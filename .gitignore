@@ -1,0 +1,16 @@
+.vs/
+bin/
+bin-int/
+*.ipch
+*.db
+*.db-wal
+*.db-shm
+*.opendb
+*.log
+*.tlog
+*.idb
+*.pdb
+*.ilk
+*.exp
+*.obj
+Debug/GAM300.exe.recipe
