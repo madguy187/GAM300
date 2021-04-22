@@ -1,0 +1,2 @@
+C:\Users\nico\Desktop\Digipen\GAM300\x64\Debug\GAM300.exe
+C:\Users\nico\Desktop\Digipen\GAM300\x64\Debug\GAM300.pdb

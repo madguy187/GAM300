@@ -14,3 +14,7 @@ bin-int/
 *.exp
 *.obj
 Debug/GAM300.exe.recipe
+x64/Debug/GAM300.exe
+*.recipe
+*.pch
+*.exe
