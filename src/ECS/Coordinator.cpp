@@ -5,7 +5,7 @@ namespace Eclipse
 {
 	Entity Coordinator::CreateEntity()
 	{
-
+		return 0;
 	}
 
 	void Coordinator::DestroyEntity(Entity entity)

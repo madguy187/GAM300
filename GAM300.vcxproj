@@ -123,7 +123,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\nico\Desktop\Digipen\GAM300\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/src</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -140,7 +140,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\nico\Desktop\Digipen\GAM300\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/src</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -152,9 +152,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Coordinator\ComponentManager\ComponentManager.cpp" />
-    <ClCompile Include="src\Coordinator\Coordinator.cpp" />
-    <ClCompile Include="src\Coordinator\EntityManager\EntityManager.cpp" />
+    <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp" />
+    <ClCompile Include="src\ECS\Coordinator.cpp" />
+    <ClCompile Include="src\ECS\EntityManager\EntityManager.cpp" />
     <ClCompile Include="src\Engine\Engine.cpp" />
     <ClCompile Include="src\EntryPoint\EntryPoint.cpp" />
     <ClCompile Include="src\pch.cpp">
@@ -173,9 +173,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Coordinator\ComponentManager\ComponentManager.h" />
-    <ClInclude Include="src\Coordinator\Coordinator.h" />
-    <ClInclude Include="src\Coordinator\EntityManager\EntityManager.h" />
+    <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h" />
+    <ClInclude Include="src\ECS\Coordinator.h" />
+    <ClInclude Include="src\ECS\EntityManager\EntityManager.h" />
     <ClInclude Include="src\Engine\Engine.h" />
     <ClInclude Include="src\EntryPoint\EntryPoint.h" />
     <ClInclude Include="src\Global.h" />

@@ -18,3 +18,5 @@ x64/Debug/GAM300.exe
 *.recipe
 *.pch
 *.exe
+*.iobj
+*.ipdb

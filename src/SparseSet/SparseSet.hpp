@@ -3,19 +3,30 @@
 
 namespace Eclipse
 {
-	template <typename T>
+	template <unsigned PAGE_SIZE>
 	class SparseSet
 	{
-		T* dense;
-		int* sparse;
-		unsigned _size = 0;
+		struct Page
+		{
+			std::array<int, PAGE_SIZE> pArray;
+		};
+
+		std::vector<Page> dense;
+		std::vector<Page> sparse;
+		unsigned _size = 0; // current size of dense
+		unsigned _capacity = 0;
+
+		__forceinline int GetPageIndex(int index)	{ return index / PAGE_SIZE; }
+		__forceinline int GetIndex(int index)		{ return index % PAGE_SIZE; }
 	public:
-		SparseSet(unsigned size);
+		SparseSet();
 		~SparseSet();
-		void Insert();
-		void Delete(unsigned index);
-		T* Search(unsigned index);
+		void Insert(int index);
+		void Delete(int index);
+		int Search(int index);
 		void Clear();
+		void Print();
+		void AddPage();
 	};
 }
 

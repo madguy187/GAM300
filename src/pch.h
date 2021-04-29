@@ -1,5 +1,6 @@
 #pragma once
 
+// printing for console
 #include <iostream>
 
 // for defines
@@ -12,3 +13,6 @@
 #include <bitset>
 #include <array>
 #include <queue>
+
+// functional
+#include <algorithm>

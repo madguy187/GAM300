@@ -3,7 +3,6 @@
 
 std::unique_ptr<Eclipse::Engine> engine;
 
-
 int main()
 {
 	engine = std::make_unique<Eclipse::Engine>();
