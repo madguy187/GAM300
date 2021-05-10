@@ -11,7 +11,9 @@ namespace Eclipse
 	public:
 		EntityManager();
 		Entity CreateEntity();
-		void DestroyEntity(Entity entity);
+		void Destroy(Entity entity);
 		void Clear();
+		void AddComponent(Entity entity, unsigned index);
+		void RemoveComponent(Entity entity, unsigned index);
 	};
 }

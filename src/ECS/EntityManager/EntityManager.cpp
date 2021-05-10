@@ -16,16 +16,38 @@ namespace Eclipse
 	{
 		Entity entity = entityQueue.front();
 		entityQueue.pop();
+		_size++;
 		return entity;
 	}
 
-	void EntityManager::DestroyEntity(Entity entity)
+	void EntityManager::Destroy(Entity entity)
 	{
 		entityQueue.push(entity);
+		entitySignature[entity].reset();
+		_size--;
 	}
 
 	void EntityManager::Clear()
 	{
-		//for (unsigned i = 0; i < )
+		std::queue<Entity> queue;
+
+		for (Entity i = 0; i < MAX_ENTITY; i++)
+		{
+			queue.push(i);
+			entitySignature[i].reset();
+		}
+
+		_size = 0;
+		entityQueue = queue;
+	}
+
+	void EntityManager::AddComponent(Entity entity, unsigned index)
+	{
+		entitySignature[entity].set(index, true);
+	}
+
+	void EntityManager::RemoveComponent(Entity entity, unsigned index)
+	{
+		entitySignature[entity].set(index, false);
 	}
 }
