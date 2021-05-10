@@ -2,9 +2,12 @@
 
 #include "pch.h"
 
+// binds a data type to an index
 template <typename U>
 class TypeID
 {
+    // initialise counter in whoever owns it
+    // e.g. unsigned TypeID<int>::_counter = 0;
     static unsigned _counter;
 
 public:
@@ -23,7 +26,7 @@ public:
     template <typename T>
     static unsigned RemoveConstRef()
     {
-        static unsigned id = _counter++;
+        static unsigned const id = _counter++;
         return id;
     }
 };
