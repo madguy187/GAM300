@@ -68,5 +68,8 @@
     <ClInclude Include="src\ECS\Coordinator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\TypeID\TypeID.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
