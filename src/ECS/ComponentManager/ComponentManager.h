@@ -1,86 +1,81 @@
 #pragma once
 #include "Global.h"
+#include "Components/ComponentArray/ComponentBase.h"
 #include "Components/ComponentArray/ComponentArray.h"
+#include "TypeID/TypeID.h"
+
+unsigned TypeID<Eclipse::IComponentArray>::_counter = 0;
 
 namespace Eclipse
 {
 	class ComponentManager
 	{
 	public:
-		template<typename... T>
+		template<typename T>
 		void RegisterComponent()
 		{
-			
-			const char* typeName = typeid(T).name();
-
-			assert(mComponentTypes.find(typeName) == mComponentTypes.end() && "Registering component type more than once.");
-
-			// Add this component type to the component type map
-			mComponentTypes.insert({ typeName, mNextComponentType });
-
 			// Create a ComponentArray pointer and add it to the component arrays map
-			mComponentArrays.insert({ typeName, std::make_shared<ComponentArray<T>>() });
+			mComponentArrays.push_back({ std::make_unique<ComponentArray<T>>(),
+				[](IComponentArray& _container, const Entity entity)
+				{ 
+					static_cast<ComponentArray<T>&>(_container).Delete(entity);
+				}
+			});
 
-			// Increment the value so that the next component registered will be different
-			++mNextComponentType;
+			id.RegisterID<T>();
 		}
 
 		template<typename T>
 		ComponentType GetComponentType()
 		{
-			const char* typeName = typeid(T).name();
-
-			assert(mComponentTypes.find(typeName) != mComponentTypes.end() && "Component not registered before use.");
-
-			// Return this component's type - used for creating signatures
-			return mComponentTypes[typeName];
+			return id.GetID<T>();
 		}
 
 		template<typename T>
 		void AddComponent(Entity entity, T component)
 		{
 			// Add a component to the array for an entity
-			GetComponentArray<T>()->Insert(entity, component);
+			//GetComponentArray<T>()->Insert(entity, component);
 		}
 
 		template<typename T>
 		void RemoveComponent(Entity entity)
 		{
 			// Remove a component from the array for an entity
-			GetComponentArray<T>()->Delete(entity);
+			ComponentBase& base = mComponentArrays[id.GetID<T>()];
+			base.Delete(base._container, entity);
 		}
 
-		template<typename T>
-		T& GetComponent(Entity entity)
-		{
-			// Get a reference to a component from the array for an entity
-			return GetComponentArray<T>()->GetComponent(entity);
-		}
+		//template<typename T>
+		//T& GetComponent(Entity entity)
+		//{
+		//	// Get a reference to a component from the array for an entity
+		//	return GetComponentArray<T>()->GetComponent(entity);
+		//}
 
-		void EntityDestroyed(Entity entity)
+		void Clear();
+
+		/*void EntityDestroyed(Entity entity)
 		{
-			/*for (auto const& pair : mComponentArrays)
+			for (int i = 0; i < mComponentArrays.size(); i++)
 			{
-				auto const& component = pair.second;
 
-				component->Delete(entity);
-			}*/
-		}
+			}
+
+			for (auto const& pointer : mComponentArrays)
+			{
+				std::static_pointer_cast<ComponentArray<T>>(pointer)->Delete(entity);
+			}
+		}*/
 
 	private:
-		std::unordered_map<const char*, ComponentType> mComponentTypes{};
-		std::unordered_map<const char*, std::shared_ptr<IComponentArray>> mComponentArrays{};
+		std::vector<ComponentBase> mComponentArrays;
+		TypeID<IComponentArray> id;
 
-		ComponentType mNextComponentType{};
-
-		template<typename T>
-		std::shared_ptr<ComponentArray<T>> GetComponentArray()
+		/*template<typename T>
+		std::unique_ptr<ComponentArray<T>> GetComponentArray()
 		{
-			const char* typeName = typeid(T).name();
-
-			assert(mComponentTypes.find(typeName) != mComponentTypes.end() && "Component not registered before use.");
-
-			return std::static_pointer_cast<ComponentArray<T>>(mComponentArrays[typeName]);
-		}
+			return mComponentArrays[id.GetID<T>()];
+		}*/
 	};
 }

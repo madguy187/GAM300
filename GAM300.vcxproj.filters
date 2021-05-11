@@ -89,5 +89,8 @@
     <ClInclude Include="src\TypeID\TypeID.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

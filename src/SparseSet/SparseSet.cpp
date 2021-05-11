@@ -18,7 +18,7 @@ namespace Eclipse
 		while (index >= _capacity)
 			AddPage();
 
-		if (Search(index) != NOT_FOUND) return;
+		if (Search(index) != NOT_FOUND) return NOT_FOUND;
 
 		dense[GetPageIndex(_size)].pArray[GetIndex(_size)] = index;
 		sparse[GetPageIndex(index)].pArray[GetIndex(index)] = _size;
@@ -50,7 +50,7 @@ namespace Eclipse
 		T sparseIndex = sparse[GetPageIndex(index)].pArray[GetIndex(index)];
 
 		if (sparseIndex < _size && dense[GetPageIndex(sparseIndex)].pArray[GetIndex(sparseIndex)] == index)
-			return dense[GetPageIndex(sparseIndex)].pArray[GetIndex(sparseIndex)];
+			return sparseIndex;
 
 		return NOT_FOUND;
 	}
