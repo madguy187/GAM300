@@ -72,6 +72,13 @@ namespace Eclipse
 			}
 		}
 
+		template <typename T>
+		std::shared_ptr<T> GetSystem()
+		{
+			const char* typeName = typeid(T).name();
+			return std::static_pointer_cast<T>(mSystems[typeName]);
+		}
+
 	private:
 		// Map from system type string pointer to a signature
 		std::unordered_map<const char*, Signature> mSignatures{};

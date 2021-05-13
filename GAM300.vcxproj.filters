@@ -92,5 +92,11 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\RenderComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\TestSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

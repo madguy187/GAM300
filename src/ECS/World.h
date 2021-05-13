@@ -72,6 +72,12 @@ namespace Eclipse
 			systemManager->Update<T>();
 		}
 
+		template <typename T>
+		std::shared_ptr<T> GetSystem()
+		{
+			return systemManager->GetSystem<T>();
+		}
+
 		void Clear();
 	};
 }
