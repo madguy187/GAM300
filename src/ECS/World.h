@@ -23,10 +23,26 @@ namespace Eclipse
 		}
 
 		template <typename T>
+		void RegisterSystem()
+		{
+			systemManager->RegisterSystem<T>();
+		}
+
+		template <typename T>
+		void RegisterSystemSignature(Signature signature)
+		{
+			systemManager->SetSignature<T>(signature);
+		}
+
+		template <typename T>
 		void AddComponent(Entity entity, T component)
 		{
 			entityManager->AddComponent(entity, componentManager->GetComponentType<T>());
 			componentManager->AddComponent<T>(entity, component);
+
+			auto signature = entityManager->GetSignature(entity);
+			signature.set(componentManager->GetComponentType<T>(), true);
+			systemManager->EntitySignatureChanged(entity, signature);
 		}
 
 		template <typename T>
@@ -35,11 +51,11 @@ namespace Eclipse
 			componentManager->RemoveComponent<T>(entity);
 		}
 
-		/*template <typename T>
+		template <typename T>
 		T& GetComponent(Entity entity)
 		{
 			return componentManager->GetComponent<T>(entity);
-		}*/
+		}
 
 		template <typename T>
 		ComponentType GetComponentType()
@@ -50,6 +66,12 @@ namespace Eclipse
 		Entity CreateEntity();
 		void DestroyEntity(Entity entity);
 		
+		template <typename T>
+		void Update()
+		{
+			systemManager->Update<T>();
+		}
+
 		void Clear();
 	};
 }

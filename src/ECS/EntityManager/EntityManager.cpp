@@ -50,4 +50,9 @@ namespace Eclipse
 	{
 		entitySignature[entity].set(index, false);
 	}
+
+	Signature EntityManager::GetSignature(Entity entity)
+	{
+		return entitySignature[entity];
+	}
 }

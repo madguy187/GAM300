@@ -15,5 +15,6 @@ namespace Eclipse
 		void Clear();
 		void AddComponent(Entity entity, unsigned index);
 		void RemoveComponent(Entity entity, unsigned index);
+		Signature GetSignature(Entity entity);
 	};
 }

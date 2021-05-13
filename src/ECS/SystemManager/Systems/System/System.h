@@ -7,6 +7,7 @@ namespace Eclipse
 	class System
 	{
 	public:
+		virtual void Update() = 0;
 		std::set<Entity> mEntities;
 	};
 }

@@ -21,3 +21,6 @@
 
 // error
 #include <assert.h>
+
+// engine extern pointer
+#include "EntryPoint/EntryPoint.h"

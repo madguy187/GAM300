@@ -23,6 +23,6 @@ namespace Eclipse
 	void World::Clear()
 	{
 		entityManager->Clear();
-		//componentManager->Clear();
+		componentManager->Clear();
 	}
 }

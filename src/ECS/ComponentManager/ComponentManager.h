@@ -19,7 +19,15 @@ namespace Eclipse
 				[](IComponentArray& _container, const Entity entity)
 				{ 
 					static_cast<ComponentArray<T>&>(_container).Delete(entity);
-				}
+				},
+				[](IComponentArray& _container, const Entity entity)
+				{
+					static_cast<ComponentArray<T>&>(_container).GetComponent(entity);
+				},
+				[](IComponentArray& _container)
+				{
+					static_cast<ComponentArray<T>&>(_container).Clear();
+				},
 			});
 
 			id.RegisterID<T>();
@@ -34,8 +42,8 @@ namespace Eclipse
 		template<typename T>
 		void AddComponent(Entity entity, T component)
 		{
-			// Add a component to the array for an entity
-			//GetComponentArray<T>()->Insert(entity, component);
+			auto& base = static_cast<ComponentArray<T>&>(*(mComponentArrays[id.GetID<T>()]._container));
+			base.Insert(entity, component);
 		}
 
 		template<typename T>
@@ -43,15 +51,16 @@ namespace Eclipse
 		{
 			// Remove a component from the array for an entity
 			ComponentBase& base = mComponentArrays[id.GetID<T>()];
-			base.Delete(base._container, entity);
+			base.Delete(*base._container, entity);
 		}
 
-		//template<typename T>
-		//T& GetComponent(Entity entity)
-		//{
-		//	// Get a reference to a component from the array for an entity
-		//	return GetComponentArray<T>()->GetComponent(entity);
-		//}
+		template<typename T>
+		T& GetComponent(Entity entity)
+		{
+			// Get a reference to a component from the array for an entity
+			auto& base = static_cast<ComponentArray<T>&>(*(mComponentArrays[id.GetID<T>()]._container));
+			return base.GetComponent(entity);
+		}
 
 		void Clear();
 
@@ -72,10 +81,10 @@ namespace Eclipse
 		std::vector<ComponentBase> mComponentArrays;
 		TypeID<IComponentArray> id;
 
-		/*template<typename T>
+		template<typename T>
 		std::unique_ptr<ComponentArray<T>> GetComponentArray()
 		{
 			return mComponentArrays[id.GetID<T>()];
-		}*/
+		}
 	};
 }

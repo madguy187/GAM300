@@ -8,6 +8,8 @@ namespace Eclipse
 	{
 		std::unique_ptr<IComponentArray> _container;
 		void (*Delete)(IComponentArray&, const Entity);
+		void (*GetComponent)(IComponentArray&, const Entity);
+		void (*Clear)(IComponentArray&);
 	};
 }
 

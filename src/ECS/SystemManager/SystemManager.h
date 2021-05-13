@@ -7,6 +7,13 @@ namespace Eclipse
 	class SystemManager
 	{
 	public:
+		template <typename T>
+		void Update()
+		{
+			const char* typeName = typeid(T).name();
+			mSystems[typeName]->Update();
+		}
+
 		template<typename T>
 		std::shared_ptr<T> RegisterSystem()
 		{
