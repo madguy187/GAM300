@@ -25,7 +25,6 @@
 #include "Triangle.h"
 #include "Quad.h"
 #include "Texture.h"
-#include "Font.h"
 #include <vector>
 #include <array>
 #include <bitset>
@@ -594,22 +593,6 @@ struct Dialogue
 	bool createDialogueBox{ false };
 	unsigned int boxID{ 0 };
 	unsigned int iconID{ 0 };
-};
-
-struct Font
-{
-	glm::mat4 projection;
-
-	using shaderIt = std::map<std::string, Shader>::iterator;
-	using FontIt = std::map<std::string, Fonts>::iterator;
-	using TextIt = std::map<std::string, Text>::iterator;
-	using DialogueIt = std::map<std::string, Dialogue>::iterator;
-
-	shaderIt shaderRef;
-	FontIt fontRef;
-	TextIt textRef;
-	DialogueIt dialogueRef;
-
 };
 
 struct Camera

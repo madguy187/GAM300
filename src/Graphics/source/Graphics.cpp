@@ -15,21 +15,19 @@
 **********************************************************************************/
 #define _USE_MATH_DEFINES
 
+#include "pch.h"
 #include "../include/Graphics.h"
 #include "../include/GLHelper.h"
 #include <cmath>
 #include <fstream>
-#include <imgui.h>
+#include "imgui.h"
 #include <string>
 #include <istream>
 
 #include <glm/gtc/type_ptr.hpp> // for glm::value_ptr
 #include <glm/gtx/matrix_transform_2d.hpp>
-
-
-#include "ImGui_Gam200.h"
 #include "../include/Vec.h"
-#include "World.h"
+#include "../src/ECS/World.h"
 /*                                                   objects with file scope
 ----------------------------------------------------------------------------- */
 using namespace rapidjson;
@@ -39,7 +37,6 @@ std::map<std::string, Shader> Graphics::shaderpgms;
 std::map<std::string, std::unique_ptr<IModel>> Graphics::models;
 std::map<std::string, Texture> Graphics::textures;
 std::map<std::string, Text> Graphics::Texts;
-std::map<std::string, Fonts> Graphics::fonts;
 std::map<std::string, Dialogue> Graphics::dialogue;
 std::vector<Dialogue> Graphics::currDialogue;
 std::multimap<unsigned int, Sprite*> Graphics::sprites;
@@ -55,7 +52,6 @@ unsigned int Graphics::framebufferTest;
 
 // create a color attachment texture
 unsigned int Graphics::textureColorbuffer;
-ImGui_LayOut debugInput;
 static bool checker;
 
 float Graphics::windowX;
@@ -66,36 +62,27 @@ float Graphics::winHeight;
 
 vec2 Graphics::frameBufferPos;
 
-extern vec2 mousecoords;
+vec2 mousecoords;
 
 GLdouble Graphics::timer = 0.5;
 World* Graphics::_world = nullptr;
-
 int StickCount = 0;
-
 int StickID = 0;
-
 bool NumebrTest = false;
-
-extern std::bitset<16> PlayerInput;
-extern std::bitset<2> isCreated;
-extern bool mouseEditor;
+bool mouseEditor = true;
 
 GameViewW* Graphics::m_frameBuffer;
 
 void Graphics::load()
 {
   //Loads all the shader programs listed in the shader file
-  LoadShaders("../Shaders/Shaders.json");
+  LoadShaders("Shaders/Shaders.json");
 
   //Loads all models listed
-  LoadModels("../meshes/Models.json");
+  LoadModels("meshes/Models.json");
 
   //Loads all textures listed
-  LoadTextures("../Textures/Textures.json");
-
-  //Loads all fonts listed
-  LoadFonts("../Fonts/Fonts.json");
+  LoadTextures("Textures/Textures.json");
 
   //Loads all particle types
   LoadParticles();
@@ -112,12 +99,12 @@ void Graphics::init()
 {
   glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
   glViewport(0, 0, GLHelper::width, GLHelper::height);
-  GLHelper::print_specs();
+  //GLHelper::print_specs();
 
   //GameViewW GameViewBuffer(GLHelper::width, GLHelper::height);
   
   m_frameBuffer = new GameViewW(GLHelper::width, GLHelper::height);
-  CreateFrameBuffer();
+  //CreateFrameBuffer();
 }
 
 /******************************************************************************/
@@ -127,19 +114,22 @@ void Graphics::init()
  /******************************************************************************/
 void Graphics::update(double, World& world)
 {
-  MouseCordConvert Editor_MousePos;
   // first, update camera
   //Graphics::camera2d.update(GLHelper::ptr_window, delta_time);
 
   int modelSelector = -1;
-  ImGui::Begin("Create Objects");
-  if (ImGui::Combo("Models", &modelSelector,
-    "Square\0Circle\0Triangle\0Lines\0Sphere\0Cube\0Cylinder\0Cone\0Torus\0Pyramid"))
-  {
-    CreateObject(modelSelector, world);
-    ImGui_LayOut::Gui_InsertSeparator(2);
-  }
-  ImGui::End();
+  //ImGui::Begin("Create Objects");
+  //if (ImGui::Combo("Models", &modelSelector,
+  //  "Square\0Circle\0Triangle\0Lines\0Sphere\0Cube\0Cylinder\0Cone\0Torus\0Pyramid"))
+  //{
+  //  CreateObject(modelSelector, world);
+
+  //  for (int i = 0; i <= 2; ++i)
+  //  {
+  //    ImGui::Separator();
+  //  }
+  //}
+  //ImGui::End();
 }
 
 /******************************************************************************/
@@ -164,51 +154,51 @@ void Graphics::draw(World& world)
     glClearColor(static_cast<GLclampf>(0.22),
       static_cast<GLclampf>(0.28), static_cast<GLclampf>(0.30),
       static_cast<GLclampf>(1.0));
-    world.Render();
+    //world.Render();
   }
   else
   {
-    //Note: ImGui might cause crashes depending on the rendering order. Always
-    // call ImGui separately or after rendering to the default framebuffer
-    glBindFramebuffer(GL_FRAMEBUFFER, m_frameBuffer->GetGameViewBuffer());
-    glClear(GL_COLOR_BUFFER_BIT);
+    ////Note: ImGui might cause crashes depending on the rendering order. Always
+    //// call ImGui separately or after rendering to the default framebuffer
+    //glBindFramebuffer(GL_FRAMEBUFFER, m_frameBuffer->GetGameViewBuffer());
+    //glClear(GL_COLOR_BUFFER_BIT);
 
-    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-    glClear(GL_COLOR_BUFFER_BIT);
+    //glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+    //glClear(GL_COLOR_BUFFER_BIT);
 
-    world.Render();
+    ////world.Render();
 
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glDisable(GL_DEPTH_TEST);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glBindTexture(GL_TEXTURE_2D, m_frameBuffer->GetTextureColourBuffer());
+    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    //glDisable(GL_DEPTH_TEST);
+    //glClear(GL_COLOR_BUFFER_BIT);
+    //glBindTexture(GL_TEXTURE_2D, m_frameBuffer->GetTextureColourBuffer());
 
-    ////  bind back to default framebuffer and draw with the attached framebuffer
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glDisable(GL_DEPTH_TEST);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+    //////  bind back to default framebuffer and draw with the attached framebuffer
+    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    //glDisable(GL_DEPTH_TEST);
+    //glClear(GL_COLOR_BUFFER_BIT);
+    //glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
 
-    ImGui::Begin("Game View");
+    //ImGui::Begin("Game View");
 
-    ImVec2 pos = ImGui::GetCursorScreenPos();
+    //ImVec2 pos = ImGui::GetCursorScreenPos();
 
-    mousecoords = { pos.x, pos.y };
-    ImGui::GetWindowDrawList()->AddImage(
-      (void*)(textureColorbuffer),
-      ImVec2(ImGui::GetCursorScreenPos()),
-      ImVec2(ImGui::GetCursorScreenPos().x + ImGui::GetWindowContentRegionMax().x,
-        ImGui::GetCursorScreenPos().y + ImGui::GetWindowContentRegionMax().y), ImVec2(0, 1), ImVec2(1, 0));
+    //mousecoords = { pos.x, pos.y };
+    //ImGui::GetWindowDrawList()->AddImage(
+    //  (void*)(textureColorbuffer),
+    //  ImVec2(ImGui::GetCursorScreenPos()),
+    //  ImVec2(ImGui::GetCursorScreenPos().x + ImGui::GetWindowContentRegionMax().x,
+    //    ImGui::GetCursorScreenPos().y + ImGui::GetWindowContentRegionMax().y), ImVec2(0, 1), ImVec2(1, 0));
 
-    winWidth = ImGui::GetWindowWidth();
-    winHeight = ImGui::GetWindowHeight();
+    //winWidth = ImGui::GetWindowWidth();
+    //winHeight = ImGui::GetWindowHeight();
 
-    windowX = (ImGui::GetWindowWidth() / 2) + ImGui::GetCursorScreenPos().x;
-    windowY = (ImGui::GetWindowHeight() / 2) + ImGui::GetCursorScreenPos().y;
-    frameBufferPos = vec2{ ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y };
-    ImGui::End();
+    //windowX = (ImGui::GetWindowWidth() / 2) + ImGui::GetCursorScreenPos().x;
+    //windowY = (ImGui::GetWindowHeight() / 2) + ImGui::GetCursorScreenPos().y;
+    //frameBufferPos = vec2{ ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y };
+    //ImGui::End();
 
-    GameViewW::ShowWindow(world, *m_frameBuffer);
+    //GameViewW::ShowWindow(world, *m_frameBuffer);
 
 
   }
@@ -299,20 +289,20 @@ void Graphics::LoadTextures(std::string textureFile)
 
 void Graphics::LoadFonts(std::string FontFile)
 {
-  Parser input;
-  input.ParseFile(FontFile);
+  //Parser input;
+  //input.ParseFile(FontFile);
 
-  std::string fontName;
-  std::string path;
+  //std::string fontName;
+  //std::string path;
 
-  for (auto& it : input.doc["fonts"].GetArray())
-  {
-    fontName = (it)["fontName"].GetString();
-    path = (it)["path"].GetString();
+  //for (auto& it : input.doc["fonts"].GetArray())
+  //{
+  //  fontName = (it)["fontName"].GetString();
+  //  path = (it)["path"].GetString();
 
-    Fonts newFont(path);
-    fonts.emplace(fontName, newFont);
-  }
+  //  //Fonts newFont(path);
+  //  //fonts.emplace(fontName, newFont);
+  //}
 }
 
 void Graphics::LoadParticles()
@@ -355,88 +345,88 @@ void Graphics::initShaderpgms(std::string shdrpgm_name,
 
 void Graphics::CreateObject(GLint model, World& world)
 {
-  auto& entManager = world.GetEntityManager();
-  auto& compManager = world.GetComponentManager();
-  auto id = entManager.CreateEntity().GetID();
-  compManager.AddComponent<Transform>(id);
-  compManager.AddComponent<IsActive>(id);
-  compManager.AddComponent<Sprite>(id);
-  compManager.AddComponent<RigidBody>(id);
-  compManager.AddComponent<RegisterEvent>(id);
-  //compManager.AddComponent<BoundingBox>(id);
+  //auto& entManager = world.GetEntityManager();
+  //auto& compManager = world.GetComponentManager();
+  //auto id = entManager.CreateEntity().GetID();
+  //compManager.AddComponent<Transform>(id);
+  //compManager.AddComponent<IsActive>(id);
+  //compManager.AddComponent<Sprite>(id);
+  //compManager.AddComponent<RigidBody>(id);
+  //compManager.AddComponent<RegisterEvent>(id);
+  ////compManager.AddComponent<BoundingBox>(id);
 
-  auto& sprite = compManager.GetComponent<Sprite>(id).get();
-  auto& transform = compManager.GetComponent<Transform>(id).get();
+  //auto& sprite = compManager.GetComponent<Sprite>(id).get();
+  //auto& transform = compManager.GetComponent<Transform>(id).get();
 
-  switch (model)
-  {
-  case 0:
-  {
-    sprite.shaderRef = shaderpgms.find("shdrpgm");
-    sprite.modelRef = models.find("square");
-    sprite.isQuad = true;
-  }
-  break;
-  case 1:
-    sprite.shaderRef = shaderpgms.find("shdrpgm");
-    sprite.modelRef = models.find("circle");
-    break;
-  case 2:
-  {
-    sprite.shaderRef = shaderpgms.find("shdrpgm");
-    sprite.modelRef = models.find("triangle");
-  }
-  break;
-  case 3:
-  {
-    sprite.shaderRef = shaderpgms.find("shdrpgm");
-    sprite.modelRef = models.find("lines");
-  }
-  break;
+  //switch (model)
+  //{
+  //case 0:
+  //{
+  //  sprite.shaderRef = shaderpgms.find("shdrpgm");
+  //  sprite.modelRef = models.find("square");
+  //  sprite.isQuad = true;
+  //}
+  //break;
+  //case 1:
+  //  sprite.shaderRef = shaderpgms.find("shdrpgm");
+  //  sprite.modelRef = models.find("circle");
+  //  break;
+  //case 2:
+  //{
+  //  sprite.shaderRef = shaderpgms.find("shdrpgm");
+  //  sprite.modelRef = models.find("triangle");
+  //}
+  //break;
+  //case 3:
+  //{
+  //  sprite.shaderRef = shaderpgms.find("shdrpgm");
+  //  sprite.modelRef = models.find("lines");
+  //}
+  //break;
 
-  case 4:
-  {
-    sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
-    sprite.modelRef = models.find("sphere");
-  }
-  break;
+  //case 4:
+  //{
+  //  sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
+  //  sprite.modelRef = models.find("sphere");
+  //}
+  //break;
 
-  case 5:
-  {
-    sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
-    sprite.modelRef = models.find("cube");
-  }
-  break;
+  //case 5:
+  //{
+  //  sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
+  //  sprite.modelRef = models.find("cube");
+  //}
+  //break;
 
-  case 6:
-  {
-    sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
-    sprite.modelRef = models.find("cylinder");
-  }
-  break;
+  //case 6:
+  //{
+  //  sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
+  //  sprite.modelRef = models.find("cylinder");
+  //}
+  //break;
 
-  case 7:
-  {
-    sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
-    sprite.modelRef = models.find("cone");
-  }
-  break;
+  //case 7:
+  //{
+  //  sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
+  //  sprite.modelRef = models.find("cone");
+  //}
+  //break;
 
-  case 8:
-  {
-    sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
-    sprite.modelRef = models.find("torus");
-  }
-  break;
+  //case 8:
+  //{
+  //  sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
+  //  sprite.modelRef = models.find("torus");
+  //}
+  //break;
 
-  case 9:
-  {
-    sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
-    sprite.modelRef = models.find("pyramid");
-  }
-  break;
+  //case 9:
+  //{
+  //  sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
+  //  sprite.modelRef = models.find("pyramid");
+  //}
+  //break;
 
-  }
+  //}
 }
 
 void Graphics::CreateFrameBuffer()
@@ -471,24 +461,24 @@ void Graphics::RegisterWorld(World* world)
 
 void Graphics::DeleteSprite(unsigned int id)
 {
-  auto handle = _world->GetComponentManager().GetComponent<Sprite>(id);
+  //auto handle = _world->GetComponentManager().GetComponent<Sprite>(id);
 
-  if (!handle.has())
-  {
-    return;
-  }
+  //if (!handle.has())
+  //{
+  //  return;
+  //}
 
-  auto& targetSprite = handle.get();
+  //auto& targetSprite = handle.get();
 
-  for (auto iterator = std::begin(sprites); iterator != std::end(sprites); ++iterator)
-  {
-    if (((*iterator).first == targetSprite.layerNum) && ((*iterator).second->ID == targetSprite.ID))
-    {
-      sprites.erase(iterator);
-      sortedID.erase(targetSprite.ID);
-      return;
-    }
-  }
+  //for (auto iterator = std::begin(sprites); iterator != std::end(sprites); ++iterator)
+  //{
+  //  if (((*iterator).first == targetSprite.layerNum) && ((*iterator).second->ID == targetSprite.ID))
+  //  {
+  //    sprites.erase(iterator);
+  //    sortedID.erase(targetSprite.ID);
+  //    return;
+  //  }
+  //}
 }
 
 void Graphics::DeleteAllSprites()
@@ -499,26 +489,26 @@ void Graphics::DeleteAllSprites()
 
 void Graphics::CreateMonkeytick(World* world, int _flag)
 {
-  if (_flag & COLLISION_BOTTOM)
-  {
-    auto& comMM = _world->GetComponentManager();
-    auto _PlayercomMM = comMM.GetComponentLookup<Player>();
+  //if (_flag & COLLISION_BOTTOM)
+  //{
+  //  auto& comMM = _world->GetComponentManager();
+  //  auto _PlayercomMM = comMM.GetComponentLookup<Player>();
 
-    for (auto& pair : _PlayercomMM)
-    {
-      auto& __player = *(pair.second);
+  //  for (auto& pair : _PlayercomMM)
+  //  {
+  //    auto& __player = *(pair.second);
 
-      if (StickCount == 1 && (__player.airtime == false) && (_flag & COLLISION_BOTTOM))
-      {
-        // create stick
-        CreateObject(6, (*world));
+  //    if (StickCount == 1 && (__player.airtime == false) && (_flag & COLLISION_BOTTOM))
+  //    {
+  //      // create stick
+  //      CreateObject(6, (*world));
 
-        PlayerInput.set(6, 1);
-        PlayerInput.set(9, 1);
+  //      PlayerInput.set(6, 1);
+  //      PlayerInput.set(9, 1);
 
-      }
-    }
-  }
+  //    }
+  //  }
+  //}
 }
 
 /******************************************************************************/
@@ -531,7 +521,7 @@ void Graphics::CreateMonkeytick(World* world, int _flag)
 GLuint Graphics::setup_texobj(std::string pathname)
 {
   int width, height, clrChannels;
-  unsigned char* data = stbi_load(pathname.c_str(), &width, &height, &clrChannels, 0);
+  unsigned char* data = nullptr; // stbi_load(pathname.c_str(), &width, &height, &clrChannels, 0);
 
   if (data)
   {
@@ -544,13 +534,13 @@ GLuint Graphics::setup_texobj(std::string pathname)
     glTextureSubImage2D(texobj_hdl, 0, 0, 0, width, height,
       GL_RGBA, GL_UNSIGNED_BYTE, data);
     // client memory not required since image is buffered in GPU memory
-    stbi_image_free(data);
+    //stbi_image_free(data);
 
     return texobj_hdl;
   }
   else
   {
-    std::string error = stbi_failure_reason();
+    std::string error = "hi";  //stbi_failure_reason();
     std::cout << "Texture could not be loaded! : " << error << std::endl;
     std::exit(EXIT_FAILURE);
   }
@@ -567,174 +557,174 @@ typename Graphics::shaderIt Graphics::FindShaders(std::string name)
 }
 
 
-void Graphics::Print_Numbers(int number, vec3 location, int size, int duration, int colour, float velocity, int id)
-{
-  (void)colour;
-  (void)velocity;
-  (void)id;
-
-  int Offset = 50;
-  int n = (int)number;
-  int index = 0;
-  int numbers[256];
-
-  if (n == 0)
-  {
-    numbers[index++] = n;
-  }
-  while (n)
-  {
-    numbers[index++] = n % 10;
-    n /= 10;
-  }
-
-  index--;
-
-  while (index >= 0)
-  {
-
-    vec3 pos = { location.x, (location.y + Offset) ,0 };
-    vec3 scale = { (float)size,(float)size,0 };
-
-    auto& entManager = _world->GetEntityManager();
-    auto& compManager = _world->GetComponentManager();
-    auto id = entManager.CreateEntity().GetID();
-
-    compManager.AddComponent<Transform>(id);
-    compManager.AddComponent<IsActive>(id);
-    compManager.AddComponent<Sprite>(id);
-    compManager.AddComponent<RigidBody>(id);
-    compManager.AddComponent<NUMBER>(id);
-
-    auto& sprite = compManager.GetComponent<Sprite>(id).get();
-    auto& GetNumber = compManager.GetComponent<NUMBER>(id).get();
-    auto& NumberTransform = compManager.GetComponent<Transform>(id).get();
-
-    GetNumber._run = true;
-
-    sprite.shaderRef = shaderpgms.find("shdrpgm");
-    sprite.modelRef = models.find("square");
-    sprite.isQuad = true;
-    sprite.hasTexture = true;
-    sprite.textureRef = textures.find("numberspritesheet");
-    sprite.layerNum = 40;
-
-    GetNumber.health = (float)duration; //lifespan
-    sprite.textureIdx.x = (float)(numbers[index] * 1);
-    sprite.textureIdx.y = 1;
-    NumberTransform.position.x = pos.x - (scale.x * index);
-    NumberTransform.position.y = pos.y;
-
-    auto& _rigid = compManager.GetComponent<RigidBody>(id).get();
-    RigidBodyComponent::set(&_rigid, BodyType::Dynamic);
-    _rigid.gravity = 0.0f;
-    _rigid.force.y = 300.0f;
-
-    index--;
-  }
-}
-
-void Graphics::CreateDeathZone(World& world)
-{
-  extern std::bitset<4> toggle;
-
-  auto& entManager = world.GetEntityManager();
-  auto& compManager = world.GetComponentManager();
-  auto id = entManager.CreateEntity().GetID();
-
-  compManager.AddComponent<Transform>(id);
-  compManager.AddComponent<IsActive>(id);
-  compManager.AddComponent<Sprite>(id);
-  compManager.AddComponent<BoundingBox>(id);
-  compManager.AddComponent<DeathZone>(id);
-  compManager.AddComponent<RigidBody>(id);
-
-  auto& sprite = compManager.GetComponent<Sprite>(id).get();
-  sprite.shaderRef = shaderpgms.find("shdrpgm");
-  sprite.modelRef = models.find("square");
-  sprite.isQuad = true;
-  sprite.transparency = 0.25f;
-  sprite.hasTexture = false;
-  sprite.layerNum = 40;
-
-  auto& Body = compManager.GetComponent<RigidBody>(id).get();
-  RigidBodyComponent::set(&Body, BodyType::Dynamic);
-  Body.gravity = 0.0f;
-  Body._CollisionType = CollisionType::DeathZone;
-
-  auto& _scale = compManager.GetComponent<Transform>(id).get();
-  _scale.scale = { 100, 100 , 0 };
-
-  std::string myName = "DeathZone ";
-  EntityNameTable::AddNameToTable(id, myName);
-
-  auto& _SetToggle = compManager.GetComponent<DeathZone>(id).get();
-  _SetToggle.ToggleDeathZone = false;
-
-  isCreated.set(0, 1);
-
-  toggle.set(2, 0);
-  toggle.set(1, 1);
-  toggle.set(0, 0);
-}
-
-void Graphics::Print_Alphabet(const char* String, float Location_x, float Location_y, float size, int duration)
-{
-  int index = 0;
-  char characters[256];
-
-  while (String[index] != NULL)
-  {
-    characters[index] = String[index];
-    index++;
-  }
-
-  index--;
-
-  while (index >= 0)
-  {
-    vec3 pos = { Location_x, Location_y ,0 };
-    vec3 scale = { size,size,0 };
-
-    if (characters[index] > 90)
-    {
-      characters[index] -= 32;
-    }
-
-    if (characters[index] != 32)
-    {
-      auto& entManager = _world->GetEntityManager();
-      auto& compManager = _world->GetComponentManager();
-      auto id = entManager.CreateEntity().GetID();
-
-      compManager.AddComponent<Transform>(id);
-      compManager.AddComponent<IsActive>(id);
-      compManager.AddComponent<Sprite>(id);
-      compManager.AddComponent<RigidBody>(id);
-      compManager.AddComponent<Alphabet>(id);
-
-      auto& sprite = compManager.GetComponent<Sprite>(id).get();
-      auto& Get = compManager.GetComponent<Alphabet>(id).get();
-      auto& AlphabetTransform = compManager.GetComponent<Transform>(id).get();
-
-      Get._run = true;
-
-      sprite.shaderRef = shaderpgms.find("shdrpgm");
-      sprite.modelRef = models.find("square");
-      sprite.isQuad = true;
-      sprite.hasTexture = true;
-      sprite.textureRef = textures.find("dog");
-      sprite.layerNum = 40;
-
-      Get.health = (float)duration; //lifespan
-      sprite.textureIdx.x = (float)(characters[index] - 65);
-      sprite.textureIdx.y = 1.0f;
-
-      AlphabetTransform.scale = scale;
-      AlphabetTransform.position.x = pos.x + (scale.x * index);
-      AlphabetTransform.position.y = pos.y;
-    }
-    index--;
-  }
-
-}
+//void Graphics::Print_Numbers(int number, vec3 location, int size, int duration, int colour, float velocity, int id)
+//{
+//  (void)colour;
+//  (void)velocity;
+//  (void)id;
+//
+//  int Offset = 50;
+//  int n = (int)number;
+//  int index = 0;
+//  int numbers[256];
+//
+//  if (n == 0)
+//  {
+//    numbers[index++] = n;
+//  }
+//  while (n)
+//  {
+//    numbers[index++] = n % 10;
+//    n /= 10;
+//  }
+//
+//  index--;
+//
+//  while (index >= 0)
+//  {
+//
+//    vec3 pos = { location.x, (location.y + Offset) ,0 };
+//    vec3 scale = { (float)size,(float)size,0 };
+//
+//    auto& entManager = _world->GetEntityManager();
+//    auto& compManager = _world->GetComponentManager();
+//    auto id = entManager.CreateEntity().GetID();
+//
+//    compManager.AddComponent<Transform>(id);
+//    compManager.AddComponent<IsActive>(id);
+//    compManager.AddComponent<Sprite>(id);
+//    compManager.AddComponent<RigidBody>(id);
+//    compManager.AddComponent<NUMBER>(id);
+//
+//    auto& sprite = compManager.GetComponent<Sprite>(id).get();
+//    auto& GetNumber = compManager.GetComponent<NUMBER>(id).get();
+//    auto& NumberTransform = compManager.GetComponent<Transform>(id).get();
+//
+//    GetNumber._run = true;
+//
+//    sprite.shaderRef = shaderpgms.find("shdrpgm");
+//    sprite.modelRef = models.find("square");
+//    sprite.isQuad = true;
+//    sprite.hasTexture = true;
+//    sprite.textureRef = textures.find("numberspritesheet");
+//    sprite.layerNum = 40;
+//
+//    GetNumber.health = (float)duration; //lifespan
+//    sprite.textureIdx.x = (float)(numbers[index] * 1);
+//    sprite.textureIdx.y = 1;
+//    NumberTransform.position.x = pos.x - (scale.x * index);
+//    NumberTransform.position.y = pos.y;
+//
+//    auto& _rigid = compManager.GetComponent<RigidBody>(id).get();
+//    RigidBodyComponent::set(&_rigid, BodyType::Dynamic);
+//    _rigid.gravity = 0.0f;
+//    _rigid.force.y = 300.0f;
+//
+//    index--;
+//  }
+//}
+//
+//void Graphics::CreateDeathZone(World& world)
+//{
+//  extern std::bitset<4> toggle;
+//
+//  auto& entManager = world.GetEntityManager();
+//  auto& compManager = world.GetComponentManager();
+//  auto id = entManager.CreateEntity().GetID();
+//
+//  compManager.AddComponent<Transform>(id);
+//  compManager.AddComponent<IsActive>(id);
+//  compManager.AddComponent<Sprite>(id);
+//  compManager.AddComponent<BoundingBox>(id);
+//  compManager.AddComponent<DeathZone>(id);
+//  compManager.AddComponent<RigidBody>(id);
+//
+//  auto& sprite = compManager.GetComponent<Sprite>(id).get();
+//  sprite.shaderRef = shaderpgms.find("shdrpgm");
+//  sprite.modelRef = models.find("square");
+//  sprite.isQuad = true;
+//  sprite.transparency = 0.25f;
+//  sprite.hasTexture = false;
+//  sprite.layerNum = 40;
+//
+//  auto& Body = compManager.GetComponent<RigidBody>(id).get();
+//  RigidBodyComponent::set(&Body, BodyType::Dynamic);
+//  Body.gravity = 0.0f;
+//  Body._CollisionType = CollisionType::DeathZone;
+//
+//  auto& _scale = compManager.GetComponent<Transform>(id).get();
+//  _scale.scale = { 100, 100 , 0 };
+//
+//  std::string myName = "DeathZone ";
+//  EntityNameTable::AddNameToTable(id, myName);
+//
+//  auto& _SetToggle = compManager.GetComponent<DeathZone>(id).get();
+//  _SetToggle.ToggleDeathZone = false;
+//
+//  isCreated.set(0, 1);
+//
+//  toggle.set(2, 0);
+//  toggle.set(1, 1);
+//  toggle.set(0, 0);
+//}
+//
+//void Graphics::Print_Alphabet(const char* String, float Location_x, float Location_y, float size, int duration)
+//{
+//  int index = 0;
+//  char characters[256];
+//
+//  while (String[index] != NULL)
+//  {
+//    characters[index] = String[index];
+//    index++;
+//  }
+//
+//  index--;
+//
+//  while (index >= 0)
+//  {
+//    vec3 pos = { Location_x, Location_y ,0 };
+//    vec3 scale = { size,size,0 };
+//
+//    if (characters[index] > 90)
+//    {
+//      characters[index] -= 32;
+//    }
+//
+//    if (characters[index] != 32)
+//    {
+//      auto& entManager = _world->GetEntityManager();
+//      auto& compManager = _world->GetComponentManager();
+//      auto id = entManager.CreateEntity().GetID();
+//
+//      compManager.AddComponent<Transform>(id);
+//      compManager.AddComponent<IsActive>(id);
+//      compManager.AddComponent<Sprite>(id);
+//      compManager.AddComponent<RigidBody>(id);
+//      compManager.AddComponent<Alphabet>(id);
+//
+//      auto& sprite = compManager.GetComponent<Sprite>(id).get();
+//      auto& Get = compManager.GetComponent<Alphabet>(id).get();
+//      auto& AlphabetTransform = compManager.GetComponent<Transform>(id).get();
+//
+//      Get._run = true;
+//
+//      sprite.shaderRef = shaderpgms.find("shdrpgm");
+//      sprite.modelRef = models.find("square");
+//      sprite.isQuad = true;
+//      sprite.hasTexture = true;
+//      sprite.textureRef = textures.find("dog");
+//      sprite.layerNum = 40;
+//
+//      Get.health = (float)duration; //lifespan
+//      sprite.textureIdx.x = (float)(characters[index] - 65);
+//      sprite.textureIdx.y = 1.0f;
+//
+//      AlphabetTransform.scale = scale;
+//      AlphabetTransform.position.x = pos.x + (scale.x * index);
+//      AlphabetTransform.position.y = pos.y;
+//    }
+//    index--;
+//  }
+//
+//}

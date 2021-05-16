@@ -24,3 +24,7 @@
 
 // engine extern pointer
 #include "EntryPoint/EntryPoint.h"
+
+// Imgui
+#include "../Libraries/imgui-master/imgui.h"
+#include "../src/Graphics/include/GLHelper.h"

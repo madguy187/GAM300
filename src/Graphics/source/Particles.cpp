@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "../include/Particles.h"
 
-const int maxParticles = 10000;
+//const int maxParticles = 10000;
 
 Particles::Particles()
 {
@@ -11,7 +11,7 @@ Particles::Particles()
 void Particles::InsertPosVtx()
 {
     Parser input;
-    input.ParseFile("../meshes/square.json");
+    input.ParseFile("meshes/square.json");
 
     const rapidjson::Value& vertex = input.doc["vertex"].GetArray();
 
@@ -27,7 +27,7 @@ void Particles::InsertPosVtx()
 void Particles::InsertTextCoord()
 {
     Parser input;
-    input.ParseFile("../meshes/square.json");
+    input.ParseFile("meshes/square.json");
 
     const rapidjson::Value& texture = input.doc["texture"].GetArray();
 

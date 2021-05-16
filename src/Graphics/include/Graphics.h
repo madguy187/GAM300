@@ -9,7 +9,6 @@
 #include "Shader.h""
 #include "ModelFactory.h"
 #include "Texture.h"
-#include "Font.h"
 #include "AllComponents.h"
 #include <vector>
 #include <array>
@@ -64,9 +63,6 @@ public:
   //container for objects
   static std::map<std::string, Object> objects;
 
-  //container for fonts
-  static std::map<std::string, Fonts> fonts;
-
   //container for static texts
   static std::map<std::string, Text> Texts;
 
@@ -114,10 +110,10 @@ public:
   static vec2 frameBufferPos;
 
   static std::bitset<2> dialogueBits;
-  static void Print_Numbers(int number, vec3 location, int size, int duration, int colour, float velocity, int id);
+ // static void Print_Numbers(int number, vec3 location, int size, int duration, int colour, float velocity, int id);
   static void CreateMonkeytick(World* world, int _flag);
-  static void CreateDeathZone(World& world);
-  static void Print_Alphabet(const char* String, float Location_x, float Location_y, float size, int duration);
+  //static void CreateDeathZone(World& world);
+  //static void Print_Alphabet(const char* String, float Location_x, float Location_y, float size, int duration);
 };
 
 #endif /* GRAPHICS_H */

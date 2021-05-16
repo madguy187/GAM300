@@ -19,7 +19,7 @@ void LightQuad::initModel()
 void LightQuad::InsertPosVtx()
 {
     Parser input;
-    input.ParseFile("../meshes/lightsquare.json");
+    input.ParseFile("meshes/lightsquare.json");
 
     const rapidjson::Value& vertex = input.doc["vertex"].GetArray();
 
@@ -35,7 +35,7 @@ void LightQuad::InsertPosVtx()
 void LightQuad::InsertIdxVtx()
 {
     Parser input;
-    input.ParseFile("../meshes/lightsquare.json");
+    input.ParseFile("meshes/lightsquare.json");
 
     const rapidjson::Value& index = input.doc["index"].GetArray();
 
@@ -52,7 +52,7 @@ void LightQuad::InsertIdxVtx()
 void LightQuad::InsertTextCoord()
 {
     Parser input;
-    input.ParseFile("../meshes/lightsquare.json");
+    input.ParseFile("meshes/lightsquare.json");
 
     const rapidjson::Value& texture = input.doc["texture"].GetArray();
 

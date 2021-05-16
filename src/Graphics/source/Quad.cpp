@@ -19,7 +19,7 @@ void Quad::initModel()
 void Quad::InsertPosVtx()
 {
     Parser input;
-    input.ParseFile("../meshes/square.json");
+    input.ParseFile("meshes/square.json");
 
     const rapidjson::Value& vertex = input.doc["vertex"].GetArray();
 
@@ -35,7 +35,7 @@ void Quad::InsertPosVtx()
 void Quad::InsertIdxVtx()
 {
     Parser input;
-    input.ParseFile("../meshes/square.json");
+    input.ParseFile("meshes/square.json");
 
     const rapidjson::Value& index = input.doc["index"].GetArray();
 
@@ -52,7 +52,7 @@ void Quad::InsertIdxVtx()
 void Quad::InsertTextCoord()
 {
     Parser input;
-    input.ParseFile("../meshes/square.json");
+    input.ParseFile("meshes/square.json");
 
     const rapidjson::Value& texture = input.doc["texture"].GetArray();
 

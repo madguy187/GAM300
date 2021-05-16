@@ -19,11 +19,31 @@ void Circle::initModel()
 
 void Circle::InsertPosVtx()
 {
+  Parser input;
+  input.ParseFile("meshes/circle.json");
 
+  const rapidjson::Value& vertex = input.doc["vertex"].GetArray();
+
+  for (rapidjson::SizeType i = 0; i < vertex.Size(); i++)
+  {
+    const rapidjson::Value& coords = vertex[i];
+
+    PosVec.push_back(glm::vec2(coords[rapidjson::SizeType(0)].GetDouble(),
+      coords[rapidjson::SizeType(1)].GetDouble()));
+  }
 }
 
 void Circle::InsertIdxVtx()
 {
+  Parser input;
+  input.ParseFile("meshes/circle.json");
+
+  const rapidjson::Value& index = input.doc["index"].GetArray();
+
+  for (auto& i : index.GetArray())
+  {
+    IdxVec.push_back(static_cast<GLushort>(i.GetUint()));
+  }
 }
 
 void Circle::InsertModelData()

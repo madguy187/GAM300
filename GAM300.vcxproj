@@ -164,13 +164,13 @@
     <ClCompile Include="src\Graphics\source\Cone.cpp" />
     <ClCompile Include="src\Graphics\source\Cube.cpp" />
     <ClCompile Include="src\Graphics\source\Cylinder.cpp" />
-    <ClCompile Include="src\Graphics\source\Font.cpp" />
     <ClCompile Include="src\Graphics\source\GameViewWindow.cpp" />
     <ClCompile Include="src\Graphics\source\glhelper.cpp" />
     <ClCompile Include="src\Graphics\source\Graphics.cpp" />
     <ClCompile Include="src\Graphics\source\LightQuad.cpp" />
     <ClCompile Include="src\Graphics\source\Lines.cpp" />
     <ClCompile Include="src\Graphics\source\ModelFactory.cpp" />
+    <ClCompile Include="src\Graphics\source\Parser.cpp" />
     <ClCompile Include="src\Graphics\source\Particles.cpp" />
     <ClCompile Include="src\Graphics\source\Plane.cpp" />
     <ClCompile Include="src\Graphics\source\Pyramid.cpp" />
@@ -216,7 +216,6 @@
     <ClInclude Include="src\Graphics\include\Cone.h" />
     <ClInclude Include="src\Graphics\include\Cube.h" />
     <ClInclude Include="src\Graphics\include\Cylinder.h" />
-    <ClInclude Include="src\Graphics\include\Font.h" />
     <ClInclude Include="src\Graphics\include\GameViewWindow.h" />
     <ClInclude Include="src\Graphics\include\GLHelper.h" />
     <ClInclude Include="src\Graphics\include\Global.h" />
@@ -228,6 +227,7 @@
     <ClInclude Include="src\Graphics\include\Matrix4.h" />
     <ClInclude Include="src\Graphics\include\ModelFactory.h" />
     <ClInclude Include="src\Graphics\include\ModelGlobal.h" />
+    <ClInclude Include="src\Graphics\include\Parser.h" />
     <ClInclude Include="src\Graphics\include\Particles.h" />
     <ClInclude Include="src\Graphics\include\Plane.h" />
     <ClInclude Include="src\Graphics\include\Pyramid.h" />
