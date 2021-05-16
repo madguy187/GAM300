@@ -32,7 +32,6 @@ namespace Eclipse
     // registering system
     world.RegisterSystem<RenderSystem>();
 
-
     // registering system signature
     Signature hi;
     hi.set(world.GetComponentType<TransformComponent>(), 1);
@@ -57,11 +56,9 @@ namespace Eclipse
 
     auto& wee = world.GetComponent<TransformComponent>(ent);
 
-    world.GetSystem<RenderSystem>();
-
     while (!glfwWindowShouldClose(GLHelper::ptr_window))
     {
-      update();
+      //update();
 
       glBindFramebuffer(GL_FRAMEBUFFER, Graphics::m_frameBuffer->GetGameViewBuffer());
       glClear(GL_COLOR_BUFFER_BIT);

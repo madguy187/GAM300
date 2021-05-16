@@ -48,7 +48,12 @@ namespace Eclipse
 		template <typename T>
 		void DestroyComponent(Entity entity)
 		{
+			entityManager->RemoveComponent(entity, componentManager->GetComponentType<T>());
 			componentManager->RemoveComponent<T>(entity);
+
+			auto signature = entityManager->GetSignature(entity);
+			signature.set(componentManager->GetComponentType<T>(), false);
+			systemManager->EntitySignatureChanged(entity, signature);
 		}
 
 		template <typename T>
