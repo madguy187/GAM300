@@ -39,7 +39,6 @@ class Graphics
   //Loads the image and creates texture object
   static GLuint setup_texobj(std::string pathname);
 
-  static World* _world;
 public:
   std::set<Entity> mEntities;
   static FrameBuffer* m_frameBuffer;

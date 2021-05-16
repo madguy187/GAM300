@@ -33,6 +33,7 @@
 ----------------------------------------------------------------------------- */
 using namespace rapidjson;
 
+using namespace Eclipse;
 
 std::map<std::string, Shader> Graphics::shaderpgms;
 std::map<std::string, std::unique_ptr<IModel>> Graphics::models;
@@ -66,7 +67,7 @@ vec2 Graphics::frameBufferPos;
 vec2 mousecoords;
 
 GLdouble Graphics::timer = 0.5;
-World* Graphics::_world = nullptr;
+//World* Graphics::_world = nullptr;
 int StickCount = 0;
 int StickID = 0;
 bool NumebrTest = false;
@@ -361,9 +362,11 @@ void Graphics::CreateObject(GLint model)
   std::cout << "id :" << EntityID << std::endl;
 
   testtest.AddComponent(EntityID, Sprite{ });
+  testtest.AddComponent(EntityID, TransformComponent{ });
 
   Sprite& sprite = engine->world.GetComponent<Sprite>(EntityID);
   sprite.layerNum = 10;
+
   switch (model)
   {
   case 0:
@@ -467,10 +470,10 @@ void Graphics::CreateFrameBuffer()
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void Graphics::RegisterWorld(World* world)
-{
-  _world = world;
-}
+//void Graphics::RegisterWorld(World* world)
+//{
+//  _world = world;
+//}
 
 void Graphics::DeleteSprite(unsigned int id)
 {
@@ -500,29 +503,29 @@ void Graphics::DeleteAllSprites()
   sortedID.clear();
 }
 
-void Graphics::CreateMonkeytick(World* world, int _flag)
-{
-  //if (_flag & COLLISION_BOTTOM)
-  //{
-  //  auto& comMM = _world->GetComponentManager();
-  //  auto _PlayercomMM = comMM.GetComponentLookup<Player>();
-
-  //  for (auto& pair : _PlayercomMM)
-  //  {
-  //    auto& __player = *(pair.second);
-
-  //    if (StickCount == 1 && (__player.airtime == false) && (_flag & COLLISION_BOTTOM))
-  //    {
-  //      // create stick
-  //      CreateObject(6, (*world));
-
-  //      PlayerInput.set(6, 1);
-  //      PlayerInput.set(9, 1);
-
-  //    }
-  //  }
-  //}
-}
+//void Graphics::CreateMonkeytick(World* world, int _flag)
+//{
+//  //if (_flag & COLLISION_BOTTOM)
+//  //{
+//  //  auto& comMM = _world->GetComponentManager();
+//  //  auto _PlayercomMM = comMM.GetComponentLookup<Player>();
+//
+//  //  for (auto& pair : _PlayercomMM)
+//  //  {
+//  //    auto& __player = *(pair.second);
+//
+//  //    if (StickCount == 1 && (__player.airtime == false) && (_flag & COLLISION_BOTTOM))
+//  //    {
+//  //      // create stick
+//  //      CreateObject(6, (*world));
+//
+//  //      PlayerInput.set(6, 1);
+//  //      PlayerInput.set(9, 1);
+//
+//  //    }
+//  //  }
+//  //}
+//}
 
 /******************************************************************************/
 /*!

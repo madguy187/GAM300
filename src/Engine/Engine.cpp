@@ -40,11 +40,11 @@ namespace Eclipse
     world.AddComponent(ent, Camera{ } );
     world.AddComponent(ent, Sprite{ });
 
-    Sprite& sprite = engine->world.GetComponent<Sprite>(ent);
-    sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
-    sprite.modelRef = Graphics::models.find("sphere");
-    sprite.layerNum = 10;
-    Graphics::sprites.emplace(sprite.layerNum, &sprite);
+    //Sprite& sprite = engine->world.GetComponent<Sprite>(ent);
+    //sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
+    //sprite.modelRef = Graphics::models.find("sphere");
+    //sprite.layerNum = 10;
+    //Graphics::sprites.emplace(sprite.layerNum, &sprite);
 
     auto& wee = world.GetComponent<TransformComponent>(ent);
 
