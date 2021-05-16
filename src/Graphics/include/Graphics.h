@@ -25,7 +25,7 @@ const int maxParticles = 10000;
 
 class World;
 
-class Graphics
+class Graphics 
 {
   static void LoadShaders(std::string shaderFile);
   static void LoadModels(std::string modelFile);
@@ -98,6 +98,14 @@ public:
   static GLdouble timer;
   static modelIt FindModel(std::string);
   static shaderIt FindShaders(std::string);
+
+  void TESTRENDER();
+
+  void SortLayers();
+
+  void DrawBuffers(unsigned int framebuffer);
+
+  void CheckUniformLoc(Sprite& sprite);
 
   static unsigned int framebuffer;
   static unsigned int framebufferTest;

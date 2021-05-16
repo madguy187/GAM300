@@ -35,6 +35,7 @@ namespace Eclipse
     // register component
     world.RegisterComponent<TransformComponent>();
     world.RegisterComponent<RenderComponent>();
+    world.RegisterComponent<Camera>();
 
     // registering system
     world.RegisterSystem<TestSystem>();
@@ -44,6 +45,7 @@ namespace Eclipse
 
     Entity ent = world.CreateEntity();
     world.AddComponent(ent, TransformComponent{ 4.0f, 5.0f, 6.0f });
+    world.AddComponent(ent, Camera());
     //world.DestroyComponent<TransformComponent>(ent);
 
     auto& wee = world.GetComponent<TransformComponent>(ent);
