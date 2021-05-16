@@ -65,6 +65,9 @@ namespace Eclipse
     while (!glfwWindowShouldClose(GLHelper::ptr_window))
     {
       update();
+
+      glBindFramebuffer(GL_FRAMEBUFFER, Graphics::framebuffer);
+      glClear(GL_COLOR_BUFFER_BIT);
       world.Update<TestSystem>();
       draw();
       // draw

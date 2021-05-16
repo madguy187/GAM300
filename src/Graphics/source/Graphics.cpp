@@ -165,9 +165,6 @@ void Graphics::draw()
     //glBindFramebuffer(GL_FRAMEBUFFER, m_frameBuffer->GetGameViewBuffer());
     //glClear(GL_COLOR_BUFFER_BIT);
 
-    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-    glClear(GL_COLOR_BUFFER_BIT);
-
     ////world.Render();
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
