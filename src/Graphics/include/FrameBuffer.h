@@ -26,7 +26,7 @@ public:
 
   void Init();
   void Update();
-  static void ShowWindow(World& _world, FrameBuffer g);
+  static void ShowWindow(FrameBuffer g);
   void CreateFrameBuffer(unsigned int p_width, unsigned int p_height);
 
   unsigned int GetGameViewBuffer();

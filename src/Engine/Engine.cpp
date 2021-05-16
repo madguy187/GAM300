@@ -4,7 +4,7 @@
 //#include "ECS/World.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RenderComponent.h"
-#include "ECS/SystemManager/Systems/include/TestSystem.h"
+#include "ECS/SystemManager/Systems/RenderSystem.h"
 
 static void unload();
 static void load();
@@ -24,7 +24,7 @@ namespace Eclipse
   void Engine::Run()
   {
     // register component
-    world.RegisterComponent<TransformComponent>(); 
+    world.RegisterComponent<TransformComponent>();
     world.RegisterComponent<RenderComponent>();
     world.RegisterComponent<Camera>();
     world.RegisterComponent<Sprite>();
@@ -34,7 +34,7 @@ namespace Eclipse
 
     // registering system signature
     Signature hi;
-    hi.set (world.GetComponentType<TransformComponent>(),1);
+    hi.set(world.GetComponentType<TransformComponent>(), 1);
     hi.set(world.GetComponentType<Sprite>(), 1);
 
     world.RegisterSystemSignature<RenderSystem>(hi);
@@ -44,21 +44,24 @@ namespace Eclipse
     world.AddComponent(ent, Camera{ });
     world.AddComponent(ent, Sprite{ });
 
-    Entity ent1 = world.CreateEntity();
-    world.AddComponent(ent1, TransformComponent{ 4.0f, 5.0f, 6.0f });
-    world.AddComponent(ent1, Sprite{ });
+    //Entity ent1 = world.CreateEntity();
+    //world.AddComponent(ent1, TransformComponent{ 4.0f, 5.0f, 6.0f });
+    //world.AddComponent(ent1, Sprite{ });
 
-    Sprite& sprite = engine->world.GetComponent<Sprite>(ent1);
-    sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
-    sprite.modelRef = Graphics::models.find("sphere");
-    sprite.layerNum = 10;
-    Graphics::sprites.emplace(sprite.layerNum, &sprite);
+    //Sprite& sprite = engine->world.GetComponent<Sprite>(ent1);
+    //sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
+    //sprite.modelRef = Graphics::models.find("sphere");
+    //sprite.layerNum = 10;
+    //Graphics::sprites.emplace(sprite.layerNum, &sprite);
 
     auto& wee = world.GetComponent<TransformComponent>(ent);
 
     while (!glfwWindowShouldClose(GLHelper::ptr_window))
     {
       //update();
+
+      glBindFramebuffer(GL_FRAMEBUFFER, Graphics::m_frameBuffer->GetGameViewBuffer());
+      glClear(GL_COLOR_BUFFER_BIT);
 
       glBindFramebuffer(GL_FRAMEBUFFER, Graphics::framebuffer);
       glClear(GL_COLOR_BUFFER_BIT);
