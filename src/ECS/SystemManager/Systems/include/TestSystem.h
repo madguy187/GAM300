@@ -20,8 +20,6 @@ glm::vec3 sphereRot = glm::vec3{ 0.0f, 0.0f, 0.0f };
 
 namespace Eclipse
 {
-  Graphics TestRender;
-
   class RenderSystem : public System
   {
   public:

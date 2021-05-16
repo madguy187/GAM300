@@ -24,7 +24,7 @@ namespace Eclipse
   void Engine::Run()
   {
     // register component
-    world.RegisterComponent<TransformComponent>();
+    world.RegisterComponent<TransformComponent>(); 
     world.RegisterComponent<RenderComponent>();
     world.RegisterComponent<Camera>();
     world.RegisterComponent<Sprite>();
@@ -32,8 +32,13 @@ namespace Eclipse
     // registering system
     world.RegisterSystem<RenderSystem>();
 
+
     // registering system signature
-    world.RegisterSystemSignature<RenderSystem>(0000'0001);
+    Signature hi;
+    hi.set (world.GetComponentType<TransformComponent>(),1);
+    hi.set (world.GetComponentType<RenderComponent>(),1);
+
+    world.RegisterSystemSignature<RenderSystem>(hi);
 
     Entity ent = world.CreateEntity();
     world.AddComponent(ent, TransformComponent{ 4.0f, 5.0f, 6.0f });

@@ -356,7 +356,7 @@ void Graphics::initShaderpgms(std::string shdrpgm_name,
 
 void Graphics::CreateObject(GLint model)
 {
-  auto& testtest = engine.get()->world;
+  auto& testtest = engine->world;
   Entity EntityID = testtest.CreateEntity();
 
   std::cout << "id :" << EntityID << std::endl;
