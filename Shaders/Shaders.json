@@ -1,0 +1,35 @@
+{
+	"shaders":
+	[
+		{
+			"shaderName": "shdrpgm",
+			"vtxShader": "../Shaders/BasicVtx.vert",
+			"frgShader": "../Shaders/BasicFrag.frag"
+		},
+		{
+			"shaderName": "textShdrpgm",
+			"vtxShader": "../Shaders/textVtx.vert",
+			"frgShader": "../Shaders/textFrag.frag"
+		},
+		{
+			"shaderName": "debugShdrpgm",
+			"vtxShader": "../Shaders/DebugVtx.vert",
+			"frgShader": "../Shaders/DebugFrag.frag"
+		},
+		{
+			"shaderName": "lightShdrpgm",
+			"vtxShader": "../Shaders/LightVtx.vert",
+			"frgShader": "../Shaders/LightFrag.frag"
+		},
+		{
+			"shaderName": "particleShdrpgm",
+			"vtxShader": "../Shaders/ParticlesVtx.vert",
+			"frgShader": "../Shaders/ParticlesFrag.frag"
+		},
+		{
+			"shaderName": "shader3DShdrpgm",
+			"vtxShader": "../Shaders/Shader3D.vert",
+			"frgShader": "../Shaders/Shader3D.frag"
+		}
+	]
+}
