@@ -132,9 +132,6 @@
     <ClCompile Include="src\Graphics\source\FrameBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\RenderSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h">
@@ -269,13 +266,10 @@
     <ClInclude Include="Libraries\stb-master\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\include\TestSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\include\FrameBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\RenderSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SRC\ECS\SYSTEMMANAGER\SYSTEMS\TESTSYSTEM.H">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
