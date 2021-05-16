@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "../include/Parser.h"
+#include "Parser.h"
 #include <vector>
 
 void Parser::ParseFile(std::string fileName)

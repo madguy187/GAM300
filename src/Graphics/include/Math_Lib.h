@@ -3,7 +3,7 @@
 #include <cmath>
 #include "Vec.h"
 #include "Matrix4.h"
-#include "Quaternion.h"
+
 #define PI                 3.14159265358979323846f
 #define DEG_TO_RAD(_a) ((_a)*PI/180.0f)
 #define RAD_TO_DEG(_a) ((_a)*180.0f/PI)
