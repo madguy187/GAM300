@@ -20,6 +20,7 @@
 #include "Particles.h"
 
 #include "../include/GameViewWindow.h"
+#include "../src/ECS/SystemManager/Systems/System/System.h"
 
 const int maxParticles = 10000;
 
@@ -32,24 +33,25 @@ class Graphics
   static void LoadTextures(std::string textureFile);
   static void LoadFonts(std::string FontFile);
   static void LoadParticles();
-  static void CreateObject(GLint model, World& world);
+  static void CreateObject(GLint model);
   static void CreateFrameBuffer();
 
   //Loads the image and creates texture object
   static GLuint setup_texobj(std::string pathname);
 
-  static std::map<std::string, std::unique_ptr<IModel>> models;
   static World* _world;
 public:
+  std::set<Entity> mEntities;
   static GameViewW* m_frameBuffer;
 
+  static std::map<std::string, std::unique_ptr<IModel>> models;
   using modelIt = std::map<std::string, std::unique_ptr<IModel>>::iterator;
   using shaderIt = std::map<std::string, Shader>::iterator;
   using TextureIt = std::map<std::string, Texture>::iterator;
 
   static void load();
   static void init();
-  static void update(double delta_time, World& world);
+  static void update(double delta_time);
   static void draw();
   static void cleanup();
   static void unload();

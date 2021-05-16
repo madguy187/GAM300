@@ -238,9 +238,6 @@ struct Sprite
 
 	bool triggerInstructionButtons = false;
 	float instructionButtonsTimer = 1.0f;
-
-	// Additional For Background
-	vec3 OldScale = { 0,0,0 };
 };
 
 struct BoundingBox

@@ -36,6 +36,7 @@ namespace Eclipse
     world.RegisterComponent<TransformComponent>();
     world.RegisterComponent<RenderComponent>();
     world.RegisterComponent<Camera>();
+    world.RegisterComponent<Sprite>();
 
     // registering system
     world.RegisterSystem<TestSystem>();
@@ -45,8 +46,16 @@ namespace Eclipse
 
     Entity ent = world.CreateEntity();
     world.AddComponent(ent, TransformComponent{ 4.0f, 5.0f, 6.0f });
-    world.AddComponent(ent, Camera());
-    //world.DestroyComponent<TransformComponent>(ent);
+    world.AddComponent(ent, Camera{ } );
+    world.AddComponent(ent, Sprite{ });
+    Camera& test = engine->world.GetComponent<Camera>(ent);
+    test.prevPos.x = 9999;
+
+    Sprite& sprite = engine->world.GetComponent<Sprite>(ent);
+    sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
+    sprite.modelRef = Graphics::models.find("sphere");
+    sprite.layerNum = 10;
+    Graphics::sprites.emplace(sprite.layerNum, &sprite);
 
     auto& wee = world.GetComponent<TransformComponent>(ent);
     std::cout << wee.x << std::endl;
@@ -55,9 +64,8 @@ namespace Eclipse
 
     while (!glfwWindowShouldClose(GLHelper::ptr_window))
     {
-
-      world.Update<TestSystem>();
       update();
+      world.Update<TestSystem>();
       draw();
       // draw
       //draw(world);
@@ -85,7 +93,7 @@ static void update()
   ImGui_ImplGlfw_NewFrame();
   ImGui::NewFrame();
 
-  //Graphics::update(fixedDeltaTime, world);
+  Graphics::update(fixedDeltaTime);
 
   std::stringstream sstr;
   sstr << std::fixed << std::setprecision(2) << GLHelper::title << " | FPS: " << GLHelper::fps;
