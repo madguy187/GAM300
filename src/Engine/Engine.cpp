@@ -32,17 +32,15 @@ namespace Eclipse
     // registering system
     world.RegisterSystem<RenderSystem>();
 
-
     // registering system signature
     Signature hi;
-    hi.set (world.GetComponentType<TransformComponent>(),1);
-    hi.set (world.GetComponentType<RenderComponent>(),1);
-
+    hi.set(world.GetComponentType<TransformComponent>(), 1);
+    hi.set(world.GetComponentType<RenderComponent>(), 1);
     world.RegisterSystemSignature<RenderSystem>(hi);
 
     Entity ent = world.CreateEntity();
     world.AddComponent(ent, TransformComponent{ 4.0f, 5.0f, 6.0f });
-    world.AddComponent(ent, Camera{ } );
+    world.AddComponent(ent, Camera{ });
     world.AddComponent(ent, Sprite{ });
 
     //Sprite& sprite = engine->world.GetComponent<Sprite>(ent);
@@ -53,11 +51,9 @@ namespace Eclipse
 
     auto& wee = world.GetComponent<TransformComponent>(ent);
 
-    world.GetSystem<RenderSystem>();
-
     while (!glfwWindowShouldClose(GLHelper::ptr_window))
     {
-      update();
+      //update();
 
       glBindFramebuffer(GL_FRAMEBUFFER, Graphics::framebuffer);
       glClear(GL_COLOR_BUFFER_BIT);
