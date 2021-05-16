@@ -3,7 +3,7 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <IncludePath>$(SolutionDir)Libraries\glfw-3.3.2.bin.WIN64\include;$(SolutionDir)Libraries\glew-2.1.0\include;$(SolutionDir)Libraries\glm-0.9.9.7;$(SolutionDir)Libraries\stb-master;$(SolutionDir)Libraries\imgui-master;$(SolutionDir)\Libraries\rapidjson-master\include\rapidjson;$(SolutionDir)Libraries\imgui-master\examples;$(ProjectDir)Components\include;$(ProjectDir)Entity\include;$(ProjectDir)Global\include;$(ProjectDir)Graphics\include;$(ProjectDir)Math\include;$(ProjectDir)ImGui\include;$(ProjectDir)Managers\include;$(ProjectDir)Systems\include;$(ProjectDir)Parser\include;$(ProjectDir)UI\include;$(ProjectDir)Utilities\include;$(ProjectDir)Editor\include;$(ProjectDir)States\include;$(ProjectDir)Physics\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Libraries\glfw-3.3.2.bin.WIN64\include;$(SolutionDir)Libraries\glew-2.1.0\include;$(SolutionDir)Libraries\glm-0.9.9.7;$(SolutionDir)Libraries\stb-master;$(SolutionDir)Libraries\imgui-master;$(SolutionDir)\Libraries\rapidjson-master\include\rapidjson;$(SolutionDir)Libraries\imgui-master\examples;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Libraries\glfw-3.3.2.bin.WIN64\lib-vc2019;$(SolutionDir)Libraries\glew-2.1.0\lib\Release\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
