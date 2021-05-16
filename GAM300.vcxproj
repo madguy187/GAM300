@@ -153,6 +153,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Libraries\imgui-master\examples\imgui_impl_glfw.cpp" />
+    <ClCompile Include="Libraries\imgui-master\examples\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Libraries\imgui-master\imgui.cpp" />
+    <ClCompile Include="Libraries\imgui-master\imgui_demo.cpp" />
+    <ClCompile Include="Libraries\imgui-master\imgui_draw.cpp" />
+    <ClCompile Include="Libraries\imgui-master\imgui_widgets.cpp" />
     <ClCompile Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.cpp" />
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp" />
     <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp" />
@@ -198,6 +204,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Libraries\stb-master\stb_image.h" />
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentBase.h" />

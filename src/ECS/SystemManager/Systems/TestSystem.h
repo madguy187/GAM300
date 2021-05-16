@@ -35,7 +35,7 @@ namespace Eclipse
 
 		  ImGui::Begin("Game View");
 
-		  //ImGui::End();
+		  ImGui::End();
 			//for (auto const& entity : mEntities)
 			//{
 			//	TransformComponent& trans = engine->world.GetComponent<TransformComponent>(entity);
