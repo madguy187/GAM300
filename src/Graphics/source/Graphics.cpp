@@ -28,6 +28,7 @@
 #include "glm/gtx/matrix_transform_2d.hpp""
 #include "../include/Vec.h"
 #include "../src/ECS/World.h"
+#include "ECS/ComponentManager/Components/TransformComponent.h"
 /*                                                   objects with file scope
 ----------------------------------------------------------------------------- */
 using namespace rapidjson;
@@ -354,88 +355,91 @@ void Graphics::initShaderpgms(std::string shdrpgm_name,
 
 void Graphics::CreateObject(GLint model)
 {
-  //auto& entManager = world.GetEntityManager();
-  //auto& compManager = world.GetComponentManager();
-  //auto id = entManager.CreateEntity().GetID();
-  //compManager.AddComponent<Transform>(id);
-  //compManager.AddComponent<IsActive>(id);
-  //compManager.AddComponent<Sprite>(id);
-  //compManager.AddComponent<RigidBody>(id);
-  //compManager.AddComponent<RegisterEvent>(id);
-  ////compManager.AddComponent<BoundingBox>(id);
+  auto& testtest = engine.get()->world;
+  Entity EntityID = testtest.CreateEntity();
 
-  //auto& sprite = compManager.GetComponent<Sprite>(id).get();
-  //auto& transform = compManager.GetComponent<Transform>(id).get();
+  std::cout << "id :" << EntityID << std::endl;
 
-  //switch (model)
-  //{
-  //case 0:
-  //{
-  //  sprite.shaderRef = shaderpgms.find("shdrpgm");
-  //  sprite.modelRef = models.find("square");
-  //  sprite.isQuad = true;
-  //}
-  //break;
-  //case 1:
-  //  sprite.shaderRef = shaderpgms.find("shdrpgm");
-  //  sprite.modelRef = models.find("circle");
-  //  break;
-  //case 2:
-  //{
-  //  sprite.shaderRef = shaderpgms.find("shdrpgm");
-  //  sprite.modelRef = models.find("triangle");
-  //}
-  //break;
-  //case 3:
-  //{
-  //  sprite.shaderRef = shaderpgms.find("shdrpgm");
-  //  sprite.modelRef = models.find("lines");
-  //}
-  //break;
+  testtest.AddComponent(EntityID, Sprite{ });
 
-  //case 4:
-  //{
-  //  sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
-  //  sprite.modelRef = models.find("sphere");
-  //}
-  //break;
+  Sprite& sprite = engine->world.GetComponent<Sprite>(EntityID);
+  sprite.layerNum = 10;
+  switch (model)
+  {
+  case 0:
+  {
+    sprite.shaderRef = shaderpgms.find("shdrpgm");
+    sprite.modelRef = models.find("square");
+    sprite.isQuad = true;
+  }
+  break;
 
-  //case 5:
-  //{
-  //  sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
-  //  sprite.modelRef = models.find("cube");
-  //}
-  //break;
+  case 1:
+    sprite.shaderRef = shaderpgms.find("shdrpgm");
+    sprite.modelRef = models.find("circle");
+    break;
+  case 2:
+  {
+    sprite.shaderRef = shaderpgms.find("shdrpgm");
+    sprite.modelRef = models.find("triangle");
+  }
+  break;
+  case 3:
+  {
+    sprite.shaderRef = shaderpgms.find("shdrpgm");
+    sprite.modelRef = models.find("lines");
+  }
+  break;
 
-  //case 6:
-  //{
-  //  sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
-  //  sprite.modelRef = models.find("cylinder");
-  //}
-  //break;
+  case 4:
+  {
+    sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
+    sprite.modelRef = models.find("sphere");
+    Graphics::sprites.emplace(sprite.layerNum, &sprite);
+  }
+  break;
 
-  //case 7:
-  //{
-  //  sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
-  //  sprite.modelRef = models.find("cone");
-  //}
-  //break;
+  case 5:
+  {
+    sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
+    sprite.modelRef = models.find("cube");
+    Graphics::sprites.emplace(sprite.layerNum, &sprite);
+  }
+  break;
 
-  //case 8:
-  //{
-  //  sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
-  //  sprite.modelRef = models.find("torus");
-  //}
-  //break;
+  case 6:
+  {
+    sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
+    sprite.modelRef = models.find("cylinder");
+    Graphics::sprites.emplace(sprite.layerNum, &sprite);
+  }
+  break;
 
-  //case 9:
-  //{
-  //  sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
-  //  sprite.modelRef = models.find("pyramid");
-  //}
-  //break;
+  case 7:
+  {
+    sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
+    sprite.modelRef = models.find("cone");
+    Graphics::sprites.emplace(sprite.layerNum, &sprite);
+  }
+  break;
 
-  //}
+  case 8:
+  {
+    sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
+    sprite.modelRef = models.find("torus");
+    Graphics::sprites.emplace(sprite.layerNum, &sprite);
+  }
+  break;
+
+  case 9:
+  {
+    sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
+    sprite.modelRef = models.find("pyramid");
+    Graphics::sprites.emplace(sprite.layerNum, &sprite);
+  }
+  break;
+
+  }
 }
 
 void Graphics::CreateFrameBuffer()
