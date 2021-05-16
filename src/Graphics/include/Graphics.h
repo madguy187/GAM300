@@ -19,7 +19,7 @@
 #include "Vec.h"
 #include "Particles.h"
 
-#include "../include/GameViewWindow.h"
+#include "../include/FrameBuffer.h"
 #include "../src/ECS/SystemManager/Systems/System/System.h"
 
 const int maxParticles = 10000;
@@ -42,7 +42,7 @@ class Graphics
   static World* _world;
 public:
   std::set<Entity> mEntities;
-  static GameViewW* m_frameBuffer;
+  static FrameBuffer* m_frameBuffer;
 
   static std::map<std::string, std::unique_ptr<IModel>> models;
   using modelIt = std::map<std::string, std::unique_ptr<IModel>>::iterator;

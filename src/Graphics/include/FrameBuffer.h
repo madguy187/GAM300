@@ -13,12 +13,12 @@ struct windowSpecifications
 
 };
 
-class GameViewW
+class FrameBuffer
 {
 public:
-  GameViewW(const glm::uvec2& p_size);
-  GameViewW(unsigned int p_width, unsigned int p_height);
-  ~GameViewW();
+  FrameBuffer(const glm::uvec2& p_size);
+  FrameBuffer(unsigned int p_width, unsigned int p_height);
+  ~FrameBuffer();
 
   void Bind() const;
   void Unbind() const;
@@ -26,7 +26,7 @@ public:
 
   void Init();
   void Update();
-  static void ShowWindow(World& _world, GameViewW g);
+  static void ShowWindow(World& _world, FrameBuffer g);
   void CreateFrameBuffer(unsigned int p_width, unsigned int p_height);
 
   unsigned int GetGameViewBuffer();

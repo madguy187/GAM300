@@ -1,55 +1,55 @@
 #include "pch.h"
-#include "../include/GameViewWindow.h"
+#include "../include/FrameBuffer.h"
 #include "../include/WindowConstraint.h"
 #include "../src/ECS/World.h"
 #include "../include/GLHelper.h"
 
-GameViewW::GameViewW(const glm::uvec2& p_size) :
+FrameBuffer::FrameBuffer(const glm::uvec2& p_size) :
   m_size{ p_size }, m_width{ m_size.x }, m_height{ m_size.y }
 {
   CreateFrameBuffer(m_width, m_height);
 
 }
 
-GameViewW::GameViewW(unsigned int p_width, unsigned int p_height) :
+FrameBuffer::FrameBuffer(unsigned int p_width, unsigned int p_height) :
   m_size{ p_width,p_height }, m_width{ m_size.x }, m_height{ m_size.y }
 {
   CreateFrameBuffer(m_width, m_height);
 }
 
-GameViewW::~GameViewW()
+FrameBuffer::~FrameBuffer()
 {
 }
 
-void GameViewW::Bind() const
+void FrameBuffer::Bind() const
 {
   glBindFramebuffer(GL_FRAMEBUFFER, m_data.frameBufferID);
   glViewport(0, 0, GLHelper::width, GLHelper::height);
 }
 
-void GameViewW::Unbind() const
+void FrameBuffer::Unbind() const
 {
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void GameViewW::Clear() const
+void FrameBuffer::Clear() const
 {
   glClearColor(0.1f, 0.2f, 0.3f, 1.f);
   glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void GameViewW::Init()
+void FrameBuffer::Init()
 {
 
 }
 
-void GameViewW::Update()
+void FrameBuffer::Update()
 {
 }
 
-void GameViewW::ShowWindow(World& _world,GameViewW g)
+void FrameBuffer::ShowWindow(World& _world, FrameBuffer g)
 {
-  //int test = GameViewW::GetGameViewBuffer();
+  //int test = FrameBuffer::GetGameViewBuffer();
   g.GetTextureColourBuffer();
 
   //glBindFramebuffer(GL_FRAMEBUFFER, test);
@@ -83,7 +83,7 @@ void GameViewW::ShowWindow(World& _world,GameViewW g)
   //ImGui::End();
 }
 
-void GameViewW::CreateFrameBuffer(unsigned int p_width, unsigned int p_height)
+void FrameBuffer::CreateFrameBuffer(unsigned int p_width, unsigned int p_height)
 {
   glGenFramebuffers(1, &m_data.frameBufferID);
   glGenRenderbuffers(1, &m_data.depthBufferID);
@@ -108,12 +108,12 @@ void GameViewW::CreateFrameBuffer(unsigned int p_width, unsigned int p_height)
   Unbind();
 }
 
-unsigned int GameViewW::GetGameViewBuffer()
+unsigned int FrameBuffer::GetGameViewBuffer()
 {
   return m_data.frameBufferID;
 }
 
-unsigned int GameViewW::GetTextureColourBuffer()
+unsigned int FrameBuffer::GetTextureColourBuffer()
 {
   return m_data.TextureColourBuffer;
 }

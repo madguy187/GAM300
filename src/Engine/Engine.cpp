@@ -4,16 +4,7 @@
 //#include "ECS/World.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RenderComponent.h"
-#include "ECS/SystemManager/Systems/TestSystem.h"
-
-#include "../src/Graphics/include/GLHelper.h"
-#include "../src/Graphics/include/Graphics.h"
-#include <iostream>
-#include <sstream>
-#include <iomanip>
-#include <memory>
-#include "imgui_impl_opengl3.h"
-#include "imgui_impl_glfw.h"
+#include "ECS/SystemManager/Systems/include/TestSystem.h"
 
 static void unload();
 static void load();
@@ -39,17 +30,15 @@ namespace Eclipse
     world.RegisterComponent<Sprite>();
 
     // registering system
-    world.RegisterSystem<TestSystem>();
+    world.RegisterSystem<RenderSystem>();
 
     // registering system signature
-    world.RegisterSystemSignature<TestSystem>(0000'0001);
+    world.RegisterSystemSignature<RenderSystem>(0000'0001);
 
     Entity ent = world.CreateEntity();
     world.AddComponent(ent, TransformComponent{ 4.0f, 5.0f, 6.0f });
     world.AddComponent(ent, Camera{ } );
     world.AddComponent(ent, Sprite{ });
-    Camera& test = engine->world.GetComponent<Camera>(ent);
-    test.prevPos.x = 9999;
 
     Sprite& sprite = engine->world.GetComponent<Sprite>(ent);
     sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
@@ -58,9 +47,8 @@ namespace Eclipse
     Graphics::sprites.emplace(sprite.layerNum, &sprite);
 
     auto& wee = world.GetComponent<TransformComponent>(ent);
-    std::cout << wee.x << std::endl;
 
-    world.GetSystem<TestSystem>();
+    world.GetSystem<RenderSystem>();
 
     while (!glfwWindowShouldClose(GLHelper::ptr_window))
     {
@@ -68,7 +56,8 @@ namespace Eclipse
 
       glBindFramebuffer(GL_FRAMEBUFFER, Graphics::framebuffer);
       glClear(GL_COLOR_BUFFER_BIT);
-      world.Update<TestSystem>();
+
+      world.Update<RenderSystem>();
       draw();
       // draw
       //draw(world);
@@ -106,17 +95,13 @@ static void update()
 static void draw()
 {
   Graphics::draw();
-
   ImGui::Render();
+
   int Width, Height;
-
   glClearColor(t_color.x, t_color.y, t_color.z, t_color.w);
-
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
   glfwGetFramebufferSize(GLHelper::ptr_window, &Width, &Height);
-
   glViewport(0, 0, Width, Height);
-
   glfwSwapBuffers(GLHelper::ptr_window);
 }
 

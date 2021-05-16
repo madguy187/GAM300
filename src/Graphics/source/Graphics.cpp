@@ -71,7 +71,7 @@ int StickID = 0;
 bool NumebrTest = false;
 bool mouseEditor = true;
 
-GameViewW* Graphics::m_frameBuffer;
+FrameBuffer* Graphics::m_frameBuffer;
 extern glm::vec3 spherePos;
 extern glm::vec3 sphereScale;
 extern glm::vec3 sphereRot;
@@ -103,10 +103,7 @@ void Graphics::init()
   std::cout << "INIT" << std::endl;
   glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
   glViewport(0, 0, GLHelper::width, GLHelper::height);
-  //GLHelper::print_specs();
-
-  //GameViewW GameViewBuffer(GLHelper::width, GLHelper::height);
-
+  GLHelper::print_specs();
   //m_frameBuffer = new GameViewW(GLHelper::width, GLHelper::height);
   CreateFrameBuffer();
 }
