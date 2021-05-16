@@ -78,6 +78,8 @@ extern glm::vec3 spherePos;
 extern glm::vec3 sphereScale;
 extern glm::vec3 sphereRot;
 
+int createdID = 0;
+
 void Graphics::load()
 {
   //Loads all the shader programs listed in the shader file
@@ -106,7 +108,8 @@ void Graphics::init()
   glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
   glViewport(0, 0, GLHelper::width, GLHelper::height);
   GLHelper::print_specs();
-  //m_frameBuffer = new GameViewW(GLHelper::width, GLHelper::height);
+  
+  m_frameBuffer = new FrameBuffer(GLHelper::width, GLHelper::height);
   CreateFrameBuffer();
 }
 
@@ -133,7 +136,7 @@ void Graphics::update(double fixed)
     }
   }
 
-  TransformComponent& trans = engine->world.GetComponent<TransformComponent>(1);
+  TransformComponent& trans = engine->world.GetComponent<TransformComponent>(createdID);
 
   ImGui::Begin("Properties");
   ImGui::DragFloat3("Scale", (float*)&sphereScale, 0.2f, 0.0f, 0.0f);
@@ -182,6 +185,11 @@ void Graphics::draw()
     glClear(GL_COLOR_BUFFER_BIT);
     glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
 
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glDisable(GL_DEPTH_TEST);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glBindTexture(GL_TEXTURE_2D, m_frameBuffer->GetTextureColourBuffer());
+
     ImGui::Begin("Game View");
 
     ImGui::GetWindowDrawList()->AddImage(
@@ -211,7 +219,7 @@ void Graphics::draw()
     //frameBufferPos = vec2{ ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y };
     //ImGui::End();
 
-    //GameViewW::ShowWindow(world, *m_frameBuffer);
+    FrameBuffer::ShowWindow(*m_frameBuffer);
 
 
   }
@@ -360,6 +368,8 @@ void Graphics::CreateObject(GLint model)
 {
   auto& testtest = engine->world;
   Entity EntityID = testtest.CreateEntity();
+
+  createdID = EntityID;
 
   std::cout << "id :" << EntityID << std::endl;
 

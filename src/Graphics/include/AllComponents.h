@@ -222,7 +222,7 @@ struct Sprite
 	bool hasTexture = false;
 	bool isQuad = false;
 
-	glm::mat3 modelNDC_xform{ 0 };
+	glm::mat4 modelNDC_xform{ 0 };
 
 	modelIt modelRef;
 	textureIt textureRef;

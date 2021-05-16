@@ -47,7 +47,7 @@ void FrameBuffer::Update()
 {
 }
 
-void FrameBuffer::ShowWindow(World& _world, FrameBuffer g)
+void FrameBuffer::ShowWindow(FrameBuffer g)
 {
   //int test = FrameBuffer::GetGameViewBuffer();
   g.GetTextureColourBuffer();
@@ -57,30 +57,30 @@ void FrameBuffer::ShowWindow(World& _world, FrameBuffer g)
 
   //_world.Render();
 
-  ////  bind back to default framebuffer and draw with the attached framebuffer
-  //glBindFramebuffer(GL_FRAMEBUFFER, 0);
-  //glDisable(GL_DEPTH_TEST);
-  //glClear(GL_COLOR_BUFFER_BIT);
-  //glBindTexture(GL_TEXTURE_2D, test2);
+  //  bind back to default framebuffer and draw with the attached framebuffer
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+  glDisable(GL_DEPTH_TEST);
+  glClear(GL_COLOR_BUFFER_BIT);
+  glBindTexture(GL_TEXTURE_2D, g.GetTextureColourBuffer());
 
-  //ImGui::Begin("Scene View");
+  ImGui::Begin("Scene View");
 
-  //ImVec2 pos = ImGui::GetCursorScreenPos();
+  ImVec2 pos = ImGui::GetCursorScreenPos();
 
-  //ImGui::GetWindowDrawList()->AddImage(
-  //  (void*)(g.m_data.TextureColourBuffer),
-  //  ImVec2(ImGui::GetCursorScreenPos()),
-  //  ImVec2(ImGui::GetCursorScreenPos().x + ImGui::GetWindowContentRegionMax().x,
-  //    ImGui::GetCursorScreenPos().y + ImGui::GetWindowContentRegionMax().y), ImVec2(0, 1), ImVec2(1, 0));
+  ImGui::GetWindowDrawList()->AddImage(
+    (void*)(g.m_data.TextureColourBuffer),
+    ImVec2(ImGui::GetCursorScreenPos()),
+    ImVec2(ImGui::GetCursorScreenPos().x + ImGui::GetWindowContentRegionMax().x,
+      ImGui::GetCursorScreenPos().y + ImGui::GetWindowContentRegionMax().y), ImVec2(0, 1), ImVec2(1, 0));
 
-  //g.m_width = ImGui::GetWindowWidth();
-  //g.m_height = ImGui::GetWindowHeight();
+  g.m_width = ImGui::GetWindowWidth();
+  g.m_height = ImGui::GetWindowHeight();
 
-  //g.windowPos.x = (ImGui::GetWindowWidth() / 2) + ImGui::GetCursorScreenPos().x;
-  //g.windowPos.y = (ImGui::GetWindowHeight() / 2) + ImGui::GetCursorScreenPos().y;
+  g.windowPos.x = (ImGui::GetWindowWidth() / 2) + ImGui::GetCursorScreenPos().x;
+  g.windowPos.y = (ImGui::GetWindowHeight() / 2) + ImGui::GetCursorScreenPos().y;
 
-  //g.frameBufferPosition = vec2{ ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y };
-  //ImGui::End();
+  g.frameBufferPosition = vec2{ ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y };
+  ImGui::End();
 }
 
 void FrameBuffer::CreateFrameBuffer(unsigned int p_width, unsigned int p_height)

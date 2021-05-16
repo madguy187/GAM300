@@ -162,6 +162,7 @@
     <ClCompile Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.cpp" />
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp" />
     <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\RenderSystem.cpp" />
     <ClCompile Include="src\ECS\World.cpp" />
     <ClCompile Include="src\ECS\EntityManager\EntityManager.cpp" />
     <ClCompile Include="src\Engine\Engine.cpp" />
@@ -212,7 +213,8 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\TransformComponent.h" />
     <ClInclude Include="src\ECS\SystemManager\SystemManager.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\System.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\include\TestSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\RenderSystem.h" />
+    <ClInclude Include="SRC\ECS\SYSTEMMANAGER\SYSTEMS\TESTSYSTEM.H" />
     <ClInclude Include="src\ECS\World.h" />
     <ClInclude Include="src\ECS\EntityManager\EntityManager.h" />
     <ClInclude Include="src\Engine\Engine.h" />
