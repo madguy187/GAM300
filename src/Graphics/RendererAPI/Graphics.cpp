@@ -26,7 +26,7 @@
 
 #include <glm/gtc/type_ptr.hpp> // for glm::value_ptr
 #include "glm/gtx/matrix_transform_2d.hpp""
-#include "../include/Vec.h"
+#include "vec.h"
 #include "../src/ECS/World.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 /*                                                   objects with file scope

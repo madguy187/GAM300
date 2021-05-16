@@ -81,11 +81,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\Libraries\glew-2.1.0;$(SolutionDir)\src\Graphics\ModelFactory;$(SolutionDir)\src\Graphics\ModelFactory\BasicPrimitives;$(SolutionDir)\src\Graphics\RendererAPI;$(SolutionDir)\src\Graphics\FrameBuffer;$(SolutionDir)\src\Graphics\include;C:\Users\Darren Sim\Desktop\ACTUAL_GAM200\GAM300\src\Graphics\Parser;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\Libraries\glew-2.1.0;$(SolutionDir)\src\Graphics\ModelFactory;$(SolutionDir)\src\Graphics\ModelFactory\BasicPrimitives;$(SolutionDir)\src\Graphics\RendererAPI;$(SolutionDir)\src\Graphics\FrameBuffer;$(SolutionDir)\src\Graphics\include;$(SolutionDir)\src\Graphics\Still_Cleaning;$(SolutionDir)\src\Graphics\Parser;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\Libraries\glew-2.1.0;$(SolutionDir)\src\Graphics\ModelFactory;$(SolutionDir)\src\Graphics\ModelFactory\BasicPrimitives;$(SolutionDir)\src\Graphics\RendererAPI;$(SolutionDir)\src\Graphics\FrameBuffer;$(SolutionDir)\src\Graphics\include;C:\Users\Darren Sim\Desktop\ACTUAL_GAM200\GAM300\src\Graphics\Parser;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\Libraries\glew-2.1.0;$(SolutionDir)\src\Graphics\ModelFactory;$(SolutionDir)\src\Graphics\ModelFactory\BasicPrimitives;$(SolutionDir)\src\Graphics\RendererAPI;$(SolutionDir)\src\Graphics\FrameBuffer;$(SolutionDir)\src\Graphics\include;$(SolutionDir)\src\Graphics\Still_Cleaning;$(SolutionDir)\src\Graphics\Parser;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -230,7 +230,7 @@ copy "$(SolutionDir)Libraries\glfw-3.3.2.bin.WIN64\lib-vc2019\glfw3.dll" "$(Targ
     <ClInclude Include="src\Engine\Engine.h" />
     <ClInclude Include="src\EntryPoint\EntryPoint.h" />
     <ClInclude Include="src\Global.h" />
-    <ClInclude Include="src\Graphics\include\AllComponents.h" />
+    <ClInclude Include="src\Graphics\Still_Cleaning\AllComponents.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\AllBasicPrimitives.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Cone.h" />
@@ -238,13 +238,13 @@ copy "$(SolutionDir)Libraries\glfw-3.3.2.bin.WIN64\lib-vc2019\glfw3.dll" "$(Targ
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Cylinder.h" />
     <ClInclude Include="src\Graphics\FrameBuffer\FrameBuffer.h" />
     <ClInclude Include="src\Graphics\RendererAPI\GLHelper.h" />
-    <ClInclude Include="src\Graphics\include\Global.h" />
+    <ClInclude Include="src\Graphics\Still_Cleaning\Global.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Graphics.h" />
     <ClInclude Include="src\Graphics\ModelFactory\IModel.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\LightQuad.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Lines.h" />
-    <ClInclude Include="src\Graphics\include\Math_Lib.h" />
-    <ClInclude Include="src\Graphics\include\Matrix4.h" />
+    <ClInclude Include="src\Graphics\Still_Cleaning\Math_Lib.h" />
+    <ClInclude Include="src\Graphics\Still_Cleaning\Matrix4.h" />
     <ClInclude Include="src\Graphics\ModelFactory\ModelFactory.h" />
     <ClInclude Include="src\Graphics\ModelFactory\ModelGlobal.h" />
     <ClInclude Include="src\Graphics\Parser\Parser.h" />
@@ -257,7 +257,7 @@ copy "$(SolutionDir)Libraries\glfw-3.3.2.bin.WIN64\lib-vc2019\glfw3.dll" "$(Targ
     <ClInclude Include="src\Graphics\RendererAPI\Texture.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Torus.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Triangle.h" />
-    <ClInclude Include="src\Graphics\include\Vec.h" />
+    <ClInclude Include="src\Graphics\Still_Cleaning\Vec.h" />
     <ClInclude Include="src\Graphics\FrameBuffer\WindowConstraint.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\SparseSet\SparseSet.hpp" />

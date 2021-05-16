@@ -18,7 +18,7 @@
 #ifndef _ALL_COMPONENTS_
 #define _ALL_COMPONENTS_
 
-#include "../src/Graphics/include/Global.h"
+#include "Global.h"
 #include <map>
 #include "Shader.h"
 #include "Circle.h"
