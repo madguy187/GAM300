@@ -58,7 +58,7 @@ namespace Eclipse
 
     while (!glfwWindowShouldClose(GLHelper::ptr_window))
     {
-      //update();
+      update();
 
       glBindFramebuffer(GL_FRAMEBUFFER, Graphics::m_frameBuffer->GetGameViewBuffer());
       glClear(GL_COLOR_BUFFER_BIT);

@@ -1,1 +1,2 @@
 C:\Users\s.wong\Documents\GitHub\GAM300\x64\Release\GAM300.exe
+C:\Users\shior\source\repos\GAM300\x64\Release\GAM300.exe
