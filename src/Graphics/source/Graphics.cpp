@@ -97,14 +97,15 @@ void Graphics::load()
  /******************************************************************************/
 void Graphics::init()
 {
+  std::cout << "INIT" << std::endl;
   glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
   glViewport(0, 0, GLHelper::width, GLHelper::height);
   //GLHelper::print_specs();
 
   //GameViewW GameViewBuffer(GLHelper::width, GLHelper::height);
-  
-  m_frameBuffer = new GameViewW(GLHelper::width, GLHelper::height);
-  //CreateFrameBuffer();
+
+  //m_frameBuffer = new GameViewW(GLHelper::width, GLHelper::height);
+  CreateFrameBuffer();
 }
 
 /******************************************************************************/
@@ -137,7 +138,7 @@ void Graphics::update(double, World& world)
     Draw function for Graphics
  */
  /******************************************************************************/
-void Graphics::draw(World& world)
+void Graphics::draw()
 {
   //int keyT = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_T);
 
@@ -158,20 +159,21 @@ void Graphics::draw(World& world)
   }
   else
   {
+    //std::cout << "DRAWING ..." << std::endl;
     ////Note: ImGui might cause crashes depending on the rendering order. Always
     //// call ImGui separately or after rendering to the default framebuffer
     //glBindFramebuffer(GL_FRAMEBUFFER, m_frameBuffer->GetGameViewBuffer());
     //glClear(GL_COLOR_BUFFER_BIT);
 
-    //glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-    //glClear(GL_COLOR_BUFFER_BIT);
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+    glClear(GL_COLOR_BUFFER_BIT);
 
     ////world.Render();
 
-    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    //glDisable(GL_DEPTH_TEST);
-    //glClear(GL_COLOR_BUFFER_BIT);
-    //glBindTexture(GL_TEXTURE_2D, m_frameBuffer->GetTextureColourBuffer());
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glDisable(GL_DEPTH_TEST);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
 
     //////  bind back to default framebuffer and draw with the attached framebuffer
     //glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -179,7 +181,17 @@ void Graphics::draw(World& world)
     //glClear(GL_COLOR_BUFFER_BIT);
     //glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
 
-    //ImGui::Begin("Game View");
+    ImGui::Begin("Game View");
+
+    ImGui::GetWindowDrawList()->AddImage(
+      (void*)(textureColorbuffer),
+      ImVec2(ImGui::GetCursorScreenPos()),
+      ImVec2(ImGui::GetCursorScreenPos().x + ImGui::GetWindowContentRegionMax().x,
+
+        ImGui::GetCursorScreenPos().y + ImGui::GetWindowContentRegionMax().y), ImVec2(0, 1), ImVec2(1, 0));
+
+    ImGui::End();
+
 
     //ImVec2 pos = ImGui::GetCursorScreenPos();
 

@@ -50,7 +50,7 @@ public:
   static void load();
   static void init();
   static void update(double delta_time, World& world);
-  static void draw(World& world);
+  static void draw();
   static void cleanup();
   static void unload();
   static void RegisterWorld(World* world);

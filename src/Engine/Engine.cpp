@@ -12,13 +12,15 @@
 #include <sstream>
 #include <iomanip>
 #include <memory>
-#include "imgui.h"
+#include "imgui_impl_opengl3.h"
+#include "imgui_impl_glfw.h"
 
 static void unload();
 static void load();
 static void init();
 static void update();
-static void draw(World& world);
+static void draw();
+vec4 t_color = vec4(0.22f, 0.28f, 0.30f, 1.00f);
 
 namespace Eclipse
 {
@@ -51,9 +53,10 @@ namespace Eclipse
 
     while (!glfwWindowShouldClose(GLHelper::ptr_window))
     {
+
       world.Update<TestSystem>();
       update();
-
+      draw();
       // draw
       //draw(world);
       //
@@ -67,7 +70,7 @@ namespace Eclipse
     //	
     //}
 
-    //unload();
+    unload();
   }
 }
 
@@ -76,6 +79,10 @@ static void update()
   float fixedDeltaTime = 1.0 / 60.0;
   glfwPollEvents();
 
+  ImGui_ImplOpenGL3_NewFrame();
+  ImGui_ImplGlfw_NewFrame();
+  ImGui::NewFrame();
+
   //Graphics::update(fixedDeltaTime, world);
 
   std::stringstream sstr;
@@ -83,9 +90,20 @@ static void update()
   glfwSetWindowTitle(GLHelper::ptr_window, sstr.str().c_str());
 }
 
-static void draw(World& world)
+static void draw()
 {
-  Graphics::draw(world);
+  Graphics::draw();
+
+  ImGui::Render();
+  int Width, Height;
+
+  glClearColor(t_color.x, t_color.y, t_color.z, t_color.w);
+
+  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+  glfwGetFramebufferSize(GLHelper::ptr_window, &Width, &Height);
+
+  glViewport(0, 0, Width, Height);
+
   glfwSwapBuffers(GLHelper::ptr_window);
 }
 
@@ -106,6 +124,14 @@ void load()
   }
 
   Graphics::load();
+
+  IMGUI_CHECKVERSION();
+  ImGui::CreateContext();
+  ImGuiIO& io = ImGui::GetIO(); (void)io;
+  ImGui_ImplGlfw_InitForOpenGL(GLHelper::ptr_window, true);
+  ImGui_ImplOpenGL3_Init();
+  ImGui::StyleColorsClassic();
+  io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 }
 
 void init()
