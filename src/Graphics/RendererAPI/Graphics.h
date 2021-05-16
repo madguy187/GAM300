@@ -19,7 +19,7 @@
 #include "Vec.h"
 #include "Particles.h"
 
-#include "../include/FrameBuffer.h"
+#include "FrameBuffer.h"
 #include "../src/ECS/SystemManager/Systems/System/System.h"
 
 const int maxParticles = 10000;
@@ -54,7 +54,6 @@ public:
   static void draw();
   static void cleanup();
   static void unload();
-  static void RegisterWorld(World* world);
   static void DeleteSprite(unsigned int id);
   static void DeleteAllSprites();
 
@@ -119,10 +118,6 @@ public:
   static vec2 frameBufferPos;
 
   static std::bitset<2> dialogueBits;
- // static void Print_Numbers(int number, vec3 location, int size, int duration, int colour, float velocity, int id);
-  static void CreateMonkeytick(World* world, int _flag);
-  //static void CreateDeathZone(World& world);
-  //static void Print_Alphabet(const char* String, float Location_x, float Location_y, float size, int duration);
 };
 
 #endif /* GRAPHICS_H */

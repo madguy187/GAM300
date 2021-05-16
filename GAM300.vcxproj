@@ -81,11 +81,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\Libraries\glew-2.1.0;$(SolutionDir)\src\Graphics\ModelFactory;$(SolutionDir)\src\Graphics\ModelFactory\BasicPrimitives;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\Libraries\glew-2.1.0;$(SolutionDir)\src\Graphics\ModelFactory;$(SolutionDir)\src\Graphics\ModelFactory\BasicPrimitives;$(SolutionDir)\src\Graphics\RendererAPI;$(SolutionDir)\src\Graphics\FrameBuffer;$(SolutionDir)\src\Graphics\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\Libraries\glew-2.1.0;$(SolutionDir)\src\Graphics\ModelFactory;$(SolutionDir)\src\Graphics\ModelFactory\BasicPrimitives;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\Libraries\glew-2.1.0;$(SolutionDir)\src\Graphics\ModelFactory;$(SolutionDir)\src\Graphics\ModelFactory\BasicPrimitives;$(SolutionDir)\src\Graphics\RendererAPI;$(SolutionDir)\src\Graphics\FrameBuffer;$(SolutionDir)\src\Graphics\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -181,9 +181,9 @@ copy "$(SolutionDir)Libraries\glfw-3.3.2.bin.WIN64\lib-vc2019\glfw3.dll" "$(Targ
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cone.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cube.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cylinder.cpp" />
-    <ClCompile Include="src\Graphics\source\FrameBuffer.cpp" />
-    <ClCompile Include="src\Graphics\source\glhelper.cpp" />
-    <ClCompile Include="src\Graphics\source\Graphics.cpp" />
+    <ClCompile Include="src\Graphics\FrameBuffer\FrameBuffer.cpp" />
+    <ClCompile Include="src\Graphics\RendererAPI\glhelper.cpp" />
+    <ClCompile Include="src\Graphics\RendererAPI\Graphics.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\LightQuad.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Lines.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\ModelFactory.cpp" />
@@ -192,13 +192,13 @@ copy "$(SolutionDir)Libraries\glfw-3.3.2.bin.WIN64\lib-vc2019\glfw3.dll" "$(Targ
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Plane.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Pyramid.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Quad.cpp" />
-    <ClCompile Include="src\Graphics\source\Shader.cpp" />
+    <ClCompile Include="src\Graphics\RendererAPI\Shader.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Sphere.cpp" />
-    <ClCompile Include="src\Graphics\source\stb_image.cpp" />
-    <ClCompile Include="src\Graphics\source\Texture.cpp" />
+    <ClCompile Include="src\Graphics\RendererAPI\stb_image.cpp" />
+    <ClCompile Include="src\Graphics\RendererAPI\Texture.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Torus.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Triangle.cpp" />
-    <ClCompile Include="src\Graphics\source\WindowConstraint.cpp" />
+    <ClCompile Include="src\Graphics\FrameBuffer\WindowConstraint.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -236,10 +236,10 @@ copy "$(SolutionDir)Libraries\glfw-3.3.2.bin.WIN64\lib-vc2019\glfw3.dll" "$(Targ
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Cone.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Cube.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Cylinder.h" />
-    <ClInclude Include="src\Graphics\include\FrameBuffer.h" />
-    <ClInclude Include="src\Graphics\include\GLHelper.h" />
+    <ClInclude Include="src\Graphics\FrameBuffer\FrameBuffer.h" />
+    <ClInclude Include="src\Graphics\RendererAPI\GLHelper.h" />
     <ClInclude Include="src\Graphics\include\Global.h" />
-    <ClInclude Include="src\Graphics\include\Graphics.h" />
+    <ClInclude Include="src\Graphics\RendererAPI\Graphics.h" />
     <ClInclude Include="src\Graphics\ModelFactory\IModel.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\LightQuad.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Lines.h" />
@@ -253,13 +253,13 @@ copy "$(SolutionDir)Libraries\glfw-3.3.2.bin.WIN64\lib-vc2019\glfw3.dll" "$(Targ
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Pyramid.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Quad.h" />
     <ClInclude Include="src\Graphics\include\Quaternion.h" />
-    <ClInclude Include="src\Graphics\include\Shader.h" />
+    <ClInclude Include="src\Graphics\RendererAPI\Shader.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Sphere.h" />
-    <ClInclude Include="src\Graphics\include\Texture.h" />
+    <ClInclude Include="src\Graphics\RendererAPI\Texture.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Torus.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Triangle.h" />
     <ClInclude Include="src\Graphics\include\Vec.h" />
-    <ClInclude Include="src\Graphics\include\WindowConstraint.h" />
+    <ClInclude Include="src\Graphics\FrameBuffer\WindowConstraint.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\SparseSet\SparseSet.hpp" />
     <ClInclude Include="src\TypeID\TypeID.h" />

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "../include/Shader.h"
+#include "Shader.h"
 
 Shader::Shader():
 	handle{0}, isLinked{GL_FALSE}

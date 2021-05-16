@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "../include/WindowConstraint.h"
+#include "WindowConstraint.h"
 
 #define IM_MAX(_A,_B)       (((_A) >= (_B)) ? (_A) : (_B))
 

@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "../include/FrameBuffer.h"
-#include "../include/WindowConstraint.h"
+#include "FrameBuffer.h"
+#include "WindowConstraint.h"
 #include "../src/ECS/World.h"
-#include "../include/GLHelper.h"
+#include "GLHelper.h"
 
 FrameBuffer::FrameBuffer(const glm::uvec2& p_size) :
   m_size{ p_size }, m_width{ m_size.x }, m_height{ m_size.y }

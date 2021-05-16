@@ -16,8 +16,8 @@
 #define _USE_MATH_DEFINES
 
 #include "pch.h"
-#include "../include/Graphics.h"
-#include "../include/GLHelper.h"
+#include "Graphics.h"
+#include "GLHelper.h"
 #include <cmath>
 #include <fstream>
 #include "imgui.h"

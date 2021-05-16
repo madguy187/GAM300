@@ -21,7 +21,7 @@ pointers to OpenGL implementations.
 
 *//*__________________________________________________________________________*/
 #include "pch.h"
-#include "../src/Graphics/include/GLHelper.h"
+#include "GLHelper.h"
 
 static GLHelper g_glhelper;
 

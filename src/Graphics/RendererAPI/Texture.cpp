@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "../include/Texture.h"
+#include "Texture.h"
 
 Texture::Texture(std::string pathname):
     sheetWidth{ 0 }, sheetHeight{ 0 }, numCols{0}, numRows{0}, 
