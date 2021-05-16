@@ -72,6 +72,9 @@ bool NumebrTest = false;
 bool mouseEditor = true;
 
 GameViewW* Graphics::m_frameBuffer;
+extern glm::vec3 spherePos;
+extern glm::vec3 sphereScale;
+extern glm::vec3 sphereRot;
 
 void Graphics::load()
 {
@@ -130,6 +133,12 @@ void Graphics::update(double fixed)
       ImGui::Separator();
     }
   }
+
+  ImGui::Begin("Properties");
+  ImGui::DragFloat3("Scale", (float*)&sphereScale, 0.2f, 0.0f, 0.0f);
+  ImGui::DragFloat3("Translate", (float*)&spherePos, 0.2f, 0.0f, 0.0f);
+  ImGui::DragFloat3("Rotate", (float*)&sphereRot, 0.2f, 0.0f, 0.0f);
+  ImGui::End();
   ImGui::End();
 }
 

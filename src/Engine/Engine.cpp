@@ -20,7 +20,7 @@ static void load();
 static void init();
 static void update();
 static void draw();
-vec4 t_color = vec4(0.22f, 0.28f, 0.30f, 1.00f);
+vec4 t_color = vec4(0.4f, 0.28f, 0.30f, 1.00f);
 
 namespace Eclipse
 {
