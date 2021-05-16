@@ -1,25 +1,24 @@
 #include "pch.h"
-#include "../include/LightQuad.h"
 
-LightQuad::LightQuad() :
+Triangle::Triangle() :
     vaoID{ 1 }, vboID{ 1 }, eboID{ 1 },
     primitiveType{ GL_TRIANGLES },
-    primitiveCount{ 2 },
-    drawCount{ 6 }
+    primitiveCount{ 1 },
+    drawCount{ 3 }
 {
     initModel();
 }
 
-void LightQuad::initModel()
+void Triangle::initModel()
 {
     InsertModelData();
     CreateBuffers();
 }
 
-void LightQuad::InsertPosVtx()
+void Triangle::InsertPosVtx()
 {
     Parser input;
-    input.ParseFile("meshes/lightsquare.json");
+    input.ParseFile("meshes/triangle.json");
 
     const rapidjson::Value& vertex = input.doc["vertex"].GetArray();
 
@@ -32,10 +31,10 @@ void LightQuad::InsertPosVtx()
     }
 }
 
-void LightQuad::InsertIdxVtx()
+void Triangle::InsertIdxVtx()
 {
     Parser input;
-    input.ParseFile("meshes/lightsquare.json");
+    input.ParseFile("meshes/triangle.json");
 
     const rapidjson::Value& index = input.doc["index"].GetArray();
 
@@ -49,90 +48,73 @@ void LightQuad::InsertIdxVtx()
     }
 }
 
-void LightQuad::InsertTextCoord()
-{
-    Parser input;
-    input.ParseFile("meshes/lightsquare.json");
-
-    const rapidjson::Value& texture = input.doc["texture"].GetArray();
-
-    for (rapidjson::SizeType i = 0; i < texture.Size(); i++)
-    {
-        const rapidjson::Value& coords = texture[i];
-
-        TextVec.push_back(glm::vec2(coords[rapidjson::SizeType(0)].GetDouble(),
-            coords[rapidjson::SizeType(1)].GetDouble()));
-    }
-}
-
-void LightQuad::InsertModelData()
+void Triangle::InsertModelData()
 {
     InsertIdxVtx();
-    InsertTextCoord();
     InsertPosVtx();
 }
 
-GLuint LightQuad::GetVaoID()
+GLuint Triangle::GetVaoID()
 {
     return vaoID;
 }
 
-GLuint LightQuad::GetVboID()
+GLuint Triangle::GetVboID()
 {
     return vboID;
 }
 
-GLuint LightQuad::GetEboID()
+GLuint Triangle::GetEboID()
 {
     return eboID;
 }
 
-GLenum LightQuad::GetPrimitiveType()
+GLenum Triangle::GetPrimitiveType()
 {
     return primitiveType;
 }
 
-GLuint LightQuad::GetPrimitiveCount()
+GLuint Triangle::GetPrimitiveCount()
 {
     return primitiveCount;
 }
 
-GLuint LightQuad::GetDrawCount()
+GLuint Triangle::GetDrawCount()
 {
     return drawCount;
 }
 
-void LightQuad::SetVaoID(GLuint id)
+void Triangle::SetVaoID(GLuint id)
 {
     this->vaoID = id;
 }
 
-void LightQuad::SetVboID(GLuint id)
+void Triangle::SetVboID(GLuint id)
 {
     this->vboID = id;
 }
 
-void LightQuad::SetEboID(GLuint id)
+void Triangle::SetEboID(GLuint id)
 {
     this->eboID = id;
 }
 
-void LightQuad::SetPrimitiveType(GLenum type)
+void Triangle::SetPrimitiveType(GLenum type)
 {
     this->primitiveType = type;
 }
 
-void LightQuad::SetPrimitiveCount(GLuint count)
+void Triangle::SetPrimitiveCount(GLuint count)
 {
     this->primitiveCount = count;
 }
 
-void LightQuad::SetDrawCount(GLuint count)
+void Triangle::SetDrawCount(GLuint count)
 {
     this->drawCount = count;
 }
 
-void LightQuad::CreateVAO()
+void Triangle::CreateVAO()
 {
     //Define the VAO handle for position attributes
     glCreateVertexArrays(1, &vaoID);
@@ -146,10 +128,9 @@ void LightQuad::CreateVAO()
     glVertexArrayVertexBuffer(vaoID, 1, vboID, sizeof(glm::vec2) * PosVec.size(), sizeof(glm::vec2));
     glVertexArrayAttribFormat(vaoID, 1, 2, GL_FLOAT, GL_FALSE, 0);
     glVertexArrayAttribBinding(vaoID, 1, 1);
-
 }
 
-void LightQuad::CreateVBO()
+void Triangle::CreateVBO()
 {
     glCreateBuffers(1, &vboID);
     glNamedBufferStorage(vboID,
@@ -161,7 +142,7 @@ void LightQuad::CreateVBO()
         sizeof(glm::vec2) * TextVec.size(), TextVec.data());
 }
 
-void LightQuad::CreateEBO()
+void Triangle::CreateEBO()
 {
     glCreateBuffers(1, &eboID);
     glNamedBufferStorage(eboID, sizeof(GLushort) * IdxVec.size(),
@@ -170,14 +151,14 @@ void LightQuad::CreateEBO()
     glBindVertexArray(0);
 }
 
-void LightQuad::CreateBuffers()
+void Triangle::CreateBuffers()
 {
     CreateVBO();
     CreateVAO();
     CreateEBO();
 }
 
-void LightQuad::DeleteModel()
+void Triangle::DeleteModel()
 {
     glDeleteVertexArrays(1, &vaoID);
     glDeleteBuffers(1, &vboID);

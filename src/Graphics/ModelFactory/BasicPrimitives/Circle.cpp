@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "../src/Graphics/include/Circle.h"
 
 Circle::Circle() :
     vaoID{ 1 }, vboID{ 1 }, eboID{ 1 },

@@ -1,41 +1,36 @@
 #include "pch.h"
-#include "../include/Triangle.h"
 
-Triangle::Triangle() :
-    vaoID{ 1 }, vboID{ 1 }, eboID{ 1 },
-    primitiveType{ GL_TRIANGLES },
+Lines::Lines() :
+    vaoID{ 1 }, vboID{ 1 }, eboID{ 0 },
+    primitiveType{ GL_LINES },
     primitiveCount{ 1 },
-    drawCount{ 3 }
+    drawCount{ 2 }
 {
     initModel();
 }
 
-void Triangle::initModel()
+void Lines::initModel()
 {
     InsertModelData();
     CreateBuffers();
 }
 
-void Triangle::InsertPosVtx()
+void Lines::InsertPosVtx()
 {
-    Parser input;
-    input.ParseFile("meshes/triangle.json");
-
-    const rapidjson::Value& vertex = input.doc["vertex"].GetArray();
-
-    for (rapidjson::SizeType i = 0; i < vertex.Size(); i++)
+    GLfloat lineSeg[] =
     {
-        const rapidjson::Value& coords = vertex[i];
+        0.0f, 0.0, 
+        1.0f, 0.0f
+    };
 
-        PosVec.push_back(glm::vec2(coords[rapidjson::SizeType(0)].GetDouble(),
-            coords[rapidjson::SizeType(1)].GetDouble()));
-    }
+    PosVec.push_back({ lineSeg[0], lineSeg[1] });
+    PosVec.push_back({ lineSeg[2], lineSeg[3] });
 }
 
-void Triangle::InsertIdxVtx()
+void Lines::InsertIdxVtx()
 {
     Parser input;
-    input.ParseFile("meshes/triangle.json");
+    input.ParseFile("meshes/square.json");
 
     const rapidjson::Value& index = input.doc["index"].GetArray();
 
@@ -49,73 +44,73 @@ void Triangle::InsertIdxVtx()
     }
 }
 
-void Triangle::InsertModelData()
+void Lines::InsertModelData()
 {
     InsertIdxVtx();
     InsertPosVtx();
 }
 
-GLuint Triangle::GetVaoID()
+GLuint Lines::GetVaoID()
 {
     return vaoID;
 }
 
-GLuint Triangle::GetVboID()
+GLuint Lines::GetVboID()
 {
     return vboID;
 }
 
-GLuint Triangle::GetEboID()
+GLuint Lines::GetEboID()
 {
     return eboID;
 }
 
-GLenum Triangle::GetPrimitiveType()
+GLenum Lines::GetPrimitiveType()
 {
     return primitiveType;
 }
 
-GLuint Triangle::GetPrimitiveCount()
+GLuint Lines::GetPrimitiveCount()
 {
     return primitiveCount;
 }
 
-GLuint Triangle::GetDrawCount()
+GLuint Lines::GetDrawCount()
 {
     return drawCount;
 }
 
-void Triangle::SetVaoID(GLuint id)
+void Lines::SetVaoID(GLuint id)
 {
     this->vaoID = id;
 }
 
-void Triangle::SetVboID(GLuint id)
+void Lines::SetVboID(GLuint id)
 {
     this->vboID = id;
 }
 
-void Triangle::SetEboID(GLuint id)
+void Lines::SetEboID(GLuint id)
 {
     this->eboID = id;
 }
 
-void Triangle::SetPrimitiveType(GLenum type)
+void Lines::SetPrimitiveType(GLenum type)
 {
     this->primitiveType = type;
 }
 
-void Triangle::SetPrimitiveCount(GLuint count)
+void Lines::SetPrimitiveCount(GLuint count)
 {
     this->primitiveCount = count;
 }
 
-void Triangle::SetDrawCount(GLuint count)
+void Lines::SetDrawCount(GLuint count)
 {
     this->drawCount = count;
 }
 
-void Triangle::CreateVAO()
+void Lines::CreateVAO()
 {
     //Define the VAO handle for position attributes
     glCreateVertexArrays(1, &vaoID);
@@ -129,9 +124,10 @@ void Triangle::CreateVAO()
     glVertexArrayVertexBuffer(vaoID, 1, vboID, sizeof(glm::vec2) * PosVec.size(), sizeof(glm::vec2));
     glVertexArrayAttribFormat(vaoID, 1, 2, GL_FLOAT, GL_FALSE, 0);
     glVertexArrayAttribBinding(vaoID, 1, 1);
+
 }
 
-void Triangle::CreateVBO()
+void Lines::CreateVBO()
 {
     glCreateBuffers(1, &vboID);
     glNamedBufferStorage(vboID,
@@ -143,25 +139,20 @@ void Triangle::CreateVBO()
         sizeof(glm::vec2) * TextVec.size(), TextVec.data());
 }
 
-void Triangle::CreateEBO()
+void Lines::CreateEBO()
 {
-    glCreateBuffers(1, &eboID);
-    glNamedBufferStorage(eboID, sizeof(GLushort) * IdxVec.size(),
-        reinterpret_cast<GLvoid*>(IdxVec.data()), GL_DYNAMIC_STORAGE_BIT);
-    glVertexArrayElementBuffer(vaoID, eboID);
-    glBindVertexArray(0);
+
 }
 
-void Triangle::CreateBuffers()
+void Lines::CreateBuffers()
 {
     CreateVBO();
     CreateVAO();
     CreateEBO();
 }
 
-void Triangle::DeleteModel()
+void Lines::DeleteModel()
 {
     glDeleteVertexArrays(1, &vaoID);
     glDeleteBuffers(1, &vboID);
-    glDeleteBuffers(1, &eboID);
 }

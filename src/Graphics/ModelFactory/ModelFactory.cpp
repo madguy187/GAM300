@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "../include/ModelFactory.h"
+#include "ModelFactory.h"
 
 std::unique_ptr<IModel> ModelFactory::create(unsigned int index)
 {

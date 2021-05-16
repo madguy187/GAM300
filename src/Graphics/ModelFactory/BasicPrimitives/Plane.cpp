@@ -1,7 +1,6 @@
 #include "pch.h"
-#include "../include/Torus.h"
 
-Torus::Torus() :
+Plane_::Plane_() :
   vaoID{ 1 }, vboID{ 1 }, eboID{ 1 },
   primitiveType{ GL_TRIANGLES },
   primitiveCount{ 2 },
@@ -11,83 +10,44 @@ Torus::Torus() :
   initModel();
 }
 
-void Torus::initModel()
+void Plane_::initModel()
 {
   InsertModelData();
   CreateBuffers();
-
 }
 
-void Torus::InsertPosVtx()
+void Plane_::InsertPosVtx()
 {
-  // 16 stacks
-  // 32 slices
-  // start angle is 0
-  // CreateTorus(16, 32, 0, TWO_PI)      
-
-  // getting the angle increment 
-  float totalAngle = (TWO_PI - 0);
-  float angleIncrement = totalAngle / (float)(16);
-
-  const float R = 0.35f;
-  const float r = 0.15f;
-
-  float row = 0.0f, col = 0.0f;
-  float alpha = 0.0f, beta = 0.0f;
-  float sinAlpha = 0.0f, cosAlpha = 0.0f;
-
-  for (int i = 0; i <= 16; ++i)
+  for (int stack = 0; stack <= 1; ++stack)
   {
-    // getting the uv for the row
-    row = (float)i / (float)16;
+    float row = (float)stack / 1;
 
-    // getting the sin alpha
-    sinAlpha = sinf(alpha);
-
-    // getting the cos alpha
-    cosAlpha = cosf(alpha);
-
-    for (int j = 0; j <= 32; ++j)
+    for (int slice = 0; slice <= 1; ++slice)
     {
-      // getting the uv for col
-      col = (float)j / (float)32;
+      float col = (float)slice / 1;
 
-      // getting the beta angle
-      beta = 2.0f * col * PI;
+      glm::vec3 posVtx { col - 0.5f , 0.5f - row , 0.0f };
+      glm::vec3 nrmVtx { 0.0f , 0.0f , 1.0f };
+      glm::vec2 texVtx { col , row };
 
-      //Position
-      glm::vec3 posVtx{ (R + r * cosf(beta)) * sinAlpha ,  r * sinf(beta) , (R + r * cosf(beta)) * cosAlpha };
-
-      //Center
-      glm::vec3 center = { R * sinf(alpha), 0.0f , R * cosf(alpha) };
-
-      //Normal
-      glm::vec3 nrmVtx = { posVtx.x - center.x , posVtx.y - center.y , posVtx.z - center.z };
-      nrmVtx = { nrmVtx.x / r , nrmVtx.y / r , nrmVtx.z / r };
-
-      // setting the UV
-      glm::vec2 texVtx{ row , col };
-
-      //Add vertices
       PosVec.push_back(posVtx);
       NormalVec.push_back(nrmVtx);
       TextVec.push_back(texVtx);
     }
-    alpha += angleIncrement;
   }
-
 }
 
-void Torus::InsertIdxVtx()
+void Plane_::InsertIdxVtx()
 {
   int i0 = 0, i1 = 0, i2 = 0, i3 = 0, i4 = 0, i5 = 0;
-  int stride = 32 + 1;
 
-  for (int i = 0; i < 16; ++i)
+  int stride = 1 + 1;
+
+  for (int i = 0; i < 1; ++i)
   {
     int currRow = i * stride;
 
-    for (int j = 0; j < 32; ++j)
+    for (int j = 0; j < 1; ++j)
     {
       /*  You need to compute the indices for the first triangle here */
       i0 = currRow + j;
@@ -95,11 +55,15 @@ void Torus::InsertIdxVtx()
       i2 = i1 + stride;
 
       /*  Ignore degenerate triangle */
-      if (!DegenerateTri(PosVec[i0], PosVec[i1], PosVec[i2]))
+      if (!DegenerateTri(PosVec[i0],
+        PosVec[i1],
+        PosVec[i2]))
       {
+
         IdxVec.push_back(i2);
         IdxVec.push_back(i1);
         IdxVec.push_back(i0);
+
         ++TriCount;
       }
 
@@ -109,89 +73,103 @@ void Torus::InsertIdxVtx()
       i5 = i0;;
 
       /*  Ignore degenerate triangle */
-      if (!DegenerateTri(PosVec[i3], PosVec[i4], PosVec[i5]))
+      if (!DegenerateTri(PosVec[i3],
+        PosVec[i4],
+        PosVec[i5]))
       {
         IdxVec.push_back(i5);
         IdxVec.push_back(i4);
         IdxVec.push_back(i3);
+
         ++TriCount;
       }
     }
   }
 }
 
-void Torus::InsertTextCoord()
+void Plane_::InsertTextCoord()
 {
+  Parser input;
+  input.ParseFile("../meshes/square.json");
+
+  const rapidjson::Value& texture = input.doc["texture"].GetArray();
+
+  for (rapidjson::SizeType i = 0; i < texture.Size(); i++)
+  {
+    const rapidjson::Value& coords = texture[i];
+
+    TextVec.push_back(glm::vec2(coords[rapidjson::SizeType(0)].GetDouble(),
+      coords[rapidjson::SizeType(1)].GetDouble()));
+  }
 }
 
-void Torus::InsertModelData()
+void Plane_::InsertModelData()
 {
   InsertPosVtx();
   InsertIdxVtx();
 }
 
-GLuint Torus::GetVaoID()
+GLuint Plane_::GetVaoID()
 {
   return vaoID;
 }
 
-GLuint Torus::GetVboID()
+GLuint Plane_::GetVboID()
 {
   return vboID;
 }
 
-GLuint Torus::GetEboID()
+GLuint Plane_::GetEboID()
 {
   return eboID;
 }
 
-GLenum Torus::GetPrimitiveType()
+GLenum Plane_::GetPrimitiveType()
 {
   return primitiveType;
 }
 
-GLuint Torus::GetPrimitiveCount()
+GLuint Plane_::GetPrimitiveCount()
 {
   return primitiveCount;
 }
 
-GLuint Torus::GetDrawCount()
+GLuint Plane_::GetDrawCount()
 {
-  //return drawCount;
-  return IdxVec.size();
+  return drawCount;
 }
 
-void Torus::SetVaoID(GLuint id)
+void Plane_::SetVaoID(GLuint id)
 {
   this->vaoID = id;
 }
 
-void Torus::SetVboID(GLuint id)
+void Plane_::SetVboID(GLuint id)
 {
   this->vboID = id;
 }
 
-void Torus::SetEboID(GLuint id)
+void Plane_::SetEboID(GLuint id)
 {
   this->eboID = id;
 }
 
-void Torus::SetPrimitiveType(GLenum type)
+void Plane_::SetPrimitiveType(GLenum type)
 {
   this->primitiveType = type;
 }
 
-void Torus::SetPrimitiveCount(GLuint count)
+void Plane_::SetPrimitiveCount(GLuint count)
 {
   this->primitiveCount = count;
 }
 
-void Torus::SetDrawCount(GLuint count)
+void Plane_::SetDrawCount(GLuint count)
 {
   this->drawCount = count;
 }
 
-void Torus::CreateVAO()
+void Plane_::CreateVAO()
 {
   //Define the VAO handle for position attributes
   glCreateVertexArrays(1, &vaoID);
@@ -208,7 +186,7 @@ void Torus::CreateVAO()
 
 }
 
-void Torus::CreateVBO()
+void Plane_::CreateVBO()
 {
   glCreateBuffers(1, &vboID);
   glNamedBufferStorage(vboID,
@@ -220,7 +198,7 @@ void Torus::CreateVBO()
     sizeof(glm::vec2) * TextVec.size(), TextVec.data());
 }
 
-void Torus::CreateEBO()
+void Plane_::CreateEBO()
 {
   glCreateBuffers(1, &eboID);
   glNamedBufferStorage(eboID, sizeof(GLushort) * IdxVec.size(),
@@ -229,28 +207,28 @@ void Torus::CreateEBO()
   glBindVertexArray(0);
 }
 
-void Torus::CreateBuffers()
+void Plane_::CreateBuffers()
 {
   CreateVBO();
   CreateVAO();
   CreateEBO();
 }
 
-void Torus::DeleteModel()
+void Plane_::DeleteModel()
 {
   glDeleteVertexArrays(1, &vaoID);
   glDeleteBuffers(1, &vboID);
   glDeleteBuffers(1, &eboID);
 }
 
-bool Torus::DegenerateTri(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2)
+bool Plane_::DegenerateTri(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2)
 {
   return (glm::distance(v0, v1) < EPSILON ||
     glm::distance(v1, v2) < EPSILON ||
     glm::distance(v2, v0) < EPSILON);
 }
 
-GLuint Torus::GetIndicesCount()
+GLuint Plane_::GetIndicesCount()
 {
   return IdxVec.size();
 }

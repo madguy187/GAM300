@@ -1,37 +1,40 @@
 #include "pch.h"
-#include "../include/Lines.h"
 
-Lines::Lines() :
-    vaoID{ 1 }, vboID{ 1 }, eboID{ 0 },
-    primitiveType{ GL_LINES },
-    primitiveCount{ 1 },
-    drawCount{ 2 }
+LightQuad::LightQuad() :
+    vaoID{ 1 }, vboID{ 1 }, eboID{ 1 },
+    primitiveType{ GL_TRIANGLES },
+    primitiveCount{ 2 },
+    drawCount{ 6 }
 {
     initModel();
 }
 
-void Lines::initModel()
+void LightQuad::initModel()
 {
     InsertModelData();
     CreateBuffers();
 }
 
-void Lines::InsertPosVtx()
-{
-    GLfloat lineSeg[] =
-    {
-        0.0f, 0.0, 
-        1.0f, 0.0f
-    };
-
-    PosVec.push_back({ lineSeg[0], lineSeg[1] });
-    PosVec.push_back({ lineSeg[2], lineSeg[3] });
-}
-
-void Lines::InsertIdxVtx()
+void LightQuad::InsertPosVtx()
 {
     Parser input;
-    input.ParseFile("meshes/square.json");
+    input.ParseFile("meshes/lightsquare.json");
+
+    const rapidjson::Value& vertex = input.doc["vertex"].GetArray();
+
+    for (rapidjson::SizeType i = 0; i < vertex.Size(); i++)
+    {
+        const rapidjson::Value& coords = vertex[i];
+
+        PosVec.push_back(glm::vec2(coords[rapidjson::SizeType(0)].GetDouble(),
+            coords[rapidjson::SizeType(1)].GetDouble()));
+    }
+}
+
+void LightQuad::InsertIdxVtx()
+{
+    Parser input;
+    input.ParseFile("meshes/lightsquare.json");
 
     const rapidjson::Value& index = input.doc["index"].GetArray();
 
@@ -45,73 +48,90 @@ void Lines::InsertIdxVtx()
     }
 }
 
-void Lines::InsertModelData()
+void LightQuad::InsertTextCoord()
+{
+    Parser input;
+    input.ParseFile("meshes/lightsquare.json");
+
+    const rapidjson::Value& texture = input.doc["texture"].GetArray();
+
+    for (rapidjson::SizeType i = 0; i < texture.Size(); i++)
+    {
+        const rapidjson::Value& coords = texture[i];
+
+        TextVec.push_back(glm::vec2(coords[rapidjson::SizeType(0)].GetDouble(),
+            coords[rapidjson::SizeType(1)].GetDouble()));
+    }
+}
+
+void LightQuad::InsertModelData()
 {
     InsertIdxVtx();
+    InsertTextCoord();
     InsertPosVtx();
 }
 
-GLuint Lines::GetVaoID()
+GLuint LightQuad::GetVaoID()
 {
     return vaoID;
 }
 
-GLuint Lines::GetVboID()
+GLuint LightQuad::GetVboID()
 {
     return vboID;
 }
 
-GLuint Lines::GetEboID()
+GLuint LightQuad::GetEboID()
 {
     return eboID;
 }
 
-GLenum Lines::GetPrimitiveType()
+GLenum LightQuad::GetPrimitiveType()
 {
     return primitiveType;
 }
 
-GLuint Lines::GetPrimitiveCount()
+GLuint LightQuad::GetPrimitiveCount()
 {
     return primitiveCount;
 }
 
-GLuint Lines::GetDrawCount()
+GLuint LightQuad::GetDrawCount()
 {
     return drawCount;
 }
 
-void Lines::SetVaoID(GLuint id)
+void LightQuad::SetVaoID(GLuint id)
 {
     this->vaoID = id;
 }
 
-void Lines::SetVboID(GLuint id)
+void LightQuad::SetVboID(GLuint id)
 {
     this->vboID = id;
 }
 
-void Lines::SetEboID(GLuint id)
+void LightQuad::SetEboID(GLuint id)
 {
     this->eboID = id;
 }
 
-void Lines::SetPrimitiveType(GLenum type)
+void LightQuad::SetPrimitiveType(GLenum type)
 {
     this->primitiveType = type;
 }
 
-void Lines::SetPrimitiveCount(GLuint count)
+void LightQuad::SetPrimitiveCount(GLuint count)
 {
     this->primitiveCount = count;
 }
 
-void Lines::SetDrawCount(GLuint count)
+void LightQuad::SetDrawCount(GLuint count)
 {
     this->drawCount = count;
 }
 
-void Lines::CreateVAO()
+void LightQuad::CreateVAO()
 {
     //Define the VAO handle for position attributes
     glCreateVertexArrays(1, &vaoID);
@@ -128,7 +148,7 @@ void Lines::CreateVAO()
 
 }
 
-void Lines::CreateVBO()
+void LightQuad::CreateVBO()
 {
     glCreateBuffers(1, &vboID);
     glNamedBufferStorage(vboID,
@@ -140,20 +160,25 @@ void Lines::CreateVBO()
         sizeof(glm::vec2) * TextVec.size(), TextVec.data());
 }
 
-void Lines::CreateEBO()
+void LightQuad::CreateEBO()
 {
-
+    glCreateBuffers(1, &eboID);
+    glNamedBufferStorage(eboID, sizeof(GLushort) * IdxVec.size(),
+        reinterpret_cast<GLvoid*>(IdxVec.data()), GL_DYNAMIC_STORAGE_BIT);
+    glVertexArrayElementBuffer(vaoID, eboID);
+    glBindVertexArray(0);
 }
 
-void Lines::CreateBuffers()
+void LightQuad::CreateBuffers()
 {
     CreateVBO();
     CreateVAO();
     CreateEBO();
 }
 
-void Lines::DeleteModel()
+void LightQuad::DeleteModel()
 {
     glDeleteVertexArrays(1, &vaoID);
     glDeleteBuffers(1, &vboID);
+    glDeleteBuffers(1, &eboID);
 }
