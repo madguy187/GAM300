@@ -34,8 +34,9 @@ namespace Eclipse
 
     // registering system signature
     Signature hi;
-    hi.set(world.GetComponentType<TransformComponent>(), 1);
-    hi.set(world.GetComponentType<RenderComponent>(), 1);
+    hi.set (world.GetComponentType<TransformComponent>(),1);
+    hi.set(world.GetComponentType<Sprite>(), 1);
+
     world.RegisterSystemSignature<RenderSystem>(hi);
 
     Entity ent = world.CreateEntity();
@@ -43,11 +44,15 @@ namespace Eclipse
     world.AddComponent(ent, Camera{ });
     world.AddComponent(ent, Sprite{ });
 
-    //Sprite& sprite = engine->world.GetComponent<Sprite>(ent);
-    //sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
-    //sprite.modelRef = Graphics::models.find("sphere");
-    //sprite.layerNum = 10;
-    //Graphics::sprites.emplace(sprite.layerNum, &sprite);
+    Entity ent1 = world.CreateEntity();
+    world.AddComponent(ent1, TransformComponent{ 4.0f, 5.0f, 6.0f });
+    world.AddComponent(ent1, Sprite{ });
+
+    Sprite& sprite = engine->world.GetComponent<Sprite>(ent1);
+    sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
+    sprite.modelRef = Graphics::models.find("sphere");
+    sprite.layerNum = 10;
+    Graphics::sprites.emplace(sprite.layerNum, &sprite);
 
     auto& wee = world.GetComponent<TransformComponent>(ent);
 
