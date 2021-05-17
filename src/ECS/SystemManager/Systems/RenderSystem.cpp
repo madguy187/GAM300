@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "../src/ECS/SystemManager/Systems/RenderSystem.h"
+#include "InputWrapper.h"
+#include "AllInputKeyCodes.h"
 
 float shakeTimer = 1.5f;
 bool shakeScreen = false;
@@ -8,12 +10,19 @@ glm::vec3 spherePos = glm::vec3{ 0.0f, 0.0f, -10.0f };
 glm::vec3 sphereScale = glm::vec3{ 5.0f, 5.0f, 5.0f };
 glm::vec3 sphereRot = glm::vec3{ 0.0f, 0.0f, 0.0f };
 
+Eclipse::InputWrapper Hi;
+Eclipse::InputWrapper H1;
+
+int lll = 0;
+
 void Eclipse::RenderSystem::Init()
 {
+
 }
 
 void Eclipse::RenderSystem::Render()
 {
+
 }
 
 void Eclipse::RenderSystem::Update()

@@ -5,6 +5,7 @@
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RenderComponent.h"
 #include "ECS/SystemManager/Systems/RenderSystem.h"
+#include "ECS/SystemManager/Systems/InputSystem.h"
 
 static void unload();
 static void load();
@@ -30,6 +31,7 @@ namespace Eclipse
     world.RegisterComponent<Sprite>();
 
     // registering system
+    world.RegisterSystem<InputSystem>();
     world.RegisterSystem<RenderSystem>();
 
     // registering system signature
@@ -66,6 +68,7 @@ namespace Eclipse
       glBindFramebuffer(GL_FRAMEBUFFER, Graphics::framebuffer);
       glClear(GL_COLOR_BUFFER_BIT);
 
+      world.Update<InputSystem>();
       world.Update<RenderSystem>();
       draw();
       // draw
