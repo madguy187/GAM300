@@ -79,7 +79,7 @@ static std::ostream& operator << (std::ostream& stream, const Eclipse::InputKeyc
   case InputKeycode::Key_EXECUTE:
     stream << "Key_EXECUTE";
     break;
-  case InputKeycode::Key_PRTSC:
+  case InputKeycode::Key_PRTSCREEN:
     stream << "Key_PRTSC";
     break;
   case InputKeycode::Key_INSERT:
@@ -199,48 +199,48 @@ static std::ostream& operator << (std::ostream& stream, const Eclipse::InputKeyc
   case InputKeycode::Key_Z:
     stream << "Key_Z";
     break;
-  case InputKeycode::Key_WINLEFT:
-    stream << "Key_WINLEFT";
-    break;
-  case InputKeycode::Key_WINRIGHT:
-    stream << "Key_WINRIGHT";
-    break;
+  //case InputKeycode::Key_WINLEFT:
+  //  stream << "Key_WINLEFT";
+  //  break;
+  //case InputKeycode::Key_WINRIGHT:
+  //  stream << "Key_WINRIGHT";
+  //  break;
   case InputKeycode::Key_APPS:
     stream << "Key_APPS";
     break;
   case InputKeycode::Key_SLEEP:
     stream << "Key_SLEEP";
     break;
-  case InputKeycode::Key_NUM0:
-    stream << "Key_NUM0";
-    break;
-  case InputKeycode::Key_NUM1:
-    stream << "Key_NUM1";
-    break;
-  case InputKeycode::Key_NUM2:
-    stream << "Key_NUM2";
-    break;
-  case InputKeycode::Key_NUM3:
-    stream << "Key_NUM3";
-    break;
-  case InputKeycode::Key_NUM4:
-    stream << "Key_NUM4";
-    break;
-  case InputKeycode::Key_NUM5:
-    stream << "Key_NUM5";
-    break;
-  case InputKeycode::Key_NUM6:
-    stream << "Key_NUM6";
-    break;
-  case InputKeycode::Key_NUM7:
-    stream << "Key_NUM7";
-    break;
-  case InputKeycode::Key_NUM8:
-    stream << "Key_NUM8";
-    break;
-  case InputKeycode::Key_NUM9:
-    stream << "Key_NUM9";
-    break;
+  //case InputKeycode::Key_NUM0:
+  //  stream << "Key_NUM0";
+  //  break;
+  //case InputKeycode::Key_NUM1:
+  //  stream << "Key_NUM1";
+  //  break;
+  //case InputKeycode::Key_NUM2:
+  //  stream << "Key_NUM2";
+  //  break;
+  //case InputKeycode::Key_NUM3:
+  //  stream << "Key_NUM3";
+  //  break;
+  //case InputKeycode::Key_NUM4:
+  //  stream << "Key_NUM4";
+  //  break;
+  //case InputKeycode::Key_NUM5:
+  //  stream << "Key_NUM5";
+  //  break;
+  //case InputKeycode::Key_NUM6:
+  //  stream << "Key_NUM6";
+  //  break;
+  //case InputKeycode::Key_NUM7:
+  //  stream << "Key_NUM7";
+  //  break;
+  //case InputKeycode::Key_NUM8:
+  //  stream << "Key_NUM8";
+  //  break;
+  //case InputKeycode::Key_NUM9:
+  //  stream << "Key_NUM9";
+  //  break;
   case InputKeycode::Key_MULTIPLY:
     stream << "Key_MULTIPLY";
     break;
@@ -376,28 +376,15 @@ void Eclipse::InputWrapper::SetIsPrint(bool input)
   EnablePrint = input;
 }
 
-bool InputWrapper::KeyTriggered(InputKeycode keycode)
+bool InputWrapper::GetKeyTriggered(InputKeycode keycode)
 {
 #ifndef CURRENT_CODE
-  int isKeyPressed = glfwGetKey(GLHelper::ptr_window, static_cast<int>(keycode));
 
-  if (isKeyPressed == GLFW_PRESS && !single)
+  if (keycode == InputKeycode::Key_3)
   {
-    if (single)
-      return false;
-
-    single = true;
-    //std::cout << " Create Apple " << std::endl;
-    return true;
-  }
-  else if (isKeyPressed == GLFW_RELEASE )
-  {
-    single = false;
-    return false;
+    int i = 0;
   }
 
-  return false;
-#else
   int isKeyPressed = glfwGetKey(GLHelper::ptr_window, static_cast<int>(keycode));
 
   if (isKeyPressed == GLFW_PRESS)
@@ -422,17 +409,47 @@ bool InputWrapper::KeyTriggered(InputKeycode keycode)
       return true;
     }
   }
-  else
+  else if (isKeyPressed == GLFW_RELEASE)
   {
     GetKeyReleased(keycode);
     return false;
   }
+  return false;
+
+#else
+  int isKeyPressed = glfwGetKey(GLHelper::ptr_window, static_cast<int>(keycode));
+
+  if (isKeyPressed == GLFW_PRESS && !single)
+  {
+    if (single)
+      return false;
+
+    single = true;
+    //std::cout << " Create Apple " << std::endl;
+    return true;
+  }
+  else if (isKeyPressed == GLFW_RELEASE)
+  {
+    single = false;
+    return false;
+  }
+  return false;
 #endif
 }
 
-bool Eclipse::InputWrapper::GetKeyDown(InputKeycode keycode)
+bool Eclipse::InputWrapper::GetKeyCurrent(InputKeycode keycode)
 {
+#ifndef CURRENT_CODE
+  int isKeyPressed = glfwGetKey(GLHelper::ptr_window, static_cast<int>(keycode));
+  if (isKeyPressed == GLFW_PRESS)
+  {
+    return true;
+  }
   return false;
+
+#else
+  return false;
+#endif
 }
 
 bool Eclipse::InputWrapper::GetKeyReleased(InputKeycode keycode)

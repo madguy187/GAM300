@@ -2,10 +2,9 @@
 
 namespace Eclipse
 {
-  //Appendix B. Keyboard Key Code Values
   //https://www.oreilly.com/library/view/javascript-dhtml/9780596514082/apb.html
-
-  enum class InputState 
+  //https://www.glfw.org/docs/3.3/group__keys.html
+  enum class InputState
   {
     Key_NULLSTATE,
     Key_RELEASED,
@@ -13,49 +12,13 @@ namespace Eclipse
     Key_HOLD
   };
 
-  enum class InputKeycode 
+  enum class InputKeycode
   {
     Key_Null = 0,
-    Key_CANCEL = 3,
-    Key_BACKSPACE = 8,
-    Key_TAB = 9,
-    Key_CLEAR = 12,
-    Key_RETURN = 13,
-    Key_SHIFT = 16,
-    Key_CTRL = 17,
-    Key_ALT = 18,
-    Key_PAUSE = 19,
-    Key_CAPSLOCK = 20,
-    Key_ESC = 27,
-    Key_SPACE = 32,
-    Key_PGUP = 33,
-    Key_PGDN = 34,
-    Key_END = 35,
-    Key_HOME = 36,
 
-    Key_LEFT = 37,
-    Key_UP = 38,
-    Key_RIGHT = 39,
-    Key_DOWN = 40,
-    Key_SELECT = 41,
-    Key_PRINT = 42,
-    Key_EXECUTE = 43,
-    Key_PRTSC = 44,
-    Key_INSERT = 45,
-    Key_DELETE = 46,
-    Key_HELP = 47,
-
-    Key_0 = 48,
-    Key_1 = 49,
-    Key_2 = 50,
-    Key_3 = 51,
-    Key_4 = 52,
-    Key_5 = 53,
-    Key_6 = 54,
-    Key_7 = 55,
-    Key_8 = 56,
-    Key_9 = 57,
-
+    /*************************************************************************
+      Keyboard Alphabets Layout
+    *************************************************************************/
     Key_A = 65,
     Key_B = 66,
     Key_C = 67,
@@ -83,65 +46,84 @@ namespace Eclipse
     Key_Y = 89,
     Key_Z = 90,
 
-    Key_WINLEFT = 91,
-    Key_WINRIGHT = 92,
-    Key_APPS = 93,
-    Key_SLEEP = 95,
+    /*************************************************************************
+      Keyboard Numbers Layout
+    *************************************************************************/
+    Key_0 = 48,
+    Key_1 = 49,
+    Key_2 = 50,
+    Key_3 = 51,
+    Key_4 = 52,
+    Key_5 = 53,
+    Key_6 = 54,
+    Key_7 = 55,
+    Key_8 = 56,
+    Key_9 = 57,
 
-    Key_NUM0 = 96,
-    Key_NUM1 = 97,
-    Key_NUM2 = 98,
-    Key_NUM3 = 99,
-    Key_NUM4 = 100,
-    Key_NUM5 = 101,
-    Key_NUM6 = 102,
-    Key_NUM7 = 103,
-    Key_NUM8 = 104,
-    Key_NUM9 = 105,
+    /*************************************************************************
+      KeyPad Keys Layout ( The one on the right of your keyboard )
+    *************************************************************************/
+    KeyPad_ENTER = 335,
+    KeyPad_EQUAL = 336,
+    KeyPad_MULTIPLY = 332,
+    KeyPad_ADD = 334,
+    KeyPad_SEPERATOR = 108,
+    KeyPad_SUBTRACT = 333,
+    KeyPad_DECIMAL = 330,
+    KeyPad_DIVIDE = 331,
 
-    Key_MULTIPLY = 106,
-    Key_ADD = 107,
-    Key_SEPERATOR = 108,
-    Key_SUBTRACT = 109,
-    Key_DECIMAL = 110,
-    Key_DIVIDE = 111,
+    /*************************************************************************
+      Keyboard F Keys Layout
+    *************************************************************************/
+    Key_F1 = 290,
+    Key_F2 = 291,
+    Key_F3 = 292,
+    Key_F4 = 293,
+    Key_F5 = 294,
+    Key_F6 = 295,
+    Key_F7 = 296,
+    Key_F8 = 297,
+    Key_F9 = 298,
+    Key_F10 = 299,
+    Key_F11 = 300,
+    Key_F12 = 301,
 
-    Key_F1 = 112,
-    Key_F2 = 113,
-    Key_F3 = 114,
-    Key_F4 = 115,
-    Key_F5 = 116,
-    Key_F6 = 117,
-    Key_F7 = 118,
-    Key_F8 = 119,
-    Key_F9 = 120,
-    Key_F10 = 121,
-    Key_F11 = 122,
-    Key_F12 = 123,
+    /*************************************************************************
+      Keyboard Arrow Keys Layout
+    *************************************************************************/
+    Key_LEFT = 263,
+    Key_UP = 265,
+    Key_RIGHT = 262,
+    Key_DOWN = 264,
 
-    Key_NUMLOCK = 144,
-    Key_SCROLLLOCK = 145,
+    /*************************************************************************
+      Keyboard OTHER Keys Layout
+    *************************************************************************/
+    Key_BACKSPACE = 259,
+    Key_TAB = 258,
+    Key_PAUSE = 284,
+    Key_CAPSLOCK = 280,
+    Key_ESC = 256,
+    Key_SPACE = 32,
+    Key_ENTER = 257,
+    Key_INSERT = 260,
+    Key_DELETE = 261,
+    Key_NUMLOCK = 282,
+    Key_SHIFTLEFT = 340,
+    Key_SHIFTRIGHT = 344,
+    Key_CTRLLEFT = 341,
+    Key_CTRLRIGHT = 345,
+    Key_ALTLEFT = 342,
+    Key_ALTRIGHT = 346,
+    Key_SEMICOLON = 59,
+    Key_COMMA = 44,
+    Key_MINUS = 45,
+    Key_EQUAL = 61,
+    Key_FORWARDSLASH = 47,
+    Key_SQBRACKETLEFT = 91,
+    Key_BACKSLASH = 92,
+    Key_SQBRACKETRIGHT = 93,
 
-    Key_SHIFTLEFT = 160,
-    Key_SHIFTRIGHT = 161,
-    Key_CTRLLEFT = 162,
-    Key_CTRLRIGHT = 163,
-    Key_ALTLEFT = 164,
-    Key_ALTRIGHT = 165,
-
-    Key_SEMICOLON = 186,
-    Key_PLUS = 187,
-    Key_COMMA = 188,
-    Key_MINUS = 189,
-    Key_PERIOD = 190,
-    Key_FORWARDSLASH = 191,
-    Key_TILDE = 192,
-    Key_SQBRACKETLEFT = 193,
-    Key_BACKSLASH = 194,
-    Key_SQBRACKETRIGHT = 195,
-    Key_QUOTE = 196,
-    Key_MISCELLANEOUS = 197,
-    Key_MAXCOUNT 
+    // More keys i will check on !
   };
-
 }

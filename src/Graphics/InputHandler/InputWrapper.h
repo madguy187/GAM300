@@ -29,8 +29,8 @@ namespace Eclipse
     unsigned char _currPressedCount = 0;					
     unsigned char _lastPressedCount = 0;					
 
-    bool KeyTriggered(InputKeycode keycode) ;
-    bool GetKeyDown(InputKeycode keycode) ;
+    bool GetKeyTriggered(InputKeycode keycode) ;
+    bool GetKeyCurrent(InputKeycode keycode) ;
     bool GetKeyReleased(InputKeycode keycode) ;
     void Update();
 

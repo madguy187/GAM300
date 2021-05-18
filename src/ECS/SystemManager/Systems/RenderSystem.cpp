@@ -31,26 +31,38 @@ void Eclipse::RenderSystem::Update()
 {
   InputHandler.EnablePrint = false;
 
-  if (InputHandler.KeyTriggered(InputKeycode::Key_0))
+  //int isKeyPressed = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_PAGE_UP);
+
+  //if (isKeyPressed == GLFW_PRESS)
+  //{
+  //  std::cout << "hi " << std::endl;
+  //}
+
+  if (InputHandler.GetKeyTriggered(InputKeycode::KeyPad_MULTIPLY))
   {
-    std::cout << " Create Apple " << std::endl;
+    std::cout << " Create Trigger Apple 1 " << std::endl;
+  }
+  else if (InputHandler.GetKeyTriggered(InputKeycode::Key_2))
+  {
+    //std::cout << " Create Trigger Apple 2 " << std::endl;
+  }
+  else if (InputHandler.GetKeyTriggered(InputKeycode::Key_3))
+  {
+    //std::cout << " Create Trigger Apple 3 " << std::endl;
+  }
+  else if (InputHandler.GetKeyCurrent(InputKeycode::Key_4))
+  {
+    std::cout << " Hold Apple4 " << std::endl;
+  }
+  else if (InputHandler.GetKeyCurrent(InputKeycode::Key_5))
+  {
+    std::cout << " Hold Apple5 " << std::endl;
+  }
+  else if (InputHandler.GetKeyTriggered(InputKeycode::Key_ESC))
+  {
+    glfwSetWindowShouldClose(GLHelper::ptr_window, GLFW_TRUE);
   }
 
-  //int isKeyPressed = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_0);
-
-  //if (isKeyPressed == GLFW_PRESS )
-  //{
-  //  if (single)
-  //    return;
-
-  //  single = true;
-
-  //  std::cout << " Create Apple " << std::endl;
-  //}
-  //else if(isKeyPressed == GLFW_RELEASE)
-  //{
-  //  single = false;
-  //}
 
   DrawBuffers(Graphics::framebuffer);
   DrawSecondBuffers(Graphics::m_frameBuffer->GetGameViewBuffer());
