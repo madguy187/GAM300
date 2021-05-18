@@ -25,8 +25,33 @@ void Eclipse::RenderSystem::Render()
 
 }
 
+bool single = false;
+
 void Eclipse::RenderSystem::Update()
 {
+  InputHandler.EnablePrint = false;
+
+  if (InputHandler.KeyTriggered(InputKeycode::Key_0))
+  {
+    std::cout << " Create Apple " << std::endl;
+  }
+
+  //int isKeyPressed = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_0);
+
+  //if (isKeyPressed == GLFW_PRESS )
+  //{
+  //  if (single)
+  //    return;
+
+  //  single = true;
+
+  //  std::cout << " Create Apple " << std::endl;
+  //}
+  //else if(isKeyPressed == GLFW_RELEASE)
+  //{
+  //  single = false;
+  //}
+
   DrawBuffers(Graphics::framebuffer);
   DrawSecondBuffers(Graphics::m_frameBuffer->GetGameViewBuffer());
 }

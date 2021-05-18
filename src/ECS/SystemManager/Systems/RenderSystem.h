@@ -5,12 +5,15 @@
 #include "Graphics.h"
 #include <glm/gtc/type_ptr.hpp> // for glm::value_ptr
 #include "glm/gtx/matrix_transform_2d.hpp"
+#include "InputWrapper.h"
 
 namespace Eclipse
 {
   class RenderSystem : public System
   {
   public:
+    InputWrapper InputHandler;
+
     void Init() ;
     void Render();
     void Update() override;

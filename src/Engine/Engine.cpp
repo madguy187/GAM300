@@ -5,7 +5,6 @@
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RenderComponent.h"
 #include "ECS/SystemManager/Systems/RenderSystem.h"
-#include "ECS/SystemManager/Systems/InputSystem.h"
 
 static void unload();
 static void load();
@@ -31,7 +30,6 @@ namespace Eclipse
     world.RegisterComponent<Sprite>();
 
     // registering system
-    world.RegisterSystem<InputSystem>();
     world.RegisterSystem<RenderSystem>();
 
     // registering system signature
@@ -56,8 +54,6 @@ namespace Eclipse
     //sprite.layerNum = 10;
     //Graphics::sprites.emplace(sprite.layerNum, &sprite);
 
-    auto& wee = world.GetComponent<TransformComponent>(ent);
-
     while (!glfwWindowShouldClose(GLHelper::ptr_window))
     {
       update();
@@ -68,22 +64,10 @@ namespace Eclipse
       glBindFramebuffer(GL_FRAMEBUFFER, Graphics::framebuffer);
       glClear(GL_COLOR_BUFFER_BIT);
 
-      world.Update<InputSystem>();
       world.Update<RenderSystem>();
       draw();
-      // draw
-      //draw(world);
-      //
-
+      glfwPollEvents();
     }
-
-    //while (true)
-    //{
-    //	world.Update<TestSystem>();
-
-    //	
-    //}
-
     unload();
   }
 }
@@ -91,7 +75,6 @@ namespace Eclipse
 static void update()
 {
   float fixedDeltaTime = 1.0 / 60.0;
-  glfwPollEvents();
 
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();

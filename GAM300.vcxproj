@@ -172,7 +172,6 @@ copy "$(SolutionDir)Libraries\glfw-3.3.2.bin.WIN64\lib-vc2019\glfw3.dll" "$(Targ
     <ClCompile Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.cpp" />
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp" />
     <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\InputSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\RenderSystem.cpp" />
     <ClCompile Include="src\ECS\World.cpp" />
     <ClCompile Include="src\ECS\EntityManager\EntityManager.cpp" />
@@ -226,7 +225,6 @@ copy "$(SolutionDir)Libraries\glfw-3.3.2.bin.WIN64\lib-vc2019\glfw3.dll" "$(Targ
     <ClInclude Include="src\ECS\ComponentManager\Components\TransformComponent.h" />
     <ClInclude Include="src\ECS\SystemManager\SystemManager.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\RenderSystem.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\InputSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\System.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\include\TestSystem.h" />
     <ClInclude Include="src\ECS\World.h" />
