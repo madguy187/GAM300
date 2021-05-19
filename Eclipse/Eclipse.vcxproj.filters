@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ECS">
+      <UniqueIdentifier>{60E1870B-CCEA-877C-5566-9E7CC16E937C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\ComponentManager">
+      <UniqueIdentifier>{5D4ADB5A-49D9-6424-F2F7-781FDE6575CA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\ComponentManager\Components">
+      <UniqueIdentifier>{52DB8E7A-BEBE-9DBA-C7C1-CBF63324640B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\ComponentManager\Components\ComponentArray">
+      <UniqueIdentifier>{93B086DE-7F2E-D777-6826-950F544319A0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\EntityManager">
+      <UniqueIdentifier>{07AF5F17-73C5-5DAD-BC3C-E9CE28922E35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager">
+      <UniqueIdentifier>{CF24BE49-3B3B-BCDF-84B2-4701F0078D67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems">
+      <UniqueIdentifier>{D6D91B50-429C-4FDA-8B4C-DE66F74D28B8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System">
+      <UniqueIdentifier>{2AA091FC-16F1-7C3E-3F55-6B002B0510A8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{DBC7D3B0-C769-FE86-B024-12DB9C6585D7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EntryPoint">
+      <UniqueIdentifier>{419769CF-2D4F-AB1C-9656-8478822D460D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SparseSet">
+      <UniqueIdentifier>{FF3F5950-6BAA-0DC7-B4E8-BE6C2092EB1B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TypeID">
+      <UniqueIdentifier>{54109DD4-40B2-C7AA-296D-DBFE15AE4EFB}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h">
+      <Filter>ECS\ComponentManager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.h">
+      <Filter>ECS\ComponentManager\Components\ComponentArray</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentBase.h">
+      <Filter>ECS\ComponentManager\Components\ComponentArray</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\RenderComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\TransformComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\EntityManager\EntityManager.h">
+      <Filter>ECS\EntityManager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\SystemManager.h">
+      <Filter>ECS\SystemManager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\System.h">
+      <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\World.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Engine.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EntryPoint\EntryPoint.h">
+      <Filter>EntryPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Global.h" />
+    <ClInclude Include="src\TypeID\TypeID.h">
+      <Filter>TypeID</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\SparseSet\SparseSet.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
+      <Filter>ECS\ComponentManager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.cpp">
+      <Filter>ECS\ComponentManager\Components\ComponentArray</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\EntityManager\EntityManager.cpp">
+      <Filter>ECS\EntityManager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp">
+      <Filter>ECS\SystemManager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\World.cpp">
+      <Filter>ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Engine.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EntryPoint\EntryPoint.cpp">
+      <Filter>EntryPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pch.cpp" />
+  </ItemGroup>
+</Project>
