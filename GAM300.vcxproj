@@ -135,8 +135,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)Libraries\glew-2.1.0\bin\Release\x64\glew32.dll" "$(TargetDir)glew32.dll" /Y
-copy "$(SolutionDir)Libraries\glfw-3.3.2.bin.WIN64\lib-vc2019\glfw3.dll" "$(TargetDir)glfw3.dll" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -158,47 +156,16 @@ copy "$(SolutionDir)Libraries\glfw-3.3.2.bin.WIN64\lib-vc2019\glfw3.dll" "$(Targ
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)Libraries\glew-2.1.0\bin\Release\x64\glew32.dll" "$(TargetDir)glew32.dll" /Y
-copy "$(SolutionDir)Libraries\glfw-3.3.2.bin.WIN64\lib-vc2019\glfw3.dll" "$(TargetDir)glfw3.dll" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Libraries\imgui-master\examples\imgui_impl_glfw.cpp" />
-    <ClCompile Include="Libraries\imgui-master\examples\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="Libraries\imgui-master\imgui.cpp" />
-    <ClCompile Include="Libraries\imgui-master\imgui_demo.cpp" />
-    <ClCompile Include="Libraries\imgui-master\imgui_draw.cpp" />
-    <ClCompile Include="Libraries\imgui-master\imgui_widgets.cpp" />
     <ClCompile Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.cpp" />
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp" />
     <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\RenderSystem.cpp" />
     <ClCompile Include="src\ECS\World.cpp" />
     <ClCompile Include="src\ECS\EntityManager\EntityManager.cpp" />
     <ClCompile Include="src\Engine\Engine.cpp" />
     <ClCompile Include="src\EntryPoint\EntryPoint.cpp" />
-    <ClCompile Include="src\Graphics\source\Circle.cpp" />
-    <ClCompile Include="src\Graphics\source\Cone.cpp" />
-    <ClCompile Include="src\Graphics\source\Cube.cpp" />
-    <ClCompile Include="src\Graphics\source\Cylinder.cpp" />
-    <ClCompile Include="src\Graphics\source\FrameBuffer.cpp" />
-    <ClCompile Include="src\Graphics\source\glhelper.cpp" />
-    <ClCompile Include="src\Graphics\source\Graphics.cpp" />
-    <ClCompile Include="src\Graphics\source\LightQuad.cpp" />
-    <ClCompile Include="src\Graphics\source\Lines.cpp" />
-    <ClCompile Include="src\Graphics\source\ModelFactory.cpp" />
-    <ClCompile Include="src\Graphics\source\Parser.cpp" />
-    <ClCompile Include="src\Graphics\source\Particles.cpp" />
-    <ClCompile Include="src\Graphics\source\Plane.cpp" />
-    <ClCompile Include="src\Graphics\source\Pyramid.cpp" />
-    <ClCompile Include="src\Graphics\source\Quad.cpp" />
-    <ClCompile Include="src\Graphics\source\Shader.cpp" />
-    <ClCompile Include="src\Graphics\source\Sphere.cpp" />
-    <ClCompile Include="src\Graphics\source\stb_image.cpp" />
-    <ClCompile Include="src\Graphics\source\Texture.cpp" />
-    <ClCompile Include="src\Graphics\source\Torus.cpp" />
-    <ClCompile Include="src\Graphics\source\Triangle.cpp" />
-    <ClCompile Include="src\Graphics\source\WindowConstraint.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -215,56 +182,22 @@ copy "$(SolutionDir)Libraries\glfw-3.3.2.bin.WIN64\lib-vc2019\glfw3.dll" "$(Targ
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Libraries\stb-master\stb_image.h" />
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentBase.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\RenderComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\TransformComponent.h" />
     <ClInclude Include="src\ECS\SystemManager\SystemManager.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\RenderSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\System.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\include\TestSystem.h" />
     <ClInclude Include="src\ECS\World.h" />
     <ClInclude Include="src\ECS\EntityManager\EntityManager.h" />
     <ClInclude Include="src\Engine\Engine.h" />
     <ClInclude Include="src\EntryPoint\EntryPoint.h" />
     <ClInclude Include="src\Global.h" />
-    <ClInclude Include="src\Graphics\include\AllComponents.h" />
-    <ClInclude Include="src\Graphics\include\Circle.h" />
-    <ClInclude Include="src\Graphics\include\Cone.h" />
-    <ClInclude Include="src\Graphics\include\Cube.h" />
-    <ClInclude Include="src\Graphics\include\Cylinder.h" />
-    <ClInclude Include="src\Graphics\include\FrameBuffer.h" />
-    <ClInclude Include="src\Graphics\include\GLHelper.h" />
-    <ClInclude Include="src\Graphics\include\Global.h" />
-    <ClInclude Include="src\Graphics\include\Graphics.h" />
-    <ClInclude Include="src\Graphics\include\IModel.h" />
-    <ClInclude Include="src\Graphics\include\LightQuad.h" />
-    <ClInclude Include="src\Graphics\include\Lines.h" />
-    <ClInclude Include="src\Graphics\include\Math_Lib.h" />
-    <ClInclude Include="src\Graphics\include\Matrix4.h" />
-    <ClInclude Include="src\Graphics\include\ModelFactory.h" />
-    <ClInclude Include="src\Graphics\include\ModelGlobal.h" />
-    <ClInclude Include="src\Graphics\include\Parser.h" />
-    <ClInclude Include="src\Graphics\include\Particles.h" />
-    <ClInclude Include="src\Graphics\include\Plane.h" />
-    <ClInclude Include="src\Graphics\include\Pyramid.h" />
-    <ClInclude Include="src\Graphics\include\Quad.h" />
-    <ClInclude Include="src\Graphics\include\Quaternion.h" />
-    <ClInclude Include="src\Graphics\include\Shader.h" />
-    <ClInclude Include="src\Graphics\include\Sphere.h" />
-    <ClInclude Include="src\Graphics\include\Texture.h" />
-    <ClInclude Include="src\Graphics\include\Torus.h" />
-    <ClInclude Include="src\Graphics\include\Triangle.h" />
-    <ClInclude Include="src\Graphics\include\Vec.h" />
-    <ClInclude Include="src\Graphics\include\WindowConstraint.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\SparseSet\SparseSet.hpp" />
     <ClInclude Include="src\TypeID\TypeID.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Property-Pages\opengl-libraries.props" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
