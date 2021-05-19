@@ -14,9 +14,11 @@ namespace Eclipse
   public:
     InputWrapper InputHandler;
 
-    void Init() ;
+    static void Load();
+    void Init();
     void Render();
     void Update() override;
+    static void unLoad();
 
   private:
     void CheckUniformLoc(Sprite& sprite);

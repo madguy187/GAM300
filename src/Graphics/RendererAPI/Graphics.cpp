@@ -108,7 +108,7 @@ void Graphics::init()
   glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
   glViewport(0, 0, GLHelper::width, GLHelper::height);
   GLHelper::print_specs();
-  
+
   m_frameBuffer = new FrameBuffer(GLHelper::width, GLHelper::height);
   CreateFrameBuffer();
 }
@@ -172,14 +172,6 @@ void Graphics::draw()
   }
   else
   {
-    //std::cout << "DRAWING ..." << std::endl;
-    ////Note: ImGui might cause crashes depending on the rendering order. Always
-    //// call ImGui separately or after rendering to the default framebuffer
-    //glBindFramebuffer(GL_FRAMEBUFFER, m_frameBuffer->GetGameViewBuffer());
-    //glClear(GL_COLOR_BUFFER_BIT);
-
-    ////world.Render();
-
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDisable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -200,28 +192,7 @@ void Graphics::draw()
         ImGui::GetCursorScreenPos().y + ImGui::GetWindowContentRegionMax().y), ImVec2(0, 1), ImVec2(1, 0));
 
     ImGui::End();
-
-
-    //ImVec2 pos = ImGui::GetCursorScreenPos();
-
-    //mousecoords = { pos.x, pos.y };
-    //ImGui::GetWindowDrawList()->AddImage(
-    //  (void*)(textureColorbuffer),
-    //  ImVec2(ImGui::GetCursorScreenPos()),
-    //  ImVec2(ImGui::GetCursorScreenPos().x + ImGui::GetWindowContentRegionMax().x,
-    //    ImGui::GetCursorScreenPos().y + ImGui::GetWindowContentRegionMax().y), ImVec2(0, 1), ImVec2(1, 0));
-
-    //winWidth = ImGui::GetWindowWidth();
-    //winHeight = ImGui::GetWindowHeight();
-
-    //windowX = (ImGui::GetWindowWidth() / 2) + ImGui::GetCursorScreenPos().x;
-    //windowY = (ImGui::GetWindowHeight() / 2) + ImGui::GetCursorScreenPos().y;
-    //frameBufferPos = vec2{ ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y };
-    //ImGui::End();
-
     FrameBuffer::ShowWindow(*m_frameBuffer);
-
-
   }
 }
 

@@ -10,10 +10,26 @@ glm::vec3 spherePos = glm::vec3{ 0.0f, 0.0f, -10.0f };
 glm::vec3 sphereScale = glm::vec3{ 5.0f, 5.0f, 5.0f };
 glm::vec3 sphereRot = glm::vec3{ 0.0f, 0.0f, 0.0f };
 
-Eclipse::InputWrapper Hi;
-Eclipse::InputWrapper H1;
+void Eclipse::RenderSystem::Load()
+{
+  if (!GLHelper::init("Configuration/configuration.json"))
+  {
+    std::cout << "Unable to create OpenGL context" << std::endl;
+    std::exit(EXIT_FAILURE);
+  }
 
-int lll = 0;
+  Graphics::load();
+
+  IMGUI_CHECKVERSION();
+  ImGui::CreateContext();
+  ImGuiIO& io = ImGui::GetIO(); (void)io;
+  ImGui_ImplGlfw_InitForOpenGL(GLHelper::ptr_window, true);
+  ImGui_ImplOpenGL3_Init();
+  ImGui::StyleColorsClassic();
+  io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
+  Graphics::init();
+}
 
 void Eclipse::RenderSystem::Init()
 {
@@ -25,47 +41,71 @@ void Eclipse::RenderSystem::Render()
 
 }
 
-bool single = false;
-
 void Eclipse::RenderSystem::Update()
 {
-  InputHandler.EnablePrint = false;
+  float fixedDeltaTime = 1.0 / 60.0;
 
-  //int isKeyPressed = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_PAGE_UP);
+  ImGui_ImplOpenGL3_NewFrame();
+  ImGui_ImplGlfw_NewFrame();
+  ImGui::NewFrame();
 
-  //if (isKeyPressed == GLFW_PRESS)
-  //{
-  //  std::cout << "hi " << std::endl;
-  //}
+  Graphics::update(fixedDeltaTime);
 
-  if (InputHandler.GetKeyTriggered(InputKeycode::KeyPad_MULTIPLY))
+  std::stringstream sstr;
+  sstr << std::fixed << std::setprecision(2) << GLHelper::title << " | FPS: " << GLHelper::fps;
+  glfwSetWindowTitle(GLHelper::ptr_window, sstr.str().c_str());
+
+  Graphics::m_frameBuffer->Bind();
+  Graphics::m_frameBuffer->Clear();
+
+  glBindFramebuffer(GL_FRAMEBUFFER, Graphics::framebuffer);
+  glClear(GL_COLOR_BUFFER_BIT);
+
+  InputHandler.SetIsPrint(false);
+
+  if (InputHandler.GetKeyTriggered(InputKeycode::Key_LEFT))
   {
-    std::cout << " Create Trigger Apple 1 " << std::endl;
+    std::cout << " Move Left " << std::endl;
   }
-  else if (InputHandler.GetKeyTriggered(InputKeycode::Key_2))
+  else if (InputHandler.GetKeyTriggered(InputKeycode::Key_RIGHT))
   {
-    //std::cout << " Create Trigger Apple 2 " << std::endl;
+    std::cout << " MOVE RIGHT " << std::endl;
   }
-  else if (InputHandler.GetKeyTriggered(InputKeycode::Key_3))
+  else if (InputHandler.GetKeyTriggered(InputKeycode::Key_SPACE))
   {
-    //std::cout << " Create Trigger Apple 3 " << std::endl;
+    std::cout << " JUMP" << std::endl;
   }
-  else if (InputHandler.GetKeyCurrent(InputKeycode::Key_4))
+  else if (InputHandler.GetKeyTriggered(InputKeycode::Key_UP))
   {
-    std::cout << " Hold Apple4 " << std::endl;
+    std::cout << " MOVE UP " << std::endl;
   }
   else if (InputHandler.GetKeyCurrent(InputKeycode::Key_5))
   {
-    std::cout << " Hold Apple5 " << std::endl;
+    std::cout << " Hold Apple 5 " << std::endl;
   }
   else if (InputHandler.GetKeyTriggered(InputKeycode::Key_ESC))
   {
     glfwSetWindowShouldClose(GLHelper::ptr_window, GLFW_TRUE);
   }
 
+  DrawSecondBuffers(Graphics::framebuffer);
+  DrawBuffers(Graphics::m_frameBuffer->GetGameViewBuffer());
 
-  DrawBuffers(Graphics::framebuffer);
-  DrawSecondBuffers(Graphics::m_frameBuffer->GetGameViewBuffer());
+  Graphics::draw();
+  ImGui::Render();
+
+  int Width, Height;
+  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+  glfwGetFramebufferSize(GLHelper::ptr_window, &Width, &Height);
+  glViewport(0, 0, Width, Height);
+  glfwSwapBuffers(GLHelper::ptr_window);
+  glfwPollEvents();
+}
+
+void Eclipse::RenderSystem::unLoad()
+{
+  ImGui::DestroyContext();
+  GLHelper::cleanup();
 }
 
 void Eclipse::RenderSystem::CheckUniformLoc(Sprite& sprite)
@@ -91,13 +131,6 @@ void Eclipse::RenderSystem::CheckUniformLoc(Sprite& sprite)
 
       if (uniform_var_loc1 >= 0)
       {
-        //if (sprite.modelRef == Graphics::FindModel("sphere") ||
-        //  sprite.modelRef == Graphics::FindModel("cube") ||
-        //  sprite.modelRef == Graphics::FindModel("cone") ||
-        //  sprite.modelRef == Graphics::FindModel("torus") ||
-        //  sprite.modelRef == Graphics::FindModel("pyramid") ||
-        //  sprite.modelRef == Graphics::FindModel("cylinder"))
-        //{
         glm::mat4 mModelNDC;
 
         float eyeRadius = 1.0f * oi.eyeRadius;

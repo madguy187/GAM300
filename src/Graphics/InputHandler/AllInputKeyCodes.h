@@ -124,6 +124,36 @@ namespace Eclipse
     Key_BACKSLASH = 92,
     Key_SQBRACKETRIGHT = 93,
 
-    // More keys i will check on !
+    // cant work on my stupid ass laptop
+    Key_MULTIPLY = 106,
+    Key_ADD = 107,
+    Key_SEPERATOR = 108,
+    Key_SUBTRACT = 109,
+    Key_DECIMAL = 110,
+    Key_DIVIDE = 111,
+    Key_CANCEL = 3,
+    Key_CLEAR = 12,
+    Key_RETURN = 13,
+    Key_SHIFT = 16,
+    Key_CTRL = 17,
+    Key_ALT = 18,
+    Key_PGUP = 266,
+    Key_PGDN = 267,
+    Key_END = 269,
+    Key_HOME = 268,
+    Key_SELECT = 41,
+    Key_PRINT = 42,
+    Key_EXECUTE = 43,
+    Key_HELP = 471,
+    Key_PRTSCREEN = 283,
+    Key_APPS = 931,
+    Key_SLEEP = 95,
+    Key_SCROLLLOCK = 281, // cann
+    Key_PLUS = 187,
+    Key_PERIOD = 46,
+    Key_TILDE = 192,
+    Key_QUOTE = 196,
+    Key_MISCELLANEOUS = 197,
   };
+
 }

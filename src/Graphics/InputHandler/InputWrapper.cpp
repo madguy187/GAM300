@@ -10,9 +10,6 @@ static std::ostream& operator << (std::ostream& stream, const Eclipse::InputKeyc
   case InputKeycode::Key_Null:
     stream << "Key_NULL";
     break;
-  case InputKeycode::Key_CANCEL:
-    stream << "Key_CANCEL";
-    break;
   case InputKeycode::Key_BACKSPACE:
     stream << "Key_BACKSPACE";
     break;
@@ -331,14 +328,9 @@ static std::ostream& operator << (std::ostream& stream, const Eclipse::InputKeyc
   case InputKeycode::Key_MINUS:
     stream << "Key_MINUS";
     break;
-  case InputKeycode::Key_PERIOD:
-    stream << "Key_PERIOD";
-    break;
   case InputKeycode::Key_FORWARDSLASH:
     stream << "Key_FORWARDSLASH";
-    break;
-  case InputKeycode::Key_TILDE:
-    stream << "Key_TILDE";
+    break;    stream << "Key_TILDE";
     break;
   case InputKeycode::Key_SQBRACKETLEFT:
     stream << "Key_SQBRACKETLEFT";
@@ -380,11 +372,6 @@ bool InputWrapper::GetKeyTriggered(InputKeycode keycode)
 {
 #ifndef CURRENT_CODE
 
-  if (keycode == InputKeycode::Key_3)
-  {
-    int i = 0;
-  }
-
   int isKeyPressed = glfwGetKey(GLHelper::ptr_window, static_cast<int>(keycode));
 
   if (isKeyPressed == GLFW_PRESS)
@@ -401,6 +388,7 @@ bool InputWrapper::GetKeyTriggered(InputKeycode keycode)
         continue;
 
       SingleFlag = true;
+      std::cout << "Container Size :" << KeyContainer.size() << std::endl;
 
       if (EnablePrint)
       {
@@ -441,6 +429,7 @@ bool Eclipse::InputWrapper::GetKeyCurrent(InputKeycode keycode)
 {
 #ifndef CURRENT_CODE
   int isKeyPressed = glfwGetKey(GLHelper::ptr_window, static_cast<int>(keycode));
+
   if (isKeyPressed == GLFW_PRESS)
   {
     return true;

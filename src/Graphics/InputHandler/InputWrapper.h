@@ -5,12 +5,14 @@
 
 namespace Eclipse
 {
+  typedef std::map< std::pair<InputKeycode, int>, std::pair<bool, bool> > InputKeyContainer;
+  using KeyIT = std::map< std::pair<InputKeycode, int>, std::pair<bool, bool> >::iterator;
 
   class InputWrapper
   {
-  public:
-    std::map< std::pair<InputKeycode, int>, std::pair<bool, bool> > KeyContainer;
-    using KeyIT = std::map< std::pair<InputKeycode, int>, std::pair<bool, bool> >::iterator;
+  private:
+    InputKeyContainer KeyContainer;
+    InputKeyContainer HoldKeyContainer;
 
     bool single;
 
@@ -22,18 +24,20 @@ namespace Eclipse
 
     bool EnablePrint = false;
 
-    void init();
-    bool GetIsPrint();
-    void SetIsPrint(bool input);
-
-    unsigned char _currPressedCount = 0;					
-    unsigned char _lastPressedCount = 0;					
-
-    bool GetKeyTriggered(InputKeycode keycode) ;
-    bool GetKeyCurrent(InputKeycode keycode) ;
-    bool GetKeyReleased(InputKeycode keycode) ;
-    void Update();
+    unsigned char _currPressedCount = 0;
+    unsigned char _lastPressedCount = 0;
 
     void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+
+  public:
+    void init();
+
+    bool GetKeyTriggered(InputKeycode keycode);
+    bool GetKeyCurrent(InputKeycode keycode);
+    bool GetKeyReleased(InputKeycode keycode);
+
+    void Update();
+    bool GetIsPrint();
+    void SetIsPrint(bool input);
   };
 }
