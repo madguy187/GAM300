@@ -519,7 +519,9 @@ void Graphics::DeleteAllSprites()
  /******************************************************************************/
 GLuint Graphics::setup_texobj(std::string pathname)
 {
-  int width, height, clrChannels;
+  int width = 0;
+  int height = 0;
+  int clrChannels;
   unsigned char* data = nullptr; // stbi_load(pathname.c_str(), &width, &height, &clrChannels, 0);
 
   if (data)
