@@ -83,7 +83,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)\GAM300\src\Graphics\InputHandler;$(SolutionDir)\Libraries\glew-2.1.0;$(SolutionDir)\src\Graphics\ModelFactory;$(SolutionDir)\src\Graphics\ModelFactory\BasicPrimitives;$(SolutionDir)\src\Graphics\RendererAPI;$(SolutionDir)\src\Graphics\FrameBuffer;$(SolutionDir)\src\Graphics\include;$(SolutionDir)\src\Graphics\Still_Cleaning;$(SolutionDir)\src\Graphics\InputHandler;$(SolutionDir)\src\Graphics\Parser;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Libraries\glfw-3.3.2.bin.WIN64\lib-vc2019;$(SolutionDir)Libraries\glew-2.1.0\lib\Release\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)\Libraries\glfw-3.3.2.bin.WIN64\lib-vc2019;$(SolutionDir)\Libraries\glew-2.1.0\lib\Release\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -139,7 +139,7 @@
       <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)Libraries\glew-2.1.0\bin\Release\x64\glew32.dll" "$(TargetDir)glew32.dll" /Y</Command>
+      <Command>copy "$(SolutionDir)Libraries\glfw-3.3.2.bin.WIN64\lib-vc2019\glfw3.dll" "$(TargetDir)glfw3.dll" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
