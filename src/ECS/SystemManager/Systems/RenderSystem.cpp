@@ -61,7 +61,7 @@ void Eclipse::RenderSystem::Update()
   glBindFramebuffer(GL_FRAMEBUFFER, Graphics::framebuffer);
   glClear(GL_COLOR_BUFFER_BIT);
 
-  InputHandler.SetIsPrint(false);
+  InputHandler.SetIsPrint(true);
 
   if (InputHandler.GetKeyTriggered(InputKeycode::Key_LEFT))
   {
