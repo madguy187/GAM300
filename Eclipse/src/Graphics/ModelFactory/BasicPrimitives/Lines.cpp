@@ -31,7 +31,7 @@ void Lines::InsertPosVtx()
 void Lines::InsertIdxVtx()
 {
     Parser input;
-    input.ParseFile("meshes/square.json");
+    input.ParseFile("src/Assets/meshes/square.json");
 
     const rapidjson::Value& index = input.doc["index"].GetArray();
 

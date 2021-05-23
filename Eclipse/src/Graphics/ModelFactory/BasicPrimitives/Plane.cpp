@@ -91,7 +91,7 @@ void Plane_::InsertIdxVtx()
 void Plane_::InsertTextCoord()
 {
   Parser input;
-  input.ParseFile("../meshes/square.json");
+  input.ParseFile("src/Assets/meshes/square.json");
 
   const rapidjson::Value& texture = input.doc["texture"].GetArray();
 

@@ -20,7 +20,7 @@ void Circle::initModel()
 void Circle::InsertPosVtx()
 {
   Parser input;
-  input.ParseFile("meshes/circle.json");
+  input.ParseFile("src/Assets/meshes/circle.json");
 
   const rapidjson::Value& vertex = input.doc["vertex"].GetArray();
 
@@ -36,7 +36,7 @@ void Circle::InsertPosVtx()
 void Circle::InsertIdxVtx()
 {
   Parser input;
-  input.ParseFile("meshes/circle.json");
+  input.ParseFile("src/Assets/meshes/circle.json");
 
   const rapidjson::Value& index = input.doc["index"].GetArray();
 

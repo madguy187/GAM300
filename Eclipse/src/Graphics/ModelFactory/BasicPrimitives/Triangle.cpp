@@ -19,7 +19,7 @@ void Triangle::initModel()
 void Triangle::InsertPosVtx()
 {
     Parser input;
-    input.ParseFile("meshes/triangle.json");
+    input.ParseFile("src/Assets/meshes/triangle.json");
 
     const rapidjson::Value& vertex = input.doc["vertex"].GetArray();
 
@@ -35,7 +35,7 @@ void Triangle::InsertPosVtx()
 void Triangle::InsertIdxVtx()
 {
     Parser input;
-    input.ParseFile("meshes/triangle.json");
+    input.ParseFile("src/Assets/meshes/triangle.json");
 
     const rapidjson::Value& index = input.doc["index"].GetArray();
 

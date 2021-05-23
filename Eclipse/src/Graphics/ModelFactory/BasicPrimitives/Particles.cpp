@@ -11,7 +11,7 @@ Particles::Particles()
 void Particles::InsertPosVtx()
 {
     Parser input;
-    input.ParseFile("meshes/square.json");
+    input.ParseFile("src/Assets/meshes/square.json");
 
     const rapidjson::Value& vertex = input.doc["vertex"].GetArray();
 
@@ -27,7 +27,7 @@ void Particles::InsertPosVtx()
 void Particles::InsertTextCoord()
 {
     Parser input;
-    input.ParseFile("meshes/square.json");
+    input.ParseFile("src/Assets/meshes/square.json");
 
     const rapidjson::Value& texture = input.doc["texture"].GetArray();
 

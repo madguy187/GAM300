@@ -3,33 +3,33 @@
 	[
 		{
 			"shaderName": "shdrpgm",
-			"vtxShader": "Shaders/BasicVtx.vert",
-			"frgShader": "Shaders/BasicFrag.frag"
+			"vtxShader": "src/Assets/Shaders/BasicVtx.vert",
+			"frgShader": "src/Assets/Shaders/BasicFrag.frag"
 		},
 		{
 			"shaderName": "textShdrpgm",
-			"vtxShader": "Shaders/textVtx.vert",
-			"frgShader": "Shaders/textFrag.frag"
+			"vtxShader": "src/Assets/Shaders/textVtx.vert",
+			"frgShader": "src/Assets/Shaders/textFrag.frag"
 		},
 		{
 			"shaderName": "debugShdrpgm",
-			"vtxShader": "Shaders/DebugVtx.vert",
-			"frgShader": "Shaders/DebugFrag.frag"
+			"vtxShader": "src/Assets/Shaders/DebugVtx.vert",
+			"frgShader": "src/Assets/Shaders/DebugFrag.frag"
 		},
 		{
 			"shaderName": "lightShdrpgm",
-			"vtxShader": "Shaders/LightVtx.vert",
-			"frgShader": "Shaders/LightFrag.frag"
+			"vtxShader": "src/Assets/Shaders/LightVtx.vert",
+			"frgShader": "src/Assets/Shaders/LightFrag.frag"
 		},
 		{
 			"shaderName": "particleShdrpgm",
-			"vtxShader": "Shaders/ParticlesVtx.vert",
-			"frgShader": "Shaders/ParticlesFrag.frag"
+			"vtxShader": "src/Assets/Shaders/ParticlesVtx.vert",
+			"frgShader": "src/Assets/Shaders/ParticlesFrag.frag"
 		},
 		{
 			"shaderName": "shader3DShdrpgm",
-			"vtxShader": "Shaders/Shader3D.vert",
-			"frgShader": "Shaders/Shader3D.frag"
+			"vtxShader": "src/Assets/Shaders/Shader3D.vert",
+			"frgShader": "src/Assets/Shaders/Shader3D.frag"
 		}
 	]
 }
