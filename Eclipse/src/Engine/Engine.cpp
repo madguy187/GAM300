@@ -38,6 +38,7 @@ namespace Eclipse
       while (!glfwWindowShouldClose(GLHelper::ptr_window))
       {
 
+        // Darren was here
         world.Update<RenderSystem>();
 
 
