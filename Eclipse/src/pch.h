@@ -26,20 +26,21 @@
 #include "EntryPoint/EntryPoint.h"
 
 // Graphics
-#include "../Libraries/imgui-master/imgui.h"
-#include "GLHelper.h"
-#include "Graphics.h"
-#include "imgui_impl_opengl3.h"
-#include "imgui_impl_glfw.h"as
+#include "IMGUI/imgui-master/imgui.h"
+#include "IMGUI/imgui-master/examples/imgui_impl_opengl3.h"
+#include "IMGUI/imgui-master/examples/imgui_impl_glfw.h"
+
+// Graphics
+#include "Graphics/RendererAPI/GLHelper.h"
+#include "Graphics/RendererAPI/Graphics.h"
 
 #include <iostream>
 #include <sstream>
 #include <iomanip>
 #include <memory>
 
-#include <GL/glew.h> 
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
+#include "GLEW/include/GL/glew.h"
+#include "GLFW/include/GLFW/glfw3.h"
+#include "GLM/glm/glm.hpp"
 
-// All Basic Primitive Models
-#include "AllBasicPrimitives.h"
+#include "Graphics/ModelFactory/BasicPrimitives/AllBasicPrimitives.h"
