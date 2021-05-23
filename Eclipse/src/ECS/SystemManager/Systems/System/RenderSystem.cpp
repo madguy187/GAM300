@@ -12,7 +12,7 @@ glm::vec3 sphereRot = glm::vec3{ 0.0f, 0.0f, 0.0f };
 
 void Eclipse::RenderSystem::Load()
 {
-  if (!GLHelper::init("Configuration/configuration.json"))
+  if (!GLHelper::init("../Dep/Configuration/configuration.json"))
   {
     std::cout << "Unable to create OpenGL context" << std::endl;
     std::exit(EXIT_FAILURE);
@@ -88,7 +88,7 @@ void Eclipse::RenderSystem::Update()
     glfwSetWindowShouldClose(GLHelper::ptr_window, GLFW_TRUE);
   }
 
-  DrawSecondBuffers(Graphics::framebuffer);
+  DrawBuffers(Graphics::framebuffer);
   DrawBuffers(Graphics::m_frameBuffer->GetGameViewBuffer());
 
   Graphics::draw();
