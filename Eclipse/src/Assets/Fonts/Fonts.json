@@ -1,0 +1,18 @@
+{
+	"fonts":
+	[
+		{
+			"fontName": "arial",
+			"path": "../Fonts/arial.ttf"
+		},
+		{
+			"fontName": "pixel-bit-advanced",
+			"path": "../Fonts/pixel-bit-advanced.ttf"
+		
+		},
+		{
+			"fontName": "JungleAdventurer",
+			"path": "../Fonts/JungleAdventurer.ttf"	
+		}
+	]
+}
