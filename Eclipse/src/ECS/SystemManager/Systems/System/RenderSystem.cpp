@@ -20,13 +20,13 @@ void Eclipse::RenderSystem::Load()
 
   Graphics::load();
 
-  //IMGUI_CHECKVERSION();
-  //ImGui::CreateContext();
-  //ImGuiIO& io = ImGui::GetIO(); (void)io;
-  //ImGui_ImplGlfw_InitForOpenGL(GLHelper::ptr_window, true);
-  //ImGui_ImplOpenGL3_Init();
-  //ImGui::StyleColorsClassic();
-  //io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+  IMGUI_CHECKVERSION();
+  ImGui::CreateContext();
+  ImGuiIO& io = ImGui::GetIO(); (void)io;
+  ImGui_ImplGlfw_InitForOpenGL(GLHelper::ptr_window, true);
+  ImGui_ImplOpenGL3_Init();
+  ImGui::StyleColorsClassic();
+  io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
   Graphics::init();
 }

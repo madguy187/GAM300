@@ -157,6 +157,7 @@ copy "$(SolutionDir)Dep\GLFW\lib-vc2019\glfw3.dll" "$(TargetDir)glfw3.dll" /Y</C
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.h" />
     <ClInclude Include="..\Dep\IMGUI\imgui-master\imconfig.h" />
     <ClInclude Include="..\Dep\IMGUI\imgui-master\imgui.h" />
     <ClInclude Include="..\Dep\IMGUI\imgui-master\imgui_internal.h" />
@@ -210,6 +211,7 @@ copy "$(SolutionDir)Dep\GLFW\lib-vc2019\glfw3.dll" "$(TargetDir)glfw3.dll" /Y</C
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp" />
     <ClCompile Include="..\Dep\IMGUI\imgui-master\imgui.cpp" />
     <ClCompile Include="..\Dep\IMGUI\imgui-master\imgui_demo.cpp" />
     <ClCompile Include="..\Dep\IMGUI\imgui-master\imgui_draw.cpp" />

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Particles.h"
 
-const int maxParticles = 10000;
+//const int maxParticles = 10000;
 
 Particles::Particles()
 {

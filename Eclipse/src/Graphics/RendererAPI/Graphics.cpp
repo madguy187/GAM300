@@ -134,12 +134,12 @@ void Graphics::update(double fixed)
 
   TransformComponent& trans = engine->world.GetComponent<TransformComponent>(createdID);
 
-  //ImGui::Begin("Properties");
+  ImGui::Begin("Properties");
   //ImGui::DragFloat3("Scale", (float*)&sphereScale, 0.2f, 0.0f, 0.0f);
   //ImGui::DragFloat3("Translate", (float*)&trans, 0.2f, 0.0f, 0.0f);
   //ImGui::DragFloat3("Rotate", (float*)&sphereRot, 0.2f, 0.0f, 0.0f);
-  //ImGui::End();
-  //ImGui::End();
+  ImGui::End();
+  ImGui::End();
 }
 
 /******************************************************************************/
