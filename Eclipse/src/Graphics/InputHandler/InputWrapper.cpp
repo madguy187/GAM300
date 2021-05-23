@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "InputWrapper.h"
+#include "GLHelper.h"
 
 using namespace Eclipse;
 

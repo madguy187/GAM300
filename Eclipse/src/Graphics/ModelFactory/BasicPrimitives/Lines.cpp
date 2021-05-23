@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Lines.h"
 
 Lines::Lines() :
     vaoID{ 1 }, vboID{ 1 }, eboID{ 0 },

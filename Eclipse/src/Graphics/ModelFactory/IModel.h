@@ -16,6 +16,8 @@
 #ifndef IMODEL_H
 #define IMODEL_H
 
+#include "glew.h"
+#include "glm.hpp"
 #include "Parser.h"
 #include <string>
 #include <vector>

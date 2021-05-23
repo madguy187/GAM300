@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Pyramid.h"
 
 Pyramid::Pyramid() :
   vaoID{ 1 }, vboID{ 1 }, eboID{ 1 },

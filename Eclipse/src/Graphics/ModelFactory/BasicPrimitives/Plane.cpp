@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Plane.h"
 
 Plane_::Plane_() :
   vaoID{ 1 }, vboID{ 1 }, eboID{ 1 },

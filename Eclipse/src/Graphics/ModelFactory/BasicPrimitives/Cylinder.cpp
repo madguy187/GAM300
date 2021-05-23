@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Cylinder.h"
 
 Cylinder::Cylinder() :
   vaoID{ 1 }, vboID{ 1 }, eboID{ 1 },

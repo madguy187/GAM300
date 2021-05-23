@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Cube.h"
 
 Cube::Cube() :
   vaoID{ 1 }, vboID{ 1 }, eboID{ 1 },

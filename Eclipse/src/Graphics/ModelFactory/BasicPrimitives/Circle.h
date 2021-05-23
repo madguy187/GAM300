@@ -19,7 +19,6 @@
 
 #include"Graphics/ModelFactory/IModel.h"
 
-
 class Circle : public IModel
 {
 public:

@@ -18,7 +18,10 @@
 #include "pch.h"
 #include "Graphics.h"
 #include "GLHelper.h"
+
 #include "imgui.h"
+#include "type_ptr.hpp"
+#include "matrix_transform_2d.hpp"
 #include "vec.h"
 #include "../src/ECS/World.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"
@@ -67,9 +70,9 @@ bool NumebrTest = false;
 bool mouseEditor = true;
 
 FrameBuffer* Graphics::m_frameBuffer;
-extern glm::vec3 spherePos;
-extern glm::vec3 sphereScale;
-extern glm::vec3 sphereRot;
+//extern glm::vec3 spherePos;
+//extern glm::vec3 sphereScale;
+//extern glm::vec3 sphereRot;
 
 int createdID = 0;
 
@@ -131,12 +134,12 @@ void Graphics::update(double fixed)
 
   TransformComponent& trans = engine->world.GetComponent<TransformComponent>(createdID);
 
-  ImGui::Begin("Properties");
-  ImGui::DragFloat3("Scale", (float*)&sphereScale, 0.2f, 0.0f, 0.0f);
-  ImGui::DragFloat3("Translate", (float*)&trans, 0.2f, 0.0f, 0.0f);
-  ImGui::DragFloat3("Rotate", (float*)&sphereRot, 0.2f, 0.0f, 0.0f);
-  ImGui::End();
-  ImGui::End();
+  //ImGui::Begin("Properties");
+  //ImGui::DragFloat3("Scale", (float*)&sphereScale, 0.2f, 0.0f, 0.0f);
+  //ImGui::DragFloat3("Translate", (float*)&trans, 0.2f, 0.0f, 0.0f);
+  //ImGui::DragFloat3("Rotate", (float*)&sphereRot, 0.2f, 0.0f, 0.0f);
+  //ImGui::End();
+  //ImGui::End();
 }
 
 /******************************************************************************/

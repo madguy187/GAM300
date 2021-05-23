@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Torus.h"
 
 Torus::Torus() :
   vaoID{ 1 }, vboID{ 1 }, eboID{ 1 },

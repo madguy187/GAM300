@@ -17,7 +17,6 @@
 #define TRIANGLE_H
 
 #include "IModel.h"
-#include <memory>
 
 class Triangle : public IModel
 {

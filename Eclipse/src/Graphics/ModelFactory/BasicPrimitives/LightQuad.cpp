@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "LightQuad.h"
 
 LightQuad::LightQuad() :
     vaoID{ 1 }, vboID{ 1 }, eboID{ 1 },

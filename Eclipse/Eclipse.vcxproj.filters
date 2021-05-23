@@ -158,6 +158,10 @@
     <ClCompile Include="src\Graphics\InputHandler\PrintOut.cpp" />
     <ClCompile Include="src\Graphics\FrameBuffer\FrameBuffer.cpp" />
     <ClCompile Include="src\Graphics\FrameBuffer\WindowConstraint.cpp" />
+    <ClCompile Include="..\Dep\IMGUI\imgui-master\imgui_demo.cpp" />
+    <ClCompile Include="..\Dep\IMGUI\imgui-master\imgui_draw.cpp" />
+    <ClCompile Include="..\Dep\IMGUI\imgui-master\imgui_widgets.cpp" />
+    <ClCompile Include="..\Dep\IMGUI\imgui-master\imgui.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Textures\Textures.json" />
@@ -182,5 +186,6 @@
     <None Include="src\Assets\Shaders\Shaders.json" />
     <None Include="src\Assets\Shaders\textFrag.frag" />
     <None Include="src\Assets\Shaders\textVtx.vert" />
+    <None Include="..\Dep\Configuration\configuration.json" />
   </ItemGroup>
 </Project>

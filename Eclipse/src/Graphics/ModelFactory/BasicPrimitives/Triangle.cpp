@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Triangle.h"
 
 Triangle::Triangle() :
     vaoID{ 1 }, vboID{ 1 }, eboID{ 1 },

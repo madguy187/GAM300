@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Cone.h"
 
 Cone::Cone() :
   vaoID{ 1 }, vboID{ 1 }, eboID{ 1 },

@@ -30,10 +30,6 @@
 #include "examples/imgui_impl_opengl3.h"
 #include "examples/imgui_impl_glfw.h"
 
-// Graphics
-#include "GLHelper.h"
-#include "Graphics.h"
-
 #include "matrix_transform.hpp"
 #include "type_ptr.hpp"
 #include "matrix_transform_2d.hpp"
@@ -44,20 +40,9 @@
 #include <sstream>
 #include <iomanip>
 #include <memory>
-
-#include "GLEW/include/GL/glew.h"
-#include "GLFW/include/GLFW/glfw3.h"
-#include "GLM/glm/glm.hpp"
-
-#include "AllBasicPrimitives.h"
-
-#include <memory>
-
 #include <vector>
 #include <string>
-#include <iostream>
 #include <fstream>
-#include <sstream>
 #include <string>
 #include <cstdlib>
 #include <string>
@@ -67,3 +52,8 @@
 #include <istream>
 #include <cmath>
 #include <fstream>
+#include <array>
+
+#include "GLEW/include/GL/glew.h"
+#include "GLFW/include/GLFW/glfw3.h"
+#include "GLM/glm/glm.hpp"

@@ -1,4 +1,6 @@
 #include "pch.h"
+#include "Quad.h"
+
 Quad::Quad():
     vaoID{ 1 }, vboID{ 1 }, eboID{ 1 },
 	primitiveType{GL_TRIANGLES}, 
