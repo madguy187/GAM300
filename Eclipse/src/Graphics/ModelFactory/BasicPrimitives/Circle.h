@@ -17,8 +17,8 @@
 #ifndef CIRCLE_H
 #define CIRCLE_H
 
-#include "IModel.h"
-#include <memory>
+#include"Graphics/ModelFactory/IModel.h"
+
 
 class Circle : public IModel
 {

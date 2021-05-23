@@ -25,8 +25,6 @@ objects participating in the application.
 #ifndef GLHELPER_H
 #define GLHELPER_H
 
-#include <GL/glew.h> // for access to OpenGL API declarations 
-#include <GLFW/glfw3.h>
 #include "Graphics.h"
 #include <iostream>
 #include <sstream>

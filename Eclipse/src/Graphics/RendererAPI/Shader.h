@@ -16,16 +16,8 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-#include <GL/glew.h> // for access to OpenGL API declarations 
-#include <glm/glm.hpp>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <cstdlib>
-#include <string>
-#include <vector>
-#include <utility>
+#include "GLEW/include/GL/glew.h"
+#include "GLM/glm/glm.hpp"
 
 class Shader
 {

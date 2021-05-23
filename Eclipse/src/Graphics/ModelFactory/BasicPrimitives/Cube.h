@@ -2,8 +2,6 @@
 #define CUBE_H
 
 #include "IModel.h"
-#include <memory>
-#include "glm/gtc/matrix_transform.hpp"
 #include "Plane.h"
 
 class Cube : public IModel

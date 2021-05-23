@@ -17,10 +17,6 @@
 #ifndef PARTICLES_H
 #define PARTICLES_H
 
-#include <GL/glew.h>
-#include <glm/glm.hpp>
-#include <vector>
-#include <string>
 #include "Parser.h"
 
 class Particles

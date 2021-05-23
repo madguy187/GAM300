@@ -25,14 +25,20 @@
 // engine extern pointer
 #include "EntryPoint/EntryPoint.h"
 
-// Graphics
-#include "IMGUI/imgui-master/imgui.h"
-#include "IMGUI/imgui-master/examples/imgui_impl_opengl3.h"
-#include "IMGUI/imgui-master/examples/imgui_impl_glfw.h"
+// Imgui
+#include "imgui.h"
+#include "examples/imgui_impl_opengl3.h"
+#include "examples/imgui_impl_glfw.h"
 
 // Graphics
-#include "Graphics/RendererAPI/GLHelper.h"
-#include "Graphics/RendererAPI/Graphics.h"
+#include "GLHelper.h"
+#include "Graphics.h"
+
+#include "matrix_transform.hpp"
+#include "type_ptr.hpp"
+#include "matrix_transform_2d.hpp"
+
+#include "stb_image.h"
 
 #include <iostream>
 #include <sstream>
@@ -43,4 +49,21 @@
 #include "GLFW/include/GLFW/glfw3.h"
 #include "GLM/glm/glm.hpp"
 
-#include "Graphics/ModelFactory/BasicPrimitives/AllBasicPrimitives.h"
+#include "AllBasicPrimitives.h"
+
+#include <memory>
+
+#include <vector>
+#include <string>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <cstdlib>
+#include <string>
+#include <vector>
+#include <utility>
+#include <string>
+#include <istream>
+#include <cmath>
+#include <fstream>

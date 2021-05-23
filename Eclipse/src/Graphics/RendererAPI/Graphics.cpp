@@ -18,14 +18,7 @@
 #include "pch.h"
 #include "Graphics.h"
 #include "GLHelper.h"
-#include <cmath>
-#include <fstream>
 #include "imgui.h"
-#include <string>
-#include <istream>
-
-#include <glm/gtc/type_ptr.hpp> // for glm::value_ptr
-#include "glm/gtx/matrix_transform_2d.hpp""
 #include "vec.h"
 #include "../src/ECS/World.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"

@@ -1,8 +1,6 @@
 #ifndef VIEW_H
 #define VIEW_H
 #include "Vec.h"
-#include <glm/glm.hpp>
-
 
 class World;
 

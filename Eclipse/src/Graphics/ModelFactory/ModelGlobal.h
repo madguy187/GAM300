@@ -1,5 +1,5 @@
 #pragma once
-#include "glm/gtc/matrix_transform.hpp"
+#include "GLM/glm/gtc/matrix_transform.hpp"
 #include "Math_Lib.h"
 
 using Vec2 = glm::vec2;

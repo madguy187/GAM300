@@ -17,18 +17,18 @@
 #define MODELFACTORY_H
 
 #include "IModel.h"
-#include "BasicPrimitives/Quad.h"
-#include "BasicPrimitives/Triangle.h"
-#include "BasicPrimitives/Circle.h"
-#include "BasicPrimitives/Lines.h"
-#include "BasicPrimitives/LightQuad.h"
-#include "BasicPrimitives/Sphere.h"
-#include "BasicPrimitives/Plane.h"
-#include "BasicPrimitives/Cube.h"
-#include "BasicPrimitives/Cylinder.h"
-#include "BasicPrimitives/Cone.h"
-#include "BasicPrimitives/Torus.h"
-#include "BasicPrimitives/Pyramid.h"
+#include "Quad.h"
+#include "Triangle.h"
+#include "Circle.h"
+#include "Lines.h"
+#include "LightQuad.h"
+#include "Sphere.h"
+#include "Plane.h"
+#include "Cube.h"
+#include "Cylinder.h"
+#include "Cone.h"
+#include "Torus.h"
+#include "Pyramid.h"
 
 #include <memory>
 

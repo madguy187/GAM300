@@ -1,11 +1,11 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
-#include <GL/glew.h> 
-#include <GLFW/glfw3.h>
+//#include <GL/glew.h> 
+//#include <GLFW/glfw3.h>
 #include "glhelper.h"
 #include <stb_image.h>
-#include <glm/glm.hpp>
+//#include <glm/glm.hpp>
 #include "Shader.h""
 #include "ModelFactory.h"
 #include "Texture.h"

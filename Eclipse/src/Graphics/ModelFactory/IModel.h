@@ -16,8 +16,6 @@
 #ifndef IMODEL_H
 #define IMODEL_H
 
-#include <GL/glew.h> // for access to OpenGL API declarations 
-#include <glm/glm.hpp>
 #include "Parser.h"
 #include <string>
 #include <vector>
