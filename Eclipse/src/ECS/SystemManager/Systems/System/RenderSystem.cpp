@@ -98,6 +98,7 @@ void Eclipse::RenderSystem::Update()
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
   glfwGetFramebufferSize(GLHelper::ptr_window, &Width, &Height);
   glViewport(0, 0, Width, Height);
+  glClearColor(0.1f, 0.2f, 0.3f, 1.f);
   glfwSwapBuffers(GLHelper::ptr_window);
   glfwPollEvents();
 }
