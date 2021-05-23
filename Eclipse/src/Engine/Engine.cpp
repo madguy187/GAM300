@@ -3,34 +3,48 @@
 
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RenderComponent.h"
+#include "ECS/SystemManager/Systems/System/RenderSystem.h"
 
 namespace Eclipse
 {
     void Engine::Init()
     {
-
+      RenderSystem::Load();
     }
 
     void Engine::Run()
     {
-        // register component
-        world.RegisterComponent<TransformComponent>();
-        world.RegisterComponent<RenderComponent>();
+      // register component
+      world.RegisterComponent<TransformComponent>();
+      world.RegisterComponent<RenderComponent>();
+      world.RegisterComponent<Camera>();
+      world.RegisterComponent<Sprite>();
 
-        // registering system
+      // registering system
+      world.RegisterSystem<RenderSystem>();
 
-        // registering system signature
-        Signature hi;
-        hi.set(world.GetComponentType<TransformComponent>(), 1);
+      // registering system signature
+      Signature hi;
+      hi.set(world.GetComponentType<TransformComponent>(), 1);
+      hi.set(world.GetComponentType<Sprite>(), 1);
 
-        Entity ent = world.CreateEntity();
-        world.AddComponent(ent, TransformComponent{ 4.0f, 5.0f, 6.0f });
+      world.RegisterSystemSignature<RenderSystem>(hi);
 
-        auto& wee = world.GetComponent<TransformComponent>(ent);
+      Entity ent = world.CreateEntity();
+      world.AddComponent(ent, TransformComponent{ 4.0f, 5.0f, 6.0f });
+      world.AddComponent(ent, Camera{ });
+      world.AddComponent(ent, Sprite{ });
 
-        while (true)
-        {
-            std::cout << world.GetComponent<TransformComponent>(ent).x << std::endl;
-        }
+      while (!glfwWindowShouldClose(GLHelper::ptr_window))
+      {
+
+        world.Update<RenderSystem>();
+
+
+
+
+      }
+
+      RenderSystem::unLoad();
     }
 }

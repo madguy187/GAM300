@@ -115,6 +115,7 @@
     <ClInclude Include="..\Dep\IMGUI\imgui-master\imgui.h" />
     <ClInclude Include="..\Dep\IMGUI\imgui-master\imgui_internal.h" />
     <ClInclude Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.h" />
+    <ClInclude Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_opengl3.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -169,6 +170,7 @@
     <ClCompile Include="..\Dep\IMGUI\imgui-master\imgui_draw.cpp" />
     <ClCompile Include="..\Dep\IMGUI\imgui-master\imgui_widgets.cpp" />
     <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp" />
+    <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_opengl3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Textures\Textures.json" />

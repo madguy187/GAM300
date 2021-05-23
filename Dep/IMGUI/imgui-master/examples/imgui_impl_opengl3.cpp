@@ -122,7 +122,7 @@ using namespace gl;
 #include <glbinding/gl/gl.h>
 using namespace gl;
 #else
-#include IMGUI_IMPL_OPENGL_LOADER_CUSTOM
+//#include IMGUI_IMPL_OPENGL_LOADER_CUSTOM
 #endif
 #endif
 

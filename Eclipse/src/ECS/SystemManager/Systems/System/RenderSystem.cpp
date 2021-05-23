@@ -43,69 +43,69 @@ void Eclipse::RenderSystem::Render()
 
 void Eclipse::RenderSystem::Update()
 {
-  //float fixedDeltaTime = 1.0 / 60.0;
+  float fixedDeltaTime = 1.0 / 60.0;
 
-  //ImGui_ImplOpenGL3_NewFrame();
-  //ImGui_ImplGlfw_NewFrame();
-  //ImGui::NewFrame();
+  ImGui_ImplOpenGL3_NewFrame();
+  ImGui_ImplGlfw_NewFrame();
+  ImGui::NewFrame();
 
-  //Graphics::update(fixedDeltaTime);
+  Graphics::update(fixedDeltaTime);
 
-  //std::stringstream sstr;
-  //sstr << std::fixed << std::setprecision(2) << GLHelper::title << " | FPS: " << GLHelper::fps;
-  //glfwSetWindowTitle(GLHelper::ptr_window, sstr.str().c_str());
+  std::stringstream sstr;
+  sstr << std::fixed << std::setprecision(2) << GLHelper::title << " | FPS: " << GLHelper::fps;
+  glfwSetWindowTitle(GLHelper::ptr_window, sstr.str().c_str());
 
-  //Graphics::m_frameBuffer->Bind();
-  //Graphics::m_frameBuffer->Clear();
+  Graphics::m_frameBuffer->Bind();
+  Graphics::m_frameBuffer->Clear();
 
-  //glBindFramebuffer(GL_FRAMEBUFFER, Graphics::framebuffer);
-  //glClear(GL_COLOR_BUFFER_BIT);
+  glBindFramebuffer(GL_FRAMEBUFFER, Graphics::framebuffer);
+  glClear(GL_COLOR_BUFFER_BIT);
 
-  //InputHandler.SetIsPrint(true);
+  InputHandler.SetIsPrint(true);
 
-  //if (InputHandler.GetKeyTriggered(InputKeycode::Key_LEFT))
-  //{
-  //  std::cout << " Move Left " << std::endl;
-  //}
-  //else if (InputHandler.GetKeyTriggered(InputKeycode::Key_RIGHT))
-  //{
-  //  std::cout << " MOVE RIGHT " << std::endl;
-  //}
-  //else if (InputHandler.GetKeyTriggered(InputKeycode::Key_SPACE))
-  //{
-  //  std::cout << " JUMP" << std::endl;
-  //}
-  //else if (InputHandler.GetKeyTriggered(InputKeycode::Key_UP))
-  //{
-  //  std::cout << " MOVE UP " << std::endl;
-  //}
-  //else if (InputHandler.GetKeyCurrent(InputKeycode::Key_5))
-  //{
-  //  std::cout << " Hold Apple 5 " << std::endl;
-  //}
-  //else if (InputHandler.GetKeyTriggered(InputKeycode::Key_ESC))
-  //{
-  //  glfwSetWindowShouldClose(GLHelper::ptr_window, GLFW_TRUE);
-  //}
+  if (InputHandler.GetKeyTriggered(InputKeycode::Key_LEFT))
+  {
+    std::cout << " Move Left " << std::endl;
+  }
+  else if (InputHandler.GetKeyTriggered(InputKeycode::Key_RIGHT))
+  {
+    std::cout << " MOVE RIGHT " << std::endl;
+  }
+  else if (InputHandler.GetKeyTriggered(InputKeycode::Key_SPACE))
+  {
+    std::cout << " JUMP" << std::endl;
+  }
+  else if (InputHandler.GetKeyTriggered(InputKeycode::Key_UP))
+  {
+    std::cout << " MOVE UP " << std::endl;
+  }
+  else if (InputHandler.GetKeyCurrent(InputKeycode::Key_5))
+  {
+    std::cout << " Hold Apple 5 " << std::endl;
+  }
+  else if (InputHandler.GetKeyTriggered(InputKeycode::Key_ESC))
+  {
+    glfwSetWindowShouldClose(GLHelper::ptr_window, GLFW_TRUE);
+  }
 
-  //DrawSecondBuffers(Graphics::framebuffer);
-  //DrawBuffers(Graphics::m_frameBuffer->GetGameViewBuffer());
+  DrawSecondBuffers(Graphics::framebuffer);
+  DrawBuffers(Graphics::m_frameBuffer->GetGameViewBuffer());
 
-  //Graphics::draw();
-  //ImGui::Render();
+  Graphics::draw();
+  ImGui::Render();
 
-  //int Width, Height;
-  //ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-  //glfwGetFramebufferSize(GLHelper::ptr_window, &Width, &Height);
-  //glViewport(0, 0, Width, Height);
-  //glfwSwapBuffers(GLHelper::ptr_window);
-  //glfwPollEvents();
+  int Width, Height;
+  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+  glfwGetFramebufferSize(GLHelper::ptr_window, &Width, &Height);
+  glViewport(0, 0, Width, Height);
+  glfwSwapBuffers(GLHelper::ptr_window);
+  glfwPollEvents();
 }
 
 void Eclipse::RenderSystem::unLoad()
 {
-  //ImGui::DestroyContext();
-  //GLHelper::cleanup();
+  ImGui::DestroyContext();
+  GLHelper::cleanup();
 }
 
 void Eclipse::RenderSystem::CheckUniformLoc(Sprite& sprite)
