@@ -79,13 +79,13 @@ int createdID = 0;
 void Graphics::load()
 {
   //Loads all the shader programs listed in the shader file
-  LoadShaders("Shaders/Shaders.json");
+  LoadShaders("src/Assets/Shaders/Shaders.json");
 
   //Loads all models listed
-  LoadModels("meshes/Models.json");
+  LoadModels("src/Assets/meshes/Models.json");
 
   //Loads all textures listed
-  LoadTextures("Textures/Textures.json");
+  LoadTextures("src/Assets/Textures/Textures.json");
 
   //Loads all particle types
   LoadParticles();
