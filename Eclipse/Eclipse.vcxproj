@@ -62,7 +62,7 @@
     <TargetName>Eclipse</TargetName>
     <TargetExt>.exe</TargetExt>
     <LibraryPath>$(SolutionDir)Dep\GLFW\lib-vc2019;$(SolutionDir)Dep\GLEW\lib\Release\x64;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)Dep\GLEW\lib\Release\x64;$(SolutionDir)Dep\GLM\glm\gtx;$(SolutionDir)Dep\GLM\glm\gtc;$(SolutionDir)Dep\GLFW\include\GLFW;$(SolutionDir)Dep\GLM\glm;$(SolutionDir)Dep\STB\stb-master;$(SolutionDir)Dep\GLEW\include\GL;$(SolutionDir)Dep\RAPIDJSON\rapidjson-master\include\rapidjson;$(SolutionDir)Dep\IMGUI\imgui-master;$(SolutionDir)Eclipse\src\Graphics\Still_Cleaning;$(SolutionDir)Eclipse\src\Graphics\RendererAPI;$(SolutionDir)Eclipse\src\Graphics\Parser;$(SolutionDir)Eclipse\src\Graphics\ModelFactory\BasicPrimitives;$(SolutionDir)Eclipse\src\Graphics\ModelFactory;$(SolutionDir)Eclipse\src\Graphics\InputHandler;$(SolutionDir)Eclipse\src\Graphics\FrameBuffer;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Eclipse\src\ECS\SystemManager\Systems\System;$(SolutionDir)Dep\GLEW\lib\Release\x64;$(SolutionDir)Dep\GLM\glm\gtx;$(SolutionDir)Dep\GLM\glm\gtc;$(SolutionDir)Dep\GLFW\include\GLFW;$(SolutionDir)Dep\GLM\glm;$(SolutionDir)Dep\STB\stb-master;$(SolutionDir)Dep\GLEW\include\GL;$(SolutionDir)Dep\RAPIDJSON\rapidjson-master\include\rapidjson;$(SolutionDir)Dep\IMGUI\imgui-master;$(SolutionDir)Eclipse\src\Graphics\Still_Cleaning;$(SolutionDir)Eclipse\src\Graphics\RendererAPI;$(SolutionDir)Eclipse\src\Graphics\Parser;$(SolutionDir)Eclipse\src\Graphics\ModelFactory\BasicPrimitives;$(SolutionDir)Eclipse\src\Graphics\ModelFactory;$(SolutionDir)Eclipse\src\Graphics\InputHandler;$(SolutionDir)Eclipse\src\Graphics\FrameBuffer;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -71,7 +71,7 @@
     <TargetName>Eclipse</TargetName>
     <TargetExt>.exe</TargetExt>
     <LibraryPath>$(SolutionDir)Dep\GLFW\lib-vc2019;$(SolutionDir)Dep\GLEW\lib\Release\x64;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)Dep\GLEW\lib\Release\x64;$(SolutionDir)Dep\GLM\glm\gtx;$(SolutionDir)Dep\GLM\glm\gtc;$(SolutionDir)Dep\GLFW\include\GLFW;$(SolutionDir)Dep\GLM\glm;$(SolutionDir)Dep\STB\stb-master;$(SolutionDir)Dep\GLEW\include\GL;$(SolutionDir)Dep\RAPIDJSON\rapidjson-master\include\rapidjson;$(SolutionDir)Dep\IMGUI\imgui-master;$(SolutionDir)Eclipse\src\Graphics\Still_Cleaning;$(SolutionDir)Eclipse\src\Graphics\RendererAPI;$(SolutionDir)Eclipse\src\Graphics\Parser;$(SolutionDir)Eclipse\src\Graphics\ModelFactory\BasicPrimitives;$(SolutionDir)Eclipse\src\Graphics\ModelFactory;$(SolutionDir)Eclipse\src\Graphics\InputHandler;$(SolutionDir)Eclipse\src\Graphics\FrameBuffer;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Eclipse\src\ECS\SystemManager\Systems\System;$(SolutionDir)Dep\GLEW\lib\Release\x64;$(SolutionDir)Dep\GLM\glm\gtx;$(SolutionDir)Dep\GLM\glm\gtc;$(SolutionDir)Dep\GLFW\include\GLFW;$(SolutionDir)Dep\GLM\glm;$(SolutionDir)Dep\STB\stb-master;$(SolutionDir)Dep\GLEW\include\GL;$(SolutionDir)Dep\RAPIDJSON\rapidjson-master\include\rapidjson;$(SolutionDir)Dep\IMGUI\imgui-master;$(SolutionDir)Eclipse\src\Graphics\Still_Cleaning;$(SolutionDir)Eclipse\src\Graphics\RendererAPI;$(SolutionDir)Eclipse\src\Graphics\Parser;$(SolutionDir)Eclipse\src\Graphics\ModelFactory\BasicPrimitives;$(SolutionDir)Eclipse\src\Graphics\ModelFactory;$(SolutionDir)Eclipse\src\Graphics\InputHandler;$(SolutionDir)Eclipse\src\Graphics\FrameBuffer;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -80,7 +80,7 @@
     <TargetName>Eclipse</TargetName>
     <TargetExt>.exe</TargetExt>
     <LibraryPath>$(SolutionDir)Dep\GLFW\lib-vc2019;$(SolutionDir)Dep\GLEW\lib\Release\x64;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)Dep\GLEW\lib\Release\x64;$(SolutionDir)Dep\GLM\glm\gtx;$(SolutionDir)Dep\GLM\glm\gtc;$(SolutionDir)Dep\GLFW\include\GLFW;$(SolutionDir)Dep\GLM\glm;$(SolutionDir)Dep\STB\stb-master;$(SolutionDir)Dep\GLEW\include\GL;$(SolutionDir)Dep\RAPIDJSON\rapidjson-master\include\rapidjson;$(SolutionDir)Dep\IMGUI\imgui-master;$(SolutionDir)Eclipse\src\Graphics\Still_Cleaning;$(SolutionDir)Eclipse\src\Graphics\RendererAPI;$(SolutionDir)Eclipse\src\Graphics\Parser;$(SolutionDir)Eclipse\src\Graphics\ModelFactory\BasicPrimitives;$(SolutionDir)Eclipse\src\Graphics\ModelFactory;$(SolutionDir)Eclipse\src\Graphics\InputHandler;$(SolutionDir)Eclipse\src\Graphics\FrameBuffer;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Eclipse\src\ECS\SystemManager\Systems\System;$(SolutionDir)Dep\GLEW\lib\Release\x64;$(SolutionDir)Dep\GLM\glm\gtx;$(SolutionDir)Dep\GLM\glm\gtc;$(SolutionDir)Dep\GLFW\include\GLFW;$(SolutionDir)Dep\GLM\glm;$(SolutionDir)Dep\STB\stb-master;$(SolutionDir)Dep\GLEW\include\GL;$(SolutionDir)Dep\RAPIDJSON\rapidjson-master\include\rapidjson;$(SolutionDir)Dep\IMGUI\imgui-master;$(SolutionDir)Eclipse\src\Graphics\Still_Cleaning;$(SolutionDir)Eclipse\src\Graphics\RendererAPI;$(SolutionDir)Eclipse\src\Graphics\Parser;$(SolutionDir)Eclipse\src\Graphics\ModelFactory\BasicPrimitives;$(SolutionDir)Eclipse\src\Graphics\ModelFactory;$(SolutionDir)Eclipse\src\Graphics\InputHandler;$(SolutionDir)Eclipse\src\Graphics\FrameBuffer;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -157,6 +157,9 @@ copy "$(SolutionDir)Dep\GLFW\lib-vc2019\glfw3.dll" "$(TargetDir)glfw3.dll" /Y</C
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Dep\IMGUI\imgui-master\imconfig.h" />
+    <ClInclude Include="..\Dep\IMGUI\imgui-master\imgui.h" />
+    <ClInclude Include="..\Dep\IMGUI\imgui-master\imgui_internal.h" />
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentBase.h" />
@@ -164,6 +167,7 @@ copy "$(SolutionDir)Dep\GLFW\lib-vc2019\glfw3.dll" "$(TargetDir)glfw3.dll" /Y</C
     <ClInclude Include="src\ECS\ComponentManager\Components\TransformComponent.h" />
     <ClInclude Include="src\ECS\EntityManager\EntityManager.h" />
     <ClInclude Include="src\ECS\SystemManager\SystemManager.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\System.h" />
     <ClInclude Include="src\ECS\World.h" />
     <ClInclude Include="src\Engine\Engine.h" />
@@ -214,6 +218,7 @@ copy "$(SolutionDir)Dep\GLFW\lib-vc2019\glfw3.dll" "$(TargetDir)glfw3.dll" /Y</C
     <ClCompile Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.cpp" />
     <ClCompile Include="src\ECS\EntityManager\EntityManager.cpp" />
     <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp" />
     <ClCompile Include="src\ECS\World.cpp" />
     <ClCompile Include="src\Engine\Engine.cpp" />
     <ClCompile Include="src\EntryPoint\EntryPoint.cpp" />
@@ -246,7 +251,6 @@ copy "$(SolutionDir)Dep\GLFW\lib-vc2019\glfw3.dll" "$(TargetDir)glfw3.dll" /Y</C
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Dep\Configuration\configuration.json" />
     <None Include="src\Assets\meshes\circle.json" />
     <None Include="src\Assets\meshes\circle.msh" />
     <None Include="src\Assets\meshes\lightsquare.json" />
