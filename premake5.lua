@@ -33,17 +33,38 @@ project "Eclipse"
 	includedirs
 	{
 		"Dep",
-		"Eclipse/src"
+		"Eclipse/src",
+    "Dep/IMGUI/imgui-master",
+    "Dep/RAPIDJSON/rapidjson-master/include/rapidjson",
+    "Dep/GLEW/include/GL",
+    "Dep/STB/stb-master",
+    "Dep/GLM/glm",
+    "Dep/GLFW/include/GLFW",
+    "Dep/GLM/glm/gtc",
+    "Dep/GLM/glm/gtx",
+    "Dep/GLEW/lib/Release/x64",
+    "Eclipse/src/Graphics/Still_Cleaning",
+    "Eclipse/src/Graphics/RendererAPI",
+    "Eclipse/src/Graphics/Parser",
+    "Eclipse/src/Graphics/ModelFactory/BasicPrimitives",
+    "Eclipse/src/Graphics/ModelFactory",
+    "Eclipse/src/Graphics/FrameBuffer",
+    "Dep/mono/include/mono-2.0"
 	}
 
   libdirs
   {
-    "%{prj.name}/Deps/mono/lib/"
+    "Dep/mono/lib/",
+    "Dep/GLFW/lib-vc2019",
+    "Dep/GLEW/lib/Release/x64"
   }
 
   links
   {
-    "mono-2.0-sgen.lib"
+    "mono-2.0-sgen.lib",
+    "opengl32.lib",
+    "glew32.lib",
+    "glfw3dll.lib"
   }
 
 	filter "system:windows"

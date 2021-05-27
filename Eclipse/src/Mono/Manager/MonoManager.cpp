@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "MonoManager.h"
-
 #include "mono/metadata/assembly.h"
 
 namespace Eclipse

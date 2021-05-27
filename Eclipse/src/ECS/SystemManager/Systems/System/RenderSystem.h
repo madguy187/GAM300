@@ -3,7 +3,7 @@
 #include "System.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "Graphics.h"
-#include "InputWrapper.h"
+#include "Graphics/InputHandler/InputWrapper.h"
 
 namespace Eclipse
 {
