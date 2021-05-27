@@ -36,6 +36,16 @@ project "Eclipse"
 		"Eclipse/src"
 	}
 
+  libdirs
+  {
+    "%{prj.name}/Deps/mono/lib/"
+  }
+
+  links
+  {
+    "mono-2.0-sgen.lib"
+  }
+
 	filter "system:windows"
 		cppdialect "C++17"
 		staticruntime "On"

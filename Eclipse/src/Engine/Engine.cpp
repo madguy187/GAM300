@@ -10,6 +10,7 @@ namespace Eclipse
     void Engine::Init()
     {
       RenderSystem::Load();
+      mono.Init();
     }
 
     void Engine::Run()

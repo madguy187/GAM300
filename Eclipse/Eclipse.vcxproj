@@ -88,7 +88,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;ENGINE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Dep;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Dep;..\Dep\mono\include\mono-2.0;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -97,6 +97,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3dll.lib;mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\nico\Desktop\Digipen\GAM300\Dep\mono\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(SolutionDir)Dep\GLEW\bin\Release\x64\glew32.dll" "$(TargetDir)glew32.dll" /Y
@@ -109,7 +111,7 @@ copy "$(SolutionDir)Dep\GLFW\lib-vc2019\glfw3.dll" "$(TargetDir)glfw3.dll" /Y</C
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;ENGINE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Dep;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Dep;..\Dep\mono\include\mono-2.0;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -123,6 +125,8 @@ copy "$(SolutionDir)Dep\GLFW\lib-vc2019\glfw3.dll" "$(TargetDir)glfw3.dll" /Y</C
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3dll.lib;mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\nico\Desktop\Digipen\GAM300\Dep\mono\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(SolutionDir)Dep\GLEW\bin\Release\x64\glew32.dll" "$(TargetDir)glew32.dll" /Y
@@ -135,7 +139,7 @@ copy "$(SolutionDir)Dep\GLFW\lib-vc2019\glfw3.dll" "$(TargetDir)glfw3.dll" /Y</C
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;ENGINE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Dep;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Dep;..\Dep\mono\include\mono-2.0;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -148,8 +152,9 @@ copy "$(SolutionDir)Dep\GLFW\lib-vc2019\glfw3.dll" "$(TargetDir)glfw3.dll" /Y</C
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3dll.lib;mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Users\nico\Desktop\Digipen\GAM300\Dep\mono\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(SolutionDir)Dep\GLEW\bin\Release\x64\glew32.dll" "$(TargetDir)glew32.dll" /Y
@@ -207,6 +212,7 @@ copy "$(SolutionDir)Dep\GLFW\lib-vc2019\glfw3.dll" "$(TargetDir)glfw3.dll" /Y</C
     <ClInclude Include="src\Graphics\Still_Cleaning\Math_Lib.h" />
     <ClInclude Include="src\Graphics\Still_Cleaning\Matrix4.h" />
     <ClInclude Include="src\Graphics\Still_Cleaning\Vec.h" />
+    <ClInclude Include="src\Mono\Manager\MonoManager.h" />
     <ClInclude Include="src\SparseSet\SparseSet.hpp" />
     <ClInclude Include="src\TypeID\TypeID.h" />
     <ClInclude Include="src\pch.h" />
@@ -250,6 +256,7 @@ copy "$(SolutionDir)Dep\GLFW\lib-vc2019\glfw3.dll" "$(TargetDir)glfw3.dll" /Y</C
     <ClCompile Include="src\Graphics\RendererAPI\Shader.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\stb_image.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\Texture.cpp" />
+    <ClCompile Include="src\Mono\Manager\MonoManager.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
