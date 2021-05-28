@@ -11,114 +11,10 @@ static std::ostream& operator << (std::ostream& stream, const Eclipse::InputKeyc
   case InputKeycode::Key_Null:
     stream << "Key_NULL";
     break;
-  case InputKeycode::Key_BACKSPACE:
-    stream << "Key_BACKSPACE";
-    break;
-  case InputKeycode::Key_TAB:
-    stream << "Key_TAB";
-    break;
-  case InputKeycode::Key_CLEAR:
-    stream << "Key_CLEAR";
-    break;
-  case InputKeycode::Key_RETURN:
-    stream << "Key_RETURN";
-    break;
-  case InputKeycode::Key_SHIFT:
-    stream << "Key_SHIFT";
-    break;
-  case InputKeycode::Key_CTRL:
-    stream << "Key_CTRL";
-    break;
-  case InputKeycode::Key_ALT:
-    stream << "Key_ALT";
-    break;
-  case InputKeycode::Key_PAUSE:
-    stream << "Key_PAUSE";
-    break;
-  case InputKeycode::Key_CAPSLOCK:
-    stream << "Key_CAPSLOCK";
-    break;
-  case InputKeycode::Key_ESC:
-    stream << "Key_ESC";
-    break;
-  case InputKeycode::Key_SPACE:
-    stream << "Key_SPACE";
-    break;
-  case InputKeycode::Key_PGUP:
-    stream << "Key_PGUP";
-    break;
-  case InputKeycode::Key_PGDN:
-    stream << "Key_PGDN";
-    break;
-  case InputKeycode::Key_END:
-    stream << "Key_END ";
-    break;
-  case InputKeycode::Key_HOME:
-    stream << "Key_HOME";
-    break;
-  case InputKeycode::Key_LEFT:
-    stream << "Key_LEFT";
-    break;
-  case InputKeycode::Key_UP:
-    stream << "Key_UP";
-    break;
-  case InputKeycode::Key_RIGHT:
-    stream << "Key_RIGHT";
-    break;
-  case InputKeycode::Key_DOWN:
-    stream << "Key_DOWN";
-    break;
-  case InputKeycode::Key_SELECT:
-    stream << "Key_SELECT";
-    break;
-  case InputKeycode::Key_PRINT:
-    stream << "Key_PRINT";
-    break;
-  case InputKeycode::Key_EXECUTE:
-    stream << "Key_EXECUTE";
-    break;
-  case InputKeycode::Key_PRTSCREEN:
-    stream << "Key_PRTSC";
-    break;
-  case InputKeycode::Key_INSERT:
-    stream << "Key_INSERT";
-    break;
-  case InputKeycode::Key_DELETE:
-    stream << "Key_DELETE";
-    break;
-  case InputKeycode::Key_HELP:
-    stream << "Key_HELP";
-    break;
-  case InputKeycode::Key_0:
-    stream << "Key_0";
-    break;
-  case InputKeycode::Key_1:
-    stream << "Key_1";
-    break;
-  case InputKeycode::Key_2:
-    stream << "Key_2";
-    break;
-  case InputKeycode::Key_3:
-    stream << "Key_3";
-    break;
-  case InputKeycode::Key_4:
-    stream << "Key_4";
-    break;
-  case InputKeycode::Key_5:
-    stream << "Key_5";
-    break;
-  case InputKeycode::Key_6:
-    stream << "Key_6";
-    break;
-  case InputKeycode::Key_7:
-    stream << "Key_7";
-    break;
-  case InputKeycode::Key_8:
-    stream << "Key_8";
-    break;
-  case InputKeycode::Key_9:
-    stream << "Key_9";
-    break;
+
+    /*************************************************************************
+      Keyboard Alphabets Layout
+    *************************************************************************/
   case InputKeycode::Key_A:
     stream << "Key_A";
     break;
@@ -197,66 +93,72 @@ static std::ostream& operator << (std::ostream& stream, const Eclipse::InputKeyc
   case InputKeycode::Key_Z:
     stream << "Key_Z";
     break;
-  //case InputKeycode::Key_WINLEFT:
-  //  stream << "Key_WINLEFT";
-  //  break;
-  //case InputKeycode::Key_WINRIGHT:
-  //  stream << "Key_WINRIGHT";
-  //  break;
-  case InputKeycode::Key_APPS:
-    stream << "Key_APPS";
+
+    /*************************************************************************
+      Keyboard Numbers Layout
+    *************************************************************************/
+  case InputKeycode::Key_0:
+    stream << "Key_0";
     break;
-  case InputKeycode::Key_SLEEP:
-    stream << "Key_SLEEP";
+  case InputKeycode::Key_1:
+    stream << "Key_1";
     break;
-  //case InputKeycode::Key_NUM0:
-  //  stream << "Key_NUM0";
-  //  break;
-  //case InputKeycode::Key_NUM1:
-  //  stream << "Key_NUM1";
-  //  break;
-  //case InputKeycode::Key_NUM2:
-  //  stream << "Key_NUM2";
-  //  break;
-  //case InputKeycode::Key_NUM3:
-  //  stream << "Key_NUM3";
-  //  break;
-  //case InputKeycode::Key_NUM4:
-  //  stream << "Key_NUM4";
-  //  break;
-  //case InputKeycode::Key_NUM5:
-  //  stream << "Key_NUM5";
-  //  break;
-  //case InputKeycode::Key_NUM6:
-  //  stream << "Key_NUM6";
-  //  break;
-  //case InputKeycode::Key_NUM7:
-  //  stream << "Key_NUM7";
-  //  break;
-  //case InputKeycode::Key_NUM8:
-  //  stream << "Key_NUM8";
-  //  break;
-  //case InputKeycode::Key_NUM9:
-  //  stream << "Key_NUM9";
-  //  break;
-  case InputKeycode::Key_MULTIPLY:
-    stream << "Key_MULTIPLY";
+  case InputKeycode::Key_2:
+    stream << "Key_2";
     break;
-  case InputKeycode::Key_ADD:
-    stream << "Key_ADD";
+  case InputKeycode::Key_3:
+    stream << "Key_3";
     break;
-  case InputKeycode::Key_SEPERATOR:
-    stream << "Key_SEPERATOR";
+  case InputKeycode::Key_4:
+    stream << "Key_4";
     break;
-  case InputKeycode::Key_SUBTRACT:
-    stream << "Key_SUBTRACT";
+  case InputKeycode::Key_5:
+    stream << "Key_5";
     break;
-  case InputKeycode::Key_DECIMAL:
-    stream << "Key_DECIMAL";
+  case InputKeycode::Key_6:
+    stream << "Key_6";
     break;
-  case InputKeycode::Key_DIVIDE:
-    stream << "Key_DIVIDE";
+  case InputKeycode::Key_7:
+    stream << "Key_7";
     break;
+  case InputKeycode::Key_8:
+    stream << "Key_8";
+    break;
+  case InputKeycode::Key_9:
+    stream << "Key_9";
+    break;
+
+    /*************************************************************************
+      KeyPad Keys Layout ( The one on the right of your keyboard )
+    *************************************************************************/
+  case InputKeycode::KeyPad_ENTER:
+    stream << "KeyPad Enter";
+    break;
+  case InputKeycode::KeyPad_EQUAL:
+    stream << "KeyPad Equal";
+    break;
+  case InputKeycode::KeyPad_MULTIPLY:
+    stream << "KeyPad Multiply";
+    break;
+  case InputKeycode::KeyPad_ADD:
+    stream << "KeyPad Add";
+    break;
+  case InputKeycode::KeyPad_SEPERATOR:
+    stream << "KeyPad Seperator";
+    break;
+  case InputKeycode::KeyPad_SUBTRACT:
+    stream << "KeyPad Subtract";
+    break;
+  case InputKeycode::KeyPad_DECIMAL:
+    stream << "KeyPad Decimal";
+    break;
+  case InputKeycode::KeyPad_DIVIDE:
+    stream << "KeyPad Divide";
+    break;
+
+    /*************************************************************************
+      Keyboard F Keys Layout
+    *************************************************************************/
   case InputKeycode::Key_F1:
     stream << "Key_F1";
     break;
@@ -293,11 +195,55 @@ static std::ostream& operator << (std::ostream& stream, const Eclipse::InputKeyc
   case InputKeycode::Key_F12:
     stream << "Key_F12";
     break;
+
+    /*************************************************************************
+      Keyboard Arrow Keys Layout
+    *************************************************************************/
+  case InputKeycode::Key_LEFT:
+    stream << "Key_LEFT";
+    break;
+  case InputKeycode::Key_UP:
+    stream << "Key_UP";
+    break;
+  case InputKeycode::Key_RIGHT:
+    stream << "Key_RIGHT";
+    break;
+  case InputKeycode::Key_DOWN:
+    stream << "Key_DOWN";
+    break;
+
+    /*************************************************************************
+      Keyboard OTHER Keys Layout
+    *************************************************************************/
+  case InputKeycode::Key_BACKSPACE:
+    stream << "Key_BACKSPACE";
+    break;
+  case InputKeycode::Key_TAB:
+    stream << "Key_TAB";
+    break;
+  case InputKeycode::Key_PAUSE:
+    stream << "Key_PAUSE";
+    break;
+  case InputKeycode::Key_CAPSLOCK:
+    stream << "Key_CapsLock";
+    break;
+  case InputKeycode::Key_ESC:
+    stream << "Key_ESC";
+    break;
+  case InputKeycode::Key_SPACE:
+    stream << "Key_SPACE";
+    break;
+  case InputKeycode::Key_ENTER:
+    stream << "Key_Enter";
+    break;
+  case InputKeycode::Key_INSERT:
+    stream << "Key_INSERT";
+    break;
+  case InputKeycode::Key_DELETE:
+    stream << "Key_DELETE";
+    break;
   case InputKeycode::Key_NUMLOCK:
     stream << "Key_NUMLOCK";
-    break;
-  case InputKeycode::Key_SCROLLLOCK:
-    stream << "Key_SCROLLLOCK";
     break;
   case InputKeycode::Key_SHIFTLEFT:
     stream << "Key_SHIFTLEFT";
@@ -320,18 +266,17 @@ static std::ostream& operator << (std::ostream& stream, const Eclipse::InputKeyc
   case InputKeycode::Key_SEMICOLON:
     stream << "Key_SEMICOLON";
     break;
-  case InputKeycode::Key_PLUS:
-    stream << "Key_PLUS";
-    break;
   case InputKeycode::Key_COMMA:
     stream << "Key_COMMA";
     break;
   case InputKeycode::Key_MINUS:
     stream << "Key_MINUS";
     break;
+  case InputKeycode::Key_EQUAL:
+    stream << "Key_EQUAL";
+    break;
   case InputKeycode::Key_FORWARDSLASH:
     stream << "Key_FORWARDSLASH";
-    break;    stream << "Key_TILDE";
     break;
   case InputKeycode::Key_SQBRACKETLEFT:
     stream << "Key_SQBRACKETLEFT";
@@ -341,6 +286,80 @@ static std::ostream& operator << (std::ostream& stream, const Eclipse::InputKeyc
     break;
   case InputKeycode::Key_SQBRACKETRIGHT:
     stream << "Key_SQBRACKETRIGHT";
+    break;
+
+    // cant work on my stupid ass laptop
+  case InputKeycode::Key_CLEAR:
+    stream << "Key_CLEAR";
+    break;
+  case InputKeycode::Key_RETURN:
+    stream << "Key_RETURN";
+    break;
+  case InputKeycode::Key_SHIFT:
+    stream << "Key_SHIFT";
+    break;
+  case InputKeycode::Key_CTRL:
+    stream << "Key_CTRL";
+    break;
+  case InputKeycode::Key_ALT:
+    stream << "Key_ALT";
+    break;
+  case InputKeycode::Key_PGUP:
+    stream << "Key_PGUP";
+    break;
+  case InputKeycode::Key_PGDN:
+    stream << "Key_PGDN";
+    break;
+  case InputKeycode::Key_END:
+    stream << "Key_END ";
+    break;
+  case InputKeycode::Key_HOME:
+    stream << "Key_HOME";
+    break;
+  case InputKeycode::Key_SELECT:
+    stream << "Key_SELECT";
+    break;
+  case InputKeycode::Key_PRINT:
+    stream << "Key_PRINT";
+    break;
+  case InputKeycode::Key_EXECUTE:
+    stream << "Key_EXECUTE";
+    break;
+  case InputKeycode::Key_PRTSCREEN:
+    stream << "Key_PRTSC";
+    break;
+  case InputKeycode::Key_HELP:
+    stream << "Key_HELP";
+    break;
+  case InputKeycode::Key_APPS:
+    stream << "Key_APPS";
+    break;
+  case InputKeycode::Key_SLEEP:
+    stream << "Key_SLEEP";
+    break;
+  case InputKeycode::Key_MULTIPLY:
+    stream << "Key_MULTIPLY";
+    break;
+  case InputKeycode::Key_ADD:
+    stream << "Key_ADD";
+    break;
+  case InputKeycode::Key_SEPERATOR:
+    stream << "Key_SEPERATOR";
+    break;
+  case InputKeycode::Key_SUBTRACT:
+    stream << "Key_SUBTRACT";
+    break;
+  case InputKeycode::Key_DECIMAL:
+    stream << "Key_DECIMAL";
+    break;
+  case InputKeycode::Key_DIVIDE:
+    stream << "Key_DIVIDE";
+    break;
+  case InputKeycode::Key_SCROLLLOCK:
+    stream << "Key_SCROLLLOCK";
+    break;
+  case InputKeycode::Key_PLUS:
+    stream << "Key_PLUS";
     break;
   case InputKeycode::Key_QUOTE:
     stream << "Key_QUOTE";
@@ -369,16 +388,52 @@ void Eclipse::InputWrapper::SetIsPrint(bool input)
   EnablePrint = input;
 }
 
+void Eclipse::InputWrapper::RegisterTriggerInput(InputKeycode keycode, int keypressFlag, bool flag, InputState input)
+{
+  KeyContainer.insert({ std::pair<InputKeycode,int>(keycode,keypressFlag),std::pair<bool,InputState>(flag,input) });
+}
+
+bool Eclipse::InputWrapper::IsKeyPressed(int input)
+{
+  return (input == GLFW_PRESS);
+}
+
+bool Eclipse::InputWrapper::IsKeyReleased(int input)
+{
+  return (input == GLFW_RELEASE);
+}
+
+int Eclipse::InputWrapper::GetKey(InputKeycode input)
+{
+  return (glfwGetKey(GLHelper::ptr_window, static_cast<int>(input)));
+}
+
+void Eclipse::InputWrapper::PrintKey(InputKeycode input)
+{
+  if (EnablePrint)
+  {
+    std::cout << "Pressed " << (input) << " " << std::endl;
+    std::cout << "KeyCode " << static_cast<int>(input) << std::endl;
+  }
+}
+
+void Eclipse::InputWrapper::RemoveKey(KeyIT& input)
+{
+  KeyContainer.erase(input);
+}
+
+
 bool InputWrapper::GetKeyTriggered(InputKeycode keycode)
 {
 #ifndef CURRENT_CODE
 
-  int isKeyPressed = glfwGetKey(GLHelper::ptr_window, static_cast<int>(keycode));
+  int Press = GetKey(keycode);
 
-  if (isKeyPressed == GLFW_PRESS)
+  if ( IsKeyPressed(Press) )
   {
     bool single = false;
-    KeyContainer.insert({ std::pair<InputKeycode,int>(keycode,isKeyPressed),std::pair<bool,bool>(single,single) });
+
+    RegisterTriggerInput(keycode, Press, single, InputState::Key_PRESSED);
 
     for (auto& pair2 : KeyContainer)
     {
@@ -389,20 +444,17 @@ bool InputWrapper::GetKeyTriggered(InputKeycode keycode)
         continue;
 
       SingleFlag = true;
-      std::cout << "Container Size :" << KeyContainer.size() << std::endl;
+      PrintKey(Message);
 
-      if (EnablePrint)
-      {
-        std::cout << "Pressed " << (Message) << " " << std::endl;
-      }
       return true;
     }
   }
-  else if (isKeyPressed == GLFW_RELEASE)
+  else if ( IsKeyReleased(Press) )
   {
     GetKeyReleased(keycode);
     return false;
   }
+
   return false;
 
 #else
@@ -424,14 +476,16 @@ bool InputWrapper::GetKeyTriggered(InputKeycode keycode)
   }
   return false;
 #endif
+
 }
 
 bool Eclipse::InputWrapper::GetKeyCurrent(InputKeycode keycode)
 {
 #ifndef CURRENT_CODE
-  int isKeyPressed = glfwGetKey(GLHelper::ptr_window, static_cast<int>(keycode));
 
-  if (isKeyPressed == GLFW_PRESS)
+  int Hold = GetKey(keycode);
+
+  if (IsKeyPressed(Hold) )
   {
     return true;
   }
@@ -444,26 +498,27 @@ bool Eclipse::InputWrapper::GetKeyCurrent(InputKeycode keycode)
 
 bool Eclipse::InputWrapper::GetKeyReleased(InputKeycode keycode)
 {
-  int isKeyReleased = glfwGetKey(GLHelper::ptr_window, static_cast<int>(keycode));
+  int Release = GetKey(keycode);
 
-  if (isKeyReleased == GLFW_RELEASE)
+  if (IsKeyReleased(Release) )
   {
     for (auto KeyIT = KeyContainer.begin(); KeyIT != KeyContainer.end(); ++KeyIT)
     {
       auto& Message = ((*KeyIT).first.first);
+      auto& InputState_ = ((*KeyIT).first.first);
 
       if (Message == keycode)
       {
         auto& Press = ((*KeyIT).first.second);
         auto& SingleFlag = ((*KeyIT).second.first);
+        auto& ReleaseFlag = ((*KeyIT).second.second);
 
+        ReleaseFlag = InputState::Key_RELEASED;
         SingleFlag = false;
-        KeyContainer.erase(KeyIT);
 
-        if (EnablePrint)
-        {
-          std::cout << "Released " << (Message) << " " << std::endl;
-        }
+        RemoveKey(KeyIT);
+        PrintKey(Message);
+
         return true;
       }
     }
