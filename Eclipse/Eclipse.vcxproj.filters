@@ -116,6 +116,7 @@
     <ClInclude Include="..\Dep\IMGUI\imgui-master\imgui_internal.h" />
     <ClInclude Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.h" />
     <ClInclude Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_opengl3.h" />
+    <ClInclude Include="src\Library\Math\Vector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">

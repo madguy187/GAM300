@@ -393,7 +393,7 @@ bool InputWrapper::GetKeyTriggered(InputKeycode keycode)
 
       if (EnablePrint)
       {
-        std::cout << "Pressed " << (Message) << " " << std::endl;
+        std::cout << "Pressed " << static_cast<int>(Message) << " " << std::endl;
       }
       return true;
     }
@@ -462,7 +462,7 @@ bool Eclipse::InputWrapper::GetKeyReleased(InputKeycode keycode)
 
         if (EnablePrint)
         {
-          std::cout << "Released " << (Message) << " " << std::endl;
+          std::cout << "Released " << static_cast<int>(Message) << " " << std::endl;
         }
         return true;
       }

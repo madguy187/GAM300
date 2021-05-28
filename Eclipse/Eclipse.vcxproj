@@ -207,6 +207,7 @@ copy "$(SolutionDir)Dep\GLFW\lib-vc2019\glfw3.dll" "$(TargetDir)glfw3.dll" /Y</C
     <ClInclude Include="src\Graphics\Still_Cleaning\Math_Lib.h" />
     <ClInclude Include="src\Graphics\Still_Cleaning\Matrix4.h" />
     <ClInclude Include="src\Graphics\Still_Cleaning\Vec.h" />
+    <ClInclude Include="src\Library\Math\Vector.h" />
     <ClInclude Include="src\SparseSet\SparseSet.hpp" />
     <ClInclude Include="src\TypeID\TypeID.h" />
     <ClInclude Include="src\pch.h" />

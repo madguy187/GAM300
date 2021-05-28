@@ -13,7 +13,7 @@ namespace Eclipse
     }
 
     void Engine::Run()
-    {
+    {  
       // register component
       world.RegisterComponent<TransformComponent>();
       world.RegisterComponent<RenderComponent>();
@@ -37,13 +37,8 @@ namespace Eclipse
 
       while (!glfwWindowShouldClose(GLHelper::ptr_window))
       {
-
         // Darren was here
         world.Update<RenderSystem>();
-
-
-
-
       }
 
       RenderSystem::unLoad();
