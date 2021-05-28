@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "RenderSystem.h"
-#include "InputWrapper.h"
-#include "AllInputKeyCodes.h"
+#include "Graphics/InputHandler/InputWrapper.h"
+#include "Graphics/InputHandler/AllInputKeyCodes.h"
 
 float shakeTimer = 1.5f;
 bool shakeScreen = false;
