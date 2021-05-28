@@ -373,9 +373,17 @@ static std::ostream& operator << (std::ostream& stream, const Eclipse::InputKeyc
   return stream;
 }
 
+Eclipse::InputWrapper::InputWrapper() : EnablePrint{false}
+{
+  init();
+}
+
 void Eclipse::InputWrapper::init()
 {
   KeyContainer.clear();
+  HoldKeyContainer.clear();
+
+  HoldKeyContainer.insert({ std::pair<InputKeycode,int>(InputKeycode::Key_Null,0),std::pair<bool,InputState>(false,InputState::Key_NULLSTATE) });
 }
 
 bool Eclipse::InputWrapper::GetIsPrint()
@@ -393,6 +401,18 @@ void Eclipse::InputWrapper::RegisterTriggerInput(InputKeycode keycode, int keypr
   KeyContainer.insert({ std::pair<InputKeycode,int>(keycode,keypressFlag),std::pair<bool,InputState>(flag,input) });
 }
 
+void Eclipse::InputWrapper::RegisterHoldInput(InputKeycode keycode, int keypressFlag, bool flag, InputState input)
+{
+
+  for (KeyIT it = HoldKeyContainer.begin(); it != HoldKeyContainer.end(); it++)
+  {
+    if ( ! (it->first.first == keycode) )
+    {
+      HoldKeyContainer.insert({ std::pair<InputKeycode,int>(keycode,keypressFlag),std::pair<bool,InputState>(flag,input) });
+    }
+  }
+}
+
 bool Eclipse::InputWrapper::IsKeyPressed(int input)
 {
   return (input == GLFW_PRESS);
@@ -408,12 +428,38 @@ int Eclipse::InputWrapper::GetKey(InputKeycode input)
   return (glfwGetKey(GLHelper::ptr_window, static_cast<int>(input)));
 }
 
+void Eclipse::InputWrapper::PrintKey(InputKeycode input, int presstype)
+{
+  if (EnablePrint)
+  {
+
+    switch (presstype)
+    {
+
+    case GLFW_PRESS:
+    {
+      std::cout << "Pressed " << (input) << " --> " << "KeyCode " << static_cast<int>(input) << std::endl;
+    }
+    break;
+
+    case GLFW_RELEASE:
+    {
+      std::cout << "Released " << (input) << " --> " << "KeyCode " << static_cast<int>(input) << std::endl;
+    }
+    break;
+
+    default:
+      break;
+    }
+  }
+}
+
 void Eclipse::InputWrapper::PrintKey(InputKeycode input)
 {
   if (EnablePrint)
   {
-    std::cout << "Pressed " << (input) << " " << std::endl;
-    std::cout << "KeyCode " << static_cast<int>(input) << std::endl;
+    std::cout << "Holding " << (input) << " --> " << "KeyCode " << static_cast<int>(input) << std::endl;
+    std::cout << "Container Size : " << HoldKeyContainer.size() << std::endl;
   }
 }
 
@@ -422,6 +468,10 @@ void Eclipse::InputWrapper::RemoveKey(KeyIT& input)
   KeyContainer.erase(input);
 }
 
+void Eclipse::InputWrapper::RemoveHoldKey(KeyIT& input)
+{
+  HoldKeyContainer.erase(input);
+}
 
 bool InputWrapper::GetKeyTriggered(InputKeycode keycode)
 {
@@ -429,7 +479,7 @@ bool InputWrapper::GetKeyTriggered(InputKeycode keycode)
 
   int Press = GetKey(keycode);
 
-  if ( IsKeyPressed(Press) )
+  if (IsKeyPressed(Press))
   {
     bool single = false;
 
@@ -444,12 +494,12 @@ bool InputWrapper::GetKeyTriggered(InputKeycode keycode)
         continue;
 
       SingleFlag = true;
-      PrintKey(Message);
+      PrintKey(Message, Press);
 
       return true;
     }
   }
-  else if ( IsKeyReleased(Press) )
+  else if (IsKeyReleased(Press))
   {
     GetKeyReleased(keycode);
     return false;
@@ -483,13 +533,21 @@ bool Eclipse::InputWrapper::GetKeyCurrent(InputKeycode keycode)
 {
 #ifndef CURRENT_CODE
 
+  Update();
+
   int Hold = GetKey(keycode);
 
-  if (IsKeyPressed(Hold) )
+  if (IsKeyPressed(Hold))
   {
-    return true;
+    bool single = false;
+    int test = HoldKeyContainer.size();
+    RegisterHoldInput(keycode, Hold, single, InputState::Key_HOLD);
   }
-  return false;
+  else if (IsKeyReleased(Hold))
+  {
+    GetHoldKeyReleased(keycode);
+    return false;
+  }
 
 #else
   return false;
@@ -500,25 +558,53 @@ bool Eclipse::InputWrapper::GetKeyReleased(InputKeycode keycode)
 {
   int Release = GetKey(keycode);
 
-  if (IsKeyReleased(Release) )
+  if (IsKeyReleased(Release))
   {
     for (auto KeyIT = KeyContainer.begin(); KeyIT != KeyContainer.end(); ++KeyIT)
     {
       auto& Message = ((*KeyIT).first.first);
-      auto& InputState_ = ((*KeyIT).first.first);
+      auto& InputState_ = ((*KeyIT).second.second);
 
-      if (Message == keycode)
+      if (Message == keycode && (InputState_ == InputState::Key_PRESSED) )
       {
         auto& Press = ((*KeyIT).first.second);
         auto& SingleFlag = ((*KeyIT).second.first);
-        auto& ReleaseFlag = ((*KeyIT).second.second);
 
-        ReleaseFlag = InputState::Key_RELEASED;
+        InputState_ = InputState::Key_RELEASED;
         SingleFlag = false;
 
         RemoveKey(KeyIT);
-        PrintKey(Message);
+        PrintKey(Message, Release);
 
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+bool Eclipse::InputWrapper::GetHoldKeyReleased(InputKeycode keycode)
+{
+  int HoldKeyRelease = GetKey(keycode);
+
+  if (IsKeyReleased(HoldKeyRelease))
+  {
+    for (auto KeyIT = HoldKeyContainer.begin(); KeyIT != HoldKeyContainer.end(); ++KeyIT)
+    {
+      auto& Message = ((*KeyIT).first.first);
+      auto& InputState_ = ((*KeyIT).second.second);
+
+      if (Message == keycode )
+      {
+        auto& Press = ((*KeyIT).first.second);
+        auto& SingleFlag = ((*KeyIT).second.first);
+
+        InputState_ = InputState::Key_RELEASED;
+        SingleFlag = false;
+
+        RemoveHoldKey(KeyIT);
+        std::cout << "HOLD CONTAINER SIZE : " << HoldKeyContainer.size()  << std::endl;
+        PrintKey(Message, HoldKeyRelease);
         return true;
       }
     }
@@ -528,7 +614,19 @@ bool Eclipse::InputWrapper::GetKeyReleased(InputKeycode keycode)
 
 void Eclipse::InputWrapper::Update()
 {
+  for (auto& pair2 : HoldKeyContainer)
+  {
+    if (HoldKeyContainer.size() == 1)
+      return;
 
+    auto& Message = (pair2.first.first);
+    auto& HoldFlag = (pair2.second.second);
+
+    if (HoldFlag == InputState::Key_HOLD )
+    {
+      PrintKey(Message);
+    }
+  }
 
 }
 

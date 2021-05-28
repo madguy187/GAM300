@@ -63,29 +63,24 @@ void Eclipse::RenderSystem::Update()
 
   InputHandler.SetIsPrint(true);
 
-  if (InputHandler.GetKeyTriggered(InputKeycode::Key_LEFT))
+  if (InputHandler.GetKeyCurrent(InputKeycode::Key_LEFT))
   {
     std::cout << " Move Left " << std::endl;
   }
-  else if (InputHandler.GetKeyTriggered(InputKeycode::Key_RIGHT))
+ 
+  if (InputHandler.GetKeyCurrent(InputKeycode::Key_RIGHT))
   {
     std::cout << " MOVE RIGHT " << std::endl;
   }
-  else if (InputHandler.GetKeyTriggered(InputKeycode::Key_SPACE))
+ 
+  if (InputHandler.GetKeyCurrent(InputKeycode::Key_SPACE))
   {
     std::cout << " JUMP" << std::endl;
   }
-  else if (InputHandler.GetKeyTriggered(InputKeycode::Key_UP))
+ 
+  if (InputHandler.GetKeyCurrent(InputKeycode::Key_UP))
   {
     std::cout << " MOVE UP " << std::endl;
-  }
-  else if (InputHandler.GetKeyCurrent(InputKeycode::Key_5))
-  {
-    std::cout << " Hold Apple 5 " << std::endl;
-  }
-  else if (InputHandler.GetKeyTriggered(InputKeycode::Key_ESC))
-  {
-    glfwSetWindowShouldClose(GLHelper::ptr_window, GLFW_TRUE);
   }
 
   DrawBuffers(Graphics::framebuffer);
