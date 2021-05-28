@@ -9,6 +9,10 @@ namespace Eclipse
 {
     void Engine::Init()
     {
+      //ECVec2D woo;
+      //glm::vec2 koo{ 1,2 };
+      //woo += koo;
+      //glm::vec2 loo = woo.ConvertToGlmVec2Type();
       RenderSystem::Load();
     }
 

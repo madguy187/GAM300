@@ -703,7 +703,7 @@ namespace Eclipse
 		return !(lhs == rhs);
 	}
 
-	typedef Vector<float, 2> TSVec2D;
-	typedef Vector<float, 3> TSVec3D;
-	typedef Vector<float, 4> TSVec4D;
+	typedef Vector<float, 2> ECVec2;
+	typedef Vector<float, 3> ECVec3;
+	typedef Vector<float, 4> ECVec4;
 }
