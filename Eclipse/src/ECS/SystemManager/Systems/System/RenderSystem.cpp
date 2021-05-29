@@ -6,6 +6,7 @@
 float shakeTimer = 1.5f;
 bool shakeScreen = false;
 OpenGL_Context Eclipse::RenderSystem::mRenderContext;
+extern int createdID;
 
 void Eclipse::RenderSystem::Load()
 {
@@ -63,6 +64,7 @@ void Eclipse::RenderSystem::Update()
   glBindFramebuffer(GL_FRAMEBUFFER, Graphics::framebuffer);
   glClear(GL_COLOR_BUFFER_BIT);
 
+  test();
   GlobalRender();
 
   // To be Removed
@@ -82,160 +84,156 @@ void Eclipse::RenderSystem::unLoad()
   ImGui::DestroyContext();
 }
 
-void Eclipse::RenderSystem::CheckUniformLoc(Sprite& sprite)
+void Eclipse::RenderSystem::CheckUniformLoc(Sprite& sprite, unsigned int id)
 {
   {
     unsigned int currCamID = 0;
 
     Camera& oi = engine->world.GetComponent<Camera>(currCamID);
+    TransformComponent& trans = engine->world.GetComponent<TransformComponent>(id);
 
-    for (auto const& entity : mEntities)
+    GLint uniform_var_loc1 = glGetUniformLocation(sprite.shaderRef->second.GetHandle(), "uModelToNDC");
+    GLint uniform_var_loc2 = glGetUniformLocation(sprite.shaderRef->second.GetHandle(), "uColor");
+    GLint uniform_var_loc3 = glGetUniformLocation(sprite.shaderRef->second.GetHandle(), "uTextureCheck");
+    GLint uniform_var_loc4 = glGetUniformLocation(sprite.shaderRef->second.GetHandle(), "TextureIndex");
+    GLint uniform_var_loc5 = glGetUniformLocation(sprite.shaderRef->second.GetHandle(), "TextureDimensions");
+    GLint uniform_var_loc6 = glGetUniformLocation(sprite.shaderRef->second.GetHandle(), "LightTimer");
+    GLint uniform_var_loc7 = glGetUniformLocation(sprite.shaderRef->second.GetHandle(), "ShakeTimer");
+    GLint uniform_var_loc8 = glGetUniformLocation(sprite.shaderRef->second.GetHandle(), "ShakeScreen");
+    GLuint tex_loc = glGetUniformLocation(sprite.shaderRef->second.GetHandle(), "uTex2d");
+
+    if (uniform_var_loc1 >= 0)
     {
-      TransformComponent& trans = engine->world.GetComponent<TransformComponent>(entity);
+      glm::mat4 mModelNDC;
 
-      GLint uniform_var_loc1 = glGetUniformLocation(sprite.shaderRef->second.GetHandle(), "uModelToNDC");
-      GLint uniform_var_loc2 = glGetUniformLocation(sprite.shaderRef->second.GetHandle(), "uColor");
-      GLint uniform_var_loc3 = glGetUniformLocation(sprite.shaderRef->second.GetHandle(), "uTextureCheck");
-      GLint uniform_var_loc4 = glGetUniformLocation(sprite.shaderRef->second.GetHandle(), "TextureIndex");
-      GLint uniform_var_loc5 = glGetUniformLocation(sprite.shaderRef->second.GetHandle(), "TextureDimensions");
-      GLint uniform_var_loc6 = glGetUniformLocation(sprite.shaderRef->second.GetHandle(), "LightTimer");
-      GLint uniform_var_loc7 = glGetUniformLocation(sprite.shaderRef->second.GetHandle(), "ShakeTimer");
-      GLint uniform_var_loc8 = glGetUniformLocation(sprite.shaderRef->second.GetHandle(), "ShakeScreen");
-      GLuint tex_loc = glGetUniformLocation(sprite.shaderRef->second.GetHandle(), "uTex2d");
+      float eyeRadius = 1.0f * oi.eyeRadius;
+      float oneStep = 3.141590118f / 36;
+      float eyeAlpha = oneStep * oi.eyeAlpha;
+      float eyeBeta = oneStep * oi.eyeBeta;
 
-      if (uniform_var_loc1 >= 0)
+      glm::vec3 view{ eyeRadius * cos(eyeAlpha) * cos(eyeBeta),
+                      eyeRadius * sin(eyeAlpha),
+                      eyeRadius * cos(eyeAlpha) * sin(eyeBeta) };
+
+      glm::vec3 upVec{ 0.0f };
+
+      if (oi.eyeAlpha == 18)
       {
-        glm::mat4 mModelNDC;
+        glm::mat4 rot = glm::rotate(glm::mat4(1.0f), -oneStep * oi.eyeBeta, glm::vec3{ 0.0f, 1.0f, 1.0f });
+        upVec = glm::mat3(rot) * -(glm::vec3{ 1.0f, 0.0f,0.0f });
+      }
+      else if (oi.eyeAlpha == -18)
+      {
+        glm::mat4 rot = glm::rotate(glm::mat4(1.0f), -oneStep * oi.eyeBeta, glm::vec3{ 0.0f, 1.0f, 1.0f });
+        upVec = glm::mat3(rot) * glm::vec3{ 1.0f, 0.0f,0.0f };
+      }
 
-        float eyeRadius = 1.0f * oi.eyeRadius;
-        float oneStep = 3.141590118f / 36;
-        float eyeAlpha = oneStep * oi.eyeAlpha;
-        float eyeBeta = oneStep * oi.eyeBeta;
+      if (oi.eyeAlpha < 18)
+      {
+        upVec = glm::vec3{ 0.0f, 1.0f, 0.0f };
+      }
+      else
+      {
+        upVec = -(glm::vec3{ 0.0f, 1.0f, 0.0f });
+      }
 
-        glm::vec3 view{ eyeRadius * cos(eyeAlpha) * cos(eyeBeta),
-                        eyeRadius * sin(eyeAlpha),
-                        eyeRadius * cos(eyeAlpha) * sin(eyeBeta) };
+      glm::mat4 viewMtx = glm::lookAt(view, glm::vec3{ 0.0f, 0.0f, 0.0f }, upVec);
+      glm::mat4 projMtx = glm::perspective(glm::radians(90.0f), static_cast<float>(OpenGL_Context::width) / static_cast<float>(OpenGL_Context::height), 1.0f, 500.0f);
+      glm::mat4 model = glm::mat4(1.0f);
 
-        glm::vec3 upVec{ 0.0f };
+      model = glm::translate(model, trans.pos);
+      model = glm::rotate(model, glm::radians(trans.rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
+      model = glm::rotate(model, glm::radians(trans.rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
+      model = glm::rotate(model, glm::radians(trans.rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
+      model = glm::scale(model, trans.scale);
 
-        if (oi.eyeAlpha == 18)
+      mModelNDC = projMtx * viewMtx * model;
+
+      glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(mModelNDC));
+      //}
+    }
+    else
+    {
+      std::cout << "Uniform variable doesn't exist!!!\n";
+      std::exit(EXIT_FAILURE);
+    }
+
+
+    if (uniform_var_loc2 >= 0)
+    {
+      //float alpha = 1.0f;
+      glUniform4f(uniform_var_loc2, sprite.color.x, sprite.color.y, sprite.color.z, sprite.transparency);
+    }
+    else
+    {
+      std::cout << "Uniform variable doesn't exist!!!\n";
+      std::exit(EXIT_FAILURE);
+    }
+
+    if (uniform_var_loc3 >= 0)
+    {
+      glUniform1i(uniform_var_loc3, sprite.hasTexture);
+    }
+    else
+    {
+      std::cout << "Uniform variable doesn't exist!!!\n";
+      std::exit(EXIT_FAILURE);
+    }
+
+    if (uniform_var_loc4 >= 0)
+    {
+      glUniform2f(uniform_var_loc4, sprite.textureIdx.x, sprite.textureIdx.y);
+    }
+    else
+    {
+      std::cout << "Uniform variable doesn't exist!!!\n";
+      std::exit(EXIT_FAILURE);
+    }
+
+    if (sprite.hasTexture)
+    {
+      if (sprite.textureRef != Graphics::textures.end())
+      {
+        if (uniform_var_loc5 >= 0)
         {
-          glm::mat4 rot = glm::rotate(glm::mat4(1.0f), -oneStep * oi.eyeBeta, glm::vec3{ 0.0f, 1.0f, 1.0f });
-          upVec = glm::mat3(rot) * -(glm::vec3{ 1.0f, 0.0f,0.0f });
-        }
-        else if (oi.eyeAlpha == -18)
-        {
-          glm::mat4 rot = glm::rotate(glm::mat4(1.0f), -oneStep * oi.eyeBeta, glm::vec3{ 0.0f, 1.0f, 1.0f });
-          upVec = glm::mat3(rot) * glm::vec3{ 1.0f, 0.0f,0.0f };
-        }
-
-        if (oi.eyeAlpha < 18)
-        {
-          upVec = glm::vec3{ 0.0f, 1.0f, 0.0f };
+          glUniform2f(uniform_var_loc5, sprite.textureRef->second.GetCols(), sprite.textureRef->second.GetRows());
         }
         else
         {
-          upVec = -(glm::vec3{ 0.0f, 1.0f, 0.0f });
-        }
-
-        glm::mat4 viewMtx = glm::lookAt(view, glm::vec3{ 0.0f, 0.0f, 0.0f }, upVec);
-        glm::mat4 projMtx = glm::perspective(glm::radians(90.0f), static_cast<float>(OpenGL_Context::width) / static_cast<float>(OpenGL_Context::height), 1.0f, 500.0f);
-        glm::mat4 model = glm::mat4(1.0f);
-
-        model = glm::translate(model, trans.pos);
-        model = glm::rotate(model, glm::radians(trans.rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(trans.rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(trans.rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::scale(model, trans.scale);
-
-        mModelNDC = projMtx * viewMtx * model;
-
-        glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(mModelNDC));
-        //}
-      }
-      else
-      {
-        std::cout << "Uniform variable doesn't exist!!!\n";
-        std::exit(EXIT_FAILURE);
-      }
-
-
-      if (uniform_var_loc2 >= 0)
-      {
-        //float alpha = 1.0f;
-        glUniform4f(uniform_var_loc2, sprite.color.x, sprite.color.y, sprite.color.z, sprite.transparency);
-      }
-      else
-      {
-        std::cout << "Uniform variable doesn't exist!!!\n";
-        std::exit(EXIT_FAILURE);
-      }
-
-      if (uniform_var_loc3 >= 0)
-      {
-        glUniform1i(uniform_var_loc3, sprite.hasTexture);
-      }
-      else
-      {
-        std::cout << "Uniform variable doesn't exist!!!\n";
-        std::exit(EXIT_FAILURE);
-      }
-
-      if (uniform_var_loc4 >= 0)
-      {
-        glUniform2f(uniform_var_loc4, sprite.textureIdx.x, sprite.textureIdx.y);
-      }
-      else
-      {
-        std::cout << "Uniform variable doesn't exist!!!\n";
-        std::exit(EXIT_FAILURE);
-      }
-
-      if (sprite.hasTexture)
-      {
-        if (sprite.textureRef != Graphics::textures.end())
-        {
-          if (uniform_var_loc5 >= 0)
-          {
-            glUniform2f(uniform_var_loc5, sprite.textureRef->second.GetCols(), sprite.textureRef->second.GetRows());
-          }
-          else
-          {
-            std::cout << "Uniform variable doesn't exist!!!\n";
-            std::exit(EXIT_FAILURE);
-          }
+          std::cout << "Uniform variable doesn't exist!!!\n";
+          std::exit(EXIT_FAILURE);
         }
       }
+    }
 
-      if (uniform_var_loc7 >= 0)
-      {
-        glUniform1f(uniform_var_loc7, shakeTimer);
-      }
-      else
-      {
-        std::cout << "Uniform variable doesn't exist!!!\n";
-        std::exit(EXIT_FAILURE);
-      }
+    if (uniform_var_loc7 >= 0)
+    {
+      glUniform1f(uniform_var_loc7, shakeTimer);
+    }
+    else
+    {
+      std::cout << "Uniform variable doesn't exist!!!\n";
+      std::exit(EXIT_FAILURE);
+    }
 
-      if (uniform_var_loc8 >= 0)
-      {
-        glUniform1i(uniform_var_loc8, shakeScreen);
-      }
-      else
-      {
-        std::cout << "Uniform variable doesn't exist!!!\n";
-        std::exit(EXIT_FAILURE);
-      }
+    if (uniform_var_loc8 >= 0)
+    {
+      glUniform1i(uniform_var_loc8, shakeScreen);
+    }
+    else
+    {
+      std::cout << "Uniform variable doesn't exist!!!\n";
+      std::exit(EXIT_FAILURE);
+    }
 
-      if (tex_loc >= 0)
-      {
-        glUniform1i(tex_loc, 1);
-      }
-      else
-      {
-        std::cout << "Uniform variable tex_loc doesn't exist!!!\n";
-        std::exit(EXIT_FAILURE);
-      }
+    if (tex_loc >= 0)
+    {
+      glUniform1i(tex_loc, 1);
+    }
+    else
+    {
+      std::cout << "Uniform variable tex_loc doesn't exist!!!\n";
+      std::exit(EXIT_FAILURE);
     }
   }
 
@@ -291,7 +289,7 @@ void Eclipse::RenderSystem::DrawBuffers(unsigned int framebuffer)
         }
       }
 
-      CheckUniformLoc(*(pair.second));
+      CheckUniformLoc(*(pair.second), pair.second->ID);
 
       // Part 4: Render OpenGL primitives encapsulated by this object's VAO using glDrawElements
       if (pair.second->modelRef->second->GetPrimitiveType() != GL_LINES)
@@ -364,7 +362,7 @@ void Eclipse::RenderSystem::DrawSecondBuffers(unsigned int framebuffer)
         }
       }
 
-      CheckUniformLoc(*(pair.second));
+      CheckUniformLoc(*(pair.second), pair.second->ID);
 
       // Part 4: Render OpenGL primitives encapsulated by this object's VAO using glDrawElements
       if (pair.second->modelRef->second->GetPrimitiveType() != GL_LINES)
@@ -385,4 +383,22 @@ void Eclipse::RenderSystem::DrawSecondBuffers(unsigned int framebuffer)
       pair.second->shaderRef->second.UnUse();
     }
   }
+}
+
+
+void Eclipse::RenderSystem::test()
+{
+  ImGui::Begin("Properties");
+
+  for (auto const& entity : mEntities)
+  {
+    if (entity == createdID)
+    {
+      TransformComponent& trans = engine->world.GetComponent<TransformComponent>(entity);
+      ImGui::DragFloat3("Scale", (float*)&trans.scale, 0.2f, 0.0f, 0.0f);
+      ImGui::DragFloat3("Translate", (float*)&trans.pos, 0.2f, 0.0f, 0.0f);
+      ImGui::DragFloat3("Rotate", (float*)&trans.rot, 0.2f, 0.0f, 0.0f);
+    }
+  }
+  ImGui::End();
 }

@@ -22,8 +22,9 @@ namespace Eclipse
     InputWrapper InputHandler;
     static OpenGL_Context mRenderContext;
 
-    void CheckUniformLoc(Sprite& sprite);
+    void CheckUniformLoc(Sprite& sprite, unsigned int id);
     void DrawBuffers(unsigned int framebuffer);
     void DrawSecondBuffers(unsigned int framebuffer);
+    void test();
   };
 }

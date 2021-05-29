@@ -126,13 +126,6 @@ void Graphics::update()
     }
   }
 
-  TransformComponent& trans = engine->world.GetComponent<TransformComponent>(createdID);
-
-  ImGui::Begin("Properties");
-  ImGui::DragFloat3("Scale", (float*)&trans.scale, 0.2f, 0.0f, 0.0f);
-  ImGui::DragFloat3("Translate", (float*)&trans.pos, 0.2f, 0.0f, 0.0f);
-  ImGui::DragFloat3("Rotate", (float*)&trans.rot, 0.2f, 0.0f, 0.0f);
-  ImGui::End();
   ImGui::End();
 }
 
@@ -338,6 +331,7 @@ void Graphics::CreateObject(GLint model)
     sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
     sprite.modelRef = models.find("sphere");
     Graphics::sprites.emplace(sprite.layerNum, &sprite);
+    sprite.ID = EntityID;
   }
   break;
 
