@@ -2,6 +2,7 @@
 
 #include "System.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"
+#include "ECS/ComponentManager/Components/CameraComponent.h"
 #include "Graphics.h"
 #include "Graphics/InputHandler/InputWrapper.h"
 

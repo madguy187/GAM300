@@ -3,6 +3,7 @@
 
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RenderComponent.h"
+#include "ECS//ComponentManager/Components/CameraComponent.h"
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
 
 namespace Eclipse
@@ -17,7 +18,7 @@ namespace Eclipse
       // register component
       world.RegisterComponent<TransformComponent>();
       world.RegisterComponent<RenderComponent>();
-      world.RegisterComponent<Camera>();
+      world.RegisterComponent<CameraComponent>();
       world.RegisterComponent<Sprite>();
 
       // registering system
@@ -32,7 +33,7 @@ namespace Eclipse
 
       Entity ent = world.CreateEntity();
       world.AddComponent(ent, TransformComponent{ 4.0f, 5.0f, 6.0f });
-      world.AddComponent(ent, Camera{ });
+      world.AddComponent(ent, CameraComponent{ });
       world.AddComponent(ent, Sprite{ });
 
       while (!glfwWindowShouldClose(GLHelper::ptr_window))

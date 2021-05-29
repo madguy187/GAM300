@@ -592,52 +592,52 @@ struct Dialogue
 	unsigned int iconID{ 0 };
 };
 
-struct Camera
-{
-  glm::vec2 right{ 0 }, up{ 0 };
-  glm::mat3 view_xform{ 0 };
-
-  // window parameters 
-  GLint height{ 0 };
-  GLfloat ar{ 0.0f };
-  glm::mat3 camwin_to_ndc_xform{ 0.0 };
-  glm::mat3 world_to_ndc_xform{ 0.0 };
-
-  // window change parameters
-  GLint min_height{ 500 }, max_height{ 2000 };
-  GLint height_chg_dir{ 1 };
-  GLint height_chg_val{ 10 };
-  GLfloat linear_speed{ 2.f };
-
-  //COMMENTED OUT
-  GLboolean camtype_flag{ GL_FALSE }; // button V
-  GLboolean left_turn_flag{ GL_FALSE }; // button H
-  GLboolean right_turn_flag{ GL_FALSE }; // button K
-  GLboolean move_flag{ GL_FALSE }; // button U  
-
-  // keyboard button press flags
-  GLboolean zoom_flag{ GL_FALSE }; //button Z
-  GLboolean zoomOut_flag{ GL_FALSE }; //button X
-  GLboolean moveRight_flag{ GL_FALSE }; //button A
-  GLboolean moveLeft_flag{ GL_FALSE }; //button D
-  GLboolean moveUp_flag{ GL_FALSE }; //button W
-  GLboolean moveDown_flag{ GL_FALSE }; //button S
-
-  enum class CameraType
-  {
-    Free_Camera,
-    Player_Camera,
-    Cinematic_Camera
-  };
-
-  CameraType camType;
-
-  glm::vec2 prevPos{ 0.0f };
-
-  int eyeAlpha{ 1 };
-  int eyeBeta{ 18 };
-  int eyeRadius{ 40 };
-};
+//struct Camera
+//{
+//  glm::vec2 right{ 0 }, up{ 0 };
+//  glm::mat3 view_xform{ 0 };
+//
+//  // window parameters 
+//  GLint height{ 0 };
+//  GLfloat ar{ 0.0f };
+//  glm::mat3 camwin_to_ndc_xform{ 0.0 };
+//  glm::mat3 world_to_ndc_xform{ 0.0 };
+//
+//  // window change parameters
+//  GLint min_height{ 500 }, max_height{ 2000 };
+//  GLint height_chg_dir{ 1 };
+//  GLint height_chg_val{ 10 };
+//  GLfloat linear_speed{ 2.f };
+//
+//  //COMMENTED OUT
+//  GLboolean camtype_flag{ GL_FALSE }; // button V
+//  GLboolean left_turn_flag{ GL_FALSE }; // button H
+//  GLboolean right_turn_flag{ GL_FALSE }; // button K
+//  GLboolean move_flag{ GL_FALSE }; // button U  
+//
+//  // keyboard button press flags
+//  GLboolean zoom_flag{ GL_FALSE }; //button Z
+//  GLboolean zoomOut_flag{ GL_FALSE }; //button X
+//  GLboolean moveRight_flag{ GL_FALSE }; //button A
+//  GLboolean moveLeft_flag{ GL_FALSE }; //button D
+//  GLboolean moveUp_flag{ GL_FALSE }; //button W
+//  GLboolean moveDown_flag{ GL_FALSE }; //button S
+//
+//  enum class CameraType
+//  {
+//    Free_Camera,
+//    Player_Camera,
+//    Cinematic_Camera
+//  };
+//
+//  CameraType camType;
+//
+//  glm::vec2 prevPos{ 0.0f };
+//
+//  int eyeAlpha{ 1 };
+//  int eyeBeta{ 18 };
+//  int eyeRadius{ 40 };
+//};
 
 struct Debug
 {

@@ -25,6 +25,8 @@
 #include "vec.h"
 #include "../src/ECS/World.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"
+#include "ECS/ComponentManager/Components/CameraComponent.h"
+
 /*                                                   objects with file scope
 ----------------------------------------------------------------------------- */
 using namespace rapidjson;
@@ -835,9 +837,10 @@ void Graphics::CheckUniformLoc(Sprite& sprite)
 
   for (auto const& entity : mEntities)
   {
-    Camera& oi = engine->world.GetComponent<Camera>(entity);
+    //Camera& oi = engine->world.GetComponent<Camera>(entity);
+    CameraComponent& oi = engine->world.GetComponent<CameraComponent>(entity);
 
-    std::cout << "camera" << oi.prevPos.x << std::endl;
+    //std::cout << "camera" << oi.prevPos.x << std::endl;
   }
 
   //unsigned int currCamID = 0;
