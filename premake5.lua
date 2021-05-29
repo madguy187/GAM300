@@ -53,6 +53,7 @@ project "Eclipse"
     "Dep/GLM/glm/gtc",
     "Dep/GLM/glm/gtx",
     "Dep/GLEW/lib/Release/x64",
+		"Dep/spdlog/include",
     "Eclipse/src/Graphics/Still_Cleaning",
     "Eclipse/src/Graphics/RendererAPI",
     "Eclipse/src/Graphics/Parser",

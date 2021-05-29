@@ -360,7 +360,7 @@ relative to the top-left corner of the window client area.
 void GLHelper::mousepos_cb(GLFWwindow* pwin, double xpos, double ypos)
 {
 #ifdef _DEBUG
-  std::cout << "Mouse cursor position: (" << xpos << ", " << ypos << ")" << std::endl;
+  /*std::cout << "Mouse cursor position: (" << xpos << ", " << ypos << ")" << std::endl;*/
 #endif
   (void)pwin;
   (void)xpos;

@@ -30,6 +30,9 @@
 #include "examples/imgui_impl_opengl3.h"
 #include "examples/imgui_impl_glfw.h"
 
+// Logger
+#include "Logger/Logger.h"
+
 #include "matrix_transform.hpp"
 #include "type_ptr.hpp"
 #include "matrix_transform_2d.hpp"
@@ -53,6 +56,7 @@
 #include <cmath>
 #include <fstream>
 #include <array>
+#include <algorithm>
 
 #include "GLEW/include/GL/glew.h"
 #include "GLFW/include/GLFW/glfw3.h"
@@ -60,3 +64,7 @@
 
 #include "GLHelper.h"
 #include "Graphics.h"
+
+// Custom Libraries
+#include "Library/Math/Vector.h"
+#include "Library/Math/Matrix.h"

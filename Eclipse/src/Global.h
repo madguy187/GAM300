@@ -1,6 +1,8 @@
 #pragma once
 #include "pch.h"
 
+#define EPSILON 0.000001f
+
 // Entities
 using Entity = uint32_t;
 static constexpr Entity MAX_ENTITY = 10000;
