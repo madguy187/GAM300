@@ -4,8 +4,8 @@
 
 using namespace Eclipse;
 
-static std::ostream& operator << (std::ostream& stream, const Eclipse::InputKeycode& keycode) {
-
+std::ostream& Eclipse::operator<<(std::ostream& stream, const InputKeycode& keycode)
+{
   switch (keycode)
   {
   case InputKeycode::Key_Null:
@@ -373,7 +373,7 @@ static std::ostream& operator << (std::ostream& stream, const Eclipse::InputKeyc
   return stream;
 }
 
-Eclipse::InputWrapper::InputWrapper() : EnablePrint{false}
+Eclipse::InputWrapper::InputWrapper() : EnablePrint{ false }
 {
   init();
 }
@@ -406,7 +406,7 @@ void Eclipse::InputWrapper::RegisterHoldInput(InputKeycode keycode, int keypress
 
   for (KeyIT it = HoldKeyContainer.begin(); it != HoldKeyContainer.end(); it++)
   {
-    if ( ! (it->first.first == keycode) )
+    if (!(it->first.first == keycode))
     {
       HoldKeyContainer.insert({ std::pair<InputKeycode,int>(keycode,keypressFlag),std::pair<bool,InputState>(flag,input) });
     }
@@ -565,7 +565,7 @@ bool Eclipse::InputWrapper::GetKeyReleased(InputKeycode keycode)
       auto& Message = ((*KeyIT).first.first);
       auto& InputState_ = ((*KeyIT).second.second);
 
-      if (Message == keycode && (InputState_ == InputState::Key_PRESSED) )
+      if (Message == keycode && (InputState_ == InputState::Key_PRESSED))
       {
         auto& Press = ((*KeyIT).first.second);
         auto& SingleFlag = ((*KeyIT).second.first);
@@ -594,7 +594,7 @@ bool Eclipse::InputWrapper::GetHoldKeyReleased(InputKeycode keycode)
       auto& Message = ((*KeyIT).first.first);
       auto& InputState_ = ((*KeyIT).second.second);
 
-      if (Message == keycode )
+      if (Message == keycode)
       {
         auto& Press = ((*KeyIT).first.second);
         auto& SingleFlag = ((*KeyIT).second.first);
@@ -603,7 +603,7 @@ bool Eclipse::InputWrapper::GetHoldKeyReleased(InputKeycode keycode)
         SingleFlag = false;
 
         RemoveHoldKey(KeyIT);
-        std::cout << "HOLD CONTAINER SIZE : " << HoldKeyContainer.size()  << std::endl;
+        std::cout << "HOLD CONTAINER SIZE : " << HoldKeyContainer.size() << std::endl;
         PrintKey(Message, HoldKeyRelease);
         return true;
       }
@@ -622,14 +622,14 @@ void Eclipse::InputWrapper::Update()
     auto& Message = (pair2.first.first);
     auto& HoldFlag = (pair2.second.second);
 
-    if (HoldFlag == InputState::Key_HOLD )
+    if (HoldFlag == InputState::Key_HOLD)
     {
       PrintKey(Message);
     }
   }
-
 }
 
 void Eclipse::InputWrapper::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
+
 }

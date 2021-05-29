@@ -9,11 +9,20 @@ namespace Eclipse
 {
     void Engine::Init()
     {
+      //ECVec2D woo;
+      //glm::vec2 koo{ 1,2 };
+      //woo += koo;
+      //glm::vec2 loo = woo.ConvertToGlmVec2Type();
+
+      /*ECMat4 mat{ 1,0,0,1,0,2,1,2,2,1,0,1,2,0,1,4 };
+      ECMat4 mat2;
+      ECMtx44Inverse(&mat2, mat);
+      std::cout << mat2;*/
       RenderSystem::Load();
     }
 
     void Engine::Run()
-    {
+    {  
       // register component
       world.RegisterComponent<TransformComponent>();
       world.RegisterComponent<RenderComponent>();
@@ -38,10 +47,6 @@ namespace Eclipse
       while (!glfwWindowShouldClose(OpenGL_Context::ptr_window))
       {
         world.Update<RenderSystem>();
-
-
-
-
       }
 
       RenderSystem::unLoad();

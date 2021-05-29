@@ -73,6 +73,18 @@
     <Filter Include="src\Graphics\Still_Cleaning">
       <UniqueIdentifier>{A45BC4B2-1069-F298-994F-EE83055CBE4F}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Library">
+      <UniqueIdentifier>{31E15EE3-9D96-D7D8-268B-D1AF923FCEDC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Library\Math">
+      <UniqueIdentifier>{AAAC9EFC-96A5-BD4E-BFD7-A2D3AB2F9D5A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Logger">
+      <UniqueIdentifier>{5CCC981E-4884-DA6B-B18B-B3C79D62755C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Reflection">
+      <UniqueIdentifier>{C7EBD53B-B3B9-C941-9C4D-3A6888BAA5A6}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\SparseSet">
       <UniqueIdentifier>{D6A11390-4262-8FC6-0B9D-D843771CD4A2}</UniqueIdentifier>
     </Filter>
@@ -228,6 +240,24 @@
     <ClInclude Include="src\Graphics\Still_Cleaning\Vec.h">
       <Filter>src\Graphics\Still_Cleaning</Filter>
     </ClInclude>
+    <ClInclude Include="src\Library\Math\Matrix.h">
+      <Filter>src\Library\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Library\Math\Vector.h">
+      <Filter>src\Library\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Logger\Logger.h">
+      <Filter>src\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Reflection\complex_support.h">
+      <Filter>src\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Reflection\primitive_support.h">
+      <Filter>src\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Reflection\registration.h">
+      <Filter>src\Reflection</Filter>
+    </ClInclude>
     <ClInclude Include="src\SparseSet\SparseSet.hpp">
       <Filter>src\SparseSet</Filter>
     </ClInclude>
@@ -352,6 +382,12 @@
     </ClCompile>
     <ClCompile Include="src\Graphics\RendererAPI\stb_image.cpp">
       <Filter>src\Graphics\RendererAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Library\Math\Matrix.cpp">
+      <Filter>src\Library\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Logger\Logger.cpp">
+      <Filter>src\Logger</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp">
       <Filter>src</Filter>
