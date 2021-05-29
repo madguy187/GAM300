@@ -4,13 +4,13 @@
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "Graphics.h"
 #include "Graphics/InputHandler/InputWrapper.h"
+#include "Graphics/OpenGL/OpenGL_Context.h"
 
 namespace Eclipse
 {
   class RenderSystem : public System
   {
   public:
-    InputWrapper InputHandler;
 
     static void Load();
     void Init();
@@ -19,6 +19,9 @@ namespace Eclipse
     static void unLoad();
 
   private:
+    InputWrapper InputHandler;
+    static OpenGL_Context mRenderContext;
+
     void CheckUniformLoc(Sprite& sprite);
     void DrawBuffers(unsigned int framebuffer);
     void DrawSecondBuffers(unsigned int framebuffer);

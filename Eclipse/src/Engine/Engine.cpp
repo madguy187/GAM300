@@ -35,10 +35,8 @@ namespace Eclipse
       world.AddComponent(ent, Camera{ });
       world.AddComponent(ent, Sprite{ });
 
-      while (!glfwWindowShouldClose(GLHelper::ptr_window))
+      while (!glfwWindowShouldClose(OpenGL_Context::ptr_window))
       {
-
-        // Darren was here
         world.Update<RenderSystem>();
 
 

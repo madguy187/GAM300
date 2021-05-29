@@ -2,7 +2,6 @@
 #include "FrameBuffer.h"
 #include "WindowConstraint.h"
 #include "../src/ECS/World.h"
-#include "GLHelper.h"
 
 
 FrameBuffer::FrameBuffer(const glm::uvec2& p_size) :

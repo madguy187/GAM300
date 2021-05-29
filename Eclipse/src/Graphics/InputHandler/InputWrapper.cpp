@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "InputWrapper.h"
-#include "GLHelper.h"
+#include "Graphics/OpenGL/OpenGL_Context.h"
 
 using namespace Eclipse;
 
@@ -425,7 +425,7 @@ bool Eclipse::InputWrapper::IsKeyReleased(int input)
 
 int Eclipse::InputWrapper::GetKey(InputKeycode input)
 {
-  return (glfwGetKey(GLHelper::ptr_window, static_cast<int>(input)));
+  return (glfwGetKey(OpenGL_Context::ptr_window, static_cast<int>(input)));
 }
 
 void Eclipse::InputWrapper::PrintKey(InputKeycode input, int presstype)

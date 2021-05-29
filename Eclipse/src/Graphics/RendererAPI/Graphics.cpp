@@ -17,7 +17,6 @@
 
 #include "pch.h"
 #include "Graphics.h"
-#include "GLHelper.h"
 
 #include "imgui.h"
 #include "type_ptr.hpp"
@@ -102,10 +101,9 @@ void Graphics::init()
 {
   std::cout << "INIT" << std::endl;
   glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-  glViewport(0, 0, GLHelper::width, GLHelper::height);
-  GLHelper::print_specs();
-
-  m_frameBuffer = new FrameBuffer(GLHelper::width, GLHelper::height);
+  glViewport(0, 0, OpenGL_Context::width, OpenGL_Context::height);
+  
+  m_frameBuffer = new FrameBuffer(OpenGL_Context::width, OpenGL_Context::height);
   CreateFrameBuffer();
 }
 
@@ -431,7 +429,7 @@ void Graphics::CreateFrameBuffer()
 
   glGenTextures(1, &textureColorbuffer);
   glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, GLHelper::width, GLHelper::height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, OpenGL_Context::width, OpenGL_Context::height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
@@ -439,12 +437,12 @@ void Graphics::CreateFrameBuffer()
   unsigned int rbo;
   glGenRenderbuffers(1, &rbo);
   glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, GLHelper::width, GLHelper::height);
+  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, OpenGL_Context::width, OpenGL_Context::height);
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
 
   if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
   {
-    std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+    std::cout << "First Frambuffer : ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
   }
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

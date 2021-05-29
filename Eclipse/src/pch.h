@@ -58,5 +58,4 @@
 #include "GLFW/include/GLFW/glfw3.h"
 #include "GLM/glm/glm.hpp"
 
-#include "GLHelper.h"
 #include "Graphics.h"

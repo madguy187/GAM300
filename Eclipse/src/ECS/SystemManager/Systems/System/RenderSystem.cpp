@@ -6,24 +6,22 @@
 float shakeTimer = 1.5f;
 bool shakeScreen = false;
 
+OpenGL_Context Eclipse::RenderSystem::mRenderContext;
+
 glm::vec3 spherePos = glm::vec3{ 0.0f, 0.0f, -10.0f };
 glm::vec3 sphereScale = glm::vec3{ 5.0f, 5.0f, 5.0f };
 glm::vec3 sphereRot = glm::vec3{ 0.0f, 0.0f, 0.0f };
 
 void Eclipse::RenderSystem::Load()
 {
-  if (!GLHelper::init("../Dep/Configuration/configuration.json"))
-  {
-    std::cout << "Unable to create OpenGL context" << std::endl;
-    std::exit(EXIT_FAILURE);
-  }
+  mRenderContext.init("../Dep/Configuration/configuration.json");
 
   Graphics::load();
 
   IMGUI_CHECKVERSION();
   ImGui::CreateContext();
   ImGuiIO& io = ImGui::GetIO(); (void)io;
-  ImGui_ImplGlfw_InitForOpenGL(GLHelper::ptr_window, true);
+  ImGui_ImplGlfw_InitForOpenGL(mRenderContext.ptr_window, true);
   ImGui_ImplOpenGL3_Init();
   ImGui::StyleColorsClassic();
   io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
@@ -51,37 +49,11 @@ void Eclipse::RenderSystem::Update()
 
   Graphics::update(fixedDeltaTime);
 
-  std::stringstream sstr;
-  sstr << std::fixed << std::setprecision(2) << GLHelper::title << " | FPS: " << GLHelper::fps;
-  glfwSetWindowTitle(GLHelper::ptr_window, sstr.str().c_str());
-
   Graphics::m_frameBuffer->Bind();
   Graphics::m_frameBuffer->Clear();
 
   glBindFramebuffer(GL_FRAMEBUFFER, Graphics::framebuffer);
   glClear(GL_COLOR_BUFFER_BIT);
-
-  InputHandler.SetIsPrint(true);
-
-  if (InputHandler.GetKeyCurrent(InputKeycode::Key_LEFT))
-  {
-    std::cout << " Move Left " << std::endl;
-  }
- 
-  if (InputHandler.GetKeyCurrent(InputKeycode::Key_RIGHT))
-  {
-    std::cout << " MOVE RIGHT " << std::endl;
-  }
- 
-  if (InputHandler.GetKeyCurrent(InputKeycode::Key_SPACE))
-  {
-    std::cout << " JUMP" << std::endl;
-  }
- 
-  if (InputHandler.GetKeyCurrent(InputKeycode::Key_UP))
-  {
-    std::cout << " MOVE UP " << std::endl;
-  }
 
   DrawBuffers(Graphics::framebuffer);
   DrawBuffers(Graphics::m_frameBuffer->GetGameViewBuffer());
@@ -91,17 +63,16 @@ void Eclipse::RenderSystem::Update()
 
   int Width, Height;
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-  glfwGetFramebufferSize(GLHelper::ptr_window, &Width, &Height);
+  glfwGetFramebufferSize(mRenderContext.ptr_window, &Width, &Height);
   glViewport(0, 0, Width, Height);
   glClearColor(0.1f, 0.2f, 0.3f, 1.f);
-  glfwSwapBuffers(GLHelper::ptr_window);
+  glfwSwapBuffers(mRenderContext.ptr_window);
   glfwPollEvents();
 }
 
 void Eclipse::RenderSystem::unLoad()
 {
   ImGui::DestroyContext();
-  GLHelper::cleanup();
 }
 
 void Eclipse::RenderSystem::CheckUniformLoc(Sprite& sprite)
@@ -161,7 +132,7 @@ void Eclipse::RenderSystem::CheckUniformLoc(Sprite& sprite)
         }
 
         glm::mat4 viewMtx = glm::lookAt(view, glm::vec3{ 0.0f, 0.0f, 0.0f }, upVec);
-        glm::mat4 projMtx = glm::perspective(glm::radians(90.0f), static_cast<float>(GLHelper::width) / static_cast<float>(GLHelper::height), 1.0f, 500.0f);
+        glm::mat4 projMtx = glm::perspective(glm::radians(90.0f), static_cast<float>(OpenGL_Context::width) / static_cast<float>(OpenGL_Context::height), 1.0f, 500.0f);
         glm::mat4 model = glm::mat4(1.0f);
 
         model = glm::translate(model, { trans.x,trans.y,trans.z });
