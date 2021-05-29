@@ -52,7 +52,7 @@ public:
 
   static void load();
   static void init();
-  static void update(double delta_time);
+  static void update();
   static void draw();
   static void cleanup();
   static void unload();

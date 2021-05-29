@@ -13,7 +13,11 @@ namespace Eclipse
     void LoadConfigData(std::string configFile);
     bool init(std::string configFile);
     void print_specs();
+
+    // Clear the view
     void pre_render();
+
+    // Render end, swap buffers
     void post_render();
     void end();
 

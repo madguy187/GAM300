@@ -13,8 +13,8 @@ namespace Eclipse
   public:
 
     static void Load();
-    void Init();
-    void Render();
+    static void Init();
+    void GlobalRender();
     void Update() override;
     static void unLoad();
 

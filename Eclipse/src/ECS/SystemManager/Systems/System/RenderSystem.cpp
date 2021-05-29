@@ -5,17 +5,14 @@
 
 float shakeTimer = 1.5f;
 bool shakeScreen = false;
-
 OpenGL_Context Eclipse::RenderSystem::mRenderContext;
-
-glm::vec3 spherePos = glm::vec3{ 0.0f, 0.0f, -10.0f };
-glm::vec3 sphereScale = glm::vec3{ 5.0f, 5.0f, 5.0f };
-glm::vec3 sphereRot = glm::vec3{ 0.0f, 0.0f, 0.0f };
 
 void Eclipse::RenderSystem::Load()
 {
+  // Loading Configuration
   mRenderContext.init("../Dep/Configuration/configuration.json");
 
+  // Loading Of Models , Shaders and etc.. 
   Graphics::load();
 
   IMGUI_CHECKVERSION();
@@ -26,28 +23,39 @@ void Eclipse::RenderSystem::Load()
   ImGui::StyleColorsClassic();
   io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
-  Graphics::init();
+  RenderSystem::Init();
 }
 
 void Eclipse::RenderSystem::Init()
 {
-
+  // Clear the view
+  mRenderContext.pre_render();
 }
 
-void Eclipse::RenderSystem::Render()
+void Eclipse::RenderSystem::GlobalRender()
 {
+  // Scene View
+  DrawBuffers(Graphics::framebuffer);
 
+  // Game View
+  DrawSecondBuffers(Graphics::m_frameBuffer->GetGameViewBuffer());
+
+  // render scene to framebuffer and add it to scene view
+  Graphics::draw();
+
+  // Imgui Render ( To be Removed )
+  ImGui::Render();
 }
 
 void Eclipse::RenderSystem::Update()
 {
-  float fixedDeltaTime = 1.0 / 60.0;
-
+  // To be Removed
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
   ImGui::NewFrame();
 
-  Graphics::update(fixedDeltaTime);
+  // To be Removed
+  Graphics::update();
 
   Graphics::m_frameBuffer->Bind();
   Graphics::m_frameBuffer->Clear();
@@ -55,23 +63,22 @@ void Eclipse::RenderSystem::Update()
   glBindFramebuffer(GL_FRAMEBUFFER, Graphics::framebuffer);
   glClear(GL_COLOR_BUFFER_BIT);
 
-  DrawBuffers(Graphics::framebuffer);
-  DrawBuffers(Graphics::m_frameBuffer->GetGameViewBuffer());
+  GlobalRender();
 
-  Graphics::draw();
-  ImGui::Render();
-
+  // To be Removed
   int Width, Height;
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
   glfwGetFramebufferSize(mRenderContext.ptr_window, &Width, &Height);
   glViewport(0, 0, Width, Height);
   glClearColor(0.1f, 0.2f, 0.3f, 1.f);
-  glfwSwapBuffers(mRenderContext.ptr_window);
-  glfwPollEvents();
+
+  // Render end, swap buffers
+  mRenderContext.post_render();
 }
 
 void Eclipse::RenderSystem::unLoad()
 {
+  mRenderContext.end();
   ImGui::DestroyContext();
 }
 
@@ -135,11 +142,11 @@ void Eclipse::RenderSystem::CheckUniformLoc(Sprite& sprite)
         glm::mat4 projMtx = glm::perspective(glm::radians(90.0f), static_cast<float>(OpenGL_Context::width) / static_cast<float>(OpenGL_Context::height), 1.0f, 500.0f);
         glm::mat4 model = glm::mat4(1.0f);
 
-        model = glm::translate(model, { trans.x,trans.y,trans.z });
-        model = glm::rotate(model, glm::radians(sphereRot.x), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(sphereRot.y), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(sphereRot.z), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::scale(model, sphereScale);
+        model = glm::translate(model, trans.pos);
+        model = glm::rotate(model, glm::radians(trans.rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(trans.rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(trans.rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, trans.scale);
 
         mModelNDC = projMtx * viewMtx * model;
 
