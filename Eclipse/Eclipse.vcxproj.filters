@@ -1,202 +1,357 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="ECS">
-      <UniqueIdentifier>{60E1870B-CCEA-877C-5566-9E7CC16E937C}</UniqueIdentifier>
+    <Filter Include="Dep">
+      <UniqueIdentifier>{9EE1870B-0AEB-877C-9366-9E7CFF6E937C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ECS\ComponentManager">
-      <UniqueIdentifier>{5D4ADB5A-49D9-6424-F2F7-781FDE6575CA}</UniqueIdentifier>
+    <Filter Include="Dep\IMGUI">
+      <UniqueIdentifier>{E8049539-546F-49B0-9DAD-FA5509572705}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ECS\ComponentManager\Components">
-      <UniqueIdentifier>{52DB8E7A-BEBE-9DBA-C7C1-CBF63324640B}</UniqueIdentifier>
+    <Filter Include="Dep\IMGUI\imgui-master">
+      <UniqueIdentifier>{EB9D08D7-D797-3129-C004-C839AC9D9795}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ECS\ComponentManager\Components\ComponentArray">
-      <UniqueIdentifier>{93B086DE-7F2E-D777-6826-950F544319A0}</UniqueIdentifier>
+    <Filter Include="Dep\IMGUI\imgui-master\examples">
+      <UniqueIdentifier>{F9C31209-65A7-2149-6EAA-4F85DA0CE899}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ECS\EntityManager">
-      <UniqueIdentifier>{07AF5F17-73C5-5DAD-BC3C-E9CE28922E35}</UniqueIdentifier>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ECS\SystemManager">
-      <UniqueIdentifier>{CF24BE49-3B3B-BCDF-84B2-4701F0078D67}</UniqueIdentifier>
+    <Filter Include="src\ECS">
+      <UniqueIdentifier>{F76D2FA9-634D-AE44-6C65-391BD8C314A6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ECS\SystemManager\Systems">
-      <UniqueIdentifier>{D6D91B50-429C-4FDA-8B4C-DE66F74D28B8}</UniqueIdentifier>
+    <Filter Include="src\ECS\ComponentManager">
+      <UniqueIdentifier>{D4771A65-C09C-69E5-E9E7-4E75D56B6803}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ECS\SystemManager\Systems\System">
-      <UniqueIdentifier>{2AA091FC-16F1-7C3E-3F55-6B002B0510A8}</UniqueIdentifier>
+    <Filter Include="src\ECS\ComponentManager\Components">
+      <UniqueIdentifier>{6950F8C7-D509-6372-5E69-7D4CCA2119E2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine">
-      <UniqueIdentifier>{DBC7D3B0-C769-FE86-B024-12DB9C6585D7}</UniqueIdentifier>
+    <Filter Include="src\ECS\ComponentManager\Components\ComponentArray">
+      <UniqueIdentifier>{CAECE577-B680-DB1F-1F45-35D40BF81512}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EntryPoint">
-      <UniqueIdentifier>{419769CF-2D4F-AB1C-9656-8478822D460D}</UniqueIdentifier>
+    <Filter Include="src\ECS\EntityManager">
+      <UniqueIdentifier>{DEF76D6C-4A64-2967-1358-C1C47F834BCF}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SparseSet">
-      <UniqueIdentifier>{FF3F5950-6BAA-0DC7-B4E8-BE6C2092EB1B}</UniqueIdentifier>
+    <Filter Include="src\ECS\SystemManager">
+      <UniqueIdentifier>{A66DCC9E-12DA-8799-DBCD-1FF747F9A901}</UniqueIdentifier>
     </Filter>
-    <Filter Include="TypeID">
-      <UniqueIdentifier>{54109DD4-40B2-C7AA-296D-DBFE15AE4EFB}</UniqueIdentifier>
+    <Filter Include="src\ECS\SystemManager\Systems">
+      <UniqueIdentifier>{AD0975A7-1922-5CD1-E2CE-EB6A4EA6F06A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ECS\SystemManager\Systems\System">
+      <UniqueIdentifier>{21B829F7-0D9F-EBEE-B6EF-510CA2B56455}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Engine">
+      <UniqueIdentifier>{12A1320E-FE58-745B-6760-4DB753370F4C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\EntryPoint">
+      <UniqueIdentifier>{F8337006-E401-640C-CD95-D432B9024071}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Graphics">
+      <UniqueIdentifier>{0D564864-F9B8-D708-A23E-10BF8E80A38B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Graphics\FrameBuffer">
+      <UniqueIdentifier>{A1EE6402-8D13-B482-B65E-9912A2E2B2A0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Graphics\InputHandler">
+      <UniqueIdentifier>{CA8F8D24-3652-C1AE-7F02-503BEB039A8C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Graphics\ModelFactory">
+      <UniqueIdentifier>{6583B0F8-D145-E482-1AF6-720F86F7BC60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Graphics\ModelFactory\BasicPrimitives">
+      <UniqueIdentifier>{42A4CBAC-AEBE-2E4E-F7E0-3EE2633A5655}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Graphics\Parser">
+      <UniqueIdentifier>{E901CDC3-5563-AAD1-DED0-F0834A31E190}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Graphics\RendererAPI">
+      <UniqueIdentifier>{8D5A1119-797F-6099-A2CA-45298E4E5FB7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Graphics\Still_Cleaning">
+      <UniqueIdentifier>{A45BC4B2-1069-F298-994F-EE83055CBE4F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\SparseSet">
+      <UniqueIdentifier>{D6A11390-4262-8FC6-0B9D-D843771CD4A2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\TypeID">
+      <UniqueIdentifier>{8BE9FB31-77A1-3D7F-E0A8-16DBCC7FD86F}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.h">
+      <Filter>Dep\IMGUI\imgui-master\examples</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_opengl3.h">
+      <Filter>Dep\IMGUI\imgui-master\examples</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dep\IMGUI\imgui-master\imgui.h">
+      <Filter>Dep\IMGUI\imgui-master</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dep\IMGUI\imgui-master\imgui_internal.h">
+      <Filter>Dep\IMGUI\imgui-master</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h">
-      <Filter>ECS\ComponentManager</Filter>
+      <Filter>src\ECS\ComponentManager</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.h">
-      <Filter>ECS\ComponentManager\Components\ComponentArray</Filter>
+      <Filter>src\ECS\ComponentManager\Components\ComponentArray</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentBase.h">
-      <Filter>ECS\ComponentManager\Components\ComponentArray</Filter>
+      <Filter>src\ECS\ComponentManager\Components\ComponentArray</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\RenderComponent.h">
-      <Filter>ECS\ComponentManager\Components</Filter>
+      <Filter>src\ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\TransformComponent.h">
-      <Filter>ECS\ComponentManager\Components</Filter>
+      <Filter>src\ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\EntityManager\EntityManager.h">
-      <Filter>ECS\EntityManager</Filter>
+      <Filter>src\ECS\EntityManager</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\SystemManager.h">
-      <Filter>ECS\SystemManager</Filter>
+      <Filter>src\ECS\SystemManager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem.h">
+      <Filter>src\ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\System.h">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
+      <Filter>src\ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\World.h">
-      <Filter>ECS</Filter>
+      <Filter>src\ECS</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\Engine.h">
-      <Filter>Engine</Filter>
+      <Filter>src\Engine</Filter>
     </ClInclude>
     <ClInclude Include="src\EntryPoint\EntryPoint.h">
-      <Filter>EntryPoint</Filter>
+      <Filter>src\EntryPoint</Filter>
     </ClInclude>
-    <ClInclude Include="src\Global.h" />
+    <ClInclude Include="src\Global.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\FrameBuffer\FrameBuffer.h">
+      <Filter>src\Graphics\FrameBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\FrameBuffer\WindowConstraint.h">
+      <Filter>src\Graphics\FrameBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h">
+      <Filter>src\Graphics\InputHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\InputHandler\InputWrapper.h">
+      <Filter>src\Graphics\InputHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\InputHandler\PrintOut.h">
+      <Filter>src\Graphics\InputHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\AllBasicPrimitives.h">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.h">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Cone.h">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Cube.h">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Cylinder.h">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\LightQuad.h">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Lines.h">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Particles.h">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Plane.h">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Pyramid.h">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Quad.h">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Sphere.h">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Torus.h">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Triangle.h">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\IModel.h">
+      <Filter>src\Graphics\ModelFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\ModelFactory.h">
+      <Filter>src\Graphics\ModelFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\ModelGlobal.h">
+      <Filter>src\Graphics\ModelFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Parser\Parser.h">
+      <Filter>src\Graphics\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\RendererAPI\GLHelper.h">
+      <Filter>src\Graphics\RendererAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\RendererAPI\Graphics.h">
+      <Filter>src\Graphics\RendererAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\RendererAPI\Shader.h">
+      <Filter>src\Graphics\RendererAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\RendererAPI\Texture.h">
+      <Filter>src\Graphics\RendererAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Still_Cleaning\AllComponents.h">
+      <Filter>src\Graphics\Still_Cleaning</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Still_Cleaning\Global.h">
+      <Filter>src\Graphics\Still_Cleaning</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Still_Cleaning\Math_Lib.h">
+      <Filter>src\Graphics\Still_Cleaning</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Still_Cleaning\Matrix4.h">
+      <Filter>src\Graphics\Still_Cleaning</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Still_Cleaning\Vec.h">
+      <Filter>src\Graphics\Still_Cleaning</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SparseSet\SparseSet.hpp">
+      <Filter>src\SparseSet</Filter>
+    </ClInclude>
     <ClInclude Include="src\TypeID\TypeID.h">
-      <Filter>TypeID</Filter>
+      <Filter>src\TypeID</Filter>
     </ClInclude>
-    <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\SparseSet\SparseSet.hpp" />
-    <ClInclude Include="src\Graphics\Still_Cleaning\AllComponents.h" />
-    <ClInclude Include="src\Graphics\Still_Cleaning\Global.h" />
-    <ClInclude Include="src\Graphics\Still_Cleaning\Math_Lib.h" />
-    <ClInclude Include="src\Graphics\Still_Cleaning\Matrix4.h" />
-    <ClInclude Include="src\Graphics\Still_Cleaning\Vec.h" />
-    <ClInclude Include="src\Graphics\RendererAPI\GLHelper.h" />
-    <ClInclude Include="src\Graphics\RendererAPI\Graphics.h" />
-    <ClInclude Include="src\Graphics\RendererAPI\Shader.h" />
-    <ClInclude Include="src\Graphics\RendererAPI\Texture.h" />
-    <ClInclude Include="src\Graphics\Parser\Parser.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\IModel.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\ModelFactory.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\ModelGlobal.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\AllBasicPrimitives.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Cone.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Cube.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Cylinder.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\LightQuad.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Lines.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Particles.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Plane.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Pyramid.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Quad.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Sphere.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Torus.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Triangle.h" />
-    <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h" />
-    <ClInclude Include="src\Graphics\InputHandler\InputWrapper.h" />
-    <ClInclude Include="src\Graphics\InputHandler\PrintOut.h" />
-    <ClInclude Include="src\Graphics\FrameBuffer\FrameBuffer.h" />
-    <ClInclude Include="src\Graphics\FrameBuffer\WindowConstraint.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem.h" />
-    <ClInclude Include="..\Dep\IMGUI\imgui-master\imconfig.h" />
-    <ClInclude Include="..\Dep\IMGUI\imgui-master\imgui.h" />
-    <ClInclude Include="..\Dep\IMGUI\imgui-master\imgui_internal.h" />
-    <ClInclude Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.h" />
-    <ClInclude Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_opengl3.h" />
-    <ClInclude Include="src\Library\Math\Vector.h" />
-    <ClInclude Include="src\Library\Math\Matrix.h" />
+    <ClInclude Include="src\pch.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp">
+      <Filter>Dep\IMGUI\imgui-master\examples</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_opengl3.cpp">
+      <Filter>Dep\IMGUI\imgui-master\examples</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dep\IMGUI\imgui-master\imgui.cpp">
+      <Filter>Dep\IMGUI\imgui-master</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dep\IMGUI\imgui-master\imgui_demo.cpp">
+      <Filter>Dep\IMGUI\imgui-master</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dep\IMGUI\imgui-master\imgui_draw.cpp">
+      <Filter>Dep\IMGUI\imgui-master</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dep\IMGUI\imgui-master\imgui_widgets.cpp">
+      <Filter>Dep\IMGUI\imgui-master</Filter>
+    </ClCompile>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
-      <Filter>ECS\ComponentManager</Filter>
+      <Filter>src\ECS\ComponentManager</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.cpp">
-      <Filter>ECS\ComponentManager\Components\ComponentArray</Filter>
+      <Filter>src\ECS\ComponentManager\Components\ComponentArray</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\EntityManager\EntityManager.cpp">
-      <Filter>ECS\EntityManager</Filter>
+      <Filter>src\ECS\EntityManager</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp">
-      <Filter>ECS\SystemManager</Filter>
+      <Filter>src\ECS\SystemManager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp">
+      <Filter>src\ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\World.cpp">
-      <Filter>ECS</Filter>
+      <Filter>src\ECS</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\Engine.cpp">
-      <Filter>Engine</Filter>
+      <Filter>src\Engine</Filter>
     </ClCompile>
     <ClCompile Include="src\EntryPoint\EntryPoint.cpp">
-      <Filter>EntryPoint</Filter>
+      <Filter>src\EntryPoint</Filter>
     </ClCompile>
-    <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\Graphics\RendererAPI\glhelper.cpp" />
-    <ClCompile Include="src\Graphics\RendererAPI\Graphics.cpp" />
-    <ClCompile Include="src\Graphics\RendererAPI\Shader.cpp" />
-    <ClCompile Include="src\Graphics\RendererAPI\stb_image.cpp" />
-    <ClCompile Include="src\Graphics\RendererAPI\Texture.cpp" />
-    <ClCompile Include="src\Graphics\Parser\Parser.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\ModelFactory.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cone.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cube.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cylinder.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\LightQuad.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Lines.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Particles.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Plane.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Pyramid.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Quad.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Sphere.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Torus.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Triangle.cpp" />
-    <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp" />
-    <ClCompile Include="src\Graphics\InputHandler\PrintOut.cpp" />
-    <ClCompile Include="src\Graphics\FrameBuffer\FrameBuffer.cpp" />
-    <ClCompile Include="src\Graphics\FrameBuffer\WindowConstraint.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp" />
-    <ClCompile Include="..\Dep\IMGUI\imgui-master\imgui.cpp" />
-    <ClCompile Include="..\Dep\IMGUI\imgui-master\imgui_demo.cpp" />
-    <ClCompile Include="..\Dep\IMGUI\imgui-master\imgui_draw.cpp" />
-    <ClCompile Include="..\Dep\IMGUI\imgui-master\imgui_widgets.cpp" />
-    <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp" />
-    <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="src\Library\Math\Matrix.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\Assets\Textures\Textures.json" />
-    <None Include="src\Assets\meshes\circle.json" />
-    <None Include="src\Assets\meshes\circle.msh" />
-    <None Include="src\Assets\meshes\lightsquare.json" />
-    <None Include="src\Assets\meshes\Models.json" />
-    <None Include="src\Assets\meshes\square.json" />
-    <None Include="src\Assets\meshes\square.msh" />
-    <None Include="src\Assets\meshes\triangle.json" />
-    <None Include="src\Assets\meshes\triangle.msh" />
-    <None Include="src\Assets\Shaders\BasicFrag.frag" />
-    <None Include="src\Assets\Shaders\BasicVtx.vert" />
-    <None Include="src\Assets\Shaders\DebugFrag.frag" />
-    <None Include="src\Assets\Shaders\DebugVtx.vert" />
-    <None Include="src\Assets\Shaders\LightFrag.frag" />
-    <None Include="src\Assets\Shaders\LightVtx.vert" />
-    <None Include="src\Assets\Shaders\ParticlesFrag.frag" />
-    <None Include="src\Assets\Shaders\ParticlesVtx.vert" />
-    <None Include="src\Assets\Shaders\Shader3D.frag" />
-    <None Include="src\Assets\Shaders\Shader3D.vert" />
-    <None Include="src\Assets\Shaders\Shaders.json" />
-    <None Include="src\Assets\Shaders\textFrag.frag" />
-    <None Include="src\Assets\Shaders\textVtx.vert" />
+    <ClCompile Include="src\Graphics\FrameBuffer\FrameBuffer.cpp">
+      <Filter>src\Graphics\FrameBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\FrameBuffer\WindowConstraint.cpp">
+      <Filter>src\Graphics\FrameBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp">
+      <Filter>src\Graphics\InputHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\InputHandler\PrintOut.cpp">
+      <Filter>src\Graphics\InputHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.cpp">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cone.cpp">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cube.cpp">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cylinder.cpp">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\LightQuad.cpp">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Lines.cpp">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Particles.cpp">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Plane.cpp">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Pyramid.cpp">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Quad.cpp">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Sphere.cpp">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Torus.cpp">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Triangle.cpp">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ModelFactory\ModelFactory.cpp">
+      <Filter>src\Graphics\ModelFactory</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Parser\Parser.cpp">
+      <Filter>src\Graphics\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\RendererAPI\Graphics.cpp">
+      <Filter>src\Graphics\RendererAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\RendererAPI\Shader.cpp">
+      <Filter>src\Graphics\RendererAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\RendererAPI\Texture.cpp">
+      <Filter>src\Graphics\RendererAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\RendererAPI\glhelper.cpp">
+      <Filter>src\Graphics\RendererAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\RendererAPI\stb_image.cpp">
+      <Filter>src\Graphics\RendererAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pch.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
