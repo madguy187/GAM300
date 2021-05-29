@@ -30,6 +30,9 @@
 #include "examples/imgui_impl_opengl3.h"
 #include "examples/imgui_impl_glfw.h"
 
+// Logger
+#include "Logger/Logger.h"
+
 #include "matrix_transform.hpp"
 #include "type_ptr.hpp"
 #include "matrix_transform_2d.hpp"
