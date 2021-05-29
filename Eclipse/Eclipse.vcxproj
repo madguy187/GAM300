@@ -252,6 +252,7 @@ copy "$(SolutionDir)Dep\GLFW\lib-vc2019\glfw3.dll" "$(TargetDir)glfw3.dll" /Y</C
     <ClCompile Include="src\Graphics\RendererAPI\Shader.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\stb_image.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\Texture.cpp" />
+    <ClCompile Include="src\Library\Math\Matrix.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

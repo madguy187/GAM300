@@ -53,6 +53,7 @@
 #include <cmath>
 #include <fstream>
 #include <array>
+#include <algorithm>
 
 #include "GLEW/include/GL/glew.h"
 #include "GLFW/include/GLFW/glfw3.h"

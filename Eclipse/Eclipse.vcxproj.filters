@@ -173,6 +173,7 @@
     <ClCompile Include="..\Dep\IMGUI\imgui-master\imgui_widgets.cpp" />
     <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp" />
     <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="src\Library\Math\Matrix.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Textures\Textures.json" />

@@ -11,12 +11,9 @@ written consent of DigiPen Institute of Technology is prohibited.
 #pragma once
 
 #include "math.h"
-
 #include <iostream>
 #include <array>
 #include <stdexcept>
-
-#define EPSILON 0.000001f
 
 namespace Eclipse
 {
@@ -34,6 +31,7 @@ namespace Eclipse
 	{
 		std::array<T, N> _data;
 	public:
+		// READ ONLY
 		T x;
 		T y;
 		T z;
@@ -590,7 +588,12 @@ namespace Eclipse
 		Vector<T, N> temp{ pVec0 };
 
 		for (size_t i = 0; i < N; ++i)
+		{
+			if (i == 3)
+				continue;
+
 			temp[i] = Division(temp[i], magnitude);
+		}
 
 		pResult = temp;
 	}
