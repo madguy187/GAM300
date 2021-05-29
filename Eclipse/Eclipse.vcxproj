@@ -191,6 +191,9 @@
     <ClInclude Include="src\Graphics\Still_Cleaning\Vec.h" />
     <ClInclude Include="src\Library\Math\Matrix.h" />
     <ClInclude Include="src\Library\Math\Vector.h" />
+    <ClInclude Include="src\Reflection\complex_support.h" />
+    <ClInclude Include="src\Reflection\primitive_support.h" />
+    <ClInclude Include="src\Reflection\registration.h" />
     <ClInclude Include="src\SparseSet\SparseSet.hpp" />
     <ClInclude Include="src\TypeID\TypeID.h" />
     <ClInclude Include="src\pch.h" />

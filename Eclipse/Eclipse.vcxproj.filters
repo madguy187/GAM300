@@ -234,6 +234,11 @@
     <ClInclude Include="src\pch.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\Library\Math\Matrix.h" />
+    <ClInclude Include="src\Library\Math\Vector.h" />
+    <ClInclude Include="src\Reflection\registration.h" />
+    <ClInclude Include="src\Reflection\complex_support.h" />
+    <ClInclude Include="src\Reflection\primitive_support.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp">
@@ -353,5 +358,6 @@
     <ClCompile Include="src\pch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Library\Math\Matrix.cpp" />
   </ItemGroup>
 </Project>
