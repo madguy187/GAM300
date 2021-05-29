@@ -19,6 +19,9 @@ namespace Eclipse
       ECMtx44Inverse(&mat2, mat);
       std::cout << mat2;*/
       RenderSystem::Load();
+      //int i = 1;
+
+      //ENGINE_LOG_ASSERT(!i, "test crash");
     }
 
     void Engine::Run()
