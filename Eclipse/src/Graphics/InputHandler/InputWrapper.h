@@ -20,7 +20,11 @@ namespace Eclipse
     void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
   public:
-    InputWrapper();
+
+    // Probably missing this:
+    friend std::ostream& operator << (std::ostream& os, const InputKeycode& course);
+
+      InputWrapper();
 
     // Check if Current Key is triggered
     bool GetKeyTriggered(InputKeycode keycode);
