@@ -54,19 +54,16 @@ void Eclipse::RenderSystem::Update()
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
   ImGui::NewFrame();
-  ImGui::NewFrame();
+ 
   // To be Removed
   Graphics::update();
-  Graphics::update(fixedDeltaTime);
   Graphics::m_frameBuffer->Bind();
-  Graphics::m_frameBuffer->Clear();
   Graphics::m_frameBuffer->Clear();
 
     glBindFramebuffer(GL_FRAMEBUFFER, Graphics::framebuffer);
     glClear(GL_COLOR_BUFFER_BIT);
   test();
   GlobalRender();
-  InputHandler.SetIsPrint(true);
   // To be Removed
   int Width, Height;
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -76,13 +73,12 @@ void Eclipse::RenderSystem::Update()
 
   // Render end, swap buffers
   mRenderContext.post_render();
-  glfwPollEvents();
 }
 
 void Eclipse::RenderSystem::unLoad()
+{
   mRenderContext.end();
   ImGui::DestroyContext();
-  GLHelper::cleanup();
 }
 
 void Eclipse::RenderSystem::CheckUniformLoc(Sprite& sprite, unsigned int id)
@@ -102,11 +98,10 @@ void Eclipse::RenderSystem::CheckUniformLoc(Sprite& sprite, unsigned int id)
         GLint uniform_var_loc7 = glGetUniformLocation(sprite.shaderRef->second.GetHandle(), "ShakeTimer");
         GLint uniform_var_loc8 = glGetUniformLocation(sprite.shaderRef->second.GetHandle(), "ShakeScreen");
         GLuint tex_loc = glGetUniformLocation(sprite.shaderRef->second.GetHandle(), "uTex2d");
-      GLuint tex_loc = glGetUniformLocation(sprite.shaderRef->second.GetHandle(), "uTex2d");
-    if (uniform_var_loc1 >= 0)
-    {
-      glm::mat4 mModelNDC;
-        glm::mat4 mModelNDC;
+
+        if (uniform_var_loc1 >= 0)
+        {
+            glm::mat4 mModelNDC;
             //float eyeRadius = 1.0f * oi.eyeRadius;
             //float oneStep = 3.141590118f / 36;
             //float eyeAlpha = oneStep * camera.eyeAlpha;
@@ -141,103 +136,91 @@ void Eclipse::RenderSystem::CheckUniformLoc(Sprite& sprite, unsigned int id)
             //glm::mat4 viewMtx = glm::lookAt(view, glm::vec3{ 0.0f, 0.0f, 0.0f }, upVec);
             //glm::mat4 projMtx = glm::perspective(glm::radians(90.0f), static_cast<float>(OpenGL_Context::width) / static_cast<float>(OpenGL_Context::height), 1.0f, 500.0f);
             glm::mat4 model = glm::mat4(1.0f);
-        glm::mat4 model = glm::mat4(1.0f);
-      model = glm::translate(model, trans.pos);
-      model = glm::rotate(model, glm::radians(trans.rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
-      model = glm::rotate(model, glm::radians(trans.rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
-      model = glm::rotate(model, glm::radians(trans.rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
-      model = glm::scale(model, trans.scale);
-        model = glm::scale(model, sphereScale);
+            model = glm::translate(model, trans.pos);
+            model = glm::rotate(model, glm::radians(trans.rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(trans.rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(trans.rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
+            model = glm::scale(model, trans.scale);
             mModelNDC = camera.projMtx * camera.viewMtx * model;
-        mModelNDC = projMtx * viewMtx * model;
-      glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(mModelNDC));
-      //}
-    }
-    else
-    {
-      std::cout << "Uniform variable doesn't exist!!!\n";
-      std::exit(EXIT_FAILURE);
-    }
-      }
-
-    if (uniform_var_loc2 >= 0)
-    {
-      //float alpha = 1.0f;
-      glUniform4f(uniform_var_loc2, sprite.color.x, sprite.color.y, sprite.color.z, sprite.transparency);
-    }
-    else
-    {
-      std::cout << "Uniform variable doesn't exist!!!\n";
-      std::exit(EXIT_FAILURE);
-    }
-      }
-    if (uniform_var_loc3 >= 0)
-    {
-      glUniform1i(uniform_var_loc3, sprite.hasTexture);
-    }
-    else
-    {
-      std::cout << "Uniform variable doesn't exist!!!\n";
-      std::exit(EXIT_FAILURE);
-    }
-      }
-    if (uniform_var_loc4 >= 0)
-    {
-      glUniform2f(uniform_var_loc4, sprite.textureIdx.x, sprite.textureIdx.y);
-    }
-    else
-    {
-      std::cout << "Uniform variable doesn't exist!!!\n";
-      std::exit(EXIT_FAILURE);
-    }
-      }
-    if (sprite.hasTexture)
-    {
-      if (sprite.textureRef != Graphics::textures.end())
-      {
-        if (uniform_var_loc5 >= 0)
-        {
-          glUniform2f(uniform_var_loc5, sprite.textureRef->second.GetCols(), sprite.textureRef->second.GetRows());
+            glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(mModelNDC));
+            //}
         }
         else
         {
-          std::cout << "Uniform variable doesn't exist!!!\n";
-          std::exit(EXIT_FAILURE);
+            std::cout << "Uniform variable doesn't exist!!!\n";
+            std::exit(EXIT_FAILURE);
         }
-      }
+        if (uniform_var_loc2 >= 0)
+        {
+            //float alpha = 1.0f;
+            glUniform4f(uniform_var_loc2, sprite.color.x, sprite.color.y, sprite.color.z, sprite.transparency);
+        }
+        else
+        {
+            std::cout << "Uniform variable doesn't exist!!!\n";
+            std::exit(EXIT_FAILURE);
+        }
+        if (uniform_var_loc3 >= 0)
+        {
+            glUniform1i(uniform_var_loc3, sprite.hasTexture);
+        }
+        else
+        {
+            std::cout << "Uniform variable doesn't exist!!!\n";
+            std::exit(EXIT_FAILURE);
+        }
+        if (uniform_var_loc4 >= 0)
+        {
+            glUniform2f(uniform_var_loc4, sprite.textureIdx.x, sprite.textureIdx.y);
+        }
+        else
+        {
+            std::cout << "Uniform variable doesn't exist!!!\n";
+            std::exit(EXIT_FAILURE);
+        }
+        if (sprite.hasTexture)
+        {
+            if (sprite.textureRef != Graphics::textures.end())
+            {
+                if (uniform_var_loc5 >= 0)
+                {
+                    glUniform2f(uniform_var_loc5, sprite.textureRef->second.GetCols(), sprite.textureRef->second.GetRows());
+                }
+                else
+                {
+                    std::cout << "Uniform variable doesn't exist!!!\n";
+                    std::exit(EXIT_FAILURE);
+                }
+            }
+        }
+        if (uniform_var_loc7 >= 0)
+        {
+            glUniform1f(uniform_var_loc7, shakeTimer);
+        }
+        else
+        {
+            std::cout << "Uniform variable doesn't exist!!!\n";
+            std::exit(EXIT_FAILURE);
+        }
+        if (uniform_var_loc8 >= 0)
+        {
+            glUniform1i(uniform_var_loc8, shakeScreen);
+        }
+        else
+        {
+            std::cout << "Uniform variable doesn't exist!!!\n";
+            std::exit(EXIT_FAILURE);
+        }
+        if (tex_loc >= 0)
+        {
+            glUniform1i(tex_loc, 1);
+        }
+        else
+        {
+            std::cout << "Uniform variable tex_loc doesn't exist!!!\n";
+            std::exit(EXIT_FAILURE);
+        }
     }
-      }
-    if (uniform_var_loc7 >= 0)
-    {
-      glUniform1f(uniform_var_loc7, shakeTimer);
-    }
-    else
-    {
-      std::cout << "Uniform variable doesn't exist!!!\n";
-      std::exit(EXIT_FAILURE);
-    }
-      }
-    if (uniform_var_loc8 >= 0)
-    {
-      glUniform1i(uniform_var_loc8, shakeScreen);
-    }
-    else
-    {
-      std::cout << "Uniform variable doesn't exist!!!\n";
-      std::exit(EXIT_FAILURE);
-    }
-      }
-    if (tex_loc >= 0)
-    {
-      glUniform1i(tex_loc, 1);
-    }
-    else
-    {
-      std::cout << "Uniform variable tex_loc doesn't exist!!!\n";
-      std::exit(EXIT_FAILURE);
-    }
-  }
-  }
 
 }
 
@@ -290,9 +273,9 @@ void Eclipse::RenderSystem::DrawBuffers(unsigned int framebuffer)
                     glTextureParameteri(pair.second->textureRef->second.GetHandle(), GL_TEXTURE_WRAP_T, GL_REPEAT);
                 }
             }
-      CheckUniformLoc(*(pair.second), pair.second->ID);
-      CheckUniformLoc(*(pair.second));
-
+      
+            CheckUniformLoc(*(pair.second), pair.second->ID);
+ 
             // Part 4: Render OpenGL primitives encapsulated by this object's VAO using glDrawElements
             if (pair.second->modelRef->second->GetPrimitiveType() != GL_LINES)
             {
@@ -363,8 +346,8 @@ void Eclipse::RenderSystem::DrawSecondBuffers(unsigned int framebuffer)
                     glTextureParameteri(pair.second->textureRef->second.GetHandle(), GL_TEXTURE_WRAP_T, GL_REPEAT);
                 }
             }
-      CheckUniformLoc(*(pair.second), pair.second->ID);
-      CheckUniformLoc(*(pair.second));
+      
+            CheckUniformLoc(*(pair.second), pair.second->ID);
 
             // Part 4: Render OpenGL primitives encapsulated by this object's VAO using glDrawElements
             if (pair.second->modelRef->second->GetPrimitiveType() != GL_LINES)
@@ -402,5 +385,4 @@ void Eclipse::RenderSystem::test()
     }
   }
   ImGui::End();
-  }
 }
