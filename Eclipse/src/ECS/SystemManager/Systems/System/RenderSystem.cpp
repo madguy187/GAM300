@@ -116,10 +116,10 @@ void Eclipse::RenderSystem::CheckUniformLoc(Sprite& sprite)
     //Camera& oi = engine->world.GetComponent<Camera>(currCamID);
     //CameraComponent& oi = engine->world.GetComponent<CameraComponent>(currCamID);
 
-    auto& gCamera = CameraManager::GetCameraManager();
-
-    auto& camera = engine->world.GetComponent<CameraComponent>(gCamera.GetEditorCameraID());
-
+    //auto& gCamera = CameraManager::GetCameraManager();
+    //auto& camera = engine->world.GetComponent<CameraComponent>(1);
+    auto& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+    
     for (auto const& entity : mEntities)
     {
 

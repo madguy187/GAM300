@@ -41,7 +41,12 @@ namespace Eclipse
       hi.set(world.GetComponentType<Sprite>(), 1);
 
       world.RegisterSystemSignature<RenderSystem>(hi);
-      world.RegisterSystemSignature<CameraSystem>(hi);
+
+      Signature hi2;
+      hi2.set(world.GetComponentType<TransformComponent>(), 1);
+      hi2.set(world.GetComponentType<CameraComponent>(), 1);
+
+      world.RegisterSystemSignature<CameraSystem>(hi2);
 
       Entity ent = world.CreateEntity();
       world.AddComponent(ent, TransformComponent{ 4.0f, 5.0f, 6.0f });

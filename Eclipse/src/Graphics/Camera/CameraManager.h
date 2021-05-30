@@ -1,6 +1,6 @@
 #pragma once
-#include "Engine/Engine.h"
 #include "ECS/ComponentManager/Components/CameraComponent.h"
+#include "ECS/ComponentManager/Components/TransformComponent.h"
 
 namespace Eclipse
 {
@@ -13,14 +13,19 @@ namespace Eclipse
 		bool moveLeft_flag{ false }; //button D
 		bool moveFront_flag{ false }; //button W
 		bool moveBack_flag{ false }; //button S
+		bool pitchUp_flag{ false }; //button R
+		bool pitchDown_flag{ false }; //button F
+		bool yawLeft_flag{ false }; //button Q
+		bool yawRight_flag{ false }; //button E
 
 		/*DOUBLE CHECK THIS*/
-		unsigned int editorCamID;
+		unsigned int editorCamID = MAX_ENTITY;
+		
 	public:
-		static CameraManager& GetCameraManager();
-
-		void InitEditorCamera();
+		void CreateEditorCamera();
 		unsigned int GetEditorCameraID();
+
+		void ComputeViewMtx(TransformComponent& _transform);
 		void UpdateEditorCamera();
 
 		void UpdateCameraInput();

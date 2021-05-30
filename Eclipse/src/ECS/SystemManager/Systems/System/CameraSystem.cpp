@@ -3,16 +3,25 @@
 
 void Eclipse::CameraSystem::Init()
 {
-	auto& gCamera = CameraManager::GetCameraManager();
-
-	gCamera.InitEditorCamera();
-	gCamera.SetCameraSpeed(5.0f);
+	engine->gCamera.CreateEditorCamera();
+	engine->gCamera.SetCameraSpeed(5.0f);
 }
 
 void Eclipse::CameraSystem::Update()
-{
-	auto& gCamera = CameraManager::GetCameraManager();
-	
-	gCamera.UpdateCameraInput();
-	gCamera.UpdateEditorCamera();
+{	
+	/*loop through camera entities*/
+	//for (auto entities : mEntities)
+	//{
+	//	auto& transform = engine->world.GetComponent<Transform>(entities);
+	//}
+	//engine->gCamera.UpdateCameraInput();
+	//engine->gCamera.UpdateEditorCamera();
+
+	/*Shift later*/
+	engine->gCamera.UpdateCameraInput();
+	engine->gCamera.UpdateEditorCamera();
+
+
+	//gCamera.UpdateViewMtx()
+	//gCamera.UpdateProjectionMtx()
 }

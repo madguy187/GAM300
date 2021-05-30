@@ -3,14 +3,13 @@
 
 namespace Eclipse
 {
-    CameraManager& CameraManager::GetCameraManager()
+    void CameraManager::CreateEditorCamera()
     {
-        static CameraManager _gCameraManager;
-        return _gCameraManager;
-    }
+        if (editorCamID != MAX_ENTITY)
+        {
+            return;
+        }
 
-    void CameraManager::InitEditorCamera()
-    {
         Entity newCam = engine->world.CreateEntity();
         engine->world.AddComponent(newCam, CameraComponent{});
 
@@ -23,6 +22,10 @@ namespace Eclipse
     unsigned int CameraManager::GetEditorCameraID()
     {
         return editorCamID;
+    }
+
+    void CameraManager::ComputeViewMtx(TransformComponent& _transform)
+    {
     }
 
     void CameraManager::UpdateEditorCamera()
@@ -76,6 +79,38 @@ namespace Eclipse
             }     
         }
 
+        if (yawLeft_flag)
+        {
+            if (camera.eyeBeta < 1.0f)
+            {
+                camera.eyeBeta = 360.0f;
+            }
+            else
+            {
+                camera.eyeBeta -= cameraSpd;
+            }
+        }
+
+        if (yawRight_flag)
+        {
+            if (camera.eyeBeta > 359.0f)
+            {
+                camera.eyeBeta = 0.0f;
+            }
+            else
+            {
+                camera.eyeBeta -= cameraSpd;
+            }
+        }
+
+        //glm::vec3 direction;
+        //direction.x = cos(glm::radians(camera.eyeBeta)) * cos(glm::radians(camera.eyeAlpha));
+        //direction.y = cos(glm::radians(camera.eyeAlpha));
+        //direction.z = sin(glm::radians(camera.eyeBeta)) * cos(glm::radians(camera.eyeAlpha));
+        //camera.eyeFront = glm::normalize(direction);
+
+        //std::cout << "Eye front: {" << camera.eyeFront.x << ", " << camera.eyeFront.y << ", " << camera.eyeFront.z << " }" << std::endl;
+
         camera.viewMtx = glm::lookAt(camera.eyePos, camera.eyePos + camera.eyeFront, camera.upVec);
         camera.projMtx = glm::perspective(glm::radians(camera.fov),
                                             static_cast<float>((GLHelper::windowRatioX * GLHelper::width) / 
@@ -85,13 +120,22 @@ namespace Eclipse
 
     void CameraManager::UpdateCameraInput()
     {
+        //Camera movement keys
         int keyA = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_A);
         int keyW = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_W);
         int keyS = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_S);
         int keyD = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_D);
 
+        /*Camera "zoom" keys
+        NOTE: Changing the FOV causes some level of distortion, similar to the fisheye effect.
+        Recommended FOV value for a realistic view is usually about 45.*/
         int keyZ = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_Z);
         int keyX = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_X);
+        
+        int keyQ = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_Q);
+        int keyE = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_E);
+        int keyR = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_R);
+        int keyF = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_F);
 
         if (GLFW_PRESS == keyA)
         {
@@ -146,6 +190,25 @@ namespace Eclipse
         {
             zoomOut_flag = false;
         }
+
+        if (GLFW_PRESS == keyQ)
+        {
+            yawLeft_flag = true;
+        }
+        else if (GLFW_RELEASE == keyQ)
+        {
+            yawLeft_flag = false;
+        }
+
+        if (GLFW_PRESS == keyE)
+        {
+            yawRight_flag = true;
+        }
+        else if (GLFW_RELEASE == keyE)
+        {
+            yawRight_flag = false;
+        }
+
     }
 
     void CameraManager::SetCameraSpeed(float newSpeed)
