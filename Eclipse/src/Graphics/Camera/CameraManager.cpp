@@ -33,7 +33,7 @@ namespace Eclipse
         unsigned int editorID = GetEditorCameraID();
         auto& camera = engine->world.GetComponent<CameraComponent>(editorID);
 
-        float cameraSpd = GLHelper::deltaTime * camera.cameraSpeed;
+        float cameraSpd = OpenGL_Context::deltaTime * camera.cameraSpeed;
 
         if (moveLeft_flag)
         {
@@ -113,29 +113,29 @@ namespace Eclipse
 
         camera.viewMtx = glm::lookAt(camera.eyePos, camera.eyePos + camera.eyeFront, camera.upVec);
         camera.projMtx = glm::perspective(glm::radians(camera.fov),
-                                            static_cast<float>((GLHelper::windowRatioX * GLHelper::width) / 
-                                                (GLHelper::windowRatioY * GLHelper::height)),
+                                            static_cast<float>((OpenGL_Context::windowRatioX * OpenGL_Context::width) / 
+                                                (OpenGL_Context::windowRatioY * OpenGL_Context::height)),
                                             camera.nearPlane, camera.farPlane);
     }
 
     void CameraManager::UpdateCameraInput()
     {
         //Camera movement keys
-        int keyA = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_A);
-        int keyW = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_W);
-        int keyS = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_S);
-        int keyD = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_D);
+        int keyA = glfwGetKey(OpenGL_Context::ptr_window, GLFW_KEY_A);
+        int keyW = glfwGetKey(OpenGL_Context::ptr_window, GLFW_KEY_W);
+        int keyS = glfwGetKey(OpenGL_Context::ptr_window, GLFW_KEY_S);
+        int keyD = glfwGetKey(OpenGL_Context::ptr_window, GLFW_KEY_D);
 
         /*Camera "zoom" keys
         NOTE: Changing the FOV causes some level of distortion, similar to the fisheye effect.
         Recommended FOV value for a realistic view is usually about 45.*/
-        int keyZ = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_Z);
-        int keyX = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_X);
+        int keyZ = glfwGetKey(OpenGL_Context::ptr_window, GLFW_KEY_Z);
+        int keyX = glfwGetKey(OpenGL_Context::ptr_window, GLFW_KEY_X);
         
-        int keyQ = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_Q);
-        int keyE = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_E);
-        int keyR = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_R);
-        int keyF = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_F);
+        int keyQ = glfwGetKey(OpenGL_Context::ptr_window, GLFW_KEY_Q);
+        int keyE = glfwGetKey(OpenGL_Context::ptr_window, GLFW_KEY_E);
+        int keyR = glfwGetKey(OpenGL_Context::ptr_window, GLFW_KEY_R);
+        int keyF = glfwGetKey(OpenGL_Context::ptr_window, GLFW_KEY_F);
 
         if (GLFW_PRESS == keyA)
         {

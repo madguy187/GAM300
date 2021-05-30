@@ -1,6 +1,7 @@
 #pragma once
 #include "ECS/ComponentManager/Components/CameraComponent.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"
+#include "ECS/SystemManager/Systems/System/RenderSystem.h"
 
 namespace Eclipse
 {

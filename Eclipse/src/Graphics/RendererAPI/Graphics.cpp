@@ -17,7 +17,6 @@
 
 #include "pch.h"
 #include "Graphics.h"
-#include "GLHelper.h"
 
 #include "imgui.h"
 #include "type_ptr.hpp"
@@ -102,12 +101,7 @@ void Graphics::load()
  /******************************************************************************/
 void Graphics::init()
 {
-  std::cout << "INIT" << std::endl;
-  glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-  glViewport(0, 0, GLHelper::width, GLHelper::height);
-  GLHelper::print_specs();
-
-  m_frameBuffer = new FrameBuffer(GLHelper::width, GLHelper::height);
+  m_frameBuffer = new FrameBuffer(OpenGL_Context::width, OpenGL_Context::height);
   CreateFrameBuffer();
 }
 
@@ -116,7 +110,7 @@ void Graphics::init()
     Update function for Graphics
  */
  /******************************************************************************/
-void Graphics::update(double fixed)
+void Graphics::update()
 {
   // first, update camera
   //Graphics::camera2d.update(GLHelper::ptr_window, delta_time);
@@ -134,13 +128,6 @@ void Graphics::update(double fixed)
     }
   }
 
-  TransformComponent& trans = engine->world.GetComponent<TransformComponent>(createdID);
-
-  ImGui::Begin("Properties");
-  ImGui::DragFloat3("Scale", (float*)&sphereScale, 0.2f, 0.0f, 0.0f);
-  ImGui::DragFloat3("Translate", (float*)&trans, 0.2f, 0.0f, 0.0f);
-  ImGui::DragFloat3("Rotate", (float*)&sphereRot, 0.2f, 0.0f, 0.0f);
-  ImGui::End();
   ImGui::End();
 }
 
@@ -151,47 +138,17 @@ void Graphics::update(double fixed)
  /******************************************************************************/
 void Graphics::draw()
 {
-  //int keyT = glfwGetKey(GLHelper::ptr_window, GLFW_KEY_T);
+  ImGui::Begin("Game View");
 
-  if (!mouseEditor)
-  {
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glClear(GL_COLOR_BUFFER_BIT);
+  ImGui::GetWindowDrawList()->AddImage(
+    (void*)(textureColorbuffer),
+    ImVec2(ImGui::GetCursorScreenPos()),
+    ImVec2(ImGui::GetCursorScreenPos().x + ImGui::GetWindowContentRegionMax().x,
+      ImGui::GetCursorScreenPos().y + ImGui::GetWindowContentRegionMax().y), ImVec2(0, 1), ImVec2(1, 0));
 
-    //Original gray background
-    //glClearColor(static_cast<GLclampf>(0.44), 
-    //    static_cast<GLclampf>(0.565), static_cast<GLclampf>(0.604), 
-    //    static_cast<GLclampf>(1.0));
+  ImGui::End();
 
-    glClearColor(static_cast<GLclampf>(0.22),
-      static_cast<GLclampf>(0.28), static_cast<GLclampf>(0.30),
-      static_cast<GLclampf>(1.0));
-    //world.Render();
-  }
-  else
-  {
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glDisable(GL_DEPTH_TEST);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glDisable(GL_DEPTH_TEST);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glBindTexture(GL_TEXTURE_2D, m_frameBuffer->GetTextureColourBuffer());
-
-    ImGui::Begin("Game View");
-
-    ImGui::GetWindowDrawList()->AddImage(
-      (void*)(textureColorbuffer),
-      ImVec2(ImGui::GetCursorScreenPos()),
-      ImVec2(ImGui::GetCursorScreenPos().x + ImGui::GetWindowContentRegionMax().x,
-
-        ImGui::GetCursorScreenPos().y + ImGui::GetWindowContentRegionMax().y), ImVec2(0, 1), ImVec2(1, 0));
-
-    ImGui::End();
-    FrameBuffer::ShowWindow(*m_frameBuffer);
-  }
+  FrameBuffer::ShowWindow(*m_frameBuffer);
 }
 
 void Graphics::cleanup()
@@ -337,11 +294,7 @@ void Graphics::CreateObject(GLint model)
 {
   auto& testtest = engine->world;
   Entity EntityID = testtest.CreateEntity();
-
   createdID = EntityID;
-
-  std::cout << "id :" << EntityID << std::endl;
-
   testtest.AddComponent(EntityID, Sprite{ });
   testtest.AddComponent(EntityID, TransformComponent{ });
 
@@ -380,6 +333,7 @@ void Graphics::CreateObject(GLint model)
     sprite.shaderRef = shaderpgms.find("shader3DShdrpgm");
     sprite.modelRef = models.find("sphere");
     Graphics::sprites.emplace(sprite.layerNum, &sprite);
+    sprite.ID = EntityID;
   }
   break;
 
@@ -433,7 +387,7 @@ void Graphics::CreateFrameBuffer()
 
   glGenTextures(1, &textureColorbuffer);
   glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, GLHelper::width, GLHelper::height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, OpenGL_Context::width, OpenGL_Context::height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
@@ -441,12 +395,12 @@ void Graphics::CreateFrameBuffer()
   unsigned int rbo;
   glGenRenderbuffers(1, &rbo);
   glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, GLHelper::width, GLHelper::height);
+  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, OpenGL_Context::width, OpenGL_Context::height);
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
 
   if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
   {
-    std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+    std::cout << "First Frambuffer : ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
   }
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

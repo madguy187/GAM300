@@ -3,7 +3,6 @@
 
 #include "glew.h"
 #include "glfw3.h"
-#include "glhelper.h"
 #include <stb_image.h>
 #include "glm.hpp"
 #include "Shader.h""
@@ -21,10 +20,13 @@
 
 #include "FrameBuffer.h"
 #include "../src/ECS/SystemManager/Systems/System/System.h"
+#include "Graphics/OpenGL/OpenGL_Context.h"
 
 const int maxParticles = 10000;
 
 class World;
+
+using namespace Eclipse;
 
 class Graphics 
 {
@@ -50,7 +52,7 @@ public:
 
   static void load();
   static void init();
-  static void update(double delta_time);
+  static void update();
   static void draw();
   static void cleanup();
   static void unload();

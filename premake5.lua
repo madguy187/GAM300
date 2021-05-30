@@ -60,6 +60,7 @@ project "Eclipse"
     "Eclipse/src/Graphics/ModelFactory/BasicPrimitives",
     "Eclipse/src/Graphics/ModelFactory",
     "Eclipse/src/Graphics/FrameBuffer",
+	"Eclipse/src/Graphics/OpenGL"
 	}
 
   libdirs

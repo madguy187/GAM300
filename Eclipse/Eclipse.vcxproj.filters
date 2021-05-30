@@ -61,6 +61,9 @@
     <Filter Include="src\Graphics\ModelFactory\BasicPrimitives">
       <UniqueIdentifier>{42A4CBAC-AEBE-2E4E-F7E0-3EE2633A5655}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Graphics\OpenGL">
+      <UniqueIdentifier>{A10E80C2-0D70-5DD0-96DD-A382023E948F}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Graphics\Parser">
       <UniqueIdentifier>{E901CDC3-5563-AAD1-DED0-F0834A31E190}</UniqueIdentifier>
     </Filter>
@@ -207,11 +210,11 @@
     <ClInclude Include="src\Graphics\ModelFactory\ModelGlobal.h">
       <Filter>src\Graphics\ModelFactory</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\OpenGL\OpenGL_Context.h">
+      <Filter>src\Graphics\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\Parser\Parser.h">
       <Filter>src\Graphics\Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Graphics\RendererAPI\GLHelper.h">
-      <Filter>src\Graphics\RendererAPI</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\RendererAPI\Graphics.h">
       <Filter>src\Graphics\RendererAPI</Filter>
@@ -363,6 +366,9 @@
     <ClCompile Include="src\Graphics\ModelFactory\ModelFactory.cpp">
       <Filter>src\Graphics\ModelFactory</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\OpenGL\OpenGL_Context.cpp">
+      <Filter>src\Graphics\OpenGL</Filter>
+    </ClCompile>
     <ClCompile Include="src\Graphics\Parser\Parser.cpp">
       <Filter>src\Graphics\Parser</Filter>
     </ClCompile>
@@ -373,9 +379,6 @@
       <Filter>src\Graphics\RendererAPI</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\RendererAPI\Texture.cpp">
-      <Filter>src\Graphics\RendererAPI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\RendererAPI\glhelper.cpp">
       <Filter>src\Graphics\RendererAPI</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\RendererAPI\stb_image.cpp">

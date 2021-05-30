@@ -127,7 +127,7 @@ namespace Eclipse
     // cant work on my stupid ass laptop
     Key_MULTIPLY = 106,
     Key_ADD = 107,
-    Key_SEPERATOR = 108,
+    Key_SEPERATOR = 1081,
     Key_SUBTRACT = 109,
     Key_DECIMAL = 110,
     Key_DIVIDE = 111,

@@ -56,12 +56,11 @@ namespace Eclipse
       //Check this! - Rachel
       CameraSystem::Init();
 
-      while (!glfwWindowShouldClose(GLHelper::ptr_window))
+      while (!glfwWindowShouldClose(OpenGL_Context::ptr_window))
       {
-          /* TEMPORARY: PLEASE REMOVE LATER - Rachel */
-          GLHelper::deltaTime = GLHelper::update_time();
+          //Please remove when delta-time implementation added - Rachel
+          OpenGL_Context::update_time(1.0f);
 
-        // Darren was here
         world.Update<RenderSystem>();
         world.Update<CameraSystem>();
       }
