@@ -7,17 +7,21 @@ namespace Eclipse
 {
 	struct CameraComponent
 	{
-		float eyeAlpha{ 1 };
-		float eyeBeta{ 18 };
-		float eyeRadius{ 40 };
+		float eyeAlpha{ 0.0f }; //pitch
+		float eyeBeta{ 0.0f }; //yaw
 
-		// Keyboard input press flags
-		bool zoomIn_flag{ false }; //button Z
-		bool zoomOut_flag{ false }; //button X
-		bool moveRight_flag{ false };  //button A
-		bool moveLeft_flag{ false }; //button D
-		bool moveUp_flag{ false }; //button W
-		bool moveDown_flag{ false }; //button S
+		float fov{ 45.0f };
+		float nearPlane{ 1.0f };
+		float farPlane{ 500.0f };
+
+		glm::vec3 eyePos{ 0.0f, 0.0f, 40.0f }; //camera position
+		glm::vec3 eyeFront{ 0.0f, 0.0f, -1.0f }; //look-at position
+		glm::vec3 upVec{ 0.0f, 1.0f, 0.0f }; //camera's up vector
+
+		glm::mat4 viewMtx{ 0.0f };
+		glm::mat4 projMtx{ 0.0f };
+
+		float cameraSpeed{ 2.5f }; //camera movement speed
 
 		enum class CameraType
 		{

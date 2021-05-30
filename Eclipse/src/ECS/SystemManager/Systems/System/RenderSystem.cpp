@@ -111,14 +111,18 @@ void Eclipse::RenderSystem::unLoad()
 
 void Eclipse::RenderSystem::CheckUniformLoc(Sprite& sprite)
 {
-  {
-    unsigned int currCamID = 0;
+    //unsigned int currCamID = 0;
 
     //Camera& oi = engine->world.GetComponent<Camera>(currCamID);
-    CameraComponent& oi = engine->world.GetComponent<CameraComponent>(currCamID);
+    //CameraComponent& oi = engine->world.GetComponent<CameraComponent>(currCamID);
+
+    auto& gCamera = CameraManager::GetCameraManager();
+
+    auto& camera = engine->world.GetComponent<CameraComponent>(gCamera.GetEditorCameraID());
 
     for (auto const& entity : mEntities)
     {
+
       TransformComponent& trans = engine->world.GetComponent<TransformComponent>(entity);
 
       GLint uniform_var_loc1 = glGetUniformLocation(sprite.shaderRef->second.GetHandle(), "uModelToNDC");
@@ -135,29 +139,29 @@ void Eclipse::RenderSystem::CheckUniformLoc(Sprite& sprite)
       {
         glm::mat4 mModelNDC;
 
-        float eyeRadius = 1.0f * oi.eyeRadius;
+        //float eyeRadius = 1.0f * oi.eyeRadius;
         float oneStep = 3.141590118f / 36;
-        float eyeAlpha = oneStep * oi.eyeAlpha;
-        float eyeBeta = oneStep * oi.eyeBeta;
+        float eyeAlpha = oneStep * camera.eyeAlpha;
+        float eyeBeta = oneStep * camera.eyeBeta;
 
-        glm::vec3 view{ eyeRadius * cos(eyeAlpha) * cos(eyeBeta),
-                        eyeRadius * sin(eyeAlpha),
-                        eyeRadius * cos(eyeAlpha) * sin(eyeBeta) };
-
+        glm::vec3 view{ cos(eyeAlpha) * cos(eyeBeta),
+                        sin(eyeAlpha),
+                        cos(eyeAlpha) * sin(eyeBeta) };
+        
         glm::vec3 upVec{ 0.0f };
 
-        if (oi.eyeAlpha == 18)
+        if (camera.eyeAlpha == 18)
         {
-          glm::mat4 rot = glm::rotate(glm::mat4(1.0f), -oneStep * oi.eyeBeta, glm::vec3{ 0.0f, 1.0f, 1.0f });
+          glm::mat4 rot = glm::rotate(glm::mat4(1.0f), -oneStep * camera.eyeBeta, glm::vec3{ 0.0f, 1.0f, 1.0f });
           upVec = glm::mat3(rot) * -(glm::vec3{ 1.0f, 0.0f,0.0f });
         }
-        else if (oi.eyeAlpha == -18)
+        else if (camera.eyeAlpha == -18)
         {
-          glm::mat4 rot = glm::rotate(glm::mat4(1.0f), -oneStep * oi.eyeBeta, glm::vec3{ 0.0f, 1.0f, 1.0f });
+          glm::mat4 rot = glm::rotate(glm::mat4(1.0f), -oneStep * camera.eyeBeta, glm::vec3{ 0.0f, 1.0f, 1.0f });
           upVec = glm::mat3(rot) * glm::vec3{ 1.0f, 0.0f,0.0f };
         }
 
-        if (oi.eyeAlpha < 18)
+        if (camera.eyeAlpha < 18)
         {
           upVec = glm::vec3{ 0.0f, 1.0f, 0.0f };
         }
@@ -166,8 +170,8 @@ void Eclipse::RenderSystem::CheckUniformLoc(Sprite& sprite)
           upVec = -(glm::vec3{ 0.0f, 1.0f, 0.0f });
         }
 
-        glm::mat4 viewMtx = glm::lookAt(view, glm::vec3{ 0.0f, 0.0f, 0.0f }, upVec);
-        glm::mat4 projMtx = glm::perspective(glm::radians(90.0f), static_cast<float>(GLHelper::width) / static_cast<float>(GLHelper::height), 1.0f, 500.0f);
+        //glm::mat4 viewMtx = glm::lookAt(view, glm::vec3{ 0.0f, 0.0f, 0.0f }, upVec);
+        //glm::mat4 projMtx = glm::perspective(glm::radians(90.0f), static_cast<float>(GLHelper::width) / static_cast<float>(GLHelper::height), 1.0f, 500.0f);
         glm::mat4 model = glm::mat4(1.0f);
 
         model = glm::translate(model, { trans.x,trans.y,trans.z });
@@ -176,7 +180,8 @@ void Eclipse::RenderSystem::CheckUniformLoc(Sprite& sprite)
         model = glm::rotate(model, glm::radians(sphereRot.z), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::scale(model, sphereScale);
 
-        mModelNDC = projMtx * viewMtx * model;
+       // mModelNDC = projMtx * viewMtx * model;
+        mModelNDC = camera.projMtx * camera.viewMtx * model;
 
         glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(mModelNDC));
         //}
@@ -265,8 +270,6 @@ void Eclipse::RenderSystem::CheckUniformLoc(Sprite& sprite)
         std::exit(EXIT_FAILURE);
       }
     }
-  }
-
 }
 
 void Eclipse::RenderSystem::DrawBuffers(unsigned int framebuffer)

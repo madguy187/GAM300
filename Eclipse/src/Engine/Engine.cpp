@@ -3,8 +3,9 @@
 
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RenderComponent.h"
-#include "ECS//ComponentManager/Components/CameraComponent.h"
+#include "ECS/ComponentManager/Components/CameraComponent.h"
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
+#include "ECS/SystemManager/Systems/System/CameraSystem.h"
 
 namespace Eclipse
 {
@@ -32,6 +33,7 @@ namespace Eclipse
 
       // registering system
       world.RegisterSystem<RenderSystem>();
+      world.RegisterSystem<CameraSystem>();
 
       // registering system signature
       Signature hi;
@@ -39,16 +41,24 @@ namespace Eclipse
       hi.set(world.GetComponentType<Sprite>(), 1);
 
       world.RegisterSystemSignature<RenderSystem>(hi);
+      world.RegisterSystemSignature<CameraSystem>(hi);
 
       Entity ent = world.CreateEntity();
       world.AddComponent(ent, TransformComponent{ 4.0f, 5.0f, 6.0f });
-      world.AddComponent(ent, CameraComponent{ });
+      //world.AddComponent(ent, CameraComponent{ });
       world.AddComponent(ent, Sprite{ });
+
+      //Check this! - Rachel
+      CameraSystem::Init();
 
       while (!glfwWindowShouldClose(GLHelper::ptr_window))
       {
+          /* TEMPORARY: PLEASE REMOVE LATER - Rachel */
+          GLHelper::deltaTime = GLHelper::update_time();
+
         // Darren was here
         world.Update<RenderSystem>();
+        world.Update<CameraSystem>();
       }
 
       RenderSystem::unLoad();

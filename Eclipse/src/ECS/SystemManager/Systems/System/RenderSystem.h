@@ -5,6 +5,7 @@
 #include "ECS/ComponentManager/Components/CameraComponent.h"
 #include "Graphics.h"
 #include "Graphics/InputHandler/InputWrapper.h"
+#include "Graphics/Camera/CameraManager.h"
 
 namespace Eclipse
 {
