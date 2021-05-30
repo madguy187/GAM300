@@ -12,6 +12,7 @@ namespace Eclipse
 
         Entity newCam = engine->world.CreateEntity();
         engine->world.AddComponent(newCam, CameraComponent{});
+        engine->world.AddComponent(newCam, TransformComponent{});
 
         editorCamID = newCam;
 
@@ -24,38 +25,48 @@ namespace Eclipse
         return editorCamID;
     }
 
-    void CameraManager::ComputeViewMtx(TransformComponent& _transform)
+    void CameraManager::ComputeViewMtx(CameraComponent& _camera, TransformComponent& _transform)
     {
+        glm::vec3 eyePos = _transform.position.ConvertToGlmVec3Type();
+        _camera.viewMtx = glm::lookAt(eyePos, eyePos + _camera.eyeFront, _camera.upVec);
     }
 
-    void CameraManager::UpdateEditorCamera()
+    void CameraManager::ComputePerspectiveMtx(CameraComponent& _camera)
+    {
+        _camera.projMtx = glm::perspective(glm::radians(_camera.fov),
+            static_cast<float>((OpenGL_Context::windowRatioX * OpenGL_Context::width) /
+                (OpenGL_Context::windowRatioY * OpenGL_Context::height)),
+            _camera.nearPlane, _camera.farPlane);
+    }
+
+    void CameraManager::UpdateEditorCamera(TransformComponent& _transform)
     {
         unsigned int editorID = GetEditorCameraID();
         auto& camera = engine->world.GetComponent<CameraComponent>(editorID);
 
         float cameraSpd = OpenGL_Context::deltaTime * camera.cameraSpeed;
 
-        if (moveLeft_flag)
+        if (input.test(0))
         {
-            camera.eyePos -= glm::normalize(glm::cross(camera.eyeFront, camera.upVec)) * cameraSpd;
+            _transform.position += glm::normalize(glm::cross(camera.eyeFront, camera.upVec)) * cameraSpd;
         }
 
-        if (moveRight_flag)
-        { 
-            camera.eyePos += glm::normalize(glm::cross(camera.eyeFront, camera.upVec)) * cameraSpd;
-        }
-
-        if (moveFront_flag)
+        if (input.test(1))
         {
-            camera.eyePos += camera.eyeFront * cameraSpd;
+            _transform.position -= glm::normalize(glm::cross(camera.eyeFront, camera.upVec)) * cameraSpd;
         }
 
-        if (moveBack_flag)
+        if (input.test(2))
         {
-            camera.eyePos -= camera.eyeFront * cameraSpd;
+            _transform.position += camera.eyeFront * cameraSpd;
         }
 
-        if (zoomIn_flag)
+        if (input.test(3))
+        {
+            _transform.position -= camera.eyeFront * cameraSpd;
+        }
+
+        if (input.test(8))
         {
             if (camera.fov < 2.0f)
             {
@@ -67,7 +78,7 @@ namespace Eclipse
             }
         }
 
-        if (zoomOut_flag)
+        if (input.test(9))
         {
             if (camera.fov > 179.0f)
             {
@@ -79,7 +90,7 @@ namespace Eclipse
             }     
         }
 
-        if (yawLeft_flag)
+        if (input.test(6))
         {
             if (camera.eyeBeta < 1.0f)
             {
@@ -91,7 +102,7 @@ namespace Eclipse
             }
         }
 
-        if (yawRight_flag)
+        if (input.test(7))
         {
             if (camera.eyeBeta > 359.0f)
             {
@@ -110,15 +121,9 @@ namespace Eclipse
         //camera.eyeFront = glm::normalize(direction);
 
         //std::cout << "Eye front: {" << camera.eyeFront.x << ", " << camera.eyeFront.y << ", " << camera.eyeFront.z << " }" << std::endl;
-
-        camera.viewMtx = glm::lookAt(camera.eyePos, camera.eyePos + camera.eyeFront, camera.upVec);
-        camera.projMtx = glm::perspective(glm::radians(camera.fov),
-                                            static_cast<float>((OpenGL_Context::windowRatioX * OpenGL_Context::width) / 
-                                                (OpenGL_Context::windowRatioY * OpenGL_Context::height)),
-                                            camera.nearPlane, camera.farPlane);
     }
 
-    void CameraManager::UpdateCameraInput()
+    void CameraManager::CheckCameraInput()
     {
         //Camera movement keys
         int keyA = glfwGetKey(OpenGL_Context::ptr_window, GLFW_KEY_A);
@@ -139,76 +144,75 @@ namespace Eclipse
 
         if (GLFW_PRESS == keyA)
         {
-            moveLeft_flag = true;
+            input.set(1, 1);
         }
         else if (GLFW_RELEASE == keyA)
         {
-            moveLeft_flag = false;
+            input.set(1, 0);
         }
 
         if (GLFW_PRESS == keyS)
         {
-            moveBack_flag = true;
+            input.set(3, 1);
         }
         else if (GLFW_RELEASE == keyS)
         {
-            moveBack_flag = false;
+            input.set(3, 0);
         }
 
         if (GLFW_PRESS == keyD)
         {
-            moveRight_flag = true;
+            input.set(0, 1);
         }
         else if (GLFW_RELEASE == keyD)
         {
-            moveRight_flag = false;
+            input.set(0, 0);
         }
 
         if (GLFW_PRESS == keyW)
         {
-            moveFront_flag = true;
+            input.set(2, 1);
         }
         else if (GLFW_RELEASE == keyW)
         {
-            moveFront_flag = false;
+            input.set(2, 0);
         }
 
         if (GLFW_PRESS == keyZ)
         {
-            zoomIn_flag = true;
+            input.set(8, 1);
         }
         else if (GLFW_RELEASE == keyZ)
         {
-            zoomIn_flag = false;
+            input.set(8, 0);
         }
 
         if (GLFW_PRESS == keyX)
         {
-            zoomOut_flag = true;
+            input.set(9, 1);
         }
         else if (GLFW_RELEASE == keyX)
         {
-            zoomOut_flag = false;
+            input.set(9, 0);
         }
 
         if (GLFW_PRESS == keyQ)
         {
-            yawLeft_flag = true;
+            input.set(6, 1);
         }
         else if (GLFW_RELEASE == keyQ)
         {
-            yawLeft_flag = false;
+            input.set(6, 0);
         }
 
         if (GLFW_PRESS == keyE)
         {
-            yawRight_flag = true;
+            input.set(7, 1);
         }
         else if (GLFW_RELEASE == keyE)
         {
-            yawRight_flag = false;
+            input.set(7, 0);
         }
-
     }
 
     void CameraManager::SetCameraSpeed(float newSpeed)

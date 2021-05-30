@@ -9,19 +9,14 @@ void Eclipse::CameraSystem::Init()
 
 void Eclipse::CameraSystem::Update()
 {	
-	/*loop through camera entities*/
-	//for (auto entities : mEntities)
-	//{
-	//	auto& transform = engine->world.GetComponent<Transform>(entities);
-	//}
-	//engine->gCamera.UpdateCameraInput();
-	//engine->gCamera.UpdateEditorCamera();
+	for (auto& it : mEntities)
+	{
+		auto& _camera = engine->world.GetComponent<CameraComponent>(it);
+		auto& _transform = engine->world.GetComponent<TransformComponent>(it);
 
-	/*Shift later*/
-	engine->gCamera.UpdateCameraInput();
-	engine->gCamera.UpdateEditorCamera();
-
-
-	//gCamera.UpdateViewMtx()
-	//gCamera.UpdateProjectionMtx()
+		engine->gCamera.CheckCameraInput();
+		engine->gCamera.UpdateEditorCamera(_transform);
+		engine->gCamera.ComputeViewMtx(_camera, _transform);
+		engine->gCamera.ComputePerspectiveMtx(_camera);
+	}
 }

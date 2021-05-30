@@ -14,7 +14,6 @@ namespace Eclipse
 		float nearPlane{ 1.0f };
 		float farPlane{ 500.0f };
 
-		glm::vec3 eyePos{ 0.0f, 0.0f, 40.0f }; //camera position
 		glm::vec3 eyeFront{ 0.0f, 0.0f, -1.0f }; //look-at position
 		glm::vec3 upVec{ 0.0f, 1.0f, 0.0f }; //camera's up vector
 

@@ -1,4 +1,5 @@
 #pragma once
+#include "pch.h"
 #include "ECS/ComponentManager/Components/CameraComponent.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
@@ -7,29 +8,31 @@ namespace Eclipse
 {
 	class CameraManager
 	{
-		// Keyboard input press flags
-		bool zoomIn_flag{ false }; //button Z
-		bool zoomOut_flag{ false }; //button X
-		bool moveRight_flag{ false };  //button A
-		bool moveLeft_flag{ false }; //button D
-		bool moveFront_flag{ false }; //button W
-		bool moveBack_flag{ false }; //button S
-		bool pitchUp_flag{ false }; //button R
-		bool pitchDown_flag{ false }; //button F
-		bool yawLeft_flag{ false }; //button Q
-		bool yawRight_flag{ false }; //button E
+		/*************************************************************************
+		  Camera bitset layout
+		  0: Move Right								: buttton A
+		  1: Move Left								: buttton D
+		  2: Move Front								: buttton W
+		  3: Move Back								: buttton S
+		  4: Pitch Up (Rotation around x-axis)		: buttton ?
+		  5: Pitch Down (Rotation around x-axis)	: buttton ?
+		  6: Yaw Left (Rotation around y-axis)		: buttton Q
+		  7: Yaw Right (Rotation around y-axis)		: buttton E
+		  8: "Zoom In" (FOV)						: buttton Z
+		  9: "Zoom Out" (FOV)						: buttton X
+		*************************************************************************/
+		std::bitset<10> input;
 
-		/*DOUBLE CHECK THIS*/
-		unsigned int editorCamID = MAX_ENTITY;
-		
+		unsigned int editorCamID = MAX_ENTITY;	
 	public:
 		void CreateEditorCamera();
 		unsigned int GetEditorCameraID();
 
-		void ComputeViewMtx(TransformComponent& _transform);
-		void UpdateEditorCamera();
+		void ComputeViewMtx(CameraComponent& _camera, TransformComponent& _transform);
+		void ComputePerspectiveMtx(CameraComponent& _camera);
+		void UpdateEditorCamera(TransformComponent& _transform);
 
-		void UpdateCameraInput();
+		void CheckCameraInput();
 
 		void SetCameraSpeed(float newSpeed);
 	};

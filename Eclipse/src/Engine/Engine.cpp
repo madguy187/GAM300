@@ -11,7 +11,7 @@ namespace Eclipse
 {
     void Engine::Init()
     {
-      //ECVec2D woo;
+      //ECVec2 woo;
       //glm::vec2 koo{ 1,2 };
       //woo += koo;
       //glm::vec2 loo = woo.ConvertToGlmVec2Type();
@@ -49,7 +49,7 @@ namespace Eclipse
       world.RegisterSystemSignature<CameraSystem>(hi2);
 
       Entity ent = world.CreateEntity();
-      world.AddComponent(ent, TransformComponent{ 4.0f, 5.0f, 6.0f });
+      //world.AddComponent(ent, TransformComponent{ 4.0f, 5.0f, 6.0f });
       //world.AddComponent(ent, CameraComponent{ });
       world.AddComponent(ent, Sprite{ });
 
