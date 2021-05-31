@@ -44,11 +44,9 @@ Signature Eclipse::RenderSystem::RegisterAll()
 
 void Eclipse::RenderSystem::Update()
 {
-    // To be Removed
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-    // To be removed
 
     engine->gGraphics.UpdateFrameBuffer();
 
@@ -58,11 +56,11 @@ void Eclipse::RenderSystem::Update()
         Sprite& _Sprites = engine->world.GetComponent<Sprite>(entity);
 
         engine->gGraphics.ShowTestWidgets(entity, engine->gGraphics.createdID);
-        engine->gGraphics.DrawBuffers(engine->gGraphics.mRenderContext.m_frameBuffer->GetFrameBufferID(), &_Sprites, GL_FILL);
-        engine->gGraphics.DrawBuffers(engine->gGraphics.mRenderContext.n_frameBuffer->GetFrameBufferID(), &_Sprites, GL_LINE);
+        engine->gGraphics.DrawBuffers(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
+        engine->gGraphics.DrawBuffers(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), &_Sprites, GL_LINE);
     }
 
-    engine->gGraphics.draw();
+    engine->gGraphics.FrameBufferDraw();
     ImGui::Render();
 
     engine->gGraphics.ImguiRender();

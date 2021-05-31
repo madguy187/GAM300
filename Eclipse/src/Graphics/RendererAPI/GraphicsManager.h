@@ -9,7 +9,7 @@ namespace Eclipse
     void post_render();
     void end();
     void unload();
-    void draw();
+    void FrameBufferDraw();
 
     // to be removed
     void ImguiRender();

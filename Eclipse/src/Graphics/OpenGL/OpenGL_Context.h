@@ -65,5 +65,6 @@ namespace Eclipse
     //Remove when delta-time implementation is added - Rachel
     static double update_time(double fps_calc_interval);
     static GLdouble deltaTime;
+    FrameBuffer* GetFramebuffer(FrameBufferMode mode);
   };
 }
