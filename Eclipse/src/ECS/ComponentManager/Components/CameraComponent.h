@@ -8,7 +8,7 @@ namespace Eclipse
 	struct CameraComponent
 	{
 		float eyeAlpha{ 0.0f }; //pitch
-		float eyeBeta{ 0.0f }; //yaw
+		float eyeBeta{ -90.0f }; //yaw
 
 		float fov{ 45.0f };
 		float nearPlane{ 1.0f };

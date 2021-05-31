@@ -18,11 +18,24 @@ namespace Eclipse
 
         auto& editorCam = engine->world.GetComponent<CameraComponent>(newCam);
         editorCam.camType = CameraComponent::CameraType::Editor_Camera;
+
+        auto& _transform = engine->world.GetComponent<TransformComponent>(newCam);
+        _transform.position = ECVec3{ 0.0f, 0.0f, 40.0f };
+        _transform.rotation = ECVec3{ 0.0f, -90.0f, 0.0f };
     }
 
     unsigned int CameraManager::GetEditorCameraID()
     {
         return editorCamID;
+    }
+
+    void CameraManager::ComputeViewDirection(CameraComponent& _camera, TransformComponent& _transform)
+    {
+        glm::vec3 direction;
+        direction.x = cos(glm::radians(_transform.rotation.y)) * cos(glm::radians(_transform.rotation.x));
+        direction.y = sin(glm::radians(_transform.rotation.x));
+        direction.z = sin(glm::radians(_transform.rotation.y)) * cos(glm::radians(_transform.rotation.x));
+        _camera.eyeFront = glm::normalize(direction);
     }
 
     void CameraManager::ComputeViewMtx(CameraComponent& _camera, TransformComponent& _transform)
@@ -92,35 +105,51 @@ namespace Eclipse
 
         if (input.test(6))
         {
-            if (camera.eyeBeta < 1.0f)
-            {
-                camera.eyeBeta = 360.0f;
+            if (_transform.rotation.y < -90.0f)
+            {            
+                _transform.rotation.y = 270.0f;
             }
             else
             {
-                camera.eyeBeta -= cameraSpd;
+                _transform.rotation.y -= cameraSpd;
             }
         }
 
         if (input.test(7))
         {
-            if (camera.eyeBeta > 359.0f)
+            if (_transform.rotation.y > 270.0f)
             {
-                camera.eyeBeta = 0.0f;
+                _transform.rotation.y = -90.0f;
             }
             else
             {
-                camera.eyeBeta -= cameraSpd;
+                _transform.rotation.y += cameraSpd;
             }
         }
 
-        //glm::vec3 direction;
-        //direction.x = cos(glm::radians(camera.eyeBeta)) * cos(glm::radians(camera.eyeAlpha));
-        //direction.y = cos(glm::radians(camera.eyeAlpha));
-        //direction.z = sin(glm::radians(camera.eyeBeta)) * cos(glm::radians(camera.eyeAlpha));
-        //camera.eyeFront = glm::normalize(direction);
+        if (input.test(4))
+        {
+            if (_transform.rotation.x > 89.0f)
+            {
+                _transform.rotation.x = 89.0f;
+            }
+            else
+            {
+                _transform.rotation.x += cameraSpd;
+            }
+        }
 
-        //std::cout << "Eye front: {" << camera.eyeFront.x << ", " << camera.eyeFront.y << ", " << camera.eyeFront.z << " }" << std::endl;
+        if (input.test(5))
+        {
+            if (_transform.rotation.x < -89.0f)
+            {
+                _transform.rotation.x = -89.0f;
+            }
+            else
+            {
+                _transform.rotation.x -= cameraSpd;
+            }
+        }
     }
 
     void CameraManager::CheckCameraInput()
@@ -212,6 +241,24 @@ namespace Eclipse
         else if (GLFW_RELEASE == keyE)
         {
             input.set(7, 0);
+        }
+
+        if (GLFW_PRESS == keyR)
+        {
+            input.set(4, 1);
+        }
+        else if (GLFW_RELEASE == keyR)
+        {
+            input.set(4, 0);
+        }
+
+        if (GLFW_PRESS == keyF)
+        {
+            input.set(5, 1);
+        }
+        else if (GLFW_RELEASE == keyF)
+        {
+            input.set(5, 0);
         }
     }
 

@@ -16,6 +16,8 @@ void Eclipse::CameraSystem::Update()
 
 		engine->gCamera.CheckCameraInput();
 		engine->gCamera.UpdateEditorCamera(_transform);
+
+		engine->gCamera.ComputeViewDirection(_camera, _transform);
 		engine->gCamera.ComputeViewMtx(_camera, _transform);
 		engine->gCamera.ComputePerspectiveMtx(_camera);
 	}
