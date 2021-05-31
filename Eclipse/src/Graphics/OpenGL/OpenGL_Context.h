@@ -18,14 +18,6 @@ namespace Eclipse
     MAXCOUNT
   };
 
-  enum class FrameBufferMode
-  {
-    None,
-    GAMEVIEW,
-    SCENEVIEW,
-    MAXCOUNT
-  };
-
   typedef std::map<FrameBufferMode, FrameBuffer*> FrameBufferContainer;
 
   class OpenGL_Context

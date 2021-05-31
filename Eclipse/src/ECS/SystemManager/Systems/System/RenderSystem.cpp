@@ -55,11 +55,11 @@ void Eclipse::RenderSystem::Update()
     // Loop
     for (auto const& entity : mEntities)
     {
-      Sprite& _Sprites = engine->world.GetComponent<Sprite>(entity);
+        Sprite& _Sprites = engine->world.GetComponent<Sprite>(entity);
 
-      engine->gGraphics.ShowTestWidgets(entity, engine->gGraphics.createdID);
-      engine->gGraphics.DrawBuffers(engine->gGraphics.mRenderContext.m_frameBuffer->GetGameViewBuffer(), &_Sprites, GL_FILL);
-      engine->gGraphics.DrawBuffers(engine->gGraphics.mRenderContext.n_frameBuffer->GetGameViewBuffer(), &_Sprites, GL_LINE);
+        engine->gGraphics.ShowTestWidgets(entity, engine->gGraphics.createdID);
+        engine->gGraphics.DrawBuffers(engine->gGraphics.mRenderContext.m_frameBuffer->GetFrameBufferID(), &_Sprites, GL_FILL);
+        engine->gGraphics.DrawBuffers(engine->gGraphics.mRenderContext.n_frameBuffer->GetFrameBufferID(), &_Sprites, GL_LINE);
     }
 
     engine->gGraphics.draw();

@@ -410,8 +410,8 @@ void Eclipse::OpenGL_Context::SetBlendMode(Eclipse::BlendMode p_mode)
 
 void Eclipse::OpenGL_Context::CreateFrameBuffers()
 {
-  m_frameBuffer = new FrameBuffer(OpenGL_Context::width, OpenGL_Context::height);
-  n_frameBuffer = new FrameBuffer(OpenGL_Context::width, OpenGL_Context::height);
+  m_frameBuffer = new FrameBuffer(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::GAMEVIEW);
+  n_frameBuffer = new FrameBuffer(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::SCENEVIEW);
 
   _Framebuffers.insert({ FrameBufferMode::GAMEVIEW  , m_frameBuffer });
   _Framebuffers.insert({ FrameBufferMode::SCENEVIEW , n_frameBuffer });
