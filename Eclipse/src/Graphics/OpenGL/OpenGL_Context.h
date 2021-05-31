@@ -18,6 +18,16 @@ namespace Eclipse
     MAXCOUNT
   };
 
+  enum class FrameBufferMode
+  {
+    None,
+    GAMEVIEW,
+    SCENEVIEW,
+    MAXCOUNT
+  };
+
+  typedef std::map<FrameBufferMode, FrameBuffer*> FrameBufferContainer;
+
   class OpenGL_Context
   {
   public:
@@ -58,6 +68,7 @@ namespace Eclipse
     static void key_cb(GLFWwindow* pwin, int key, int scancode, int action, int mod);
     static void mousebutton_cb(GLFWwindow* pwin, int button, int action, int mod);
 
+    FrameBufferContainer _Framebuffers;
 
     //Remove when delta-time implementation is added - Rachel
     static double update_time(double fps_calc_interval);

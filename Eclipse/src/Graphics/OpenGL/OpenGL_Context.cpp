@@ -412,6 +412,9 @@ void Eclipse::OpenGL_Context::CreateFrameBuffers()
 {
   m_frameBuffer = new FrameBuffer(OpenGL_Context::width, OpenGL_Context::height);
   n_frameBuffer = new FrameBuffer(OpenGL_Context::width, OpenGL_Context::height);
+
+  _Framebuffers.insert({ FrameBufferMode::GAMEVIEW  , m_frameBuffer });
+  _Framebuffers.insert({ FrameBufferMode::SCENEVIEW , n_frameBuffer });
 }
 
 double Eclipse::OpenGL_Context::update_time(double fps_calc_interval)

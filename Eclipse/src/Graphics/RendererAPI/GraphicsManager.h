@@ -15,5 +15,15 @@ namespace Eclipse
     void ImguiRender();
     void UpdateFrameBuffer();
     OpenGL_Context mRenderContext;
+    unsigned int createdID;
+    void DrawBuffers(unsigned int FrameBufferID, Sprite* _spritecomponent, GLenum mode);
+
+  private:
+    void ShowTestWidgets();
+    void CreatePrimitives(GLint model);
+    void CheckUniformLoc(Sprite& sprite, unsigned int id);
+
+  public:
+    void ShowTestWidgets(unsigned int id, unsigned int createdId);
   };
 }

@@ -15,16 +15,9 @@ namespace Eclipse
   {
   public:
     static void Init();
-    static void unLoad();
+    static Signature RegisterAll();
 
   private:
-    void GlobalRender();
     void Update() override;
-    GraphicsManager _GraphicsManager;
-
-    void CheckUniformLoc(Sprite& sprite, unsigned int id);
-    void DrawBuffers(unsigned int framebuffer);
-    void DrawSecondBuffers(unsigned int framebuffer);
-    void test();
   };
 }

@@ -35,23 +35,14 @@ namespace Eclipse
       world.RegisterSystem<RenderSystem>();
       world.RegisterSystem<CameraSystem>();
 
-      // registering system signature
-      Signature hi;
-      hi.set(world.GetComponentType<TransformComponent>(), 1);
-      hi.set(world.GetComponentType<Sprite>(), 1);
-
-      world.RegisterSystemSignature<RenderSystem>(hi);
+      // Render System
+      Signature RenderSys = RenderSystem::RegisterAll();
+      world.RegisterSystemSignature<RenderSystem>(RenderSys);
 
       Signature hi2;
       hi2.set(world.GetComponentType<TransformComponent>(), 1);
       hi2.set(world.GetComponentType<CameraComponent>(), 1);
-
       world.RegisterSystemSignature<CameraSystem>(hi2);
-
-      Entity ent = world.CreateEntity();
-      //world.AddComponent(ent, TransformComponent{ 4.0f, 5.0f, 6.0f });
-      //world.AddComponent(ent, CameraComponent{ });
-      world.AddComponent(ent, Sprite{ });
 
       //Check this! - Rachel
       CameraSystem::Init();
@@ -65,6 +56,7 @@ namespace Eclipse
         world.Update<CameraSystem>();
       }
 
-      RenderSystem::unLoad();
+      // unLoad
+      gGraphics.end();
     }
 }
