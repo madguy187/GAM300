@@ -300,6 +300,7 @@ void Graphics::CreateObject(GLint model)
 
   Sprite& sprite = engine->world.GetComponent<Sprite>(EntityID);
   sprite.layerNum = 10;
+  sprite.ID = EntityID;
 
   switch (model)
   {

@@ -49,6 +49,9 @@
     <Filter Include="src\Graphics">
       <UniqueIdentifier>{0D564864-F9B8-D708-A23E-10BF8E80A38B}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Graphics\Camera">
+      <UniqueIdentifier>{E5F976A5-515B-54B3-DAC8-9A6546298B72}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Graphics\FrameBuffer">
       <UniqueIdentifier>{A1EE6402-8D13-B482-B65E-9912A2E2B2A0}</UniqueIdentifier>
     </Filter>
@@ -108,6 +111,9 @@
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h">
       <Filter>src\ECS\ComponentManager</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h">
+      <Filter>src\ECS\ComponentManager\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.h">
       <Filter>src\ECS\ComponentManager\Components\ComponentArray</Filter>
     </ClInclude>
@@ -126,6 +132,9 @@
     <ClInclude Include="src\ECS\SystemManager\SystemManager.h">
       <Filter>src\ECS\SystemManager</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem.h">
+      <Filter>src\ECS\SystemManager\Systems\System</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem.h">
       <Filter>src\ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
@@ -143,6 +152,9 @@
     </ClInclude>
     <ClInclude Include="src\Global.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Camera\CameraManager.h">
+      <Filter>src\Graphics\Camera</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\FrameBuffer\FrameBuffer.h">
       <Filter>src\Graphics\FrameBuffer</Filter>
@@ -237,6 +249,9 @@
     <ClInclude Include="src\Graphics\Still_Cleaning\Matrix4.h">
       <Filter>src\Graphics\Still_Cleaning</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\Still_Cleaning\Vec.h">
+      <Filter>src\Graphics\Still_Cleaning</Filter>
+    </ClInclude>
     <ClInclude Include="src\Library\Math\Matrix.h">
       <Filter>src\Library\Math</Filter>
     </ClInclude>
@@ -264,10 +279,6 @@
     <ClInclude Include="src\pch.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\Camera\CameraManager.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem.h" />
-    <ClInclude Include="src\Graphics\Still_Cleaning\Vec.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp">
@@ -300,6 +311,9 @@
     <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp">
       <Filter>src\ECS\SystemManager</Filter>
     </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem.cpp">
+      <Filter>src\ECS\SystemManager\Systems\System</Filter>
+    </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp">
       <Filter>src\ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
@@ -311,6 +325,9 @@
     </ClCompile>
     <ClCompile Include="src\EntryPoint\EntryPoint.cpp">
       <Filter>src\EntryPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Camera\CameraManager.cpp">
+      <Filter>src\Graphics\Camera</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\FrameBuffer\FrameBuffer.cpp">
       <Filter>src\Graphics\FrameBuffer</Filter>
@@ -393,7 +410,5 @@
     <ClCompile Include="src\pch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\Camera\CameraManager.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem.cpp" />
   </ItemGroup>
 </Project>
