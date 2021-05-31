@@ -9,8 +9,6 @@ namespace Eclipse
     class CameraSystem : public System
     {
     public:
-        InputWrapper InputHandler;
-
         static void Init();
         void Update() override;
     };

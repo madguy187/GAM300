@@ -47,8 +47,8 @@ namespace Eclipse
     void CameraManager::ComputePerspectiveMtx(CameraComponent& _camera)
     {
         _camera.projMtx = glm::perspective(glm::radians(_camera.fov),
-            static_cast<float>((OpenGL_Context::windowRatioX * OpenGL_Context::width) /
-                (OpenGL_Context::windowRatioY * OpenGL_Context::height)),
+            static_cast<float>((OpenGL_Context::GetWindowRatioX() * OpenGL_Context::GetWidth()) /
+                (OpenGL_Context::GetWindowRatioY() * OpenGL_Context::GetHeight() )),
             _camera.nearPlane, _camera.farPlane);
     }
 
@@ -154,58 +154,96 @@ namespace Eclipse
 
     void CameraManager::CheckCameraInput()
     {
+        InputHandler.SetIsPrint(false);
+
         //Camera movement keys
-        int keyA = glfwGetKey(OpenGL_Context::ptr_window, GLFW_KEY_A);
-        int keyW = glfwGetKey(OpenGL_Context::ptr_window, GLFW_KEY_W);
-        int keyS = glfwGetKey(OpenGL_Context::ptr_window, GLFW_KEY_S);
-        int keyD = glfwGetKey(OpenGL_Context::ptr_window, GLFW_KEY_D);
+        //int keyA = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_A);
+        //int keyW = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_W);
+        //int keyS = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_S);
+        //int keyD = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_D);
 
         /*Camera "zoom" keys
         NOTE: Changing the FOV causes some level of distortion, similar to the fisheye effect.
         Recommended FOV value for a realistic view is usually about 45.*/
-        int keyZ = glfwGetKey(OpenGL_Context::ptr_window, GLFW_KEY_Z);
-        int keyX = glfwGetKey(OpenGL_Context::ptr_window, GLFW_KEY_X);
+        int keyZ = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_Z);
+        int keyX = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_X);
         
-        int keyQ = glfwGetKey(OpenGL_Context::ptr_window, GLFW_KEY_Q);
-        int keyE = glfwGetKey(OpenGL_Context::ptr_window, GLFW_KEY_E);
-        int keyR = glfwGetKey(OpenGL_Context::ptr_window, GLFW_KEY_R);
-        int keyF = glfwGetKey(OpenGL_Context::ptr_window, GLFW_KEY_F);
+        int keyQ = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_Q);
+        int keyE = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_E);
+        int keyR = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_R);
+        int keyF = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_F);
 
-        if (GLFW_PRESS == keyA)
+        if (InputHandler.GetKeyCurrent(InputKeycode::Key_A))
         {
             input.set(1, 1);
         }
-        else if (GLFW_RELEASE == keyA)
+        else
         {
             input.set(1, 0);
         }
 
-        if (GLFW_PRESS == keyS)
+        if (InputHandler.GetKeyCurrent(InputKeycode::Key_S))
         {
             input.set(3, 1);
         }
-        else if (GLFW_RELEASE == keyS)
+        else
         {
             input.set(3, 0);
         }
 
-        if (GLFW_PRESS == keyD)
+        if (InputHandler.GetKeyCurrent(InputKeycode::Key_D))
         {
             input.set(0, 1);
         }
-        else if (GLFW_RELEASE == keyD)
+        else 
         {
             input.set(0, 0);
         }
 
-        if (GLFW_PRESS == keyW)
+        if (InputHandler.GetKeyCurrent(InputKeycode::Key_W))
         {
             input.set(2, 1);
         }
-        else if (GLFW_RELEASE == keyW)
+        else 
         {
             input.set(2, 0);
         }
+
+        //if (GLFW_PRESS == keyA)
+        //{
+        //    input.set(1, 1);
+        //}
+        //else if (GLFW_RELEASE == keyA)
+        //{
+        //    input.set(1, 0);
+        //}
+
+        //if (GLFW_PRESS == keyS)
+        //{
+        //    input.set(3, 1);
+        //}
+        //else if (GLFW_RELEASE == keyS)
+        //{
+        //    input.set(3, 0);
+        //}
+
+        //if (GLFW_PRESS == keyD)
+        //{
+        //    input.set(0, 1);
+        //}
+        //else if (GLFW_RELEASE == keyD)
+        //{
+        //    input.set(0, 0);
+        //}
+
+        //if (GLFW_PRESS == keyW)
+        //{
+        //    input.set(2, 1);
+        //}
+        //else if (GLFW_RELEASE == keyW)
+        //{
+        //    input.set(2, 0);
+        //}
 
         if (GLFW_PRESS == keyZ)
         {

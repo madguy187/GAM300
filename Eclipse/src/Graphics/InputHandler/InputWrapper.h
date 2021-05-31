@@ -22,7 +22,7 @@ namespace Eclipse
   public:
 
     // Probably missing this:
-    friend std::ostream& operator << (std::ostream& os, const InputKeycode& course);
+    friend std::ostream& operator << (std::ostream& os, const InputKeycode& in);
 
       InputWrapper();
 

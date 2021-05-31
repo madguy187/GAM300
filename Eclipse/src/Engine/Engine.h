@@ -10,6 +10,7 @@ namespace Eclipse
 	public:
 		World world;
 		CameraManager gCamera;
+		GraphicsManager gGraphics;
 
 		void Init();
 		void Run();

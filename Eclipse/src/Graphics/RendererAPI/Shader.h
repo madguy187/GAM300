@@ -47,6 +47,7 @@ public:
 	void SetUniform(const GLchar* name, glm::vec4& value);
 	void SetUniform(const GLchar* name, glm::mat3& value);
 	void SetUniform(const GLchar* name, glm::mat4& value);
+	int GetLocation(const char* name) const;
 private:
 	std::string GetShaderData(const std::string& fileName);
 	GLboolean CompileShader(GLenum shaderType, const std::string fileName);
@@ -66,6 +67,7 @@ private:
 	GLuint handle;
 	GLboolean isLinked;
 	std::string message;
+	unsigned int m_id;
 };
 
 #endif /* SHADER_H */

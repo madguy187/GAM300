@@ -26,14 +26,14 @@ void Sphere::InsertPosVtx()
     for (int stack = 0; stack <= 32; ++stack)
     {
         float row = static_cast<float>(stack) / 32;
-        float beta =  M_PI * (row - 0.5f);
+        float beta = static_cast<float>(M_PI * (row - 0.5f));
 
         for (int slice = 0; slice <= 32; ++slice)
         {
             float col = static_cast<float>(slice) / 32;
-            float alpha = col * M_PI * 2.0f;
+            float alpha = static_cast<float>(col * M_PI * 2.0f);
 
-            glm::vec3 posVtx { radius * sin(alpha) * cos(beta), radius * sin(beta), radius * cos(alpha) * cos(beta) };
+            glm::vec3 posVtx{ radius * sin(alpha) * cos(beta), radius * sin(beta), radius * cos(alpha) * cos(beta) };
 
             PosVec.push_back(posVtx);
             NormalVec.push_back(posVtx / radius);
@@ -169,8 +169,7 @@ GLuint Sphere::GetPrimitiveCount()
 
 GLuint Sphere::GetDrawCount()
 {
-    //return drawCount;
-    return IdxVec.size();
+    return static_cast<GLuint>(IdxVec.size());
 }
 
 void Sphere::SetVaoID(GLuint id)
@@ -264,5 +263,5 @@ bool Sphere::DegenerateTri(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2)
 
 GLuint Sphere::GetIndicesCount()
 {
-    return IdxVec.size();
+    return static_cast<GLuint>(IdxVec.size());
 }
