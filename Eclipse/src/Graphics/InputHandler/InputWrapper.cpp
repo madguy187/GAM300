@@ -373,16 +373,20 @@ std::ostream& Eclipse::operator<<(std::ostream& stream, const InputKeycode& keyc
     return stream;
 }
 
-Eclipse::InputWrapper::InputWrapper() : EnablePrint{ false }
+Eclipse::InputWrapper::InputWrapper() : 
+    EnablePrint{ false }
 {
     init();
 }
 
 void Eclipse::InputWrapper::init()
 {
+
+    // Clear Container just in case
     KeyContainer.clear();
     HoldKeyContainer.clear();
 
+    // Insert one inactive key into container for Hold Key Container , no need for trigger container
     HoldKeyContainer.insert({ std::pair<InputKeycode,int>(InputKeycode::Key_Null,0),std::pair<bool,InputState>(false,InputState::Key_NULLSTATE) });
 }
 

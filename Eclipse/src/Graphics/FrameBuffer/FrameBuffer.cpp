@@ -28,7 +28,7 @@ FrameBuffer::FrameBuffer(unsigned int p_width, unsigned int p_height, FrameBuffe
         std::exit(EXIT_FAILURE);
     }
 
-    if (in == Eclipse::FrameBufferMode::None || in == Eclipse::FrameBufferMode::MAXCOUNT)
+    if (in == Eclipse::FrameBufferMode::NONE || in == Eclipse::FrameBufferMode::MAXCOUNT)
     {
         ENGINE_CORE_INFO("Creating FrameBuffer with Invalid Type");
         ENGINE_LOG_ASSERT(false, "Creating FrameBuffer with Invalid Type");

@@ -286,7 +286,7 @@ void Eclipse::GraphicsManager::UpdateFrameBuffer()
 
 FrameBuffer* Eclipse::OpenGL_Context::GetFramebuffer(FrameBufferMode mode)
 {
-    if (mode == FrameBufferMode::MAXCOUNT || mode == FrameBufferMode::None)
+    if (mode == FrameBufferMode::MAXCOUNT || mode == FrameBufferMode::NONE)
     {
         ENGINE_CORE_INFO("Wrong FrameBuffer Type");
         ENGINE_LOG_ASSERT(false, " Wrong FrameBuffer Type");

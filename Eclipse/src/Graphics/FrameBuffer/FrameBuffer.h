@@ -6,9 +6,9 @@ namespace Eclipse
 {
     enum class FrameBufferMode
     {
-        None,
-        GAMEVIEW,
-        SCENEVIEW,
+        NONE = 0,
+        GAMEVIEW = 1,
+        SCENEVIEW = 2,
         MAXCOUNT
     };
 

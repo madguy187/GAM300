@@ -351,7 +351,7 @@ void Eclipse::OpenGL_Context::CreateFrameBuffers()
 
 void Eclipse::OpenGL_Context::CreateFrameBuffers(unsigned int width, unsigned int height, Eclipse::FrameBufferMode in)
 {
-    if (in == Eclipse::FrameBufferMode::None || in == Eclipse::FrameBufferMode::MAXCOUNT)
+    if (in == Eclipse::FrameBufferMode::NONE || in == Eclipse::FrameBufferMode::MAXCOUNT)
     {
         ENGINE_CORE_INFO("Creating FrameBuffer with Invalid Type");
         ENGINE_LOG_ASSERT(false, "Creating FrameBuffer with Invalid Type");
