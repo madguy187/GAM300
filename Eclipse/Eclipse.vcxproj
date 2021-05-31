@@ -185,6 +185,8 @@
     <ClInclude Include="src\Graphics\OpenGL\OpenGL_Context.h" />
     <ClInclude Include="src\Graphics\Parser\Parser.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Graphics.h" />
+    <ClInclude Include="src\Graphics\RendererAPI\GraphicsManager.h" />
+    <ClInclude Include="src\Graphics\RendererAPI\Renderer.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Shader.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Texture.h" />
     <ClInclude Include="src\Graphics\Still_Cleaning\AllComponents.h" />
@@ -240,6 +242,7 @@
     <ClCompile Include="src\Graphics\OpenGL\OpenGL_Context.cpp" />
     <ClCompile Include="src\Graphics\Parser\Parser.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\Graphics.cpp" />
+    <ClCompile Include="src\Graphics\RendererAPI\GraphicsManager.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\Shader.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\Texture.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\stb_image.cpp" />

@@ -20,7 +20,7 @@ namespace Eclipse
       ECMat4 mat2;
       ECMtx44Inverse(&mat2, mat);
       std::cout << mat2;*/
-      RenderSystem::Load();
+      RenderSystem::Init();
     }
 
     void Engine::Run()

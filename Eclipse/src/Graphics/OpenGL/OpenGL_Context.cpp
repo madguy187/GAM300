@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "OpenGL_Context.h"
+#include "Graphics/RendererAPI/Renderer.h"
 
 using namespace Eclipse;
 
@@ -160,7 +161,7 @@ void Eclipse::OpenGL_Context::key_cb(GLFWwindow* pwin, int key, int scancode, in
     std::cout << "Key released" << std::endl;
 #endif
   }
-  }
+}
 
 void Eclipse::OpenGL_Context::mousebutton_cb(GLFWwindow* pwin, int button, int action, int mod)
 {
@@ -341,11 +342,8 @@ void Eclipse::OpenGL_Context::print_specs()
 
 void Eclipse::OpenGL_Context::pre_render()
 {
-  glViewport(0, 0, width, height);
-  glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-  Graphics::init();
+  Eclipse::OpenGL_Context::Init();
+  Eclipse::OpenGL_Context::CreateFrameBuffers();
 }
 
 void Eclipse::OpenGL_Context::post_render()
@@ -360,51 +358,91 @@ void Eclipse::OpenGL_Context::end()
   glfwTerminate();
 }
 
+void Eclipse::OpenGL_Context::Init()
+{
+  GLCall(glEnable(GL_BLEND));
+  GLCall(glEnable(GL_DEPTH_TEST));
+
+  Eclipse::OpenGL_Context::SetViewport(0, 0, OpenGL_Context::width, OpenGL_Context::height);
+  Eclipse::OpenGL_Context::SetClearColor({ 0.2f, 0.2f, 0.2f, 1.0f });
+  Eclipse::OpenGL_Context::Clear();
+}
+
+void Eclipse::OpenGL_Context::Clear()
+{
+  GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+}
+
+void Eclipse::OpenGL_Context::SetViewport(unsigned int p_x, unsigned int p_y, unsigned int p_width, unsigned int p_height)
+{
+  GLCall(glViewport(p_x, p_y, p_width, p_height));
+}
+
+void Eclipse::OpenGL_Context::SetClearColor(const glm::vec4& p_color)
+{
+  GLCall(glClearColor(p_color.r, p_color.g, p_color.b, p_color.a));
+}
+
+void Eclipse::OpenGL_Context::SetBlendMode(Eclipse::BlendMode p_mode)
+{
+  switch (p_mode)
+  {
+  case Eclipse::BlendMode::INTERPOLATE:
+    GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+    break;
+  case Eclipse::BlendMode::PREMULTIPLY:
+    GLCall(glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA));
+    break;
+  case Eclipse::BlendMode::NOBLEND:
+    GLCall(glBlendFunc(GL_ONE, GL_ONE));
+    break;
+  case Eclipse::BlendMode::ADDITIVE:
+    GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE));
+    break;
+  case Eclipse::BlendMode::LIGHTMAP:
+    GLCall(glBlendFunc(GL_DST_COLOR, GL_ZERO));
+    break;
+  case Eclipse::BlendMode::MULTIPLY:
+    GLCall(glBlendFunc(GL_DST_COLOR, GL_SRC_COLOR));
+    break;
+  }
+}
+
+void Eclipse::OpenGL_Context::CreateFrameBuffers()
+{
+  m_frameBuffer = new FrameBuffer(OpenGL_Context::width, OpenGL_Context::height);
+  n_frameBuffer = new FrameBuffer(OpenGL_Context::width, OpenGL_Context::height);
+}
 
 double Eclipse::OpenGL_Context::update_time(double fps_calc_interval)
 {
-    // get elapsed time (in seconds) between previous and current frames
-    static double prev_time = glfwGetTime();
-    double curr_time = glfwGetTime();
-    double delta_time = curr_time - prev_time;
-    prev_time = curr_time;
+  // get elapsed time (in seconds) between previous and current frames
+  static double prev_time = glfwGetTime();
+  double curr_time = glfwGetTime();
+  double delta_time = curr_time - prev_time;
+  prev_time = curr_time;
 
-    // fps calculations
-    static double count = 0.0; // number of game loop iterations
-    static double start_time = glfwGetTime();
-    // get elapsed time since very beginning (in seconds) ...
-    double elapsed_time = curr_time - start_time;
+  // fps calculations
+  static double count = 0.0; // number of game loop iterations
+  static double start_time = glfwGetTime();
+  // get elapsed time since very beginning (in seconds) ...
+  double elapsed_time = curr_time - start_time;
 
-    ++count;
+  ++count;
 
-    // update fps at least every 10 seconds ...
-    fps_calc_interval = (fps_calc_interval < 0.0) ? 0.0 : fps_calc_interval;
-    fps_calc_interval = (fps_calc_interval > 10.0) ? 10.0 : fps_calc_interval;
+  // update fps at least every 10 seconds ...
+  fps_calc_interval = (fps_calc_interval < 0.0) ? 0.0 : fps_calc_interval;
+  fps_calc_interval = (fps_calc_interval > 10.0) ? 10.0 : fps_calc_interval;
 
-    if (elapsed_time > fps_calc_interval)
-    {
-        OpenGL_Context::fps = count / elapsed_time;
-        start_time = curr_time;
-        count = 0.0;
-    }
+  if (elapsed_time > fps_calc_interval)
+  {
+    OpenGL_Context::fps = count / elapsed_time;
+    start_time = curr_time;
+    count = 0.0;
+  }
 
-    deltaTime = delta_time;
+  deltaTime = delta_time;
 
-    // done calculating fps ...
-    return delta_time;
+  // done calculating fps ...
+  return delta_time;
 }
-
-//GLint Eclipse::OpenGL_Context::GetWindowWidth()
-//{
-//  return width;
-//}
-//
-//GLint Eclipse::OpenGL_Context::GetWindowHeight()
-//{
-//  return height;
-//}
-//
-//void* Eclipse::OpenGL_Context::GetWindow()
-//{
-//  return ptr_window;
-//}

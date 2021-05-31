@@ -279,6 +279,8 @@
     <ClInclude Include="src\pch.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\RendererAPI\Renderer.h" />
+    <ClInclude Include="src\Graphics\RendererAPI\GraphicsManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp">
@@ -410,5 +412,6 @@
     <ClCompile Include="src\pch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\RendererAPI\GraphicsManager.cpp" />
   </ItemGroup>
 </Project>

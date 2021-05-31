@@ -64,13 +64,12 @@ vec2 Graphics::frameBufferPos;
 vec2 mousecoords;
 
 GLdouble Graphics::timer = 0.5;
-//World* Graphics::_world = nullptr;
+
 int StickCount = 0;
 int StickID = 0;
 bool NumebrTest = false;
 bool mouseEditor = true;
 
-FrameBuffer* Graphics::m_frameBuffer;
 extern glm::vec3 spherePos;
 extern glm::vec3 sphereScale;
 extern glm::vec3 sphereRot;
@@ -101,8 +100,6 @@ void Graphics::load()
  /******************************************************************************/
 void Graphics::init()
 {
-  m_frameBuffer = new FrameBuffer(OpenGL_Context::width, OpenGL_Context::height);
-  CreateFrameBuffer();
 }
 
 /******************************************************************************/
@@ -138,17 +135,17 @@ void Graphics::update()
  /******************************************************************************/
 void Graphics::draw()
 {
-  ImGui::Begin("Game View");
+  //ImGui::Begin("Game View");
 
-  ImGui::GetWindowDrawList()->AddImage(
-    (void*)(textureColorbuffer),
-    ImVec2(ImGui::GetCursorScreenPos()),
-    ImVec2(ImGui::GetCursorScreenPos().x + ImGui::GetWindowContentRegionMax().x,
-      ImGui::GetCursorScreenPos().y + ImGui::GetWindowContentRegionMax().y), ImVec2(0, 1), ImVec2(1, 0));
+  //ImGui::GetWindowDrawList()->AddImage(
+  //  (void*)(textureColorbuffer),
+  //  ImVec2(ImGui::GetCursorScreenPos()),
+  //  ImVec2(ImGui::GetCursorScreenPos().x + ImGui::GetWindowContentRegionMax().x,
+  //    ImGui::GetCursorScreenPos().y + ImGui::GetWindowContentRegionMax().y), ImVec2(0, 1), ImVec2(1, 0));
 
-  ImGui::End();
+  //ImGui::End();
 
-  FrameBuffer::ShowWindow(*m_frameBuffer);
+  //FrameBuffer::ShowWindow(*m_frameBuffer);
 }
 
 void Graphics::cleanup()

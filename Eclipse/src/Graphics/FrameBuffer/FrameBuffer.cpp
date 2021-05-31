@@ -47,7 +47,7 @@ void FrameBuffer::Update()
 {
 }
 
-void FrameBuffer::ShowWindow(FrameBuffer g)
+void FrameBuffer::ShowWindow(FrameBuffer g, const char* input)
 {
   g.GetTextureColourBuffer();
 
@@ -57,7 +57,7 @@ void FrameBuffer::ShowWindow(FrameBuffer g)
   glClear(GL_COLOR_BUFFER_BIT);
   glBindTexture(GL_TEXTURE_2D, g.GetTextureColourBuffer());
 
-  ImGui::Begin("Scene View");
+  ImGui::Begin(input);
 
   ImVec2 pos = ImGui::GetCursorScreenPos();
 

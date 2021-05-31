@@ -7,6 +7,17 @@
 
 namespace Eclipse
 {
+  enum class BlendMode
+  {
+    INTERPOLATE,
+    PREMULTIPLY,
+    NOBLEND,
+    ADDITIVE,
+    MULTIPLY,
+    LIGHTMAP,
+    MAXCOUNT
+  };
+
   class OpenGL_Context
   {
   public:
@@ -20,6 +31,17 @@ namespace Eclipse
     // Render end, swap buffers
     void post_render();
     void end();
+
+    void Init();
+    void Clear();
+    void SetViewport(unsigned int p_x, unsigned int p_y, unsigned int p_width, unsigned int p_height);
+    void SetClearColor(const glm::vec4& p_color);
+    void SetBlendMode(BlendMode p_mode);
+
+    void CreateFrameBuffers();
+
+    FrameBuffer* m_frameBuffer;
+    FrameBuffer* n_frameBuffer;
 
     static GLint width, height;
     GLint prevWidth, prevHeight;

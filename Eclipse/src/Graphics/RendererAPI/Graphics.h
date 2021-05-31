@@ -43,7 +43,7 @@ class Graphics
 
 public:
   std::set<Entity> mEntities;
-  static FrameBuffer* m_frameBuffer;
+  //static FrameBuffer* m_frameBuffer;
 
   static std::map<std::string, std::unique_ptr<IModel>> models;
   using modelIt = std::map<std::string, std::unique_ptr<IModel>>::iterator;
