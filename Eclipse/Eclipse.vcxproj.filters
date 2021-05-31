@@ -231,6 +231,12 @@
     <ClInclude Include="src\Graphics\RendererAPI\Graphics.h">
       <Filter>src\Graphics\RendererAPI</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\RendererAPI\GraphicsManager.h">
+      <Filter>src\Graphics\RendererAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\RendererAPI\Renderer.h">
+      <Filter>src\Graphics\RendererAPI</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\RendererAPI\Shader.h">
       <Filter>src\Graphics\RendererAPI</Filter>
     </ClInclude>
@@ -279,8 +285,6 @@
     <ClInclude Include="src\pch.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\RendererAPI\Renderer.h" />
-    <ClInclude Include="src\Graphics\RendererAPI\GraphicsManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp">
@@ -394,6 +398,9 @@
     <ClCompile Include="src\Graphics\RendererAPI\Graphics.cpp">
       <Filter>src\Graphics\RendererAPI</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\RendererAPI\GraphicsManager.cpp">
+      <Filter>src\Graphics\RendererAPI</Filter>
+    </ClCompile>
     <ClCompile Include="src\Graphics\RendererAPI\Shader.cpp">
       <Filter>src\Graphics\RendererAPI</Filter>
     </ClCompile>
@@ -412,6 +419,5 @@
     <ClCompile Include="src\pch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\RendererAPI\GraphicsManager.cpp" />
   </ItemGroup>
 </Project>

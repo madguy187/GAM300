@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Graphics/RendererAPI/GraphicsManager.h"
+#include "EntryPoint/EntryPoint.h"
 
 float shakeTimer = 1.0f;
 bool shakeScreen = 1.0f;
@@ -15,7 +16,7 @@ void Eclipse::GraphicsManager::pre_render()
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
-    ImGui_ImplGlfw_InitForOpenGL(mRenderContext.ptr_window, true);
+    ImGui_ImplGlfw_InitForOpenGL(mRenderContext.GetWindow(), true);
     ImGui_ImplOpenGL3_Init();
     ImGui::StyleColorsClassic();
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
@@ -287,6 +288,9 @@ FrameBuffer* Eclipse::OpenGL_Context::GetFramebuffer(FrameBufferMode mode)
 {
     if (mode == FrameBufferMode::MAXCOUNT || mode == FrameBufferMode::None)
     {
+        ENGINE_CORE_INFO("Wrong FrameBuffer Type");
+        ENGINE_LOG_ASSERT(false, " Wrong FrameBuffer Type");
+        std::exit(EXIT_FAILURE);
         return nullptr;
     }
 
@@ -300,6 +304,8 @@ FrameBuffer* Eclipse::OpenGL_Context::GetFramebuffer(FrameBufferMode mode)
             return &selectfb;
         }
     }
+
+    return nullptr;
 }
 
 void Eclipse::GraphicsManager::FrameBufferDraw()
@@ -324,7 +330,7 @@ void Eclipse::GraphicsManager::ImguiRender()
     // To be Removed
     int Width, Height;
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    glfwGetFramebufferSize(mRenderContext.ptr_window, &Width, &Height);
+    glfwGetFramebufferSize(mRenderContext.GetWindow(), &Width, &Height);
     mRenderContext.SetViewport(0, 0, Width, Height);
     mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });
 }

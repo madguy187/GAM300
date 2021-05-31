@@ -1108,6 +1108,7 @@ template <typename Char> class float_writer {
   float_specs specs_;
   Char decimal_point_;
 
+
   template <typename It> It prettify(It it) const {
     // pow(10, full_exp - 1) <= v <= pow(10, full_exp).
     int full_exp = num_digits_ + exp_;

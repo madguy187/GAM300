@@ -5,8 +5,8 @@
 #include "EntryPoint/EntryPoint.h"
 
 FrameBuffer::FrameBuffer(const glm::uvec2& p_size, FrameBufferMode in) :
-    m_size{ p_size }, 
-    m_width{ m_size.x }, 
+    m_size{ p_size },
+    m_width{ m_size.x },
     m_height{ m_size.y },
     FrameBufferType{ in }
 {
@@ -16,12 +16,12 @@ FrameBuffer::FrameBuffer(const glm::uvec2& p_size, FrameBufferMode in) :
 }
 
 FrameBuffer::FrameBuffer(unsigned int p_width, unsigned int p_height, FrameBufferMode in) :
-    m_size{ p_width,p_height }, 
-    m_width{ m_size.x }, 
+    m_size{ p_width,p_height },
+    m_width{ m_size.x },
     m_height{ m_size.y },
-    FrameBufferType{in}
+    FrameBufferType{ in }
 {
-    if (p_width == 0 || p_height == 0 )
+    if (p_width == 0 || p_height == 0)
     {
         ENGINE_CORE_INFO("Width or Height cant be 0");
         ENGINE_LOG_ASSERT(false, "Width or Height cant be 0");
@@ -46,7 +46,7 @@ FrameBuffer::~FrameBuffer()
 void FrameBuffer::Bind() const
 {
     glBindFramebuffer(GL_FRAMEBUFFER, m_data.frameBufferID);
-    glViewport(0, 0, OpenGL_Context::width, OpenGL_Context::height);
+    glViewport(0, 0, OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight());
 }
 
 void FrameBuffer::Unbind() const
@@ -60,18 +60,8 @@ void FrameBuffer::Clear() const
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void FrameBuffer::Init()
-{
-
-}
-
-void FrameBuffer::Update()
-{
-}
-
 void FrameBuffer::ShowWindow(FrameBuffer g, const char* input)
 {
-
     if (&g == nullptr)
     {
         ENGINE_CORE_INFO("FrameBuffer is Nullptr");
@@ -95,8 +85,8 @@ void FrameBuffer::ShowWindow(FrameBuffer g, const char* input)
         ImVec2(ImGui::GetCursorScreenPos().x + ImGui::GetWindowContentRegionMax().x,
             ImGui::GetCursorScreenPos().y + ImGui::GetWindowContentRegionMax().y), ImVec2(0, 1), ImVec2(1, 0));
 
-    g.m_width = ImGui::GetWindowWidth();
-    g.m_height = ImGui::GetWindowHeight();
+    g.m_width = static_cast<int>(ImGui::GetWindowWidth());
+    g.m_height = static_cast<int>(ImGui::GetWindowHeight());
 
     g.windowPos.x = (ImGui::GetWindowWidth() / 2) + ImGui::GetCursorScreenPos().x;
     g.windowPos.y = (ImGui::GetWindowHeight() / 2) + ImGui::GetCursorScreenPos().y;
@@ -111,7 +101,7 @@ void FrameBuffer::CreateFrameBuffer(unsigned int p_width, unsigned int p_height)
     glGenRenderbuffers(1, &m_data.depthBufferID);
 
     glBindRenderbuffer(GL_RENDERBUFFER, m_data.depthBufferID);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, OpenGL_Context::width, OpenGL_Context::height);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight());
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_data.depthBufferID);
 
     glBindFramebuffer(GL_FRAMEBUFFER, m_data.frameBufferID);
@@ -124,8 +114,10 @@ void FrameBuffer::CreateFrameBuffer(unsigned int p_width, unsigned int p_height)
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
     {
-        std::cout << "ERROR Framebuffer Type : " << m_data.hiddentype << " is not complete!" << std::endl;
-        ENGINE_CORE_INFO("ERROR Framebuffer is not complete!");
+        std::cout << " Framebuffer Type : " << m_data.hiddentype << " is not complete!" << std::endl;
+        ENGINE_CORE_INFO(" Framebuffer is not complete!");
+        ENGINE_LOG_ASSERT(false, " Framebuffer is not complete!");
+        std::exit(EXIT_FAILURE);
     }
 
     Unbind();

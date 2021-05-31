@@ -3,52 +3,10 @@
 #include "Graphics/RendererAPI/Renderer.h"
 #include "EntryPoint/EntryPoint.h"
 
-using namespace Eclipse;
-
-GLFWwindow* OpenGL_Context::ptr_window;
-GLint OpenGL_Context::width;
-GLint OpenGL_Context::height;
-GLdouble OpenGL_Context::m_posX;
-GLdouble OpenGL_Context::m_posY;
-float OpenGL_Context::windowRatioX;
-float OpenGL_Context::windowRatioY;
 GLdouble OpenGL_Context::fps;
 GLdouble OpenGL_Context::deltaTime;
 
-static void mousebutton_cb(GLFWwindow* pwin, int button, int action, int mod)
-{
-    (void)mod;
-    (void)pwin;
-
-    switch (button)
-    {
-    case GLFW_MOUSE_BUTTON_LEFT:
-#ifdef _DEBUG
-        std::cout << "Left mouse button ";
-#endif
-        break;
-    case GLFW_MOUSE_BUTTON_RIGHT:
-#ifdef _DEBUG
-        std::cout << "Right mouse button ";
-#endif
-        break;
-    }
-
-    switch (action)
-    {
-    case GLFW_PRESS:
-#ifdef _DEBUG
-        std::cout << "pressed!!!" << std::endl;
-#endif
-        break;
-    case GLFW_RELEASE:
-#ifdef _DEBUG
-        std::cout << "released!!!" << std::endl;
-#endif
-        break;
-    }
-
-}
+using namespace Eclipse;
 
 static void on_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -89,7 +47,7 @@ static void on_window_close_callback(GLFWwindow* window)
 
 void Eclipse::OpenGL_Context::on_close()
 {
-    glfwSetWindowShouldClose(OpenGL_Context::ptr_window, GLFW_TRUE);
+    glfwSetWindowShouldClose(OpenGL_Context::GetWindow(), GLFW_TRUE);
 }
 
 void Eclipse::OpenGL_Context::mousepos_cb(GLFWwindow* pwin, double xpos, double ypos)
@@ -127,76 +85,12 @@ void mousescroll_cb(GLFWwindow* pwin, double xoffset, double yoffset)
     (void)yoffset;
 }
 
-void Eclipse::OpenGL_Context::fbsize_cb(GLFWwindow* ptr_win, int _width, int _height)
-{
-    (void)ptr_win;
-    std::cout << "fbsize_cb getting called!!!" << std::endl;
-    // use the entire framebuffer as drawing region
-    glViewport(0, 0, _width, _height);
-    // later, if working in 3D, we'll have to set the projection matrix here ...
-}
-
-void Eclipse::OpenGL_Context::key_cb(GLFWwindow* pwin, int key, int scancode, int action, int mod) {
-
-    (void)mod;
-    (void)scancode;
-    (void)pwin;
-
-    //float g_dt = static_cast<float>(GLHelper::update_time(1.0));
-
-    if (GLFW_PRESS == action)
-    {
-#ifdef _DEBUG
-        std::cout << "Key pressed" << std::endl;
-#endif
-    }
-    else if (GLFW_REPEAT == action)
-    {
-#ifdef _DEBUG
-        std::cout << "Key repeatedly pressed" << std::endl;
-#endif
-    }
-    else if (GLFW_RELEASE == action)
-    {
-#ifdef _DEBUG
-        std::cout << "Key released" << std::endl;
-#endif
-    }
-}
-
 void Eclipse::OpenGL_Context::mousebutton_cb(GLFWwindow* pwin, int button, int action, int mod)
 {
     (void)mod;
     (void)pwin;
-
-    switch (button)
-    {
-    case GLFW_MOUSE_BUTTON_LEFT:
-#ifdef _DEBUG
-        std::cout << "Left mouse button ";
-#endif
-        break;
-    case GLFW_MOUSE_BUTTON_RIGHT:
-#ifdef _DEBUG
-        std::cout << "Right mouse button ";
-#endif
-        break;
-    }
-
-    switch (action)
-    {
-    case GLFW_PRESS:
-#ifdef _DEBUG
-        std::cout << "pressed!!!" << std::endl;
-#endif
-        break;
-    case GLFW_RELEASE:
-#ifdef _DEBUG
-        std::cout << "released!!!" << std::endl;
-#endif
-        break;
-    }
-
+    (void)button;
+    (void)action;
 }
 
 void Eclipse::OpenGL_Context::LoadConfigData(std::string configFile)
@@ -238,14 +132,14 @@ bool Eclipse::OpenGL_Context::init(std::string configFile)
     glfwWindowHint(GLFW_BLUE_BITS, 8); glfwWindowHint(GLFW_ALPHA_BITS, 8);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE); // window dimensions are static
 
-    OpenGL_Context::prevWidth = OpenGL_Context::width;
-    OpenGL_Context::prevHeight = OpenGL_Context::height;
+    prevWidth = width;
+    prevHeight = height;
 
     // Create the window and store this window as window pointer
     // so that we can use it in callback functions
-    OpenGL_Context::ptr_window = glfwCreateWindow(width, height, title.c_str(), NULL(), NULL);
-    OpenGL_Context::windowRatioX = static_cast<float>(OpenGL_Context::width) / static_cast<float>(OpenGL_Context::prevWidth);
-    OpenGL_Context::windowRatioY = static_cast<float>(OpenGL_Context::height) / static_cast<float>(OpenGL_Context::prevHeight);
+    ptr_window = glfwCreateWindow(width, height, title.c_str(), NULL(), NULL);
+    windowRatioX = static_cast<float>(OpenGL_Context::width) / static_cast<float>(OpenGL_Context::prevWidth);
+    windowRatioY = static_cast<float>(OpenGL_Context::height) / static_cast<float>(OpenGL_Context::prevHeight);
 
     if (!OpenGL_Context::ptr_window)
     {
@@ -254,17 +148,17 @@ bool Eclipse::OpenGL_Context::init(std::string configFile)
         return false;
     }
 
-    glfwMakeContextCurrent(OpenGL_Context::ptr_window);
-    glfwSetKeyCallback(OpenGL_Context::ptr_window, on_key_callback);
-    glfwSetScrollCallback(OpenGL_Context::ptr_window, on_scroll_callback);
-    glfwSetFramebufferSizeCallback(OpenGL_Context::ptr_window, on_window_size_callback);
-    glfwSetMouseButtonCallback(OpenGL_Context::ptr_window, OpenGL_Context::mousebutton_cb);
-    glfwSetCursorPosCallback(OpenGL_Context::ptr_window, OpenGL_Context::mousepos_cb);
-    glfwSetWindowSizeCallback(OpenGL_Context::ptr_window, on_window_size_callback);
-    glfwSetWindowCloseCallback(OpenGL_Context::ptr_window, on_window_close_callback);
+    glfwMakeContextCurrent(ptr_window);
+    glfwSetKeyCallback(ptr_window, on_key_callback);
+    glfwSetScrollCallback(ptr_window, on_scroll_callback);
+    glfwSetFramebufferSizeCallback(ptr_window, on_window_size_callback);
+    glfwSetMouseButtonCallback(ptr_window, mousebutton_cb);
+    glfwSetCursorPosCallback(ptr_window, mousepos_cb);
+    glfwSetWindowSizeCallback(ptr_window, on_window_size_callback);
+    glfwSetWindowCloseCallback(ptr_window, on_window_close_callback);
 
     // this is the default setting ...
-    glfwSetInputMode(OpenGL_Context::ptr_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    glfwSetInputMode(ptr_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
     // Part 2: Initialize entry points to OpenGL functions and extensions
     GLenum err = glewInit();
@@ -350,13 +244,14 @@ void Eclipse::OpenGL_Context::pre_render()
 void Eclipse::OpenGL_Context::post_render()
 {
     glfwPollEvents();
-    glfwSwapBuffers(OpenGL_Context::ptr_window);
+    glfwSwapBuffers(OpenGL_Context::GetWindow());
 }
 
 void Eclipse::OpenGL_Context::end()
 {
-    glfwDestroyWindow(OpenGL_Context::ptr_window);
+    glfwDestroyWindow(OpenGL_Context::GetWindow());
     glfwTerminate();
+    Graphics::unload();
 }
 
 void Eclipse::OpenGL_Context::Init()
@@ -468,3 +363,28 @@ void Eclipse::OpenGL_Context::CreateFrameBuffers(unsigned int width, unsigned in
 }
 
 #endif
+
+GLFWwindow* Eclipse::OpenGL_Context::GetWindow()
+{
+    return ptr_window;
+}
+
+GLint Eclipse::OpenGL_Context::GetWidth()
+{
+    return width;
+}
+
+GLint Eclipse::OpenGL_Context::GetHeight()
+{
+    return height;
+}
+
+float Eclipse::OpenGL_Context::GetWindowRatioX()
+{
+    return windowRatioX;
+}
+
+float Eclipse::OpenGL_Context::GetWindowRatioY()
+{
+    return windowRatioY;
+}

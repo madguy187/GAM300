@@ -11,52 +11,52 @@ namespace Eclipse
 {
     void Engine::Init()
     {
-      //ECVec2 woo;
-      //glm::vec2 koo{ 1,2 };
-      //woo += koo;
-      //glm::vec2 loo = woo.ConvertToGlmVec2Type();
+        //ECVec2 woo;
+        //glm::vec2 koo{ 1,2 };
+        //woo += koo;
+        //glm::vec2 loo = woo.ConvertToGlmVec2Type();
 
-      /*ECMat4 mat{ 1,0,0,1,0,2,1,2,2,1,0,1,2,0,1,4 };
-      ECMat4 mat2;
-      ECMtx44Inverse(&mat2, mat);
-      std::cout << mat2;*/
-      RenderSystem::Init();
+        /*ECMat4 mat{ 1,0,0,1,0,2,1,2,2,1,0,1,2,0,1,4 };
+        ECMat4 mat2;
+        ECMtx44Inverse(&mat2, mat);
+        std::cout << mat2;*/
+        RenderSystem::Init();
     }
 
     void Engine::Run()
-    {  
-      // register component
-      world.RegisterComponent<TransformComponent>();
-      world.RegisterComponent<RenderComponent>();
-      world.RegisterComponent<CameraComponent>();
-      world.RegisterComponent<Sprite>();
+    {
+        // register component
+        world.RegisterComponent<TransformComponent>();
+        world.RegisterComponent<RenderComponent>();
+        world.RegisterComponent<CameraComponent>();
+        world.RegisterComponent<Sprite>();
 
-      // registering system
-      world.RegisterSystem<RenderSystem>();
-      world.RegisterSystem<CameraSystem>();
+        // registering system
+        world.RegisterSystem<RenderSystem>();
+        world.RegisterSystem<CameraSystem>();
 
-      // Render System
-      Signature RenderSys = RenderSystem::RegisterAll();
-      world.RegisterSystemSignature<RenderSystem>(RenderSys);
+        // Render System
+        Signature RenderSys = RenderSystem::RegisterAll();
+        world.RegisterSystemSignature<RenderSystem>(RenderSys);
 
-      Signature hi2;
-      hi2.set(world.GetComponentType<TransformComponent>(), 1);
-      hi2.set(world.GetComponentType<CameraComponent>(), 1);
-      world.RegisterSystemSignature<CameraSystem>(hi2);
+        Signature hi2;
+        hi2.set(world.GetComponentType<TransformComponent>(), 1);
+        hi2.set(world.GetComponentType<CameraComponent>(), 1);
+        world.RegisterSystemSignature<CameraSystem>(hi2);
 
-      //Check this! - Rachel
-      CameraSystem::Init();
+        //Check this! - Rachel
+        CameraSystem::Init();
 
-      while (!glfwWindowShouldClose(OpenGL_Context::ptr_window))
-      {
-          //Please remove when delta-time implementation added - Rachel
-          OpenGL_Context::update_time(1.0f);
+        while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
+        {
+            //Please remove when delta-time implementation added - Rachel
+            OpenGL_Context::update_time(1.0f);
 
-        world.Update<RenderSystem>();
-        world.Update<CameraSystem>();
-      }
+            world.Update<RenderSystem>();
+            world.Update<CameraSystem>();
+        }
 
-      // unLoad
-      gGraphics.end();
+        // unLoad
+        gGraphics.end();
     }
 }
