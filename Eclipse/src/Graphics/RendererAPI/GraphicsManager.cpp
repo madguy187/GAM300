@@ -286,7 +286,9 @@ void Eclipse::GraphicsManager::UpdateFrameBuffer()
 FrameBuffer* Eclipse::OpenGL_Context::GetFramebuffer(FrameBufferMode mode)
 {
     if (mode == FrameBufferMode::MAXCOUNT || mode == FrameBufferMode::None)
-        return;
+    {
+        return nullptr;
+    }
 
     for (auto const& it : _Framebuffers)
     {

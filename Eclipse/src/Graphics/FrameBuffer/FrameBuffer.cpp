@@ -2,7 +2,7 @@
 #include "FrameBuffer.h"
 #include "WindowConstraint.h"
 #include "../src/ECS/World.h"
-
+#include "EntryPoint/EntryPoint.h"
 
 FrameBuffer::FrameBuffer(const glm::uvec2& p_size, FrameBufferMode in) :
     m_size{ p_size }, 
@@ -21,6 +21,20 @@ FrameBuffer::FrameBuffer(unsigned int p_width, unsigned int p_height, FrameBuffe
     m_height{ m_size.y },
     FrameBufferType{in}
 {
+    if (p_width == 0 || p_height == 0 )
+    {
+        ENGINE_CORE_INFO("Width or Height cant be 0");
+        ENGINE_LOG_ASSERT(false, "Width or Height cant be 0");
+        std::exit(EXIT_FAILURE);
+    }
+
+    if (in == Eclipse::FrameBufferMode::None || in == Eclipse::FrameBufferMode::MAXCOUNT)
+    {
+        ENGINE_CORE_INFO("Creating FrameBuffer with Invalid Type");
+        ENGINE_LOG_ASSERT(false, "Creating FrameBuffer with Invalid Type");
+        std::exit(EXIT_FAILURE);
+    }
+
     m_data.hiddentype = in;
     CreateFrameBuffer(m_width, m_height);
 }
@@ -57,6 +71,14 @@ void FrameBuffer::Update()
 
 void FrameBuffer::ShowWindow(FrameBuffer g, const char* input)
 {
+
+    if (&g == nullptr)
+    {
+        ENGINE_CORE_INFO("FrameBuffer is Nullptr");
+        ENGINE_LOG_ASSERT(false, "FrameBuffer is Nullptr");
+        std::exit(EXIT_FAILURE);
+    }
+
     //  bind back to default framebuffer and draw with the attached framebuffer
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDisable(GL_DEPTH_TEST);
@@ -102,7 +124,8 @@ void FrameBuffer::CreateFrameBuffer(unsigned int p_width, unsigned int p_height)
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
     {
-        std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+        std::cout << "ERROR Framebuffer Type : " << m_data.hiddentype << " is not complete!" << std::endl;
+        ENGINE_CORE_INFO("ERROR Framebuffer is not complete!");
     }
 
     Unbind();
@@ -126,4 +149,20 @@ unsigned int FrameBuffer::GetDepthBufferID()
 FrameBufferMode Eclipse::FrameBuffer::GetFrameBufferType()
 {
     return FrameBufferType;
+}
+
+std::ostream& Eclipse::operator<<(std::ostream& os, const FrameBufferMode& in)
+{
+    switch (in)
+    {
+    case FrameBufferMode::GAMEVIEW:
+        os << "Game FrameBuffer";
+        break;
+
+    case FrameBufferMode::SCENEVIEW:
+        os << "Scene FrameBuffer";
+        break;
+    }
+
+    return os;
 }

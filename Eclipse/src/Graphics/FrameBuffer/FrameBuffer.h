@@ -50,6 +50,8 @@ namespace Eclipse
         glm::uvec2 m_size;
         unsigned int m_width, m_height;
 
+        friend std::ostream& operator << (std::ostream& os, const FrameBufferMode& in);
+
     };
 }
 #endif//VIEW_H
