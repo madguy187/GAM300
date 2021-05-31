@@ -11,13 +11,13 @@
 
 namespace Eclipse
 {
-  class RenderSystem : public System
-  {
-  public:
-    static void Init();
-    static Signature RegisterAll();
+    class RenderSystem : public System
+    {
+    public:
+        static void Init();
+        static Signature RegisterAll();
 
-  private:
-    void Update() override;
-  };
+    private:
+        void Update() override;
+    };
 }

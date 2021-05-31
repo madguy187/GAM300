@@ -549,7 +549,6 @@ bool Eclipse::InputWrapper::GetKeyCurrent(InputKeycode keycode)
         return false;
     }
 
-    return false;
 #else
     return false;
 #endif
@@ -604,7 +603,7 @@ bool Eclipse::InputWrapper::GetHoldKeyReleased(InputKeycode keycode)
                 SingleFlag = false;
 
                 RemoveHoldKey(KeyIT);
-                std::cout << "HOLD CONTAINER SIZE : " << HoldKeyContainer.size() << std::endl;
+                //std::cout << "HOLD CONTAINER SIZE : " << HoldKeyContainer.size() << std::endl;
                 PrintKey(Message, HoldKeyRelease);
                 return true;
             }
