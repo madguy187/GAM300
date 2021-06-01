@@ -6,10 +6,11 @@ namespace Eclipse
 	class MonoManager
 	{
 		MonoDomain* domain;
-		std::vector<MonoObject*> objects;
-		std::vector<MonoImage*> images;
+		MonoAssembly* assembly;
+		MonoImage* image;
 	public:
 		void Init();
 		void Update();
+		void GenerateDLL();
 	};
 }

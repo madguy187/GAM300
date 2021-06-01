@@ -238,6 +238,10 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Mono\ScriptAPI\EclipseBehavior.cs" />
+    <None Include="src\Mono\ScriptAPI\IScriptable.cs" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

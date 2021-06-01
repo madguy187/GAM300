@@ -8,7 +8,7 @@ void Parser::ParseFile(std::string fileName)
 
     if (file.is_open())
     {
-      std::cout << "test" << std::endl;
+      //std::cout << "test" << std::endl;
     }
 
     if (file)

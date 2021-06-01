@@ -24,6 +24,7 @@ namespace Eclipse
       // registering system
       world.RegisterSystem<RenderSystem>();
 
+
       // registering system signature
       Signature hi;
       hi.set(world.GetComponentType<TransformComponent>(), 1);

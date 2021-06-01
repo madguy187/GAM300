@@ -27,7 +27,17 @@ project "Eclipse"
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
-    "%{prj.name}/src/**.hpp"
+    "%{prj.name}/src/**.hpp",
+    "Dep/IMGUI/imgui-master/imgui_widgets.cpp",
+    "Dep/IMGUI/imgui-master/imgui_draw.cpp",
+    "Dep/IMGUI/imgui-master/imgui_demo.cpp",
+    "Dep/IMGUI/imgui-master/imgui_internal.h",
+    "Dep/IMGUI/imgui-master/imgui.cpp",
+    "Dep/IMGUI/imgui-master/imgui.h",
+    "Dep/IMGUI/imgui-master/examples/imgui_impl_opengl3.cpp",
+    "Dep/IMGUI/imgui-master/examples/imgui_impl_opengl3.h",
+    "Dep/IMGUI/imgui-master/examples/imgui_impl_glfw.cpp",
+    "Dep/IMGUI/imgui-master/examples/imgui_impl_glfw.h"
 	}
 
 	includedirs
