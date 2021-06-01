@@ -172,6 +172,7 @@
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Cylinder.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\LightQuad.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Lines.h" />
+    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Lines3D.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Particles.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Plane.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Pyramid.h" />
@@ -231,6 +232,7 @@
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cylinder.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\LightQuad.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Lines.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Lines3D.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Particles.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Plane.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Pyramid.cpp" />
@@ -255,4 +257,4 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-</Project> 
+</Project>

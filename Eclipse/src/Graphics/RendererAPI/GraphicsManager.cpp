@@ -128,6 +128,11 @@ void Eclipse::GraphicsManager::CreatePrimitives(GLint model)
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
+
+    case 10:
+        sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
+        sprite.modelRef = Graphics::models.find("lines3D");
+        Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
 }
 
@@ -148,7 +153,8 @@ void Eclipse::GraphicsManager::DrawBuffers(unsigned int FrameBufferID, Sprite* _
         _spritecomponent->modelRef == Graphics::FindModel("cone") ||
         _spritecomponent->modelRef == Graphics::FindModel("torus") ||
         _spritecomponent->modelRef == Graphics::FindModel("pyramid") ||
-        _spritecomponent->modelRef == Graphics::FindModel("cylinder"))
+        _spritecomponent->modelRef == Graphics::FindModel("cylinder") ||
+        _spritecomponent->modelRef == Graphics::FindModel("lines3D"))
     {
 
         glPolygonMode(GL_FRONT_AND_BACK, mode);
@@ -180,8 +186,16 @@ void Eclipse::GraphicsManager::DrawBuffers(unsigned int FrameBufferID, Sprite* _
 
     CheckUniformLoc(*(_spritecomponent), _spritecomponent->ID);
 
-    glDrawElements(_spritecomponent->modelRef->second->GetPrimitiveType(),
-        _spritecomponent->modelRef->second->GetDrawCount(), GL_UNSIGNED_SHORT, NULL);
+    if (_spritecomponent->modelRef->second->GetPrimitiveType() != GL_LINES)
+    {
+        glDrawElements(_spritecomponent->modelRef->second->GetPrimitiveType(),
+            _spritecomponent->modelRef->second->GetDrawCount(), GL_UNSIGNED_SHORT, NULL);
+    }
+    else
+    {
+        glLineWidth(5.0f); //Note that glLineWidth() is deprecated
+        glDrawArrays(_spritecomponent->modelRef->second->GetPrimitiveType(), 0, 2);
+    }
 
     // Part 5: Clean up
     glBindVertexArray(0);
@@ -341,7 +355,7 @@ void Eclipse::GraphicsManager::ShowTestWidgets()
     ImGui::Begin("Create Objects");
 
     if (ImGui::Combo("Models", &modelSelector,
-        "Square\0Circle\0Triangle\0Lines\0Sphere\0Cube\0Cylinder\0Cone\0Torus\0Pyramid"))
+        "Square\0Circle\0Triangle\0Lines\0Sphere\0Cube\0Cylinder\0Cone\0Torus\0Pyramid\0Lines3D"))
     {
         CreatePrimitives(modelSelector);
 

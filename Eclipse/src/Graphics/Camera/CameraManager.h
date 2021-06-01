@@ -24,6 +24,7 @@ namespace Eclipse
 		std::bitset<10> input;
 
 		unsigned int editorCamID = MAX_ENTITY;	
+		unsigned int gameCamID = MAX_ENTITY;
 	public:
 		InputWrapper InputHandler;
 
@@ -38,5 +39,8 @@ namespace Eclipse
 		void CheckCameraInput();
 
 		void SetCameraSpeed(float newSpeed);
+
+		void CreateGameCamera();
+		unsigned int GetGameCameraID();
 	};
 }

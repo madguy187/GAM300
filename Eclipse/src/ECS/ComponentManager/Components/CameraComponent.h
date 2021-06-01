@@ -24,7 +24,8 @@ namespace Eclipse
 
 		enum class CameraType
 		{
-			Editor_Camera
+			Editor_Camera,
+			Game_Camera
 		};
 
 		CameraType camType;

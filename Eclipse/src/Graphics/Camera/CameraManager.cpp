@@ -48,7 +48,7 @@ namespace Eclipse
     {
         _camera.projMtx = glm::perspective(glm::radians(_camera.fov),
             static_cast<float>((OpenGL_Context::GetWindowRatioX() * OpenGL_Context::GetWidth()) /
-                (OpenGL_Context::GetWindowRatioY() * OpenGL_Context::GetHeight() )),
+                (OpenGL_Context::GetWindowRatioY() * OpenGL_Context::GetHeight())),
             _camera.nearPlane, _camera.farPlane);
     }
 
@@ -306,5 +306,31 @@ namespace Eclipse
         auto& camera = engine->world.GetComponent<CameraComponent>(editorID);
 
         camera.cameraSpeed = newSpeed;
+    }
+
+    void CameraManager::CreateGameCamera()
+    {
+        if (gameCamID != MAX_ENTITY)
+        {
+            return;
+        }
+
+        Entity newCam = engine->world.CreateEntity();
+        engine->world.AddComponent(newCam, CameraComponent{});
+        engine->world.AddComponent(newCam, TransformComponent{});
+
+        gameCamID = newCam;
+
+        auto& editorCam = engine->world.GetComponent<CameraComponent>(newCam);
+        editorCam.camType = CameraComponent::CameraType::Game_Camera;
+
+        auto& _transform = engine->world.GetComponent<TransformComponent>(newCam);
+        _transform.position = ECVec3{ 0.0f, 0.0f, 40.0f };
+        _transform.rotation = ECVec3{ 0.0f, -90.0f, 0.0f };
+    }
+
+    unsigned int CameraManager::GetGameCameraID()
+    {
+        return gameCamID;
     }
 }
