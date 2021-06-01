@@ -69,8 +69,8 @@ namespace Eclipse
     float ECMtx33Determinant(const Matrix<float, 3, 3>& pMtx)
     {
         return (pMtx[0][0] * (pMtx[1][1] * pMtx[2][2] - pMtx[1][2] * pMtx[2][1]) -
-            (pMtx[0][1] * (pMtx[1][0] * pMtx[2][2] - pMtx[1][2] * pMtx[2][0])) +
-            (pMtx[0][2] * (pMtx[1][0] * pMtx[2][1] - pMtx[1][1] * pMtx[2][0])));
+               (pMtx[0][1] * (pMtx[1][0] * pMtx[2][2] - pMtx[1][2] * pMtx[2][0])) +
+               (pMtx[0][2] * (pMtx[1][0] * pMtx[2][1] - pMtx[1][1] * pMtx[2][0])));
     }
 
     void ECMtx33Inverse(Matrix<float, 3, 3>* pResult, const Matrix<float, 3, 3>& pMtx)
@@ -183,37 +183,33 @@ namespace Eclipse
 
     float ECMtx44Determinant(const Matrix<float, 4, 4>& pMtx)
     {
-        float first = pMtx[0][0] *
-            (pMtx[1][1] * pMtx[2][2] * pMtx[3][3] -
-                pMtx[1][1] * pMtx[2][3] * pMtx[3][2] -
-                pMtx[2][1] * pMtx[1][2] * pMtx[3][3] +
-                pMtx[2][1] * pMtx[1][3] * pMtx[3][2] +
-                pMtx[3][1] * pMtx[1][2] * pMtx[2][3] -
-                pMtx[3][1] * pMtx[1][3] * pMtx[2][2]);
+        float first = pMtx[0][0] * (pMtx[1][1] * pMtx[2][2] * pMtx[3][3] -
+                      pMtx[1][1] * pMtx[2][3] * pMtx[3][2] -
+                      pMtx[2][1] * pMtx[1][2] * pMtx[3][3] +
+                      pMtx[2][1] * pMtx[1][3] * pMtx[3][2] +
+                      pMtx[3][1] * pMtx[1][2] * pMtx[2][3] -
+                      pMtx[3][1] * pMtx[1][3] * pMtx[2][2]);
 
-        float second = pMtx[0][1] *
-            ((-pMtx[1][0]) * pMtx[2][2] * pMtx[3][3] +
-                pMtx[1][0] * pMtx[2][3] * pMtx[3][2] +
-                pMtx[2][0] * pMtx[1][2] * pMtx[3][3] -
-                pMtx[2][0] * pMtx[1][3] * pMtx[3][2] -
-                pMtx[3][0] * pMtx[1][2] * pMtx[2][3] +
-                pMtx[3][0] * pMtx[1][3] * pMtx[2][2]);
+        float second = pMtx[0][1] * ((-pMtx[1][0]) * pMtx[2][2] * pMtx[3][3] +
+                       pMtx[1][0] * pMtx[2][3] * pMtx[3][2] +
+                       pMtx[2][0] * pMtx[1][2] * pMtx[3][3] -
+                       pMtx[2][0] * pMtx[1][3] * pMtx[3][2] -
+                       pMtx[3][0] * pMtx[1][2] * pMtx[2][3] +
+                       pMtx[3][0] * pMtx[1][3] * pMtx[2][2]);
 
-        float third = pMtx[0][2] *
-            (pMtx[1][0] * pMtx[2][1] * pMtx[3][3] -
-                pMtx[1][0] * pMtx[2][3] * pMtx[3][1] -
-                pMtx[2][0] * pMtx[1][1] * pMtx[3][3] +
-                pMtx[2][0] * pMtx[1][3] * pMtx[3][1] +
-                pMtx[3][0] * pMtx[1][1] * pMtx[2][3] -
-                pMtx[3][0] * pMtx[1][3] * pMtx[2][1]);
+        float third = pMtx[0][2] *(pMtx[1][0] * pMtx[2][1] * pMtx[3][3] -
+                      pMtx[1][0] * pMtx[2][3] * pMtx[3][1] -
+                      pMtx[2][0] * pMtx[1][1] * pMtx[3][3] +
+                      pMtx[2][0] * pMtx[1][3] * pMtx[3][1] +
+                      pMtx[3][0] * pMtx[1][1] * pMtx[2][3] -
+                      pMtx[3][0] * pMtx[1][3] * pMtx[2][1]);
 
-        float fourth = pMtx[0][3] *
-            ((-pMtx[1][0]) * pMtx[2][1] * pMtx[3][2] +
-                pMtx[1][0] * pMtx[2][2] * pMtx[3][1] +
-                pMtx[2][0] * pMtx[1][1] * pMtx[3][2] -
-                pMtx[2][0] * pMtx[1][2] * pMtx[3][1] -
-                pMtx[3][0] * pMtx[1][1] * pMtx[2][2] +
-                pMtx[3][0] * pMtx[1][2] * pMtx[2][1]);
+        float fourth = pMtx[0][3] * ((-pMtx[1][0]) * pMtx[2][1] * pMtx[3][2] +
+                       pMtx[1][0] * pMtx[2][2] * pMtx[3][1] +
+                       pMtx[2][0] * pMtx[1][1] * pMtx[3][2] -
+                       pMtx[2][0] * pMtx[1][2] * pMtx[3][1] -
+                       pMtx[3][0] * pMtx[1][1] * pMtx[2][2] +
+                       pMtx[3][0] * pMtx[1][2] * pMtx[2][1]);
 
         return first + second + third + fourth;
     }
@@ -238,48 +234,48 @@ namespace Eclipse
                                          pMtx[3][1] * pMtx[1][2] * pMtx[2][3] -
                                          pMtx[3][1] * pMtx[1][3] * pMtx[2][2]) / determinant;
             pResult->operator[](1)[0] = ((-pMtx[1][0]) * pMtx[2][2] * pMtx[3][3] +
-                pMtx[1][0] * pMtx[2][3] * pMtx[3][2] +
-                pMtx[2][0] * pMtx[1][2] * pMtx[3][3] -
-                pMtx[2][0] * pMtx[1][3] * pMtx[3][2] -
-                pMtx[3][0] * pMtx[1][2] * pMtx[2][3] +
-                pMtx[3][0] * pMtx[1][3] * pMtx[2][2]) / determinant;
+                                         pMtx[1][0] * pMtx[2][3] * pMtx[3][2] +
+                                         pMtx[2][0] * pMtx[1][2] * pMtx[3][3] -
+                                         pMtx[2][0] * pMtx[1][3] * pMtx[3][2] -
+                                         pMtx[3][0] * pMtx[1][2] * pMtx[2][3] +
+                                         pMtx[3][0] * pMtx[1][3] * pMtx[2][2]) / determinant;
             pResult->operator[](2)[0] = (pMtx[1][0] * pMtx[2][1] * pMtx[3][3] -
-                pMtx[1][0] * pMtx[2][3] * pMtx[3][1] -
-                pMtx[2][0] * pMtx[1][1] * pMtx[3][3] +
-                pMtx[2][0] * pMtx[1][3] * pMtx[3][1] +
-                pMtx[3][0] * pMtx[1][1] * pMtx[2][3] -
-                pMtx[3][0] * pMtx[1][3] * pMtx[2][1]) / determinant;
+                                         pMtx[1][0] * pMtx[2][3] * pMtx[3][1] -
+                                         pMtx[2][0] * pMtx[1][1] * pMtx[3][3] +
+                                         pMtx[2][0] * pMtx[1][3] * pMtx[3][1] +
+                                         pMtx[3][0] * pMtx[1][1] * pMtx[2][3] -
+                                         pMtx[3][0] * pMtx[1][3] * pMtx[2][1]) / determinant;
             pResult->operator[](3)[0] = ((-pMtx[1][0]) * pMtx[2][1] * pMtx[3][2] +
-                pMtx[1][0] * pMtx[2][2] * pMtx[3][1] +
-                pMtx[2][0] * pMtx[1][1] * pMtx[3][2] -
-                pMtx[2][0] * pMtx[1][2] * pMtx[3][1] -
-                pMtx[3][0] * pMtx[1][1] * pMtx[2][2] +
-                pMtx[3][0] * pMtx[1][2] * pMtx[2][1]) / determinant;
+                                         pMtx[1][0] * pMtx[2][2] * pMtx[3][1] +
+                                         pMtx[2][0] * pMtx[1][1] * pMtx[3][2] -
+                                         pMtx[2][0] * pMtx[1][2] * pMtx[3][1] -
+                                         pMtx[3][0] * pMtx[1][1] * pMtx[2][2] +
+                                         pMtx[3][0] * pMtx[1][2] * pMtx[2][1]) / determinant;
 
             pResult->operator[](0)[1] = ((-pMtx[0][1]) * pMtx[2][2] * pMtx[3][3] +
-                pMtx[0][1] * pMtx[2][3] * pMtx[3][2] +
-                pMtx[2][1] * pMtx[0][2] * pMtx[3][3] -
-                pMtx[2][1] * pMtx[0][3] * pMtx[3][2] -
-                pMtx[3][1] * pMtx[0][2] * pMtx[2][3] +
-                pMtx[3][1] * pMtx[0][3] * pMtx[2][2]) / determinant;
+                                         pMtx[0][1] * pMtx[2][3] * pMtx[3][2] +
+                                         pMtx[2][1] * pMtx[0][2] * pMtx[3][3] -
+                                         pMtx[2][1] * pMtx[0][3] * pMtx[3][2] -
+                                         pMtx[3][1] * pMtx[0][2] * pMtx[2][3] +
+                                         pMtx[3][1] * pMtx[0][3] * pMtx[2][2]) / determinant;
             pResult->operator[](1)[1] = (pMtx[0][0] * pMtx[2][2] * pMtx[3][3] -
-                pMtx[0][0] * pMtx[2][3] * pMtx[3][2] -
-                pMtx[2][0] * pMtx[0][2] * pMtx[3][3] +
-                pMtx[2][0] * pMtx[0][3] * pMtx[3][2] +
-                pMtx[3][0] * pMtx[0][2] * pMtx[2][3] -
-                pMtx[3][0] * pMtx[0][3] * pMtx[2][2]) / determinant;
+                                         pMtx[0][0] * pMtx[2][3] * pMtx[3][2] -
+                                         pMtx[2][0] * pMtx[0][2] * pMtx[3][3] +
+                                         pMtx[2][0] * pMtx[0][3] * pMtx[3][2] +
+                                         pMtx[3][0] * pMtx[0][2] * pMtx[2][3] -
+                                         pMtx[3][0] * pMtx[0][3] * pMtx[2][2]) / determinant;
             pResult->operator[](2)[1] = ((-pMtx[0][0]) * pMtx[2][1] * pMtx[3][3] +
-                pMtx[0][0] * pMtx[2][3] * pMtx[3][1] +
-                pMtx[2][0] * pMtx[0][1] * pMtx[3][3] -
-                pMtx[2][0] * pMtx[0][3] * pMtx[3][1] -
-                pMtx[3][0] * pMtx[0][1] * pMtx[2][3] +
-                pMtx[3][0] * pMtx[0][3] * pMtx[2][1]) / determinant;
+                                         pMtx[0][0] * pMtx[2][3] * pMtx[3][1] +
+                                         pMtx[2][0] * pMtx[0][1] * pMtx[3][3] -
+                                         pMtx[2][0] * pMtx[0][3] * pMtx[3][1] -
+                                         pMtx[3][0] * pMtx[0][1] * pMtx[2][3] +
+                                         pMtx[3][0] * pMtx[0][3] * pMtx[2][1]) / determinant;
             pResult->operator[](3)[1] = (pMtx[0][0] * pMtx[2][1] * pMtx[3][2] -
-                pMtx[0][0] * pMtx[2][2] * pMtx[3][1] -
-                pMtx[2][0] * pMtx[0][1] * pMtx[3][2] +
-                pMtx[2][0] * pMtx[0][2] * pMtx[3][1] +
-                pMtx[3][0] * pMtx[0][1] * pMtx[2][2] -
-                pMtx[3][0] * pMtx[0][2] * pMtx[2][1]) / determinant;
+                                         pMtx[0][0] * pMtx[2][2] * pMtx[3][1] -
+                                         pMtx[2][0] * pMtx[0][1] * pMtx[3][2] +
+                                         pMtx[2][0] * pMtx[0][2] * pMtx[3][1] +
+                                         pMtx[3][0] * pMtx[0][1] * pMtx[2][2] -
+                                         pMtx[3][0] * pMtx[0][2] * pMtx[2][1]) / determinant;
 
             pResult->operator[](0)[2] = (pMtx[0][1] * pMtx[1][2] * pMtx[3][3] -
                                          pMtx[0][1] * pMtx[1][3] * pMtx[3][2] -
@@ -288,48 +284,48 @@ namespace Eclipse
                                          pMtx[3][1] * pMtx[0][2] * pMtx[1][3] -
                                          pMtx[3][1] * pMtx[0][3] * pMtx[1][2]) / determinant;
             pResult->operator[](1)[2] = ((-pMtx[0][0]) * pMtx[1][2] * pMtx[3][3] +
-                pMtx[0][0] * pMtx[1][3] * pMtx[3][2] +
-                pMtx[1][0] * pMtx[0][2] * pMtx[3][3] -
-                pMtx[1][0] * pMtx[0][3] * pMtx[3][2] -
-                pMtx[3][0] * pMtx[0][2] * pMtx[1][3] +
-                pMtx[3][0] * pMtx[0][3] * pMtx[1][2]) / determinant;
+                                         pMtx[0][0] * pMtx[1][3] * pMtx[3][2] +
+                                         pMtx[1][0] * pMtx[0][2] * pMtx[3][3] -
+                                         pMtx[1][0] * pMtx[0][3] * pMtx[3][2] -
+                                         pMtx[3][0] * pMtx[0][2] * pMtx[1][3] +
+                                         pMtx[3][0] * pMtx[0][3] * pMtx[1][2]) / determinant;
             pResult->operator[](2)[2] = (pMtx[0][0] * pMtx[1][1] * pMtx[3][3] -
-                pMtx[0][0] * pMtx[1][3] * pMtx[3][1] -
-                pMtx[1][0] * pMtx[0][1] * pMtx[3][3] +
-                pMtx[1][0] * pMtx[0][3] * pMtx[3][1] +
-                pMtx[3][0] * pMtx[0][1] * pMtx[1][3] -
-                pMtx[3][0] * pMtx[0][3] * pMtx[1][1]) / determinant;
+                                         pMtx[0][0] * pMtx[1][3] * pMtx[3][1] -
+                                         pMtx[1][0] * pMtx[0][1] * pMtx[3][3] +
+                                         pMtx[1][0] * pMtx[0][3] * pMtx[3][1] +
+                                         pMtx[3][0] * pMtx[0][1] * pMtx[1][3] -
+                                         pMtx[3][0] * pMtx[0][3] * pMtx[1][1]) / determinant;
             pResult->operator[](3)[2] = ((-pMtx[0][0]) * pMtx[1][1] * pMtx[3][2] +
-                pMtx[0][0] * pMtx[1][2] * pMtx[3][1] +
-                pMtx[1][0] * pMtx[0][1] * pMtx[3][2] -
-                pMtx[1][0] * pMtx[0][2] * pMtx[3][1] -
-                pMtx[3][0] * pMtx[0][1] * pMtx[1][2] +
-                pMtx[3][0] * pMtx[0][2] * pMtx[1][1]) / determinant;
+                                         pMtx[0][0] * pMtx[1][2] * pMtx[3][1] +
+                                         pMtx[1][0] * pMtx[0][1] * pMtx[3][2] -
+                                         pMtx[1][0] * pMtx[0][2] * pMtx[3][1] -
+                                         pMtx[3][0] * pMtx[0][1] * pMtx[1][2] +
+                                         pMtx[3][0] * pMtx[0][2] * pMtx[1][1]) / determinant;
 
             pResult->operator[](0)[3] = ((-pMtx[0][1]) * pMtx[1][2] * pMtx[2][3] +
-                pMtx[0][1] * pMtx[1][3] * pMtx[2][2] +
-                pMtx[1][1] * pMtx[0][2] * pMtx[2][3] -
-                pMtx[1][1] * pMtx[0][3] * pMtx[2][2] -
-                pMtx[2][1] * pMtx[0][2] * pMtx[1][3] +
-                pMtx[2][1] * pMtx[0][3] * pMtx[1][2]) / determinant;
+                                         pMtx[0][1] * pMtx[1][3] * pMtx[2][2] +
+                                         pMtx[1][1] * pMtx[0][2] * pMtx[2][3] -
+                                         pMtx[1][1] * pMtx[0][3] * pMtx[2][2] -
+                                         pMtx[2][1] * pMtx[0][2] * pMtx[1][3] +
+                                         pMtx[2][1] * pMtx[0][3] * pMtx[1][2]) / determinant;
             pResult->operator[](1)[3] = (pMtx[0][0] * pMtx[1][2] * pMtx[2][3] -
-                pMtx[0][0] * pMtx[1][3] * pMtx[2][2] -
-                pMtx[1][0] * pMtx[0][2] * pMtx[2][3] +
-                pMtx[1][0] * pMtx[0][3] * pMtx[2][2] +
-                pMtx[2][0] * pMtx[0][2] * pMtx[1][3] -
-                pMtx[2][0] * pMtx[0][3] * pMtx[1][2]) / determinant;
+                                         pMtx[0][0] * pMtx[1][3] * pMtx[2][2] -
+                                         pMtx[1][0] * pMtx[0][2] * pMtx[2][3] +
+                                         pMtx[1][0] * pMtx[0][3] * pMtx[2][2] +
+                                         pMtx[2][0] * pMtx[0][2] * pMtx[1][3] -
+                                         pMtx[2][0] * pMtx[0][3] * pMtx[1][2]) / determinant;
             pResult->operator[](2)[3] = ((-pMtx[0][0]) * pMtx[1][1] * pMtx[2][3] +
-                pMtx[0][0] * pMtx[1][3] * pMtx[2][1] +
-                pMtx[1][0] * pMtx[0][1] * pMtx[2][3] -
-                pMtx[1][0] * pMtx[0][3] * pMtx[2][1] -
-                pMtx[2][0] * pMtx[0][1] * pMtx[1][3] +
-                pMtx[2][0] * pMtx[0][3] * pMtx[1][1]) / determinant;
+                                         pMtx[0][0] * pMtx[1][3] * pMtx[2][1] +
+                                         pMtx[1][0] * pMtx[0][1] * pMtx[2][3] -
+                                         pMtx[1][0] * pMtx[0][3] * pMtx[2][1] -
+                                         pMtx[2][0] * pMtx[0][1] * pMtx[1][3] +
+                                         pMtx[2][0] * pMtx[0][3] * pMtx[1][1]) / determinant;
             pResult->operator[](3)[3] = (pMtx[0][0] * pMtx[1][1] * pMtx[2][2] -
-                pMtx[0][0] * pMtx[1][2] * pMtx[2][1] -
-                pMtx[1][0] * pMtx[0][1] * pMtx[2][2] +
-                pMtx[1][0] * pMtx[0][2] * pMtx[2][1] +
-                pMtx[2][0] * pMtx[0][1] * pMtx[1][2] -
-                pMtx[2][0] * pMtx[0][2] * pMtx[1][1]) / determinant;
+                                         pMtx[0][0] * pMtx[1][2] * pMtx[2][1] -
+                                         pMtx[1][0] * pMtx[0][1] * pMtx[2][2] +
+                                         pMtx[1][0] * pMtx[0][2] * pMtx[2][1] +
+                                         pMtx[2][0] * pMtx[0][1] * pMtx[1][2] -
+                                         pMtx[2][0] * pMtx[0][2] * pMtx[1][1]) / determinant;
         }
     }
 
