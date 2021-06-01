@@ -49,6 +49,9 @@
     <Filter Include="src\Graphics">
       <UniqueIdentifier>{0D564864-F9B8-D708-A23E-10BF8E80A38B}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Graphics\Camera">
+      <UniqueIdentifier>{E5F976A5-515B-54B3-DAC8-9A6546298B72}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Graphics\FrameBuffer">
       <UniqueIdentifier>{A1EE6402-8D13-B482-B65E-9912A2E2B2A0}</UniqueIdentifier>
     </Filter>
@@ -60,6 +63,9 @@
     </Filter>
     <Filter Include="src\Graphics\ModelFactory\BasicPrimitives">
       <UniqueIdentifier>{42A4CBAC-AEBE-2E4E-F7E0-3EE2633A5655}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Graphics\OpenGL">
+      <UniqueIdentifier>{A10E80C2-0D70-5DD0-96DD-A382023E948F}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Graphics\Parser">
       <UniqueIdentifier>{E901CDC3-5563-AAD1-DED0-F0834A31E190}</UniqueIdentifier>
@@ -105,6 +111,9 @@
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h">
       <Filter>src\ECS\ComponentManager</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h">
+      <Filter>src\ECS\ComponentManager\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.h">
       <Filter>src\ECS\ComponentManager\Components\ComponentArray</Filter>
     </ClInclude>
@@ -123,6 +132,9 @@
     <ClInclude Include="src\ECS\SystemManager\SystemManager.h">
       <Filter>src\ECS\SystemManager</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem.h">
+      <Filter>src\ECS\SystemManager\Systems\System</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem.h">
       <Filter>src\ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
@@ -140,6 +152,9 @@
     </ClInclude>
     <ClInclude Include="src\Global.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Camera\CameraManager.h">
+      <Filter>src\Graphics\Camera</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\FrameBuffer\FrameBuffer.h">
       <Filter>src\Graphics\FrameBuffer</Filter>
@@ -207,13 +222,19 @@
     <ClInclude Include="src\Graphics\ModelFactory\ModelGlobal.h">
       <Filter>src\Graphics\ModelFactory</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\OpenGL\OpenGL_Context.h">
+      <Filter>src\Graphics\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\Parser\Parser.h">
       <Filter>src\Graphics\Parser</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\RendererAPI\GLHelper.h">
+    <ClInclude Include="src\Graphics\RendererAPI\Graphics.h">
       <Filter>src\Graphics\RendererAPI</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\RendererAPI\Graphics.h">
+    <ClInclude Include="src\Graphics\RendererAPI\GraphicsManager.h">
+      <Filter>src\Graphics\RendererAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\RendererAPI\Renderer.h">
       <Filter>src\Graphics\RendererAPI</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\RendererAPI\Shader.h">
@@ -296,6 +317,9 @@
     <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp">
       <Filter>src\ECS\SystemManager</Filter>
     </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem.cpp">
+      <Filter>src\ECS\SystemManager\Systems\System</Filter>
+    </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp">
       <Filter>src\ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
@@ -307,6 +331,9 @@
     </ClCompile>
     <ClCompile Include="src\EntryPoint\EntryPoint.cpp">
       <Filter>src\EntryPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Camera\CameraManager.cpp">
+      <Filter>src\Graphics\Camera</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\FrameBuffer\FrameBuffer.cpp">
       <Filter>src\Graphics\FrameBuffer</Filter>
@@ -362,19 +389,22 @@
     <ClCompile Include="src\Graphics\ModelFactory\ModelFactory.cpp">
       <Filter>src\Graphics\ModelFactory</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\OpenGL\OpenGL_Context.cpp">
+      <Filter>src\Graphics\OpenGL</Filter>
+    </ClCompile>
     <ClCompile Include="src\Graphics\Parser\Parser.cpp">
       <Filter>src\Graphics\Parser</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\RendererAPI\Graphics.cpp">
       <Filter>src\Graphics\RendererAPI</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\RendererAPI\GraphicsManager.cpp">
+      <Filter>src\Graphics\RendererAPI</Filter>
+    </ClCompile>
     <ClCompile Include="src\Graphics\RendererAPI\Shader.cpp">
       <Filter>src\Graphics\RendererAPI</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\RendererAPI\Texture.cpp">
-      <Filter>src\Graphics\RendererAPI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\RendererAPI\glhelper.cpp">
       <Filter>src\Graphics\RendererAPI</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\RendererAPI\stb_image.cpp">

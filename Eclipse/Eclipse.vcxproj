@@ -80,7 +80,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;ENGINE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Dep;src;..\Dep\IMGUI\imgui-master;..\Dep\RAPIDJSON\rapidjson-master\include\rapidjson;..\Dep\GLEW\include\GL;..\Dep\STB\stb-master;..\Dep\GLM\glm;..\Dep\GLFW\include\GLFW;..\Dep\GLM\glm\gtc;..\Dep\GLM\glm\gtx;..\Dep\GLEW\lib\Release\x64;..\Dep\spdlog\include;src\Graphics\Still_Cleaning;src\Graphics\RendererAPI;src\Graphics\Parser;src\Graphics\ModelFactory\BasicPrimitives;src\Graphics\ModelFactory;src\Graphics\FrameBuffer;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Dep;src;..\Dep\IMGUI\imgui-master;..\Dep\RAPIDJSON\rapidjson-master\include\rapidjson;..\Dep\GLEW\include\GL;..\Dep\STB\stb-master;..\Dep\GLM\glm;..\Dep\GLFW\include\GLFW;..\Dep\GLM\glm\gtc;..\Dep\GLM\glm\gtx;..\Dep\GLEW\lib\Release\x64;..\Dep\spdlog\include;src\Graphics\Still_Cleaning;src\Graphics\RendererAPI;src\Graphics\Parser;src\Graphics\ModelFactory\BasicPrimitives;src\Graphics\ModelFactory;src\Graphics\FrameBuffer;src\Graphics\OpenGL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -99,7 +99,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;ENGINE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Dep;src;..\Dep\IMGUI\imgui-master;..\Dep\RAPIDJSON\rapidjson-master\include\rapidjson;..\Dep\GLEW\include\GL;..\Dep\STB\stb-master;..\Dep\GLM\glm;..\Dep\GLFW\include\GLFW;..\Dep\GLM\glm\gtc;..\Dep\GLM\glm\gtx;..\Dep\GLEW\lib\Release\x64;..\Dep\spdlog\include;src\Graphics\Still_Cleaning;src\Graphics\RendererAPI;src\Graphics\Parser;src\Graphics\ModelFactory\BasicPrimitives;src\Graphics\ModelFactory;src\Graphics\FrameBuffer;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Dep;src;..\Dep\IMGUI\imgui-master;..\Dep\RAPIDJSON\rapidjson-master\include\rapidjson;..\Dep\GLEW\include\GL;..\Dep\STB\stb-master;..\Dep\GLM\glm;..\Dep\GLFW\include\GLFW;..\Dep\GLM\glm\gtc;..\Dep\GLM\glm\gtx;..\Dep\GLEW\lib\Release\x64;..\Dep\spdlog\include;src\Graphics\Still_Cleaning;src\Graphics\RendererAPI;src\Graphics\Parser;src\Graphics\ModelFactory\BasicPrimitives;src\Graphics\ModelFactory;src\Graphics\FrameBuffer;src\Graphics\OpenGL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -122,7 +122,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;ENGINE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Dep;src;..\Dep\IMGUI\imgui-master;..\Dep\RAPIDJSON\rapidjson-master\include\rapidjson;..\Dep\GLEW\include\GL;..\Dep\STB\stb-master;..\Dep\GLM\glm;..\Dep\GLFW\include\GLFW;..\Dep\GLM\glm\gtc;..\Dep\GLM\glm\gtx;..\Dep\GLEW\lib\Release\x64;..\Dep\spdlog\include;src\Graphics\Still_Cleaning;src\Graphics\RendererAPI;src\Graphics\Parser;src\Graphics\ModelFactory\BasicPrimitives;src\Graphics\ModelFactory;src\Graphics\FrameBuffer;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Dep;src;..\Dep\IMGUI\imgui-master;..\Dep\RAPIDJSON\rapidjson-master\include\rapidjson;..\Dep\GLEW\include\GL;..\Dep\STB\stb-master;..\Dep\GLM\glm;..\Dep\GLFW\include\GLFW;..\Dep\GLM\glm\gtc;..\Dep\GLM\glm\gtx;..\Dep\GLEW\lib\Release\x64;..\Dep\spdlog\include;src\Graphics\Still_Cleaning;src\Graphics\RendererAPI;src\Graphics\Parser;src\Graphics\ModelFactory\BasicPrimitives;src\Graphics\ModelFactory;src\Graphics\FrameBuffer;src\Graphics\OpenGL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -145,18 +145,21 @@
     <ClInclude Include="..\Dep\IMGUI\imgui-master\imgui.h" />
     <ClInclude Include="..\Dep\IMGUI\imgui-master\imgui_internal.h" />
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentBase.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\RenderComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\TransformComponent.h" />
     <ClInclude Include="src\ECS\EntityManager\EntityManager.h" />
     <ClInclude Include="src\ECS\SystemManager\SystemManager.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\System.h" />
     <ClInclude Include="src\ECS\World.h" />
     <ClInclude Include="src\Engine\Engine.h" />
     <ClInclude Include="src\EntryPoint\EntryPoint.h" />
     <ClInclude Include="src\Global.h" />
+    <ClInclude Include="src\Graphics\Camera\CameraManager.h" />
     <ClInclude Include="src\Graphics\FrameBuffer\FrameBuffer.h" />
     <ClInclude Include="src\Graphics\FrameBuffer\WindowConstraint.h" />
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h" />
@@ -179,9 +182,11 @@
     <ClInclude Include="src\Graphics\ModelFactory\IModel.h" />
     <ClInclude Include="src\Graphics\ModelFactory\ModelFactory.h" />
     <ClInclude Include="src\Graphics\ModelFactory\ModelGlobal.h" />
+    <ClInclude Include="src\Graphics\OpenGL\OpenGL_Context.h" />
     <ClInclude Include="src\Graphics\Parser\Parser.h" />
-    <ClInclude Include="src\Graphics\RendererAPI\GLHelper.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Graphics.h" />
+    <ClInclude Include="src\Graphics\RendererAPI\GraphicsManager.h" />
+    <ClInclude Include="src\Graphics\RendererAPI\Renderer.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Shader.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Texture.h" />
     <ClInclude Include="src\Graphics\Still_Cleaning\AllComponents.h" />
@@ -210,10 +215,12 @@
     <ClCompile Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.cpp" />
     <ClCompile Include="src\ECS\EntityManager\EntityManager.cpp" />
     <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp" />
     <ClCompile Include="src\ECS\World.cpp" />
     <ClCompile Include="src\Engine\Engine.cpp" />
     <ClCompile Include="src\EntryPoint\EntryPoint.cpp" />
+    <ClCompile Include="src\Graphics\Camera\CameraManager.cpp" />
     <ClCompile Include="src\Graphics\FrameBuffer\FrameBuffer.cpp" />
     <ClCompile Include="src\Graphics\FrameBuffer\WindowConstraint.cpp" />
     <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp" />
@@ -232,11 +239,12 @@
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Torus.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Triangle.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\ModelFactory.cpp" />
+    <ClCompile Include="src\Graphics\OpenGL\OpenGL_Context.cpp" />
     <ClCompile Include="src\Graphics\Parser\Parser.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\Graphics.cpp" />
+    <ClCompile Include="src\Graphics\RendererAPI\GraphicsManager.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\Shader.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\Texture.cpp" />
-    <ClCompile Include="src\Graphics\RendererAPI\glhelper.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\stb_image.cpp" />
     <ClCompile Include="src\Library\Math\Matrix.cpp" />
     <ClCompile Include="src\Logger\Logger.cpp" />
@@ -247,4 +255,4 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-</Project>
+</Project> 

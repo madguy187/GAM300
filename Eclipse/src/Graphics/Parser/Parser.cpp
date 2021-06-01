@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "pch.h"
 #include "Parser.h"
 #include <vector>
@@ -5,11 +6,6 @@
 void Parser::ParseFile(std::string fileName)
 { 
     std::ifstream file(fileName.c_str());
-
-    if (file.is_open())
-    {
-      std::cout << "test" << std::endl;
-    }
 
     if (file)
     {

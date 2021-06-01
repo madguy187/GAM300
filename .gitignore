@@ -20,3 +20,4 @@ x64/Debug/GAM300.exe
 *.iobj
 *.ipdb
 *.exe
+/Libraries
