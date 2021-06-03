@@ -433,14 +433,12 @@ namespace Eclipse
 
 		glm::vec3 ConvertToGlmVec3Type()
 		{
-			//glm::vec2 temp{ this->_data[0], this->_data[1],  this->_data[2] };
 			glm::vec3 temp{ this->_data[0], this->_data[1],  this->_data[2] };
 			return temp;
 		}
 
 		glm::vec4 ConvertToGlmVec4Type()
 		{
-			//glm::vec2 temp{ this->_data[0], this->_data[1], this->_data[2], this->_data[3] };
 			glm::vec4 temp{ this->_data[0], this->_data[1], this->_data[2], this->_data[3] };
 			return temp;
 		}

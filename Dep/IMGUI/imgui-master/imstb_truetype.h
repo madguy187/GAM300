@@ -3072,7 +3072,7 @@ static void stbtt__fill_active_edges_new(float *scanline, float *scanline_fill, 
             }
          } else {
             // if edge goes outside of box we're drawing, we require
-            // clipping logic. since this does not match the intended use
+            // clipping Movement. since this does not match the intended use
             // of this library, we use a different, very slow brute
             // force implementation
             int x;
@@ -3081,10 +3081,10 @@ static void stbtt__fill_active_edges_new(float *scanline, float *scanline_fill, 
                //
                // there can be up to two intersections with the pixel. any intersection
                // with left or right edges can be handled by splitting into two (or three)
-               // regions. intersections with top & bottom do not necessitate case-wise logic.
+               // regions. intersections with top & bottom do not necessitate case-wise Movement.
                //
                // the old way of doing this found the intersections with the left & right edges,
-               // then used some simple logic to produce up to three segments in sorted order
+               // then used some simple Movement to produce up to three segments in sorted order
                // from top-to-bottom. however, this had a problem: if an x edge was epsilon
                // across the x border, then the corresponding y position might not be distinct
                // from the other y segment, and it might ignored as an empty segment. to avoid

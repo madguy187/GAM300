@@ -42,8 +42,8 @@ project "Eclipse"
 
 	includedirs
 	{
-		"Dep",
-		"Eclipse/src",
+	"Dep",
+	"Eclipse/src",
     "Dep/IMGUI/imgui-master",
     "Dep/RAPIDJSON/rapidjson-master/include/rapidjson",
     "Dep/GLEW/include/GL",
@@ -53,14 +53,15 @@ project "Eclipse"
     "Dep/GLM/glm/gtc",
     "Dep/GLM/glm/gtx",
     "Dep/GLEW/lib/Release/x64",
-		"Dep/spdlog/include",
+	"Dep/spdlog/include",
     "Eclipse/src/Graphics/Still_Cleaning",
     "Eclipse/src/Graphics/RendererAPI",
     "Eclipse/src/Graphics/Parser",
     "Eclipse/src/Graphics/ModelFactory/BasicPrimitives",
     "Eclipse/src/Graphics/ModelFactory",
     "Eclipse/src/Graphics/FrameBuffer",
-	"Eclipse/src/Graphics/OpenGL"
+	"Eclipse/src/Graphics/OpenGL",
+	"Eclipse/src/ImGui/Vendor"
 	}
 
   libdirs

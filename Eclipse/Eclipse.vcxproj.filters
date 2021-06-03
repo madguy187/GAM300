@@ -76,6 +76,18 @@
     <Filter Include="src\Graphics\Still_Cleaning">
       <UniqueIdentifier>{A45BC4B2-1069-F298-994F-EE83055CBE4F}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\ImGui">
+      <UniqueIdentifier>{170E22B3-8378-D629-CCB6-87CF3860B47E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ImGui\ImGuiAPI">
+      <UniqueIdentifier>{FB538D80-E737-4ED6-5098-48293C9B3858}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ImGui\Setup">
+      <UniqueIdentifier>{F7C92912-6355-97D6-6C66-1ACBD870F3D6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ImGui\Vendor">
+      <UniqueIdentifier>{74F05E5E-60E9-7DB0-891B-633575735DBC}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Library">
       <UniqueIdentifier>{31E15EE3-9D96-D7D8-268B-D1AF923FCEDC}</UniqueIdentifier>
     </Filter>
@@ -258,6 +270,39 @@
     <ClInclude Include="src\Graphics\Still_Cleaning\Vec.h">
       <Filter>src\Graphics\Still_Cleaning</Filter>
     </ClInclude>
+    <ClInclude Include="src\ImGui\ImGuiAPI\ImGuiAPI.h">
+      <Filter>src\ImGui\ImGuiAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Setup\ImGuiSetup.h">
+      <Filter>src\ImGui\Setup</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\IconsFontAwesome.h">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\imconfig.h">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\imgui.h">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\imgui_impl_glfw.h">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\imgui_impl_opengl3.h">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\imgui_internal.h">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\imstb_rectpack.h">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\imstb_textedit.h">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\imstb_truetype.h">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClInclude>
     <ClInclude Include="src\Library\Math\Matrix.h">
       <Filter>src\Library\Math</Filter>
     </ClInclude>
@@ -409,6 +454,30 @@
     </ClCompile>
     <ClCompile Include="src\Graphics\RendererAPI\stb_image.cpp">
       <Filter>src\Graphics\RendererAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\ImGuiAPI\ImGuiAPI.cpp">
+      <Filter>src\ImGui\ImGuiAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\Setup\ImGuiSetup.cpp">
+      <Filter>src\ImGui\Setup</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\Vendor\imgui.cpp">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\Vendor\imgui_demo.cpp">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\Vendor\imgui_draw.cpp">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\Vendor\imgui_impl_glfw.cpp">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\Vendor\imgui_impl_opengl3.cpp">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\Vendor\imgui_widgets.cpp">
+      <Filter>src\ImGui\Vendor</Filter>
     </ClCompile>
     <ClCompile Include="src\Library\Math\Matrix.cpp">
       <Filter>src\Library\Math</Filter>
