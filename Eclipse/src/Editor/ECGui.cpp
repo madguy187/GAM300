@@ -63,62 +63,62 @@ namespace Eclipse
 		instance.EndTreeNode();
 	}
 
-	void ECGui::DrawSliderWidget(const char* name, int* var, bool hideName, int minrange, int maxrange)
+	void ECGui::DrawSliderIntWidget(const char* name, int* var, bool hideName, int minrange, int maxrange)
 	{
 		instance.SliderInt(name, var, hideName, minrange, maxrange);
 	}
 
-	void ECGui::DrawSliderWidget(const char* name, float* var, bool hideName, float minrange, float maxrange)
+	void ECGui::DrawSliderFloatWidget(const char* name, float* var, bool hideName, float minrange, float maxrange)
 	{
 		instance.SliderFloat(name, var, hideName, minrange, maxrange);
 	}
 
-	void ECGui::DrawSliderWidget(const char* name, float vector[2], bool hideName, float minrange, float maxrange)
+	void ECGui::DrawSliderFloat2Widget(const char* name, float vector[2], bool hideName, float minrange, float maxrange)
 	{
 		instance.SliderFloat2(name, vector, hideName, minrange, maxrange);
 	}
 
-	void ECGui::DrawSliderWidget(const char* name, float vector[3], bool hideName, float minrange, float maxrange)
+	void ECGui::DrawSliderFloat3Widget(const char* name, float vector[3], bool hideName, float minrange, float maxrange)
 	{
 		instance.SliderFloat3(name, vector, hideName, minrange, maxrange);
 	}
 
-	void ECGui::DrawSliderWidget(const char* name, float vector[4], bool hideName, float minrange, float maxrange)
+	void ECGui::DrawSliderFloat4Widget(const char* name, float vector[4], bool hideName, float minrange, float maxrange)
 	{
 		instance.SliderFloat4(name, vector, hideName, minrange, maxrange);
 	}
 
-	void ECGui::DrawInputWidget(const char* name, int* var, bool hideName, int snapValue)
+	void ECGui::DrawInputIntWidget(const char* name, int* var, bool hideName, int snapValue)
 	{
 		instance.InputInt(name, var, hideName, snapValue);
 	}
 
-	void ECGui::DrawInputWidget(const char* name, float* var, bool hideName, float snapValue)
+	void ECGui::DrawInputFloatWidget(const char* name, float* var, bool hideName, float snapValue)
 	{
 		instance.InputFloat(name, var, hideName, snapValue);
 	}
 
-	void ECGui::DrawInputWidget(const char* name, float vector[2], bool hideName)
+	void ECGui::DrawInputFloat2Widget(const char* name, float vector[2], bool hideName)
 	{
 		instance.InputFloat2(name, vector, hideName);
 	}
 
-	void ECGui::DrawInputWidget(const char* name, float vector[3], bool hideName)
+	void ECGui::DrawInputFloat3Widget(const char* name, float vector[3], bool hideName)
 	{
 		instance.InputFloat3(name, vector, hideName);
 	}
 
-	void ECGui::DrawInputWidget(const char* name, float vector[4], bool hideName)
+	void ECGui::DrawInputFloat4Widget(const char* name, float vector[4], bool hideName)
 	{
 		instance.InputFloat4(name, vector, hideName);
 	}
 
-	void ECGui::DrawInputWidget(const char* name, const char* hintText, char* buffer, size_t bufferSize, bool hideName)
+	void ECGui::DrawInputTextHintWidget(const char* name, const char* hintText, char* buffer, size_t bufferSize, bool hideName)
 	{
 		instance.InputTextWithHint(name, hintText, buffer, bufferSize, hideName);
 	}
 
-	void ECGui::DrawInputWidget(const char* name, char* buffer, size_t bufferSize, bool hideName)
+	void ECGui::DrawInputTextWidget(const char* name, char* buffer, size_t bufferSize, bool hideName)
 	{
 		instance.InputText(name, buffer, bufferSize, hideName);
 	}

@@ -276,33 +276,6 @@
     <ClInclude Include="src\ImGui\Setup\ImGuiSetup.h">
       <Filter>src\ImGui\Setup</Filter>
     </ClInclude>
-    <ClInclude Include="src\ImGui\Vendor\IconsFontAwesome.h">
-      <Filter>src\ImGui\Vendor</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ImGui\Vendor\imconfig.h">
-      <Filter>src\ImGui\Vendor</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ImGui\Vendor\imgui.h">
-      <Filter>src\ImGui\Vendor</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ImGui\Vendor\imgui_impl_glfw.h">
-      <Filter>src\ImGui\Vendor</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ImGui\Vendor\imgui_impl_opengl3.h">
-      <Filter>src\ImGui\Vendor</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ImGui\Vendor\imgui_internal.h">
-      <Filter>src\ImGui\Vendor</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ImGui\Vendor\imstb_rectpack.h">
-      <Filter>src\ImGui\Vendor</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ImGui\Vendor\imstb_textedit.h">
-      <Filter>src\ImGui\Vendor</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ImGui\Vendor\imstb_truetype.h">
-      <Filter>src\ImGui\Vendor</Filter>
-    </ClInclude>
     <ClInclude Include="src\Library\Math\Matrix.h">
       <Filter>src\Library\Math</Filter>
     </ClInclude>
@@ -333,6 +306,7 @@
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Lines3D.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Frustum.h" />
     <ClInclude Include="src\Graphics\Debugging\DebugRenderingManager.h" />
+    <ClInclude Include="src\Editor\ECGui.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp">
@@ -464,24 +438,6 @@
     <ClCompile Include="src\ImGui\Setup\ImGuiSetup.cpp">
       <Filter>src\ImGui\Setup</Filter>
     </ClCompile>
-    <ClCompile Include="src\ImGui\Vendor\imgui.cpp">
-      <Filter>src\ImGui\Vendor</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\Vendor\imgui_demo.cpp">
-      <Filter>src\ImGui\Vendor</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\Vendor\imgui_draw.cpp">
-      <Filter>src\ImGui\Vendor</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\Vendor\imgui_impl_glfw.cpp">
-      <Filter>src\ImGui\Vendor</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\Vendor\imgui_impl_opengl3.cpp">
-      <Filter>src\ImGui\Vendor</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\Vendor\imgui_widgets.cpp">
-      <Filter>src\ImGui\Vendor</Filter>
-    </ClCompile>
     <ClCompile Include="src\Library\Math\Matrix.cpp">
       <Filter>src\Library\Math</Filter>
     </ClCompile>
@@ -494,5 +450,6 @@
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Lines3D.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Frustum.cpp" />
     <ClCompile Include="src\Graphics\Debugging\DebugRenderingManager.cpp" />
+    <ClCompile Include="src\Editor\ECGui.cpp" />
   </ItemGroup>
 </Project>

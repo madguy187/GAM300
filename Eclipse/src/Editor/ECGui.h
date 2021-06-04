@@ -173,33 +173,32 @@ namespace Eclipse
 			instance.TextMat4(varname, var);
 		}
 
-		// Slider Widgets - Function Overloading
 		// Supports Int and float only
-		static void DrawSliderWidget(const char* name, int* var, 
+		static void DrawSliderIntWidget(const char* name, int* var, 
 			bool hideName = true, int minrange = 0.0f, int maxrange = 1000.0f);
-		static void DrawSliderWidget(const char* name, float* var,
+		static void DrawSliderFloatWidget(const char* name, float* var,
 			bool hideName = true, float minrange = 0.0f, float maxrange = 1000.0f);
-		static void DrawSliderWidget(const char* name, float vector[2],
+		static void DrawSliderFloat2Widget(const char* name, float vector[2],
 			bool hideName = true, float minrange = 0.0f, float maxrange = 1000.0f);
-		static void DrawSliderWidget(const char* name, float vector[3],
+		static void DrawSliderFloat3Widget(const char* name, float vector[3],
 			bool hideName = true, float minrange = 0.0f, float maxrange = 1000.0f);
-		static void DrawSliderWidget(const char* name, float vector[4],
+		static void DrawSliderFloat4Widget(const char* name, float vector[4],
 			bool hideName = true, float minrange = 0.0f, float maxrange = 1000.0f);
 
-		// Input Widgets - Function Overloading
-		static void DrawInputWidget(const char* name, int* var,
+		// Input Widgets
+		static void DrawInputIntWidget(const char* name, int* var,
 			bool hideName = true, int snapValue = 0);
-		static void DrawInputWidget(const char* name, float* var,
+		static void DrawInputFloatWidget(const char* name, float* var,
 			bool hideName = true, float snapValue = 0.0f);
-		static void DrawInputWidget(const char* name, float vector[2],
+		static void DrawInputFloat2Widget(const char* name, float vector[2],
 			bool hideName = true);
-		static void DrawInputWidget(const char* name, float vector[3],
+		static void DrawInputFloat3Widget(const char* name, float vector[3],
 			bool hideName = true);
-		static void DrawInputWidget(const char* name, float vector[4],
+		static void DrawInputFloat4Widget(const char* name, float vector[4],
 			bool hideName = true);
-		static void DrawInputWidget(const char* name, const char* hintText,
+		static void DrawInputTextHintWidget(const char* name, const char* hintText,
 			char* buffer, size_t bufferSize, bool hideName = true);
-		static void DrawInputWidget(const char* name, char* buffer,
+		static void DrawInputTextWidget(const char* name, char* buffer,
 			size_t bufferSize, bool hideName = true);
 
 		// Misc
