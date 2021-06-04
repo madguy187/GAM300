@@ -36,20 +36,25 @@ namespace Eclipse
         direction.y = sin(glm::radians(_transform.rotation.x));
         direction.z = sin(glm::radians(_transform.rotation.y)) * cos(glm::radians(_transform.rotation.x));
         _camera.eyeFront = glm::normalize(direction);
+
+        _camera.rightVec = glm::normalize(glm::cross(_camera.eyeFront, _camera.worldUp));
+        _camera.upVec = glm::normalize(glm::cross(_camera.rightVec, _camera.eyeFront));
     }
 
     void CameraManager::ComputeViewMtx(CameraComponent& _camera, TransformComponent& _transform)
     {
         glm::vec3 eyePos = _transform.position.ConvertToGlmVec3Type();
+        _camera.eyePos = eyePos;
         _camera.viewMtx = glm::lookAt(eyePos, eyePos + _camera.eyeFront, _camera.upVec);
     }
 
     void CameraManager::ComputePerspectiveMtx(CameraComponent& _camera)
     {
+        _camera.aspect = static_cast<float>((OpenGL_Context::GetWindowRatioX() * OpenGL_Context::GetWidth()) /
+            (OpenGL_Context::GetWindowRatioY() * OpenGL_Context::GetHeight()));
+
         _camera.projMtx = glm::perspective(glm::radians(_camera.fov),
-            static_cast<float>((OpenGL_Context::GetWindowRatioX() * OpenGL_Context::GetWidth()) /
-                (OpenGL_Context::GetWindowRatioY() * OpenGL_Context::GetHeight())),
-            _camera.nearPlane, _camera.farPlane);
+            _camera.aspect, _camera.nearPlane, _camera.farPlane);
     }
 
     void CameraManager::UpdateEditorCamera(TransformComponent& _transform)
@@ -172,6 +177,8 @@ namespace Eclipse
         int keyE = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_E);
         int keyR = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_R);
         int keyF = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_F);
+
+        int keyP = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_P);
 
         if (InputHandler.GetKeyCurrent(InputKeycode::Key_A))
         {
@@ -308,6 +315,16 @@ namespace Eclipse
         camera.cameraSpeed = newSpeed;
     }
 
+    void CameraManager::SetNearPlane(CameraComponent& _camera, float _nearPlane)
+    {
+        _camera.nearPlane = _nearPlane;
+    }
+
+    void CameraManager::SetFarPlane(CameraComponent& _camera, float _farPlane)
+    {
+        _camera.farPlane = _farPlane;
+    }
+
     void CameraManager::CreateGameCamera()
     {
         if (gameCamID != MAX_ENTITY)
@@ -325,7 +342,7 @@ namespace Eclipse
         editorCam.camType = CameraComponent::CameraType::Game_Camera;
 
         auto& _transform = engine->world.GetComponent<TransformComponent>(newCam);
-        _transform.position = ECVec3{ 0.0f, 0.0f, 40.0f };
+        _transform.position = ECVec3{ 0.0f, 0.0f, 10.0f };
         _transform.rotation = ECVec3{ 0.0f, -90.0f, 0.0f };
     }
 

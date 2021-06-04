@@ -5,6 +5,11 @@ void Eclipse::CameraSystem::Init()
 {
 	engine->gCamera.CreateEditorCamera();
 	engine->gCamera.SetCameraSpeed(5.0f);
+
+	//Temporary test code to create an initial game camera, remove later
+	engine->gCamera.CreateGameCamera();
+	auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetGameCameraID());
+	engine->gCamera.SetFarPlane(_camera, 100.0f);
 }
 
 void Eclipse::CameraSystem::Update()
@@ -21,7 +26,7 @@ void Eclipse::CameraSystem::Update()
 		}
 		else
 		{
-
+			engine->gDebugManager.AddCameraFrustum(it, _camera);
 		}
 
 		engine->gCamera.ComputeViewDirection(_camera, _transform);

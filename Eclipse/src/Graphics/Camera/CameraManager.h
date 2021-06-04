@@ -39,6 +39,8 @@ namespace Eclipse
 		void CheckCameraInput();
 
 		void SetCameraSpeed(float newSpeed);
+		void SetNearPlane(CameraComponent& _camera, float _nearPlane);
+		void SetFarPlane(CameraComponent& _camera, float _farPlane);
 
 		void CreateGameCamera();
 		unsigned int GetGameCameraID();

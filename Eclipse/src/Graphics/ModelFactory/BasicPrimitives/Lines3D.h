@@ -22,7 +22,7 @@
 class Lines3D : public IModel
 {
 public:
-    Lines3D();
+    Lines3D(glm::vec3 _startPos = glm::vec3{ -0.5f, -0.0f, 0.0f }, glm::vec3 _endPos = glm::vec3{ 0.5f, 0.0f, 0.0f });
     virtual ~Lines3D() = default;
 
     void initModel() override;
@@ -58,6 +58,9 @@ private:
     GLenum primitiveType;
     GLuint primitiveCount;
     GLuint drawCount;
+
+    glm::vec3 startPos;
+    glm::vec3 endPos;
 
     std::vector<glm::vec3> PosVec;
     std::vector<glm::vec2> TextVec;

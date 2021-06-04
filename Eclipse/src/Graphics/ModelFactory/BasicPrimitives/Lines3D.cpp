@@ -1,12 +1,15 @@
 #include "pch.h"
 #include "Lines3D.h"
 
-Lines3D::Lines3D() :
+Lines3D::Lines3D(glm::vec3 _startPos, glm::vec3 _endPos) :
     vaoID{ 1 }, vboID{ 1 }, eboID{ 0 },
     primitiveType{ GL_LINES },
     primitiveCount{ 1 },
     drawCount{ 2 }
 {
+    startPos = _startPos;
+    endPos = _endPos;
+
     initModel();
 }
 
@@ -20,8 +23,8 @@ void Lines3D::InsertPosVtx()
 {
     GLfloat lineSeg[] =
     {
-        0.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f
+        startPos.x, startPos.y, startPos.z,
+        endPos.x, endPos.y, endPos.z
     };
 
     PosVec.push_back({ lineSeg[0], lineSeg[1], lineSeg[2] });
@@ -104,27 +107,16 @@ void Lines3D::CreateVAO()
     glCreateVertexArrays(1, &vaoID);
     glEnableVertexArrayAttrib(vaoID, 0);
     glVertexArrayVertexBuffer(vaoID, 0, vboID, 0, sizeof(glm::vec3));
-    glVertexArrayAttribFormat(vaoID, 0, 2, GL_FLOAT, GL_FALSE, 0);
+    glVertexArrayAttribFormat(vaoID, 0, 3, GL_FLOAT, GL_FALSE, 0);
     glVertexArrayAttribBinding(vaoID, 0, 0);
-
-    //Define the VAO handle for texture coordinates
-    glEnableVertexArrayAttrib(vaoID, 1);
-    glVertexArrayVertexBuffer(vaoID, 1, vboID, sizeof(glm::vec3) * PosVec.size(), sizeof(glm::vec2));
-    glVertexArrayAttribFormat(vaoID, 1, 2, GL_FLOAT, GL_FALSE, 0);
-    glVertexArrayAttribBinding(vaoID, 1, 1);
-
 }
 
 void Lines3D::CreateVBO()
 {
     glCreateBuffers(1, &vboID);
     glNamedBufferStorage(vboID,
-        sizeof(glm::vec3) * PosVec.size() + sizeof(glm::vec2) * TextVec.size(),
-        nullptr, GL_DYNAMIC_STORAGE_BIT);
-    glNamedBufferSubData(vboID, 0,
-        sizeof(glm::vec3) * PosVec.size(), PosVec.data());
-    glNamedBufferSubData(vboID, sizeof(glm::vec3) * PosVec.size(),
-        sizeof(glm::vec2) * TextVec.size(), TextVec.data());
+        sizeof(glm::vec3) * PosVec.size(), nullptr, GL_DYNAMIC_STORAGE_BIT);
+    glNamedBufferSubData(vboID, 0, sizeof(glm::vec3) * PosVec.size(), PosVec.data());
 }
 
 void Lines3D::CreateEBO()
