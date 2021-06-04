@@ -30,9 +30,12 @@ namespace Eclipse
 		bool BeginComboList(const char* name, const char* previewCurrent, bool hideName = true,
 			                ImGuiComboFlags flags = 0);
 		void EndComboList();
+		bool BeginTreeNode(const char* name);
+		void EndTreeNode();
 
 		// Semi-Dynamic Widgets (Don't need an end function for it)
 		bool CreateCollapsingHeader(const char* name);
+		bool CreateSelectableButton(const char* label, bool* active, ImGuiSelectableFlags flags = 0);
 
 		// Static Widgets
 		// For Printing out on the windows
@@ -77,6 +80,8 @@ namespace Eclipse
 		void InsertSameLine();
 		void InsertHorizontalLineSeperator();
 		void PushItemWidth(float value);
+		bool IsItemHovered();
+		void SetToolTip(const char* message);
 
 	private:
 		std::string HideWidgetName(const char* name, bool Changing);

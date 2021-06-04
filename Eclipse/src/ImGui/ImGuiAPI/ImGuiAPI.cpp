@@ -95,9 +95,24 @@ namespace Eclipse
 		ImGui::EndCombo();
 	}
 
+	bool ImGuiAPI::BeginTreeNode(const char* name)
+	{
+		return ImGui::TreeNode(name);;
+	}
+
+	void ImGuiAPI::EndTreeNode()
+	{
+		ImGui::TreePop();
+	}
+
 	bool ImGuiAPI::CreateCollapsingHeader(const char* name)
 	{
 		return ImGui::CollapsingHeader(name);
+	}
+
+	bool ImGuiAPI::CreateSelectableButton(const char* label, bool* active, ImGuiSelectableFlags flags)
+	{
+		return ImGui::Selectable(label, active, flags);
 	}
 
 	void ImGuiAPI::TextInt(const char* varname, const int& var)
@@ -281,6 +296,16 @@ namespace Eclipse
 	void ImGuiAPI::PushItemWidth(float value)
 	{
 		ImGui::PushItemWidth(value);
+	}
+
+	bool ImGuiAPI::IsItemHovered()
+	{
+		return ImGui::IsItemHovered();
+	}
+
+	void ImGuiAPI::SetToolTip(const char* message)
+	{
+		ImGui::SetTooltip(message);
 	}
 
 	std::string ImGuiAPI::HideWidgetName(const char* name, bool Changing)

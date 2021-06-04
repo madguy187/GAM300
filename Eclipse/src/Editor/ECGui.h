@@ -92,11 +92,14 @@ namespace Eclipse
 
 		static void BeginStyleVariant(ImGuiStyleVar id, float scale);
 		static void EndStyleVariant();
-		static bool BeginComboList(const char* name, const char* previewCurrent, 
-			                       bool hideName = true, 
-			                       ImGuiComboFlags flags = 0);
-		static void EndComboList();
+		static bool BeginTreeNode(const char* name);
+		static void EndTreeNode();
 		static bool CreateCollapsingHeader(const char* name);
+		static bool CreateSelectableButton(const char* label, bool* active, 
+			                               ImGuiSelectableFlags flags = 0);
+		static void CreateComboList(ComboListSettings settings,
+			                        const std::vector<std::string>& vecStr,
+			                        size_t& index);
 
 		/*************************************************************************/
 		/*                           Static Widgets                              */
@@ -210,5 +213,7 @@ namespace Eclipse
 		static void InsertSameLine();
 		static void InsertHorizontalLineSeperator();
 		static void PushItemWidth(float value);
+		static bool IsItemHovered();
+		static void SetToolTip(const char* message);
 	};
 }

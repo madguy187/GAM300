@@ -23,19 +23,44 @@ namespace Eclipse
 		instance.EndStyleVariant();
 	}
 
-	bool ECGui::BeginComboList(const char* name, const char* previewCurrent, bool hideName, ImGuiComboFlags flags)
+	void ECGui::CreateComboList(ComboListSettings settings, const std::vector<std::string>& vecStr, size_t& index)
 	{
-		return false;
-	}
+		const char* combo_label = vecStr[index].c_str();
+		if (instance.BeginComboList(settings.Name, settings.CurrentPreview, settings.HideName, settings.flags))
+		{
+			for (size_t n = 0; n < vecStr.size(); n++)
+			{
+				const bool is_selected = (index == n);
 
-	void ECGui::EndComboList()
-	{
-		instance.EndComboList();
+				if (ImGui::Selectable(vecStr[n].c_str(), is_selected))
+					index = n;
+
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+			}
+
+			instance.EndComboList();
+		}
 	}
 
 	bool ECGui::CreateCollapsingHeader(const char* name)
 	{
 		return instance.CreateCollapsingHeader(name);
+	}
+
+	bool ECGui::CreateSelectableButton(const char* label, bool* active, ImGuiSelectableFlags flags)
+	{
+		return instance.CreateSelectableButton(label, active, flags);
+	}
+
+	bool ECGui::BeginTreeNode(const char* name)
+	{
+		return instance.BeginTreeNode(name);
+	}
+
+	void ECGui::EndTreeNode()
+	{
+		instance.EndTreeNode();
 	}
 
 	void ECGui::DrawSliderWidget(const char* name, int* var, bool hideName, int minrange, int maxrange)
@@ -121,5 +146,15 @@ namespace Eclipse
 	void ECGui::PushItemWidth(float value)
 	{
 		instance.PushItemWidth(value);
+	}
+
+	bool ECGui::IsItemHovered()
+	{
+		return instance.IsItemHovered();
+	}
+
+	void ECGui::SetToolTip(const char* message)
+	{
+		instance.SetToolTip(message);
 	}
 }

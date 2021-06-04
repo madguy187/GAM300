@@ -156,6 +156,7 @@
     <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\System.h" />
     <ClInclude Include="src\ECS\World.h" />
+    <ClInclude Include="src\Editor\ECGui.h" />
     <ClInclude Include="src\Engine\Engine.h" />
     <ClInclude Include="src\EntryPoint\EntryPoint.h" />
     <ClInclude Include="src\Global.h" />
@@ -196,15 +197,6 @@
     <ClInclude Include="src\Graphics\Still_Cleaning\Vec.h" />
     <ClInclude Include="src\ImGui\ImGuiAPI\ImGuiAPI.h" />
     <ClInclude Include="src\ImGui\Setup\ImGuiSetup.h" />
-    <ClInclude Include="src\ImGui\Vendor\IconsFontAwesome.h" />
-    <ClInclude Include="src\ImGui\Vendor\imconfig.h" />
-    <ClInclude Include="src\ImGui\Vendor\imgui.h" />
-    <ClInclude Include="src\ImGui\Vendor\imgui_impl_glfw.h" />
-    <ClInclude Include="src\ImGui\Vendor\imgui_impl_opengl3.h" />
-    <ClInclude Include="src\ImGui\Vendor\imgui_internal.h" />
-    <ClInclude Include="src\ImGui\Vendor\imstb_rectpack.h" />
-    <ClInclude Include="src\ImGui\Vendor\imstb_textedit.h" />
-    <ClInclude Include="src\ImGui\Vendor\imstb_truetype.h" />
     <ClInclude Include="src\Library\Math\Matrix.h" />
     <ClInclude Include="src\Library\Math\Vector.h" />
     <ClInclude Include="src\Logger\Logger.h" />
@@ -229,6 +221,7 @@
     <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp" />
     <ClCompile Include="src\ECS\World.cpp" />
+    <ClCompile Include="src\Editor\ECGui.cpp" />
     <ClCompile Include="src\Engine\Engine.cpp" />
     <ClCompile Include="src\EntryPoint\EntryPoint.cpp" />
     <ClCompile Include="src\Graphics\Camera\CameraManager.cpp" />
@@ -259,24 +252,6 @@
     <ClCompile Include="src\Graphics\RendererAPI\stb_image.cpp" />
     <ClCompile Include="src\ImGui\ImGuiAPI\ImGuiAPI.cpp" />
     <ClCompile Include="src\ImGui\Setup\ImGuiSetup.cpp" />
-    <ClCompile Include="src\ImGui\Vendor\imgui.cpp">
-      <ObjectFileName>$(IntDir)\imgui1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\Vendor\imgui_demo.cpp">
-      <ObjectFileName>$(IntDir)\imgui_demo1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\Vendor\imgui_draw.cpp">
-      <ObjectFileName>$(IntDir)\imgui_draw1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\Vendor\imgui_impl_glfw.cpp">
-      <ObjectFileName>$(IntDir)\imgui_impl_glfw1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\Vendor\imgui_impl_opengl3.cpp">
-      <ObjectFileName>$(IntDir)\imgui_impl_opengl31.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\Vendor\imgui_widgets.cpp">
-      <ObjectFileName>$(IntDir)\imgui_widgets1.obj</ObjectFileName>
-    </ClCompile>
     <ClCompile Include="src\Library\Math\Matrix.cpp" />
     <ClCompile Include="src\Logger\Logger.cpp" />
     <ClCompile Include="src\pch.cpp">
