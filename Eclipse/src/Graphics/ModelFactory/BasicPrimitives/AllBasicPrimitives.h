@@ -15,5 +15,6 @@
 #include "Sphere.h"
 #include "Torus.h"
 #include "Triangle.h"
+#include "Lines3D.h"
 
 #endif /* ALL_BASIC_PRIMITIVES_H */

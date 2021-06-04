@@ -330,6 +330,9 @@
     <ClInclude Include="src\pch.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Lines3D.h" />
+    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Frustum.h" />
+    <ClInclude Include="src\Graphics\Debugging\DebugRenderingManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp">
@@ -488,5 +491,8 @@
     <ClCompile Include="src\pch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Lines3D.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Frustum.cpp" />
+    <ClCompile Include="src\Graphics\Debugging\DebugRenderingManager.cpp" />
   </ItemGroup>
 </Project>

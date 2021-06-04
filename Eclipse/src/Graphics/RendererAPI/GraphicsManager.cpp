@@ -128,6 +128,23 @@ void Eclipse::GraphicsManager::CreatePrimitives(GLint model)
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
+
+    case 10:
+    {
+        sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
+        sprite.modelRef = Graphics::models.find("lines3D");
+        Graphics::sprites.emplace(sprite.layerNum, &sprite);
+    }
+    break;
+
+    case 11:
+    {
+        sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
+        sprite.modelRef = Graphics::models.find("plane");
+        Graphics::sprites.emplace(sprite.layerNum, &sprite);
+    }
+    break;
+
     }
 }
 
@@ -148,7 +165,9 @@ void Eclipse::GraphicsManager::DrawBuffers(unsigned int FrameBufferID, Sprite* _
         _spritecomponent->modelRef == Graphics::FindModel("cone") ||
         _spritecomponent->modelRef == Graphics::FindModel("torus") ||
         _spritecomponent->modelRef == Graphics::FindModel("pyramid") ||
-        _spritecomponent->modelRef == Graphics::FindModel("cylinder"))
+        _spritecomponent->modelRef == Graphics::FindModel("cylinder") ||
+        _spritecomponent->modelRef == Graphics::FindModel("lines3D") ||
+        _spritecomponent->modelRef == Graphics::FindModel("plane"))
     {
 
         glPolygonMode(GL_FRONT_AND_BACK, mode);
@@ -178,22 +197,44 @@ void Eclipse::GraphicsManager::DrawBuffers(unsigned int FrameBufferID, Sprite* _
         }
     }
 
-    CheckUniformLoc(*(_spritecomponent), _spritecomponent->ID);
+    CheckUniformLoc(*(_spritecomponent), _spritecomponent->ID, FrameBufferID);
 
-    glDrawElements(_spritecomponent->modelRef->second->GetPrimitiveType(),
-        _spritecomponent->modelRef->second->GetDrawCount(), GL_UNSIGNED_SHORT, NULL);
-
+    if (_spritecomponent->modelRef->second->GetPrimitiveType() != GL_LINES)
+    {
+        glDrawElements(_spritecomponent->modelRef->second->GetPrimitiveType(),
+            _spritecomponent->modelRef->second->GetDrawCount(), GL_UNSIGNED_SHORT, NULL);
+    }
+    else
+    {
+        glLineWidth(5.0f); //Note that glLineWidth() is deprecated
+        glDrawArrays(_spritecomponent->modelRef->second->GetPrimitiveType(), 0, 2);
+    }
+    
     // Part 5: Clean up
     glBindVertexArray(0);
     _spritecomponent->shaderRef->second.UnUse();
 }
 
-void Eclipse::GraphicsManager::CheckUniformLoc(Sprite& sprite, unsigned int id)
+void Eclipse::GraphicsManager::CheckUniformLoc(Sprite& sprite, unsigned int id, unsigned int framebufferID)
 {
     {
-        unsigned int currCamID = 0;
-        //Camera& oi = engine->world.GetComponent<Camera>(currCamID);
-        auto& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+        CameraComponent camera;
+
+        if (framebufferID == engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID())
+        {
+            camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+        }
+        else
+        {
+            //Check if game camera exists
+            if (engine->gCamera.GetGameCameraID() == MAX_ENTITY)
+            {
+                return;
+            }
+
+            camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetGameCameraID());
+        }
+
         TransformComponent& trans = engine->world.GetComponent<TransformComponent>(id);
 
         GLint uniform_var_loc1 = sprite.shaderRef->second.GetLocation("uModelToNDC");
@@ -235,7 +276,7 @@ void Eclipse::GraphicsManager::CheckUniformLoc(Sprite& sprite, unsigned int id)
         {
             glUniform2f(uniform_var_loc4, sprite.textureIdx.x, sprite.textureIdx.y);
         }
-
+        
         if (sprite.hasTexture)
         {
             if (sprite.textureRef != Graphics::textures.end())
@@ -341,7 +382,7 @@ void Eclipse::GraphicsManager::ShowTestWidgets()
     ImGui::Begin("Create Objects");
 
     if (ImGui::Combo("Models", &modelSelector,
-        "Square\0Circle\0Triangle\0Lines\0Sphere\0Cube\0Cylinder\0Cone\0Torus\0Pyramid"))
+        "Square\0Circle\0Triangle\0Lines\0Sphere\0Cube\0Cylinder\0Cone\0Torus\0Pyramid\0Lines3D\0Plane"))
     {
         CreatePrimitives(modelSelector);
 

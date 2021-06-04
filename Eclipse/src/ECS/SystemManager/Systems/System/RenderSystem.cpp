@@ -2,6 +2,7 @@
 #include "RenderSystem.h"
 #include "Graphics/InputHandler/InputWrapper.h"
 #include "Graphics/InputHandler/AllInputKeyCodes.h"
+#include "Graphics/Debugging/DebugRenderingManager.h"
 
 //Components
 #include "ECS/ComponentManager/Components/TransformComponent.h"
@@ -60,6 +61,8 @@ void Eclipse::RenderSystem::Update()
         engine->gGraphics.DrawBuffers(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
         engine->gGraphics.DrawBuffers(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), &_Sprites, GL_LINE);
     }
+
+    engine->gDebugManager.DrawDebugShapes(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 
     engine->gGraphics.FrameBufferDraw();
     ImGui::Render();

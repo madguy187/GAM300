@@ -21,7 +21,7 @@ namespace Eclipse
   private:
     void ShowTestWidgets();
     void CreatePrimitives(GLint model);
-    void CheckUniformLoc(Sprite& sprite, unsigned int id);
+    void CheckUniformLoc(Sprite& sprite, unsigned int id, unsigned int framebufferID);
 
   public:
     void ShowTestWidgets(unsigned int id, unsigned int createdId);

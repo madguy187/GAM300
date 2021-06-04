@@ -48,6 +48,10 @@
 		{
 			"modelName": "pyramid",
 			"modelIndex": 11
+		},
+		{
+			"modelName": "lines3D",
+			"modelIndex": 12
 		}
 		
 	]
