@@ -12,3 +12,23 @@ using ComponentType = std::uint8_t;
 static constexpr ComponentType MAX_COMPONENT = 32;
 using Signature = std::bitset<MAX_COMPONENT>;
 static constexpr unsigned MAX_PAGE_SIZE = 10;
+
+enum class EditorWindowType
+{
+	UNASSIGNED,
+	HIERARCHY,
+	INSPECTOR,
+	SCENE,
+	ASSETS,
+	PROFILER,
+	CONSOLELOG
+};
+
+enum class EditorMenuType
+{
+	UNASSIGNED,
+	FILE,
+	EDIT,
+	WINDOWS,
+	HELP
+};

@@ -309,6 +309,7 @@
     <ClInclude Include="src\Editor\ECGuiAPI\ECGui.h" />
     <ClInclude Include="src\Editor\Manager\EditorManager.h" />
     <ClInclude Include="src\Editor\Windows\Interface\ECGuiWindow.h" />
+    <ClInclude Include="src\Library\Strings\StringsConcatenate.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp">
