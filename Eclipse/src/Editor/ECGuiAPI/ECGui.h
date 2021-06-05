@@ -108,7 +108,13 @@ namespace Eclipse
 		// Supports Int, Float, Double, Size_t, Bool, String, All our engine
 		// Vectors and Matrices
 		template <typename T>
-		static void DrawTextWidget(const char* varname, const T& var)
+		static void DrawTextWidget(const char* varname, const T&)
+		{
+			instance.Text(varname);
+		}
+
+		template <>
+		static void DrawTextWidget(const char* varname, const int& var)
 		{
 			instance.TextInt(varname, var);
 		}
