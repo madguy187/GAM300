@@ -202,10 +202,11 @@
     <ClInclude Include="src\Graphics\Still_Cleaning\Vec.h" />
     <ClInclude Include="src\ImGui\ImGuiAPI\ImGuiAPI.h" />
     <ClInclude Include="src\ImGui\Setup\ImGuiSetup.h" />
-    <ClInclude Include="src\Library\Strings\StringsConcatenate.h" />
     <ClInclude Include="src\ImGui\Vendor\IconsFontAwesome.h" />
+    <ClInclude Include="src\ImGui\Vendor\IconsMaterialDesignIcons.h" />
     <ClInclude Include="src\Library\Math\Matrix.h" />
     <ClInclude Include="src\Library\Math\Vector.h" />
+    <ClInclude Include="src\Library\Strings\StringsConcatenate.h" />
     <ClInclude Include="src\Logger\Logger.h" />
     <ClInclude Include="src\Reflection\complex_support.h" />
     <ClInclude Include="src\Reflection\primitive_support.h" />

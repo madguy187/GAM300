@@ -35,7 +35,7 @@ namespace Eclipse
 		inline void AddWindow()
 		{
 			ENGINE_LOG_ASSERT(std::is_base_of_v<ECGuiWindow, TWindow>, "Type is not an ECGui Window!");
-			_windows.emplace_back(std::make_unique<TWindow>();
+			_windows.emplace_back(std::make_unique<TWindow>());
 		}
 	};
 }

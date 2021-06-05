@@ -43,6 +43,18 @@
     <Filter Include="src\Editor">
       <UniqueIdentifier>{C3F37E0D-AFAB-C05A-18B3-99B6048A5B4B}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Editor\ECGuiAPI">
+      <UniqueIdentifier>{F90F401B-6571-1D29-EEDE-63DB5A3F54E8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Editor\Manager">
+      <UniqueIdentifier>{ED4228F7-D926-E94C-4287-E39F2E8AD3CE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Editor\Windows">
+      <UniqueIdentifier>{FDB0990B-E994-5A61-52F5-54B43EF844E3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Editor\Windows\Interface">
+      <UniqueIdentifier>{1D3910F7-09F4-FFA2-B2AB-78ED9E454A33}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Engine">
       <UniqueIdentifier>{12A1320E-FE58-745B-6760-4DB753370F4C}</UniqueIdentifier>
     </Filter>
@@ -99,6 +111,9 @@
     </Filter>
     <Filter Include="src\Library\Math">
       <UniqueIdentifier>{AAAC9EFC-96A5-BD4E-BFD7-A2D3AB2F9D5A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Library\Strings">
+      <UniqueIdentifier>{EA119A78-5673-7786-DFE0-BD384B41AE45}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Logger">
       <UniqueIdentifier>{5CCC981E-4884-DA6B-B18B-B3C79D62755C}</UniqueIdentifier>
@@ -165,8 +180,14 @@
     <ClInclude Include="src\ECS\World.h">
       <Filter>src\ECS</Filter>
     </ClInclude>
-    <ClInclude Include="src\Editor\ECGui.h">
-      <Filter>src\Editor</Filter>
+    <ClInclude Include="src\Editor\ECGuiAPI\ECGui.h">
+      <Filter>src\Editor\ECGuiAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Manager\EditorManager.h">
+      <Filter>src\Editor\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\Interface\ECGuiWindow.h">
+      <Filter>src\Editor\Windows\Interface</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\Engine.h">
       <Filter>src\Engine</Filter>
@@ -300,11 +321,17 @@
     <ClInclude Include="src\ImGui\Vendor\IconsFontAwesome.h">
       <Filter>src\ImGui\Vendor</Filter>
     </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\IconsMaterialDesignIcons.h">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClInclude>
     <ClInclude Include="src\Library\Math\Matrix.h">
       <Filter>src\Library\Math</Filter>
     </ClInclude>
     <ClInclude Include="src\Library\Math\Vector.h">
       <Filter>src\Library\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Library\Strings\StringsConcatenate.h">
+      <Filter>src\Library\Strings</Filter>
     </ClInclude>
     <ClInclude Include="src\Logger\Logger.h">
       <Filter>src\Logger</Filter>
@@ -330,13 +357,6 @@
     <ClInclude Include="src\pch.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Lines3D.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Frustum.h" />
-    <ClInclude Include="src\Graphics\Debugging\DebugRenderingManager.h" />
-    <ClInclude Include="src\Editor\ECGuiAPI\ECGui.h" />
-    <ClInclude Include="src\Editor\Manager\EditorManager.h" />
-    <ClInclude Include="src\Editor\Windows\Interface\ECGuiWindow.h" />
-    <ClInclude Include="src\Library\Strings\StringsConcatenate.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp">
@@ -378,8 +398,11 @@
     <ClCompile Include="src\ECS\World.cpp">
       <Filter>src\ECS</Filter>
     </ClCompile>
-    <ClCompile Include="src\Editor\ECGui.cpp">
-      <Filter>src\Editor</Filter>
+    <ClCompile Include="src\Editor\ECGuiAPI\ECGui.cpp">
+      <Filter>src\Editor\ECGuiAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Manager\EditorManager.cpp">
+      <Filter>src\Editor\Manager</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\Engine.cpp">
       <Filter>src\Engine</Filter>
@@ -492,10 +515,5 @@
     <ClCompile Include="src\pch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Lines3D.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Frustum.cpp" />
-    <ClCompile Include="src\Graphics\Debugging\DebugRenderingManager.cpp" />
-    <ClCompile Include="src\Editor\ECGuiAPI\ECGui.cpp" />
-    <ClCompile Include="src\Editor\Manager\EditorManager.cpp" />
   </ItemGroup>
 </Project>
