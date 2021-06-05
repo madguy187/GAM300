@@ -84,7 +84,7 @@ project "Eclipse"
   {
     "Dep/GLFW/lib-vc2019",
     "Dep/GLEW/lib/Release/x64",
-	"Dep/PhysX/Release"
+	"Dep/PhysX/Debug"
   }
 
   links
