@@ -307,6 +307,7 @@
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Frustum.h" />
     <ClInclude Include="src\Graphics\Debugging\DebugRenderingManager.h" />
     <ClInclude Include="src\Editor\ECGui.h" />
+    <ClInclude Include="src\Time\Clock.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp">
@@ -451,5 +452,6 @@
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Frustum.cpp" />
     <ClCompile Include="src\Graphics\Debugging\DebugRenderingManager.cpp" />
     <ClCompile Include="src\Editor\ECGui.cpp" />
+    <ClCompile Include="src\Time\Clock.cpp" />
   </ItemGroup>
 </Project>

@@ -207,6 +207,7 @@
     <ClInclude Include="src\Reflection\primitive_support.h" />
     <ClInclude Include="src\Reflection\registration.h" />
     <ClInclude Include="src\SparseSet\SparseSet.hpp" />
+    <ClInclude Include="src\Time\Clock.h" />
     <ClInclude Include="src\TypeID\TypeID.h" />
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
@@ -263,6 +264,7 @@
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Time\Clock.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
