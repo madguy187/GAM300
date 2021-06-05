@@ -61,7 +61,6 @@ project "Eclipse"
     "Eclipse/src/Graphics/ModelFactory",
     "Eclipse/src/Graphics/FrameBuffer",
 	"Eclipse/src/Graphics/OpenGL",
-	"Eclipse/src/ImGui/Vendor"
 	}
 
   libdirs
