@@ -8,8 +8,9 @@ namespace Eclipse
 
 	}
 
-	void Inspector::Init()
+	Inspector::Inspector()
 	{
-
+		Type = EditorWindowType::INSPECTOR;
+		WindowName = "Inspector";
 	}
 }

@@ -4,11 +4,11 @@
 
 namespace Eclipse
 {
-	class Inspector : public ECGuiWindow
+	class Scene : public ECGuiWindow
 	{
 	public:
 		void Update() override;
-		Inspector();
+		Scene();
 	private:
 	};
 }

@@ -37,8 +37,8 @@ namespace Eclipse
 		template <typename TWindow>
 		inline void AddWindow(const char* title)
 		{
-			ENGINE_LOG_ASSERT(std::is_base_of_v<ECGuiWindow, TWindow>, "Type is not an ECGui Window!");
-			_windows.emplace_back(std::make_unique<TWindow>());
+			static_assert(std::is_base_of_v<ECGuiWindow, TWindow>, "Type is not an ECGui Window!");
+			Windows_.emplace_back(std::make_unique<TWindow>());
 
 			auto* com = MenuBar_.GetMenuComponent(EditorMenuType::WINDOWS);
 			com->AddItems(title);

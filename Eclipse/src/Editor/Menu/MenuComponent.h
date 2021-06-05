@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Editor/ECGuiAPI/ECGui.h"
-
 namespace Eclipse
 {
 	class MenuComponent

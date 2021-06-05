@@ -74,3 +74,6 @@
 #include "Reflection/registration.h"
 #include "Reflection/primitive_support.h"
 #include "Reflection/complex_support.h"
+
+// Editor API
+#include "Editor/ECGuiAPI/ECGui.h"

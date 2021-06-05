@@ -1,14 +1,17 @@
 #pragma once
 
+#include "Global.h"
+
 namespace Eclipse
 {
 	class ECGuiWindow
 	{
 	public:
-		virtual void Init() = 0;
 		virtual void Update() = 0;
 		virtual ~ECGuiWindow() = default;
 
-		bool isVisible{ true };
+		EditorWindowType Type{ EditorWindowType::UNASSIGNED };
+		const char* WindowName{ nullptr };
+		bool IsVisible{ true };
 	};
 }
