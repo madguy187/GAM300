@@ -79,7 +79,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;_CRT_NO_SECURE_WARNINGS;ENGINE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;_CRT_SECURE_NO_WARNINGS;ENGINE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\Dep;src;..\Dep\IMGUI\imgui-master;..\Dep\RAPIDJSON\rapidjson-master\include\rapidjson;..\Dep\GLEW\include\GL;..\Dep\STB\stb-master;..\Dep\GLM\glm;..\Dep\GLFW\include\GLFW;..\Dep\GLM\glm\gtc;..\Dep\GLM\glm\gtx;..\Dep\GLEW\lib\Release\x64;..\Dep\spdlog\include;src\Graphics\Still_Cleaning;src\Graphics\RendererAPI;src\Graphics\Parser;src\Graphics\ModelFactory\BasicPrimitives;src\Graphics\ModelFactory;src\Graphics\FrameBuffer;src\Graphics\OpenGL;src\ImGui\Vendor;..\Dep\PhysX\include;..\Dep\PhysX\include\characterkinematic;..\Dep\PhysX\include\collision;..\Dep\PhysX\include\common;..\Dep\PhysX\include\cooking;..\Dep\PhysX\include\cudamanager;..\Dep\PhysX\include\extensions;..\Dep\PhysX\include\filebuf;..\Dep\PhysX\include\foundation;..\Dep\PhysX\include\geometry;..\Dep\PhysX\include\geomutils;..\Dep\PhysX\include\gpu;..\Dep\PhysX\include\pvd;..\Dep\PhysX\include\solver;..\Dep\PhysX\include\task;..\Dep\PhysX\include\vehicle;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -103,7 +103,7 @@ xcopy /y /d "..\Dep\PhysX\Debug\PhysXFoundation_64.dll" "$(TargetDir)" /q</Comma
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;_CRT_NO_SECURE_WARNINGS;ENGINE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;_CRT_SECURE_NO_WARNINGS;ENGINE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\Dep;src;..\Dep\IMGUI\imgui-master;..\Dep\RAPIDJSON\rapidjson-master\include\rapidjson;..\Dep\GLEW\include\GL;..\Dep\STB\stb-master;..\Dep\GLM\glm;..\Dep\GLFW\include\GLFW;..\Dep\GLM\glm\gtc;..\Dep\GLM\glm\gtx;..\Dep\GLEW\lib\Release\x64;..\Dep\spdlog\include;src\Graphics\Still_Cleaning;src\Graphics\RendererAPI;src\Graphics\Parser;src\Graphics\ModelFactory\BasicPrimitives;src\Graphics\ModelFactory;src\Graphics\FrameBuffer;src\Graphics\OpenGL;src\ImGui\Vendor;..\Dep\PhysX\include;..\Dep\PhysX\include\characterkinematic;..\Dep\PhysX\include\collision;..\Dep\PhysX\include\common;..\Dep\PhysX\include\cooking;..\Dep\PhysX\include\cudamanager;..\Dep\PhysX\include\extensions;..\Dep\PhysX\include\filebuf;..\Dep\PhysX\include\foundation;..\Dep\PhysX\include\geometry;..\Dep\PhysX\include\geomutils;..\Dep\PhysX\include\gpu;..\Dep\PhysX\include\pvd;..\Dep\PhysX\include\solver;..\Dep\PhysX\include\task;..\Dep\PhysX\include\vehicle;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -131,7 +131,7 @@ xcopy /y /d "..\Dep\PhysX\Release\PhysXFoundation_64.dll" "$(TargetDir)" /q</Com
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;_CRT_NO_SECURE_WARNINGS;ENGINE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;_CRT_SECURE_NO_WARNINGS;ENGINE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\Dep;src;..\Dep\IMGUI\imgui-master;..\Dep\RAPIDJSON\rapidjson-master\include\rapidjson;..\Dep\GLEW\include\GL;..\Dep\STB\stb-master;..\Dep\GLM\glm;..\Dep\GLFW\include\GLFW;..\Dep\GLM\glm\gtc;..\Dep\GLM\glm\gtx;..\Dep\GLEW\lib\Release\x64;..\Dep\spdlog\include;src\Graphics\Still_Cleaning;src\Graphics\RendererAPI;src\Graphics\Parser;src\Graphics\ModelFactory\BasicPrimitives;src\Graphics\ModelFactory;src\Graphics\FrameBuffer;src\Graphics\OpenGL;src\ImGui\Vendor;..\Dep\PhysX\include;..\Dep\PhysX\include\characterkinematic;..\Dep\PhysX\include\collision;..\Dep\PhysX\include\common;..\Dep\PhysX\include\cooking;..\Dep\PhysX\include\cudamanager;..\Dep\PhysX\include\extensions;..\Dep\PhysX\include\filebuf;..\Dep\PhysX\include\foundation;..\Dep\PhysX\include\geometry;..\Dep\PhysX\include\geomutils;..\Dep\PhysX\include\gpu;..\Dep\PhysX\include\pvd;..\Dep\PhysX\include\solver;..\Dep\PhysX\include\task;..\Dep\PhysX\include\vehicle;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
