@@ -83,7 +83,7 @@ project "Eclipse"
   libdirs
   {
     "Dep/GLFW/lib-vc2019",
-    "Dep/GLEW/lib/Release/x64"
+    "Dep/GLEW/lib/Release/x64",
 	"Dep/PhysX/Release"
   }
 
@@ -91,7 +91,7 @@ project "Eclipse"
   {
     "opengl32.lib",
     "glew32.lib",
-    "glfw3dll.lib"
+    "glfw3dll.lib",
 	"LowLevel_static_64.lib",
 	"LowLevelAABB_static_64.lib",
 	"LowLevelDynamics_static_64.lib",

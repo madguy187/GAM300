@@ -40,6 +40,9 @@
     <Filter Include="src\ECS\SystemManager\Systems\System">
       <UniqueIdentifier>{21B829F7-0D9F-EBEE-B6EF-510CA2B56455}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Editor">
+      <UniqueIdentifier>{C3F37E0D-AFAB-C05A-18B3-99B6048A5B4B}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Engine">
       <UniqueIdentifier>{12A1320E-FE58-745B-6760-4DB753370F4C}</UniqueIdentifier>
     </Filter>
@@ -51,6 +54,9 @@
     </Filter>
     <Filter Include="src\Graphics\Camera">
       <UniqueIdentifier>{E5F976A5-515B-54B3-DAC8-9A6546298B72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Graphics\Debugging">
+      <UniqueIdentifier>{08A811BE-F4A1-3A10-DD0E-D120C9A7A07C}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Graphics\FrameBuffer">
       <UniqueIdentifier>{A1EE6402-8D13-B482-B65E-9912A2E2B2A0}</UniqueIdentifier>
@@ -97,11 +103,17 @@
     <Filter Include="src\Logger">
       <UniqueIdentifier>{5CCC981E-4884-DA6B-B18B-B3C79D62755C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Physics">
+      <UniqueIdentifier>{9F8B9316-0B41-0C0C-9435-06E300EA0210}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Reflection">
       <UniqueIdentifier>{C7EBD53B-B3B9-C941-9C4D-3A6888BAA5A6}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\SparseSet">
       <UniqueIdentifier>{D6A11390-4262-8FC6-0B9D-D843771CD4A2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Time">
+      <UniqueIdentifier>{EB0B26CF-D7D8-80DA-00F2-6E82EC1DB668}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\TypeID">
       <UniqueIdentifier>{8BE9FB31-77A1-3D7F-E0A8-16DBCC7FD86F}</UniqueIdentifier>
@@ -156,6 +168,9 @@
     <ClInclude Include="src\ECS\World.h">
       <Filter>src\ECS</Filter>
     </ClInclude>
+    <ClInclude Include="src\Editor\ECGui.h">
+      <Filter>src\Editor</Filter>
+    </ClInclude>
     <ClInclude Include="src\Engine\Engine.h">
       <Filter>src\Engine</Filter>
     </ClInclude>
@@ -167,6 +182,9 @@
     </ClInclude>
     <ClInclude Include="src\Graphics\Camera\CameraManager.h">
       <Filter>src\Graphics\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Debugging\DebugRenderingManager.h">
+      <Filter>src\Graphics\Debugging</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\FrameBuffer\FrameBuffer.h">
       <Filter>src\Graphics\FrameBuffer</Filter>
@@ -198,10 +216,16 @@
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Cylinder.h">
       <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Frustum.h">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\LightQuad.h">
       <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Lines.h">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Lines3D.h">
       <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Particles.h">
@@ -276,6 +300,33 @@
     <ClInclude Include="src\ImGui\Setup\ImGuiSetup.h">
       <Filter>src\ImGui\Setup</Filter>
     </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\IconsFontAwesome.h">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\imconfig.h">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\imgui.h">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\imgui_impl_glfw.h">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\imgui_impl_opengl3.h">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\imgui_internal.h">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\imstb_rectpack.h">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\imstb_textedit.h">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\imstb_truetype.h">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClInclude>
     <ClInclude Include="src\Library\Math\Matrix.h">
       <Filter>src\Library\Math</Filter>
     </ClInclude>
@@ -284,6 +335,9 @@
     </ClInclude>
     <ClInclude Include="src\Logger\Logger.h">
       <Filter>src\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Physics\PhysicsManager.h">
+      <Filter>src\Physics</Filter>
     </ClInclude>
     <ClInclude Include="src\Reflection\complex_support.h">
       <Filter>src\Reflection</Filter>
@@ -297,17 +351,15 @@
     <ClInclude Include="src\SparseSet\SparseSet.hpp">
       <Filter>src\SparseSet</Filter>
     </ClInclude>
+    <ClInclude Include="src\Time\Clock.h">
+      <Filter>src\Time</Filter>
+    </ClInclude>
     <ClInclude Include="src\TypeID\TypeID.h">
       <Filter>src\TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Lines3D.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Frustum.h" />
-    <ClInclude Include="src\Graphics\Debugging\DebugRenderingManager.h" />
-    <ClInclude Include="src\Editor\ECGui.h" />
-    <ClInclude Include="src\Time\Clock.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp">
@@ -349,6 +401,9 @@
     <ClCompile Include="src\ECS\World.cpp">
       <Filter>src\ECS</Filter>
     </ClCompile>
+    <ClCompile Include="src\Editor\ECGui.cpp">
+      <Filter>src\Editor</Filter>
+    </ClCompile>
     <ClCompile Include="src\Engine\Engine.cpp">
       <Filter>src\Engine</Filter>
     </ClCompile>
@@ -357,6 +412,9 @@
     </ClCompile>
     <ClCompile Include="src\Graphics\Camera\CameraManager.cpp">
       <Filter>src\Graphics\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Debugging\DebugRenderingManager.cpp">
+      <Filter>src\Graphics\Debugging</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\FrameBuffer\FrameBuffer.cpp">
       <Filter>src\Graphics\FrameBuffer</Filter>
@@ -382,10 +440,16 @@
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cylinder.cpp">
       <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Frustum.cpp">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClCompile>
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\LightQuad.cpp">
       <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Lines.cpp">
+      <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Lines3D.cpp">
       <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Particles.cpp">
@@ -439,19 +503,38 @@
     <ClCompile Include="src\ImGui\Setup\ImGuiSetup.cpp">
       <Filter>src\ImGui\Setup</Filter>
     </ClCompile>
+    <ClCompile Include="src\ImGui\Vendor\imgui.cpp">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\Vendor\imgui_demo.cpp">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\Vendor\imgui_draw.cpp">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\Vendor\imgui_impl_glfw.cpp">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\Vendor\imgui_impl_opengl3.cpp">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\Vendor\imgui_widgets.cpp">
+      <Filter>src\ImGui\Vendor</Filter>
+    </ClCompile>
     <ClCompile Include="src\Library\Math\Matrix.cpp">
       <Filter>src\Library\Math</Filter>
     </ClCompile>
     <ClCompile Include="src\Logger\Logger.cpp">
       <Filter>src\Logger</Filter>
     </ClCompile>
+    <ClCompile Include="src\Physics\PhysicsManager.cpp">
+      <Filter>src\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Time\Clock.cpp">
+      <Filter>src\Time</Filter>
+    </ClCompile>
     <ClCompile Include="src\pch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Lines3D.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Frustum.cpp" />
-    <ClCompile Include="src\Graphics\Debugging\DebugRenderingManager.cpp" />
-    <ClCompile Include="src\Editor\ECGui.cpp" />
-    <ClCompile Include="src\Time\Clock.cpp" />
   </ItemGroup>
 </Project>
