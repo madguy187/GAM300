@@ -149,6 +149,7 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentBase.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\RenderComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\TransformComponent.h" />
     <ClInclude Include="src\ECS\EntityManager\EntityManager.h" />
     <ClInclude Include="src\ECS\SystemManager\SystemManager.h" />
