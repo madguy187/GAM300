@@ -145,6 +145,11 @@ namespace Eclipse
 		ImGui::Text("%s: %s", varname, var.c_str());
 	}
 
+	void ImGuiAPI::TextStaticString(const char* varname, const char* var)
+	{
+		ImGui::Text("%s: %s", varname, var);
+	}
+
 	void ImGuiAPI::TextVec2(const char* varname, const ECVec2& var)
 	{
 		ImGui::Text("%s: {x{%.1f}, y{%.1f}}", varname, var.x, var.y);

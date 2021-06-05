@@ -45,6 +45,7 @@ namespace Eclipse
 		void TextSize_t(const char* varname, const size_t& var);
 		void TextBool(const char* varname, const bool& var);
 		void TextString(const char* varname, const std::string& var);
+		void TextStaticString(const char* varname, const char* var);
 		void TextVec2(const char* varname, const ECVec2& var);
 		void TextVec3(const char* varname, const ECVec3& var);
 		void TextVec4(const char* varname, const ECVec4& var);
@@ -82,7 +83,6 @@ namespace Eclipse
 		void PushItemWidth(float value);
 		bool IsItemHovered();
 		void SetToolTip(const char* message);
-
 	private:
 		std::string HideWidgetName(const char* name, bool Changing);
 	};
