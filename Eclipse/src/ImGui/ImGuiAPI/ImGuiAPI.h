@@ -14,7 +14,7 @@ namespace Eclipse
 		static void EndMainWindow();
 		static bool BeginChildWindow(const char* name, ImVec2 size = ImVec2(0, 0),
 			                  bool border = false, ImGuiWindowFlags flag = 0);
-		static void EndChidWindow();
+		static void EndChildWindow();
 		static ImVec2 GetWindowSize();
 		static void SetWindowSize(float width, float height);
 

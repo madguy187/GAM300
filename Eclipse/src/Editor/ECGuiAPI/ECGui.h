@@ -53,6 +53,10 @@ namespace Eclipse
 			ImGuiAPI::EndChildWindow();
 		}
 
+		static bool BeginMainWindow(const char* name);
+		static void EndMainWindow();
+		static bool BeginChildWindow(ChildSettings settings);
+		static void EndChildWindow();
 		static ImVec2 GetWindowSize();
 		static void SetWindowSize(float width, float height);
 
@@ -88,8 +92,12 @@ namespace Eclipse
 			ImGuiAPI::BeginMenuComponents();
 		}
 
+		static bool BeginPopUpButtonList(PopUpButtonSettings settings);
+		static void EndPopUpButtonList();
+		static bool BeginMenuBar();
+		static void EndMenuBar();
 		static bool BeginMenuComponents(const char* name);
-		static void BeginEndComponents();
+		static void EndMenuComponents();
 		static void BeginStyleVariant(ImGuiStyleVar id, float scale);
 		static void EndStyleVariant();
 		static bool BeginTreeNode(const char* name);

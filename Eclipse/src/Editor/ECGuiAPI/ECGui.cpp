@@ -3,6 +3,27 @@
 
 namespace Eclipse
 {
+	bool ECGui::BeginMainWindow(const char* name)
+	{
+		return ImGuiAPI::BeginMainWindow(name);
+	}
+
+	void ECGui::EndMainWindow()
+	{
+		ImGuiAPI::EndMainWindow();
+	}
+
+	bool ECGui::BeginChildWindow(ChildSettings settings)
+	{
+		return ImGuiAPI::BeginChildWindow(settings.Name, settings.Size,
+			settings.HaveBorder, settings.flags);
+	}
+
+	void ECGui::EndChildWindow()
+	{
+		ImGuiAPI::EndChildWindow();
+	}
+
 	ImVec2 ECGui::GetWindowSize()
 	{
 		return ImGuiAPI::GetWindowSize();
@@ -13,12 +34,32 @@ namespace Eclipse
 		ImGuiAPI::SetWindowSize(width, height);
 	}
 
+	bool ECGui::BeginPopUpButtonList(PopUpButtonSettings settings)
+	{
+		return ImGuiAPI::BeginPopUpButtonList(settings.Name, settings.ID);
+	}
+
+	void ECGui::EndPopUpButtonList()
+	{
+		ImGuiAPI::EndPopUpButtonList();
+	}
+
+	bool ECGui::BeginMenuBar()
+	{
+		return ImGuiAPI::BeginMenuBar();
+	}
+
+	void ECGui::EndMenuBar()
+	{
+		ImGuiAPI::EndMenuBar();
+	}
+
 	bool ECGui::BeginMenuComponents(const char* name)
 	{
 		return ImGuiAPI::BeginMenuComponents(name);
 	}
 
-	void ECGui::BeginEndComponents()
+	void ECGui::EndMenuComponents()
 	{
 		ImGuiAPI::EndMenuComponents();
 	}

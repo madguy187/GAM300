@@ -9,6 +9,7 @@ namespace Eclipse
 	public:
 		void Update() override;
 		Inspector();
+		void DrawImpl();
 	private:
 	};
 }

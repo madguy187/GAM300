@@ -20,7 +20,7 @@ namespace Eclipse
 		return ImGui::BeginChild(name, size, border, flag);
 	}
 
-	void ImGuiAPI::EndChidWindow()
+	void ImGuiAPI::EndChildWindow()
 	{
 		return ImGui::EndChild();
 	}
