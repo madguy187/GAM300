@@ -89,8 +89,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\Dep\GLFW\lib-vc2019;..\Dep\GLEW\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3dll.lib;LowLevel_static_64.lib;LowLevelAABB_static_64.lib;LowLevelDynamics_static_64.lib;PhysX_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXCommon_64.lib;PhysXCooking_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;PhysXTask_static_64.lib;PhysXVehicle_static_64.lib;SampleBase_static_64.lib;SampleFramework_static_64.lib;SamplesToolkit_static_64.lib;SceneQuery_static_64.lib;SimulationController_static_64.lib;SnippetRender_static_64.lib;SnippetUtils_static_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\Dep\GLFW\lib-vc2019;..\Dep\GLEW\lib\Release\x64;..\Dep\PhysX\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -112,8 +112,8 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\Dep\GLFW\lib-vc2019;..\Dep\GLEW\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3dll.lib;LowLevel_static_64.lib;LowLevelAABB_static_64.lib;LowLevelDynamics_static_64.lib;PhysX_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXCommon_64.lib;PhysXCooking_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;PhysXTask_static_64.lib;PhysXVehicle_static_64.lib;SampleBase_static_64.lib;SampleFramework_static_64.lib;SamplesToolkit_static_64.lib;SceneQuery_static_64.lib;SimulationController_static_64.lib;SnippetRender_static_64.lib;SnippetUtils_static_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\Dep\GLFW\lib-vc2019;..\Dep\GLEW\lib\Release\x64;..\Dep\PhysX\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -135,8 +135,8 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\Dep\GLFW\lib-vc2019;..\Dep\GLEW\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3dll.lib;LowLevel_static_64.lib;LowLevelAABB_static_64.lib;LowLevelDynamics_static_64.lib;PhysX_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXCommon_64.lib;PhysXCooking_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;PhysXTask_static_64.lib;PhysXVehicle_static_64.lib;SampleBase_static_64.lib;SampleFramework_static_64.lib;SamplesToolkit_static_64.lib;SceneQuery_static_64.lib;SimulationController_static_64.lib;SnippetRender_static_64.lib;SnippetUtils_static_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\Dep\GLFW\lib-vc2019;..\Dep\GLEW\lib\Release\x64;..\Dep\PhysX\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -149,6 +149,7 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentBase.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\RenderComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\TransformComponent.h" />
     <ClInclude Include="src\ECS\EntityManager\EntityManager.h" />
     <ClInclude Include="src\ECS\SystemManager\SystemManager.h" />
@@ -213,6 +214,7 @@
     <ClInclude Include="src\Library\Math\Vector.h" />
     <ClInclude Include="src\Library\Strings\StringsConcatenate.h" />
     <ClInclude Include="src\Logger\Logger.h" />
+    <ClInclude Include="src\Physics\PhysicsManager.h" />
     <ClInclude Include="src\Reflection\complex_support.h" />
     <ClInclude Include="src\Reflection\primitive_support.h" />
     <ClInclude Include="src\Reflection\registration.h" />
@@ -277,6 +279,7 @@
     <ClCompile Include="src\ImGui\Setup\ImGuiSetup.cpp" />
     <ClCompile Include="src\Library\Math\Matrix.cpp" />
     <ClCompile Include="src\Logger\Logger.cpp" />
+    <ClCompile Include="src\Physics\PhysicsManager.cpp" />
     <ClCompile Include="src\Time\Clock.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>

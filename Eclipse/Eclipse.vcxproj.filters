@@ -118,6 +118,9 @@
     <Filter Include="src\Logger">
       <UniqueIdentifier>{5CCC981E-4884-DA6B-B18B-B3C79D62755C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Physics">
+      <UniqueIdentifier>{9F8B9316-0B41-0C0C-9435-06E300EA0210}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Reflection">
       <UniqueIdentifier>{C7EBD53B-B3B9-C941-9C4D-3A6888BAA5A6}</UniqueIdentifier>
     </Filter>
@@ -336,6 +339,9 @@
     <ClInclude Include="src\Logger\Logger.h">
       <Filter>src\Logger</Filter>
     </ClInclude>
+    <ClInclude Include="src\Physics\PhysicsManager.h">
+      <Filter>src\Physics</Filter>
+    </ClInclude>
     <ClInclude Include="src\Reflection\complex_support.h">
       <Filter>src\Reflection</Filter>
     </ClInclude>
@@ -362,6 +368,7 @@
     <ClInclude Include="src\Editor\Windows\Inspector\Inspector.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\EditorSystem.h" />
     <ClInclude Include="src\Editor\Windows\Scene\Scene.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp">
@@ -513,6 +520,9 @@
     </ClCompile>
     <ClCompile Include="src\Logger\Logger.cpp">
       <Filter>src\Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Physics\PhysicsManager.cpp">
+      <Filter>src\Physics</Filter>
     </ClCompile>
     <ClCompile Include="src\Time\Clock.cpp">
       <Filter>src\Time</Filter>
