@@ -5,6 +5,6 @@ namespace Eclipse
 	class EditorSystem
 	{
 	public:
-		void Update();
+		static void Update();
 	};
 }
