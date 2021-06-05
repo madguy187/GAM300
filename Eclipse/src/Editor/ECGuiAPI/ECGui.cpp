@@ -5,28 +5,38 @@ namespace Eclipse
 {
 	ImVec2 ECGui::GetWindowSize()
 	{
-		return instance.GetWindowSize();
+		return ImGuiAPI::GetWindowSize();
 	}
 
 	void ECGui::SetWindowSize(float width, float height)
 	{
-		instance.SetWindowSize(width, height);
+		ImGuiAPI::SetWindowSize(width, height);
+	}
+
+	bool ECGui::BeginMenuComponents(const char* name)
+	{
+		return ImGuiAPI::BeginMenuComponents(name);
+	}
+
+	void ECGui::BeginEndComponents()
+	{
+		ImGuiAPI::EndMenuComponents();
 	}
 
 	void ECGui::BeginStyleVariant(ImGuiStyleVar id, float scale)
 	{
-		instance.BeginStyleVariant(id, scale);
+		ImGuiAPI::BeginStyleVariant(id, scale);
 	}
 
 	void ECGui::EndStyleVariant()
 	{
-		instance.EndStyleVariant();
+		ImGuiAPI::EndStyleVariant();
 	}
 
 	void ECGui::CreateComboList(ComboListSettings settings, const std::vector<std::string>& vecStr, size_t& index)
 	{
 		const char* combo_label = vecStr[index].c_str();
-		if (instance.BeginComboList(settings.Name, settings.CurrentPreview, settings.HideName, settings.flags))
+		if (ImGuiAPI::BeginComboList(settings.Name, settings.CurrentPreview, settings.HideName, settings.flags))
 		{
 			for (size_t n = 0; n < vecStr.size(); n++)
 			{
@@ -39,122 +49,127 @@ namespace Eclipse
 					ImGui::SetItemDefaultFocus();
 			}
 
-			instance.EndComboList();
+			ImGuiAPI::EndComboList();
 		}
+	}
+
+	bool ECGui::CreateMenuItem(const char* name, bool* open)
+	{
+		return ImGuiAPI::CreateMenuItem(name, open);
 	}
 
 	bool ECGui::CreateCollapsingHeader(const char* name)
 	{
-		return instance.CreateCollapsingHeader(name);
+		return ImGuiAPI::CreateCollapsingHeader(name);
 	}
 
 	bool ECGui::CreateSelectableButton(const char* label, bool* active, ImGuiSelectableFlags flags)
 	{
-		return instance.CreateSelectableButton(label, active, flags);
+		return ImGuiAPI::CreateSelectableButton(label, active, flags);
 	}
 
 	bool ECGui::BeginTreeNode(const char* name)
 	{
-		return instance.BeginTreeNode(name);
+		return ImGuiAPI::BeginTreeNode(name);
 	}
 
 	void ECGui::EndTreeNode()
 	{
-		instance.EndTreeNode();
+		ImGuiAPI::EndTreeNode();
 	}
 
 	void ECGui::DrawSliderIntWidget(const char* name, int* var, bool hideName, int minrange, int maxrange)
 	{
-		instance.SliderInt(name, var, hideName, minrange, maxrange);
+		ImGuiAPI::SliderInt(name, var, hideName, minrange, maxrange);
 	}
 
 	void ECGui::DrawSliderFloatWidget(const char* name, float* var, bool hideName, float minrange, float maxrange)
 	{
-		instance.SliderFloat(name, var, hideName, minrange, maxrange);
+		ImGuiAPI::SliderFloat(name, var, hideName, minrange, maxrange);
 	}
 
 	void ECGui::DrawSliderFloat2Widget(const char* name, float vector[2], bool hideName, float minrange, float maxrange)
 	{
-		instance.SliderFloat2(name, vector, hideName, minrange, maxrange);
+		ImGuiAPI::SliderFloat2(name, vector, hideName, minrange, maxrange);
 	}
 
 	void ECGui::DrawSliderFloat3Widget(const char* name, float vector[3], bool hideName, float minrange, float maxrange)
 	{
-		instance.SliderFloat3(name, vector, hideName, minrange, maxrange);
+		ImGuiAPI::SliderFloat3(name, vector, hideName, minrange, maxrange);
 	}
 
 	void ECGui::DrawSliderFloat4Widget(const char* name, float vector[4], bool hideName, float minrange, float maxrange)
 	{
-		instance.SliderFloat4(name, vector, hideName, minrange, maxrange);
+		ImGuiAPI::SliderFloat4(name, vector, hideName, minrange, maxrange);
 	}
 
 	void ECGui::DrawInputIntWidget(const char* name, int* var, bool hideName, int snapValue)
 	{
-		instance.InputInt(name, var, hideName, snapValue);
+		ImGuiAPI::InputInt(name, var, hideName, snapValue);
 	}
 
 	void ECGui::DrawInputFloatWidget(const char* name, float* var, bool hideName, float snapValue)
 	{
-		instance.InputFloat(name, var, hideName, snapValue);
+		ImGuiAPI::InputFloat(name, var, hideName, snapValue);
 	}
 
 	void ECGui::DrawInputFloat2Widget(const char* name, float vector[2], bool hideName)
 	{
-		instance.InputFloat2(name, vector, hideName);
+		ImGuiAPI::InputFloat2(name, vector, hideName);
 	}
 
 	void ECGui::DrawInputFloat3Widget(const char* name, float vector[3], bool hideName)
 	{
-		instance.InputFloat3(name, vector, hideName);
+		ImGuiAPI::InputFloat3(name, vector, hideName);
 	}
 
 	void ECGui::DrawInputFloat4Widget(const char* name, float vector[4], bool hideName)
 	{
-		instance.InputFloat4(name, vector, hideName);
+		ImGuiAPI::InputFloat4(name, vector, hideName);
 	}
 
 	void ECGui::DrawInputTextHintWidget(const char* name, const char* hintText, char* buffer, size_t bufferSize, bool hideName)
 	{
-		instance.InputTextWithHint(name, hintText, buffer, bufferSize, hideName);
+		ImGuiAPI::InputTextWithHint(name, hintText, buffer, bufferSize, hideName);
 	}
 
 	void ECGui::DrawInputTextWidget(const char* name, char* buffer, size_t bufferSize, bool hideName)
 	{
-		instance.InputText(name, buffer, bufferSize, hideName);
+		ImGuiAPI::InputText(name, buffer, bufferSize, hideName);
 	}
 
 	bool ECGui::CheckBoxBool(const char* name, bool* var, bool hideName)
 	{
-		return instance.CheckBoxBool(name, var, hideName);
+		return ImGuiAPI::CheckBoxBool(name, var, hideName);
 	}
 
 	bool ECGui::ButtonBool(const char* name)
 	{
-		return instance.ButtonBool(name);
+		return ImGuiAPI::ButtonBool(name);
 	}
 
 	void ECGui::InsertSameLine()
 	{
-		instance.InsertSameLine();
+		ImGuiAPI::InsertSameLine();
 	}
 
 	void ECGui::InsertHorizontalLineSeperator()
 	{
-		instance.InsertHorizontalLineSeperator();
+		ImGuiAPI::InsertHorizontalLineSeperator();
 	}
 
 	void ECGui::PushItemWidth(float value)
 	{
-		instance.PushItemWidth(value);
+		ImGuiAPI::PushItemWidth(value);
 	}
 
 	bool ECGui::IsItemHovered()
 	{
-		return instance.IsItemHovered();
+		return ImGuiAPI::IsItemHovered();
 	}
 
 	void ECGui::SetToolTip(const char* message)
 	{
-		instance.SetToolTip(message);
+		ImGuiAPI::SetToolTip(message);
 	}
 }

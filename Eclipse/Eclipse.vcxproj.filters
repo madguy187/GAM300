@@ -357,6 +357,8 @@
     <ClInclude Include="src\pch.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\Editor\Menu\MenuBar.h" />
+    <ClInclude Include="src\Editor\Menu\MenuComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp">
@@ -515,5 +517,7 @@
     <ClCompile Include="src\pch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Editor\Menu\MenuBar.cpp" />
+    <ClCompile Include="src\Editor\Menu\MenuComponent.cpp" />
   </ItemGroup>
 </Project>

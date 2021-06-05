@@ -57,6 +57,7 @@
 #include <fstream>
 #include <array>
 #include <algorithm>
+#include <memory>
 
 #include "GLEW/include/GL/glew.h"
 #include "GLFW/include/GLFW/glfw3.h"

@@ -4,8 +4,6 @@
 
 namespace Eclipse
 {
-	static ImGuiAPI instance;
-
 	struct ChildSettings
 	{
 		const char* Name{ nullptr };
@@ -28,7 +26,7 @@ namespace Eclipse
 		const char* ID{ nullptr };
 	};
 
-	class ECGui : public ImGuiAPI
+	class ECGui
 	{
 	public:
 		/*************************************************************************/
@@ -72,7 +70,7 @@ namespace Eclipse
 		}
 
 		template <typename T, typename... Args>
-		static bool DrawMenuBar(std::function<T> fn, Args&... args)
+		static void DrawMenuBar(std::function<T> fn, Args&... args)
 		{
 			if (ImGuiAPI::BeginMenuBar())
 				fn(args...);
@@ -90,6 +88,8 @@ namespace Eclipse
 			ImGuiAPI::BeginMenuComponents();
 		}
 
+		static bool BeginMenuComponents(const char* name);
+		static void BeginEndComponents();
 		static void BeginStyleVariant(ImGuiStyleVar id, float scale);
 		static void EndStyleVariant();
 		static bool BeginTreeNode(const char* name);
@@ -100,6 +100,7 @@ namespace Eclipse
 		static void CreateComboList(ComboListSettings settings,
 			                        const std::vector<std::string>& vecStr,
 			                        size_t& index);
+		static bool CreateMenuItem(const char* name, bool* open);
 
 		/*************************************************************************/
 		/*                           Static Widgets                              */
@@ -110,73 +111,73 @@ namespace Eclipse
 		template <typename T>
 		static void DrawTextWidget(const char* varname, const T&)
 		{
-			instance.Text(varname);
+			ImGuiAPI::Text(varname);
 		}
 
 		template <>
 		static void DrawTextWidget(const char* varname, const int& var)
 		{
-			instance.TextInt(varname, var);
+			ImGuiAPI::TextInt(varname, var);
 		}
 
 		template <>
 		static void DrawTextWidget(const char* varname, const float& var)
 		{
-			instance.TextFloat(varname, var);
+			ImGuiAPI::TextFloat(varname, var);
 		}
 
 		template <>
 		static void DrawTextWidget(const char* varname, const double& var)
 		{
-			instance.TextDouble(varname, var);
+			ImGuiAPI::TextDouble(varname, var);
 		}
 
 		template <>
 		static void DrawTextWidget(const char* varname, const size_t& var)
 		{
-			instance.TextSize_t(varname, var);
+			ImGuiAPI::TextSize_t(varname, var);
 		}
 
 		template <>
 		static void DrawTextWidget(const char* varname, const bool& var)
 		{
-			instance.TextBool(varname, var);
+			ImGuiAPI::TextBool(varname, var);
 		}
 
 		template <>
 		static void DrawTextWidget(const char* varname, const std::string& var)
 		{
-			instance.TextString(varname, var);
+			ImGuiAPI::TextString(varname, var);
 		}
 
 		template <>
 		static void DrawTextWidget(const char* varname, const ECVec2& var)
 		{
-			instance.TextVec2(varname, var);
+			ImGuiAPI::TextVec2(varname, var);
 		}
 
 		template <>
 		static void DrawTextWidget(const char* varname, const ECVec3& var)
 		{
-			instance.TextVec3(varname, var);
+			ImGuiAPI::TextVec3(varname, var);
 		}
 
 		template <>
 		static void DrawTextWidget(const char* varname, const ECVec4& var)
 		{
-			instance.TextVec4(varname, var);
+			ImGuiAPI::TextVec4(varname, var);
 		}
 
 		template <>
 		static void DrawTextWidget(const char* varname, const ECMat3& var)
 		{
-			instance.TextMat3(varname, var);
+			ImGuiAPI::TextMat3(varname, var);
 		}
 
 		template <>
 		static void DrawTextWidget(const char* varname, const ECMat4& var)
 		{
-			instance.TextMat4(varname, var);
+			ImGuiAPI::TextMat4(varname, var);
 		}
 
 		// Supports Int and float only

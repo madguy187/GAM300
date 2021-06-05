@@ -21,6 +21,9 @@ namespace Eclipse
         ECMtx44Inverse(&mat2, mat);
         std::cout << mat2;*/
         RenderSystem::Init();
+
+        if (EditorState)
+            editorManager = std::make_unique<EditorManager>();
     }
 
     void Engine::Run()
@@ -96,5 +99,9 @@ namespace Eclipse
 
         // unLoad
         gGraphics.end();
+    }
+    bool Engine::GetEditorState()
+    {
+        return EditorState;
     }
 }

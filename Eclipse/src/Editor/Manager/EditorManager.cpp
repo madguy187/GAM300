@@ -1,28 +1,35 @@
 #include "pch.h"
 #include "EditorManager.h"
 #include "ImGui/Vendor/IconsFontAwesome.h"
+#include "Editor/Windows/Inspector/Inspector.h"
 
 namespace Eclipse
 {
 	EditorManager::EditorManager()
 	{
-
+		InitMenu();
+		InitGUIWindows();
+		InitFont();
 	}
 
 	void EditorManager::InitGUIWindows()
 	{
-
+		AddWindow<Inspector>("Inspector");
 	}
 
 	void EditorManager::InitMenu()
 	{
+		MenuComponent file{ "File", EditorMenuType::FILE };
+		MenuComponent window{ "Windows", EditorMenuType::WINDOWS };
 
+		MenuBar_.AddMenuComponents(file);
+		MenuBar_.AddMenuComponents(window);
 	}
 
 	void EditorManager::InitFont()
 	{
 		// Initialize Custom ImGui Text
-		//io.Fonts->AddFontDefault();
+		// io.Fonts->AddFontDefault();
 		ImGuiIO& io = ImGui::GetIO();
 		ImFontConfig text_config;
 		text_config.OversampleH = 2;
@@ -50,5 +57,10 @@ namespace Eclipse
 		static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
 		ImFontConfig icons_config; icons_config.MergeMode = true; icons_config.PixelSnapH = true;
 		io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/fontawesome-webfont.ttf", 12.0f, &icons_config, icons_ranges);
+	}
+
+	std::vector<std::unique_ptr<ECGuiWindow>>& EditorManager::GetAllWindows()
+	{
+		return Windows_;
 	}
 }
