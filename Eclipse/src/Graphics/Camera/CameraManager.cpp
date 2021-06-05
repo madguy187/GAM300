@@ -62,7 +62,7 @@ namespace Eclipse
         unsigned int editorID = GetEditorCameraID();
         auto& camera = engine->world.GetComponent<CameraComponent>(editorID);
 
-        float cameraSpd = OpenGL_Context::deltaTime * camera.cameraSpeed;
+        float cameraSpd = engine->Game_Clock.get_fixedDeltaTime() * camera.cameraSpeed;
 
         if (input.test(0))
         {
