@@ -47,13 +47,51 @@ namespace Eclipse
         //Check this! - Rachel
         CameraSystem::Init();
 
+        float currTime = static_cast<float>(clock());
+        float accumulatedTime = 0.0f;
+        int framecount = 0;
+        float dt = 0.0f;
+        float updaterate = 4.0f;
+
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
-            //Please remove when delta-time implementation added - Rachel
-            OpenGL_Context::update_time(1.0f);
+            Game_Clock.set_timeSteps(0);
+            float newTime = static_cast<float>(clock());
+            Game_Clock.set_DeltaTime((newTime - currTime) / static_cast<float>(CLOCKS_PER_SEC));
+
+            if (Game_Clock.get_DeltaTime() == 0.0f)
+                Game_Clock.set_DeltaTime(0.0001f);
+
+            dt += Game_Clock.get_DeltaTime();
+            accumulatedTime += Game_Clock.get_DeltaTime();
+
+            while (accumulatedTime >= Game_Clock.get_fixedDeltaTime())
+            {
+                Game_Clock.set_timeSteps(Game_Clock.get_timeSteps() + 1);
+                accumulatedTime -= Game_Clock.get_fixedDeltaTime();
+
+            }
+
+            if (dt > 1.0f / updaterate)
+            {
+                Game_Clock.setFPS(static_cast<float>(framecount) / dt);
+                framecount = 0;
+                dt -= 1.0f / updaterate;
+            }
+
+            currTime = newTime;
+
+            if (Game_Clock.get_timeSteps() > 10)
+            {
+                Game_Clock.set_timeSteps(10);
+            }
+
+            for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
+            {
+                world.Update<CameraSystem>();
+            }
 
             world.Update<RenderSystem>();
-            world.Update<CameraSystem>();
         }
 
         // unLoad
