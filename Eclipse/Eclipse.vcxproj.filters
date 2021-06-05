@@ -49,11 +49,20 @@
     <Filter Include="src\Editor\Manager">
       <UniqueIdentifier>{ED4228F7-D926-E94C-4287-E39F2E8AD3CE}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Editor\Menu">
+      <UniqueIdentifier>{C73A2BCC-33C6-9890-3CD7-1B85A8E1F490}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Editor\Windows">
       <UniqueIdentifier>{FDB0990B-E994-5A61-52F5-54B43EF844E3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Editor\Windows\Inspector">
+      <UniqueIdentifier>{032AD2C2-EFE4-C16E-989C-3AB984360CFF}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Editor\Windows\Interface">
       <UniqueIdentifier>{1D3910F7-09F4-FFA2-B2AB-78ED9E454A33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Editor\Windows\Scene">
+      <UniqueIdentifier>{DA27242B-C64C-73AB-EF97-583BDB1B72C9}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Engine">
       <UniqueIdentifier>{12A1320E-FE58-745B-6760-4DB753370F4C}</UniqueIdentifier>
@@ -162,6 +171,9 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\RenderComponent.h">
       <Filter>src\ECS\ComponentManager\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h">
+      <Filter>src\ECS\ComponentManager\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\TransformComponent.h">
       <Filter>src\ECS\ComponentManager\Components</Filter>
     </ClInclude>
@@ -172,6 +184,9 @@
       <Filter>src\ECS\SystemManager</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem.h">
+      <Filter>src\ECS\SystemManager\Systems\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\EditorSystem.h">
       <Filter>src\ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem.h">
@@ -189,8 +204,20 @@
     <ClInclude Include="src\Editor\Manager\EditorManager.h">
       <Filter>src\Editor\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="src\Editor\Menu\MenuBar.h">
+      <Filter>src\Editor\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Menu\MenuComponent.h">
+      <Filter>src\Editor\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\Inspector\Inspector.h">
+      <Filter>src\Editor\Windows\Inspector</Filter>
+    </ClInclude>
     <ClInclude Include="src\Editor\Windows\Interface\ECGuiWindow.h">
       <Filter>src\Editor\Windows\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\Scene\Scene.h">
+      <Filter>src\Editor\Windows\Scene</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\Engine.h">
       <Filter>src\Engine</Filter>
@@ -363,12 +390,6 @@
     <ClInclude Include="src\pch.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Editor\Menu\MenuBar.h" />
-    <ClInclude Include="src\Editor\Menu\MenuComponent.h" />
-    <ClInclude Include="src\Editor\Windows\Inspector\Inspector.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\EditorSystem.h" />
-    <ClInclude Include="src\Editor\Windows\Scene\Scene.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp">
@@ -404,6 +425,9 @@
     <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem.cpp">
       <Filter>src\ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\EditorSystem.cpp">
+      <Filter>src\ECS\SystemManager\Systems\System</Filter>
+    </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp">
       <Filter>src\ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
@@ -415,6 +439,18 @@
     </ClCompile>
     <ClCompile Include="src\Editor\Manager\EditorManager.cpp">
       <Filter>src\Editor\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Menu\MenuBar.cpp">
+      <Filter>src\Editor\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Menu\MenuComponent.cpp">
+      <Filter>src\Editor\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\Inspector\Inspector.cpp">
+      <Filter>src\Editor\Windows\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\Scene\Scene.cpp">
+      <Filter>src\Editor\Windows\Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\Engine.cpp">
       <Filter>src\Engine</Filter>
@@ -530,10 +566,5 @@
     <ClCompile Include="src\pch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Editor\Menu\MenuBar.cpp" />
-    <ClCompile Include="src\Editor\Menu\MenuComponent.cpp" />
-    <ClCompile Include="src\Editor\Windows\Inspector\Inspector.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\EditorSystem.cpp" />
-    <ClCompile Include="src\Editor\Windows\Scene\Scene.cpp" />
   </ItemGroup>
 </Project>
