@@ -214,7 +214,6 @@ void Eclipse::GraphicsManager::DrawBuffers(unsigned int FrameBufferID, RenderCom
     glDepthFunc(GL_LEQUAL);
     glDepthRange(0.0f, 1.0f);
     glShadeModel(GL_SMOOTH);
-    glEnable(GL_BLEND);
     glDisable(GL_CULL_FACE);
     glPolygonMode(GL_FRONT_AND_BACK, mode);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

@@ -47,6 +47,8 @@ void FrameBuffer::Bind() const
 {
     glBindFramebuffer(GL_FRAMEBUFFER, m_data.frameBufferID);
     glViewport(0, 0, OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight());
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
 }
 
 void FrameBuffer::Unbind() const
@@ -57,7 +59,7 @@ void FrameBuffer::Unbind() const
 void FrameBuffer::Clear() const
 {
     //glClearColor(0.1f, 0.2f, 0.3f, 1.f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Eclipse::FrameBuffer::Resize(unsigned width, unsigned height)
@@ -84,33 +86,32 @@ void FrameBuffer::ShowWindow(FrameBuffer g, const char* input)
     //  bind back to default framebuffer and draw with the attached framebuffer
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDisable(GL_DEPTH_TEST);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glBindTexture(GL_TEXTURE_2D, g.GetTextureColourBufferID());
 }
 
 void FrameBuffer::CreateFrameBuffer(unsigned int p_width, unsigned int p_height)
 {
-    //if (m_data.frameBufferID)
-    //{
-    //    glDeleteFramebuffers(1, &m_data.frameBufferID);
-    //    glDeleteTextures(1, &m_data.TextureColourBuffer);
-    //    glDeleteTextures(1, &m_data.depthBufferID);
-    //}
-
     glGenFramebuffers(1, &m_data.frameBufferID);
-    glGenRenderbuffers(1, &m_data.depthBufferID);
-
-    glBindRenderbuffer(GL_RENDERBUFFER, m_data.depthBufferID);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight());
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_data.depthBufferID);
 
     glBindFramebuffer(GL_FRAMEBUFFER, m_data.frameBufferID);
+
+    glEnable(GL_DEPTH_TEST);
+
     glGenTextures(1, &m_data.TextureColourBuffer);
     glBindTexture(GL_TEXTURE_2D, m_data.TextureColourBuffer);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, p_width, p_height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D, 0);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_data.TextureColourBuffer, 0);
+
+    glGenRenderbuffers(1, &m_data.depthBufferID);
+    glBindRenderbuffer(GL_RENDERBUFFER, m_data.depthBufferID);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight());
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_data.depthBufferID);
+
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
     {
