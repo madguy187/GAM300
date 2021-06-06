@@ -129,19 +129,19 @@ namespace Eclipse
 		ImGuiAPI::SliderFloat(name, var, hideName, minrange, maxrange);
 	}
 
-	void ECGui::DrawSliderFloat2Widget(const char* name, float vector[2], bool hideName, float minrange, float maxrange)
+	void ECGui::DrawSliderFloat2Widget(const char* name, ECVec2* vector, bool hideName, float minrange, float maxrange)
 	{
-		ImGuiAPI::SliderFloat2(name, vector, hideName, minrange, maxrange);
+		ImGuiAPI::SliderFloat2(name, (float*)vector, hideName, minrange, maxrange);
 	}
 
-	void ECGui::DrawSliderFloat3Widget(const char* name, float vector[3], bool hideName, float minrange, float maxrange)
+	void ECGui::DrawSliderFloat3Widget(const char* name, ECVec3* vector, bool hideName, float minrange, float maxrange)
 	{
-		ImGuiAPI::SliderFloat3(name, vector, hideName, minrange, maxrange);
+		ImGuiAPI::SliderFloat3(name, (float*)vector, hideName, minrange, maxrange);
 	}
 
-	void ECGui::DrawSliderFloat4Widget(const char* name, float vector[4], bool hideName, float minrange, float maxrange)
+	void ECGui::DrawSliderFloat4Widget(const char* name, ECVec4* vector, bool hideName, float minrange, float maxrange)
 	{
-		ImGuiAPI::SliderFloat4(name, vector, hideName, minrange, maxrange);
+		ImGuiAPI::SliderFloat4(name, (float*)vector, hideName, minrange, maxrange);
 	}
 
 	void ECGui::DrawInputIntWidget(const char* name, int* var, bool hideName, int snapValue)
@@ -154,19 +154,19 @@ namespace Eclipse
 		ImGuiAPI::InputFloat(name, var, hideName, snapValue);
 	}
 
-	void ECGui::DrawInputFloat2Widget(const char* name, float vector[2], bool hideName)
+	void ECGui::DrawInputFloat2Widget(const char* name, ECVec2* vector, bool hideName)
 	{
-		ImGuiAPI::InputFloat2(name, vector, hideName);
+		ImGuiAPI::InputFloat2(name, (float*)vector, hideName);
 	}
 
-	void ECGui::DrawInputFloat3Widget(const char* name, float vector[3], bool hideName)
+	void ECGui::DrawInputFloat3Widget(const char* name, ECVec3* vector, bool hideName)
 	{
-		ImGuiAPI::InputFloat3(name, vector, hideName);
+		ImGuiAPI::InputFloat3(name, (float*)vector, hideName);
 	}
 
-	void ECGui::DrawInputFloat4Widget(const char* name, float vector[4], bool hideName)
+	void ECGui::DrawInputFloat4Widget(const char* name, ECVec4* vector, bool hideName)
 	{
-		ImGuiAPI::InputFloat4(name, vector, hideName);
+		ImGuiAPI::InputFloat4(name, (float*)vector, hideName);
 	}
 
 	void ECGui::DrawInputTextHintWidget(const char* name, const char* hintText, char* buffer, size_t bufferSize, bool hideName)

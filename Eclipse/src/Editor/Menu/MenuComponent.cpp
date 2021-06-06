@@ -9,22 +9,26 @@ namespace Eclipse
 	{
 		for (const auto& str : List_)
 		{
-			DrawImpl(str.c_str());
+			DrawImpl();
 		}
+
+		DrawGuiWindows();
 	}
 
 	MenuComponent::MenuComponent(const char* name, EditorMenuType type) :
-		Name_{ name }, Type_{ type } {}
+		Name_{ name }, Type_{ type }, ID{ 0 } {}
 
 	void MenuComponent::AddItems(const char* name)
 	{
 		List_.push_back(std::string{ name });
-		ListToName_[name] = name;
+		ListToName_[ID] = name;
+		ID++;
 	}
 
-	void MenuComponent::DrawImpl(const char* key)
+	void MenuComponent::DrawImpl()
 	{
-		if (!strcmp(key, "Scene"))
+		// For specific items
+		/*if (!strcmp(key, "Scene"))
 		{
 			auto* scene = engine->editorManager->GetEditorWindow<Scene>();
 
@@ -46,6 +50,27 @@ namespace Eclipse
 					game->IsVisible = true;
 				else
 					game->IsVisible = false;
+			}
+		}*/
+	}
+
+	void MenuComponent::DrawGuiWindows()
+	{
+		if (!strcmp(Name_, "Windows"))
+		{
+			int index = 0;
+
+			for (auto& window : engine->editorManager->GetAllWindows())
+			{
+				if (ECGui::CreateMenuItem(ListToName_[index], &window->IsVisible))
+				{
+					if (window->IsVisible)
+						window->IsVisible = true;
+					else
+						window->IsVisible = false;
+				}
+
+				index++;
 			}
 		}
 	}
