@@ -4,6 +4,7 @@
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RenderComponent.h"
 #include "ECS/ComponentManager/Components/CameraComponent.h"
+#include "ECS/ComponentManager/Components/RigidBodyComponent.h"
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
 #include "ECS/SystemManager/Systems/System/EditorSystem.h"
@@ -26,6 +27,7 @@ namespace Eclipse
         world.RegisterComponent<RenderComponent>();
         world.RegisterComponent<CameraComponent>();
         world.RegisterComponent<Sprite>();
+        world.RegisterComponent<RigidBodyComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();

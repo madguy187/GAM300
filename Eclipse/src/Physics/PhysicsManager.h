@@ -1,6 +1,7 @@
 #pragma once
 #include "Global.h"
 #include "PxPhysicsAPI.h"
+#include "ECS/ComponentManager/Components/RigidBodyComponent.h"
 namespace Eclipse
 {
 	using namespace physx;
@@ -10,9 +11,15 @@ namespace Eclipse
 		PxPhysics* Px_Physics;
 		PxCooking* Px_Cooking;
 		PxScene* Px_Scene;
+		std::map<Entity,PxRigidDynamic*> RigidObjects;
+		std::map<Entity,PxRigidStatic*> StaticObjects;
 	public:
 		void Load();
 		void Simulate();
 		void Unload();
+
+		void CreateActor(Entity ent, bool is_static);
+		void AddActorToScene(Entity ent);
+		void RemoveActorFromScene(Entity ent);
 	};
 }

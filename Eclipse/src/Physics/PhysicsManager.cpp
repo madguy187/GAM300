@@ -52,12 +52,66 @@ namespace Eclipse
 
 	}
 
+	void PhysicsManager::CreateActor(Entity ent,bool is_static)
+	{
+		if (RigidObjects.find(ent) != RigidObjects.end() || StaticObjects.find(ent) != StaticObjects.end())
+			return;
+
+		if (is_static)
+		{
+			PxRigidStatic* temp;
+		}
+		else
+		{
+			PxRigidDynamic* temp;
+		}
+	}
+
+	void PhysicsManager::AddActorToScene(Entity ent)
+	{
+		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
+		if (rigid._Static)
+		{
+			if(StaticObjects.find(ent) != StaticObjects.end())
+			{
+				Px_Scene->addActor(*(StaticObjects[ent]));
+				rigid.inScene = true;
+			}
+		}
+		else
+		{
+			if (RigidObjects.find(ent) != RigidObjects.end())
+			{
+				Px_Scene->addActor(*(RigidObjects[ent]));
+				rigid.inScene = true;
+			}
+		}
+	}
+
+	void PhysicsManager::RemoveActorFromScene(Entity ent)
+	{
+		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
+		if (rigid._Static)
+		{
+			if (StaticObjects.find(ent) != StaticObjects.end())
+			{
+				Px_Scene->removeActor(*(StaticObjects[ent]));
+				rigid.inScene = false;
+			}
+		}
+		else
+		{
+			if (RigidObjects.find(ent) != RigidObjects.end())
+			{
+				Px_Scene->removeActor(*(RigidObjects[ent]));
+				rigid.inScene = false;
+			}
+		}
+	}
+
 	void PhysicsManager::Simulate()
 	{
-		PxRigidActor* myactor;
-
-		PxReal deltatime = 0.0f;
-		Px_Scene->simulate(deltatime);
+		Px_Scene->simulate(engine->Game_Clock.get_fixedDeltaTime());
 	}
 
 	void PhysicsManager::Unload()

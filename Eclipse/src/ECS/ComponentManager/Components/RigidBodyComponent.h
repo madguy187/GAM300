@@ -9,6 +9,7 @@ namespace Eclipse
 		bool _Kinematic;
 		bool enableGravity;
 		bool enableRotation;
+		bool inScene;
 
 		float mass;
 		float drag;
