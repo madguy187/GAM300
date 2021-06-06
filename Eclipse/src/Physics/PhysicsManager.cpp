@@ -9,22 +9,31 @@ namespace Eclipse
 
 		Px_Foundation = PxCreateFoundation(PX_PHYSICS_VERSION, gDefaultAllocatorCallback, gDefaultErrorCallback);
 		if (!Px_Foundation)
+		{
 			std::cout << "PxCreateFoundation failed!" << std::endl;
+			return;
+		}
 
 		bool recordMemoryAllocations = true;
 
 		//PxPvd* mPvd = PxCreatePvd(*Px_Foundation);
 		//PxPvdTransport* transport = PxDefaultPvdSocketTransportCreate(PVD_HOST, 5425, 10);
 		//mPvd->connect(*transport, PxPvdInstrumentationFlag::eALL);
-	
+
 		Px_Physics = PxCreatePhysics(PX_PHYSICS_VERSION, *Px_Foundation,
 			PxTolerancesScale(), recordMemoryAllocations);
 		if (!Px_Physics)
+		{
 			std::cout << "PxCreatePhysics failed!" << std::endl;
+			return;
+		}
 
 		Px_Cooking = PxCreateCooking(PX_PHYSICS_VERSION, *Px_Foundation, PxCookingParams(PxTolerancesScale()));
 		if (!Px_Cooking)
+		{
 			std::cout << "PxCreateCooking failed!" << std::endl;
+			return;
+		}
 
 		PxSceneDesc sceneDesc(Px_Physics->getTolerancesScale());
 		sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
