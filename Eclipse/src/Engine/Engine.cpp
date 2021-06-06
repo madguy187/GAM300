@@ -7,6 +7,7 @@
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
 #include "ECS/SystemManager/Systems/System/EditorSystem.h"
+#include "ImGui/Setup/ImGuiSetup.h"
 
 
 namespace Eclipse
@@ -42,6 +43,7 @@ namespace Eclipse
 
         //Check this! - Rachel
         CameraSystem::Init();
+        ImGuiSetup::Init(EditorState);
 
         float currTime = static_cast<float>(clock());
         float accumulatedTime = 0.0f;
@@ -77,6 +79,8 @@ namespace Eclipse
 
             currTime = newTime;
 
+            ImGuiSetup::Begin(EditorState);
+
             if (Game_Clock.get_timeSteps() > 10)
             {
                 Game_Clock.set_timeSteps(10);
@@ -90,10 +94,13 @@ namespace Eclipse
             }
 
             world.Update<RenderSystem>();
+
+            ImGuiSetup::End(EditorState);
         }
 
         // unLoad
         gGraphics.end();
+        ImGuiSetup::Destroy(EditorState);
     }
 
     bool Engine::GetEditorState()
