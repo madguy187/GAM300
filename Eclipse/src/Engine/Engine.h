@@ -23,6 +23,6 @@ namespace Eclipse
 
 		bool GetEditorState();
 	private:
-		bool EditorState{ false };
+		bool EditorState{ true };
 	};
 }

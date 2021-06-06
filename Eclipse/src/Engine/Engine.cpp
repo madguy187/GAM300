@@ -15,7 +15,7 @@ namespace Eclipse
     void Engine::Init()
     {
         RenderSystem::Init();
-
+        ImGuiSetup::Init(EditorState);
         if (EditorState)
             editorManager = std::make_unique<EditorManager>();
     }
@@ -43,7 +43,6 @@ namespace Eclipse
 
         //Check this! - Rachel
         CameraSystem::Init();
-        ImGuiSetup::Init(EditorState);
 
         float currTime = static_cast<float>(clock());
         float accumulatedTime = 0.0f;

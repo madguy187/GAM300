@@ -15,8 +15,8 @@ namespace Eclipse
 
 	void EditorManager::InitGUIWindows()
 	{
-		AddWindow<Inspector>("Inspector");
-		AddWindow<Scene>("Scene");
+		/*AddWindow<Inspector>("Inspector");
+		AddWindow<Scene>("Scene");*/
 	}
 
 	void EditorManager::InitMenu()
