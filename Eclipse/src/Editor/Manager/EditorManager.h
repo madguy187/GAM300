@@ -13,13 +13,14 @@ namespace Eclipse
 		void InitMenu();
 		void InitFont();
 		std::vector<std::unique_ptr<ECGuiWindow>>& GetAllWindows();
+		MenuBar& GetMenuBar();
 
 		template <typename TWindow>
 		TWindow* GetEditorWindow()
 		{
 			TWindow* temp = nullptr;
 
-			for (const auto& window : _windows)
+			for (const auto& window : Windows_)
 			{
 				temp = dynamic_cast<TWindow*>(window.get());
 

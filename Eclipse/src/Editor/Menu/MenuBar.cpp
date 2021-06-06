@@ -10,9 +10,10 @@ namespace Eclipse
 
 	void MenuBar::DrawImpl()
 	{
-		for (auto& members : MenuComponents_)
+		for (auto& member : MenuComponents_)
 		{
-			members.Update();
+			ECGui::DrawMenuComponent<void()>(member.GetName(),
+											 [&]() { member.Update(); });
 		}
 	}
 

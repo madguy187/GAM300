@@ -67,4 +67,9 @@ namespace Eclipse
 	{
 		return Windows_;
 	}
+
+	MenuBar& EditorManager::GetMenuBar()
+	{
+		return MenuBar_;
+	}
 }
