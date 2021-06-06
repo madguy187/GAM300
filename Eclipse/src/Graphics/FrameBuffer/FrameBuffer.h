@@ -22,6 +22,7 @@ namespace Eclipse
         void Bind() const;
         void Unbind() const;
         void Clear() const;
+        void Resize(unsigned width, unsigned height);
 
         static void ShowWindow(FrameBuffer g, const char* input);
 

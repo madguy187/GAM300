@@ -60,6 +60,14 @@ void FrameBuffer::Clear() const
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
+void Eclipse::FrameBuffer::Resize(unsigned width, unsigned height)
+{
+    m_width = width;
+    m_height = height;
+
+    CreateFrameBuffer(m_width, m_height);
+}
+
 void FrameBuffer::ShowWindow(FrameBuffer g, const char* input)
 {
     if (&g == nullptr)
@@ -75,7 +83,7 @@ void FrameBuffer::ShowWindow(FrameBuffer g, const char* input)
     glClear(GL_COLOR_BUFFER_BIT);
     glBindTexture(GL_TEXTURE_2D, g.GetTextureColourBufferID());
 
-    ImGui::Begin(input);
+    /*ImGui::Begin(input);
 
     ImVec2 pos = ImGui::GetCursorScreenPos();
 
@@ -92,11 +100,18 @@ void FrameBuffer::ShowWindow(FrameBuffer g, const char* input)
     g.windowPos.y = (ImGui::GetWindowHeight() / 2) + ImGui::GetCursorScreenPos().y;
 
     g.frameBufferPosition = vec2{ ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y };
-    ImGui::End();
+    ImGui::End();*/
 }
 
 void FrameBuffer::CreateFrameBuffer(unsigned int p_width, unsigned int p_height)
 {
+    if (m_data.frameBufferID)
+    {
+        glDeleteFramebuffers(1, &m_data.frameBufferID);
+        glDeleteTextures(1, &m_data.TextureColourBuffer);
+        glDeleteTextures(1, &m_data.depthBufferID);
+    }
+
     glGenFramebuffers(1, &m_data.frameBufferID);
     glGenRenderbuffers(1, &m_data.depthBufferID);
 

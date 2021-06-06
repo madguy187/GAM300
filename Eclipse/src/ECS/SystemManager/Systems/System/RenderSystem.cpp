@@ -66,7 +66,6 @@ void Eclipse::RenderSystem::Update()
 
     engine->gGraphics.FrameBufferDraw();
     /*ImGui::Render();*/
-
     /*engine->gGraphics.ImguiRender();*/
-    engine->gGraphics.post_render();
+    //engine->gGraphics.post_render();
 }

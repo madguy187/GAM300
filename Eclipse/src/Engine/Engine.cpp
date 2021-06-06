@@ -52,6 +52,10 @@ namespace Eclipse
 
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
+            glfwPollEvents();
+            /*engine->gGraphics.mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);*/
+
             Game_Clock.set_timeSteps(0);
             float newTime = static_cast<float>(clock());
             Game_Clock.set_DeltaTime((newTime - currTime) / static_cast<float>(CLOCKS_PER_SEC));
@@ -95,6 +99,9 @@ namespace Eclipse
             world.Update<RenderSystem>();
 
             ImGuiSetup::End(EditorState);
+            glfwSwapBuffers(OpenGL_Context::GetWindow());
+            glfwSwapInterval(1);
+            glFlush();
         }
 
         // unLoad

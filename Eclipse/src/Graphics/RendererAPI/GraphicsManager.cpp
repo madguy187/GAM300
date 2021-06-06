@@ -12,15 +12,6 @@ void Eclipse::GraphicsManager::pre_render()
     // Loading Of Models , Shaders and etc.. 
     Graphics::load();
 
-    // To be Removed
-    /*IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    ImGui_ImplGlfw_InitForOpenGL(mRenderContext.GetWindow(), true);
-    ImGui_ImplOpenGL3_Init();
-    ImGui::StyleColorsClassic();
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;*/
-
     // Clear the View
     mRenderContext.pre_render();
 }
@@ -368,11 +359,11 @@ void Eclipse::GraphicsManager::FrameBufferDraw()
 void Eclipse::GraphicsManager::ImguiRender()
 {
     // To be Removed
-    int Width, Height;
+    /*int Width, Height;
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     glfwGetFramebufferSize(mRenderContext.GetWindow(), &Width, &Height);
-    mRenderContext.SetViewport(0, 0, Width, Height);
-    mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });
+    mRenderContext.SetViewport(0, 0, Width, Height);*/
+    //mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });
 }
 
 void Eclipse::GraphicsManager::ShowTestWidgets()
