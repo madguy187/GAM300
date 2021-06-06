@@ -27,7 +27,6 @@ namespace Eclipse
         world.RegisterComponent<RenderComponent>();
         world.RegisterComponent<CameraComponent>();
         world.RegisterComponent<RenderComponent>();
-        world.RegisterComponent<PointLightComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
@@ -53,7 +52,9 @@ namespace Eclipse
 
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
-            engine->gGraphics.mRenderContext.SetClearColor({0.1f, 0.2f, 0.3f, 1.f});
+            glfwPollEvents();
+            engine->gGraphics.mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });
+            //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
             Game_Clock.set_timeSteps(0);
             float newTime = static_cast<float>(clock());
@@ -98,7 +99,9 @@ namespace Eclipse
             world.Update<RenderSystem>();
 
             ImGuiSetup::End(EditorState);
-            OpenGL_Context::post_render();
+            glfwSwapBuffers(OpenGL_Context::GetWindow());
+            glfwSwapInterval(1);
+            glFlush();
         }
 
         // unLoad

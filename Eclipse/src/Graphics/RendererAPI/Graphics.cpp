@@ -1,5 +1,5 @@
 /**********************************************************************************
-* \             Graphics.cpp
+* \file            Graphics.cpp
 *
 * \brief        Definition of the Graphics class function(s).
 *
@@ -17,6 +17,11 @@
 
 #include "pch.h"
 #include "Graphics.h"
+
+#include "imgui.h"
+#include "type_ptr.hpp"
+#include "matrix_transform_2d.hpp"
+#include "../src/ECS/World.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/CameraComponent.h"
 
@@ -29,6 +34,7 @@ std::map<std::string, Shader> Graphics::shaderpgms;
 std::map<std::string, std::unique_ptr<IModel>> Graphics::models;
 std::map<std::string, Texture> Graphics::textures;
 std::multimap<unsigned int, RenderComponent*> Graphics::sprites;
+std::multimap<unsigned int, unsigned int> Graphics::interactables;
 std::set<unsigned int> Graphics::sortedID;
 
 void Graphics::load()
@@ -124,6 +130,13 @@ void Graphics::LoadTextures(std::string textureFile)
     }
 }
 
+void Graphics::LoadParticles()
+{
+    //Particles newParticle;
+
+    //particleType.emplace("Default", newParticle);
+}
+
 /******************************************************************************/
 /*!
     This function sets up the shader program by loading the shader files and
@@ -152,6 +165,28 @@ void Graphics::initShaderpgms(std::string shdrpgm_name,
 
     // add compiled, linked, and validated shader program to std::map container GLApp::shdrpgms
     Graphics::shaderpgms[shdrpgm_name] = shdrpgm;
+}
+
+void Graphics::DeleteSprite(unsigned int id)
+{
+    //auto handle = _world->GetComponentManager().GetComponent<Sprite>(id);
+
+    //if (!handle.has())
+    //{
+    //  return;
+    //}
+
+    //auto& targetSprite = handle.get();
+
+    //for (auto iterator = std::begin(sprites); iterator != std::end(sprites); ++iterator)
+    //{
+    //  if (((*iterator).first == targetSprite.layerNum) && ((*iterator).second->ID == targetSprite.ID))
+    //  {
+    //    sprites.erase(iterator);
+    //    sortedID.erase(targetSprite.ID);
+    //    return;
+    //  }
+    //}
 }
 
 void Graphics::DeleteAllSprites()
