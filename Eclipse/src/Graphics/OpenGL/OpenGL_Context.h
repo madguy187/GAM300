@@ -31,7 +31,7 @@ namespace Eclipse
         inline static GLdouble m_posX, m_posY;
 
     public:
-        FrameBufferContainer _Framebuffers;
+        inline static FrameBufferContainer _Framebuffers;
 
         void LoadConfigData(std::string configFile);
         bool init(std::string configFile);
@@ -61,10 +61,11 @@ namespace Eclipse
         static double update_time(double fps_calc_interval);
         static GLdouble deltaTime;
         static GLdouble fps;
+        static void CreateFrameBuffers(unsigned int width, unsigned int height, Eclipse::FrameBufferMode);
 
     private:
         void Init();
         void Clear();
-        void CreateFrameBuffers(unsigned int width, unsigned int height, Eclipse::FrameBufferMode);
+        
     };
 }

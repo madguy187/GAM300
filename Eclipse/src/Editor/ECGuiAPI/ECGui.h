@@ -26,6 +26,13 @@ namespace Eclipse
 		const char* ID{ nullptr };
 	};
 
+	struct MenuItemsSettings
+	{
+		const char* Name{ nullptr };
+		const char* Shortcut{ nullptr };
+		bool IsSelected{ false };
+	};
+
 	class ECGui
 	{
 	public:
@@ -77,19 +84,21 @@ namespace Eclipse
 		static void DrawMenuBar(std::function<T> fn, Args&... args)
 		{
 			if (ImGuiAPI::BeginMenuBar())
+			{
 				fn(args...);
-
-			ImGuiAPI::EndMenuBar();
+				ImGuiAPI::EndMenuBar();
+			}
 		}
 
 		template <typename T, typename... Args>
-		static bool DrawMenuComponent(const char* name, 
+		static void DrawMenuComponent(const char* name,
 			std::function<T> fn, Args&... args)
 		{
-			if (ImGuiAPI::BeginMenuComponents(name))
+			if (ImGuiAPI::BeginMenuComponents(name)) 
+			{
 				fn(args...);
-
-			ImGuiAPI::BeginMenuComponents();
+				ImGuiAPI::EndMenuComponents();
+			}
 		}
 
 		static bool BeginPopUpButtonList(PopUpButtonSettings settings);

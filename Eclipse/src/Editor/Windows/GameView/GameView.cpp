@@ -1,24 +1,24 @@
 #include "pch.h"
-#include "Scene.h"
+#include "GameView.h"
 
 namespace Eclipse
 {
-	void Scene::Update()
+	void eGameView::Update()
 	{
 		if (IsVisible)
-			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&Scene::InitilializeFrameBuffer, this));
+			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&eGameView::InitilializeFrameBuffer, this));
 	}
 
-	Scene::Scene() :
+	eGameView::eGameView() :
 		mViewportSize{ 0.0f, 0.0f }
 	{
-		Type = EditorWindowType::SCENE;
-		WindowName = "Scene";
+		Type = EditorWindowType::GAMEVIEW;
+		WindowName = "Game View";
 
-		m_frameBuffer = std::make_shared<FrameBuffer>(*engine->gGraphics.mRenderContext.GetFramebuffer(FrameBufferMode::SCENEVIEW));
+		m_frameBuffer = std::make_shared<FrameBuffer>(*engine->gGraphics.mRenderContext.GetFramebuffer(FrameBufferMode::GAMEVIEW));
 	}
 
-	void Scene::InitilializeFrameBuffer()
+	void eGameView::InitilializeFrameBuffer()
 	{
 		ImVec2 viewportPanelSize = ECGui::GetWindowSize();
 
@@ -30,15 +30,15 @@ namespace Eclipse
 		}
 
 		ChildSettings settings;
-		settings.Name = "SceneFrameBuffer";
+		settings.Name = "GameViewFrameBuffer";
 		settings.Size = ImVec2{ mViewportSize.x, mViewportSize.y };
-		ECGui::DrawChildWindow<void()>(settings, std::bind(&Scene::RunFrameBuffer, this));
+		ECGui::DrawChildWindow<void()>(settings, std::bind(&eGameView::RunFrameBuffer, this));
 	}
 
-	void Scene::RunFrameBuffer()
+	void eGameView::RunFrameBuffer()
 	{
 		// Set Image size
-		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
+		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())), 
 			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 		if (ECGui::IsItemHovered())

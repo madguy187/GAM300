@@ -3,6 +3,7 @@
 #include "ImGui/Vendor/IconsFontAwesome.h"
 #include "Editor/Windows/Inspector/Inspector.h"
 #include "Editor/Windows/Scene/Scene.h"
+#include "Editor/Windows/GameView/GameView.h"
 
 namespace Eclipse
 {
@@ -15,8 +16,9 @@ namespace Eclipse
 
 	void EditorManager::InitGUIWindows()
 	{
-		AddWindow<Inspector>("Inspector");
+		//AddWindow<Inspector>("Inspector");
 		AddWindow<Scene>("Scene");
+		AddWindow<eGameView>("GameView");
 	}
 
 	void EditorManager::InitMenu()
@@ -64,5 +66,10 @@ namespace Eclipse
 	std::vector<std::unique_ptr<ECGuiWindow>>& EditorManager::GetAllWindows()
 	{
 		return Windows_;
+	}
+
+	MenuBar& EditorManager::GetMenuBar()
+	{
+		return MenuBar_;
 	}
 }

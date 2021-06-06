@@ -1,11 +1,16 @@
 #include "pch.h"
 #include "MenuComponent.h"
+#include "Editor/Windows/Scene/Scene.h"
+#include "Editor/Windows/GameView/GameView.h"
 
 namespace Eclipse
 {
 	void MenuComponent::Update()
 	{
-		ECGui::DrawMenuBar<void()>(std::bind(&MenuComponent::DrawImpl, this));
+		for (const auto& str : List_)
+		{
+			DrawImpl(str.c_str());
+		}
 	}
 
 	MenuComponent::MenuComponent(const char* name, EditorMenuType type) :
@@ -14,22 +19,33 @@ namespace Eclipse
 	void MenuComponent::AddItems(const char* name)
 	{
 		List_.push_back(std::string{ name });
-		ListToIndex_[name] = ID;
-		ID++;
+		ListToName_[name] = name;
 	}
 
-	void MenuComponent::DrawImpl()
+	void MenuComponent::DrawImpl(const char* key)
 	{
-		for (const auto& str : List_)
+		if (!strcmp(key, "Scene"))
 		{
-			switch (ListToIndex_[str.c_str()])
-			{
-			case 0:
-			{
+			auto* scene = engine->editorManager->GetEditorWindow<Scene>();
 
+			if (ECGui::CreateMenuItem(key, &scene->IsVisible))
+			{
+				if (scene->IsVisible)
+					scene->IsVisible = true;
+				else
+					scene->IsVisible = false;
 			}
-			default:
-				break;
+		}
+		else if (!strcmp(key, "GameView"))
+		{
+			auto* game = engine->editorManager->GetEditorWindow<eGameView>();
+
+			if (ECGui::CreateMenuItem(key, &game->IsVisible))
+			{
+				if (game->IsVisible)
+					game->IsVisible = true;
+				else
+					game->IsVisible = false;
 			}
 		}
 	}
@@ -37,5 +53,10 @@ namespace Eclipse
 	EditorMenuType MenuComponent::GetType()
 	{
 		return Type_;
+	}
+
+	const char* MenuComponent::GetName()
+	{
+		return Name_;
 	}
 }
