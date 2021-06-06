@@ -31,7 +31,6 @@ void Eclipse::GraphicsManager::end()
 void Eclipse::GraphicsManager::unload()
 {
     mRenderContext.end();
-    /*ImGui::DestroyContext();*/
 }
 
 void Eclipse::GraphicsManager::CreatePrimitives(GLint model)
@@ -53,7 +52,6 @@ void Eclipse::GraphicsManager::CreatePrimitives(GLint model)
         sprite.isQuad = true;
         sprite.hasTexture = true;
         sprite.textureRef = Graphics::textures.find("orange");
-        //Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
 
@@ -187,13 +185,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(GLint model)
     break;
     case 12:
     {
-        testtest.AddComponent(EntityID, RenderComponent{ });
-        testtest.AddComponent(EntityID, TransformComponent{ });
-        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
-        sprite.ID = EntityID;
-        sprite.shaderRef = Graphics::shaderpgms.find("nooblight");
-        sprite.modelRef = Graphics::models.find("cube");
-        Graphics::sprites.emplace(sprite.layerNum, &sprite);
+        engine->LightManager.CreatePointLight();
     }
     break;
     }
@@ -218,83 +210,35 @@ void Eclipse::GraphicsManager::DrawBuffers(unsigned int FrameBufferID, RenderCom
     glPolygonMode(GL_FRONT_AND_BACK, mode);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    if (_spritecomponent->hasTexture)
-    {
-        if (_spritecomponent->textureRef != Graphics::textures.end())
-        {
-            glBindTextureUnit(1, _spritecomponent->textureRef->second.GetHandle());
-
-            glEnable(GL_BLEND);
-
-            glTextureParameteri(_spritecomponent->textureRef->second.GetHandle(), GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTextureParameteri(_spritecomponent->textureRef->second.GetHandle(), GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTextureParameteri(_spritecomponent->textureRef->second.GetHandle(), GL_TEXTURE_WRAP_S, GL_REPEAT);
-            glTextureParameteri(_spritecomponent->textureRef->second.GetHandle(), GL_TEXTURE_WRAP_T, GL_REPEAT);
-        }
-    }
-
-    if (_spritecomponent->ID == 2)
-    {
-        CheckUniformLoc(*(_spritecomponent), _spritecomponent->ID, FrameBufferID);
-    }
-    else if (_spritecomponent->ID == 3)
-    {
-        L_CheckUniformLoc(*(_spritecomponent), _spritecomponent->ID, FrameBufferID);
-    }
-
-    glDrawElements(_spritecomponent->modelRef->second->GetPrimitiveType(), _spritecomponent->modelRef->second->GetDrawCount(), GL_UNSIGNED_SHORT, NULL);
+    CheckTexture(_spritecomponent);
+    CheckUniformLoc(*(_spritecomponent), _spritecomponent->ID, FrameBufferID);
+    DrawIndexed(_spritecomponent, GL_UNSIGNED_SHORT);
 
     // Part 5: Clean up
     glBindVertexArray(0);
     _spritecomponent->shaderRef->second.UnUse();
 }
 
-void Eclipse::GraphicsManager::L_CheckUniformLoc(RenderComponent& sprite, unsigned int id, unsigned int framebufferID)
+void Eclipse::GraphicsManager::DrawIndexed(RenderComponent* in, GLenum mode)
 {
-    CameraComponent camera;
+    glDrawElements(in->modelRef->second->GetPrimitiveType(), in->modelRef->second->GetDrawCount(), GL_UNSIGNED_SHORT, NULL);
+}
 
-    if (framebufferID == engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID())
+void Eclipse::GraphicsManager::CheckTexture(RenderComponent* in)
+{
+    if (in->hasTexture)
     {
-        camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
-    }
-    else
-    {
-        //Check if game camera exists
-        if (engine->gCamera.GetGameCameraID() == MAX_ENTITY)
+        if (in->textureRef != Graphics::textures.end())
         {
-            return;
+            glBindTextureUnit(1, in->textureRef->second.GetHandle());
+
+            glEnable(GL_BLEND);
+
+            glTextureParameteri(in->textureRef->second.GetHandle(), GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTextureParameteri(in->textureRef->second.GetHandle(), GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTextureParameteri(in->textureRef->second.GetHandle(), GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTextureParameteri(in->textureRef->second.GetHandle(), GL_TEXTURE_WRAP_T, GL_REPEAT);
         }
-
-        camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetGameCameraID());
-    }
-
-    auto& camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetEditorCameraID());
-    TransformComponent& trans = engine->world.GetComponent<TransformComponent>(id);
-
-    glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-
-    GLint uniform_var_loc1 = sprite.shaderRef->second.GetLocation("uModelToNDC");
-    GLuint lll = sprite.shaderRef->second.GetLocation("lightColor");
-
-    spherepos = trans.pos;
-
-    if (uniform_var_loc1 >= 0)
-    {
-        glm::mat4 mModelNDC;
-
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, trans.pos);
-        model = glm::rotate(model, glm::radians(trans.rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(trans.rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(trans.rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::scale(model, trans.scale);
-        mModelNDC = camera.projMtx * camera.viewMtx * model;
-        glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(mModelNDC));
-    }
-
-    if (lll >= 0)
-    {
-        glUniform4f(lll, lightColor.x, lightColor.y, lightColor.z, lightColor.w);
     }
 }
 
@@ -455,16 +399,6 @@ void Eclipse::GraphicsManager::FrameBufferDraw()
 *************************************************************************/
 
 #ifndef Imgui_Things
-
-void Eclipse::GraphicsManager::ImguiRender()
-{
-    // To be Removed
-    /*int Width, Height;
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    glfwGetFramebufferSize(mRenderContext.GetWindow(), &Width, &Height);
-    mRenderContext.SetViewport(0, 0, Width, Height);*/
-    //mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });
-}
 
 void Eclipse::GraphicsManager::ShowTestWidgets()
 {

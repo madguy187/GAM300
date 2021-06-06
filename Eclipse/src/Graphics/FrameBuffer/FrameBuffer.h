@@ -30,6 +30,8 @@ namespace Eclipse
         unsigned int GetDepthBufferID();
         FrameBufferMode GetFrameBufferType();
 
+        void DeletCurrentFrameBuffer();
+
     private:
 
         struct FramebufferData

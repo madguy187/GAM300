@@ -12,7 +12,7 @@ FrameBuffer::FrameBuffer(const glm::uvec2& p_size, FrameBufferMode in) :
 {
     m_data.hiddentype = in;
     CreateFrameBuffer(m_width, m_height);
-
+    ENGINE_CORE_INFO("FrameBuffer Created Successfully");
 }
 
 FrameBuffer::FrameBuffer(unsigned int p_width, unsigned int p_height, FrameBufferMode in) :
@@ -23,20 +23,19 @@ FrameBuffer::FrameBuffer(unsigned int p_width, unsigned int p_height, FrameBuffe
 {
     if (p_width == 0 || p_height == 0)
     {
-        ENGINE_CORE_INFO("Width or Height cant be 0");
         ENGINE_LOG_ASSERT(false, "Width or Height cant be 0");
         std::exit(EXIT_FAILURE);
     }
 
     if (in == Eclipse::FrameBufferMode::NONE || in == Eclipse::FrameBufferMode::MAXCOUNT)
     {
-        ENGINE_CORE_INFO("Creating FrameBuffer with Invalid Type");
         ENGINE_LOG_ASSERT(false, "Creating FrameBuffer with Invalid Type");
         std::exit(EXIT_FAILURE);
     }
 
     m_data.hiddentype = in;
     CreateFrameBuffer(m_width, m_height);
+    ENGINE_CORE_INFO("FrameBuffer Created Successfully");
 }
 
 FrameBuffer::~FrameBuffer()
@@ -58,27 +57,20 @@ void FrameBuffer::Unbind() const
 
 void FrameBuffer::Clear() const
 {
-    //glClearColor(0.1f, 0.2f, 0.3f, 1.f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Eclipse::FrameBuffer::Resize(unsigned width, unsigned height)
 {
-    if (m_data.frameBufferID)
-    {
-        glDeleteFramebuffers(1, &m_data.frameBufferID);
-        glDeleteTextures(1, &m_data.TextureColourBuffer);
-        glDeleteTextures(1, &m_data.depthBufferID);
-    }
-
+    DeletCurrentFrameBuffer();
     Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), Eclipse::FrameBufferMode::SCENEVIEW);
+    ENGINE_CORE_INFO("Resize Successful");
 }
 
 void FrameBuffer::ShowWindow(FrameBuffer g, const char* input)
 {
     if (&g == nullptr)
     {
-        ENGINE_CORE_INFO("FrameBuffer is Nullptr");
         ENGINE_LOG_ASSERT(false, "FrameBuffer is Nullptr");
         std::exit(EXIT_FAILURE);
     }
@@ -116,7 +108,6 @@ void FrameBuffer::CreateFrameBuffer(unsigned int p_width, unsigned int p_height)
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
     {
         std::cout << " Framebuffer Type : " << m_data.hiddentype << " is not complete!" << std::endl;
-        ENGINE_CORE_INFO(" Framebuffer is not complete!");
         ENGINE_LOG_ASSERT(false, " Framebuffer is not complete!");
         std::exit(EXIT_FAILURE);
     }
@@ -158,4 +149,15 @@ std::ostream& Eclipse::operator<<(std::ostream& os, const FrameBufferMode& in)
     }
 
     return os;
+}
+
+void Eclipse::FrameBuffer::DeletCurrentFrameBuffer()
+{
+    if (m_data.frameBufferID)
+    {
+        glDeleteFramebuffers(1, &m_data.frameBufferID);
+        glDeleteTextures(1, &m_data.TextureColourBuffer);
+        glDeleteTextures(1, &m_data.depthBufferID);
+        ENGINE_CORE_INFO("FrameBuffer deleted successfully");
+    }
 }

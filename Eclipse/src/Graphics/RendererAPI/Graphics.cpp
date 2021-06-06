@@ -48,7 +48,7 @@ void Graphics::load()
     //Loads all textures listed
     LoadTextures("src/Assets/Textures/Textures.json");
 
-    ENGINE_CORE_INFO("Loading Models Successful");
+    ENGINE_CORE_INFO("Loaded Models , Shaders and Textures Successful");
 }
 
 void Graphics::unload()

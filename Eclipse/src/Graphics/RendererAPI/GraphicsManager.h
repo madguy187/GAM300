@@ -13,13 +13,12 @@ namespace Eclipse
     void FrameBufferDraw();
 
     // to be removed
-    void ImguiRender();
     void UpdateFrameBuffer();
     OpenGL_Context mRenderContext;
     unsigned int createdID;
     void DrawBuffers(unsigned int FrameBufferID, RenderComponent* _spritecomponent, GLenum mode);
-
-    void L_CheckUniformLoc(RenderComponent& sprite, unsigned int id, unsigned int framebufferID);
+    void DrawIndexed(RenderComponent* in, GLenum mode);
+    void CheckTexture(RenderComponent* in);
 
   private:
     void ShowTestWidgets();

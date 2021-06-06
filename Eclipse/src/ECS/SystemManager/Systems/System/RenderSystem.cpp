@@ -30,6 +30,7 @@
 
 void Eclipse::RenderSystem::Init()
 {
+    ENGINE_CORE_INFO("RenderSystem Init");
     engine->gGraphics.pre_render();
 }
 
@@ -46,10 +47,6 @@ Signature Eclipse::RenderSystem::RegisterAll()
 
 void Eclipse::RenderSystem::Update()
 {
-   /* ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();*/
-
     engine->gGraphics.UpdateFrameBuffer();
 
     // Loop
@@ -66,7 +63,4 @@ void Eclipse::RenderSystem::Update()
     engine->gDebugManager.DrawDebugShapes(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 
     engine->gGraphics.FrameBufferDraw();
-    /*ImGui::Render();*/
-    /*engine->gGraphics.ImguiRender();*/
-    //engine->gGraphics.post_render();
 }

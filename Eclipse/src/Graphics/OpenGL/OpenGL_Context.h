@@ -37,12 +37,13 @@ namespace Eclipse
         bool init(std::string configFile);
         void print_specs();
         void pre_render();
-        void post_render();
+        static void post_render();
         void end();
         void CreateFrameBuffers();
         void SetBlendMode(BlendMode p_mode);
         void SetClearColor(const glm::vec4& p_color);
         void SetViewport(unsigned int p_x, unsigned int p_y, unsigned int p_width, unsigned int p_height);
+        static void CreateFrameBuffers(unsigned int width, unsigned int height, Eclipse::FrameBufferMode);
 
         static GLFWwindow* GetWindow();
         static GLint GetWidth();
@@ -61,11 +62,9 @@ namespace Eclipse
         static double update_time(double fps_calc_interval);
         static GLdouble deltaTime;
         static GLdouble fps;
-        static void CreateFrameBuffers(unsigned int width, unsigned int height, Eclipse::FrameBufferMode);
 
     private:
         void Init();
-        void Clear();
-        
+        void Clear();      
     };
 }

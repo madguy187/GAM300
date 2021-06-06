@@ -246,9 +246,6 @@
     <ClInclude Include="src\Graphics\InputHandler\InputWrapper.h">
       <Filter>src\Graphics\InputHandler</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\InputHandler\PrintOut.h">
-      <Filter>src\Graphics\InputHandler</Filter>
-    </ClInclude>
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\AllBasicPrimitives.h">
       <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
     </ClInclude>
@@ -459,9 +456,6 @@
       <Filter>src\Graphics\FrameBuffer</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp">
-      <Filter>src\Graphics\InputHandler</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\InputHandler\PrintOut.cpp">
       <Filter>src\Graphics\InputHandler</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.cpp">
