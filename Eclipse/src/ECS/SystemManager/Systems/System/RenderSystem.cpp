@@ -1,10 +1,12 @@
 #include "pch.h"
+
+// includes
 #include "RenderSystem.h"
 #include "Graphics/InputHandler/InputWrapper.h"
 #include "Graphics/InputHandler/AllInputKeyCodes.h"
 #include "Graphics/Debugging/DebugRenderingManager.h"
 
-//Components
+// Components
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RenderComponent.h"
 
@@ -30,6 +32,7 @@
 
 void Eclipse::RenderSystem::Init()
 {
+    ENGINE_CORE_INFO("RenderSystem Init");
     engine->gGraphics.pre_render();
 }
 
@@ -46,10 +49,6 @@ Signature Eclipse::RenderSystem::RegisterAll()
 
 void Eclipse::RenderSystem::Update()
 {
-   /* ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();*/
-
     engine->gGraphics.UpdateFrameBuffer();
 
     // Loop
@@ -58,15 +57,12 @@ void Eclipse::RenderSystem::Update()
         RenderComponent& _Sprites = engine->world.GetComponent<RenderComponent>(entity);
 
         engine->gGraphics.ShowTestWidgets(entity, engine->gGraphics.createdID);
-        engine->gGraphics.DrawBuffers(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
-        engine->gGraphics.DrawBuffers(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), &_Sprites, GL_LINE);
+        engine->gGraphics.DrawBuffers(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW), &_Sprites, GL_FILL);
+        engine->gGraphics.DrawBuffers(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW), &_Sprites, GL_LINE);
     }
 
-    engine->LightManager.DrawPointLights(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+    engine->LightManager.DrawPointLights(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW));
     engine->gDebugManager.DrawDebugShapes(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 
     engine->gGraphics.FrameBufferDraw();
-    /*ImGui::Render();*/
-    /*engine->gGraphics.ImguiRender();*/
-    //engine->gGraphics.post_render();
 }

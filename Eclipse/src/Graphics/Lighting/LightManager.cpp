@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Graphics/Lighting/LightManager.h"
+#include "FrameBuffer.h"
 
 extern glm::vec3 spherepos;
 
@@ -19,9 +20,9 @@ void Eclipse::Lights::CreatePointLight()
     _pointlights.insert({ sprite.ID, &sprite });
 }
 
-void Eclipse::Lights::DrawBuffers(unsigned int FrameBufferID, Eclipse::PointLightComponent* _spritecomponent, GLenum mode)
+void Eclipse::Lights::DrawBuffers(FrameBuffer* fb , Eclipse::PointLightComponent* _spritecomponent, GLenum mode)
 {
-    GLCall(glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID));
+    fb->Bind();
     _spritecomponent->shaderRef->second.Use();
     GLCall(glBindVertexArray(_spritecomponent->modelRef->second->GetVaoID()));
 
@@ -35,7 +36,7 @@ void Eclipse::Lights::DrawBuffers(unsigned int FrameBufferID, Eclipse::PointLigh
     glPolygonMode(GL_FRONT_AND_BACK, mode);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    CheckUniformLoc(*_spritecomponent, _spritecomponent->ID, FrameBufferID);
+    CheckUniformLoc(*_spritecomponent, _spritecomponent->ID, fb->GetFrameBufferID());
 
    GLCall(glDrawElements(_spritecomponent->modelRef->second->GetPrimitiveType(), _spritecomponent->modelRef->second->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
 
@@ -93,12 +94,12 @@ void Eclipse::Lights::CheckUniformLoc(PointLightComponent& sprite, unsigned int 
     }
 }
 
-void Eclipse::Lights::DrawPointLights(unsigned int framebufferID)
+void Eclipse::Lights::DrawPointLights(FrameBuffer* in)
 {
     for (auto& it : _pointlights)
     {
         engine->gGraphics.ShowTestWidgets(it.first, (engine->gGraphics.createdID+1));
-        DrawBuffers(framebufferID, it.second, GL_FILL);
+        DrawBuffers(in, it.second, GL_FILL);
     }
 }
 

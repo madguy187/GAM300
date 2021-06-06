@@ -53,7 +53,7 @@ void Eclipse::OpenGL_Context::on_close()
 void Eclipse::OpenGL_Context::mousepos_cb(GLFWwindow* pwin, double xpos, double ypos)
 {
 #ifdef _DEBUG
-    std::cout << "Mouse cursor position: (" << xpos << ", " << ypos << ")" << std::endl;
+    //std::cout << "Mouse cursor position: (" << xpos << ", " << ypos << ")" << std::endl;
 #endif
     (void)pwin;
     (void)xpos;
@@ -77,8 +77,8 @@ void error_cb(int error, char const* description)
 void mousescroll_cb(GLFWwindow* pwin, double xoffset, double yoffset)
 {
 #ifdef _DEBUG
-    std::cout << "Mouse scroll wheel offset: ("
-        << xoffset << ", " << yoffset << ")" << std::endl;
+    //std::cout << "Mouse scroll wheel offset: ("
+    //    << xoffset << ", " << yoffset << ")" << std::endl;
 #endif
     (void)pwin;
     (void)xoffset;
@@ -245,6 +245,8 @@ void Eclipse::OpenGL_Context::post_render()
 {
     glfwPollEvents();
     glfwSwapBuffers(OpenGL_Context::GetWindow());
+    glfwSwapInterval(1);
+    glFlush();
 }
 
 void Eclipse::OpenGL_Context::end()
@@ -351,15 +353,16 @@ void Eclipse::OpenGL_Context::CreateFrameBuffers()
 
 void Eclipse::OpenGL_Context::CreateFrameBuffers(unsigned int width, unsigned int height, Eclipse::FrameBufferMode in)
 {
+
     if (in == Eclipse::FrameBufferMode::NONE || in == Eclipse::FrameBufferMode::MAXCOUNT)
     {
-        ENGINE_CORE_INFO("Creating FrameBuffer with Invalid Type");
         ENGINE_LOG_ASSERT(false, "Creating FrameBuffer with Invalid Type");
         std::exit(EXIT_FAILURE);
     }
 
     FrameBuffer* m_frameBuffer = new FrameBuffer(width, height, in);
     _Framebuffers.insert({ in , m_frameBuffer });
+    ENGINE_CORE_INFO("FrameBuffer Ready For Use");
 }
 
 #endif

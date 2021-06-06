@@ -37,7 +37,7 @@ namespace Eclipse
         bool init(std::string configFile);
         void print_specs();
         void pre_render();
-        void post_render();
+        static void post_render();
         void end();
         void CreateFrameBuffers();
         void SetBlendMode(BlendMode p_mode);

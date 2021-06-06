@@ -19,9 +19,9 @@ namespace Eclipse
     public:
         InputWrapper inputhandler;
         static void CreatePointLight();
-        void DrawBuffers(unsigned int FrameBufferID, PointLightComponent* _spritecomponent, GLenum mode);
+        void DrawBuffers(FrameBuffer* fb, PointLightComponent* _spritecomponent, GLenum mode);
         void CheckUniformLoc(PointLightComponent& sprite, unsigned int id, unsigned int framebufferID);
-        void DrawPointLights(unsigned int framebufferID);
+        void DrawPointLights(FrameBuffer* in);
         void SetMode(PointLightComponent& sprite);
     };
 }
