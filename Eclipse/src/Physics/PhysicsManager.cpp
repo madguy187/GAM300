@@ -54,16 +54,51 @@ namespace Eclipse
 
 	void PhysicsManager::CreateActor(Entity ent,bool is_static)
 	{
+		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
 		if (RigidObjects.find(ent) != RigidObjects.end() || StaticObjects.find(ent) != StaticObjects.end())
 			return;
 
+		PxVec3 temptrans;
+		temptrans.x = transform.pos.x;
+		temptrans.y = transform.pos.y;
+		temptrans.z = transform.pos.z;
 		if (is_static)
 		{
-			PxRigidStatic* temp;
+			PxRigidStatic* temp = Px_Physics->createRigidStatic(PxTransform(temptrans));
+			StaticObjects.insert(std::make_pair(ent,temp));
 		}
 		else
 		{
-			PxRigidDynamic* temp;
+			PxRigidDynamic* temp = Px_Physics->createRigidDynamic(PxTransform(temptrans));
+			RigidObjects.insert(std::make_pair(ent, temp));
+		}
+	}
+
+	void PhysicsManager::AttachBoxToActor(Entity ent,float hx, float hy, float hz)
+	{
+		if (StaticObjects.find(ent) == StaticObjects.end() || RigidObjects.find(ent) == RigidObjects.end())
+			return;
+
+		PxMaterial* tempmat = Px_Physics->createMaterial(0.5, 0.5, 0.1);
+		if (!tempmat)
+		{
+			std::cout << "creatematerial failed" << std::endl;
+			return;
+		}
+
+		if (StaticObjects.find(ent) != StaticObjects.end())
+		{
+			PxRigidStatic* temp = StaticObjects[ent];
+			PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*temp, PxBoxGeometry{ hx,hy,hz },*tempmat);
+			temp->attachShape(*tempshape);
+
+		}
+
+		if (RigidObjects.find(ent) != RigidObjects.end())
+		{
+			PxRigidDynamic* temp = RigidObjects[ent];
+			PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*temp, PxBoxGeometry{ hx,hy,hz }, *tempmat);
+			temp->attachShape(*tempshape);
 		}
 	}
 
