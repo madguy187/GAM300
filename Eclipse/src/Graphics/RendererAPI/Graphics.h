@@ -8,16 +8,12 @@
 #include "Shader.h"
 #include "ModelFactory.h"
 #include "Texture.h"
-#include "AllComponents.h"
 #include <vector>
 #include <array>
 #include <map>
 #include <set>
 #include <bitset>
-
-#include "Vec.h"
 #include "Particles.h"
-
 #include "FrameBuffer.h"
 #include "../src/ECS/SystemManager/Systems/System/System.h"
 #include "Graphics/OpenGL/OpenGL_Context.h"

@@ -22,7 +22,6 @@
 #include <string>
 #include <vector>
 #include "ModelGlobal.h"
-#include "Math_Lib.h"
 
 class IModel
 {

@@ -160,6 +160,7 @@ xcopy /y /d "..\Dep\PhysX\Release\PhysXFoundation_64.dll" "$(TargetDir)" /q</Com
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentBase.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\PointLightComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\RenderComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\TransformComponent.h" />
@@ -188,6 +189,7 @@ xcopy /y /d "..\Dep\PhysX\Release\PhysXFoundation_64.dll" "$(TargetDir)" /q</Com
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h" />
     <ClInclude Include="src\Graphics\InputHandler\InputWrapper.h" />
     <ClInclude Include="src\Graphics\InputHandler\PrintOut.h" />
+    <ClInclude Include="src\Graphics\Lighting\LightManager.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\AllBasicPrimitives.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Cone.h" />
@@ -214,11 +216,6 @@ xcopy /y /d "..\Dep\PhysX\Release\PhysXFoundation_64.dll" "$(TargetDir)" /q</Com
     <ClInclude Include="src\Graphics\RendererAPI\Renderer.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Shader.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Texture.h" />
-    <ClInclude Include="src\Graphics\Still_Cleaning\AllComponents.h" />
-    <ClInclude Include="src\Graphics\Still_Cleaning\Global.h" />
-    <ClInclude Include="src\Graphics\Still_Cleaning\Math_Lib.h" />
-    <ClInclude Include="src\Graphics\Still_Cleaning\Matrix4.h" />
-    <ClInclude Include="src\Graphics\Still_Cleaning\Vec.h" />
     <ClInclude Include="src\ImGui\ImGuiAPI\ImGuiAPI.h" />
     <ClInclude Include="src\ImGui\Setup\ImGuiSetup.h" />
     <ClInclude Include="src\ImGui\Vendor\IconsFontAwesome.h" />
@@ -266,6 +263,7 @@ xcopy /y /d "..\Dep\PhysX\Release\PhysXFoundation_64.dll" "$(TargetDir)" /q</Com
     <ClCompile Include="src\Graphics\FrameBuffer\WindowConstraint.cpp" />
     <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp" />
     <ClCompile Include="src\Graphics\InputHandler\PrintOut.cpp" />
+    <ClCompile Include="src\Graphics\Lighting\LightManager.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cone.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cube.cpp" />

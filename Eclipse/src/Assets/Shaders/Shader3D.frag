@@ -114,8 +114,6 @@ void main ()
 	}
 	else
 	{
-    vec4 hi  = pointLight();	
-    
-    fFragClr = texture(uTex2d, TxtCoord) * uColor;
+    fFragClr = pointLight();
 	}
 }

@@ -1,6 +1,5 @@
 #ifndef VIEW_H
 #define VIEW_H
-#include "Vec.h"
 
 namespace Eclipse
 {
@@ -43,8 +42,8 @@ namespace Eclipse
 
         FrameBufferMode FrameBufferType;
         FramebufferData m_data;
-        vec2 windowPos;
-        vec2 frameBufferPosition;
+        ECVec2 windowPos;
+        ECVec2 frameBufferPosition;
         glm::uvec2 m_size;
         unsigned int m_width, m_height;
 
