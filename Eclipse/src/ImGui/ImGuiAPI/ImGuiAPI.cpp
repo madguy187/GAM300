@@ -20,7 +20,7 @@ namespace Eclipse
 		return ImGui::BeginChild(name, size, border, flag);
 	}
 
-	void ImGuiAPI::EndChidWindow()
+	void ImGuiAPI::EndChildWindow()
 	{
 		return ImGui::EndChild();
 	}
@@ -66,6 +66,11 @@ namespace Eclipse
 	void ImGuiAPI::EndMenuBar()
 	{
 		ImGui::EndMainMenuBar();
+	}
+
+	bool ImGuiAPI::CreateMenuItem(const char* name, bool* open)
+	{
+		return ImGui::MenuItem(name, "", open);
 	}
 
 	bool ImGuiAPI::BeginMenuComponents(const char* name)
@@ -143,6 +148,11 @@ namespace Eclipse
 	void ImGuiAPI::TextString(const char* varname, const std::string& var)
 	{
 		ImGui::Text("%s: %s", varname, var.c_str());
+	}
+
+	void ImGuiAPI::TextStaticString(const char* varname, const char* var)
+	{
+		ImGui::Text("%s: %s", varname, var);
 	}
 
 	void ImGuiAPI::TextVec2(const char* varname, const ECVec2& var)

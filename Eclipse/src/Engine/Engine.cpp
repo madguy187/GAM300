@@ -6,21 +6,17 @@
 #include "ECS/ComponentManager/Components/CameraComponent.h"
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
+#include "ECS/SystemManager/Systems/System/EditorSystem.h"
+
 
 namespace Eclipse
 {
     void Engine::Init()
     {
-        //ECVec2 woo;
-        //glm::vec2 koo{ 1,2 };
-        //woo += koo;
-        //glm::vec2 loo = woo.ConvertToGlmVec2Type();
-
-        /*ECMat4 mat{ 1,0,0,1,0,2,1,2,2,1,0,1,2,0,1,4 };
-        ECMat4 mat2;
-        ECMtx44Inverse(&mat2, mat);
-        std::cout << mat2;*/
         RenderSystem::Init();
+
+        if (EditorState)
+            editorManager = std::make_unique<EditorManager>();
     }
 
     void Engine::Run()
@@ -86,6 +82,8 @@ namespace Eclipse
                 Game_Clock.set_timeSteps(10);
             }
 
+            EditorSystem::Update();
+
             for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
             {
                 world.Update<CameraSystem>();
@@ -96,5 +94,10 @@ namespace Eclipse
 
         // unLoad
         gGraphics.end();
+    }
+
+    bool Engine::GetEditorState()
+    {
+        return EditorState;
     }
 }
