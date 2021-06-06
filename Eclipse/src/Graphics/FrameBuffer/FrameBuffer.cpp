@@ -56,16 +56,20 @@ void FrameBuffer::Unbind() const
 
 void FrameBuffer::Clear() const
 {
-    glClearColor(0.1f, 0.2f, 0.3f, 1.f);
+    //glClearColor(0.1f, 0.2f, 0.3f, 1.f);
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void Eclipse::FrameBuffer::Resize(unsigned width, unsigned height)
 {
-    m_width = width;
-    m_height = height;
+    if (m_data.frameBufferID)
+    {
+        glDeleteFramebuffers(1, &m_data.frameBufferID);
+        glDeleteTextures(1, &m_data.TextureColourBuffer);
+        glDeleteTextures(1, &m_data.depthBufferID);
+    }
 
-    CreateFrameBuffer(m_width, m_height);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), Eclipse::FrameBufferMode::SCENEVIEW);
 }
 
 void FrameBuffer::ShowWindow(FrameBuffer g, const char* input)
@@ -105,12 +109,12 @@ void FrameBuffer::ShowWindow(FrameBuffer g, const char* input)
 
 void FrameBuffer::CreateFrameBuffer(unsigned int p_width, unsigned int p_height)
 {
-    if (m_data.frameBufferID)
-    {
-        glDeleteFramebuffers(1, &m_data.frameBufferID);
-        glDeleteTextures(1, &m_data.TextureColourBuffer);
-        glDeleteTextures(1, &m_data.depthBufferID);
-    }
+    //if (m_data.frameBufferID)
+    //{
+    //    glDeleteFramebuffers(1, &m_data.frameBufferID);
+    //    glDeleteTextures(1, &m_data.TextureColourBuffer);
+    //    glDeleteTextures(1, &m_data.depthBufferID);
+    //}
 
     glGenFramebuffers(1, &m_data.frameBufferID);
     glGenRenderbuffers(1, &m_data.depthBufferID);
