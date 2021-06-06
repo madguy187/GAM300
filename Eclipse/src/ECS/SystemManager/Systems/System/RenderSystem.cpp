@@ -38,7 +38,7 @@ Signature Eclipse::RenderSystem::RegisterAll()
     Signature SystemSignature;
 
     SystemSignature.set(engine->world.GetComponentType<TransformComponent>(), 1);
-    SystemSignature.set(engine->world.GetComponentType<Sprite>(), 1);
+    SystemSignature.set(engine->world.GetComponentType<RenderComponent>(), 1);
     engine->world.RegisterSystemSignature<RenderSystem>(SystemSignature);
 
     return SystemSignature;
@@ -55,7 +55,7 @@ void Eclipse::RenderSystem::Update()
     // Loop
     for (auto const& entity : mEntities)
     {
-        Sprite& _Sprites = engine->world.GetComponent<Sprite>(entity);
+        RenderComponent& _Sprites = engine->world.GetComponent<RenderComponent>(entity);
 
         engine->gGraphics.ShowTestWidgets(entity, engine->gGraphics.createdID);
         engine->gGraphics.DrawBuffers(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);

@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "Texture.h"
 
-Texture::Texture(std::string pathname):
-    sheetWidth{ 0 }, sheetHeight{ 0 }, numCols{0}, numRows{0}, 
+using namespace Eclipse;
+
+Texture::Texture(std::string pathname) :
+    sheetWidth{ 0 }, sheetHeight{ 0 }, numCols{ 0 }, numRows{ 0 },
     channels{ 0 }
 {
     initTexture(pathname);
@@ -10,31 +12,34 @@ Texture::Texture(std::string pathname):
 
 void Texture::initTexture(std::string pathname)
 {
-    //unsigned char* data = stbi_load(pathname.c_str(), &sheetWidth, &sheetHeight, &channels, 0);
+    unsigned char* data = stbi_load(pathname.c_str(), &sheetWidth, &sheetHeight, &channels, STBI_rgb_alpha);
 
-    //if (data)
-    //{
-    //    GLuint texobj_hdl;
-    //    // define and initialize a handle to texture object that will encapsulate two-dimensional textures
-    //    glCreateTextures(GL_TEXTURE_2D, 1, &texobj_hdl);
-    //    // allocate GPU storage for texture image data loaded from file
-    //    glTextureStorage2D(texobj_hdl, 1, GL_RGBA8, sheetWidth, sheetHeight);
-    //    // copy image data from client memory to GPU texture buffer memory
-    //    glTextureSubImage2D(texobj_hdl, 0, 0, 0, sheetWidth, sheetHeight,
-    //        GL_RGBA, GL_UNSIGNED_BYTE, data);
-    //    //glGenerateMipmap(GL_TEXTURE_2D);
+    if (data)
+    {
+        GLuint texobj_hdl;
 
-    //    // client memory not required since image is buffered in GPU memory
-    //    stbi_image_free(data);
+        //// define and initialize a handle to texture object that will encapsulate two-dimensional textures
+        glCreateTextures(GL_TEXTURE_2D, 1, &texobj_hdl);
 
-    //    handle = texobj_hdl;
-    //}
-    //else
-    //{
-    //    std::string error = stbi_failure_reason();
-    //    std::cout << "Texture could not be loaded! : " << error << std::endl;
-    //    std::exit(EXIT_FAILURE);
-    //}
+        //// allocate GPU storage for texture image data loaded from file
+        glTextureStorage2D(texobj_hdl, 1, GL_RGBA8, sheetWidth, sheetHeight);
+
+        //// copy image data from client memory to GPU texture buffer memory
+        glTextureSubImage2D(texobj_hdl, 0, 0, 0, sheetWidth, sheetHeight, GL_RGBA, GL_UNSIGNED_BYTE, data);
+
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        //// client memory not required since image is buffered in GPU memory
+        stbi_image_free(data);
+
+        handle = texobj_hdl;
+    }
+    else
+    {
+        std::string error = stbi_failure_reason();
+        std::cout << "Texture could not be loaded! : " << error << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
 }
 
 GLuint Texture::GetHandle()

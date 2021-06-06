@@ -5,6 +5,8 @@
 float shakeTimer = 1.0f;
 bool shakeScreen = 1.0f;
 
+glm::vec3 spherepos;
+
 void Eclipse::GraphicsManager::pre_render()
 {  // Loading Configuration
     mRenderContext.init("../Dep/Configuration/configuration.json");
@@ -37,35 +39,50 @@ void Eclipse::GraphicsManager::CreatePrimitives(GLint model)
     auto& testtest = engine->world;
     Entity EntityID = testtest.CreateEntity();
     createdID = EntityID;
-    testtest.AddComponent(EntityID, Sprite{ });
-    testtest.AddComponent(EntityID, TransformComponent{ });
-
-    Sprite& sprite = engine->world.GetComponent<Sprite>(EntityID);
-    sprite.layerNum = 10;
-    sprite.ID = EntityID;
 
     switch (model)
     {
     case 0:
     {
-        sprite.shaderRef = Graphics::shaderpgms.find("shdrpgm");
+        testtest.AddComponent(EntityID, RenderComponent{ });
+        testtest.AddComponent(EntityID, TransformComponent{ });
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
+        sprite.ID = EntityID;
+        sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("square");
         sprite.isQuad = true;
+        sprite.hasTexture = true;
+        sprite.textureRef = Graphics::textures.find("orange");
+        //Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
 
     case 1:
+    {
+        testtest.AddComponent(EntityID, RenderComponent{ });
+        testtest.AddComponent(EntityID, TransformComponent{ });
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
+        sprite.ID = EntityID;
         sprite.shaderRef = Graphics::shaderpgms.find("shdrpgm");
         sprite.modelRef = Graphics::models.find("circle");
-        break;
+    }
+    break;
     case 2:
     {
+        testtest.AddComponent(EntityID, RenderComponent{ });
+        testtest.AddComponent(EntityID, TransformComponent{ });
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
+        sprite.ID = EntityID;
         sprite.shaderRef = Graphics::shaderpgms.find("shdrpgm");
         sprite.modelRef = Graphics::models.find("triangle");
     }
     break;
     case 3:
     {
+        testtest.AddComponent(EntityID, RenderComponent{ });
+        testtest.AddComponent(EntityID, TransformComponent{ });
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
+        sprite.ID = EntityID;
         sprite.shaderRef = Graphics::shaderpgms.find("shdrpgm");
         sprite.modelRef = Graphics::models.find("lines");
     }
@@ -73,23 +90,37 @@ void Eclipse::GraphicsManager::CreatePrimitives(GLint model)
 
     case 4:
     {
-        sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
-        sprite.modelRef = Graphics::models.find("sphere");
-        Graphics::sprites.emplace(sprite.layerNum, &sprite);
+        testtest.AddComponent(EntityID, RenderComponent{ });
+        testtest.AddComponent(EntityID, TransformComponent{ });
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
         sprite.ID = EntityID;
+        sprite.shaderRef = Graphics::shaderpgms.find("nooblight");
+        sprite.modelRef = Graphics::models.find("sphere");
+        sprite.ID = EntityID;
+        Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
 
     case 5:
     {
+        testtest.AddComponent(EntityID, RenderComponent{ });
+        testtest.AddComponent(EntityID, TransformComponent{ });
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
+        sprite.ID = EntityID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("cube");
+        sprite.hasTexture = true;
+        sprite.textureRef = Graphics::textures.find("orange");
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
 
     case 6:
     {
+        testtest.AddComponent(EntityID, RenderComponent{ });
+        testtest.AddComponent(EntityID, TransformComponent{ });
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
+        sprite.ID = EntityID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("cylinder");
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
@@ -98,6 +129,10 @@ void Eclipse::GraphicsManager::CreatePrimitives(GLint model)
 
     case 7:
     {
+        testtest.AddComponent(EntityID, RenderComponent{ });
+        testtest.AddComponent(EntityID, TransformComponent{ });
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
+        sprite.ID = EntityID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("cone");
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
@@ -106,6 +141,10 @@ void Eclipse::GraphicsManager::CreatePrimitives(GLint model)
 
     case 8:
     {
+        testtest.AddComponent(EntityID, RenderComponent{ });
+        testtest.AddComponent(EntityID, TransformComponent{ });
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
+        sprite.ID = EntityID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("torus");
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
@@ -114,14 +153,21 @@ void Eclipse::GraphicsManager::CreatePrimitives(GLint model)
 
     case 9:
     {
+        testtest.AddComponent(EntityID, RenderComponent{ });
+        testtest.AddComponent(EntityID, TransformComponent{ });
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
+        sprite.ID = EntityID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("pyramid");
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
-
     case 10:
     {
+        testtest.AddComponent(EntityID, RenderComponent{ });
+        testtest.AddComponent(EntityID, TransformComponent{ });
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
+        sprite.ID = EntityID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("lines3D");
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
@@ -130,16 +176,30 @@ void Eclipse::GraphicsManager::CreatePrimitives(GLint model)
 
     case 11:
     {
+        testtest.AddComponent(EntityID, RenderComponent{ });
+        testtest.AddComponent(EntityID, TransformComponent{ });
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
+        sprite.ID = EntityID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("plane");
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
-
+    case 12:
+    {
+        testtest.AddComponent(EntityID, RenderComponent{ });
+        testtest.AddComponent(EntityID, TransformComponent{ });
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
+        sprite.ID = EntityID;
+        sprite.shaderRef = Graphics::shaderpgms.find("nooblight");
+        sprite.modelRef = Graphics::models.find("cube");
+        Graphics::sprites.emplace(sprite.layerNum, &sprite);
+    }
+    break;
     }
 }
 
-void Eclipse::GraphicsManager::DrawBuffers(unsigned int FrameBufferID, Sprite* _spritecomponent, GLenum mode)
+void Eclipse::GraphicsManager::DrawBuffers(unsigned int FrameBufferID, RenderComponent* _spritecomponent, GLenum mode)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
 
@@ -149,28 +209,14 @@ void Eclipse::GraphicsManager::DrawBuffers(unsigned int FrameBufferID, Sprite* _
     // Part 2: Bind the object's VAO handle using glBindVertexArray
     glBindVertexArray(_spritecomponent->modelRef->second->GetVaoID());
 
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
+    glDepthFunc(GL_LEQUAL);
+    glDepthRange(0.0f, 1.0f);
+    glShadeModel(GL_SMOOTH);
     glEnable(GL_BLEND);
-
-    if (_spritecomponent->modelRef == Graphics::FindModel("sphere") ||
-        _spritecomponent->modelRef == Graphics::FindModel("cube") ||
-        _spritecomponent->modelRef == Graphics::FindModel("cone") ||
-        _spritecomponent->modelRef == Graphics::FindModel("torus") ||
-        _spritecomponent->modelRef == Graphics::FindModel("pyramid") ||
-        _spritecomponent->modelRef == Graphics::FindModel("cylinder") ||
-        _spritecomponent->modelRef == Graphics::FindModel("lines3D") ||
-        _spritecomponent->modelRef == Graphics::FindModel("plane"))
-    {
-
-        glPolygonMode(GL_FRONT_AND_BACK, mode);
-        glDisable(GL_CULL_FACE);
-        glEnable(GL_LINE_SMOOTH);
-    }
-    else
-    {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        glEnable(GL_CULL_FACE);
-    }
-
+    glDisable(GL_CULL_FACE);
+    glPolygonMode(GL_FRONT_AND_BACK, mode);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     if (_spritecomponent->hasTexture)
@@ -188,25 +234,72 @@ void Eclipse::GraphicsManager::DrawBuffers(unsigned int FrameBufferID, Sprite* _
         }
     }
 
-    CheckUniformLoc(*(_spritecomponent), _spritecomponent->ID, FrameBufferID);
+    if (_spritecomponent->ID == 2)
+    {
+        CheckUniformLoc(*(_spritecomponent), _spritecomponent->ID, FrameBufferID);
+    }
+    else if (_spritecomponent->ID == 3)
+    {
+        L_CheckUniformLoc(*(_spritecomponent), _spritecomponent->ID, FrameBufferID);
+    }
 
-    if (_spritecomponent->modelRef->second->GetPrimitiveType() != GL_LINES)
-    {
-        glDrawElements(_spritecomponent->modelRef->second->GetPrimitiveType(),
-            _spritecomponent->modelRef->second->GetDrawCount(), GL_UNSIGNED_SHORT, NULL);
-    }
-    else
-    {
-        glLineWidth(5.0f); //Note that glLineWidth() is deprecated
-        glDrawArrays(_spritecomponent->modelRef->second->GetPrimitiveType(), 0, 2);
-    }
-    
+    glDrawElements(_spritecomponent->modelRef->second->GetPrimitiveType(), _spritecomponent->modelRef->second->GetDrawCount(), GL_UNSIGNED_SHORT, NULL);
+
     // Part 5: Clean up
     glBindVertexArray(0);
     _spritecomponent->shaderRef->second.UnUse();
 }
 
-void Eclipse::GraphicsManager::CheckUniformLoc(Sprite& sprite, unsigned int id, unsigned int framebufferID)
+void Eclipse::GraphicsManager::L_CheckUniformLoc(RenderComponent& sprite, unsigned int id, unsigned int framebufferID)
+{
+    CameraComponent camera;
+
+    if (framebufferID == engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID())
+    {
+        camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+    }
+    else
+    {
+        //Check if game camera exists
+        if (engine->gCamera.GetGameCameraID() == MAX_ENTITY)
+        {
+            return;
+        }
+
+        camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetGameCameraID());
+    }
+
+    auto& camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetEditorCameraID());
+    TransformComponent& trans = engine->world.GetComponent<TransformComponent>(id);
+
+    glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+
+    GLint uniform_var_loc1 = sprite.shaderRef->second.GetLocation("uModelToNDC");
+    GLuint lll = sprite.shaderRef->second.GetLocation("lightColor");
+
+    spherepos = trans.pos;
+
+    if (uniform_var_loc1 >= 0)
+    {
+        glm::mat4 mModelNDC;
+
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, trans.pos);
+        model = glm::rotate(model, glm::radians(trans.rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(trans.rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(trans.rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, trans.scale);
+        mModelNDC = camera.projMtx * camera.viewMtx * model;
+        glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(mModelNDC));
+    }
+
+    if (lll >= 0)
+    {
+        glUniform4f(lll, lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+    }
+}
+
+void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned int id, unsigned int framebufferID)
 {
     {
         CameraComponent camera;
@@ -226,6 +319,7 @@ void Eclipse::GraphicsManager::CheckUniformLoc(Sprite& sprite, unsigned int id, 
             camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetGameCameraID());
         }
 
+        TransformComponent& camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetEditorCameraID());
         TransformComponent& trans = engine->world.GetComponent<TransformComponent>(id);
 
         GLint uniform_var_loc1 = sprite.shaderRef->second.GetLocation("uModelToNDC");
@@ -233,10 +327,12 @@ void Eclipse::GraphicsManager::CheckUniformLoc(Sprite& sprite, unsigned int id, 
         GLint uniform_var_loc3 = sprite.shaderRef->second.GetLocation("uTextureCheck");
         GLint uniform_var_loc4 = sprite.shaderRef->second.GetLocation("TextureIndex");
         GLint uniform_var_loc5 = sprite.shaderRef->second.GetLocation("TextureDimensions");
-        GLint uniform_var_loc6 = sprite.shaderRef->second.GetLocation("LightTimer");
-        GLint uniform_var_loc7 = sprite.shaderRef->second.GetLocation("ShakeTimer");
-        GLint uniform_var_loc8 = sprite.shaderRef->second.GetLocation("ShakeScreen");
+        //GLint uniform_var_loc6 = sprite.shaderRef->second.GetLocation("LightTimer");
         GLuint tex_loc = sprite.shaderRef->second.GetLocation("uTex2d");
+        GLuint lll = sprite.shaderRef->second.GetLocation("lightColor");
+        GLuint cam = sprite.shaderRef->second.GetLocation("camPos");
+        GLuint pos = sprite.shaderRef->second.GetLocation("lightPos");
+        GLuint model2 = sprite.shaderRef->second.GetLocation("model");
 
         if (uniform_var_loc1 >= 0)
         {
@@ -250,11 +346,26 @@ void Eclipse::GraphicsManager::CheckUniformLoc(Sprite& sprite, unsigned int id, 
             model = glm::scale(model, trans.scale);
             mModelNDC = camera.projMtx * camera.viewMtx * model;
             glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(mModelNDC));
+            glUniformMatrix4fv(model2, 1, GL_FALSE, glm::value_ptr(model));
+        }
+
+        if (pos >= 0)
+        {
+            glUniform3f(pos, spherepos.x, spherepos.y, spherepos.z);
+        }
+
+        if (cam >= 0)
+        {
+            glUniform3f(lll, camerapos.position.x, camerapos.position.y, camerapos.position.z);
+        }
+
+        if (lll >= 0)
+        {
+            glUniform4f(lll, sprite.lightColor.x, sprite.lightColor.y, sprite.lightColor.z, sprite.lightColor.w);
         }
 
         if (uniform_var_loc2 >= 0)
         {
-            //float alpha = 1.0f;
             glUniform4f(uniform_var_loc2, sprite.color.x, sprite.color.y, sprite.color.z, sprite.transparency);
         }
 
@@ -265,16 +376,16 @@ void Eclipse::GraphicsManager::CheckUniformLoc(Sprite& sprite, unsigned int id, 
 
         if (uniform_var_loc4 >= 0)
         {
-            glUniform2f(uniform_var_loc4, sprite.textureIdx.x, sprite.textureIdx.y);
+            GLCall(glUniform2f(uniform_var_loc4, sprite.textureIdx.x, sprite.textureIdx.y));
         }
-        
+
         if (sprite.hasTexture)
         {
             if (sprite.textureRef != Graphics::textures.end())
             {
                 if (uniform_var_loc5 >= 0)
                 {
-                    glUniform2f(uniform_var_loc5, sprite.textureRef->second.GetCols(), sprite.textureRef->second.GetRows());
+                    GLCall(glUniform2f(uniform_var_loc5, sprite.textureRef->second.GetCols(), sprite.textureRef->second.GetRows()));
                 }
                 else
                 {
@@ -282,16 +393,6 @@ void Eclipse::GraphicsManager::CheckUniformLoc(Sprite& sprite, unsigned int id, 
                     std::exit(EXIT_FAILURE);
                 }
             }
-        }
-
-        if (uniform_var_loc7 >= 0)
-        {
-            glUniform1f(uniform_var_loc7, shakeTimer);
-        }
-
-        if (uniform_var_loc8 >= 0)
-        {
-            glUniform1i(uniform_var_loc8, shakeScreen);
         }
 
         if (tex_loc >= 0)
@@ -372,7 +473,7 @@ void Eclipse::GraphicsManager::ShowTestWidgets()
     ImGui::Begin("Create Objects");
 
     if (ImGui::Combo("Models", &modelSelector,
-        "Square\0Circle\0Triangle\0Lines\0Sphere\0Cube\0Cylinder\0Cone\0Torus\0Pyramid\0Lines3D\0Plane"))
+        "Square\0Circle\0Triangle\0Lines\0Sphere\0Cube\0Cylinder\0Cone\0Torus\0Pyramid\0Lines3D\0Plane\0testlight"))
     {
         CreatePrimitives(modelSelector);
 

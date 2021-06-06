@@ -21,7 +21,6 @@
 #include "imgui.h"
 #include "type_ptr.hpp"
 #include "matrix_transform_2d.hpp"
-#include "vec.h"
 #include "../src/ECS/World.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/CameraComponent.h"
@@ -29,19 +28,14 @@
 /*                                                   objects with file scope
 ----------------------------------------------------------------------------- */
 using namespace rapidjson;
-
 using namespace Eclipse;
 
 std::map<std::string, Shader> Graphics::shaderpgms;
 std::map<std::string, std::unique_ptr<IModel>> Graphics::models;
 std::map<std::string, Texture> Graphics::textures;
-std::map<std::string, Text> Graphics::Texts;
-std::multimap<unsigned int, Sprite*> Graphics::sprites;
+std::multimap<unsigned int, RenderComponent*> Graphics::sprites;
 std::multimap<unsigned int, unsigned int> Graphics::interactables;
 std::set<unsigned int> Graphics::sortedID;
-std::map<std::string, Particles> Graphics::particleType;
-std::array<Particle, maxParticles> Graphics::particles;
-std::vector<Graphics::Vertex> Graphics::particleVtx;
 
 void Graphics::load()
 {
@@ -54,8 +48,7 @@ void Graphics::load()
     //Loads all textures listed
     LoadTextures("src/Assets/Textures/Textures.json");
 
-    //Loads all particle types
-    LoadParticles();
+    ENGINE_CORE_INFO("Loading Models Successful");
 }
 
 void Graphics::unload()
@@ -137,29 +130,11 @@ void Graphics::LoadTextures(std::string textureFile)
     }
 }
 
-void Graphics::LoadFonts(std::string FontFile)
-{
-    //Parser input;
-    //input.ParseFile(FontFile);
-
-    //std::string fontName;
-    //std::string path;
-
-    //for (auto& it : input.doc["fonts"].GetArray())
-    //{
-    //  fontName = (it)["fontName"].GetString();
-    //  path = (it)["path"].GetString();
-
-    //  //Fonts newFont(path);
-    //  //fonts.emplace(fontName, newFont);
-    //}
-}
-
 void Graphics::LoadParticles()
 {
-    Particles newParticle;
+    //Particles newParticle;
 
-    particleType.emplace("Default", newParticle);
+    //particleType.emplace("Default", newParticle);
 }
 
 /******************************************************************************/

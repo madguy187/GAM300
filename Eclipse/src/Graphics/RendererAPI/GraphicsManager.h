@@ -1,4 +1,5 @@
 #pragma once
+#include "ECS/ComponentManager/Components/RenderComponent.h"
 
 namespace Eclipse
 {
@@ -16,12 +17,14 @@ namespace Eclipse
     void UpdateFrameBuffer();
     OpenGL_Context mRenderContext;
     unsigned int createdID;
-    void DrawBuffers(unsigned int FrameBufferID, Sprite* _spritecomponent, GLenum mode);
+    void DrawBuffers(unsigned int FrameBufferID, RenderComponent* _spritecomponent, GLenum mode);
+
+    void L_CheckUniformLoc(RenderComponent& sprite, unsigned int id, unsigned int framebufferID);
 
   private:
     void ShowTestWidgets();
     void CreatePrimitives(GLint model);
-    void CheckUniformLoc(Sprite& sprite, unsigned int id, unsigned int framebufferID);
+    void CheckUniformLoc(RenderComponent& sprite, unsigned int id, unsigned int framebufferID);
 
   public:
     void ShowTestWidgets(unsigned int id, unsigned int createdId);

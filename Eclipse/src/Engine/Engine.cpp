@@ -26,7 +26,7 @@ namespace Eclipse
         world.RegisterComponent<TransformComponent>();
         world.RegisterComponent<RenderComponent>();
         world.RegisterComponent<CameraComponent>();
-        world.RegisterComponent<Sprite>();
+        world.RegisterComponent<RenderComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();

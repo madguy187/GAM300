@@ -86,25 +86,6 @@ void FrameBuffer::ShowWindow(FrameBuffer g, const char* input)
     glDisable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT);
     glBindTexture(GL_TEXTURE_2D, g.GetTextureColourBufferID());
-
-    /*ImGui::Begin(input);
-
-    ImVec2 pos = ImGui::GetCursorScreenPos();
-
-    ImGui::GetWindowDrawList()->AddImage(
-        (void*)(g.m_data.TextureColourBuffer),
-        ImVec2(ImGui::GetCursorScreenPos()),
-        ImVec2(ImGui::GetCursorScreenPos().x + ImGui::GetWindowContentRegionMax().x,
-            ImGui::GetCursorScreenPos().y + ImGui::GetWindowContentRegionMax().y), ImVec2(0, 1), ImVec2(1, 0));
-
-    g.m_width = static_cast<int>(ImGui::GetWindowWidth());
-    g.m_height = static_cast<int>(ImGui::GetWindowHeight());
-
-    g.windowPos.x = (ImGui::GetWindowWidth() / 2) + ImGui::GetCursorScreenPos().x;
-    g.windowPos.y = (ImGui::GetWindowHeight() / 2) + ImGui::GetCursorScreenPos().y;
-
-    g.frameBufferPosition = vec2{ ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y };
-    ImGui::End();*/
 }
 
 void FrameBuffer::CreateFrameBuffer(unsigned int p_width, unsigned int p_height)
