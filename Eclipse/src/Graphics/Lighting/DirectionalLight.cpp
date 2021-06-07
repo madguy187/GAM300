@@ -1,6 +1,11 @@
 #include "pch.h"
 #include "Graphics/Lighting/DirectionalLight.h"
 
+DirectionalLightContainer Eclipse::DirectionalLight::GetContainer()
+{
+    return _DirectionalLight;
+}
+
 void Eclipse::DirectionalLight::CreateDirectionalLight(unsigned int CreatedID)
 {
     std::cout << _DirectionalLight.size() << std::endl;
@@ -14,6 +19,7 @@ void Eclipse::DirectionalLight::CreateDirectionalLight(unsigned int CreatedID)
     DirectionalLightComponent& _global = engine->world.GetComponent<DirectionalLightComponent>(CreatedID);
     _global.ID = CreatedID;
     _global.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
+    _global.modelRef = Graphics::models.find("cube");
 
     // Success
     _DirectionalLight.insert({ counter,&_global });
@@ -21,9 +27,23 @@ void Eclipse::DirectionalLight::CreateDirectionalLight(unsigned int CreatedID)
     counter++;
 }
 
-void Eclipse::DirectionalLight::Draw(unsigned int framebufferID)
+void Eclipse::DirectionalLight::Draw(DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
 {
+    glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
+    in->shaderRef->second.Use();
+    glBindVertexArray(in->modelRef->second->GetVaoID());
 
+    glEnable(GL_BLEND);
+    glPolygonMode(GL_FRONT_AND_BACK, mode);
+    glDisable(GL_CULL_FACE);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    CheckUniformLoc(in->shaderRef, *in, indexID, _DirectionalLight.size());
+
+    GLCall(glDrawElements(in->modelRef->second->GetPrimitiveType(), in->modelRef->second->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
+
+    glBindVertexArray(0);
+    in->shaderRef->second.UnUse();
 }
 
 void Eclipse::DirectionalLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, DirectionalLightComponent& hi, int index, unsigned int containersize)
@@ -31,25 +51,44 @@ void Eclipse::DirectionalLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, Dir
     // We should only have 1 but lets see how
     std::string number = std::to_string(index);
 
-    GLint uniform_var_loc1 = _shdrpgm->second.GetLocation(("pointLights[" + number + "].position").c_str());
-    GLint uniform_var_loc2 = _shdrpgm->second.GetLocation(("pointLights[" + number + "].ambient").c_str());
-    GLint uniform_var_loc3 = _shdrpgm->second.GetLocation(("pointLights[" + number + "].diffuse").c_str());
-    GLint uniform_var_loc4 = _shdrpgm->second.GetLocation(("pointLights[" + number + "].specular").c_str());
-    GLint uniform_var_loc5 = _shdrpgm->second.GetLocation(("pointLights[" + number + "].constant").c_str());
-    GLint uniform_var_loc6 = _shdrpgm->second.GetLocation(("pointLights[" + number + "].linear").c_str());
-    GLint uniform_var_loc7 = _shdrpgm->second.GetLocation(("pointLights[" + number + "].quadratic").c_str());
-    GLint uniform_var_loc8 = _shdrpgm->second.GetLocation("uModelToNDC");
-    GLint uniform_var_loc9 = _shdrpgm->second.GetLocation("NumberOfPointLights");
-
-    GLuint model2 = _shdrpgm->second.GetLocation("model");
-    GLint check = _shdrpgm->second.GetLocation("uTextureCheck");
+    GLint uniform_var_loc1 = _shdrpgm->second.GetLocation(("directionlight[" + number + "].direction").c_str());
+    GLint uniform_var_loc2 = _shdrpgm->second.GetLocation(("directionlight[" + number + "].ambient").c_str());
+    GLint uniform_var_loc3 = _shdrpgm->second.GetLocation(("directionlight[" + number + "].diffuse").c_str());
+    GLint uniform_var_loc4 = _shdrpgm->second.GetLocation(("directionlight[" + number + "].specular").c_str());
+    GLint uniform_var_loc5 = _shdrpgm->second.GetLocation("uModelToNDC");
+    GLuint uniform_var_lo6 = _shdrpgm->second.GetLocation("model");
+    GLint uniform_var_loc7 = _shdrpgm->second.GetLocation("uTextureCheck");
 
     TransformComponent& trans = engine->world.GetComponent<TransformComponent>(hi.ID);
 
     CameraComponent camera;
     camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 
-    if (uniform_var_loc8 >= 0)
+    // Direction
+    if (uniform_var_loc1 >= 0)
+    {
+       GLCall(glUniform3f(uniform_var_loc1, trans.pos.x*-1 , trans.pos.y*-1, trans.pos.z*-1));
+    }
+
+    // ambient
+    if (uniform_var_loc2 >= 0)
+    {
+        GLCall(glUniform3f(uniform_var_loc2, 0.05f, 0.05f, 0.05f));
+    }
+
+    // diffuse
+    if (uniform_var_loc3 >= 0)
+    {
+        GLCall(glUniform3f(uniform_var_loc3, 0.4f, 0.4f, 0.4f));
+    }
+
+    // specular
+    if (uniform_var_loc4 >= 0)
+    {
+        GLCall(glUniform3f(uniform_var_loc4, 0.5f, 0.5f, 0.5f));
+    }
+
+    if (uniform_var_loc5 >= 0 && uniform_var_lo6 >= 0)
     {
         glm::mat4 mModelNDC;
 
@@ -60,62 +99,32 @@ void Eclipse::DirectionalLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, Dir
         model = glm::rotate(model, glm::radians(trans.rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::scale(model, trans.scale);
         mModelNDC = camera.projMtx * camera.viewMtx * model;
-        glUniformMatrix4fv(uniform_var_loc8, 1, GL_FALSE, glm::value_ptr(mModelNDC));
-        glUniformMatrix4fv(model2, 1, GL_FALSE, glm::value_ptr(model));
-    }
-
-    // position
-    if (uniform_var_loc1 >= 0)
-    {
-        glUniform3f(uniform_var_loc1, trans.pos.x, trans.pos.y, trans.pos.z);
-    }
-
-    // ambient
-    if (uniform_var_loc2 >= 0)
-    {
-        glUniform3f(uniform_var_loc2, 0.2f, 0.2f, 0.2f);
-    }
-
-    // diffuse
-    if (uniform_var_loc3 >= 0)
-    {
-        glUniform3f(uniform_var_loc3, 0.5f, 0.5f, 0.5f);
-    }
-
-    // specular
-    if (uniform_var_loc4 >= 0)
-    {
-        glUniform3f(uniform_var_loc4, 0.1, 0.1, 0.1);
-    }
-
-    // constant
-    if (uniform_var_loc5 >= 0)
-    {
-        glUniform1i(uniform_var_loc5, 1.0);
-    }
-
-    // linear
-    if (uniform_var_loc6 >= 0)
-    {
-        glUniform1i(uniform_var_loc6, 0.09f);
+        GLCall(glUniformMatrix4fv(uniform_var_loc5, 1, GL_FALSE, glm::value_ptr(mModelNDC)));
+        GLCall(glUniformMatrix4fv(uniform_var_lo6, 1, GL_FALSE, glm::value_ptr(model)));
     }
 
     if (uniform_var_loc7 >= 0)
     {
-        glUniform1i(uniform_var_loc7, 0.032f);
-    }
-
-    if (check >= 0)
-    {
-        glUniform1i(check, false);
-    }
-
-    if (uniform_var_loc9 >= 0)
-    {
-        glUniform1i(uniform_var_loc5, 1);
+        GLCall(glUniform1i(uniform_var_loc7, 0));
     }
 }
 
-void Eclipse::DirectionalLight::Draw(DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID)
+void Eclipse::DirectionalLight::FirstGlobalLight()
 {
+    // Add Components
+    auto& GetWorld = engine->world;
+    Entity CreatedID = GetWorld.CreateEntity();
+    GetWorld.AddComponent(CreatedID, TransformComponent{});
+    GetWorld.AddComponent(CreatedID, DirectionalLightComponent{});
+
+    // Assign
+    DirectionalLightComponent& _global = engine->world.GetComponent<DirectionalLightComponent>(CreatedID);
+    _global.ID = CreatedID;
+    _global.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
+    _global.modelRef = Graphics::models.find("cube");
+
+    // Success
+    _DirectionalLight.insert({ counter,&_global });
+    ENGINE_CORE_INFO("DirectionalLight Created Successfully");
+    counter++;
 }

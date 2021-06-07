@@ -8,7 +8,7 @@ PointLightContainer Eclipse::PointLight::GetContainer()
 
 unsigned int Eclipse::PointLight::GetNumberOfPointLights()
 {
-    return 0;
+    return _pointlights.size();
 }
 
 void Eclipse::PointLight::CreatePointLight(unsigned int CreatedID)
@@ -54,8 +54,10 @@ void Eclipse::PointLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, PointLigh
     GLint uniform_var_loc7 = _shdrpgm->second.GetLocation(("pointLights[" + number + "].quadratic").c_str());
     GLint uniform_var_loc8 = _shdrpgm->second.GetLocation("uModelToNDC");
     GLint uniform_var_loc9 = _shdrpgm->second.GetLocation("NumberOfPointLights");
-    GLuint model2 = _shdrpgm->second.GetLocation("model");
-    GLint check = _shdrpgm->second.GetLocation("uTextureCheck");
+    GLuint uniform_var_loc10 = _shdrpgm->second.GetLocation("model");
+    GLint uniform_var_loc11 = _shdrpgm->second.GetLocation("uTextureCheck");
+    GLint uniform_var_loc12 = _shdrpgm->second.GetLocation(("pointLights[" + number + "].lightColor").c_str());
+    GLint uniform_var_loc13 = _shdrpgm->second.GetLocation("uColor");
 
     TransformComponent& trans = engine->world.GetComponent<TransformComponent>(hi.ID);
 
@@ -74,7 +76,7 @@ void Eclipse::PointLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, PointLigh
         model = glm::scale(model, trans.scale);
         mModelNDC = camera.projMtx * camera.viewMtx * model;
         glUniformMatrix4fv(uniform_var_loc8, 1, GL_FALSE, glm::value_ptr(mModelNDC));
-        glUniformMatrix4fv(model2, 1, GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(uniform_var_loc10, 1, GL_FALSE, glm::value_ptr(model));
     }
 
     // position
@@ -118,15 +120,27 @@ void Eclipse::PointLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, PointLigh
         glUniform1i(uniform_var_loc7, 0.032f);
     }
 
-    if (check >= 0)
+    if (uniform_var_loc11 >= 0)
     {
-        glUniform1i(check, false);
+        glUniform1i(uniform_var_loc11, 0);
     }
 
     if (uniform_var_loc9 >= 0)
     {
-        glUniform1i(uniform_var_loc5, 1);
+        glUniform1i(uniform_var_loc9, 1);
     }
+
+    // Light Color
+    if (uniform_var_loc12 >= 0)
+    {
+        glUniform3f(uniform_var_loc12, 1.0f, 1.0f, 1.0f);
+    }
+
+    // Own Color
+    if (uniform_var_loc13 >= 0)
+    {
+        glUniform3f(uniform_var_loc13, 1.0f, 0.99f, 0.5f);
+    } 
 }
 
 void Eclipse::PointLight::Draw(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)

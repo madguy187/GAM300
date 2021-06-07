@@ -4,10 +4,20 @@
 void Eclipse::LightingSystem::Init()
 {
     ENGINE_CORE_INFO("LightingSystem Init");
+
 }
 
 void Eclipse::LightingSystem::Update()
 {
+    // Loop
+    for (auto const& entity : engine->LightManager.GetDirectionalLightContainer())
+    {
+        engine->gGraphics.ShowTestWidgets(entity.second->ID, engine->gGraphics.createdID);
+
+        engine->LightManager.DrawDirectionalLight(entity.second,
+            engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), entity.first, GL_FILL);
+    }
+
     // Loop
     for (auto const& entity : engine->LightManager.GetPointLightsContainer())
     {
@@ -16,7 +26,7 @@ void Eclipse::LightingSystem::Update()
         engine->LightManager.DrawPointLights(entity.second,
             engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), entity.first, GL_FILL);
 
-        engine->LightManager.DrawPointLights(entity.second,
-            engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), entity.first, GL_LINE);
+        //engine->LightManager.DrawPointLights(entity.second,
+        //    engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), entity.first, GL_FILL);
     }
 }

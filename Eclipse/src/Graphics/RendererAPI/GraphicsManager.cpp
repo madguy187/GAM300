@@ -183,9 +183,18 @@ void Eclipse::GraphicsManager::CreatePrimitives(GLint model)
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
+
+    // pointlight
     case 12:
     {
         engine->LightManager.CreateLights(Eclipse::TypesOfLights::POINTLIGHT, EntityID);
+    }
+    break;
+
+    // Directional
+    case 13:
+    {
+        engine->LightManager.CreateLights(Eclipse::TypesOfLights::DIRECTIONAL, EntityID);
     }
     break;
     }
@@ -202,10 +211,6 @@ void Eclipse::GraphicsManager::DrawBuffers(unsigned int FrameBufferID, RenderCom
     glBindVertexArray(_spritecomponent->modelRef->second->GetVaoID());
 
     glEnable(GL_DEPTH_TEST);
-    glDepthMask(GL_TRUE);
-    glDepthFunc(GL_LESS);
-    glDepthRange(0.0f, 1.0f);
-    glShadeModel(GL_SMOOTH);
     glDisable(GL_CULL_FACE);
     glPolygonMode(GL_FRONT_AND_BACK, mode);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -245,10 +250,12 @@ void Eclipse::GraphicsManager::CheckTexture(RenderComponent* in)
 void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned int id, unsigned int framebufferID)
 {
     CameraComponent camera;
+    TransformComponent camerapos;
 
     if (framebufferID == engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID())
     {
         camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+        camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetGameCameraID());
     }
     else
     {
@@ -259,9 +266,9 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
         }
 
         camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetGameCameraID());
+        camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetGameCameraID());
     }
 
-    TransformComponent& camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetEditorCameraID());
     TransformComponent& trans = engine->world.GetComponent<TransformComponent>(id);
 
     GLint uniform_var_loc1 = sprite.shaderRef->second.GetLocation("uModelToNDC");
@@ -413,7 +420,7 @@ void Eclipse::GraphicsManager::ShowTestWidgets()
     ImGui::Begin("Create Objects");
 
     if (ImGui::Combo("Models", &modelSelector,
-        "Square\0Circle\0Triangle\0Lines\0Sphere\0Cube\0Cylinder\0Cone\0Torus\0Pyramid\0Lines3D\0Plane\0testlight"))
+        "Square\0Circle\0Triangle\0Lines\0Sphere\0Cube\0Cylinder\0Cone\0Torus\0Pyramid\0Lines3D\0Plane\0testlight\0D_Light"))
     {
         CreatePrimitives(modelSelector);
 

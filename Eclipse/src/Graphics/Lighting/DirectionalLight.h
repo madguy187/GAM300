@@ -10,14 +10,16 @@ namespace Eclipse
     class DirectionalLight
     {
     private:
-        // I do not think we need this but lets see
+        // Directional Light Container
         inline static Eclipse::DirectionalLightContainer _DirectionalLight;
 
     public:
         inline static int counter = 0;
+        DirectionalLightContainer GetContainer();
         static void CreateDirectionalLight(unsigned int CreatedID);
-        void Draw(unsigned int framebufferID); //??
+        void Draw(DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
         void CheckUniformLoc(Graphics::shaderIt _shdrpgm, DirectionalLightComponent& hi, int index, unsigned int containersize);
         void Draw(DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID);
+        void FirstGlobalLight();
     };
 }

@@ -6,6 +6,7 @@ namespace Eclipse
 {
     struct DirectionalLightComponent
     {
+        using modelIt = std::map<std::string, std::unique_ptr<IModel>>::iterator;
         using shaderIt = std::map<std::string, Shader>::iterator;
         unsigned int ID = 0;
 
@@ -14,9 +15,8 @@ namespace Eclipse
         ECVec3 ambient;
         ECVec3 diffuse;
         ECVec3 specular;
-
         bool visible;
-
+        modelIt modelRef;
         shaderIt shaderRef;
         glm::mat4 modelNDC_xform{ 0 };
     };

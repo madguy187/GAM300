@@ -16,9 +16,9 @@ void Eclipse::Lights::CreateLights(TypesOfLights in, unsigned int CreatedID)
     }
     break;
 
-    default:
+    case TypesOfLights::DIRECTIONAL:
     {
-
+        _DirectionalLights.CreateDirectionalLight(CreatedID);
     }
     break;
     }
@@ -27,6 +27,16 @@ void Eclipse::Lights::CreateLights(TypesOfLights in, unsigned int CreatedID)
 void Eclipse::Lights::DrawPointLights(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
 {
     _allpointlights.Draw(in, framebufferID, indexID, mode);
+}
+
+void Eclipse::Lights::DrawDirectionalLight(DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
+{
+    _DirectionalLights.Draw(in, framebufferID, indexID, mode);
+}
+
+DirectionalLightContainer Eclipse::Lights::GetDirectionalLightContainer()
+{
+    return _DirectionalLights.GetContainer();
 }
 
 PointLightContainer Eclipse::Lights::GetPointLightsContainer()
