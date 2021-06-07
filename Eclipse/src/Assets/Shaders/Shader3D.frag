@@ -1,4 +1,4 @@
-#version 450 core
+#version 330 core
 
 layout (location=0) in vec2 TxtCoord;
 
@@ -22,7 +22,22 @@ struct Material {
     float shininess;
 }; 
   
-//uniform Material material;
+struct PointLight 
+{    
+    vec3 position;
+    
+    float constant;
+    float linear;
+    float quadratic;  
+
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};  
+
+#define NR_POINT_LIGHTS 4  
+
+uniform PointLight pointLights[NR_POINT_LIGHTS];
 
 vec4 testMaterials()
 {
@@ -48,6 +63,31 @@ vec4 testMaterials()
         
     vec3 result = ambient + diffuse + specular;
     return (texture(uTex2d, TxtCoord) * vec4(result, 1.0) );
+}
+
+vec4 DirectionalLight()
+{
+    vec3 ignore = lightPos;
+
+    // Ambient Lighting
+    float ambientStrength = 0.1f;
+    vec4 ambient = ambientStrength * lightColor;
+
+    // diffuse lighting
+    vec3 normal = (normal_from_vtxShader);
+    vec3 lightDirection = normalize(vec3(0.0f,1.0f,1.0f));
+    float diff = max(dot(normal, lightDirection), 0.0f);
+    vec3 diffuse = diff * vec3(lightColor);
+
+    float specularStrength = 0.5;
+    vec3 viewDir = normalize(camPos - crntPos);
+    vec3 reflectDir = reflect(-lightDirection, normal);  
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 2);
+    vec3 specular = specularStrength * spec * vec3(lightColor);  
+
+    vec3 result = vec3( vec3(ambient) + diffuse + specular) * vec3(uColor) ;
+
+    return texture(uTex2d, TxtCoord) * lightColor * vec4(result,1.0f);
 }
 
 vec4 pointLight()
@@ -81,25 +121,37 @@ vec4 pointLight()
     return texture(uTex2d, TxtCoord) * lightColor * vec4(result,1.0f);
 }
 
-vec4 DirectionalLight()
+// Multiple PointLight Calculation
+vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
-    vec3 ignore = lightPos;
+    vec3 lightDir = normalize( light.position - fragPos);
 
     // Ambient Lighting
     float ambientStrength = 0.1f;
     vec4 ambient = ambientStrength * lightColor;
 
-    // diffuse lighting
-    vec3 normal = (normal_from_vtxShader);
-    vec3 lightDirection = normalize(vec3(0.0f,1.0f,1.0f));
-    float diff = max(dot(normal, lightDirection), 0.0f);
+    // diffuse shading
+    float diff = max(dot(normal, lightDir), 0.0);
     vec3 diffuse = diff * vec3(lightColor);
 
-    float specularStrength = 0.5;
-    vec3 viewDir = normalize(camPos - crntPos);
-    vec3 reflectDir = reflect(-lightDirection, normal);  
+    // specular shading
+    vec3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 2);
-    vec3 specular = specularStrength * spec * vec3(lightColor);  
+    vec3 specular = 0.5 * spec * vec3(lightColor);  
+
+    // attenuation
+    //float distance    = length(light.position - fragPos);
+    //float attenuation = 1.0 / (light.constant + light.linear * distance + 
+  			    // light.quadratic * (distance * distance));    
+
+    // combine results
+    //vec3 ambient  =  light.ambient * vec3(lightColor) * vec3(texture(uTex2d, TxtCoord));
+    //vec3 diffuse  =  light.diffuse * vec3(lightColor) * diff * vec3(texture(uTex2d, TxtCoord));
+    //vec3 specular =  light.specular * vec3(lightColor) * spec * vec3(texture(uTex2d, TxtCoord));
+
+    //ambient  *= attenuation;
+    //diffuse  *= attenuation;
+    //specular *= attenuation;
 
     vec3 result = vec3( vec3(ambient) + diffuse + specular) * vec3(uColor) ;
 
@@ -108,12 +160,24 @@ vec4 DirectionalLight()
 
 void main () 
 {
+    vec3 result = vec3(0,0,0);
+
 	if(!uTextureCheck)
 	{
 		fFragClr = vec4(uColor);
 	}
 	else
 	{
-    fFragClr = pointLight();
-	}
+    
+     vec4 ignore = lightColor;
+     vec3 ignore1 = lightPos;
+
+     // properties
+     vec3 norm = (normal_from_vtxShader);
+     vec3 viewDir = normalize(camPos - crntPos);
+
+     result += CalcPointLight( pointLights[0], norm, crntPos, viewDir);
+
+     fFragClr = vec4(result,1.0f);
+    }
 }

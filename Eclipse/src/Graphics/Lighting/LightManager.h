@@ -12,9 +12,7 @@ namespace Eclipse
     public:
 
     private:
-       inline static PointLightContainer _pointlights;
-
-
+       inline static std::vector<PointLightComponent*> _pointlights;
 
     public:
         InputWrapper inputhandler;
@@ -23,5 +21,7 @@ namespace Eclipse
         void CheckUniformLoc(PointLightComponent& sprite, unsigned int id, unsigned int framebufferID);
         void DrawPointLights(unsigned int framebufferID);
         void SetMode(PointLightComponent& sprite);
+        void CheckUniformLoc(Graphics::shaderIt _shdrpgm, PointLightComponent& _camera);
+        void TESTDRAW(unsigned int ID, unsigned int framebufferID);
     };
 }
