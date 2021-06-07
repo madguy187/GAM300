@@ -185,7 +185,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(GLint model)
     break;
     case 12:
     {
-        engine->LightManager.CreateLights(Eclipse::TypesOfLights::POINTLIGHT,EntityID);
+        engine->LightManager.CreateLights(Eclipse::TypesOfLights::POINTLIGHT, EntityID);
     }
     break;
     }
@@ -357,6 +357,11 @@ void Eclipse::GraphicsManager::UpdateFrameBuffer()
     }
 }
 
+void Eclipse::GraphicsManager::GlobalFrameBufferBind()
+{
+    Eclipse::GraphicsManager::UpdateFrameBuffer();
+}
+
 FrameBuffer* Eclipse::OpenGL_Context::GetFramebuffer(FrameBufferMode mode)
 {
     if (mode == FrameBufferMode::MAXCOUNT || mode == FrameBufferMode::NONE)
@@ -387,6 +392,11 @@ void Eclipse::GraphicsManager::FrameBufferDraw()
 
     FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)), "GameView");
     FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)), "SceneView");
+}
+
+void Eclipse::GraphicsManager::GlobalFrmeBufferDraw()
+{
+    Eclipse::GraphicsManager::FrameBufferDraw();
 }
 
 #endif

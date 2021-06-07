@@ -47,7 +47,6 @@ Signature Eclipse::RenderSystem::RegisterAll()
 
 void Eclipse::RenderSystem::Update()
 {
-    engine->gGraphics.UpdateFrameBuffer();
 
     // Loop
     for (auto const& entity : mEntities)
@@ -59,8 +58,6 @@ void Eclipse::RenderSystem::Update()
         engine->gGraphics.DrawBuffers(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), &_Sprites, GL_LINE);
     }
 
-    engine->LightManager.DrawLights(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
     engine->gDebugManager.DrawDebugShapes(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 
-    engine->gGraphics.FrameBufferDraw();
 }

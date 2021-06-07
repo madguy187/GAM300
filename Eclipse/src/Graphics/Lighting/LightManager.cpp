@@ -24,9 +24,12 @@ void Eclipse::Lights::CreateLights(TypesOfLights in, unsigned int CreatedID)
     }
 }
 
-void Eclipse::Lights::DrawLights(unsigned int framebufferID)
+void Eclipse::Lights::DrawPointLights(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
 {
-    // Draw All Point Lights
-    _allpointlights.DrawPointLights(framebufferID);
+    _allpointlights.Draw(in, framebufferID, indexID, mode);
+}
 
+PointLightContainer Eclipse::Lights::GetPointLightsContainer()
+{
+    return _allpointlights.GetContainer();
 }

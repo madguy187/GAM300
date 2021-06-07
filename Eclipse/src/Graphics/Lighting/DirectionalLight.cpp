@@ -1,48 +1,34 @@
 #include "pch.h"
-#include "PointLight.h"
+#include "Graphics/Lighting/DirectionalLight.h"
 
-PointLightContainer Eclipse::PointLight::GetContainer()
+void Eclipse::DirectionalLight::CreateDirectionalLight(unsigned int CreatedID)
 {
-    return _pointlights;
-}
-
-unsigned int Eclipse::PointLight::GetNumberOfPointLights()
-{
-    return 0;
-}
-
-void Eclipse::PointLight::CreatePointLight(unsigned int CreatedID)
-{
-    std::cout << _pointlights.size() << std::endl;
+    std::cout << _DirectionalLight.size() << std::endl;
 
     // Add Components
     auto& GetWorld = engine->world;
     GetWorld.AddComponent(CreatedID, TransformComponent{});
-    GetWorld.AddComponent(CreatedID, PointLightComponent{});
+    GetWorld.AddComponent(CreatedID, DirectionalLightComponent{});
 
     // Assign
-    PointLightComponent& sprite = engine->world.GetComponent<PointLightComponent>(CreatedID);
-    sprite.ID = CreatedID;
-    sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
-    sprite.modelRef = Graphics::models.find("cube");
+    DirectionalLightComponent& _global = engine->world.GetComponent<DirectionalLightComponent>(CreatedID);
+    _global.ID = CreatedID;
+    _global.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
 
     // Success
-    _pointlights.insert({ counter,&sprite });
-    ENGINE_CORE_INFO("Pointlight Created Successfully");
+    _DirectionalLight.insert({ counter,&_global });
+    ENGINE_CORE_INFO("DirectionalLight Created Successfully");
     counter++;
 }
 
-void Eclipse::PointLight::DrawPointLights(unsigned int framebufferID)
+void Eclipse::DirectionalLight::Draw(unsigned int framebufferID)
 {
-    for (auto& it : _pointlights)
-    {
-        engine->gGraphics.ShowTestWidgets(it.second->ID, (engine->gGraphics.createdID));
-        Draw(it.second, framebufferID, it.first, GL_FILL);
-    }
+
 }
 
-void Eclipse::PointLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, PointLightComponent& hi, int index, unsigned int containersize)
+void Eclipse::DirectionalLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, DirectionalLightComponent& hi, int index, unsigned int containersize)
 {
+    // We should only have 1 but lets see how
     std::string number = std::to_string(index);
 
     GLint uniform_var_loc1 = _shdrpgm->second.GetLocation(("pointLights[" + number + "].position").c_str());
@@ -54,6 +40,7 @@ void Eclipse::PointLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, PointLigh
     GLint uniform_var_loc7 = _shdrpgm->second.GetLocation(("pointLights[" + number + "].quadratic").c_str());
     GLint uniform_var_loc8 = _shdrpgm->second.GetLocation("uModelToNDC");
     GLint uniform_var_loc9 = _shdrpgm->second.GetLocation("NumberOfPointLights");
+
     GLuint model2 = _shdrpgm->second.GetLocation("model");
     GLint check = _shdrpgm->second.GetLocation("uTextureCheck");
 
@@ -129,25 +116,6 @@ void Eclipse::PointLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, PointLigh
     }
 }
 
-void Eclipse::PointLight::Draw(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
+void Eclipse::DirectionalLight::Draw(DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID)
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
-
-    in->shaderRef->second.Use();
-
-    glBindVertexArray(in->modelRef->second->GetVaoID());
-
-    glEnable(GL_BLEND);
-
-    glPolygonMode(GL_FRONT_AND_BACK, mode);
-    glDisable(GL_CULL_FACE);
-    glEnable(GL_LINE_SMOOTH);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    CheckUniformLoc(in->shaderRef, *in, indexID, _pointlights.size());
-
-    glLineWidth(5.0f); //Note that glLineWidth() is deprecated
-    GLCall(glDrawElements(in->modelRef->second->GetPrimitiveType(), in->modelRef->second->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
-
-    glBindVertexArray(0);
-    in->shaderRef->second.UnUse();
 }

@@ -4,9 +4,11 @@
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RenderComponent.h"
 #include "ECS/ComponentManager/Components/CameraComponent.h"
+#include "ECS/ComponentManager/Components/DirectionalLightComponent.h"
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
 #include "ECS/SystemManager/Systems/System/EditorSystem.h"
+#include "ECS/SystemManager/Systems/System/LightingSystem.h"
 #include "ImGui/Setup/ImGuiSetup.h"
 
 
@@ -28,10 +30,12 @@ namespace Eclipse
         world.RegisterComponent<CameraComponent>();
         world.RegisterComponent<RenderComponent>();
         world.RegisterComponent<PointLightComponent>();
+        world.RegisterComponent<DirectionalLightComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
         world.RegisterSystem<CameraSystem>();
+        world.RegisterSystem<LightingSystem>();
 
         // Render System
         Signature RenderSys = RenderSystem::RegisterAll();
@@ -41,6 +45,11 @@ namespace Eclipse
         hi2.set(world.GetComponentType<TransformComponent>(), 1);
         hi2.set(world.GetComponentType<CameraComponent>(), 1);
         world.RegisterSystemSignature<CameraSystem>(hi2);
+
+        Signature hi3;
+        hi3.set(world.GetComponentType<TransformComponent>(), 1);
+        hi3.set(world.GetComponentType<PointLightComponent>(), 1);
+        world.RegisterSystemSignature<LightingSystem>(hi3);
 
         //Check this! - Rachel
         CameraSystem::Init();
@@ -96,7 +105,10 @@ namespace Eclipse
                 world.Update<CameraSystem>();
             }
 
+            engine->gGraphics.GlobalFrameBufferBind();
+            world.Update<LightingSystem>();
             world.Update<RenderSystem>();
+            engine->gGraphics.GlobalFrmeBufferDraw();
 
             ImGuiSetup::End(EditorState);
             OpenGL_Context::post_render();

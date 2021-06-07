@@ -9,14 +9,18 @@ namespace Eclipse
     class PointLight
     {
     private:
+        inline static int counter = 0;
+        InputWrapper inputhandler;
         inline static Eclipse::PointLightContainer _pointlights;
 
     public:
-        inline static int counter = 0;
-        InputWrapper inputhandler;
+        PointLightContainer GetContainer();
+        unsigned int GetNumberOfPointLights();
         static void CreatePointLight(unsigned int CreatedID);
         void DrawPointLights(unsigned int framebufferID);
+        void Draw(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
+
+    private:
         void CheckUniformLoc(Graphics::shaderIt _shdrpgm, PointLightComponent& hi, int index, unsigned int containersize);
-        void Draw(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID);
     };
 }
