@@ -23,7 +23,7 @@ void Eclipse::OpenGL_Context::on_key(int key, int scancode, int action, int mods
 
 static void on_scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    std::cout << "Mouse scroll wheel offset: (" << xoffset << ", " << yoffset << ")" << std::endl;
+   // std::cout << "Mouse scroll wheel offset: (" << xoffset << ", " << yoffset << ")" << std::endl;
 }
 
 static void on_window_size_callback(GLFWwindow* window, int width, int height)
@@ -53,7 +53,7 @@ void Eclipse::OpenGL_Context::on_close()
 void Eclipse::OpenGL_Context::mousepos_cb(GLFWwindow* pwin, double xpos, double ypos)
 {
 #ifdef _DEBUG
-    std::cout << "Mouse cursor position: (" << xpos << ", " << ypos << ")" << std::endl;
+    //std::cout << "Mouse cursor position: (" << xpos << ", " << ypos << ")" << std::endl;
 #endif
     (void)pwin;
     (void)xpos;
@@ -77,8 +77,8 @@ void error_cb(int error, char const* description)
 void mousescroll_cb(GLFWwindow* pwin, double xoffset, double yoffset)
 {
 #ifdef _DEBUG
-    std::cout << "Mouse scroll wheel offset: ("
-        << xoffset << ", " << yoffset << ")" << std::endl;
+    //std::cout << "Mouse scroll wheel offset: ("
+    //    << xoffset << ", " << yoffset << ")" << std::endl;
 #endif
     (void)pwin;
     (void)xoffset;

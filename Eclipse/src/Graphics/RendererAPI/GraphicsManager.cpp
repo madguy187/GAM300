@@ -185,7 +185,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(GLint model)
     break;
     case 12:
     {
-        engine->LightManager.CreatePointLight();
+        engine->LightManager.CreateLights(Eclipse::TypesOfLights::POINTLIGHT,EntityID);
     }
     break;
     }

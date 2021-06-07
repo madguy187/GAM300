@@ -188,6 +188,7 @@ xcopy /y /d "..\Dep\PhysX\Release\PhysXFoundation_64.dll" "$(TargetDir)" /q</Com
     <ClInclude Include="src\Graphics\FrameBuffer\WindowConstraint.h" />
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h" />
     <ClInclude Include="src\Graphics\InputHandler\InputWrapper.h" />
+    <ClInclude Include="src\Graphics\Lighting\PointLight.h" />
     <ClInclude Include="src\Graphics\Lighting\LightManager.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\AllBasicPrimitives.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.h" />
@@ -262,6 +263,7 @@ xcopy /y /d "..\Dep\PhysX\Release\PhysXFoundation_64.dll" "$(TargetDir)" /q</Com
     <ClCompile Include="src\Graphics\FrameBuffer\WindowConstraint.cpp" />
     <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp" />
     <ClCompile Include="src\Graphics\Lighting\LightManager.cpp" />
+    <ClCompile Include="src\Graphics\Lighting\PointLight.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cone.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cube.cpp" />

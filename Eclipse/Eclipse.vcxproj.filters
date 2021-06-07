@@ -375,6 +375,7 @@
     <ClInclude Include="src\Editor\Windows\GameView\GameView.h" />
     <ClInclude Include="src\Graphics\Lighting\LightManager.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\PointLightComponent.h" />
+    <ClInclude Include="src\Graphics\Lighting\PointLight.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp">
@@ -550,6 +551,7 @@
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\GameView\GameView.cpp" />
     <ClCompile Include="src\Graphics\Lighting\LightManager.cpp" />
+    <ClCompile Include="src\Graphics\Lighting\PointLight.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\BasicFrag.frag" />

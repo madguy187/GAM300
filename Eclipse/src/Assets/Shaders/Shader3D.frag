@@ -38,6 +38,7 @@ struct PointLight
 #define NR_POINT_LIGHTS 4  
 
 uniform PointLight pointLights[NR_POINT_LIGHTS];
+uniform int NumberOfPointLights;
 
 vec4 testMaterials()
 {
@@ -176,7 +177,12 @@ void main ()
      vec3 norm = (normal_from_vtxShader);
      vec3 viewDir = normalize(camPos - crntPos);
 
-     result += CalcPointLight( pointLights[0], norm, crntPos, viewDir);
+     int test = NumberOfPointLights;
+
+     for(int i = 0 ; i < 2 ; i++ )
+     {
+          result += CalcPointLight( pointLights[i], norm, crntPos, viewDir);
+     }
 
      fFragClr = vec4(result,1.0f);
     }
