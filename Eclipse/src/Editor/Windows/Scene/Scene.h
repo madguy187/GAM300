@@ -4,7 +4,7 @@
 
 namespace Eclipse
 {
-	class Scene : public ECGuiWindow
+	class Scene final : public ECGuiWindow
 	{
 	public:
 		void Update() override;

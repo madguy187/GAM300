@@ -4,7 +4,7 @@
 
 namespace Eclipse
 {
-	class eGameView : public ECGuiWindow
+	class eGameView final : public ECGuiWindow
 	{
 	public:
 		void Update() override;

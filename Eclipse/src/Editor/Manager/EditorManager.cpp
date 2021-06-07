@@ -72,4 +72,9 @@ namespace Eclipse
 	{
 		return MenuBar_;
 	}
+
+	size_t EditorManager::GetWindowListSize()
+	{
+		return Size_;
+	}
 }

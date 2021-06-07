@@ -421,7 +421,9 @@ void Eclipse::GraphicsManager::ShowTestWidgets(unsigned int id, unsigned int cre
     {
         TransformComponent& trans = engine->world.GetComponent<TransformComponent>(id);
         ImGui::DragFloat3("Scale", (float*)&trans.scale, 0.2f, 0.0f, 0.0f);
+        //ECGui::DrawSliderFloat3Widget("Scale", &trans.scale);
         ImGui::DragFloat3("Translate", (float*)&trans.pos, 0.2f, 0.0f, 0.0f);
+        //ECGui::DrawSliderFloat3Widget("Translate", &trans.position);
         ImGui::DragFloat3("Rotate", (float*)&trans.rot, 0.2f, 0.0f, 0.0f);
     }
 }
