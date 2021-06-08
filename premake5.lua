@@ -124,16 +124,32 @@ project "Eclipse"
 		defines
 		{
 			"ENGINE_PLATFORM_WINDOWS",
+      "_CRT_SECURE_NO_WARNINGS"
 		}
-
 
 	filter "configurations:Debug"
 		defines "ENGINE_DEBUG"
 		symbols "On"
 
+    postbuildcommands
+    {
+      "{COPY} ../Dep/PhysX/Debug/PhysX_64.dll %{cfg.targetdir}",
+      "{COPY} ../Dep/PhysX/Debug/PhysXCooking_64.dll %{cfg.targetdir}",
+      "{COPY} ../Dep/PhysX/Debug/PhysXFoundation_64.dll %{cfg.targetdir}",
+      "{COPY} ../Dep/mono/bin/mono-2.0-sgen.dll %{cfg.targetdir}"
+    }
+
 	filter "configurations:Release"
 		defines "ENGINE_RELEASE"
 		optimize "On"
+
+    postbuildcommands
+    {
+      "{COPY} ../Dep/PhysX/Release/PhysX_64.dll %{cfg.targetdir}",
+      "{COPY} ../Dep/PhysX/Release/PhysXCooking_64.dll %{cfg.targetdir}",
+      "{COPY} ../Dep/PhysX/Release/PhysXFoundation_64.dll %{cfg.targetdir}",
+      "{COPY} ../Dep/mono/bin/mono-2.0-sgen.dll %{cfg.targetdir}"
+    }
 
 	filter "configurations:Dist"
 		defines "ENGINE_DIST"
