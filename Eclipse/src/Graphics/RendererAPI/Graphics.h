@@ -3,10 +3,9 @@
 
 #include "glew.h"
 #include "glfw3.h"
-#include "glhelper.h"
 #include <stb_image.h>
 #include "glm.hpp"
-#include "Shader.h""
+#include "Shader.h"
 #include "ModelFactory.h"
 #include "Texture.h"
 #include "AllComponents.h"
@@ -21,10 +20,13 @@
 
 #include "FrameBuffer.h"
 #include "../src/ECS/SystemManager/Systems/System/System.h"
+#include "Graphics/OpenGL/OpenGL_Context.h"
 
 const int maxParticles = 10000;
 
 class World;
+
+using namespace Eclipse;
 
 class Graphics 
 {
@@ -33,15 +35,13 @@ class Graphics
   static void LoadTextures(std::string textureFile);
   static void LoadFonts(std::string FontFile);
   static void LoadParticles();
-  static void CreateObject(GLint model);
-  static void CreateFrameBuffer();
 
   //Loads the image and creates texture object
   static GLuint setup_texobj(std::string pathname);
 
 public:
   std::set<Entity> mEntities;
-  static FrameBuffer* m_frameBuffer;
+  //static FrameBuffer* m_frameBuffer;
 
   static std::map<std::string, std::unique_ptr<IModel>> models;
   using modelIt = std::map<std::string, std::unique_ptr<IModel>>::iterator;
@@ -49,10 +49,6 @@ public:
   using TextureIt = std::map<std::string, Texture>::iterator;
 
   static void load();
-  static void init();
-  static void update(double delta_time);
-  static void draw();
-  static void cleanup();
   static void unload();
   static void DeleteSprite(unsigned int id);
   static void DeleteAllSprites();
@@ -65,10 +61,6 @@ public:
 
   //container for static texts
   static std::map<std::string, Text> Texts;
-
-  //container for dialogue texts
-  static std::map<std::string, Dialogue> dialogue;
-  static std::vector<Dialogue> currDialogue;
 
   //container for sprites
   static std::multimap<unsigned int, Sprite*> sprites;
@@ -99,25 +91,6 @@ public:
   static modelIt FindModel(std::string);
   static shaderIt FindShaders(std::string);
 
-  void TESTRENDER();
-
-  void SortLayers();
-
-  void DrawBuffers(unsigned int framebuffer);
-
-  void CheckUniformLoc(Sprite& sprite);
-
-  static unsigned int framebuffer;
-  static unsigned int framebufferTest;
-  static unsigned int textureColorbuffer;
-
-  static float windowX;
-  static float windowY;
-  static float winWidth;
-  static float winHeight;
-  static vec2 frameBufferPos;
-
-  static std::bitset<2> dialogueBits;
 };
 
 #endif /* GRAPHICS_H */

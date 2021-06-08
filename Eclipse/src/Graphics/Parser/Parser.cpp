@@ -6,11 +6,6 @@ void Parser::ParseFile(std::string fileName)
 { 
     std::ifstream file(fileName.c_str());
 
-    if (file.is_open())
-    {
-      //std::cout << "test" << std::endl;
-    }
-
     if (file)
     {
         rapidjson::IStreamWrapper ss(file);

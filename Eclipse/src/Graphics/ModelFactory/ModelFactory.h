@@ -29,6 +29,7 @@
 #include "Cone.h"
 #include "Torus.h"
 #include "Pyramid.h"
+#include "Lines3D.h"
 
 #include <memory>
 

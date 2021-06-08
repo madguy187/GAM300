@@ -3,51 +3,115 @@
 
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RenderComponent.h"
+#include "ECS/ComponentManager/Components/CameraComponent.h"
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
+#include "ECS/SystemManager/Systems/System/CameraSystem.h"
+#include "ECS/SystemManager/Systems/System/EditorSystem.h"
+#include "ImGui/Setup/ImGuiSetup.h"
+
 
 namespace Eclipse
 {
     void Engine::Init()
     {
-      RenderSystem::Load();
-      mono.Init();
+        mono.Init();
+        RenderSystem::Init();
+        ImGuiSetup::Init(EditorState);
+        if (EditorState)
+            editorManager = std::make_unique<EditorManager>();
     }
 
     void Engine::Run()
     {
-      // register component
-      world.RegisterComponent<TransformComponent>();
-      world.RegisterComponent<RenderComponent>();
-      world.RegisterComponent<Camera>();
-      world.RegisterComponent<Sprite>();
+        // register component
+        world.RegisterComponent<TransformComponent>();
+        world.RegisterComponent<RenderComponent>();
+        world.RegisterComponent<CameraComponent>();
+        world.RegisterComponent<Sprite>();
 
-      // registering system
-      world.RegisterSystem<RenderSystem>();
+        // registering system
+        world.RegisterSystem<RenderSystem>();
+        world.RegisterSystem<CameraSystem>();
 
+        // Render System
+        Signature RenderSys = RenderSystem::RegisterAll();
+        world.RegisterSystemSignature<RenderSystem>(RenderSys);
 
-      // registering system signature
-      Signature hi;
-      hi.set(world.GetComponentType<TransformComponent>(), 1);
-      hi.set(world.GetComponentType<Sprite>(), 1);
+        Signature hi2;
+        hi2.set(world.GetComponentType<TransformComponent>(), 1);
+        hi2.set(world.GetComponentType<CameraComponent>(), 1);
+        world.RegisterSystemSignature<CameraSystem>(hi2);
 
-      world.RegisterSystemSignature<RenderSystem>(hi);
+        //Check this! - Rachel
+        CameraSystem::Init();
 
-      Entity ent = world.CreateEntity();
-      world.AddComponent(ent, TransformComponent{ 4.0f, 5.0f, 6.0f });
-      world.AddComponent(ent, Camera{ });
-      world.AddComponent(ent, Sprite{ });
+        float currTime = static_cast<float>(clock());
+        float accumulatedTime = 0.0f;
+        int framecount = 0;
+        float dt = 0.0f;
+        float updaterate = 4.0f;
 
-      while (!glfwWindowShouldClose(GLHelper::ptr_window))
-      {
+        while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
+        {
+            glfwPollEvents();
+            engine->gGraphics.mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });
+            //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-        // Darren was here
-        world.Update<RenderSystem>();
+            Game_Clock.set_timeSteps(0);
+            float newTime = static_cast<float>(clock());
+            Game_Clock.set_DeltaTime((newTime - currTime) / static_cast<float>(CLOCKS_PER_SEC));
 
+            if (Game_Clock.get_DeltaTime() == 0.0f)
+                Game_Clock.set_DeltaTime(0.0001f);
 
+            dt += Game_Clock.get_DeltaTime();
+            accumulatedTime += Game_Clock.get_DeltaTime();
 
+            while (accumulatedTime >= Game_Clock.get_fixedDeltaTime())
+            {
+                Game_Clock.set_timeSteps(Game_Clock.get_timeSteps() + 1);
+                accumulatedTime -= Game_Clock.get_fixedDeltaTime();
 
-      }
+            }
 
-      RenderSystem::unLoad();
+            if (dt > 1.0f / updaterate)
+            {
+                Game_Clock.setFPS(static_cast<float>(framecount) / dt);
+                framecount = 0;
+                dt -= 1.0f / updaterate;
+            }
+
+            currTime = newTime;
+
+            ImGuiSetup::Begin(EditorState);
+
+            if (Game_Clock.get_timeSteps() > 10)
+            {
+                Game_Clock.set_timeSteps(10);
+            }
+
+            EditorSystem::Update();
+
+            for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
+            {
+                world.Update<CameraSystem>();
+            }
+
+            world.Update<RenderSystem>();
+
+            ImGuiSetup::End(EditorState);
+            glfwSwapBuffers(OpenGL_Context::GetWindow());
+            glfwSwapInterval(1);
+            glFlush();
+        }
+
+        // unLoad
+        gGraphics.end();
+        ImGuiSetup::Destroy(EditorState);
+    }
+
+    bool Engine::GetEditorState()
+    {
+        return EditorState;
     }
 }

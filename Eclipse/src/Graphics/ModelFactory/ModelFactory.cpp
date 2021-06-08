@@ -29,6 +29,8 @@ std::unique_ptr<IModel> ModelFactory::create(unsigned int index)
 	  return std::make_unique<Torus>();
 	case 11:
 	  return std::make_unique<Pyramid>();
+	case 12:
+		return std::make_unique<Lines3D>();
 	default:
 		throw std::string("Invalid Model!");
 	}
