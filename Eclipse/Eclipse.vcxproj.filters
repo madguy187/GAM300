@@ -31,14 +31,8 @@
     <Filter Include="src\ECS\EntityManager">
       <UniqueIdentifier>{DEF76D6C-4A64-2967-1358-C1C47F834BCF}</UniqueIdentifier>
     </Filter>
-     <Filter Include="Mono">
-      <UniqueIdentifier>{7E2F897C-6A66-8A0D-1353-7010FF68060F}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mono\Manager">
-      <UniqueIdentifier>{A8092495-946C-B339-3DF2-EBEF29347FBC}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SparseSet">
-      <UniqueIdentifier>{FF3F5950-6BAA-0DC7-B4E8-BE6C2092EB1B}</UniqueIdentifier>
+    <Filter Include="src\ECS\SystemManager">
+      <UniqueIdentifier>{A66DCC9E-12DA-8799-DBCD-1FF747F9A901}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ECS\SystemManager\Systems">
       <UniqueIdentifier>{AD0975A7-1922-5CD1-E2CE-EB6A4EA6F06A}</UniqueIdentifier>
@@ -60,6 +54,9 @@
     </Filter>
     <Filter Include="src\Editor\Windows">
       <UniqueIdentifier>{FDB0990B-E994-5A61-52F5-54B43EF844E3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Editor\Windows\GameView">
+      <UniqueIdentifier>{81D87383-EDE5-A169-76CC-9D54E2D86D20}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Editor\Windows\Inspector">
       <UniqueIdentifier>{032AD2C2-EFE4-C16E-989C-3AB984360CFF}</UniqueIdentifier>
@@ -132,6 +129,12 @@
     </Filter>
     <Filter Include="src\Logger">
       <UniqueIdentifier>{5CCC981E-4884-DA6B-B18B-B3C79D62755C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Mono">
+      <UniqueIdentifier>{F54E22CF-E11B-7DDA-0A35-6B82F660B268}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Mono\Manager">
+      <UniqueIdentifier>{1FB044A8-0BA9-63FA-34DB-487F20334306}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Physics">
       <UniqueIdentifier>{9F8B9316-0B41-0C0C-9435-06E300EA0210}</UniqueIdentifier>
@@ -215,6 +218,9 @@
     </ClInclude>
     <ClInclude Include="src\Editor\Menu\MenuComponent.h">
       <Filter>src\Editor\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\GameView\GameView.h">
+      <Filter>src\Editor\Windows\GameView</Filter>
     </ClInclude>
     <ClInclude Include="src\Editor\Windows\Inspector\Inspector.h">
       <Filter>src\Editor\Windows\Inspector</Filter>
@@ -372,6 +378,9 @@
     <ClInclude Include="src\Logger\Logger.h">
       <Filter>src\Logger</Filter>
     </ClInclude>
+    <ClInclude Include="src\Mono\Manager\MonoManager.h">
+      <Filter>src\Mono\Manager</Filter>
+    </ClInclude>
     <ClInclude Include="src\Physics\PhysicsManager.h">
       <Filter>src\Physics</Filter>
     </ClInclude>
@@ -390,16 +399,12 @@
     <ClInclude Include="src\Time\Clock.h">
       <Filter>src\Time</Filter>
     </ClInclude>
-    <ClInclude Include="src\Mono\Manager\MonoManager.h">
-      <Filter>Mono\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="src\TypeID\TypeID.h">
       <Filter>src\TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Editor\Windows\GameView\GameView.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp">
@@ -441,9 +446,6 @@
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp">
       <Filter>src\ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
-    </ClCompile>
     <ClCompile Include="src\ECS\World.cpp">
       <Filter>src\ECS</Filter>
     </ClCompile>
@@ -458,6 +460,9 @@
     </ClCompile>
     <ClCompile Include="src\Editor\Menu\MenuComponent.cpp">
       <Filter>src\Editor\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\GameView\GameView.cpp">
+      <Filter>src\Editor\Windows\GameView</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\Inspector\Inspector.cpp">
       <Filter>src\Editor\Windows\Inspector</Filter>
@@ -570,6 +575,9 @@
     <ClCompile Include="src\Logger\Logger.cpp">
       <Filter>src\Logger</Filter>
     </ClCompile>
+    <ClCompile Include="src\Mono\Manager\MonoManager.cpp">
+      <Filter>src\Mono\Manager</Filter>
+    </ClCompile>
     <ClCompile Include="src\Physics\PhysicsManager.cpp">
       <Filter>src\Physics</Filter>
     </ClCompile>
@@ -579,13 +587,5 @@
     <ClCompile Include="src\pch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Mono\Manager\MonoManager.cpp">
-      <Filter>Mono\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Windows\GameView\GameView.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\Mono\ScriptAPI\EclipseBehavior.cs" />
-    <None Include="src\Mono\ScriptAPI\IScriptable.cs" />
   </ItemGroup>
 </Project>

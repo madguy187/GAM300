@@ -77,42 +77,43 @@ project "Eclipse"
 		"Dep/PhysX/include/pvd",
 		"Dep/PhysX/include/solver",
 		"Dep/PhysX/include/task",
-		"Dep/PhysX/include/vehicle"
+		"Dep/PhysX/include/vehicle",
+    "Dep/mono/include/mono-2.0"
 	}
 
   libdirs
   {
     "Dep/GLFW/lib-vc2019",
     "Dep/GLEW/lib/Release/x64",
-	"Dep/PhysX/Debug"
+	  "Dep/PhysX/Debug",
+    "Dep/mono/lib/"
   }
 
   links
   {
-	"mono-2.0-sgen.lib",
+	  "mono-2.0-sgen.lib",
     "opengl32.lib",
     "glew32.lib",
     "glfw3dll.lib",
-	"LowLevel_static_64.lib",
-	"LowLevelAABB_static_64.lib",
-	"LowLevelDynamics_static_64.lib",
-	"PhysX_64.lib",
-	"PhysXCharacterKinematic_static_64.lib",
-	"PhysXCommon_64.lib",
-	"PhysXCooking_64.lib",
-	"PhysXExtensions_static_64.lib",
-	"PhysXFoundation_64.lib",
-	"PhysXPvdSDK_static_64.lib",
-	"PhysXTask_static_64.lib",
-	"PhysXVehicle_static_64.lib",
-	"SampleBase_static_64.lib",
-	"SampleFramework_static_64.lib",
-	"SamplesToolkit_static_64.lib",
-	"SceneQuery_static_64.lib",
-	"SimulationController_static_64.lib",
-	"SnippetRender_static_64.lib",
-	"SnippetUtils_static_64.lib"
-	"Dep/mono/include/mono-2.0"
+	  "LowLevel_static_64.lib",
+	  "LowLevelAABB_static_64.lib",
+	  "LowLevelDynamics_static_64.lib",
+	  "PhysX_64.lib",
+	  "PhysXCharacterKinematic_static_64.lib",
+	  "PhysXCommon_64.lib",
+	  "PhysXCooking_64.lib",
+	  "PhysXExtensions_static_64.lib",
+	  "PhysXFoundation_64.lib",
+	  "PhysXPvdSDK_static_64.lib",
+	  "PhysXTask_static_64.lib",
+	  "PhysXVehicle_static_64.lib",
+	  "SampleBase_static_64.lib",
+	  "SampleFramework_static_64.lib",
+	  "SamplesToolkit_static_64.lib",
+	  "SceneQuery_static_64.lib",
+	  "SimulationController_static_64.lib",
+	  "SnippetRender_static_64.lib",
+	  "SnippetUtils_static_64.lib"
   }
 
 	filter "system:windows"
