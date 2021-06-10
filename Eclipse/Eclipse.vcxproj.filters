@@ -414,6 +414,7 @@
     <ClInclude Include="src\pch.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\EntityComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp">

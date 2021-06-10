@@ -160,6 +160,7 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentBase.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\EntityComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\RenderComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\TransformComponent.h" />
@@ -306,4 +307,4 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-</Project> 
+</Project>
