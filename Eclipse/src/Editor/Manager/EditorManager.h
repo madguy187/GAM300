@@ -13,13 +13,15 @@ namespace Eclipse
 		void InitMenu();
 		void InitFont();
 		std::vector<std::unique_ptr<ECGuiWindow>>& GetAllWindows();
+		MenuBar& GetMenuBar();
+		size_t GetWindowListSize();
 
 		template <typename TWindow>
 		TWindow* GetEditorWindow()
 		{
 			TWindow* temp = nullptr;
 
-			for (const auto& window : _windows)
+			for (const auto& window : Windows_)
 			{
 				temp = dynamic_cast<TWindow*>(window.get());
 
@@ -33,6 +35,7 @@ namespace Eclipse
 	private:
 		std::vector<std::unique_ptr<ECGuiWindow>> Windows_;
 		MenuBar MenuBar_;
+		size_t Size_{ 0 };
 
 		template <typename TWindow>
 		inline void AddWindow(const char* title)
@@ -42,6 +45,8 @@ namespace Eclipse
 
 			auto* com = MenuBar_.GetMenuComponent(EditorMenuType::WINDOWS);
 			com->AddItems(title);
+
+			Size_++;
 		}
 	};
 }

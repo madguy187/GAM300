@@ -21,7 +21,8 @@ enum class EditorWindowType
 	SCENE,
 	ASSETS,
 	PROFILER,
-	CONSOLELOG
+	CONSOLELOG,
+	GAMEVIEW
 };
 
 enum class EditorMenuType

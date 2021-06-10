@@ -4,7 +4,7 @@
 
 namespace Eclipse
 {
-	class Scene : public ECGuiWindow
+	class Scene final : public ECGuiWindow
 	{
 	public:
 		void Update() override;
@@ -14,6 +14,6 @@ namespace Eclipse
 	private:
 		glm::vec2 mViewportSize;
 		// Hold Frame Buffer Object
-		// std::shared_ptr<FrameBuffer> m_frameBuffer;
+		std::shared_ptr<FrameBuffer> m_frameBuffer;
 	};
 }

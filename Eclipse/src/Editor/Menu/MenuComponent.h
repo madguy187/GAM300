@@ -10,12 +10,14 @@ namespace Eclipse
 		MenuComponent(const char* name, EditorMenuType type);
 		void AddItems(const char* name);
 		void DrawImpl();
+		void DrawGuiWindows();
 		EditorMenuType GetType();
+		const char* GetName();
 	private:
 		const char* Name_;
 		EditorMenuType Type_;
-		int ID{ 0 };
+		int ID;
 		std::vector<std::string> List_;
-		std::unordered_map<const char*, int> ListToIndex_;
+		std::map<int, const char*> ListToName_;
 	};
 }

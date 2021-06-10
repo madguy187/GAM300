@@ -46,9 +46,9 @@ Signature Eclipse::RenderSystem::RegisterAll()
 
 void Eclipse::RenderSystem::Update()
 {
-    ImGui_ImplOpenGL3_NewFrame();
+   /* ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
+    ImGui::NewFrame();*/
 
     engine->gGraphics.UpdateFrameBuffer();
 
@@ -65,8 +65,7 @@ void Eclipse::RenderSystem::Update()
     engine->gDebugManager.DrawDebugShapes(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 
     engine->gGraphics.FrameBufferDraw();
-    ImGui::Render();
-
-    engine->gGraphics.ImguiRender();
-    engine->gGraphics.post_render();
+    /*ImGui::Render();*/
+    /*engine->gGraphics.ImguiRender();*/
+    //engine->gGraphics.post_render();
 }

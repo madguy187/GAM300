@@ -77,19 +77,21 @@ namespace Eclipse
 		static void DrawMenuBar(std::function<T> fn, Args&... args)
 		{
 			if (ImGuiAPI::BeginMenuBar())
+			{
 				fn(args...);
-
-			ImGuiAPI::EndMenuBar();
+				ImGuiAPI::EndMenuBar();
+			}
 		}
 
 		template <typename T, typename... Args>
-		static bool DrawMenuComponent(const char* name, 
+		static void DrawMenuComponent(const char* name,
 			std::function<T> fn, Args&... args)
 		{
-			if (ImGuiAPI::BeginMenuComponents(name))
+			if (ImGuiAPI::BeginMenuComponents(name)) 
+			{
 				fn(args...);
-
-			ImGuiAPI::BeginMenuComponents();
+				ImGuiAPI::EndMenuComponents();
+			}
 		}
 
 		static bool BeginPopUpButtonList(PopUpButtonSettings settings);
@@ -190,26 +192,26 @@ namespace Eclipse
 
 		// Supports Int and float only
 		static void DrawSliderIntWidget(const char* name, int* var, 
-			bool hideName = true, int minrange = 0.0f, int maxrange = 1000.0f);
+			bool hideName = true, int minrange = 0.0f, int maxrange = 500.0f);
 		static void DrawSliderFloatWidget(const char* name, float* var,
-			bool hideName = true, float minrange = 0.0f, float maxrange = 1000.0f);
-		static void DrawSliderFloat2Widget(const char* name, float vector[2],
-			bool hideName = true, float minrange = 0.0f, float maxrange = 1000.0f);
-		static void DrawSliderFloat3Widget(const char* name, float vector[3],
-			bool hideName = true, float minrange = 0.0f, float maxrange = 1000.0f);
-		static void DrawSliderFloat4Widget(const char* name, float vector[4],
-			bool hideName = true, float minrange = 0.0f, float maxrange = 1000.0f);
+			bool hideName = true, float minrange = 0.0f, float maxrange = 500.0f);
+		static void DrawSliderFloat2Widget(const char* name, ECVec2* vector,
+			bool hideName = true, float minrange = 0.0f, float maxrange = 500.0f);
+		static void DrawSliderFloat3Widget(const char* name, ECVec3* vector,
+			bool hideName = true, float minrange = 0.0f, float maxrange = 500.0f);
+		static void DrawSliderFloat4Widget(const char* name, ECVec4* vector,
+			bool hideName = true, float minrange = 0.0f, float maxrange = 500.0f);
 
 		// Input Widgets
 		static void DrawInputIntWidget(const char* name, int* var,
 			bool hideName = true, int snapValue = 0);
 		static void DrawInputFloatWidget(const char* name, float* var,
 			bool hideName = true, float snapValue = 0.0f);
-		static void DrawInputFloat2Widget(const char* name, float vector[2],
+		static void DrawInputFloat2Widget(const char* name, ECVec2* vector,
 			bool hideName = true);
-		static void DrawInputFloat3Widget(const char* name, float vector[3],
+		static void DrawInputFloat3Widget(const char* name, ECVec3* vector,
 			bool hideName = true);
-		static void DrawInputFloat4Widget(const char* name, float vector[4],
+		static void DrawInputFloat4Widget(const char* name, ECVec4* vector,
 			bool hideName = true);
 		static void DrawInputTextHintWidget(const char* name, const char* hintText,
 			char* buffer, size_t bufferSize, bool hideName = true);

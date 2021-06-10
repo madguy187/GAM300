@@ -55,6 +55,9 @@
     <Filter Include="src\Editor\Windows">
       <UniqueIdentifier>{FDB0990B-E994-5A61-52F5-54B43EF844E3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Editor\Windows\GameView">
+      <UniqueIdentifier>{81D87383-EDE5-A169-76CC-9D54E2D86D20}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Editor\Windows\Inspector">
       <UniqueIdentifier>{032AD2C2-EFE4-C16E-989C-3AB984360CFF}</UniqueIdentifier>
     </Filter>
@@ -126,6 +129,12 @@
     </Filter>
     <Filter Include="src\Logger">
       <UniqueIdentifier>{5CCC981E-4884-DA6B-B18B-B3C79D62755C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Mono">
+      <UniqueIdentifier>{F54E22CF-E11B-7DDA-0A35-6B82F660B268}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Mono\Manager">
+      <UniqueIdentifier>{1FB044A8-0BA9-63FA-34DB-487F20334306}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Physics">
       <UniqueIdentifier>{9F8B9316-0B41-0C0C-9435-06E300EA0210}</UniqueIdentifier>
@@ -209,6 +218,9 @@
     </ClInclude>
     <ClInclude Include="src\Editor\Menu\MenuComponent.h">
       <Filter>src\Editor\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\GameView\GameView.h">
+      <Filter>src\Editor\Windows\GameView</Filter>
     </ClInclude>
     <ClInclude Include="src\Editor\Windows\Inspector\Inspector.h">
       <Filter>src\Editor\Windows\Inspector</Filter>
@@ -366,6 +378,9 @@
     <ClInclude Include="src\Logger\Logger.h">
       <Filter>src\Logger</Filter>
     </ClInclude>
+    <ClInclude Include="src\Mono\Manager\MonoManager.h">
+      <Filter>src\Mono\Manager</Filter>
+    </ClInclude>
     <ClInclude Include="src\Physics\PhysicsManager.h">
       <Filter>src\Physics</Filter>
     </ClInclude>
@@ -445,6 +460,9 @@
     </ClCompile>
     <ClCompile Include="src\Editor\Menu\MenuComponent.cpp">
       <Filter>src\Editor\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\GameView\GameView.cpp">
+      <Filter>src\Editor\Windows\GameView</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\Inspector\Inspector.cpp">
       <Filter>src\Editor\Windows\Inspector</Filter>
@@ -556,6 +574,9 @@
     </ClCompile>
     <ClCompile Include="src\Logger\Logger.cpp">
       <Filter>src\Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Mono\Manager\MonoManager.cpp">
+      <Filter>src\Mono\Manager</Filter>
     </ClCompile>
     <ClCompile Include="src\Physics\PhysicsManager.cpp">
       <Filter>src\Physics</Filter>

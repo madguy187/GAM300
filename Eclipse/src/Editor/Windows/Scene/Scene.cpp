@@ -14,6 +14,8 @@ namespace Eclipse
 	{
 		Type = EditorWindowType::SCENE;
 		WindowName = "Scene";
+
+		m_frameBuffer = std::make_shared<FrameBuffer>(*engine->gGraphics.mRenderContext.GetFramebuffer(FrameBufferMode::SCENEVIEW));
 	}
 
 	void Scene::InitilializeFrameBuffer()
@@ -23,7 +25,7 @@ namespace Eclipse
 		if (mViewportSize != *((glm::vec2*)&viewportPanelSize))
 		{
 			// Resize the framebuffer based on the size of the imgui window
-			//m_frameBuffer->OnResize(static_cast<GLuint>(viewportPanelSize.x), static_cast<GLuint>(viewportPanelSize.y));
+			m_frameBuffer->Resize(static_cast<unsigned>(viewportPanelSize.x), static_cast<unsigned>(viewportPanelSize.y));
 			mViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 		}
 
@@ -35,11 +37,9 @@ namespace Eclipse
 
 	void Scene::RunFrameBuffer()
 	{
-		// Have an id for color attachment
-		//GLuint textureID = m_frameBuffer->GetColourAttachment();
-
 		// Set Image size
-		//ImGui::Image((void*)(static_cast<size_t>(textureID)), ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
+			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 		if (ECGui::IsItemHovered())
 		{
