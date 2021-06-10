@@ -15,21 +15,32 @@ static constexpr unsigned MAX_PAGE_SIZE = 10;
 
 enum class EditorWindowType
 {
-	UNASSIGNED,
 	HIERARCHY,
 	INSPECTOR,
 	SCENE,
 	ASSETS,
 	PROFILER,
 	CONSOLELOG,
-	GAMEVIEW
+	GAMEVIEW,
+	UNASSIGNED
 };
 
 enum class EditorMenuType
 {
-	UNASSIGNED,
 	FILE,
 	EDIT,
 	WINDOWS,
-	HELP
+	HELP,
+	UNASSIGNED
+};
+
+enum class EntityType
+{
+	ENT_GEO_CUBE,
+	ENT_GEO_SPHERE,
+	ENT_GEO_PYRAMID,
+	ENT_GEO_CONE,
+	ENT_GEO_TORUS,
+	ENT_GEO_CUBE,
+	ENT_UNASSIGNED
 };
