@@ -130,6 +130,12 @@
     <Filter Include="src\Logger">
       <UniqueIdentifier>{5CCC981E-4884-DA6B-B18B-B3C79D62755C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Mono">
+      <UniqueIdentifier>{F54E22CF-E11B-7DDA-0A35-6B82F660B268}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Mono\Manager">
+      <UniqueIdentifier>{1FB044A8-0BA9-63FA-34DB-487F20334306}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Physics">
       <UniqueIdentifier>{9F8B9316-0B41-0C0C-9435-06E300EA0210}</UniqueIdentifier>
     </Filter>
@@ -372,6 +378,9 @@
     <ClInclude Include="src\Logger\Logger.h">
       <Filter>src\Logger</Filter>
     </ClInclude>
+    <ClInclude Include="src\Mono\Manager\MonoManager.h">
+      <Filter>src\Mono\Manager</Filter>
+    </ClInclude>
     <ClInclude Include="src\Physics\PhysicsManager.h">
       <Filter>src\Physics</Filter>
     </ClInclude>
@@ -396,6 +405,8 @@
     <ClInclude Include="src\pch.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\Events\EventManager.h" />
+    <ClInclude Include="src\Events\Events.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp">
@@ -575,6 +586,9 @@
     <ClCompile Include="src\Logger\Logger.cpp">
       <Filter>src\Logger</Filter>
     </ClCompile>
+    <ClCompile Include="src\Mono\Manager\MonoManager.cpp">
+      <Filter>src\Mono\Manager</Filter>
+    </ClCompile>
     <ClCompile Include="src\Physics\PhysicsManager.cpp">
       <Filter>src\Physics</Filter>
     </ClCompile>
@@ -584,22 +598,5 @@
     <ClCompile Include="src\pch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\Assets\Shaders\BasicFrag.frag" />
-    <None Include="src\Assets\Shaders\BasicVtx.vert" />
-    <None Include="src\Assets\Shaders\DebugFrag.frag" />
-    <None Include="src\Assets\Shaders\DebugVtx.vert" />
-    <None Include="src\Assets\Shaders\light.frag" />
-    <None Include="src\Assets\Shaders\light.vert" />
-    <None Include="src\Assets\Shaders\LightFrag.frag" />
-    <None Include="src\Assets\Shaders\LightVtx.vert" />
-    <None Include="src\Assets\Shaders\ParticlesFrag.frag" />
-    <None Include="src\Assets\Shaders\ParticlesVtx.vert" />
-    <None Include="src\Assets\Shaders\Shader3D.frag" />
-    <None Include="src\Assets\Shaders\Shader3D.vert" />
-    <None Include="src\Assets\Shaders\Shaders.json" />
-    <None Include="src\Assets\Shaders\textFrag.frag" />
-    <None Include="src\Assets\Shaders\textVtx.vert" />
   </ItemGroup>
 </Project>

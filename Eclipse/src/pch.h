@@ -9,36 +9,6 @@
 // memory
 #include <memory>
 
-// containers
-#include <bitset>
-#include <array>
-#include <queue>
-#include <unordered_map>
-#include <set>
-
-// functional
-#include <algorithm>
-
-// error
-#include <assert.h>
-
-// engine extern pointer
-#include "EntryPoint/EntryPoint.h"
-
-// Imgui
-#include "imgui.h"
-#include "examples/imgui_impl_opengl3.h"
-#include "examples/imgui_impl_glfw.h"
-
-// Logger
-#include "Logger/Logger.h"
-
-#include "matrix_transform.hpp"
-#include "type_ptr.hpp"
-#include "matrix_transform_2d.hpp"
-
-#include "stb_image.h"
-
 #include <iostream>
 #include <sstream>
 #include <iomanip>
@@ -58,6 +28,43 @@
 #include <array>
 #include <algorithm>
 #include <memory>
+
+// functional
+#include <algorithm>
+#include <functional>
+
+// error
+#include <assert.h>
+
+// containers
+#include <bitset>
+#include <array>
+#include <queue>
+#include <unordered_map>
+#include <set>
+
+// Events
+#include "Events/Events.h"
+#include "Events/EventManager.h"
+
+// engine extern pointer
+#include "EntryPoint/EntryPoint.h"
+
+// Imgui
+#include "imgui.h"
+#include "examples/imgui_impl_opengl3.h"
+#include "examples/imgui_impl_glfw.h"
+
+// Logger
+#include "Logger/Logger.h"
+
+#include "matrix_transform.hpp"
+#include "type_ptr.hpp"
+#include "matrix_transform_2d.hpp"
+
+#include "stb_image.h"
+
+
 
 #include "GLEW/include/GL/glew.h"
 #include "GLFW/include/GLFW/glfw3.h"
