@@ -18,7 +18,9 @@ namespace Eclipse
 		void Simulate();
 		void Unload();
 
-		void AttachBoxToActor(Entity ent,float hx, float hy, float hz);
+		void AttachBoxToActor(Entity ent,float halfx, float halfy, float halfz);
+		void AttachSphereToActor(Entity ent,float radius);
+		void AttachCapsuleToActor(Entity ent, float radius, float halfheight);
 		void CreateActor(Entity ent, bool is_static);
 		void AddActorToScene(Entity ent);
 		void RemoveActorFromScene(Entity ent);

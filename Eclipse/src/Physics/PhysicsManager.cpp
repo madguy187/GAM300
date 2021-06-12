@@ -37,23 +37,23 @@ namespace Eclipse
 
 		PxSceneDesc sceneDesc(Px_Physics->getTolerancesScale());
 		sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
-		
+
 		if (!sceneDesc.cpuDispatcher)
 		{
 			PxDefaultCpuDispatcher* mCpuDispatcher = PxDefaultCpuDispatcherCreate(2);
 			if (!mCpuDispatcher)
-				std::cout << "PxDefaultCpuDispatcherCreate failed!" <<  std::endl;
+				std::cout << "PxDefaultCpuDispatcherCreate failed!" << std::endl;
 			sceneDesc.cpuDispatcher = mCpuDispatcher;
 		}
 		if (!sceneDesc.filterShader)
 			sceneDesc.filterShader = PxDefaultSimulationFilterShader;
 
-//#ifdef PX_WINDOWS
-//		if (!sceneDesc.gpuDispatcher && mCudaContextManager)
-//		{
-//			sceneDesc.gpuDispatcher = mCudaContextManager->getGpuDispatcher();
-//		}
-//#endif
+		//#ifdef PX_WINDOWS
+		//		if (!sceneDesc.gpuDispatcher && mCudaContextManager)
+		//		{
+		//			sceneDesc.gpuDispatcher = mCudaContextManager->getGpuDispatcher();
+		//		}
+		//#endif
 		Px_Scene = Px_Physics->createScene(sceneDesc);
 		if (!Px_Scene)
 			std::cout << "createScene failed!" << std::endl;
@@ -61,7 +61,7 @@ namespace Eclipse
 
 	}
 
-	void PhysicsManager::CreateActor(Entity ent,bool is_static)
+	void PhysicsManager::CreateActor(Entity ent, bool is_static)
 	{
 		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
 		if (RigidObjects.find(ent) != RigidObjects.end() || StaticObjects.find(ent) != StaticObjects.end())
@@ -74,7 +74,7 @@ namespace Eclipse
 		if (is_static)
 		{
 			PxRigidStatic* temp = Px_Physics->createRigidStatic(PxTransform(temptrans));
-			StaticObjects.insert(std::make_pair(ent,temp));
+			StaticObjects.insert(std::make_pair(ent, temp));
 		}
 		else
 		{
@@ -83,7 +83,7 @@ namespace Eclipse
 		}
 	}
 
-	void PhysicsManager::AttachBoxToActor(Entity ent,float hx, float hy, float hz)
+	void PhysicsManager::AttachBoxToActor(Entity ent, float hx, float hy, float hz)
 	{
 		if (StaticObjects.find(ent) == StaticObjects.end() || RigidObjects.find(ent) == RigidObjects.end())
 			return;
@@ -98,7 +98,7 @@ namespace Eclipse
 		if (StaticObjects.find(ent) != StaticObjects.end())
 		{
 			PxRigidStatic* temp = StaticObjects[ent];
-			PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*temp, PxBoxGeometry{ hx,hy,hz },*tempmat);
+			PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*temp, PxBoxGeometry{ hx,hy,hz }, *tempmat);
 			temp->attachShape(*tempshape);
 
 		}
@@ -109,6 +109,63 @@ namespace Eclipse
 			PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*temp, PxBoxGeometry{ hx,hy,hz }, *tempmat);
 			temp->attachShape(*tempshape);
 		}
+	}
+
+	void PhysicsManager::AttachSphereToActor(Entity ent, float radius)
+	{
+		if (StaticObjects.find(ent) == StaticObjects.end() || RigidObjects.find(ent) == RigidObjects.end())
+			return;
+
+		PxMaterial* tempmat = Px_Physics->createMaterial(0.5, 0.5, 0.1);
+		if (!tempmat)
+		{
+			std::cout << "creatematerial failed" << std::endl;
+			return;
+		}
+
+		if (StaticObjects.find(ent) != StaticObjects.end())
+		{
+			PxRigidStatic* temp = StaticObjects[ent];
+			PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*temp, PxSphereGeometry{ radius }, *tempmat);
+			temp->attachShape(*tempshape);
+
+		}
+
+		if (RigidObjects.find(ent) != RigidObjects.end())
+		{
+			PxRigidDynamic* temp = RigidObjects[ent];
+			PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*temp, PxSphereGeometry{ radius }, *tempmat);
+			temp->attachShape(*tempshape);
+		}
+	}
+
+	void PhysicsManager::AttachCapsuleToActor(Entity ent, float radius,float halfheight)
+	{
+		if (StaticObjects.find(ent) == StaticObjects.end() || RigidObjects.find(ent) == RigidObjects.end())
+			return;
+
+		PxMaterial* tempmat = Px_Physics->createMaterial(0.5, 0.5, 0.1);
+		if (!tempmat)
+		{
+			std::cout << "creatematerial failed" << std::endl;
+			return;
+		}
+
+		if (StaticObjects.find(ent) != StaticObjects.end())
+		{
+			PxRigidStatic* temp = StaticObjects[ent];
+			PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*temp, PxCapsuleGeometry{ radius,halfheight }, *tempmat);
+			temp->attachShape(*tempshape);
+
+		}
+
+		if (RigidObjects.find(ent) != RigidObjects.end())
+		{
+			PxRigidDynamic* temp = RigidObjects[ent];
+			PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*temp, PxCapsuleGeometry{ radius,halfheight }, *tempmat);
+			temp->attachShape(*tempshape);
+		}
+
 	}
 
 	void PhysicsManager::AddActorToScene(Entity ent)
