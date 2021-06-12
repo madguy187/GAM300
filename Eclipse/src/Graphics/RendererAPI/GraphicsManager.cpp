@@ -92,7 +92,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(GLint model)
         testtest.AddComponent(EntityID, TransformComponent{ });
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
         sprite.ID = EntityID;
-        sprite.shaderRef = Graphics::shaderpgms.find("nooblight");
+        sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("sphere");
         sprite.ID = EntityID;
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
@@ -279,7 +279,7 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
     GLuint tex_loc = sprite.shaderRef->second.GetLocation("uTex2d");
     GLuint lll = sprite.shaderRef->second.GetLocation("lightColor");
     GLuint cam = sprite.shaderRef->second.GetLocation("camPos");
-    GLuint pos = sprite.shaderRef->second.GetLocation("lightPos");
+    //GLuint pos = sprite.shaderRef->second.GetLocation("lightPos");
     GLuint model2 = sprite.shaderRef->second.GetLocation("model");
 
     if (uniform_var_loc1 >= 0)
@@ -297,10 +297,10 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
         glUniformMatrix4fv(model2, 1, GL_FALSE, glm::value_ptr(model));
     }
 
-    if (pos >= 0)
+   /* if (pos >= 0)
     {
         glUniform3f(pos, spherepos.x, spherepos.y, spherepos.z);
-    }
+    }*/
 
     if (cam >= 0)
     {
