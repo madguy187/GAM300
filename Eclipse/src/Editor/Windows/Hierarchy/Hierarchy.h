@@ -4,6 +4,12 @@
 
 namespace Eclipse
 {
+	struct EntitySelectionTracker
+	{
+		Entity index{ 0 };
+		std::string name{};
+	};
+
 	class Hierarchy final : public ECGuiWindow
 	{
 	public:

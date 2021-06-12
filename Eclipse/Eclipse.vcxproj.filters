@@ -416,6 +416,7 @@
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\EntityComponent.h" />
     <ClInclude Include="src\Library\Strings\Lexical.h" />
+    <ClInclude Include="src\Editor\Windows\Hierarchy\Hierarchy.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp">
@@ -598,5 +599,6 @@
     <ClCompile Include="src\pch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Editor\Windows\Hierarchy\Hierarchy.cpp" />
   </ItemGroup>
 </Project>

@@ -364,16 +364,19 @@ namespace Eclipse
 		{
 			try {
 				_data.at(0) = value;
+				x = value;
 			}
 			catch (std::out_of_range const&) {
 				std::cout << "Setting Index Out of Vector Size!" << std::endl;
 			}
+
 		}
 
 		void setY(T value)
 		{
 			try {
 				_data.at(1) = value;
+				y = value;
 			}
 			catch (std::out_of_range const&) {
 				std::cout << "Setting Index Out of Vector Size!" << std::endl;
@@ -384,6 +387,7 @@ namespace Eclipse
 		{
 			try {
 				_data.at(2) = value;
+				z = value;
 			}
 			catch (std::out_of_range const&) {
 				std::cout << "Setting Index Out of Vector Size!" << std::endl;
@@ -394,6 +398,7 @@ namespace Eclipse
 		{
 			try {
 				_data.at(3) = value;
+				w = value;
 			}
 			catch (std::out_of_range const&) {
 				std::cout << "Setting Index Out of Vector Size!" << std::endl;
