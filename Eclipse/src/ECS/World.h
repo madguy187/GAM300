@@ -72,6 +72,7 @@ namespace Eclipse
 
 		Entity CreateEntity();
 		void DestroyEntity(Entity entity);
+		bool CheckComponent(Entity entity, Signature signature);
 		
 		template <typename T>
 		void Update()

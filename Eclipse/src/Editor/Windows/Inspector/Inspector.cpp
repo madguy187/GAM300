@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "Inspector.h"
+#include "ECS/ComponentManager/Components/EntityComponent.h"
+#include "ECS/ComponentManager/Components/TransformComponent.h"
 
 namespace Eclipse
 {
@@ -17,6 +19,39 @@ namespace Eclipse
 
 	void Inspector::DrawImpl()
 	{
-		// Do stuff here
+		WindowSize_.setX(ECGui::GetWindowSize().x);
+		WindowSize_.setY(ECGui::GetWindowSize().y);
+
+		if (!engine->editorManager->EntityHierarchyList_.empty())
+		{
+			auto& entcom = engine->world.GetComponent<EntityComponent>
+				(engine->editorManager->EntityHierarchyList_[engine->editorManager->GEHIndex_]);
+
+			ECGui::DrawInputTextWidget("EntityName", const_cast<char*>(entcom.Name.c_str()),
+				entcom.Name.size());
+
+			ECGui::InsertHorizontalLineSeperator();
+
+
+		}
+		else
+		{
+			const char* entName = "No Entities";
+
+			ECGui::DrawInputTextWidget("EntityName", const_cast<char*>(entName),
+				strlen(entName));
+		}
+
+		ECGui::InsertHorizontalLineSeperator();
+	}
+
+	bool Inspector::ShowEntityProperty(Entity ID)
+	{
+		return false;
+	}
+
+	bool Inspector::ShowTransformProperty(Entity ID)
+	{
+		return false;
 	}
 }

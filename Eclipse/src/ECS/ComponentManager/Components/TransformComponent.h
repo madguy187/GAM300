@@ -7,6 +7,7 @@ namespace Eclipse
 	{
 		ECVec3 position{ 0.0f, 0.0f, 0.0f };
 		ECVec3 rotation{ 0.0f, 0.0f, 0.0f }; //rotation around x,y,z-axis respectively
+		ECVec3 scale{ 0.0f, 0.0f, 0.0f };
 
 		//float x = 0.0f;
 		//float y = 0.0f;

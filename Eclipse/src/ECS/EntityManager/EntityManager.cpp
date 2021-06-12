@@ -51,6 +51,14 @@ namespace Eclipse
 		entitySignature[entity].set(index, false);
 	}
 
+	bool EntityManager::CheckComponent(Entity entity, Signature signature)
+	{
+		if ((entitySignature[entity] & signature) != 0)
+			return true;
+
+		return false;
+	}
+
 	Signature EntityManager::GetSignature(Entity entity)
 	{
 		return entitySignature[entity];

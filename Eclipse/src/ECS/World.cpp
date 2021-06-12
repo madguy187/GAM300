@@ -17,7 +17,12 @@ namespace Eclipse
 
 	void World::DestroyEntity(Entity entity)
 	{
-		
+		return entityManager->Destroy(entity);
+	}
+
+	bool World::CheckComponent(Entity entity, Signature signature)
+	{
+		return entityManager->CheckComponent(entity, signature);
 	}
 	
 	void World::Clear()
