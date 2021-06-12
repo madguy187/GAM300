@@ -26,8 +26,13 @@ namespace Eclipse
 		EntFilter.Draw();
 		ECGui::InsertHorizontalLineSeperator();
 
-		TrackEntitySelection(engine->editorManager->EntityHierarchyList_, CurrEnt_, 
-			PrevEnt_, engine->editorManager->GEHIndex_, EntFilter);
+		if (ECGui::BeginTreeNode("Default Scene"))
+		{
+			TrackEntitySelection(engine->editorManager->EntityHierarchyList_, CurrEnt_,
+				PrevEnt_, engine->editorManager->GEHIndex_, EntFilter);
+
+			ECGui::EndTreeNode();
+		}
 	}
 
 	void Hierarchy::TrackEntitySelection(const std::vector<Entity>& list, EntitySelectionTracker& curr, 

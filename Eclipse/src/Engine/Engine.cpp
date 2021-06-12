@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Engine.h"
 
+#include "ECS/ComponentManager/Components/EntityComponent.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RenderComponent.h"
 #include "ECS/ComponentManager/Components/CameraComponent.h"
@@ -42,6 +43,7 @@ namespace Eclipse
             editorManager = std::make_unique<EditorManager>();
 
         // register component
+        world.RegisterComponent<EntityComponent>();
         world.RegisterComponent<TransformComponent>();
         world.RegisterComponent<RenderComponent>();
         world.RegisterComponent<CameraComponent>();

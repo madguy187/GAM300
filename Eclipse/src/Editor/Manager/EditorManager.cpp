@@ -22,7 +22,7 @@ namespace Eclipse
 		AddWindow<Scene>("Scene");
 		AddWindow<eGameView>("GameView");
 		AddWindow<Inspector>("Inspector");
-		//AddWindow<Hierarchy>("Hierarchy");
+		AddWindow<Hierarchy>("Hierarchy");
 	}
 
 	void EditorManager::InitMenu()
