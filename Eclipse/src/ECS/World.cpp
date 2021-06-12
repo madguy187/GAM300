@@ -17,7 +17,9 @@ namespace Eclipse
 
 	void World::DestroyEntity(Entity entity)
 	{
-		
+		componentManager->RemoveComponentBySignature(entity, entityManager->GetSignature(entity));
+		entityManager->Destroy(entity);
+		systemManager->EntitySignatureChanged(entity, 0);
 	}
 	
 	void World::Clear()
