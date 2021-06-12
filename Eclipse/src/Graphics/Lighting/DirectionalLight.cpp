@@ -67,7 +67,7 @@ void Eclipse::DirectionalLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, Dir
     // Direction
     if (uniform_var_loc1 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc1, trans.pos.x * -1, trans.pos.y * -1, trans.pos.z * -1));
+        //GLCall(glUniform3f(uniform_var_loc1, trans.pos.x * -1, trans.pos.y * -1, trans.pos.z * -1));
     }
 
     // ambient
@@ -92,15 +92,25 @@ void Eclipse::DirectionalLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, Dir
     {
         glm::mat4 mModelNDC;
 
+        //glm::mat4 model = glm::mat4(1.0f);
+        //model = glm::translate(model, trans.pos);
+        //model = glm::rotate(model, glm::radians(trans.rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
+        //model = glm::rotate(model, glm::radians(trans.rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
+        //model = glm::rotate(model, glm::radians(trans.rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
+        //model = glm::scale(model, trans.scale);
+        //mModelNDC = camera.projMtx * camera.viewMtx * model;
+        //GLCall(glUniformMatrix4fv(uniform_var_loc5, 1, GL_FALSE, glm::value_ptr(mModelNDC)));
+        //GLCall(glUniformMatrix4fv(uniform_var_lo6, 1, GL_FALSE, glm::value_ptr(model)));
+
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, trans.pos);
-        model = glm::rotate(model, glm::radians(trans.rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(trans.rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(trans.rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::scale(model, trans.scale);
+        model = glm::translate(model, trans.position.ConvertToGlmVec3Type());
+        model = glm::rotate(model, glm::radians(trans.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(trans.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(trans.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, trans.scale.ConvertToGlmVec3Type());
         mModelNDC = camera.projMtx * camera.viewMtx * model;
-        GLCall(glUniformMatrix4fv(uniform_var_loc5, 1, GL_FALSE, glm::value_ptr(mModelNDC)));
-        GLCall(glUniformMatrix4fv(uniform_var_lo6, 1, GL_FALSE, glm::value_ptr(model)));
+        glUniformMatrix4fv(uniform_var_loc5, 1, GL_FALSE, glm::value_ptr(mModelNDC));
+        glUniformMatrix4fv(uniform_var_lo6, 1, GL_FALSE, glm::value_ptr(model));
     }
 
     if (uniform_var_loc7 >= 0)

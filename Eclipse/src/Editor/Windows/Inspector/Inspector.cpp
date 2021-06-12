@@ -31,7 +31,7 @@ namespace Eclipse
 				entcom.Name.size());
 
 			ECGui::InsertHorizontalLineSeperator();
-			ECGui::PushItemWidth(WindowSize_.y);
+			ECGui::PushItemWidth(WindowSize_.getX());
 
 			ShowEntityProperty(currEnt);
 			ShowTransformProperty(currEnt);
@@ -84,7 +84,7 @@ namespace Eclipse
 				ECGui::DrawSliderFloat3Widget("TransRot", &transCom.rotation);
 
 				ECGui::DrawTextWidget<const char*>("Scale", "");
-				ECGui::DrawSliderFloat3Widget("TransScale", &transCom.sScale);
+				ECGui::DrawSliderFloat3Widget("TransScale", &transCom.scale);
 			}
 		}
 

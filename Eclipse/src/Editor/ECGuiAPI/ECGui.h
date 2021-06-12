@@ -64,13 +64,14 @@ namespace Eclipse
 		/*                           Dynamic Widgets                             */
 		/*************************************************************************/
 		template <typename T, typename... Args>
-		static bool BeginPopUpButtonList(PopUpButtonSettings settings,
+		static void BeginPopUpButtonList(PopUpButtonSettings settings,
 			std::function<T> fn, Args&... args)
 		{
 			if (ImGuiAPI::BeginPopUpButtonList(settings.Name, settings.ID))
+			{
 				fn(args...);
-
-			ImGuiAPI::EndPopUpButtonList();
+				ImGuiAPI::EndPopUpButtonList();
+			}
 		}
 
 		template <typename T, typename... Args>
@@ -198,7 +199,7 @@ namespace Eclipse
 		static void DrawSliderFloat2Widget(const char* name, ECVec2* vector,
 			bool hideName = true, float minrange = 0.0f, float maxrange = 500.0f);
 		static void DrawSliderFloat3Widget(const char* name, ECVec3* vector,
-			bool hideName = true, float minrange = 0.0f, float maxrange = 500.0f);
+			bool hideName = true, float minrange = 0.0f, float maxrange = 50.0f);
 		static void DrawSliderFloat4Widget(const char* name, ECVec4* vector,
 			bool hideName = true, float minrange = 0.0f, float maxrange = 500.0f);
 

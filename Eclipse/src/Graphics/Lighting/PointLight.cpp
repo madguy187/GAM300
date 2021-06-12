@@ -67,7 +67,7 @@ void Eclipse::PointLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, PointLigh
     {
         glm::mat4 mModelNDC;
 
-        glm::mat4 model = glm::mat4(1.0f);
+        /*glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, PointlightTransform.pos);
         model = glm::rotate(model, glm::radians(PointlightTransform.rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(PointlightTransform.rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -75,13 +75,23 @@ void Eclipse::PointLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, PointLigh
         model = glm::scale(model, PointlightTransform.scale);
         mModelNDC = camera.projMtx * camera.viewMtx * model;
         GLCall(glUniformMatrix4fv(uniform_var_loc8, 1, GL_FALSE, glm::value_ptr(mModelNDC)));
-        GLCall(glUniformMatrix4fv(uniform_var_loc10, 1, GL_FALSE, glm::value_ptr(model)));
+        GLCall(glUniformMatrix4fv(uniform_var_loc10, 1, GL_FALSE, glm::value_ptr(model)));*/
+
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, PointlightTransform.position.ConvertToGlmVec3Type());
+        model = glm::rotate(model, glm::radians(PointlightTransform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(PointlightTransform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(PointlightTransform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, PointlightTransform.scale.ConvertToGlmVec3Type());
+        mModelNDC = camera.projMtx * camera.viewMtx * model;
+        glUniformMatrix4fv(uniform_var_loc8, 1, GL_FALSE, glm::value_ptr(mModelNDC));
+        glUniformMatrix4fv(uniform_var_loc10, 1, GL_FALSE, glm::value_ptr(model));
     }
 
     // position
     if (uniform_var_loc1 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc1, PointlightTransform.pos.x, PointlightTransform.pos.y, PointlightTransform.pos.z));
+        GLCall(glUniform3f(uniform_var_loc1, PointlightTransform.position.x, PointlightTransform.position.y, PointlightTransform.position.z));
     }
 
     // ambient

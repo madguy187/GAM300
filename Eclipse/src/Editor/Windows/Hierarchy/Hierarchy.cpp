@@ -15,10 +15,32 @@ namespace Eclipse
 	{
 		Type = EditorWindowType::HIERARCHY;
 		WindowName = "Hierarchy";
+
+		// For Geometry
+		TagList_.push_back(std::vector<std::string>());
+		// For Lights
+		TagList_.push_back(std::vector<std::string>());
+
+		for (int index = 0; index != static_cast<int>(EntityType::ENT_LIGHT_POINT); ++index)
+		{
+			EntityType temp = static_cast<EntityType>(index);
+			TagList_[0].push_back(lexical_cast<std::string>(temp));
+		}
+
+		for (int index = static_cast<int>(EntityType::ENT_LIGHT_POINT); 
+			index != static_cast<int>(EntityType::ENT_UNASSIGNED); ++index)
+		{
+			EntityType temp = static_cast<EntityType>(index);
+			TagList_[1].push_back(lexical_cast<std::string>(temp));
+		}
 	}
 
 	void Hierarchy::DrawImpl()
 	{
+		PopUpButtonSettings settings{ "Add Entity", "EntityCreationListBegin" };
+		ECGui::BeginPopUpButtonList<void()>(settings, std::bind(&Hierarchy::ShowEntityCreationList, this));
+		ECGui::InsertHorizontalLineSeperator();
+
 		ECGui::DrawTextWidget<size_t>("Entity Count", engine->editorManager->EntityHierarchyList_.size());
 		ECGui::InsertHorizontalLineSeperator();
 
@@ -80,6 +102,58 @@ namespace Eclipse
 
 					globalIndex = index;
 				}
+			}
+		}
+	}
+
+	void Hierarchy::ShowEntityCreationList()
+	{
+		for (size_t i = 0; i < TagList_.size(); ++i)
+		{
+			switch (i)
+			{
+				case 0:
+				{
+					if (ECGui::BeginTreeNode("Geometry"))
+					{
+						for (size_t j = 0; j < TagList_[i].size(); ++j)
+						{
+							bool selected = false;
+
+							if (ECGui::CreateSelectableButton(TagList_[i][j].c_str(), &selected))
+							{
+								Entity ID = engine->editorManager->CreateEntity(lexical_cast<EntityType>(TagList_[i][j]));
+								engine->gGraphics.CreatePrimitives(ID, static_cast<int>(i * TagList_.size() + j));
+							}
+						}
+
+						ECGui::EndTreeNode();
+					}
+
+					break;
+				}
+				case 1:
+				{
+					if (ECGui::BeginTreeNode("Lights"))
+					{
+						for (size_t j = 0; j < TagList_[i].size(); ++j)
+						{
+							bool selected = false;
+
+							if (ECGui::CreateSelectableButton(TagList_[i][j].c_str(), &selected))
+							{
+								Entity ID = engine->editorManager->CreateEntity(lexical_cast<EntityType>(TagList_[i][j]));
+								engine->gGraphics.CreatePrimitives(ID, static_cast<int>(i * TagList_.size() + j));
+							}
+						}
+
+						ECGui::EndTreeNode();
+					}
+
+					break;
+				}
+				default:
+					break;
 			}
 		}
 	}

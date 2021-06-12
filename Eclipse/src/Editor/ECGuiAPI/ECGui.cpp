@@ -84,7 +84,9 @@ namespace Eclipse
 				const bool is_selected = (index == n);
 
 				if (ImGui::Selectable(vecStr[n].c_str(), is_selected))
+				{
 					index = n;
+				}
 
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
