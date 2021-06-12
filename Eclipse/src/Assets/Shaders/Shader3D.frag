@@ -150,7 +150,7 @@ void main ()
      vec3 result = vec3(0,0,0);
     
      vec4 ignore = lightColor;
-     vec3 ignore1 = lightPos;
+     //vec3 ignore1 = lightPos;
 
      // properties
      vec3 norm = (normal_from_vtxShader);
@@ -198,7 +198,7 @@ vec3 CalcPointLight(PointLight light, vec3 normala, vec3 fragPos, vec3 viewDira)
 
     vec3 result = vec3( vec3(ambient) + diffuse + specular) ;
 
-    return texture(uTex2d, TxtCoord) * vec4(result,1.0f);
+    return vec3(texture(uTex2d, TxtCoord) * vec4(result,1.0f));
 }
 
 // calculates the color when using a directional light.
