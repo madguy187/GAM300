@@ -70,7 +70,7 @@ namespace Eclipse
 	Entity EditorManager::CreateEntity(EntityType type)
 	{
 		Entity ID = engine->world.CreateEntity();
-		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast<std::string>(type), true });
+		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast<std::string>(type), true});
 		engine->world.AddComponent(ID, TransformComponent{});
 
 		EntityHierarchyList_.push_back(ID);

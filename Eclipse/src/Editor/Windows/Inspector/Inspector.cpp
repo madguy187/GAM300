@@ -28,7 +28,7 @@ namespace Eclipse
 			auto& entcom = engine->world.GetComponent<EntityComponent>(currEnt);
 
 			ECGui::DrawInputTextWidget("EntityName", const_cast<char*>(entcom.Name.c_str()),
-				entcom.Name.size());
+				entcom.Name.size(), ImGuiInputTextFlags_ReadOnly);
 
 			ECGui::InsertHorizontalLineSeperator();
 			ECGui::PushItemWidth(WindowSize_.getX());
@@ -41,7 +41,7 @@ namespace Eclipse
 			const char* entName = "No Entities";
 
 			ECGui::DrawInputTextWidget("EntityName", const_cast<char*>(entName),
-				strlen(entName));
+				strlen(entName), ImGuiInputTextFlags_ReadOnly);
 		}
 
 		ECGui::InsertHorizontalLineSeperator();
@@ -78,10 +78,10 @@ namespace Eclipse
 				auto& transCom = engine->world.GetComponent<TransformComponent>(ID);
 
 				ECGui::DrawTextWidget<const char*>("Position", "");
-				ECGui::DrawSliderFloat3Widget("TransVec", &transCom.position);
+				ECGui::DrawSliderFloat3Widget("TransVec", &transCom.position, true, -50.f, 50.f);
 
 				ECGui::DrawTextWidget<const char*>("Rotation", "");
-				ECGui::DrawSliderFloat3Widget("TransRot", &transCom.rotation);
+				ECGui::DrawSliderFloat3Widget("TransRot", &transCom.rotation, true, -360.f, 360.f);
 
 				ECGui::DrawTextWidget<const char*>("Scale", "");
 				ECGui::DrawSliderFloat3Widget("TransScale", &transCom.scale);

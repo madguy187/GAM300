@@ -193,15 +193,15 @@ namespace Eclipse
 
 		// Supports Int and float only
 		static void DrawSliderIntWidget(const char* name, int* var, 
-			bool hideName = true, int minrange = 0.0f, int maxrange = 500.0f);
+			bool hideName = true, int minrange = 0.0f, int maxrange = 50.0f);
 		static void DrawSliderFloatWidget(const char* name, float* var,
-			bool hideName = true, float minrange = 0.0f, float maxrange = 500.0f);
+			bool hideName = true, float minrange = 0.0f, float maxrange = 50.0f);
 		static void DrawSliderFloat2Widget(const char* name, ECVec2* vector,
-			bool hideName = true, float minrange = 0.0f, float maxrange = 500.0f);
+			bool hideName = true, float minrange = 0.0f, float maxrange = 50.0f);
 		static void DrawSliderFloat3Widget(const char* name, ECVec3* vector,
 			bool hideName = true, float minrange = 0.0f, float maxrange = 50.0f);
 		static void DrawSliderFloat4Widget(const char* name, ECVec4* vector,
-			bool hideName = true, float minrange = 0.0f, float maxrange = 500.0f);
+			bool hideName = true, float minrange = 0.0f, float maxrange = 50.0f);
 
 		// Input Widgets
 		static void DrawInputIntWidget(const char* name, int* var,
@@ -217,7 +217,7 @@ namespace Eclipse
 		static void DrawInputTextHintWidget(const char* name, const char* hintText,
 			char* buffer, size_t bufferSize, bool hideName = true);
 		static void DrawInputTextWidget(const char* name, char* buffer,
-			size_t bufferSize, bool hideName = true);
+			size_t bufferSize, ImGuiInputTextFlags flag = 0, bool hideName = true);
 
 		// Misc
 		static bool CheckBoxBool(const char* name, bool* var, bool hideName = true);
