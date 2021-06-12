@@ -8,19 +8,16 @@
 #include "Shader.h"
 #include "ModelFactory.h"
 #include "Texture.h"
-#include "AllComponents.h"
 #include <vector>
 #include <array>
 #include <map>
 #include <set>
 #include <bitset>
-
-#include "Vec.h"
 #include "Particles.h"
-
 #include "FrameBuffer.h"
 #include "../src/ECS/SystemManager/Systems/System/System.h"
 #include "Graphics/OpenGL/OpenGL_Context.h"
+#include "ECS/ComponentManager/Components/RenderComponent.h"
 
 const int maxParticles = 10000;
 
@@ -56,14 +53,8 @@ public:
   //container for textures
   static std::map<std::string, Texture> textures;
 
-  //container for objects
-  static std::map<std::string, Object> objects;
-
-  //container for static texts
-  static std::map<std::string, Text> Texts;
-
   //container for sprites
-  static std::multimap<unsigned int, Sprite*> sprites;
+  static std::multimap<unsigned int, RenderComponent*> sprites;
   static std::set<unsigned int> sortedID;
 
   //container for interactables
@@ -75,11 +66,6 @@ public:
     glm::vec4 Color;
     glm::vec2 UV;
   };
-
-  //container for particles
-  static std::map<std::string, Particles> particleType;
-  static std::array<Particle, maxParticles> particles;
-  static std::vector<Vertex> particleVtx;
 
   //Container for shader programs and helper functions
   static std::map<std::string, Shader> shaderpgms;

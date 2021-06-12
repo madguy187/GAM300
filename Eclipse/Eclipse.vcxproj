@@ -160,6 +160,8 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentBase.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\DirectionalLightComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\PointLightComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\EntityComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\RenderComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h" />
@@ -168,6 +170,7 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClInclude Include="src\ECS\SystemManager\SystemManager.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\EditorSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\LightingSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\System.h" />
     <ClInclude Include="src\ECS\World.h" />
@@ -191,7 +194,9 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClInclude Include="src\Graphics\FrameBuffer\WindowConstraint.h" />
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h" />
     <ClInclude Include="src\Graphics\InputHandler\InputWrapper.h" />
-    <ClInclude Include="src\Graphics\InputHandler\PrintOut.h" />
+    <ClInclude Include="src\Graphics\Lighting\DirectionalLight.h" />
+    <ClInclude Include="src\Graphics\Lighting\LightManager.h" />
+    <ClInclude Include="src\Graphics\Lighting\PointLight.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\AllBasicPrimitives.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Cone.h" />
@@ -218,11 +223,6 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClInclude Include="src\Graphics\RendererAPI\Renderer.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Shader.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Texture.h" />
-    <ClInclude Include="src\Graphics\Still_Cleaning\AllComponents.h" />
-    <ClInclude Include="src\Graphics\Still_Cleaning\Global.h" />
-    <ClInclude Include="src\Graphics\Still_Cleaning\Math_Lib.h" />
-    <ClInclude Include="src\Graphics\Still_Cleaning\Matrix4.h" />
-    <ClInclude Include="src\Graphics\Still_Cleaning\Vec.h" />
     <ClInclude Include="src\ImGui\ImGuiAPI\ImGuiAPI.h" />
     <ClInclude Include="src\ImGui\Setup\ImGuiSetup.h" />
     <ClInclude Include="src\ImGui\Vendor\IconsFontAwesome.h" />
@@ -255,6 +255,7 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\EditorSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp" />
     <ClCompile Include="src\ECS\World.cpp" />
     <ClCompile Include="src\Editor\ECGuiAPI\ECGui.cpp" />
@@ -272,7 +273,9 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClCompile Include="src\Graphics\FrameBuffer\FrameBuffer.cpp" />
     <ClCompile Include="src\Graphics\FrameBuffer\WindowConstraint.cpp" />
     <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp" />
-    <ClCompile Include="src\Graphics\InputHandler\PrintOut.cpp" />
+    <ClCompile Include="src\Graphics\Lighting\DirectionalLight.cpp" />
+    <ClCompile Include="src\Graphics\Lighting\LightManager.cpp" />
+    <ClCompile Include="src\Graphics\Lighting\PointLight.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cone.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cube.cpp" />
@@ -306,6 +309,23 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Assets\Shaders\BasicFrag.frag" />
+    <None Include="src\Assets\Shaders\BasicVtx.vert" />
+    <None Include="src\Assets\Shaders\DebugFrag.frag" />
+    <None Include="src\Assets\Shaders\DebugVtx.vert" />
+    <None Include="src\Assets\Shaders\light.frag" />
+    <None Include="src\Assets\Shaders\light.vert" />
+    <None Include="src\Assets\Shaders\LightFrag.frag" />
+    <None Include="src\Assets\Shaders\LightVtx.vert" />
+    <None Include="src\Assets\Shaders\ParticlesFrag.frag" />
+    <None Include="src\Assets\Shaders\ParticlesVtx.vert" />
+    <None Include="src\Assets\Shaders\Shader3D.frag" />
+    <None Include="src\Assets\Shaders\Shader3D.vert" />
+    <None Include="src\Assets\Shaders\Shaders.json" />
+    <None Include="src\Assets\Shaders\textFrag.frag" />
+    <None Include="src\Assets\Shaders\textVtx.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

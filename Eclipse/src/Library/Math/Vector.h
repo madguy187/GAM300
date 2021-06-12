@@ -32,10 +32,10 @@ namespace Eclipse
 		std::array<T, N> _data;
 	public:
 		// READ ONLY
-		T x;
-		T y;
-		T z;
-		T w;
+		T x{};
+		T y{};
+		T z{};
+		T w{};
 
 		Vector() :
 			Vector<T, N>(T(0))
