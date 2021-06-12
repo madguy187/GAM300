@@ -26,9 +26,10 @@ namespace Eclipse
 		{
 			Entity currEnt = engine->editorManager->EntityHierarchyList_[engine->editorManager->GEHIndex_];
 			auto& entcom = engine->world.GetComponent<EntityComponent>(currEnt);
+			std::string entityName = entcom.Name + " " + std::to_string(currEnt);
 
-			ECGui::DrawInputTextWidget("EntityName", const_cast<char*>(entcom.Name.c_str()),
-				entcom.Name.size(), ImGuiInputTextFlags_ReadOnly);
+			ECGui::DrawInputTextWidget("EntityName", const_cast<char*>(entityName.c_str()),
+				entityName.size(), ImGuiInputTextFlags_ReadOnly);
 
 			ECGui::InsertHorizontalLineSeperator();
 			ECGui::PushItemWidth(WindowSize_.getX());
