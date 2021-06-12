@@ -34,7 +34,7 @@ namespace Eclipse
         EventSystem<Test1>::registerListener(Tester2);
         EventSystem<Test1>::registerListener(std::bind(&World::TempFunc, &world, std::placeholders::_1));
 
-        struct Test1 t{};
+        struct Test1 t {};
         EventSystem<Test1>::dispatchEvent(t);
         std::cout << "ENDED" << std::endl;
 

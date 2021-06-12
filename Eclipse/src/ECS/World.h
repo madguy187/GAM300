@@ -18,6 +18,10 @@ namespace Eclipse
 	public:
 		World();
 
+		Entity CreateEntity();
+		void DestroyEntity(Entity entity);
+		void Clear();
+
 		template <typename T>
 		void RegisterComponent()
 		{
@@ -59,6 +63,18 @@ namespace Eclipse
 		}
 
 		template <typename T>
+		bool CheckComponent(Entity entity)
+		{
+			auto signature = entityManager->GetSignature(entity);
+
+			int index = componentManager->GetComponentType<T>();
+			if (signature[index])
+				return true;
+
+			return false;
+		}
+
+		template <typename T>
 		T& GetComponent(Entity entity)
 		{
 			return componentManager->GetComponent<T>(entity);
@@ -70,9 +86,6 @@ namespace Eclipse
 			return componentManager->GetComponentType<T>();
 		}
 
-		Entity CreateEntity();
-		void DestroyEntity(Entity entity);
-		
 		template <typename T>
 		void Update()
 		{
@@ -84,8 +97,6 @@ namespace Eclipse
 		{
 			return systemManager->GetSystem<T>();
 		}
-
-		void Clear();
 
 		bool TempFunc(const Test1& t)
 		{
