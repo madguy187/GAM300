@@ -77,8 +77,8 @@
 #include "Library/Math/Vector.h"
 #include "Library/Math/Matrix.h"
 
-#include "Library/Strings/StringsConcatenate.h"
 #include "Library/Strings/Lexical.h"
+#include "Library/Strings/StringsConcatenate.h"
 
 // Reflection
 #include "Reflection/registration.h"

@@ -27,7 +27,7 @@ namespace Eclipse
     }
 
     template <>
-    const std::string lexical_cast(const EntityType& type)
+    inline const std::string lexical_cast(const EntityType& type)
     {
         std::stringstream stream;
 

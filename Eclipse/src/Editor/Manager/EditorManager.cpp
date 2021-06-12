@@ -2,9 +2,11 @@
 #include "EditorManager.h"
 #include "ImGui/Vendor/IconsFontAwesome.h"
 #include "Editor/Windows/Inspector/Inspector.h"
+#include "Editor/Windows/Hierarchy/Hierarchy.h"
 #include "Editor/Windows/Scene/Scene.h"
 #include "Editor/Windows/GameView/GameView.h"
 #include "ECS/ComponentManager/Components/EntityComponent.h"
+//#include "Library/Strings/Lexical.h"
 
 namespace Eclipse
 {
@@ -17,9 +19,10 @@ namespace Eclipse
 
 	void EditorManager::InitGUIWindows()
 	{
-		//AddWindow<Inspector>("Inspector");
 		AddWindow<Scene>("Scene");
 		AddWindow<eGameView>("GameView");
+		AddWindow<Inspector>("Inspector");
+		//AddWindow<Hierarchy>("Hierarchy");
 	}
 
 	void EditorManager::InitMenu()
@@ -73,6 +76,8 @@ namespace Eclipse
 		EntityHierarchyList_.push_back(ID);
 		EntityToTypeMap_.insert(std::pair<Entity, EntityType>(ID, type));
 		GEHIndex_ = EntityHierarchyList_.size() - 1;
+
+		return ID;
 	}
 
 	void EditorManager::DestroyEntity(Entity ID)

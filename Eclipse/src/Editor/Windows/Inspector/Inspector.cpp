@@ -24,15 +24,16 @@ namespace Eclipse
 
 		if (!engine->editorManager->EntityHierarchyList_.empty())
 		{
-			auto& entcom = engine->world.GetComponent<EntityComponent>
-				(engine->editorManager->EntityHierarchyList_[engine->editorManager->GEHIndex_]);
+			Entity currEnt = engine->editorManager->EntityHierarchyList_[engine->editorManager->GEHIndex_];
+			auto& entcom = engine->world.GetComponent<EntityComponent>(currEnt);
 
 			ECGui::DrawInputTextWidget("EntityName", const_cast<char*>(entcom.Name.c_str()),
 				entcom.Name.size());
 
 			ECGui::InsertHorizontalLineSeperator();
 
-
+			ShowEntityProperty(currEnt);
+			ShowTransformProperty(currEnt);
 		}
 		else
 		{
@@ -47,6 +48,7 @@ namespace Eclipse
 
 	bool Inspector::ShowEntityProperty(Entity ID)
 	{
+		//if (engine->world.CheckComponent(ID, ))
 		return false;
 	}
 
