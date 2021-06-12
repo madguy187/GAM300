@@ -90,7 +90,7 @@ void Eclipse::PointLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, PointLigh
     // position
     if (uniform_var_loc1 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc1, PointlightTransform.position.x, PointlightTransform.position.y, PointlightTransform.position.z));
+        GLCall(glUniform3f(uniform_var_loc1, PointlightTransform.position.getX(), PointlightTransform.position.getY(), PointlightTransform.position.getZ()));
     }
 
     // ambient

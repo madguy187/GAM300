@@ -287,7 +287,7 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
 
     if (cam >= 0)
     {
-        glUniform3f(lll, camerapos.position.x, camerapos.position.y, camerapos.position.z);
+        glUniform3f(lll, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ());
     }
 
     if (lll >= 0)
