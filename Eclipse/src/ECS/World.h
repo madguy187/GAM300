@@ -5,6 +5,8 @@
 #include "SystemManager/SystemManager.h"
 #include "TypeID/TypeID.h"
 
+//#include "Events/Events.h"
+
 namespace Eclipse
 {
 	class World
@@ -84,5 +86,11 @@ namespace Eclipse
 		}
 
 		void Clear();
+
+		bool TempFunc(const Test1& t)
+		{
+			std::cout << "World.h TempFunc" << std::endl;
+			return false;
+		}
 	};
 }

@@ -5,6 +5,7 @@
 #include "Graphics/Camera/CameraManager.h"
 #include "Graphics/Debugging/DebugRenderingManager.h"
 #include "Editor/Manager/EditorManager.h"
+#include "Mono/Manager/MonoManager.h"
 
 namespace Eclipse
 {
@@ -17,6 +18,7 @@ namespace Eclipse
 		Clock Game_Clock;
 		DebugRenderingManager gDebugManager;
 		std::unique_ptr<EditorManager> editorManager;
+		MonoManager mono;
 
 		void Init();
 		void Run();

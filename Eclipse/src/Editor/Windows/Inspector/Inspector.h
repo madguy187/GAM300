@@ -4,7 +4,7 @@
 
 namespace Eclipse
 {
-	class Inspector : public ECGuiWindow
+	class Inspector final : public ECGuiWindow
 	{
 	public:
 		void Update() override;

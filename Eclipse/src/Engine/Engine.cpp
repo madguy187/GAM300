@@ -10,11 +10,33 @@
 #include "ECS/SystemManager/Systems/System/EditorSystem.h"
 #include "ImGui/Setup/ImGuiSetup.h"
 
+bool Tester1(const Test1& e)
+{
+    std::cout << "Engine.cpp Tester1" << std::endl;
+    return false;
+}
+
+bool Tester2(const Test1& e)
+{
+    std::cout << "Engine.cpp Tester2" << std::endl;
+    return false;
+}
 
 namespace Eclipse
 {
     void Engine::Init()
     {
+        mono.Init();
+
+        // multiple listener calls
+        EventSystem<Test1>::registerListener(Tester1);
+        EventSystem<Test1>::registerListener(Tester2);
+        EventSystem<Test1>::registerListener(std::bind(&World::TempFunc, &world, std::placeholders::_1));
+
+        struct Test1 t{};
+        EventSystem<Test1>::dispatchEvent(t);
+        std::cout << "ENDED" << std::endl;
+
         RenderSystem::Init();
         ImGuiSetup::Init(EditorState);
         if (EditorState)
