@@ -40,10 +40,7 @@ namespace Eclipse
         ImGuiSetup::Init(EditorState);
         if (EditorState)
             editorManager = std::make_unique<EditorManager>();
-    }
 
-    void Engine::Run()
-    {
         // register component
         world.RegisterComponent<TransformComponent>();
         world.RegisterComponent<RenderComponent>();
@@ -62,7 +59,10 @@ namespace Eclipse
         hi2.set(world.GetComponentType<TransformComponent>(), 1);
         hi2.set(world.GetComponentType<CameraComponent>(), 1);
         world.RegisterSystemSignature<CameraSystem>(hi2);
+    }
 
+    void Engine::Run()
+    {
         //Check this! - Rachel
         CameraSystem::Init();
 

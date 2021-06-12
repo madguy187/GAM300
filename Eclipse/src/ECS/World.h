@@ -93,5 +93,11 @@ namespace Eclipse
 			std::cout << "World.h TempFunc" << std::endl;
 			return false;
 		}
+
+		void DumpAll()
+		{
+			std::cout << std::endl;
+			std::cout << "Entities: " << std::endl;
+		}
 	};
 }
