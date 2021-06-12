@@ -1,6 +1,6 @@
 #pragma once
 #include "GLM/glm/gtc/matrix_transform.hpp"
-# define PI           3.14159265358979323846  /* pi */
+# define PI           3.14159265358979323846f  /* pi */
 
 
 using Vec2 = glm::vec2;
