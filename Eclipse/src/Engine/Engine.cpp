@@ -67,6 +67,7 @@ namespace Eclipse
 
         //Check this! - Rachel
         CameraSystem::Init();
+        gPhysics.Load();
 
         float currTime = static_cast<float>(clock());
         float accumulatedTime = 0.0f;
@@ -130,6 +131,7 @@ namespace Eclipse
 
         // unLoad
         gGraphics.end();
+        gPhysics.Unload();
         ImGuiSetup::Destroy(EditorState);
     }
 

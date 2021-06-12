@@ -217,6 +217,7 @@ namespace Eclipse
 
 	void PhysicsManager::Unload()
 	{
+		Px_Cooking->release();
 		Px_Physics->release();
 		Px_Foundation->release();
 	}

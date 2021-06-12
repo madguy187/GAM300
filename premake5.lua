@@ -133,9 +133,13 @@ project "Eclipse"
 
     postbuildcommands
     {
+	  "{COPY} ../Dep/PhysX/Debug/glut32.dll %{cfg.targetdir}",
       "{COPY} ../Dep/PhysX/Debug/PhysX_64.dll %{cfg.targetdir}",
+	  "{COPY} ../Dep/PhysX/Debug/PhysXCommon_64.dll %{cfg.targetdir}",
       "{COPY} ../Dep/PhysX/Debug/PhysXCooking_64.dll %{cfg.targetdir}",
+	  "{COPY} ../Dep/PhysX/Debug/PhysXDevice_64.dll %{cfg.targetdir}",
       "{COPY} ../Dep/PhysX/Debug/PhysXFoundation_64.dll %{cfg.targetdir}",
+	  "{COPY} ../Dep/PhysX/Debug/PhysXGpu_64.dll %{cfg.targetdir}",
       "{COPY} ../Dep/mono/bin/mono-2.0-sgen.dll %{cfg.targetdir}"
     }
 
@@ -145,9 +149,13 @@ project "Eclipse"
 
     postbuildcommands
     {
+      "{COPY} ../Dep/PhysX/Release/glut32.dll %{cfg.targetdir}",
       "{COPY} ../Dep/PhysX/Release/PhysX_64.dll %{cfg.targetdir}",
+	  "{COPY} ../Dep/PhysX/Release/PhysXCommon_64.dll %{cfg.targetdir}",
       "{COPY} ../Dep/PhysX/Release/PhysXCooking_64.dll %{cfg.targetdir}",
+	  "{COPY} ../Dep/PhysX/Release/PhysXDevice_64.dll %{cfg.targetdir}",
       "{COPY} ../Dep/PhysX/Release/PhysXFoundation_64.dll %{cfg.targetdir}",
+	  "{COPY} ../Dep/PhysX/Release/PhysXGpu_64.dll %{cfg.targetdir}",
       "{COPY} ../Dep/mono/bin/mono-2.0-sgen.dll %{cfg.targetdir}"
     }
 

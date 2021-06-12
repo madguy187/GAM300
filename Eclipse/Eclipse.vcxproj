@@ -93,9 +93,13 @@
       <AdditionalLibraryDirectories>..\Dep\GLFW\lib-vc2019;..\Dep\GLEW\lib\Release\x64;..\Dep\PhysX\Debug;..\Dep\mono\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\Dep\PhysX\Debug\PhysX_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Debug\PhysX_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Debug\PhysX_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
+      <Command>IF EXIST ..\Dep\PhysX\Debug\glut32.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Debug\glut32.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Debug\glut32.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\PhysX\Debug\PhysX_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Debug\PhysX_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Debug\PhysX_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\PhysX\Debug\PhysXCommon_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Debug\PhysXCommon_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Debug\PhysXCommon_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\PhysX\Debug\PhysXCooking_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Debug\PhysXCooking_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Debug\PhysXCooking_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\PhysX\Debug\PhysXDevice_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Debug\PhysXDevice_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Debug\PhysXDevice_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\PhysX\Debug\PhysXFoundation_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Debug\PhysXFoundation_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Debug\PhysXFoundation_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\PhysX\Debug\PhysXGpu_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Debug\PhysXGpu_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Debug\PhysXGpu_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\mono-2.0-sgen.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\mono\bin\mono-2.0-sgen.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -122,9 +126,13 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
       <AdditionalLibraryDirectories>..\Dep\GLFW\lib-vc2019;..\Dep\GLEW\lib\Release\x64;..\Dep\PhysX\Debug;..\Dep\mono\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\Dep\PhysX\Release\PhysX_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Release\PhysX_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Release\PhysX_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
+      <Command>IF EXIST ..\Dep\PhysX\Release\glut32.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Release\glut32.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Release\glut32.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\PhysX\Release\PhysX_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Release\PhysX_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Release\PhysX_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\PhysX\Release\PhysXCommon_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Release\PhysXCommon_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Release\PhysXCommon_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\PhysX\Release\PhysXCooking_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Release\PhysXCooking_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Release\PhysXCooking_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\PhysX\Release\PhysXDevice_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Release\PhysXDevice_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Release\PhysXDevice_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\PhysX\Release\PhysXFoundation_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Release\PhysXFoundation_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Release\PhysXFoundation_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\PhysX\Release\PhysXGpu_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Release\PhysXGpu_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Release\PhysXGpu_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\mono-2.0-sgen.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\mono\bin\mono-2.0-sgen.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
