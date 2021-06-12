@@ -175,6 +175,7 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClInclude Include="src\ECS\SystemManager\SystemManager.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\EditorSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\System.h" />
     <ClInclude Include="src\ECS\World.h" />
@@ -260,6 +261,7 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\EditorSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp" />
     <ClCompile Include="src\ECS\World.cpp" />
     <ClCompile Include="src\Editor\ECGuiAPI\ECGui.cpp" />
