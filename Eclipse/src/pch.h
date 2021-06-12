@@ -52,9 +52,9 @@
 #include "EntryPoint/EntryPoint.h"
 
 // Imgui
-#include "imgui.h"
-#include "examples/imgui_impl_opengl3.h"
-#include "examples/imgui_impl_glfw.h"
+//#include "imgui.h"
+//#include "imgui_impl_opengl3.h"
+//#include "imgui_impl_glfw.h"
 
 // Logger
 #include "Logger/Logger.h"
@@ -64,8 +64,6 @@
 #include "matrix_transform_2d.hpp"
 
 #include "stb_image.h"
-
-
 
 #include "GLEW/include/GL/glew.h"
 #include "GLFW/include/GLFW/glfw3.h"
@@ -91,7 +89,7 @@
 // ---- Input Handler Api ----
 // Create an object for example : InputWrapper test;
 // Call test.GetKeyCurrent(InputKeycode::Key_W)
-#include "Graphics/InputHandler/InputWrapper.h""
+#include "Graphics/InputHandler/InputWrapper.h"
 
 // GlCall Error
 #include "Graphics/RendererAPI/Renderer.h"

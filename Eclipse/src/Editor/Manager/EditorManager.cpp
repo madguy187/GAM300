@@ -28,6 +28,7 @@ namespace Eclipse
 	void EditorManager::InitMenu()
 	{
 		MenuComponent file{ "File", EditorMenuType::FILE };
+		file.AddItems("Exit");
 		MenuComponent window{ "Windows", EditorMenuType::WINDOWS };
 
 		MenuBar_.AddMenuComponents(file);
