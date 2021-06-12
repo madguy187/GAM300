@@ -17,7 +17,6 @@ void Eclipse::PointLight::CreatePointLight(unsigned int CreatedID)
 
     // Add Components
     auto& GetWorld = engine->world;
-    GetWorld.AddComponent(CreatedID, TransformComponent{});
     GetWorld.AddComponent(CreatedID, PointLightComponent{});
 
     // Assign

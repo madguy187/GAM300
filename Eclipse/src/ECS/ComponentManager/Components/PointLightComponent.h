@@ -28,7 +28,7 @@ namespace Eclipse
         bool visible;
 
         modelIt modelRef;
-        textureIt textureRef;
+        //textureIt textureRef;
         shaderIt shaderRef;
 
         glm::mat4 modelNDC_xform{ 0 };

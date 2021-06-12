@@ -143,7 +143,7 @@ namespace Eclipse
 							if (ECGui::CreateSelectableButton(TagList_[i][j].c_str(), &selected))
 							{
 								Entity ID = engine->editorManager->CreateEntity(lexical_cast<EntityType>(TagList_[i][j]));
-								engine->gGraphics.CreatePrimitives(ID, static_cast<int>(i * TagList_.size() + j));
+								engine->gGraphics.CreatePrimitives(ID, static_cast<int>(i * TagList_[i - 1].size() + j));
 							}
 						}
 
