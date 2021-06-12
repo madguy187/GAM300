@@ -1,24 +1,21 @@
-#version 330 core
+#version 450 core
 
 layout (location=0) in vec2 TxtCoord;
-
 layout (location=0) out vec4 fFragClr;
 
 uniform sampler2D uTex2d;
 uniform vec4 uColor;
 uniform bool uTextureCheck;
-
 uniform vec4 lightColor;
-
 in vec3 crntPos;
 uniform vec3 lightPos;
 in vec3 normal_from_vtxShader;
 uniform vec3 camPos;
 
-
 // Structs
 
-struct Material {
+struct Material 
+{
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
@@ -28,15 +25,16 @@ struct Material {
 struct PointLight 
 {    
     vec3 lightColor;
-    vec3 position;
-    
-    float constant;
-    float linear;
-    float quadratic;  
-
+    vec3 position;  
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
+
+    float constant;
+    float linear;
+    float quadratic;  
+    float IntensityStrength;
+    float test;
 };  
 
 struct DirLight 
@@ -118,7 +116,7 @@ vec4 pointLight()
 	float dist = length(lightVec);
 	float constant = 1.00;
 	float linear = 0.09;
-    float quadratic = 0.032f;
+    float quadratic = 0.032;
 	float inten = 1.0f / (constant + linear * dist + quadratic * ( dist * dist ) );
 
     float ambientStrength = 0.1f;
@@ -162,12 +160,12 @@ void main ()
 
      result = CalcDirLight(directionlight[0], norm, viewDir);
 
-     for(int i = 0 ; i < 4 ; i++ )
+     for(int i = 0 ; i < 1 ; i++ )
      {
           result += CalcPointLight( pointLights[i], norm, crntPos, viewDir);
      }
 
-     fFragClr = texture(uTex2d, TxtCoord) * vec4(result,1.0f);
+     fFragClr = texture(uTex2d, TxtCoord) * vec4(uColor) * vec4(result,1.0f);
     }
 }
 
@@ -181,8 +179,8 @@ vec3 CalcPointLight(PointLight light, vec3 normala, vec3 fragPos, vec3 viewDira)
 	float dist = length(lightVec);
 	float constant = light.constant;
 	float linear = light.linear;
-    float quadratic = 0.032;
-	float inten = 1.0f / (constant + linear * dist + quadratic * ( dist * dist ) );
+    float quadratic = light.quadratic;
+	float inten = light.IntensityStrength / (constant + linear * dist + quadratic * ( dist * dist ) );
 
     vec3 ambientStrength = light.ambient;
     vec4 ambient = vec4(light.lightColor,1.0) * vec4(ambientStrength,1.0) * inten ;
@@ -195,7 +193,7 @@ vec3 CalcPointLight(PointLight light, vec3 normala, vec3 fragPos, vec3 viewDira)
 
     vec3 specularStrength = light.specular;
     vec3 reflectDir = reflect(-lightDirection, normal);  
-    float spec = pow(max(dot(viewDira, reflectDir), 0.0), 32); // 32 is material shiness
+    float spec = pow(max(dot(viewDira, reflectDir), 0.0), 4); // 32 is material shiness
     vec3 specular = specularStrength * spec * light.lightColor * inten ;  
 
     vec3 result = vec3( vec3(ambient) + diffuse + specular) ;

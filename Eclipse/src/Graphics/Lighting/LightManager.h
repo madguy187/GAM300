@@ -23,6 +23,7 @@ namespace Eclipse
     public:
 
     public:
+        void init();
         void Update();
         void CreateLights(TypesOfLights in, unsigned int CreatedID);
         void DrawPointLights(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);

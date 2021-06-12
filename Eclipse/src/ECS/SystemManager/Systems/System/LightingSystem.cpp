@@ -4,7 +4,7 @@
 void Eclipse::LightingSystem::Init()
 {
     ENGINE_CORE_INFO("LightingSystem Init");
-
+    engine->LightManager.init();
 }
 
 void Eclipse::LightingSystem::Update()
@@ -25,8 +25,5 @@ void Eclipse::LightingSystem::Update()
 
         engine->LightManager.DrawPointLights(entity.second,
             engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), entity.first, GL_FILL);
-
-        //engine->LightManager.DrawPointLights(entity.second,
-        //    engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), entity.first, GL_FILL);
     }
 }

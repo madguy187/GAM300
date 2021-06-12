@@ -12,16 +12,16 @@ namespace Eclipse
 
         unsigned int ID = 0;
 
-        ECVec3 ambient;
-        ECVec3 diffuse;
-        ECVec3 specular;
-
+        ECVec3 ambient{ 0.2f , 0.2f, 0.2f };
+        ECVec3 diffuse{ 0.5f,0.5f,0.5f };
+        ECVec3 specular{ 1.0f,1.0f,1.0f };
         ECVec3 lightColor{ 1.0f,1.0f,1.0f };
-        ECVec3 position{ 1.0f,1.0f,1.0f };
+        ECVec3 Color{ 0,0,0 };
 
-        float constant = 0.0f;
-        float linear = 0.0f;
-        float quadratic = 0.0f;
+        float IntensityStrength = 10.0f ;
+        float constant = 1.0f;
+        float linear = 0.09f;
+        float quadratic = 0.032f;
         float radius = 0.0f;
 
         bool hasTexture = false;

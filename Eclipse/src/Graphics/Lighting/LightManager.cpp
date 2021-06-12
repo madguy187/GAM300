@@ -1,6 +1,13 @@
 #include "pch.h"
 #include "Graphics/Lighting/LightManager.h"
 
+void Eclipse::Lights::init()
+{
+    //auto& World_ = engine->world;
+    //Entity EntityID = World_.CreateEntity();
+    //CreateLights(TypesOfLights::DIRECTIONAL,EntityID);
+}
+
 void Eclipse::Lights::Update()
 {
 
@@ -18,7 +25,8 @@ void Eclipse::Lights::CreateLights(TypesOfLights in, unsigned int CreatedID)
 
     case TypesOfLights::DIRECTIONAL:
     {
-        _DirectionalLights.CreateDirectionalLight(CreatedID);
+        // ill use shader first
+        //_DirectionalLights.CreateDirectionalLight(CreatedID);
     }
     break;
     }
