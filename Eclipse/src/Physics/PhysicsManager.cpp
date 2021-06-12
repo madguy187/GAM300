@@ -167,7 +167,7 @@ namespace Eclipse
 		}
 
 	}
-
+	
 	void PhysicsManager::AddActorToScene(Entity ent)
 	{
 		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
@@ -208,6 +208,29 @@ namespace Eclipse
 				rigid.inScene = false;
 			}
 		}
+	}
+
+	void PhysicsManager::UpdateActor(Entity ent)
+	{
+		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
+		if (rigid._Static)
+			return;
+
+		if (RigidObjects.find(ent) != RigidObjects.end())
+		{
+			PxVec3 temp;
+			temp.x =rigid.forces.getX();
+			temp.y = rigid.forces.getY();
+			temp.z = rigid.forces.getZ();
+			RigidObjects[ent]->setForceAndTorque(temp, { 0,0,0 });
+			RigidObjects[ent]->setMass(rigid.mass);
+			RigidObjects[ent]->setActorFlag(PxActorFlag::eDISABLE_GRAVITY,rigid.enableGravity ? false : true);
+		}
+	}
+
+	void PhysicsManager::GetActorPosition(Entity ent)
+	{
+		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
 	}
 
 	void PhysicsManager::Simulate()
