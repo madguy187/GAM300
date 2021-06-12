@@ -92,7 +92,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(GLint model)
         testtest.AddComponent(EntityID, TransformComponent{ });
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
         sprite.ID = EntityID;
-        sprite.shaderRef = Graphics::shaderpgms.find("nooblight");
+        sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("sphere");
         sprite.ID = EntityID;
         Graphics::sprites.emplace(sprite.layerNum, &sprite);

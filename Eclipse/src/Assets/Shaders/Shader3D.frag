@@ -198,7 +198,7 @@ vec3 CalcPointLight(PointLight light, vec3 normala, vec3 fragPos, vec3 viewDira)
 
     vec3 result = vec3( vec3(ambient) + diffuse + specular) ;
 
-    return vec3(texture(uTex2d, TxtCoord) * vec4(result,1.0f));
+    return vec3(texture(uTex2d, TxtCoord)) * result;
 }
 
 // calculates the color when using a directional light.
