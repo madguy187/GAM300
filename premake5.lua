@@ -70,11 +70,25 @@ project "Eclipse"
         "Dep/mono/include/mono-2.0"
 	}
 
+  filter "configurations:Debug"
+		defines "ENGINE_DEBUG"
+		symbols "On"
   libdirs
   {
     "Dep/GLFW/lib-vc2019",
     "Dep/GLEW/lib/Release/x64",
 	  "Dep/PhysX/Debug",
+    "Dep/mono/lib/"
+  }
+
+  filter "configurations:Release"
+		defines "ENGINE_RELEASE"
+		optimize "On"
+  libdirs
+  {
+    "Dep/GLFW/lib-vc2019",
+    "Dep/GLEW/lib/Release/x64",
+	  "Dep/PhysX/Release",
     "Dep/mono/lib/"
   }
 

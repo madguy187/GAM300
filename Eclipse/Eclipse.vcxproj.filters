@@ -189,6 +189,9 @@
     <ClInclude Include="src\ECS\SystemManager\Systems\System\LightingSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.h">
+      <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
@@ -440,6 +443,9 @@
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp">

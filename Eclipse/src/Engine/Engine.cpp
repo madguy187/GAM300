@@ -53,10 +53,8 @@ namespace Eclipse
         world.RegisterComponent<TransformComponent>();
         world.RegisterComponent<RenderComponent>();
         world.RegisterComponent<CameraComponent>();
-        world.RegisterComponent<RenderComponent>();
         world.RegisterComponent<PointLightComponent>();
         world.RegisterComponent<DirectionalLightComponent>();
-        world.RegisterComponent<Sprite>();
         world.RegisterComponent<RigidBodyComponent>();
 
         // registering system
