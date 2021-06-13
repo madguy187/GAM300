@@ -81,6 +81,7 @@ namespace Eclipse
 
         //Check this! - Rachel
         CameraSystem::Init();
+        LightingSystem::Init();
 
         float currTime = static_cast<float>(clock());
         float accumulatedTime = 0.0f;

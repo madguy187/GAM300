@@ -11,13 +11,12 @@ namespace Eclipse
         unsigned int ID = 0;
 
         ECVec3 lightColor{ 1.0f,1.0f,1.0f };
-        ECVec3 Direction{ 0.0f,0.0f,0.0f };
-        ECVec3 ambient;
-        ECVec3 diffuse;
-        ECVec3 specular;
+        ECVec3 Direction{ 0.0f,0.0f,6.0f };
+        ECVec3 ambient{ 0.2f , 0.2f, 0.2f };
+        ECVec3 diffuse{ 0.5f,0.5f,0.5f };
+        ECVec3 specular{ 0.1f,0.1f,0.1f };
         bool visible;
-        modelIt modelRef;
-        shaderIt shaderRef;
+
         glm::mat4 modelNDC_xform{ 0 };
     };
 }

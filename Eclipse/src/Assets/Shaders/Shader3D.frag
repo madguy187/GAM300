@@ -39,7 +39,7 @@ struct PointLight
 struct DirLight 
 {
     vec3 direction;
-	
+	vec3 lightColor;
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
@@ -176,7 +176,7 @@ void main ()
      vec3 norm = (normal_from_vtxShader);
      vec3 viewDir = normalize(camPos - crntPos);
 
-     //result = CalcDirLight(directionlight[0], norm, viewDir);
+     result = CalcDirLight(directionlight[0], norm, viewDir);
 
      for(int i = 0 ; i < NumberOfPointLights ; i++ )
      {
@@ -266,9 +266,9 @@ vec3 CalcDirLight(DirLight light, vec3 normala, vec3 viewDira)
     float spec = pow(max(dot(viewDira, reflectDir), 0.0), 2);
 
     // combine results
-    vec3 ambient =  light.ambient * vec3(lightColor) * vec3(texture(uTex2d, TxtCoord));
-    vec3 diffuse =  light.diffuse * diff * vec3(texture(uTex2d, TxtCoord));
-    vec3 specular = light.specular * spec * vec3(texture(uTex2d, TxtCoord));
+    vec3 ambient =  light.ambient * vec3(light.lightColor) * vec3(texture(uTex2d, TxtCoord));
+    vec3 diffuse =  light.diffuse * vec3(light.lightColor) * diff * vec3(texture(uTex2d, TxtCoord));
+    vec3 specular = light.specular * vec3(light.lightColor) * spec * vec3(texture(uTex2d, TxtCoord));
 
     return (ambient + diffuse + specular);
 }

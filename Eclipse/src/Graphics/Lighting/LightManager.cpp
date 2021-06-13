@@ -3,9 +3,7 @@
 
 void Eclipse::Lights::init()
 {
-    auto& World_ = engine->world;
-    Entity EntityID = World_.CreateEntity();
-    CreateLights(TypesOfLights::POINTLIGHT,3);
+    //engine->LightManager._DirectionalLights.FirstGlobalLight();
 }
 
 void Eclipse::Lights::Update()
