@@ -78,7 +78,7 @@ namespace Eclipse
 			if (ImGuizmo::IsUsing())
 			{
 				transCom.position.setX(glm::vec3(transform[3]).x);
-				transCom.position.setY(glm::vec3(transform[3]).y);
+				transCom.position.setY(-glm::vec3(transform[3]).y);
 				transCom.position.setZ(glm::vec3(transform[3]).z);
 			}
 
