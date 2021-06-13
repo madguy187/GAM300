@@ -156,7 +156,7 @@ void main ()
      vec3 norm = (normal_from_vtxShader);
      vec3 viewDir = normalize(camPos - crntPos);
 
-     result = CalcDirLight(directionlight[0], norm, viewDir);
+     //result = CalcDirLight(directionlight[0], norm, viewDir);
 
      for(int i = 0 ; i < NumberOfPointLights ; i++ )
      {
@@ -186,8 +186,8 @@ vec3 CalcPointLight(PointLight light, vec3 normala, vec3 fragPos, vec3 viewDira)
     // diffuse lighting
     vec3 normal = (normal_from_vtxShader);
     vec3 lightDirection = normalize(lightVec);
-    float diff = max(dot(normal, lightDirection), 0.0f); // light.diffuse
-    vec3 diffuse = light.diffuse * light.lightColor * diff  * inten ;
+    //float diff = max(dot(normal, lightDirection), 0.0f); 
+    vec3 diffuse = light.lightColor * light.diffuse  * inten ;  
 
     vec3 specularStrength = light.specular;
     vec3 reflectDir = reflect(-lightDirection, normal);  
