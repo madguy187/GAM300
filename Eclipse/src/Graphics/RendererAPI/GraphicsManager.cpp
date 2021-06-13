@@ -54,8 +54,10 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         engine->world.AddComponent(ID, RenderComponent{});
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
-        sprite.shaderRef = Graphics::shaderpgms.find("shdrpgm");
+        sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("circle");
+        sprite.hasTexture = true;
+        sprite.textureRef = Graphics::textures.find("orange");
     }
     break;
     case 2:
@@ -63,8 +65,10 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         engine->world.AddComponent(ID, RenderComponent{});
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
-        sprite.shaderRef = Graphics::shaderpgms.find("shdrpgm");
+        sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("triangle");
+        sprite.hasTexture = true;
+        sprite.textureRef = Graphics::textures.find("orange");
     }
     break;
     case 3:
@@ -72,7 +76,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         engine->world.AddComponent(ID, RenderComponent{});
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
-        sprite.shaderRef = Graphics::shaderpgms.find("shdrpgm");
+        sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("lines");
     }
     break;
@@ -83,7 +87,8 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("sphere");
-        Graphics::sprites.emplace(sprite.layerNum, &sprite);
+        sprite.hasTexture = true;
+        sprite.textureRef = Graphics::textures.find("orange");
     }
     break;
     case 5:
@@ -95,7 +100,6 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.modelRef = Graphics::models.find("cube");
         sprite.hasTexture = true;
         sprite.textureRef = Graphics::textures.find("orange");
-        Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
     case 6:
@@ -105,7 +109,8 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("cylinder");
-        Graphics::sprites.emplace(sprite.layerNum, &sprite);
+        sprite.hasTexture = true;
+        sprite.textureRef = Graphics::textures.find("orange");
     }
     break;
     case 7:
@@ -115,7 +120,8 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("cone");
-        Graphics::sprites.emplace(sprite.layerNum, &sprite);
+        sprite.hasTexture = true;
+        sprite.textureRef = Graphics::textures.find("orange");
     }
     break;
     case 8:
@@ -125,7 +131,8 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("torus");
-        Graphics::sprites.emplace(sprite.layerNum, &sprite);
+        sprite.hasTexture = true;
+        sprite.textureRef = Graphics::textures.find("orange");
     }
     break;
     case 9:
@@ -135,7 +142,8 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("pyramid");
-        Graphics::sprites.emplace(sprite.layerNum, &sprite);
+        sprite.hasTexture = true;
+        sprite.textureRef = Graphics::textures.find("orange");
     }
     break;
     case 10:
@@ -155,7 +163,8 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("plane");
-        Graphics::sprites.emplace(sprite.layerNum, &sprite);
+        sprite.hasTexture = true;
+        sprite.textureRef = Graphics::textures.find("orange");
     }
     break;
     // pointlight

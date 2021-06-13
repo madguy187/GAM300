@@ -19,15 +19,13 @@ void Eclipse::Lights::CreateLights(TypesOfLights in, unsigned int CreatedID)
     {
     case TypesOfLights::POINTLIGHT:
     {
-        //_allspotlights.CreateSpotLight(CreatedID);
         _allpointlights.CreatePointLight(CreatedID);
     }
     break;
 
     case TypesOfLights::DIRECTIONAL:
     {
-        // ill use shader first
-        //_DirectionalLights.CreateDirectionalLight(CreatedID);
+        _DirectionalLights.CreateDirectionalLight(CreatedID);
     }
     break;
 

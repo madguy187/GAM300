@@ -216,7 +216,7 @@ vec3 CalcPointLight(PointLight light, vec3 normala, vec3 fragPos, vec3 viewDira)
 
     vec3 specularStrength = light.specular;
     vec3 reflectDir = reflect(-lightDirection, normal);  
-    float spec = pow(max(dot(viewDira, reflectDir), 0.0), 2); // 32 is material shiness
+    float spec = pow(max(dot(viewDira, reflectDir), 0.0), 32); // 32 is material shiness
     vec3 specular = specularStrength * spec * light.lightColor * inten ;  
 
     vec3 result = vec3( vec3(ambient) + diffuse + specular) ;
@@ -243,7 +243,7 @@ vec3 CalcSpotLight(SpotLight light, vec3 normala, vec3 fragPos, vec3 viewDira)
     // specular
     vec3 specularStrength = light.specular;
     vec3 reflectDir = reflect(-light.position, normal);  
-    float spec = pow(max(dot(viewDira, reflectDir), 0.0), 16); // 32 is material shiness
+    float spec = pow(max(dot(viewDira, reflectDir), 0.0), 256); // 32 is material shiness
     vec3 specular = spec * specularStrength * light.lightColor ;  
 
 	float angle = dot(vec3(0.0f,0.0f, -6.0f), -lightDirection);
