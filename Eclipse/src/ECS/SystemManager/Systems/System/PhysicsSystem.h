@@ -3,5 +3,8 @@
 
 namespace Eclipse
 {
-
+	class PhysicsSystem : public System
+	{
+		void Update() override;
+	};
 }
