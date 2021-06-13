@@ -9,7 +9,7 @@ namespace Eclipse
 
 		MenuComponent(const char* name, EditorMenuType type);
 		void AddItems(const char* name);
-		void DrawImpl();
+		void DrawImpl(const char* key);
 		void DrawGuiWindows();
 		EditorMenuType GetType();
 		const char* GetName();

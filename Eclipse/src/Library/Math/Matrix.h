@@ -34,6 +34,22 @@ namespace Eclipse
             }
         }
 
+        Matrix(float value)
+            : rows{ M }, cols{ N }
+        {
+            for (size_type i = 0; i < rows; i++)
+            {
+                // For Rows
+                data.push_back(std::vector<value_type>());
+
+                for (size_type j = 0; j < cols; j++)
+                {
+                    // For Cols
+                    data[i].push_back(value);
+                }
+            }
+        }
+
         Matrix(const value_type* pArr)
             : rows{ M }, cols{ N }
         {
@@ -261,6 +277,53 @@ namespace Eclipse
         {
             return cols;
         }
+
+        void ConvertToGlmMat3Type()
+        {
+            glm::mat3 temp{};
+
+            temp[0][0] = data[0][0];
+            temp[0][1] = data[0][1];
+            temp[0][2] = data[0][2];
+
+            temp[1][0] = data[1][0];
+            temp[1][1] = data[1][1];
+            temp[1][2] = data[1][2];
+
+            temp[2][0] = data[2][0];
+            temp[2][1] = data[2][1];
+            temp[2][2] = data[2][2];
+
+            return temp;
+        }
+
+        void ConvertToGlmMat4Type()
+        {
+            glm::mat4 temp{};
+
+            temp[0][0] = data[0][0];
+            temp[0][1] = data[0][1];
+            temp[0][2] = data[0][2];
+            temp[0][3] = data[0][3];
+
+            temp[1][0] = data[1][0];
+            temp[1][1] = data[1][1];
+            temp[1][2] = data[1][2];
+            temp[1][3] = data[1][3];
+
+            temp[2][0] = data[2][0];
+            temp[2][1] = data[2][1];
+            temp[2][2] = data[2][2];
+            temp[2][3] = data[2][3];
+
+            temp[3][0] = data[3][0];
+            temp[3][1] = data[3][1];
+            temp[3][2] = data[3][2];
+            temp[3][3] = data[3][3];
+
+            return temp;
+        }
+
     private:
         size_type rows;
         size_type cols;

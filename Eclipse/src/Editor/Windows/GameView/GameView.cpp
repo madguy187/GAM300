@@ -25,7 +25,7 @@ namespace Eclipse
 		if (mViewportSize != *((glm::vec2*)&viewportPanelSize))
 		{
 			// Resize the framebuffer based on the size of the imgui window
-			m_frameBuffer->Resize(static_cast<unsigned>(viewportPanelSize.x), static_cast<unsigned>(viewportPanelSize.y));
+			//m_frameBuffer->Resize(static_cast<unsigned>(viewportPanelSize.x), static_cast<unsigned>(viewportPanelSize.y));
 			mViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 		}
 

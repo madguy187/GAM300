@@ -1,13 +1,16 @@
 #include "pch.h"
 #include "Engine.h"
 
+#include "ECS/ComponentManager/Components/EntityComponent.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RenderComponent.h"
 #include "ECS/ComponentManager/Components/CameraComponent.h"
+#include "ECS/ComponentManager/Components/DirectionalLightComponent.h"
 #include "ECS/ComponentManager/Components/RigidBodyComponent.h"
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
 #include "ECS/SystemManager/Systems/System/EditorSystem.h"
+#include "ECS/SystemManager/Systems/System/LightingSystem.h"
 #include "ImGui/Setup/ImGuiSetup.h"
 
 bool Tester1(const Test1& e)
@@ -33,7 +36,7 @@ namespace Eclipse
         EventSystem<Test1>::registerListener(Tester2);
         EventSystem<Test1>::registerListener(std::bind(&World::TempFunc, &world, std::placeholders::_1));
 
-        struct Test1 t{};
+        struct Test1 t {};
         EventSystem<Test1>::dispatchEvent(t);
         std::cout << "ENDED" << std::endl;
 
@@ -46,15 +49,20 @@ namespace Eclipse
     void Engine::Run()
     {
         // register component
+        world.RegisterComponent<EntityComponent>();
         world.RegisterComponent<TransformComponent>();
         world.RegisterComponent<RenderComponent>();
         world.RegisterComponent<CameraComponent>();
+        world.RegisterComponent<RenderComponent>();
+        world.RegisterComponent<PointLightComponent>();
+        world.RegisterComponent<DirectionalLightComponent>();
         world.RegisterComponent<Sprite>();
         world.RegisterComponent<RigidBodyComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
         world.RegisterSystem<CameraSystem>();
+        world.RegisterSystem<LightingSystem>();
 
         // Render System
         Signature RenderSys = RenderSystem::RegisterAll();
@@ -64,6 +72,11 @@ namespace Eclipse
         hi2.set(world.GetComponentType<TransformComponent>(), 1);
         hi2.set(world.GetComponentType<CameraComponent>(), 1);
         world.RegisterSystemSignature<CameraSystem>(hi2);
+
+        Signature hi3;
+        hi3.set(world.GetComponentType<TransformComponent>(), 1);
+        hi3.set(world.GetComponentType<PointLightComponent>(), 1);
+        world.RegisterSystemSignature<LightingSystem>(hi3);
 
         //Check this! - Rachel
         CameraSystem::Init();
@@ -79,7 +92,6 @@ namespace Eclipse
         {
             glfwPollEvents();
             engine->gGraphics.mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });
-            //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
             Game_Clock.set_timeSteps(0);
             float newTime = static_cast<float>(clock());
@@ -121,12 +133,13 @@ namespace Eclipse
                 world.Update<CameraSystem>();
             }
 
+            engine->gGraphics.GlobalFrameBufferBind();
+            world.Update<LightingSystem>();
             world.Update<RenderSystem>();
+            engine->gGraphics.GlobalFrmeBufferDraw();
 
             ImGuiSetup::End(EditorState);
-            glfwSwapBuffers(OpenGL_Context::GetWindow());
-            glfwSwapInterval(1);
-            glFlush();
+            OpenGL_Context::post_render();
         }
 
         // unLoad
