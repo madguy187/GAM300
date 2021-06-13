@@ -227,37 +227,30 @@ vec3 CalcPointLight(PointLight light, vec3 normala, vec3 fragPos, vec3 viewDira)
 // calculates the color when using a spot light.
 vec3 CalcSpotLight(SpotLight light, vec3 normala, vec3 fragPos, vec3 viewDira)
 {
-    vec3 lightDir = (light.position - fragPos);
+	// controls how big the area that is lit up is
+	float outerCone = 0.90f;
+	float innerCone = 0.95f;
 
-    // intensity of light with respect to distance
-	float dist = length(lightDir);
-	float constant = 1.0f;
-	float linear = 0.09;
-    float quadratic = 0.032;
-	float inten = 1.0 / (constant + linear * dist + quadratic * ( dist * dist ) );
-
-    // spotlight intensity
-    float theta = dot(lightDir, (light.direction)); 
-    float epsilon = light.cutOff - light.outerCutOff;
-    float intensity = clamp((theta - light.cutOff) / epsilon, 0.0, 1.0);
-
-    // ambient shading
+    // amibient
     vec3 ambientStrength = light.ambient;
-    vec4 ambient = vec4(light.lightColor,1.0) * vec4(ambientStrength,1.0) * inten ;
+    vec4 ambient = vec4(light.lightColor,1.0) * vec4(ambientStrength,1.0) ;
 
     // diffuse lighting
-    vec3 normal = (normal_from_vtxShader);
-    vec3 diffuse = light.lightColor * light.diffuse  * inten * intensity;  
+    vec3 normal = normalize(normal_from_vtxShader);
+    vec3 lightDirection = normalize(light.position - fragPos);
+	float diffuse = max(dot(normal, lightDirection), 0.0f);
 
-    // specular shading
+    // specular
     vec3 specularStrength = light.specular;
-    vec3 reflectDir = reflect(-lightDir, normala);  
-    float spec = pow(max(dot(viewDira, reflectDir), 0.0), 4); // 32 is material shiness
-    vec3 specular = specularStrength * spec * light.lightColor * inten ;  
+    vec3 reflectDir = reflect(-light.position, normal);  
+    float spec = pow(max(dot(viewDira, reflectDir), 0.0), 16); // 32 is material shiness
+    vec3 specular = spec * specularStrength * light.lightColor ;  
 
-    vec3 result = vec3( vec3(ambient) + diffuse + specular) ;
+	float angle = dot(vec3(0.0f,0.0f, -6.0f), -lightDirection);
+	float intensity = clamp((angle - outerCone) / (innerCone - outerCone), 0.0f, 1.0f);
 
-    return vec3(texture(uTex2d, TxtCoord)) * result;
+     vec3 result = vec3(ambient) + diffuse + specular;
+     return vec3(texture(uTex2d, TxtCoord)) * result * intensity;
 }
 
 // calculates the color when using a directional light.

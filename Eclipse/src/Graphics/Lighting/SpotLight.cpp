@@ -47,7 +47,6 @@ void SpotLight::Draw(SpotLightComponent* in, unsigned int framebufferID, unsigne
     glEnable(GL_BLEND);
     glPolygonMode(GL_FRONT_AND_BACK, mode);
     glDisable(GL_CULL_FACE);
-    glEnable(GL_LINE_SMOOTH);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     CheckUniformLoc(in->shaderRef, *in, indexID, _spotlights.size());
@@ -176,12 +175,12 @@ void SpotLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, SpotLightComponent&
         GLCall(glUniform1f(uniform_var_loc16, glm::cos(glm::radians(15.0f))));
     }
 
-    //// position
-    //if (uniform_var_loc17 >= 0)
-    //{
-    //    GLCall(glUniform3f(uniform_var_loc17, in_spot.direction.x, in_spot.direction.y, in_spot.direction.z));
-    //}
+    // position
+    if (uniform_var_loc17 >= 0)
+    {
+        GLCall(glUniform3f(uniform_var_loc17, in_spot.direction.x, in_spot.direction.y, in_spot.direction.z));
+    }
 
-    GLCall(glUniform3f(uniform_var_loc17, SpotlightTransform.position.getX(), SpotlightTransform.position.getY(), SpotlightTransform.position.getZ()*-1));
+   // GLCall(glUniform3f(uniform_var_loc17, SpotlightTransform.position.getX(), SpotlightTransform.position.getY(), SpotlightTransform.position.getZ()));
 
 }

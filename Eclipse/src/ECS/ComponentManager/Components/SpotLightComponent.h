@@ -13,10 +13,10 @@ namespace Eclipse
         unsigned int ID = 0;
 
         ECVec3 lightColor{ 1.0f,1.0f,1.0f };
-        ECVec3 direction{ 0,6,6 };
+        ECVec3 direction{ 1,1,20 };
         ECVec3 ambient{ 0.1f , 0.1f, 0.1f };
-        ECVec3 diffuse{ 0.8f,0.8f,0.8f };
-        ECVec3 specular{ 1.0f,1.0f,1.0f };
+        ECVec3 diffuse{ 0.1f,0.1f,0.1f };
+        ECVec3 specular{ 0.1f,0.1f,0.1f };
 
         float cutOff = 0.0f;
         float outerCutOff = 0.0f;
