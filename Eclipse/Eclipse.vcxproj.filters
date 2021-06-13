@@ -201,6 +201,9 @@
     <ClInclude Include="src\ECS\SystemManager\Systems\System\EditorSystem.h">
       <Filter>src\ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.h">
+      <Filter>src\ECS\SystemManager\Systems\System</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem.h">
       <Filter>src\ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
@@ -414,7 +417,6 @@
     <ClInclude Include="src\pch.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp">
@@ -451,6 +453,9 @@
       <Filter>src\ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\EditorSystem.cpp">
+      <Filter>src\ECS\SystemManager\Systems\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.cpp">
       <Filter>src\ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp">
@@ -597,6 +602,5 @@
     <ClCompile Include="src\pch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.cpp" />
   </ItemGroup>
 </Project>
