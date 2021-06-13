@@ -182,7 +182,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     // Spot
     case 14:
     {
-        engine->LightManager.CreateLights(Eclipse::TypesOfLights::DIRECTIONAL, ID);
+        engine->LightManager.CreateLights(Eclipse::TypesOfLights::SPOTLIGHT, ID);
     }
     break;
     }

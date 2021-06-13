@@ -75,6 +75,9 @@ namespace Eclipse
         case EntityType::ENT_LIGHT_DIRECTIONAL:
             stream << "Directional Light";
             break;
+        case EntityType::ENT_LIGHT_SPOT:
+            stream << "Spot Light";
+            break;
         default:
             stream << "NULL";
             break;
@@ -114,6 +117,8 @@ namespace Eclipse
             return EntityType::ENT_LIGHT_POINT;
         else if (type == "Directional Light")
             return EntityType::ENT_LIGHT_DIRECTIONAL;
+        else if (type == "Spot Light")
+            return EntityType::ENT_LIGHT_SPOT;
         else
             return EntityType::ENT_UNASSIGNED;
     }

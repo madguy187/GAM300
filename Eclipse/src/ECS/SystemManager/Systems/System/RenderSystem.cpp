@@ -47,6 +47,18 @@ Signature Eclipse::RenderSystem::RegisterAll()
 
 void Eclipse::RenderSystem::Update()
 {
+    InputHandler.SetIsPrint(true);
+
+    if (InputHandler.GetKeyTriggered(InputKeycode::Key_LEFT))
+    {
+        std::cout << " Move Left " << std::endl;
+    }
+
+    if (InputHandler.GetKeyTriggered(InputKeycode::Key_RIGHT))
+    {
+        std::cout << " MOVE RIGHT " << std::endl;
+    }
+
 
     // Loop
     for (auto const& entity : mEntities)

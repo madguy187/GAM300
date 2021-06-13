@@ -17,7 +17,8 @@ void Eclipse::Lights::CreateLights(TypesOfLights in, unsigned int CreatedID)
     {
     case TypesOfLights::POINTLIGHT:
     {
-        _allpointlights.CreatePointLight(CreatedID);
+        _allspotlights.CreateSpotLight(CreatedID);
+        //_allpointlights.CreatePointLight(CreatedID);
     }
     break;
 

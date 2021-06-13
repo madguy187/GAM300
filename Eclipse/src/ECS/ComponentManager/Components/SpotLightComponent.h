@@ -14,8 +14,8 @@ namespace Eclipse
 
         ECVec3 lightColor{ 1.0f,1.0f,1.0f };
         ECVec3 direction{ 1,1,20 };
-        ECVec3 ambient{ 0.1f , 0.1f, 0.1f };
-        ECVec3 diffuse{ 0.1f,0.1f,0.1f };
+        ECVec3 ambient{ 0.5f , 0.5f, 0.5f };
+        ECVec3 diffuse{ 0.5f,0.5f,0.5f };
         ECVec3 specular{ 0.1f,0.1f,0.1f };
 
         float cutOff = 0.0f;
