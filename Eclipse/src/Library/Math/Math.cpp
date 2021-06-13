@@ -66,13 +66,15 @@ namespace Eclipse
 			}
 #endif
 
-			rotation.y = asin(-Row[0][2]);
+			rotation.y = asin(-Row[0][2]) * (180.0f / PI);
 			if (cos(rotation.y) != 0) {
-				rotation.x = atan2(Row[1][2], Row[2][2]);
-				rotation.z = atan2(Row[0][1], Row[0][0]);
+				/*rotation.x = atan2(Row[1][2], Row[2][2]);
+				rotation.z = atan2(Row[0][1], Row[0][0]);*/
+				rotation.x = atan2(Row[1][2], Row[2][2]) * (180.0f / PI);
+				rotation.z = atan2(Row[0][1], Row[0][0]) * (180.0f / PI);
 			}
 			else {
-				rotation.x = atan2(-Row[2][0], Row[1][1]);
+				rotation.x = atan2(-Row[2][0], Row[1][1]) * (180.0f / PI);
 				rotation.z = 0;
 			}
 

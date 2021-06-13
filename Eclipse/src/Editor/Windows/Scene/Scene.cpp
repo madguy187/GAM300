@@ -78,8 +78,16 @@ namespace Eclipse
 				glm::vec3 deltaRotation = rotation - transCom.rotation.ConvertToGlmVec3Type();
 
 				transCom.position = translation;
-				transCom.rotation += deltaRotation;
+				transCom.rotation = rotation;
+				/*transCom.rotation.setX(rotation.x * (180.0f / 3.141592653589793238463f));
+				transCom.rotation.setY(rotation.y * (180.0f / 3.141592653589793238463f));
+				transCom.rotation.setZ(rotation.z * (180.0f / 3.141592653589793238463f));*/
+
 				transCom.scale = scale;
+
+				std::cout << rotation.x << std::endl;
+				std::cout << rotation.y << std::endl;
+				std::cout << rotation.z << std::endl;
 			}
 
 			/*std::cout << ImGuizmo::IsOver() << std::endl;*/
