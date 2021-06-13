@@ -39,42 +39,6 @@ namespace Eclipse
 
         _camera.rightVec = glm::normalize(glm::cross(_camera.eyeFront, _camera.worldUp));
         _camera.upVec = glm::normalize(glm::cross(_camera.rightVec, _camera.eyeFront));
-
-        /*glm::vec3 targeteye = _transform.position.ConvertToGlmVec3Type() - _camera.eyePos;
-        float len = sqrt(targeteye.x * targeteye.x + targeteye.y * targeteye.y + targeteye.z * targeteye.z);
-
-        if (len < FLT_EPSILON && len > -FLT_EPSILON)
-            len = FLT_EPSILON;
-
-        _camera.eyeFront = glm::vec3(targeteye.x / len,
-            targeteye.y / len,
-            targeteye.z / len);
-
-        glm::vec3 cross = glm::vec3(_camera.eyeFront.y * _camera.worldUp.z - _camera.eyeFront.z * _camera.worldUp.y,
-            _camera.eyeFront.z * _camera.worldUp.x - _camera.eyeFront.x * _camera.worldUp.z,
-            _camera.eyeFront.x * _camera.worldUp.y - _camera.eyeFront.y * _camera.worldUp.x);
-
-        len = sqrt(cross.x * cross.x + cross.y * cross.y + cross.z * cross.z);
-
-        if (len < FLT_EPSILON && len > -FLT_EPSILON)
-            len = FLT_EPSILON;
-
-        _camera.rightVec = glm::vec3(cross.x / len,
-            cross.y / len,
-            cross.z / len);
-
-        cross = glm::vec3(_camera.rightVec.y * _camera.eyeFront.z - _camera.rightVec.z * _camera.eyeFront.y,
-            _camera.rightVec.z * _camera.eyeFront.x - _camera.rightVec.x * _camera.eyeFront.z,
-            _camera.rightVec.x * _camera.eyeFront.y - _camera.rightVec.y * _camera.eyeFront.x);
-
-        len = sqrt(cross.x * cross.x + cross.y * cross.y + cross.z * cross.z);
-
-        if (len < FLT_EPSILON && len > -FLT_EPSILON)
-            len = FLT_EPSILON;
-
-        _camera.upVec = glm::vec3(cross.x / len,
-            cross.y / len,
-            cross.z / len);*/
     }
 
     void CameraManager::ComputeViewMtx(CameraComponent& _camera, TransformComponent& _transform)
@@ -82,55 +46,12 @@ namespace Eclipse
         glm::vec3 eyePos = _transform.position.ConvertToGlmVec3Type();
         _camera.eyePos = eyePos;
         _camera.viewMtx = glm::lookAt(eyePos, eyePos + _camera.eyeFront, _camera.upVec);
-
-        //glm::vec3 eyePos = _transform.position.ConvertToGlmVec3Type();
-        //_camera.eyePos = eyePos;
-        //glm::mat4 M(glm::vec4(_camera.rightVec.x, _camera.upVec.x, -_camera.eyeFront.x, _camera.eyePos.x),
-        //    glm::vec4(_camera.rightVec.y, _camera.upVec.y, -_camera.eyeFront.y, _camera.eyePos.y),
-        //    glm::vec4(_camera.rightVec.z, _camera.upVec.z, -_camera.eyeFront.z, _camera.eyePos.z),
-        //    glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)); // 1.0f for point
-
-        //glm::mat4 result, L_inverse, T_inverse;
-
-        //L_inverse[0].x = M[0].x;
-        //L_inverse[0].y = M[1].x;
-        //L_inverse[0].z = M[2].x;
-        //L_inverse[0].w = 0.0f;
-
-        //L_inverse[1].x = M[0].y;
-        //L_inverse[1].y = M[1].y;
-        //L_inverse[1].z = M[2].y;
-        //L_inverse[1].w = 0.0f;
-
-        //L_inverse[2].x = M[0].z;
-        //L_inverse[2].y = M[1].z;
-        //L_inverse[2].z = M[2].z;
-        //L_inverse[2].w = 0.0f;
-
-        //T_inverse[0].w = -M[0].w;
-        //T_inverse[1].w = -M[1].w;
-        //T_inverse[2].w = -M[2].w;
-
-        //result = L_inverse * T_inverse;
-        //_camera.viewMtx = result;
     }
 
     void CameraManager::ComputePerspectiveMtx(CameraComponent& _camera)
     {
         _camera.aspect = static_cast<float>((OpenGL_Context::GetWindowRatioX() * OpenGL_Context::GetWidth()) /
             (OpenGL_Context::GetWindowRatioY() * OpenGL_Context::GetHeight()));
-
-
-       /* float rfov = _camera.fov * DEG_TO_RAD;
-
-        float half_fov = tan(_camera.fov / 2.0f);
-
-        _camera.projMtx[0][0] = 1.0f / (_camera.aspect * half_fov);
-        _camera.projMtx[1][1] = 1.0f / half_fov;
-        _camera.projMtx[2][2] = -(_camera.farPlane + _camera.nearPlane) / (_camera.farPlane - _camera.nearPlane);
-        _camera.projMtx[2][3] = -(2.0f * _camera.farPlane * _camera.nearPlane) / (_camera.farPlane - _camera.nearPlane);
-        _camera.projMtx[3][2] = -1.0f;
-        _camera.projMtx[3][3] = 0.0f;*/
 
         _camera.projMtx = glm::perspective(glm::radians(_camera.fov),
             _camera.aspect, _camera.nearPlane, _camera.farPlane);

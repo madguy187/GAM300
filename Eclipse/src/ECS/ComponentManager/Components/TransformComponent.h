@@ -15,11 +15,7 @@ namespace Eclipse
 		// For ImGuizmo to work - Subjected to Change
 		glm::mat4 GetTransform() const
 		{
-			glm::mat4 Rotation = glm::rotate(glm::mat4(1.0f), rotation.getX(), { 1, 0, 0 })
-				* glm::rotate(glm::mat4(1.0f), rotation.getY(), { 0, 1, 0 })
-				* glm::rotate(glm::mat4(1.0f), rotation.getZ(), { 0, 0, 1 });
-
-			/*glm::mat4 Rotation = glm::toMat4(glm::quat(rotation.ConvertToGlmVec3Type()));*/
+			glm::mat4 Rotation = glm::toMat4(glm::quat(rotation.ConvertToGlmVec3Type()));
 
 			return glm::translate(glm::mat4(1.0f), position.ConvertToGlmVec3Type())
 				* Rotation

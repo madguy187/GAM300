@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Scene.h"
 #include "ImGuizmo.h"
+#include "Library/Math/Math.h"
 
 namespace Eclipse
 {
@@ -42,14 +43,11 @@ namespace Eclipse
 		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
 			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
+		m_GizmoType = ImGuizmo::OPERATION::ROTATE;
+
 		// ImGuizmo Logic
-		if (!engine->editorManager->EntityHierarchyList_.empty())
+		if (!engine->editorManager->EntityHierarchyList_.empty() && m_GizmoType != -1)
 		{
-			static const float identityMatrix[16] =
-			{ 1.f, 0.f, 0.f, 0.f,
-				0.f, 1.f, 0.f, 0.f,
-				0.f, 0.f, 1.f, 0.f,
-				0.f, 0.f, 0.f, 1.f };
 			Entity selectedEntity = engine->editorManager->GetSelectedEntity();
 
 			ImGuizmo::SetOrthographic(true);
@@ -62,27 +60,29 @@ namespace Eclipse
 			// Camera
 			Entity cameraEntity = static_cast<Entity>(engine->gCamera.GetEditorCameraID());
 			const auto& camCom = engine->world.GetComponent<CameraComponent>(cameraEntity);
-			//engine->gCamera.ComputePerspectiveMtx(*camCom);
-			const glm::mat4& cameraProjection = camCom.projMtx;
-			glm::mat4 cameraView = glm::inverse(engine->world.GetComponent<TransformComponent>(cameraEntity).GetTransform());
 
 			// Selected Entity Transform
 			auto& transCom = engine->world.GetComponent<TransformComponent>(selectedEntity);
 			glm::mat4 transform = transCom.GetTransform();
 
-			ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
-				ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::LOCAL, glm::value_ptr(transform));
+			ImGuizmo::Manipulate(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx),
+				(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform));
 
 			/*ImGuizmo::DrawGrid(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection), identityMatrix, 100.f);*/
 
 			if (ImGuizmo::IsUsing())
 			{
-				transCom.position.setX(glm::vec3(transform[3]).x);
-				transCom.position.setY(-glm::vec3(transform[3]).y);
-				transCom.position.setZ(glm::vec3(transform[3]).z);
+				glm::vec3 translation, rotation, scale;
+				Math::DecomposeTransform(transform, translation, rotation, scale);
+
+				glm::vec3 deltaRotation = rotation - transCom.rotation.ConvertToGlmVec3Type();
+
+				transCom.position = translation;
+				transCom.rotation += deltaRotation;
+				transCom.scale = scale;
 			}
 
-			std::cout << ImGuizmo::IsOver() << std::endl;
+			/*std::cout << ImGuizmo::IsOver() << std::endl;*/
 		}
 
 		if (ECGui::IsItemHovered())
