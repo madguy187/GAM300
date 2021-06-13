@@ -45,19 +45,25 @@ namespace Eclipse
 		// ImGuizmo Logic
 		if (!engine->editorManager->EntityHierarchyList_.empty())
 		{
+			static const float identityMatrix[16] =
+			{ 1.f, 0.f, 0.f, 0.f,
+				0.f, 1.f, 0.f, 0.f,
+				0.f, 0.f, 1.f, 0.f,
+				0.f, 0.f, 0.f, 1.f };
 			Entity selectedEntity = engine->editorManager->GetSelectedEntity();
 
 			ImGuizmo::SetOrthographic(false);
 			ImGuizmo::SetDrawlist();
 
-			float windowWidth = ECGui::GetWindowWidth();
-			float windowHeight = ECGui::GetWindowHeight();
-			ImGuizmo::SetRect(mViewportSize.x, mViewportSize.y, windowWidth, windowHeight); 
+			float windowWidth = (float)ECGui::GetWindowWidth();
+			float windowHeight = (float)ECGui::GetWindowHeight();
+			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
 
 			// Camera
 			Entity cameraEntity = static_cast<Entity>(engine->gCamera.GetEditorCameraID());
 			const auto& camCom = engine->world.GetComponent<CameraComponent>(cameraEntity);
-			const glm::mat4& cameraProjection = camCom.projMtx;
+			//engine->gCamera.ComputePerspectiveMtx(*camCom);
+			glm::mat4 cameraProjection = camCom.projMtx;
 			glm::mat4 cameraView = glm::inverse(engine->world.GetComponent<TransformComponent>(cameraEntity).GetTransform());
 
 			// Selected Entity Transform
@@ -66,6 +72,17 @@ namespace Eclipse
 
 			ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
 				ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::LOCAL, glm::value_ptr(transform));
+
+			/*ImGuizmo::DrawGrid(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection), identityMatrix, 100.f);*/
+
+			if (ImGuizmo::IsUsing())
+			{
+				transCom.position.setX(glm::vec3(transform[3]).x);
+				transCom.position.setY(glm::vec3(transform[3]).y);
+				transCom.position.setZ(glm::vec3(transform[3]).z);
+			}
+
+			std::cout << ImGuizmo::IsOver() << std::endl;
 		}
 
 		if (ECGui::IsItemHovered())
