@@ -9,21 +9,24 @@ void Eclipse::LightingSystem::Init()
 
 void Eclipse::LightingSystem::Update()
 {
-    // Loop
+    // Directional Light ; By right should only have 1
     for (auto const& entity : engine->LightManager.GetDirectionalLightContainer())
     {
-        engine->gGraphics.ShowTestWidgets(entity.second->ID, engine->gGraphics.createdID);
-
         engine->LightManager.DrawDirectionalLight(entity.second,
             engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), entity.first, GL_FILL);
     }
 
-    // Loop
+    // PointLights Draw
     for (auto const& entity : engine->LightManager.GetPointLightsContainer())
     {
-        engine->gGraphics.ShowTestWidgets(entity.second->ID, engine->gGraphics.createdID);
-
         engine->LightManager.DrawPointLights(entity.second,
+            engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), entity.first, GL_FILL);
+    }
+
+    // SpotLight Draw
+    for (auto const& entity : engine->LightManager.GetSpotLightsContainer())
+    {
+        engine->LightManager.DrawSpotLight(entity.second,
             engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), entity.first, GL_FILL);
     }
 }

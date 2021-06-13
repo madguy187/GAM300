@@ -13,8 +13,6 @@ unsigned int Eclipse::PointLight::GetNumberOfPointLights()
 
 void Eclipse::PointLight::CreatePointLight(unsigned int CreatedID)
 {
-    std::cout << _pointlights.size() << std::endl;
-
     // Add Components
     auto& GetWorld = engine->world;
     GetWorld.AddComponent(CreatedID, PointLightComponent{});
@@ -35,7 +33,6 @@ void Eclipse::PointLight::DrawPointLights(unsigned int framebufferID)
 {
     for (auto& it : _pointlights)
     {
-        engine->gGraphics.ShowTestWidgets(it.second->ID, (engine->gGraphics.createdID));
         Draw(it.second, framebufferID, it.first, GL_FILL);
     }
 }
@@ -59,23 +56,15 @@ void Eclipse::PointLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, PointLigh
     GLint uniform_var_loc13 = _shdrpgm->second.GetLocation("uColor");
     GLint uniform_var_loc14 = _shdrpgm->second.GetLocation(("pointLights[" + number + "].IntensityStrength").c_str());
 
+    // SpotLight Position
     TransformComponent& PointlightTransform = engine->world.GetComponent<TransformComponent>(in_pointlight.ID);
+
+    // Which Camera's matrix
     CameraComponent& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 
     if (uniform_var_loc8 >= 0)
     {
         glm::mat4 mModelNDC;
-
-        /*glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, PointlightTransform.pos);
-        model = glm::rotate(model, glm::radians(PointlightTransform.rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(PointlightTransform.rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(PointlightTransform.rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::scale(model, PointlightTransform.scale);
-        mModelNDC = camera.projMtx * camera.viewMtx * model;
-        GLCall(glUniformMatrix4fv(uniform_var_loc8, 1, GL_FALSE, glm::value_ptr(mModelNDC)));
-        GLCall(glUniformMatrix4fv(uniform_var_loc10, 1, GL_FALSE, glm::value_ptr(model)));*/
-
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, PointlightTransform.position.ConvertToGlmVec3Type());
         model = glm::rotate(model, glm::radians(PointlightTransform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));

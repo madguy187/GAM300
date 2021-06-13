@@ -6,6 +6,7 @@
 #include "ECS/ComponentManager/Components/RenderComponent.h"
 #include "ECS/ComponentManager/Components/CameraComponent.h"
 #include "ECS/ComponentManager/Components/DirectionalLightComponent.h"
+#include "ECS/ComponentManager/Components/SpotLightComponent.h"
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
 #include "ECS/SystemManager/Systems/System/EditorSystem.h"
@@ -55,6 +56,7 @@ namespace Eclipse
         world.RegisterComponent<RenderComponent>();
         world.RegisterComponent<PointLightComponent>();
         world.RegisterComponent<DirectionalLightComponent>();
+        world.RegisterComponent<SpotLightComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
@@ -73,6 +75,8 @@ namespace Eclipse
         Signature hi3;
         hi3.set(world.GetComponentType<TransformComponent>(), 1);
         hi3.set(world.GetComponentType<PointLightComponent>(), 1);
+        hi3.set(world.GetComponentType<DirectionalLightComponent>(), 1);
+        hi3.set(world.GetComponentType<SpotLightComponent>(), 1);
         world.RegisterSystemSignature<LightingSystem>(hi3);
 
         //Check this! - Rachel

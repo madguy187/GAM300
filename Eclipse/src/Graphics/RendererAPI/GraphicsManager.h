@@ -22,13 +22,8 @@ namespace Eclipse
     void CreatePrimitives(Entity ID, int ModelType);
 
   private:
-    void ShowTestWidgets();
     void CheckUniformLoc(RenderComponent& sprite, unsigned int id, unsigned int framebufferID);
     void UpdateFrameBuffer();
     void FrameBufferDraw();
-
-    // imgui , to be removed
-  public:
-    void ShowTestWidgets(unsigned int id, unsigned int createdId);
   };
 }

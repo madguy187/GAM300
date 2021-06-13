@@ -170,6 +170,12 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         engine->LightManager.CreateLights(Eclipse::TypesOfLights::DIRECTIONAL, ID);
     }
     break;
+    // Spot
+    case 14:
+    {
+        engine->LightManager.CreateLights(Eclipse::TypesOfLights::DIRECTIONAL, ID);
+    }
+    break;
     }
 }
 
@@ -228,7 +234,7 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
     if (framebufferID == engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID())
     {
         camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
-        camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetGameCameraID());
+        camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetEditorCameraID());
     }
     else
     {
@@ -252,23 +258,11 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
     GLuint tex_loc = sprite.shaderRef->second.GetLocation("uTex2d");
     GLuint lll = sprite.shaderRef->second.GetLocation("lightColor");
     GLuint cam = sprite.shaderRef->second.GetLocation("camPos");
-    //GLuint pos = sprite.shaderRef->second.GetLocation("lightPos");
     GLuint model2 = sprite.shaderRef->second.GetLocation("model");
 
     if (uniform_var_loc1 >= 0)
     {
         glm::mat4 mModelNDC;
-
-       /* glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, trans.pos);
-        model = glm::rotate(model, glm::radians(trans.rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(trans.rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(trans.rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::scale(model, trans.scale);
-        mModelNDC = camera.projMtx * camera.viewMtx * model;
-        glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(mModelNDC));
-        glUniformMatrix4fv(model2, 1, GL_FALSE, glm::value_ptr(model));*/
-
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, trans.position.ConvertToGlmVec3Type());
         model = glm::rotate(model, glm::radians(trans.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -280,19 +274,9 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
         glUniformMatrix4fv(model2, 1, GL_FALSE, glm::value_ptr(model));
     }
 
-   /* if (pos >= 0)
-    {
-        glUniform3f(pos, spherepos.x, spherepos.y, spherepos.z);
-    }*/
-
     if (cam >= 0)
     {
         glUniform3f(lll, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ());
-    }
-
-    if (lll >= 0)
-    {
-        glUniform4f(lll, sprite.lightColor.x, sprite.lightColor.y, sprite.lightColor.z, sprite.lightColor.w);
     }
 
     if (uniform_var_loc2 >= 0)
@@ -377,9 +361,6 @@ FrameBuffer* Eclipse::OpenGL_Context::GetFramebuffer(FrameBufferMode mode)
 
 void Eclipse::GraphicsManager::FrameBufferDraw()
 {
-    // Will be Removed , its imgui stuffs
-    Eclipse::GraphicsManager::ShowTestWidgets();
-
     FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)), "GameView");
     FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)), "SceneView");
 }
@@ -387,46 +368,6 @@ void Eclipse::GraphicsManager::FrameBufferDraw()
 void Eclipse::GraphicsManager::GlobalFrmeBufferDraw()
 {
     Eclipse::GraphicsManager::FrameBufferDraw();
-}
-
-#endif
-
-/*************************************************************************
-  ImGui Test Things
-*************************************************************************/
-
-#ifndef Imgui_Things
-
-void Eclipse::GraphicsManager::ShowTestWidgets()
-{
-    /*int modelSelector = -1;
-    ImGui::Begin("Create Objects");
-
-    if (ImGui::Combo("Models", &modelSelector,
-        "Square\0Circle\0Triangle\0Lines\0Sphere\0Cube\0Cylinder\0Cone\0Torus\0Pyramid\0Lines3D\0Plane\0testlight\0D_Light"))
-    {
-        CreatePrimitives(modelSelector);
-
-        for (int i = 0; i <= 2; ++i)
-        {
-            ImGui::Separator();
-        }
-    }
-    ImGui::End();*/
-}
-
-void Eclipse::GraphicsManager::ShowTestWidgets(unsigned int id, unsigned int createdId)
-{
-    //if (id == createdId)
-    //{
-    //    TransformComponent& trans = engine->world.GetComponent<TransformComponent>(id);
-    //    //ImGui::DragFloat3("Scale", (float*)&trans.scale, 0.2f, 0.0f, 0.0f);
-    //    ECGui::DrawSliderFloat3Widget("Scale", &trans.scale);
-    //    //ImGui::DragFloat3("Translate", (float*)&trans.pos, 0.2f, 0.0f, 0.0f);
-    //    ECGui::DrawSliderFloat3Widget("Translate", &trans.position);
-    //    //ImGui::DragFloat3("Rotate", (float*)&trans.rot, 0.2f, 0.0f, 0.0f);
-    //    ECGui::DrawSliderFloat3Widget("Rotate", &trans.rotation);
-    //}
 }
 
 #endif

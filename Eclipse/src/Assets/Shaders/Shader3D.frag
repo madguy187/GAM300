@@ -34,7 +34,6 @@ struct PointLight
     float linear;
     float quadratic;  
     float IntensityStrength;
-    float test;
 };  
 
 struct DirLight 
@@ -46,6 +45,23 @@ struct DirLight
     vec3 specular;
 };
 
+struct SpotLight 
+{
+    vec3 lightColor;
+    vec3 position;
+    vec3 direction;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;   
+
+    float constant;
+    float linear;
+    float quadratic;    
+    float IntensityStrength;
+    float cutOff;
+    float outerCutOff;
+};
+
 #define NR_POINT_LIGHTS 4  
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform int NumberOfPointLights;
@@ -53,9 +69,13 @@ uniform int NumberOfPointLights;
 #define NR_DIRECTIONAL_LIGHTS 1  
 uniform DirLight directionlight[NR_DIRECTIONAL_LIGHTS];
 
+#define NR_SPOT_LIGHTS 1  
+uniform SpotLight spotLights[NR_SPOT_LIGHTS];
+
 // Function Headers
 vec3 CalcPointLight(PointLight light, vec3 normala, vec3 fragPos, vec3 viewDira);
 vec3 CalcDirLight(DirLight light, vec3 normala, vec3 viewDira);
+vec3 CalcSpotLight(SpotLight light, vec3 normala, vec3 fragPos, vec3 viewDira);
 
 vec4 testMaterials()
 {
@@ -163,6 +183,11 @@ void main ()
           result += CalcPointLight( pointLights[i], norm, crntPos, viewDir);
      }
 
+     for(int i = 0 ; i < 1 ; i++ )
+     {
+          result += CalcSpotLight( spotLights[i], norm, crntPos, viewDir);
+     }
+
      fFragClr = texture(uTex2d, TxtCoord) * vec4(uColor) * vec4(result,1.0f);
     }
 }
@@ -191,6 +216,42 @@ vec3 CalcPointLight(PointLight light, vec3 normala, vec3 fragPos, vec3 viewDira)
 
     vec3 specularStrength = light.specular;
     vec3 reflectDir = reflect(-lightDirection, normal);  
+    float spec = pow(max(dot(viewDira, reflectDir), 0.0), 4); // 32 is material shiness
+    vec3 specular = specularStrength * spec * light.lightColor * inten ;  
+
+    vec3 result = vec3( vec3(ambient) + diffuse + specular) ;
+
+    return vec3(texture(uTex2d, TxtCoord)) * result;
+}
+
+// calculates the color when using a spot light.
+vec3 CalcSpotLight(SpotLight light, vec3 normala, vec3 fragPos, vec3 viewDira)
+{
+    vec3 lightDir = (light.position - fragPos);
+
+    // intensity of light with respect to distance
+	float dist = length(lightDir);
+	float constant = 1.0f;
+	float linear = 0.09;
+    float quadratic = 0.032;
+	float inten = 1.0 / (constant + linear * dist + quadratic * ( dist * dist ) );
+
+    // spotlight intensity
+    float theta = dot(lightDir, (light.direction)); 
+    float epsilon = light.cutOff - light.outerCutOff;
+    float intensity = clamp((theta - light.cutOff) / epsilon, 0.0, 1.0);
+
+    // ambient shading
+    vec3 ambientStrength = light.ambient;
+    vec4 ambient = vec4(light.lightColor,1.0) * vec4(ambientStrength,1.0) * inten ;
+
+    // diffuse lighting
+    vec3 normal = (normal_from_vtxShader);
+    vec3 diffuse = light.lightColor * light.diffuse  * inten * intensity;  
+
+    // specular shading
+    vec3 specularStrength = light.specular;
+    vec3 reflectDir = reflect(-lightDir, normala);  
     float spec = pow(max(dot(viewDira, reflectDir), 0.0), 4); // 32 is material shiness
     vec3 specular = specularStrength * spec * light.lightColor * inten ;  
 
