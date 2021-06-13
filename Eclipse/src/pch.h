@@ -71,6 +71,9 @@
 
 #include "Graphics.h"
 
+// System Performance
+#include "Editor/Windows/System Performance/SystemPerformance.h"
+
 // Custom Libraries
 #include "Library/Math/Vector.h"
 #include "Library/Math/Matrix.h"

@@ -22,6 +22,7 @@ enum class EditorWindowType
 	PROFILER,
 	CONSOLELOG,
 	GAMEVIEW,
+	SYSPERFORMANCE,
 	UNASSIGNED
 };
 

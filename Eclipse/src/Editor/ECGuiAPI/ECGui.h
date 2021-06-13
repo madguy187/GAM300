@@ -232,5 +232,13 @@ namespace Eclipse
 		static void PushItemWidth(float value);
 		static bool IsItemHovered();
 		static void SetToolTip(const char* message);
+
+		/*************************************************************************/
+		/*                         Graph Widgets                                 */
+		/*************************************************************************/
+		static void PlotHistogram(const char* label, std::vector<float> values, 
+			int values_offset = 0, const char* overlay_text = NULL, 
+			float scale_min = FLT_MAX, float scale_max = FLT_MAX, ImVec2 graph_size = ImVec2(0, 0), 
+			int stride = sizeof(float));
 	};
 }

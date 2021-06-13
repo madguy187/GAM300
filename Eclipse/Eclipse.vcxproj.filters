@@ -419,6 +419,7 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Editor\Windows\System Performance\SystemPerformance.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -611,5 +612,6 @@
       <Filter>Time</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\Editor\Windows\System Performance\SystemPerformance.cpp" />
   </ItemGroup>
 </Project>

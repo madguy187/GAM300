@@ -13,7 +13,7 @@ void Eclipse::CameraSystem::Init()
 }
 
 void Eclipse::CameraSystem::Update()
-{	
+{
 	for (auto& it : mEntities)
 	{
 		auto& _camera = engine->world.GetComponent<CameraComponent>(it);
@@ -33,4 +33,5 @@ void Eclipse::CameraSystem::Update()
 		engine->gCamera.ComputeViewMtx(_camera, _transform);
 		engine->gCamera.ComputePerspectiveMtx(_camera);
 	}
+
 }

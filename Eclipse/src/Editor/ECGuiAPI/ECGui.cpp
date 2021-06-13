@@ -215,4 +215,13 @@ namespace Eclipse
 	{
 		ImGuiAPI::SetToolTip(message);
 	}
+	void ECGui::PlotHistogram(const char* name, std::vector<float> value, int values_offset, const char* overlay_text, float scale_min, float scale_max, ImVec2 graph_size, int stride)
+	{
+		float values[100] = {0};
+		std::copy(value.begin(), value.end(), values);
+		char overlay[32];
+		sprintf(overlay, "%f", values);
+		//ImGui::PlotLines("Frame Times", values, IM_ARRAYSIZE(values));
+		ImGuiAPI::PlotHistogram(name, values, IM_ARRAYSIZE(values), 0, overlay, 0.0f, 1.0f, ImVec2(0, 80.0f),stride);
+	}
 }
