@@ -394,6 +394,9 @@
     <ClInclude Include="src\ImGui\Vendor\imstb_truetype.h">
       <Filter>ImGui\Vendor</Filter>
     </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\stb_image.h">
+      <Filter>ImGui\Vendor</Filter>
+    </ClInclude>
     <ClInclude Include="src\Library\Math\Matrix.h">
       <Filter>Library\Math</Filter>
     </ClInclude>

@@ -52,7 +52,7 @@ namespace Eclipse
 				0.f, 0.f, 0.f, 1.f };
 			Entity selectedEntity = engine->editorManager->GetSelectedEntity();
 
-			ImGuizmo::SetOrthographic(false);
+			ImGuizmo::SetOrthographic(true);
 			ImGuizmo::SetDrawlist();
 
 			float windowWidth = (float)ECGui::GetWindowWidth();
@@ -63,7 +63,7 @@ namespace Eclipse
 			Entity cameraEntity = static_cast<Entity>(engine->gCamera.GetEditorCameraID());
 			const auto& camCom = engine->world.GetComponent<CameraComponent>(cameraEntity);
 			//engine->gCamera.ComputePerspectiveMtx(*camCom);
-			glm::mat4 cameraProjection = camCom.projMtx;
+			const glm::mat4& cameraProjection = camCom.projMtx;
 			glm::mat4 cameraView = glm::inverse(engine->world.GetComponent<TransformComponent>(cameraEntity).GetTransform());
 
 			// Selected Entity Transform
