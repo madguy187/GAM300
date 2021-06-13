@@ -109,6 +109,9 @@
     <Filter Include="ImGui\Vendor">
       <UniqueIdentifier>{FD493E4B-E9AC-CDEF-9232-06A67E749972}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ImGui\Vendor\ImGuizmo">
+      <UniqueIdentifier>{FD481B09-69B5-D603-32A9-6E619ED4F86B}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Library">
       <UniqueIdentifier>{1AE124DA-86C0-A375-8FD8-2E4CFB360AD7}</UniqueIdentifier>
     </Filter>
@@ -355,6 +358,18 @@
     <ClInclude Include="src\ImGui\Vendor\IconsMaterialDesignIcons.h">
       <Filter>ImGui\Vendor</Filter>
     </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\ImGuizmo\ImCurveEdit.h">
+      <Filter>ImGui\Vendor\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\ImGuizmo\ImGradient.h">
+      <Filter>ImGui\Vendor\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\ImGuizmo\ImGuizmo.h">
+      <Filter>ImGui\Vendor\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\ImGuizmo\ImSequencer.h">
+      <Filter>ImGui\Vendor\ImGuizmo</Filter>
+    </ClInclude>
     <ClInclude Include="src\ImGui\Vendor\imconfig.h">
       <Filter>ImGui\Vendor</Filter>
     </ClInclude>
@@ -576,6 +591,18 @@
     </ClCompile>
     <ClCompile Include="src\ImGui\Setup\ImGuiSetup.cpp">
       <Filter>ImGui\Setup</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImCurveEdit.cpp">
+      <Filter>ImGui\Vendor\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImGradient.cpp">
+      <Filter>ImGui\Vendor\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImGuizmo.cpp">
+      <Filter>ImGui\Vendor\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImSequencer.cpp">
+      <Filter>ImGui\Vendor\ImGuizmo</Filter>
     </ClCompile>
     <ClCompile Include="src\ImGui\Vendor\imgui.cpp">
       <Filter>ImGui\Vendor</Filter>

@@ -112,8 +112,13 @@ namespace Eclipse
 		return MenuBar_;
 	}
 
-	size_t EditorManager::GetWindowListSize()
+	size_t EditorManager::GetWindowListSize() const
 	{
 		return Size_;
+	}
+
+	Entity EditorManager::GetSelectedEntity() const
+	{
+		return EntityHierarchyList_[GEHIndex_];
 	}
 }

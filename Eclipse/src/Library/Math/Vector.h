@@ -430,19 +430,19 @@ namespace Eclipse
 			return _data.data();
 		}
 
-		glm::vec2 ConvertToGlmVec2Type()
+		glm::vec2 ConvertToGlmVec2Type() const
 		{
 			glm::vec2 temp{ this->_data[0], this->_data[1] };
 			return temp;
 		}
 
-		glm::vec3 ConvertToGlmVec3Type()
+		glm::vec3 ConvertToGlmVec3Type() const
 		{
 			glm::vec3 temp{ this->_data[0], this->_data[1],  this->_data[2] };
 			return temp;
 		}
 
-		glm::vec4 ConvertToGlmVec4Type()
+		glm::vec4 ConvertToGlmVec4Type() const
 		{
 			glm::vec4 temp{ this->_data[0], this->_data[1], this->_data[2], this->_data[3] };
 			return temp;

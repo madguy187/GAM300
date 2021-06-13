@@ -30,6 +30,16 @@ namespace Eclipse
 		return ImGui::GetContentRegionAvail();
 	}
 
+	float ImGuiAPI::GetWindowHeight()
+	{
+		return ImGui::GetWindowHeight();
+	}
+
+	float ImGuiAPI::GetWindowWidth()
+	{
+		return ImGui::GetWindowWidth();
+	}
+
 	void ImGuiAPI::SetWindowSize(float width, float height)
 	{
 		ImGui::SetNextWindowSize(ImVec2(width, height));

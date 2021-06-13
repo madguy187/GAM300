@@ -51,6 +51,7 @@ project "Eclipse"
 		"Eclipse/src/Graphics/FrameBuffer",
 		"Eclipse/src/Graphics/OpenGL",
 		"Eclipse/src/ImGui/Vendor",
+		"Eclipse/src/ImGui/Vendor/ImGuizmo",
 		"Dep/PhysX/include",
 		"Dep/PhysX/include/characterkinematic",
 		"Dep/PhysX/include/collision",

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Scene.h"
+#include "ImGuizmo.h"
 
 namespace Eclipse
 {
@@ -41,9 +42,35 @@ namespace Eclipse
 		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
 			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
+		// ImGuizmo Logic
+		if (!engine->editorManager->EntityHierarchyList_.empty())
+		{
+			Entity selectedEntity = engine->editorManager->GetSelectedEntity();
+
+			ImGuizmo::SetOrthographic(false);
+			ImGuizmo::SetDrawlist();
+
+			float windowWidth = ECGui::GetWindowWidth();
+			float windowHeight = ECGui::GetWindowHeight();
+			ImGuizmo::SetRect(mViewportSize.x, mViewportSize.y, windowWidth, windowHeight); 
+
+			// Camera
+			Entity cameraEntity = static_cast<Entity>(engine->gCamera.GetEditorCameraID());
+			const auto& camCom = engine->world.GetComponent<CameraComponent>(cameraEntity);
+			const glm::mat4& cameraProjection = camCom.projMtx;
+			glm::mat4 cameraView = glm::inverse(engine->world.GetComponent<TransformComponent>(cameraEntity).GetTransform());
+
+			// Selected Entity Transform
+			auto& transCom = engine->world.GetComponent<TransformComponent>(selectedEntity);
+			glm::mat4 transform = transCom.GetTransform();
+
+			ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
+				ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::LOCAL, glm::value_ptr(transform));
+		}
+
 		if (ECGui::IsItemHovered())
 		{
-			// Do all the future stuff here
+			// Do all the future stuff here when hovering on window
 		}
 	}
 }
