@@ -50,15 +50,15 @@ namespace Eclipse
 
 		if (ECGui::BeginTreeNode("Default Scene"))
 		{
-			TrackEntitySelection(engine->editorManager->EntityHierarchyList_, CurrEnt_,
-				PrevEnt_, engine->editorManager->GEHIndex_, EntFilter);
+			TrackEntitySelection(engine->editorManager->EntityHierarchyList_, PrevEnt_, CurrEnt_, 
+				engine->editorManager->GEHIndex_, EntFilter);
 
 			ECGui::EndTreeNode();
 		}
 	}
 
-	void Hierarchy::TrackEntitySelection(const std::vector<Entity>& list, EntitySelectionTracker& curr, 
-		EntitySelectionTracker& prev, size_t& globalIndex, ImGuiTextFilter& filter)
+	void Hierarchy::TrackEntitySelection(const std::vector<Entity>& list, 
+		EntitySelectionTracker& prev, EntitySelectionTracker& curr, size_t& globalIndex, ImGuiTextFilter& filter)
 	{
 		std::string entityName{};
 
@@ -68,8 +68,8 @@ namespace Eclipse
 
 			if (filter.PassFilter(entCom.Name.c_str()))
 			{
-				if (ECGui::CreateSelectableButton(my_strcat(entCom.Name, " ", list[index]).c_str(),
-					&entCom.IsActive))
+				entityName = my_strcat(entCom.Name, " ", list[index]);
+				if (ECGui::CreateSelectableButton(entityName.c_str(), &entCom.IsActive))
 				{
 					if (curr.index == list[index])
 					{
@@ -124,6 +124,7 @@ namespace Eclipse
 							{
 								Entity ID = engine->editorManager->CreateEntity(lexical_cast<EntityType>(TagList_[i][j]));
 								engine->gGraphics.CreatePrimitives(ID, static_cast<int>(i * TagList_.size() + j));
+								UpdateEntityTracker(ID);
 							}
 						}
 
@@ -144,6 +145,7 @@ namespace Eclipse
 							{
 								Entity ID = engine->editorManager->CreateEntity(lexical_cast<EntityType>(TagList_[i][j]));
 								engine->gGraphics.CreatePrimitives(ID, static_cast<int>(i * TagList_[i - 1].size() + j));
+								UpdateEntityTracker(ID);
 							}
 						}
 
@@ -155,6 +157,24 @@ namespace Eclipse
 				default:
 					break;
 			}
+		}
+	}
+	void Hierarchy::UpdateEntityTracker(Entity ID)
+	{
+		if (ID != CurrEnt_.index)
+		{
+			auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
+
+			if (engine->world.CheckComponent<EntityComponent>(CurrEnt_.index))
+			{
+				auto& prevEntCom = engine->world.GetComponent<EntityComponent>(CurrEnt_.index);
+				prevEntCom.IsActive = false;
+				PrevEnt_.name = CurrEnt_.name;
+				PrevEnt_.index = CurrEnt_.index;
+			}
+
+			CurrEnt_.name = my_strcat(entCom.Name, " ", ID);
+			CurrEnt_.index = ID;
 		}
 	}
 }

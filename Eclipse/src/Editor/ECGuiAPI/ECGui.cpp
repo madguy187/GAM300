@@ -176,9 +176,9 @@ namespace Eclipse
 		ImGuiAPI::InputTextWithHint(name, hintText, buffer, bufferSize, hideName);
 	}
 
-	void ECGui::DrawInputTextWidget(const char* name, char* buffer, size_t bufferSize, bool hideName)
+	void ECGui::DrawInputTextWidget(const char* name, char* buffer, size_t bufferSize, ImGuiInputTextFlags flag, bool hideName)
 	{
-		ImGuiAPI::InputText(name, buffer, bufferSize, hideName);
+		ImGuiAPI::InputText(name, buffer, bufferSize, flag, hideName);
 	}
 
 	bool ECGui::CheckBoxBool(const char* name, bool* var, bool hideName)

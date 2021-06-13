@@ -16,13 +16,13 @@ namespace Eclipse
 		void Update() override;
 		Hierarchy();
 		void DrawImpl();
-		void TrackEntitySelection(const std::vector<Entity>& list, EntitySelectionTracker& curr,
-			EntitySelectionTracker& prev, size_t& globalIndex, ImGuiTextFilter& filter);
+		void TrackEntitySelection(const std::vector<Entity>& list, EntitySelectionTracker& prev,
+			EntitySelectionTracker& curr, size_t& globalIndex, ImGuiTextFilter& filter);
 		void ShowEntityCreationList();
+		void UpdateEntityTracker(Entity ID);
 	private:
 		EntitySelectionTracker CurrEnt_;
 		EntitySelectionTracker PrevEnt_;
 		std::vector<std::vector<std::string>> TagList_;
-		//std::vector<std::string> LightList_;
 	};
 }

@@ -245,12 +245,12 @@ namespace Eclipse
 		ImGui::InputTextWithHint(finalID.c_str(), hintText, buffer, bufferSize);
 	}
 
-	void ImGuiAPI::InputText(const char* name, char* buffer, size_t bufferSize, bool hideName)
+	void ImGuiAPI::InputText(const char* name, char* buffer, size_t bufferSize, ImGuiInputTextFlags flag, bool hideName)
 	{
 		//Text(name);
 		std::string finalID = HideWidgetName(name, true);
 		InsertSameLine();
-		ImGui::InputText(finalID.c_str(), buffer, bufferSize);
+		ImGui::InputText(finalID.c_str(), buffer, bufferSize, flag);
 	}
 
 	void ImGuiAPI::SliderInt(const char* name, int* var, bool hideName, int minrange, int maxrange)

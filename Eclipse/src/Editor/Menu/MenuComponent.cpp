@@ -9,7 +9,7 @@ namespace Eclipse
 	{
 		for (const auto& str : List_)
 		{
-			DrawImpl();
+			DrawImpl(str.c_str());
 		}
 
 		DrawGuiWindows();
@@ -25,9 +25,19 @@ namespace Eclipse
 		ID++;
 	}
 
-	void MenuComponent::DrawImpl()
+	void MenuComponent::DrawImpl(const char* key)
 	{
 		// For specific items
+		if (!strcmp(key, "Exit"))
+		{
+			bool selected = false;
+
+			if (ECGui::CreateMenuItem(key, &selected))
+			{
+				glfwSetWindowShouldClose(OpenGL_Context::GetWindow(), 1);
+			}
+		}
+
 		/*if (!strcmp(key, "Scene"))
 		{
 			auto* scene = engine->editorManager->GetEditorWindow<Scene>();

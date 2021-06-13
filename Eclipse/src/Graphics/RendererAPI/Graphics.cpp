@@ -18,7 +18,6 @@
 #include "pch.h"
 #include "Graphics.h"
 
-#include "imgui.h"
 #include "type_ptr.hpp"
 #include "matrix_transform_2d.hpp"
 #include "../src/ECS/World.h"
