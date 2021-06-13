@@ -209,14 +209,14 @@ vec3 CalcPointLight(PointLight light, vec3 normala, vec3 fragPos, vec3 viewDira)
     vec4 ambient = vec4(light.lightColor,1.0) * vec4(ambientStrength,1.0) * inten ;
 
     // diffuse lighting
-    vec3 normal = (normal_from_vtxShader);
+    vec3 normal = normalize(normal_from_vtxShader);
     vec3 lightDirection = normalize(lightVec);
     //float diff = max(dot(normal, lightDirection), 0.0f); 
     vec3 diffuse = light.lightColor * light.diffuse  * inten ;  
 
     vec3 specularStrength = light.specular;
     vec3 reflectDir = reflect(-lightDirection, normal);  
-    float spec = pow(max(dot(viewDira, reflectDir), 0.0), 4); // 32 is material shiness
+    float spec = pow(max(dot(viewDira, reflectDir), 0.0), 2); // 32 is material shiness
     vec3 specular = specularStrength * spec * light.lightColor * inten ;  
 
     vec3 result = vec3( vec3(ambient) + diffuse + specular) ;
