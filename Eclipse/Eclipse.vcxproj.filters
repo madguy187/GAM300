@@ -421,6 +421,7 @@
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Graphics\Lighting\SpotLight.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\SpotLightComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\MaterialComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">

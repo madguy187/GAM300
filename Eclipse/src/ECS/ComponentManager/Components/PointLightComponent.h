@@ -25,12 +25,10 @@ namespace Eclipse
         float radius = 0.0f;
 
         bool hasTexture = false;
-        bool visible;
+        bool visible = true;
 
         modelIt modelRef;
-        //textureIt textureRef;
         shaderIt shaderRef;
-
         glm::mat4 modelNDC_xform{ 0 };
     };
 }

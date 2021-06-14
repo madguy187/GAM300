@@ -77,6 +77,7 @@ void SpotLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, SpotLightComponent&
     GLint uniform_var_loc15 = _shdrpgm->second.GetLocation(("spotLights[" + number + "].cutOff").c_str());
     GLint uniform_var_loc16 = _shdrpgm->second.GetLocation(("spotLights[" + number + "].outerCutOff").c_str());
     GLint uniform_var_loc17 = _shdrpgm->second.GetLocation(("spotLights[" + number + "].direction").c_str());
+    GLint uniform_var_loc18 = _shdrpgm->second.GetLocation("NumberOfSpotLights");
 
     // SpotLight Position
     TransformComponent& SpotlightTransform = engine->world.GetComponent<TransformComponent>(in_spot.ID);
@@ -181,6 +182,8 @@ void SpotLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, SpotLightComponent&
         GLCall(glUniform3f(uniform_var_loc17, in_spot.direction.x, in_spot.direction.y, in_spot.direction.z));
     }
 
-   // GLCall(glUniform3f(uniform_var_loc17, SpotlightTransform.position.getX(), SpotlightTransform.position.getY(), SpotlightTransform.position.getZ()));
-
+    if (uniform_var_loc18 >= 0)
+    {
+        GLCall(glUniform1i(uniform_var_loc18, containersize));
+    }
 }

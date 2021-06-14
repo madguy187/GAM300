@@ -14,7 +14,6 @@ namespace Eclipse
     class RenderSystem : public System
     {
     public:
-        InputWrapper InputHandler;
         static void Init();
         static Signature RegisterAll();
 

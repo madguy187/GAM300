@@ -16,7 +16,6 @@ namespace Eclipse
         ECVec3 diffuse{ 0.5f,0.5f,0.5f };
         ECVec3 specular{ 0.1f,0.1f,0.1f };
         bool visible;
-
         glm::mat4 modelNDC_xform{ 0 };
     };
 }

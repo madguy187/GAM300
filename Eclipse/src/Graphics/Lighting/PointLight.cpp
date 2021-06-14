@@ -161,7 +161,10 @@ void Eclipse::PointLight::Draw(PointLightComponent* in, unsigned int framebuffer
 
     CheckUniformLoc(in->shaderRef, *in, indexID, _pointlights.size());
 
-    GLCall(glDrawElements(in->modelRef->second->GetPrimitiveType(), in->modelRef->second->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
+    if (in->visible)
+    {
+        GLCall(glDrawElements(in->modelRef->second->GetPrimitiveType(), in->modelRef->second->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
+    }
 
     glBindVertexArray(0);
     in->shaderRef->second.UnUse();

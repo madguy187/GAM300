@@ -8,7 +8,8 @@ bool shakeScreen = 1.0f;
 glm::vec3 spherepos;
 
 void Eclipse::GraphicsManager::pre_render()
-{  // Loading Configuration
+{
+    // Loading Configuration
     mRenderContext.init("../Dep/Configuration/configuration.json");
 
     // Loading Of Models , Shaders and etc.. 
@@ -264,7 +265,7 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
     GLint uniform_var_loc3 = sprite.shaderRef->second.GetLocation("uTextureCheck");
     GLint uniform_var_loc4 = sprite.shaderRef->second.GetLocation("TextureIndex");
     GLint uniform_var_loc5 = sprite.shaderRef->second.GetLocation("TextureDimensions");
-    GLuint tex_loc = sprite.shaderRef->second.GetLocation("uTex2d");
+    GLuint uniform_var_loc6 = sprite.shaderRef->second.GetLocation("uTex2d");
     GLuint lll = sprite.shaderRef->second.GetLocation("lightColor");
     GLuint cam = sprite.shaderRef->second.GetLocation("camPos");
     GLuint model2 = sprite.shaderRef->second.GetLocation("model");
@@ -319,9 +320,9 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
         }
     }
 
-    if (tex_loc >= 0)
+    if (uniform_var_loc6 >= 0)
     {
-        glUniform1i(tex_loc, 1);
+        glUniform1i(uniform_var_loc6, 1);
     }
 }
 
