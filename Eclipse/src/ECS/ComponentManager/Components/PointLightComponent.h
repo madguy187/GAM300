@@ -15,8 +15,8 @@ namespace Eclipse
         ECVec3 ambient{ 0.2f , 0.2f, 0.2f };
         ECVec3 diffuse{ 0.5f,0.5f,0.5f };
         ECVec3 specular{ 0.1f,0.1f,0.1f };
-        ECVec3 lightColor{ 1.0f,1.0f,1.0f };
-        ECVec3 Color{ 0,0,0 };
+        ECVec3 lightColor{ 1.0f,0.99f,0.0f };
+        ECVec3 Color{ 1.0f,0.99f,0 };
 
         float IntensityStrength = 10.0f ;
         float constant = 1.0f;

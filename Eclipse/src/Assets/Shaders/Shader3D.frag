@@ -4,7 +4,7 @@ layout(location = 0) in vec2 TxtCoord;
 layout(location = 0) out vec4 fFragClr;
 
 uniform sampler2D uTex2d;
-uniform vec4 uColor;
+uniform vec3 uColor;
 uniform bool uTextureCheck;
 uniform vec4 lightColor; in vec3 crntPos;
 uniform vec3 lightPos; in vec3 normal_from_vtxShader;
@@ -31,12 +31,15 @@ struct PointLight {
     float IntensityStrength;
 };
 
-struct DirLight {
+struct DirLight 
+{
     vec3 direction;
     vec3 lightColor;
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
+    
+    bool visible;
 };
 
 struct SpotLight {
@@ -102,7 +105,7 @@ void main()
 
     if (!uTextureCheck) 
     {
-        fFragClr = vec4(uColor);
+        fFragClr = vec4(uColor,1.0f);
     } 
     else 
     {
@@ -125,7 +128,7 @@ void main()
             result += CalcSpotLight(spotLights[i], norm, crntPos, viewDir);
         }
 
-        fFragClr = texture(uTex2d, TxtCoord) * vec4(uColor) * vec4(result, 1.0f);
+        fFragClr = texture(uTex2d, TxtCoord) * vec4(result, 1.0f);
     }
 }
 

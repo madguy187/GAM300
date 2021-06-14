@@ -38,13 +38,16 @@ void Eclipse::DirectionalLight::Draw(DirectionalLightComponent* in, unsigned int
 
     CheckUniformLoc(shdrpgm, *in, indexID, _DirectionalLight.size());
 
-    GLCall(glDrawElements(Graphics::models.find("sphere")->second->GetPrimitiveType(), Graphics::models.find("sphere")->second->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
+    if (in->visible)
+    {
+        GLCall(glDrawElements(Graphics::models.find("sphere")->second->GetPrimitiveType(), Graphics::models.find("sphere")->second->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
+    }
 
     glBindVertexArray(0);
     shdrpgm->second.UnUse();
 }
 
-void Eclipse::DirectionalLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, DirectionalLightComponent& hi, int index, unsigned int containersize)
+void Eclipse::DirectionalLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, DirectionalLightComponent& in_light, int index, unsigned int containersize)
 {
     // We should only have 1 but lets see how
     std::string number = std::to_string(index);
@@ -55,10 +58,10 @@ void Eclipse::DirectionalLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, Dir
     GLint uniform_var_loc4 = _shdrpgm->second.GetLocation(("directionlight[" + number + "].specular").c_str());
     GLint uniform_var_loc5 = _shdrpgm->second.GetLocation("uModelToNDC");
     GLuint uniform_var_lo6 = _shdrpgm->second.GetLocation("model");
-    GLint uniform_var_loc7 = _shdrpgm->second.GetLocation("uTextureCheck");
     GLint uniform_var_loc8 = _shdrpgm->second.GetLocation(("directionlight[" + number + "].lightColor").c_str());
+    GLint uniform_var_loc9 = _shdrpgm->second.GetLocation(("directionlight[" + number + "].visible").c_str());
 
-    TransformComponent& trans = engine->world.GetComponent<TransformComponent>(hi.ID);
+    TransformComponent& trans = engine->world.GetComponent<TransformComponent>(in_light.ID);
 
     CameraComponent camera;
     camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
@@ -86,29 +89,31 @@ void Eclipse::DirectionalLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, Dir
     // ambient
     if (uniform_var_loc2 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc2, 1.0f, 1.0f, 1.0f));
+        GLCall(glUniform3f(uniform_var_loc2, in_light.ambient.x, in_light.ambient.y, in_light.ambient.z));
     }
 
     // diffuse
     if (uniform_var_loc3 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc3, 0.5f, 0.5f, 0.5f));
+        GLCall(glUniform3f(uniform_var_loc3, in_light.diffuse.x, in_light.diffuse.y, in_light.diffuse.z));
     }
 
     // specular
     if (uniform_var_loc4 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc4, 1.0f, 1.0f, 1.0f));
+        GLCall(glUniform3f(uniform_var_loc4, in_light.specular.x, in_light.specular.y, in_light.specular.z));
     }
 
-    if (uniform_var_loc7 >= 0)
-    {
-        GLCall(glUniform1i(uniform_var_loc7, 0));
-    }
-
+    // LightColor
     if (uniform_var_loc8 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc8, hi.lightColor.x, hi.lightColor.y, hi.lightColor.z));
+        GLCall(glUniform3f(uniform_var_loc8, in_light.lightColor.x, in_light.lightColor.y, in_light.lightColor.z));
+    }
+
+    // Visibility
+    if (uniform_var_loc9 >= 0)
+    {
+        GLCall(glUniform1i(uniform_var_loc9, in_light.visible));
     }
 
 }
