@@ -314,6 +314,12 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Mono\ScriptAPI\EclipseBehavior.cs" />
+    <None Include="src\Mono\ScriptAPI\GameObject.cs" />
+    <None Include="src\Mono\ScriptAPI\IScriptable.cs" />
+    <None Include="src\Mono\ScriptAPI\TransformComponent.cs" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
