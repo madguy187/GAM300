@@ -19,4 +19,5 @@ x64/Debug/GAM300.exe
 *.pch
 *.iobj
 *.ipdb
+*.exe
 /Libraries
