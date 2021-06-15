@@ -6,4 +6,4 @@ sysconfdir=${prefix}/etc
 
 Name: Mono
 Description: Mono Runtime
-Version: 6.12.0
+Version: 6.10.0

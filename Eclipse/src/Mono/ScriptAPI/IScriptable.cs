@@ -1,4 +1,4 @@
-namespace Eclipse
+/*namespace Eclipse
 {
     abstract class IScriptable
     {
@@ -7,4 +7,4 @@ namespace Eclipse
         public interface void FixedUpdate();
         public interface void Terminate();
     }
-}
+}*/
