@@ -9,41 +9,12 @@
 // memory
 #include <memory>
 
-// containers
-#include <bitset>
-#include <array>
-#include <queue>
-#include <unordered_map>
-#include <set>
-
-// functional
-#include <algorithm>
-
-// error
-#include <assert.h>
-
-// engine extern pointer
-#include "EntryPoint/EntryPoint.h"
-
-// Imgui
-#include "imgui.h"
-#include "examples/imgui_impl_opengl3.h"
-#include "examples/imgui_impl_glfw.h"
-
-// Logger
-#include "Logger/Logger.h"
-
-#include "matrix_transform.hpp"
-#include "type_ptr.hpp"
-#include "matrix_transform_2d.hpp"
-
-#include "stb_image.h"
-
 #include <iostream>
 #include <sstream>
 #include <iomanip>
 #include <memory>
 #include <vector>
+#include <map>
 #include <string>
 #include <fstream>
 #include <string>
@@ -59,6 +30,41 @@
 #include <algorithm>
 #include <memory>
 
+// functional
+#include <algorithm>
+#include <functional>
+
+// error
+#include <assert.h>
+
+// containers
+#include <bitset>
+#include <array>
+#include <queue>
+#include <unordered_map>
+#include <set>
+
+// Events
+#include "Events/Events.h"
+#include "Events/EventManager.h"
+
+// engine extern pointer
+#include "EntryPoint/EntryPoint.h"
+
+// Imgui
+//#include "imgui.h"
+//#include "imgui_impl_opengl3.h"
+//#include "imgui_impl_glfw.h"
+
+// Logger
+#include "Logger/Logger.h"
+
+#include "matrix_transform.hpp"
+#include "type_ptr.hpp"
+#include "matrix_transform_2d.hpp"
+
+#include "stb_image.h"
+
 #include "GLEW/include/GL/glew.h"
 #include "GLFW/include/GLFW/glfw3.h"
 #include "GLM/glm/glm.hpp"
@@ -69,11 +75,21 @@
 #include "Library/Math/Vector.h"
 #include "Library/Math/Matrix.h"
 
+#include "Library/Strings/Lexical.h"
 #include "Library/Strings/StringsConcatenate.h"
 
+// Reflection
 #include "Reflection/registration.h"
 #include "Reflection/primitive_support.h"
 #include "Reflection/complex_support.h"
 
 // Editor API
 #include "Editor/ECGuiAPI/ECGui.h"
+
+// ---- Input Handler Api ----
+// Create an object for example : InputWrapper test;
+// Call test.GetKeyCurrent(InputKeycode::Key_W)
+#include "Graphics/InputHandler/InputWrapper.h"
+
+// GlCall Error
+#include "Graphics/RendererAPI/Renderer.h"

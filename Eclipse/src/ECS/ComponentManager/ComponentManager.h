@@ -54,6 +54,25 @@ namespace Eclipse
 			base.Delete(*base._container, entity);
 		}
 
+		void RemoveComponentByID(Entity entity, size_t index)
+		{
+			// Remove a component from the array for an entity
+			ComponentBase& base = mComponentArrays[index];
+			base.Delete(*base._container, entity);
+		}
+
+		void RemoveComponentBySignature(Entity entity, Signature signature)
+		{
+			for (size_t i = 0; i < signature.size(); i++)
+			{
+				if (signature[i])
+				{
+					ComponentBase& base = mComponentArrays[i];
+					base.Delete(*base._container, entity);
+				}
+			}
+		}
+
 		template<typename T>
 		T& GetComponent(Entity entity)
 		{
@@ -63,19 +82,6 @@ namespace Eclipse
 		}
 
 		void Clear();
-
-		/*void EntityDestroyed(Entity entity)
-		{
-			for (int i = 0; i < mComponentArrays.size(); i++)
-			{
-
-			}
-
-			for (auto const& pointer : mComponentArrays)
-			{
-				std::static_pointer_cast<ComponentArray<T>>(pointer)->Delete(entity);
-			}
-		}*/
 
 	private:
 		std::vector<ComponentBase> mComponentArrays;

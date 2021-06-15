@@ -25,7 +25,7 @@ namespace Eclipse
         float radius = 0.0f;
 
         bool hasTexture = false;
-        bool visible = false;
+        bool visible;
 
         modelIt modelRef;
         //textureIt textureRef;

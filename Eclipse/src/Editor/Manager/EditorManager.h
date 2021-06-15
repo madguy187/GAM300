@@ -9,9 +9,14 @@ namespace Eclipse
 	{
 	public:
 		EditorManager();
+
 		void InitGUIWindows();
 		void InitMenu();
 		void InitFont();
+
+		Entity CreateEntity(EntityType type);
+		void DestroyEntity(Entity ID);
+
 		std::vector<std::unique_ptr<ECGuiWindow>>& GetAllWindows();
 		MenuBar& GetMenuBar();
 		size_t GetWindowListSize();
@@ -32,6 +37,9 @@ namespace Eclipse
 			return temp;
 		}
 
+		std::vector<Entity> EntityHierarchyList_;
+		std::map<Entity, EntityType> EntityToTypeMap_;
+		size_t GEHIndex_{ 0 };
 	private:
 		std::vector<std::unique_ptr<ECGuiWindow>> Windows_;
 		MenuBar MenuBar_;
@@ -45,7 +53,6 @@ namespace Eclipse
 
 			auto* com = MenuBar_.GetMenuComponent(EditorMenuType::WINDOWS);
 			com->AddItems(title);
-
 			Size_++;
 		}
 	};

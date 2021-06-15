@@ -1,8 +1,8 @@
 #pragma once
 
 #include "imgui.h"
-#include "examples/imgui_impl_opengl3.h"
-#include "examples/imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+#include "imgui_impl_glfw.h"
 
 namespace Eclipse
 {
@@ -61,7 +61,8 @@ namespace Eclipse
 		static void InputFloat4(const char* name, float vector[4], bool hideName = true);
 		static void InputTextWithHint(const char* name, const char* hintText, char* buffer,
 			                   size_t bufferSize, bool hideName = true);
-		static void InputText(const char* name, char* buffer, size_t bufferSize, bool hideName = true);
+		static void InputText(const char* name, char* buffer, size_t bufferSize, 
+			ImGuiInputTextFlags flag = 0, bool hideName = true);
 
 		static void SliderInt(const char* name, int* var, bool hideName = true,
 			           int minrange = 0.0f, int maxrange = 1000.0f);

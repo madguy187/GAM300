@@ -13,15 +13,12 @@ namespace Eclipse
 	{
 	public:
 		World world;
-		Clock Game_Clock;
-		std::unique_ptr<EditorManager> editorManager;
-
-		// GRAPHICS MANAGERS
 		CameraManager gCamera;
 		GraphicsManager gGraphics;
+		Clock Game_Clock;
 		DebugRenderingManager gDebugManager;
+		std::unique_ptr<EditorManager> editorManager;
 		Lights LightManager;
-
 		MonoManager mono;
 
 		void Init();
