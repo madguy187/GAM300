@@ -71,8 +71,8 @@
 
 #include "Graphics.h"
 
-// System Performance
-#include "Editor/Windows/System Performance/SystemPerformance.h"
+// Profiler
+#include "Editor/Windows/Profiler/Profiler.h"
 
 // Custom Libraries
 #include "Library/Math/Vector.h"

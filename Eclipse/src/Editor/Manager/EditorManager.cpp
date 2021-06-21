@@ -23,7 +23,7 @@ namespace Eclipse
 		AddWindow<eGameView>("GameView");
 		AddWindow<Inspector>("Inspector");
 		AddWindow<Hierarchy>("Hierarchy");
-		AddWindow<PerformanceTimer>("System Performance");
+		AddWindow<Profiler>("Profiler");
 	}
 
 	void EditorManager::InitMenu()

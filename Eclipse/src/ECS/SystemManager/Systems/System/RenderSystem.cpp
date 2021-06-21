@@ -47,7 +47,9 @@ Signature Eclipse::RenderSystem::RegisterAll()
 
 void Eclipse::RenderSystem::Update()
 {
-
+    Profiler timer;
+    timer.SetName({ SystemName::RENDER });
+    timer.tracker.system_start = glfwGetTime();
     // Loop
     for (auto const& entity : mEntities)
     {
@@ -59,5 +61,7 @@ void Eclipse::RenderSystem::Update()
     }
 
     engine->gDebugManager.DrawDebugShapes(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+    timer.tracker.system_end = glfwGetTime();
 
+    timer.ContainerAddTime(timer.tracker);
 }
