@@ -83,7 +83,7 @@ namespace Eclipse
         int framecount = 0;
         float dt = 0.0f;
         float updaterate = 4.0f;
-
+        Profiler Timer;
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
 
@@ -117,7 +117,7 @@ namespace Eclipse
             currTime = newTime;
 
             ImGuiSetup::Begin(EditorState);
-        	
+            Timer.tracker.system_start = glfwGetTime();
             if (Game_Clock.get_timeSteps() > 10)
             {
                 Game_Clock.set_timeSteps(10);
@@ -135,7 +135,8 @@ namespace Eclipse
             world.Update<LightingSystem>();
             world.Update<RenderSystem>();
             engine->gGraphics.GlobalFrmeBufferDraw();
-
+            Timer.tracker.system_end = glfwGetTime();
+            Timer.EngineTimer(Timer);
             ImGuiSetup::End(EditorState);
             OpenGL_Context::post_render();
         	

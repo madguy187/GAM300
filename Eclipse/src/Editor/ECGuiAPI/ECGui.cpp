@@ -218,10 +218,11 @@ namespace Eclipse
 	void ECGui::PlotHistogram(const char* name, std::vector<float> value, int values_offset, const char* overlay_text, float scale_min, float scale_max, ImVec2 graph_size, int stride)
 	{
 		float values[100] = {0};
+		//static double refresh_time = 0.0;
 		std::copy(value.begin(), value.end(), values);
-		char overlay[32];
-		sprintf(overlay, "%f", values);
 		//ImGui::PlotLines("Frame Times", values, IM_ARRAYSIZE(values));
-		ImGuiAPI::PlotHistogram(name, values, IM_ARRAYSIZE(values), 0, overlay, 0.0f, 1.0f, ImVec2(0, 80.0f),stride);
+		//ImGui::ProgressBar(progress, ImVec2(0.0f, 0.0f));
+		ImGui::TextColored(ImVec4(0.9f, 0.6f, 0.1f, 1.0f), "%.2f %%", values[1]);
+		ImGui::PlotHistogram(name, values, IM_ARRAYSIZE(values), values_offset, overlay_text, scale_min, scale_max, graph_size,stride);
 	}
 }
