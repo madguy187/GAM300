@@ -108,8 +108,8 @@ void Logger::AddLog(const char* fmt, ...)
 
 void Eclipse::Logger::pushMessage(const char* message)
 {
-	this->messages.push_back();
-	isPushed();
+	//this->messages.push_back();
+	//isPushed();
 }
 
 void Eclipse::Logger::isPushed()
