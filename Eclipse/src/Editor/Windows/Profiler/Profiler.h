@@ -16,6 +16,9 @@ namespace Eclipse
 		inline static float engine_time = 0.0f;
 		
 	public:
+
+		Clock clock;
+		
 		inline static std::map<SystemName, std::vector<float>> time_container;
 		
 		void Update() override;
@@ -31,9 +34,8 @@ namespace Eclipse
 			float system_end = 0.0f;
 			float system_offset = 0.0f;
 		};
-		TimerTracker tracker;
 
-		Clock clock;
+		TimerTracker tracker;
 		
 		void ContainerAddTime(TimerTracker inputTracker);
 		

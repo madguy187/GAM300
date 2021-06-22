@@ -58,6 +58,7 @@
 
 // Logger
 #include "Logger/Logger.h"
+#include "Editor/Windows/Log/Log.h"
 
 #include "matrix_transform.hpp"
 #include "type_ptr.hpp"

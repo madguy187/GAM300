@@ -420,6 +420,7 @@
     </ClInclude>
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Editor\Windows\Profiler\Profiler.h" />
+    <ClInclude Include="src\Editor\Windows\Log\Log.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -612,7 +613,7 @@
       <Filter>Time</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\Editor\Windows\System Performance\SystemPerformance.cpp" />
     <ClCompile Include="src\Editor\Windows\Profiler\Profiler.cpp" />
+    <ClCompile Include="src\Editor\Windows\Log\Log.cpp" />
   </ItemGroup>
 </Project>

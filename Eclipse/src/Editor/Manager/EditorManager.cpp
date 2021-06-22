@@ -24,6 +24,7 @@ namespace Eclipse
 		AddWindow<Inspector>("Inspector");
 		AddWindow<Hierarchy>("Hierarchy");
 		AddWindow<Profiler>("Profiler");
+		AddWindow<Logger>("Log");
 	}
 
 	void EditorManager::InitMenu()
