@@ -75,6 +75,9 @@
 // Profiler
 #include "Editor/Windows/Profiler/Profiler.h"
 
+//Asset Browser
+#include "Editor/Windows/AssetBroswer/AssetBrowser.h"
+
 // Custom Libraries
 #include "Library/Math/Vector.h"
 #include "Library/Math/Matrix.h"

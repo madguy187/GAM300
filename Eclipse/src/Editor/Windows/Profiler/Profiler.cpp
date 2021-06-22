@@ -38,7 +38,7 @@ void Eclipse::Profiler::DrawImpl()
 	//static float* pvalues= &PerformanceTimer::timeContainer[SystemName::egame][0] ;
 	ECGui::BeginChildWindow({ "System Performance",ImVec2(0,500),true });
 	ImGui::Dummy(ImVec2(0.0f, 10.0f));
-	ImGui::TextColored(ImVec4(0.9f, 0.6f, 0.1f, 1.0f), "FPS: %.2f %%", GetFPS());
+	ImGui::TextColored(ImVec4(0.9f, 0.6f, 0.1f, 1.0f), "FPS: %.2f", GetFPS());
 	ECGui::PlotHistogram("Lighting System", Profiler::time_container[SystemName::LIGHTING], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
 	ECGui::PlotHistogram("Render System", Profiler::time_container[SystemName::RENDER], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
 	ECGui::PlotHistogram("Camera System", Profiler::time_container[SystemName::CAMERA], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));

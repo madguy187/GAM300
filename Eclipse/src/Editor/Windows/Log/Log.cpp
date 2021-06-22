@@ -4,7 +4,7 @@ Logger::Logger()
 {
 	
 	Type = EditorWindowType::LOGGER;
-	WindowName = "LOG";
+	WindowName = "Log";
 	AutoScroll = false;
 	Clear();
 }

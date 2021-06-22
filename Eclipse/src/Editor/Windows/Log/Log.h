@@ -7,18 +7,18 @@ namespace Eclipse
 	class Logger : public ECGuiWindow , public Log
 	{
 		Log log;
-	std::vector<std::string>messages;
-	bool ispushedd = false;
-	ImGuiTextBuffer     Buf;
-	ImGuiTextFilter     Filter;
-	ImVector<int>       LineOffsets;
-	bool                AutoScroll = false;
-	void    Clear();
-	void    AddLog(const char* fmt, ...) IM_FMTARGS(2);
+		std::vector<std::string>messages;
+		bool ispushedd = false;
+		ImGuiTextBuffer     Buf;
+		ImGuiTextFilter     Filter;
+		ImVector<int>       LineOffsets;
+		bool                AutoScroll = false;
+		void    Clear();
+		void    AddLog(const char* fmt, ...) IM_FMTARGS(2);
 
-	void pushMessage(const char* message);
+		void pushMessage(const char* message);
 
-	void isPushed();
+		void isPushed();
 	public:
 		void Update() override;
 		Logger();

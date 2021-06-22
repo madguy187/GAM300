@@ -421,6 +421,7 @@
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Editor\Windows\Profiler\Profiler.h" />
     <ClInclude Include="src\Editor\Windows\Log\Log.h" />
+    <ClInclude Include="src\Editor\Windows\AssetBroswer\AssetBrowser.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -615,5 +616,6 @@
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\Editor\Windows\Profiler\Profiler.cpp" />
     <ClCompile Include="src\Editor\Windows\Log\Log.cpp" />
+    <ClCompile Include="src\Editor\Windows\AssetBroswer\AssetBrowser.cpp" />
   </ItemGroup>
 </Project>
