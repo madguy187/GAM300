@@ -38,28 +38,36 @@ void Eclipse::AssetBrowser::DrawImpl()
 			{
 				const auto& path = dirEntry.path();
 				auto relativePath = std::filesystem::relative(path, s_AssetPath);
-				std::string relativePathStr = relativePath.string();
+				std::string fileNameString = relativePath.filename().string();
+				static bool jumpDir = false;
 				if (dirEntry.is_directory())
 				{
-
-					if (ImGui::TreeNode(relativePathStr.c_str()))
+					if (ImGui::TreeNode(fileNameString.c_str()))
 					{
-						
 						m_SecondDir = m_CurrentDir;
 						m_SecondDir /= path.filename();
-						if(!std::filesystem::exists(m_SecondDir))
+						//checking if the dir does not exist 
+						if(!exists(m_SecondDir))
 						{
-							m_SecondDir = m_CurrentDir.parent_path();
+							m_SecondDir = m_CurrentDir;
 						}
 						for (auto& secondEntry : std::filesystem::directory_iterator(m_SecondDir))
 						{
 							if(secondEntry.is_directory())
 							{
+								//std::cout << secondEntry. << std::endl;
 								const auto& path2 = secondEntry.path();
 								auto relativePath2 = std::filesystem::relative(path2, s_AssetPath);
-								std::string relativePathStr2 = relativePath2.string();
-								if (ImGui::TreeNode(relativePathStr2.c_str()))
+								std::string fileNameString2 = relativePath2.filename().string();
+								if (ImGui::TreeNode(fileNameString2.c_str()))
 								{
+									if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0))
+									{
+										m_SecondDir = path2;
+										m_CurrentDir = m_SecondDir; \
+										jumpDir = true;
+									}
+									//m_CurrentDir = m_SecondDir;
 									ImGui::TreePop();
 								}
 								
@@ -68,17 +76,16 @@ void Eclipse::AssetBrowser::DrawImpl()
 						
 						ImGui::TreePop();
 					}
-					
-					if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0))
+					if (!jumpDir && ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0))
 					{
 						m_CurrentDir /= path.filename();
 					}
-
-					//if (ImGui::Button(relativePathStr.c_str()))
-					//{
-					//	m_CurrentDir /= path.filename();
-					//}
+					if(jumpDir)
+					{
+						jumpDir = false;
+					}
 				}
+				
 			}
 		}
 		
@@ -90,31 +97,47 @@ void Eclipse::AssetBrowser::DrawImpl()
 	{
 		ImGui::BeginChild("##top_bar", ImVec2(0, 30));
 		{
+			//for (auto& dirEntry : std::filesystem::directory_iterator(s_AssetPath))
+			//{
+			//	const auto& path = dirEntry.path();
+			//	auto relativePath = std::filesystem::relative(path, s_AssetPath);
+			//	std::string fileNameString = relativePath.string();
+			//	ImGui::SameLine();
+			//	if (ImGui::SmallButton((fileNameString.c_str())))
+			//	{
+			//		m_CurrentDir /= path.filename();
+			//	}
+			//}
 			int secIdx = 0, newPwdLastSecIdx = -1;
 			int secIdxside = 0, newPwdLastSecIdxside = -1;
-			for (auto& sec : s_AssetPath)
+			for (auto& sec : m_CurrentDir)
 			{
 				ImGui::PushID(secIdx);
 				if (secIdx > 0)
+				{
 					ImGui::SameLine();
+					ImGui::Text("/");
+					ImGui::SameLine();
+				}
 				if (ImGui::SmallButton((sec.u8string()).c_str()))
+				{
 					newPwdLastSecIdx = secIdx;
+				}
 				ImGui::PopID();
 				++secIdx;
 			}
-
+			
 			if (newPwdLastSecIdx >= 0)
 			{
 				int i = 0;
 				std::filesystem::path newPwd;
-				for (auto& sec : s_AssetPath)
+				for (auto& sec : m_CurrentDir)
 				{
 					if (i++ > newPwdLastSecIdx)
 						break;
 					newPwd /= sec;
 				}
 				m_CurrentDir = newPwd;
-				m_SecondDir = newPwd;
 			}
 		}
 		ImGui::EndChild();
