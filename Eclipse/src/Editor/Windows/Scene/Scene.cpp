@@ -43,14 +43,14 @@ namespace Eclipse
 		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
 			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
-		m_GizmoType = ImGuizmo::OPERATION::ROTATE;
+		/*m_GizmoType = ImGuizmo::OPERATION::SCALE;*/
 
 		// ImGuizmo Logic
 		if (!engine->editorManager->EntityHierarchyList_.empty() && m_GizmoType != -1)
 		{
 			Entity selectedEntity = engine->editorManager->GetSelectedEntity();
 
-			ImGuizmo::SetOrthographic(true);
+			ImGuizmo::SetOrthographic(false);
 			ImGuizmo::SetDrawlist();
 
 			float windowWidth = (float)ECGui::GetWindowWidth();
@@ -96,6 +96,41 @@ namespace Eclipse
 		if (ECGui::IsItemHovered())
 		{
 			// Do all the future stuff here when hovering on window
+			OnKeyPressed();
+		}
+	}
+
+	void Scene::OnKeyPressed()
+	{
+		// Delete Entity
+		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Delete)))
+		{
+			if (!engine->editorManager->EntityHierarchyList_.empty())
+			{
+				Entity currEnt = engine->editorManager->GetSelectedEntity();
+
+				if (currEnt != engine->gCamera.GetEditorCameraID() ||
+					currEnt != engine->gCamera.GetGameCameraID())
+				{
+					engine->editorManager->DestroyEntity(currEnt);
+				}
+			}
+		}
+		// Gizmos
+		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_W)))
+		{
+			if (!ImGuizmo::IsUsing())
+				m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+		}
+		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_E)))
+		{
+			if (!ImGuizmo::IsUsing())
+				m_GizmoType = ImGuizmo::OPERATION::SCALE;
+		}
+		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_R)))
+		{
+			if (!ImGuizmo::IsUsing())
+				m_GizmoType = ImGuizmo::OPERATION::ROTATE;
 		}
 	}
 }

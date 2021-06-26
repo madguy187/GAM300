@@ -11,6 +11,7 @@ namespace Eclipse
 		Scene();
 		void InitilializeFrameBuffer();
 		void RunFrameBuffer();
+		void OnKeyPressed();
 	private:
 		glm::vec2 mViewportSize;
 		// Hold Frame Buffer Object
