@@ -19,17 +19,15 @@ this file.
 
     <PropertyGroup>
         <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
-        <FSharpBuildAssemblyFile Condition=" '$(FSharpBuildAssemblyFile)' =='' ">$(MSBuildThisFileDirectory)FSharp.Build.dll</FSharpBuildAssemblyFile>
+        <FSharpBuildAssemblyFile Condition=" '$(FSharpBuildAssemblyFile)' =='' ">FSharp.Build.dll</FSharpBuildAssemblyFile>
     </PropertyGroup>
 
     <UsingTask TaskName="Fsc" AssemblyFile="$(FSharpBuildAssemblyFile)" />
-    <UsingTask TaskName="Fsi" AssemblyFile="$(FSharpBuildAssemblyFile)" />
     <UsingTask TaskName="FSharpEmbedResourceText" AssemblyFile="$(FSharpBuildAssemblyFile)" />
     <UsingTask TaskName="FSharpEmbedResXSource" AssemblyFile="$(FSharpBuildAssemblyFile)" />
     <UsingTask TaskName="CreateFSharpManifestResourceName" AssemblyFile="$(FSharpBuildAssemblyFile)" />
     <UsingTask TaskName="WriteCodeFragment" AssemblyFile="$(FSharpBuildAssemblyFile)" />
     <UsingTask TaskName="FSharpPlatformInformation" AssemblyFile="$(FSharpBuildAssemblyFile)" />
-    <UsingTask TaskName="SubstituteText" AssemblyFile="$(FSharpBuildAssemblyFile)" />
 
     <PropertyGroup>
         <ImportByWildcardBeforeMicrosoftFSharpTargets Condition="'$(ImportByWildcardBeforeMicrosoftFSharpTargets)' == ''">true</ImportByWildcardBeforeMicrosoftFSharpTargets>
@@ -169,6 +167,7 @@ this file.
         </CreateFSharpManifestResourceName>
         <!-- END MSBUILD -->
 
+
         <ItemGroup>
             <EmbeddedResource Remove="@(EmbeddedResource)" Condition="'%(EmbeddedResource.ManifestResourceName)' == ''"/>
             <EmbeddedResource Include="@(_Temporary)" />
@@ -187,7 +186,7 @@ this file.
     </ItemGroup>
 
     <PropertyGroup>
-        <CoreCompileDependsOn>_ComputeNonExistentFileProperty</CoreCompileDependsOn>
+        <CoreCompileDependsOn></CoreCompileDependsOn>
     </PropertyGroup>
 
     <Target Name="GenerateFSharpTextResources"
@@ -202,7 +201,6 @@ this file.
 
         <ItemGroup>
             <CompileBefore Include="@(_FsGeneratedResXSource)" />
-            <FsGeneratedSource Include="@(_FsGeneratedResXSource)" />
             <FileWrites Include="@(_FsGeneratedResXSource)" />
         </ItemGroup>
 
@@ -214,11 +212,11 @@ this file.
 
         <ItemGroup>
             <CompileBefore Include="@(_FsGeneratedTxtSource)" />
-            <FsGeneratedSource Include="@(_FsGeneratedTxtSource)" />
             <EmbeddedResource Include="@(_FsGeneratedResx)" />
             <FileWrites Include="@(_FsGeneratedTxtSource)" />
             <FileWrites Include="@(_FsGeneratedResx)" />
         </ItemGroup>
+
     </Target>
 
     <Target
@@ -227,7 +225,6 @@ this file.
                 @(CompileBefore);
                 @(Compile);
                 @(CompileAfter);
-                @(FscCompilerTools);
                 @(_CoreCompileResourceInputs);
                 @(ManifestNonResxWithNoCultureOnDisk);
                 $(ApplicationIcon);
@@ -239,9 +236,7 @@ this file.
                 $(Win32Manifest);
                 @(CustomAdditionalCompileInputs);
                 $(VersionFile);
-                $(KeyOriginatorFile);
-                $(UseSource);
-                $(LoadSource)"
+                $(KeyOriginatorFile)"
         Outputs="@(DocFileItem);
                  @(IntermediateAssembly);
                  @(_DebugSymbolsIntermediatePath);
@@ -274,7 +269,7 @@ this file.
         <ItemGroup>
             <ActualEmbeddedResources
                 Condition=" '$(UsingXBuild)' == true"
-                Include="@(_CoreCompileResourceInputs);@(ManifestResourceWithNoCulture);@(ManifestNonResxWithNoCultureOnDisk);@(CompiledLicenseFile);@(AdditionalEmbeddedResource)" />
+                Include="@(ManifestResourceWithNoCulture);@(ManifestNonResxWithNoCultureOnDisk);@(CompiledLicenseFile);@(AdditionalEmbeddedResource)" />
           <ActualEmbeddedResources
                 Condition=" '$(UsingXBuild)' != true"
                 Include="@(_CoreCompileResourceInputs);@(CompiledLicenseFile);@(AdditionalEmbeddedResource)" />
@@ -282,42 +277,30 @@ this file.
 
         <ItemGroup>
             <EmbeddedFiles Include="@(Embed)" KeepDuplicates="false" />
-            <EmbeddedFiles Include="@(FsGeneratedSource)"  KeepDuplicates="false" Condition="'$(SourceLink)'!='' or '$(EmbeddedFiles)'!='' or '$(EmbedAllSources)'!=''" />
         </ItemGroup>
 
-        <!-- Dotnet SDK requires SimpleResolution to be true Legacy project system build not -->
-        <PropertyGroup>
-            <FscOtherFlags Condition="'$(SimpleResolution)' == 'true'">--simpleresolution $(OtherFlags)</FscOtherFlags>
-            <FscOtherFlags Condition="'$(SimpleResolution)' != 'true'">$(OtherFlags)</FscOtherFlags>
-        </PropertyGroup>
-
         <!-- Condition is to filter out the _CoreCompileResourceInputs so that it doesn't pass in culture resources to the compiler -->
-        <!-- NOTE: ManifestResourceWithNoCulture and ManifestNonResxWithNoCultureOnDisk are generated by Mono targets files -->
-        <Fsc  Condition="'%(_CoreCompileResourceInputs.WithCulture)' != 'true'"
+        <!-- NOTE: ManifestResourceWithNoCulture and ManifestNonResxWithNoCultureOnDisk are generated by Mono targets files --> 
+        <Fsc  Condition=" '%(_CoreCompileResourceInputs.WithCulture)' != 'true' "
               BaseAddress="$(BaseAddress)"
-              ChecksumAlgorithm="$(PdbChecksumAlgorithm)"
               CodePage="$(CodePage)"
-              CompilerTools="@(FscCompilerTools)"
               DebugSymbols="$(DebugSymbols)"
               DebugType="$(DebugType)"
               DefineConstants="$(DefineConstants)"
               DelaySign="$(DelaySign)"
-              Deterministic="$(Deterministic)"
               DisabledWarnings="$(NoWarn)"
               DocumentationFile="$(DocumentationFile)"
               DotnetFscCompilerPath="$(DotnetFscCompilerPath)"
               EmbedAllSources="$(EmbedAllSources)"
-              Embed="@(EmbeddedFiles)"
+              EmbeddedFiles="@(EmbeddedFiles)"
               GenerateInterfaceFile="$(GenerateInterfaceFile)"
               HighEntropyVA="$(HighEntropyVA)"
               KeyFile="$(KeyOriginatorFile)"
-              LangVersion="$(LangVersion)"
               LCID="$(LCID)"
               NoFramework="true"
               Optimize="$(Optimize)"
-              OtherFlags="$(FscOtherFlags)"
+              OtherFlags="$(OtherFlags)"
               OutputAssembly="@(IntermediateAssembly)"
-              PathMap="$(PathMap)"
               PdbFile="$(PdbFile)"
               Platform="$(PlatformTarget)"
               Prefer32Bit="$(Actual32Bit)"
@@ -330,7 +313,6 @@ this file.
               SkipCompilerExecution="$(SkipCompilerExecution)"
               SourceLink="$(SourceLink)"
               Sources="@(CompileBefore);@(Compile);@(CompileAfter)"
-              SubsystemVersion="$(SubsystemVersion)"
               Tailcalls="$(Tailcalls)"
               TargetType="$(OutputType)"
               TargetProfile="$(TargetProfile)"
@@ -344,7 +326,8 @@ this file.
               WarningLevel="$(WarningLevel)"
               WarningsAsErrors="$(WarningsAsErrors)"
               Win32ManifestFile="$(Win32Manifest)"
-              Win32ResourceFile="$(Win32Resource)">
+              Win32ResourceFile="$(Win32Resource)"
+              SubsystemVersion="$(SubsystemVersion)">
           <Output TaskParameter="CommandLineArgs" ItemName="FscCommandLineArgs" />
         </Fsc>
 
@@ -364,7 +347,7 @@ this file.
             fragment into a temporary source file for the compiler.
 
             ============================================================
-    -->
+        -->
 
     <!--
     ============================================================
@@ -429,10 +412,10 @@ this file.
             ContinueOnError="true"
             Overwrite="true"/>
 
-        <ItemGroup Condition="'$(AdditionalSourcesText)' != ''">
-            <CompileBefore Include="$(TargetFrameworkMonikerAssemblyAttributesPath)" />
-            <_FsGeneratedTfmAttributesSource Include="$(TargetFrameworkMonikerAssemblyAttributesPath)" />
+        <ItemGroup>
+            <CompileBefore Include="$(TargetFrameworkMonikerAssemblyAttributesPath)" Condition="'$(AdditionalSourcesText)' != ''"/>
         </ItemGroup>
+
     </Target>
 
     <!--
@@ -491,24 +474,44 @@ this file.
 
     <Target Name="RedirectTPReferenceToNewRedistributableLocation" BeforeTargets="ResolveAssemblyReferences">
       <PropertyGroup>
-        <_OldRefAssemTPLocation>Reference Assemblies\Microsoft\FSharp\.NETFramework\v4.0\4.3.0.0\Type Providers\FSharp.Data.TypeProviders.dll</_OldRefAssemTPLocation>
+        <_OldRefAssemTPLocation>$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\FSharp\.NETFramework\v4.0\4.3.0.0\Type Providers\FSharp.Data.TypeProviders.dll</_OldRefAssemTPLocation>
         <_OldSdkTPLocationPrefix>$(MSBuildProgramFiles32)\Microsoft SDKs\F#</_OldSdkTPLocationPrefix>
         <_OldSdkTPLocationSuffix>Framework\v4.0\FSharp.Data.TypeProviders.dll</_OldSdkTPLocationSuffix>
+
+        <NewFSharpCompilerLocation Condition=" '$(NewFSharpCompilerLocation)' == '' ">$(MSBuildThisFileDirectory)</NewFSharpCompilerLocation>
+        <NewFSharpCompilerLocation Condition=" !HasTrailingSlash('$(NewFSharpCompilerLocation)') ">$(NewFSharpCompilerLocation)\</NewFSharpCompilerLocation>
       </PropertyGroup>
 
       <ItemGroup>
-        <!-- Issue error message if there is an inbox TypeProvider referenced.-->
+        <!-- Issue warning message if there is an inbox TypeProvider referenced.-->
         <ReferenceToInboxTP Include="@(Reference)"
                             Condition="'%(Reference.Identity)' == 'FSharp.Data.TypeProviders' and
-                                       $([System.String]::new('%(Reference.HintPath)').EndsWith('$(_OldRefAssemTPLocation)', System.StringComparison.OrdinalIgnoreCase))" />
+                                       '%(Reference.HintPath)' == '$(_OldRefAssemTPLocation)' and
+                                       Exists('$(NewFSharpCompilerLocation)FSharp.Data.TypeProviders.dll')" />
         <ReferenceToInboxTP Include="@(Reference)"
                             Condition="'%(Reference.Identity)' == 'FSharp.Data.TypeProviders' and
                                        $([System.String]::new('%(Reference.HintPath)').StartsWith('$(_OldSdkTPLocationPrefix)', System.StringComparison.OrdinalIgnoreCase)) and
-                                       $([System.String]::new('%(Reference.HintPath)').EndsWith('$(_OldSdkTPLocationSuffix)', System.StringComparison.OrdinalIgnoreCase))" />
+                                       $([System.String]::new('%(Reference.HintPath)').EndsWith('$(_OldSdkTPLocationSuffix)', System.StringComparison.OrdinalIgnoreCase)) and
+                                       Exists('$(NewFSharpCompilerLocation)FSharp.Data.TypeProviders.dll')" />
 
+        <!-- Update references to FSharp.Data.TypeProviders.dll -->
+        <Reference Condition="'%(Reference.Identity)' == 'FSharp.Data.TypeProviders' and
+                              '%(Reference.HintPath)' == '$(_OldRefAssemTPLocation)' and
+                              Exists('$(NewFSharpCompilerLocation)FSharp.Data.TypeProviders.dll')">
+          <HintPath>$(NewFSharpCompilerLocation)FSharp.Data.TypeProviders.dll</HintPath>
+        </Reference>
+
+        <!-- Update references to FSharp.Data.TypeProviders.dll -->
+        <Reference Condition="'%(Reference.Identity)' == 'FSharp.Data.TypeProviders' and
+                               $([System.String]::new('%(Reference.HintPath)').StartsWith('$(_OldSdkTPLocationPrefix)', System.StringComparison.OrdinalIgnoreCase)) and
+                               $([System.String]::new('%(Reference.HintPath)').EndsWith('$(_OldSdkTPLocationSuffix)', System.StringComparison.OrdinalIgnoreCase)) and
+                               Exists('$(NewFSharpCompilerLocation)FSharp.Data.TypeProviders.dll')">
+
+          <HintPath>$(NewFSharpCompilerLocation)FSharp.Data.TypeProviders.dll</HintPath>
+        </Reference>
       </ItemGroup>
-      <Error
-          Text="This Project references an obsolete TypeProvider: FSharp.Data.TypeProviders.dll, this was removed In Visual Studio 2019 16.7.0. Consider Switching to the NuGet package version: https://www.nuget.org/packages/FSharp.Data.TypeProviders."
+      <Warning
+          Text="This Project references the obsolete TypeProvider: FSharp.Data.TypeProviders.dll.  Consider Switching to the Nuget package version: https://www.nuget.org/packages/FSharp.Data.TypeProviders."
           Condition=" '@(ReferenceToInboxTP->Count())' != '0' " />
     </Target>
 

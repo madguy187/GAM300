@@ -6,10 +6,14 @@ namespace Eclipse
 {
 	void MonoManager::Init()
 	{
+		ENGINE_CORE_INFO("Mono: Initialising");
+
 		mono_set_dirs("../Dep/mono/lib", "../Dep/mono/etc");
 
 		domain = mono_jit_init("Manager");
 		assert(domain, "Domain could not be created");
+
+		GenerateDLL();
 
 		assembly = mono_domain_assembly_open(domain, "../EclipseScripts.dll");
 		assert(assembly, "Assembly could not be opened");
@@ -17,7 +21,7 @@ namespace Eclipse
 		image = mono_assembly_get_image(assembly);
 		assert(image, "Image failed");
 
-		std::cout << "Mono Init Success" << std::endl;
+		ENGINE_CORE_INFO("Mono: Successfully Initialise");
 	}
 
 	void MonoManager::Update()
@@ -27,6 +31,9 @@ namespace Eclipse
 
 	void MonoManager::GenerateDLL()
 	{
-		//system("")
+		ENGINE_CORE_INFO("Mono: Generating DLLs");
+		system("sh -c ../Dep/mono/bin/mcs_api.bat");
+		system("sh -c ../Dep/mono/bin/mcs_scripts.bat");
+		ENGINE_CORE_INFO("Mono: Successfully Generate DLLs");
 	}
 }
