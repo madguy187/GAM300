@@ -4,7 +4,7 @@ layout(location = 0) in vec2 TxtCoord;
 layout(location = 0) out vec4 fFragClr;
 
 uniform sampler2D uTex2d;
-uniform vec3 uColor;
+uniform vec4 uColor;
 uniform bool uTextureCheck;
 uniform vec4 lightColor; in vec3 crntPos;
 uniform vec3 lightPos; in vec3 normal_from_vtxShader;
@@ -105,7 +105,7 @@ void main()
 
     if (!uTextureCheck) 
     {
-        fFragClr = vec4(uColor,1.0f);
+        fFragClr = vec4(uColor);
     } 
     else 
     {

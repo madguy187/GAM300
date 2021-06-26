@@ -30,7 +30,6 @@ class Graphics
   static void LoadShaders(std::string shaderFile);
   static void LoadModels(std::string modelFile);
   static void LoadTextures(std::string textureFile);
-  static void LoadFonts(std::string FontFile);
   static void LoadParticles();
 
   //Loads the image and creates texture object

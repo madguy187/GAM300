@@ -6,10 +6,6 @@ namespace Eclipse
 {
     struct SpotLightComponent
     {
-        using modelIt = std::map<std::string, std::unique_ptr<IModel>>::iterator;
-        using textureIt = std::map<std::string, Eclipse::Texture>::iterator;
-        using shaderIt = std::map<std::string, Shader>::iterator;
-
         unsigned int ID = 0;
 
         ECVec3 lightColor{ 1.0f,1.0f,1.0f };
@@ -17,21 +13,22 @@ namespace Eclipse
         ECVec3 ambient{ 0.5f , 0.5f, 0.5f };
         ECVec3 diffuse{ 0.5f,0.5f,0.5f };
         ECVec3 specular{ 0.1f,0.1f,0.1f };
+        ECVec4 Color{ 1.0f,1.0f,1.0f,1.0f };
 
+        float IntensityStrength = 10.0f;
+        float radius = 0.0f;
         float cutOff = 0.0f;
         float outerCutOff = 0.0f;
         float constant = 1.0f;
         float linear = 0.09f;
         float quadratic = 0.032f;
 
-        modelIt modelRef;
-        shaderIt shaderRef;
-        glm::mat4 modelNDC_xform{ 0 };
-
-        ECVec3 Color{ 0,0,0 };
-        float IntensityStrength = 10.0f;
-        float radius = 0.0f;
         bool hasTexture = false;
         bool visible;
+
+        IModel* modelRef;
+        Shader* shaderRef;
+        Texture* textureRef;
+        glm::mat4 modelNDC_xform{ 0 };
     };
 }

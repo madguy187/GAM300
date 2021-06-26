@@ -1,4 +1,4 @@
-    #include "pch.h"
+#include "pch.h"
 #include "Graphics/Lighting/SpotLight.h"
 
 using namespace Eclipse;
@@ -21,8 +21,8 @@ void SpotLight::CreateSpotLight(unsigned int CreatedID)
     // Assign
     SpotLightComponent& sprite = engine->world.GetComponent<SpotLightComponent>(CreatedID);
     sprite.ID = CreatedID;
-    sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
-    sprite.modelRef = Graphics::models.find("cube");
+    sprite.shaderRef = &(Graphics::shaderpgms.find("shader3DShdrpgm")->second);
+    sprite.modelRef = Graphics::models.find("cube")->second.get();
 
     // Success
     _spotlights.insert({ counter,&sprite });
@@ -41,8 +41,8 @@ void SpotLight::DrawSpotLights(unsigned int framebufferID)
 void SpotLight::Draw(SpotLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
-    in->shaderRef->second.Use();
-    glBindVertexArray(in->modelRef->second->GetVaoID());
+    in->shaderRef->Use();
+    glBindVertexArray(in->modelRef->GetVaoID());
 
     glEnable(GL_BLEND);
     glPolygonMode(GL_FRONT_AND_BACK, mode);
@@ -51,33 +51,33 @@ void SpotLight::Draw(SpotLightComponent* in, unsigned int framebufferID, unsigne
 
     CheckUniformLoc(in->shaderRef, *in, indexID, _spotlights.size());
 
-    GLCall(glDrawElements(in->modelRef->second->GetPrimitiveType(), in->modelRef->second->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
+    GLCall(glDrawElements(in->modelRef->GetPrimitiveType(), in->modelRef->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
 
     glBindVertexArray(0);
-    in->shaderRef->second.UnUse();
+    in->shaderRef->UnUse();
 }
 
-void SpotLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, SpotLightComponent& in_spot, int index, unsigned int containersize)
+void SpotLight::CheckUniformLoc(Shader* _shdrpgm, SpotLightComponent& in_spot, int index, unsigned int containersize)
 {
     std::string number = std::to_string(index);
 
-    GLint uniform_var_loc1 = _shdrpgm->second.GetLocation(("spotLights[" + number + "].position").c_str());
-    GLint uniform_var_loc2 = _shdrpgm->second.GetLocation(("spotLights[" + number + "].ambient").c_str());
-    GLint uniform_var_loc3 = _shdrpgm->second.GetLocation(("spotLights[" + number + "].diffuse").c_str());
-    GLint uniform_var_loc4 = _shdrpgm->second.GetLocation(("spotLights[" + number + "].specular").c_str());
-    GLint uniform_var_loc5 = _shdrpgm->second.GetLocation(("spotLights[" + number + "].constant").c_str());
-    GLint uniform_var_loc6 = _shdrpgm->second.GetLocation(("spotLights[" + number + "].linear").c_str());
-    GLint uniform_var_loc7 = _shdrpgm->second.GetLocation(("spotLights[" + number + "].quadratic").c_str());
-    GLint uniform_var_loc8 = _shdrpgm->second.GetLocation("uModelToNDC");
-    GLuint uniform_var_loc10 = _shdrpgm->second.GetLocation("model");
-    GLint uniform_var_loc11 = _shdrpgm->second.GetLocation("uTextureCheck");
-    GLint uniform_var_loc12 = _shdrpgm->second.GetLocation(("spotLights[" + number + "].lightColor").c_str());
-    GLint uniform_var_loc13 = _shdrpgm->second.GetLocation("uColor");
-    GLint uniform_var_loc14 = _shdrpgm->second.GetLocation(("spotLights[" + number + "].IntensityStrength").c_str());
-    GLint uniform_var_loc15 = _shdrpgm->second.GetLocation(("spotLights[" + number + "].cutOff").c_str());
-    GLint uniform_var_loc16 = _shdrpgm->second.GetLocation(("spotLights[" + number + "].outerCutOff").c_str());
-    GLint uniform_var_loc17 = _shdrpgm->second.GetLocation(("spotLights[" + number + "].direction").c_str());
-    GLint uniform_var_loc18 = _shdrpgm->second.GetLocation("NumberOfSpotLights");
+    GLint uniform_var_loc1 = _shdrpgm->GetLocation(("spotLights[" + number + "].position").c_str());
+    GLint uniform_var_loc2 = _shdrpgm->GetLocation(("spotLights[" + number + "].ambient").c_str());
+    GLint uniform_var_loc3 = _shdrpgm->GetLocation(("spotLights[" + number + "].diffuse").c_str());
+    GLint uniform_var_loc4 = _shdrpgm->GetLocation(("spotLights[" + number + "].specular").c_str());
+    GLint uniform_var_loc5 = _shdrpgm->GetLocation(("spotLights[" + number + "].constant").c_str());
+    GLint uniform_var_loc6 = _shdrpgm->GetLocation(("spotLights[" + number + "].linear").c_str());
+    GLint uniform_var_loc7 = _shdrpgm->GetLocation(("spotLights[" + number + "].quadratic").c_str());
+    GLint uniform_var_loc8 = _shdrpgm->GetLocation("uModelToNDC");
+    GLuint uniform_var_loc10 = _shdrpgm->GetLocation("model");
+    GLint uniform_var_loc11 = _shdrpgm->GetLocation("uTextureCheck");
+    GLint uniform_var_loc12 = _shdrpgm->GetLocation(("spotLights[" + number + "].lightColor").c_str());
+    GLint uniform_var_loc13 = _shdrpgm->GetLocation("uColor");
+    GLint uniform_var_loc14 = _shdrpgm->GetLocation(("spotLights[" + number + "].IntensityStrength").c_str());
+    GLint uniform_var_loc15 = _shdrpgm->GetLocation(("spotLights[" + number + "].cutOff").c_str());
+    GLint uniform_var_loc16 = _shdrpgm->GetLocation(("spotLights[" + number + "].outerCutOff").c_str());
+    GLint uniform_var_loc17 = _shdrpgm->GetLocation(("spotLights[" + number + "].direction").c_str());
+    GLint uniform_var_loc18 = _shdrpgm->GetLocation("NumberOfSpotLights");
 
     // SpotLight Position
     TransformComponent& SpotlightTransform = engine->world.GetComponent<TransformComponent>(in_spot.ID);
@@ -155,7 +155,7 @@ void SpotLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, SpotLightComponent&
     // Own Color
     if (uniform_var_loc13 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc13, in_spot.Color.x, in_spot.Color.y, in_spot.Color.z));
+        GLCall(glUniform4f(uniform_var_loc13, in_spot.Color.x, in_spot.Color.y, in_spot.Color.z, in_spot.Color.w));
     }
 
     // Intensity of Light

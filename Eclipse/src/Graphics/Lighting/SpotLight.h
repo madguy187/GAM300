@@ -21,6 +21,6 @@ namespace Eclipse
         void Draw(SpotLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
 
     private:
-        void CheckUniformLoc(Graphics::shaderIt _shdrpgm, SpotLightComponent& hi, int index, unsigned int containersize);
+        void CheckUniformLoc(Shader* _shdrpgm, SpotLightComponent& hi, int index, unsigned int containersize);
     };
 }
