@@ -162,6 +162,9 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\EntityComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\MaterialComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\PointLightComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
@@ -169,6 +172,9 @@
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\SpotLightComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\TransformComponent.h">
@@ -263,6 +269,9 @@
       <Filter>Graphics\Lighting</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\Lighting\PointLight.h">
+      <Filter>Graphics\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Lighting\SpotLight.h">
       <Filter>Graphics\Lighting</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\AllBasicPrimitives.h">
@@ -419,9 +428,6 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\Graphics\Lighting\SpotLight.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\SpotLightComponent.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\MaterialComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -503,6 +509,9 @@
       <Filter>Graphics\Lighting</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\Lighting\PointLight.cpp">
+      <Filter>Graphics\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Lighting\SpotLight.cpp">
       <Filter>Graphics\Lighting</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.cpp">
@@ -614,6 +623,5 @@
       <Filter>Time</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\Graphics\Lighting\SpotLight.cpp" />
   </ItemGroup>
 </Project>

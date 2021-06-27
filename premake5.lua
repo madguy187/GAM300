@@ -67,7 +67,8 @@ project "Eclipse"
 		"Dep/PhysX/include/solver",
 		"Dep/PhysX/include/task",
 		"Dep/PhysX/include/vehicle",
-        "Dep/mono/include/mono-2.0"
+        "Dep/mono/include/mono-2.0",
+		"Dep/ASSIMP",
 	}
 
   libdirs
@@ -75,15 +76,16 @@ project "Eclipse"
     "Dep/GLFW/lib-vc2019",
     "Dep/GLEW/lib/Release/x64",
 	  "Dep/PhysX/Debug",
-    "Dep/mono/lib/"
+    "Dep/mono/lib/",
+	"Dep/ASSIMP/"
   }
 
   links
   {
 	  "mono-2.0-sgen.lib",
-    "opengl32.lib",
-    "glew32.lib",
-    "glfw3dll.lib",
+      "opengl32.lib",
+      "glew32.lib",
+      "glfw3dll.lib",
 	  "LowLevel_static_64.lib",
 	  "LowLevelAABB_static_64.lib",
 	  "LowLevelDynamics_static_64.lib",
@@ -102,7 +104,8 @@ project "Eclipse"
 	  "SceneQuery_static_64.lib",
 	  "SimulationController_static_64.lib",
 	  "SnippetRender_static_64.lib",
-	  "SnippetUtils_static_64.lib"
+	  "SnippetUtils_static_64.lib",
+	  "assimp-vc142-mtd"
   }
 
 	filter "system:windows"

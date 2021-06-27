@@ -93,3 +93,6 @@
 
 // GlCall Error
 #include "Graphics/RendererAPI/Renderer.h"
+
+// Assimp
+#include <ASSIMP/include/assimp/aabb.h>
