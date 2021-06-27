@@ -30,6 +30,11 @@
 			"shaderName": "shader3DShdrpgm",
 			"vtxShader": "src/Assets/Shaders/Shader3D.vert",
 			"frgShader": "src/Assets/Shaders/Shader3D.frag"
+		},
+		{
+			"shaderName": "nooblight",
+			"vtxShader": "src/Assets/Shaders/light.vert",
+			"frgShader": "src/Assets/Shaders/light.frag"
 		}
 	]
 }

@@ -73,6 +73,9 @@
     <Filter Include="src\EntryPoint">
       <UniqueIdentifier>{F8337006-E401-640C-CD95-D432B9024071}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Events">
+      <UniqueIdentifier>{7162C20E-5D1A-045C-C621-DDB7B2F89E4C}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Graphics">
       <UniqueIdentifier>{0D564864-F9B8-D708-A23E-10BF8E80A38B}</UniqueIdentifier>
     </Filter>
@@ -88,6 +91,9 @@
     <Filter Include="src\Graphics\InputHandler">
       <UniqueIdentifier>{CA8F8D24-3652-C1AE-7F02-503BEB039A8C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Graphics\Lighting">
+      <UniqueIdentifier>{32087887-9E74-3382-6768-CBDFD39355EA}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Graphics\ModelFactory">
       <UniqueIdentifier>{6583B0F8-D145-E482-1AF6-720F86F7BC60}</UniqueIdentifier>
     </Filter>
@@ -102,9 +108,6 @@
     </Filter>
     <Filter Include="src\Graphics\RendererAPI">
       <UniqueIdentifier>{8D5A1119-797F-6099-A2CA-45298E4E5FB7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Graphics\Still_Cleaning">
-      <UniqueIdentifier>{A45BC4B2-1069-F298-994F-EE83055CBE4F}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ImGui">
       <UniqueIdentifier>{170E22B3-8378-D629-CCB6-87CF3860B47E}</UniqueIdentifier>
@@ -177,6 +180,12 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentBase.h">
       <Filter>src\ECS\ComponentManager\Components\ComponentArray</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\DirectionalLightComponent.h">
+      <Filter>src\ECS\ComponentManager\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\PointLightComponent.h">
+      <Filter>src\ECS\ComponentManager\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\RenderComponent.h">
       <Filter>src\ECS\ComponentManager\Components</Filter>
     </ClInclude>
@@ -196,6 +205,9 @@
       <Filter>src\ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\EditorSystem.h">
+      <Filter>src\ECS\SystemManager\Systems\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\LightingSystem.h">
       <Filter>src\ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem.h">
@@ -237,6 +249,12 @@
     <ClInclude Include="src\EntryPoint\EntryPoint.h">
       <Filter>src\EntryPoint</Filter>
     </ClInclude>
+    <ClInclude Include="src\Events\EventManager.h">
+      <Filter>src\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Events\Events.h">
+      <Filter>src\Events</Filter>
+    </ClInclude>
     <ClInclude Include="src\Global.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -258,8 +276,14 @@
     <ClInclude Include="src\Graphics\InputHandler\InputWrapper.h">
       <Filter>src\Graphics\InputHandler</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\InputHandler\PrintOut.h">
-      <Filter>src\Graphics\InputHandler</Filter>
+    <ClInclude Include="src\Graphics\Lighting\DirectionalLight.h">
+      <Filter>src\Graphics\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Lighting\LightManager.h">
+      <Filter>src\Graphics\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Lighting\PointLight.h">
+      <Filter>src\Graphics\Lighting</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\AllBasicPrimitives.h">
       <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
@@ -339,21 +363,6 @@
     <ClInclude Include="src\Graphics\RendererAPI\Texture.h">
       <Filter>src\Graphics\RendererAPI</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\Still_Cleaning\AllComponents.h">
-      <Filter>src\Graphics\Still_Cleaning</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Graphics\Still_Cleaning\Global.h">
-      <Filter>src\Graphics\Still_Cleaning</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Graphics\Still_Cleaning\Math_Lib.h">
-      <Filter>src\Graphics\Still_Cleaning</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Graphics\Still_Cleaning\Matrix4.h">
-      <Filter>src\Graphics\Still_Cleaning</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Graphics\Still_Cleaning\Vec.h">
-      <Filter>src\Graphics\Still_Cleaning</Filter>
-    </ClInclude>
     <ClInclude Include="src\ImGui\ImGuiAPI\ImGuiAPI.h">
       <Filter>src\ImGui\ImGuiAPI</Filter>
     </ClInclude>
@@ -405,8 +414,6 @@
     <ClInclude Include="src\pch.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Events\EventManager.h" />
-    <ClInclude Include="src\Events\Events.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Dep\IMGUI\imgui-master\examples\imgui_impl_glfw.cpp">
@@ -443,6 +450,9 @@
       <Filter>src\ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\EditorSystem.cpp">
+      <Filter>src\ECS\SystemManager\Systems\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem.cpp">
       <Filter>src\ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp">
@@ -493,8 +503,14 @@
     <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp">
       <Filter>src\Graphics\InputHandler</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\InputHandler\PrintOut.cpp">
-      <Filter>src\Graphics\InputHandler</Filter>
+    <ClCompile Include="src\Graphics\Lighting\DirectionalLight.cpp">
+      <Filter>src\Graphics\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Lighting\LightManager.cpp">
+      <Filter>src\Graphics\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Lighting\PointLight.cpp">
+      <Filter>src\Graphics\Lighting</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.cpp">
       <Filter>src\Graphics\ModelFactory\BasicPrimitives</Filter>
@@ -589,5 +605,22 @@
     <ClCompile Include="src\pch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Assets\Shaders\BasicFrag.frag" />
+    <None Include="src\Assets\Shaders\BasicVtx.vert" />
+    <None Include="src\Assets\Shaders\DebugFrag.frag" />
+    <None Include="src\Assets\Shaders\DebugVtx.vert" />
+    <None Include="src\Assets\Shaders\light.frag" />
+    <None Include="src\Assets\Shaders\light.vert" />
+    <None Include="src\Assets\Shaders\LightFrag.frag" />
+    <None Include="src\Assets\Shaders\LightVtx.vert" />
+    <None Include="src\Assets\Shaders\ParticlesFrag.frag" />
+    <None Include="src\Assets\Shaders\ParticlesVtx.vert" />
+    <None Include="src\Assets\Shaders\Shader3D.frag" />
+    <None Include="src\Assets\Shaders\Shader3D.vert" />
+    <None Include="src\Assets\Shaders\Shaders.json" />
+    <None Include="src\Assets\Shaders\textFrag.frag" />
+    <None Include="src\Assets\Shaders\textVtx.vert" />
   </ItemGroup>
 </Project>

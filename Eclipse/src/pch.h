@@ -84,3 +84,11 @@
 
 // Editor API
 #include "Editor/ECGuiAPI/ECGui.h"
+
+// ---- Input Handler Api ----
+// Create an object for example : InputWrapper test;
+// Call test.GetKeyCurrent(InputKeycode::Key_W)
+#include "Graphics/InputHandler/InputWrapper.h""
+
+// GlCall Error
+#include "Graphics/RendererAPI/Renderer.h"

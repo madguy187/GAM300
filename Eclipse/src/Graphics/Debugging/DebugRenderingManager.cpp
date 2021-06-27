@@ -8,9 +8,9 @@ void Eclipse::DebugRenderingManager::CheckUniformLoc(Graphics::shaderIt _shdrpgm
     GLint uniform_var_loc3 = _shdrpgm->second.GetLocation("uTextureCheck");
     GLint uniform_var_loc4 = _shdrpgm->second.GetLocation("TextureIndex");
     GLint uniform_var_loc5 = _shdrpgm->second.GetLocation("TextureDimensions");
-    GLint uniform_var_loc6 = _shdrpgm->second.GetLocation("LightTimer");
-    GLint uniform_var_loc7 = _shdrpgm->second.GetLocation("ShakeTimer");
-    GLint uniform_var_loc8 = _shdrpgm->second.GetLocation("ShakeScreen");
+    //GLint uniform_var_loc6 = _shdrpgm->second.GetLocation("LightTimer");
+    //GLint uniform_var_loc7 = _shdrpgm->second.GetLocation("ShakeTimer");
+    //GLint uniform_var_loc8 = _shdrpgm->second.GetLocation("ShakeScreen");
     GLuint tex_loc = _shdrpgm->second.GetLocation("uTex2d");
 
     if (uniform_var_loc1 >= 0)
@@ -34,15 +34,15 @@ void Eclipse::DebugRenderingManager::CheckUniformLoc(Graphics::shaderIt _shdrpgm
         glUniform2f(uniform_var_loc4, 0.0f, 0.0f);
     }
 
-    if (uniform_var_loc7 >= 0)
-    {
-        glUniform1f(uniform_var_loc7, 1.0f);
-    }
+    //if (uniform_var_loc7 >= 0)
+    //{
+    //    glUniform1f(uniform_var_loc7, 1.0f);
+    //}
 
-    if (uniform_var_loc8 >= 0)
-    {
-        glUniform1i(uniform_var_loc8, 1.0f);
-    }
+    //if (uniform_var_loc8 >= 0)
+    //{
+    //    glUniform1i(uniform_var_loc8, 1.0f);
+    //}
 
     if (tex_loc >= 0)
     {
