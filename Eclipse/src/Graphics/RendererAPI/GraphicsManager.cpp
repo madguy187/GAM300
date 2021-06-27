@@ -8,8 +8,7 @@ bool shakeScreen = 1.0f;
 glm::vec3 spherepos;
 
 void Eclipse::GraphicsManager::pre_render()
-{
-    // Loading Configuration
+{  // Loading Configuration
     mRenderContext.init("../Dep/Configuration/configuration.json");
 
     // Loading Of Models , Shaders and etc.. 
@@ -55,10 +54,8 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         engine->world.AddComponent(ID, RenderComponent{});
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
-        sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
+        sprite.shaderRef = Graphics::shaderpgms.find("shdrpgm");
         sprite.modelRef = Graphics::models.find("circle");
-        sprite.hasTexture = true;
-        sprite.textureRef = Graphics::textures.find("orange");
     }
     break;
     case 2:
@@ -66,10 +63,8 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         engine->world.AddComponent(ID, RenderComponent{});
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
-        sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
+        sprite.shaderRef = Graphics::shaderpgms.find("shdrpgm");
         sprite.modelRef = Graphics::models.find("triangle");
-        sprite.hasTexture = true;
-        sprite.textureRef = Graphics::textures.find("orange");
     }
     break;
     case 3:
@@ -77,7 +72,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         engine->world.AddComponent(ID, RenderComponent{});
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
-        sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
+        sprite.shaderRef = Graphics::shaderpgms.find("shdrpgm");
         sprite.modelRef = Graphics::models.find("lines");
     }
     break;
@@ -88,8 +83,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("sphere");
-        sprite.hasTexture = true;
-        sprite.textureRef = Graphics::textures.find("orange");
+        Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
     case 5:
@@ -101,6 +95,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.modelRef = Graphics::models.find("cube");
         sprite.hasTexture = true;
         sprite.textureRef = Graphics::textures.find("orange");
+        Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
     case 6:
@@ -110,8 +105,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("cylinder");
-        sprite.hasTexture = true;
-        sprite.textureRef = Graphics::textures.find("orange");
+        Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
     case 7:
@@ -121,8 +115,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("cone");
-        sprite.hasTexture = true;
-        sprite.textureRef = Graphics::textures.find("orange");
+        Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
     case 8:
@@ -132,8 +125,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("torus");
-        sprite.hasTexture = true;
-        sprite.textureRef = Graphics::textures.find("orange");
+        Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
     case 9:
@@ -143,8 +135,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("pyramid");
-        sprite.hasTexture = true;
-        sprite.textureRef = Graphics::textures.find("orange");
+        Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
     case 10:
@@ -164,8 +155,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("plane");
-        sprite.hasTexture = true;
-        sprite.textureRef = Graphics::textures.find("orange");
+        Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
     // pointlight
@@ -178,12 +168,6 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     case 13:
     {
         engine->LightManager.CreateLights(Eclipse::TypesOfLights::DIRECTIONAL, ID);
-    }
-    break;
-    // Spot
-    case 14:
-    {
-        engine->LightManager.CreateLights(Eclipse::TypesOfLights::SPOTLIGHT, ID);
     }
     break;
     }
@@ -244,7 +228,7 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
     if (framebufferID == engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID())
     {
         camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
-        camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetEditorCameraID());
+        camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetGameCameraID());
     }
     else
     {
@@ -265,14 +249,26 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
     GLint uniform_var_loc3 = sprite.shaderRef->second.GetLocation("uTextureCheck");
     GLint uniform_var_loc4 = sprite.shaderRef->second.GetLocation("TextureIndex");
     GLint uniform_var_loc5 = sprite.shaderRef->second.GetLocation("TextureDimensions");
-    GLuint uniform_var_loc6 = sprite.shaderRef->second.GetLocation("uTex2d");
+    GLuint tex_loc = sprite.shaderRef->second.GetLocation("uTex2d");
     GLuint lll = sprite.shaderRef->second.GetLocation("lightColor");
     GLuint cam = sprite.shaderRef->second.GetLocation("camPos");
+    //GLuint pos = sprite.shaderRef->second.GetLocation("lightPos");
     GLuint model2 = sprite.shaderRef->second.GetLocation("model");
 
     if (uniform_var_loc1 >= 0)
     {
         glm::mat4 mModelNDC;
+
+        /* glm::mat4 model = glm::mat4(1.0f);
+         model = glm::translate(model, trans.pos);
+         model = glm::rotate(model, glm::radians(trans.rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
+         model = glm::rotate(model, glm::radians(trans.rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
+         model = glm::rotate(model, glm::radians(trans.rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
+         model = glm::scale(model, trans.scale);
+         mModelNDC = camera.projMtx * camera.viewMtx * model;
+         glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(mModelNDC));
+         glUniformMatrix4fv(model2, 1, GL_FALSE, glm::value_ptr(model));*/
+
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, trans.position.ConvertToGlmVec3Type());
         model = glm::rotate(model, glm::radians(trans.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -284,9 +280,19 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
         glUniformMatrix4fv(model2, 1, GL_FALSE, glm::value_ptr(model));
     }
 
+    /* if (pos >= 0)
+     {
+         glUniform3f(pos, spherepos.x, spherepos.y, spherepos.z);
+     }*/
+
     if (cam >= 0)
     {
         glUniform3f(lll, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ());
+    }
+
+    if (lll >= 0)
+    {
+        glUniform4f(lll, sprite.lightColor.x, sprite.lightColor.y, sprite.lightColor.z, sprite.lightColor.w);
     }
 
     if (uniform_var_loc2 >= 0)
@@ -320,9 +326,9 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
         }
     }
 
-    if (uniform_var_loc6 >= 0)
+    if (tex_loc >= 0)
     {
-        glUniform1i(uniform_var_loc6, 1);
+        glUniform1i(tex_loc, 1);
     }
 }
 

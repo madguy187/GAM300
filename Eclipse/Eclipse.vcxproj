@@ -318,6 +318,23 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Assets\Shaders\BasicFrag.frag" />
+    <None Include="src\Assets\Shaders\BasicVtx.vert" />
+    <None Include="src\Assets\Shaders\DebugFrag.frag" />
+    <None Include="src\Assets\Shaders\DebugVtx.vert" />
+    <None Include="src\Assets\Shaders\light.frag" />
+    <None Include="src\Assets\Shaders\light.vert" />
+    <None Include="src\Assets\Shaders\LightFrag.frag" />
+    <None Include="src\Assets\Shaders\LightVtx.vert" />
+    <None Include="src\Assets\Shaders\ParticlesFrag.frag" />
+    <None Include="src\Assets\Shaders\ParticlesVtx.vert" />
+    <None Include="src\Assets\Shaders\Shader3D.frag" />
+    <None Include="src\Assets\Shaders\Shader3D.vert" />
+    <None Include="src\Assets\Shaders\Shaders.json" />
+    <None Include="src\Assets\Shaders\textFrag.frag" />
+    <None Include="src\Assets\Shaders\textVtx.vert" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
