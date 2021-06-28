@@ -5,15 +5,17 @@ namespace Eclipse
 {
 	class AssetBrowser final : public ECGuiWindow
 	{
-		std::filesystem::path m_CurrentDir;
-		std::filesystem::path m_SecondDir;
+		const std::filesystem::path AssetPath = "Assets";
+		std::filesystem::path CurrentDir;
+		std::filesystem::path NextDir;
 
 	public:
 		void Update() override;
 		AssetBrowser();
 		void DrawImpl();
+		void PathTracker(std::filesystem::path& CurrentPath);
 		void BackToParentPath(std::filesystem::path &CurrentPath);
-		std::filesystem::path NextPath(std::filesystem::path CurrentPath,std::filesystem::path paths);
+		void NextPath(std::filesystem::path& CurrentPath,std::filesystem::path paths);
 
 
 
