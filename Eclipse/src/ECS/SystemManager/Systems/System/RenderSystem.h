@@ -14,6 +14,7 @@ namespace Eclipse
     class RenderSystem : public System
     {
     public:
+        Cube m;
         static void Init();
         static Signature RegisterAll();
 

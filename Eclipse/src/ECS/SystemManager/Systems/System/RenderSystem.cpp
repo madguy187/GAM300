@@ -28,6 +28,8 @@
 
 *************************************************************************/
 
+//Cube m;
+
 void Eclipse::RenderSystem::Init()
 {
     ENGINE_CORE_INFO("RenderSystem Init");
@@ -48,13 +50,18 @@ Signature Eclipse::RenderSystem::RegisterAll()
 void Eclipse::RenderSystem::Update()
 {
     // Loop
-    for (auto const& entity : mEntities)
-    {
-        RenderComponent& _Sprites = engine->world.GetComponent<RenderComponent>(entity);
-        engine->gGraphics.DrawBuffers(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
-        engine->gGraphics.DrawBuffers(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
-    }
+    //for (auto const& entity : mEntities)
+    //{
+    //    RenderComponent& _Sprites = engine->world.GetComponent<RenderComponent>(entity);
+    //    engine->gGraphics.DrawBuffers(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
+    //    engine->gGraphics.DrawBuffers(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
+    //}
 
     engine->gDebugManager.DrawDebugShapes(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 
+    auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
+    shdrpgm->second.Use();
+    m.render(shdrpgm->second);
+
+    shdrpgm->second.UnUse();
 }

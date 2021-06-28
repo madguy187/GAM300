@@ -7,6 +7,25 @@
 
 namespace Eclipse
 {
+
+#ifndef CURRENT_CODE
+    class Texture 
+    {
+    public:
+        Texture(std::string dir, std::string path, aiTextureType type);
+
+        void generate();
+        void load(bool flip = true);
+
+        void bind();
+
+        // texture object
+        unsigned int id;
+        aiTextureType type;
+        std::string dir;
+        std::string path;
+    };
+#else
     class Texture
     {
     public:
@@ -42,6 +61,8 @@ namespace Eclipse
         GLint numCols;
         GLint numRows;
     };
+#endif
+
 }
 
 #endif /* TEXTURE_H */
