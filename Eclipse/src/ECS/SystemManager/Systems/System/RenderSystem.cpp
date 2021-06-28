@@ -61,6 +61,10 @@ void Eclipse::RenderSystem::Update()
 
     auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
     shdrpgm->second.Use();
+    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     m.render(shdrpgm->second);
 
     shdrpgm->second.UnUse();
