@@ -29,7 +29,6 @@ WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and
 
     <WriteCodeFragment AssemblyAttributes="@(AssemblyAttribute)" Language="$(Language)" OutputFile="$(GeneratedAssemblyInfoFile)">
       <Output TaskParameter="OutputFile" ItemName="CompileBefore" />
-      <Output TaskParameter="OutputFile" ItemName="FsGeneratedSource" />
       <Output TaskParameter="OutputFile" ItemName="FileWrites" />
     </WriteCodeFragment>
   </Target>

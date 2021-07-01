@@ -33,20 +33,15 @@ void Eclipse::GraphicsManager::unload()
     mRenderContext.end();
 }
 
-void Eclipse::GraphicsManager::CreatePrimitives(GLint model)
+void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
 {
-    auto& testtest = engine->world;
-    Entity EntityID = testtest.CreateEntity();
-    createdID = EntityID;
-
-    switch (model)
+    switch (ModelType)
     {
     case 0:
     {
-        testtest.AddComponent(EntityID, RenderComponent{ });
-        testtest.AddComponent(EntityID, TransformComponent{ });
-        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
-        sprite.ID = EntityID;
+        engine->world.AddComponent(ID, RenderComponent{});
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
+        sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("square");
         sprite.isQuad = true;
@@ -54,57 +49,48 @@ void Eclipse::GraphicsManager::CreatePrimitives(GLint model)
         sprite.textureRef = Graphics::textures.find("orange");
     }
     break;
-
     case 1:
     {
-        testtest.AddComponent(EntityID, RenderComponent{ });
-        testtest.AddComponent(EntityID, TransformComponent{ });
-        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
-        sprite.ID = EntityID;
+        engine->world.AddComponent(ID, RenderComponent{});
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
+        sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shdrpgm");
         sprite.modelRef = Graphics::models.find("circle");
     }
     break;
     case 2:
     {
-        testtest.AddComponent(EntityID, RenderComponent{ });
-        testtest.AddComponent(EntityID, TransformComponent{ });
-        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
-        sprite.ID = EntityID;
+        engine->world.AddComponent(ID, RenderComponent{});
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
+        sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shdrpgm");
         sprite.modelRef = Graphics::models.find("triangle");
     }
     break;
     case 3:
     {
-        testtest.AddComponent(EntityID, RenderComponent{ });
-        testtest.AddComponent(EntityID, TransformComponent{ });
-        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
-        sprite.ID = EntityID;
+        engine->world.AddComponent(ID, RenderComponent{});
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
+        sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shdrpgm");
         sprite.modelRef = Graphics::models.find("lines");
     }
     break;
-
     case 4:
     {
-        testtest.AddComponent(EntityID, RenderComponent{ });
-        testtest.AddComponent(EntityID, TransformComponent{ });
-        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
-        sprite.ID = EntityID;
+        engine->world.AddComponent(ID, RenderComponent{ });
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
+        sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("sphere");
-        sprite.ID = EntityID;
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
-
     case 5:
     {
-        testtest.AddComponent(EntityID, RenderComponent{ });
-        testtest.AddComponent(EntityID, TransformComponent{ });
-        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
-        sprite.ID = EntityID;
+        engine->world.AddComponent(ID, RenderComponent{});
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
+        sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("cube");
         sprite.hasTexture = true;
@@ -112,49 +98,41 @@ void Eclipse::GraphicsManager::CreatePrimitives(GLint model)
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
-
     case 6:
     {
-        testtest.AddComponent(EntityID, RenderComponent{ });
-        testtest.AddComponent(EntityID, TransformComponent{ });
-        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
-        sprite.ID = EntityID;
+        engine->world.AddComponent(ID, RenderComponent{});
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
+        sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("cylinder");
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
-
     case 7:
     {
-        testtest.AddComponent(EntityID, RenderComponent{ });
-        testtest.AddComponent(EntityID, TransformComponent{ });
-        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
-        sprite.ID = EntityID;
+        engine->world.AddComponent(ID, RenderComponent{});
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
+        sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("cone");
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
-
     case 8:
     {
-        testtest.AddComponent(EntityID, RenderComponent{ });
-        testtest.AddComponent(EntityID, TransformComponent{ });
-        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
-        sprite.ID = EntityID;
+        engine->world.AddComponent(ID, RenderComponent{});
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
+        sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("torus");
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
-
     case 9:
     {
-        testtest.AddComponent(EntityID, RenderComponent{ });
-        testtest.AddComponent(EntityID, TransformComponent{ });
-        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
-        sprite.ID = EntityID;
+        engine->world.AddComponent(ID, RenderComponent{});
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
+        sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("pyramid");
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
@@ -162,39 +140,34 @@ void Eclipse::GraphicsManager::CreatePrimitives(GLint model)
     break;
     case 10:
     {
-        testtest.AddComponent(EntityID, RenderComponent{ });
-        testtest.AddComponent(EntityID, TransformComponent{ });
-        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
-        sprite.ID = EntityID;
+        engine->world.AddComponent(ID, RenderComponent{});
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
+        sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("lines3D");
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
-
     case 11:
     {
-        testtest.AddComponent(EntityID, RenderComponent{ });
-        testtest.AddComponent(EntityID, TransformComponent{ });
-        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(EntityID);
-        sprite.ID = EntityID;
+        engine->world.AddComponent(ID, RenderComponent{});
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
+        sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("plane");
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
-
     // pointlight
     case 12:
     {
-        engine->LightManager.CreateLights(Eclipse::TypesOfLights::POINTLIGHT, EntityID);
+        engine->LightManager.CreateLights(Eclipse::TypesOfLights::POINTLIGHT, ID);
     }
     break;
-
     // Directional
     case 13:
     {
-        engine->LightManager.CreateLights(Eclipse::TypesOfLights::DIRECTIONAL, EntityID);
+        engine->LightManager.CreateLights(Eclipse::TypesOfLights::DIRECTIONAL, ID);
     }
     break;
     }
@@ -286,12 +259,22 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
     {
         glm::mat4 mModelNDC;
 
-        glm::mat4 model = glm::mat4(1.0f);
+       /* glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, trans.pos);
         model = glm::rotate(model, glm::radians(trans.rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(trans.rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::rotate(model, glm::radians(trans.rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::scale(model, trans.scale);
+        mModelNDC = camera.projMtx * camera.viewMtx * model;
+        glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(mModelNDC));
+        glUniformMatrix4fv(model2, 1, GL_FALSE, glm::value_ptr(model));*/
+
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, trans.position.ConvertToGlmVec3Type());
+        model = glm::rotate(model, glm::radians(trans.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(trans.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(trans.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, trans.scale.ConvertToGlmVec3Type());
         mModelNDC = camera.projMtx * camera.viewMtx * model;
         glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(mModelNDC));
         glUniformMatrix4fv(model2, 1, GL_FALSE, glm::value_ptr(model));
@@ -304,7 +287,7 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
 
     if (cam >= 0)
     {
-        glUniform3f(lll, camerapos.position.x, camerapos.position.y, camerapos.position.z);
+        glUniform3f(lll, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ());
     }
 
     if (lll >= 0)
@@ -416,7 +399,7 @@ void Eclipse::GraphicsManager::GlobalFrmeBufferDraw()
 
 void Eclipse::GraphicsManager::ShowTestWidgets()
 {
-    int modelSelector = -1;
+    /*int modelSelector = -1;
     ImGui::Begin("Create Objects");
 
     if (ImGui::Combo("Models", &modelSelector,
@@ -429,20 +412,21 @@ void Eclipse::GraphicsManager::ShowTestWidgets()
             ImGui::Separator();
         }
     }
-    ImGui::End();
+    ImGui::End();*/
 }
 
 void Eclipse::GraphicsManager::ShowTestWidgets(unsigned int id, unsigned int createdId)
 {
-    if (id == createdId)
-    {
-        TransformComponent& trans = engine->world.GetComponent<TransformComponent>(id);
-        ImGui::DragFloat3("Scale", (float*)&trans.scale, 0.2f, 0.0f, 0.0f);
-        //ECGui::DrawSliderFloat3Widget("Scale", &trans.scale);
-        ImGui::DragFloat3("Translate", (float*)&trans.pos, 0.2f, 0.0f, 0.0f);
-        //ECGui::DrawSliderFloat3Widget("Translate", &trans.position);
-        ImGui::DragFloat3("Rotate", (float*)&trans.rot, 0.2f, 0.0f, 0.0f);
-    }
+    //if (id == createdId)
+    //{
+    //    TransformComponent& trans = engine->world.GetComponent<TransformComponent>(id);
+    //    //ImGui::DragFloat3("Scale", (float*)&trans.scale, 0.2f, 0.0f, 0.0f);
+    //    ECGui::DrawSliderFloat3Widget("Scale", &trans.scale);
+    //    //ImGui::DragFloat3("Translate", (float*)&trans.pos, 0.2f, 0.0f, 0.0f);
+    //    ECGui::DrawSliderFloat3Widget("Translate", &trans.position);
+    //    //ImGui::DragFloat3("Rotate", (float*)&trans.rot, 0.2f, 0.0f, 0.0f);
+    //    ECGui::DrawSliderFloat3Widget("Rotate", &trans.rotation);
+    //}
 }
 
 #endif

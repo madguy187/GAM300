@@ -2,8 +2,11 @@
 #include "EditorManager.h"
 #include "ImGui/Vendor/IconsFontAwesome.h"
 #include "Editor/Windows/Inspector/Inspector.h"
+#include "Editor/Windows/Hierarchy/Hierarchy.h"
 #include "Editor/Windows/Scene/Scene.h"
 #include "Editor/Windows/GameView/GameView.h"
+#include "ECS/ComponentManager/Components/EntityComponent.h"
+//#include "Library/Strings/Lexical.h"
 
 namespace Eclipse
 {
@@ -16,14 +19,16 @@ namespace Eclipse
 
 	void EditorManager::InitGUIWindows()
 	{
-		//AddWindow<Inspector>("Inspector");
 		AddWindow<Scene>("Scene");
 		AddWindow<eGameView>("GameView");
+		AddWindow<Inspector>("Inspector");
+		AddWindow<Hierarchy>("Hierarchy");
 	}
 
 	void EditorManager::InitMenu()
 	{
 		MenuComponent file{ "File", EditorMenuType::FILE };
+		file.AddItems("Exit");
 		MenuComponent window{ "Windows", EditorMenuType::WINDOWS };
 
 		MenuBar_.AddMenuComponents(file);
@@ -61,6 +66,40 @@ namespace Eclipse
 		static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
 		ImFontConfig icons_config; icons_config.MergeMode = true; icons_config.PixelSnapH = true;
 		io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/fontawesome-webfont.ttf", 12.0f, &icons_config, icons_ranges);
+	}
+
+	Entity EditorManager::CreateEntity(EntityType type)
+	{
+		Entity ID = engine->world.CreateEntity();
+		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast<std::string>(type), true});
+		engine->world.AddComponent(ID, TransformComponent{});
+
+		EntityHierarchyList_.push_back(ID);
+		EntityToTypeMap_.insert(std::pair<Entity, EntityType>(ID, type));
+		GEHIndex_ = EntityHierarchyList_.size() - 1;
+
+		return ID;
+	}
+
+	void EditorManager::DestroyEntity(Entity ID)
+	{
+		for (size_t i = 0; i < EntityHierarchyList_.size(); ++i)
+		{
+			if (ID == EntityHierarchyList_[i])
+			{
+				EntityHierarchyList_.erase(EntityHierarchyList_.begin() + i);
+
+				if (i == EntityHierarchyList_.size())
+					GEHIndex_ = EntityHierarchyList_.size() - 1;
+				else
+					GEHIndex_ = i;
+
+				break;
+			}
+		}
+
+		EntityToTypeMap_.erase(ID);
+		engine->world.DestroyEntity(ID);
 	}
 
 	std::vector<std::unique_ptr<ECGuiWindow>>& EditorManager::GetAllWindows()

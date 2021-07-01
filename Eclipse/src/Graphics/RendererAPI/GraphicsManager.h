@@ -19,10 +19,10 @@ namespace Eclipse
     void DrawBuffers(unsigned int FrameBufferID, RenderComponent* _spritecomponent, GLenum mode);
     void DrawIndexed(RenderComponent* in, GLenum mode);
     void CheckTexture(RenderComponent* in);
+    void CreatePrimitives(Entity ID, int ModelType);
 
   private:
     void ShowTestWidgets();
-    void CreatePrimitives(GLint model);
     void CheckUniformLoc(RenderComponent& sprite, unsigned int id, unsigned int framebufferID);
     void UpdateFrameBuffer();
     void FrameBufferDraw();
