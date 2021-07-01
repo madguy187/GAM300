@@ -5,6 +5,12 @@
       "path": "src/Assets/Textures/brick.png",
       "spriteDimensions": [ 1024, 1024 ],
       "spriteIndex": [ 0, 0 ]
+    },
+	{
+      "textureName": "PlayPauseStop",
+      "path": "src/Assets/Textures/PlayPauseStop.png",
+      "spriteDimensions": [ 302, 304 ],
+      "spriteIndex": [ 0, 0 ]
     }
   ]
 }

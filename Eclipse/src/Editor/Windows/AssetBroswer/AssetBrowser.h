@@ -5,7 +5,7 @@ namespace Eclipse
 {
 	class AssetBrowser final : public ECGuiWindow
 	{
-		const std::filesystem::path AssetPath = "Assets";
+		const std::filesystem::path AssetPath = "src//Assets";
 		std::filesystem::path CurrentDir;
 		std::filesystem::path NextDir;
 
