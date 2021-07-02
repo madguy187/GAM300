@@ -44,8 +44,6 @@ void Mesh::render(Shader& shader) {
 
     //auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
 
-    shader.Use(); 
-
     glBindVertexArray(VAO);
 
     glDisable(GL_BLEND);

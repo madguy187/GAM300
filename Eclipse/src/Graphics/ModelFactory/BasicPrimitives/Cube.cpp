@@ -354,12 +354,13 @@ Mesh Cube::processMesh(aiMesh* mesh, const aiScene* scene)
 
 void Cube::render(Shader& shader)
 {
-    auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
-    glBindFramebuffer(GL_FRAMEBUFFER, engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID());
-
     for (unsigned int i = 0; i < meshes.size(); i++) 
     {
+        auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
+        glBindFramebuffer(GL_FRAMEBUFFER, engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID());
         shdrpgm->second.Use();
+
         meshes[i].render(shdrpgm->second);
+
     }
 }
