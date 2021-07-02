@@ -40,25 +40,27 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiCo
     setup();
 }
 
-void Mesh::render(Shader shader) {
+void Mesh::render(Shader& shader) {
 
-    shader.Use();
+    //auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
+
+    shader.Use(); 
 
     glBindVertexArray(VAO);
 
-    glEnable(GL_BLEND);
+    glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     if (noTex) 
     {
-        // materials
-        auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
+        //// materials
+        //auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
 
-        GLint uniform_var_loc0 = shdrpgm->second.GetLocation("material.diffuse");
-        GLint uniform_var_loc1 = shdrpgm->second.GetLocation("material.specular");
-        GLint uniform_var_loc2 = shdrpgm->second.GetLocation("noTex");
+        GLint uniform_var_loc0 = shader.GetLocation("material.diffuse");
+        GLint uniform_var_loc1 = shader.GetLocation("material.specular");
+        GLint uniform_var_loc2 = shader.GetLocation("noTex");
 
         if (uniform_var_loc0 >= 0)
         {
@@ -116,23 +118,19 @@ void Mesh::render(Shader shader) {
                 glUniform1i(tex_loc, i);
             }
 
-            // set the shader value
-            //shader.setInt(name, i);
-
             // bind texture
             textures[i].bind();
         }
     }
 
     // EBO stuff
-    glBindVertexArray(VAO);
+    //glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
+    shader.UnUse();
 
     // reset
     glActiveTexture(GL_TEXTURE0);
-
-    shader.UnUse();
 }
 
 void Mesh::cleanup() {

@@ -21,7 +21,7 @@ void Eclipse::DebugRenderingManager::CheckUniformLoc(Graphics::shaderIt _shdrpgm
 
     if (uniform_var_loc2 >= 0)
     {
-        glUniform4f(uniform_var_loc2, 0.5f, 0.0f, 0.0f, 1.0f);
+        glUniform4f(uniform_var_loc2, 1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     if (uniform_var_loc3 >= 0)
@@ -72,13 +72,13 @@ void Eclipse::DebugRenderingManager::DrawFrustum(unsigned int ID, unsigned int f
 
         glBindVertexArray(it.GetVaoID());
 
-        //glEnable(GL_BLEND);
-        //
-        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        //glDisable(GL_CULL_FACE);
-        //glEnable(GL_LINE_SMOOTH);
-        //
-        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_BLEND);
+        
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glDisable(GL_CULL_FACE);
+        glEnable(GL_LINE_SMOOTH);
+        
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         CheckUniformLoc(shdrpgm, _camera);
 

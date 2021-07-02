@@ -59,7 +59,7 @@ void Eclipse::RenderSystem::Update()
 
     engine->gDebugManager.DrawDebugShapes(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 
-    auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
-    glBindFramebuffer(GL_FRAMEBUFFER, engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
-    m.render(shdrpgm->second);
+   auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
+   //glBindFramebuffer(GL_FRAMEBUFFER, engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID());
+   m.render(shdrpgm->second);
 }

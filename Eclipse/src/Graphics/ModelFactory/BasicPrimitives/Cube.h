@@ -54,7 +54,7 @@ public:
     void render();
 
     Mesh processMesh(aiMesh* mesh, const aiScene* scene);
-    void render(Shader shader);
+    void render(Shader& shader);
 public:
 
     // False

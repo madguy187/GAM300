@@ -352,19 +352,14 @@ Mesh Cube::processMesh(aiMesh* mesh, const aiScene* scene)
     return Mesh(vertices, indices, textures);
 }
 
-void Cube::render(Shader shader)
+void Cube::render(Shader& shader)
 {
-    glm::mat4 model = glm::mat4(1.0f);
+    auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
+    glBindFramebuffer(GL_FRAMEBUFFER, engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID());
 
-    model = glm::translate(model, pos);
-    model = glm::scale(model, size);
-    model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    shader.setMat4("model", model);
-
-    shader.setFloat("material.shininess", 0.5f);
-
-    for (unsigned int i = 0; i < meshes.size(); i++) {
-
-        meshes[i].render(shader);
+    for (unsigned int i = 0; i < meshes.size(); i++) 
+    {
+        shdrpgm->second.Use();
+        meshes[i].render(shdrpgm->second);
     }
 }
