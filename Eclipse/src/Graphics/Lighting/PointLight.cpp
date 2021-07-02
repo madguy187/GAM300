@@ -21,7 +21,7 @@ void Eclipse::PointLight::CreatePointLight(unsigned int CreatedID)
     PointLightComponent& sprite = engine->world.GetComponent<PointLightComponent>(CreatedID);
     sprite.ID = CreatedID;
     sprite.shaderRef = &(Graphics::shaderpgms.find("shader3DShdrpgm")->second);
-    sprite.modelRef = Graphics::models.find("cube")->second.get();
+    sprite.modelRef = Graphics::models.find("sphere")->second.get();
 
     // Success
     _pointlights.insert({ counter,&sprite });

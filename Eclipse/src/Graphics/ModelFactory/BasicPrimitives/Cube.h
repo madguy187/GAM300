@@ -57,7 +57,8 @@ public:
     void render(Shader shader);
 public:
 
-    bool noTex;
+    // False
+    bool noTex = false;
     glm::vec3 pos;
     glm::vec3 size;
 

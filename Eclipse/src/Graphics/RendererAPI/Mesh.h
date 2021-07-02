@@ -37,7 +37,7 @@ public:
 private:
 	unsigned int VBO, EBO;
 
-	bool noTex;
+	bool noTex ;
 
 	void setup();
 };

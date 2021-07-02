@@ -13,6 +13,7 @@ in vec3 normal_from_vtxShader;
 uniform vec3 camPos;
 
 // Structs
+uniform sampler2D diffuse0;
 
 struct Material 
 {
@@ -147,23 +148,9 @@ void main ()
 	}
 	else
 	{
-     vec3 result = vec3(0,0,0);
-    
-     vec4 ignore = lightColor;
-     //vec3 ignore1 = lightPos;
+     fFragClr = texture(uTex2d, TxtCoord);
 
-     // properties
-     vec3 norm = (normal_from_vtxShader);
-     vec3 viewDir = normalize(camPos - crntPos);
-
-     result = CalcDirLight(directionlight[0], norm, viewDir);
-
-     for(int i = 0 ; i < NumberOfPointLights ; i++ )
-     {
-          result += CalcPointLight( pointLights[i], norm, crntPos, viewDir);
-     }
-
-     fFragClr = texture(uTex2d, TxtCoord) * vec4(uColor) * vec4(result,1.0f);
+     //fFragClr = texture(uTex2d, TxtCoord); //* vec4(uColor) * vec4(result,1.0f);
     }
 }
 

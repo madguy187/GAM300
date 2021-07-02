@@ -41,6 +41,17 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiCo
 }
 
 void Mesh::render(Shader shader) {
+
+    shader.Use();
+
+    glBindVertexArray(VAO);
+
+    glEnable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     if (noTex) 
     {
         // materials
@@ -85,6 +96,15 @@ void Mesh::render(Shader shader) {
                 break;
             }
 
+            //std::cout << name << std::endl;
+
+            GLint uniform_var_loc2 = Graphics::shaderpgms.find("shader3DShdrpgm")->second.GetLocation("uColor");
+
+            if (uniform_var_loc2 >= 0)
+            {
+                glUniform4f(uniform_var_loc2, 1, 1,1,1);
+            }
+
             // set the shader value
             shader.setInt(name, i);
             // bind texture
@@ -96,6 +116,7 @@ void Mesh::render(Shader shader) {
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
+    shader.UnUse();
 
     // reset
     glActiveTexture(GL_TEXTURE0);
