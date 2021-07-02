@@ -98,15 +98,28 @@ void Mesh::render(Shader shader) {
 
             //std::cout << name << std::endl;
 
-            GLint uniform_var_loc2 = Graphics::shaderpgms.find("shader3DShdrpgm")->second.GetLocation("uColor");
+            GLint uniform_var_loc2 = shader.GetLocation("uColor");
+            GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
+            GLuint tex_loc = shader.GetLocation("uTex2d");
 
             if (uniform_var_loc2 >= 0)
             {
-                glUniform4f(uniform_var_loc2, 1, 1,1,1);
+                glUniform4f(uniform_var_loc2, 0.5, 0,0,1);
+            }
+
+            if (uniform_var_loc3 >= 0)
+            {
+                glUniform1i(uniform_var_loc3, true);
+            }
+
+            if (tex_loc >= 0)
+            {
+                glUniform1i(tex_loc, i);
             }
 
             // set the shader value
-            shader.setInt(name, i);
+            //shader.setInt(name, i);
+
             // bind texture
             textures[i].bind();
         }
@@ -116,10 +129,11 @@ void Mesh::render(Shader shader) {
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
-    shader.UnUse();
 
     // reset
     glActiveTexture(GL_TEXTURE0);
+
+    shader.UnUse();
 }
 
 void Mesh::cleanup() {

@@ -144,10 +144,11 @@ void main ()
 {
 	if(!uTextureCheck)
 	{
-		fFragClr = vec4(uColor);
+		fFragClr = vec4(uColor) ;
 	}
 	else
 	{
+     vec4 yo = texture(uTex2d, TxtCoord) ;
      fFragClr = texture(uTex2d, TxtCoord);
 
      //fFragClr = texture(uTex2d, TxtCoord); //* vec4(uColor) * vec4(result,1.0f);

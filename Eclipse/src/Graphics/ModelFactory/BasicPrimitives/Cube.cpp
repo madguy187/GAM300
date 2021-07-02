@@ -268,22 +268,12 @@ std::vector<Texture> Cube::loadTextures(aiMaterial* mat, aiTextureType type)
         {
             // not loaded yet
             Texture tex(directory, str.C_Str(), type);
+            tex.load(false);
             textures.push_back(tex);
             textures_loaded.push_back(tex);
         }
     }
     return textures;
-}
-
-void Cube::render()
-{
-    // TEXTURES
-    unsigned int diffuseIdx = 0;
-    unsigned int specularIdx = 0;
-
-    glBindVertexArray(vaoID);
-    glDrawElements(GL_TRIANGLES, IdxVec.size(), GL_UNSIGNED_INT, 0);
-
 }
 
 Mesh Cube::processMesh(aiMesh* mesh, const aiScene* scene)
