@@ -8,9 +8,6 @@ void Eclipse::DebugRenderingManager::CheckUniformLoc(Graphics::shaderIt _shdrpgm
     GLint uniform_var_loc3 = _shdrpgm->second.GetLocation("uTextureCheck");
     GLint uniform_var_loc4 = _shdrpgm->second.GetLocation("TextureIndex");
     GLint uniform_var_loc5 = _shdrpgm->second.GetLocation("TextureDimensions");
-    //GLint uniform_var_loc6 = _shdrpgm->second.GetLocation("LightTimer");
-    //GLint uniform_var_loc7 = _shdrpgm->second.GetLocation("ShakeTimer");
-    //GLint uniform_var_loc8 = _shdrpgm->second.GetLocation("ShakeScreen");
     GLuint tex_loc = _shdrpgm->second.GetLocation("uTex2d");
 
     if (uniform_var_loc1 >= 0)
@@ -21,7 +18,7 @@ void Eclipse::DebugRenderingManager::CheckUniformLoc(Graphics::shaderIt _shdrpgm
 
     if (uniform_var_loc2 >= 0)
     {
-        glUniform4f(uniform_var_loc2, 1.0f, 1.0f, 1.0f, 1.0f);
+        glUniform4f(uniform_var_loc2, 0.0f, 0.0f, 0.0f, 1.0f);
     }
 
     if (uniform_var_loc3 >= 0)
@@ -34,16 +31,6 @@ void Eclipse::DebugRenderingManager::CheckUniformLoc(Graphics::shaderIt _shdrpgm
         glUniform2f(uniform_var_loc4, 0.0f, 0.0f);
     }
 
-    //if (uniform_var_loc7 >= 0)
-    //{
-    //    glUniform1f(uniform_var_loc7, 1.0f);
-    //}
-
-    //if (uniform_var_loc8 >= 0)
-    //{
-    //    glUniform1i(uniform_var_loc8, 1.0f);
-    //}
-
     if (tex_loc >= 0)
     {
         glUniform1i(tex_loc, 1);
@@ -53,26 +40,30 @@ void Eclipse::DebugRenderingManager::CheckUniformLoc(Graphics::shaderIt _shdrpgm
 void Eclipse::DebugRenderingManager::AddCameraFrustum(unsigned int ID, CameraComponent& _camera)
 {
     Frustum newFrustum;
-    newFrustum.UpdateFrustum(_camera);
-
     SetDebugShape(ID, newFrustum);
 }
 
 void Eclipse::DebugRenderingManager::DrawFrustum(unsigned int ID, unsigned int framebufferID)
 {
+    auto& frustum = std::any_cast<Frustum>(debugShapes[ID]);
+    frustum.UpdateFrustum(engine->world.GetComponent<CameraComponent>(ID));
+    SetDebugShape(ID, frustum);
+
     auto& lineArr = std::any_cast<Frustum>(debugShapes[ID]).GetLineSegments();
     auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 
     auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
-    glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
 
-    for (auto& it : lineArr)
+    for (unsigned int i = 0; i < lineArr.size(); ++i)
     {
         shdrpgm->second.Use();
 
-        glBindVertexArray(it.GetVaoID());
+        glBindVertexArray(frustum.GetVaoID());
+
+        glNamedBufferSubData(frustum.GetVboID(), 0, 2 * sizeof(glm::vec3), &lineArr[i]);
 
         glEnable(GL_BLEND);
+        glEnable(GL_DEPTH_TEST);
 
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         glDisable(GL_CULL_FACE);
@@ -83,7 +74,7 @@ void Eclipse::DebugRenderingManager::DrawFrustum(unsigned int ID, unsigned int f
         CheckUniformLoc(shdrpgm, _camera);
 
         glLineWidth(5.0f); //Note that glLineWidth() is deprecated
-        glDrawArrays(it.GetPrimitiveType(), 0, 2);
+        glDrawArrays(frustum.GetPrimitiveType(), 0, 2);
 
         glBindVertexArray(0);
         shdrpgm->second.UnUse();
