@@ -14,7 +14,6 @@ AssimpModel::AssimpModel(glm::vec3 pos, glm::vec3 size, bool noTex)
 
 void AssimpModel::render(Shader shader)
 {
-
     CameraComponent camera;
     TransformComponent camerapos;
     camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
@@ -43,7 +42,8 @@ void AssimpModel::render(Shader shader)
 
 void AssimpModel::cleanup()
 {
-    for (unsigned int i = 0; i < meshes.size(); i++) {
+    for (unsigned int i = 0; i < meshes.size(); i++)
+    {
         meshes[i].cleanup();
     }
 }

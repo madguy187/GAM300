@@ -8,26 +8,10 @@
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RenderComponent.h"
 
+
 #include "AssimpModel/AssimpModel.h"
-/*************************************************************************
-  RenderSystem
 
-  ! Note all imgui stuffs will be taken out
-
-  Init   : PreRender Init
-         - Load Files
-         - Clear View
-
-  Update : Update Loop
-         - Update FrameBuffers
-         - Render
-         - Render on FrameBuffer
-         - Post Render
-
-  RegisterAll : Set Signatures for this system
-         - To be removed
-
-*************************************************************************/
+#include "SparseSet/SparseSet.hpp"
 
 //Cube m;
 std::vector<AssimpModel> test;
@@ -37,10 +21,13 @@ void Eclipse::RenderSystem::Init()
     ENGINE_CORE_INFO("RenderSystem Init");
     engine->gGraphics.pre_render();
 
-    AssimpModel m(glm::vec3(0.0f, -2.0f, -5.0f), glm::vec3(0.05f), false);
-    m.loadAssimpModel("src/Assets/ASSModels/dog/scene.gltf");
-    test.push_back(m);
-    engine->gGraphics.ModelContainer.push_back(&m);
+    engine->AssimpManager.LoadAllModels();
+
+    //AssimpModel m(glm::vec3(0.0f, -2.0f, -5.0f), glm::vec3(0.05f), false);
+    //std::string name = "dog";
+    //m.loadAssimpModel(("src/Assets/ASSModels/" + name + "/scene.gltf").c_str());
+    //test.push_back(m);
+    //engine->gGraphics.ModelContainer.push_back(&m);
 }
 
 Signature Eclipse::RenderSystem::RegisterAll()
@@ -66,6 +53,8 @@ void Eclipse::RenderSystem::Update()
 
     engine->gDebugManager.DrawDebugShapes(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 
-   auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
-   test[0].render(shdrpgm->second);
+    engine->AssimpManager.DrawBuffers(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL);
+
+    //auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
+    //test[0].render(shdrpgm->second);
 }

@@ -197,6 +197,7 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClInclude Include="src\Graphics\Lighting\PointLight.h" />
     <ClInclude Include="src\Graphics\Lighting\SpotLight.h" />
     <ClInclude Include="src\Graphics\Material\Material.h" />
+    <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.h" />
     <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\AllBasicPrimitives.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.h" />
@@ -282,6 +283,7 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClCompile Include="src\Graphics\Lighting\PointLight.cpp" />
     <ClCompile Include="src\Graphics\Lighting\SpotLight.cpp" />
     <ClCompile Include="src\Graphics\Material\Material.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cone.cpp" />

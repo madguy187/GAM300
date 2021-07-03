@@ -1,0 +1,11 @@
+Model Information:
+* title:	luna the lowpoly dog
+* source:	https://sketchfab.com/3d-models/luna-the-lowpoly-dog-61abe4aabd9d4cb5bfdd817b98e8ef06
+* author:	Maf'j Alvarez (https://sketchfab.com/blujay)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "luna the lowpoly dog" (https://sketchfab.com/3d-models/luna-the-lowpoly-dog-61abe4aabd9d4cb5bfdd817b98e8ef06) by Maf'j Alvarez (https://sketchfab.com/blujay) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -8,14 +8,13 @@
 #include "Graphics/OpenGL/OpenGL_Context.h"
 #include "Graphics/Camera/CameraManager.h"
 #include "Graphics/RendererAPI/GraphicsManager.h"
-#include "AssimpModel/AssimpModel.h"
+#include "AssimpModel/AssimpManager.h"
 
 namespace Eclipse
 {
     class RenderSystem : public System
     {
     public:
-        //Cube m;
         static void Init();
         static Signature RegisterAll();
 

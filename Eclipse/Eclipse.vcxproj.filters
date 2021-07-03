@@ -431,6 +431,7 @@
     <ClInclude Include="src\Graphics\RendererAPI\Mesh.h" />
     <ClInclude Include="src\Graphics\Material\Material.h" />
     <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.h" />
+    <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -629,6 +630,7 @@
     <ClCompile Include="src\Graphics\RendererAPI\Mesh.cpp" />
     <ClCompile Include="src\Graphics\Material\Material.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\BasicFrag.frag" />
