@@ -5,13 +5,13 @@
 
 namespace Eclipse
 {
-	void Scene::Update()
+	void SceneWindow::Update()
 	{
 		if (IsVisible)
-			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&Scene::InitilializeFrameBuffer, this));
+			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&SceneWindow::InitilializeFrameBuffer, this));
 	}
 
-	Scene::Scene() :
+	SceneWindow::SceneWindow() :
 		mViewportSize{ 0.0f, 0.0f }
 	{
 		Type = EditorWindowType::SCENE;
@@ -20,7 +20,7 @@ namespace Eclipse
 		m_frameBuffer = std::make_shared<FrameBuffer>(*engine->gGraphics.mRenderContext.GetFramebuffer(FrameBufferMode::SCENEVIEW));
 	}
 
-	void Scene::InitilializeFrameBuffer()
+	void SceneWindow::InitilializeFrameBuffer()
 	{
 		ImVec2 viewportPanelSize = ECGui::GetWindowSize();
 
@@ -34,10 +34,10 @@ namespace Eclipse
 		ChildSettings settings;
 		settings.Name = "SceneFrameBuffer";
 		settings.Size = ImVec2{ mViewportSize.x, mViewportSize.y };
-		ECGui::DrawChildWindow<void()>(settings, std::bind(&Scene::RunFrameBuffer, this));
+		ECGui::DrawChildWindow<void()>(settings, std::bind(&SceneWindow::RunFrameBuffer, this));
 	}
 
-	void Scene::RunFrameBuffer()
+	void SceneWindow::RunFrameBuffer()
 	{
 		// Set Image size
 		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
@@ -144,7 +144,7 @@ namespace Eclipse
 		}
 	}
 
-	void Scene::OnKeyPressed()
+	void SceneWindow::OnKeyPressed()
 	{
 		// Delete Entity
 		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Delete)))

@@ -11,11 +11,11 @@ namespace Eclipse
 		float mRotSnapValue{ 45.f };
 	};
 
-	class Scene final : public ECGuiWindow
+	class SceneWindow final : public ECGuiWindow
 	{
 	public:
 		void Update() override;
-		Scene();
+		SceneWindow();
 		void InitilializeFrameBuffer();
 		void RunFrameBuffer();
 		void OnKeyPressed();
