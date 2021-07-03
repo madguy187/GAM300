@@ -22,12 +22,6 @@ void Eclipse::RenderSystem::Init()
     engine->gGraphics.pre_render();
 
     engine->AssimpManager.LoadAllModels();
-
-    //AssimpModel m(glm::vec3(0.0f, -2.0f, -5.0f), glm::vec3(0.05f), false);
-    //std::string name = "dog";
-    //m.loadAssimpModel(("src/Assets/ASSModels/" + name + "/scene.gltf").c_str());
-    //test.push_back(m);
-    //engine->gGraphics.ModelContainer.push_back(&m);
 }
 
 Signature Eclipse::RenderSystem::RegisterAll()
@@ -53,8 +47,5 @@ void Eclipse::RenderSystem::Update()
 
     engine->gDebugManager.DrawDebugShapes(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 
-    engine->AssimpManager.DrawBuffers(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL);
-
-    //auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
-    //test[0].render(shdrpgm->second);
+    engine->AssimpManager.DrawBuffers();
 }
