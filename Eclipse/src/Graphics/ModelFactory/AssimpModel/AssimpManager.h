@@ -21,10 +21,9 @@ private:
 public:
     void LoadAllModels();
     void CreateModel(std::string name, std::string path);
-    void DrawBuffers(unsigned int FrameBufferID, GLenum mode);
+    void DrawBuffers();
     AssimpModelContainer GetContainer();
     unsigned int AssimpModelCount();
     void DeleteItem(unsigned int index, AssimpModel* model_ptr);
-    void DeleteItem();
 };
 #endif // ASSIMP_MANAGER_H
