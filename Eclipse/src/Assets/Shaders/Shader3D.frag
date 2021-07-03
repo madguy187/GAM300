@@ -148,6 +148,13 @@ void main ()
 	}
 	else
 	{
+     
+     vec4 ignore = lightColor;
+
+     // properties
+     vec3 norm = (normal_from_vtxShader);
+     vec3 viewDir = normalize(camPos - crntPos);
+
      vec4 yo = texture(uTex2d, TxtCoord) ;
      fFragClr = texture(uTex2d, TxtCoord);
 

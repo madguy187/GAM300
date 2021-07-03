@@ -93,8 +93,8 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("cube");
-        sprite.hasTexture = true;
-        sprite.textureRef = Graphics::textures.find("orange");
+        //sprite.hasTexture = true;
+        //sprite.textureRef = Graphics::textures.find("orange");
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
@@ -328,7 +328,7 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
 
     if (tex_loc >= 0)
     {
-        glUniform1i(tex_loc, 1);
+        glUniform1i(tex_loc, false);
     }
 }
 

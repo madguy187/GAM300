@@ -17,6 +17,7 @@ Cube::Cube() :
 void Cube::initModel()
 {
     //LoadModel("src/Assets/ASSModels/lotr_troll/TrollApose_low.fbx");
+    InsertModelData();
     CreateBuffers();
 
 }
