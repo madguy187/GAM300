@@ -43,8 +43,6 @@ namespace Eclipse
 		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
 			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
-		/*m_GizmoType = ImGuizmo::OPERATION::SCALE;*/
-
 		// ImGuizmo Logic
 		if (!engine->editorManager->EntityHierarchyList_.empty() && m_GizmoType != -1)
 		{
@@ -68,8 +66,39 @@ namespace Eclipse
 			ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(transCom.position.ConvertToGlmVec3Type()),
 					glm::value_ptr(transCom.rotation.ConvertToGlmVec3Type()), glm::value_ptr(transCom.scale.ConvertToGlmVec3Type()), glm::value_ptr(transform));
 
+			// Snapping
+			bool IsSnapOn = ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_LeftControl));
+			glm::vec3 snapValues{};
+
+			switch (m_GizmoType)
+			{
+			case ImGuizmo::OPERATION::TRANSLATE:
+				snapValues = 
+					{ mSnapSettings.mPosSnapValue, 
+					  mSnapSettings.mPosSnapValue,
+					  mSnapSettings.mPosSnapValue };
+				break;
+			case ImGuizmo::OPERATION::ROTATE:
+				snapValues =
+					{ mSnapSettings.mRotSnapValue,
+					  mSnapSettings.mRotSnapValue,
+					  mSnapSettings.mRotSnapValue };
+				break;
+			case ImGuizmo::OPERATION::SCALE:
+				snapValues =
+					{ mSnapSettings.mScaleSnapValue,
+					  mSnapSettings.mScaleSnapValue,
+					  mSnapSettings.mScaleSnapValue };
+				break;
+			default:
+				break;
+			}
+
+			/*std::cout << snapValues[0] << "," << snapValues[1] << "," << snapValues[2] << "," << std::endl;*/
+
 			ImGuizmo::Manipulate(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx),
-				(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform));
+				(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
+				nullptr, IsSnapOn ? glm::value_ptr(snapValues) : nullptr);
 			
 			/*static const float identityMatrix[16] =
 			{ 1.f, 0.f, 0.f, 0.f,
@@ -77,12 +106,13 @@ namespace Eclipse
 				0.f, 0.f, 1.f, 0.f,
 				0.f, 0.f, 0.f, 1.f };
 
+
 			ImGuizmo::DrawGrid(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx), identityMatrix, 100.f);*/
 
 			if (ImGuizmo::IsUsing())
 			{
 				glm::vec3 translation, rotation, scale;
-				ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(translation), 
+				ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(translation),
 					glm::value_ptr(rotation), glm::value_ptr(scale));
 
 				//Math::DecomposeTransform(transform, translation, rotation, scale);
@@ -104,6 +134,9 @@ namespace Eclipse
 					break;
 				}
 			}
+
+			/*ImGuiIO& io = ImGui::GetIO();
+			ImGuizmo::ViewManipulate(const_cast<float*>(glm::value_ptr(camCom.viewMtx)), camCom.fov, ImVec2(io.DisplaySize.x - 128, 0), ImVec2(128, 128), 0x10101010);*/
 		}
 
 		if (ECGui::IsItemHovered())
@@ -130,6 +163,11 @@ namespace Eclipse
 			}
 		}
 		// Gizmos
+		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Q)))
+		{
+			if (!ImGuizmo::IsUsing())
+				m_GizmoType = -1;
+		}
 		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_W)))
 		{
 			if (!ImGuizmo::IsUsing())
