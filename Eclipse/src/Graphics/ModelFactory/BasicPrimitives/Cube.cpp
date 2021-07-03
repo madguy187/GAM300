@@ -16,8 +16,8 @@ Cube::Cube() :
 
 void Cube::initModel()
 {
-    LoadModel("src/Assets/ASSModels/lotr_troll/scene.gltf");
-    //CreateBuffers();
+    //LoadModel("src/Assets/ASSModels/lotr_troll/TrollApose_low.fbx");
+    CreateBuffers();
 
 }
 
@@ -212,6 +212,8 @@ GLuint Cube::GetIndicesCount()
     return static_cast<GLuint>(IdxVec.size());
 }
 
+
+/*
 void Cube::LoadModel(std::string pathname)
 {
     Assimp::Importer import;
@@ -364,3 +366,5 @@ void Cube::render(Shader& shader)
 
     }
 }
+
+*/

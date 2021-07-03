@@ -429,6 +429,8 @@
     </ClInclude>
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Mesh.h" />
+    <ClInclude Include="src\Graphics\Material\Material.h" />
+    <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -625,6 +627,8 @@
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\Mesh.cpp" />
+    <ClCompile Include="src\Graphics\Material\Material.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\BasicFrag.frag" />
