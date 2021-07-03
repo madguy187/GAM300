@@ -21,7 +21,7 @@ monolist=($(printf "%s\n" "${filelist[@]}" | egrep "\\.(exe|dll)\$"))
 configlist=($(printf "%s\n" "${filelist[@]}" | egrep "\\.config\$"))
 
 # Set the prefix, unless it is overriden (used when building mono rpms)
-: ${prefix=/cygdrive/d/j/workspace/build-package-win-mono/2020-02/packaging/Windows/tmp/mono}
+: ${prefix=/cygdrive/d/j/workspace/build-package-win-mono/2019-12/packaging/Windows/tmp/mono}
 
 # Can override .config scanning if specified
 : ${IGNORE_CONFIG_SCAN=0}
