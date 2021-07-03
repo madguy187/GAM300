@@ -63,34 +63,47 @@ namespace Eclipse
 
 			// Selected Entity Transform
 			auto& transCom = engine->world.GetComponent<TransformComponent>(selectedEntity);
-			glm::mat4 transform = transCom.GetTransform();
+			glm::mat4 transform{};
+
+			ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(transCom.position.ConvertToGlmVec3Type()),
+					glm::value_ptr(transCom.rotation.ConvertToGlmVec3Type()), glm::value_ptr(transCom.scale.ConvertToGlmVec3Type()), glm::value_ptr(transform));
 
 			ImGuizmo::Manipulate(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx),
 				(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform));
+			
+			/*static const float identityMatrix[16] =
+			{ 1.f, 0.f, 0.f, 0.f,
+				0.f, 1.f, 0.f, 0.f,
+				0.f, 0.f, 1.f, 0.f,
+				0.f, 0.f, 0.f, 1.f };
 
-			/*ImGuizmo::DrawGrid(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection), identityMatrix, 100.f);*/
+			ImGuizmo::DrawGrid(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx), identityMatrix, 100.f);*/
 
 			if (ImGuizmo::IsUsing())
 			{
 				glm::vec3 translation, rotation, scale;
-				Math::DecomposeTransform(transform, translation, rotation, scale);
+				ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(translation), 
+					glm::value_ptr(rotation), glm::value_ptr(scale));
+
+				//Math::DecomposeTransform(transform, translation, rotation, scale);
 
 				glm::vec3 deltaRotation = rotation - transCom.rotation.ConvertToGlmVec3Type();
 
-				transCom.position = translation;
-				transCom.rotation = rotation;
-				/*transCom.rotation.setX(rotation.x * (180.0f / 3.141592653589793238463f));
-				transCom.rotation.setY(rotation.y * (180.0f / 3.141592653589793238463f));
-				transCom.rotation.setZ(rotation.z * (180.0f / 3.141592653589793238463f));*/
-
-				transCom.scale = scale;
-
-				std::cout << rotation.x << std::endl;
-				std::cout << rotation.y << std::endl;
-				std::cout << rotation.z << std::endl;
+				switch (m_GizmoType)
+				{
+				case ImGuizmo::OPERATION::TRANSLATE:
+					transCom.position = translation;
+					break;
+				case ImGuizmo::OPERATION::ROTATE:
+					transCom.rotation += deltaRotation;
+					break;
+				case ImGuizmo::OPERATION::SCALE:
+					transCom.scale = scale;
+					break;
+				default:
+					break;
+				}
 			}
-
-			/*std::cout << ImGuizmo::IsOver() << std::endl;*/
 		}
 
 		if (ECGui::IsItemHovered())
