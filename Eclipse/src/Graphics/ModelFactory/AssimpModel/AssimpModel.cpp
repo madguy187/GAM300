@@ -36,7 +36,7 @@ void AssimpModel::Render(Shader shader)
         glBindFramebuffer(GL_FRAMEBUFFER, engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID());
         shdrpgm->second.Use();
 
-        meshes[i].render(shader);
+        meshes[i].Render(shader);
     }
 }
 
@@ -44,7 +44,7 @@ void AssimpModel::Cleanup()
 {
     for (unsigned int i = 0; i < meshes.size(); i++)
     {
-        meshes[i].cleanup();
+        meshes[i].Cleanup();
     }
 }
 
@@ -80,6 +80,21 @@ void AssimpModel::ProcessNode(aiNode* node, const aiScene* scene)
     }
 }
 
+void AssimpModel::SetName(std::string name)
+{
+    NameOfModel = name;
+}
+
+std::string AssimpModel::GetDirectory()
+{
+    return directory;
+}
+
+std::string AssimpModel::GetName()
+{
+    return NameOfModel;
+}
+
 Mesh AssimpModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 {
     std::vector<Vertex> vertices;
@@ -92,19 +107,19 @@ Mesh AssimpModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
         Vertex vertex;
 
         // position
-        vertex.pos = glm::vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
+        vertex.Position = glm::vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
 
         // normal vectors
-        vertex.normal = glm::vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
+        vertex.Normal = glm::vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
 
         // textures
         if (mesh->mTextureCoords[0]) 
         {
-            vertex.texCoord = glm::vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
+            vertex.TextureCoodinates = glm::vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
         }
         else 
         {
-            vertex.texCoord = glm::vec2(0.0f);
+            vertex.TextureCoodinates = glm::vec2(0.0f);
         }
 
         vertices.push_back(vertex);
@@ -123,7 +138,8 @@ Mesh AssimpModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
     {
         aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
-        if (noTex) {
+        if (noTex) 
+        {
             // diffuse color
             aiColor4D diff(1.0f);
             aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diff);
@@ -155,7 +171,7 @@ std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType ty
     {
         aiString str;
         mat->GetTexture(type, i, &str);
-        std::cout << str.C_Str() << std::endl;
+        //std::cout << str.C_Str() << std::endl;
 
         // prevent duplicate loading
         bool skip = false;
@@ -169,7 +185,7 @@ std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType ty
             }
         }
 
-        std::cout << "TEST" << std::endl;
+        //std::cout << "TEST" << std::endl;
 
         if (!skip) 
         {

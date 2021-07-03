@@ -9,37 +9,34 @@
 
 using namespace Eclipse;
 
-struct Vertex 
+struct Vertex
 {
-	glm::vec3 pos;
-	glm::vec3 normal;
-	glm::vec2 texCoord;
-	static std::vector<Vertex> genList(float* vertices, int noVertices);
+    glm::vec3 Position;
+    glm::vec3 Normal;
+    glm::vec2 TextureCoodinates;
+    static std::vector<Vertex> GenList(float* vertices, int noVertices);
 };
 
-class Mesh {
+class Mesh
+{
 public:
-	std::vector<Vertex> vertices;
-	std::vector<unsigned int> indices;
-	unsigned int VAO;
+    std::vector<Vertex> Vertices;
+    std::vector<unsigned int> Indices;
+    unsigned int VAO;
+    std::vector<Texture> Textures;
+    aiColor4D Diffuse;
+    aiColor4D Specular;
 
-	std::vector<Texture> textures;
-	aiColor4D diffuse;
-	aiColor4D specular;
+    Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures = {});
+    Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiColor4D diffuse, aiColor4D spec);
 
-	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures = {});
-	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiColor4D diffuse, aiColor4D spec);
-
-	void render(Shader& shader);
-
-	void cleanup();
+    void Render(Shader& shader);
+    void Cleanup();
 
 private:
-	unsigned int VBO, EBO;
-
-	bool noTex ;
-
-	void setup();
+    unsigned int VBO, EBO;
+    bool NoTex;
+    void Setup();
 };
 
 #endif

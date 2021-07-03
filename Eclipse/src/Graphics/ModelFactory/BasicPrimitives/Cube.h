@@ -47,26 +47,7 @@ public:
 
     bool DegenerateTri(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2);
     GLuint GetIndicesCount();
-
-    void LoadModel(std::string pathname);
-    void processNode(aiNode* node, const aiScene* scene);
-    std::vector<Texture> loadTextures(aiMaterial* mat, aiTextureType type);
-    void render();
-
-    Mesh processMesh(aiMesh* mesh, const aiScene* scene);
-    void render(Shader& shader);
 public:
-
-    // False
-    bool noTex = false;
-    glm::vec3 pos;
-    glm::vec3 size;
-
-    std::vector<Mesh> meshes;
-    std::string directory;
-    std::vector<Texture> textures_loaded;
-    std::vector<Texture> textures;
-
     GLuint vaoID;
     GLuint vboID;
     GLuint eboID;

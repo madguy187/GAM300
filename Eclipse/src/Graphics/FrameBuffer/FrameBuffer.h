@@ -11,6 +11,9 @@ namespace Eclipse
         MAXCOUNT
     };
 
+    static const char* enum_FrameBufferMode_str[] =
+    { "NONE", "GAMEVIEW", "SCENEVIEW", "MAXCOUNT" };
+
     class FrameBuffer
     {
     public:
@@ -29,7 +32,7 @@ namespace Eclipse
         unsigned int GetTextureColourBufferID();
         unsigned int GetDepthBufferID();
         FrameBufferMode GetFrameBufferType();
-
+        std::string GetName();
         void DeletCurrentFrameBuffer();
 
     private:
@@ -48,10 +51,11 @@ namespace Eclipse
         ECVec2 frameBufferPosition;
         glm::uvec2 m_size;
         unsigned int m_width, m_height;
+        std::string Name;
 
         friend std::ostream& operator << (std::ostream& os, const FrameBufferMode& in);
         void CreateFrameBuffer(unsigned int p_width, unsigned int p_height);
-
+        std::string getStringForEnum(int enum_val);
     };
 }
 #endif//VIEW_H

@@ -24,12 +24,12 @@ void AssimpModelManager::CreateModel(std::string name, std::string FolderName)
     // Initialise
     AssimpModel* NewModel = new AssimpModel(glm::vec3(0.0f, -2.0f, -5.0f), glm::vec3(0.05f), false);
     NewModel->LoadAssimpModel(PathName);
-    NewModel->NameOfModel = name;
+    NewModel->SetName(name);
 
     // Insert
     if (AssimpModelContainer_.insert(std::pair<unsigned int, AssimpModel*>(ID, NewModel)).second == true)
     {
-        std::string Success = ("3D Model [ " + name + " ] Created and Inseted into Container Successfully! ").c_str();
+        std::string Success = ("3D Model [" + name + "] Created and Inseted into Container Successfully! ").c_str();
         ENGINE_CORE_INFO(Success);
     }
 }
@@ -73,7 +73,7 @@ void AssimpModelManager::DeleteItem(unsigned int index, AssimpModel* model_ptr)
         {
             AssimpModelContainer_.erase(AssimpIT);
 
-            std::string Name = (*AssimpIT).second->NameOfModel;
+            std::string Name = (*AssimpIT).second->GetName();
             std::string SuccessMsg = ("Model [ " + Name + " ] + erased from AssimpModelContainer_").c_str();
             ENGINE_CORE_INFO(SuccessMsg);
             return;

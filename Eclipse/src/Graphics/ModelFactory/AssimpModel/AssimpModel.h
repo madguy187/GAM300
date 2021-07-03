@@ -11,13 +11,18 @@ using namespace Eclipse;
 
 class AssimpModel
 {
-public:
-    bool noTex;
-
+private:
     std::string NameOfModel;
     std::vector<Mesh> meshes;
     std::string directory;
     std::vector<Texture> textures_loaded;
+
+    Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
+    std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type);
+    void ProcessNode(aiNode* node, const aiScene* scene);
+
+public:
+    bool noTex;
     glm::vec3 pos;
     glm::vec3 size;
 
@@ -27,9 +32,8 @@ public:
     void LoadAssimpModel(std::string path);
     void Render(Shader shader);
     void Cleanup();
-    void ProcessNode(aiNode* node, const aiScene* scene);
-
-    Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
-    std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type);
+    void SetName(std::string name);
+    std::string GetName();
+    std::string GetDirectory();
 };
 #endif // ASSIMP_MODEL_CLASS
