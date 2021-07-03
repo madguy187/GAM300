@@ -67,7 +67,6 @@ namespace Eclipse
 					glm::value_ptr(transCom.rotation.ConvertToGlmVec3Type()), glm::value_ptr(transCom.scale.ConvertToGlmVec3Type()), glm::value_ptr(transform));
 
 			// Snapping
-			bool IsSnapOn = ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_LeftControl));
 			glm::vec3 snapValues{};
 
 			switch (m_GizmoType)
@@ -94,18 +93,17 @@ namespace Eclipse
 				break;
 			}
 
-			/*std::cout << snapValues[0] << "," << snapValues[1] << "," << snapValues[2] << "," << std::endl;*/
+			ImGuiIO& io = ImGui::GetIO();
 
 			ImGuizmo::Manipulate(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx),
 				(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
-				nullptr, IsSnapOn ? glm::value_ptr(snapValues) : nullptr);
+				nullptr, io.KeyCtrl ? glm::value_ptr(snapValues) : nullptr);
 			
 			/*static const float identityMatrix[16] =
 			{ 1.f, 0.f, 0.f, 0.f,
 				0.f, 1.f, 0.f, 0.f,
 				0.f, 0.f, 1.f, 0.f,
 				0.f, 0.f, 0.f, 1.f };
-
 
 			ImGuizmo::DrawGrid(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx), identityMatrix, 100.f);*/
 
