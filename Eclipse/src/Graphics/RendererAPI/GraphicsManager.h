@@ -1,5 +1,6 @@
 #pragma once
 #include "ECS/ComponentManager/Components/RenderComponent.h"
+#include "AssimpModel/AssimpModel.h"
 
 namespace Eclipse
 {
@@ -7,6 +8,7 @@ namespace Eclipse
   {
   public:
       OpenGL_Context mRenderContext;
+      std::vector<AssimpModel*> ModelContainer;
       unsigned int createdID;
 
   public:

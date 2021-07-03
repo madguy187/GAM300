@@ -14,11 +14,20 @@ AssimpModel::AssimpModel(glm::vec3 pos, glm::vec3 size, bool noTex)
 
 void AssimpModel::render(Shader shader)
 {
+
+    CameraComponent camera;
+    TransformComponent camerapos;
+    camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+    camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetGameCameraID());
+
     glm::mat4 AssimpModel = glm::mat4(1.0f);
     AssimpModel = glm::translate(AssimpModel, pos);
     AssimpModel = glm::scale(AssimpModel, size);
     AssimpModel = glm::rotate(AssimpModel, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     shader.setMat4("AssimpModel", AssimpModel);
+
+    GLint uniform_var_loc1 = shader.GetLocation("uModelToNDC");
+    GLuint model2 = shader.GetLocation("model");
 
     shader.setFloat("material.shininess", 0.0f);
 
