@@ -48,7 +48,7 @@ namespace Eclipse
 		{
 			OnGizmoUpdateEvent();
 		}
-
+		
 		if (ECGui::IsItemHovered() && ImGui::IsWindowFocused() /*temp fix*/)
 		{
 			// Do all the future stuff here when hovering on window
@@ -79,22 +79,22 @@ namespace Eclipse
 		// Gizmos
 		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Q)))
 		{
-			if (!ImGuizmo::IsUsing())
+			if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
 				m_GizmoType = -1;
 		}
 		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_W)))
 		{
-			if (!ImGuizmo::IsUsing())
+			if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
 				m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
 		}
 		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_E)))
 		{
-			if (!ImGuizmo::IsUsing())
+			if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
 				m_GizmoType = ImGuizmo::OPERATION::SCALE;
 		}
 		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_R)))
 		{
-			if (!ImGuizmo::IsUsing())
+			if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
 				m_GizmoType = ImGuizmo::OPERATION::ROTATE;
 		}
 	}
