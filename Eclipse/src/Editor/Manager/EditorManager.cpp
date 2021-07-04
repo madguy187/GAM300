@@ -5,7 +5,6 @@
 #include "Editor/Windows/Hierarchy/Hierarchy.h"
 #include "Editor/Windows/Scene/Scene.h"
 #include "Editor/Windows/GameView/GameView.h"
-#include "Editor/Windows/Debug/Debug.h"
 #include "ECS/ComponentManager/Components/EntityComponent.h"
 //#include "Library/Strings/Lexical.h"
 
@@ -20,11 +19,13 @@ namespace Eclipse
 
 	void EditorManager::InitGUIWindows()
 	{
-		AddWindow<eGameViewWindow>("GameView");
-		AddWindow<SceneWindow>("Scene");
-		AddWindow<InspectorWindow>("Inspector");
-		AddWindow<HierarchyWindow>("Hierarchy");
-		AddWindow<DebugWindow>("Debug");
+		AddWindow<Scene>("Scene");
+		AddWindow<eGameView>("GameView");
+		AddWindow<Inspector>("Inspector");
+		AddWindow<Hierarchy>("Hierarchy");
+		AddWindow<Profiler>("Profiler");
+		AddWindow<Logger>("Log");
+		AddWindow<AssetBrowser>("AssetBrowser");
 	}
 
 	void EditorManager::InitMenu()
@@ -114,13 +115,8 @@ namespace Eclipse
 		return MenuBar_;
 	}
 
-	size_t EditorManager::GetWindowListSize() const
+	size_t EditorManager::GetWindowListSize()
 	{
 		return Size_;
-	}
-
-	Entity EditorManager::GetSelectedEntity() const
-	{
-		return EntityHierarchyList_[GEHIndex_];
 	}
 }

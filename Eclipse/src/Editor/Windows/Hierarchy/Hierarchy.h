@@ -10,11 +10,11 @@ namespace Eclipse
 		std::string name{};
 	};
 
-	class HierarchyWindow final : public ECGuiWindow
+	class Hierarchy final : public ECGuiWindow
 	{
 	public:
 		void Update() override;
-		HierarchyWindow();
+		Hierarchy();
 		void DrawImpl();
 		void TrackEntitySelection(const std::vector<Entity>& list, EntitySelectionTracker& prev,
 			EntitySelectionTracker& curr, size_t& globalIndex, ImGuiTextFilter& filter);

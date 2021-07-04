@@ -22,7 +22,10 @@ enum class EditorWindowType
 	PROFILER,
 	CONSOLELOG,
 	GAMEVIEW,
+<<<<<<< HEAD
 	DEBUG,
+=======
+>>>>>>> parent of e62e5aca (Merge branch 'Master_' into TianYu)
 	LOGGER,
 	ASSETBROWSER,
 	UNASSIGNED
@@ -51,9 +54,7 @@ enum class EntityType
 	ENT_GEO_PYRAMID,
 	ENT_GEO_LINES3D,
 	ENT_GEO_PLANES,
-	// ADD ON SHAPES HERE
 	ENT_LIGHT_POINT,
 	ENT_LIGHT_DIRECTIONAL,
-	// ADD ON LIGHTS HERE
 	ENT_UNASSIGNED
 };

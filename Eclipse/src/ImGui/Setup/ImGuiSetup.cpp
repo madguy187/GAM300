@@ -2,7 +2,6 @@
 #include "imgui.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_glfw.h"
-
 #include "ImGuiSetup.h"
 
 namespace Eclipse
@@ -46,8 +45,7 @@ namespace Eclipse
 		{
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplGlfw_NewFrame();
-			ImGui::NewFrame(); 
-			ImGuizmo::BeginFrame();
+			ImGui::NewFrame();
 			ImGui::ShowDemoWindow(&state);
 		}
 	}

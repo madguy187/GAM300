@@ -29,16 +29,6 @@ namespace Eclipse
 		return ImGuiAPI::GetWindowSize();
 	}
 
-	float ECGui::GetWindowHeight()
-	{
-		return ImGuiAPI::GetWindowHeight();
-	}
-
-	float ECGui::GetWindowWidth()
-	{
-		return ImGuiAPI::GetWindowWidth();
-	}
-
 	void ECGui::SetWindowSize(float width, float height)
 	{
 		ImGuiAPI::SetWindowSize(width, height);

@@ -4,32 +4,16 @@
 
 namespace Eclipse
 {
-	struct SnapValueSettings
-	{
-		float mPosSnapValue{ 1.f };
-		float mScaleSnapValue{ 1.f };
-		float mRotSnapValue{ 45.f };
-	};
-
-	class SceneWindow final : public ECGuiWindow
+	class Scene final : public ECGuiWindow
 	{
 	public:
 		void Update() override;
-		SceneWindow();
+		Scene();
 		void InitilializeFrameBuffer();
 		void RunFrameBuffer();
-		void OnKeyPressedEvent();
-		void OnGizmoUpdateEvent();
-		void OnCameraMoveEvent();
-		void OnCameraZoomEvent();
-
-		SnapValueSettings& GetSnapSettings();
 	private:
 		glm::vec2 mViewportSize;
-		SnapValueSettings mSnapSettings;
 		// Hold Frame Buffer Object
 		std::shared_ptr<FrameBuffer> m_frameBuffer;
-		// Hold Gizmo Type
-		int m_GizmoType{ -1 };
 	};
 }

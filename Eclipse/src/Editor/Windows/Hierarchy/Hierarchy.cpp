@@ -5,13 +5,13 @@
 
 namespace Eclipse
 {
-	void HierarchyWindow::Update()
+	void Hierarchy::Update()
 	{
 		if (IsVisible)
-			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&HierarchyWindow::DrawImpl, this));
+			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&Hierarchy::DrawImpl, this));
 	}
 
-	HierarchyWindow::HierarchyWindow()
+	Hierarchy::Hierarchy()
 	{
 		Type = EditorWindowType::HIERARCHY;
 		WindowName = "Hierarchy";
@@ -35,10 +35,10 @@ namespace Eclipse
 		}
 	}
 
-	void HierarchyWindow::DrawImpl()
+	void Hierarchy::DrawImpl()
 	{
 		PopUpButtonSettings settings{ "Add Entity", "EntityCreationListBegin" };
-		ECGui::BeginPopUpButtonList<void()>(settings, std::bind(&HierarchyWindow::ShowEntityCreationList, this));
+		ECGui::BeginPopUpButtonList<void()>(settings, std::bind(&Hierarchy::ShowEntityCreationList, this));
 		ECGui::InsertHorizontalLineSeperator();
 
 		ECGui::DrawTextWidget<size_t>("Entity Count", engine->editorManager->EntityHierarchyList_.size());
@@ -57,7 +57,7 @@ namespace Eclipse
 		}
 	}
 
-	void HierarchyWindow::TrackEntitySelection(const std::vector<Entity>& list,
+	void Hierarchy::TrackEntitySelection(const std::vector<Entity>& list, 
 		EntitySelectionTracker& prev, EntitySelectionTracker& curr, size_t& globalIndex, ImGuiTextFilter& filter)
 	{
 		std::string entityName{};
@@ -106,7 +106,7 @@ namespace Eclipse
 		}
 	}
 
-	void HierarchyWindow::ShowEntityCreationList()
+	void Hierarchy::ShowEntityCreationList()
 	{
 		for (size_t i = 0; i < TagList_.size(); ++i)
 		{
@@ -159,7 +159,7 @@ namespace Eclipse
 			}
 		}
 	}
-	void HierarchyWindow::UpdateEntityTracker(Entity ID)
+	void Hierarchy::UpdateEntityTracker(Entity ID)
 	{
 		if (ID != CurrEnt_.index)
 		{

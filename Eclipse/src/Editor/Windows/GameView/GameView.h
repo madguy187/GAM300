@@ -4,11 +4,11 @@
 
 namespace Eclipse
 {
-	class eGameViewWindow final : public ECGuiWindow
+	class eGameView final : public ECGuiWindow
 	{
 	public:
 		void Update() override;
-		eGameViewWindow();
+		eGameView();
 		void InitilializeFrameBuffer();
 		void RunFrameBuffer();
 	private:

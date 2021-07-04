@@ -5,26 +5,26 @@
 
 namespace Eclipse
 {
-	void InspectorWindow::Update()
+	void Inspector::Update()
 	{
 		if (IsVisible)
-			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&InspectorWindow::DrawImpl, this));
+			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&Inspector::DrawImpl, this));
 	}
 
-	InspectorWindow::InspectorWindow()
+	Inspector::Inspector()
 	{
 		Type = EditorWindowType::INSPECTOR;
 		WindowName = "Inspector";
 	}
 
-	void InspectorWindow::DrawImpl()
+	void Inspector::DrawImpl()
 	{
 		WindowSize_.setX(ECGui::GetWindowSize().x);
 		WindowSize_.setY(ECGui::GetWindowSize().y);
 
 		if (!engine->editorManager->EntityHierarchyList_.empty())
 		{
-			Entity currEnt = engine->editorManager->GetSelectedEntity();
+			Entity currEnt = engine->editorManager->EntityHierarchyList_[engine->editorManager->GEHIndex_];
 			auto& entcom = engine->world.GetComponent<EntityComponent>(currEnt);
 			std::string entityName = entcom.Name + " " + std::to_string(currEnt);
 
@@ -48,7 +48,7 @@ namespace Eclipse
 		ECGui::InsertHorizontalLineSeperator();
 	}
 
-	bool InspectorWindow::ShowEntityProperty(Entity ID)
+	bool Inspector::ShowEntityProperty(Entity ID)
 	{
 		if (engine->world.CheckComponent<EntityComponent>(ID))
 		{
@@ -70,7 +70,7 @@ namespace Eclipse
 		return false;
 	}
 
-	bool InspectorWindow::ShowTransformProperty(Entity ID)
+	bool Inspector::ShowTransformProperty(Entity ID)
 	{
 		if (engine->world.CheckComponent<TransformComponent>(ID))
 		{
@@ -79,10 +79,6 @@ namespace Eclipse
 				auto& transCom = engine->world.GetComponent<TransformComponent>(ID);
 
 				ECGui::DrawTextWidget<const char*>("Position", "");
-				//if (ImGui::SliderFloat3("TransVec", const_cast<float*>(transCom.position.data()), -50.f, 50.f) && ImGui::IsItemDeactivatedAfterEdit())
-				//{
-
-				//}
 				ECGui::DrawSliderFloat3Widget("TransVec", &transCom.position, true, -50.f, 50.f);
 
 				ECGui::DrawTextWidget<const char*>("Rotation", "");
