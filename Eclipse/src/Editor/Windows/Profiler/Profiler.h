@@ -41,11 +41,11 @@ namespace Eclipse
 		
 		void SetName(SystemName key);
 		
-		float GetOffsetTime(TimerTracker inputTracker, float systemTime);
+		float GetOffsetTime(TimerTracker inputTracker);
 
 		float GetFPS();
 		
-		void EngineTimer(ProfilerWindow timer);
+		void EngineTimer(TimerTracker timer);
 	};
 
 

@@ -86,7 +86,7 @@ namespace Eclipse
         ProfilerWindow Timer;
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
-
+            Timer.tracker.system_start = glfwGetTime();
             glfwPollEvents();
             engine->gGraphics.mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });
 
@@ -117,7 +117,7 @@ namespace Eclipse
             currTime = newTime;
 
             ImGuiSetup::Begin(EditorState);
-            Timer.tracker.system_start = glfwGetTime();
+        	
             if (Game_Clock.get_timeSteps() > 10)
             {
                 Game_Clock.set_timeSteps(10);
@@ -134,10 +134,10 @@ namespace Eclipse
             world.Update<LightingSystem>();
             world.Update<RenderSystem>();
             engine->gGraphics.GlobalFrmeBufferDraw();
-            Timer.tracker.system_end = glfwGetTime();
-            Timer.EngineTimer(Timer);
             ImGuiSetup::End(EditorState);
             OpenGL_Context::post_render();
+            Timer.tracker.system_end = glfwGetTime();
+            Timer.EngineTimer(Timer.tracker);
         	
         }
 
