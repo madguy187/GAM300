@@ -49,7 +49,7 @@ namespace Eclipse
 			GizmoUpdate();
 		}
 
-		if (ECGui::IsItemHovered())
+		if (ECGui::IsItemHovered() && ImGui::IsWindowFocused() /*temp fix*/)
 		{
 			// Do all the future stuff here when hovering on window
 			OnKeyPressed();
@@ -58,6 +58,8 @@ namespace Eclipse
 
 	void SceneWindow::OnKeyPressed()
 	{
+		ImGuiIO& io = ImGui::GetIO();
+
 		// Delete Entity
 		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Delete)))
 		{
@@ -147,7 +149,7 @@ namespace Eclipse
 		}
 
 		ImGuiIO& io = ImGui::GetIO();
-
+		
 		ImGuizmo::Manipulate(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx),
 			(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
 			nullptr, io.KeyCtrl ? glm::value_ptr(snapValues) : nullptr);
