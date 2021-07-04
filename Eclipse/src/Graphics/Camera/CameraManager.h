@@ -10,8 +10,8 @@ namespace Eclipse
 	{
 		/*************************************************************************
 		  Camera bitset layout
-		  0: Move Right								: buttton A
-		  1: Move Left								: buttton D
+		  0: Move Right								: buttton D
+		  1: Move Left								: buttton A
 		  2: Move Front								: buttton W
 		  3: Move Back								: buttton S
 		  4: Pitch Up (Rotation around x-axis)		: buttton R
@@ -41,6 +41,8 @@ namespace Eclipse
 		void SetCameraSpeed(float newSpeed);
 		void SetNearPlane(CameraComponent& _camera, float _nearPlane);
 		void SetFarPlane(CameraComponent& _camera, float _farPlane);
+
+		std::bitset<10>& GetInput();
 
 		void CreateGameCamera();
 		unsigned int GetGameCameraID();
