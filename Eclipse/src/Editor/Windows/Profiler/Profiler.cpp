@@ -70,7 +70,7 @@ namespace Eclipse
 	}
 	float ProfilerWindow::GetFPS()
 	{
-
+		 
 		return clock.getFPS();
 	}
 	void ProfilerWindow::EngineTimer(TimerTracker timer)
