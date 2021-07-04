@@ -4,7 +4,7 @@
 void Eclipse::Lights::init()
 {
     CreateAttenuationLevels();
-    engine->LightManager._DirectionalLights.FirstGlobalLight();
+    //engine->LightManager._DirectionalLights.FirstGlobalLight();
 }
 
 void Eclipse::Lights::Update()

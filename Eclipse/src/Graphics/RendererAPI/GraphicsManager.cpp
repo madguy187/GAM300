@@ -257,6 +257,11 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
     GLuint cam = sprite.shaderRef->second.GetLocation("camPos");
     GLuint model2 = sprite.shaderRef->second.GetLocation("model");
 
+    if (ImGui::CollapsingHeader("Material"))
+    {
+        ImGui::ColorPicker3("Color", (float*)&sprite.color, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
+    }
+
     if (uniform_var_loc1 >= 0)
     {
         glm::mat4 mModelNDC;
