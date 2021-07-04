@@ -26,6 +26,7 @@ namespace Eclipse
         return source == "true" ? true : false;
     }
 
+    // if u add here, add below also, scroll down!!!
     template <>
     inline const std::string lexical_cast(const EntityType& type)
     {
@@ -83,6 +84,7 @@ namespace Eclipse
         return stream.str();
     }
 
+    // HERE HEHEHEHEHEHEHEHEHEH
     template <>
     inline const EntityType lexical_cast(const std::string& type)
     {
