@@ -170,6 +170,12 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         engine->LightManager.CreateLights(Eclipse::TypesOfLights::DIRECTIONAL, ID);
     }
     break;
+    // Directional
+    case 14:
+    {
+        engine->LightManager.CreateLights(Eclipse::TypesOfLights::SPOTLIGHT, ID);
+    }
+    break;
     }
 }
 

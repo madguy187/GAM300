@@ -16,12 +16,31 @@ namespace Eclipse
         MAXCOUNT
     };
 
+    class AttenuationValues
+    {
+    public:
+        float Constant_ = 0.0f;
+        float Linear_ = 0.0f;
+        float Quadratic_ = 0.0f;
+
+    public:
+        AttenuationValues(float constant, float linear, float quadratic) :
+            Constant_(constant),
+            Linear_(linear),
+            Quadratic_(quadratic)
+        {
+
+        }
+
+    };
+
     class Lights
     {
     private:
         PointLight _allpointlights;
         DirectionalLight _DirectionalLights;
         SpotLight _allspotlights;
+        std::vector <std::pair<unsigned int, AttenuationValues>> AttenuationLevels;
 
     public:
 
@@ -39,5 +58,9 @@ namespace Eclipse
         PointLightContainer GetPointLightsContainer();
         DirectionalLightContainer GetDirectionalLightContainer();
         SpotLightContainer GetSpotLightsContainer();
+
+        // Light Properties
+        void CreateAttenuationLevels();
+        void SetAttenuation(PointLightComponent& in , unsigned int Level);
     };
 }
