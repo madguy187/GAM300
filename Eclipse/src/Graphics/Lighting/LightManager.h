@@ -7,18 +7,22 @@
 
 namespace Eclipse
 {
-    // Base Cases
+    // --------------- Base Cases -----------------------//
     template<typename T, typename = void>
     struct has_Color : std::false_type {};
 
     template<typename T, typename = void>
     struct has_LightColor : std::false_type {};
+    // --------------------------------------------------//
 
+    // Check if T has the variable , if have , will enter template
+    // --------------------------------------------------------------------------------------------------------------//
     template<typename TypeOfLight>
     struct has_Color< TypeOfLight, decltype(std::declval<TypeOfLight>().Color, void())> : std::true_type {};
 
     template<typename TypeOfLight>
     struct has_LightColor< TypeOfLight, decltype(std::declval<TypeOfLight>().lightColor, void())> : std::true_type {};
+    // --------------------------------------------------------------------------------------------------------------//
 
     enum class TypesOfLights
     {
@@ -89,9 +93,9 @@ namespace Eclipse
 
         // Light Properties
         void CreateAttenuationLevels();
-        void SetAttenuation(PointLightComponent& in , unsigned int Level);
+        void SetAttenuation(PointLightComponent& in, unsigned int Level);
 
-        template <typename TypeOfLight , typename TYPE>
+        template <typename TypeOfLight, typename TYPE>
         void SetColor(TypeOfLight& OBJ, TYPE val)
         {
             if (constexpr(has_Color<TypeOfLight>::value == true))
