@@ -41,7 +41,8 @@ struct PointLight
 struct DirLight 
 {
     vec3 direction;
-	
+	vec3 lightColor;
+    bool visible;
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
@@ -178,15 +179,17 @@ void main ()
      vec3 norm = (normal_from_vtxShader);
      vec3 viewDir = normalize(camPos - crntPos);
 
+     //result = CalcDirLight(directionlight[0], norm, viewDir);
+
      for(int i = 0 ; i < NumberOfPointLights ; i++ )
      {
           result += CalcPointLight( pointLights[i], norm, crntPos, viewDir);
      }
 
-     for(int i = 0 ; i < NumberOfSpotLights ; i++ )
-     {
-          result += CalcSpotLight( spotLights[i], norm, crntPos, viewDir);
-     }
+    for(int i = 0 ; i < NumberOfSpotLights ; i++ )
+    {
+         result += CalcSpotLight( spotLights[i], norm, crntPos, viewDir);
+    }
 
      fFragClr = texture(uTex2d, TxtCoord) * vec4(result,1.0f);
 
@@ -241,10 +244,10 @@ vec3 CalcSpotLight(SpotLight light, vec3 normala, vec3 fragPos, vec3 viewDira)
 
     // attenuation
     float distance = length(light.position - fragPos);
-    float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));  
+    float attenuation = 10.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));  
     
     // spotlight intensity
-    float theta = dot(lightDir, normalize(-light.direction)); 
+    float theta = dot(lightDir, normalize(light.direction)); 
     float epsilon = light.cutOff - light.outerCutOff;
     float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
 
