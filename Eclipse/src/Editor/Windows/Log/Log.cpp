@@ -82,6 +82,7 @@ void Logger::Update()
 	{
 		this->AddLog("%s", "test");
 	}
+	//this->AddLog("%s", "test");
 	if (IsVisible)
 		ECGui::DrawMainWindow<void()>(WindowName, std::bind(&Logger::DrawImpl, this));
 	isPushed();
