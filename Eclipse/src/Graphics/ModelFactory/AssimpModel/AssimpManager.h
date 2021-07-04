@@ -25,5 +25,7 @@ public:
     AssimpModelContainer GetContainer();
     unsigned int AssimpModelCount();
     void DeleteItem(unsigned int index, AssimpModel* model_ptr);
+    void DebugPrint();
+    void AddComponents();
 };
 #endif // ASSIMP_MANAGER_H

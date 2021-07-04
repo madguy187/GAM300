@@ -20,17 +20,16 @@ private:
     Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
     std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type);
     void ProcessNode(aiNode* node, const aiScene* scene);
-
+    void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera);
 public:
     bool noTex;
-    glm::vec3 pos;
-    glm::vec3 size;
+    unsigned int ID = 0;
 
     AssimpModel() { }
-    AssimpModel(glm::vec3 pos = glm::vec3(0.0f), glm::vec3 size = glm::vec3(1.0f), bool noTex = false);
+    AssimpModel(bool noTex = false);
 
     void LoadAssimpModel(std::string path);
-    void Render(Shader shader);
+    void Render(Shader& shader);
     void Cleanup();
     void SetName(std::string name);
     std::string GetName();

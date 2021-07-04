@@ -118,7 +118,7 @@ void Mesh::Render(Shader& shader)
     }
 
     // EBO stuff
-    //glBindVertexArray(VAO);
+    glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 

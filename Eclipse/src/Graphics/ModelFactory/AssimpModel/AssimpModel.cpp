@@ -3,34 +3,24 @@
 
 using namespace Eclipse;
 
-AssimpModel::AssimpModel(glm::vec3 pos, glm::vec3 size, bool noTex)
+AssimpModel::AssimpModel(bool noTex)
     :
-    pos(pos),
-    size(size),
     noTex(noTex)
 {
 
 }
 
-void AssimpModel::Render(Shader shader)
+void AssimpModel::Render(Shader& shader)
 {
+    // Shader Activate
     shader.Use();
 
-    auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetGameCameraID());
-    GLint uniform_var_loc1 = shader.GetLocation("uModelToNDC");
-
-    if (uniform_var_loc1 >= 0)
-    {
-        glm::mat4 mModelNDC = _camera.projMtx * _camera.viewMtx * glm::mat4(1.0f);
-        glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(mModelNDC));
-    }
+    // Check Main Uniforms
+    auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+    CheckUniformLoc(shader, _camera);
 
     for (unsigned int i = 0; i < meshes.size(); i++)
     {
-        //auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
-        glBindFramebuffer(GL_FRAMEBUFFER, engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID());
-        //shdrpgm->second.Use();
-
         meshes[i].Render(shader);
     }
 
@@ -74,6 +64,41 @@ void AssimpModel::ProcessNode(aiNode* node, const aiScene* scene)
     for (unsigned int i = 0; i < node->mNumChildren; i++)
     {
         ProcessNode(node->mChildren[i], scene);
+    }
+}
+
+void AssimpModel::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera)
+{
+    TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(ID);
+
+    GLint uModelToNDC_ = _shdrpgm.GetLocation("uModelToNDC");
+    GLuint model_ = _shdrpgm.GetLocation("model");
+
+    if (uModelToNDC_ >= 0)
+    {
+        glm::mat4 mModelNDC;
+
+        // Everything Below this Comment is To be Removed !!
+        if (NameOfModel == "Black Dog")
+        {
+            Transform.position.setX(10);
+        }
+        else
+        {
+            Transform.position.setX(-10);
+        }
+        ///////////////////////////////////////////////////////
+
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
+        model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
+
+        mModelNDC = _camera.projMtx * _camera.viewMtx * model;
+        glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
+        glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
     }
 }
 
@@ -123,9 +148,11 @@ Mesh AssimpModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
     }
 
     // process indices
-    for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
+    for (unsigned int i = 0; i < mesh->mNumFaces; i++) 
+    {
         aiFace face = mesh->mFaces[i];
-        for (unsigned int j = 0; j < face.mNumIndices; j++) {
+        for (unsigned int j = 0; j < face.mNumIndices; j++) 
+        {
             indices.push_back(face.mIndices[j]);
         }
     }

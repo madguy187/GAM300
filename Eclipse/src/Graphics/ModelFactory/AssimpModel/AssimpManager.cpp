@@ -5,8 +5,10 @@ using namespace Eclipse;
 
 void AssimpModelManager::CreateModel(std::string name, std::string FolderName)
 {
-    auto& GetWorld = engine->world;
-    int ID = GetWorld.CreateEntity();
+    Entity ID = engine->world.CreateEntity();
+
+    // Not sure why i get Vector subscript issues when i add component here
+    //engine->world.AddComponent(ID, TransformComponent{});
 
     // Create path
     std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/scene.gltf").c_str();
@@ -22,7 +24,7 @@ void AssimpModelManager::CreateModel(std::string name, std::string FolderName)
     }
 
     // Initialise
-    AssimpModel* NewModel = new AssimpModel(glm::vec3(0.0f, -2.0f, -5.0f), glm::vec3(0.05f), false);
+    AssimpModel* NewModel = new AssimpModel(false);
     NewModel->LoadAssimpModel(PathName);
     NewModel->SetName(name);
 
@@ -39,13 +41,16 @@ void AssimpModelManager::LoadAllModels()
     // Team using XML i think , so i prolly can do a xml file loading or some sort so people can mass load
 
     // Satic create first
-    CreateModel("White Dog", "dog2");
+    CreateModel("White Dog", "dog");
+    CreateModel("Black Dog", "dog");
+    DebugPrint();
 
     ENGINE_CORE_INFO("All Assimp Models Loaded");
 }
 
 void AssimpModelManager::DrawBuffers()
 {
+    glBindFramebuffer(GL_FRAMEBUFFER, engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
     auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
 
     for (auto const& Models : AssimpModelContainer_)
@@ -78,5 +83,40 @@ void AssimpModelManager::DeleteItem(unsigned int index, AssimpModel* model_ptr)
             ENGINE_CORE_INFO(SuccessMsg);
             return;
         }
+    }
+}
+
+void AssimpModelManager::DebugPrint()
+{
+    std::cout << std::endl;
+    std::cout << "Container Size " << AssimpModelContainer_.size()  << std::endl;
+    std::cout << "---------------------------------" << std::endl;
+
+    for (auto const& Models : AssimpModelContainer_)
+    {
+        auto& InvidualModels = *(Models.second);
+        std::cout << " Entity ID : " << Models.first << std::endl;
+        std::cout << " Model Name : " << InvidualModels.GetName() << std::endl;
+        std::cout << " Model Directory : " << InvidualModels.GetDirectory() << std::endl;
+    }
+
+    std::cout << "---------------------------------" << std::endl;
+    std::cout << std::endl;
+}
+
+void AssimpModelManager::AddComponents()
+{
+    for (auto const& Models : AssimpModelContainer_)
+    {
+        auto& InvidualModels = *(Models.second);
+        std::cout << "Entity ID : " << Models.first << std::endl;
+        engine->world.AddComponent(Models.first, TransformComponent{});
+
+        // Everything Below this Comment is To be Removed !!
+        TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(Models.first);
+        Transform.scale.setX(10);
+        Transform.scale.setY(10);
+        Transform.scale.setZ(10);
+        Transform.rotation.setX(270);
     }
 }
