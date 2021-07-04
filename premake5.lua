@@ -51,6 +51,7 @@ project "Eclipse"
 		"Eclipse/src/Graphics/FrameBuffer",
 		"Eclipse/src/Graphics/OpenGL",
 		"Eclipse/src/ImGui/Vendor",
+		"Eclipse/src/ImGui/Vendor/ImGuizmo",
 		"Dep/PhysX/include",
 		"Dep/PhysX/include/characterkinematic",
 		"Dep/PhysX/include/collision",
@@ -73,8 +74,8 @@ project "Eclipse"
 
   libdirs
   {
-    "Dep/GLFW/lib-vc2019",
-    "Dep/GLEW/lib/Release/x64",
+	  "Dep/GLFW/lib-vc2019",
+	  "Dep/GLEW/lib/Release/x64",
 	  "Dep/PhysX/Debug",
     "Dep/mono/lib/",
 	"Dep/ASSIMP/"
@@ -83,9 +84,9 @@ project "Eclipse"
   links
   {
 	  "mono-2.0-sgen.lib",
-      "opengl32.lib",
-      "glew32.lib",
-      "glfw3dll.lib",
+	  "opengl32.lib",
+	  "glew32.lib",
+	  "glfw3dll.lib",
 	  "LowLevel_static_64.lib",
 	  "LowLevelAABB_static_64.lib",
 	  "LowLevelDynamics_static_64.lib",
@@ -116,7 +117,7 @@ project "Eclipse"
 		defines
 		{
 			"ENGINE_PLATFORM_WINDOWS",
-      "_CRT_SECURE_NO_WARNINGS"
+            "_CRT_SECURE_NO_WARNINGS"
 		}
 
 	filter "configurations:Debug"

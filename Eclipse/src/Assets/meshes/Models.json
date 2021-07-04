@@ -52,6 +52,10 @@
 		{
 			"modelName": "lines3D",
 			"modelIndex": 12
+		},
+		{
+			"modelName": "frustum",
+			"modelIndex": 12
 		}
 		
 	]

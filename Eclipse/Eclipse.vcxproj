@@ -176,6 +176,7 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClInclude Include="src\Editor\Manager\EditorManager.h" />
     <ClInclude Include="src\Editor\Menu\MenuBar.h" />
     <ClInclude Include="src\Editor\Menu\MenuComponent.h" />
+    <ClInclude Include="src\Editor\Windows\Debug\Debug.h" />
     <ClInclude Include="src\Editor\Windows\GameView\GameView.h" />
     <ClInclude Include="src\Editor\Windows\Hierarchy\Hierarchy.h" />
     <ClInclude Include="src\Editor\Windows\Inspector\Inspector.h" />
@@ -230,6 +231,10 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClInclude Include="src\ImGui\Setup\ImGuiSetup.h" />
     <ClInclude Include="src\ImGui\Vendor\IconsFontAwesome.h" />
     <ClInclude Include="src\ImGui\Vendor\IconsMaterialDesignIcons.h" />
+    <ClInclude Include="src\ImGui\Vendor\ImGuizmo\ImCurveEdit.h" />
+    <ClInclude Include="src\ImGui\Vendor\ImGuizmo\ImGradient.h" />
+    <ClInclude Include="src\ImGui\Vendor\ImGuizmo\ImGuizmo.h" />
+    <ClInclude Include="src\ImGui\Vendor\ImGuizmo\ImSequencer.h" />
     <ClInclude Include="src\ImGui\Vendor\imconfig.h" />
     <ClInclude Include="src\ImGui\Vendor\imgui.h" />
     <ClInclude Include="src\ImGui\Vendor\imgui_impl_glfw.h" />
@@ -238,6 +243,8 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClInclude Include="src\ImGui\Vendor\imstb_rectpack.h" />
     <ClInclude Include="src\ImGui\Vendor\imstb_textedit.h" />
     <ClInclude Include="src\ImGui\Vendor\imstb_truetype.h" />
+    <ClInclude Include="src\ImGui\Vendor\stb_image.h" />
+    <ClInclude Include="src\Library\Math\Math.h" />
     <ClInclude Include="src\Library\Math\Matrix.h" />
     <ClInclude Include="src\Library\Math\Vector.h" />
     <ClInclude Include="src\Library\Strings\Lexical.h" />
@@ -267,6 +274,7 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClCompile Include="src\Editor\Manager\EditorManager.cpp" />
     <ClCompile Include="src\Editor\Menu\MenuBar.cpp" />
     <ClCompile Include="src\Editor\Menu\MenuComponent.cpp" />
+    <ClCompile Include="src\Editor\Windows\Debug\Debug.cpp" />
     <ClCompile Include="src\Editor\Windows\GameView\GameView.cpp" />
     <ClCompile Include="src\Editor\Windows\Hierarchy\Hierarchy.cpp" />
     <ClCompile Include="src\Editor\Windows\Inspector\Inspector.cpp" />
@@ -311,12 +319,17 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClCompile Include="src\Graphics\RendererAPI\stb_image.cpp" />
     <ClCompile Include="src\ImGui\ImGuiAPI\ImGuiAPI.cpp" />
     <ClCompile Include="src\ImGui\Setup\ImGuiSetup.cpp" />
+    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImCurveEdit.cpp" />
+    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImGradient.cpp" />
+    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImGuizmo.cpp" />
+    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImSequencer.cpp" />
     <ClCompile Include="src\ImGui\Vendor\imgui.cpp" />
     <ClCompile Include="src\ImGui\Vendor\imgui_demo.cpp" />
     <ClCompile Include="src\ImGui\Vendor\imgui_draw.cpp" />
     <ClCompile Include="src\ImGui\Vendor\imgui_impl_glfw.cpp" />
     <ClCompile Include="src\ImGui\Vendor\imgui_impl_opengl3.cpp" />
     <ClCompile Include="src\ImGui\Vendor\imgui_widgets.cpp" />
+    <ClCompile Include="src\Library\Math\Math.cpp" />
     <ClCompile Include="src\Library\Math\Matrix.cpp" />
     <ClCompile Include="src\Logger\Logger.cpp" />
     <ClCompile Include="src\Mono\Manager\MonoManager.cpp" />
