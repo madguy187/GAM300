@@ -73,7 +73,7 @@ void SpotLight::CheckUniformLoc(Shader* _shdrpgm, SpotLightComponent& in_spot, i
     GLint uniform_var_loc11 = _shdrpgm->GetLocation("uTextureCheck");
     GLint uniform_var_loc12 = _shdrpgm->GetLocation(("spotLights[" + number + "].lightColor").c_str());
     GLint uniform_var_loc13 = _shdrpgm->GetLocation("uColor");
-    //GLint uniform_var_loc14 = _shdrpgm->GetLocation(("spotLights[" + number + "].IntensityStrength").c_str());
+    GLint uniform_var_loc14 = _shdrpgm->GetLocation(("spotLights[" + number + "].IntensityStrength").c_str());
     GLint uniform_var_loc15 = _shdrpgm->GetLocation(("spotLights[" + number + "].cutOff").c_str());
     GLint uniform_var_loc16 = _shdrpgm->GetLocation(("spotLights[" + number + "].outerCutOff").c_str());
     GLint uniform_var_loc17 = _shdrpgm->GetLocation(("spotLights[" + number + "].direction").c_str());
@@ -159,10 +159,10 @@ void SpotLight::CheckUniformLoc(Shader* _shdrpgm, SpotLightComponent& in_spot, i
     }
 
     // Intensity of Light
-   // if (uniform_var_loc14 >= 0)
-   // {
-   //     GLCall(glUniform1f(uniform_var_loc14, in_spot.IntensityStrength));
-   // }
+    if (uniform_var_loc14 >= 0)
+    {
+        GLCall(glUniform1f(uniform_var_loc14, in_spot.IntensityStrength));
+    }
 
     // cutOff
     if (uniform_var_loc15 >= 0)
@@ -173,7 +173,7 @@ void SpotLight::CheckUniformLoc(Shader* _shdrpgm, SpotLightComponent& in_spot, i
     // outerCutOff
     if (uniform_var_loc16 >= 0)
     {
-        GLCall(glUniform1f(uniform_var_loc16, glm::cos(glm::radians(15.0f))));
+        GLCall(glUniform1f(uniform_var_loc16, glm::cos(glm::radians(27.5f))));
     }
 
     // position

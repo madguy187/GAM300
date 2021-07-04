@@ -31,7 +31,21 @@ namespace Eclipse
         {
 
         }
+    };
 
+    class Angles
+    {
+    public:
+        float InnerAngle = 0.0f;
+        float OuterAngle = 0.0f;
+
+    public:
+        Angles(float inn, float out) :
+            InnerAngle(inn),
+            OuterAngle(out)
+        {
+
+        }
     };
 
     class Lights
@@ -41,6 +55,7 @@ namespace Eclipse
         DirectionalLight _DirectionalLights;
         SpotLight _allspotlights;
         std::vector <std::pair<unsigned int, AttenuationValues>> AttenuationLevels;
+        std::vector <std::pair<unsigned int, Angles>> SpotLightAngles;
 
     public:
 
@@ -62,5 +77,6 @@ namespace Eclipse
         // Light Properties
         void CreateAttenuationLevels();
         void SetAttenuation(PointLightComponent& in , unsigned int Level);
+        void SetAngles();
     };
 }

@@ -50,6 +50,7 @@ struct DirLight
 
 struct SpotLight 
 {
+    float IntensityStrength;
     vec3 lightColor;
     vec3 position;
     vec3 direction;
@@ -244,7 +245,7 @@ vec3 CalcSpotLight(SpotLight light, vec3 normala, vec3 fragPos, vec3 viewDira)
 
     // attenuation
     float distance = length(light.position - fragPos);
-    float attenuation = 10.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));  
+    float attenuation = light.IntensityStrength / (light.constant + light.linear * distance + light.quadratic * (distance * distance));  
     
     // spotlight intensity
     float theta = dot(lightDir, normalize(light.direction)); 

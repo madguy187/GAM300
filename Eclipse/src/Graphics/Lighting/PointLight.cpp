@@ -57,7 +57,7 @@ void Eclipse::PointLight::CheckUniformLoc(Shader* _shdrpgm, PointLightComponent&
     GLint uniform_var_loc14 = _shdrpgm->GetLocation(("pointLights[" + number + "].IntensityStrength").c_str());
 
     // Set Attenuation
-    engine->LightManager.SetAttenuation(in_pointlight, 7);
+    engine->LightManager.SetAttenuation(in_pointlight, 5);
 
     // SpotLight Position
     TransformComponent& PointlightTransform = engine->world.GetComponent<TransformComponent>(in_pointlight.ID);
