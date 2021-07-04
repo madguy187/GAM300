@@ -3,19 +3,13 @@
 
 namespace Eclipse
 {
-	void eGameView::Update()
+	void eGameViewWindow::Update()
 	{
-		//Profiler timer;
-		//timer.SetName({ SystemName::TEST });
-		//timer.tracker.system_start = glfwGetTime();
 		if (IsVisible)
-			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&eGameView::InitilializeFrameBuffer, this));
-		//timer.tracker.system_end = glfwGetTime();
-		//
-		//timer.ContainerAddTime(timer.tracker);
+			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&eGameViewWindow::InitilializeFrameBuffer, this));
 	}
 
-	eGameView::eGameView() :
+	eGameViewWindow::eGameViewWindow() :
 		mViewportSize{ 0.0f, 0.0f }
 	{
 		Type = EditorWindowType::GAMEVIEW;
@@ -24,7 +18,7 @@ namespace Eclipse
 		m_frameBuffer = std::make_shared<FrameBuffer>(*engine->gGraphics.mRenderContext.GetFramebuffer(FrameBufferMode::GAMEVIEW));
 	}
 
-	void eGameView::InitilializeFrameBuffer()
+	void eGameViewWindow::InitilializeFrameBuffer()
 	{
 		ImVec2 viewportPanelSize = ECGui::GetWindowSize();
 
@@ -38,10 +32,10 @@ namespace Eclipse
 		ChildSettings settings;
 		settings.Name = "GameViewFrameBuffer";
 		settings.Size = ImVec2{ mViewportSize.x, mViewportSize.y };
-		ECGui::DrawChildWindow<void()>(settings, std::bind(&eGameView::RunFrameBuffer, this));
+		ECGui::DrawChildWindow<void()>(settings, std::bind(&eGameViewWindow::RunFrameBuffer, this));
 	}
 
-	void eGameView::RunFrameBuffer()
+	void eGameViewWindow::RunFrameBuffer()
 	{
 		// Set Image size
 		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())), 

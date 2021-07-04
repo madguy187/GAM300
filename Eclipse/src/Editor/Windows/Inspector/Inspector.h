@@ -4,11 +4,11 @@
 
 namespace Eclipse
 {
-	class Inspector final : public ECGuiWindow
+	class InspectorWindow final : public ECGuiWindow
 	{
 	public:
 		void Update() override;
-		Inspector();
+		InspectorWindow();
 		void DrawImpl();
 
 		bool ShowEntityProperty(Entity ID);

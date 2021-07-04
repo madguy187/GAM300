@@ -58,6 +58,8 @@ namespace Eclipse
 		static bool BeginChildWindow(ChildSettings settings);
 		static void EndChildWindow();
 		static ImVec2 GetWindowSize();
+		static float GetWindowHeight();
+		static float GetWindowWidth();
 		static void SetWindowSize(float width, float height);
 
 		/*************************************************************************/
