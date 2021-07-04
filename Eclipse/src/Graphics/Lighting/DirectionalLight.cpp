@@ -131,6 +131,7 @@ void Eclipse::DirectionalLight::FirstGlobalLight()
     auto& GetWorld = engine->world;
     Entity CreatedID = GetWorld.CreateEntity();
     engine->world.AddComponent(CreatedID, DirectionalLightComponent{});
+    engine->world.AddComponent(CreatedID, TransformComponent{});
 
     // Assign
     DirectionalLightComponent& _global = engine->world.GetComponent<DirectionalLightComponent>(CreatedID);

@@ -4,7 +4,7 @@
 void Eclipse::Lights::init()
 {
     CreateAttenuationLevels();
-    //engine->LightManager._DirectionalLights.FirstGlobalLight();
+    engine->LightManager._DirectionalLights.FirstGlobalLight();
 }
 
 void Eclipse::Lights::Update()
@@ -79,7 +79,7 @@ void Eclipse::Lights::CreateAttenuationLevels()
     AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(12, AttenuationValues(1.0f, 0.0014f, 0.00000f)));
     // Largest Range
 
-    std::cout << AttenuationLevels.size() << " Attentuation Levels Created! " << std::endl;
+    ENGINE_CORE_INFO("Attentuation Levels Created! ");
 }
 
 void Eclipse::Lights::SetAttenuation(PointLightComponent& in, unsigned int Level)

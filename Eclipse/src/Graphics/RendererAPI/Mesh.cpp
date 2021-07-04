@@ -111,7 +111,6 @@ void Mesh::Render(Shader& shader, GLenum mode)
             {
                 glUniform1i(tex_loc, i);
             }
-
             // bind texture
             Textures[i].bind();
         }

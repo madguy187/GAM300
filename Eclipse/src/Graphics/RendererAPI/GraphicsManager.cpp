@@ -253,12 +253,8 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
     GLint uniform_var_loc1 = sprite.shaderRef->second.GetLocation("uModelToNDC");
     GLint uniform_var_loc2 = sprite.shaderRef->second.GetLocation("uColor");
     GLint uniform_var_loc3 = sprite.shaderRef->second.GetLocation("uTextureCheck");
-    //GLint uniform_var_loc4 = sprite.shaderRef->second.GetLocation("TextureIndex");
-    //GLint uniform_var_loc5 = sprite.shaderRef->second.GetLocation("TextureDimensions");
     GLuint tex_loc = sprite.shaderRef->second.GetLocation("uTex2d");
-    GLuint lll = sprite.shaderRef->second.GetLocation("lightColor");
     GLuint cam = sprite.shaderRef->second.GetLocation("camPos");
-    //GLuint pos = sprite.shaderRef->second.GetLocation("lightPos");
     GLuint model2 = sprite.shaderRef->second.GetLocation("model");
 
     if (uniform_var_loc1 >= 0)
@@ -276,19 +272,9 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
         glUniformMatrix4fv(model2, 1, GL_FALSE, glm::value_ptr(model));
     }
 
-    /* if (pos >= 0)
-     {
-         glUniform3f(pos, spherepos.x, spherepos.y, spherepos.z);
-     }*/
-
     if (cam >= 0)
     {
-        glUniform3f(lll, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ());
-    }
-
-    if (lll >= 0)
-    {
-        glUniform4f(lll, sprite.lightColor.x, sprite.lightColor.y, sprite.lightColor.z, sprite.lightColor.w);
+        glUniform3f(cam, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ());
     }
 
     if (uniform_var_loc2 >= 0)

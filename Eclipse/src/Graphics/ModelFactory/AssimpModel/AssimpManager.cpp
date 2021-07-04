@@ -7,8 +7,7 @@ void AssimpModelManager::CreateModel(std::string name, std::string FolderName)
 {
     Entity ID = engine->world.CreateEntity();
 
-    // Not sure why i get Vector subscript issues when i add component here
-    //engine->world.AddComponent(ID, TransformComponent{});
+    // add component here
 
     // Create path
     std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/scene.gltf").c_str();
