@@ -20,7 +20,8 @@ namespace Eclipse
 		void RunFrameBuffer();
 		void OnKeyPressedEvent();
 		void OnGizmoUpdateEvent();
-		void OnMoveCameraEvent();
+		void OnCameraMoveEvent();
+		void OnCameraZoomEvent();
 
 		SnapValueSettings& GetSnapSettings();
 	private:

@@ -53,7 +53,8 @@ namespace Eclipse
 		{
 			// Do all the future stuff here when hovering on window
 			OnKeyPressedEvent();
-			OnMoveCameraEvent();
+			OnCameraMoveEvent();
+			OnCameraZoomEvent();
 		}
 	}
 
@@ -193,7 +194,32 @@ namespace Eclipse
 		ImGuizmo::ViewManipulate(const_cast<float*>(glm::value_ptr(camCom.viewMtx)), camCom.fov, ImVec2(io.DisplaySize.x - 128, 0), ImVec2(128, 128), 0x10101010);*/
 	}
 
-	void SceneWindow::OnMoveCameraEvent()
+	void SceneWindow::OnCameraZoomEvent()
+	{
+		ImGuiIO& io = ImGui::GetIO();
+
+		if (io.MouseWheel != 0.0f/* && io.KeyCtrl*/)
+		{
+			// ImGui Scroll Up Detection
+			if (io.MouseWheel > 0.0f)
+				engine->gCamera.GetInput().set(8, 1);
+			else
+				engine->gCamera.GetInput().set(8, 0);
+
+			// ImGui Scroll Down Detection
+			if (io.MouseWheel < 0.0f)
+				engine->gCamera.GetInput().set(9, 1);
+			else
+				engine->gCamera.GetInput().set(9, 0);
+		}
+		else
+		{
+			engine->gCamera.GetInput().set(8, 0);
+			engine->gCamera.GetInput().set(9, 0);
+		}
+	}
+
+	void SceneWindow::OnCameraMoveEvent()
 	{
 		ImGuiIO& io = ImGui::GetIO();
 		ImVec2 value_with_lock_threshold = ImGui::GetMouseDragDelta(1);
@@ -202,26 +228,64 @@ namespace Eclipse
 		// ImGui Right Click Detection
 		if (ImGui::IsMouseDragging(1))
 		{
-			std::cout << (value_with_lock_threshold.x > benchmarkValue && io.MouseDelta.x > 0.0f) << std::endl;
+			// Camera Yaw Right
 			if (value_with_lock_threshold.x > benchmarkValue && io.MouseDelta.x > 0.0f)
 				engine->gCamera.GetInput().set(7, 1);
 			else
 				engine->gCamera.GetInput().set(7, 0);
 
+			// Camera Yaw Left
 			if (value_with_lock_threshold.x < benchmarkValue && io.MouseDelta.x < 0.0f)
 				engine->gCamera.GetInput().set(6, 1);
 			else
 				engine->gCamera.GetInput().set(6, 0);
 
+			// Camera Pitch Down
 			if (value_with_lock_threshold.y > benchmarkValue && io.MouseDelta.y > 0.0f)
 				engine->gCamera.GetInput().set(5, 1);
 			else
 				engine->gCamera.GetInput().set(5, 0);
 
+			// Camera Pitch Up
 			if (value_with_lock_threshold.y < benchmarkValue && io.MouseDelta.y < 0.0f)
 				engine->gCamera.GetInput().set(4, 1);
 			else
 				engine->gCamera.GetInput().set(4, 0);
+
+			// Camera Move Front
+			if (ImGui::IsKeyDown(ImGui::GetKeyIndex(ImGuiKey_W)))
+				engine->gCamera.GetInput().set(2, 1);
+			else
+				engine->gCamera.GetInput().set(2, 0);
+
+			// Camera Move Left
+			if (ImGui::IsKeyDown(ImGui::GetKeyIndex(ImGuiKey_A)))
+				engine->gCamera.GetInput().set(1, 1);
+			else
+				engine->gCamera.GetInput().set(1, 0);
+
+			// Camera Move Back
+			if (ImGui::IsKeyDown(ImGui::GetKeyIndex(ImGuiKey_S)))
+				engine->gCamera.GetInput().set(3, 1);
+			else
+				engine->gCamera.GetInput().set(3, 0);
+
+			// Camera Move Right
+			if (ImGui::IsKeyDown(ImGui::GetKeyIndex(ImGuiKey_D)))
+				engine->gCamera.GetInput().set(0, 1);
+			else
+				engine->gCamera.GetInput().set(0, 0);
+		}
+		else
+		{
+			engine->gCamera.GetInput().set(0, 0);
+			engine->gCamera.GetInput().set(1, 0);
+			engine->gCamera.GetInput().set(2, 0);
+			engine->gCamera.GetInput().set(3, 0);
+			engine->gCamera.GetInput().set(4, 0);
+			engine->gCamera.GetInput().set(5, 0);
+			engine->gCamera.GetInput().set(6, 0);
+			engine->gCamera.GetInput().set(7, 0);
 		}
 	}
 

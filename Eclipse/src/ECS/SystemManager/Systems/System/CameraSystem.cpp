@@ -22,7 +22,7 @@ void Eclipse::CameraSystem::Update()
 
 		if (_camera.camType == CameraComponent::CameraType::Editor_Camera)
 		{
-			engine->gCamera.CheckCameraInput();
+			//engine->gCamera.CheckCameraInput();
 			engine->gCamera.UpdateEditorCamera(_transform);
 		}
 

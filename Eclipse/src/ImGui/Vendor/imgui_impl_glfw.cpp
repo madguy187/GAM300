@@ -208,6 +208,8 @@ static bool ImGui_ImplGlfw_Init(GLFWwindow* window, bool install_callbacks, Glfw
     io.KeyMap[ImGuiKey_W] = GLFW_KEY_W;
     io.KeyMap[ImGuiKey_E] = GLFW_KEY_E;
     io.KeyMap[ImGuiKey_R] = GLFW_KEY_R;
+    io.KeyMap[ImGuiKey_S] = GLFW_KEY_S;
+    io.KeyMap[ImGuiKey_D] = GLFW_KEY_D;
 
     io.SetClipboardTextFn = ImGui_ImplGlfw_SetClipboardText;
     io.GetClipboardTextFn = ImGui_ImplGlfw_GetClipboardText;

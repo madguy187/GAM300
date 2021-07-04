@@ -37,5 +37,17 @@ namespace Eclipse
 			ECGui::InsertSameLine();
 			ECGui::DrawInputFloatWidget("RotSnap", &scene->GetSnapSettings().mRotSnapValue, true, 45.f);
 		}
+
+		if (engine->gCamera.GetEditorCameraID() != MAX_ENTITY)
+		{
+			auto& camCom = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+
+			ECGui::DrawTextWidget<const char*>("Camera Speed:", "");
+			{
+				ECGui::DrawTextWidget<const char*>("Speed", "");
+				ECGui::InsertSameLine();
+				ECGui::DrawSliderFloatWidget("CamSpeed", &camCom.cameraSpeed, true, 1.f, 30.f);
+			}
+		}
 	}
 }
