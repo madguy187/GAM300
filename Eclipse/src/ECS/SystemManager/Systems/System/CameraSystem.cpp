@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CameraSystem.h"
 
+
 void Eclipse::CameraSystem::Init()
 {
 	engine->gCamera.CreateEditorCamera();

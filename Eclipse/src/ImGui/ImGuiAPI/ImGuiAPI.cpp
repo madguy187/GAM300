@@ -112,7 +112,7 @@ namespace Eclipse
 
 	bool ImGuiAPI::BeginTreeNode(const char* name)
 	{
-		return ImGui::TreeNode(name);;
+		return ImGui::TreeNode(name);
 	}
 
 	void ImGuiAPI::EndTreeNode()

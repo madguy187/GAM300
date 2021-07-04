@@ -9,6 +9,8 @@ namespace Eclipse
 		Log log;
 		std::vector<std::string>messages;
 		bool ispushedd = false;
+		bool clear;
+		bool copy;
 		ImGuiTextBuffer     Buf;
 		ImGuiTextFilter     Filter;
 		ImVector<int>       LineOffsets;
@@ -23,6 +25,7 @@ namespace Eclipse
 		void Update() override;
 		LoggerWindow();
 		void DrawImpl();
+		void MainFunc();
 	};
 
 }
