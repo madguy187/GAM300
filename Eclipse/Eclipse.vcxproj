@@ -174,6 +174,7 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClInclude Include="src\Editor\Manager\EditorManager.h" />
     <ClInclude Include="src\Editor\Menu\MenuBar.h" />
     <ClInclude Include="src\Editor\Menu\MenuComponent.h" />
+    <ClInclude Include="src\Editor\Windows\Debug\Debug.h" />
     <ClInclude Include="src\Editor\Windows\GameView\GameView.h" />
     <ClInclude Include="src\Editor\Windows\Hierarchy\Hierarchy.h" />
     <ClInclude Include="src\Editor\Windows\Inspector\Inspector.h" />
@@ -266,6 +267,7 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClCompile Include="src\Editor\Manager\EditorManager.cpp" />
     <ClCompile Include="src\Editor\Menu\MenuBar.cpp" />
     <ClCompile Include="src\Editor\Menu\MenuComponent.cpp" />
+    <ClCompile Include="src\Editor\Windows\Debug\Debug.cpp" />
     <ClCompile Include="src\Editor\Windows\GameView\GameView.cpp" />
     <ClCompile Include="src\Editor\Windows\Hierarchy\Hierarchy.cpp" />
     <ClCompile Include="src\Editor\Windows\Inspector\Inspector.cpp" />

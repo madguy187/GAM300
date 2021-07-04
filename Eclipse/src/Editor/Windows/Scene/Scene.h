@@ -19,6 +19,9 @@ namespace Eclipse
 		void InitilializeFrameBuffer();
 		void RunFrameBuffer();
 		void OnKeyPressed();
+		void GizmoUpdate();
+
+		SnapValueSettings& GetSnapSettings();
 	private:
 		glm::vec2 mViewportSize;
 		SnapValueSettings mSnapSettings;

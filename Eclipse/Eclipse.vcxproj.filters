@@ -438,6 +438,7 @@
     </ClInclude>
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Library\Math\Math.h" />
+    <ClInclude Include="src\Editor\Windows\Debug\Debug.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -643,5 +644,6 @@
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\Library\Math\Math.cpp" />
+    <ClCompile Include="src\Editor\Windows\Debug\Debug.cpp" />
   </ItemGroup>
 </Project>

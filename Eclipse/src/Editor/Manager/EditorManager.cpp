@@ -5,6 +5,7 @@
 #include "Editor/Windows/Hierarchy/Hierarchy.h"
 #include "Editor/Windows/Scene/Scene.h"
 #include "Editor/Windows/GameView/GameView.h"
+#include "Editor/Windows/Debug/Debug.h"
 #include "ECS/ComponentManager/Components/EntityComponent.h"
 //#include "Library/Strings/Lexical.h"
 
@@ -19,10 +20,11 @@ namespace Eclipse
 
 	void EditorManager::InitGUIWindows()
 	{
-		AddWindow<Scene>("Scene");
-		AddWindow<eGameView>("GameView");
-		AddWindow<Inspector>("Inspector");
-		AddWindow<Hierarchy>("Hierarchy");
+		AddWindow<eGameViewWindow>("GameView");
+		AddWindow<SceneWindow>("Scene");
+		AddWindow<InspectorWindow>("Inspector");
+		AddWindow<HierarchyWindow>("Hierarchy");
+		AddWindow<DebugWindow>("Debug");
 	}
 
 	void EditorManager::InitMenu()

@@ -24,7 +24,7 @@ namespace Eclipse
 
 		if (!engine->editorManager->EntityHierarchyList_.empty())
 		{
-			Entity currEnt = engine->editorManager->EntityHierarchyList_[engine->editorManager->GEHIndex_];
+			Entity currEnt = engine->editorManager->GetSelectedEntity();
 			auto& entcom = engine->world.GetComponent<EntityComponent>(currEnt);
 			std::string entityName = entcom.Name + " " + std::to_string(currEnt);
 

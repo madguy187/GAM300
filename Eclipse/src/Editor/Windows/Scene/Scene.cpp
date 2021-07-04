@@ -46,95 +46,7 @@ namespace Eclipse
 		// ImGuizmo Logic
 		if (!engine->editorManager->EntityHierarchyList_.empty() && m_GizmoType != -1)
 		{
-			Entity selectedEntity = engine->editorManager->GetSelectedEntity();
-
-			ImGuizmo::SetOrthographic(false);
-			ImGuizmo::SetDrawlist();
-
-			float windowWidth = (float)ECGui::GetWindowWidth();
-			float windowHeight = (float)ECGui::GetWindowHeight();
-			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
-
-			// Camera
-			Entity cameraEntity = static_cast<Entity>(engine->gCamera.GetEditorCameraID());
-			const auto& camCom = engine->world.GetComponent<CameraComponent>(cameraEntity);
-
-			// Selected Entity Transform
-			auto& transCom = engine->world.GetComponent<TransformComponent>(selectedEntity);
-			glm::mat4 transform{};
-
-			ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(transCom.position.ConvertToGlmVec3Type()),
-					glm::value_ptr(transCom.rotation.ConvertToGlmVec3Type()), glm::value_ptr(transCom.scale.ConvertToGlmVec3Type()), glm::value_ptr(transform));
-
-			// Snapping
-			glm::vec3 snapValues{};
-
-			switch (m_GizmoType)
-			{
-			case ImGuizmo::OPERATION::TRANSLATE:
-				snapValues = 
-					{ mSnapSettings.mPosSnapValue, 
-					  mSnapSettings.mPosSnapValue,
-					  mSnapSettings.mPosSnapValue };
-				break;
-			case ImGuizmo::OPERATION::ROTATE:
-				snapValues =
-					{ mSnapSettings.mRotSnapValue,
-					  mSnapSettings.mRotSnapValue,
-					  mSnapSettings.mRotSnapValue };
-				break;
-			case ImGuizmo::OPERATION::SCALE:
-				snapValues =
-					{ mSnapSettings.mScaleSnapValue,
-					  mSnapSettings.mScaleSnapValue,
-					  mSnapSettings.mScaleSnapValue };
-				break;
-			default:
-				break;
-			}
-
-			ImGuiIO& io = ImGui::GetIO();
-
-			ImGuizmo::Manipulate(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx),
-				(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
-				nullptr, io.KeyCtrl ? glm::value_ptr(snapValues) : nullptr);
-			
-			/*static const float identityMatrix[16] =
-			{ 1.f, 0.f, 0.f, 0.f,
-				0.f, 1.f, 0.f, 0.f,
-				0.f, 0.f, 1.f, 0.f,
-				0.f, 0.f, 0.f, 1.f };
-
-			ImGuizmo::DrawGrid(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx), identityMatrix, 100.f);*/
-
-			if (ImGuizmo::IsUsing())
-			{
-				glm::vec3 translation, rotation, scale;
-				ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(translation),
-					glm::value_ptr(rotation), glm::value_ptr(scale));
-
-				//Math::DecomposeTransform(transform, translation, rotation, scale);
-
-				glm::vec3 deltaRotation = rotation - transCom.rotation.ConvertToGlmVec3Type();
-
-				switch (m_GizmoType)
-				{
-				case ImGuizmo::OPERATION::TRANSLATE:
-					transCom.position = translation;
-					break;
-				case ImGuizmo::OPERATION::ROTATE:
-					transCom.rotation += deltaRotation;
-					break;
-				case ImGuizmo::OPERATION::SCALE:
-					transCom.scale = scale;
-					break;
-				default:
-					break;
-				}
-			}
-
-			/*ImGuiIO& io = ImGui::GetIO();
-			ImGuizmo::ViewManipulate(const_cast<float*>(glm::value_ptr(camCom.viewMtx)), camCom.fov, ImVec2(io.DisplaySize.x - 128, 0), ImVec2(128, 128), 0x10101010);*/
+			GizmoUpdate();
 		}
 
 		if (ECGui::IsItemHovered())
@@ -181,5 +93,105 @@ namespace Eclipse
 			if (!ImGuizmo::IsUsing())
 				m_GizmoType = ImGuizmo::OPERATION::ROTATE;
 		}
+	}
+
+	void SceneWindow::GizmoUpdate()
+	{
+		Entity selectedEntity = engine->editorManager->GetSelectedEntity();
+
+		ImGuizmo::SetOrthographic(false);
+		ImGuizmo::SetDrawlist();
+
+		float windowWidth = (float)ECGui::GetWindowWidth();
+		float windowHeight = (float)ECGui::GetWindowHeight();
+		ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+
+		// Camera
+		Entity cameraEntity = static_cast<Entity>(engine->gCamera.GetEditorCameraID());
+		const auto& camCom = engine->world.GetComponent<CameraComponent>(cameraEntity);
+
+		// Selected Entity Transform
+		auto& transCom = engine->world.GetComponent<TransformComponent>(selectedEntity);
+		glm::mat4 transform{};
+
+		ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(transCom.position.ConvertToGlmVec3Type()),
+			glm::value_ptr(transCom.rotation.ConvertToGlmVec3Type()),
+			glm::value_ptr(transCom.scale.ConvertToGlmVec3Type()),
+			glm::value_ptr(transform));
+
+		// Snapping
+		glm::vec3 snapValues{};
+
+		switch (m_GizmoType)
+		{
+		case ImGuizmo::OPERATION::TRANSLATE:
+			snapValues =
+			{ mSnapSettings.mPosSnapValue,
+			  mSnapSettings.mPosSnapValue,
+			  mSnapSettings.mPosSnapValue };
+			break;
+		case ImGuizmo::OPERATION::ROTATE:
+			snapValues =
+			{ mSnapSettings.mRotSnapValue,
+			  mSnapSettings.mRotSnapValue,
+			  mSnapSettings.mRotSnapValue };
+			break;
+		case ImGuizmo::OPERATION::SCALE:
+			snapValues =
+			{ mSnapSettings.mScaleSnapValue,
+			  mSnapSettings.mScaleSnapValue,
+			  mSnapSettings.mScaleSnapValue };
+			break;
+		default:
+			break;
+		}
+
+		ImGuiIO& io = ImGui::GetIO();
+
+		ImGuizmo::Manipulate(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx),
+			(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
+			nullptr, io.KeyCtrl ? glm::value_ptr(snapValues) : nullptr);
+
+		/*static const float identityMatrix[16] =
+		{ 1.f, 0.f, 0.f, 0.f,
+			0.f, 1.f, 0.f, 0.f,
+			0.f, 0.f, 1.f, 0.f,
+			0.f, 0.f, 0.f, 1.f };
+
+		ImGuizmo::DrawGrid(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx), identityMatrix, 100.f);*/
+
+		if (ImGuizmo::IsUsing())
+		{
+			glm::vec3 translation, rotation, scale;
+			ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(translation),
+				glm::value_ptr(rotation), glm::value_ptr(scale));
+
+			//Math::DecomposeTransform(transform, translation, rotation, scale);
+
+			glm::vec3 deltaRotation = rotation - transCom.rotation.ConvertToGlmVec3Type();
+
+			switch (m_GizmoType)
+			{
+			case ImGuizmo::OPERATION::TRANSLATE:
+				transCom.position = translation;
+				break;
+			case ImGuizmo::OPERATION::ROTATE:
+				transCom.rotation += deltaRotation;
+				break;
+			case ImGuizmo::OPERATION::SCALE:
+				transCom.scale = scale;
+				break;
+			default:
+				break;
+			}
+		}
+
+		/*ImGuiIO& io = ImGui::GetIO();
+		ImGuizmo::ViewManipulate(const_cast<float*>(glm::value_ptr(camCom.viewMtx)), camCom.fov, ImVec2(io.DisplaySize.x - 128, 0), ImVec2(128, 128), 0x10101010);*/
+	}
+
+	SnapValueSettings& SceneWindow::GetSnapSettings()
+	{
+		return mSnapSettings;
 	}
 }
