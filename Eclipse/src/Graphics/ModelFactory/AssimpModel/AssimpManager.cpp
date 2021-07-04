@@ -49,7 +49,7 @@ void AssimpModelManager::LoadAllModels()
 void AssimpModelManager::Draw(unsigned int FrameBufferID, GLenum Mode)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
-    auto shdrpgm = Graphics::shaderpgms.find("3DModels");
+    auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
 
     for (auto const& Models : AssimpModelContainer_)
     {

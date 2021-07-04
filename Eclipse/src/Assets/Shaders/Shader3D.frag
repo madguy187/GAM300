@@ -148,15 +148,20 @@ void main ()
 	}
 	else
 	{
-     
+  
+     vec3 result = vec3(0,0,0);
      vec4 ignore = lightColor;
 
      // properties
      vec3 norm = (normal_from_vtxShader);
      vec3 viewDir = normalize(camPos - crntPos);
 
-     vec4 yo = texture(uTex2d, TxtCoord) ;
-     fFragClr = texture(uTex2d, TxtCoord);
+     for(int i = 0 ; i < NumberOfPointLights ; i++ )
+     {
+          result += CalcPointLight( pointLights[i], norm, crntPos, viewDir);
+     }
+
+     fFragClr = texture(uTex2d, TxtCoord) * vec4(result,1.0f);
 
      //fFragClr = texture(uTex2d, TxtCoord); //* vec4(uColor) * vec4(result,1.0f);
     }

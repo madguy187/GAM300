@@ -340,6 +340,8 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\Assets\Shaders\AssimpShader3D.frag" />
+    <None Include="src\Assets\Shaders\AssimpShader3D.vert" />
     <None Include="src\Assets\Shaders\BasicFrag.frag" />
     <None Include="src\Assets\Shaders\BasicVtx.vert" />
     <None Include="src\Assets\Shaders\DebugFrag.frag" />

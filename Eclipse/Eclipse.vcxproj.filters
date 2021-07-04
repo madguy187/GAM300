@@ -663,6 +663,8 @@
     <ClCompile Include="src\Graphics\Material\Material.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.cpp" />
+    <ClCompile Include="src\Editor\Windows\Debug\Debug.cpp" />
+    <ClCompile Include="src\Library\Math\Math.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\BasicFrag.frag" />
@@ -680,5 +682,7 @@
     <None Include="src\Assets\Shaders\Shaders.json" />
     <None Include="src\Assets\Shaders\textFrag.frag" />
     <None Include="src\Assets\Shaders\textVtx.vert" />
+    <None Include="src\Assets\Shaders\AssimpShader3D.frag" />
+    <None Include="src\Assets\Shaders\AssimpShader3D.vert" />
   </ItemGroup>
 </Project>

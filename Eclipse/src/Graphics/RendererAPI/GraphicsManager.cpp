@@ -259,16 +259,6 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
     {
         glm::mat4 mModelNDC;
 
-        /* glm::mat4 model = glm::mat4(1.0f);
-         model = glm::translate(model, trans.pos);
-         model = glm::rotate(model, glm::radians(trans.rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
-         model = glm::rotate(model, glm::radians(trans.rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
-         model = glm::rotate(model, glm::radians(trans.rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
-         model = glm::scale(model, trans.scale);
-         mModelNDC = camera.projMtx * camera.viewMtx * model;
-         glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(mModelNDC));
-         glUniformMatrix4fv(model2, 1, GL_FALSE, glm::value_ptr(model));*/
-
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, trans.position.ConvertToGlmVec3Type());
         model = glm::rotate(model, glm::radians(trans.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
