@@ -22,7 +22,10 @@ enum class EditorWindowType
 	PROFILER,
 	CONSOLELOG,
 	GAMEVIEW,
+<<<<<<< HEAD
 	DEBUG,
+=======
+>>>>>>> parent of e62e5ac (Merge branch 'Master_' into TianYu)
 	LOGGER,
 	ASSETBROWSER,
 	UNASSIGNED
