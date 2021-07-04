@@ -177,10 +177,10 @@ void main ()
      vec4 ignore = lightColor;
 
      // properties
-     vec3 norm = (normal_from_vtxShader);
+     vec3 norm = normalize(normal_from_vtxShader);
      vec3 viewDir = normalize(camPos - crntPos);
 
-     //result = CalcDirLight(directionlight[0], norm, viewDir);
+     result = CalcDirLight(directionlight[0], norm, viewDir);
 
      for(int i = 0 ; i < NumberOfPointLights ; i++ )
      {
@@ -269,19 +269,18 @@ vec3 CalcSpotLight(SpotLight light, vec3 normala, vec3 fragPos, vec3 viewDira)
 // calculates the color when using a directional light.
 vec3 CalcDirLight(DirLight light, vec3 normala, vec3 viewDira)
 {
+	// ambient
+	vec3 ambient = light.ambient;
+
+	// diffuse
     vec3 lightDir = normalize(-light.direction);
-
-    // diffuse shading
     float diff = max(dot(normala, lightDir), 0.0);
+    vec3 diffuse = light.diffuse * diff;
 
-    // specular shading
-    vec3 reflectDir = reflect(-lightDir, normala);
-    float spec = pow(max(dot(viewDira, reflectDir), 0.0), 2);
-
-    // combine results
-    vec3 ambient =  light.ambient * vec3(lightColor) * vec3(texture(uTex2d, TxtCoord));
-    vec3 diffuse =  light.diffuse * diff * vec3(texture(uTex2d, TxtCoord));
-    vec3 specular = light.specular * spec * vec3(texture(uTex2d, TxtCoord));
+    // specular
+	vec3 reflectDir = reflect(-lightDir, normala);
+	float spec = pow(max(dot(viewDira, reflectDir), 0.0), 128);
+	vec3 specular = light.specular * spec;
 
     return (ambient + diffuse + specular);
 }

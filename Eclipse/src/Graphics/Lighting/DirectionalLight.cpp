@@ -84,7 +84,7 @@ void Eclipse::DirectionalLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, Dir
     // Direction
     if (uniform_var_loc1 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc1, trans.position.getX() * -1, trans.position.getY() * -1, trans.position.getZ() * -1));
+        GLCall(glUniform3f(uniform_var_loc1, in_light.Direction.getX(), in_light.Direction.getY(), in_light.Direction.getZ()));
     }
 
     // ambient
