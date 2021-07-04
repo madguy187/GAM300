@@ -7,10 +7,10 @@ AssimpModel::AssimpModel(bool noTex)
     :
     noTex(noTex)
 {
-
+    GlobalMode = GL_FILL;
 }
 
-void AssimpModel::Render(Shader& shader)
+void AssimpModel::Render(Shader& shader , GLenum MOde)
 {
     // Shader Activate
     shader.Use();
@@ -21,7 +21,7 @@ void AssimpModel::Render(Shader& shader)
 
     for (unsigned int i = 0; i < meshes.size(); i++)
     {
-        meshes[i].Render(shader);
+        meshes[i].Render(shader, MOde);
     }
 
     shader.UnUse();
@@ -49,6 +49,12 @@ void AssimpModel::LoadAssimpModel(std::string path)
 
     directory = path.substr(0, path.find_last_of("/"));
     ProcessNode(scene->mRootNode, scene);
+
+    std::cout << "ID : " << ID << std::endl;
+    std::cout << "mNumMeshes " << scene->mRootNode->mNumMeshes << std::endl;
+    std::cout << "mNumChildren " << scene->mRootNode->mNumChildren << std::endl;
+    std::cout << "Texture Size " << textures_loaded.size() << std::endl;
+
 }
 
 void AssimpModel::ProcessNode(aiNode* node, const aiScene* scene)

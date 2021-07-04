@@ -24,12 +24,13 @@ private:
 public:
     bool noTex;
     unsigned int ID = 0;
+    GLenum GlobalMode = GL_FILL;
 
     AssimpModel() { }
     AssimpModel(bool noTex = false);
 
     void LoadAssimpModel(std::string path);
-    void Render(Shader& shader);
+    void Render(Shader& shader,GLenum mode);
     void Cleanup();
     void SetName(std::string name);
     std::string GetName();

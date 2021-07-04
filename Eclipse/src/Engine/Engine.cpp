@@ -146,6 +146,7 @@ namespace Eclipse
 
         // unLoad
         gGraphics.end();
+        AssimpManager.CleanUpAllModels();
         ImGuiSetup::Destroy(EditorState);
     }
 

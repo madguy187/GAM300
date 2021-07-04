@@ -38,25 +38,23 @@ void AssimpModelManager::CreateModel(std::string name, std::string FolderName)
 
 void AssimpModelManager::LoadAllModels()
 {
-    // Team using XML i think , so i prolly can do a xml file loading or some sort so people can mass load
-
-    // Satic create first
     CreateModel("White Dog", "dog");
     CreateModel("Black Dog", "dog");
+    
     DebugPrint();
 
     ENGINE_CORE_INFO("All Assimp Models Loaded");
 }
 
-void AssimpModelManager::DrawBuffers()
+void AssimpModelManager::Draw(unsigned int FrameBufferID, GLenum Mode)
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
-    auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
+    glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
+    auto shdrpgm = Graphics::shaderpgms.find("3DModels");
 
     for (auto const& Models : AssimpModelContainer_)
     {
         auto& InvidualModels = *(Models.second);
-        InvidualModels.Render(shdrpgm->second);
+        InvidualModels.Render(shdrpgm->second, Mode);
     }
 }
 
@@ -118,5 +116,14 @@ void AssimpModelManager::AddComponents()
         Transform.scale.setY(10);
         Transform.scale.setZ(10);
         Transform.rotation.setX(270);
+    }
+}
+
+void AssimpModelManager::CleanUpAllModels()
+{
+    for (auto const& Models : AssimpModelContainer_)
+    {
+        auto& InvidualModels = *(Models.second);
+        InvidualModels.Cleanup();
     }
 }

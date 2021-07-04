@@ -30,7 +30,7 @@ public:
     Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures = {});
     Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiColor4D diffuse, aiColor4D spec);
 
-    void Render(Shader& shader);
+    void Render(Shader& shader, GLenum mode);
     void Cleanup();
 
 private:

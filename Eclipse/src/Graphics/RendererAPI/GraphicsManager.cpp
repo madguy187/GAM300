@@ -173,7 +173,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     }
 }
 
-void Eclipse::GraphicsManager::DrawBuffers(unsigned int FrameBufferID, RenderComponent* _spritecomponent, GLenum mode)
+void Eclipse::GraphicsManager::Draw(unsigned int FrameBufferID, RenderComponent* _spritecomponent, GLenum mode)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
 

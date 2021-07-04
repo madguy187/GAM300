@@ -19,13 +19,14 @@ private:
     AssimpModelContainer AssimpModelContainer_;
 
 public:
-    void LoadAllModels();
-    void CreateModel(std::string name, std::string path);
-    void DrawBuffers();
     AssimpModelContainer GetContainer();
     unsigned int AssimpModelCount();
+    void LoadAllModels();
+    void CreateModel(std::string name, std::string path);
+    void Draw(unsigned int FrameBufferID, GLenum mode);
     void DeleteItem(unsigned int index, AssimpModel* model_ptr);
     void DebugPrint();
     void AddComponents();
+    void CleanUpAllModels();
 };
 #endif // ASSIMP_MANAGER_H
