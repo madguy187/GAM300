@@ -46,17 +46,18 @@ namespace Eclipse
 		// ImGuizmo Logic
 		if (!engine->editorManager->EntityHierarchyList_.empty() && m_GizmoType != -1)
 		{
-			GizmoUpdate();
+			OnGizmoUpdateEvent();
 		}
 
 		if (ECGui::IsItemHovered() && ImGui::IsWindowFocused() /*temp fix*/)
 		{
 			// Do all the future stuff here when hovering on window
-			OnKeyPressed();
+			OnKeyPressedEvent();
+			OnMoveCameraEvent();
 		}
 	}
 
-	void SceneWindow::OnKeyPressed()
+	void SceneWindow::OnKeyPressedEvent()
 	{
 		ImGuiIO& io = ImGui::GetIO();
 
@@ -97,7 +98,7 @@ namespace Eclipse
 		}
 	}
 
-	void SceneWindow::GizmoUpdate()
+	void SceneWindow::OnGizmoUpdateEvent()
 	{
 		Entity selectedEntity = engine->editorManager->GetSelectedEntity();
 
@@ -190,6 +191,38 @@ namespace Eclipse
 
 		/*ImGuiIO& io = ImGui::GetIO();
 		ImGuizmo::ViewManipulate(const_cast<float*>(glm::value_ptr(camCom.viewMtx)), camCom.fov, ImVec2(io.DisplaySize.x - 128, 0), ImVec2(128, 128), 0x10101010);*/
+	}
+
+	void SceneWindow::OnMoveCameraEvent()
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		ImVec2 value_with_lock_threshold = ImGui::GetMouseDragDelta(1);
+		const float benchmarkValue = 0.0f;
+
+		// ImGui Right Click Detection
+		if (ImGui::IsMouseDragging(1))
+		{
+			std::cout << (value_with_lock_threshold.x > benchmarkValue && io.MouseDelta.x > 0.0f) << std::endl;
+			if (value_with_lock_threshold.x > benchmarkValue && io.MouseDelta.x > 0.0f)
+				engine->gCamera.GetInput().set(7, 1);
+			else
+				engine->gCamera.GetInput().set(7, 0);
+
+			if (value_with_lock_threshold.x < benchmarkValue && io.MouseDelta.x < 0.0f)
+				engine->gCamera.GetInput().set(6, 1);
+			else
+				engine->gCamera.GetInput().set(6, 0);
+
+			if (value_with_lock_threshold.y > benchmarkValue && io.MouseDelta.y > 0.0f)
+				engine->gCamera.GetInput().set(5, 1);
+			else
+				engine->gCamera.GetInput().set(5, 0);
+
+			if (value_with_lock_threshold.y < benchmarkValue && io.MouseDelta.y < 0.0f)
+				engine->gCamera.GetInput().set(4, 1);
+			else
+				engine->gCamera.GetInput().set(4, 0);
+		}
 	}
 
 	SnapValueSettings& SceneWindow::GetSnapSettings()

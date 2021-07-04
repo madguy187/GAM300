@@ -18,8 +18,9 @@ namespace Eclipse
 		SceneWindow();
 		void InitilializeFrameBuffer();
 		void RunFrameBuffer();
-		void OnKeyPressed();
-		void GizmoUpdate();
+		void OnKeyPressedEvent();
+		void OnGizmoUpdateEvent();
+		void OnMoveCameraEvent();
 
 		SnapValueSettings& GetSnapSettings();
 	private:

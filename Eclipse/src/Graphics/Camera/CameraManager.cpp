@@ -325,6 +325,11 @@ namespace Eclipse
         _camera.farPlane = _farPlane;
     }
 
+    std::bitset<10>& CameraManager::GetInput()
+    {
+        return input;
+    }
+
     void CameraManager::CreateGameCamera()
     {
         if (gameCamID != MAX_ENTITY)
