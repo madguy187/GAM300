@@ -3,7 +3,7 @@
 #include "../Interface/ECGuiWindow.h"
 namespace Eclipse
 {
-	class AssetBrowser final : public ECGuiWindow
+	class AssetBrowserWindow final : public ECGuiWindow
 	{
 		const std::filesystem::path AssetPath = "src//Assets";
 		std::filesystem::path CurrentDir;
@@ -11,7 +11,7 @@ namespace Eclipse
 
 	public:
 		void Update() override;
-		AssetBrowser();
+		AssetBrowserWindow();
 		void DrawImpl();
 		void PathTracker(std::filesystem::path& CurrentPath);
 		void BackToParentPath(std::filesystem::path &CurrentPath);

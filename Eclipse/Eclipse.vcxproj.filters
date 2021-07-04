@@ -40,6 +40,12 @@
     <Filter Include="Editor\Windows">
       <UniqueIdentifier>{C690B5AD-B25E-A9B3-9BF2-19DA875F8518}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editor\Windows\AssetBroswer">
+      <UniqueIdentifier>{D9B80427-45C6-320D-CEAC-2EF83AB9FEC3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Windows\Debug">
+      <UniqueIdentifier>{BC97D61F-A826-60E9-5145-74E43DB3708F}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Editor\Windows\GameView">
       <UniqueIdentifier>{6A8AA614-D6C1-EEAB-DFCB-52CF4B8215A5}</UniqueIdentifier>
     </Filter>
@@ -51,6 +57,12 @@
     </Filter>
     <Filter Include="Editor\Windows\Interface">
       <UniqueIdentifier>{262899AE-124D-E82E-3B98-CDBE271CE74C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Windows\Log">
+      <UniqueIdentifier>{979B17BC-837F-D811-ECDF-D264D8E2C293}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Windows\Profiler">
+      <UniqueIdentifier>{D8F05B84-4428-A41B-4D32-083FB9E8CA14}</UniqueIdentifier>
     </Filter>
     <Filter Include="Editor\Windows\Scene">
       <UniqueIdentifier>{63FAE420-4F89-6EEA-F8A7-82E5E4157F90}</UniqueIdentifier>
@@ -108,6 +120,9 @@
     </Filter>
     <Filter Include="ImGui\Vendor">
       <UniqueIdentifier>{FD493E4B-E9AC-CDEF-9232-06A67E749972}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui\Vendor\ImGuizmo">
+      <UniqueIdentifier>{FD481B09-69B5-D603-32A9-6E619ED4F86B}</UniqueIdentifier>
     </Filter>
     <Filter Include="Library">
       <UniqueIdentifier>{1AE124DA-86C0-A375-8FD8-2E4CFB360AD7}</UniqueIdentifier>
@@ -210,6 +225,12 @@
     <ClInclude Include="src\Editor\Menu\MenuComponent.h">
       <Filter>Editor\Menu</Filter>
     </ClInclude>
+    <ClInclude Include="src\Editor\Windows\AssetBroswer\AssetBrowser.h">
+      <Filter>Editor\Windows\AssetBroswer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\Debug\Debug.h">
+      <Filter>Editor\Windows\Debug</Filter>
+    </ClInclude>
     <ClInclude Include="src\Editor\Windows\GameView\GameView.h">
       <Filter>Editor\Windows\GameView</Filter>
     </ClInclude>
@@ -221,6 +242,12 @@
     </ClInclude>
     <ClInclude Include="src\Editor\Windows\Interface\ECGuiWindow.h">
       <Filter>Editor\Windows\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\Log\Log.h">
+      <Filter>Editor\Windows\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\Profiler\Profiler.h">
+      <Filter>Editor\Windows\Profiler</Filter>
     </ClInclude>
     <ClInclude Include="src\Editor\Windows\Scene\Scene.h">
       <Filter>Editor\Windows\Scene</Filter>
@@ -355,6 +382,18 @@
     <ClInclude Include="src\ImGui\Vendor\IconsMaterialDesignIcons.h">
       <Filter>ImGui\Vendor</Filter>
     </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\ImGuizmo\ImCurveEdit.h">
+      <Filter>ImGui\Vendor\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\ImGuizmo\ImGradient.h">
+      <Filter>ImGui\Vendor\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\ImGuizmo\ImGuizmo.h">
+      <Filter>ImGui\Vendor\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\ImGuizmo\ImSequencer.h">
+      <Filter>ImGui\Vendor\ImGuizmo</Filter>
+    </ClInclude>
     <ClInclude Include="src\ImGui\Vendor\imconfig.h">
       <Filter>ImGui\Vendor</Filter>
     </ClInclude>
@@ -377,6 +416,9 @@
       <Filter>ImGui\Vendor</Filter>
     </ClInclude>
     <ClInclude Include="src\ImGui\Vendor\imstb_truetype.h">
+      <Filter>ImGui\Vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\Vendor\stb_image.h">
       <Filter>ImGui\Vendor</Filter>
     </ClInclude>
     <ClInclude Include="src\Library\Math\Matrix.h">
@@ -419,9 +461,6 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\Editor\Windows\Profiler\Profiler.h" />
-    <ClInclude Include="src\Editor\Windows\Log\Log.h" />
-    <ClInclude Include="src\Editor\Windows\AssetBroswer\AssetBrowser.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -463,6 +502,12 @@
     <ClCompile Include="src\Editor\Menu\MenuComponent.cpp">
       <Filter>Editor\Menu</Filter>
     </ClCompile>
+    <ClCompile Include="src\Editor\Windows\AssetBroswer\AssetBrowser.cpp">
+      <Filter>Editor\Windows\AssetBroswer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\Debug\Debug.cpp">
+      <Filter>Editor\Windows\Debug</Filter>
+    </ClCompile>
     <ClCompile Include="src\Editor\Windows\GameView\GameView.cpp">
       <Filter>Editor\Windows\GameView</Filter>
     </ClCompile>
@@ -471,6 +516,12 @@
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\Inspector\Inspector.cpp">
       <Filter>Editor\Windows\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\Log\Log.cpp">
+      <Filter>Editor\Windows\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\Profiler\Profiler.cpp">
+      <Filter>Editor\Windows\Profiler</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\Scene\Scene.cpp">
       <Filter>Editor\Windows\Scene</Filter>
@@ -580,6 +631,18 @@
     <ClCompile Include="src\ImGui\Setup\ImGuiSetup.cpp">
       <Filter>ImGui\Setup</Filter>
     </ClCompile>
+    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImCurveEdit.cpp">
+      <Filter>ImGui\Vendor\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImGradient.cpp">
+      <Filter>ImGui\Vendor\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImGuizmo.cpp">
+      <Filter>ImGui\Vendor\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImSequencer.cpp">
+      <Filter>ImGui\Vendor\ImGuizmo</Filter>
+    </ClCompile>
     <ClCompile Include="src\ImGui\Vendor\imgui.cpp">
       <Filter>ImGui\Vendor</Filter>
     </ClCompile>
@@ -614,8 +677,5 @@
       <Filter>Time</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\Editor\Windows\Profiler\Profiler.cpp" />
-    <ClCompile Include="src\Editor\Windows\Log\Log.cpp" />
-    <ClCompile Include="src\Editor\Windows\AssetBroswer\AssetBrowser.cpp" />
   </ItemGroup>
 </Project>

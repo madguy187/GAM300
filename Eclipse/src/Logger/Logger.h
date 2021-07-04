@@ -23,7 +23,7 @@ namespace Eclipse
 	};
 }
 
-#define ENGINE_CORE_ERROR(...) Eclipse::Log::GetCrashLogger()->error(__VA_ARGS__);
-#define ENGINE_CORE_INFO(...) Eclipse::Log::GetConsoleLogger()->info(__VA_ARGS__);
-#define ENGINE_CORE_WARN(...) Eclipse::Log::GetConsoleLogger()->warn(__VA_ARGS__);
+#define ENGINE_CORE_ERROR(...) Eclipse::Log::GetCrashLogger()->error(__VA_ARGS__); // RED
+#define ENGINE_CORE_INFO(...) Eclipse::Log::GetConsoleLogger()->info(__VA_ARGS__); // GREEN
+#define ENGINE_CORE_WARN(...) Eclipse::Log::GetConsoleLogger()->warn(__VA_ARGS__); // YELLOW
 //#define ENGINE_CORE_FATAL(...) Transcend::Log::GetConsoleLogger()->fatal(__VA_ARGS__);

@@ -4,7 +4,7 @@
 
 namespace Eclipse
 {
-	class Logger : public ECGuiWindow , public Log
+	class LoggerWindow : public ECGuiWindow , public Log
 	{
 		Log log;
 		std::vector<std::string>messages;
@@ -21,7 +21,7 @@ namespace Eclipse
 		void isPushed();
 	public:
 		void Update() override;
-		Logger();
+		LoggerWindow();
 		void DrawImpl();
 	};
 
