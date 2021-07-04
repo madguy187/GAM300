@@ -10,7 +10,7 @@ void Eclipse::LightingSystem::Init()
 void Eclipse::LightingSystem::Update()
 {
     // Loop
-    Profiler timer;
+    ProfilerWindow timer;
     timer.SetName({ SystemName::LIGHTING });
     timer.tracker.system_start = glfwGetTime();
 	

@@ -15,7 +15,7 @@ void Eclipse::CameraSystem::Init()
 
 void Eclipse::CameraSystem::Update()
 {
-	Profiler timer;
+	ProfilerWindow timer;
 	timer.SetName({ SystemName::CAMERA });
 	timer.tracker.system_start = glfwGetTime();
 	for (auto& it : mEntities)
@@ -25,7 +25,7 @@ void Eclipse::CameraSystem::Update()
 
 		if (_camera.camType == CameraComponent::CameraType::Editor_Camera)
 		{
-			engine->gCamera.CheckCameraInput();
+			//engine->gCamera.CheckCameraInput();
 			engine->gCamera.UpdateEditorCamera(_transform);
 		}
 

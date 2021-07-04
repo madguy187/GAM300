@@ -103,6 +103,35 @@ namespace Eclipse
 		}
 
 		// Assignment Operators
+		template <typename U>
+		Vector<T, N>& operator=(const U& rhs)
+		{
+			for (size_t i = 0; i < N; ++i)
+			{
+				this->_data[i] = rhs[i];
+
+				switch (i)
+				{
+				case 0:
+					x = this->_data[i];
+					break;
+				case 1:
+					y = this->_data[i];
+					break;
+				case 2:
+					z = this->_data[i];
+					break;
+				case 3:
+					w = this->_data[i];
+					break;
+				default:
+					break;
+				}
+			}
+
+			return *this;
+		}
+
 		Vector<T, N>& operator+=(const Vector<T, N>& rhs)
 		{
 			for (size_t i = 0; i < N; ++i)
@@ -122,6 +151,8 @@ namespace Eclipse
 					break;
 				case 3:
 					w = this->_data[i];
+					break;
+				default:
 					break;
 				}
 			}
@@ -176,6 +207,8 @@ namespace Eclipse
 				case 3:
 					w = this->_data[i];
 					break;
+				default:
+					break;
 				}
 			}
 
@@ -228,6 +261,8 @@ namespace Eclipse
 					break;
 				case 3:
 					w = this->_data[i];
+					break;
+				default:
 					break;
 				}
 			}
@@ -283,6 +318,9 @@ namespace Eclipse
 				case 3:
 					w = this->_data[i];
 					break;
+				default:
+					break;
+
 				}
 			}
 
@@ -310,6 +348,8 @@ namespace Eclipse
 						break;
 					case 3:
 						w = this->_data[i];
+						break;
+					default:
 						break;
 					}
 				}
@@ -430,19 +470,19 @@ namespace Eclipse
 			return _data.data();
 		}
 
-		glm::vec2 ConvertToGlmVec2Type()
+		glm::vec2 ConvertToGlmVec2Type() const
 		{
 			glm::vec2 temp{ this->_data[0], this->_data[1] };
 			return temp;
 		}
 
-		glm::vec3 ConvertToGlmVec3Type()
+		glm::vec3 ConvertToGlmVec3Type() const
 		{
 			glm::vec3 temp{ this->_data[0], this->_data[1],  this->_data[2] };
 			return temp;
 		}
 
-		glm::vec4 ConvertToGlmVec4Type()
+		glm::vec4 ConvertToGlmVec4Type() const
 		{
 			glm::vec4 temp{ this->_data[0], this->_data[1], this->_data[2], this->_data[3] };
 			return temp;

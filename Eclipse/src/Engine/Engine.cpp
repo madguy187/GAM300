@@ -83,7 +83,7 @@ namespace Eclipse
         int framecount = 0;
         float dt = 0.0f;
         float updaterate = 4.0f;
-        Profiler Timer;
+        ProfilerWindow Timer;
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
 

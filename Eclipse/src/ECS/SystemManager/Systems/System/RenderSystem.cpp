@@ -47,7 +47,7 @@ Signature Eclipse::RenderSystem::RegisterAll()
 
 void Eclipse::RenderSystem::Update()
 {
-    Profiler timer;
+    ProfilerWindow timer;
     timer.SetName({ SystemName::RENDER });
     timer.tracker.system_start = glfwGetTime();
     // Loop

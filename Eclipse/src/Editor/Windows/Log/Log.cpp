@@ -1,6 +1,6 @@
 #include "pch.h"
 
-Logger::Logger()
+LoggerWindow::LoggerWindow()
 {
 	
 	Type = EditorWindowType::LOGGER;
@@ -9,7 +9,7 @@ Logger::Logger()
 	Clear();
 }
 
-void Logger::DrawImpl()
+void LoggerWindow::DrawImpl()
 {
 	if (ImGui::BeginPopup("Options"))
 	{
@@ -76,7 +76,7 @@ void Logger::DrawImpl()
 }
 
 
-void Logger::Update()
+void LoggerWindow::Update()
 {
 	for (static int n = 0; n < this->messages.size(); n++)
 	{
@@ -84,18 +84,18 @@ void Logger::Update()
 	}
 	//this->AddLog("%s", "test");
 	if (IsVisible)
-		ECGui::DrawMainWindow<void()>(WindowName, std::bind(&Logger::DrawImpl, this));
+		ECGui::DrawMainWindow<void()>(WindowName, std::bind(&LoggerWindow::DrawImpl, this));
 	isPushed();
 }
 
-void Eclipse::Logger::Clear()
+void Eclipse::LoggerWindow::Clear()
 {
 	Buf.clear();
 	LineOffsets.clear();
 	LineOffsets.push_back(0);
 }
 
-void Logger::AddLog(const char* fmt, ...)
+void LoggerWindow::AddLog(const char* fmt, ...)
 {
 	int old_size = Buf.size();
 	va_list args;
@@ -107,13 +107,13 @@ void Logger::AddLog(const char* fmt, ...)
 			LineOffsets.push_back(old_size + 1);
 }
 
-void Eclipse::Logger::pushMessage(const char* message)
+void Eclipse::LoggerWindow::pushMessage(const char* message)
 {
 	//this->messages.push_back();
 	//isPushed();
 }
 
-void Eclipse::Logger::isPushed()
+void Eclipse::LoggerWindow::isPushed()
 {
 	if (this->ispushedd)
 	{

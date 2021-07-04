@@ -11,7 +11,7 @@ namespace Eclipse
 		COUNTER
 	};
 	
-	class Profiler final : public ECGuiWindow
+	class ProfilerWindow final : public ECGuiWindow
 	{
 		inline static float engine_time = 0.0f;
 		
@@ -23,7 +23,7 @@ namespace Eclipse
 		
 		void Update() override;
 		
-		Profiler();
+		ProfilerWindow();
 
 		void DrawImpl();
 
@@ -45,7 +45,7 @@ namespace Eclipse
 
 		float GetFPS();
 		
-		void EngineTimer(Profiler timer);
+		void EngineTimer(ProfilerWindow timer);
 	};
 
 

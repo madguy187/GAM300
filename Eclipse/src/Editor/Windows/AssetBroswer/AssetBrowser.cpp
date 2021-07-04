@@ -1,19 +1,19 @@
 #include "pch.h"
 
-Eclipse::AssetBrowser::AssetBrowser()
+Eclipse::AssetBrowserWindow::AssetBrowserWindow()
 	:CurrentDir(AssetPath), NextDir()
 {
 	Type = EditorWindowType::ASSETBROWSER;
 	WindowName = "AssetBrowser";
 }
 
-void Eclipse::AssetBrowser::Update()
+void Eclipse::AssetBrowserWindow::Update()
 {
 	if (IsVisible)
-		ECGui::DrawMainWindow<void()>(WindowName, std::bind(&AssetBrowser::DrawImpl, this));
+		ECGui::DrawMainWindow<void()>(WindowName, std::bind(&AssetBrowserWindow::DrawImpl, this));
 }
 
-void Eclipse::AssetBrowser::DrawImpl()
+void Eclipse::AssetBrowserWindow::DrawImpl()
 {
 	RenderComponent sprite;
 	sprite.textureRef = Graphics::textures.find("PlayPauseStop");
@@ -171,7 +171,7 @@ void Eclipse::AssetBrowser::DrawImpl()
 	ImGui::EndChild();
 }
 
-void Eclipse::AssetBrowser::PathTracker(std::filesystem::path& CurrentPath)
+void Eclipse::AssetBrowserWindow::PathTracker(std::filesystem::path& CurrentPath)
 {
 	std::string source = {"src"};
 	int id = 0, newPathId = -1;
@@ -211,12 +211,12 @@ void Eclipse::AssetBrowser::PathTracker(std::filesystem::path& CurrentPath)
 	}
 }
 
-void Eclipse::AssetBrowser::BackToParentPath(std::filesystem::path& CurrentPath)
+void Eclipse::AssetBrowserWindow::BackToParentPath(std::filesystem::path& CurrentPath)
 {
 	CurrentPath = CurrentPath.parent_path();
 }
 
-void Eclipse::AssetBrowser::NextPath(std::filesystem::path& CurrentPath, std::filesystem::path paths)
+void Eclipse::AssetBrowserWindow::NextPath(std::filesystem::path& CurrentPath, std::filesystem::path paths)
 {
 	CurrentPath /= paths.filename();
 }
