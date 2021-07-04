@@ -39,7 +39,7 @@ void AssimpModelManager::LoadAllModels()
     // Team using XML i think , so i prolly can do a xml file loading or some sort so people can mass load
 
     // Satic create first
-    CreateModel("White Dog", "dog");
+    CreateModel("White Dog", "dog2");
 
     ENGINE_CORE_INFO("All Assimp Models Loaded");
 }

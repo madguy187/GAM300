@@ -85,7 +85,7 @@
 
 // Editor API
 #include "Editor/ECGuiAPI/ECGui.h"
-#include "ImGuizmo.h"
+#include "ImGuizmo/ImGuizmo.h" 
 
 // ---- Input Handler Api ----
 // Create an object for example : InputWrapper test;

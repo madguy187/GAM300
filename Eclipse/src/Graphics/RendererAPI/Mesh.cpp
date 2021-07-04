@@ -42,7 +42,6 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiCo
 
 void Mesh::Render(Shader& shader)
 {
-
     glBindVertexArray(VAO);
 
     glDisable(GL_BLEND);
@@ -122,7 +121,6 @@ void Mesh::Render(Shader& shader)
     //glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
-    shader.UnUse();
 
     // reset
     glActiveTexture(GL_TEXTURE0);

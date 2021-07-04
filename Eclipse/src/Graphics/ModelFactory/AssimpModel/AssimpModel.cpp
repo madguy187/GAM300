@@ -14,30 +14,27 @@ AssimpModel::AssimpModel(glm::vec3 pos, glm::vec3 size, bool noTex)
 
 void AssimpModel::Render(Shader shader)
 {
-    CameraComponent camera;
-    TransformComponent camerapos;
-    camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
-    camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetGameCameraID());
+    shader.Use();
 
-    glm::mat4 AssimpModel = glm::mat4(1.0f);
-    AssimpModel = glm::translate(AssimpModel, pos);
-    AssimpModel = glm::scale(AssimpModel, size);
-    AssimpModel = glm::rotate(AssimpModel, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    shader.setMat4("AssimpModel", AssimpModel);
-
+    auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetGameCameraID());
     GLint uniform_var_loc1 = shader.GetLocation("uModelToNDC");
-    GLuint model2 = shader.GetLocation("model");
 
-    shader.setFloat("material.shininess", 0.0f);
+    if (uniform_var_loc1 >= 0)
+    {
+        glm::mat4 mModelNDC = _camera.projMtx * _camera.viewMtx * glm::mat4(1.0f);
+        glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(mModelNDC));
+    }
 
     for (unsigned int i = 0; i < meshes.size(); i++)
     {
-        auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
+        //auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
         glBindFramebuffer(GL_FRAMEBUFFER, engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID());
-        shdrpgm->second.Use();
+        //shdrpgm->second.Use();
 
         meshes[i].Render(shader);
     }
+
+    shader.UnUse();
 }
 
 void AssimpModel::Cleanup()
