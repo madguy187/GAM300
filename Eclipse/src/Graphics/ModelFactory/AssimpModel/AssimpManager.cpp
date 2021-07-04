@@ -106,7 +106,7 @@ void AssimpModelManager::AddComponents()
     for (auto const& Models : AssimpModelContainer_)
     {
         auto& InvidualModels = *(Models.second);
-        std::cout << "Entity ID : " << Models.first << std::endl;
+        std::cout << "Added Transform Component For 3DModel ID : " << Models.first << std::endl;
         engine->world.AddComponent(Models.first, TransformComponent{});
 
         // Everything Below this Comment is To be Removed !!

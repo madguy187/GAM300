@@ -93,8 +93,6 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("cube");
-        //sprite.hasTexture = true;
-        //sprite.textureRef = Graphics::textures.find("orange");
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;

@@ -49,12 +49,6 @@ void AssimpModel::LoadAssimpModel(std::string path)
 
     directory = path.substr(0, path.find_last_of("/"));
     ProcessNode(scene->mRootNode, scene);
-
-    std::cout << "ID : " << ID << std::endl;
-    std::cout << "mNumMeshes " << scene->mRootNode->mNumMeshes << std::endl;
-    std::cout << "mNumChildren " << scene->mRootNode->mNumChildren << std::endl;
-    std::cout << "Texture Size " << textures_loaded.size() << std::endl;
-
 }
 
 void AssimpModel::ProcessNode(aiNode* node, const aiScene* scene)

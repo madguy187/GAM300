@@ -65,6 +65,9 @@ void Eclipse::PointLight::CheckUniformLoc(Shader* _shdrpgm, PointLightComponent&
     // Which Camera's matrix
     CameraComponent& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 
+    engine->LightManager.SetColor(in_pointlight, { 0.5,0.3,0.1,1 });
+    engine->LightManager.SetLightColor(in_pointlight, { 0.5,0.3,0.1,1 });
+
     // Model Matrix
     if (uniform_var_loc8 >= 0)
     {
