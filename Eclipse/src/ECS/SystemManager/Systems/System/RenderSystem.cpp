@@ -17,7 +17,7 @@ void Eclipse::RenderSystem::Init()
 
     engine->AssimpManager.LoadAllModels();
 
-    // SKYBOX=============================
+    // SKY
     skybox.init();
     skybox.loadTextures("src/Assets/Sky");
 }
@@ -35,11 +35,13 @@ Signature Eclipse::RenderSystem::RegisterAll()
 
 void Eclipse::RenderSystem::Update()
 {
-    auto shdrpgm = Graphics::shaderpgms.find("Sky");
+    // SKY =============================
     glBindFramebuffer(GL_FRAMEBUFFER, engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+    auto shdrpgm = Graphics::shaderpgms.find("Sky");
     skybox.render(shdrpgm->second);
+    shdrpgm->second.UnUse();
 
-    //Loop
+    // RENDERCOMPONENTS & TRANSFORMCOMPONENT =============================
     for (auto const& entity : mEntities)
     {
         RenderComponent& _Sprites = engine->world.GetComponent<RenderComponent>(entity);
@@ -47,7 +49,10 @@ void Eclipse::RenderSystem::Update()
         engine->gGraphics.Draw(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
     }
 
+    // CAMERA =============================
     engine->gDebugManager.DrawDebugShapes(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+
+    // MODELS =============================
     engine->AssimpManager.Draw(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), GL_FILL);
-    engine->AssimpManager.Draw(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_LINE);
+    engine->AssimpManager.Draw(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL);
 }

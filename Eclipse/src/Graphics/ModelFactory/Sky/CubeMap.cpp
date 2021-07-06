@@ -120,6 +120,9 @@ void Cubemap::init() {
 
 void Cubemap::render(Shader& shader) 
 {
+    VAO.bind();
+
+    // Shader Activate
     shader.Use();
 
     glDepthMask(GL_FALSE);
@@ -148,9 +151,11 @@ void Cubemap::render(Shader& shader)
 
     VAO.bind();
     VAO.draw(GL_TRIANGLES, 0, 36);
-    ArrayObject::clear();
 
     glDepthMask(GL_TRUE);
+
+    shader.UnUse();
+    glBindVertexArray(0);
 }
 
 void Cubemap::cleanup() {

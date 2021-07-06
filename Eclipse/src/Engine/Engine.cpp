@@ -136,8 +136,8 @@ namespace Eclipse
             }
 
             engine->gGraphics.GlobalFrameBufferBind();
-            world.Update<LightingSystem>();
             world.Update<RenderSystem>();
+            world.Update<LightingSystem>();
             engine->gGraphics.GlobalFrmeBufferDraw();
 
             ImGuiSetup::End(EditorState);
