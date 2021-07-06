@@ -9,12 +9,14 @@
 #include "Graphics/Camera/CameraManager.h"
 #include "Graphics/RendererAPI/GraphicsManager.h"
 #include "AssimpModel/AssimpManager.h"
+#include "Graphics/ModelFactory/Sky/CubeMap.h"
 
 namespace Eclipse
 {
     class RenderSystem : public System
     {
     public:
+        static inline Cubemap skybox;
         static void Init();
         static Signature RegisterAll();
 

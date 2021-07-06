@@ -39,6 +39,11 @@
       "shaderName": "3DModels",
       "vtxShader": "src/Assets/Shaders/AssimpShader3D.vert",
       "frgShader": "src/Assets/Shaders/AssimpShader3D.frag"
+    },
+    {
+      "shaderName": "Sky",
+      "vtxShader": "src/Assets/Shaders/skybox.vert",
+      "frgShader": "src/Assets/Shaders/skybox.frag"
     }
   ]
 }

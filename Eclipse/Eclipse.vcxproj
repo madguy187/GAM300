@@ -219,6 +219,8 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClInclude Include="src\Graphics\ModelFactory\IModel.h" />
     <ClInclude Include="src\Graphics\ModelFactory\ModelFactory.h" />
     <ClInclude Include="src\Graphics\ModelFactory\ModelGlobal.h" />
+    <ClInclude Include="src\Graphics\ModelFactory\Sky\CubeMap.h" />
+    <ClInclude Include="src\Graphics\ModelFactory\Sky\glmemory.hpp" />
     <ClInclude Include="src\Graphics\OpenGL\OpenGL_Context.h" />
     <ClInclude Include="src\Graphics\Parser\Parser.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Graphics.h" />
@@ -309,6 +311,7 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Torus.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Triangle.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\ModelFactory.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\Sky\CubeMap.cpp" />
     <ClCompile Include="src\Graphics\OpenGL\OpenGL_Context.cpp" />
     <ClCompile Include="src\Graphics\Parser\Parser.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\Graphics.cpp" />
@@ -355,6 +358,8 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <None Include="src\Assets\Shaders\Shader3D.frag" />
     <None Include="src\Assets\Shaders\Shader3D.vert" />
     <None Include="src\Assets\Shaders\Shaders.json" />
+    <None Include="src\Assets\Shaders\skybox.frag" />
+    <None Include="src\Assets\Shaders\skybox.vert" />
     <None Include="src\Assets\Shaders\textFrag.frag" />
     <None Include="src\Assets\Shaders\textVtx.vert" />
   </ItemGroup>

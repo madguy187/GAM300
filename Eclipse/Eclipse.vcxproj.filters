@@ -452,6 +452,8 @@
     <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.h" />
     <ClInclude Include="src\Library\Math\Math.h" />
     <ClInclude Include="src\Editor\Windows\Debug\Debug.h" />
+    <ClInclude Include="src\Graphics\ModelFactory\Sky\CubeMap.h" />
+    <ClInclude Include="src\Graphics\ModelFactory\Sky\glmemory.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -665,6 +667,7 @@
     <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.cpp" />
     <ClCompile Include="src\Editor\Windows\Debug\Debug.cpp" />
     <ClCompile Include="src\Library\Math\Math.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\Sky\CubeMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\BasicFrag.frag" />
@@ -684,5 +687,7 @@
     <None Include="src\Assets\Shaders\textVtx.vert" />
     <None Include="src\Assets\Shaders\AssimpShader3D.frag" />
     <None Include="src\Assets\Shaders\AssimpShader3D.vert" />
+    <None Include="src\Assets\Shaders\skybox.frag" />
+    <None Include="src\Assets\Shaders\skybox.vert" />
   </ItemGroup>
 </Project>

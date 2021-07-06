@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AssimpModel/AssimpModel.h"
+#include <regex>
 
 using namespace Eclipse;
 
@@ -10,7 +11,7 @@ AssimpModel::AssimpModel(bool noTex)
     GlobalMode = GL_FILL;
 }
 
-void AssimpModel::Render(Shader& shader , GLenum MOde)
+void AssimpModel::Render(Shader& shader, GLenum MOde)
 {
     // Shader Activate
     shader.Use();
@@ -37,8 +38,14 @@ void AssimpModel::Cleanup()
 
 void AssimpModel::LoadAssimpModel(std::string path)
 {
+
     Assimp::Importer import;
     const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+
+    //if (scene->GetEmbeddedTexture("src/Assets/ASSModels/dog/1.FBX") == nullptr)
+    //{
+    //    std::cout << "fuck" << std::endl;
+    //}
 
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
     {
@@ -135,11 +142,11 @@ Mesh AssimpModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
         vertex.Normal = glm::vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
 
         // textures
-        if (mesh->mTextureCoords[0]) 
+        if (mesh->mTextureCoords[0])
         {
             vertex.TextureCoodinates = glm::vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
         }
-        else 
+        else
         {
             vertex.TextureCoodinates = glm::vec2(0.0f);
         }
@@ -148,10 +155,10 @@ Mesh AssimpModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
     }
 
     // process indices
-    for (unsigned int i = 0; i < mesh->mNumFaces; i++) 
+    for (unsigned int i = 0; i < mesh->mNumFaces; i++)
     {
         aiFace face = mesh->mFaces[i];
-        for (unsigned int j = 0; j < face.mNumIndices; j++) 
+        for (unsigned int j = 0; j < face.mNumIndices; j++)
         {
             indices.push_back(face.mIndices[j]);
         }
@@ -161,8 +168,43 @@ Mesh AssimpModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
     if (mesh->mMaterialIndex >= 0)
     {
         aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+        std::regex regexExpress("^\\*\\d+");
+        std::cmatch regexMatches;
 
-        if (noTex) 
+        //for (size_t j = 0; j < material->GetTextureCount(aiTextureType_DIFFUSE); j++)
+        //{      
+        //    // The path to the texture.
+        //    aiString texturePath;
+
+        //    // Get the path to the texture.
+        //    if (material->GetTexture(aiTextureType_LIGHTMAP, j, &texturePath) ==
+        //        aiReturn_SUCCESS)
+        //    {
+        //        // Check if it's an embedded or external  texture.
+        //        if (std::regex_search(texturePath.C_Str(), regexMatches, regexExpress))
+        //        {
+        //            // Get the index str.
+        //            std::string indexStr = *(regexMatches.begin());
+
+        //            // Drop the "*" character.
+        //            indexStr = indexStr.erase(0, 1);
+
+        //            // Convert the string to an integer. (This is the index in the
+        //            // Scene::mTextures[] array.
+        //            int index = std::stoi(indexStr);
+
+        //            // Print the index.
+        //            std::cout << "Scene::mTextures[" << index << "]." << std::endl;
+        //        }
+        //        else
+        //        {
+        //            // Print the texture file path.
+        //            std::cout << "File Path: " << texturePath.C_Str() << std::endl;
+        //        }
+        //    }
+        //}
+
+        if (noTex)
         {
             // diffuse color
             aiColor4D diff(1.0f);
@@ -199,9 +241,9 @@ std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType ty
 
         // prevent duplicate loading
         bool skip = false;
-        for (unsigned int j = 0; j < textures_loaded.size(); j++) 
+        for (unsigned int j = 0; j < textures_loaded.size(); j++)
         {
-            if (std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0) 
+            if (std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0)
             {
                 textures.push_back(textures_loaded[j]);
                 skip = true;
@@ -211,7 +253,7 @@ std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType ty
 
         //std::cout << "TEST" << std::endl;
 
-        if (!skip) 
+        if (!skip)
         {
             // not loaded yet
             Texture tex(directory, str.C_Str(), type);
@@ -222,4 +264,64 @@ std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType ty
     }
 
     return textures;
+}
+
+void AssimpModel::FBXLoadAssimpModel(const char* in)
+{
+    const aiScene* scene = aiImportFile(in, aiProcessPreset_TargetRealtime_MaxQuality);
+
+    if (!scene)
+    {
+        std::cout << "Could not load file " << in << std::endl;
+    }
+
+    std::vector<Mesh> meshes;
+    meshes.reserve(scene->mNumMeshes);
+
+    std::vector<Vertex> vertices;
+    std::vector<unsigned int> indices;
+    std::vector<Texture> textures;
+
+    for (unsigned int meshIdx = 0; meshIdx < scene->mNumMeshes; meshIdx++)
+    {
+        aiMesh* mesh = scene->mMeshes[meshIdx];
+
+        aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+        aiColor4D specularColor;
+        aiColor4D diffuseColor;
+        aiColor4D ambientColor;
+        float shininess;
+
+        aiGetMaterialColor(material, AI_MATKEY_COLOR_SPECULAR, &specularColor);
+        aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diffuseColor);
+        aiGetMaterialColor(material, AI_MATKEY_COLOR_AMBIENT, &ambientColor);
+        aiGetMaterialFloat(material, AI_MATKEY_SHININESS, &shininess);
+
+        for (int vertIdx = 0; vertIdx < mesh->mNumVertices; vertIdx++)
+        {
+            Vertex vertex;
+            aiVector3D vert = mesh->mVertices[vertIdx];
+            aiVector3D norm = mesh->mNormals[vertIdx];
+
+            // position
+            vertex.Position = glm::vec3(vert.x, vert.y, vert.z);
+
+            // normal vectors
+            vertex.Normal = glm::vec3(norm.x, norm.y, norm.z);
+
+            vertices.push_back(vertex);
+        }
+
+        std::vector<unsigned int> indices;
+        indices.reserve(mesh->mNumFaces * 3);
+
+        for (unsigned int faceIdx = 0; faceIdx < mesh->mNumFaces; faceIdx++)
+        {
+            indices.push_back(mesh->mFaces[faceIdx].mIndices[0u]);
+            indices.push_back(mesh->mFaces[faceIdx].mIndices[1u]);
+            indices.push_back(mesh->mFaces[faceIdx].mIndices[2u]);
+        }
+
+        Mesh Test = Mesh(vertices, indices, textures);
+    }
 }

@@ -10,15 +10,16 @@
 #include "AssimpModel/AssimpModel.h"
 #include "SparseSet/SparseSet.hpp"
 
-//Cube m;
-std::vector<AssimpModel> test;
-
 void Eclipse::RenderSystem::Init()
 {
     ENGINE_CORE_INFO("RenderSystem Init");
     engine->gGraphics.pre_render();
 
     engine->AssimpManager.LoadAllModels();
+
+    // SKYBOX=============================
+    skybox.init();
+    skybox.loadTextures("src/Assets/Sky");
 }
 
 Signature Eclipse::RenderSystem::RegisterAll()
@@ -34,6 +35,9 @@ Signature Eclipse::RenderSystem::RegisterAll()
 
 void Eclipse::RenderSystem::Update()
 {
+    auto shdrpgm = Graphics::shaderpgms.find("Sky");
+    glBindFramebuffer(GL_FRAMEBUFFER, engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+    skybox.render(shdrpgm->second);
 
     //Loop
     for (auto const& entity : mEntities)
