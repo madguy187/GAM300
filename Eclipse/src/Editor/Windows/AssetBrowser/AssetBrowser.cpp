@@ -8,6 +8,12 @@ namespace Eclipse
 	{
 		Type = EditorWindowType::ASSETBROWSER;
 		WindowName = "AssetBrowser";
+		
+		sprite.textureRef = Graphics::textures.find("PlayPauseStop");
+
+		FolderIcon.textureRef = Graphics::textures.find("FolderIcon");
+
+		memset(searchBuffer, 0, 128);
 	}
 	
 	void AssetBrowserWindow::Update()
@@ -19,10 +25,6 @@ namespace Eclipse
 	void AssetBrowserWindow::DrawImpl()
 	{
 		//temp render components test phase
-		
-		sprite.textureRef = Graphics::textures.find("PlayPauseStop");
-		
-		FolderIcon.textureRef = Graphics::textures.find("FolderIcon");
 		
 		ImGui::Columns(2);
 		
@@ -123,10 +125,11 @@ namespace Eclipse
 	{
 		//top path 
 		ECGui::DrawChildWindow<void()>({ "##top_bar", ImVec2(0, 20) }, std::bind(&AssetBrowserWindow::PathTracker, this));
-		
+
 		ImGui::Separator();
 
 		//folders and items
+		
 		ECGui::DrawChildWindow<void()>({ "Scrolling"}, std::bind(&AssetBrowserWindow::FoldersAndItems, this));
 	}
 
@@ -146,106 +149,54 @@ namespace Eclipse
 			//for pop ups
 			ImGui::EndPopup();
 		}
-
-		//	ImGui::Columns(s_ColumnCount, nullptr, false);
 		
-		float window_visible_x2 = ImGui::GetWindowPos().x + ECGui::GetWindowSize().x;
+		ImGui::Columns(5,0,false);
+
 
 		static ImVec2 button_sz(120, 60);
-		
+	
 		//ImGui::DragFloat2("size", (float*)&button_sz, 0.5f, 1.0f, 200.0f, "%.0f");
 		
 		ImGuiStyle& style = ImGui::GetStyle();
-		
-		ImDrawList* draw_list = ImGui::GetWindowDrawList();
 		
 		static int counter = 0;
 		
 		for (auto& dirEntry : std::filesystem::directory_iterator(CurrentDir))
 		{
+
 			const auto& path = dirEntry.path();
-			
+
 			auto relativePath = std::filesystem::relative(path, AssetPath);
-			
+
 			std::string fileNameString = relativePath.filename().string();
 
-			if (dirEntry.is_directory())
-			{
-				ImGui::PushID(counter);
-				
-				ImGui::BeginGroup();
-				
-				if (ImGui::ImageButton((void*)FolderIcon.textureRef->second.GetHandle(),
-					button_sz,
-					ImVec2(folderoffsetX, folderoffsetY),
-					ImVec2(1 / FolderIcon.textureRef->second.GetCols() + folderoffsetX, 1 / FolderIcon.textureRef->second.GetRows() + folderoffsetY)))
-				{
-					//do stuff with the files
-				}
-				
-				ImGui::TextWrapped(fileNameString.c_str());
-
-				ImGui::EndGroup();
-				
-				//draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(255, 255, 0, 255),0,0,3.f);
-				if (ECGui::IsItemHovered())
-				{
-					ECGui::SetToolTip(fileNameString.c_str());
-				}
-			}
-			else
-			{
-				ImGui::PushID(counter);
-				
-				ImGui::BeginGroup();
-				
-				if (ImGui::ImageButton((void*)sprite.textureRef->second.GetHandle(),
-					button_sz,
-					ImVec2(offsetX, offsetY),
-					ImVec2(1 / sprite.textureRef->second.GetCols() + offsetX, 1 / sprite.textureRef->second.GetRows() + offsetY)))
-				{
-					//do stuff with the files
-				}
-				
-				ImGui::TextWrapped(fileNameString.c_str());
-				
-				ImGui::EndGroup();
-				
-				//draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(255, 255, 0, 255),0,0,3.f);
-				if (ECGui::IsItemHovered())
-				{
-					ECGui::SetToolTip(fileNameString.c_str());
-				}
-			}
-			float last_button_x2 = ImGui::GetItemRectMax().x;
+			RenderComponent icon = dirEntry.is_directory() ? FolderIcon : sprite;
 			
-			float next_button_x2 = last_button_x2 + style.ItemSpacing.x + button_sz.x; // Expected position if next button was on same line
-
-			if (counter + 1 < 5 && next_button_x2 < window_visible_x2)
+			ImGui::ImageButton((void*)icon.textureRef->second.GetHandle(),
+				button_sz,
+				ImVec2(folderoffsetX, folderoffsetY),
+				ImVec2(1 / FolderIcon.textureRef->second.GetCols() + folderoffsetX, 1 / FolderIcon.textureRef->second.GetRows() + folderoffsetY));
+			if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
 			{
-				ECGui::InsertSameLine();
-				counter = 0;
-			}
-			else
-			{
-				ImGui::NextColumn();
-			}
-			
-			ImGui::PopID();
-			
-			++counter;
-
-			if (dirEntry.is_directory())
-			{
-				if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0))
+				if (dirEntry.is_directory())
 				{
 					NextPath(CurrentDir, path);
 				}
+				else
+				{
+					//do stuff
+				}
 			}
+			if (ECGui::IsItemHovered())
+			{
+				ECGui::SetToolTip(fileNameString.c_str());
+			}
+			ImGui::TextWrapped(fileNameString.c_str());
+			ImGui::NextColumn();
 		}
-		counter = 0;
-
+		ImGui::Columns(1);
 		ImGui::PopStyleColor(2);
+		
 
 	}
 	
@@ -287,6 +238,51 @@ namespace Eclipse
 			}
 			this->CurrentDir = newPath;
 		}
+
+		ImGui::SameLine();
+
+		//if (ImGui::InputTextWithHint("", "Search...", searchBuffer, 128))
+		//{
+		//	std::string queryLowerCase;
+		//	for (const auto& character : searchBuffer)
+		//	{
+		//		queryLowerCase += std::tolower(character);
+		//	}
+		//	
+		//	for(auto& dirEntry : std::filesystem::directory_iterator(AllDir))
+		//	{
+		//		const auto& path = dirEntry.path();
+		//		auto relativePath = std::filesystem::relative(path, AssetPath);
+		//		
+		//		SearchPaths.push_back(relativePath.filename().c_str());
+		//	}
+		//
+		//	for(auto& dirEntrys : SearchPaths)
+		//	{
+		//		std::string filename;
+		//		std::string tempstring = dirEntrys.filename().string();
+		//
+		//		int i = 0;
+		//		//while(tempstring[i] == '0')
+		//		//{
+		//		//	i++;
+		//		//
+		//		//	tempstring.erase(0, i);
+		//		//}
+		//		for (const auto& character : tempstring)
+		//		{
+		//			if(character != 0)
+		//			{
+		//				filename += std::tolower(character);
+		//			}
+		//		}
+		//		if (filename.compare(queryLowerCase) != std::string::npos)
+		//		{
+		//			std::cout << "found";
+		//		}
+		//		
+		//	}
+		//}
 	}
 	
 	void AssetBrowserWindow::BackToParentPath(std::filesystem::path& CurrentPath)

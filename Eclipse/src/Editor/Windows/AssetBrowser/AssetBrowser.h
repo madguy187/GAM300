@@ -11,6 +11,8 @@ namespace Eclipse
 		std::filesystem::path NextDir;
 		RenderComponent sprite;
 		RenderComponent FolderIcon;
+		char searchBuffer[128];
+		std::vector<std::filesystem::path> SearchPaths;
 
 	public:
 		void Update() override;
