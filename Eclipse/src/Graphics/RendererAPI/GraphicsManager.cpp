@@ -177,6 +177,30 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     }
 }
 
+void Eclipse::GraphicsManager::CreateSky(std::string _Dir)
+{
+    if (SkyCount == 1)
+    {
+        ENGINE_LOG_ASSERT(false, "There is already 1 Cube Map Created");
+        return;
+    }
+
+    Sky = std::make_unique<CubeMap>();
+    Sky->CreateSky(_Dir);
+
+    SkyCount++;
+}
+
+void Eclipse::GraphicsManager::RenderSky(unsigned int FrameBufferID)
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
+    auto shdrpgm = Graphics::shaderpgms.find("Sky");
+
+    Sky->Render(shdrpgm->second);
+
+    shdrpgm->second.UnUse();
+}
+
 void Eclipse::GraphicsManager::Draw(unsigned int FrameBufferID, RenderComponent* _spritecomponent, GLenum mode)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
@@ -229,7 +253,7 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
     CameraComponent camera;
     TransformComponent camerapos;
 
-    if (framebufferID == engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID())
+    if (framebufferID == engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID())
     {
         camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
         camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetGameCameraID());

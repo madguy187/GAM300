@@ -220,7 +220,6 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClInclude Include="src\Graphics\ModelFactory\ModelFactory.h" />
     <ClInclude Include="src\Graphics\ModelFactory\ModelGlobal.h" />
     <ClInclude Include="src\Graphics\ModelFactory\Sky\CubeMap.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\Sky\glmemory.hpp" />
     <ClInclude Include="src\Graphics\OpenGL\OpenGL_Context.h" />
     <ClInclude Include="src\Graphics\Parser\Parser.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Graphics.h" />

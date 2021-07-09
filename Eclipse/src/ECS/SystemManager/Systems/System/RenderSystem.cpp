@@ -12,14 +12,15 @@
 
 void Eclipse::RenderSystem::Init()
 {
+    // Graphics Init =============================
     ENGINE_CORE_INFO("RenderSystem Init");
-    engine->gGraphics.pre_render();
+    engine->GraphicsManager.pre_render();
 
+    // Load All Models =============================
     engine->AssimpManager.LoadAllModels();
 
-    // SKY
-    skybox.init();
-    skybox.loadTextures("src/Assets/Sky");
+    // Create SKY =============================
+    engine->GraphicsManager.CreateSky("src/Assets/Sky");
 }
 
 Signature Eclipse::RenderSystem::RegisterAll()
@@ -35,24 +36,21 @@ Signature Eclipse::RenderSystem::RegisterAll()
 
 void Eclipse::RenderSystem::Update()
 {
-    // SKY =============================
-    glBindFramebuffer(GL_FRAMEBUFFER, engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
-    auto shdrpgm = Graphics::shaderpgms.find("Sky");
-    skybox.render(shdrpgm->second);
-    shdrpgm->second.UnUse();
+    // SKY Reder =============================
+    engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 
-    // RENDERCOMPONENTS & TRANSFORMCOMPONENT =============================
+    // (RENDERCOMPONENTS & TRANSFORMCOMPONENT) Render =============================
     for (auto const& entity : mEntities)
     {
         RenderComponent& _Sprites = engine->world.GetComponent<RenderComponent>(entity);
-        engine->gGraphics.Draw(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
-        engine->gGraphics.Draw(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
+        engine->GraphicsManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
+        engine->GraphicsManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
     }
 
     // CAMERA =============================
-    engine->gDebugManager.DrawDebugShapes(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+    engine->gDebugManager.DrawDebugShapes(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 
-    // MODELS =============================
-    engine->AssimpManager.Draw(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), GL_FILL);
-    engine->AssimpManager.Draw(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL);
+    // MODELS Render=============================
+    engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), GL_FILL);
+    engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL);
 }

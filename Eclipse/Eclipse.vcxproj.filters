@@ -453,7 +453,6 @@
     <ClInclude Include="src\Library\Math\Math.h" />
     <ClInclude Include="src\Editor\Windows\Debug\Debug.h" />
     <ClInclude Include="src\Graphics\ModelFactory\Sky\CubeMap.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\Sky\glmemory.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">

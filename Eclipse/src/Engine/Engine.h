@@ -15,7 +15,7 @@ namespace Eclipse
 	public:
 		World world;
 		CameraManager gCamera;
-		GraphicsManager gGraphics;
+		GraphicsManager GraphicsManager;
 		Clock Game_Clock;
 		DebugRenderingManager gDebugManager;
 		std::unique_ptr<EditorManager> editorManager;

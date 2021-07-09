@@ -93,7 +93,7 @@ namespace Eclipse
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
             glfwPollEvents();
-            engine->gGraphics.mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });
+            engine->GraphicsManager.mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });
 
             Game_Clock.set_timeSteps(0);
             float newTime = static_cast<float>(clock());
@@ -136,7 +136,7 @@ namespace Eclipse
             }
 
             // FRAMEBUFFER BIND =============================
-            engine->gGraphics.GlobalFrameBufferBind();
+            engine->GraphicsManager.GlobalFrameBufferBind();
 
             // RENDERSYSTEM =============================
             world.Update<RenderSystem>();
@@ -145,14 +145,14 @@ namespace Eclipse
             world.Update<LightingSystem>();
 
             // FRAMEBUFFER DRAW ==========================
-            engine->gGraphics.GlobalFrmeBufferDraw();
+            engine->GraphicsManager.GlobalFrmeBufferDraw();
 
             ImGuiSetup::End(EditorState);
             OpenGL_Context::post_render();
         }
 
         // unLoad
-        gGraphics.end();
+        GraphicsManager.end();
         AssimpManager.CleanUpAllModels();
         ImGuiSetup::Destroy(EditorState);
     }

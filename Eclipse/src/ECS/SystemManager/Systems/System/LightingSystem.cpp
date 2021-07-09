@@ -13,20 +13,20 @@ void Eclipse::LightingSystem::Update()
     for (auto const& entity : engine->LightManager.GetDirectionalLightContainer())
     {
         engine->LightManager.DrawDirectionalLight(entity.second,
-            engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), entity.first, GL_FILL);
+            engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), entity.first, GL_FILL);
     }
 
     // PointLights Draw
     for (auto const& entity : engine->LightManager.GetPointLightsContainer())
     {
         engine->LightManager.DrawPointLights(entity.second,
-            engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), entity.first, GL_FILL);
+            engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), entity.first, GL_FILL);
     }
 
     // SpotLight Draw
     for (auto const& entity : engine->LightManager.GetSpotLightsContainer())
     {
         engine->LightManager.DrawSpotLight(entity.second,
-            engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), entity.first, GL_FILL);
+            engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), entity.first, GL_FILL);
     }
 }

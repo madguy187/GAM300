@@ -4,41 +4,33 @@
 #include <string>
 #include <vector>
 #include "shader.h"
-#include "Graphics/ModelFactory/Sky/glmemory.hpp"
 
 namespace Eclipse
 {
-    class Cubemap
+    class CubeMap
     {
+    private:
+        unsigned int Id;
+        std::string Directory;
+        std::vector<std::string> Faces;
+        bool HasTextures;
+        unsigned int VAO;
+        unsigned int VBO;
+        unsigned int EBO;
     public:
-        Cubemap();
-
-        void loadTextures(std::string dir,
-            std::string right = "right.png",
-            std::string left = "left.png",
-            std::string top = "top.png",
-            std::string bottom = "bottom.png",
-            std::string front = "front.png",
-            std::string back = "back.png");
-
-        void init();
-        void render(Shader& shader);
-        void cleanup();
+        CubeMap();
+        void CreateSky(std::string _dir);
+        void Render(Shader& shader);
+        void Cleanup();
 
     private:
+        void Setup(int& height, int& width, int& channel);
 
-        // texture object
-        unsigned int id;
-        std::string dir;
-        std::vector<std::string> faces;
-        bool hasTextures;
-
-        // cube object
-        GLuint vboID;
-        //ArrayObject VAO;
-
-        unsigned int NEWVAO;
-        unsigned int VBO, EBO;
+        void LoadTextures(std::string dir,
+            std::string right = "right.png", std::string left = "left.png", std::string top = "top.png",
+            std::string bottom = "bottom.png", std::string front = "front.png", std::string back = "back.png");
+        void Load(std::string _dir, std::string right, std::string left,
+            std::string top, std::string bottom, std::string front, std::string back);
     };
 }
 
