@@ -25,9 +25,6 @@ void AssimpModelManager::CreateModel(std::string name, std::string FolderName)
     // Initialise
     AssimpModel* NewModel = new AssimpModel(false);
     NewModel->LoadAssimpModel(PathName);
-
-    // fbx file not working
-    //NewModel->LoadAssimpModel("src/Assets/ASSModels/dog/1.FBX");
     NewModel->SetName(name);
 
     // Insert
@@ -40,8 +37,8 @@ void AssimpModelManager::CreateModel(std::string name, std::string FolderName)
 
 void AssimpModelManager::LoadAllModels()
 {
-    CreateModel("White Dog", "dog");
-    CreateModel("Black Dog", "dog");
+    CreateModel("White Dog", "dog2");
+    CreateModel("Black Dog", "dog2");
     
     DebugPrint();
 
@@ -55,9 +52,12 @@ void AssimpModelManager::Draw(unsigned int FrameBufferID, GLenum Mode)
 
     for (auto const& Models : AssimpModelContainer_)
     {
+        shdrpgm->second.Use();
         auto& InvidualModels = *(Models.second);
         InvidualModels.Render(shdrpgm->second, Mode);
     }
+
+    shdrpgm->second.UnUse();
 }
 
 AssimpModelContainer AssimpModelManager::GetContainer()

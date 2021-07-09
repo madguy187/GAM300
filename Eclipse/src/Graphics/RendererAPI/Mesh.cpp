@@ -42,7 +42,7 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiCo
 
 void Mesh::Render(Shader& shader, GLenum mode)
 {
-    glBindVertexArray(VAO);
+   // glBindVertexArray(VAO);
 
     glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
@@ -114,15 +114,14 @@ void Mesh::Render(Shader& shader, GLenum mode)
             // bind texture
             Textures[i].bind();
         }
+        // reset
+        glActiveTexture(GL_TEXTURE0);
     }
 
     // EBO stuff
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
-
-    // reset
-    glActiveTexture(GL_TEXTURE0);
 }
 
 void Mesh::Cleanup()

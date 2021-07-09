@@ -14,7 +14,7 @@ AssimpModel::AssimpModel(bool noTex)
 void AssimpModel::Render(Shader& shader, GLenum MOde)
 {
     // Shader Activate
-    shader.Use();
+    //shader.Use();
 
     // Check Main Uniforms
     auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
@@ -25,7 +25,7 @@ void AssimpModel::Render(Shader& shader, GLenum MOde)
         meshes[i].Render(shader, MOde);
     }
 
-    shader.UnUse();
+    //shader.UnUse();
 }
 
 void AssimpModel::Cleanup()
@@ -38,9 +38,15 @@ void AssimpModel::Cleanup()
 
 void AssimpModel::LoadAssimpModel(std::string path)
 {
+    unsigned int importOptions = aiProcess_Triangulate
+        | aiProcess_OptimizeMeshes
+        | aiProcess_JoinIdenticalVertices
+        | aiProcess_Triangulate
+        | aiProcess_CalcTangentSpace
+        | aiProcess_FlipUVs;
 
     Assimp::Importer import;
-    const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+    const aiScene* scene = import.ReadFile(path, importOptions);
 
     //if (scene->GetEmbeddedTexture("src/Assets/ASSModels/dog/1.FBX") == nullptr)
     //{
@@ -240,64 +246,4 @@ std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType ty
     }
 
     return textures;
-}
-
-void AssimpModel::FBXLoadAssimpModel(const char* in)
-{
-    const aiScene* scene = aiImportFile(in, aiProcessPreset_TargetRealtime_MaxQuality);
-
-    if (!scene)
-    {
-        std::cout << "Could not load file " << in << std::endl;
-    }
-
-    std::vector<Mesh> meshes;
-    meshes.reserve(scene->mNumMeshes);
-
-    std::vector<Vertex> vertices;
-    std::vector<unsigned int> indices;
-    std::vector<Texture> textures;
-
-    for (unsigned int meshIdx = 0; meshIdx < scene->mNumMeshes; meshIdx++)
-    {
-        aiMesh* mesh = scene->mMeshes[meshIdx];
-
-        aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-        aiColor4D specularColor;
-        aiColor4D diffuseColor;
-        aiColor4D ambientColor;
-        float shininess;
-
-        aiGetMaterialColor(material, AI_MATKEY_COLOR_SPECULAR, &specularColor);
-        aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diffuseColor);
-        aiGetMaterialColor(material, AI_MATKEY_COLOR_AMBIENT, &ambientColor);
-        aiGetMaterialFloat(material, AI_MATKEY_SHININESS, &shininess);
-
-        for (int vertIdx = 0; vertIdx < mesh->mNumVertices; vertIdx++)
-        {
-            Vertex vertex;
-            aiVector3D vert = mesh->mVertices[vertIdx];
-            aiVector3D norm = mesh->mNormals[vertIdx];
-
-            // position
-            vertex.Position = glm::vec3(vert.x, vert.y, vert.z);
-
-            // normal vectors
-            vertex.Normal = glm::vec3(norm.x, norm.y, norm.z);
-
-            vertices.push_back(vertex);
-        }
-
-        std::vector<unsigned int> indices;
-        indices.reserve(mesh->mNumFaces * 3);
-
-        for (unsigned int faceIdx = 0; faceIdx < mesh->mNumFaces; faceIdx++)
-        {
-            indices.push_back(mesh->mFaces[faceIdx].mIndices[0u]);
-            indices.push_back(mesh->mFaces[faceIdx].mIndices[1u]);
-            indices.push_back(mesh->mFaces[faceIdx].mIndices[2u]);
-        }
-
-        Mesh Test = Mesh(vertices, indices, textures);
-    }
 }
