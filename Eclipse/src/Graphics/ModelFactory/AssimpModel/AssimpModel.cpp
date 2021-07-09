@@ -168,62 +168,39 @@ Mesh AssimpModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
     if (mesh->mMaterialIndex >= 0)
     {
         aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-        std::regex regexExpress("^\\*\\d+");
-        std::cmatch regexMatches;
 
-        //for (size_t j = 0; j < material->GetTextureCount(aiTextureType_DIFFUSE); j++)
-        //{      
-        //    // The path to the texture.
-        //    aiString texturePath;
+        aiString texture_file;
+        material->Get(AI_MATKEY_TEXTURE(aiTextureType_DIFFUSE, 0), texture_file);
 
-        //    // Get the path to the texture.
-        //    if (material->GetTexture(aiTextureType_LIGHTMAP, j, &texturePath) ==
-        //        aiReturn_SUCCESS)
-        //    {
-        //        // Check if it's an embedded or external  texture.
-        //        if (std::regex_search(texturePath.C_Str(), regexMatches, regexExpress))
-        //        {
-        //            // Get the index str.
-        //            std::string indexStr = *(regexMatches.begin());
-
-        //            // Drop the "*" character.
-        //            indexStr = indexStr.erase(0, 1);
-
-        //            // Convert the string to an integer. (This is the index in the
-        //            // Scene::mTextures[] array.
-        //            int index = std::stoi(indexStr);
-
-        //            // Print the index.
-        //            std::cout << "Scene::mTextures[" << index << "]." << std::endl;
-        //        }
-        //        else
-        //        {
-        //            // Print the texture file path.
-        //            std::cout << "File Path: " << texturePath.C_Str() << std::endl;
-        //        }
-        //    }
-        //}
-
-        if (noTex)
+        if (auto texture = scene->GetEmbeddedTexture(texture_file.C_Str()) ) 
         {
-            // diffuse color
-            aiColor4D diff(1.0f);
-            aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diff);
-
-            // specular color
-            aiColor4D spec(1.0f);
-            aiGetMaterialColor(material, AI_MATKEY_COLOR_SPECULAR, &spec);
-
-            return Mesh(vertices, indices, diff, spec);
+            std::cout << "Embedded" << std::endl;
+            // Not working for fbx file leh
         }
+        else
+        {
+            //regular file, check if it exists and read it
+            if (noTex)
+            {
+                // diffuse color
+                aiColor4D diff(1.0f);
+                aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diff);
 
-        // diffuse maps
-        std::vector<Texture> diffuseMaps = LoadTextures(material, aiTextureType_DIFFUSE);
-        textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+                // specular color
+                aiColor4D spec(1.0f);
+                aiGetMaterialColor(material, AI_MATKEY_COLOR_SPECULAR, &spec);
 
-        // specular maps
-        std::vector<Texture> specularMaps = LoadTextures(material, aiTextureType_SPECULAR);
-        textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+                return Mesh(vertices, indices, diff, spec);
+            }
+
+            // diffuse maps
+            std::vector<Texture> diffuseMaps = LoadTextures(material, aiTextureType_DIFFUSE);
+            textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+
+            // specular maps
+            std::vector<Texture> specularMaps = LoadTextures(material, aiTextureType_SPECULAR);
+            textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+        }
     }
 
     return Mesh(vertices, indices, textures);
@@ -237,7 +214,6 @@ std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType ty
     {
         aiString str;
         mat->GetTexture(type, i, &str);
-        //std::cout << str.C_Str() << std::endl;
 
         // prevent duplicate loading
         bool skip = false;

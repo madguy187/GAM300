@@ -135,9 +135,16 @@ namespace Eclipse
                 world.Update<CameraSystem>();
             }
 
+            // FRAMEBUFFER BIND =============================
             engine->gGraphics.GlobalFrameBufferBind();
+
+            // RENDERSYSTEM =============================
             world.Update<RenderSystem>();
+
+            // LIGHTINGSYSTEM =============================
             world.Update<LightingSystem>();
+
+            // FRAMEBUFFER DRAW ==========================
             engine->gGraphics.GlobalFrmeBufferDraw();
 
             ImGuiSetup::End(EditorState);

@@ -25,6 +25,8 @@ void AssimpModelManager::CreateModel(std::string name, std::string FolderName)
     // Initialise
     AssimpModel* NewModel = new AssimpModel(false);
     NewModel->LoadAssimpModel(PathName);
+
+    // fbx file not working
     //NewModel->LoadAssimpModel("src/Assets/ASSModels/dog/1.FBX");
     NewModel->SetName(name);
 

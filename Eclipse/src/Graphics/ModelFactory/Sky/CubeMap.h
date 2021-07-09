@@ -35,7 +35,10 @@ namespace Eclipse
 
         // cube object
         GLuint vboID;
-        ArrayObject VAO;
+        //ArrayObject VAO;
+
+        unsigned int NEWVAO;
+        unsigned int VBO, EBO;
     };
 }
 

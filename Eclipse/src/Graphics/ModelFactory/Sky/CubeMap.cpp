@@ -100,27 +100,24 @@ void Cubemap::init() {
          1.0f, -1.0f,  1.0f
     };
 
-    // generate/setup VAO
-    VAO.generate();
-    VAO.bind();
+    glGenVertexArrays(1, &NEWVAO);
+    glGenBuffers(1, &VBO);
+    glBindVertexArray(NEWVAO);
 
-    // setup VBO
-    VAO["VBO"] = BufferObject(GL_ARRAY_BUFFER);
-    VAO["VBO"].generate();
-    VAO["VBO"].bind();
-    VAO["VBO"].setData<float>(36 * 3, skyboxVertices, GL_STATIC_DRAW);
+    // load data into VBO
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, 108 * sizeof(float), skyboxVertices, GL_STATIC_DRAW);
 
-    // set attribute pointers
-    VAO["VBO"].setAttPointer<GLfloat>(0, 3, GL_FLOAT, 3, 0);
-
-    VAO["VBO"].clear();
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)(0 * sizeof(GL_FLOAT)));
+    glBindBuffer(GL_FLOAT, 0);
 
     glBindVertexArray(0);
 }
 
 void Cubemap::render(Shader& shader) 
 {
-    VAO.bind();
+    glBindVertexArray(NEWVAO);
 
     // Shader Activate
     shader.Use();
@@ -149,9 +146,8 @@ void Cubemap::render(Shader& shader)
         glBindTexture(GL_TEXTURE_CUBE_MAP, id);
     }
 
-    VAO.bind();
-    VAO.draw(GL_TRIANGLES, 0, 36);
-
+    glBindVertexArray(NEWVAO);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
     glDepthMask(GL_TRUE);
 
     shader.UnUse();
@@ -159,5 +155,5 @@ void Cubemap::render(Shader& shader)
 }
 
 void Cubemap::cleanup() {
-    VAO.cleanup();
+    //VAO.cleanup();
 }
