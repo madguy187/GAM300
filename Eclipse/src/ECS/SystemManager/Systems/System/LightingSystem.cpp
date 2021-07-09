@@ -10,6 +10,10 @@ void Eclipse::LightingSystem::Init()
 void Eclipse::LightingSystem::Update()
 {
     // Loop
+    ProfilerWindow timer;
+    timer.SetName({ SystemName::LIGHTING });
+    timer.tracker.system_start = glfwGetTime();
+	
     for (auto const& entity : engine->LightManager.GetDirectionalLightContainer())
     {
         engine->gGraphics.ShowTestWidgets(entity.second->ID, engine->gGraphics.createdID);
@@ -26,4 +30,8 @@ void Eclipse::LightingSystem::Update()
         engine->LightManager.DrawPointLights(entity.second,
             engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), entity.first, GL_FILL);
     }
+
+    timer.tracker.system_end = glfwGetTime();
+
+    timer.ContainerAddTime(timer.tracker);
 }

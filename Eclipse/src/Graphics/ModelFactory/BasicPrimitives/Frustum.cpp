@@ -1,9 +1,142 @@
 #include "pch.h"
 #include "Frustum.h"
 
-Frustum::Frustum()
+Frustum::Frustum(glm::vec3 _startPos, glm::vec3 _endPos) :
+	vaoID{ 1 }, vboID{ 1 }, eboID{ 0 },
+	primitiveType{ GL_LINES },
+	primitiveCount{ 1 },
+	drawCount{ 2 }
 {
+	startPos = _startPos;
+	endPos = _endPos;
+
+	initModel();
 }
+
+void Frustum::initModel()
+{
+	InsertModelData();
+	CreateBuffers();
+}
+
+void Frustum::InsertPosVtx()
+{
+	GLfloat lineSeg[] =
+	{
+		startPos.x, startPos.y, startPos.z,
+		endPos.x, endPos.y, endPos.z
+	};
+
+	PosVec.push_back({ lineSeg[0], lineSeg[1], lineSeg[2] });
+	PosVec.push_back({ lineSeg[3], lineSeg[4], lineSeg[5] });
+}
+
+void Frustum::InsertIdxVtx()
+{
+
+}
+
+void Frustum::InsertModelData()
+{
+	InsertPosVtx();
+}
+
+GLuint Frustum::GetVaoID()
+{
+	return vaoID;
+}
+
+GLuint Frustum::GetVboID()
+{
+	return vboID;
+}
+
+GLuint Frustum::GetEboID()
+{
+	return eboID;
+}
+
+GLenum Frustum::GetPrimitiveType()
+{
+	return primitiveType;
+}
+
+GLuint Frustum::GetPrimitiveCount()
+{
+	return primitiveCount;
+}
+
+GLuint Frustum::GetDrawCount()
+{
+	return drawCount;
+}
+
+void Frustum::SetVaoID(GLuint id)
+{
+	this->vaoID = id;
+}
+
+void Frustum::SetVboID(GLuint id)
+{
+	this->vboID = id;
+}
+
+void Frustum::SetEboID(GLuint id)
+{
+	this->eboID = id;
+}
+
+void Frustum::SetPrimitiveType(GLenum type)
+{
+	this->primitiveType = type;
+}
+
+void Frustum::SetPrimitiveCount(GLuint count)
+{
+	this->primitiveCount = count;
+}
+
+void Frustum::SetDrawCount(GLuint count)
+{
+	this->drawCount = count;
+}
+
+void Frustum::CreateVAO()
+{
+	//Define the VAO handle for position attributes
+	glCreateVertexArrays(1, &vaoID);
+	glEnableVertexArrayAttrib(vaoID, 0);
+	glVertexArrayVertexBuffer(vaoID, 0, vboID, 0, sizeof(glm::vec3));
+	glVertexArrayAttribFormat(vaoID, 0, 3, GL_FLOAT, GL_FALSE, 0);
+	glVertexArrayAttribBinding(vaoID, 0, 0);
+}
+
+void Frustum::CreateVBO()
+{
+	glCreateBuffers(1, &vboID);
+	glNamedBufferStorage(vboID,
+		sizeof(glm::vec3) * PosVec.size(), nullptr, GL_DYNAMIC_STORAGE_BIT);
+	glNamedBufferSubData(vboID, 0, sizeof(glm::vec3) * PosVec.size(), PosVec.data());
+}
+
+void Frustum::CreateEBO()
+{
+
+}
+
+void Frustum::CreateBuffers()
+{
+	CreateVBO();
+	CreateVAO();
+	CreateEBO();
+}
+
+void Frustum::DeleteModel()
+{
+	glDeleteVertexArrays(1, &vaoID);
+	glDeleteBuffers(1, &vboID);
+}
+
 
 glm::vec3 Frustum::ComputeNearCenter(CameraComponent& _camera)
 {
@@ -39,7 +172,7 @@ void Frustum::AddLineSegment(unsigned int index, glm::vec3 p0, glm::vec3 p1)
 {
 	ENGINE_LOG_ASSERT(index < 12, "Frustum index cannot be greater than 11!");
 
-	Lines3D newLine{ p0, p1 };
+	FrustumLines newLine{ p0, p1 };
 	lineSegments[index] = newLine;
 }
 

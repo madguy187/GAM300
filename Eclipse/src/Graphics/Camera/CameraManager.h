@@ -42,6 +42,8 @@ namespace Eclipse
 		void SetNearPlane(CameraComponent& _camera, float _nearPlane);
 		void SetFarPlane(CameraComponent& _camera, float _farPlane);
 
+		std::bitset<10>& GetInput();
+
 		void CreateGameCamera();
 		unsigned int GetGameCameraID();
 	};

@@ -22,6 +22,9 @@ enum class EditorWindowType
 	PROFILER,
 	CONSOLELOG,
 	GAMEVIEW,
+	DEBUG,
+	LOGGER,
+	ASSETBROWSER,
 	UNASSIGNED
 };
 
