@@ -17,11 +17,18 @@ out vec3 normal_from_vtxShader;
 
 void main() 
 {
+        vec2 over;
+
 		gl_Position =  uModelToNDC * vec4(vVertexPosition, 1.0f);
 
 		crntPos = vec3(model * vec4(vVertexPosition, 1.0));
 
 		normal_from_vtxShader = mat3(transpose(inverse(model))) * normal_from_vtxbuffer;  
+
+		float offsetX = TextureIndex.x * (1.0 / TextureDimensions.x);	
+		float offsetY = TextureIndex.y * (1.0 / TextureDimensions.y);
+		
+		over = vec2((TextureCoord.x / TextureDimensions.x) + offsetX, TextureCoord.y / TextureDimensions.y + offsetY);
 
 		TxtCoord = TextureCoord;
 }

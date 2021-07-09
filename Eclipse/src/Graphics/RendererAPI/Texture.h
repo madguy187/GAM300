@@ -9,8 +9,9 @@ namespace Eclipse
 {
 
 #ifndef CURRENT_CODE
-    class Texture 
+    class Texture
     {
+        // 3D Textures =============================
     public:
         Texture(std::string dir, std::string path, aiTextureType type);
 
@@ -24,6 +25,40 @@ namespace Eclipse
         aiTextureType type;
         std::string dir;
         std::string path;
+
+        // 2D Textures =============================
+    public:
+        Texture(std::string pathname);
+        void initTexture(std::string pathname);
+
+        GLuint GetHandle();
+
+        GLint GetWidth();
+        GLint GetHeight();
+        GLint GetChannels();
+
+        GLfloat GetCols();
+        GLfloat GetRows();
+
+        GLint GetSpriteWidth();
+        GLint GetSpriteHeight();
+
+        void setSpriteWidth(GLint _spriteWidth);
+        void setSpriteHeight(GLint _spriteHeight);
+
+        void DeleteTexture();
+    private:
+        GLuint handle;
+
+        GLint sheetWidth;
+        GLint sheetHeight;
+        GLint channels;
+
+        GLint spriteWidth;
+        GLint spriteHeight;
+
+        GLint numCols;
+        GLint numRows;
     };
 #else
     class Texture

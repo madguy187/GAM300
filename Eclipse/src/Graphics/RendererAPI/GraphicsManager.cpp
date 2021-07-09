@@ -93,6 +93,9 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("cube");
+
+        sprite.hasTexture = true;
+        sprite.textureRef = Graphics::textures.find("orange");
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
@@ -198,7 +201,7 @@ void Eclipse::GraphicsManager::RenderSky(unsigned int FrameBufferID)
 
     Sky->Render(shdrpgm->second);
 
-    shdrpgm->second.UnUse();
+    //shdrpgm->second.UnUse();
 }
 
 void Eclipse::GraphicsManager::Draw(unsigned int FrameBufferID, RenderComponent* _spritecomponent, GLenum mode)
@@ -232,20 +235,20 @@ void Eclipse::GraphicsManager::DrawIndexed(RenderComponent* in, GLenum mode)
 
 void Eclipse::GraphicsManager::CheckTexture(RenderComponent* in)
 {
-    //if (in->hasTexture)
-    //{
-    //    if (in->textureRef != Graphics::textures.end())
-    //    {
-    //        glBindTextureUnit(1, in->textureRef->second.GetHandle());
+    if (in->hasTexture)
+    {
+        if (in->textureRef != Graphics::textures.end())
+        {
+            glBindTexture(GL_TEXTURE_2D, in->textureRef->second.GetHandle());
 
-    //        glEnable(GL_BLEND);
+            glEnable(GL_BLEND);
 
-    //        glTextureParameteri(in->textureRef->second.GetHandle(), GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    //        glTextureParameteri(in->textureRef->second.GetHandle(), GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    //        glTextureParameteri(in->textureRef->second.GetHandle(), GL_TEXTURE_WRAP_S, GL_REPEAT);
-    //        glTextureParameteri(in->textureRef->second.GetHandle(), GL_TEXTURE_WRAP_T, GL_REPEAT);
-    //    }
-    //}
+            glTextureParameteri(in->textureRef->second.GetHandle(), GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTextureParameteri(in->textureRef->second.GetHandle(), GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTextureParameteri(in->textureRef->second.GetHandle(), GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTextureParameteri(in->textureRef->second.GetHandle(), GL_TEXTURE_WRAP_T, GL_REPEAT);
+        }
+    }
 }
 
 void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned int id, unsigned int framebufferID)
@@ -275,6 +278,8 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
     GLint uniform_var_loc1 = sprite.shaderRef->second.GetLocation("uModelToNDC");
     GLint uniform_var_loc2 = sprite.shaderRef->second.GetLocation("uColor");
     GLint uniform_var_loc3 = sprite.shaderRef->second.GetLocation("uTextureCheck");
+    GLint uniform_var_loc4 = sprite.shaderRef->second.GetLocation("TextureIndex");
+    GLint uniform_var_loc5 = sprite.shaderRef->second.GetLocation("TextureDimensions");
     GLuint tex_loc = sprite.shaderRef->second.GetLocation("uTex2d");
     GLuint cam = sprite.shaderRef->second.GetLocation("camPos");
     GLuint model2 = sprite.shaderRef->second.GetLocation("model");
@@ -314,26 +319,26 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
         glUniform1i(uniform_var_loc3, sprite.hasTexture);
     }
 
-    //if (uniform_var_loc4 >= 0)
-    //{
-    //    GLCall(glUniform2f(uniform_var_loc4, sprite.textureIdx.x, sprite.textureIdx.y));
-    //}
+    if (uniform_var_loc4 >= 0)
+    {
+        GLCall(glUniform2f(uniform_var_loc4, sprite.textureIdx.x, sprite.textureIdx.y));
+    }
 
-    //if (sprite.hasTexture)
-    //{
-    //    if (sprite.textureRef != Graphics::textures.end())
-    //    {
-    //        if (uniform_var_loc5 >= 0)
-    //        {
-    //            //GLCall(glUniform2f(uniform_var_loc5, sprite.textureRef->second.GetCols(), sprite.textureRef->second.GetRows()));
-    //        }
-    //        else
-    //        {
-    //            std::cout << "Uniform variable doesn't exist!!!\n";
-    //            std::exit(EXIT_FAILURE);
-    //        }
-    //    }
-    //}
+    if (sprite.hasTexture)
+    {
+        if (sprite.textureRef != Graphics::textures.end())
+        {
+            if (uniform_var_loc5 >= 0)
+            {
+                //GLCall(glUniform2f(uniform_var_loc5, sprite.textureRef->second.GetCols(), sprite.textureRef->second.GetRows()));
+            }
+            else
+            {
+                std::cout << "Uniform variable doesn't exist!!!\n";
+                std::exit(EXIT_FAILURE);
+            }
+        }
+    }
 
     if (tex_loc >= 0)
     {
