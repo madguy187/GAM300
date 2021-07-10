@@ -25,6 +25,7 @@ namespace Eclipse
 		void UpdateActor(Entity ent);
 		void GetActorPosition(Entity ent);
 		void SetActorPosition(Entity ent);
+		void ChangeRigidStatic(Entity ent);
 		void AddActorToScene(Entity ent);
 		void RemoveActorFromScene(Entity ent);
 	};

@@ -83,6 +83,72 @@ namespace Eclipse
 		}
 	}
 
+	void PhysicsManager::ChangeRigidStatic(Entity ent)
+	{
+		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
+		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
+		auto it = StaticObjects.find(ent);
+		auto it2 = RigidObjects.find(ent);
+		if (rigid._Static && it != StaticObjects.end())
+			return;
+		else if (!rigid._Static && it2 != RigidObjects.end())
+			return;
+
+		if (rigid._Static && it2 != RigidObjects.end())
+		{
+			if(rigid.inScene)
+				RemoveActorFromScene(ent);
+			PxShape** shapes = new PxShape*[RigidObjects[ent]->getNbShapes()];
+
+			RigidObjects[ent]->getShapes(shapes, RigidObjects[ent]->getNbShapes());
+			PxVec3 temptrans;
+			temptrans.x = transform.position.x;
+			temptrans.y = transform.position.y;
+			temptrans.z = transform.position.z;
+
+			PxRigidStatic* temp = Px_Physics->createRigidStatic(PxTransform(temptrans));
+
+
+			PxShape** shapeit = shapes;
+			while (shapeit != nullptr)
+			{
+				temp->attachShape(**shapeit);
+				shapeit++;
+			}
+
+			RigidObjects[ent]->release();
+			RigidObjects.erase(ent);
+			StaticObjects.insert(std::make_pair(ent, temp));
+		}
+		if (!rigid._Static && it != StaticObjects.end())
+		{
+			if (rigid.inScene)
+				RemoveActorFromScene(ent);
+
+			PxShape** shapes = new PxShape * [StaticObjects[ent]->getNbShapes()];
+
+			StaticObjects[ent]->getShapes(shapes, StaticObjects[ent]->getNbShapes());
+			PxVec3 temptrans;
+			temptrans.x = transform.position.x;
+			temptrans.y = transform.position.y;
+			temptrans.z = transform.position.z;
+
+			PxRigidDynamic* temp = Px_Physics->createRigidDynamic(PxTransform(temptrans));
+
+
+			PxShape** shapeit = shapes;
+			while (shapeit != nullptr)
+			{
+				temp->attachShape(**shapeit);
+				shapeit++;
+			}
+
+			StaticObjects[ent]->release();
+			StaticObjects.erase(ent);
+			RigidObjects.insert(std::make_pair(ent, temp));
+		}
+	}
+
 	void PhysicsManager::AttachBoxToActor(Entity ent, float hx, float hy, float hz)
 	{
 		if (StaticObjects.find(ent) == StaticObjects.end() || RigidObjects.find(ent) == RigidObjects.end())
@@ -156,7 +222,6 @@ namespace Eclipse
 			PxRigidStatic* temp = StaticObjects[ent];
 			PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*temp, PxCapsuleGeometry{ radius,halfheight }, *tempmat);
 			temp->attachShape(*tempshape);
-
 		}
 
 		if (RigidObjects.find(ent) != RigidObjects.end())
