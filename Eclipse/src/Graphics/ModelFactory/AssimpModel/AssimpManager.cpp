@@ -24,7 +24,6 @@ void AssimpModelManager::CreateModel(std::string name, std::string FolderName)
 
     // Initialise
     AssimpModel* NewModel = new AssimpModel(false);
-    //NewModel->LoadAssimpModel(PathName);
     NewModel->LoadAssimpModel(PathName);
     NewModel->SetName(name);
 
