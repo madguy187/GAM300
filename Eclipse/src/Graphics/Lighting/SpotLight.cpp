@@ -108,19 +108,19 @@ void SpotLight::CheckUniformLoc(Shader* _shdrpgm, SpotLightComponent& in_spot, i
     // ambient
     if (uniform_var_loc2 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc2, in_spot.ambient.x, in_spot.ambient.y, in_spot.ambient.z));
+        GLCall(glUniform3f(uniform_var_loc2, in_spot.ambient.getX(), in_spot.ambient.getY(), in_spot.ambient.getZ()));
     }
 
     // diffuse
     if (uniform_var_loc3 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc3, in_spot.diffuse.x, in_spot.diffuse.y, in_spot.diffuse.z));
+        GLCall(glUniform3f(uniform_var_loc3, in_spot.diffuse.getX(), in_spot.diffuse.getY(), in_spot.diffuse.getZ()));
     }
 
     // specular
     if (uniform_var_loc4 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc4, in_spot.specular.x, in_spot.specular.y, in_spot.specular.z));
+        GLCall(glUniform3f(uniform_var_loc4, in_spot.specular.getX(), in_spot.specular.getY(), in_spot.specular.getZ()));
     }
 
     // constant
@@ -167,19 +167,19 @@ void SpotLight::CheckUniformLoc(Shader* _shdrpgm, SpotLightComponent& in_spot, i
     // cutOff
     if (uniform_var_loc15 >= 0)
     {
-        GLCall(glUniform1f(uniform_var_loc15, glm::cos(glm::radians(12.5f))));
+        GLCall(glUniform1f(uniform_var_loc15, glm::cos(glm::radians(in_spot.cutOff))));
     }
 
     // outerCutOff
     if (uniform_var_loc16 >= 0)
     {
-        GLCall(glUniform1f(uniform_var_loc16, glm::cos(glm::radians(27.5f))));
+        GLCall(glUniform1f(uniform_var_loc16, glm::cos(glm::radians(in_spot.outerCutOff))));
     }
 
     // position
     if (uniform_var_loc17 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc17, in_spot.direction.x, in_spot.direction.y, in_spot.direction.z));
+        GLCall(glUniform3f(uniform_var_loc17, in_spot.direction.getX(), in_spot.direction.getY(), in_spot.direction.getZ()));
     }
 
     if (uniform_var_loc18 >= 0)

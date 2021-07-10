@@ -13,8 +13,8 @@
 void Eclipse::RenderSystem::Init()
 {
     // Graphics Init =============================
-    ENGINE_CORE_INFO("RenderSystem Init");
-    engine->GraphicsManager.Pre_Render();
+    EDITOR_LOG_INFO("RenderSystem Init");
+    engine->GraphicsManager.DebugPrintFrameBuffers();
 
     // Load All Models =============================
     engine->AssimpManager.LoadAllModels();

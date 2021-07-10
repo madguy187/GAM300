@@ -43,6 +43,7 @@ void AssimpModelManager::LoadAllModels()
     DebugPrint();
 
     ENGINE_CORE_INFO("All Assimp Models Loaded");
+    EDITOR_LOG_INFO("All Necessary Models Loaded");
 }
 
 void AssimpModelManager::Draw(unsigned int FrameBufferID, GLenum Mode)
@@ -54,7 +55,7 @@ void AssimpModelManager::Draw(unsigned int FrameBufferID, GLenum Mode)
     for (auto const& Models : AssimpModelContainer_)
     {
         auto& InvidualModels = *(Models.second);
-        InvidualModels.Render(shdrpgm->second, Mode);
+        InvidualModels.Render(shdrpgm->second, Mode,FrameBufferID);
     }
 
     shdrpgm->second.UnUse();

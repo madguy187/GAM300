@@ -91,10 +91,15 @@ void CubeMap::CreateSky(std::string _dir)
     glBindBuffer(GL_FLOAT, 0);
 
     glBindVertexArray(0);
+
+    EDITOR_LOG_INFO("CubeMap : Environment Created");
 }
 
 void CubeMap::Render(Shader& shader)
 {
+    if (Visible == false)
+        return;
+
     glBindVertexArray(VAO);
 
     // Shader Activate
@@ -176,6 +181,16 @@ bool Eclipse::CubeMap::GetTextureFlag()
 unsigned int Eclipse::CubeMap::GetFaceCount()
 {
     return Faces.size();
+}
+
+void Eclipse::CubeMap::SetVisible(bool in)
+{
+    Visible = in;
+}
+
+bool Eclipse::CubeMap::GetVisibllity()
+{
+    return Visible;
 }
 
 void Eclipse::CubeMap::Setup(int& height_, int& width_, int& channel)

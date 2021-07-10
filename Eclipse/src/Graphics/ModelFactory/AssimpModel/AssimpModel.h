@@ -34,7 +34,8 @@ namespace Eclipse
         Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
         std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type);
         void ProcessNode(aiNode* node, const aiScene* scene);
-        void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera);
+        void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera , unsigned int FrameBufferID);
+        void SimpleCameraPlay(TransformComponent& in, unsigned int Fraembuffer);
     public:
         bool noTex = false;
         unsigned int ID = 0;
@@ -44,7 +45,7 @@ namespace Eclipse
         AssimpModel(bool noTex = false);
 
         void LoadAssimpModel(std::string path);
-        void Render(Shader& shader, GLenum mode);
+        void Render(Shader& shader, GLenum mode, unsigned int FrameBufferID);
         void Cleanup();
         void SetName(std::string name);
         std::string GetName();

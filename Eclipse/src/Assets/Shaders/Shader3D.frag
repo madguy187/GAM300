@@ -247,5 +247,5 @@ vec3 CalcDirLight(DirLight light, vec3 normala, vec3 viewDira , vec4 texDiff, ve
 	float spec = pow(max(dot(viewDira, reflectDir), 0.0), 0.5 * 128);
 	vec3 specular = light.specular * (spec * vec3(texSpec));
 
-    return (ambient + diffuse + specular);
+    return (ambient + diffuse + specular) * light.lightColor;
 }

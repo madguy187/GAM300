@@ -133,10 +133,21 @@ namespace Eclipse
 	{
 		if (engine->world.CheckComponent<SpotLightComponent>(ID))
 		{
-			if (ECGui::CreateCollapsingHeader("PointLight Component"))
+			if (ECGui::CreateCollapsingHeader("SpotLight Component"))
 			{
 				auto& _SpotLight = engine->world.GetComponent<SpotLightComponent>(ID);
 
+				ECGui::DrawTextWidget<const char*>("IntensityStrength", "");
+				ECGui::DrawSliderFloatWidget("IntensityFloat", &_SpotLight.IntensityStrength, true, 0.f, 150.f);
+
+				ECGui::DrawTextWidget<const char*>("CutOff", "");
+				ECGui::DrawSliderFloatWidget("CutOffFloat", &_SpotLight.cutOff, true, 0.f, 50.0f);
+
+				ECGui::DrawTextWidget<const char*>("OuterCutOff", "");
+				ECGui::DrawSliderFloatWidget("OuterCutOffFloat", &_SpotLight.outerCutOff, true, 0.f, 50.0f);
+
+				ECGui::DrawTextWidget<const char*>("Direction", "");
+				ECGui::DrawSliderFloat3Widget("DirectionVec", &_SpotLight.direction, true, 0.f, 150.f);
 			}
 		}
 
@@ -150,8 +161,19 @@ namespace Eclipse
 			if (ECGui::CreateCollapsingHeader("DirectionalLightComponent"))
 			{
 				auto& _DLight = engine->world.GetComponent<DirectionalLightComponent>(ID);
+
+				ECGui::DrawTextWidget<const char*>("Light Colour", "");
+				ImGui::ColorPicker3("Color", (float*)&_DLight.lightColor, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
+
 				ECGui::DrawTextWidget<const char*>("DLight Ambient", "");
 				ECGui::DrawSliderFloat3Widget("AmbientVec", &_DLight.ambient, true, 0.0f, 1.0f);
+
+				ECGui::DrawTextWidget<const char*>("DLight Diffuse", "");
+				ECGui::DrawSliderFloat3Widget("DiffuseVec", &_DLight.diffuse, true, 0.0f, 1.0f);
+
+				ECGui::DrawTextWidget<const char*>("DLight Specular", "");
+				ECGui::DrawSliderFloat3Widget("SpecularVec", &_DLight.specular, true, 0.0f, 1.0f);
+
 			}
 		}
 

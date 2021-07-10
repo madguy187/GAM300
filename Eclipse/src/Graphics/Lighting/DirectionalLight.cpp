@@ -108,7 +108,7 @@ void Eclipse::DirectionalLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, Dir
     // LightColor
     if (uniform_var_loc8 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc8, in_light.lightColor.x, in_light.lightColor.y, in_light.lightColor.z));
+        GLCall(glUniform3f(uniform_var_loc8, in_light.lightColor.getX(), in_light.lightColor.getY(), in_light.lightColor.getX()));
     }
 
     // Visibility

@@ -380,6 +380,23 @@ void Eclipse::GraphicsManager::UpdateFrameBuffer()
     }
 }
 
+void Eclipse::GraphicsManager::DebugPrintFrameBuffers()
+{
+    std::cout << "FrameBuffer Size :" << mRenderContext._Framebuffers.size() << std::endl;
+    std::cout << "------------------------------------------" << std::endl;
+    for (auto const& SelectedFrameBuffer : mRenderContext._Framebuffers)
+    {
+        std::cout << " FrameBuffer Name :" << SelectedFrameBuffer.second->GetName() << std::endl;
+        std::cout << " FrameBuffer ID :" << SelectedFrameBuffer.second->GetFrameBufferID() << std::endl;
+        std::cout << " DepthBuffer ID :" << SelectedFrameBuffer.second->GetDepthBufferID() << std::endl;
+        std::cout << " ColorBuffer ID :" << SelectedFrameBuffer.second->GetTextureColourBufferID() << std::endl;
+        std::cout << " Type  : " << SelectedFrameBuffer.second->GetFrameBufferType() << std::endl;
+        std::cout << std::endl;
+    }
+
+    EDITOR_LOG_INFO("All FrameBufers Created");
+}
+
 void Eclipse::GraphicsManager::GlobalFrameBufferBind()
 {
     Eclipse::GraphicsManager::UpdateFrameBuffer();

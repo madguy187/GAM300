@@ -32,6 +32,7 @@ namespace Eclipse
         void CreatePrimitives(Entity ID, int ModelType);
         void CreateSky(std::string _Dir);
         void RenderSky(unsigned int FrameBufferID);
+        void DebugPrintFrameBuffers();
 
     private:
         void CheckUniformLoc(RenderComponent& sprite, unsigned int id, unsigned int framebufferID);

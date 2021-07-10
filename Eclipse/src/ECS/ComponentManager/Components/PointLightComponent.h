@@ -22,7 +22,7 @@ namespace Eclipse
         int AttenuationLevel = 5;
 
         bool hasTexture = false;
-        bool visible = true;
+        bool visible = false;
 
         IModel* modelRef;
         Shader* shaderRef;

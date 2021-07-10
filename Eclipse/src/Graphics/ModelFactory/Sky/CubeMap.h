@@ -17,6 +17,7 @@ namespace Eclipse
         unsigned int VAO;
         unsigned int VBO;
         unsigned int EBO;
+        bool Visible = true;
 
     public:
         CubeMap();
@@ -31,6 +32,8 @@ namespace Eclipse
         void SetTextureFlag(bool in);
         bool GetTextureFlag();
         unsigned int GetFaceCount();
+        void SetVisible(bool in);
+        bool GetVisibllity();
 
     private:
         void Setup(int& height, int& width, int& channel);

@@ -40,7 +40,7 @@ namespace Eclipse
         EventSystem<Test1>::dispatchEvent(t);
         std::cout << "ENDED" << std::endl;
 
-        RenderSystem::Init();
+        engine->GraphicsManager.Pre_Render();
         ImGuiSetup::Init(EditorState);
 
         if (EditorState)
@@ -81,6 +81,7 @@ namespace Eclipse
         world.RegisterSystemSignature<LightingSystem>(hi3);
 
         //Check this! - Rachel
+        RenderSystem::Init();
         CameraSystem::Init();
         LightingSystem::Init();
         engine->AssimpManager.AddComponents();
