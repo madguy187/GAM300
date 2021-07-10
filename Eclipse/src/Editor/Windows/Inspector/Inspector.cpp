@@ -13,7 +13,7 @@ namespace Eclipse
 
 	InspectorWindow::InspectorWindow()
 	{
-		Type = EditorWindowType::INSPECTOR;
+		Type = EditorWindowType::EWT_INSPECTOR;
 		WindowName = "Inspector";
 	}
 

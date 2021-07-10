@@ -27,7 +27,7 @@ void Eclipse::PointLight::CreatePointLight(unsigned int CreatedID)
 
     // Success
     _pointlights.insert({ counter,&sprite });
-    ENGINE_CORE_INFO("Pointlight Created Successfully");
+    EDITOR_LOG_INFO("Pointlight Created Successfully");
     counter++;
 }
 

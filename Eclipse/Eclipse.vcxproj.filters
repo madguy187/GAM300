@@ -465,6 +465,7 @@
     <ClInclude Include="src\Serialization\Serializer.h" />
     <ClInclude Include="src\Serialization\TinyXML\tinystr.h" />
     <ClInclude Include="src\Serialization\TinyXML\tinyxml.h" />
+    <ClInclude Include="src\Editor\Windows\Log\ConsoleData.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">

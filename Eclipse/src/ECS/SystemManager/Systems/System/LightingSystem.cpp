@@ -3,7 +3,7 @@
 
 void Eclipse::LightingSystem::Init()
 {
-    ENGINE_CORE_INFO("LightingSystem Init");
+    EDITOR_LOG_INFO("LightingSystem Init");
     engine->LightManager.init();
 }
 
