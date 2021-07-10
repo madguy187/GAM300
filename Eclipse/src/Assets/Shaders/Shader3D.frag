@@ -187,12 +187,12 @@ vec3 CalcPointLight(PointLight light, vec3 normala, vec3 fragPos, vec3 viewDira)
 
     vec3 specularStrength = light.specular;
     vec3 reflectDir = reflect(-lightDirection, normal);  
-    float spec = pow(max(dot(viewDira, reflectDir), 0.0), 4); // 32 is material shiness
+    float spec = pow(max(dot(viewDira, reflectDir), 0.0), 128); // 32 is material shiness
     vec3 specular = specularStrength * spec * light.lightColor * inten ;  
 
     vec3 result = vec3( vec3(ambient) + diffuse + specular) ;
 
-    return vec3(texture(uTex2d, TxtCoord)) * result;
+    return result;
 }
 
 // calculates the color when using a spot light.
