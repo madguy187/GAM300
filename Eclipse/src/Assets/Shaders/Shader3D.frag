@@ -226,9 +226,9 @@ vec3 CalcSpotLight(SpotLight light, vec3 normala, vec3 fragPos, vec3 viewDira)
     diffuse *= attenuation * intensity;
     specular *= attenuation * intensity;
 
-    vec3 result = (ambient + diffuse + specular) * light.lightColor;
+    vec3 result = (ambient + diffuse + specular);
     
-    return vec3(texture(uTex2d, TxtCoord)) * result;
+    return result;
 }
 
 // calculates the color when using a directional light.

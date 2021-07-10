@@ -36,6 +36,9 @@ void AssimpModelManager::CreateModel(std::string name, std::string FolderName , 
 
 void AssimpModelManager::LoadAllModels()
 {
+    // hi
+    //CreateModel("White Dog", "testhouse", "scene.gltf");
+
     CreateModel("White Dog", "dog","scene.gltf");
     CreateModel("Black Dog", "dog2","scene.gltf");
     CreateModel("Black", "dog3","scene.gltf");
