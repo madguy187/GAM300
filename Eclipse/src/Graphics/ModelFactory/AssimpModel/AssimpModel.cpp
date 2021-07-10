@@ -89,25 +89,15 @@ void AssimpModel::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera)
         // Everything Below this Comment is To be Removed !!
         if (NameOfModel == "Black Dog")
         {
-            Transform.position.setX(10);
-
-            Transform.scale.setX(2);
-            Transform.scale.setY(2);
-            Transform.scale.setZ(2);
+            Transform.position.setX(20);
         }
         else if (NameOfModel == "White Dog")
         {
-            Transform.position.setX(-10);
-            Transform.scale.setX(5);
-            Transform.scale.setY(5);
-            Transform.scale.setZ(5);
+            Transform.position.setX(-20);
         }
         else
         {
             Transform.position.setX(0);
-            Transform.scale.setX(10);
-            Transform.scale.setY(10);
-            Transform.scale.setZ(10);
         }
         ///////////////////////////////////////////////////////
 

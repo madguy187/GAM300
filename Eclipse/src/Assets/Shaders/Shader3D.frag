@@ -13,6 +13,8 @@ uniform vec3 camPos;
 
 // Structs
 uniform sampler2D diffuse0;
+uniform sampler2D specular0;
+uniform int noTex;
 
 struct Material 
 {
@@ -78,7 +80,7 @@ uniform DirLight directionlight[NR_DIRECTIONAL_LIGHTS];
 
 // Function Headers
 vec3 CalcPointLight(PointLight light, vec3 normala, vec3 fragPos, vec3 viewDira);
-vec3 CalcDirLight(DirLight light, vec3 normala, vec3 viewDira);
+vec3 CalcDirLight(DirLight light, vec3 normala, vec3 viewDira, vec4 texDiff, vec4 texSpec);
 vec3 CalcSpotLight(SpotLight light, vec3 normala, vec3 fragPos, vec3 viewDira);
 
 vec4 testMaterials()
@@ -122,7 +124,18 @@ void main ()
      vec3 norm = normalize(normal_from_vtxShader);
      vec3 viewDir = normalize(camPos - crntPos);
 
-     result = CalcDirLight(directionlight[0], norm, viewDir);
+    vec4 texDiff;
+	vec4 texSpec;
+
+	if (noTex == 1) {
+		//texDiff = material.diffuse;
+		//texSpec = material.specular;
+	} else {
+		texDiff = texture(diffuse0, TxtCoord);
+		texSpec = texture(specular0, TxtCoord);
+	}
+
+     result = CalcDirLight(directionlight[0], norm, viewDir,texDiff,texSpec);
 
      for(int i = 0 ; i < NumberOfPointLights ; i++ )
      {
@@ -207,20 +220,20 @@ vec3 CalcSpotLight(SpotLight light, vec3 normala, vec3 fragPos, vec3 viewDira)
 }
 
 // calculates the color when using a directional light.
-vec3 CalcDirLight(DirLight light, vec3 normala, vec3 viewDira)
+vec3 CalcDirLight(DirLight light, vec3 normala, vec3 viewDira , vec4 texDiff, vec4 texSpec)
 {
 	// ambient
-	vec3 ambient = light.ambient;
+	vec3 ambient = light.ambient * vec3(texDiff);
 
 	// diffuse
     vec3 lightDir = normalize(-light.direction);
     float diff = max(dot(normala, lightDir), 0.0);
-    vec3 diffuse = light.diffuse * diff;
+    vec3 diffuse = light.diffuse * (diff * vec3(texDiff));
 
     // specular
 	vec3 reflectDir = reflect(-lightDir, normala);
-	float spec = pow(max(dot(viewDira, reflectDir), 0.0), 128);
-	vec3 specular = light.specular * spec;
+	float spec = pow(max(dot(viewDira, reflectDir), 0.0), 0.5 * 128);
+	vec3 specular = light.specular * (spec * vec3(texSpec));
 
     return (ambient + diffuse + specular);
 }

@@ -37,6 +37,8 @@ namespace Eclipse
 			ShowEntityProperty(currEnt);
 			ShowTransformProperty(currEnt);
 			ShowPointLightProperty(currEnt);
+			ShowSpotLightProperty(currEnt);
+			ShowDirectionalLightProperty(currEnt);
 		}
 		else
 		{
@@ -134,6 +136,21 @@ namespace Eclipse
 			{
 				auto& _SpotLight = engine->world.GetComponent<SpotLightComponent>(ID);
 
+			}
+		}
+
+		return false;
+	}
+
+	bool InspectorWindow::ShowDirectionalLightProperty(Entity ID)
+	{
+		if (engine->world.CheckComponent<DirectionalLightComponent>(ID))
+		{
+			if (ECGui::CreateCollapsingHeader("DirectionalLightComponent"))
+			{
+				auto& _DLight = engine->world.GetComponent<DirectionalLightComponent>(ID);
+				ECGui::DrawTextWidget<const char*>("DLight Ambient", "");
+				ECGui::DrawSliderFloat3Widget("AmbientVec", &_DLight.ambient, true, 0.0f, 1.0f);
 			}
 		}
 

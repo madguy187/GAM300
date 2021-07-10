@@ -90,19 +90,19 @@ void Eclipse::DirectionalLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, Dir
     // ambient
     if (uniform_var_loc2 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc2, in_light.ambient.x, in_light.ambient.y, in_light.ambient.z));
+        GLCall(glUniform3f(uniform_var_loc2, in_light.ambient.getX(), in_light.ambient.getY(), in_light.ambient.getZ()));
     }
 
     // diffuse
     if (uniform_var_loc3 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc3, in_light.diffuse.x, in_light.diffuse.y, in_light.diffuse.z));
+        GLCall(glUniform3f(uniform_var_loc3, in_light.diffuse.getX(), in_light.diffuse.getY(), in_light.diffuse.getZ()));
     }
 
     // specular
     if (uniform_var_loc4 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc4, in_light.specular.x, in_light.specular.y, in_light.specular.z));
+        GLCall(glUniform3f(uniform_var_loc4, in_light.specular.getX(), in_light.specular.getY(), in_light.specular.getZ()));
     }
 
     // LightColor

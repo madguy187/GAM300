@@ -71,6 +71,9 @@ void Mesh::Render(Shader& shader, GLenum mode)
         GLint uniform_var_loc2 = shader.GetLocation("uColor");
         GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
         GLuint tex_loc = shader.GetLocation("uTex2d");
+        GLuint diff0 = shader.GetLocation("diffuse0");
+        GLuint spec = shader.GetLocation("specular0");
+        GLuint dsa = shader.GetLocation("noTex");
 
         if (uniform_var_loc2 >= 0)
         {
@@ -85,7 +88,11 @@ void Mesh::Render(Shader& shader, GLenum mode)
         if (tex_loc >= 0)
         {
             glUniform1i(tex_loc, i);
+            glUniform1i(diff0, i);
+            glUniform1i(spec, i);
+            glUniform1i(spec, false);
         }
+
         // bind texture
         Textures[i].Bind();
     }

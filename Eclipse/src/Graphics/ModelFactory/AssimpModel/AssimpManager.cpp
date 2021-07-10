@@ -120,6 +120,11 @@ void AssimpModelManager::AddComponents()
         Transform.scale.setX(10);
         Transform.scale.setY(10);
         Transform.scale.setZ(10);
+
+        // Alittle Shine
+        //Transform.rotation.setZ(270);
+        
+        // Sit properly
         Transform.rotation.setX(270);
     }
 }
