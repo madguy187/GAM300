@@ -58,7 +58,6 @@
 
 // Logger
 #include "Logger/Logger.h"
-#include "Editor/Windows/Log/Log.h"
 
 #include "matrix_transform.hpp"
 #include "type_ptr.hpp"
@@ -74,9 +73,6 @@
 
 // Profiler
 #include "Editor/Windows/Profiler/Profiler.h"
-
-//Asset Browser
-#include "Editor/Windows/AssetBroswer/AssetBrowser.h"
 
 // Custom Libraries
 #include "Library/Math/Vector.h"

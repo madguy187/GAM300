@@ -233,6 +233,7 @@ namespace Eclipse
 		//ImGui::PlotLines("Frame Times", values, IM_ARRAYSIZE(values));
 		//ImGui::ProgressBar(progress, ImVec2(0.0f, 0.0f));
 		ImGui::TextColored(ImVec4(0.9f, 0.6f, 0.1f, 1.0f), "%.2f %%", values[1]);
+		//ImGui::TextColored(ImVec4(0.9f, 0.6f, 0.1f, 1.0f), "%.2f %%", values[1]);
 		ImGui::PlotHistogram(name, values, IM_ARRAYSIZE(values), values_offset, overlay_text, scale_min, scale_max, graph_size,stride);
 	}
 }

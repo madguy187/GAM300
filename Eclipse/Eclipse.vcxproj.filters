@@ -225,7 +225,7 @@
     <ClInclude Include="src\Editor\Menu\MenuComponent.h">
       <Filter>Editor\Menu</Filter>
     </ClInclude>
-    <ClInclude Include="src\Editor\Windows\AssetBroswer\AssetBrowser.h">
+    <ClInclude Include="src\Editor\Windows\AssetBrowser\AssetBrowser.h">
       <Filter>Editor\Windows\AssetBroswer</Filter>
     </ClInclude>
     <ClInclude Include="src\Editor\Windows\Debug\Debug.h">
@@ -502,7 +502,7 @@
     <ClCompile Include="src\Editor\Menu\MenuComponent.cpp">
       <Filter>Editor\Menu</Filter>
     </ClCompile>
-    <ClCompile Include="src\Editor\Windows\AssetBroswer\AssetBrowser.cpp">
+    <ClCompile Include="src\Editor\Windows\AssetBrowser\AssetBrowser.cpp">
       <Filter>Editor\Windows\AssetBroswer</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\Debug\Debug.cpp">

@@ -11,6 +11,12 @@
       "path": "src/Assets/Textures/PlayPauseStop.png",
       "spriteDimensions": [ 302, 304 ],
       "spriteIndex": [ 0, 0 ]
+    },
+	{
+      "textureName": "FolderIcon",
+      "path": "src/Assets/Textures/Folder_Icon.png",
+      "spriteDimensions": [ 161, 144 ],
+      "spriteIndex": [ 0, 0 ]
     }
   ]
 }
