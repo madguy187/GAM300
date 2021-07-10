@@ -40,7 +40,7 @@ void AssimpModelManager::LoadAllModels()
 {
     CreateModel("White Dog", "dog2");
     CreateModel("Black Dog", "dog");
-    //CreateModel("Black", "dog");
+    CreateModel("Black", "dog");
     
     DebugPrint();
 
