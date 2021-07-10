@@ -11,6 +11,7 @@
 #include "ECS/SystemManager/Systems/System/EditorSystem.h"
 #include "ECS/SystemManager/Systems/System/LightingSystem.h"
 #include "ImGui/Setup/ImGuiSetup.h"
+#include "Serialization/SerializationManager.h"
 
 bool Tester1(const Test1& e)
 {
@@ -60,6 +61,7 @@ namespace Eclipse
         world.RegisterSystem<RenderSystem>();
         world.RegisterSystem<CameraSystem>();
         world.RegisterSystem<LightingSystem>();
+        world.RegisterSystem<SerializationManager>();
 
         // Render System
         Signature RenderSys = RenderSystem::RegisterAll();
@@ -75,6 +77,12 @@ namespace Eclipse
         hi3.set(world.GetComponentType<PointLightComponent>(), 1);
         world.RegisterSystemSignature<LightingSystem>(hi3);
 
+        //!!! TEMPORARY !!!
+        Signature test3;
+        hi3.set(world.GetComponentType<EntityComponent>(), 1);
+        world.RegisterSystemSignature<SerializationManager>(test3);
+        //!!! TEMPORARY !!!
+        
         //Check this! - Rachel
         CameraSystem::Init();
 
