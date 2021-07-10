@@ -10,7 +10,7 @@ void AssimpModelManager::CreateModel(std::string name, std::string FolderName)
     // add component here
 
     // Create path
-    std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/1.FBX").c_str();
+    std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/scene.gltf").c_str();
 
     // Test Path
     std::ifstream test(PathName);
@@ -39,8 +39,8 @@ void AssimpModelManager::CreateModel(std::string name, std::string FolderName)
 void AssimpModelManager::LoadAllModels()
 {
     CreateModel("White Dog", "dog3");
-    //CreateModel("Black Dog", "dog");
-    //CreateModel("Black", "dog");
+    CreateModel("Black Dog", "dog2");
+    CreateModel("Black", "dog");
     
     DebugPrint();
 

@@ -233,39 +233,40 @@ std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType ty
 {
     std::vector<Texture> textures;
 
-    Texture tex(directory, "textures/default_Base_Color.png", type);
-    tex.load(false);
-    textures.push_back(tex);
-    textures_loaded.push_back(tex);
+    // need my own reader for fbx textures
+    //Texture tex(directory, "textures/default_Base_Color.png", type);
+    //tex.load(false);
+    //textures.push_back(tex);
+    //textures_loaded.push_back(tex);
 
-    //for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
-    //{
-    //    aiString str;
-    //    mat->GetTexture(type, i, &str);
+    for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
+    {
+        aiString str;
+        mat->GetTexture(type, i, &str);
 
-    //    // prevent duplicate loading
-    //    bool skip = false;
-    //    for (unsigned int j = 0; j < textures_loaded.size(); j++)
-    //    {
-    //        if (std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0)
-    //        {
-    //            textures.push_back(textures_loaded[j]);
-    //            skip = true;
-    //            break;
-    //        }
-    //    }
+        // prevent duplicate loading
+        bool skip = false;
+        for (unsigned int j = 0; j < textures_loaded.size(); j++)
+        {
+            if (std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0)
+            {
+                textures.push_back(textures_loaded[j]);
+                skip = true;
+                break;
+            }
+        }
 
-    //    if (!skip)
-    //    {
-    //        // not loaded yet
-    //        std::cout << str.C_Str() << std::endl;
+        if (!skip)
+        {
+            // not loaded yet
+            std::cout << str.C_Str() << std::endl;
 
-    //        Texture tex(directory, str.C_Str(), type);
-    //        tex.load(false);
-    //        textures.push_back(tex);
-    //        textures_loaded.push_back(tex);
-    //    }
-    //}
+            Texture tex(directory, str.C_Str(), type);
+            tex.load(false);
+            textures.push_back(tex);
+            textures_loaded.push_back(tex);
+        }
+    }
 
     return textures;
 }
