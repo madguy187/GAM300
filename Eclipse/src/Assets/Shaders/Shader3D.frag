@@ -226,7 +226,7 @@ vec3 CalcSpotLight(SpotLight light, vec3 normala, vec3 fragPos, vec3 viewDira)
     diffuse *= attenuation * intensity;
     specular *= attenuation * intensity;
 
-    vec3 result = (ambient + diffuse + specular);
+    vec3 result = (ambient + diffuse + specular) * light.lightColor;
     
     return vec3(texture(uTex2d, TxtCoord)) * result;
 }

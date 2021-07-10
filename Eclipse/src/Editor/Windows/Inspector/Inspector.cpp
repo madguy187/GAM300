@@ -140,11 +140,14 @@ namespace Eclipse
 				ECGui::DrawTextWidget<const char*>("IntensityStrength", "");
 				ECGui::DrawSliderFloatWidget("IntensityFloat", &_SpotLight.IntensityStrength, true, 0.f, 150.f);
 
-				ECGui::DrawTextWidget<const char*>("CutOff", "");
-				ECGui::DrawSliderFloatWidget("CutOffFloat", &_SpotLight.cutOff, true, 0.f, 50.0f);
+				ECGui::DrawTextWidget<const char*>("Light Colour", "");
+				ImGui::ColorPicker3("Color", (float*)&_SpotLight.lightColor, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
 
 				ECGui::DrawTextWidget<const char*>("OuterCutOff", "");
 				ECGui::DrawSliderFloatWidget("OuterCutOffFloat", &_SpotLight.outerCutOff, true, 0.f, 50.0f);
+
+				ECGui::DrawTextWidget<const char*>("CutOff", "");
+				ECGui::DrawSliderFloatWidget("CutOffFloat", &_SpotLight.cutOff, true, 0.f, (_SpotLight.outerCutOff - 5.0f));
 
 				ECGui::DrawTextWidget<const char*>("Direction", "");
 				ECGui::DrawSliderFloat3Widget("DirectionVec", &_SpotLight.direction, true, 0.f, 150.f);

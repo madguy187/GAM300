@@ -149,7 +149,7 @@ void SpotLight::CheckUniformLoc(Shader* _shdrpgm, SpotLightComponent& in_spot, i
     // Light Color
     if (uniform_var_loc12 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc12, in_spot.lightColor.x, in_spot.lightColor.y, in_spot.lightColor.z));
+        GLCall(glUniform3f(uniform_var_loc12, in_spot.lightColor.getX(), in_spot.lightColor.getY(), in_spot.lightColor.getZ()));
     }
 
     // Own Color
