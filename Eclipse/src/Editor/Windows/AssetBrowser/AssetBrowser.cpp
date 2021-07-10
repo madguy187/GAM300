@@ -189,7 +189,12 @@ namespace Eclipse
 				}
 				if (ECGui::IsItemHovered())
 				{
-					ECGui::SetToolTip(fileNameString.c_str());
+					ImGui::BeginChild("test", { 200,200 }, true);
+					{
+						ImGui::Text("File Path: %s", relativePath.string().c_str());
+						ImGui::Text("File Name: %s", fileNameString.c_str());
+					}
+					ImGui::EndChild();
 				}
 				if (found && searchLowerCase == LowerCase(relativePath.filename().string().c_str()))
 				{
@@ -242,7 +247,14 @@ namespace Eclipse
 						}
 						if (ECGui::IsItemHovered())
 						{
-							ECGui::SetToolTip(fileNameString.c_str());
+							ImGui::BeginChild("test", { 200,200 }, true);
+							{
+								ImGui::Text("File Path: %s", relativePath.string().c_str());
+								ImGui::Text("File Name: %s", fileNameString.c_str());
+							}
+							ImGui::EndChild();
+							//ECGui::SetToolTip(fileNameString.c_str());
+							//ECGui::SetToolTip(relativePath.string().c_str());
 						}
 						ImDrawList* draw_list = ImGui::GetWindowDrawList();
 						ImGui::TextWrapped(fileNameString.c_str());
