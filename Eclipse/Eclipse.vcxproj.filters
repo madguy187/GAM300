@@ -40,8 +40,8 @@
     <Filter Include="Editor\Windows">
       <UniqueIdentifier>{C690B5AD-B25E-A9B3-9BF2-19DA875F8518}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Editor\Windows\AssetBroswer">
-      <UniqueIdentifier>{D9B80427-45C6-320D-CEAC-2EF83AB9FEC3}</UniqueIdentifier>
+    <Filter Include="Editor\Windows\AssetBrowser">
+      <UniqueIdentifier>{59D90627-C5E6-340D-4ECD-30F8BAD900C4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Editor\Windows\Debug">
       <UniqueIdentifier>{BC97D61F-A826-60E9-5145-74E43DB3708F}</UniqueIdentifier>
@@ -241,7 +241,7 @@
       <Filter>Editor\Menu</Filter>
     </ClInclude>
     <ClInclude Include="src\Editor\Windows\AssetBrowser\AssetBrowser.h">
-      <Filter>Editor\Windows\AssetBroswer</Filter>
+      <Filter>Editor\Windows\AssetBrowser</Filter>
     </ClInclude>
     <ClInclude Include="src\Editor\Windows\Debug\Debug.h">
       <Filter>Editor\Windows\Debug</Filter>
@@ -454,9 +454,6 @@
     <ClInclude Include="src\ImGui\Vendor\stb_image.h">
       <Filter>ImGui\Vendor</Filter>
     </ClInclude>
-    <ClInclude Include="src\Library\Math\Math.h">
-      <Filter>Library\Math</Filter>
-    </ClInclude>
     <ClInclude Include="src\Library\Math\Matrix.h">
       <Filter>Library\Math</Filter>
     </ClInclude>
@@ -497,6 +494,7 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Graphics\Lighting\LightProperties.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -539,7 +537,7 @@
       <Filter>Editor\Menu</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\AssetBrowser\AssetBrowser.cpp">
-      <Filter>Editor\Windows\AssetBroswer</Filter>
+      <Filter>Editor\Windows\AssetBrowser</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\Debug\Debug.cpp">
       <Filter>Editor\Windows\Debug</Filter>
@@ -714,9 +712,6 @@
     </ClCompile>
     <ClCompile Include="src\ImGui\Vendor\imgui_widgets.cpp">
       <Filter>ImGui\Vendor</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Library\Math\Math.cpp">
-      <Filter>Library\Math</Filter>
     </ClCompile>
     <ClCompile Include="src\Library\Math\Matrix.cpp">
       <Filter>Library\Math</Filter>

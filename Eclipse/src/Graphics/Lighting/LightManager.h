@@ -6,23 +6,6 @@
 
 namespace Eclipse
 {
-    // --------------- Base Cases -----------------------//
-    template<typename T, typename = void>
-    struct has_Color : std::false_type {};
-
-    template<typename T, typename = void>
-    struct has_LightColor : std::false_type {};
-    // --------------------------------------------------//
-
-    // Check if T has the variable , if have , will enter template
-    // --------------------------------------------------------------------------------------------------------------//
-    template<typename TypeOfLight>
-    struct has_Color< TypeOfLight, decltype(std::declval<TypeOfLight>().Color, void())> : std::true_type {};
-
-    template<typename TypeOfLight>
-    struct has_LightColor< TypeOfLight, decltype(std::declval<TypeOfLight>().lightColor, void())> : std::true_type {};
-    // --------------------------------------------------------------------------------------------------------------//
-
     enum class TypesOfLights
     {
         NONE,
@@ -66,6 +49,25 @@ namespace Eclipse
 
     class Lights
     {
+    public:
+        // --------------- Base Cases -----------------------//
+        template<typename T, typename = void>
+        struct has_Color : std::false_type {};
+
+        template<typename T, typename = void>
+        struct has_LightColor : std::false_type {};
+        // --------------------------------------------------//
+
+        // Check if T has the variable , if have , will enter template
+        // --------------------------------------------------------------------------------------------------------------//
+        template<typename TypeOfLight>
+        struct has_Color< TypeOfLight, decltype(std::declval<TypeOfLight>().Color, void())> : std::true_type {};
+
+        template<typename TypeOfLight>
+        struct has_LightColor< TypeOfLight, decltype(std::declval<TypeOfLight>().lightColor, void())> : std::true_type {};
+        // --------------------------------------------------------------------------------------------------------------//
+
+
     private:
         PointLight _allpointlights;
         DirectionalLight _DirectionalLights;
@@ -95,37 +97,14 @@ namespace Eclipse
         void SetAttenuation(PointLightComponent& in, unsigned int Level);
 
         template <typename TypeOfLight, typename TYPE>
-        void SetColor(TypeOfLight& OBJ, TYPE val)
-        {
-            if (constexpr(has_Color<TypeOfLight>::value == true))
-            {
-                OBJ.Color.setX(val);
-                OBJ.Color.setY(val);
-                OBJ.Color.setZ(val);
-            }
-        }
+        void SetColor(TypeOfLight& OBJ, TYPE val);
 
         template <typename TypeOfLight>
-        void SetColor(TypeOfLight& OBJ, ECVec4 in)
-        {
-            if (constexpr(has_Color<TypeOfLight>::value == true))
-            {
-                OBJ.Color.setX(in.x);
-                OBJ.Color.setY(in.y);
-                OBJ.Color.setZ(in.z);
-            }
-        }
+        void SetColor(TypeOfLight& OBJ, ECVec4 in);
 
         template <typename TypeOfLight>
-        void SetLightColor(TypeOfLight& OBJ, ECVec4 in)
-        {
-            if (constexpr(has_LightColor<TypeOfLight>::value == true))
-            {
-                OBJ.lightColor.setX(in.x);
-                OBJ.lightColor.setY(in.y);
-                OBJ.lightColor.setZ(in.z);
-            }
-        }
-
+        void SetLightColor(TypeOfLight& OBJ, ECVec4 in);
     };
+
+#include "Graphics/Lighting/LightProperties.hpp"
 }
