@@ -36,6 +36,7 @@ namespace Eclipse
 
 			ShowEntityProperty(currEnt);
 			ShowTransformProperty(currEnt);
+			ShowPointLightProperty(currEnt);
 		}
 		else
 		{
@@ -86,6 +87,53 @@ namespace Eclipse
 
 				ECGui::DrawTextWidget<const char*>("Scale", "");
 				ECGui::DrawSliderFloat3Widget("TransScale", &transCom.scale);
+			}
+		}
+
+		return false;
+	}
+
+	bool InspectorWindow::ShowPointLightProperty(Entity ID)
+	{
+		if (engine->world.CheckComponent<PointLightComponent>(ID))
+		{
+			if (ECGui::CreateCollapsingHeader("PointLight Component"))
+			{
+				auto& _PointLight = engine->world.GetComponent<PointLightComponent>(ID);
+
+				ECGui::DrawTextWidget<const char*>("IntensityStrength", "");
+				ECGui::DrawSliderFloatWidget("IntensityFloat", &_PointLight.IntensityStrength, true, 0.f, 150.f);
+
+				ECGui::DrawTextWidget<const char*>("Light Colour", "");
+				ECGui::DrawSliderFloat4Widget("ColourVec", &_PointLight.Color, true, 0.0f, 1.0f);
+				engine->LightManager.SetLightColor(_PointLight, { _PointLight.Color.getX() ,_PointLight.Color.getY() , _PointLight.Color.getZ() , 1.0f });
+
+				ECGui::DrawTextWidget<const char*>("Attenuation Level", "");
+				ECGui::DrawSliderIntWidget("ColourVec", &_PointLight.AttenuationLevel, true, 0, 10);
+				engine->LightManager.SetAttenuation(_PointLight, _PointLight.AttenuationLevel);
+
+				ECGui::DrawTextWidget<const char*>("Light Ambient", "");
+				ECGui::DrawSliderFloat3Widget("AmbientVec", &_PointLight.ambient, true, 0.0f, 1.0f);
+
+				ECGui::DrawTextWidget<const char*>("Light Diffuse", "");
+				ECGui::DrawSliderFloat3Widget("DiffuseVec", &_PointLight.diffuse, true, 0.0f, 1.0f);
+
+				ECGui::DrawTextWidget<const char*>("Light Specular", "");
+				ECGui::DrawSliderFloat3Widget("SpecularVec", &_PointLight.specular, true, 0.0f, 1.0f);
+			}
+		}
+
+		return false;
+	}
+
+	bool InspectorWindow::ShowSpotLightProperty(Entity ID)
+	{
+		if (engine->world.CheckComponent<SpotLightComponent>(ID))
+		{
+			if (ECGui::CreateCollapsingHeader("PointLight Component"))
+			{
+				auto& _SpotLight = engine->world.GetComponent<SpotLightComponent>(ID);
+
 			}
 		}
 

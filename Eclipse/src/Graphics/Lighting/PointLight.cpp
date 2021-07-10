@@ -56,17 +56,11 @@ void Eclipse::PointLight::CheckUniformLoc(Shader* _shdrpgm, PointLightComponent&
     GLint uniform_var_loc13 = _shdrpgm->GetLocation("uColor");
     GLint uniform_var_loc14 = _shdrpgm->GetLocation(("pointLights[" + number + "].IntensityStrength").c_str());
 
-    // Set Attenuation
-    engine->LightManager.SetAttenuation(in_pointlight, 5);
-
     // SpotLight Position
     TransformComponent& PointlightTransform = engine->world.GetComponent<TransformComponent>(in_pointlight.ID);
 
     // Which Camera's matrix
     CameraComponent& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
-
-    engine->LightManager.SetColor(in_pointlight, { 0.5,0.3,0.1,1 });
-    engine->LightManager.SetLightColor(in_pointlight, { 0.5,0.3,0.1,1 });
 
     // Model Matrix
     if (uniform_var_loc8 >= 0)
@@ -92,19 +86,19 @@ void Eclipse::PointLight::CheckUniformLoc(Shader* _shdrpgm, PointLightComponent&
     // ambient
     if (uniform_var_loc2 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc2, in_pointlight.ambient.x, in_pointlight.ambient.y, in_pointlight.ambient.z));
+        GLCall(glUniform3f(uniform_var_loc2, in_pointlight.ambient.getX(), in_pointlight.ambient.getY(), in_pointlight.ambient.getZ()));
     }
 
     // diffuse
     if (uniform_var_loc3 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc3, in_pointlight.diffuse.x, in_pointlight.diffuse.y, in_pointlight.diffuse.z));
+        GLCall(glUniform3f(uniform_var_loc3, in_pointlight.diffuse.getX(), in_pointlight.diffuse.getY(), in_pointlight.diffuse.getZ()));
     }
 
     // specular
     if (uniform_var_loc4 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc4, in_pointlight.specular.x, in_pointlight.specular.y, in_pointlight.specular.z));
+        GLCall(glUniform3f(uniform_var_loc4, in_pointlight.specular.getX(), in_pointlight.specular.getY(), in_pointlight.specular.getZ()));
     }
 
     // constant
@@ -140,13 +134,13 @@ void Eclipse::PointLight::CheckUniformLoc(Shader* _shdrpgm, PointLightComponent&
     // Light Color
     if (uniform_var_loc12 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc12, in_pointlight.lightColor.x, in_pointlight.lightColor.y, in_pointlight.lightColor.z));
+        GLCall(glUniform3f(uniform_var_loc12, in_pointlight.lightColor.getX(), in_pointlight.lightColor.getY(), in_pointlight.lightColor.getZ()));
     }
 
     // Own Color
     if (uniform_var_loc13 >= 0)
     {
-        GLCall(glUniform4f(uniform_var_loc13, in_pointlight.Color.x, in_pointlight.Color.y, in_pointlight.Color.z, in_pointlight.Color.w));
+        GLCall(glUniform4f(uniform_var_loc13, in_pointlight.Color.getX(), in_pointlight.Color.getY(), in_pointlight.Color.getZ(), in_pointlight.Color.getW()));
     }
 
     // Intensity of Light

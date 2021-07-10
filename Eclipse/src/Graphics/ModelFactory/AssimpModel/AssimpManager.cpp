@@ -3,14 +3,12 @@
 
 using namespace Eclipse;
 
-void AssimpModelManager::CreateModel(std::string name, std::string FolderName)
+void AssimpModelManager::CreateModel(std::string name, std::string FolderName , std::string filename)
 {
     Entity ID = engine->world.CreateEntity();
 
-    // add component here
-
     // Create path
-    std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/scene.gltf").c_str();
+    std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/" + filename).c_str();
 
     // Test Path
     std::ifstream test(PathName);
@@ -37,9 +35,9 @@ void AssimpModelManager::CreateModel(std::string name, std::string FolderName)
 
 void AssimpModelManager::LoadAllModels()
 {
-    CreateModel("White Dog", "dog3");
-    CreateModel("Black Dog", "dog2");
-    CreateModel("Black", "dog");
+    CreateModel("White Dog", "dog3","scene.gltf");
+    CreateModel("Black Dog", "dog2","scene.gltf");
+    CreateModel("Black", "dog","scene.gltf");
     
     DebugPrint();
 

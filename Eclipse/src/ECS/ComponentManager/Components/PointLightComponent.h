@@ -19,6 +19,7 @@ namespace Eclipse
         float linear = 0.09f;
         float quadratic = 0.032f;
         float radius = 0.0f;
+        int AttenuationLevel = 5;
 
         bool hasTexture = false;
         bool visible = true;

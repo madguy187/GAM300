@@ -185,6 +185,10 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClInclude Include="src\Editor\Windows\Log\Log.h" />
     <ClInclude Include="src\Editor\Windows\Profiler\Profiler.h" />
     <ClInclude Include="src\Editor\Windows\Scene\Scene.h" />
+    <ClInclude Include="src\Editor\Windows\SwitchViews\Bottom.h" />
+    <ClInclude Include="src\Editor\Windows\SwitchViews\Left.h" />
+    <ClInclude Include="src\Editor\Windows\SwitchViews\Right.h" />
+    <ClInclude Include="src\Editor\Windows\SwitchViews\Top.h" />
     <ClInclude Include="src\Engine\Engine.h" />
     <ClInclude Include="src\EntryPoint\EntryPoint.h" />
     <ClInclude Include="src\Events\EventManager.h" />
@@ -286,6 +290,10 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClCompile Include="src\Editor\Windows\Log\Log.cpp" />
     <ClCompile Include="src\Editor\Windows\Profiler\Profiler.cpp" />
     <ClCompile Include="src\Editor\Windows\Scene\Scene.cpp" />
+    <ClCompile Include="src\Editor\Windows\SwitchViews\Bottom.cpp" />
+    <ClCompile Include="src\Editor\Windows\SwitchViews\Left.cpp" />
+    <ClCompile Include="src\Editor\Windows\SwitchViews\Right.cpp" />
+    <ClCompile Include="src\Editor\Windows\SwitchViews\Top.cpp" />
     <ClCompile Include="src\Engine\Engine.cpp" />
     <ClCompile Include="src\EntryPoint\EntryPoint.cpp" />
     <ClCompile Include="src\Graphics\Camera\CameraManager.cpp" />

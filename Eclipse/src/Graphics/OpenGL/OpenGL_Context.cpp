@@ -349,6 +349,10 @@ void Eclipse::OpenGL_Context::CreateFrameBuffers()
 {
     Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::GAMEVIEW);
     Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::SCENEVIEW);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::SWITCHINGVIEWS_TOP);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::SWITCHINGVIEWS_BOTTOM);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::SWITCHINGVIEWS_LEFT);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::SWITCHINGVIEWS_RIGHT);
 }
 
 void Eclipse::OpenGL_Context::CreateFrameBuffers(unsigned int width, unsigned int height, Eclipse::FrameBufferMode in)

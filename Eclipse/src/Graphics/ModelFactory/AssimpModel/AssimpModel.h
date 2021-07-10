@@ -12,8 +12,6 @@
 
 namespace Eclipse
 {
-    // GTLF Reader
-    // Render Multiple Have issues for now
     class AssimpModel
     {
     private:
@@ -49,4 +47,4 @@ namespace Eclipse
     };
 
 }
-#endif // ASSIMP_MODEL_CLASS
+#endif // ASSIMP_MODEL_CLASS#ifndef ASSIMP_MODEL_CLASS_H

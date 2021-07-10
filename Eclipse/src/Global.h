@@ -25,6 +25,10 @@ enum class EditorWindowType
 	DEBUG,
 	LOGGER,
 	ASSETBROWSER,
+	SWITCHVIEW_TOP,
+	SWITCHVIEW_Bottom,
+	SWITCHVIEW_Left,
+	SWITCHVIEW_Right,
 	UNASSIGNED
 };
 

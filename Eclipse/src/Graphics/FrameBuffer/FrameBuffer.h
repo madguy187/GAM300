@@ -8,11 +8,19 @@ namespace Eclipse
         NONE = 0,
         GAMEVIEW = 1,
         SCENEVIEW = 2,
+        SWITCHINGVIEWS_TOP = 3,
+        SWITCHINGVIEWS_BOTTOM,
+        SWITCHINGVIEWS_LEFT,
+        SWITCHINGVIEWS_RIGHT,
         MAXCOUNT
     };
 
     static const char* enum_FrameBufferMode_str[] =
-    { "NONE", "GAMEVIEW", "SCENEVIEW", "MAXCOUNT" };
+    {
+      "NONE", "GAMEVIEW", "SCENEVIEW",
+      "SWITCHINGVIEWS_TOP", "SWITCHINGVIEWS_BOTTOM", "SWITCHINGVIEWS_LEFT", "SWITCHINGVIEWS_RIGHT",
+      "MAXCOUNT"
+    };
 
     class FrameBuffer
     {

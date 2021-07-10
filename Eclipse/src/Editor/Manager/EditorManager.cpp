@@ -12,6 +12,12 @@
 #include "Editor/Windows/Profiler/Profiler.h"
 //#include "Library/Strings/Lexical.h"
 
+// Switch Views --------------------------
+#include "Editor/Windows/SwitchViews/Top.h"
+#include "Editor/Windows/SwitchViews/Bottom.h"
+#include "Editor/Windows/SwitchViews/Right.h"
+#include "Editor/Windows/SwitchViews/Left.h"
+
 namespace Eclipse
 {
 	EditorManager::EditorManager()
@@ -31,6 +37,10 @@ namespace Eclipse
 		AddWindow<LoggerWindow>("Log");
 		AddWindow<AssetBrowserWindow>("AssetBrowser");
 		AddWindow<DebugWindow>("Debug");
+		AddWindow<eTopViewWindow>("SwitchView_Top");
+		AddWindow<eBottomViewWindow>("SwitchView_Bottom");
+		AddWindow<eLeftViewWindow>("SwitchView_Left");
+		AddWindow<eRightViewWindow>("SwitchView_Right");
 	}
 
 	void EditorManager::InitMenu()

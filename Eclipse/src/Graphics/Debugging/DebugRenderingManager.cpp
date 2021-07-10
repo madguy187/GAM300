@@ -53,6 +53,8 @@ void Eclipse::DebugRenderingManager::AddCameraFrustum(unsigned int ID, CameraCom
 
 void Eclipse::DebugRenderingManager::DrawFrustum(unsigned int ID, unsigned int framebufferID)
 {
+    glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
+
     auto& frustum = std::any_cast<Frustum>(debugShapes[ID]);
     frustum.UpdateFrustum(engine->world.GetComponent<CameraComponent>(ID));
     SetDebugShape(ID, frustum);

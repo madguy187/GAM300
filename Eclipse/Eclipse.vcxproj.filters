@@ -495,6 +495,10 @@
     </ClInclude>
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Graphics\Lighting\LightProperties.hpp" />
+    <ClInclude Include="src\Editor\Windows\SwitchViews\Top.h" />
+    <ClInclude Include="src\Editor\Windows\SwitchViews\Bottom.h" />
+    <ClInclude Include="src\Editor\Windows\SwitchViews\Left.h" />
+    <ClInclude Include="src\Editor\Windows\SwitchViews\Right.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -729,5 +733,9 @@
       <Filter>Time</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\Editor\Windows\SwitchViews\Top.cpp" />
+    <ClCompile Include="src\Editor\Windows\SwitchViews\Bottom.cpp" />
+    <ClCompile Include="src\Editor\Windows\SwitchViews\Left.cpp" />
+    <ClCompile Include="src\Editor\Windows\SwitchViews\Right.cpp" />
   </ItemGroup>
 </Project>

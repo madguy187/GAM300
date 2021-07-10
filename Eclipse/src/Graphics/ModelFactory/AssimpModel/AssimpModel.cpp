@@ -259,7 +259,7 @@ std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType ty
         if (!skip)
         {
             // not loaded yet
-            std::cout << str.C_Str() << std::endl;
+            //std::cout << str.C_Str() << std::endl;
 
             Texture tex(directory, str.C_Str(), type);
             tex.load(false);

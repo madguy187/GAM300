@@ -32,3 +32,25 @@ void Lights::SetLightColor(TypeOfLight& OBJ, ECVec4 in)
         OBJ.lightColor.setZ(in.z);
     }
 }
+
+template<typename TypeOfLight>
+inline void Eclipse::Lights::SetAmbient(TypeOfLight& OBJ, ECVec3 in)
+{
+    if (constexpr(has_LightColor<TypeOfLight>::value == true))
+    {
+        OBJ.ambient.setX(in.x);
+        OBJ.ambient.setY(in.y);
+        OBJ.ambient.setZ(in.z);
+    }
+}
+
+template<typename TypeOfLight>
+inline void Eclipse::Lights::SetDiffuse(TypeOfLight& OBJ, ECVec3 in)
+{
+    if (constexpr(has_LightColor<TypeOfLight>::value == true))
+    {
+        OBJ.diffuse.setX(in.x);
+        OBJ.diffuse.setY(in.y);
+        OBJ.diffuse.setZ(in.z);
+    }
+}

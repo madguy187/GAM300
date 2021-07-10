@@ -56,6 +56,13 @@ namespace Eclipse
 
         template<typename T, typename = void>
         struct has_LightColor : std::false_type {};
+
+        template<typename T, typename = void>
+        struct has_Ambient : std::false_type {};
+
+        template<typename T, typename = void>
+        struct has_Diffuse : std::false_type {};
+
         // --------------------------------------------------//
 
         // Check if T has the variable , if have , will enter template
@@ -65,6 +72,12 @@ namespace Eclipse
 
         template<typename TypeOfLight>
         struct has_LightColor< TypeOfLight, decltype(std::declval<TypeOfLight>().lightColor, void())> : std::true_type {};
+
+        template<typename TypeOfLight>
+        struct has_Ambient< TypeOfLight, decltype(std::declval<TypeOfLight>().ambient, void())> : std::true_type {};
+
+        template<typename TypeOfLight>
+        struct has_Diffuse< TypeOfLight, decltype(std::declval<TypeOfLight>().diffuse, void())> : std::true_type {};
         // --------------------------------------------------------------------------------------------------------------//
 
 
@@ -104,6 +117,12 @@ namespace Eclipse
 
         template <typename TypeOfLight>
         void SetLightColor(TypeOfLight& OBJ, ECVec4 in);
+
+        template <typename TypeOfLight>
+        void SetAmbient(TypeOfLight& OBJ, ECVec3 in);
+
+        template <typename TypeOfLight>
+        void SetDiffuse(TypeOfLight& OBJ, ECVec3 in);
     };
 
 #include "Graphics/Lighting/LightProperties.hpp"
