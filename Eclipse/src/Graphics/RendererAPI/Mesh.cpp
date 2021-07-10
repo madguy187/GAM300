@@ -60,7 +60,7 @@ void Mesh::Render(Shader& shader, GLenum mode)
 
         // retrieve texture info
         std::string name;
-        switch (Textures[i].type)
+        switch (Textures[i].GetType())
         {
         case aiTextureType_DIFFUSE:
             name = "diffuse" + std::to_string(diffuseIdx++);
@@ -90,7 +90,7 @@ void Mesh::Render(Shader& shader, GLenum mode)
         }
         // bind texture
         //Textures[i].bind();
-        glBindTexture(GL_TEXTURE_2D, Textures[i].id);
+        glBindTexture(GL_TEXTURE_2D, Textures[i].GetId());
     }
     // EBO stuff
     glBindVertexArray(VAO);

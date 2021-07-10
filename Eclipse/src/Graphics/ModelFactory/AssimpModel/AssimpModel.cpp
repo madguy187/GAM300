@@ -13,9 +13,6 @@ AssimpModel::AssimpModel(bool noTex)
 
 void AssimpModel::Render(Shader& shader, GLenum MOde)
 {
-    // Shader Activate
-    //shader.Use();
-
     // Check Main Uniforms
     auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
     CheckUniformLoc(shader, _camera);
@@ -24,8 +21,6 @@ void AssimpModel::Render(Shader& shader, GLenum MOde)
     {
         meshes[i].Render(shader, MOde);
     }
-
-    //shader.UnUse();
 }
 
 void AssimpModel::Cleanup()
@@ -95,14 +90,24 @@ void AssimpModel::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera)
         if (NameOfModel == "Black Dog")
         {
             Transform.position.setX(10);
+
+            Transform.scale.setX(2);
+            Transform.scale.setY(2);
+            Transform.scale.setZ(2);
         }
         else if (NameOfModel == "White Dog")
         {
             Transform.position.setX(-10);
+            Transform.scale.setX(5);
+            Transform.scale.setY(5);
+            Transform.scale.setZ(5);
         }
         else
         {
             Transform.position.setX(0);
+            Transform.scale.setX(10);
+            Transform.scale.setY(10);
+            Transform.scale.setZ(10);
         }
         ///////////////////////////////////////////////////////
 
@@ -138,7 +143,7 @@ void Eclipse::AssimpModel::GetTextureNames()
 {
     for (int i = 0; i < textures_loaded.size(); i++)
     {
-        std::cout << " Texture Name " << textures_loaded[i].path << std::endl;
+        std::cout << " Texture Name " << textures_loaded[i].GetPath() << std::endl;
     }
 }
 
@@ -248,7 +253,7 @@ std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType ty
         bool skip = false;
         for (unsigned int j = 0; j < textures_loaded.size(); j++)
         {
-            if (std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0)
+            if (std::strcmp(textures_loaded[j].GetPath().data(), str.C_Str()) == 0)
             {
                 textures.push_back(textures_loaded[j]);
                 skip = true;
@@ -262,7 +267,7 @@ std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType ty
             //std::cout << str.C_Str() << std::endl;
 
             Texture tex(directory, str.C_Str(), type);
-            tex.load(false);
+            tex.Load(false);
             textures.push_back(tex);
             textures_loaded.push_back(tex);
         }
