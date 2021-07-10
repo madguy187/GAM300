@@ -296,10 +296,10 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
         glUniform4f(bb, 1, 1, 1, 1);
     }
 
-    if (ImGui::CollapsingHeader("Material"))
-    {
-        ImGui::ColorPicker3("Color", (float*)&sprite.color, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
-    }
+    //if (ImGui::CollapsingHeader("Material"))
+    //{
+    //    ImGui::ColorPicker3("Color", (float*)&sprite.color, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
+    //}
 
     if (uniform_var_loc1 >= 0)
     {
@@ -323,7 +323,7 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
 
     if (uniform_var_loc2 >= 0)
     {
-        glUniform4f(uniform_var_loc2, sprite.color.x, sprite.color.y, sprite.color.z, sprite.transparency);
+        glUniform4f(uniform_var_loc2, sprite.color.getX(), sprite.color.getY(), sprite.color.getZ(), sprite.transparency);
     }
 
     if (uniform_var_loc3 >= 0)

@@ -107,7 +107,8 @@ namespace Eclipse
 				ECGui::DrawSliderFloatWidget("IntensityFloat", &_PointLight.IntensityStrength, true, 0.f, 150.f);
 
 				ECGui::DrawTextWidget<const char*>("Light Colour", "");
-				ECGui::DrawSliderFloat4Widget("ColourVec", &_PointLight.Color, true, 0.0f, 1.0f);
+				ImGui::ColorPicker3("Color", (float*)&_PointLight.Color, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
+				//ECGui::DrawSliderFloat4Widget("ColourVec", &_PointLight.Color, true, 0.0f, 1.0f);
 				engine->LightManager.SetLightColor(_PointLight, { _PointLight.Color.getX() ,_PointLight.Color.getY() , _PointLight.Color.getZ() , 1.0f });
 
 				ECGui::DrawTextWidget<const char*>("Attenuation Level", "");
