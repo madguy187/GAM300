@@ -12,7 +12,7 @@ namespace Eclipse
 
 	DebugWindow::DebugWindow()
 	{
-		Type = EditorWindowType::DEBUG;
+		Type = EditorWindowType::DEBUG_;
 		WindowName = "Debug";
 	}
 

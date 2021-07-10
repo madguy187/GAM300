@@ -1,31 +1,29 @@
 #include "pch.h"
 #include "SerializationManager.h"
 
-SerializationManager::SerializationManager() {}
-
-void SerializationManager::Update()
+namespace Eclipse
 {
+	SerializationManager::SerializationManager() {}
 
-}
-
-void SerializationManager::SerializeAllEntity(const char* fullpath)
-{
-	std::filesystem::path p(fullpath);
-	p.filename().replace_extension("");
-
-	sz.StartElement(p.string());
-	sz.StartElement("Entities");
-	
-	for (auto const& ent : mEntities)
+	void SerializationManager::SerializeAllEntity(const char* fullpath)
 	{
+		std::vector<Entity>& entities = engine->editorManager->EntityHierarchyList_;
+		std::filesystem::path p(fullpath);
+		p.filename().replace_extension("");
 
+		sz.StartElement(p.string());
+		sz.StartElement("Entities");
+		sz.AddAttributeToElement("Size", entities.size());
+		for (auto const& ent : entities)
+		{
+
+		}
+		sz.CloseElement();
+		sz.CloseElement();
 	}
-	sz.AddAttributeToElement("Size", mEntities.size());
-	sz.CloseElement();
-	sz.CloseElement();
-}
 
-SerializationManager::~SerializationManager() 
-{
-	SerializeAllEntity();
+	SerializationManager::~SerializationManager()
+	{
+		SerializeAllEntity();
+	}
 }

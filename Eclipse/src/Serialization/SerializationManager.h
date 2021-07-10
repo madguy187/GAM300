@@ -1,16 +1,17 @@
 #pragma once
 #include "Serializer.h"
 
-class SerializationManager : public System
+namespace Eclipse
 {
-	Serializer sz;
+	class SerializationManager
+	{
+		Serializer sz;
 
-public:
-	SerializationManager();
+	public:
+		SerializationManager();
 
-	void Update() override;
+		void SerializeAllEntity(const char* fullpath = "Data/Temp/temp.xml");
 
-	void SerializeAllEntity(const char* fullpath = "Data/Temp/temp.xml");
-
-	~SerializationManager();
-};
+		~SerializationManager();
+	};
+}

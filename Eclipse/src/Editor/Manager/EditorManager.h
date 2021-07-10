@@ -2,6 +2,7 @@
 
 #include "Editor/Windows/Interface/ECGuiWindow.h"
 #include "Editor/Menu/MenuBar.h"
+#include "Serialization/SerializationManager.h"
 
 namespace Eclipse
 {
@@ -46,6 +47,10 @@ namespace Eclipse
 		MenuBar MenuBar_;
 		size_t Size_{ 0 };
 
+		//!!! Temporary !!! - by JH
+		Eclipse::SerializationManager szManager;
+		//!!! Temporary !!! - by JH
+		
 		template <typename TWindow>
 		inline void AddWindow(const char* title)
 		{

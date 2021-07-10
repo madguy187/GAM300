@@ -86,6 +86,9 @@
 #include "Reflection/primitive_support.h"
 #include "Reflection/complex_support.h"
 
+// Serialization
+#include "Serialization/SerializationManager.h"
+
 // Editor API
 #include "Editor/ECGuiAPI/ECGui.h"
 
