@@ -40,6 +40,9 @@
     <Filter Include="Editor\Windows">
       <UniqueIdentifier>{C690B5AD-B25E-A9B3-9BF2-19DA875F8518}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editor\Windows\AssetBroswer">
+      <UniqueIdentifier>{D9B80427-45C6-320D-CEAC-2EF83AB9FEC3}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Editor\Windows\Debug">
       <UniqueIdentifier>{BC97D61F-A826-60E9-5145-74E43DB3708F}</UniqueIdentifier>
     </Filter>
@@ -54,6 +57,12 @@
     </Filter>
     <Filter Include="Editor\Windows\Interface">
       <UniqueIdentifier>{262899AE-124D-E82E-3B98-CDBE271CE74C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Windows\Log">
+      <UniqueIdentifier>{979B17BC-837F-D811-ECDF-D264D8E2C293}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Windows\Profiler">
+      <UniqueIdentifier>{D8F05B84-4428-A41B-4D32-083FB9E8CA14}</UniqueIdentifier>
     </Filter>
     <Filter Include="Editor\Windows\Scene">
       <UniqueIdentifier>{63FAE420-4F89-6EEA-F8A7-82E5E4157F90}</UniqueIdentifier>
@@ -231,6 +240,9 @@
     <ClInclude Include="src\Editor\Menu\MenuComponent.h">
       <Filter>Editor\Menu</Filter>
     </ClInclude>
+    <ClInclude Include="src\Editor\Windows\AssetBrowser\AssetBrowser.h">
+      <Filter>Editor\Windows\AssetBroswer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Editor\Windows\Debug\Debug.h">
       <Filter>Editor\Windows\Debug</Filter>
     </ClInclude>
@@ -245,6 +257,12 @@
     </ClInclude>
     <ClInclude Include="src\Editor\Windows\Interface\ECGuiWindow.h">
       <Filter>Editor\Windows\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\Log\Log.h">
+      <Filter>Editor\Windows\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\Profiler\Profiler.h">
+      <Filter>Editor\Windows\Profiler</Filter>
     </ClInclude>
     <ClInclude Include="src\Editor\Windows\Scene\Scene.h">
       <Filter>Editor\Windows\Scene</Filter>
@@ -520,6 +538,9 @@
     <ClCompile Include="src\Editor\Menu\MenuComponent.cpp">
       <Filter>Editor\Menu</Filter>
     </ClCompile>
+    <ClCompile Include="src\Editor\Windows\AssetBrowser\AssetBrowser.cpp">
+      <Filter>Editor\Windows\AssetBroswer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Editor\Windows\Debug\Debug.cpp">
       <Filter>Editor\Windows\Debug</Filter>
     </ClCompile>
@@ -531,6 +552,12 @@
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\Inspector\Inspector.cpp">
       <Filter>Editor\Windows\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\Log\Log.cpp">
+      <Filter>Editor\Windows\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\Profiler\Profiler.cpp">
+      <Filter>Editor\Windows\Profiler</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\Scene\Scene.cpp">
       <Filter>Editor\Windows\Scene</Filter>

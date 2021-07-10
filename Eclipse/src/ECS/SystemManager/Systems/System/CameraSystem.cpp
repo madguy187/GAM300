@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CameraSystem.h"
 
+
 void Eclipse::CameraSystem::Init()
 {
 	engine->gCamera.CreateEditorCamera();
@@ -14,7 +15,10 @@ void Eclipse::CameraSystem::Init()
 }
 
 void Eclipse::CameraSystem::Update()
-{	
+{
+	ProfilerWindow timer;
+	timer.SetName({ SystemName::CAMERA });
+	timer.tracker.system_start = glfwGetTime();
 	for (auto& it : mEntities)
 	{
 		auto& _camera = engine->world.GetComponent<CameraComponent>(it);
@@ -30,4 +34,8 @@ void Eclipse::CameraSystem::Update()
 		engine->gCamera.ComputeViewMtx(_camera, _transform);
 		engine->gCamera.ComputePerspectiveMtx(_camera);
 	}
+	timer.tracker.system_end = glfwGetTime();
+
+	timer.ContainerAddTime(timer.tracker);
+
 }

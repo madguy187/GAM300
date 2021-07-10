@@ -36,6 +36,10 @@ Signature Eclipse::RenderSystem::RegisterAll()
 
 void Eclipse::RenderSystem::Update()
 {
+    ProfilerWindow timer;
+    timer.SetName({ SystemName::RENDER });
+    timer.tracker.system_start = glfwGetTime();
+
     // SKY Reder =============================
     engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 
@@ -53,4 +57,7 @@ void Eclipse::RenderSystem::Update()
 
     // CAMERA =============================
     engine->gDebugManager.DrawDebugShapes(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+
+    timer.tracker.system_end = glfwGetTime();
+    timer.ContainerAddTime(timer.tracker);
 }

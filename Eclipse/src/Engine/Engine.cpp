@@ -89,9 +89,10 @@ namespace Eclipse
         int framecount = 0;
         float dt = 0.0f;
         float updaterate = 4.0f;
-
+        ProfilerWindow Timer;
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
+            Timer.tracker.system_start = glfwGetTime();
             glfwPollEvents();
             engine->GraphicsManager.mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });
 
@@ -122,7 +123,7 @@ namespace Eclipse
             currTime = newTime;
 
             ImGuiSetup::Begin(EditorState);
-
+        	
             if (Game_Clock.get_timeSteps() > 10)
             {
                 Game_Clock.set_timeSteps(10);
@@ -149,6 +150,9 @@ namespace Eclipse
 
             ImGuiSetup::End(EditorState);
             OpenGL_Context::post_render();
+            Timer.tracker.system_end = glfwGetTime();
+            Timer.EngineTimer(Timer.tracker);
+        	
         }
 
         // unLoad

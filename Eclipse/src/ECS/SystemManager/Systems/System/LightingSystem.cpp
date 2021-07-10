@@ -9,6 +9,10 @@ void Eclipse::LightingSystem::Init()
 
 void Eclipse::LightingSystem::Update()
 {
+    ProfilerWindow timer;
+    timer.SetName({ SystemName::LIGHTING });
+    timer.tracker.system_start = glfwGetTime();
+	
     // Directional Light ; By right should only have 1
     for (auto const& entity : engine->LightManager.GetDirectionalLightContainer())
     {
@@ -29,4 +33,8 @@ void Eclipse::LightingSystem::Update()
         engine->LightManager.DrawSpotLight(entity.second,
             engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), entity.first, GL_FILL);
     }
+
+    timer.tracker.system_end = glfwGetTime();
+
+    timer.ContainerAddTime(timer.tracker);
 }

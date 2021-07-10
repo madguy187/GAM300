@@ -7,6 +7,9 @@
 #include "Editor/Windows/GameView/GameView.h"
 #include "Editor/Windows/Debug/Debug.h"
 #include "ECS/ComponentManager/Components/EntityComponent.h"
+#include "Editor/Windows/AssetBrowser/AssetBrowser.h"
+#include "Editor/Windows/Log/Log.h"
+#include "Editor/Windows/Profiler/Profiler.h"
 //#include "Library/Strings/Lexical.h"
 
 namespace Eclipse
@@ -24,6 +27,9 @@ namespace Eclipse
 		AddWindow<SceneWindow>("Scene");
 		AddWindow<InspectorWindow>("Inspector");
 		AddWindow<HierarchyWindow>("Hierarchy");
+		AddWindow<ProfilerWindow>("Profiler");
+		AddWindow<LoggerWindow>("Log");
+		AddWindow<AssetBrowserWindow>("AssetBrowser");
 		AddWindow<DebugWindow>("Debug");
 	}
 
@@ -114,7 +120,7 @@ namespace Eclipse
 		return MenuBar_;
 	}
 
-	size_t EditorManager::GetWindowListSize() const
+	size_t EditorManager::GetWindowListSize()
 	{
 		return Size_;
 	}

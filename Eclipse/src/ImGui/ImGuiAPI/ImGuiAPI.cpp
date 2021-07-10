@@ -112,7 +112,7 @@ namespace Eclipse
 
 	bool ImGuiAPI::BeginTreeNode(const char* name)
 	{
-		return ImGui::TreeNode(name);;
+		return ImGui::TreeNode(name);
 	}
 
 	void ImGuiAPI::EndTreeNode()
@@ -326,6 +326,11 @@ namespace Eclipse
 	void ImGuiAPI::SetToolTip(const char* message)
 	{
 		ImGui::SetTooltip(message);
+	}
+
+	void ImGuiAPI::PlotHistogram(const char* label, const float* values, int values_count, int values_offset, const char* overlay_text, float scale_min, float scale_max, ImVec2 graph_size, int stride)
+	{
+		ImGui::PlotHistogram(label, values, values_count, values_offset, overlay_text, scale_min, scale_max, graph_size, stride);
 	}
 
 	std::string ImGuiAPI::HideWidgetName(const char* name, bool Changing)

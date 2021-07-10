@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Scene.h"
 #include "ImGuizmo/ImGuizmo.h"
-#include "Library/Math/Math.h"
 
 namespace Eclipse
 {

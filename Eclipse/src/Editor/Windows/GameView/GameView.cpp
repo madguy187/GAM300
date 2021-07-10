@@ -5,8 +5,14 @@ namespace Eclipse
 {
 	void eGameViewWindow::Update()
 	{
+		//Profiler timer;
+		//timer.SetName({ SystemName::TEST });
+		//timer.tracker.system_start = glfwGetTime();
 		if (IsVisible)
 			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&eGameViewWindow::InitilializeFrameBuffer, this));
+		//timer.tracker.system_end = glfwGetTime();
+		//
+		//timer.ContainerAddTime(timer.tracker);
 	}
 
 	eGameViewWindow::eGameViewWindow() :

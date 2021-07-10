@@ -176,11 +176,14 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClInclude Include="src\Editor\Manager\EditorManager.h" />
     <ClInclude Include="src\Editor\Menu\MenuBar.h" />
     <ClInclude Include="src\Editor\Menu\MenuComponent.h" />
+    <ClInclude Include="src\Editor\Windows\AssetBrowser\AssetBrowser.h" />
     <ClInclude Include="src\Editor\Windows\Debug\Debug.h" />
     <ClInclude Include="src\Editor\Windows\GameView\GameView.h" />
     <ClInclude Include="src\Editor\Windows\Hierarchy\Hierarchy.h" />
     <ClInclude Include="src\Editor\Windows\Inspector\Inspector.h" />
     <ClInclude Include="src\Editor\Windows\Interface\ECGuiWindow.h" />
+    <ClInclude Include="src\Editor\Windows\Log\Log.h" />
+    <ClInclude Include="src\Editor\Windows\Profiler\Profiler.h" />
     <ClInclude Include="src\Editor\Windows\Scene\Scene.h" />
     <ClInclude Include="src\Engine\Engine.h" />
     <ClInclude Include="src\EntryPoint\EntryPoint.h" />
@@ -245,7 +248,6 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClInclude Include="src\ImGui\Vendor\imstb_textedit.h" />
     <ClInclude Include="src\ImGui\Vendor\imstb_truetype.h" />
     <ClInclude Include="src\ImGui\Vendor\stb_image.h" />
-    <ClInclude Include="src\Library\Math\Math.h" />
     <ClInclude Include="src\Library\Math\Matrix.h" />
     <ClInclude Include="src\Library\Math\Vector.h" />
     <ClInclude Include="src\Library\Strings\Lexical.h" />
@@ -275,10 +277,13 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClCompile Include="src\Editor\Manager\EditorManager.cpp" />
     <ClCompile Include="src\Editor\Menu\MenuBar.cpp" />
     <ClCompile Include="src\Editor\Menu\MenuComponent.cpp" />
+    <ClCompile Include="src\Editor\Windows\AssetBrowser\AssetBrowser.cpp" />
     <ClCompile Include="src\Editor\Windows\Debug\Debug.cpp" />
     <ClCompile Include="src\Editor\Windows\GameView\GameView.cpp" />
     <ClCompile Include="src\Editor\Windows\Hierarchy\Hierarchy.cpp" />
     <ClCompile Include="src\Editor\Windows\Inspector\Inspector.cpp" />
+    <ClCompile Include="src\Editor\Windows\Log\Log.cpp" />
+    <ClCompile Include="src\Editor\Windows\Profiler\Profiler.cpp" />
     <ClCompile Include="src\Editor\Windows\Scene\Scene.cpp" />
     <ClCompile Include="src\Engine\Engine.cpp" />
     <ClCompile Include="src\EntryPoint\EntryPoint.cpp" />
@@ -331,7 +336,6 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClCompile Include="src\ImGui\Vendor\imgui_impl_glfw.cpp" />
     <ClCompile Include="src\ImGui\Vendor\imgui_impl_opengl3.cpp" />
     <ClCompile Include="src\ImGui\Vendor\imgui_widgets.cpp" />
-    <ClCompile Include="src\Library\Math\Math.cpp" />
     <ClCompile Include="src\Library\Math\Matrix.cpp" />
     <ClCompile Include="src\Logger\Logger.cpp" />
     <ClCompile Include="src\Mono\Manager\MonoManager.cpp" />

@@ -19,7 +19,7 @@ namespace Eclipse
 
 		std::vector<std::unique_ptr<ECGuiWindow>>& GetAllWindows();
 		MenuBar& GetMenuBar();
-		size_t GetWindowListSize() const;
+		size_t GetWindowListSize();
 		Entity GetSelectedEntity() const;
 
 		template <typename TWindow>
