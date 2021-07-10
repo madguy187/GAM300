@@ -42,6 +42,7 @@ namespace Eclipse
 
         RenderSystem::Init();
         ImGuiSetup::Init(EditorState);
+
         if (EditorState)
             editorManager = std::make_unique<EditorManager>();
     }

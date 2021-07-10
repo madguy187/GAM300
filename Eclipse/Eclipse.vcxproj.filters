@@ -499,6 +499,7 @@
     <ClInclude Include="src\Editor\Windows\SwitchViews\Bottom.h" />
     <ClInclude Include="src\Editor\Windows\SwitchViews\Left.h" />
     <ClInclude Include="src\Editor\Windows\SwitchViews\Right.h" />
+    <ClInclude Include="src\Editor\Windows\Log\ConsoleData.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">

@@ -182,6 +182,7 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
     <ClInclude Include="src\Editor\Windows\Hierarchy\Hierarchy.h" />
     <ClInclude Include="src\Editor\Windows\Inspector\Inspector.h" />
     <ClInclude Include="src\Editor\Windows\Interface\ECGuiWindow.h" />
+    <ClInclude Include="src\Editor\Windows\Log\ConsoleData.h" />
     <ClInclude Include="src\Editor\Windows\Log\Log.h" />
     <ClInclude Include="src\Editor\Windows\Profiler\Profiler.h" />
     <ClInclude Include="src\Editor\Windows\Scene\Scene.h" />

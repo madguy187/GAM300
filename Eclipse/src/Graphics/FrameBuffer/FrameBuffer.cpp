@@ -66,7 +66,7 @@ void Eclipse::FrameBuffer::Resize(unsigned width, unsigned height)
 {
     DeletCurrentFrameBuffer();
     Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), Eclipse::FrameBufferMode::SCENEVIEW);
-    ENGINE_CORE_INFO("Resize Successful");
+    EDITOR_LOG_INFO("Resize Successful");
 }
 
 void FrameBuffer::ShowWindow(FrameBuffer g, const char* input)
@@ -187,6 +187,6 @@ void Eclipse::FrameBuffer::DeletCurrentFrameBuffer()
         glDeleteFramebuffers(1, &m_data.frameBufferID);
         glDeleteTextures(1, &m_data.TextureColourBuffer);
         glDeleteTextures(1, &m_data.depthBufferID);
-        ENGINE_CORE_INFO("FrameBuffer deleted successfully");
+        EDITOR_LOG_INFO("FrameBuffer deleted successfully");
     }
 }

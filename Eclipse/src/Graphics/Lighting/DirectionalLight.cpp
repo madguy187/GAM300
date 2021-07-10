@@ -18,7 +18,7 @@ void Eclipse::DirectionalLight::CreateDirectionalLight(unsigned int CreatedID)
 
     // Success
     _DirectionalLight.insert({ counter,&_global });
-    ENGINE_CORE_INFO("DirectionalLight Created Successfully");
+    EDITOR_LOG_INFO("DirectionalLight Created Successfully");
     counter++;
 }
 
@@ -139,6 +139,7 @@ void Eclipse::DirectionalLight::FirstGlobalLight()
 
     // Success
     _DirectionalLight.insert({ counter,&_global });
-    ENGINE_CORE_INFO("First DirectionalLight Created Successfully");
+    //ENGINE_CORE_INFO("First DirectionalLight Created Successfully");
+    EDITOR_LOG_INFO("DirectionalLight Created Successfully");
     counter++;
 }
