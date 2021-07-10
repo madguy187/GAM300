@@ -19,6 +19,8 @@ namespace Eclipse
 		InitMenu();
 		InitGUIWindows();
 		InitFont();
+
+		EDITOR_LOG_INFO("Editor Initialized!");
 	}
 
 	void EditorManager::InitGUIWindows()
