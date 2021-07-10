@@ -18,8 +18,8 @@
 
 #include "GLEW/include/GL/glew.h"
 #include "GLM/glm/glm.hpp"
-#include "assimp/color4.h"
-#include "ASSIMP/color4.inl"
+#include "color4.h"
+#include "color4.inl"
 
 class Shader
 {

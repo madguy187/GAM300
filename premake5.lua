@@ -69,7 +69,8 @@ project "Eclipse"
 		"Dep/PhysX/include/task",
 		"Dep/PhysX/include/vehicle",
         "Dep/mono/include/mono-2.0",
-		"Dep/ASSIMP",
+		"Dep/ASSIMP/include/assimp",
+	    "Dep/ASSIMP"
 	}
 
   libdirs

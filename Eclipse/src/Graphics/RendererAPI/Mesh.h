@@ -4,8 +4,8 @@
 #include <vector>
 #include "Shader.h"
 #include "Texture.h"
-#include "assimp/color4.h"
-#include "ASSIMP/color4.inl"
+#include "color4.h"
+#include "color4.inl"
 
 using namespace Eclipse;
 

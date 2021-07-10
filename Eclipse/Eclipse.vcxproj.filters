@@ -40,6 +40,9 @@
     <Filter Include="Editor\Windows">
       <UniqueIdentifier>{C690B5AD-B25E-A9B3-9BF2-19DA875F8518}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editor\Windows\Debug">
+      <UniqueIdentifier>{BC97D61F-A826-60E9-5145-74E43DB3708F}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Editor\Windows\GameView">
       <UniqueIdentifier>{6A8AA614-D6C1-EEAB-DFCB-52CF4B8215A5}</UniqueIdentifier>
     </Filter>
@@ -82,11 +85,20 @@
     <Filter Include="Graphics\Lighting">
       <UniqueIdentifier>{5BBF6932-C7D5-67C8-104D-F3E97CA23850}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics\Material">
+      <UniqueIdentifier>{745AF5D4-E070-F36A-29E8-7E8C953DC4F2}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Graphics\ModelFactory">
       <UniqueIdentifier>{0EA78BA6-7A13-47A1-4307-DFFEAF326909}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics\ModelFactory\AssimpModel">
+      <UniqueIdentifier>{3BB4CCDB-A722-225B-F00B-DD5A5CB917F7}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Graphics\ModelFactory\BasicPrimitives">
       <UniqueIdentifier>{EBF9626C-57BE-615C-2024-92268CA7FD91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\ModelFactory\Sky">
+      <UniqueIdentifier>{34B31FC3-A075-534D-E925-E2D955272C2B}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\OpenGL">
       <UniqueIdentifier>{8AE717A8-F672-856C-FF83-08616B8EE16C}</UniqueIdentifier>
@@ -219,6 +231,9 @@
     <ClInclude Include="src\Editor\Menu\MenuComponent.h">
       <Filter>Editor\Menu</Filter>
     </ClInclude>
+    <ClInclude Include="src\Editor\Windows\Debug\Debug.h">
+      <Filter>Editor\Windows\Debug</Filter>
+    </ClInclude>
     <ClInclude Include="src\Editor\Windows\GameView\GameView.h">
       <Filter>Editor\Windows\GameView</Filter>
     </ClInclude>
@@ -277,6 +292,15 @@
     <ClInclude Include="src\Graphics\Lighting\SpotLight.h">
       <Filter>Graphics\Lighting</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\Material\Material.h">
+      <Filter>Graphics\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.h">
+      <Filter>Graphics\ModelFactory\AssimpModel</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.h">
+      <Filter>Graphics\ModelFactory\AssimpModel</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\AllBasicPrimitives.h">
       <Filter>Graphics\ModelFactory\BasicPrimitives</Filter>
     </ClInclude>
@@ -334,6 +358,9 @@
     <ClInclude Include="src\Graphics\ModelFactory\ModelGlobal.h">
       <Filter>Graphics\ModelFactory</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\Sky\CubeMap.h">
+      <Filter>Graphics\ModelFactory\Sky</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\OpenGL\OpenGL_Context.h">
       <Filter>Graphics\OpenGL</Filter>
     </ClInclude>
@@ -344,6 +371,9 @@
       <Filter>Graphics\RendererAPI</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\RendererAPI\GraphicsManager.h">
+      <Filter>Graphics\RendererAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\RendererAPI\Mesh.h">
       <Filter>Graphics\RendererAPI</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\RendererAPI\Renderer.h">
@@ -406,6 +436,9 @@
     <ClInclude Include="src\ImGui\Vendor\stb_image.h">
       <Filter>ImGui\Vendor</Filter>
     </ClInclude>
+    <ClInclude Include="src\Library\Math\Math.h">
+      <Filter>Library\Math</Filter>
+    </ClInclude>
     <ClInclude Include="src\Library\Math\Matrix.h">
       <Filter>Library\Math</Filter>
     </ClInclude>
@@ -446,13 +479,6 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\Graphics\RendererAPI\Mesh.h" />
-    <ClInclude Include="src\Graphics\Material\Material.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.h" />
-    <ClInclude Include="src\Library\Math\Math.h" />
-    <ClInclude Include="src\Editor\Windows\Debug\Debug.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\Sky\CubeMap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -493,6 +519,9 @@
     </ClCompile>
     <ClCompile Include="src\Editor\Menu\MenuComponent.cpp">
       <Filter>Editor\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\Debug\Debug.cpp">
+      <Filter>Editor\Windows\Debug</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\GameView\GameView.cpp">
       <Filter>Editor\Windows\GameView</Filter>
@@ -538,6 +567,15 @@
     </ClCompile>
     <ClCompile Include="src\Graphics\Lighting\SpotLight.cpp">
       <Filter>Graphics\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Material\Material.cpp">
+      <Filter>Graphics\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.cpp">
+      <Filter>Graphics\ModelFactory\AssimpModel</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.cpp">
+      <Filter>Graphics\ModelFactory\AssimpModel</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.cpp">
       <Filter>Graphics\ModelFactory\BasicPrimitives</Filter>
@@ -587,6 +625,9 @@
     <ClCompile Include="src\Graphics\ModelFactory\ModelFactory.cpp">
       <Filter>Graphics\ModelFactory</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\ModelFactory\Sky\CubeMap.cpp">
+      <Filter>Graphics\ModelFactory\Sky</Filter>
+    </ClCompile>
     <ClCompile Include="src\Graphics\OpenGL\OpenGL_Context.cpp">
       <Filter>Graphics\OpenGL</Filter>
     </ClCompile>
@@ -597,6 +638,9 @@
       <Filter>Graphics\RendererAPI</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\RendererAPI\GraphicsManager.cpp">
+      <Filter>Graphics\RendererAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\RendererAPI\Mesh.cpp">
       <Filter>Graphics\RendererAPI</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\RendererAPI\Shader.cpp">
@@ -644,6 +688,9 @@
     <ClCompile Include="src\ImGui\Vendor\imgui_widgets.cpp">
       <Filter>ImGui\Vendor</Filter>
     </ClCompile>
+    <ClCompile Include="src\Library\Math\Math.cpp">
+      <Filter>Library\Math</Filter>
+    </ClCompile>
     <ClCompile Include="src\Library\Math\Matrix.cpp">
       <Filter>Library\Math</Filter>
     </ClCompile>
@@ -660,33 +707,5 @@
       <Filter>Time</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\Graphics\RendererAPI\Mesh.cpp" />
-    <ClCompile Include="src\Graphics\Material\Material.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.cpp" />
-    <ClCompile Include="src\Editor\Windows\Debug\Debug.cpp" />
-    <ClCompile Include="src\Library\Math\Math.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\Sky\CubeMap.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\Assets\Shaders\BasicFrag.frag" />
-    <None Include="src\Assets\Shaders\BasicVtx.vert" />
-    <None Include="src\Assets\Shaders\DebugFrag.frag" />
-    <None Include="src\Assets\Shaders\DebugVtx.vert" />
-    <None Include="src\Assets\Shaders\light.frag" />
-    <None Include="src\Assets\Shaders\light.vert" />
-    <None Include="src\Assets\Shaders\LightFrag.frag" />
-    <None Include="src\Assets\Shaders\LightVtx.vert" />
-    <None Include="src\Assets\Shaders\ParticlesFrag.frag" />
-    <None Include="src\Assets\Shaders\ParticlesVtx.vert" />
-    <None Include="src\Assets\Shaders\Shader3D.frag" />
-    <None Include="src\Assets\Shaders\Shader3D.vert" />
-    <None Include="src\Assets\Shaders\Shaders.json" />
-    <None Include="src\Assets\Shaders\textFrag.frag" />
-    <None Include="src\Assets\Shaders\textVtx.vert" />
-    <None Include="src\Assets\Shaders\AssimpShader3D.frag" />
-    <None Include="src\Assets\Shaders\AssimpShader3D.vert" />
-    <None Include="src\Assets\Shaders\skybox.frag" />
-    <None Include="src\Assets\Shaders\skybox.vert" />
   </ItemGroup>
 </Project>

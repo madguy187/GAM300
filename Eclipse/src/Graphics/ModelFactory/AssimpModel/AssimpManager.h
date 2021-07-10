@@ -1,9 +1,9 @@
 #ifndef ASSIMP_MANAGER_H
 #define ASSIMP_MANAGER_H
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
+#include "Importer.hpp"
+#include "scene.h"
+#include "postprocess.h"
 
 #include <vector>
 #include "AssimpModel/AssimpModel.h"

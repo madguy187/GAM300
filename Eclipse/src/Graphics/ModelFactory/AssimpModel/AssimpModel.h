@@ -1,14 +1,14 @@
 #ifndef ASSIMP_MODEL_CLASS_H
 #define ASSIMP_MODEL_CLASS_H
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
+#include "Importer.hpp"
+#include "scene.h"
+#include "postprocess.h"
 #include <vector>
 #include "mesh.h"
 
 // fbx
-#include <assimp/cimport.h>
+#include "cimport.h"
 
 namespace Eclipse
 {

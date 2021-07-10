@@ -4,9 +4,9 @@
 #include "IModel.h"
 #include "Plane.h"
 
-#include "ASSIMP/Importer.hpp"
-#include "ASSIMP/postprocess.h"
-#include "ASSIMP/scene.h"
+#include "Importer.hpp"
+#include "postprocess.h"
+#include "scene.h"
 #include "Graphics/RendererAPI/Texture.h"
 
 #include "Mesh.h"
