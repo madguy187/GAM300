@@ -16,7 +16,7 @@ void AssimpModelManager::CreateModel(std::string name, std::string FolderName , 
     if (!test)
     {
         std::string Error = ("The file path " + PathName + " doesnt exist! ").c_str();
-        ENGINE_LOG_ASSERT(false, Error);
+        //ENGINE_LOG_ASSERT(false, Error);
         std::exit(EXIT_FAILURE);
     }
 

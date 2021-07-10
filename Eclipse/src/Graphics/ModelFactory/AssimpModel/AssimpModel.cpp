@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "AssimpModel/AssimpModel.h"
 #include <regex>
+#include "Logger/Logger.h"
 
 using namespace Eclipse;
 
@@ -51,7 +52,7 @@ void AssimpModel::LoadAssimpModel(std::string path)
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
     {
         std::string Error = ("Could not load AssimpModel at " + path + import.GetErrorString()).c_str();
-        ENGINE_LOG_ASSERT(false, Error);
+        //ENGINE_LOG_ASSERT(false, Error);
         return;
     }
 
