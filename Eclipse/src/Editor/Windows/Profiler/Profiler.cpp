@@ -10,7 +10,7 @@ namespace Eclipse
 
 	ProfilerWindow::ProfilerWindow()
 	{
-		Type = EditorWindowType::PROFILER;
+		Type = EditorWindowType::EWT_PROFILER;
 		WindowName = "Profiler";
 	}
 

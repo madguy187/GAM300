@@ -13,7 +13,7 @@ namespace Eclipse
 
 	HierarchyWindow::HierarchyWindow()
 	{
-		Type = EditorWindowType::HIERARCHY;
+		Type = EditorWindowType::EWT_HIERARCHY;
 		WindowName = "Hierarchy";
 
 		// For Geometry

@@ -8,3 +8,5 @@
 [07/10/21 12:04:26] [CORE] [error] Crash Report: Assertion Failed! The file path src/Assets/ASSModels/dog/1.FBX doesnt exist! 
 [07/10/21 16:03:17] [CORE] [error] Crash Report: Program has crashed. Please check crash log for details.
 [07/10/21 16:03:17] [CORE] [error] Crash Report: Assertion Failed! The file path src/Assets/ASSModels/dog2/scene.glft doesnt exist! 
+[07/11/21 01:08:08] [CORE] [error] Crash Report: Assertion Failed! Testing!
+[07/11/21 01:15:16] [CORE] [error] Crash Report: Assertion Failed! Testing!
