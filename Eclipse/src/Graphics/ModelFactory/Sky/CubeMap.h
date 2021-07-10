@@ -17,11 +17,20 @@ namespace Eclipse
         unsigned int VAO;
         unsigned int VBO;
         unsigned int EBO;
+
     public:
         CubeMap();
         void CreateSky(std::string _dir);
         void Render(Shader& shader);
         void Cleanup();
+        std::string GetDirectory();
+        void SetDirectory(std::string in);
+        unsigned int GetVaoID();
+        unsigned int GetVboID();
+        unsigned int GetEboID();
+        void SetTextureFlag(bool in);
+        bool GetTextureFlag();
+        unsigned int GetFaceCount();
 
     private:
         void Setup(int& height, int& width, int& channel);

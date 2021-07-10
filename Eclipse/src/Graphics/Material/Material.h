@@ -1,12 +1,13 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
-struct Material 
+class Material 
 {
-    glm::vec3 ambient;
-    glm::vec3 diffuse;
-    glm::vec3 specular;
-    float shininess;
+public:
+    ECVec3 Ambient;
+    ECVec3 Diffuse;
+    ECVec3 Specular;
+    float Shininess;
 
     static Material emerald;
     static Material jade;

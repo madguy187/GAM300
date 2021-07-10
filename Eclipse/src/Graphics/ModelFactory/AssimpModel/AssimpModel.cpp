@@ -17,17 +17,17 @@ void AssimpModel::Render(Shader& shader, GLenum MOde)
     auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
     CheckUniformLoc(shader, _camera);
 
-    for (unsigned int i = 0; i < meshes.size(); i++)
+    for (unsigned int i = 0; i < Meshes.size(); i++)
     {
-        meshes[i].Render(shader, MOde);
+        Meshes[i].Render(shader, MOde);
     }
 }
 
 void AssimpModel::Cleanup()
 {
-    for (unsigned int i = 0; i < meshes.size(); i++)
+    for (unsigned int i = 0; i < Meshes.size(); i++)
     {
-        meshes[i].Cleanup();
+        Meshes[i].Cleanup();
     }
 }
 
@@ -55,7 +55,7 @@ void AssimpModel::LoadAssimpModel(std::string path)
         return;
     }
 
-    directory = path.substr(0, path.find_last_of("/"));
+    Directory = path.substr(0, path.find_last_of("/"));
     ProcessNode(scene->mRootNode, scene);
 }
 
@@ -65,7 +65,7 @@ void AssimpModel::ProcessNode(aiNode* node, const aiScene* scene)
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        meshes.push_back(ProcessMesh(mesh, scene));
+        Meshes.push_back(ProcessMesh(mesh, scene));
     }
 
     // process all child nodes
@@ -131,19 +131,34 @@ void AssimpModel::SetName(std::string name)
 
 std::string AssimpModel::GetDirectory()
 {
-    return directory;
+    return Directory;
 }
 
 unsigned int Eclipse::AssimpModel::GetNumberOfTextures()
 {
-    return textures_loaded.size();
+    return Textures_loaded.size();
+}
+
+unsigned int Eclipse::AssimpModel::GetNumberOfMeshes()
+{
+    return Meshes.size();
+}
+
+ModelType Eclipse::AssimpModel::GetType()
+{
+    return type;
+}
+
+void Eclipse::AssimpModel::SetModelType(ModelType in)
+{
+    type = in;
 }
 
 void Eclipse::AssimpModel::GetTextureNames()
 {
-    for (int i = 0; i < textures_loaded.size(); i++)
+    for (int i = 0; i < Textures_loaded.size(); i++)
     {
-        std::cout << " Texture Name " << textures_loaded[i].GetPath() << std::endl;
+        std::cout << " Texture Name " << Textures_loaded[i].GetPath() << std::endl;
     }
 }
 
@@ -251,11 +266,11 @@ std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType ty
 
         // prevent duplicate loading
         bool skip = false;
-        for (unsigned int j = 0; j < textures_loaded.size(); j++)
+        for (unsigned int j = 0; j < Textures_loaded.size(); j++)
         {
-            if (std::strcmp(textures_loaded[j].GetPath().data(), str.C_Str()) == 0)
+            if (std::strcmp(Textures_loaded[j].GetPath().data(), str.C_Str()) == 0)
             {
-                textures.push_back(textures_loaded[j]);
+                textures.push_back(Textures_loaded[j]);
                 skip = true;
                 break;
             }
@@ -266,10 +281,10 @@ std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType ty
             // not loaded yet
             //std::cout << str.C_Str() << std::endl;
 
-            Texture tex(directory, str.C_Str(), type);
+            Texture tex(Directory, str.C_Str(), type);
             tex.Load(false);
             textures.push_back(tex);
-            textures_loaded.push_back(tex);
+            Textures_loaded.push_back(tex);
         }
     }
 

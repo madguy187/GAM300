@@ -7,8 +7,9 @@ bool shakeScreen = 1.0f;
 
 glm::vec3 spherepos;
 
-void Eclipse::GraphicsManager::pre_render()
-{  // Loading Configuration
+void Eclipse::GraphicsManager::Pre_Render()
+{  
+    // Loading Configuration
     mRenderContext.init("../Dep/Configuration/configuration.json");
 
     // Loading Of Models , Shaders and etc.. 
@@ -18,17 +19,17 @@ void Eclipse::GraphicsManager::pre_render()
     mRenderContext.pre_render();
 }
 
-void Eclipse::GraphicsManager::post_render()
+void Eclipse::GraphicsManager::Post_Render()
 {
     mRenderContext.post_render();
 }
 
-void Eclipse::GraphicsManager::end()
+void Eclipse::GraphicsManager::End()
 {
     mRenderContext.end();
 }
 
-void Eclipse::GraphicsManager::unload()
+void Eclipse::GraphicsManager::Unload()
 {
     mRenderContext.end();
 }

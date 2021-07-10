@@ -50,7 +50,7 @@ namespace Eclipse
     class Lights
     {
     public:
-        // --------------- Base Cases -----------------------//
+        // Base Classes =============================
         template<typename T, typename = void>
         struct has_Color : std::false_type {};
 
@@ -63,10 +63,7 @@ namespace Eclipse
         template<typename T, typename = void>
         struct has_Diffuse : std::false_type {};
 
-        // --------------------------------------------------//
-
-        // Check if T has the variable , if have , will enter template
-        // --------------------------------------------------------------------------------------------------------------//
+        // Check if T has the variable , if have , will enter template =============================
         template<typename TypeOfLight>
         struct has_Color< TypeOfLight, decltype(std::declval<TypeOfLight>().Color, void())> : std::true_type {};
 
@@ -78,8 +75,6 @@ namespace Eclipse
 
         template<typename TypeOfLight>
         struct has_Diffuse< TypeOfLight, decltype(std::declval<TypeOfLight>().diffuse, void())> : std::true_type {};
-        // --------------------------------------------------------------------------------------------------------------//
-
 
     private:
         PointLight _allpointlights;
@@ -89,23 +84,21 @@ namespace Eclipse
         std::vector <std::pair<unsigned int, Angles>> SpotLightAngles;
 
     public:
-
-    public:
         void init();
         void Update();
         void CreateLights(TypesOfLights in, unsigned int CreatedID);
 
-        // Draws
+        // Draws =============================
         void DrawPointLights(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
         void DrawDirectionalLight(DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
         void DrawSpotLight(SpotLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
 
-        // Get Containers
+        // Get Containers  =============================
         PointLightContainer GetPointLightsContainer();
         DirectionalLightContainer GetDirectionalLightContainer();
         SpotLightContainer GetSpotLightsContainer();
 
-        // Light Properties
+        // LightProperties =============================
         void CreateAttenuationLevels();
         void SetAttenuation(PointLightComponent& in, unsigned int Level);
 

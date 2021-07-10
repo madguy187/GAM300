@@ -14,7 +14,7 @@ void Eclipse::RenderSystem::Init()
 {
     // Graphics Init =============================
     ENGINE_CORE_INFO("RenderSystem Init");
-    engine->GraphicsManager.pre_render();
+    engine->GraphicsManager.Pre_Render();
 
     // Load All Models =============================
     engine->AssimpManager.LoadAllModels();

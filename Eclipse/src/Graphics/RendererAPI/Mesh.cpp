@@ -42,8 +42,6 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiCo
 
 void Mesh::Render(Shader& shader, GLenum mode)
 {
-    // glBindVertexArray(VAO);
-
     glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
@@ -89,8 +87,7 @@ void Mesh::Render(Shader& shader, GLenum mode)
             glUniform1i(tex_loc, i);
         }
         // bind texture
-        //Textures[i].bind();
-        glBindTexture(GL_TEXTURE_2D, Textures[i].GetId());
+        Textures[i].Bind();
     }
     // EBO stuff
     glBindVertexArray(VAO);
@@ -110,31 +107,29 @@ void Mesh::Cleanup()
 
 void Mesh::Setup()
 {
-    // create buffers/arrays
+    // Cr8 buffers
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
 
     glBindVertexArray(VAO);
 
-    // load data into VBO
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, Vertices.size() * sizeof(Vertex), &Vertices[0], GL_STATIC_DRAW);
 
-    // load data into EBO
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, Indices.size() * sizeof(unsigned int), &Indices[0], GL_STATIC_DRAW);
 
     // set vertex attribute pointers
-    // vertex.position
+    // Vertex positions
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
 
-    // vertex.texCoord
+    // Textures C0ordinates
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, TextureCoodinates)));
 
-    // vertex.normal
+    // Normsals
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, Normal)));
 

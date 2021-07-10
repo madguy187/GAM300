@@ -138,6 +138,46 @@ void CubeMap::Cleanup()
     glDeleteBuffers(1, &VBO);
 }
 
+std::string Eclipse::CubeMap::GetDirectory()
+{
+    return Directory;
+}
+
+void Eclipse::CubeMap::SetDirectory(std::string in)
+{
+    Directory = in;
+}
+
+unsigned int Eclipse::CubeMap::GetVaoID()
+{
+    return VAO;
+}
+
+unsigned int Eclipse::CubeMap::GetVboID()
+{
+    return VBO;
+}
+
+unsigned int Eclipse::CubeMap::GetEboID()
+{
+    return EBO;
+}
+
+void Eclipse::CubeMap::SetTextureFlag(bool in)
+{
+    HasTextures = in;
+}
+
+bool Eclipse::CubeMap::GetTextureFlag()
+{
+    return HasTextures;
+}
+
+unsigned int Eclipse::CubeMap::GetFaceCount()
+{
+    return Faces.size();
+}
+
 void Eclipse::CubeMap::Setup(int& height_, int& width_, int& channel)
 {
     for (unsigned int i = 0; i < 6; i++)

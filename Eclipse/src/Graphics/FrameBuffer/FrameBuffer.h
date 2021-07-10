@@ -9,9 +9,9 @@ namespace Eclipse
         GAMEVIEW = 1,
         SCENEVIEW = 2,
         SWITCHINGVIEWS_TOP = 3,
-        SWITCHINGVIEWS_BOTTOM,
-        SWITCHINGVIEWS_LEFT,
-        SWITCHINGVIEWS_RIGHT,
+        SWITCHINGVIEWS_BOTTOM = 4,
+        SWITCHINGVIEWS_LEFT = 5,
+        SWITCHINGVIEWS_RIGHT = 6,
         MAXCOUNT
     };
 

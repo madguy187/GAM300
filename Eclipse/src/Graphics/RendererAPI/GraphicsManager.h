@@ -20,10 +20,10 @@ namespace Eclipse
         unsigned int SkyCount = 0;
 
     public:
-        void pre_render();
-        void post_render();
-        void end();
-        void unload();
+        void Pre_Render();
+        void Post_Render();
+        void End();
+        void Unload();
         void GlobalFrmeBufferDraw();
         void GlobalFrameBufferBind();
         void Draw(unsigned int FrameBufferID, RenderComponent* _spritecomponent, GLenum mode);

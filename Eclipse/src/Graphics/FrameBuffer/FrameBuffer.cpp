@@ -159,6 +159,22 @@ std::ostream& Eclipse::operator<<(std::ostream& os, const FrameBufferMode& in)
     case FrameBufferMode::SCENEVIEW:
         os << "Scene FrameBuffer";
         break;
+
+    case FrameBufferMode::SWITCHINGVIEWS_BOTTOM:
+        os << "SWITCHINGVIEWS_BOTTOM FrameBuffer";
+        break;
+
+    case FrameBufferMode::SWITCHINGVIEWS_LEFT:
+        os << "SWITCHINGVIEWS_LEFT FrameBuffer";
+        break;
+
+    case FrameBufferMode::SWITCHINGVIEWS_RIGHT:
+        os << "SWITCHINGVIEWS_RIGHT FrameBuffer";
+        break;
+
+    case FrameBufferMode::SWITCHINGVIEWS_TOP:
+        os << "SWITCHINGVIEWS_TOP FrameBuffer";
+        break;
     }
 
     return os;

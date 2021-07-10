@@ -12,20 +12,31 @@
 
 namespace Eclipse
 {
+    enum class ModelType
+    {
+        UNASSIGNED = 0,
+        HUMAN = 1,
+        ANIMAL = 2,
+        HOUSE = 3,
+        ENVIRONMENT = 4,
+        MAXCOUNT
+    };
+
     class AssimpModel
     {
     private:
         std::string NameOfModel;
-        std::vector<Mesh> meshes;
-        std::string directory;
-        std::vector<Texture> textures_loaded;
+        std::vector<Mesh> Meshes;
+        std::string Directory;
+        std::vector<Texture> Textures_loaded;
+        ModelType type = ModelType::UNASSIGNED;
 
         Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
         std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type);
         void ProcessNode(aiNode* node, const aiScene* scene);
         void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera);
     public:
-        bool noTex;
+        bool noTex = false;
         unsigned int ID = 0;
         GLenum GlobalMode = GL_FILL;
 
@@ -40,6 +51,9 @@ namespace Eclipse
         std::string GetDirectory();
         unsigned int GetNumberOfTextures();
         void GetTextureNames();
+        unsigned int GetNumberOfMeshes();
+        ModelType GetType();
+        void SetModelType(ModelType in);
 
         // fbx
     public:

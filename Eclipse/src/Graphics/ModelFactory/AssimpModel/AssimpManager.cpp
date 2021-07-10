@@ -24,6 +24,7 @@ void AssimpModelManager::CreateModel(std::string name, std::string FolderName , 
     AssimpModel* NewModel = new AssimpModel(false);
     NewModel->LoadAssimpModel(PathName);
     NewModel->SetName(name);
+    NewModel->SetModelType(ModelType::ANIMAL);
 
     // Insert
     if (AssimpModelContainer_.insert(std::pair<unsigned int, AssimpModel*>(ID, NewModel)).second == true)
