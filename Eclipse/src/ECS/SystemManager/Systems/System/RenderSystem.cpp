@@ -20,7 +20,7 @@ void Eclipse::RenderSystem::Init()
     engine->AssimpManager.LoadAllModels();
 
     // Create SKY =============================
-    engine->GraphicsManager.CreateSky("src/Assets/Sky");
+    //engine->GraphicsManager.CreateSky("src/Assets/Sky");
 }
 
 Signature Eclipse::RenderSystem::RegisterAll()
@@ -37,7 +37,11 @@ Signature Eclipse::RenderSystem::RegisterAll()
 void Eclipse::RenderSystem::Update()
 {
     // SKY Reder =============================
-    engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+    //engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+
+    // MODELS Render=============================
+    //engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), GL_FILL);
+    engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL);
 
     // (RENDERCOMPONENTS & TRANSFORMCOMPONENT) Render =============================
     for (auto const& entity : mEntities)
@@ -49,8 +53,4 @@ void Eclipse::RenderSystem::Update()
 
     // CAMERA =============================
     engine->gDebugManager.DrawDebugShapes(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
-
-    // MODELS Render=============================
-    engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), GL_FILL);
-    engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL);
 }

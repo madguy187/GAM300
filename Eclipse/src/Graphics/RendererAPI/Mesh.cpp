@@ -42,86 +42,63 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiCo
 
 void Mesh::Render(Shader& shader, GLenum mode)
 {
-   // glBindVertexArray(VAO);
+    // glBindVertexArray(VAO);
 
     glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
     glPolygonMode(GL_FRONT_AND_BACK, mode);
 
-    if (NoTex)
+    // textures
+    unsigned int diffuseIdx = 0;
+    unsigned int specularIdx = 0;
+
+    for (unsigned int i = 0; i < Textures.size(); i++)
     {
-        GLint uniform_var_loc0 = shader.GetLocation("material.diffuse");
-        GLint uniform_var_loc1 = shader.GetLocation("material.specular");
-        GLint uniform_var_loc2 = shader.GetLocation("noTex");
+        // activate texture
+        glActiveTexture(GL_TEXTURE0 + i);
 
-        if (uniform_var_loc0 >= 0)
+        // retrieve texture info
+        std::string name;
+        switch (Textures[i].type)
         {
-            GLCall(glUniform4f(uniform_var_loc0, Diffuse.r, Diffuse.g, Diffuse.b, Diffuse.a));
+        case aiTextureType_DIFFUSE:
+            name = "diffuse" + std::to_string(diffuseIdx++);
+            break;
+        case aiTextureType_SPECULAR:
+            name = "specular" + std::to_string(specularIdx++);
+            break;
         }
 
-        if (uniform_var_loc1 >= 0)
-        {
-            GLCall(glUniform4f(uniform_var_loc0, Specular.r, Specular.g, Specular.b, Specular.a));
-        }
+        GLint uniform_var_loc2 = shader.GetLocation("uColor");
+        GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
+        GLuint tex_loc = shader.GetLocation("uTex2d");
 
         if (uniform_var_loc2 >= 0)
         {
-            GLCall(glUniform1i(uniform_var_loc2, 1));
+            glUniform4f(uniform_var_loc2, 0.5, 0, 0, 1);
         }
-    }
-    else
-    {
-        // textures
-        unsigned int diffuseIdx = 0;
-        unsigned int specularIdx = 0;
 
-        for (unsigned int i = 0; i < Textures.size(); i++)
+        if (uniform_var_loc3 >= 0)
         {
-            // activate texture
-            glActiveTexture(GL_TEXTURE0 + i);
-
-            // retrieve texture info
-            std::string name;
-            switch (Textures[i].type)
-            {
-            case aiTextureType_DIFFUSE:
-                name = "diffuse" + std::to_string(diffuseIdx++);
-                break;
-            case aiTextureType_SPECULAR:
-                name = "specular" + std::to_string(specularIdx++);
-                break;
-            }
-
-            GLint uniform_var_loc2 = shader.GetLocation("uColor");
-            GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
-            GLuint tex_loc = shader.GetLocation("uTex2d");
-
-            if (uniform_var_loc2 >= 0)
-            {
-                glUniform4f(uniform_var_loc2, 0.5, 0, 0, 1);
-            }
-
-            if (uniform_var_loc3 >= 0)
-            {
-                glUniform1i(uniform_var_loc3, true);
-            }
-
-            if (tex_loc >= 0)
-            {
-                glUniform1i(tex_loc, i);
-            }
-            // bind texture
-            Textures[i].bind();
+            glUniform1i(uniform_var_loc3, true);
         }
-        // reset
-        glActiveTexture(GL_TEXTURE0);
-    }
 
+        if (tex_loc >= 0)
+        {
+            glUniform1i(tex_loc, i);
+        }
+        // bind texture
+        //Textures[i].bind();
+        glBindTexture(GL_TEXTURE_2D, Textures[i].id);
+    }
     // EBO stuff
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
+
+    // reset
+    glActiveTexture(GL_TEXTURE0);
 }
 
 void Mesh::Cleanup()

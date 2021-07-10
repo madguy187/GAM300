@@ -96,9 +96,13 @@ void AssimpModel::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera)
         {
             Transform.position.setX(10);
         }
-        else
+        else if (NameOfModel == "White Dog")
         {
             Transform.position.setX(-10);
+        }
+        else
+        {
+            Transform.position.setX(0);
         }
         ///////////////////////////////////////////////////////
 
@@ -123,6 +127,19 @@ void AssimpModel::SetName(std::string name)
 std::string AssimpModel::GetDirectory()
 {
     return directory;
+}
+
+unsigned int Eclipse::AssimpModel::GetNumberOfTextures()
+{
+    return textures_loaded.size();
+}
+
+void Eclipse::AssimpModel::GetTextureNames()
+{
+    for (int i = 0; i < textures_loaded.size(); i++)
+    {
+        std::cout << " Texture Name " << textures_loaded[i].path << std::endl;
+    }
 }
 
 std::string AssimpModel::GetName()
@@ -178,7 +195,7 @@ Mesh AssimpModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
         aiString texture_file;
         material->Get(AI_MATKEY_TEXTURE(aiTextureType_DIFFUSE, 0), texture_file);
 
-        if (auto texture = scene->GetEmbeddedTexture(texture_file.C_Str()) ) 
+        if (auto texture = scene->GetEmbeddedTexture(texture_file.C_Str()))
         {
             std::cout << "Embedded" << std::endl;
             // Not working for fbx file leh
@@ -233,11 +250,11 @@ std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType ty
             }
         }
 
-        //std::cout << "TEST" << std::endl;
-
         if (!skip)
         {
             // not loaded yet
+            std::cout << str.C_Str() << std::endl;
+
             Texture tex(directory, str.C_Str(), type);
             tex.load(false);
             textures.push_back(tex);

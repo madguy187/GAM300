@@ -31,6 +31,7 @@ void Texture::load(bool flip)
 
     if (data) 
     {
+        glGenTextures(1, &id);
         glBindTexture(GL_TEXTURE_2D, id);
         glTexImage2D(GL_TEXTURE_2D, 0, colorMode, width, height, 0, colorMode, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);

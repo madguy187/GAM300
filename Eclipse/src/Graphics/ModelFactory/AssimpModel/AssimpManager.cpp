@@ -24,6 +24,7 @@ void AssimpModelManager::CreateModel(std::string name, std::string FolderName)
 
     // Initialise
     AssimpModel* NewModel = new AssimpModel(false);
+    //NewModel->LoadAssimpModel(PathName);
     NewModel->LoadAssimpModel(PathName);
     NewModel->SetName(name);
 
@@ -38,7 +39,8 @@ void AssimpModelManager::CreateModel(std::string name, std::string FolderName)
 void AssimpModelManager::LoadAllModels()
 {
     CreateModel("White Dog", "dog2");
-    CreateModel("Black Dog", "dog2");
+    CreateModel("Black Dog", "dog");
+    //CreateModel("Black", "dog");
     
     DebugPrint();
 
@@ -49,10 +51,10 @@ void AssimpModelManager::Draw(unsigned int FrameBufferID, GLenum Mode)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
     auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
+    shdrpgm->second.Use();
 
     for (auto const& Models : AssimpModelContainer_)
     {
-        shdrpgm->second.Use();
         auto& InvidualModels = *(Models.second);
         InvidualModels.Render(shdrpgm->second, Mode);
     }
@@ -98,6 +100,9 @@ void AssimpModelManager::DebugPrint()
         std::cout << " Entity ID : " << Models.first << std::endl;
         std::cout << " Model Name : " << InvidualModels.GetName() << std::endl;
         std::cout << " Model Directory : " << InvidualModels.GetDirectory() << std::endl;
+        std::cout << " Number of Textures : " << InvidualModels.GetNumberOfTextures() << std::endl;
+        InvidualModels.GetTextureNames();
+        std::cout << std::endl;
     }
 
     std::cout << "---------------------------------" << std::endl;

@@ -40,6 +40,8 @@ namespace Eclipse
         void SetName(std::string name);
         std::string GetName();
         std::string GetDirectory();
+        unsigned int GetNumberOfTextures();
+        void GetTextureNames();
 
         // fbx
     public:
