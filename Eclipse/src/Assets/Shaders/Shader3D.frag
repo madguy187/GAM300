@@ -12,6 +12,7 @@ in vec3 normal_from_vtxShader;
 uniform vec3 camPos;
 uniform vec4 sdiffuse;
 uniform vec4 sspecular;
+uniform bool TEST;
 
 // Structs
 uniform sampler2D diffuse0;
@@ -139,6 +140,12 @@ void main ()
 		texDiff = texture(diffuse0, TxtCoord);
 		texSpec = texture(specular0, TxtCoord);
 	}
+
+    if(TEST)
+    {
+    	texDiff = texture(uTex2d, TxtCoord);
+    	texSpec = texture(uTex2d, TxtCoord);
+    }
 
      result = CalcDirLight(directionlight[0], norm, viewDir,texDiff,texSpec);
 

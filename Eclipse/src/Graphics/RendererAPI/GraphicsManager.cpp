@@ -286,19 +286,27 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
     GLuint cam = sprite.shaderRef->second.GetLocation("camPos");
     GLuint model2 = sprite.shaderRef->second.GetLocation("model");
     GLuint dsa = sprite.shaderRef->second.GetLocation("noTex");
+    GLuint TEST = sprite.shaderRef->second.GetLocation("TEST");
 
     // I will need to change all these with Material system
     // ------------------------------------------------------------
     GLuint aa = sprite.shaderRef->second.GetLocation("sdiffuse");
     GLuint bb = sprite.shaderRef->second.GetLocation("sspecular");
 
-    if (dsa >= 0)
-    {
-        glUniform1i(dsa, true);
-        glUniform4f(aa, 1, 1, 1, 1);
-        glUniform4f(bb, 1, 1, 1, 1);
-    }
+    //if (dsa >= 0)
+    //{
+    //    glUniform1i(dsa, true);
+    //    glUniform4f(aa, 1, 1, 1, 1);
+    //    glUniform4f(bb, 1, 1, 1, 1);
+    //}
+
     // ------------------------------------------------------------
+
+
+    if (TEST >= 0)
+    {
+        glUniform1i(TEST, 1);
+    }
 
     if (uniform_var_loc1 >= 0)
     {

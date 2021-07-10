@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Material.h"
+#include "MaterialManager.h"
 
 Material Material::Emerald =
 {
@@ -200,4 +200,9 @@ Material Material::mix(Material m1, Material m2, float mix)
         m1.Specular * mix + m2.Specular * (1 - mix),
         m1.Shininess * mix + m2.Shininess * (1 - mix)
     };
+}
+
+void Eclipse::Material::CheckMaterialUniforms(Shader* _shdrpgm, MaterialComponent& hi, int index)
+{
+
 }

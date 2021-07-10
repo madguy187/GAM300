@@ -310,7 +310,7 @@
     <ClInclude Include="src\Graphics\Lighting\SpotLight.h">
       <Filter>Graphics\Lighting</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\Material\Material.h">
+    <ClInclude Include="src\Graphics\Material\MaterialManager.h">
       <Filter>Graphics\Material</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.h">
@@ -598,7 +598,7 @@
     <ClCompile Include="src\Graphics\Lighting\SpotLight.cpp">
       <Filter>Graphics\Lighting</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\Material\Material.cpp">
+    <ClCompile Include="src\Graphics\Material\MaterialManager.cpp">
       <Filter>Graphics\Material</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.cpp">
