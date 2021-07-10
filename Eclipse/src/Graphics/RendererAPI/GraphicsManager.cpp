@@ -285,6 +285,16 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
     GLuint tex_loc = sprite.shaderRef->second.GetLocation("uTex2d");
     GLuint cam = sprite.shaderRef->second.GetLocation("camPos");
     GLuint model2 = sprite.shaderRef->second.GetLocation("model");
+    GLuint dsa = sprite.shaderRef->second.GetLocation("noTex");
+    GLuint aa = sprite.shaderRef->second.GetLocation("sdiffuse");
+    GLuint bb = sprite.shaderRef->second.GetLocation("sspecular");
+
+    if (dsa >= 0)
+    {
+        glUniform1i(dsa, true);
+        glUniform4f(aa, 1, 1, 1, 1);
+        glUniform4f(bb, 1, 1, 1, 1);
+    }
 
     if (ImGui::CollapsingHeader("Material"))
     {
@@ -323,7 +333,7 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
 
     if (uniform_var_loc4 >= 0)
     {
-        GLCall(glUniform2f(uniform_var_loc4, sprite.textureIdx.x, sprite.textureIdx.y));
+        GLCall(glUniform2f(uniform_var_loc4, sprite.textureIdx.getX(), sprite.textureIdx.getY()));
     }
 
     if (sprite.hasTexture)
@@ -332,7 +342,7 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
         {
             if (uniform_var_loc5 >= 0)
             {
-                //GLCall(glUniform2f(uniform_var_loc5, sprite.textureRef->second.GetCols(), sprite.textureRef->second.GetRows()));
+                GLCall(glUniform2f(uniform_var_loc5, sprite.textureRef->second.GetCols(), sprite.textureRef->second.GetRows()));
             }
             else
             {

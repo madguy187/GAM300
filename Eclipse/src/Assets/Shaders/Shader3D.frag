@@ -10,6 +10,8 @@ in vec3 crntPos;
 uniform vec3 lightPos;
 in vec3 normal_from_vtxShader;
 uniform vec3 camPos;
+uniform vec4 sdiffuse;
+uniform vec4 sspecular;
 
 // Structs
 uniform sampler2D diffuse0;
@@ -127,10 +129,13 @@ void main ()
     vec4 texDiff;
 	vec4 texSpec;
 
-	if (noTex == 1) {
-		//texDiff = material.diffuse;
-		//texSpec = material.specular;
-	} else {
+	if (noTex == 1) 
+    {
+		texDiff = sdiffuse;
+		texSpec = sspecular;
+	} 
+    else 
+    {
 		texDiff = texture(diffuse0, TxtCoord);
 		texSpec = texture(specular0, TxtCoord);
 	}
