@@ -3,7 +3,6 @@
 #include "Graphics/Lighting/PointLight.h"
 #include "Graphics/Lighting/DirectionalLight.h"
 #include "Graphics/Lighting/SpotLight.h"
-#include "Library/Math/Math.h"
 
 namespace Eclipse
 {
