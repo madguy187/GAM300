@@ -1,5 +1,0 @@
-[07/11/21 01:08:08] [CORE] [error] Crash Report: Assertion Failed! Testing!
-[07/11/21 01:15:16] [CORE] [error] Crash Report: Assertion Failed! Testing!
-[07/11/21 01:38:23] [CORE] [error] Crash Report: Assertion Failed! woo
-[07/11/21 01:43:23] [CORE] [error] Crash Report: Assertion Failed! woo
-[07/11/21 02:02:01] [CORE] [error] Crash Report: Assertion Failed! woo
