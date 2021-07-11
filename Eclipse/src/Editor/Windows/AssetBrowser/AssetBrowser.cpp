@@ -7,6 +7,7 @@ namespace Eclipse
 		:CurrentDir(AllDir), AllDir(AssetPath),padding(16.0f),thumbnailSize(120.0f)
 	{
 		Type = EditorWindowType::EWT_ASSETBROWSER;
+		
 		WindowName = "AssetBrowser";
 
 		sprite.textureRef = Graphics::textures.find("PlayPauseStop");
@@ -84,20 +85,27 @@ namespace Eclipse
 							if (secondEntry.is_directory())
 							{
 								const auto& path2 = secondEntry.path();
+								
 								auto relativePath2 = relative(path2, AssetPath);
+								
 								std::string fileNameString2 = relativePath2.filename().string();
+								
 								if (ECGui::BeginTreeNode(fileNameString2.c_str()))
 								{
 									if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0))
 									{
 										NextDir = path2;
+										
 										CurrentDir = NextDir;
+										
 										if (!exists(CurrentDir))
 										{
 											CurrentDir = AllDir;
 										}
+										
 										jumpDir = true;
 									}
+									
 									ECGui::EndTreeNode();
 								}
 
@@ -183,8 +191,7 @@ namespace Eclipse
 			}
 		}
 		ImGui::Columns(1);
-		//ImGui::SliderFloat("ThumbNail Size", &thumbnailSize, 16, 512);
-		//ImGui::SliderFloat("padding", &padding, 0, 32);
+		
 		ImGui::PopStyleColor(2);
 
 
@@ -193,21 +200,25 @@ namespace Eclipse
 	void AssetBrowserWindow::PathAndSearches()
 	{
 		Path();
+		
 		Search();
 	}
 
 	void AssetBrowserWindow::Path()
 	{
-		//ImGui::SetColumnOffset(2, 300);
 		std::string source = { "src" };
+		
 		int id = 0, newPathId = -1;
+		
 		for (auto& it : this->CurrentDir)
 		{
 			ImGui::PushID(id);
 			if (id > 0)
 			{
 				ECGui::InsertSameLine();
+				
 				ImGui::Text("/");
+				
 				ECGui::InsertSameLine();
 			}
 			if (it.string() != source)
@@ -217,22 +228,28 @@ namespace Eclipse
 					newPathId = id;
 				}
 			}
+			
 			ImGui::PopID();
+			
 			++id;
 		}
 
 		if (newPathId >= 0)
 		{
 			int i = 0;
+			
 			std::filesystem::path newPath;
+			
 			for (auto& sec : this->CurrentDir)
 			{
 				if (i++ > newPathId)
 				{
 					break;
 				}
+				
 				newPath /= sec;
 			}
+			
 			this->CurrentDir = newPath;
 		}
 	}
@@ -281,7 +298,9 @@ namespace Eclipse
 			if (found && searchLowerCase == LowerCase(relativePath.filename().string().c_str()))
 			{
 				ImDrawList* draw_list = ImGui::GetWindowDrawList();
+				
 				ImGui::TextWrapped(fileNameString.c_str());
+				
 				draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(255, 255, 0, 255));
 			}
 			else
@@ -367,13 +386,18 @@ namespace Eclipse
 					{
 						subDirFolders.push_back(secondEntry);
 					}
+					
 					subDirItems.push_back(secondEntry);
 				}
 
 			}
+			
 			AddToFolderMap(dirEntry, subDirFolders);
+			
 			AddToPathMap(dirEntry, subDirItems);
+			
 			subDirFolders.clear();
+			
 			subDirItems.clear();
 		}
 	}
@@ -456,11 +480,6 @@ namespace Eclipse
 					//CurrentDir = pair.first;
 					found = true;
 				}
-				else
-				{
-					std::cout << "test";
-					found = false;
-				}
 			}
 
 			std::string nameString = LowerCase(pair2.filename().string().c_str());
@@ -518,6 +537,7 @@ namespace Eclipse
 	std::string AssetBrowserWindow::LowerCase(const char* buffer)
 	{
 		std::string lowerCaseString;
+		
 		std::string bufferString(buffer);
 
 		for (const auto& character : bufferString)
@@ -526,10 +546,12 @@ namespace Eclipse
 		}
 
 		size_t lastdot = lowerCaseString.find_last_of(".");
+		
 		if (lastdot == std::string::npos)
 		{
 			return lowerCaseString;
 		}
+		
 		return lowerCaseString.substr(0, lastdot);
 	}
 
