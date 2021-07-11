@@ -158,7 +158,6 @@ namespace Eclipse
             OpenGL_Context::post_render();
             Timer.tracker.system_end = glfwGetTime();
             Timer.EngineTimer(Timer.tracker);
-        	
         }
 
         // unLoad
