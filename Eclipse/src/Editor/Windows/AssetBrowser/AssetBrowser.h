@@ -49,9 +49,16 @@ namespace Eclipse
 		////////////////////////////////
 		
 	public:
+		
+		//main update function
+		////////////////////////////////
 		void Update() override;
 		AssetBrowserWindow();
 		void DrawImpl();
+		////////////////////////////////
+
+		//asset browser main
+		////////////////////////////////
 		void LeftFolderHierarchy();
 		void RightFoldersAndItems();
 		void FoldersAndItems();
@@ -61,8 +68,11 @@ namespace Eclipse
 		void BackToParentPath(std::filesystem::path &CurrentPath);
 		void NextPath(std::filesystem::path& CurrentPath,std::filesystem::path paths);
 		void MapNextPath(std::map<std::filesystem::path, std::vector<std::filesystem::path>> &pathMap, std::filesystem::path Key);
+		////////////////////////////////
 
-		// search functions
+		
+		// search functions 
+		////////////////////////////////
 		void AddToPathMap(std::filesystem::path dirEntry, std::vector<std::filesystem::path> subDirItems);
 		void AddToFolderMap(std::filesystem::path dirEntry, std::vector<std::filesystem::path> Folder);
 		void ScanAll();
@@ -70,7 +80,13 @@ namespace Eclipse
 		void SearchInBaseFolder();
 		void SearchInFolders();
 		void MainSearchLogic(std::map<std::filesystem::path, std::vector<std::filesystem::path>>::value_type Key);
-		std::string LowerCase(const char* buffer);
 		bool BuffIsEmpty(const char* buffer);
+		////////////////////////////////
+
+		
+		// converting to small case letters
+		////////////////////////////////
+		std::string LowerCase(const char* buffer);
+		////////////////////////////////
 	};
 }

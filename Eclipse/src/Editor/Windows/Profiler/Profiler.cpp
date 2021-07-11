@@ -64,8 +64,7 @@ namespace Eclipse
 	}
 	float ProfilerWindow::GetFPS()
 	{ 
-		//return GLHelper::fps;
-		return 0.0f;
+		return engine->Game_Clock.getFPS();
 	}
 	void ProfilerWindow::EngineTimer(TimerTracker timer)
 	{
