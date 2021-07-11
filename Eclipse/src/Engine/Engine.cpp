@@ -45,9 +45,9 @@ namespace Eclipse
         if (EditorState)
             editorManager = std::make_unique<EditorManager>();
 
-        bool x = false;
+        /*bool x = false;
         std::string msg = "woo";
-        ENGINE_LOG_ASSERT(x, msg.c_str());
+        ENGINE_LOG_ASSERT(x, msg.c_str());*/
     }
 
     void Engine::Run()
