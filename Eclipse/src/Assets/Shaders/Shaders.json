@@ -44,6 +44,11 @@
       "shaderName": "Sky",
       "vtxShader": "src/Assets/Shaders/skybox.vert",
       "frgShader": "src/Assets/Shaders/skybox.frag"
+    },
+    {
+      "shaderName": "Grid",
+      "vtxShader": "src/Assets/Shaders/Grid.vert",
+      "frgShader": "src/Assets/Shaders/Grid.frag"
     }
   ]
 }

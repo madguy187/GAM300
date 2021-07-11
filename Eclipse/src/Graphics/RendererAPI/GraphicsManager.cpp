@@ -46,8 +46,6 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("square");
         sprite.isQuad = true;
-        sprite.hasTexture = true;
-        sprite.textureRef = Graphics::textures.find("orange");
     }
     break;
     case 1:

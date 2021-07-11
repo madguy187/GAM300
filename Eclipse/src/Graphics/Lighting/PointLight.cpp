@@ -22,6 +22,7 @@ void Eclipse::PointLight::CreatePointLight(unsigned int CreatedID)
     sprite.ID = CreatedID;
     sprite.shaderRef = &(Graphics::shaderpgms.find("shader3DShdrpgm")->second);
     sprite.modelRef = Graphics::models.find("sphere")->second.get();
+    engine->LightManager.SetAttenuation(sprite, 5);
 
     // Success
     _pointlights.insert({ counter,&sprite });

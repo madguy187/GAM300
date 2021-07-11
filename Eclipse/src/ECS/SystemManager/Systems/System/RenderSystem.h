@@ -8,12 +8,14 @@
 #include "Graphics/OpenGL/OpenGL_Context.h"
 #include "Graphics/Camera/CameraManager.h"
 #include "Graphics/RendererAPI/GraphicsManager.h"
+#include "Graphics/Grid/Grid.h"
 
 namespace Eclipse
 {
     class RenderSystem : public System
     {
     public:
+        static inline Grid hi;
         static void Init();
         static Signature RegisterAll();
 
