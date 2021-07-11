@@ -10,6 +10,7 @@ uniform mat4 uModelToNDC;
 uniform mat4 model;
 uniform vec2 TextureIndex;
 uniform vec2 TextureDimensions;
+uniform bool TEST;
 
 out vec3 crntPos;
 out vec2 TexCoord;
@@ -25,10 +26,13 @@ void main()
 
 		normal_from_vtxShader = mat3(transpose(inverse(model))) * normal_from_vtxbuffer;  
 
-		float offsetX = TextureIndex.x * (1.0 / TextureDimensions.x);	
-		float offsetY = TextureIndex.y * (1.0 / TextureDimensions.y);
+		if(TEST)
+		{
+			float offsetX = TextureIndex.x * (1.0 / TextureDimensions.x);	
+			float offsetY = TextureIndex.y * (1.0 / TextureDimensions.y);
 		
-		over = vec2((TextureCoord.x / TextureDimensions.x) + offsetX, TextureCoord.y / TextureDimensions.y + offsetY);
+			TxtCoord = vec2((TextureCoord.x / TextureDimensions.x) + offsetX, TextureCoord.y / TextureDimensions.y + offsetY);
+		}
 
 		TxtCoord = TextureCoord;
 }

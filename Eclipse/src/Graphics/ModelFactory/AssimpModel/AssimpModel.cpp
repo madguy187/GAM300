@@ -82,6 +82,7 @@ void AssimpModel::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, un
 
     GLint uModelToNDC_ = _shdrpgm.GetLocation("uModelToNDC");
     GLuint model_ = _shdrpgm.GetLocation("model");
+    GLuint TEST = _shdrpgm.GetLocation("TEST");
 
     if (uModelToNDC_ >= 0)
     {
@@ -112,6 +113,11 @@ void AssimpModel::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, un
         mModelNDC = _camera.projMtx * _camera.viewMtx * model;
         glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
+    }
+
+    if (TEST >= 0)
+    {
+        glUniform1i(TEST, 0);
     }
 }
 
