@@ -6,6 +6,7 @@
 #include "Editor/Manager/EditorManager.h"
 #include "Graphics/Lighting/LightManager.h"
 #include "Mono/Manager/MonoManager.h"
+#include "Graphics/Picker/PickingManager.h"
 
 namespace Eclipse
 {
@@ -20,6 +21,7 @@ namespace Eclipse
 		std::unique_ptr<EditorManager> editorManager;
 		Lights LightManager;
 		MonoManager mono;
+		PickingManager gPicker;
 
 		void Init();
 		void Run();

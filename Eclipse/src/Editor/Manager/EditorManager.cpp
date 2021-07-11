@@ -82,8 +82,12 @@ namespace Eclipse
 	Entity EditorManager::CreateEntity(EntityType type)
 	{
 		Entity ID = engine->world.CreateEntity();
-		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast<std::string>(type), true});
+		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast<std::string>(type), true });
 		engine->world.AddComponent(ID, TransformComponent{});
+
+		//Check this please - Rachel
+		auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
+		engine->gPicker.GenerateAabb(ID, _transform);
 
 		EntityHierarchyList_.push_back(ID);
 		EntityToTypeMap_.insert(std::pair<Entity, EntityType>(ID, type));

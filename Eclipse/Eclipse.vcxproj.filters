@@ -462,6 +462,8 @@
     </ClInclude>
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Editor\Windows\Log\ConsoleData.h" />
+    <ClInclude Include="src\Graphics\Picker\PickingManager.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -678,5 +680,6 @@
       <Filter>Time</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\Graphics\Picker\PickingManager.cpp" />
   </ItemGroup>
 </Project>

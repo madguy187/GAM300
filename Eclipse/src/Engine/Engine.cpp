@@ -5,6 +5,7 @@
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RenderComponent.h"
 #include "ECS/ComponentManager/Components/CameraComponent.h"
+#include "ECS/ComponentManager/Components/AabbComponent.h"
 #include "ECS/ComponentManager/Components/DirectionalLightComponent.h"
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
@@ -56,6 +57,7 @@ namespace Eclipse
         world.RegisterComponent<RenderComponent>();
         world.RegisterComponent<PointLightComponent>();
         world.RegisterComponent<DirectionalLightComponent>();
+        world.RegisterComponent<AabbComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();

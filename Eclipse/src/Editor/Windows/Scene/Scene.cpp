@@ -102,6 +102,26 @@ namespace Eclipse
 	{
 		Entity selectedEntity = engine->editorManager->GetSelectedEntity();
 
+		engine->gPicker.UpdateAabb(selectedEntity);
+
+		auto& aabb = engine->world.GetComponent<AabbComponent>(selectedEntity);
+		auto& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+
+		float t;
+		glm::vec3 rayDir = engine->gPicker.ComputeCursorRayDirection();
+		bool collision = engine->gPicker.RayAabb(camera.eyePos, rayDir, aabb.min.ConvertToGlmVec3Type(), aabb.max.ConvertToGlmVec3Type(), t);
+		//bool collision = engine->gPicker.RayAabb(glm::vec3{ 0.0f, 0.0f, 40.0f }, glm::vec3{ 0.0f, 0.0f, -1.0f }, aabb.min.ConvertToGlmVec3Type(), aabb.max.ConvertToGlmVec3Type(), t);
+
+
+		//std::cout << "RayDir: { " << rayDir.x << ", " << rayDir.y << ", " << rayDir.z << " }" << std::endl;
+		//std::cout << "RayStart: { " << camera.eyePos.x << ", " << camera.eyePos.y << ", " << camera.eyePos.z << " }" << std::endl;
+		//std::cout << "t: " << t << std::endl;
+		
+		//if (collision)
+		//{
+		//	std::cout << "Colliding!" << std::endl;
+		//}
+
 		ImGuizmo::SetOrthographic(false);
 		ImGuizmo::SetDrawlist();
 
