@@ -423,7 +423,7 @@ namespace Eclipse
 		}
 
 		ImGui::SameLine();
-		if (ImGui::Button("Refresh", { 40,20 }))
+		if (ImGui::Button("Refresh", { 70,20 }))
 		{
 			refresh = true;
 			EDITOR_LOG_INFO("Asset Browser Refreshed!");
