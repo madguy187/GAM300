@@ -61,9 +61,10 @@ namespace Eclipse
 
 	}
 
-	void PhysicsManager::CreateActor(Entity ent, bool is_static)
+	void PhysicsManager::CreateActor(Entity ent)
 	{
 		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
+
 		if (Px_Actors[ent] != nullptr)
 			return;
 
@@ -71,76 +72,77 @@ namespace Eclipse
 		temptrans.x = transform.position.getX();
 		temptrans.y = transform.position.getY();
 		temptrans.z = transform.position.getZ();
-		if (is_static)
-			Px_Actors[ent] = Px_Physics->createRigidStatic(PxTransform(temptrans));
+
+		if (engine->world.CheckComponent<RigidBodyComponent>(ent))
+		{
+			auto& rigidbody = engine->world.GetComponent<RigidBodyComponent>(ent);
+			if(rigidbody._Static)
+				Px_Actors[ent] = Px_Physics->createRigidStatic(PxTransform(temptrans));
+			else
+				Px_Actors[ent] = Px_Physics->createRigidDynamic(PxTransform(temptrans));
+		}
 		else
-			Px_Actors[ent] = Px_Physics->createRigidDynamic(PxTransform(temptrans));
+			Px_Actors[ent] = Px_Physics->createRigidStatic(PxTransform(temptrans));
 	}
 
 	void PhysicsManager::ChangeRigidStatic(Entity ent)
 	{
 		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
 		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
-		auto it = StaticObjects.find(ent);
-		auto it2 = RigidObjects.find(ent);
-		if (rigid._Static && it != StaticObjects.end())
-			return;
-		else if (!rigid._Static && it2 != RigidObjects.end())
-			return;
 
-		if (rigid._Static && it2 != RigidObjects.end())
+		if(rigid.inScene)
+			RemoveActorFromScene(ent);
+		PxShape** shapes = new PxShape*[dynamic_cast<PxRigidActor*>(Px_Actors[ent])->getNbShapes()];
+
+		dynamic_cast<PxRigidActor*>(Px_Actors[ent])->getShapes(shapes, dynamic_cast<PxRigidActor*>(Px_Actors[ent])->getNbShapes());
+		PxVec3 temptrans;
+		temptrans.x = transform.position.x;
+		temptrans.y = transform.position.y;
+		temptrans.z = transform.position.z;
+
+		PxRigidStatic* temp = Px_Physics->createRigidStatic(PxTransform(temptrans));
+
+
+		PxShape** shapeit = shapes;
+		while (shapeit != nullptr)
 		{
-			if(rigid.inScene)
-				RemoveActorFromScene(ent);
-			PxShape** shapes = new PxShape*[RigidObjects[ent]->getNbShapes()];
-
-			RigidObjects[ent]->getShapes(shapes, RigidObjects[ent]->getNbShapes());
-			PxVec3 temptrans;
-			temptrans.x = transform.position.x;
-			temptrans.y = transform.position.y;
-			temptrans.z = transform.position.z;
-
-			PxRigidStatic* temp = Px_Physics->createRigidStatic(PxTransform(temptrans));
-
-
-			PxShape** shapeit = shapes;
-			while (shapeit != nullptr)
-			{
-				temp->attachShape(**shapeit);
-				shapeit++;
-			}
-
-			RigidObjects[ent]->release();
-			RigidObjects.erase(ent);
-			StaticObjects.insert(std::make_pair(ent, temp));
+			temp->attachShape(**shapeit);
+			shapeit++;
 		}
-		if (!rigid._Static && it != StaticObjects.end())
+
+		Px_Actors[ent]->release();
+		Px_Actors[ent] = temp;
+		AddActorToScene(ent);
+	}
+
+	void PhysicsManager::ChangeStaticRigid(Entity ent)
+	{
+		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
+		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
+
+		if (rigid.inScene)
+			RemoveActorFromScene(ent);
+		PxShape** shapes = new PxShape * [dynamic_cast<PxRigidActor*>(Px_Actors[ent])->getNbShapes()];
+
+		dynamic_cast<PxRigidActor*>(Px_Actors[ent])->getShapes(shapes, dynamic_cast<PxRigidActor*>(Px_Actors[ent])->getNbShapes());
+		PxVec3 temptrans;
+		temptrans.x = transform.position.x;
+		temptrans.y = transform.position.y;
+		temptrans.z = transform.position.z;
+
+		PxRigidDynamic* temp = Px_Physics->createRigidDynamic(PxTransform(temptrans));
+
+
+		PxShape** shapeit = shapes;
+		while (shapeit != nullptr)
 		{
-			if (rigid.inScene)
-				RemoveActorFromScene(ent);
-
-			PxShape** shapes = new PxShape * [StaticObjects[ent]->getNbShapes()];
-
-			StaticObjects[ent]->getShapes(shapes, StaticObjects[ent]->getNbShapes());
-			PxVec3 temptrans;
-			temptrans.x = transform.position.x;
-			temptrans.y = transform.position.y;
-			temptrans.z = transform.position.z;
-
-			PxRigidDynamic* temp = Px_Physics->createRigidDynamic(PxTransform(temptrans));
-
-
-			PxShape** shapeit = shapes;
-			while (shapeit != nullptr)
-			{
-				temp->attachShape(**shapeit);
-				shapeit++;
-			}
-
-			StaticObjects[ent]->release();
-			StaticObjects.erase(ent);
-			RigidObjects.insert(std::make_pair(ent, temp));
+			temp->attachShape(**shapeit);
+			shapeit++;
 		}
+
+		Px_Actors[ent]->release();
+		Px_Actors[ent] = temp;
+		AddActorToScene(ent);
 	}
 
 	void PhysicsManager::AttachBoxToActor(Entity ent, float hx, float hy, float hz)

@@ -20,11 +20,12 @@ namespace Eclipse
 		void AttachBoxToActor(Entity ent,float halfx, float halfy, float halfz);
 		void AttachSphereToActor(Entity ent,float radius);
 		void AttachCapsuleToActor(Entity ent, float radius, float halfheight);
-		void CreateActor(Entity ent, bool is_static);
+		void CreateActor(Entity ent);
 		void UpdateActor(Entity ent);
 		void GetActorPosition(Entity ent);
 		void SetActorPosition(Entity ent);
 		void ChangeRigidStatic(Entity ent);
+		void ChangeStaticRigid(Entity ent);
 		void AddActorToScene(Entity ent);
 		void RemoveActorFromScene(Entity ent);
 	};
