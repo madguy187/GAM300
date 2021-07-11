@@ -21,3 +21,4 @@ x64/Debug/GAM300.exe
 *.ipdb
 *.exe
 /Libraries
+Eclipse/Logs/Crash Report.txt
