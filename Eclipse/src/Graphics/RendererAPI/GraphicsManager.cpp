@@ -280,8 +280,8 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
     GLint uniform_var_loc1 = sprite.shaderRef->second.GetLocation("uModelToNDC");
     GLint uniform_var_loc2 = sprite.shaderRef->second.GetLocation("uColor");
     GLint uniform_var_loc3 = sprite.shaderRef->second.GetLocation("uTextureCheck");
-    GLint uniform_var_loc4 = sprite.shaderRef->second.GetLocation("TextureIndex");
-    GLint uniform_var_loc5 = sprite.shaderRef->second.GetLocation("TextureDimensions");
+    //GLint uniform_var_loc4 = sprite.shaderRef->second.GetLocation("TextureIndex");
+    //GLint uniform_var_loc5 = sprite.shaderRef->second.GetLocation("TextureDimensions");
     GLuint tex_loc = sprite.shaderRef->second.GetLocation("uTex2d");
     GLuint cam = sprite.shaderRef->second.GetLocation("camPos");
     GLuint model2 = sprite.shaderRef->second.GetLocation("model");
@@ -338,26 +338,26 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
         glUniform1i(uniform_var_loc3, sprite.hasTexture);
     }
 
-    if (uniform_var_loc4 >= 0)
-    {
-        GLCall(glUniform2f(uniform_var_loc4, sprite.textureIdx.getX(), sprite.textureIdx.getY()));
-    }
+    //if (uniform_var_loc4 >= 0)
+    //{
+    //    GLCall(glUniform2f(uniform_var_loc4, sprite.textureIdx.getX(), sprite.textureIdx.getY()));
+    //}
 
-    if (sprite.hasTexture)
-    {
-        if (sprite.textureRef != Graphics::textures.end())
-        {
-            if (uniform_var_loc5 >= 0)
-            {
-                GLCall(glUniform2f(uniform_var_loc5, sprite.textureRef->second.GetCols(), sprite.textureRef->second.GetRows()));
-            }
-            else
-            {
-                std::cout << "Uniform variable doesn't exist!!!\n";
-                std::exit(EXIT_FAILURE);
-            }
-        }
-    }
+    //if (sprite.hasTexture)
+    //{
+    //    if (sprite.textureRef != Graphics::textures.end())
+    //    {
+    //        if (uniform_var_loc5 >= 0)
+    //        {
+    //            GLCall(glUniform2f(uniform_var_loc5, sprite.textureRef->second.GetCols(), sprite.textureRef->second.GetRows()));
+    //        }
+    //        else
+    //        {
+    //            std::cout << "Uniform variable doesn't exist!!!\n";
+    //            std::exit(EXIT_FAILURE);
+    //        }
+    //    }
+    //}
 
     if (tex_loc >= 0)
     {
