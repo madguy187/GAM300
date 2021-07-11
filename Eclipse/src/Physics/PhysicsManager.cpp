@@ -68,19 +68,13 @@ namespace Eclipse
 			return;
 
 		PxVec3 temptrans;
-		temptrans.x = transform.position.x;
-		temptrans.y = transform.position.y;
-		temptrans.z = transform.position.z;
+		temptrans.x = transform.position.getX();
+		temptrans.y = transform.position.getY();
+		temptrans.z = transform.position.getZ();
 		if (is_static)
-		{
-			Px_Actor[ent] = Px_Physics->createRigidStatic(PxTransform(temptrans));
-			StaticObjects.insert(std::make_pair(ent, temp));
-		}
+			Px_Actors[ent] = Px_Physics->createRigidStatic(PxTransform(temptrans));
 		else
-		{
-			PxRigidDynamic* temp = Px_Physics->createRigidDynamic(PxTransform(temptrans));
-			RigidObjects.insert(std::make_pair(ent, temp));
-		}
+			Px_Actors[ent] = Px_Physics->createRigidDynamic(PxTransform(temptrans));
 	}
 
 	void PhysicsManager::ChangeRigidStatic(Entity ent)
@@ -151,7 +145,7 @@ namespace Eclipse
 
 	void PhysicsManager::AttachBoxToActor(Entity ent, float hx, float hy, float hz)
 	{
-		if (StaticObjects.find(ent) == StaticObjects.end() || RigidObjects.find(ent) == RigidObjects.end())
+		if (Px_Actors[ent] == nullptr)
 			return;
 
 		PxMaterial* tempmat = Px_Physics->createMaterial(0.5, 0.5, 0.1);
@@ -161,25 +155,15 @@ namespace Eclipse
 			return;
 		}
 
-		if (StaticObjects.find(ent) != StaticObjects.end())
-		{
-			PxRigidStatic* temp = StaticObjects[ent];
-			PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*temp, PxBoxGeometry{ hx,hy,hz }, *tempmat);
-			temp->attachShape(*tempshape);
+		PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*dynamic_cast<PxRigidActor*>(Px_Actors[ent]), PxBoxGeometry{ hx,hy,hz }, *tempmat);
+		dynamic_cast<PxRigidActor*>(Px_Actors[ent])->attachShape(*tempshape);
+		tempshape->release();
 
-		}
-
-		if (RigidObjects.find(ent) != RigidObjects.end())
-		{
-			PxRigidDynamic* temp = RigidObjects[ent];
-			PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*temp, PxBoxGeometry{ hx,hy,hz }, *tempmat);
-			temp->attachShape(*tempshape);
-		}
 	}
 
 	void PhysicsManager::AttachSphereToActor(Entity ent, float radius)
 	{
-		if (StaticObjects.find(ent) == StaticObjects.end() || RigidObjects.find(ent) == RigidObjects.end())
+		if (Px_Actors[ent] == nullptr)
 			return;
 
 		PxMaterial* tempmat = Px_Physics->createMaterial(0.5, 0.5, 0.1);
@@ -188,26 +172,14 @@ namespace Eclipse
 			std::cout << "creatematerial failed" << std::endl;
 			return;
 		}
-
-		if (StaticObjects.find(ent) != StaticObjects.end())
-		{
-			PxRigidStatic* temp = StaticObjects[ent];
-			PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*temp, PxSphereGeometry{ radius }, *tempmat);
-			temp->attachShape(*tempshape);
-
-		}
-
-		if (RigidObjects.find(ent) != RigidObjects.end())
-		{
-			PxRigidDynamic* temp = RigidObjects[ent];
-			PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*temp, PxSphereGeometry{ radius }, *tempmat);
-			temp->attachShape(*tempshape);
-		}
+		PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*dynamic_cast<PxRigidActor*>(Px_Actors[ent]), PxSphereGeometry{ radius }, *tempmat);
+		dynamic_cast<PxRigidActor*>(Px_Actors[ent])->attachShape(*tempshape);
+		tempshape->release();
 	}
 
 	void PhysicsManager::AttachCapsuleToActor(Entity ent, float radius,float halfheight)
 	{
-		if (StaticObjects.find(ent) == StaticObjects.end() || RigidObjects.find(ent) == RigidObjects.end())
+		if (Px_Actors[ent] == nullptr)
 			return;
 
 		PxMaterial* tempmat = Px_Physics->createMaterial(0.5, 0.5, 0.1);
@@ -217,62 +189,25 @@ namespace Eclipse
 			return;
 		}
 
-		if (StaticObjects.find(ent) != StaticObjects.end())
-		{
-			PxRigidStatic* temp = StaticObjects[ent];
-			PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*temp, PxCapsuleGeometry{ radius,halfheight }, *tempmat);
-			temp->attachShape(*tempshape);
-		}
-
-		if (RigidObjects.find(ent) != RigidObjects.end())
-		{
-			PxRigidDynamic* temp = RigidObjects[ent];
-			PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*temp, PxCapsuleGeometry{ radius,halfheight }, *tempmat);
-			temp->attachShape(*tempshape);
-		}
-
+		PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*dynamic_cast<PxRigidActor*>(Px_Actors[ent]), PxCapsuleGeometry{ radius,halfheight }, *tempmat);
+		dynamic_cast<PxRigidActor*>(Px_Actors[ent])->attachShape(*tempshape);
+		tempshape->release();
 	}
 	
 	void PhysicsManager::AddActorToScene(Entity ent)
 	{
 		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
-		if (rigid._Static)
-		{
-			if(StaticObjects.find(ent) != StaticObjects.end())
-			{
-				Px_Scene->addActor(*(StaticObjects[ent]));
-				rigid.inScene = true;
-			}
-		}
-		else
-		{
-			if (RigidObjects.find(ent) != RigidObjects.end())
-			{
-				Px_Scene->addActor(*(RigidObjects[ent]));
-				rigid.inScene = true;
-			}
-		}
+
+		Px_Scene->addActor(*Px_Actors[ent]);
+		rigid.inScene = true;
 	}
 
 	void PhysicsManager::RemoveActorFromScene(Entity ent)
 	{
 		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
-		if (rigid._Static)
-		{
-			if (StaticObjects.find(ent) != StaticObjects.end())
-			{
-				Px_Scene->removeActor(*(StaticObjects[ent]));
-				rigid.inScene = false;
-			}
-		}
-		else
-		{
-			if (RigidObjects.find(ent) != RigidObjects.end())
-			{
-				Px_Scene->removeActor(*(RigidObjects[ent]));
-				rigid.inScene = false;
-			}
-		}
+
+		Px_Scene->removeActor(*Px_Actors[ent]);
+		rigid.inScene = false;
 	}
 
 	void PhysicsManager::UpdateActor(Entity ent)
@@ -281,15 +216,15 @@ namespace Eclipse
 		if (rigid._Static)
 			return;
 
-		if (RigidObjects.find(ent) != RigidObjects.end())
+		if (Px_Actors[ent] != nullptr)
 		{
 			PxVec3 temp;
 			temp.x =rigid.forces.getX();
 			temp.y = rigid.forces.getY();
 			temp.z = rigid.forces.getZ();
-			RigidObjects[ent]->setForceAndTorque(temp, { 0,0,0 });
-			RigidObjects[ent]->setMass(rigid.mass);
-			RigidObjects[ent]->setActorFlag(PxActorFlag::eDISABLE_GRAVITY,rigid.enableGravity ? false : true);
+			dynamic_cast<PxRigidDynamic*>(Px_Actors[ent])->setForceAndTorque(temp, { 0,0,0 });
+			dynamic_cast<PxRigidDynamic*>(Px_Actors[ent])->setMass(rigid.mass);
+			dynamic_cast<PxRigidDynamic*>(Px_Actors[ent])->setActorFlag(PxActorFlag::eDISABLE_GRAVITY,rigid.enableGravity ? false : true);
 		}
 	}
 
