@@ -16,7 +16,7 @@ void AssimpModelManager::CreateModel(std::string name, std::string FolderName , 
     if (!test)
     {
         std::string Error = ("The file path " + PathName + " doesnt exist! ").c_str();
-        //ENGINE_LOG_ASSERT(false, Error);
+        ENGINE_LOG_ASSERT(false, Error);
         std::exit(EXIT_FAILURE);
     }
 
@@ -139,5 +139,16 @@ void AssimpModelManager::CleanUpAllModels()
     {
         auto& InvidualModels = *(Models.second);
         InvidualModels.Cleanup();
+    }
+}
+
+AssimpModelManager::~AssimpModelManager()
+{
+    for (auto i : AssimpModelContainer_)
+    {
+        if (i.second != nullptr)
+        {
+            delete i.second;
+        }
     }
 }

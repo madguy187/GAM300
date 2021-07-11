@@ -28,5 +28,6 @@ public:
     void DebugPrint();
     void AddComponents();
     void CleanUpAllModels();
+    ~AssimpModelManager();
 };
 #endif // ASSIMP_MANAGER_H
