@@ -13,7 +13,7 @@ namespace Eclipse
 
 	LoggerWindow::LoggerWindow()
 	{
-		Type = EditorWindowType::LOGGER;
+		Type = EditorWindowType::EWT_LOGGER;
 		WindowName = "Log";
 		EditorLog_ = std::make_shared<ConsoleData>();
 	}

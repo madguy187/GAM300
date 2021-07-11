@@ -16,6 +16,8 @@ namespace Eclipse
 			                  bool border = false, ImGuiWindowFlags flag = 0);
 		static void EndChildWindow();
 		static ImVec2 GetWindowSize();
+		static ImVec2 GetWindowPos();
+		static ImVec2 GetCursorScreenPos();
 		static float GetWindowHeight();
 		static float GetWindowWidth();
 		static void SetWindowSize(float width, float height);

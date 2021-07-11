@@ -8,7 +8,18 @@ namespace Eclipse
         NONE = 0,
         GAMEVIEW = 1,
         SCENEVIEW = 2,
+        SWITCHINGVIEWS_TOP = 3,
+        SWITCHINGVIEWS_BOTTOM = 4,
+        SWITCHINGVIEWS_LEFT = 5,
+        SWITCHINGVIEWS_RIGHT = 6,
         MAXCOUNT
+    };
+
+    static const char* enum_FrameBufferMode_str[] =
+    {
+      "NONE", "GAMEVIEW", "SCENEVIEW",
+      "SWITCHINGVIEWS_TOP", "SWITCHINGVIEWS_BOTTOM", "SWITCHINGVIEWS_LEFT", "SWITCHINGVIEWS_RIGHT",
+      "MAXCOUNT"
     };
 
     class FrameBuffer
@@ -29,7 +40,7 @@ namespace Eclipse
         unsigned int GetTextureColourBufferID();
         unsigned int GetDepthBufferID();
         FrameBufferMode GetFrameBufferType();
-
+        std::string GetName();
         void DeletCurrentFrameBuffer();
 
     private:
@@ -48,10 +59,11 @@ namespace Eclipse
         ECVec2 frameBufferPosition;
         glm::uvec2 m_size;
         unsigned int m_width, m_height;
+        std::string Name;
 
         friend std::ostream& operator << (std::ostream& os, const FrameBufferMode& in);
         void CreateFrameBuffer(unsigned int p_width, unsigned int p_height);
-
+        std::string getStringForEnum(int enum_val);
     };
 }
 #endif//VIEW_H

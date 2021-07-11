@@ -30,6 +30,16 @@ namespace Eclipse
 		return ImGui::GetContentRegionAvail();
 	}
 
+	ImVec2 ImGuiAPI::GetWindowPos()
+	{
+		return ImGui::GetWindowPos();
+	}
+
+	ImVec2 ImGuiAPI::GetCursorScreenPos()
+	{
+		return ImGui::GetCursorScreenPos();
+	}
+
 	float ImGuiAPI::GetWindowHeight()
 	{
 		return ImGui::GetWindowHeight();

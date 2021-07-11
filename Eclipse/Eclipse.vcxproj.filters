@@ -40,8 +40,8 @@
     <Filter Include="Editor\Windows">
       <UniqueIdentifier>{C690B5AD-B25E-A9B3-9BF2-19DA875F8518}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Editor\Windows\AssetBroswer">
-      <UniqueIdentifier>{D9B80427-45C6-320D-CEAC-2EF83AB9FEC3}</UniqueIdentifier>
+    <Filter Include="Editor\Windows\AssetBrowser">
+      <UniqueIdentifier>{59D90627-C5E6-340D-4ECD-30F8BAD900C4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Editor\Windows\Debug">
       <UniqueIdentifier>{BC97D61F-A826-60E9-5145-74E43DB3708F}</UniqueIdentifier>
@@ -66,6 +66,9 @@
     </Filter>
     <Filter Include="Editor\Windows\Scene">
       <UniqueIdentifier>{63FAE420-4F89-6EEA-F8A7-82E5E4157F90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Windows\SwitchViews">
+      <UniqueIdentifier>{F5A4416B-E1B4-ED3B-4A6E-525A369DDCD4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine">
       <UniqueIdentifier>{DBC7D3B0-C769-FE86-B024-12DB9C6585D7}</UniqueIdentifier>
@@ -94,11 +97,20 @@
     <Filter Include="Graphics\Lighting">
       <UniqueIdentifier>{5BBF6932-C7D5-67C8-104D-F3E97CA23850}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics\Material">
+      <UniqueIdentifier>{745AF5D4-E070-F36A-29E8-7E8C953DC4F2}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Graphics\ModelFactory">
       <UniqueIdentifier>{0EA78BA6-7A13-47A1-4307-DFFEAF326909}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics\ModelFactory\AssimpModel">
+      <UniqueIdentifier>{3BB4CCDB-A722-225B-F00B-DD5A5CB917F7}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Graphics\ModelFactory\BasicPrimitives">
       <UniqueIdentifier>{EBF9626C-57BE-615C-2024-92268CA7FD91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\ModelFactory\Sky">
+      <UniqueIdentifier>{34B31FC3-A075-534D-E925-E2D955272C2B}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\OpenGL">
       <UniqueIdentifier>{8AE717A8-F672-856C-FF83-08616B8EE16C}</UniqueIdentifier>
@@ -177,6 +189,9 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\EntityComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\MaterialComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\PointLightComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
@@ -184,6 +199,9 @@
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\SpotLightComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\TransformComponent.h">
@@ -226,7 +244,7 @@
       <Filter>Editor\Menu</Filter>
     </ClInclude>
     <ClInclude Include="src\Editor\Windows\AssetBrowser\AssetBrowser.h">
-      <Filter>Editor\Windows\AssetBroswer</Filter>
+      <Filter>Editor\Windows\AssetBrowser</Filter>
     </ClInclude>
     <ClInclude Include="src\Editor\Windows\Debug\Debug.h">
       <Filter>Editor\Windows\Debug</Filter>
@@ -243,6 +261,9 @@
     <ClInclude Include="src\Editor\Windows\Interface\ECGuiWindow.h">
       <Filter>Editor\Windows\Interface</Filter>
     </ClInclude>
+    <ClInclude Include="src\Editor\Windows\Log\ConsoleData.h">
+      <Filter>Editor\Windows\Log</Filter>
+    </ClInclude>
     <ClInclude Include="src\Editor\Windows\Log\Log.h">
       <Filter>Editor\Windows\Log</Filter>
     </ClInclude>
@@ -251,6 +272,18 @@
     </ClInclude>
     <ClInclude Include="src\Editor\Windows\Scene\Scene.h">
       <Filter>Editor\Windows\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\SwitchViews\Bottom.h">
+      <Filter>Editor\Windows\SwitchViews</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\SwitchViews\Left.h">
+      <Filter>Editor\Windows\SwitchViews</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\SwitchViews\Right.h">
+      <Filter>Editor\Windows\SwitchViews</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\SwitchViews\Top.h">
+      <Filter>Editor\Windows\SwitchViews</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\Engine.h">
       <Filter>Engine</Filter>
@@ -289,8 +322,23 @@
     <ClInclude Include="src\Graphics\Lighting\LightManager.h">
       <Filter>Graphics\Lighting</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\Lighting\LightProperties.hpp">
+      <Filter>Graphics\Lighting</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\Lighting\PointLight.h">
       <Filter>Graphics\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Lighting\SpotLight.h">
+      <Filter>Graphics\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Material\MaterialManager.h">
+      <Filter>Graphics\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.h">
+      <Filter>Graphics\ModelFactory\AssimpModel</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.h">
+      <Filter>Graphics\ModelFactory\AssimpModel</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\AllBasicPrimitives.h">
       <Filter>Graphics\ModelFactory\BasicPrimitives</Filter>
@@ -349,6 +397,9 @@
     <ClInclude Include="src\Graphics\ModelFactory\ModelGlobal.h">
       <Filter>Graphics\ModelFactory</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\Sky\CubeMap.h">
+      <Filter>Graphics\ModelFactory\Sky</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\OpenGL\OpenGL_Context.h">
       <Filter>Graphics\OpenGL</Filter>
     </ClInclude>
@@ -359,6 +410,9 @@
       <Filter>Graphics\RendererAPI</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\RendererAPI\GraphicsManager.h">
+      <Filter>Graphics\RendererAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\RendererAPI\Mesh.h">
       <Filter>Graphics\RendererAPI</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\RendererAPI\Renderer.h">
@@ -506,7 +560,7 @@
       <Filter>Editor\Menu</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\AssetBrowser\AssetBrowser.cpp">
-      <Filter>Editor\Windows\AssetBroswer</Filter>
+      <Filter>Editor\Windows\AssetBrowser</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\Debug\Debug.cpp">
       <Filter>Editor\Windows\Debug</Filter>
@@ -528,6 +582,18 @@
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\Scene\Scene.cpp">
       <Filter>Editor\Windows\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\SwitchViews\Bottom.cpp">
+      <Filter>Editor\Windows\SwitchViews</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\SwitchViews\Left.cpp">
+      <Filter>Editor\Windows\SwitchViews</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\SwitchViews\Right.cpp">
+      <Filter>Editor\Windows\SwitchViews</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\SwitchViews\Top.cpp">
+      <Filter>Editor\Windows\SwitchViews</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\Engine.cpp">
       <Filter>Engine</Filter>
@@ -558,6 +624,18 @@
     </ClCompile>
     <ClCompile Include="src\Graphics\Lighting\PointLight.cpp">
       <Filter>Graphics\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Lighting\SpotLight.cpp">
+      <Filter>Graphics\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Material\MaterialManager.cpp">
+      <Filter>Graphics\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.cpp">
+      <Filter>Graphics\ModelFactory\AssimpModel</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.cpp">
+      <Filter>Graphics\ModelFactory\AssimpModel</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.cpp">
       <Filter>Graphics\ModelFactory\BasicPrimitives</Filter>
@@ -607,6 +685,9 @@
     <ClCompile Include="src\Graphics\ModelFactory\ModelFactory.cpp">
       <Filter>Graphics\ModelFactory</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\ModelFactory\Sky\CubeMap.cpp">
+      <Filter>Graphics\ModelFactory\Sky</Filter>
+    </ClCompile>
     <ClCompile Include="src\Graphics\OpenGL\OpenGL_Context.cpp">
       <Filter>Graphics\OpenGL</Filter>
     </ClCompile>
@@ -617,6 +698,9 @@
       <Filter>Graphics\RendererAPI</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\RendererAPI\GraphicsManager.cpp">
+      <Filter>Graphics\RendererAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\RendererAPI\Mesh.cpp">
       <Filter>Graphics\RendererAPI</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\RendererAPI\Shader.cpp">

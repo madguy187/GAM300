@@ -10,7 +10,7 @@ namespace Eclipse
 
 	ProfilerWindow::ProfilerWindow()
 	{
-		Type = EditorWindowType::PROFILER;
+		Type = EditorWindowType::EWT_PROFILER;
 		WindowName = "Profiler";
 	}
 
@@ -71,7 +71,7 @@ namespace Eclipse
 	float ProfilerWindow::GetFPS()
 	{
 
-		return clock.getFPS();
+		return engine->Game_Clock.getFPS();
 	}
 	void ProfilerWindow::EngineTimer(TimerTracker timer)
 	{

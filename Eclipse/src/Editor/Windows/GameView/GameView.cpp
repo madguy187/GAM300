@@ -18,10 +18,10 @@ namespace Eclipse
 	eGameViewWindow::eGameViewWindow() :
 		mViewportSize{ 0.0f, 0.0f }
 	{
-		Type = EditorWindowType::GAMEVIEW;
+		Type = EditorWindowType::EWT_GAMEVIEW;
 		WindowName = "Game View";
 
-		m_frameBuffer = std::make_shared<FrameBuffer>(*engine->gGraphics.mRenderContext.GetFramebuffer(FrameBufferMode::GAMEVIEW));
+		m_frameBuffer = std::make_shared<FrameBuffer>(*engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::GAMEVIEW));
 	}
 
 	void eGameViewWindow::InitilializeFrameBuffer()

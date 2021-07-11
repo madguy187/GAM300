@@ -34,8 +34,10 @@ FrameBuffer::FrameBuffer(unsigned int p_width, unsigned int p_height, FrameBuffe
     }
 
     m_data.hiddentype = in;
+    Name = getStringForEnum(static_cast<int>(in));
     CreateFrameBuffer(m_width, m_height);
-    ENGINE_CORE_INFO("FrameBuffer Created Successfully");
+    std::string SuccessMsg = "FrameBuffer [" + Name + "]  Created Successfully";
+    ENGINE_CORE_INFO(SuccessMsg.c_str());
 }
 
 FrameBuffer::~FrameBuffer()
@@ -115,6 +117,12 @@ void FrameBuffer::CreateFrameBuffer(unsigned int p_width, unsigned int p_height)
     Unbind();
 }
 
+std::string Eclipse::FrameBuffer::getStringForEnum(int enum_val)
+{
+    std::string tmp(enum_FrameBufferMode_str[enum_val]);
+    return tmp;
+}
+
 unsigned int FrameBuffer::GetFrameBufferID()
 {
     return m_data.frameBufferID;
@@ -135,6 +143,11 @@ FrameBufferMode Eclipse::FrameBuffer::GetFrameBufferType()
     return FrameBufferType;
 }
 
+std::string Eclipse::FrameBuffer::GetName()
+{
+    return Name;
+}
+
 std::ostream& Eclipse::operator<<(std::ostream& os, const FrameBufferMode& in)
 {
     switch (in)
@@ -145,6 +158,22 @@ std::ostream& Eclipse::operator<<(std::ostream& os, const FrameBufferMode& in)
 
     case FrameBufferMode::SCENEVIEW:
         os << "Scene FrameBuffer";
+        break;
+
+    case FrameBufferMode::SWITCHINGVIEWS_BOTTOM:
+        os << "SWITCHINGVIEWS_BOTTOM FrameBuffer";
+        break;
+
+    case FrameBufferMode::SWITCHINGVIEWS_LEFT:
+        os << "SWITCHINGVIEWS_LEFT FrameBuffer";
+        break;
+
+    case FrameBufferMode::SWITCHINGVIEWS_RIGHT:
+        os << "SWITCHINGVIEWS_RIGHT FrameBuffer";
+        break;
+
+    case FrameBufferMode::SWITCHINGVIEWS_TOP:
+        os << "SWITCHINGVIEWS_TOP FrameBuffer";
         break;
     }
 

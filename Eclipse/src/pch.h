@@ -88,6 +88,7 @@
 
 // Editor API
 #include "Editor/ECGuiAPI/ECGui.h"
+#include "ImGuizmo/ImGuizmo.h" 
 #include "Editor/Windows/Log/Log.h"
 
 // ---- Input Handler Api ----
