@@ -21,7 +21,7 @@ namespace Eclipse
 		Type = EditorWindowType::EWT_GAMEVIEW;
 		WindowName = "Game View";
 
-		m_frameBuffer = std::make_shared<FrameBuffer>(*engine->gGraphics.mRenderContext.GetFramebuffer(FrameBufferMode::GAMEVIEW));
+		m_frameBuffer = std::make_shared<FrameBuffer>(*engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::GAMEVIEW));
 	}
 
 	void eGameViewWindow::InitilializeFrameBuffer()

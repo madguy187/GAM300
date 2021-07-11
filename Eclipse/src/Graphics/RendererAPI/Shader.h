@@ -18,6 +18,8 @@
 
 #include "GLEW/include/GL/glew.h"
 #include "GLM/glm/glm.hpp"
+#include "color4.h"
+#include "color4.inl"
 
 class Shader
 {
@@ -48,6 +50,16 @@ public:
 	void SetUniform(const GLchar* name, glm::mat3& value);
 	void SetUniform(const GLchar* name, glm::mat4& value);
 	int GetLocation(const char* name) const;
+
+	void setInt(const std::string& name, int value);
+	void setFloat(const std::string& name, float value);
+	void set3Float(const std::string& name, float v1, float v2, float v3);
+	void set3Float(const std::string& name, glm::vec3 v);
+	void set4Float(const std::string& name, float v1, float v2, float v3, float v4);
+	void set4Float(const std::string& name, aiColor4D color);
+	void set4Float(const std::string& name, glm::vec4 v);
+	void setMat4(const std::string& name, glm::mat4 val);
+
 private:
 	std::string GetShaderData(const std::string& fileName);
 	GLboolean CompileShader(GLenum shaderType, const std::string fileName);
