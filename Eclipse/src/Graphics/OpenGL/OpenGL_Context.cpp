@@ -365,6 +365,7 @@ void Eclipse::OpenGL_Context::CreateFrameBuffers(unsigned int width, unsigned in
 
     FrameBuffer* m_frameBuffer = new FrameBuffer(width, height, in);
     _Framebuffers.insert({ in , m_frameBuffer });
+    //delete m_frameBuffer;
     ENGINE_CORE_INFO("FrameBuffer Ready For Use");
 }
 
