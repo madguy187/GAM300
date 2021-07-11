@@ -12,6 +12,12 @@ void Eclipse::DebugRenderingManager::CheckUniformLoc(Graphics::shaderIt _shdrpgm
     //GLint uniform_var_loc7 = _shdrpgm->second.GetLocation("ShakeTimer");
     //GLint uniform_var_loc8 = _shdrpgm->second.GetLocation("ShakeScreen");
     GLuint tex_loc = _shdrpgm->second.GetLocation("uTex2d");
+    GLuint TEST = _shdrpgm->second.GetLocation("TEST");
+
+    if (TEST >= 0)
+    {
+        glUniform1i(TEST, 0);
+    }
 
     if (uniform_var_loc1 >= 0)
     {

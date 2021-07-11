@@ -67,6 +67,9 @@
     <Filter Include="Editor\Windows\Scene">
       <UniqueIdentifier>{63FAE420-4F89-6EEA-F8A7-82E5E4157F90}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editor\Windows\SwitchViews">
+      <UniqueIdentifier>{F5A4416B-E1B4-ED3B-4A6E-525A369DDCD4}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine">
       <UniqueIdentifier>{DBC7D3B0-C769-FE86-B024-12DB9C6585D7}</UniqueIdentifier>
     </Filter>
@@ -258,6 +261,9 @@
     <ClInclude Include="src\Editor\Windows\Interface\ECGuiWindow.h">
       <Filter>Editor\Windows\Interface</Filter>
     </ClInclude>
+    <ClInclude Include="src\Editor\Windows\Log\ConsoleData.h">
+      <Filter>Editor\Windows\Log</Filter>
+    </ClInclude>
     <ClInclude Include="src\Editor\Windows\Log\Log.h">
       <Filter>Editor\Windows\Log</Filter>
     </ClInclude>
@@ -266,6 +272,18 @@
     </ClInclude>
     <ClInclude Include="src\Editor\Windows\Scene\Scene.h">
       <Filter>Editor\Windows\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\SwitchViews\Bottom.h">
+      <Filter>Editor\Windows\SwitchViews</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\SwitchViews\Left.h">
+      <Filter>Editor\Windows\SwitchViews</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\SwitchViews\Right.h">
+      <Filter>Editor\Windows\SwitchViews</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\SwitchViews\Top.h">
+      <Filter>Editor\Windows\SwitchViews</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\Engine.h">
       <Filter>Engine</Filter>
@@ -302,6 +320,9 @@
       <Filter>Graphics\Lighting</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\Lighting\LightManager.h">
+      <Filter>Graphics\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Lighting\LightProperties.hpp">
       <Filter>Graphics\Lighting</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\Lighting\PointLight.h">
@@ -494,12 +515,6 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\Graphics\Lighting\LightProperties.hpp" />
-    <ClInclude Include="src\Editor\Windows\SwitchViews\Top.h" />
-    <ClInclude Include="src\Editor\Windows\SwitchViews\Bottom.h" />
-    <ClInclude Include="src\Editor\Windows\SwitchViews\Left.h" />
-    <ClInclude Include="src\Editor\Windows\SwitchViews\Right.h" />
-    <ClInclude Include="src\Editor\Windows\Log\ConsoleData.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -564,6 +579,18 @@
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\Scene\Scene.cpp">
       <Filter>Editor\Windows\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\SwitchViews\Bottom.cpp">
+      <Filter>Editor\Windows\SwitchViews</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\SwitchViews\Left.cpp">
+      <Filter>Editor\Windows\SwitchViews</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\SwitchViews\Right.cpp">
+      <Filter>Editor\Windows\SwitchViews</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\SwitchViews\Top.cpp">
+      <Filter>Editor\Windows\SwitchViews</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\Engine.cpp">
       <Filter>Engine</Filter>
@@ -734,9 +761,5 @@
       <Filter>Time</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\Editor\Windows\SwitchViews\Top.cpp" />
-    <ClCompile Include="src\Editor\Windows\SwitchViews\Bottom.cpp" />
-    <ClCompile Include="src\Editor\Windows\SwitchViews\Left.cpp" />
-    <ClCompile Include="src\Editor\Windows\SwitchViews\Right.cpp" />
   </ItemGroup>
 </Project>

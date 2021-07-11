@@ -130,7 +130,8 @@ project "Eclipse"
       "{COPY} ../Dep/PhysX/Debug/PhysX_64.dll %{cfg.targetdir}",
       "{COPY} ../Dep/PhysX/Debug/PhysXCooking_64.dll %{cfg.targetdir}",
       "{COPY} ../Dep/PhysX/Debug/PhysXFoundation_64.dll %{cfg.targetdir}",
-      "{COPY} ../Dep/mono/bin/mono-2.0-sgen.dll %{cfg.targetdir}"
+      "{COPY} ../Dep/mono/bin/mono-2.0-sgen.dll %{cfg.targetdir}",
+	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.dll %{cfg.targetdir}"
     }
 
 	filter "configurations:Release"
@@ -142,7 +143,8 @@ project "Eclipse"
       "{COPY} ../Dep/PhysX/Release/PhysX_64.dll %{cfg.targetdir}",
       "{COPY} ../Dep/PhysX/Release/PhysXCooking_64.dll %{cfg.targetdir}",
       "{COPY} ../Dep/PhysX/Release/PhysXFoundation_64.dll %{cfg.targetdir}",
-      "{COPY} ../Dep/mono/bin/mono-2.0-sgen.dll %{cfg.targetdir}"
+      "{COPY} ../Dep/mono/bin/mono-2.0-sgen.dll %{cfg.targetdir}",
+	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.dll %{cfg.targetdir}"
     }
 
 	filter "configurations:Dist"

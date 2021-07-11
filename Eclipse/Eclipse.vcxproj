@@ -96,7 +96,8 @@
       <Command>IF EXIST ..\Dep\PhysX\Debug\PhysX_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Debug\PhysX_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Debug\PhysX_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\PhysX\Debug\PhysXCooking_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Debug\PhysXCooking_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Debug\PhysXCooking_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\PhysX\Debug\PhysXFoundation_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Debug\PhysXFoundation_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Debug\PhysXFoundation_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
-IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\mono-2.0-sgen.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\mono\bin\mono-2.0-sgen.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)</Command>
+IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\mono-2.0-sgen.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\mono\bin\mono-2.0-sgen.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\assimp-vc142-mtd.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\ASSIMP\assimp-vc142-mtd.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -125,7 +126,8 @@ IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\m
       <Command>IF EXIST ..\Dep\PhysX\Release\PhysX_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Release\PhysX_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Release\PhysX_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\PhysX\Release\PhysXCooking_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Release\PhysXCooking_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Release\PhysXCooking_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\PhysX\Release\PhysXFoundation_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Release\PhysXFoundation_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Release\PhysXFoundation_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
-IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\mono-2.0-sgen.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\mono\bin\mono-2.0-sgen.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)</Command>
+IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\mono-2.0-sgen.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\mono\bin\mono-2.0-sgen.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\assimp-vc142-mtd.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\ASSIMP\assimp-vc142-mtd.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
