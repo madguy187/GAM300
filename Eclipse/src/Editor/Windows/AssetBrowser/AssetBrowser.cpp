@@ -6,7 +6,7 @@ namespace Eclipse
 	AssetBrowserWindow::AssetBrowserWindow()
 		:CurrentDir(AllDir),AllDir(AssetPath)
 	{
-		Type = EditorWindowType::ASSETBROWSER;
+		Type = EditorWindowType::EWT_ASSETBROWSER;
 		WindowName = "AssetBrowser";
 		
 		sprite.textureRef = Graphics::textures.find("PlayPauseStop");

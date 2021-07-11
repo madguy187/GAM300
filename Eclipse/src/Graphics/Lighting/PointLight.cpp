@@ -13,8 +13,6 @@ unsigned int Eclipse::PointLight::GetNumberOfPointLights()
 
 void Eclipse::PointLight::CreatePointLight(unsigned int CreatedID)
 {
-    std::cout << _pointlights.size() << std::endl;
-
     // Add Components
     auto& GetWorld = engine->world;
     GetWorld.AddComponent(CreatedID, PointLightComponent{});
@@ -22,12 +20,12 @@ void Eclipse::PointLight::CreatePointLight(unsigned int CreatedID)
     // Assign
     PointLightComponent& sprite = engine->world.GetComponent<PointLightComponent>(CreatedID);
     sprite.ID = CreatedID;
-    sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
-    sprite.modelRef = Graphics::models.find("cube");
+    sprite.shaderRef = &(Graphics::shaderpgms.find("shader3DShdrpgm")->second);
+    sprite.modelRef = Graphics::models.find("sphere")->second.get();
 
     // Success
     _pointlights.insert({ counter,&sprite });
-    ENGINE_CORE_INFO("Pointlight Created Successfully");
+    EDITOR_LOG_INFO("Pointlight Created Successfully");
     counter++;
 }
 
@@ -35,47 +33,39 @@ void Eclipse::PointLight::DrawPointLights(unsigned int framebufferID)
 {
     for (auto& it : _pointlights)
     {
-        engine->gGraphics.ShowTestWidgets(it.second->ID, (engine->gGraphics.createdID));
         Draw(it.second, framebufferID, it.first, GL_FILL);
     }
 }
 
-void Eclipse::PointLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, PointLightComponent& in_pointlight, int index, unsigned int containersize)
+void Eclipse::PointLight::CheckUniformLoc(Shader* _shdrpgm, PointLightComponent& in_pointlight, int index, unsigned int containersize)
 {
+    // Custom Variables into Shaders
     std::string number = std::to_string(index);
+    GLint uniform_var_loc1 = _shdrpgm->GetLocation(("pointLights[" + number + "].position").c_str());
+    GLint uniform_var_loc2 = _shdrpgm->GetLocation(("pointLights[" + number + "].ambient").c_str());
+    GLint uniform_var_loc3 = _shdrpgm->GetLocation(("pointLights[" + number + "].diffuse").c_str());
+    GLint uniform_var_loc4 = _shdrpgm->GetLocation(("pointLights[" + number + "].specular").c_str());
+    GLint uniform_var_loc5 = _shdrpgm->GetLocation(("pointLights[" + number + "].constant").c_str());
+    GLint uniform_var_loc6 = _shdrpgm->GetLocation(("pointLights[" + number + "].linear").c_str());
+    GLint uniform_var_loc7 = _shdrpgm->GetLocation(("pointLights[" + number + "].quadratic").c_str());
+    GLint uniform_var_loc8 = _shdrpgm->GetLocation("uModelToNDC");
+    GLint uniform_var_loc9 = _shdrpgm->GetLocation("NumberOfPointLights");
+    GLuint uniform_var_loc10 = _shdrpgm->GetLocation("model");
+    GLint uniform_var_loc11 = _shdrpgm->GetLocation("uTextureCheck");
+    GLint uniform_var_loc12 = _shdrpgm->GetLocation(("pointLights[" + number + "].lightColor").c_str());
+    GLint uniform_var_loc13 = _shdrpgm->GetLocation("uColor");
+    GLint uniform_var_loc14 = _shdrpgm->GetLocation(("pointLights[" + number + "].IntensityStrength").c_str());
 
-    GLint uniform_var_loc1 = _shdrpgm->second.GetLocation(("pointLights[" + number + "].position").c_str());
-    GLint uniform_var_loc2 = _shdrpgm->second.GetLocation(("pointLights[" + number + "].ambient").c_str());
-    GLint uniform_var_loc3 = _shdrpgm->second.GetLocation(("pointLights[" + number + "].diffuse").c_str());
-    GLint uniform_var_loc4 = _shdrpgm->second.GetLocation(("pointLights[" + number + "].specular").c_str());
-    GLint uniform_var_loc5 = _shdrpgm->second.GetLocation(("pointLights[" + number + "].constant").c_str());
-    GLint uniform_var_loc6 = _shdrpgm->second.GetLocation(("pointLights[" + number + "].linear").c_str());
-    GLint uniform_var_loc7 = _shdrpgm->second.GetLocation(("pointLights[" + number + "].quadratic").c_str());
-    GLint uniform_var_loc8 = _shdrpgm->second.GetLocation("uModelToNDC");
-    GLint uniform_var_loc9 = _shdrpgm->second.GetLocation("NumberOfPointLights");
-    GLuint uniform_var_loc10 = _shdrpgm->second.GetLocation("model");
-    GLint uniform_var_loc11 = _shdrpgm->second.GetLocation("uTextureCheck");
-    GLint uniform_var_loc12 = _shdrpgm->second.GetLocation(("pointLights[" + number + "].lightColor").c_str());
-    GLint uniform_var_loc13 = _shdrpgm->second.GetLocation("uColor");
-    GLint uniform_var_loc14 = _shdrpgm->second.GetLocation(("pointLights[" + number + "].IntensityStrength").c_str());
-
+    // SpotLight Position
     TransformComponent& PointlightTransform = engine->world.GetComponent<TransformComponent>(in_pointlight.ID);
+
+    // Which Camera's matrix
     CameraComponent& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 
+    // Model Matrix
     if (uniform_var_loc8 >= 0)
     {
         glm::mat4 mModelNDC;
-
-        /*glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, PointlightTransform.pos);
-        model = glm::rotate(model, glm::radians(PointlightTransform.rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(PointlightTransform.rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(PointlightTransform.rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::scale(model, PointlightTransform.scale);
-        mModelNDC = camera.projMtx * camera.viewMtx * model;
-        GLCall(glUniformMatrix4fv(uniform_var_loc8, 1, GL_FALSE, glm::value_ptr(mModelNDC)));
-        GLCall(glUniformMatrix4fv(uniform_var_loc10, 1, GL_FALSE, glm::value_ptr(model)));*/
-
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, PointlightTransform.position.ConvertToGlmVec3Type());
         model = glm::rotate(model, glm::radians(PointlightTransform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -87,7 +77,7 @@ void Eclipse::PointLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, PointLigh
         glUniformMatrix4fv(uniform_var_loc10, 1, GL_FALSE, glm::value_ptr(model));
     }
 
-    // position
+    // Position of Light
     if (uniform_var_loc1 >= 0)
     {
         GLCall(glUniform3f(uniform_var_loc1, PointlightTransform.position.getX(), PointlightTransform.position.getY(), PointlightTransform.position.getZ()));
@@ -96,19 +86,19 @@ void Eclipse::PointLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, PointLigh
     // ambient
     if (uniform_var_loc2 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc2, in_pointlight.ambient.x, in_pointlight.ambient.y, in_pointlight.ambient.z));
+        GLCall(glUniform3f(uniform_var_loc2, in_pointlight.ambient.getX(), in_pointlight.ambient.getY(), in_pointlight.ambient.getZ()));
     }
 
     // diffuse
     if (uniform_var_loc3 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc3, in_pointlight.diffuse.x, in_pointlight.diffuse.y, in_pointlight.diffuse.z));
+        GLCall(glUniform3f(uniform_var_loc3, in_pointlight.diffuse.getX(), in_pointlight.diffuse.getY(), in_pointlight.diffuse.getZ()));
     }
 
     // specular
     if (uniform_var_loc4 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc4, in_pointlight.specular.x, in_pointlight.specular.y, in_pointlight.specular.z));
+        GLCall(glUniform3f(uniform_var_loc4, in_pointlight.specular.getX(), in_pointlight.specular.getY(), in_pointlight.specular.getZ()));
     }
 
     // constant
@@ -129,11 +119,13 @@ void Eclipse::PointLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, PointLigh
         GLCall(glUniform1f(uniform_var_loc7, in_pointlight.quadratic));
     }
 
+    // Check Texture
     if (uniform_var_loc11 >= 0)
     {
         GLCall(glUniform1i(uniform_var_loc11, in_pointlight.hasTexture));
     }
 
+    // Number Of PointLights
     if (uniform_var_loc9 >= 0)
     {
         GLCall(glUniform1i(uniform_var_loc9, containersize));
@@ -142,13 +134,13 @@ void Eclipse::PointLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, PointLigh
     // Light Color
     if (uniform_var_loc12 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc12, in_pointlight.lightColor.x, in_pointlight.lightColor.y, in_pointlight.lightColor.z));
+        GLCall(glUniform3f(uniform_var_loc12, in_pointlight.lightColor.getX(), in_pointlight.lightColor.getY(), in_pointlight.lightColor.getZ()));
     }
 
     // Own Color
     if (uniform_var_loc13 >= 0)
     {
-        GLCall(glUniform3f(uniform_var_loc13, in_pointlight.Color.x, in_pointlight.Color.y, in_pointlight.Color.z));
+        GLCall(glUniform4f(uniform_var_loc13, in_pointlight.Color.getX(), in_pointlight.Color.getY(), in_pointlight.Color.getZ(), in_pointlight.Color.getW()));
     }
 
     // Intensity of Light
@@ -161,8 +153,8 @@ void Eclipse::PointLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, PointLigh
 void Eclipse::PointLight::Draw(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
-    in->shaderRef->second.Use();
-    glBindVertexArray(in->modelRef->second->GetVaoID());
+    in->shaderRef->Use();
+    glBindVertexArray(in->modelRef->GetVaoID());
 
     glEnable(GL_BLEND);
     glPolygonMode(GL_FRONT_AND_BACK, mode);
@@ -172,8 +164,11 @@ void Eclipse::PointLight::Draw(PointLightComponent* in, unsigned int framebuffer
 
     CheckUniformLoc(in->shaderRef, *in, indexID, _pointlights.size());
 
-    GLCall(glDrawElements(in->modelRef->second->GetPrimitiveType(), in->modelRef->second->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
+    if (in->visible)
+    {
+        GLCall(glDrawElements(in->modelRef->GetPrimitiveType(), in->modelRef->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
+    }
 
     glBindVertexArray(0);
-    in->shaderRef->second.UnUse();
+    in->shaderRef->UnUse();
 }

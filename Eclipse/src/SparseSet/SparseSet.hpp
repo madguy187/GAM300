@@ -23,9 +23,6 @@ namespace Eclipse
 
 		const T NOT_FOUND = -1;
 
-		SparseSet() = default;
-		~SparseSet() = default;
-
 		T Search(T index)
 		{
 			if (index > _capacity)
@@ -90,7 +87,6 @@ namespace Eclipse
 
 		void AddPage()
 		{
-
 			sparse.push_back(Page{});
 			dense.push_back(Page{});
 			_capacity += PAGE_SIZE;

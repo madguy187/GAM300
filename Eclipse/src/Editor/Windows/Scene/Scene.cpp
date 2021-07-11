@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Scene.h"
-#include "ImGuizmo.h"
+#include "ImGuizmo/ImGuizmo.h"
 
 namespace Eclipse
 {
@@ -13,10 +13,10 @@ namespace Eclipse
 	SceneWindow::SceneWindow() :
 		mViewportSize{ 0.0f, 0.0f }
 	{
-		Type = EditorWindowType::SCENE;
+		Type = EditorWindowType::EWT_SCENE;
 		WindowName = "Scene";
 
-		m_frameBuffer = std::make_shared<FrameBuffer>(*engine->gGraphics.mRenderContext.GetFramebuffer(FrameBufferMode::SCENEVIEW));
+		m_frameBuffer = std::make_shared<FrameBuffer>(*engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SCENEVIEW));
 	}
 
 	void SceneWindow::InitilializeFrameBuffer()
