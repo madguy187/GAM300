@@ -64,7 +64,7 @@ namespace Eclipse
 	void PhysicsManager::CreateActor(Entity ent, bool is_static)
 	{
 		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
-		if (RigidObjects.find(ent) != RigidObjects.end() || StaticObjects.find(ent) != StaticObjects.end())
+		if (Px_Actors[ent] != nullptr)
 			return;
 
 		PxVec3 temptrans;
@@ -73,7 +73,7 @@ namespace Eclipse
 		temptrans.z = transform.position.z;
 		if (is_static)
 		{
-			PxRigidStatic* temp = Px_Physics->createRigidStatic(PxTransform(temptrans));
+			Px_Actor[ent] = Px_Physics->createRigidStatic(PxTransform(temptrans));
 			StaticObjects.insert(std::make_pair(ent, temp));
 		}
 		else
