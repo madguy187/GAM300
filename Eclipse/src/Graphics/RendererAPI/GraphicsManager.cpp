@@ -394,7 +394,7 @@ void Eclipse::GraphicsManager::DebugPrintFrameBuffers()
         std::cout << std::endl;
     }
 
-    EDITOR_LOG_INFO("All FrameBufers Created");
+    ENGINE_CORE_INFO("All FrameBufers Created");
 }
 
 void Eclipse::GraphicsManager::GlobalFrameBufferBind()
