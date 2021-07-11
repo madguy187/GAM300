@@ -11,8 +11,7 @@ namespace Eclipse
 		PxPhysics* Px_Physics;
 		PxCooking* Px_Cooking;
 		PxScene* Px_Scene;
-		std::map<Entity,PxRigidDynamic*> RigidObjects;
-		std::map<Entity,PxRigidStatic*> StaticObjects;
+		std::array<physx::PxActor*, MAX_ENTITY> Px_Actors;
 	public:
 		void Load();
 		void Simulate();
