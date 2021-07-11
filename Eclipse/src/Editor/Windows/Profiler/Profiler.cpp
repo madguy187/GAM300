@@ -41,13 +41,7 @@ namespace Eclipse
 		//static float* pvalues= &PerformanceTimer::timeContainer[SystemName::egame][0] ;
 		ECGui::BeginChildWindow({ "System Performance",ImVec2(0,500),true });
 		ImGui::Dummy(ImVec2(0.0f, 10.0f));
-		ImGui::TextColored(ImVec4(0.9f, 0.6f, 0.1f, 1.0f), "FPS: %.2f", GetFPS());
-
-		//float values[100] = { 0 };
-		//std::copy(ProfilerWindow::time_container[SystemName::RENDER].begin(), ProfilerWindow::time_container[SystemName::RENDER].end(), values);
-		////ImGui::TextColored(ImVec4(0.9f, 0.6f, 0.1f, 1.0f), "%.2f %%", values[1]);
-		//ImGui::TextColored(ImVec4(0.9f, 0.6f, 0.1f, 1.0f), "%.2f , %.2f", values[1]*100,engine_time*100);
-		//ImGui::PlotHistogram("Render System", values, IM_ARRAYSIZE(values), 0, 0, 0.0f, 1.0f, ImVec2(0, 40.0f), sizeof(float));
+		ImGui::TextColored(ImVec4(0.9f, 0.6f, 0.1f, 1.0f), "FPS: %.2f", GetFPS()); 
 		ECGui::PlotHistogram("Lighting System", ProfilerWindow::time_container[SystemName::LIGHTING], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
 		ECGui::PlotHistogram("Render System", ProfilerWindow::time_container[SystemName::RENDER], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
 		ECGui::PlotHistogram("Camera System", ProfilerWindow::time_container[SystemName::CAMERA], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
@@ -69,9 +63,9 @@ namespace Eclipse
 		//return inputTracker.system_offset;
 	}
 	float ProfilerWindow::GetFPS()
-	{
-		 
-		return clock.getFPS();
+	{ 
+		//return GLHelper::fps;
+		return 0.0f;
 	}
 	void ProfilerWindow::EngineTimer(TimerTracker timer)
 	{
