@@ -214,6 +214,7 @@ void Eclipse::GraphicsManager::Draw(unsigned int FrameBufferID, RenderComponent*
     // Part 2: Bind the object's VAO handle using glBindVertexArray
     glBindVertexArray(_spritecomponent->modelRef->second->GetVaoID());
 
+    glEnable(GL_FRAMEBUFFER_SRGB);
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
     glPolygonMode(GL_FRONT_AND_BACK, mode);
@@ -393,6 +394,31 @@ void Eclipse::GraphicsManager::DebugPrintFrameBuffers()
     }
 
     ENGINE_CORE_INFO("All FrameBufers Created");
+}
+
+float Eclipse::GraphicsManager::GetGammaCorrection()
+{
+    return GammaCorrection;
+}
+
+void Eclipse::GraphicsManager::SetGammaCorrection(float in)
+{
+    GammaCorrection = in;
+}
+
+void Eclipse::GraphicsManager::UploadGammaCorrectionToShader()
+{
+    auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
+    shdrpgm->second.Use();
+
+    GLint uniform_var_loc1 = shdrpgm->second.GetLocation("gamma");
+
+    if (uniform_var_loc1 >= 0)
+    {
+        GLCall(glUniform1f(uniform_var_loc1, engine->GraphicsManager.GetGammaCorrection()));
+    }
+
+    shdrpgm->second.UnUse();
 }
 
 void Eclipse::GraphicsManager::GlobalFrameBufferBind()

@@ -14,6 +14,7 @@ uniform vec4 sdiffuse;
 uniform vec4 sspecular;
 uniform bool TEST;
 uniform bool useBlinn;
+uniform float gamma;
 
 // Structs
 uniform sampler2D diffuse0;
@@ -160,7 +161,9 @@ void main ()
          result += CalcSpotLight( spotLights[i], norm, crntPos, viewDir , texDiff, texSpec);
     }
 
-    fFragClr = texture(uTex2d, TxtCoord) * vec4(result,1.0f);
+     fFragClr = texture(uTex2d, TxtCoord) * vec4(result,1.0f);
+     fFragClr.rgb = pow(fFragClr.rgb, vec3(1.0/gamma));
+
     }
 }
 

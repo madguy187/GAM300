@@ -39,6 +39,7 @@ namespace Eclipse
             ShowPointLightProperty(currEnt);
             ShowSpotLightProperty(currEnt);
             ShowDirectionalLightProperty(currEnt);
+            SetGamma();
         }
         else
         {
@@ -210,5 +211,13 @@ namespace Eclipse
         }
 
         return false;
+    }
+
+    void InspectorWindow::SetGamma()
+    {
+        static float Test = 2.2f;
+        ECGui::DrawTextWidget<const char*>("Gamma Correction Value", "");
+        ECGui::DrawSliderFloatWidget("Gamma", &Test, true, 0.f, 3.0f);
+        engine->GraphicsManager.SetGammaCorrection(Test);
     }
 }

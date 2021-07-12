@@ -33,8 +33,13 @@ namespace Eclipse
         void CreateSky(std::string _Dir);
         void RenderSky(unsigned int FrameBufferID);
         void DebugPrintFrameBuffers();
+        float GetGammaCorrection();
+        void SetGammaCorrection(float in);
+        void UploadGammaCorrectionToShader();
 
     private:
+        float GammaCorrection = 0.2f;
+
         void CheckUniformLoc(RenderComponent& sprite, unsigned int id, unsigned int framebufferID);
         void UpdateFrameBuffer();
         void FrameBufferDraw();

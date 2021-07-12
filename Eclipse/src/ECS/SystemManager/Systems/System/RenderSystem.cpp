@@ -42,6 +42,8 @@ void Eclipse::RenderSystem::Update()
     timer.SetName({ SystemName::RENDER });
     timer.tracker.system_start = glfwGetTime();
 
+    engine->GraphicsManager.UploadGammaCorrectionToShader();
+
     // SKY Reder =============================
     engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID());
     engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_LEFT)->GetFrameBufferID());
