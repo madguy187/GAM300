@@ -158,7 +158,7 @@ void Eclipse::PointLight::CheckUniformLoc(Shader* _shdrpgm, PointLightComponent&
 
     if (useBlinn_ >= 0)
     {
-        GLCall(glUniform1i(useBlinn_, true));
+        GLCall(glUniform1i(useBlinn_, in_pointlight.EnableBlinnPhong));
     }
 }
 

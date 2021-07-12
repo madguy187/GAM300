@@ -21,6 +21,7 @@ namespace Eclipse
         float radius = 0.0f;
         int AttenuationLevel = 5;
 
+        bool EnableBlinnPhong = true;
         bool hasTexture = false;
         bool visible = false;
 

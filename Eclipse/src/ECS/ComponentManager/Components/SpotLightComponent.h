@@ -25,8 +25,9 @@ namespace Eclipse
         int AttenuationLevel = 5;
         float SurroundingAttenuationLevel = 0.3f;
 
+        bool EnableBlinnPhong = true;
         bool hasTexture = false;
-        bool visible;
+        bool visible = false;
 
         IModel* modelRef;
         Shader* shaderRef;

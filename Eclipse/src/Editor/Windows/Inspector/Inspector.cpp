@@ -103,6 +103,11 @@ namespace Eclipse
             {
                 auto& _PointLight = engine->world.GetComponent<PointLightComponent>(ID);
 
+                static bool enable = true;
+                static bool isVisible = false;
+                ECGui::CheckBoxBool("Enable", &_PointLight.EnableBlinnPhong, enable);
+                ECGui::CheckBoxBool("IsVisible", &_PointLight.visible, isVisible);
+
                 ECGui::DrawTextWidget<const char*>("IntensityStrength", "");
                 ECGui::DrawSliderFloatWidget("IntensityFloat", &_PointLight.IntensityStrength, true, 0.f, 150.f);
 
@@ -137,6 +142,11 @@ namespace Eclipse
             {
                 auto& _SpotLight = engine->world.GetComponent<SpotLightComponent>(ID);
 
+                static bool enable = true;
+                static bool isVisible = false;
+                ECGui::CheckBoxBool("Enable", &_SpotLight.EnableBlinnPhong, enable);
+                ECGui::CheckBoxBool("IsVisible", &_SpotLight.visible, isVisible);
+
                 ECGui::DrawTextWidget<const char*>("IntensityStrength", "");
                 ECGui::DrawSliderFloatWidget("IntensityFloat", &_SpotLight.IntensityStrength, true, 0.f, 150.f);
 
@@ -166,8 +176,8 @@ namespace Eclipse
                 ECGui::DrawSliderFloat3Widget("SpecularVec", &_SpotLight.specular, true, 0.0f, 1.0f);
 
                 ECGui::DrawTextWidget<const char*>("Surrounding Attenuation Level", "");
-                ECGui::DrawSliderFloatWidget("SurroundIntensity", &_SpotLight.SurroundingAttenuationLevel, true, 0.f, 
-                    ( (_SpotLight.ambient.getX() + _SpotLight.ambient.getY() + _SpotLight.ambient.getZ())/3 ) );
+                ECGui::DrawSliderFloatWidget("SurroundIntensity", &_SpotLight.SurroundingAttenuationLevel, true, 0.f,
+                    ((_SpotLight.ambient.getX() + _SpotLight.ambient.getY() + _SpotLight.ambient.getZ()) / 3));
             }
         }
 
@@ -182,6 +192,9 @@ namespace Eclipse
             {
                 auto& _DLight = engine->world.GetComponent<DirectionalLightComponent>(ID);
 
+                static bool enable = true;
+                ECGui::CheckBoxBool("Enable", &_DLight.EnableBlinnPhong, enable);
+
                 ECGui::DrawTextWidget<const char*>("Light Colour", "");
                 ImGui::ColorPicker3("Color", (float*)&_DLight.lightColor, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
 
@@ -193,7 +206,6 @@ namespace Eclipse
 
                 ECGui::DrawTextWidget<const char*>("DLight Specular", "");
                 ECGui::DrawSliderFloat3Widget("SpecularVec", &_DLight.specular, true, 0.0f, 1.0f);
-
             }
         }
 

@@ -57,7 +57,10 @@ void SpotLight::Draw(SpotLightComponent* in, unsigned int framebufferID, unsigne
 
     CheckUniformLoc(in->shaderRef, *in, indexID, _spotlights.size());
 
-    GLCall(glDrawElements(in->modelRef->GetPrimitiveType(), in->modelRef->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
+    if (in->visible)
+    {
+        GLCall(glDrawElements(in->modelRef->GetPrimitiveType(), in->modelRef->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
+    }
 
     glBindVertexArray(0);
     in->shaderRef->UnUse();
@@ -202,6 +205,6 @@ void SpotLight::CheckUniformLoc(Shader* _shdrpgm, SpotLightComponent& in_spot, i
 
     if (useBlinn_ >= 0)
     {
-        GLCall(glUniform1i(useBlinn_, true));
+        GLCall(glUniform1i(useBlinn_, in_spot.EnableBlinnPhong));
     }
 }

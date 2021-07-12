@@ -69,6 +69,9 @@ namespace Eclipse
         template<typename T, typename = void>
         struct has_Specular : std::false_type {};
 
+        template<typename T, typename = void>
+        struct has_EnableBlinnPhong : std::false_type {};
+
         // Check if T has the variable , if have , will enter template =============================
         template<typename TypeOfLight>
         struct has_Color< TypeOfLight, decltype(std::declval<TypeOfLight>().Color, void())> : std::true_type {};
@@ -88,12 +91,16 @@ namespace Eclipse
         template<typename TypeOfLight>
         struct has_Specular< TypeOfLight, decltype(std::declval<TypeOfLight>().specular, void())> : std::true_type {};
 
+        template<typename TypeOfLight>
+        struct has_EnableBlinnPhong< TypeOfLight, decltype(std::declval<TypeOfLight>().EnableBlinnPhong, void())> : std::true_type {};
+
     private:
         PointLight _allpointlights;
         DirectionalLight _DirectionalLights;
         SpotLight _allspotlights;
         std::vector <std::pair<unsigned int, AttenuationValues>> AttenuationLevels;
         std::vector <std::pair<unsigned int, Angles>> SpotLightAngles;
+        bool EnableBlinnPhong = true;
 
     public:
         void init();
@@ -133,6 +140,9 @@ namespace Eclipse
 
         template <typename TypeOfLight>
         void SetSpecular(TypeOfLight& OBJ, ECVec3 in);
+
+        template <typename TypeOfLight>
+        void SetBlinnPhong(TypeOfLight& OBJ, bool& in);
     };
 
 #include "Graphics/Lighting/LightProperties.hpp"

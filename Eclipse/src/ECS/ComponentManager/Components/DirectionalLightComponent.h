@@ -21,6 +21,8 @@ namespace Eclipse
         Shader* shaderRef;
         Texture* textureRef;
 
+        bool EnableBlinnPhong = true;
+
         glm::mat4 modelNDC_xform{ 0 };
     };
 }

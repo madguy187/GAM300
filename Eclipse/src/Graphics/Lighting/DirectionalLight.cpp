@@ -124,7 +124,7 @@ void Eclipse::DirectionalLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, Dir
 
     if (useBlinn_ >= 0)
     {
-        GLCall(glUniform1i(useBlinn_, true));
+        GLCall(glUniform1i(useBlinn_, in_light.EnableBlinnPhong));
     }
 
 }

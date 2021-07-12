@@ -76,3 +76,12 @@ inline void Eclipse::Lights::SetSpecular(TypeOfLight& OBJ, ECVec3 in)
         OBJ.specular.setZ(in.z);
     }
 }
+
+template<typename TypeOfLight>
+inline void Eclipse::Lights::SetBlinnPhong(TypeOfLight& OBJ, bool& in)
+{
+    if (constexpr(has_EnableBlinnPhong<TypeOfLight>::value == true))
+    {
+        OBJ.specular.EnableBlinnPhong = in; 
+    }
+}
