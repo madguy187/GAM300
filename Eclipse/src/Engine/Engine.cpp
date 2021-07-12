@@ -103,6 +103,7 @@ namespace Eclipse
             engine->GraphicsManager.mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });
 
             Game_Clock.set_timeSteps(0);
+            framecount++;
             float newTime = static_cast<float>(clock());
             Game_Clock.set_DeltaTime((newTime - currTime) / static_cast<float>(CLOCKS_PER_SEC));
 
