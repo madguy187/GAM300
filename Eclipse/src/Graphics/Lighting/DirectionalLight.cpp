@@ -60,6 +60,7 @@ void Eclipse::DirectionalLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, Dir
     GLuint uniform_var_lo6 = _shdrpgm->second.GetLocation("model");
     GLint uniform_var_loc8 = _shdrpgm->second.GetLocation(("directionlight[" + number + "].lightColor").c_str());
     GLint uniform_var_loc10 = _shdrpgm->second.GetLocation("uColor");
+    GLint useBlinn_ = _shdrpgm->second.GetLocation("useBlinn");
 
     TransformComponent& trans = engine->world.GetComponent<TransformComponent>(in_light.ID);
 
@@ -110,16 +111,15 @@ void Eclipse::DirectionalLight::CheckUniformLoc(Graphics::shaderIt _shdrpgm, Dir
         GLCall(glUniform3f(uniform_var_loc8, in_light.lightColor.getX(), in_light.lightColor.getY(), in_light.lightColor.getX()));
     }
 
-    // Visibility
-    //if (uniform_var_loc9 >= 0)
-    //{
-    //    GLCall(glUniform1i(uniform_var_loc9, in_light.visible));
-    //}
-
     // Own Color
     if (uniform_var_loc10 >= 0)
     {
         GLCall(glUniform4f(uniform_var_loc10, in_light.Color.x, in_light.Color.y, in_light.Color.z, in_light.Color.w));
+    }
+
+    if (useBlinn_ >= 0)
+    {
+        GLCall(glUniform1i(useBlinn_, true));
     }
 
 }

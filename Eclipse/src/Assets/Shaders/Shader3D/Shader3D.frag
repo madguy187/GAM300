@@ -13,6 +13,7 @@ uniform vec3 camPos;
 uniform vec4 sdiffuse;
 uniform vec4 sspecular;
 uniform bool TEST;
+uniform bool useBlinn;
 
 // Structs
 uniform sampler2D diffuse0;
@@ -242,9 +243,30 @@ vec3 CalcDirLight(DirLight light, vec3 normala, vec3 viewDira , vec4 texDiff, ve
     vec3 diffuse = light.diffuse * (diff * vec3(texDiff));
 
     // specular
-	vec3 reflectDir = reflect(-lightDir, normala);
-	float spec = pow(max(dot(viewDira, reflectDir), 0.0), 0.5 * 128);
-	vec3 specular = light.specular * (spec * vec3(texSpec));
+	vec4 specular = vec4(0.0, 0.0, 0.0, 1.0);
 
-    return (ambient + diffuse + specular) * light.lightColor;
+	if (diff > 0) 
+    {
+		// if diff <= 0, object is "behind" light
+
+		float dotProd = 0.0;
+
+		if (useBlinn) 
+        {
+			vec3 halfwayDir = normalize(lightDir + viewDira);
+			dotProd = dot(normala, halfwayDir);
+		}
+		else 
+        {
+			// calculate using Phong model
+			vec3 reflectDir = reflect(-lightDir, normala);
+			dotProd = dot(viewDira, reflectDir);
+		}
+
+		float spec = pow(max(dotProd, 0.0), 0.5 * 128);
+        // float spec = pow(max(dotProd, 0.0), material.shininess * 128);
+		specular = vec4(light.specular,1.0) * (spec * texSpec);
+	}
+
+    return ( vec4(ambient,1.0) + vec4(diffuse,1.0) + specular ) * vec4(light.lightColor,1.0);
 }
