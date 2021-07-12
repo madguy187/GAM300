@@ -56,6 +56,7 @@ void Eclipse::PointLight::CheckUniformLoc(Shader* _shdrpgm, PointLightComponent&
     GLint uniform_var_loc12 = _shdrpgm->GetLocation(("pointLights[" + number + "].lightColor").c_str());
     GLint uniform_var_loc13 = _shdrpgm->GetLocation("uColor");
     GLint uniform_var_loc14 = _shdrpgm->GetLocation(("pointLights[" + number + "].IntensityStrength").c_str());
+    GLint useBlinn_ = _shdrpgm->GetLocation("useBlinn");
 
     // SpotLight Position
     TransformComponent& PointlightTransform = engine->world.GetComponent<TransformComponent>(in_pointlight.ID);
@@ -148,6 +149,11 @@ void Eclipse::PointLight::CheckUniformLoc(Shader* _shdrpgm, PointLightComponent&
     if (uniform_var_loc14 >= 0)
     {
         GLCall(glUniform1f(uniform_var_loc14, in_pointlight.IntensityStrength));
+    }
+
+    if (useBlinn_ >= 0)
+    {
+        GLCall(glUniform1i(useBlinn_, true));
     }
 }
 

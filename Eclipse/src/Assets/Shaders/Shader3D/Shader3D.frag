@@ -43,7 +43,7 @@ struct PointLight
     float test;
 };  
 
-struct DirLight 
+struct DirectionalLight 
 {
     vec3 direction;
 	vec3 lightColor;
@@ -79,11 +79,11 @@ uniform SpotLight spotLights[NR_SPOTLIGHTS];
 uniform int NumberOfSpotLights;
 
 #define NR_DIRECTIONAL_LIGHTS 1  
-uniform DirLight directionlight[NR_DIRECTIONAL_LIGHTS];
+uniform DirectionalLight directionlight[NR_DIRECTIONAL_LIGHTS];
 
 // Function Headers
-vec3 CalcPointLight(PointLight light, vec3 normala, vec3 fragPos, vec3 viewDira);
-vec3 CalcDirLight(DirLight light, vec3 normala, vec3 viewDira, vec4 texDiff, vec4 texSpec);
+vec3 CalcPointLight(PointLight light, vec3 normala, vec3 fragPos, vec3 viewDira, vec4 texDiff, vec4 texSpec);
+vec3 CalcDirLight(DirectionalLight light, vec3 normala, vec3 viewDira, vec4 texDiff, vec4 texSpec);
 vec3 CalcSpotLight(SpotLight light, vec3 normala, vec3 fragPos, vec3 viewDira);
 
 vec4 testMaterials()
@@ -147,11 +147,11 @@ void main ()
     	texSpec = texture(uTex2d, TxtCoord);
     }
 
-     result = CalcDirLight(directionlight[0], norm, viewDir,texDiff,texSpec);
+     result = CalcDirLight(directionlight[0], norm, viewDir,texDiff, texSpec);
 
      for(int i = 0 ; i < NumberOfPointLights ; i++ )
      {
-          result += CalcPointLight( pointLights[i], norm, crntPos, viewDir);
+          result += CalcPointLight( pointLights[i], norm, crntPos, viewDir , texDiff, texSpec);
      }
 
     for(int i = 0 ; i < NumberOfSpotLights ; i++ )
@@ -165,34 +165,50 @@ void main ()
 
 
 // Pointllght Calculation
-vec3 CalcPointLight(PointLight light, vec3 normala, vec3 fragPos, vec3 viewDira)
+vec3 CalcPointLight(PointLight light, vec3 normala, vec3 fragPos, vec3 viewDira , vec4 texDiff, vec4 texSpec)
 {
-	vec3 lightVec = (light.position - fragPos);
+	// ambient
+	vec4 ambient = vec4(light.ambient,1.0) * texDiff;
 
-	// intensity of light with respect to distance
-	float dist = length(lightVec);
-	float constant = light.constant;
+	// diffuse
+	vec3 lightDir = normalize(light.position - fragPos);
+	float diff = max(dot(normala, lightDir), 0.0);
+	vec4 diffuse = vec4(light.diffuse,1.0) * (diff * texDiff);
+
+	// specular
+	vec4 specular = vec4(0.0, 0.0, 0.0, 1.0);
+	if (diff > 0) 
+    {
+		float dotProd = 0.0;
+
+		if (useBlinn) 
+        {
+			vec3 halfwayDir = normalize(lightDir + viewDira);
+			dotProd = dot(normala, halfwayDir);
+		}
+		else
+        {
+			// calculate using Phong model
+			vec3 reflectDir = reflect(-lightDir, normala);
+			dotProd = dot(viewDira, reflectDir);
+		}
+
+		float spec = pow(max(dotProd, 0.0), 0.5 * 128);
+        // 		float spec = pow(max(dotProd, 0.0), material.shininess * 128);
+		specular = vec4(light.specular,1.0) * (spec * texSpec);
+	}
+
+	float dist = length(light.position - fragPos);
+    float constant = light.constant;
 	float linear = light.linear;
     float quadratic = light.quadratic;
-	float inten = light.IntensityStrength / (constant + linear * dist + quadratic * ( dist * dist ) );
+	float attenuation = light.IntensityStrength / (constant + linear * dist + quadratic * ( dist * dist ) );
 
-    vec3 ambientStrength = light.ambient;
-    vec4 ambient = vec4(light.lightColor,1.0) * vec4(ambientStrength,1.0) * inten ;
+	ambient *= attenuation;
+	diffuse *= attenuation;
+	specular *= attenuation;
 
-    // diffuse lighting
-    vec3 normal = (normal_from_vtxShader);
-    vec3 lightDirection = normalize(lightVec);
-    float diff = max(dot(normal, lightDirection), 0.0f); // light.diffuse
-    vec3 diffuse = light.diffuse * light.lightColor * diff  * inten ;
-
-    vec3 specularStrength = light.specular;
-    vec3 reflectDir = reflect(-lightDirection, normal);  
-    float spec = pow(max(dot(viewDira, reflectDir), 0.0), 128); // 32 is material shiness
-    vec3 specular = specularStrength * spec * light.lightColor * inten ;  
-
-    vec3 result = vec3( vec3(ambient) + diffuse + specular) ;
-
-    return result;
+    return vec4(ambient + diffuse + specular) * vec4(light.lightColor,1.0);
 }
 
 // calculates the color when using a spot light.
@@ -232,7 +248,7 @@ vec3 CalcSpotLight(SpotLight light, vec3 normala, vec3 fragPos, vec3 viewDira)
 }
 
 // calculates the color when using a directional light.
-vec3 CalcDirLight(DirLight light, vec3 normala, vec3 viewDira , vec4 texDiff, vec4 texSpec)
+vec3 CalcDirLight(DirectionalLight light, vec3 normala, vec3 viewDira , vec4 texDiff, vec4 texSpec)
 {
 	// ambient
 	vec3 ambient = light.ambient * vec3(texDiff);
