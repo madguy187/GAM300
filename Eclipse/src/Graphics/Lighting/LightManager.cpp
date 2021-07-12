@@ -84,14 +84,6 @@ void Eclipse::Lights::CreateAttenuationLevels()
     ENGINE_CORE_INFO("Attentuation Levels Created!");
 }
 
-void Eclipse::Lights::SetAttenuation(PointLightComponent& in, unsigned int Level)
-{
-    in.constant = AttenuationLevels[Level].second.Constant_;
-    in.linear = AttenuationLevels[Level].second.Linear_;
-    in.quadratic = AttenuationLevels[Level].second.Quadratic_;
-}
-
-
 PointLightContainer Eclipse::Lights::GetPointLightsContainer()
 {
     return _allpointlights.GetContainer();

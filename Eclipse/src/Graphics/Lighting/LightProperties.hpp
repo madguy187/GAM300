@@ -54,3 +54,14 @@ inline void Eclipse::Lights::SetDiffuse(TypeOfLight& OBJ, ECVec3 in)
         OBJ.diffuse.setZ(in.z);
     }
 }
+
+template<typename TypeOfLight>
+inline void Eclipse::Lights::SetAttenuation(TypeOfLight& OBJ, unsigned int in)
+{
+    if (constexpr(has_attenuation<TypeOfLight>::value == true))
+    {
+        OBJ.constant = AttenuationLevels[in].second.Constant_;
+        OBJ.linear = AttenuationLevels[in].second.Linear_;
+        OBJ.quadratic = AttenuationLevels[in].second.Quadratic_;
+    }
+}

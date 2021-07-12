@@ -64,6 +64,7 @@ struct SpotLight
     float constant;
     float linear;
     float quadratic;
+    float SurroundingAttenuationLevel;
   
     vec3 ambient;
     vec3 diffuse;
@@ -84,7 +85,7 @@ uniform DirectionalLight directionlight[NR_DIRECTIONAL_LIGHTS];
 // Function Headers
 vec3 CalcPointLight(PointLight light, vec3 normala, vec3 fragPos, vec3 viewDira, vec4 texDiff, vec4 texSpec);
 vec3 CalcDirLight(DirectionalLight light, vec3 normala, vec3 viewDira, vec4 texDiff, vec4 texSpec);
-vec3 CalcSpotLight(SpotLight light, vec3 normala, vec3 fragPos, vec3 viewDira);
+vec3 CalcSpotLight(SpotLight light, vec3 normala, vec3 fragPos, vec3 viewDira , vec4 texDiff, vec4 texSpec);
 
 vec4 testMaterials()
 {
@@ -156,7 +157,7 @@ void main ()
 
     for(int i = 0 ; i < NumberOfSpotLights ; i++ )
     {
-         result += CalcSpotLight( spotLights[i], norm, crntPos, viewDir);
+         result += CalcSpotLight( spotLights[i], norm, crntPos, viewDir , texDiff, texSpec);
     }
 
     fFragClr = texture(uTex2d, TxtCoord) * vec4(result,1.0f);
@@ -212,39 +213,66 @@ vec3 CalcPointLight(PointLight light, vec3 normala, vec3 fragPos, vec3 viewDira 
 }
 
 // calculates the color when using a spot light.
-vec3 CalcSpotLight(SpotLight light, vec3 normala, vec3 fragPos, vec3 viewDira)
+vec3 CalcSpotLight(SpotLight light, vec3 normala, vec3 fragPos, vec3 viewDira , vec4 texDiff, vec4 texSpec )
 {
-    vec3 lightDir = normalize(light.position - fragPos);
+	vec3 lightDir = normalize(light.position - fragPos);
+	float theta = dot(lightDir, normalize(-light.direction));
 
-    // diffuse shading
-    float diff = max(dot(normala, lightDir), 0.0);
+    // ambient
+	vec4 ambient = vec4(light.ambient,1.0) * texDiff;
 
-    // specular shading
-    vec3 reflectDir = reflect(-lightDir, normala);
 
-    float spec = pow(max(dot(viewDira, reflectDir), 0.0), 32);
+    if (theta > light.outerCutOff) 
+    {
+     
+      // diffuse
+	  float diff = max(dot(normala, lightDir), 0.0);
+	  vec4 diffuse = vec4(light.diffuse,1.0) * (diff * texDiff);
 
-    // attenuation
-    float distance = length(light.position - fragPos);
-    float attenuation = light.IntensityStrength / (light.constant + light.linear * distance + light.quadratic * (distance * distance));  
-    
-    // spotlight intensity
-    float theta = dot(lightDir, normalize(light.direction)); 
-    float epsilon = light.cutOff - light.outerCutOff;
-    float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
+      vec4 specular = vec4(0.0, 0.0, 0.0, 1.0);
 
-    // combine results
-    vec3 ambient = light.ambient * light.lightColor * vec3(texture(uTex2d, TxtCoord));
-    vec3 diffuse = light.diffuse * light.lightColor * diff * vec3(texture(uTex2d, TxtCoord));
-    vec3 specular = light.specular * light.lightColor * spec * vec3(texture(uTex2d, TxtCoord));
+        if (diff > 0) 
+        {
+          float dotProd = 0.0;
 
-    ambient *= attenuation * intensity;
-    diffuse *= attenuation * intensity;
-    specular *= attenuation * intensity;
+			if (useBlinn) 
+            {
+				vec3 halfwayDir = normalize(lightDir + viewDira);
+				dotProd = dot(normala, halfwayDir);
+            }
+            else
+            {
+  				vec3 reflectDir = reflect(-lightDir, normala);
+				dotProd = dot(viewDira, reflectDir);          
+            }
 
-    vec3 result = (ambient + diffuse + specular);
-    
-    return result;
+			float spec = pow(max(dotProd, 0.0), 0.5 * 128);
+            //float spec = pow(max(dotProd, 0.0), material.shininess * 128);
+			specular = vec4(light.specular,1.0) * (spec * texSpec);
+        }
+
+		// calculate Intensity
+		float intensity = clamp((theta - light.outerCutOff) / (light.cutOff - light.outerCutOff), 0.0, 1.0);
+		diffuse *= intensity;
+		specular *= intensity;
+
+		float dist = length(light.position - fragPos);
+	    float constant = light.constant;
+	    float linear = light.linear;
+        float quadratic = light.quadratic;
+	    float attenuation = light.IntensityStrength / (constant + linear * dist + quadratic * ( dist * dist ) );
+
+		// apply attenuation
+		ambient *= attenuation;
+		diffuse *= attenuation;
+		specular *= attenuation;
+
+        return ( vec3(ambient) + vec3(diffuse) + vec3(specular) )  * light.lightColor ;
+     }
+     else
+     {
+          return vec3(ambient) * light.SurroundingAttenuationLevel;
+     }
 }
 
 // calculates the color when using a directional light.

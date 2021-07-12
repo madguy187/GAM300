@@ -23,6 +23,7 @@ void SpotLight::CreateSpotLight(unsigned int CreatedID)
     sprite.ID = CreatedID;
     sprite.shaderRef = &(Graphics::shaderpgms.find("shader3DShdrpgm")->second);
     sprite.modelRef = Graphics::models.find("cube")->second.get();
+    engine->LightManager.SetAttenuation(sprite, 5);
 
     // Success
     _spotlights.insert({ counter,&sprite });
@@ -78,6 +79,8 @@ void SpotLight::CheckUniformLoc(Shader* _shdrpgm, SpotLightComponent& in_spot, i
     GLint uniform_var_loc16 = _shdrpgm->GetLocation(("spotLights[" + number + "].outerCutOff").c_str());
     GLint uniform_var_loc17 = _shdrpgm->GetLocation(("spotLights[" + number + "].direction").c_str());
     GLint uniform_var_loc18 = _shdrpgm->GetLocation("NumberOfSpotLights");
+    GLint uniform_var_loc19 = _shdrpgm->GetLocation(("spotLights[" + number + "].SurroundingAttenuationLevel").c_str());
+    GLint useBlinn_ = _shdrpgm->GetLocation("useBlinn");
 
     // SpotLight Position
     TransformComponent& SpotlightTransform = engine->world.GetComponent<TransformComponent>(in_spot.ID);
@@ -185,5 +188,15 @@ void SpotLight::CheckUniformLoc(Shader* _shdrpgm, SpotLightComponent& in_spot, i
     if (uniform_var_loc18 >= 0)
     {
         GLCall(glUniform1i(uniform_var_loc18, containersize));
+    }
+
+    if (uniform_var_loc19 >= 0)
+    {
+        GLCall(glUniform1f(uniform_var_loc19, in_spot.SurroundingAttenuationLevel));
+    }
+
+    if (useBlinn_ >= 0)
+    {
+        GLCall(glUniform1i(useBlinn_, true));
     }
 }
