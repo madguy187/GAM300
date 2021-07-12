@@ -11,13 +11,13 @@ void Eclipse::DebugRenderingManager::CheckUniformLoc(Graphics::shaderIt _shdrpgm
     //GLint uniform_var_loc6 = _shdrpgm->second.GetLocation("LightTimer");
     //GLint uniform_var_loc7 = _shdrpgm->second.GetLocation("ShakeTimer");
     //GLint uniform_var_loc8 = _shdrpgm->second.GetLocation("ShakeScreen");
-    GLuint tex_loc = _shdrpgm->second.GetLocation("uTex2d");
-    GLuint TEST = _shdrpgm->second.GetLocation("TEST");
+    //GLuint tex_loc = _shdrpgm->second.GetLocation("uTex2d");
+    //GLuint TEST = _shdrpgm->second.GetLocation("TEST");
 
-    if (TEST >= 0)
-    {
-        glUniform1i(TEST, 0);
-    }
+    //if (TEST >= 0)
+    //{
+    //    glUniform1i(TEST, 0);
+    //}
 
     if (uniform_var_loc1 >= 0)
     {
@@ -45,10 +45,10 @@ void Eclipse::DebugRenderingManager::CheckUniformLoc(Graphics::shaderIt _shdrpgm
     //    glUniform2f(uniform_var_loc5, 0, 0);
     //}
 
-    if (tex_loc >= 0)
-    {
-        glUniform1i(tex_loc, 1);
-    }
+    //if (tex_loc >= 0)
+    //{
+    //    glUniform1i(tex_loc, 1);
+    //}
 }
 
 void Eclipse::DebugRenderingManager::AddCameraFrustum(unsigned int ID, CameraComponent& _camera)
@@ -68,7 +68,7 @@ void Eclipse::DebugRenderingManager::DrawFrustum(unsigned int ID, unsigned int f
     auto& lineArr = std::any_cast<Frustum>(debugShapes[ID]).GetLineSegments();
     auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 
-    auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
+    auto shdrpgm = Graphics::shaderpgms.find("FrustrumShader");
 
     for (unsigned int i = 0; i < lineArr.size(); ++i)
     {

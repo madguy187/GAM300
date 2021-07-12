@@ -21,6 +21,8 @@ void AssimpModelManager::CreateModel(std::string name, std::string FolderName , 
     }
 
     // Initialise
+
+    // Always set False because we have textures
     AssimpModel* NewModel = new AssimpModel(false);
     NewModel->LoadAssimpModel(PathName);
     NewModel->SetName(name);

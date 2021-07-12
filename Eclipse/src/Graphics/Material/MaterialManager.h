@@ -7,13 +7,17 @@ namespace Eclipse
     typedef std::map<int, MaterialComponent*> MaterialContainer;
     using MtIT = std::map<int, MaterialComponent*>::iterator;
 
-    class Material
+    struct Material
     {
     public:
         ECVec3 Ambient;
         ECVec3 Diffuse;
         ECVec3 Specular;
         float Shininess;
+
+        /*
+            static instances of common materials
+        */
 
         static Material Emerald;
         static Material Jade;
@@ -41,7 +45,7 @@ namespace Eclipse
         static Material Yellow_rubber;
 
         static Material mix(Material m1, Material m2, float mix = 0.5f);
-        void CheckMaterialUniforms(Shader* _shdrpgm, MaterialComponent& hi, int index);
+        static void CheckMaterialUniforms(Shader* _shdrpgm, MaterialComponent& hi, int index);
     };
 }
 

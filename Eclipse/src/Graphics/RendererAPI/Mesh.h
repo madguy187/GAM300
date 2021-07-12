@@ -6,6 +6,7 @@
 #include "Texture.h"
 #include "color4.h"
 #include "color4.inl"
+#include "Graphics/Material/MaterialManager.h"
 
 namespace Eclipse
 {
@@ -30,12 +31,14 @@ namespace Eclipse
         aiColor4D Specular;
         std::vector<Vertex> Vertices;
         std::vector<unsigned int> Indices;
-
         void Setup();
-
     public:
+        Mesh(std::vector<Texture> textures = {});
+        Mesh(aiColor4D diff, aiColor4D spec);
         Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures = {});
         Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiColor4D diffuse, aiColor4D spec);
+        void SetMaterialDiffuse(float x, float y, float z);
+        void SetMaterialSpecular(float x, float y, float z);
         void Render(Shader& shader, GLenum mode);
         void Cleanup();
     };

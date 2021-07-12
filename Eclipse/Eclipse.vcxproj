@@ -239,7 +239,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\RendererAPI\Mesh.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Renderer.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Shader.h" />
-    <ClInclude Include="src\Graphics\RendererAPI\Texture.h" />
+    <ClInclude Include="src\Graphics\Textures\Texture.h" />
     <ClInclude Include="src\ImGui\ImGuiAPI\ImGuiAPI.h" />
     <ClInclude Include="src\ImGui\Setup\ImGuiSetup.h" />
     <ClInclude Include="src\ImGui\Vendor\IconsFontAwesome.h" />
@@ -336,8 +336,8 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\RendererAPI\GraphicsManager.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\Mesh.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\Shader.cpp" />
-    <ClCompile Include="src\Graphics\RendererAPI\Texture.cpp" />
-    <ClCompile Include="src\Graphics\RendererAPI\stb_image.cpp" />
+    <ClCompile Include="src\Graphics\Textures\Texture.cpp" />
+    <ClCompile Include="src\Graphics\Textures\stb_image.cpp" />
     <ClCompile Include="src\ImGui\ImGuiAPI\ImGuiAPI.cpp" />
     <ClCompile Include="src\ImGui\Setup\ImGuiSetup.cpp" />
     <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImCurveEdit.cpp" />
@@ -364,8 +364,12 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <None Include="src\Assets\Shaders\AssimpShader3D.vert" />
     <None Include="src\Assets\Shaders\BasicFrag.frag" />
     <None Include="src\Assets\Shaders\BasicVtx.vert" />
+    <None Include="src\Assets\Shaders\CameraShader.frag" />
+    <None Include="src\Assets\Shaders\CameraShader.vert" />
     <None Include="src\Assets\Shaders\DebugFrag.frag" />
     <None Include="src\Assets\Shaders\DebugVtx.vert" />
+    <None Include="src\Assets\Shaders\Frustrum\Frustrum.frag" />
+    <None Include="src\Assets\Shaders\Frustrum\Frustrum.vert" />
     <None Include="src\Assets\Shaders\Grid.frag" />
     <None Include="src\Assets\Shaders\Grid.vert" />
     <None Include="src\Assets\Shaders\light.frag" />

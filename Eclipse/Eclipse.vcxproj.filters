@@ -421,7 +421,7 @@
     <ClInclude Include="src\Graphics\RendererAPI\Shader.h">
       <Filter>Graphics\RendererAPI</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\RendererAPI\Texture.h">
+    <ClInclude Include="src\Graphics\Textures\Texture.h">
       <Filter>Graphics\RendererAPI</Filter>
     </ClInclude>
     <ClInclude Include="src\ImGui\ImGuiAPI\ImGuiAPI.h">
@@ -704,10 +704,10 @@
     <ClCompile Include="src\Graphics\RendererAPI\Shader.cpp">
       <Filter>Graphics\RendererAPI</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\RendererAPI\Texture.cpp">
+    <ClCompile Include="src\Graphics\Textures\Texture.cpp">
       <Filter>Graphics\RendererAPI</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\RendererAPI\stb_image.cpp">
+    <ClCompile Include="src\Graphics\Textures\stb_image.cpp">
       <Filter>Graphics\RendererAPI</Filter>
     </ClCompile>
     <ClCompile Include="src\ImGui\ImGuiAPI\ImGuiAPI.cpp">
@@ -786,5 +786,9 @@
     <None Include="src\Assets\Shaders\skybox.vert" />
     <None Include="src\Assets\Shaders\textFrag.frag" />
     <None Include="src\Assets\Shaders\textVtx.vert" />
+    <None Include="src\Assets\Shaders\CameraShader.frag" />
+    <None Include="src\Assets\Shaders\CameraShader.vert" />
+    <None Include="src\Assets\Shaders\Frustrum\Frustrum.frag" />
+    <None Include="src\Assets\Shaders\Frustrum\Frustrum.vert" />
   </ItemGroup>
 </Project>

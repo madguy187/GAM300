@@ -49,6 +49,11 @@
       "shaderName": "Grid",
       "vtxShader": "src/Assets/Shaders/Grid.vert",
       "frgShader": "src/Assets/Shaders/Grid.frag"
+    },
+    {
+      "shaderName": "FrustrumShader",
+      "vtxShader": "src/Assets/Shaders/Frustrum/Frustrum.vert",
+      "frgShader": "src/Assets/Shaders/Frustrum/Frustrum.frag"
     }
   ]
 }
