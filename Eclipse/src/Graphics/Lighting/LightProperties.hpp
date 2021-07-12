@@ -65,3 +65,14 @@ inline void Eclipse::Lights::SetAttenuation(TypeOfLight& OBJ, unsigned int in)
         OBJ.quadratic = AttenuationLevels[in].second.Quadratic_;
     }
 }
+
+template<typename TypeOfLight>
+inline void Eclipse::Lights::SetSpecular(TypeOfLight& OBJ, ECVec3 in)
+{
+    if (constexpr(has_Specular<TypeOfLight>::value == true))
+    {
+        OBJ.specular.setX(in.x);
+        OBJ.specular.setY(in.y);
+        OBJ.specular.setZ(in.z);
+    }
+}

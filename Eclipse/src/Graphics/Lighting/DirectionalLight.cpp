@@ -16,6 +16,11 @@ void Eclipse::DirectionalLight::CreateDirectionalLight(unsigned int CreatedID)
     DirectionalLightComponent& _global = engine->world.GetComponent<DirectionalLightComponent>(CreatedID);
     _global.ID = CreatedID;
 
+    TransformComponent& transform = engine->world.GetComponent<TransformComponent>(CreatedID);
+    transform.scale.setX(1.0f);
+    transform.scale.setY(1.0f);
+    transform.scale.setZ(1.0f);
+
     // Success
     _DirectionalLight.insert({ counter,&_global });
     EDITOR_LOG_INFO("DirectionalLight Created Successfully");

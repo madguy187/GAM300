@@ -66,6 +66,9 @@ namespace Eclipse
         template<typename T, typename = void>
         struct has_attenuation : std::false_type {};
 
+        template<typename T, typename = void>
+        struct has_Specular : std::false_type {};
+
         // Check if T has the variable , if have , will enter template =============================
         template<typename TypeOfLight>
         struct has_Color< TypeOfLight, decltype(std::declval<TypeOfLight>().Color, void())> : std::true_type {};
@@ -81,6 +84,9 @@ namespace Eclipse
 
         template<typename TypeOfLight>
         struct has_attenuation< TypeOfLight, decltype(std::declval<TypeOfLight>().constant, std::declval<TypeOfLight>().linear , std::declval<TypeOfLight>().quadratic, void())> : std::true_type {};
+
+        template<typename TypeOfLight>
+        struct has_Specular< TypeOfLight, decltype(std::declval<TypeOfLight>().specular, void())> : std::true_type {};
 
     private:
         PointLight _allpointlights;
@@ -124,6 +130,9 @@ namespace Eclipse
 
         template <typename TypeOfLight>
         void SetAttenuation(TypeOfLight& OBJ, unsigned int in);
+
+        template <typename TypeOfLight>
+        void SetSpecular(TypeOfLight& OBJ, ECVec3 in);
     };
 
 #include "Graphics/Lighting/LightProperties.hpp"

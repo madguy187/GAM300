@@ -24,6 +24,11 @@ void Eclipse::PointLight::CreatePointLight(unsigned int CreatedID)
     sprite.modelRef = Graphics::models.find("sphere")->second.get();
     engine->LightManager.SetAttenuation(sprite, 5);
 
+    TransformComponent& transform = engine->world.GetComponent<TransformComponent>(CreatedID);
+    transform.scale.setX(1.0f);
+    transform.scale.setY(1.0f);
+    transform.scale.setZ(1.0f);
+
     // Success
     _pointlights.insert({ counter,&sprite });
     EDITOR_LOG_INFO("Pointlight Created Successfully");
