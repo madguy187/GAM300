@@ -790,5 +790,11 @@
     <None Include="src\Assets\Shaders\CameraShader.vert" />
     <None Include="src\Assets\Shaders\Frustrum\Frustrum.frag" />
     <None Include="src\Assets\Shaders\Frustrum\Frustrum.vert" />
+    <None Include="src\Assets\Shaders\Grid\Grid.frag" />
+    <None Include="src\Assets\Shaders\Grid\Grid.vert" />
+    <None Include="src\Assets\Shaders\CubeMap\skybox.frag" />
+    <None Include="src\Assets\Shaders\CubeMap\skybox.vert" />
+    <None Include="src\Assets\Shaders\Shader3D\Shader3D.frag" />
+    <None Include="src\Assets\Shaders\Shader3D\Shader3D.vert" />
   </ItemGroup>
 </Project>

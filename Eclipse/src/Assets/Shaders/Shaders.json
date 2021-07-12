@@ -27,8 +27,8 @@
     },
     {
       "shaderName": "shader3DShdrpgm",
-      "vtxShader": "src/Assets/Shaders/Shader3D.vert",
-      "frgShader": "src/Assets/Shaders/Shader3D.frag"
+      "vtxShader": "src/Assets/Shaders/Shader3D/Shader3D.vert",
+      "frgShader": "src/Assets/Shaders/Shader3D/Shader3D.frag"
     },
     {
       "shaderName": "nooblight",
@@ -42,13 +42,13 @@
     },
     {
       "shaderName": "Sky",
-      "vtxShader": "src/Assets/Shaders/skybox.vert",
-      "frgShader": "src/Assets/Shaders/skybox.frag"
+      "vtxShader": "src/Assets/Shaders/CubeMap/skybox.vert",
+      "frgShader": "src/Assets/Shaders/CubeMap/skybox.frag"
     },
     {
       "shaderName": "Grid",
-      "vtxShader": "src/Assets/Shaders/Grid.vert",
-      "frgShader": "src/Assets/Shaders/Grid.frag"
+      "vtxShader": "src/Assets/Shaders/Grid/Grid.vert",
+      "frgShader": "src/Assets/Shaders/Grid/Grid.frag"
     },
     {
       "shaderName": "FrustrumShader",
