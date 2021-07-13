@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Graphics/Lighting/LightManager.h"
+#include "LightManager.h"
 
 void Eclipse::Lights::init()
 {
@@ -37,6 +38,16 @@ void Eclipse::Lights::CreateLights(TypesOfLights in, unsigned int CreatedID)
     break;
 
     }
+}
+
+void Eclipse::Lights::SetApplyLightingFlag(bool in)
+{
+    ApplyLighting = in;
+}
+
+bool Eclipse::Lights::CheckApplyLighting()
+{
+    return ApplyLighting;
 }
 
 void Eclipse::Lights::DrawPointLights(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)

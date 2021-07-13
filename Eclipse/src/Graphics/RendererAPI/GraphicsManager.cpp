@@ -214,7 +214,6 @@ void Eclipse::GraphicsManager::Draw(unsigned int FrameBufferID, RenderComponent*
     // Part 2: Bind the object's VAO handle using glBindVertexArray
     glBindVertexArray(_spritecomponent->modelRef->second->GetVaoID());
 
-    glEnable(GL_FRAMEBUFFER_SRGB);
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
     glPolygonMode(GL_FRONT_AND_BACK, mode);
