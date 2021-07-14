@@ -235,8 +235,10 @@ namespace Eclipse
             if (ECGui::CreateCollapsingHeader("Grid Settings"))
             {
                 static bool enable = true;
+                static bool show = true;
                 ECGui::DrawTextWidget<const char*>("Show Grid", "");
-                ECGui::CheckBoxBool("Visible", &engine->GridMap.Visible, enable);
+                ECGui::CheckBoxBool("Visible", &show, enable);
+                engine->GridMap.SetGridToShow(show);
 
                 ECGui::DrawTextWidget<const char*>("Grid Colour", "");
                 ECGui::DrawSliderFloat3Widget("Colour", &engine->GridMap.GridColour, true, 0.0f, 1.0f);

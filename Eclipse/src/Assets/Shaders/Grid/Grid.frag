@@ -8,6 +8,8 @@ layout(location=0) out vec4 fFragClr;
 uniform vec4 lightColor;
 uniform float QuadScale;
 uniform vec3 GridColour;
+uniform mat4 viewMtx;
+uniform mat4 projMtx;
 
 vec4 grid(vec3 fragPos3D, float scale) 
 {
@@ -35,9 +37,16 @@ vec4 grid(vec3 fragPos3D, float scale)
     return color;
 }
 
+float computeDepth(vec3 pos) 
+{
+    vec4 clip_space_pos = projMtx * viewMtx * vec4(pos.xyz, 1.0);
+    return (clip_space_pos.z / clip_space_pos.w);
+}
+
 void main () 
 {
     float t = -nearPoint.y / (farPoint.y - nearPoint.y);
     vec3 fragPos3D = nearPoint + t * (farPoint - nearPoint);
+    gl_FragDepth = computeDepth(fragPos3D);
     fFragClr = grid(fragPos3D, QuadScale) * float(t > 0);
 }

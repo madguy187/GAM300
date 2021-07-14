@@ -10,11 +10,11 @@ namespace Eclipse
 		Quad* WholeGrid = nullptr;
 		Shader* ShaderRef = nullptr;
 		float Transparency = 1.0f;
+		bool Visible = true;
 
 	public:
 		ECVec3 GridColour{ 0.0f,0.0f,0.0f };
 		float GridScale = 0.05f;
-		bool Visible = true;
 
 		Quad* GetModelReference();
 		Shader* GetShaderReference();
