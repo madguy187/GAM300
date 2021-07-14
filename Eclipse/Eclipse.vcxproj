@@ -380,6 +380,8 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <None Include="src\Assets\Shaders\light.vert" />
     <None Include="src\Assets\Shaders\LightFrag.frag" />
     <None Include="src\Assets\Shaders\LightVtx.vert" />
+    <None Include="src\Assets\Shaders\Outlining\Outlining.frag" />
+    <None Include="src\Assets\Shaders\Outlining\Outlining.vert" />
     <None Include="src\Assets\Shaders\ParticlesFrag.frag" />
     <None Include="src\Assets\Shaders\ParticlesVtx.vert" />
     <None Include="src\Assets\Shaders\Shader3D.frag" />

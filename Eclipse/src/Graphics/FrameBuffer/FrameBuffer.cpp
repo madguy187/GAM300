@@ -48,8 +48,10 @@ void FrameBuffer::Bind() const
 {
     glBindFramebuffer(GL_FRAMEBUFFER, m_data.frameBufferID);
     glViewport(0, 0, OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight());
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+
 }
 
 void FrameBuffer::Unbind() const

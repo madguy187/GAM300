@@ -796,5 +796,7 @@
     <None Include="src\Assets\Shaders\CubeMap\skybox.vert" />
     <None Include="src\Assets\Shaders\Shader3D\Shader3D.frag" />
     <None Include="src\Assets\Shaders\Shader3D\Shader3D.vert" />
+    <None Include="src\Assets\Shaders\Outlining\Outlining.frag" />
+    <None Include="src\Assets\Shaders\Outlining\Outlining.vert" />
   </ItemGroup>
 </Project>

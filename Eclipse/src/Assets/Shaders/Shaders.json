@@ -54,6 +54,11 @@
       "shaderName": "FrustrumShader",
       "vtxShader": "src/Assets/Shaders/Frustrum/Frustrum.vert",
       "frgShader": "src/Assets/Shaders/Frustrum/Frustrum.frag"
+    },
+    {
+      "shaderName": "OutLineShader",
+      "vtxShader": "src/Assets/Shaders/Outlining/Outlining.vert",
+      "frgShader": "src/Assets/Shaders/Outlining/Outlining.frag"
     }
   ]
 }
