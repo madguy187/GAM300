@@ -39,6 +39,7 @@ namespace Eclipse
             ShowPointLightProperty(currEnt);
             ShowSpotLightProperty(currEnt);
             ShowDirectionalLightProperty(currEnt);
+            ShowGridSettings(currEnt);
             SetGamma();
         }
         else
@@ -78,6 +79,9 @@ namespace Eclipse
     {
         if (engine->world.CheckComponent<TransformComponent>(ID))
         {
+            if (ID == engine->GridMap.GetGridID())
+                return false;
+
             if (ECGui::CreateCollapsingHeader("Transform"))
             {
                 auto& transCom = engine->world.GetComponent<TransformComponent>(ID);
@@ -221,4 +225,27 @@ namespace Eclipse
         engine->GraphicsManager.SetGammaCorrection(Test);
     }
 
+    bool InspectorWindow::ShowGridSettings(Entity ID)
+    {
+        if (engine->GridMap.GetModelReference() == nullptr)
+            return false;
+
+        if (engine->world.CheckComponent<TransformComponent>(ID))
+        {
+            if (ECGui::CreateCollapsingHeader("Grid Settings"))
+            {
+                static bool enable = true;
+                ECGui::DrawTextWidget<const char*>("Show Grid", "");
+                ECGui::CheckBoxBool("Visible", &engine->GridMap.Visible, enable);
+
+                ECGui::DrawTextWidget<const char*>("Grid Colour", "");
+                ECGui::DrawSliderFloat3Widget("Colour", &engine->GridMap.GridColour, true, 0.0f, 1.0f);
+
+                ECGui::DrawTextWidget<const char*>("Grid Scale", "");
+                ECGui::DrawSliderFloatWidget("Scale", &engine->GridMap.GridScale, true, 0.0f, 20.0f);
+            }
+        }
+
+        return false;
+    }
 }

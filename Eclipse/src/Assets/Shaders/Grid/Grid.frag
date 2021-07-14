@@ -7,6 +7,7 @@ layout(location=0) out vec4 fFragClr;
 
 uniform vec4 lightColor;
 uniform float QuadScale;
+uniform vec3 GridColour;
 
 vec4 grid(vec3 fragPos3D, float scale) 
 {
@@ -17,7 +18,7 @@ vec4 grid(vec3 fragPos3D, float scale)
     float line = min(grid.x, grid.y);
     float minimumz = min(derivative.y, 1);
     float minimumx = min(derivative.x, 1);
-    vec4 color = vec4(0, 0, 0, 1.0 - min(line, 1.0));
+    vec4 color = vec4(GridColour.x, GridColour.y, GridColour.z, 1.0 - min(line, 1.0));
 
     // z axis
     if(fragPos3D.x > -0.1 * minimumx && fragPos3D.x < 0.1 * minimumx)

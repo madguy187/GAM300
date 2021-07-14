@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Grid.h"
 #include "Editor/Windows/Scene/Scene.h"
+#include "ECS/ComponentManager/Components/EntityComponent.h"
 
 namespace Eclipse
 {
@@ -32,6 +33,7 @@ namespace Eclipse
 		GLint uniform_var_loc1 = ShaderRef->GetLocation("QuadScale");
 		GLint uniform_var_loc2 = ShaderRef->GetLocation("viewMtx");
 		GLint uniform_var_loc3 = ShaderRef->GetLocation("projMtx");
+		GLint uniform_var_loc4 = ShaderRef->GetLocation("GridColour");
 
 		glm::mat4 mModelNDC;
 		glm::mat4 model = glm::mat4(1.0f);
@@ -47,6 +49,8 @@ namespace Eclipse
 		glUniformMatrix4fv(uniform_var_loc2, 1, GL_FALSE, glm::value_ptr(camera.viewMtx));
 
 		glUniformMatrix4fv(uniform_var_loc3, 1, GL_FALSE, glm::value_ptr(camera.projMtx));
+
+		GLCall(glUniform3f(uniform_var_loc4, GridColour.getX(), GridColour.getY(), GridColour.getZ()));
 	}
 
 	float Grid::GetGridScale()
@@ -57,6 +61,16 @@ namespace Eclipse
 	void Grid::SetGridScale(float in)
 	{
 		GridScale = in;
+	}
+
+	bool Grid::CheckShowGrid()
+	{
+		return Visible;
+	}
+
+	void Grid::SetGridToShow(bool in)
+	{
+		Visible = in;
 	}
 
 	Quad* Grid::GetModelReference()
@@ -77,7 +91,12 @@ namespace Eclipse
 	void Grid::Init()
 	{
 		GridID = engine->world.CreateEntity();
+		engine->world.AddComponent(GridID, EntityComponent{ EntityType::ENT_UNASSIGNED, "Grid", true });
 		engine->world.AddComponent(GridID, TransformComponent{});
+
+		engine->editorManager->EntityHierarchyList_.push_back(GridID);
+		engine->editorManager->EntityToTypeMap_.insert(std::pair<Entity, EntityType>(GridID, EntityType::ENT_UNASSIGNED));
+
 
 		WholeGrid = new Quad;
 		ShaderRef = &(Graphics::shaderpgms.find("Grid")->second);
@@ -105,8 +124,11 @@ namespace Eclipse
 		// Check here
 		CheckUniformLocation(GridID);
 
-		// Draw
-		glDrawElements(WholeGrid->GetPrimitiveType(), WholeGrid->GetDrawCount(), GL_UNSIGNED_SHORT, NULL);
+		if (Visible == true)
+		{
+			// Draw
+			glDrawElements(WholeGrid->GetPrimitiveType(), WholeGrid->GetDrawCount(), GL_UNSIGNED_SHORT, NULL);
+		}
 
 		// Part 5: Clean up
 		glBindVertexArray(0);

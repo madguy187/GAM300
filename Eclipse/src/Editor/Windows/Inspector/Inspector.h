@@ -17,6 +17,7 @@ namespace Eclipse
 		bool ShowSpotLightProperty(Entity ID);
 		bool ShowDirectionalLightProperty(Entity ID);
 		void SetGamma();
+		bool ShowGridSettings(Entity ID);
 	private:
 		ECVec2 WindowSize_{};
 	};

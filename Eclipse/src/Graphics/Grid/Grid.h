@@ -9,11 +9,12 @@ namespace Eclipse
 		unsigned int GridID;
 		Quad* WholeGrid = nullptr;
 		Shader* ShaderRef = nullptr;
-		ECVec3 GridColour{ 1.0f,1.0f,1.0f };
 		float Transparency = 1.0f;
-		float GridScale = 0.05f;
 
 	public:
+		ECVec3 GridColour{ 0.0f,0.0f,0.0f };
+		float GridScale = 0.05f;
+		bool Visible = true;
 
 		Quad* GetModelReference();
 		Shader* GetShaderReference();
@@ -24,6 +25,8 @@ namespace Eclipse
 		void CheckUniformLocation(unsigned int GridID);
 		float GetGridScale();
 		void SetGridScale(float in);
+		bool CheckShowGrid();
+		void SetGridToShow(bool in);
 
 		void Init();
 		void DrawGrid();
