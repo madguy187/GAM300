@@ -220,4 +220,5 @@ namespace Eclipse
         ECGui::DrawSliderFloatWidget("Gamma", &Test, true, 0.f, 3.0f);
         engine->GraphicsManager.SetGammaCorrection(Test);
     }
+
 }

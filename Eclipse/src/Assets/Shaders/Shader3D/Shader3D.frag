@@ -212,7 +212,7 @@ vec3 CalcPointLight(PointLight light, vec3 normala, vec3 fragPos, vec3 viewDira 
 	diffuse *= attenuation;
 	specular *= attenuation;
 
-    return vec4(ambient + diffuse + specular) * vec4(light.lightColor,1.0);
+    return ( vec3(ambient) + vec3(diffuse) + vec3(specular) ) * vec3(light.lightColor);
 }
 
 // calculates the color when using a spot light.
@@ -315,5 +315,5 @@ vec3 CalcDirLight(DirectionalLight light, vec3 normala, vec3 viewDira , vec4 tex
 		specular = vec4(light.specular,1.0) * (spec * texSpec);
 	}
 
-    return ( vec4(ambient,1.0) + vec4(diffuse,1.0) + specular ) * vec4(light.lightColor,1.0);
+    return ( vec3(ambient) + vec3(diffuse) + vec3(specular) ) * vec3(light.lightColor);
 }
