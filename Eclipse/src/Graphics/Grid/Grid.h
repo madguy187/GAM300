@@ -16,6 +16,9 @@ namespace Eclipse
 		ECVec3 GridColour{ 0.0f,0.0f,0.0f };
 		float GridScale = 0.05f;
 
+		// How many squares inside a highlighted block
+		float InsideQuadCount = 10.0f;
+
 		Quad* GetModelReference();
 		Shader* GetShaderReference();
 		float GetTransparency();

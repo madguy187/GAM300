@@ -245,6 +245,9 @@ namespace Eclipse
 
                 ECGui::DrawTextWidget<const char*>("Grid Scale", "");
                 ECGui::DrawSliderFloatWidget("Scale", &engine->GridMap.GridScale, true, 0.0f, 20.0f);
+
+                ECGui::DrawTextWidget<const char*>("Inside Quad Count", "");
+                ECGui::DrawSliderFloatWidget("Quad Count", &engine->GridMap.InsideQuadCount, true, 0.0f, 100.0f);
             }
         }
 

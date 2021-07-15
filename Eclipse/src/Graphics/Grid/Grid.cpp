@@ -33,7 +33,8 @@ namespace Eclipse
 		float nearplane = camera.nearPlane;
 		float farplane = camera.farPlane;
 
-		//GLint uniform_var_loc1 = ShaderRef->GetLocation("QuadScale");
+		GLint uniform_var_loc1 = ShaderRef->GetLocation("QuadScale");
+		GLint uniform_var_loc7 = ShaderRef->GetLocation("InsideQuadCount");
 		GLint uniform_var_loc2 = ShaderRef->GetLocation("viewMtx");
 		GLint uniform_var_loc3 = ShaderRef->GetLocation("projMtx");
 		//GLint uniform_var_loc4 = ShaderRef->GetLocation("GridColour");
@@ -49,7 +50,8 @@ namespace Eclipse
 		model = glm::scale(model, trans.scale.ConvertToGlmVec3Type());
 		mModelNDC = camera.projMtx * camera.viewMtx * model;
 
-		//GLCall(glUniform1f(uniform_var_loc1, GridScale));
+		GLCall(glUniform1f(uniform_var_loc1, GridScale));
+		GLCall(glUniform1f(uniform_var_loc7, InsideQuadCount));
 		GLCall(glUniform1f(uniform_var_loc5, nearplane));
 		GLCall(glUniform1f(uniform_var_loc6, farplane));
 		glUniformMatrix4fv(uniform_var_loc2, 1, GL_FALSE, glm::value_ptr(camera.viewMtx));

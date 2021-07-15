@@ -7,6 +7,7 @@ layout(location=0) out vec4 fFragClr;
 
 uniform vec4 lightColor;
 uniform float QuadScale;
+uniform float InsideQuadCount;
 uniform vec3 GridColour;
 uniform mat4 viewMtx;
 uniform mat4 projMtx;
@@ -68,7 +69,9 @@ void main ()
 
     float fading = max(0, (0.5 - linearDepth));
 
-    fFragClr =(grid(fragPos3D, 10, true) + grid(fragPos3D, 1, true))* float(t > 0); 
+    // QuadScale = 10
+    // ThickLine = 1
+    fFragClr =(grid(fragPos3D, QuadScale, true) + grid(fragPos3D, InsideQuadCount, true))* float(t > 0); 
 
     fFragClr.a *= fading;
 }
