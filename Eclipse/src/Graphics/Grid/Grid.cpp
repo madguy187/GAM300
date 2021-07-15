@@ -30,10 +30,15 @@ namespace Eclipse
 		CameraComponent camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 		TransformComponent& trans = engine->world.GetComponent<TransformComponent>(GridID);
 
-		GLint uniform_var_loc1 = ShaderRef->GetLocation("QuadScale");
+		float nearplane = camera.nearPlane;
+		float farplane = camera.farPlane;
+
+		//GLint uniform_var_loc1 = ShaderRef->GetLocation("QuadScale");
 		GLint uniform_var_loc2 = ShaderRef->GetLocation("viewMtx");
 		GLint uniform_var_loc3 = ShaderRef->GetLocation("projMtx");
-		GLint uniform_var_loc4 = ShaderRef->GetLocation("GridColour");
+		//GLint uniform_var_loc4 = ShaderRef->GetLocation("GridColour");
+		GLint uniform_var_loc5 = ShaderRef->GetLocation("near");
+		GLint uniform_var_loc6 = ShaderRef->GetLocation("far");
 
 		glm::mat4 mModelNDC;
 		glm::mat4 model = glm::mat4(1.0f);
@@ -44,13 +49,12 @@ namespace Eclipse
 		model = glm::scale(model, trans.scale.ConvertToGlmVec3Type());
 		mModelNDC = camera.projMtx * camera.viewMtx * model;
 
-		GLCall(glUniform1f(uniform_var_loc1, GridScale));
-
+		//GLCall(glUniform1f(uniform_var_loc1, GridScale));
+		GLCall(glUniform1f(uniform_var_loc5, nearplane));
+		GLCall(glUniform1f(uniform_var_loc6, farplane));
 		glUniformMatrix4fv(uniform_var_loc2, 1, GL_FALSE, glm::value_ptr(camera.viewMtx));
-
 		glUniformMatrix4fv(uniform_var_loc3, 1, GL_FALSE, glm::value_ptr(camera.projMtx));
-
-		GLCall(glUniform3f(uniform_var_loc4, GridColour.getX(), GridColour.getY(), GridColour.getZ()));
+		//GLCall(glUniform3f(uniform_var_loc4, GridColour.getX(), GridColour.getY(), GridColour.getZ()));
 	}
 
 	float Grid::GetGridScale()
