@@ -5,7 +5,6 @@ layout(location = 4) in vec3 farPoint;
 
 layout(location=0) out vec4 fFragClr;
 
-uniform vec4 lightColor;
 uniform float QuadScale;
 uniform float InsideQuadCount;
 uniform vec3 GridColour;
@@ -13,9 +12,18 @@ uniform mat4 viewMtx;
 uniform mat4 projMtx;
 uniform float near;
 uniform float far;
+uniform bool CheckDraw;
+uniform float TestDraw;
+uniform bool testing;
 
 vec4 grid(vec3 fragPos3D, float scale, bool drawAxis) 
 {
+   if(drawAxis == false)
+   {
+   return vec4(0,0,0,0);
+   }
+   else
+   {   
     vec2 coord = fragPos3D.xz / scale;
 
     vec2 derivative = fwidth(coord);
@@ -28,7 +36,7 @@ vec4 grid(vec3 fragPos3D, float scale, bool drawAxis)
 
     float minimumx = min(derivative.x, 1);
 
-    vec4 color = vec4(0.0, 0.0, 0.0, 1.0 - min(line, 1.0));
+    vec4 color = vec4(GridColour.x, GridColour.y, GridColour.z , 1.0 - min(line, 1.0));
 
     // z axis
     if(fragPos3D.x > -0.1 * minimumx && fragPos3D.x < 0.1 * minimumx)
@@ -43,6 +51,7 @@ vec4 grid(vec3 fragPos3D, float scale, bool drawAxis)
     }
 
     return color;
+    }
 }
 float computeDepth(vec3 pos) 
 {
@@ -71,7 +80,7 @@ void main ()
 
     // QuadScale = 10
     // ThickLine = 1
-    fFragClr =(grid(fragPos3D, QuadScale, true) + grid(fragPos3D, InsideQuadCount, true))* float(t > 0); 
+    fFragClr =(grid(fragPos3D, QuadScale, CheckDraw) + grid(fragPos3D, InsideQuadCount, CheckDraw))* float(t > 0); 
 
     fFragClr.a *= fading;
 }
