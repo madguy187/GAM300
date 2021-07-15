@@ -20,7 +20,7 @@ vec4 grid(vec3 fragPos3D, float scale, bool drawAxis)
 {
    if(drawAxis == false)
    {
-   return vec4(0,0,0,0);
+    return vec4(0,0,0,0);
    }
    else
    {   
@@ -53,17 +53,20 @@ vec4 grid(vec3 fragPos3D, float scale, bool drawAxis)
     return color;
     }
 }
+
 float computeDepth(vec3 pos) 
 {
     vec4 clip_space_pos = projMtx * viewMtx * vec4(pos.xyz, 1.0);
     return (clip_space_pos.z / clip_space_pos.w);
 }
+
 float computeLinearDepth(vec3 pos) 
 {
-    vec4 clip_space_pos = projMtx * viewMtx * vec4(pos.xyz, 1.0);
-    float clip_space_depth = (clip_space_pos.z / clip_space_pos.w) * 2.0 - 1.0; // put back between -1 and 1
-    float linearDepth = (2.0 * near * far) / (far + near - clip_space_depth * (far - near)); // get linear value between 0.01 and 100
-    return linearDepth / far; // normalize
+   // Check depth Calculation
+   vec4 clip_space_pos = projMtx * viewMtx * vec4(pos.xyz, 1.0);
+   float clip_space_depth = (clip_space_pos.z / clip_space_pos.w) * 2.0 - 1.0; 
+   float linearDepth = (2.0 * near * far) / (far + near - clip_space_depth * (far - near)); 
+   return linearDepth / far; // normalize
 }
 
 void main () 
@@ -83,4 +86,9 @@ void main ()
     fFragClr =(grid(fragPos3D, QuadScale, CheckDraw) + grid(fragPos3D, InsideQuadCount, CheckDraw))* float(t > 0); 
 
     fFragClr.a *= fading;
+
+    if( fFragClr.a == 0.0 )
+    {
+       discard;
+    }
 }

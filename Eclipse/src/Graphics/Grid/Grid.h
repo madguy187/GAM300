@@ -30,13 +30,13 @@ namespace Eclipse
 		void SetGridScale(float in);
 		bool CheckShowGrid();
 		void SetGridToShow(bool in);
+		void DebugPrint();
 
 		void Init();
 		void DrawGrid();
 
 
 		~Grid();
-
 
 		// Useless Stuffs for Now
 		//IModel* modelRef;

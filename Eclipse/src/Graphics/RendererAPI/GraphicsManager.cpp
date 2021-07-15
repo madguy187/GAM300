@@ -215,7 +215,6 @@ void Eclipse::GraphicsManager::Draw(unsigned int FrameBufferID, RenderComponent*
     glBindVertexArray(_spritecomponent->modelRef->second->GetVaoID());
 
     glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
     glDisable(GL_CULL_FACE);
     glPolygonMode(GL_FRONT_AND_BACK, mode);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

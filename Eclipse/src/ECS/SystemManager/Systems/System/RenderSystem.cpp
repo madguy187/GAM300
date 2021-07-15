@@ -12,8 +12,6 @@
 
 void Eclipse::RenderSystem::Init()
 {
-	glEnable(GL_STENCIL_TEST);
-
 	// Graphics Init =============================
 	EDITOR_LOG_INFO("RenderSystem Init");
 	engine->GraphicsManager.DebugPrintFrameBuffers();
@@ -24,7 +22,9 @@ void Eclipse::RenderSystem::Init()
 	// Create SKY =============================
 	engine->GraphicsManager.CreateSky("src/Assets/Sky");
 
+	// Create Grid =============================
 	engine->GridMap.Init();
+	engine->GridMap.DebugPrint();
 }
 
 Signature Eclipse::RenderSystem::RegisterAll()
@@ -47,9 +47,9 @@ void Eclipse::RenderSystem::Update()
 	engine->GraphicsManager.UploadGammaCorrectionToShader();
 
 	// SKY Reder =============================
-	engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID());
-	engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_LEFT)->GetFrameBufferID());
-	engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_BOTTOM)->GetFrameBufferID());
+	//engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID());
+	//engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_LEFT)->GetFrameBufferID());
+	//engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_BOTTOM)->GetFrameBufferID());
 
 	// (RENDERCOMPONENTS & TRANSFORMCOMPONENT) Render =============================
 	for (auto const& entity : mEntities)

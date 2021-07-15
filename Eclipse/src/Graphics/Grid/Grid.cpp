@@ -30,8 +30,8 @@ namespace Eclipse
 		CameraComponent camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 		TransformComponent& trans = engine->world.GetComponent<TransformComponent>(GridID);
 
-		float nearplane = camera.nearPlane;
-		float farplane = camera.farPlane;
+		float nearplane = camera.nearPlane; // 0.1; // camera.nearPlane;
+		float farplane = camera.farPlane;   // 100.0f; // camera.farPlane;
 
 		GLint uniform_var_loc1 = ShaderRef->GetLocation("QuadScale");
 		GLint uniform_var_loc2 = ShaderRef->GetLocation("viewMtx");
@@ -41,15 +41,6 @@ namespace Eclipse
 		GLint uniform_var_loc6 = ShaderRef->GetLocation("far");
 		GLint uniform_var_loc7 = ShaderRef->GetLocation("InsideQuadCount");
 		GLint uniform_var_loc8 = ShaderRef->GetLocation("CheckDraw");
-
-		glm::mat4 mModelNDC;
-		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::translate(model, trans.position.ConvertToGlmVec3Type());
-		model = glm::rotate(model, glm::radians(trans.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::rotate(model, glm::radians(trans.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::rotate(model, glm::radians(trans.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-		model = glm::scale(model, trans.scale.ConvertToGlmVec3Type());
-		mModelNDC = camera.projMtx * camera.viewMtx * model;
 
 		GLCall(glUniform1f(uniform_var_loc1, GridScale));
 		GLCall(glUniform1f(uniform_var_loc7, InsideQuadCount));
@@ -79,6 +70,17 @@ namespace Eclipse
 	void Grid::SetGridToShow(bool in)
 	{
 		Visible = in;
+	}
+
+	void Grid::DebugPrint()
+	{
+		std::cout << "Grid Debug Print" << std::endl;
+		std::cout << "===========================" << std::endl;
+		std::cout << "Grid ID : " << GridID << std::endl;
+		std::cout << "Grid Scale : " << GridScale << std::endl;
+		std::cout << "Inside Quad Count : " << InsideQuadCount << std::endl;
+		std::cout << "Grid Colour : " << GridColour.getX() << " " << GridColour.getY() << " " << GridColour.getZ() << std::endl;
+		std::cout << "Visible ? : " << Visible << std::endl;
 	}
 
 	Quad* Grid::GetModelReference()
@@ -127,6 +129,7 @@ namespace Eclipse
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LESS);
 		glDisable(GL_CULL_FACE);
+		glEnable(GL_LINE_SMOOTH);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

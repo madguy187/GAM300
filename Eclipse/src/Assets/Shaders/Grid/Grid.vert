@@ -22,8 +22,8 @@ vec3 UnprojectPoint(float x, float y, float z, mat4 view, mat4 projection)
 
 void main() 
 {
-    nearPoint = UnprojectPoint(vVertexPosition.x, vVertexPosition.y, 0.0,viewMtx, projMtx).xyz;
-    farPoint = UnprojectPoint(vVertexPosition.x, vVertexPosition.y, 1.0, viewMtx, projMtx).xyz; 
+    nearPoint = UnprojectPoint(vVertexPosition.x, vVertexPosition.y, 0.0,viewMtx, projMtx);
+    farPoint = UnprojectPoint(vVertexPosition.x, vVertexPosition.y, 1.0, viewMtx, projMtx); 
 
     gl_Position =  vec4(vVertexPosition, 1.0);
 }
