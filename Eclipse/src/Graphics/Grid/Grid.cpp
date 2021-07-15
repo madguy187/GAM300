@@ -125,6 +125,7 @@ namespace Eclipse
 		glBindVertexArray(WholeGrid->GetVaoID());
 
 		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LESS);
 		glDisable(GL_CULL_FACE);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

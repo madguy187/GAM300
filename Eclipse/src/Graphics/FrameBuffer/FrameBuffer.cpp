@@ -105,9 +105,8 @@ void FrameBuffer::CreateFrameBuffer(unsigned int p_width, unsigned int p_height)
     glGenRenderbuffers(1, &m_data.depthBufferID);
     glBindRenderbuffer(GL_RENDERBUFFER, m_data.depthBufferID);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight());
-    glBindRenderbuffer(GL_RENDERBUFFER, 0);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_data.depthBufferID);
-
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
     {
