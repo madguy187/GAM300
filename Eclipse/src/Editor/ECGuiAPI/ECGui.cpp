@@ -29,6 +29,18 @@ namespace Eclipse
 		return ImGuiAPI::GetWindowSize();
 	}
 
+	ECVec2 ECGui::GetWindowPos()
+	{
+		ECVec2 pos{ ImGuiAPI::GetWindowPos().x,  ImGuiAPI::GetWindowPos().y };
+		return pos;
+	}
+
+	ECVec2 ECGui::GetCursorScreenPos()
+	{
+		ECVec2 pos{ ImGuiAPI::GetCursorScreenPos().x,  ImGuiAPI::GetCursorScreenPos().y };
+		return pos;
+	}
+
 	float ECGui::GetWindowHeight()
 	{
 		return ImGuiAPI::GetWindowHeight();

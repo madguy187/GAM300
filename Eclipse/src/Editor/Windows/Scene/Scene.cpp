@@ -7,11 +7,11 @@ namespace Eclipse
 	void SceneWindow::Update()
 	{
 		if (IsVisible)
-			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&SceneWindow::InitilializeFrameBuffer, this));
+			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&SceneWindow::RunMainWindow, this));
 	}
 
 	SceneWindow::SceneWindow() :
-		mViewportSize{ 0.0f, 0.0f }
+		mViewportSize{}, mSceneBufferSize{}
 	{
 		Type = EditorWindowType::EWT_SCENE;
 		WindowName = "Scene";
@@ -19,7 +19,7 @@ namespace Eclipse
 		m_frameBuffer = std::make_shared<FrameBuffer>(*engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SCENEVIEW));
 	}
 
-	void SceneWindow::InitilializeFrameBuffer()
+	void SceneWindow::RunMainWindow()
 	{
 		ImVec2 viewportPanelSize = ECGui::GetWindowSize();
 
@@ -38,6 +38,15 @@ namespace Eclipse
 
 	void SceneWindow::RunFrameBuffer()
 	{
+		// Update Frame Buffer Settings
+		mSceneBufferSize = glm::vec2{ ECGui::GetWindowWidth(), ECGui::GetWindowHeight() };
+		mSceneBufferPos = ECGui::GetWindowPos();
+		mCursorScreenPos = ECGui::GetCursorScreenPos();
+
+		/*std::cout << "SceneBuffer Size: " << mSceneBufferSize.x << " " << mSceneBufferSize.y << std::endl;*/
+		/*std::cout << "SceneBuffer Pos: " << mSceneBufferPos.x << " " << mSceneBufferPos.y << std::endl;
+		std::cout << "CursorScreen Pos: " << mCursorScreenPos.x << " " << mCursorScreenPos.y << std::endl;*/
+
 		// Set Image size
 		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
 			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
@@ -291,5 +300,20 @@ namespace Eclipse
 	SnapValueSettings& SceneWindow::GetSnapSettings()
 	{
 		return mSnapSettings;
+	}
+
+	glm::vec2 SceneWindow::GetSceneBufferPos()
+	{
+		return mSceneBufferPos.ConvertToGlmVec2Type();
+	}
+
+	glm::vec2 SceneWindow::GetSceneBufferSize()
+	{
+		return mSceneBufferSize;
+	}
+
+	glm::vec2 SceneWindow::GetCursorScreenPos()
+	{
+		return mCursorScreenPos.ConvertToGlmVec2Type();
 	}
 }

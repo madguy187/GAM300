@@ -15,9 +15,8 @@ namespace Eclipse
 	{
 		inline static float engine_time = 0.0f;
 		
-		inline static float fps = 0.0f;
 	public:
-		
+
 		inline static std::map<SystemName, std::vector<float>> time_container;
 		
 		void Update() override;
