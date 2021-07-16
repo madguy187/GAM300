@@ -6,7 +6,23 @@ namespace Eclipse
     void AssimpModelManager::CreateModel(std::string name, std::string FolderName, std::string filename)
     {
         Entity ID = engine->world.CreateEntity();
-        
+
+        // Add Required Components
+        engine->world.AddComponent(ID, TransformComponent{});
+        engine->world.AddComponent(ID, EntityComponent{ EntityType::ENT_UNASSIGNED, name , true });
+
+        // Manually adding to hierachy List
+        // ----------------------------------------------------------------------------------------------------------
+        engine->editorManager->EntityHierarchyList_.push_back(ID);
+        engine->editorManager->EntityToTypeMap_.insert(std::pair<Entity, EntityType>(ID, EntityType::ENT_UNASSIGNED));
+
+        TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(ID);
+        Transform.scale.setX(10);
+        Transform.scale.setY(10);
+        Transform.scale.setZ(10);
+        Transform.rotation.setX(270);
+        // ----------------------------------------------------------------------------------------------------------
+       
         // Create path
         std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/" + filename).c_str();
 
@@ -32,9 +48,9 @@ namespace Eclipse
         // hi
         //CreateModel("White Dog", "testhouse", "scene.gltf");
 
-        CreateModel("White Dog", "dog", "scene.gltf");
-        CreateModel("Black Dog", "dog2", "scene.gltf");
-        CreateModel("Black", "dog3", "scene.gltf");
+        CreateModel("Fikrul", "dog", "scene.gltf");
+        CreateModel("Nico", "dog2", "scene.gltf");
+        CreateModel("Guan Hin", "dog3", "scene.gltf");
 
         DebugPrint();
 

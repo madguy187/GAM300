@@ -30,8 +30,8 @@ namespace Eclipse
         void DebugPrint();
         void AddComponents();
         void CleanUpAllModels();
-        ~AssimpModelManager();
         void TestPath(std::string& path);
+        ~AssimpModelManager();
     };
 }
 #endif // ASSIMP_MANAGER_H

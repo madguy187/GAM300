@@ -54,10 +54,6 @@ namespace Eclipse
         unsigned int GetNumberOfMeshes();
         ModelType GetType();
         void SetModelType(ModelType in);
-
-        // fbx
-    public:
-        void FBXLoadAssimpModel(const char* in);
     };
 
 }

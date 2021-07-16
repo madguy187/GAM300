@@ -166,9 +166,9 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     case 12:
     {
         // Testing of creating prefabs is fine.
-        engine->AssimpManager.CreateModel("White Dog", "dog" , "scene.gltf");
+        //engine->AssimpManager.CreateModel("White Dog", "dog" , "scene.gltf");
         
-        //engine->LightManager.CreateLights(Eclipse::TypesOfLights::POINTLIGHT, ID);
+        engine->LightManager.CreateLights(Eclipse::TypesOfLights::POINTLIGHT, ID);
     }
     break;
     // Directional

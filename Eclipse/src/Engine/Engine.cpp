@@ -88,7 +88,6 @@ namespace Eclipse
         RenderSystem::Init();
         CameraSystem::Init();
         LightingSystem::Init();
-        engine->AssimpManager.AddComponents();
 
         float currTime = static_cast<float>(clock());
         float accumulatedTime = 0.0f;
@@ -130,7 +129,7 @@ namespace Eclipse
             currTime = newTime;
 
             ImGuiSetup::Begin(EditorState);
-        	
+
             if (Game_Clock.get_timeSteps() > 10)
             {
                 Game_Clock.set_timeSteps(10);
