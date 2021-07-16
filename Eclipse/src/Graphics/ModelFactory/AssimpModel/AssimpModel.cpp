@@ -14,10 +14,6 @@ namespace Eclipse
 
     void AssimpModel::Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID)
     {
-        // Check Main Uniforms
-        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
-        CheckUniformLoc(shader, _camera, FrameBufferID);
-
         for (unsigned int i = 0; i < Meshes.size(); i++)
         {
             Meshes[i].Render(shader, MOde);
@@ -73,51 +69,6 @@ namespace Eclipse
         for (unsigned int i = 0; i < node->mNumChildren; i++)
         {
             ProcessNode(node->mChildren[i], scene);
-        }
-    }
-
-    void AssimpModel::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID)
-    {
-        TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(ID);
-
-        GLint uModelToNDC_ = _shdrpgm.GetLocation("uModelToNDC");
-        GLuint model_ = _shdrpgm.GetLocation("model");
-        GLuint TEST = _shdrpgm.GetLocation("TEST");
-
-        if (uModelToNDC_ >= 0)
-        {
-            glm::mat4 mModelNDC;
-
-            //// Everything Below this Comment is To be Removed !!
-            //if (NameOfModel == "Black Dog")
-            //{
-            //    Transform.position.setX(20);
-            //}
-            //else if (NameOfModel == "White Dog")
-            //{
-            //    Transform.position.setX(-20);
-            //}
-            //else
-            //{
-            //    Transform.position.setX(0);
-            //}
-            ///////////////////////////////////////////////////////
-
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
-            model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-            model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-            model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-            model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
-
-            mModelNDC = _camera.projMtx * _camera.viewMtx * model;
-            glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
-            glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
-        }
-
-        if (TEST >= 0)
-        {
-            glUniform1i(TEST, 0);
         }
     }
 

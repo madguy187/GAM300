@@ -25,6 +25,7 @@ namespace Eclipse
         void LoadAllModels();
         void CreateModel(std::string name, std::string path, std::string filename);
         void Draw(unsigned int FrameBufferID, GLenum mode);
+        void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID);
         void DeleteItem(unsigned int index, AssimpModel* model_ptr);
         void DebugPrint();
         void AddComponents();

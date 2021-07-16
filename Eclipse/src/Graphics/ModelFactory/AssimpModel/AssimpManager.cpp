@@ -6,11 +6,6 @@ namespace Eclipse
     void AssimpModelManager::CreateModel(std::string name, std::string FolderName, std::string filename)
     {
         Entity ID = engine->world.CreateEntity();
-        engine->world.AddComponent(ID, EntityComponent{ EntityType::ENT_UNASSIGNED, "Dog", true });
-        engine->world.AddComponent(ID, TransformComponent{});
-
-        TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(ID);
-        Transform.rotation.setX(270);
         
         // Create path
         std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/" + filename).c_str();
@@ -37,9 +32,9 @@ namespace Eclipse
         // hi
         //CreateModel("White Dog", "testhouse", "scene.gltf");
 
-        //CreateModel("White Dog", "dog", "scene.gltf");
-        //CreateModel("Black Dog", "dog2", "scene.gltf");
-        //CreateModel("Black", "dog3", "scene.gltf");
+        CreateModel("White Dog", "dog", "scene.gltf");
+        CreateModel("Black Dog", "dog2", "scene.gltf");
+        CreateModel("Black", "dog3", "scene.gltf");
 
         DebugPrint();
 
@@ -49,6 +44,8 @@ namespace Eclipse
 
     void AssimpModelManager::Draw(unsigned int FrameBufferID, GLenum Mode)
     {
+        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+
         glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
         auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
 
@@ -56,11 +53,47 @@ namespace Eclipse
 
         for (auto const& Models : AssimpModelContainer_)
         {
+            auto& ID = Models.first;
             auto& InvidualModels = *(Models.second);
+
+            // Check Main Uniforms For each Model
+            // Translation done here for each model
+            CheckUniformLoc(shdrpgm->second, _camera, FrameBufferID, ID);
+
+            // Render
             InvidualModels.Render(shdrpgm->second, Mode, FrameBufferID);
         }
 
         shdrpgm->second.UnUse();
+    }
+
+    void AssimpModelManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID , unsigned int ModelID)
+    {
+        TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(ModelID);
+
+         GLint uModelToNDC_ = _shdrpgm.GetLocation("uModelToNDC");
+         GLuint model_ = _shdrpgm.GetLocation("model");
+        GLuint TEST = _shdrpgm.GetLocation("TEST");
+
+        if (uModelToNDC_ >= 0)
+        {
+            glm::mat4 mModelNDC;
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
+            model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+            model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
+
+            mModelNDC = _camera.projMtx * _camera.viewMtx * model;
+            glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
+            glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
+        }
+
+        if (TEST >= 0)
+        {
+            glUniform1i(TEST, 0);
+        }
     }
 
     AssimpModelContainer AssimpModelManager::GetContainer()
@@ -112,24 +145,26 @@ namespace Eclipse
 
     void AssimpModelManager::AddComponents()
     {
-       // for (auto const& Models : AssimpModelContainer_)
-       // {
-       //     auto& InvidualModels = *(Models.second);
-       //     std::cout << "Added Transform Component For 3DModel ID : " << Models.first << std::endl;
-       //     engine->world.AddComponent(Models.first, TransformComponent{});
-       //
-       //     // Everything Below this Comment is To be Removed !!
-       //     TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(Models.first);
-       //     Transform.scale.setX(10);
-       //     Transform.scale.setY(10);
-       //     Transform.scale.setZ(10);
-       //
-       //     // Alittle Shine
-       //     //Transform.rotation.setZ(270);
-       //
-       //     // Sit properly
-       //     Transform.rotation.setX(270);
-       // }
+        for (auto const& Models : AssimpModelContainer_)
+        {
+            auto& InvidualModels = *(Models.second);
+            std::cout << "Added Transform Component For 3DModel ID : " << Models.first << std::endl;
+            engine->world.AddComponent(Models.first, TransformComponent{});
+            engine->world.AddComponent(Models.first, EntityComponent{ EntityType::ENT_UNASSIGNED, InvidualModels.GetName() , true });
+
+            // Manually adding to hierachy List
+            engine->editorManager->EntityHierarchyList_.push_back(Models.first);
+            engine->editorManager->EntityToTypeMap_.insert(std::pair<Entity, EntityType>(Models.first, EntityType::ENT_UNASSIGNED));
+       
+            // Everything Below this Comment is To be Removed !!
+            TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(Models.first);
+            Transform.scale.setX(10);
+            Transform.scale.setY(10);
+            Transform.scale.setZ(10);
+       
+            // Sit properly
+            Transform.rotation.setX(270);
+        }
     }
 
     void AssimpModelManager::CleanUpAllModels()
