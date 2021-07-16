@@ -49,6 +49,15 @@ namespace Eclipse
 		//right side
 		ECGui::DrawChildWindow<void()>({ "##directory_structure", ImVec2(0, ImGui::GetWindowHeight() - 65) }, std::bind(&AssetBrowserWindow::RightFoldersAndItems, this));
 	}
+	template <typename T>
+	void AssetBrowserWindow::CreateTreeNode(std::string name, std::function<T> function)
+	{
+		if (ECGui::BeginTreeNode(name.c_str()))
+		{
+			function();
+			ECGui::EndTreeNode();
+		}
+	}
 
 	void AssetBrowserWindow::LeftFolderHierarchy()
 	{
@@ -78,6 +87,7 @@ namespace Eclipse
 
 			if (dirEntry.is_directory())
 			{
+				CreateTreeNode<void()>(fileNameString, );
 				if (ECGui::BeginTreeNode(fileNameString.c_str()))
 				{
 					//setting the subDir to Current Dir

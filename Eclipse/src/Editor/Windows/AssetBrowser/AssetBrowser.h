@@ -64,6 +64,8 @@ namespace Eclipse
 
 		//asset browser main
 		////////////////////////////////
+		template <typename T>
+		void CreateTreeNode(std::string name,std::function<T> function);
 		void LeftFolderHierarchy();
 		void LeftFolders();
 		void RightFoldersAndItems();
