@@ -41,7 +41,6 @@ namespace Eclipse
 		std::map<std::filesystem::path, std::vector<std::filesystem::path>> pathMap;
 		std::map<std::filesystem::path, std::vector<std::filesystem::path>> FolderMap;
 		//stores all data for path map
-		std::vector<std::string> subDirItems;
 		std::vector<std::string> subDirItemsPath;
 		std::string searchItemsLowerCase;
 		std::string searchFoldersLowerCase;
@@ -85,6 +84,7 @@ namespace Eclipse
 		void AddToPathMap(std::filesystem::path dirEntry, std::vector<std::filesystem::path> subDirItems);
 		void AddToFolderMap(std::filesystem::path dirEntry, std::vector<std::filesystem::path> Folder);
 		bool ExistInVector(std::string Path, std::vector<std::string> container);
+		void GetIndex(std::vector<std::string> container, std::string key, int& pos);
 		void ScanAll();
 		void SearchItems();
 		void SearchFolders();

@@ -75,6 +75,7 @@ namespace Eclipse
 			else
 			{
 				ResetTreeNodeOpen = true;
+				
 				LeftSearchedFolders();
 			}
 			
@@ -421,6 +422,17 @@ namespace Eclipse
 		return false;
 	}
 
+	void AssetBrowserWindow::GetIndex(std::vector<std::string> container, std::string key, int& pos)
+	{
+		auto it = std::find(container.begin(), container.end(), key);
+
+		// If element was found
+		if (it != container.end())
+		{
+			pos = it - container.begin();
+		}
+	}
+
 	void AssetBrowserWindow::ScanAll()
 	{
 		std::vector<std::filesystem::path> tempSubDirFolders;
@@ -453,10 +465,6 @@ namespace Eclipse
 						tempSubDirFolders.push_back(secondEntry);
 					}
 
-					if(!ExistInVector(secondEntry.path().filename().string(),subDirItems))
-					{
-						subDirItems.push_back(secondEntry.path().filename().string());
-					}
 					if (!ExistInVector(secondEntry.path().string(), subDirItemsPath))
 					{
 						subDirItemsPath.push_back(secondEntry.path().string());
@@ -473,6 +481,7 @@ namespace Eclipse
 			AddToPathMap(dirEntry, tempSubDirItems);
 
 			tempSubDirFolders.clear();
+			
 			tempSubDirItems.clear();
 		}
 
@@ -633,21 +642,20 @@ namespace Eclipse
 
 	void AssetBrowserWindow::MainSearchLogic(std::vector<std::string> subDirItemsPath)
 	{
-		int index = 0;
-
+		
 		//path that can be used in the future to get the item
 		std::filesystem::path tempPath;
 		
 		for (auto const& pair2 : subDirItemsPath)
 		{
-			std::string nameString = LowerCase(subDirItems.at(index).c_str());
-
 			tempPath = pair2;
+			
 			if (!std::filesystem::is_directory(tempPath))
 			{
-				if (!BuffIsEmpty(searchItemBuffer)&& nameString.find(searchItemsLowerCase) != std::string::npos)
+				
+				if (!BuffIsEmpty(searchItemBuffer)&& tempPath.string().find(searchItemsLowerCase) != std::string::npos)
 				{
-					RenderComponent icon = std::filesystem::is_directory(pair2) ? FolderIcon : sprite;
+					RenderComponent icon = std::filesystem::is_directory(tempPath) ? FolderIcon : sprite;
 
 					ImGui::ImageButton((void*)icon.textureRef->second.GetHandle(),
 						buttonSize,
@@ -666,14 +674,14 @@ namespace Eclipse
 
 					ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
-					ImGui::TextWrapped(nameString.c_str());
+					ImGui::TextWrapped(tempPath.filename().string().c_str());
 
 					draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(255, 255, 0, 255));
 
 					ImGui::NextColumn();
 				}
 			}
-			index++;
+			
 		}
 	}
 
