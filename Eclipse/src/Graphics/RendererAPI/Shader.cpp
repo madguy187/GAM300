@@ -379,11 +379,12 @@ GLboolean Shader::Validate()
 int Shader::GetLocation(const char* name) const
 {
 	const int location = glGetUniformLocation(static_cast<GLboolean>(handle), name);
-	if (location == -1)
-	{
-	  std::cout << "[OpenGL Error] Shader: Uniform " << name << " does not exist!" << std::endl;
-	  std::exit(EXIT_FAILURE);
-	}
+
+	//if (location == -1)
+	//{
+	//  std::cout << "[OpenGL Error] Shader: Uniform " << name << " does not exist!" << std::endl;
+	//  std::exit(EXIT_FAILURE);
+	//}
 
 	return location;
 }

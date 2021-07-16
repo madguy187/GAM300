@@ -83,6 +83,34 @@ namespace Eclipse
         shdrpgm->second.UnUse();
     }
 
+    void AssimpModelManager::HighlihtDraw(unsigned int FrameBufferID, GLenum Mode)
+    {
+        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+
+        glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
+        auto shdrpgm = Graphics::shaderpgms.find("OutLineShader");
+
+        shdrpgm->second.Use();
+
+        for (auto const& Models : AssimpModelContainer_)
+        {
+            auto& ID = Models.first;
+            auto& InvidualModels = *(Models.second);
+
+            // Check Main Uniforms For each Model
+            // Translation done here for each model
+            CheckUniformLoc(shdrpgm->second, _camera, FrameBufferID, ID);
+
+            GLuint HI = shdrpgm->second.GetLocation("outlining");
+            GLCall(glUniform1f(HI, 0.08f));
+
+            // Render
+            InvidualModels.Render(shdrpgm->second, Mode, FrameBufferID);
+        }
+
+        shdrpgm->second.UnUse();
+    }
+
     void AssimpModelManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID , unsigned int ModelID)
     {
         TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(ModelID);
