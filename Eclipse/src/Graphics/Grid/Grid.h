@@ -13,7 +13,7 @@ namespace Eclipse
 		bool Visible = true;
 
 	public:
-		ECVec3 GridColour{ 0.0f,0.0f,0.0f };
+		ECVec3 GridColour{ 0.3f,0.3f,0.3f };
 		float GridScale = 0.05f;
 
 		// How many squares inside a highlighted block

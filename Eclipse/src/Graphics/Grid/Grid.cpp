@@ -33,23 +33,23 @@ namespace Eclipse
 		float nearplane = camera.nearPlane; // 0.1; // camera.nearPlane;
 		float farplane = camera.farPlane;   // 100.0f; // camera.farPlane;
 
-		GLint uniform_var_loc1 = ShaderRef->GetLocation("QuadScale");
+		//GLint uniform_var_loc1 = ShaderRef->GetLocation("QuadScale");
 		GLint uniform_var_loc2 = ShaderRef->GetLocation("viewMtx");
 		GLint uniform_var_loc3 = ShaderRef->GetLocation("projMtx");
 		GLint uniform_var_loc4 = ShaderRef->GetLocation("GridColour");
-		GLint uniform_var_loc5 = ShaderRef->GetLocation("near");
-		GLint uniform_var_loc6 = ShaderRef->GetLocation("far");
-		GLint uniform_var_loc7 = ShaderRef->GetLocation("InsideQuadCount");
-		GLint uniform_var_loc8 = ShaderRef->GetLocation("CheckDraw");
+		//GLint uniform_var_loc5 = ShaderRef->GetLocation("near");
+		//GLint uniform_var_loc6 = ShaderRef->GetLocation("far");
+		//GLint uniform_var_loc7 = ShaderRef->GetLocation("InsideQuadCount");
+		//GLint uniform_var_loc8 = ShaderRef->GetLocation("CheckDraw");
 
-		GLCall(glUniform1f(uniform_var_loc1, GridScale));
-		GLCall(glUniform1f(uniform_var_loc7, InsideQuadCount));
-		GLCall(glUniform1f(uniform_var_loc5, nearplane));
-		GLCall(glUniform1f(uniform_var_loc6, farplane));
+		//GLCall(glUniform1f(uniform_var_loc1, GridScale));
+		//GLCall(glUniform1f(uniform_var_loc7, InsideQuadCount));
+		//GLCall(glUniform1f(uniform_var_loc5, nearplane));
+		//GLCall(glUniform1f(uniform_var_loc6, farplane));
 		glUniformMatrix4fv(uniform_var_loc2, 1, GL_FALSE, glm::value_ptr(camera.viewMtx));
 		glUniformMatrix4fv(uniform_var_loc3, 1, GL_FALSE, glm::value_ptr(camera.projMtx));
 		GLCall(glUniform3f(uniform_var_loc4, GridColour.getX(), GridColour.getY(), GridColour.getZ()));
-		GLCall(glUniform1i(uniform_var_loc8, Visible));
+		//GLCall(glUniform1i(uniform_var_loc8, Visible));
 	}
 
 	float Grid::GetGridScale()

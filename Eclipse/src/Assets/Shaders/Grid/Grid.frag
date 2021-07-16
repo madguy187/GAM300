@@ -1,4 +1,4 @@
-#version 450 core
+#version 460 core
 
 layout(location = 3) in vec3 nearPoint;
 layout(location = 4) in vec3 farPoint; 
@@ -39,13 +39,13 @@ vec4 grid(vec3 fragPos3D, float scale, bool drawAxis)
     vec4 color = vec4(GridColour.x, GridColour.y, GridColour.z , 1.0 - min(line, 1.0));
 
     // z axis
-    if(fragPos3D.x > -0.1 * minimumx && fragPos3D.x < 0.1 * minimumx)
+    if(fragPos3D.x > -0.1 * minimumx && fragPos3D.x < 5 * minimumx)
     {
             color.z = 1.0;
     }
 
     // x axis
-    if(fragPos3D.z > -0.1 * minimumz && fragPos3D.z < 0.1 * minimumz)
+    if(fragPos3D.z > -0.1 * minimumz && fragPos3D.z < 5 * minimumz)
     {
             color.x = 1.0;
     }
@@ -57,17 +57,31 @@ vec4 grid(vec3 fragPos3D, float scale, bool drawAxis)
 float computeDepth(vec3 pos) 
 {
     vec4 clip_space_pos = projMtx * viewMtx * vec4(pos.xyz, 1.0);
-    return (clip_space_pos.z / clip_space_pos.w);
+    float clip_space_depth =  (clip_space_pos.z / clip_space_pos.w);
+    float far = gl_DepthRange.far;
+    float near = gl_DepthRange.near;
+    float depth = (((far-near) * clip_space_depth) + near + far) / 2.0;
+    return depth;
+
+   // vec4 clip_space_pos = projMtx * viewMtx * vec4(pos.xyz, 1.0);
+   // return (clip_space_pos.z / clip_space_pos.w);
 }
 
 float computeLinearDepth(vec3 pos) 
 {
+    vec4 clip_space_pos = projMtx * viewMtx * vec4(pos.xyz, 1.0);
+    float clip_space_depth = (clip_space_pos.z / clip_space_pos.w) * 2.0 - 1.0; // put back between -1 and 1
+    float linearDepth = (2.0 * 0.01 * 100) / (100 + 0.01 - clip_space_depth * (100 - 0.01)); // get linear value between 0.01 and 100
+    return linearDepth / 100; // normalize
+
    // Check depth Calculation
-   vec4 clip_space_pos = projMtx * viewMtx * vec4(pos.xyz, 1.0);
-   float clip_space_depth = (clip_space_pos.z / clip_space_pos.w) * 2.0 - 1.0; 
-   float linearDepth = (2.0 * near * far) / (far + near - clip_space_depth * (far - near)); 
-   return linearDepth / far; // normalize
+  // vec4 clip_space_pos = projMtx * viewMtx * vec4(pos.xyz, 1.0);
+  // float clip_space_depth = (clip_space_pos.z / clip_space_pos.w) * 2.0 - 1.0; 
+  // float linearDepth = (2.0 * near * far) / (far + near - clip_space_depth * (far - near)); 
+  // return linearDepth / far; // normalize
 }
+
+layout (depth_any) out float gl_FragDepth;
 
 void main () 
 {
@@ -83,7 +97,7 @@ void main ()
 
     // QuadScale = 10
     // ThickLine = 1
-    fFragClr =(grid(fragPos3D, QuadScale, CheckDraw) + grid(fragPos3D, InsideQuadCount, CheckDraw))* float(t > 0); 
+    fFragClr =(grid(fragPos3D, 0.1, true) + grid(fragPos3D, 1, true))* float(t > 0); 
 
     fFragClr.a *= fading;
 
