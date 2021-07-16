@@ -61,7 +61,6 @@ namespace Eclipse
 
 	void AssetBrowserWindow::LeftFolderHierarchy()
 	{
-		ImDrawList* draw_list = ImGui::GetWindowDrawList();
 		
 		SearchFolders();
 		
@@ -105,7 +104,6 @@ namespace Eclipse
 									}
 									ECGui::EndTreeNode();
 								}
-								//draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(255, 255, 0, 255));
 							}
 						}
 						ECGui::EndTreeNode();
