@@ -22,7 +22,7 @@ namespace Eclipse
         Transform.scale.setZ(10);
         Transform.rotation.setX(270);
         // ----------------------------------------------------------------------------------------------------------
-       
+
         // Create path
         std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/" + filename).c_str();
 
@@ -85,38 +85,41 @@ namespace Eclipse
 
     void AssimpModelManager::HighlihtDraw(unsigned int FrameBufferID, GLenum Mode)
     {
-        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
-
-        glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
-        auto shdrpgm = Graphics::shaderpgms.find("OutLineShader");
-
-        shdrpgm->second.Use();
-
-        for (auto const& Models : AssimpModelContainer_)
+        if (engine->GraphicsManager.CheckIfHighlight() == true)
         {
-            auto& ID = Models.first;
-            auto& InvidualModels = *(Models.second);
+            auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 
-            // Check Main Uniforms For each Model
-            // Translation done here for each model
-            CheckUniformLoc(shdrpgm->second, _camera, FrameBufferID, ID);
+            glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
+            auto shdrpgm = Graphics::shaderpgms.find("OutLineShader");
 
-            GLuint HI = shdrpgm->second.GetLocation("outlining");
-            GLCall(glUniform1f(HI, 0.08f));
+            shdrpgm->second.Use();
 
-            // Render
-            InvidualModels.Render(shdrpgm->second, Mode, FrameBufferID);
+            for (auto const& Models : AssimpModelContainer_)
+            {
+                auto& ID = Models.first;
+                auto& InvidualModels = *(Models.second);
+
+                // Check Main Uniforms For each Model
+                // Translation done here for each model
+                CheckUniformLoc(shdrpgm->second, _camera, FrameBufferID, ID);
+
+                GLuint uniformloc1 = shdrpgm->second.GetLocation("outlining");
+                GLCall(glUniform1f(uniformloc1, engine->GraphicsManager.OutlineThickness));
+
+                // Render
+                InvidualModels.Render(shdrpgm->second, Mode, FrameBufferID);
+            }
+
+            shdrpgm->second.UnUse();
         }
-
-        shdrpgm->second.UnUse();
     }
 
-    void AssimpModelManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID , unsigned int ModelID)
+    void AssimpModelManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID)
     {
         TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(ModelID);
 
-         GLint uModelToNDC_ = _shdrpgm.GetLocation("uModelToNDC");
-         GLuint model_ = _shdrpgm.GetLocation("model");
+        GLint uModelToNDC_ = _shdrpgm.GetLocation("uModelToNDC");
+        GLuint model_ = _shdrpgm.GetLocation("model");
         GLuint TEST = _shdrpgm.GetLocation("TEST");
 
         if (uModelToNDC_ >= 0)
@@ -199,13 +202,13 @@ namespace Eclipse
             // Manually adding to hierachy List
             engine->editorManager->EntityHierarchyList_.push_back(Models.first);
             engine->editorManager->EntityToTypeMap_.insert(std::pair<Entity, EntityType>(Models.first, EntityType::ENT_UNASSIGNED));
-       
+
             // Everything Below this Comment is To be Removed !!
             TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(Models.first);
             Transform.scale.setX(10);
             Transform.scale.setY(10);
             Transform.scale.setZ(10);
-       
+
             // Sit properly
             Transform.rotation.setX(270);
         }

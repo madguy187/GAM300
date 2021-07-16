@@ -8,7 +8,7 @@ bool shakeScreen = 1.0f;
 glm::vec3 spherepos;
 
 void Eclipse::GraphicsManager::Pre_Render()
-{  
+{
     // Loading Configuration
     mRenderContext.init("../Dep/Configuration/configuration.json");
 
@@ -167,7 +167,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     {
         // Testing of creating prefabs is fine.
         //engine->AssimpManager.CreateModel("White Dog", "dog" , "scene.gltf");
-        
+
         engine->LightManager.CreateLights(Eclipse::TypesOfLights::POINTLIGHT, ID);
     }
     break;
@@ -424,6 +424,38 @@ void Eclipse::GraphicsManager::UploadGammaCorrectionToShader()
     }
 
     shdrpgm->second.UnUse();
+}
+
+void Eclipse::GraphicsManager::StencilBufferClear()
+{
+    //Enable modifying of the stencil buffer
+    glStencilMask(0xFF);
+
+    // Clear stencil buffer
+    glStencilFunc(GL_ALWAYS, 0 , 0xFF);
+}
+
+void Eclipse::GraphicsManager::OutlinePreparation2()
+{
+    //Make it so only the pixels without the value 1 pass the test
+    glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+
+    //Disable modifying of the stencil buffer
+    glStencilMask(0xFF);
+}
+
+bool Eclipse::GraphicsManager::CheckIfHighlight()
+{
+    return EnableHighlight;
+}
+
+void Eclipse::GraphicsManager::OutlinePreparation1()
+{
+    // Make it so the stencil test always passes
+    glStencilFunc(GL_ALWAYS, 1, 0xFF);
+
+    // Enable modifying of the stencil buffer
+    glStencilMask(0xFF);
 }
 
 void Eclipse::GraphicsManager::GlobalFrameBufferBind()

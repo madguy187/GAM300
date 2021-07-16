@@ -11,6 +11,7 @@ namespace Eclipse
 {
     void RenderSystem::Init()
     {
+        // Outlining Preparation ============================= 
         // Enables the Stencil Buffer
         glEnable(GL_STENCIL_TEST);
         // Sets rules for outcomes of stecil tests
@@ -52,40 +53,41 @@ namespace Eclipse
 
         if (engine->GraphicsManager.CheckRender == true)
         {
-            // SKY Reder =============================
+            // SKY Reder Start =============================
             engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+            // SKY Reder End ===============================
+ 
 
-            // (RENDERCOMPONENTS & TRANSFORMCOMPONENT) Render =============================
-            for (auto const& entity : mEntities)
+            // Basic Primitives Render Start =============================
+            for (auto const& entity : mEntities) // - using RenderComponent and TransformComponent
             {
                 RenderComponent& _Sprites = engine->world.GetComponent<RenderComponent>(entity);
                 engine->GraphicsManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
                 engine->GraphicsManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
             }
+            // Basic Primitives Render End ==============================
 
-            // CAMERA =============================
+
+            // CAMERA Render Start =============================
             engine->gDebugManager.DrawDebugShapes(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+            // CAMERA Render End ===============================
+ 
 
-            // MODELS Render=============================
-
-            glStencilFunc(GL_ALWAYS, 1, 0xFF);
-            glStencilMask(0xFF);
-
+            // MODELS Render  Start =============================
+            engine->GraphicsManager.OutlinePreparation1();
             engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL);
-
-            glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-            glStencilMask(0xFF);
-            glDisable(GL_DEPTH_TEST);
-
+            engine->GraphicsManager.OutlinePreparation2();
             engine->AssimpManager.HighlihtDraw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL);
+            engine->GraphicsManager.StencilBufferClear();           
 
-            glStencilMask(0xFF);
-            glStencilFunc(GL_ALWAYS, 0, 0xFF);
-            
-            //engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), GL_FILL);
+            engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), GL_FILL);
+            // MODELS Render  End ===============================
+  
 
-            // GRID Render =============================
+            // GRID Render Start =============================
             engine->GraphicsManager.GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+            // GRID Render End ===============================
+
         }
 
         timer.tracker.system_end = glfwGetTime();

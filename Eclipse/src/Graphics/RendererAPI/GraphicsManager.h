@@ -21,6 +21,8 @@ namespace Eclipse
         unsigned int SkyCount = 0;
         std::unique_ptr<Grid> GridManager;
         bool CheckRender = true;
+        bool EnableHighlight = true;
+        float OutlineThickness = 0.05f;
 
     public:
         void Pre_Render();
@@ -39,6 +41,10 @@ namespace Eclipse
         float GetGammaCorrection();
         void SetGammaCorrection(float in);
         void UploadGammaCorrectionToShader();
+        void StencilBufferClear();
+        void OutlinePreparation1();
+        void OutlinePreparation2();
+        bool CheckIfHighlight();
 
     private:
         float GammaCorrection = 0.2f;
