@@ -23,7 +23,8 @@ namespace Eclipse
 		
 		//button settings
 		////////////////////////////////
-		char searchBuffer[128];
+		char searchItemBuffer[128];
+		char searchFolderBuffer[128];
 		ImVec2 buttonSize;
 		float padding;
 		float thumbnailSize;
@@ -39,13 +40,17 @@ namespace Eclipse
 		//std::map<std::filesystem::path, std::vector<std::filesystem::path>> OgpathMap;(testing)
 		std::map<std::filesystem::path, std::vector<std::filesystem::path>> pathMap;
 		std::map<std::filesystem::path, std::vector<std::filesystem::path>> FolderMap;
-		std::vector<std::filesystem::path> subDirItems;
-		std::vector<std::filesystem::path> subDirFolders;
-		std::string searchLowerCase;
+		//stores all data for path map
+		std::vector<std::string> subDirItems;
+		std::vector<std::string> subDirItemsPath;
+		std::string searchItemsLowerCase;
+		std::string searchFoldersLowerCase;
 		std::string folderString;
 		bool found = false;
-		bool searchMode = false;
+		bool searchItemMode = false;
+		bool searchFolderMode = false;
 		bool refresh = true;
+		bool jumpDir = false;
 		////////////////////////////////
 		
 	public:
@@ -60,6 +65,7 @@ namespace Eclipse
 		//asset browser main
 		////////////////////////////////
 		void LeftFolderHierarchy();
+		void LeftFolders();
 		void RightFoldersAndItems();
 		void FoldersAndItems();
 		void PathAndSearches();
@@ -67,7 +73,6 @@ namespace Eclipse
 		void ItemsAndFolders();
 		void BackToParentPath(std::filesystem::path &CurrentPath);
 		void NextPath(std::filesystem::path& CurrentPath,std::filesystem::path paths);
-		void MapNextPath(std::map<std::filesystem::path, std::vector<std::filesystem::path>> &pathMap, std::filesystem::path Key);
 		////////////////////////////////
 
 		
@@ -76,10 +81,12 @@ namespace Eclipse
 		void AddToPathMap(std::filesystem::path dirEntry, std::vector<std::filesystem::path> subDirItems);
 		void AddToFolderMap(std::filesystem::path dirEntry, std::vector<std::filesystem::path> Folder);
 		void ScanAll();
-		void Search();
+		void SearchItems();
+		void SearchFolders();
 		void SearchInBaseFolder();
 		void SearchInFolders();
 		void MainSearchLogic(std::map<std::filesystem::path, std::vector<std::filesystem::path>>::value_type Key);
+		void MainSearchLogic(std::vector<std::string> subDirItemsPath);
 		bool BuffIsEmpty(const char* buffer);
 		////////////////////////////////
 

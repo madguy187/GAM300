@@ -14,8 +14,10 @@ namespace Eclipse
 
 		FolderIcon.textureRef = Graphics::textures.find("FolderIcon");
 
-		memset(searchBuffer, 0, 128);
-
+		memset(searchItemBuffer, 0, 128);
+		
+		memset(searchFolderBuffer, 0, 128);
+		
 		buttonSize = { thumbnailSize,thumbnailSize };
 	}
 
@@ -50,84 +52,91 @@ namespace Eclipse
 
 	void AssetBrowserWindow::LeftFolderHierarchy()
 	{
-		static bool jumpDir = false;
-
+		
+		SearchFolders();
 		if (ECGui::CreateCollapsingHeader("Content"))
 		{
-
-			for (auto& dirEntry : std::filesystem::directory_iterator(AllDir))
+			if (!searchFolderMode)
 			{
-				const auto& path = dirEntry.path();
-
-				auto relativePath = relative(path, AssetPath);
-
-				std::string fileNameString = relativePath.filename().string();
-
-				if (dirEntry.is_directory())
-				{
-					if (ECGui::BeginTreeNode(fileNameString.c_str()))
-					{
-						//setting the subDir to Current Dir
-						NextDir = AllDir;
-
-						//setting its nxt path so that the tree node
-						//shows all paths the current path hold afterwards
-
-						NextPath(NextDir, path);
-
-						//checking if the dir does not exist 
-						if (!exists(NextDir))
-						{
-							NextDir = AllDir;
-						}
-						for (auto& secondEntry : std::filesystem::recursive_directory_iterator(NextDir))
-						{
-							if (secondEntry.is_directory())
-							{
-								const auto& path2 = secondEntry.path();
-								
-								auto relativePath2 = relative(path2, AssetPath);
-								
-								std::string fileNameString2 = relativePath2.filename().string();
-								
-								if (ECGui::BeginTreeNode(fileNameString2.c_str()))
-								{
-									if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0))
-									{
-										NextDir = path2;
-										
-										CurrentDir = NextDir;
-										
-										if (!exists(CurrentDir))
-										{
-											CurrentDir = AllDir;
-										}
-										
-										jumpDir = true;
-									}
-									
-									ECGui::EndTreeNode();
-								}
-
-							}
-						}
-						ECGui::EndTreeNode();
-					}
-
-					if (!jumpDir && ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0))
-					{
-						NextPath(CurrentDir, path);
-					}
-
-					if (jumpDir)
-					{
-						jumpDir = false;
-					}
-				}
-
+				LeftFolders();
+			}
+			else
+			{
+				
 			}
 		}
 
+	}
+
+	void AssetBrowserWindow::LeftFolders()
+	{
+		for (auto& dirEntry : std::filesystem::directory_iterator(AllDir))
+		{
+			const auto& path = dirEntry.path();
+
+			std::string fileNameString = path.filename().string();
+
+			if (dirEntry.is_directory())
+			{
+				if (ECGui::BeginTreeNode(fileNameString.c_str()))
+				{
+					//setting the subDir to Current Dir
+					NextDir = AllDir;
+
+					//setting its nxt path so that the tree node
+					//shows all paths the current path hold afterwards
+
+					NextPath(NextDir, path);
+
+					//checking if the dir does not exist 
+					if (!exists(NextDir))
+					{
+						NextDir = AllDir;
+					}
+					for (auto& secondEntry : std::filesystem::recursive_directory_iterator(NextDir))
+					{
+						if (secondEntry.is_directory())
+						{
+							const auto& path2 = secondEntry.path();
+
+							std::string fileNameString2 = path2.filename().string();
+
+							if (ECGui::BeginTreeNode(fileNameString2.c_str()))
+							{
+								if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0))
+								{
+									NextDir = path2;
+
+									CurrentDir = NextDir;
+
+									if (!exists(CurrentDir))
+									{
+										CurrentDir = AllDir;
+									}
+
+									jumpDir = true;
+								}
+
+								ECGui::EndTreeNode();
+							}
+
+						}
+					}
+					ECGui::EndTreeNode();
+				}
+
+				if (!jumpDir && ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0))
+				{
+					NextPath(CurrentDir, path);
+				}
+
+				if (jumpDir)
+				{
+					jumpDir = false;
+				}
+			}
+
+		}
 	}
 
 	void AssetBrowserWindow::RightFoldersAndItems()
@@ -175,7 +184,7 @@ namespace Eclipse
 
 		ImGuiStyle& style = ImGui::GetStyle();
 
-		if (!searchMode)
+		if (!searchItemMode)
 		{
 			ItemsAndFolders();
 		}
@@ -201,7 +210,7 @@ namespace Eclipse
 	{
 		Path();
 		
-		Search();
+		SearchItems();
 	}
 
 	void AssetBrowserWindow::Path()
@@ -286,16 +295,10 @@ namespace Eclipse
 
 			if (ECGui::IsItemHovered())
 			{
-				//ImGui::BeginChild("test", { 200,200 }, true);
-				//{
-				//	ImGui::Text("File Path: %s", relativePath.string().c_str());
-				//	ImGui::Text("File Name: %s", fileNameString.c_str());
-				//}
-				//ImGui::EndChild();
 				ECGui::SetToolTip(relativePath.string().c_str());
 			}
 
-			if (found && searchLowerCase == LowerCase(relativePath.filename().string().c_str()))
+			if (found && searchItemsLowerCase == LowerCase(relativePath.filename().string().c_str()))
 			{
 				ImDrawList* draw_list = ImGui::GetWindowDrawList();
 				
@@ -327,12 +330,6 @@ namespace Eclipse
 		}
 	}
 
-	void AssetBrowserWindow::MapNextPath(std::map<std::filesystem::path, std::vector<std::filesystem::path>>& pathMap,
-		std::filesystem::path Key)
-	{
-
-	}
-
 	void AssetBrowserWindow::AddToPathMap(std::filesystem::path dirEntry, std::vector<std::filesystem::path> subDirItems)
 	{
 		if (pathMap.find(dirEntry) != pathMap.end())
@@ -361,6 +358,8 @@ namespace Eclipse
 
 	void AssetBrowserWindow::ScanAll()
 	{
+		std::vector<std::filesystem::path> tempSubDirFolders;
+		std::vector<std::filesystem::path> tempSubDirItems;
 		for (auto& dirEntry : std::filesystem::directory_iterator(AllDir))
 		{
 			const auto& path = dirEntry.path();
@@ -384,41 +383,44 @@ namespace Eclipse
 				{
 					if (secondEntry.is_directory())
 					{
-						subDirFolders.push_back(secondEntry);
+						tempSubDirFolders.push_back(secondEntry);
 					}
 					
-					subDirItems.push_back(secondEntry);
+					subDirItems.push_back(secondEntry.path().filename().string());
+					
+					subDirItemsPath.push_back(secondEntry.path().string());
+					
+					tempSubDirItems.push_back(secondEntry);
 				}
 
 			}
+
 			
-			AddToFolderMap(dirEntry, subDirFolders);
+			AddToFolderMap(dirEntry, tempSubDirFolders);
 			
-			AddToPathMap(dirEntry, subDirItems);
-			
-			subDirFolders.clear();
-			
-			subDirItems.clear();
+			AddToPathMap(dirEntry, tempSubDirItems);
+
 		}
+
 	}
 
-	void AssetBrowserWindow::Search()
+	void AssetBrowserWindow::SearchItems()
 	{
-		if (ImGui::InputTextWithHint("", "Search...", searchBuffer, 128))
+		if (ImGui::InputTextWithHint("", "Search...", searchItemBuffer, 128))
 		{
-			if (BuffIsEmpty(searchBuffer))
+			if (BuffIsEmpty(searchItemBuffer))
 			{
-				searchMode = false;
+				searchItemMode = false;
 			}
 			else
 			{
-				searchMode = true;
+				searchItemMode = true;
 			}
 
 			//when theres nothing in the buffer
 
 			// this is the string i am searching in the directories
-			searchLowerCase = LowerCase(searchBuffer);
+			searchItemsLowerCase = LowerCase(searchItemBuffer);
 			
 		}
 
@@ -437,12 +439,33 @@ namespace Eclipse
 		//right side search for all folders
 	}
 
+	void AssetBrowserWindow::SearchFolders()
+	{
+		if (ImGui::InputTextWithHint("", "Search...", searchFolderBuffer, 128))
+		{
+			if (BuffIsEmpty(searchFolderBuffer))
+			{
+				searchFolderMode = false;
+			}
+			else
+			{
+				searchFolderMode = true;
+			}
+
+			//when theres nothing in the buffer
+
+			// this is the string i am searching in the directories
+			searchFoldersLowerCase = LowerCase(searchFolderBuffer);
+
+		}
+	}
+
 	void AssetBrowserWindow::SearchInBaseFolder()
 	{
-		for (auto const& pair : pathMap)
-		{
-			MainSearchLogic(pair);
-		}
+		// i get the vectors from all the path map
+		// then i loop through the final vector	
+		MainSearchLogic(subDirItemsPath);
+		
 	}
 
 	void AssetBrowserWindow::SearchInFolders()
@@ -462,20 +485,20 @@ namespace Eclipse
 		{
 			folderString = LowerCase(pair2.filename().string().c_str());
 
-			if (searchLowerCase == folderString)
+			if (searchItemsLowerCase == folderString)
 			{
 				//found
 				found = true;
 				//CurrentDir = pair.first;
 
-				if (BuffIsEmpty(searchBuffer))
+				if (BuffIsEmpty(searchItemBuffer))
 				{
 					found = false;
 				}
 			}
 			else
 			{
-				if (folderString.find(searchLowerCase) != std::string::npos)
+				if (folderString.find(searchItemsLowerCase) != std::string::npos)
 				{
 					//CurrentDir = pair.first;
 					found = true;
@@ -492,7 +515,7 @@ namespace Eclipse
 
 			if (!std::filesystem::is_directory(pair2))
 			{
-				if (found && nameString.find(searchLowerCase) != std::string::npos)
+				if (found && nameString.find(searchItemsLowerCase) != std::string::npos)
 				{
 					RenderComponent icon = std::filesystem::is_directory(pair2) ? FolderIcon : sprite;
 
@@ -508,17 +531,6 @@ namespace Eclipse
 
 					if (ECGui::IsItemHovered())
 					{
-						//ImGui::BeginChild("test", { 200,200 }, true);
-						//{
-						//	ImGui::Text("File Path: %s", relativePath.string().c_str());
-						//	
-						//	ImGui::Text("File Name: %s", fileNameString.c_str());
-						//}
-						//
-						//ImGui::EndChild();
-
-						//ECGui::SetToolTip(fileNameString.c_str());
-
 						ECGui::SetToolTip(relativePath.string().c_str());
 					}
 
@@ -531,6 +543,49 @@ namespace Eclipse
 					ImGui::NextColumn();
 				}
 			}
+		}
+	}
+
+	void AssetBrowserWindow::MainSearchLogic(std::vector<std::string> subDirItemsPath)
+	{
+		int index = 0;
+		std::filesystem::path tempPath;
+		for (auto const& pair2 : subDirItemsPath)
+		{
+			std::string nameString = LowerCase(subDirItems.at(index).c_str());
+
+			tempPath = pair2;
+			if (!std::filesystem::is_directory(tempPath))
+			{
+				if (!BuffIsEmpty(searchItemBuffer)&& nameString.find(searchItemsLowerCase) != std::string::npos)
+				{
+					RenderComponent icon = std::filesystem::is_directory(pair2) ? FolderIcon : sprite;
+
+					ImGui::ImageButton((void*)icon.textureRef->second.GetHandle(),
+						buttonSize,
+						{ 1,0 },
+						{ 2,1 });
+
+					if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
+					{
+						//files do something ?
+					}
+
+					if (ECGui::IsItemHovered())
+					{
+						ECGui::SetToolTip(pair2.c_str());
+					}
+
+					ImDrawList* draw_list = ImGui::GetWindowDrawList();
+
+					ImGui::TextWrapped(nameString.c_str());
+
+					draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(255, 255, 0, 255));
+
+					ImGui::NextColumn();
+				}
+			}
+			index++;
 		}
 	}
 
@@ -557,7 +612,7 @@ namespace Eclipse
 
 	bool AssetBrowserWindow::BuffIsEmpty(const char* buffer)
 	{
-		if (strlen(searchBuffer) == 0)
+		if (strlen(buffer) == 0)
 		{
 			return true;
 		}
