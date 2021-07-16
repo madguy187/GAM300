@@ -5,6 +5,7 @@
 #include "AssimpModel/AssimpModel.h"
 #include "Graphics/InputHandler/InputWrapper.h"
 #include "Graphics/ModelFactory/Sky/CubeMap.h"
+#include "Graphics/Grid/Grid.h"
 
 namespace Eclipse
 {
@@ -18,6 +19,7 @@ namespace Eclipse
         GLenum GlobalMode = GL_FILL;
         std::unique_ptr<CubeMap> Sky;
         unsigned int SkyCount = 0;
+        std::unique_ptr<Grid> GridManager;
 
     public:
         void Pre_Render();

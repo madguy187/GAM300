@@ -79,7 +79,7 @@ namespace Eclipse
     {
         if (engine->world.CheckComponent<TransformComponent>(ID))
         {
-            if (ID == engine->GridMap.GetGridID())
+            if (ID == engine->GraphicsManager.GridManager->GetGridID())
                 return false;
 
             if (ECGui::CreateCollapsingHeader("Transform"))
@@ -227,7 +227,7 @@ namespace Eclipse
 
     bool InspectorWindow::ShowGridSettings(Entity ID)
     {
-        if (engine->GridMap.GetModelReference() == nullptr)
+        if (engine->GraphicsManager.GridManager->GetModelReference() == nullptr)
             return false;
 
         if (engine->world.CheckComponent<TransformComponent>(ID))
@@ -238,28 +238,28 @@ namespace Eclipse
                 static bool show = true;
                 ECGui::DrawTextWidget<const char*>("Show Grid", "");
                 ECGui::CheckBoxBool("Visible", &show, enable);
-                engine->GridMap.SetGridToShow(show);
+                engine->GraphicsManager.GridManager->SetGridToShow(show);
 
 
                 static ECVec3 GridColour_ = { 0.3f,0.3f,0.3f };
                 ECGui::DrawTextWidget<const char*>("Grid Colour", "");
                 ECGui::DrawSliderFloat3Widget("Colour", &GridColour_, true, 0.0f, 1.0f);
-                engine->GridMap.SetGridColour(GridColour_);
+                engine->GraphicsManager.GridManager->SetGridColour(GridColour_);
 
                 static int InnerGrid = 2;
                 ECGui::DrawTextWidget<const char*>("InnerRatio", "");
                 ECGui::DrawSliderIntWidget("Ratio", &InnerGrid, true, 0.0f, 10.0f);
-                engine->GridMap.SetInnerRatio(InnerGrid);
+                engine->GraphicsManager.GridManager->SetInnerRatio(InnerGrid);
 
                 static float XAxis = 1.0f;
                 ECGui::DrawTextWidget<const char*>("Set X Axis Colour", "");
                 ECGui::DrawSliderFloatWidget("XAxis", &XAxis, true, 0.0f, 1.0f);
-                engine->GridMap.SetXAxisColour(XAxis);
+                engine->GraphicsManager.GridManager->SetXAxisColour(XAxis);
 
                 static float ZAxis = 1.0f;
                 ECGui::DrawTextWidget<const char*>("Set Z Axis Colour", "");
                 ECGui::DrawSliderFloatWidget("ZAxis", &ZAxis, true, 0.0f, 1.0f);
-                engine->GridMap.SetZAxisColour(ZAxis);
+                engine->GraphicsManager.GridManager->SetZAxisColour(ZAxis);
             }
         }
 

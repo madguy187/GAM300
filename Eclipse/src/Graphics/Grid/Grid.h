@@ -3,26 +3,21 @@
 
 namespace Eclipse
 {
+	// GridScale % InnerRatio Should be 0 as it gives u the number of boxes inside a grid
+
 	class Grid
 	{
 	private:
 		unsigned int GridID;
-
-		// Model Used for the grid
+		ECVec3 GridColour{ 0.3f,0.3f,0.3f };
 		Quad* WholeGrid = nullptr;
-
-		// SHader used for the grid
 		Shader* ShaderRef = nullptr;
 		std::string ShaderName;
-
 		bool Visible = true;
-		ECVec3 GridColour{ 0.3f,0.3f,0.3f };
 		int GridScale = 10;
-		// How many squares inside a highlighted block
 		int InnerRatio = 2;
 		int SingleXAxisLineThickness = 5;
 		int SingleZAxisLineThickness = 5;
-
 		float XAxisColour = 1.0f;
 		float ZAxisColour = 1.0f;
 
@@ -59,7 +54,7 @@ namespace Eclipse
 		void UseFrameBuffer(unsigned int FramebufferID);
 		void CheckUniformLocation(unsigned int GridID);
 		void Init();
-		void DrawGrid();
+		void DrawGrid(unsigned int FrameBufferID);
 
 		~Grid();
 

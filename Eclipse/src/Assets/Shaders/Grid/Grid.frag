@@ -95,4 +95,9 @@ void main ()
 
     fFragClr.a *= fading;
 
+    if ( fFragClr.a == 0.0 )
+    {
+      discard;
+    }
+
 }

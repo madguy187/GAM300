@@ -85,10 +85,12 @@ namespace Eclipse
         std::cout << "Grid Debug Print" << std::endl;
         std::cout << "===========================" << std::endl;
         std::cout << "Grid ID : " << GridID << std::endl;
-        std::cout << "Grid Scale : " << GridScale << std::endl;
-        std::cout << "Inside Quad Count : " << InnerRatio << std::endl;
+        std::cout << "Per Square Scale : " << GridScale << std::endl;
+        std::cout << "Inner Ratio : " << InnerRatio << std::endl;
+        std::cout << "How Many Squares inside each Grid : " << GridScale/InnerRatio << std::endl;
         std::cout << "Grid Colour : " << GridColour.getX() << " " << GridColour.getY() << " " << GridColour.getZ() << std::endl;
         std::cout << "Visible ? : " << Visible << std::endl;
+        std::cout << "===========================" << std::endl;
     }
 
     ECVec3 Grid::GetGridColour()
@@ -177,20 +179,26 @@ namespace Eclipse
         engine->editorManager->EntityHierarchyList_.push_back(GridID);
         engine->editorManager->EntityToTypeMap_.insert(std::pair<Entity, EntityType>(GridID, EntityType::ENT_UNASSIGNED));
 
-
         WholeGrid = new Quad;
         ShaderRef = &(Graphics::shaderpgms.find("Grid")->second);
         ShaderName = Graphics::shaderpgms.find("Grid")->first;
 
-        std::cout << WholeGrid->GetDrawCount() << std::endl;
+        auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
+        float SnapValue = scene->GetSnapSettings().mPosSnapValue;
+        GridScale = (SnapValue);
 
         // Useless Stuffs for now
         //modelRef = Graphics::models.find("square")->second.get();
+
+        if (WholeGrid != nullptr)
+        {
+            EDITOR_LOG_INFO("Grid Created");
+        }
     }
 
-    void Grid::DrawGrid()
+    void Grid::DrawGrid(unsigned int FrameBufferID)
     {
-        UseFrameBuffer(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+        UseFrameBuffer(FrameBufferID);
 
         ShaderRef->Use();
 

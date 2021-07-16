@@ -17,6 +17,10 @@ void Eclipse::GraphicsManager::Pre_Render()
 
     // Clear the View
     mRenderContext.pre_render();
+
+
+    // Initialise Grid
+    GridManager = std::make_unique<Grid>();
 }
 
 void Eclipse::GraphicsManager::Post_Render()

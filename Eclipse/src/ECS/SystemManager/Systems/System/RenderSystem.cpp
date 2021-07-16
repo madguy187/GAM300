@@ -23,8 +23,8 @@ void Eclipse::RenderSystem::Init()
     engine->GraphicsManager.CreateSky("src/Assets/Sky");
 
     // Create Grid =============================
-    engine->GridMap.Init();
-    engine->GridMap.DebugPrint();
+    engine->GraphicsManager.GridManager->Init();
+    engine->GraphicsManager.GridManager->DebugPrint();
 }
 
 Signature Eclipse::RenderSystem::RegisterAll()
@@ -48,8 +48,6 @@ void Eclipse::RenderSystem::Update()
 
     // SKY Reder =============================
     engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID());
-    engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_LEFT)->GetFrameBufferID());
-    engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_BOTTOM)->GetFrameBufferID());
 
     // (RENDERCOMPONENTS & TRANSFORMCOMPONENT) Render =============================
     for (auto const& entity : mEntities)
@@ -64,13 +62,10 @@ void Eclipse::RenderSystem::Update()
 
     // MODELS Render=============================
     engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL);
-    engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL);
-    engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_TOP)->GetFrameBufferID(), GL_FILL);
-    engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_BOTTOM)->GetFrameBufferID(), GL_LINE);
-    engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_LEFT)->GetFrameBufferID(), GL_FILL);
-    engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_RIGHT)->GetFrameBufferID(), GL_LINE);
+    engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), GL_FILL);
 
-    engine->GridMap.DrawGrid();
+    // GRID Render =============================
+    engine->GraphicsManager.GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 
     timer.tracker.system_end = glfwGetTime();
     timer.ContainerAddTime(timer.tracker);
