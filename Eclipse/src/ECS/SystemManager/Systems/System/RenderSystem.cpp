@@ -53,7 +53,7 @@ namespace Eclipse
         if (engine->GraphicsManager.CheckRender == true)
         {
             // SKY Reder =============================
-            engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID());
+            engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 
             // (RENDERCOMPONENTS & TRANSFORMCOMPONENT) Render =============================
             for (auto const& entity : mEntities)

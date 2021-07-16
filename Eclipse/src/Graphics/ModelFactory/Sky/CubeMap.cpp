@@ -107,7 +107,7 @@ namespace Eclipse
         // Shader Activate
         shader.Use();
 
-        //glDepthMask(GL_FALSE);
+        glDepthMask(GL_FALSE);
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
         // Check Main Uniforms
@@ -133,7 +133,7 @@ namespace Eclipse
 
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
-        //glDepthMask(GL_TRUE);
+        glDepthMask(GL_TRUE);
 
         shader.UnUse();
         glBindVertexArray(0);
