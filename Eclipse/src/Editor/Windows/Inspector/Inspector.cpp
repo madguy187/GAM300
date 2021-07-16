@@ -240,14 +240,26 @@ namespace Eclipse
                 ECGui::CheckBoxBool("Visible", &show, enable);
                 engine->GridMap.SetGridToShow(show);
 
+
+                static ECVec3 GridColour_ = { 0.3f,0.3f,0.3f };
                 ECGui::DrawTextWidget<const char*>("Grid Colour", "");
-                ECGui::DrawSliderFloat3Widget("Colour", &engine->GridMap.GridColour, true, 0.0f, 1.0f);
+                ECGui::DrawSliderFloat3Widget("Colour", &GridColour_, true, 0.0f, 1.0f);
+                engine->GridMap.SetGridColour(GridColour_);
 
-                ECGui::DrawTextWidget<const char*>("Grid Scale", "");
-                ECGui::DrawSliderFloatWidget("Scale", &engine->GridMap.GridScale, true, 0.0f, 20.0f);
+                static int InnerGrid = 2;
+                ECGui::DrawTextWidget<const char*>("InnerRatio", "");
+                ECGui::DrawSliderIntWidget("Ratio", &InnerGrid, true, 0.0f, 10.0f);
+                engine->GridMap.SetInnerRatio(InnerGrid);
 
-                ECGui::DrawTextWidget<const char*>("Inside Quad Count", "");
-                ECGui::DrawSliderFloatWidget("Quad Count", &engine->GridMap.InsideQuadCount, true, 0.0f, 100.0f);
+                static float XAxis = 1.0f;
+                ECGui::DrawTextWidget<const char*>("Set X Axis Colour", "");
+                ECGui::DrawSliderFloatWidget("XAxis", &XAxis, true, 0.0f, 1.0f);
+                engine->GridMap.SetXAxisColour(XAxis);
+
+                static float ZAxis = 1.0f;
+                ECGui::DrawTextWidget<const char*>("Set Z Axis Colour", "");
+                ECGui::DrawSliderFloatWidget("ZAxis", &ZAxis, true, 0.0f, 1.0f);
+                engine->GridMap.SetZAxisColour(ZAxis);
             }
         }
 
