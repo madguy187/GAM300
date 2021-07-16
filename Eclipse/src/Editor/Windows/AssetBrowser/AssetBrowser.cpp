@@ -63,6 +63,7 @@ namespace Eclipse
 	{
 		
 		SearchFolders();
+		
 		if (ECGui::CreateCollapsingHeader("Content"))
 		{
 			if (!searchFolderMode)
@@ -87,7 +88,6 @@ namespace Eclipse
 
 			if (dirEntry.is_directory())
 			{
-				CreateTreeNode<void()>(fileNameString, );
 				if (ECGui::BeginTreeNode(fileNameString.c_str()))
 				{
 					//setting the subDir to Current Dir
@@ -369,7 +369,9 @@ namespace Eclipse
 	void AssetBrowserWindow::ScanAll()
 	{
 		std::vector<std::filesystem::path> tempSubDirFolders;
+		
 		std::vector<std::filesystem::path> tempSubDirItems;
+		
 		for (auto& dirEntry : std::filesystem::directory_iterator(AllDir))
 		{
 			const auto& path = dirEntry.path();
@@ -444,7 +446,21 @@ namespace Eclipse
 		{
 			refresh = false;
 		}
-
+		ImGui::SameLine();
+		if (ImGui::Button("Clear", { 70,20 }))
+		{
+			if(BuffIsEmpty(searchItemBuffer))
+			{
+				searchItemMode = false;
+				EDITOR_LOG_WARN("Cleared Failed: Buffer Empty");
+			}
+			else
+			{
+				memset(searchItemBuffer, 0, 128);
+				searchItemMode = false;
+				EDITOR_LOG_INFO("Item Search Buffer Cleared");
+			}
+		}
 		//left side search for all files & folders in that current dir
 		//right side search for all folders
 	}
@@ -559,7 +575,10 @@ namespace Eclipse
 	void AssetBrowserWindow::MainSearchLogic(std::vector<std::string> subDirItemsPath)
 	{
 		int index = 0;
+
+		//path that can be used in the future to get the item
 		std::filesystem::path tempPath;
+		
 		for (auto const& pair2 : subDirItemsPath)
 		{
 			std::string nameString = LowerCase(subDirItems.at(index).c_str());
