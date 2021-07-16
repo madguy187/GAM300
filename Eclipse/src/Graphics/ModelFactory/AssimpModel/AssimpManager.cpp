@@ -120,7 +120,8 @@ namespace Eclipse
 
         GLint uModelToNDC_ = _shdrpgm.GetLocation("uModelToNDC");
         GLuint model_ = _shdrpgm.GetLocation("model");
-        GLuint TEST = _shdrpgm.GetLocation("TEST");
+        //GLuint TEST = _shdrpgm.GetLocation("TEST");
+        GLuint dsa = _shdrpgm.GetLocation("noTex");
 
         if (uModelToNDC_ >= 0)
         {
@@ -137,10 +138,12 @@ namespace Eclipse
             glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
         }
 
-        if (TEST >= 0)
-        {
-            glUniform1i(TEST, 0);
-        }
+        glUniform1i(dsa, 0);
+
+        //if (TEST >= 0)
+        //{
+        //    glUniform1i(TEST, 0);
+        //}
     }
 
     AssimpModelContainer AssimpModelManager::GetContainer()

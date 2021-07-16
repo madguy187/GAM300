@@ -23,6 +23,7 @@ namespace Eclipse
         bool CheckRender = true;
         bool EnableHighlight = true;
         float OutlineThickness = 0.05f;
+        bool EnableGammaCorrection = true;
 
     public:
         void Pre_Render();
@@ -47,7 +48,7 @@ namespace Eclipse
         bool CheckIfHighlight();
 
     private:
-        float GammaCorrection = 0.2f;
+        float GammaCorrection = 2.2f;
 
         void CheckUniformLoc(RenderComponent& sprite, unsigned int id, unsigned int framebufferID);
         void UpdateFrameBuffer();

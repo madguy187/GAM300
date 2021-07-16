@@ -86,7 +86,7 @@ namespace Eclipse
 
                 GLint uniform_var_loc2 = shader.GetLocation("uColor");
                 GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
-                GLuint tex_loc = shader.GetLocation("uTex2d");
+                //GLuint tex_loc = shader.GetLocation("uTex2d");
                 GLuint diff0 = shader.GetLocation("diffuse0");
                 GLuint spec = shader.GetLocation("specular0");
                 GLuint dsa = shader.GetLocation("noTex");
@@ -101,13 +101,10 @@ namespace Eclipse
                     glUniform1i(uniform_var_loc3, true);
                 }
 
-                if (tex_loc >= 0)
-                {
-                    glUniform1i(tex_loc, i);
-                    glUniform1i(diff0, i);
-                    glUniform1i(spec, i);
-                    glUniform1i(dsa, false);
-                }
+                //glUniform1i(tex_loc, i);
+                glUniform1i(diff0, i);
+                glUniform1i(spec, i);
+                glUniform1i(dsa, false);
 
                 // bind texture
                 Textures[i].Bind();

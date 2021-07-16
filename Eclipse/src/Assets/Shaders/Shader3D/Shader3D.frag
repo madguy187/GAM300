@@ -15,6 +15,7 @@ uniform vec4 sspecular;
 uniform bool TEST;
 uniform bool useBlinn;
 uniform float gamma;
+uniform float EnableGammaCorrection;
 
 // Structs
 uniform sampler2D diffuse0;
@@ -134,6 +135,9 @@ void main ()
 
 	if (noTex == 1) 
     {
+      	//texDiff = texture(uTex2d, TxtCoord);
+    	//texSpec = texture(uTex2d, TxtCoord);
+
 		texDiff = sdiffuse;
 		texSpec = sspecular;
 	} 
@@ -142,12 +146,6 @@ void main ()
 		texDiff = texture(diffuse0, TxtCoord);
 		texSpec = texture(specular0, TxtCoord);
 	}
-
-    if(TEST)
-    {
-    	texDiff = texture(uTex2d, TxtCoord);
-    	texSpec = texture(uTex2d, TxtCoord);
-    }
 
      result = CalcDirLight(directionlight[0], norm, viewDir,texDiff, texSpec);
 
@@ -162,7 +160,11 @@ void main ()
     }
 
      fFragClr = texture(uTex2d, TxtCoord) * vec4(result,1.0f);
-     fFragClr.rgb = pow(fFragClr.rgb, vec3(1.0/gamma));
+
+     if(EnableGammaCorrection == 1)
+     {
+         fFragClr.rgb = pow(fFragClr.rgb, vec3(1.0/gamma));
+     }
 
     }
 }

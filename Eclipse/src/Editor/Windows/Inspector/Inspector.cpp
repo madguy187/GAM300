@@ -219,10 +219,13 @@ namespace Eclipse
 
     void InspectorWindow::SetGamma()
     {
-        static float Test = 2.2f;
-        ECGui::DrawTextWidget<const char*>("Gamma Correction Value", "");
-        ECGui::DrawSliderFloatWidget("Gamma", &Test, true, 0.f, 3.0f);
-        engine->GraphicsManager.SetGammaCorrection(Test);
+        if (engine->GraphicsManager.EnableGammaCorrection == true)
+        {
+            static float Test = 2.2f;
+            ECGui::DrawTextWidget<const char*>("Gamma Correction Value", "");
+            ECGui::DrawSliderFloatWidget("Gamma", &Test, true, 0.f, 3.0f);
+            engine->GraphicsManager.SetGammaCorrection(Test);
+        }
     }
 
     bool InspectorWindow::ShowGridSettings(Entity ID)

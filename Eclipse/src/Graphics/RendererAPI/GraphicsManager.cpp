@@ -306,6 +306,9 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
 
     // ------------------------------------------------------------
 
+    glUniform1i(dsa, true);
+    glUniform4f(aa, 1, 1, 1, 1);
+    glUniform4f(bb, 1, 1, 1, 1);
 
     if (TEST >= 0)
     {
@@ -417,11 +420,10 @@ void Eclipse::GraphicsManager::UploadGammaCorrectionToShader()
     shdrpgm->second.Use();
 
     GLint uniform_var_loc1 = shdrpgm->second.GetLocation("gamma");
+    GLint uniform_var_loc2 = shdrpgm->second.GetLocation("EnableGammaCorrection");
 
-    if (uniform_var_loc1 >= 0)
-    {
-        GLCall(glUniform1f(uniform_var_loc1, engine->GraphicsManager.GetGammaCorrection()));
-    }
+    GLCall(glUniform1f(uniform_var_loc1, engine->GraphicsManager.GetGammaCorrection()));
+    GLCall(glUniform1f(uniform_var_loc1, engine->GraphicsManager.EnableGammaCorrection));
 
     shdrpgm->second.UnUse();
 }
@@ -432,7 +434,7 @@ void Eclipse::GraphicsManager::StencilBufferClear()
     glStencilMask(0xFF);
 
     // Clear stencil buffer
-    glStencilFunc(GL_ALWAYS, 0 , 0xFF);
+    glStencilFunc(GL_ALWAYS, 0, 0xFF);
 }
 
 void Eclipse::GraphicsManager::OutlinePreparation2()
