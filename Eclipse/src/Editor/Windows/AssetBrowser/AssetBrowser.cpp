@@ -61,6 +61,7 @@ namespace Eclipse
 
 	void AssetBrowserWindow::LeftFolderHierarchy()
 	{
+		ImDrawList* draw_list = ImGui::GetWindowDrawList();
 		
 		SearchFolders();
 		
@@ -69,11 +70,50 @@ namespace Eclipse
 			if (!searchFolderMode)
 			{
 				LeftFolders();
+
+				ResetTreeNodeOpen = false;
 			}
 			else
 			{
+				ResetTreeNodeOpen = true;
 				
+				for (auto& pair : FolderMap)
+				{
+					
+					ImGui::SetNextItemOpen(true);
+					
+					if (ECGui::BeginTreeNode((pair.first.filename().string().c_str())))
+					{
+						for (auto& pair2 : pair.second)
+						{
+							std::string temp = LowerCase(pair2.filename().string().c_str()).c_str();
+							if (!BuffIsEmpty(searchFolderBuffer) && temp.find(searchFolderBuffer) != std::string::npos)
+							{
+								//ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+								if (ImGui::TreeNode(temp.c_str()))
+								{
+									if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0))
+									{
+										NextDir = pair2;
+
+										CurrentDir = NextDir;
+
+										if (!exists(CurrentDir))
+										{
+											CurrentDir = AllDir;
+										}
+									}
+									ECGui::EndTreeNode();
+								}
+								//draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(255, 255, 0, 255));
+							}
+						}
+						ECGui::EndTreeNode();
+					}
+					
+				}
 			}
+			
 		}
 
 	}
@@ -82,6 +122,11 @@ namespace Eclipse
 	{
 		for (auto& dirEntry : std::filesystem::directory_iterator(AllDir))
 		{
+			if (ResetTreeNodeOpen)
+			{
+				ImGui::SetNextItemOpen(false);
+			}
+			
 			const auto& path = dirEntry.path();
 
 			std::string fileNameString = path.filename().string();
@@ -366,6 +411,15 @@ namespace Eclipse
 
 	}
 
+	bool AssetBrowserWindow::ExistInVector(std::string Path, std::vector<std::string> container)
+	{
+		if (std::find(container.begin(), container.end(), Path) != container.end())
+		{
+			return true;
+		}
+		return false;
+	}
+
 	void AssetBrowserWindow::ScanAll()
 	{
 		std::vector<std::filesystem::path> tempSubDirFolders;
@@ -397,10 +451,15 @@ namespace Eclipse
 					{
 						tempSubDirFolders.push_back(secondEntry);
 					}
-					
-					subDirItems.push_back(secondEntry.path().filename().string());
-					
-					subDirItemsPath.push_back(secondEntry.path().string());
+
+					if(!ExistInVector(secondEntry.path().filename().string(),subDirItems))
+					{
+						subDirItems.push_back(secondEntry.path().filename().string());
+					}
+					if (!ExistInVector(secondEntry.path().string(), subDirItemsPath))
+					{
+						subDirItemsPath.push_back(secondEntry.path().string());
+					}
 					
 					tempSubDirItems.push_back(secondEntry);
 				}
@@ -412,6 +471,8 @@ namespace Eclipse
 			
 			AddToPathMap(dirEntry, tempSubDirItems);
 
+			tempSubDirFolders.clear();
+			tempSubDirItems.clear();
 		}
 
 	}
@@ -488,10 +549,7 @@ namespace Eclipse
 
 	void AssetBrowserWindow::SearchInBaseFolder()
 	{
-		// i get the vectors from all the path map
-		// then i loop through the final vector	
-		MainSearchLogic(subDirItemsPath);
-		
+		MainSearchLogic(subDirItemsPath);	
 	}
 
 	void AssetBrowserWindow::SearchInFolders()

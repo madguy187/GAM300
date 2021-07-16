@@ -51,6 +51,7 @@ namespace Eclipse
 		bool searchFolderMode = false;
 		bool refresh = true;
 		bool jumpDir = false;
+		bool ResetTreeNodeOpen = false;
 		////////////////////////////////
 		
 	public:
@@ -82,6 +83,7 @@ namespace Eclipse
 		////////////////////////////////
 		void AddToPathMap(std::filesystem::path dirEntry, std::vector<std::filesystem::path> subDirItems);
 		void AddToFolderMap(std::filesystem::path dirEntry, std::vector<std::filesystem::path> Folder);
+		bool ExistInVector(std::string Path, std::vector<std::string> container);
 		void ScanAll();
 		void SearchItems();
 		void SearchFolders();
