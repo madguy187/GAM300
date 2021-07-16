@@ -68,24 +68,18 @@ namespace Eclipse
 
             // MODELS Render=============================
 
-            // Make it so the stencil test always passes
             glStencilFunc(GL_ALWAYS, 1, 0xFF);
-            // Enable modifying of the stencil buffer
             glStencilMask(0xFF);
 
             engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL);
 
-            //Make it so only the pixels without the value 1 pass the test
             glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-            // Disable modifying of the stencil buffer
             glStencilMask(0xFF);
-            // Disable the depth buffer
             glDisable(GL_DEPTH_TEST);
 
             engine->AssimpManager.HighlihtDraw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL);
 
             glStencilMask(0xFF);
-            // Clear stencil buffer
             glStencilFunc(GL_ALWAYS, 0, 0xFF);
             
             //engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), GL_FILL);
