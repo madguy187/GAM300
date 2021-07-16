@@ -129,8 +129,6 @@ struct ConsoleData
         ImGui::SameLine();
         bool clear = ImGui::Button("Clear");
         ImGui::SameLine();
-        bool copy = ImGui::Button("Copy");
-        ImGui::SameLine();
         _Filter.Draw("Filter", -100.0f);
 
         ImGui::Separator();
@@ -138,8 +136,6 @@ struct ConsoleData
 
         if (clear)
             Clear();
-        if (copy)
-            ImGui::LogToClipboard();
 
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
         const char* buf = _Buffer.begin();
