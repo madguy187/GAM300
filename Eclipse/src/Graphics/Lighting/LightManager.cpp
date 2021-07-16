@@ -2,100 +2,104 @@
 #include "Graphics/Lighting/LightManager.h"
 #include "LightManager.h"
 
-void Eclipse::Lights::init()
-{
-    // LightManager Init =============================
-    ENGINE_CORE_INFO("LightManager Init");
-    CreateAttenuationLevels();
-    //engine->LightManager._DirectionalLights.FirstGlobalLight();
-}
-
-void Eclipse::Lights::Update()
+namespace Eclipse
 {
 
-}
-
-void Eclipse::Lights::CreateLights(TypesOfLights in, unsigned int CreatedID)
-{
-    switch (in)
+    void Lights::init()
     {
-    case TypesOfLights::POINTLIGHT:
-    {
-        _allpointlights.CreatePointLight(CreatedID);
+        // LightManager Init =============================
+        ENGINE_CORE_INFO("LightManager Init");
+        CreateAttenuationLevels();
+        //engine->LightManager._DirectionalLights.FirstGlobalLight();
     }
-    break;
 
-    case TypesOfLights::DIRECTIONAL:
+    void Lights::Update()
     {
-        _DirectionalLights.CreateDirectionalLight(CreatedID);
-    }
-    break;
-
-    case TypesOfLights::SPOTLIGHT:
-    {
-        _allspotlights.CreateSpotLight(CreatedID);
-    }
-    break;
 
     }
-}
 
-void Eclipse::Lights::SetApplyLightingFlag(bool in)
-{
-    ApplyLighting = in;
-}
+    void Lights::CreateLights(TypesOfLights in, unsigned int CreatedID)
+    {
+        switch (in)
+        {
+        case TypesOfLights::POINTLIGHT:
+        {
+            _allpointlights.CreatePointLight(CreatedID);
+        }
+        break;
 
-bool Eclipse::Lights::CheckApplyLighting()
-{
-    return ApplyLighting;
-}
+        case TypesOfLights::DIRECTIONAL:
+        {
+            _DirectionalLights.CreateDirectionalLight(CreatedID);
+        }
+        break;
 
-void Eclipse::Lights::DrawPointLights(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
-{
-    _allpointlights.Draw(in, framebufferID, indexID, mode);
-}
+        case TypesOfLights::SPOTLIGHT:
+        {
+            _allspotlights.CreateSpotLight(CreatedID);
+        }
+        break;
 
-void Eclipse::Lights::DrawDirectionalLight(DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
-{
-    _DirectionalLights.Draw(in, framebufferID, indexID, mode);
-}
+        }
+    }
 
-void Eclipse::Lights::DrawSpotLight(SpotLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
-{
-    _allspotlights.Draw(in, framebufferID, indexID, mode);
-}
+    void Lights::SetApplyLightingFlag(bool in)
+    {
+        ApplyLighting = in;
+    }
 
-DirectionalLightContainer Eclipse::Lights::GetDirectionalLightContainer()
-{
-    return _DirectionalLights.GetContainer();
-}
+    bool Lights::CheckApplyLighting()
+    {
+        return ApplyLighting;
+    }
 
-SpotLightContainer Eclipse::Lights::GetSpotLightsContainer()
-{
-    return _allspotlights.GetContainer();
-}
+    void Lights::DrawPointLights(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
+    {
+        _allpointlights.Draw(in, framebufferID, indexID, mode);
+    }
 
-void Eclipse::Lights::CreateAttenuationLevels()
-{
-    // Smallest Range
-    AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(1, AttenuationValues(1.0f, 0.7f, 1.8f)));
-    AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(2, AttenuationValues(1.0f, 0.35f, 0.44f)));
-    AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(3, AttenuationValues(1.0f, 0.22f, 0.20f)));
-    AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(4, AttenuationValues(1.0f, 0.14f, 0.07f)));
-    AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(5, AttenuationValues(1.0f, 0.09f, 0.032f)));
-    AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(6, AttenuationValues(1.0f, 0.07f, 0.017f)));
-    AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(7, AttenuationValues(1.0f, 0.045f, 0.0075f)));
-    AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(8, AttenuationValues(1.0f, 0.027f, 0.0028f)));
-    AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(9, AttenuationValues(1.0f, 0.022f, 0.0019f)));
-    AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(10, AttenuationValues(1.0f, 0.014f, 0.0007f)));
-    AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(11, AttenuationValues(1.0f, 0.007f, 0.0002f)));
-    AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(12, AttenuationValues(1.0f, 0.0014f, 0.00000f)));
-    // Largest Range
+    void Lights::DrawDirectionalLight(DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
+    {
+        _DirectionalLights.Draw(in, framebufferID, indexID, mode);
+    }
 
-    ENGINE_CORE_INFO("Attentuation Levels Created!");
-}
+    void Lights::DrawSpotLight(SpotLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
+    {
+        _allspotlights.Draw(in, framebufferID, indexID, mode);
+    }
 
-PointLightContainer Eclipse::Lights::GetPointLightsContainer()
-{
-    return _allpointlights.GetContainer();
+    DirectionalLightContainer Lights::GetDirectionalLightContainer()
+    {
+        return _DirectionalLights.GetContainer();
+    }
+
+    SpotLightContainer Lights::GetSpotLightsContainer()
+    {
+        return _allspotlights.GetContainer();
+    }
+
+    void Lights::CreateAttenuationLevels()
+    {
+        // Smallest Range
+        AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(1, AttenuationValues(1.0f, 0.7f, 1.8f)));
+        AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(2, AttenuationValues(1.0f, 0.35f, 0.44f)));
+        AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(3, AttenuationValues(1.0f, 0.22f, 0.20f)));
+        AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(4, AttenuationValues(1.0f, 0.14f, 0.07f)));
+        AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(5, AttenuationValues(1.0f, 0.09f, 0.032f)));
+        AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(6, AttenuationValues(1.0f, 0.07f, 0.017f)));
+        AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(7, AttenuationValues(1.0f, 0.045f, 0.0075f)));
+        AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(8, AttenuationValues(1.0f, 0.027f, 0.0028f)));
+        AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(9, AttenuationValues(1.0f, 0.022f, 0.0019f)));
+        AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(10, AttenuationValues(1.0f, 0.014f, 0.0007f)));
+        AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(11, AttenuationValues(1.0f, 0.007f, 0.0002f)));
+        AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(12, AttenuationValues(1.0f, 0.0014f, 0.00000f)));
+        // Largest Range
+
+        ENGINE_CORE_INFO("Attentuation Levels Created!");
+    }
+
+    PointLightContainer Lights::GetPointLightsContainer()
+    {
+        return _allpointlights.GetContainer();
+    }
 }

@@ -20,6 +20,7 @@ namespace Eclipse
         std::unique_ptr<CubeMap> Sky;
         unsigned int SkyCount = 0;
         std::unique_ptr<Grid> GridManager;
+        bool CheckRender = true;
 
     public:
         void Pre_Render();

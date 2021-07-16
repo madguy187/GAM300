@@ -1,5 +1,6 @@
 #pragma once
 #include "ECS/ComponentManager/Components/PointLightComponent.h"
+#include "ECS/ComponentManager/Components/TransformComponent.h"
 
 namespace Eclipse
 {
@@ -14,7 +15,7 @@ namespace Eclipse
     private:
         inline static int counter = 0;
         InputWrapper inputhandler;
-        inline static Eclipse::PointLightContainer _pointlights;
+        inline static PointLightContainer _pointlights;
 
     public:
         PointLightContainer GetContainer();
