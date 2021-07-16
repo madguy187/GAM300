@@ -75,41 +75,7 @@ namespace Eclipse
 			else
 			{
 				ResetTreeNodeOpen = true;
-				
-				for (auto& pair : FolderMap)
-				{
-					
-					ImGui::SetNextItemOpen(true);
-					
-					if (ECGui::BeginTreeNode((pair.first.filename().string().c_str())))
-					{
-						for (auto& pair2 : pair.second)
-						{
-							std::string temp = LowerCase(pair2.filename().string().c_str()).c_str();
-							if (!BuffIsEmpty(searchFolderBuffer) && temp.find(searchFolderBuffer) != std::string::npos)
-							{
-								//ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-								if (ImGui::TreeNode(temp.c_str()))
-								{
-									if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0))
-									{
-										NextDir = pair2;
-
-										CurrentDir = NextDir;
-
-										if (!exists(CurrentDir))
-										{
-											CurrentDir = AllDir;
-										}
-									}
-									ECGui::EndTreeNode();
-								}
-							}
-						}
-						ECGui::EndTreeNode();
-					}
-					
-				}
+				LeftSearchedFolders();
 			}
 			
 		}
@@ -187,6 +153,43 @@ namespace Eclipse
 				{
 					jumpDir = false;
 				}
+			}
+
+		}
+	}
+
+	void AssetBrowserWindow::LeftSearchedFolders()
+	{
+		for (auto& pair : FolderMap)
+		{
+			ImGui::SetNextItemOpen(true);
+
+			if (ECGui::BeginTreeNode((pair.first.filename().string().c_str())))
+			{
+				for (auto& pair2 : pair.second)
+				{
+					std::string temp = LowerCase(pair2.filename().string().c_str()).c_str();
+					if (!BuffIsEmpty(searchFolderBuffer) && temp.find(searchFolderBuffer) != std::string::npos)
+					{
+						//ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+						if (ImGui::TreeNode(temp.c_str()))
+						{
+							if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0))
+							{
+								NextDir = pair2;
+
+								CurrentDir = NextDir;
+
+								if (!exists(CurrentDir))
+								{
+									CurrentDir = AllDir;
+								}
+							}
+							ECGui::EndTreeNode();
+						}
+					}
+				}
+				ECGui::EndTreeNode();
 			}
 
 		}

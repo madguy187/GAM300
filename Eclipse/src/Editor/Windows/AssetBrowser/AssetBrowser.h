@@ -69,6 +69,7 @@ namespace Eclipse
 		void CreateTreeNode(std::string name,std::function<T> function);
 		void LeftFolderHierarchy();
 		void LeftFolders();
+		void LeftSearchedFolders();
 		void RightFoldersAndItems();
 		void FoldersAndItems();
 		void PathAndSearches();
