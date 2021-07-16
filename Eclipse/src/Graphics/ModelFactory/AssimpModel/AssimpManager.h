@@ -7,6 +7,7 @@
 
 #include <vector>
 #include "AssimpModel/AssimpModel.h"
+#include "ECS/ComponentManager/Components/EntityComponent.h"
 
 namespace Eclipse
 {

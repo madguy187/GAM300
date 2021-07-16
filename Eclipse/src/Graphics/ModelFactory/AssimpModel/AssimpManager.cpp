@@ -6,7 +6,12 @@ namespace Eclipse
     void AssimpModelManager::CreateModel(std::string name, std::string FolderName, std::string filename)
     {
         Entity ID = engine->world.CreateEntity();
+        engine->world.AddComponent(ID, EntityComponent{ EntityType::ENT_UNASSIGNED, "Dog", true });
+        engine->world.AddComponent(ID, TransformComponent{});
 
+        TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(ID);
+        Transform.rotation.setX(270);
+        
         // Create path
         std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/" + filename).c_str();
 
@@ -32,9 +37,9 @@ namespace Eclipse
         // hi
         //CreateModel("White Dog", "testhouse", "scene.gltf");
 
-        CreateModel("White Dog", "dog", "scene.gltf");
-        CreateModel("Black Dog", "dog2", "scene.gltf");
-        CreateModel("Black", "dog3", "scene.gltf");
+        //CreateModel("White Dog", "dog", "scene.gltf");
+        //CreateModel("Black Dog", "dog2", "scene.gltf");
+        //CreateModel("Black", "dog3", "scene.gltf");
 
         DebugPrint();
 
@@ -107,24 +112,24 @@ namespace Eclipse
 
     void AssimpModelManager::AddComponents()
     {
-        for (auto const& Models : AssimpModelContainer_)
-        {
-            auto& InvidualModels = *(Models.second);
-            std::cout << "Added Transform Component For 3DModel ID : " << Models.first << std::endl;
-            engine->world.AddComponent(Models.first, TransformComponent{});
-
-            // Everything Below this Comment is To be Removed !!
-            TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(Models.first);
-            Transform.scale.setX(10);
-            Transform.scale.setY(10);
-            Transform.scale.setZ(10);
-
-            // Alittle Shine
-            //Transform.rotation.setZ(270);
-
-            // Sit properly
-            Transform.rotation.setX(270);
-        }
+       // for (auto const& Models : AssimpModelContainer_)
+       // {
+       //     auto& InvidualModels = *(Models.second);
+       //     std::cout << "Added Transform Component For 3DModel ID : " << Models.first << std::endl;
+       //     engine->world.AddComponent(Models.first, TransformComponent{});
+       //
+       //     // Everything Below this Comment is To be Removed !!
+       //     TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(Models.first);
+       //     Transform.scale.setX(10);
+       //     Transform.scale.setY(10);
+       //     Transform.scale.setZ(10);
+       //
+       //     // Alittle Shine
+       //     //Transform.rotation.setZ(270);
+       //
+       //     // Sit properly
+       //     Transform.rotation.setX(270);
+       // }
     }
 
     void AssimpModelManager::CleanUpAllModels()

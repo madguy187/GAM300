@@ -88,19 +88,19 @@ namespace Eclipse
         {
             glm::mat4 mModelNDC;
 
-            // Everything Below this Comment is To be Removed !!
-            if (NameOfModel == "Black Dog")
-            {
-                Transform.position.setX(20);
-            }
-            else if (NameOfModel == "White Dog")
-            {
-                Transform.position.setX(-20);
-            }
-            else
-            {
-                Transform.position.setX(0);
-            }
+            //// Everything Below this Comment is To be Removed !!
+            //if (NameOfModel == "Black Dog")
+            //{
+            //    Transform.position.setX(20);
+            //}
+            //else if (NameOfModel == "White Dog")
+            //{
+            //    Transform.position.setX(-20);
+            //}
+            //else
+            //{
+            //    Transform.position.setX(0);
+            //}
             ///////////////////////////////////////////////////////
 
             glm::mat4 model = glm::mat4(1.0f);
