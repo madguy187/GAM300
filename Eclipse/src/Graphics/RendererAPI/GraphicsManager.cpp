@@ -165,7 +165,9 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     // pointlight
     case 12:
     {
-        //engine->AssimpManager.CreateModel("White Dog", "dog3");
+        // Testing of creating prefabs is fine.
+        //engine->AssimpManager.CreateModel("White Dog", "dog" , "scene.gltf");
+        
         engine->LightManager.CreateLights(Eclipse::TypesOfLights::POINTLIGHT, ID);
     }
     break;

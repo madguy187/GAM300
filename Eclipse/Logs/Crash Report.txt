@@ -7,3 +7,4 @@
 [07/16/21 15:08:22] [CORE] [error] Crash Report: Assertion Failed! C:\Users\Darren Sim\Desktop\ACTUAL_GAM200\GAM300\Eclipse\src\Graphics\Grid\Grid.cpp Line 38: GridScale % InnerRatio Should be 0
 [07/16/21 15:08:30] [CORE] [error] Crash Report: Assertion Failed! C:\Users\Darren Sim\Desktop\ACTUAL_GAM200\GAM300\Eclipse\src\Graphics\Grid\Grid.cpp Line 38: GridScale % InnerRatio Should be 0
 [07/16/21 15:08:32] [CORE] [error] Crash Report: Assertion Failed! C:\Users\Darren Sim\Desktop\ACTUAL_GAM200\GAM300\Eclipse\src\Graphics\Grid\Grid.cpp Line 38: GridScale % InnerRatio Should be 0
+[07/16/21 16:20:08] [CORE] [error] Crash Report: Assertion Failed! C:\Users\Darren Sim\Desktop\ACTUAL_GAM200\GAM300\Eclipse\src\Graphics\ModelFactory\AssimpModel\AssimpManager.cpp Line 157: The file path src/Assets/ASSModels/dasdsa/scene.gltf doesnt exist! 

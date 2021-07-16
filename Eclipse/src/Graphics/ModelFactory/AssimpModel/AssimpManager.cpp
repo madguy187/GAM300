@@ -11,16 +11,7 @@ namespace Eclipse
         std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/" + filename).c_str();
 
         // Test Path
-        std::ifstream test(PathName);
-
-        if (!test)
-        {
-            std::string Error = ("The file path " + PathName + " doesnt exist! ").c_str();
-            ENGINE_LOG_ASSERT(false, Error);
-            std::exit(EXIT_FAILURE);
-        }
-
-        // Initialise
+        TestPath(PathName);
 
         // Always set False because we have textures
         AssimpModel* NewModel = new AssimpModel(false);
@@ -153,6 +144,18 @@ namespace Eclipse
             {
                 delete i.second;
             }
+        }
+    }
+
+    void AssimpModelManager::TestPath(std::string& path)
+    {
+        std::ifstream test(path);
+
+        if (!test)
+        {
+            std::string Error = ("The file path " + path + " doesnt exist! ").c_str();
+            ENGINE_LOG_ASSERT(false, Error);
+            std::exit(EXIT_FAILURE);
         }
     }
 }

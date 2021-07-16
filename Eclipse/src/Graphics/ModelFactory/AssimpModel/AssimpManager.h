@@ -29,6 +29,7 @@ namespace Eclipse
         void AddComponents();
         void CleanUpAllModels();
         ~AssimpModelManager();
+        void TestPath(std::string& path);
     };
 }
 #endif // ASSIMP_MANAGER_H
