@@ -9,9 +9,8 @@ namespace Eclipse
 	{
 		std::vector<Entity>& entities = engine->editorManager->EntityHierarchyList_;
 		std::filesystem::path p(fullpath);
-		p.filename().replace_extension("");
 
-		sz.StartElement(p.string());
+		sz.StartElement(p.filename().replace_extension("").string());
 		sz.StartElement("Entities");
 		sz.AddAttributeToElement("Size", entities.size());
 		for (auto const& ent : entities)
