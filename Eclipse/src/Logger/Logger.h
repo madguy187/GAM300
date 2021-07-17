@@ -9,7 +9,7 @@
 #include "spdlog/fmt/ostr.h"
 
 // Use this instead of static_assert
-#define ENGINE_LOG_ASSERT(x, ...) { if(!(x)) { ENGINE_CORE_WARN("Program has crashed. Please check crash log for details."); ENGINE_CORE_ERROR("Assertion Failed! {0}", __VA_ARGS__); int msgID = MessageBox( nullptr, TEXT(__VA_ARGS__), TEXT("Assertion Failed!"), MB_ABORTRETRYIGNORE ); if (msgID == IDRETRY) { __debugbreak(); } else if (msgID == IDABORT) { glfwSetWindowShouldClose(OpenGL_Context::GetWindow(), 1); } } }
+#define ENGINE_LOG_ASSERT(x, ...) { if(!(x)) { ENGINE_CORE_WARN("Program has crashed. Please check crash log for details."); ENGINE_CORE_ERROR("Assertion Failed! {0}", my_strcat(__FILE__, " Line ", __LINE__, ": ", __VA_ARGS__).c_str()); std::stringstream ss; ss<<"File: "<< __FILE__<< "\n"<< "Line: "<< __LINE__<< "\n"<< "\n"<< "For more information, please check crash log for details."<< "\n"<< "\n"<< "(Click Retry to debug application)"; wchar_t* msg = charToWChar(ss.str().c_str()); int msgID = MessageBox( nullptr, msg, TEXT("Debug Assertion Failed!"), MB_ABORTRETRYIGNORE ); delete[] msg; if (msgID == IDRETRY) { __debugbreak(); } else if (msgID == IDABORT) { glfwSetWindowShouldClose(OpenGL_Context::GetWindow(), 1); } } }
 
 namespace Eclipse
 {

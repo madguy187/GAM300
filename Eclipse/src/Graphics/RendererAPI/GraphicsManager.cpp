@@ -7,8 +7,9 @@ bool shakeScreen = 1.0f;
 
 glm::vec3 spherepos;
 
-void Eclipse::GraphicsManager::pre_render()
-{  // Loading Configuration
+void Eclipse::GraphicsManager::Pre_Render()
+{  
+    // Loading Configuration
     mRenderContext.init("../Dep/Configuration/configuration.json");
 
     // Loading Of Models , Shaders and etc.. 
@@ -18,17 +19,17 @@ void Eclipse::GraphicsManager::pre_render()
     mRenderContext.pre_render();
 }
 
-void Eclipse::GraphicsManager::post_render()
+void Eclipse::GraphicsManager::Post_Render()
 {
     mRenderContext.post_render();
 }
 
-void Eclipse::GraphicsManager::end()
+void Eclipse::GraphicsManager::End()
 {
     mRenderContext.end();
 }
 
-void Eclipse::GraphicsManager::unload()
+void Eclipse::GraphicsManager::Unload()
 {
     mRenderContext.end();
 }
@@ -93,6 +94,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("cube");
+
         sprite.hasTexture = true;
         sprite.textureRef = Graphics::textures.find("orange");
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
@@ -161,6 +163,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     // pointlight
     case 12:
     {
+        //engine->AssimpManager.CreateModel("White Dog", "dog3");
         engine->LightManager.CreateLights(Eclipse::TypesOfLights::POINTLIGHT, ID);
     }
     break;
@@ -170,10 +173,40 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         engine->LightManager.CreateLights(Eclipse::TypesOfLights::DIRECTIONAL, ID);
     }
     break;
+    // SpotLight
+    case 14:
+    {
+        engine->LightManager.CreateLights(Eclipse::TypesOfLights::SPOTLIGHT, ID);
+    }
+    break;
     }
 }
 
-void Eclipse::GraphicsManager::DrawBuffers(unsigned int FrameBufferID, RenderComponent* _spritecomponent, GLenum mode)
+void Eclipse::GraphicsManager::CreateSky(std::string _Dir)
+{
+    if (SkyCount == 1)
+    {
+        ENGINE_LOG_ASSERT(false, "There is already 1 Cube Map Created");
+        return;
+    }
+
+    Sky = std::make_unique<CubeMap>();
+    Sky->CreateSky(_Dir);
+
+    SkyCount++;
+}
+
+void Eclipse::GraphicsManager::RenderSky(unsigned int FrameBufferID)
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
+    auto shdrpgm = Graphics::shaderpgms.find("Sky");
+
+    Sky->Render(shdrpgm->second);
+
+    //shdrpgm->second.UnUse();
+}
+
+void Eclipse::GraphicsManager::Draw(unsigned int FrameBufferID, RenderComponent* _spritecomponent, GLenum mode)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
 
@@ -208,7 +241,7 @@ void Eclipse::GraphicsManager::CheckTexture(RenderComponent* in)
     {
         if (in->textureRef != Graphics::textures.end())
         {
-            glBindTextureUnit(1, in->textureRef->second.GetHandle());
+            glBindTexture(GL_TEXTURE_2D, in->textureRef->second.GetHandle());
 
             glEnable(GL_BLEND);
 
@@ -225,7 +258,7 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
     CameraComponent camera;
     TransformComponent camerapos;
 
-    if (framebufferID == engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID())
+    if (framebufferID == engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID())
     {
         camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
         camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetGameCameraID());
@@ -247,27 +280,37 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
     GLint uniform_var_loc1 = sprite.shaderRef->second.GetLocation("uModelToNDC");
     GLint uniform_var_loc2 = sprite.shaderRef->second.GetLocation("uColor");
     GLint uniform_var_loc3 = sprite.shaderRef->second.GetLocation("uTextureCheck");
-    GLint uniform_var_loc4 = sprite.shaderRef->second.GetLocation("TextureIndex");
-    GLint uniform_var_loc5 = sprite.shaderRef->second.GetLocation("TextureDimensions");
+    //GLint uniform_var_loc4 = sprite.shaderRef->second.GetLocation("TextureIndex");
+    //GLint uniform_var_loc5 = sprite.shaderRef->second.GetLocation("TextureDimensions");
     GLuint tex_loc = sprite.shaderRef->second.GetLocation("uTex2d");
-    GLuint lll = sprite.shaderRef->second.GetLocation("lightColor");
     GLuint cam = sprite.shaderRef->second.GetLocation("camPos");
-    //GLuint pos = sprite.shaderRef->second.GetLocation("lightPos");
     GLuint model2 = sprite.shaderRef->second.GetLocation("model");
+    GLuint dsa = sprite.shaderRef->second.GetLocation("noTex");
+    GLuint TEST = sprite.shaderRef->second.GetLocation("TEST");
+
+    // I will need to change all these with Material system
+    // ------------------------------------------------------------
+    GLuint aa = sprite.shaderRef->second.GetLocation("sdiffuse");
+    GLuint bb = sprite.shaderRef->second.GetLocation("sspecular");
+
+    //if (dsa >= 0)
+    //{
+    //    glUniform1i(dsa, true);
+    //    glUniform4f(aa, 1, 1, 1, 1);
+    //    glUniform4f(bb, 1, 1, 1, 1);
+    //}
+
+    // ------------------------------------------------------------
+
+
+    if (TEST >= 0)
+    {
+        glUniform1i(TEST, 1);
+    }
 
     if (uniform_var_loc1 >= 0)
     {
         glm::mat4 mModelNDC;
-
-       /* glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, trans.pos);
-        model = glm::rotate(model, glm::radians(trans.rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(trans.rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(trans.rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::scale(model, trans.scale);
-        mModelNDC = camera.projMtx * camera.viewMtx * model;
-        glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(mModelNDC));
-        glUniformMatrix4fv(model2, 1, GL_FALSE, glm::value_ptr(model));*/
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, trans.position.ConvertToGlmVec3Type());
@@ -280,24 +323,14 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
         glUniformMatrix4fv(model2, 1, GL_FALSE, glm::value_ptr(model));
     }
 
-   /* if (pos >= 0)
-    {
-        glUniform3f(pos, spherepos.x, spherepos.y, spherepos.z);
-    }*/
-
     if (cam >= 0)
     {
-        glUniform3f(lll, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ());
-    }
-
-    if (lll >= 0)
-    {
-        glUniform4f(lll, sprite.lightColor.x, sprite.lightColor.y, sprite.lightColor.z, sprite.lightColor.w);
+        glUniform3f(cam, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ());
     }
 
     if (uniform_var_loc2 >= 0)
     {
-        glUniform4f(uniform_var_loc2, sprite.color.x, sprite.color.y, sprite.color.z, sprite.transparency);
+        glUniform4f(uniform_var_loc2, sprite.color.getX(), sprite.color.getY(), sprite.color.getZ(), sprite.transparency);
     }
 
     if (uniform_var_loc3 >= 0)
@@ -305,30 +338,30 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
         glUniform1i(uniform_var_loc3, sprite.hasTexture);
     }
 
-    if (uniform_var_loc4 >= 0)
-    {
-        GLCall(glUniform2f(uniform_var_loc4, sprite.textureIdx.x, sprite.textureIdx.y));
-    }
+    //if (uniform_var_loc4 >= 0)
+    //{
+    //    GLCall(glUniform2f(uniform_var_loc4, sprite.textureIdx.getX(), sprite.textureIdx.getY()));
+    //}
 
-    if (sprite.hasTexture)
-    {
-        if (sprite.textureRef != Graphics::textures.end())
-        {
-            if (uniform_var_loc5 >= 0)
-            {
-                GLCall(glUniform2f(uniform_var_loc5, sprite.textureRef->second.GetCols(), sprite.textureRef->second.GetRows()));
-            }
-            else
-            {
-                std::cout << "Uniform variable doesn't exist!!!\n";
-                std::exit(EXIT_FAILURE);
-            }
-        }
-    }
+    //if (sprite.hasTexture)
+    //{
+    //    if (sprite.textureRef != Graphics::textures.end())
+    //    {
+    //        if (uniform_var_loc5 >= 0)
+    //        {
+    //            GLCall(glUniform2f(uniform_var_loc5, sprite.textureRef->second.GetCols(), sprite.textureRef->second.GetRows()));
+    //        }
+    //        else
+    //        {
+    //            std::cout << "Uniform variable doesn't exist!!!\n";
+    //            std::exit(EXIT_FAILURE);
+    //        }
+    //    }
+    //}
 
     if (tex_loc >= 0)
     {
-        glUniform1i(tex_loc, 1);
+        glUniform1i(tex_loc, false);
     }
 }
 
@@ -345,6 +378,23 @@ void Eclipse::GraphicsManager::UpdateFrameBuffer()
         SelectedFrameBuffer.second->Bind();
         SelectedFrameBuffer.second->Clear();
     }
+}
+
+void Eclipse::GraphicsManager::DebugPrintFrameBuffers()
+{
+    std::cout << "FrameBuffer Size :" << mRenderContext._Framebuffers.size() << std::endl;
+    std::cout << "------------------------------------------" << std::endl;
+    for (auto const& SelectedFrameBuffer : mRenderContext._Framebuffers)
+    {
+        std::cout << " FrameBuffer Name :" << SelectedFrameBuffer.second->GetName() << std::endl;
+        std::cout << " FrameBuffer ID :" << SelectedFrameBuffer.second->GetFrameBufferID() << std::endl;
+        std::cout << " DepthBuffer ID :" << SelectedFrameBuffer.second->GetDepthBufferID() << std::endl;
+        std::cout << " ColorBuffer ID :" << SelectedFrameBuffer.second->GetTextureColourBufferID() << std::endl;
+        std::cout << " Type  : " << SelectedFrameBuffer.second->GetFrameBufferType() << std::endl;
+        std::cout << std::endl;
+    }
+
+    ENGINE_CORE_INFO("All FrameBufers Created");
 }
 
 void Eclipse::GraphicsManager::GlobalFrameBufferBind()
@@ -377,56 +427,17 @@ FrameBuffer* Eclipse::OpenGL_Context::GetFramebuffer(FrameBufferMode mode)
 
 void Eclipse::GraphicsManager::FrameBufferDraw()
 {
-    // Will be Removed , its imgui stuffs
-    Eclipse::GraphicsManager::ShowTestWidgets();
-
     FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)), "GameView");
     FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)), "SceneView");
+    FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_TOP)), "SceneView_Top");
+    FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_BOTTOM)), "SceneView_Bottom");
+    FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_LEFT)), "SceneView_Left");
+    FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_RIGHT)), "SceneView_Right");
 }
 
 void Eclipse::GraphicsManager::GlobalFrmeBufferDraw()
 {
     Eclipse::GraphicsManager::FrameBufferDraw();
-}
-
-#endif
-
-/*************************************************************************
-  ImGui Test Things
-*************************************************************************/
-
-#ifndef Imgui_Things
-
-void Eclipse::GraphicsManager::ShowTestWidgets()
-{
-    /*int modelSelector = -1;
-    ImGui::Begin("Create Objects");
-
-    if (ImGui::Combo("Models", &modelSelector,
-        "Square\0Circle\0Triangle\0Lines\0Sphere\0Cube\0Cylinder\0Cone\0Torus\0Pyramid\0Lines3D\0Plane\0testlight\0D_Light"))
-    {
-        CreatePrimitives(modelSelector);
-
-        for (int i = 0; i <= 2; ++i)
-        {
-            ImGui::Separator();
-        }
-    }
-    ImGui::End();*/
-}
-
-void Eclipse::GraphicsManager::ShowTestWidgets(unsigned int id, unsigned int createdId)
-{
-    //if (id == createdId)
-    //{
-    //    TransformComponent& trans = engine->world.GetComponent<TransformComponent>(id);
-    //    //ImGui::DragFloat3("Scale", (float*)&trans.scale, 0.2f, 0.0f, 0.0f);
-    //    ECGui::DrawSliderFloat3Widget("Scale", &trans.scale);
-    //    //ImGui::DragFloat3("Translate", (float*)&trans.pos, 0.2f, 0.0f, 0.0f);
-    //    ECGui::DrawSliderFloat3Widget("Translate", &trans.position);
-    //    //ImGui::DragFloat3("Rotate", (float*)&trans.rot, 0.2f, 0.0f, 0.0f);
-    //    ECGui::DrawSliderFloat3Widget("Rotate", &trans.rotation);
-    //}
 }
 
 #endif

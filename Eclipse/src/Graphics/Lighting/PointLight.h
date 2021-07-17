@@ -4,7 +4,10 @@
 namespace Eclipse
 {
     typedef std::map<int, PointLightComponent*> PointLightContainer;
+
     using PLIT = std::map<int, PointLightComponent*>::iterator;
+    using modelIt = std::map<std::string, std::unique_ptr<IModel>>::iterator;
+    using shaderIt = std::map<std::string, Shader>::iterator;
 
     class PointLight
     {
@@ -21,6 +24,6 @@ namespace Eclipse
         void Draw(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
 
     private:
-        void CheckUniformLoc(Graphics::shaderIt _shdrpgm, PointLightComponent& hi, int index, unsigned int containersize);
+        void CheckUniformLoc(Shader* _shdrpgm, PointLightComponent& hi, int index, unsigned int containersize);
     };
 }

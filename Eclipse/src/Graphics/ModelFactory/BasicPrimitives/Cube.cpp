@@ -178,8 +178,7 @@ void Cube::CreateVBO()
 void Cube::CreateEBO()
 {
     glCreateBuffers(1, &eboID);
-    glNamedBufferStorage(eboID, sizeof(GLushort) * IdxVec.size(),
-        reinterpret_cast<GLvoid*>(IdxVec.data()), GL_DYNAMIC_STORAGE_BIT);
+    glNamedBufferStorage(eboID, sizeof(GLushort) * IdxVec.size(), reinterpret_cast<GLvoid*>(IdxVec.data()), GL_DYNAMIC_STORAGE_BIT);
     glVertexArrayElementBuffer(vaoID, eboID);
     glBindVertexArray(0);
 }
