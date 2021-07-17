@@ -24,6 +24,7 @@ namespace Eclipse
         bool EnableHighlight = true;
         float OutlineThickness = 0.05f;
         bool EnableGammaCorrection = true;
+        bool DrawSky = true;
 
     public:
         void Pre_Render();
@@ -41,11 +42,12 @@ namespace Eclipse
         void DebugPrintFrameBuffers();
         float GetGammaCorrection();
         void SetGammaCorrection(float in);
-        void UploadGammaCorrectionToShader();
+        void UploadGlobalUniforms();
         void StencilBufferClear();
         void OutlinePreparation1();
         void OutlinePreparation2();
         bool CheckIfHighlight();
+        void SetIfHighlight(bool in);
 
     private:
         float GammaCorrection = 2.2f;

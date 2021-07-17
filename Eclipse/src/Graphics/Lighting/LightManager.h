@@ -47,7 +47,7 @@ namespace Eclipse
         }
     };
 
-    class Lights
+    class LightManager
     {
     public:
         // Base Classes =============================
@@ -101,9 +101,10 @@ namespace Eclipse
         std::vector <std::pair<unsigned int, AttenuationValues>> AttenuationLevels;
         std::vector <std::pair<unsigned int, Angles>> SpotLightAngles;
         bool EnableBlinnPhong = true;
-        bool ApplyLighting = true;
 
     public:
+        bool ApplyLighting = true;
+
         void init();
         void Update();
         void CreateLights(TypesOfLights in, unsigned int CreatedID);

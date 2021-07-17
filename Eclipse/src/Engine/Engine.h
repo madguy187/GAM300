@@ -19,7 +19,7 @@ namespace Eclipse
 		Clock Game_Clock;
 		DebugRenderingManager gDebugManager;
 		std::unique_ptr<EditorManager> editorManager;
-		Lights LightManager;
+		LightManager LightManager;
 		MonoManager mono;
 	    AssimpModelManager AssimpManager;
 

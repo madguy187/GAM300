@@ -49,7 +49,7 @@ namespace Eclipse
         timer.SetName({ SystemName::RENDER });
         timer.tracker.system_start = glfwGetTime();
 
-        engine->GraphicsManager.UploadGammaCorrectionToShader();
+        engine->GraphicsManager.UploadGlobalUniforms();
 
         if (engine->GraphicsManager.CheckRender == true)
         {

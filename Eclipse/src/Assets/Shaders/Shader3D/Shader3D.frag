@@ -15,7 +15,8 @@ uniform vec4 sspecular;
 uniform bool TEST;
 uniform bool useBlinn;
 uniform float gamma;
-uniform float EnableGammaCorrection;
+uniform bool EnableGammaCorrection;
+uniform bool CheckApplyLighting;
 
 // Structs
 uniform sampler2D diffuse0;
@@ -138,8 +139,8 @@ void main ()
       	//texDiff = texture(uTex2d, TxtCoord);
     	//texSpec = texture(uTex2d, TxtCoord);
 
-		texDiff = sdiffuse;
-		texSpec = sspecular;
+		texDiff = texture(uTex2d, TxtCoord) * sdiffuse;
+		texSpec = texture(uTex2d, TxtCoord) * sspecular;      
 	} 
     else 
     {
@@ -147,25 +148,28 @@ void main ()
 		texSpec = texture(specular0, TxtCoord);
 	}
 
-     result = CalcDirLight(directionlight[0], norm, viewDir,texDiff, texSpec);
-
-     for(int i = 0 ; i < NumberOfPointLights ; i++ )
-     {
-          result += CalcPointLight( pointLights[i], norm, crntPos, viewDir , texDiff, texSpec);
-     }
-
-    for(int i = 0 ; i < NumberOfSpotLights ; i++ )
+    if( CheckApplyLighting == true )
     {
-         result += CalcSpotLight( spotLights[i], norm, crntPos, viewDir , texDiff, texSpec);
+        result = CalcDirLight(directionlight[0], norm, viewDir,texDiff, texSpec);
+
+        for(int i = 0 ; i < NumberOfPointLights ; i++ )
+        {
+             result += CalcPointLight( pointLights[i], norm, crntPos, viewDir , texDiff, texSpec);
+        }
+
+        for(int i = 0 ; i < NumberOfSpotLights ; i++ )
+        {
+             result += CalcSpotLight( spotLights[i], norm, crntPos, viewDir , texDiff, texSpec);
+        }
     }
 
-     fFragClr = texture(uTex2d, TxtCoord) * vec4(result,1.0f);
+        fFragClr = vec4(result,1.0f);
 
-     if(EnableGammaCorrection == 1)
-     {
-         fFragClr.rgb = pow(fFragClr.rgb, vec3(1.0/gamma));
-     }
-
+        if(EnableGammaCorrection == true )
+        {
+            fFragClr.rgb = pow(fFragClr.rgb, vec3(1.0/gamma));
+        }
+        
     }
 }
 

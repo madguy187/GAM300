@@ -39,8 +39,8 @@ namespace Eclipse
             ShowPointLightProperty(currEnt);
             ShowSpotLightProperty(currEnt);
             ShowDirectionalLightProperty(currEnt);
+            RenderSettings();
             ShowGridSettings(currEnt);
-            SetGamma();
         }
         else
         {
@@ -109,9 +109,14 @@ namespace Eclipse
                 auto& _PointLight = engine->world.GetComponent<PointLightComponent>(ID);
 
                 static bool enable = true;
+                ECGui::DrawTextWidget<const char*>("EnableBlinnPhong", "");
+                ECGui::InsertSameLine();
+                ECGui::CheckBoxBool("EnableBlinnPhong", &_PointLight.EnableBlinnPhong, enable);
+
                 static bool isVisible = false;
-                ECGui::CheckBoxBool("Enable", &_PointLight.EnableBlinnPhong, enable);
-                ECGui::CheckBoxBool("IsVisible", &_PointLight.visible, isVisible);
+                ECGui::DrawTextWidget<const char*>("IsVisible", "");
+                ECGui::InsertSameLine();
+                ECGui::CheckBoxBool(" ", &_PointLight.visible, isVisible);
 
                 ECGui::DrawTextWidget<const char*>("IntensityStrength", "");
                 ECGui::DrawSliderFloatWidget("IntensityFloat", &_PointLight.IntensityStrength, true, 0.f, 150.f);
@@ -148,8 +153,13 @@ namespace Eclipse
                 auto& _SpotLight = engine->world.GetComponent<SpotLightComponent>(ID);
 
                 static bool enable = true;
+                ECGui::DrawTextWidget<const char*>("EnableBlinnPhong", "");
+                ECGui::InsertSameLine();
+                ECGui::CheckBoxBool("EnableBlinnPhong", &_SpotLight.EnableBlinnPhong, enable);
+
                 static bool isVisible = false;
-                ECGui::CheckBoxBool("Enable", &_SpotLight.EnableBlinnPhong, enable);
+                ECGui::DrawTextWidget<const char*>("IsVisible", "");
+                ECGui::InsertSameLine();
                 ECGui::CheckBoxBool("IsVisible", &_SpotLight.visible, isVisible);
 
                 ECGui::DrawTextWidget<const char*>("IntensityStrength", "");
@@ -198,7 +208,12 @@ namespace Eclipse
                 auto& _DLight = engine->world.GetComponent<DirectionalLightComponent>(ID);
 
                 static bool enable = true;
+                ECGui::DrawTextWidget<const char*>("EnableBlinnPhong", "");
+                ECGui::InsertSameLine();
                 ECGui::CheckBoxBool("Enable", &_DLight.EnableBlinnPhong, enable);
+
+                ECGui::DrawTextWidget<const char*>("LightDirection ", "");
+                ECGui::DrawSliderFloat3Widget("LightDirection", &_DLight.Direction, true, -20.0f, 20.0f);
 
                 ECGui::DrawTextWidget<const char*>("Light Colour", "");
                 ImGui::ColorPicker3("Color", (float*)&_DLight.lightColor, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
@@ -217,14 +232,42 @@ namespace Eclipse
         return false;
     }
 
-    void InspectorWindow::SetGamma()
+    void InspectorWindow::RenderSettings()
     {
-        if (engine->GraphicsManager.EnableGammaCorrection == true)
+        if (ECGui::CreateCollapsingHeader("RenderSystem Settings"))
         {
-            static float Test = 2.2f;
-            ECGui::DrawTextWidget<const char*>("Gamma Correction Value", "");
-            ECGui::DrawSliderFloatWidget("Gamma", &Test, true, 0.f, 3.0f);
-            engine->GraphicsManager.SetGammaCorrection(Test);
+            static bool EnableHighlight = true;
+            ECGui::DrawTextWidget<const char*>("EnableHighLight", "");
+            ECGui::InsertSameLine();
+            ECGui::CheckBoxBool("EnableHighLight", &engine->GraphicsManager.EnableHighlight, EnableHighlight);
+
+            static bool EnableLightingSystem = true;
+            ECGui::DrawTextWidget<const char*>("EnableLighting", "");
+            ECGui::InsertSameLine();
+            ECGui::CheckBoxBool("EnableLighting", &engine->LightManager.ApplyLighting, EnableLightingSystem);
+
+            static bool EnableRenderingSystem = true;
+            ECGui::DrawTextWidget<const char*>("EnableRender", "");
+            ECGui::InsertSameLine();
+            ECGui::CheckBoxBool("EnableRender", &engine->GraphicsManager.CheckRender, EnableRenderingSystem);
+
+            static bool DrawSky = true;
+            ECGui::DrawTextWidget<const char*>("EnableRenderSky", "");
+            ECGui::InsertSameLine();
+            ECGui::CheckBoxBool("EnableRenderSky", &engine->GraphicsManager.DrawSky, DrawSky);
+
+            static bool DrawGrid = true;
+            ECGui::DrawTextWidget<const char*>("DrawGrid", "");
+            ECGui::InsertSameLine();
+            ECGui::CheckBoxBool("DrawGrid", &engine->GraphicsManager.GridManager->Visible, DrawSky);
+
+            if (engine->GraphicsManager.EnableGammaCorrection == true)
+            {
+                static float Test = 2.2f;
+                ECGui::DrawTextWidget<const char*>("Gamma Correction Value", "");
+                ECGui::DrawSliderFloatWidget("Gamma", &Test, true, 0.f, 3.0f);
+                engine->GraphicsManager.SetGammaCorrection(Test);
+            }
         }
     }
 

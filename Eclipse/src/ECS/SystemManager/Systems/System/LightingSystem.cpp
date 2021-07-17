@@ -15,7 +15,7 @@ namespace Eclipse
         timer.SetName({ SystemName::LIGHTING });
         timer.tracker.system_start = glfwGetTime();
 
-        if (engine->LightManager.CheckApplyLighting())
+        if (engine->LightManager.CheckApplyLighting() == true)
         {
             // Directional Light =============================
             for (auto const& entity : engine->LightManager.GetDirectionalLightContainer())

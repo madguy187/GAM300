@@ -5,7 +5,7 @@
 namespace Eclipse
 {
 
-    void Lights::init()
+    void LightManager::init()
     {
         // LightManager Init =============================
         ENGINE_CORE_INFO("LightManager Init");
@@ -13,12 +13,12 @@ namespace Eclipse
         //engine->LightManager._DirectionalLights.FirstGlobalLight();
     }
 
-    void Lights::Update()
+    void LightManager::Update()
     {
 
     }
 
-    void Lights::CreateLights(TypesOfLights in, unsigned int CreatedID)
+    void LightManager::CreateLights(TypesOfLights in, unsigned int CreatedID)
     {
         switch (in)
         {
@@ -43,42 +43,48 @@ namespace Eclipse
         }
     }
 
-    void Lights::SetApplyLightingFlag(bool in)
+    void LightManager::SetApplyLightingFlag(bool in)
     {
         ApplyLighting = in;
     }
 
-    bool Lights::CheckApplyLighting()
+    bool LightManager::CheckApplyLighting()
     {
+        auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
+        shdrpgm->second.Use();
+        GLint uniform_var_loc1 = shdrpgm->second.GetLocation("CheckApplyLighting");
+        GLCall(glUniform1i(uniform_var_loc1, ApplyLighting));
+        shdrpgm->second.UnUse();
+
         return ApplyLighting;
     }
 
-    void Lights::DrawPointLights(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
+    void LightManager::DrawPointLights(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
     {
         _allpointlights.Draw(in, framebufferID, indexID, mode);
     }
 
-    void Lights::DrawDirectionalLight(DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
+    void LightManager::DrawDirectionalLight(DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
     {
         _DirectionalLights.Draw(in, framebufferID, indexID, mode);
     }
 
-    void Lights::DrawSpotLight(SpotLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
+    void LightManager::DrawSpotLight(SpotLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
     {
         _allspotlights.Draw(in, framebufferID, indexID, mode);
     }
 
-    DirectionalLightContainer Lights::GetDirectionalLightContainer()
+    DirectionalLightContainer LightManager::GetDirectionalLightContainer()
     {
         return _DirectionalLights.GetContainer();
     }
 
-    SpotLightContainer Lights::GetSpotLightsContainer()
+    SpotLightContainer LightManager::GetSpotLightsContainer()
     {
         return _allspotlights.GetContainer();
     }
 
-    void Lights::CreateAttenuationLevels()
+    void LightManager::CreateAttenuationLevels()
     {
         // Smallest Range
         AttenuationLevels.push_back(std::pair<unsigned int, AttenuationValues>(1, AttenuationValues(1.0f, 0.7f, 1.8f)));
@@ -98,7 +104,7 @@ namespace Eclipse
         ENGINE_CORE_INFO("Attentuation Levels Created!");
     }
 
-    PointLightContainer Lights::GetPointLightsContainer()
+    PointLightContainer LightManager::GetPointLightsContainer()
     {
         return _allpointlights.GetContainer();
     }

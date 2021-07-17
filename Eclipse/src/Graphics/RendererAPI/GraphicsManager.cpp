@@ -202,12 +202,13 @@ void Eclipse::GraphicsManager::CreateSky(std::string _Dir)
 
 void Eclipse::GraphicsManager::RenderSky(unsigned int FrameBufferID)
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
-    auto shdrpgm = Graphics::shaderpgms.find("Sky");
+    if (DrawSky == true)
+    {
+        glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
+        auto shdrpgm = Graphics::shaderpgms.find("Sky");
 
-    Sky->Render(shdrpgm->second);
-
-    //shdrpgm->second.UnUse();
+        Sky->Render(shdrpgm->second);
+    }
 }
 
 void Eclipse::GraphicsManager::Draw(unsigned int FrameBufferID, RenderComponent* _spritecomponent, GLenum mode)
@@ -290,30 +291,15 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
     GLuint cam = sprite.shaderRef->second.GetLocation("camPos");
     GLuint model2 = sprite.shaderRef->second.GetLocation("model");
     GLuint dsa = sprite.shaderRef->second.GetLocation("noTex");
-    GLuint TEST = sprite.shaderRef->second.GetLocation("TEST");
 
     // I will need to change all these with Material system
     // ------------------------------------------------------------
     GLuint aa = sprite.shaderRef->second.GetLocation("sdiffuse");
     GLuint bb = sprite.shaderRef->second.GetLocation("sspecular");
 
-    //if (dsa >= 0)
-    //{
-    //    glUniform1i(dsa, true);
-    //    glUniform4f(aa, 1, 1, 1, 1);
-    //    glUniform4f(bb, 1, 1, 1, 1);
-    //}
-
-    // ------------------------------------------------------------
-
     glUniform1i(dsa, true);
     glUniform4f(aa, 1, 1, 1, 1);
     glUniform4f(bb, 1, 1, 1, 1);
-
-    if (TEST >= 0)
-    {
-        glUniform1i(TEST, 1);
-    }
 
     if (uniform_var_loc1 >= 0)
     {
@@ -414,17 +400,21 @@ void Eclipse::GraphicsManager::SetGammaCorrection(float in)
     GammaCorrection = in;
 }
 
-void Eclipse::GraphicsManager::UploadGammaCorrectionToShader()
+void Eclipse::GraphicsManager::UploadGlobalUniforms()
 {
+    CameraComponent camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+    TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetGameCameraID());
+
     auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
     shdrpgm->second.Use();
 
     GLint uniform_var_loc1 = shdrpgm->second.GetLocation("gamma");
     GLint uniform_var_loc2 = shdrpgm->second.GetLocation("EnableGammaCorrection");
+    GLint uniform_var_loc3 = shdrpgm->second.GetLocation("camPos");
 
     GLCall(glUniform1f(uniform_var_loc1, engine->GraphicsManager.GetGammaCorrection()));
-    GLCall(glUniform1f(uniform_var_loc1, engine->GraphicsManager.EnableGammaCorrection));
-
+    GLCall(glUniform1i(uniform_var_loc2, engine->GraphicsManager.EnableGammaCorrection));
+    GLCall(glUniform3f(uniform_var_loc3, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ()));
     shdrpgm->second.UnUse();
 }
 
@@ -449,6 +439,11 @@ void Eclipse::GraphicsManager::OutlinePreparation2()
 bool Eclipse::GraphicsManager::CheckIfHighlight()
 {
     return EnableHighlight;
+}
+
+void Eclipse::GraphicsManager::SetIfHighlight(bool in)
+{
+    EnableHighlight = in;
 }
 
 void Eclipse::GraphicsManager::OutlinePreparation1()
