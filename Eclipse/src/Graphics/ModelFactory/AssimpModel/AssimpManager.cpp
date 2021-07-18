@@ -48,9 +48,9 @@ namespace Eclipse
         // hi
         //CreateModel("White Dog", "testhouse", "scene.gltf");
 
-        CreateModel("Fikrul", "dog", "scene.gltf");
-        CreateModel("Nico", "dog2", "scene.gltf");
-        CreateModel("Guan Hin", "dog3", "scene.gltf");
+       //CreateModel("Fikrul", "dog", "scene.gltf");
+       //CreateModel("Nico", "dog2", "scene.gltf");
+       //CreateModel("Guan Hin", "dog3", "scene.gltf");
 
         DebugPrint();
 

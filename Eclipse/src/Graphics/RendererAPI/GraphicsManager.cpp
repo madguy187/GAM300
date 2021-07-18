@@ -87,6 +87,10 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("sphere");
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
+
+        sprite.hasTexture = true;
+        sprite.textureRef = Graphics::textures.find("orange");
+        Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
     case 5:
@@ -180,7 +184,8 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     // SpotLight
     case 14:
     {
-        engine->LightManager.CreateLights(Eclipse::TypesOfLights::SPOTLIGHT, ID);
+        engine->AssimpManager.CreateModel("White Dog", "dog" , "scene.gltf");
+        //engine->LightManager.CreateLights(Eclipse::TypesOfLights::SPOTLIGHT, ID);
     }
     break;
     }
@@ -298,8 +303,8 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
     GLuint bb = sprite.shaderRef->second.GetLocation("sspecular");
 
     glUniform1i(dsa, true);
-    glUniform4f(aa, 1, 1, 1, 1);
-    glUniform4f(bb, 1, 1, 1, 1);
+    glUniform4f(aa, 1, 0.5f, 0.31, 1);
+    glUniform4f(bb, 1, 0.5f, 0.31, 1);
 
     if (uniform_var_loc1 >= 0)
     {

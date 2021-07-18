@@ -212,6 +212,11 @@ namespace Eclipse
                 ECGui::InsertSameLine();
                 ECGui::CheckBoxBool("Enable", &_DLight.EnableBlinnPhong, enable);
 
+                static bool Affects = true;
+                ECGui::DrawTextWidget<const char*>("Affects World", "");
+                ECGui::InsertSameLine();
+                ECGui::CheckBoxBool("Affects World", &_DLight.AffectsWorld, enable);
+
                 ECGui::DrawTextWidget<const char*>("LightDirection ", "");
                 ECGui::DrawSliderFloat3Widget("LightDirection", &_DLight.Direction, true, -20.0f, 20.0f);
 

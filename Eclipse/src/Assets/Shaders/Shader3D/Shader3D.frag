@@ -53,6 +53,7 @@ struct DirectionalLight
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
+    bool AffectsWorld;
 };
 
 struct SpotLight 
@@ -150,7 +151,10 @@ void main ()
 
     if( CheckApplyLighting == true )
     {
-        result = CalcDirLight(directionlight[0], norm, viewDir,texDiff, texSpec);
+        if( directionlight[0].AffectsWorld == true )
+        {
+            result = CalcDirLight(directionlight[0], norm, viewDir,texDiff, texSpec);
+        }
 
         for(int i = 0 ; i < NumberOfPointLights ; i++ )
         {
