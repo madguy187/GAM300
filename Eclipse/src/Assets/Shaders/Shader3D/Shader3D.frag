@@ -29,6 +29,7 @@ struct Material
     vec3 diffuse;
     vec3 specular;
     float shininess;
+    float MaximumShininess;
 }; 
   
 struct PointLight 
@@ -86,36 +87,13 @@ uniform int NumberOfSpotLights;
 #define NR_DIRECTIONAL_LIGHTS 1  
 uniform DirectionalLight directionlight[NR_DIRECTIONAL_LIGHTS];
 
+uniform Material material;
+
 // Function Headers
 vec3 CalcPointLight(PointLight light, vec3 normala, vec3 fragPos, vec3 viewDira, vec4 texDiff, vec4 texSpec);
 vec3 CalcDirLight(DirectionalLight light, vec3 normala, vec3 viewDira, vec4 texDiff, vec4 texSpec);
 vec3 CalcSpotLight(SpotLight light, vec3 normala, vec3 fragPos, vec3 viewDira , vec4 texDiff, vec4 texSpec);
 
-vec4 testMaterials()
-{
-    vec3 ambientA = vec3(0.0215,0.1745,0.0215);
-    vec3 diffuseA = vec3(0.07568,0.61424,0.07568);;
-    vec3 specularA = vec3(0.633,0.727811,0.633);;
-    float shininessA = 0.6f;
-
-    // ambient
-    vec3 ambient = ambientA;
-  	
-    // diffuse 
-    vec3 norm = (normal_from_vtxShader);
-    vec3 lightDir = normalize(lightPos - crntPos);
-    float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = (diff *diffuseA);
-    
-    // specular
-    vec3 viewDir = normalize(camPos - crntPos);
-    vec3 reflectDir = reflect(-lightDir, norm);  
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininessA);
-    vec3 specular = (spec * specularA);  
-        
-    vec3 result = ambient + diffuse + specular;
-    return (texture(uTex2d, TxtCoord) * vec4(result, 1.0) );
-}
 
 void main () 
 {
@@ -207,8 +185,7 @@ vec3 CalcPointLight(PointLight light, vec3 normala, vec3 fragPos, vec3 viewDira 
 			dotProd = dot(viewDira, reflectDir);
 		}
 
-		float spec = pow(max(dotProd, 0.0), 0.5 * 128);
-        // 		float spec = pow(max(dotProd, 0.0), material.shininess * 128);
+		float spec = pow(max(dotProd, 0.0), material.shininess * material.MaximumShininess);
 		specular = vec4(light.specular,1.0) * (spec * texSpec);
 	}
 
@@ -259,8 +236,7 @@ vec3 CalcSpotLight(SpotLight light, vec3 normala, vec3 fragPos, vec3 viewDira , 
 				dotProd = dot(viewDira, reflectDir);          
             }
 
-			float spec = pow(max(dotProd, 0.0), 0.5 * 128);
-            //float spec = pow(max(dotProd, 0.0), material.shininess * 128);
+			float spec = pow(max(dotProd, 0.0), material.shininess * material.MaximumShininess);
 			specular = vec4(light.specular,1.0) * (spec * texSpec);
         }
 
@@ -320,8 +296,7 @@ vec3 CalcDirLight(DirectionalLight light, vec3 normala, vec3 viewDira , vec4 tex
 			dotProd = dot(viewDira, reflectDir);
 		}
 
-		float spec = pow(max(dotProd, 0.0), 0.5 * 128);
-        // float spec = pow(max(dotProd, 0.0), material.shininess * 128);
+		float spec = pow(max(dotProd, 0.0), material.shininess * material.MaximumShininess);
 		specular = vec4(light.specular,1.0) * (spec * texSpec);
 	}
 

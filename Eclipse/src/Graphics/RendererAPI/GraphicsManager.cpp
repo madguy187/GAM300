@@ -303,8 +303,9 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
     GLuint bb = sprite.shaderRef->second.GetLocation("sspecular");
 
     glUniform1i(dsa, true);
-    glUniform4f(aa, 1, 0.5f, 0.31, 1);
-    glUniform4f(bb, 1, 0.5f, 0.31, 1);
+ 
+    glUniform4f(aa, 0.07568, 0.61424, 0.07568, 1);
+    glUniform4f(bb, 0.633, 0.727811, 0.633, 1);
 
     if (uniform_var_loc1 >= 0)
     {

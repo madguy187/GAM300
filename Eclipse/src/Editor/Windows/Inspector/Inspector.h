@@ -18,6 +18,7 @@ namespace Eclipse
 		bool ShowDirectionalLightProperty(Entity ID);
 		void RenderSettings();
 		bool ShowGridSettings(Entity ID);
+		bool ShowMaterialProperty(Entity ID);
 	private:
 		ECVec2 WindowSize_{};
 	};

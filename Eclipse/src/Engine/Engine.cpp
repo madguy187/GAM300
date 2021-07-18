@@ -7,11 +7,14 @@
 #include "ECS/ComponentManager/Components/CameraComponent.h"
 #include "ECS/ComponentManager/Components/DirectionalLightComponent.h"
 #include "ECS/ComponentManager/Components/SpotLightComponent.h"
+#include "ECS/ComponentManager/Components/MaterialComponent.h"
+
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
 #include "ECS/SystemManager/Systems/System/EditorSystem.h"
 #include "ECS/SystemManager/Systems/System/LightingSystem.h"
 #include "ImGui/Setup/ImGuiSetup.h"
+#include "ECS/SystemManager/Systems/System/MaterialSystem.h"
 
 bool Tester1(const Test1& e)
 {
@@ -62,11 +65,13 @@ namespace Eclipse
         world.RegisterComponent<PointLightComponent>();
         world.RegisterComponent<DirectionalLightComponent>();
         world.RegisterComponent<SpotLightComponent>();
+        world.RegisterComponent<MaterialComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
         world.RegisterSystem<CameraSystem>();
         world.RegisterSystem<LightingSystem>();
+        world.RegisterSystem<MaterialSystem>();
 
         // Render System
         Signature RenderSys = RenderSystem::RegisterAll();
@@ -83,6 +88,10 @@ namespace Eclipse
         hi3.set(world.GetComponentType<DirectionalLightComponent>(), 1);
         hi3.set(world.GetComponentType<SpotLightComponent>(), 1);
         world.RegisterSystemSignature<LightingSystem>(hi3);
+
+        Signature mat;
+        mat.set(world.GetComponentType<MaterialComponent>(), 1);
+        world.RegisterSystemSignature<MaterialSystem>(mat);
 
         //Check this! - Rachel
         RenderSystem::Init();
@@ -150,6 +159,9 @@ namespace Eclipse
 
             // LIGHTINGSYSTEM =============================
             world.Update<LightingSystem>();
+
+            // Material SYstem
+            world.Update<MaterialSystem>();
 
             // FRAMEBUFFER DRAW ==========================
             engine->GraphicsManager.GlobalFrmeBufferDraw();

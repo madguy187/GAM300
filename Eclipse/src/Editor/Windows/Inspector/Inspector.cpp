@@ -39,6 +39,7 @@ namespace Eclipse
             ShowPointLightProperty(currEnt);
             ShowSpotLightProperty(currEnt);
             ShowDirectionalLightProperty(currEnt);
+            ShowMaterialProperty(currEnt);
             RenderSettings();
             ShowGridSettings(currEnt);
         }
@@ -311,6 +312,27 @@ namespace Eclipse
                 ECGui::DrawTextWidget<const char*>("Set Z Axis Colour", "");
                 ECGui::DrawSliderFloatWidget("ZAxis", &ZAxis, true, 0.0f, 1.0f);
                 engine->GraphicsManager.GridManager->SetZAxisColour(ZAxis);
+            }
+        }
+
+        return false;
+    }
+
+    bool InspectorWindow::ShowMaterialProperty(Entity ID)
+    {
+        if (engine->world.CheckComponent<MaterialComponent>(ID))
+        {
+            if (ECGui::CreateCollapsingHeader("MaterialComponent"))
+            {
+                auto& mat = engine->world.GetComponent<MaterialComponent>(ID);
+
+
+                ECGui::DrawTextWidget<float>("Max Shininess", (mat.MaximumShininess));
+                ECGui::DrawTextWidget<float>("Current Shininess", (mat.shininess * mat.MaximumShininess)  );
+                ECGui::InsertHorizontalLineSeperator();
+
+                ECGui::DrawTextWidget<const char*>("Shininess", "");
+                ECGui::DrawInputFloatWidget("Shininess", &mat.shininess, true, 0.03125f);
             }
         }
 

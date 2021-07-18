@@ -15,10 +15,6 @@ namespace Eclipse
         ECVec3 Specular;
         float Shininess;
 
-        /*
-            static instances of common materials
-        */
-
         static Material Emerald;
         static Material Jade;
         static Material Obsidian;
@@ -45,7 +41,16 @@ namespace Eclipse
         static Material Yellow_rubber;
 
         static Material mix(Material m1, Material m2, float mix = 0.5f);
-        static void CheckMaterialUniforms(Shader* _shdrpgm, MaterialComponent& hi, int index);
+    };
+
+    class MaterialManager
+    {
+    private:
+        void CheckUnniformLocation(Shader& in, MaterialComponent& inside);
+
+    public:
+        float GetCurrentShininess(MaterialComponent& in);
+        void UpdateShininess(MaterialComponent& in);
     };
 }
 

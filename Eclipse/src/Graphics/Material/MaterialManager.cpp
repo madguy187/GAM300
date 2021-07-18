@@ -204,8 +204,25 @@ namespace Eclipse
         };
     }
 
-    void Material::CheckMaterialUniforms(Shader* _shdrpgm, MaterialComponent& hi, int index)
+    float MaterialManager::GetCurrentShininess(MaterialComponent& in)
     {
+        return (in.shininess * in.MaximumShininess);
+    }
 
+    void MaterialManager::CheckUnniformLocation(Shader& in, MaterialComponent& inside)
+    {
+        GLint uniform_var_loc1 = in.GetLocation("material.shininess");
+        GLint uniform_var_loc2 = in.GetLocation("material.MaximumShininess");
+
+        GLCall(glUniform1f(uniform_var_loc1, inside.shininess));
+        GLCall(glUniform1f(uniform_var_loc2, inside.MaximumShininess));
+    }
+
+    void MaterialManager::UpdateShininess(MaterialComponent& in)
+    {
+        auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
+        shdrpgm->second.Use();
+        CheckUnniformLocation(shdrpgm->second, in);
+        shdrpgm->second.UnUse();
     }
 }

@@ -524,6 +524,7 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -773,5 +774,6 @@
       <Filter>Time</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem.cpp" />
   </ItemGroup>
 </Project>

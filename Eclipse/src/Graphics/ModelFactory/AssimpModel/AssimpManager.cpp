@@ -8,6 +8,7 @@ namespace Eclipse
         Entity ID = engine->world.CreateEntity();
 
         // Add Required Components
+        engine->world.AddComponent(ID, MaterialComponent{});
         engine->world.AddComponent(ID, TransformComponent{});
         engine->world.AddComponent(ID, EntityComponent{ EntityType::ENT_UNASSIGNED, name , true });
 
