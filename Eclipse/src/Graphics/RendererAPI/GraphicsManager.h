@@ -22,7 +22,7 @@ namespace Eclipse
         std::unique_ptr<Grid> GridManager;
         bool CheckRender = true;
         bool EnableGammaCorrection = true;
-        bool DrawSky = true;
+        bool DrawSky = false;
 
     public:
         void Pre_Render();

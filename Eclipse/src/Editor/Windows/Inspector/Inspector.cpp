@@ -246,25 +246,25 @@ namespace Eclipse
             ECGui::InsertSameLine();
             ECGui::CheckBoxBool("EnableHighLight", &engine->MaterialManager.EnableHighlight, EnableHighlight);
 
-            static bool EnableLightingSystem = true;
+            static bool EnableLightingSystem = engine->LightManager.ApplyLighting;
             ECGui::DrawTextWidget<const char*>("EnableLighting", "");
             ECGui::InsertSameLine();
             ECGui::CheckBoxBool("EnableLighting", &engine->LightManager.ApplyLighting, EnableLightingSystem);
 
-            static bool EnableRenderingSystem = true;
+            static bool EnableRenderingSystem = engine->GraphicsManager.CheckRender;
             ECGui::DrawTextWidget<const char*>("EnableRender", "");
             ECGui::InsertSameLine();
             ECGui::CheckBoxBool("EnableRender", &engine->GraphicsManager.CheckRender, EnableRenderingSystem);
 
-            static bool DrawSky = true;
-            ECGui::DrawTextWidget<const char*>("EnableRenderSky", "");
+            static bool DrawSky = engine->GraphicsManager.DrawSky;
+            ECGui::DrawTextWidget<const char*>("DrawSky", "");
             ECGui::InsertSameLine();
-            ECGui::CheckBoxBool("EnableRenderSky", &engine->GraphicsManager.DrawSky, DrawSky);
+            ECGui::CheckBoxBool(" ", &engine->GraphicsManager.DrawSky, DrawSky);
 
-            static bool DrawGrid = true;
+            static bool DrawGrid = engine->GraphicsManager.GridManager->Visible;
             ECGui::DrawTextWidget<const char*>("DrawGrid", "");
             ECGui::InsertSameLine();
-            ECGui::CheckBoxBool("DrawGrid", &engine->GraphicsManager.GridManager->Visible, DrawSky);
+            ECGui::CheckBoxBool("DrawGrid", &engine->GraphicsManager.GridManager->Visible, DrawGrid);
 
             if (engine->GraphicsManager.EnableGammaCorrection == true)
             {
