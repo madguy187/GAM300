@@ -32,6 +32,7 @@ namespace Eclipse
         void AddComponents();
         void CleanUpAllModels();
         void TestPath(std::string& path);
+        AssimpModel* GetModel(unsigned int ID);
         ~AssimpModelManager();
     };
 }

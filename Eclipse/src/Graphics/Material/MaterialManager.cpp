@@ -237,7 +237,7 @@ namespace Eclipse
 
             shdrpgm->second.Use();
 
-            for (auto const& Models : engine->AssimpManager.GetContainer() )
+            for (auto const& Models : ModelHighlightContainer)
             {
                 auto& ID = Models.first;
                 auto& InvidualModels = *(Models.second);
@@ -260,6 +260,35 @@ namespace Eclipse
             }
 
             shdrpgm->second.UnUse();
+        }
+    }
+
+    void MaterialManager::RegisterForHighlighting(MaterialComponent& in, unsigned int index)
+    {
+        if (in.RegisterForHighlight == true)
+            return;
+
+        bool CheckModel = engine->world.CheckComponent<RenderComponent>(index);
+
+        if (CheckModel)
+        {
+
+        }
+        else
+        {
+            AssimpModel* CurrentModel = engine->AssimpManager.GetModel(index);
+
+            // Insert
+            if (ModelHighlightContainer.insert(std::pair<unsigned int, AssimpModel*>(index, CurrentModel)).second == true)
+            {
+                in.RegisterForHighlight = true;
+
+                std::string Success = ("Model [" + CurrentModel->GetName() + "] Registered For Highlighting ! ").c_str();
+                ENGINE_CORE_INFO(Success);
+                
+                std::cout << "HighLight Container Size : " << ModelHighlightContainer.size() << std::endl;
+                return;
+            }
         }
     }
 }

@@ -1,11 +1,19 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
+
 #include "ECS/ComponentManager/Components/MaterialComponent.h"
+#include "Graphics/ModelFactory/AssimpModel/AssimpModel.h"
 
 namespace Eclipse
 {
     typedef std::map<int, MaterialComponent*> MaterialContainer;
     using MtIT = std::map<int, MaterialComponent*>::iterator;
+
+    typedef std::map<int, MaterialComponent*> HighlightingContainer;
+    using HighlightIT = std::map<int, MaterialComponent*>::iterator;
+
+    typedef std::map<int, AssimpModel*> ModelHighLight;
+    using HighlightModelIT = std::map<int, AssimpModel*>::iterator;
 
     struct Material
     {
@@ -50,10 +58,13 @@ namespace Eclipse
 
     public:
         bool EnableHighlight = false;
+        ModelHighLight ModelHighlightContainer;
 
         float GetCurrentShininess(MaterialComponent& in);
         void UpdateShininess(MaterialComponent& in);
         void Highlight(unsigned int FrameBufferID, GLenum Mode);
+
+        void RegisterForHighlighting(MaterialComponent& in, unsigned int index);
     };
 }
 

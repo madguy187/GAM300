@@ -6,7 +6,6 @@
 #include "Texture.h"
 #include "color4.h"
 #include "color4.inl"
-#include "Graphics/Material/MaterialManager.h"
 
 namespace Eclipse
 {

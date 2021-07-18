@@ -329,6 +329,26 @@ namespace Eclipse
                 ECGui::DrawTextWidget<float>("Current Shininess", (mat.shininess * mat.MaximumShininess)  );
                 ECGui::InsertHorizontalLineSeperator();
 
+                // POpup
+                if (ImGui::Button("Register Highlight"))
+                {
+                    ImGui::OpenPopup("Register Highlight");
+                }
+                ECGui::InsertHorizontalLineSeperator();
+
+                static bool Reg = mat.RegisterForHighlight;
+                if (ImGui::BeginPopup("Register Highlight"))
+                {
+                    ImGui::Checkbox("Register", &Reg);
+
+                    if (Reg == true)
+                    {
+                        engine->MaterialManager.RegisterForHighlighting(mat, ID);
+                    }
+
+                    ImGui::EndPopup();
+                }
+
                 static bool highlight = mat.Highlight;
                 ECGui::DrawTextWidget<const char*>("Highlight", "");
                 ECGui::CheckBoxBool("Highlight", &mat.Highlight, highlight);

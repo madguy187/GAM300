@@ -14,6 +14,7 @@ namespace Eclipse
         float MaximumShininess = 128.0f;
 
         // Check Highlighting
+        bool RegisterForHighlight = false;
         bool Highlight = false;
         float Thickness = 0.05f;
     };

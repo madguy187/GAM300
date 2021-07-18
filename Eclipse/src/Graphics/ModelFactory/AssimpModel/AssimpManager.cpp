@@ -243,4 +243,20 @@ namespace Eclipse
             std::exit(EXIT_FAILURE);
         }
     }
+
+    AssimpModel* AssimpModelManager::GetModel(unsigned int ID)
+    {
+        for (auto const& it : AssimpModelContainer_)
+        {
+            auto& ID = (it.first);
+            auto& SelectedModel = *(it.second);
+
+            if (ID == ID)
+            {
+                return &SelectedModel;
+            }
+        }
+
+        return nullptr;
+    }
 }
