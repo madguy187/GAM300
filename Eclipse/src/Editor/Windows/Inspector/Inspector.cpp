@@ -326,8 +326,9 @@ namespace Eclipse
                 auto& mat = engine->world.GetComponent<MaterialComponent>(ID);
 
                 ECGui::DrawTextWidget<float>("Max Shininess", (mat.MaximumShininess));
-                ECGui::DrawTextWidget<float>("Current Shininess", (mat.shininess * mat.MaximumShininess)  );
+                ECGui::DrawTextWidget<float>("Current Shininess", (mat.shininess * mat.MaximumShininess));
                 ECGui::InsertHorizontalLineSeperator();
+
 
                 // POpup
                 if (ImGui::Button("Register Highlight"))

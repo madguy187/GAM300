@@ -209,13 +209,22 @@ namespace Eclipse
         return (in.shininess * in.MaximumShininess);
     }
 
+    MaterialManager::MaterialManager(bool InitRegisterHighlight_, bool EnableHighlight_):
+        InitRegisterHighlight(InitRegisterHighlight_),
+        EnableHighlight(EnableHighlight_)
+    {
+    }
+
+
     void MaterialManager::CheckUnniformLocation(Shader& in, MaterialComponent& inside)
     {
         GLint uniform_var_loc1 = in.GetLocation("material.shininess");
         GLint uniform_var_loc2 = in.GetLocation("material.MaximumShininess");
+        GLuint uniformloc3 = in.GetLocation("outlining");
 
         GLCall(glUniform1f(uniform_var_loc1, inside.shininess));
         GLCall(glUniform1f(uniform_var_loc2, inside.MaximumShininess));
+        GLCall(glUniform1f(uniformloc3, inside.Thickness));
     }
 
     void MaterialManager::UpdateShininess(MaterialComponent& in)
@@ -251,8 +260,8 @@ namespace Eclipse
                     // Translation done here for each model
                     engine->AssimpManager.CheckUniformLoc(shdrpgm->second, _camera, FrameBufferID, ID);
 
-                    GLuint uniformloc1 = shdrpgm->second.GetLocation("outlining");
-                    GLCall(glUniform1f(uniformloc1, highlight.Thickness));
+                    // Materials Update
+                    engine->MaterialManager.CheckUnniformLocation(shdrpgm->second, highlight);
 
                     // Render
                     InvidualModels.Render(shdrpgm->second, Mode, FrameBufferID);

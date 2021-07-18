@@ -53,18 +53,23 @@ namespace Eclipse
 
     class MaterialManager
     {
-    private:
-        void CheckUnniformLocation(Shader& in, MaterialComponent& inside);
-
     public:
+        // First parameter is for init , should we add highlight Component into everyone of them?
+        // Second parameter is enabling highlight
+        MaterialManager(bool InitRegisterHighlight_, bool EnableHighlight_);
+
+        bool InitRegisterHighlight = false;
         bool EnableHighlight = false;
         ModelHighLight ModelHighlightContainer;
 
+    public:
         float GetCurrentShininess(MaterialComponent& in);
         void UpdateShininess(MaterialComponent& in);
         void Highlight(unsigned int FrameBufferID, GLenum Mode);
-
         void RegisterForHighlighting(MaterialComponent& in, unsigned int index);
+        void CheckUnniformLocation(Shader& in, MaterialComponent& inside);
+    private:
+
     };
 }
 

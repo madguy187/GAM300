@@ -87,81 +87,43 @@ namespace Eclipse
         }
 
         // Position of Light
-        if (uniform_var_loc1 >= 0)
-        {
-            GLCall(glUniform3f(uniform_var_loc1, PointlightTransform.position.getX(), PointlightTransform.position.getY(), PointlightTransform.position.getZ()));
-        }
+        GLCall(glUniform3f(uniform_var_loc1, PointlightTransform.position.getX(), PointlightTransform.position.getY(), PointlightTransform.position.getZ()));
 
         // ambient
-        if (uniform_var_loc2 >= 0)
-        {
-            GLCall(glUniform3f(uniform_var_loc2, in_pointlight.ambient.getX(), in_pointlight.ambient.getY(), in_pointlight.ambient.getZ()));
-        }
+        GLCall(glUniform3f(uniform_var_loc2, in_pointlight.ambient.getX(), in_pointlight.ambient.getY(), in_pointlight.ambient.getZ()));
 
         // diffuse
-        if (uniform_var_loc3 >= 0)
-        {
-            GLCall(glUniform3f(uniform_var_loc3, in_pointlight.diffuse.getX(), in_pointlight.diffuse.getY(), in_pointlight.diffuse.getZ()));
-        }
+        GLCall(glUniform3f(uniform_var_loc3, in_pointlight.diffuse.getX(), in_pointlight.diffuse.getY(), in_pointlight.diffuse.getZ()));
 
         // specular
-        if (uniform_var_loc4 >= 0)
-        {
-            GLCall(glUniform3f(uniform_var_loc4, in_pointlight.specular.getX(), in_pointlight.specular.getY(), in_pointlight.specular.getZ()));
-        }
+        GLCall(glUniform3f(uniform_var_loc4, in_pointlight.specular.getX(), in_pointlight.specular.getY(), in_pointlight.specular.getZ()));
 
         // constant
-        if (uniform_var_loc5 >= 0)
-        {
-            GLCall(glUniform1f(uniform_var_loc5, in_pointlight.constant));
-        }
+        GLCall(glUniform1f(uniform_var_loc5, in_pointlight.constant));
 
         // linear
-        if (uniform_var_loc6 >= 0)
-        {
-            GLCall(glUniform1f(uniform_var_loc6, in_pointlight.linear));
-        }
+        GLCall(glUniform1f(uniform_var_loc6, in_pointlight.linear));
 
         // quadratic
-        if (uniform_var_loc7 >= 0)
-        {
-            GLCall(glUniform1f(uniform_var_loc7, in_pointlight.quadratic));
-        }
+        GLCall(glUniform1f(uniform_var_loc7, in_pointlight.quadratic));
 
         // Check Texture
-        if (uniform_var_loc11 >= 0)
-        {
-            GLCall(glUniform1i(uniform_var_loc11, in_pointlight.hasTexture));
-        }
+        GLCall(glUniform1i(uniform_var_loc11, in_pointlight.hasTexture));
 
         // Number Of PointLights
-        if (uniform_var_loc9 >= 0)
-        {
-            GLCall(glUniform1i(uniform_var_loc9, containersize));
-        }
+        GLCall(glUniform1i(uniform_var_loc9, containersize));
 
         // Light Color
-        if (uniform_var_loc12 >= 0)
-        {
-            GLCall(glUniform3f(uniform_var_loc12, in_pointlight.lightColor.getX(), in_pointlight.lightColor.getY(), in_pointlight.lightColor.getZ()));
-        }
+        GLCall(glUniform3f(uniform_var_loc12, in_pointlight.lightColor.getX(), in_pointlight.lightColor.getY(), in_pointlight.lightColor.getZ()));
 
         // Own Color
-        if (uniform_var_loc13 >= 0)
-        {
-            GLCall(glUniform4f(uniform_var_loc13, in_pointlight.Color.getX(), in_pointlight.Color.getY(), in_pointlight.Color.getZ(), in_pointlight.Color.getW()));
-        }
+        GLCall(glUniform4f(uniform_var_loc13, in_pointlight.Color.getX(), in_pointlight.Color.getY(), in_pointlight.Color.getZ(), in_pointlight.Color.getW()));
 
         // Intensity of Light
-        if (uniform_var_loc14 >= 0)
-        {
-            GLCall(glUniform1f(uniform_var_loc14, in_pointlight.IntensityStrength));
-        }
+        GLCall(glUniform1f(uniform_var_loc14, in_pointlight.IntensityStrength));
 
-        if (useBlinn_ >= 0)
-        {
-            GLCall(glUniform1i(useBlinn_, in_pointlight.EnableBlinnPhong));
-        }
+        // UseBlinn
+        GLCall(glUniform1i(useBlinn_, in_pointlight.EnableBlinnPhong));
     }
 
     void PointLight::Draw(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)

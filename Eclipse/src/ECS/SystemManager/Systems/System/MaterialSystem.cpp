@@ -5,7 +5,7 @@ namespace Eclipse
 {
     void MaterialSystem::Init()
     {
-
+        EDITOR_LOG_INFO("MaterialSystem Init");
     }
 
     void MaterialSystem::Update()

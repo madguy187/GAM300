@@ -11,25 +11,25 @@
 
 namespace Eclipse
 {
-	class Engine
-	{
-	public:
-		World world;
-		CameraManager gCamera;
-		GraphicsManager GraphicsManager;
-		Clock Game_Clock;
-		DebugRenderingManager gDebugManager;
-		std::unique_ptr<EditorManager> editorManager;
-		LightManager LightManager;
-		MonoManager mono;
-	    AssimpModelManager AssimpManager;
-		MaterialManager MaterialManager;
+    class Engine
+    {
+    public:
+        World world;
+        CameraManager gCamera;
+        GraphicsManager GraphicsManager;
+        Clock Game_Clock;
+        DebugRenderingManager gDebugManager;
+        std::unique_ptr<EditorManager> editorManager;
+        LightManager LightManager;
+        MonoManager mono;
+        AssimpModelManager AssimpManager;
+        MaterialManager MaterialManager{ false , false };
 
-		void Init();
-		void Run();
+        void Init();
+        void Run();
 
-		bool GetEditorState();
-	private:
-		bool EditorState{ true };
-	};
+        bool GetEditorState();
+    private:
+        bool EditorState{ true };
+    };
 }

@@ -11,6 +11,12 @@ namespace Eclipse
 
     void DirectionalLight::CreateDirectionalLight(unsigned int CreatedID)
     {
+        if (_DirectionalLight.size() == 1)
+        {
+            EDITOR_LOG_WARN("Already Have Directional Light");
+            return;
+        }
+
         // Add Components
         auto& GetWorld = engine->world;
         GetWorld.AddComponent(CreatedID, DirectionalLightComponent{});
@@ -28,6 +34,8 @@ namespace Eclipse
         _DirectionalLight.insert({ counter,&_global });
         EDITOR_LOG_INFO("DirectionalLight Created Successfully");
         counter++;
+
+        std::cout << " Number of Directional Lights : " << _DirectionalLight.size() << std::endl;
     }
 
     void DirectionalLight::Draw(DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)

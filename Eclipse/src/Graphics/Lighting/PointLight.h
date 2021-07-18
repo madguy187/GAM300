@@ -6,10 +6,6 @@ namespace Eclipse
 {
     typedef std::map<int, PointLightComponent*> PointLightContainer;
 
-    using PLIT = std::map<int, PointLightComponent*>::iterator;
-    using modelIt = std::map<std::string, std::unique_ptr<IModel>>::iterator;
-    using shaderIt = std::map<std::string, Shader>::iterator;
-
     class PointLight
     {
     private:

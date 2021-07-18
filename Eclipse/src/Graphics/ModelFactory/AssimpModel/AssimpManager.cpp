@@ -24,6 +24,7 @@ namespace Eclipse
         Transform.rotation.setX(270);
         // ----------------------------------------------------------------------------------------------------------
 
+
         // Create path
         std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/" + filename).c_str();
 
@@ -42,6 +43,15 @@ namespace Eclipse
             std::string Success = ("3D Model [" + name + "] Created and Inseted into Container Successfully! ").c_str();
             ENGINE_CORE_INFO(Success);
         }
+
+        // ----------------------------------------------------------------------------------------------------------
+        if (engine->MaterialManager.InitRegisterHighlight == true)
+        {
+            MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+            engine->MaterialManager.RegisterForHighlighting(mat, ID);
+        }
+        // ----------------------------------------------------------------------------------------------------------
+
     }
 
     void AssimpModelManager::LoadAllModels()
@@ -117,8 +127,15 @@ namespace Eclipse
 
     void AssimpModelManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID)
     {
-        TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(ModelID);
+        MaterialComponent& material = engine->world.GetComponent<MaterialComponent>(ModelID);
+        GLint uniform_var_loc1 = _shdrpgm.GetLocation("material.shininess");
+        GLint uniform_var_loc2 = _shdrpgm.GetLocation("material.MaximumShininess");
 
+        GLCall(glUniform1f(uniform_var_loc1, material.shininess));
+        GLCall(glUniform1f(uniform_var_loc2, material.MaximumShininess));
+
+
+        TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(ModelID);
         GLint uModelToNDC_ = _shdrpgm.GetLocation("uModelToNDC");
         GLuint model_ = _shdrpgm.GetLocation("model");
         GLuint dsa = _shdrpgm.GetLocation("noTex");

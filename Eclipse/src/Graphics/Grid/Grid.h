@@ -54,6 +54,8 @@ namespace Eclipse
         void UseFrameBuffer(unsigned int FramebufferID);
         void CheckUniformLocation(unsigned int GridID);
         void Init();
+
+        // Drawing of Grid , Must render last
         void DrawGrid(unsigned int FrameBufferID);
 
         ~Grid();
