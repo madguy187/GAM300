@@ -221,10 +221,13 @@ namespace Eclipse
         GLint uniform_var_loc1 = in.GetLocation("material.shininess");
         GLint uniform_var_loc2 = in.GetLocation("material.MaximumShininess");
         GLuint uniformloc3 = in.GetLocation("outlining");
+        GLuint uniformloc4 = in.GetLocation("HighlightColour");
 
         GLCall(glUniform1f(uniform_var_loc1, inside.shininess));
         GLCall(glUniform1f(uniform_var_loc2, inside.MaximumShininess));
         GLCall(glUniform1f(uniformloc3, inside.Thickness));
+        GLCall(glUniform3f(uniformloc4, inside.HighlightColour.getX(), inside.HighlightColour.getY(), inside.HighlightColour.getZ()));
+
     }
 
     void MaterialManager::UpdateShininess(MaterialComponent& in)

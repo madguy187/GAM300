@@ -2,9 +2,9 @@
 
 layout (location=0) out vec4 fFragClr;
 
-uniform vec4 uColor;
+uniform vec3 HighlightColour;
 
 void main () 
 {
-    fFragClr = vec4(1.0, 1.0, 1.0, 1.0);
+    fFragClr = vec4(HighlightColour, 1.0);
 }
