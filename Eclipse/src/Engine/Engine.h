@@ -7,6 +7,7 @@
 #include "Graphics/Lighting/LightManager.h"
 #include "Mono/Manager/MonoManager.h"
 #include "AssimpModel/AssimpManager.h"
+#include "Graphics/Material/MaterialManager.h"
 
 namespace Eclipse
 {
@@ -22,6 +23,7 @@ namespace Eclipse
 		LightManager LightManager;
 		MonoManager mono;
 	    AssimpModelManager AssimpManager;
+		MaterialManager MaterialManager;
 
 		void Init();
 		void Run();

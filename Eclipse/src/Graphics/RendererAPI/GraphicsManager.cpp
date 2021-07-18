@@ -442,16 +442,6 @@ void Eclipse::GraphicsManager::OutlinePreparation2()
     glStencilMask(0xFF);
 }
 
-bool Eclipse::GraphicsManager::CheckIfHighlight()
-{
-    return EnableHighlight;
-}
-
-void Eclipse::GraphicsManager::SetIfHighlight(bool in)
-{
-    EnableHighlight = in;
-}
-
 void Eclipse::GraphicsManager::OutlinePreparation1()
 {
     // Make it so the stencil test always passes

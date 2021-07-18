@@ -86,7 +86,7 @@ namespace Eclipse
 
     void AssimpModelManager::HighlihtDraw(unsigned int FrameBufferID, GLenum Mode)
     {
-        if (engine->GraphicsManager.CheckIfHighlight() == true)
+        if (1) // if highlight is true
         {
             auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 
@@ -105,7 +105,7 @@ namespace Eclipse
                 CheckUniformLoc(shdrpgm->second, _camera, FrameBufferID, ID);
 
                 GLuint uniformloc1 = shdrpgm->second.GetLocation("outlining");
-                GLCall(glUniform1f(uniformloc1, engine->GraphicsManager.OutlineThickness));
+                GLCall(glUniform1f(uniformloc1, 0.05f));
 
                 // Render
                 InvidualModels.Render(shdrpgm->second, Mode, FrameBufferID);

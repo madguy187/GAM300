@@ -15,5 +15,6 @@ namespace Eclipse
 
         // Check Highlighting
         bool Highlight = false;
+        float Thickness = 0.05f;
     };
 }

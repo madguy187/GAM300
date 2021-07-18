@@ -225,4 +225,41 @@ namespace Eclipse
         CheckUnniformLocation(shdrpgm->second, in);
         shdrpgm->second.UnUse();
     }
+
+    void MaterialManager::Highlight(unsigned int FrameBufferID, GLenum Mode)
+    {
+        if (EnableHighlight == true)
+        {
+            auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+
+            glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
+            auto shdrpgm = Graphics::shaderpgms.find("OutLineShader");
+
+            shdrpgm->second.Use();
+
+            for (auto const& Models : engine->AssimpManager.GetContainer() )
+            {
+                auto& ID = Models.first;
+                auto& InvidualModels = *(Models.second);
+
+                auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+                auto& highlight = engine->world.GetComponent<MaterialComponent>(ID);
+
+                if (highlight.Highlight == true)
+                {
+                    // Check Main Uniforms For each Model
+                    // Translation done here for each model
+                    engine->AssimpManager.CheckUniformLoc(shdrpgm->second, _camera, FrameBufferID, ID);
+
+                    GLuint uniformloc1 = shdrpgm->second.GetLocation("outlining");
+                    GLCall(glUniform1f(uniformloc1, highlight.Thickness));
+
+                    // Render
+                    InvidualModels.Render(shdrpgm->second, Mode, FrameBufferID);
+                }
+            }
+
+            shdrpgm->second.UnUse();
+        }
+    }
 }

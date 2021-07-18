@@ -49,8 +49,11 @@ namespace Eclipse
         void CheckUnniformLocation(Shader& in, MaterialComponent& inside);
 
     public:
+        bool EnableHighlight = false;
+
         float GetCurrentShininess(MaterialComponent& in);
         void UpdateShininess(MaterialComponent& in);
+        void Highlight(unsigned int FrameBufferID, GLenum Mode);
     };
 }
 

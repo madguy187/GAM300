@@ -13,7 +13,11 @@ namespace Eclipse
         for (auto const& entity : mEntities) 
         {
             MaterialComponent& material = engine->world.GetComponent<MaterialComponent>(entity);
-            MaterialManager_.UpdateShininess(material);
+            engine->MaterialManager.UpdateShininess(material);
         }
+
+        engine->MaterialManager.Highlight(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL);
+        engine->GraphicsManager.StencilBufferClear();
+
     }
 }

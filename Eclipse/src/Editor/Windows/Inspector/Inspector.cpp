@@ -245,7 +245,7 @@ namespace Eclipse
             static bool EnableHighlight = true;
             ECGui::DrawTextWidget<const char*>("EnableHighLight", "");
             ECGui::InsertSameLine();
-            ECGui::CheckBoxBool("EnableHighLight", &engine->GraphicsManager.EnableHighlight, EnableHighlight);
+            ECGui::CheckBoxBool("EnableHighLight", &engine->MaterialManager.EnableHighlight, EnableHighlight);
 
             static bool EnableLightingSystem = true;
             ECGui::DrawTextWidget<const char*>("EnableLighting", "");
@@ -326,10 +326,13 @@ namespace Eclipse
             {
                 auto& mat = engine->world.GetComponent<MaterialComponent>(ID);
 
-
                 ECGui::DrawTextWidget<float>("Max Shininess", (mat.MaximumShininess));
                 ECGui::DrawTextWidget<float>("Current Shininess", (mat.shininess * mat.MaximumShininess)  );
                 ECGui::InsertHorizontalLineSeperator();
+
+                static bool highlight = mat.Highlight;
+                ECGui::DrawTextWidget<const char*>("Highlight", "");
+                ECGui::CheckBoxBool("Highlight", &mat.Highlight, highlight);
 
                 ECGui::DrawTextWidget<const char*>("Shininess", "");
                 ECGui::DrawInputFloatWidget("Shininess", &mat.shininess, true, 0.03125f);

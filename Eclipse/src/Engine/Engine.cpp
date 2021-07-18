@@ -162,6 +162,9 @@ namespace Eclipse
 
             // Material SYstem
             world.Update<MaterialSystem>();
+            
+            // GRID DRAW =============================
+            engine->GraphicsManager.GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 
             // FRAMEBUFFER DRAW ==========================
             engine->GraphicsManager.GlobalFrmeBufferDraw();

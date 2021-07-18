@@ -76,18 +76,10 @@ namespace Eclipse
             // MODELS Render  Start =============================
             engine->GraphicsManager.OutlinePreparation1();
             engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL);
-            engine->GraphicsManager.OutlinePreparation2();
-            engine->AssimpManager.HighlihtDraw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL);
-            engine->GraphicsManager.StencilBufferClear();           
+            engine->GraphicsManager.OutlinePreparation2();       
 
             engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), GL_FILL);
             // MODELS Render  End ===============================
-  
-
-            // GRID Render Start =============================
-            engine->GraphicsManager.GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
-            // GRID Render End ===============================
-
         }
 
         timer.tracker.system_end = glfwGetTime();
