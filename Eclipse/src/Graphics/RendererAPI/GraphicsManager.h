@@ -44,6 +44,7 @@ namespace Eclipse
         void StencilBufferClear();
         void OutlinePreparation1();
         void OutlinePreparation2();
+        void UpdateStencilBuffer(bool in);
 
     private:
         float GammaCorrection = 2.2f;

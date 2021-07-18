@@ -54,6 +54,7 @@ namespace Eclipse
         if (engine->GraphicsManager.CheckRender == true)
         {
             // SKY Reder Start =============================
+            engine->GraphicsManager.UpdateStencilBuffer(false);
             engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
             // SKY Reder End ===============================
  
@@ -62,6 +63,7 @@ namespace Eclipse
             for (auto const& entity : mEntities) // - using RenderComponent and TransformComponent
             {
                 RenderComponent& _Sprites = engine->world.GetComponent<RenderComponent>(entity);
+                engine->GraphicsManager.UpdateStencilBuffer(false);
                 engine->GraphicsManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
                 engine->GraphicsManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
             }
@@ -69,15 +71,17 @@ namespace Eclipse
 
 
             // CAMERA Render Start =============================
+            engine->GraphicsManager.UpdateStencilBuffer(false);
             engine->gDebugManager.DrawDebugShapes(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
             // CAMERA Render End ===============================
  
 
             // MODELS Render  Start =============================
-            engine->GraphicsManager.OutlinePreparation1();
+            engine->GraphicsManager.UpdateStencilBuffer(true);
             engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL);
             engine->GraphicsManager.OutlinePreparation2();       
 
+            engine->GraphicsManager.UpdateStencilBuffer(false);
             engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), GL_FILL);
             // MODELS Render  End ===============================
         }

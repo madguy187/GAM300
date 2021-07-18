@@ -184,7 +184,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     // SpotLight
     case 14:
     {
-        engine->AssimpManager.CreateModel("White Dog", "dog" , "scene.gltf");
+        engine->AssimpManager.CreateModel("White Dog", "dog", "scene.gltf");
         //engine->LightManager.CreateLights(Eclipse::TypesOfLights::SPOTLIGHT, ID);
     }
     break;
@@ -271,7 +271,7 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
     if (framebufferID == engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID())
     {
         camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
-        camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetGameCameraID());
+        camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetEditorCameraID());
     }
     else
     {
@@ -281,8 +281,8 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
             return;
         }
 
-        camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetGameCameraID());
-        camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetGameCameraID());
+        camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+        camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetEditorCameraID());
     }
 
     TransformComponent& trans = engine->world.GetComponent<TransformComponent>(id);
@@ -303,7 +303,7 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
     GLuint bb = sprite.shaderRef->second.GetLocation("sspecular");
 
     glUniform1i(dsa, true);
- 
+
     glUniform4f(aa, 0.07568, 0.61424, 0.07568, 1);
     glUniform4f(bb, 0.633, 0.727811, 0.633, 1);
 
@@ -431,6 +431,9 @@ void Eclipse::GraphicsManager::StencilBufferClear()
 
     // Clear stencil buffer
     glStencilFunc(GL_ALWAYS, 0, 0xFF);
+
+    // Enable the depth buffer
+    glEnable(GL_DEPTH_TEST);
 }
 
 void Eclipse::GraphicsManager::OutlinePreparation2()
@@ -440,6 +443,32 @@ void Eclipse::GraphicsManager::OutlinePreparation2()
 
     //Disable modifying of the stencil buffer
     glStencilMask(0xFF);
+
+    glDisable(GL_DEPTH_TEST);
+}
+
+void Eclipse::GraphicsManager::UpdateStencilBuffer(bool in)
+{
+    // We can use this function like the below to affect both drawings
+
+    /*
+    UpdateStencilBuffer(false)
+    Draw Call
+    Draw Call
+    */
+
+    if (in == false)
+    {
+        glStencilMask(0x00);
+    }
+    else
+    {
+        // Make it so the stencil test always passes
+        glStencilFunc(GL_ALWAYS, 1, 0xFF);
+
+        // Enable modifying of the stencil buffer
+        glStencilMask(0xFF);
+    }
 }
 
 void Eclipse::GraphicsManager::OutlinePreparation1()
