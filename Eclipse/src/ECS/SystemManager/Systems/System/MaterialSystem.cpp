@@ -16,9 +16,12 @@ namespace Eclipse
             MaterialComponent& material = engine->world.GetComponent<MaterialComponent>(entity);
             engine->MaterialManager.UpdateShininess(material);
 
-            // HighLight BASIC Start ===============================
-            engine->MaterialManager.Highlight(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), entity, GL_FILL);
-            // HighLight BASIC End ===============================
+            if (engine->world.CheckComponent<RenderComponent>(entity))
+            {
+                // HighLight BASIC Start ===============================
+                engine->MaterialManager.Highlight(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), entity, GL_FILL);
+                // HighLight BASIC End ===============================
+            }
 
         }
 
