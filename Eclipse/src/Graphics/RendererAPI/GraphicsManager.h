@@ -45,11 +45,10 @@ namespace Eclipse
         void OutlinePreparation1();
         void OutlinePreparation2();
         void UpdateStencilBuffer(bool in);
+        void CheckUniformLoc(RenderComponent& sprite, unsigned int id, unsigned int framebufferID);
 
     private:
         float GammaCorrection = 2.2f;
-
-        void CheckUniformLoc(RenderComponent& sprite, unsigned int id, unsigned int framebufferID);
         void UpdateFrameBuffer();
         void FrameBufferDraw();
     };

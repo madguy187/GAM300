@@ -38,6 +38,7 @@ namespace Eclipse
 
         SystemSignature.set(engine->world.GetComponentType<TransformComponent>(), 1);
         SystemSignature.set(engine->world.GetComponentType<RenderComponent>(), 1);
+        SystemSignature.set(engine->world.GetComponentType<MaterialComponent>(), 1);
         engine->world.RegisterSystemSignature<RenderSystem>(SystemSignature);
 
         return SystemSignature;
@@ -57,15 +58,20 @@ namespace Eclipse
             engine->GraphicsManager.UpdateStencilBuffer(false);
             engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
             // SKY Reder End ===============================
- 
+
 
             // Basic Primitives Render Start =============================
             for (auto const& entity : mEntities) // - using RenderComponent and TransformComponent
             {
                 RenderComponent& _Sprites = engine->world.GetComponent<RenderComponent>(entity);
+                MaterialComponent& dasdsa = engine->world.GetComponent<MaterialComponent>(entity);
+
+                engine->GraphicsManager.UpdateStencilBuffer(true);
+                engine->GraphicsManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
+                engine->GraphicsManager.OutlinePreparation2();
+
                 engine->GraphicsManager.UpdateStencilBuffer(false);
                 engine->GraphicsManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
-                engine->GraphicsManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
             }
             // Basic Primitives Render End ==============================
 
@@ -74,12 +80,12 @@ namespace Eclipse
             engine->GraphicsManager.UpdateStencilBuffer(false);
             engine->gDebugManager.DrawDebugShapes(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
             // CAMERA Render End ===============================
- 
+
 
             // MODELS Render  Start =============================
             engine->GraphicsManager.UpdateStencilBuffer(true);
             engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL);
-            engine->GraphicsManager.OutlinePreparation2();       
+            engine->GraphicsManager.OutlinePreparation2();
 
             engine->GraphicsManager.UpdateStencilBuffer(false);
             engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), GL_FILL);

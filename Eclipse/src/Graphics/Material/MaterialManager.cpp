@@ -209,7 +209,7 @@ namespace Eclipse
         return (in.shininess * in.MaximumShininess);
     }
 
-    MaterialManager::MaterialManager(bool InitRegisterHighlight_, bool EnableHighlight_):
+    MaterialManager::MaterialManager(bool InitRegisterHighlight_, bool EnableHighlight_) :
         InitRegisterHighlight(InitRegisterHighlight_),
         EnableHighlight(EnableHighlight_)
     {
@@ -227,6 +227,48 @@ namespace Eclipse
         GLCall(glUniform1f(uniform_var_loc2, inside.MaximumShininess));
         GLCall(glUniform1f(uniformloc3, inside.Thickness));
         GLCall(glUniform3f(uniformloc4, inside.HighlightColour.getX(), inside.HighlightColour.getY(), inside.HighlightColour.getZ()));
+
+    }
+
+    void MaterialManager::CheckUniformLoc(RenderComponent& sprite, Shader& in, unsigned int id, unsigned int framebufferID)
+    {
+        CameraComponent camera;
+        TransformComponent camerapos;
+
+        if (framebufferID == engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID())
+        {
+            camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+            camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetEditorCameraID());
+        }
+        else
+        {
+            //Check if game camera exists
+            if (engine->gCamera.GetGameCameraID() == MAX_ENTITY)
+            {
+                return;
+            }
+
+            camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+            camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetEditorCameraID());
+        }
+
+        TransformComponent& trans = engine->world.GetComponent<TransformComponent>(id);
+
+        GLint uniform_var_loc1 = in.GetLocation("uModelToNDC");
+
+        if (uniform_var_loc1 >= 0)
+        {
+            glm::mat4 mModelNDC;
+
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::translate(model, trans.position.ConvertToGlmVec3Type());
+            model = glm::rotate(model, glm::radians(trans.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(trans.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(trans.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+            model = glm::scale(model, { trans.scale.getX() * 1.2 , trans.scale.getX()*1.2, trans.scale.getZ()*1.2});
+            mModelNDC = camera.projMtx * camera.viewMtx * model;
+            glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(mModelNDC));
+        }
 
     }
 
@@ -297,10 +339,43 @@ namespace Eclipse
 
                 std::string Success = ("Model [" + CurrentModel->GetName() + "] Registered For Highlighting ! ").c_str();
                 ENGINE_CORE_INFO(Success);
-                
+
                 std::cout << "HighLight Container Size : " << ModelHighlightContainer.size() << std::endl;
                 return;
             }
         }
+    }
+
+    void MaterialManager::Highlight(unsigned int FrameBufferID, unsigned int ModelID, GLenum mode)
+    {
+        glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
+
+        auto shdrpgm = Graphics::shaderpgms.find("OutLineShader");
+
+        shdrpgm->second.Use();
+
+        auto& _spritecomponent = engine->world.GetComponent<RenderComponent>(ModelID);
+        auto& highlight = engine->world.GetComponent<MaterialComponent>(ModelID);
+
+        // Part 2: Bind the object's VAO handle using glBindVertexArray
+        glBindVertexArray(_spritecomponent.modelRef->second->GetVaoID());
+
+        glEnable(GL_DEPTH_TEST);
+        glDisable(GL_CULL_FACE);
+        glPolygonMode(GL_FRONT_AND_BACK, mode);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        engine->GraphicsManager.CheckTexture(&_spritecomponent);
+
+        // Materials Update
+        engine->MaterialManager.CheckUnniformLocation(shdrpgm->second, highlight);
+
+        CheckUniformLoc(_spritecomponent, shdrpgm->second, _spritecomponent.ID, FrameBufferID);
+
+        engine->GraphicsManager.DrawIndexed(&_spritecomponent, GL_UNSIGNED_SHORT);
+
+        // Part 5: Clean up
+        glBindVertexArray(0);
+        shdrpgm->second.UnUse();
     }
 }

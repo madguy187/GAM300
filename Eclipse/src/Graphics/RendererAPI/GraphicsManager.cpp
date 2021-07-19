@@ -96,6 +96,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     case 5:
     {
         engine->world.AddComponent(ID, RenderComponent{});
+        engine->world.AddComponent(ID, MaterialComponent{});
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
