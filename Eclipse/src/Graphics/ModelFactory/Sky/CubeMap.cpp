@@ -111,7 +111,7 @@ namespace Eclipse
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
         // Check Main Uniforms
-        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetGameCameraID());
+        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
         GLint view = shader.GetLocation("view");
         GLuint projection = shader.GetLocation("projection");
 
