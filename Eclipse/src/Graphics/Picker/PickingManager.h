@@ -1,6 +1,7 @@
 #pragma once
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/AabbComponent.h"
+#include "Editor/Windows/Scene/Scene.h"
 #include <limits>
 
 #ifndef PICKINGMANAGER_H

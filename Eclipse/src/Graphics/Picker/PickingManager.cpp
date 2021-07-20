@@ -32,6 +32,7 @@ void Eclipse::PickingManager::UpdateAabb(unsigned int ID)
 glm::vec3 Eclipse::PickingManager::ComputeCursorRayDirection()
 {
     auto& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+    auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
 
     //float winWidth = static_cast<float>(OpenGL_Context::GetWindowRatioX() * OpenGL_Context::GetWidth());
     //float winHeight = static_cast<float>(OpenGL_Context::GetWindowRatioY() * OpenGL_Context::GetHeight());
@@ -52,7 +53,8 @@ glm::vec3 Eclipse::PickingManager::ComputeCursorRayDirection()
     float mouseY = OpenGL_Context::GetMouseCursorPos().y;
 
     float windowOffsetX = ImGui::GetCursorScreenPos().x - OpenGL_Context::GetContextPosition().x;
-    float windowOffsetY = ImGui::GetCursorScreenPos().y - OpenGL_Context::GetContextPosition().y;
+    //float windowOffsetY = ImGui::GetCursorScreenPos().y - OpenGL_Context::GetContextPosition().y;
+    float windowOffsetY = (OpenGL_Context::GetContextPosition().y + OpenGL_Context::GetHeight()) - ImGui::GetCursorScreenPos().y;
 
     float windowX = (ImGui::GetWindowWidth() / 2) + windowOffsetX;
     float windowY = (ImGui::GetWindowHeight() / 2) + windowOffsetY;
@@ -88,11 +90,11 @@ glm::vec3 Eclipse::PickingManager::ComputeCursorRayDirection()
     if (GLFW_PRESS == keyN)
     {
         auto& io = ImGui::GetIO();
-        std::cout << "ImGui mousePosX: " << io.MousePos.x << std::endl;
-        std::cout << "ImGui mousePosY: " << io.MousePos.y << std::endl;     
-
-        std::cout << "ImGui WindowPosX: " << ImGui::GetWindowPos().x << std::endl;
-        std::cout << "ImGui WindowPosY: " << ImGui::GetWindowPos().y << std::endl;
+        //std::cout << "ImGui mousePosX: " << io.MousePos.x << std::endl;
+        //std::cout << "ImGui mousePosY: " << io.MousePos.y << std::endl;     
+        //
+        //std::cout << "ImGui WindowPosX: " << ImGui::GetWindowPos().x << std::endl;
+        //std::cout << "ImGui WindowPosY: " << ImGui::GetWindowPos().y << std::endl;
 
         //std::cout << "ImGui ContentRegionAvailX: " << ImGui::GetContentRegionAvail().x << std::endl;
         //std::cout << "ImGui ContentRegionAvailY: " << ImGui::GetContentRegionAvail().y << std::endl;
@@ -115,14 +117,23 @@ glm::vec3 Eclipse::PickingManager::ComputeCursorRayDirection()
         std::cout << "ContextPosX: " << OpenGL_Context::GetContextPosition().x << std::endl;
         std::cout << "ContextPosY: " << OpenGL_Context::GetContextPosition().y << std::endl;
 
+        //std::cout << "ImGui WindowPosX: " << ImGui::GetWindowPos().x << std::endl;
+        //std::cout << "ImGui WindowPosY: " << ImGui::GetWindowPos().y << std::endl;
+
+        std::cout << "WindowPosX func: " << scene->GetSceneBufferPos().x << std::endl;
+        std::cout << "WindowPosY func: " << scene->GetSceneBufferPos().y << std::endl;
+
         std::cout << "MousePosX: " << OpenGL_Context::GetMouseCursorPos().x << std::endl;
         std::cout << "MousePosY: " << OpenGL_Context::GetMouseCursorPos().y << std::endl;
 
         std::cout << "Camera Height: " << camera.fov << std::endl;
         std::cout << "Camera Pos: {" << camera.eyePos.x << ", " << camera.eyePos.y << ", " << camera.eyePos.z << " }" << std::endl;
 
-        std::cout << "ImGui Width: " << ImGui::GetWindowWidth() << std::endl;
-        std::cout << "ImGui Height: " << ImGui::GetWindowHeight() << std::endl;
+        std::cout << "ImGui Width func: " << scene->GetSceneBufferSize().x << std::endl;
+        std::cout << "ImGui Height func: " << scene->GetSceneBufferSize().y << std::endl;
+        
+        //std::cout << "ImGui Width: " << ImGui::GetWindowWidth() << std::endl;
+        //std::cout << "ImGui Height: " << ImGui::GetWindowHeight() << std::endl;
         std::cout << "AR: " << aspectRatio << std::endl;
         
         std::cout << "CursorScreenPosX: " << ImGui::GetCursorScreenPos().x << std::endl;
