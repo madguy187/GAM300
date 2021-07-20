@@ -28,6 +28,9 @@ namespace Eclipse
         // Create Grid =============================
         engine->GraphicsManager.GridManager->Init();
         engine->GraphicsManager.GridManager->DebugPrint();
+
+        // Enables the Depth Buffer
+        //glEnable(GL_DEPTH_TEST);
     }
 
     Signature RenderSystem::RegisterAll()

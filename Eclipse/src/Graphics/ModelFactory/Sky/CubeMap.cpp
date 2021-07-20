@@ -115,16 +115,11 @@ namespace Eclipse
         GLint view = shader.GetLocation("view");
         GLuint projection = shader.GetLocation("projection");
 
-        if (view >= 0)
-        {
-            glm::mat4 newview = glm::mat4(glm::mat3(_camera.viewMtx));
-            glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(newview));
-        }
+        glm::mat4 _cameraprojMtx = glm::perspective(glm::radians(_camera.fov), _camera.aspect, 0.1f, _camera.farPlane);
 
-        if (projection >= 0)
-        {
-            glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
-        }
+        glm::mat4 newview = glm::mat4(glm::mat3(_camera.viewMtx));
+        glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(newview));
+        glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_cameraprojMtx));
 
         if (HasTextures)
         {
