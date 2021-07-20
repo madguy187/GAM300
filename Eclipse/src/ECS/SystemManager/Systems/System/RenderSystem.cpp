@@ -12,9 +12,7 @@ namespace Eclipse
     void RenderSystem::Init()
     {
         // Outlining Preparation ============================= 
-        // Enables the Stencil Buffer
         glEnable(GL_STENCIL_TEST);
-        // Sets rules for outcomes of stecil tests
         glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
         // Graphics Init =============================
@@ -66,9 +64,9 @@ namespace Eclipse
                 RenderComponent& _Sprites = engine->world.GetComponent<RenderComponent>(entity);
                 MaterialComponent& dasdsa = engine->world.GetComponent<MaterialComponent>(entity);
 
-                engine->GraphicsManager.UpdateStencilBuffer(true);
+                glStencilFunc(GL_ALWAYS, 2, 0xFF);
+                glStencilMask(0xFF);
                 engine->GraphicsManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
-                engine->GraphicsManager.OutlinePreparation2();
 
                 engine->GraphicsManager.UpdateStencilBuffer(false);
                 engine->GraphicsManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
@@ -83,9 +81,10 @@ namespace Eclipse
 
 
             // MODELS Render  Start =============================
-            engine->GraphicsManager.UpdateStencilBuffer(true);
+       
+            glStencilFunc(GL_ALWAYS, 1, 0xFF);
+            glStencilMask(0xFF);
             engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL);
-            engine->GraphicsManager.OutlinePreparation2();
 
             engine->GraphicsManager.UpdateStencilBuffer(false);
             engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), GL_FILL);

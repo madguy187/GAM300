@@ -18,5 +18,8 @@ namespace Eclipse
         bool Highlight = false;
         float Thickness = 0.05f;
         ECVec3 HighlightColour{ 0.0f,0.0f,0.0f };
+
+        // Only for 3D Primitives
+        float ScaleUp = 1.05f;
     };
 }

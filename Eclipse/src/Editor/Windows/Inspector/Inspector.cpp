@@ -357,8 +357,16 @@ namespace Eclipse
                 ECGui::DrawTextWidget<const char*>("Shininess", "");
                 ECGui::DrawInputFloatWidget("Shininess", &mat.shininess, true, 0.03125f);
 
-                ECGui::DrawTextWidget<const char*>("Highlight", "");
-                ECGui::DrawInputFloatWidget("Highlight", &mat.Thickness, true, 0.005f);
+                if (engine->world.CheckComponent<RenderComponent>(ID))
+                {
+                    ECGui::DrawTextWidget<const char*>("Highlight", "");
+                    ECGui::DrawInputFloatWidget("Highlight", &mat.ScaleUp, true, 0.05f);
+                }
+                else
+                {
+                    ECGui::DrawTextWidget<const char*>("Highlight", "");
+                    ECGui::DrawInputFloatWidget("Highlight", &mat.Thickness, true, 0.005f);
+                }
 
                 ECGui::DrawTextWidget<const char*>("Highlight Colour", "");
                 ImGui::ColorPicker3("Color", (float*)&mat.HighlightColour, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);

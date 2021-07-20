@@ -253,6 +253,7 @@ namespace Eclipse
         }
 
         TransformComponent& trans = engine->world.GetComponent<TransformComponent>(id);
+        MaterialComponent& outline = engine->world.GetComponent<MaterialComponent>(id);
 
         GLint uniform_var_loc1 = in.GetLocation("uModelToNDC");
 
@@ -265,7 +266,7 @@ namespace Eclipse
             model = glm::rotate(model, glm::radians(trans.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
             model = glm::rotate(model, glm::radians(trans.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
             model = glm::rotate(model, glm::radians(trans.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-            model = glm::scale(model, { trans.scale.getX() * 1.2 , trans.scale.getX()*1.2, trans.scale.getZ()*1.2});
+            model = glm::scale(model, { trans.scale.getX() * outline.ScaleUp , trans.scale.getX() * outline.ScaleUp, trans.scale.getZ() * outline.ScaleUp });
             mModelNDC = camera.projMtx * camera.viewMtx * model;
             glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(mModelNDC));
         }
@@ -348,34 +349,37 @@ namespace Eclipse
 
     void MaterialManager::Highlight(unsigned int FrameBufferID, unsigned int ModelID, GLenum mode)
     {
-        glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
+        if (EnableHighlight == true)
+        {
+            glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
 
-        auto shdrpgm = Graphics::shaderpgms.find("OutLineShader");
+            auto shdrpgm = Graphics::shaderpgms.find("OutLineShader");
 
-        shdrpgm->second.Use();
+            shdrpgm->second.Use();
 
-        auto& _spritecomponent = engine->world.GetComponent<RenderComponent>(ModelID);
-        auto& highlight = engine->world.GetComponent<MaterialComponent>(ModelID);
+            auto& _spritecomponent = engine->world.GetComponent<RenderComponent>(ModelID);
+            auto& highlight = engine->world.GetComponent<MaterialComponent>(ModelID);
 
-        // Part 2: Bind the object's VAO handle using glBindVertexArray
-        glBindVertexArray(_spritecomponent.modelRef->second->GetVaoID());
+            // Part 2: Bind the object's VAO handle using glBindVertexArray
+            glBindVertexArray(_spritecomponent.modelRef->second->GetVaoID());
 
-        glEnable(GL_DEPTH_TEST);
-        glDisable(GL_CULL_FACE);
-        glPolygonMode(GL_FRONT_AND_BACK, mode);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glEnable(GL_DEPTH_TEST);
+            glDisable(GL_CULL_FACE);
+            glPolygonMode(GL_FRONT_AND_BACK, mode);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        engine->GraphicsManager.CheckTexture(&_spritecomponent);
+            engine->GraphicsManager.CheckTexture(&_spritecomponent);
 
-        // Materials Update
-        engine->MaterialManager.CheckUnniformLocation(shdrpgm->second, highlight);
+            // Materials Update
+            engine->MaterialManager.CheckUnniformLocation(shdrpgm->second, highlight);
 
-        CheckUniformLoc(_spritecomponent, shdrpgm->second, _spritecomponent.ID, FrameBufferID);
+            CheckUniformLoc(_spritecomponent, shdrpgm->second, _spritecomponent.ID, FrameBufferID);
 
-        engine->GraphicsManager.DrawIndexed(&_spritecomponent, GL_UNSIGNED_SHORT);
+            engine->GraphicsManager.DrawIndexed(&_spritecomponent, GL_UNSIGNED_SHORT);
 
-        // Part 5: Clean up
-        glBindVertexArray(0);
-        shdrpgm->second.UnUse();
+            // Part 5: Clean up
+            glBindVertexArray(0);
+            shdrpgm->second.UnUse();
+        }
     }
 }
