@@ -273,6 +273,21 @@ namespace Eclipse
 
     }
 
+    void MaterialManager::HighlightBasicPrimitives(MaterialComponent& in, unsigned int EntityId, unsigned int FrameBufferID)
+    {
+        if (EnableHighlight == true)
+        {
+            if (in.Highlight == true)
+            {
+                if (engine->world.CheckComponent<RenderComponent>(EntityId))
+                {
+                    engine->MaterialManager.UpdateStencilWith_Outline(EntityId);
+                    engine->MaterialManager.Highlight(FrameBufferID, EntityId, GL_FILL);
+                }
+            }
+        }
+    }
+
     void MaterialManager::UpdateShininess(MaterialComponent& in)
     {
         auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
@@ -297,11 +312,14 @@ namespace Eclipse
                 auto& ID = Models.first;
                 auto& InvidualModels = *(Models.second);
 
-                auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+                engine->MaterialManager.UpdateStencilWith_Outline(ID);
+
                 auto& highlight = engine->world.GetComponent<MaterialComponent>(ID);
 
                 if (highlight.Highlight == true)
                 {
+                    auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+
                     // Check Main Uniforms For each Model
                     // Translation done here for each model
                     engine->AssimpManager.CheckUniformLoc(shdrpgm->second, _camera, FrameBufferID, ID);
@@ -381,5 +399,42 @@ namespace Eclipse
             glBindVertexArray(0);
             shdrpgm->second.UnUse();
         }
+    }
+
+    void MaterialManager::UpdateStencilWithActualObject(unsigned int ID)
+    {
+        // We allow EACH object to pass the stencil test uniquely
+        // Stencil updated uniquely with each mode's ID
+        glStencilFunc(GL_ALWAYS, ID, 0xFF);
+
+        // We enable writing to stencil buffer
+        glStencilMask(0xFF);
+    }
+
+    void MaterialManager::DoNotUpdateStencil()
+    {
+        // We dont Update Stencil Buffer
+        glStencilMask(0x00);
+    }
+
+    void MaterialManager::UpdateStencilWith_Outline(unsigned int ID)
+    {
+        // Draw parts of the Model that are not equal to the unique ID.
+        // We only draw the part of the Model that are outside the previously drawn Model
+        glStencilFunc(GL_NOTEQUAL, ID, 0xFF);
+        glStencilMask(0xFF);
+        glDisable(GL_DEPTH_TEST);
+    }
+
+    void MaterialManager::StencilBufferClear()
+    {
+        //Enable modifying of the stencil buffer
+        glStencilMask(0xFF);
+
+        // Clear stencil buffer
+        glStencilFunc(GL_ALWAYS, 0, 0xFF);
+
+        // Enable the depth buffer
+        glEnable(GL_DEPTH_TEST);
     }
 }

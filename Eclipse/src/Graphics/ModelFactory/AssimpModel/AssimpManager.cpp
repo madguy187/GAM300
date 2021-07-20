@@ -83,6 +83,8 @@ namespace Eclipse
             auto& ID = Models.first;
             auto& InvidualModels = *(Models.second);
 
+            engine->MaterialManager.UpdateStencilWithActualObject(ID);
+
             // Check Main Uniforms For each Model
             // Translation done here for each model
             CheckUniformLoc(shdrpgm->second, _camera, FrameBufferID, ID);

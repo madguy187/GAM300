@@ -41,10 +41,6 @@ namespace Eclipse
         float GetGammaCorrection();
         void SetGammaCorrection(float in);
         void UploadGlobalUniforms();
-        void StencilBufferClear();
-        void OutlinePreparation1();
-        void OutlinePreparation2();
-        void UpdateStencilBuffer(bool in);
         void CheckUniformLoc(RenderComponent& sprite, unsigned int id, unsigned int framebufferID);
 
     private:

@@ -425,62 +425,6 @@ void Eclipse::GraphicsManager::UploadGlobalUniforms()
     shdrpgm->second.UnUse();
 }
 
-void Eclipse::GraphicsManager::StencilBufferClear()
-{
-    //Enable modifying of the stencil buffer
-    glStencilMask(0xFF);
-
-    // Clear stencil buffer
-    glStencilFunc(GL_ALWAYS, 0, 0xFF);
-
-    // Enable the depth buffer
-    glEnable(GL_DEPTH_TEST);
-}
-
-void Eclipse::GraphicsManager::OutlinePreparation2()
-{
-    //Make it so only the pixels without the value 1 pass the test
-    glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-
-    //Disable modifying of the stencil buffer
-    glStencilMask(0xFF);
-
-    glDisable(GL_DEPTH_TEST);
-}
-
-void Eclipse::GraphicsManager::UpdateStencilBuffer(bool in)
-{
-    // We can use this function like the below to affect both drawings
-
-    /*
-    UpdateStencilBuffer(false)
-    Draw Call
-    Draw Call
-    */
-
-    if (in == false)
-    {
-        glStencilMask(0x00);
-    }
-    else
-    {
-        // Make it so the stencil test always passes
-        glStencilFunc(GL_ALWAYS, 1, 0xFF);
-
-        // Enable modifying of the stencil buffer
-        glStencilMask(0xFF);
-    }
-}
-
-void Eclipse::GraphicsManager::OutlinePreparation1()
-{
-    // Make it so the stencil test always passes
-    glStencilFunc(GL_ALWAYS, 1, 0xFF);
-
-    // Enable modifying of the stencil buffer
-    glStencilMask(0xFF);
-}
-
 void Eclipse::GraphicsManager::GlobalFrameBufferBind()
 {
     Eclipse::GraphicsManager::UpdateFrameBuffer();
