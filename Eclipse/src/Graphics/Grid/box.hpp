@@ -118,6 +118,15 @@ public:
             glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
 
+        glEnable(GL_BLEND);
+        glEnable(GL_DEPTH_TEST);
+
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glDisable(GL_CULL_FACE);
+        glEnable(GL_LINE_SMOOTH);
+
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
         // render instanced data
         glBindVertexArray(VAO);
         glDrawElementsInstanced(GL_LINES, indices.size(), GL_UNSIGNED_INT, 0, size);
