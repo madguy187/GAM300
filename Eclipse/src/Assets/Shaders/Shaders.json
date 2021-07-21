@@ -34,6 +34,11 @@
       "shaderName": "OutLineShader",
       "vtxShader": "src/Assets/Shaders/Outlining/Outlining.vert",
       "frgShader": "src/Assets/Shaders/Outlining/Outlining.frag"
+    },
+    {
+      "shaderName": "AABB",
+      "vtxShader": "src/Assets/Shaders/AABB.vert",
+      "frgShader": "src/Assets/Shaders/AABB.frag"
     }
   ]
 }

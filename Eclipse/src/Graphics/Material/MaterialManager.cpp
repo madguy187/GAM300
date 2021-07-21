@@ -322,7 +322,7 @@ namespace Eclipse
 
                     // Check Main Uniforms For each Model
                     // Translation done here for each model
-                    engine->AssimpManager.CheckUniformLoc(shdrpgm->second, _camera, FrameBufferID, ID);
+                    //engine->AssimpManager.CheckUniformLoc(shdrpgm->second, _camera, FrameBufferID, ID);
 
                     // Materials Update
                     engine->MaterialManager.CheckUnniformLocation(shdrpgm->second, highlight);

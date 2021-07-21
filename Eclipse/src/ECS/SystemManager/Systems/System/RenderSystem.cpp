@@ -29,8 +29,10 @@ namespace Eclipse
         engine->GraphicsManager.GridManager->Init();
         engine->GraphicsManager.GridManager->DebugPrint();
 
-        // Enables the Depth Buffer
-        //glEnable(GL_DEPTH_TEST);
+        box.init();
+
+        //BoundingRegion br({ -1,-1,-1 }, { 1,1,1 });
+        //box.addInstance(br, { 0,0,0 }, { 5,5,5 });
     }
 
     Signature RenderSystem::RegisterAll()
@@ -46,6 +48,9 @@ namespace Eclipse
 
     void RenderSystem::Update()
     {
+        //box.offsets.clear();
+        //box.sizes.clear();
+
         ProfilerWindow timer;
         timer.SetName({ SystemName::RENDER });
         timer.tracker.system_start = glfwGetTime();
@@ -81,11 +86,46 @@ namespace Eclipse
 
 
             // MODELS Render  Start =============================
-            engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL);
+            engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL, &box);
 
             engine->MaterialManager.DoNotUpdateStencil();
-            engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), GL_FILL);
+            engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), GL_FILL, &box);
             // MODELS Render  End ===============================
+
+            // render boxes
+            engine->MaterialManager.DoNotUpdateStencil();
+            if (box.offsets.size() > 0)
+            {
+                glBindFramebuffer(GL_FRAMEBUFFER, engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+                CameraComponent camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+                auto shdrpgm = Graphics::shaderpgms.find("AABB");
+                shdrpgm->second.Use();
+
+                //glEnable(GL_BLEND);
+                //glEnable(GL_DEPTH_TEST);
+
+                //glPolygon Mode(GL_FRONT_AND_BACK, GL_LINE);
+                //glDisable(GL_CULL_FACE);
+                //glEnable(GL_LINE_SMOOTH);
+                ////glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                //glEnable(GL_BLEND);
+
+                glEnable(GL_LINE_SMOOTH);
+                glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+
+                GLint uniform_var_loc1 = shdrpgm->second.GetLocation("view");
+                GLint uniform_var_loc2 = shdrpgm->second.GetLocation("projection");
+
+                glm::mat4 _cameraprojMtx = glm::perspective(glm::radians(camera.fov), camera.aspect, 0.1f, camera.farPlane);
+
+                glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(camera.viewMtx));
+                glUniformMatrix4fv(uniform_var_loc2, 1, GL_FALSE, glm::value_ptr(_cameraprojMtx));
+
+                glLineWidth(100.0f); //Note that glLineWidth() is deprecated
+                box.render(shdrpgm->second);
+                shdrpgm->second.UnUse();
+            }
         }
 
         timer.tracker.system_end = glfwGetTime();

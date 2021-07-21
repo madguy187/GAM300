@@ -69,7 +69,7 @@ namespace Eclipse
         EDITOR_LOG_INFO("All Necessary Models Loaded");
     }
 
-    void AssimpModelManager::Draw(unsigned int FrameBufferID, GLenum Mode)
+    void AssimpModelManager::Draw(unsigned int FrameBufferID, GLenum Mode , Box* box)
     {
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 
@@ -87,7 +87,7 @@ namespace Eclipse
 
             // Check Main Uniforms For each Model
             // Translation done here for each model
-            CheckUniformLoc(shdrpgm->second, _camera, FrameBufferID, ID);
+            CheckUniformLoc(shdrpgm->second, _camera, FrameBufferID, ID , box);
 
             // Render
             InvidualModels.Render(shdrpgm->second, Mode, FrameBufferID);
@@ -114,7 +114,7 @@ namespace Eclipse
 
                 // Check Main Uniforms For each Model
                 // Translation done here for each model
-                CheckUniformLoc(shdrpgm->second, _camera, FrameBufferID, ID);
+                //CheckUniformLoc(shdrpgm->second, _camera, FrameBufferID, ID);
 
                 GLuint uniformloc1 = shdrpgm->second.GetLocation("outlining");
                 GLCall(glUniform1f(uniformloc1, 0.05f));
@@ -127,7 +127,7 @@ namespace Eclipse
         }
     }
 
-    void AssimpModelManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID)
+    void AssimpModelManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID , Box* box)
     {
         MaterialComponent& material = engine->world.GetComponent<MaterialComponent>(ModelID);
         GLint uniform_var_loc1 = _shdrpgm.GetLocation("material.shininess");
@@ -155,6 +155,9 @@ namespace Eclipse
             mModelNDC = _camera.projMtx * _camera.viewMtx * model;
             glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
             glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
+
+            BoundingRegion br({ -1,-1,-1 }, { 1,1,1 });
+            box->addInstance(br, Transform.position.ConvertToGlmVec3Type(), Transform.scale.ConvertToGlmVec3Type());
         }
 
         glUniform1i(dsa, 0);

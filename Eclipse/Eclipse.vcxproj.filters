@@ -525,6 +525,8 @@
     </ClInclude>
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem.h" />
+    <ClInclude Include="src\Graphics\Grid\bounds.h" />
+    <ClInclude Include="src\Graphics\Grid\box.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -775,5 +777,25 @@
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem.cpp" />
+    <ClCompile Include="src\Graphics\Grid\bounds.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Assets\Shaders\AABB.frag" />
+    <None Include="src\Assets\Shaders\AABB.vert" />
+    <None Include="src\Assets\Shaders\AssimpShader3D.frag" />
+    <None Include="src\Assets\Shaders\AssimpShader3D.vert" />
+    <None Include="src\Assets\Shaders\BasicFrag.frag" />
+    <None Include="src\Assets\Shaders\BasicVtx.vert" />
+    <None Include="src\Assets\Shaders\DebugFrag.frag" />
+    <None Include="src\Assets\Shaders\DebugVtx.vert" />
+    <None Include="src\Assets\Shaders\light.frag" />
+    <None Include="src\Assets\Shaders\light.vert" />
+    <None Include="src\Assets\Shaders\LightFrag.frag" />
+    <None Include="src\Assets\Shaders\LightVtx.vert" />
+    <None Include="src\Assets\Shaders\ParticlesFrag.frag" />
+    <None Include="src\Assets\Shaders\ParticlesVtx.vert" />
+    <None Include="src\Assets\Shaders\Shaders.json" />
+    <None Include="src\Assets\Shaders\textFrag.frag" />
+    <None Include="src\Assets\Shaders\textVtx.vert" />
   </ItemGroup>
 </Project>
