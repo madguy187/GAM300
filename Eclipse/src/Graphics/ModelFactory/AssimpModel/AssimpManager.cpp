@@ -18,9 +18,9 @@ namespace Eclipse
         engine->editorManager->EntityToTypeMap_.insert(std::pair<Entity, EntityType>(ID, EntityType::ENT_UNASSIGNED));
 
         TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(ID);
-        Transform.scale.setX(10);
-        Transform.scale.setY(10);
-        Transform.scale.setZ(10);
+        Transform.scale.setX(5);
+        Transform.scale.setY(5);
+        Transform.scale.setZ(5);
         Transform.rotation.setX(270);
         // ----------------------------------------------------------------------------------------------------------
 
@@ -157,7 +157,7 @@ namespace Eclipse
             glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
 
             BoundingRegion br({ -1,-1,-1 }, { 1,1,1 });
-            box->addInstance(br, Transform.position.ConvertToGlmVec3Type(), Transform.scale.ConvertToGlmVec3Type());
+            box->addInstance(br, Transform.position.ConvertToGlmVec3Type(), { 5,5,5 });
         }
 
         glUniform1i(dsa, 0);

@@ -67,6 +67,7 @@ namespace Eclipse
 
         void DoNotUpdateStencil();
         void StencilBufferClear();
+        void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID);
         void UpdateStencilWith_Outline(unsigned int ID);
         void UpdateStencilWithActualObject(unsigned int ID);
         void Highlight(unsigned int FrameBufferID, GLenum Mode);

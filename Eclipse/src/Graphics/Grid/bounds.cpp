@@ -14,7 +14,10 @@ BoundingRegion::BoundingRegion(glm::vec3 center, float radius)
 
 // initialize as AABB
 BoundingRegion::BoundingRegion(glm::vec3 mina, glm::vec3 maxa)
-	: type(BoundTypes::AABB), Min(mina), Max(maxa) {}
+	: type(BoundTypes::AABB), Min(mina), Max(maxa) 
+{
+	int i = 0;
+}
 
 /*
 	Calculating values for the region
