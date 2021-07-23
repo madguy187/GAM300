@@ -1,4 +1,31 @@
 <?xml version="1.0" ?>
 <temp>
-    <Entities Size="4" />
+    <Entities Size="2">
+        <Entity 0>
+            <EntityComponent>
+                <Name Name="true" />
+                <Tag Tag="true" />
+                <IsActive IsActive="true" />
+            </EntityComponent>
+            <struct Eclipse::RenderComponent Unavailable="true" />
+            <TransformComponent>
+                <Position Position="true" />
+                <Rotation Rotation="true" />
+                <Scale Scale="true" />
+            </TransformComponent>
+        </Entity 0>
+        <Entity 1>
+            <EntityComponent>
+                <Name Name="true" />
+                <Tag Tag="true" />
+                <IsActive IsActive="true" />
+            </EntityComponent>
+            <struct Eclipse::RenderComponent Unavailable="true" />
+            <TransformComponent>
+                <Position Position="true" />
+                <Rotation Rotation="true" />
+                <Scale Scale="true" />
+            </TransformComponent>
+        </Entity 1>
+    </Entities>
 </temp>

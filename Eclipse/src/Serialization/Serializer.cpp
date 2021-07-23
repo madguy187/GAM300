@@ -54,6 +54,6 @@ namespace Eclipse
 
 	Serializer::~Serializer()
 	{
-		SaveXML("Data\\Temp\\temp.xml");
+		SaveXML("Data\\Temp\\Temp.xml");
 	}
 }
