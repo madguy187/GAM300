@@ -93,11 +93,12 @@ namespace Eclipse
 			}
 			
 			const auto& path = dirEntry.path();
-
+			
 			std::string fileNameString = path.filename().string();
-
+			
 			if (dirEntry.is_directory())
 			{
+				
 				if (ECGui::BeginTreeNode(fileNameString.c_str()))
 				{
 					//setting the subDir to Current Dir
@@ -120,7 +121,7 @@ namespace Eclipse
 							const auto& path2 = secondEntry.path();
 
 							std::string fileNameString2 = path2.filename().string();
-
+							
 							if (ECGui::BeginTreeNode(fileNameString2.c_str()))
 							{
 								if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0))
@@ -139,10 +140,46 @@ namespace Eclipse
 
 								ECGui::EndTreeNode();
 							}
-
+							if (ImGui::BeginDragDropTarget())
+							{
+								if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ITEM"))
+								{
+									try
+									{
+										paths = (const wchar_t*)payload->Data;
+										std::filesystem::copy(std::filesystem::path(AssetPath / paths), secondEntry.path());
+										std::filesystem::remove(std::filesystem::path(AssetPath / paths));
+										refresh = true;
+									}
+									catch (std::filesystem::filesystem_error& e)
+									{
+										std::cout << e.what() << '\n';
+									}
+								}
+								ImGui::EndDragDropTarget();
+							}
 						}
 					}
 					ECGui::EndTreeNode();
+				}
+
+				if (ImGui::BeginDragDropTarget())
+				{
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ITEM"))
+					{
+						try
+						{
+							paths = (const wchar_t*)payload->Data;
+							std::filesystem::copy(std::filesystem::path(AssetPath / paths), dirEntry.path());
+							std::filesystem::remove(std::filesystem::path(AssetPath / paths));
+							refresh = true;
+						}
+						catch (std::filesystem::filesystem_error& e)
+						{
+							std::cout << e.what() << '\n';
+						}
+					}
+					ImGui::EndDragDropTarget();
 				}
 
 				if (!jumpDir && ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0))
@@ -330,14 +367,42 @@ namespace Eclipse
 			auto relativePath = std::filesystem::relative(path, AssetPath);
 
 			std::string fileNameString = relativePath.filename().string();
-
+			
+			ImGui::PushID(fileNameString.c_str());
+			
 			RenderComponent icon = dirEntry.is_directory() ? FolderIcon : sprite;
 
 			ImGui::ImageButton((void*)icon.textureRef->second.GetHandle(),
 				buttonSize,
 				{ 1,0 },
 				{ 2,1 });
+			//drag drop
+			
+			if(ImGui::BeginDragDropSource())
+			{
+				const wchar_t* itemPath = relativePath.c_str();
+				ImGui::SetDragDropPayload("ITEM", itemPath , (wcslen(itemPath) + 1) * sizeof(wchar_t));
+				ImGui::EndDragDropSource();
+			}
 
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ITEM"))
+				{
+					try
+					{
+						paths = (const wchar_t*)payload->Data;
+						std::filesystem::copy(std::filesystem::path(AssetPath / paths), dirEntry.path());
+						std::filesystem::remove(std::filesystem::path(AssetPath / paths));
+						refresh = true;
+					}
+					catch (std::filesystem::filesystem_error& e)
+					{
+						std::cout << e.what() << '\n';
+					}
+				}
+				ImGui::EndDragDropTarget();
+			}
 			if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
 			{
 				if (dirEntry.is_directory())
@@ -369,6 +434,7 @@ namespace Eclipse
 			}
 
 			ImGui::NextColumn();
+			ImGui::PopID();
 		}
 	}
 

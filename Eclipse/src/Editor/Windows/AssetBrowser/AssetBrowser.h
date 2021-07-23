@@ -31,6 +31,7 @@ namespace Eclipse
 		float cellSize;
 		float panelWidth;
 		int columnCount;
+		const wchar_t* paths;
 		////////////////////////////////
 
 		//Searching
