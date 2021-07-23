@@ -5,7 +5,6 @@
 #include "glfw3.h"
 #include "glm.hpp"
 #include "GLM/glm/gtc/type_ptr.hpp"
-
 #include "Graphics/Grid/bounds.h"
 
 #define UPPER_BOUND 100
@@ -97,10 +96,32 @@ public:
         glBindVertexArray(0);
     }
 
-    void render(Shader shader) {
+    void render(Shader shader, CameraComponent& camera)
+    {
+        GLint uniform_var_loc1 =shader.GetLocation("view");
+        GLint uniform_var_loc2 =shader.GetLocation("projection");
+        GLint uniform_var_loc3 = shader.GetLocation("model");
+        GLint uniform_var_loc4 = shader.GetLocation("uModelToNDC");
 
-        GLint uniform_var_loc1 = shader.GetLocation("model");
-        glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(glm::mat4(1.0f)));
+        glm::mat4 _cameraprojMtx = glm::perspective(glm::radians(camera.fov), camera.aspect, camera.nearPlane, camera.farPlane);
+
+
+        glm::mat4 mModelNDC;
+        glm::mat4 model = glm::mat4(1.0f);
+        glm::vec3 rot{ 0,0,0 };
+        glm::vec3 sclae{5,5,5};
+        model = glm::translate(model, offsets[0]);
+        model = glm::rotate(model, glm::radians(rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, sizes[0]);
+
+        mModelNDC = _cameraprojMtx * camera.viewMtx * model;
+        glUniformMatrix4fv(uniform_var_loc4, 1, GL_FALSE, glm::value_ptr(mModelNDC));
+
+        //glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(camera.viewMtx));
+        //glUniformMatrix4fv(uniform_var_loc2, 1, GL_FALSE, glm::value_ptr(_cameraprojMtx));
+        //glUniformMatrix4fv(uniform_var_loc3, 1, GL_FALSE, glm::value_ptr(glm::mat4(1.0f)));
 
         // update data
         int size = std::min(UPPER_BOUND, (int)offsets.size()); // if more than 100 instances, only render 100
@@ -136,7 +157,7 @@ public:
     void addInstance(BoundingRegion br, glm::vec3 pos, glm::vec3 size) 
     {
         offsets.push_back(br.calculateCenter() * size + pos);
-        sizes.push_back(br.calculateDimensions() * size);
+        sizes.push_back(br.calculateDimensions());
     }
 
     void cleanup() {

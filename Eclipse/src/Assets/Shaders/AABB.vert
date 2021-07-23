@@ -3,13 +3,11 @@ layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aOffset;
 layout (location = 2) in vec3 aSize;
 
-uniform mat4 model;
+uniform mat4 uModelToNDC;
 uniform mat4 view;
 uniform mat4 projection;
 
 void main() 
 {
-	vec3 pos = aPos * aSize;
-
-	gl_Position = projection * view * model * vec4(pos + aOffset, 1.0);
+	gl_Position = uModelToNDC * vec4(aPos, 1.0);
 }

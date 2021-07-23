@@ -156,7 +156,7 @@ namespace Eclipse
             glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
             glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
 
-            BoundingRegion br({ -1,-1,-1 }, { 1,1,1 });
+            BoundingRegion br({ -5,-5,-5 }, { 5,5,5 });
             box->addInstance(br, Transform.position.ConvertToGlmVec3Type(), { 5,5,5 });
         }
 

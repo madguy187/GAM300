@@ -85,8 +85,8 @@ namespace Eclipse
 			// MODELS Render  Start =============================
 			engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL, &box);
 
-			engine->MaterialManager.DoNotUpdateStencil();
-			engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), GL_FILL, &box);
+			//engine->MaterialManager.DoNotUpdateStencil();
+			//engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), GL_FILL, &box);
 			// MODELS Render  End ===============================
 
 			// render boxes
@@ -98,13 +98,14 @@ namespace Eclipse
 				auto shdrpgm = Graphics::shaderpgms.find("AABB");
 				shdrpgm->second.Use();
 
-				GLint uniform_var_loc1 = shdrpgm->second.GetLocation("view");
-				GLint uniform_var_loc2 = shdrpgm->second.GetLocation("projection");
-				glm::mat4 _cameraprojMtx = glm::perspective(glm::radians(camera.fov), camera.aspect, camera.nearPlane, camera.farPlane);
-				glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(camera.viewMtx));
-				glUniformMatrix4fv(uniform_var_loc2, 1, GL_FALSE, glm::value_ptr(_cameraprojMtx));
+				//GLint uniform_var_loc1 = shdrpgm->second.GetLocation("view");
+				//GLint uniform_var_loc2 = shdrpgm->second.GetLocation("projection");
+				//glm::mat4 _cameraprojMtx = glm::perspective(glm::radians(camera.fov), camera.aspect, camera.nearPlane, camera.farPlane);
+				//glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(camera.viewMtx));
+				//glUniformMatrix4fv(uniform_var_loc2, 1, GL_FALSE, glm::value_ptr(_cameraprojMtx));
 
-				box.render(shdrpgm->second);
+				box.render(shdrpgm->second, camera);
+
 				shdrpgm->second.UnUse();
 			}
 		}
