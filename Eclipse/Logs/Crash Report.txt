@@ -1,2 +1,2 @@
-[05/29/21 23:14:57] [CORE] [error] Crash Report: Assertion Failed! test crash
-[05/30/21 23:07:50] [CORE] [error] Crash Report: Assertion Failed! test crash
+[07/11/21 22:52:17] [CORE] [error] Crash Report: Assertion Failed! C:\Users\ferna\Desktop\GAM300\Eclipse\src\Engine\Engine.cpp Line 51: woo
+[07/11/21 22:53:05] [CORE] [error] Crash Report: Assertion Failed! C:\Users\ferna\Desktop\GAM300\Eclipse\src\Engine\Engine.cpp Line 51: woo

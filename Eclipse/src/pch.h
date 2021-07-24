@@ -71,6 +71,9 @@
 
 #include "Graphics.h"
 
+// Profiler
+#include "Editor/Windows/Profiler/Profiler.h"
+
 // Custom Libraries
 #include "Library/Math/Vector.h"
 #include "Library/Math/Matrix.h"
@@ -85,6 +88,8 @@
 
 // Editor API
 #include "Editor/ECGuiAPI/ECGui.h"
+#include "ImGuizmo/ImGuizmo.h" 
+#include "Editor/Windows/Log/Log.h"
 
 // ---- Input Handler Api ----
 // Create an object for example : InputWrapper test;

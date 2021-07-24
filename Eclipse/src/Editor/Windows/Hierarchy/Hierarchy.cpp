@@ -5,15 +5,15 @@
 
 namespace Eclipse
 {
-	void Hierarchy::Update()
+	void HierarchyWindow::Update()
 	{
 		if (IsVisible)
-			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&Hierarchy::DrawImpl, this));
+			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&HierarchyWindow::DrawImpl, this));
 	}
 
-	Hierarchy::Hierarchy()
+	HierarchyWindow::HierarchyWindow()
 	{
-		Type = EditorWindowType::HIERARCHY;
+		Type = EditorWindowType::EWT_HIERARCHY;
 		WindowName = "Hierarchy";
 
 		// For Geometry
@@ -35,10 +35,10 @@ namespace Eclipse
 		}
 	}
 
-	void Hierarchy::DrawImpl()
+	void HierarchyWindow::DrawImpl()
 	{
 		PopUpButtonSettings settings{ "Add Entity", "EntityCreationListBegin" };
-		ECGui::BeginPopUpButtonList<void()>(settings, std::bind(&Hierarchy::ShowEntityCreationList, this));
+		ECGui::BeginPopUpButtonList<void()>(settings, std::bind(&HierarchyWindow::ShowEntityCreationList, this));
 		ECGui::InsertHorizontalLineSeperator();
 
 		ECGui::DrawTextWidget<size_t>("Entity Count", engine->editorManager->EntityHierarchyList_.size());
@@ -57,7 +57,7 @@ namespace Eclipse
 		}
 	}
 
-	void Hierarchy::TrackEntitySelection(const std::vector<Entity>& list, 
+	void HierarchyWindow::TrackEntitySelection(const std::vector<Entity>& list,
 		EntitySelectionTracker& prev, EntitySelectionTracker& curr, size_t& globalIndex, ImGuiTextFilter& filter)
 	{
 		std::string entityName{};
@@ -106,7 +106,7 @@ namespace Eclipse
 		}
 	}
 
-	void Hierarchy::ShowEntityCreationList()
+	void HierarchyWindow::ShowEntityCreationList()
 	{
 		for (size_t i = 0; i < TagList_.size(); ++i)
 		{
@@ -123,7 +123,7 @@ namespace Eclipse
 							if (ECGui::CreateSelectableButton(TagList_[i][j].c_str(), &selected))
 							{
 								Entity ID = engine->editorManager->CreateEntity(lexical_cast<EntityType>(TagList_[i][j]));
-								engine->gGraphics.CreatePrimitives(ID, static_cast<int>(i * TagList_.size() + j));
+								engine->GraphicsManager.CreatePrimitives(ID, static_cast<int>(i * TagList_.size() + j));
 								UpdateEntityTracker(ID);
 							}
 						}
@@ -144,7 +144,7 @@ namespace Eclipse
 							if (ECGui::CreateSelectableButton(TagList_[i][j].c_str(), &selected))
 							{
 								Entity ID = engine->editorManager->CreateEntity(lexical_cast<EntityType>(TagList_[i][j]));
-								engine->gGraphics.CreatePrimitives(ID, static_cast<int>(i * TagList_[i - 1].size() + j));
+								engine->GraphicsManager.CreatePrimitives(ID, static_cast<int>(i * TagList_[i - 1].size() + j));
 								UpdateEntityTracker(ID);
 							}
 						}
@@ -159,7 +159,7 @@ namespace Eclipse
 			}
 		}
 	}
-	void Hierarchy::UpdateEntityTracker(Entity ID)
+	void HierarchyWindow::UpdateEntityTracker(Entity ID)
 	{
 		if (ID != CurrEnt_.index)
 		{

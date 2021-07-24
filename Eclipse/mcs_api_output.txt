@@ -1,2 +1,2 @@
-src\Mono\ScriptAPI\GameObject.cs(5,30): error CS1525: Unexpected symbol `>', expecting `[', `identifier', `in', or `out'
-Compilation failed: 1 error(s), 0 warnings
+'"C:\Users\ferna\Desktop\GAM300\Dep\mono\bin\\mono.exe"' is not recognized as an internal or external command,
+operable program or batch file.

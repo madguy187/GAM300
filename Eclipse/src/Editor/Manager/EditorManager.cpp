@@ -5,8 +5,18 @@
 #include "Editor/Windows/Hierarchy/Hierarchy.h"
 #include "Editor/Windows/Scene/Scene.h"
 #include "Editor/Windows/GameView/GameView.h"
+#include "Editor/Windows/Debug/Debug.h"
 #include "ECS/ComponentManager/Components/EntityComponent.h"
+#include "Editor/Windows/AssetBrowser/AssetBrowser.h"
+#include "Editor/Windows/Log/Log.h"
+#include "Editor/Windows/Profiler/Profiler.h"
 //#include "Library/Strings/Lexical.h"
+
+// Switch Views --------------------------
+#include "Editor/Windows/SwitchViews/Top.h"
+#include "Editor/Windows/SwitchViews/Bottom.h"
+#include "Editor/Windows/SwitchViews/Right.h"
+#include "Editor/Windows/SwitchViews/Left.h"
 
 namespace Eclipse
 {
@@ -15,14 +25,25 @@ namespace Eclipse
 		InitMenu();
 		InitGUIWindows();
 		InitFont();
+
+		EDITOR_LOG_INFO("Editor Initialized!");
+		EDITOR_LOG_WARN("Testing Warning!");
 	}
 
 	void EditorManager::InitGUIWindows()
 	{
-		AddWindow<Scene>("Scene");
-		AddWindow<eGameView>("GameView");
-		AddWindow<Inspector>("Inspector");
-		AddWindow<Hierarchy>("Hierarchy");
+		AddWindow<eGameViewWindow>("GameView");
+		AddWindow<SceneWindow>("Scene");
+		AddWindow<InspectorWindow>("Inspector");
+		AddWindow<HierarchyWindow>("Hierarchy");
+		AddWindow<ProfilerWindow>("Profiler");
+		AddWindow<LoggerWindow>("Log");
+		AddWindow<AssetBrowserWindow>("AssetBrowser");
+		AddWindow<DebugWindow>("Debug");
+		AddWindow<eTopViewWindow>("SwitchView_Top");
+		AddWindow<eBottomViewWindow>("SwitchView_Bottom");
+		AddWindow<eLeftViewWindow>("SwitchView_Left");
+		AddWindow<eRightViewWindow>("SwitchView_Right");
 	}
 
 	void EditorManager::InitMenu()
@@ -115,5 +136,10 @@ namespace Eclipse
 	size_t EditorManager::GetWindowListSize()
 	{
 		return Size_;
+	}
+
+	Entity EditorManager::GetSelectedEntity() const
+	{
+		return EntityHierarchyList_[GEHIndex_];
 	}
 }

@@ -5,19 +5,19 @@
 
 namespace Eclipse
 {
-	void Inspector::Update()
+	void InspectorWindow::Update()
 	{
 		if (IsVisible)
-			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&Inspector::DrawImpl, this));
+			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&InspectorWindow::DrawImpl, this));
 	}
 
-	Inspector::Inspector()
+	InspectorWindow::InspectorWindow()
 	{
-		Type = EditorWindowType::INSPECTOR;
+		Type = EditorWindowType::EWT_INSPECTOR;
 		WindowName = "Inspector";
 	}
 
-	void Inspector::DrawImpl()
+	void InspectorWindow::DrawImpl()
 	{
 		WindowSize_.setX(ECGui::GetWindowSize().x);
 		WindowSize_.setY(ECGui::GetWindowSize().y);
@@ -36,6 +36,9 @@ namespace Eclipse
 
 			ShowEntityProperty(currEnt);
 			ShowTransformProperty(currEnt);
+			ShowPointLightProperty(currEnt);
+			ShowSpotLightProperty(currEnt);
+			ShowDirectionalLightProperty(currEnt);
 		}
 		else
 		{
@@ -48,7 +51,7 @@ namespace Eclipse
 		ECGui::InsertHorizontalLineSeperator();
 	}
 
-	bool Inspector::ShowEntityProperty(Entity ID)
+	bool InspectorWindow::ShowEntityProperty(Entity ID)
 	{
 		if (engine->world.CheckComponent<EntityComponent>(ID))
 		{
@@ -70,7 +73,7 @@ namespace Eclipse
 		return false;
 	}
 
-	bool Inspector::ShowTransformProperty(Entity ID)
+	bool InspectorWindow::ShowTransformProperty(Entity ID)
 	{
 		if (engine->world.CheckComponent<TransformComponent>(ID))
 		{
@@ -86,6 +89,94 @@ namespace Eclipse
 
 				ECGui::DrawTextWidget<const char*>("Scale", "");
 				ECGui::DrawSliderFloat3Widget("TransScale", &transCom.scale);
+			}
+		}
+
+		return false;
+	}
+
+	bool InspectorWindow::ShowPointLightProperty(Entity ID)
+	{
+		if (engine->world.CheckComponent<PointLightComponent>(ID))
+		{
+			if (ECGui::CreateCollapsingHeader("PointLight Component"))
+			{
+				auto& _PointLight = engine->world.GetComponent<PointLightComponent>(ID);
+
+				ECGui::DrawTextWidget<const char*>("IntensityStrength", "");
+				ECGui::DrawSliderFloatWidget("IntensityFloat", &_PointLight.IntensityStrength, true, 0.f, 150.f);
+
+				ECGui::DrawTextWidget<const char*>("Light Colour", "");
+				ImGui::ColorPicker3("Color", (float*)&_PointLight.Color, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
+				//ECGui::DrawSliderFloat4Widget("ColourVec", &_PointLight.Color, true, 0.0f, 1.0f);
+				engine->LightManager.SetLightColor(_PointLight, { _PointLight.Color.getX() ,_PointLight.Color.getY() , _PointLight.Color.getZ() , 1.0f });
+
+				ECGui::DrawTextWidget<const char*>("Attenuation Level", "");
+				ECGui::DrawSliderIntWidget("ColourVec", &_PointLight.AttenuationLevel, true, 0, 10);
+				engine->LightManager.SetAttenuation(_PointLight, _PointLight.AttenuationLevel);
+
+				ECGui::DrawTextWidget<const char*>("Light Ambient", "");
+				ECGui::DrawSliderFloat3Widget("AmbientVec", &_PointLight.ambient, true, 0.0f, 1.0f);
+
+				ECGui::DrawTextWidget<const char*>("Light Diffuse", "");
+				ECGui::DrawSliderFloat3Widget("DiffuseVec", &_PointLight.diffuse, true, 0.0f, 1.0f);
+
+				ECGui::DrawTextWidget<const char*>("Light Specular", "");
+				ECGui::DrawSliderFloat3Widget("SpecularVec", &_PointLight.specular, true, 0.0f, 1.0f);
+			}
+		}
+
+		return false;
+	}
+
+	bool InspectorWindow::ShowSpotLightProperty(Entity ID)
+	{
+		if (engine->world.CheckComponent<SpotLightComponent>(ID))
+		{
+			if (ECGui::CreateCollapsingHeader("SpotLight Component"))
+			{
+				auto& _SpotLight = engine->world.GetComponent<SpotLightComponent>(ID);
+
+				ECGui::DrawTextWidget<const char*>("IntensityStrength", "");
+				ECGui::DrawSliderFloatWidget("IntensityFloat", &_SpotLight.IntensityStrength, true, 0.f, 150.f);
+
+				ECGui::DrawTextWidget<const char*>("Light Colour", "");
+				ImGui::ColorPicker3("Color", (float*)&_SpotLight.lightColor, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
+
+				ECGui::DrawTextWidget<const char*>("OuterCutOff", "");
+				ECGui::DrawSliderFloatWidget("OuterCutOffFloat", &_SpotLight.outerCutOff, true, 0.f, 50.0f);
+
+				ECGui::DrawTextWidget<const char*>("CutOff", "");
+				ECGui::DrawSliderFloatWidget("CutOffFloat", &_SpotLight.cutOff, true, 0.f, (_SpotLight.outerCutOff - 5.0f));
+
+				ECGui::DrawTextWidget<const char*>("Direction", "");
+				ECGui::DrawSliderFloat3Widget("DirectionVec", &_SpotLight.direction, true, 0.f, 150.f);
+			}
+		}
+
+		return false;
+	}
+
+	bool InspectorWindow::ShowDirectionalLightProperty(Entity ID)
+	{
+		if (engine->world.CheckComponent<DirectionalLightComponent>(ID))
+		{
+			if (ECGui::CreateCollapsingHeader("DirectionalLightComponent"))
+			{
+				auto& _DLight = engine->world.GetComponent<DirectionalLightComponent>(ID);
+
+				ECGui::DrawTextWidget<const char*>("Light Colour", "");
+				ImGui::ColorPicker3("Color", (float*)&_DLight.lightColor, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
+
+				ECGui::DrawTextWidget<const char*>("DLight Ambient", "");
+				ECGui::DrawSliderFloat3Widget("AmbientVec", &_DLight.ambient, true, 0.0f, 1.0f);
+
+				ECGui::DrawTextWidget<const char*>("DLight Diffuse", "");
+				ECGui::DrawSliderFloat3Widget("DiffuseVec", &_DLight.diffuse, true, 0.0f, 1.0f);
+
+				ECGui::DrawTextWidget<const char*>("DLight Specular", "");
+				ECGui::DrawSliderFloat3Widget("SpecularVec", &_DLight.specular, true, 0.0f, 1.0f);
+
 			}
 		}
 

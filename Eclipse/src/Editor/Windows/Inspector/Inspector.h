@@ -1,18 +1,21 @@
-#pragma once
+//#pragma once
 
 #include "../Interface/ECGuiWindow.h"
 
 namespace Eclipse
 {
-	class Inspector final : public ECGuiWindow
+	class InspectorWindow final : public ECGuiWindow
 	{
 	public:
 		void Update() override;
-		Inspector();
+		InspectorWindow();
 		void DrawImpl();
 
 		bool ShowEntityProperty(Entity ID);
 		bool ShowTransformProperty(Entity ID);
+		bool ShowPointLightProperty(Entity ID);
+		bool ShowSpotLightProperty(Entity ID);
+		bool ShowDirectionalLightProperty(Entity ID);
 	private:
 		ECVec2 WindowSize_{};
 	};

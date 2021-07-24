@@ -6,6 +6,7 @@
 #include "Editor/Manager/EditorManager.h"
 #include "Graphics/Lighting/LightManager.h"
 #include "Mono/Manager/MonoManager.h"
+#include "AssimpModel/AssimpManager.h"
 
 namespace Eclipse
 {
@@ -14,12 +15,13 @@ namespace Eclipse
 	public:
 		World world;
 		CameraManager gCamera;
-		GraphicsManager gGraphics;
+		GraphicsManager GraphicsManager;
 		Clock Game_Clock;
 		DebugRenderingManager gDebugManager;
 		std::unique_ptr<EditorManager> editorManager;
 		Lights LightManager;
 		MonoManager mono;
+	    AssimpModelManager AssimpManager;
 
 		void Init();
 		void Run();

@@ -16,6 +16,10 @@ namespace Eclipse
 			                  bool border = false, ImGuiWindowFlags flag = 0);
 		static void EndChildWindow();
 		static ImVec2 GetWindowSize();
+		static ImVec2 GetWindowPos();
+		static ImVec2 GetCursorScreenPos();
+		static float GetWindowHeight();
+		static float GetWindowWidth();
 		static void SetWindowSize(float width, float height);
 
 		// Dynamic Widgets
@@ -85,6 +89,11 @@ namespace Eclipse
 		static void PushItemWidth(float value);
 		static bool IsItemHovered();
 		static void SetToolTip(const char* message);
+
+		//Plot Widgets
+		static void PlotHistogram(const char* label, const float* values, int values_count, 
+			int values_offset = 0, const char* overlay_text = NULL, float scale_min = FLT_MAX, 
+			float scale_max = FLT_MAX, ImVec2 graph_size = ImVec2(0, 0), int stride = sizeof(float));
 	private:
 		static std::string HideWidgetName(const char* name, bool Changing);
 	};
