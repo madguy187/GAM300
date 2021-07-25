@@ -31,8 +31,8 @@ namespace Eclipse
 		AddWindow<InspectorWindow>("Inspector");
 		AddWindow<HierarchyWindow>("Hierarchy");
 		AddWindow<ProfilerWindow>("Profiler");
-		AddWindow<LoggerWindow>("Log");
 		AddWindow<AssetBrowserWindow>("AssetBrowser");
+		AddWindow<LoggerWindow>("Log");
 		AddWindow<DebugWindow>("Debug");
 		AddWindow<SwitchViewsWindow>("SwitchViews");
 	}
