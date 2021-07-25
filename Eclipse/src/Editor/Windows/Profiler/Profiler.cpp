@@ -12,6 +12,7 @@ namespace Eclipse
 	{
 		Type = EditorWindowType::EWT_PROFILER;
 		WindowName = "Profiler";
+		IsVisible = false;
 	}
 
 	void ProfilerWindow::ContainerAddTime(TimerTracker inputTracker)
