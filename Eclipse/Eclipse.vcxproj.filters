@@ -520,6 +520,7 @@
     <ClInclude Include="src\Serialization\TinyXML\tinystr.h" />
     <ClInclude Include="src\Serialization\TinyXML\tinyxml.h" />
     <ClInclude Include="src\Editor\Windows\Log\ConsoleData.h" />
+    <ClInclude Include="src\Serialization\Deserializer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -772,5 +773,6 @@
     <ClCompile Include="src\Serialization\TinyXML\tinyxml.cpp" />
     <ClCompile Include="src\Serialization\TinyXML\tinyxmlerror.cpp" />
     <ClCompile Include="src\Serialization\TinyXML\tinyxmlparser.cpp" />
+    <ClCompile Include="src\Serialization\Deserializer.cpp" />
   </ItemGroup>
 </Project>

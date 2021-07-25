@@ -97,6 +97,10 @@ namespace Eclipse
         float dt = 0.0f;
         float updaterate = 4.0f;
         ProfilerWindow Timer;
+
+        //Deserialization(temp)
+        EditorSystem::LoadTemp();
+
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
             Timer.tracker.system_start = glfwGetTime();
@@ -161,6 +165,9 @@ namespace Eclipse
             Timer.tracker.system_end = glfwGetTime();
             Timer.EngineTimer(Timer.tracker);
         }
+
+        //Serialization(Temp)
+        EditorSystem::SaveTemp();
 
         // unLoad
         GraphicsManager.End();

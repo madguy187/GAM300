@@ -6,5 +6,7 @@ namespace Eclipse
 	{
 	public:
 		static void Update();
+		static void SaveTemp();
+		static void LoadTemp();
 	};
 }

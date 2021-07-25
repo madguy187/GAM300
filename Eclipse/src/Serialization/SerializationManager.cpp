@@ -7,9 +7,17 @@ namespace Eclipse
 
 	void SerializationManager::SerializeEntity(const Entity& ent, const size_t& counter)
 	{
-		sz.StartElement("Entity ", true, counter);
+		sz.StartElement("Entity_", true, counter);
+		sz.AddAttributeToElement("ID", ent);
 		SerializeAllComponents(ent);
 		sz.CloseElement();
+	}
+
+	void SerializationManager::DeserializeEntity(const size_t& counter)
+	{
+		dsz.StartElement("Entity", true, counter);
+
+		dsz.CloseElement();
 	}
 
 	void SerializationManager::SerializeAllComponents(const Entity& ent)
@@ -88,8 +96,34 @@ namespace Eclipse
 		sz.CloseElement();
 	}
 
+	void SerializationManager::DeserializeAllEntity(const char* fullpath)
+	{
+		std::filesystem::path p(fullpath);
+		if (!dsz.LoadXML(fullpath))
+			return;
+
+		if (dsz.StartElement(p.filename().replace_extension("").string()))
+		{
+			if (dsz.StartElement("Entities"))
+			{
+				dsz.IterateChildElement();
+			}
+			dsz.CloseElement();
+		}
+		dsz.CloseElement();
+	}
+
+	void SerializationManager::SaveFile(const char* fullpath)
+	{
+		sz.SaveXML(fullpath);
+	}
+
+	bool SerializationManager::LoadFile(const char* fullpath)
+	{
+		return dsz.LoadXML(fullpath);
+	}
+
 	SerializationManager::~SerializationManager()
 	{
-		SerializeAllEntity();
 	}
 }

@@ -23,6 +23,9 @@ namespace Eclipse
 		size_t GetWindowListSize();
 		Entity GetSelectedEntity() const;
 
+		void SaveTemp(const char* fullpath = "Data/Temp/Temp.xml");
+		void LoadTemp(const char* fullpath = "Data/Temp/Temp.xml");
+
 		template <typename TWindow>
 		TWindow* GetEditorWindow()
 		{

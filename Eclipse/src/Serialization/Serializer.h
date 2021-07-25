@@ -101,20 +101,55 @@ namespace Eclipse
 			CloseElement();
 		}
 
-
 		template <typename T, size_t N>
 		void AddAttributeToElement(const std::string& att_name, const Vector<T, N>& att_data)
 		{
 			StartElement(att_name);
-			std::string name{ att_name + "Member" };
+			std::string vecNames[4] = { {"x"}, {"y"}, {"z"}, {"w"} };
 			for (size_t i = 0; i < N; ++i)
 			{
+				AddAttributeToElement<T>(vecNames[i], att_data[i]);
+			}
+			CloseElement();
+		}
+
+		template <typename T, size_t N1, size_t N2, glm::qualifier GLM>
+		void AddAttributeToElement(const std::string& att_name, const glm::mat<N1, N2, T, GLM>& att_data)
+		{
+			StartElement(att_name);
+			//Col x Row
+			/*2x3
+						Col1 Col2
+			Row1    
+			Row2
+			Row3
+			*/
+			AddAttributeToElement<size_t>("Col", N1);
+			AddAttributeToElement<size_t>("Row", N2);
+			std::string name{ att_name + "Col" };
+			for (size_t i = 0; i < N1; ++i)
+			{
+				std::string dataName{"_" + std::to_string(i)};
 				StartElement(name, true, i);
-				AddAttributeToElement<T>("Data", att_data[i]);
+				for (size_t j = 0; j < N2; ++j)
+				{
+					AddAttributeToElement<T>(dataName + std::to_string(j), att_data[i][j]);
+				}
 				CloseElement();
 			}
 			CloseElement();
 		}
 
+		template <typename T, size_t N, glm::qualifier GLM>
+		void AddAttributeToElement(const std::string& att_name, const glm::vec<N, T, GLM>& att_data)
+		{
+			StartElement(att_name);
+			std::string vecNames[4] = { {"x"}, {"y"}, {"z"}, {"w"} };
+			for (size_t i = 0; i < N; ++i)
+			{
+				AddAttributeToElement<T>(vecNames[i], att_data[i]);
+			}
+			CloseElement();
+		}
 	};
 }

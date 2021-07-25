@@ -15,4 +15,20 @@ namespace Eclipse
 			engine->editorManager->GetMenuBar().Update();
 		}
 	}
+
+	void EditorSystem::SaveTemp()
+	{
+		if (engine->GetEditorState())
+		{
+			engine->editorManager->SaveTemp();
+		}
+	}
+
+	void EditorSystem::LoadTemp()
+	{
+		if (engine->GetEditorState())
+		{
+			engine->editorManager->LoadTemp();
+		}
+	}
 }

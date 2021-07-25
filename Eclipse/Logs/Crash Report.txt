@@ -1,2 +1,6 @@
 [07/11/21 22:52:17] [CORE] [error] Crash Report: Assertion Failed! C:\Users\ferna\Desktop\GAM300\Eclipse\src\Engine\Engine.cpp Line 51: woo
 [07/11/21 22:53:05] [CORE] [error] Crash Report: Assertion Failed! C:\Users\ferna\Desktop\GAM300\Eclipse\src\Engine\Engine.cpp Line 51: woo
+[07/25/21 19:37:07] [CORE] [error] Crash Report: Assertion Failed! D:\GAM300\GAM300\Eclipse\src\Serialization\Deserializer.cpp Line 77: Fail to load the file ""temp.xml""
+[07/25/21 19:37:15] [CORE] [error] Crash Report: Assertion Failed! D:\GAM300\GAM300\Eclipse\src\Serialization\Deserializer.cpp Line 77: Fail to load the file ""temp.xml""
+[07/25/21 19:37:43] [CORE] [error] Crash Report: Assertion Failed! D:\GAM300\GAM300\Eclipse\src\Serialization\Deserializer.cpp Line 77: Fail to load the file ""temp.xml""
+[07/25/21 19:38:56] [CORE] [error] Crash Report: Assertion Failed! D:\GAM300\GAM300\Eclipse\src\Serialization\Deserializer.cpp Line 77: Fail to load the file ""temp.xml""

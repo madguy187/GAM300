@@ -20,8 +20,8 @@ namespace Eclipse
 		}
 		else
 		{
-			std::string final_name = ele_name + std::to_string(counter);
-			newChild = new TiXmlElement(final_name.c_str());
+			std::string finalName = ele_name + std::to_string(counter);
+			newChild = new TiXmlElement(finalName.c_str());
 		}
 
 
@@ -54,6 +54,6 @@ namespace Eclipse
 
 	Serializer::~Serializer()
 	{
-		SaveXML("Data\\Temp\\Temp.xml");
+
 	}
 }

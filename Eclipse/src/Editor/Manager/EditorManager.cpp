@@ -142,4 +142,18 @@ namespace Eclipse
 	{
 		return EntityHierarchyList_[GEHIndex_];
 	}
+
+	void EditorManager::SaveTemp(const char* fullpath)
+	{
+		szManager.SerializeAllEntity(fullpath);
+		szManager.SaveFile(fullpath);
+	}
+
+	void EditorManager::LoadTemp(const char* fullpath)
+	{
+		if (szManager.LoadFile(fullpath))
+		{
+			szManager.DeserializeAllEntity(fullpath);
+		}
+	}
 }
