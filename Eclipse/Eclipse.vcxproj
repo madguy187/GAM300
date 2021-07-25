@@ -358,10 +358,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\Mono\ScriptAPI\EclipseBehavior.cs" />
-    <None Include="src\Mono\ScriptAPI\GameObject.cs" />
-    <None Include="src\Mono\ScriptAPI\IScriptable.cs" />
-    <None Include="src\Mono\ScriptAPI\TransformComponent.cs" />
+    <None Include="src\Mono\ScriptAPI\MonoVec3.cs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -10,7 +10,7 @@ namespace Eclipse
         //Vector3 scale;
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        public extern static Vector3 GetTranslate(Entity ent);
+        public extern static MonoVec3 GetTranslate(Entity ent);
 
         //[MethodImplAttribute(MethodImplOptions.InternalCall)]
         //public extern static Vector3 GetScale(Entity ent);
