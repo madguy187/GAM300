@@ -10,13 +10,7 @@
 #include "Editor/Windows/AssetBrowser/AssetBrowser.h"
 #include "Editor/Windows/Log/Log.h"
 #include "Editor/Windows/Profiler/Profiler.h"
-//#include "Library/Strings/Lexical.h"
-
-// Switch Views --------------------------
-#include "Editor/Windows/SwitchViews/Top.h"
-#include "Editor/Windows/SwitchViews/Bottom.h"
-#include "Editor/Windows/SwitchViews/Right.h"
-#include "Editor/Windows/SwitchViews/Left.h"
+#include "Editor/Windows/SwitchViews/SwitchViews.h"
 
 namespace Eclipse
 {
@@ -37,13 +31,10 @@ namespace Eclipse
 		AddWindow<InspectorWindow>("Inspector");
 		AddWindow<HierarchyWindow>("Hierarchy");
 		AddWindow<ProfilerWindow>("Profiler");
-		AddWindow<LoggerWindow>("Log");
 		AddWindow<AssetBrowserWindow>("AssetBrowser");
+		AddWindow<LoggerWindow>("Log");
 		AddWindow<DebugWindow>("Debug");
-		AddWindow<eTopViewWindow>("SwitchView_Top");
-		AddWindow<eBottomViewWindow>("SwitchView_Bottom");
-		AddWindow<eLeftViewWindow>("SwitchView_Left");
-		AddWindow<eRightViewWindow>("SwitchView_Right");
+		AddWindow<SwitchViewsWindow>("SwitchViews");
 	}
 
 	void EditorManager::InitMenu()
@@ -79,7 +70,8 @@ namespace Eclipse
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-		glTexImage2D(GL_TEXTURE_2D, 0, bytes_per_pixels, width, height, 0, (bytes_per_pixels == 3) ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+		glTexImage2D(GL_TEXTURE_2D, 0, bytes_per_pixels, width, height, 0, 
+			(bytes_per_pixels == 3) ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 
 		io.Fonts->SetTexID((void*)static_cast<size_t>(textureID));
 

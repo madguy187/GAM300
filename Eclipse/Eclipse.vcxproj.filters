@@ -273,18 +273,6 @@
     <ClInclude Include="src\Editor\Windows\Scene\Scene.h">
       <Filter>Editor\Windows\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="src\Editor\Windows\SwitchViews\Bottom.h">
-      <Filter>Editor\Windows\SwitchViews</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Editor\Windows\SwitchViews\Left.h">
-      <Filter>Editor\Windows\SwitchViews</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Editor\Windows\SwitchViews\Right.h">
-      <Filter>Editor\Windows\SwitchViews</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Editor\Windows\SwitchViews\Top.h">
-      <Filter>Editor\Windows\SwitchViews</Filter>
-    </ClInclude>
     <ClInclude Include="src\Engine\Engine.h">
       <Filter>Engine</Filter>
     </ClInclude>
@@ -521,6 +509,7 @@
     <ClInclude Include="src\Serialization\TinyXML\tinyxml.h" />
     <ClInclude Include="src\Editor\Windows\Log\ConsoleData.h" />
     <ClInclude Include="src\Serialization\Deserializer.h" />
+    <ClInclude Include="src\Editor\Windows\SwitchViews\SwitchViews.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -585,18 +574,6 @@
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\Scene\Scene.cpp">
       <Filter>Editor\Windows\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Windows\SwitchViews\Bottom.cpp">
-      <Filter>Editor\Windows\SwitchViews</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Windows\SwitchViews\Left.cpp">
-      <Filter>Editor\Windows\SwitchViews</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Windows\SwitchViews\Right.cpp">
-      <Filter>Editor\Windows\SwitchViews</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Windows\SwitchViews\Top.cpp">
-      <Filter>Editor\Windows\SwitchViews</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\Engine.cpp">
       <Filter>Engine</Filter>

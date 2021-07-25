@@ -44,6 +44,7 @@ namespace Eclipse
 
 		std::vector<Entity> EntityHierarchyList_;
 		std::map<Entity, EntityType> EntityToTypeMap_;
+		std::map<const char*, const char*> DataComponentFilter_;
 		size_t GEHIndex_{ 0 };
 	private:
 		std::vector<std::unique_ptr<ECGuiWindow>> Windows_;
