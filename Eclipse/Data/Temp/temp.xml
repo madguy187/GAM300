@@ -1,4 +1,71 @@
 <?xml version="1.0" ?>
 <Temp>
-    <Entities Size="0" />
+    <Entities Size="2">
+        <Entity_0 ID="5">
+            <EntityComponent>
+                <Name Name="Cube" />
+                <Tag Tag="5" />
+                <IsActive IsActive="false" />
+            </EntityComponent>
+            <RenderComponent>
+                <Color x="1" y="1" z="1" />
+                <TextureIdx x="0" y="0" />
+                <HasTexture HasTexture="true" />
+                <IsQuad IsQuad="false" />
+                <ModelNDC_XForm Col="4" Row="4">
+                    <ModelNDC_XFormCol0 _00="0" _01="0" _02="0" _03="0" />
+                    <ModelNDC_XFormCol1 _10="0" _11="0" _12="0" _13="0" />
+                    <ModelNDC_XFormCol2 _20="0" _21="0" _22="0" _23="0" />
+                    <ModelNDC_XFormCol3 _30="0" _31="0" _32="0" _33="0" />
+                </ModelNDC_XForm>
+                <ModelRef ModelRef="cube" />
+                <TextureRef TextureRef="orange" />
+                <ShaderRef ShaderRef="shader3DShdrpgm" />
+                <ID ID="5" />
+                <Name Name="" />
+                <NewLayer NewLayer="0" />
+                <LayerNum LayerNum="0" />
+                <Transparency Transparency="1" />
+                <LightColor x="1" y="1" z="1" w="1" />
+            </RenderComponent>
+            <TransformComponent>
+                <Position x="0" y="0" z="0" />
+                <Rotation x="0" y="0" z="0" />
+                <Scale x="5" y="5" z="5" />
+            </TransformComponent>
+        </Entity_0>
+        <Entity_1 ID="6">
+            <EntityComponent>
+                <Name Name="Cone" />
+                <Tag Tag="7" />
+                <IsActive IsActive="true" />
+            </EntityComponent>
+            <RenderComponent>
+                <Color x="1" y="1" z="1" />
+                <TextureIdx x="0" y="0" />
+                <HasTexture HasTexture="false" />
+                <IsQuad IsQuad="false" />
+                <ModelNDC_XForm Col="4" Row="4">
+                    <ModelNDC_XFormCol0 _00="0" _01="0" _02="0" _03="0" />
+                    <ModelNDC_XFormCol1 _10="0" _11="0" _12="0" _13="0" />
+                    <ModelNDC_XFormCol2 _20="0" _21="0" _22="0" _23="0" />
+                    <ModelNDC_XFormCol3 _30="0" _31="0" _32="0" _33="0" />
+                </ModelNDC_XForm>
+                <ModelRef ModelRef="cone" />
+                <TextureRef TextureRef="" />
+                <ShaderRef ShaderRef="shader3DShdrpgm" />
+                <ID ID="6" />
+                <Name Name="" />
+                <NewLayer NewLayer="0" />
+                <LayerNum LayerNum="0" />
+                <Transparency Transparency="1" />
+                <LightColor x="1" y="1" z="1" w="1" />
+            </RenderComponent>
+            <TransformComponent>
+                <Position x="0" y="0" z="0" />
+                <Rotation x="0" y="0" z="0" />
+                <Scale x="5" y="5" z="5" />
+            </TransformComponent>
+        </Entity_1>
+    </Entities>
 </Temp>

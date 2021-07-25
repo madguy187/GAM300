@@ -89,7 +89,6 @@ namespace Eclipse
 		template <typename T>
 		void AddAttributeToElement(const std::string& att_name, const std::vector<T>& att_data)
 		{
-			StartElement(att_name);
 			size_t counter = 0;
 			std::string name{att_name + " member"};
 			for (const T& data : att_data)
@@ -98,25 +97,21 @@ namespace Eclipse
 				AddAttributeToElement<T>("member", data);
 				CloseElement();
 			}
-			CloseElement();
 		}
 
 		template <typename T, size_t N>
 		void AddAttributeToElement(const std::string& att_name, const Vector<T, N>& att_data)
 		{
-			StartElement(att_name);
 			std::string vecNames[4] = { {"x"}, {"y"}, {"z"}, {"w"} };
 			for (size_t i = 0; i < N; ++i)
 			{
 				AddAttributeToElement<T>(vecNames[i], att_data[i]);
 			}
-			CloseElement();
 		}
 
 		template <typename T, size_t N1, size_t N2, glm::qualifier GLM>
 		void AddAttributeToElement(const std::string& att_name, const glm::mat<N1, N2, T, GLM>& att_data)
 		{
-			StartElement(att_name);
 			//Col x Row
 			/*2x3
 						Col1 Col2
@@ -137,19 +132,16 @@ namespace Eclipse
 				}
 				CloseElement();
 			}
-			CloseElement();
 		}
 
 		template <typename T, size_t N, glm::qualifier GLM>
 		void AddAttributeToElement(const std::string& att_name, const glm::vec<N, T, GLM>& att_data)
 		{
-			StartElement(att_name);
 			std::string vecNames[4] = { {"x"}, {"y"}, {"z"}, {"w"} };
 			for (size_t i = 0; i < N; ++i)
 			{
 				AddAttributeToElement<T>(vecNames[i], att_data[i]);
 			}
-			CloseElement();
 		}
 	};
 }
