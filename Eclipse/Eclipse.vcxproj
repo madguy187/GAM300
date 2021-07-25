@@ -203,7 +203,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\FrameBuffer\FrameBuffer.h" />
     <ClInclude Include="src\Graphics\FrameBuffer\WindowConstraint.h" />
     <ClInclude Include="src\Graphics\Grid\bounds.h" />
-    <ClInclude Include="src\Graphics\Grid\box.hpp" />
+    <ClInclude Include="src\Graphics\Grid\Box.h" />
     <ClInclude Include="src\Graphics\Grid\Grid.h" />
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h" />
     <ClInclude Include="src\Graphics\InputHandler\InputWrapper.h" />
@@ -310,6 +310,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\FrameBuffer\WindowConstraint.cpp" />
     <ClCompile Include="src\Graphics\Grid\bounds.cpp" />
     <ClCompile Include="src\Graphics\Grid\Grid.cpp" />
+    <ClCompile Include="src\Graphics\Grid\Box.cpp" />
     <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp" />
     <ClCompile Include="src\Graphics\Lighting\DirectionalLight.cpp" />
     <ClCompile Include="src\Graphics\Lighting\LightManager.cpp" />

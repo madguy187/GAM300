@@ -69,7 +69,7 @@ namespace Eclipse
         EDITOR_LOG_INFO("All Necessary Models Loaded");
     }
 
-    void AssimpModelManager::Draw(unsigned int FrameBufferID, GLenum Mode , Box* box)
+    void AssimpModelManager::Draw(unsigned int FrameBufferID, GLenum Mode, AABB* box)
     {
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 
@@ -87,7 +87,7 @@ namespace Eclipse
 
             // Check Main Uniforms For each Model
             // Translation done here for each model
-            CheckUniformLoc(shdrpgm->second, _camera, FrameBufferID, ID , box);
+            CheckUniformLoc(shdrpgm->second, _camera, FrameBufferID, ID, box);
 
             // Render
             InvidualModels.Render(shdrpgm->second, Mode, FrameBufferID);
@@ -127,7 +127,7 @@ namespace Eclipse
         }
     }
 
-    void AssimpModelManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID , Box* box)
+    void AssimpModelManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID, AABB* box)
     {
         MaterialComponent& material = engine->world.GetComponent<MaterialComponent>(ModelID);
         GLint uniform_var_loc1 = _shdrpgm.GetLocation("material.shininess");
@@ -142,6 +142,8 @@ namespace Eclipse
         GLuint model_ = _shdrpgm.GetLocation("model");
         GLuint dsa = _shdrpgm.GetLocation("noTex");
 
+        glm::vec3 NewScale = { Transform.scale.getX() * 0.5 ,Transform.scale.getY() * 0.5 , Transform.scale.getZ() * 0.5 };
+
         if (uModelToNDC_ >= 0)
         {
             glm::mat4 mModelNDC;
@@ -150,14 +152,14 @@ namespace Eclipse
             model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
             model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
             model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-            model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
+            model = glm::scale(model, NewScale);
+
+            BoundingRegion br(Transform.position.ConvertToGlmVec3Type(), Transform.scale.ConvertToGlmVec3Type());
+            box->AddInstance(br, Transform.position.ConvertToGlmVec3Type());
 
             mModelNDC = _camera.projMtx * _camera.viewMtx * model;
             glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
             glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
-
-            BoundingRegion br({ -5,-5,-5 }, { 5,5,5 });
-            box->addInstance(br, Transform.position.ConvertToGlmVec3Type(), { 5,5,5 });
         }
 
         glUniform1i(dsa, 0);

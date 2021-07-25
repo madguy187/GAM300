@@ -9,14 +9,14 @@
 #include "Graphics/Camera/CameraManager.h"
 #include "Graphics/RendererAPI/GraphicsManager.h"
 #include "Graphics/Grid/Grid.h"
-#include "Graphics/Grid/box.hpp"
+#include "Graphics/Grid/Box.h"
 
 namespace Eclipse
 {
     class RenderSystem : public System
     {
     public:
-        static inline Box box;
+        static inline AABB box;
         static void Init();
         static Signature RegisterAll();
 

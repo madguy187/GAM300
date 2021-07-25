@@ -266,6 +266,11 @@ namespace Eclipse
             ECGui::InsertSameLine();
             ECGui::CheckBoxBool("DrawGrid", &engine->GraphicsManager.GridManager->Visible, DrawGrid);
 
+            static bool DrawAABBS = engine->GraphicsManager.AllAABBs.DrawAABBS;
+            ECGui::DrawTextWidget<const char*>("DrawAABBS", "");
+            ECGui::InsertSameLine();
+            ECGui::CheckBoxBool(".", &engine->GraphicsManager.AllAABBs.DrawAABBS, DrawAABBS);
+
             if (engine->GraphicsManager.EnableGammaCorrection == true)
             {
                 static float Test = 2.2f;

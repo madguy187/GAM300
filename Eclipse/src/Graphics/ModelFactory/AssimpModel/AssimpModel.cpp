@@ -30,15 +30,23 @@ namespace Eclipse
 
     void AssimpModel::LoadAssimpModel(std::string path)
     {
-        unsigned int importOptions = aiProcess_Triangulate
-            | aiProcess_OptimizeMeshes
-            | aiProcess_JoinIdenticalVertices
-            | aiProcess_Triangulate
-            | aiProcess_CalcTangentSpace
-            | aiProcess_FlipUVs;
+        unsigned int importOptions = aiProcess_Triangulate | aiProcess_GenSmoothNormals | 
+                                     aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices;
 
         Assimp::Importer import;
         const aiScene* scene = import.ReadFile(path, importOptions);
+
+        //double factor(0.0);
+        //bool result = scene->mMetaData->Get("UnitScaleFactor", factor);
+
+        //if (result == false)
+        //{
+        //    std::cout << "Failed to retrieve  unit scale factor!" << std::endl;
+        //}
+        //else
+        //{
+        //    std::cout << "Scale is " << factor << std::endl;
+        //}
 
         //if (scene->GetEmbeddedTexture("src/Assets/ASSModels/dog/1.FBX") == nullptr)
         //{

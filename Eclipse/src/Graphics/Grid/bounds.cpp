@@ -1,148 +1,161 @@
 #include "pch.h"
 #include "Graphics/Grid/bounds.h"
-/*
-		Constructors
-*/
 
-// initialize with type
-BoundingRegion::BoundingRegion(BoundTypes type)
-	: type(type) {}
-
-// initialize as sphere
-BoundingRegion::BoundingRegion(glm::vec3 center, float radius)
-	: type(BoundTypes::SPHERE), center(center), radius(radius) {}
-
-// initialize as AABB
-BoundingRegion::BoundingRegion(glm::vec3 mina, glm::vec3 maxa)
-	: type(BoundTypes::AABB), Min(mina), Max(maxa) 
+namespace Eclipse
 {
-	int i = 0;
-}
+    BoundingRegion::BoundingRegion(BoundTypes type) :
+        type(type)
+    {
 
-/*
-	Calculating values for the region
-*/
+    }
 
-// center
-glm::vec3 BoundingRegion::calculateCenter() {
-	return (type == BoundTypes::AABB) ? (Min + Max) / 2.0f : center;
-}
+    BoundingRegion::BoundingRegion(glm::vec3 center, float radius) :
+        type(BoundTypes::SPHERE),
+        center(center),
+        radius(radius)
+    {
 
-// calculate dimensions
-glm::vec3 BoundingRegion::calculateDimensions() {
-	return (type == BoundTypes::AABB) ? (Max - Min) : glm::vec3(2.0f * radius);
-}
+    }
 
-/*
-	testing methods
-*/
+    //initialize as AABB
+    BoundingRegion::BoundingRegion(glm::vec3 mina, glm::vec3 maxa, bool in) :
+        type(BoundTypes::AABB),
+        Minimum(mina),
+        Maximum(maxa)
+    {
 
-// determine if point inside
-bool BoundingRegion::containsPoint(glm::vec3 pt) {
-	if (type == BoundTypes::AABB) {
-		// box - point must be larger than man and smaller than max
-		return (pt.x >= Min.x) && (pt.x <= Max.x) &&
-			(pt.y >= Min.y) && (pt.y <= Max.y) &&
-			(pt.z >= Min.z) && (pt.z <= Min.z);
-	}
-	else {
-		// sphere - distance must be less than radius
-		// x^2 + y^2 + z^2 <= r^2
-		float distSquared = 0.0f;
-		for (int i = 0; i < 3; i++) {
-			distSquared += (center[i] - pt[i]) * (center[i] - pt[i]);
-		}
-		return distSquared <= (radius * radius);
-	}
-}
+    }
 
-// determine if region completely inside
-bool BoundingRegion::containsRegion(BoundingRegion br) {
-	if (br.type == BoundTypes::AABB) {
-		// if br is a box, just has to contain min and max
-		return containsPoint(br.Min) && containsPoint(br.Max);
-	}
-	else if (type == BoundTypes::SPHERE && br.type == BoundTypes::SPHERE) {
-		// if both spheres, combination of distance from centers and br.radius is less than radius
-		return glm::length(center - br.center) + br.radius < radius;
-	}
-	else {
-		// if this is a box and br is a sphere
+    BoundingRegion::BoundingRegion(glm::vec3 position, glm::vec3 Scale)
+    {
+        type = BoundTypes::AABB;
 
-		if (!containsPoint(br.center)) {
-			// center is outside of the box
-			return false;
-		}
+        Minimum = { -(Scale.x / 2) ,-(Scale.y / 2)  , -(Scale.z / 2) };
+        Maximum = { (Scale.x / 2) ,  (Scale.y / 2)  ,  (Scale.z / 2) };
+    }
 
-		// center inside the box
-		/*
-			for each axis (x, y, z)
-			- if distance to each side is smaller than the radius, return false
-		*/
-		for (int i = 0; i < 3; i++) {
-			if (abs(Max[i] - br.center[i]) < br.radius ||
-				abs(br.center[i] - Min[i]) < br.radius) {
-				return false;
-			}
-		}
+    glm::vec3 BoundingRegion::calculateCenter()
+    {
+        if (type == BoundTypes::AABB)
+        {
+            return ((Minimum + Maximum) / 2.0f);
+        }
+        else
+        {
+            return center;
+        }
+    }
 
-		return true;
-	}
-}
+    // calculate dimensions
+    glm::vec3 BoundingRegion::calculateDimensions()
+    {
+        if (type == BoundTypes::AABB)
+        {
+            return (Maximum - Minimum);
+        }
+        else
+        {
+            return glm::vec3(2.0f * radius);
+        }
+    }
 
-// determine if region intersects (partial containment)
-bool BoundingRegion::intersectsWith(BoundingRegion br) {
-	// overlap on all axes
+    bool BoundingRegion::containsPoint(glm::vec3 pt)
+    {
+        if (type == BoundTypes::AABB)
+        {
+            return (pt.x >= Minimum.x) && (pt.x <= Maximum.x) && (pt.y >= Minimum.y) && (pt.y <= Maximum.y) && (pt.z >= Minimum.z) && (pt.z <= Minimum.z);
+        }
+        else
+        {
+            float distSquared = 0.0f;
 
-	if (type == BoundTypes::AABB && br.type == BoundTypes::AABB) {
-		// both boxes
+            for (int i = 0; i < 3; i++)
+            {
+                distSquared += (center[i] - pt[i]) * (center[i] - pt[i]);
+            }
 
-		glm::vec3 rad = calculateDimensions() / 2.0f;				// "radius" of this box
-		glm::vec3 radBr = br.calculateDimensions() / 2.0f;			// "radius" of br
+            return distSquared <= (radius * radius);
+        }
+    }
 
-		glm::vec3 center = calculateCenter();						// center of this box
-		glm::vec3 centerBr = br.calculateCenter();					// center of br
+    bool BoundingRegion::containsRegion(BoundingRegion br)
+    {
+        if (br.type == BoundTypes::AABB)
+        {
+            return containsPoint(br.Minimum) && containsPoint(br.Maximum);
+        }
+        else if (type == BoundTypes::SPHERE && br.type == BoundTypes::SPHERE)
+        {
+            return glm::length(center - br.center) + br.radius < radius;
+        }
+        else
+        {
+            if (!containsPoint(br.center))
+            {
+                return false;
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                if (abs(Maximum[i] - br.center[i]) < br.radius || abs(br.center[i] - Minimum[i]) < br.radius)
+                {
+                    return false;
+                }
+            }
 
-		glm::vec3 dist = abs(center - centerBr);
+            return true;
+        }
+    }
 
-		for (int i = 0; i < 3; i++) {
-			if (dist[i] > rad[i] + radBr[i]) {
-				// no overlap on this axis
-				return false;
-			}
-		}
+    bool BoundingRegion::intersectsWith(BoundingRegion br)
+    {
+        if (type == BoundTypes::AABB && br.type == BoundTypes::AABB)
+        {
+            // both boxes
 
-		// failed to prove wrong on each axis
-		return true;
-	}
-	else if (type == BoundTypes::SPHERE && br.type == BoundTypes::SPHERE) {
-		// both spheres - distance between centers must be less than combined radius
+            glm::vec3 rad = calculateDimensions() / 2.0f;
+            glm::vec3 radBr = br.calculateDimensions() / 2.0f;
 
-		return glm::length(center - br.center) < (radius + br.radius);
-	}
-	else if (type == BoundTypes::SPHERE) {
-		// this is a sphere, br is a box
+            glm::vec3 center = calculateCenter();
+            glm::vec3 centerBr = br.calculateCenter();
 
-		// determine if sphere is above top, below bottom, etc
-		// find distance (squared) to the closest plane
-		float distSquared = 0.0f;
-		for (int i = 0; i < 3; i++) {
-			if (center[i] < br.Min[i]) {
-				// beyond min
-				distSquared += (br.Min[i] - center[i]) * (br.Min[i] * center[i]);
-			}
-			else if (center[i] > br.Max[i]) {
-				// beyond max
-				distSquared += (center[i] - br.Max[i]) * (center[i] - br.Max[i]);
-			}
-			// else inside
-		}
+            glm::vec3 dist = abs(center - centerBr);
 
-		return distSquared < (radius* radius);
-	}
-	else {
-		// this is a box, br is a sphere
-		// call algorithm for br (defined in preceding else if block)
-		return br.intersectsWith(*this);
-	}
+            for (int i = 0; i < 3; i++)
+            {
+                if (dist[i] > rad[i] + radBr[i])
+                {
+                    // no overlap on this axis
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        else if (type == BoundTypes::SPHERE && br.type == BoundTypes::SPHERE)
+        {
+            return glm::length(center - br.center) < (radius + br.radius);
+        }
+        else if (type == BoundTypes::SPHERE)
+        {
+            float distSquared = 0.0f;
+
+            for (int i = 0; i < 3; i++)
+            {
+                if (center[i] < br.Minimum[i])
+                {
+                    distSquared += (br.Minimum[i] - center[i]) * (br.Minimum[i] * center[i]);
+                }
+                else if (center[i] > br.Maximum[i])
+                {
+                    distSquared += (center[i] - br.Maximum[i]) * (center[i] - br.Maximum[i]);
+                }
+            }
+
+            return distSquared < (radius* radius);
+        }
+        else
+        {
+            return br.intersectsWith(*this);
+        }
+    }
 }

@@ -1,61 +1,38 @@
 #ifndef BOUNDS_H
 #define BOUNDS_H
 
-#include "glm.hpp"
-
-enum class BoundTypes
+namespace Eclipse
 {
-    AABB = 0x00,	// 0x00 = 0	// Axis-aligned bounding box
-    SPHERE = 0x01	// 0x01 = 1
-};
+    enum class BoundTypes
+    {
+        None = 0,
+        AABB = 1,
+        SPHERE = 2,
+        Macount
+    };
 
-class BoundingRegion
-{
-public:
-    BoundTypes type;
+    class BoundingRegion
+    {
+    public:
+        BoundTypes type;
 
-    // sphere values
-    glm::vec3 center;
-    float radius;
+        // sphere values
+        glm::vec3 center;
+        float radius;
 
-    // bounding box values
-    glm::vec3 Min;
-    glm::vec3 Max;
+        // bounding box values
+        glm::vec3 Minimum;
+        glm::vec3 Maximum;
 
-    /*
-        Constructors
-    */
-
-    // initialize with type
-    BoundingRegion(BoundTypes type);
-
-    // initialize as sphere
-    BoundingRegion(glm::vec3 center, float radius);
-
-    // initialize as AABB
-    BoundingRegion(glm::vec3 min, glm::vec3 max);
-
-    /*
-        Calculating values for the region
-    */
-
-    // center
-    glm::vec3 calculateCenter();
-
-    // calculate dimensions
-    glm::vec3 calculateDimensions();
-
-    /*
-        testing methods
-    */
-
-    // determine if point inside
-    bool containsPoint(glm::vec3 pt);
-
-    // determine if region completely inside
-    bool containsRegion(BoundingRegion br);
-
-    // determine if region intersects (partial containment)
-    bool intersectsWith(BoundingRegion br);
-};
+        BoundingRegion(BoundTypes type);
+        BoundingRegion(glm::vec3 center, float radius);
+        BoundingRegion(glm::vec3 min, glm::vec3 max, bool in);
+        BoundingRegion(glm::vec3 position , glm::vec3 Scale);
+        glm::vec3 calculateCenter();
+        glm::vec3 calculateDimensions();
+        bool containsPoint(glm::vec3 pt);
+        bool containsRegion(BoundingRegion br);
+        bool intersectsWith(BoundingRegion br);
+    };
+}
 #endif

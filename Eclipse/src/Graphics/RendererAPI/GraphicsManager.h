@@ -6,6 +6,7 @@
 #include "Graphics/InputHandler/InputWrapper.h"
 #include "Graphics/ModelFactory/Sky/CubeMap.h"
 #include "Graphics/Grid/Grid.h"
+#include "Graphics/Grid/Box.h"
 
 namespace Eclipse
 {
@@ -14,12 +15,14 @@ namespace Eclipse
     public:
         OpenGL_Context mRenderContext;
         std::vector<AssimpModel*> ModelContainer;
-        unsigned int createdID;
         InputWrapper InputHandler;
         GLenum GlobalMode = GL_FILL;
         std::unique_ptr<CubeMap> Sky;
-        unsigned int SkyCount = 0;
         std::unique_ptr<Grid> GridManager;
+        AABB AllAABBs;
+
+        unsigned int createdID;
+        unsigned int SkyCount = 0;
         bool CheckRender = true;
         bool EnableGammaCorrection = true;
         bool DrawSky = false;
