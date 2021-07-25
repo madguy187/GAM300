@@ -99,8 +99,6 @@ namespace Eclipse
 	void SerializationManager::DeserializeAllEntity(const char* fullpath)
 	{
 		std::filesystem::path p(fullpath);
-		if (!dsz.LoadXML(fullpath))
-			return;
 
 		if (dsz.StartElement(p.filename().replace_extension("").string()))
 		{
