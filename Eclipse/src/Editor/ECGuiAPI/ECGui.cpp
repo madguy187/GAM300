@@ -123,8 +123,22 @@ namespace Eclipse
 		return ImGuiAPI::CreateMenuItem(name, open);
 	}
 
-	bool ECGui::CreateCollapsingHeader(const char* name)
+	bool ECGui::DrawDataHeader(const char* varname, ImGuiTextFilter& filter)
 	{
+		if (filter.PassFilter(varname))
+		{
+			ImGuiAPI::Text(varname);
+			return true;
+		}
+
+		return false;
+	}
+
+	bool ECGui::CreateCollapsingHeader(const char* name, bool forInspector)
+	{
+		if (forInspector)
+			engine->editorManager->DataComponentFilter_[name] = name;
+
 		return ImGuiAPI::CreateCollapsingHeader(name);
 	}
 

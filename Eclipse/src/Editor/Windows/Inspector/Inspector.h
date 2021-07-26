@@ -11,14 +11,11 @@ namespace Eclipse
 		InspectorWindow();
 		void DrawImpl();
 
-		bool ShowEntityProperty(Entity ID);
-		bool ShowTransformProperty(Entity ID);
-		bool ShowPointLightProperty(Entity ID);
-		bool ShowSpotLightProperty(Entity ID);
-		bool ShowDirectionalLightProperty(Entity ID);
-		void RenderSettings();
-		bool ShowGridSettings(Entity ID);
-		bool ShowMaterialProperty(Entity ID);
+		bool ShowEntityProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowTransformProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowPointLightProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowSpotLightProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowDirectionalLightProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 	private:
 		ECVec2 WindowSize_{};
 	};

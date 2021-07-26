@@ -279,18 +279,6 @@
     <ClInclude Include="src\Editor\Windows\Scene\Scene.h">
       <Filter>Editor\Windows\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="src\Editor\Windows\SwitchViews\Bottom.h">
-      <Filter>Editor\Windows\SwitchViews</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Editor\Windows\SwitchViews\Left.h">
-      <Filter>Editor\Windows\SwitchViews</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Editor\Windows\SwitchViews\Right.h">
-      <Filter>Editor\Windows\SwitchViews</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Editor\Windows\SwitchViews\Top.h">
-      <Filter>Editor\Windows\SwitchViews</Filter>
-    </ClInclude>
     <ClInclude Include="src\Engine\Engine.h">
       <Filter>Engine</Filter>
     </ClInclude>
@@ -527,6 +515,7 @@
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem.h" />
     <ClInclude Include="src\Graphics\Grid\bounds.h" />
     <ClInclude Include="src\Graphics\Grid\Box.h" />
+    <ClInclude Include="src\Editor\Windows\SwitchViews\SwitchViews.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -591,18 +580,6 @@
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\Scene\Scene.cpp">
       <Filter>Editor\Windows\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Windows\SwitchViews\Bottom.cpp">
-      <Filter>Editor\Windows\SwitchViews</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Windows\SwitchViews\Left.cpp">
-      <Filter>Editor\Windows\SwitchViews</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Windows\SwitchViews\Right.cpp">
-      <Filter>Editor\Windows\SwitchViews</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Windows\SwitchViews\Top.cpp">
-      <Filter>Editor\Windows\SwitchViews</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\Engine.cpp">
       <Filter>Engine</Filter>
@@ -798,5 +775,6 @@
     <None Include="src\Assets\Shaders\Shaders.json" />
     <None Include="src\Assets\Shaders\textFrag.frag" />
     <None Include="src\Assets\Shaders\textVtx.vert" />
+    <ClCompile Include="src\Editor\Windows\SwitchViews\SwitchViews.cpp" />
   </ItemGroup>
 </Project>
