@@ -152,7 +152,7 @@ namespace Eclipse
             model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
             model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
             model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-            model = glm::scale(model, NewScale);
+            model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
 
             BoundingRegion br(Transform.position.ConvertToGlmVec3Type(), Transform.scale.ConvertToGlmVec3Type());
             box->AddInstance(br, Transform.position.ConvertToGlmVec3Type());
