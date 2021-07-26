@@ -504,6 +504,7 @@
     </ClInclude>
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Editor\Windows\SwitchViews\SwitchViews.h" />
+    <ClInclude Include="src\Editor\Utitlities\DragAndDrop.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -739,5 +740,6 @@
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\Editor\Windows\SwitchViews\SwitchViews.cpp" />
+    <ClCompile Include="src\Editor\Utitlities\DragAndDrop.cpp" />
   </ItemGroup>
 </Project>

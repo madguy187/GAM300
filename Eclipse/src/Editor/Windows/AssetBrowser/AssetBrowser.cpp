@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "AssetBrowser.h"
-
 namespace Eclipse
 {
 	AssetBrowserWindow::AssetBrowserWindow()
@@ -140,47 +139,13 @@ namespace Eclipse
 
 								ECGui::EndTreeNode();
 							}
-							if (ImGui::BeginDragDropTarget())
-							{
-								if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ITEM"))
-								{
-									try
-									{
-										paths = (const wchar_t*)payload->Data;
-										std::filesystem::copy(std::filesystem::path(AssetPath / paths), secondEntry.path());
-										std::filesystem::remove(std::filesystem::path(AssetPath / paths));
-										refresh = true;
-									}
-									catch (std::filesystem::filesystem_error& e)
-									{
-										std::cout << e.what() << '\n';
-									}
-								}
-								ImGui::EndDragDropTarget();
-							}
+							engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath, secondEntry, refresh);
 						}
 					}
 					ECGui::EndTreeNode();
 				}
 
-				if (ImGui::BeginDragDropTarget())
-				{
-					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ITEM"))
-					{
-						try
-						{
-							paths = (const wchar_t*)payload->Data;
-							std::filesystem::copy(std::filesystem::path(AssetPath / paths), dirEntry.path());
-							std::filesystem::remove(std::filesystem::path(AssetPath / paths));
-							refresh = true;
-						}
-						catch (std::filesystem::filesystem_error& e)
-						{
-							std::cout << e.what() << '\n';
-						}
-					}
-					ImGui::EndDragDropTarget();
-				}
+				engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath, dirEntry, refresh);
 
 				if (!jumpDir && ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0))
 				{
@@ -377,32 +342,10 @@ namespace Eclipse
 				{ 1,0 },
 				{ 2,1 });
 			//drag drop
+			engine->editorManager->Item_.AssetBrowerFilesAndFoldersSource("ITEM", relativePath);
 			
-			if(ImGui::BeginDragDropSource())
-			{
-				const wchar_t* itemPath = relativePath.c_str();
-				ImGui::SetDragDropPayload("ITEM", itemPath , (wcslen(itemPath) + 1) * sizeof(wchar_t));
-				ImGui::EndDragDropSource();
-			}
+			engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath, dirEntry, refresh);
 
-			if (ImGui::BeginDragDropTarget())
-			{
-				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ITEM"))
-				{
-					try
-					{
-						paths = (const wchar_t*)payload->Data;
-						std::filesystem::copy(std::filesystem::path(AssetPath / paths), dirEntry.path());
-						std::filesystem::remove(std::filesystem::path(AssetPath / paths));
-						refresh = true;
-					}
-					catch (std::filesystem::filesystem_error& e)
-					{
-						std::cout << e.what() << '\n';
-					}
-				}
-				ImGui::EndDragDropTarget();
-			}
 			if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
 			{
 				if (dirEntry.is_directory())
