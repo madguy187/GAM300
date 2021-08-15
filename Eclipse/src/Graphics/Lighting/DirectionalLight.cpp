@@ -56,7 +56,7 @@ namespace Eclipse
 
         if (in->visible)
         {
-            GLCall(glDrawElements(Graphics::models.find("sphere")->second->GetPrimitiveType(), Graphics::models.find("sphere")->second->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
+            GLCall(glDrawElements(Graphics::models["sphere"]->GetPrimitiveType(), Graphics::models.find("sphere")->second->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
         }
 
         glBindVertexArray(0);
