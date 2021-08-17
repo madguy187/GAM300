@@ -14,6 +14,7 @@ namespace Eclipse
 	{
 		Type = EditorWindowType::EWT_DEBUG;
 		WindowName = "Debug";
+		IsVisible = false;
 	}
 
 	void DebugWindow::DrawImpl()
