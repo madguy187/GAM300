@@ -27,6 +27,10 @@ void Eclipse::PickingManager::UpdateAabb(unsigned int ID)
 	_aabb.center = ECVec3{ position.x, position.y, position.z };
 	_aabb.min = ECVec3{ position.x - halfExt.x, position.y - halfExt.y, position.z - halfExt.z };
 	_aabb.max = ECVec3{ position.x + halfExt.x, position.y + halfExt.y, position.z + halfExt.z };
+
+    //std::cout << "HalfExtX: " << halfExt.x << std::endl;
+    //std::cout << "HalfExtY: " << halfExt.y << std::endl;
+    //std::cout << "HalfExtZ: " << halfExt.z << std::endl;
 }
 
 glm::vec3 Eclipse::PickingManager::ComputeCursorRayDirection()
@@ -79,8 +83,22 @@ glm::vec3 Eclipse::PickingManager::ComputeCursorRayDirection()
 
     //std::cout << "Mouse: { " << mouseX << " ," << mouseY << " }" << std::endl;
 
+    float _mouseX, _mouseY;
+    _mouseX = OpenGL_Context::GetMouseCursorPos().x;
+    _mouseY = OpenGL_Context::GetMouseCursorPos().y;
+
+    _mouseX -= (scene->GetSceneBufferPos().x - OpenGL_Context::GetContextPosition().x);
+    _mouseY -= (scene->GetSceneBufferPos().y - OpenGL_Context::GetContextPosition().y);
+
+    _mouseX -= (0.5f * scene->GetSceneBufferSize().x);
+    _mouseY -= (0.5f * scene->GetSceneBufferSize().y);
+
+    _mouseX = _mouseX * (camWidth / ImGui::GetWindowWidth());
+    _mouseY = _mouseY * (camera.fov / ImGui::GetWindowHeight());
+
 	glm::mat4 invVP = glm::inverse(camera.projMtx * camera.viewMtx);
-	glm::vec4 clipCoords = glm::vec4{ mouseX, -mouseY, -1.0f, 1.0f };
+	//glm::vec4 clipCoords = glm::vec4{ mouseX, -mouseY, -1.0f, 1.0f };
+	glm::vec4 clipCoords = glm::vec4{ _mouseX, -_mouseY, -1.0f, 1.0f };
 	glm::vec4 worldPos = invVP * clipCoords;
 
 	glm::vec3 dir = glm::normalize(glm::vec3(worldPos));
@@ -113,7 +131,18 @@ glm::vec3 Eclipse::PickingManager::ComputeCursorRayDirection()
         //
         //std::cout << "ImGui WindowContentRegionMaxX: " << ImGui::GetWindowContentRegionMax().x << std::endl;
         //std::cout << "ImGui WindowContentRegionMaxY: " << ImGui::GetWindowContentRegionMax().y << std::endl;
-        
+        float _mouseX, _mouseY;
+        _mouseX = OpenGL_Context::GetMouseCursorPos().x;
+        _mouseY = OpenGL_Context::GetMouseCursorPos().y;
+
+        _mouseX -= (scene->GetSceneBufferPos().x - OpenGL_Context::GetContextPosition().x);
+        _mouseY -= (scene->GetSceneBufferPos().y - OpenGL_Context::GetContextPosition().y);
+
+        _mouseX -= (0.5f * scene->GetSceneBufferSize().x);
+        _mouseY -= (0.5f * scene->GetSceneBufferSize().y);
+
+        std::cout << "_Mouse: { " << _mouseX << " ," << _mouseY << " }" << std::endl;
+
         std::cout << "ContextPosX: " << OpenGL_Context::GetContextPosition().x << std::endl;
         std::cout << "ContextPosY: " << OpenGL_Context::GetContextPosition().y << std::endl;
 
@@ -146,7 +175,7 @@ glm::vec3 Eclipse::PickingManager::ComputeCursorRayDirection()
         std::cout << "WindowY: " << (ImGui::GetWindowHeight() / 2) + ImGui::GetCursorScreenPos().y << std::endl;
 
         std::cout << "Mouse: { " << mouseX << " ," << mouseY << " }" << std::endl;
-        std::cout << "RayDir: { " << dir.x << ", " << dir.y << ", " << dir.z << " }" << std::endl;
+        //std::cout << "RayDir: { " << dir.x << ", " << dir.y << ", " << dir.z << " }" << std::endl;
 
         std::cout << std::endl;
     }
