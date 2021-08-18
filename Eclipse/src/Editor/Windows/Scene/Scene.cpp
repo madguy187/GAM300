@@ -118,35 +118,7 @@ namespace Eclipse
 
 		float t;
 		glm::vec3 rayDir = engine->gPicker.ComputeCursorRayDirection();
-		rayDir.z = -rayDir.z;
 		bool collision = engine->gPicker.RayAabb(camera.eyePos, rayDir, aabb.min.ConvertToGlmVec3Type(), aabb.max.ConvertToGlmVec3Type(), t);
-		//bool collision = engine->gPicker.RayAabb(glm::vec3{ 0.0f, 0.0f, 40.0f }, glm::vec3{ 0.0f, 0.0f, -1.0f }, aabb.min.ConvertToGlmVec3Type(), aabb.max.ConvertToGlmVec3Type(), t);
-
-
-		//std::cout << "RayDir: { " << rayDir.x << ", " << rayDir.y << ", " << rayDir.z << " }" << std::endl;
-		//std::cout << "RayStart: { " << camera.eyePos.x << ", " << camera.eyePos.y << ", " << camera.eyePos.z << " }" << std::endl;
-		//std::cout << "t: " << t << std::endl;
-		
-		int keyN = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_N);
-
-		if (GLFW_PRESS == keyN)
-		{
-			std::cout << "RayDir: { " << rayDir.x << ", " << rayDir.y << ", " << rayDir.z << " }" << std::endl;
-
-			if (collision)
-			{
-				std::cout << "Colliding!" << std::endl;
-			}
-			else
-			{
-				std::cout << "Not Colliding." << std::endl;
-			}
-		}
-
-		//if (collision)
-		//{
-		//	std::cout << "Colliding!" << std::endl;
-		//}
 
 		ImGuizmo::SetOrthographic(false);
 		ImGuizmo::SetDrawlist();
