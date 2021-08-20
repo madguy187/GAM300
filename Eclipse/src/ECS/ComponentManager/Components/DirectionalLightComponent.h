@@ -7,8 +7,10 @@ namespace Eclipse
     struct DirectionalLightComponent
     {
         unsigned int ID = 0;
+
         bool visible = false;
         bool AffectsWorld = true;
+        bool EnableBlinnPhong = true;
 
         ECVec3 lightColor{ 1.0f,1.0f,1.0f };
         ECVec3 Direction{ -1.0f,-1.0f,-1.0f };
@@ -17,12 +19,11 @@ namespace Eclipse
         ECVec3 specular{ 0.5f,0.5f,0.5f };
         ECVec4 Color{ 1.0f,1.0f,1.0f,1 };
 
-        IModel* modelRef;
-        Shader* shaderRef;
-        Texture* textureRef;
-
-        bool EnableBlinnPhong = true;
-
         glm::mat4 modelNDC_xform{ 0 };
+
+        // Not Needed For now
+        //IModel* modelRef;
+        //Shader* shaderRef;
+        //Texture* textureRef;
     };
 }

@@ -17,7 +17,7 @@ namespace Eclipse
         std::vector<unsigned int> indices;
 
     public:
-        bool DrawAABBS = false;
+        bool DrawAABBS = true;
         std::vector<glm::vec3> Position;
         std::vector<glm::vec3> AABB_Size;
 

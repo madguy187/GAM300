@@ -47,7 +47,7 @@ namespace Eclipse
         void CheckUniformLoc(RenderComponent& sprite, unsigned int id, unsigned int framebufferID);
 
     private:
-        float GammaCorrection = 2.2f;
+        float GammaCorrection = 1.0f;
         void UpdateFrameBuffer();
         void FrameBufferDraw();
     };

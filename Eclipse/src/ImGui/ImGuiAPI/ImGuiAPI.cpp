@@ -193,7 +193,7 @@ namespace Eclipse
 	void ImGuiAPI::TextMat3(const char* varname, const ECMat3& var)
 	{
 		ImGui::Text("%s: ", varname);
-		
+
 		for (size_t i = 0; i < var.Rows(); ++i)
 		{
 			for (size_t j = 0; j < var.Cols(); ++j)
