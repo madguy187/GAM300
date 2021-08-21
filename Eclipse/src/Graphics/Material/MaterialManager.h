@@ -57,8 +57,8 @@ namespace Eclipse
         // First parameter is for init , should we add highlight Component into everyone of them?
         // Second parameter is enabling highlight
         MaterialManager(bool InitRegisterHighlight_, bool EnableHighlight_);
-        bool InitRegisterHighlight = false;
-        bool EnableHighlight = false;
+        bool InitRegisterHighlight = true;
+        bool EnableHighlight = true;
         ModelHighLight ModelHighlightContainer;
 
     public:

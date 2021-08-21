@@ -20,6 +20,5 @@ namespace Eclipse
 		void Draw(DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
 		void CheckUniformLoc(Shader* _shdrpgm, DirectionalLightComponent& hi, int index, unsigned int containersize);
 		void FirstGlobalLight();
-		void AddDirectionalLight();
 	};
 }

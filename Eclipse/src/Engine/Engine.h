@@ -23,7 +23,7 @@ namespace Eclipse
         LightManager LightManager;
         MonoManager mono;
         AssimpModelManager AssimpManager;
-        MaterialManager MaterialManager{ false , false };
+        MaterialManager MaterialManager{ true , true };
 
         void Init();
         void Run();

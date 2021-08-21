@@ -6,7 +6,8 @@ namespace Eclipse
 {
     struct PointLightComponent
     {
-        unsigned int ID = 0;
+        unsigned int ID = 0; // Store Entity ID
+        unsigned int Counter = 0; // To iterate in Shaders
 
         ECVec3 ambient{ 0.2f , 0.2f, 0.2f };
         ECVec3 diffuse{ 0.5f,0.5f,0.5f };
@@ -25,9 +26,10 @@ namespace Eclipse
         bool hasTexture = false;
         bool visible = false;
 
-        IModel* modelRef;
-        Shader* shaderRef;
-        Texture* textureRef;
-        glm::mat4 modelNDC_xform{ 0 };
+        // Not Needed For now
+        //IModel* modelRef;
+        //Shader* shaderRef;
+        //Texture* textureRef;
+
     };
 }

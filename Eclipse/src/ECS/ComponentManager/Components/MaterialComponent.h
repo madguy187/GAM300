@@ -15,7 +15,7 @@ namespace Eclipse
 
         // Check Highlighting
         bool RegisterForHighlight = false;
-        bool Highlight = false;
+        bool Highlight = true;
         float Thickness = 0.05f;
         ECVec3 HighlightColour{ 0.0f,0.0f,0.0f };
 
