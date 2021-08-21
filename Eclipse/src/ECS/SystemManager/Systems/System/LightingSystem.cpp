@@ -20,8 +20,11 @@ namespace Eclipse
 			// Directional Light =============================
 			for (auto const& entity : engine->LightManager.GetDirectionalLightContainer())
 			{
-				engine->LightManager.DrawDirectionalLight(entity.second,
-					engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), entity.first, GL_FILL);
+				engine->LightManager.DrawDirectionalLight(
+					entity.second, // DirectionalLightComponent
+					engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), // FrameBufferID
+					entity.second->Counter, // ID used to loop in shaders
+					GL_FILL);
 			}
 
 			// PointLights =============================
@@ -37,8 +40,11 @@ namespace Eclipse
 			// SpotLights =============================
 			for (auto const& entity : engine->LightManager.GetSpotLightsContainer())
 			{
-				engine->LightManager.DrawSpotLight(entity.second,
-					engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), entity.first, GL_FILL);
+				engine->LightManager.DrawSpotLight(
+					entity.second, // SpotLightComponent
+					engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), // FrameBuffer ID
+					entity.second->Counter, // ID used to loop in shaders
+					GL_FILL);
 			}
 		}
 

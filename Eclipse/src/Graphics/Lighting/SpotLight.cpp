@@ -16,25 +16,45 @@ namespace Eclipse
 
     void SpotLight::CreateSpotLight(unsigned int CreatedID)
     {
-        // Add Components
+        // Add SpotLightComponent
         engine->world.AddComponent(CreatedID, SpotLightComponent{});
 
-        // Assign
-        SpotLightComponent& sprite = engine->world.GetComponent<SpotLightComponent>(CreatedID);
-        sprite.ID = CreatedID;
-        sprite.shaderRef = &(Graphics::shaderpgms.find("shader3DShdrpgm")->second);
-        sprite.modelRef = Graphics::models.find("sphere")->second.get();
-        engine->LightManager.SetAttenuation(sprite, 5);
+        // SpotLightComponent
+        SpotLightComponent& SpotLight = engine->world.GetComponent<SpotLightComponent>(CreatedID);
+        SpotLight.ID = CreatedID;
+        SpotLight.Counter = counter;
+        engine->LightManager.SetAttenuation(SpotLight, 5);
 
+        // TransformComponent
         TransformComponent& transform = engine->world.GetComponent<TransformComponent>(CreatedID);
         transform.scale.setX(1.0f);
         transform.scale.setY(1.0f);
         transform.scale.setZ(1.0f);
 
-        // Success
-        _spotlights.insert({ counter,&sprite });
-        ENGINE_CORE_INFO("SpotLight Created Successfully");
-        counter++;
+        // Insert into container
+        if (_spotlights.insert({ SpotLight.ID ,&SpotLight }).second == true)
+        {
+            ENGINE_CORE_INFO("SpotLight Created Successfully");
+            counter++;
+        }
+    }
+
+    bool SpotLight::DeleteSpotLight(unsigned int EntityID)
+    {
+        SLIT it = _spotlights.find(EntityID);
+
+        if (it == _spotlights.end())
+        {
+            return false;
+        }
+        else
+        {
+            _spotlights.erase(EntityID);
+            --counter;
+
+            EDITOR_LOG_INFO("SpotLight Removed Successfully");
+            return true;
+        }
     }
 
     void SpotLight::DrawSpotLights(unsigned int framebufferID)
@@ -48,23 +68,27 @@ namespace Eclipse
     void SpotLight::Draw(SpotLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
     {
         glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
-        in->shaderRef->Use();
-        glBindVertexArray(in->modelRef->GetVaoID());
+
+        auto shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
+        shdrpgm.Use();
+
+        glBindVertexArray(Graphics::models["sphere"]->GetVaoID());
 
         glEnable(GL_BLEND);
         glPolygonMode(GL_FRONT_AND_BACK, mode);
         glDisable(GL_CULL_FACE);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        CheckUniformLoc(in->shaderRef, *in, indexID, _spotlights.size());
+        CheckUniformLoc(&shdrpgm, *in, indexID, _spotlights.size());
 
         if (in->visible)
         {
-            GLCall(glDrawElements(in->modelRef->GetPrimitiveType(), in->modelRef->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
+            GLCall(glDrawElements(Graphics::models["sphere"]->GetPrimitiveType(),
+                Graphics::models["sphere"]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
         }
 
         glBindVertexArray(0);
-        in->shaderRef->UnUse();
+        shdrpgm.UnUse();
     }
 
     void SpotLight::CheckUniformLoc(Shader* _shdrpgm, SpotLightComponent& in_spot, int index, unsigned int containersize)

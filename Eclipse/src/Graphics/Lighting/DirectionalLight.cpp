@@ -21,21 +21,40 @@ namespace Eclipse
 		engine->world.AddComponent(CreatedID, DirectionalLightComponent{});
 
 		DirectionalLightComponent& _GlobalLight = engine->world.GetComponent<DirectionalLightComponent>(CreatedID);
-		TransformComponent& transform = engine->world.GetComponent<TransformComponent>(CreatedID);
-
 		_GlobalLight.ID = CreatedID;
+		_GlobalLight.Counter = counter;
+
+		TransformComponent& transform = engine->world.GetComponent<TransformComponent>(CreatedID);
 		transform.scale.setX(1.0f);
 		transform.scale.setY(1.0f);
 		transform.scale.setZ(1.0f);
 
 		// Insert into container
-		if (_DirectionalLight.insert({ counter,&_GlobalLight }).second == true)
+		if (_DirectionalLight.insert({ _GlobalLight.ID ,&_GlobalLight }).second == true)
 		{
 			EDITOR_LOG_INFO("DirectionalLight Created Successfully");
 			counter++;
 		}
 
 		std::cout << " Number of Directional Lights : " << _DirectionalLight.size() << std::endl;
+	}
+
+	bool DirectionalLight::DeleteDirectionalLight(unsigned int EntityID)
+	{
+		DLIT it = _DirectionalLight.find(EntityID);
+
+		if (it == _DirectionalLight.end())
+		{
+			return false;
+		}
+		else
+		{
+			_DirectionalLight.erase(EntityID);
+			--counter;
+
+			EDITOR_LOG_INFO("DirectionalLight Removed Successfully");
+			return true;
+		}
 	}
 
 	void DirectionalLight::Draw(DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
@@ -133,10 +152,11 @@ namespace Eclipse
 
 		// Assign
 		DirectionalLightComponent& _global = engine->world.GetComponent<DirectionalLightComponent>(CreatedID);
-		_global.ID = CreatedID;
+		_global.Counter = CreatedID;
+		_global.ID = counter;
 
 		// Success
-		_DirectionalLight.insert({ counter,&_global });
+		_DirectionalLight.insert({ _global.ID,&_global });
 		EDITOR_LOG_INFO("DirectionalLight Created Successfully");
 		counter++;
 	}

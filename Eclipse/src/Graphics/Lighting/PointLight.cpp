@@ -50,6 +50,8 @@ namespace Eclipse
 		{
 			_pointlights.erase(EntityID);
 			--counter;
+
+			EDITOR_LOG_INFO("Pointlight Removed Successfully");
 			return true;
 		}
 	}

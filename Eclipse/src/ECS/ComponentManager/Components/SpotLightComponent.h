@@ -7,6 +7,7 @@ namespace Eclipse
     struct SpotLightComponent
     {
         unsigned int ID = 0;
+        unsigned int Counter = 0;
 
         ECVec3 lightColor{ 1.0f,1.0f,1.0f };
         ECVec3 direction{ 0,0,-5 };
@@ -29,9 +30,10 @@ namespace Eclipse
         bool hasTexture = false;
         bool visible = false;
 
-        IModel* modelRef;
-        Shader* shaderRef;
-        Texture* textureRef;
-        glm::mat4 modelNDC_xform{ 0 };
+        // Not needed
+        //IModel* modelRef;
+        //Shader* shaderRef;
+        //Texture* textureRef;
+        //glm::mat4 modelNDC_xform{ 0 };
     };
 }

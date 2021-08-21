@@ -7,6 +7,7 @@ namespace Eclipse
     struct DirectionalLightComponent
     {
         unsigned int ID = 0;
+        unsigned int Counter = 0;
 
         bool visible = false;
         bool AffectsWorld = true;
