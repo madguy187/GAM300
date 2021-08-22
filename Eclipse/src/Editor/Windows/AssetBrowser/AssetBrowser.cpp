@@ -139,13 +139,13 @@ namespace Eclipse
 
 								ECGui::EndTreeNode();
 							}
-							engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath, secondEntry, refresh);
+							engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), secondEntry, refresh);
 						}
 					}
 					ECGui::EndTreeNode();
 				}
 
-				engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath, dirEntry, refresh);
+				engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh);
 
 				if (!jumpDir && ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0))
 				{
@@ -342,9 +342,9 @@ namespace Eclipse
 				{ 1,0 },
 				{ 2,1 });
 			//drag drop
-			engine->editorManager->Item_.AssetBrowerFilesAndFoldersSource("ITEM", relativePath);
+			engine->editorManager->Item_.AssetBrowerFilesAndFoldersSource("ITEM", relativePath.string());
 			
-			engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath, dirEntry, refresh);
+			engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh);
 
 			if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
 			{
