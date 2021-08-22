@@ -84,6 +84,16 @@ namespace Eclipse
             _transform.position -= camera.eyeFront * cameraSpd;
         }
 
+        if (input.test(10))
+        {
+            _transform.position += camera.upVec * cameraSpd;
+        }
+
+        if (input.test(11))
+        {
+            _transform.position -= camera.upVec * cameraSpd;
+        }
+
         if (input.test(8))
         {
             if (camera.fov < 2.0f)
@@ -177,6 +187,9 @@ namespace Eclipse
         int keyE = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_E);
         int keyR = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_R);
         int keyF = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_F);
+
+        int keyT = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_T);
+        int keyG = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_G);
 
         int keyP = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_P);
 
@@ -305,6 +318,25 @@ namespace Eclipse
         {
             input.set(5, 0);
         }
+
+        if (GLFW_PRESS == keyT)
+        {
+            input.set(10, 1);
+        }
+        else if (GLFW_RELEASE == keyT)
+        {
+            input.set(10, 0);
+        }
+
+        if (GLFW_PRESS == keyG)
+        {
+            input.set(11, 1);
+        }
+        else if (GLFW_RELEASE == keyG)
+        {
+            input.set(11, 0);
+        }
+
     }
 
     void CameraManager::SetCameraSpeed(float newSpeed)
@@ -325,7 +357,7 @@ namespace Eclipse
         _camera.farPlane = _farPlane;
     }
 
-    std::bitset<10>& CameraManager::GetInput()
+    std::bitset<12>& CameraManager::GetInput()
     {
         return input;
     }

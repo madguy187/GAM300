@@ -10,18 +10,20 @@ namespace Eclipse
 	{
 		/*************************************************************************
 		  Camera bitset layout
-		  0: Move Right								: buttton A
-		  1: Move Left								: buttton D
-		  2: Move Front								: buttton W
-		  3: Move Back								: buttton S
-		  4: Pitch Up (Rotation around x-axis)		: buttton R
-		  5: Pitch Down (Rotation around x-axis)	: buttton F
-		  6: Yaw Left (Rotation around y-axis)		: buttton Q
-		  7: Yaw Right (Rotation around y-axis)		: buttton E
-		  8: "Zoom In" (FOV)						: buttton Z
-		  9: "Zoom Out" (FOV)						: buttton X
+		  0: Move Right								: button A
+		  1: Move Left								: button D
+		  2: Move Front								: button W
+		  3: Move Back								: button S
+		  4: Pitch Up (Rotation around x-axis)		: button R
+		  5: Pitch Down (Rotation around x-axis)	: button F
+		  6: Yaw Left (Rotation around y-axis)		: button Q
+		  7: Yaw Right (Rotation around y-axis)		: button E
+		  8: "Zoom In" (FOV)						: button Z
+		  9: "Zoom Out" (FOV)						: button X
+		  10: Move Up								: button T
+		  11: Move Down								: button G
 		*************************************************************************/
-		std::bitset<10> input;
+		std::bitset<12> input;
 
 		unsigned int editorCamID = MAX_ENTITY;	
 		unsigned int gameCamID = MAX_ENTITY;
@@ -42,7 +44,7 @@ namespace Eclipse
 		void SetNearPlane(CameraComponent& _camera, float _nearPlane);
 		void SetFarPlane(CameraComponent& _camera, float _farPlane);
 
-		std::bitset<10>& GetInput();
+		std::bitset<12>& GetInput();
 
 		void CreateGameCamera();
 		unsigned int GetGameCameraID();
