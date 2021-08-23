@@ -25,7 +25,7 @@ namespace Eclipse
 		glm::mat4 viewMtx{ 0.0f };
 		glm::mat4 projMtx{ 0.0f };
 
-		float cameraSpeed{ 2.5f }; //camera movement speed
+		float cameraSpeed{ 12.5f }; //camera movement speed
 
 		enum class CameraType
 		{
@@ -38,5 +38,13 @@ namespace Eclipse
 		};
 
 		CameraType camType;
+
+		enum class ProjectionType
+		{
+			Orthographic,
+			Perspective
+		};
+
+		ProjectionType projType;
 	};
 }

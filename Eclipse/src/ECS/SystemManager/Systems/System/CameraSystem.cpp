@@ -34,6 +34,12 @@ void Eclipse::CameraSystem::Update()
 			//engine->gCamera.CheckCameraInput();
 			engine->gCamera.UpdateEditorCamera(_transform);
 		}
+		else if ((_camera.camType != CameraComponent::CameraType::Editor_Camera) &&
+				(_camera.camType != CameraComponent::CameraType::Game_Camera))
+		{
+			engine->gCamera.CheckViewCameraInput();
+			engine->gCamera.UpdateViewCamera(_camera, _transform);
+		}
 
 		engine->gCamera.ComputeViewDirection(_camera, _transform);
 		engine->gCamera.ComputeViewMtx(_camera, _transform);

@@ -25,6 +25,19 @@ namespace Eclipse
 		*************************************************************************/
 		std::bitset<12> input;
 
+		/*************************************************************************
+		  View Cameras bitset layout
+
+		  Orthographic projection
+		  0: Move Left								: button A
+		  1: Move Right								: button D
+		  2: Move Up								: button W
+		  3: Move Down								: button S
+		  4: Zoom In								: button Z
+		  5: Zoom Out								: button X
+		*************************************************************************/
+		std::bitset<6> viewInput;
+
 		std::map<CameraComponent::CameraType, unsigned int> cameraList;
 
 		unsigned int editorCamID = MAX_ENTITY;	
@@ -41,6 +54,8 @@ namespace Eclipse
 		void UpdateEditorCamera(TransformComponent& _transform);
 
 		void CheckCameraInput();
+		void CheckViewCameraInput();
+		void UpdateViewCamera(CameraComponent& _camera, TransformComponent& _transform);
 
 		void SetCameraSpeed(float newSpeed);
 		void SetNearPlane(CameraComponent& _camera, float _nearPlane);
@@ -53,7 +68,6 @@ namespace Eclipse
 
 		void CreateViewCamera(CameraComponent::CameraType _camType);
 		void SetViewCameraValues(CameraComponent::CameraType _camType, TransformComponent& _transform);
-
 		unsigned int GetCameraID(CameraComponent::CameraType _camType);
 	};
 }

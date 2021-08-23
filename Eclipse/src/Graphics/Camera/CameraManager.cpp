@@ -18,6 +18,7 @@ namespace Eclipse
 
         auto& editorCam = engine->world.GetComponent<CameraComponent>(newCam);
         editorCam.camType = CameraComponent::CameraType::Editor_Camera;
+        editorCam.projType = CameraComponent::ProjectionType::Perspective;
 
         auto& _transform = engine->world.GetComponent<TransformComponent>(newCam);
         _transform.position = ECVec3{ 0.0f, 0.0f, 40.0f };
@@ -58,8 +59,7 @@ namespace Eclipse
         _camera.aspect = static_cast<float>((OpenGL_Context::GetWindowRatioX() * OpenGL_Context::GetWidth()) /
             (OpenGL_Context::GetWindowRatioY() * OpenGL_Context::GetHeight()));
 
-        if ((_camera.camType != CameraComponent::CameraType::Editor_Camera) && 
-            (_camera.camType != CameraComponent::CameraType::Game_Camera))
+        if (_camera.projType == CameraComponent::ProjectionType::Orthographic)
         {
             _camera.projMtx = glm::ortho(static_cast<float>(-(OpenGL_Context::GetWidth()) * _camera.aspect) / transform.scale.x,
                 static_cast<float>((OpenGL_Context::GetWidth()) * _camera.aspect) / transform.scale.x,
@@ -357,6 +357,110 @@ namespace Eclipse
 
     }
 
+    void CameraManager::CheckViewCameraInput()
+    {
+        int keyA = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_A);
+        int keyW = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_W);
+        int keyS = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_S);
+        int keyD = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_D);
+
+        int keyZ = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_Z);
+        int keyX = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_X);
+
+        if (GLFW_PRESS == keyA)
+        {
+            viewInput.set(0, 1);
+        }
+        else if (GLFW_RELEASE == keyA)
+        {
+            viewInput.set(0, 0);
+        }
+        
+        if (GLFW_PRESS == keyS)
+        {
+            viewInput.set(3, 1);
+        }
+        else if (GLFW_RELEASE == keyS)
+        {
+            viewInput.set(3, 0);
+        }
+        
+        if (GLFW_PRESS == keyD)
+        {
+            viewInput.set(1, 1);
+        }
+        else if (GLFW_RELEASE == keyD)
+        {
+            viewInput.set(1, 0);
+        }
+        
+        if (GLFW_PRESS == keyW)
+        {
+            viewInput.set(2, 1);
+        }
+        else if (GLFW_RELEASE == keyW)
+        {
+            viewInput.set(2, 0);
+        }
+
+        if (GLFW_PRESS == keyZ)
+        {
+            viewInput.set(4, 1);
+        }
+        else if (GLFW_RELEASE == keyZ)
+        {
+            viewInput.set(4, 0);
+        }
+
+        if (GLFW_PRESS == keyX)
+        {
+            viewInput.set(5, 1);
+        }
+        else if (GLFW_RELEASE == keyX)
+        {
+            viewInput.set(5, 0);
+        }
+
+    }
+
+    void CameraManager::UpdateViewCamera(CameraComponent& _camera, TransformComponent& _transform)
+    {
+        float cameraSpd = engine->Game_Clock.get_DeltaTime() * _camera.cameraSpeed;
+
+        if (viewInput.test(0))
+        {
+            _transform.position -= glm::normalize(glm::cross(_camera.eyeFront, _camera.upVec)) * cameraSpd;
+        }
+
+        if (viewInput.test(1))
+        {
+            _transform.position += glm::normalize(glm::cross(_camera.eyeFront, _camera.upVec)) * cameraSpd;
+        }
+
+        if (viewInput.test(2))
+        {
+            _transform.position += _camera.upVec * cameraSpd;
+        }
+
+        if (viewInput.test(3))
+        {
+            _transform.position -= _camera.upVec * cameraSpd;
+        }
+
+        if (_camera.projType == CameraComponent::ProjectionType::Orthographic)
+        {
+            if (viewInput.test(4))
+            {
+                _transform.scale.x += cameraSpd;
+            }
+
+            if (viewInput.test(5))
+            {
+                _transform.scale.x -= cameraSpd;
+            }
+        }
+    }
+
     void CameraManager::SetCameraSpeed(float newSpeed)
     {
         unsigned int editorID = GetEditorCameraID();
@@ -395,6 +499,7 @@ namespace Eclipse
 
         auto& gameCam = engine->world.GetComponent<CameraComponent>(newCam);
         gameCam.camType = CameraComponent::CameraType::Game_Camera;
+        gameCam.projType = CameraComponent::ProjectionType::Perspective;
 
         auto& _transform = engine->world.GetComponent<TransformComponent>(newCam);
         _transform.position = ECVec3{ 0.0f, 0.0f, 30.0f };
@@ -417,6 +522,7 @@ namespace Eclipse
 
         auto& viewCam = engine->world.GetComponent<CameraComponent>(newCam);
         viewCam.camType = _camType;
+        viewCam.projType = CameraComponent::ProjectionType::Orthographic;
 
         auto& _transform = engine->world.GetComponent<TransformComponent>(newCam);
         SetViewCameraValues(_camType, _transform);
@@ -431,14 +537,14 @@ namespace Eclipse
         {
             case CameraComponent::CameraType::TopView_Camera:
             {
-                _transform.position = ECVec3{ 0.0f, 40.0f, 0.0f };
+                _transform.position = ECVec3{ 0.0f, 60.0f, 0.0f };
                 _transform.rotation = ECVec3{ -90.0f, 90.0f, 0.0f };
                 _transform.scale = ECVec3{ 100.0f, 1.0f, 1.0f };
             }
             break;
             case CameraComponent::CameraType::BottomView_Camera:
             {
-                _transform.position = ECVec3{ 0.0f, -40.0f, 0.0f };
+                _transform.position = ECVec3{ 0.0f, -60.0f, 0.0f };
                 _transform.rotation = ECVec3{ 90.0f, 90.0f, 0.0f };
                 _transform.scale = ECVec3{ 100.0f, 1.0f, 1.0f };
             }
