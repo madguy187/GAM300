@@ -25,6 +25,8 @@ namespace Eclipse
 		*************************************************************************/
 		std::bitset<12> input;
 
+		std::map<CameraComponent::CameraType, unsigned int> cameraList;
+
 		unsigned int editorCamID = MAX_ENTITY;	
 		unsigned int gameCamID = MAX_ENTITY;
 	public:
@@ -48,5 +50,10 @@ namespace Eclipse
 
 		void CreateGameCamera();
 		unsigned int GetGameCameraID();
+
+		void CreateViewCamera(CameraComponent::CameraType _camType);
+		void SetViewCameraValues(CameraComponent::CameraType _camType, TransformComponent& _transform);
+
+		unsigned int GetCameraID(CameraComponent::CameraType _camType);
 	};
 }
