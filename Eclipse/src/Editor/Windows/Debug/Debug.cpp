@@ -47,7 +47,7 @@ namespace Eclipse
 			{
 				ECGui::DrawTextWidget<const char*>("Speed", "");
 				ECGui::InsertSameLine();
-				ECGui::DrawSliderFloatWidget("CamSpeed", &camCom.cameraSpeed, true, 1.f, 30.f);
+				ECGui::DrawSliderFloatWidget("CamSpeed", &camCom.cameraSpeed, true, 1.f, 200.f);
 			}
 		}
 	}
