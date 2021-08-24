@@ -113,6 +113,9 @@ namespace Eclipse
 					{
 						NextDir = AllDir;
 					}
+					
+					engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh);
+					
 					for (auto& secondEntry : std::filesystem::recursive_directory_iterator(NextDir))
 					{
 						if (secondEntry.is_directory())
@@ -144,9 +147,9 @@ namespace Eclipse
 					}
 					ECGui::EndTreeNode();
 				}
-
+				
 				engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh);
-
+				
 				if (!jumpDir && ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0))
 				{
 					NextPath(CurrentDir, path);
