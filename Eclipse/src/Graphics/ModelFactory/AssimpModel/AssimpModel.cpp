@@ -12,10 +12,10 @@ AssimpModel::AssimpModel(bool noTex)
     GlobalMode = GL_FILL;
 }
 
-void AssimpModel::Render(Shader& shader, GLenum MOde ,unsigned int FrameBufferID)
+void AssimpModel::Render(Shader& shader, GLenum MOde ,unsigned int FrameBufferID, CameraComponent::CameraType _camType)
 {
     // Check Main Uniforms
-    auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+    auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
     CheckUniformLoc(shader, _camera, FrameBufferID);
 
     for (unsigned int i = 0; i < Meshes.size(); i++)

@@ -10,18 +10,45 @@ namespace Eclipse
 	{
 		/*************************************************************************
 		  Camera bitset layout
-		  0: Move Right								: buttton A
-		  1: Move Left								: buttton D
-		  2: Move Front								: buttton W
-		  3: Move Back								: buttton S
-		  4: Pitch Up (Rotation around x-axis)		: buttton R
-		  5: Pitch Down (Rotation around x-axis)	: buttton F
-		  6: Yaw Left (Rotation around y-axis)		: buttton Q
-		  7: Yaw Right (Rotation around y-axis)		: buttton E
-		  8: "Zoom In" (FOV)						: buttton Z
-		  9: "Zoom Out" (FOV)						: buttton X
+		  0: Move Right								: button A
+		  1: Move Left								: button D
+		  2: Move Front								: button W
+		  3: Move Back								: button S
+		  4: Pitch Up (Rotation around x-axis)		: button R
+		  5: Pitch Down (Rotation around x-axis)	: button F
+		  6: Yaw Left (Rotation around y-axis)		: button Q
+		  7: Yaw Right (Rotation around y-axis)		: button E
+		  8: "Zoom In" (FOV)						: button Z
+		  9: "Zoom Out" (FOV)						: button X
+		  10: Move Up								: button T
+		  11: Move Down								: button G
 		*************************************************************************/
-		std::bitset<10> input;
+		std::bitset<12> input;
+
+		/*************************************************************************
+		  View Cameras bitset layout
+
+		  Orthographic projection
+		  0: Move Left								: button A
+		  1: Move Right								: button D
+		  2: Move Up								: button W
+		  3: Move Down								: button S
+		  4: Zoom In								: button Z
+		  5: Zoom Out								: button X
+
+		  Perspective projection
+		  0: Move Left								: button A
+		  1: Move Right								: button D
+		  2: Move Up								: button W
+		  3: Move Down								: button S
+		  4: Move Front								: button Z
+		  5: Move Back								: button X
+		  6: "Zoom In" (FOV)						: button R
+		  7: "Zoom Out" (FOV)						: button F
+		*************************************************************************/
+		std::bitset<8> viewInput;
+
+		std::map<CameraComponent::CameraType, unsigned int> cameraList;
 
 		unsigned int editorCamID = MAX_ENTITY;	
 		unsigned int gameCamID = MAX_ENTITY;
@@ -31,20 +58,30 @@ namespace Eclipse
 		void CreateEditorCamera();
 		unsigned int GetEditorCameraID();
 
+		void CreateGameCamera();
+		unsigned int GetGameCameraID();
+
+		void CreateViewCamera(CameraComponent::CameraType _camType);
+		void SetViewCameraValues(CameraComponent::CameraType _camType, TransformComponent& _transform);
+		void SetViewCameraProjectionType(CameraComponent& _camera, CameraComponent::ProjectionType _projType);
+		void SetViewCameraProjectionType(CameraComponent::CameraType _camType, CameraComponent::ProjectionType _projType);
+
+		unsigned int GetCameraID(CameraComponent::CameraType _camType);
+
 		void ComputeViewDirection(CameraComponent& _camera, TransformComponent& _transform);
 		void ComputeViewMtx(CameraComponent& _camera, TransformComponent& _transform);
 		void ComputePerspectiveMtx(CameraComponent& _camera);
 		void UpdateEditorCamera(TransformComponent& _transform);
 
 		void CheckCameraInput();
+		void CheckViewCameraInput();
+		void UpdateViewCamera(CameraComponent& _camera, TransformComponent& _transform);
 
 		void SetCameraSpeed(float newSpeed);
 		void SetNearPlane(CameraComponent& _camera, float _nearPlane);
 		void SetFarPlane(CameraComponent& _camera, float _farPlane);
 
-		std::bitset<10>& GetInput();
-
-		void CreateGameCamera();
-		unsigned int GetGameCameraID();
+		std::bitset<12>& GetInput();
+		std::bitset<8>& GetViewInput();
 	};
 }

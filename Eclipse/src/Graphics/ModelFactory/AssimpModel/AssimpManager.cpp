@@ -49,7 +49,7 @@ void AssimpModelManager::LoadAllModels()
     EDITOR_LOG_INFO("All Necessary Models Loaded");
 }
 
-void AssimpModelManager::Draw(unsigned int FrameBufferID, GLenum Mode)
+void AssimpModelManager::Draw(unsigned int FrameBufferID, GLenum Mode, CameraComponent::CameraType _camType)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
     auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
@@ -58,7 +58,7 @@ void AssimpModelManager::Draw(unsigned int FrameBufferID, GLenum Mode)
     for (auto const& Models : AssimpModelContainer_)
     {
         auto& InvidualModels = *(Models.second);
-        InvidualModels.Render(shdrpgm->second, Mode,FrameBufferID);
+        InvidualModels.Render(shdrpgm->second, Mode,FrameBufferID, _camType);
     }
 
     shdrpgm->second.UnUse();

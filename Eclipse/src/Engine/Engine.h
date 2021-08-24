@@ -7,6 +7,7 @@
 #include "Graphics/Lighting/LightManager.h"
 #include "Mono/Manager/MonoManager.h"
 #include "AssimpModel/AssimpManager.h"
+#include "Graphics/Picker/PickingManager.h"
 
 namespace Eclipse
 {
@@ -22,6 +23,7 @@ namespace Eclipse
 		Lights LightManager;
 		MonoManager mono;
 	    AssimpModelManager AssimpManager;
+		PickingManager gPicker;
 
 		void Init();
 		void Run();
