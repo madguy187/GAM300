@@ -69,9 +69,10 @@ bool Eclipse::PickingManager::RayAabb(glm::vec3& rayStart, glm::vec3& rayDir, gl
 
     for (size_t i = 0; i < 3; ++i)
     {
-        if (rayDir[i] == 0)
+        if (rayDir[static_cast<glm::length_t>(i)] == 0)
         {
-            if ((rayStart[i] >= aabbMin[i]) && (rayStart[i] <= aabbMax[i]))
+            if ((rayStart[static_cast<glm::length_t>(i)] >= aabbMin[static_cast<glm::length_t>(i)]) && 
+                (rayStart[static_cast<glm::length_t>(i)] <= aabbMax[static_cast<glm::length_t>(i)]))
             {
                 continue;
             }
@@ -82,9 +83,9 @@ bool Eclipse::PickingManager::RayAabb(glm::vec3& rayStart, glm::vec3& rayDir, gl
             }
         }
 
-        float invDir = 1.0f / rayDir[i];
-        float t1 = (aabbMin[i] - rayStart[i]) * invDir;
-        float t2 = (aabbMax[i] - rayStart[i]) * invDir;
+        float invDir = 1.0f / rayDir[static_cast<glm::length_t>(i)];
+        float t1 = (aabbMin[static_cast<glm::length_t>(i)] - rayStart[static_cast<glm::length_t>(i)]) * invDir;
+        float t2 = (aabbMax[static_cast<glm::length_t>(i)] - rayStart[static_cast<glm::length_t>(i)]) * invDir;
 
         if (t1 > t2)
         {
