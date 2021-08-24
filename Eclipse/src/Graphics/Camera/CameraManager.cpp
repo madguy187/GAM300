@@ -32,6 +32,104 @@ namespace Eclipse
         return editorCamID;
     }
 
+    void CameraManager::CreateGameCamera()
+    {
+        if (gameCamID != MAX_ENTITY)
+        {
+            return;
+        }
+
+        Entity newCam = engine->world.CreateEntity();
+        engine->world.AddComponent(newCam, CameraComponent{});
+        engine->world.AddComponent(newCam, TransformComponent{});
+
+        gameCamID = newCam;
+
+        auto& gameCam = engine->world.GetComponent<CameraComponent>(newCam);
+        gameCam.camType = CameraComponent::CameraType::Game_Camera;
+        gameCam.projType = CameraComponent::ProjectionType::Perspective;
+
+        auto& _transform = engine->world.GetComponent<TransformComponent>(newCam);
+        _transform.position = ECVec3{ 0.0f, 0.0f, 30.0f };
+        _transform.rotation = ECVec3{ 0.0f, -90.0f, 0.0f };
+
+        cameraList.emplace(CameraComponent::CameraType::Game_Camera, newCam);
+    }
+
+    unsigned int CameraManager::GetGameCameraID()
+    {
+        return gameCamID;
+    }
+
+
+    void CameraManager::CreateViewCamera(CameraComponent::CameraType _camType)
+    {
+        Entity newCam = engine->world.CreateEntity();
+        engine->world.AddComponent(newCam, CameraComponent{});
+        engine->world.AddComponent(newCam, TransformComponent{});
+
+        auto& viewCam = engine->world.GetComponent<CameraComponent>(newCam);
+        viewCam.camType = _camType;
+        viewCam.projType = CameraComponent::ProjectionType::Orthographic;
+
+        auto& _transform = engine->world.GetComponent<TransformComponent>(newCam);
+        SetViewCameraValues(_camType, _transform);
+
+        cameraList.emplace(_camType, newCam);
+    }
+
+
+    void CameraManager::SetViewCameraValues(CameraComponent::CameraType _camType, TransformComponent& _transform)
+    {
+        switch (_camType)
+        {
+        case CameraComponent::CameraType::TopView_Camera:
+        {
+            _transform.position = ECVec3{ 0.0f, 60.0f, 0.0f };
+            _transform.rotation = ECVec3{ -90.0f, 90.0f, 0.0f };
+            _transform.scale = ECVec3{ 100.0f, 1.0f, 1.0f };
+        }
+        break;
+        case CameraComponent::CameraType::BottomView_Camera:
+        {
+            _transform.position = ECVec3{ 0.0f, -60.0f, 0.0f };
+            _transform.rotation = ECVec3{ 90.0f, 90.0f, 0.0f };
+            _transform.scale = ECVec3{ 100.0f, 1.0f, 1.0f };
+        }
+        break;
+        case CameraComponent::CameraType::LeftView_Camera:
+        {
+            _transform.position = ECVec3{ -60.0f, 0.0f, 0.0f };
+            _transform.rotation = ECVec3{ 0.0f, 0.0f, 0.0f };
+            _transform.scale = ECVec3{ 100.0f, 1.0f, 1.0f };
+        }
+        break;
+        case CameraComponent::CameraType::RightView_camera:
+        {
+            _transform.position = ECVec3{ 60.0f, 0.0f, 0.0f };
+            _transform.rotation = ECVec3{ 0.0f, 180.0f, 0.0f };
+            _transform.scale = ECVec3{ 100.0f, 1.0f, 1.0f };
+        }
+        break;
+        }
+    }
+
+    void CameraManager::SetViewCameraProjectionType(CameraComponent& _camera, CameraComponent::ProjectionType _projType)
+    {
+        _camera.projType = _projType;
+    }
+
+    void CameraManager::SetViewCameraProjectionType(CameraComponent::CameraType _camType, CameraComponent::ProjectionType _projType)
+    {
+        auto& camera = engine->world.GetComponent<CameraComponent>(GetCameraID(_camType));
+        camera.projType = _projType;
+    }
+
+    unsigned int CameraManager::GetCameraID(CameraComponent::CameraType _camType)
+    {
+        return cameraList[_camType];
+    }
+
     void CameraManager::ComputeViewDirection(CameraComponent& _camera, TransformComponent& _transform)
     {
         glm::vec3 direction;
@@ -367,6 +465,9 @@ namespace Eclipse
         int keyZ = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_Z);
         int keyX = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_X);
 
+        int keyR = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_R);
+        int keyF = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_F);
+
         if (GLFW_PRESS == keyA)
         {
             viewInput.set(0, 1);
@@ -421,6 +522,23 @@ namespace Eclipse
             viewInput.set(5, 0);
         }
 
+        if (GLFW_PRESS == keyR)
+        {
+            viewInput.set(6, 1);
+        }
+        else if (GLFW_RELEASE == keyR)
+        {
+            viewInput.set(6, 0);
+        }
+
+        if (GLFW_PRESS == keyF)
+        {
+            viewInput.set(7, 1);
+        }
+        else if (GLFW_RELEASE == keyF)
+        {
+            viewInput.set(7, 0);
+        }
     }
 
     void CameraManager::UpdateViewCamera(CameraComponent& _camera, TransformComponent& _transform)
@@ -459,6 +577,42 @@ namespace Eclipse
                 _transform.scale.x -= cameraSpd;
             }
         }
+        else
+        {
+            if (viewInput.test(4))
+            {
+                _transform.position += _camera.eyeFront * cameraSpd;
+            }
+
+            if (viewInput.test(5))
+            {
+                _transform.position -= _camera.eyeFront * cameraSpd;
+            }
+
+            if (viewInput.test(6))
+            {
+                if (_camera.fov < 2.0f)
+                {
+                    _camera.fov = 1.0f;
+                }
+                else
+                {
+                    _camera.fov -= cameraSpd;
+                }
+            }
+
+            if (viewInput.test(7))
+            {
+                if (_camera.fov > 179.0f)
+                {
+                    _camera.fov = 180.0f;
+                }
+                else
+                {
+                    _camera.fov += cameraSpd;
+                }
+            }
+        }
     }
 
     void CameraManager::SetCameraSpeed(float newSpeed)
@@ -484,90 +638,8 @@ namespace Eclipse
         return input;
     }
 
-    void CameraManager::CreateGameCamera()
+    std::bitset<8>& CameraManager::GetViewInput()
     {
-        if (gameCamID != MAX_ENTITY)
-        {
-            return;
-        }
-
-        Entity newCam = engine->world.CreateEntity();
-        engine->world.AddComponent(newCam, CameraComponent{});
-        engine->world.AddComponent(newCam, TransformComponent{});
-
-        gameCamID = newCam;
-
-        auto& gameCam = engine->world.GetComponent<CameraComponent>(newCam);
-        gameCam.camType = CameraComponent::CameraType::Game_Camera;
-        gameCam.projType = CameraComponent::ProjectionType::Perspective;
-
-        auto& _transform = engine->world.GetComponent<TransformComponent>(newCam);
-        _transform.position = ECVec3{ 0.0f, 0.0f, 30.0f };
-        _transform.rotation = ECVec3{ 0.0f, -90.0f, 0.0f };
-
-        cameraList.emplace(CameraComponent::CameraType::Game_Camera, newCam);
-    }
-
-    unsigned int CameraManager::GetGameCameraID()
-    {
-        return gameCamID;
-    }
-
-
-    void CameraManager::CreateViewCamera(CameraComponent::CameraType _camType)
-    {
-        Entity newCam = engine->world.CreateEntity();
-        engine->world.AddComponent(newCam, CameraComponent{});
-        engine->world.AddComponent(newCam, TransformComponent{});
-
-        auto& viewCam = engine->world.GetComponent<CameraComponent>(newCam);
-        viewCam.camType = _camType;
-        viewCam.projType = CameraComponent::ProjectionType::Orthographic;
-
-        auto& _transform = engine->world.GetComponent<TransformComponent>(newCam);
-        SetViewCameraValues(_camType, _transform);
-
-        cameraList.emplace(_camType, newCam);
-    }
-
-
-    void CameraManager::SetViewCameraValues(CameraComponent::CameraType _camType, TransformComponent& _transform)
-    {
-        switch (_camType)
-        {
-            case CameraComponent::CameraType::TopView_Camera:
-            {
-                _transform.position = ECVec3{ 0.0f, 60.0f, 0.0f };
-                _transform.rotation = ECVec3{ -90.0f, 90.0f, 0.0f };
-                _transform.scale = ECVec3{ 100.0f, 1.0f, 1.0f };
-            }
-            break;
-            case CameraComponent::CameraType::BottomView_Camera:
-            {
-                _transform.position = ECVec3{ 0.0f, -60.0f, 0.0f };
-                _transform.rotation = ECVec3{ 90.0f, 90.0f, 0.0f };
-                _transform.scale = ECVec3{ 100.0f, 1.0f, 1.0f };
-            }
-            break;
-            case CameraComponent::CameraType::LeftView_Camera:
-            {
-                _transform.position = ECVec3{ -60.0f, 0.0f, 0.0f };
-                _transform.rotation = ECVec3{ 0.0f, 0.0f, 0.0f };
-                _transform.scale = ECVec3{ 100.0f, 1.0f, 1.0f };
-            }
-            break;
-            case CameraComponent::CameraType::RightView_camera:
-            {
-                _transform.position = ECVec3{ 60.0f, 0.0f, 0.0f };
-                _transform.rotation = ECVec3{ 0.0f, 180.0f, 0.0f };
-                _transform.scale = ECVec3{ 100.0f, 1.0f, 1.0f };
-            }
-            break;
-        }
-    }
-
-    unsigned int CameraManager::GetCameraID(CameraComponent::CameraType _camType)
-    {
-        return cameraList[_camType];
+        return viewInput;
     }
 }

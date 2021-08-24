@@ -35,8 +35,18 @@ namespace Eclipse
 		  3: Move Down								: button S
 		  4: Zoom In								: button Z
 		  5: Zoom Out								: button X
+
+		  Perspective projection
+		  0: Move Left								: button A
+		  1: Move Right								: button D
+		  2: Move Up								: button W
+		  3: Move Down								: button S
+		  4: Move Front								: button Z
+		  5: Move Back								: button X
+		  6: "Zoom In" (FOV)						: button R
+		  7: "Zoom Out" (FOV)						: button F
 		*************************************************************************/
-		std::bitset<6> viewInput;
+		std::bitset<8> viewInput;
 
 		std::map<CameraComponent::CameraType, unsigned int> cameraList;
 
@@ -47,6 +57,16 @@ namespace Eclipse
 
 		void CreateEditorCamera();
 		unsigned int GetEditorCameraID();
+
+		void CreateGameCamera();
+		unsigned int GetGameCameraID();
+
+		void CreateViewCamera(CameraComponent::CameraType _camType);
+		void SetViewCameraValues(CameraComponent::CameraType _camType, TransformComponent& _transform);
+		void SetViewCameraProjectionType(CameraComponent& _camera, CameraComponent::ProjectionType _projType);
+		void SetViewCameraProjectionType(CameraComponent::CameraType _camType, CameraComponent::ProjectionType _projType);
+
+		unsigned int GetCameraID(CameraComponent::CameraType _camType);
 
 		void ComputeViewDirection(CameraComponent& _camera, TransformComponent& _transform);
 		void ComputeViewMtx(CameraComponent& _camera, TransformComponent& _transform);
@@ -62,12 +82,6 @@ namespace Eclipse
 		void SetFarPlane(CameraComponent& _camera, float _farPlane);
 
 		std::bitset<12>& GetInput();
-
-		void CreateGameCamera();
-		unsigned int GetGameCameraID();
-
-		void CreateViewCamera(CameraComponent::CameraType _camType);
-		void SetViewCameraValues(CameraComponent::CameraType _camType, TransformComponent& _transform);
-		unsigned int GetCameraID(CameraComponent::CameraType _camType);
+		std::bitset<8>& GetViewInput();
 	};
 }
