@@ -23,6 +23,9 @@ namespace Eclipse
 					std::filesystem::path itemPaths = AssetPath.c_str();
 					std::filesystem::copy(std::filesystem::path(itemPaths / paths), dirEntry.path());
 					std::filesystem::remove(std::filesystem::path(itemPaths / paths));
+					//std::filesystem::path iewqeqeq = itemPaths / paths;
+					//std::string test = dirEntry.path().string() + "\\";
+					//std::rename(iewqeqeq.string().c_str(), test.c_str());
 					refreshBrowser = true;
 				}
 				catch (std::filesystem::filesystem_error& e)

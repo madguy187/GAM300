@@ -126,7 +126,7 @@ namespace Eclipse
 							
 							if (ECGui::BeginTreeNode(fileNameString2.c_str()))
 							{
-								if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0))
+								if (/*ImGui::IsMouseDoubleClicked(0) &&*/ImGui::IsItemClicked(0))
 								{
 									NextDir = path2;
 
@@ -150,7 +150,7 @@ namespace Eclipse
 				
 				engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh);
 				
-				if (!jumpDir && ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0))
+				if (!jumpDir && /*ImGui::IsMouseDoubleClicked(0) &&*/ ImGui::IsItemClicked(0))
 				{
 					NextPath(CurrentDir, path);
 				}
