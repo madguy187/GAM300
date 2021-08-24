@@ -11,7 +11,7 @@ namespace Eclipse
 		}
 	}
 	
-	void DragAndDrop::AssetBrowerFilesAndFoldersTarget(const char* type, const char* paths, std::string AssetPath,std::filesystem::directory_entry dirEntry,bool refreshBrowser)
+	void DragAndDrop::AssetBrowerFilesAndFoldersTarget(const char* type, const char* paths, std::string AssetPath,std::filesystem::directory_entry dirEntry,bool& refreshBrowser)
 	{
 		if (ImGui::BeginDragDropTarget())
 		{

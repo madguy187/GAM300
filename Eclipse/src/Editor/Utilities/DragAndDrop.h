@@ -7,6 +7,6 @@ namespace Eclipse
 	public:
 
 		void AssetBrowerFilesAndFoldersSource(const char* type,std::string relativePath );
-		void AssetBrowerFilesAndFoldersTarget(const char* type, const char* paths, std::string AssetPath, std::filesystem::directory_entry dirEntry, bool refreshBrowser);
+		void AssetBrowerFilesAndFoldersTarget(const char* type, const char* paths, std::string AssetPath, std::filesystem::directory_entry dirEntry, bool& refreshBrowser);
 	};
 }
