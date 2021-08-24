@@ -345,7 +345,8 @@ namespace Eclipse
 				{ 1,0 },
 				{ 2,1 });
 			//drag drop
-			engine->editorManager->Item_.AssetBrowerFilesAndFoldersSource("ITEM", relativePath.string());
+			engine->editorManager->Item_.GenericPayloadSource("ITEM", relativePath.string());
+			engine->editorManager->Item_.GenericPayloadSource("TESTING", relativePath.string());
 			
 			engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh);
 
