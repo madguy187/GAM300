@@ -12,7 +12,7 @@ namespace Eclipse
 			ImGui::EndDragDropSource();
 		}
 	}
-	void DragAndDrop::AssetBrowerFilesAndFoldersTarget(const char* type, const wchar_t* paths, std::string AssetPath,std::filesystem::directory_entry dirEntry,bool refreshBrowerser)
+	void DragAndDrop::AssetBrowerFilesAndFoldersTarget(const char* type, const wchar_t* paths, std::string AssetPath,std::filesystem::directory_entry dirEntry,bool refreshBrowser)
 	{
 		if (ImGui::BeginDragDropTarget())
 		{
@@ -26,7 +26,7 @@ namespace Eclipse
 					std::filesystem::path itemPaths = itemPath;
 					std::filesystem::copy(std::filesystem::path(itemPaths / paths), dirEntry.path());
 					std::filesystem::remove(std::filesystem::path(itemPaths / paths));
-					refreshBrowerser = true;
+					refreshBrowser = true;
 				}
 				catch (std::filesystem::filesystem_error& e)
 				{
