@@ -5,229 +5,301 @@
 
 namespace Eclipse
 {
-    unsigned int Grid::GetGridID()
-    {
-        return GridID;
-    }
+	unsigned int Grid::GetGridID()
+	{
+		return GridID;
+	}
 
-    void Grid::SetTransparency(float in)
-    {
-        Transparency = in;
-    }
+	void Grid::SetTransparency(float in)
+	{
+		Transparency = in;
+	}
 
-    void Grid::UseFrameBuffer(unsigned int FramebufferID)
-    {
-        glBindFramebuffer(GL_FRAMEBUFFER, FramebufferID);
-    }
+	void Grid::UseFrameBuffer(unsigned int FramebufferID)
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, FramebufferID);
+	}
 
-    void Grid::CheckUniformLocation(unsigned int GridID)
-    {
-        // Be in line with Editor Settings
-        auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
-        float SnapValue = scene->GetSnapSettings().mPosSnapValue;
-        GridScale = (SnapValue);
+	void Grid::CheckUniformLocation(unsigned int GridID)
+	{
+		// Be in line with Editor Settings
+		auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
+		float SnapValue = scene->GetSnapSettings().mPosSnapValue;
+		GridScale = (SnapValue);
 
-        CameraComponent camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
-        TransformComponent& trans = engine->world.GetComponent<TransformComponent>(GridID);
+		CameraComponent camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+		TransformComponent& trans = engine->world.GetComponent<TransformComponent>(GridID);
 
-        float nearplane = camera.nearPlane;
-        float farplane =  camera.farPlane; 
+		float nearplane = camera.nearPlane;
+		float farplane = camera.farPlane;
 
-        GLint uniform_var_loc1 = ShaderRef->GetLocation("QuadScale");
-        GLint uniform_var_loc2 = ShaderRef->GetLocation("viewMtx");
-        GLint uniform_var_loc3 = ShaderRef->GetLocation("projMtx");
-        GLint uniform_var_loc4 = ShaderRef->GetLocation("GridColour");
-        GLint uniform_var_loc5 = ShaderRef->GetLocation("CameraNearPlane");
-        GLint uniform_var_loc6 = ShaderRef->GetLocation("CameraFarPlane");
-        GLint uniform_var_loc7 = ShaderRef->GetLocation("Inner");
-        GLint uniform_var_loc8 = ShaderRef->GetLocation("CheckDraw");
-        GLint uniform_var_loc9 = ShaderRef->GetLocation("Z_Thickness");
-        GLint uniform_var_loc10 = ShaderRef->GetLocation("X_Thickness");
-        GLint uniform_var_loc11 = ShaderRef->GetLocation("XAxis_Colour");
-        GLint uniform_var_loc12 = ShaderRef->GetLocation("ZAxis_Colour");
+		GLint uniform_var_loc1 = ShaderRef->GetLocation("QuadScale");
+		GLint uniform_var_loc2 = ShaderRef->GetLocation("viewMtx");
+		GLint uniform_var_loc3 = ShaderRef->GetLocation("projMtx");
+		GLint uniform_var_loc4 = ShaderRef->GetLocation("GridColour");
+		GLint uniform_var_loc5 = ShaderRef->GetLocation("CameraNearPlane");
+		GLint uniform_var_loc6 = ShaderRef->GetLocation("CameraFarPlane");
+		GLint uniform_var_loc7 = ShaderRef->GetLocation("Inner");
+		GLint uniform_var_loc8 = ShaderRef->GetLocation("CheckDraw");
+		GLint uniform_var_loc9 = ShaderRef->GetLocation("Z_Thickness");
+		GLint uniform_var_loc10 = ShaderRef->GetLocation("X_Thickness");
+		GLint uniform_var_loc11 = ShaderRef->GetLocation("XAxis_Colour");
+		GLint uniform_var_loc12 = ShaderRef->GetLocation("ZAxis_Colour");
 
-        GLCall(glUniform1i(uniform_var_loc1, GridScale));
-        glUniformMatrix4fv(uniform_var_loc2, 1, GL_FALSE, glm::value_ptr(camera.viewMtx));
-        glUniformMatrix4fv(uniform_var_loc3, 1, GL_FALSE, glm::value_ptr(camera.projMtx));
-        GLCall(glUniform3f(uniform_var_loc4, GridColour.getX(), GridColour.getY(), GridColour.getZ()));
-        GLCall(glUniform1f(uniform_var_loc5, nearplane));
-        GLCall(glUniform1f(uniform_var_loc6, farplane));
-        GLCall(glUniform1i(uniform_var_loc7, InnerRatio));
-        GLCall(glUniform1i(uniform_var_loc8, Visible));
-        GLCall(glUniform1i(uniform_var_loc9, SingleZAxisLineThickness));
-        GLCall(glUniform1i(uniform_var_loc10, SingleXAxisLineThickness));
-        GLCall(glUniform1f(uniform_var_loc11, XAxisColour));
-        GLCall(glUniform1f(uniform_var_loc12, ZAxisColour));
-    }
+		GLCall(glUniform1i(uniform_var_loc1, GridScale));
+		glUniformMatrix4fv(uniform_var_loc2, 1, GL_FALSE, glm::value_ptr(camera.viewMtx));
+		glUniformMatrix4fv(uniform_var_loc3, 1, GL_FALSE, glm::value_ptr(camera.projMtx));
+		GLCall(glUniform3f(uniform_var_loc4, GridColour.getX(), GridColour.getY(), GridColour.getZ()));
+		GLCall(glUniform1f(uniform_var_loc5, nearplane));
+		GLCall(glUniform1f(uniform_var_loc6, farplane));
+		GLCall(glUniform1i(uniform_var_loc7, InnerRatio));
+		GLCall(glUniform1i(uniform_var_loc8, Visible));
+		GLCall(glUniform1i(uniform_var_loc9, SingleZAxisLineThickness));
+		GLCall(glUniform1i(uniform_var_loc10, SingleXAxisLineThickness));
+		GLCall(glUniform1f(uniform_var_loc11, XAxisColour));
+		GLCall(glUniform1f(uniform_var_loc12, ZAxisColour));
+	}
 
-    float Grid::GetGridScale()
-    {
-        return GridScale;
-    }
+	float Grid::GetGridScale()
+	{
+		return GridScale;
+	}
 
-    void Grid::SetGridScale(float in)
-    {
-        GridScale = in;
-    }
+	void Grid::SetGridScale(float in)
+	{
+		GridScale = in;
+	}
 
-    bool Grid::CheckShowGrid()
-    {
-        return Visible;
-    }
+	bool Grid::CheckShowGrid()
+	{
+		return Visible;
+	}
 
-    void Grid::SetGridToShow(bool in)
-    {
-        Visible = in;
-    }
+	void Grid::SetGridToShow(bool in)
+	{
+		Visible = in;
+	}
 
-    void Grid::DebugPrint()
-    {
-        std::cout << "Grid Debug Print" << std::endl;
-        std::cout << "===========================" << std::endl;
-        std::cout << "Grid ID : " << GridID << std::endl;
-        std::cout << "Per Square Scale : " << GridScale << std::endl;
-        std::cout << "Inner Ratio : " << InnerRatio << std::endl;
-        std::cout << "How Many Squares inside each Grid : " << GridScale/InnerRatio << std::endl;
-        std::cout << "Grid Colour : " << GridColour.getX() << " " << GridColour.getY() << " " << GridColour.getZ() << std::endl;
-        std::cout << "Visible ? : " << Visible << std::endl;
-        std::cout << "===========================" << std::endl;
-    }
+	void Grid::DebugPrint()
+	{
+		std::cout << "Grid Debug Print" << std::endl;
+		std::cout << "===========================" << std::endl;
+		std::cout << "Grid ID : " << GridID << std::endl;
+		std::cout << "Per Square Scale : " << GridScale << std::endl;
+		std::cout << "Inner Ratio : " << InnerRatio << std::endl;
+		std::cout << "How Many Squares inside each Grid : " << GridScale / InnerRatio << std::endl;
+		std::cout << "Grid Colour : " << GridColour.getX() << " " << GridColour.getY() << " " << GridColour.getZ() << std::endl;
+		std::cout << "Visible ? : " << Visible << std::endl;
+		std::cout << "===========================" << std::endl;
+	}
 
-    ECVec3 Grid::GetGridColour()
-    {
-        return GridColour;
-    }
+	ECVec3 Grid::GetGridColour()
+	{
+		return GridColour;
+	}
 
-    void Grid::SetGridColour(ECVec3& in)
-    {
-        GridColour.setX(in.getX());
-        GridColour.setY(in.getY());
-        GridColour.setZ(in.getZ());
-    }
+	void Grid::SetGridColour(ECVec3& in)
+	{
+		GridColour.setX(in.getX());
+		GridColour.setY(in.getY());
+		GridColour.setZ(in.getZ());
+	}
 
-    int Grid::GetInnerRatio()
-    {
-        return InnerRatio;
-    }
+	int Grid::GetInnerRatio()
+	{
+		return InnerRatio;
+	}
 
-    void Grid::SetInnerRatio(int& in)
-    {
-        InnerRatio = in;
-    }
+	void Grid::SetInnerRatio(int& in)
+	{
+		InnerRatio = in;
+	}
 
-    int Grid::GetSingleZ_Thickness()
-    {
-        return SingleZAxisLineThickness;
-    }
+	int Grid::GetSingleZ_Thickness()
+	{
+		return SingleZAxisLineThickness;
+	}
 
-    void Grid::SetSingleZ_Thickness(int& in)
-    {
-        SingleZAxisLineThickness = in;
-    }
+	void Grid::SetSingleZ_Thickness(int& in)
+	{
+		SingleZAxisLineThickness = in;
+	}
 
-    int Grid::GetSingleX_Thickness()
-    {
-        return SingleXAxisLineThickness;
-    }
+	int Grid::GetSingleX_Thickness()
+	{
+		return SingleXAxisLineThickness;
+	}
 
-    float Grid::GetXAxisColour()
-    {
-        return XAxisColour;
-    }
+	float Grid::GetXAxisColour()
+	{
+		return XAxisColour;
+	}
 
-    float Grid::GetZAxisColour()
-    {
-        return ZAxisColour;
-    }
+	float Grid::GetZAxisColour()
+	{
+		return ZAxisColour;
+	}
 
-    void Grid::SetSingleX_Thickness(int& in)
-    {
-        SingleXAxisLineThickness = in;
-    }
+	void Grid::SetSingleX_Thickness(int& in)
+	{
+		SingleXAxisLineThickness = in;
+	}
 
-    void Grid::SetXAxisColour(float& in)
-    {
-        XAxisColour = in;
-    }
+	void Grid::SetXAxisColour(float& in)
+	{
+		XAxisColour = in;
+	}
 
-    void Grid::SetZAxisColour(float& in)
-    {
-        ZAxisColour = in;
-    }
+	void Grid::SetZAxisColour(float& in)
+	{
+		ZAxisColour = in;
+	}
 
-    Quad* Grid::GetModelReference()
-    {
-        return WholeGrid;
-    }
+	Quad* Grid::GetModelReference()
+	{
+		return WholeGrid;
+	}
 
-    Shader* Grid::GetShaderReference()
-    {
-        return ShaderRef;
-    }
+	Shader* Grid::GetShaderReference()
+	{
+		return ShaderRef;
+	}
 
-    float Grid::GetTransparency()
-    {
-        return Transparency;
-    }
+	float Grid::GetTransparency()
+	{
+		return Transparency;
+	}
 
-    void Grid::Init()
-    {
-        GridID = engine->world.CreateEntity();
-        engine->world.AddComponent(GridID, EntityComponent{ EntityType::ENT_UNASSIGNED, "Grid", true });
-        engine->world.AddComponent(GridID, TransformComponent{});
+	void Grid::Init()
+	{
+		// Add Grid as an entity
+		GridID = engine->world.CreateEntity();
+		engine->world.AddComponent(GridID, EntityComponent{ EntityType::ENT_UNASSIGNED, "Grid", true });
+		engine->world.AddComponent(GridID, TransformComponent{});
 
-        engine->editorManager->EntityHierarchyList_.push_back(GridID);
-        engine->editorManager->EntityToTypeMap_.insert(std::pair<Entity, EntityType>(GridID, EntityType::ENT_UNASSIGNED));
+		engine->editorManager->EntityHierarchyList_.push_back(GridID);
+		engine->editorManager->EntityToTypeMap_.insert(std::pair<Entity, EntityType>(GridID, EntityType::ENT_UNASSIGNED));
 
-        WholeGrid = new Quad;
-        ShaderRef = &(Graphics::shaderpgms.find("Grid")->second);
-        ShaderName = Graphics::shaderpgms.find("Grid")->first;
+		WholeGrid = new Quad;
+		ShaderRef = &(Graphics::shaderpgms.find("Grid")->second);
+		ShaderName = Graphics::shaderpgms.find("Grid")->first;
 
-        auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
-        float SnapValue = scene->GetSnapSettings().mPosSnapValue;
-        GridScale = (SnapValue);
+		CalculateGridSettings();
 
-        // Useless Stuffs for now
-        //modelRef = Graphics::models.find("square")->second.get();
+		if (WholeGrid != nullptr)
+		{
+			EDITOR_LOG_INFO("Grid Created");
+		}
 
-        if (WholeGrid != nullptr)
-        {
-            EDITOR_LOG_INFO("Grid Created");
-        }
-    }
+		CalculateGridCoordinates();
+	}
 
-    void Grid::DrawGrid(unsigned int FrameBufferID)
-    {
-        UseFrameBuffer(FrameBufferID);
+	void Grid::CalculateGridCoordinates()
+	{
+		// Length of Grid on each side.
+		ECVec3 TempLength = XYZ_Length;
 
-        ShaderRef->Use();
+		// Only max have this number of tiles
+		GridArray.reserve(TotalTiles);
 
-        // Part 2: Bind the object's VAO handle using glBindVertexArray
-        glBindVertexArray(WholeGrid->GetVaoID());
+		// Initialise everything 
+		Tile NewTile(GridScale, true);
+		NewTile.CenterPoint = StartingPosition;
+		GridArray.push_back(NewTile);
 
-        glEnable(GL_DEPTH_TEST);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		for (int i = 0; i < (TotalTiles - 1); i++)
+		{
+			Tile NewTile(GridScale, false);
+			GridArray.push_back(NewTile);
+		}
+		std::cout << "Grid Size " << GridArray.size() << std::endl;
 
-        // Check here
-        CheckUniformLocation(GridID);
+		for (int y = 0; y < GridSize; y++)
+		{
+			for (int z = 0; z < 9; z+=3)
+			{
+				//unsigned int CounterZ = z;
+				//CounterZ /= 3;
 
-        if (Visible == true)
-        {
-            // Draw
-            glDrawElements(WholeGrid->GetPrimitiveType(), WholeGrid->GetDrawCount(), GL_UNSIGNED_SHORT, NULL);
-        }
+				for (int x = 0; x < GridSize; x++)
+				{
+					unsigned int PreviousIndex = x;
+					--PreviousIndex;
 
-        // Part 5: Clean up
-        glBindVertexArray(0);
-        ShaderRef->UnUse();
-    }
+					if (GridArray[x].FirstTile == true)
+						continue;
 
-    Grid::~Grid()
-    {
-        // Handle Memory for WholeGrid*
-        if (WholeGrid != nullptr)
-        {
-            delete WholeGrid;
-        }
-    }
+					GridArray[z * 3 + x].CenterPoint.setX(GridArray[PreviousIndex].CenterPoint.getX() + GridScale);
+					GridArray[z * 3 + x].CenterPoint.setY(GridArray[PreviousIndex].CenterPoint.getY());
+					GridArray[z * 3 + x].CenterPoint.setZ(GridArray[PreviousIndex].CenterPoint.getZ()); // -(CounterZ * GridScale) );
+				}
+			}
+		}
+	}
+
+	void Grid::CalculateGridSettings()
+	{
+		auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
+		float SnapValue = scene->GetSnapSettings().mPosSnapValue;
+		GridScale = (SnapValue);
+
+		TotalTiles = GridSize * GridSize * GridSize;
+
+		Length = GridSize * GridScale;
+		XYZ_Length.setX(Length);
+		XYZ_Length.setY(Length);
+		XYZ_Length.setZ(Length);
+
+		Maximum.setX((XYZ_Length.getX() / 2));
+		Maximum.setY((XYZ_Length.getY()));
+		Maximum.setZ((XYZ_Length.getZ() / 2));
+
+		Minimum.setX(-(XYZ_Length.getX() / 2));
+		Minimum.setY(0.0f);
+		Minimum.setZ(-(XYZ_Length.getZ() / 2));
+
+		CalculateStartingPoint(Minimum, Maximum);
+	}
+
+	void Grid::CalculateStartingPoint(ECVec3& MinimumIn, ECVec3& Maximum)
+	{
+		StartingPosition.setX((MinimumIn.getX() + (MinimumIn.getX() + GridScale)) / 2);
+		StartingPosition.setY((MinimumIn.getY() + (MinimumIn.getY() + GridScale)) / 2);
+		StartingPosition.setZ((Maximum.getZ() + (Maximum.getZ() - GridScale)) / 2);
+	}
+
+	void Grid::DrawGrid(unsigned int FrameBufferID)
+	{
+		UseFrameBuffer(FrameBufferID);
+
+		ShaderRef->Use();
+
+		// Part 2: Bind the object's VAO handle using glBindVertexArray
+		glBindVertexArray(WholeGrid->GetVaoID());
+
+		glEnable(GL_DEPTH_TEST);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+		// Check here
+		CheckUniformLocation(GridID);
+
+		if (Visible == true)
+		{
+			// Draw
+			glDrawElements(WholeGrid->GetPrimitiveType(), WholeGrid->GetDrawCount(), GL_UNSIGNED_SHORT, NULL);
+		}
+
+		// Part 5: Clean up
+		glBindVertexArray(0);
+		ShaderRef->UnUse();
+	}
+
+	Grid::~Grid()
+	{
+		// Handle Memory for WholeGrid*
+		if (WholeGrid != nullptr)
+		{
+			delete WholeGrid;
+		}
+	}
 }

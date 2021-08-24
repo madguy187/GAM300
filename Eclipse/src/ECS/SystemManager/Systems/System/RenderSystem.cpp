@@ -81,7 +81,6 @@ namespace Eclipse
             engine->gDebugManager.DrawDebugShapes(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
             // CAMERA Render End ===============================
 
-
             // MODELS Render  Start =============================
             engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL, &engine->GraphicsManager.AllAABBs);
 

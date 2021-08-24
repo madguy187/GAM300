@@ -91,13 +91,8 @@ void main ()
 
     float fading = max(0, (0.5 - linearDepth));
 
-    fFragClr =(grid(fragPos3D, QuadScale, CheckDraw) + grid(fragPos3D, Inner , CheckDraw)) * float(t > 0); 
+    fFragClr =( grid(fragPos3D, QuadScale, CheckDraw) + grid(fragPos3D, Inner , CheckDraw) ) * float(t > 0); 
 
     fFragClr.a *= fading;
-
-    if ( fFragClr.a == 0.0 )
-    {
-      discard;
-    }
 
 }
