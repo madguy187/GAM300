@@ -6,13 +6,12 @@ namespace Eclipse
 	{
 		if (ImGui::BeginDragDropSource())
 		{
-			wchar_t itemPath[100];
-			mbstowcs(itemPath, relativePath.c_str(), 99);
-			ImGui::SetDragDropPayload(type, itemPath, ((relativePath.size()) + 1) * sizeof(wchar_t));
+			ImGui::SetDragDropPayload(type, relativePath.c_str(), ((relativePath.size()) + 1) * sizeof(wchar_t));
 			ImGui::EndDragDropSource();
 		}
 	}
-	void DragAndDrop::AssetBrowerFilesAndFoldersTarget(const char* type, const wchar_t* paths, std::string AssetPath,std::filesystem::directory_entry dirEntry,bool refreshBrowser)
+	
+	void DragAndDrop::AssetBrowerFilesAndFoldersTarget(const char* type, const char* paths, std::string AssetPath,std::filesystem::directory_entry dirEntry,bool refreshBrowser)
 	{
 		if (ImGui::BeginDragDropTarget())
 		{
@@ -20,10 +19,8 @@ namespace Eclipse
 			{
 				try
 				{
-					paths = (const wchar_t*)payload->Data;
-					wchar_t itemPath[100];
-					mbstowcs(itemPath, AssetPath.c_str(), 99);
-					std::filesystem::path itemPaths = itemPath;
+					paths = (const char*)payload->Data;
+					std::filesystem::path itemPaths = AssetPath.c_str();
 					std::filesystem::copy(std::filesystem::path(itemPaths / paths), dirEntry.path());
 					std::filesystem::remove(std::filesystem::path(itemPaths / paths));
 					refreshBrowser = true;
