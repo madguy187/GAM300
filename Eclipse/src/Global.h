@@ -62,3 +62,17 @@ enum class EntityType
 	// ADD ON LIGHTS HERE
 	ENT_UNASSIGNED
 };
+
+enum class PayloadSourceType
+{
+	PST_TEXT,
+	PST_IMAGE,
+	PST_UNASSIGNED
+};
+
+enum class PayloadTargetType
+{
+	PTT_WIDGET,
+	PTT_WINDOW,
+	PTT_UNASSIGNED
+};
