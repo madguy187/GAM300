@@ -29,6 +29,18 @@ namespace Eclipse
 		return ImGuiAPI::GetWindowSize();
 	}
 
+	ECVec2 ECGui::GetWindowPos()
+	{
+		ECVec2 pos{ ImGuiAPI::GetWindowPos().x,  ImGuiAPI::GetWindowPos().y };
+		return pos;
+	}
+
+	ECVec2 ECGui::GetCursorScreenPos()
+	{
+		ECVec2 pos{ ImGuiAPI::GetCursorScreenPos().x,  ImGuiAPI::GetCursorScreenPos().y };
+		return pos;
+	}
+
 	float ECGui::GetWindowHeight()
 	{
 		return ImGuiAPI::GetWindowHeight();
@@ -111,8 +123,22 @@ namespace Eclipse
 		return ImGuiAPI::CreateMenuItem(name, open);
 	}
 
-	bool ECGui::CreateCollapsingHeader(const char* name)
+	bool ECGui::DrawDataHeader(const char* varname, ImGuiTextFilter& filter)
 	{
+		if (filter.PassFilter(varname))
+		{
+			ImGuiAPI::Text(varname);
+			return true;
+		}
+
+		return false;
+	}
+
+	bool ECGui::CreateCollapsingHeader(const char* name, bool forInspector)
+	{
+		if (forInspector)
+			engine->editorManager->DataComponentFilter_[name] = name;
+
 		return ImGuiAPI::CreateCollapsingHeader(name);
 	}
 

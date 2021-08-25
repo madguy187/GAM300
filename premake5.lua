@@ -51,6 +51,7 @@ project "Eclipse"
 		"Eclipse/src/Graphics/FrameBuffer",
 		"Eclipse/src/Graphics/OpenGL",
 		"Eclipse/src/ImGui/Vendor",
+		"Eclipse/src/ImGui/Vendor/ImGuizmo",
 		"Dep/PhysX/include",
 		"Dep/PhysX/include/characterkinematic",
 		"Dep/PhysX/include/collision",
@@ -67,15 +68,18 @@ project "Eclipse"
 		"Dep/PhysX/include/solver",
 		"Dep/PhysX/include/task",
 		"Dep/PhysX/include/vehicle",
-        "Dep/mono/include/mono-2.0"
+        "Dep/mono/include/mono-2.0",
+		"Dep/ASSIMP/include/assimp",
+	    "Dep/ASSIMP"
 	}
 
   libdirs
   {
     "Dep/GLFW/lib-vc2019",
     "Dep/GLEW/lib/Release/x64",
-	"Dep/PhysX/Debug",
-    "Dep/mono/lib/"
+	  "Dep/PhysX/Debug",
+    "Dep/mono/lib/",
+	"Dep/ASSIMP/"
   }
 
   links
@@ -102,7 +106,8 @@ project "Eclipse"
 	  "SceneQuery_static_64.lib",
 	  "SimulationController_static_64.lib",
 	  "SnippetRender_static_64.lib",
-	  "SnippetUtils_static_64.lib"
+	  "SnippetUtils_static_64.lib",
+	  "assimp-vc142-mtd"
   }
 
 	filter "system:windows"
@@ -129,7 +134,8 @@ project "Eclipse"
 	  "{COPY} ../Dep/PhysX/Debug/PhysXDevice64.dll %{cfg.targetdir}",
       "{COPY} ../Dep/PhysX/Debug/PhysXFoundation_64.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/PhysX/Debug/PhysXGpu_64.dll %{cfg.targetdir}",
-      "{COPY} ../Dep/mono/bin/mono-2.0-sgen.dll %{cfg.targetdir}"
+      "{COPY} ../Dep/mono/bin/mono-2.0-sgen.dll %{cfg.targetdir}",
+	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.dll %{cfg.targetdir}"
     }
 
 	filter "configurations:Release"
@@ -145,7 +151,8 @@ project "Eclipse"
 	  "{COPY} ../Dep/PhysX/Release/PhysXDevice64.dll %{cfg.targetdir}",
       "{COPY} ../Dep/PhysX/Release/PhysXFoundation_64.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/PhysX/Release/PhysXGpu_64.dll %{cfg.targetdir}",
-      "{COPY} ../Dep/mono/bin/mono-2.0-sgen.dll %{cfg.targetdir}"
+      "{COPY} ../Dep/mono/bin/mono-2.0-sgen.dll %{cfg.targetdir}",
+	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.dll %{cfg.targetdir}"
     }
 
 	filter "configurations:Dist"

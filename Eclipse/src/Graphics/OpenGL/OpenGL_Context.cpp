@@ -56,10 +56,10 @@ void Eclipse::OpenGL_Context::mousepos_cb(GLFWwindow* pwin, double xpos, double 
     //std::cout << "Mouse cursor position: (" << xpos << ", " << ypos << ")" << std::endl;
 #endif
     (void)pwin;
-    (void)xpos;
-    (void)ypos;
+    //(void)xpos;
+    //(void)ypos;
     m_posX = xpos;
-    m_posX = ypos;
+    m_posY = ypos;
 }
 
 void error_cb(int error, char const* description)
@@ -91,6 +91,17 @@ void Eclipse::OpenGL_Context::mousebutton_cb(GLFWwindow* pwin, int button, int a
     (void)pwin;
     (void)button;
     (void)action;
+}
+
+void Eclipse::OpenGL_Context::window_pos_callback(GLFWwindow* pwin, int xpos, int ypos)
+{
+#ifdef _DEBUG
+    //std::cout << "Context window position: ("
+    //   << xpos << ", " << ypos << ")" << std::endl;
+#endif
+    (void)pwin;
+    winPosX = xpos;
+    winPosY = ypos;
 }
 
 void Eclipse::OpenGL_Context::LoadConfigData(std::string configFile)
@@ -141,6 +152,11 @@ bool Eclipse::OpenGL_Context::init(std::string configFile)
     windowRatioX = static_cast<float>(OpenGL_Context::width) / static_cast<float>(OpenGL_Context::prevWidth);
     windowRatioY = static_cast<float>(OpenGL_Context::height) / static_cast<float>(OpenGL_Context::prevHeight);
 
+    int contextX, contextY;
+    glfwGetWindowPos(ptr_window,&contextX, &contextY);
+    winPosX = contextX;
+    winPosY = contextY;
+
     if (!OpenGL_Context::ptr_window)
     {
         std::cerr << "GLFW unable to create OpenGL context - abort program\n";
@@ -156,6 +172,7 @@ bool Eclipse::OpenGL_Context::init(std::string configFile)
     glfwSetCursorPosCallback(ptr_window, mousepos_cb);
     glfwSetWindowSizeCallback(ptr_window, on_window_size_callback);
     glfwSetWindowCloseCallback(ptr_window, on_window_close_callback);
+    glfwSetWindowPosCallback(ptr_window, window_pos_callback);
 
     // this is the default setting ...
     glfwSetInputMode(ptr_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
@@ -349,6 +366,10 @@ void Eclipse::OpenGL_Context::CreateFrameBuffers()
 {
     Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::GAMEVIEW);
     Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::SCENEVIEW);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::SWITCHINGVIEWS_TOP);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::SWITCHINGVIEWS_BOTTOM);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::SWITCHINGVIEWS_LEFT);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::SWITCHINGVIEWS_RIGHT);
 }
 
 void Eclipse::OpenGL_Context::CreateFrameBuffers(unsigned int width, unsigned int height, Eclipse::FrameBufferMode in)
@@ -361,6 +382,7 @@ void Eclipse::OpenGL_Context::CreateFrameBuffers(unsigned int width, unsigned in
 
     FrameBuffer* m_frameBuffer = new FrameBuffer(width, height, in);
     _Framebuffers.insert({ in , m_frameBuffer });
+    //delete m_frameBuffer;
     ENGINE_CORE_INFO("FrameBuffer Ready For Use");
 }
 
@@ -389,4 +411,14 @@ float Eclipse::OpenGL_Context::GetWindowRatioX()
 float Eclipse::OpenGL_Context::GetWindowRatioY()
 {
     return windowRatioY;
+}
+
+glm::vec2 Eclipse::OpenGL_Context::GetMouseCursorPos()
+{
+    return glm::vec2{ m_posX, m_posY };
+}
+
+glm::vec2 Eclipse::OpenGL_Context::GetContextPosition()
+{
+    return glm::vec2{ winPosX, winPosY };
 }

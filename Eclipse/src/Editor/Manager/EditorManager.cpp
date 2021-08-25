@@ -10,7 +10,7 @@
 #include "Editor/Windows/AssetBrowser/AssetBrowser.h"
 #include "Editor/Windows/Log/Log.h"
 #include "Editor/Windows/Profiler/Profiler.h"
-//#include "Library/Strings/Lexical.h"
+#include "Editor/Windows/SwitchViews/SwitchViews.h"
 
 namespace Eclipse
 {
@@ -19,6 +19,9 @@ namespace Eclipse
 		InitMenu();
 		InitGUIWindows();
 		InitFont();
+
+		EDITOR_LOG_INFO("Editor Initialized!");
+		EDITOR_LOG_WARN("Testing Warning!");
 	}
 
 	void EditorManager::InitGUIWindows()
@@ -28,9 +31,10 @@ namespace Eclipse
 		AddWindow<InspectorWindow>("Inspector");
 		AddWindow<HierarchyWindow>("Hierarchy");
 		AddWindow<ProfilerWindow>("Profiler");
-		AddWindow<LoggerWindow>("Log");
 		AddWindow<AssetBrowserWindow>("AssetBrowser");
+		AddWindow<LoggerWindow>("Log");
 		AddWindow<DebugWindow>("Debug");
+		AddWindow<SwitchViewsWindow>("SwitchViews");
 	}
 
 	void EditorManager::InitMenu()
@@ -66,7 +70,8 @@ namespace Eclipse
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-		glTexImage2D(GL_TEXTURE_2D, 0, bytes_per_pixels, width, height, 0, (bytes_per_pixels == 3) ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+		glTexImage2D(GL_TEXTURE_2D, 0, bytes_per_pixels, width, height, 0, 
+			(bytes_per_pixels == 3) ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 
 		io.Fonts->SetTexID((void*)static_cast<size_t>(textureID));
 
@@ -79,8 +84,12 @@ namespace Eclipse
 	Entity EditorManager::CreateEntity(EntityType type)
 	{
 		Entity ID = engine->world.CreateEntity();
-		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast<std::string>(type), true});
+		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast<std::string>(type), true });
 		engine->world.AddComponent(ID, TransformComponent{});
+
+		//Check this please - Rachel
+		auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
+		engine->gPicker.GenerateAabb(ID, _transform);
 
 		EntityHierarchyList_.push_back(ID);
 		EntityToTypeMap_.insert(std::pair<Entity, EntityType>(ID, type));

@@ -6,7 +6,8 @@ namespace Eclipse
 {
 	class IComponentArray
 	{
-		
+	public:
+		virtual ~IComponentArray() {};
 	};
 
 	template <typename T>
@@ -14,6 +15,7 @@ namespace Eclipse
 	{
 		SparseSet<Entity, MAX_PAGE_SIZE> set;
 		std::array<T, MAX_ENTITY> components;
+
 	public:
 		void Insert(Entity ent, T component)
 		{

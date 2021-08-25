@@ -5,8 +5,9 @@
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RenderComponent.h"
 #include "ECS/ComponentManager/Components/CameraComponent.h"
+#include "ECS/ComponentManager/Components/AabbComponent.h"
 #include "ECS/ComponentManager/Components/DirectionalLightComponent.h"
-#include "ECS/ComponentManager/Components/RigidBodyComponent.h"
+#include "ECS/ComponentManager/Components/SpotLightComponent.h"
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
 #include "ECS/SystemManager/Systems/System/EditorSystem.h"
@@ -40,10 +41,15 @@ namespace Eclipse
         EventSystem<Test1>::dispatchEvent(t);
         std::cout << "ENDED" << std::endl;
 
-        RenderSystem::Init();
+        engine->GraphicsManager.Pre_Render();
         ImGuiSetup::Init(EditorState);
+
         if (EditorState)
             editorManager = std::make_unique<EditorManager>();
+
+        /*bool x = false;
+        std::string msg = "woo";
+        ENGINE_LOG_ASSERT(x, msg.c_str());*/
     }
 
     void Engine::Run()
@@ -53,9 +59,11 @@ namespace Eclipse
         world.RegisterComponent<TransformComponent>();
         world.RegisterComponent<RenderComponent>();
         world.RegisterComponent<CameraComponent>();
+        world.RegisterComponent<RenderComponent>();
         world.RegisterComponent<PointLightComponent>();
         world.RegisterComponent<DirectionalLightComponent>();
-        world.RegisterComponent<RigidBodyComponent>();
+        world.RegisterComponent<AabbComponent>();
+        world.RegisterComponent<SpotLightComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
@@ -74,24 +82,30 @@ namespace Eclipse
         Signature hi3;
         hi3.set(world.GetComponentType<TransformComponent>(), 1);
         hi3.set(world.GetComponentType<PointLightComponent>(), 1);
+        hi3.set(world.GetComponentType<DirectionalLightComponent>(), 1);
+        hi3.set(world.GetComponentType<SpotLightComponent>(), 1);
         world.RegisterSystemSignature<LightingSystem>(hi3);
 
         //Check this! - Rachel
+        RenderSystem::Init();
         CameraSystem::Init();
-        gPhysics.Load();
+        LightingSystem::Init();
+        engine->AssimpManager.AddComponents();
 
         float currTime = static_cast<float>(clock());
         float accumulatedTime = 0.0f;
         int framecount = 0;
         float dt = 0.0f;
         float updaterate = 4.0f;
-
+        ProfilerWindow Timer;
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
+            Timer.tracker.system_start = glfwGetTime();
             glfwPollEvents();
-            engine->gGraphics.mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });
+            engine->GraphicsManager.mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });
 
             Game_Clock.set_timeSteps(0);
+            framecount++;
             float newTime = static_cast<float>(clock());
             Game_Clock.set_DeltaTime((newTime - currTime) / static_cast<float>(CLOCKS_PER_SEC));
 
@@ -118,7 +132,7 @@ namespace Eclipse
             currTime = newTime;
 
             ImGuiSetup::Begin(EditorState);
-
+        	
             if (Game_Clock.get_timeSteps() > 10)
             {
                 Game_Clock.set_timeSteps(10);
@@ -131,18 +145,27 @@ namespace Eclipse
                 world.Update<CameraSystem>();
             }
 
-            engine->gGraphics.GlobalFrameBufferBind();
-            world.Update<LightingSystem>();
+            // FRAMEBUFFER BIND =============================
+            engine->GraphicsManager.GlobalFrameBufferBind();
+
+            // RENDERSYSTEM =============================
             world.Update<RenderSystem>();
-            engine->gGraphics.GlobalFrmeBufferDraw();
+
+            // LIGHTINGSYSTEM =============================
+            world.Update<LightingSystem>();
+
+            // FRAMEBUFFER DRAW ==========================
+            engine->GraphicsManager.GlobalFrmeBufferDraw();
 
             ImGuiSetup::End(EditorState);
             OpenGL_Context::post_render();
+            Timer.tracker.system_end = glfwGetTime();
+            Timer.EngineTimer(Timer.tracker);
         }
 
         // unLoad
-        gGraphics.end();
-        gPhysics.Unload();
+        GraphicsManager.End();
+        AssimpManager.CleanUpAllModels();
         ImGuiSetup::Destroy(EditorState);
     }
 

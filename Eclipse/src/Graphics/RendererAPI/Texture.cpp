@@ -3,6 +3,99 @@
 
 using namespace Eclipse;
 
+Texture::Texture(std::string dir, std::string path, aiTextureType type) :
+    Directory(dir),
+    Path(path),
+    Type(type)
+{
+
+}
+
+void Texture::Generate()
+{
+    glGenTextures(1, &Id);
+}
+
+void Texture::Load(bool flip)
+{
+    stbi_set_flip_vertically_on_load(flip);
+
+    int width, height, nChannels;
+
+    unsigned char* data = stbi_load((Directory + "/" + Path).c_str(), &width, &height, &nChannels, 0);
+
+    GLenum colorMode = GL_RGB;
+
+    switch (nChannels) 
+    {
+    case 1:
+        colorMode = GL_RED;
+        break;
+    case 4:
+        colorMode = GL_RGBA;
+        break;
+    };
+
+    if (data)
+    {
+        glGenTextures(1, &Id);
+        glBindTexture(GL_TEXTURE_2D, Id);
+        glTexImage2D(GL_TEXTURE_2D, 0, colorMode, width, height, 0, colorMode, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    }
+    else
+    {
+        std::cout << "Image not loaded at " << Path << std::endl;
+    }
+
+    stbi_image_free(data);
+}
+
+void Texture::Bind()
+{
+    glBindTexture(GL_TEXTURE_2D, Id);
+}
+
+void Eclipse::Texture::SetDirectory(std::string dir)
+{
+    Directory = dir;
+}
+
+void Eclipse::Texture::SetPath(std::string pathhh)
+{
+    Path = pathhh;
+}
+
+void Eclipse::Texture::SetType(aiTextureType in)
+{
+    Type = in;
+}
+
+std::string Eclipse::Texture::GetDirectory()
+{
+    return Directory;
+}
+
+std::string Eclipse::Texture::GetPath()
+{
+    return Path;
+}
+
+aiTextureType Eclipse::Texture::GetType()
+{
+    return Type;
+}
+
+unsigned int Eclipse::Texture::GetId()
+{
+    return Id;
+}
+
 Texture::Texture(std::string pathname) :
     sheetWidth{ 0 }, sheetHeight{ 0 }, numCols{ 0 }, numRows{ 0 },
     channels{ 0 }

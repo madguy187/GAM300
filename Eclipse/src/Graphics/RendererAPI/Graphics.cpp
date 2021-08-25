@@ -1,28 +1,9 @@
-/**********************************************************************************
-* \file            Graphics.cpp
-*
-* \brief        Definition of the Graphics class function(s).
-*
-* \author       Lin Yanping Rachel
-*
-* \email		l.yanpingrachel@digipen.edu
-*
-* \date			10 oct 2020
-*
-* \copyright    Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
-*                or disclosure of this file or its contents without the prior
-*                written consent of DigiPen Institute of Technology is prohibited.
-**********************************************************************************/
 #define _USE_MATH_DEFINES
 
 #include "pch.h"
 #include "Graphics.h"
-
 #include "type_ptr.hpp"
 #include "matrix_transform_2d.hpp"
-#include "../src/ECS/World.h"
-#include "ECS/ComponentManager/Components/TransformComponent.h"
-#include "ECS/ComponentManager/Components/CameraComponent.h"
 
 /*                                                   objects with file scope
 ----------------------------------------------------------------------------- */
@@ -33,7 +14,6 @@ std::map<std::string, Shader> Graphics::shaderpgms;
 std::map<std::string, std::unique_ptr<IModel>> Graphics::models;
 std::map<std::string, Texture> Graphics::textures;
 std::multimap<unsigned int, RenderComponent*> Graphics::sprites;
-std::multimap<unsigned int, unsigned int> Graphics::interactables;
 std::set<unsigned int> Graphics::sortedID;
 
 void Graphics::load()
@@ -62,9 +42,9 @@ void Graphics::unload()
         it->second->DeleteModel();
     }
 
-    for (auto it = textures.begin(); it != textures.end(); ++it)
+    for (auto fb : OpenGL_Context::_Framebuffers)
     {
-        it->second.DeleteTexture();
+        delete fb.second;
     }
 }
 
@@ -127,13 +107,6 @@ void Graphics::LoadTextures(std::string textureFile)
         newTex.setSpriteHeight(spriteDimensions.y);
         textures.emplace(textureName, newTex);
     }
-}
-
-void Graphics::LoadParticles()
-{
-    //Particles newParticle;
-
-    //particleType.emplace("Default", newParticle);
 }
 
 /******************************************************************************/

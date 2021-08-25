@@ -16,7 +16,7 @@ namespace Eclipse
 	public:
 		void Update() override;
 		SceneWindow();
-		void InitilializeFrameBuffer();
+		void RunMainWindow();
 		void RunFrameBuffer();
 		void OnKeyPressedEvent();
 		void OnGizmoUpdateEvent();
@@ -24,8 +24,14 @@ namespace Eclipse
 		void OnCameraZoomEvent();
 
 		SnapValueSettings& GetSnapSettings();
+		glm::vec2 GetSceneBufferPos();
+		glm::vec2 GetSceneBufferSize();
+		glm::vec2 GetCursorScreenPos();
 	private:
 		glm::vec2 mViewportSize;
+		glm::vec2 mSceneBufferSize;
+		ECVec2 mSceneBufferPos;
+		ECVec2 mCursorScreenPos;
 		SnapValueSettings mSnapSettings;
 		// Hold Frame Buffer Object
 		std::shared_ptr<FrameBuffer> m_frameBuffer;

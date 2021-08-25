@@ -29,7 +29,7 @@ namespace Eclipse
         std::string title;
         inline static GLFWwindow* ptr_window;
         inline static GLdouble m_posX, m_posY;
-
+        inline static GLdouble winPosX, winPosY;
     public:
         inline static FrameBufferContainer _Framebuffers;
 
@@ -50,6 +50,8 @@ namespace Eclipse
         static GLint GetHeight();
         static float GetWindowRatioX();
         static float GetWindowRatioY();
+        static glm::vec2 GetMouseCursorPos();
+        static glm::vec2 GetContextPosition();
         FrameBuffer* GetFramebuffer(FrameBufferMode mode);
 
         void on_key(int key, int scancode, int action, int mods);
@@ -57,12 +59,12 @@ namespace Eclipse
         static void on_close();
         static void mousepos_cb(GLFWwindow* pwin, double xpos, double ypos);
         static void mousebutton_cb(GLFWwindow* pwin, int button, int action, int mod);
+        static void window_pos_callback(GLFWwindow* pwin, int xpos, int ypos);
 
         //Remove when delta-time implementation is added - Rachel
         static double update_time(double fps_calc_interval);
         static GLdouble deltaTime;
         static GLdouble fps;
-
     private:
         void Init();
         void Clear();      

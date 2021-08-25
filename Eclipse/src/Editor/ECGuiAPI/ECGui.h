@@ -58,6 +58,8 @@ namespace Eclipse
 		static bool BeginChildWindow(ChildSettings settings);
 		static void EndChildWindow();
 		static ImVec2 GetWindowSize();
+		static ECVec2 GetWindowPos();
+		static ECVec2 GetCursorScreenPos();
 		static float GetWindowHeight();
 		static float GetWindowWidth();
 		static void SetWindowSize(float width, float height);
@@ -107,7 +109,7 @@ namespace Eclipse
 		static void EndStyleVariant();
 		static bool BeginTreeNode(const char* name);
 		static void EndTreeNode();
-		static bool CreateCollapsingHeader(const char* name);
+		static bool CreateCollapsingHeader(const char* name, bool forInspector = false);
 		static bool CreateSelectableButton(const char* label, bool* active, 
 			                               ImGuiSelectableFlags flags = 0);
 		static void CreateComboList(ComboListSettings settings,
@@ -118,6 +120,9 @@ namespace Eclipse
 		/*************************************************************************/
 		/*                           Static Widgets                              */
 		/*************************************************************************/
+		// Special Draw Text Widget: To enable filter on its data members
+		static bool DrawDataHeader(const char* varname, ImGuiTextFilter& filter);
+
 		// Text Widgets - Template Overloading
 		// Supports Int, Float, Double, Size_t, Bool, String, All our engine
 		// Vectors and Matrices

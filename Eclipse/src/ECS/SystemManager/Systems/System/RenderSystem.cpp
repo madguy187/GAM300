@@ -7,31 +7,20 @@
 //Components
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RenderComponent.h"
-
-/*************************************************************************
-  RenderSystem
-
-  ! Note all imgui stuffs will be taken out
-
-  Init   : PreRender Init
-         - Load Files
-         - Clear View
-
-  Update : Update Loop
-         - Update FrameBuffers
-         - Render
-         - Render on FrameBuffer
-         - Post Render
-
-  RegisterAll : Set Signatures for this system
-         - To be removed
-
-*************************************************************************/
+#include "AssimpModel/AssimpModel.h"
+#include "SparseSet/SparseSet.hpp"
 
 void Eclipse::RenderSystem::Init()
 {
-    ENGINE_CORE_INFO("RenderSystem Init");
-    engine->gGraphics.pre_render();
+    // Graphics Init =============================
+    EDITOR_LOG_INFO("RenderSystem Init");
+    engine->GraphicsManager.DebugPrintFrameBuffers();
+
+    // Load All Models =============================
+    engine->AssimpManager.LoadAllModels();
+
+    // Create SKY =============================
+    engine->GraphicsManager.CreateSky("src/Assets/Sky");
 }
 
 Signature Eclipse::RenderSystem::RegisterAll()
@@ -50,18 +39,31 @@ void Eclipse::RenderSystem::Update()
     ProfilerWindow timer;
     timer.SetName({ SystemName::RENDER });
     timer.tracker.system_start = glfwGetTime();
-    // Loop
+
+    // SKY Reder =============================
+    engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID());
+    engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_LEFT)->GetFrameBufferID());
+    engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_BOTTOM)->GetFrameBufferID());
+
+    // (RENDERCOMPONENTS & TRANSFORMCOMPONENT) Render =============================
     for (auto const& entity : mEntities)
     {
         RenderComponent& _Sprites = engine->world.GetComponent<RenderComponent>(entity);
-
-        engine->gGraphics.ShowTestWidgets(entity, engine->gGraphics.createdID);
-        engine->gGraphics.DrawBuffers(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
-        engine->gGraphics.DrawBuffers(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
+        engine->GraphicsManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
+        engine->GraphicsManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
     }
 
-    engine->gDebugManager.DrawDebugShapes(engine->gGraphics.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
-    timer.tracker.system_end = glfwGetTime();
+    // CAMERA =============================
+    engine->gDebugManager.DrawDebugShapes(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 
+    // MODELS Render=============================
+    engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), GL_FILL, CameraComponent::CameraType::Game_Camera);
+    engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL, CameraComponent::CameraType::Editor_Camera);
+    engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_TOP)->GetFrameBufferID(), GL_FILL, CameraComponent::CameraType::TopView_Camera);
+    engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_BOTTOM)->GetFrameBufferID(), GL_FILL, CameraComponent::CameraType::BottomView_Camera);
+    engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_LEFT)->GetFrameBufferID(), GL_FILL, CameraComponent::CameraType::LeftView_Camera);
+    engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_RIGHT)->GetFrameBufferID(), GL_FILL, CameraComponent::CameraType::RightView_camera);
+
+    timer.tracker.system_end = glfwGetTime();
     timer.ContainerAddTime(timer.tracker);
 }
