@@ -22,7 +22,7 @@ namespace Eclipse
 		void SerializeData() {}
 
 		template <typename T, typename... Args>
-		void SerializeData(const char* name, T element, Args... elements)
+		inline void SerializeData(const char* name, T element, Args... elements)
 		{
 			sz.StartElement(name);
 			sz.AddAttributeToElement(name, element);
@@ -31,7 +31,7 @@ namespace Eclipse
 		}
 
 		template <typename CompType>
-		void SerializeComponent(const CompType& data)
+		inline void SerializeComponent(const CompType& data)
 		{
 			sz.StartElement(typeid(data).name());
 			sz.AddAttributeToElement("Unavailable", true);
@@ -39,7 +39,7 @@ namespace Eclipse
 		}
 
 		template <>
-		void SerializeComponent<EntityComponent>(const EntityComponent& data)
+		inline void SerializeComponent<EntityComponent>(const EntityComponent& data)
 		{
 			sz.StartElement("EntityComponent");
 			SerializeData(
@@ -51,7 +51,7 @@ namespace Eclipse
 		}
 
 		template <>
-		void SerializeComponent<TransformComponent>(const TransformComponent& data)
+		inline void SerializeComponent<TransformComponent>(const TransformComponent& data)
 		{
 			sz.StartElement("TransformComponent");
 			SerializeData(
@@ -63,7 +63,7 @@ namespace Eclipse
 		}
 
 		template <>
-		void SerializeComponent<RenderComponent>(const RenderComponent& data)
+		inline void SerializeComponent<RenderComponent>(const RenderComponent& data)
 		{
 			sz.StartElement("RenderComponent");
 			SerializeData(
@@ -86,7 +86,7 @@ namespace Eclipse
 		}
 
 		template <>
-		void SerializeComponent<RigidBodyComponent>(const RigidBodyComponent& data)
+		inline void SerializeComponent<RigidBodyComponent>(const RigidBodyComponent& data)
 		{
 			sz.StartElement("RigidBodyComponent");
 			SerializeData(
@@ -104,7 +104,7 @@ namespace Eclipse
 		}
 
 		template <>
-		void SerializeComponent<MaterialComponent>(const MaterialComponent& data)
+		inline void SerializeComponent<MaterialComponent>(const MaterialComponent& data)
 		{
 			sz.StartElement("MaterialComponent");
 			SerializeData(
@@ -124,7 +124,7 @@ namespace Eclipse
 		}
 
 		template <>
-		void SerializeComponent<CameraComponent>(const CameraComponent& data)
+		inline void SerializeComponent<CameraComponent>(const CameraComponent& data)
 		{
 			sz.StartElement("CameraComponent");
 			SerializeData(

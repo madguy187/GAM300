@@ -38,56 +38,56 @@ namespace Eclipse
 
 		//Add attribute to element
 		template <typename T>
-		void AddAttributeToElement(const std::string& att_name, const T& att_data)
+		inline void AddAttributeToElement(const std::string& att_name, const T& att_data)
 		{
 			_currElement->SetAttribute(att_name.c_str(), std::to_string(att_data).c_str());
 		}
 
 		template <>
-		void AddAttributeToElement<int>(const std::string& att_name, const int& att_data)
+		inline void AddAttributeToElement<int>(const std::string& att_name, const int& att_data)
 		{
 			_currElement->SetAttribute(att_name.c_str(), att_data);
 		}
 
 		template <>
-		void AddAttributeToElement<double>(const std::string& att_name, const double& att_data)
+		inline void AddAttributeToElement<double>(const std::string& att_name, const double& att_data)
 		{
 			_currElement->SetDoubleAttribute(att_name.c_str(), att_data);
 		}
 
 		template <>
-		void AddAttributeToElement<float>(const std::string& att_name, const float& att_data)
+		inline void AddAttributeToElement<float>(const std::string& att_name, const float& att_data)
 		{
 			_currElement->SetDoubleAttribute(att_name.c_str(), att_data);
 		}
 
 		template <>
-		void AddAttributeToElement<std::string>(const std::string& att_name, const std::string& att_data)
+		inline void AddAttributeToElement<std::string>(const std::string& att_name, const std::string& att_data)
 		{
 			_currElement->SetAttribute(att_name.c_str(), att_data.c_str());
 		}
 
 		template <>
-		void AddAttributeToElement<const char*>(const std::string& att_name, const char* const& att_data)
+		inline void AddAttributeToElement<const char*>(const std::string& att_name, const char* const& att_data)
 		{
 			_currElement->SetAttribute(att_name.c_str(), att_data);
 		}
 
 		template <>
-		void AddAttributeToElement<char>(const std::string& att_name, const char& att_data)
+		inline void AddAttributeToElement<char>(const std::string& att_name, const char& att_data)
 		{
 			std::string c{ att_data };
 			_currElement->SetAttribute(att_name.c_str(), c.c_str());
 		}
 
 		template <>
-		void AddAttributeToElement<bool>(const std::string& att_name, const bool& att_data)
+		inline void AddAttributeToElement<bool>(const std::string& att_name, const bool& att_data)
 		{
 			_currElement->SetAttribute(att_name.c_str(), att_data ? "true" : "false");
 		}
 
 		template <typename T>
-		void AddAttributeToElement(const std::string& att_name, const std::vector<T>& att_data)
+		inline void AddAttributeToElement(const std::string& att_name, const std::vector<T>& att_data)
 		{
 			size_t counter = 0;
 			std::string name{att_name + " member"};
@@ -100,7 +100,7 @@ namespace Eclipse
 		}
 
 		template <typename T, size_t N>
-		void AddAttributeToElement(const std::string& att_name, const Vector<T, N>& att_data)
+		inline void AddAttributeToElement(const std::string& att_name, const Vector<T, N>& att_data)
 		{
 			std::string vecNames[4] = { {"x"}, {"y"}, {"z"}, {"w"} };
 			for (size_t i = 0; i < N; ++i)
@@ -110,7 +110,7 @@ namespace Eclipse
 		}
 
 		template <typename T, size_t N1, size_t N2, glm::qualifier GLM>
-		void AddAttributeToElement(const std::string& att_name, const glm::mat<N1, N2, T, GLM>& att_data)
+		inline void AddAttributeToElement(const std::string& att_name, const glm::mat<N1, N2, T, GLM>& att_data)
 		{
 			//Col x Row
 			/*2x3
@@ -135,7 +135,7 @@ namespace Eclipse
 		}
 
 		template <typename T, size_t N, glm::qualifier GLM>
-		void AddAttributeToElement(const std::string& att_name, const glm::vec<N, T, GLM>& att_data)
+		inline void AddAttributeToElement(const std::string& att_name, const glm::vec<N, T, GLM>& att_data)
 		{
 			std::string vecNames[4] = { {"x"}, {"y"}, {"z"}, {"w"} };
 			for (size_t i = 0; i < N; ++i)
