@@ -1,13 +1,21 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
+
 #include "ECS/ComponentManager/Components/MaterialComponent.h"
+#include "Graphics/ModelFactory/AssimpModel/AssimpModel.h"
 
 namespace Eclipse
 {
     typedef std::map<int, MaterialComponent*> MaterialContainer;
     using MtIT = std::map<int, MaterialComponent*>::iterator;
 
-    class Material
+    typedef std::map<int, MaterialComponent*> HighlightingContainer;
+    using HighlightIT = std::map<int, MaterialComponent*>::iterator;
+
+    typedef std::map<int, AssimpModel*> ModelHighLight;
+    using HighlightModelIT = std::map<int, AssimpModel*>::iterator;
+
+    struct Material
     {
     public:
         ECVec3 Ambient;
@@ -41,7 +49,35 @@ namespace Eclipse
         static Material Yellow_rubber;
 
         static Material mix(Material m1, Material m2, float mix = 0.5f);
-        void CheckMaterialUniforms(Shader* _shdrpgm, MaterialComponent& hi, int index);
+    };
+
+    class MaterialManager
+    {
+    public:
+        // First parameter is for init , should we add highlight Component into everyone of them?
+        // Second parameter is enabling highlight
+        MaterialManager(bool InitRegisterHighlight_, bool EnableHighlight_);
+        bool InitRegisterHighlight = false;
+        bool EnableHighlight = false;
+        ModelHighLight ModelHighlightContainer;
+
+    public:
+        float GetCurrentShininess(MaterialComponent& in);
+        void UpdateShininess(MaterialComponent& in);
+
+        void DoNotUpdateStencil();
+        void StencilBufferClear();
+        void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID);
+        void UpdateStencilWith_Outline(unsigned int ID);
+        void UpdateStencilWithActualObject(unsigned int ID);
+        void Highlight(unsigned int FrameBufferID, GLenum Mode);
+        void RegisterForHighlighting(MaterialComponent& in, unsigned int index);
+        void HighlightBasicPrimitives(MaterialComponent& in, unsigned int EntityId, unsigned int FrameBufferID);
+
+    private:
+        void CheckUnniformLocation(Shader& in, MaterialComponent& inside);
+        void CheckUniformLoc(RenderComponent& sprite, Shader& in, unsigned int id, unsigned int framebufferID);
+        void Highlight(unsigned int FrameBufferID, unsigned int ModelID, GLenum mode);
     };
 }
 

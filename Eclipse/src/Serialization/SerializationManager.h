@@ -88,7 +88,7 @@ namespace Eclipse
 		template <>
 		void SerializeComponent<RigidBodyComponent>(const RigidBodyComponent& data)
 		{
-			sz.StartElement("RenderComponent");
+			sz.StartElement("RigidBodyComponent");
 			SerializeData(
 				"IsStatic", data._Static,
 				"IsKinematic", data._Kinematic,
@@ -106,16 +106,19 @@ namespace Eclipse
 		template <>
 		void SerializeComponent<MaterialComponent>(const MaterialComponent& data)
 		{
-			sz.StartElement("RenderComponent");
+			sz.StartElement("MaterialComponent");
 			SerializeData(
 				"ID", data.ID,
 				"Ambient", data.ambient,
 				"Diffuse", data.diffuse,
 				"Specular", data.specular,
 				"Shininess", data.shininess,
-				"Color", data.Color,
-				"HasTexture", data.hasTexture,
-				"IsVisible", data.visible
+				"MaximumShininess", data.MaximumShininess,
+				"RegisterForHighlight", data.RegisterForHighlight,
+				"Highlight", data.Highlight,
+				"Thickness", data.Thickness,
+				"HighlightColor", data.HighlightColour,
+				"ScaleUp", data.ScaleUp
 			);
 			sz.CloseElement();
 		}
@@ -123,7 +126,7 @@ namespace Eclipse
 		template <>
 		void SerializeComponent<CameraComponent>(const CameraComponent& data)
 		{
-			sz.StartElement("RenderComponent");
+			sz.StartElement("CameraComponent");
 			SerializeData(
 				"EyeAlpha", data.eyeAlpha,
 				"EyeBeta", data.eyeBeta,

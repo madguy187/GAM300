@@ -5,20 +5,7 @@ void Eclipse::DebugRenderingManager::CheckUniformLoc(Graphics::shaderIt _shdrpgm
 {
     GLint uniform_var_loc1 = _shdrpgm->second.GetLocation("uModelToNDC");
     GLint uniform_var_loc2 = _shdrpgm->second.GetLocation("uColor");
-    //GLint uniform_var_loc3 = _shdrpgm->second.GetLocation("uTextureCheck");
-    //GLint uniform_var_loc4 = _shdrpgm->second.GetLocation("TextureIndex");
-    //GLint uniform_var_loc5 = _shdrpgm->second.GetLocation("TextureDimensions");
-    //GLint uniform_var_loc6 = _shdrpgm->second.GetLocation("LightTimer");
-    //GLint uniform_var_loc7 = _shdrpgm->second.GetLocation("ShakeTimer");
-    //GLint uniform_var_loc8 = _shdrpgm->second.GetLocation("ShakeScreen");
-    GLuint tex_loc = _shdrpgm->second.GetLocation("uTex2d");
-    GLuint TEST = _shdrpgm->second.GetLocation("TEST");
-
-    if (TEST >= 0)
-    {
-        glUniform1i(TEST, 0);
-    }
-
+    
     if (uniform_var_loc1 >= 0)
     {
         glm::mat4 mModelNDC = _camera.projMtx * _camera.viewMtx * glm::mat4(1.0f);
@@ -28,26 +15,6 @@ void Eclipse::DebugRenderingManager::CheckUniformLoc(Graphics::shaderIt _shdrpgm
     if (uniform_var_loc2 >= 0)
     {
         glUniform4f(uniform_var_loc2, 0.0f, 0.0f, 0.0f, 1.0f);
-    }
-
-    //if (uniform_var_loc3 >= 0)
-    //{
-    //    glUniform1i(uniform_var_loc3, false);
-    //}
-
-    //if (uniform_var_loc4 >= 0)
-    //{
-    //    glUniform2f(uniform_var_loc4, 0.0f, 0.0f);
-    //}
-
-    //if (uniform_var_loc5 >= 0)
-    //{
-    //    glUniform2f(uniform_var_loc5, 0, 0);
-    //}
-
-    if (tex_loc >= 0)
-    {
-        glUniform1i(tex_loc, 1);
     }
 }
 
@@ -68,7 +35,7 @@ void Eclipse::DebugRenderingManager::DrawFrustum(unsigned int ID, unsigned int f
     auto& lineArr = std::any_cast<Frustum>(debugShapes[ID]).GetLineSegments();
     auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 
-    auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
+    auto shdrpgm = Graphics::shaderpgms.find("FrustrumShader");
 
     for (unsigned int i = 0; i < lineArr.size(); ++i)
     {

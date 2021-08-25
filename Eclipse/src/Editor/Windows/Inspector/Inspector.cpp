@@ -70,6 +70,12 @@ namespace Eclipse
 
 				if (ECGui::ButtonBool("Set Name"))
 					entCom.Name = entNameInput;
+
+				/*static char test[256];
+				static std::string testtest;
+				ECGui::DrawInputTextHintWidget("test", "testtest", test, 256);
+				engine->editorManager->Item_.GenericPayloadTarget("TESTING", testtest, "SUCCESSFUL");
+				strcpy(test, testtest.c_str());*/
 			}
 		}
 

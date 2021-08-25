@@ -6,7 +6,7 @@ namespace Eclipse
 {
 	struct SnapValueSettings
 	{
-		float mPosSnapValue{ 1.f };
+		float mPosSnapValue{ 5.f };
 		float mScaleSnapValue{ 1.f };
 		float mRotSnapValue{ 45.f };
 	};

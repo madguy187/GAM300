@@ -2,6 +2,7 @@
 
 #include "Editor/Windows/Interface/ECGuiWindow.h"
 #include "Editor/Menu/MenuBar.h"
+#include <Editor/Utilities//DragAndDrop.h>
 #include "Serialization/SerializationManager.h"
 
 namespace Eclipse
@@ -46,6 +47,7 @@ namespace Eclipse
 		std::map<Entity, EntityType> EntityToTypeMap_;
 		std::map<const char*, const char*> DataComponentFilter_;
 		size_t GEHIndex_{ 0 };
+		DragAndDrop Item_;
 	private:
 		std::vector<std::unique_ptr<ECGuiWindow>> Windows_;
 		MenuBar MenuBar_;

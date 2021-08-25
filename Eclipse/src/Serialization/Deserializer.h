@@ -6,23 +6,27 @@
 #include <string>
 #include <type_traits>
 
-class Deserializer
+
+namespace Eclipse
 {
-	TiXmlDocument _doc;
-	TiXmlElement* _currElement;
-	std::filesystem::path _path;
-	bool hasFile;
+	class Deserializer
+	{
+		TiXmlDocument _doc;
+		TiXmlElement* _currElement;
+		std::filesystem::path _path;
+		bool hasFile;
 
-public:
-	Deserializer();
+	public:
+		Deserializer();
 
-	bool StartElement(const std::string& ele_name, bool isMultiple = false, size_t counter = 0);
+		bool StartElement(const std::string& ele_name, bool isMultiple = false, size_t counter = 0);
 
-	void CloseElement();
+		void CloseElement();
 
-	void IterateChildElement();
+		void IterateChildrenOfElement();
 
-	bool LoadXML(const std::string& savePath);
+		bool LoadXML(const std::string& savePath);
 
-	~Deserializer();
-};
+		~Deserializer();
+	};
+}

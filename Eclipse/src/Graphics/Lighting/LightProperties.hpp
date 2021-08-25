@@ -1,7 +1,7 @@
 #include "Graphics/Lighting/LightManager.h"
 
 template <typename TypeOfLight, typename TYPE>
-void Lights::SetColor(TypeOfLight& OBJ, TYPE val)
+void LightManager::SetColor(TypeOfLight& OBJ, TYPE val)
 {
     if (constexpr(has_Color<TypeOfLight>::value == true))
     {
@@ -12,7 +12,7 @@ void Lights::SetColor(TypeOfLight& OBJ, TYPE val)
 }
 
 template <typename TypeOfLight>
-void Lights::SetColor(TypeOfLight& OBJ, ECVec4 in)
+void LightManager::SetColor(TypeOfLight& OBJ, ECVec4 in)
 {
     if (constexpr(has_Color<TypeOfLight>::value == true))
     {
@@ -23,7 +23,7 @@ void Lights::SetColor(TypeOfLight& OBJ, ECVec4 in)
 }
 
 template <typename TypeOfLight>
-void Lights::SetLightColor(TypeOfLight& OBJ, ECVec4 in)
+void LightManager::SetLightColor(TypeOfLight& OBJ, ECVec4 in)
 {
     if (constexpr(has_LightColor<TypeOfLight>::value == true))
     {
@@ -34,7 +34,7 @@ void Lights::SetLightColor(TypeOfLight& OBJ, ECVec4 in)
 }
 
 template<typename TypeOfLight>
-inline void Eclipse::Lights::SetAmbient(TypeOfLight& OBJ, ECVec3 in)
+inline void Eclipse::LightManager::SetAmbient(TypeOfLight& OBJ, ECVec3 in)
 {
     if (constexpr(has_LightColor<TypeOfLight>::value == true))
     {
@@ -45,12 +45,43 @@ inline void Eclipse::Lights::SetAmbient(TypeOfLight& OBJ, ECVec3 in)
 }
 
 template<typename TypeOfLight>
-inline void Eclipse::Lights::SetDiffuse(TypeOfLight& OBJ, ECVec3 in)
+inline void Eclipse::LightManager::SetDiffuse(TypeOfLight& OBJ, ECVec3 in)
 {
     if (constexpr(has_LightColor<TypeOfLight>::value == true))
     {
         OBJ.diffuse.setX(in.x);
         OBJ.diffuse.setY(in.y);
         OBJ.diffuse.setZ(in.z);
+    }
+}
+
+template<typename TypeOfLight>
+inline void Eclipse::LightManager::SetAttenuation(TypeOfLight& OBJ, unsigned int in)
+{
+    if (constexpr(has_attenuation<TypeOfLight>::value == true))
+    {
+        OBJ.constant = AttenuationLevels[in].second.Constant_;
+        OBJ.linear = AttenuationLevels[in].second.Linear_;
+        OBJ.quadratic = AttenuationLevels[in].second.Quadratic_;
+    }
+}
+
+template<typename TypeOfLight>
+inline void Eclipse::LightManager::SetSpecular(TypeOfLight& OBJ, ECVec3 in)
+{
+    if (constexpr(has_Specular<TypeOfLight>::value == true))
+    {
+        OBJ.specular.setX(in.x);
+        OBJ.specular.setY(in.y);
+        OBJ.specular.setZ(in.z);
+    }
+}
+
+template<typename TypeOfLight>
+inline void Eclipse::LightManager::SetBlinnPhong(TypeOfLight& OBJ, bool& in)
+{
+    if (constexpr(has_EnableBlinnPhong<TypeOfLight>::value == true))
+    {
+        OBJ.specular.EnableBlinnPhong = in;
     }
 }

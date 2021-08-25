@@ -104,7 +104,7 @@ namespace Eclipse
 		{
 			if (dsz.StartElement("Entities"))
 			{
-				dsz.IterateChildElement();
+				dsz.IterateChildrenOfElement();
 			}
 			dsz.CloseElement();
 		}

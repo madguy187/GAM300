@@ -17,7 +17,7 @@ out vec3 normal_from_vtxShader;
 void main() 
 {
 		gl_Position =  uModelToNDC * vec4(vVertexPosition, 1.0f);
-
+		 
 		crntPos = vec3(model * vec4(vVertexPosition, 1.0));
 
 		normal_from_vtxShader = mat3(transpose(inverse(model))) * normal_from_vtxbuffer;  
