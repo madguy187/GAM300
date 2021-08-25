@@ -24,7 +24,7 @@ namespace Eclipse
         unsigned int AssimpModelCount();
         void LoadAllModels();
         void CreateModel(std::string name, std::string path, std::string filename);
-        void Draw(unsigned int FrameBufferID, GLenum mode , AABB* box);
+        void Draw(unsigned int FrameBufferID, GLenum mode , AABB* box ,  CameraComponent::CameraType _camType);
         void HighlihtDraw(unsigned int FrameBufferID, GLenum Mode);
         void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID , AABB* box);
         void DeleteItem(unsigned int index, AssimpModel* model_ptr);

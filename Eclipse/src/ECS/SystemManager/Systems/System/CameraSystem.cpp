@@ -7,6 +7,11 @@ void Eclipse::CameraSystem::Init()
 	engine->gCamera.CreateEditorCamera();
 	engine->gCamera.SetCameraSpeed(5.0f);
 
+	engine->gCamera.CreateViewCamera(CameraComponent::CameraType::TopView_Camera);
+	engine->gCamera.CreateViewCamera(CameraComponent::CameraType::BottomView_Camera);
+	engine->gCamera.CreateViewCamera(CameraComponent::CameraType::LeftView_Camera);
+	engine->gCamera.CreateViewCamera(CameraComponent::CameraType::RightView_camera);
+
 	//Temporary test code to create an initial game camera, remove later
 	engine->gCamera.CreateGameCamera();
 	auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetGameCameraID());
@@ -28,6 +33,12 @@ void Eclipse::CameraSystem::Update()
 		{
 			//engine->gCamera.CheckCameraInput();
 			engine->gCamera.UpdateEditorCamera(_transform);
+		}
+		else if ((_camera.camType != CameraComponent::CameraType::Editor_Camera) &&
+				(_camera.camType != CameraComponent::CameraType::Game_Camera))
+		{
+			engine->gCamera.CheckViewCameraInput();
+			engine->gCamera.UpdateViewCamera(_camera, _transform);
 		}
 
 		engine->gCamera.ComputeViewDirection(_camera, _transform);

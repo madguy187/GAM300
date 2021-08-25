@@ -70,3 +70,16 @@ enum class TypeToHighlight
     MODE_BASIC = 2,
     MAXCOUNT
 };
+enum class PayloadSourceType
+{
+	PST_TEXT,
+	PST_IMAGE,
+	PST_UNASSIGNED
+};
+
+enum class PayloadTargetType
+{
+	PTT_WIDGET,
+	PTT_WINDOW,
+	PTT_UNASSIGNED
+};

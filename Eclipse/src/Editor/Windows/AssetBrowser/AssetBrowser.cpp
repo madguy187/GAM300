@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "AssetBrowser.h"
-
 namespace Eclipse
 {
 	AssetBrowserWindow::AssetBrowserWindow()
@@ -69,11 +68,16 @@ namespace Eclipse
 			if (!searchFolderMode)
 			{
 				LeftFolders();
+
+				ResetTreeNodeOpen = false;
 			}
 			else
 			{
+				ResetTreeNodeOpen = true;
 				
+				LeftSearchedFolders();
 			}
+			
 		}
 
 	}
@@ -82,12 +86,18 @@ namespace Eclipse
 	{
 		for (auto& dirEntry : std::filesystem::directory_iterator(AllDir))
 		{
+			if (ResetTreeNodeOpen)
+			{
+				ImGui::SetNextItemOpen(false);
+			}
+			
 			const auto& path = dirEntry.path();
-
+			
 			std::string fileNameString = path.filename().string();
-
+			
 			if (dirEntry.is_directory())
 			{
+				
 				if (ECGui::BeginTreeNode(fileNameString.c_str()))
 				{
 					//setting the subDir to Current Dir
@@ -103,6 +113,9 @@ namespace Eclipse
 					{
 						NextDir = AllDir;
 					}
+					
+					engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh);
+					
 					for (auto& secondEntry : std::filesystem::recursive_directory_iterator(NextDir))
 					{
 						if (secondEntry.is_directory())
@@ -110,7 +123,7 @@ namespace Eclipse
 							const auto& path2 = secondEntry.path();
 
 							std::string fileNameString2 = path2.filename().string();
-
+							
 							if (ECGui::BeginTreeNode(fileNameString2.c_str()))
 							{
 								if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0))
@@ -129,12 +142,14 @@ namespace Eclipse
 
 								ECGui::EndTreeNode();
 							}
-
+							engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), secondEntry, refresh);
 						}
 					}
 					ECGui::EndTreeNode();
 				}
-
+				
+				engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh);
+				
 				if (!jumpDir && ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0))
 				{
 					NextPath(CurrentDir, path);
@@ -144,6 +159,43 @@ namespace Eclipse
 				{
 					jumpDir = false;
 				}
+			}
+
+		}
+	}
+
+	void AssetBrowserWindow::LeftSearchedFolders()
+	{
+		for (auto& pair : FolderMap)
+		{
+			ImGui::SetNextItemOpen(true);
+
+			if (ECGui::BeginTreeNode((pair.first.filename().string().c_str())))
+			{
+				for (auto& pair2 : pair.second)
+				{
+					std::string temp = LowerCase(pair2.filename().string().c_str()).c_str();
+					if (!BuffIsEmpty(searchFolderBuffer) && temp.find(searchFolderBuffer) != std::string::npos)
+					{
+						//ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+						if (ImGui::TreeNode(temp.c_str()))
+						{
+							if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0))
+							{
+								NextDir = pair2;
+
+								CurrentDir = NextDir;
+
+								if (!exists(CurrentDir))
+								{
+									CurrentDir = AllDir;
+								}
+							}
+							ECGui::EndTreeNode();
+						}
+					}
+				}
+				ECGui::EndTreeNode();
 			}
 
 		}
@@ -283,13 +335,20 @@ namespace Eclipse
 			auto relativePath = std::filesystem::relative(path, AssetPath);
 
 			std::string fileNameString = relativePath.filename().string();
-
+			
+			ImGui::PushID(fileNameString.c_str());
+			
 			RenderComponent icon = dirEntry.is_directory() ? FolderIcon : sprite;
 
 			ImGui::ImageButton((void*)icon.textureRef->second.GetHandle(),
 				buttonSize,
 				{ 1,0 },
 				{ 2,1 });
+			//drag drop
+			engine->editorManager->Item_.GenericPayloadSource("ITEM", relativePath.string());
+			engine->editorManager->Item_.GenericPayloadSource("TESTING", relativePath.string());
+			
+			engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh);
 
 			if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
 			{
@@ -322,6 +381,7 @@ namespace Eclipse
 			}
 
 			ImGui::NextColumn();
+			ImGui::PopID();
 		}
 	}
 
@@ -366,6 +426,26 @@ namespace Eclipse
 
 	}
 
+	bool AssetBrowserWindow::ExistInVector(std::string Path, std::vector<std::string> container)
+	{
+		if (std::find(container.begin(), container.end(), Path) != container.end())
+		{
+			return true;
+		}
+		return false;
+	}
+
+	void AssetBrowserWindow::GetIndex(std::vector<std::string> container, std::string key, int& pos)
+	{
+		auto it = std::find(container.begin(), container.end(), key);
+
+		// If element was found
+		if (it != container.end())
+		{
+			pos = it - container.begin();
+		}
+	}
+
 	void AssetBrowserWindow::ScanAll()
 	{
 		std::vector<std::filesystem::path> tempSubDirFolders;
@@ -397,10 +477,11 @@ namespace Eclipse
 					{
 						tempSubDirFolders.push_back(secondEntry);
 					}
-					
-					subDirItems.push_back(secondEntry.path().filename().string());
-					
-					subDirItemsPath.push_back(secondEntry.path().string());
+
+					if (!ExistInVector(secondEntry.path().string(), subDirItemsPath))
+					{
+						subDirItemsPath.push_back(secondEntry.path().string());
+					}
 					
 					tempSubDirItems.push_back(secondEntry);
 				}
@@ -412,6 +493,9 @@ namespace Eclipse
 			
 			AddToPathMap(dirEntry, tempSubDirItems);
 
+			tempSubDirFolders.clear();
+			
+			tempSubDirItems.clear();
 		}
 
 	}
@@ -488,10 +572,7 @@ namespace Eclipse
 
 	void AssetBrowserWindow::SearchInBaseFolder()
 	{
-		// i get the vectors from all the path map
-		// then i loop through the final vector	
-		MainSearchLogic(subDirItemsPath);
-		
+		MainSearchLogic(subDirItemsPath);	
 	}
 
 	void AssetBrowserWindow::SearchInFolders()
@@ -574,21 +655,20 @@ namespace Eclipse
 
 	void AssetBrowserWindow::MainSearchLogic(std::vector<std::string> subDirItemsPath)
 	{
-		int index = 0;
-
+		
 		//path that can be used in the future to get the item
 		std::filesystem::path tempPath;
 		
 		for (auto const& pair2 : subDirItemsPath)
 		{
-			std::string nameString = LowerCase(subDirItems.at(index).c_str());
-
 			tempPath = pair2;
+			
 			if (!std::filesystem::is_directory(tempPath))
 			{
-				if (!BuffIsEmpty(searchItemBuffer)&& nameString.find(searchItemsLowerCase) != std::string::npos)
+				
+				if (!BuffIsEmpty(searchItemBuffer)&& tempPath.string().find(searchItemsLowerCase) != std::string::npos)
 				{
-					RenderComponent icon = std::filesystem::is_directory(pair2) ? FolderIcon : sprite;
+					RenderComponent icon = std::filesystem::is_directory(tempPath) ? FolderIcon : sprite;
 
 					ImGui::ImageButton((void*)icon.textureRef->second.GetHandle(),
 						buttonSize,
@@ -607,14 +687,14 @@ namespace Eclipse
 
 					ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
-					ImGui::TextWrapped(nameString.c_str());
+					ImGui::TextWrapped(tempPath.filename().string().c_str());
 
 					draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(255, 255, 0, 255));
 
 					ImGui::NextColumn();
 				}
 			}
-			index++;
+			
 		}
 	}
 

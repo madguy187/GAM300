@@ -515,7 +515,11 @@
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem.h" />
     <ClInclude Include="src\Graphics\Grid\bounds.h" />
     <ClInclude Include="src\Graphics\Grid\Box.h" />
+    <ClInclude Include="src\Editor\Windows\Log\ConsoleData.h" />
+    <ClInclude Include="src\Graphics\Picker\PickingManager.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
     <ClInclude Include="src\Editor\Windows\SwitchViews\SwitchViews.h" />
+    <ClInclude Include="src\Editor\Utilities\DragAndDrop.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -775,6 +779,8 @@
     <None Include="src\Assets\Shaders\Shaders.json" />
     <None Include="src\Assets\Shaders\textFrag.frag" />
     <None Include="src\Assets\Shaders\textVtx.vert" />
+    <ClCompile Include="src\Graphics\Picker\PickingManager.cpp" />
     <ClCompile Include="src\Editor\Windows\SwitchViews\SwitchViews.cpp" />
+    <ClCompile Include="src\Editor\Utilities\DragAndDrop.cpp" />
   </ItemGroup>
 </Project>

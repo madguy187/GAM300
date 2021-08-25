@@ -44,7 +44,7 @@ namespace Eclipse
         AssimpModel(bool noTex = false);
 
         void LoadAssimpModel(std::string path);
-        void Render(Shader& shader, GLenum mode, unsigned int FrameBufferID);
+        void Render(Shader& shader, GLenum mode, unsigned int FrameBufferID, CameraComponent::CameraType _camType);
         void Cleanup();
         void SetName(std::string name);
         std::string GetName();

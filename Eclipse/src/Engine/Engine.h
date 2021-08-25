@@ -8,23 +8,25 @@
 #include "Mono/Manager/MonoManager.h"
 #include "AssimpModel/AssimpManager.h"
 #include "Graphics/Material/MaterialManager.h"
+#include "Graphics/Picker/PickingManager.h"
 
 namespace Eclipse
 {
-    class Engine
-    {
-    public:
-        World world;
-        CameraManager gCamera;
-        GraphicsManager GraphicsManager;
-        Clock Game_Clock;
-        DebugRenderingManager gDebugManager;
-        std::unique_ptr<EditorManager> editorManager;
-        LightManager LightManager;
-        MonoManager mono;
-        AssimpModelManager AssimpManager;
+	class Engine
+	{
+	public:
+		World world;
+		CameraManager gCamera;
+		GraphicsManager GraphicsManager;
+		Clock Game_Clock;
+		DebugRenderingManager gDebugManager;
+		std::unique_ptr<EditorManager> editorManager;
+		LightManager LightManager;
+		MonoManager mono;
+	    AssimpModelManager AssimpManager;
+		PickingManager gPicker;
         MaterialManager MaterialManager{ false , false };
-
+        
         void Init();
         void Run();
 
