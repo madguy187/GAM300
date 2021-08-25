@@ -3,7 +3,7 @@
 #include "ImGui/Vendor/IconsFontAwesome.h"
 #include "Editor/Windows/Inspector/Inspector.h"
 #include "Editor/Windows/Hierarchy/Hierarchy.h"
-#include "Editor/Windows/Scene/Scene.h"
+#include "Editor/Windows/Scene/SceneView.h"
 #include "Editor/Windows/GameView/GameView.h"
 #include "Editor/Windows/Debug/Debug.h"
 #include "ECS/ComponentManager/Components/EntityComponent.h"

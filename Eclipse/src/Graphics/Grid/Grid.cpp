@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Grid.h"
-#include "Editor/Windows/Scene/Scene.h"
+#include "Editor/Windows/Scene/SceneView.h"
 #include "ECS/ComponentManager/Components/EntityComponent.h"
 
 namespace Eclipse
@@ -212,15 +212,13 @@ namespace Eclipse
 			Tile NewTile(GridScale, false);
 			GridArray.push_back(NewTile);
 		}
+
 		std::cout << "Grid Size " << GridArray.size() << std::endl;
 
 		for (int y = 0; y < GridSize; y++)
 		{
-			for (int z = 0; z < 9; z+=3)
+			for (int z = 0; z < GridSize; z ++)
 			{
-				//unsigned int CounterZ = z;
-				//CounterZ /= 3;
-
 				for (int x = 0; x < GridSize; x++)
 				{
 					unsigned int PreviousIndex = x;
@@ -229,9 +227,9 @@ namespace Eclipse
 					if (GridArray[x].FirstTile == true)
 						continue;
 
-					GridArray[z * 3 + x].CenterPoint.setX(GridArray[PreviousIndex].CenterPoint.getX() + GridScale);
-					GridArray[z * 3 + x].CenterPoint.setY(GridArray[PreviousIndex].CenterPoint.getY());
-					GridArray[z * 3 + x].CenterPoint.setZ(GridArray[PreviousIndex].CenterPoint.getZ()); // -(CounterZ * GridScale) );
+					GridArray[ (z * 3) + x + y].CenterPoint.setX(GridArray[PreviousIndex].CenterPoint.getX() + GridScale);
+					GridArray[ (z * 3) + x + y].CenterPoint.setY(GridArray[PreviousIndex].CenterPoint.getY() );
+					GridArray[ (z * 3) + x + y].CenterPoint.setZ(GridArray[PreviousIndex].CenterPoint.getZ() );
 				}
 			}
 		}
@@ -239,7 +237,10 @@ namespace Eclipse
 
 	void Grid::CalculateGridSettings()
 	{
+
+		auto& CurrentGridPosition = engine->world.GetComponent<TransformComponent>(GridID);
 		auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
+
 		float SnapValue = scene->GetSnapSettings().mPosSnapValue;
 		GridScale = (SnapValue);
 
@@ -250,13 +251,18 @@ namespace Eclipse
 		XYZ_Length.setY(Length);
 		XYZ_Length.setZ(Length);
 
-		Maximum.setX((XYZ_Length.getX() / 2));
-		Maximum.setY((XYZ_Length.getY()));
-		Maximum.setZ((XYZ_Length.getZ() / 2));
+		ECVec3 Half;
+		Half.setX(XYZ_Length.getX() / 2.0f);
+		Half.setY(XYZ_Length.getY() / 2.0f);
+		Half.setZ( XYZ_Length.getZ() / 2.0f);
 
-		Minimum.setX(-(XYZ_Length.getX() / 2));
-		Minimum.setY(0.0f);
-		Minimum.setZ(-(XYZ_Length.getZ() / 2));
+		Minimum.setX(CurrentGridPosition.position.getX() - Half.getX());
+		Minimum.setY(CurrentGridPosition.position.getY());
+		Minimum.setZ(CurrentGridPosition.position.getZ() - Half.getZ());
+
+		Maximum.setX(CurrentGridPosition.position.getX() + Half.getX());
+		Maximum.setY(CurrentGridPosition.position.getY() + XYZ_Length.getY());
+		Maximum.setZ(CurrentGridPosition.position.getZ() + Half.getZ());
 
 		CalculateStartingPoint(Minimum, Maximum);
 	}
@@ -265,7 +271,7 @@ namespace Eclipse
 	{
 		StartingPosition.setX((MinimumIn.getX() + (MinimumIn.getX() + GridScale)) / 2);
 		StartingPosition.setY((MinimumIn.getY() + (MinimumIn.getY() + GridScale)) / 2);
-		StartingPosition.setZ((Maximum.getZ() + (Maximum.getZ() - GridScale)) / 2);
+		StartingPosition.setZ((Maximum.getZ()   + (Maximum.getZ()   - GridScale)) / 2);
 	}
 
 	void Grid::DrawGrid(unsigned int FrameBufferID)
