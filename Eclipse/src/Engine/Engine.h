@@ -25,7 +25,7 @@ namespace Eclipse
 		MonoManager mono;
 	    AssimpModelManager AssimpManager;
 		PickingManager gPicker;
-        MaterialManager MaterialManager{ false , false };
+        MaterialManager MaterialManager{ true , true };
         
         void Init();
         void Run();
