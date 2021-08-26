@@ -34,12 +34,6 @@ namespace Eclipse
 
 		ImGui::SetColumnOffset(1, 150);
 
-		if (refresh == true)
-		{
-			ScanAll();
-
-			refresh = false;
-		}
 		//left side
 		ECGui::DrawChildWindow<void()>({ "##folders_common" }, std::bind(&AssetBrowserWindow::LeftFolderHierarchy, this));
 
@@ -47,6 +41,13 @@ namespace Eclipse
 
 		//right side
 		ECGui::DrawChildWindow<void()>({ "##directory_structure", ImVec2(0, ImGui::GetWindowHeight() - 65) }, std::bind(&AssetBrowserWindow::RightFoldersAndItems, this));
+
+		if (refresh == true)
+		{
+			ScanAll();
+			EDITOR_LOG_INFO("Asset Browser Refreshed!");
+			refresh = false;
+		}
 	}
 	template <typename T>
 	void AssetBrowserWindow::CreateTreeNode(std::string name, std::function<T> function)
@@ -148,7 +149,7 @@ namespace Eclipse
 					ECGui::EndTreeNode();
 				}
 				
-				engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh , pathMap);
+				engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap);
 				
 				if (!jumpDir && /*ImGui::IsMouseDoubleClicked(0) &&*/ ImGui::IsItemClicked(0))
 				{
@@ -523,11 +524,6 @@ namespace Eclipse
 		if (ImGui::Button("Refresh", { 70,20 }))
 		{
 			refresh = true;
-			EDITOR_LOG_INFO("Asset Browser Refreshed!");
-		}
-		else
-		{
-			refresh = false;
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Clear", { 70,20 }))
