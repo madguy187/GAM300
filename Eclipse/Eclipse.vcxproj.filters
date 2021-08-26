@@ -91,6 +91,9 @@
     <Filter Include="Graphics\FrameBuffer">
       <UniqueIdentifier>{2AC125F8-1650-AFC1-BF6E-C3BCABDCBF67}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics\Grid">
+      <UniqueIdentifier>{4B128797-B7D2-02CE-800D-4C4BEC8C47AA}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Graphics\InputHandler">
       <UniqueIdentifier>{73B368D2-DF1F-24CD-A813-BC2A143F4635}</UniqueIdentifier>
     </Filter>
@@ -120,6 +123,9 @@
     </Filter>
     <Filter Include="Graphics\RendererAPI">
       <UniqueIdentifier>{162DD20E-02BC-5BD8-ABDA-6FD397486C7E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Textures">
+      <UniqueIdentifier>{A9FD1089-1514-0F1F-5E8B-9A40CAE0DFA6}</UniqueIdentifier>
     </Filter>
     <Filter Include="ImGui">
       <UniqueIdentifier>{C0FF640D-2C14-8DBE-F595-301E616989EF}</UniqueIdentifier>
@@ -298,6 +304,9 @@
     <ClInclude Include="src\Graphics\FrameBuffer\WindowConstraint.h">
       <Filter>Graphics\FrameBuffer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\Grid\Grid.h">
+      <Filter>Graphics\Grid</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h">
       <Filter>Graphics\InputHandler</Filter>
     </ClInclude>
@@ -409,8 +418,8 @@
     <ClInclude Include="src\Graphics\RendererAPI\Shader.h">
       <Filter>Graphics\RendererAPI</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\RendererAPI\Texture.h">
-      <Filter>Graphics\RendererAPI</Filter>
+    <ClInclude Include="src\Graphics\Textures\Texture.h">
+      <Filter>Graphics\Textures</Filter>
     </ClInclude>
     <ClInclude Include="src\ImGui\ImGuiAPI\ImGuiAPI.h">
       <Filter>ImGui\ImGuiAPI</Filter>
@@ -503,6 +512,9 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem.h" />
+    <ClInclude Include="src\Graphics\Grid\bounds.h" />
+    <ClInclude Include="src\Graphics\Grid\Box.h" />
     <ClInclude Include="src\Editor\Windows\Log\ConsoleData.h" />
     <ClInclude Include="src\Graphics\Picker\PickingManager.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
@@ -590,6 +602,9 @@
     </ClCompile>
     <ClCompile Include="src\Graphics\FrameBuffer\WindowConstraint.cpp">
       <Filter>Graphics\FrameBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Grid\Grid.cpp">
+      <Filter>Graphics\Grid</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp">
       <Filter>Graphics\InputHandler</Filter>
@@ -684,11 +699,11 @@
     <ClCompile Include="src\Graphics\RendererAPI\Shader.cpp">
       <Filter>Graphics\RendererAPI</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\RendererAPI\Texture.cpp">
-      <Filter>Graphics\RendererAPI</Filter>
+    <ClCompile Include="src\Graphics\Textures\Texture.cpp">
+      <Filter>Graphics\Textures</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\RendererAPI\stb_image.cpp">
-      <Filter>Graphics\RendererAPI</Filter>
+    <ClCompile Include="src\Graphics\Textures\stb_image.cpp">
+      <Filter>Graphics\Textures</Filter>
     </ClCompile>
     <ClCompile Include="src\ImGui\ImGuiAPI\ImGuiAPI.cpp">
       <Filter>ImGui\ImGuiAPI</Filter>
@@ -742,6 +757,28 @@
       <Filter>Time</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem.cpp" />
+    <ClCompile Include="src\Graphics\Grid\bounds.cpp" />
+    <ClCompile Include="src\Graphics\Grid\Box.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Assets\Shaders\AABB.frag" />
+    <None Include="src\Assets\Shaders\AABB.vert" />
+    <None Include="src\Assets\Shaders\AssimpShader3D.frag" />
+    <None Include="src\Assets\Shaders\AssimpShader3D.vert" />
+    <None Include="src\Assets\Shaders\BasicFrag.frag" />
+    <None Include="src\Assets\Shaders\BasicVtx.vert" />
+    <None Include="src\Assets\Shaders\DebugFrag.frag" />
+    <None Include="src\Assets\Shaders\DebugVtx.vert" />
+    <None Include="src\Assets\Shaders\light.frag" />
+    <None Include="src\Assets\Shaders\light.vert" />
+    <None Include="src\Assets\Shaders\LightFrag.frag" />
+    <None Include="src\Assets\Shaders\LightVtx.vert" />
+    <None Include="src\Assets\Shaders\ParticlesFrag.frag" />
+    <None Include="src\Assets\Shaders\ParticlesVtx.vert" />
+    <None Include="src\Assets\Shaders\Shaders.json" />
+    <None Include="src\Assets\Shaders\textFrag.frag" />
+    <None Include="src\Assets\Shaders\textVtx.vert" />
     <ClCompile Include="src\Graphics\Picker\PickingManager.cpp" />
     <ClCompile Include="src\Editor\Windows\SwitchViews\SwitchViews.cpp" />
     <ClCompile Include="src\Editor\Utilities\DragAndDrop.cpp" />
