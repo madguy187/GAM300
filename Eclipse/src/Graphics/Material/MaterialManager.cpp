@@ -266,7 +266,7 @@ namespace Eclipse
 			model = glm::rotate(model, glm::radians(trans.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
 			model = glm::rotate(model, glm::radians(trans.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
 			model = glm::rotate(model, glm::radians(trans.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-			model = glm::scale(model, { trans.scale.getX() * outline.ScaleUp , trans.scale.getX() * outline.ScaleUp, trans.scale.getZ() * outline.ScaleUp });
+			model = glm::scale(model, { trans.scale.getX() * outline.ScaleUp , trans.scale.getY() * outline.ScaleUp, trans.scale.getZ() * outline.ScaleUp });
 			mModelNDC = camera.projMtx * camera.viewMtx * model;
 			glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(mModelNDC));
 		}

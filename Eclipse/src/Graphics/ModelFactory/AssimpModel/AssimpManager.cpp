@@ -21,7 +21,9 @@ namespace Eclipse
 		Transform.scale.setX(5);
 		Transform.scale.setY(5);
 		Transform.scale.setZ(5);
-		Transform.rotation.setX(270);
+
+		// intermittent fix did not work
+		//Transform.rotation.setX(-90);
 		// ----------------------------------------------------------------------------------------------------------
 
 
@@ -98,7 +100,7 @@ namespace Eclipse
 
 	void AssimpModelManager::HighlihtDraw(unsigned int FrameBufferID, GLenum Mode)
 	{
-		if (1) // if highlight is true
+		if (0) // if highlight is true
 		{
 			auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 
@@ -141,8 +143,6 @@ namespace Eclipse
 		GLint uModelToNDC_ = _shdrpgm.GetLocation("uModelToNDC");
 		GLuint model_ = _shdrpgm.GetLocation("model");
 		GLuint dsa = _shdrpgm.GetLocation("noTex");
-
-		glm::vec3 NewScale = { Transform.scale.getX() * 0.5 ,Transform.scale.getY() * 0.5 , Transform.scale.getZ() * 0.5 };
 
 		if (uModelToNDC_ >= 0)
 		{
@@ -231,8 +231,8 @@ namespace Eclipse
 			Transform.scale.setY(10);
 			Transform.scale.setZ(10);
 
-			// Sit properly
-			Transform.rotation.setX(270);
+			// Sit properly ( intermittent fix not working )
+			//Transform.rotation.setX(270);
 		}
 	}
 

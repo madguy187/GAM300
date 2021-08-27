@@ -185,7 +185,9 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     // SpotLight
     case 14:
     {
-        engine->AssimpManager.CreateModel("White Dog", "dog", "scene.gltf");
+        // Just to test create models , will revert back to spotlights
+        engine->AssimpManager.CreateModel("White Dog", "testhouse", "scene.gltf");
+        
         //engine->LightManager.CreateLights(Eclipse::TypesOfLights::SPOTLIGHT, ID);
     }
     break;

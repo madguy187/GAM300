@@ -13,11 +13,11 @@ namespace Eclipse
         // Materials Update ===============================
         for (auto const& entity : mEntities)
         {
-            MaterialComponent& material = engine->world.GetComponent<MaterialComponent>(entity);\
-
+            MaterialComponent& material = engine->world.GetComponent<MaterialComponent>(entity);
+        
             // Update Shininess ===============================
             engine->MaterialManager.UpdateShininess(material);
-
+        
             // HighLight Basic Models Start ===============================
             engine->MaterialManager.HighlightBasicPrimitives(material, entity, engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
             // HighLight Basic Models End ===============================
