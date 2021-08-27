@@ -22,11 +22,11 @@ namespace Eclipse
         float shininess = 0.25f;
         float MaximumShininess = 128.0f;
         bool RegisterForHighlight = false;
-        bool Highlight = false;
+        bool Highlight = true;
         ModelType Modeltype = ModelType::None;
 
         // Check Highlighting
-        float Thickness = 0.5f;
+        float Thickness = 0.05f;
 
         // Only for 3D Primitives
         float ScaleUp = 1.05f;

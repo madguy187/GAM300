@@ -63,10 +63,6 @@ void AssimpModel::LoadAssimpModel(std::string path)
 	//scene->mRootNode->mTransformation.c1 = Model[2][2] * scene->mRootNode->mTransformation.c1;
 
 	ProcessNode(scene->mRootNode, scene);
-
-	int i = 0;
-
-	Meshes.size();
 }
 
 void AssimpModel::ProcessNode(aiNode* node, const aiScene* scene)
