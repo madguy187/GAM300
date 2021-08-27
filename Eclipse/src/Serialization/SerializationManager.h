@@ -195,7 +195,7 @@ namespace Eclipse
 		template <>
 		inline void SerializeComponent<PointLightComponent>(const PointLightComponent& data)
 		{
-			sz.StartElement("SpotLightComponent");
+			sz.StartElement("PointLightComponent");
 			SerializeData(
 				"ID", data.ID,
 				"Counter", data.Counter,
@@ -221,7 +221,7 @@ namespace Eclipse
 		template <>
 		inline void SerializeComponent<DirectionalLightComponent>(const DirectionalLightComponent& data)
 		{
-			sz.StartElement("SpotLightComponent");
+			sz.StartElement("DirectionalLightComponent");
 			SerializeData(
 				"ID", data.ID,
 				"Counter", data.Counter,
