@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "MenuComponent.h"
-#include "Editor/Windows/Scene/Scene.h"
+#include "Editor/Windows/Scene/SceneView.h"
 #include "Editor/Windows/GameView/GameView.h"
 
 namespace Eclipse
