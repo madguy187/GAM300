@@ -78,6 +78,8 @@ namespace Eclipse
         void CheckUnniformLocation(Shader& in, MaterialComponent& inside);
         void CheckUniformLoc(RenderComponent& sprite, Shader& in, unsigned int id, unsigned int framebufferID);
         void Highlight(unsigned int FrameBufferID, unsigned int ModelID, GLenum mode);
+        bool HighlightClick(unsigned int ModelID);
+        bool UnHighlight(unsigned int ModelID);
     };
 }
 

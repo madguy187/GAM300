@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Debug.h"
-#include "../Scene/Scene.h"
+#include "../Scene/SceneView.h"
 
 namespace Eclipse
 {

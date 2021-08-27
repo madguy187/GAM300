@@ -25,6 +25,7 @@ namespace Eclipse
 	class AssimpModel
 	{
 	private:
+		std::vector<glm::vec3> AllVertices;
 		std::string NameOfModel;
 		std::vector<Mesh> Meshes;
 		std::string Directory;
@@ -54,6 +55,7 @@ namespace Eclipse
 		unsigned int GetNumberOfMeshes();
 		ModelType GetType();
 		void SetModelType(ModelType in);
+		std::vector<glm::vec3> GetVertices();
 	};
 
 }

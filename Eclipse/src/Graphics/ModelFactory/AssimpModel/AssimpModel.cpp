@@ -31,37 +31,33 @@ void AssimpModel::Cleanup()
 
 void AssimpModel::LoadAssimpModel(std::string path)
 {
-	unsigned int importOptions = aiProcess_Triangulate | aiProcess_GenSmoothNormals |
-		aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices;
+	unsigned int importOptions =
+		aiProcess_Triangulate |
+		aiProcess_GenSmoothNormals |
+		aiProcess_FlipUVs |
+		aiProcess_JoinIdenticalVertices |
+		aiProcess_FlipWindingOrder |
+		aiProcess_RemoveRedundantMaterials | 
+		aiProcess_FindDegenerates | 
+		aiProcess_FindInvalidData | 
+		aiProcess_GenUVCoords | 
+		aiProcess_TransformUVCoords |
+		aiProcess_FindInstances | 
+		aiProcess_PreTransformVertices;
 
 	Assimp::Importer import;
 	const aiScene* scene = import.ReadFile(path, importOptions);
 
-	//double factor(0.0);
-	//bool result = scene->mMetaData->Get("UnitScaleFactor", factor);
-
-	//if (result == false)
-	//{
-	//    std::cout << "Failed to retrieve  unit scale factor!" << std::endl;
-	//}
-	//else
-	//{
-	//    std::cout << "Scale is " << factor << std::endl;
-	//}
-
-	//if (scene->GetEmbeddedTexture("src/Assets/ASSModels/dog/1.FBX") == nullptr)
-	//{
-	//    std::cout << "fuck" << std::endl;
-	//}
-
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
 		std::string Error = ("Could not load AssimpModel at " + path + import.GetErrorString()).c_str();
-		//ENGINE_LOG_ASSERT(false, Error);
 		return;
 	}
 
 	Directory = path.substr(0, path.find_last_of("/"));
+	//glm::mat4 Model = (glm::rotate(glm::mat4(1.0f), -90.0f, glm::vec3(1.0f, 0.0f, 0.0f)));
+	//scene->mRootNode->mTransformation = aiMatrix4x4();
+
 	ProcessNode(scene->mRootNode, scene);
 }
 
@@ -77,6 +73,7 @@ void AssimpModel::ProcessNode(aiNode* node, const aiScene* scene)
 	// process all child nodes
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{
+		//node->mChildren[i]->mTransformation = scene->mRootNode->mTransformation * node->mChildren[i]->mTransformation;
 		ProcessNode(node->mChildren[i], scene);
 	}
 }
@@ -109,6 +106,11 @@ ModelType Eclipse::AssimpModel::GetType()
 void Eclipse::AssimpModel::SetModelType(ModelType in)
 {
 	type = in;
+}
+
+std::vector<glm::vec3> Eclipse::AssimpModel::GetVertices()
+{
+	return AllVertices;
 }
 
 void Eclipse::AssimpModel::GetTextureNames()
@@ -151,6 +153,7 @@ Mesh AssimpModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 			vertex.TextureCoodinates = glm::vec2(0.0f);
 		}
 
+		AllVertices.push_back(vertex.Position);
 		vertices.push_back(vertex);
 	}
 
