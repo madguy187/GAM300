@@ -44,6 +44,10 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     {
     case 0:
     {
+        engine->world.AddComponent(ID, MaterialComponent{});
+        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+        mat.Modeltype = MaterialComponent::ModelType::BasicPrimitives;
+
         engine->world.AddComponent(ID, RenderComponent{});
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
@@ -54,33 +58,49 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     break;
     case 1:
     {
+        engine->world.AddComponent(ID, MaterialComponent{});
+        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+        mat.Modeltype = MaterialComponent::ModelType::BasicPrimitives;
+
         engine->world.AddComponent(ID, RenderComponent{});
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
-        sprite.shaderRef = Graphics::shaderpgms.find("shdrpgm");
+        sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("circle");
     }
     break;
     case 2:
     {
+        engine->world.AddComponent(ID, MaterialComponent{});
+        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+        mat.Modeltype = MaterialComponent::ModelType::BasicPrimitives;
+
         engine->world.AddComponent(ID, RenderComponent{});
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
-        sprite.shaderRef = Graphics::shaderpgms.find("shdrpgm");
+        sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("triangle");
     }
     break;
     case 3:
     {
+        engine->world.AddComponent(ID, MaterialComponent{});
+        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+        mat.Modeltype = MaterialComponent::ModelType::BasicPrimitives;
+
         engine->world.AddComponent(ID, RenderComponent{});
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
-        sprite.shaderRef = Graphics::shaderpgms.find("shdrpgm");
+        sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("lines");
     }
     break;
     case 4:
     {
+        engine->world.AddComponent(ID, MaterialComponent{});
+        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+        mat.Modeltype = MaterialComponent::ModelType::BasicPrimitives;
+
         engine->world.AddComponent(ID, RenderComponent{ });
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
@@ -97,11 +117,14 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     {
         engine->world.AddComponent(ID, RenderComponent{});
         engine->world.AddComponent(ID, MaterialComponent{});
+
+        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+        mat.Modeltype = MaterialComponent::ModelType::BasicPrimitives;
+
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
         sprite.shaderRef = Graphics::shaderpgms.find("shader3DShdrpgm");
         sprite.modelRef = Graphics::models.find("cube");
-
         sprite.hasTexture = true;
         sprite.textureRef = Graphics::textures.find("orange");
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
@@ -109,6 +132,10 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     break;
     case 6:
     {
+        engine->world.AddComponent(ID, MaterialComponent{});
+        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+        mat.Modeltype = MaterialComponent::ModelType::BasicPrimitives;
+
         engine->world.AddComponent(ID, RenderComponent{});
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
@@ -119,6 +146,10 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     break;
     case 7:
     {
+        engine->world.AddComponent(ID, MaterialComponent{});
+        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+        mat.Modeltype = MaterialComponent::ModelType::BasicPrimitives;
+
         engine->world.AddComponent(ID, RenderComponent{});
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
@@ -129,6 +160,10 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     break;
     case 8:
     {
+        engine->world.AddComponent(ID, MaterialComponent{});
+        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+        mat.Modeltype = MaterialComponent::ModelType::BasicPrimitives;
+
         engine->world.AddComponent(ID, RenderComponent{});
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
@@ -139,6 +174,10 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     break;
     case 9:
     {
+        engine->world.AddComponent(ID, MaterialComponent{});
+        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+        mat.Modeltype = MaterialComponent::ModelType::BasicPrimitives;
+
         engine->world.AddComponent(ID, RenderComponent{});
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
@@ -149,6 +188,10 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     break;
     case 10:
     {
+        engine->world.AddComponent(ID, MaterialComponent{});
+        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+        mat.Modeltype = MaterialComponent::ModelType::BasicPrimitives;
+
         engine->world.AddComponent(ID, RenderComponent{});
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
@@ -159,6 +202,10 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     break;
     case 11:
     {
+        engine->world.AddComponent(ID, MaterialComponent{});
+        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+        mat.Modeltype = MaterialComponent::ModelType::BasicPrimitives;
+
         engine->world.AddComponent(ID, RenderComponent{});
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
@@ -186,7 +233,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     case 14:
     {
         // Just to test create models , will revert back to spotlights
-        engine->AssimpManager.CreateModel("White Dog", "testhouse", "scene.gltf");
+        engine->AssimpManager.CreateModel("White Dog", "dog", "scene.gltf");
         
         //engine->LightManager.CreateLights(Eclipse::TypesOfLights::SPOTLIGHT, ID);
     }

@@ -217,7 +217,7 @@ namespace Eclipse
 
         std::cout << "Grid Size " << GridArray.size() << std::endl;
 
-        for (int y = 0; y < GridSize; y++)
+        for (int y = 0; y < TotalTiles; y += 9)
         {
             for (int z = 0; z < GridSize; z++)
             {
@@ -229,9 +229,9 @@ namespace Eclipse
                     if (GridArray[x].FirstTile == true)
                         continue;
 
-                    GridArray[(z * 3) + x + y].CenterPoint.setX(GridArray[PreviousIndex].CenterPoint.getX() + GridScale);
-                    GridArray[(z * 3) + x + y].CenterPoint.setY(GridArray[PreviousIndex].CenterPoint.getY());
-                    GridArray[(z * 3) + x + y].CenterPoint.setZ(GridArray[PreviousIndex].CenterPoint.getZ());
+                    GridArray[(z * 3) + x + y].CenterPoint.setX(GridArray[(z * 3) + PreviousIndex + y].CenterPoint.getX() + (x * GridScale));
+                    GridArray[(z * 3) + x + y].CenterPoint.setY(GridArray[(z * 3) + PreviousIndex + y].CenterPoint.getY() + (y * GridScale));
+                    GridArray[(z * 3) + x + y].CenterPoint.setZ(GridArray[(z * 3) + PreviousIndex + y].CenterPoint.getZ() - (z * GridScale));
                 }
             }
         }
@@ -273,7 +273,7 @@ namespace Eclipse
     {
         StartingPosition.setX((MinimumIn.getX() + (MinimumIn.getX() + GridScale)) / 2);
         StartingPosition.setY((MinimumIn.getY() + (MinimumIn.getY() + GridScale)) / 2);
-        StartingPosition.setZ((Maximum.getZ() + (Maximum.getZ() - GridScale)) / 2);
+        StartingPosition.setZ((Maximum.getZ()   + (Maximum.getZ()   - GridScale)) / 2);
     }
 
     void Grid::DrawGrid(unsigned int FrameBufferID)

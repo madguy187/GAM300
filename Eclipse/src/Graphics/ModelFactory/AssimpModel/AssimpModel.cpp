@@ -63,6 +63,10 @@ void AssimpModel::LoadAssimpModel(std::string path)
 	//scene->mRootNode->mTransformation.c1 = Model[2][2] * scene->mRootNode->mTransformation.c1;
 
 	ProcessNode(scene->mRootNode, scene);
+
+	int i = 0;
+
+	Meshes.size();
 }
 
 void AssimpModel::ProcessNode(aiNode* node, const aiScene* scene)
@@ -112,6 +116,11 @@ void Eclipse::AssimpModel::SetModelType(ModelType in)
 	type = in;
 }
 
+std::vector<glm::vec3> Eclipse::AssimpModel::GetVertices()
+{
+	return AllVertices;
+}
+
 void Eclipse::AssimpModel::GetTextureNames()
 {
 	for (int i = 0; i < Textures_loaded.size(); i++)
@@ -152,6 +161,7 @@ Mesh AssimpModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 			vertex.TextureCoodinates = glm::vec2(0.0f);
 		}
 
+		AllVertices.push_back(vertex.Position);
 		vertices.push_back(vertex);
 	}
 
