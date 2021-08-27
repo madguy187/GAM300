@@ -58,10 +58,6 @@ void AssimpModel::LoadAssimpModel(std::string path)
 	//glm::mat4 Model = (glm::rotate(glm::mat4(1.0f), -90.0f, glm::vec3(1.0f, 0.0f, 0.0f)));
 	//scene->mRootNode->mTransformation = aiMatrix4x4();
 
-	//scene->mRootNode->mTransformation.a1 = Model[0][0] * scene->mRootNode->mTransformation.a1;
-	//scene->mRootNode->mTransformation.b1 = Model[1][1] * scene->mRootNode->mTransformation.b1;
-	//scene->mRootNode->mTransformation.c1 = Model[2][2] * scene->mRootNode->mTransformation.c1;
-
 	ProcessNode(scene->mRootNode, scene);
 }
 
