@@ -15,9 +15,11 @@ namespace Eclipse
 
 	void SerializationManager::DeserializeEntity(const size_t& counter)
 	{
-		dsz.StartElement("Entity", true, counter);
-
-		dsz.CloseElement();
+		if (dsz.StartElement("Entity_", true, counter))
+		{
+			DeserializeAllComponents(2);
+			dsz.CloseElement();
+		}
 	}
 
 	void SerializationManager::SerializeAllComponents(const Entity& ent)
@@ -77,6 +79,28 @@ namespace Eclipse
 			auto& comp = w.GetComponent<TransformComponent>(ent);
 			SerializeComponent<TransformComponent>(comp);
 		}
+
+		if (w.CheckComponent<AabbComponent>(ent))
+		{
+			auto& comp = w.GetComponent<AabbComponent>(ent);
+			SerializeComponent<AabbComponent>(comp);
+		}
+
+	}
+
+	void SerializationManager::DeserializeAllComponents(const Entity& ent)
+	{
+		if (dsz.StartElement("EntityComponent"))
+		{
+			DeserializeComponent<EntityComponent>(ent);
+			dsz.CloseElement();
+		}
+
+		if (dsz.StartElement("TransformComponent"))
+		{
+			DeserializeComponent<TransformComponent>(ent);
+			dsz.CloseElement();
+		}
 	}
 
 	void SerializationManager::SerializeAllEntity(const char* fullpath)
@@ -104,7 +128,15 @@ namespace Eclipse
 		{
 			if (dsz.StartElement("Entities"))
 			{
-				dsz.IterateChildrenOfElement();
+				size_t size = 0;
+				dsz.ReadAttributeFromElement("Size", size);
+
+				for (size_t i = 0; i < size; ++i)
+				{
+					DeserializeEntity(i);
+				}
+
+				//dsz.IterateChildrenOfElement();
 			}
 			dsz.CloseElement();
 		}

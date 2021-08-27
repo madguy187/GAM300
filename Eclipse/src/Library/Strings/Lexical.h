@@ -1,5 +1,4 @@
 #pragma once
-
 namespace Eclipse
 {
     template <typename T, typename U>
@@ -121,5 +120,104 @@ namespace Eclipse
             return EntityType::ENT_LIGHT_SPOT;
         else
             return EntityType::ENT_UNASSIGNED;
+    }
+
+    template <>
+    inline const std::string lexical_cast(const CameraComponent::CameraType& type)
+    {
+      std::stringstream stream;
+
+      switch (type)
+      {
+      case CameraComponent::CameraType::Editor_Camera:
+        stream << "Editor Camera";
+        break;
+      case CameraComponent::CameraType::Game_Camera:
+        stream << "Game Camera";
+        break;
+      case CameraComponent::CameraType::TopView_Camera:
+        stream << "Top View Camera";
+        break;
+      case CameraComponent::CameraType::BottomView_Camera:
+        stream << "Bottom View Camera";
+        break;
+      case CameraComponent::CameraType::LeftView_Camera:
+        stream << "Left View Camera";
+        break;
+      case CameraComponent::CameraType::RightView_camera:
+        stream << "Right View Camera";
+        break;
+      }
+
+      return stream.str();
+    }
+
+    template <>
+    inline const CameraComponent::CameraType lexical_cast(const std::string& type)
+    {
+      if (type == "Editor Camera")
+      {
+        return CameraComponent::CameraType::Editor_Camera;
+      }
+      else if (type == "Game Camera")
+      {
+        return CameraComponent::CameraType::Game_Camera;
+      }
+      else if (type == "Top View Camera")
+      {
+        return CameraComponent::CameraType::TopView_Camera;
+      }
+      else if (type == "Bottom View Camera")
+      {
+        return CameraComponent::CameraType::BottomView_Camera;
+      }
+      else if (type == "Left View Camera")
+      {
+        return CameraComponent::CameraType::LeftView_Camera;
+      }
+      else if (type == "Right View Camera")
+      {
+        return CameraComponent::CameraType::RightView_camera;
+      }
+      else
+      {
+        return CameraComponent::CameraType::Editor_Camera;
+      }
+    }
+
+
+    template <>
+    inline const std::string lexical_cast(const CameraComponent::ProjectionType& type)
+    {
+      std::stringstream stream;
+
+      switch (type)
+      {
+      case CameraComponent::ProjectionType::Orthographic:
+        stream << "Orthographic";
+        break;
+      case CameraComponent::ProjectionType::Perspective:
+        stream << "Perspective";
+        break;
+      }
+
+      return stream.str();
+    }
+
+    template <>
+    inline const CameraComponent::ProjectionType lexical_cast(const std::string& type)
+    {
+      if (type == "Orthographic")
+      {
+        return CameraComponent::ProjectionType::Orthographic;
+      }
+      else if (type == "Perspective")
+      {
+        return CameraComponent::ProjectionType::Perspective;
+      }
+      else
+      {
+        return CameraComponent::ProjectionType::Perspective;
+      }
     }
 }

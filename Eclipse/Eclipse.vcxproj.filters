@@ -220,6 +220,7 @@
     <ClInclude Include="src\Time\Clock.h" />
     <ClInclude Include="src\TypeID\TypeID.h" />
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Serialization\TypenameCast.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\AABB.frag" />

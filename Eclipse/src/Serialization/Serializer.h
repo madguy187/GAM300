@@ -11,6 +11,7 @@ float, double
 #pragma once
 #include "Global.h"
 #include "TinyXML/tinyxml.h"
+#include "Library/Strings/Lexical.h"
 #include <filesystem>
 #include <iostream>
 #include <string>
@@ -40,7 +41,7 @@ namespace Eclipse
 		template <typename T>
 		inline void AddAttributeToElement(const std::string& att_name, const T& att_data)
 		{
-			_currElement->SetAttribute(att_name.c_str(), std::to_string(att_data).c_str());
+			_currElement->SetAttribute(att_name.c_str(), lexical_cast<std::string>(att_data).c_str());
 		}
 
 		template <>
@@ -61,11 +62,11 @@ namespace Eclipse
 			_currElement->SetDoubleAttribute(att_name.c_str(), att_data);
 		}
 
-		template <>
+		/*template <>
 		inline void AddAttributeToElement<std::string>(const std::string& att_name, const std::string& att_data)
 		{
 			_currElement->SetAttribute(att_name.c_str(), att_data.c_str());
-		}
+		}*/
 
 		template <>
 		inline void AddAttributeToElement<const char*>(const std::string& att_name, const char* const& att_data)
@@ -80,11 +81,11 @@ namespace Eclipse
 			_currElement->SetAttribute(att_name.c_str(), c.c_str());
 		}
 
-		template <>
+		/*template <>
 		inline void AddAttributeToElement<bool>(const std::string& att_name, const bool& att_data)
 		{
 			_currElement->SetAttribute(att_name.c_str(), att_data ? "true" : "false");
-		}
+		}*/
 
 		template <typename T>
 		inline void AddAttributeToElement(const std::string& att_name, const std::vector<T>& att_data)
@@ -121,7 +122,7 @@ namespace Eclipse
 			*/
 			AddAttributeToElement<size_t>("Col", N1);
 			AddAttributeToElement<size_t>("Row", N2);
-			std::string name{ att_name + "Col" };
+			std::string name{ "Col" };
 			for (size_t i = 0; i < N1; ++i)
 			{
 				std::string dataName{"_" + std::to_string(i)};

@@ -1,7 +1,9 @@
 #pragma once
+#include "Global.h"
 #include "Serializer.h"
 #include "Deserializer.h"
 #include "../ECS/ComponentManager/Components/EntityComponent.h"
+#include "../ECS/ComponentManager/Components/AabbComponent.h"
 #include "../ECS/ComponentManager/Components/CameraComponent.h"
 #include "../ECS/ComponentManager/Components/DirectionalLightComponent.h"
 #include "../ECS/ComponentManager/Components/MaterialComponent.h"
@@ -44,7 +46,7 @@ namespace Eclipse
 			sz.StartElement("EntityComponent");
 			SerializeData(
 				"Name", data.Name,
-				"Tag", static_cast<int>(data.Tag),
+				"Tag", data.Tag,
 				"IsActive", data.IsActive
 			);
 			sz.CloseElement();
@@ -124,6 +126,18 @@ namespace Eclipse
 		}
 
 		template <>
+		inline void SerializeComponent<AabbComponent>(const AabbComponent& data)
+		{
+			sz.StartElement("AabbComponent");
+			SerializeData(
+				"Center", data.center,
+				"Min", data.min,
+				"Max", data.max
+			);
+			sz.CloseElement();
+		}
+
+		template <>
 		inline void SerializeComponent<CameraComponent>(const CameraComponent& data)
 		{
 			sz.StartElement("CameraComponent");
@@ -142,17 +156,156 @@ namespace Eclipse
 				"ViewMtx", data.viewMtx,
 				"ProjMtx", data.projMtx,
 				"CameraSpeed", data.cameraSpeed,
-				"CamType", static_cast<int>(data.camType)
+				"CameraType", lexical_cast<std::string>(data.camType),
+				"ProjectionType", lexical_cast<std::string>(data.projType)
 			);
 			sz.CloseElement();
 		}
 
+		template <>
+		inline void SerializeComponent<SpotLightComponent>(const SpotLightComponent& data)
+		{
+			sz.StartElement("SpotLightComponent");
+			SerializeData(
+				"ID", data.ID,
+				"Counter", data.Counter,
+				"LightColor", data.lightColor,
+				"Direction", data.direction,
+				"Ambient", data.ambient,
+				"Diffuse", data.diffuse,
+				"Specular", data.specular,
+				"Color", data.Color,
+				"IntensityStrength", data.IntensityStrength,
+				"Radius", data.radius,
+				"CutOff", data.cutOff,
+				"OuterCutOff", data.outerCutOff,
+				"Constant", data.constant,
+				"Linear", data.linear,
+				"Quadratic", data.quadratic,
+				"AttenuationLevel", data.AttenuationLevel,
+				"SurroundingAttenuationLevel", data.SurroundingAttenuationLevel,
+				"EnableBlinnPhong", data.EnableBlinnPhong,
+				"HasTexture", data.hasTexture,
+				"Visible", data.visible
+			);
+
+			sz.CloseElement();
+		}
+		
+		template <>
+		inline void SerializeComponent<PointLightComponent>(const PointLightComponent& data)
+		{
+			sz.StartElement("SpotLightComponent");
+			SerializeData(
+				"ID", data.ID,
+				"Counter", data.Counter,
+				"Ambient", data.ambient,
+				"Diffuse", data.diffuse,
+				"Specular", data.specular,
+				"LightColor", data.lightColor,
+				"Color", data.Color,
+				"IntensityStrength", data.IntensityStrength,
+				"Constant", data.constant,
+				"Linear", data.linear,
+				"Quadratic", data.quadratic,
+				"Radius", data.radius,
+				"AttenuationLevel", data.AttenuationLevel,
+				"EnableBlinnPhong", data.EnableBlinnPhong,
+				"HasTexture", data.hasTexture,
+				"Visible", data.visible
+			);
+
+			sz.CloseElement();
+		}
+
+		template <>
+		inline void SerializeComponent<DirectionalLightComponent>(const DirectionalLightComponent& data)
+		{
+			sz.StartElement("SpotLightComponent");
+			SerializeData(
+				"ID", data.ID,
+				"Counter", data.Counter,
+				"Visible", data.visible,
+				"AffectsWorld", data.AffectsWorld,
+				"EnableBlinnPhong", data.EnableBlinnPhong,
+				"LightColor", data.lightColor,
+				"Direction", data.Direction,
+				"Ambient", data.ambient,
+				"Diffuse", data.diffuse,
+				"Specular", data.specular,
+				"Color", data.Color,
+				"ModelNDC_xform", data.modelNDC_xform
+			);
+
+			sz.CloseElement();
+		}
+
+		template <typename T>
+		inline void DeserializeComponent(const Entity& ent)
+		{
+			std::string msg = typeid(T).name();
+			msg += " is invalid as a component.";
+			ENGINE_CORE_ERROR(false, msg.c_str());
+		}
+
+		template<>
+		inline void DeserializeComponent<EntityComponent>(const Entity& ent)
+		{
+			EntityComponent test;
+
+			if (dsz.StartElement("Name"))
+			{
+				dsz.ReadAttributeFromElement("Name", test.Name);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Tag"))
+			{
+				dsz.ReadAttributeFromElement("Tag", test.Tag);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("IsActive"))
+			{
+				dsz.ReadAttributeFromElement("IsActive", test.IsActive);
+				dsz.CloseElement();
+			}
+		}
+
+		template<>
+		inline void DeserializeComponent<TransformComponent>(const Entity& ent)
+		{
+			TransformComponent test;
+
+			if (dsz.StartElement("Position"))
+			{
+				dsz.ReadAttributeFromElement(test.position);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Rotation"))
+			{
+				dsz.ReadAttributeFromElement(test.rotation);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Scale"))
+			{
+				dsz.ReadAttributeFromElement(test.scale);
+				dsz.CloseElement();
+			}
+			std::cout << test.position << std::endl;
+			std::cout << test.rotation << std::endl;
+			std::cout << test.scale << std::endl;
+		}
 
 		void SerializeEntity(const Entity& ent, const size_t& counter);
 
 		void DeserializeEntity(const size_t& counter);
 
 		void SerializeAllComponents(const Entity& ent);
+
+		void DeserializeAllComponents(const Entity& ent);
 
 	public:
 		SerializationManager();

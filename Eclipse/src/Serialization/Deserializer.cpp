@@ -109,4 +109,31 @@ namespace Eclipse
 	{
 
 	}
+
+	bool Deserializer::CheckAttributeValue(const std::string& name)
+	{
+		if (_currElement->Attribute(name.c_str()))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	const char* Deserializer::GetAttributeValue(const std::string& name)
+	{
+		const char* att_str = _currElement->Attribute(name.c_str());
+
+		if (!att_str)
+		{
+			std::string msg = "Failed to obtain attribute value \"";
+			msg += name + "during deserialization!";
+			ENGINE_LOG_ASSERT(false, msg.c_str());
+			std::exit(EXIT_FAILURE);
+		}
+
+		return att_str;
+	}
 }
