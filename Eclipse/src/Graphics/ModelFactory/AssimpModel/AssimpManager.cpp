@@ -57,12 +57,12 @@ namespace Eclipse
         }
         // ----------------------------------------------------------------------------------------------------------
 
-        std::cout << NewModel->GetVertices().size() << std::endl;
-        
-        for (auto& i : NewModel->GetVertices())
-        {
-        	std::cout << "Position"  << i.x << " " << i.y << " " << i.x << std::endl;
-        }
+        //std::cout << NewModel->GetVertices().size() << std::endl;
+        //
+        //for (auto& i : NewModel->GetVertices())
+        //{
+        //	std::cout << "Position"  << i.x << " " << i.y << " " << i.x << std::endl;
+        //}
 
     }
 
