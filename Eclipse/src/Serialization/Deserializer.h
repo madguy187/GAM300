@@ -42,6 +42,13 @@ namespace Eclipse
 		}
 		
 		template <>
+		inline void ReadAttributeFromElement(const std::string& att_name, bool& att_data)
+		{
+			std::string str = GetAttributeValue(att_name);
+			att_data = lexical_cast<bool>(str);
+		}
+		
+		template <>
 		inline void ReadAttributeFromElement(const std::string& att_name, CameraComponent::CameraType& att_data)
 		{
 			std::string str = GetAttributeValue(att_name);

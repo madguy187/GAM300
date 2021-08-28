@@ -19,6 +19,7 @@ namespace Eclipse
 		{
 			Entity ent = engine->world.CreateEntity();
 			DeserializeAllComponents(ent);
+			engine->editorManager->RegisterExistingEntity(ent);
 			dsz.CloseElement();
 		}
 	}
@@ -123,18 +124,50 @@ namespace Eclipse
 			dsz.CloseElement();
 		}
 
-		if (dsz.StartElement("AabbComponent"))
-		{
-			AabbComponent comp;
-			DeserializeComponent<AabbComponent>(ent, comp);
-			engine->world.AddComponent(ent, comp);
-			dsz.CloseElement();
-		}
+		//if (dsz.StartElement("AabbComponent"))
+		//{
+		//	AabbComponent comp;
+		//	DeserializeComponent<AabbComponent>(ent, comp);
+		//	engine->world.AddComponent(ent, comp);
+		//	dsz.CloseElement();
+		//}
 
 		if (dsz.StartElement("RigidBodyComponent"))
 		{
 			RigidBodyComponent comp;
 			DeserializeComponent<RigidBodyComponent>(ent, comp);
+			engine->world.AddComponent(ent, comp);
+			dsz.CloseElement();
+		}
+
+		if (dsz.StartElement("CameraComponent"))
+		{
+			CameraComponent comp;
+			DeserializeComponent<CameraComponent>(ent, comp);
+			engine->world.AddComponent(ent, comp);
+			dsz.CloseElement();
+		}
+		
+		if (dsz.StartElement("PointLightComponent"))
+		{
+			PointLightComponent comp;
+			DeserializeComponent<PointLightComponent>(ent, comp);
+			engine->world.AddComponent(ent, comp);
+			dsz.CloseElement();
+		}
+		
+		if (dsz.StartElement("SpotLightComponent"))
+		{
+			SpotLightComponent comp;
+			DeserializeComponent<SpotLightComponent>(ent, comp);
+			engine->world.AddComponent(ent, comp);
+			dsz.CloseElement();
+		}
+		
+		if (dsz.StartElement("DirectionalLightComponent"))
+		{
+			DirectionalLightComponent comp;
+			DeserializeComponent<DirectionalLightComponent>(ent, comp);
 			engine->world.AddComponent(ent, comp);
 			dsz.CloseElement();
 		}

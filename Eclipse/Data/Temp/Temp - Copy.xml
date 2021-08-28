@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <Temp>
-    <Entities Size="9">
+    <Entities Size="6">
         <Entity_0 ID="6">
             <EntityComponent>
                 <Name value="Cone" />
@@ -8,7 +8,7 @@
                 <IsActive value="false" />
             </EntityComponent>
             <MaterialComponent>
-                <ID value="6" />
+                <ID value="0" />
                 <Ambient x="0" y="0" z="0" />
                 <Diffuse x="0" y="0" z="0" />
                 <Specular x="0.1" y="0.1" z="0.1" />
@@ -48,9 +48,9 @@
                 <Scale x="10" y="10" z="10" />
             </TransformComponent>
             <AabbComponent>
-                <Center x="-20.571" y="1.21099" z="0" />
-                <Min x="-25.571" y="-3.78901" z="-5" />
-                <Max x="-15.571" y="6.21099" z="5" />
+                <Center x="0" y="0" z="0" />
+                <Min x="-5" y="-5" z="-5" />
+                <Max x="5" y="5" z="5" />
             </AabbComponent>
         </Entity_0>
         <Entity_1 ID="7">
@@ -60,7 +60,7 @@
                 <IsActive value="false" />
             </EntityComponent>
             <MaterialComponent>
-                <ID value="7" />
+                <ID value="0" />
                 <Ambient x="0" y="0" z="0" />
                 <Diffuse x="0" y="0" z="0" />
                 <Specular x="0.1" y="0.1" z="0.1" />
@@ -100,9 +100,9 @@
                 <Scale x="10" y="10" z="10" />
             </TransformComponent>
             <AabbComponent>
-                <Center x="20.461" y="-0.0550478" z="0" />
-                <Min x="15.461" y="-5.05505" z="-5" />
-                <Max x="25.461" y="4.94495" z="5" />
+                <Center x="0" y="0" z="0" />
+                <Min x="-5" y="-5" z="-5" />
+                <Max x="5" y="5" z="5" />
             </AabbComponent>
         </Entity_1>
         <Entity_2 ID="8">
@@ -112,7 +112,7 @@
                 <IsActive value="false" />
             </EntityComponent>
             <MaterialComponent>
-                <ID value="8" />
+                <ID value="0" />
                 <Ambient x="0" y="0" z="0" />
                 <Diffuse x="0" y="0" z="0" />
                 <Specular x="0.1" y="0.1" z="0.1" />
@@ -152,9 +152,9 @@
                 <Scale x="10" y="10" z="10" />
             </TransformComponent>
             <AabbComponent>
-                <Center x="0.550028" y="9.41271" z="0" />
-                <Min x="-4.44997" y="4.41271" z="-5" />
-                <Max x="5.55003" y="14.4127" z="5" />
+                <Center x="0" y="0" z="0" />
+                <Min x="-5" y="-5" z="-5" />
+                <Max x="5" y="5" z="5" />
             </AabbComponent>
         </Entity_2>
         <Entity_3 ID="9">
@@ -164,7 +164,7 @@
                 <IsActive value="false" />
             </EntityComponent>
             <MaterialComponent>
-                <ID value="9" />
+                <ID value="0" />
                 <Ambient x="0" y="0" z="0" />
                 <Diffuse x="0" y="0" z="0" />
                 <Specular x="0.1" y="0.1" z="0.1" />
@@ -204,9 +204,9 @@
                 <Scale x="10" y="10" z="10" />
             </TransformComponent>
             <AabbComponent>
-                <Center x="-0.0550008" y="-12.0549" z="0" />
-                <Min x="-5.055" y="-17.0549" z="-5" />
-                <Max x="4.945" y="-7.0549" z="5" />
+                <Center x="0" y="0" z="0" />
+                <Min x="-5" y="-5" z="-5" />
+                <Max x="5" y="5" z="5" />
             </AabbComponent>
         </Entity_3>
         <Entity_4 ID="10">
@@ -216,7 +216,7 @@
                 <IsActive value="false" />
             </EntityComponent>
             <MaterialComponent>
-                <ID value="10" />
+                <ID value="0" />
                 <Ambient x="0" y="0" z="0" />
                 <Diffuse x="0" y="0" z="0" />
                 <Specular x="0.1" y="0.1" z="0.1" />
@@ -256,19 +256,19 @@
                 <Scale x="10" y="10" z="10" />
             </TransformComponent>
             <AabbComponent>
-                <Center x="-9.24044" y="-0.715584" z="0" />
-                <Min x="-14.2404" y="-5.71558" z="-5" />
-                <Max x="-4.24044" y="4.28442" z="5" />
+                <Center x="0" y="0" z="0" />
+                <Min x="-5" y="-5" z="-5" />
+                <Max x="5" y="5" z="5" />
             </AabbComponent>
         </Entity_4>
         <Entity_5 ID="11">
             <EntityComponent>
                 <Name value="Cube" />
                 <Tag value="Cube" />
-                <IsActive value="false" />
+                <IsActive value="true" />
             </EntityComponent>
             <MaterialComponent>
-                <ID value="11" />
+                <ID value="0" />
                 <Ambient x="0" y="0" z="0" />
                 <Diffuse x="0" y="0" z="0" />
                 <Specular x="0.1" y="0.1" z="0.1" />
@@ -308,89 +308,10 @@
                 <Scale x="10" y="10" z="10" />
             </TransformComponent>
             <AabbComponent>
-                <Center x="5.83028" y="0.110091" z="0" />
-                <Min x="0.83028" y="-4.88991" z="-5" />
-                <Max x="10.8303" y="5.11009" z="5" />
+                <Center x="0" y="0" z="0" />
+                <Min x="-5" y="-5" z="-5" />
+                <Max x="5" y="5" z="5" />
             </AabbComponent>
         </Entity_5>
-        <Entity_6 ID="12">
-            <EntityComponent>
-                <Name value="Spot" />
-                <Tag value="Spot Light" />
-                <IsActive value="true" />
-            </EntityComponent>
-            <TransformComponent>
-                <Position x="5.36549" y="10.0623" z="0.494464" />
-                <Rotation x="0" y="0" z="0" />
-                <Scale x="10" y="10" z="10" />
-            </TransformComponent>
-            <AabbComponent>
-                <Center x="0" y="0" z="0" />
-                <Min x="-5" y="-5" z="-5" />
-                <Max x="5" y="5" z="5" />
-            </AabbComponent>
-        </Entity_6>
-        <Entity_7 ID="13">
-            <EntityComponent>
-                <Name value="White" />
-                <Tag value="NULL" />
-                <IsActive value="false" />
-            </EntityComponent>
-            <MaterialComponent>
-                <ID value="0" />
-                <Ambient x="0" y="0" z="0" />
-                <Diffuse x="0" y="0" z="0" />
-                <Specular x="0.1" y="0.1" z="0.1" />
-                <HighlightColor x="0" y="0" z="0" />
-                <Shininess value="0.25" />
-                <MaximumShininess value="128" />
-                <RegisterForHighlight value="true" />
-                <Highlight value="false" />
-                <Modeltype value="Models3D" />
-                <Thickness value="0.05" />
-                <ScaleUp value="1.05" />
-            </MaterialComponent>
-            <TransformComponent>
-                <Position x="0" y="0" z="0" />
-                <Rotation x="0" y="0" z="0" />
-                <Scale x="5" y="5" z="5" />
-            </TransformComponent>
-        </Entity_7>
-        <Entity_8 ID="14">
-            <EntityComponent>
-                <Name value="Directional" />
-                <Tag value="Directional Light" />
-                <IsActive value="false" />
-            </EntityComponent>
-            <DirectionalLightComponent>
-                <ID value="14" />
-                <Counter value="0" />
-                <Visible value="false" />
-                <AffectsWorld value="true" />
-                <EnableBlinnPhong value="true" />
-                <LightColor x="1" y="1" z="0.980392" />
-                <Direction x="-1" y="-1" z="-1" />
-                <Ambient x="0.2" y="0.208" z="0.312" />
-                <Diffuse x="0.377" y="0.312" z="0.4" />
-                <Specular x="0.416" y="0.039" z="0.494" />
-                <Color x="1" y="1" z="1" w="1" />
-                <ModelNDC_xform Col="4" Row="4">
-                    <Col0 _00="0" _01="0" _02="0" _03="0" />
-                    <Col1 _10="0" _11="0" _12="0" _13="0" />
-                    <Col2 _20="0" _21="0" _22="0" _23="0" />
-                    <Col3 _30="0" _31="0" _32="0" _33="0" />
-                </ModelNDC_xform>
-            </DirectionalLightComponent>
-            <TransformComponent>
-                <Position x="-0.214878" y="0" z="0" />
-                <Rotation x="0" y="0" z="0" />
-                <Scale x="1" y="1" z="1" />
-            </TransformComponent>
-            <AabbComponent>
-                <Center x="0" y="0" z="0" />
-                <Min x="-5" y="-5" z="-5" />
-                <Max x="5" y="5" z="5" />
-            </AabbComponent>
-        </Entity_8>
     </Entities>
 </Temp>
