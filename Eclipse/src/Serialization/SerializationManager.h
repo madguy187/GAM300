@@ -157,8 +157,8 @@ namespace Eclipse
 				"ViewMtx", data.viewMtx,
 				"ProjMtx", data.projMtx,
 				"CameraSpeed", data.cameraSpeed,
-				"CameraType", lexical_cast<std::string>(data.camType),
-				"ProjectionType", lexical_cast<std::string>(data.projType)
+				"CameraType", data.camType,
+				"ProjectionType", data.projType
 			);
 			sz.CloseElement();
 		}
@@ -242,7 +242,7 @@ namespace Eclipse
 		}
 
 		template <typename T>
-		inline void DeserializeComponent(const Entity& ent)
+		inline void DeserializeComponent(const Entity& ent, T& comp)
 		{
 			std::string msg = typeid(T).name();
 			msg += " is invalid as a component.";
@@ -250,10 +250,8 @@ namespace Eclipse
 		}
 
 		template<>
-		inline void DeserializeComponent<EntityComponent>(const Entity& ent)
+		inline void DeserializeComponent<EntityComponent>(const Entity& ent, EntityComponent& comp)
 		{
-			EntityComponent comp;
-
 			if (dsz.StartElement("Name"))
 			{
 				dsz.ReadAttributeFromElement("value", comp.Name);
@@ -271,15 +269,11 @@ namespace Eclipse
 				dsz.ReadAttributeFromElement("value", comp.IsActive);
 				dsz.CloseElement();
 			}
-
-			engine->world.AddComponent<EntityComponent>(ent, comp);
 		}
 
 		template<>
-		inline void DeserializeComponent<TransformComponent>(const Entity& ent)
+		inline void DeserializeComponent<TransformComponent>(const Entity& ent, TransformComponent& comp)
 		{
-			TransformComponent comp;
-
 			if (dsz.StartElement("Position"))
 			{
 				dsz.ReadAttributeFromElement(comp.position);
@@ -297,15 +291,11 @@ namespace Eclipse
 				dsz.ReadAttributeFromElement(comp.scale);
 				dsz.CloseElement();
 			}
-
-			engine->world.AddComponent<TransformComponent>(ent, comp);
 		}
 
 		template<>
-		inline void DeserializeComponent<RenderComponent>(const Entity& ent)
+		inline void DeserializeComponent<RenderComponent>(const Entity& ent, RenderComponent& comp)
 		{
-			RenderComponent comp;
-
 			if (dsz.StartElement("Color"))
 			{
 				dsz.ReadAttributeFromElement(comp.color);
@@ -342,7 +332,7 @@ namespace Eclipse
 				dsz.CloseElement();
 			}
 
-			if (dsz.StartElement("TextureRef") && comp.hasTexture)
+			if (comp.hasTexture && dsz.StartElement("TextureRef"))
 			{
 				dsz.ReadAttributeFromElement("value", comp.textureRef);
 				dsz.CloseElement();
@@ -385,15 +375,11 @@ namespace Eclipse
 				dsz.ReadAttributeFromElement(comp.lightColor);
 				dsz.CloseElement();
 			}
-
-			engine->world.AddComponent<RenderComponent>(ent, comp);
 		}
 		
 		template<>
-		inline void DeserializeComponent<MaterialComponent>(const Entity& ent)
+		inline void DeserializeComponent<MaterialComponent>(const Entity& ent, MaterialComponent& comp)
 		{
-			MaterialComponent comp;
-
 			comp.ID = ent;
 
 			if (dsz.StartElement("Ambient"))
@@ -461,15 +447,11 @@ namespace Eclipse
 				dsz.ReadAttributeFromElement("value", comp.ScaleUp);
 				dsz.CloseElement();
 			}
-
-			engine->world.AddComponent<MaterialComponent>(ent, comp);
 		}
 		
 		template<>
-		inline void DeserializeComponent<AabbComponent>(const Entity& ent)
+		inline void DeserializeComponent<AabbComponent>(const Entity& ent, AabbComponent& comp)
 		{
-			AabbComponent comp;
-
 			if (dsz.StartElement("Center"))
 			{
 				dsz.ReadAttributeFromElement(comp.center);
@@ -487,15 +469,11 @@ namespace Eclipse
 				dsz.ReadAttributeFromElement(comp.max);
 				dsz.CloseElement();
 			}
-
-			engine->world.AddComponent<AabbComponent>(ent, comp);
 		}
 		
 		template<>
-		inline void DeserializeComponent<RigidBodyComponent>(const Entity& ent)
-		{
-			RigidBodyComponent comp;
-			
+		inline void DeserializeComponent<RigidBodyComponent>(const Entity& ent, RigidBodyComponent& comp)
+		{			
 			if (dsz.StartElement("IsStatic"))
 			{
 				dsz.ReadAttributeFromElement("value", comp._Static);
@@ -555,8 +533,394 @@ namespace Eclipse
 				dsz.ReadAttributeFromElement(comp.forces);
 				dsz.CloseElement();
 			}
+		}
+		
+		template<>
+		inline void DeserializeComponent<CameraComponent>(const Entity& ent, CameraComponent& comp)
+		{
+			if (dsz.StartElement("EyeAlpha"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.eyeAlpha);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("EyeBeta"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.eyeBeta);
+				dsz.CloseElement();
+			}
 
-			engine->world.AddComponent<RigidBodyComponent>(ent, comp);
+			if (dsz.StartElement("FOV"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.fov);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("NearPlane"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.nearPlane);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("FarPlane"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.farPlane);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("Aspect"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.aspect);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("EyePos"))
+			{
+				dsz.ReadAttributeFromElement(comp.eyePos);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("EyeFront"))
+			{
+				dsz.ReadAttributeFromElement(comp.eyeFront);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("UpVec"))
+			{
+				dsz.ReadAttributeFromElement(comp.upVec);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("RightVec"))
+			{
+				dsz.ReadAttributeFromElement(comp.rightVec);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("WorldUp"))
+			{
+				dsz.ReadAttributeFromElement(comp.worldUp);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("ViewMtx"))
+			{
+				dsz.ReadAttributeFromElement(comp.viewMtx);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("ProjMtx"))
+			{
+				dsz.ReadAttributeFromElement(comp.projMtx);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("CameraSpeed"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.cameraSpeed);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("CameraType"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.camType);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("ProjectionType"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.projType);
+				dsz.CloseElement();
+			}
+		}
+
+		template<>
+		inline void DeserializeComponent<SpotLightComponent>(const Entity& ent, SpotLightComponent& comp)
+		{
+			comp.ID = ent;
+
+			if (dsz.StartElement("Counter"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.Counter);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("LightColor"))
+			{
+				dsz.ReadAttributeFromElement(comp.lightColor);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Direction"))
+			{
+				dsz.ReadAttributeFromElement(comp.direction);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("Ambient"))
+			{
+				dsz.ReadAttributeFromElement(comp.ambient);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("Diffuse"))
+			{
+				dsz.ReadAttributeFromElement(comp.diffuse);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("Specular"))
+			{
+				dsz.ReadAttributeFromElement(comp.specular);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Color"))
+			{
+				dsz.ReadAttributeFromElement(comp.Color);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("IntensityStrength"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.IntensityStrength);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Radius"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.radius);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("CutOff"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.cutOff);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("OuterCutOff"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.outerCutOff);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("Constant"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.constant);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("Linear"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.linear);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("Quadratic"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.quadratic);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("AttenuationLevel"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.AttenuationLevel);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("SurroundingAttenuationLevel"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.SurroundingAttenuationLevel);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("EnableBlinnPhong"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.EnableBlinnPhong);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("HasTexture"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.hasTexture);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("Visible"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.visible);
+				dsz.CloseElement();
+			}
+		}
+
+		template<>
+		inline void DeserializeComponent<PointLightComponent>(const Entity& ent, PointLightComponent& comp)
+		{
+			comp.ID = ent;
+
+			if (dsz.StartElement("Counter"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.Counter);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Ambient"))
+			{
+				dsz.ReadAttributeFromElement(comp.ambient);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Diffuse"))
+			{
+				dsz.ReadAttributeFromElement(comp.diffuse);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Specular"))
+			{
+				dsz.ReadAttributeFromElement(comp.specular);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("LightColor"))
+			{
+				dsz.ReadAttributeFromElement(comp.lightColor);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Color"))
+			{
+				dsz.ReadAttributeFromElement(comp.Color);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("IntensityStrength"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.IntensityStrength);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Constant"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.constant);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Linear"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.linear);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Quadratic"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.quadratic);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Radius"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.radius);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("AttenuationLevel"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.AttenuationLevel);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("EnableBlinnPhong"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.EnableBlinnPhong);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("HasTexture"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.hasTexture);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Visible"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.visible);
+				dsz.CloseElement();
+			}
+		}
+
+		template<>
+		inline void DeserializeComponent<DirectionalLightComponent>(const Entity& ent, DirectionalLightComponent& comp)
+		{
+			comp.ID = ent;
+
+			if (dsz.StartElement("Counter"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.Counter);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Visible"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.visible);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("AffectsWorld"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.AffectsWorld);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("EnableBlinnPhong"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.EnableBlinnPhong);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("LightColor"))
+			{
+				dsz.ReadAttributeFromElement(comp.lightColor);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("Direction"))
+			{
+				dsz.ReadAttributeFromElement(comp.Direction);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Ambient"))
+			{
+				dsz.ReadAttributeFromElement(comp.ambient);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Diffuse"))
+			{
+				dsz.ReadAttributeFromElement(comp.diffuse);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Specular"))
+			{
+				dsz.ReadAttributeFromElement(comp.specular);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Color"))
+			{
+				dsz.ReadAttributeFromElement(comp.Color);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("ModelNDC_xform"))
+			{
+				dsz.ReadAttributeFromElement(comp.modelNDC_xform);
+				dsz.CloseElement();
+			}
 		}
 
 		void SerializeEntity(const Entity& ent, const size_t& counter);

@@ -93,37 +93,49 @@ namespace Eclipse
 	{
 		if (dsz.StartElement("EntityComponent"))
 		{
-			DeserializeComponent<EntityComponent>(ent);
+			EntityComponent comp;
+			DeserializeComponent<EntityComponent>(ent, comp);
+			engine->world.AddComponent(ent, comp);
 			dsz.CloseElement();
 		}
 
 		if (dsz.StartElement("TransformComponent"))
 		{
-			DeserializeComponent<TransformComponent>(ent);
+			TransformComponent comp;
+			DeserializeComponent<TransformComponent>(ent, comp);
+			engine->world.AddComponent(ent, comp);
 			dsz.CloseElement();
 		}
 
 		if (dsz.StartElement("RenderComponent"))
 		{
-			DeserializeComponent<RenderComponent>(ent);
+			RenderComponent comp;
+			DeserializeComponent<RenderComponent>(ent, comp);
+			engine->world.AddComponent(ent, comp);
 			dsz.CloseElement();
 		}
 
 		if (dsz.StartElement("MaterialComponent"))
 		{
-			DeserializeComponent<MaterialComponent>(ent);
+			MaterialComponent comp;
+			DeserializeComponent<MaterialComponent>(ent, comp);
+			engine->world.AddComponent(ent, comp);
 			dsz.CloseElement();
 		}
 
 		if (dsz.StartElement("AabbComponent"))
 		{
-			DeserializeComponent<AabbComponent>(ent);
+			AabbComponent comp;
+			DeserializeComponent<AabbComponent>(ent, comp);
+			engine->world.AddComponent(ent, comp);
 			dsz.CloseElement();
 		}
 
 		if (dsz.StartElement("RigidBodyComponent"))
 		{
-			DeserializeComponent<RigidBodyComponent>(ent);
+			RigidBodyComponent comp;
+			DeserializeComponent<RigidBodyComponent>(ent, comp);
+			engine->world.AddComponent(ent, comp);
 			dsz.CloseElement();
 		}
 	}
