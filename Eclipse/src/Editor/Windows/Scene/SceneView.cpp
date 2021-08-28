@@ -114,13 +114,6 @@ namespace Eclipse
 		// Rachel said to comment out.
 		//engine->gPicker.UpdateAabb(selectedEntity);
 
-		//auto& aabb = engine->world.GetComponent<AabbComponent>(selectedEntity);
-		//auto& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
-
-		//float t;
-		//glm::vec3 rayDir = engine->gPicker.ComputeCursorRayDirection();
-		//bool collision = engine->gPicker.RayAabb(camera.eyePos, rayDir, aabb.min.ConvertToGlmVec3Type(), aabb.max.ConvertToGlmVec3Type(), t);
-
 		ImGuizmo::SetOrthographic(false);
 		ImGuizmo::SetDrawlist();
 

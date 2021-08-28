@@ -14,6 +14,7 @@
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
 #include "ECS/SystemManager/Systems/System/EditorSystem.h"
 #include "ECS/SystemManager/Systems/System/LightingSystem.h"
+#include "ECS/SystemManager/Systems/System/PickingSystem.h"
 #include "ImGui/Setup/ImGuiSetup.h"
 #include "ECS/SystemManager/Systems/System/MaterialSystem.h"
 #include "ECS/SystemManager/Systems/System/GridSystem.h"
@@ -76,6 +77,7 @@ namespace Eclipse
         world.RegisterSystem<LightingSystem>();
         world.RegisterSystem<MaterialSystem>();
         world.RegisterSystem<GridSystem>();
+        world.RegisterSystem<PickingSystem>();
 
         // Render System
         Signature RenderSys = RenderSystem::RegisterAll();
@@ -96,6 +98,12 @@ namespace Eclipse
         Signature mat;
         mat.set(world.GetComponentType<MaterialComponent>(), 1);
         world.RegisterSystemSignature<MaterialSystem>(mat);
+
+        Signature picking;
+        picking.set(world.GetComponentType<AabbComponent>(), 1);
+        picking.set(world.GetComponentType<TransformComponent>(), 1);
+        picking.set(world.GetComponentType<MaterialComponent>(), 1);
+        world.RegisterSystemSignature<PickingSystem>(picking);
 
         //Check this! - Rachel
         RenderSystem::Init();
@@ -171,6 +179,8 @@ namespace Eclipse
             // Material SYstem
             world.Update<MaterialSystem>();
             
+            world.Update<PickingSystem>();
+
             // GRID DRAW ============================= Must be last of All Renders
             engine->GraphicsManager.GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 

@@ -90,7 +90,7 @@ namespace Eclipse
 
 		// Check this please - Rachel
 		auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
-		engine->gPicker.GenerateAabb(ID, _transform);
+		engine->gPicker.GenerateAabb(ID, _transform, type);
 
 		EntityHierarchyList_.push_back(ID);
 		EntityToTypeMap_.insert(std::pair<Entity, EntityType>(ID, type));
@@ -105,7 +105,6 @@ namespace Eclipse
 		auto& transform = engine->world.GetComponent<TransformComponent>(ID);
 		auto& entcom = engine->world.GetComponent<EntityComponent>(ID);
 
-		engine->gPicker.GenerateAabb(ID, transform);
 		EntityHierarchyList_.push_back(ID);
 		EntityToTypeMap_.insert(std::pair<Entity, EntityType>(ID, entcom.Tag));
 		GEHIndex_ = EntityHierarchyList_.size() - 1;
