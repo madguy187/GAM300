@@ -5,6 +5,7 @@
 #include "scene.h"
 #include "postprocess.h"
 #include <vector>
+#include <algorithm>
 #include "mesh.h"
 
 // fbx

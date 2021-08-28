@@ -157,6 +157,109 @@ Mesh AssimpModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 		vertices.push_back(vertex);
 	}
 
+	float maxValue = FLT_MIN;
+	float minValue = FLT_MAX;
+
+	float minX = FLT_MAX;
+	float minY = FLT_MAX;
+	float minZ = FLT_MAX;
+
+	float maxX = FLT_MIN;
+	float maxY = FLT_MIN;
+	float maxZ = FLT_MIN;
+
+	for (auto& it : AllVertices)
+	{
+		if (it.x > maxX)
+		{
+			maxX = it.x;
+		}
+
+		if (it.y > maxY)
+		{
+			maxY = it.y;
+		}
+
+		if (it.z > maxZ)
+		{
+			maxZ = it.z;
+		}
+
+		if (it.x < minX)
+		{
+			minX = it.x;
+		}
+
+		if (it.y < minY)
+		{
+			minY = it.y;
+		}
+
+		if (it.z < minZ)
+		{
+			minZ = it.z;
+		}
+
+		if (it.x > maxValue)
+		{
+			maxValue = it.x;
+		}
+
+		if (it.y > maxValue)
+		{
+			maxValue = it.y;
+		}
+
+		if (it.z > maxValue)
+		{
+			maxValue = it.z;
+		}
+
+		if (it.x < minValue)
+		{
+			minValue = it.x;
+		}
+
+		if (it.y < minValue)
+		{
+			minValue = it.y;
+		}
+
+		if (it.z < minValue)
+		{
+			minValue = it.z;
+		}
+
+	}
+
+	glm::vec3 centroid = glm::vec3{ (minX + maxX) / 2.0f, (minY + maxY) / 2.0f, (minZ + maxZ) / 2.0f };
+	std::cout << "Centroid: { " << centroid.x << ", " << centroid.y << ", " << centroid.z << " }" << std::endl;
+
+	std::cout << "Max Value: " << maxValue << std::endl;
+	std::cout << "Min Value: " << minValue << std::endl;
+
+	float largestAxis = (std::max)(maxValue, std::abs(minValue));
+
+	std::cout << "largestAxis: " << largestAxis << std::endl;
+
+	for (auto& it : AllVertices)
+	{
+		it -= centroid;
+
+		it.x /= largestAxis;
+		it.y /= largestAxis;
+		it.z /= largestAxis;
+	}
+	
+	for (auto& it : vertices)
+	{
+		it.Position -= centroid;
+
+		it.Position.x /= largestAxis;
+		it.Position.y /= largestAxis;
+		it.Position.z /= largestAxis;
+	}
+
 	// process indices
 	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
 	{
