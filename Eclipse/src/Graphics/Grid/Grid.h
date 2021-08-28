@@ -7,6 +7,7 @@ namespace Eclipse
 
 	struct Tile
 	{
+		Tile() {}
 		Tile(float UnitLengthofeachtile , bool in) : 
 			width(UnitLengthofeachtile),
 			FirstTile(in)
@@ -25,7 +26,7 @@ namespace Eclipse
 	{
 	private:
 		unsigned int GridID;
-		int GridScale = 5; // Unit length of each grid
+		float GridScale = 5.0f; // Unit length of each grid
 		int InnerRatio = 1;
 		int SingleXAxisLineThickness = 5;
 		int SingleZAxisLineThickness = 5;
@@ -85,6 +86,7 @@ namespace Eclipse
 		void CalculateGridCoordinates();
 		void CalculateGridSettings();
 		void CalculateStartingPoint(ECVec3& MinimumIn, ECVec3& Maximum);
+		void DebugPrintCoorindates(std::vector<Tile>& in);
 
 		// Drawing of Grid , Must render last
 		void DrawGrid(unsigned int FrameBufferID);

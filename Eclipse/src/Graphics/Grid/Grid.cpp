@@ -223,18 +223,31 @@ namespace Eclipse
             {
                 for (int x = 0; x < GridSize; x++)
                 {
-                    unsigned int PreviousIndex = x;
-                    --PreviousIndex;
+                    unsigned int Index = (z * 3) + x + y;
 
-                    if (GridArray[x].FirstTile == true)
-                        continue;
+                    // Set Center Point
+                    glm::vec3 Center = { StartingPosition.getX() + (x * GridScale) , StartingPosition.getY() + ( (y/9) * GridScale) , StartingPosition.getZ() - (z * GridScale) };
+                    GridArray[Index].CenterPoint = ECVec3{ Center.x, Center.y, Center.z };
 
-                    GridArray[(z * 3) + x + y].CenterPoint.setX(GridArray[(z * 3) + PreviousIndex + y].CenterPoint.getX() + (x * GridScale));
-                    GridArray[(z * 3) + x + y].CenterPoint.setY(GridArray[(z * 3) + PreviousIndex + y].CenterPoint.getY() + (y * GridScale));
-                    GridArray[(z * 3) + x + y].CenterPoint.setZ(GridArray[(z * 3) + PreviousIndex + y].CenterPoint.getZ() - (z * GridScale));
+                    // Set Maximum Point
+                    float test = Center.x + (GridScale / 2);
+                    glm::vec3 Maximum = { Center.x + (GridScale / 2) , Center.y + (GridScale / 2) , Center.z + (GridScale / 2) };
+                    GridArray[Index].MaximumPoint = ECVec3{ Maximum.x, Maximum.y, Maximum.z };
+
+                    // Set Minimum Point
+                    glm::vec3 Minimum = { Center.x - (GridScale / 2) , Center.y - (GridScale / 2) , Center.z - (GridScale / 2) };
+                    GridArray[Index].MinimumPoint = ECVec3{ Minimum.x, Minimum.y, Minimum.z };
+
+                    // Set Width
+                    GridArray[Index].width = Maximum.x - Minimum.x;
+
+                    // Insert into container
+                    gridArray.insert( {Index ,GridArray[Index]});
                 }
             }
         }
+
+        DebugPrintCoorindates(GridArray);
     }
 
     void Grid::CalculateGridSettings()
@@ -273,7 +286,29 @@ namespace Eclipse
     {
         StartingPosition.setX((MinimumIn.getX() + (MinimumIn.getX() + GridScale)) / 2);
         StartingPosition.setY((MinimumIn.getY() + (MinimumIn.getY() + GridScale)) / 2);
-        StartingPosition.setZ((Maximum.getZ()   + (Maximum.getZ()   - GridScale)) / 2);
+        StartingPosition.setZ((Maximum.getZ() + (Maximum.getZ() - GridScale)) / 2);
+    }
+
+    void Grid::DebugPrintCoorindates(std::vector<Tile>& in)
+    {
+        for (int y = 0; y < TotalTiles; y += 9)
+        {
+            for (int z = 0; z < GridSize; z++)
+            {
+                for (int x = 0; x < GridSize; x++)
+                {
+                    unsigned int Index = (z * 3) + x + y;
+
+                    std::cout << "=================================" << std::endl;
+                    std::cout << "= ID            :" << Index << std::endl;
+                    std::cout << "= Maximum Point :" << gridArray[Index].MaximumPoint << std::endl;
+                    std::cout << "= Minimum Point :" << gridArray[Index].MinimumPoint << std::endl;
+                    std::cout << "= Center Point  :" << gridArray[Index].CenterPoint << std::endl;
+                    std::cout << "= Width         :" << gridArray[Index].width << std::endl;
+                    std::cout << "=================================" << std::endl;
+                }
+            }
+        }
     }
 
     void Grid::DrawGrid(unsigned int FrameBufferID)
