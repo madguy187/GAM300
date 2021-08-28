@@ -17,7 +17,8 @@ namespace Eclipse
 	{
 		if (dsz.StartElement("Entity_", true, counter))
 		{
-			DeserializeAllComponents(2);
+			Entity ent = engine->world.CreateEntity();
+			DeserializeAllComponents(ent);
 			dsz.CloseElement();
 		}
 	}
@@ -99,6 +100,30 @@ namespace Eclipse
 		if (dsz.StartElement("TransformComponent"))
 		{
 			DeserializeComponent<TransformComponent>(ent);
+			dsz.CloseElement();
+		}
+
+		if (dsz.StartElement("RenderComponent"))
+		{
+			DeserializeComponent<RenderComponent>(ent);
+			dsz.CloseElement();
+		}
+
+		if (dsz.StartElement("MaterialComponent"))
+		{
+			DeserializeComponent<MaterialComponent>(ent);
+			dsz.CloseElement();
+		}
+
+		if (dsz.StartElement("AabbComponent"))
+		{
+			DeserializeComponent<AabbComponent>(ent);
+			dsz.CloseElement();
+		}
+
+		if (dsz.StartElement("RigidBodyComponent"))
+		{
+			DeserializeComponent<RigidBodyComponent>(ent);
 			dsz.CloseElement();
 		}
 	}

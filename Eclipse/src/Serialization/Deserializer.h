@@ -40,6 +40,48 @@ namespace Eclipse
 			std::string str = GetAttributeValue(att_name);
 			att_data = lexical_cast<EntityType>(str);
 		}
+		
+		template <>
+		inline void ReadAttributeFromElement(const std::string& att_name, CameraComponent::CameraType& att_data)
+		{
+			std::string str = GetAttributeValue(att_name);
+			att_data = lexical_cast<CameraComponent::CameraType>(str);
+		}
+		
+		template <>
+		inline void ReadAttributeFromElement(const std::string& att_name, CameraComponent::ProjectionType& att_data)
+		{
+			std::string str = GetAttributeValue(att_name);
+			att_data = lexical_cast<CameraComponent::ProjectionType>(str);
+		}
+		
+		template <>
+		inline void ReadAttributeFromElement(const std::string& att_name, MaterialComponent::ModelType& att_data)
+		{
+			std::string str = GetAttributeValue(att_name);
+			att_data = lexical_cast<MaterialComponent::ModelType>(str);
+		}
+		
+		template <>
+		inline void ReadAttributeFromElement(const std::string& att_name, RenderComponent::modelIt& att_data)
+		{
+			std::string str = GetAttributeValue(att_name);
+			att_data = Graphics::models.find(str);
+		}
+		
+		template <>
+		inline void ReadAttributeFromElement(const std::string& att_name, RenderComponent::textureIt& att_data)
+		{
+			std::string str = GetAttributeValue(att_name);
+			att_data = Graphics::textures.find(str);
+		}
+		
+		template <>
+		inline void ReadAttributeFromElement(const std::string& att_name, RenderComponent::shaderIt& att_data)
+		{
+			std::string str = GetAttributeValue(att_name);
+			att_data = Graphics::shaderpgms.find(str);
+		}
 
 		template <typename T, size_t N>
 		inline void ReadAttributeFromElement(Vector<T, N>& att_data)
@@ -63,7 +105,7 @@ namespace Eclipse
 				StartElement(name, true, i);
 				for (size_t j = 0; j < N2; ++j)
 				{
-					std::string str = GetAttributeValue(dataname + std::to_string(j));
+					std::string str = GetAttributeValue(dataName + std::to_string(j));
 					att_data[i][j] = lexical_cast<T>(str);
 				}
 				CloseElement();

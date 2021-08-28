@@ -27,7 +27,7 @@ namespace Eclipse
 		inline void SerializeData(const char* name, T element, Args... elements)
 		{
 			sz.StartElement(name);
-			sz.AddAttributeToElement(name, element);
+			sz.AddAttributeToElement("value", element);
 			sz.CloseElement();
 			SerializeData(elements...);
 		}
@@ -114,12 +114,13 @@ namespace Eclipse
 				"Ambient", data.ambient,
 				"Diffuse", data.diffuse,
 				"Specular", data.specular,
+				"HighlightColor", data.HighlightColour,
 				"Shininess", data.shininess,
 				"MaximumShininess", data.MaximumShininess,
 				"RegisterForHighlight", data.RegisterForHighlight,
 				"Highlight", data.Highlight,
+				"Modeltype", data.Modeltype,
 				"Thickness", data.Thickness,
-				"HighlightColor", data.HighlightColour,
 				"ScaleUp", data.ScaleUp
 			);
 			sz.CloseElement();
@@ -251,52 +252,311 @@ namespace Eclipse
 		template<>
 		inline void DeserializeComponent<EntityComponent>(const Entity& ent)
 		{
-			EntityComponent test;
+			EntityComponent comp;
 
 			if (dsz.StartElement("Name"))
 			{
-				dsz.ReadAttributeFromElement("Name", test.Name);
+				dsz.ReadAttributeFromElement("value", comp.Name);
 				dsz.CloseElement();
 			}
 
 			if (dsz.StartElement("Tag"))
 			{
-				dsz.ReadAttributeFromElement("Tag", test.Tag);
+				dsz.ReadAttributeFromElement("value", comp.Tag);
 				dsz.CloseElement();
 			}
 
 			if (dsz.StartElement("IsActive"))
 			{
-				dsz.ReadAttributeFromElement("IsActive", test.IsActive);
+				dsz.ReadAttributeFromElement("value", comp.IsActive);
 				dsz.CloseElement();
 			}
+
+			engine->world.AddComponent<EntityComponent>(ent, comp);
 		}
 
 		template<>
 		inline void DeserializeComponent<TransformComponent>(const Entity& ent)
 		{
-			TransformComponent test;
+			TransformComponent comp;
 
 			if (dsz.StartElement("Position"))
 			{
-				dsz.ReadAttributeFromElement(test.position);
+				dsz.ReadAttributeFromElement(comp.position);
 				dsz.CloseElement();
 			}
 
 			if (dsz.StartElement("Rotation"))
 			{
-				dsz.ReadAttributeFromElement(test.rotation);
+				dsz.ReadAttributeFromElement(comp.rotation);
 				dsz.CloseElement();
 			}
 
 			if (dsz.StartElement("Scale"))
 			{
-				dsz.ReadAttributeFromElement(test.scale);
+				dsz.ReadAttributeFromElement(comp.scale);
 				dsz.CloseElement();
 			}
-			std::cout << test.position << std::endl;
-			std::cout << test.rotation << std::endl;
-			std::cout << test.scale << std::endl;
+
+			engine->world.AddComponent<TransformComponent>(ent, comp);
+		}
+
+		template<>
+		inline void DeserializeComponent<RenderComponent>(const Entity& ent)
+		{
+			RenderComponent comp;
+
+			if (dsz.StartElement("Color"))
+			{
+				dsz.ReadAttributeFromElement(comp.color);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("TextureIdx"))
+			{
+				dsz.ReadAttributeFromElement(comp.textureIdx);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("HasTexture"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.hasTexture);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("IsQuad"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.isQuad);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("ModelNDC_XForm"))
+			{
+				dsz.ReadAttributeFromElement(comp.modelNDC_xform);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("ModelRef"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.modelRef);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("TextureRef") && comp.hasTexture)
+			{
+				dsz.ReadAttributeFromElement("value", comp.textureRef);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("ShaderRef"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.shaderRef);
+				dsz.CloseElement();
+			}
+
+			comp.ID = ent;
+
+			if (dsz.StartElement("Name"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.name);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("NewLayer"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.newLayer);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("LayerNum"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.layerNum);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("Transparency"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.transparency);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("LightColor"))
+			{
+				dsz.ReadAttributeFromElement(comp.lightColor);
+				dsz.CloseElement();
+			}
+
+			engine->world.AddComponent<RenderComponent>(ent, comp);
+		}
+		
+		template<>
+		inline void DeserializeComponent<MaterialComponent>(const Entity& ent)
+		{
+			MaterialComponent comp;
+
+			comp.ID = ent;
+
+			if (dsz.StartElement("Ambient"))
+			{
+				dsz.ReadAttributeFromElement(comp.ambient);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Diffuse"))
+			{
+				dsz.ReadAttributeFromElement(comp.diffuse);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Specular"))
+			{
+				dsz.ReadAttributeFromElement(comp.specular);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("HighlightColor"))
+			{
+				dsz.ReadAttributeFromElement(comp.HighlightColour);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Shininess"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.shininess);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("MaximumShininess"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.MaximumShininess);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("RegisterForHighlight"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.RegisterForHighlight);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Highlight"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.Highlight);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("Modeltype"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.Modeltype);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Thickness"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.Thickness);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("ScaleUp"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.ScaleUp);
+				dsz.CloseElement();
+			}
+
+			engine->world.AddComponent<MaterialComponent>(ent, comp);
+		}
+		
+		template<>
+		inline void DeserializeComponent<AabbComponent>(const Entity& ent)
+		{
+			AabbComponent comp;
+
+			if (dsz.StartElement("Center"))
+			{
+				dsz.ReadAttributeFromElement(comp.center);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Min"))
+			{
+				dsz.ReadAttributeFromElement(comp.min);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Max"))
+			{
+				dsz.ReadAttributeFromElement(comp.max);
+				dsz.CloseElement();
+			}
+
+			engine->world.AddComponent<AabbComponent>(ent, comp);
+		}
+		
+		template<>
+		inline void DeserializeComponent<RigidBodyComponent>(const Entity& ent)
+		{
+			RigidBodyComponent comp;
+			
+			if (dsz.StartElement("IsStatic"))
+			{
+				dsz.ReadAttributeFromElement("value", comp._Static);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("IsKinematic"))
+			{
+				dsz.ReadAttributeFromElement("value", comp._Kinematic);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("IsEnableGravity"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.enableGravity);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("IsEnableGravity"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.enableGravity);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("IsEnableRotation"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.enableRotation);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("Mass"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.mass);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("Drag"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.drag);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("AngDrag"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.angdrag);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Velocity"))
+			{
+				dsz.ReadAttributeFromElement(comp.velocity);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("Forces"))
+			{
+				dsz.ReadAttributeFromElement(comp.forces);
+				dsz.CloseElement();
+			}
+
+			engine->world.AddComponent<RigidBodyComponent>(ent, comp);
 		}
 
 		void SerializeEntity(const Entity& ent, const size_t& counter);

@@ -1,4 +1,6 @@
 #pragma once
+#include "ECS/ComponentManager/Components/MaterialComponent.h"
+
 namespace Eclipse
 {
     template <typename T, typename U>
@@ -185,7 +187,6 @@ namespace Eclipse
       }
     }
 
-
     template <>
     inline const std::string lexical_cast(const CameraComponent::ProjectionType& type)
     {
@@ -218,6 +219,52 @@ namespace Eclipse
       else
       {
         return CameraComponent::ProjectionType::Perspective;
+      }
+    }
+
+    template <>
+    inline const std::string lexical_cast(const MaterialComponent::ModelType& type)
+    {
+      std::stringstream stream;
+
+      switch (type)
+      {
+      case MaterialComponent::ModelType::BasicPrimitives:
+        stream << "BasicPrimitives";
+        break;
+      case MaterialComponent::ModelType::Models3D:
+        stream << "Models3D";
+        break;
+      case MaterialComponent::ModelType::Maxcount:
+        stream << "Maxcount";
+        break;
+      case MaterialComponent::ModelType::None:
+      default:
+        stream << "None";
+        break;
+      }
+
+      return stream.str();
+    }
+
+    template <>
+    inline const MaterialComponent::ModelType lexical_cast(const std::string& type)
+    {
+      if (type == "BasicPrimitives")
+      {
+        return MaterialComponent::ModelType::BasicPrimitives;
+      }
+      else if (type == "Models3D")
+      {
+        return MaterialComponent::ModelType::Models3D;
+      }
+      else if (type == "Maxcount")
+      {
+        return MaterialComponent::ModelType::Maxcount;
+      }
+      else
+      {
+        return MaterialComponent::ModelType::None;
       }
     }
 }
