@@ -105,7 +105,6 @@ namespace Eclipse
 		auto& transform = engine->world.GetComponent<TransformComponent>(ID);
 		auto& entcom = engine->world.GetComponent<EntityComponent>(ID);
 
-		engine->gPicker.GenerateAabb(ID, transform);
 		EntityHierarchyList_.push_back(ID);
 		EntityToTypeMap_.insert(std::pair<Entity, EntityType>(ID, entcom.Tag));
 		GEHIndex_ = EntityHierarchyList_.size() - 1;
