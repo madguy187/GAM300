@@ -89,7 +89,7 @@ namespace Eclipse
 
 		//Check this please - Rachel
 		auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
-		engine->gPicker.GenerateAabb(ID, _transform);
+		engine->gPicker.GenerateAabb(ID, _transform, type);
 
 		EntityHierarchyList_.push_back(ID);
 		EntityToTypeMap_.insert(std::pair<Entity, EntityType>(ID, type));

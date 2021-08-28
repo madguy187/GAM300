@@ -397,7 +397,7 @@ namespace Eclipse
 
     bool MaterialManager::HighlightClick(unsigned int ModelID)
     {
-        if (engine->world.CheckComponent< MaterialComponent>(ModelID) == true)
+        if (engine->world.CheckComponent<MaterialComponent>(ModelID) == true)
         {
             MaterialComponent& PrepareToHighlight = engine->world.GetComponent<MaterialComponent>(ModelID);
 
@@ -416,12 +416,17 @@ namespace Eclipse
 
     bool MaterialManager::UnHighlight(unsigned int ModelID)
     {
-        MaterialComponent& PrepareToHighlight = engine->world.GetComponent<MaterialComponent>(ModelID);
-
-        if (PrepareToHighlight.Highlight == true )
+        if (engine->world.CheckComponent<MaterialComponent>(ModelID) == true)
         {
-            PrepareToHighlight.Highlight = false;
-            return true;
+            MaterialComponent& PrepareToHighlight = engine->world.GetComponent<MaterialComponent>(ModelID);
+
+            if (PrepareToHighlight.Highlight == true)
+            {
+                PrepareToHighlight.Highlight = false;
+                return true;
+            }
+
+            return false;
         }
 
         return false;
