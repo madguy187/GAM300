@@ -8,6 +8,7 @@
 #include "Mono/Manager/MonoManager.h"
 #include "AssimpModel/AssimpManager.h"
 #include "Graphics/Picker/PickingManager.h"
+#include "Physics/PhysicsManager.h"
 
 namespace Eclipse
 {
@@ -24,7 +25,7 @@ namespace Eclipse
 		MonoManager mono;
 	    AssimpModelManager AssimpManager;
 		PickingManager gPicker;
-
+		PhysicsManager gPhysics;
 		void Init();
 		void Run();
 

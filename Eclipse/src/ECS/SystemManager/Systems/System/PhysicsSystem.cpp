@@ -8,4 +8,9 @@ void PhysicsSystem::Update()
 		engine->gPhysics.UpdateActor(entity);
 	}
 	engine->gPhysics.Simulate();
+
+	for (auto const& entity : mEntities)
+	{
+		engine->gPhysics.GetActorPosition(entity);
+	}
 }

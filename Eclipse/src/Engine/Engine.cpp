@@ -8,10 +8,12 @@
 #include "ECS/ComponentManager/Components/AabbComponent.h"
 #include "ECS/ComponentManager/Components/DirectionalLightComponent.h"
 #include "ECS/ComponentManager/Components/SpotLightComponent.h"
+#include "ECS/ComponentManager/Components/RigidBodyComponent.h"
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
 #include "ECS/SystemManager/Systems/System/EditorSystem.h"
 #include "ECS/SystemManager/Systems/System/LightingSystem.h"
+#include "ECS/SystemManager/Systems/System/PhysicsSystem.h"
 #include "ImGui/Setup/ImGuiSetup.h"
 
 bool Tester1(const Test1& e)
@@ -64,11 +66,13 @@ namespace Eclipse
         world.RegisterComponent<DirectionalLightComponent>();
         world.RegisterComponent<AabbComponent>();
         world.RegisterComponent<SpotLightComponent>();
+        world.RegisterComponent<RigidBodyComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
         world.RegisterSystem<CameraSystem>();
         world.RegisterSystem<LightingSystem>();
+        world.RegisterSystem<PhysicsSystem>();
 
         // Render System
         Signature RenderSys = RenderSystem::RegisterAll();
@@ -90,6 +94,7 @@ namespace Eclipse
         RenderSystem::Init();
         CameraSystem::Init();
         LightingSystem::Init();
+        gPhysics.Init();
         engine->AssimpManager.AddComponents();
 
         float currTime = static_cast<float>(clock());

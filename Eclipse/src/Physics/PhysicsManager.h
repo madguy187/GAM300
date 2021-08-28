@@ -13,7 +13,7 @@ namespace Eclipse
 		PxScene* Px_Scene;
 		std::array<physx::PxActor*, MAX_ENTITY> Px_Actors;
 	public:
-		void Load();
+		void Init();
 		void Simulate();
 		void Unload();
 

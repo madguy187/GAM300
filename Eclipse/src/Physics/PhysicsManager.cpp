@@ -2,7 +2,7 @@
 #include "PhysicsManager.h"
 namespace Eclipse
 {
-	void PhysicsManager::Load()
+	void PhysicsManager::Init()
 	{
 		static PxDefaultErrorCallback gDefaultErrorCallback;
 		static PxDefaultAllocator gDefaultAllocatorCallback;
@@ -215,15 +215,30 @@ namespace Eclipse
 	void PhysicsManager::UpdateActor(Entity ent)
 	{
 		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
+		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
 		if (rigid._Static)
-			return;
+		{
+			PxVec3 temptrans;
+			temptrans.x = transform.position.x;
+			temptrans.y = transform.position.y;
+			temptrans.z = transform.position.z;
 
+			dynamic_cast<PxRigidStatic*>(Px_Actors[ent])->setGlobalPose(PxTransform{ temptrans });
+			return;
+		}
 		if (Px_Actors[ent] != nullptr)
 		{
 			PxVec3 temp;
-			temp.x =rigid.forces.getX();
+			PxVec3 temptrans;
+
+			temp.x = rigid.forces.getX();
 			temp.y = rigid.forces.getY();
 			temp.z = rigid.forces.getZ();
+			temptrans.x = transform.position.x;
+			temptrans.y = transform.position.y;
+			temptrans.z = transform.position.z;
+
+			dynamic_cast<PxRigidDynamic*>(Px_Actors[ent])->setGlobalPose(PxTransform{ temptrans });
 			dynamic_cast<PxRigidDynamic*>(Px_Actors[ent])->setForceAndTorque(temp, { 0,0,0 });
 			dynamic_cast<PxRigidDynamic*>(Px_Actors[ent])->setMass(rigid.mass);
 			dynamic_cast<PxRigidDynamic*>(Px_Actors[ent])->setActorFlag(PxActorFlag::eDISABLE_GRAVITY,rigid.enableGravity ? false : true);
@@ -233,6 +248,14 @@ namespace Eclipse
 	void PhysicsManager::GetActorPosition(Entity ent)
 	{
 		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
+		if (rigid._Static)
+			return;
+		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
+
+		PxTransform temp = dynamic_cast<PxRigidDynamic*>(Px_Actors[ent])->getGlobalPose();
+		transform.position.setX(temp.p.x);
+		transform.position.setY(temp.p.y);
+		transform.position.setZ(temp.p.z);
 	}
 
 	void PhysicsManager::Simulate()
