@@ -6,7 +6,7 @@
 
 namespace Eclipse
 {
-    class AABB
+    class AABB_
     {
 
     private:
@@ -21,7 +21,7 @@ namespace Eclipse
         std::vector<glm::vec3> Position;
         std::vector<glm::vec3> AABB_Size;
 
-        AABB();
+        AABB_();
         void Init();
         void Render(Shader shader, CameraComponent& camera);
         void AddInstance(BoundingRegion br, glm::vec3 pos);

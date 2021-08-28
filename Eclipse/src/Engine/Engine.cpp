@@ -16,6 +16,7 @@
 #include "ECS/SystemManager/Systems/System/LightingSystem.h"
 #include "ImGui/Setup/ImGuiSetup.h"
 #include "ECS/SystemManager/Systems/System/MaterialSystem.h"
+#include "ECS/SystemManager/Systems/System/GridSystem.h"
 
 bool Tester1(const Test1& e)
 {
@@ -74,6 +75,7 @@ namespace Eclipse
         world.RegisterSystem<CameraSystem>();
         world.RegisterSystem<LightingSystem>();
         world.RegisterSystem<MaterialSystem>();
+        world.RegisterSystem<GridSystem>();
 
         // Render System
         Signature RenderSys = RenderSystem::RegisterAll();
@@ -99,6 +101,7 @@ namespace Eclipse
         RenderSystem::Init();
         CameraSystem::Init();
         LightingSystem::Init();
+        GridSystem::Init();
 
         float currTime = static_cast<float>(clock());
         float accumulatedTime = 0.0f;
@@ -155,6 +158,9 @@ namespace Eclipse
 
             // FRAMEBUFFER BIND =============================
             engine->GraphicsManager.GlobalFrameBufferBind();
+            
+            // GRID SYSTEM =============================
+            world.Update<GridSystem>();
 
             // RENDERSYSTEM =============================
             world.Update<RenderSystem>();

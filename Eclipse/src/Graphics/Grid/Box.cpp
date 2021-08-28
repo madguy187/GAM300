@@ -3,7 +3,7 @@
 
 namespace Eclipse
 {
-    AABB::AABB() :
+    AABB_::AABB_() :
         VAO{ 1 },
         VBO{ 1 },
         EBO{ 1 }
@@ -11,7 +11,7 @@ namespace Eclipse
 
     }
 
-    void AABB::Init()
+    void AABB_::Init()
     {
         vertices =
         {
@@ -68,7 +68,7 @@ namespace Eclipse
         glBindVertexArray(0);
     }
 
-    void AABB::Render(Shader shader, CameraComponent& camera)
+    void AABB_::Render(Shader shader, CameraComponent& camera)
     {
         GLint uniform_var_loc1 = shader.GetLocation("view");
         GLint uniform_var_loc2 = shader.GetLocation("projection");
@@ -107,7 +107,7 @@ namespace Eclipse
         glBindVertexArray(0);
     }
 
-    void AABB::AddInstance(BoundingRegion br, glm::vec3 pos)
+    void AABB_::AddInstance(BoundingRegion br, glm::vec3 pos)
     {
         glm::vec3 positions = br.calculateCenter() + pos;
         glm::vec3 dim = br.calculateDimensions();
@@ -116,19 +116,19 @@ namespace Eclipse
         AABB_Size.push_back(dim);
     }
 
-    void AABB::Cleanup()
+    void AABB_::Cleanup()
     {
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
     }
 
-    void AABB::Reset()
+    void AABB_::Reset()
     {
         Position.clear();
         AABB_Size.clear();
     }
 
-    void AABB::DrawAll(unsigned int FramebufferID)
+    void AABB_::DrawAll(unsigned int FramebufferID)
     {
         if (DrawAABBS)
         {

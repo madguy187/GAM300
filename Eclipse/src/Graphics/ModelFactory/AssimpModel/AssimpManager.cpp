@@ -57,12 +57,67 @@ namespace Eclipse
         }
         // ----------------------------------------------------------------------------------------------------------
 
-        //std::cout << NewModel->GetVertices().size() << std::endl;
-        //
-        //for (auto& i : NewModel->GetVertices())
-        //{
-        //	std::cout << "Position"  << i.x << " " << i.y << " " << i.x << std::endl;
-        //}
+        //Test Code
+        if (0)
+        {
+            AssimpModel* ONE = new AssimpModel(false);
+            ONE->LoadAssimpModel(PathName);
+            ONE->SetName(name);
+            ONE->SetModelType(ModelType::ANIMAL);
+
+            AssimpModel* TWO = new AssimpModel(false);
+            TWO->LoadAssimpModel(PathName);
+            TWO->SetName(name);
+
+            AssimpModel* Three = new AssimpModel(false);
+            Three->LoadAssimpModel(PathName);
+            Three->SetName(name);
+
+            ONE->test.maxX = 15;
+            ONE->test.maxY = 15;
+            ONE->test.maxZ = 15;
+            ONE->test.minX = -15;
+            ONE->test.minY = -15;
+            ONE->test.minZ = -15;
+            ONE->test.maxX = 15;
+            ONE->test.EntityID = 10;
+
+            TWO->test.maxX = 5;
+            TWO->test.maxY = 5;
+            TWO->test.maxZ = 5;
+            TWO->test.minX = -5;
+            TWO->test.minY = -5;
+            TWO->test.minZ = -5;
+            TWO->test.EntityID = 11;
+
+            Three->test.maxX = -20;
+            Three->test.maxY = -20;
+            Three->test.maxZ = -20;
+            Three->test.minX = -50;
+            Three->test.minY = -50;
+            Three->test.minZ = -50;
+            Three->test.EntityID = 12;
+
+            AssimpModelContainer AABBCC;
+
+            AABBCC.insert(std::pair<unsigned int, AssimpModel*>(ONE->test.EntityID, ONE));
+            AABBCC.insert(std::pair<unsigned int, AssimpModel*>(TWO->test.EntityID, TWO));
+            AABBCC.insert(std::pair<unsigned int, AssimpModel*>(Three->test.EntityID, Three));
+
+            std::shared_ptr<AssimpModel>first(ONE);
+            std::shared_ptr<AssimpModel>second(TWO);
+            std::shared_ptr<AssimpModel>third(Three);
+
+            // tiles
+            engine->test.InsertObject(first);
+            engine->test.InsertObject(second);
+            engine->test.InsertObject(third);
+
+            //pass in model to check with the grid
+            auto& aabbCollisions = engine->test.queryOverlaps(first.get()->getAABB());
+
+            std::cout << AABBCC[aabbCollisions[0]]->GetName() << std::endl;
+        }
 
     }
 
@@ -74,7 +129,7 @@ namespace Eclipse
         EDITOR_LOG_INFO("All Necessary Models Loaded");
     }
 
-    void AssimpModelManager::Draw(unsigned int FrameBufferID, GLenum Mode, AABB* box, CameraComponent::CameraType _camType)
+    void AssimpModelManager::Draw(unsigned int FrameBufferID, GLenum Mode, AABB_* box, CameraComponent::CameraType _camType)
     {
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
 
@@ -132,7 +187,7 @@ namespace Eclipse
         }
     }
 
-    void AssimpModelManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID, AABB* box)
+    void AssimpModelManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID, AABB_* box)
     {
         MaterialComponent& material = engine->world.GetComponent<MaterialComponent>(ModelID);
         GLint uniform_var_loc1 = _shdrpgm.GetLocation("material.shininess");
@@ -250,13 +305,18 @@ namespace Eclipse
 
     AssimpModelManager::~AssimpModelManager()
     {
-        for (auto i : AssimpModelContainer_)
-        {
-            if (i.second != nullptr)
-            {
-                delete i.second;
-            }
-        }
+        //for (auto i : AssimpModelContainer_)
+        //{
+        //    if (i.second != nullptr)
+        //    {
+        //        delete i.second;
+        //    }
+        //}
+    }
+
+    void AssimpModelManager::addSpriteToCollisionSet(const std::shared_ptr<AssimpModel>& sprite)
+    {
+        engine->test.InsertObject(sprite);
     }
 
     void AssimpModelManager::TestPath(std::string& path)
