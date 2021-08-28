@@ -14,7 +14,8 @@ namespace Eclipse
 		void InitMenu();
 		void InitFont();
 
-		Entity CreateEntity(EntityType type);
+		Entity CreateDefaultEntity(EntityType type);
+		void RegisterExistingEntity(Entity ID);
 		void DestroyEntity(Entity ID);
 
 		std::vector<std::unique_ptr<ECGuiWindow>>& GetAllWindows();
