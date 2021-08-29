@@ -166,7 +166,8 @@ namespace Eclipse
 
             // FRAMEBUFFER BIND =============================
             engine->GraphicsManager.GlobalFrameBufferBind();
-            
+            engine->GraphicsManager.ResetInstancedDebugBoxes();
+
             // GRID SYSTEM =============================
             world.Update<GridSystem>();
 

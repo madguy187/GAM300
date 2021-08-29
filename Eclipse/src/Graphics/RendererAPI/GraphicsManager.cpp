@@ -414,6 +414,11 @@ void Eclipse::GraphicsManager::CheckUniformLoc(RenderComponent& sprite, unsigned
     }
 }
 
+void Eclipse::GraphicsManager::ResetInstancedDebugBoxes()
+{
+    AllAABBs.Reset();
+}
+
 /*************************************************************************
   FrameBuffer Things
 *************************************************************************/

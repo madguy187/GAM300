@@ -45,6 +45,7 @@ namespace Eclipse
         void SetGammaCorrection(float in);
         void UploadGlobalUniforms();
         void CheckUniformLoc(RenderComponent& sprite, unsigned int id, unsigned int framebufferID);
+        void ResetInstancedDebugBoxes();
 
     private:
         float GammaCorrection = 1.0f;
