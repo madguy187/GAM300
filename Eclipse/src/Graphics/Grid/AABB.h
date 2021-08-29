@@ -37,8 +37,8 @@ namespace Eclipse
         void SetMaxMin(ECVec3& Max, ECVec3& Min , unsigned int id);
         void SetEntityID(unsigned int id);
         ECVec3 GetMinimum(TransformComponent& in);
-
         ECVec3 GetMaximum(TransformComponent& in);
+        void UpdateMinMax(TransformComponent& in);
 
     private:
         float CalculateSurfaceArea();

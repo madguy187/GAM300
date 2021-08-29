@@ -165,6 +165,26 @@ AABB Eclipse::AssimpModel::getAABB() const
 	return AABB_Property;
 }
 
+AABB Eclipse::AssimpModel::SetAABB(TransformComponent& in)
+{
+	glm::vec3 scale = in.scale.ConvertToGlmVec3Type();
+	glm::vec3 position = in.position.ConvertToGlmVec3Type();
+
+	glm::vec3 halfExt = scale / 2.0f;
+	glm::vec3 min{ position.x - halfExt.x, position.y - halfExt.y, position.z - halfExt.z };
+	glm::vec3 max{ position.x + halfExt.x, position.y + halfExt.y, position.z + halfExt.z };
+
+	AABB_Property.minX = min.x;
+	AABB_Property.minY = min.y;
+	AABB_Property.minZ = min.z;
+
+	AABB_Property.maxX = max.x;
+	AABB_Property.maxY = max.y;
+	AABB_Property.maxZ = max.z;
+
+	return AABB_Property;
+}
+
 void Eclipse::AssimpModel::GetTextureNames()
 {
 	for (int i = 0; i < Textures_loaded.size(); i++)

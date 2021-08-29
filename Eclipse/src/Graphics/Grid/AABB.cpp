@@ -88,6 +88,24 @@ namespace Eclipse
         return max;
     }
 
+    void AABB::UpdateMinMax(TransformComponent& in)
+    {
+        glm::vec3 scale = in.scale.ConvertToGlmVec3Type();
+        glm::vec3 position = in.position.ConvertToGlmVec3Type();
+
+        glm::vec3 halfExt = scale / 2.0f;
+        glm::vec3 min{ position.x - halfExt.x, position.y - halfExt.y, position.z - halfExt.z };
+        glm::vec3 max{ position.x + halfExt.x, position.y + halfExt.y, position.z + halfExt.z };
+
+        minX = min.x;
+        minY = min.y;
+        minZ = min.z;
+
+        maxX = max.x;
+        maxY = max.y;
+        maxZ = max.z;
+    }
+
     void AABB::SetIsGrid(bool in)
     {
         IsGrid = in;
@@ -124,8 +142,8 @@ namespace Eclipse
     bool AABB::Overlaps(const AABB& other) const
     {
         return maxX > other.minX && minX < other.maxX&&
-            maxY > other.minY && minY < other.maxY&&
-            maxZ > other.minZ && minZ < other.maxZ;
+               maxY > other.minY && minY < other.maxY&&
+               maxZ > other.minZ && minZ < other.maxZ;
     }
 
     bool AABB::Contains(const AABB& other) const

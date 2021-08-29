@@ -65,6 +65,7 @@ namespace Eclipse
         std::vector<glm::vec3> GetVertices();
 
         AABB getAABB() const override;
+        AABB SetAABB(TransformComponent& in);
     };
 
 }

@@ -1,24 +1,20 @@
 #include "pch.h"
 #include "GridSystem.h"
 
-void Eclipse::GridSystem::Init()
+namespace Eclipse
 {
-
-}
-
-void Eclipse::GridSystem::Update()
-{
-    for (auto& M : engine->AssimpManager.GetContainer())
+    void GridSystem::Init()
     {
-        unsigned int EntityID = M.first;
-        auto& Model = M.second;
 
-        auto& ModelVsGrid = engine->test.CheckOverlap(Model->getAABB());
+    }
 
-        if (ModelVsGrid.size() >= 1)
+    void GridSystem::Update()
+    {
+        for (auto& M : engine->AssimpManager.GetContainer())
         {
-            auto& unoccupied = engine->GraphicsManager.GridManager->GetOccupiedTiles(ModelVsGrid);
-            auto& Coordinates = engine->world.GetComponent<TransformComponent>(EntityID);
+            auto& Model = M.second;
+            auto& Transform = engine->world.GetComponent<TransformComponent>(M.first);
+            auto& ModelVsGrid = engine->test.CheckOverlap(Model->SetAABB(Transform));
         }
     }
 }
