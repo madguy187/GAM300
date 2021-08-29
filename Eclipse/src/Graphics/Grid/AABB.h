@@ -4,10 +4,9 @@
 
 namespace Eclipse
 {
-    struct AABB
+    class AABB
     {
     public:
-        unsigned int EntityID = 0;
         float minX;
         float minY;
         float minZ;
@@ -16,6 +15,11 @@ namespace Eclipse
         float maxZ;
         float surfaceArea;
 
+    private:
+        unsigned int EntityID = 0;
+        bool IsGrid = false;
+
+    public:
         AABB();
         AABB(float minX, float minY, float minZ, float maxX, float maxY, float maxZ); // :
 
@@ -27,9 +31,19 @@ namespace Eclipse
         float GetWidth();
         float GetHeight();
         float GetDepth();
+        unsigned int GetEntityID();
+        bool CheckIsGrid();
+        void SetIsGrid(bool in);
+        void SetMaxMin(ECVec3& Max, ECVec3& Min , unsigned int id);
+        void SetEntityID(unsigned int id);
+        ECVec3 GetMinimum(TransformComponent& in);
+
+        ECVec3 GetMaximum(TransformComponent& in);
 
     private:
         float CalculateSurfaceArea();
+        void SetMinimum(ECVec3& in);
+        void SetMaximum(ECVec3& in);
     };
 }
 #endif // DYNAMICTREE_AABB_H

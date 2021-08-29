@@ -1,96 +1,114 @@
 #pragma once
 #include "Graphics/ModelFactory/BasicPrimitives/Quad.h"
+#include "Graphics/Grid/IAABB.h"
+#include "Graphics/Grid/AABB.h"
 
 namespace Eclipse
 {
-	// GridScale % InnerRatio Should be 0 as it gives u the number of boxes inside a grid
+    typedef unsigned int TILE_ID; // Each Tile ID
 
-	struct Tile
-	{
-		Tile() {}
-		Tile(float UnitLengthofeachtile , bool in) : 
-			width(UnitLengthofeachtile),
-			FirstTile(in)
-		{
+    // GridScale % InnerRatio Should be 0 as it gives u the number of boxes inside a grid
 
-		}
+    struct Tile : public IAABB
+    {
+        Tile() {}
+        Tile(float UnitLengthofeachtile, bool in) :
+            width(UnitLengthofeachtile),
+            FirstTile(in)
+        {
+            // If its the First Tile , Will be 0
+            if (in == true)
+            {
+                aabb.SetEntityID(0);
+            }
 
-		ECVec3 MinimumPoint{ 0.0f,0.0f,0.0f };
-		ECVec3 MaximumPoint{ 0.0f,0.0f,0.0f };
-		ECVec3 CenterPoint{ 0.0f,0.0f,0.0f };
-		bool FirstTile = false;
-		float width; //width = height!
-	};
+            aabb.SetIsGrid(true);
+        }
 
-	class Grid
-	{
-	private:
-		unsigned int GridID;
-		float GridScale = 5.0f; // Unit length of each grid
-		int InnerRatio = 1;
-		int SingleXAxisLineThickness = 5;
-		int SingleZAxisLineThickness = 5;
-		float XAxisColour = 1.0f;
-		float ZAxisColour = 1.0f;
-		ECVec3 GridColour{ 0.3f,0.3f,0.3f };
-		Quad* WholeGrid = nullptr;
-		Shader* ShaderRef = nullptr;
-		std::string ShaderName;
+        AABB aabb;
+        ECVec3 MinimumPoint{ 0.0f,0.0f,0.0f };
+        ECVec3 MaximumPoint{ 0.0f,0.0f,0.0f };
+        ECVec3 CenterPoint{ 0.0f,0.0f,0.0f };
+        bool FirstTile = false;
+        float width = 0.0f; //width = height!
+        TILE_ID GridID = 0;
+        bool Occupied = false;
 
-		// Coordinates Setup
-		unsigned int GridSize = 3; // Number of tiles each side
-		unsigned int TotalTiles = 0;
-		float Grid3x3[10][10][10];
-		ECVec3 XYZ_Length{ 0, 0, 0 };
-		ECVec3 Minimum{ 0, 0, 0 };
-		ECVec3 Maximum{ 0, 0, 0 };
-		std::vector<Tile> GridArray; //array of all the points;
-		std::map<unsigned int, Tile> gridArray; //key = the grid count;
-		unsigned int Length = 0;
-		ECVec3 StartingPosition{ 0.0f,0.0f,0.0f }; // Starting position of the bottom left most tile
+        AABB getAABB() const override;
+    };
 
-		// Not used yet
-		float Fading = 0.0f;
-		float Transparency = 1.0f;
+    class Grid
+    {
+    private:
+        unsigned int GridID; // Whole Grtid ID
+        float GridScale = 5.0f; // Unit length of each grid
+        int InnerRatio = 1;
+        int SingleXAxisLineThickness = 5;
+        int SingleZAxisLineThickness = 5;
+        float XAxisColour = 1.0f;
+        float ZAxisColour = 1.0f;
+        ECVec3 GridColour{ 0.3f,0.3f,0.3f };
+        Quad* WholeGrid = nullptr;
+        Shader* ShaderRef = nullptr;
+        std::string ShaderName;
 
-	public:
-		bool Visible = true;
+        // Coordinates Setup
+        unsigned int GridSize = 4; // Number of tiles each side
+        unsigned int TotalTiles = 0;
+        ECVec3 XYZ_Length{ 0, 0, 0 };
+        ECVec3 Minimum{ 0, 0, 0 };
+        ECVec3 Maximum{ 0, 0, 0 };
+        std::vector<Tile> GridArray; //array of all the points;
+        std::map<unsigned int, Tile> gridArray; //key = the grid count;
+        unsigned int Length = 0;
+        ECVec3 StartingPosition{ 0.0f,0.0f,0.0f }; // Starting position of the bottom left most tile
 
-		Quad* GetModelReference();
-		Shader* GetShaderReference();
-		ECVec3 GetGridColour();
-		float GetTransparency();
-		float GetGridScale();
-		unsigned int GetGridID();
-		int GetInnerRatio();
-		int GetSingleZ_Thickness();
-		int GetSingleX_Thickness();
-		float GetXAxisColour();
-		float GetZAxisColour();
+        // Not used yet
+        float Fading = 0.0f;
+        float Transparency = 1.0f;
 
-		void SetTransparency(float in);
-		void SetGridToShow(bool in);
-		void SetGridScale(float in);
-		void SetInnerRatio(int& in);
-		void SetGridColour(ECVec3& in);
-		void SetSingleZ_Thickness(int& in);
-		void SetSingleX_Thickness(int& in);
-		void SetXAxisColour(float& in);
-		void SetZAxisColour(float& in);
+    public:
+        bool Visible = true;
 
-		void DebugPrint();
-		bool CheckShowGrid();
-		void UseFrameBuffer(unsigned int FramebufferID);
-		void CheckUniformLocation(unsigned int GridID);
-		void Init();
-		void CalculateGridCoordinates();
-		void CalculateGridSettings();
-		void CalculateStartingPoint(ECVec3& MinimumIn, ECVec3& Maximum);
-		void DebugPrintCoorindates(std::vector<Tile>& in);
+        Quad* GetModelReference();
+        Shader* GetShaderReference();
+        ECVec3 GetGridColour();
+        float GetTransparency();
+        float GetGridScale();
+        unsigned int GetGridID();
+        int GetInnerRatio();
+        int GetSingleZ_Thickness();
+        int GetSingleX_Thickness();
+        float GetXAxisColour();
+        float GetZAxisColour();
 
-		// Drawing of Grid , Must render last
-		void DrawGrid(unsigned int FrameBufferID);
+        void SetTransparency(float in);
+        void SetGridToShow(bool in);
+        void SetGridScale(float in);
+        void SetInnerRatio(int& in);
+        void SetGridColour(ECVec3& in);
+        void SetSingleZ_Thickness(int& in);
+        void SetSingleX_Thickness(int& in);
+        void SetXAxisColour(float& in);
+        void SetZAxisColour(float& in);
 
-		~Grid();
-	};
+        void DebugPrint();
+        bool CheckShowGrid();
+        void UseFrameBuffer(unsigned int FramebufferID);
+        void CheckUniformLocation(unsigned int GridID);
+        void Init();
+        void CalculateGridCoordinates();
+        void CalculateGridSettings();
+        void CalculateStartingPoint(ECVec3& MinimumIn, ECVec3& Maximum);
+        void DebugPrintCoorindates(std::vector<Tile>& in);
+
+        bool CheckTileOccupied(TILE_ID tileID);
+        TILE_ID GetTile();
+        std::vector<TILE_ID> GetOccupiedTiles(std::vector<TILE_ID>& in);
+
+        // Drawing of Grid , Must render last
+        void DrawGrid(unsigned int FrameBufferID);
+
+        ~Grid();
+    };
 }

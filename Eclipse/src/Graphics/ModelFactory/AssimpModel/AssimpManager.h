@@ -35,8 +35,6 @@ namespace Eclipse
         void TestPath(std::string& path);
         AssimpModel* GetModel(unsigned int ID);
         ~AssimpModelManager();
-
-        void addSpriteToCollisionSet(const std::shared_ptr<AssimpModel>& sprite);
     };
 }
 #endif // ASSIMP_MANAGER_H

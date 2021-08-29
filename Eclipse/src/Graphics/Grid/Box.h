@@ -20,6 +20,7 @@ namespace Eclipse
         bool DrawAABBS = true;
         std::vector<glm::vec3> Position;
         std::vector<glm::vec3> AABB_Size;
+        int Counter = 0;
 
         AABB_();
         void Init();

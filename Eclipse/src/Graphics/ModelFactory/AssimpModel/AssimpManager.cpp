@@ -5,31 +5,17 @@ namespace Eclipse
 {
     void AssimpModelManager::CreateModel(unsigned int ID, std::string name, std::string FolderName, std::string filename)
     {
-        //Entity ID = engine->world.CreateEntity();
-        //std::cout << "Assimp ID: " << ID << std::endl;
-
         // Add Required Components
         engine->world.AddComponent(ID, MaterialComponent{});
-        //engine->world.AddComponent(ID, TransformComponent{});
-        //engine->world.AddComponent(ID, EntityComponent{ EntityType::ENT_UNASSIGNED, name , true });
-
-        // Manually adding to hierachy List
-        // ----------------------------------------------------------------------------------------------------------
-        //engine->editorManager->EntityHierarchyList_.push_back(ID);
-        //engine->editorManager->EntityToTypeMap_.insert(std::pair<Entity, EntityType>(ID, EntityType::ENT_UNASSIGNED));
 
         TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(ID);
         Transform.scale.setX(5);
         Transform.scale.setY(5);
         Transform.scale.setZ(5);
 
-        // intermittent fix did not work
-        //Transform.rotation.setX(-270);
-
         MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
         mat.Modeltype = MaterialComponent::ModelType::Models3D;
         // ----------------------------------------------------------------------------------------------------------
-
 
         // Create path
         std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/" + filename).c_str();
@@ -43,6 +29,12 @@ namespace Eclipse
         NewModel->SetName(name);
         NewModel->SetModelType(ModelType::ANIMAL);
 
+        // Calculate Required
+        ECVec3 min = NewModel->AABB_Property.GetMinimum(Transform);
+        ECVec3 max = NewModel->AABB_Property.GetMaximum(Transform);
+        NewModel->AABB_Property.SetMaxMin(max, min, ID);
+        // ----------------------------------------------------------------------------------------------------------
+        
         // Insert
         if (AssimpModelContainer_.insert(std::pair<unsigned int, AssimpModel*>(ID, NewModel)).second == true)
         {
@@ -61,6 +53,18 @@ namespace Eclipse
         //Test Code
         if (0)
         {
+            AssimpModelContainer AABBCCDD;
+            AABBCCDD.insert(std::pair<unsigned int, AssimpModel*>(ID, NewModel));
+
+            std::cout << "NAME of NewModel" << NewModel->GetName() << std::endl;
+            std::cout << "NAME of first" << AABBCCDD[7]->GetName() << std::endl;
+
+            AABBCCDD[7]->SetName("stupid");
+
+            std::cout << "NAME of NewModel" << NewModel->GetName() << std::endl;
+            std::cout << "NAME of first" << AABBCCDD[7]->GetName() << std::endl;
+
+
             AssimpModel* ONE = new AssimpModel(false);
             ONE->LoadAssimpModel(PathName);
             ONE->SetName(name);
@@ -74,36 +78,36 @@ namespace Eclipse
             Three->LoadAssimpModel(PathName);
             Three->SetName(name);
 
-            ONE->test.maxX = 15;
-            ONE->test.maxY = 15;
-            ONE->test.maxZ = 15;
-            ONE->test.minX = -15;
-            ONE->test.minY = -15;
-            ONE->test.minZ = -15;
-            ONE->test.maxX = 15;
-            ONE->test.EntityID = 10;
+            ONE->AABB_Property.maxX = 15;
+            ONE->AABB_Property.maxY = 15;
+            ONE->AABB_Property.maxZ = 15;
+            ONE->AABB_Property.minX = -15;
+            ONE->AABB_Property.minY = -15;
+            ONE->AABB_Property.minZ = -15;
+            ONE->AABB_Property.maxX = 15;
+            //ONE->AABB_Property.SetEntityID(10);
 
-            TWO->test.maxX = 5;
-            TWO->test.maxY = 5;
-            TWO->test.maxZ = 5;
-            TWO->test.minX = -5;
-            TWO->test.minY = -5;
-            TWO->test.minZ = -5;
-            TWO->test.EntityID = 11;
+            TWO->AABB_Property.maxX = 5;
+            TWO->AABB_Property.maxY = 5;
+            TWO->AABB_Property.maxZ = 5;
+            TWO->AABB_Property.minX = -5;
+            TWO->AABB_Property.minY = -5;
+            TWO->AABB_Property.minZ = -5;
+            //TWO->AABB_Property.SetEntityID(11);
 
-            Three->test.maxX = -20;
-            Three->test.maxY = -20;
-            Three->test.maxZ = -20;
-            Three->test.minX = -50;
-            Three->test.minY = -50;
-            Three->test.minZ = -50;
-            Three->test.EntityID = 12;
+            Three->AABB_Property.maxX = -20;
+            Three->AABB_Property.maxY = -20;
+            Three->AABB_Property.maxZ = -20;
+            Three->AABB_Property.minX = -50;
+            Three->AABB_Property.minY = -50;
+            Three->AABB_Property.minZ = -50;
+            //Three->AABB_Property.SetEntityID(12);
 
             AssimpModelContainer AABBCC;
 
-            AABBCC.insert(std::pair<unsigned int, AssimpModel*>(ONE->test.EntityID, ONE));
-            AABBCC.insert(std::pair<unsigned int, AssimpModel*>(TWO->test.EntityID, TWO));
-            AABBCC.insert(std::pair<unsigned int, AssimpModel*>(Three->test.EntityID, Three));
+            AABBCC.insert(std::pair<unsigned int, AssimpModel*>(ONE->AABB_Property.GetEntityID(), ONE));
+            AABBCC.insert(std::pair<unsigned int, AssimpModel*>(TWO->AABB_Property.GetEntityID(), TWO));
+            AABBCC.insert(std::pair<unsigned int, AssimpModel*>(Three->AABB_Property.GetEntityID(), Three));
 
             std::shared_ptr<AssimpModel>first(ONE);
             std::shared_ptr<AssimpModel>second(TWO);
@@ -115,7 +119,7 @@ namespace Eclipse
             engine->test.InsertObject(third);
 
             //pass in model to check with the grid
-            auto& aabbCollisions = engine->test.queryOverlaps(first.get()->getAABB());
+            auto& aabbCollisions = engine->test.CheckOverlap(first.get()->getAABB());
 
             std::cout << AABBCC[aabbCollisions[0]]->GetName() << std::endl;
         }
@@ -212,6 +216,9 @@ namespace Eclipse
             model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
             model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
             model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
+
+            glm::vec3 pospos = Transform.position.ConvertToGlmVec3Type();
+            std::cout << pospos.x << " " << pospos.y << " " << pospos.z << std::endl;
 
             BoundingRegion br(Transform.position.ConvertToGlmVec3Type(), Transform.scale.ConvertToGlmVec3Type());
             box->AddInstance(br, Transform.position.ConvertToGlmVec3Type());
@@ -313,11 +320,6 @@ namespace Eclipse
         //        delete i.second;
         //    }
         //}
-    }
-
-    void AssimpModelManager::addSpriteToCollisionSet(const std::shared_ptr<AssimpModel>& sprite)
-    {
-        engine->test.InsertObject(sprite);
     }
 
     void AssimpModelManager::TestPath(std::string& path)

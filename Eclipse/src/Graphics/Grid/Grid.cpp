@@ -172,16 +172,6 @@ namespace Eclipse
 
     void Grid::Init()
     {
-        // Add Grid as an entity
-        /*
-        GridID = engine->world.CreateEntity();
-        engine->world.AddComponent(GridID, EntityComponent{ EntityType::ENT_UNASSIGNED, "Grid", true });
-        engine->world.AddComponent(GridID, TransformComponent{});
-
-        engine->editorManager->EntityHierarchyList_.push_back(GridID);
-        engine->editorManager->EntityToTypeMap_.insert(std::pair<Entity, EntityType>(GridID, EntityType::ENT_UNASSIGNED));
-        */
-
         WholeGrid = new Quad;
         ShaderRef = &(Graphics::shaderpgms.find("Grid")->second);
         ShaderName = Graphics::shaderpgms.find("Grid")->first;
@@ -217,20 +207,19 @@ namespace Eclipse
 
         std::cout << "Grid Size " << GridArray.size() << std::endl;
 
-        for (int y = 0; y < TotalTiles; y += 9)
+        for (int y = 0; y < TotalTiles; y += (GridSize* GridSize) )
         {
             for (int z = 0; z < GridSize; z++)
             {
                 for (int x = 0; x < GridSize; x++)
                 {
-                    unsigned int Index = (z * 3) + x + y;
+                    unsigned int Index = (z * GridSize) + x + y;
 
                     // Set Center Point
-                    glm::vec3 Center = { StartingPosition.getX() + (x * GridScale) , StartingPosition.getY() + ( (y/9) * GridScale) , StartingPosition.getZ() - (z * GridScale) };
+                    glm::vec3 Center = { StartingPosition.getX() + (x * GridScale) , StartingPosition.getY() + ((y / (GridSize* GridSize) ) * GridScale) , StartingPosition.getZ() - (z * GridScale) };
                     GridArray[Index].CenterPoint = ECVec3{ Center.x, Center.y, Center.z };
 
                     // Set Maximum Point
-                    float test = Center.x + (GridScale / 2);
                     glm::vec3 Maximum = { Center.x + (GridScale / 2) , Center.y + (GridScale / 2) , Center.z + (GridScale / 2) };
                     GridArray[Index].MaximumPoint = ECVec3{ Maximum.x, Maximum.y, Maximum.z };
 
@@ -241,11 +230,18 @@ namespace Eclipse
                     // Set Width
                     GridArray[Index].width = Maximum.x - Minimum.x;
 
+                    // Set AABB For Dynamic Tree
+                    GridArray[Index].aabb.SetMaxMin(GridArray[Index].MaximumPoint , GridArray[Index].MinimumPoint, Index);
+                    std::shared_ptr<Tile>first = std::make_shared<Tile>(GridArray[Index]);
+                    engine->test.InsertObject(first);
+
                     // Insert into container
-                    gridArray.insert( {Index ,GridArray[Index]});
+                    gridArray.insert({ Index ,GridArray[Index] });
                 }
             }
         }
+
+        //auto& aabbCollisions = engine->test.queryOverlaps(GridArray[2].getAABB());
 
         DebugPrintCoorindates(GridArray);
     }
@@ -291,13 +287,13 @@ namespace Eclipse
 
     void Grid::DebugPrintCoorindates(std::vector<Tile>& in)
     {
-        for (int y = 0; y < TotalTiles; y += 9)
+        for (int y = 0; y < TotalTiles; y += (GridSize* GridSize) )
         {
             for (int z = 0; z < GridSize; z++)
             {
                 for (int x = 0; x < GridSize; x++)
                 {
-                    unsigned int Index = (z * 3) + x + y;
+                    unsigned int Index = (z * GridSize) + x + y;
 
                     std::cout << "=================================" << std::endl;
                     std::cout << "= ID            :" << Index << std::endl;
@@ -309,6 +305,36 @@ namespace Eclipse
                 }
             }
         }
+    }
+
+    bool Grid::CheckTileOccupied(TILE_ID tileID)
+    {
+        if (gridArray[tileID].Occupied)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    TILE_ID Grid::GetTile()
+    {
+        return TILE_ID();
+    }
+
+    std::vector<TILE_ID> Grid::GetOccupiedTiles(std::vector<TILE_ID>& in)
+    {
+        std::vector<TILE_ID> Temp;
+
+        for (int Index = 0; Index < in.size(); Index++)
+        {
+            if (gridArray[in[Index]].Occupied == false)
+            {
+                Temp.push_back( gridArray[in[Index]].aabb.GetEntityID() );
+            }
+        }
+
+        return Temp;
     }
 
     void Grid::DrawGrid(unsigned int FrameBufferID)
@@ -344,5 +370,10 @@ namespace Eclipse
         {
             delete WholeGrid;
         }
+    }
+
+    AABB Tile::getAABB() const
+    {
+        return aabb;;
     }
 }

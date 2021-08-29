@@ -27,7 +27,7 @@ namespace Eclipse
         NodeCapacity(initialSize),
         GrowthSize(initialSize)
     {
-        AllNodes.resize(initialSize);
+        AllNodes.reserve(initialSize);
 
         for (unsigned nodeIndex = 0; nodeIndex < initialSize; nodeIndex++)
         {
@@ -50,7 +50,7 @@ namespace Eclipse
             assert(AllocatedNodeCount == NodeCapacity);
 
             NodeCapacity += GrowthSize;
-            AllNodes.resize(NodeCapacity);
+            AllNodes.reserve(NodeCapacity);
 
             for (unsigned nodeIndex = AllocatedNodeCount; nodeIndex < NodeCapacity; nodeIndex++)
             {
@@ -106,7 +106,7 @@ namespace Eclipse
         UpdateLeaf(nodeIndex, object->getAABB());
     }
 
-    std::vector<unsigned int> AABBTree::queryOverlaps(AABB& object)
+    std::vector<unsigned int> AABBTree::CheckOverlap(AABB& object)
     {
         std::vector<unsigned int> overlaps;
         std::stack<unsigned> stack;
@@ -124,9 +124,9 @@ namespace Eclipse
 
             if (node.aabb.Overlaps(testAabb))
             {
-                if (node.isLeaf() && node.aabb.EntityID != object.EntityID)
+                if (node.isLeaf() && node.aabb.GetEntityID() != object.GetEntityID() )
                 {
-                    overlaps.push_back(node.aabb.EntityID);
+                    overlaps.push_back(node.aabb.GetEntityID() );
                 }
                 else
                 {

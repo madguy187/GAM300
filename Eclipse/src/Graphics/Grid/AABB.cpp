@@ -57,6 +57,65 @@ namespace Eclipse
         return maxZ - minZ;
     }
 
+    unsigned int AABB::GetEntityID()
+    {
+        return EntityID;
+    }
+
+    bool AABB::CheckIsGrid()
+    {
+        return IsGrid;
+    }
+
+    void AABB::SetEntityID(unsigned int id)
+    {
+        EntityID = id;
+    }
+
+    ECVec3 AABB::GetMinimum(TransformComponent& in)
+    {
+        glm::vec3 halfExt = in.scale.ConvertToGlmVec3Type() / 2.0f;
+        ECVec3 min = ECVec3{ in.position.getX() - halfExt.x, in.position.getY() - halfExt.y, in.position.getZ() - halfExt.z };
+
+        return min;
+    }
+
+    ECVec3 AABB::GetMaximum(TransformComponent& in)
+    {
+        glm::vec3 halfExt = in.scale.ConvertToGlmVec3Type() / 2.0f;
+        ECVec3 max = ECVec3{ in.position.getX() + halfExt.x, in.position.getY() + halfExt.y, in.position.getZ() + halfExt.z };
+
+        return max;
+    }
+
+    void AABB::SetIsGrid(bool in)
+    {
+        IsGrid = in;
+    }
+
+    void AABB::SetMaxMin(ECVec3& Max, ECVec3& Min , unsigned int id)
+    {
+        SetMaximum(Max);
+        SetMinimum(Min);
+        SetEntityID(id);
+
+        surfaceArea = CalculateSurfaceArea();
+    }
+
+    void AABB::SetMinimum(ECVec3& in)
+    {
+        minX = in.getX();
+        minY = in.getY();
+        minZ = in.getZ();
+    }
+
+    void AABB::SetMaximum(ECVec3& in)
+    {
+        maxX = in.getX();
+        maxY = in.getY();
+        maxZ = in.getZ();
+    }
+
     float AABB::CalculateSurfaceArea()
     {
         return 2.0f * (GetWidth() * GetHeight() + GetWidth() * GetDepth() + GetHeight() * GetDepth());

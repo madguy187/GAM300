@@ -46,6 +46,7 @@ namespace Eclipse
         bool noTex = false;
         unsigned int ID = 0;
         GLenum GlobalMode = GL_FILL;
+        AABB AABB_Property; // For Dynamic AABB
 
         AssimpModel() { }
         AssimpModel(bool noTex = false);
@@ -63,9 +64,7 @@ namespace Eclipse
         void SetModelType(ModelType in);
         std::vector<glm::vec3> GetVertices();
 
-        AABB test;
-        AABB getAABB() const override { return test; };
-        void setset(float in) { test.maxX = in; };
+        AABB getAABB() const override;
     };
 
 }

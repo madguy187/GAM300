@@ -29,7 +29,7 @@ namespace Eclipse
     {
     private:
         std::map<std::shared_ptr<IAABB>, unsigned int> AABBToNodeMap;
-        std::vector<AABBNode> AllNodes;
+        std::unordered_map<unsigned int , AABBNode> AllNodes;
         unsigned int RootNodeIndex = 0;
         unsigned int AllocatedNodeCount = 0;
         unsigned int NextFreeNoedIndex = 0;
@@ -43,7 +43,7 @@ namespace Eclipse
         void InsertObject(const std::shared_ptr<IAABB>& object);
         void RemoveObject(const std::shared_ptr<IAABB>& object);
         void UpdateObject(const std::shared_ptr<IAABB>& object);
-        std::vector<unsigned int> queryOverlaps(AABB& object);
+        std::vector<unsigned int> CheckOverlap(AABB& object);
 
     private:
         unsigned AllocateNode();

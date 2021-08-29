@@ -160,6 +160,11 @@ std::vector<glm::vec3> Eclipse::AssimpModel::GetVertices()
 	return AllVertices;
 }
 
+AABB Eclipse::AssimpModel::getAABB() const
+{
+	return AABB_Property;
+}
+
 void Eclipse::AssimpModel::GetTextureNames()
 {
 	for (int i = 0; i < Textures_loaded.size(); i++)

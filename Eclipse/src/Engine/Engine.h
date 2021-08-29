@@ -27,7 +27,7 @@ namespace Eclipse
 	    AssimpModelManager AssimpManager;
 		PickingManager gPicker;
         MaterialManager MaterialManager{ true , true };
-		AABBTree test{ 10 };
+		AABBTree test{ 27 };
 
         void Init();
         void Run();
