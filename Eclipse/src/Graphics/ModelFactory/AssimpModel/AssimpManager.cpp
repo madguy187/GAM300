@@ -34,7 +34,7 @@ namespace Eclipse
         ECVec3 max = NewModel->AABB_Property.GetMaximum(Transform);
         NewModel->AABB_Property.SetMaxMin(max, min, ID);
         // ----------------------------------------------------------------------------------------------------------
-        
+
         // Insert
         if (AssimpModelContainer_.insert(std::pair<unsigned int, AssimpModel*>(ID, NewModel)).second == true)
         {
@@ -114,12 +114,12 @@ namespace Eclipse
             std::shared_ptr<AssimpModel>third(Three);
 
             // tiles
-            engine->test.InsertObject(first);
-            engine->test.InsertObject(second);
-            engine->test.InsertObject(third);
+            engine->CollisionGridTree.InsertObject(first);
+            engine->CollisionGridTree.InsertObject(second);
+            engine->CollisionGridTree.InsertObject(third);
 
             //pass in model to check with the grid
-            auto& aabbCollisions = engine->test.CheckOverlap(first.get()->getAABB());
+            auto& aabbCollisions = engine->CollisionGridTree.CheckOverlap(first.get()->getAABB());
 
             std::cout << AABBCC[aabbCollisions[0]]->GetName() << std::endl;
         }

@@ -46,8 +46,6 @@ namespace Eclipse
 
     void RenderSystem::Update()
     {
-        engine->GraphicsManager.ResetInstancedDebugBoxes();
-
         ProfilerWindow timer;
         timer.SetName({ SystemName::RENDER });
         timer.tracker.system_start = glfwGetTime();

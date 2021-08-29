@@ -27,7 +27,7 @@ namespace Eclipse
 	    AssimpModelManager AssimpManager;
 		PickingManager gPicker;
         MaterialManager MaterialManager{ true , true };
-		AABBTree test{ 27 };
+		AABBTree CollisionGridTree{ 150 };
 
         void Init();
         void Run();

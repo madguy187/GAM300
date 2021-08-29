@@ -244,7 +244,7 @@ namespace Eclipse
                     // Set AABB For Dynamic Tree
                     GridArray[Index].aabb.SetMaxMin(GridArray[Index].MaximumPoint, GridArray[Index].MinimumPoint, Index);
                     std::shared_ptr<Tile>first = std::make_shared<Tile>(GridArray[Index]);
-                    engine->test.InsertObject(first);
+                    engine->CollisionGridTree.InsertObject(first);
 
                     // Insert into container
                     gridArray.insert({ Index ,GridArray[Index] });

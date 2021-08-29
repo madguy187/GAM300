@@ -14,7 +14,21 @@ namespace Eclipse
         {
             auto& Model = M.second;
             auto& Transform = engine->world.GetComponent<TransformComponent>(M.first);
-            auto& ModelVsGrid = engine->test.CheckOverlap(Model->SetAABB(Transform));
+            auto& ModelVsGrid = engine->CollisionGridTree.CheckOverlap(Model->SetAABB(Transform));
+        }
+
+        auto& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+
+        if (ImGui::IsMouseClicked(0))
+        {
+            glm::vec3 rayDir = engine->gPicker.ComputeCursorRayDirection();
+            float t;
+            auto& MouseVsGrid = engine->CollisionGridTree.SecondCheckOverlap(camera.eyePos, rayDir, t);
+
+            if (MouseVsGrid.size() >= 1)
+            {
+                std::cout << " Test Colision " << std::endl;
+            }
         }
     }
 }

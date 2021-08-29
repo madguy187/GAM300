@@ -146,6 +146,13 @@ namespace Eclipse
                maxZ > other.minZ && minZ < other.maxZ;
     }
 
+    bool AABB::MouseOverlaps(glm::vec3 mousepos , const AABB& other) const
+    {
+        return maxX > other.minX && minX < other.maxX &&
+               maxY > other.minY && minY < other.maxY &&
+               maxZ > other.minZ && minZ < other.maxZ;
+    }
+
     bool AABB::Contains(const AABB& other) const
     {
         return other.minX >= minX &&
@@ -154,5 +161,13 @@ namespace Eclipse
             other.maxY <= maxY &&
             other.minZ >= minZ &&
             other.maxZ <= maxZ;
+    }
+
+    bool AABB::Contains(const glm::vec3& other) const
+    {
+        return 
+               other.x >= minX && other.x <= maxX
+            && other.y >= minY && other.y <= maxY 
+            && other.z >= minZ && other.z <= maxZ;
     }
 }

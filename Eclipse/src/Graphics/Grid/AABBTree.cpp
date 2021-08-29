@@ -2,6 +2,7 @@
 #include "AABBTree.h"
 #include <stack>
 #include "AABB.h"
+#include "Graphics/Picker/PickingManager.h"
 
 namespace Eclipse
 {
@@ -124,9 +125,45 @@ namespace Eclipse
 
             if (node.aabb.Overlaps(testAabb))
             {
-                if (node.isLeaf() && node.aabb.GetEntityID() != object.GetEntityID() )
+                if (node.isLeaf() && node.aabb.GetEntityID() != object.GetEntityID())
                 {
-                    overlaps.push_back(node.aabb.GetEntityID() );
+                    overlaps.push_back(node.aabb.GetEntityID());
+                }
+                else
+                {
+                    stack.push(node.leftNodeIndex);
+                    stack.push(node.rightNodeIndex);
+                }
+            }
+        }
+
+        return overlaps;
+    }
+
+    std::vector<unsigned int> AABBTree::SecondCheckOverlap(glm::vec3& rayStart, glm::vec3& rayDir, float& t)
+    {
+        std::vector<unsigned int> overlaps;
+        std::stack<unsigned> stack;
+
+        stack.push(RootNodeIndex);
+        while (!stack.empty())
+        {
+            unsigned nodeIndex = stack.top();
+            stack.pop();
+
+            if (nodeIndex == AABB_NULL_NODE) continue;
+
+            AABBNode& node = AllNodes[nodeIndex];
+            glm::vec3 AABBmin = { node .aabb.minX,node.aabb.minY , node.aabb.minZ };
+            glm::vec3 AABBmax = { node.aabb.maxX ,node.aabb.maxY , node.aabb.maxY };
+
+            bool collision = PickingManager::RayAabb(rayStart, rayDir, AABBmin, AABBmax, t);
+
+            if (collision)
+            {
+                if (node.isLeaf())
+                {
+                    overlaps.push_back(node.aabb.GetEntityID());
                 }
                 else
                 {

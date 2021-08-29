@@ -54,7 +54,7 @@ namespace Eclipse
         std::string ShaderName;
         
         // Coordinates Setup
-        unsigned int GridSize = 6; // Number of tiles each side , please use even number
+        unsigned int GridSize = 4; // Number of tiles each side , please use even number
         unsigned int TotalTiles = 0;
         ECVec3 XYZ_Length{ 0, 0, 0 };
         ECVec3 Minimum{ 0, 0, 0 };

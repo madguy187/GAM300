@@ -24,7 +24,9 @@ namespace Eclipse
         AABB(float minX, float minY, float minZ, float maxX, float maxY, float maxZ); // :
 
         bool Overlaps(const AABB& other) const;
+        bool MouseOverlaps(glm::vec3 mousepos, const AABB& other) const;
         bool Contains(const AABB& other) const;
+        bool Contains(const glm::vec3& other) const;
         AABB Merge(const AABB& rhs) const;
         AABB Intersection(const AABB& rhs) const;
 
