@@ -7,6 +7,7 @@
 #include "Editor/Windows/GameView/GameView.h"
 #include "Editor/Windows/Debug/Debug.h"
 #include "ECS/ComponentManager/Components/EntityComponent.h"
+#include "ECS/ComponentManager/Components/RigidBodyComponent.h"
 #include "Editor/Windows/AssetBrowser/AssetBrowser.h"
 #include "Editor/Windows/Log/Log.h"
 #include "Editor/Windows/Profiler/Profiler.h"
@@ -86,9 +87,11 @@ namespace Eclipse
 		Entity ID = engine->world.CreateEntity();
 		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast<std::string>(type), true });
 		engine->world.AddComponent(ID, TransformComponent{});
+		engine->world.AddComponent(ID, RigidBodyComponent{});
 
 		//Check this please - Rachel
 		auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
+
 		engine->gPicker.GenerateAabb(ID, _transform);
 
 		EntityHierarchyList_.push_back(ID);

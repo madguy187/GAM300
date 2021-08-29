@@ -5,17 +5,17 @@ namespace Eclipse
 {
 	struct RigidBodyComponent
 	{
-		bool _Static;
-		bool _Kinematic;
-		bool enableGravity;
-		bool enableRotation;
-		bool inScene;
+		bool _Static{false};
+		bool _Kinematic{false};
+		bool enableGravity{false};
+		bool enableRotation{false};
+		bool inScene{false};
 
-		float mass;
-		float drag;
-		float angdrag;
+		float mass{1.0f};
+		float drag{0.0f};
+		float angdrag{0.0f};
 
-		ECVec3 velocity;
-		ECVec3 forces;
+		ECVec3 velocity{0,0,0};
+		ECVec3 forces{5,5,5};
 	};
 }

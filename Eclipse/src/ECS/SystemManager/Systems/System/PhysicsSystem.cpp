@@ -5,6 +5,7 @@ void PhysicsSystem::Update()
 {
 	for (auto const& entity : mEntities)
 	{
+		engine->gPhysics.InitActor(entity);
 		engine->gPhysics.UpdateActor(entity);
 	}
 	engine->gPhysics.Simulate();

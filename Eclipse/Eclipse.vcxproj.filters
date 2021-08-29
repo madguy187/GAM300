@@ -222,9 +222,6 @@
     <ClInclude Include="src\ECS\SystemManager\Systems\System\LightingSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.h">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
-    </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
@@ -511,6 +508,7 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
     <ClInclude Include="src\Editor\Windows\SwitchViews\SwitchViews.h" />
     <ClInclude Include="src\Editor\Utilities\DragAndDrop.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -532,9 +530,6 @@
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp">
@@ -751,5 +746,6 @@
     <ClCompile Include="src\Graphics\Picker\PickingManager.cpp" />
     <ClCompile Include="src\Editor\Windows\SwitchViews\SwitchViews.cpp" />
     <ClCompile Include="src\Editor\Utilities\DragAndDrop.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.cpp" />
   </ItemGroup>
 </Project>

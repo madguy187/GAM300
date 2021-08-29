@@ -90,6 +90,11 @@ namespace Eclipse
         hi3.set(world.GetComponentType<SpotLightComponent>(), 1);
         world.RegisterSystemSignature<LightingSystem>(hi3);
 
+        Signature hi4;
+        hi4.set(world.GetComponentType<TransformComponent>(), 1);
+        hi4.set(world.GetComponentType<RigidBodyComponent>(), 1);
+        world.RegisterSystemSignature<PhysicsSystem>(hi4);
+
         //Check this! - Rachel
         RenderSystem::Init();
         CameraSystem::Init();
@@ -148,6 +153,7 @@ namespace Eclipse
             for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
             {
                 world.Update<CameraSystem>();
+                world.Update<PhysicsSystem>();
             }
 
             // FRAMEBUFFER BIND =============================

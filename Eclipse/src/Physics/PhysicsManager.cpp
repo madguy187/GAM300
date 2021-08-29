@@ -61,7 +61,7 @@ namespace Eclipse
 
 	}
 
-	void PhysicsManager::CreateActor(Entity ent)
+	void PhysicsManager::InitActor(Entity ent)
 	{
 		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
 
@@ -238,7 +238,7 @@ namespace Eclipse
 			temptrans.y = transform.position.y;
 			temptrans.z = transform.position.z;
 
-			dynamic_cast<PxRigidDynamic*>(Px_Actors[ent])->setGlobalPose(PxTransform{ temptrans });
+			dynamic_cast<PxRigidActor*>(Px_Actors[ent])->setGlobalPose(PxTransform{ temptrans });
 			dynamic_cast<PxRigidDynamic*>(Px_Actors[ent])->setForceAndTorque(temp, { 0,0,0 });
 			dynamic_cast<PxRigidDynamic*>(Px_Actors[ent])->setMass(rigid.mass);
 			dynamic_cast<PxRigidDynamic*>(Px_Actors[ent])->setActorFlag(PxActorFlag::eDISABLE_GRAVITY,rigid.enableGravity ? false : true);
@@ -261,6 +261,7 @@ namespace Eclipse
 	void PhysicsManager::Simulate()
 	{
 		Px_Scene->simulate(engine->Game_Clock.get_fixedDeltaTime());
+		Px_Scene->fetchResults(true);
 	}
 
 	void PhysicsManager::Unload()
