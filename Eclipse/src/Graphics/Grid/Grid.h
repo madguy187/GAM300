@@ -103,6 +103,7 @@ namespace Eclipse
         void CalculateGridSettings();
         void CalculateStartingPoint(ECVec3& MinimumIn, ECVec3& Maximum);
         void DebugPrintCoorindates(std::vector<Tile>& in);
+        void InsertAsDebugBox();
 
         bool CheckTileOccupied(TILE_ID tileID);
         TILE_ID GetTile();

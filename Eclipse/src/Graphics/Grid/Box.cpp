@@ -135,10 +135,10 @@ namespace Eclipse
     }
 
 
-    void AABB_::AddInstance(BoundingRegion br, glm::vec3 pos, glm::vec3 size)
+    void AABB_::AddInstance(BoundingRegion& br)
     {
-        Offsets.push_back(br.calculateCenter() * size + pos);
-        Sizes.push_back(size);
+        Offsets.push_back(br.calculateCenter() * br.Scale + br.Position);
+        Sizes.push_back(br.Scale);
     }
 
     void AABB_::Cleanup()
@@ -153,6 +153,8 @@ namespace Eclipse
     {
         Offsets.clear();
         Sizes.clear();
+
+        engine->GraphicsManager.GridManager->InsertAsDebugBox();
     }
 
     bool AABB_::CheckToRender()

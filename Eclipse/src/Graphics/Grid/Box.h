@@ -33,7 +33,7 @@ namespace Eclipse
 
         AABB_();
         void Init();
-        void AddInstance(BoundingRegion br, glm::vec3 pos, glm::vec3 size);
+        void AddInstance(BoundingRegion& br);
         void Cleanup();
         void Reset();
         void DrawAll(unsigned int FramebufferID);

@@ -218,7 +218,7 @@ namespace Eclipse
             model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
 
             BoundingRegion br(Transform.position.ConvertToGlmVec3Type(), Transform.scale.ConvertToGlmVec3Type());
-            box->AddInstance(br, Transform.position.ConvertToGlmVec3Type() , Transform.scale.ConvertToGlmVec3Type());
+            box->AddInstance(br);
 
             mModelNDC = _camera.projMtx * _camera.viewMtx * model;
             glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
@@ -310,13 +310,13 @@ namespace Eclipse
 
     AssimpModelManager::~AssimpModelManager()
     {
-        //for (auto i : AssimpModelContainer_)
-        //{
-        //    if (i.second != nullptr)
-        //    {
-        //        delete i.second;
-        //    }
-        //}
+        for (auto i : AssimpModelContainer_)
+        {
+            if (i.second != nullptr)
+            {
+                delete i.second;
+            }
+        }
     }
 
     void AssimpModelManager::TestPath(std::string& path)

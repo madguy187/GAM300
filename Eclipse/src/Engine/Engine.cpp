@@ -170,16 +170,19 @@ namespace Eclipse
             // GRID SYSTEM =============================
             world.Update<GridSystem>();
 
+            // RENDERSYSTEM =============================
+            world.Update<RenderSystem>();
+
             // LIGHTINGSYSTEM =============================
             world.Update<LightingSystem>();
 
             // Material SYstem
             world.Update<MaterialSystem>();
-            
+
             world.Update<PickingSystem>();
 
-            // RENDERSYSTEM =============================
-            world.Update<RenderSystem>();
+            // GRID DRAW ============================= Must be last of All Renders
+            engine->GraphicsManager.GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 
             // FRAMEBUFFER DRAW ==========================
             engine->GraphicsManager.GlobalFrmeBufferDraw();
