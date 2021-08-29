@@ -166,13 +166,9 @@ namespace Eclipse
 
             // FRAMEBUFFER BIND =============================
             engine->GraphicsManager.GlobalFrameBufferBind();
-            engine->GraphicsManager.ResetInstancedDebugBoxes();
 
             // GRID SYSTEM =============================
             world.Update<GridSystem>();
-
-            // RENDERSYSTEM =============================
-            world.Update<RenderSystem>();
 
             // LIGHTINGSYSTEM =============================
             world.Update<LightingSystem>();
@@ -182,8 +178,8 @@ namespace Eclipse
             
             world.Update<PickingSystem>();
 
-            // GRID DRAW ============================= Must be last of All Renders
-            engine->GraphicsManager.GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+            // RENDERSYSTEM =============================
+            world.Update<RenderSystem>();
 
             // FRAMEBUFFER DRAW ==========================
             engine->GraphicsManager.GlobalFrmeBufferDraw();

@@ -419,6 +419,12 @@ void Eclipse::GraphicsManager::ResetInstancedDebugBoxes()
     AllAABBs.Reset();
 }
 
+void Eclipse::GraphicsManager::DrawDebugBoxes()
+{
+    // render boxes
+   engine->GraphicsManager.AllAABBs.DrawAll(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+}
+
 /*************************************************************************
   FrameBuffer Things
 *************************************************************************/

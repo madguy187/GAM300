@@ -46,6 +46,7 @@ namespace Eclipse
 
 	void RenderSystem::Update()
 	{
+		//engine->GraphicsManager.ResetInstancedDebugBoxes();
 
 		ProfilerWindow timer;
 		timer.SetName({ SystemName::RENDER });
@@ -55,7 +56,7 @@ namespace Eclipse
 
 		if (engine->GraphicsManager.CheckRender == true)
 		{
-			// SKY Reder Start =============================
+			// SKY Render Start =============================
 			engine->MaterialManager.DoNotUpdateStencil();
 			engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 			// SKY Reder End ===============================
@@ -90,26 +91,14 @@ namespace Eclipse
 			engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_RIGHT)->GetFrameBufferID(), GL_FILL, &box, CameraComponent::CameraType::LeftView_Camera);
 			// MODELS Render  End ===============================
 
-			// render boxes
+			// Debug Boxes Draw Start =============================
 			engine->MaterialManager.DoNotUpdateStencil();
-			//engine->GraphicsManager.AllAABBs.DrawAll(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+			engine->GraphicsManager.DrawDebugBoxes();
+			// Debug Boxes Draw End ===============================
+			
+			// GRID DRAW ============================= Must be last of All Renders
+			engine->GraphicsManager.GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 
-			if (engine->GraphicsManager.AllAABBs.offsets.size() > 0)
-			{
-				glBindFramebuffer(GL_FRAMEBUFFER, engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
-				CameraComponent camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
-				auto shdrpgm = Graphics::shaderpgms.find("AABB");
-				shdrpgm->second.Use();
-
-				GLint uniform_var_loc1 = shdrpgm->second.GetLocation("view");
-				GLint uniform_var_loc2 = shdrpgm->second.GetLocation("projection");
-				glm::mat4 _cameraprojMtx = glm::perspective(glm::radians(camera.fov), camera.aspect, camera.nearPlane, camera.farPlane);
-				glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(camera.viewMtx));
-				glUniformMatrix4fv(uniform_var_loc2, 1, GL_FALSE, glm::value_ptr(_cameraprojMtx));
-
-				engine->GraphicsManager.AllAABBs.Render(shdrpgm->second, camera);
-				shdrpgm->second.UnUse();
-			}
 		}
 
 		timer.tracker.system_end = glfwGetTime();

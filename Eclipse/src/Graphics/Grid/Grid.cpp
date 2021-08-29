@@ -207,7 +207,7 @@ namespace Eclipse
 
         std::cout << "Grid Size " << GridArray.size() << std::endl;
 
-        for (int y = 0; y < TotalTiles; y += (GridSize* GridSize) )
+        for (int y = 0; y < TotalTiles; y += (GridSize * GridSize))
         {
             for (int z = 0; z < GridSize; z++)
             {
@@ -216,7 +216,7 @@ namespace Eclipse
                     unsigned int Index = (z * GridSize) + x + y;
 
                     // Set Center Point
-                    glm::vec3 Center = { StartingPosition.getX() + (x * GridScale) , StartingPosition.getY() + ((y / (GridSize* GridSize) ) * GridScale) , StartingPosition.getZ() - (z * GridScale) };
+                    glm::vec3 Center = { StartingPosition.getX() + (x * GridScale) , StartingPosition.getY() + ((y / (GridSize * GridSize)) * GridScale) , StartingPosition.getZ() - (z * GridScale) };
                     GridArray[Index].CenterPoint = ECVec3{ Center.x, Center.y, Center.z };
 
                     // Set Maximum Point
@@ -230,8 +230,14 @@ namespace Eclipse
                     // Set Width
                     GridArray[Index].width = Maximum.x - Minimum.x;
 
+                    if (AddDebugBoxes)
+                    {
+                        BoundingRegion br(GridArray[Index].CenterPoint.ConvertToGlmVec3Type(), { GridScale ,GridScale ,GridScale });
+                        engine->GraphicsManager.AllAABBs.AddInstance(br, GridArray[Index].CenterPoint.ConvertToGlmVec3Type(), { GridScale ,GridScale ,GridScale });
+                    }
+
                     // Set AABB For Dynamic Tree
-                    GridArray[Index].aabb.SetMaxMin(GridArray[Index].MaximumPoint , GridArray[Index].MinimumPoint, Index);
+                    GridArray[Index].aabb.SetMaxMin(GridArray[Index].MaximumPoint, GridArray[Index].MinimumPoint, Index);
                     std::shared_ptr<Tile>first = std::make_shared<Tile>(GridArray[Index]);
                     engine->test.InsertObject(first);
 
@@ -240,8 +246,6 @@ namespace Eclipse
                 }
             }
         }
-
-        //auto& aabbCollisions = engine->test.queryOverlaps(GridArray[2].getAABB());
 
         DebugPrintCoorindates(GridArray);
     }
@@ -287,7 +291,7 @@ namespace Eclipse
 
     void Grid::DebugPrintCoorindates(std::vector<Tile>& in)
     {
-        for (int y = 0; y < TotalTiles; y += (GridSize* GridSize) )
+        for (int y = 0; y < TotalTiles; y += (GridSize * GridSize))
         {
             for (int z = 0; z < GridSize; z++)
             {
@@ -330,7 +334,7 @@ namespace Eclipse
         {
             if (gridArray[in[Index]].Occupied == false)
             {
-                Temp.push_back( gridArray[in[Index]].aabb.GetEntityID() );
+                Temp.push_back(gridArray[in[Index]].aabb.GetEntityID());
             }
         }
 

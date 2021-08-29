@@ -1,9 +1,6 @@
 #ifndef DYNAMICTREE_AABBTREE_H
 #define DYNAMICTREE_AABBTREE_H
 #include "AABB.h"
-//#include <memory>
-//#include <vector>
-//#include <map>
 #include "IAABB.h"
 #include "Graphics/ModelFactory/AssimpModel/AssimpModel.h"
 
