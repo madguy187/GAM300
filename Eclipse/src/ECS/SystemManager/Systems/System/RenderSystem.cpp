@@ -95,7 +95,6 @@ namespace Eclipse
             engine->MaterialManager.DoNotUpdateStencil();
             engine->GraphicsManager.DrawDebugBoxes();
             // Debug Boxes Draw End ===============================
-
         }
 
         timer.tracker.system_end = glfwGetTime();

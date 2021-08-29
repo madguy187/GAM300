@@ -2,7 +2,7 @@
 
 #include "Graphics/Grid/bounds.h"
 
-#define UPPER_BOUND 10000
+#define UPPER_BOUND 50000
 
 namespace Eclipse
 {

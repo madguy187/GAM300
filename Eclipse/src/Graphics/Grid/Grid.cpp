@@ -196,18 +196,18 @@ namespace Eclipse
         // Only max have this number of tiles
         GridArray.reserve(TotalTiles);
 
-        // Initialise everything 
-        Tile NewTile(GridScale, true);
-        NewTile.CenterPoint = StartingPosition;
-        GridArray.push_back(NewTile);
+        //// Initialise everything 
+        //Tile NewTile(GridScale, true);
+        //NewTile.CenterPoint = StartingPosition;
+        //GridArray.push_back(NewTile);
 
-        for (int i = 0; i < (TotalTiles - 1); i++)
-        {
-            Tile NewTile(GridScale, false);
-            GridArray.push_back(NewTile);
-        }
+        //for (int i = 0; i < (TotalTiles - 1); i++)
+        //{
+        //    Tile NewTile(GridScale, false);
+        //    GridArray.push_back(NewTile);
+        //}
 
-        std::cout << "Grid Size " << GridArray.size() << std::endl;
+        //std::cout << "Grid Size " << GridArray.size() << std::endl;
 
         for (int y = 0; y < TotalTiles; y += (GridSize * GridSize))
         {
@@ -216,6 +216,9 @@ namespace Eclipse
                 for (int x = 0; x < GridSize; x++)
                 {
                     unsigned int Index = (z * GridSize) + x + y;
+
+                    Tile NewTile(GridScale, true);
+                    GridArray.push_back(NewTile);
 
                     // Set Center Point
                     glm::vec3 Center = { StartingPosition.getX() + (x * GridScale) , StartingPosition.getY() + ((y / (GridSize * GridSize)) * GridScale) , StartingPosition.getZ() - (z * GridScale) };
@@ -293,6 +296,9 @@ namespace Eclipse
 
     void Grid::DebugPrintCoorindates(std::vector<Tile>& in)
     {
+        if (PrintDebug == false)
+            return;
+
         for (int y = 0; y < TotalTiles; y += (GridSize * GridSize))
         {
             for (int z = 0; z < GridSize; z++)
@@ -315,7 +321,7 @@ namespace Eclipse
 
     void Grid::InsertAsDebugBox()
     {
-        BoundingRegion br({ 0,0,0 }, { GridScale * GridSize ,0  ,GridScale * GridSize });
+        BoundingRegion br({ 0,0,0 }, { GridScale * GridSize , 0  ,GridScale * GridSize });
         engine->GraphicsManager.AllAABBs.AddInstance(br);
     }
 

@@ -18,7 +18,6 @@ void Eclipse::GridSystem::Update()
         if (ModelVsGrid.size() >= 1)
         {
             auto& unoccupied = engine->GraphicsManager.GridManager->GetOccupiedTiles(ModelVsGrid);
-
             auto& Coordinates = engine->world.GetComponent<TransformComponent>(EntityID);
         }
     }
