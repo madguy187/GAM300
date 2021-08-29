@@ -221,7 +221,7 @@ namespace Eclipse
             std::cout << pospos.x << " " << pospos.y << " " << pospos.z << std::endl;
 
             BoundingRegion br(Transform.position.ConvertToGlmVec3Type(), Transform.scale.ConvertToGlmVec3Type());
-            box->AddInstance(br, Transform.position.ConvertToGlmVec3Type());
+            box->AddInstance(br, Transform.position.ConvertToGlmVec3Type() , Transform.scale.ConvertToGlmVec3Type());
 
             mModelNDC = _camera.projMtx * _camera.viewMtx * model;
             glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));

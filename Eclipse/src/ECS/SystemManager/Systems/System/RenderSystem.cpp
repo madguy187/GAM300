@@ -30,7 +30,7 @@ namespace Eclipse
 		engine->GraphicsManager.GridManager->DebugPrint();
 
 		// Create AABB Boxes =============================
-		engine->GraphicsManager.AllAABBs.Init();
+		box.Init();
 	}
 
 	Signature RenderSystem::RegisterAll()
@@ -46,7 +46,8 @@ namespace Eclipse
 
 	void RenderSystem::Update()
 	{
-		engine->GraphicsManager.AllAABBs.Reset();
+		box.offsets.clear();
+		box.sizes.clear();
 
 		ProfilerWindow timer;
 		timer.SetName({ SystemName::RENDER });
@@ -81,19 +82,36 @@ namespace Eclipse
 			// CAMERA Render End ===============================
 
 			// MODELS Render  Start =============================
-			engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL, &engine->GraphicsManager.AllAABBs, CameraComponent::CameraType::Editor_Camera);
+			engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL, &box, CameraComponent::CameraType::Editor_Camera);
 
-			engine->MaterialManager.DoNotUpdateStencil();
-			engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), GL_FILL, &box, CameraComponent::CameraType::Game_Camera);
-			engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_TOP)->GetFrameBufferID(), GL_FILL, &box, CameraComponent::CameraType::TopView_Camera);
-			engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_BOTTOM)->GetFrameBufferID(), GL_FILL, &box, CameraComponent::CameraType::BottomView_Camera);
-			engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_LEFT)->GetFrameBufferID(), GL_FILL, &box, CameraComponent::CameraType::RightView_camera);
-			engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_RIGHT)->GetFrameBufferID(), GL_FILL, &box, CameraComponent::CameraType::LeftView_Camera);
+			//engine->MaterialManager.DoNotUpdateStencil();
+			//engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), GL_FILL, &box, CameraComponent::CameraType::Game_Camera);
+			//engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_TOP)->GetFrameBufferID(), GL_FILL, &box, CameraComponent::CameraType::TopView_Camera);
+			//engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_BOTTOM)->GetFrameBufferID(), GL_FILL, &box, CameraComponent::CameraType::BottomView_Camera);
+			//engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_LEFT)->GetFrameBufferID(), GL_FILL, &box, CameraComponent::CameraType::RightView_camera);
+			//engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_RIGHT)->GetFrameBufferID(), GL_FILL, &box, CameraComponent::CameraType::LeftView_Camera);
 			// MODELS Render  End ===============================
 
 			// render boxes
 			engine->MaterialManager.DoNotUpdateStencil();
-			engine->GraphicsManager.AllAABBs.DrawAll(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+			//engine->GraphicsManager.AllAABBs.DrawAll(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+
+			if (box.offsets.size() > 0)
+			{
+				glBindFramebuffer(GL_FRAMEBUFFER, engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+				CameraComponent camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+				auto shdrpgm = Graphics::shaderpgms.find("AABB");
+				shdrpgm->second.Use();
+
+				GLint uniform_var_loc1 = shdrpgm->second.GetLocation("view");
+				GLint uniform_var_loc2 = shdrpgm->second.GetLocation("projection");
+				glm::mat4 _cameraprojMtx = glm::perspective(glm::radians(camera.fov), camera.aspect, camera.nearPlane, camera.farPlane);
+				glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(camera.viewMtx));
+				glUniformMatrix4fv(uniform_var_loc2, 1, GL_FALSE, glm::value_ptr(_cameraprojMtx));
+
+				box.Render(shdrpgm->second, camera);
+				shdrpgm->second.UnUse();
+			}
 		}
 
 		timer.tracker.system_end = glfwGetTime();

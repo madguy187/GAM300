@@ -18,14 +18,15 @@ namespace Eclipse
 
     public:
         bool DrawAABBS = true;
-        std::vector<glm::vec3> Position;
-        std::vector<glm::vec3> AABB_Size;
+        std::vector<glm::vec3> offsets;
+        std::vector<glm::vec3> sizes;
         int Counter = 0;
+        unsigned int offsetVBO, sizeVBO;
 
         AABB_();
         void Init();
         void Render(Shader shader, CameraComponent& camera);
-        void AddInstance(BoundingRegion br, glm::vec3 pos);
+        void AddInstance(BoundingRegion br, glm::vec3 pos, glm::vec3 size);
         void Cleanup();
         void Reset();
         void DrawAll(unsigned int FramebufferID);
