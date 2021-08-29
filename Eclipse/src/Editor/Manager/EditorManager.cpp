@@ -3,7 +3,7 @@
 #include "ImGui/Vendor/IconsFontAwesome.h"
 #include "Editor/Windows/Inspector/Inspector.h"
 #include "Editor/Windows/Hierarchy/Hierarchy.h"
-#include "Editor/Windows/Scene/Scene.h"
+#include "Editor/Windows/Scene/SceneView.h"
 #include "Editor/Windows/GameView/GameView.h"
 #include "Editor/Windows/Debug/Debug.h"
 #include "ECS/ComponentManager/Components/EntityComponent.h"
@@ -81,13 +81,14 @@ namespace Eclipse
 		io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/fontawesome-webfont.ttf", 12.0f, &icons_config, icons_ranges);
 	}
 
-	Entity EditorManager::CreateEntity(EntityType type)
+	Entity EditorManager::CreateDefaultEntity(EntityType type)
 	{
 		Entity ID = engine->world.CreateEntity();
+
 		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast<std::string>(type), true });
 		engine->world.AddComponent(ID, TransformComponent{});
 
-		//Check this please - Rachel
+		// Check this please - Rachel
 		auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
 		engine->gPicker.GenerateAabb(ID, _transform);
 
@@ -96,6 +97,18 @@ namespace Eclipse
 		GEHIndex_ = EntityHierarchyList_.size() - 1;
 
 		return ID;
+	}
+
+	void EditorManager::RegisterExistingEntity(Entity ID)
+	{
+		// Ensure entity has entity and transform com before using it
+		auto& transform = engine->world.GetComponent<TransformComponent>(ID);
+		auto& entcom = engine->world.GetComponent<EntityComponent>(ID);
+
+		engine->gPicker.GenerateAabb(ID, transform);
+		EntityHierarchyList_.push_back(ID);
+		EntityToTypeMap_.insert(std::pair<Entity, EntityType>(ID, entcom.Tag));
+		GEHIndex_ = EntityHierarchyList_.size() - 1;
 	}
 
 	void EditorManager::DestroyEntity(Entity ID)

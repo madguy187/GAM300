@@ -4,21 +4,31 @@
 
 namespace Eclipse
 {
-    typedef std::map<int, DirectionalLightComponent*> DirectionalLightContainer;
-    using DLIT = std::map<int, DirectionalLightComponent*>::iterator;
+	typedef std::map<int, DirectionalLightComponent*> DirectionalLightContainer;
+	using DLIT = std::map<int, DirectionalLightComponent*>::iterator;
 
-    class DirectionalLight
-    {
-    private:
-        // Directional Light Container
-        inline static Eclipse::DirectionalLightContainer _DirectionalLight;
+	class DirectionalLight
+	{
+	private:
+		// Directional Light Container
+		inline static Eclipse::DirectionalLightContainer _DirectionalLight;
+		// Global Counter for all DirectionalLight to loop in shader
+		inline static unsigned int counter = 0;
 
-    public:
-        inline static int counter = 0;
-        DirectionalLightContainer GetContainer();
-        static void CreateDirectionalLight(unsigned int CreatedID);
-        void Draw(DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
-        void CheckUniformLoc(Graphics::shaderIt _shdrpgm, DirectionalLightComponent& hi, int index, unsigned int containersize);
-        void FirstGlobalLight();
-    };
+	public:
+		// Returns DirectionalLight Container
+		DirectionalLightContainer GetContainer();
+		// Create Directional Light
+		static void CreateDirectionalLight(unsigned int CreatedID);
+		// Delete Directional Light
+		static bool DeleteDirectionalLight(unsigned int EntityID);
+		// Directional Light Draw
+		void Draw(DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
+		// First Created Light
+		void FirstGlobalLight();
+
+	private:
+		// Update Shader Variables
+		void CheckUniformLoc(Shader* _shdrpgm, DirectionalLightComponent& hi, int index, unsigned int containersize);
+	};
 }

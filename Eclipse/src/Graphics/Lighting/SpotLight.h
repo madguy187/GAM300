@@ -17,6 +17,7 @@ namespace Eclipse
         SpotLightContainer GetContainer();
         unsigned int GetNumberOfSpotLights();
         static void CreateSpotLight(unsigned int CreatedID);
+        static bool DeleteSpotLight(unsigned int EntityID);
         void DrawSpotLights(unsigned int framebufferID);
         void Draw(SpotLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
 

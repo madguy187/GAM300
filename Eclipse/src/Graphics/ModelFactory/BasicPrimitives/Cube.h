@@ -7,7 +7,7 @@
 #include "Importer.hpp"
 #include "postprocess.h"
 #include "scene.h"
-#include "Graphics/RendererAPI/Texture.h"
+#include "Graphics/Textures/Texture.h"
 
 #include "Mesh.h"
 

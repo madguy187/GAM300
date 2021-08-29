@@ -12,54 +12,51 @@
 
 namespace Eclipse
 {
-    enum class ModelType
-    {
-        UNASSIGNED = 0,
-        HUMAN = 1,
-        ANIMAL = 2,
-        HOUSE = 3,
-        ENVIRONMENT = 4,
-        MAXCOUNT
-    };
+	enum class ModelType
+	{
+		UNASSIGNED = 0,
+		HUMAN = 1,
+		ANIMAL = 2,
+		HOUSE = 3,
+		ENVIRONMENT = 4,
+		MAXCOUNT
+	};
 
-    class AssimpModel
-    {
-    private:
-        std::string NameOfModel;
-        std::vector<Mesh> Meshes;
-        std::string Directory;
-        std::vector<Texture> Textures_loaded;
-        ModelType type = ModelType::UNASSIGNED;
+	class AssimpModel
+	{
+	private:
+		std::vector<glm::vec3> AllVertices;
+		std::string NameOfModel;
+		std::vector<Mesh> Meshes;
+		std::string Directory;
+		std::vector<Texture> Textures_loaded;
+		ModelType type = ModelType::UNASSIGNED;
 
-        Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
-        std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type);
-        void ProcessNode(aiNode* node, const aiScene* scene);
-        void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera , unsigned int FrameBufferID);
-        void SimpleCameraPlay(TransformComponent& in, unsigned int Fraembuffer);
-    public:
-        bool noTex = false;
-        unsigned int ID = 0;
-        GLenum GlobalMode = GL_FILL;
+		Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
+		std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type);
+		void ProcessNode(aiNode* node, const aiScene* scene);
 
-        AssimpModel() { }
-        AssimpModel(bool noTex = false);
+	public:
+		bool noTex = false;
+		unsigned int ID = 0;
+		GLenum GlobalMode = GL_FILL;
 
-        void LoadAssimpModel(std::string path);
-        void Render(Shader& shader, GLenum mode, unsigned int FrameBufferID, CameraComponent::CameraType _camType);
-        void Cleanup();
-        void SetName(std::string name);
-        std::string GetName();
-        std::string GetDirectory();
-        unsigned int GetNumberOfTextures();
-        void GetTextureNames();
-        unsigned int GetNumberOfMeshes();
-        ModelType GetType();
-        void SetModelType(ModelType in);
+		AssimpModel() { }
+		AssimpModel(bool noTex = false);
 
-        // fbx
-    public:
-        void FBXLoadAssimpModel(const char* in);
-    };
+		void LoadAssimpModel(std::string path);
+		void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID);
+		void Cleanup();
+		void SetName(std::string name);
+		std::string GetName();
+		std::string GetDirectory();
+		unsigned int GetNumberOfTextures();
+		void GetTextureNames();
+		unsigned int GetNumberOfMeshes();
+		ModelType GetType();
+		void SetModelType(ModelType in);
+		std::vector<glm::vec3> GetVertices();
+	};
 
 }
 #endif // ASSIMP_MODEL_CLASS#ifndef ASSIMP_MODEL_CLASS_H
