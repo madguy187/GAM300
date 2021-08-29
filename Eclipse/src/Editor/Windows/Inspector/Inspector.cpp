@@ -11,6 +11,10 @@ namespace Eclipse
 			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&InspectorWindow::DrawImpl, this));
 	}
 
+	void InspectorWindow::Unload()
+	{
+	}
+
 	InspectorWindow::InspectorWindow()
 	{
 		Type = EditorWindowType::EWT_INSPECTOR;

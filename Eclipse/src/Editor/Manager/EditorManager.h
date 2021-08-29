@@ -39,6 +39,8 @@ namespace Eclipse
 
 			return temp;
 		}
+		
+		void Clear();
 
 		std::vector<Entity> EntityHierarchyList_;
 		std::map<Entity, EntityType> EntityToTypeMap_;
