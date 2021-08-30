@@ -30,6 +30,7 @@ void Eclipse::PickingSystem::EditorUpdate()
 			{
 				engine->MaterialManager.UnHighlight(engine->gPicker.GetCurrentCollisionID());
 			}
+
 			engine->gPicker.SetCurrentCollisionID(it);
 			engine->MaterialManager.HighlightClick(it);
 		}
