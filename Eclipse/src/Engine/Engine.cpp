@@ -35,7 +35,7 @@ namespace Eclipse
 {
     void Engine::Init()
     {
-        mono.Init();
+        //mono.Init();
 
         // multiple listener calls
         EventSystem<Test1>::registerListener(Tester1);
@@ -105,6 +105,8 @@ namespace Eclipse
         picking.set(world.GetComponentType<MaterialComponent>(), 1);
         world.RegisterSystemSignature<PickingSystem>(picking);
 
+        mono.Init();
+        
         //Check this! - Rachel
         RenderSystem::Init();
         CameraSystem::Init();
@@ -187,6 +189,8 @@ namespace Eclipse
             // GRID DRAW ============================= Must be last of All Renders
             engine->GraphicsManager.GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 
+            mono.Update();
+
             // FRAMEBUFFER DRAW ==========================
             engine->GraphicsManager.GlobalFrmeBufferDraw();
 
@@ -197,6 +201,7 @@ namespace Eclipse
         }
 
         // unLoad
+        mono.StopMono();
         GraphicsManager.End();
         AssimpManager.CleanUpAllModels();
         ImGuiSetup::Destroy(EditorState);
