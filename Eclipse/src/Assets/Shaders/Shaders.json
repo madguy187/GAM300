@@ -1,34 +1,9 @@
 {
   "shaders": [
     {
-      "shaderName": "shdrpgm",
-      "vtxShader": "src/Assets/Shaders/BasicVtx.vert",
-      "frgShader": "src/Assets/Shaders/BasicFrag.frag"
-    },
-    {
-      "shaderName": "textShdrpgm",
-      "vtxShader": "src/Assets/Shaders/textVtx.vert",
-      "frgShader": "src/Assets/Shaders/textFrag.frag"
-    },
-    {
-      "shaderName": "debugShdrpgm",
-      "vtxShader": "src/Assets/Shaders/DebugVtx.vert",
-      "frgShader": "src/Assets/Shaders/DebugFrag.frag"
-    },
-    {
-      "shaderName": "lightShdrpgm",
-      "vtxShader": "src/Assets/Shaders/LightVtx.vert",
-      "frgShader": "src/Assets/Shaders/LightFrag.frag"
-    },
-    {
-      "shaderName": "particleShdrpgm",
-      "vtxShader": "src/Assets/Shaders/ParticlesVtx.vert",
-      "frgShader": "src/Assets/Shaders/ParticlesFrag.frag"
-    },
-    {
       "shaderName": "shader3DShdrpgm",
-      "vtxShader": "src/Assets/Shaders/Shader3D.vert",
-      "frgShader": "src/Assets/Shaders/Shader3D.frag"
+      "vtxShader": "src/Assets/Shaders/Shader3D/Shader3D.vert",
+      "frgShader": "src/Assets/Shaders/Shader3D/Shader3D.frag"
     },
     {
       "shaderName": "nooblight",
@@ -42,8 +17,28 @@
     },
     {
       "shaderName": "Sky",
-      "vtxShader": "src/Assets/Shaders/skybox.vert",
-      "frgShader": "src/Assets/Shaders/skybox.frag"
+      "vtxShader": "src/Assets/Shaders/CubeMap/skybox.vert",
+      "frgShader": "src/Assets/Shaders/CubeMap/skybox.frag"
+    },
+    {
+      "shaderName": "Grid",
+      "vtxShader": "src/Assets/Shaders/Grid/Grid.vert",
+      "frgShader": "src/Assets/Shaders/Grid/Grid.frag"
+    },
+    {
+      "shaderName": "FrustrumShader",
+      "vtxShader": "src/Assets/Shaders/Frustrum/Frustrum.vert",
+      "frgShader": "src/Assets/Shaders/Frustrum/Frustrum.frag"
+    },
+    {
+      "shaderName": "OutLineShader",
+      "vtxShader": "src/Assets/Shaders/Outlining/Outlining.vert",
+      "frgShader": "src/Assets/Shaders/Outlining/Outlining.frag"
+    },
+    {
+      "shaderName": "AABB",
+      "vtxShader": "src/Assets/Shaders/AABB.vert",
+      "frgShader": "src/Assets/Shaders/AABB.frag"
     }
   ]
 }

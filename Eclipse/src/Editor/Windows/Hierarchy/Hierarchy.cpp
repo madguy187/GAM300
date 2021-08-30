@@ -11,6 +11,12 @@ namespace Eclipse
 			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&HierarchyWindow::DrawImpl, this));
 	}
 
+	void HierarchyWindow::Unload()
+	{
+		CurrEnt_.Clear();
+		PrevEnt_.Clear();
+	}
+
 	HierarchyWindow::HierarchyWindow()
 	{
 		Type = EditorWindowType::EWT_HIERARCHY;
@@ -122,7 +128,7 @@ namespace Eclipse
 
 							if (ECGui::CreateSelectableButton(TagList_[i][j].c_str(), &selected))
 							{
-								Entity ID = engine->editorManager->CreateEntity(lexical_cast<EntityType>(TagList_[i][j]));
+								Entity ID = engine->editorManager->CreateDefaultEntity(lexical_cast<EntityType>(TagList_[i][j]));
 								engine->GraphicsManager.CreatePrimitives(ID, static_cast<int>(i * TagList_.size() + j));
 								UpdateEntityTracker(ID);
 							}
@@ -143,7 +149,7 @@ namespace Eclipse
 
 							if (ECGui::CreateSelectableButton(TagList_[i][j].c_str(), &selected))
 							{
-								Entity ID = engine->editorManager->CreateEntity(lexical_cast<EntityType>(TagList_[i][j]));
+								Entity ID = engine->editorManager->CreateDefaultEntity(lexical_cast<EntityType>(TagList_[i][j]));
 								engine->GraphicsManager.CreatePrimitives(ID, static_cast<int>(i * TagList_[i - 1].size() + j));
 								UpdateEntityTracker(ID);
 							}

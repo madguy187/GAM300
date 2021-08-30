@@ -8,8 +8,9 @@ namespace Eclipse
 	{
 	public:
 		void Update() override;
+		void Unload() override;
 		eGameViewWindow();
-		void InitilializeFrameBuffer();
+		void RunMainWindow();
 		void RunFrameBuffer();
 	private:
 		glm::vec2 mViewportSize;

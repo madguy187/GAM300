@@ -139,7 +139,7 @@ namespace Eclipse
 
 			MonoMethod* method = mono_class_get_method_from_name(klass, "Update", 0);
 
-			//mono_runtime_invoke(method, obj, NULL, NULL);
+			mono_runtime_invoke(method, obj, NULL, NULL);
 		}
 	}
 

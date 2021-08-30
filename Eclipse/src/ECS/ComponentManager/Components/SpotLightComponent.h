@@ -7,9 +7,10 @@ namespace Eclipse
     struct SpotLightComponent
     {
         unsigned int ID = 0;
+        unsigned int Counter = 0;
 
         ECVec3 lightColor{ 1.0f,1.0f,1.0f };
-        ECVec3 direction{ 0,0,5 };
+        ECVec3 direction{ 0,0,-5 };
         ECVec3 ambient{ 0.5f , 0.5f, 0.5f };
         ECVec3 diffuse{ 0.5f,0.5f,0.5f };
         ECVec3 specular{ 0.1f,0.1f,0.1f };
@@ -22,13 +23,17 @@ namespace Eclipse
         float constant = 1.0f;
         float linear = 0.09f;
         float quadratic = 0.032f;
+        int AttenuationLevel = 5;
+        float SurroundingAttenuationLevel = 0.3f;
 
+        bool EnableBlinnPhong = true;
         bool hasTexture = false;
-        bool visible;
+        bool visible = false;
 
-        IModel* modelRef;
-        Shader* shaderRef;
-        Texture* textureRef;
-        glm::mat4 modelNDC_xform{ 0 };
+        // Not needed
+        //IModel* modelRef;
+        //Shader* shaderRef;
+        //Texture* textureRef;
+        //glm::mat4 modelNDC_xform{ 0 };
     };
 }

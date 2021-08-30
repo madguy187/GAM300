@@ -31,6 +31,7 @@ namespace Eclipse
 		float cellSize;
 		float panelWidth;
 		int columnCount;
+		const char* paths;
 		////////////////////////////////
 
 		//Searching
@@ -41,7 +42,6 @@ namespace Eclipse
 		std::map<std::filesystem::path, std::vector<std::filesystem::path>> pathMap;
 		std::map<std::filesystem::path, std::vector<std::filesystem::path>> FolderMap;
 		//stores all data for path map
-		std::vector<std::string> subDirItems;
 		std::vector<std::string> subDirItemsPath;
 		std::string searchItemsLowerCase;
 		std::string searchFoldersLowerCase;
@@ -51,6 +51,7 @@ namespace Eclipse
 		bool searchFolderMode = false;
 		bool refresh = true;
 		bool jumpDir = false;
+		bool ResetTreeNodeOpen = false;
 		////////////////////////////////
 		
 	public:
@@ -58,6 +59,7 @@ namespace Eclipse
 		//main update function
 		////////////////////////////////
 		void Update() override;
+		void Unload() override;
 		AssetBrowserWindow();
 		void DrawImpl();
 		////////////////////////////////
@@ -68,6 +70,7 @@ namespace Eclipse
 		void CreateTreeNode(std::string name,std::function<T> function);
 		void LeftFolderHierarchy();
 		void LeftFolders();
+		void LeftSearchedFolders();
 		void RightFoldersAndItems();
 		void FoldersAndItems();
 		void PathAndSearches();
@@ -82,6 +85,8 @@ namespace Eclipse
 		////////////////////////////////
 		void AddToPathMap(std::filesystem::path dirEntry, std::vector<std::filesystem::path> subDirItems);
 		void AddToFolderMap(std::filesystem::path dirEntry, std::vector<std::filesystem::path> Folder);
+		bool ExistInVector(std::string Path, std::vector<std::string> container);
+		void GetIndex(std::vector<std::string> container, std::string key, int& pos);
 		void ScanAll();
 		void SearchItems();
 		void SearchFolders();

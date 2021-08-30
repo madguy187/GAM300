@@ -8,10 +8,15 @@ namespace Eclipse
 			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&ProfilerWindow::DrawImpl, this));
 	}
 
+	void ProfilerWindow::Unload()
+	{
+	}
+
 	ProfilerWindow::ProfilerWindow()
 	{
 		Type = EditorWindowType::EWT_PROFILER;
 		WindowName = "Profiler";
+		IsVisible = false;
 	}
 
 	void ProfilerWindow::ContainerAddTime(TimerTracker inputTracker)

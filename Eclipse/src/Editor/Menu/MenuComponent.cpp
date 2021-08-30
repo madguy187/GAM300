@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "MenuComponent.h"
-#include "Editor/Windows/Scene/Scene.h"
+
+#include "Editor/Utilities/OpenFileDialog.h"
+#include "Editor/Windows/Scene/SceneView.h"
 #include "Editor/Windows/GameView/GameView.h"
 
 namespace Eclipse
@@ -38,6 +40,25 @@ namespace Eclipse
 			}
 		}
 
+		if (!strcmp(key, "Open"))
+		{
+			bool selected = false;
+
+			if (ECGui::CreateMenuItem(key, &selected))
+			{
+				FileDialog::FileBrowser();
+			}
+		}
+
+		if (!strcmp(key, "Save"))
+		{
+			bool selected = false;
+
+			if (ECGui::CreateMenuItem(key, &selected))
+			{
+				FileDialog::SaveFile();
+			}
+		}
 		/*if (!strcmp(key, "Scene"))
 		{
 			auto* scene = engine->editorManager->GetEditorWindow<Scene>();

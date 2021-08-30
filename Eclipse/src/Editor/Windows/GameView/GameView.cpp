@@ -9,10 +9,14 @@ namespace Eclipse
 		//timer.SetName({ SystemName::TEST });
 		//timer.tracker.system_start = glfwGetTime();
 		if (IsVisible)
-			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&eGameViewWindow::InitilializeFrameBuffer, this));
+			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&eGameViewWindow::RunMainWindow, this));
 		//timer.tracker.system_end = glfwGetTime();
 		//
 		//timer.ContainerAddTime(timer.tracker);
+	}
+
+	void eGameViewWindow::Unload()
+	{
 	}
 
 	eGameViewWindow::eGameViewWindow() :
@@ -24,7 +28,7 @@ namespace Eclipse
 		m_frameBuffer = std::make_shared<FrameBuffer>(*engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::GAMEVIEW));
 	}
 
-	void eGameViewWindow::InitilializeFrameBuffer()
+	void eGameViewWindow::RunMainWindow()
 	{
 		ImVec2 viewportPanelSize = ECGui::GetWindowSize();
 

@@ -3,20 +3,14 @@
 #include "ImGui/Vendor/IconsFontAwesome.h"
 #include "Editor/Windows/Inspector/Inspector.h"
 #include "Editor/Windows/Hierarchy/Hierarchy.h"
-#include "Editor/Windows/Scene/Scene.h"
+#include "Editor/Windows/Scene/SceneView.h"
 #include "Editor/Windows/GameView/GameView.h"
 #include "Editor/Windows/Debug/Debug.h"
 #include "ECS/ComponentManager/Components/EntityComponent.h"
 #include "Editor/Windows/AssetBrowser/AssetBrowser.h"
 #include "Editor/Windows/Log/Log.h"
 #include "Editor/Windows/Profiler/Profiler.h"
-//#include "Library/Strings/Lexical.h"
-
-// Switch Views --------------------------
-#include "Editor/Windows/SwitchViews/Top.h"
-#include "Editor/Windows/SwitchViews/Bottom.h"
-#include "Editor/Windows/SwitchViews/Right.h"
-#include "Editor/Windows/SwitchViews/Left.h"
+#include "Editor/Windows/SwitchViews/SwitchViews.h"
 
 namespace Eclipse
 {
@@ -37,19 +31,18 @@ namespace Eclipse
 		AddWindow<InspectorWindow>("Inspector");
 		AddWindow<HierarchyWindow>("Hierarchy");
 		AddWindow<ProfilerWindow>("Profiler");
-		AddWindow<LoggerWindow>("Log");
 		AddWindow<AssetBrowserWindow>("AssetBrowser");
+		AddWindow<LoggerWindow>("Log");
 		AddWindow<DebugWindow>("Debug");
-		AddWindow<eTopViewWindow>("SwitchView_Top");
-		AddWindow<eBottomViewWindow>("SwitchView_Bottom");
-		AddWindow<eLeftViewWindow>("SwitchView_Left");
-		AddWindow<eRightViewWindow>("SwitchView_Right");
+		AddWindow<SwitchViewsWindow>("SwitchViews");
 	}
 
 	void EditorManager::InitMenu()
 	{
 		MenuComponent file{ "File", EditorMenuType::FILE };
 		file.AddItems("Exit");
+		file.AddItems("Open");
+		file.AddItems("Save");
 		MenuComponent window{ "Windows", EditorMenuType::WINDOWS };
 
 		MenuBar_.AddMenuComponents(file);
@@ -79,7 +72,8 @@ namespace Eclipse
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-		glTexImage2D(GL_TEXTURE_2D, 0, bytes_per_pixels, width, height, 0, (bytes_per_pixels == 3) ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+		glTexImage2D(GL_TEXTURE_2D, 0, bytes_per_pixels, width, height, 0, 
+			(bytes_per_pixels == 3) ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 
 		io.Fonts->SetTexID((void*)static_cast<size_t>(textureID));
 
@@ -89,17 +83,34 @@ namespace Eclipse
 		io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/fontawesome-webfont.ttf", 12.0f, &icons_config, icons_ranges);
 	}
 
-	Entity EditorManager::CreateEntity(EntityType type)
+	Entity EditorManager::CreateDefaultEntity(EntityType type)
 	{
 		Entity ID = engine->world.CreateEntity();
-		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast<std::string>(type), true});
+
+		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast<std::string>(type), true });
 		engine->world.AddComponent(ID, TransformComponent{});
+
+		// Check this please - Rachel
+		auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
+		engine->gPicker.GenerateAabb(ID, _transform);
 
 		EntityHierarchyList_.push_back(ID);
 		EntityToTypeMap_.insert(std::pair<Entity, EntityType>(ID, type));
 		GEHIndex_ = EntityHierarchyList_.size() - 1;
 
 		return ID;
+	}
+
+	void EditorManager::RegisterExistingEntity(Entity ID)
+	{
+		// Ensure entity has entity and transform com before using it
+		auto& transform = engine->world.GetComponent<TransformComponent>(ID);
+		auto& entcom = engine->world.GetComponent<EntityComponent>(ID);
+
+		engine->gPicker.GenerateAabb(ID, transform);
+		EntityHierarchyList_.push_back(ID);
+		EntityToTypeMap_.insert(std::pair<Entity, EntityType>(ID, entcom.Tag));
+		GEHIndex_ = EntityHierarchyList_.size() - 1;
 	}
 
 	void EditorManager::DestroyEntity(Entity ID)
@@ -141,5 +152,17 @@ namespace Eclipse
 	Entity EditorManager::GetSelectedEntity() const
 	{
 		return EntityHierarchyList_[GEHIndex_];
+	}
+
+	void EditorManager::Clear()
+	{
+		EntityHierarchyList_.clear();
+		EntityToTypeMap_.clear();
+		GEHIndex_ = 0;
+
+		for (const auto& window : Windows_)
+		{
+			window->Unload();
+		}
 	}
 }

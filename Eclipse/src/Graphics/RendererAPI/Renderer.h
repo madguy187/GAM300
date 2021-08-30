@@ -21,10 +21,5 @@ namespace Eclipse
   };
 }
 
-#ifdef DEBUG_OPENGL
-// Call glGetError first, then calls function 'x', then GLLogError
-#define GLCall(x) glGetError(); x; Renderer::GLLogError(#x, __FILE__, __LINE__);
-#else
-// Empty wrapper
 #define GLCall(x) x
-#endif 
+ 

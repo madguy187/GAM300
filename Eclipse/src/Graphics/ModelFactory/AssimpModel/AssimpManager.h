@@ -7,27 +7,33 @@
 
 #include <vector>
 #include "AssimpModel/AssimpModel.h"
+#include "ECS/ComponentManager/Components/EntityComponent.h"
 
-using namespace Eclipse;
-
-typedef std::map<unsigned int, AssimpModel*> AssimpModelContainer;
-using AssimpIT = std::map<unsigned int, AssimpModel*>::iterator;
-
-class AssimpModelManager
+namespace Eclipse
 {
-private:
-    AssimpModelContainer AssimpModelContainer_;
+    typedef std::map<unsigned int, AssimpModel*> AssimpModelContainer;
+    using AssimpIT = std::map<unsigned int, AssimpModel*>::iterator;
 
-public:
-    AssimpModelContainer GetContainer();
-    unsigned int AssimpModelCount();
-    void LoadAllModels();
-    void CreateModel(std::string name, std::string path, std::string filename);
-    void Draw(unsigned int FrameBufferID, GLenum mode);
-    void DeleteItem(unsigned int index, AssimpModel* model_ptr);
-    void DebugPrint();
-    void AddComponents();
-    void CleanUpAllModels();
-    ~AssimpModelManager();
-};
+    class AssimpModelManager
+    {
+    private:
+        AssimpModelContainer AssimpModelContainer_;
+
+    public:
+        AssimpModelContainer GetContainer();
+        unsigned int AssimpModelCount();
+        void LoadAllModels();
+        void CreateModel(std::string name, std::string path, std::string filename);
+        void Draw(unsigned int FrameBufferID, GLenum mode , AABB* box ,  CameraComponent::CameraType _camType);
+        void HighlihtDraw(unsigned int FrameBufferID, GLenum Mode);
+        void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID , AABB* box);
+        void DeleteItem(unsigned int index, AssimpModel* model_ptr);
+        void DebugPrint();
+        void AddComponents();
+        void CleanUpAllModels();
+        void TestPath(std::string& path);
+        AssimpModel* GetModel(unsigned int ID);
+        ~AssimpModelManager();
+    };
+}
 #endif // ASSIMP_MANAGER_H
