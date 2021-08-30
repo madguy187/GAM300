@@ -23,21 +23,12 @@ void Eclipse::PickingSystem::Update()
 			{
 				auto& material = engine->world.GetComponent<MaterialComponent>(it);
 				
-				if (material.Highlight)
+				if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
 				{
-					engine->gPicker.SetCurrentCollisionID(MAX_ENTITY);
-					engine->MaterialManager.UnHighlight(it);
+					engine->MaterialManager.UnHighlight(engine->gPicker.GetCurrentCollisionID());
 				}
-				else
-				{
-					engine->gPicker.SetCurrentCollisionID(it);
-					engine->MaterialManager.HighlightClick(it);
-				}			
-			}
-			else
-			{
-				engine->gPicker.SetCurrentCollisionID(MAX_ENTITY);
-				engine->MaterialManager.UnHighlight(it);
+				engine->gPicker.SetCurrentCollisionID(it);
+				engine->MaterialManager.HighlightClick(it);
 			}
 
 			engine->gPicker.UpdateAabb(it);
