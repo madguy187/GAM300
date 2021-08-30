@@ -119,7 +119,7 @@ namespace Eclipse
             engine->CollisionGridTree.InsertObject(third);
 
             //pass in model to check with the grid
-            auto& aabbCollisions = engine->CollisionGridTree.CheckOverlap(first.get()->getAABB());
+            auto& aabbCollisions = engine->CollisionGridTree.CheckOverlapAgainstGrid(first.get()->getAABB());
 
             std::cout << AABBCC[aabbCollisions[0]]->GetName() << std::endl;
         }

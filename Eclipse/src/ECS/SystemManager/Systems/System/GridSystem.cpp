@@ -14,7 +14,7 @@ namespace Eclipse
         {
             auto& Model = M.second;
             auto& Transform = engine->world.GetComponent<TransformComponent>(M.first);
-            auto ModelVsGrid = engine->CollisionGridTree.CheckOverlap(Model->SetAABB(Transform));
+            auto ModelVsGrid = engine->CollisionGridTree.CheckOverlapAgainstGrid(Model->SetAABB(Transform));
 
             if (ModelVsGrid.size() >= 1)
             {
