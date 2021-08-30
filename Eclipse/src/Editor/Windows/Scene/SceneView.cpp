@@ -61,12 +61,14 @@ namespace Eclipse
 			OnGizmoUpdateEvent();
 		}
 		
-		if (ECGui::IsItemHovered() && ImGui::IsWindowFocused() /*temp fix*/)
+		if (ECGui::IsItemHovered() /*&& ImGui::IsWindowFocused()*/ /*temp fix*/)
 		{
 			// Do all the future stuff here when hovering on window
 			OnKeyPressedEvent();
 			OnCameraMoveEvent();
 			OnCameraZoomEvent();
+			OnSelectEntityEvent();
+			std::cout << engine->gPicker.GetCurrentCollisionID() << std::endl;
 		}
 	}
 
@@ -231,6 +233,15 @@ namespace Eclipse
 		{
 			engine->gCamera.GetInput().set(8, 0);
 			engine->gCamera.GetInput().set(9, 0);
+		}
+	}
+
+	void SceneWindow::OnSelectEntityEvent()
+	{
+		if (ImGui::IsMouseClicked(0))
+		{
+			if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
+				engine->editorManager->SetSelectedEntity(engine->gPicker.GetCurrentCollisionID());
 		}
 	}
 
