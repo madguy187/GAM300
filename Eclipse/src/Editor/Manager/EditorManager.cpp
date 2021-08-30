@@ -41,6 +41,8 @@ namespace Eclipse
 	{
 		MenuComponent file{ "File", EditorMenuType::FILE };
 		file.AddItems("Exit");
+		file.AddItems("Open");
+		file.AddItems("Save");
 		MenuComponent window{ "Windows", EditorMenuType::WINDOWS };
 
 		MenuBar_.AddMenuComponents(file);
