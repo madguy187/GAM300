@@ -8,6 +8,10 @@ namespace Eclipse
 			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&ProfilerWindow::DrawImpl, this));
 	}
 
+	void ProfilerWindow::Unload()
+	{
+	}
+
 	ProfilerWindow::ProfilerWindow()
 	{
 		Type = EditorWindowType::EWT_PROFILER;

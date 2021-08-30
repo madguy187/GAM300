@@ -15,6 +15,10 @@ namespace Eclipse
 		//timer.ContainerAddTime(timer.tracker);
 	}
 
+	void eGameViewWindow::Unload()
+	{
+	}
+
 	eGameViewWindow::eGameViewWindow() :
 		mViewportSize{ 0.0f, 0.0f }
 	{

@@ -26,6 +26,10 @@ namespace Eclipse
 			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&AssetBrowserWindow::DrawImpl, this));
 	}
 
+	void AssetBrowserWindow::Unload()
+	{
+	}
+
 	void AssetBrowserWindow::DrawImpl()
 	{
 		//temp render components test phase

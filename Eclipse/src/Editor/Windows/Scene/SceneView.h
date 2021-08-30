@@ -15,6 +15,7 @@ namespace Eclipse
 	{
 	public:
 		void Update() override;
+		void Unload() override;
 		SceneWindow();
 		void RunMainWindow();
 		void RunFrameBuffer();
@@ -23,7 +24,8 @@ namespace Eclipse
 		void OnCameraMoveEvent();
 		void OnCameraZoomEvent();
 
-		SnapValueSettings& GetSnapSettings();
+		SnapValueSettings& GetRefToSnapSettings();
+		SnapValueSettings GetSnapSettings();
 		glm::vec2 GetSceneBufferPos();
 		glm::vec2 GetSceneBufferSize();
 		glm::vec2 GetCursorScreenPos();

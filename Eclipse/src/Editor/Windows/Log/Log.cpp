@@ -11,6 +11,10 @@ namespace Eclipse
 			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&LoggerWindow::DrawImpl, this));
 	}
 
+	void LoggerWindow::Unload()
+	{
+	}
+
 	LoggerWindow::LoggerWindow()
 	{
 		Type = EditorWindowType::EWT_LOGGER;
