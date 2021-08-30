@@ -10,11 +10,6 @@ namespace Eclipse
         return GridID;
     }
 
-    void Grid::SetTransparency(float in)
-    {
-        Transparency = in;
-    }
-
     void Grid::UseFrameBuffer(unsigned int FramebufferID)
     {
         glBindFramebuffer(GL_FRAMEBUFFER, FramebufferID);
@@ -165,18 +160,12 @@ namespace Eclipse
         return ShaderRef;
     }
 
-    float Grid::GetTransparency()
-    {
-        return Transparency;
-    }
-
     void Grid::Init()
     {
         InsertAsDebugBox();
 
         WholeGrid = new Quad;
         ShaderRef = &(Graphics::shaderpgms.find("Grid")->second);
-        ShaderName = Graphics::shaderpgms.find("Grid")->first;
 
         CalculateGridSettings();
 
@@ -220,7 +209,7 @@ namespace Eclipse
                     GridArray[Index].MinimumPoint = ECVec3{ Minimum.x, Minimum.y, Minimum.z };
 
                     // Set Width
-                    GridArray[Index].width = Maximum.x - Minimum.x;
+                    GridArray[Index].Width = Maximum.x - Minimum.x;
 
                     if (AddDebugBoxes)
                     {
@@ -253,7 +242,7 @@ namespace Eclipse
 
         TotalTiles = GridSize * GridSize * GridSize;
 
-        Length = GridSize * GridScale;
+        float Length = GridSize * GridScale;
         XYZ_Length.setX(Length);
         XYZ_Length.setY(Length);
         XYZ_Length.setZ(Length);
@@ -299,7 +288,7 @@ namespace Eclipse
                     std::cout << "= Maximum Point :" << gridArray[Index].MaximumPoint << std::endl;
                     std::cout << "= Minimum Point :" << gridArray[Index].MinimumPoint << std::endl;
                     std::cout << "= Center Point  :" << gridArray[Index].CenterPoint << std::endl;
-                    std::cout << "= Width         :" << gridArray[Index].width << std::endl;
+                    std::cout << "= Width         :" << gridArray[Index].Width << std::endl;
                     std::cout << "=================================" << std::endl;
                 }
             }
@@ -312,7 +301,7 @@ namespace Eclipse
         engine->GraphicsManager.AllAABBs.AddInstance(br);
     }
 
-    bool Grid::CheckTileOccupied(TILE_ID tileID)
+    bool Grid::CheckTileOccupied(TILE_ID& tileID)
     {
         if (gridArray[tileID].Occupied)
         {
@@ -322,18 +311,13 @@ namespace Eclipse
         return false;
     }
 
-    TILE_ID Grid::GetTile()
-    {
-        return TILE_ID();
-    }
-
     std::vector<TILE_ID> Grid::GetOccupiedTiles(std::vector<TILE_ID>& in)
     {
         std::vector<TILE_ID> Temp;
 
         for (int Index = 0; Index < in.size(); Index++)
         {
-            if (gridArray[in[Index]].Occupied == false)
+            if (gridArray[in[Index]].Occupied == true)
             {
                 Temp.push_back(gridArray[in[Index]].aabb.GetEntityID());
             }

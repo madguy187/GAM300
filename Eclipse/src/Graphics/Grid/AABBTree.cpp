@@ -119,7 +119,7 @@ namespace Eclipse
             unsigned nodeIndex = stack.top();
             stack.pop();
 
-            if (nodeIndex == AABB_NULL_NODE) 
+            if (nodeIndex == AABB_NULL_NODE)
                 continue;
 
             AABBNode& node = AllNodes[nodeIndex];
@@ -134,7 +134,7 @@ namespace Eclipse
                         node.aabb.DistanceToObject = node.aabb.maxX - testAabb.maxX;
                         float yo = engine->GraphicsManager.GridManager->gridArray[hi].aabb.DistanceToObject;
 
-                        if ( abs(node.aabb.DistanceToObject) > abs(yo) )
+                        if (abs(node.aabb.DistanceToObject) > abs(yo))
                         {
                             continue;
                         }
@@ -164,7 +164,41 @@ namespace Eclipse
         return overlaps;
     }
 
-    std::vector<unsigned int> AABBTree::SecondCheckOverlap(glm::vec3& rayStart, glm::vec3& rayDir, float& t)
+    std::vector<unsigned int> AABBTree::CheckOverlap(AABB& object)
+    {
+        std::vector<unsigned int> overlaps;
+        std::stack<unsigned> stack;
+        AABB& testAabb = object;
+
+        stack.push(RootNodeIndex);
+        while (!stack.empty())
+        {
+            unsigned nodeIndex = stack.top();
+            stack.pop();
+
+            if (nodeIndex == AABB_NULL_NODE)
+                continue;
+
+            AABBNode& node = AllNodes[nodeIndex];
+
+            if (node.aabb.Overlaps(testAabb))
+            {
+                if (node.isLeaf() && node.aabb.GetEntityID() != object.GetEntityID())
+                {
+                    overlaps.push_back(node.aabb.GetEntityID());
+                }
+                else
+                {
+                    stack.push(node.leftNodeIndex);
+                    stack.push(node.rightNodeIndex);
+                }
+            }
+        }
+
+        return overlaps;
+    }
+
+    std::vector<unsigned int> AABBTree::CheckMouseOverlapAgainstGrid(glm::vec3& rayStart, glm::vec3& rayDir, float& t)
     {
         std::vector<unsigned int> overlaps;
         std::stack<unsigned> stack;
@@ -178,7 +212,7 @@ namespace Eclipse
             if (nodeIndex == AABB_NULL_NODE) continue;
 
             AABBNode& node = AllNodes[nodeIndex];
-            glm::vec3 AABBmin = { node .aabb.minX,node.aabb.minY , node.aabb.minZ };
+            glm::vec3 AABBmin = { node.aabb.minX,node.aabb.minY , node.aabb.minZ };
             glm::vec3 AABBmax = { node.aabb.maxX ,node.aabb.maxY , node.aabb.maxY };
 
             bool collision = PickingManager::RayAabb(rayStart, rayDir, AABBmin, AABBmax, t);

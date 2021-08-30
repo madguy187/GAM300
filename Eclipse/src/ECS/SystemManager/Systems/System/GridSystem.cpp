@@ -30,7 +30,7 @@ namespace Eclipse
         //{
         //    glm::vec3 rayDir = engine->gPicker.ComputeCursorRayDirection();
         //    float t;
-        //    auto& MouseVsGrid = engine->CollisionGridTree.SecondCheckOverlap(camera.eyePos, rayDir, t);
+        //    auto& MouseVsGrid = engine->CollisionGridTree.CheckMouseOverlapAgainstGrid(camera.eyePos, rayDir, t);
 
         //    // Test Code
         //    if (MouseVsGrid.size() >= 1)
