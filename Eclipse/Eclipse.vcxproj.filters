@@ -785,4 +785,7 @@
     <ClCompile Include="src\Editor\Windows\SwitchViews\SwitchViews.cpp" />
     <ClCompile Include="src\Editor\Utilities\DragAndDrop.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Mono\ScriptAPI\MonoVec3.cs" />
+  </ItemGroup>
 </Project>

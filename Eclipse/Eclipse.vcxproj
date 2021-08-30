@@ -386,6 +386,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <None Include="src\Assets\Shaders\Shaders.json" />
     <None Include="src\Assets\Shaders\textFrag.frag" />
     <None Include="src\Assets\Shaders\textVtx.vert" />
+    <None Include="src\Mono\ScriptAPI\MonoVec3.cs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
