@@ -8,6 +8,7 @@ namespace Eclipse
 	{
 	public:
 		void Update() override;
+		void Unload() override;
 		eGameViewWindow();
 		void RunMainWindow();
 		void RunFrameBuffer();

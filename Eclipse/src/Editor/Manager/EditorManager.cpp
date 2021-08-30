@@ -150,4 +150,16 @@ namespace Eclipse
 	{
 		return EntityHierarchyList_[GEHIndex_];
 	}
+
+	void EditorManager::Clear()
+	{
+		EntityHierarchyList_.clear();
+		EntityToTypeMap_.clear();
+		GEHIndex_ = 0;
+
+		for (const auto& window : Windows_)
+		{
+			window->Unload();
+		}
+	}
 }

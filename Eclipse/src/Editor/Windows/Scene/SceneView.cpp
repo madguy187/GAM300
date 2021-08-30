@@ -10,6 +10,10 @@ namespace Eclipse
 			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&SceneWindow::RunMainWindow, this));
 	}
 
+	void SceneWindow::Unload()
+	{
+	}
+
 	SceneWindow::SceneWindow() :
 		mViewportSize{}, mSceneBufferSize{}
 	{
@@ -300,7 +304,12 @@ namespace Eclipse
 		}
 	}
 
-	SnapValueSettings& SceneWindow::GetSnapSettings()
+	SnapValueSettings& SceneWindow::GetRefToSnapSettings()
+	{
+		return mSnapSettings;
+	}
+
+	SnapValueSettings SceneWindow::GetSnapSettings()
 	{
 		return mSnapSettings;
 	}
