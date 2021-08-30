@@ -10,8 +10,8 @@ namespace Eclipse
 
         public UInt32 Entity
         {
-            get { gameObject.Entity; }
-            set { gameObject.Entity = value; }
+            get => gameObject.Entity;
+            set => gameObject.Entity = value;
         }
     }
 }

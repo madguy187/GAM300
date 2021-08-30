@@ -29,7 +29,7 @@ namespace Eclipse
 {
     void Engine::Init()
     {
-        
+        //mono.Init();
 
         // multiple listener calls
         EventSystem<Test1>::registerListener(Tester1);
@@ -84,18 +84,8 @@ namespace Eclipse
         hi3.set(world.GetComponentType<SpotLightComponent>(), 1);
         world.RegisterSystemSignature<LightingSystem>(hi3);
 
-        Entity ent = engine->world.CreateEntity();
-        TransformComponent trans;
-        trans.position.x = 5.0f;
-        trans.position.y = 3.0f;
-        trans.position.z = 1.0f;
-        engine->world.AddComponent<TransformComponent>(ent, trans);
-        TransformComponent& trans = engine->world.GetComponent<TransformComponent>(ent);
-        std::cout << trans.position.x << std::endl;
-
         mono.Init();
-        mono.Update();
-
+        
         //Check this! - Rachel
         RenderSystem::Init();
         CameraSystem::Init();
@@ -164,7 +154,7 @@ namespace Eclipse
             // LIGHTINGSYSTEM =============================
             world.Update<LightingSystem>();
 
-            //mono.Update();
+            mono.Update();
 
             // FRAMEBUFFER DRAW ==========================
             engine->GraphicsManager.GlobalFrmeBufferDraw();

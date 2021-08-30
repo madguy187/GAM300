@@ -29,8 +29,15 @@ namespace Eclipse
 		return class_list;
 	}
 
-	MonoObject* GetTranslate(Entity ent)
+	static MonoObject* GetTranslate(Entity ent)
 	{
+		TransformComponent& trans2 = engine->world.GetComponent<TransformComponent>(ent);
+		auto& trans = engine->world.GetComponent<TransformComponent>(ent);
+		void* args[3];
+		args[0] = &trans.position.x;
+		args[1] = &trans.position.y;
+		args[2] = &trans.position.z;
+
 		MonoClass* klass = mono_class_from_name(engine->mono.GetAPIImage(), "Eclipse", "MonoVec3");
 
 		if (klass == nullptr) {
@@ -53,14 +60,7 @@ namespace Eclipse
 			return nullptr;
 		}
 
-		mono_runtime_object_init(obj);
-
-		auto& trans = engine->world.GetComponent<TransformComponent>(ent);
-		void* args[3];
-		args[0] = &trans.position.x;
-		args[1] = &trans.position.y;
-		args[2] = &trans.position.z;
-
+		//mono_runtime_object_init(obj);
 		mono_runtime_invoke(ctor_method, obj, args, NULL);
 
 		return obj;
@@ -96,17 +96,51 @@ namespace Eclipse
 		// adding internal call
 		mono_add_internal_call("Eclipse.TransformComponent::GetTranslate", GetTranslate);
 
+		/*Entity ent = engine->world.CreateEntity();
+		TransformComponent trans;
+		trans.position.x = 1.0f;
+		trans.position.y = 2.0f;
+		trans.position.z = 3.0f;*/
 		
+		/*engine->world.AddComponent<TransformComponent>(ent, trans);*/
+
+		/*TransformComponent& trans2 = engine->world.GetComponent<TransformComponent>(ent);
+		std::cout << trans2.position.x << std::endl;*/
+
+		MonoClass* klass = mono_class_from_name(engine->mono.GetScriptImage(), "", "Dog");
+
+		if (klass == nullptr) {
+			std::cout << "Failed loading class, Dog" << std::endl;
+			return;
+		}
+
+		MonoObject* obj = mono_object_new(mono_domain_get(), klass);
+		if (obj == nullptr) {
+			std::cout << "Failed loading class instance, Dog" << std::endl;
+			return;
+		}
+
+		objects.push_back(obj);
+		std::cout << "Successfully pushed" << std::endl;
 	}
 
 	void MonoManager::Update()
 	{
-		GetTranslate(0);
-		//DumpInfo(engine->mono.GetAPIImage());
-		//DumpInfo(engine->mono.GetScriptImage());
-			//GetTranslate(0, *it);
+		/*DumpInfoFromImage(engine->mono.GetAPIImage());
+		DumpInfoFromImage(engine->mono.GetScriptImage());*/
+		for (auto& obj : objects)
+		{
+			MonoClass* klass = mono_class_from_name(engine->mono.GetScriptImage(), "", "Dog");
 
-		//std::cout << objs.size() << std::endl;
+			if (klass == nullptr) {
+				std::cout << "Failed loading class, MonoVec3" << std::endl;
+				continue;
+			}
+
+			MonoMethod* method = mono_class_get_method_from_name(klass, "Update", 0);
+
+			//mono_runtime_invoke(method, obj, NULL, NULL);
+		}
 	}
 
 	void MonoManager::GenerateDLL()
