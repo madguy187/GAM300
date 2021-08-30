@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Scene.h"
+#include "ECS/SystemManager/Systems/System/PickingSystem.h"
 #include "ImGuizmo/ImGuizmo.h"
 
 namespace Eclipse
@@ -240,6 +241,9 @@ namespace Eclipse
 	{
 		if (ImGui::IsMouseClicked(0))
 		{
+			auto& picksys = engine->world.GetSystem<PickingSystem>();
+			picksys->EditorUpdate();
+
 			if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
 				engine->editorManager->SetSelectedEntity(engine->gPicker.GetCurrentCollisionID());
 		}

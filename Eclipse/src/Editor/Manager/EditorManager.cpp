@@ -146,7 +146,10 @@ namespace Eclipse
 
 	Entity EditorManager::GetSelectedEntity() const
 	{
-		return EntityHierarchyList_[GEHIndex_];
+		if (!EntityHierarchyList_.empty())
+			return EntityHierarchyList_[GEHIndex_];
+		else
+			return MAX_ENTITY;
 	}
 
 	void EditorManager::SetSelectedEntity(Entity ID)

@@ -12,5 +12,6 @@ namespace Eclipse
     public:
         static void Init();
         void Update() override;
+        void EditorUpdate();
     };
 }
