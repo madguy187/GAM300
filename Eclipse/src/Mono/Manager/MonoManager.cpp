@@ -143,6 +143,16 @@ namespace Eclipse
 		}
 	}
 
+	void MonoManager::StopMono()
+	{
+		mono_jit_cleanup(domain);
+		/*mono_image_close(ScriptImage);
+		mono_image_close(APIImage);*/
+		
+		objects.clear();
+
+	}
+
 	void MonoManager::GenerateDLL()
 	{
 		ENGINE_CORE_INFO("Mono: Generating DLLs");

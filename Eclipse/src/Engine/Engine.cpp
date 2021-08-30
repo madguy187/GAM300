@@ -166,6 +166,7 @@ namespace Eclipse
         }
 
         // unLoad
+        mono.StopMono();
         GraphicsManager.End();
         AssimpManager.CleanUpAllModels();
         ImGuiSetup::Destroy(EditorState);

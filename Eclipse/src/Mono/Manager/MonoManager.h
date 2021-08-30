@@ -19,6 +19,7 @@ namespace Eclipse
 	public:
 		void Init();
 		void Update();
+		void StopMono();
 
 		// Gets image containing all API Scripts
 		MonoImage* GetAPIImage();
