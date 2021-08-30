@@ -61,7 +61,7 @@ namespace Eclipse
         std::string ShaderName;
         
         // Coordinates Setup
-        unsigned int GridSize = 2; // Number of tiles each side , please use even number
+        unsigned int GridSize = 16; // Number of tiles each side , please use even number
         unsigned int TotalTiles = 0;
         ECVec3 XYZ_Length{ 0, 0, 0 };
         ECVec3 Minimum{ 0, 0, 0 };
@@ -70,7 +70,7 @@ namespace Eclipse
         unsigned int Length = 0;
         ECVec3 StartingPosition{ 0.0f,0.0f,0.0f }; // Starting position of the bottom left most tile
         bool AddDebugBoxes = false;
-        bool PrintDebug = true;
+        bool PrintDebug = false;
 
         // Not used yet
         float Fading = 0.0f;

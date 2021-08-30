@@ -107,7 +107,7 @@ namespace Eclipse
         UpdateLeaf(nodeIndex, object->getAABB());
     }
 
-    std::vector<unsigned int> AABBTree::CheckOverlap(AABB& object)
+    std::vector<unsigned int> AABBTree::CheckOverlapAgainstGrid(AABB& object)
     {
         std::vector<unsigned int> overlaps;
         std::stack<unsigned> stack;
@@ -119,7 +119,8 @@ namespace Eclipse
             unsigned nodeIndex = stack.top();
             stack.pop();
 
-            if (nodeIndex == AABB_NULL_NODE) continue;
+            if (nodeIndex == AABB_NULL_NODE) 
+                continue;
 
             AABBNode& node = AllNodes[nodeIndex];
 
@@ -127,7 +128,30 @@ namespace Eclipse
             {
                 if (node.isLeaf() && node.aabb.GetEntityID() != object.GetEntityID())
                 {
-                    overlaps.push_back(node.aabb.GetEntityID());
+                    if (overlaps.size() != 0)
+                    {
+                        unsigned int hi = overlaps[0];
+                        node.aabb.DistanceToObject = node.aabb.maxX - testAabb.maxX;
+                        float yo = engine->GraphicsManager.GridManager->gridArray[hi].aabb.DistanceToObject;
+
+                        if ( abs(node.aabb.DistanceToObject) > abs(yo) )
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            std::vector<unsigned int>::iterator it;
+                            it = overlaps.begin();
+                            overlaps.erase(it);
+                            overlaps.push_back(node.aabb.GetEntityID());
+                        }
+                    }
+                    else
+                    {
+                        node.aabb.DistanceToObject = node.aabb.maxX - testAabb.maxX;
+                        engine->GraphicsManager.GridManager->gridArray[node.aabb.GetEntityID()].aabb.DistanceToObject = node.aabb.DistanceToObject;
+                        overlaps.push_back(node.aabb.GetEntityID());
+                    }
                 }
                 else
                 {

@@ -14,6 +14,7 @@ namespace Eclipse
         float maxY;
         float maxZ;
         float surfaceArea;
+        float DistanceToObject = 0.0f;
 
     private:
         unsigned int EntityID = 0;
