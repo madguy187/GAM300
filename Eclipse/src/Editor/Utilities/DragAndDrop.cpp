@@ -59,6 +59,7 @@ namespace Eclipse
 		std::string AssetPath, std::filesystem::directory_entry dirEntry, bool& refreshBrowser, std::map<std::filesystem::path, std::vector<std::filesystem::path>> pathMap)
 	{
 		static std::string folderName;
+		
 		if (ImGui::BeginDragDropTarget())
 		{
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(type))

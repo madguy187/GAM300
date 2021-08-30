@@ -12,6 +12,7 @@ namespace Eclipse
 
 		void GenericPayloadTarget(const char* id, std::string& destination, 
 			const char* cMsg, PayloadTargetType type = PayloadTargetType::PTT_WIDGET);
+		
 		void AssetBrowerFilesAndFoldersTarget(const char* type, const char* paths, std::string AssetPath, 
 			std::filesystem::directory_entry dirEntry, bool& refreshBrowser, std::map<std::filesystem::path, std::vector<std::filesystem::path>> pathMap);
 	};
