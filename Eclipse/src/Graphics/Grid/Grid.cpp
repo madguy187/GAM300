@@ -196,19 +196,6 @@ namespace Eclipse
         // Only max have this number of tiles
         GridArray.reserve(TotalTiles);
 
-        //// Initialise everything 
-        //Tile NewTile(GridScale, true);
-        //NewTile.CenterPoint = StartingPosition;
-        //GridArray.push_back(NewTile);
-
-        //for (int i = 0; i < (TotalTiles - 1); i++)
-        //{
-        //    Tile NewTile(GridScale, false);
-        //    GridArray.push_back(NewTile);
-        //}
-
-        //std::cout << "Grid Size " << GridArray.size() << std::endl;
-
         for (int y = 0; y < TotalTiles; y += (GridSize * GridSize))
         {
             for (int z = 0; z < GridSize; z++)
@@ -353,6 +340,15 @@ namespace Eclipse
         }
 
         return Temp;
+    }
+
+    ECVec3 Grid::SnapCalculate(ECVec3& p, float s)
+    {
+        float snapX = p.getX() + ((std::floor(p.getX() / s) - p.getX() / 5) * 5);
+        float snapY = p.getY() + ((std::floor(p.getY() / s) - p.getY() / 5) * 5);
+        float snapZ = p.getZ() + ((std::floor(p.getZ() / s) - p.getZ() / 5) * 5);
+
+        return ECVec3(snapX, snapY, snapZ);
     }
 
     void Grid::DrawGrid(unsigned int FrameBufferID)

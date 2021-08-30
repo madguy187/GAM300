@@ -14,7 +14,18 @@ namespace Eclipse
         {
             auto& Model = M.second;
             auto& Transform = engine->world.GetComponent<TransformComponent>(M.first);
-            auto& ModelVsGrid = engine->CollisionGridTree.CheckOverlap(Model->SetAABB(Transform));
+            auto ModelVsGrid = engine->CollisionGridTree.CheckOverlap(Model->SetAABB(Transform));
+
+            //Entity i = ModelVsGrid[0];
+
+            //if (ModelVsGrid.size() >= 1)
+            //{
+            //    for (int i = 0; i < ModelVsGrid.size(); i++)
+            //    {
+            //        auto& Transform1 = engine->world.GetComponent<TransformComponent>(M.first);
+            //        Transform1.position = engine->GraphicsManager.GridManager->gridArray[i].CenterPoint;
+            //    }
+            //}
         }
 
         auto& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
@@ -25,9 +36,15 @@ namespace Eclipse
             float t;
             auto& MouseVsGrid = engine->CollisionGridTree.SecondCheckOverlap(camera.eyePos, rayDir, t);
 
+            // Test Code
             if (MouseVsGrid.size() >= 1)
             {
-                std::cout << " Test Colision " << std::endl;
+                std::cout << " - Collided With -" << std::endl;
+
+                for (int i = 0; i < MouseVsGrid.size(); i++)
+                {
+                    std::cout << "Tile ID : " << MouseVsGrid[i] << std::endl;
+                }
             }
         }
     }

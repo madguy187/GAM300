@@ -10,6 +10,13 @@ namespace Eclipse
 
     // GridScale % InnerRatio Should be 0 as it gives u the number of boxes inside a grid
 
+    enum class SnapMode
+    {
+        CREATE,
+        MOVE,
+        MAXCOUNT
+    };
+
     struct Tile : public IAABB
     {
         Tile() {}
@@ -54,13 +61,12 @@ namespace Eclipse
         std::string ShaderName;
         
         // Coordinates Setup
-        unsigned int GridSize = 4; // Number of tiles each side , please use even number
+        unsigned int GridSize = 2; // Number of tiles each side , please use even number
         unsigned int TotalTiles = 0;
         ECVec3 XYZ_Length{ 0, 0, 0 };
         ECVec3 Minimum{ 0, 0, 0 };
         ECVec3 Maximum{ 0, 0, 0 };
         std::vector<Tile> GridArray; //array of all the points;
-        std::map<unsigned int, Tile> gridArray; //key = the grid count;
         unsigned int Length = 0;
         ECVec3 StartingPosition{ 0.0f,0.0f,0.0f }; // Starting position of the bottom left most tile
         bool AddDebugBoxes = false;
@@ -72,6 +78,7 @@ namespace Eclipse
 
     public:
         bool Visible = true;
+        std::map<unsigned int, Tile> gridArray; //key = the grid count;
 
         Quad* GetModelReference();
         Shader* GetShaderReference();
@@ -109,6 +116,8 @@ namespace Eclipse
         bool CheckTileOccupied(TILE_ID tileID);
         TILE_ID GetTile();
         std::vector<TILE_ID> GetOccupiedTiles(std::vector<TILE_ID>& in);
+
+        ECVec3 SnapCalculate(ECVec3& p, float s);
 
         // Drawing of Grid , Must render last
         void DrawGrid(unsigned int FrameBufferID);
