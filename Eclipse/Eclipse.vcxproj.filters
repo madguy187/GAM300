@@ -520,6 +520,7 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
     <ClInclude Include="src\Editor\Windows\SwitchViews\SwitchViews.h" />
     <ClInclude Include="src\Editor\Utilities\DragAndDrop.h" />
+    <ClInclude Include="src\Editor\Utilities\OpenFileDialog.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -760,6 +761,7 @@
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem.cpp" />
     <ClCompile Include="src\Graphics\Grid\bounds.cpp" />
     <ClCompile Include="src\Graphics\Grid\Box.cpp" />
+    <ClCompile Include="src\Editor\Utilities\OpenFileDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\AABB.frag" />

@@ -3,7 +3,6 @@
 
 char* FileDialog::FileBrowser()
 {
-	//std::string myString{ "All Files\0*.*\0Json Files\0*.json\0Source Files\0*.cpp\0Header Files\0*.h\0" };
 	OPENFILENAMEA openFileName;
 	char fileName[MAX_PATH] = "";
 	wchar_t wFilename[MAX_PATH] = L"";
@@ -25,7 +24,6 @@ char* FileDialog::FileBrowser()
 
 char* FileDialog::SaveFile()
 {
-	//std::string myString{ "All Files\0*.*\0Json Files\0*.json\0Source Files\0*.cpp\0Header Files\0*.h\0" };
 	OPENFILENAMEA openFileName;
 	char fileName[MAX_PATH] = "";
 	wchar_t wFilename[MAX_PATH] = L"";
