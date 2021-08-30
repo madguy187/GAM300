@@ -59,6 +59,7 @@ namespace Eclipse
 		//main update function
 		////////////////////////////////
 		void Update() override;
+		void Unload() override;
 		AssetBrowserWindow();
 		void DrawImpl();
 		////////////////////////////////

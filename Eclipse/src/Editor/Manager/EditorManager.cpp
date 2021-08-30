@@ -41,6 +41,8 @@ namespace Eclipse
 	{
 		MenuComponent file{ "File", EditorMenuType::FILE };
 		file.AddItems("Exit");
+		file.AddItems("Open");
+		file.AddItems("Save");
 		MenuComponent window{ "Windows", EditorMenuType::WINDOWS };
 
 		MenuBar_.AddMenuComponents(file);
@@ -149,5 +151,17 @@ namespace Eclipse
 	Entity EditorManager::GetSelectedEntity() const
 	{
 		return EntityHierarchyList_[GEHIndex_];
+	}
+
+	void EditorManager::Clear()
+	{
+		EntityHierarchyList_.clear();
+		EntityToTypeMap_.clear();
+		GEHIndex_ = 0;
+
+		for (const auto& window : Windows_)
+		{
+			window->Unload();
+		}
 	}
 }

@@ -525,6 +525,7 @@
     <ClInclude Include="src\Graphics\Grid\AABBTree.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\GridSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem.h" />
+    <ClInclude Include="src\Editor\Utilities\OpenFileDialog.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -769,6 +770,7 @@
     <ClCompile Include="src\ECS\SystemManager\Systems\System\GridSystem.cpp" />
     <ClCompile Include="src\Graphics\Grid\AABB.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp" />
+    <ClCompile Include="src\Editor\Utilities\OpenFileDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\AABB.frag" />

@@ -10,6 +10,10 @@ namespace Eclipse
 			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&DebugWindow::DrawImpl, this));
 	}
 
+	void DebugWindow::Unload()
+	{
+	}
+
 	DebugWindow::DebugWindow()
 	{
 		Type = EditorWindowType::EWT_DEBUG;
@@ -26,17 +30,17 @@ namespace Eclipse
 		{
 			ECGui::DrawTextWidget<const char*>("Pos", "");
 			ECGui::InsertSameLine();
-			ECGui::DrawInputFloatWidget("PosSnap", &scene->GetSnapSettings().mPosSnapValue, true, 0.5f);
+			ECGui::DrawInputFloatWidget("PosSnap", &scene->GetRefToSnapSettings().mPosSnapValue, true, 0.5f);
 			ECGui::InsertSameLine();
 
 			ECGui::DrawTextWidget<const char*>("Scale", "");
 			ECGui::InsertSameLine();
-			ECGui::DrawInputFloatWidget("ScaleSnap", &scene->GetSnapSettings().mScaleSnapValue, true, 0.5f);
+			ECGui::DrawInputFloatWidget("ScaleSnap", &scene->GetRefToSnapSettings().mScaleSnapValue, true, 0.5f);
 			ECGui::InsertSameLine();
 
 			ECGui::DrawTextWidget<const char*>("Rot", "");
 			ECGui::InsertSameLine();
-			ECGui::DrawInputFloatWidget("RotSnap", &scene->GetSnapSettings().mRotSnapValue, true, 45.f);
+			ECGui::DrawInputFloatWidget("RotSnap", &scene->GetRefToSnapSettings().mRotSnapValue, true, 45.f);
 		}
 
 		if (engine->gCamera.GetEditorCameraID() != MAX_ENTITY)

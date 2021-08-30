@@ -9,6 +9,10 @@ namespace Eclipse
 			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&SwitchViewsWindow::RunMainWindow, this));
 	}
 
+	void SwitchViewsWindow::Unload()
+	{
+	}
+
 	SwitchViewsWindow::SwitchViewsWindow() :
 		mViewportSize{ 0.0f, 0.0f }
 	{

@@ -11,6 +11,12 @@ namespace Eclipse
 			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&HierarchyWindow::DrawImpl, this));
 	}
 
+	void HierarchyWindow::Unload()
+	{
+		CurrEnt_.Clear();
+		PrevEnt_.Clear();
+	}
+
 	HierarchyWindow::HierarchyWindow()
 	{
 		Type = EditorWindowType::EWT_HIERARCHY;
