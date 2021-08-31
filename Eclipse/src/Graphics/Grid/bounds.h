@@ -23,11 +23,12 @@ namespace Eclipse
         // bounding box values
         glm::vec3 Minimum;
         glm::vec3 Maximum;
+        glm::vec3 Position;
+        glm::vec3 Scale;
 
-        BoundingRegion(BoundTypes type);
         BoundingRegion(glm::vec3 center, float radius);
-        BoundingRegion(glm::vec3 min, glm::vec3 max, bool in);
-        BoundingRegion(glm::vec3 position , glm::vec3 Scale);
+        BoundingRegion(glm::vec3 min, glm::vec3 max , glm::vec3 position, glm::vec3 scale);
+        BoundingRegion(glm::vec3 position, glm::vec3 Scale);
         glm::vec3 calculateCenter();
         glm::vec3 calculateDimensions();
         bool containsPoint(glm::vec3 pt);

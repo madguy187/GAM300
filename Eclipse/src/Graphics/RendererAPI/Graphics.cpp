@@ -10,9 +10,9 @@
 using namespace rapidjson;
 using namespace Eclipse;
 
-std::map<std::string, Shader> Graphics::shaderpgms;
-std::map<std::string, std::unique_ptr<IModel>> Graphics::models;
-std::map<std::string, Texture> Graphics::textures;
+std::unordered_map<std::string, Shader> Graphics::shaderpgms;
+std::unordered_map<std::string, std::unique_ptr<IModel>> Graphics::models;
+std::unordered_map<std::string, Texture> Graphics::textures;
 std::multimap<unsigned int, RenderComponent*> Graphics::sprites;
 std::set<unsigned int> Graphics::sortedID;
 
@@ -32,17 +32,17 @@ void Graphics::load()
 
 void Graphics::unload()
 {
-    for (auto it = shaderpgms.begin(); it != shaderpgms.end(); ++it)
+    for (auto& it = shaderpgms.begin(); it != shaderpgms.end(); ++it)
     {
         it->second.DeleteShaderProgram();
     }
 
-    for (auto it = models.begin(); it != models.end(); ++it)
+    for (auto& it = models.begin(); it != models.end(); ++it)
     {
         it->second->DeleteModel();
     }
 
-    for (auto fb : OpenGL_Context::_Framebuffers)
+    for (auto& fb : OpenGL_Context::_Framebuffers)
     {
         delete fb.second;
     }
@@ -177,7 +177,7 @@ GLuint Graphics::setup_texobj(std::string pathname)
 {
     int width = 0;
     int height = 0;
-    int clrChannels;
+    int clrChannels = 0;
     unsigned char* data = nullptr; // stbi_load(pathname.c_str(), &width, &height, &clrChannels, 0);
 
     if (data)

@@ -9,9 +9,8 @@ AssimpModel::AssimpModel(bool noTex)
 	:
 	noTex(noTex)
 {
-	GlobalMode = GL_FILL;
+	//GlobalMode = GL_FILL;
 }
-
 
 void AssimpModel::Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID)
 {
@@ -125,7 +124,7 @@ glm::vec3 Eclipse::AssimpModel::ComputeCentroid(std::pair<float, float>& _minmax
 	return centroid;
 }
 
-void AssimpModel::SetName(std::string name)
+void AssimpModel::SetName(std::string& name)
 {
 	NameOfModel = name;
 }
@@ -158,6 +157,43 @@ void Eclipse::AssimpModel::SetModelType(ModelType in)
 std::vector<glm::vec3> Eclipse::AssimpModel::GetVertices()
 {
 	return AllVertices;
+}
+
+void Eclipse::AssimpModel::SetProperties(std::string& ModelName, ModelType in, unsigned int ID_)
+{
+	ID = ID_;
+	SetName(ModelName);
+	SetModelType(in);
+}
+
+DYN_AABB Eclipse::AssimpModel::getAABB() const
+{
+	return AABB_Property;
+}
+
+DYN_AABB Eclipse::AssimpModel::SetAABB(TransformComponent& in)
+{
+	glm::vec3 scale = in.scale.ConvertToGlmVec3Type();
+	glm::vec3 position = in.position.ConvertToGlmVec3Type();
+
+	glm::vec3 halfExt = scale / 2.0f;
+	glm::vec3 min{ position.x - halfExt.x, position.y - halfExt.y, position.z - halfExt.z };
+	glm::vec3 max{ position.x + halfExt.x, position.y + halfExt.y, position.z + halfExt.z };
+
+	AABB_Property.minX = min.x;
+	AABB_Property.minY = min.y;
+	AABB_Property.minZ = min.z;
+
+	AABB_Property.maxX = max.x;
+	AABB_Property.maxY = max.y;
+	AABB_Property.maxZ = max.z;
+
+	return AABB_Property;
+}
+
+unsigned int Eclipse::AssimpModel::GetEntityID()
+{
+	return ID;
 }
 
 void Eclipse::AssimpModel::GetTextureNames()

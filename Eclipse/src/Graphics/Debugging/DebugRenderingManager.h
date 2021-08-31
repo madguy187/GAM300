@@ -9,7 +9,7 @@ namespace Eclipse
 	class DebugRenderingManager
 	{
 		std::map<unsigned int, std::any> debugShapes;
-		void CheckUniformLoc(Graphics::shaderIt _shdrpgm, CameraComponent& _camera);
+		void CheckUniformLoc(Shader*_shdrpgm, CameraComponent& _camera);
 	public:
 		void AddCameraFrustum(unsigned int ID, CameraComponent& _camera);
 		void DrawFrustum(unsigned int ID, unsigned int framebufferID);

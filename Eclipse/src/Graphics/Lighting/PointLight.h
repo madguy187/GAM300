@@ -4,8 +4,8 @@
 
 namespace Eclipse
 {
-	typedef std::map<int, PointLightComponent*> PointLightContainer;
-	using PointL = std::map<int, PointLightComponent*>::iterator;
+	typedef std::unordered_map<unsigned int, PointLightComponent*> PointLightContainer;
+	using PointL = std::unordered_map<unsigned int, PointLightComponent*>::iterator;
 
 	class PointLight
 	{
@@ -28,6 +28,10 @@ namespace Eclipse
 		void DrawPointLights(unsigned int framebufferID);
 		// PointLight
 		void Draw(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
+		// Insert pointlight
+		bool InsertPointLight(PointLightComponent& in);
+		// Clear
+		void ClearContainer();
 
 	private:
 		// Update Shader Variables

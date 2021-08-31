@@ -14,8 +14,8 @@ const float  QUARTER_PI = 0.25 * PI;
 const float  EIGHTH_PI = 0.125 * PI;
 const float  SIXTEENTH_PI = 0.0625 * PI;
 
-const float  DEG_TO_RAD = PI / 180.0;
-const float  RAD_TO_DEG = 180.0 / PI;
+const float  DEG_TO_RAD = PI / 180.0f;
+const float  RAD_TO_DEG = 180.0f / PI;
 
 const int XINDEX = 0;
 const int YINDEX = 1;
