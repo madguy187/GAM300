@@ -1,7 +1,12 @@
 #include "pch.h"
 #include "OpenFileDialog.h"
 
-char* FileDialog::FileBrowser()
+void FileDialog::printFile(std::string input)
+{
+	std::cout << input;
+}
+
+std::string FileDialog::FileBrowser()
 {
 	OPENFILENAMEA openFileName;
 	char fileName[MAX_PATH] = "";
@@ -9,20 +14,23 @@ char* FileDialog::FileBrowser()
 	mbstowcs(wFilename, fileName, strlen(fileName) + 1);//Plus null
 	ZeroMemory(&openFileName, sizeof(openFileName));
 	openFileName.lStructSize = sizeof(OPENFILENAME);
-	openFileName.lpstrFilter = "All Files\0*.*\0C++ Files\0*.cpp\0Header Files\0*.h\0";
 	openFileName.lpstrFile = fileName;
+	openFileName.lpstrFile[0] = '\0';
 	openFileName.nMaxFile = MAX_PATH;
+	openFileName.lpstrFilter = "All Files\0*.*\0C++ Files\0*.cpp\0Header Files\0*.h\0";
 	openFileName.nFilterIndex = 1;
+	openFileName.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 	std::filesystem::path _originPath{ std::filesystem::current_path() };
 	if (GetOpenFileNameA(&openFileName))
 	{
 		std::filesystem::current_path(_originPath);
 		//open file (de-serialize here)
+		std::filesystem::path tempPath = fileName;
+		return tempPath.filename().string();
 	}
-	return nullptr;
+	return std::string();
 }
-
-char* FileDialog::SaveFile()
+std::string FileDialog::SaveFile()
 {
 	OPENFILENAMEA openFileName;
 	char fileName[MAX_PATH] = "";
@@ -30,32 +38,23 @@ char* FileDialog::SaveFile()
 	mbstowcs(wFilename, fileName, strlen(fileName) + 1);//Plus null
 	ZeroMemory(&openFileName, sizeof(openFileName));
 	openFileName.lStructSize = sizeof(OPENFILENAME);
-	openFileName.lpstrFilter = "All Files\0*.*\0C++ Files\0*.cpp\0Header Files\0*.h\0";
 	openFileName.lpstrFile = fileName;
+	openFileName.lpstrFile[0] = '\0';
 	openFileName.nMaxFile = MAX_PATH;
+	openFileName.lpstrFilter = "All Files\0*.*\0C++ Files\0*.cpp\0Header Files\0*.h\0";
 	openFileName.nFilterIndex = 1;
+	openFileName.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+	
 	std::filesystem::path _originPath{ std::filesystem::current_path() };
 
 	if (GetSaveFileNameA(&openFileName))
 	{
 		std::filesystem::path _path{ fileName };
-		std::string _fileDirName = _path.replace_extension("").filename().string();
 
 		std::filesystem::current_path(_originPath);
-		std::filesystem::path _dataDir{ "Data" };
-
-		if (!std::filesystem::exists(_dataDir))
-		{
-			std::filesystem::create_directory(_dataDir);
-		}
-
-		std::filesystem::path _fileDir{ ((_dataDir.string() + "\\") + _fileDirName) + "\\" };
-
-		if (!std::filesystem::exists(_fileDir))
-		{
-			std::filesystem::create_directory(_fileDir);
-		}
+		
 		//save file  (serialize here)
+		return  _path.filename().string();
 	}
-	return nullptr;
+	return std::string();
 }
