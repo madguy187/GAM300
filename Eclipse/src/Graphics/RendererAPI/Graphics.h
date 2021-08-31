@@ -37,10 +37,10 @@ namespace Eclipse
     public:
         std::set<Entity> mEntities;
 
-        static std::map<std::string, std::unique_ptr<IModel>> models;
-        using modelIt = std::map<std::string, std::unique_ptr<IModel>>::iterator;
-        using shaderIt = std::map<std::string, Shader>::iterator;
-        using TextureIt = std::map<std::string, Texture>::iterator;
+        static std::unordered_map<std::string, std::unique_ptr<IModel>> models;
+        using modelIt = std::unordered_map<std::string, std::unique_ptr<IModel>>::iterator;
+        using shaderIt = std::unordered_map<std::string, Shader>::iterator;
+        using TextureIt = std::unordered_map<std::string, Texture>::iterator;
 
         static void load();
         static void unload();
@@ -48,14 +48,14 @@ namespace Eclipse
         static void DeleteAllSprites();
 
         //container for textures
-        static std::map<std::string, Texture> textures;
+        static std::unordered_map<std::string, Texture> textures;
 
         //container for sprites
         static std::multimap<unsigned int, RenderComponent*> sprites;
         static std::set<unsigned int> sortedID;
 
         //Container for shader programs and helper functions
-        static std::map<std::string, Shader> shaderpgms;
+        static std::unordered_map<std::string, Shader> shaderpgms;
         using shaderVec = std::vector<std::pair<std::string, std::string>>;
         static void initShaderpgms(std::string shdrpgm_name,
             std::string vtx_shdr, std::string frg_shdr);

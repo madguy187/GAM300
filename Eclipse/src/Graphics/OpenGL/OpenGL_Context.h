@@ -18,7 +18,7 @@ namespace Eclipse
         MAXCOUNT
     };
 
-    typedef std::map<FrameBufferMode, FrameBuffer*> FrameBufferContainer;
+    typedef std::unordered_map<FrameBufferMode, FrameBuffer*> FrameBufferContainer;
 
     class OpenGL_Context
     {

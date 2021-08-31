@@ -28,12 +28,13 @@ namespace Eclipse
     class AssimpModel : public IAABB
     {
     private:
-        std::vector<glm::vec3> AllVertices;
-        std::string NameOfModel;
-        std::vector<Mesh> Meshes;
-        std::string Directory;
-        std::vector<Texture> Textures_loaded;
+        unsigned int ID = 0;
         ModelType type = ModelType::UNASSIGNED;
+        std::string NameOfModel;
+        std::string Directory;
+        std::vector<Mesh> Meshes;
+        std::vector<Texture> Textures_loaded;
+        std::vector<glm::vec3> AllVertices;
 
         Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
         std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type);
@@ -44,8 +45,6 @@ namespace Eclipse
 
     public:
         bool noTex = false;
-        unsigned int ID = 0;
-        GLenum GlobalMode = GL_FILL;
         AABB AABB_Property; // For Dynamic AABB
 
         AssimpModel() { }
@@ -54,7 +53,7 @@ namespace Eclipse
         void LoadAssimpModel(std::string path);
         void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID);
         void Cleanup();
-        void SetName(std::string name);
+        void SetName(std::string& name);
         std::string GetName();
         std::string GetDirectory();
         unsigned int GetNumberOfTextures();
@@ -63,7 +62,7 @@ namespace Eclipse
         ModelType GetType();
         void SetModelType(ModelType in);
         std::vector<glm::vec3> GetVertices();
-
+        void SetProperties(std::string& ModelName , ModelType in , unsigned int ID);
         AABB getAABB() const override;
         AABB SetAABB(TransformComponent& in);
     };

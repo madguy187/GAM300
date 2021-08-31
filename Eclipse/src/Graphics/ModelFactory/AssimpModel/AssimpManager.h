@@ -12,8 +12,8 @@
 
 namespace Eclipse
 {
-    typedef std::map<unsigned int, AssimpModel*> AssimpModelContainer;
-    using AssimpIT = std::map<unsigned int, AssimpModel*>::iterator;
+    typedef std::unordered_map<unsigned int, AssimpModel*> AssimpModelContainer;
+    using AssimpIT = std::unordered_map<unsigned int, AssimpModel*>::iterator;
 
     class AssimpModelManager
     {

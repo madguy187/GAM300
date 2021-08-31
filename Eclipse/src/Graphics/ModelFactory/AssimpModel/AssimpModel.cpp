@@ -9,9 +9,8 @@ AssimpModel::AssimpModel(bool noTex)
 	:
 	noTex(noTex)
 {
-	GlobalMode = GL_FILL;
+	//GlobalMode = GL_FILL;
 }
-
 
 void AssimpModel::Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID)
 {
@@ -125,7 +124,7 @@ glm::vec3 Eclipse::AssimpModel::ComputeCentroid(std::pair<float, float>& _minmax
 	return centroid;
 }
 
-void AssimpModel::SetName(std::string name)
+void AssimpModel::SetName(std::string& name)
 {
 	NameOfModel = name;
 }
@@ -158,6 +157,13 @@ void Eclipse::AssimpModel::SetModelType(ModelType in)
 std::vector<glm::vec3> Eclipse::AssimpModel::GetVertices()
 {
 	return AllVertices;
+}
+
+void Eclipse::AssimpModel::SetProperties(std::string& ModelName, ModelType in, unsigned int ID_)
+{
+	ID = ID_;
+	SetName(ModelName);
+	SetModelType(in);
 }
 
 AABB Eclipse::AssimpModel::getAABB() const

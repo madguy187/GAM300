@@ -26,8 +26,7 @@ namespace Eclipse
         // Always set False because we have textures
         AssimpModel* NewModel = new AssimpModel(false);
         NewModel->LoadAssimpModel(PathName);
-        NewModel->SetName(name);
-        NewModel->SetModelType(ModelType::ANIMAL);
+        NewModel->SetProperties(name, ModelType::ANIMAL, ID);
 
         // Calculate Required
         ECVec3 min = NewModel->AABB_Property.GetMinimum(Transform);
@@ -51,78 +50,78 @@ namespace Eclipse
         // ----------------------------------------------------------------------------------------------------------
 
         //Test Code
-        if (0)
-        {
-            AssimpModelContainer AABBCCDD;
-            AABBCCDD.insert(std::pair<unsigned int, AssimpModel*>(ID, NewModel));
+        //if (0)
+        //{
+        //    AssimpModelContainer AABBCCDD;
+        //    AABBCCDD.insert(std::pair<unsigned int, AssimpModel*>(ID, NewModel));
 
-            std::cout << "NAME of NewModel" << NewModel->GetName() << std::endl;
-            std::cout << "NAME of first" << AABBCCDD[7]->GetName() << std::endl;
+        //    std::cout << "NAME of NewModel" << NewModel->GetName() << std::endl;
+        //    std::cout << "NAME of first" << AABBCCDD[7]->GetName() << std::endl;
 
-            AABBCCDD[7]->SetName("stupid");
+        //    AABBCCDD[7]->SetName("stupid");
 
-            std::cout << "NAME of NewModel" << NewModel->GetName() << std::endl;
-            std::cout << "NAME of first" << AABBCCDD[7]->GetName() << std::endl;
+        //    std::cout << "NAME of NewModel" << NewModel->GetName() << std::endl;
+        //    std::cout << "NAME of first" << AABBCCDD[7]->GetName() << std::endl;
 
 
-            AssimpModel* ONE = new AssimpModel(false);
-            ONE->LoadAssimpModel(PathName);
-            ONE->SetName(name);
-            ONE->SetModelType(ModelType::ANIMAL);
+        //    AssimpModel* ONE = new AssimpModel(false);
+        //    ONE->LoadAssimpModel(PathName);
+        //    ONE->SetName(name);
+        //    ONE->SetModelType(ModelType::ANIMAL);
 
-            AssimpModel* TWO = new AssimpModel(false);
-            TWO->LoadAssimpModel(PathName);
-            TWO->SetName(name);
+        //    AssimpModel* TWO = new AssimpModel(false);
+        //    TWO->LoadAssimpModel(PathName);
+        //    TWO->SetName(name);
 
-            AssimpModel* Three = new AssimpModel(false);
-            Three->LoadAssimpModel(PathName);
-            Three->SetName(name);
+        //    AssimpModel* Three = new AssimpModel(false);
+        //    Three->LoadAssimpModel(PathName);
+        //    Three->SetName(name);
 
-            ONE->AABB_Property.maxX = 15;
-            ONE->AABB_Property.maxY = 15;
-            ONE->AABB_Property.maxZ = 15;
-            ONE->AABB_Property.minX = -15;
-            ONE->AABB_Property.minY = -15;
-            ONE->AABB_Property.minZ = -15;
-            ONE->AABB_Property.maxX = 15;
-            //ONE->AABB_Property.SetEntityID(10);
+        //    ONE->AABB_Property.maxX = 15;
+        //    ONE->AABB_Property.maxY = 15;
+        //    ONE->AABB_Property.maxZ = 15;
+        //    ONE->AABB_Property.minX = -15;
+        //    ONE->AABB_Property.minY = -15;
+        //    ONE->AABB_Property.minZ = -15;
+        //    ONE->AABB_Property.maxX = 15;
+        //    //ONE->AABB_Property.SetEntityID(10);
 
-            TWO->AABB_Property.maxX = 5;
-            TWO->AABB_Property.maxY = 5;
-            TWO->AABB_Property.maxZ = 5;
-            TWO->AABB_Property.minX = -5;
-            TWO->AABB_Property.minY = -5;
-            TWO->AABB_Property.minZ = -5;
-            //TWO->AABB_Property.SetEntityID(11);
+        //    TWO->AABB_Property.maxX = 5;
+        //    TWO->AABB_Property.maxY = 5;
+        //    TWO->AABB_Property.maxZ = 5;
+        //    TWO->AABB_Property.minX = -5;
+        //    TWO->AABB_Property.minY = -5;
+        //    TWO->AABB_Property.minZ = -5;
+        //    //TWO->AABB_Property.SetEntityID(11);
 
-            Three->AABB_Property.maxX = -20;
-            Three->AABB_Property.maxY = -20;
-            Three->AABB_Property.maxZ = -20;
-            Three->AABB_Property.minX = -50;
-            Three->AABB_Property.minY = -50;
-            Three->AABB_Property.minZ = -50;
-            //Three->AABB_Property.SetEntityID(12);
+        //    Three->AABB_Property.maxX = -20;
+        //    Three->AABB_Property.maxY = -20;
+        //    Three->AABB_Property.maxZ = -20;
+        //    Three->AABB_Property.minX = -50;
+        //    Three->AABB_Property.minY = -50;
+        //    Three->AABB_Property.minZ = -50;
+        //    //Three->AABB_Property.SetEntityID(12);
 
-            AssimpModelContainer AABBCC;
+        //    AssimpModelContainer AABBCC;
 
-            AABBCC.insert(std::pair<unsigned int, AssimpModel*>(ONE->AABB_Property.GetEntityID(), ONE));
-            AABBCC.insert(std::pair<unsigned int, AssimpModel*>(TWO->AABB_Property.GetEntityID(), TWO));
-            AABBCC.insert(std::pair<unsigned int, AssimpModel*>(Three->AABB_Property.GetEntityID(), Three));
+        //    AABBCC.insert(std::pair<unsigned int, AssimpModel*>(ONE->AABB_Property.GetEntityID(), ONE));
+        //    AABBCC.insert(std::pair<unsigned int, AssimpModel*>(TWO->AABB_Property.GetEntityID(), TWO));
+        //    AABBCC.insert(std::pair<unsigned int, AssimpModel*>(Three->AABB_Property.GetEntityID(), Three));
 
-            std::shared_ptr<AssimpModel>first(ONE);
-            std::shared_ptr<AssimpModel>second(TWO);
-            std::shared_ptr<AssimpModel>third(Three);
+        //    std::shared_ptr<AssimpModel>first(ONE);
+        //    std::shared_ptr<AssimpModel>second(TWO);
+        //    std::shared_ptr<AssimpModel>third(Three);
 
-            // tiles
-            engine->CollisionGridTree.InsertObject(first);
-            engine->CollisionGridTree.InsertObject(second);
-            engine->CollisionGridTree.InsertObject(third);
+        //    // tiles
+        //    engine->CollisionGridTree.InsertObject(first);
+        //    engine->CollisionGridTree.InsertObject(second);
+        //    engine->CollisionGridTree.InsertObject(third);
 
-            //pass in model to check with the grid
-            auto& aabbCollisions = engine->CollisionGridTree.CheckOverlapAgainstGrid(first.get()->getAABB());
+        //    //pass in model to check with the grid
+        //    auto& aabbCollisions = engine->CollisionGridTree.CheckOverlapAgainstGrid(first.get()->getAABB());
 
-            std::cout << AABBCC[aabbCollisions[0]]->GetName() << std::endl;
-        }
+        //    std::cout << AABBCC[aabbCollisions[0]]->GetName() << std::endl;
+        //}
 
     }
 

@@ -341,17 +341,17 @@ namespace Eclipse
 
         ShaderRef->Use();
 
-        // Part 2: Bind the object's VAO handle using glBindVertexArray
-        glBindVertexArray(WholeGrid->GetVaoID());
-
-        glEnable(GL_DEPTH_TEST);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-        // Check here
-        CheckUniformLocation(GridID);
-
         if (Visible == true)
         {
+            // Part 2: Bind the object's VAO handle using glBindVertexArray
+            glBindVertexArray(WholeGrid->GetVaoID());
+
+            glEnable(GL_DEPTH_TEST);
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+            // Check here
+            CheckUniformLocation(GridID);
+
             // Draw
             glDrawElements(WholeGrid->GetPrimitiveType(), WholeGrid->GetDrawCount(), GL_UNSIGNED_SHORT, NULL);
         }
@@ -372,6 +372,6 @@ namespace Eclipse
 
     AABB Tile::getAABB() const
     {
-        return aabb;;
+        return aabb;
     }
 }

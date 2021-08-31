@@ -4,8 +4,8 @@
 
 namespace Eclipse
 {
-	typedef std::map<int, DirectionalLightComponent*> DirectionalLightContainer;
-	using DLIT = std::map<int, DirectionalLightComponent*>::iterator;
+	typedef std::unordered_map<int, DirectionalLightComponent*> DirectionalLightContainer;
+	using DLIT = std::unordered_map<int, DirectionalLightComponent*>::iterator;
 
 	class DirectionalLight
 	{

@@ -3,8 +3,8 @@
 
 namespace Eclipse
 {
-    typedef std::map<int, SpotLightComponent*> SpotLightContainer;
-    using SLIT = std::map<int, SpotLightComponent*>::iterator;
+    typedef std::unordered_map<int, SpotLightComponent*> SpotLightContainer;
+    using SLIT = std::unordered_map<int, SpotLightComponent*>::iterator;
 
     class SpotLight
     {

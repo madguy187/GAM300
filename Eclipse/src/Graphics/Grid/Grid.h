@@ -95,7 +95,7 @@ namespace Eclipse
         std::vector<Tile> GridArray;
 
     public:
-        std::map<unsigned int, Tile> gridArray; //key = the grid count;
+        std::unordered_map<unsigned int, Tile> gridArray; //key = the grid count;
 
         // Get Model Reference
         Quad* GetModelReference();
