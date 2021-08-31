@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Scene.h"
+#include "ECS/SystemManager/Systems/System/PickingSystem.h"
 #include "ImGuizmo/ImGuizmo.h"
 
 namespace Eclipse
@@ -60,13 +61,15 @@ namespace Eclipse
 		{
 			OnGizmoUpdateEvent();
 		}
-		
-		if (ECGui::IsItemHovered() && ImGui::IsWindowFocused() /*temp fix*/)
+
+		if (ECGui::IsItemHovered() /*&& ImGui::IsWindowFocused()*/ /*temp fix*/)
 		{
 			// Do all the future stuff here when hovering on window
 			OnKeyPressedEvent();
 			OnCameraMoveEvent();
 			OnCameraZoomEvent();
+			OnSelectEntityEvent();
+			std::cout << engine->gPicker.GetCurrentCollisionID() << std::endl;
 		}
 	}
 
@@ -166,7 +169,7 @@ namespace Eclipse
 		}
 
 		ImGuiIO& io = ImGui::GetIO();
-		
+
 		ImGuizmo::Manipulate(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx),
 			(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
 			nullptr, io.KeyCtrl ? glm::value_ptr(snapValues) : nullptr);
@@ -231,6 +234,18 @@ namespace Eclipse
 		{
 			engine->gCamera.GetInput().set(8, 0);
 			engine->gCamera.GetInput().set(9, 0);
+		}
+	}
+
+	void SceneWindow::OnSelectEntityEvent()
+	{
+		if (ImGui::IsMouseClicked(0))
+		{
+			auto& picksys = engine->world.GetSystem<PickingSystem>();
+			picksys->EditorUpdate();
+
+			if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
+				engine->editorManager->SetSelectedEntity(engine->gPicker.GetCurrentCollisionID());
 		}
 	}
 
