@@ -181,6 +181,7 @@ namespace Eclipse
 
 			CurrEnt_.name = my_strcat(entCom.Name, " ", ID);
 			CurrEnt_.index = ID;
+			entCom.IsActive = true;
 		}
 	}
 }

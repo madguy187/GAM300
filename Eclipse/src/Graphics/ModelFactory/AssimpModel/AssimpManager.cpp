@@ -283,9 +283,7 @@ namespace Eclipse
             engine->world.AddComponent(Models.first, TransformComponent{});
             engine->world.AddComponent(Models.first, EntityComponent{ EntityType::ENT_UNASSIGNED, InvidualModels.GetName() , true });
 
-            // Manually adding to hierachy List
-            engine->editorManager->EntityHierarchyList_.push_back(Models.first);
-            engine->editorManager->EntityToTypeMap_.insert(std::pair<Entity, EntityType>(Models.first, EntityType::ENT_UNASSIGNED));
+            engine->editorManager->RegisterExistingEntity(Models.first);
 
             // Everything Below this Comment is To be Removed !!
             TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(Models.first);

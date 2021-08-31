@@ -23,6 +23,7 @@ namespace Eclipse
 		void OnGizmoUpdateEvent();
 		void OnCameraMoveEvent();
 		void OnCameraZoomEvent();
+		void OnSelectEntityEvent();
 
 		SnapValueSettings& GetRefToSnapSettings();
 		SnapValueSettings GetSnapSettings();
