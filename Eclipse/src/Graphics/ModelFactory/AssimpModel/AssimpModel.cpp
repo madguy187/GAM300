@@ -166,12 +166,12 @@ void Eclipse::AssimpModel::SetProperties(std::string& ModelName, ModelType in, u
 	SetModelType(in);
 }
 
-AABB Eclipse::AssimpModel::getAABB() const
+DYN_AABB Eclipse::AssimpModel::getAABB() const
 {
 	return AABB_Property;
 }
 
-AABB Eclipse::AssimpModel::SetAABB(TransformComponent& in)
+DYN_AABB Eclipse::AssimpModel::SetAABB(TransformComponent& in)
 {
 	glm::vec3 scale = in.scale.ConvertToGlmVec3Type();
 	glm::vec3 position = in.position.ConvertToGlmVec3Type();
@@ -189,6 +189,11 @@ AABB Eclipse::AssimpModel::SetAABB(TransformComponent& in)
 	AABB_Property.maxZ = max.z;
 
 	return AABB_Property;
+}
+
+unsigned int Eclipse::AssimpModel::GetEntityID()
+{
+	return ID;
 }
 
 void Eclipse::AssimpModel::GetTextureNames()

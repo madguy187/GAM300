@@ -370,7 +370,7 @@ namespace Eclipse
         }
     }
 
-    AABB Tile::getAABB() const
+    DYN_AABB Tile::getAABB() const
     {
         return aabb;
     }

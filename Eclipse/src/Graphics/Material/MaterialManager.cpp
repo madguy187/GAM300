@@ -298,9 +298,9 @@ namespace Eclipse
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 
         glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
-        auto shdrpgm = Graphics::shaderpgms.find("OutLineShader");
+        auto shdrpgm = Graphics::shaderpgms["OutLineShader"];
 
-        shdrpgm->second.Use();
+        shdrpgm.Use();
 
         for (auto const& Models : ModelHighlightContainer)
         {
@@ -317,17 +317,17 @@ namespace Eclipse
 
                 // Check Main Uniforms For each Model
                 // Translation done here for each model
-                CheckUniformLoc(shdrpgm->second, _camera, FrameBufferID, ID);
+                CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ID);
 
                 // Materials Update
-                engine->MaterialManager.CheckUnniformLocation(shdrpgm->second, highlight);
+                engine->MaterialManager.CheckUnniformLocation(shdrpgm, highlight);
 
                 // Render
-                InvidualModels.Render(shdrpgm->second, Mode, FrameBufferID);
+                InvidualModels.Render(shdrpgm, Mode, FrameBufferID);
             }
         }
 
-        shdrpgm->second.UnUse();
+        shdrpgm.UnUse();
     }
 
     void MaterialManager::RegisterForHighlighting(MaterialComponent& in, unsigned int index)

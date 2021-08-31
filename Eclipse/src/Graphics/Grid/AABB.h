@@ -4,7 +4,7 @@
 
 namespace Eclipse
 {
-    class AABB
+    class DYN_AABB
     {
     public:
         float minX;
@@ -21,15 +21,15 @@ namespace Eclipse
         bool IsGrid = false;
 
     public:
-        AABB();
-        AABB(float minX, float minY, float minZ, float maxX, float maxY, float maxZ); // :
+        DYN_AABB();
+        DYN_AABB(float minX, float minY, float minZ, float maxX, float maxY, float maxZ); // :
 
-        bool Overlaps(const AABB& other) const;
-        bool MouseOverlaps(glm::vec3 mousepos, const AABB& other) const;
-        bool Contains(const AABB& other) const;
+        bool Overlaps(const DYN_AABB& other) const;
+        bool MouseOverlaps(glm::vec3 mousepos, const DYN_AABB& other) const;
+        bool Contains(const DYN_AABB& other) const;
         bool Contains(const glm::vec3& other) const;
-        AABB Merge(const AABB& rhs) const;
-        AABB Intersection(const AABB& rhs) const;
+        DYN_AABB Merge(const DYN_AABB& rhs) const;
+        DYN_AABB Intersection(const DYN_AABB& rhs) const;
 
         float GetWidth();
         float GetHeight();

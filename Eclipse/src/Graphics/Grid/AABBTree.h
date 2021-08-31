@@ -10,7 +10,7 @@ namespace Eclipse
 {
     struct AABBNode
     {
-        AABB aabb;
+        DYN_AABB aabb;
         std::shared_ptr<IAABB> object;
 
         unsigned int parentNodeIndex = 0;
@@ -40,8 +40,8 @@ namespace Eclipse
         void InsertObject(const std::shared_ptr<IAABB>& object);
         void RemoveObject(const std::shared_ptr<IAABB>& object);
         void UpdateObject(const std::shared_ptr<IAABB>& object);
-        std::vector<unsigned int> CheckOverlapAgainstGrid(AABB& object);
-        std::vector<unsigned int> CheckOverlap(AABB& object);
+        std::vector<unsigned int> CheckOverlapAgainstGrid(DYN_AABB& object);
+        std::vector<unsigned int> CheckOverlap(DYN_AABB& object);
         std::vector<unsigned int> CheckMouseOverlapAgainstGrid(glm::vec3& rayStart, glm::vec3& rayDir, float& t);
 
     private:
@@ -49,7 +49,7 @@ namespace Eclipse
         void DeallocateNode(unsigned nodeIndex);
         void InsertLeaf(unsigned leafNodeIndex);
         void RemoveLeaf(unsigned leafNodeIndex);
-        void UpdateLeaf(unsigned leafNodeIndex, const AABB& newAaab);
+        void UpdateLeaf(unsigned leafNodeIndex, const DYN_AABB& newAaab);
         void FixUpwardsTree(unsigned treeNodeIndex);
 
     };

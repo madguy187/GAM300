@@ -20,7 +20,8 @@ namespace Eclipse
         static bool DeleteSpotLight(unsigned int EntityID);
         void DrawSpotLights(unsigned int framebufferID);
         void Draw(SpotLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
-
+        bool InsertSpotLightLight(SpotLightComponent& in);
+        void ClearContainer();
     private:
         void CheckUniformLoc(Shader* _shdrpgm, SpotLightComponent& hi, int index, unsigned int containersize);
     };

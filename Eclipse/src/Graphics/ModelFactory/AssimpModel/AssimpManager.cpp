@@ -34,7 +34,7 @@ namespace Eclipse
         NewModel->AABB_Property.SetMaxMin(max, min, ID);
         // ----------------------------------------------------------------------------------------------------------
 
-        // Insert
+        //// Insert
         if (AssimpModelContainer_.insert(std::pair<unsigned int, AssimpModel*>(ID, NewModel)).second == true)
         {
             std::string Success = ("3D Model [" + name + "] Created and Inseted into Container Successfully! ").c_str();
@@ -316,6 +316,24 @@ namespace Eclipse
                 delete i.second;
             }
         }
+    }
+
+    bool AssimpModelManager::InsertModel(AssimpModel& in)
+    {
+        // Insert
+        if (AssimpModelContainer_.insert({ in.GetEntityID() , &in }).second == true)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    bool AssimpModelManager::ClearContainer()
+    {
+        AssimpModelContainer_.clear();
+
+        return true;
     }
 
     void AssimpModelManager::TestPath(std::string& path)

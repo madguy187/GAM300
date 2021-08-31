@@ -45,7 +45,7 @@ namespace Eclipse
 
     public:
         bool noTex = false;
-        AABB AABB_Property; // For Dynamic AABB
+        DYN_AABB AABB_Property; // For Dynamic AABB
 
         AssimpModel() { }
         AssimpModel(bool noTex = false);
@@ -63,8 +63,9 @@ namespace Eclipse
         void SetModelType(ModelType in);
         std::vector<glm::vec3> GetVertices();
         void SetProperties(std::string& ModelName , ModelType in , unsigned int ID);
-        AABB getAABB() const override;
-        AABB SetAABB(TransformComponent& in);
+        DYN_AABB getAABB() const override;
+        DYN_AABB SetAABB(TransformComponent& in);
+        unsigned int GetEntityID();
     };
 
 }

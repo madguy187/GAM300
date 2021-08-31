@@ -26,6 +26,10 @@ namespace Eclipse
 		void Draw(DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
 		// First Created Light
 		void FirstGlobalLight();
+		// insert DirectionalLight
+		bool InsertDirectionalLight(DirectionalLightComponent& in);
+		// Clear 
+		void ClearContainer();
 
 	private:
 		// Update Shader Variables

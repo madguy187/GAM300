@@ -35,6 +35,8 @@ namespace Eclipse
         void TestPath(std::string& path);
         AssimpModel* GetModel(unsigned int ID);
         ~AssimpModelManager();
+        bool InsertModel(AssimpModel& in);
+        bool ClearContainer();
     };
 }
 #endif // ASSIMP_MANAGER_H

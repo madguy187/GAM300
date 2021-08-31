@@ -28,6 +28,10 @@ namespace Eclipse
 		void DrawPointLights(unsigned int framebufferID);
 		// PointLight
 		void Draw(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
+		// Insert pointlight
+		bool InsertPointLight(PointLightComponent& in);
+		// Clear
+		void ClearContainer();
 
 	private:
 		// Update Shader Variables

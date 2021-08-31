@@ -32,7 +32,7 @@ namespace Eclipse
         // Tile ID
         TILE_ID GridID = 0;
         // Tile AABB to be used in DynamicAABBTree
-        AABB aabb;
+        DYN_AABB aabb;
         // Tile Minimum Point
         ECVec3 MinimumPoint{ 0.0f,0.0f,0.0f };
         // Tile Maximum Point
@@ -46,7 +46,7 @@ namespace Eclipse
         // Tile Occupied? 
         bool Occupied = false;
         // Get AABB For Tile
-        AABB getAABB() const override;
+        DYN_AABB getAABB() const override;
     };
 
     class Grid

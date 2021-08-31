@@ -25,10 +25,6 @@ namespace Eclipse
         // Create SKY =============================
         engine->GraphicsManager.CreateSky("src/Assets/Sky");
 
-        // Create Grid =============================
-        engine->GraphicsManager.GridManager->Init();
-        engine->GraphicsManager.GridManager->DebugPrint();
-
         // Create AABB Boxes =============================
         engine->GraphicsManager.AllAABBs.Init();
     }

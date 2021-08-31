@@ -107,11 +107,11 @@ namespace Eclipse
         UpdateLeaf(nodeIndex, object->getAABB());
     }
 
-    std::vector<unsigned int> AABBTree::CheckOverlapAgainstGrid(AABB& object)
+    std::vector<unsigned int> AABBTree::CheckOverlapAgainstGrid(DYN_AABB& object)
     {
         std::vector<unsigned int> overlaps;
         std::stack<unsigned> stack;
-        AABB& testAabb = object;
+        DYN_AABB& testAabb = object;
 
         stack.push(RootNodeIndex);
         while (!stack.empty())
@@ -164,11 +164,11 @@ namespace Eclipse
         return overlaps;
     }
 
-    std::vector<unsigned int> AABBTree::CheckOverlap(AABB& object)
+    std::vector<unsigned int> AABBTree::CheckOverlap(DYN_AABB& object)
     {
         std::vector<unsigned int> overlaps;
         std::stack<unsigned> stack;
-        AABB& testAabb = object;
+        DYN_AABB& testAabb = object;
 
         stack.push(RootNodeIndex);
         while (!stack.empty())
@@ -261,7 +261,7 @@ namespace Eclipse
             const AABBNode& leftNode = AllNodes[leftNodeIndex];
             const AABBNode& rightNode = AllNodes[rightNodeIndex];
 
-            AABB combinedAabb = treeNode.aabb.Merge(leafNode.aabb);
+            DYN_AABB combinedAabb = treeNode.aabb.Merge(leafNode.aabb);
 
             float newParentNodeCost = 2.0f * combinedAabb.surfaceArea;
             float minimumPushDownCost = 2.0f * (combinedAabb.surfaceArea - treeNode.aabb.surfaceArea);
@@ -275,7 +275,7 @@ namespace Eclipse
             }
             else
             {
-                AABB newLeftAabb = leafNode.aabb.Merge(leftNode.aabb);
+                DYN_AABB newLeftAabb = leafNode.aabb.Merge(leftNode.aabb);
                 costLeft = (newLeftAabb.surfaceArea - leftNode.aabb.surfaceArea) + minimumPushDownCost;
             }
             if (rightNode.isLeaf())
@@ -284,7 +284,7 @@ namespace Eclipse
             }
             else
             {
-                AABB newRightAabb = leafNode.aabb.Merge(rightNode.aabb);
+                DYN_AABB newRightAabb = leafNode.aabb.Merge(rightNode.aabb);
                 costRight = (newRightAabb.surfaceArea - rightNode.aabb.surfaceArea) + minimumPushDownCost;
             }
 
@@ -393,7 +393,7 @@ namespace Eclipse
         leafNode.parentNodeIndex = AABB_NULL_NODE;
     }
 
-    void AABBTree::UpdateLeaf(unsigned leafNodeIndex, const AABB& newAaab)
+    void AABBTree::UpdateLeaf(unsigned leafNodeIndex, const DYN_AABB& newAaab)
     {
         AABBNode& node = AllNodes[leafNodeIndex];
 

@@ -160,4 +160,19 @@ namespace Eclipse
 		EDITOR_LOG_INFO("DirectionalLight Created Successfully");
 		counter++;
 	}
+
+	bool DirectionalLight::InsertDirectionalLight(DirectionalLightComponent& in)
+	{
+		if (_DirectionalLight.insert({ in.ID , &in }).second == true)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	void DirectionalLight::ClearContainer()
+	{
+		_DirectionalLight.clear();
+	}
 }
