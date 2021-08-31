@@ -5,10 +5,6 @@ namespace Eclipse
 {
     struct RenderComponent
     {
-        using modelIt = std::map<std::string, std::unique_ptr<IModel>>::iterator;
-        using textureIt = std::map<std::string, Eclipse::Texture>::iterator;
-        using shaderIt = std::map<std::string, Shader>::iterator;
-
         ECVec3 color{ 1.0f, 1.0f, 1.0f };
         ECVec2 textureIdx{ 0.0, 0.0 };
 
@@ -16,9 +12,9 @@ namespace Eclipse
         bool isQuad = false;
         glm::mat4 modelNDC_xform{ 0 };
 
-        modelIt modelRef;
-        textureIt textureRef;
-        shaderIt shaderRef;
+        std::string modelRef;
+        std::string shaderRef;
+        std::string textureRef;
 
         unsigned int ID = 0;
         std::string name;

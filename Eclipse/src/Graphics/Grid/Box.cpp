@@ -97,7 +97,7 @@ namespace Eclipse
         glBindVertexArray(0);
     }
 
-    void AABB_::Render(Shader shader)
+    void AABB_::Render(Shader& shader)
     {
         GLint uniform_var_loc1 = shader.GetLocation("model");
         glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(glm::mat4(1.0f)));
@@ -181,17 +181,17 @@ namespace Eclipse
                 glBindFramebuffer(GL_FRAMEBUFFER, FramebufferID);
 
                 CameraComponent camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
-                auto shdrpgm = Graphics::shaderpgms.find("AABB");
-                shdrpgm->second.Use();
+                auto shdrpgm = Graphics::shaderpgms["AABB"];
+                shdrpgm.Use();
 
-                GLint uniform_var_loc1 = shdrpgm->second.GetLocation("view");
-                GLint uniform_var_loc2 = shdrpgm->second.GetLocation("projection");
+                GLint uniform_var_loc1 = shdrpgm.GetLocation("view");
+                GLint uniform_var_loc2 = shdrpgm.GetLocation("projection");
                 glm::mat4 _cameraprojMtx = glm::perspective(glm::radians(camera.fov), camera.aspect, camera.nearPlane, camera.farPlane);
                 glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(camera.viewMtx));
                 glUniformMatrix4fv(uniform_var_loc2, 1, GL_FALSE, glm::value_ptr(_cameraprojMtx));
 
-                engine->GraphicsManager.AllAABBs.Render(shdrpgm->second);
-                shdrpgm->second.UnUse();
+                engine->GraphicsManager.AllAABBs.Render(shdrpgm);
+                shdrpgm.UnUse();
             }
         }
     }

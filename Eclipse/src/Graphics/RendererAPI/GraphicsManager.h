@@ -44,7 +44,7 @@ namespace Eclipse
         float GetGammaCorrection();
         void SetGammaCorrection(float in);
         void UploadGlobalUniforms();
-        void CheckUniformLoc(RenderComponent& sprite, unsigned int id, unsigned int framebufferID);
+        void CheckUniformLoc(Shader* _shdrpgm , RenderComponent& sprite, unsigned int id, unsigned int framebufferID);
         // Reset Boxes so we can prepare to add
         void ResetInstancedDebugBoxes();
         // Draw Debug Boxes

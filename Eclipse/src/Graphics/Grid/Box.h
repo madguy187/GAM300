@@ -27,7 +27,7 @@ namespace Eclipse
         bool CheckToRender();
         // Check Flag to render
         bool ShouldRender();
-        void Render(Shader shader);
+        void Render(Shader& shader);
 
     public:
 

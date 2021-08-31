@@ -4,8 +4,8 @@
 
 namespace Eclipse
 {
-	typedef std::map<int, PointLightComponent*> PointLightContainer;
-	using PointL = std::map<int, PointLightComponent*>::iterator;
+	typedef std::map<unsigned int, PointLightComponent*> PointLightContainer;
+	using PointL = std::map<unsigned int, PointLightComponent*>::iterator;
 
 	class PointLight
 	{

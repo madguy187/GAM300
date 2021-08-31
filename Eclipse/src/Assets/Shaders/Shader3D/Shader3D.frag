@@ -44,7 +44,6 @@ struct PointLight
     float linear;
     float quadratic;  
     float IntensityStrength;
-    float test;
 };  
 
 struct DirectionalLight 

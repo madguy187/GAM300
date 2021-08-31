@@ -139,9 +139,9 @@ namespace Eclipse
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
 
         glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
-        auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
+        auto shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
 
-        shdrpgm->second.Use();
+        shdrpgm.Use();
 
         for (auto const& Models : AssimpModelContainer_)
         {
@@ -152,13 +152,13 @@ namespace Eclipse
 
             // Check Main Uniforms For each Model
             // Translation done here for each model
-            CheckUniformLoc(shdrpgm->second, _camera, FrameBufferID, ID, box);
+            CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ID, box);
 
             // Render
-            InvidualModels.Render(shdrpgm->second, Mode, FrameBufferID);
+            InvidualModels.Render(shdrpgm, Mode, FrameBufferID);
         }
 
-        shdrpgm->second.UnUse();
+        shdrpgm.UnUse();
     }
 
     void AssimpModelManager::HighlihtDraw(unsigned int FrameBufferID, GLenum Mode)
