@@ -39,11 +39,11 @@ namespace Eclipse
             // Test Code
             if (MouseVsGrid.size() >= 1)
             {
-                std::cout << " - Collided With -" << std::endl;
+                //std::cout << " - Collided With -" << std::endl;
 
                 for (int i = 0; i < MouseVsGrid.size(); i++)
                 {
-                    std::cout << "Tile ID : " << MouseVsGrid[i] << std::endl;
+                    //std::cout << "Tile ID : " << MouseVsGrid[i] << std::endl;
                 }
             }
         }
