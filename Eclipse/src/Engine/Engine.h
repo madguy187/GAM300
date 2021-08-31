@@ -9,6 +9,7 @@
 #include "AssimpModel/AssimpManager.h"
 #include "Graphics/Material/MaterialManager.h"
 #include "Graphics/Picker/PickingManager.h"
+#include "Graphics/Grid/AABBTree.h"
 
 namespace Eclipse
 {
@@ -26,7 +27,8 @@ namespace Eclipse
 	    AssimpModelManager AssimpManager;
 		PickingManager gPicker;
         MaterialManager MaterialManager{ true , true };
-        
+		AABBTree CollisionGridTree{ 150 };
+
         void Init();
         void Run();
 

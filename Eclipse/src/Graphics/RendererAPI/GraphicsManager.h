@@ -19,7 +19,7 @@ namespace Eclipse
         GLenum GlobalMode = GL_FILL;
         std::unique_ptr<CubeMap> Sky;
         std::unique_ptr<Grid> GridManager;
-        AABB AllAABBs;
+        AABB_ AllAABBs;
 
         unsigned int createdID;
         unsigned int SkyCount = 0;
@@ -44,7 +44,11 @@ namespace Eclipse
         float GetGammaCorrection();
         void SetGammaCorrection(float in);
         void UploadGlobalUniforms();
-        void CheckUniformLoc(RenderComponent& sprite, unsigned int id, unsigned int framebufferID);
+        void CheckUniformLoc(Shader* _shdrpgm , RenderComponent& sprite, unsigned int id, unsigned int framebufferID);
+        // Reset Boxes so we can prepare to add
+        void ResetInstancedDebugBoxes();
+        // Draw Debug Boxes
+        void DrawDebugBoxes();
 
     private:
         float GammaCorrection = 1.0f;

@@ -3,12 +3,6 @@
 
 namespace Eclipse
 {
-    BoundingRegion::BoundingRegion(BoundTypes type) :
-        type(type)
-    {
-
-    }
-
     BoundingRegion::BoundingRegion(glm::vec3 center, float radius) :
         type(BoundTypes::SPHERE),
         center(center),
@@ -18,20 +12,25 @@ namespace Eclipse
     }
 
     //initialize as AABB
-    BoundingRegion::BoundingRegion(glm::vec3 mina, glm::vec3 maxa, bool in) :
+    BoundingRegion::BoundingRegion(glm::vec3 mina, glm::vec3 maxa , glm::vec3 position, glm::vec3 scale) :
         type(BoundTypes::AABB),
         Minimum(mina),
-        Maximum(maxa)
+        Maximum(maxa),
+        Scale(scale),
+        Position(position)
     {
 
     }
 
-    BoundingRegion::BoundingRegion(glm::vec3 position, glm::vec3 Scale)
+    BoundingRegion::BoundingRegion(glm::vec3 position, glm::vec3 scale)
     {
         type = BoundTypes::AABB;
 
         Minimum = { -(Scale.x / 2) ,-(Scale.y / 2)  , -(Scale.z / 2) };
         Maximum = { (Scale.x / 2) ,  (Scale.y / 2)  ,  (Scale.z / 2) };
+
+        Position = position;
+        Scale = scale;
     }
 
     glm::vec3 BoundingRegion::calculateCenter()

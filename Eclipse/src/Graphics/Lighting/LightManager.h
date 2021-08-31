@@ -110,6 +110,10 @@ namespace Eclipse
         void CreateLights(TypesOfLights in, unsigned int CreatedID);
         void SetApplyLightingFlag(bool in);
         bool CheckApplyLighting();
+        bool InsertPointLight(PointLightComponent& in);
+        bool InsertDirectionalLight(DirectionalLightComponent& in);
+        bool InsertSpotLightLight(SpotLightComponent& in);
+        bool ClearAllContainer();
 
         // Draws =============================
         void DrawPointLights(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);

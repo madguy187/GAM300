@@ -27,7 +27,6 @@ namespace Eclipse
 
             // HighLight Models Start ===============================
             engine->MaterialManager.Highlight(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL);
-            engine->MaterialManager.Highlight(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), GL_FILL);
             // HighLight Models End ===============================
 
             engine->MaterialManager.StencilBufferClear();

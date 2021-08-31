@@ -16,7 +16,9 @@ namespace Eclipse
     class RenderSystem : public System
     {
     public:
-        static inline AABB box;
+        // Empty Instanced Debug Box Container
+        static inline AABB_ box;
+
         static void Init();
         static Signature RegisterAll();
 

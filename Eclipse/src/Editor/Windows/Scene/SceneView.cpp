@@ -62,7 +62,7 @@ namespace Eclipse
 			OnGizmoUpdateEvent();
 		}
 		
-		if (ECGui::IsItemHovered() /*&& ImGui::IsWindowFocused()*/ /*temp fix*/)
+		if (ECGui::IsItemHovered() && ImGui::IsWindowFocused() /*temp fix*/)
 		{
 			// Do all the future stuff here when hovering on window
 			OnKeyPressedEvent();
@@ -169,7 +169,7 @@ namespace Eclipse
 		}
 
 		ImGuiIO& io = ImGui::GetIO();
-		
+
 		ImGuizmo::Manipulate(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx),
 			(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
 			nullptr, io.KeyCtrl ? glm::value_ptr(snapValues) : nullptr);

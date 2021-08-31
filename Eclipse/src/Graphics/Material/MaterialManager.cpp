@@ -298,9 +298,9 @@ namespace Eclipse
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 
         glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
-        auto shdrpgm = Graphics::shaderpgms.find("OutLineShader");
+        auto shdrpgm = Graphics::shaderpgms["OutLineShader"];
 
-        shdrpgm->second.Use();
+        shdrpgm.Use();
 
         for (auto const& Models : ModelHighlightContainer)
         {
@@ -317,17 +317,17 @@ namespace Eclipse
 
                 // Check Main Uniforms For each Model
                 // Translation done here for each model
-                CheckUniformLoc(shdrpgm->second, _camera, FrameBufferID, ID);
+                CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ID);
 
                 // Materials Update
-                engine->MaterialManager.CheckUnniformLocation(shdrpgm->second, highlight);
+                engine->MaterialManager.CheckUnniformLocation(shdrpgm, highlight);
 
                 // Render
-                InvidualModels.Render(shdrpgm->second, Mode, FrameBufferID);
+                InvidualModels.Render(shdrpgm, Mode, FrameBufferID);
             }
         }
 
-        shdrpgm->second.UnUse();
+        shdrpgm.UnUse();
     }
 
     void MaterialManager::RegisterForHighlighting(MaterialComponent& in, unsigned int index)
@@ -365,15 +365,15 @@ namespace Eclipse
         {
             glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
 
-            auto shdrpgm = Graphics::shaderpgms.find("OutLineShader");
+            auto& shdrpgm = Graphics::shaderpgms["OutLineShader"];
 
-            shdrpgm->second.Use();
+            shdrpgm.Use();
 
             auto& _spritecomponent = engine->world.GetComponent<RenderComponent>(ModelID);
             auto& highlight = engine->world.GetComponent<MaterialComponent>(ModelID);
 
-            // Part 2: Bind the object's VAO handle using glBindVertexArray
-            glBindVertexArray(_spritecomponent.modelRef->second->GetVaoID());
+            // Part 2: Bind the object's VAO handle using glBindVertexArray          
+            glBindVertexArray(Graphics::models[_spritecomponent.modelRef]->GetVaoID());
 
             glEnable(GL_DEPTH_TEST);
             glDisable(GL_CULL_FACE);
@@ -383,15 +383,15 @@ namespace Eclipse
             engine->GraphicsManager.CheckTexture(&_spritecomponent);
 
             // Materials Update
-            engine->MaterialManager.CheckUnniformLocation(shdrpgm->second, highlight);
+            engine->MaterialManager.CheckUnniformLocation(shdrpgm, highlight);
 
-            CheckUniformLoc(_spritecomponent, shdrpgm->second, _spritecomponent.ID, FrameBufferID);
+            CheckUniformLoc(_spritecomponent, shdrpgm, _spritecomponent.ID, FrameBufferID);
 
             engine->GraphicsManager.DrawIndexed(&_spritecomponent, GL_UNSIGNED_SHORT);
 
             // Part 5: Clean up
             glBindVertexArray(0);
-            shdrpgm->second.UnUse();
+            shdrpgm.UnUse();
         }
     }
 
