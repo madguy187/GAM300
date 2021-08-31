@@ -2,7 +2,8 @@
 
 #include "Editor/Windows/Interface/ECGuiWindow.h"
 #include "Editor/Menu/MenuBar.h"
-#include <Editor/Utilities//DragAndDrop.h>
+#include <Editor/Utilities/DragAndDrop.h>
+
 #include "Serialization/SerializationManager.h"
 
 namespace Eclipse
@@ -43,6 +44,8 @@ namespace Eclipse
 
 			return temp;
 		}
+		
+		void Clear();
 
 		std::vector<Entity> EntityHierarchyList_;
 		std::map<Entity, EntityType> EntityToTypeMap_;

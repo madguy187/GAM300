@@ -41,6 +41,8 @@ namespace Eclipse
 	{
 		MenuComponent file{ "File", EditorMenuType::FILE };
 		file.AddItems("Exit");
+		file.AddItems("Open");
+		file.AddItems("Save");
 		MenuComponent window{ "Windows", EditorMenuType::WINDOWS };
 
 		MenuBar_.AddMenuComponents(file);
@@ -90,7 +92,7 @@ namespace Eclipse
 
 		// Check this please - Rachel
 		auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
-		engine->gPicker.GenerateAabb(ID, _transform);
+		engine->gPicker.GenerateAabb(ID, _transform, type);
 
 		EntityHierarchyList_.push_back(ID);
 		EntityToTypeMap_.insert(std::pair<Entity, EntityType>(ID, type));
@@ -105,7 +107,6 @@ namespace Eclipse
 		auto& transform = engine->world.GetComponent<TransformComponent>(ID);
 		auto& entcom = engine->world.GetComponent<EntityComponent>(ID);
 
-		engine->gPicker.GenerateAabb(ID, transform);
 		EntityHierarchyList_.push_back(ID);
 		EntityToTypeMap_.insert(std::pair<Entity, EntityType>(ID, entcom.Tag));
 		GEHIndex_ = EntityHierarchyList_.size() - 1;
@@ -163,6 +164,18 @@ namespace Eclipse
 		if (szManager.LoadFile(fullpath))
 		{
 			szManager.DeserializeAllEntity(fullpath);
+		}
+	}
+
+	void EditorManager::Clear()
+	{
+		EntityHierarchyList_.clear();
+		EntityToTypeMap_.clear();
+		GEHIndex_ = 0;
+
+		for (const auto& window : Windows_)
+		{
+			window->Unload();
 		}
 	}
 }

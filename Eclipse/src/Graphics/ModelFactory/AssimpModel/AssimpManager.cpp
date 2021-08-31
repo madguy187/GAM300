@@ -3,19 +3,20 @@
 
 namespace Eclipse
 {
-    void AssimpModelManager::CreateModel(std::string name, std::string FolderName, std::string filename)
+    void AssimpModelManager::CreateModel(unsigned int ID, std::string name, std::string FolderName, std::string filename)
     {
-        Entity ID = engine->world.CreateEntity();
+        //Entity ID = engine->world.CreateEntity();
+        //std::cout << "Assimp ID: " << ID << std::endl;
 
         // Add Required Components
         engine->world.AddComponent(ID, MaterialComponent{});
-        engine->world.AddComponent(ID, TransformComponent{});
-        engine->world.AddComponent(ID, EntityComponent{ EntityType::ENT_UNASSIGNED, name , true });
+        //engine->world.AddComponent(ID, TransformComponent{});
+        //engine->world.AddComponent(ID, EntityComponent{ EntityType::ENT_UNASSIGNED, name , true });
 
         // Manually adding to hierachy List
         // ----------------------------------------------------------------------------------------------------------
-        engine->editorManager->EntityHierarchyList_.push_back(ID);
-        engine->editorManager->EntityToTypeMap_.insert(std::pair<Entity, EntityType>(ID, EntityType::ENT_UNASSIGNED));
+        //engine->editorManager->EntityHierarchyList_.push_back(ID);
+        //engine->editorManager->EntityToTypeMap_.insert(std::pair<Entity, EntityType>(ID, EntityType::ENT_UNASSIGNED));
 
         TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(ID);
         Transform.scale.setX(5);

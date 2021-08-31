@@ -159,6 +159,7 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
     <ClInclude Include="src\Editor\Windows\SwitchViews\SwitchViews.h" />
     <ClInclude Include="src\Editor\Utilities\DragAndDrop.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -410,6 +411,7 @@
     <ClCompile Include="src\Serialization\TinyXML\tinyxml.cpp" />
     <ClCompile Include="src\Serialization\TinyXML\tinyxmlerror.cpp" />
     <ClCompile Include="src\Serialization\TinyXML\tinyxmlparser.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\AABB.frag" />
@@ -429,5 +431,8 @@
     <None Include="src\Assets\Shaders\Shaders.json" />
     <None Include="src\Assets\Shaders\textFrag.frag" />
     <None Include="src\Assets\Shaders\textVtx.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Mono\ScriptAPI\MonoVec3.cs" />
   </ItemGroup>
 </Project>

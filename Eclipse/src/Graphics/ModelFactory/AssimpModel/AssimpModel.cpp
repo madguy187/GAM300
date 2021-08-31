@@ -78,6 +78,53 @@ void AssimpModel::ProcessNode(aiNode* node, const aiScene* scene)
 	}
 }
 
+float Eclipse::AssimpModel::GetLargestAxisValue(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ)
+{
+	float minValue = (std::min)({ _minmaxX.first, _minmaxY.first, _minmaxZ.first });
+	float maxValue = (std::max)({ _minmaxX.second, _minmaxY.second, _minmaxZ.second });
+
+	float largestAxis = (std::max)(std::abs(minValue), maxValue);
+
+	return largestAxis;
+}
+
+void Eclipse::AssimpModel::ComputeAxisMinMax(std::vector<glm::vec3>& vertices, std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ)
+{
+	std::vector<float> verticesX;
+	std::vector<float> verticesY;
+	std::vector<float> verticesZ;
+
+	for (auto& it : vertices)
+	{
+		verticesX.push_back(it.x);
+		verticesY.push_back(it.y);
+		verticesZ.push_back(it.z);
+	}
+
+	auto minmaxX = std::minmax_element(verticesX.begin(), verticesX.end());
+	auto minmaxY = std::minmax_element(verticesY.begin(), verticesY.end());
+	auto minmaxZ = std::minmax_element(verticesZ.begin(), verticesZ.end());
+
+	_minmaxX.first = *minmaxX.first;
+	_minmaxX.second = *minmaxX.second;
+
+	_minmaxY.first = *minmaxY.first;
+	_minmaxY.second = *minmaxY.second;
+
+	_minmaxZ.first = *minmaxZ.first;
+	_minmaxZ.second = *minmaxZ.second;
+}
+
+glm::vec3 Eclipse::AssimpModel::ComputeCentroid(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ)
+{
+	glm::vec3 centroid = glm::vec3{ 
+		(_minmaxX.first + _minmaxX.second) / 2.0f, 
+		(_minmaxY.first + _minmaxY.second) / 2.0f, 
+		(_minmaxZ.first + _minmaxZ.second) / 2.0f };
+
+	return centroid;
+}
+
 void AssimpModel::SetName(std::string name)
 {
 	NameOfModel = name;
@@ -155,6 +202,33 @@ Mesh AssimpModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 
 		AllVertices.push_back(vertex.Position);
 		vertices.push_back(vertex);
+	}
+
+	std::pair<float, float> minmaxX;
+	std::pair<float, float> minmaxY;
+	std::pair<float, float> minmaxZ;
+
+	ComputeAxisMinMax(AllVertices, minmaxX, minmaxY, minmaxZ);
+
+	glm::vec3 centroid = ComputeCentroid(minmaxX, minmaxY, minmaxZ);
+	float largestAxis = GetLargestAxisValue(minmaxX, minmaxY, minmaxZ);
+
+	for (auto& it : AllVertices)
+	{
+		it -= centroid;
+
+		it.x /= largestAxis;
+		it.y /= largestAxis;
+		it.z /= largestAxis;
+	}
+	
+	for (auto& it : vertices)
+	{
+		it.Position -= centroid;
+
+		it.Position.x /= largestAxis;
+		it.Position.y /= largestAxis;
+		it.Position.z /= largestAxis;
 	}
 
 	// process indices

@@ -14,6 +14,7 @@
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
 #include "ECS/SystemManager/Systems/System/EditorSystem.h"
 #include "ECS/SystemManager/Systems/System/LightingSystem.h"
+#include "ECS/SystemManager/Systems/System/PickingSystem.h"
 #include "ImGui/Setup/ImGuiSetup.h"
 #include "ECS/SystemManager/Systems/System/MaterialSystem.h"
 #include "Serialization/SerializationManager.h"
@@ -34,7 +35,7 @@ namespace Eclipse
 {
     void Engine::Init()
     {
-        mono.Init();
+        //mono.Init();
 
         // multiple listener calls
         EventSystem<Test1>::registerListener(Tester1);
@@ -75,6 +76,7 @@ namespace Eclipse
         world.RegisterSystem<CameraSystem>();
         world.RegisterSystem<LightingSystem>();
         world.RegisterSystem<MaterialSystem>();
+        world.RegisterSystem<PickingSystem>();
 
         // Render System
         Signature RenderSys = RenderSystem::RegisterAll();
@@ -96,6 +98,13 @@ namespace Eclipse
         mat.set(world.GetComponentType<MaterialComponent>(), 1);
         world.RegisterSystemSignature<MaterialSystem>(mat);
 
+        Signature picking;
+        picking.set(world.GetComponentType<AabbComponent>(), 1);
+        picking.set(world.GetComponentType<TransformComponent>(), 1);
+        picking.set(world.GetComponentType<MaterialComponent>(), 1);
+        world.RegisterSystemSignature<PickingSystem>(picking);
+
+        mono.Init();
         
         //Check this! - Rachel
         RenderSystem::Init();
@@ -171,8 +180,12 @@ namespace Eclipse
             // Material SYstem
             world.Update<MaterialSystem>();
             
+            world.Update<PickingSystem>();
+
             // GRID DRAW ============================= Must be last of All Renders
             engine->GraphicsManager.GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+
+            mono.Update();
 
             // FRAMEBUFFER DRAW ==========================
             engine->GraphicsManager.GlobalFrmeBufferDraw();
@@ -187,6 +200,7 @@ namespace Eclipse
         EditorSystem::SaveTemp();
 
         // unLoad
+        mono.StopMono();
         GraphicsManager.End();
         AssimpManager.CleanUpAllModels();
         ImGuiSetup::Destroy(EditorState);
