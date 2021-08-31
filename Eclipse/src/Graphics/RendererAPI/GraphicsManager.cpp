@@ -235,7 +235,6 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     {
         // Just to test create models , will revert back to spotlights
         engine->AssimpManager.CreateModel(ID, "White Dog", "dog", "scene.gltf");
-
         //engine->LightManager.CreateLights(Eclipse::TypesOfLights::SPOTLIGHT, ID);
     }
     break;
@@ -282,7 +281,7 @@ void Eclipse::GraphicsManager::Draw(unsigned int FrameBufferID, RenderComponent*
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     CheckTexture(_spritecomponent);
-    CheckUniformLoc(&shdrpgm ,*(_spritecomponent), _spritecomponent->ID, FrameBufferID);
+    CheckUniformLoc(&shdrpgm, *(_spritecomponent), _spritecomponent->ID, FrameBufferID);
     DrawIndexed(_spritecomponent, GL_UNSIGNED_SHORT);
 
     // Part 5: Clean up
@@ -300,7 +299,7 @@ void Eclipse::GraphicsManager::CheckTexture(RenderComponent* in)
 {
     if (in->hasTexture)
     {
-        
+
         glBindTexture(GL_TEXTURE_2D, Graphics::textures[in->textureRef].GetHandle());
 
         glEnable(GL_BLEND);
@@ -312,7 +311,7 @@ void Eclipse::GraphicsManager::CheckTexture(RenderComponent* in)
     }
 }
 
-void Eclipse::GraphicsManager::CheckUniformLoc(Shader* _shdrpgm ,RenderComponent& sprite, unsigned int id, unsigned int framebufferID)
+void Eclipse::GraphicsManager::CheckUniformLoc(Shader* _shdrpgm, RenderComponent& sprite, unsigned int id, unsigned int framebufferID)
 {
     CameraComponent camera;
     TransformComponent camerapos;
@@ -337,8 +336,8 @@ void Eclipse::GraphicsManager::CheckUniformLoc(Shader* _shdrpgm ,RenderComponent
     TransformComponent& trans = engine->world.GetComponent<TransformComponent>(id);
 
     GLint uniform_var_loc1 = _shdrpgm->GetLocation("uModelToNDC");
-    GLint uniform_var_loc2 =_shdrpgm->GetLocation("uColor");
-    GLint uniform_var_loc3 =_shdrpgm->GetLocation("uTextureCheck");
+    GLint uniform_var_loc2 = _shdrpgm->GetLocation("uColor");
+    GLint uniform_var_loc3 = _shdrpgm->GetLocation("uTextureCheck");
     //GLint uniform_var_loc4 = sprite.shaderRef->second.GetLocation("TextureIndex");
     //GLint uniform_var_loc5 = sprite.shaderRef->second.GetLocation("TextureDimensions");
     GLuint tex_loc = _shdrpgm->GetLocation("uTex2d");
@@ -498,18 +497,9 @@ FrameBuffer* Eclipse::OpenGL_Context::GetFramebuffer(FrameBufferMode mode)
         return nullptr;
     }
 
-    for (auto const& it : _Framebuffers)
-    {
-        auto& type = (it.first);
-        auto& selectfb = *(it.second);
+    auto& selectfb = _Framebuffers[mode];
 
-        if (type == mode)
-        {
-            return &selectfb;
-        }
-    }
-
-    return nullptr;
+    return selectfb;
 }
 
 void Eclipse::GraphicsManager::FrameBufferDraw()
