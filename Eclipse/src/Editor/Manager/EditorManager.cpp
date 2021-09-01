@@ -87,7 +87,7 @@ namespace Eclipse
 	{
 		Entity ID = engine->world.CreateEntity();
 
-		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast<std::string>(type), true });
+		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast_toStr<EntityType>(type), true });
 		engine->world.AddComponent(ID, TransformComponent{});
 
 		// Check this please - Rachel
