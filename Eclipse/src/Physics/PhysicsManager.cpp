@@ -83,6 +83,8 @@ namespace Eclipse
 		}
 		else
 			Px_Actors[ent] = Px_Physics->createRigidStatic(PxTransform(temptrans));
+
+		AddActorToScene(ent);
 	}
 
 	void PhysicsManager::ChangeRigidStatic(Entity ent)
@@ -238,10 +240,10 @@ namespace Eclipse
 			temptrans.y = transform.position.y;
 			temptrans.z = transform.position.z;
 
-			dynamic_cast<PxRigidActor*>(Px_Actors[ent])->setGlobalPose(PxTransform{ temptrans });
-			dynamic_cast<PxRigidDynamic*>(Px_Actors[ent])->setForceAndTorque(temp, { 0,0,0 });
-			dynamic_cast<PxRigidDynamic*>(Px_Actors[ent])->setMass(rigid.mass);
-			dynamic_cast<PxRigidDynamic*>(Px_Actors[ent])->setActorFlag(PxActorFlag::eDISABLE_GRAVITY,rigid.enableGravity ? false : true);
+			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setGlobalPose(PxTransform{ temptrans });
+			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setForceAndTorque(temp, { 0,0,0 });
+			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setMass(rigid.mass);
+			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setActorFlag(PxActorFlag::eDISABLE_GRAVITY,rigid.enableGravity ? false : true);
 		}
 	}
 
@@ -252,7 +254,7 @@ namespace Eclipse
 			return;
 		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
 
-		PxTransform temp = dynamic_cast<PxRigidDynamic*>(Px_Actors[ent])->getGlobalPose();
+		PxTransform temp = static_cast<PxRigidDynamic*>(Px_Actors[ent])->getGlobalPose();
 		transform.position.setX(temp.p.x);
 		transform.position.setY(temp.p.y);
 		transform.position.setZ(temp.p.z);
