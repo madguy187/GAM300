@@ -30,16 +30,6 @@ namespace Eclipse
 	void MenuComponent::DrawImpl(const char* key)
 	{
 		// For specific items
-		if (!strcmp(key, "Exit"))
-		{
-			bool selected = false;
-
-			if (ECGui::CreateMenuItem(key, &selected))
-			{
-				glfwSetWindowShouldClose(OpenGL_Context::GetWindow(), 1);
-			}
-		}
-
 		if (!strcmp(key, "Open"))
 		{
 			bool selected = false;
@@ -57,6 +47,16 @@ namespace Eclipse
 			if (ECGui::CreateMenuItem(key, &selected))
 			{
 				FileDialog::SaveFile();
+			}
+		}
+
+		if (!strcmp(key, "Exit"))
+		{
+			bool selected = false;
+
+			if (ECGui::CreateMenuItem(key, &selected))
+			{
+				glfwSetWindowShouldClose(OpenGL_Context::GetWindow(), 1);
 			}
 		}
 		/*if (!strcmp(key, "Scene"))

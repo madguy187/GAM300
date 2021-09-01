@@ -532,6 +532,7 @@
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\PrimitiveDeltaCommand.h" />
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec2DeltaCommand.h" />
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec4DeltaCommand.h" />
+    <ClInclude Include="src\Editor\ECGuiAPI\ECGuiInputHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -778,6 +779,7 @@
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp" />
     <ClCompile Include="src\Editor\Utilities\OpenFileDialog.cpp" />
     <ClCompile Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.cpp" />
+    <ClCompile Include="src\Editor\ECGuiAPI\ECGuiInputHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\AABB.frag" />
