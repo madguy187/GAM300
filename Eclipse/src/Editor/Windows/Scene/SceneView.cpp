@@ -69,7 +69,7 @@ namespace Eclipse
 			OnCameraMoveEvent();
 			OnCameraZoomEvent();
 			OnSelectEntityEvent();
-			std::cout << engine->gPicker.GetCurrentCollisionID() << std::endl;
+			s/*td::cout << engine->gPicker.GetCurrentCollisionID() << std::endl;*/
 		}
 	}
 

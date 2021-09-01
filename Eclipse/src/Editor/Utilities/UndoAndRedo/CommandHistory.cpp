@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "CommandHistory.h"
 
 namespace Eclipse
@@ -8,7 +9,7 @@ namespace Eclipse
 
 	void CommandHistory::RegisterCommand(ICommand* cmd)
 	{
-		cmd->execute();
+		cmd->Execute();
 
 		// Delete all the existing commands infront when a new command is done
 		if (m_CommandPtrIndex < m_CommandSize - 1)
@@ -51,7 +52,7 @@ namespace Eclipse
 	{
 		if (m_CommandSize >= 0)
 		{
-			m_Commands[m_CommandPtrIndex]->undo();
+			m_Commands[m_CommandPtrIndex]->Undo();
 			m_CommandPtrIndex--;
 		}
 	}
@@ -62,7 +63,7 @@ namespace Eclipse
 
 		if (redoIndex < m_CommandSize && redoIndex >= 0)
 		{
-			m_Commands[redoIndex]->execute();
+			m_Commands[redoIndex]->Execute();
 			m_CommandPtrIndex = redoIndex;
 		}
 	}

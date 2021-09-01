@@ -5,8 +5,8 @@ namespace Eclipse
 	class ICommand
 	{
 	public:
-		virtual void execute() = 0;
-		virtual void undo() = 0;
+		virtual void Execute() = 0;
+		virtual void Undo() = 0;
 		virtual bool MergeCmds(ICommand* otherCmd) = 0;
 		virtual ~ICommand() = default;
 

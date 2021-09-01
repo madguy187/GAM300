@@ -157,64 +157,64 @@ namespace Eclipse
 		ImGuiAPI::EndTreeNode();
 	}
 
-	void ECGui::DrawSliderIntWidget(const char* name, int* var, bool hideName, int minrange, int maxrange)
+	bool ECGui::DrawSliderIntWidget(const char* name, int* var, bool hideName, int minrange, int maxrange)
 	{
-		ImGuiAPI::SliderInt(name, var, hideName, minrange, maxrange);
+		return ImGuiAPI::SliderInt(name, var, hideName, minrange, maxrange);
 	}
 
-	void ECGui::DrawSliderFloatWidget(const char* name, float* var, bool hideName, float minrange, float maxrange)
+	bool ECGui::DrawSliderFloatWidget(const char* name, float* var, bool hideName, float minrange, float maxrange)
 	{
-		ImGuiAPI::SliderFloat(name, var, hideName, minrange, maxrange);
+		return ImGuiAPI::SliderFloat(name, var, hideName, minrange, maxrange);
 	}
 
-	void ECGui::DrawSliderFloat2Widget(const char* name, ECVec2* vector, bool hideName, float minrange, float maxrange)
+	bool ECGui::DrawSliderFloat2Widget(const char* name, ECVec2* vector, bool hideName, float minrange, float maxrange)
 	{
-		ImGuiAPI::SliderFloat2(name, (float*)vector, hideName, minrange, maxrange);
+		return ImGuiAPI::SliderFloat2(name, (float*)vector, hideName, minrange, maxrange);
 	}
 
-	void ECGui::DrawSliderFloat3Widget(const char* name, ECVec3* vector, bool hideName, float minrange, float maxrange)
+	bool ECGui::DrawSliderFloat3Widget(const char* name, ECVec3* vector, bool hideName, float minrange, float maxrange)
 	{
-		ImGuiAPI::SliderFloat3(name, (float*)vector, hideName, minrange, maxrange);
+		return ImGuiAPI::SliderFloat3(name, (float*)vector, hideName, minrange, maxrange);
 	}
 
-	void ECGui::DrawSliderFloat4Widget(const char* name, ECVec4* vector, bool hideName, float minrange, float maxrange)
+	bool ECGui::DrawSliderFloat4Widget(const char* name, ECVec4* vector, bool hideName, float minrange, float maxrange)
 	{
-		ImGuiAPI::SliderFloat4(name, (float*)vector, hideName, minrange, maxrange);
+		return ImGuiAPI::SliderFloat4(name, (float*)vector, hideName, minrange, maxrange);
 	}
 
-	void ECGui::DrawInputIntWidget(const char* name, int* var, bool hideName, int snapValue)
+	bool ECGui::DrawInputIntWidget(const char* name, int* var, bool hideName, int snapValue)
 	{
-		ImGuiAPI::InputInt(name, var, hideName, snapValue);
+		return ImGuiAPI::InputInt(name, var, hideName, snapValue);
 	}
 
-	void ECGui::DrawInputFloatWidget(const char* name, float* var, bool hideName, float snapValue)
+	bool ECGui::DrawInputFloatWidget(const char* name, float* var, bool hideName, float snapValue)
 	{
-		ImGuiAPI::InputFloat(name, var, hideName, snapValue);
+		return ImGuiAPI::InputFloat(name, var, hideName, snapValue);
 	}
 
-	void ECGui::DrawInputFloat2Widget(const char* name, ECVec2* vector, bool hideName)
+	bool ECGui::DrawInputFloat2Widget(const char* name, ECVec2* vector, bool hideName)
 	{
-		ImGuiAPI::InputFloat2(name, (float*)vector, hideName);
+		return ImGuiAPI::InputFloat2(name, (float*)vector, hideName);
 	}
 
-	void ECGui::DrawInputFloat3Widget(const char* name, ECVec3* vector, bool hideName)
+	bool ECGui::DrawInputFloat3Widget(const char* name, ECVec3* vector, bool hideName)
 	{
-		ImGuiAPI::InputFloat3(name, (float*)vector, hideName);
+		return ImGuiAPI::InputFloat3(name, (float*)vector, hideName);
 	}
 
-	void ECGui::DrawInputFloat4Widget(const char* name, ECVec4* vector, bool hideName)
+	bool ECGui::DrawInputFloat4Widget(const char* name, ECVec4* vector, bool hideName)
 	{
-		ImGuiAPI::InputFloat4(name, (float*)vector, hideName);
+		return ImGuiAPI::InputFloat4(name, (float*)vector, hideName);
 	}
 
-	void ECGui::DrawInputTextHintWidget(const char* name, const char* hintText, char* buffer, size_t bufferSize, bool hideName)
+	bool ECGui::DrawInputTextHintWidget(const char* name, const char* hintText, char* buffer, size_t bufferSize, bool hideName)
 	{
-		ImGuiAPI::InputTextWithHint(name, hintText, buffer, bufferSize, hideName);
+		return ImGuiAPI::InputTextWithHint(name, hintText, buffer, bufferSize, hideName);
 	}
 
-	void ECGui::DrawInputTextWidget(const char* name, char* buffer, size_t bufferSize, ImGuiInputTextFlags flag, bool hideName)
+	bool ECGui::DrawInputTextWidget(const char* name, char* buffer, size_t bufferSize, ImGuiInputTextFlags flag, bool hideName)
 	{
-		ImGuiAPI::InputText(name, buffer, bufferSize, flag, hideName);
+		return ImGuiAPI::InputText(name, buffer, bufferSize, flag, hideName);
 	}
 
 	bool ECGui::CheckBoxBool(const char* name, bool* var, bool hideName)

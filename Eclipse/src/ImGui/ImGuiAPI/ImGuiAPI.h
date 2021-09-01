@@ -58,25 +58,25 @@ namespace Eclipse
 		static void TextMat4(const char* varname, const ECMat4& var);
 		static void Text(const char* varname);
 		// Manipulate Variables
-		static void InputInt(const char* name, int* var, bool hideName = true, int snapValue = 0);
-		static void InputFloat(const char* name, float* var, bool hideName = true, float snapValue = 0.0f);
-		static void InputFloat2(const char* name, float vector[2], bool hideName = true);
-		static void InputFloat3(const char* name, float vector[3], bool hideName = true);
-		static void InputFloat4(const char* name, float vector[4], bool hideName = true);
-		static void InputTextWithHint(const char* name, const char* hintText, char* buffer,
+		static bool InputInt(const char* name, int* var, bool hideName = true, int snapValue = 0);
+		static bool InputFloat(const char* name, float* var, bool hideName = true, float snapValue = 0.0f);
+		static bool InputFloat2(const char* name, float vector[2], bool hideName = true);
+		static bool InputFloat3(const char* name, float vector[3], bool hideName = true);
+		static bool InputFloat4(const char* name, float vector[4], bool hideName = true);
+		static bool InputTextWithHint(const char* name, const char* hintText, char* buffer,
 			                   size_t bufferSize, bool hideName = true);
-		static void InputText(const char* name, char* buffer, size_t bufferSize, 
+		static bool InputText(const char* name, char* buffer, size_t bufferSize,
 			ImGuiInputTextFlags flag = 0, bool hideName = true);
 
-		static void SliderInt(const char* name, int* var, bool hideName = true,
+		static bool SliderInt(const char* name, int* var, bool hideName = true,
 			           int minrange = 0.0f, int maxrange = 1000.0f);
-		static void SliderFloat(const char* name, float* var, bool hideName = true,
+		static bool SliderFloat(const char* name, float* var, bool hideName = true,
 			             float minrange = 0.0f, float maxrange = 1000.0f);
-		static void SliderFloat2(const char* name, float vector[2], bool hideName = true,
+		static bool SliderFloat2(const char* name, float vector[2], bool hideName = true,
 			              float minrange = 0.0f, float maxrange = 1000.0f);
-		static void SliderFloat3(const char* name, float vector[3], bool hideName = true,
+		static bool SliderFloat3(const char* name, float vector[3], bool hideName = true,
 			              float minrange = 0.0f, float maxrange = 1000.0f);
-		static void SliderFloat4(const char* name, float vector[4], bool hideName = true,
+		static bool SliderFloat4(const char* name, float vector[4], bool hideName = true,
 			              float minrange = 0.0f, float maxrange = 1000.0f);
 		// Misc
 		static bool CheckBoxBool(const char* name, bool* var, bool hideName = true);
