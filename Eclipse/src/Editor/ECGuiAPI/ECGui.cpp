@@ -166,7 +166,7 @@ namespace Eclipse
 		}
 		else if (ImGui::IsItemDeactivatedAfterChange())
 		{
-			CommandHistory::DisableMergeForMostRecendCommand();
+			CommandHistory::DisableMergeForMostRecentCommand();
 		}
 
 		return false;
@@ -181,7 +181,7 @@ namespace Eclipse
 		}
 		else if (ImGui::IsItemDeactivatedAfterChange())
 		{
-			CommandHistory::DisableMergeForMostRecendCommand();
+			CommandHistory::DisableMergeForMostRecentCommand();
 		}
 
 		return false;
@@ -196,7 +196,7 @@ namespace Eclipse
 		}
 		else if (ImGui::IsItemDeactivatedAfterChange())
 		{
-			CommandHistory::DisableMergeForMostRecendCommand();
+			CommandHistory::DisableMergeForMostRecentCommand();
 		}
 
 		return false;
@@ -211,7 +211,7 @@ namespace Eclipse
 		}
 		else if (ImGui::IsItemDeactivatedAfterChange())
 		{
-			CommandHistory::DisableMergeForMostRecendCommand();
+			CommandHistory::DisableMergeForMostRecentCommand();
 		}
 
 		return false;
@@ -226,7 +226,7 @@ namespace Eclipse
 		}
 		else if (ImGui::IsItemDeactivatedAfterChange())
 		{
-			CommandHistory::DisableMergeForMostRecendCommand();
+			CommandHistory::DisableMergeForMostRecentCommand();
 		}
 
 		return false;
@@ -238,7 +238,7 @@ namespace Eclipse
 
 		if (ImGuiAPI::InputInt(name, var, hideName, snapValue))
 		{
-			CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<float>{ oldValue, *var });
+			CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<int>{ oldValue, *var });
 			return true;
 		}
 
@@ -267,7 +267,7 @@ namespace Eclipse
 		}
 		else if (ImGui::IsItemDeactivatedAfterChange())
 		{
-			CommandHistory::DisableMergeForMostRecendCommand();
+			CommandHistory::DisableMergeForMostRecentCommand();
 		}
 
 		return false;
@@ -282,7 +282,7 @@ namespace Eclipse
 		}
 		else if (ImGui::IsItemDeactivatedAfterChange())
 		{
-			CommandHistory::DisableMergeForMostRecendCommand();
+			CommandHistory::DisableMergeForMostRecentCommand();
 		}
 
 		return false;
@@ -297,7 +297,7 @@ namespace Eclipse
 		}
 		else if (ImGui::IsItemDeactivatedAfterChange())
 		{
-			CommandHistory::DisableMergeForMostRecendCommand();
+			CommandHistory::DisableMergeForMostRecentCommand();
 		}
 
 		return false;
@@ -312,7 +312,7 @@ namespace Eclipse
 		}
 		else if (ImGui::IsItemDeactivatedAfterChange())
 		{
-			CommandHistory::DisableMergeForMostRecendCommand();
+			CommandHistory::DisableMergeForMostRecentCommand();
 		}
 
 		return false;

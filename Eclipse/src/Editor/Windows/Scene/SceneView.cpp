@@ -219,7 +219,7 @@ namespace Eclipse
 		}
 		else if (ImGuizmo::IsOver())
 		{
-			CommandHistory::DisableMergeForMostRecendCommand();
+			CommandHistory::DisableMergeForMostRecentCommand();
 		}
 
 		/*ImGuiIO& io = ImGui::GetIO();

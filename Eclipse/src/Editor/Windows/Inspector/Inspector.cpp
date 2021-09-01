@@ -73,7 +73,11 @@ namespace Eclipse
 				ECGui::DrawInputTextHintWidget("InputEntityName", "Enter Entity Name", entNameInput, 256);
 
 				if (ECGui::ButtonBool("Set Name"))
+				{
+					std::string oldName = entCom.Name;
 					entCom.Name = entNameInput;
+					CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<std::string>{ oldName, entCom.Name });
+				}
 
 				/*static char test[256];
 				static std::string testtest;

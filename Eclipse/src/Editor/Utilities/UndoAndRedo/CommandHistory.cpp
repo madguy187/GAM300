@@ -41,7 +41,7 @@ namespace Eclipse
 		m_CommandPtrIndex = m_CommandSize - 1;
 	}
 
-	void CommandHistory::DisableMergeForMostRecendCommand()
+	void CommandHistory::DisableMergeForMostRecentCommand()
 	{
 		// Manually Stop merging all commands
 		if ((m_CommandSize - 1) >= 0)

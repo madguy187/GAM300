@@ -10,7 +10,7 @@ namespace Eclipse
 	{
 	public:
 		static void RegisterCommand(ICommand* cmd);
-		static void DisableMergeForMostRecendCommand();
+		static void DisableMergeForMostRecentCommand();
 		static void Undo();
 		static void Redo();
 		static void Clear();
