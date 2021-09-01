@@ -257,7 +257,7 @@ void Eclipse::GraphicsManager::CreateSky(std::string _Dir)
 
 void Eclipse::GraphicsManager::RenderSky(unsigned int FrameBufferID)
 {
-    if (1)
+    if (DrawSky == true)
     {
         glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
         auto& shdrpgm = Graphics::shaderpgms["Sky"];

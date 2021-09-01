@@ -37,7 +37,7 @@ namespace Eclipse
             auto& MouseVsGrid = engine->CollisionGridTree.CheckMouseOverlapAgainstGrid(camera.eyePos, rayDir, t);
 
             // Test Code
-            if (MouseVsGrid.size() >= 1)
+           /* if (MouseVsGrid.size() >= 1)
             {
                 std::cout << " - Collided With -" << std::endl;
 
@@ -45,7 +45,7 @@ namespace Eclipse
                 {
                     std::cout << "Tile ID : " << MouseVsGrid[i] << std::endl;
                 }
-            }
+            }*/
         }
     }
 }

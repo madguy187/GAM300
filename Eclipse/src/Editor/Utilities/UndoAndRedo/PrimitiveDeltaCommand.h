@@ -12,18 +12,18 @@ namespace Eclipse
 	{
 	public:
 		PrimitiveDeltaCommand(T& ogVar, T& newVar) :
-			m_Variable{ ogVar }, m_NewVariable{ newVar }, m_OldVariable{ T{} }
+			m_Variable{ ogVar }, m_VariableToKeep{ newVar }, m_NewVariable2{ newVar }, m_OldVariable{ T{} }
 		{}
 
 		virtual void Execute() override
 		{
 			m_OldVariable = m_Variable;
-			m_Variable = m_NewVariable;
+			m_VariableToKeep = m_NewVariable2;
 		}
 
 		virtual void Undo() override
 		{
-			m_Variable = m_OldVariable;
+			m_VariableToKeep = m_OldVariable;
 		}
 
 		virtual bool MergeCmds(ICommand* otherCmd) override
@@ -33,9 +33,9 @@ namespace Eclipse
 			if (primDeltaCmd)
 			{
 				// Check if both command is referring to the same variable
-				if (&primDeltaCmd->m_Variabe == &this->m_Variabe)
+				if (&primDeltaCmd->m_VariableToKeep == &this->m_VariableToKeep)
 				{
-					primDeltaCmd->m_NewVariable = this->m_NewVariable;
+					primDeltaCmd->m_NewVariable2 = this->m_NewVariable2;
 					return true;
 				}
 			}
@@ -44,8 +44,9 @@ namespace Eclipse
 		}
 
 	private:
-		T& m_Variabe;
-		T m_NewVariable;
+		T m_Variable;
+		T& m_VariableToKeep;
+		T m_NewVariable2;
 		T m_OldVariable;
 	};
 }

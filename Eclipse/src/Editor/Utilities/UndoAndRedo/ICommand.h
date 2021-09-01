@@ -22,3 +22,5 @@ namespace Eclipse
 #include "CommandHistory.h"
 #include "ECVec3DeltaCommand.h"
 #include "ECVec2DeltaCommand.h"
+#include "ECVec4DeltaCommand.h"
+#include "PrimitiveDeltaCommand.h"

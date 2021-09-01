@@ -69,21 +69,15 @@ namespace Eclipse
 			OnCameraMoveEvent();
 			OnCameraZoomEvent();
 			OnSelectEntityEvent();
-
-			ImGuiIO& io = ImGui::GetIO();
-
-			if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Z)) && io.KeyCtrl)
-			{
-				CommandHistory::Undo();
-			}
-
-			if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Y)) && io.KeyCtrl)
-			{
-				CommandHistory::Redo();
-			}
-
-			/*std::cout << engine->gPicker.GetCurrentCollisionID() << std::endl; */
 		}
+
+		ImGuiIO& io = ImGui::GetIO();
+
+		// REDO/UNDO
+		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Z)) && io.KeyCtrl)
+			CommandHistory::Undo();
+		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Y)) && io.KeyCtrl)
+			CommandHistory::Redo();
 	}
 
 	void SceneWindow::OnKeyPressedEvent()
@@ -209,16 +203,23 @@ namespace Eclipse
 			{
 			case ImGuizmo::OPERATION::TRANSLATE:
 				transCom.position = translation;
+				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.position, transCom.position });
 				break;
 			case ImGuizmo::OPERATION::ROTATE:
 				transCom.rotation += deltaRotation;
+				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.rotation, transCom.rotation });
 				break;
 			case ImGuizmo::OPERATION::SCALE:
 				transCom.scale = scale;
+				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.scale, transCom.scale });
 				break;
 			default:
 				break;
 			}
+		}
+		else if (ImGuizmo::IsOver())
+		{
+			CommandHistory::DisableMergeForMostRecendCommand();
 		}
 
 		/*ImGuiIO& io = ImGui::GetIO();

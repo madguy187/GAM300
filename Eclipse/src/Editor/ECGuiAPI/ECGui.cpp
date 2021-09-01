@@ -159,17 +159,47 @@ namespace Eclipse
 
 	bool ECGui::DrawSliderIntWidget(const char* name, int* var, bool hideName, int minrange, int maxrange)
 	{
-		return ImGuiAPI::SliderInt(name, var, hideName, minrange, maxrange);
+		if (ImGuiAPI::SliderInt(name, var, hideName, minrange, maxrange))
+		{
+			CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<int>{ *var, *var });
+			return true;
+		}
+		else if (ImGui::IsItemDeactivatedAfterChange())
+		{
+			CommandHistory::DisableMergeForMostRecendCommand();
+		}
+
+		return false;
 	}
 
 	bool ECGui::DrawSliderFloatWidget(const char* name, float* var, bool hideName, float minrange, float maxrange)
 	{
-		return ImGuiAPI::SliderFloat(name, var, hideName, minrange, maxrange);
+		if (ImGuiAPI::SliderFloat(name, var, hideName, minrange, maxrange))
+		{
+			CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<float>{ *var, *var });
+			return true;
+		}
+		else if (ImGui::IsItemDeactivatedAfterChange())
+		{
+			CommandHistory::DisableMergeForMostRecendCommand();
+		}
+
+		return false;
 	}
 
 	bool ECGui::DrawSliderFloat2Widget(const char* name, ECVec2* vector, bool hideName, float minrange, float maxrange)
 	{
-		return ImGuiAPI::SliderFloat2(name, (float*)vector, hideName, minrange, maxrange);
+		if (ImGuiAPI::SliderFloat2(name, (float*)vector, hideName, minrange, maxrange))
+		{
+			CommandHistory::RegisterCommand(new ECVec2DeltaCommand{ *vector, *vector });
+			return true;
+		}
+		else if (ImGui::IsItemDeactivatedAfterChange())
+		{
+			CommandHistory::DisableMergeForMostRecendCommand();
+		}
+
+		return false;
 	}
 
 	bool ECGui::DrawSliderFloat3Widget(const char* name, ECVec3* vector, bool hideName, float minrange, float maxrange)
@@ -189,37 +219,103 @@ namespace Eclipse
 
 	bool ECGui::DrawSliderFloat4Widget(const char* name, ECVec4* vector, bool hideName, float minrange, float maxrange)
 	{
-		return ImGuiAPI::SliderFloat4(name, (float*)vector, hideName, minrange, maxrange);
+		if (ImGuiAPI::SliderFloat4(name, (float*)vector, hideName, minrange, maxrange))
+		{
+			CommandHistory::RegisterCommand(new ECVec4DeltaCommand{ *vector, *vector });
+			return true;
+		}
+		else if (ImGui::IsItemDeactivatedAfterChange())
+		{
+			CommandHistory::DisableMergeForMostRecendCommand();
+		}
+
+		return false;
 	}
 
 	bool ECGui::DrawInputIntWidget(const char* name, int* var, bool hideName, int snapValue)
 	{
-		return ImGuiAPI::InputInt(name, var, hideName, snapValue);
+		int oldValue = *var;
+
+		if (ImGuiAPI::InputInt(name, var, hideName, snapValue))
+		{
+			CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<float>{ oldValue, *var });
+			return true;
+		}
+
+		return false;
 	}
 
 	bool ECGui::DrawInputFloatWidget(const char* name, float* var, bool hideName, float snapValue)
 	{
-		return ImGuiAPI::InputFloat(name, var, hideName, snapValue);
+		float oldValue = *var;
+
+		if (ImGuiAPI::InputFloat(name, var, hideName, snapValue))
+		{
+			CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<float>{ oldValue, *var  });
+			return true;
+		}
+
+		return false;
 	}
 
 	bool ECGui::DrawInputFloat2Widget(const char* name, ECVec2* vector, bool hideName)
 	{
-		return ImGuiAPI::InputFloat2(name, (float*)vector, hideName);
+		if (ImGuiAPI::InputFloat2(name, (float*)vector, hideName))
+		{
+			CommandHistory::RegisterCommand(new ECVec2DeltaCommand{ *vector, *vector });
+			return true;
+		}
+		else if (ImGui::IsItemDeactivatedAfterChange())
+		{
+			CommandHistory::DisableMergeForMostRecendCommand();
+		}
+
+		return false;
 	}
 
 	bool ECGui::DrawInputFloat3Widget(const char* name, ECVec3* vector, bool hideName)
 	{
-		return ImGuiAPI::InputFloat3(name, (float*)vector, hideName);
+		if (ImGuiAPI::InputFloat3(name, (float*)vector, hideName))
+		{
+			CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ *vector, *vector });
+			return true;
+		}
+		else if (ImGui::IsItemDeactivatedAfterChange())
+		{
+			CommandHistory::DisableMergeForMostRecendCommand();
+		}
+
+		return false;
 	}
 
 	bool ECGui::DrawInputFloat4Widget(const char* name, ECVec4* vector, bool hideName)
 	{
-		return ImGuiAPI::InputFloat4(name, (float*)vector, hideName);
+		if (ImGuiAPI::InputFloat4(name, (float*)vector, hideName))
+		{
+			CommandHistory::RegisterCommand(new ECVec4DeltaCommand{ *vector, *vector });
+			return true;
+		}
+		else if (ImGui::IsItemDeactivatedAfterChange())
+		{
+			CommandHistory::DisableMergeForMostRecendCommand();
+		}
+
+		return false;
 	}
 
 	bool ECGui::DrawInputTextHintWidget(const char* name, const char* hintText, char* buffer, size_t bufferSize, bool hideName)
 	{
-		return ImGuiAPI::InputTextWithHint(name, hintText, buffer, bufferSize, hideName);
+		if (ImGuiAPI::InputTextWithHint(name, hintText, buffer, bufferSize, hideName))
+		{
+			CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<char*>{ buffer, buffer });
+			return true;
+		}
+		else if (ImGui::IsItemDeactivatedAfterChange())
+		{
+			CommandHistory::DisableMergeForMostRecendCommand();
+		}
+
+		return false;
 	}
 
 	bool ECGui::DrawInputTextWidget(const char* name, char* buffer, size_t bufferSize, ImGuiInputTextFlags flag, bool hideName)
@@ -261,6 +357,7 @@ namespace Eclipse
 	{
 		ImGuiAPI::SetToolTip(message);
 	}
+
 	void ECGui::PlotHistogram(const char* name, std::vector<float> value, int values_offset, const char* overlay_text, float scale_min, float scale_max, ImVec2 graph_size, int stride)
 	{
 		float values[100] = {0};

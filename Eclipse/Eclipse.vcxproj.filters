@@ -531,6 +531,7 @@
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec3DeltaCommand.h" />
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\PrimitiveDeltaCommand.h" />
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec2DeltaCommand.h" />
+    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec4DeltaCommand.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
