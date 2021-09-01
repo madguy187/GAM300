@@ -76,6 +76,12 @@ namespace Eclipse
 			{
 				CommandHistory::Undo();
 			}
+
+			if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Y)) && io.KeyCtrl)
+			{
+				CommandHistory::Redo();
+			}
+
 			/*std::cout << engine->gPicker.GetCurrentCollisionID() << std::endl; */
 		}
 	}

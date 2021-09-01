@@ -204,6 +204,7 @@ namespace Eclipse
         GraphicsManager.End();
         AssimpManager.CleanUpAllModels();
         ImGuiSetup::Destroy(EditorState);
+        CommandHistory::Clear();
     }
 
     bool Engine::GetEditorState()

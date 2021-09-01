@@ -2,7 +2,7 @@
 
 #include "ICommand.h"
 
-#define MAX_SIZE 500
+#define MAX_SIZE 1000
 
 namespace Eclipse
 {

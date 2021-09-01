@@ -4,11 +4,11 @@
 
 namespace Eclipse
 {
-	class ECVec3DeltaCommand : public ICommand
+	class ECVec2DeltaCommand : public ICommand
 	{
 	public:
-		ECVec3DeltaCommand(ECVec3& ogVec, ECVec3& newVec) :
-			m_Vector{ ogVec }, m_NewVector{ newVec }, m_OldVector{ ECVec3{} }
+		ECVec2DeltaCommand(ECVec2& ogVec, ECVec2& newVec) :
+			m_Vector{ ogVec }, m_NewVector{ newVec }, m_OldVector{ ECVec2{} }
 		{}
 
 		virtual void Execute() override
@@ -16,19 +16,17 @@ namespace Eclipse
 			m_OldVector = m_Vector;
 			m_Vector.setX(m_NewVector.getX());
 			m_Vector.setY(m_NewVector.getY());
-			m_Vector.setZ(m_NewVector.getZ());
 		}
 
 		virtual void Undo() override
 		{
 			m_Vector.setX(m_OldVector.x);
 			m_Vector.setY(m_OldVector.y);
-			m_Vector.setZ(m_OldVector.z);
 		}
 
 		virtual bool MergeCmds(ICommand* otherCmd) override
 		{
-			ECVec3DeltaCommand* vecDeltaCmd = dynamic_cast<ECVec3DeltaCommand*>(otherCmd);
+			ECVec2DeltaCommand* vecDeltaCmd = dynamic_cast<ECVec2DeltaCommand*>(otherCmd);
 
 			if (vecDeltaCmd)
 			{
@@ -44,8 +42,8 @@ namespace Eclipse
 		}
 
 	private:
-		ECVec3& m_Vector;
-		ECVec3 m_NewVector;
-		ECVec3 m_OldVector;
+		ECVec2& m_Vector;
+		ECVec2 m_NewVector;
+		ECVec2 m_OldVector;
 	};
 }
