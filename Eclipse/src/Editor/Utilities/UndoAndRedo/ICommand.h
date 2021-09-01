@@ -18,3 +18,6 @@ namespace Eclipse
 		static int ID_;
 	};
 }
+
+#include "CommandHistory.h"
+#include "ECVec3DeltaCommand.h"

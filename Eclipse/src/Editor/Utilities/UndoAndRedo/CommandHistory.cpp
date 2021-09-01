@@ -50,7 +50,7 @@ namespace Eclipse
 
 	void CommandHistory::Undo()
 	{
-		if (m_CommandSize >= 0)
+		if (m_CommandPtrIndex >= 0)
 		{
 			m_Commands[m_CommandPtrIndex]->Undo();
 			m_CommandPtrIndex--;

@@ -62,14 +62,21 @@ namespace Eclipse
 			OnGizmoUpdateEvent();
 		}
 		
-		if (ECGui::IsItemHovered() && ImGui::IsWindowFocused() /*temp fix*/)
+		if (ECGui::IsItemHovered() /*&& ImGui::IsWindowFocused() *//*temp fix*/)
 		{
 			// Do all the future stuff here when hovering on window
 			OnKeyPressedEvent();
 			OnCameraMoveEvent();
 			OnCameraZoomEvent();
 			OnSelectEntityEvent();
-			s/*td::cout << engine->gPicker.GetCurrentCollisionID() << std::endl;*/
+
+			ImGuiIO& io = ImGui::GetIO();
+
+			if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Z)) && io.KeyCtrl)
+			{
+				CommandHistory::Undo();
+			}
+			/*std::cout << engine->gPicker.GetCurrentCollisionID() << std::endl; */
 		}
 	}
 

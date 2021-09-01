@@ -528,6 +528,7 @@
     <ClInclude Include="src\Editor\Utilities\OpenFileDialog.h" />
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ICommand.h" />
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.h" />
+    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec3DeltaCommand.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">

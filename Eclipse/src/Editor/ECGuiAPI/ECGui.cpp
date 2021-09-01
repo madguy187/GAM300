@@ -174,7 +174,14 @@ namespace Eclipse
 
 	bool ECGui::DrawSliderFloat3Widget(const char* name, ECVec3* vector, bool hideName, float minrange, float maxrange)
 	{
-		return ImGuiAPI::SliderFloat3(name, (float*)vector, hideName, minrange, maxrange);
+		//ECVec3 oldVec{ *vector };
+		if (ImGuiAPI::SliderFloat3(name, (float*)vector, hideName, minrange, maxrange))
+		{
+			CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ *vector, *vector });
+			return true;
+		}
+		//CommandHistory::DisableMergeForMostRecendCommand();
+		return false;
 	}
 
 	bool ECGui::DrawSliderFloat4Widget(const char* name, ECVec4* vector, bool hideName, float minrange, float maxrange)

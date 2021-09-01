@@ -185,6 +185,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Editor\Utilities\DragAndDrop.h" />
     <ClInclude Include="src\Editor\Utilities\OpenFileDialog.h" />
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.h" />
+    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec3DeltaCommand.h" />
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ICommand.h" />
     <ClInclude Include="src\Editor\Windows\AssetBrowser\AssetBrowser.h" />
     <ClInclude Include="src\Editor\Windows\Debug\Debug.h" />
