@@ -168,12 +168,13 @@ namespace Eclipse
         ShaderRef = &(Graphics::shaderpgms.find("Grid")->second);
 
         CalculateGridSettings();
-        CalculateGridCoordinates();
 
         if (WholeGrid != nullptr)
         {
             EDITOR_LOG_INFO("Grid Created");
         }
+
+        CalculateGridCoordinates();
     }
 
     void Grid::CalculateGridCoordinates()
@@ -184,14 +185,13 @@ namespace Eclipse
         // Only max have this number of tiles
         GridArray.reserve(TotalTiles);
 
-        for (int y = 0; y < GridSize; y++ )
+        for (int y = 0; y < TotalTiles; y += (GridSize * GridSize))
         {
             for (int z = 0; z < GridSize; z++)
             {
                 for (int x = 0; x < GridSize; x++)
                 {
-                    unsigned int Index = (z * GridSize) + x + (y * (GridSize * GridSize) );
-                    float HalfExtents = (GridScale / 2);
+                    unsigned int Index = (z * GridSize) + x + y;
 
                     Tile NewTile(GridScale, true);
                     GridArray.push_back(NewTile);
@@ -201,11 +201,11 @@ namespace Eclipse
                     GridArray[Index].CenterPoint = ECVec3{ Center.x, Center.y, Center.z };
 
                     // Set Maximum Point
-                    glm::vec3 Maximum = { Center.x + HalfExtents , Center.y + HalfExtents , Center.z + HalfExtents };
+                    glm::vec3 Maximum = { Center.x + (GridScale / 2) , Center.y + (GridScale / 2) , Center.z + (GridScale / 2) };
                     GridArray[Index].MaximumPoint = ECVec3{ Maximum.x, Maximum.y, Maximum.z };
 
                     // Set Minimum Point
-                    glm::vec3 Minimum = { Center.x - HalfExtents , Center.y - HalfExtents , Center.z - HalfExtents };
+                    glm::vec3 Minimum = { Center.x - (GridScale / 2) , Center.y - (GridScale / 2) , Center.z - (GridScale / 2) };
                     GridArray[Index].MinimumPoint = ECVec3{ Minimum.x, Minimum.y, Minimum.z };
 
                     // Set Width
