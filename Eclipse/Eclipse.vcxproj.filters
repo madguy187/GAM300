@@ -521,6 +521,8 @@
     <ClInclude Include="src\Editor\Windows\SwitchViews\SwitchViews.h" />
     <ClInclude Include="src\Editor\Utilities\DragAndDrop.h" />
     <ClInclude Include="src\Editor\Utilities\OpenFileDialog.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\ParentChildComponent.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -762,6 +764,7 @@
     <ClCompile Include="src\Graphics\Grid\bounds.cpp" />
     <ClCompile Include="src\Graphics\Grid\Box.cpp" />
     <ClCompile Include="src\Editor\Utilities\OpenFileDialog.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\AABB.frag" />

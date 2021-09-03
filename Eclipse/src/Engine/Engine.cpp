@@ -9,6 +9,7 @@
 #include "ECS/ComponentManager/Components/DirectionalLightComponent.h"
 #include "ECS/ComponentManager/Components/SpotLightComponent.h"
 #include "ECS/ComponentManager/Components/MaterialComponent.h"
+#include "ECS/ComponentManager/Components/ParentChildComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
@@ -68,6 +69,7 @@ namespace Eclipse
         world.RegisterComponent<AabbComponent>();
         world.RegisterComponent<SpotLightComponent>();
         world.RegisterComponent<MaterialComponent>();
+        world.RegisterComponent<ParentChildComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();

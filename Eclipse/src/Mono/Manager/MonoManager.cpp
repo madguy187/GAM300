@@ -133,7 +133,7 @@ namespace Eclipse
 
 			void* args[1];
 			//mono_runtime_object_init(obj);
-			mono_runtime_invoke(ctor_method, obj, args, NULL);
+			//mono_runtime_invoke(ctor_method, obj, args, NULL);
 		}
 	}
 
