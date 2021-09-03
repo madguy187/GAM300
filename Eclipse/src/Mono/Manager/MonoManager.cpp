@@ -107,20 +107,7 @@ namespace Eclipse
 		/*TransformComponent& trans2 = engine->world.GetComponent<TransformComponent>(ent);
 		std::cout << trans2.position.x << std::endl;*/
 
-		MonoClass* klass = mono_class_from_name(engine->mono.GetScriptImage(), "", "Dog");
-
-		if (klass == nullptr) {
-			std::cout << "Failed loading class, Dog" << std::endl;
-			return;
-		}
-
-		MonoObject* obj = mono_object_new(mono_domain_get(), klass);
-		if (obj == nullptr) {
-			std::cout << "Failed loading class instance, Dog" << std::endl;
-			return;
-		}
-
-		objects.push_back(obj);
+		CreateScriptObjects();
 		std::cout << "Successfully pushed" << std::endl;
 	}
 
@@ -137,9 +124,15 @@ namespace Eclipse
 				continue;
 			}
 
-			MonoMethod* method = mono_class_get_method_from_name(klass, "Update", 0);
+			MonoMethod* ctor_method = mono_class_get_method_from_name(klass, ".ctor", -1);
+			if (!ctor_method)
+			{
+				std::cout << "Failed to get method" << std::endl;
+				continue;
+			}
 
-			//mono_runtime_invoke(method, obj, NULL, NULL);
+			//mono_runtime_object_init(obj);
+			//mono_runtime_invoke(ctor_method, obj, args, NULL);
 		}
 	}
 
@@ -150,7 +143,6 @@ namespace Eclipse
 		mono_image_close(APIImage);*/
 		
 		objects.clear();
-
 	}
 
 	void MonoManager::GenerateDLL()
@@ -159,6 +151,40 @@ namespace Eclipse
 		system("sh -c ../Dep/mono/bin/mcs_api.bat");
 		system("sh -c ../Dep/mono/bin/mcs_scripts.bat");
 		ENGINE_CORE_INFO("Mono: Successfully Generate DLLs");
+	}
+
+	void MonoManager::CreateScriptObjects()
+	{
+		std::list<MonoClass*> objs = GetAssemblyClassList(ScriptImage);
+		objs.pop_front();
+
+		MonoClass* base = mono_class_from_name(APIImage, "Eclipse", "EclipseBehavior");
+		MonoMethod* method = mono_class_get_method_from_name(base, "InitBehavior", -1);
+		if (method == nullptr) {
+			std::cout << "Failed loading class method" << std::endl;
+			return;
+		}
+
+		for (auto it = objs.begin(); it != objs.end(); it++)
+		{
+			DumpInfoFromClass(*it);
+			MonoObject* obj = mono_object_new(mono_domain_get(), *it);
+
+			if (obj == nullptr) {
+				std::cout << "Failed loading class instance " << mono_class_get_name(*it) << std::endl;
+				return;
+			}
+
+			objects.push_back(obj);
+
+			void* args[2];
+			uint32_t handle = mono_gchandle_new(obj, true);
+			args[0] = &handle;
+			Entity ent = 0;
+			args[1] = &ent;
+			
+			mono_runtime_invoke(method, obj, args, NULL);
+		}
 	}
 	MonoImage* MonoManager::GetAPIImage()
 	{
