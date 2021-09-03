@@ -157,64 +157,170 @@ namespace Eclipse
 		ImGuiAPI::EndTreeNode();
 	}
 
-	void ECGui::DrawSliderIntWidget(const char* name, int* var, bool hideName, int minrange, int maxrange)
+	bool ECGui::DrawSliderIntWidget(const char* name, int* var, bool hideName, int minrange, int maxrange)
 	{
-		ImGuiAPI::SliderInt(name, var, hideName, minrange, maxrange);
+		if (ImGuiAPI::SliderInt(name, var, hideName, minrange, maxrange))
+		{
+			CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<int>{ *var, *var });
+			return true;
+		}
+		else if (ImGui::IsItemDeactivatedAfterChange())
+		{
+			CommandHistory::DisableMergeForMostRecentCommand();
+		}
+
+		return false;
 	}
 
-	void ECGui::DrawSliderFloatWidget(const char* name, float* var, bool hideName, float minrange, float maxrange)
+	bool ECGui::DrawSliderFloatWidget(const char* name, float* var, bool hideName, float minrange, float maxrange)
 	{
-		ImGuiAPI::SliderFloat(name, var, hideName, minrange, maxrange);
+		if (ImGuiAPI::SliderFloat(name, var, hideName, minrange, maxrange))
+		{
+			CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<float>{ *var, *var });
+			return true;
+		}
+		else if (ImGui::IsItemDeactivatedAfterChange())
+		{
+			CommandHistory::DisableMergeForMostRecentCommand();
+		}
+
+		return false;
 	}
 
-	void ECGui::DrawSliderFloat2Widget(const char* name, ECVec2* vector, bool hideName, float minrange, float maxrange)
+	bool ECGui::DrawSliderFloat2Widget(const char* name, ECVec2* vector, bool hideName, float minrange, float maxrange)
 	{
-		ImGuiAPI::SliderFloat2(name, (float*)vector, hideName, minrange, maxrange);
+		if (ImGuiAPI::SliderFloat2(name, (float*)vector, hideName, minrange, maxrange))
+		{
+			CommandHistory::RegisterCommand(new ECVec2DeltaCommand{ *vector, *vector });
+			return true;
+		}
+		else if (ImGui::IsItemDeactivatedAfterChange())
+		{
+			CommandHistory::DisableMergeForMostRecentCommand();
+		}
+
+		return false;
 	}
 
-	void ECGui::DrawSliderFloat3Widget(const char* name, ECVec3* vector, bool hideName, float minrange, float maxrange)
+	bool ECGui::DrawSliderFloat3Widget(const char* name, ECVec3* vector, bool hideName, float minrange, float maxrange)
 	{
-		ImGuiAPI::SliderFloat3(name, (float*)vector, hideName, minrange, maxrange);
+		if (ImGuiAPI::SliderFloat3(name, (float*)vector, hideName, minrange, maxrange))
+		{
+			CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ *vector, *vector });
+			return true;
+		}
+		else if (ImGui::IsItemDeactivatedAfterChange())
+		{
+			CommandHistory::DisableMergeForMostRecentCommand();
+		}
+
+		return false;
 	}
 
-	void ECGui::DrawSliderFloat4Widget(const char* name, ECVec4* vector, bool hideName, float minrange, float maxrange)
+	bool ECGui::DrawSliderFloat4Widget(const char* name, ECVec4* vector, bool hideName, float minrange, float maxrange)
 	{
-		ImGuiAPI::SliderFloat4(name, (float*)vector, hideName, minrange, maxrange);
+		if (ImGuiAPI::SliderFloat4(name, (float*)vector, hideName, minrange, maxrange))
+		{
+			CommandHistory::RegisterCommand(new ECVec4DeltaCommand{ *vector, *vector });
+			return true;
+		}
+		else if (ImGui::IsItemDeactivatedAfterChange())
+		{
+			CommandHistory::DisableMergeForMostRecentCommand();
+		}
+
+		return false;
 	}
 
-	void ECGui::DrawInputIntWidget(const char* name, int* var, bool hideName, int snapValue)
+	bool ECGui::DrawInputIntWidget(const char* name, int* var, bool hideName, int snapValue)
 	{
-		ImGuiAPI::InputInt(name, var, hideName, snapValue);
+		int oldValue = *var;
+
+		if (ImGuiAPI::InputInt(name, var, hideName, snapValue))
+		{
+			CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<int>{ oldValue, *var });
+			return true;
+		}
+
+		return false;
 	}
 
-	void ECGui::DrawInputFloatWidget(const char* name, float* var, bool hideName, float snapValue)
+	bool ECGui::DrawInputFloatWidget(const char* name, float* var, bool hideName, float snapValue)
 	{
-		ImGuiAPI::InputFloat(name, var, hideName, snapValue);
+		float oldValue = *var;
+
+		if (ImGuiAPI::InputFloat(name, var, hideName, snapValue))
+		{
+			CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<float>{ oldValue, *var  });
+			return true;
+		}
+
+		return false;
 	}
 
-	void ECGui::DrawInputFloat2Widget(const char* name, ECVec2* vector, bool hideName)
+	bool ECGui::DrawInputFloat2Widget(const char* name, ECVec2* vector, bool hideName)
 	{
-		ImGuiAPI::InputFloat2(name, (float*)vector, hideName);
+		if (ImGuiAPI::InputFloat2(name, (float*)vector, hideName))
+		{
+			CommandHistory::RegisterCommand(new ECVec2DeltaCommand{ *vector, *vector });
+			return true;
+		}
+		else if (ImGui::IsItemDeactivatedAfterChange())
+		{
+			CommandHistory::DisableMergeForMostRecentCommand();
+		}
+
+		return false;
 	}
 
-	void ECGui::DrawInputFloat3Widget(const char* name, ECVec3* vector, bool hideName)
+	bool ECGui::DrawInputFloat3Widget(const char* name, ECVec3* vector, bool hideName)
 	{
-		ImGuiAPI::InputFloat3(name, (float*)vector, hideName);
+		if (ImGuiAPI::InputFloat3(name, (float*)vector, hideName))
+		{
+			CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ *vector, *vector });
+			return true;
+		}
+		else if (ImGui::IsItemDeactivatedAfterChange())
+		{
+			CommandHistory::DisableMergeForMostRecentCommand();
+		}
+
+		return false;
 	}
 
-	void ECGui::DrawInputFloat4Widget(const char* name, ECVec4* vector, bool hideName)
+	bool ECGui::DrawInputFloat4Widget(const char* name, ECVec4* vector, bool hideName)
 	{
-		ImGuiAPI::InputFloat4(name, (float*)vector, hideName);
+		if (ImGuiAPI::InputFloat4(name, (float*)vector, hideName))
+		{
+			CommandHistory::RegisterCommand(new ECVec4DeltaCommand{ *vector, *vector });
+			return true;
+		}
+		else if (ImGui::IsItemDeactivatedAfterChange())
+		{
+			CommandHistory::DisableMergeForMostRecentCommand();
+		}
+
+		return false;
 	}
 
-	void ECGui::DrawInputTextHintWidget(const char* name, const char* hintText, char* buffer, size_t bufferSize, bool hideName)
+	bool ECGui::DrawInputTextHintWidget(const char* name, const char* hintText, char* buffer, size_t bufferSize, bool hideName)
 	{
-		ImGuiAPI::InputTextWithHint(name, hintText, buffer, bufferSize, hideName);
+		if (ImGuiAPI::InputTextWithHint(name, hintText, buffer, bufferSize, hideName))
+		{
+			CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<char*>{ buffer, buffer });
+			return true;
+		}
+		else if (ImGui::IsItemDeactivatedAfterChange())
+		{
+			CommandHistory::DisableMergeForMostRecentCommand();
+		}
+
+		return false;
 	}
 
-	void ECGui::DrawInputTextWidget(const char* name, char* buffer, size_t bufferSize, ImGuiInputTextFlags flag, bool hideName)
+	bool ECGui::DrawInputTextWidget(const char* name, char* buffer, size_t bufferSize, ImGuiInputTextFlags flag, bool hideName)
 	{
-		ImGuiAPI::InputText(name, buffer, bufferSize, flag, hideName);
+		return ImGuiAPI::InputText(name, buffer, bufferSize, flag, hideName);
 	}
 
 	bool ECGui::CheckBoxBool(const char* name, bool* var, bool hideName)
@@ -251,6 +357,7 @@ namespace Eclipse
 	{
 		ImGuiAPI::SetToolTip(message);
 	}
+
 	void ECGui::PlotHistogram(const char* name, std::vector<float> value, int values_offset, const char* overlay_text, float scale_min, float scale_max, ImVec2 graph_size, int stride)
 	{
 		float values[100] = {0};

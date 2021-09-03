@@ -9,9 +9,9 @@ namespace Eclipse
 		
 		WindowName = "AssetBrowser";
 
-		sprite.textureRef = Graphics::textures.find("PlayPauseStop");
+		sprite.textureRef = Graphics::textures.find("PlayPauseStop")->first;
 
-		FolderIcon.textureRef = Graphics::textures.find("FolderIcon");
+		FolderIcon.textureRef = Graphics::textures.find("FolderIcon")->first;
 
 		memset(searchItemBuffer, 0, 128);
 		
@@ -344,8 +344,8 @@ namespace Eclipse
 			ImGui::PushID(fileNameString.c_str());
 			
 			RenderComponent icon = dirEntry.is_directory() ? FolderIcon : sprite;
-
-			ImGui::ImageButton((void*)icon.textureRef->second.GetHandle(),
+		
+			ImGui::ImageButton((void*)Graphics::textures[icon.textureRef].GetHandle(),
 				buttonSize,
 				{ 1,0 },
 				{ 2,1 });
@@ -625,7 +625,7 @@ namespace Eclipse
 				{
 					RenderComponent icon = std::filesystem::is_directory(pair2) ? FolderIcon : sprite;
 
-					ImGui::ImageButton((void*)icon.textureRef->second.GetHandle(),
+					ImGui::ImageButton((void*)Graphics::textures[icon.textureRef].GetHandle(),
 						buttonSize,
 						{ 1,0 },
 						{ 2,1 });
@@ -669,7 +669,7 @@ namespace Eclipse
 				{
 					RenderComponent icon = std::filesystem::is_directory(tempPath) ? FolderIcon : sprite;
 
-					ImGui::ImageButton((void*)icon.textureRef->second.GetHandle(),
+					ImGui::ImageButton((void*)Graphics::textures[icon.textureRef].GetHandle(),
 						buttonSize,
 						{ 1,0 },
 						{ 2,1 });

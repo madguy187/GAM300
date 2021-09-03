@@ -42,7 +42,7 @@ enum class EditorMenuType
     UNASSIGNED
 };
 
-enum class EntityType
+enum EntityType
 {
     ENT_GEO_SQUARE,
     ENT_GEO_CIRCLE,

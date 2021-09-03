@@ -1,6 +1,9 @@
 using System;
+using System.Runtime.CompilerServices;
+using System.Collections.Generic;
+using Eclipse;
 
-public class Dog
+public class Dog : EclipseBehavior
 {
     static public void Type()
     {
@@ -14,5 +17,10 @@ public class Dog
     {
         for (var i = 0; i < times; ++i )
             Console.WriteLine("bark!");
+    }
+
+    public void Update()
+    {
+        Console.WriteLine("C# Update");
     }
 }

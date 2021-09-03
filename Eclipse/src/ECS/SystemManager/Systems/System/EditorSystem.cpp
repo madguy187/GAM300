@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "EditorSystem.h"
+#include "Editor/ECGuiAPI/ECGuiInputHandler.h"
 
 namespace Eclipse
 {
@@ -7,6 +8,8 @@ namespace Eclipse
 	{
 		if (engine->GetEditorState())
 		{
+			ECGuiInputHandler::Update();
+
 			for (const auto& window : engine->editorManager->GetAllWindows())
 			{
 				window->Update();

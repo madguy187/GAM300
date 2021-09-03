@@ -6,11 +6,26 @@ namespace Eclipse
 	class MonoManager
 	{
 		MonoDomain* domain;
-		MonoAssembly* assembly;
-		MonoImage* image;
+		MonoAssembly* ScriptAssembly;
+		MonoAssembly* APIAssembly;
+		MonoImage* ScriptImage;
+		MonoImage* APIImage;
+
+		std::vector<MonoObject*> objects;
+
+		// Generates all the scripts into a dll
+		void GenerateDLL();
+
 	public:
 		void Init();
 		void Update();
-		void GenerateDLL();
+		void StopMono();
+
+		// Gets image containing all API Scripts
+		MonoImage* GetAPIImage();
+		// Gets image containing all User scripts
+		MonoImage* GetScriptImage();
+		void DumpInfoFromImage(MonoImage* _image);
+		void DumpInfoFromClass(MonoClass* _class);
 	};
 }

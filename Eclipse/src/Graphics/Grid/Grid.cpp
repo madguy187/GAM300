@@ -10,11 +10,6 @@ namespace Eclipse
         return GridID;
     }
 
-    void Grid::SetTransparency(float in)
-    {
-        Transparency = in;
-    }
-
     void Grid::UseFrameBuffer(unsigned int FramebufferID)
     {
         glBindFramebuffer(GL_FRAMEBUFFER, FramebufferID);
@@ -165,26 +160,12 @@ namespace Eclipse
         return ShaderRef;
     }
 
-    float Grid::GetTransparency()
-    {
-        return Transparency;
-    }
-
     void Grid::Init()
     {
-        // Add Grid as an entity
-        /*
-        GridID = engine->world.CreateEntity();
-        engine->world.AddComponent(GridID, EntityComponent{ EntityType::ENT_UNASSIGNED, "Grid", true });
-        engine->world.AddComponent(GridID, TransformComponent{});
-
-        engine->editorManager->EntityHierarchyList_.push_back(GridID);
-        engine->editorManager->EntityToTypeMap_.insert(std::pair<Entity, EntityType>(GridID, EntityType::ENT_UNASSIGNED));
-        */
+        InsertAsDebugBox();
 
         WholeGrid = new Quad;
         ShaderRef = &(Graphics::shaderpgms.find("Grid")->second);
-        ShaderName = Graphics::shaderpgms.find("Grid")->first;
 
         CalculateGridSettings();
 
@@ -204,37 +185,50 @@ namespace Eclipse
         // Only max have this number of tiles
         GridArray.reserve(TotalTiles);
 
-        // Initialise everything 
-        Tile NewTile(GridScale, true);
-        NewTile.CenterPoint = StartingPosition;
-        GridArray.push_back(NewTile);
-
-        for (int i = 0; i < (TotalTiles - 1); i++)
-        {
-            Tile NewTile(GridScale, false);
-            GridArray.push_back(NewTile);
-        }
-
-        std::cout << "Grid Size " << GridArray.size() << std::endl;
-
-        for (int y = 0; y < TotalTiles; y += 9)
+        for (int y = 0; y < TotalTiles; y += (GridSize * GridSize))
         {
             for (int z = 0; z < GridSize; z++)
             {
                 for (int x = 0; x < GridSize; x++)
                 {
-                    unsigned int PreviousIndex = x;
-                    --PreviousIndex;
+                    unsigned int Index = (z * GridSize) + x + y;
 
-                    if (GridArray[x].FirstTile == true)
-                        continue;
+                    Tile NewTile(GridScale, true);
+                    GridArray.push_back(NewTile);
 
-                    GridArray[(z * 3) + x + y].CenterPoint.setX(GridArray[(z * 3) + PreviousIndex + y].CenterPoint.getX() + (x * GridScale));
-                    GridArray[(z * 3) + x + y].CenterPoint.setY(GridArray[(z * 3) + PreviousIndex + y].CenterPoint.getY() + (y * GridScale));
-                    GridArray[(z * 3) + x + y].CenterPoint.setZ(GridArray[(z * 3) + PreviousIndex + y].CenterPoint.getZ() - (z * GridScale));
+                    // Set Center Point
+                    glm::vec3 Center = { StartingPosition.getX() + (x * GridScale) , StartingPosition.getY() + ((y / (GridSize * GridSize)) * GridScale) , StartingPosition.getZ() - (z * GridScale) };
+                    GridArray[Index].CenterPoint = ECVec3{ Center.x, Center.y, Center.z };
+
+                    // Set Maximum Point
+                    glm::vec3 Maximum = { Center.x + (GridScale / 2) , Center.y + (GridScale / 2) , Center.z + (GridScale / 2) };
+                    GridArray[Index].MaximumPoint = ECVec3{ Maximum.x, Maximum.y, Maximum.z };
+
+                    // Set Minimum Point
+                    glm::vec3 Minimum = { Center.x - (GridScale / 2) , Center.y - (GridScale / 2) , Center.z - (GridScale / 2) };
+                    GridArray[Index].MinimumPoint = ECVec3{ Minimum.x, Minimum.y, Minimum.z };
+
+                    // Set Width
+                    GridArray[Index].Width = Maximum.x - Minimum.x;
+
+                    if (AddDebugBoxes)
+                    {
+                        BoundingRegion br(GridArray[Index].CenterPoint.ConvertToGlmVec3Type(), { GridScale ,GridScale ,GridScale });
+                        engine->GraphicsManager.AllAABBs.AddInstance(br);
+                    }
+
+                    // Set AABB For Dynamic Tree
+                    GridArray[Index].aabb.SetMaxMin(GridArray[Index].MaximumPoint, GridArray[Index].MinimumPoint, Index);
+                    std::shared_ptr<Tile>first = std::make_shared<Tile>(GridArray[Index]);
+                    engine->CollisionGridTree.InsertObject(first);
+
+                    // Insert into container
+                    gridArray.insert({ Index ,GridArray[Index] });
                 }
             }
         }
+
+        DebugPrintCoorindates(GridArray);
     }
 
     void Grid::CalculateGridSettings()
@@ -248,7 +242,7 @@ namespace Eclipse
 
         TotalTiles = GridSize * GridSize * GridSize;
 
-        Length = GridSize * GridScale;
+        float Length = GridSize * GridScale;
         XYZ_Length.setX(Length);
         XYZ_Length.setY(Length);
         XYZ_Length.setZ(Length);
@@ -273,7 +267,72 @@ namespace Eclipse
     {
         StartingPosition.setX((MinimumIn.getX() + (MinimumIn.getX() + GridScale)) / 2);
         StartingPosition.setY((MinimumIn.getY() + (MinimumIn.getY() + GridScale)) / 2);
-        StartingPosition.setZ((Maximum.getZ()   + (Maximum.getZ()   - GridScale)) / 2);
+        StartingPosition.setZ((Maximum.getZ() + (Maximum.getZ() - GridScale)) / 2);
+    }
+
+    void Grid::DebugPrintCoorindates(std::vector<Tile>& in)
+    {
+        if (PrintDebug == false)
+            return;
+
+        for (int y = 0; y < TotalTiles; y += (GridSize * GridSize))
+        {
+            for (int z = 0; z < GridSize; z++)
+            {
+                for (int x = 0; x < GridSize; x++)
+                {
+                    unsigned int Index = (z * GridSize) + x + y;
+
+                    std::cout << "=================================" << std::endl;
+                    std::cout << "= ID            :" << Index << std::endl;
+                    std::cout << "= Maximum Point :" << gridArray[Index].MaximumPoint << std::endl;
+                    std::cout << "= Minimum Point :" << gridArray[Index].MinimumPoint << std::endl;
+                    std::cout << "= Center Point  :" << gridArray[Index].CenterPoint << std::endl;
+                    std::cout << "= Width         :" << gridArray[Index].Width << std::endl;
+                    std::cout << "=================================" << std::endl;
+                }
+            }
+        }
+    }
+
+    void Grid::InsertAsDebugBox()
+    {
+        BoundingRegion br({ 0,0,0 }, { GridScale * GridSize , 0  ,GridScale * GridSize });
+        engine->GraphicsManager.AllAABBs.AddInstance(br);
+    }
+
+    bool Grid::CheckTileOccupied(TILE_ID& tileID)
+    {
+        if (gridArray[tileID].Occupied)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    std::vector<TILE_ID> Grid::GetOccupiedTiles(std::vector<TILE_ID>& in)
+    {
+        std::vector<TILE_ID> Temp;
+
+        for (int Index = 0; Index < in.size(); Index++)
+        {
+            if (gridArray[in[Index]].Occupied == true)
+            {
+                Temp.push_back(gridArray[in[Index]].aabb.GetEntityID());
+            }
+        }
+
+        return Temp;
+    }
+
+    ECVec3 Grid::SnapCalculate(ECVec3& p, float s)
+    {
+        float snapX = p.getX() + ((std::floor(p.getX() / s) - p.getX() / 5) * 5);
+        float snapY = p.getY() + ((std::floor(p.getY() / s) - p.getY() / 5) * 5);
+        float snapZ = p.getZ() + ((std::floor(p.getZ() / s) - p.getZ() / 5) * 5);
+
+        return ECVec3(snapX, snapY, snapZ);
     }
 
     void Grid::DrawGrid(unsigned int FrameBufferID)
@@ -282,17 +341,17 @@ namespace Eclipse
 
         ShaderRef->Use();
 
-        // Part 2: Bind the object's VAO handle using glBindVertexArray
-        glBindVertexArray(WholeGrid->GetVaoID());
-
-        glEnable(GL_DEPTH_TEST);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-        // Check here
-        CheckUniformLocation(GridID);
-
         if (Visible == true)
         {
+            // Part 2: Bind the object's VAO handle using glBindVertexArray
+            glBindVertexArray(WholeGrid->GetVaoID());
+
+            glEnable(GL_DEPTH_TEST);
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+            // Check here
+            CheckUniformLocation(GridID);
+
             // Draw
             glDrawElements(WholeGrid->GetPrimitiveType(), WholeGrid->GetDrawCount(), GL_UNSIGNED_SHORT, NULL);
         }
@@ -309,5 +368,10 @@ namespace Eclipse
         {
             delete WholeGrid;
         }
+    }
+
+    DYN_AABB Tile::getAABB() const
+    {
+        return aabb;
     }
 }

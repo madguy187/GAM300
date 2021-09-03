@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Scene.h"
+#include "ECS/SystemManager/Systems/System/PickingSystem.h"
 #include "ImGuizmo/ImGuizmo.h"
 
 namespace Eclipse
@@ -61,12 +62,13 @@ namespace Eclipse
 			OnGizmoUpdateEvent();
 		}
 		
-		if (ECGui::IsItemHovered() && ImGui::IsWindowFocused() /*temp fix*/)
+		if (ECGui::IsItemHovered() /*&& ImGui::IsWindowFocused() *//*temp fix*/)
 		{
 			// Do all the future stuff here when hovering on window
 			OnKeyPressedEvent();
 			OnCameraMoveEvent();
 			OnCameraZoomEvent();
+			OnSelectEntityEvent();
 		}
 	}
 
@@ -118,13 +120,6 @@ namespace Eclipse
 		// Rachel said to comment out.
 		//engine->gPicker.UpdateAabb(selectedEntity);
 
-		//auto& aabb = engine->world.GetComponent<AabbComponent>(selectedEntity);
-		//auto& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
-
-		//float t;
-		//glm::vec3 rayDir = engine->gPicker.ComputeCursorRayDirection();
-		//bool collision = engine->gPicker.RayAabb(camera.eyePos, rayDir, aabb.min.ConvertToGlmVec3Type(), aabb.max.ConvertToGlmVec3Type(), t);
-
 		ImGuizmo::SetOrthographic(false);
 		ImGuizmo::SetDrawlist();
 
@@ -173,7 +168,7 @@ namespace Eclipse
 		}
 
 		ImGuiIO& io = ImGui::GetIO();
-		
+
 		ImGuizmo::Manipulate(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx),
 			(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
 			nullptr, io.KeyCtrl ? glm::value_ptr(snapValues) : nullptr);
@@ -200,16 +195,23 @@ namespace Eclipse
 			{
 			case ImGuizmo::OPERATION::TRANSLATE:
 				transCom.position = translation;
+				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.position, transCom.position });
 				break;
 			case ImGuizmo::OPERATION::ROTATE:
 				transCom.rotation += deltaRotation;
+				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.rotation, transCom.rotation });
 				break;
 			case ImGuizmo::OPERATION::SCALE:
 				transCom.scale = scale;
+				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.scale, transCom.scale });
 				break;
 			default:
 				break;
 			}
+		}
+		else if (ImGuizmo::IsOver())
+		{
+			CommandHistory::DisableMergeForMostRecentCommand();
 		}
 
 		/*ImGuiIO& io = ImGui::GetIO();
@@ -238,6 +240,18 @@ namespace Eclipse
 		{
 			engine->gCamera.GetInput().set(8, 0);
 			engine->gCamera.GetInput().set(9, 0);
+		}
+	}
+
+	void SceneWindow::OnSelectEntityEvent()
+	{
+		if (ImGui::IsMouseClicked(0))
+		{
+			auto& picksys = engine->world.GetSystem<PickingSystem>();
+			picksys->EditorUpdate();
+
+			if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
+				engine->editorManager->SetSelectedEntity(engine->gPicker.GetCurrentCollisionID());
 		}
 	}
 
