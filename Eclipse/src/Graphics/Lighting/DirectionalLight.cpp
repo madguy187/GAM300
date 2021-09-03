@@ -24,10 +24,10 @@ namespace Eclipse
 		_GlobalLight.ID = CreatedID;
 		_GlobalLight.Counter = counter;
 
-		TransformComponent& transform = engine->world.GetComponent<TransformComponent>(CreatedID);
-		transform.scale.setX(1.0f);
-		transform.scale.setY(1.0f);
-		transform.scale.setZ(1.0f);
+		//TransformComponent& transform = engine->world.GetComponent<TransformComponent>(CreatedID);
+		//transform.scale.setX(1.0f);
+		//transform.scale.setY(1.0f);
+		//transform.scale.setZ(1.0f);
 
 		// Insert into container
 		if (_DirectionalLight.insert({ _GlobalLight.ID ,&_GlobalLight }).second == true)
@@ -61,7 +61,7 @@ namespace Eclipse
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
 
-		auto shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
+		auto& shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
 		shdrpgm.Use();
 
 		glBindVertexArray(Graphics::models["sphere"]->GetVaoID());
@@ -159,5 +159,20 @@ namespace Eclipse
 		_DirectionalLight.insert({ _global.ID,&_global });
 		EDITOR_LOG_INFO("DirectionalLight Created Successfully");
 		counter++;
+	}
+
+	bool DirectionalLight::InsertDirectionalLight(DirectionalLightComponent& in)
+	{
+		if (_DirectionalLight.insert({ in.ID , &in }).second == true)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	void DirectionalLight::ClearContainer()
+	{
+		_DirectionalLight.clear();
 	}
 }

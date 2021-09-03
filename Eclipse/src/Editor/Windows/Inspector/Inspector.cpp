@@ -67,13 +67,17 @@ namespace Eclipse
 				static char entNameInput[256];
 				auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
 
-				ECGui::DrawTextWidget<std::string>("Entity Tag", lexical_cast<std::string>(entCom.Tag));
+				ECGui::DrawTextWidget<std::string>("Entity Tag", lexical_cast_toStr<EntityType>(entCom.Tag));
 				ECGui::DrawTextWidget<const char*>("Edit Name:", "");
 				ECGui::InsertSameLine();
 				ECGui::DrawInputTextHintWidget("InputEntityName", "Enter Entity Name", entNameInput, 256);
 
 				if (ECGui::ButtonBool("Set Name"))
+				{
+					std::string oldName = entCom.Name;
 					entCom.Name = entNameInput;
+					CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<std::string>{ oldName, entCom.Name });
+				}
 
 				/*static char test[256];
 				static std::string testtest;

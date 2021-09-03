@@ -27,4 +27,8 @@ namespace Eclipse
 		entityManager->Clear();
 		componentManager->Clear();
 	}
+	std::vector<std::string> World::GetAllComponentNames()
+	{
+		return componentManager->GetAllComponentNames();
+	}
 }

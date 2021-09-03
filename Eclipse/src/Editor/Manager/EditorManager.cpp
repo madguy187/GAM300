@@ -40,9 +40,9 @@ namespace Eclipse
 	void EditorManager::InitMenu()
 	{
 		MenuComponent file{ "File", EditorMenuType::FILE };
-		file.AddItems("Exit");
 		file.AddItems("Open");
 		file.AddItems("Save");
+		file.AddItems("Exit");
 		MenuComponent window{ "Windows", EditorMenuType::WINDOWS };
 
 		MenuBar_.AddMenuComponents(file);
@@ -87,15 +87,15 @@ namespace Eclipse
 	{
 		Entity ID = engine->world.CreateEntity();
 
-		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast<std::string>(type), true });
+		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast_toStr<EntityType>(type), true });
 		engine->world.AddComponent(ID, TransformComponent{});
 
 		// Check this please - Rachel
 		auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
-		engine->gPicker.GenerateAabb(ID, _transform);
+		engine->gPicker.GenerateAabb(ID, _transform, type);
 
 		EntityHierarchyList_.push_back(ID);
-		EntityToTypeMap_.insert(std::pair<Entity, EntityType>(ID, type));
+		EntityToIndexMap_.insert(std::pair<Entity, int>(ID, static_cast<int>(EntityHierarchyList_.size() - 1)));
 		GEHIndex_ = EntityHierarchyList_.size() - 1;
 
 		return ID;
@@ -103,13 +103,8 @@ namespace Eclipse
 
 	void EditorManager::RegisterExistingEntity(Entity ID)
 	{
-		// Ensure entity has entity and transform com before using it
-		auto& transform = engine->world.GetComponent<TransformComponent>(ID);
-		auto& entcom = engine->world.GetComponent<EntityComponent>(ID);
-
-		engine->gPicker.GenerateAabb(ID, transform);
 		EntityHierarchyList_.push_back(ID);
-		EntityToTypeMap_.insert(std::pair<Entity, EntityType>(ID, entcom.Tag));
+		EntityToIndexMap_.insert(std::pair<Entity, int>(ID, static_cast<int>(EntityHierarchyList_.size() - 1)));
 		GEHIndex_ = EntityHierarchyList_.size() - 1;
 	}
 
@@ -130,7 +125,7 @@ namespace Eclipse
 			}
 		}
 
-		EntityToTypeMap_.erase(ID);
+		EntityToIndexMap_.erase(ID);
 		engine->world.DestroyEntity(ID);
 	}
 
@@ -151,13 +146,23 @@ namespace Eclipse
 
 	Entity EditorManager::GetSelectedEntity() const
 	{
-		return EntityHierarchyList_[GEHIndex_];
+		if (!EntityHierarchyList_.empty())
+			return EntityHierarchyList_[GEHIndex_];
+		else
+			return MAX_ENTITY;
+	}
+
+	void EditorManager::SetSelectedEntity(Entity ID)
+	{
+		GEHIndex_ = static_cast<size_t>(EntityToIndexMap_[ID]);
+		auto* hc = GetEditorWindow<HierarchyWindow>();
+		hc->UpdateEntityTracker(ID);
 	}
 
 	void EditorManager::Clear()
 	{
 		EntityHierarchyList_.clear();
-		EntityToTypeMap_.clear();
+		EntityToIndexMap_.clear();
 		GEHIndex_ = 0;
 
 		for (const auto& window : Windows_)
