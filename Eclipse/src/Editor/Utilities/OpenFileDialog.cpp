@@ -1,11 +1,6 @@
 #include "pch.h"
 #include "OpenFileDialog.h"
 
-void FileDialog::printFile(std::string input)
-{
-	std::cout << input;
-}
-
 std::string FileDialog::FileBrowser()
 {
 	OPENFILENAMEA openFileName;
