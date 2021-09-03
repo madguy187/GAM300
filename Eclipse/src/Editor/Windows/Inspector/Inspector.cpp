@@ -46,6 +46,16 @@ namespace Eclipse
 			ShowPointLightProperty("PointLight", currEnt, CompFilter);
 			ShowSpotLightProperty("SpotLight", currEnt, CompFilter);
 			ShowDirectionalLightProperty("DirectionalLight", currEnt, CompFilter);
+			//tianyu testing will delete later
+			//todo
+			if (engine->world.CheckComponent<testComponent>(currEnt))
+			{
+				if (CompFilter.PassFilter("test") && ECGui::CreateCollapsingHeader("test"))
+				{
+				}
+			}
+
+			AddComponentsController(currEnt);
 		}
 		else
 		{
@@ -112,7 +122,7 @@ namespace Eclipse
 		return false;
 	}
 
-	bool InspectorWindow::ShowPointLightProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+	bool InspectorWindow:: ShowPointLightProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
 	{
 		if (engine->world.CheckComponent<PointLightComponent>(ID))
 		{
@@ -201,5 +211,281 @@ namespace Eclipse
 		}
 
 		return false;
+	}
+	void InspectorWindow::AddComponentsController( Entity ID)
+	{
+		if (ImGui::Button("Add Component"))
+		{
+			ImGui::OpenPopup("Add Component");
+		}
+		if (ImGui::BeginPopup("Add Component"))
+		{
+			AddComponents(ID);
+			ImGui::EndPopup();
+		}
+	}
+	void InspectorWindow::AddComponents(Entity ID)
+	{
+		const char* Components[] = { "TransformComponent", "RenderComponent",
+									 "CameraComponent", "PointLightComponent",
+									 "DirectionalLightComponent", "AabbComponent",
+									 "SpotLightComponent", "MaterialComponent","testComponent" };
+
+		static ImGuiTextFilter AddComponentFilter;
+		
+		auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
+		
+		AddComponentFilter.Draw();
+
+		for (int i = 0; i < IM_ARRAYSIZE(Components); i++)
+		{
+			if (AddComponentFilter.PassFilter(Components[i]))
+			{
+				if(ImGui::Button(Components[i], ImVec2(200, 0)))
+				{
+					switch (str2int(Components[i]))
+					{
+					case str2int("TransformComponent"):
+						if (!engine->world.CheckComponent<TransformComponent>(ID))
+						{
+							AddComponentsSucess("TransformComponent", entCom, ID);
+							engine->world.AddComponent(ID, TransformComponent{});
+						}
+						else
+						{
+							AddComponentsFailed("TransformComponent", entCom, ID);
+						}
+						break;
+					case str2int("RenderComponent"):
+						if (!engine->world.CheckComponent<RenderComponent>(ID))
+						{
+							AddComponentsSucess("RenderComponent", entCom, ID);
+							engine->world.AddComponent(ID, RenderComponent{});
+						}
+						else
+						{
+							AddComponentsFailed("RenderComponent", entCom, ID);
+						}
+						break;
+					case str2int("CameraComponent"):
+						if (!engine->world.CheckComponent<CameraComponent>(ID))
+						{
+							AddComponentsSucess("CameraComponent", entCom, ID);
+							engine->world.AddComponent(ID, CameraComponent{});
+						}
+						else
+						{
+							AddComponentsFailed("CameraComponent", entCom, ID);
+						}
+						break;
+					case str2int("PointLightComponent"):
+						if (!engine->world.CheckComponent<PointLightComponent>(ID))
+						{
+							AddComponentsSucess("PointLightComponent", entCom, ID);
+							engine->world.AddComponent(ID, PointLightComponent{});
+						}
+						else
+						{
+							AddComponentsFailed("PointLightComponent", entCom, ID);
+						}
+						break;
+					case str2int("DirectionalLightComponent"):
+						if(!engine->world.CheckComponent<DirectionalLightComponent>(ID))
+						{
+							AddComponentsSucess("DirectionalLightComponent", entCom, ID);
+							engine->world.AddComponent(ID, DirectionalLightComponent{});
+						}
+						else
+						{
+							AddComponentsFailed("DirectionalLightComponent", entCom, ID);
+						}
+						break;
+					case str2int("AabbComponent"):
+						if (!engine->world.CheckComponent<AabbComponent>(ID))
+						{
+							AddComponentsSucess("AabbComponent", entCom, ID);
+							engine->world.AddComponent(ID, AabbComponent{});
+						}
+						else
+						{
+							AddComponentsFailed("AabbComponent", entCom, ID);
+						}
+						break;
+					case str2int("SpotLightComponent"):
+						if (!engine->world.CheckComponent<SpotLightComponent>(ID))
+						{
+							AddComponentsSucess("SpotLightComponent", entCom, ID);
+							engine->world.AddComponent(ID, SpotLightComponent{});
+						}
+						else
+						{
+							AddComponentsFailed("SpotLightComponent", entCom, ID);
+						}
+						break;
+					case str2int("MaterialComponent"):
+						if (!engine->world.CheckComponent<MaterialComponent>(ID))
+						{
+							AddComponentsSucess("MaterialComponent", entCom, ID);
+							engine->world.AddComponent(ID, MaterialComponent{});
+						}
+						else
+						{
+							AddComponentsFailed("MaterialComponent", entCom, ID);
+						}
+						break;
+					case str2int("testComponent"):
+						if (!engine->world.CheckComponent<testComponent>(ID))
+						{
+							AddComponentsSucess("testComponent", entCom, ID);
+							engine->world.AddComponent(ID, testComponent{});
+						}
+						else
+						{
+							AddComponentsFailed("testComponent",entCom,ID);
+						}
+						break;
+					}
+				}
+			}
+		}
+		
+	}
+	void InspectorWindow::AddComponentsSucess(const char* Components, EntityComponent& entCom, Entity ID)
+	{
+		std::string Comp(Components);
+		Comp += " Added For " + entCom.Name + std::to_string(ID);
+		EDITOR_LOG_INFO(Comp.c_str());
+	}
+	void InspectorWindow::AddComponentsFailed(const char* Components, EntityComponent& entCom, Entity ID)
+	{
+		std::string Comp(Components);
+		Comp += " Already Exists in " + entCom.Name + std::to_string(ID);
+		EDITOR_LOG_WARN(Comp.c_str());
+	}
+	void InspectorWindow::RemoveComponents(Entity ID)
+	{
+		const char* Components[] = { "TransformComponent", "RenderComponent",
+									 "CameraComponent", "PointLightComponent",
+									 "DirectionalLightComponent", "AabbComponent",
+									 "SpotLightComponent", "MaterialComponent","testComponent" };
+
+		static ImGuiTextFilter AddComponentFilter;
+		
+		auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
+		
+		AddComponentFilter.Draw();
+
+		for (int i = 0; i < IM_ARRAYSIZE(Components); i++)
+		{
+			if (AddComponentFilter.PassFilter(Components[i]))
+			{
+				if(ImGui::Button(Components[i], ImVec2(200, 0)))
+				{
+					switch (str2int(Components[i]))
+					{
+					case str2int("TransformComponent"):
+						if (!engine->world.CheckComponent<TransformComponent>(ID))
+						{
+							AddComponentsSucess("TransformComponent", entCom, ID);
+							engine->world.AddComponent(ID, TransformComponent{});
+						}
+						else
+						{
+							AddComponentsFailed("TransformComponent", entCom, ID);
+						}
+						break;
+					case str2int("RenderComponent"):
+						if (!engine->world.CheckComponent<RenderComponent>(ID))
+						{
+							AddComponentsSucess("RenderComponent", entCom, ID);
+							engine->world.AddComponent(ID, RenderComponent{});
+						}
+						else
+						{
+							AddComponentsFailed("RenderComponent", entCom, ID);
+						}
+						break;
+					case str2int("CameraComponent"):
+						if (!engine->world.CheckComponent<CameraComponent>(ID))
+						{
+							AddComponentsSucess("CameraComponent", entCom, ID);
+							engine->world.AddComponent(ID, CameraComponent{});
+						}
+						else
+						{
+							AddComponentsFailed("CameraComponent", entCom, ID);
+						}
+						break;
+					case str2int("PointLightComponent"):
+						if (!engine->world.CheckComponent<PointLightComponent>(ID))
+						{
+							AddComponentsSucess("PointLightComponent", entCom, ID);
+							engine->world.AddComponent(ID, PointLightComponent{});
+						}
+						else
+						{
+							AddComponentsFailed("PointLightComponent", entCom, ID);
+						}
+						break;
+					case str2int("DirectionalLightComponent"):
+						if(!engine->world.CheckComponent<DirectionalLightComponent>(ID))
+						{
+							AddComponentsSucess("DirectionalLightComponent", entCom, ID);
+							engine->world.AddComponent(ID, DirectionalLightComponent{});
+						}
+						else
+						{
+							AddComponentsFailed("DirectionalLightComponent", entCom, ID);
+						}
+						break;
+					case str2int("AabbComponent"):
+						if (!engine->world.CheckComponent<AabbComponent>(ID))
+						{
+							AddComponentsSucess("AabbComponent", entCom, ID);
+							engine->world.AddComponent(ID, AabbComponent{});
+						}
+						else
+						{
+							AddComponentsFailed("AabbComponent", entCom, ID);
+						}
+						break;
+					case str2int("SpotLightComponent"):
+						if (!engine->world.CheckComponent<SpotLightComponent>(ID))
+						{
+							AddComponentsSucess("SpotLightComponent", entCom, ID);
+							engine->world.AddComponent(ID, SpotLightComponent{});
+						}
+						else
+						{
+							AddComponentsFailed("SpotLightComponent", entCom, ID);
+						}
+						break;
+					case str2int("MaterialComponent"):
+						if (!engine->world.CheckComponent<MaterialComponent>(ID))
+						{
+							AddComponentsSucess("MaterialComponent", entCom, ID);
+							engine->world.AddComponent(ID, MaterialComponent{});
+						}
+						else
+						{
+							AddComponentsFailed("MaterialComponent", entCom, ID);
+						}
+						break;
+					case str2int("testComponent"):
+						if (!engine->world.CheckComponent<testComponent>(ID))
+						{
+							AddComponentsSucess("testComponent", entCom, ID);
+							engine->world.DestroyComponent< testComponent{} >(ID, testComponent{});
+						}
+						else
+						{
+							AddComponentsFailed("testComponent",entCom,ID);
+						}
+						break;
+					}
+				}
+			}
+		}
+		
 	}
 }

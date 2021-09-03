@@ -69,6 +69,7 @@ namespace Eclipse
         world.RegisterComponent<AabbComponent>();
         world.RegisterComponent<SpotLightComponent>();
         world.RegisterComponent<MaterialComponent>();
+    	world.RegisterComponent<testComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
