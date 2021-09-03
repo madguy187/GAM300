@@ -180,7 +180,7 @@ namespace Eclipse
             world.Update<PickingSystem>();
 
             // RENDERSYSTEM =============================
-            world.Update<RenderSystem>();
+          world.Update<RenderSystem>();
 
             // Material SYstem =============================
             world.Update<MaterialSystem>();
