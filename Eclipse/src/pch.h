@@ -90,6 +90,9 @@
 // Serialization
 #include "Serialization/SerializationManager.h"
 
+//SceneManager
+#include "SceneManagement/SceneManager.h"
+
 // Editor API
 #include "Editor/ECGuiAPI/ECGui.h"
 #include "ImGuizmo/ImGuizmo.h" 

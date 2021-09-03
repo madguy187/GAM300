@@ -1,120 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h">
-      <Filter>ECS\ComponentManager</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h">
-      <Filter>ECS\ComponentManager\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.h">
-      <Filter>ECS\ComponentManager\Components\ComponentArray</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentBase.h">
-      <Filter>ECS\ComponentManager\Components\ComponentArray</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\ComponentManager\Components\DirectionalLightComponent.h">
-      <Filter>ECS\ComponentManager\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\ComponentManager\Components\EntityComponent.h">
-      <Filter>ECS\ComponentManager\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\ComponentManager\Components\MaterialComponent.h">
-      <Filter>ECS\ComponentManager\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\ComponentManager\Components\PointLightComponent.h">
-      <Filter>ECS\ComponentManager\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\ComponentManager\Components\RenderComponent.h">
-      <Filter>ECS\ComponentManager\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h">
-      <Filter>ECS\ComponentManager\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\ComponentManager\Components\SpotLightComponent.h">
-      <Filter>ECS\ComponentManager\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\ComponentManager\Components\TransformComponent.h">
-      <Filter>ECS\ComponentManager\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\EntityManager\EntityManager.h">
-      <Filter>ECS\EntityManager</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\SystemManager.h">
-      <Filter>ECS\SystemManager</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem.h">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\EditorSystem.h">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\LightingSystem.h">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem.h">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\System.h">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\World.h">
-      <Filter>ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Editor\ECGuiAPI\ECGui.h">
-      <Filter>Editor\ECGuiAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Editor\Manager\EditorManager.h">
-      <Filter>Editor\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Editor\Menu\MenuBar.h">
-      <Filter>Editor\Menu</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Editor\Menu\MenuComponent.h">
-      <Filter>Editor\Menu</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Editor\Windows\AssetBrowser\AssetBrowser.h">
-      <Filter>Editor\Windows\AssetBrowser</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Editor\Windows\Debug\Debug.h">
-      <Filter>Editor\Windows\Debug</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Editor\Windows\GameView\GameView.h">
-      <Filter>Editor\Windows\GameView</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Editor\Windows\Hierarchy\Hierarchy.h">
-      <Filter>Editor\Windows\Hierarchy</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Editor\Windows\Inspector\Inspector.h">
-      <Filter>Editor\Windows\Inspector</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Editor\Windows\Interface\ECGuiWindow.h">
-      <Filter>Editor\Windows\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Editor\Windows\Log\ConsoleData.h">
-      <Filter>Editor\Windows\Log</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Editor\Windows\Log\Log.h">
-      <Filter>Editor\Windows\Log</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Editor\Windows\Profiler\Profiler.h">
-      <Filter>Editor\Windows\Profiler</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Editor\Windows\Scene\SceneView.h">
-      <Filter>Editor\Windows\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Engine\Engine.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\EntryPoint\EntryPoint.h">
-      <Filter>EntryPoint</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Events\EventManager.h">
-      <Filter>Events</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Events\Events.h">
-      <Filter>Events</Filter>
-    </ClInclude>
     <ClInclude Include="src\Global.h" />
     <ClInclude Include="src\Graphics\Camera\CameraManager.h" />
     <ClInclude Include="src\Graphics\Debugging\DebugRenderingManager.h" />
@@ -160,248 +46,97 @@
     <ClInclude Include="src\Editor\Windows\SwitchViews\SwitchViews.h" />
     <ClInclude Include="src\Editor\Utilities\DragAndDrop.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem.h" />
+    <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentBase.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\DirectionalLightComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\EntityComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\MaterialComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\PointLightComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\RenderComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\SpotLightComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\TransformComponent.h" />
+    <ClInclude Include="src\ECS\EntityManager\EntityManager.h" />
+    <ClInclude Include="src\ECS\SystemManager\SystemManager.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\EditorSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\LightingSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\System.h" />
+    <ClInclude Include="src\ECS\World.h" />
+    <ClInclude Include="src\Editor\ECGuiAPI\ECGui.h" />
+    <ClInclude Include="src\Editor\Manager\EditorManager.h" />
+    <ClInclude Include="src\Editor\Menu\MenuBar.h" />
+    <ClInclude Include="src\Editor\Menu\MenuComponent.h" />
+    <ClInclude Include="src\Editor\Utilities\OpenFileDialog.h" />
+    <ClInclude Include="src\Editor\Windows\AssetBrowser\AssetBrowser.h" />
+    <ClInclude Include="src\Editor\Windows\Debug\Debug.h" />
+    <ClInclude Include="src\Editor\Windows\GameView\GameView.h" />
+    <ClInclude Include="src\Editor\Windows\Hierarchy\Hierarchy.h" />
+    <ClInclude Include="src\Editor\Windows\Inspector\Inspector.h" />
+    <ClInclude Include="src\Editor\Windows\Interface\ECGuiWindow.h" />
+    <ClInclude Include="src\Editor\Windows\Log\ConsoleData.h" />
+    <ClInclude Include="src\Editor\Windows\Log\Log.h" />
+    <ClInclude Include="src\Editor\Windows\Profiler\Profiler.h" />
+    <ClInclude Include="src\Editor\Windows\Scene\SceneView.h" />
+    <ClInclude Include="src\Engine\Engine.h" />
+    <ClInclude Include="src\EntryPoint\EntryPoint.h" />
+    <ClInclude Include="src\Events\EventManager.h" />
+    <ClInclude Include="src\Events\Events.h" />
+    <ClInclude Include="src\Graphics\RendererAPI\Graphics.h" />
+    <ClInclude Include="src\Graphics\RendererAPI\GraphicsManager.h" />
+    <ClInclude Include="src\Graphics\RendererAPI\Mesh.h" />
+    <ClInclude Include="src\Graphics\RendererAPI\Renderer.h" />
+    <ClInclude Include="src\Graphics\RendererAPI\Shader.h" />
+    <ClInclude Include="src\Graphics\Textures\Texture.h" />
+    <ClInclude Include="src\ImGui\ImGuiAPI\ImGuiAPI.h" />
+    <ClInclude Include="src\ImGui\Setup\ImGuiSetup.h" />
+    <ClInclude Include="src\ImGui\Vendor\IconsFontAwesome.h" />
+    <ClInclude Include="src\ImGui\Vendor\IconsMaterialDesignIcons.h" />
+    <ClInclude Include="src\ImGui\Vendor\ImGuizmo\ImCurveEdit.h" />
+    <ClInclude Include="src\ImGui\Vendor\ImGuizmo\ImGradient.h" />
+    <ClInclude Include="src\ImGui\Vendor\ImGuizmo\ImGuizmo.h" />
+    <ClInclude Include="src\ImGui\Vendor\ImGuizmo\ImSequencer.h" />
+    <ClInclude Include="src\ImGui\Vendor\imconfig.h" />
+    <ClInclude Include="src\ImGui\Vendor\imgui.h" />
+    <ClInclude Include="src\ImGui\Vendor\imgui_impl_glfw.h" />
+    <ClInclude Include="src\ImGui\Vendor\imgui_impl_opengl3.h" />
+    <ClInclude Include="src\ImGui\Vendor\imgui_internal.h" />
+    <ClInclude Include="src\ImGui\Vendor\imstb_rectpack.h" />
+    <ClInclude Include="src\ImGui\Vendor\imstb_textedit.h" />
+    <ClInclude Include="src\ImGui\Vendor\imstb_truetype.h" />
+    <ClInclude Include="src\ImGui\Vendor\stb_image.h" />
+    <ClInclude Include="src\Library\Math\Matrix.h" />
+    <ClInclude Include="src\Library\Math\Vector.h" />
+    <ClInclude Include="src\Library\Strings\Lexical.h" />
+    <ClInclude Include="src\Library\Strings\StringsConcatenate.h" />
+    <ClInclude Include="src\Logger\Logger.h" />
+    <ClInclude Include="src\Mono\Manager\MonoManager.h" />
+    <ClInclude Include="src\Physics\PhysicsManager.h" />
+    <ClInclude Include="src\Reflection\complex_support.h" />
+    <ClInclude Include="src\Reflection\primitive_support.h" />
+    <ClInclude Include="src\Reflection\registration.h" />
+    <ClInclude Include="src\Serialization\Deserializer.h" />
+    <ClInclude Include="src\Serialization\SerializationManager.h" />
+    <ClInclude Include="src\Serialization\Serializer.h" />
+    <ClInclude Include="src\Serialization\TinyXML\tinystr.h" />
+    <ClInclude Include="src\Serialization\TinyXML\tinyxml.h" />
+    <ClInclude Include="src\Serialization\TypenameCast.h" />
+    <ClInclude Include="src\SparseSet\SparseSet.hpp" />
+    <ClInclude Include="src\Time\Clock.h" />
+    <ClInclude Include="src\TypeID\TypeID.h" />
+    <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\SceneManagement\SceneManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
-      <Filter>ECS\ComponentManager</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.cpp">
-      <Filter>ECS\ComponentManager\Components\ComponentArray</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ECS\EntityManager\EntityManager.cpp">
-      <Filter>ECS\EntityManager</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp">
-      <Filter>ECS\SystemManager</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\EditorSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ECS\World.cpp">
-      <Filter>ECS</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\ECGuiAPI\ECGui.cpp">
-      <Filter>Editor\ECGuiAPI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Manager\EditorManager.cpp">
-      <Filter>Editor\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Menu\MenuBar.cpp">
-      <Filter>Editor\Menu</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Menu\MenuComponent.cpp">
-      <Filter>Editor\Menu</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Windows\AssetBrowser\AssetBrowser.cpp">
-      <Filter>Editor\Windows\AssetBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Windows\Debug\Debug.cpp">
-      <Filter>Editor\Windows\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Windows\GameView\GameView.cpp">
-      <Filter>Editor\Windows\GameView</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Windows\Hierarchy\Hierarchy.cpp">
-      <Filter>Editor\Windows\Hierarchy</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Windows\Inspector\Inspector.cpp">
-      <Filter>Editor\Windows\Inspector</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Windows\Log\Log.cpp">
-      <Filter>Editor\Windows\Log</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Windows\Profiler\Profiler.cpp">
-      <Filter>Editor\Windows\Profiler</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Windows\Scene\SceneView.cpp">
-      <Filter>Editor\Windows\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Engine\Engine.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="src\EntryPoint\EntryPoint.cpp">
-      <Filter>EntryPoint</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\Camera\CameraManager.cpp">
-      <Filter>Graphics\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\Debugging\DebugRenderingManager.cpp">
-      <Filter>Graphics\Debugging</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\FrameBuffer\FrameBuffer.cpp">
-      <Filter>Graphics\FrameBuffer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\FrameBuffer\WindowConstraint.cpp">
-      <Filter>Graphics\FrameBuffer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\Grid\Grid.cpp">
-      <Filter>Graphics\Grid</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp">
-      <Filter>Graphics\InputHandler</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\Lighting\DirectionalLight.cpp">
-      <Filter>Graphics\Lighting</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\Lighting\LightManager.cpp">
-      <Filter>Graphics\Lighting</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\Lighting\PointLight.cpp">
-      <Filter>Graphics\Lighting</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\Lighting\SpotLight.cpp">
-      <Filter>Graphics\Lighting</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\Material\MaterialManager.cpp">
-      <Filter>Graphics\Material</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.cpp">
-      <Filter>Graphics\ModelFactory\AssimpModel</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.cpp">
-      <Filter>Graphics\ModelFactory\AssimpModel</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.cpp">
-      <Filter>Graphics\ModelFactory\BasicPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cone.cpp">
-      <Filter>Graphics\ModelFactory\BasicPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cube.cpp">
-      <Filter>Graphics\ModelFactory\BasicPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cylinder.cpp">
-      <Filter>Graphics\ModelFactory\BasicPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Frustum.cpp">
-      <Filter>Graphics\ModelFactory\BasicPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\LightQuad.cpp">
-      <Filter>Graphics\ModelFactory\BasicPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Lines.cpp">
-      <Filter>Graphics\ModelFactory\BasicPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Lines3D.cpp">
-      <Filter>Graphics\ModelFactory\BasicPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Particles.cpp">
-      <Filter>Graphics\ModelFactory\BasicPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Plane.cpp">
-      <Filter>Graphics\ModelFactory\BasicPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Pyramid.cpp">
-      <Filter>Graphics\ModelFactory\BasicPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Quad.cpp">
-      <Filter>Graphics\ModelFactory\BasicPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Sphere.cpp">
-      <Filter>Graphics\ModelFactory\BasicPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Torus.cpp">
-      <Filter>Graphics\ModelFactory\BasicPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Triangle.cpp">
-      <Filter>Graphics\ModelFactory\BasicPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\ModelFactory\ModelFactory.cpp">
-      <Filter>Graphics\ModelFactory</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\ModelFactory\Sky\CubeMap.cpp">
-      <Filter>Graphics\ModelFactory\Sky</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\OpenGL\OpenGL_Context.cpp">
-      <Filter>Graphics\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\Parser\Parser.cpp">
-      <Filter>Graphics\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\RendererAPI\Graphics.cpp">
-      <Filter>Graphics\RendererAPI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\RendererAPI\GraphicsManager.cpp">
-      <Filter>Graphics\RendererAPI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\RendererAPI\Mesh.cpp">
-      <Filter>Graphics\RendererAPI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\RendererAPI\Shader.cpp">
-      <Filter>Graphics\RendererAPI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\Textures\Texture.cpp">
-      <Filter>Graphics\Textures</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\Textures\stb_image.cpp">
-      <Filter>Graphics\Textures</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\ImGuiAPI\ImGuiAPI.cpp">
-      <Filter>ImGui\ImGuiAPI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\Setup\ImGuiSetup.cpp">
-      <Filter>ImGui\Setup</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImCurveEdit.cpp">
-      <Filter>ImGui\Vendor\ImGuizmo</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImGradient.cpp">
-      <Filter>ImGui\Vendor\ImGuizmo</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImGuizmo.cpp">
-      <Filter>ImGui\Vendor\ImGuizmo</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImSequencer.cpp">
-      <Filter>ImGui\Vendor\ImGuizmo</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\Vendor\imgui.cpp">
-      <Filter>ImGui\Vendor</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\Vendor\imgui_demo.cpp">
-      <Filter>ImGui\Vendor</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\Vendor\imgui_draw.cpp">
-      <Filter>ImGui\Vendor</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\Vendor\imgui_impl_glfw.cpp">
-      <Filter>ImGui\Vendor</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\Vendor\imgui_impl_opengl3.cpp">
-      <Filter>ImGui\Vendor</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\Vendor\imgui_widgets.cpp">
-      <Filter>ImGui\Vendor</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Library\Math\Matrix.cpp">
-      <Filter>Library\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Logger\Logger.cpp">
-      <Filter>Logger</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Mono\Manager\MonoManager.cpp">
-      <Filter>Mono\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Physics\PhysicsManager.cpp">
-      <Filter>Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Time\Clock.cpp">
-      <Filter>Time</Filter>
-    </ClCompile>
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem.cpp" />
     <ClCompile Include="src\Graphics\Grid\bounds.cpp" />
     <ClCompile Include="src\Graphics\Grid\Box.cpp" />
     <ClCompile Include="src\Editor\Utilities\DragAndDrop.cpp" />
-    <ClCompile Include="src\Editor\Windows\Scene\Scene.cpp" />
     <ClCompile Include="src\Editor\Windows\SwitchViews\SwitchViews.cpp" />
     <ClCompile Include="src\Graphics\Picker\PickingManager.cpp" />
     <ClCompile Include="src\Serialization\Deserializer.cpp" />
@@ -412,6 +147,86 @@
     <ClCompile Include="src\Serialization\TinyXML\tinyxmlerror.cpp" />
     <ClCompile Include="src\Serialization\TinyXML\tinyxmlparser.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp" />
+    <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp" />
+    <ClCompile Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.cpp" />
+    <ClCompile Include="src\ECS\EntityManager\EntityManager.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\EditorSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp" />
+    <ClCompile Include="src\ECS\World.cpp" />
+    <ClCompile Include="src\Editor\ECGuiAPI\ECGui.cpp" />
+    <ClCompile Include="src\Editor\Manager\EditorManager.cpp" />
+    <ClCompile Include="src\Editor\Menu\MenuBar.cpp" />
+    <ClCompile Include="src\Editor\Menu\MenuComponent.cpp" />
+    <ClCompile Include="src\Editor\Utilities\OpenFileDialog.cpp" />
+    <ClCompile Include="src\Editor\Windows\AssetBrowser\AssetBrowser.cpp" />
+    <ClCompile Include="src\Editor\Windows\Debug\Debug.cpp" />
+    <ClCompile Include="src\Editor\Windows\GameView\GameView.cpp" />
+    <ClCompile Include="src\Editor\Windows\Hierarchy\Hierarchy.cpp" />
+    <ClCompile Include="src\Editor\Windows\Inspector\Inspector.cpp" />
+    <ClCompile Include="src\Editor\Windows\Log\Log.cpp" />
+    <ClCompile Include="src\Editor\Windows\Profiler\Profiler.cpp" />
+    <ClCompile Include="src\Editor\Windows\Scene\SceneView.cpp" />
+    <ClCompile Include="src\Engine\Engine.cpp" />
+    <ClCompile Include="src\EntryPoint\EntryPoint.cpp" />
+    <ClCompile Include="src\Graphics\Camera\CameraManager.cpp" />
+    <ClCompile Include="src\Graphics\Debugging\DebugRenderingManager.cpp" />
+    <ClCompile Include="src\Graphics\FrameBuffer\FrameBuffer.cpp" />
+    <ClCompile Include="src\Graphics\FrameBuffer\WindowConstraint.cpp" />
+    <ClCompile Include="src\Graphics\Grid\Grid.cpp" />
+    <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp" />
+    <ClCompile Include="src\Graphics\Lighting\DirectionalLight.cpp" />
+    <ClCompile Include="src\Graphics\Lighting\LightManager.cpp" />
+    <ClCompile Include="src\Graphics\Lighting\PointLight.cpp" />
+    <ClCompile Include="src\Graphics\Lighting\SpotLight.cpp" />
+    <ClCompile Include="src\Graphics\Material\MaterialManager.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cone.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cube.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cylinder.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Frustum.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\LightQuad.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Lines.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Lines3D.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Particles.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Plane.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Pyramid.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Quad.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Sphere.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Torus.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Triangle.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\ModelFactory.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\Sky\CubeMap.cpp" />
+    <ClCompile Include="src\Graphics\OpenGL\OpenGL_Context.cpp" />
+    <ClCompile Include="src\Graphics\Parser\Parser.cpp" />
+    <ClCompile Include="src\Graphics\RendererAPI\Graphics.cpp" />
+    <ClCompile Include="src\Graphics\RendererAPI\GraphicsManager.cpp" />
+    <ClCompile Include="src\Graphics\RendererAPI\Mesh.cpp" />
+    <ClCompile Include="src\Graphics\RendererAPI\Shader.cpp" />
+    <ClCompile Include="src\Graphics\Textures\Texture.cpp" />
+    <ClCompile Include="src\Graphics\Textures\stb_image.cpp" />
+    <ClCompile Include="src\ImGui\ImGuiAPI\ImGuiAPI.cpp" />
+    <ClCompile Include="src\ImGui\Setup\ImGuiSetup.cpp" />
+    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImCurveEdit.cpp" />
+    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImGradient.cpp" />
+    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImGuizmo.cpp" />
+    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImSequencer.cpp" />
+    <ClCompile Include="src\ImGui\Vendor\imgui.cpp" />
+    <ClCompile Include="src\ImGui\Vendor\imgui_demo.cpp" />
+    <ClCompile Include="src\ImGui\Vendor\imgui_draw.cpp" />
+    <ClCompile Include="src\ImGui\Vendor\imgui_impl_glfw.cpp" />
+    <ClCompile Include="src\ImGui\Vendor\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="src\ImGui\Vendor\imgui_widgets.cpp" />
+    <ClCompile Include="src\Library\Math\Matrix.cpp" />
+    <ClCompile Include="src\Logger\Logger.cpp" />
+    <ClCompile Include="src\Mono\Manager\MonoManager.cpp" />
+    <ClCompile Include="src\Physics\PhysicsManager.cpp" />
+    <ClCompile Include="src\Time\Clock.cpp" />
+    <ClCompile Include="src\SceneManagement\SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\AABB.frag" />

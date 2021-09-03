@@ -272,6 +272,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Reflection\complex_support.h" />
     <ClInclude Include="src\Reflection\primitive_support.h" />
     <ClInclude Include="src\Reflection\registration.h" />
+    <ClInclude Include="src\SceneManagement\SceneManager.h" />
     <ClInclude Include="src\Serialization\Deserializer.h" />
     <ClInclude Include="src\Serialization\SerializationManager.h" />
     <ClInclude Include="src\Serialization\Serializer.h" />
@@ -369,6 +370,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Logger\Logger.cpp" />
     <ClCompile Include="src\Mono\Manager\MonoManager.cpp" />
     <ClCompile Include="src\Physics\PhysicsManager.cpp" />
+    <ClCompile Include="src\SceneManagement\SceneManager.cpp" />
     <ClCompile Include="src\Serialization\Deserializer.cpp" />
     <ClCompile Include="src\Serialization\SerializationManager.cpp" />
     <ClCompile Include="src\Serialization\Serializer.cpp" />

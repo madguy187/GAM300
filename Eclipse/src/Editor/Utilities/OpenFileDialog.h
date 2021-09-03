@@ -3,7 +3,8 @@
 class FileDialog
 {
 public:
-	
-	static char* FileBrowser();
-	static char* SaveFile();
+
+  static std::string FileBrowser();
+
+  static std::string SaveFile();
 };
