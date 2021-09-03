@@ -146,9 +146,9 @@ namespace Eclipse
         // Grid Init = Calculate Everything 
         void Init();
         // Calculate and insert Tiles for the Whole Grid
-        void CalculateGridCoordinates();
+        bool CalculateGridCoordinates();
         // Calculate Grid Properties
-        void CalculateGridSettings();
+        bool CalculateGridSettings();
         // Calculate Starting Point for the Grid which we going to use bottom left
         void CalculateStartingPoint(ECVec3& MinimumIn, ECVec3& Maximum);
         // Print All the Coordinates of each Tile in the Grid
