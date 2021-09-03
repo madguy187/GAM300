@@ -104,6 +104,11 @@ namespace Eclipse
         picking.set(world.GetComponentType<MaterialComponent>(), 1);
         world.RegisterSystemSignature<PickingSystem>(picking);
 
+        Signature gridCol;
+        gridCol.set(world.GetComponentType<AabbComponent>(), 1);
+        gridCol.set(world.GetComponentType<TransformComponent>(), 1);
+        world.RegisterSystemSignature<GridSystem>(gridCol);
+
         mono.Init();
         
         //Check this! - Rachel

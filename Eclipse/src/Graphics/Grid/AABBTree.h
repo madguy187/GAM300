@@ -3,6 +3,7 @@
 #include "AABB.h"
 #include "IAABB.h"
 #include "Graphics/ModelFactory/AssimpModel/AssimpModel.h"
+#include "ECS/ComponentManager/Components/AabbComponent.h"
 
 #define AABB_NULL_NODE 0xffffffff
 
@@ -26,7 +27,7 @@ namespace Eclipse
     {
     private:
         std::map<std::shared_ptr<IAABB>, unsigned int> AABBToNodeMap;
-        std::unordered_map<unsigned int , AABBNode> AllNodes;
+        std::unordered_map<unsigned int, AABBNode> AllNodes;
         unsigned int RootNodeIndex = 0;
         unsigned int AllocatedNodeCount = 0;
         unsigned int NextFreeNoedIndex = 0;
@@ -41,8 +42,10 @@ namespace Eclipse
         void RemoveObject(const std::shared_ptr<IAABB>& object);
         void UpdateObject(const std::shared_ptr<IAABB>& object);
         std::vector<unsigned int> CheckOverlapAgainstGrid(DYN_AABB& object);
+        std::vector<unsigned int> CheckOverlapAgainstGrid(AabbComponent& object);
         std::vector<unsigned int> CheckOverlap(DYN_AABB& object);
         std::vector<unsigned int> CheckMouseOverlapAgainstGrid(glm::vec3& rayStart, glm::vec3& rayDir, float& t);
+        unsigned int NumberOfIntersections(std::vector<unsigned int>& in);
 
     private:
         unsigned AllocateNode();

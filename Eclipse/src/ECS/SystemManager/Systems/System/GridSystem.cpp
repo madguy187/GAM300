@@ -14,16 +14,16 @@ namespace Eclipse
 
     void GridSystem::Update()
     {
-        for (auto& M : engine->AssimpManager.GetContainer())
+        for (auto& it : mEntities)
         {
-            auto& Model = M.second;
-            auto& Transform = engine->world.GetComponent<TransformComponent>(M.first);
-            auto ModelVsGrid = engine->CollisionGridTree.CheckOverlapAgainstGrid(Model->SetAABB(Transform));
+            auto& aabb = engine->world.GetComponent<AabbComponent>(it);
+            auto& Transform = engine->world.GetComponent<TransformComponent>(it);
 
-            if (ModelVsGrid.size() >= 1)
+            auto& ModelVsGrid = engine->CollisionGridTree.CheckOverlapAgainstGrid(DYN_AABB::SetAABB(Transform, aabb));
+
+            if (engine->CollisionGridTree.NumberOfIntersections(ModelVsGrid))
             {
-                auto& Transform1 = engine->world.GetComponent<TransformComponent>(M.first);
-                Transform1.position = engine->GraphicsManager.GridManager->gridArray[ModelVsGrid[0]].CenterPoint;
+                Transform.position = engine->GraphicsManager.GridManager->gridArray[ModelVsGrid[0]].CenterPoint;
             }
         }
 

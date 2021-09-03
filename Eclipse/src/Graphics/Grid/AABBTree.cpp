@@ -131,7 +131,7 @@ namespace Eclipse
                     if (overlaps.size() != 0)
                     {
                         unsigned int hi = overlaps[0];
-                        node.aabb.DistanceToObject = node.aabb.maxX - testAabb.maxX;
+                        node.aabb.DistanceToObject = node.aabb.Max.x - testAabb.Max.x;
                         float yo = engine->GraphicsManager.GridManager->gridArray[hi].aabb.DistanceToObject;
 
                         if (abs(node.aabb.DistanceToObject) > abs(yo))
@@ -148,7 +148,64 @@ namespace Eclipse
                     }
                     else
                     {
-                        node.aabb.DistanceToObject = node.aabb.maxX - testAabb.maxX;
+                        node.aabb.DistanceToObject = node.aabb.Max.x - testAabb.Max.x;
+                        engine->GraphicsManager.GridManager->gridArray[node.aabb.GetEntityID()].aabb.DistanceToObject = node.aabb.DistanceToObject;
+                        overlaps.push_back(node.aabb.GetEntityID());
+                    }
+                }
+                else
+                {
+                    stack.push(node.leftNodeIndex);
+                    stack.push(node.rightNodeIndex);
+                }
+            }
+        }
+
+        return overlaps;
+    }
+
+    std::vector<unsigned int> AABBTree::CheckOverlapAgainstGrid(AabbComponent& object)
+    {
+        std::vector<unsigned int> overlaps;
+        std::stack<unsigned> stack;
+        AabbComponent& testAabb = object;
+
+        stack.push(RootNodeIndex);
+        while (!stack.empty())
+        {
+            unsigned nodeIndex = stack.top();
+            stack.pop();
+
+            if (nodeIndex == AABB_NULL_NODE)
+                continue;
+
+            AABBNode& node = AllNodes[nodeIndex];
+
+            if (node.aabb.Overlaps(testAabb))
+            {
+                if (node.isLeaf())
+                {
+                    if (overlaps.size() != 0)
+                    {
+                        unsigned int hi = overlaps[0];
+                        node.aabb.DistanceToObject = node.aabb.Max.x - testAabb.max.getX();
+                        float yo = engine->GraphicsManager.GridManager->gridArray[hi].aabb.DistanceToObject;
+
+                        if (abs(node.aabb.DistanceToObject) > abs(yo))
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            std::vector<unsigned int>::iterator it;
+                            it = overlaps.begin();
+                            overlaps.erase(it);
+                            overlaps.push_back(node.aabb.GetEntityID());
+                        }
+                    }
+                    else
+                    {
+                        node.aabb.DistanceToObject = node.aabb.Max.x - testAabb.max.getX();
                         engine->GraphicsManager.GridManager->gridArray[node.aabb.GetEntityID()].aabb.DistanceToObject = node.aabb.DistanceToObject;
                         overlaps.push_back(node.aabb.GetEntityID());
                     }
@@ -212,8 +269,8 @@ namespace Eclipse
             if (nodeIndex == AABB_NULL_NODE) continue;
 
             AABBNode& node = AllNodes[nodeIndex];
-            glm::vec3 AABBmin = { node.aabb.minX,node.aabb.minY , node.aabb.minZ };
-            glm::vec3 AABBmax = { node.aabb.maxX ,node.aabb.maxY , node.aabb.maxY };
+            glm::vec3 AABBmin = { node.aabb.Min.x,node.aabb.Min.y , node.aabb.Min.z };
+            glm::vec3 AABBmax = { node.aabb.Max.x ,node.aabb.Max.y , node.aabb.Max.z };
 
             bool collision = PickingManager::RayAabb(rayStart, rayDir, AABBmin, AABBmax, t);
 
@@ -232,6 +289,11 @@ namespace Eclipse
         }
 
         return overlaps;
+    }
+
+    unsigned int AABBTree::NumberOfIntersections(std::vector<unsigned int>& in)
+    {
+        return in.size();
     }
 
     void AABBTree::InsertLeaf(unsigned leafNodeIndex)

@@ -25,7 +25,7 @@ namespace Eclipse
         MAXCOUNT
     };
 
-    class AssimpModel : public IAABB
+    class AssimpModel //: public IAABB
     {
     private:
         unsigned int ID = 0;
@@ -63,8 +63,8 @@ namespace Eclipse
         void SetModelType(ModelType in);
         std::vector<glm::vec3> GetVertices();
         void SetProperties(std::string& ModelName , ModelType in , unsigned int ID);
-        DYN_AABB getAABB() const override;
-        DYN_AABB SetAABB(TransformComponent& in);
+        //DYN_AABB getAABB() const override;
+        //DYN_AABB SetAABB(TransformComponent& in);
         unsigned int GetEntityID();
     };
 
