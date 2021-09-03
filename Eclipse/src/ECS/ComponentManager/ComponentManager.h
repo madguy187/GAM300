@@ -14,6 +14,9 @@ namespace Eclipse
 		template<typename T>
 		void RegisterComponent()
 		{
+			std::string name{ typeid(T).name() };
+			mComponentNames.push_back(name.substr(name.find("::") + 2));
+
 			// Create a ComponentArray pointer and add it to the component arrays map
 			mComponentArrays.push_back({ std::make_unique<ComponentArray<T>>(),
 				[](IComponentArray& _container, const Entity entity)
@@ -82,9 +85,11 @@ namespace Eclipse
 		}
 
 		void Clear();
+		std::vector<std::string>& GetAllComponentNames();
 
 	private:
 		std::vector<ComponentBase> mComponentArrays;
+		std::vector<std::string> mComponentNames;
 		TypeID<IComponentArray> id;
 
 		template<typename T>

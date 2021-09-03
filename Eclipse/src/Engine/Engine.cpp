@@ -18,6 +18,7 @@
 #include "ImGui/Setup/ImGuiSetup.h"
 #include "ECS/SystemManager/Systems/System/MaterialSystem.h"
 #include "Serialization/SerializationManager.h"
+#include "ECS/SystemManager/Systems/System/GridSystem.h"
 
 bool Tester1(const Test1& e)
 {
@@ -64,7 +65,6 @@ namespace Eclipse
         world.RegisterComponent<TransformComponent>();
         world.RegisterComponent<RenderComponent>();
         world.RegisterComponent<CameraComponent>();
-        world.RegisterComponent<RenderComponent>();
         world.RegisterComponent<PointLightComponent>();
         world.RegisterComponent<DirectionalLightComponent>();
         world.RegisterComponent<AabbComponent>();
@@ -76,6 +76,7 @@ namespace Eclipse
         world.RegisterSystem<CameraSystem>();
         world.RegisterSystem<LightingSystem>();
         world.RegisterSystem<MaterialSystem>();
+        world.RegisterSystem<GridSystem>();
         world.RegisterSystem<PickingSystem>();
 
         // Render System
@@ -110,6 +111,7 @@ namespace Eclipse
         RenderSystem::Init();
         CameraSystem::Init();
         LightingSystem::Init();
+        GridSystem::Init();
 
         float currTime = static_cast<float>(clock());
         float accumulatedTime = 0.0f;
@@ -171,16 +173,22 @@ namespace Eclipse
             // FRAMEBUFFER BIND =============================
             engine->GraphicsManager.GlobalFrameBufferBind();
 
-            // RENDERSYSTEM =============================
-            world.Update<RenderSystem>();
+            // Reset DebugBoxes =============================
+            engine->GraphicsManager.ResetInstancedDebugBoxes();
+
+            // GRID SYSTEM =============================
+            world.Update<GridSystem>();
 
             // LIGHTINGSYSTEM =============================
             world.Update<LightingSystem>();
 
-            // Material SYstem
-            world.Update<MaterialSystem>();
-            
             world.Update<PickingSystem>();
+
+            // RENDERSYSTEM =============================
+            world.Update<RenderSystem>();
+
+            // Material SYstem =============================
+            world.Update<MaterialSystem>();
 
             // GRID DRAW ============================= Must be last of All Renders
             engine->GraphicsManager.GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
@@ -204,6 +212,7 @@ namespace Eclipse
         GraphicsManager.End();
         AssimpManager.CleanUpAllModels();
         ImGuiSetup::Destroy(EditorState);
+        CommandHistory::Clear();
     }
 
     bool Engine::GetEditorState()

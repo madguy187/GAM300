@@ -91,6 +91,21 @@ namespace Eclipse
         shdrpgm.UnUse();
     }
 
+    bool SpotLight::InsertSpotLightLight(SpotLightComponent& in)
+    {
+        if (_spotlights.insert({ in.ID , &in }).second == true)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    void SpotLight::ClearContainer()
+    {
+        _spotlights.clear();
+    }
+
     void SpotLight::CheckUniformLoc(Shader* _shdrpgm, SpotLightComponent& in_spot, int index, unsigned int containersize)
     {
         std::string number = std::to_string(index);

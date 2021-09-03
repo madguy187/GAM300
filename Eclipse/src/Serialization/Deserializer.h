@@ -38,7 +38,7 @@ namespace Eclipse
 		inline void ReadAttributeFromElement(const std::string& att_name, EntityType& att_data)
 		{
 			std::string str = GetAttributeValue(att_name);
-			att_data = lexical_cast<EntityType>(str);
+			att_data = lexical_cast_toEnum<EntityType>(str);
 		}
 		
 		template <>
@@ -52,44 +52,23 @@ namespace Eclipse
 		inline void ReadAttributeFromElement(const std::string& att_name, CameraComponent::CameraType& att_data)
 		{
 			std::string str = GetAttributeValue(att_name);
-			att_data = lexical_cast<CameraComponent::CameraType>(str);
+			att_data = lexical_cast_toEnum<CameraComponent::CameraType>(str);
 		}
 		
 		template <>
 		inline void ReadAttributeFromElement(const std::string& att_name, CameraComponent::ProjectionType& att_data)
 		{
 			std::string str = GetAttributeValue(att_name);
-			att_data = lexical_cast<CameraComponent::ProjectionType>(str);
+			att_data = lexical_cast_toEnum<CameraComponent::ProjectionType>(str);
 		}
 		
 		template <>
 		inline void ReadAttributeFromElement(const std::string& att_name, MaterialComponent::ModelType& att_data)
 		{
 			std::string str = GetAttributeValue(att_name);
-			att_data = lexical_cast<MaterialComponent::ModelType>(str);
+			att_data = lexical_cast_toEnum<MaterialComponent::ModelType>(str);
 		}
 		
-		template <>
-		inline void ReadAttributeFromElement(const std::string& att_name, RenderComponent::modelIt& att_data)
-		{
-			std::string str = GetAttributeValue(att_name);
-			att_data = Graphics::models.find(str);
-		}
-		
-		template <>
-		inline void ReadAttributeFromElement(const std::string& att_name, RenderComponent::textureIt& att_data)
-		{
-			std::string str = GetAttributeValue(att_name);
-			att_data = Graphics::textures.find(str);
-		}
-		
-		template <>
-		inline void ReadAttributeFromElement(const std::string& att_name, RenderComponent::shaderIt& att_data)
-		{
-			std::string str = GetAttributeValue(att_name);
-			att_data = Graphics::shaderpgms.find(str);
-		}
-
 		template <typename T, size_t N>
 		inline void ReadAttributeFromElement(Vector<T, N>& att_data)
 		{

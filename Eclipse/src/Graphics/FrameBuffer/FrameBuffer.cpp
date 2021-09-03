@@ -68,7 +68,7 @@ namespace Eclipse
     void Eclipse::FrameBuffer::Resize(unsigned width, unsigned height)
     {
         DeletCurrentFrameBuffer();
-        Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), Eclipse::FrameBufferMode::SCENEVIEW);
+        Eclipse::OpenGL_Context::CreateFrameBuffers(width, height, Eclipse::FrameBufferMode::GAMEVIEW);
         EDITOR_LOG_INFO("Resize Successful");
     }
 
@@ -105,7 +105,7 @@ namespace Eclipse
 
         glGenRenderbuffers(1, &m_data.depthBufferID);
         glBindRenderbuffer(GL_RENDERBUFFER, m_data.depthBufferID);
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight());
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, p_width, p_height);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_data.depthBufferID);
         //glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
@@ -189,6 +189,8 @@ namespace Eclipse
             glDeleteFramebuffers(1, &m_data.frameBufferID);
             glDeleteTextures(1, &m_data.TextureColourBuffer);
             glDeleteTextures(1, &m_data.depthBufferID);
+
+            engine->GraphicsManager.mRenderContext._Framebuffers.erase(FrameBufferType);
             EDITOR_LOG_INFO("FrameBuffer deleted successfully");
         }
     }

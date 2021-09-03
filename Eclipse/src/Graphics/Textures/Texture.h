@@ -22,6 +22,7 @@ namespace Eclipse
         std::string Path;
 
     public:
+        Texture() {};
         Texture(std::string dir, std::string path, aiTextureType type);
 
         void Generate();

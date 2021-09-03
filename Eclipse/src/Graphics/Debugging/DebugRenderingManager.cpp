@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "DebugRenderingManager.h"
 
-void Eclipse::DebugRenderingManager::CheckUniformLoc(Graphics::shaderIt _shdrpgm, CameraComponent& _camera)
+void Eclipse::DebugRenderingManager::CheckUniformLoc(Shader*_shdrpgm, CameraComponent& _camera)
 {
-    GLint uniform_var_loc1 = _shdrpgm->second.GetLocation("uModelToNDC");
-    GLint uniform_var_loc2 = _shdrpgm->second.GetLocation("uColor");
+    GLint uniform_var_loc1 = _shdrpgm->GetLocation("uModelToNDC");
+    GLint uniform_var_loc2 = _shdrpgm->GetLocation("uColor");
     
     if (uniform_var_loc1 >= 0)
     {
@@ -35,11 +35,11 @@ void Eclipse::DebugRenderingManager::DrawFrustum(unsigned int ID, unsigned int f
     auto& lineArr = std::any_cast<Frustum>(debugShapes[ID]).GetLineSegments();
     auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 
-    auto shdrpgm = Graphics::shaderpgms.find("FrustrumShader");
+    auto& shdrpgm = Graphics::shaderpgms["FrustrumShader"];
 
     for (unsigned int i = 0; i < lineArr.size(); ++i)
     {
-        shdrpgm->second.Use();
+        shdrpgm.Use();
 
         glBindVertexArray(frustum.GetVaoID());
 
@@ -54,13 +54,13 @@ void Eclipse::DebugRenderingManager::DrawFrustum(unsigned int ID, unsigned int f
         
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        CheckUniformLoc(shdrpgm, _camera);
+        CheckUniformLoc(&shdrpgm, _camera);
 
         glLineWidth(5.0f); //Note that glLineWidth() is deprecated
         glDrawArrays(frustum.GetPrimitiveType(), 0, 2);
 
         glBindVertexArray(0);
-        shdrpgm->second.UnUse();
+        shdrpgm.UnUse();
     }
 }
 

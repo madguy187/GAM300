@@ -7,40 +7,33 @@ void Eclipse::PickingSystem::Init()
 
 void Eclipse::PickingSystem::Update()
 {
+	// Probably use for the game in the future
+}
+
+void Eclipse::PickingSystem::EditorUpdate()
+{
 	auto& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 
-	if (ImGui::IsMouseClicked(0))
+	for (auto& it : mEntities)
 	{
-		for (auto& it : mEntities)
+		auto& aabb = engine->world.GetComponent<AabbComponent>(it);
+
+		float t;
+		glm::vec3 rayDir = engine->gPicker.ComputeCursorRayDirection();
+		bool collision = engine->gPicker.RayAabb(camera.eyePos, rayDir, aabb.min.ConvertToGlmVec3Type(), aabb.max.ConvertToGlmVec3Type(), t);
+
+		if (collision)
 		{
-			auto& aabb = engine->world.GetComponent<AabbComponent>(it);
+			auto& material = engine->world.GetComponent<MaterialComponent>(it);
 
-			float t;
-			glm::vec3 rayDir = engine->gPicker.ComputeCursorRayDirection();
-			bool collision = engine->gPicker.RayAabb(camera.eyePos, rayDir, aabb.min.ConvertToGlmVec3Type(), aabb.max.ConvertToGlmVec3Type(), t);
-
-			if (collision)
+			if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
 			{
-				auto& material = engine->world.GetComponent<MaterialComponent>(it);
-				
-				if (material.Highlight)
-				{
-					engine->gPicker.SetCurrentCollisionID(MAX_ENTITY);
-					engine->MaterialManager.UnHighlight(it);
-				}
-				else
-				{
-					engine->gPicker.SetCurrentCollisionID(it);
-					engine->MaterialManager.HighlightClick(it);
-				}			
+				engine->MaterialManager.UnHighlight(engine->gPicker.GetCurrentCollisionID());
 			}
-			else
-			{
-				engine->gPicker.SetCurrentCollisionID(MAX_ENTITY);
-				engine->MaterialManager.UnHighlight(it);
-			}
-
-			engine->gPicker.UpdateAabb(it);
+			engine->gPicker.SetCurrentCollisionID(it);
+			engine->MaterialManager.HighlightClick(it);
 		}
+
+		engine->gPicker.UpdateAabb(it);
 	}
 }

@@ -10,4 +10,8 @@ namespace Eclipse
 			mComponentArrays[i].Clear(*(mComponentArrays[i]._container));
 		}
 	}
+	std::vector<std::string>& ComponentManager::GetAllComponentNames()
+	{
+		return mComponentNames;
+	}
 }

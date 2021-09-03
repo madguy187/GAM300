@@ -81,11 +81,29 @@ namespace Eclipse
 			_currElement->SetAttribute(att_name.c_str(), c.c_str());
 		}
 
-		/*template <>
-		inline void AddAttributeToElement<bool>(const std::string& att_name, const bool& att_data)
+		template <>
+		inline void AddAttributeToElement(const std::string& att_name, const EntityType& att_data)
 		{
-			_currElement->SetAttribute(att_name.c_str(), att_data ? "true" : "false");
-		}*/
+			_currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<EntityType>(att_data).c_str());
+		}
+		
+		template <>
+		inline void AddAttributeToElement(const std::string& att_name, const CameraComponent::CameraType& att_data)
+		{
+			_currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<CameraComponent::CameraType>(att_data).c_str());
+		}
+		
+		template <>
+		inline void AddAttributeToElement(const std::string& att_name, const CameraComponent::ProjectionType& att_data)
+		{
+			_currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<CameraComponent::ProjectionType>(att_data).c_str());
+		}
+		
+		template <>
+		inline void AddAttributeToElement(const std::string& att_name, const MaterialComponent::ModelType& att_data)
+		{
+			_currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<MaterialComponent::ModelType>(att_data).c_str());
+		}
 
 		template <typename T>
 		inline void AddAttributeToElement(const std::string& att_name, const std::vector<T>& att_data)

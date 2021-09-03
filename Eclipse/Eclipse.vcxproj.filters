@@ -45,6 +45,10 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
     <ClInclude Include="src\Editor\Windows\SwitchViews\SwitchViews.h" />
     <ClInclude Include="src\Editor\Utilities\DragAndDrop.h" />
+    <ClInclude Include="src\Graphics\Grid\AABB.h" />
+    <ClInclude Include="src\Graphics\Grid\IAABB.h" />
+    <ClInclude Include="src\Graphics\Grid\AABBTree.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\GridSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem.h" />
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h" />
@@ -130,6 +134,14 @@
     <ClInclude Include="src\TypeID\TypeID.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\SceneManagement\SceneManager.h" />
+    <ClInclude Include="src\Editor\Utilities\OpenFileDialog.h" />
+    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ICommand.h" />
+    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.h" />
+    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec3DeltaCommand.h" />
+    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\PrimitiveDeltaCommand.h" />
+    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec2DeltaCommand.h" />
+    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec4DeltaCommand.h" />
+    <ClInclude Include="src\Editor\ECGuiAPI\ECGuiInputHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\pch.cpp" />
@@ -146,6 +158,9 @@
     <ClCompile Include="src\Serialization\TinyXML\tinyxml.cpp" />
     <ClCompile Include="src\Serialization\TinyXML\tinyxmlerror.cpp" />
     <ClCompile Include="src\Serialization\TinyXML\tinyxmlparser.cpp" />
+    <ClCompile Include="src\Graphics\Grid\AABBTree.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\GridSystem.cpp" />
+    <ClCompile Include="src\Graphics\Grid\AABB.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp" />
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp" />
     <ClCompile Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.cpp" />
@@ -227,6 +242,9 @@
     <ClCompile Include="src\Physics\PhysicsManager.cpp" />
     <ClCompile Include="src\Time\Clock.cpp" />
     <ClCompile Include="src\SceneManagement\SceneManager.cpp" />
+    <ClCompile Include="src\Editor\Utilities\OpenFileDialog.cpp" />
+    <ClCompile Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.cpp" />
+    <ClCompile Include="src\Editor\ECGuiAPI\ECGuiInputHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\AABB.frag" />

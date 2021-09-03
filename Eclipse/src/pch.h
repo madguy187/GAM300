@@ -78,7 +78,7 @@
 // Custom Libraries
 #include "Library/Math/Vector.h"
 #include "Library/Math/Matrix.h"
-
+#include "Editor/Utilities/UndoAndRedo/ICommand.h"
 #include "Library/Strings/Lexical.h"
 #include "Library/Strings/StringsConcatenate.h"
 

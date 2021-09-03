@@ -25,6 +25,7 @@ namespace Eclipse
 		MenuBar& GetMenuBar();
 		size_t GetWindowListSize();
 		Entity GetSelectedEntity() const;
+		void SetSelectedEntity(Entity ID);
 
 		void SaveTemp(const char* fullpath = "Data/Temp/Temp.xml");
 		void LoadTemp(const char* fullpath = "Data/Temp/Temp.xml");
@@ -48,7 +49,7 @@ namespace Eclipse
 		void Clear();
 
 		std::vector<Entity> EntityHierarchyList_;
-		std::map<Entity, EntityType> EntityToTypeMap_;
+		std::map<Entity, int> EntityToIndexMap_;
 		std::map<const char*, const char*> DataComponentFilter_;
 		size_t GEHIndex_{ 0 };
 		DragAndDrop Item_;

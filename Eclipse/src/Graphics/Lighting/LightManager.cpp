@@ -57,6 +57,30 @@ namespace Eclipse
         return ApplyLighting;
     }
 
+    bool LightManager::InsertPointLight(PointLightComponent& in)
+    {
+        return _allpointlights.InsertPointLight(in);
+    }
+
+    bool LightManager::InsertDirectionalLight(DirectionalLightComponent& in)
+    {
+        return _DirectionalLights.InsertDirectionalLight(in);
+    }
+
+    bool LightManager::InsertSpotLightLight(SpotLightComponent& in)
+    {
+        return _allspotlights.InsertSpotLightLight(in);
+    }
+
+    bool LightManager::ClearAllContainer()
+    {
+        _allpointlights.ClearContainer();
+        _DirectionalLights.ClearContainer();
+        _allspotlights.ClearContainer();
+
+        return true;
+    }
+
     void LightManager::DrawPointLights(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
     {
         _allpointlights.Draw(in, framebufferID, indexID, mode);

@@ -5,7 +5,7 @@
 void Eclipse::CameraSystem::Init()
 {
 	engine->gCamera.CreateEditorCamera();
-	engine->gCamera.SetCameraSpeed(5.0f);
+	engine->gCamera.SetCameraSpeed(50.0f);
 
 	engine->gCamera.CreateViewCamera(CameraComponent::CameraType::TopView_Camera);
 	engine->gCamera.CreateViewCamera(CameraComponent::CameraType::BottomView_Camera);

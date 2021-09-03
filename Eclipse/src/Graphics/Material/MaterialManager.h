@@ -6,14 +6,14 @@
 
 namespace Eclipse
 {
-    typedef std::map<int, MaterialComponent*> MaterialContainer;
-    using MtIT = std::map<int, MaterialComponent*>::iterator;
+    typedef std::unordered_map<int, MaterialComponent*> MaterialContainer;
+    using MtIT = std::unordered_map<int, MaterialComponent*>::iterator;
 
-    typedef std::map<int, MaterialComponent*> HighlightingContainer;
-    using HighlightIT = std::map<int, MaterialComponent*>::iterator;
+    typedef std::unordered_map<int, MaterialComponent*> HighlightingContainer;
+    using HighlightIT = std::unordered_map<int, MaterialComponent*>::iterator;
 
-    typedef std::map<int, AssimpModel*> ModelHighLight;
-    using HighlightModelIT = std::map<int, AssimpModel*>::iterator;
+    typedef std::unordered_map<int, AssimpModel*> ModelHighLight;
+    using HighlightModelIT = std::unordered_map<int, AssimpModel*>::iterator;
 
     struct Material
     {
