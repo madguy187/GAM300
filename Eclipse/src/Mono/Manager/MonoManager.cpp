@@ -124,15 +124,16 @@ namespace Eclipse
 				continue;
 			}
 
-			MonoMethod* ctor_method = mono_class_get_method_from_name(klass, ".ctor", -1);
+			MonoMethod* ctor_method = mono_class_get_method_from_name(klass, "Update", -1);
 			if (!ctor_method)
 			{
 				std::cout << "Failed to get method" << std::endl;
 				continue;
 			}
 
+			void* args[1];
 			//mono_runtime_object_init(obj);
-			//mono_runtime_invoke(ctor_method, obj, args, NULL);
+			mono_runtime_invoke(ctor_method, obj, args, NULL);
 		}
 	}
 

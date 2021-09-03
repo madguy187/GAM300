@@ -11,7 +11,7 @@ namespace Eclipse
 
         protected void InitBehavior(UInt32 handle, UInt32 entity)
         {
-            gameObject = new GameObject;
+            gameObject = new GameObject();
             gc_handle = handle;
             Entity = entity;
         }
