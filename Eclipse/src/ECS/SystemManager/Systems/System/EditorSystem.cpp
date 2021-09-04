@@ -10,7 +10,7 @@ namespace Eclipse
 		{
 			ECGuiInputHandler::Update();
 
-			for (const auto& window : engine->editorManager->GetAllWindows())
+			for (const auto& window : engine->editorManager->GetAllWindowsByRef())
 			{
 				window->Update();
 			}

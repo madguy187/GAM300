@@ -136,8 +136,8 @@ namespace Eclipse
 
 	bool ECGui::CreateCollapsingHeader(const char* name, bool forInspector)
 	{
-		if (forInspector)
-			engine->editorManager->DataComponentFilter_[name] = name;
+		/*if (forInspector)
+			engine->editorManager->DataComponentFilter_[name] = name;*/
 
 		return ImGuiAPI::CreateCollapsingHeader(name);
 	}

@@ -46,15 +46,15 @@ namespace Eclipse
     template<typename T>
     struct enumConstRefHolder
     {
-        T const& enumVal;
-        enumConstRefHolder(T const& enumVal) : enumVal(enumVal) {}
+        T& enumVal;
+        enumConstRefHolder(T& enumVal) : enumVal(enumVal) {}
     };
 
     // The next two functions reads/writes an enum as a string.
     template<typename T>
     inline std::ostream& operator<<(std::ostream& str, enumConstRefHolder<T> const& data)
     {
-        return str << enumStrings<T>::data[data.enumVal];
+        return str << enumStrings<T>::data[static_cast<int>(data.enumVal)];
     }
 
     template<typename T>
@@ -77,14 +77,14 @@ namespace Eclipse
     // Public interface: use the ability of function to deduce their template type without
     // being explicitly told to create the correct type of enumRefHolder<T>
     template <typename T>
-    enumConstRefHolder<T> EnumToString(T const& e) { return enumConstRefHolder<T>(e); }
+    enumConstRefHolder<T> EnumToString(T& e) { return enumConstRefHolder<T>(e); }
 
     template <typename T>
     enumRefHolder<T> EnumFromString(T& e) { return enumRefHolder<T>(e); }
 
     // Use for direct conversion to its respective types
     template <typename T>
-    inline std::string lexical_cast_toStr(T const& e)
+    inline std::string lexical_cast_toStr(T& e)
     {
         std::stringstream stream;
         stream << EnumToString(e);

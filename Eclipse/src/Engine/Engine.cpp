@@ -69,6 +69,7 @@ namespace Eclipse
         world.RegisterComponent<AabbComponent>();
         world.RegisterComponent<SpotLightComponent>();
         world.RegisterComponent<MaterialComponent>();
+    	world.RegisterComponent<testComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
@@ -185,7 +186,7 @@ namespace Eclipse
             world.Update<PickingSystem>();
 
             // RENDERSYSTEM =============================
-            world.Update<RenderSystem>();
+			world.Update<RenderSystem>();
 
             // Material SYstem =============================
             world.Update<MaterialSystem>();
