@@ -4,8 +4,9 @@
 #include "Graphics/Grid/IAABB.h"
 #include "Graphics/Grid/AABB.h"
 #include "Graphics/Grid/Box.h"
-#include "Graphics/Grid/AABBTree.h"
 #include "ECS/ComponentManager/Components/AabbComponent.h"
+#include "Graphics/Grid/AABBTree.h"
+#include "ECS/ComponentManager/Components/TransformComponent.h"
 
 namespace Eclipse
 {
@@ -57,26 +58,26 @@ namespace Eclipse
         // The Whole Grid ID
         unsigned int GridID;
         // Unit length of each Title
-        float GridScale = 0.0f;
+        float GridScale = 5.0f;
         // GridScale % InnerRatio Should be 0 as it gives u the number of boxes inside a Tile
-        int InnerRatio = 0;
+        int InnerRatio = 1;
         // X Grid Axis Outline Thickness
-        int SingleXAxisLineThickness = 0;
+        int SingleXAxisLineThickness = 5;
         // Z Grid Axis Outline Thickness
-        int SingleZAxisLineThickness = 0;
+        int SingleZAxisLineThickness = 5;
         // X Grid Axis Outline Colour
-        float XAxisColour = 0.0f;
+        float XAxisColour = 1.0f;
         // Z Grid Axis Outline Colour
-        float ZAxisColour = 0.0f;
+        float ZAxisColour = 1.0f;
         // Whole Grid Colour
-        ECVec3 GridColour{ 0.0f,0.0f,0.0f };
+        ECVec3 GridColour{ 0.3f,0.3f,0.3f };
         // What Shape am i using to Render the Grid
         Quad* WholeGrid = nullptr;
         // Shader Reference 
         Shader* ShaderRef = nullptr;
 
         // Number of Tiles Each Side.
-        unsigned int GridSize = 0;
+        unsigned int GridSize = 16;
         // Total Number of Tiles for the Grid
         unsigned int TotalTiles = 0;
         // Flag to Add Debug Boxes for each Tile
@@ -95,13 +96,10 @@ namespace Eclipse
         ECVec3 StartingPosition{ 0.0f,0.0f,0.0f };
         // Vector of all the Tiles
         std::vector<Tile> GridArray;
-        // Current Snap Value
-        float CurrentSnapValue = 0.0f;
-        // Grid that holds each ID and Tile
-        std::map<unsigned int, std::shared_ptr<Tile>> gridArray; //key = the grid count;
 
     public:
-        Grid();
+        std::unordered_map<unsigned int, Tile> gridArray; //key = the grid count;
+
         // Get Model Reference
         Quad* GetModelReference();
         // Get Model Reference
@@ -168,18 +166,14 @@ namespace Eclipse
         void DrawGrid(unsigned int FrameBufferID);
         // Destructor
         ~Grid();
-        // Aassign Snap
-        ECVec3 AssignSnap(unsigned int id);
-        // Check Current SnapValue Same?
-        bool CheckCurrentSnapValue();
-        // If Snap Updated , Recalculate
-        void UpdateGridCoordinates();
-        // Set Distance for Node and Gridarray // Need to find a way for them to share resources //
-        void SetDistance(AABBNode& Node, float in, unsigned int indexin);
-        // Get Tile's distanceToCurrentObject by index
-        float GetDistanceToObject(unsigned int indexin);
-        // Get with between two tiles , preparations for snapping
-        float GetWidth(AABBNode& lhs, AabbComponent& rhs) const;
+        // Get Current Tile's distancetotheObject
+        float GetDistanceToObject(unsigned int indexIn);
+        // Set distance for Both the Tree and GridArray
+        void SetDistance(AABBNode& Nodein , AabbComponent& aabbin , unsigned int id );
+        // Set Distance For Current Node for Grid
+        void SetDistance(AABBNode& Nodein, AabbComponent& aabbin);
+        // Only check for 1 Intersection.
+        void SetPosition(TransformComponent& in , unsigned int ID);
 
         // UNSED ================================
         ECVec3 SnapCalculate(ECVec3& p, float s);

@@ -12,20 +12,20 @@ namespace Eclipse
 
         // Create Grid =============================
         engine->GridManager->Init();
+        engine->GridManager->DebugPrint();
     }
 
     void GridSystem::Update()
     {
-        for (auto& it : mEntities)
+        for (auto& EntityId : mEntities)
         {
-            auto& aabb = engine->world.GetComponent<AabbComponent>(it);
-            auto& Transform = engine->world.GetComponent<TransformComponent>(it);
-
+            auto& aabb = engine->world.GetComponent<AabbComponent>(EntityId);
+            auto& Transform = engine->world.GetComponent<TransformComponent>(EntityId);       
             auto& ModelVsGrid = engine->CollisionGridTree.CheckOverlapAgainstGrid(DYN_AABB::SetAABB(Transform, aabb));
 
             if (engine->CollisionGridTree.NumberOfIntersections(ModelVsGrid))
             {
-                Transform.position = engine->GridManager->AssignSnap(ModelVsGrid[0]);
+                engine->GridManager->SetPosition(Transform, ModelVsGrid[0]);
             }
         }
 

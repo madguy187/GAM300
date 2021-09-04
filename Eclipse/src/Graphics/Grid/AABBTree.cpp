@@ -131,10 +131,10 @@ namespace Eclipse
                     if (overlaps.size() != 0)
                     {
                         unsigned int hi = overlaps[0];
-                        node.aabb.SetDistanceToObject(node.aabb.Max.x - testAabb.Max.x);
-                        float yo = engine->GridManager->GetDistanceToObject(hi);
+                        node.aabb.DistanceToObject = node.aabb.Max.x - testAabb.Max.x;
+                        float yo = engine->GridManager->gridArray[hi].aabb.DistanceToObject;
 
-                        if (abs(node.aabb.GetDistanceToObject()) > abs(yo))
+                        if (abs(node.aabb.DistanceToObject) > abs(yo))
                         {
                             continue;
                         }
@@ -148,8 +148,8 @@ namespace Eclipse
                     }
                     else
                     {
-                        node.aabb.SetDistanceToObject(node.aabb.Max.x - testAabb.Max.x);
-                        engine->GridManager->SetDistance(node, node.aabb.Max.x - testAabb.Max.x, node.aabb.GetEntityID());
+                        node.aabb.DistanceToObject = node.aabb.Max.x - testAabb.Max.x;
+                        engine->GridManager->gridArray[node.aabb.GetEntityID()].aabb.DistanceToObject = node.aabb.DistanceToObject;
                         overlaps.push_back(node.aabb.GetEntityID());
                     }
                 }
@@ -168,7 +168,7 @@ namespace Eclipse
     {
         std::vector<unsigned int> overlaps;
         std::stack<unsigned> stack;
-        AabbComponent& ObjectToBeCheckedAgsintTree = object;
+        AabbComponent& CheckedObjectAgsintTree = object;
 
         stack.push(RootNodeIndex);
         while (!stack.empty())
@@ -181,20 +181,18 @@ namespace Eclipse
 
             AABBNode& node = AllNodes[nodeIndex];
 
-            float Distance = 0;
-
-            if (node.aabb.Overlaps(ObjectToBeCheckedAgsintTree))
+            if (node.aabb.Overlaps(CheckedObjectAgsintTree))
             {
                 if (node.isLeaf())
                 {
                     if (overlaps.size() != 0)
                     {
-                        unsigned int FirstRegisteredTileIndex = overlaps[0];
-                        Distance = node.aabb.Max.x - ObjectToBeCheckedAgsintTree.max.getX();
-                        node.aabb.SetDistanceToObject(Distance);
-                        float CurrentTileDistance = engine->GridManager->GetDistanceToObject(FirstRegisteredTileIndex);
+                        unsigned int FirstTileRegistered = overlaps[0];
+                        engine->GridManager->SetDistance(node, CheckedObjectAgsintTree);
+                        //node.aabb.DistanceToObject = node.aabb.Max.x - testAabb.max.getX();
+                        float RegisteredTileDistance = engine->GridManager->GetDistanceToObject(FirstTileRegistered);
 
-                        if (abs(node.aabb.GetDistanceToObject()) > abs(CurrentTileDistance))
+                        if (abs(node.aabb.DistanceToObject) > abs(RegisteredTileDistance))
                         {
                             continue;
                         }
@@ -208,7 +206,9 @@ namespace Eclipse
                     }
                     else
                     {
-                        engine->GridManager->SetDistance(node, Distance, node.aabb.GetEntityID());
+                        engine->GridManager->SetDistance(node, object, node.aabb.GetEntityID());
+                        //node.aabb.DistanceToObject = node.aabb.Max.x - testAabb.max.getX();
+                        //engine->GridManager->gridArray[node.aabb.GetEntityID()].aabb.DistanceToObject = node.aabb.DistanceToObject;
                         overlaps.push_back(node.aabb.GetEntityID());
                     }
                 }

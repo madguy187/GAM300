@@ -12,11 +12,11 @@ namespace Eclipse
         glm::vec3 Min;
         glm::vec3 Max;
         float surfaceArea;
+        float DistanceToObject = 0.0f;
 
     private:
         unsigned int EntityID = 0;
         bool IsGrid = false;
-        float DistanceToObject = 0.0f;
 
     public:
         DYN_AABB();
@@ -42,8 +42,7 @@ namespace Eclipse
         ECVec3 GetMinimum(TransformComponent& in);
         ECVec3 GetMaximum(TransformComponent& in);
         void UpdateMinMax(TransformComponent& in);
-        void SetDistanceToObject(float in);
-        float GetDistanceToObject();
+
     private:
         float CalculateSurfaceArea();
         void SetMinimum(ECVec3& in);
