@@ -22,7 +22,9 @@ std::string FileDialog::FileBrowser()
 		std::filesystem::current_path(_originPath);
 		//open file (de-serialize here)
 		std::filesystem::path tempPath = fileName;
-		return tempPath.filename().string();
+		
+		EDITOR_LOG_INFO(tempPath.string().c_str());
+		return tempPath.string();
 	}
 	return std::string();
 }
@@ -50,7 +52,8 @@ std::string FileDialog::SaveFile()
 		std::filesystem::current_path(_originPath);
 		
 		//save file  (serialize here)
-		return  _path.filename().string();
+		EDITOR_LOG_INFO(_path.string().c_str());
+		return  _path.string();
 	}
 	return std::string();
 }
