@@ -11,14 +11,21 @@ namespace Eclipse
 	public:
 		EditorManager();
 
+		// Intialization
 		void InitGUIWindows();
 		void InitMenu();
 		void InitFont();
 
+		// Registry
 		Entity CreateDefaultEntity(EntityType type);
 		void RegisterExistingEntity(Entity ID);
+		void InsertExistingEntity(size_t pos, Entity ID);
 		void DestroyEntity(Entity ID);
 
+		// Editor Utilities
+		void SwapEntities(size_t firstIndex, size_t secondIndex);
+
+		// Getters
 		std::vector<std::unique_ptr<ECGuiWindow>>& GetAllWindowsByRef();
 		const std::vector<Entity>& GetEntityListByConstRef() const;
 		const Entity* GetEntityListData();
@@ -26,8 +33,10 @@ namespace Eclipse
 		size_t GetWindowListSize() const;
 		Entity GetSelectedEntity() const;
 		size_t GetEntityListSize() const;
+		int GetEntityIndex(Entity ID);
 		bool IsEntityListEmpty() const;
 
+		// Setters
 		void SetSelectedEntity(Entity ID);
 		void SetGlobalIndex(size_t index);
 
@@ -47,6 +56,7 @@ namespace Eclipse
 			return temp;
 		}
 		
+		// Cleaning Up
 		void Clear();
 
 		// std::map<const char*, const char*> DataComponentFilter_;
@@ -57,7 +67,7 @@ namespace Eclipse
 		size_t Size_{ 0 };
 
 		std::vector<Entity> EntityHierarchyList_;
-		std::map<Entity, int> EntityToIndexMap_;
+		std::unordered_map<Entity, int> EntityToIndexMap_;
 		size_t GEHIndex_{ 0 };
 
 		template <typename TWindow>

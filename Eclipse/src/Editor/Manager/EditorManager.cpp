@@ -110,23 +110,37 @@ namespace Eclipse
 
 	void EditorManager::DestroyEntity(Entity ID)
 	{
-		for (size_t i = 0; i < EntityHierarchyList_.size(); ++i)
+		size_t pos = static_cast<size_t>(EntityToIndexMap_[ID]);
+
+		EntityHierarchyList_.erase(EntityHierarchyList_.begin() + pos);
+		EntityToIndexMap_.erase(ID);
+
+		if (!EntityHierarchyList_.empty())
 		{
-			if (ID == EntityHierarchyList_[i])
-			{
-				EntityHierarchyList_.erase(EntityHierarchyList_.begin() + i);
-
-				if (i == EntityHierarchyList_.size())
-					GEHIndex_ = EntityHierarchyList_.size() - 1;
-				else
-					GEHIndex_ = i;
-
-				break;
-			}
+			if (pos == EntityHierarchyList_.size())
+				SetSelectedEntity(EntityHierarchyList_[EntityHierarchyList_.size() - 1]);
+			else
+				SetSelectedEntity(EntityHierarchyList_[pos]);
 		}
 
-		EntityToIndexMap_.erase(ID);
 		engine->world.DestroyEntity(ID);
+	}
+
+	void EditorManager::SwapEntities(size_t firstIndex, size_t secondIndex)
+	{
+		EntityToIndexMap_[EntityHierarchyList_[firstIndex]] = static_cast<int>(secondIndex);
+		EntityToIndexMap_[EntityHierarchyList_[secondIndex]] = static_cast<int>(firstIndex);;
+
+		auto tmp = EntityHierarchyList_[firstIndex];
+		EntityHierarchyList_[firstIndex] = EntityHierarchyList_[secondIndex];
+		EntityHierarchyList_[secondIndex] = tmp;
+	}
+
+	void EditorManager::InsertExistingEntity(size_t pos, Entity ID)
+	{
+		auto itrPos = EntityHierarchyList_.begin() + pos;
+		EntityHierarchyList_.insert(itrPos, ID);
+		EntityToIndexMap_[ID] = static_cast<int>(pos);
 	}
 
 	std::vector<std::unique_ptr<ECGuiWindow>>& EditorManager::GetAllWindowsByRef()
@@ -165,6 +179,11 @@ namespace Eclipse
 	size_t EditorManager::GetEntityListSize() const
 	{
 		return EntityHierarchyList_.size();
+	}
+
+	int EditorManager::GetEntityIndex(Entity ID)
+	{
+		return EntityToIndexMap_[ID];
 	}
 
 	bool EditorManager::IsEntityListEmpty() const

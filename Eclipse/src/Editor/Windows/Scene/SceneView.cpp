@@ -76,22 +76,8 @@ namespace Eclipse
 	{
 		ImGuiIO& io = ImGui::GetIO();
 
-		// Delete Entity
-		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Delete)))
-		{
-			if (!engine->editorManager->IsEntityListEmpty())
-			{
-				Entity currEnt = engine->editorManager->GetSelectedEntity();
-
-				if (currEnt != engine->gCamera.GetEditorCameraID() ||
-					currEnt != engine->gCamera.GetGameCameraID())
-				{
-					engine->editorManager->DestroyEntity(currEnt);
-				}
-			}
-		}
 		// Gizmos
-		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Q)))
+		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Q)))
 		{
 			if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
 				m_GizmoType = -1;
