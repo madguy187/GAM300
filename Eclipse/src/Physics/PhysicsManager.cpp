@@ -158,11 +158,7 @@ namespace Eclipse
 			std::cout << "creatematerial failed" << std::endl;
 			return;
 		}
-
 		PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*dynamic_cast<PxRigidActor*>(Px_Actors[ent]), PxBoxGeometry{ hx,hy,hz }, *tempmat);
-		dynamic_cast<PxRigidActor*>(Px_Actors[ent])->attachShape(*tempshape);
-		tempshape->release();
-
 	}
 
 	void PhysicsManager::AttachSphereToActor(Entity ent, float radius)
@@ -177,8 +173,6 @@ namespace Eclipse
 			return;
 		}
 		PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*dynamic_cast<PxRigidActor*>(Px_Actors[ent]), PxSphereGeometry{ radius }, *tempmat);
-		dynamic_cast<PxRigidActor*>(Px_Actors[ent])->attachShape(*tempshape);
-		tempshape->release();
 	}
 
 	void PhysicsManager::AttachCapsuleToActor(Entity ent, float radius,float halfheight)
@@ -194,8 +188,6 @@ namespace Eclipse
 		}
 
 		PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*dynamic_cast<PxRigidActor*>(Px_Actors[ent]), PxCapsuleGeometry{ radius,halfheight }, *tempmat);
-		dynamic_cast<PxRigidActor*>(Px_Actors[ent])->attachShape(*tempshape);
-		tempshape->release();
 	}
 	
 	void PhysicsManager::AddActorToScene(Entity ent)
@@ -230,20 +222,28 @@ namespace Eclipse
 		}
 		if (Px_Actors[ent] != nullptr)
 		{
-			PxVec3 temp;
-			PxVec3 temptrans;
+			PxVec3 tempforce{ 0,0,0 };
+			PxVec3 temptrans{0,0,0};
+			PxQuat temprot{0,0,0,0};
 
-			temp.x = rigid.forces.getX();
-			temp.y = rigid.forces.getY();
-			temp.z = rigid.forces.getZ();
+			tempforce.x = rigid.forces.getX();
+			tempforce.y = rigid.forces.getY();
+			tempforce.z = rigid.forces.getZ();
+
 			temptrans.x = transform.position.x;
 			temptrans.y = transform.position.y;
 			temptrans.z = transform.position.z;
 
-			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setGlobalPose(PxTransform{ temptrans });
-			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setForceAndTorque(temp, { 0,0,0 });
+			temprot.x = sinf(transform.rotation.getX() / 2);
+			temprot.y = sinf(transform.rotation.getY() / 2);
+			temprot.z = sinf(transform.rotation.getZ() / 2);
+	
+			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setGlobalPose(PxTransform{ temptrans,temprot });
+			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setForceAndTorque(tempforce, { 0,0,0 });
 			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setMass(rigid.mass);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setActorFlag(PxActorFlag::eDISABLE_GRAVITY,rigid.enableGravity ? false : true);
+			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setAngularVelocity(PxVec3{ 0,0,5 });
+			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setAngularDamping(0.f);
 		}
 	}
 
@@ -258,6 +258,10 @@ namespace Eclipse
 		transform.position.setX(temp.p.x);
 		transform.position.setY(temp.p.y);
 		transform.position.setZ(temp.p.z);
+		
+		transform.rotation.setX(asinf(temp.q.x) * 2);
+		transform.rotation.setY(asinf(temp.q.y) * 2);
+		transform.rotation.setZ(asinf(temp.q.z) * 2);
 	}
 
 	void PhysicsManager::Simulate()
