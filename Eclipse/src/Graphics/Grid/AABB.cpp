@@ -117,9 +117,19 @@ namespace Eclipse
         Max = { in.getX() , in.getY() , in.getZ() };
     }
 
+    void DYN_AABB::SetDistanceToObject(float in)
+    {
+        DistanceToObject = in;
+    }
+
     float DYN_AABB::CalculateSurfaceArea()
     {
         return 2.0f * (GetWidth() * GetHeight() + GetWidth() * GetDepth() + GetHeight() * GetDepth());
+    }
+
+    float DYN_AABB::GetDistanceToObject()
+    {
+        return DistanceToObject;
     }
 
     bool DYN_AABB::Overlaps(const AabbComponent& other) const

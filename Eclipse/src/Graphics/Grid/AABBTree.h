@@ -4,6 +4,7 @@
 #include "IAABB.h"
 #include "Graphics/ModelFactory/AssimpModel/AssimpModel.h"
 #include "ECS/ComponentManager/Components/AabbComponent.h"
+#include "Graphics/Grid/Grid.h"
 
 #define AABB_NULL_NODE 0xffffffff
 
@@ -27,7 +28,6 @@ namespace Eclipse
     {
     private:
         std::map<std::shared_ptr<IAABB>, unsigned int> AABBToNodeMap;
-        std::unordered_map<unsigned int, AABBNode> AllNodes;
         unsigned int RootNodeIndex = 0;
         unsigned int AllocatedNodeCount = 0;
         unsigned int NextFreeNoedIndex = 0;
@@ -35,6 +35,7 @@ namespace Eclipse
         unsigned int GrowthSize = 0;
 
     public:
+        std::unordered_map<unsigned int, AABBNode> AllNodes;
         AABBTree(unsigned initialSize);
         ~AABBTree();
 

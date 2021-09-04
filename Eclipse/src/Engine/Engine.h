@@ -28,6 +28,7 @@ namespace Eclipse
 		PickingManager gPicker;
         MaterialManager MaterialManager{ true , true };
 		AABBTree CollisionGridTree{ 150 };
+		std::unique_ptr <Grid> GridManager;
 
         void Init();
         void Run();

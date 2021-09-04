@@ -150,6 +150,18 @@ namespace Eclipse
         ZAxisColour = in;
     }
 
+    Grid::Grid()
+    {
+        GridScale = 5.0f;
+        InnerRatio = 1;
+        SingleXAxisLineThickness = 5;
+        SingleZAxisLineThickness = 5;
+        XAxisColour = 1.0f;
+        ZAxisColour = 1.0f;
+        GridColour = ECVec3{ 0.3f,0.3f,0.3f };
+        GridSize = 10;
+    }
+
     Quad* Grid::GetModelReference()
     {
         return WholeGrid;
@@ -167,7 +179,7 @@ namespace Eclipse
         WholeGrid = new Quad;
         ShaderRef = &(Graphics::shaderpgms["Grid"]);
 
-        if (WholeGrid != nullptr && CalculateGridSettings() && CalculateGridCoordinates() )
+        if (WholeGrid != nullptr && CalculateGridSettings() && CalculateGridCoordinates())
         {
             EDITOR_LOG_INFO("Grid Created");
         }
@@ -198,16 +210,14 @@ namespace Eclipse
                     GridArray[Index].CenterPoint = ECVec3{ Center.x, Center.y, Center.z };
 
                     // Set Maximum Point
-                    glm::vec3 Maximum = { Center.x + HalfExtent , Center.y + HalfExtent , Center.z + HalfExtent };
+                    glm::vec3 Maximum = Center + HalfExtent; // { Center.x + HalfExtent, Center.y + HalfExtent, Center.z + HalfExtent };
                     GridArray[Index].MaximumPoint = ECVec3{ Maximum.x, Maximum.y, Maximum.z };
 
                     // Set Minimum Point
-                    glm::vec3 Minimum = { Center.x - HalfExtent , Center.y - HalfExtent , Center.z - HalfExtent };
+                    glm::vec3 Minimum = Center - HalfExtent; // { Center.x - HalfExtent, Center.y - HalfExtent, Center.z - HalfExtent };
                     GridArray[Index].MinimumPoint = ECVec3{ Minimum.x, Minimum.y, Minimum.z };
 
-                    // Set Width
-                    GridArray[Index].Width = Maximum.x - Minimum.x;
-
+                    // See if need to add debug boxes
                     if (AddDebugBoxes)
                     {
                         BoundingRegion br(GridArray[Index].CenterPoint.ConvertToGlmVec3Type(), { GridScale ,GridScale ,GridScale });
@@ -220,7 +230,7 @@ namespace Eclipse
                     engine->CollisionGridTree.InsertObject(first);
 
                     // Insert into container
-                    gridArray.insert({ Index ,GridArray[Index] });
+                    gridArray.insert({ Index , first });
                 }
             }
         }
@@ -236,8 +246,8 @@ namespace Eclipse
         ECVec3 CurrentGridPosition = { 0,0,0 };
         auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
 
-        float SnapValue = scene->GetSnapSettings().mPosSnapValue;
-        GridScale = (SnapValue);
+        CurrentSnapValue = scene->GetSnapSettings().mPosSnapValue;
+        GridScale = (CurrentSnapValue);
 
         TotalTiles = GridSize * GridSize * GridSize;
 
@@ -286,10 +296,10 @@ namespace Eclipse
 
                     std::cout << "=================================" << std::endl;
                     std::cout << "= ID            :" << Index << std::endl;
-                    std::cout << "= Maximum Point :" << gridArray[Index].MaximumPoint << std::endl;
-                    std::cout << "= Minimum Point :" << gridArray[Index].MinimumPoint << std::endl;
-                    std::cout << "= Center Point  :" << gridArray[Index].CenterPoint << std::endl;
-                    std::cout << "= Width         :" << gridArray[Index].Width << std::endl;
+                    std::cout << "= Maximum Point :" << gridArray[Index]->MaximumPoint << std::endl;
+                    std::cout << "= Minimum Point :" << gridArray[Index]->MinimumPoint << std::endl;
+                    std::cout << "= Center Point  :" << gridArray[Index]->CenterPoint << std::endl;
+                    std::cout << "= Width         :" << gridArray[Index]->Width << std::endl;
                     std::cout << "=================================" << std::endl;
                 }
             }
@@ -304,7 +314,7 @@ namespace Eclipse
 
     bool Grid::CheckTileOccupied(TILE_ID& tileID)
     {
-        if (gridArray[tileID].Occupied)
+        if (gridArray[tileID]->Occupied)
         {
             return true;
         }
@@ -318,9 +328,9 @@ namespace Eclipse
 
         for (int Index = 0; Index < in.size(); Index++)
         {
-            if (gridArray[in[Index]].Occupied == true)
+            if (gridArray[in[Index]]->Occupied == true)
             {
-                Temp.push_back(gridArray[in[Index]].aabb.GetEntityID());
+                Temp.push_back(gridArray[in[Index]]->aabb.GetEntityID());
             }
         }
 
@@ -369,6 +379,44 @@ namespace Eclipse
         {
             delete WholeGrid;
         }
+    }
+
+    ECVec3 Grid::AssignSnap(unsigned int id)
+    {
+        return gridArray[id]->CenterPoint;
+    }
+
+    bool Grid::CheckCurrentSnapValue()
+    {
+        auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
+        return scene->GetSnapSettings().mPosSnapValue == CurrentSnapValue;
+    }
+
+    void Grid::UpdateGridCoordinates()
+    {
+        if (!CheckCurrentSnapValue())
+        {
+            CalculateGridSettings();
+            CalculateGridCoordinates();
+
+            // Wait ah , thinking of a way lol
+        }
+    }
+
+    void Grid::SetDistance(AABBNode& Node, float distanceIne, unsigned int indexin)
+    {
+        Node.aabb.SetDistanceToObject(distanceIne);
+        gridArray[Node.aabb.GetEntityID()]->aabb.SetDistanceToObject(Node.aabb.GetDistanceToObject());
+    }
+
+    float Grid::GetDistanceToObject(unsigned int indexin)
+    {
+        return gridArray[indexin]->aabb.GetDistanceToObject();
+    }
+
+    float Grid::GetWidth(AABBNode& lhs, AabbComponent& rhs) const
+    {
+        return lhs.aabb.Max.x - rhs.max.getX();;
     }
 
     DYN_AABB Tile::getAABB() const

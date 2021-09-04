@@ -191,7 +191,7 @@ namespace Eclipse
             world.Update<MaterialSystem>();
 
             // GRID DRAW ============================= Must be last of All Renders
-            engine->GraphicsManager.GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+            engine->GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 
             mono.Update();
 

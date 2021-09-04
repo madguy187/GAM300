@@ -7,9 +7,11 @@ namespace Eclipse
     {
         EDITOR_LOG_INFO("GridSystem Init");
 
+        // Initialise Grid
+        engine->GridManager = std::make_unique<Grid>();
+
         // Create Grid =============================
-        engine->GraphicsManager.GridManager->Init();
-        engine->GraphicsManager.GridManager->DebugPrint();
+        engine->GridManager->Init();
     }
 
     void GridSystem::Update()
@@ -23,7 +25,7 @@ namespace Eclipse
 
             if (engine->CollisionGridTree.NumberOfIntersections(ModelVsGrid))
             {
-                Transform.position = engine->GraphicsManager.GridManager->gridArray[ModelVsGrid[0]].CenterPoint;
+                Transform.position = engine->GridManager->AssignSnap(ModelVsGrid[0]);
             }
         }
 
