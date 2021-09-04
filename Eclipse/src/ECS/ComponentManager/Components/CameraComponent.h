@@ -27,7 +27,7 @@ namespace Eclipse
 
 		float cameraSpeed{ 50.f }; //camera movement speed
 
-		enum CameraType
+		enum class CameraType
 		{
 			Editor_Camera,
 			Game_Camera,
@@ -39,7 +39,7 @@ namespace Eclipse
 
 		CameraType camType;
 
-		enum ProjectionType
+		enum class ProjectionType
 		{
 			Orthographic,
 			Perspective

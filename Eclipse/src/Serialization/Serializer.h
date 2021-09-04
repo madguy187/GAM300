@@ -84,25 +84,25 @@ namespace Eclipse
 		template <>
 		inline void AddAttributeToElement(const std::string& att_name, const EntityType& att_data)
 		{
-			_currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<EntityType>(att_data).c_str());
+			_currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<EntityType>(const_cast<EntityType&>(att_data)).c_str());
 		}
 		
 		template <>
 		inline void AddAttributeToElement(const std::string& att_name, const CameraComponent::CameraType& att_data)
 		{
-			_currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<CameraComponent::CameraType>(att_data).c_str());
+			_currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<CameraComponent::CameraType>(const_cast<CameraComponent::CameraType&>(att_data)).c_str());
 		}
 		
 		template <>
 		inline void AddAttributeToElement(const std::string& att_name, const CameraComponent::ProjectionType& att_data)
 		{
-			_currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<CameraComponent::ProjectionType>(att_data).c_str());
+			_currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<CameraComponent::ProjectionType>(const_cast<CameraComponent::ProjectionType&>(att_data)).c_str());
 		}
 		
 		template <>
 		inline void AddAttributeToElement(const std::string& att_name, const MaterialComponent::ModelType& att_data)
 		{
-			_currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<MaterialComponent::ModelType>(att_data).c_str());
+			_currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<MaterialComponent::ModelType>(const_cast<MaterialComponent::ModelType&>(att_data)).c_str());
 		}
 
 		template <typename T>

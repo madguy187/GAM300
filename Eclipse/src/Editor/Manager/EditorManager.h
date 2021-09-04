@@ -13,19 +13,34 @@ namespace Eclipse
 	public:
 		EditorManager();
 
+		// Intialization
 		void InitGUIWindows();
 		void InitMenu();
 		void InitFont();
 
+		// Registry
 		Entity CreateDefaultEntity(EntityType type);
 		void RegisterExistingEntity(Entity ID);
+		void InsertExistingEntity(size_t pos, Entity ID);
 		void DestroyEntity(Entity ID);
 
-		std::vector<std::unique_ptr<ECGuiWindow>>& GetAllWindows();
+		// Editor Utilities
+		void SwapEntities(size_t firstIndex, size_t secondIndex);
+
+		// Getters
+		std::vector<std::unique_ptr<ECGuiWindow>>& GetAllWindowsByRef();
+		const std::vector<Entity>& GetEntityListByConstRef() const;
+		const Entity* GetEntityListData();
 		MenuBar& GetMenuBar();
-		size_t GetWindowListSize();
+		size_t GetWindowListSize() const;
 		Entity GetSelectedEntity() const;
+		size_t GetEntityListSize() const;
+		int GetEntityIndex(Entity ID);
+		bool IsEntityListEmpty() const;
+
+		// Setters
 		void SetSelectedEntity(Entity ID);
+		void SetGlobalIndex(size_t index);
 
 		void SaveTemp(const char* fullpath = "Data/Temp/Temp.xml");
 		void LoadTemp(const char* fullpath = "Data/Temp/Temp.xml");
@@ -46,17 +61,19 @@ namespace Eclipse
 			return temp;
 		}
 		
+		// Cleaning Up
 		void Clear();
 
-		std::vector<Entity> EntityHierarchyList_;
-		std::map<Entity, int> EntityToIndexMap_;
-		std::map<const char*, const char*> DataComponentFilter_;
-		size_t GEHIndex_{ 0 };
-		DragAndDrop Item_;
+		// std::map<const char*, const char*> DataComponentFilter_;
+		DragAndDrop DragAndDropInst_;
 	private:
 		std::vector<std::unique_ptr<ECGuiWindow>> Windows_;
 		MenuBar MenuBar_;
 		size_t Size_{ 0 };
+
+		std::vector<Entity> EntityHierarchyList_;
+		std::unordered_map<Entity, int> EntityToIndexMap_;
+		size_t GEHIndex_{ 0 };
 
 		//!!! Temporary !!! - by JH
 		Eclipse::SerializationManager szManager;

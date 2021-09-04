@@ -51,7 +51,7 @@ namespace Eclipse
 
 		if (!std::filesystem::exists(finalPath))
 		{
-			ENGINE_CORE_ERROR(false, "Fail to register scene.");
+			EDITOR_LOG_WARN(false, "Fail to register scene.");
 			return -1;
 		}
 
@@ -64,7 +64,7 @@ namespace Eclipse
 
 		if (CheckSceneAvailable(fileName))
 		{
-			ENGINE_CORE_WARN(false, "Scene is already registered.");
+			EDITOR_LOG_WARN(false, "Scene is already registered.");
 			return GetSceneIndex(fileName);
 		}
 
@@ -134,7 +134,7 @@ namespace Eclipse
 	{
 		if (idx < 0 || idx >= numOfScene)
 		{
-			ENGINE_CORE_ERROR(false, "Fail to load scene.");
+			EDITOR_LOG_WARN(false, "Fail to load scene.");
 			return;
 		}
 
@@ -145,7 +145,7 @@ namespace Eclipse
 	{
 		if (!CheckSceneAvailable(name))
 		{
-			ENGINE_CORE_ERROR(false, "Fail to load scene.");
+			EDITOR_LOG_WARN(false, "Fail to load scene.");
 			return;
 		}
 		nextScene = GetSceneIndex(name);

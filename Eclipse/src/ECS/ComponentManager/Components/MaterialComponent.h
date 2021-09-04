@@ -6,7 +6,7 @@ namespace Eclipse
 {
     struct MaterialComponent
     {
-        enum ModelType
+        enum class ModelType
         {
             None = 0,
             BasicPrimitives = 1,

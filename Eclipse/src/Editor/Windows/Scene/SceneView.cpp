@@ -57,7 +57,7 @@ namespace Eclipse
 			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 		// ImGuizmo Logic
-		if (!engine->editorManager->EntityHierarchyList_.empty() && m_GizmoType != -1)
+		if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
 		{
 			OnGizmoUpdateEvent();
 		}
@@ -76,22 +76,8 @@ namespace Eclipse
 	{
 		ImGuiIO& io = ImGui::GetIO();
 
-		// Delete Entity
-		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Delete)))
-		{
-			if (!engine->editorManager->EntityHierarchyList_.empty())
-			{
-				Entity currEnt = engine->editorManager->GetSelectedEntity();
-
-				if (currEnt != engine->gCamera.GetEditorCameraID() ||
-					currEnt != engine->gCamera.GetGameCameraID())
-				{
-					engine->editorManager->DestroyEntity(currEnt);
-				}
-			}
-		}
 		// Gizmos
-		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Q)))
+		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Q)))
 		{
 			if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
 				m_GizmoType = -1;

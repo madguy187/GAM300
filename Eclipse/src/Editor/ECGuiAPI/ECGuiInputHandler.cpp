@@ -12,5 +12,19 @@ namespace Eclipse
 			CommandHistory::Undo();
 		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Y)) && io.KeyCtrl)
 			CommandHistory::Redo();
+		// Delete Entity
+		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Delete)))
+		{
+			if (!engine->editorManager->IsEntityListEmpty())
+			{
+				Entity currEnt = engine->editorManager->GetSelectedEntity();
+
+				if (currEnt != engine->gCamera.GetEditorCameraID() ||
+					currEnt != engine->gCamera.GetGameCameraID())
+				{
+					engine->editorManager->DestroyEntity(currEnt);
+				}
+			}
+		}
 	}
 }

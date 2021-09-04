@@ -178,7 +178,7 @@ namespace Eclipse
 
 	void SerializationManager::SerializeAllEntity(const char* fullpath)
 	{
-		std::vector<Entity>& entities = engine->editorManager->EntityHierarchyList_;
+		const std::vector<Entity>& entities = engine->editorManager->GetEntityListByConstRef();
 		std::filesystem::path p(fullpath);
 
 		sz.StartElement(p.filename().replace_extension("").string());
