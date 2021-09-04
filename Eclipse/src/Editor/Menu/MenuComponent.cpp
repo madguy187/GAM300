@@ -30,6 +30,16 @@ namespace Eclipse
 	void MenuComponent::DrawImpl(const char* key)
 	{
 		// For specific items
+		if (!strcmp(key, "New"))
+		{
+			bool selected = false;
+
+			if (ECGui::CreateMenuItem(key, &selected))
+			{
+				
+			}
+		}
+		
 		if (!strcmp(key, "Open"))
 		{
 			bool selected = false;
@@ -40,7 +50,7 @@ namespace Eclipse
 			}
 		}
 
-		if (!strcmp(key, "Save"))
+		if (!strcmp(key, "Save As..."))
 		{
 			bool selected = false;
 

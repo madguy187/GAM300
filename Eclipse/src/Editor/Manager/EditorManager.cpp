@@ -40,8 +40,9 @@ namespace Eclipse
 	void EditorManager::InitMenu()
 	{
 		MenuComponent file{ "File", EditorMenuType::FILE };
+		file.AddItems("New");
 		file.AddItems("Open");
-		file.AddItems("Save");
+		file.AddItems("Save As...");
 		file.AddItems("Exit");
 		MenuComponent window{ "Windows", EditorMenuType::WINDOWS };
 
