@@ -153,6 +153,7 @@ namespace Eclipse
 			PointLightComponent comp;
 			DeserializeComponent<PointLightComponent>(ent, comp);
 			engine->world.AddComponent(ent, comp);
+			engine->LightManager.InsertPointLight(engine->world.GetComponent<PointLightComponent>(ent));
 			dsz.CloseElement();
 		}
 		
@@ -161,6 +162,7 @@ namespace Eclipse
 			SpotLightComponent comp;
 			DeserializeComponent<SpotLightComponent>(ent, comp);
 			engine->world.AddComponent(ent, comp);
+			engine->LightManager.InsertSpotLightLight(engine->world.GetComponent<SpotLightComponent>(ent));
 			dsz.CloseElement();
 		}
 		
@@ -169,6 +171,7 @@ namespace Eclipse
 			DirectionalLightComponent comp;
 			DeserializeComponent<DirectionalLightComponent>(ent, comp);
 			engine->world.AddComponent(ent, comp);
+			engine->LightManager.InsertDirectionalLight(engine->world.GetComponent<DirectionalLightComponent>(ent));
 			dsz.CloseElement();
 		}
 	}

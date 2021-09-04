@@ -19,13 +19,13 @@ namespace Eclipse
 		const static SceneIndex RELOAD = INT_MAX - 1;
 
 	public:
-		SceneManager();
+		static void Initialize();
 
 		static void ProcessScene();
 
-		static void InitStartingScene(const SceneIndex& idx);
+		/*static void InitStartingScene(const SceneIndex& idx);
 		
-		static void InitStartingScene(const std::string& name);
+		static void InitStartingScene(const std::string& name);*/
 
 		static SceneIndex RegisterScene(const std::string& path);
 

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "SceneManager.h"
+#include "../ECS/SystemManager/Systems/System/CameraSystem.h"
 
 namespace Eclipse
 {
@@ -12,19 +13,11 @@ namespace Eclipse
 	std::vector<std::string> SceneManager::sceneList;
 	std::unordered_map<std::string, std::string> SceneManager::mapNameToPath;
 
-	SceneManager::SceneManager()
+	void SceneManager::Initialize()
 	{
-		//RegisterScene();
-	}
-
-	void SceneManager::InitStartingScene(const SceneIndex& idx)
-	{
-
-	}
-
-	void SceneManager::InitStartingScene(const std::string& name)
-	{
-
+		sceneList.push_back("Empty");
+		mapNameToPath.insert({ "Empty", "Empty" });
+		numOfScene++;
 	}
 
 	void SceneManager::ProcessScene()
@@ -37,12 +30,17 @@ namespace Eclipse
 				nextScene = curScene;
 				engine->editorManager->LoadTemp(mapNameToPath[sceneList[curScene]].c_str());
 			}
+			else if (nextScene == 0)
+			{
+				return;
+			}
 			else if (nextScene != QUIT)
 			{
 				prevScene = curScene;
 				curScene = nextScene;
 				engine->editorManager->LoadTemp(mapNameToPath[sceneList[curScene]].c_str());
 			}
+			CameraSystem::Init();
 		}
 
 	}
@@ -64,7 +62,7 @@ namespace Eclipse
 
 		std::string fileName = finalPath.filename().string();
 
-		if (!CheckSceneAvailable(fileName))
+		if (CheckSceneAvailable(fileName))
 		{
 			ENGINE_CORE_WARN(false, "Scene is already registered.");
 			return GetSceneIndex(fileName);
@@ -170,6 +168,7 @@ namespace Eclipse
 			engine->editorManager->Clear();
 		}
 		engine->world.Clear();
+		engine->LightManager.ClearAllContainer();
 	}
 
 	void SceneManager::ReloadScene()

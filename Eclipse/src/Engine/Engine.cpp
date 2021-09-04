@@ -120,8 +120,9 @@ namespace Eclipse
         float updaterate = 4.0f;
         ProfilerWindow Timer;
 
+        SceneManager::Initialize();
         //Deserialization(temp)
-        EditorSystem::LoadTemp();
+        //EditorSystem::LoadTemp();
 
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
@@ -200,6 +201,7 @@ namespace Eclipse
 
             ImGuiSetup::End(EditorState);
             OpenGL_Context::post_render();
+            SceneManager::ProcessScene();
             Timer.tracker.system_end = glfwGetTime();
             Timer.EngineTimer(Timer.tracker);
         }
