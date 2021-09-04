@@ -387,6 +387,12 @@ namespace Eclipse
         Nodein.aabb.DistanceToObject = Nodein.aabb.Max.x - aabbin.max.getX();
     }
 
+    void Grid::SetDistance(AABBNode& Nodein, DYN_AABB& aabbin )
+    {
+        Nodein.aabb.DistanceToObject = Nodein.aabb.Max.x - aabbin.Max.x;
+        engine->GridManager->gridArray[Nodein.aabb.GetEntityID()].aabb.DistanceToObject = Nodein.aabb.DistanceToObject;
+    }
+
     void Grid::SetPosition(TransformComponent& in, unsigned int id)
     {
         in.position = gridArray[id].CenterPoint;

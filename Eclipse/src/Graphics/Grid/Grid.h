@@ -77,7 +77,7 @@ namespace Eclipse
         Shader* ShaderRef = nullptr;
 
         // Number of Tiles Each Side.
-        unsigned int GridSize = 16;
+        unsigned int GridSize = 2;
         // Total Number of Tiles for the Grid
         unsigned int TotalTiles = 0;
         // Flag to Add Debug Boxes for each Tile
@@ -96,10 +96,9 @@ namespace Eclipse
         ECVec3 StartingPosition{ 0.0f,0.0f,0.0f };
         // Vector of all the Tiles
         std::vector<Tile> GridArray;
-
-    public:
         std::unordered_map<unsigned int, Tile> gridArray; //key = the grid count;
 
+    public:
         // Get Model Reference
         Quad* GetModelReference();
         // Get Model Reference
@@ -172,6 +171,8 @@ namespace Eclipse
         void SetDistance(AABBNode& Nodein , AabbComponent& aabbin , unsigned int id );
         // Set Distance For Current Node for Grid
         void SetDistance(AABBNode& Nodein, AabbComponent& aabbin);
+        // Set Distance For Current Node for Grid
+        void SetDistance(AABBNode& Nodein, DYN_AABB& aabbin);
         // Only check for 1 Intersection.
         void SetPosition(TransformComponent& in , unsigned int ID);
 

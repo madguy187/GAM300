@@ -132,7 +132,7 @@ namespace Eclipse
                     {
                         unsigned int hi = overlaps[0];
                         node.aabb.DistanceToObject = node.aabb.Max.x - testAabb.Max.x;
-                        float yo = engine->GridManager->gridArray[hi].aabb.DistanceToObject;
+                        float yo = engine->GridManager->GetDistanceToObject(hi); // gridArray[hi].aabb.DistanceToObject;
 
                         if (abs(node.aabb.DistanceToObject) > abs(yo))
                         {
@@ -148,8 +148,7 @@ namespace Eclipse
                     }
                     else
                     {
-                        node.aabb.DistanceToObject = node.aabb.Max.x - testAabb.Max.x;
-                        engine->GridManager->gridArray[node.aabb.GetEntityID()].aabb.DistanceToObject = node.aabb.DistanceToObject;
+                        engine->GridManager->SetDistance(node, object);
                         overlaps.push_back(node.aabb.GetEntityID());
                     }
                 }
@@ -188,8 +187,7 @@ namespace Eclipse
                     if (overlaps.size() != 0)
                     {
                         unsigned int FirstTileRegistered = overlaps[0];
-                        engine->GridManager->SetDistance(node, CheckedObjectAgsintTree);
-                        //node.aabb.DistanceToObject = node.aabb.Max.x - testAabb.max.getX();
+                        engine->GridManager->SetDistance(node, CheckedObjectAgsintTree);                
                         float RegisteredTileDistance = engine->GridManager->GetDistanceToObject(FirstTileRegistered);
 
                         if (abs(node.aabb.DistanceToObject) > abs(RegisteredTileDistance))
@@ -207,8 +205,6 @@ namespace Eclipse
                     else
                     {
                         engine->GridManager->SetDistance(node, object, node.aabb.GetEntityID());
-                        //node.aabb.DistanceToObject = node.aabb.Max.x - testAabb.max.getX();
-                        //engine->GridManager->gridArray[node.aabb.GetEntityID()].aabb.DistanceToObject = node.aabb.DistanceToObject;
                         overlaps.push_back(node.aabb.GetEntityID());
                     }
                 }
