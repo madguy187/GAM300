@@ -57,7 +57,7 @@ namespace Eclipse
 			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 		// ImGuizmo Logic
-		if (!engine->editorManager->EntityHierarchyList_.empty() && m_GizmoType != -1)
+		if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
 		{
 			OnGizmoUpdateEvent();
 		}
@@ -79,7 +79,7 @@ namespace Eclipse
 		// Delete Entity
 		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Delete)))
 		{
-			if (!engine->editorManager->EntityHierarchyList_.empty())
+			if (!engine->editorManager->IsEntityListEmpty())
 			{
 				Entity currEnt = engine->editorManager->GetSelectedEntity();
 

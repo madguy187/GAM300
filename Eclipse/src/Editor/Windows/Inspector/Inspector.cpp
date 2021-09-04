@@ -26,7 +26,7 @@ namespace Eclipse
 		WindowSize_.setX(ECGui::GetWindowSize().x);
 		WindowSize_.setY(ECGui::GetWindowSize().y);
 
-		if (!engine->editorManager->EntityHierarchyList_.empty())
+		if (!engine->editorManager->IsEntityListEmpty())
 		{
 			Entity currEnt = engine->editorManager->GetSelectedEntity();
 			auto& entcom = engine->world.GetComponent<EntityComponent>(currEnt);

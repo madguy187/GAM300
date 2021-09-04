@@ -129,9 +129,19 @@ namespace Eclipse
 		engine->world.DestroyEntity(ID);
 	}
 
-	std::vector<std::unique_ptr<ECGuiWindow>>& EditorManager::GetAllWindows()
+	std::vector<std::unique_ptr<ECGuiWindow>>& EditorManager::GetAllWindowsByRef()
 	{
 		return Windows_;
+	}
+
+	const std::vector<Entity>& EditorManager::GetEntityListByConstRef() const
+	{
+		return EntityHierarchyList_;
+	}
+
+	const Entity* EditorManager::GetEntityListData()
+	{
+		return EntityHierarchyList_.data();
 	}
 
 	MenuBar& EditorManager::GetMenuBar()
@@ -139,7 +149,7 @@ namespace Eclipse
 		return MenuBar_;
 	}
 
-	size_t EditorManager::GetWindowListSize()
+	size_t EditorManager::GetWindowListSize() const
 	{
 		return Size_;
 	}
@@ -152,11 +162,26 @@ namespace Eclipse
 			return MAX_ENTITY;
 	}
 
+	size_t EditorManager::GetEntityListSize() const
+	{
+		return EntityHierarchyList_.size();
+	}
+
+	bool EditorManager::IsEntityListEmpty() const
+	{
+		return EntityHierarchyList_.empty();
+	}
+
 	void EditorManager::SetSelectedEntity(Entity ID)
 	{
 		GEHIndex_ = static_cast<size_t>(EntityToIndexMap_[ID]);
 		auto* hc = GetEditorWindow<HierarchyWindow>();
 		hc->UpdateEntityTracker(ID);
+	}
+
+	void EditorManager::SetGlobalIndex(size_t index)
+	{
+		GEHIndex_ = index;
 	}
 
 	void EditorManager::Clear()

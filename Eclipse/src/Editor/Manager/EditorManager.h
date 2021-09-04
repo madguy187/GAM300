@@ -19,11 +19,17 @@ namespace Eclipse
 		void RegisterExistingEntity(Entity ID);
 		void DestroyEntity(Entity ID);
 
-		std::vector<std::unique_ptr<ECGuiWindow>>& GetAllWindows();
+		std::vector<std::unique_ptr<ECGuiWindow>>& GetAllWindowsByRef();
+		const std::vector<Entity>& GetEntityListByConstRef() const;
+		const Entity* GetEntityListData();
 		MenuBar& GetMenuBar();
-		size_t GetWindowListSize();
+		size_t GetWindowListSize() const;
 		Entity GetSelectedEntity() const;
+		size_t GetEntityListSize() const;
+		bool IsEntityListEmpty() const;
+
 		void SetSelectedEntity(Entity ID);
+		void SetGlobalIndex(size_t index);
 
 		template <typename TWindow>
 		TWindow* GetEditorWindow()
@@ -43,15 +49,16 @@ namespace Eclipse
 		
 		void Clear();
 
-		std::vector<Entity> EntityHierarchyList_;
-		std::map<Entity, int> EntityToIndexMap_;
-		std::map<const char*, const char*> DataComponentFilter_;
-		size_t GEHIndex_{ 0 };
-		DragAndDrop Item_;
+		// std::map<const char*, const char*> DataComponentFilter_;
+		DragAndDrop DragAndDropInst_;
 	private:
 		std::vector<std::unique_ptr<ECGuiWindow>> Windows_;
 		MenuBar MenuBar_;
 		size_t Size_{ 0 };
+
+		std::vector<Entity> EntityHierarchyList_;
+		std::map<Entity, int> EntityToIndexMap_;
+		size_t GEHIndex_{ 0 };
 
 		template <typename TWindow>
 		inline void AddWindow(const char* title)

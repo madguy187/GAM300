@@ -91,7 +91,7 @@ namespace Eclipse
 		{
 			int index = 0;
 
-			for (auto& window : engine->editorManager->GetAllWindows())
+			for (auto& window : engine->editorManager->GetAllWindowsByRef())
 			{
 				if (ECGui::CreateMenuItem(ListToName_[index], &window->IsVisible))
 				{
