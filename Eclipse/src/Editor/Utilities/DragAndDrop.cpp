@@ -26,6 +26,28 @@ namespace Eclipse
 		}
 	}
 
+	void DragAndDrop::IndexPayloadSource(const char* id, const int& source, PayloadSourceType type)
+	{
+		if (ImGui::BeginDragDropSource())
+		{
+			ImGui::SetDragDropPayload(id, &source, sizeof(source));
+
+			switch (type)
+			{
+			case PayloadSourceType::PST_TEXT:
+				ImGui::TextUnformatted(lexical_cast<std::string>(source).c_str());
+				break;
+			case PayloadSourceType::PST_IMAGE:
+				// For rendering 2D Image -> Need ask Graphics side
+				break;
+			default:
+				break;
+			}
+
+			ImGui::EndDragDropSource();
+		}
+	}
+
 	void DragAndDrop::GenericPayloadTarget(const char* id, std::string& destination,
 		const char* cMsg, PayloadTargetType type)
 	{
@@ -54,9 +76,33 @@ namespace Eclipse
 			ImGui::EndDragDropTarget();
 		}
 	}
+
+	void DragAndDrop::IndexPayloadTarget(const char* id, const int& destination, const char* cMsg, PayloadTargetType type)
+	{
+		if (ImGui::BeginDragDropTarget())
+		{
+			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(id);
+
+			if (payload)
+			{
+				switch (type)
+				{
+				case PayloadTargetType::PTT_INDEX:
+					int* data = (int*)payload->Data;
+					engine->editorManager->SwapEntities(static_cast<size_t>(*data), static_cast<size_t>(destination));
+					break;
+				}
+
+				EDITOR_LOG_INFO(cMsg);
+			}
+
+			ImGui::EndDragDropTarget();
+		}
+	}
 	
 	void DragAndDrop::AssetBrowerFilesAndFoldersTarget(const char* type, const char* paths, 
-		std::string AssetPath, std::filesystem::directory_entry dirEntry, bool& refreshBrowser, std::map<std::filesystem::path, std::vector<std::filesystem::path>> pathMap)
+		std::string AssetPath, std::filesystem::directory_entry dirEntry, bool& refreshBrowser, 
+		std::map<std::filesystem::path, std::vector<std::filesystem::path>> pathMap)
 	{
 		static std::string folderName;
 		
