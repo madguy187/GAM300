@@ -81,6 +81,6 @@ enum class PayloadTargetType
 {
 	PTT_WIDGET,
 	PTT_WINDOW,
-	PTT_INDEX,
+	PTT_INDEXSWAPPING,
 	PTT_UNASSIGNED
 };

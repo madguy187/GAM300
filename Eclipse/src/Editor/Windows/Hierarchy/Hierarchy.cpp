@@ -77,9 +77,6 @@ namespace Eclipse
 				entityName = my_strcat(entCom.Name, " ", list[index]);
 				if (ECGui::CreateSelectableButton(entityName.c_str(), &entCom.IsActive))
 				{
-					engine->editorManager->DragAndDropInst_.IndexPayloadSource("TESTING", static_cast<int>(index));
-					engine->editorManager->DragAndDropInst_.IndexPayloadTarget("TESTING", static_cast<int>(index), "SUCCESSFUL");
-
 					if (curr.index == list[index])
 					{
 						entCom.IsActive = true;
@@ -111,6 +108,10 @@ namespace Eclipse
 
 					engine->editorManager->SetGlobalIndex(index);
 				}
+
+				engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexSwapping", static_cast<int>(index));
+				engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexSwapping", static_cast<int>(index), 
+					"Entity positions swapped!");
 			}
 		}
 	}

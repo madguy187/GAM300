@@ -3,7 +3,7 @@
 
 namespace Eclipse
 {
-	void DragAndDrop::GenericPayloadSource(const char* id, const std::string& source,
+	void DragAndDrop::StringPayloadSource(const char* id, const std::string& source,
 		PayloadSourceType type)
 	{
 		if (ImGui::BeginDragDropSource())
@@ -48,7 +48,7 @@ namespace Eclipse
 		}
 	}
 
-	void DragAndDrop::GenericPayloadTarget(const char* id, std::string& destination,
+	void DragAndDrop::StringPayloadTarget(const char* id, std::string& destination,
 		const char* cMsg, PayloadTargetType type)
 	{
 		if (ImGui::BeginDragDropTarget())
@@ -82,14 +82,17 @@ namespace Eclipse
 		if (ImGui::BeginDragDropTarget())
 		{
 			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(id);
+			int* data = nullptr;
 
 			if (payload)
 			{
 				switch (type)
 				{
-				case PayloadTargetType::PTT_INDEX:
-					int* data = (int*)payload->Data;
+				case PayloadTargetType::PTT_INDEXSWAPPING:
+					data = (int*)payload->Data;
 					engine->editorManager->SwapEntities(static_cast<size_t>(*data), static_cast<size_t>(destination));
+					break;
+				default:
 					break;
 				}
 
