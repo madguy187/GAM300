@@ -30,16 +30,16 @@ namespace Eclipse
 	void MenuComponent::DrawImpl(const char* key)
 	{
 		// For specific items
-		if (!strcmp(key, "Exit"))
+		if (!strcmp(key, "New"))
 		{
 			bool selected = false;
 
 			if (ECGui::CreateMenuItem(key, &selected))
 			{
-				glfwSetWindowShouldClose(OpenGL_Context::GetWindow(), 1);
+				
 			}
 		}
-
+		
 		if (!strcmp(key, "Open"))
 		{
 			bool selected = false;
@@ -50,13 +50,23 @@ namespace Eclipse
 			}
 		}
 
-		if (!strcmp(key, "Save"))
+		if (!strcmp(key, "Save As..."))
 		{
 			bool selected = false;
 
 			if (ECGui::CreateMenuItem(key, &selected))
 			{
 				FileDialog::SaveFile();
+			}
+		}
+
+		if (!strcmp(key, "Exit"))
+		{
+			bool selected = false;
+
+			if (ECGui::CreateMenuItem(key, &selected))
+			{
+				glfwSetWindowShouldClose(OpenGL_Context::GetWindow(), 1);
 			}
 		}
 		/*if (!strcmp(key, "Scene"))
@@ -91,7 +101,7 @@ namespace Eclipse
 		{
 			int index = 0;
 
-			for (auto& window : engine->editorManager->GetAllWindows())
+			for (auto& window : engine->editorManager->GetAllWindowsByRef())
 			{
 				if (ECGui::CreateMenuItem(ListToName_[index], &window->IsVisible))
 				{

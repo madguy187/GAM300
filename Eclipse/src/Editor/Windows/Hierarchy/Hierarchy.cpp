@@ -30,14 +30,14 @@ namespace Eclipse
 		for (int index = 0; index != static_cast<int>(EntityType::ENT_LIGHT_POINT); ++index)
 		{
 			EntityType temp = static_cast<EntityType>(index);
-			TagList_[0].push_back(lexical_cast<std::string>(temp));
+			TagList_[0].push_back(lexical_cast_toStr<EntityType>(temp));
 		}
 
 		for (int index = static_cast<int>(EntityType::ENT_LIGHT_POINT); 
 			index != static_cast<int>(EntityType::ENT_UNASSIGNED); ++index)
 		{
 			EntityType temp = static_cast<EntityType>(index);
-			TagList_[1].push_back(lexical_cast<std::string>(temp));
+			TagList_[1].push_back(lexical_cast_toStr<EntityType>(temp));
 		}
 	}
 
@@ -47,7 +47,7 @@ namespace Eclipse
 		ECGui::BeginPopUpButtonList<void()>(settings, std::bind(&HierarchyWindow::ShowEntityCreationList, this));
 		ECGui::InsertHorizontalLineSeperator();
 
-		ECGui::DrawTextWidget<size_t>("Entity Count", engine->editorManager->EntityHierarchyList_.size());
+		ECGui::DrawTextWidget<size_t>("Entity Count", engine->editorManager->GetEntityListSize());
 		ECGui::InsertHorizontalLineSeperator();
 
 		static ImGuiTextFilter EntFilter;
@@ -56,15 +56,15 @@ namespace Eclipse
 
 		if (ECGui::BeginTreeNode("Default Scene"))
 		{
-			TrackEntitySelection(engine->editorManager->EntityHierarchyList_, PrevEnt_, CurrEnt_, 
-				engine->editorManager->GEHIndex_, EntFilter);
+			TrackEntitySelection(engine->editorManager->GetEntityListByConstRef(), 
+				PrevEnt_, CurrEnt_, EntFilter);
 
 			ECGui::EndTreeNode();
 		}
 	}
 
-	void HierarchyWindow::TrackEntitySelection(const std::vector<Entity>& list,
-		EntitySelectionTracker& prev, EntitySelectionTracker& curr, size_t& globalIndex, ImGuiTextFilter& filter)
+	void HierarchyWindow::TrackEntitySelection(const std::vector<Entity>& list, EntitySelectionTracker& prev,
+		EntitySelectionTracker& curr, ImGuiTextFilter& filter)
 	{
 		std::string entityName{};
 
@@ -106,7 +106,7 @@ namespace Eclipse
 						}
 					}
 
-					globalIndex = index;
+					engine->editorManager->SetGlobalIndex(index);
 				}
 			}
 		}
@@ -128,7 +128,7 @@ namespace Eclipse
 
 							if (ECGui::CreateSelectableButton(TagList_[i][j].c_str(), &selected))
 							{
-								Entity ID = engine->editorManager->CreateDefaultEntity(lexical_cast<EntityType>(TagList_[i][j]));
+								Entity ID = engine->editorManager->CreateDefaultEntity(lexical_cast_toEnum<EntityType>(TagList_[i][j]));
 								engine->GraphicsManager.CreatePrimitives(ID, static_cast<int>(i * TagList_.size() + j));
 								UpdateEntityTracker(ID);
 							}
@@ -149,7 +149,7 @@ namespace Eclipse
 
 							if (ECGui::CreateSelectableButton(TagList_[i][j].c_str(), &selected))
 							{
-								Entity ID = engine->editorManager->CreateDefaultEntity(lexical_cast<EntityType>(TagList_[i][j]));
+								Entity ID = engine->editorManager->CreateDefaultEntity(lexical_cast_toEnum<EntityType>(TagList_[i][j]));
 								engine->GraphicsManager.CreatePrimitives(ID, static_cast<int>(i * TagList_[i - 1].size() + j));
 								UpdateEntityTracker(ID);
 							}

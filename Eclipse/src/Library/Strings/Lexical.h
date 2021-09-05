@@ -2,6 +2,7 @@
 
 namespace Eclipse
 {
+    // Convert from string to any primitive types
     template <typename T, typename U>
     inline const T lexical_cast(const U& source)
     {
@@ -26,7 +27,102 @@ namespace Eclipse
         return source == "true" ? true : false;
     }
 
-    template <>
+    // This is the type that will hold all the strings.
+    // Each enumeration type will declare its own specialization.
+    template<typename T>
+    struct enumStrings
+    {
+        static char const* data[];
+    };
+
+    // This is a utility type. Created automatically, should not be used directly.
+    template<typename T>
+    struct enumRefHolder
+    {
+        T& enumVal;
+        enumRefHolder(T& enumVal) : enumVal(enumVal) {}
+    };
+
+    template<typename T>
+    struct enumConstRefHolder
+    {
+        T& enumVal;
+        enumConstRefHolder(T& enumVal) : enumVal(enumVal) {}
+    };
+
+    // The next two functions reads/writes an enum as a string.
+    template<typename T>
+    inline std::ostream& operator<<(std::ostream& str, enumConstRefHolder<T> const& data)
+    {
+        return str << enumStrings<T>::data[static_cast<int>(data.enumVal)];
+    }
+
+    template<typename T>
+    std::istream& operator>>(std::istream& str, enumRefHolder<T> const& data)
+    {
+        std::string value;
+        str >> value;
+
+        static auto begin = std::begin(enumStrings<T>::data);
+        static auto end = std::end(enumStrings<T>::data);
+
+        auto find = std::find(begin, end, value);
+        if (find != end)
+        {
+            data.enumVal = static_cast<T>(std::distance(begin, find));
+        }
+        return str;
+    }
+
+    // Public interface: use the ability of function to deduce their template type without
+    // being explicitly told to create the correct type of enumRefHolder<T>
+    template <typename T>
+    enumConstRefHolder<T> EnumToString(T& e) { return enumConstRefHolder<T>(e); }
+
+    template <typename T>
+    enumRefHolder<T> EnumFromString(T& e) { return enumRefHolder<T>(e); }
+
+    // Use for direct conversion to its respective types
+    template <typename T>
+    inline std::string lexical_cast_toStr(T& e)
+    {
+        std::stringstream stream;
+        stream << EnumToString(e);
+        return stream.str();
+    }
+
+    template <typename T>
+    inline T lexical_cast_toEnum(std::string const& e)
+    {
+        T temp;
+        std::stringstream stream(e);
+        stream >> EnumFromString(temp);
+        return temp;
+    }
+
+    // Just have to add all your data here
+    // MUST BE IN ORDER ON HOW U DECLARE UR ENUMS
+    template<> char const* enumStrings<EntityType>::data[] = 
+    {
+        "Square", 
+        "Circle",
+        "Triangle",
+        "Lines",
+        "Sphere",
+        "Cube",
+        "Cylinder",
+        "Cone",
+        "Torus",
+        "Pyramid",
+        "Lines3D",
+        "Planes",
+        "Point Light",
+        "Directional Light",
+        "Spot Light",
+        "NULL"
+    };
+
+    /*template <>
     inline const std::string lexical_cast(const EntityType& type)
     {
         std::stringstream stream;
@@ -121,5 +217,5 @@ namespace Eclipse
             return EntityType::ENT_LIGHT_SPOT;
         else
             return EntityType::ENT_UNASSIGNED;
-    }
+    }*/
 }

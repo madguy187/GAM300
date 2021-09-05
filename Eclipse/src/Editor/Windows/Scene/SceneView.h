@@ -39,6 +39,6 @@ namespace Eclipse
 		// Hold Frame Buffer Object
 		std::shared_ptr<FrameBuffer> m_frameBuffer;
 		// Hold Gizmo Type
-		int m_GizmoType{ -1 };
+		int m_GizmoType{ 0 };
 	};
 }

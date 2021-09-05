@@ -119,7 +119,7 @@ namespace Eclipse
 						NextDir = AllDir;
 					}
 					
-					engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap);
+					engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap);
 					
 					for (auto& secondEntry : std::filesystem::recursive_directory_iterator(NextDir))
 					{
@@ -147,13 +147,13 @@ namespace Eclipse
 
 								ECGui::EndTreeNode();
 							}
-							engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), secondEntry, refresh, pathMap);
+							engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), secondEntry, refresh, pathMap);
 						}
 					}
 					ECGui::EndTreeNode();
 				}
 				
-				engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap);
+				engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap);
 				
 				if (!jumpDir && /*ImGui::IsMouseDoubleClicked(0) &&*/ ImGui::IsItemClicked(0))
 				{
@@ -350,9 +350,9 @@ namespace Eclipse
 				{ 1,0 },
 				{ 2,1 });
 			//drag drop
-			engine->editorManager->Item_.GenericPayloadSource("ITEM", relativePath.string());
+			engine->editorManager->DragAndDropInst_.GenericPayloadSource("ITEM", relativePath.string());
 			
-			engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh,pathMap);
+			engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh,pathMap);
 
 			if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
 			{

@@ -222,6 +222,7 @@ namespace Eclipse
 				}
 				catch (std::filesystem::filesystem_error& e)
 				{
+					EDITOR_LOG_WARN(e.what());
 					std::cout << e.what() << '\n';
 				}
 			}

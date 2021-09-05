@@ -57,19 +57,18 @@ namespace Eclipse
 			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 		// ImGuizmo Logic
-		if (!engine->editorManager->EntityHierarchyList_.empty() && m_GizmoType != -1)
+		if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
 		{
 			OnGizmoUpdateEvent();
 		}
 		
-		if (ECGui::IsItemHovered() && ImGui::IsWindowFocused() /*temp fix*/)
+		if (ECGui::IsItemHovered() /*&& ImGui::IsWindowFocused() *//*temp fix*/)
 		{
 			// Do all the future stuff here when hovering on window
 			OnKeyPressedEvent();
 			OnCameraMoveEvent();
 			OnCameraZoomEvent();
 			OnSelectEntityEvent();
-			//std::cout << engine->gPicker.GetCurrentCollisionID() << std::endl;
 		}
 	}
 
@@ -77,22 +76,8 @@ namespace Eclipse
 	{
 		ImGuiIO& io = ImGui::GetIO();
 
-		// Delete Entity
-		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Delete)))
-		{
-			if (!engine->editorManager->EntityHierarchyList_.empty())
-			{
-				Entity currEnt = engine->editorManager->GetSelectedEntity();
-
-				if (currEnt != engine->gCamera.GetEditorCameraID() ||
-					currEnt != engine->gCamera.GetGameCameraID())
-				{
-					engine->editorManager->DestroyEntity(currEnt);
-				}
-			}
-		}
 		// Gizmos
-		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Q)))
+		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Q)))
 		{
 			if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
 				m_GizmoType = -1;
@@ -196,16 +181,23 @@ namespace Eclipse
 			{
 			case ImGuizmo::OPERATION::TRANSLATE:
 				transCom.position = translation;
+				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.position, transCom.position });
 				break;
 			case ImGuizmo::OPERATION::ROTATE:
 				transCom.rotation += deltaRotation;
+				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.rotation, transCom.rotation });
 				break;
 			case ImGuizmo::OPERATION::SCALE:
 				transCom.scale = scale;
+				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.scale, transCom.scale });
 				break;
 			default:
 				break;
 			}
+		}
+		else if (ImGuizmo::IsOver())
+		{
+			CommandHistory::DisableMergeForMostRecentCommand();
 		}
 
 		/*ImGuiIO& io = ImGui::GetIO();
