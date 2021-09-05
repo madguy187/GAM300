@@ -108,6 +108,10 @@ namespace Eclipse
 
 					engine->editorManager->SetGlobalIndex(index);
 				}
+
+				engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexSwapping", static_cast<int>(index));
+				engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexSwapping", static_cast<int>(index), 
+					"Entity positions swapped!");
 			}
 		}
 	}
