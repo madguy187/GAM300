@@ -350,7 +350,7 @@ namespace Eclipse
 				{ 1,0 },
 				{ 2,1 });
 			//drag drop
-			engine->editorManager->DragAndDropInst_.GenericPayloadSource("ITEM", relativePath.string());
+			engine->editorManager->DragAndDropInst_.StringPayloadSource("ITEM", relativePath.string());
 			
 			engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh,pathMap);
 
