@@ -119,7 +119,7 @@ namespace Eclipse
 						NextDir = AllDir;
 					}
 					
-					engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap);
+					engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
 					
 					for (auto& secondEntry : std::filesystem::recursive_directory_iterator(NextDir))
 					{
@@ -147,13 +147,13 @@ namespace Eclipse
 
 								ECGui::EndTreeNode();
 							}
-							engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), secondEntry, refresh, pathMap);
+							engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), secondEntry, refresh, pathMap, CopyFilesAndFolder);
 						}
 					}
 					ECGui::EndTreeNode();
 				}
 				
-				engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap);
+				engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
 				
 				if (!jumpDir && /*ImGui::IsMouseDoubleClicked(0) &&*/ ImGui::IsItemClicked(0))
 				{
@@ -209,7 +209,7 @@ namespace Eclipse
 	void AssetBrowserWindow::RightFoldersAndItems()
 	{
 		//top path 
-		ECGui::DrawChildWindow<void()>({ "##top_bar", ImVec2(0, 50) }, std::bind(&AssetBrowserWindow::PathAndSearches, this));
+		ECGui::DrawChildWindow<void()>({ "##top_bar", ImVec2(0, 70) }, std::bind(&AssetBrowserWindow::PathAndSearches, this));
 		
 		ImGui::Separator();
 
@@ -352,7 +352,7 @@ namespace Eclipse
 			//drag drop
 			engine->editorManager->DragAndDropInst_.GenericPayloadSource("ITEM", relativePath.string());
 			
-			engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh,pathMap);
+			engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh,pathMap, CopyFilesAndFolder);
 
 			if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
 			{
@@ -523,8 +523,6 @@ namespace Eclipse
 			searchItemsLowerCase = LowerCase(searchItemBuffer);
 			
 		}
-
-		ImGui::SameLine();
 		if (ImGui::Button("Refresh", { 70,20 }))
 		{
 			refresh = true;
@@ -544,6 +542,9 @@ namespace Eclipse
 				EDITOR_LOG_INFO("Item Search Buffer Cleared");
 			}
 		}
+		ImGui::SameLine();
+		
+		ImGui::Checkbox("Copy Mode", &CopyFilesAndFolder);
 		//left side search for all files & folders in that current dir
 		//right side search for all folders
 	}
