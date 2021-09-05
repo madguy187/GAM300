@@ -123,7 +123,7 @@ namespace Eclipse
 
         SceneManager::Initialize();
         //Deserialization(temp)
-        //EditorSystem::LoadTemp();
+        EditorSystem::LoadTemp();
 
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
