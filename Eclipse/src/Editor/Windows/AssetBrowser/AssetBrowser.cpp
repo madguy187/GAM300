@@ -545,6 +545,11 @@ namespace Eclipse
 		ImGui::SameLine();
 		
 		ImGui::Checkbox("Copy Mode", &CopyFilesAndFolder);
+		
+		ImGui::SameLine();
+		
+		ImGuiAPI::HelpMarker("When ticked |Copy of files and folder| Else |Moving of files and folder | to destination  ");
+
 		//left side search for all files & folders in that current dir
 		//right side search for all folders
 	}
