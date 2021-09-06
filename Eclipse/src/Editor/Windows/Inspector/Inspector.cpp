@@ -2,6 +2,7 @@
 #include "Inspector.h"
 #include "ECS/ComponentManager/Components/EntityComponent.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"
+#include "ECS/ComponentManager/Components/RigidBodyComponent.h"
 
 namespace Eclipse
 {
@@ -208,6 +209,19 @@ namespace Eclipse
 
 				ECGui::DrawTextWidget<const char*>("DLight Specular", "");
 				ECGui::DrawSliderFloat3Widget("DLightSpecularVec", &_DLight.specular, true, 0.0f, 1.0f);
+			}
+		}
+
+		return false;
+	}
+	bool InspectorWindow::ShowRigidBodyProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+	{
+		if (engine->world.CheckComponent<RigidBodyComponent>(ID))
+		{
+			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+			{
+				auto& _RigidB = engine->world.GetComponent<RigidBodyComponent>(ID);
+				
 			}
 		}
 
