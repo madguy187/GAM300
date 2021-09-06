@@ -210,7 +210,7 @@ namespace Eclipse
         // unLoad
         mono.StopMono();
         GraphicsManager.End();
-        AssimpManager.CleanUpAllModels();
+        AssimpManager.CleanUpAllModelsMeshes();
         ImGuiSetup::Destroy(EditorState);
         CommandHistory::Clear();
     }

@@ -3,7 +3,7 @@
 
 namespace Eclipse
 {
-    void AssimpModelManager::LoadModels(std::string& modelFile)
+    void AssimpModelManager::LoadModels(const std::string& modelFile)
     {
         Parser input;
         input.ParseFile(modelFile);
@@ -26,8 +26,6 @@ namespace Eclipse
 
             AssimpLoadedModels.emplace(FolderName, std::move(ptr));
         }
-
-        std::cout << AssimpLoadedModels.size() << std::endl;
     }
 
     std::string AssimpModelManager::GetKey(const std::string& in)
@@ -76,10 +74,8 @@ namespace Eclipse
 
     void AssimpModelManager::LoadAllModels()
     {
-        std::string path = "src/Assets/ASSModels/AssimpModels.json";
-        LoadModels(path);
-
-        DebugPrint();
+        LoadModels("src/Assets/ASSModels/AssimpModels.json");
+        PrintLoadedModels();
 
         ENGINE_CORE_INFO("All Assimp Models Loaded");
         EDITOR_LOG_INFO("All Necessary Models Loaded");
@@ -216,6 +212,11 @@ namespace Eclipse
         return AssimpModelContainerV2.size();
     }
 
+    unsigned int AssimpModelManager::MeshFactoryCount()
+    {
+        return AssimpLoadedModels.size();
+    }
+
     AssimpModelContainer AssimpModelManager::GetContainer()
     {
         return AssimpModelContainer_;
@@ -242,16 +243,21 @@ namespace Eclipse
         }
     }
 
-    void AssimpModelManager::DebugPrint()
+    void AssimpModelManager::DeleteItem(unsigned int index)
+    {
+        AssimpMeshIT it = AssimpModelContainerV2.find(index);
+        AssimpModelContainerV2.erase(index);
+    }
+
+    void AssimpModelManager::PrintLoadedModels()
     {
         std::cout << std::endl;
-        std::cout << "Container Size " << AssimpModelContainer_.size() << std::endl;
-        std::cout << "---------------------------------" << std::endl;
+        std::cout << "Loaded Models Count " << AssimpLoadedModels.size() << std::endl;
+        std::cout << "-------------------------------------------------------------------" << std::endl;
 
-        for (auto const& Models : AssimpModelContainer_)
+        for (auto const& Models : AssimpLoadedModels)
         {
             auto& InvidualModels = *(Models.second);
-            std::cout << " Entity ID : " << Models.first << std::endl;
             std::cout << " Model Name : " << InvidualModels.GetName() << std::endl;
             std::cout << " Model Directory : " << InvidualModels.GetDirectory() << std::endl;
             std::cout << " Number of Textures : " << InvidualModels.GetNumberOfTextures() << std::endl;
@@ -259,30 +265,8 @@ namespace Eclipse
             std::cout << std::endl;
         }
 
-        std::cout << "---------------------------------" << std::endl;
+        std::cout << "-------------------------------------------------------------------" << std::endl;
         std::cout << std::endl;
-    }
-
-    void AssimpModelManager::AddComponents()
-    {
-        for (auto const& Models : AssimpModelContainer_)
-        {
-            auto& InvidualModels = *(Models.second);
-            std::cout << "Added Transform Component For 3DModel ID : " << Models.first << std::endl;
-            engine->world.AddComponent(Models.first, TransformComponent{});
-            engine->world.AddComponent(Models.first, EntityComponent{ EntityType::ENT_UNASSIGNED, InvidualModels.GetName() , true });
-
-            engine->editorManager->RegisterExistingEntity(Models.first);
-
-            // Everything Below this Comment is To be Removed !!
-            TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(Models.first);
-            Transform.scale.setX(10);
-            Transform.scale.setY(10);
-            Transform.scale.setZ(10);
-
-            // Sit properly ( intermittent fix not working )
-            //Transform.rotation.setX(270);
-        }
     }
 
     void AssimpModelManager::CleanUpAllModels()
@@ -294,21 +278,49 @@ namespace Eclipse
         }
     }
 
+    void AssimpModelManager::CleanUpAllModelsMeshes()
+    {
+        for (auto const& Models : AssimpModelContainerV2)
+        {
+            auto& InvidualModels = *(Models.second);
+            Cleanup(InvidualModels);
+        }
+    }
+
+    void AssimpModelManager::Cleanup(MeshComponent3D& in)
+    {
+        for (unsigned int i = 0; i < in.Meshes.size(); i++)
+        {
+            in.Meshes[i].Cleanup();
+        }
+    }
+
     AssimpModelManager::~AssimpModelManager()
     {
-        for (auto i : AssimpModelContainer_)
-        {
-            if (i.second != nullptr)
-            {
-                delete i.second;
-            }
-        }
+        //for (auto i : AssimpModelContainerV2)
+        //{
+        //    if (i.second != nullptr)
+        //    {
+        //        delete i.second;
+        //    }
+        //}
     }
 
     bool AssimpModelManager::InsertModel(AssimpModel& in)
     {
         // Insert
         if (AssimpModelContainer_.insert({ in.GetEntityID() , &in }).second == true)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    bool AssimpModelManager::InsertMesh(MeshComponent3D& in)
+    {
+        // Insert
+        if (AssimpModelContainerV2.insert({ in.ID , &in }).second == true)
         {
             return true;
         }
@@ -334,12 +346,12 @@ namespace Eclipse
 
         if (AssimpModelContainerV2.insert({ in.ID ,&in }).second == true)
         {
-            EDITOR_LOG_INFO("mODEL Created Successfully");
+            EDITOR_LOG_INFO( ("Model : " + in.NameOfModel +  "Created Successfully").c_str());
         }
 
         engine->MaterialManager.RegisterMeshForHighlight(in.ID);
 
-        std::cout << AssimpModelContainerV2.size() << std::endl;
+        std::cout << "Current Model Container Size " << AssimpModelContainerV2.size() << std::endl;
     }
 
     void AssimpModelManager::TestPath(std::string& path)

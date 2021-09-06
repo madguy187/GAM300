@@ -244,7 +244,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         engine->world.AddComponent(ID, MeshComponent3D{});
         MeshComponent3D& sprite = engine->world.GetComponent<MeshComponent3D>(ID);
         sprite.ID = ID;
-        sprite.Key = engine->AssimpManager.GetKey("dog"); //AssimpLoadedModels["dog"]->GetName();
+        sprite.Key = engine->AssimpManager.GetKey("dog"); 
 
         engine->AssimpManager.InsertModel(sprite, sprite.Key);
     }
