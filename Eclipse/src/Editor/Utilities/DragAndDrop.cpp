@@ -3,7 +3,7 @@
 
 namespace Eclipse
 {
-	void DragAndDrop::GenericPayloadSource(const char* id, const std::string& source,
+	void DragAndDrop::StringPayloadSource(const char* id, const std::string& source,
 		PayloadSourceType type)
 	{
 		if (ImGui::BeginDragDropSource())
@@ -26,7 +26,29 @@ namespace Eclipse
 		}
 	}
 
-	void DragAndDrop::GenericPayloadTarget(const char* id, std::string& destination,
+	void DragAndDrop::IndexPayloadSource(const char* id, const int& source, PayloadSourceType type)
+	{
+		if (ImGui::BeginDragDropSource())
+		{
+			ImGui::SetDragDropPayload(id, &source, sizeof(source));
+
+			switch (type)
+			{
+			case PayloadSourceType::PST_TEXT:
+				ImGui::TextUnformatted(lexical_cast<std::string>(source).c_str());
+				break;
+			case PayloadSourceType::PST_IMAGE:
+				// For rendering 2D Image -> Need ask Graphics side
+				break;
+			default:
+				break;
+			}
+
+			ImGui::EndDragDropSource();
+		}
+	}
+
+	void DragAndDrop::StringPayloadTarget(const char* id, std::string& destination,
 		const char* cMsg, PayloadTargetType type)
 	{
 		if (ImGui::BeginDragDropTarget())
@@ -54,11 +76,37 @@ namespace Eclipse
 			ImGui::EndDragDropTarget();
 		}
 	}
+
+	void DragAndDrop::IndexPayloadTarget(const char* id, const int& destination, const char* cMsg, PayloadTargetType type)
+	{
+		if (ImGui::BeginDragDropTarget())
+		{
+			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(id);
+			int* data = nullptr;
+
+			if (payload)
+			{
+				switch (type)
+				{
+				case PayloadTargetType::PTT_INDEXSWAPPING:
+					data = (int*)payload->Data;
+					engine->editorManager->SwapEntities(static_cast<size_t>(*data), static_cast<size_t>(destination));
+					break;
+				default:
+					break;
+				}
+
+				EDITOR_LOG_INFO(cMsg);
+			}
+
+			ImGui::EndDragDropTarget();
+		}
+	}
 	
 	void DragAndDrop::AssetBrowerFilesAndFoldersTarget(const char* type, const char* paths, 
-		std::string AssetPath, std::filesystem::directory_entry dirEntry, bool& refreshBrowser, std::map<std::filesystem::path, std::vector<std::filesystem::path>> pathMap, bool& copyFile)
+		std::string AssetPath, std::filesystem::directory_entry dirEntry, bool& refreshBrowser, 
+		std::map<std::filesystem::path, std::vector<std::filesystem::path>> pathMap)
 	{
-		
 		static std::string folderName;
 		
 		if (ImGui::BeginDragDropTarget())
@@ -182,20 +230,14 @@ namespace Eclipse
 										break;
 									}
 								}
-								if (!copyFile)
+								for (auto const& it : deletefiles)
 								{
-									for (auto const& it : deletefiles)
-									{
-										std::filesystem::remove_all(std::filesystem::path(it.first.c_str()));
-									}
+									std::filesystem::remove_all(std::filesystem::path(it.first.c_str()));
 								}
-								if(baseFile)
+								if (baseFile)
 								{
 									baseFile = false;
-									if(!copyFile)
-									{
-										std::filesystem::remove(std::filesystem::path(parentPath));
-									}
+									std::filesystem::remove(std::filesystem::path(parentPath));
 								}
 							}
 						}
@@ -212,10 +254,7 @@ namespace Eclipse
 							}
 							std::filesystem::copy(std::filesystem::path(itemPaths / paths), dirEntry.path().string() + "//" + folderName, copyOptions);
 						}
-						if(!copyFile)
-						{
-							std::filesystem::remove_all(std::filesystem::path(itemPaths / paths));
-						}
+						std::filesystem::remove_all(std::filesystem::path(itemPaths / paths));
 						//resetting for the next moving of files
 						deletefiles.clear();
 						files.clear();
@@ -226,10 +265,7 @@ namespace Eclipse
 					else
 					{
 						std::filesystem::copy(std::filesystem::path(itemPaths / paths), dirEntry.path());
-						if(!copyFile)
-						{
-							std::filesystem::remove(std::filesystem::path(itemPaths / paths));
-						}
+						std::filesystem::remove(std::filesystem::path(itemPaths / paths));
 					}
 					refreshBrowser = true;
 				}
