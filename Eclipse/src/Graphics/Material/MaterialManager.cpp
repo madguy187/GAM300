@@ -432,6 +432,14 @@ namespace Eclipse
         return false;
     }
 
+    void MaterialManager::RegisterMeshForHighlight(unsigned int ID)
+    {
+        if (InitRegisterHighlight == true)
+        {
+            RegisterMeshForHighlighting(ID);
+        }
+    }
+
     void MaterialManager::UpdateStencilWithActualObject(unsigned int ID)
     {
         // We allow EACH object to pass the stencil test uniquely
@@ -500,5 +508,64 @@ namespace Eclipse
         }
 
         glUniform1i(dsa, 0);
+    }
+
+    void MaterialManager::RegisterMeshForHighlighting(unsigned int index)
+    {
+        auto& mat = engine->world.GetComponent<MaterialComponent>(index);
+
+        if (mat.RegisterForHighlight == true)
+            return;
+
+        auto& mesh = engine->world.GetComponent<MeshComponent3D>(index);
+
+        // Insert
+        if (MeshHighLightContainer.insert(std::pair<unsigned int, MeshComponent3D*>(index, &mesh)).second == true)
+        {
+            mat.RegisterForHighlight = true;
+
+            std::string Success = ("Model [" + mesh.NameOfModel + "] Registered For Highlighting ! ").c_str();
+            ENGINE_CORE_INFO(Success);
+
+            std::cout << "HighLight Container Size : " << ModelHighlightContainer.size() << std::endl;
+            return;
+        }
+    }
+
+    void MaterialManager::MeshHighlight(unsigned int FrameBufferID, GLenum Mode)
+    {
+        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+
+        glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
+        auto shdrpgm = Graphics::shaderpgms["OutLineShader"];
+
+        shdrpgm.Use();
+
+        for (auto const& Models : MeshHighLightContainer)
+        {
+            auto& ID = Models.first;
+            auto& InvidualModels = *(Models.second);
+
+            engine->MaterialManager.UpdateStencilWith_Outline(ID);
+
+            auto& highlight = engine->world.GetComponent<MaterialComponent>(ID);
+
+            if (highlight.Highlight == true)
+            {
+                auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+
+                // Check Main Uniforms For each Model
+                // Translation done here for each model
+                CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ID);
+
+                // Materials Update
+                engine->MaterialManager.CheckUnniformLocation(shdrpgm, highlight);
+
+                // Render
+                engine->AssimpManager.Render(shdrpgm, Mode, FrameBufferID, InvidualModels);
+            }
+        }
+
+        shdrpgm.UnUse();
     }
 }

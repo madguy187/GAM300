@@ -84,3 +84,13 @@ enum class PayloadTargetType
 	PTT_INDEXSWAPPING,
 	PTT_UNASSIGNED
 };
+
+enum class ModelType
+{
+    MT_UNASSIGNED = 0,
+    MT_HUMAN = 1,
+    MT_ANIMAL = 2,
+    MT_HOUSE = 3,
+    MT_ENVIRONMENT = 4,
+    MT_MAXCOUNT
+};

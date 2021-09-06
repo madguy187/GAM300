@@ -2,16 +2,12 @@
 	"AssimpModels":
 	[
 		{
-			"modelName": "square",
-			"modelIndex": 0
+			"FolderName": "dog",
+			"FileName": "scene.gltf"
 		},
 		{
-			"modelName": "triangle",
-			"modelIndex": 1
-		},
-		{
-			"modelName": "circle",
-			"modelIndex": 2
+			"FolderName": "testhouse",
+			"FileName": "scene.gltf"
 		}
 	]
 }
