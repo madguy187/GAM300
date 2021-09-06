@@ -126,6 +126,16 @@ namespace Eclipse
         glDeleteBuffers(1, &EBO);
     }
 
+    std::vector<Vertex>& Mesh::GetVertices()
+    {
+        return Vertices;
+    }
+
+    unsigned int Mesh::GetVBOID()
+    {
+        return VBO;
+    }
+
     void Mesh::Setup()
     {
         // Cr8 buffers

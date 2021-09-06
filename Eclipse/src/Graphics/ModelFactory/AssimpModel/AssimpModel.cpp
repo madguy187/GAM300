@@ -58,6 +58,9 @@ void AssimpModel::LoadAssimpModel(std::string path)
     //scene->mRootNode->mTransformation = aiMatrix4x4();
 
     ProcessNode(scene->mRootNode, scene);
+
+    //TEST CODE
+    LoadNewModel();
 }
 
 void AssimpModel::ProcessNode(aiNode* node, const aiScene* scene)
@@ -66,7 +69,7 @@ void AssimpModel::ProcessNode(aiNode* node, const aiScene* scene)
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        Meshes.push_back(ProcessMesh(mesh, scene));
+        ProcessMesh(mesh, scene);
     }
 
     // process all child nodes
@@ -154,6 +157,60 @@ void Eclipse::AssimpModel::SetModelType(ModelType in)
     type = in;
 }
 
+void Eclipse::AssimpModel::LoadNewModel()
+{
+    std::vector<glm::vec3> combinedVertices;
+
+    for (auto& it : meshData)
+    {
+        for (auto& vertex : it.vertices)
+        {
+            combinedVertices.push_back(vertex.Position);
+        }
+    }
+
+    //std::cout << "Combined Size: " << combinedVertices.size() << std::endl;
+
+    std::pair<float, float> minmaxX;
+    std::pair<float, float> minmaxY;
+    std::pair<float, float> minmaxZ;
+
+    ComputeAxisMinMax(combinedVertices, minmaxX, minmaxY, minmaxZ);
+
+    glm::vec3 centroid = ComputeCentroid(minmaxX, minmaxY, minmaxZ);
+    float largestAxis = GetLargestAxisValue(minmaxX, minmaxY, minmaxZ);
+
+    for (auto& it : meshData)
+    {
+        for (auto& vertex : it.vertices)
+        {
+            vertex.Position -= centroid;
+
+            vertex.Position.x /= largestAxis;
+            vertex.Position.y /= largestAxis;
+            vertex.Position.z /= largestAxis;
+        }
+
+        if (it.hasTexture)
+        {
+            Meshes.push_back(Mesh(it.vertices, it.indices, it.textures));
+        }
+        else
+        {
+            Meshes.push_back(Mesh(it.vertices, it.indices, it.Diffuse, it.Specular));
+        }
+    }
+
+    for (auto& it : AllVertices)
+    {
+        it -= centroid;
+
+        it.x /= largestAxis;
+        it.y /= largestAxis;
+        it.z /= largestAxis;
+    }
+}
+
 std::vector<glm::vec3> Eclipse::AssimpModel::GetVertices()
 {
     return AllVertices;
@@ -204,11 +261,14 @@ std::string AssimpModel::GetName()
     return NameOfModel;
 }
 
-Mesh AssimpModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
+void AssimpModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
     std::vector<Texture> textures;
+
+    //TEST CODE
+    MeshData newMesh;
 
     // vertices
     for (unsigned int i = 0; i < mesh->mNumVertices; i++)
@@ -233,34 +293,13 @@ Mesh AssimpModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 
         AllVertices.push_back(vertex.Position);
         vertices.push_back(vertex);
+
+        //TEST CODE
+        newMesh.vertices.push_back(vertex);
     }
 
-    std::pair<float, float> minmaxX;
-    std::pair<float, float> minmaxY;
-    std::pair<float, float> minmaxZ;
 
-    ComputeAxisMinMax(AllVertices, minmaxX, minmaxY, minmaxZ);
-
-    glm::vec3 centroid = ComputeCentroid(minmaxX, minmaxY, minmaxZ);
-    float largestAxis = GetLargestAxisValue(minmaxX, minmaxY, minmaxZ);
-
-    for (auto& it : AllVertices)
-    {
-        it -= centroid;
-
-        it.x /= largestAxis;
-        it.y /= largestAxis;
-        it.z /= largestAxis;
-    }
-
-    for (auto& it : vertices)
-    {
-        it.Position -= centroid;
-
-        it.Position.x /= largestAxis;
-        it.Position.y /= largestAxis;
-        it.Position.z /= largestAxis;
-    }
+    //std::cout << "Num vertices: " << mesh->mNumVertices << std::endl;
 
     // process indices
     for (unsigned int i = 0; i < mesh->mNumFaces; i++)
@@ -269,6 +308,7 @@ Mesh AssimpModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
         for (unsigned int j = 0; j < face.mNumIndices; j++)
         {
             indices.push_back(face.mIndices[j]);
+            newMesh.indices.push_back(face.mIndices[j]);
         }
     }
 
@@ -298,20 +338,29 @@ Mesh AssimpModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
                 aiColor4D spec(1.0f);
                 aiGetMaterialColor(material, AI_MATKEY_COLOR_SPECULAR, &spec);
 
-                return Mesh(vertices, indices, diff, spec);
+                //return Mesh(vertices, indices, diff, spec);
+
+                meshData.push_back(newMesh);
+                return;
             }
+
+            newMesh.hasTexture = true;
 
             // diffuse maps
             std::vector<Texture> diffuseMaps = LoadTextures(material, aiTextureType_DIFFUSE);
             textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+            newMesh.textures.insert(newMesh.textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
             // specular maps
             std::vector<Texture> specularMaps = LoadTextures(material, aiTextureType_SPECULAR);
             textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+            newMesh.textures.insert(newMesh.textures.end(), specularMaps.begin(), specularMaps.end());
         }
     }
 
-    return Mesh(vertices, indices, textures);
+    meshData.push_back(newMesh);
+    return;
+   // return Mesh(vertices, indices, textures);
 }
 
 std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType type)

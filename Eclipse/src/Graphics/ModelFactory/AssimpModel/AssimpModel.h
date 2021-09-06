@@ -15,6 +15,20 @@
 
 namespace Eclipse
 {
+    //TEST CODE
+    struct MeshData
+    {
+        std::vector<Vertex> vertices;
+        std::vector<unsigned int> indices;
+
+        aiColor4D Diffuse;
+        aiColor4D Specular;
+
+        bool hasTexture = false;
+        std::vector<Texture> textures;
+    };
+
+
     enum class ModelType
     {
         UNASSIGNED = 0,
@@ -36,12 +50,16 @@ namespace Eclipse
         std::vector<Texture> Textures_loaded;
         std::vector<glm::vec3> AllVertices;
 
-        Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
+        std::vector<MeshData> meshData;
+
+        void ProcessMesh(aiMesh* mesh, const aiScene* scene);
         std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type);
         void ProcessNode(aiNode* node, const aiScene* scene);
         float GetLargestAxisValue(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         void ComputeAxisMinMax(std::vector<glm::vec3>& vertices, std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         glm::vec3 ComputeCentroid(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
+
+        void LoadNewModel();
 
     public:
         bool noTex = false;
