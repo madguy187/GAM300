@@ -77,7 +77,7 @@ namespace Eclipse
         Shader* ShaderRef = nullptr;
 
         // Number of Tiles Each Side.
-        unsigned int GridSize = 2;
+        unsigned int GridSize = 16;
         // Total Number of Tiles for the Grid
         unsigned int TotalTiles = 0;
         // Flag to Add Debug Boxes for each Tile

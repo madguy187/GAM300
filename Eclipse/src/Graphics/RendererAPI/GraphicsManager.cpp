@@ -199,17 +199,18 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     break;
     case 11:
     {
-        engine->world.AddComponent(ID, MaterialComponent{});
-        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
-        mat.Modeltype = MaterialComponent::ModelType::BasicPrimitives;
+        //engine->world.AddComponent(ID, MaterialComponent{});
+        //MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+        //mat.Modeltype = MaterialComponent::ModelType::BasicPrimitives;
 
-        engine->world.AddComponent(ID, RenderComponent{});
-        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
-        sprite.ID = ID;
-        sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-        sprite.modelRef = Graphics::models.find("plane")->first;
-        Graphics::sprites.emplace(sprite.layerNum, &sprite);
+        //engine->world.AddComponent(ID, RenderComponent{});
+        //RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
+        //sprite.ID = ID;
+        //sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
+        //sprite.modelRef = Graphics::models.find("plane")->first;
+        //Graphics::sprites.emplace(sprite.layerNum, &sprite);
         //engine->AssimpManager.CreateModel(ID, "White Dog", "dog", "scene.gltf");
+        engine->AssimpManager.CreateModel(ID, "White Dog", "testhouse", "scene.gltf");
     }
     break;
     // pointlight
@@ -231,7 +232,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     case 14:
     {
         // Just to test create models , will revert back to spotlights
-        engine->AssimpManager.CreateModel(ID, "White Dog", "testhouse", "scene.gltf");
+        engine->AssimpManager.CreateModel(ID, "White Dog", "dog", "scene.gltf");
         //engine->LightManager.CreateLights(Eclipse::TypesOfLights::SPOTLIGHT, ID);
     }
     break;

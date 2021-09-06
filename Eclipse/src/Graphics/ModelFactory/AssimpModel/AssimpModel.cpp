@@ -3,355 +3,368 @@
 #include <regex>
 #include "Logger/Logger.h"
 
-using namespace Eclipse;
-
-AssimpModel::AssimpModel(bool noTex)
-    :
-    noTex(noTex)
+namespace Eclipse
 {
-    //GlobalMode = GL_FILL;
-}
 
-void AssimpModel::Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID)
-{
-    for (unsigned int i = 0; i < Meshes.size(); i++)
-    {
-        Meshes[i].Render(shader, MOde);
-    }
-}
+	AssimpModel::AssimpModel(bool noTex)
+		:
+		noTex(noTex)
+	{
+		//GlobalMode = GL_FILL;
+	}
 
-void AssimpModel::Cleanup()
-{
-    for (unsigned int i = 0; i < Meshes.size(); i++)
-    {
-        Meshes[i].Cleanup();
-    }
-}
+	void AssimpModel::Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID)
+	{
+		for (unsigned int i = 0; i < Meshes.size(); i++)
+		{
+			Meshes[i].Render(shader, MOde);
+		}
+	}
 
-void AssimpModel::LoadAssimpModel(std::string path)
-{
-    unsigned int importOptions =
-        aiProcess_Triangulate |
-        aiProcess_GenSmoothNormals |
-        aiProcess_FlipUVs |
-        aiProcess_JoinIdenticalVertices |
-        aiProcess_FlipWindingOrder |
-        aiProcess_RemoveRedundantMaterials |
-        aiProcess_FindDegenerates |
-        aiProcess_FindInvalidData |
-        aiProcess_GenUVCoords |
-        aiProcess_TransformUVCoords |
-        aiProcess_FindInstances |
-        aiProcess_PreTransformVertices;
+	void AssimpModel::Cleanup()
+	{
+		for (unsigned int i = 0; i < Meshes.size(); i++)
+		{
+			Meshes[i].Cleanup();
+		}
+	}
 
-    Assimp::Importer import;
-    const aiScene* scene = import.ReadFile(path, importOptions);
+	void AssimpModel::LoadAssimpModel(std::string path)
+	{
+		unsigned int importOptions =
+			aiProcess_Triangulate |
+			aiProcess_GenSmoothNormals |
+			aiProcess_FlipUVs |
+			aiProcess_JoinIdenticalVertices |
+			aiProcess_FlipWindingOrder |
+			aiProcess_RemoveRedundantMaterials |
+			aiProcess_FindDegenerates |
+			aiProcess_FindInvalidData |
+			aiProcess_GenUVCoords |
+			aiProcess_TransformUVCoords |
+			aiProcess_FindInstances |
+			aiProcess_PreTransformVertices;
 
-    if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
-    {
-        std::string Error = ("Could not load AssimpModel at " + path + import.GetErrorString()).c_str();
-        return;
-    }
+		Assimp::Importer import;
+		const aiScene* scene = import.ReadFile(path, importOptions);
 
-    Directory = path.substr(0, path.find_last_of("/"));
-    //glm::mat4 Model = (glm::rotate(glm::mat4(1.0f), -90.0f, glm::vec3(1.0f, 0.0f, 0.0f)));
-    //scene->mRootNode->mTransformation = aiMatrix4x4();
+		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+		{
+			std::string Error = ("Could not load AssimpModel at " + path + import.GetErrorString()).c_str();
+			return;
+		}
 
-    ProcessNode(scene->mRootNode, scene);
-}
+		Directory = path.substr(0, path.find_last_of("/"));
+		//glm::mat4 Model = (glm::rotate(glm::mat4(1.0f), -90.0f, glm::vec3(1.0f, 0.0f, 0.0f)));
+		//scene->mRootNode->mTransformation = aiMatrix4x4();
 
-void AssimpModel::ProcessNode(aiNode* node, const aiScene* scene)
-{
-    // process all meshes
-    for (unsigned int i = 0; i < node->mNumMeshes; i++)
-    {
-        aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        Meshes.push_back(ProcessMesh(mesh, scene));
-    }
+		ProcessNode(scene->mRootNode, scene);
+	}
 
-    // process all child nodes
-    for (unsigned int i = 0; i < node->mNumChildren; i++)
-    {
-        //node->mChildren[i]->mTransformation = scene->mRootNode->mTransformation * node->mChildren[i]->mTransformation;
-        ProcessNode(node->mChildren[i], scene);
-    }
-}
+	void AssimpModel::ProcessNode(aiNode* node, const aiScene* scene)
+	{
+		// process all meshes
+		for (unsigned int i = 0; i < node->mNumMeshes; i++)
+		{
+			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+			Meshes.push_back(ProcessMesh(mesh, scene));
+		}
 
-float Eclipse::AssimpModel::GetLargestAxisValue(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ)
-{
-    float minValue = (std::min)({ _minmaxX.first, _minmaxY.first, _minmaxZ.first });
-    float maxValue = (std::max)({ _minmaxX.second, _minmaxY.second, _minmaxZ.second });
+		// process all child nodes
+		for (unsigned int i = 0; i < node->mNumChildren; i++)
+		{
+			//node->mChildren[i]->mTransformation = scene->mRootNode->mTransformation * node->mChildren[i]->mTransformation;
+			ProcessNode(node->mChildren[i], scene);
+		}
+	}
 
-    float largestAxis = (std::max)(std::abs(minValue), maxValue);
+	float Eclipse::AssimpModel::GetLargestAxisValue(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ)
+	{
+		float minValue = (std::min)({ _minmaxX.first, _minmaxY.first, _minmaxZ.first });
+		float maxValue = (std::max)({ _minmaxX.second, _minmaxY.second, _minmaxZ.second });
 
-    return largestAxis;
-}
+		float largestAxis = (std::max)(std::abs(minValue), maxValue);
 
-void Eclipse::AssimpModel::ComputeAxisMinMax(std::vector<glm::vec3>& vertices, std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ)
-{
-    std::vector<float> verticesX;
-    std::vector<float> verticesY;
-    std::vector<float> verticesZ;
+		return largestAxis;
+	}
 
-    for (auto& it : vertices)
-    {
-        verticesX.push_back(it.x);
-        verticesY.push_back(it.y);
-        verticesZ.push_back(it.z);
-    }
+	void Eclipse::AssimpModel::ComputeAxisMinMax(std::vector<glm::vec3>& vertices, std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ)
+	{
+		std::vector<float> verticesX;
+		std::vector<float> verticesY;
+		std::vector<float> verticesZ;
 
-    auto minmaxX = std::minmax_element(verticesX.begin(), verticesX.end());
-    auto minmaxY = std::minmax_element(verticesY.begin(), verticesY.end());
-    auto minmaxZ = std::minmax_element(verticesZ.begin(), verticesZ.end());
+		for (auto& it : vertices)
+		{
+			verticesX.push_back(it.x);
+			verticesY.push_back(it.y);
+			verticesZ.push_back(it.z);
+		}
 
-    _minmaxX.first = *minmaxX.first;
-    _minmaxX.second = *minmaxX.second;
+		auto minmaxX = std::minmax_element(verticesX.begin(), verticesX.end());
+		auto minmaxY = std::minmax_element(verticesY.begin(), verticesY.end());
+		auto minmaxZ = std::minmax_element(verticesZ.begin(), verticesZ.end());
 
-    _minmaxY.first = *minmaxY.first;
-    _minmaxY.second = *minmaxY.second;
+		_minmaxX.first = *minmaxX.first;
+		_minmaxX.second = *minmaxX.second;
 
-    _minmaxZ.first = *minmaxZ.first;
-    _minmaxZ.second = *minmaxZ.second;
-}
+		_minmaxY.first = *minmaxY.first;
+		_minmaxY.second = *minmaxY.second;
 
-glm::vec3 Eclipse::AssimpModel::ComputeCentroid(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ)
-{
-    glm::vec3 centroid = glm::vec3{
-        (_minmaxX.first + _minmaxX.second) / 2.0f,
-        (_minmaxY.first + _minmaxY.second) / 2.0f,
-        (_minmaxZ.first + _minmaxZ.second) / 2.0f };
+		_minmaxZ.first = *minmaxZ.first;
+		_minmaxZ.second = *minmaxZ.second;
+	}
 
-    return centroid;
-}
+	glm::vec3 Eclipse::AssimpModel::ComputeCentroid(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ)
+	{
+		glm::vec3 centroid = glm::vec3{
+			(_minmaxX.first + _minmaxX.second) / 2.0f,
+			(_minmaxY.first + _minmaxY.second) / 2.0f,
+			(_minmaxZ.first + _minmaxZ.second) / 2.0f };
 
-void AssimpModel::SetName(std::string& name)
-{
-    NameOfModel = name;
-}
+		return centroid;
+	}
 
-std::string AssimpModel::GetDirectory()
-{
-    return Directory;
-}
+	void AssimpModel::SetName(std::string& name)
+	{
+		NameOfModel = name;
+	}
 
-unsigned int Eclipse::AssimpModel::GetNumberOfTextures()
-{
-    return Textures_loaded.size();
-}
+	std::string AssimpModel::GetDirectory()
+	{
+		return Directory;
+	}
 
-unsigned int Eclipse::AssimpModel::GetNumberOfMeshes()
-{
-    return Meshes.size();
-}
+	unsigned int Eclipse::AssimpModel::GetNumberOfTextures()
+	{
+		return Textures_loaded.size();
+	}
 
-ModelType Eclipse::AssimpModel::GetType()
-{
-    return type;
-}
+	unsigned int Eclipse::AssimpModel::GetNumberOfMeshes()
+	{
+		return Meshes.size();
+	}
 
-void Eclipse::AssimpModel::SetModelType(ModelType in)
-{
-    type = in;
-}
+	ModelType Eclipse::AssimpModel::GetType()
+	{
+		return type;
+	}
 
-std::vector<glm::vec3> Eclipse::AssimpModel::GetVertices()
-{
-    return AllVertices;
-}
+	void Eclipse::AssimpModel::SetModelType(ModelType in)
+	{
+		type = in;
+	}
 
-void Eclipse::AssimpModel::SetProperties(std::string& ModelName, ModelType in, unsigned int ID_)
-{
-    ID = ID_;
-    SetName(ModelName);
-    SetModelType(in);
-}
+	std::vector<glm::vec3> Eclipse::AssimpModel::GetVertices()
+	{
+		return AllVertices;
+	}
 
-//DYN_AABB Eclipse::AssimpModel::getAABB() const
-//{
-//    return AABB_Property;
-//}
-//
-//DYN_AABB Eclipse::AssimpModel::SetAABB(TransformComponent& in)
-//{
-//    glm::vec3 scale = in.scale.ConvertToGlmVec3Type();
-//    glm::vec3 position = in.position.ConvertToGlmVec3Type();
-//
-//    glm::vec3 halfExt = scale / 2.0f;
-//    glm::vec3 min{ position.x - halfExt.x, position.y - halfExt.y, position.z - halfExt.z };
-//    glm::vec3 max{ position.x + halfExt.x, position.y + halfExt.y, position.z + halfExt.z };
-//
-//    AABB_Property.Min = min;
-//    AABB_Property.Max = max;
-//
-//    return AABB_Property;
-//}
+	void Eclipse::AssimpModel::SetProperties(std::string& ModelName, ModelType in, unsigned int ID_)
+	{
+		ID = ID_;
+		SetName(ModelName);
+		SetModelType(in);
+	}
 
-unsigned int Eclipse::AssimpModel::GetEntityID()
-{
-    return ID;
-}
+	//DYN_AABB Eclipse::AssimpModel::getAABB() const
+	//{
+	//    return AABB_Property;
+	//}
+	//
+	//DYN_AABB Eclipse::AssimpModel::SetAABB(TransformComponent& in)
+	//{
+	//    glm::vec3 scale = in.scale.ConvertToGlmVec3Type();
+	//    glm::vec3 position = in.position.ConvertToGlmVec3Type();
+	//
+	//    glm::vec3 halfExt = scale / 2.0f;
+	//    glm::vec3 min{ position.x - halfExt.x, position.y - halfExt.y, position.z - halfExt.z };
+	//    glm::vec3 max{ position.x + halfExt.x, position.y + halfExt.y, position.z + halfExt.z };
+	//
+	//    AABB_Property.Min = min;
+	//    AABB_Property.Max = max;
+	//
+	//    return AABB_Property;
+	//}
 
-void Eclipse::AssimpModel::GetTextureNames()
-{
-    for (int i = 0; i < Textures_loaded.size(); i++)
-    {
-        std::cout << " Texture Name " << Textures_loaded[i].GetPath() << std::endl;
-    }
-}
+	unsigned int Eclipse::AssimpModel::GetEntityID()
+	{
+		return ID;
+	}
 
-std::string AssimpModel::GetName()
-{
-    return NameOfModel;
-}
+	void Eclipse::AssimpModel::GetTextureNames()
+	{
+		for (int i = 0; i < Textures_loaded.size(); i++)
+		{
+			std::cout << " Texture Name " << Textures_loaded[i].GetPath() << std::endl;
+		}
+	}
 
-Mesh AssimpModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
-{
-    std::vector<Vertex> vertices;
-    std::vector<unsigned int> indices;
-    std::vector<Texture> textures;
+	std::string AssimpModel::GetName()
+	{
+		return NameOfModel;
+	}
 
-    // vertices
-    for (unsigned int i = 0; i < mesh->mNumVertices; i++)
-    {
-        Vertex vertex;
+	Mesh AssimpModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
+	{
+		std::vector<Vertex> vertices;
+		std::vector<unsigned int> indices;
+		std::vector<Texture> textures;
 
-        // position
-        vertex.Position = glm::vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
+		// vertices
+		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
+		{
+			Vertex vertex;
 
-        // normal vectors
-        vertex.Normal = glm::vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
+			// position
+			vertex.Position = glm::vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
 
-        // textures
-        if (mesh->mTextureCoords[0])
-        {
-            vertex.TextureCoodinates = glm::vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
-        }
-        else
-        {
-            vertex.TextureCoodinates = glm::vec2(0.0f);
-        }
+			// normal vectors
+			vertex.Normal = glm::vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
 
-        AllVertices.push_back(vertex.Position);
-        vertices.push_back(vertex);
-    }
+			// textures
+			if (mesh->mTextureCoords[0])
+			{
+				vertex.TextureCoodinates = glm::vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
+			}
+			else
+			{
+				vertex.TextureCoodinates = glm::vec2(0.0f);
+			}
 
-    std::pair<float, float> minmaxX;
-    std::pair<float, float> minmaxY;
-    std::pair<float, float> minmaxZ;
+			AllVertices.push_back(vertex.Position);
+			vertices.push_back(vertex);
+		}
 
-    ComputeAxisMinMax(AllVertices, minmaxX, minmaxY, minmaxZ);
+		std::pair<float, float> minmaxX;
+		std::pair<float, float> minmaxY;
+		std::pair<float, float> minmaxZ;
 
-    glm::vec3 centroid = ComputeCentroid(minmaxX, minmaxY, minmaxZ);
-    float largestAxis = GetLargestAxisValue(minmaxX, minmaxY, minmaxZ);
+		ComputeAxisMinMax(AllVertices, minmaxX, minmaxY, minmaxZ);
 
-    for (auto& it : AllVertices)
-    {
-        it -= centroid;
+		glm::vec3 centroid = ComputeCentroid(minmaxX, minmaxY, minmaxZ);
+		float largestAxis = GetLargestAxisValue(minmaxX, minmaxY, minmaxZ);
 
-        it.x /= largestAxis;
-        it.y /= largestAxis;
-        it.z /= largestAxis;
-    }
+		for (auto& it : AllVertices)
+		{
+			it -= centroid;
 
-    for (auto& it : vertices)
-    {
-        it.Position -= centroid;
+			it.x /= largestAxis;
+			it.y /= largestAxis;
+			it.z /= largestAxis;
+		}
 
-        it.Position.x /= largestAxis;
-        it.Position.y /= largestAxis;
-        it.Position.z /= largestAxis;
-    }
+		for (auto& it : vertices)
+		{
+			it.Position -= centroid;
 
-    // process indices
-    for (unsigned int i = 0; i < mesh->mNumFaces; i++)
-    {
-        aiFace face = mesh->mFaces[i];
-        for (unsigned int j = 0; j < face.mNumIndices; j++)
-        {
-            indices.push_back(face.mIndices[j]);
-        }
-    }
+			it.Position.x /= largestAxis;
+			it.Position.y /= largestAxis;
+			it.Position.z /= largestAxis;
+		}
 
-    // process material
-    if (mesh->mMaterialIndex >= 0)
-    {
-        aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+		// process indices
+		for (unsigned int i = 0; i < mesh->mNumFaces; i++)
+		{
+			aiFace face = mesh->mFaces[i];
+			for (unsigned int j = 0; j < face.mNumIndices; j++)
+			{
+				indices.push_back(face.mIndices[j]);
+			}
+		}
 
-        aiString texture_file;
-        material->Get(AI_MATKEY_TEXTURE(aiTextureType_DIFFUSE, 0), texture_file);
+		// process material
+		if (mesh->mMaterialIndex >= 0)
+		{
+			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
-        if (auto texture = scene->GetEmbeddedTexture(texture_file.C_Str()))
-        {
-            std::cout << "Embedded" << std::endl;
-            // Not working for fbx file leh
-        }
-        else
-        {
-            //regular file, check if it exists and read it
-            if (noTex)
-            {
-                // diffuse color
-                aiColor4D diff(1.0f);
-                aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diff);
+			aiString texture_file;
+			material->Get(AI_MATKEY_TEXTURE(aiTextureType_DIFFUSE, 0), texture_file);
 
-                // specular color
-                aiColor4D spec(1.0f);
-                aiGetMaterialColor(material, AI_MATKEY_COLOR_SPECULAR, &spec);
+			if (auto texture = scene->GetEmbeddedTexture(texture_file.C_Str()))
+			{
+				std::cout << "Embedded" << std::endl;
+				// Not working for fbx file leh
+			}
+			else
+			{
+				//regular file, check if it exists and read it
+				if (noTex)
+				{
+					// diffuse color
+					aiColor4D diff(1.0f);
+					aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diff);
 
-                return Mesh(vertices, indices, diff, spec);
-            }
+					// specular color
+					aiColor4D spec(1.0f);
+					aiGetMaterialColor(material, AI_MATKEY_COLOR_SPECULAR, &spec);
 
-            // diffuse maps
-            std::vector<Texture> diffuseMaps = LoadTextures(material, aiTextureType_DIFFUSE);
-            textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+					return Mesh(vertices, indices, diff, spec);
+				}
 
-            // specular maps
-            std::vector<Texture> specularMaps = LoadTextures(material, aiTextureType_SPECULAR);
-            textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-        }
-    }
+				// diffuse maps
+				std::vector<Texture> diffuseMaps = LoadTextures(material, aiTextureType_DIFFUSE);
+				textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
-    return Mesh(vertices, indices, textures);
-}
+				// specular maps
+				std::vector<Texture> specularMaps = LoadTextures(material, aiTextureType_SPECULAR);
+				textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+			}
+		}
 
-std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType type)
-{
-    std::vector<Texture> textures;
+		return Mesh(vertices, indices, textures);
+	}
 
-    // need my own reader for fbx textures
-    //Texture tex(directory, "textures/default_Base_Color.png", type);
-    //tex.load(false);
-    //textures.push_back(tex);
-    //textures_loaded.push_back(tex);
+	std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType type)
+	{
+		std::vector<Texture> textures;
 
-    for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
-    {
-        aiString str;
-        mat->GetTexture(type, i, &str);
+		// need my own reader for fbx textures
+		//Texture tex(directory, "textures/default_Base_Color.png", type);
+		//tex.load(false);
+		//textures.push_back(tex);
+		//textures_loaded.push_back(tex);
 
-        // prevent duplicate loading
-        bool skip = false;
-        for (unsigned int j = 0; j < Textures_loaded.size(); j++)
-        {
-            if (std::strcmp(Textures_loaded[j].GetPath().data(), str.C_Str()) == 0)
-            {
-                textures.push_back(Textures_loaded[j]);
-                skip = true;
-                break;
-            }
-        }
+		for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
+		{
+			aiString str;
+			mat->GetTexture(type, i, &str);
 
-        if (!skip)
-        {
-            // not loaded yet
-            //std::cout << str.C_Str() << std::endl;
+			// prevent duplicate loading
+			bool skip = false;
+			for (unsigned int j = 0; j < Textures_loaded.size(); j++)
+			{
+				if (std::strcmp(Textures_loaded[j].GetPath().data(), str.C_Str()) == 0)
+				{
+					textures.push_back(Textures_loaded[j]);
+					skip = true;
+					break;
+				}
+			}
 
-            Texture tex(Directory, str.C_Str(), type);
-            tex.Load(false);
-            textures.push_back(tex);
-            Textures_loaded.push_back(tex);
-        }
-    }
+			if (!skip)
+			{
+				// not loaded yet
+				//std::cout << str.C_Str() << std::endl;
 
-    return textures;
+				Texture tex(Directory, str.C_Str(), type);
+				tex.Load(false);
+				textures.push_back(tex);
+				Textures_loaded.push_back(tex);
+			}
+		}
+
+		return textures;
+	}
+
+
+	void Eclipse::AssimpModel::initModel()
+	{
+
+	}
+
+	void Eclipse::AssimpModel::DeleteModel()
+	{
+
+	}
 }
