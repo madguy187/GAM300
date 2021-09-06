@@ -13,6 +13,7 @@
 #include "Graphics/Grid/IAABB.h"
 #include "Graphics/Grid/AABB.h"
 
+#include "Graphics/ModelFactory/AssimpModel/IAssimpModel.h"
 namespace Eclipse
 {
     //TEST CODE
@@ -39,7 +40,7 @@ namespace Eclipse
         MAXCOUNT
     };
 
-    class AssimpModel //: public IAABB
+    class AssimpModel : public IAssimpModel
     {
     private:
         unsigned int ID = 0;
@@ -63,7 +64,6 @@ namespace Eclipse
 
     public:
         bool noTex = false;
-        DYN_AABB AABB_Property; // For Dynamic AABB
 
         AssimpModel() { }
         AssimpModel(bool noTex = false);
@@ -81,9 +81,10 @@ namespace Eclipse
         void SetModelType(ModelType in);
         std::vector<glm::vec3> GetVertices();
         void SetProperties(std::string& ModelName , ModelType in , unsigned int ID);
-        //DYN_AABB getAABB() const override;
-        //DYN_AABB SetAABB(TransformComponent& in);
         unsigned int GetEntityID();
+
+        void initModel() override;
+        void DeleteModel() override;
     };
 
 }
