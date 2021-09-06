@@ -52,6 +52,7 @@ namespace Eclipse
 		bool refresh = true;
 		bool jumpDir = false;
 		bool ResetTreeNodeOpen = false;
+		bool CopyFilesAndFolder = false;
 		////////////////////////////////
 		
 	public:
