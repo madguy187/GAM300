@@ -47,6 +47,7 @@ namespace Eclipse
 			ShowPointLightProperty("PointLight", currEnt, CompFilter);
 			ShowSpotLightProperty("SpotLight", currEnt, CompFilter);
 			ShowDirectionalLightProperty("DirectionalLight", currEnt, CompFilter);
+			ShowRigidBodyProperty("RigidBody", currEnt, CompFilter);
 			//tianyu testing will delete later
 			//todo
 			if (engine->world.CheckComponent<testComponent>(currEnt))
@@ -221,7 +222,16 @@ namespace Eclipse
 			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
 			{
 				auto& _RigidB = engine->world.GetComponent<RigidBodyComponent>(ID);
+
+				ECGui::DrawTextWidget<const char*>("Enable Gravity", "");
+				ECGui::CheckBoxBool("Rigid Body Enable Gravity", &_RigidB.enableGravity);
 				
+				ECGui::DrawTextWidget<const char*>("Forces", "");
+				ECGui::DrawSliderFloat3Widget("Rigid Body Forces", &_RigidB.forces, true, 0.0f, 1.0f);
+				
+				ECGui::DrawTextWidget<const char*>("Velocity", "");
+				ECGui::DrawSliderFloat3Widget("Rigid Body Velocity", &_RigidB.velocity, true, 0.0f, 1.0f);
+
 			}
 		}
 
@@ -356,6 +366,17 @@ namespace Eclipse
 							AddComponentsFailed("MaterialComponent", entCom, ID);
 						}
 						break;
+					case str2int("RigidBodyComponent"):
+						if (!engine->world.CheckComponent<RigidBodyComponent>(ID))
+						{
+							AddComponentsSucess("RigidBodyComponent", entCom, ID);
+							engine->world.AddComponent(ID, RigidBodyComponent{});
+						}
+						else
+						{
+							AddComponentsFailed("RigidBodyComponent", entCom, ID);
+						}
+						break;
 					case str2int("testComponent"):
 						if (!engine->world.CheckComponent<testComponent>(ID))
 						{
@@ -487,6 +508,17 @@ namespace Eclipse
 						else
 						{
 							RemoveComponentsFailed("MaterialComponent", entCom, ID);
+						}
+						break;
+					case str2int("RigidBodyComponent"):
+						if (engine->world.CheckComponent<RigidBodyComponent>(ID))
+						{
+							RemoveComponentsSucess("RigidBodyComponent", entCom, ID);
+							engine->world.DestroyComponent<RigidBodyComponent>(ID);
+						}
+						else
+						{
+							RemoveComponentsFailed("RigidBodyComponent", entCom, ID);
 						}
 						break;
 					case str2int("testComponent"):

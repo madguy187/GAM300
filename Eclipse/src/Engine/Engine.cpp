@@ -9,6 +9,7 @@
 #include "ECS/ComponentManager/Components/DirectionalLightComponent.h"
 #include "ECS/ComponentManager/Components/SpotLightComponent.h"
 #include "ECS/ComponentManager/Components/MaterialComponent.h"
+#include "ECS/ComponentManager/Components/RigidBodyComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
@@ -18,7 +19,6 @@
 #include "ImGui/Setup/ImGuiSetup.h"
 #include "ECS/SystemManager/Systems/System/MaterialSystem.h"
 #include "ECS/SystemManager/Systems/System/GridSystem.h"
-
 bool Tester1(const Test1& e)
 {
     std::cout << "Engine.cpp Tester1" << std::endl;
@@ -69,6 +69,7 @@ namespace Eclipse
         world.RegisterComponent<AabbComponent>();
         world.RegisterComponent<SpotLightComponent>();
         world.RegisterComponent<MaterialComponent>();
+        world.RegisterComponent<RigidBodyComponent>();
     	world.RegisterComponent<testComponent>();
 
         // registering system
