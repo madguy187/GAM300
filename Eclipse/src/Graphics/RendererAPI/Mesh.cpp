@@ -39,7 +39,7 @@ namespace Eclipse
         Setup();
     }
 
-    void Mesh::Render(Shader& shader, GLenum mode)
+    void Mesh::Render(Shader& shader, GLenum mode , unsigned int id)
     {
         glEnable(GL_BLEND);
         glEnable(GL_DEPTH_TEST);
@@ -47,7 +47,7 @@ namespace Eclipse
         glPolygonMode(GL_FRONT_AND_BACK, mode);
 
         // If dont have textures ( Flagged as True )
-        if (NoTex)
+        if (NoTex && (!engine->world.CheckComponent<TextureComponent>(id)))
         {
             //GLint uniform_var_loc2 = shader.GetLocation("uColor");
             //GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
@@ -59,22 +59,25 @@ namespace Eclipse
             //shader.set4Float("material.diffuse", diffuse);
             //shader.set4Float("material.specular", specular);
             //shader.setInt("noTex", 1);
+
+            std::cout << "no texture component" << std::endl;
         }
         else
         {
+            TextureComponent& tex = engine->world.GetComponent<TextureComponent>(id);
 
             // textures
             unsigned int diffuseIdx = 0;
             unsigned int specularIdx = 0;
 
-            for (unsigned int i = 0; i < Textures.size(); i++)
+            for (unsigned int i = 0; i < tex.Textures.size(); i++)
             {
                 // activate texture
                 glActiveTexture(GL_TEXTURE0 + i);
 
                 // retrieve texture info
                 std::string name;
-                switch (Textures[i].GetType())
+                switch (tex.Textures[i].GetType())
                 {
                 case aiTextureType_DIFFUSE:
                     name = "diffuse" + std::to_string(diffuseIdx++);
@@ -107,7 +110,7 @@ namespace Eclipse
                 glUniform1i(dsa, false);
 
                 // bind texture
-                Textures[i].Bind();
+                tex.Textures[i].Bind();
             }
         }
         // EBO stuff
@@ -124,6 +127,16 @@ namespace Eclipse
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
         glDeleteBuffers(1, &EBO);
+    }
+
+    std::vector<Vertex>& Mesh::GetVertices()
+    {
+        return Vertices;
+    }
+
+    unsigned int Mesh::GetVBOID()
+    {
+        return VBO;
     }
 
     void Mesh::Setup()

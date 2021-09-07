@@ -79,3 +79,8 @@ void Eclipse::DebugRenderingManager::DrawDebugShapes(unsigned int framebufferID)
         }
     }
 }
+
+void Eclipse::DebugRenderingManager::ClearDebugShapes()
+{
+    debugShapes.clear();
+}

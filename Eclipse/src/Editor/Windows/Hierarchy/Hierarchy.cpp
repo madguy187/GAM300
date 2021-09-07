@@ -47,7 +47,7 @@ namespace Eclipse
 		ECGui::BeginPopUpButtonList<void()>(settings, std::bind(&HierarchyWindow::ShowEntityCreationList, this));
 		ECGui::InsertHorizontalLineSeperator();
 
-		ECGui::DrawTextWidget<size_t>("Entity Count", engine->editorManager->EntityHierarchyList_.size());
+		ECGui::DrawTextWidget<size_t>("Entity Count", engine->editorManager->GetEntityListSize());
 		ECGui::InsertHorizontalLineSeperator();
 
 		static ImGuiTextFilter EntFilter;
@@ -56,15 +56,15 @@ namespace Eclipse
 
 		if (ECGui::BeginTreeNode("Default Scene"))
 		{
-			TrackEntitySelection(engine->editorManager->EntityHierarchyList_, PrevEnt_, CurrEnt_, 
-				engine->editorManager->GEHIndex_, EntFilter);
+			TrackEntitySelection(engine->editorManager->GetEntityListByConstRef(), 
+				PrevEnt_, CurrEnt_, EntFilter);
 
 			ECGui::EndTreeNode();
 		}
 	}
 
-	void HierarchyWindow::TrackEntitySelection(const std::vector<Entity>& list,
-		EntitySelectionTracker& prev, EntitySelectionTracker& curr, size_t& globalIndex, ImGuiTextFilter& filter)
+	void HierarchyWindow::TrackEntitySelection(const std::vector<Entity>& list, EntitySelectionTracker& prev,
+		EntitySelectionTracker& curr, ImGuiTextFilter& filter)
 	{
 		std::string entityName{};
 
@@ -106,8 +106,12 @@ namespace Eclipse
 						}
 					}
 
-					globalIndex = index;
+					engine->editorManager->SetGlobalIndex(index);
 				}
+
+				engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexSwapping", static_cast<int>(index));
+				engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexSwapping", static_cast<int>(index), 
+					"Entity positions swapped!");
 			}
 		}
 	}

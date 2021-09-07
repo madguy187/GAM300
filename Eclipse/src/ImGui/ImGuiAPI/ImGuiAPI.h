@@ -89,6 +89,7 @@ namespace Eclipse
 		static void PushItemWidth(float value);
 		static bool IsItemHovered();
 		static void SetToolTip(const char* message);
+		static void HelpMarker(const char* message);
 
 		//Plot Widgets
 		static void PlotHistogram(const char* label, const float* values, int values_count, 

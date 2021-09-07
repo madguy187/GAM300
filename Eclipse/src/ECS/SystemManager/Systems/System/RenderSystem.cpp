@@ -35,6 +35,7 @@ namespace Eclipse
 
         SystemSignature.set(engine->world.GetComponentType<TransformComponent>(), 1);
         SystemSignature.set(engine->world.GetComponentType<RenderComponent>(), 1);
+        SystemSignature.set(engine->world.GetComponentType<MaterialComponent>(), 1);
         engine->world.RegisterSystemSignature<RenderSystem>(SystemSignature);
 
         return SystemSignature;
@@ -75,14 +76,26 @@ namespace Eclipse
             // CAMERA Render End ===============================
 
             // MODELS Render  Start =============================
-            engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL, &engine->GraphicsManager.AllAABBs, CameraComponent::CameraType::Editor_Camera);
+            engine->AssimpManager.MeshDraw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), 
+                    engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetRenderMode(), 
+                    &engine->GraphicsManager.AllAABBs, CameraComponent::CameraType::Editor_Camera);
 
             engine->MaterialManager.DoNotUpdateStencil();
-            engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), GL_FILL, &box, CameraComponent::CameraType::Game_Camera);
-            engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_TOP)->GetFrameBufferID(), GL_FILL, &box, CameraComponent::CameraType::TopView_Camera);
-            engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_BOTTOM)->GetFrameBufferID(), GL_FILL, &box, CameraComponent::CameraType::BottomView_Camera);
-            engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_LEFT)->GetFrameBufferID(), GL_FILL, &box, CameraComponent::CameraType::RightView_camera);
-            engine->AssimpManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_RIGHT)->GetFrameBufferID(), GL_FILL, &box, CameraComponent::CameraType::LeftView_Camera);
+            engine->AssimpManager.MeshDraw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), 
+                    engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetRenderMode(), 
+                    &box, CameraComponent::CameraType::Game_Camera);
+            engine->AssimpManager.MeshDraw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_TOP)->GetFrameBufferID(),
+                    engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_TOP)->GetRenderMode(), 
+                    &box, CameraComponent::CameraType::TopView_Camera);
+            engine->AssimpManager.MeshDraw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_BOTTOM)->GetFrameBufferID(),
+                    engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_BOTTOM)->GetRenderMode(), 
+                    &box, CameraComponent::CameraType::BottomView_Camera);
+            engine->AssimpManager.MeshDraw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_LEFT)->GetFrameBufferID(),
+                    engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_LEFT)->GetRenderMode(), 
+                    &box, CameraComponent::CameraType::RightView_camera);
+            engine->AssimpManager.MeshDraw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_RIGHT)->GetFrameBufferID(),
+                    engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_RIGHT)->GetRenderMode(), 
+                    &box, CameraComponent::CameraType::LeftView_Camera);
             // MODELS Render  End ===============================
 
             // Debug Boxes Draw Start =============================

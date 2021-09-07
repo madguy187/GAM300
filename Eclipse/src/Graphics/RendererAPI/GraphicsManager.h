@@ -2,6 +2,7 @@
 #define GRAPHICS_MANAGER_H
 
 #include "ECS/ComponentManager/Components/RenderComponent.h"
+#include "ECS/ComponentManager/Components/MeshComponent3D.h"
 #include "AssimpModel/AssimpModel.h"
 #include "Graphics/InputHandler/InputWrapper.h"
 #include "Graphics/ModelFactory/Sky/CubeMap.h"
@@ -18,7 +19,6 @@ namespace Eclipse
         InputWrapper InputHandler;
         GLenum GlobalMode = GL_FILL;
         std::unique_ptr<CubeMap> Sky;
-        std::unique_ptr<Grid> GridManager;
         AABB_ AllAABBs;
 
         unsigned int createdID;

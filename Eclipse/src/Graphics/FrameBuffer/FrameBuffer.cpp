@@ -194,4 +194,14 @@ namespace Eclipse
             EDITOR_LOG_INFO("FrameBuffer deleted successfully");
         }
     }
+
+    void FrameBuffer::SetRenderMode(RenderMode _renderMode)
+    {
+        m_renderMode = _renderMode;
+    }
+
+    FrameBuffer::RenderMode FrameBuffer::GetRenderMode()
+    {
+        return m_renderMode;
+    }
 }

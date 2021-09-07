@@ -5,10 +5,13 @@
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RenderComponent.h"
 #include "ECS/ComponentManager/Components/CameraComponent.h"
-#include "ECS/ComponentManager/Components/AabbComponent.h"
+#include "ECS/ComponentManager/Components/AABBComponent.h"
 #include "ECS/ComponentManager/Components/DirectionalLightComponent.h"
 #include "ECS/ComponentManager/Components/SpotLightComponent.h"
 #include "ECS/ComponentManager/Components/MaterialComponent.h"
+#include "ECS/ComponentManager/Components/MeshComponent3D.h"
+#include "ECS/ComponentManager/Components/RigidBodyComponent.h"
+#include "ECS/ComponentManager/Components/TextureComponent.h"
 #include "ECS/ComponentManager/Components/ParentChildComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
@@ -19,7 +22,6 @@
 #include "ImGui/Setup/ImGuiSetup.h"
 #include "ECS/SystemManager/Systems/System/MaterialSystem.h"
 #include "ECS/SystemManager/Systems/System/GridSystem.h"
-
 bool Tester1(const Test1& e)
 {
     std::cout << "Engine.cpp Tester1" << std::endl;
@@ -67,9 +69,13 @@ namespace Eclipse
         world.RegisterComponent<CameraComponent>();
         world.RegisterComponent<PointLightComponent>();
         world.RegisterComponent<DirectionalLightComponent>();
-        world.RegisterComponent<AabbComponent>();
+        world.RegisterComponent<AABBComponent>();
         world.RegisterComponent<SpotLightComponent>();
         world.RegisterComponent<MaterialComponent>();
+        world.RegisterComponent<testComponent>();
+        world.RegisterComponent<MeshComponent3D>();
+        world.RegisterComponent<RigidBodyComponent>();
+        world.RegisterComponent<TextureComponent>();
         world.RegisterComponent<ParentChildComponent>();
 
         // registering system
@@ -101,13 +107,18 @@ namespace Eclipse
         world.RegisterSystemSignature<MaterialSystem>(mat);
 
         Signature picking;
-        picking.set(world.GetComponentType<AabbComponent>(), 1);
+        picking.set(world.GetComponentType<AABBComponent>(), 1);
         picking.set(world.GetComponentType<TransformComponent>(), 1);
         picking.set(world.GetComponentType<MaterialComponent>(), 1);
         world.RegisterSystemSignature<PickingSystem>(picking);
 
+        Signature gridCol;
+        gridCol.set(world.GetComponentType<AABBComponent>(), 1);
+        gridCol.set(world.GetComponentType<TransformComponent>(), 1);
+        world.RegisterSystemSignature<GridSystem>(gridCol);
+
         mono.Init();
-        
+
         //Check this! - Rachel
         RenderSystem::Init();
         CameraSystem::Init();
@@ -188,7 +199,7 @@ namespace Eclipse
             world.Update<MaterialSystem>();
 
             // GRID DRAW ============================= Must be last of All Renders
-            engine->GraphicsManager.GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+            engine->GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 
             mono.Update();
 
@@ -204,7 +215,7 @@ namespace Eclipse
         // unLoad
         mono.StopMono();
         GraphicsManager.End();
-        AssimpManager.CleanUpAllModels();
+        AssimpManager.CleanUpAllModelsMeshes();
         ImGuiSetup::Destroy(EditorState);
         CommandHistory::Clear();
     }
