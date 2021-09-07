@@ -2,10 +2,16 @@
 #include "PickingManager.h"
 
 
-void Eclipse::PickingManager::GenerateAabb(unsigned int ID, TransformComponent& _transform)
+void Eclipse::PickingManager::GenerateAabb(unsigned int ID, TransformComponent& _transform, EntityType _type)
 {
+    if ((_type == EntityType::ENT_LIGHT_POINT) || (_type == EntityType::ENT_LIGHT_DIRECTIONAL))
+    {
+        return;
+    }
+
 	engine->world.AddComponent(ID, AabbComponent{});
 	auto& _aabb = engine->world.GetComponent<AabbComponent>(ID);
+    std::cout << "Generate AABB ID: " << ID << std::endl;
 
 	glm::vec3 scale = _transform.scale.ConvertToGlmVec3Type();
 	glm::vec3 position = _transform.position.ConvertToGlmVec3Type();
@@ -28,7 +34,6 @@ void Eclipse::PickingManager::UpdateAabb(unsigned int ID)
 	_aabb.center = ECVec3{ position.x, position.y, position.z };
 	_aabb.min = ECVec3{ position.x - halfExt.x, position.y - halfExt.y, position.z - halfExt.z };
 	_aabb.max = ECVec3{ position.x + halfExt.x, position.y + halfExt.y, position.z + halfExt.z };
-
 }
 
 glm::vec3 Eclipse::PickingManager::ComputeCursorRayDirection()
@@ -109,4 +114,14 @@ bool Eclipse::PickingManager::RayAabb(glm::vec3& rayStart, glm::vec3& rayDir, gl
     }
 
     return true;
+}
+
+unsigned int Eclipse::PickingManager::GetCurrentCollisionID()
+{
+    return currentCollisionID;
+}
+
+void Eclipse::PickingManager::SetCurrentCollisionID(unsigned int ID)
+{
+    currentCollisionID = ID;
 }

@@ -5,49 +5,62 @@
 #include "scene.h"
 #include "postprocess.h"
 #include <vector>
+#include <algorithm>
 #include "mesh.h"
 
 // fbx
 #include "cimport.h"
+#include "Graphics/Grid/IAABB.h"
+#include "Graphics/Grid/AABB.h"
 
 namespace Eclipse
 {
-    enum class ModelType
+    //TEST CODE
+    struct MeshData
     {
-        UNASSIGNED = 0,
-        HUMAN = 1,
-        ANIMAL = 2,
-        HOUSE = 3,
-        ENVIRONMENT = 4,
-        MAXCOUNT
+        std::vector<Vertex> vertices;
+        std::vector<unsigned int> indices;
+
+        aiColor4D Diffuse;
+        aiColor4D Specular;
+
+        bool hasTexture = false;
+        std::vector<Texture> textures;
     };
 
     class AssimpModel
     {
     private:
+        unsigned int ID = 0;
+        bool NoTextures = false; // Set False if model got textures
+        ModelType type = ModelType::MT_UNASSIGNED;
+        // Take Note , i will use folder name as key
         std::string NameOfModel;
-        std::vector<Mesh> Meshes;
         std::string Directory;
+        std::vector<Mesh> Meshes;
         std::vector<Texture> Textures_loaded;
-        ModelType type = ModelType::UNASSIGNED;
+        std::vector<glm::vec3> AllVertices;
+        std::vector<MeshData> meshData;
 
-        Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
+        void ProcessMesh(aiMesh* mesh, const aiScene* scene);
         std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type);
         void ProcessNode(aiNode* node, const aiScene* scene);
-        void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera , unsigned int FrameBufferID);
-        void SimpleCameraPlay(TransformComponent& in, unsigned int Fraembuffer);
+        float GetLargestAxisValue(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
+        void ComputeAxisMinMax(std::vector<glm::vec3>& vertices, std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
+        glm::vec3 ComputeCentroid(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
+
+        void LoadNewModel();
+
     public:
-        bool noTex = false;
-        unsigned int ID = 0;
-        GLenum GlobalMode = GL_FILL;
 
         AssimpModel() { }
         AssimpModel(bool noTex = false);
+        AssimpModel(bool noTex, std::string& NameOfModels, std::string& Directorys, std::vector<Mesh> Meshess, std::vector<Texture> Textures_loadeds);
 
         void LoadAssimpModel(std::string path);
-        void Render(Shader& shader, GLenum mode, unsigned int FrameBufferID, CameraComponent::CameraType _camType);
+        void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID , unsigned int id);
         void Cleanup();
-        void SetName(std::string name);
+        void SetName(std::string& name);
         std::string GetName();
         std::string GetDirectory();
         unsigned int GetNumberOfTextures();
@@ -55,10 +68,13 @@ namespace Eclipse
         unsigned int GetNumberOfMeshes();
         ModelType GetType();
         void SetModelType(ModelType in);
-
-        // fbx
-    public:
-        void FBXLoadAssimpModel(const char* in);
+        std::vector<glm::vec3> GetVertices();
+        void SetProperties(std::string& ModelName, ModelType in, unsigned int ID);
+        void SetProperties(std::string& ModelName, ModelType in);
+        unsigned int GetEntityID();
+        std::vector<Mesh> GetMesh();
+        std::vector<Texture> GetTextures();
+        bool CheckNoTextures();
     };
 
 }

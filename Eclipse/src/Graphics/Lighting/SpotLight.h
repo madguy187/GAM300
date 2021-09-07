@@ -3,8 +3,8 @@
 
 namespace Eclipse
 {
-    typedef std::map<int, SpotLightComponent*> SpotLightContainer;
-    using SLIT = std::map<int, SpotLightComponent*>::iterator;
+    typedef std::unordered_map<int, SpotLightComponent*> SpotLightContainer;
+    using SLIT = std::unordered_map<int, SpotLightComponent*>::iterator;
 
     class SpotLight
     {
@@ -17,9 +17,11 @@ namespace Eclipse
         SpotLightContainer GetContainer();
         unsigned int GetNumberOfSpotLights();
         static void CreateSpotLight(unsigned int CreatedID);
+        static bool DeleteSpotLight(unsigned int EntityID);
         void DrawSpotLights(unsigned int framebufferID);
         void Draw(SpotLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
-
+        bool InsertSpotLightLight(SpotLightComponent& in);
+        void ClearContainer();
     private:
         void CheckUniformLoc(Shader* _shdrpgm, SpotLightComponent& hi, int index, unsigned int containersize);
     };

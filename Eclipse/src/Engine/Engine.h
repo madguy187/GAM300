@@ -7,7 +7,9 @@
 #include "Graphics/Lighting/LightManager.h"
 #include "Mono/Manager/MonoManager.h"
 #include "AssimpModel/AssimpManager.h"
+#include "Graphics/Material/MaterialManager.h"
 #include "Graphics/Picker/PickingManager.h"
+#include "Graphics/Grid/AABBTree.h"
 #include "Physics/PhysicsManager.h"
 
 namespace Eclipse
@@ -21,16 +23,21 @@ namespace Eclipse
 		Clock Game_Clock;
 		DebugRenderingManager gDebugManager;
 		std::unique_ptr<EditorManager> editorManager;
-		Lights LightManager;
+		LightManager LightManager;
 		MonoManager mono;
 	    AssimpModelManager AssimpManager;
 		PickingManager gPicker;
-		PhysicsManager gPhysics;
-		void Init();
-		void Run();
+        MaterialManager MaterialManager{ true , true };
+		AABBTree CollisionGridTree{ 150 };
+		std::unique_ptr<Grid> GridManager;
 
-		bool GetEditorState();
-	private:
-		bool EditorState{ true };
-	};
+        void Init();
+        void Run();
+		PhysicsManager gPhysics;
+
+
+        bool GetEditorState();
+    private:
+        bool EditorState{ true };
+    };
 }

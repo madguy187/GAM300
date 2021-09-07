@@ -4,30 +4,91 @@
 #include "Importer.hpp"
 #include "scene.h"
 #include "postprocess.h"
+#include  <utility>
 
 #include <vector>
 #include "AssimpModel/AssimpModel.h"
+#include "ECS/ComponentManager/Components/EntityComponent.h"
+#include "Graphics/Grid/AABBTree.h"
+#include "ECS/ComponentManager/Components/TextureComponent.h"
 
-using namespace Eclipse;
-
-typedef std::map<unsigned int, AssimpModel*> AssimpModelContainer;
-using AssimpIT = std::map<unsigned int, AssimpModel*>::iterator;
-
-class AssimpModelManager
+namespace Eclipse
 {
-private:
-    AssimpModelContainer AssimpModelContainer_;
+    typedef std::unordered_map<unsigned int, AssimpModel*> AssimpModelContainer;
+    typedef std::unordered_map<unsigned int, MeshComponent3D*> MeshModelContainer;
+    using AssimpIT = std::unordered_map<unsigned int, AssimpModel&>::iterator;
+    using AssimpMeshIT = std::unordered_map<unsigned int, MeshComponent3D*>::iterator; 
 
-public:
-    AssimpModelContainer GetContainer();
-    unsigned int AssimpModelCount();
-    void LoadAllModels();
-    void CreateModel(std::string name, std::string path, std::string filename);
-    void Draw(unsigned int FrameBufferID, GLenum mode, CameraComponent::CameraType _camType);
-    void DeleteItem(unsigned int index, AssimpModel* model_ptr);
-    void DebugPrint();
-    void AddComponents();
-    void CleanUpAllModels();
-    ~AssimpModelManager();
-};
+    // Current Version
+    // Prev : Loading Model in every Create , Store them into Container as AssimpModel*
+    // Now  : All Models are Only Loaded Once , Store them as Mesh* in AssimpLoadedModels.
+
+    class AssimpModelManager
+    {
+    private:
+        // Version 2 Container that stores AssimpModel*
+        MeshModelContainer AssimpModelContainerV2;
+        // Container to store Models who are loaded once
+        std::unordered_map<std::string, std::unique_ptr<AssimpModel>> AssimpLoadedModels;
+
+        // Version 1 Container that stores AssimpModel*
+        AssimpModelContainer AssimpModelContainer_;
+    public:
+        // Get Current MeshComponent Container
+        MeshModelContainer GetMeshContainer();
+        // Ger how many Models in Container
+        unsigned int MeshModelCount();
+        // Get Current Model Factory Count
+        unsigned int MeshFactoryCount();
+        // Load All Models Once
+        void LoadAllModels();
+        // Render Function that uses the Container that stores MeshComponent 
+        void MeshDraw(unsigned int FrameBufferID, GLenum Mode, AABB_* box, CameraComponent::CameraType _camType);
+        // Upload to Shader
+        void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID, AABB_* box);
+        // Delete Model from MeshContainer Using ID
+        void DeleteItem(unsigned int index);
+        // Print out all the Loaded Model details
+        void PrintLoadedModels();
+        // Destory buffers
+        void CleanUpAllModelsMeshes();
+        // Cleanup
+        void Cleanup(MeshComponent3D& in);
+        // Check Current path is correct
+        void TestPath(std::string& path);
+        // Draw function that takes in Mesh Component
+        void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent3D& in, unsigned int inin);
+        // Using MeshComponent into Container , Pass in key please
+        void InsertModel(MeshComponent3D& in, std::string& key);
+        // Model Factory to load all models
+        void LoadModels(const std::string& modelFile);
+        // Get Key
+        std::string GetKey(const std::string& in);
+        // Destructor
+        ~AssimpModelManager();
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // For Jian Herng
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        bool InsertMesh(MeshComponent3D& in);
+        bool ClearContainer();
+
+    private:
+        //
+        void CleanUpAllModels();
+        unsigned int AssimpModelCount();
+        bool InsertModel(AssimpModel& in);
+        AssimpModelContainer GetContainer();
+        AssimpModel* GetModel(unsigned int ID);
+        void CreateModel(unsigned int ID, std::string name, std::string path, std::string filename);
+        void Draw(unsigned int FrameBufferID, GLenum mode, AABB_* box, CameraComponent::CameraType _camType);
+        void HighlihtDraw(unsigned int FrameBufferID, GLenum Mode);
+        void DeleteItem(unsigned int index, AssimpModel* model_ptr);
+
+    public:
+        // tEXTURES i put here first ah
+        std::multimap<std::string, std::unique_ptr<Texture>> LoadedTextures;
+        void SetTexturesForModel(TextureComponent& in, std::string& passinkey);
+    };
+}
 #endif // ASSIMP_MANAGER_H

@@ -21,10 +21,14 @@ namespace Eclipse
 		entityManager->Destroy(entity);
 		systemManager->EntitySignatureChanged(entity, 0);
 	}
-	
+
 	void World::Clear()
 	{
 		entityManager->Clear();
 		componentManager->Clear();
+	}
+	std::vector<std::string> World::GetAllComponentNames()
+	{
+		return componentManager->GetAllComponentNames();
 	}
 }

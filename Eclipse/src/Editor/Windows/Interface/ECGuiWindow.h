@@ -8,6 +8,7 @@ namespace Eclipse
 	{
 	public:
 		virtual void Update() = 0;
+		virtual void Unload() = 0;
 		virtual ~ECGuiWindow() = default;
 
 		EditorWindowType Type{ EditorWindowType::EWT_UNASSIGNED };

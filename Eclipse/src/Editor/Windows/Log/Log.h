@@ -9,6 +9,7 @@ namespace Eclipse
 	{
 	public:
 		void Update() override;
+		void Unload() override;
 		LoggerWindow();
 		void DrawImpl();
 

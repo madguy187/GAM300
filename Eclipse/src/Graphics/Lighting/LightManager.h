@@ -47,7 +47,7 @@ namespace Eclipse
         }
     };
 
-    class Lights
+    class LightManager
     {
     public:
         // Base Classes =============================
@@ -63,6 +63,15 @@ namespace Eclipse
         template<typename T, typename = void>
         struct has_Diffuse : std::false_type {};
 
+        template<typename T, typename = void>
+        struct has_attenuation : std::false_type {};
+
+        template<typename T, typename = void>
+        struct has_Specular : std::false_type {};
+
+        template<typename T, typename = void>
+        struct has_EnableBlinnPhong : std::false_type {};
+
         // Check if T has the variable , if have , will enter template =============================
         template<typename TypeOfLight>
         struct has_Color< TypeOfLight, decltype(std::declval<TypeOfLight>().Color, void())> : std::true_type {};
@@ -76,17 +85,35 @@ namespace Eclipse
         template<typename TypeOfLight>
         struct has_Diffuse< TypeOfLight, decltype(std::declval<TypeOfLight>().diffuse, void())> : std::true_type {};
 
+        template<typename TypeOfLight>
+        struct has_attenuation< TypeOfLight, decltype(std::declval<TypeOfLight>().constant, std::declval<TypeOfLight>().linear , std::declval<TypeOfLight>().quadratic, void())> : std::true_type {};
+
+        template<typename TypeOfLight>
+        struct has_Specular< TypeOfLight, decltype(std::declval<TypeOfLight>().specular, void())> : std::true_type {};
+
+        template<typename TypeOfLight>
+        struct has_EnableBlinnPhong< TypeOfLight, decltype(std::declval<TypeOfLight>().EnableBlinnPhong, void())> : std::true_type {};
+
     private:
         PointLight _allpointlights;
         DirectionalLight _DirectionalLights;
         SpotLight _allspotlights;
         std::vector <std::pair<unsigned int, AttenuationValues>> AttenuationLevels;
         std::vector <std::pair<unsigned int, Angles>> SpotLightAngles;
+        bool EnableBlinnPhong = true;
 
     public:
+        bool ApplyLighting = true;
+
         void init();
         void Update();
         void CreateLights(TypesOfLights in, unsigned int CreatedID);
+        void SetApplyLightingFlag(bool in);
+        bool CheckApplyLighting();
+        bool InsertPointLight(PointLightComponent& in);
+        bool InsertDirectionalLight(DirectionalLightComponent& in);
+        bool InsertSpotLightLight(SpotLightComponent& in);
+        bool ClearAllContainer();
 
         // Draws =============================
         void DrawPointLights(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
@@ -100,7 +127,6 @@ namespace Eclipse
 
         // LightProperties =============================
         void CreateAttenuationLevels();
-        void SetAttenuation(PointLightComponent& in, unsigned int Level);
 
         template <typename TypeOfLight, typename TYPE>
         void SetColor(TypeOfLight& OBJ, TYPE val);
@@ -116,6 +142,15 @@ namespace Eclipse
 
         template <typename TypeOfLight>
         void SetDiffuse(TypeOfLight& OBJ, ECVec3 in);
+
+        template <typename TypeOfLight>
+        void SetAttenuation(TypeOfLight& OBJ, unsigned int in);
+
+        template <typename TypeOfLight>
+        void SetSpecular(TypeOfLight& OBJ, ECVec3 in);
+
+        template <typename TypeOfLight>
+        void SetBlinnPhong(TypeOfLight& OBJ, bool& in);
     };
 
 #include "Graphics/Lighting/LightProperties.hpp"

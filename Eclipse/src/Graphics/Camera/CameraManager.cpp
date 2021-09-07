@@ -21,8 +21,8 @@ namespace Eclipse
         editorCam.projType = CameraComponent::ProjectionType::Perspective;
 
         auto& _transform = engine->world.GetComponent<TransformComponent>(newCam);
-        _transform.position = ECVec3{ 0.0f, 0.0f, 40.0f };
-        _transform.rotation = ECVec3{ 0.0f, -90.0f, 0.0f };
+        _transform.position = ECVec3{ 0.0f, 20.0f, 40.0f };
+        _transform.rotation = ECVec3{ -40.0f, -90.0f, 0.0f };
 
         cameraList.emplace(CameraComponent::CameraType::Editor_Camera, newCam);
     }

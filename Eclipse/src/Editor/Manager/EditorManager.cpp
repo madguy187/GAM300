@@ -3,7 +3,7 @@
 #include "ImGui/Vendor/IconsFontAwesome.h"
 #include "Editor/Windows/Inspector/Inspector.h"
 #include "Editor/Windows/Hierarchy/Hierarchy.h"
-#include "Editor/Windows/Scene/Scene.h"
+#include "Editor/Windows/Scene/SceneView.h"
 #include "Editor/Windows/GameView/GameView.h"
 #include "Editor/Windows/Debug/Debug.h"
 #include "ECS/ComponentManager/Components/EntityComponent.h"
@@ -41,6 +41,9 @@ namespace Eclipse
 	void EditorManager::InitMenu()
 	{
 		MenuComponent file{ "File", EditorMenuType::FILE };
+		file.AddItems("New");
+		file.AddItems("Open");
+		file.AddItems("Save As...");
 		file.AddItems("Exit");
 		MenuComponent window{ "Windows", EditorMenuType::WINDOWS };
 
@@ -82,49 +85,80 @@ namespace Eclipse
 		io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/fontawesome-webfont.ttf", 12.0f, &icons_config, icons_ranges);
 	}
 
-	Entity EditorManager::CreateEntity(EntityType type)
+	Entity EditorManager::CreateDefaultEntity(EntityType type)
 	{
 		Entity ID = engine->world.CreateEntity();
-		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast<std::string>(type), true });
+
+		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast_toStr<EntityType>(type), true });
 		engine->world.AddComponent(ID, TransformComponent{});
 		engine->world.AddComponent(ID, RigidBodyComponent{});
 
-		//Check this please - Rachel
+		// Check this please - Rachel
 		auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
-
-		engine->gPicker.GenerateAabb(ID, _transform);
+		engine->gPicker.GenerateAabb(ID, _transform, type);
 
 		EntityHierarchyList_.push_back(ID);
-		EntityToTypeMap_.insert(std::pair<Entity, EntityType>(ID, type));
+		EntityToIndexMap_.insert(std::pair<Entity, int>(ID, static_cast<int>(EntityHierarchyList_.size() - 1)));
 		GEHIndex_ = EntityHierarchyList_.size() - 1;
 
 		return ID;
 	}
 
+	void EditorManager::RegisterExistingEntity(Entity ID)
+	{
+		EntityHierarchyList_.push_back(ID);
+		EntityToIndexMap_.insert(std::pair<Entity, int>(ID, static_cast<int>(EntityHierarchyList_.size() - 1)));
+		GEHIndex_ = EntityHierarchyList_.size() - 1;
+	}
+
 	void EditorManager::DestroyEntity(Entity ID)
 	{
-		for (size_t i = 0; i < EntityHierarchyList_.size(); ++i)
+		size_t pos = static_cast<size_t>(EntityToIndexMap_[ID]);
+
+		EntityHierarchyList_.erase(EntityHierarchyList_.begin() + pos);
+		EntityToIndexMap_.erase(ID);
+
+		if (!EntityHierarchyList_.empty())
 		{
-			if (ID == EntityHierarchyList_[i])
-			{
-				EntityHierarchyList_.erase(EntityHierarchyList_.begin() + i);
-
-				if (i == EntityHierarchyList_.size())
-					GEHIndex_ = EntityHierarchyList_.size() - 1;
-				else
-					GEHIndex_ = i;
-
-				break;
-			}
+			if (pos == EntityHierarchyList_.size())
+				SetSelectedEntity(EntityHierarchyList_[EntityHierarchyList_.size() - 1]);
+			else
+				SetSelectedEntity(EntityHierarchyList_[pos]);
 		}
 
-		EntityToTypeMap_.erase(ID);
 		engine->world.DestroyEntity(ID);
 	}
 
-	std::vector<std::unique_ptr<ECGuiWindow>>& EditorManager::GetAllWindows()
+	void EditorManager::SwapEntities(size_t firstIndex, size_t secondIndex)
+	{
+		EntityToIndexMap_[EntityHierarchyList_[firstIndex]] = static_cast<int>(secondIndex);
+		EntityToIndexMap_[EntityHierarchyList_[secondIndex]] = static_cast<int>(firstIndex);;
+
+		auto tmp = EntityHierarchyList_[firstIndex];
+		EntityHierarchyList_[firstIndex] = EntityHierarchyList_[secondIndex];
+		EntityHierarchyList_[secondIndex] = tmp;
+	}
+
+	void EditorManager::InsertExistingEntity(size_t pos, Entity ID)
+	{
+		auto itrPos = EntityHierarchyList_.begin() + pos;
+		EntityHierarchyList_.insert(itrPos, ID);
+		EntityToIndexMap_[ID] = static_cast<int>(pos);
+	}
+
+	std::vector<std::unique_ptr<ECGuiWindow>>& EditorManager::GetAllWindowsByRef()
 	{
 		return Windows_;
+	}
+
+	const std::vector<Entity>& EditorManager::GetEntityListByConstRef() const
+	{
+		return EntityHierarchyList_;
+	}
+
+	const Entity* EditorManager::GetEntityListData()
+	{
+		return EntityHierarchyList_.data();
 	}
 
 	MenuBar& EditorManager::GetMenuBar()
@@ -132,13 +166,55 @@ namespace Eclipse
 		return MenuBar_;
 	}
 
-	size_t EditorManager::GetWindowListSize()
+	size_t EditorManager::GetWindowListSize() const
 	{
 		return Size_;
 	}
 
 	Entity EditorManager::GetSelectedEntity() const
 	{
-		return EntityHierarchyList_[GEHIndex_];
+		if (!EntityHierarchyList_.empty())
+			return EntityHierarchyList_[GEHIndex_];
+		else
+			return MAX_ENTITY;
+	}
+
+	size_t EditorManager::GetEntityListSize() const
+	{
+		return EntityHierarchyList_.size();
+	}
+
+	int EditorManager::GetEntityIndex(Entity ID)
+	{
+		return EntityToIndexMap_[ID];
+	}
+
+	bool EditorManager::IsEntityListEmpty() const
+	{
+		return EntityHierarchyList_.empty();
+	}
+
+	void EditorManager::SetSelectedEntity(Entity ID)
+	{
+		GEHIndex_ = static_cast<size_t>(EntityToIndexMap_[ID]);
+		auto* hc = GetEditorWindow<HierarchyWindow>();
+		hc->UpdateEntityTracker(ID);
+	}
+
+	void EditorManager::SetGlobalIndex(size_t index)
+	{
+		GEHIndex_ = index;
+	}
+
+	void EditorManager::Clear()
+	{
+		EntityHierarchyList_.clear();
+		EntityToIndexMap_.clear();
+		GEHIndex_ = 0;
+
+		for (const auto& window : Windows_)
+		{
+			window->Unload();
+		}
 	}
 }

@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "MenuComponent.h"
-#include "Editor/Windows/Scene/Scene.h"
+
+#include "Editor/Utilities/OpenFileDialog.h"
+#include "Editor/Windows/Scene/SceneView.h"
 #include "Editor/Windows/GameView/GameView.h"
 
 namespace Eclipse
@@ -28,6 +30,36 @@ namespace Eclipse
 	void MenuComponent::DrawImpl(const char* key)
 	{
 		// For specific items
+		if (!strcmp(key, "New"))
+		{
+			bool selected = false;
+
+			if (ECGui::CreateMenuItem(key, &selected))
+			{
+				
+			}
+		}
+		
+		if (!strcmp(key, "Open"))
+		{
+			bool selected = false;
+
+			if (ECGui::CreateMenuItem(key, &selected))
+			{
+				FileDialog::FileBrowser();
+			}
+		}
+
+		if (!strcmp(key, "Save As..."))
+		{
+			bool selected = false;
+
+			if (ECGui::CreateMenuItem(key, &selected))
+			{
+				FileDialog::SaveFile();
+			}
+		}
+
 		if (!strcmp(key, "Exit"))
 		{
 			bool selected = false;
@@ -37,7 +69,6 @@ namespace Eclipse
 				glfwSetWindowShouldClose(OpenGL_Context::GetWindow(), 1);
 			}
 		}
-
 		/*if (!strcmp(key, "Scene"))
 		{
 			auto* scene = engine->editorManager->GetEditorWindow<Scene>();
@@ -70,7 +101,7 @@ namespace Eclipse
 		{
 			int index = 0;
 
-			for (auto& window : engine->editorManager->GetAllWindows())
+			for (auto& window : engine->editorManager->GetAllWindowsByRef())
 			{
 				if (ECGui::CreateMenuItem(ListToName_[index], &window->IsVisible))
 				{

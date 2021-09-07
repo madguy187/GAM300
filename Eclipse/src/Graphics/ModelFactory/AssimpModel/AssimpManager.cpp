@@ -1,154 +1,421 @@
 #include "pch.h"
 #include "AssimpManager.h"
 
-using namespace Eclipse;
-
-void AssimpModelManager::CreateModel(std::string name, std::string FolderName , std::string filename)
+namespace Eclipse
 {
-    Entity ID = engine->world.CreateEntity();
+	void AssimpModelManager::LoadModels(const std::string& modelFile)
+	{
+		Parser input;
+		input.ParseFile(modelFile);
 
-    // Create path
-    std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/" + filename).c_str();
+		std::string FolderName;
+		std::string filename;
 
-    // Test Path
-    std::ifstream test(PathName);
+		for (auto& it : input.doc["AssimpModels"].GetArray())
+		{
+			FolderName = (it)["FolderName"].GetString();
+			filename = (it)["FileName"].GetString();
 
-    if (!test)
-    {
-        std::string Error = ("The file path " + PathName + " doesnt exist! ").c_str();
-        ENGINE_LOG_ASSERT(false, Error);
-        std::exit(EXIT_FAILURE);
-    }
+			std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/" + filename).c_str();
 
-    // Initialise
-    AssimpModel* NewModel = new AssimpModel(false);
-    NewModel->LoadAssimpModel(PathName);
-    NewModel->SetName(name);
-    NewModel->SetModelType(ModelType::ANIMAL);
+			TestPath(PathName);
 
-    // Insert
-    if (AssimpModelContainer_.insert(std::pair<unsigned int, AssimpModel*>(ID, NewModel)).second == true)
-    {
-        std::string Success = ("3D Model [" + name + "] Created and Inseted into Container Successfully! ").c_str();
-        ENGINE_CORE_INFO(Success);
-    }
-}
+			std::unique_ptr<AssimpModel> ptr(new AssimpModel(false));
+			ptr->SetProperties(FolderName, ModelType::MT_ANIMAL);
+			ptr->LoadAssimpModel(PathName);
 
-void AssimpModelManager::LoadAllModels()
-{
-    // hi
-    //CreateModel("White Dog", "testhouse", "scene.gltf");
+			AssimpLoadedModels.emplace(FolderName, std::move(ptr));
+		}
+	}
 
-    CreateModel("White Dog", "dog","scene.gltf");
-    CreateModel("Black Dog", "dog2","scene.gltf");
-    CreateModel("Black", "dog3","scene.gltf");
-    
-    DebugPrint();
+	std::string AssimpModelManager::GetKey(const std::string& in)
+	{
+		return AssimpLoadedModels[in]->GetName();
+	}
 
-    ENGINE_CORE_INFO("All Assimp Models Loaded");
-    EDITOR_LOG_INFO("All Necessary Models Loaded");
-}
+	void AssimpModelManager::CreateModel(unsigned int ID, std::string name, std::string FolderName, std::string filename)
+	{
+		// Add Required Components
+		engine->world.AddComponent(ID, MaterialComponent{});
 
-void AssimpModelManager::Draw(unsigned int FrameBufferID, GLenum Mode, CameraComponent::CameraType _camType)
-{
-    glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
-    auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
-    shdrpgm->second.Use();
+		TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(ID);
+		Transform.scale.setX(5);
+		Transform.scale.setY(5);
+		Transform.scale.setZ(5);
 
-    for (auto const& Models : AssimpModelContainer_)
-    {
-        auto& InvidualModels = *(Models.second);
-        InvidualModels.Render(shdrpgm->second, Mode,FrameBufferID, _camType);
-    }
+		MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+		mat.Modeltype = MaterialComponent::ModelType::Models3D;
+		// ----------------------------------------------------------------------------------------------------------
 
-    shdrpgm->second.UnUse();
-}
+		// Create path
+		std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/" + filename).c_str();
 
-AssimpModelContainer AssimpModelManager::GetContainer()
-{
-    return AssimpModelContainer_;
-}
+		// Test Path
+		TestPath(PathName);
 
-unsigned int AssimpModelManager::AssimpModelCount()
-{
-    return AssimpModelContainer_.size();
-}
+		// Always set False because we have textures
+		AssimpModel* NewModel = new AssimpModel(false);
+		NewModel->LoadAssimpModel(PathName);
+		NewModel->SetProperties(name, ModelType::MT_ANIMAL, ID);
 
-void AssimpModelManager::DeleteItem(unsigned int index, AssimpModel* model_ptr)
-{
-    for (auto AssimpIT = AssimpModelContainer_.begin(); AssimpIT != std::end(AssimpModelContainer_); ++AssimpIT)
-    {
-        if (((*AssimpIT).first == index) && ((*AssimpIT).second == model_ptr))
-        {
-            AssimpModelContainer_.erase(AssimpIT);
+		// ----------------------------------------------------------------------------------------------------------
 
-            std::string Name = (*AssimpIT).second->GetName();
-            std::string SuccessMsg = ("Model [ " + Name + " ] + erased from AssimpModelContainer_").c_str();
-            ENGINE_CORE_INFO(SuccessMsg);
-            return;
-        }
-    }
-}
+		//// Insert
+		if (AssimpModelContainer_.insert(std::pair<unsigned int, AssimpModel*>(ID, NewModel)).second == true)
+		{
+			std::string Success = ("3D Model [" + name + "] Created and Inseted into Container Successfully! ").c_str();
+			ENGINE_CORE_INFO(Success);
+		}
 
-void AssimpModelManager::DebugPrint()
-{
-    std::cout << std::endl;
-    std::cout << "Container Size " << AssimpModelContainer_.size()  << std::endl;
-    std::cout << "---------------------------------" << std::endl;
+		// ----------------------------------------------------------------------------------------------------------
+		engine->MaterialManager.RegisterMeshForHighlighting(ID);
+		// ----------------------------------------------------------------------------------------------------------
+	}
 
-    for (auto const& Models : AssimpModelContainer_)
-    {
-        auto& InvidualModels = *(Models.second);
-        std::cout << " Entity ID : " << Models.first << std::endl;
-        std::cout << " Model Name : " << InvidualModels.GetName() << std::endl;
-        std::cout << " Model Directory : " << InvidualModels.GetDirectory() << std::endl;
-        std::cout << " Number of Textures : " << InvidualModels.GetNumberOfTextures() << std::endl;
-        InvidualModels.GetTextureNames();
-        std::cout << std::endl;
-    }
+	void AssimpModelManager::LoadAllModels()
+	{
+		LoadModels("src/Assets/ASSModels/AssimpModels.json");
+		PrintLoadedModels();
 
-    std::cout << "---------------------------------" << std::endl;
-    std::cout << std::endl;
-}
+		ENGINE_CORE_INFO("All Assimp Models Loaded");
+		EDITOR_LOG_INFO("All Necessary Models Loaded");
+	}
 
-void AssimpModelManager::AddComponents()
-{
-    for (auto const& Models : AssimpModelContainer_)
-    {
-        auto& InvidualModels = *(Models.second);
-        std::cout << "Added Transform Component For 3DModel ID : " << Models.first << std::endl;
-        engine->world.AddComponent(Models.first, TransformComponent{});
+	void AssimpModelManager::MeshDraw(unsigned int FrameBufferID, GLenum Mode, AABB_* box, CameraComponent::CameraType _camType)
+	{
+		auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
 
-        // Everything Below this Comment is To be Removed !!
-        TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(Models.first);
-        Transform.scale.setX(10);
-        Transform.scale.setY(10);
-        Transform.scale.setZ(10);
+		glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
+		auto shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
 
-        // Alittle Shine
-        //Transform.rotation.setZ(270);
-        
-        // Sit properly
-        Transform.rotation.setX(270);
-    }
-}
+		shdrpgm.Use();
 
-void AssimpModelManager::CleanUpAllModels()
-{
-    for (auto const& Models : AssimpModelContainer_)
-    {
-        auto& InvidualModels = *(Models.second);
-        InvidualModels.Cleanup();
-    }
-}
+		for (auto const& Models : AssimpModelContainerV2)
+		{
+			auto& ID = Models.first;
+			auto& ModelMesh = *(Models.second);
 
-AssimpModelManager::~AssimpModelManager()
-{
-    for (auto i : AssimpModelContainer_)
-    {
-        if (i.second != nullptr)
-        {
-            delete i.second;
-        }
-    }
+			engine->MaterialManager.UpdateStencilWithActualObject(ID);
+
+			// Check Main Uniforms For each Model
+			// Translation done here for each model
+			CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ID, box);
+
+			// Render
+			Render(shdrpgm, Mode, FrameBufferID, ModelMesh, ID);
+		}
+
+		shdrpgm.UnUse();
+	}
+
+	void AssimpModelManager::Draw(unsigned int FrameBufferID, GLenum Mode, AABB_* box, CameraComponent::CameraType _camType)
+	{
+		auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
+
+		glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
+		auto shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
+
+		shdrpgm.Use();
+
+		for (auto const& Models : AssimpModelContainer_)
+		{
+			auto& ID = Models.first;
+			auto& InvidualModels = *(Models.second);
+
+			engine->MaterialManager.UpdateStencilWithActualObject(ID);
+
+			// Check Main Uniforms For each Model
+			// Translation done here for each model
+			CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ID, box);
+
+			// Render
+			InvidualModels.Render(shdrpgm, Mode, FrameBufferID, ID);
+		}
+
+		shdrpgm.UnUse();
+	}
+
+	void AssimpModelManager::HighlihtDraw(unsigned int FrameBufferID, GLenum Mode)
+	{
+		if (0) // if highlight is true
+		{
+			auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+
+			glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
+			auto shdrpgm = Graphics::shaderpgms.find("OutLineShader");
+
+			shdrpgm->second.Use();
+
+			for (auto const& Models : AssimpModelContainer_)
+			{
+				auto& ID = Models.first;
+				auto& InvidualModels = *(Models.second);
+
+				// Check Main Uniforms For each Model
+				// Translation done here for each model
+				//CheckUniformLoc(shdrpgm->second, _camera, FrameBufferID, ID);
+
+				GLuint uniformloc1 = shdrpgm->second.GetLocation("outlining");
+				GLCall(glUniform1f(uniformloc1, 0.05f));
+
+				// Render
+				InvidualModels.Render(shdrpgm->second, Mode, FrameBufferID, ID);
+			}
+
+			shdrpgm->second.UnUse();
+		}
+	}
+
+	void AssimpModelManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID, AABB_* box)
+	{
+		MaterialComponent& material = engine->world.GetComponent<MaterialComponent>(ModelID);
+		GLint uniform_var_loc1 = _shdrpgm.GetLocation("material.shininess");
+		GLint uniform_var_loc2 = _shdrpgm.GetLocation("material.MaximumShininess");
+
+		GLCall(glUniform1f(uniform_var_loc1, material.shininess));
+		GLCall(glUniform1f(uniform_var_loc2, material.MaximumShininess));
+
+
+		TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(ModelID);
+		GLint uModelToNDC_ = _shdrpgm.GetLocation("uModelToNDC");
+		GLuint model_ = _shdrpgm.GetLocation("model");
+		GLuint dsa = _shdrpgm.GetLocation("noTex");
+
+		if (uModelToNDC_ >= 0)
+		{
+			glm::mat4 mModelNDC;
+			glm::mat4 model = glm::mat4(1.0f);
+			model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
+			model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+			model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+			model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
+
+			BoundingRegion br(Transform.position.ConvertToGlmVec3Type(), Transform.scale.ConvertToGlmVec3Type());
+			box->AddInstance(br);
+
+			mModelNDC = _camera.projMtx * _camera.viewMtx * model;
+			glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
+			glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
+		}
+
+		glUniform1i(dsa, 0);
+	}
+
+	MeshModelContainer AssimpModelManager::GetMeshContainer()
+	{
+		return AssimpModelContainerV2;
+	}
+
+	unsigned int AssimpModelManager::MeshModelCount()
+	{
+		return AssimpModelContainerV2.size();
+	}
+
+	unsigned int AssimpModelManager::MeshFactoryCount()
+	{
+		return AssimpLoadedModels.size();
+	}
+
+	AssimpModelContainer AssimpModelManager::GetContainer()
+	{
+		return AssimpModelContainer_;
+	}
+
+	unsigned int AssimpModelManager::AssimpModelCount()
+	{
+		return AssimpModelContainer_.size();
+	}
+
+	void AssimpModelManager::DeleteItem(unsigned int index, AssimpModel* model_ptr)
+	{
+		for (auto AssimpIT = AssimpModelContainer_.begin(); AssimpIT != std::end(AssimpModelContainer_); ++AssimpIT)
+		{
+			if (((*AssimpIT).first == index) && ((*AssimpIT).second == model_ptr))
+			{
+				AssimpModelContainer_.erase(AssimpIT);
+
+				std::string Name = (*AssimpIT).second->GetName();
+				std::string SuccessMsg = ("Model [ " + Name + " ] + erased from AssimpModelContainer_").c_str();
+				ENGINE_CORE_INFO(SuccessMsg);
+				return;
+			}
+		}
+	}
+
+	void AssimpModelManager::SetTexturesForModel(TextureComponent& in, std::string& passkey)
+	{
+		in.TextureKey = passkey;
+
+		for (auto& i : LoadedTextures)
+		{
+			if (in.TextureKey == i.first)
+			{
+				in.Textures.push_back(*(i.second));
+			}
+		}
+	}
+
+	void AssimpModelManager::DeleteItem(unsigned int index)
+	{
+		AssimpMeshIT it = AssimpModelContainerV2.find(index);
+		AssimpModelContainerV2.erase(index);
+	}
+
+	void AssimpModelManager::PrintLoadedModels()
+	{
+		std::cout << std::endl;
+		std::cout << "Loaded Models Count " << AssimpLoadedModels.size() << std::endl;
+		std::cout << "-------------------------------------------------------------------" << std::endl;
+
+		for (auto const& Models : AssimpLoadedModels)
+		{
+			auto& InvidualModels = *(Models.second);
+			std::cout << " Model Name : " << InvidualModels.GetName() << std::endl;
+			std::cout << " Model Directory : " << InvidualModels.GetDirectory() << std::endl;
+			std::cout << " Number of Textures : " << InvidualModels.GetNumberOfTextures() << std::endl;
+			InvidualModels.GetTextureNames();
+			std::cout << std::endl;
+		}
+
+		std::cout << "-------------------------------------------------------------------" << std::endl;
+		std::cout << std::endl;
+
+		std::cout << std::endl;
+		std::cout << "Loaded Textures Count " << LoadedTextures.size() << std::endl;
+		std::cout << "-------------------------------------------------------------------" << std::endl;
+
+		for (auto const& Texs : LoadedTextures)
+		{
+			auto& ModelName = (Texs.first);
+			auto& Texture = *(Texs.second);
+			std::cout << " Model Name : " << ModelName << std::endl;
+			std::cout << " Texture Path : " << Texture.GetPath() << std::endl;
+			std::cout << std::endl;
+		}
+
+		std::cout << "-------------------------------------------------------------------" << std::endl;
+		std::cout << std::endl;
+	}
+
+	void AssimpModelManager::CleanUpAllModels()
+	{
+		for (auto const& Models : AssimpModelContainer_)
+		{
+			auto& InvidualModels = *(Models.second);
+			InvidualModels.Cleanup();
+		}
+	}
+
+	void AssimpModelManager::CleanUpAllModelsMeshes()
+	{
+		for (auto const& Models : AssimpModelContainerV2)
+		{
+			auto& InvidualModels = *(Models.second);
+			Cleanup(InvidualModels);
+		}
+	}
+
+	void AssimpModelManager::Cleanup(MeshComponent3D& in)
+	{
+		for (unsigned int i = 0; i < in.Meshes.size(); i++)
+		{
+			in.Meshes[i].Cleanup();
+		}
+	}
+
+	AssimpModelManager::~AssimpModelManager()
+	{
+		//for (auto i : AssimpModelContainerV2)
+		//{
+		//    if (i.second != nullptr)
+		//    {
+		//        delete i.second;
+		//    }
+		//}
+	}
+
+	bool AssimpModelManager::InsertModel(AssimpModel& in)
+	{
+		// Insert
+		if (AssimpModelContainer_.insert({ in.GetEntityID() , &in }).second == true)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	bool AssimpModelManager::InsertMesh(MeshComponent3D& in)
+	{
+		// Insert
+		if (AssimpModelContainerV2.insert({ in.ID , &in }).second == true)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	bool AssimpModelManager::ClearContainer()
+	{
+		AssimpModelContainer_.clear();
+
+		return true;
+	}
+
+	void AssimpModelManager::InsertModel(MeshComponent3D& in, std::string& key)
+	{
+		in.Directory = engine->AssimpManager.AssimpLoadedModels[key]->GetDirectory();
+		in.Meshes = engine->AssimpManager.AssimpLoadedModels[key]->GetMesh();
+		in.NameOfModel = engine->AssimpManager.AssimpLoadedModels[key]->GetName();
+		in.NoTextures = engine->AssimpManager.AssimpLoadedModels[key]->CheckNoTextures();
+		in.Textures_loaded = engine->AssimpManager.AssimpLoadedModels[key]->GetTextures();
+		in.type = engine->AssimpManager.AssimpLoadedModels[key]->GetType();
+
+		if (AssimpModelContainerV2.insert({ in.ID ,&in }).second == true)
+		{
+			EDITOR_LOG_INFO(("Model : " + in.NameOfModel + "Created Successfully").c_str());
+		}
+
+		engine->MaterialManager.RegisterMeshForHighlight(in.ID);
+
+		std::cout << "Current Model Container Size " << AssimpModelContainerV2.size() << std::endl;
+	}
+
+	void AssimpModelManager::TestPath(std::string& path)
+	{
+		std::ifstream test(path);
+
+		if (!test)
+		{
+			std::string Error = ("The file path " + path + " doesnt exist! ").c_str();
+			ENGINE_LOG_ASSERT(false, Error);
+			std::exit(EXIT_FAILURE);
+		}
+	}
+
+	AssimpModel* AssimpModelManager::GetModel(unsigned int ID)
+	{
+		for (auto const& it : AssimpModelContainer_)
+		{
+			auto& ID = (it.first);
+			auto& SelectedModel = *(it.second);
+
+			if (ID == ID)
+			{
+				return &SelectedModel;
+			}
+		}
+
+		return nullptr;
+	}
+
+	void AssimpModelManager::Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent3D& in, unsigned int ModelID)
+	{
+		for (unsigned int i = 0; i < in.Meshes.size(); i++)
+		{
+			in.Meshes[i].Render(shader, MOde, ModelID);
+		}
+	}
 }

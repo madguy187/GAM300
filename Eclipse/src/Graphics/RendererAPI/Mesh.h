@@ -30,14 +30,19 @@ namespace Eclipse
         aiColor4D Specular;
         std::vector<Vertex> Vertices;
         std::vector<unsigned int> Indices;
-
         void Setup();
-
     public:
+        Mesh(std::vector<Texture> textures = {});
+        Mesh(aiColor4D diff, aiColor4D spec);
         Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures = {});
         Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiColor4D diffuse, aiColor4D spec);
-        void Render(Shader& shader, GLenum mode);
+        void SetMaterialDiffuse(float x, float y, float z);
+        void SetMaterialSpecular(float x, float y, float z);
+        void Render(Shader& shader, GLenum mode , unsigned int id);
         void Cleanup();
+
+        std::vector<Vertex>& GetVertices();
+        unsigned int GetVBOID();
     };
 }
 #endif

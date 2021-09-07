@@ -193,7 +193,7 @@ namespace Eclipse
 	void ImGuiAPI::TextMat3(const char* varname, const ECMat3& var)
 	{
 		ImGui::Text("%s: ", varname);
-		
+
 		for (size_t i = 0; i < var.Rows(); ++i)
 		{
 			for (size_t j = 0; j < var.Cols(); ++j)
@@ -227,80 +227,80 @@ namespace Eclipse
 		ImGui::Text("%s ", varname);
 	}
 
-	void ImGuiAPI::InputInt(const char* name, int* var, bool hideName, int snapValue)
+	bool ImGuiAPI::InputInt(const char* name, int* var, bool hideName, int snapValue)
 	{
 		std::string finalID = HideWidgetName(name, hideName);
-		ImGui::InputInt(finalID.c_str(), var, snapValue);
+		return ImGui::InputInt(finalID.c_str(), var, snapValue);
 	}
 
-	void ImGuiAPI::InputFloat(const char* name, float* var, bool hideName, float snapValue)
+	bool ImGuiAPI::InputFloat(const char* name, float* var, bool hideName, float snapValue)
 	{
 		std::string finalID = HideWidgetName(name, hideName);
-		ImGui::InputFloat(finalID.c_str(), var, snapValue);
+		return ImGui::InputFloat(finalID.c_str(), var, snapValue);
 	}
 
-	void ImGuiAPI::InputFloat2(const char* name, float vector[2], bool hideName)
+	bool ImGuiAPI::InputFloat2(const char* name, float vector[2], bool hideName)
 	{
 		std::string finalID = HideWidgetName(name, hideName);
-		ImGui::InputFloat2(finalID.c_str(), vector);
+		return ImGui::InputFloat2(finalID.c_str(), vector);
 	}
 
-	void ImGuiAPI::InputFloat3(const char* name, float vector[3], bool hideName)
+	bool ImGuiAPI::InputFloat3(const char* name, float vector[3], bool hideName)
 	{
 		std::string finalID = HideWidgetName(name, hideName);
-		ImGui::InputFloat3(finalID.c_str(), vector);
+		return ImGui::InputFloat3(finalID.c_str(), vector);
 	}
 
-	void ImGuiAPI::InputFloat4(const char* name, float vector[4], bool hideName)
+	bool ImGuiAPI::InputFloat4(const char* name, float vector[4], bool hideName)
 	{
 		std::string finalID = HideWidgetName(name, hideName);
-		ImGui::InputFloat4(finalID.c_str(), vector);
+		return ImGui::InputFloat4(finalID.c_str(), vector);
 	}
 
-	void ImGuiAPI::InputTextWithHint(const char* name, const char* hintText, char* buffer, size_t bufferSize, bool hideName)
+	bool ImGuiAPI::InputTextWithHint(const char* name, const char* hintText, char* buffer, size_t bufferSize, bool hideName)
 	{
 		//Text(name);
 		std::string finalID = HideWidgetName(name, true);
 		InsertSameLine();
-		ImGui::InputTextWithHint(finalID.c_str(), hintText, buffer, bufferSize);
+		return ImGui::InputTextWithHint(finalID.c_str(), hintText, buffer, bufferSize);
 	}
 
-	void ImGuiAPI::InputText(const char* name, char* buffer, size_t bufferSize, ImGuiInputTextFlags flag, bool hideName)
+	bool ImGuiAPI::InputText(const char* name, char* buffer, size_t bufferSize, ImGuiInputTextFlags flag, bool hideName)
 	{
 		//Text(name);
 		std::string finalID = HideWidgetName(name, true);
 		InsertSameLine();
-		ImGui::InputText(finalID.c_str(), buffer, bufferSize, flag);
+		return ImGui::InputText(finalID.c_str(), buffer, bufferSize, flag);
 	}
 
-	void ImGuiAPI::SliderInt(const char* name, int* var, bool hideName, int minrange, int maxrange)
+	bool ImGuiAPI::SliderInt(const char* name, int* var, bool hideName, int minrange, int maxrange)
 	{
 		std::string finalID = HideWidgetName(name, hideName);
-		ImGui::SliderInt(finalID.c_str(), var, minrange, maxrange);
+		return ImGui::SliderInt(finalID.c_str(), var, minrange, maxrange);
 	}
 
-	void ImGuiAPI::SliderFloat(const char* name, float* var, bool hideName, float minrange, float maxrange)
+	bool ImGuiAPI::SliderFloat(const char* name, float* var, bool hideName, float minrange, float maxrange)
 	{
 		std::string finalID = HideWidgetName(name, hideName);
-		ImGui::SliderFloat(finalID.c_str(), var, minrange, maxrange);
+		return ImGui::SliderFloat(finalID.c_str(), var, minrange, maxrange);
 	}
 
-	void ImGuiAPI::SliderFloat2(const char* name, float vector[2], bool hideName, float minrange, float maxrange)
+	bool ImGuiAPI::SliderFloat2(const char* name, float vector[2], bool hideName, float minrange, float maxrange)
 	{
 		std::string finalID = HideWidgetName(name, hideName);
-		ImGui::SliderFloat2(finalID.c_str(), vector, minrange, maxrange);
+		return ImGui::SliderFloat2(finalID.c_str(), vector, minrange, maxrange);
 	}
 
-	void ImGuiAPI::SliderFloat3(const char* name, float vector[3], bool hideName, float minrange, float maxrange)
+	bool ImGuiAPI::SliderFloat3(const char* name, float vector[3], bool hideName, float minrange, float maxrange)
 	{
 		std::string finalID = HideWidgetName(name, hideName);
-		ImGui::SliderFloat3(finalID.c_str(), vector, minrange, maxrange);
+		return ImGui::SliderFloat3(finalID.c_str(), vector, minrange, maxrange);
 	}
 
-	void ImGuiAPI::SliderFloat4(const char* name, float vector[4], bool hideName, float minrange, float maxrange)
+	bool ImGuiAPI::SliderFloat4(const char* name, float vector[4], bool hideName, float minrange, float maxrange)
 	{
 		std::string finalID = HideWidgetName(name, hideName);
-		ImGui::SliderFloat4(finalID.c_str(), vector, minrange, maxrange);
+		return ImGui::SliderFloat4(finalID.c_str(), vector, minrange, maxrange);
 	}
 
 	bool ImGuiAPI::CheckBoxBool(const char* name, bool* var, bool hideName)
@@ -336,6 +336,21 @@ namespace Eclipse
 	void ImGuiAPI::SetToolTip(const char* message)
 	{
 		ImGui::SetTooltip(message);
+	}
+
+	void ImGuiAPI::HelpMarker(const char* message)
+	{
+		ImGui::PushStyleColor(ImGuiCol_TextDisabled, (ImVec4)ImColor::HSV(1, 1.f, 1.6f, 1.f));
+		ImGui::TextDisabled("(?)");
+		ImGui::PopStyleColor(1);
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::BeginTooltip();
+			ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+			ImGui::TextUnformatted(message);
+			ImGui::PopTextWrapPos();
+			ImGui::EndTooltip();
+		}
 	}
 
 	void ImGuiAPI::PlotHistogram(const char* label, const float* values, int values_count, int values_offset, const char* overlay_text, float scale_min, float scale_max, ImVec2 graph_size, int stride)

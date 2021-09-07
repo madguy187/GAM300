@@ -21,6 +21,7 @@ namespace Eclipse
 		Entity CreateEntity();
 		void DestroyEntity(Entity entity);
 		void Clear();
+		std::vector<std::string> GetAllComponentNames();
 
 		template <typename T>
 		void RegisterComponent()

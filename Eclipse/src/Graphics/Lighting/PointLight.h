@@ -1,29 +1,40 @@
 #pragma once
 #include "ECS/ComponentManager/Components/PointLightComponent.h"
+#include "ECS/ComponentManager/Components/TransformComponent.h"
 
 namespace Eclipse
 {
-    typedef std::map<int, PointLightComponent*> PointLightContainer;
+	typedef std::unordered_map<unsigned int, PointLightComponent*> PointLightContainer;
+	using PointL = std::unordered_map<unsigned int, PointLightComponent*>::iterator;
 
-    using PLIT = std::map<int, PointLightComponent*>::iterator;
-    using modelIt = std::map<std::string, std::unique_ptr<IModel>>::iterator;
-    using shaderIt = std::map<std::string, Shader>::iterator;
+	class PointLight
+	{
+	private:
+		// Global Counter for all pointlights to loop in shader
+		inline static int counter = 0;
+		// Container for all Pointlights
+		inline static PointLightContainer _pointlights;
 
-    class PointLight
-    {
-    private:
-        inline static int counter = 0;
-        InputWrapper inputhandler;
-        inline static Eclipse::PointLightContainer _pointlights;
+	public:
+		// Returns the PointLight Container
+		PointLightContainer GetContainer();
+		// Returns the number of Pointlights
+		unsigned int GetNumberOfPointLights();
+		// Create PointLight
+		static void CreatePointLight(unsigned int CreatedID);
+		// Remove PointLight From Container
+		static bool DeletePointLight(unsigned int EntityID);
+		// Pointlight Old Draw
+		void DrawPointLights(unsigned int framebufferID);
+		// PointLight
+		void Draw(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
+		// Insert pointlight
+		bool InsertPointLight(PointLightComponent& in);
+		// Clear
+		void ClearContainer();
 
-    public:
-        PointLightContainer GetContainer();
-        unsigned int GetNumberOfPointLights();
-        static void CreatePointLight(unsigned int CreatedID);
-        void DrawPointLights(unsigned int framebufferID);
-        void Draw(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
-
-    private:
-        void CheckUniformLoc(Shader* _shdrpgm, PointLightComponent& hi, int index, unsigned int containersize);
-    };
+	private:
+		// Update Shader Variables
+		void CheckUniformLoc(Shader* _shdrpgm, PointLightComponent& hi, int index, unsigned int containersize);
+	};
 }

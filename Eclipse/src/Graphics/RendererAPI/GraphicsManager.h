@@ -2,9 +2,12 @@
 #define GRAPHICS_MANAGER_H
 
 #include "ECS/ComponentManager/Components/RenderComponent.h"
+#include "ECS/ComponentManager/Components/MeshComponent3D.h"
 #include "AssimpModel/AssimpModel.h"
 #include "Graphics/InputHandler/InputWrapper.h"
 #include "Graphics/ModelFactory/Sky/CubeMap.h"
+#include "Graphics/Grid/Grid.h"
+#include "Graphics/Grid/Box.h"
 
 namespace Eclipse
 {
@@ -13,11 +16,16 @@ namespace Eclipse
     public:
         OpenGL_Context mRenderContext;
         std::vector<AssimpModel*> ModelContainer;
-        unsigned int createdID;
         InputWrapper InputHandler;
         GLenum GlobalMode = GL_FILL;
         std::unique_ptr<CubeMap> Sky;
+        AABB_ AllAABBs;
+
+        unsigned int createdID;
         unsigned int SkyCount = 0;
+        bool CheckRender = true;
+        bool EnableGammaCorrection = true;
+        bool DrawSky = false;
 
     public:
         void Pre_Render();
@@ -33,9 +41,17 @@ namespace Eclipse
         void CreateSky(std::string _Dir);
         void RenderSky(unsigned int FrameBufferID);
         void DebugPrintFrameBuffers();
+        float GetGammaCorrection();
+        void SetGammaCorrection(float in);
+        void UploadGlobalUniforms();
+        void CheckUniformLoc(Shader* _shdrpgm , RenderComponent& sprite, unsigned int id, unsigned int framebufferID);
+        // Reset Boxes so we can prepare to add
+        void ResetInstancedDebugBoxes();
+        // Draw Debug Boxes
+        void DrawDebugBoxes();
 
     private:
-        void CheckUniformLoc(RenderComponent& sprite, unsigned int id, unsigned int framebufferID);
+        float GammaCorrection = 1.0f;
         void UpdateFrameBuffer();
         void FrameBufferDraw();
     };

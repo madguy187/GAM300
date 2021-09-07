@@ -1,19 +1,11 @@
 #include "pch.h"
 #include "DebugRenderingManager.h"
 
-void Eclipse::DebugRenderingManager::CheckUniformLoc(Graphics::shaderIt _shdrpgm, CameraComponent& _camera)
+void Eclipse::DebugRenderingManager::CheckUniformLoc(Shader*_shdrpgm, CameraComponent& _camera)
 {
-    GLint uniform_var_loc1 = _shdrpgm->second.GetLocation("uModelToNDC");
-    GLint uniform_var_loc2 = _shdrpgm->second.GetLocation("uColor");
-
-    GLuint tex_loc = _shdrpgm->second.GetLocation("uTex2d");
-    GLuint TEST = _shdrpgm->second.GetLocation("TEST");
-
-    if (TEST >= 0)
-    {
-        glUniform1i(TEST, 0);
-    }
-
+    GLint uniform_var_loc1 = _shdrpgm->GetLocation("uModelToNDC");
+    GLint uniform_var_loc2 = _shdrpgm->GetLocation("uColor");
+    
     if (uniform_var_loc1 >= 0)
     {
         glm::mat4 mModelNDC = _camera.projMtx * _camera.viewMtx * glm::mat4(1.0f);
@@ -23,11 +15,6 @@ void Eclipse::DebugRenderingManager::CheckUniformLoc(Graphics::shaderIt _shdrpgm
     if (uniform_var_loc2 >= 0)
     {
         glUniform4f(uniform_var_loc2, 0.0f, 0.0f, 0.0f, 1.0f);
-    }
-
-    if (tex_loc >= 0)
-    {
-        glUniform1i(tex_loc, 1);
     }
 }
 
@@ -48,11 +35,11 @@ void Eclipse::DebugRenderingManager::DrawFrustum(unsigned int ID, unsigned int f
     auto& lineArr = std::any_cast<Frustum>(debugShapes[ID]).GetLineSegments();
     auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 
-    auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
+    auto& shdrpgm = Graphics::shaderpgms["FrustrumShader"];
 
     for (unsigned int i = 0; i < lineArr.size(); ++i)
     {
-        shdrpgm->second.Use();
+        shdrpgm.Use();
 
         glBindVertexArray(frustum.GetVaoID());
 
@@ -67,13 +54,13 @@ void Eclipse::DebugRenderingManager::DrawFrustum(unsigned int ID, unsigned int f
         
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        CheckUniformLoc(shdrpgm, _camera);
+        CheckUniformLoc(&shdrpgm, _camera);
 
         glLineWidth(5.0f); //Note that glLineWidth() is deprecated
         glDrawArrays(frustum.GetPrimitiveType(), 0, 2);
 
         glBindVertexArray(0);
-        shdrpgm->second.UnUse();
+        shdrpgm.UnUse();
     }
 }
 

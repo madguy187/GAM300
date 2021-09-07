@@ -9,9 +9,9 @@ namespace Eclipse
 		
 		WindowName = "AssetBrowser";
 
-		sprite.textureRef = Graphics::textures.find("PlayPauseStop");
+		sprite.textureRef = Graphics::textures.find("PlayPauseStop")->first;
 
-		FolderIcon.textureRef = Graphics::textures.find("FolderIcon");
+		FolderIcon.textureRef = Graphics::textures.find("FolderIcon")->first;
 
 		memset(searchItemBuffer, 0, 128);
 		
@@ -26,6 +26,10 @@ namespace Eclipse
 			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&AssetBrowserWindow::DrawImpl, this));
 	}
 
+	void AssetBrowserWindow::Unload()
+	{
+	}
+
 	void AssetBrowserWindow::DrawImpl()
 	{
 		//temp render components test phase
@@ -34,12 +38,6 @@ namespace Eclipse
 
 		ImGui::SetColumnOffset(1, 150);
 
-		if (refresh == true)
-		{
-			ScanAll();
-
-			refresh = false;
-		}
 		//left side
 		ECGui::DrawChildWindow<void()>({ "##folders_common" }, std::bind(&AssetBrowserWindow::LeftFolderHierarchy, this));
 
@@ -47,6 +45,13 @@ namespace Eclipse
 
 		//right side
 		ECGui::DrawChildWindow<void()>({ "##directory_structure", ImVec2(0, ImGui::GetWindowHeight() - 65) }, std::bind(&AssetBrowserWindow::RightFoldersAndItems, this));
+
+		if (refresh == true)
+		{
+			ScanAll();
+			EDITOR_LOG_INFO("Asset Browser Refreshed!");
+			refresh = false;
+		}
 	}
 	template <typename T>
 	void AssetBrowserWindow::CreateTreeNode(std::string name, std::function<T> function)
@@ -114,7 +119,7 @@ namespace Eclipse
 						NextDir = AllDir;
 					}
 					
-					engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh);
+					engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
 					
 					for (auto& secondEntry : std::filesystem::recursive_directory_iterator(NextDir))
 					{
@@ -126,7 +131,7 @@ namespace Eclipse
 							
 							if (ECGui::BeginTreeNode(fileNameString2.c_str()))
 							{
-								if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0))
+								if (/*ImGui::IsMouseDoubleClicked(0) &&*/ImGui::IsItemClicked(0))
 								{
 									NextDir = path2;
 
@@ -142,15 +147,15 @@ namespace Eclipse
 
 								ECGui::EndTreeNode();
 							}
-							engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), secondEntry, refresh);
+							engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), secondEntry, refresh, pathMap, CopyFilesAndFolder);
 						}
 					}
 					ECGui::EndTreeNode();
 				}
 				
-				engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh);
+				engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
 				
-				if (!jumpDir && ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0))
+				if (!jumpDir && /*ImGui::IsMouseDoubleClicked(0) &&*/ ImGui::IsItemClicked(0))
 				{
 					NextPath(CurrentDir, path);
 				}
@@ -204,7 +209,7 @@ namespace Eclipse
 	void AssetBrowserWindow::RightFoldersAndItems()
 	{
 		//top path 
-		ECGui::DrawChildWindow<void()>({ "##top_bar", ImVec2(0, 50) }, std::bind(&AssetBrowserWindow::PathAndSearches, this));
+		ECGui::DrawChildWindow<void()>({ "##top_bar", ImVec2(0, 70) }, std::bind(&AssetBrowserWindow::PathAndSearches, this));
 		
 		ImGui::Separator();
 
@@ -339,16 +344,15 @@ namespace Eclipse
 			ImGui::PushID(fileNameString.c_str());
 			
 			RenderComponent icon = dirEntry.is_directory() ? FolderIcon : sprite;
-
-			ImGui::ImageButton((void*)icon.textureRef->second.GetHandle(),
+		
+			ImGui::ImageButton((void*)Graphics::textures[icon.textureRef].GetHandle(),
 				buttonSize,
 				{ 1,0 },
 				{ 2,1 });
 			//drag drop
-			engine->editorManager->Item_.GenericPayloadSource("ITEM", relativePath.string());
-			engine->editorManager->Item_.GenericPayloadSource("TESTING", relativePath.string());
+			engine->editorManager->DragAndDropInst_.StringPayloadSource("ITEM", relativePath.string());
 			
-			engine->editorManager->Item_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh);
+			engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh,pathMap, CopyFilesAndFolder);
 
 			if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
 			{
@@ -519,16 +523,9 @@ namespace Eclipse
 			searchItemsLowerCase = LowerCase(searchItemBuffer);
 			
 		}
-
-		ImGui::SameLine();
 		if (ImGui::Button("Refresh", { 70,20 }))
 		{
 			refresh = true;
-			EDITOR_LOG_INFO("Asset Browser Refreshed!");
-		}
-		else
-		{
-			refresh = false;
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Clear", { 70,20 }))
@@ -545,6 +542,14 @@ namespace Eclipse
 				EDITOR_LOG_INFO("Item Search Buffer Cleared");
 			}
 		}
+		ImGui::SameLine();
+		
+		ImGui::Checkbox("Copy Mode", &CopyFilesAndFolder);
+		
+		ImGui::SameLine();
+		
+		ImGuiAPI::HelpMarker("When ticked |Copy of files and folder| Else |Moving of files and folder | to destination  ");
+
 		//left side search for all files & folders in that current dir
 		//right side search for all folders
 	}
@@ -626,7 +631,7 @@ namespace Eclipse
 				{
 					RenderComponent icon = std::filesystem::is_directory(pair2) ? FolderIcon : sprite;
 
-					ImGui::ImageButton((void*)icon.textureRef->second.GetHandle(),
+					ImGui::ImageButton((void*)Graphics::textures[icon.textureRef].GetHandle(),
 						buttonSize,
 						{ 1,0 },
 						{ 2,1 });
@@ -670,7 +675,7 @@ namespace Eclipse
 				{
 					RenderComponent icon = std::filesystem::is_directory(tempPath) ? FolderIcon : sprite;
 
-					ImGui::ImageButton((void*)icon.textureRef->second.GetHandle(),
+					ImGui::ImageButton((void*)Graphics::textures[icon.textureRef].GetHandle(),
 						buttonSize,
 						{ 1,0 },
 						{ 2,1 });

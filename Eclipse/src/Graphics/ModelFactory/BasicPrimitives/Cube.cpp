@@ -50,7 +50,7 @@ void Cube::InsertPosVtx()
         for (int j = 0; j < 4; ++j)
         {
             glm::vec3 posVtx = glm::vec3(transformMat * glm::vec4(planemesh.PosVec[j], 1.0));
-            glm::vec3 nrmVtx = glm::vec3(transformMat * glm::vec4(planemesh.NormalVec[j], 1.0));
+            glm::vec3 nrmVtx = glm::vec3(transformMat * glm::vec4(planemesh.NormalVec[j], 0.0));
 
             posVtx = RoundDecimal(posVtx);
             nrmVtx = RoundDecimal(nrmVtx);
@@ -161,6 +161,10 @@ void Cube::CreateVAO()
     glVertexArrayAttribFormat(vaoID, 1, 2, GL_FLOAT, GL_FALSE, 0);
     glVertexArrayAttribBinding(vaoID, 1, 1);
 
+    glEnableVertexArrayAttrib(vaoID, 2);
+    glVertexArrayVertexBuffer(vaoID, 2, vboID, sizeof(glm::vec3) * PosVec.size() + sizeof(glm::vec2) * TextVec.size(), sizeof(glm::vec3));
+    glVertexArrayAttribFormat(vaoID, 2, 3, GL_FLOAT, GL_FALSE, 0);
+    glVertexArrayAttribBinding(vaoID, 2, 2);
 }
 
 void Cube::CreateVBO()
