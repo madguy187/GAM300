@@ -93,7 +93,6 @@ namespace Eclipse
             engine->AssimpManager.MeshDraw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_LEFT)->GetFrameBufferID(),
                     engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_LEFT)->GetRenderMode(), 
                     &box, CameraComponent::CameraType::RightView_camera);
-            engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_RIGHT)->SetRenderMode(FrameBuffer::RenderMode::Wireframe_Mode);
             engine->AssimpManager.MeshDraw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_RIGHT)->GetFrameBufferID(),
                     engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_RIGHT)->GetRenderMode(), 
                     &box, CameraComponent::CameraType::LeftView_Camera);
