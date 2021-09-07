@@ -16,5 +16,7 @@ namespace Eclipse
 		void SetDebugShape(unsigned int ID, std::any newShape);
 
 		void DrawDebugShapes(unsigned int framebufferID);
+
+		void ClearDebugShapes();
 	};
 }

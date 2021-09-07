@@ -163,11 +163,11 @@ namespace Eclipse
         return overlaps;
     }
 
-    std::vector<unsigned int> AABBTree::CheckOverlapAgainstGrid(AabbComponent& object)
+    std::vector<unsigned int> AABBTree::CheckOverlapAgainstGrid(AABBComponent& object)
     {
         std::vector<unsigned int> overlaps;
         std::stack<unsigned> stack;
-        AabbComponent& CheckedObjectAgsintTree = object;
+        AABBComponent& CheckedObjectAgsintTree = object;
 
         stack.push(RootNodeIndex);
         while (!stack.empty())

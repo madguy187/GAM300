@@ -517,7 +517,6 @@
     <ClInclude Include="src\Graphics\Grid\Box.h" />
     <ClInclude Include="src\Editor\Windows\Log\ConsoleData.h" />
     <ClInclude Include="src\Graphics\Picker\PickingManager.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
     <ClInclude Include="src\Editor\Windows\SwitchViews\SwitchViews.h" />
     <ClInclude Include="src\Editor\Utilities\DragAndDrop.h" />
     <ClInclude Include="src\Graphics\Grid\AABB.h" />
@@ -534,6 +533,7 @@
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec4DeltaCommand.h" />
     <ClInclude Include="src\Editor\ECGuiAPI\ECGuiInputHandler.h" />
     <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\IAssimpModel.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\AABBComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">

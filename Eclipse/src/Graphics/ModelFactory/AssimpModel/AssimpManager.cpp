@@ -172,7 +172,7 @@ namespace Eclipse
 		EDITOR_LOG_INFO("All Necessary Models Loaded");
 	}
 
-	void AssimpModelManager::Draw(unsigned int FrameBufferID, GLenum Mode, AABB_* box, CameraComponent::CameraType _camType)
+	void AssimpModelManager::Draw(unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
 	{
 		auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
 
@@ -192,8 +192,16 @@ namespace Eclipse
 			// Translation done here for each model
 			CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ID, box);
 
-			// Render
-			InvidualModels.Render(shdrpgm, Mode, FrameBufferID);
+			if (_renderMode == FrameBuffer::RenderMode::Fill_Mode)
+			{
+				// Render
+				InvidualModels.Render(shdrpgm, GL_FILL, FrameBufferID);
+			}
+			else
+			{
+				InvidualModels.Render(shdrpgm, GL_LINE, FrameBufferID);
+			}
+			
 		}
 
 		shdrpgm.UnUse();

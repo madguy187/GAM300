@@ -16,7 +16,7 @@ void Eclipse::PickingSystem::EditorUpdate()
 
 	for (auto& it : mEntities)
 	{
-		auto& aabb = engine->world.GetComponent<AabbComponent>(it);
+		auto& aabb = engine->world.GetComponent<AABBComponent>(it);
 
 		float t;
 		glm::vec3 rayDir = engine->gPicker.ComputeCursorRayDirection();

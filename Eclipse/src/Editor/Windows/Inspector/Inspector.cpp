@@ -333,15 +333,15 @@ namespace Eclipse
 							AddComponentsFailed("DirectionalLightComponent", entCom, ID);
 						}
 						break;
-					case str2int("AabbComponent"):
-						if (!engine->world.CheckComponent<AabbComponent>(ID))
+					case str2int("AABBComponent"):
+						if (!engine->world.CheckComponent<AABBComponent>(ID))
 						{
-							AddComponentsSucess("AabbComponent", entCom, ID);
-							engine->world.AddComponent(ID, AabbComponent{});
+							AddComponentsSucess("AABBComponent", entCom, ID);
+							engine->world.AddComponent(ID, AABBComponent{});
 						}
 						else
 						{
-							AddComponentsFailed("AabbComponent", entCom, ID);
+							AddComponentsFailed("AABBComponent", entCom, ID);
 						}
 						break;
 					case str2int("SpotLightComponent"):
@@ -477,15 +477,15 @@ namespace Eclipse
 							RemoveComponentsFailed("DirectionalLightComponent", entCom, ID);
 						}
 						break;
-					case str2int("AabbComponent"):
-						if (engine->world.CheckComponent<AabbComponent>(ID))
+					case str2int("AABBComponent"):
+						if (engine->world.CheckComponent<AABBComponent>(ID))
 						{
-							RemoveComponentsSucess("AabbComponent", entCom, ID);
-							engine->world.DestroyComponent<AabbComponent>(ID);
+							RemoveComponentsSucess("AABBComponent", entCom, ID);
+							engine->world.DestroyComponent<AABBComponent>(ID);
 						}
 						else
 						{
-							RemoveComponentsFailed("AabbComponent", entCom, ID);
+							RemoveComponentsFailed("AABBComponent", entCom, ID);
 						}
 						break;
 					case str2int("SpotLightComponent"):
