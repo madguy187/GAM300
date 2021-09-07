@@ -31,6 +31,7 @@ namespace Eclipse
     class AssimpModel
     {
     private:
+        unsigned int Index = 0;
         unsigned int ID = 0;
         bool NoTextures = false; // Set False if model got textures
         ModelType type = ModelType::MT_UNASSIGNED;

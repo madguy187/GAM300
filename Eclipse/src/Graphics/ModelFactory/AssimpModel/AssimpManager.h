@@ -32,6 +32,10 @@ namespace Eclipse
 
         // Version 1 Container that stores AssimpModel*
         AssimpModelContainer AssimpModelContainer_;
+
+        // Name of Model , < MeshIndex, Texture Container > 
+        std::unordered_map<std::string, std::map<unsigned int, std::vector<std::unique_ptr<Texture>>> >LoadedTexturesV2;
+        std::multimap<std::string, std::unique_ptr<Texture>> LoadedTextures;
     public:
         // Get Current MeshComponent Container
         MeshModelContainer GetMeshContainer();
@@ -85,10 +89,10 @@ namespace Eclipse
         void DeleteItem(unsigned int index, AssimpModel* model_ptr);
 
     public:
-        std::unordered_map<std::string, std::vector< std::unique_ptr<Texture>>>LoadedTexturesV2;
-        std::multimap<std::string, std::unique_ptr<Texture>> LoadedTextures;
+        // TEXTURES PUT HERE FIRST
+        
         void SetTexturesForModel(TextureComponent& in, std::string& passinkey);
-        void InsertTextures(std::string& NameofModel , std::unique_ptr<Texture> in);
+        void InsertTextures(std::string& NameofModel, std::unique_ptr<Texture> in, unsigned int MeshId);
     };
 }
 #endif // ASSIMP_MANAGER_H

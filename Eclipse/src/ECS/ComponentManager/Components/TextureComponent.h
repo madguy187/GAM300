@@ -6,9 +6,12 @@ namespace Eclipse
 {
     struct TextureComponent
     {
+        // See if need or not
         unsigned int ID = 0;
         TextureType Type = TextureType::TT_UNASSIGNED;
+
+        // Assimp Models
         std::string TextureKey;
-        std::vector<Texture> Textures;
+        std::map<unsigned int, std::vector<Texture>> test;
     };
 }

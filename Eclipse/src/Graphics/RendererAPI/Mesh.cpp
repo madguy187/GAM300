@@ -39,7 +39,7 @@ namespace Eclipse
         Setup();
     }
 
-    void Mesh::Render(Shader& shader, GLenum mode , unsigned int id)
+    void Mesh::Render(Shader& shader, GLenum mode , unsigned int id , unsigned int MeshIndex)
     {
         glEnable(GL_BLEND);
         glEnable(GL_DEPTH_TEST);
@@ -69,15 +69,15 @@ namespace Eclipse
             // textures
             unsigned int diffuseIdx = 0;
             unsigned int specularIdx = 0;
-
-            for (unsigned int i = 0; i < tex.Textures.size(); i++)
+          
+            for (unsigned int i = 0; i < tex.test[MeshIndex].size(); i++)
             {
                 // activate texture
                 glActiveTexture(GL_TEXTURE0 + i);
 
                 // retrieve texture info
                 std::string name;
-                switch (tex.Textures[i].GetType())
+                switch (tex.test[MeshIndex][i].GetType())
                 {
                 case aiTextureType_DIFFUSE:
                     name = "diffuse" + std::to_string(diffuseIdx++);
@@ -110,7 +110,7 @@ namespace Eclipse
                 glUniform1i(dsa, false);
 
                 // bind texture
-                tex.Textures[i].Bind();
+                tex.test[MeshIndex][i].Bind();
             }
         }
         // EBO stuff
@@ -127,6 +127,14 @@ namespace Eclipse
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
         glDeleteBuffers(1, &EBO);
+    }
+
+    void Mesh::GetAllTextures()
+    {
+        for (int i = 0; i < Textures.size(); i++)
+        {
+            std::cout << " Texture Name " << Textures[i].GetPath() << std::endl;
+        }
     }
 
     std::vector<Vertex>& Mesh::GetVertices()

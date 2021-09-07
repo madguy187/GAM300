@@ -27,7 +27,7 @@ namespace Eclipse
     {
         for (unsigned int i = 0; i < Meshes.size(); i++)
         {
-            Meshes[i].Render(shader, MOde, id);
+            Meshes[i].Render(shader, MOde, id,i);
         }
     }
 
@@ -371,6 +371,7 @@ namespace Eclipse
         }
 
         meshData.push_back(newMesh);
+        Index++;
         return;
         // return Mesh(vertices, indices, textures);
     }
@@ -397,6 +398,9 @@ namespace Eclipse
                 if (std::strcmp(Textures_loaded[j].GetPath().data(), str.C_Str()) == 0)
                 {
                     textures.push_back(Textures_loaded[j]);
+                    std::unique_ptr<Texture> ptr(new Texture(Textures_loaded[j]));
+                    engine->AssimpManager.InsertTextures(NameOfModel, std::move(ptr), Index);
+
                     skip = true;
                     break;
                 }
@@ -409,9 +413,8 @@ namespace Eclipse
                 textures.push_back(tex);
                 Textures_loaded.push_back(tex);
 
-                std::unique_ptr<Texture> ptr(new Texture(Directory, str.C_Str(), type));
-                ptr->Load(false);
-                engine->AssimpManager.InsertTextures(NameOfModel, std::move(ptr));
+                std::unique_ptr<Texture> ptr(new Texture(tex));
+                engine->AssimpManager.InsertTextures(NameOfModel, std::move(ptr), Index);
             }
         }
 

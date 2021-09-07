@@ -263,16 +263,24 @@ namespace Eclipse
 	{
 		in.TextureKey = passkey;
 
-		for (int i = 0 ; i < LoadedTexturesV2[passkey].size() ; i++)
+		for (int i = 0 ; i <= LoadedTexturesV2[passkey][i].size() ; i++)
 		{
-			in.Textures.push_back(*LoadedTexturesV2[passkey][i]);
+			for (int EachTexture = 0; EachTexture < LoadedTexturesV2[passkey][i].size(); EachTexture++)
+			{
+				//in.test.emplace(i, *LoadedTexturesV2[passkey][i][i]);
+				//in.Textures.push_back(*LoadedTexturesV2[passkey][i][EachTexture]);
+
+				in.test[i].push_back(*LoadedTexturesV2[passkey][i][EachTexture]);
+			}
 		}
 	}
 
-	void AssimpModelManager::InsertTextures(std::string& NameofModel , std::unique_ptr<Texture> in)
+	void AssimpModelManager::InsertTextures(std::string& NameofModel , std::unique_ptr<Texture> in , unsigned int MeshId)
 	{
 		/*LoadedTexturesV2.emplace(NameofModel, LoadedTexturesV2[NameofModel].push_back(std::move(in)));*/
-		LoadedTexturesV2[NameofModel].push_back(std::move(in));
+		//LoadedTexturesV2[NameofModel].push_back(std::move(in));
+
+		LoadedTexturesV2[NameofModel][MeshId].push_back(std::move(in));
 	}
 
 	void AssimpModelManager::DeleteItem(unsigned int index)
@@ -298,18 +306,25 @@ namespace Eclipse
 		}
 
 		std::cout << "-------------------------------------------------------------------" << std::endl;
-		std::cout << std::endl;
 
 		std::cout << std::endl;
-		std::cout << "Loaded Textures Count " << LoadedTextures.size() << std::endl;
+		std::cout << "Loaded Textures Count " << LoadedTexturesV2.size() << std::endl;
 		std::cout << "-------------------------------------------------------------------" << std::endl;
 
-		for (auto const& Texs : LoadedTextures)
+		for (auto const& Model : LoadedTexturesV2)
 		{
-			auto& ModelName = (Texs.first);
-			auto& Texture = *(Texs.second);
-			std::cout << " Model Name : " << ModelName << std::endl;
-			std::cout << " Texture Path : " << Texture.GetPath() << std::endl;
+			auto& ModelName = (Model.first);
+			auto& MapWithMeshIndexAndTextures = (Model.second);
+
+			std::cout << "Model Name : " << ModelName << std::endl;
+
+			for (auto& i : MapWithMeshIndexAndTextures)
+			{
+				for (auto& EachTextures : i.second)
+				{
+					std::cout << "MeshIndex [" << i.first << "] " << EachTextures->GetPath() << std::endl;
+				}
+			}
 			std::cout << std::endl;
 		}
 
@@ -434,7 +449,7 @@ namespace Eclipse
 	{
 		for (unsigned int i = 0; i < in.Meshes.size(); i++)
 		{
-			in.Meshes[i].Render(shader, MOde, ModelID);
+			in.Meshes[i].Render(shader, MOde, ModelID ,i);
 		}
 	}
 }
