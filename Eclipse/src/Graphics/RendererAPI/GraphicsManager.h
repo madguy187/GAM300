@@ -18,7 +18,6 @@ namespace Eclipse
         InputWrapper InputHandler;
         GLenum GlobalMode = GL_FILL;
         std::unique_ptr<CubeMap> Sky;
-        std::unique_ptr<Grid> GridManager;
         AABB_ AllAABBs;
 
         unsigned int createdID;

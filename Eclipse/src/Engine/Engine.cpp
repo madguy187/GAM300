@@ -106,6 +106,11 @@ namespace Eclipse
         picking.set(world.GetComponentType<MaterialComponent>(), 1);
         world.RegisterSystemSignature<PickingSystem>(picking);
 
+        Signature gridCol;
+        gridCol.set(world.GetComponentType<AabbComponent>(), 1);
+        gridCol.set(world.GetComponentType<TransformComponent>(), 1);
+        world.RegisterSystemSignature<GridSystem>(gridCol);
+
         mono.Init();
         
         //Check this! - Rachel
@@ -188,7 +193,7 @@ namespace Eclipse
             world.Update<MaterialSystem>();
 
             // GRID DRAW ============================= Must be last of All Renders
-            engine->GraphicsManager.GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+            engine->GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 
             mono.Update();
 

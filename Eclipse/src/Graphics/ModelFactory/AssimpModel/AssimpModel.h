@@ -13,8 +13,23 @@
 #include "Graphics/Grid/IAABB.h"
 #include "Graphics/Grid/AABB.h"
 
+#include "Graphics/ModelFactory/AssimpModel/IAssimpModel.h"
 namespace Eclipse
 {
+    //TEST CODE
+    struct MeshData
+    {
+        std::vector<Vertex> vertices;
+        std::vector<unsigned int> indices;
+
+        aiColor4D Diffuse;
+        aiColor4D Specular;
+
+        bool hasTexture = false;
+        std::vector<Texture> textures;
+    };
+
+
     enum class ModelType
     {
         UNASSIGNED = 0,
@@ -25,7 +40,7 @@ namespace Eclipse
         MAXCOUNT
     };
 
-    class AssimpModel : public IAABB
+    class AssimpModel : public IAssimpModel
     {
     private:
         unsigned int ID = 0;
@@ -36,16 +51,19 @@ namespace Eclipse
         std::vector<Texture> Textures_loaded;
         std::vector<glm::vec3> AllVertices;
 
-        Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
+        std::vector<MeshData> meshData;
+
+        void ProcessMesh(aiMesh* mesh, const aiScene* scene);
         std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type);
         void ProcessNode(aiNode* node, const aiScene* scene);
         float GetLargestAxisValue(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         void ComputeAxisMinMax(std::vector<glm::vec3>& vertices, std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         glm::vec3 ComputeCentroid(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
 
+        void LoadNewModel();
+
     public:
         bool noTex = false;
-        DYN_AABB AABB_Property; // For Dynamic AABB
 
         AssimpModel() { }
         AssimpModel(bool noTex = false);
@@ -63,9 +81,10 @@ namespace Eclipse
         void SetModelType(ModelType in);
         std::vector<glm::vec3> GetVertices();
         void SetProperties(std::string& ModelName , ModelType in , unsigned int ID);
-        DYN_AABB getAABB() const override;
-        DYN_AABB SetAABB(TransformComponent& in);
         unsigned int GetEntityID();
+
+        void initModel() override;
+        void DeleteModel() override;
     };
 
 }

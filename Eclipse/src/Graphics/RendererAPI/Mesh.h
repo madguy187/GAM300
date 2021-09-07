@@ -40,6 +40,9 @@ namespace Eclipse
         void SetMaterialSpecular(float x, float y, float z);
         void Render(Shader& shader, GLenum mode);
         void Cleanup();
+
+        std::vector<Vertex>& GetVertices();
+        unsigned int GetVBOID();
     };
 }
 #endif

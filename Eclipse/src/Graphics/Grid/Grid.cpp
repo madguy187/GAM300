@@ -165,19 +165,15 @@ namespace Eclipse
         InsertAsDebugBox();
 
         WholeGrid = new Quad;
-        ShaderRef = &(Graphics::shaderpgms.find("Grid")->second);
+        ShaderRef = &(Graphics::shaderpgms["Grid"]);
 
-        CalculateGridSettings();
-
-        if (WholeGrid != nullptr)
+        if (WholeGrid != nullptr && CalculateGridSettings() && CalculateGridCoordinates())
         {
             EDITOR_LOG_INFO("Grid Created");
         }
-
-        CalculateGridCoordinates();
     }
 
-    void Grid::CalculateGridCoordinates()
+    bool Grid::CalculateGridCoordinates()
     {
         // Length of Grid on each side.
         ECVec3 TempLength = XYZ_Length;
@@ -192,6 +188,7 @@ namespace Eclipse
                 for (int x = 0; x < GridSize; x++)
                 {
                     unsigned int Index = (z * GridSize) + x + y;
+                    float HalfExtent = (GridScale / 2);
 
                     Tile NewTile(GridScale, true);
                     GridArray.push_back(NewTile);
@@ -201,11 +198,11 @@ namespace Eclipse
                     GridArray[Index].CenterPoint = ECVec3{ Center.x, Center.y, Center.z };
 
                     // Set Maximum Point
-                    glm::vec3 Maximum = { Center.x + (GridScale / 2) , Center.y + (GridScale / 2) , Center.z + (GridScale / 2) };
+                    glm::vec3 Maximum = { Center.x + HalfExtent , Center.y + HalfExtent , Center.z + HalfExtent };
                     GridArray[Index].MaximumPoint = ECVec3{ Maximum.x, Maximum.y, Maximum.z };
 
                     // Set Minimum Point
-                    glm::vec3 Minimum = { Center.x - (GridScale / 2) , Center.y - (GridScale / 2) , Center.z - (GridScale / 2) };
+                    glm::vec3 Minimum = { Center.x - HalfExtent , Center.y - HalfExtent , Center.z - HalfExtent };
                     GridArray[Index].MinimumPoint = ECVec3{ Minimum.x, Minimum.y, Minimum.z };
 
                     // Set Width
@@ -229,9 +226,11 @@ namespace Eclipse
         }
 
         DebugPrintCoorindates(GridArray);
+
+        return true;
     }
 
-    void Grid::CalculateGridSettings()
+    bool Grid::CalculateGridSettings()
     {
 
         ECVec3 CurrentGridPosition = { 0,0,0 };
@@ -261,6 +260,8 @@ namespace Eclipse
         Maximum.setZ(CurrentGridPosition.getZ() + Half.getZ());
 
         CalculateStartingPoint(Minimum, Maximum);
+
+        return true;
     }
 
     void Grid::CalculateStartingPoint(ECVec3& MinimumIn, ECVec3& Maximum)
@@ -368,6 +369,33 @@ namespace Eclipse
         {
             delete WholeGrid;
         }
+    }
+
+    float Grid::GetDistanceToObject(unsigned int indexIn)
+    {
+        return gridArray[indexIn].aabb.DistanceToObject;;
+    }
+
+    void Grid::SetDistance(AABBNode& Nodein, AabbComponent& aabbin, unsigned int id)
+    {
+        Nodein.aabb.DistanceToObject = Nodein.aabb.Max.x - aabbin.max.getX();
+        /*engine->GridManager->*/gridArray[Nodein.aabb.GetEntityID()].aabb.DistanceToObject = Nodein.aabb.DistanceToObject;
+    }
+
+    void Grid::SetDistance(AABBNode& Nodein, AabbComponent& aabbin)
+    {
+        Nodein.aabb.DistanceToObject = Nodein.aabb.Max.x - aabbin.max.getX();
+    }
+
+    void Grid::SetDistance(AABBNode& Nodein, DYN_AABB& aabbin )
+    {
+        Nodein.aabb.DistanceToObject = Nodein.aabb.Max.x - aabbin.Max.x;
+        engine->GridManager->gridArray[Nodein.aabb.GetEntityID()].aabb.DistanceToObject = Nodein.aabb.DistanceToObject;
+    }
+
+    void Grid::SetPosition(TransformComponent& in, unsigned int id)
+    {
+        in.position = gridArray[id].CenterPoint;
     }
 
     DYN_AABB Tile::getAABB() const
