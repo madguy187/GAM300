@@ -60,6 +60,7 @@ enum class EntityType
     ENT_LIGHT_DIRECTIONAL,
     ENT_LIGHT_SPOT,
     // ADD ON LIGHTS HERE
+	ENT_CAMERA,
     ENT_UNASSIGNED
 };
 

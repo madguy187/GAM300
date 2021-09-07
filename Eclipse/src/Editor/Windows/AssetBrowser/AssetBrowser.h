@@ -1,6 +1,8 @@
 #pragma once
 #include <filesystem>
-#include "../Interface/ECGuiWindow.h"
+
+#include "imgui.h"
+
 namespace Eclipse
 {
 	class AssetBrowserWindow final : public ECGuiWindow

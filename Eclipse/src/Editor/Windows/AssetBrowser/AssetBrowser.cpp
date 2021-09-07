@@ -3,16 +3,12 @@
 namespace Eclipse
 {
 	AssetBrowserWindow::AssetBrowserWindow()
-		:CurrentDir(AllDir), AllDir(AssetPath), padding(16.0f), thumbnailSize(120.0f)
+		:CurrentDir(AllDir), AllDir(AssetPath), padding(16.0f), thumbnailSize(120.0f),sprite(),FolderIcon()
 	{
 		Type = EditorWindowType::EWT_ASSETBROWSER;
 
 		WindowName = "AssetBrowser";
-
-		sprite.textureRef = Graphics::textures.find("PlayPauseStop")->first;
-
-		FolderIcon.textureRef = Graphics::textures.find("FolderIcon")->first;
-
+	
 		memset(searchItemBuffer, 0, 128);
 
 		memset(searchFolderBuffer, 0, 128);
@@ -43,6 +39,10 @@ namespace Eclipse
 
 		ImGui::NextColumn();
 
+		sprite.textureRef = Graphics::textures.find("PlayPauseStop")->first;
+
+		FolderIcon.textureRef = Graphics::textures.find("FolderIcon")->first;
+		
 		//right side
 		ECGui::DrawChildWindow<void()>({ "##directory_structure", ImVec2(0, ImGui::GetWindowHeight() - 65) }, std::bind(&AssetBrowserWindow::RightFoldersAndItems, this));
 
