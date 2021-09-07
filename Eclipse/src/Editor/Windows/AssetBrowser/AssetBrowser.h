@@ -96,6 +96,8 @@ namespace Eclipse
 		void MainSearchLogic(std::map<std::filesystem::path, std::vector<std::filesystem::path>>::value_type Key);
 		void MainSearchLogic(std::vector<std::string> subDirItemsPath);
 		bool BuffIsEmpty(const char* buffer);
+		std::map<std::filesystem::path, std::vector<std::filesystem::path>> getFolderMap();
+		std::map<std::filesystem::path, std::vector<std::filesystem::path>> getPathMap();
 		////////////////////////////////
 
 		

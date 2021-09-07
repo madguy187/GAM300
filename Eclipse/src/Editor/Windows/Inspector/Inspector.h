@@ -22,7 +22,7 @@ namespace Eclipse
 		void AddComponentsController(Entity ID);
 		void RemoveComponentsController(Entity ID);
 		void AddComponents(Entity ID);
-		void AddComponentsSucess(const char* Components, EntityComponent& entCom, Entity ID);
+		void AddComponentsSuccess(const char* Components, EntityComponent& entCom, Entity ID);
 		void AddComponentsFailed(const char* Components,EntityComponent& entCom , Entity ID);
 		void RemoveComponents(Entity ID);
 		void RemoveComponentsSucess(const char* Components, EntityComponent& entCom, Entity ID);
