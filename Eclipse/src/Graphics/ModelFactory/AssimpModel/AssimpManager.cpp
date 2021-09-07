@@ -263,18 +263,9 @@ namespace Eclipse
 	{
 		in.TextureKey = passkey;
 
-		//for (auto& i : LoadedTextures)
-		//{
-		//	if (in.TextureKey == i.first)
-		//	{
-		//		in.Textures.push_back(*(i.second));
-		//	}
-		//}
-
 		for (int i = 0 ; i < LoadedTexturesV2[passkey].size() ; i++)
 		{
-			auto& hi = LoadedTexturesV2[passkey][i];
-			std::cout << hi->GetPath() << std::endl;
+			in.Textures.push_back(*LoadedTexturesV2[passkey][i]);
 		}
 	}
 
