@@ -2,7 +2,7 @@
 #define DYNAMICTREE_AABB_H
 
 #include <algorithm>
-#include "ECS/ComponentManager/Components/AabbComponent.h"
+#include "ECS/ComponentManager/Components/AABBComponent.h"
 
 namespace Eclipse
 {
@@ -23,13 +23,13 @@ namespace Eclipse
         DYN_AABB(float minX, float minY, float minZ, float maxX, float maxY, float maxZ); // :
 
         bool Overlaps(const DYN_AABB& other) const;
-        bool Overlaps(const AabbComponent& other) const;
+        bool Overlaps(const AABBComponent& other) const;
         bool MouseOverlaps(glm::vec3 mousepos, const DYN_AABB& other) const;
         bool Contains(const DYN_AABB& other) const;
         bool Contains(const glm::vec3& other) const;
         DYN_AABB Merge(const DYN_AABB& rhs) const;
         DYN_AABB Intersection(const DYN_AABB& rhs) const;
-        static AabbComponent& SetAABB(TransformComponent& in, AabbComponent& aabbin);
+        static AABBComponent& SetAABB(TransformComponent& in, AABBComponent& aabbin);
 
         float GetWidth();
         float GetHeight();

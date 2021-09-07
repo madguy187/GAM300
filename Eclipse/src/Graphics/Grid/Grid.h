@@ -4,7 +4,7 @@
 #include "Graphics/Grid/IAABB.h"
 #include "Graphics/Grid/AABB.h"
 #include "Graphics/Grid/Box.h"
-#include "ECS/ComponentManager/Components/AabbComponent.h"
+#include "ECS/ComponentManager/Components/AABBComponent.h"
 #include "Graphics/Grid/AABBTree.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 
@@ -168,9 +168,9 @@ namespace Eclipse
         // Get Current Tile's distancetotheObject
         float GetDistanceToObject(unsigned int indexIn);
         // Set distance for Both the Tree and GridArray
-        void SetDistance(AABBNode& Nodein , AabbComponent& aabbin , unsigned int id );
+        void SetDistance(AABBNode& Nodein , AABBComponent& aabbin , unsigned int id );
         // Set Distance For Current Node for Grid
-        void SetDistance(AABBNode& Nodein, AabbComponent& aabbin);
+        void SetDistance(AABBNode& Nodein, AABBComponent& aabbin);
         // Set Distance For Current Node for Grid
         void SetDistance(AABBNode& Nodein, DYN_AABB& aabbin);
         // Only check for 1 Intersection.

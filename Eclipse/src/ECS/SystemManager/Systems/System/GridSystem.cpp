@@ -19,7 +19,7 @@ namespace Eclipse
     {
         for (auto& EntityId : mEntities)
         {
-            auto& aabb = engine->world.GetComponent<AabbComponent>(EntityId);
+            auto& aabb = engine->world.GetComponent<AABBComponent>(EntityId);
             auto& Transform = engine->world.GetComponent<TransformComponent>(EntityId);
             auto& ModelVsGrid = engine->CollisionGridTree.CheckOverlapAgainstGrid(DYN_AABB::SetAABB(Transform, aabb));
 
