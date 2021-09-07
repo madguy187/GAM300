@@ -13,7 +13,6 @@
 #include "Graphics/Grid/IAABB.h"
 #include "Graphics/Grid/AABB.h"
 
-#include "Graphics/ModelFactory/AssimpModel/IAssimpModel.h"
 namespace Eclipse
 {
     //TEST CODE
@@ -29,28 +28,18 @@ namespace Eclipse
         std::vector<Texture> textures;
     };
 
-
-    enum class ModelType
-    {
-        UNASSIGNED = 0,
-        HUMAN = 1,
-        ANIMAL = 2,
-        HOUSE = 3,
-        ENVIRONMENT = 4,
-        MAXCOUNT
-    };
-
-    class AssimpModel : public IAssimpModel
+    class AssimpModel
     {
     private:
         unsigned int ID = 0;
-        ModelType type = ModelType::UNASSIGNED;
+        bool NoTextures = false; // Set False if model got textures
+        ModelType type = ModelType::MT_UNASSIGNED;
+        // Take Note , i will use folder name as key
         std::string NameOfModel;
         std::string Directory;
         std::vector<Mesh> Meshes;
         std::vector<Texture> Textures_loaded;
         std::vector<glm::vec3> AllVertices;
-
         std::vector<MeshData> meshData;
 
         void ProcessMesh(aiMesh* mesh, const aiScene* scene);
@@ -63,13 +52,13 @@ namespace Eclipse
         void LoadNewModel();
 
     public:
-        bool noTex = false;
 
         AssimpModel() { }
         AssimpModel(bool noTex = false);
+        AssimpModel(bool noTex, std::string& NameOfModels, std::string& Directorys, std::vector<Mesh> Meshess, std::vector<Texture> Textures_loadeds);
 
         void LoadAssimpModel(std::string path);
-        void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID);
+        void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID , unsigned int id);
         void Cleanup();
         void SetName(std::string& name);
         std::string GetName();
@@ -80,11 +69,12 @@ namespace Eclipse
         ModelType GetType();
         void SetModelType(ModelType in);
         std::vector<glm::vec3> GetVertices();
-        void SetProperties(std::string& ModelName , ModelType in , unsigned int ID);
+        void SetProperties(std::string& ModelName, ModelType in, unsigned int ID);
+        void SetProperties(std::string& ModelName, ModelType in);
         unsigned int GetEntityID();
-
-        void initModel() override;
-        void DeleteModel() override;
+        std::vector<Mesh> GetMesh();
+        std::vector<Texture> GetTextures();
+        bool CheckNoTextures();
     };
 
 }

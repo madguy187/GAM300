@@ -532,7 +532,8 @@
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec2DeltaCommand.h" />
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec4DeltaCommand.h" />
     <ClInclude Include="src\Editor\ECGuiAPI\ECGuiInputHandler.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\IAssimpModel.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\MeshComponent3D.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\TextureComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AABBComponent.h" />
   </ItemGroup>
   <ItemGroup>

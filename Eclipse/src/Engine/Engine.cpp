@@ -9,7 +9,9 @@
 #include "ECS/ComponentManager/Components/DirectionalLightComponent.h"
 #include "ECS/ComponentManager/Components/SpotLightComponent.h"
 #include "ECS/ComponentManager/Components/MaterialComponent.h"
+#include "ECS/ComponentManager/Components/MeshComponent3D.h"
 #include "ECS/ComponentManager/Components/RigidBodyComponent.h"
+#include "ECS/ComponentManager/Components/TextureComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
@@ -69,8 +71,10 @@ namespace Eclipse
         world.RegisterComponent<AABBComponent>();
         world.RegisterComponent<SpotLightComponent>();
         world.RegisterComponent<MaterialComponent>();
+        world.RegisterComponent<testComponent>();
+        world.RegisterComponent<MeshComponent3D>();
         world.RegisterComponent<RigidBodyComponent>();
-    	world.RegisterComponent<testComponent>();
+        world.RegisterComponent<TextureComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
@@ -112,7 +116,7 @@ namespace Eclipse
         world.RegisterSystemSignature<GridSystem>(gridCol);
 
         mono.Init();
-        
+
         //Check this! - Rachel
         RenderSystem::Init();
         CameraSystem::Init();
@@ -187,7 +191,7 @@ namespace Eclipse
             world.Update<PickingSystem>();
 
             // RENDERSYSTEM =============================
-			world.Update<RenderSystem>();
+            world.Update<RenderSystem>();
 
             // Material SYstem =============================
             world.Update<MaterialSystem>();
@@ -209,7 +213,7 @@ namespace Eclipse
         // unLoad
         mono.StopMono();
         GraphicsManager.End();
-        AssimpManager.CleanUpAllModels();
+        AssimpManager.CleanUpAllModelsMeshes();
         ImGuiSetup::Destroy(EditorState);
         CommandHistory::Clear();
     }

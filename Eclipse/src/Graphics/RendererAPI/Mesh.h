@@ -38,7 +38,7 @@ namespace Eclipse
         Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiColor4D diffuse, aiColor4D spec);
         void SetMaterialDiffuse(float x, float y, float z);
         void SetMaterialSpecular(float x, float y, float z);
-        void Render(Shader& shader, GLenum mode);
+        void Render(Shader& shader, GLenum mode , unsigned int id);
         void Cleanup();
 
         std::vector<Vertex>& GetVertices();
