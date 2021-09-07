@@ -135,6 +135,8 @@ namespace Eclipse
 		auto tmp = EntityHierarchyList_[firstIndex];
 		EntityHierarchyList_[firstIndex] = EntityHierarchyList_[secondIndex];
 		EntityHierarchyList_[secondIndex] = tmp;
+
+		SetSelectedEntity(tmp);
 	}
 
 	void EditorManager::InsertExistingEntity(size_t pos, Entity ID)
@@ -150,15 +152,13 @@ namespace Eclipse
 		// No need check for dup here, it will just replace
 		EntityToIndexMap_[ID] = static_cast<int>(pos);
 
-		size_t counter = 0;
-
 		for (auto& pair : EntityToIndexMap_)
 		{
 			if (pair.second >= pos && pair.first != ID)
 				pair.second++;
 		}
 
-		std::cout << "done";
+		SetSelectedEntity(ID);
 	}
 
 	std::vector<std::unique_ptr<ECGuiWindow>>& EditorManager::GetAllWindowsByRef()

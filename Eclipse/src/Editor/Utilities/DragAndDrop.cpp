@@ -77,67 +77,62 @@ namespace Eclipse
 		}
 	}
 
-	void DragAndDrop::IndexPayloadTarget(const char* id, const int& destination, bool wee, PayloadTargetType type)
+	void DragAndDrop::IndexPayloadTarget(const char* id, const int& destination, bool IsSelected, PayloadTargetType type)
 	{
-		static bool test = false;
-		static int indextest = 0;
-		static int desttest = 0;
-
 		if (ImGui::BeginDragDropTarget())
 		{
 			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(id);
-			//int* data = nullptr;
 
 			if (payload)
 			{
-				indextest = *((int*)payload->Data);
-				desttest = destination;
-				test = true;
+				SourceIndex_ = *((int*)payload->Data);
+				DestinationIndex_ = destination;
+				IsIndexJobSelected = true;
 			}
 
 			ImGui::EndDragDropTarget();
 		}
-		else if (wee && test)
+		else if (IsSelected && IsIndexJobSelected)
 		{
 			switch (type)
 			{
 			case PayloadTargetType::PTT_INDEXEDIT:
 			{
 				ImGui::OpenPopup("IndexJobList");
-				test = true;
+				/*test = true;*/
 
 				if (ImGui::BeginPopup("IndexJobList"))
 				{
 					for (int i = 0; i < IM_ARRAYSIZE(IndexJobNames); ++i)
 					{
-						//std::cout << "wee" << std::endl;
-						//ImGui::PushID(i);
 						bool selected = false;
-						if (/*ImGui::Selectable(IndexJobNames[i], &selected)*/ECGui::CreateSelectableButton(IndexJobNames[i], &selected))
+						if (ECGui::CreateSelectableButton(IndexJobNames[i], &selected))
 						{
 							switch (i)
 							{
-								// Move index
+							// Move index
 							case 0:
-								engine->editorManager->InsertExistingEntity(static_cast<size_t>(desttest),
-									engine->editorManager->GetEntityID(indextest));
-								test = false;
+								engine->editorManager->InsertExistingEntity(static_cast<size_t>(DestinationIndex_),
+									engine->editorManager->GetEntityID(SourceIndex_));
+								IsIndexJobSelected = false;
+								EDITOR_LOG_INFO("Entity moved.");
 								break;
-								// Swap index
+							// Swap index
 							case 1:
-								engine->editorManager->SwapEntities(static_cast<size_t>(indextest), static_cast<size_t>(desttest));
-								test = false;
+								engine->editorManager->SwapEntities(static_cast<size_t>(SourceIndex_), static_cast<size_t>(DestinationIndex_));
+								IsIndexJobSelected = false;
+								EDITOR_LOG_INFO("Entity positions swapped.");
 								break;
-								// Parent Child
+							// Parent Child
 							case 2:
-								test = false;
+								IsIndexJobSelected = false;
 								break;
+							// Cancel
 							default:
-								test = false;
+								IsIndexJobSelected = false;
 								break;
 							}
 						}
-						//ImGui::PopID();
 					}
 					ImGui::EndPopup();
 				}
