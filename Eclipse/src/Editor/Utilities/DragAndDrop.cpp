@@ -77,29 +77,75 @@ namespace Eclipse
 		}
 	}
 
-	void DragAndDrop::IndexPayloadTarget(const char* id, const int& destination, const char* cMsg, PayloadTargetType type)
+	void DragAndDrop::IndexPayloadTarget(const char* id, const int& destination, bool wee, PayloadTargetType type)
 	{
+		static bool test = false;
+		static int indextest = 0;
+		static int desttest = 0;
+
 		if (ImGui::BeginDragDropTarget())
 		{
 			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(id);
-			int* data = nullptr;
+			//int* data = nullptr;
 
 			if (payload)
 			{
-				switch (type)
-				{
-				case PayloadTargetType::PTT_INDEXSWAPPING:
-					data = (int*)payload->Data;
-					engine->editorManager->SwapEntities(static_cast<size_t>(*data), static_cast<size_t>(destination));
-					break;
-				default:
-					break;
-				}
-
-				EDITOR_LOG_INFO(cMsg);
+				indextest = *((int*)payload->Data);
+				desttest = destination;
+				test = true;
 			}
 
 			ImGui::EndDragDropTarget();
+		}
+		else if (wee && test)
+		{
+			switch (type)
+			{
+			case PayloadTargetType::PTT_INDEXEDIT:
+			{
+				ImGui::OpenPopup("IndexJobList");
+				test = true;
+
+				if (ImGui::BeginPopup("IndexJobList"))
+				{
+					for (int i = 0; i < IM_ARRAYSIZE(IndexJobNames); ++i)
+					{
+						//std::cout << "wee" << std::endl;
+						//ImGui::PushID(i);
+						bool selected = false;
+						if (/*ImGui::Selectable(IndexJobNames[i], &selected)*/ECGui::CreateSelectableButton(IndexJobNames[i], &selected))
+						{
+							switch (i)
+							{
+								// Move index
+							case 0:
+								engine->editorManager->InsertExistingEntity(static_cast<size_t>(desttest),
+									engine->editorManager->GetEntityID(indextest));
+								test = false;
+								break;
+								// Swap index
+							case 1:
+								engine->editorManager->SwapEntities(static_cast<size_t>(indextest), static_cast<size_t>(desttest));
+								test = false;
+								break;
+								// Parent Child
+							case 2:
+								test = false;
+								break;
+							default:
+								test = false;
+								break;
+							}
+						}
+						//ImGui::PopID();
+					}
+					ImGui::EndPopup();
+				}
+				break;
+			}
+			default:
+				break;
+			}
 		}
 	}
 	

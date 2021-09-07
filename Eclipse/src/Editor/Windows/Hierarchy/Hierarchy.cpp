@@ -110,8 +110,7 @@ namespace Eclipse
 				}
 
 				engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexSwapping", static_cast<int>(index));
-				engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexSwapping", static_cast<int>(index), 
-					"Entity positions swapped!");
+				engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexSwapping", static_cast<int>(index), entCom.IsActive);
 			}
 		}
 	}

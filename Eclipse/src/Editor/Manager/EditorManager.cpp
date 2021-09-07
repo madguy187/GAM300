@@ -139,9 +139,26 @@ namespace Eclipse
 
 	void EditorManager::InsertExistingEntity(size_t pos, Entity ID)
 	{
+		auto oldItrPos = std::find(EntityHierarchyList_.begin(), EntityHierarchyList_.end(), ID);
+
+		// Erase if it already exist, safety check to remove duplicates
+		if (oldItrPos != EntityHierarchyList_.end())
+			EntityHierarchyList_.erase(oldItrPos);
+
 		auto itrPos = EntityHierarchyList_.begin() + pos;
 		EntityHierarchyList_.insert(itrPos, ID);
+		// No need check for dup here, it will just replace
 		EntityToIndexMap_[ID] = static_cast<int>(pos);
+
+		size_t counter = 0;
+
+		for (auto& pair : EntityToIndexMap_)
+		{
+			if (pair.second >= pos && pair.first != ID)
+				pair.second++;
+		}
+
+		std::cout << "done";
 	}
 
 	std::vector<std::unique_ptr<ECGuiWindow>>& EditorManager::GetAllWindowsByRef()
@@ -185,6 +202,11 @@ namespace Eclipse
 	int EditorManager::GetEntityIndex(Entity ID)
 	{
 		return EntityToIndexMap_[ID];
+	}
+
+	Entity EditorManager::GetEntityID(int index)
+	{
+		return EntityHierarchyList_[index];
 	}
 
 	bool EditorManager::IsEntityListEmpty() const

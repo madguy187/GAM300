@@ -81,6 +81,14 @@ enum class PayloadTargetType
 {
 	PTT_WIDGET,
 	PTT_WINDOW,
-	PTT_INDEXSWAPPING,
+	PTT_INDEXEDIT,
 	PTT_UNASSIGNED
+};
+
+enum class PayloadIndexJob
+{
+    PIJ_MOVE,
+    PIJ_SWAP,
+    PIJ_PARENTCHILD,
+    PIJ_UNASSIGNED
 };

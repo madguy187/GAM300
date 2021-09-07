@@ -2,6 +2,8 @@
 
 namespace Eclipse
 {
+	static const char* IndexJobNames[] = { "Move", "Swap", "Parent Child", "Cancel"};
+
 	class DragAndDrop
 	{
 		std::map< std::string, std::string> files;
@@ -14,8 +16,8 @@ namespace Eclipse
 
 		void StringPayloadTarget(const char* id, std::string& destination,
 			const char* cMsg, PayloadTargetType type = PayloadTargetType::PTT_WIDGET);
-		void IndexPayloadTarget(const char* id, const int& destination,
-			const char* cMsg, PayloadTargetType type = PayloadTargetType::PTT_INDEXSWAPPING);
+		void IndexPayloadTarget(const char* id, const int& destination, bool wee,
+			PayloadTargetType type = PayloadTargetType::PTT_INDEXEDIT);
 		void AssetBrowerFilesAndFoldersTarget(const char* type, const char* paths, std::string AssetPath, 
 			std::filesystem::directory_entry dirEntry, bool& refreshBrowser, std::map<std::filesystem::path, 
 			std::vector<std::filesystem::path>> pathMap,bool& CopyMode);
