@@ -48,6 +48,7 @@ namespace Eclipse
 			ShowSpotLightProperty("SpotLight", currEnt, CompFilter);
 			ShowDirectionalLightProperty("DirectionalLight", currEnt, CompFilter);
 			ShowRigidBodyProperty("RigidBody", currEnt, CompFilter);
+			ShowEditorCameraProperty("Camera", currEnt, CompFilter);
 			//tianyu testing will delete later
 			//todo
 			if (engine->world.CheckComponent<testComponent>(currEnt))
@@ -231,6 +232,38 @@ namespace Eclipse
 				
 				ECGui::DrawTextWidget<const char*>("Velocity", "");
 				ECGui::DrawSliderFloat3Widget("Rigid Body Velocity", &_RigidB.velocity, true, 0.0f, 1.0f);
+
+			}
+		}
+
+		return false;
+	}
+	bool InspectorWindow::ShowEditorCameraProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+	{
+		if (engine->world.CheckComponent<CameraComponent>(ID))
+		{
+			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+			{
+				auto& _Camera = engine->world.GetComponent<CameraComponent>(ID);
+
+				if(engine->gCamera.GetEditorCameraID() == ID)
+				{
+					ECGui::DrawTextWidget<const char*>("Near Plane", "");
+					ECGui::DrawSliderFloatWidget("Near Plane", &_Camera.nearPlane, false, 0, 1000);
+					ECGui::DrawTextWidget<const char*>("Far Plane", "");
+					ECGui::DrawSliderFloatWidget("Far Plane", &_Camera.farPlane,false,0,1000);
+				}
+				ECGui::DrawTextWidget<const char*>("Camera Speed", "");
+				ECGui::DrawSliderFloatWidget("Camera Speed", &_Camera.cameraSpeed);
+				
+				//ECGui::DrawTextWidget<const char*>("Enable Gravity", "");
+				//ECGui::CheckBoxBool("Rigid Body Enable Gravity", &_RigidB.enableGravity);
+				//
+				//ECGui::DrawTextWidget<const char*>("Forces", "");
+				//ECGui::DrawSliderFloat3Widget("Rigid Body Forces", &_RigidB.forces, true, 0.0f, 1.0f);
+				//
+				//ECGui::DrawTextWidget<const char*>("Velocity", "");
+				//ECGui::DrawSliderFloat3Widget("Rigid Body Velocity", &_RigidB.velocity, true, 0.0f, 1.0f);
 
 			}
 		}

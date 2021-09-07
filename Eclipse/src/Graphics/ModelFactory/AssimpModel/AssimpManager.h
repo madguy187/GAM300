@@ -11,7 +11,6 @@
 #include "ECS/ComponentManager/Components/EntityComponent.h"
 #include "Graphics/Grid/AABBTree.h"
 #include "ECS/ComponentManager/Components/TextureComponent.h"
-
 namespace Eclipse
 {
     typedef std::unordered_map<unsigned int, AssimpModel*> AssimpModelContainer;
