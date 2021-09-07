@@ -34,7 +34,7 @@ namespace Eclipse
         AssimpModelContainer AssimpModelContainer_;
 
         // Name of Model , < MeshIndex, Texture Container > 
-        std::unordered_map<std::string, std::map<unsigned int, std::vector<std::unique_ptr<Texture>>> >LoadedTexturesV2;
+        std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>> >LoadedTexturesV2;
         std::multimap<std::string, std::unique_ptr<Texture>> LoadedTextures;
     public:
         // Get Current MeshComponent Container

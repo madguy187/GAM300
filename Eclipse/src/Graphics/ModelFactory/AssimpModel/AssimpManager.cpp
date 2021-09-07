@@ -5,19 +5,35 @@ namespace Eclipse
 {
 	void AssimpModelManager::LoadModels(const std::string& modelFile)
 	{
-		Parser input;
-		input.ParseFile(modelFile);
+		//Parser input;
+		//input.ParseFile(modelFile);
 
-		std::string FolderName;
-		std::string filename;
+		//std::string FolderName;
+		//std::string filename;
 
-		for (auto& it : input.doc["AssimpModels"].GetArray())
+		//for (auto& it : input.doc["AssimpModels"].GetArray())
+		//{
+		//	FolderName = (it)["FolderName"].GetString();
+		//	filename = (it)["FileName"].GetString();
+
+		//	std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/" + filename).c_str();
+
+		//	TestPath(PathName);
+
+		//	std::unique_ptr<AssimpModel> ptr(new AssimpModel(false));
+		//	ptr->SetProperties(FolderName, ModelType::MT_ANIMAL);
+		//	ptr->LoadAssimpModel(PathName);
+
+		//	AssimpLoadedModels.emplace(FolderName, std::move(ptr));
+		//}
+
+		for (auto& dirEntry : std::filesystem::directory_iterator("src//Assets//ASSModels"))
 		{
-			FolderName = (it)["FolderName"].GetString();
-			filename = (it)["FileName"].GetString();
+			const auto& path = dirEntry.path();
+			auto relativePath = relative(path, "src//");
+			std::string FolderName = relativePath.filename().string();
 
-			std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/" + filename).c_str();
-
+			std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/" + "scene.gltf").c_str();
 			TestPath(PathName);
 
 			std::unique_ptr<AssimpModel> ptr(new AssimpModel(false));
@@ -25,6 +41,7 @@ namespace Eclipse
 			ptr->LoadAssimpModel(PathName);
 
 			AssimpLoadedModels.emplace(FolderName, std::move(ptr));
+			//std::cout << "File NAME : " << fileNameString << std::endl;
 		}
 	}
 
