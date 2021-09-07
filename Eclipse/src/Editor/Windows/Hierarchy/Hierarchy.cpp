@@ -109,8 +109,10 @@ namespace Eclipse
 					engine->editorManager->SetGlobalIndex(index);
 				}
 
-				engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexSwapping", static_cast<int>(index));
-				engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexSwapping", static_cast<int>(index), entCom.IsActive);
+				engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit", 
+					static_cast<int>(index));
+				engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit", 
+					static_cast<int>(index), entCom.IsActive);
 			}
 		}
 	}
@@ -160,7 +162,6 @@ namespace Eclipse
 
 						ECGui::EndTreeNode();
 					}
-
 					break;
 				}
 				default:
