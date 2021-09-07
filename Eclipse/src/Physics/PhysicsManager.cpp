@@ -233,7 +233,7 @@ namespace Eclipse
 		float siny_cosp = 2 * (quat.w * quat.z + quat.x * quat.y);
 		float cosy_cosp = 1 - 2 * (quat.y * quat.y + quat.z * quat.z);
 
-		temp.setZ(std::atan2(siny_cosp, cosy_cosp));
+		temp.setZ(std::atan2(siny_cosp, cosy_cosp) * (180.0/M_PI));
 
 		return temp;
 	}
@@ -285,14 +285,14 @@ namespace Eclipse
 			temptrans.y = transform.position.y;
 			temptrans.z = transform.position.z;
 
-			temprot = AnglestoQuat(transform.rotation.getZ(),transform.rotation.getY(),transform.rotation.getX());
+			temprot = AnglestoQuat(transform.rotation.getX(),transform.rotation.getY(),transform.rotation.getZ());
 	
 			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setGlobalPose(PxTransform{ temptrans,temprot});
 			//static_cast<PxRigidDynamic*>(Px_Actors[ent])->setForceAndTorque(tempforce, { 0,0,0 });
 			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setMass(rigid.mass);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setActorFlag(PxActorFlag::eDISABLE_GRAVITY,rigid.enableGravity ? false : true);
-			//static_cast<PxRigidDynamic*>(Px_Actors[ent])->setAngularVelocity(PxVec3{ 0,0,5 });
-			//static_cast<PxRigidDynamic*>(Px_Actors[ent])->setAngularDamping(0.f);
+			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setAngularVelocity(PxVec3{ 0,0,1 });
+			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setAngularDamping(0.f);
 		}
 	}
 
