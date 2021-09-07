@@ -23,11 +23,11 @@ namespace Eclipse
 
     }
 
-    void AssimpModel::Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID)
+    void AssimpModel::Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, unsigned int id)
     {
         for (unsigned int i = 0; i < Meshes.size(); i++)
         {
-            Meshes[i].Render(shader, MOde);
+            Meshes[i].Render(shader, MOde, id);
         }
     }
 
@@ -404,13 +404,14 @@ namespace Eclipse
 
             if (!skip)
             {
-                // not loaded yet
-                //std::cout << str.C_Str() << std::endl;
-
                 Texture tex(Directory, str.C_Str(), type);
                 tex.Load(false);
                 textures.push_back(tex);
                 Textures_loaded.push_back(tex);
+
+                std::unique_ptr<Texture> ptr(new Texture(Directory, str.C_Str(), type));
+                ptr->Load(false);
+                engine->AssimpManager.LoadedTextures.emplace(NameOfModel, std::move(ptr));
             }
         }
 

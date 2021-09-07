@@ -34,6 +34,7 @@ namespace Eclipse
         unsigned int ID = 0;
         bool NoTextures = false; // Set False if model got textures
         ModelType type = ModelType::MT_UNASSIGNED;
+        // Take Note , i will use folder name as key
         std::string NameOfModel;
         std::string Directory;
         std::vector<Mesh> Meshes;
@@ -57,7 +58,7 @@ namespace Eclipse
         AssimpModel(bool noTex, std::string& NameOfModels, std::string& Directorys, std::vector<Mesh> Meshess, std::vector<Texture> Textures_loadeds);
 
         void LoadAssimpModel(std::string path);
-        void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID);
+        void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID , unsigned int id);
         void Cleanup();
         void SetName(std::string& name);
         std::string GetName();

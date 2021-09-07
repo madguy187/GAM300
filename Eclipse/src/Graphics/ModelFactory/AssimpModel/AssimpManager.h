@@ -10,13 +10,14 @@
 #include "AssimpModel/AssimpModel.h"
 #include "ECS/ComponentManager/Components/EntityComponent.h"
 #include "Graphics/Grid/AABBTree.h"
+#include "ECS/ComponentManager/Components/TextureComponent.h"
 
 namespace Eclipse
 {
     typedef std::unordered_map<unsigned int, AssimpModel*> AssimpModelContainer;
     typedef std::unordered_map<unsigned int, MeshComponent3D*> MeshModelContainer;
     using AssimpIT = std::unordered_map<unsigned int, AssimpModel&>::iterator;
-    using AssimpMeshIT = std::unordered_map<unsigned int, MeshComponent3D*>::iterator;
+    using AssimpMeshIT = std::unordered_map<unsigned int, MeshComponent3D*>::iterator; 
 
     // Current Version
     // Prev : Loading Model in every Create , Store them into Container as AssimpModel*
@@ -56,7 +57,7 @@ namespace Eclipse
         // Check Current path is correct
         void TestPath(std::string& path);
         // Draw function that takes in Mesh Component
-        void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent3D& in);
+        void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent3D& in, unsigned int inin);
         // Using MeshComponent into Container , Pass in key please
         void InsertModel(MeshComponent3D& in, std::string& key);
         // Model Factory to load all models
@@ -72,6 +73,7 @@ namespace Eclipse
         bool InsertMesh(MeshComponent3D& in);
         bool ClearContainer();
 
+    private:
         //
         void CleanUpAllModels();
         unsigned int AssimpModelCount();
@@ -82,6 +84,10 @@ namespace Eclipse
         void Draw(unsigned int FrameBufferID, GLenum mode, AABB_* box, CameraComponent::CameraType _camType);
         void HighlihtDraw(unsigned int FrameBufferID, GLenum Mode);
         void DeleteItem(unsigned int index, AssimpModel* model_ptr);
+
+    public:
+        // tEXTURES i put here first ah
+        std::multimap<std::string, std::unique_ptr<Texture>> LoadedTextures;
     };
 }
 #endif // ASSIMP_MANAGER_H

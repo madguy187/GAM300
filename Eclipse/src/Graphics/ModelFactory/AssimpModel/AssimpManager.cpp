@@ -21,8 +21,8 @@ namespace Eclipse
             TestPath(PathName);
 
             std::unique_ptr<AssimpModel> ptr(new AssimpModel(false));
-            ptr->LoadAssimpModel(PathName);
             ptr->SetProperties(FolderName, ModelType::MT_ANIMAL);
+            ptr->LoadAssimpModel(PathName);
 
             AssimpLoadedModels.emplace(FolderName, std::move(ptr));
         }
@@ -102,7 +102,7 @@ namespace Eclipse
             CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ID, box);
 
             // Render
-            Render(shdrpgm, Mode, FrameBufferID, ModelMesh);
+            Render(shdrpgm, Mode, FrameBufferID, ModelMesh, ID);
         }
 
         shdrpgm.UnUse();
@@ -129,7 +129,7 @@ namespace Eclipse
             CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ID, box);
 
             // Render
-            InvidualModels.Render(shdrpgm, Mode, FrameBufferID);
+            InvidualModels.Render(shdrpgm, Mode, FrameBufferID,ID);
         }
 
         shdrpgm.UnUse();
@@ -159,7 +159,7 @@ namespace Eclipse
                 GLCall(glUniform1f(uniformloc1, 0.05f));
 
                 // Render
-                InvidualModels.Render(shdrpgm->second, Mode, FrameBufferID);
+                InvidualModels.Render(shdrpgm->second, Mode, FrameBufferID, ID);
             }
 
             shdrpgm->second.UnUse();
@@ -267,6 +267,22 @@ namespace Eclipse
 
         std::cout << "-------------------------------------------------------------------" << std::endl;
         std::cout << std::endl;
+
+        std::cout << std::endl;
+        std::cout << "Loaded Textures Count " << LoadedTextures.size() << std::endl;
+        std::cout << "-------------------------------------------------------------------" << std::endl;
+
+        for (auto const& Texs : LoadedTextures)
+        {
+            auto& ModelName = (Texs.first);
+            auto& Texture = *(Texs.second);
+            std::cout << " Model Name : " << ModelName << std::endl;
+            std::cout << " Texture Path : " << Texture.GetPath() << std::endl;
+            std::cout << std::endl;
+        }
+
+        std::cout << "-------------------------------------------------------------------" << std::endl;
+        std::cout << std::endl;
     }
 
     void AssimpModelManager::CleanUpAllModels()
@@ -346,7 +362,7 @@ namespace Eclipse
 
         if (AssimpModelContainerV2.insert({ in.ID ,&in }).second == true)
         {
-            EDITOR_LOG_INFO( ("Model : " + in.NameOfModel +  "Created Successfully").c_str());
+            EDITOR_LOG_INFO(("Model : " + in.NameOfModel + "Created Successfully").c_str());
         }
 
         engine->MaterialManager.RegisterMeshForHighlight(in.ID);
@@ -382,11 +398,11 @@ namespace Eclipse
         return nullptr;
     }
 
-    void AssimpModelManager::Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent3D& in)
+    void AssimpModelManager::Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent3D& in, unsigned int ModelID)
     {
         for (unsigned int i = 0; i < in.Meshes.size(); i++)
         {
-            in.Meshes[i].Render(shader, MOde);
+            in.Meshes[i].Render(shader, MOde, ModelID);
         }
     }
 }

@@ -39,7 +39,7 @@ namespace Eclipse
         Setup();
     }
 
-    void Mesh::Render(Shader& shader, GLenum mode)
+    void Mesh::Render(Shader& shader, GLenum mode , unsigned int id)
     {
         glEnable(GL_BLEND);
         glEnable(GL_DEPTH_TEST);

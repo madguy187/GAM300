@@ -323,7 +323,7 @@ namespace Eclipse
                 engine->MaterialManager.CheckUnniformLocation(shdrpgm, highlight);
 
                 // Render
-                InvidualModels.Render(shdrpgm, Mode, FrameBufferID);
+                InvidualModels.Render(shdrpgm, Mode, FrameBufferID,ID);
             }
         }
 
@@ -337,26 +337,26 @@ namespace Eclipse
 
         bool CheckModel = engine->world.CheckComponent<RenderComponent>(index);
 
-        if (CheckModel)
-        {
+        //if (CheckModel)
+        //{
 
-        }
-        else
-        {
-            AssimpModel* CurrentModel = engine->AssimpManager.GetModel(index);
+        //}
+        //else
+        //{
+        //    AssimpModel* CurrentModel = engine->AssimpManager.GetModel(index);
 
-            // Insert
-            if (ModelHighlightContainer.insert(std::pair<unsigned int, AssimpModel*>(index, CurrentModel)).second == true)
-            {
-                in.RegisterForHighlight = true;
+        //    // Insert
+        //    if (ModelHighlightContainer.insert(std::pair<unsigned int, AssimpModel*>(index, CurrentModel)).second == true)
+        //    {
+        //        in.RegisterForHighlight = true;
 
-                std::string Success = ("Model [" + CurrentModel->GetName() + "] Registered For Highlighting ! ").c_str();
-                ENGINE_CORE_INFO(Success);
+        //        std::string Success = ("Model [" + CurrentModel->GetName() + "] Registered For Highlighting ! ").c_str();
+        //        ENGINE_CORE_INFO(Success);
 
-                std::cout << "HighLight Container Size : " << ModelHighlightContainer.size() << std::endl;
-                return;
-            }
-        }
+        //        std::cout << "HighLight Container Size : " << ModelHighlightContainer.size() << std::endl;
+        //        return;
+        //    }
+        //}
     }
 
     void MaterialManager::Highlight(unsigned int FrameBufferID, unsigned int ModelID, GLenum mode)
@@ -562,7 +562,7 @@ namespace Eclipse
                 engine->MaterialManager.CheckUnniformLocation(shdrpgm, highlight);
 
                 // Render
-                engine->AssimpManager.Render(shdrpgm, Mode, FrameBufferID, InvidualModels);
+                engine->AssimpManager.Render(shdrpgm, Mode, FrameBufferID, InvidualModels, ID);
             }
         }
 
