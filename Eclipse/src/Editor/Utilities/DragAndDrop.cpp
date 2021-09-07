@@ -99,7 +99,6 @@ namespace Eclipse
 			case PayloadTargetType::PTT_INDEXEDIT:
 			{
 				ImGui::OpenPopup("IndexJobList");
-				/*test = true;*/
 
 				if (ImGui::BeginPopup("IndexJobList"))
 				{
