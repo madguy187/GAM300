@@ -9,5 +9,6 @@ namespace Eclipse
         unsigned int ID = 0;
         TextureType Type = TextureType::TT_UNASSIGNED;
         std::string TextureKey;
+        std::vector<Texture> Textures;
     };
 }

@@ -222,6 +222,8 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         //sprite.modelRef = Graphics::models.find("plane")->first;
         //Graphics::sprites.emplace(sprite.layerNum, &sprite);
 
+        engine->world.AddComponent(ID, TextureComponent{});
+        TextureComponent& tex = engine->world.GetComponent<TextureComponent>(ID);
         engine->world.AddComponent(ID, MaterialComponent{});
         MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
         mat.Modeltype = MaterialComponent::ModelType::Models3D;
@@ -232,6 +234,10 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.Key = engine->AssimpManager.GetKey("testhouse"); //AssimpLoadedModels["dog"]->GetName();
 
         engine->AssimpManager.InsertModel(sprite, sprite.Key);
+
+        tex.ID = ID;
+
+        engine->AssimpManager.SetTexturesForModel(tex, sprite.Key);
     }
     break;
     // pointlight
@@ -250,15 +256,20 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     case 14:
     {
         engine->world.AddComponent(ID, MaterialComponent{});
-        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
-        mat.Modeltype = MaterialComponent::ModelType::Models3D;
-
         engine->world.AddComponent(ID, MeshComponent3D{});
-        MeshComponent3D& sprite = engine->world.GetComponent<MeshComponent3D>(ID);
-        sprite.ID = ID;
-        sprite.Key = engine->AssimpManager.GetKey("dog2"); 
+        engine->world.AddComponent(ID, TextureComponent{});
 
+        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+        MeshComponent3D& sprite = engine->world.GetComponent<MeshComponent3D>(ID);
+        TextureComponent& tex = engine->world.GetComponent<TextureComponent>(ID);
+
+        mat.Modeltype = MaterialComponent::ModelType::Models3D;
+        sprite.ID = ID;
+        sprite.Key = engine->AssimpManager.GetKey("dog"); 
         engine->AssimpManager.InsertModel(sprite, sprite.Key);
+        tex.ID = ID;
+
+        engine->AssimpManager.SetTexturesForModel(tex , sprite.Key);
     }
     break;
     }

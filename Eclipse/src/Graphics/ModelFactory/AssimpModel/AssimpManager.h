@@ -88,6 +88,7 @@ namespace Eclipse
     public:
         // tEXTURES i put here first ah
         std::multimap<std::string, std::unique_ptr<Texture>> LoadedTextures;
+        void SetTexturesForModel(TextureComponent& in, std::string& passinkey);
     };
 }
 #endif // ASSIMP_MANAGER_H
