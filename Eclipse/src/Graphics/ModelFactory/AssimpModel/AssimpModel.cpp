@@ -411,7 +411,7 @@ namespace Eclipse
 
                 std::unique_ptr<Texture> ptr(new Texture(Directory, str.C_Str(), type));
                 ptr->Load(false);
-                engine->AssimpManager.LoadedTextures.emplace(NameOfModel, std::move(ptr));
+                engine->AssimpManager.InsertTextures(NameOfModel, std::move(ptr));
             }
         }
 

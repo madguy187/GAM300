@@ -17,8 +17,8 @@ namespace Eclipse
     typedef std::unordered_map<unsigned int, AssimpModel*> AssimpModelContainer;
     typedef std::unordered_map<unsigned int, MeshComponent3D*> MeshModelContainer;
     using AssimpIT = std::unordered_map<unsigned int, AssimpModel&>::iterator;
-    using AssimpMeshIT = std::unordered_map<unsigned int, MeshComponent3D*>::iterator; 
-
+    using AssimpMeshIT = std::unordered_map<unsigned int, MeshComponent3D*>::iterator;
+    using TextureIT = std::unordered_map<std::string, std::vector< std::unique_ptr<Texture>>>::iterator;
     // Current Version
     // Prev : Loading Model in every Create , Store them into Container as AssimpModel*
     // Now  : All Models are Only Loaded Once , Store them as Mesh* in AssimpLoadedModels.
@@ -86,9 +86,10 @@ namespace Eclipse
         void DeleteItem(unsigned int index, AssimpModel* model_ptr);
 
     public:
-        // tEXTURES i put here first ah
+        std::unordered_map<std::string, std::vector< std::unique_ptr<Texture>>>LoadedTexturesV2;
         std::multimap<std::string, std::unique_ptr<Texture>> LoadedTextures;
         void SetTexturesForModel(TextureComponent& in, std::string& passinkey);
+        void InsertTextures(std::string& NameofModel , std::unique_ptr<Texture> in);
     };
 }
 #endif // ASSIMP_MANAGER_H

@@ -247,13 +247,25 @@ namespace Eclipse
 	{
 		in.TextureKey = passkey;
 
-		for (auto& i : LoadedTextures)
+		//for (auto& i : LoadedTextures)
+		//{
+		//	if (in.TextureKey == i.first)
+		//	{
+		//		in.Textures.push_back(*(i.second));
+		//	}
+		//}
+
+		for (int i = 0 ; i < LoadedTexturesV2[passkey].size() ; i++)
 		{
-			if (in.TextureKey == i.first)
-			{
-				in.Textures.push_back(*(i.second));
-			}
+			auto& hi = LoadedTexturesV2[passkey][i];
+			std::cout << hi->GetPath() << std::endl;
 		}
+	}
+
+	void AssimpModelManager::InsertTextures(std::string& NameofModel , std::unique_ptr<Texture> in)
+	{
+		/*LoadedTexturesV2.emplace(NameofModel, LoadedTexturesV2[NameofModel].push_back(std::move(in)));*/
+		LoadedTexturesV2[NameofModel].push_back(std::move(in));
 	}
 
 	void AssimpModelManager::DeleteItem(unsigned int index)
