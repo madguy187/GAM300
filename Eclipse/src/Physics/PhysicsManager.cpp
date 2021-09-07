@@ -189,7 +189,58 @@ namespace Eclipse
 
 		PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*dynamic_cast<PxRigidActor*>(Px_Actors[ent]), PxCapsuleGeometry{ radius,halfheight }, *tempmat);
 	}
+
+	PxQuat PhysicsManager::AnglestoQuat(float degreeX, float degreeY, float degreeZ)
+	{
+		float yaw = degreeZ * (M_PI/180);
+		float pitch = degreeY * (M_PI/180);
+		float roll = degreeX * (M_PI/180);
+
+
+		float cy = cosf(yaw * 0.5);
+		float sy = sin(yaw * 0.5);
+		float cp = cos(pitch * 0.5);
+		float sp = sin(pitch * 0.5);
+		float cr = cos(roll * 0.5);
+		float sr = sin(roll* 0.5);
+
+		return PxQuat(sr * cp * cy - cr * sp * sy ,//X
+					  cr * sp * cy + sr * cp * sy ,//Y
+				      cr * cp * sy - sr * sp * cy ,//Z
+			          cr * cp * cy + sr * sp * sy);//W
+	}
+
+	ECVec3 PhysicsManager::QuattoAngles(PxQuat quat)
+	{
+		ECVec3 temp{0,0,0};
+
+		std::cout << quat.x << std::endl;
+		std::cout << quat.y << std::endl;
+		std::cout << quat.z << std::endl;
+		//x rotation
+		float sinr_cosp = 2 * (quat.w * quat.x + quat.y * quat.z);
+		float cosr_cosp = 1 - 2 * (quat.x * quat.x + quat.y * quat.y);
+		
+		temp.setX(std::atan2(sinr_cosp, cosr_cosp) * (180.0/M_PI));
+
+		//y rotation
+		float sinp = 2 * (quat.w * quat.y - quat.z * quat.x);
+		if (std::abs(sinp) >= 1)
+			temp.setY(static_cast<float>(std::copysign(M_PI / 2, sinp) * (180.0/M_PI)));
+		else
+			temp.setY(std::asinf(sinp) * (180.0/M_PI));
+
+		float siny_cosp = 2 * (quat.w * quat.z + quat.x * quat.y);
+		float cosy_cosp = 1 - 2 * (quat.y * quat.y + quat.z * quat.z);
+
+		temp.setZ(std::atan2(siny_cosp, cosy_cosp));
+
+		return temp;
+	}
 	
+
+
+
 	void PhysicsManager::AddActorToScene(Entity ent)
 	{
 		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
@@ -217,14 +268,14 @@ namespace Eclipse
 			temptrans.y = transform.position.y;
 			temptrans.z = transform.position.z;
 
-			dynamic_cast<PxRigidStatic*>(Px_Actors[ent])->setGlobalPose(PxTransform{ temptrans });
+			static_cast<PxRigidStatic*>(Px_Actors[ent])->setGlobalPose(PxTransform{ temptrans });
 			return;
 		}
 		if (Px_Actors[ent] != nullptr)
 		{
 			PxVec3 tempforce{ 0,0,0 };
 			PxVec3 temptrans{0,0,0};
-			PxQuat temprot{0,0,0,0};
+			PxQuat temprot;
 
 			tempforce.x = rigid.forces.getX();
 			tempforce.y = rigid.forces.getY();
@@ -234,16 +285,14 @@ namespace Eclipse
 			temptrans.y = transform.position.y;
 			temptrans.z = transform.position.z;
 
-			temprot.x = sinf(transform.rotation.getX() / 2);
-			temprot.y = sinf(transform.rotation.getY() / 2);
-			temprot.z = sinf(transform.rotation.getZ() / 2);
+			temprot = AnglestoQuat(transform.rotation.getZ(),transform.rotation.getY(),transform.rotation.getX());
 	
-			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setGlobalPose(PxTransform{ temptrans,temprot });
-			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setForceAndTorque(tempforce, { 0,0,0 });
+			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setGlobalPose(PxTransform{ temptrans,temprot});
+			//static_cast<PxRigidDynamic*>(Px_Actors[ent])->setForceAndTorque(tempforce, { 0,0,0 });
 			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setMass(rigid.mass);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setActorFlag(PxActorFlag::eDISABLE_GRAVITY,rigid.enableGravity ? false : true);
-			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setAngularVelocity(PxVec3{ 0,0,5 });
-			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setAngularDamping(0.f);
+			//static_cast<PxRigidDynamic*>(Px_Actors[ent])->setAngularVelocity(PxVec3{ 0,0,5 });
+			//static_cast<PxRigidDynamic*>(Px_Actors[ent])->setAngularDamping(0.f);
 		}
 	}
 
@@ -259,9 +308,7 @@ namespace Eclipse
 		transform.position.setY(temp.p.y);
 		transform.position.setZ(temp.p.z);
 		
-		transform.rotation.setX(asinf(temp.q.x) * 2);
-		transform.rotation.setY(asinf(temp.q.y) * 2);
-		transform.rotation.setZ(asinf(temp.q.z) * 2);
+		transform.rotation = QuattoAngles(temp.q);
 	}
 
 	void PhysicsManager::Simulate()

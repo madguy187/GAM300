@@ -20,6 +20,9 @@ namespace Eclipse
 		void AttachBoxToActor(Entity ent,float halfx, float halfy, float halfz);
 		void AttachSphereToActor(Entity ent,float radius);
 		void AttachCapsuleToActor(Entity ent, float radius, float halfheight);
+
+		PxQuat AnglestoQuat(float degreeX, float degreeY, float degreeZ);
+		ECVec3 QuattoAngles(PxQuat quat);
 		void InitActor(Entity ent);
 		void UpdateActor(Entity ent);
 		void GetActorPosition(Entity ent);
