@@ -281,7 +281,7 @@ namespace Eclipse
 					case str2int("TransformComponent"):
 						if (!engine->world.CheckComponent<TransformComponent>(ID))
 						{
-							AddComponentsSucess("TransformComponent", entCom, ID);
+							AddComponentsSuccess("TransformComponent", entCom, ID);
 							engine->world.AddComponent(ID, TransformComponent{});
 						}
 						else
@@ -292,7 +292,7 @@ namespace Eclipse
 					case str2int("RenderComponent"):
 						if (!engine->world.CheckComponent<RenderComponent>(ID))
 						{
-							AddComponentsSucess("RenderComponent", entCom, ID);
+							AddComponentsSuccess("RenderComponent", entCom, ID);
 							engine->world.AddComponent(ID, RenderComponent{});
 						}
 						else
@@ -303,7 +303,7 @@ namespace Eclipse
 					case str2int("CameraComponent"):
 						if (!engine->world.CheckComponent<CameraComponent>(ID))
 						{
-							AddComponentsSucess("CameraComponent", entCom, ID);
+							AddComponentsSuccess("CameraComponent", entCom, ID);
 							engine->world.AddComponent(ID, CameraComponent{});
 						}
 						else
@@ -314,7 +314,7 @@ namespace Eclipse
 					case str2int("PointLightComponent"):
 						if (!engine->world.CheckComponent<PointLightComponent>(ID))
 						{
-							AddComponentsSucess("PointLightComponent", entCom, ID);
+							AddComponentsSuccess("PointLightComponent", entCom, ID);
 							engine->world.AddComponent(ID, PointLightComponent{});
 						}
 						else
@@ -325,7 +325,7 @@ namespace Eclipse
 					case str2int("DirectionalLightComponent"):
 						if(!engine->world.CheckComponent<DirectionalLightComponent>(ID))
 						{
-							AddComponentsSucess("DirectionalLightComponent", entCom, ID);
+							AddComponentsSuccess("DirectionalLightComponent", entCom, ID);
 							engine->world.AddComponent(ID, DirectionalLightComponent{});
 						}
 						else
@@ -336,7 +336,7 @@ namespace Eclipse
 					case str2int("AABBComponent"):
 						if (!engine->world.CheckComponent<AABBComponent>(ID))
 						{
-							AddComponentsSucess("AABBComponent", entCom, ID);
+							AddComponentsSuccess("AABBComponent", entCom, ID);
 							engine->world.AddComponent(ID, AABBComponent{});
 						}
 						else
@@ -347,7 +347,7 @@ namespace Eclipse
 					case str2int("SpotLightComponent"):
 						if (!engine->world.CheckComponent<SpotLightComponent>(ID))
 						{
-							AddComponentsSucess("SpotLightComponent", entCom, ID);
+							AddComponentsSuccess("SpotLightComponent", entCom, ID);
 							engine->world.AddComponent(ID, SpotLightComponent{});
 						}
 						else
@@ -358,7 +358,7 @@ namespace Eclipse
 					case str2int("MaterialComponent"):
 						if (!engine->world.CheckComponent<MaterialComponent>(ID))
 						{
-							AddComponentsSucess("MaterialComponent", entCom, ID);
+							AddComponentsSuccess("MaterialComponent", entCom, ID);
 							engine->world.AddComponent(ID, MaterialComponent{});
 						}
 						else
@@ -369,7 +369,7 @@ namespace Eclipse
 					case str2int("RigidBodyComponent"):
 						if (!engine->world.CheckComponent<RigidBodyComponent>(ID))
 						{
-							AddComponentsSucess("RigidBodyComponent", entCom, ID);
+							AddComponentsSuccess("RigidBodyComponent", entCom, ID);
 							engine->world.AddComponent(ID, RigidBodyComponent{});
 						}
 						else
@@ -380,7 +380,7 @@ namespace Eclipse
 					case str2int("testComponent"):
 						if (!engine->world.CheckComponent<testComponent>(ID))
 						{
-							AddComponentsSucess("testComponent", entCom, ID);
+							AddComponentsSuccess("testComponent", entCom, ID);
 							engine->world.AddComponent(ID, testComponent{});
 						}
 						else
@@ -394,7 +394,7 @@ namespace Eclipse
 		}
 		
 	}
-	void InspectorWindow::AddComponentsSucess(const char* Components, EntityComponent& entCom, Entity ID)
+	void InspectorWindow::AddComponentsSuccess(const char* Components, EntityComponent& entCom, Entity ID)
 	{
 		std::string Comp(Components);
 		Comp += " Added For " + entCom.Name + std::to_string(ID) + " Add Succeed";
