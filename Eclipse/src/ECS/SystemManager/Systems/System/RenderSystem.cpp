@@ -36,6 +36,7 @@ namespace Eclipse
         SystemSignature.set(engine->world.GetComponentType<TransformComponent>(), 1);
         SystemSignature.set(engine->world.GetComponentType<RenderComponent>(), 1);
         SystemSignature.set(engine->world.GetComponentType<MaterialComponent>(), 1);
+        SystemSignature.set(engine->world.GetComponentType<TextureComponent>(), 1);
         engine->world.RegisterSystemSignature<RenderSystem>(SystemSignature);
 
         return SystemSignature;
@@ -62,10 +63,10 @@ namespace Eclipse
                 RenderComponent& _Sprites = engine->world.GetComponent<RenderComponent>(entityID);
 
                 engine->MaterialManager.UpdateStencilWithActualObject(entityID);
-                engine->GraphicsManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
+                engine->GraphicsManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL, entityID);
 
                 engine->MaterialManager.DoNotUpdateStencil();
-                engine->GraphicsManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL);
+                engine->GraphicsManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL, entityID);
             }
             // Basic Primitives Render End ==============================
 

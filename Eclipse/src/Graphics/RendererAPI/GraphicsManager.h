@@ -36,9 +36,9 @@ namespace Eclipse
         void Unload();
         void GlobalFrmeBufferDraw();
         void GlobalFrameBufferBind();
-        void Draw(unsigned int FrameBufferID, RenderComponent* _spritecomponent, GLenum mode);
+        void Draw(unsigned int FrameBufferID, RenderComponent* _spritecomponent, GLenum mode, unsigned int ID);
         void DrawIndexed(RenderComponent* in, GLenum mode);
-        void CheckTexture(RenderComponent* in);
+        void CheckTexture(unsigned int ID);
         void CreatePrimitives(Entity ID, int ModelType);
         void CreateSky(std::string _Dir);
         void RenderSky(unsigned int FrameBufferID);

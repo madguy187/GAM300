@@ -13,5 +13,9 @@ namespace Eclipse
         // Assimp Models
         std::string TextureKey;
         std::map<unsigned int, std::vector<Texture>> HoldingTextures;
+
+        // Basic Primitives
+        bool hasTexture = false;
+        std::string textureRef;
     };
 }

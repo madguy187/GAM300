@@ -94,6 +94,9 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     break;
     case 4:
     {
+        engine->world.AddComponent(ID, TextureComponent{});
+        TextureComponent& text = engine->world.GetComponent<TextureComponent>(ID);
+
         engine->world.AddComponent(ID, MaterialComponent{});
         MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
         mat.Modeltype = MaterialComponent::ModelType::BasicPrimitives;
@@ -105,13 +108,16 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.modelRef = Graphics::models.find("sphere")->first;
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
 
-        sprite.hasTexture = true;
-        sprite.textureRef = Graphics::textures.find("orange")->first;
+        text.hasTexture = true;
+        text.textureRef = Graphics::textures.find("orange")->first;
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
     case 5:
     {
+        engine->world.AddComponent(ID, TextureComponent{});
+        TextureComponent& text = engine->world.GetComponent<TextureComponent>(ID);
+
         engine->world.AddComponent(ID, RenderComponent{});
         engine->world.AddComponent(ID, MaterialComponent{});
 
@@ -122,8 +128,8 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.ID = ID;
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         sprite.modelRef = Graphics::models.find("cube")->first;
-        sprite.hasTexture = true;
-        sprite.textureRef = Graphics::textures.find("orange")->first;
+        text.hasTexture = true;
+        text.textureRef = Graphics::textures.find("orange")->first;
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
@@ -297,7 +303,7 @@ void Eclipse::GraphicsManager::RenderSky(unsigned int FrameBufferID)
     }
 }
 
-void Eclipse::GraphicsManager::Draw(unsigned int FrameBufferID, RenderComponent* _spritecomponent, GLenum mode)
+void Eclipse::GraphicsManager::Draw(unsigned int FrameBufferID, RenderComponent* _spritecomponent, GLenum mode, unsigned int ID)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
 
@@ -311,7 +317,7 @@ void Eclipse::GraphicsManager::Draw(unsigned int FrameBufferID, RenderComponent*
     glPolygonMode(GL_FRONT_AND_BACK, mode);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    CheckTexture(_spritecomponent);
+    CheckTexture(ID);
     CheckUniformLoc(&shdrpgm, *(_spritecomponent), _spritecomponent->ID, FrameBufferID);
     DrawIndexed(_spritecomponent, GL_UNSIGNED_SHORT);
 
@@ -326,19 +332,24 @@ void Eclipse::GraphicsManager::DrawIndexed(RenderComponent* in, GLenum mode)
         Graphics::models[in->modelRef]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
 }
 
-void Eclipse::GraphicsManager::CheckTexture(RenderComponent* in)
+void Eclipse::GraphicsManager::CheckTexture(unsigned int ID)
 {
-    if (in->hasTexture)
+    if (engine->world.CheckComponent<TextureComponent>(ID))
     {
+        TextureComponent& tex = engine->world.GetComponent<TextureComponent>(ID);
 
-        glBindTexture(GL_TEXTURE_2D, Graphics::textures[in->textureRef].GetHandle());
+        if (tex.hasTexture)
+        {
 
-        glEnable(GL_BLEND);
+            glBindTexture(GL_TEXTURE_2D, Graphics::textures[tex.textureRef].GetHandle());
 
-        glTextureParameteri(Graphics::textures[in->textureRef].GetHandle(), GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTextureParameteri(Graphics::textures[in->textureRef].GetHandle(), GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTextureParameteri(Graphics::textures[in->textureRef].GetHandle(), GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTextureParameteri(Graphics::textures[in->textureRef].GetHandle(), GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glEnable(GL_BLEND);
+
+            glTextureParameteri(Graphics::textures[tex.textureRef].GetHandle(), GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTextureParameteri(Graphics::textures[tex.textureRef].GetHandle(), GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTextureParameteri(Graphics::textures[tex.textureRef].GetHandle(), GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTextureParameteri(Graphics::textures[tex.textureRef].GetHandle(), GL_TEXTURE_WRAP_T, GL_REPEAT);
+        }
     }
 }
 
@@ -411,9 +422,10 @@ void Eclipse::GraphicsManager::CheckUniformLoc(Shader* _shdrpgm, RenderComponent
         glUniform4f(uniform_var_loc2, sprite.color.getX(), sprite.color.getY(), sprite.color.getZ(), sprite.transparency);
     }
 
-    if (uniform_var_loc3 >= 0)
+    if (engine->world.CheckComponent<TextureComponent>(id))
     {
-        glUniform1i(uniform_var_loc3, sprite.hasTexture);
+        TextureComponent& tex = engine->world.GetComponent<TextureComponent>(id);
+        glUniform1i(uniform_var_loc3, tex.hasTexture);
     }
 
     //if (uniform_var_loc4 >= 0)

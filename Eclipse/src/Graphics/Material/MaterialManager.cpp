@@ -314,7 +314,7 @@ namespace Eclipse
             glPolygonMode(GL_FRONT_AND_BACK, mode);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-            engine->GraphicsManager.CheckTexture(&_spritecomponent);
+            engine->GraphicsManager.CheckTexture(ModelID);
 
             // Materials Update
             engine->MaterialManager.CheckUnniformLocation(shdrpgm, highlight);
@@ -515,7 +515,7 @@ namespace Eclipse
         glUniform1i(NoTextures, in.NoTextures);
         glUniform4f(DifuseMaterial, 0.07568, 0.61424, 0.07568, 1);
         glUniform4f(SpecularMaterial, 0.633, 0.727811, 0.633, 1);
-        
+
         shdrpgm.UnUse();
     }
 }
