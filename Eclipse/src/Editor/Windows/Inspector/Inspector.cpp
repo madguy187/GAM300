@@ -255,15 +255,6 @@ namespace Eclipse
 				ECGui::DrawTextWidget<const char*>("Camera Speed", "");
 				ECGui::DrawSliderFloatWidget("Camera Speed", &_Camera.cameraSpeed);
 				
-				//ECGui::DrawTextWidget<const char*>("Enable Gravity", "");
-				//ECGui::CheckBoxBool("Rigid Body Enable Gravity", &_RigidB.enableGravity);
-				//
-				//ECGui::DrawTextWidget<const char*>("Forces", "");
-				//ECGui::DrawSliderFloat3Widget("Rigid Body Forces", &_RigidB.forces, true, 0.0f, 1.0f);
-				//
-				//ECGui::DrawTextWidget<const char*>("Velocity", "");
-				//ECGui::DrawSliderFloat3Widget("Rigid Body Velocity", &_RigidB.velocity, true, 0.0f, 1.0f);
-
 			}
 		}
 
