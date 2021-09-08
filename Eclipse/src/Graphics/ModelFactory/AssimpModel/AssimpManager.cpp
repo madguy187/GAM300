@@ -5,7 +5,7 @@ namespace Eclipse
 {
     void AssimpModelManager::LoadModels(const std::string& modelFile)
     {
-        for (auto& dirEntry : std::filesystem::directory_iterator("src//Assets//ASSModels"))
+        for (auto& dirEntry : std::filesystem::directory_iterator(modelFile))
         {
             const auto& path = dirEntry.path();
             auto relativePath = relative(path, "src//");
@@ -68,7 +68,7 @@ namespace Eclipse
 
     void AssimpModelManager::LoadAllModels()
     {
-        LoadModels("src/Assets/ASSModels/AssimpModels.json");
+        LoadModels("src//Assets//ASSModels");
         PrintLoadedModels();
 
         ENGINE_CORE_INFO("All Assimp Models Loaded");

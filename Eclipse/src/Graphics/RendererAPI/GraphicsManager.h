@@ -28,6 +28,8 @@ namespace Eclipse
         bool DrawSky = false;
 
     public:
+        std::map<std::string, std::vector<std::string>> ShaderMap;
+
         void Pre_Render();
         void Post_Render();
         void End();
@@ -49,6 +51,8 @@ namespace Eclipse
         void ResetInstancedDebugBoxes();
         // Draw Debug Boxes
         void DrawDebugBoxes();
+
+        std::string GetModelName(unsigned int modelname);
 
     private:
         float GammaCorrection = 1.0f;

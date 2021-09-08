@@ -24,11 +24,6 @@ namespace Eclipse
         _GlobalLight.ID = CreatedID;
         _GlobalLight.Counter = counter;
 
-        //TransformComponent& transform = engine->world.GetComponent<TransformComponent>(CreatedID);
-        //transform.scale.setX(1.0f);
-        //transform.scale.setY(1.0f);
-        //transform.scale.setZ(1.0f);
-
         // Insert into container
         if (_DirectionalLight.insert({ _GlobalLight.ID ,&_GlobalLight }).second == true)
         {

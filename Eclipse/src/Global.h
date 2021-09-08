@@ -60,7 +60,7 @@ enum class EntityType
     ENT_LIGHT_DIRECTIONAL,
     ENT_LIGHT_SPOT,
     // ADD ON LIGHTS HERE
-	ENT_CAMERA,
+    ENT_CAMERA,
     ENT_UNASSIGNED
 };
 
@@ -102,4 +102,23 @@ enum class TextureType
     TT_2D = 1,
     TT_3D = 2,
     MT_MAXCOUNT
+};
+
+// Please keep this
+enum class LoadingModels : unsigned int
+{
+    square = 0,
+    triangle = 1,
+    circle = 2,
+    lines = 3,
+    lightsquare = 4,
+    sphere = 5,
+    plane = 6,
+    cube = 7,
+    cylinder = 8,
+    cone = 9,
+    torus = 10,
+    pyramid = 11,
+    lines3D = 12,
+    MAXCOUNT
 };

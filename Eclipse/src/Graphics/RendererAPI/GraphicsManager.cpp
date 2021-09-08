@@ -236,9 +236,9 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
 
         mat.Modeltype = MaterialComponent::ModelType::Models3D;
         sprite.ID = ID;
-        sprite.Key = engine->AssimpManager.GetKey("testhouse"); 
+        sprite.Key = engine->AssimpManager.GetKey("testhouse");
         engine->AssimpManager.InsertModel(sprite, sprite.Key);
-        engine->AssimpManager.SetTexturesForModel(tex , sprite.Key);
+        engine->AssimpManager.SetTexturesForModel(tex, sprite.Key);
     }
     break;
     }
@@ -424,6 +424,70 @@ void Eclipse::GraphicsManager::DrawDebugBoxes()
 {
     // render boxes
     engine->GraphicsManager.AllAABBs.DrawAll(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+}
+
+std::string Eclipse::GraphicsManager::GetModelName(unsigned int modelname)
+{
+    switch (modelname)
+    {
+    case 0:
+        return "square";
+        break;
+
+    case 1:
+        return "triangle";
+        break;
+
+    case 2:
+        return "circle";
+        break;
+
+    case 3:
+        return "lines";
+        break;
+
+    case 4:
+        return "lightsquare";
+        break;
+
+    case 5:
+        return "sphere";
+        break;
+
+    case 6:
+        return "plane";
+        break;
+
+    case 7:
+        return "cube";
+        break;
+
+    case 8:
+        return "cylinder";
+        break;
+
+    case 9:
+        return "cone";
+        break;
+
+    case 10:
+        return "torus";
+        break;
+
+    case 11:
+        return "pyramid";
+        break;
+
+    case 12:
+        return "lines3D";
+        break;
+
+    case 13:
+        return "frustum";
+        break;
+    }
+
+    return std::string();
 }
 
 /*************************************************************************
