@@ -14,6 +14,8 @@ namespace Eclipse
 		memset(searchFolderBuffer, 0, 128);
 
 		buttonSize = { thumbnailSize,thumbnailSize };
+
+		ScanAll();
 	}
 
 	void AssetBrowserWindow::Update()
