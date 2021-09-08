@@ -374,17 +374,17 @@ void Eclipse::GraphicsManager::CheckUniformLoc(Shader* _shdrpgm, RenderComponent
     GLuint tex_loc = _shdrpgm->GetLocation("uTex2d");
     GLuint cam = _shdrpgm->GetLocation("camPos");
     GLuint model2 = _shdrpgm->GetLocation("model");
-    GLuint dsa = _shdrpgm->GetLocation("noTex");
+    //GLuint dsa = _shdrpgm->GetLocation("noTex");
 
-    // I will need to change all these with Material system
-    // ------------------------------------------------------------
-    GLuint aa = _shdrpgm->GetLocation("sdiffuse");
-    GLuint bb = _shdrpgm->GetLocation("sspecular");
+    //// I will need to change all these with Material system
+    //// ------------------------------------------------------------
+    //GLuint aa = _shdrpgm->GetLocation("sdiffuse");
+    //GLuint bb = _shdrpgm->GetLocation("sspecular");
 
-    glUniform1i(dsa, true);
+    //glUniform1i(dsa, false);
 
-    glUniform4f(aa, 0.07568, 0.61424, 0.07568, 1);
-    glUniform4f(bb, 0.633, 0.727811, 0.633, 1);
+    //glUniform4f(aa, 0.07568, 0.61424, 0.07568, 1);
+    //glUniform4f(bb, 0.633, 0.727811, 0.633, 1);
 
     if (uniform_var_loc1 >= 0)
     {

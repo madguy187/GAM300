@@ -502,4 +502,20 @@ namespace Eclipse
 
         shdrpgm.UnUse();
     }
+
+    void MaterialManager::UpdateMaterial(MaterialComponent& in)
+    {
+        auto& shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
+        shdrpgm.Use();
+
+        GLuint DifuseMaterial = shdrpgm.GetLocation("sdiffuse");
+        GLuint SpecularMaterial = shdrpgm.GetLocation("sspecular");
+        GLuint NoTextures = shdrpgm.GetLocation("noTex");
+
+        glUniform1i(NoTextures, in.NoTextures);
+        glUniform4f(DifuseMaterial, 0.07568, 0.61424, 0.07568, 1);
+        glUniform4f(SpecularMaterial, 0.633, 0.727811, 0.633, 1);
+        
+        shdrpgm.UnUse();
+    }
 }

@@ -75,6 +75,7 @@ namespace Eclipse
         void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID);
         void RegisterMeshForHighlighting(unsigned int index);
         void MeshHighlight(unsigned int FrameBufferID, GLenum Mode);
+        void UpdateMaterial(MaterialComponent& in);
         void UpdateStencilWith_Outline(unsigned int ID);
         void UpdateStencilWithActualObject(unsigned int ID);
         void HighlightBasicPrimitives(MaterialComponent& in, unsigned int EntityId, unsigned int FrameBufferID);

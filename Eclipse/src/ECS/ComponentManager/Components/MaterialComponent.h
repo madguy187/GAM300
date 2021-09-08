@@ -24,6 +24,7 @@ namespace Eclipse
         ModelType Modeltype = ModelType::None;
         bool RegisterForHighlight = false;
         bool Highlight = false;
+        bool NoTextures = true;
 
         // Check Highlighting
         float Thickness = 0.05f;
