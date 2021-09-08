@@ -4,57 +4,49 @@
 namespace Eclipse
 {
     DYN_AABB::DYN_AABB() :
-        minX(0.0f),
-        minY(0.0f),
-        minZ(0.0f),
-        maxX(0.0f),
-        maxY(0.0f),
-        maxZ(0.0f),
         surfaceArea(0.0f)
     {
-
+        Min = { 0.0f , 0.0f, 0.0f };
+        Max = { 0.0f , 0.0f, 0.0f };
     }
 
-    DYN_AABB::DYN_AABB(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) :
-        minX(minX),
-        minY(minY),
-        minZ(minZ),
-        maxX(maxX),
-        maxY(maxY),
-        maxZ(maxZ)
+    DYN_AABB::DYN_AABB(float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
     {
+        Min = { minX , minY, minZ };
+        Max = { maxX , maxY, maxZ };
+
         surfaceArea = CalculateSurfaceArea();
     }
 
     DYN_AABB DYN_AABB::Merge(const DYN_AABB& rhs) const
     {
-        ECVec3 min = { std::min<float>(minX, rhs.minX), std::min<float>(minY, rhs.minY), std::min<float>(minZ, rhs.minZ) };
-        ECVec3 max = { std::max<float>(maxX, rhs.maxX), std::max<float>(maxY, rhs.maxY), std::max<float>(maxZ, rhs.maxZ) };
+        ECVec3 min = { std::min<float>(Min.x, rhs.Min.x), std::min<float>(Min.y, rhs.Min.y), std::min<float>(Min.z, rhs.Min.z) };
+        ECVec3 max = { std::max<float>(Max.x, rhs.Max.x), std::max<float>(Max.y, rhs.Max.y), std::max<float>(Max.z, rhs.Max.z) };
 
         return DYN_AABB({ min.getX() , min.getY() , min.getZ(), max.getX() , max.getY() , max.getZ() });
     }
 
     DYN_AABB DYN_AABB::Intersection(const DYN_AABB& rhs) const
     {
-        ECVec3 min = { std::min<float>(minX, rhs.minX), std::min<float>(minY, rhs.minY), std::min<float>(minZ, rhs.minZ) };
-        ECVec3 max = { std::max<float>(maxX, rhs.maxX), std::max<float>(maxY, rhs.maxY), std::max<float>(maxZ, rhs.maxZ) };
+        ECVec3 min = { std::min<float>(Min.x, rhs.Min.x), std::min<float>(Min.y, rhs.Min.y), std::min<float>(Min.z, rhs.Min.z) };
+        ECVec3 max = { std::max<float>(Max.x, rhs.Max.x), std::max<float>(Max.y, rhs.Max.y), std::max<float>(Max.z, rhs.Max.z) };
 
         return DYN_AABB({ min.getX() , min.getY() , min.getZ(), max.getX() , max.getY() , max.getZ() });
     }
 
     float DYN_AABB::GetWidth()
     {
-        return maxX - minX;
+        return Max.x - Min.x;
     }
 
     float DYN_AABB::GetHeight()
     {
-        return maxY - minY;
+        return Max.y - Min.y;
     }
 
     float DYN_AABB::GetDepth()
     {
-        return maxZ - minZ;
+        return Max.z - Min.z;
     }
 
     unsigned int DYN_AABB::GetEntityID()
@@ -97,13 +89,8 @@ namespace Eclipse
         glm::vec3 min{ position.x - halfExt.x, position.y - halfExt.y, position.z - halfExt.z };
         glm::vec3 max{ position.x + halfExt.x, position.y + halfExt.y, position.z + halfExt.z };
 
-        minX = min.x;
-        minY = min.y;
-        minZ = min.z;
-
-        maxX = max.x;
-        maxY = max.y;
-        maxZ = max.z;
+        Min = { min.x , min.y , min.z };
+        Max = { max.x , max.y , max.z };
     }
 
     void DYN_AABB::SetIsGrid(bool in)
@@ -122,16 +109,12 @@ namespace Eclipse
 
     void DYN_AABB::SetMinimum(ECVec3& in)
     {
-        minX = in.getX();
-        minY = in.getY();
-        minZ = in.getZ();
+        Min = { in.getX() , in.getY() , in.getZ() };
     }
 
     void DYN_AABB::SetMaximum(ECVec3& in)
     {
-        maxX = in.getX();
-        maxY = in.getY();
-        maxZ = in.getZ();
+        Max = { in.getX() , in.getY() , in.getZ() };
     }
 
     float DYN_AABB::CalculateSurfaceArea()
@@ -139,35 +122,59 @@ namespace Eclipse
         return 2.0f * (GetWidth() * GetHeight() + GetWidth() * GetDepth() + GetHeight() * GetDepth());
     }
 
+    bool DYN_AABB::Overlaps(const AABBComponent& other) const
+    {
+        return Max.x > other.min.getX() && Min.x < other.max.getX() &&
+            Max.y > other.min.getY() && Min.y < other.max.getY() &&
+            Max.z > other.min.getZ() && Min.z < other.max.getZ();
+    }
+
     bool DYN_AABB::Overlaps(const DYN_AABB& other) const
     {
-        return maxX > other.minX && minX < other.maxX&&
-            maxY > other.minY && minY < other.maxY&&
-            maxZ > other.minZ && minZ < other.maxZ;
+        return Max.x > other.Min.x && Min.x < other.Max.x&&
+            Max.y > other.Min.y && Min.y < other.Max.y&&
+            Max.z > other.Min.z && Min.z < other.Max.z;
     }
 
     bool DYN_AABB::MouseOverlaps(glm::vec3 mousepos, const DYN_AABB& other) const
     {
-        return maxX > other.minX && minX < other.maxX&&
-            maxY > other.minY && minY < other.maxY&&
-            maxZ > other.minZ && minZ < other.maxZ;
+        return Max.x > other.Min.x && Min.x < other.Max.x&&
+            Max.y > other.Min.y && Min.y < other.Max.y&&
+            Max.z > other.Min.z && Min.z < other.Max.z;
     }
 
     bool DYN_AABB::Contains(const DYN_AABB& other) const
     {
-        return other.minX >= minX &&
-            other.maxX <= maxX &&
-            other.minY >= minY &&
-            other.maxY <= maxY &&
-            other.minZ >= minZ &&
-            other.maxZ <= maxZ;
+        return other.Min.x >= Min.x &&
+            other.Max.x <= Max.x &&
+            other.Min.y >= Min.y &&
+            other.Max.y <= Max.y &&
+            other.Min.z >= Min.z &&
+            other.Max.z <= Max.z;
     }
 
     bool DYN_AABB::Contains(const glm::vec3& other) const
     {
         return
-            other.x >= minX && other.x <= maxX
-            && other.y >= minY && other.y <= maxY
-            && other.z >= minZ && other.z <= maxZ;
+            other.x >= Min.x && other.x <= Max.x
+            && other.y >= Min.y && other.y <= Max.y
+            && other.z >= Min.z && other.z <= Max.z;
     }
+
+    AABBComponent& DYN_AABB::SetAABB(TransformComponent& in, AABBComponent& aabbin)
+    {
+        glm::vec3 scale = in.scale.ConvertToGlmVec3Type();
+        glm::vec3 position = in.position.ConvertToGlmVec3Type();
+
+        glm::vec3 halfExt = scale / 2.0f;
+        glm::vec3 min{ position.x - halfExt.x, position.y - halfExt.y, position.z - halfExt.z };
+        glm::vec3 max{ position.x + halfExt.x, position.y + halfExt.y, position.z + halfExt.z };
+
+        aabbin.center = ECVec3{ position.x , position.y , position.z };
+        aabbin.min = ECVec3{ min.x,min.y,min.z };
+        aabbin.max = ECVec3{ max.x,max.y,max.z };
+
+        return aabbin;
+    }
+
 }

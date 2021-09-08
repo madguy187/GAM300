@@ -15,17 +15,17 @@ static constexpr unsigned MAX_PAGE_SIZE = 10;
 
 enum class EditorWindowType
 {
-	EWT_HIERARCHY,
-	EWT_INSPECTOR,
-	EWT_SCENE,
-	EWT_ASSETS,
-	EWT_PROFILER,
-	EWT_CONSOLELOG,
-	EWT_GAMEVIEW,
-	EWT_DEBUG,
-	EWT_LOGGER,
-	EWT_ASSETBROWSER,
-	EWT_SWITCHVIEWS,
+    EWT_HIERARCHY,
+    EWT_INSPECTOR,
+    EWT_SCENE,
+    EWT_ASSETS,
+    EWT_PROFILER,
+    EWT_CONSOLELOG,
+    EWT_GAMEVIEW,
+    EWT_DEBUG,
+    EWT_LOGGER,
+    EWT_ASSETBROWSER,
+    EWT_SWITCHVIEWS,
     SWITCHVIEW_TOP,
     SWITCHVIEW_Bottom,
     SWITCHVIEW_Left,
@@ -60,7 +60,7 @@ enum class EntityType
     ENT_LIGHT_DIRECTIONAL,
     ENT_LIGHT_SPOT,
     // ADD ON LIGHTS HERE
-    ENT_CAMERA,
+	ENT_CAMERA,
     ENT_UNASSIGNED
 };
 
@@ -73,9 +73,9 @@ enum class TypeToHighlight
 };
 enum class PayloadSourceType
 {
-	PST_TEXT,
-	PST_IMAGE,
-	PST_UNASSIGNED
+    PST_TEXT,
+    PST_IMAGE,
+    PST_UNASSIGNED
 };
 
 enum class PayloadTargetType
@@ -92,4 +92,22 @@ enum class PayloadIndexJob
     PIJ_SWAP,
     PIJ_PARENTCHILD,
     PIJ_UNASSIGNED
+};
+
+enum class ModelType
+{
+    MT_UNASSIGNED = 0,
+    MT_HUMAN = 1,
+    MT_ANIMAL = 2,
+    MT_HOUSE = 3,
+    MT_ENVIRONMENT = 4,
+    MT_MAXCOUNT
+};
+
+enum class TextureType
+{
+    TT_UNASSIGNED = 0,
+    TT_2D = 1,
+    TT_3D = 2,
+    MT_MAXCOUNT
 };

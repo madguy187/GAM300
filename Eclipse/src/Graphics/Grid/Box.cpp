@@ -154,7 +154,7 @@ namespace Eclipse
         Offsets.clear();
         Sizes.clear();
 
-        engine->GraphicsManager.GridManager->InsertAsDebugBox();
+        engine->GridManager->InsertAsDebugBox();
     }
 
     bool AABB_::CheckToRender()

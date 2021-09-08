@@ -5,10 +5,13 @@
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RenderComponent.h"
 #include "ECS/ComponentManager/Components/CameraComponent.h"
-#include "ECS/ComponentManager/Components/AabbComponent.h"
+#include "ECS/ComponentManager/Components/AABBComponent.h"
 #include "ECS/ComponentManager/Components/DirectionalLightComponent.h"
 #include "ECS/ComponentManager/Components/SpotLightComponent.h"
 #include "ECS/ComponentManager/Components/MaterialComponent.h"
+#include "ECS/ComponentManager/Components/MeshComponent3D.h"
+#include "ECS/ComponentManager/Components/RigidBodyComponent.h"
+#include "ECS/ComponentManager/Components/TextureComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
@@ -18,7 +21,6 @@
 #include "ImGui/Setup/ImGuiSetup.h"
 #include "ECS/SystemManager/Systems/System/MaterialSystem.h"
 #include "ECS/SystemManager/Systems/System/GridSystem.h"
-
 bool Tester1(const Test1& e)
 {
     std::cout << "Engine.cpp Tester1" << std::endl;
@@ -47,6 +49,7 @@ namespace Eclipse
         std::cout << "ENDED" << std::endl;
 
         engine->GraphicsManager.Pre_Render();
+    	
         ImGuiSetup::Init(EditorState);
 
         if (EditorState)
@@ -66,10 +69,13 @@ namespace Eclipse
         world.RegisterComponent<CameraComponent>();
         world.RegisterComponent<PointLightComponent>();
         world.RegisterComponent<DirectionalLightComponent>();
-        world.RegisterComponent<AabbComponent>();
+        world.RegisterComponent<AABBComponent>();
         world.RegisterComponent<SpotLightComponent>();
         world.RegisterComponent<MaterialComponent>();
-    	world.RegisterComponent<testComponent>();
+        world.RegisterComponent<testComponent>();
+        world.RegisterComponent<MeshComponent3D>();
+        world.RegisterComponent<RigidBodyComponent>();
+        world.RegisterComponent<TextureComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
@@ -100,19 +106,23 @@ namespace Eclipse
         world.RegisterSystemSignature<MaterialSystem>(mat);
 
         Signature picking;
-        picking.set(world.GetComponentType<AabbComponent>(), 1);
+        picking.set(world.GetComponentType<AABBComponent>(), 1);
         picking.set(world.GetComponentType<TransformComponent>(), 1);
         picking.set(world.GetComponentType<MaterialComponent>(), 1);
         world.RegisterSystemSignature<PickingSystem>(picking);
 
+        Signature gridCol;
+        gridCol.set(world.GetComponentType<AABBComponent>(), 1);
+        gridCol.set(world.GetComponentType<TransformComponent>(), 1);
+        world.RegisterSystemSignature<GridSystem>(gridCol);
+
         mono.Init();
-        
+
         //Check this! - Rachel
         RenderSystem::Init();
         CameraSystem::Init();
         LightingSystem::Init();
         GridSystem::Init();
-
         float currTime = static_cast<float>(clock());
         float accumulatedTime = 0.0f;
         int framecount = 0;
@@ -121,6 +131,7 @@ namespace Eclipse
         ProfilerWindow Timer;
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
+           
             Timer.tracker.system_start = glfwGetTime();
             glfwPollEvents();
             engine->GraphicsManager.mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });
@@ -181,19 +192,18 @@ namespace Eclipse
             world.Update<PickingSystem>();
 
             // RENDERSYSTEM =============================
-			world.Update<RenderSystem>();
+            world.Update<RenderSystem>();
 
             // Material SYstem =============================
             world.Update<MaterialSystem>();
 
             // GRID DRAW ============================= Must be last of All Renders
-            engine->GraphicsManager.GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+            engine->GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
 
             mono.Update();
 
             // FRAMEBUFFER DRAW ==========================
             engine->GraphicsManager.GlobalFrmeBufferDraw();
-
             ImGuiSetup::End(EditorState);
             OpenGL_Context::post_render();
             Timer.tracker.system_end = glfwGetTime();
@@ -203,7 +213,7 @@ namespace Eclipse
         // unLoad
         mono.StopMono();
         GraphicsManager.End();
-        AssimpManager.CleanUpAllModels();
+        AssimpManager.CleanUpAllModelsMeshes();
         ImGuiSetup::Destroy(EditorState);
         CommandHistory::Clear();
     }

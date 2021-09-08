@@ -9,9 +9,9 @@ void Eclipse::PickingManager::GenerateAabb(unsigned int ID, TransformComponent& 
         return;
     }
 
-	engine->world.AddComponent(ID, AabbComponent{});
-	auto& _aabb = engine->world.GetComponent<AabbComponent>(ID);
-    std::cout << "Generate AABB ID: " << ID << std::endl;
+	engine->world.AddComponent(ID, AABBComponent{});
+	auto& _aabb = engine->world.GetComponent<AABBComponent>(ID);
+    //std::cout << "Generate AABB ID: " << ID << std::endl;
 
 	glm::vec3 scale = _transform.scale.ConvertToGlmVec3Type();
 	glm::vec3 position = _transform.position.ConvertToGlmVec3Type();
@@ -25,7 +25,7 @@ void Eclipse::PickingManager::GenerateAabb(unsigned int ID, TransformComponent& 
 void Eclipse::PickingManager::UpdateAabb(unsigned int ID)
 {
 	auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
-	auto& _aabb = engine->world.GetComponent<AabbComponent>(ID);
+	auto& _aabb = engine->world.GetComponent<AABBComponent>(ID);
 
 	glm::vec3 scale = _transform.scale.ConvertToGlmVec3Type();
 	glm::vec3 position = _transform.position.ConvertToGlmVec3Type();
@@ -124,4 +124,9 @@ unsigned int Eclipse::PickingManager::GetCurrentCollisionID()
 void Eclipse::PickingManager::SetCurrentCollisionID(unsigned int ID)
 {
     currentCollisionID = ID;
+}
+
+void Eclipse::PickingManager::ResetScene()
+{
+    currentCollisionID = MAX_ENTITY;
 }

@@ -155,17 +155,19 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\AABBComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentBase.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\DirectionalLightComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\EntityComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\MaterialComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\MeshComponent3D.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\PointLightComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\RenderComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\SpotLightComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\TextureComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\TransformComponent.h" />
     <ClInclude Include="src\ECS\EntityManager\EntityManager.h" />
     <ClInclude Include="src\ECS\SystemManager\SystemManager.h" />

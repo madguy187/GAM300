@@ -1,0 +1,22 @@
+{
+	"AssimpModels":
+	[
+		{
+			"FolderName": "dog2",
+			"FileName": "scene.gltf"
+		},
+		{
+			"FolderName": "testhouse",
+			"FileName": "scene.gltf"
+		},
+		{
+			"FolderName": "dog",
+			"FileName": "scene.gltf"
+		},
+		{
+			"FolderName": "hi",
+			"FileName": "scene.gltf"
+		}
+		
+	]
+}

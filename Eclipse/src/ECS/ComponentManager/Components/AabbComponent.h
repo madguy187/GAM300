@@ -3,7 +3,7 @@
 
 namespace Eclipse
 {
-	struct AabbComponent
+	struct AABBComponent
 	{
 		ECVec3 center{ 0.0f, 0.0f, 0.0f };
 		ECVec3 min{ 0.0f, 0.0f, 0.0f };

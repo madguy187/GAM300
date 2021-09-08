@@ -112,6 +112,7 @@ namespace Eclipse
         "Point Light",
         "Directional Light",
         "Spot Light",
+        "Camera",
         "NULL"
     };
 

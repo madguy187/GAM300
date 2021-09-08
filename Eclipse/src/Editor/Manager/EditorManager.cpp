@@ -92,9 +92,13 @@ namespace Eclipse
 		engine->world.AddComponent(ID, TransformComponent{});
 
 		// Check this please - Rachel
-		auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
-		engine->gPicker.GenerateAabb(ID, _transform, type);
+		if(type!=EntityType::ENT_CAMERA)
+		{
+			auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
+			engine->gPicker.GenerateAabb(ID, _transform, type);
 
+		}
+		
 		EntityHierarchyList_.push_back(ID);
 		EntityToIndexMap_.insert(std::pair<Entity, int>(ID, static_cast<int>(EntityHierarchyList_.size() - 1)));
 		GEHIndex_ = EntityHierarchyList_.size() - 1;
