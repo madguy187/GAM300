@@ -185,30 +185,58 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     break;
     case 10:
     {
-        engine->world.AddComponent(ID, MaterialComponent{});
-        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
-        mat.Modeltype = MaterialComponent::ModelType::BasicPrimitives;
+        //engine->world.AddComponent(ID, MaterialComponent{});
+        //MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+        //mat.Modeltype = MaterialComponent::ModelType::BasicPrimitives;
 
-        engine->world.AddComponent(ID, RenderComponent{});
-        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
+        //engine->world.AddComponent(ID, RenderComponent{});
+        //RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
+        //sprite.ID = ID;
+        //sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
+        //sprite.modelRef = Graphics::models.find("lines3D")->first;
+        //Graphics::sprites.emplace(sprite.layerNum, &sprite);
+
+        engine->world.AddComponent(ID, MaterialComponent{});
+        engine->world.AddComponent(ID, MeshComponent3D{});
+        engine->world.AddComponent(ID, TextureComponent{});
+
+        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+        MeshComponent3D& sprite = engine->world.GetComponent<MeshComponent3D>(ID);
+        TextureComponent& tex = engine->world.GetComponent<TextureComponent>(ID);
+
+        mat.Modeltype = MaterialComponent::ModelType::Models3D;
         sprite.ID = ID;
-        sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-        sprite.modelRef = Graphics::models.find("lines3D")->first;
-        Graphics::sprites.emplace(sprite.layerNum, &sprite);
+        sprite.Key = engine->AssimpManager.GetKey("hi");
+        engine->AssimpManager.InsertModel(sprite, sprite.Key);
+        engine->AssimpManager.SetTexturesForModel(tex, sprite.Key);
     }
     break;
     case 11:
     {
-        engine->world.AddComponent(ID, MaterialComponent{});
-        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
-        mat.Modeltype = MaterialComponent::ModelType::BasicPrimitives;
+        //engine->world.AddComponent(ID, MaterialComponent{});
+        //MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+        //mat.Modeltype = MaterialComponent::ModelType::BasicPrimitives;
 
-        engine->world.AddComponent(ID, RenderComponent{});
-        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
+        //engine->world.AddComponent(ID, RenderComponent{});
+        //RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
+        //sprite.ID = ID;
+        //sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
+        //sprite.modelRef = Graphics::models.find("plane")->first;
+        //Graphics::sprites.emplace(sprite.layerNum, &sprite);
+
+        engine->world.AddComponent(ID, MaterialComponent{});
+        engine->world.AddComponent(ID, MeshComponent3D{});
+        engine->world.AddComponent(ID, TextureComponent{});
+
+        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+        MeshComponent3D& sprite = engine->world.GetComponent<MeshComponent3D>(ID);
+        TextureComponent& tex = engine->world.GetComponent<TextureComponent>(ID);
+
+        mat.Modeltype = MaterialComponent::ModelType::Models3D;
         sprite.ID = ID;
-        sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-        sprite.modelRef = Graphics::models.find("plane")->first;
-        Graphics::sprites.emplace(sprite.layerNum, &sprite);
+        sprite.Key = engine->AssimpManager.GetKey("dog");
+        engine->AssimpManager.InsertModel(sprite, sprite.Key);
+        engine->AssimpManager.SetTexturesForModel(tex, sprite.Key);
     }
     break;
     // pointlight
