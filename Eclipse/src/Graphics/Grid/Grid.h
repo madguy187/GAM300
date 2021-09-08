@@ -98,6 +98,8 @@ namespace Eclipse
         std::vector<Tile> GridArray;
         std::unordered_map<unsigned int, Tile> gridArray; //key = the grid count;
 
+        bool GridSystemIsRunning = true;
+
     public:
         // Get Model Reference
         Quad* GetModelReference();
@@ -175,6 +177,9 @@ namespace Eclipse
         void SetDistance(AABBNode& Nodein, DYN_AABB& aabbin);
         // Only check for 1 Intersection.
         void SetPosition(TransformComponent& in , unsigned int ID);
+
+        bool GetGridSystemIsRunning();
+        void SetGridSystemIsRunning(bool in);
 
         // UNSED ================================
         ECVec3 SnapCalculate(ECVec3& p, float s);

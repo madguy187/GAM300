@@ -264,7 +264,7 @@ namespace Eclipse
                 //in.test.emplace(i, *LoadedTexturesV2[passkey][i][i]);
                 //in.Textures.push_back(*LoadedTexturesV2[passkey][i][EachTexture]);
 
-                in.test[i].push_back(*LoadedTexturesV2[passkey][i][EachTexture]);
+                in.HoldingTextures[i].push_back(*LoadedTexturesV2[passkey][i][EachTexture]);
             }
         }
     }

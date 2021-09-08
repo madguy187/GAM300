@@ -70,14 +70,14 @@ namespace Eclipse
             unsigned int diffuseIdx = 0;
             unsigned int specularIdx = 0;
           
-            for (unsigned int i = 0; i < tex.test[MeshIndex].size(); i++)
+            for (unsigned int i = 0; i < tex.HoldingTextures[MeshIndex].size(); i++)
             {
                 // activate texture
                 glActiveTexture(GL_TEXTURE0 + i);
 
                 // retrieve texture info
                 std::string name;
-                switch (tex.test[MeshIndex][i].GetType())
+                switch (tex.HoldingTextures[MeshIndex][i].GetType())
                 {
                 case aiTextureType_DIFFUSE:
                     name = "diffuse" + std::to_string(diffuseIdx++);
@@ -110,7 +110,7 @@ namespace Eclipse
                 glUniform1i(dsa, false);
 
                 // bind texture
-                tex.test[MeshIndex][i].Bind();
+                tex.HoldingTextures[MeshIndex][i].Bind();
             }
         }
         // EBO stuff
