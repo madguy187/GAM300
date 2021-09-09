@@ -49,18 +49,20 @@ namespace Eclipse
         // If dont have textures ( Flagged as True )
         if (NoTex && (!engine->world.CheckComponent<TextureComponent>(id)))
         {
-            //GLint uniform_var_loc2 = shader.GetLocation("uColor");
-            //GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
-            //GLuint tex_loc = shader.GetLocation("uTex2d");
-            //GLuint diff0 = shader.GetLocation("diffuse0");
-            //GLuint spec = shader.GetLocation("specular0");
-            //GLuint dsa = shader.GetLocation("noTex");
+            GLint uniform_var_loc1 = shader.GetLocation("BasicPrimitives");
+            GLint uniform_var_loc2 = shader.GetLocation("uColor");
+            GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
+            GLuint tex_loc = shader.GetLocation("uTex2d");
+            GLuint diff0 = shader.GetLocation("sdiffuse");
+            GLuint spec = shader.GetLocation("specular0");
+            GLuint Texture = shader.GetLocation("noTex");
 
-            //shader.set4Float("material.diffuse", diffuse);
-            //shader.set4Float("material.specular", specular);
-            //shader.setInt("noTex", 1);
-
-            //std::cout << "no texture component" << std::endl;
+            glUniform1i(uniform_var_loc3, true);
+            glUniform4f(diff0, Diffuse.r, Diffuse.g, Diffuse.b , Diffuse.a);
+            glUniform4f(spec, Specular.r, Specular.g, Specular.b, Specular.a);
+            glUniform1i(Texture, true);
+            glUniform1i(tex_loc, false);
+            glUniform1i(uniform_var_loc1, false);
         }
         else
         {
@@ -87,17 +89,17 @@ namespace Eclipse
                     break;
                 }
 
-                GLint uniform_var_loc2 = shader.GetLocation("uColor");
+                //GLint uniform_var_loc2 = shader.GetLocation("uColor");
                 GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
                 //GLuint tex_loc = shader.GetLocation("uTex2d");
                 GLuint diff0 = shader.GetLocation("diffuse0");
                 GLuint spec = shader.GetLocation("specular0");
                 GLuint dsa = shader.GetLocation("noTex");
 
-                if (uniform_var_loc2 >= 0)
-                {
-                    glUniform4f(uniform_var_loc2, 0.5, 0, 0, 1);
-                }
+                //if (uniform_var_loc2 >= 0)
+                //{
+                //    glUniform4f(uniform_var_loc2, 0.5, 0, 0, 1);
+                //}
 
                 if (uniform_var_loc3 >= 0)
                 {

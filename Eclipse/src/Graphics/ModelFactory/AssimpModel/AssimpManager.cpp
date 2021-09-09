@@ -20,6 +20,8 @@ namespace Eclipse
 
             AssimpLoadedModels.emplace(FolderName, std::move(ptr));
         }
+
+        ENGINE_CORE_INFO("All Assimp Models Loaded Once");
     }
 
     std::string AssimpModelManager::GetKey(const std::string& in)
@@ -70,9 +72,6 @@ namespace Eclipse
     {
         LoadModels("src//Assets//ASSModels");
         PrintLoadedModels();
-
-        ENGINE_CORE_INFO("All Assimp Models Loaded");
-        EDITOR_LOG_INFO("All Necessary Models Loaded");
     }
 
     void AssimpModelManager::MeshDraw(unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
@@ -259,12 +258,19 @@ namespace Eclipse
 
         for (int i = 0; i <= LoadedTexturesV2[passkey][i].size(); i++)
         {
-            for (int EachTexture = 0; EachTexture < LoadedTexturesV2[passkey][i].size(); EachTexture++)
+            if (LoadedTexturesV2.find(passkey) != LoadedTexturesV2.end())
             {
-                //in.test.emplace(i, *LoadedTexturesV2[passkey][i][i]);
-                //in.Textures.push_back(*LoadedTexturesV2[passkey][i][EachTexture]);
+                for (int EachTexture = 0; EachTexture < LoadedTexturesV2[passkey][i].size(); EachTexture++)
+                {
+                    //in.test.emplace(i, *LoadedTexturesV2[passkey][i][i]);
+                    //in.Textures.push_back(*LoadedTexturesV2[passkey][i][EachTexture]);
 
-                in.HoldingTextures[i].push_back(*LoadedTexturesV2[passkey][i][EachTexture]);
+                    in.HoldingTextures[i].push_back(*LoadedTexturesV2[passkey][i][EachTexture]);
+
+                    continue;
+                }
+
+                EDITOR_LOG_WARN("No Textures Found for Current Model");
             }
         }
     }
