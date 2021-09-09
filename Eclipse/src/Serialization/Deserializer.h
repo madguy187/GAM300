@@ -35,6 +35,12 @@ namespace Eclipse
 		}
 
 		template <>
+		inline void ReadAttributeFromElement(const std::string& att_name, std::string& att_data)
+		{
+			att_data = GetAttributeValue(att_name);
+		}
+
+		template <>
 		inline void ReadAttributeFromElement(const std::string& att_name, EntityType& att_data)
 		{
 			std::string str = GetAttributeValue(att_name);
