@@ -345,7 +345,7 @@ namespace Eclipse
 
 			ImGui::PushID(fileNameString.c_str());
 
-			RenderComponent icon = dirEntry.is_directory() ? FolderIcon : sprite;
+			TextureComponent icon = dirEntry.is_directory() ? FolderIcon : sprite;
 
 			ImGui::ImageButton((void*)Graphics::textures[icon.textureRef].GetHandle(),
 				buttonSize,
@@ -631,7 +631,7 @@ namespace Eclipse
 			{
 				if (found && nameString.find(searchItemsLowerCase) != std::string::npos)
 				{
-					RenderComponent icon = std::filesystem::is_directory(pair2) ? FolderIcon : sprite;
+					TextureComponent icon = std::filesystem::is_directory(pair2) ? FolderIcon : sprite;
 
 					ImGui::ImageButton((void*)Graphics::textures[icon.textureRef].GetHandle(),
 						buttonSize,
@@ -675,7 +675,7 @@ namespace Eclipse
 
 				if (!BuffIsEmpty(searchItemBuffer) && tempPath.string().find(searchItemsLowerCase) != std::string::npos)
 				{
-					RenderComponent icon = std::filesystem::is_directory(tempPath) ? FolderIcon : sprite;
+					TextureComponent icon = std::filesystem::is_directory(tempPath) ? FolderIcon : sprite;
 
 					ImGui::ImageButton((void*)Graphics::textures[icon.textureRef].GetHandle(),
 						buttonSize,

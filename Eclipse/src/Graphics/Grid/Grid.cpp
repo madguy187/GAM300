@@ -398,6 +398,16 @@ namespace Eclipse
         in.position = gridArray[id].CenterPoint;
     }
 
+    bool Grid::GetGridSystemIsRunning()
+    {
+        return GridSystemIsRunning;
+    }
+
+    void Grid::SetGridSystemIsRunning(bool in)
+    {
+        GridSystemIsRunning = in;
+    }
+
     DYN_AABB Tile::getAABB() const
     {
         return aabb;

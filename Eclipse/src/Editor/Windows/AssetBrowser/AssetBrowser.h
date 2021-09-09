@@ -18,8 +18,8 @@ namespace Eclipse
 
 		//Buton Icon rendering
 		////////////////////////////////
-		RenderComponent sprite;
-		RenderComponent FolderIcon;
+		TextureComponent sprite;
+		TextureComponent FolderIcon;
 		////////////////////////////////
 
 		

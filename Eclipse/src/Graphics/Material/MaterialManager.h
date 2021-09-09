@@ -75,9 +75,9 @@ namespace Eclipse
         void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID);
         void RegisterMeshForHighlighting(unsigned int index);
         void MeshHighlight(unsigned int FrameBufferID, GLenum Mode);
+        void UpdateMaterial(MaterialComponent& in);
         void UpdateStencilWith_Outline(unsigned int ID);
         void UpdateStencilWithActualObject(unsigned int ID);
-        void Highlight(unsigned int FrameBufferID, GLenum Mode);
         void HighlightBasicPrimitives(MaterialComponent& in, unsigned int EntityId, unsigned int FrameBufferID);
         bool HighlightClick(unsigned int ModelID);
         bool UnHighlight(unsigned int ModelID);
@@ -86,7 +86,6 @@ namespace Eclipse
         void CheckUnniformLocation(Shader& in, MaterialComponent& inside);
         void CheckUniformLoc(RenderComponent& sprite, Shader& in, unsigned int id, unsigned int framebufferID);
         void Highlight(unsigned int FrameBufferID, unsigned int ModelID, GLenum mode);
-        void RegisterForHighlighting(MaterialComponent& in, unsigned int index);
     };
 }
 

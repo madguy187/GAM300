@@ -27,7 +27,7 @@ namespace Eclipse
     {
         for (unsigned int i = 0; i < Meshes.size(); i++)
         {
-            Meshes[i].Render(shader, MOde, id);
+            Meshes[i].Render(shader, MOde, id,i);
         }
     }
 
@@ -202,14 +202,16 @@ namespace Eclipse
                 vertex.Position.z /= largestAxis;
             }
 
-            if (it.hasTexture)
+            if (it.NoTextures == false)
             {
                 Meshes.push_back(Mesh(it.vertices, it.indices, it.textures));
             }
             else
             {
-                Meshes.push_back(Mesh(it.vertices, it.indices, it.Diffuse, it.Specular));
+                Meshes.push_back(Mesh(it.vertices, it.indices, it.Diffuse, it.Specular,it.NoTextures));
             }
+
+            NoTextures = it.NoTextures;
         }
 
         for (auto& it : AllVertices)
@@ -339,24 +341,7 @@ namespace Eclipse
             }
             else
             {
-                //regular file, check if it exists and read it
-                if (NoTextures)
-                {
-                    // diffuse color
-                    aiColor4D diff(1.0f);
-                    aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diff);
-
-                    // specular color
-                    aiColor4D spec(1.0f);
-                    aiGetMaterialColor(material, AI_MATKEY_COLOR_SPECULAR, &spec);
-
-                    //return Mesh(vertices, indices, diff, spec);
-
-                    meshData.push_back(newMesh);
-                    return;
-                }
-
-                newMesh.hasTexture = true;
+                newMesh.NoTextures = false;
 
                 // diffuse maps
                 std::vector<Texture> diffuseMaps = LoadTextures(material, aiTextureType_DIFFUSE);
@@ -367,10 +352,33 @@ namespace Eclipse
                 std::vector<Texture> specularMaps = LoadTextures(material, aiTextureType_SPECULAR);
                 textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
                 newMesh.textures.insert(newMesh.textures.end(), specularMaps.begin(), specularMaps.end());
+
+                // If no textures are found , we get the material
+                if (newMesh.textures.empty())
+                {
+                    // If no textures are found , set to false
+                    newMesh.NoTextures = true;
+
+                    // diffuse color
+                    aiColor4D diff(1.0f);
+                    aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diff);
+                    newMesh.Diffuse = diff;
+
+                    // specular color
+                    aiColor4D spec(1.0f);
+                    aiGetMaterialColor(material, AI_MATKEY_COLOR_SPECULAR, &spec);
+                    newMesh.Specular = spec;
+
+                    meshData.push_back(newMesh);
+                    Index++;
+                    return;
+                }
+
             }
         }
 
         meshData.push_back(newMesh);
+        Index++;
         return;
         // return Mesh(vertices, indices, textures);
     }
@@ -397,6 +405,9 @@ namespace Eclipse
                 if (std::strcmp(Textures_loaded[j].GetPath().data(), str.C_Str()) == 0)
                 {
                     textures.push_back(Textures_loaded[j]);
+                    std::unique_ptr<Texture> ptr(new Texture(Textures_loaded[j]));
+                    engine->AssimpManager.InsertTextures(NameOfModel, std::move(ptr), Index);
+
                     skip = true;
                     break;
                 }
@@ -409,9 +420,8 @@ namespace Eclipse
                 textures.push_back(tex);
                 Textures_loaded.push_back(tex);
 
-                std::unique_ptr<Texture> ptr(new Texture(Directory, str.C_Str(), type));
-                ptr->Load(false);
-                engine->AssimpManager.LoadedTextures.emplace(NameOfModel, std::move(ptr));
+                std::unique_ptr<Texture> ptr(new Texture(tex));
+                engine->AssimpManager.InsertTextures(NameOfModel, std::move(ptr), Index);
             }
         }
 

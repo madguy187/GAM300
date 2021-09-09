@@ -28,15 +28,17 @@ namespace Eclipse
         bool DrawSky = false;
 
     public:
+        std::map<std::string, std::vector<std::string>> ShaderMap;
+
         void Pre_Render();
         void Post_Render();
         void End();
         void Unload();
         void GlobalFrmeBufferDraw();
         void GlobalFrameBufferBind();
-        void Draw(unsigned int FrameBufferID, RenderComponent* _spritecomponent, GLenum mode);
+        void Draw(unsigned int FrameBufferID, RenderComponent* _spritecomponent, GLenum mode, unsigned int ID);
         void DrawIndexed(RenderComponent* in, GLenum mode);
-        void CheckTexture(RenderComponent* in);
+        void CheckTexture(unsigned int ID);
         void CreatePrimitives(Entity ID, int ModelType);
         void CreateSky(std::string _Dir);
         void RenderSky(unsigned int FrameBufferID);
@@ -49,6 +51,8 @@ namespace Eclipse
         void ResetInstancedDebugBoxes();
         // Draw Debug Boxes
         void DrawDebugBoxes();
+
+        std::string GetModelName(unsigned int modelname);
 
     private:
         float GammaCorrection = 1.0f;
