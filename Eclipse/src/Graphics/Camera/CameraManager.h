@@ -8,6 +8,28 @@ namespace Eclipse
 {
 	class CameraManager
 	{
+		const ECVec3 EDITORCAM_INITPOS = ECVec3{ 0.0f, 20.0f, 40.0f };
+		const ECVec3 EDITORCAM_INITROT = ECVec3{ -40.0f, -90.0f, 0.0f };
+
+		const ECVec3 GAMECAM_INITPOS = ECVec3{ 0.0f, 0.0f, 30.0f };
+		const ECVec3 GAMECAM_INITROT = ECVec3{ 0.0f, -90.0f, 0.0f };
+
+		const ECVec3 TOPCAM_INITPOS = ECVec3{ 0.0f, 60.0f, 0.0f };
+		const ECVec3 TOPCAM_INITROT = ECVec3{ -90.0f, 90.0f, 0.0f };
+		const ECVec3 TOPCAM_INITSCALE = ECVec3{ 100.0f, 1.0f, 1.0f };
+
+		const ECVec3 BOTTOMCAM_INITPOS = ECVec3{ 0.0f, -60.0f, 0.0f };
+		const ECVec3 BOTTOMCAM_INITROT = ECVec3{ 90.0f, 90.0f, 0.0f };
+		const ECVec3 BOTTOMCAM_INITSCALE = ECVec3{ 100.0f, 1.0f, 1.0f };
+
+		const ECVec3 LEFTCAM_INITPOS = ECVec3{ -60.0f, 0.0f, 0.0f };
+		const ECVec3 LEFTCAM_INITROT = ECVec3{ 0.0f, 0.0f, 0.0f };
+		const ECVec3 LEFTCAM_INITSCALE = ECVec3{ 100.0f, 1.0f, 1.0f };
+
+		const ECVec3 RIGHTCAM_INITPOS = ECVec3{ 60.0f, 0.0f, 0.0f };
+		const ECVec3 RIGHTCAM_INITROT = ECVec3{ 0.0f, 180.0f, 0.0f };
+		const ECVec3 RIGHTCAM_INITSCALE = ECVec3{ 100.0f, 1.0f, 1.0f };
+
 		/*************************************************************************
 		  Camera bitset layout
 		  0: Move Right								: button A
@@ -83,5 +105,7 @@ namespace Eclipse
 
 		std::bitset<12>& GetInput();
 		std::bitset<8>& GetViewInput();
+
+		void ResetScene();
 	};
 }

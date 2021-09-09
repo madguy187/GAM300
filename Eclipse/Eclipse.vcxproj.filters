@@ -42,7 +42,6 @@
     <ClInclude Include="src\Graphics\OpenGL\OpenGL_Context.h" />
     <ClInclude Include="src\Graphics\Parser\Parser.h" />
     <ClInclude Include="src\Graphics\Picker\PickingManager.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
     <ClInclude Include="src\Editor\Windows\SwitchViews\SwitchViews.h" />
     <ClInclude Include="src\Editor\Utilities\DragAndDrop.h" />
     <ClInclude Include="src\Graphics\Grid\AABB.h" />
@@ -142,6 +141,9 @@
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec2DeltaCommand.h" />
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec4DeltaCommand.h" />
     <ClInclude Include="src\Editor\ECGuiAPI\ECGuiInputHandler.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\MeshComponent3D.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\TextureComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\AABBComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\pch.cpp" />

@@ -28,18 +28,18 @@ namespace Eclipse
         Setup();
     }
 
-    Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiColor4D diffuse, aiColor4D specular)
+    Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiColor4D diffuse, aiColor4D specular, bool in)
         :
         Vertices(vertices),
         Indices(indices),
         Diffuse(diffuse),
         Specular(specular),
-        NoTex(true)
+        NoTex(in)
     {
         Setup();
     }
 
-    void Mesh::Render(Shader& shader, GLenum mode)
+    void Mesh::Render(Shader& shader, GLenum mode , unsigned int id , unsigned int MeshIndex)
     {
         glEnable(GL_BLEND);
         glEnable(GL_DEPTH_TEST);
@@ -47,34 +47,39 @@ namespace Eclipse
         glPolygonMode(GL_FRONT_AND_BACK, mode);
 
         // If dont have textures ( Flagged as True )
-        if (NoTex)
+        if (NoTex && (!engine->world.CheckComponent<TextureComponent>(id)))
         {
-            //GLint uniform_var_loc2 = shader.GetLocation("uColor");
-            //GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
-            //GLuint tex_loc = shader.GetLocation("uTex2d");
-            //GLuint diff0 = shader.GetLocation("diffuse0");
-            //GLuint spec = shader.GetLocation("specular0");
-            //GLuint dsa = shader.GetLocation("noTex");
+            GLint uniform_var_loc1 = shader.GetLocation("BasicPrimitives");
+            GLint uniform_var_loc2 = shader.GetLocation("uColor");
+            GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
+            GLuint tex_loc = shader.GetLocation("uTex2d");
+            GLuint diff0 = shader.GetLocation("sdiffuse");
+            GLuint spec = shader.GetLocation("specular0");
+            GLuint Texture = shader.GetLocation("noTex");
 
-            //shader.set4Float("material.diffuse", diffuse);
-            //shader.set4Float("material.specular", specular);
-            //shader.setInt("noTex", 1);
+            glUniform1i(uniform_var_loc3, true);
+            glUniform4f(diff0, Diffuse.r, Diffuse.g, Diffuse.b , Diffuse.a);
+            glUniform4f(spec, Specular.r, Specular.g, Specular.b, Specular.a);
+            glUniform1i(Texture, true);
+            glUniform1i(tex_loc, false);
+            glUniform1i(uniform_var_loc1, false);
         }
         else
         {
+            TextureComponent& tex = engine->world.GetComponent<TextureComponent>(id);
 
             // textures
             unsigned int diffuseIdx = 0;
             unsigned int specularIdx = 0;
-
-            for (unsigned int i = 0; i < Textures.size(); i++)
+          
+            for (unsigned int i = 0; i < tex.HoldingTextures[MeshIndex].size(); i++)
             {
                 // activate texture
                 glActiveTexture(GL_TEXTURE0 + i);
 
                 // retrieve texture info
                 std::string name;
-                switch (Textures[i].GetType())
+                switch (tex.HoldingTextures[MeshIndex][i].GetType())
                 {
                 case aiTextureType_DIFFUSE:
                     name = "diffuse" + std::to_string(diffuseIdx++);
@@ -84,17 +89,17 @@ namespace Eclipse
                     break;
                 }
 
-                GLint uniform_var_loc2 = shader.GetLocation("uColor");
+                //GLint uniform_var_loc2 = shader.GetLocation("uColor");
                 GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
                 //GLuint tex_loc = shader.GetLocation("uTex2d");
                 GLuint diff0 = shader.GetLocation("diffuse0");
                 GLuint spec = shader.GetLocation("specular0");
                 GLuint dsa = shader.GetLocation("noTex");
 
-                if (uniform_var_loc2 >= 0)
-                {
-                    glUniform4f(uniform_var_loc2, 0.5, 0, 0, 1);
-                }
+                //if (uniform_var_loc2 >= 0)
+                //{
+                //    glUniform4f(uniform_var_loc2, 0.5, 0, 0, 1);
+                //}
 
                 if (uniform_var_loc3 >= 0)
                 {
@@ -107,7 +112,7 @@ namespace Eclipse
                 glUniform1i(dsa, false);
 
                 // bind texture
-                Textures[i].Bind();
+                tex.HoldingTextures[MeshIndex][i].Bind();
             }
         }
         // EBO stuff
@@ -124,6 +129,24 @@ namespace Eclipse
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
         glDeleteBuffers(1, &EBO);
+    }
+
+    void Mesh::GetAllTextures()
+    {
+        for (int i = 0; i < Textures.size(); i++)
+        {
+            std::cout << " Texture Name " << Textures[i].GetPath() << std::endl;
+        }
+    }
+
+    std::vector<Vertex>& Mesh::GetVertices()
+    {
+        return Vertices;
+    }
+
+    unsigned int Mesh::GetVBOID()
+    {
+        return VBO;
     }
 
     void Mesh::Setup()

@@ -1,2 +1,1 @@
-[08/27/21 22:54:16] [CORE] [error] Crash Report: Assertion Failed! D:\GAM300\GAM300\Eclipse\src\Serialization\Deserializer.cpp Line 131: Failed to obtain attribute value during deserialization!
-[08/28/21 00:25:58] [CORE] [error] Crash Report: Assertion Failed! D:\GAM300\GAM300\Eclipse\src\Serialization\Deserializer.cpp Line 131: Failed to obtain attribute value during deserialization!
+[09/08/21 06:19:14] [CORE] [error] Crash Report: Assertion Failed! C:\Users\Darren Sim\Documents\GitHub\GAM300\Eclipse\src\Graphics\ModelFactory\AssimpModel\AssimpManager.cpp Line 444: The file path src/Assets/ASSModels/m4a1/scene.gltf doesnt exist! 

@@ -15,43 +15,51 @@
 
 namespace Eclipse
 {
-    enum class ModelType
+    //TEST CODE
+    struct MeshData
     {
-        UNASSIGNED = 0,
-        HUMAN = 1,
-        ANIMAL = 2,
-        HOUSE = 3,
-        ENVIRONMENT = 4,
-        MAXCOUNT
+        std::vector<Vertex> vertices;
+        std::vector<unsigned int> indices;
+
+        aiColor4D Diffuse;
+        aiColor4D Specular;
+
+        bool NoTextures = false;
+        std::vector<Texture> textures;
     };
 
-    class AssimpModel : public IAABB
+    class AssimpModel
     {
     private:
+        unsigned int Index = 0;
         unsigned int ID = 0;
-        ModelType type = ModelType::UNASSIGNED;
+        bool NoTextures = false; // Set False if model got textures
+        ModelType type = ModelType::MT_UNASSIGNED;
+        // Take Note , i will use folder name as key
         std::string NameOfModel;
         std::string Directory;
         std::vector<Mesh> Meshes;
         std::vector<Texture> Textures_loaded;
         std::vector<glm::vec3> AllVertices;
+        std::vector<MeshData> meshData;
 
-        Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
+        void ProcessMesh(aiMesh* mesh, const aiScene* scene);
         std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type);
         void ProcessNode(aiNode* node, const aiScene* scene);
         float GetLargestAxisValue(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         void ComputeAxisMinMax(std::vector<glm::vec3>& vertices, std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         glm::vec3 ComputeCentroid(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
 
+        void LoadNewModel();
+
     public:
-        bool noTex = false;
-        DYN_AABB AABB_Property; // For Dynamic AABB
 
         AssimpModel() { }
         AssimpModel(bool noTex = false);
+        AssimpModel(bool noTex, std::string& NameOfModels, std::string& Directorys, std::vector<Mesh> Meshess, std::vector<Texture> Textures_loadeds);
 
         void LoadAssimpModel(std::string path);
-        void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID);
+        void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID , unsigned int id);
         void Cleanup();
         void SetName(std::string& name);
         std::string GetName();
@@ -62,10 +70,12 @@ namespace Eclipse
         ModelType GetType();
         void SetModelType(ModelType in);
         std::vector<glm::vec3> GetVertices();
-        void SetProperties(std::string& ModelName , ModelType in , unsigned int ID);
-        DYN_AABB getAABB() const override;
-        DYN_AABB SetAABB(TransformComponent& in);
+        void SetProperties(std::string& ModelName, ModelType in, unsigned int ID);
+        void SetProperties(std::string& ModelName, ModelType in);
         unsigned int GetEntityID();
+        std::vector<Mesh> GetMesh();
+        std::vector<Texture> GetTextures();
+        bool CheckNoTextures();
     };
 
 }

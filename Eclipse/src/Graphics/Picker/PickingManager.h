@@ -1,6 +1,6 @@
 #pragma once
 #include "ECS/ComponentManager/Components/TransformComponent.h"
-#include "ECS/ComponentManager/Components/AabbComponent.h"
+#include "ECS/ComponentManager/Components/AABBComponent.h"
 #include "Editor/Windows/Scene/SceneView.h"
 #include <limits>
 
@@ -19,6 +19,8 @@ namespace Eclipse
 		static bool RayAabb(glm::vec3& rayStart, glm::vec3& rayDir, glm::vec3& aabbMin, glm::vec3& aabbMax, float& t);
 		unsigned int GetCurrentCollisionID();
 		void SetCurrentCollisionID(unsigned int ID);
+
+		void ResetScene();
 	};
 }
 

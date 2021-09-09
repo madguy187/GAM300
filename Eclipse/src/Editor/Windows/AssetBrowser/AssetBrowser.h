@@ -1,6 +1,8 @@
 #pragma once
 #include <filesystem>
-#include "../Interface/ECGuiWindow.h"
+
+#include "imgui.h"
+
 namespace Eclipse
 {
 	class AssetBrowserWindow final : public ECGuiWindow
@@ -16,8 +18,8 @@ namespace Eclipse
 
 		//Buton Icon rendering
 		////////////////////////////////
-		RenderComponent sprite;
-		RenderComponent FolderIcon;
+		TextureComponent sprite;
+		TextureComponent FolderIcon;
 		////////////////////////////////
 
 		
@@ -52,6 +54,7 @@ namespace Eclipse
 		bool refresh = true;
 		bool jumpDir = false;
 		bool ResetTreeNodeOpen = false;
+		bool CopyFilesAndFolder = false;
 		////////////////////////////////
 		
 	public:
@@ -95,6 +98,8 @@ namespace Eclipse
 		void MainSearchLogic(std::map<std::filesystem::path, std::vector<std::filesystem::path>>::value_type Key);
 		void MainSearchLogic(std::vector<std::string> subDirItemsPath);
 		bool BuffIsEmpty(const char* buffer);
+		std::map<std::filesystem::path, std::vector<std::filesystem::path>> getFolderMap();
+		std::map<std::filesystem::path, std::vector<std::filesystem::path>> getPathMap();
 		////////////////////////////////
 
 		

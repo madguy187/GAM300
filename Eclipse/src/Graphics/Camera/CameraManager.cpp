@@ -10,9 +10,12 @@ namespace Eclipse
             return;
         }
 
-        Entity newCam = engine->world.CreateEntity();
+        Entity newCam = engine->editorManager->CreateDefaultEntity(EntityType::ENT_CAMERA);
+    	
+        //engine->world.AddComponent(newCam, EntityComponent{EntityType::ENT_CAMERA,
+        // lexical_cast_toStr<EntityType>(EntityType::ENT_CAMERA)});
         engine->world.AddComponent(newCam, CameraComponent{});
-        engine->world.AddComponent(newCam, TransformComponent{});
+       // engine->world.AddComponent(newCam, TransformComponent{});
 
         editorCamID = newCam;
 
@@ -21,8 +24,8 @@ namespace Eclipse
         editorCam.projType = CameraComponent::ProjectionType::Perspective;
 
         auto& _transform = engine->world.GetComponent<TransformComponent>(newCam);
-        _transform.position = ECVec3{ 0.0f, 20.0f, 40.0f };
-        _transform.rotation = ECVec3{ -40.0f, -90.0f, 0.0f };
+        _transform.position = EDITORCAM_INITPOS;
+        _transform.rotation = EDITORCAM_INITROT;
 
         cameraList.emplace(CameraComponent::CameraType::Editor_Camera, newCam);
     }
@@ -50,8 +53,8 @@ namespace Eclipse
         gameCam.projType = CameraComponent::ProjectionType::Perspective;
 
         auto& _transform = engine->world.GetComponent<TransformComponent>(newCam);
-        _transform.position = ECVec3{ 0.0f, 0.0f, 30.0f };
-        _transform.rotation = ECVec3{ 0.0f, -90.0f, 0.0f };
+        _transform.position = GAMECAM_INITPOS;
+        _transform.rotation = GAMECAM_INITROT;
 
         cameraList.emplace(CameraComponent::CameraType::Game_Camera, newCam);
     }
@@ -85,30 +88,30 @@ namespace Eclipse
         {
         case CameraComponent::CameraType::TopView_Camera:
         {
-            _transform.position = ECVec3{ 0.0f, 60.0f, 0.0f };
-            _transform.rotation = ECVec3{ -90.0f, 90.0f, 0.0f };
-            _transform.scale = ECVec3{ 100.0f, 1.0f, 1.0f };
+            _transform.position = TOPCAM_INITPOS;
+            _transform.rotation = TOPCAM_INITROT;
+            _transform.scale = TOPCAM_INITSCALE;
         }
         break;
         case CameraComponent::CameraType::BottomView_Camera:
         {
-            _transform.position = ECVec3{ 0.0f, -60.0f, 0.0f };
-            _transform.rotation = ECVec3{ 90.0f, 90.0f, 0.0f };
-            _transform.scale = ECVec3{ 100.0f, 1.0f, 1.0f };
+            _transform.position = BOTTOMCAM_INITPOS;
+            _transform.rotation = BOTTOMCAM_INITROT;
+            _transform.scale = BOTTOMCAM_INITSCALE;
         }
         break;
         case CameraComponent::CameraType::LeftView_Camera:
         {
-            _transform.position = ECVec3{ -60.0f, 0.0f, 0.0f };
-            _transform.rotation = ECVec3{ 0.0f, 0.0f, 0.0f };
-            _transform.scale = ECVec3{ 100.0f, 1.0f, 1.0f };
+            _transform.position = LEFTCAM_INITPOS;
+            _transform.rotation = LEFTCAM_INITROT;
+            _transform.scale = LEFTCAM_INITSCALE;
         }
         break;
         case CameraComponent::CameraType::RightView_camera:
         {
-            _transform.position = ECVec3{ 60.0f, 0.0f, 0.0f };
-            _transform.rotation = ECVec3{ 0.0f, 180.0f, 0.0f };
-            _transform.scale = ECVec3{ 100.0f, 1.0f, 1.0f };
+            _transform.position = RIGHTCAM_INITPOS;
+            _transform.rotation = RIGHTCAM_INITROT;
+            _transform.scale = RIGHTCAM_INITSCALE;
         }
         break;
         }
@@ -641,5 +644,28 @@ namespace Eclipse
     std::bitset<8>& CameraManager::GetViewInput()
     {
         return viewInput;
+    }
+
+    void CameraManager::ResetScene()
+    {
+        editorCamID = MAX_ENTITY;
+        gameCamID = MAX_ENTITY;
+
+        engine->gDebugManager.ClearDebugShapes();
+        cameraList.clear();
+
+        //Re-create and initialize all cameras
+        engine->gCamera.CreateEditorCamera();
+        engine->gCamera.SetCameraSpeed(50.0f);
+
+        engine->gCamera.CreateViewCamera(CameraComponent::CameraType::TopView_Camera);
+        engine->gCamera.CreateViewCamera(CameraComponent::CameraType::BottomView_Camera);
+        engine->gCamera.CreateViewCamera(CameraComponent::CameraType::LeftView_Camera);
+        engine->gCamera.CreateViewCamera(CameraComponent::CameraType::RightView_camera);
+
+        engine->gCamera.CreateGameCamera();
+        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetGameCameraID());
+        engine->gDebugManager.AddCameraFrustum(engine->gCamera.GetGameCameraID(), _camera);
+        engine->gCamera.SetFarPlane(_camera, 100.0f);
     }
 }

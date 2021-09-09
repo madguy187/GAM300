@@ -338,6 +338,21 @@ namespace Eclipse
 		ImGui::SetTooltip(message);
 	}
 
+	void ImGuiAPI::HelpMarker(const char* message)
+	{
+		ImGui::PushStyleColor(ImGuiCol_TextDisabled, (ImVec4)ImColor::HSV(1, 1.f, 1.6f, 1.f));
+		ImGui::TextDisabled("(?)");
+		ImGui::PopStyleColor(1);
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::BeginTooltip();
+			ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+			ImGui::TextUnformatted(message);
+			ImGui::PopTextWrapPos();
+			ImGui::EndTooltip();
+		}
+	}
+
 	void ImGuiAPI::PlotHistogram(const char* label, const float* values, int values_count, int values_offset, const char* overlay_text, float scale_min, float scale_max, ImVec2 graph_size, int stride)
 	{
 		ImGui::PlotHistogram(label, values, values_count, values_offset, overlay_text, scale_min, scale_max, graph_size, stride);

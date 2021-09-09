@@ -293,72 +293,6 @@ namespace Eclipse
         shdrpgm->second.UnUse();
     }
 
-    void MaterialManager::Highlight(unsigned int FrameBufferID, GLenum Mode)
-    {
-        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
-
-        glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
-        auto shdrpgm = Graphics::shaderpgms["OutLineShader"];
-
-        shdrpgm.Use();
-
-        for (auto const& Models : ModelHighlightContainer)
-        {
-            auto& ID = Models.first;
-            auto& InvidualModels = *(Models.second);
-
-            engine->MaterialManager.UpdateStencilWith_Outline(ID);
-
-            auto& highlight = engine->world.GetComponent<MaterialComponent>(ID);
-
-            if (highlight.Highlight == true)
-            {
-                auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
-
-                // Check Main Uniforms For each Model
-                // Translation done here for each model
-                CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ID);
-
-                // Materials Update
-                engine->MaterialManager.CheckUnniformLocation(shdrpgm, highlight);
-
-                // Render
-                InvidualModels.Render(shdrpgm, Mode, FrameBufferID);
-            }
-        }
-
-        shdrpgm.UnUse();
-    }
-
-    void MaterialManager::RegisterForHighlighting(MaterialComponent& in, unsigned int index)
-    {
-        if (in.RegisterForHighlight == true)
-            return;
-
-        bool CheckModel = engine->world.CheckComponent<RenderComponent>(index);
-
-        if (CheckModel)
-        {
-
-        }
-        else
-        {
-            AssimpModel* CurrentModel = engine->AssimpManager.GetModel(index);
-
-            // Insert
-            if (ModelHighlightContainer.insert(std::pair<unsigned int, AssimpModel*>(index, CurrentModel)).second == true)
-            {
-                in.RegisterForHighlight = true;
-
-                std::string Success = ("Model [" + CurrentModel->GetName() + "] Registered For Highlighting ! ").c_str();
-                ENGINE_CORE_INFO(Success);
-
-                std::cout << "HighLight Container Size : " << ModelHighlightContainer.size() << std::endl;
-                return;
-            }
-        }
-    }
-
     void MaterialManager::Highlight(unsigned int FrameBufferID, unsigned int ModelID, GLenum mode)
     {
         if (EnableHighlight == true)
@@ -380,7 +314,7 @@ namespace Eclipse
             glPolygonMode(GL_FRONT_AND_BACK, mode);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-            engine->GraphicsManager.CheckTexture(&_spritecomponent);
+            engine->GraphicsManager.CheckTexture(ModelID);
 
             // Materials Update
             engine->MaterialManager.CheckUnniformLocation(shdrpgm, highlight);
@@ -430,6 +364,14 @@ namespace Eclipse
         }
 
         return false;
+    }
+
+    void MaterialManager::RegisterMeshForHighlight(unsigned int ID)
+    {
+        if (InitRegisterHighlight == true)
+        {
+            RegisterMeshForHighlighting(ID);
+        }
     }
 
     void MaterialManager::UpdateStencilWithActualObject(unsigned int ID)
@@ -500,5 +442,80 @@ namespace Eclipse
         }
 
         glUniform1i(dsa, 0);
+    }
+
+    void MaterialManager::RegisterMeshForHighlighting(unsigned int index)
+    {
+        auto& mat = engine->world.GetComponent<MaterialComponent>(index);
+
+        if (mat.RegisterForHighlight == true)
+            return;
+
+        auto& mesh = engine->world.GetComponent<MeshComponent3D>(index);
+
+        // Insert
+        if (MeshHighLightContainer.insert(std::pair<unsigned int, MeshComponent3D*>(index, &mesh)).second == true)
+        {
+            mat.RegisterForHighlight = true;
+
+            std::string Success = ("Model [" + mesh.NameOfModel + "] Registered For Highlighting ! ").c_str();
+            ENGINE_CORE_INFO(Success);
+
+            std::cout << "HighLight Container Size : " << ModelHighlightContainer.size() << std::endl;
+            return;
+        }
+    }
+
+    void MaterialManager::MeshHighlight(unsigned int FrameBufferID, GLenum Mode)
+    {
+        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+
+        glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
+        auto shdrpgm = Graphics::shaderpgms["OutLineShader"];
+
+        shdrpgm.Use();
+
+        for (auto const& Models : MeshHighLightContainer)
+        {
+            auto& ID = Models.first;
+            auto& InvidualModels = *(Models.second);
+
+            engine->MaterialManager.UpdateStencilWith_Outline(ID);
+
+            auto& highlight = engine->world.GetComponent<MaterialComponent>(ID);
+
+            if (highlight.Highlight == true)
+            {
+                auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+
+                // Check Main Uniforms For each Model
+                // Translation done here for each model
+                CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ID);
+
+                // Materials Update
+                engine->MaterialManager.CheckUnniformLocation(shdrpgm, highlight);
+
+                // Render
+                engine->AssimpManager.Render(shdrpgm, Mode, FrameBufferID, InvidualModels, ID);
+            }
+        }
+
+        shdrpgm.UnUse();
+    }
+
+    void MaterialManager::UpdateMaterial(MaterialComponent& in)
+    {
+        auto& shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
+        shdrpgm.Use();
+
+        GLuint DifuseMaterial = shdrpgm.GetLocation("sdiffuse");
+        GLuint SpecularMaterial = shdrpgm.GetLocation("sspecular");
+        GLuint NoTextures = shdrpgm.GetLocation("noTex");
+
+        glUniform1i(NoTextures, in.NoTextures);
+        glUniform4f(DifuseMaterial, 0.07568, 0.61424, 0.07568, 1);
+        glUniform4f(SpecularMaterial, 0.633, 0.727811, 0.633, 1);
+
+        shdrpgm.UnUse();
     }
 }

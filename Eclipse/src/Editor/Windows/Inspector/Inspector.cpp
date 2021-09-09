@@ -2,6 +2,7 @@
 #include "Inspector.h"
 #include "ECS/ComponentManager/Components/EntityComponent.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"
+#include "ECS/ComponentManager/Components/RigidBodyComponent.h"
 
 namespace Eclipse
 {
@@ -46,6 +47,8 @@ namespace Eclipse
 			ShowPointLightProperty("PointLight", currEnt, CompFilter);
 			ShowSpotLightProperty("SpotLight", currEnt, CompFilter);
 			ShowDirectionalLightProperty("DirectionalLight", currEnt, CompFilter);
+			ShowRigidBodyProperty("RigidBody", currEnt, CompFilter);
+			ShowEditorCameraProperty("Camera", currEnt, CompFilter);
 			//tianyu testing will delete later
 			//todo
 			if (engine->world.CheckComponent<testComponent>(currEnt))
@@ -54,7 +57,6 @@ namespace Eclipse
 				{
 				}
 			}
-
 			AddComponentsController(currEnt);
 			RemoveComponentsController(currEnt);
 		}
@@ -213,38 +215,99 @@ namespace Eclipse
 
 		return false;
 	}
+	bool InspectorWindow::ShowRigidBodyProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+	{
+		if (engine->world.CheckComponent<RigidBodyComponent>(ID))
+		{
+			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+			{
+				auto& _RigidB = engine->world.GetComponent<RigidBodyComponent>(ID);
+
+				ECGui::DrawTextWidget<const char*>("Enable Gravity", "");
+				ECGui::CheckBoxBool("Rigid Body Enable Gravity", &_RigidB.enableGravity);
+				
+				ECGui::DrawTextWidget<const char*>("Forces", "");
+				ECGui::DrawSliderFloat3Widget("Rigid Body Forces", &_RigidB.forces, true, 0.0f, 1.0f);
+				
+				ECGui::DrawTextWidget<const char*>("Velocity", "");
+				ECGui::DrawSliderFloat3Widget("Rigid Body Velocity", &_RigidB.velocity, true, 0.0f, 1.0f);
+
+			}
+		}
+
+		return false;
+	}
+	bool InspectorWindow::ShowEditorCameraProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+	{
+		if (engine->world.CheckComponent<CameraComponent>(ID))
+		{
+			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+			{
+				auto& _Camera = engine->world.GetComponent<CameraComponent>(ID);
+
+				if(engine->gCamera.GetEditorCameraID() == ID)
+				{
+					ECGui::DrawTextWidget<const char*>("Near Plane", "");
+					ECGui::DrawSliderFloatWidget("Near Plane", &_Camera.nearPlane, false, 0, 1000);
+					ECGui::DrawTextWidget<const char*>("Far Plane", "");
+					ECGui::DrawSliderFloatWidget("Far Plane", &_Camera.farPlane,false,0,1000);
+				}
+				ECGui::DrawTextWidget<const char*>("Camera Speed", "");
+				ECGui::DrawSliderFloatWidget("Camera Speed", &_Camera.cameraSpeed);
+				
+				//ECGui::DrawTextWidget<const char*>("Enable Gravity", "");
+				//ECGui::CheckBoxBool("Rigid Body Enable Gravity", &_RigidB.enableGravity);
+				//
+				//ECGui::DrawTextWidget<const char*>("Forces", "");
+				//ECGui::DrawSliderFloat3Widget("Rigid Body Forces", &_RigidB.forces, true, 0.0f, 1.0f);
+				//
+				//ECGui::DrawTextWidget<const char*>("Velocity", "");
+				//ECGui::DrawSliderFloat3Widget("Rigid Body Velocity", &_RigidB.velocity, true, 0.0f, 1.0f);
+
+			}
+		}
+
+		return false;
+	}
 	void InspectorWindow::AddComponentsController( Entity ID)
 	{
-		if (ImGui::Button("Add Component"))
+		ImVec2 buttonSize = {180,20};
+		if (ImGui::Button(("Add Component"), buttonSize))
 		{
 			ImGui::OpenPopup("Add Component");
 		}
 		if (ImGui::BeginPopup("Add Component"))
 		{
+			ImGui::SetScrollY(5);
+			ImGui::BeginChild("Remove Components",{250,200});
 			AddComponents(ID);
+			ImGui::EndChild();
 			ImGui::EndPopup();
 		}
 	}
 	void InspectorWindow::RemoveComponentsController(Entity ID)
 	{
-		if (ImGui::Button("Remove Component"))
+		ImVec2 buttonSize = { 180,20 };
+		if (ImGui::Button(("Remove Component"), buttonSize))
 		{
 			ImGui::OpenPopup("Remove Component");
 		}
 		if (ImGui::BeginPopup("Remove Component"))
 		{
+			ImGui::SetScrollY(5);
+			ImGui::BeginChild("Remove Components",{250,200});
 			RemoveComponents(ID);
+			ImGui::EndChild();
 			ImGui::EndPopup();
 		}
 	}
 	void InspectorWindow::AddComponents(Entity ID)
 	{
-
 		static ImGuiTextFilter AddComponentFilter;
-		
+
 		auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
 		
-		AddComponentFilter.Draw();
+		AddComponentFilter.Draw("Filter",160);
 
 		for (int i = 0; i < engine->world.GetAllComponentNames().size(); i++)
 		{
@@ -257,7 +320,7 @@ namespace Eclipse
 					case str2int("TransformComponent"):
 						if (!engine->world.CheckComponent<TransformComponent>(ID))
 						{
-							AddComponentsSucess("TransformComponent", entCom, ID);
+							AddComponentsSuccess("TransformComponent", entCom, ID);
 							engine->world.AddComponent(ID, TransformComponent{});
 						}
 						else
@@ -268,7 +331,7 @@ namespace Eclipse
 					case str2int("RenderComponent"):
 						if (!engine->world.CheckComponent<RenderComponent>(ID))
 						{
-							AddComponentsSucess("RenderComponent", entCom, ID);
+							AddComponentsSuccess("RenderComponent", entCom, ID);
 							engine->world.AddComponent(ID, RenderComponent{});
 						}
 						else
@@ -279,7 +342,7 @@ namespace Eclipse
 					case str2int("CameraComponent"):
 						if (!engine->world.CheckComponent<CameraComponent>(ID))
 						{
-							AddComponentsSucess("CameraComponent", entCom, ID);
+							AddComponentsSuccess("CameraComponent", entCom, ID);
 							engine->world.AddComponent(ID, CameraComponent{});
 						}
 						else
@@ -290,7 +353,7 @@ namespace Eclipse
 					case str2int("PointLightComponent"):
 						if (!engine->world.CheckComponent<PointLightComponent>(ID))
 						{
-							AddComponentsSucess("PointLightComponent", entCom, ID);
+							AddComponentsSuccess("PointLightComponent", entCom, ID);
 							engine->world.AddComponent(ID, PointLightComponent{});
 						}
 						else
@@ -301,7 +364,7 @@ namespace Eclipse
 					case str2int("DirectionalLightComponent"):
 						if(!engine->world.CheckComponent<DirectionalLightComponent>(ID))
 						{
-							AddComponentsSucess("DirectionalLightComponent", entCom, ID);
+							AddComponentsSuccess("DirectionalLightComponent", entCom, ID);
 							engine->world.AddComponent(ID, DirectionalLightComponent{});
 						}
 						else
@@ -309,21 +372,21 @@ namespace Eclipse
 							AddComponentsFailed("DirectionalLightComponent", entCom, ID);
 						}
 						break;
-					case str2int("AabbComponent"):
-						if (!engine->world.CheckComponent<AabbComponent>(ID))
+					case str2int("AABBComponent"):
+						if (!engine->world.CheckComponent<AABBComponent>(ID))
 						{
-							AddComponentsSucess("AabbComponent", entCom, ID);
-							engine->world.AddComponent(ID, AabbComponent{});
+							AddComponentsSuccess("AABBComponent", entCom, ID);
+							engine->world.AddComponent(ID, AABBComponent{});
 						}
 						else
 						{
-							AddComponentsFailed("AabbComponent", entCom, ID);
+							AddComponentsFailed("AABBComponent", entCom, ID);
 						}
 						break;
 					case str2int("SpotLightComponent"):
 						if (!engine->world.CheckComponent<SpotLightComponent>(ID))
 						{
-							AddComponentsSucess("SpotLightComponent", entCom, ID);
+							AddComponentsSuccess("SpotLightComponent", entCom, ID);
 							engine->world.AddComponent(ID, SpotLightComponent{});
 						}
 						else
@@ -334,7 +397,7 @@ namespace Eclipse
 					case str2int("MaterialComponent"):
 						if (!engine->world.CheckComponent<MaterialComponent>(ID))
 						{
-							AddComponentsSucess("MaterialComponent", entCom, ID);
+							AddComponentsSuccess("MaterialComponent", entCom, ID);
 							engine->world.AddComponent(ID, MaterialComponent{});
 						}
 						else
@@ -342,10 +405,21 @@ namespace Eclipse
 							AddComponentsFailed("MaterialComponent", entCom, ID);
 						}
 						break;
+					case str2int("RigidBodyComponent"):
+						if (!engine->world.CheckComponent<RigidBodyComponent>(ID))
+						{
+							AddComponentsSuccess("RigidBodyComponent", entCom, ID);
+							engine->world.AddComponent(ID, RigidBodyComponent{});
+						}
+						else
+						{
+							AddComponentsFailed("RigidBodyComponent", entCom, ID);
+						}
+						break;
 					case str2int("testComponent"):
 						if (!engine->world.CheckComponent<testComponent>(ID))
 						{
-							AddComponentsSucess("testComponent", entCom, ID);
+							AddComponentsSuccess("testComponent", entCom, ID);
 							engine->world.AddComponent(ID, testComponent{});
 						}
 						else
@@ -359,7 +433,7 @@ namespace Eclipse
 		}
 		
 	}
-	void InspectorWindow::AddComponentsSucess(const char* Components, EntityComponent& entCom, Entity ID)
+	void InspectorWindow::AddComponentsSuccess(const char* Components, EntityComponent& entCom, Entity ID)
 	{
 		std::string Comp(Components);
 		Comp += " Added For " + entCom.Name + std::to_string(ID) + " Add Succeed";
@@ -377,7 +451,7 @@ namespace Eclipse
 		
 		auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
 		
-		AddComponentFilter.Draw();
+		AddComponentFilter.Draw("Filter", 160);
 
 		for (int i = 0; i < engine->world.GetAllComponentNames().size(); i++)
 		{
@@ -442,15 +516,15 @@ namespace Eclipse
 							RemoveComponentsFailed("DirectionalLightComponent", entCom, ID);
 						}
 						break;
-					case str2int("AabbComponent"):
-						if (engine->world.CheckComponent<AabbComponent>(ID))
+					case str2int("AABBComponent"):
+						if (engine->world.CheckComponent<AABBComponent>(ID))
 						{
-							RemoveComponentsSucess("AabbComponent", entCom, ID);
-							engine->world.DestroyComponent<AabbComponent>(ID);
+							RemoveComponentsSucess("AABBComponent", entCom, ID);
+							engine->world.DestroyComponent<AABBComponent>(ID);
 						}
 						else
 						{
-							RemoveComponentsFailed("AabbComponent", entCom, ID);
+							RemoveComponentsFailed("AABBComponent", entCom, ID);
 						}
 						break;
 					case str2int("SpotLightComponent"):
@@ -473,6 +547,17 @@ namespace Eclipse
 						else
 						{
 							RemoveComponentsFailed("MaterialComponent", entCom, ID);
+						}
+						break;
+					case str2int("RigidBodyComponent"):
+						if (engine->world.CheckComponent<RigidBodyComponent>(ID))
+						{
+							RemoveComponentsSucess("RigidBodyComponent", entCom, ID);
+							engine->world.DestroyComponent<RigidBodyComponent>(ID);
+						}
+						else
+						{
+							RemoveComponentsFailed("RigidBodyComponent", entCom, ID);
 						}
 						break;
 					case str2int("testComponent"):

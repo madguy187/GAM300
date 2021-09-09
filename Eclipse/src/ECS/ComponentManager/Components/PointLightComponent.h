@@ -24,7 +24,8 @@ namespace Eclipse
 
         bool EnableBlinnPhong = true;
         bool hasTexture = false;
-        bool visible = false;
+        bool visible = true;
+        bool AffectsWorld = true;
 
         // Not Needed For now
         //IModel* modelRef;
