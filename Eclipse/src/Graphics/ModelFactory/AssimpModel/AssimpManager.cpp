@@ -392,21 +392,30 @@ namespace Eclipse
         return true;
     }
 
-    void AssimpModelManager::InsertModel(MeshComponent3D& in, std::string& key)
+    void AssimpModelManager::InsertModel(unsigned int id)
     {
-        in.Directory = engine->AssimpManager.AssimpLoadedModels[key]->GetDirectory();
-        in.Meshes = engine->AssimpManager.AssimpLoadedModels[key]->GetMesh();
-        in.NameOfModel = engine->AssimpManager.AssimpLoadedModels[key]->GetName();
-        in.NoTextures = engine->AssimpManager.AssimpLoadedModels[key]->CheckNoTextures();
-        in.Textures_loaded = engine->AssimpManager.AssimpLoadedModels[key]->GetTextures();
-        in.type = engine->AssimpManager.AssimpLoadedModels[key]->GetType();
+        auto& sprite = engine->world.GetComponent<MeshComponent3D>(id);
 
-        if (AssimpModelContainerV2.insert({ in.ID ,&in }).second == true)
+        sprite.Directory = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetDirectory();
+        sprite.Meshes = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetMesh();
+        sprite.NameOfModel = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetName();
+        sprite.NoTextures = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->CheckNoTextures();
+        sprite.Textures_loaded = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetTextures();
+        sprite.type = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetType();
+
+        if (AssimpModelContainerV2.insert({ sprite.ID ,&sprite }).second == true)
         {
-            EDITOR_LOG_INFO(("Model : " + in.NameOfModel + "Created Successfully").c_str());
+            EDITOR_LOG_INFO(("Model : " + sprite.NameOfModel + "Created Successfully").c_str());
         }
 
-        engine->MaterialManager.RegisterMeshForHighlight(in.ID);
+        engine->MaterialManager.RegisterMeshForHighlight(sprite.ID);
+
+        // If got TextureComponent
+        if (engine->world.CheckComponent<TextureComponent>(id))
+        {
+            auto& tex = engine->world.GetComponent<TextureComponent>(id);
+            engine->AssimpManager.SetTexturesForModel(tex, sprite.Key);
+        }
 
         std::cout << "Current Model Container Size " << AssimpModelContainerV2.size() << std::endl;
     }

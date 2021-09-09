@@ -210,6 +210,8 @@ namespace Eclipse
             {
                 Meshes.push_back(Mesh(it.vertices, it.indices, it.Diffuse, it.Specular,it.NoTextures));
             }
+
+            NoTextures = it.NoTextures;
         }
 
         for (auto& it : AllVertices)

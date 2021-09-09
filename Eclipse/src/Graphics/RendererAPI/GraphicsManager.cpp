@@ -208,13 +208,11 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
 
         MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
         MeshComponent3D& sprite = engine->world.GetComponent<MeshComponent3D>(ID);
-        TextureComponent& tex = engine->world.GetComponent<TextureComponent>(ID);
 
         mat.Modeltype = MaterialComponent::ModelType::Models3D;
         sprite.ID = ID;
         sprite.Key = engine->AssimpManager.GetKey("hi");
-        engine->AssimpManager.InsertModel(sprite, sprite.Key);
-        engine->AssimpManager.SetTexturesForModel(tex, sprite.Key);
+        engine->AssimpManager.InsertModel(ID);
     }
     break;
     case 11:
@@ -236,13 +234,11 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
 
         MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
         MeshComponent3D& sprite = engine->world.GetComponent<MeshComponent3D>(ID);
-        TextureComponent& tex = engine->world.GetComponent<TextureComponent>(ID);
 
         mat.Modeltype = MaterialComponent::ModelType::Models3D;
         sprite.ID = ID;
         sprite.Key = engine->AssimpManager.GetKey("dog");
-        engine->AssimpManager.InsertModel(sprite, sprite.Key);
-        engine->AssimpManager.SetTexturesForModel(tex, sprite.Key);
+        engine->AssimpManager.InsertModel(ID);
     }
     break;
     // pointlight
@@ -266,13 +262,11 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
 
         MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
         MeshComponent3D& sprite = engine->world.GetComponent<MeshComponent3D>(ID);
-        TextureComponent& tex = engine->world.GetComponent<TextureComponent>(ID);
 
         mat.Modeltype = MaterialComponent::ModelType::Models3D;
         sprite.ID = ID;
         sprite.Key = engine->AssimpManager.GetKey("testhouse");
-        engine->AssimpManager.InsertModel(sprite, sprite.Key);
-        engine->AssimpManager.SetTexturesForModel(tex, sprite.Key);
+        engine->AssimpManager.InsertModel(ID);
     }
     break;
     }

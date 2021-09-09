@@ -62,7 +62,7 @@ namespace Eclipse
         // Draw function that takes in Mesh Component
         void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent3D& in, unsigned int inin);
         // Using MeshComponent into Container , Pass in key please
-        void InsertModel(MeshComponent3D& in, std::string& key);
+        void InsertModel(unsigned int ID);
         // Model Factory to load all models
         void LoadModels(const std::string& modelFile);
         // Get Key
