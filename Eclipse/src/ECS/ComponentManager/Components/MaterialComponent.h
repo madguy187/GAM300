@@ -16,8 +16,8 @@ namespace Eclipse
 
         unsigned int ID = 0;
         ECVec3 ambient{ 0.0f,0.0f,0.0f };
-        ECVec3 diffuse{ 0.0f,0.0f,0.0f };
-        ECVec3 specular{ 0.1f,0.1f,0.1f };
+        ECVec3 diffuse{ 1.0f,1.0f,1.0f };
+        ECVec3 specular{ 1.0f,1.0f,1.0f };
         ECVec3 HighlightColour{ 1.0f,0.0f,0.0f };
         float shininess = 0.25f;
         float MaximumShininess = 128.0f;

@@ -327,12 +327,36 @@ namespace Eclipse
         }
 
         // process material
-        if (mesh->mMaterialIndex >= 0)
+        if (mesh->mMaterialIndex >= 0 && scene->HasMaterials())
         {
             aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
             aiString texture_file;
             material->Get(AI_MATKEY_TEXTURE(aiTextureType_DIFFUSE, 0), texture_file);
+
+            //
+            //aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];//Get the current material
+            aiString materialName;//The name of the material found in mesh file
+            aiReturn ret;//Code which says whether loading something has been successful of not
+
+            ret = material->Get(AI_MATKEY_NAME, materialName);//Get the material name (pass by reference)
+            if (ret != AI_SUCCESS) materialName = "";//Failed to find material name so makes var empty
+
+            //Diffuse maps
+            int numTextures = material->GetTextureCount(aiTextureType_DIFFUSE);//Amount of diffuse textures
+            aiString textureName;//Filename of the texture using the aiString assimp structure
+
+            if (numTextures > 0)
+            {
+                //Get the file name of the texture by passing the variable by reference again
+                //Second param is 0, which is the first diffuse texture
+                //There can be more diffuse textures but for now we are only interested in the first one
+                ret = material->Get(AI_MATKEY_TEXTURE(aiTextureType_DIFFUSE, 0), textureName);
+
+                std::string textureType = "diff_";
+                std::string textureFileName = textureType + textureName.data;//The actual name of the texture file
+            }
+            //
 
             if (auto texture = scene->GetEmbeddedTexture(texture_file.C_Str()))
             {

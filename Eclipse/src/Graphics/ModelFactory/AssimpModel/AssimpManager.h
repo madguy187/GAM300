@@ -44,7 +44,7 @@ namespace Eclipse
         // Get Current Model Factory Count
         unsigned int MeshFactoryCount();
         // Load All Models Once
-        void LoadAllModels();
+        void Init();
         // Render Function that uses the Container that stores MeshComponent 
         void MeshDraw(unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
         // Upload to Shader

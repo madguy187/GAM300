@@ -3,6 +3,12 @@
 
 namespace Eclipse
 {
+    void AssimpModelManager::Init()
+    {
+        LoadModels("src//Assets//ASSModels");
+        PrintLoadedModels();
+    }
+
     void AssimpModelManager::LoadModels(const std::string& modelFile)
     {
         for (auto& dirEntry : std::filesystem::directory_iterator(modelFile))
@@ -66,12 +72,6 @@ namespace Eclipse
         // ----------------------------------------------------------------------------------------------------------
         engine->MaterialManager.RegisterMeshForHighlighting(ID);
         // ----------------------------------------------------------------------------------------------------------
-    }
-
-    void AssimpModelManager::LoadAllModels()
-    {
-        LoadModels("src//Assets//ASSModels");
-        PrintLoadedModels();
     }
 
     void AssimpModelManager::MeshDraw(unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
@@ -260,17 +260,16 @@ namespace Eclipse
         {
             if (LoadedTexturesV2.find(passkey) != LoadedTexturesV2.end())
             {
-                for (int EachTexture = 0; EachTexture < LoadedTexturesV2[passkey][i].size(); EachTexture++)
+                if (LoadedTexturesV2[passkey][i].size() == 0)
                 {
-                    //in.test.emplace(i, *LoadedTexturesV2[passkey][i][i]);
-                    //in.Textures.push_back(*LoadedTexturesV2[passkey][i][EachTexture]);
-
-                    in.HoldingTextures[i].push_back(*LoadedTexturesV2[passkey][i][EachTexture]);
-
+                    EDITOR_LOG_WARN("No Textures Found for Current Model");
                     continue;
                 }
 
-                EDITOR_LOG_WARN("No Textures Found for Current Model");
+                for (int EachTexture = 0; EachTexture < LoadedTexturesV2[passkey][i].size(); EachTexture++)
+                {
+                    in.HoldingTextures[i].push_back(*LoadedTexturesV2[passkey][i][EachTexture]);
+                }
             }
         }
     }

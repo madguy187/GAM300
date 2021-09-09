@@ -513,8 +513,8 @@ namespace Eclipse
         GLuint NoTextures = shdrpgm.GetLocation("noTex");
 
         glUniform1i(NoTextures, in.NoTextures);
-        glUniform4f(DifuseMaterial, 0.07568, 0.61424, 0.07568, 1);
-        glUniform4f(SpecularMaterial, 0.633, 0.727811, 0.633, 1);
+        glUniform4f(DifuseMaterial, in.diffuse.getX(), in.diffuse.getY(), in.diffuse.getZ(), 1);
+        glUniform4f(SpecularMaterial, in.specular.getX(), in.specular.getY(), in.specular.getZ(), 1);
 
         shdrpgm.UnUse();
     }

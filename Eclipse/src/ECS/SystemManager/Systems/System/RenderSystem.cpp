@@ -20,7 +20,7 @@ namespace Eclipse
         engine->GraphicsManager.DebugPrintFrameBuffers();
 
         // Load All Models =============================
-        engine->AssimpManager.LoadAllModels();
+        engine->AssimpManager.Init();
 
         // Create SKY =============================
         engine->GraphicsManager.CreateSky("src/Assets/Sky");
@@ -35,7 +35,6 @@ namespace Eclipse
 
         SystemSignature.set(engine->world.GetComponentType<TransformComponent>(), 1);
         SystemSignature.set(engine->world.GetComponentType<RenderComponent>(), 1);
-        SystemSignature.set(engine->world.GetComponentType<MaterialComponent>(), 1);
         SystemSignature.set(engine->world.GetComponentType<TextureComponent>(), 1);
         engine->world.RegisterSystemSignature<RenderSystem>(SystemSignature);
 
