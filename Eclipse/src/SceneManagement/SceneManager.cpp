@@ -166,9 +166,12 @@ namespace Eclipse
 		if (engine->GetEditorState())
 		{
 			engine->editorManager->Clear();
+			engine->gPicker.ResetScene();
 		}
+		engine->AssimpManager.ClearContainer();
 		engine->world.Clear();
 		engine->LightManager.ClearAllContainer();
+		engine->gCamera.ResetScene();
 	}
 
 	void SceneManager::ReloadScene()

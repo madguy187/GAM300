@@ -82,12 +82,23 @@ namespace Eclipse
 			SerializeComponent<TransformComponent>(comp);
 		}
 
-		if (w.CheckComponent<AabbComponent>(ent))
+		if (w.CheckComponent<AABBComponent>(ent))
 		{
-			auto& comp = w.GetComponent<AabbComponent>(ent);
-			SerializeComponent<AabbComponent>(comp);
+			auto& comp = w.GetComponent<AABBComponent>(ent);
+			SerializeComponent<AABBComponent>(comp);
 		}
 
+		if (w.CheckComponent<MeshComponent3D>(ent))
+		{
+			auto& comp = w.GetComponent<MeshComponent3D>(ent);
+			SerializeComponent<MeshComponent3D>(comp);
+		}
+
+		if (w.CheckComponent<TextureComponent>(ent))
+		{
+			auto& comp = w.GetComponent<TextureComponent>(ent);
+			SerializeComponent<TextureComponent>(comp);
+		}
 	}
 
 	void SerializationManager::DeserializeAllComponents(const Entity& ent)
@@ -140,14 +151,14 @@ namespace Eclipse
 			dsz.CloseElement();
 		}
 
-		if (dsz.StartElement("CameraComponent"))
+		/*if (dsz.StartElement("CameraComponent"))
 		{
 			CameraComponent comp;
 			DeserializeComponent<CameraComponent>(ent, comp);
 			engine->world.AddComponent(ent, comp);
 			dsz.CloseElement();
 		}
-		
+		*/
 		if (dsz.StartElement("PointLightComponent"))
 		{
 			PointLightComponent comp;
@@ -172,6 +183,23 @@ namespace Eclipse
 			DeserializeComponent<DirectionalLightComponent>(ent, comp);
 			engine->world.AddComponent(ent, comp);
 			engine->LightManager.InsertDirectionalLight(engine->world.GetComponent<DirectionalLightComponent>(ent));
+			dsz.CloseElement();
+		}
+
+		if (dsz.StartElement("TextureComponent"))
+		{
+			TextureComponent comp;
+			DeserializeComponent<TextureComponent>(ent, comp);
+			engine->world.AddComponent(ent, comp);
+			dsz.CloseElement();
+		}
+
+		if (dsz.StartElement("MeshComponent3D"))
+		{
+			MeshComponent3D comp;
+			DeserializeComponent<MeshComponent3D>(ent, comp);
+			engine->world.AddComponent(ent, comp);
+			engine->AssimpManager.InsertModel(comp.ID);
 			dsz.CloseElement();
 		}
 	}

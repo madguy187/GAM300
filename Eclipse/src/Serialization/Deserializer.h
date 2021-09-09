@@ -74,6 +74,13 @@ namespace Eclipse
 			std::string str = GetAttributeValue(att_name);
 			att_data = lexical_cast_toEnum<MaterialComponent::ModelType>(str);
 		}
+
+		template <>
+		inline void ReadAttributeFromElement(const std::string& att_name, TextureType& att_data)
+		{
+			std::string str = GetAttributeValue(att_name);
+			att_data = lexical_cast_toEnum<TextureType>(str);
+		}
 		
 		template <typename T, size_t N>
 		inline void ReadAttributeFromElement(Vector<T, N>& att_data)

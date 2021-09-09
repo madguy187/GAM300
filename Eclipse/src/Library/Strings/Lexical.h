@@ -148,4 +148,12 @@ namespace Eclipse
       "Models3D",
       "Maxcount"
     };
+
+    template<> char const* enumStrings<TextureType>::data[] =
+    {
+      "TT_UNASSIGNED",
+      "TT_2D",
+      "TT_3D",
+      "MT_MAXCOUNT"
+    };
 }

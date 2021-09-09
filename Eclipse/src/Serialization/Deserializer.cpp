@@ -93,13 +93,13 @@ namespace Eclipse
 			os << "Fail to load the file \"" << _path.filename() << "\"." <<
 				_doc.ErrorDesc() << " at Row " << _doc.ErrorRow() << " Column "
 				<< _doc.ErrorCol();
-			ENGINE_CORE_WARN(os.str().c_str())
+			EDITOR_LOG_WARN(os.str().c_str())
 		}
 		else
 		{
 			std::ostringstream os;
 			os << "File \"" << _path.filename() << "\"" << " is loaded successfuly.";
-			ENGINE_CORE_INFO(os.str().c_str())
+			EDITOR_LOG_INFO(os.str().c_str())
 		}
 
 		return result;
@@ -128,10 +128,9 @@ namespace Eclipse
 
 		if (!att_str)
 		{
-			std::string msg = "Failed to obtain attribute value \"";
-			msg += name + "during deserialization!";
-			ENGINE_LOG_ASSERT(false, msg.c_str());
-			std::exit(EXIT_FAILURE);
+			std::string msg = "Failed to obtain attribute value of \"";
+			msg += name + " during deserialization!";
+			EDITOR_LOG_WARN(false, msg.c_str());
 		}
 
 		return att_str;

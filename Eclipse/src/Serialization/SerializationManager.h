@@ -12,6 +12,8 @@
 #include "../ECS/ComponentManager/Components/RigidBodyComponent.h"
 #include "../ECS/ComponentManager/Components/SpotLightComponent.h"
 #include "../ECS/ComponentManager/Components/TransformComponent.h"
+#include "../ECS/ComponentManager/Components/TextureComponent.h"
+#include "../ECS/ComponentManager/Components/MeshComponent3D.h"
 
 namespace Eclipse
 {
@@ -71,11 +73,9 @@ namespace Eclipse
 			SerializeData(
 				"Color", data.color,
 				"TextureIdx", data.textureIdx,
-				"HasTexture", data.hasTexture,
 				"IsQuad", data.isQuad,
 				"ModelNDC_XForm", data.modelNDC_xform,
 				"ModelRef", data.modelRef,
-				"TextureRef", data.hasTexture ? data.textureRef : "",
 				"ShaderRef", data.shaderRef,
 				"ID", data.ID,
 				"Name", data.name,
@@ -117,9 +117,10 @@ namespace Eclipse
 				"HighlightColor", data.HighlightColour,
 				"Shininess", data.shininess,
 				"MaximumShininess", data.MaximumShininess,
+				"Modeltype", data.Modeltype,
 				"RegisterForHighlight", data.RegisterForHighlight,
 				"Highlight", data.Highlight,
-				"Modeltype", data.Modeltype,
+				"NoTextures", data.NoTextures,
 				"Thickness", data.Thickness,
 				"ScaleUp", data.ScaleUp
 			);
@@ -127,9 +128,9 @@ namespace Eclipse
 		}
 
 		template <>
-		inline void SerializeComponent<AabbComponent>(const AabbComponent& data)
+		inline void SerializeComponent<AABBComponent>(const AABBComponent& data)
 		{
-			sz.StartElement("AabbComponent");
+			sz.StartElement("AABBComponent");
 			SerializeData(
 				"Center", data.center,
 				"Min", data.min,
@@ -187,7 +188,8 @@ namespace Eclipse
 				"SurroundingAttenuationLevel", data.SurroundingAttenuationLevel,
 				"EnableBlinnPhong", data.EnableBlinnPhong,
 				"HasTexture", data.hasTexture,
-				"Visible", data.visible
+				"Visible", data.visible,
+				"AffectsWorld", data.AffectsWorld
 			);
 
 			sz.CloseElement();
@@ -213,7 +215,8 @@ namespace Eclipse
 				"AttenuationLevel", data.AttenuationLevel,
 				"EnableBlinnPhong", data.EnableBlinnPhong,
 				"HasTexture", data.hasTexture,
-				"Visible", data.visible
+				"Visible", data.visible,
+				"AffectsWorld", data.AffectsWorld
 			);
 
 			sz.CloseElement();
@@ -236,6 +239,33 @@ namespace Eclipse
 				"Specular", data.specular,
 				"Color", data.Color,
 				"ModelNDC_xform", data.modelNDC_xform
+			);
+
+			sz.CloseElement();
+		}
+
+		template <>
+		inline void SerializeComponent<TextureComponent>(const TextureComponent& data)
+		{
+			sz.StartElement("TextureComponent");
+			SerializeData(
+				"ID", data.ID,
+				"TextureType", data.Type,
+				"TextureKey", data.TextureKey,
+				"HasTexture", data.hasTexture,
+				"TextureRef", data.textureRef
+			);
+
+			sz.CloseElement();
+		}
+		
+		template <>
+		inline void SerializeComponent<MeshComponent3D>(const MeshComponent3D& data)
+		{
+			sz.StartElement("MeshComponent3D");
+			SerializeData(
+				"ID", data.ID,
+				"Key", data.Key
 			);
 
 			sz.CloseElement();
@@ -308,12 +338,6 @@ namespace Eclipse
 				dsz.CloseElement();
 			}
 
-			if (dsz.StartElement("HasTexture"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.hasTexture);
-				dsz.CloseElement();
-			}
-
 			if (dsz.StartElement("IsQuad"))
 			{
 				dsz.ReadAttributeFromElement("value", comp.isQuad);
@@ -329,12 +353,6 @@ namespace Eclipse
 			if (dsz.StartElement("ModelRef"))
 			{
 				dsz.ReadAttributeFromElement("value", comp.modelRef);
-				dsz.CloseElement();
-			}
-
-			if (comp.hasTexture && dsz.StartElement("TextureRef"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.textureRef);
 				dsz.CloseElement();
 			}
 
@@ -442,6 +460,12 @@ namespace Eclipse
 				dsz.CloseElement();
 			}
 			
+			if (dsz.StartElement("NoTextures"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.NoTextures);
+				dsz.CloseElement();
+			}
+			
 			if (dsz.StartElement("ScaleUp"))
 			{
 				dsz.ReadAttributeFromElement("value", comp.ScaleUp);
@@ -450,7 +474,7 @@ namespace Eclipse
 		}
 		
 		template<>
-		inline void DeserializeComponent<AabbComponent>(const Entity& ent, AabbComponent& comp)
+		inline void DeserializeComponent<AABBComponent>(const Entity& ent, AABBComponent& comp)
 		{
 			if (dsz.StartElement("Center"))
 			{
@@ -753,6 +777,12 @@ namespace Eclipse
 				dsz.ReadAttributeFromElement("value", comp.visible);
 				dsz.CloseElement();
 			}
+
+			if (dsz.StartElement("AffectsWorld"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.AffectsWorld);
+				dsz.CloseElement();
+			}
 		}
 
 		template<>
@@ -849,6 +879,12 @@ namespace Eclipse
 				dsz.ReadAttributeFromElement("value", comp.visible);
 				dsz.CloseElement();
 			}
+
+			if (dsz.StartElement("AffectsWorld"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.AffectsWorld);
+				dsz.CloseElement();
+			}
 		}
 
 		template<>
@@ -919,6 +955,48 @@ namespace Eclipse
 			if (dsz.StartElement("ModelNDC_xform"))
 			{
 				dsz.ReadAttributeFromElement(comp.modelNDC_xform);
+				dsz.CloseElement();
+			}
+		}
+		
+		template<>
+		inline void DeserializeComponent<TextureComponent>(const Entity& ent, TextureComponent& comp)
+		{
+			comp.ID = ent;
+
+			if (dsz.StartElement("TextureType"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.Type);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("TextureKey"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.TextureKey);
+				dsz.CloseElement();
+			}
+			
+			if (dsz.StartElement("HasTexture"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.hasTexture);
+				dsz.CloseElement();
+			}
+
+			if (dsz.StartElement("TextureRef"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.textureRef);
+				dsz.CloseElement();
+			}
+		}
+		
+		template<>
+		inline void DeserializeComponent<MeshComponent3D>(const Entity& ent, MeshComponent3D& comp)
+		{
+			comp.ID = ent;
+
+			if (dsz.StartElement("Key"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.Key);
 				dsz.CloseElement();
 			}
 		}
