@@ -28,13 +28,13 @@ namespace Eclipse
         Setup();
     }
 
-    Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiColor4D diffuse, aiColor4D specular)
+    Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiColor4D diffuse, aiColor4D specular, bool in)
         :
         Vertices(vertices),
         Indices(indices),
         Diffuse(diffuse),
         Specular(specular),
-        NoTex(true)
+        NoTex(in)
     {
         Setup();
     }
@@ -60,7 +60,7 @@ namespace Eclipse
             //shader.set4Float("material.specular", specular);
             //shader.setInt("noTex", 1);
 
-            std::cout << "no texture component" << std::endl;
+            //std::cout << "no texture component" << std::endl;
         }
         else
         {

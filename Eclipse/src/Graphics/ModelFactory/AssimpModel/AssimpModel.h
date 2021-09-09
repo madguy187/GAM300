@@ -24,7 +24,7 @@ namespace Eclipse
         aiColor4D Diffuse;
         aiColor4D Specular;
 
-        bool hasTexture = false;
+        bool NoTextures = false;
         std::vector<Texture> textures;
     };
 
