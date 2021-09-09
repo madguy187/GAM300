@@ -24,7 +24,7 @@ namespace Eclipse
         aiColor4D Diffuse;
         aiColor4D Specular;
 
-        bool noTex;
+        bool hasTexture = false;
         std::vector<Texture> textures;
     };
 
@@ -55,7 +55,7 @@ namespace Eclipse
     public:
 
         AssimpModel() { }
-        AssimpModel(bool noTex);
+        AssimpModel(bool noTex = false);
         AssimpModel(bool noTex, std::string& NameOfModels, std::string& Directorys, std::vector<Mesh> Meshess, std::vector<Texture> Textures_loadeds);
 
         void LoadAssimpModel(std::string path);

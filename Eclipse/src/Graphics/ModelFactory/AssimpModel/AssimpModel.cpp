@@ -202,7 +202,7 @@ namespace Eclipse
                 vertex.Position.z /= largestAxis;
             }
 
-            if (it.noTex == true)
+            if (it.hasTexture)
             {
                 Meshes.push_back(Mesh(it.vertices, it.indices, it.textures));
             }
@@ -210,8 +210,6 @@ namespace Eclipse
             {
                 Meshes.push_back(Mesh(it.vertices, it.indices, it.Diffuse, it.Specular));
             }
-
-            NoTextures = it.noTex;
         }
 
         for (auto& it : AllVertices)
@@ -222,7 +220,6 @@ namespace Eclipse
             it.y /= largestAxis;
             it.z /= largestAxis;
         }
-
     }
 
     std::vector<glm::vec3> Eclipse::AssimpModel::GetVertices()
@@ -342,7 +339,24 @@ namespace Eclipse
             }
             else
             {
-                newMesh.noTex = false;
+                //regular file, check if it exists and read it
+                if (NoTextures)
+                {
+                    // diffuse color
+                    aiColor4D diff(1.0f);
+                    aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diff);
+
+                    // specular color
+                    aiColor4D spec(1.0f);
+                    aiGetMaterialColor(material, AI_MATKEY_COLOR_SPECULAR, &spec);
+
+                    //return Mesh(vertices, indices, diff, spec);
+
+                    meshData.push_back(newMesh);
+                    return;
+                }
+
+                newMesh.hasTexture = true;
 
                 // diffuse maps
                 std::vector<Texture> diffuseMaps = LoadTextures(material, aiTextureType_DIFFUSE);
@@ -353,26 +367,6 @@ namespace Eclipse
                 std::vector<Texture> specularMaps = LoadTextures(material, aiTextureType_SPECULAR);
                 textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
                 newMesh.textures.insert(newMesh.textures.end(), specularMaps.begin(), specularMaps.end());
-
-                //regular file, check if it exists and read it
-                if (newMesh.textures.size() == 0)
-                {
-                    newMesh.noTex = true;
-
-                    // diffuse color
-                    aiColor4D diff(1.0f);
-                    aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diff);
-                    newMesh.Diffuse = diff;
-
-                    // specular color
-                    aiColor4D spec(1.0f);
-                    aiGetMaterialColor(material, AI_MATKEY_COLOR_SPECULAR, &spec);
-                    newMesh.Specular = spec;
-
-                    meshData.push_back(newMesh);
-                    Index++;
-                    return;
-                }
             }
         }
 
