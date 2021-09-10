@@ -137,6 +137,7 @@ namespace Eclipse
 				ECGui::DrawSliderFloatWidget("IntensityFloat", &_PointLight.IntensityStrength, true, 0.f, 150.f);
 
 				ECGui::DrawTextWidget<const char*>("Light Colour", "");
+
 				ImGui::ColorPicker3("PLightColor", (float*)&_PointLight.Color, 
 					ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
 				//ECGui::DrawSliderFloat4Widget("ColourVec", &_PointLight.Color, true, 0.0f, 1.0f);
@@ -155,6 +156,39 @@ namespace Eclipse
 
 				ECGui::DrawTextWidget<const char*>("Light Specular", "");
 				ECGui::DrawSliderFloat3Widget("PLightSpecularVec", &_PointLight.specular, true, 0.0f, 1.0f);
+
+				ECGui::DrawTextWidget<const char*>("Intensity Strength", "");
+				ECGui::DrawSliderFloatWidget("Intensity Strength", &_PointLight.IntensityStrength, true, 0.0f, 50.0f);
+
+				ECGui::DrawTextWidget<const char*>("Constant", "");
+				ECGui::DrawSliderFloatWidget("Constant", &_PointLight.constant, true, 0.0f, 50.0f);
+
+				ECGui::DrawTextWidget<const char*>("Linear", "");
+				ECGui::DrawSliderFloatWidget("Linear", &_PointLight.linear, true, 0.0f, 50.0f);
+
+				ECGui::DrawTextWidget<const char*>("Quadratic", "");
+				ECGui::DrawSliderFloatWidget("Linear", &_PointLight.quadratic, true, 0.0f, 50.0f);
+
+				ECGui::DrawTextWidget<const char*>("Radius", "");
+				ECGui::DrawSliderFloatWidget("Linear", &_PointLight.radius, true, 0.0f, 50.0f);
+
+				ImGui::Columns(2, NULL, true);
+				ECGui::DrawTextWidget<const char*>("Enable Blinn Phong", "");
+				ECGui::DrawTextWidget<const char*>("Visible", "");
+				ECGui::DrawTextWidget<const char*>("Affects World", "");
+				ImGui::NextColumn();
+				ECGui::CheckBoxBool("Enable Blinn Phong", &_PointLight.EnableBlinnPhong);
+				ECGui::CheckBoxBool("Enable Blinn PhongVisible", &_PointLight.visible);
+				ECGui::CheckBoxBool("Affects World", &_PointLight.AffectsWorld);
+				ImGui::Columns(1, NULL, true);
+				//ECGui::DrawTextWidget<const char*>("Visible", "");
+				//ImGui::NextColumn();
+				//ECGui::CheckBoxBool("Enable Blinn PhongVisible", &_PointLight.visible);
+
+				//ECGui::DrawTextWidget<const char*>("Affects World", "");
+				//ImGui::NextColumn();
+				//ECGui::CheckBoxBool("Affects World", &_PointLight.AffectsWorld);
+
 			}
 		}
 
