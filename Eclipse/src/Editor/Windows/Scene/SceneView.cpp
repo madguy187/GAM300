@@ -55,15 +55,15 @@ namespace Eclipse
 		// Set Image size
 		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
 			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-
-		// ImGuizmo Logic
-		if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
-		{
-			OnGizmoUpdateEvent();
-		}
 		
 		if (ECGui::IsItemHovered() /*&& ImGui::IsWindowFocused() *//*temp fix*/)
 		{
+			// ImGuizmo Logic
+			if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
+			{
+			//	OnGizmoUpdateEvent();
+			}
+
 			// Do all the future stuff here when hovering on window
 			OnKeyPressedEvent();
 			OnCameraMoveEvent();
@@ -297,6 +297,18 @@ namespace Eclipse
 				engine->gCamera.GetInput().set(0, 1);
 			else
 				engine->gCamera.GetInput().set(0, 0);
+
+			// Camera Move Up
+			if (ImGui::IsKeyDown(ImGui::GetKeyIndex(ImGuiKey_Q)))
+				engine->gCamera.GetInput().set(10, 1);
+			else
+				engine->gCamera.GetInput().set(10, 0);
+
+			// Camera Move Down
+			if (ImGui::IsKeyDown(ImGui::GetKeyIndex(ImGuiKey_E)))
+				engine->gCamera.GetInput().set(11, 1);
+			else
+				engine->gCamera.GetInput().set(11, 0);
 		}
 		else
 		{
@@ -308,6 +320,8 @@ namespace Eclipse
 			engine->gCamera.GetInput().set(5, 0);
 			engine->gCamera.GetInput().set(6, 0);
 			engine->gCamera.GetInput().set(7, 0);
+			engine->gCamera.GetInput().set(10, 0);
+			engine->gCamera.GetInput().set(11, 0);
 		}
 	}
 

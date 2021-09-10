@@ -10,7 +10,10 @@
 #include "Editor/Windows/AssetBrowser/AssetBrowser.h"
 #include "Editor/Windows/Log/Log.h"
 #include "Editor/Windows/Profiler/Profiler.h"
-#include "Editor/Windows/SwitchViews/SwitchViews.h"
+#include "Editor/Windows/SwitchViews/TopSwitchViewWindow.h"
+#include "Editor/Windows/SwitchViews/BottomSwitchViewWindow.h"
+#include "Editor/Windows/SwitchViews/LeftSwitchViewWindow.h"
+#include "Editor/Windows/SwitchViews/RightSwitchViewWindow.h"
 
 namespace Eclipse
 {
@@ -34,7 +37,10 @@ namespace Eclipse
 		AddWindow<AssetBrowserWindow>("AssetBrowser");
 		AddWindow<LoggerWindow>("Log");
 		AddWindow<DebugWindow>("Debug");
-		AddWindow<SwitchViewsWindow>("SwitchViews");
+		AddWindow<TopSwitchViewWindow>("TopSwitchView");
+		AddWindow<BottomSwitchViewWindow>("BottomSwitchViews");
+		AddWindow<LeftSwitchViewWindow>("LeftSwitchViews");
+		AddWindow<RightSwitchViewWindow>("RightSwitchViews");
 	}
 
 	void EditorManager::InitMenu()

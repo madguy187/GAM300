@@ -517,7 +517,6 @@
     <ClInclude Include="src\Graphics\Grid\Box.h" />
     <ClInclude Include="src\Editor\Windows\Log\ConsoleData.h" />
     <ClInclude Include="src\Graphics\Picker\PickingManager.h" />
-    <ClInclude Include="src\Editor\Windows\SwitchViews\SwitchViews.h" />
     <ClInclude Include="src\Editor\Utilities\DragAndDrop.h" />
     <ClInclude Include="src\Graphics\Grid\AABB.h" />
     <ClInclude Include="src\Graphics\Grid\IAABB.h" />
@@ -535,6 +534,10 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\MeshComponent3D.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\TextureComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AABBComponent.h" />
+    <ClInclude Include="src\Editor\Windows\SwitchViews\TopSwitchViewWindow.h" />
+    <ClInclude Include="src\Editor\Windows\SwitchViews\BottomSwitchViewWindow.h" />
+    <ClInclude Include="src\Editor\Windows\SwitchViews\LeftSwitchViewWindow.h" />
+    <ClInclude Include="src\Editor\Windows\SwitchViews\RightSwitchViewWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -782,6 +785,10 @@
     <ClCompile Include="src\Editor\Utilities\OpenFileDialog.cpp" />
     <ClCompile Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.cpp" />
     <ClCompile Include="src\Editor\ECGuiAPI\ECGuiInputHandler.cpp" />
+    <ClCompile Include="src\Editor\Windows\SwitchViews\TopSwitchViewWindow.cpp" />
+    <ClCompile Include="src\Editor\Windows\SwitchViews\BottomSwitchViewWindow.cpp" />
+    <ClCompile Include="src\Editor\Windows\SwitchViews\LeftSwitchViewWindow.cpp" />
+    <ClCompile Include="src\Editor\Windows\SwitchViews\RightSwitchViewWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\AABB.frag" />
@@ -802,7 +809,6 @@
     <None Include="src\Assets\Shaders\textFrag.frag" />
     <None Include="src\Assets\Shaders\textVtx.vert" />
     <ClCompile Include="src\Graphics\Picker\PickingManager.cpp" />
-    <ClCompile Include="src\Editor\Windows\SwitchViews\SwitchViews.cpp" />
     <ClCompile Include="src\Editor\Utilities\DragAndDrop.cpp" />
   </ItemGroup>
   <ItemGroup>
