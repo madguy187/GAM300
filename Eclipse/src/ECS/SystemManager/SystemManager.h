@@ -72,6 +72,14 @@ namespace Eclipse
 			}
 		}
 
+		void Clear()
+		{
+			for (auto& system : mSystems)
+			{
+				system.second->mEntities.clear();
+			}
+		}
+
 		template <typename T>
 		std::shared_ptr<T> GetSystem()
 		{
