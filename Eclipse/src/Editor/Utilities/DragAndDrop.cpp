@@ -209,8 +209,8 @@ namespace Eclipse
 												{
 													files.insert(std::pair<std::string, std::string>(dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName, dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName));
 												}
+
 												std::filesystem::create_directories(dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string());
-												//std::filesystem::create_directories(dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName);
 												std::filesystem::copy(pair2, dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName);
 								
 											}
