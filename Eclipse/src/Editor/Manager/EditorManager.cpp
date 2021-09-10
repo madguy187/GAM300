@@ -92,7 +92,7 @@ namespace Eclipse
 		engine->world.AddComponent(ID, TransformComponent{});
 
 		// Check this please - Rachel
-		if(type!=EntityType::ENT_CAMERA)
+		if(type!=EntityType::ENT_GAMECAMERA)
 		{
 			auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
 			engine->gPicker.GenerateAabb(ID, _transform, type);

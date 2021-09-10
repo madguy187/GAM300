@@ -23,40 +23,30 @@ namespace Eclipse
 		void AddComponentsController(Entity ID);
 		void RemoveComponentsController(Entity ID);
 		void ShowAddComponentList(Entity ID);
-		void AddComponentsSuccess(const char* Components, const std::string& name, Entity ID);
-		void AddComponentsFailed(const char* Components, const std::string& name, Entity ID);
 		void ShowRemoveComponentList(Entity ID);
-		void RemoveComponentsSuccess(const char* Components, const std::string& name, Entity ID);
-		void RemoveComponentsFailed(const char* Components, const std::string& name, Entity ID);
+
+		template <typename TComponents>
+		void AddComponentsFeedback(const char* Components, const std::string& name, Entity ID, bool exist);
+		
+		template <typename TComponents>
+		void RemoveComponentsFeedback(const char* Components, const std::string& name, Entity ID, bool exist);
 
 		template <typename TComponents>
 		void ComponentRegistry(const char* CompName, Entity ID,
 			const std::string EntityName, EditComponent method)
 		{
+			bool isExist = engine->world.CheckComponent<TComponents>(ID);
+
 			if (method == EditComponent::EC_ADDCOMPONENT)
 			{
-				if (!engine->world.CheckComponent<TComponents>(ID))
-				{
-					AddComponentsSuccess(CompName, EntityName, ID);
-					engine->world.AddComponent(ID, TComponents{});
-				}
-				else
-				{
-					AddComponentsFailed(CompName, EntityName, ID);
-				}
+				AddComponentsFeedback<TComponents>(CompName, EntityName, ID, isExist);
 			}
 			else
 			{
-				if (engine->world.CheckComponent<TComponents>(ID))
-				{
-					RemoveComponentsSuccess(CompName, EntityName, ID);
-					engine->world.DestroyComponent<TComponents>(ID);
-				}
-				else
-				{
-					RemoveComponentsFailed(CompName, EntityName, ID);
-				}
+				RemoveComponentsFeedback<TComponents>(CompName, EntityName, ID, isExist);
 			}
+
+			ImGui::CloseCurrentPopup();
 		}
 
 		static constexpr unsigned int str2int(const char* str, int h = 0)

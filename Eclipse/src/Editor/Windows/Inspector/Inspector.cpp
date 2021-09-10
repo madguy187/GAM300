@@ -245,13 +245,13 @@ namespace Eclipse
 			{
 				auto& _Camera = engine->world.GetComponent<CameraComponent>(ID);
 
-				if(engine->gCamera.GetEditorCameraID() == ID)
-				{
-					ECGui::DrawTextWidget<const char*>("Near Plane", "");
-					ECGui::DrawSliderFloatWidget("Near Plane", &_Camera.nearPlane, false, 0, 1000);
-					ECGui::DrawTextWidget<const char*>("Far Plane", "");
-					ECGui::DrawSliderFloatWidget("Far Plane", &_Camera.farPlane,false,0,1000);
-				}
+				//if(engine->gCamera.GetGameCameraID() == ID)
+				//{
+				//	ECGui::DrawTextWidget<const char*>("Near Plane", "");
+				//	ECGui::DrawSliderFloatWidget("Near Plane", &_Camera.nearPlane, false, 0, 1000);
+				//	ECGui::DrawTextWidget<const char*>("Far Plane", "");
+				//	ECGui::DrawSliderFloatWidget("Far Plane", &_Camera.farPlane,false,0,1000);
+				//}
 				ECGui::DrawTextWidget<const char*>("Camera Speed", "");
 				ECGui::DrawSliderFloatWidget("Camera Speed", &_Camera.cameraSpeed);
 				
@@ -303,11 +303,11 @@ namespace Eclipse
 
 		for (int i = 0; i < engine->world.GetAllComponentNames().size(); i++)
 		{
-			if (AddComponentFilter.PassFilter(engine->world.GetAllComponentNames().at(i).c_str()))
+			if (AddComponentFilter.PassFilter(engine->world.GetAllComponentNames()[i].c_str()))
 			{
-				if(ImGui::Button(engine->world.GetAllComponentNames().at(i).c_str(), ImVec2(200, 0)))
+				if(ImGui::Button(engine->world.GetAllComponentNames()[i].c_str(), ImVec2(200, 0)))
 				{
-					switch (str2int(engine->world.GetAllComponentNames().at(i).c_str()))
+					switch (str2int(engine->world.GetAllComponentNames()[i].c_str()))
 					{
 					case str2int("TransformComponent"):
 						ComponentRegistry<TransformComponent>("TransformComponent", ID, entCom.Name,
@@ -355,20 +355,37 @@ namespace Eclipse
 		}
 		
 	}
-	void InspectorWindow::AddComponentsSuccess(const char* Components, const std::string& name, Entity ID)
+
+	template <typename TComponents>
+	void InspectorWindow::AddComponentsFeedback(const char* Components, const std::string& name, Entity ID, bool exist)
 	{
-		std::string Comp = my_strcat(std::string{ Components }, " Added For ", name, ID, " Add Succeed");
-		/*std::string Comp(Components);
-		Comp += " Added For " + name + std::to_string(ID) + " Add Succeed";*/
-		EDITOR_LOG_INFO(Comp.c_str());
+		if(!exist)
+		{
+			engine->world.AddComponent(ID, TComponents{});
+			std::string Comp = my_strcat(std::string{ Components }, " Added For ", name, ID, " Add Succeed");
+			EDITOR_LOG_INFO(Comp.c_str());
+		}
+		else
+		{
+			std::string Comp = my_strcat(std::string{ Components }, " Already Exists in ", name, ID, " Add Failed");
+			EDITOR_LOG_WARN(Comp.c_str());
+		}
 	}
 
-	void InspectorWindow::AddComponentsFailed(const char* Components, const std::string& name, Entity ID)
+	template <typename TComponents>
+	void InspectorWindow::RemoveComponentsFeedback(const char* Components, const std::string& name, Entity ID,bool exist)
 	{
-		std::string Comp = my_strcat(std::string{ Components }, " Already Exists in ", name, ID, " Add Failed");
-		/*std::string Comp(Components);
-		Comp += " Already Exists in " + name + std::to_string(ID) + " Add Failed";*/
-		EDITOR_LOG_WARN(Comp.c_str());
+		if(exist)
+		{
+			std::string Comp = my_strcat(std::string{ Components }, " Removed For ", name, ID, " Remove Succeed");
+			EDITOR_LOG_INFO(Comp.c_str());
+			engine->world.DestroyComponent<TComponents>(ID);
+		}
+		else
+		{
+			std::string Comp = my_strcat(std::string{ Components }, " Does Not Exists in ", name, ID, " Remove Failed");
+			EDITOR_LOG_WARN(Comp.c_str());
+		}
 	}
 
 	void InspectorWindow::ShowRemoveComponentList(Entity ID)
@@ -381,11 +398,11 @@ namespace Eclipse
 
 		for (int i = 0; i < engine->world.GetAllComponentNames().size(); i++)
 		{
-			if (RemoveComponentFilter.PassFilter(engine->world.GetAllComponentNames().at(i).c_str()))
+			if (RemoveComponentFilter.PassFilter(engine->world.GetAllComponentNames()[i].c_str()))
 			{
-				if(ImGui::Button(engine->world.GetAllComponentNames().at(i).c_str(), ImVec2(200, 0)))
+				if(ImGui::Button(engine->world.GetAllComponentNames()[i].c_str(), ImVec2(200, 0)))
 				{
-					switch (str2int(engine->world.GetAllComponentNames().at(i).c_str()))
+					switch (str2int(engine->world.GetAllComponentNames()[i].c_str()))
 					{
 					case str2int("TransformComponent"):
 						ComponentRegistry<TransformComponent>("TransformComponent", ID, entCom.Name,
@@ -433,18 +450,5 @@ namespace Eclipse
 		}
 		
 	}
-	void InspectorWindow::RemoveComponentsSuccess(const char* Components, const std::string& name, Entity ID)
-	{
-		std::string Comp = my_strcat(std::string{ Components }, " Removed For ", name, ID, " Remove Succeed");
-		/*std::string Comp(Components);
-		Comp += " Removed For " + entCom.Name + std::to_string(ID) + " Remove Succeed";*/
-		EDITOR_LOG_INFO(Comp.c_str());
-	}
-	void InspectorWindow::RemoveComponentsFailed(const char* Components, const std::string& name, Entity ID)
-	{
-		std::string Comp = my_strcat(std::string{ Components }, " Does Not Exists in ", name, ID, " Remove Failed");
-		/*std::string Comp(Components);
-		Comp += " Does Not Exists in " + entCom.Name + std::to_string(ID) + " Remove Failed";*/
-		EDITOR_LOG_WARN(Comp.c_str());
-	}
+
 }

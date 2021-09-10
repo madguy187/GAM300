@@ -34,7 +34,7 @@ namespace Eclipse
 		}
 
 		for (int index = static_cast<int>(EntityType::ENT_LIGHT_POINT); 
-			index != static_cast<int>(EntityType::ENT_CAMERA); ++index)
+			index != static_cast<int>(EntityType::ENT_GAMECAMERA); ++index)
 		{
 			EntityType temp = static_cast<EntityType>(index);
 			TagList_[1].push_back(lexical_cast_toStr<EntityType>(temp));
