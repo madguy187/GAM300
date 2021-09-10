@@ -162,6 +162,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\ECS\ComponentManager\Components\DirectionalLightComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\EntityComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\MaterialComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\ParentChildComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\MeshComponent3D.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\PointLightComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\RenderComponent.h" />
@@ -176,6 +177,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\ECS\SystemManager\Systems\System\GridSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\LightingSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\System.h" />
@@ -300,6 +302,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\ECS\SystemManager\Systems\System\GridSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp" />
     <ClCompile Include="src\ECS\World.cpp" />
