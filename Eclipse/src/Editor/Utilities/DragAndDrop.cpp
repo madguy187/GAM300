@@ -108,7 +108,11 @@ namespace Eclipse
 		std::map<std::filesystem::path, std::vector<std::filesystem::path>> pathMap, bool& CopyMode)
 	{
 		static std::string folderName;
-		
+
+		static std::string parentPath;
+
+		std::filesystem::path itemPaths = AssetPath.c_str();
+
 		if (ImGui::BeginDragDropTarget())
 		{
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(type))
@@ -116,10 +120,10 @@ namespace Eclipse
 				try
 				{
 					paths = (const char*)payload->Data;
-					std::filesystem::path itemPaths = AssetPath.c_str();
+
 					if(std::filesystem::is_directory(itemPaths.string() + "\\" + paths))
 					{
-						std::string parentPath = std::filesystem::path(itemPaths / paths).string();
+						parentPath = std::filesystem::path(itemPaths / paths).string();
 						bool baseFile = false;
 						size_t pos = 0;
 						int fileSize = 0;
@@ -251,11 +255,14 @@ namespace Eclipse
 						}
 						
 						folderName = std::filesystem::path(paths).filename().string();
+
 						bool once = true;
+
 						for (int i = 1; i <= fileSize; ++i)
 						{
 							const auto copyOptions = std::filesystem::copy_options::update_existing
 								| std::filesystem::copy_options::recursive;
+
 							if(std::filesystem::is_directory(std::filesystem::path(itemPaths / paths)) && once)
 							{
 								std::filesystem::create_directories(dirEntry.path().string() + "\\" + std::filesystem::path(itemPaths / paths).filename().string());
@@ -270,11 +277,7 @@ namespace Eclipse
 						}
 						
 						//resetting for the next moving of files
-						deletefiles.clear();
-						files.clear();
-						folderName.clear();
-						parentPath.clear();
-						refreshBrowser = true;
+						ClearAllFiles(folderName, parentPath, refreshBrowser);
 					}
 					else
 					{
@@ -290,9 +293,24 @@ namespace Eclipse
 				catch (std::filesystem::filesystem_error& e)
 				{
 					EDITOR_LOG_WARN(e.what());
+
+					if (!CopyMode)
+					{
+						std::filesystem::remove_all(std::filesystem::path(itemPaths / paths));
+					}
+
+					ClearAllFiles(folderName,parentPath, refreshBrowser);
 				}
 			}
 			ImGui::EndDragDropTarget();
 		}
+	}
+	void DragAndDrop::ClearAllFiles(std::string& folderName, std::string& parentPath, bool& refreshBrowser)
+	{
+		deletefiles.clear();
+		files.clear();
+		folderName.clear();
+		parentPath.clear();
+		refreshBrowser = true;
 	}
 }
