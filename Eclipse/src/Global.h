@@ -130,3 +130,9 @@ enum class LoadingModels : unsigned int
     lines3D = 12,
     MAXCOUNT
 };
+
+enum class EditComponent
+{
+    EC_ADDCOMPONENT,
+    EC_REMOVECOMPONENT
+};
