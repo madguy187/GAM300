@@ -60,7 +60,7 @@ enum class EntityType
     ENT_LIGHT_DIRECTIONAL,
     ENT_LIGHT_SPOT,
     // ADD ON LIGHTS HERE
-    ENT_CAMERA,
+    ENT_GAMECAMERA,
     ENT_UNASSIGNED
 };
 
@@ -80,10 +80,18 @@ enum class PayloadSourceType
 
 enum class PayloadTargetType
 {
-    PTT_WIDGET,
-    PTT_WINDOW,
-    PTT_INDEXSWAPPING,
-    PTT_UNASSIGNED
+	PTT_WIDGET,
+	PTT_WINDOW,
+	PTT_INDEXEDIT,
+	PTT_UNASSIGNED
+};
+
+enum class PayloadIndexJob
+{
+    PIJ_MOVE,
+    PIJ_SWAP,
+    PIJ_PARENTCHILD,
+    PIJ_UNASSIGNED
 };
 
 enum class ModelType
@@ -121,4 +129,10 @@ enum class LoadingModels : unsigned int
     pyramid = 11,
     lines3D = 12,
     MAXCOUNT
+};
+
+enum class EditComponent
+{
+    EC_ADDCOMPONENT,
+    EC_REMOVECOMPONENT
 };

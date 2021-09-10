@@ -36,6 +36,7 @@ namespace Eclipse
 		Entity GetSelectedEntity() const;
 		size_t GetEntityListSize() const;
 		int GetEntityIndex(Entity ID);
+		Entity GetEntityID(int index);
 		bool IsEntityListEmpty() const;
 
 		// Setters
