@@ -5,7 +5,7 @@
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RenderComponent.h"
 #include "ECS/ComponentManager/Components/CameraComponent.h"
-#include "ECS/ComponentManager/Components/AabbComponent.h"
+#include "ECS/ComponentManager/Components/AABBComponent.h"
 #include "ECS/ComponentManager/Components/DirectionalLightComponent.h"
 #include "ECS/ComponentManager/Components/SpotLightComponent.h"
 #include "ECS/ComponentManager/Components/MaterialComponent.h"
@@ -50,6 +50,7 @@ namespace Eclipse
         std::cout << "ENDED" << std::endl;
 
         engine->GraphicsManager.Pre_Render();
+    	
         ImGuiSetup::Init(EditorState);
 
         if (EditorState)
@@ -69,7 +70,7 @@ namespace Eclipse
         world.RegisterComponent<CameraComponent>();
         world.RegisterComponent<PointLightComponent>();
         world.RegisterComponent<DirectionalLightComponent>();
-        world.RegisterComponent<AabbComponent>();
+        world.RegisterComponent<AABBComponent>();
         world.RegisterComponent<SpotLightComponent>();
         world.RegisterComponent<MaterialComponent>();
         world.RegisterComponent<testComponent>();
@@ -107,13 +108,13 @@ namespace Eclipse
         world.RegisterSystemSignature<MaterialSystem>(mat);
 
         Signature picking;
-        picking.set(world.GetComponentType<AabbComponent>(), 1);
+        picking.set(world.GetComponentType<AABBComponent>(), 1);
         picking.set(world.GetComponentType<TransformComponent>(), 1);
         picking.set(world.GetComponentType<MaterialComponent>(), 1);
         world.RegisterSystemSignature<PickingSystem>(picking);
 
         Signature gridCol;
-        gridCol.set(world.GetComponentType<AabbComponent>(), 1);
+        gridCol.set(world.GetComponentType<AABBComponent>(), 1);
         gridCol.set(world.GetComponentType<TransformComponent>(), 1);
         world.RegisterSystemSignature<GridSystem>(gridCol);
 
@@ -139,6 +140,7 @@ namespace Eclipse
         ProfilerWindow Timer;
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
+           
             Timer.tracker.system_start = glfwGetTime();
             glfwPollEvents();
             engine->GraphicsManager.mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });

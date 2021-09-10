@@ -3,7 +3,7 @@
 #include "AABB.h"
 #include "IAABB.h"
 #include "Graphics/ModelFactory/AssimpModel/AssimpModel.h"
-#include "ECS/ComponentManager/Components/AabbComponent.h"
+#include "ECS/ComponentManager/Components/AABBComponent.h"
 
 #define AABB_NULL_NODE 0xffffffff
 
@@ -42,7 +42,7 @@ namespace Eclipse
         void RemoveObject(const std::shared_ptr<IAABB>& object);
         void UpdateObject(const std::shared_ptr<IAABB>& object);
         std::vector<unsigned int> CheckOverlapAgainstGrid(DYN_AABB& object);
-        std::vector<unsigned int> CheckOverlapAgainstGrid(AabbComponent& object);
+        std::vector<unsigned int> CheckOverlapAgainstGrid(AABBComponent& object);
         std::vector<unsigned int> CheckOverlap(DYN_AABB& object);
         std::vector<unsigned int> CheckMouseOverlapAgainstGrid(glm::vec3& rayStart, glm::vec3& rayDir, float& t);
         unsigned int NumberOfIntersections(std::vector<unsigned int>& in);

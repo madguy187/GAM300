@@ -122,7 +122,7 @@ namespace Eclipse
         return 2.0f * (GetWidth() * GetHeight() + GetWidth() * GetDepth() + GetHeight() * GetDepth());
     }
 
-    bool DYN_AABB::Overlaps(const AabbComponent& other) const
+    bool DYN_AABB::Overlaps(const AABBComponent& other) const
     {
         return Max.x > other.min.getX() && Min.x < other.max.getX() &&
             Max.y > other.min.getY() && Min.y < other.max.getY() &&
@@ -161,7 +161,7 @@ namespace Eclipse
             && other.z >= Min.z && other.z <= Max.z;
     }
 
-    AabbComponent& DYN_AABB::SetAABB(TransformComponent& in, AabbComponent& aabbin)
+    AABBComponent& DYN_AABB::SetAABB(TransformComponent& in, AABBComponent& aabbin)
     {
         glm::vec3 scale = in.scale.ConvertToGlmVec3Type();
         glm::vec3 position = in.position.ConvertToGlmVec3Type();

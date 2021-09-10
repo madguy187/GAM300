@@ -376,13 +376,13 @@ namespace Eclipse
         return gridArray[indexIn].aabb.DistanceToObject;;
     }
 
-    void Grid::SetDistance(AABBNode& Nodein, AabbComponent& aabbin, unsigned int id)
+    void Grid::SetDistance(AABBNode& Nodein, AABBComponent& aabbin, unsigned int id)
     {
         Nodein.aabb.DistanceToObject = Nodein.aabb.Max.x - aabbin.max.getX();
         /*engine->GridManager->*/gridArray[Nodein.aabb.GetEntityID()].aabb.DistanceToObject = Nodein.aabb.DistanceToObject;
     }
 
-    void Grid::SetDistance(AABBNode& Nodein, AabbComponent& aabbin)
+    void Grid::SetDistance(AABBNode& Nodein, AABBComponent& aabbin)
     {
         Nodein.aabb.DistanceToObject = Nodein.aabb.Max.x - aabbin.max.getX();
     }
@@ -396,6 +396,16 @@ namespace Eclipse
     void Grid::SetPosition(TransformComponent& in, unsigned int id)
     {
         in.position = gridArray[id].CenterPoint;
+    }
+
+    bool Grid::GetGridSystemIsRunning()
+    {
+        return GridSystemIsRunning;
+    }
+
+    void Grid::SetGridSystemIsRunning(bool in)
+    {
+        GridSystemIsRunning = in;
     }
 
     DYN_AABB Tile::getAABB() const

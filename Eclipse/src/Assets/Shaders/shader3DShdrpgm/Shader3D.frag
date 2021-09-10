@@ -17,6 +17,7 @@ uniform bool useBlinn;
 uniform float gamma;
 uniform bool EnableGammaCorrection;
 uniform bool CheckApplyLighting;
+uniform int BasicPrimitives;
 
 // Structs
 uniform sampler2D diffuse0;
@@ -117,8 +118,16 @@ void main ()
       	//texDiff = texture(uTex2d, TxtCoord);
     	//texSpec = texture(uTex2d, TxtCoord);
 
-		texDiff = texture(uTex2d, TxtCoord) * sdiffuse;
-		texSpec = texture(uTex2d, TxtCoord) * sspecular;      
+        if( BasicPrimitives == 1)
+        {
+ 		  texDiff = texture(uTex2d, TxtCoord) * sdiffuse;
+		  texSpec = texture(uTex2d, TxtCoord) * sspecular;           
+        }
+        else
+        {
+          texDiff = sdiffuse;
+          texSpec = sspecular;  
+        }
 	} 
     else 
     {

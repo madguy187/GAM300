@@ -28,7 +28,7 @@ namespace Eclipse
     class Graphics
     {
         static void LoadShaders(std::string shaderFile);
-        static void LoadModels(std::string modelFile);
+        static void LoadModels();
         static void LoadTextures(std::string textureFile);
 
         //Loads the image and creates texture object

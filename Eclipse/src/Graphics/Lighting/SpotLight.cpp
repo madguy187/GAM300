@@ -108,27 +108,8 @@ namespace Eclipse
 
     void SpotLight::CheckUniformLoc(Shader* _shdrpgm, SpotLightComponent& in_spot, int index, unsigned int containersize)
     {
-        std::string number = std::to_string(index);
-
-        GLint uniform_var_loc1 = _shdrpgm->GetLocation(("spotLights[" + number + "].position").c_str());
-        GLint uniform_var_loc2 = _shdrpgm->GetLocation(("spotLights[" + number + "].ambient").c_str());
-        GLint uniform_var_loc3 = _shdrpgm->GetLocation(("spotLights[" + number + "].diffuse").c_str());
-        GLint uniform_var_loc4 = _shdrpgm->GetLocation(("spotLights[" + number + "].specular").c_str());
-        GLint uniform_var_loc5 = _shdrpgm->GetLocation(("spotLights[" + number + "].constant").c_str());
-        GLint uniform_var_loc6 = _shdrpgm->GetLocation(("spotLights[" + number + "].linear").c_str());
-        GLint uniform_var_loc7 = _shdrpgm->GetLocation(("spotLights[" + number + "].quadratic").c_str());
         GLint uniform_var_loc8 = _shdrpgm->GetLocation("uModelToNDC");
         GLuint uniform_var_loc10 = _shdrpgm->GetLocation("model");
-        GLint uniform_var_loc11 = _shdrpgm->GetLocation("uTextureCheck");
-        GLint uniform_var_loc12 = _shdrpgm->GetLocation(("spotLights[" + number + "].lightColor").c_str());
-        GLint uniform_var_loc13 = _shdrpgm->GetLocation("uColor");
-        GLint uniform_var_loc14 = _shdrpgm->GetLocation(("spotLights[" + number + "].IntensityStrength").c_str());
-        GLint uniform_var_loc15 = _shdrpgm->GetLocation(("spotLights[" + number + "].cutOff").c_str());
-        GLint uniform_var_loc16 = _shdrpgm->GetLocation(("spotLights[" + number + "].outerCutOff").c_str());
-        GLint uniform_var_loc17 = _shdrpgm->GetLocation(("spotLights[" + number + "].direction").c_str());
-        GLint uniform_var_loc18 = _shdrpgm->GetLocation("NumberOfSpotLights");
-        GLint uniform_var_loc19 = _shdrpgm->GetLocation(("spotLights[" + number + "].SurroundingAttenuationLevel").c_str());
-        GLint useBlinn_ = _shdrpgm->GetLocation("useBlinn");
 
         // SpotLight Position
         TransformComponent& SpotlightTransform = engine->world.GetComponent<TransformComponent>(in_spot.ID);
@@ -150,101 +131,75 @@ namespace Eclipse
             glUniformMatrix4fv(uniform_var_loc10, 1, GL_FALSE, glm::value_ptr(model));
         }
 
-        // position
-        if (uniform_var_loc1 >= 0)
+        if (in_spot.AffectsWorld)
         {
+            std::string number = std::to_string(index);
+
+            GLint uniform_var_loc1 = _shdrpgm->GetLocation(("spotLights[" + number + "].position").c_str());
+            GLint uniform_var_loc2 = _shdrpgm->GetLocation(("spotLights[" + number + "].ambient").c_str());
+            GLint uniform_var_loc3 = _shdrpgm->GetLocation(("spotLights[" + number + "].diffuse").c_str());
+            GLint uniform_var_loc4 = _shdrpgm->GetLocation(("spotLights[" + number + "].specular").c_str());
+            GLint uniform_var_loc5 = _shdrpgm->GetLocation(("spotLights[" + number + "].constant").c_str());
+            GLint uniform_var_loc6 = _shdrpgm->GetLocation(("spotLights[" + number + "].linear").c_str());
+            GLint uniform_var_loc7 = _shdrpgm->GetLocation(("spotLights[" + number + "].quadratic").c_str());
+            GLint uniform_var_loc8 = _shdrpgm->GetLocation("uModelToNDC");
+            GLuint uniform_var_loc10 = _shdrpgm->GetLocation("model");
+            GLint uniform_var_loc11 = _shdrpgm->GetLocation("uTextureCheck");
+            GLint uniform_var_loc12 = _shdrpgm->GetLocation(("spotLights[" + number + "].lightColor").c_str());
+            GLint uniform_var_loc13 = _shdrpgm->GetLocation("uColor");
+            GLint uniform_var_loc14 = _shdrpgm->GetLocation(("spotLights[" + number + "].IntensityStrength").c_str());
+            GLint uniform_var_loc15 = _shdrpgm->GetLocation(("spotLights[" + number + "].cutOff").c_str());
+            GLint uniform_var_loc16 = _shdrpgm->GetLocation(("spotLights[" + number + "].outerCutOff").c_str());
+            GLint uniform_var_loc17 = _shdrpgm->GetLocation(("spotLights[" + number + "].direction").c_str());
+            GLint uniform_var_loc18 = _shdrpgm->GetLocation("NumberOfSpotLights");
+            GLint uniform_var_loc19 = _shdrpgm->GetLocation(("spotLights[" + number + "].SurroundingAttenuationLevel").c_str());
+            GLint useBlinn_ = _shdrpgm->GetLocation("useBlinn");
+
+            // position
             GLCall(glUniform3f(uniform_var_loc1, SpotlightTransform.position.getX(), SpotlightTransform.position.getY(), SpotlightTransform.position.getZ()));
-        }
 
-        // ambient
-        if (uniform_var_loc2 >= 0)
-        {
+            // ambient
             GLCall(glUniform3f(uniform_var_loc2, in_spot.ambient.getX(), in_spot.ambient.getY(), in_spot.ambient.getZ()));
-        }
 
-        // diffuse
-        if (uniform_var_loc3 >= 0)
-        {
+            // diffuse
             GLCall(glUniform3f(uniform_var_loc3, in_spot.diffuse.getX(), in_spot.diffuse.getY(), in_spot.diffuse.getZ()));
-        }
 
-        // specular
-        if (uniform_var_loc4 >= 0)
-        {
+            // specular
             GLCall(glUniform3f(uniform_var_loc4, in_spot.specular.getX(), in_spot.specular.getY(), in_spot.specular.getZ()));
-        }
 
-        // constant
-        if (uniform_var_loc5 >= 0)
-        {
+            // constant
             GLCall(glUniform1f(uniform_var_loc5, in_spot.constant));
-        }
 
-        // linear
-        if (uniform_var_loc6 >= 0)
-        {
+            // linear
             GLCall(glUniform1f(uniform_var_loc6, in_spot.linear));
-        }
 
-        // quadratic
-        if (uniform_var_loc7 >= 0)
-        {
+            // quadratic
             GLCall(glUniform1f(uniform_var_loc7, in_spot.quadratic));
-        }
 
-        if (uniform_var_loc11 >= 0)
-        {
             GLCall(glUniform1i(uniform_var_loc11, in_spot.hasTexture));
-        }
 
-        // Light Color
-        if (uniform_var_loc12 >= 0)
-        {
+            // Light Color
             GLCall(glUniform3f(uniform_var_loc12, in_spot.lightColor.getX(), in_spot.lightColor.getY(), in_spot.lightColor.getZ()));
-        }
 
-        // Own Color
-        if (uniform_var_loc13 >= 0)
-        {
+            // Own Color
             GLCall(glUniform4f(uniform_var_loc13, in_spot.Color.x, in_spot.Color.y, in_spot.Color.z, in_spot.Color.w));
-        }
 
-        // Intensity of Light
-        if (uniform_var_loc14 >= 0)
-        {
+            // Intensity of Light{
             GLCall(glUniform1f(uniform_var_loc14, in_spot.IntensityStrength));
-        }
 
-        // cutOff
-        if (uniform_var_loc15 >= 0)
-        {
+            // cutOff
             GLCall(glUniform1f(uniform_var_loc15, glm::cos(glm::radians(in_spot.cutOff))));
-        }
 
-        // outerCutOff
-        if (uniform_var_loc16 >= 0)
-        {
+            // outerCutOff
             GLCall(glUniform1f(uniform_var_loc16, glm::cos(glm::radians(in_spot.outerCutOff))));
-        }
 
-        // position
-        if (uniform_var_loc17 >= 0)
-        {
+            // position
             GLCall(glUniform3f(uniform_var_loc17, in_spot.direction.getX(), in_spot.direction.getY(), in_spot.direction.getZ()));
-        }
 
-        if (uniform_var_loc18 >= 0)
-        {
             GLCall(glUniform1i(uniform_var_loc18, containersize));
-        }
 
-        if (uniform_var_loc19 >= 0)
-        {
             GLCall(glUniform1f(uniform_var_loc19, in_spot.SurroundingAttenuationLevel));
-        }
 
-        if (useBlinn_ >= 0)
-        {
             GLCall(glUniform1i(useBlinn_, in_spot.EnableBlinnPhong));
         }
     }

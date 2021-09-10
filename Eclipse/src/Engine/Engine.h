@@ -11,6 +11,7 @@
 #include "Graphics/Picker/PickingManager.h"
 #include "Graphics/Grid/AABBTree.h"
 #include "Physics/PhysicsManager.h"
+#include "Editor/Windows/AssetBrowser/AssetBrowser.h"
 
 namespace Eclipse
 {
@@ -21,7 +22,6 @@ namespace Eclipse
 		CameraManager gCamera;
 		GraphicsManager GraphicsManager;
 		Clock Game_Clock;
-		DebugRenderingManager gDebugManager;
 		std::unique_ptr<EditorManager> editorManager;
 		LightManager LightManager;
 		MonoManager mono;
@@ -30,7 +30,8 @@ namespace Eclipse
         MaterialManager MaterialManager{ true , true };
 		AABBTree CollisionGridTree{ 150 };
 		std::unique_ptr<Grid> GridManager;
-
+		DebugRenderingManager gDebugManager;
+		AssetBrowserWindow gAssetB;
         void Init();
         void Run();
 		PhysicsManager gPhysics;

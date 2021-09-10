@@ -25,6 +25,12 @@ namespace Eclipse
     class FrameBuffer
     {
     public:
+        enum class RenderMode
+        {
+            Fill_Mode,
+            Wireframe_Mode
+        };
+
         FrameBuffer(const glm::uvec2& p_size, FrameBufferMode in);
         FrameBuffer(unsigned int p_width, unsigned int p_height, FrameBufferMode in);
         ~FrameBuffer();
@@ -43,6 +49,8 @@ namespace Eclipse
         std::string GetName();
         void DeletCurrentFrameBuffer();
 
+        void SetRenderMode(RenderMode _renderMode);
+        RenderMode GetRenderMode();
     private:
 
         struct FramebufferData
@@ -55,6 +63,7 @@ namespace Eclipse
 
         FrameBufferMode FrameBufferType;
         FramebufferData m_data;
+        RenderMode m_renderMode = RenderMode::Fill_Mode;
         ECVec2 windowPos;
         ECVec2 frameBufferPosition;
         glm::uvec2 m_size;

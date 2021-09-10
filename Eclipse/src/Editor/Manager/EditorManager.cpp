@@ -94,9 +94,13 @@ namespace Eclipse
 		engine->world.AddComponent(ID, RigidBodyComponent{});
 
 		// Check this please - Rachel
-		auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
-		engine->gPicker.GenerateAabb(ID, _transform, type);
+		if(type!=EntityType::ENT_CAMERA)
+		{
+			auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
+			engine->gPicker.GenerateAabb(ID, _transform, type);
 
+		}
+		
 		EntityHierarchyList_.push_back(ID);
 		EntityToIndexMap_.insert(std::pair<Entity, int>(ID, static_cast<int>(EntityHierarchyList_.size() - 1)));
 		GEHIndex_ = EntityHierarchyList_.size() - 1;
@@ -137,13 +141,30 @@ namespace Eclipse
 		auto tmp = EntityHierarchyList_[firstIndex];
 		EntityHierarchyList_[firstIndex] = EntityHierarchyList_[secondIndex];
 		EntityHierarchyList_[secondIndex] = tmp;
+
+		SetSelectedEntity(tmp);
 	}
 
 	void EditorManager::InsertExistingEntity(size_t pos, Entity ID)
 	{
+		auto oldItrPos = std::find(EntityHierarchyList_.begin(), EntityHierarchyList_.end(), ID);
+
+		// Erase if it already exist, safety check to remove duplicates
+		if (oldItrPos != EntityHierarchyList_.end())
+			EntityHierarchyList_.erase(oldItrPos);
+
 		auto itrPos = EntityHierarchyList_.begin() + pos;
 		EntityHierarchyList_.insert(itrPos, ID);
+		// No need check for dup here, it will just replace
 		EntityToIndexMap_[ID] = static_cast<int>(pos);
+
+		for (auto& pair : EntityToIndexMap_)
+		{
+			if (pair.second >= pos && pair.first != ID)
+				pair.second++;
+		}
+
+		SetSelectedEntity(ID);
 	}
 
 	std::vector<std::unique_ptr<ECGuiWindow>>& EditorManager::GetAllWindowsByRef()
@@ -187,6 +208,11 @@ namespace Eclipse
 	int EditorManager::GetEntityIndex(Entity ID)
 	{
 		return EntityToIndexMap_[ID];
+	}
+
+	Entity EditorManager::GetEntityID(int index)
+	{
+		return EntityHierarchyList_[index];
 	}
 
 	bool EditorManager::IsEntityListEmpty() const

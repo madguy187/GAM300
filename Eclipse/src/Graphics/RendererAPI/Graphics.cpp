@@ -19,10 +19,10 @@ std::set<unsigned int> Graphics::sortedID;
 void Graphics::load()
 {
     //Loads all the shader programs listed in the shader file
-    LoadShaders("src/Assets/Shaders/Shaders.json");
+    LoadShaders("src//Assets//Shaders");
 
     //Loads all models listed
-    LoadModels("src/Assets/meshes/Models.json");
+    LoadModels();
 
     //Loads all textures listed
     LoadTextures("src/Assets/Textures/Textures.json");
@@ -50,38 +50,34 @@ void Graphics::unload()
 
 void Graphics::LoadShaders(std::string shaderFile)
 {
-    Parser input;
-    input.ParseFile(shaderFile);
-
-    std::string shdrName, vtxName, frgName;
-
-    for (auto& it : input.doc["shaders"].GetArray())
+    for (auto& dirEntry : std::filesystem::directory_iterator(shaderFile))
     {
-        shdrName = (it)["shaderName"].GetString();
-        vtxName = (it)["vtxShader"].GetString();
-        frgName = (it)["frgShader"].GetString();
+        const auto& path = dirEntry.path();
+        auto relativePath = relative(path, "src//");
+        std::string FolderName = relativePath.filename().string();
+        std::string PathName = ("src/Assets/Shaders/" + FolderName).c_str();
 
-        initShaderpgms(shdrName, vtxName, frgName);
+        for (auto& dirEntry : std::filesystem::directory_iterator(PathName))
+        {
+            const auto& path = dirEntry.path();
+            auto relativePath = relative(path, "src//");
+            std::string ShaderFragOrVert = relativePath.filename().string();
+            std::string ShaderFragConcatenate = "src/Assets/Shaders/" + FolderName + "/" + ShaderFragOrVert;
+            engine->GraphicsManager.ShaderMap[FolderName].push_back(ShaderFragConcatenate);
+        }
+
+        initShaderpgms(FolderName, engine->GraphicsManager.ShaderMap[FolderName][1],
+            engine->GraphicsManager.ShaderMap[FolderName][0]);
     }
-
 }
 
-void Graphics::LoadModels(std::string modelFile)
+void Graphics::LoadModels()
 {
-    Parser input;
-    input.ParseFile(modelFile);
-
-    std::string modelName;
-    int index;
-
-    for (auto& it : input.doc["models"].GetArray())
+    for (unsigned int i = 0; i < static_cast<unsigned int>(LoadingModels::MAXCOUNT); i++)
     {
-        modelName = (it)["modelName"].GetString();
-        index = (it)["modelIndex"].GetInt();
-
-        models.emplace(modelName, ModelFactory::create(index));
+        auto& ModelName = engine->GraphicsManager.GetModelName(i);
+        models.emplace(ModelName, ModelFactory::create(i));
     }
-
 }
 
 void Graphics::LoadTextures(std::string textureFile)
