@@ -208,20 +208,6 @@ namespace Eclipse
 		GEHIndex_ = index;
 	}
 
-	void EditorManager::SaveTemp(const char* fullpath)
-	{
-		szManager.SerializeAllEntity(fullpath);
-		szManager.SaveFile(fullpath);
-	}
-
-	void EditorManager::LoadTemp(const char* fullpath)
-	{
-		if (szManager.LoadFile(fullpath))
-		{
-			szManager.DeserializeAllEntity(fullpath);
-		}
-	}
-
 	void EditorManager::Clear()
 	{
 		EntityHierarchyList_.clear();

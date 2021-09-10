@@ -1009,17 +1009,21 @@ namespace Eclipse
 
 		void DeserializeAllComponents(const Entity& ent);
 
+		void SerializeAllEntity(const char* fullpath);
+
+		void DeserializeAllEntity(const char* fullpath);
+
+		void SaveFile(const char* fullpath);
+
+		bool LoadFile(const char* fullpath);
+
 	public:
 		SerializationManager();
 
-		void SerializeAllEntity(const char* fullpath = "Data/Temp/Temp.xml");
-
-		void DeserializeAllEntity(const char* fullpath = "Data/Temp/Temp.xml");
-
-		void SaveFile(const char* fullpath = "Data/Temp/Temp.xml");
-
-		bool LoadFile(const char* fullpath = "Data/Temp/Temp.xml");
-
 		~SerializationManager();
+
+		void SaveSceneFile(const char* fullpath = "Data/Temp/Temp.xml");
+
+		void LoadSceneFile(const char* fullpath = "Data/Temp/Temp.xml");
 	};
 }

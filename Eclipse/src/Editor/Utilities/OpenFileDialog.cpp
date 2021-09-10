@@ -71,9 +71,7 @@ std::string FileDialog::SaveFile()
 
 		std::filesystem::current_path(_originPath);
 
-    std::filesystem::current_path(_originPath);
-
-    engine->editorManager->SaveTemp(_path.string().c_str());
+    engine->szManager.SaveSceneFile(_path.string().c_str());
 
     SceneManager::RegisterScene(_path.string());
 

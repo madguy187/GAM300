@@ -28,7 +28,7 @@ namespace Eclipse
 			if (nextScene == RELOAD)
 			{
 				nextScene = curScene;
-				engine->editorManager->LoadTemp(mapNameToPath[sceneList[curScene]].c_str());
+				engine->szManager.LoadSceneFile(mapNameToPath[sceneList[curScene]].c_str());
 			}
 			else if (nextScene == 0)
 			{
@@ -38,9 +38,8 @@ namespace Eclipse
 			{
 				prevScene = curScene;
 				curScene = nextScene;
-				engine->editorManager->LoadTemp(mapNameToPath[sceneList[curScene]].c_str());
+				engine->szManager.LoadSceneFile(mapNameToPath[sceneList[curScene]].c_str());
 			}
-			CameraSystem::Init();
 		}
 
 	}
@@ -148,7 +147,13 @@ namespace Eclipse
 			EDITOR_LOG_WARN(false, "Fail to load scene.");
 			return;
 		}
+
 		nextScene = GetSceneIndex(name);
+
+		if (nextScene == curScene)
+		{
+			ReloadScene();
+		}
 	}
 
 	void SceneManager::LoadNextScene()
@@ -167,6 +172,7 @@ namespace Eclipse
 		{
 			engine->editorManager->Clear();
 			engine->gPicker.ResetScene();
+			CommandHistory::Clear();
 		}
 		engine->AssimpManager.ClearContainer();
 		engine->world.Clear();
@@ -177,5 +183,14 @@ namespace Eclipse
 	void SceneManager::ReloadScene()
 	{
 		nextScene = RELOAD;
+	}
+
+	void SceneManager::NewScene()
+	{
+		nextScene = 0;
+		if (curScene == nextScene)
+		{
+			ReloadScene();
+		}
 	}
 }

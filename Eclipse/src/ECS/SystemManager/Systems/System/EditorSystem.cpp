@@ -19,19 +19,4 @@ namespace Eclipse
 		}
 	}
 
-	void EditorSystem::SaveTemp()
-	{
-		if (engine->GetEditorState())
-		{
-			engine->editorManager->SaveTemp();
-		}
-	}
-
-	void EditorSystem::LoadTemp()
-	{
-		if (engine->GetEditorState())
-		{
-			engine->editorManager->LoadTemp();
-		}
-	}
 }

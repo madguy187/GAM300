@@ -135,13 +135,13 @@ namespace Eclipse
 			dsz.CloseElement();
 		}
 
-		//if (dsz.StartElement("AabbComponent"))
-		//{
-		//	AabbComponent comp;
-		//	DeserializeComponent<AabbComponent>(ent, comp);
-		//	engine->world.AddComponent(ent, comp);
-		//	dsz.CloseElement();
-		//}
+		if (dsz.StartElement("AABBComponent"))
+		{
+			AABBComponent comp;
+			DeserializeComponent<AABBComponent>(ent, comp);
+			engine->world.AddComponent(ent, comp);
+			dsz.CloseElement();
+		}
 
 		if (dsz.StartElement("RigidBodyComponent"))
 		{
@@ -209,7 +209,6 @@ namespace Eclipse
 		const std::vector<Entity>& entities = engine->editorManager->GetEntityListByConstRef();
 		std::filesystem::path p(fullpath);
 
-		sz.StartElement(p.filename().replace_extension("").string());
 		sz.StartElement("Entities");
 		sz.AddAttributeToElement("Size", entities.size());
 		size_t counter = 0;
@@ -218,28 +217,23 @@ namespace Eclipse
 			SerializeEntity(ent, counter++);
 		}
 		sz.CloseElement();
-		sz.CloseElement();
 	}
 
 	void SerializationManager::DeserializeAllEntity(const char* fullpath)
 	{
 		std::filesystem::path p(fullpath);
 
-		if (dsz.StartElement(p.filename().replace_extension("").string()))
+		if (dsz.StartElement("Entities"))
 		{
-			if (dsz.StartElement("Entities"))
+			size_t size = 0;
+			dsz.ReadAttributeFromElement("Size", size);
+
+			for (size_t i = 0; i < size; ++i)
 			{
-				size_t size = 0;
-				dsz.ReadAttributeFromElement("Size", size);
-
-				for (size_t i = 0; i < size; ++i)
-				{
-					DeserializeEntity(i);
-				}
-
-				//dsz.IterateChildrenOfElement();
+				DeserializeEntity(i);
 			}
-			dsz.CloseElement();
+
+			//dsz.IterateChildrenOfElement();
 		}
 		dsz.CloseElement();
 	}
@@ -257,4 +251,19 @@ namespace Eclipse
 	SerializationManager::~SerializationManager()
 	{
 	}
+
+	void SerializationManager::SaveSceneFile(const char* fullpath)
+	{
+		SerializeAllEntity(fullpath);
+		SaveFile(fullpath);
+	}
+
+	void SerializationManager::LoadSceneFile(const char* fullpath)
+	{
+		if (LoadFile(fullpath))
+		{
+			DeserializeAllEntity(fullpath);
+		}
+	}
+
 }

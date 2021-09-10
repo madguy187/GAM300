@@ -133,11 +133,10 @@ namespace Eclipse
 
         SceneManager::Initialize();
         //Deserialization(temp)
-        EditorSystem::LoadTemp();
+        szManager.LoadSceneFile();
 
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
-           
             Timer.tracker.system_start = glfwGetTime();
             glfwPollEvents();
             engine->GraphicsManager.mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });
@@ -219,7 +218,7 @@ namespace Eclipse
         }
 
         //Serialization(Temp)
-        EditorSystem::SaveTemp();
+        szManager.SaveSceneFile();
 
         // unLoad
         mono.StopMono();

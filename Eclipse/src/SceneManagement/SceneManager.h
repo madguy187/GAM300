@@ -58,5 +58,7 @@ namespace Eclipse
 		static void Clear();
 
 		static void ReloadScene();
+
+		static void NewScene();
 	};
 }

@@ -36,7 +36,7 @@ namespace Eclipse
 
 			if (ECGui::CreateMenuItem(key, &selected))
 			{
-				
+				SceneManager::NewScene();
 			}
 		}
 		

@@ -75,9 +75,6 @@ namespace Eclipse
 		std::unordered_map<Entity, int> EntityToIndexMap_;
 		size_t GEHIndex_{ 0 };
 
-		//!!! Temporary !!! - by JH
-		Eclipse::SerializationManager szManager;
-		//!!! Temporary !!! - by JH
 		
 		template <typename TWindow>
 		inline void AddWindow(const char* title)
