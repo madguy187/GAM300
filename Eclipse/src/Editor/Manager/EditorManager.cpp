@@ -91,7 +91,6 @@ namespace Eclipse
 
 		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast_toStr<EntityType>(type), true });
 		engine->world.AddComponent(ID, TransformComponent{});
-		engine->world.AddComponent(ID, RigidBodyComponent{});
 
 		// Check this please - Rachel
 		if(type!=EntityType::ENT_CAMERA)
