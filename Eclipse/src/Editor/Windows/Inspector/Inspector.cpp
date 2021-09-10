@@ -137,6 +137,7 @@ namespace Eclipse
 				ECGui::DrawSliderFloatWidget("IntensityFloat", &_PointLight.IntensityStrength, true, 0.f, 150.f);
 
 				ECGui::DrawTextWidget<const char*>("Light Colour", "");
+
 				ImGui::ColorPicker3("PLightColor", (float*)&_PointLight.Color, 
 					ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
 				//ECGui::DrawSliderFloat4Widget("ColourVec", &_PointLight.Color, true, 0.0f, 1.0f);
@@ -155,6 +156,32 @@ namespace Eclipse
 
 				ECGui::DrawTextWidget<const char*>("Light Specular", "");
 				ECGui::DrawSliderFloat3Widget("PLightSpecularVec", &_PointLight.specular, true, 0.0f, 1.0f);
+
+				ECGui::DrawTextWidget<const char*>("Intensity Strength", "");
+				ECGui::DrawSliderFloatWidget("Intensity Strength", &_PointLight.IntensityStrength, true, 0.0f, 50.0f);
+
+				ECGui::DrawTextWidget<const char*>("Constant", "");
+				ECGui::DrawSliderFloatWidget("Constant", &_PointLight.constant, true, 0.0f, 50.0f);
+
+				ECGui::DrawTextWidget<const char*>("Linear", "");
+				ECGui::DrawSliderFloatWidget("Linear", &_PointLight.linear, true, 0.0f, 50.0f);
+
+				ECGui::DrawTextWidget<const char*>("Quadratic", "");
+				ECGui::DrawSliderFloatWidget("Linear", &_PointLight.quadratic, true, 0.0f, 50.0f);
+
+				ECGui::DrawTextWidget<const char*>("Radius", "");
+				ECGui::DrawSliderFloatWidget("Linear", &_PointLight.radius, true, 0.0f, 50.0f);
+
+				ImGui::Columns(2, NULL, true);
+				ECGui::DrawTextWidget<const char*>("Enable Blinn Phong", "");
+				ECGui::DrawTextWidget<const char*>("Visible", "");
+				ECGui::DrawTextWidget<const char*>("Affects World", "");
+				ImGui::NextColumn();
+				ECGui::CheckBoxBool("Enable Blinn Phong", &_PointLight.EnableBlinnPhong);
+				ECGui::CheckBoxBool("Enable Blinn PhongVisible", &_PointLight.visible);
+				ECGui::CheckBoxBool("Affects World", &_PointLight.AffectsWorld);
+				ImGui::Columns(1, NULL, true);
+
 			}
 		}
 
@@ -176,6 +203,19 @@ namespace Eclipse
 				ImGui::ColorPicker3("SLightColor", (float*)&_SpotLight.lightColor, 
 					ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
 
+				ECGui::DrawTextWidget<const char*>("Attenuation Level", "");
+				ECGui::DrawSliderIntWidget("PLightColourVec", &_SpotLight.AttenuationLevel, true, 0, 10);
+				engine->LightManager.SetAttenuation(_SpotLight, _SpotLight.AttenuationLevel);
+
+				ECGui::DrawTextWidget<const char*>("Light Ambient", "");
+				ECGui::DrawSliderFloat3Widget("PLightAmbientVec", &_SpotLight.ambient, true, 0.0f, 1.0f);
+
+				ECGui::DrawTextWidget<const char*>("Light Diffuse", "");
+				ECGui::DrawSliderFloat3Widget("PLightDiffuseVec", &_SpotLight.diffuse, true, 0.0f, 1.0f);
+
+				ECGui::DrawTextWidget<const char*>("Light Specular", "");
+				ECGui::DrawSliderFloat3Widget("PLightSpecularVec", &_SpotLight.specular, true, 0.0f, 1.0f);
+
 				ECGui::DrawTextWidget<const char*>("OuterCutOff", "");
 				ECGui::DrawSliderFloatWidget("SLightOuterCutOffFloat", &_SpotLight.outerCutOff, true, 0.f, 50.0f);
 
@@ -184,6 +224,28 @@ namespace Eclipse
 
 				ECGui::DrawTextWidget<const char*>("Direction", "");
 				ECGui::DrawSliderFloat3Widget("SLightDirectionVec", &_SpotLight.direction, true, 0.f, 150.f);
+
+				ECGui::DrawTextWidget<const char*>("Constant", "");
+				ECGui::DrawSliderFloatWidget("Constant", &_SpotLight.constant, true, 0.0f, 50.0f);
+
+				ECGui::DrawTextWidget<const char*>("Linear", "");
+				ECGui::DrawSliderFloatWidget("Linear", &_SpotLight.linear, true, 0.0f, 50.0f);
+
+				ECGui::DrawTextWidget<const char*>("Quadratic", "");
+				ECGui::DrawSliderFloatWidget("Linear", &_SpotLight.quadratic, true, 0.0f, 50.0f);
+
+				ECGui::DrawTextWidget<const char*>("Radius", "");
+				ECGui::DrawSliderFloatWidget("Linear", &_SpotLight.radius, true, 0.0f, 50.0f);
+
+				ImGui::Columns(2, NULL, true);
+				ECGui::DrawTextWidget<const char*>("Enable Blinn Phong", "");
+				ECGui::DrawTextWidget<const char*>("Visible", "");
+				ECGui::DrawTextWidget<const char*>("Affects World", "");
+				ImGui::NextColumn();
+				ECGui::CheckBoxBool("Enable Blinn Phong", &_SpotLight.EnableBlinnPhong);
+				ECGui::CheckBoxBool("Enable Blinn PhongVisible", &_SpotLight.visible);
+				ECGui::CheckBoxBool("Affects World", &_SpotLight.AffectsWorld);
+				ImGui::Columns(1, NULL, true);
 			}
 		}
 
