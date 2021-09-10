@@ -12,6 +12,7 @@
 #include "ECS/ComponentManager/Components/MeshComponent3D.h"
 #include "ECS/ComponentManager/Components/RigidBodyComponent.h"
 #include "ECS/ComponentManager/Components/TextureComponent.h"
+#include "ECS/ComponentManager/Components/ParentChildComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
@@ -75,6 +76,7 @@ namespace Eclipse
         world.RegisterComponent<MeshComponent3D>();
         world.RegisterComponent<RigidBodyComponent>();
         world.RegisterComponent<TextureComponent>();
+        world.RegisterComponent<ParentChildComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
