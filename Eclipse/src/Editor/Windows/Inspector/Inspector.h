@@ -22,18 +22,46 @@ namespace Eclipse
 
 		void AddComponentsController(Entity ID);
 		void RemoveComponentsController(Entity ID);
-		void AddComponents(Entity ID);
-		void AddComponentsSuccess(const char* Components, EntityComponent& entCom, Entity ID);
-		void AddComponentsFailed(const char* Components,EntityComponent& entCom , Entity ID);
-		void RemoveComponents(Entity ID);
-		void RemoveComponentsSucess(const char* Components, EntityComponent& entCom, Entity ID);
-		void RemoveComponentsFailed(const char* Components, EntityComponent& entCom, Entity ID);
+		void ShowAddComponentList(Entity ID);
+		void AddComponentsSuccess(const char* Components, const std::string& name, Entity ID);
+		void AddComponentsFailed(const char* Components, const std::string& name, Entity ID);
+		void ShowRemoveComponentList(Entity ID);
+		void RemoveComponentsSuccess(const char* Components, const std::string& name, Entity ID);
+		void RemoveComponentsFailed(const char* Components, const std::string& name, Entity ID);
+
+		template <typename TComponents>
+		void ComponentRegistry(const char* CompName, Entity ID,
+			const std::string EntityName, EditComponent method)
+		{
+			if (method == EditComponent::EC_ADDCOMPONENT)
+			{
+				if (!engine->world.CheckComponent<TComponents>(ID))
+				{
+					AddComponentsSuccess(CompName, EntityName, ID);
+					engine->world.AddComponent(ID, TComponents{});
+				}
+				else
+				{
+					AddComponentsFailed(CompName, EntityName, ID);
+				}
+			}
+			else
+			{
+				if (engine->world.CheckComponent<TComponents>(ID))
+				{
+					RemoveComponentsSuccess(CompName, EntityName, ID);
+					engine->world.DestroyComponent<TComponents>(ID);
+				}
+				else
+				{
+					RemoveComponentsFailed(CompName, EntityName, ID);
+				}
+			}
+		}
 
 		static constexpr unsigned int str2int(const char* str, int h = 0)
 		{
-
 			return !str[h] ? 5381 : (str2int(str, h + 1) * 33) ^ str[h];
-
 		}
 	private:
 		ECVec2 WindowSize_{};
