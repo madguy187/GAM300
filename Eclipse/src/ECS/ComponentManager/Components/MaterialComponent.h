@@ -14,6 +14,11 @@ namespace Eclipse
             Maxcount
         };  
 
+    	//TODO
+    	//ComboIndex if for imgui combolist to select the correct model type - Tian Yu
+        size_t ComboIndex = 0;
+
+    	
         unsigned int ID = 0;
         ECVec3 ambient{ 0.0f,0.0f,0.0f };
         ECVec3 diffuse{ 0.0f,0.0f,0.0f };

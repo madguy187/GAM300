@@ -72,7 +72,6 @@ namespace Eclipse
         world.RegisterComponent<AABBComponent>();
         world.RegisterComponent<SpotLightComponent>();
         world.RegisterComponent<MaterialComponent>();
-        world.RegisterComponent<testComponent>();
         world.RegisterComponent<MeshComponent3D>();
         world.RegisterComponent<RigidBodyComponent>();
         world.RegisterComponent<TextureComponent>();

@@ -49,14 +49,12 @@ namespace Eclipse
 			ShowDirectionalLightProperty("DirectionalLight", currEnt, CompFilter);
 			ShowRigidBodyProperty("RigidBody", currEnt, CompFilter);
 			ShowEditorCameraProperty("Camera", currEnt, CompFilter);
-			//tianyu testing will delete later
-			//todo
-			if (engine->world.CheckComponent<testComponent>(currEnt))
-			{
-				if (CompFilter.PassFilter("test") && ECGui::CreateCollapsingHeader("test"))
-				{
-				}
-			}
+			ShowTextureProperty("Texture", currEnt, CompFilter);
+			ShowRenderProperty("Render", currEnt, CompFilter);
+			ShowMaterialProperty("Material", currEnt, CompFilter);
+			ShowMeshProperty("Mesh", currEnt, CompFilter);
+
+			
 			AddComponentsController(currEnt);
 			RemoveComponentsController(currEnt);
 		}
@@ -167,10 +165,10 @@ namespace Eclipse
 				ECGui::DrawSliderFloatWidget("Linear", &_PointLight.linear, true, 0.0f, 50.0f);
 
 				ECGui::DrawTextWidget<const char*>("Quadratic", "");
-				ECGui::DrawSliderFloatWidget("Linear", &_PointLight.quadratic, true, 0.0f, 50.0f);
+				ECGui::DrawSliderFloatWidget("Quadratic", &_PointLight.quadratic, true, 0.0f, 50.0f);
 
 				ECGui::DrawTextWidget<const char*>("Radius", "");
-				ECGui::DrawSliderFloatWidget("Linear", &_PointLight.radius, true, 0.0f, 50.0f);
+				ECGui::DrawSliderFloatWidget("Radius", &_PointLight.radius, true, 0.0f, 50.0f);
 
 				ImGui::Columns(2, NULL, true);
 				ECGui::DrawTextWidget<const char*>("Enable Blinn Phong", "");
@@ -232,10 +230,10 @@ namespace Eclipse
 				ECGui::DrawSliderFloatWidget("Linear", &_SpotLight.linear, true, 0.0f, 50.0f);
 
 				ECGui::DrawTextWidget<const char*>("Quadratic", "");
-				ECGui::DrawSliderFloatWidget("Linear", &_SpotLight.quadratic, true, 0.0f, 50.0f);
+				ECGui::DrawSliderFloatWidget("Quadratic", &_SpotLight.quadratic, true, 0.0f, 50.0f);
 
 				ECGui::DrawTextWidget<const char*>("Radius", "");
-				ECGui::DrawSliderFloatWidget("Linear", &_SpotLight.radius, true, 0.0f, 50.0f);
+				ECGui::DrawSliderFloatWidget("Radius", &_SpotLight.radius, true, 0.0f, 50.0f);
 
 				ImGui::Columns(2, NULL, true);
 				ECGui::DrawTextWidget<const char*>("Enable Blinn Phong", "");
@@ -307,19 +305,76 @@ namespace Eclipse
 			{
 				auto& _Camera = engine->world.GetComponent<CameraComponent>(ID);
 
-				//if(engine->gCamera.GetGameCameraID() == ID)
-				//{
-				//	ECGui::DrawTextWidget<const char*>("Near Plane", "");
-				//	ECGui::DrawSliderFloatWidget("Near Plane", &_Camera.nearPlane, false, 0, 1000);
-				//	ECGui::DrawTextWidget<const char*>("Far Plane", "");
-				//	ECGui::DrawSliderFloatWidget("Far Plane", &_Camera.farPlane,false,0,1000);
-				//}
 				ECGui::DrawTextWidget<const char*>("Camera Speed", "");
 				ECGui::DrawSliderFloatWidget("Camera Speed", &_Camera.cameraSpeed);
 				
 			}
 		}
 
+		return false;
+	}
+
+	bool InspectorWindow::ShowTextureProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+	{
+		return false;
+	}
+
+	bool InspectorWindow::ShowRenderProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+	{
+		return false;
+	}
+	
+	bool InspectorWindow::ShowMaterialProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+	{
+		if (engine->world.CheckComponent<MaterialComponent>(ID))
+		{
+			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+			{
+				
+				auto& _Material = engine->world.GetComponent<MaterialComponent>(ID);
+
+				std::vector<std::string> _ModelVector = { "None","BasicPrimitives","Models3D"};
+
+				std::map<std::string, MaterialComponent::ModelType> _Map = { {"None",MaterialComponent::ModelType::None}, {"BasicPrimitives",MaterialComponent::ModelType::BasicPrimitives},
+															{"Models3D",MaterialComponent::ModelType::Models3D}};
+				
+				ComboListSettings settings = {"Model Type"};
+
+				ECGui::DrawTextWidget<const char*>("Model Type", "");
+				ECGui::CreateComboList(settings, _ModelVector, _Material.ComboIndex);
+				_Material.Modeltype = _Map[_ModelVector[_Material.ComboIndex]];
+				std::cout << _ModelVector[_Material.ComboIndex];
+				
+				ECGui::DrawTextWidget<const char*>("Ambient", "");
+				ECGui::DrawSliderFloat3Widget("Material Specular", &_Material.ambient, true, 0.0f, 1.0f);
+
+				ECGui::DrawTextWidget<const char*>("Diffuse", "");
+				ECGui::DrawSliderFloat3Widget("Material Specular", &_Material.diffuse, true, 0.0f, 1.0f);
+
+				ECGui::DrawTextWidget<const char*>("Specular", "");
+				ECGui::DrawSliderFloat3Widget("Material Specular", &_Material.specular, true, 0.0f, 1.0f);
+
+				ECGui::DrawTextWidget<const char*>("MaximumShininess", "");
+				ECGui::DrawSliderFloatWidget("Material MaximumShininess", &_Material.MaximumShininess, true, 0.0f, 200.0f);
+
+				ECGui::DrawTextWidget<const char*>("Thickness", "");
+				ECGui::DrawSliderFloatWidget("Material Thickness", &_Material.Thickness, true, 0.0f, 200.0f);
+
+				ECGui::DrawTextWidget<const char*>("ScaleUp", "");
+				ECGui::DrawSliderFloatWidget("Material ScaleUp", &_Material.ScaleUp, true, 0.0f, 200.0f);
+				
+				ImGui::Columns(2, NULL, true);
+				ECGui::DrawTextWidget<const char*>("Highlight", "");
+				ImGui::NextColumn();
+				ECGui::CheckBoxBool("Enable Blinn Phong", &_Material.Highlight);
+				ImGui::Columns(1, NULL, true);
+			}
+		}
+		
+		return false;
+	}
+	bool InspectorWindow::ShowMeshProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+	{
 		return false;
 	}
 	void InspectorWindow::AddComponentsController( Entity ID)
@@ -405,10 +460,6 @@ namespace Eclipse
 						break;
 					case str2int("RigidBodyComponent"):
 						ComponentRegistry<RigidBodyComponent>("RigidBodyComponent", ID, entCom.Name,
-							EditComponent::EC_ADDCOMPONENT);
-						break;
-					case str2int("testComponent"):
-						ComponentRegistry<testComponent>("testComponent", ID, entCom.Name,
 							EditComponent::EC_ADDCOMPONENT);
 						break;
 					}
@@ -500,10 +551,6 @@ namespace Eclipse
 						break;
 					case str2int("RigidBodyComponent"):
 						ComponentRegistry<RigidBodyComponent>("RigidBodyComponent", ID, entCom.Name,
-							EditComponent::EC_REMOVECOMPONENT);
-						break;
-					case str2int("testComponent"):
-						ComponentRegistry<testComponent>("testComponent", ID, entCom.Name,
 							EditComponent::EC_REMOVECOMPONENT);
 						break;
 					}
