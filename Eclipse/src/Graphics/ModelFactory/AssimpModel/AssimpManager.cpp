@@ -393,7 +393,7 @@ namespace Eclipse
 
     bool AssimpModelManager::ClearContainer()
     {
-        AssimpModelContainer_.clear();
+        AssimpModelContainerV2.clear();
 
         return true;
     }
