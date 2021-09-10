@@ -19,6 +19,10 @@ namespace Eclipse
 		bool ShowDirectionalLightProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowRigidBodyProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowEditorCameraProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowTextureProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowRenderProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowMaterialProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowMeshProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 
 		void AddComponentsController(Entity ID);
 		void RemoveComponentsController(Entity ID);
