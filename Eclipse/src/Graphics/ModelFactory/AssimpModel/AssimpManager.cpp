@@ -27,6 +27,69 @@ namespace Eclipse
             AssimpLoadedModels.emplace(FolderName, std::move(ptr));
         }
 
+        // First file path so i shd be src/assets/assmodels
+        //for (auto& dirEntry : std::filesystem::directory_iterator("src//Assets//ASSModels"))
+        //{
+        //    const auto& path = dirEntry.path();
+        //    auto relativePath = relative(path, "src//");
+        //    std::string FolderName = relativePath.filename().string(); // Return me the name of the folder of my model
+        //    std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/").c_str();
+
+        //    for (auto& dirEntry : std::filesystem::directory_iterator(PathName))
+        //    {
+        //        const auto& path = dirEntry.path();
+        //        auto relativePath = relative(path, "src//");
+        //        std::string NextFolderName = relativePath.filename().string();
+
+        //        if (NextFolderName == "textures")
+        //        {
+        //            std::string InsideModelFolder = ("src/Assets/ASSModels/" + FolderName).c_str();
+        //            std::string InsideTextures = ("src/Assets/ASSModels/" + FolderName + "/" + NextFolderName).c_str();
+
+        //            unsigned int Index = 0;
+
+        //            std::unique_ptr<Texture> LastTracked;
+
+        //            std::string TexturePath;
+
+        //            for (auto& dirEntry : std::filesystem::directory_iterator(InsideTextures))
+        //            {
+        //                const auto& path = dirEntry.path();
+        //                auto relativePath = relative(path, "src//");
+        //                std::string TextureName = relativePath.filename().string();
+
+        //                 TexturePath = NextFolderName + "/" + TextureName;
+        //                // If i find the first base colour , i insert.
+        //                if (TextureName.find("baseColor") != std::string::npos)
+        //                {
+        //                    Texture tex(InsideModelFolder, TexturePath, aiTextureType_DIFFUSE);
+        //                    std::unique_ptr<Texture> ptr(new Texture(tex));
+        //                    ptr->Load(false);
+        //                    engine->AssimpManager.InsertTextures(FolderName, std::move(ptr), Index);
+
+        //                    std::unique_ptr<Texture> ptr2(new Texture(tex));
+        //                    engine->AssimpManager.InsertTextures(FolderName, std::move(ptr2), Index);
+
+        //                    LastTracked = std::unique_ptr<Texture>((new Texture(tex)));
+
+        //                    Index++;
+        //                }
+        //            }
+
+        //            if (AssimpLoadedModels[FolderName]->GetMesh().size() != Index)
+        //            {
+        //                Texture tex(InsideModelFolder, TexturePath, aiTextureType_DIFFUSE);
+        //                std::unique_ptr<Texture> ptr(new Texture(tex));
+        //                ptr->Load(false);
+        //                engine->AssimpManager.InsertTextures(FolderName, std::move(ptr), Index);
+
+        //                std::unique_ptr<Texture> ptr2(new Texture(tex));
+        //                engine->AssimpManager.InsertTextures(FolderName, std::move(ptr2), Index);
+        //            }
+        //        }
+        //    }
+        //}
+
         ENGINE_CORE_INFO("All Assimp Models Loaded Once");
     }
 

@@ -223,7 +223,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
 
         mat.Modeltype = MaterialComponent::ModelType::Models3D;
         sprite.ID = ID;
-        sprite.Key = engine->AssimpManager.GetKey("hi");
+        sprite.Key = engine->AssimpManager.GetKey("lotr_troll");
         engine->AssimpManager.InsertModel(ID);
     }
     break;
@@ -242,7 +242,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
 
         engine->world.AddComponent(ID, MaterialComponent{});
         engine->world.AddComponent(ID, MeshComponent3D{});
-        //engine->world.AddComponent(ID, TextureComponent{});
+        engine->world.AddComponent(ID, TextureComponent{});
 
         MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
         MeshComponent3D& sprite = engine->world.GetComponent<MeshComponent3D>(ID);

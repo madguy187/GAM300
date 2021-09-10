@@ -90,7 +90,7 @@ namespace Eclipse
 
     public:
         // TEXTURES PUT HERE FIRST
-        
+        unsigned int Index = 0; // mesh index.
         void SetTexturesForModel(TextureComponent& in, std::string& passinkey);
         void InsertTextures(std::string& NameofModel, std::unique_ptr<Texture> in, unsigned int MeshId);
     };
