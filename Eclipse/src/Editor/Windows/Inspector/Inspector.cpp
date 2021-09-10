@@ -52,7 +52,7 @@ namespace Eclipse
 			ShowTextureProperty("Texture", currEnt, CompFilter);
 			ShowRenderProperty("Render", currEnt, CompFilter);
 			ShowMaterialProperty("Material", currEnt, CompFilter);
-			ShowMeshProperty("Mesh", currEnt, CompFilter);
+			ShowMesh3DProperty("Mesh", currEnt, CompFilter);
 
 			
 			AddComponentsController(currEnt);
@@ -316,11 +316,48 @@ namespace Eclipse
 
 	bool InspectorWindow::ShowTextureProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
 	{
+		if (engine->world.CheckComponent<TextureComponent>(ID))
+		{
+			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+			{
+				auto& _Texture = engine->world.GetComponent<TextureComponent>(ID);
+				
+				std::vector<std::string> _TextureVector = { "TT_UNASSIGNED","TT_2D","BasicPrimitives","TT_3D" };
+
+				std::map<std::string, TextureType> _Map = { {"TT_UNASSIGNED",TextureType::TT_UNASSIGNED}, {"TT_2D",TextureType::TT_2D},
+															{"TT_3D",TextureType::TT_3D} };
+
+				ComboListSettings settings = { "Texture Type"  , _TextureVector[_Texture.ComboIndex].c_str(),false };
+
+				ECGui::DrawTextWidget<const char*>("KEY ID: ", "");
+				ECGui::InsertSameLine();
+				ECGui::DrawTextWidget<const char*>(std::to_string(_Texture.ID).c_str(), "");
+				
+				ECGui::DrawTextWidget<const char*>("Texture Type", "");
+				ECGui::CreateComboList(settings, _TextureVector, _Texture.ComboIndex);
+				_Texture.Type = _Map[_TextureVector[_Texture.ComboIndex]];
+				
+				//TODO
+				//Display all textures on the inspector
+			}
+		}
+		
 		return false;
 	}
 
 	bool InspectorWindow::ShowRenderProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
 	{
+		if (engine->world.CheckComponent<RenderComponent>(ID))
+		{
+			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+			{
+				auto& _Render = engine->world.GetComponent<RenderComponent>(ID);
+
+				ECGui::DrawTextWidget<const char*>("Transparency", "");
+				ECGui::DrawSliderFloatWidget("Render Transparency", &_Render.transparency, true, 0.0f, 200.0f);
+			}
+		}
+		
 		return false;
 	}
 	
@@ -338,12 +375,11 @@ namespace Eclipse
 				std::map<std::string, MaterialComponent::ModelType> _Map = { {"None",MaterialComponent::ModelType::None}, {"BasicPrimitives",MaterialComponent::ModelType::BasicPrimitives},
 															{"Models3D",MaterialComponent::ModelType::Models3D}};
 				
-				ComboListSettings settings = {"Model Type"};
+				ComboListSettings settings = {"Model Type" , _ModelVector[_Material.ComboIndex].c_str(),false};
 
 				ECGui::DrawTextWidget<const char*>("Model Type", "");
 				ECGui::CreateComboList(settings, _ModelVector, _Material.ComboIndex);
 				_Material.Modeltype = _Map[_ModelVector[_Material.ComboIndex]];
-				std::cout << _ModelVector[_Material.ComboIndex];
 				
 				ECGui::DrawTextWidget<const char*>("Ambient", "");
 				ECGui::DrawSliderFloat3Widget("Material Specular", &_Material.ambient, true, 0.0f, 1.0f);
@@ -373,10 +409,38 @@ namespace Eclipse
 		
 		return false;
 	}
-	bool InspectorWindow::ShowMeshProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+	
+	bool InspectorWindow::ShowMesh3DProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
 	{
+		if (engine->world.CheckComponent<MeshComponent3D>(ID))
+		{
+			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+			{
+				auto& _Mesh3D = engine->world.GetComponent<MeshComponent3D>(ID);
+
+				std::vector<std::string> _Mesh3DVector = { "MT_UNASSIGNED","MT_HUMAN","MT_ANIMAL","MT_HOUSE","MT_ENVIRONMENT"};
+
+				std::map<std::string, ModelType> _Map = { {"MT_UNASSIGNED",ModelType::MT_UNASSIGNED}, {"MT_HUMAN",ModelType::MT_HUMAN},
+															{"MT_ANIMAL",ModelType::MT_ANIMAL},{"MT_HOUSE",ModelType::MT_HOUSE},
+															{"MT_ENVIRONMENT",ModelType::MT_ENVIRONMENT} };
+
+				ComboListSettings settings = { "Texture Type"  , _Mesh3DVector[_Mesh3D.ComboIndex].c_str(),false };
+
+				ECGui::DrawTextWidget<const char*>("KEY ID: ", "");
+				ECGui::InsertSameLine();
+				ECGui::DrawTextWidget<const char*>(std::to_string(_Mesh3D.ID).c_str(), "");
+				ECGui::DrawTextWidget<const char*>("MODEL NAME: ", "");
+				ECGui::InsertSameLine();
+				ECGui::DrawTextWidget<const char*>(_Mesh3D.NameOfModel.c_str(), "");
+
+				ECGui::DrawTextWidget<const char*>("Model Type", "");
+				ECGui::CreateComboList(settings, _Mesh3DVector, _Mesh3D.ComboIndex);
+				_Mesh3D.type = _Map[_Mesh3DVector[_Mesh3D.ComboIndex]];
+			}
+		}
 		return false;
 	}
+	
 	void InspectorWindow::AddComponentsController( Entity ID)
 	{
 		ImVec2 buttonSize = {180,20};
@@ -393,6 +457,7 @@ namespace Eclipse
 			ImGui::EndPopup();
 		}
 	}
+	
 	void InspectorWindow::RemoveComponentsController(Entity ID)
 	{
 		ImVec2 buttonSize = { 180,20 };
@@ -410,6 +475,7 @@ namespace Eclipse
 			ImGui::EndPopup();
 		}
 	}
+	
 	void InspectorWindow::ShowAddComponentList(Entity ID)
 	{
 		static ImGuiTextFilter AddComponentFilter;
@@ -462,6 +528,14 @@ namespace Eclipse
 						ComponentRegistry<RigidBodyComponent>("RigidBodyComponent", ID, entCom.Name,
 							EditComponent::EC_ADDCOMPONENT);
 						break;
+					case str2int("TextureComponent"):
+						ComponentRegistry<TextureComponent>("TextureComponent", ID, entCom.Name,
+							EditComponent::EC_ADDCOMPONENT);
+						break;
+					case str2int("MeshComponent3D"):
+						ComponentRegistry<MeshComponent3D>("MeshComponent3D", ID, entCom.Name,
+							EditComponent::EC_ADDCOMPONENT);
+						break;
 					}
 				}
 			}
@@ -469,51 +543,19 @@ namespace Eclipse
 		
 	}
 
-	template <typename TComponents>
-	void InspectorWindow::AddComponentsFeedback(const char* Components, const std::string& name, Entity ID, bool exist)
-	{
-		if(!exist)
-		{
-			engine->world.AddComponent(ID, TComponents{});
-			std::string Comp = my_strcat(std::string{ Components }, " Added For ", name, ID, " Add Succeed");
-			EDITOR_LOG_INFO(Comp.c_str());
-		}
-		else
-		{
-			std::string Comp = my_strcat(std::string{ Components }, " Already Exists in ", name, ID, " Add Failed");
-			EDITOR_LOG_WARN(Comp.c_str());
-		}
-	}
-
-	template <typename TComponents>
-	void InspectorWindow::RemoveComponentsFeedback(const char* Components, const std::string& name, Entity ID,bool exist)
-	{
-		if(exist)
-		{
-			std::string Comp = my_strcat(std::string{ Components }, " Removed For ", name, ID, " Remove Succeed");
-			EDITOR_LOG_INFO(Comp.c_str());
-			engine->world.DestroyComponent<TComponents>(ID);
-		}
-		else
-		{
-			std::string Comp = my_strcat(std::string{ Components }, " Does Not Exists in ", name, ID, " Remove Failed");
-			EDITOR_LOG_WARN(Comp.c_str());
-		}
-	}
-
 	void InspectorWindow::ShowRemoveComponentList(Entity ID)
 	{
 		static ImGuiTextFilter RemoveComponentFilter;
-		
+
 		auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
-		
+
 		RemoveComponentFilter.Draw("Filter", 160);
 
 		for (int i = 0; i < engine->world.GetAllComponentNames().size(); i++)
 		{
 			if (RemoveComponentFilter.PassFilter(engine->world.GetAllComponentNames()[i].c_str()))
 			{
-				if(ImGui::Button(engine->world.GetAllComponentNames()[i].c_str(), ImVec2(200, 0)))
+				if (ImGui::Button(engine->world.GetAllComponentNames()[i].c_str(), ImVec2(200, 0)))
 				{
 					switch (str2int(engine->world.GetAllComponentNames()[i].c_str()))
 					{
@@ -553,11 +595,52 @@ namespace Eclipse
 						ComponentRegistry<RigidBodyComponent>("RigidBodyComponent", ID, entCom.Name,
 							EditComponent::EC_REMOVECOMPONENT);
 						break;
+					case str2int("TextureComponent"):
+						ComponentRegistry<TextureComponent>("TextureComponent", ID, entCom.Name,
+							EditComponent::EC_REMOVECOMPONENT);
+						break;
+					case str2int("MeshComponent3D"):
+						ComponentRegistry<MeshComponent3D>("MeshComponent3D", ID, entCom.Name,
+							EditComponent::EC_REMOVECOMPONENT);
+						break;
 					}
 				}
 			}
 		}
-		
+
 	}
+	
+	template <typename TComponents>
+	void InspectorWindow::AddComponentsFeedback(const char* Components, const std::string& name, Entity ID, bool exist)
+	{
+		if(!exist)
+		{
+			engine->world.AddComponent(ID, TComponents{});
+			std::string Comp = my_strcat(std::string{ Components }, " Added For ", name, ID, " Add Succeed");
+			EDITOR_LOG_INFO(Comp.c_str());
+		}
+		else
+		{
+			std::string Comp = my_strcat(std::string{ Components }, " Already Exists in ", name, ID, " Add Failed");
+			EDITOR_LOG_WARN(Comp.c_str());
+		}
+	}
+
+	template <typename TComponents>
+	void InspectorWindow::RemoveComponentsFeedback(const char* Components, const std::string& name, Entity ID,bool exist)
+	{
+		if(exist)
+		{
+			std::string Comp = my_strcat(std::string{ Components }, " Removed For ", name, ID, " Remove Succeed");
+			EDITOR_LOG_INFO(Comp.c_str());
+			engine->world.DestroyComponent<TComponents>(ID);
+		}
+		else
+		{
+			std::string Comp = my_strcat(std::string{ Components }, " Does Not Exists in ", name, ID, " Remove Failed");
+			EDITOR_LOG_WARN(Comp.c_str());
+		}
+	}
+
 
 }

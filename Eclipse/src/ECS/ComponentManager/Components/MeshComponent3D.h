@@ -5,6 +5,11 @@ namespace Eclipse
 {
     struct MeshComponent3D
     {
+        //TODO
+		//ComboIndex if for imgui combolist to select the correct model type - Tian Yu
+        size_t ComboIndex;
+
+    	
         // Store key
         std::string Key;
 
