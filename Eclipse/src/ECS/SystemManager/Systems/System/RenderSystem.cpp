@@ -35,7 +35,6 @@ namespace Eclipse
 
         SystemSignature.set(engine->world.GetComponentType<TransformComponent>(), 1);
         SystemSignature.set(engine->world.GetComponentType<RenderComponent>(), 1);
-        SystemSignature.set(engine->world.GetComponentType<TextureComponent>(), 1);
         engine->world.RegisterSystemSignature<RenderSystem>(SystemSignature);
 
         return SystemSignature;

@@ -55,6 +55,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     break;
     case 1:
     {
+        //engine->world.AddComponent(ID, TextureComponent{});
         engine->world.AddComponent(ID, MaterialComponent{});
         MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
         mat.Modeltype = MaterialComponent::ModelType::BasicPrimitives;
@@ -425,6 +426,10 @@ void Eclipse::GraphicsManager::CheckUniformLoc(Shader* _shdrpgm, RenderComponent
     {
         TextureComponent& tex = engine->world.GetComponent<TextureComponent>(id);
         glUniform1i(uniform_var_loc3, tex.hasTexture);
+    }
+    else
+    {
+        glUniform1i(uniform_var_loc3, false);
     }
 
     //if (uniform_var_loc4 >= 0)
