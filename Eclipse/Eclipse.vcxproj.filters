@@ -37,6 +37,12 @@
     <Filter Include="Editor\Menu">
       <UniqueIdentifier>{300751B4-9CBC-C9A9-25B1-C3809165C0AD}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editor\Utilities">
+      <UniqueIdentifier>{F7DD8FC0-E3D6-AE12-0C09-9497F8608E1E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Utilities\UndoAndRedo">
+      <UniqueIdentifier>{99D07E34-858B-6EE0-2E43-E72A1ADDB870}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Editor\Windows">
       <UniqueIdentifier>{C690B5AD-B25E-A9B3-9BF2-19DA875F8518}</UniqueIdentifier>
     </Filter>
@@ -121,6 +127,9 @@
     <Filter Include="Graphics\Parser">
       <UniqueIdentifier>{D2DA64A9-3E66-D26D-4777-5562B3812E6E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics\Picker">
+      <UniqueIdentifier>{2343EDA9-8FCE-5A6E-98DF-DD6204EAB66E}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Graphics\RendererAPI">
       <UniqueIdentifier>{162DD20E-02BC-5BD8-ABDA-6FD397486C7E}</UniqueIdentifier>
     </Filter>
@@ -180,7 +189,13 @@
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h">
       <Filter>ECS\ComponentManager</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\CollisionComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.h">
@@ -198,6 +213,9 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\MaterialComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\MeshComponent3D.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\PointLightComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
@@ -208,6 +226,9 @@
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\SpotLightComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\TextureComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\TransformComponent.h">
@@ -225,7 +246,22 @@
     <ClInclude Include="src\ECS\SystemManager\Systems\System\EditorSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\GridSystem.h">
+      <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\Header.h">
+      <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\LightingSystem.h">
+      <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem.h">
+      <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.h">
+      <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem.h">
@@ -240,6 +276,9 @@
     <ClInclude Include="src\Editor\ECGuiAPI\ECGui.h">
       <Filter>Editor\ECGuiAPI</Filter>
     </ClInclude>
+    <ClInclude Include="src\Editor\ECGuiAPI\ECGuiInputHandler.h">
+      <Filter>Editor\ECGuiAPI</Filter>
+    </ClInclude>
     <ClInclude Include="src\Editor\Manager\EditorManager.h">
       <Filter>Editor\Manager</Filter>
     </ClInclude>
@@ -248,6 +287,30 @@
     </ClInclude>
     <ClInclude Include="src\Editor\Menu\MenuComponent.h">
       <Filter>Editor\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Utilities\DragAndDrop.h">
+      <Filter>Editor\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Utilities\OpenFileDialog.h">
+      <Filter>Editor\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.h">
+      <Filter>Editor\Utilities\UndoAndRedo</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec2DeltaCommand.h">
+      <Filter>Editor\Utilities\UndoAndRedo</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec3DeltaCommand.h">
+      <Filter>Editor\Utilities\UndoAndRedo</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec4DeltaCommand.h">
+      <Filter>Editor\Utilities\UndoAndRedo</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ICommand.h">
+      <Filter>Editor\Utilities\UndoAndRedo</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\PrimitiveDeltaCommand.h">
+      <Filter>Editor\Utilities\UndoAndRedo</Filter>
     </ClInclude>
     <ClInclude Include="src\Editor\Windows\AssetBrowser\AssetBrowser.h">
       <Filter>Editor\Windows\AssetBrowser</Filter>
@@ -279,6 +342,9 @@
     <ClInclude Include="src\Editor\Windows\Scene\SceneView.h">
       <Filter>Editor\Windows\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="src\Editor\Windows\SwitchViews\SwitchViews.h">
+      <Filter>Editor\Windows\SwitchViews</Filter>
+    </ClInclude>
     <ClInclude Include="src\Engine\Engine.h">
       <Filter>Engine</Filter>
     </ClInclude>
@@ -304,7 +370,22 @@
     <ClInclude Include="src\Graphics\FrameBuffer\WindowConstraint.h">
       <Filter>Graphics\FrameBuffer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\Grid\AABB.h">
+      <Filter>Graphics\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Grid\AABBTree.h">
+      <Filter>Graphics\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Grid\Box.h">
+      <Filter>Graphics\Grid</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\Grid\Grid.h">
+      <Filter>Graphics\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Grid\IAABB.h">
+      <Filter>Graphics\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Grid\bounds.h">
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h">
@@ -402,6 +483,9 @@
     </ClInclude>
     <ClInclude Include="src\Graphics\Parser\Parser.h">
       <Filter>Graphics\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Picker\PickingManager.h">
+      <Filter>Graphics\Picker</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\RendererAPI\Graphics.h">
       <Filter>Graphics\RendererAPI</Filter>
@@ -512,30 +596,6 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem.h" />
-    <ClInclude Include="src\Graphics\Grid\bounds.h" />
-    <ClInclude Include="src\Graphics\Grid\Box.h" />
-    <ClInclude Include="src\Editor\Windows\Log\ConsoleData.h" />
-    <ClInclude Include="src\Graphics\Picker\PickingManager.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
-    <ClInclude Include="src\Editor\Windows\SwitchViews\SwitchViews.h" />
-    <ClInclude Include="src\Editor\Utilities\DragAndDrop.h" />
-    <ClInclude Include="src\Graphics\Grid\AABB.h" />
-    <ClInclude Include="src\Graphics\Grid\IAABB.h" />
-    <ClInclude Include="src\Graphics\Grid\AABBTree.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\GridSystem.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem.h" />
-    <ClInclude Include="src\Editor\Utilities\OpenFileDialog.h" />
-    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ICommand.h" />
-    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.h" />
-    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec3DeltaCommand.h" />
-    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\PrimitiveDeltaCommand.h" />
-    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec2DeltaCommand.h" />
-    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec4DeltaCommand.h" />
-    <ClInclude Include="src\Editor\ECGuiAPI\ECGuiInputHandler.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\MeshComponent3D.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\TextureComponent.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -556,7 +616,19 @@
     <ClCompile Include="src\ECS\SystemManager\Systems\System\EditorSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\GridSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp">
@@ -568,6 +640,9 @@
     <ClCompile Include="src\Editor\ECGuiAPI\ECGui.cpp">
       <Filter>Editor\ECGuiAPI</Filter>
     </ClCompile>
+    <ClCompile Include="src\Editor\ECGuiAPI\ECGuiInputHandler.cpp">
+      <Filter>Editor\ECGuiAPI</Filter>
+    </ClCompile>
     <ClCompile Include="src\Editor\Manager\EditorManager.cpp">
       <Filter>Editor\Manager</Filter>
     </ClCompile>
@@ -576,6 +651,15 @@
     </ClCompile>
     <ClCompile Include="src\Editor\Menu\MenuComponent.cpp">
       <Filter>Editor\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Utilities\DragAndDrop.cpp">
+      <Filter>Editor\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Utilities\OpenFileDialog.cpp">
+      <Filter>Editor\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.cpp">
+      <Filter>Editor\Utilities\UndoAndRedo</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\AssetBrowser\AssetBrowser.cpp">
       <Filter>Editor\Windows\AssetBrowser</Filter>
@@ -601,6 +685,9 @@
     <ClCompile Include="src\Editor\Windows\Scene\SceneView.cpp">
       <Filter>Editor\Windows\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="src\Editor\Windows\SwitchViews\SwitchViews.cpp">
+      <Filter>Editor\Windows\SwitchViews</Filter>
+    </ClCompile>
     <ClCompile Include="src\Engine\Engine.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
@@ -619,7 +706,19 @@
     <ClCompile Include="src\Graphics\FrameBuffer\WindowConstraint.cpp">
       <Filter>Graphics\FrameBuffer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\Grid\AABB.cpp">
+      <Filter>Graphics\Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Grid\AABBTree.cpp">
+      <Filter>Graphics\Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Grid\Box.cpp">
+      <Filter>Graphics\Grid</Filter>
+    </ClCompile>
     <ClCompile Include="src\Graphics\Grid\Grid.cpp">
+      <Filter>Graphics\Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Grid\bounds.cpp">
       <Filter>Graphics\Grid</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp">
@@ -703,6 +802,9 @@
     <ClCompile Include="src\Graphics\Parser\Parser.cpp">
       <Filter>Graphics\Parser</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\Picker\PickingManager.cpp">
+      <Filter>Graphics\Picker</Filter>
+    </ClCompile>
     <ClCompile Include="src\Graphics\RendererAPI\Graphics.cpp">
       <Filter>Graphics\RendererAPI</Filter>
     </ClCompile>
@@ -773,41 +875,5 @@
       <Filter>Time</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem.cpp" />
-    <ClCompile Include="src\Graphics\Grid\bounds.cpp" />
-    <ClCompile Include="src\Graphics\Grid\Box.cpp" />
-    <ClCompile Include="src\Graphics\Grid\AABBTree.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\GridSystem.cpp" />
-    <ClCompile Include="src\Graphics\Grid\AABB.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp" />
-    <ClCompile Include="src\Editor\Utilities\OpenFileDialog.cpp" />
-    <ClCompile Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.cpp" />
-    <ClCompile Include="src\Editor\ECGuiAPI\ECGuiInputHandler.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\Assets\Shaders\AABB.frag" />
-    <None Include="src\Assets\Shaders\AABB.vert" />
-    <None Include="src\Assets\Shaders\AssimpShader3D.frag" />
-    <None Include="src\Assets\Shaders\AssimpShader3D.vert" />
-    <None Include="src\Assets\Shaders\BasicFrag.frag" />
-    <None Include="src\Assets\Shaders\BasicVtx.vert" />
-    <None Include="src\Assets\Shaders\DebugFrag.frag" />
-    <None Include="src\Assets\Shaders\DebugVtx.vert" />
-    <None Include="src\Assets\Shaders\light.frag" />
-    <None Include="src\Assets\Shaders\light.vert" />
-    <None Include="src\Assets\Shaders\LightFrag.frag" />
-    <None Include="src\Assets\Shaders\LightVtx.vert" />
-    <None Include="src\Assets\Shaders\ParticlesFrag.frag" />
-    <None Include="src\Assets\Shaders\ParticlesVtx.vert" />
-    <None Include="src\Assets\Shaders\Shaders.json" />
-    <None Include="src\Assets\Shaders\textFrag.frag" />
-    <None Include="src\Assets\Shaders\textVtx.vert" />
-    <ClCompile Include="src\Graphics\Picker\PickingManager.cpp" />
-    <ClCompile Include="src\Editor\Windows\SwitchViews\SwitchViews.cpp" />
-    <ClCompile Include="src\Editor\Utilities\DragAndDrop.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\Mono\ScriptAPI\MonoVec3.cs" />
   </ItemGroup>
 </Project>
