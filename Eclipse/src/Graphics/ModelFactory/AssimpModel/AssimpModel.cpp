@@ -7,14 +7,14 @@ namespace Eclipse
 {
 
     AssimpModel::AssimpModel(bool noTex)
-        :
-        NoTextures(noTex)
+        //:
+        //NoTextures(noTex)
     {
         //GlobalMode = GL_FILL;
     }
 
     AssimpModel::AssimpModel(bool noTex, std::string& NameOfModels, std::string& Directorys, std::vector<Mesh> Meshess, std::vector<Texture> Textures_loadeds) :
-        NoTextures(noTex),
+        //NoTextures(noTex),
         NameOfModel(NameOfModels),
         Directory(Directorys),
         Meshes(Meshess),
@@ -65,8 +65,6 @@ namespace Eclipse
         }
 
         Directory = path.substr(0, path.find_last_of("/"));
-        //glm::mat4 Model = (glm::rotate(glm::mat4(1.0f), -90.0f, glm::vec3(1.0f, 0.0f, 0.0f)));
-        //scene->mRootNode->mTransformation = aiMatrix4x4();
 
         ProcessNode(scene->mRootNode, scene);
 
@@ -86,7 +84,6 @@ namespace Eclipse
         // process all child nodes
         for (unsigned int i = 0; i < node->mNumChildren; i++)
         {
-            //node->mChildren[i]->mTransformation = scene->mRootNode->mTransformation * node->mChildren[i]->mTransformation;
             ProcessNode(node->mChildren[i], scene);
         }
     }
@@ -210,8 +207,6 @@ namespace Eclipse
             {
                 Meshes.push_back(Mesh(it.vertices, it.indices, it.Diffuse, it.Specular,it.NoTextures));
             }
-
-            NoTextures = it.NoTextures;
         }
 
         for (auto& it : AllVertices)
@@ -255,11 +250,6 @@ namespace Eclipse
     std::vector<Texture> AssimpModel::GetTextures()
     {
         return Textures_loaded;
-    }
-
-    bool AssimpModel::CheckNoTextures()
-    {
-        return NoTextures;
     }
 
     void Eclipse::AssimpModel::GetTextureNames()
@@ -370,7 +360,7 @@ namespace Eclipse
                     newMesh.Specular = spec;
 
                     meshData.push_back(newMesh);
-                    Index++;
+                    MeshIndex++;
                     return;
                 }
 
@@ -378,7 +368,7 @@ namespace Eclipse
         }
 
         meshData.push_back(newMesh);
-        Index++;
+        MeshIndex++;
         return;
         // return Mesh(vertices, indices, textures);
     }
@@ -406,7 +396,7 @@ namespace Eclipse
                 {
                     textures.push_back(Textures_loaded[j]);
                     std::unique_ptr<Texture> ptr(new Texture(Textures_loaded[j]));
-                    engine->AssimpManager.InsertTextures(NameOfModel, std::move(ptr), Index);
+                    engine->AssimpManager.InsertTextures(NameOfModel, std::move(ptr), MeshIndex);
 
                     skip = true;
                     break;
@@ -421,7 +411,7 @@ namespace Eclipse
                 Textures_loaded.push_back(tex);
 
                 std::unique_ptr<Texture> ptr(new Texture(tex));
-                engine->AssimpManager.InsertTextures(NameOfModel, std::move(ptr), Index);
+                engine->AssimpManager.InsertTextures(NameOfModel, std::move(ptr), MeshIndex);
             }
         }
 

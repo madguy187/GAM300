@@ -31,9 +31,9 @@ namespace Eclipse
     class AssimpModel
     {
     private:
-        unsigned int Index = 0;
+        unsigned int MeshIndex = 0;
         unsigned int ID = 0;
-        bool NoTextures = false; // Set False if model got textures
+        //bool NoTextures = false; // Set False if model got textures
         ModelType type = ModelType::MT_UNASSIGNED;
         // Take Note , i will use folder name as key
         std::string NameOfModel;
@@ -75,7 +75,6 @@ namespace Eclipse
         unsigned int GetEntityID();
         std::vector<Mesh> GetMesh();
         std::vector<Texture> GetTextures();
-        bool CheckNoTextures();
     };
 
 }

@@ -242,7 +242,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
 
         engine->world.AddComponent(ID, MaterialComponent{});
         engine->world.AddComponent(ID, MeshComponent3D{});
-        engine->world.AddComponent(ID, TextureComponent{});
+        //engine->world.AddComponent(ID, TextureComponent{});
 
         MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
         MeshComponent3D& sprite = engine->world.GetComponent<MeshComponent3D>(ID);
