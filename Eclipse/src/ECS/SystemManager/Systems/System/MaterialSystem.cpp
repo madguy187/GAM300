@@ -20,6 +20,9 @@ namespace Eclipse
                 // Update Shininess ===============================
                 engine->MaterialManager.UpdateShininess(material);
 
+                // Update Materials ===============================
+                engine->MaterialManager.UpdateMaterial(material);
+
                 // HighLight Basic Models Start ===============================
                 engine->MaterialManager.HighlightBasicPrimitives(material, entity, engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
                 // HighLight Basic Models End ===============================

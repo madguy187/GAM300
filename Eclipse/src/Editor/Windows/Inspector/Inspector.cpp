@@ -57,7 +57,6 @@ namespace Eclipse
 				{
 				}
 			}
-
 			AddComponentsController(currEnt);
 			RemoveComponentsController(currEnt);
 		}
@@ -272,36 +271,43 @@ namespace Eclipse
 	}
 	void InspectorWindow::AddComponentsController( Entity ID)
 	{
-		if (ImGui::Button("Add Component"))
+		ImVec2 buttonSize = {180,20};
+		if (ImGui::Button(("Add Component"), buttonSize))
 		{
 			ImGui::OpenPopup("Add Component");
 		}
 		if (ImGui::BeginPopup("Add Component"))
 		{
+			ImGui::SetScrollY(5);
+			ImGui::BeginChild("Remove Components",{250,200});
 			AddComponents(ID);
+			ImGui::EndChild();
 			ImGui::EndPopup();
 		}
 	}
 	void InspectorWindow::RemoveComponentsController(Entity ID)
 	{
-		if (ImGui::Button("Remove Component"))
+		ImVec2 buttonSize = { 180,20 };
+		if (ImGui::Button(("Remove Component"), buttonSize))
 		{
 			ImGui::OpenPopup("Remove Component");
 		}
 		if (ImGui::BeginPopup("Remove Component"))
 		{
+			ImGui::SetScrollY(5);
+			ImGui::BeginChild("Remove Components",{250,200});
 			RemoveComponents(ID);
+			ImGui::EndChild();
 			ImGui::EndPopup();
 		}
 	}
 	void InspectorWindow::AddComponents(Entity ID)
 	{
-
 		static ImGuiTextFilter AddComponentFilter;
-		
+
 		auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
 		
-		AddComponentFilter.Draw();
+		AddComponentFilter.Draw("Filter",160);
 
 		for (int i = 0; i < engine->world.GetAllComponentNames().size(); i++)
 		{
@@ -445,7 +451,7 @@ namespace Eclipse
 		
 		auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
 		
-		AddComponentFilter.Draw();
+		AddComponentFilter.Draw("Filter", 160);
 
 		for (int i = 0; i < engine->world.GetAllComponentNames().size(); i++)
 		{

@@ -204,6 +204,7 @@ namespace Eclipse
 
             // FRAMEBUFFER DRAW ==========================
             engine->GraphicsManager.GlobalFrmeBufferDraw();
+
             ImGuiSetup::End(EditorState);
             OpenGL_Context::post_render();
             Timer.tracker.system_end = glfwGetTime();

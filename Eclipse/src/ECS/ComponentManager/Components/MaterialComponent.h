@@ -21,9 +21,10 @@ namespace Eclipse
         ECVec3 HighlightColour{ 1.0f,0.0f,0.0f };
         float shininess = 0.25f;
         float MaximumShininess = 128.0f;
+        ModelType Modeltype = ModelType::None;
         bool RegisterForHighlight = false;
         bool Highlight = false;
-        ModelType Modeltype = ModelType::None;
+        bool NoTextures = true;
 
         // Check Highlighting
         float Thickness = 0.05f;
