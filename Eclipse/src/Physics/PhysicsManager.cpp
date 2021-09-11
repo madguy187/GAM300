@@ -198,11 +198,11 @@ namespace Eclipse
 
 
 		float cy = cosf(yaw * 0.5);
-		float sy = sin(yaw * 0.5);
-		float cp = cos(pitch * 0.5);
-		float sp = sin(pitch * 0.5);
-		float cr = cos(roll * 0.5);
-		float sr = sin(roll* 0.5);
+		float sy = sinf(yaw * 0.5);
+		float cp = cosf(pitch * 0.5);
+		float sp = sinf(pitch * 0.5);
+		float cr = cosf(roll * 0.5);
+		float sr = sinf(roll* 0.5);
 
 		return PxQuat(sr * cp * cy - cr * sp * sy ,//X
 					  cr * sp * cy + sr * cp * sy ,//Y
@@ -221,7 +221,7 @@ namespace Eclipse
 		float sinr_cosp = 2 * (quat.w * quat.x + quat.y * quat.z);
 		float cosr_cosp = 1 - 2 * (quat.x * quat.x + quat.y * quat.y);
 		
-		temp.setX(std::atan2(sinr_cosp, cosr_cosp) * (180.0/M_PI));
+		temp.setX(std::atan2f(sinr_cosp, cosr_cosp) * (180.0/M_PI));
 
 		//y rotation
 		float sinp = 2 * (quat.w * quat.y - quat.z * quat.x);
@@ -233,7 +233,7 @@ namespace Eclipse
 		float siny_cosp = 2 * (quat.w * quat.z + quat.x * quat.y);
 		float cosy_cosp = 1 - 2 * (quat.y * quat.y + quat.z * quat.z);
 
-		temp.setZ(std::atan2(siny_cosp, cosy_cosp) * (180.0/M_PI));
+		temp.setZ(std::atan2f(siny_cosp, cosy_cosp) * (180.0/M_PI));
 
 		return temp;
 	}
@@ -274,12 +274,18 @@ namespace Eclipse
 		if (Px_Actors[ent] != nullptr)
 		{
 			PxVec3 tempforce{ 0,0,0 };
+			PxVec3 tempangVelo{ 0,0,0 };
 			PxVec3 temptrans{0,0,0};
 			PxQuat temprot;
 
 			tempforce.x = rigid.forces.getX();
 			tempforce.y = rigid.forces.getY();
 			tempforce.z = rigid.forces.getZ();
+
+			tempangVelo.x = rigid.Angvelocity.getX();
+			tempangVelo.y = rigid.Angvelocity.getY();
+			tempangVelo.z = rigid.Angvelocity.getZ();
+
 
 			temptrans.x = transform.position.x;
 			temptrans.y = transform.position.y;
@@ -288,10 +294,10 @@ namespace Eclipse
 			temprot = AnglestoQuat(transform.rotation.getX(),transform.rotation.getY(),transform.rotation.getZ());
 	
 			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setGlobalPose(PxTransform{ temptrans,temprot});
-			//static_cast<PxRigidDynamic*>(Px_Actors[ent])->setForceAndTorque(tempforce, { 0,0,0 });
+			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setForceAndTorque(tempforce, { 0,0,0 });
 			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setMass(rigid.mass);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setActorFlag(PxActorFlag::eDISABLE_GRAVITY,rigid.enableGravity ? false : true);
-			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setAngularVelocity(PxVec3{ 0,0,1 });
+			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setAngularVelocity(tempangVelo);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setAngularDamping(0.f);
 		}
 	}

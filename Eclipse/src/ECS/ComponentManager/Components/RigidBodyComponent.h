@@ -16,6 +16,7 @@ namespace Eclipse
 		float angdrag{0.0f};
 
 		ECVec3 velocity{0,0,0};
-		ECVec3 forces{5,5,5};
+		ECVec3 Angvelocity{ 0,0,0 };
+		ECVec3 forces{0,0,0};
 	};
 }
