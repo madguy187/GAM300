@@ -27,7 +27,7 @@ namespace Eclipse
     {
         for (unsigned int i = 0; i < Meshes.size(); i++)
         {
-            Meshes[i].Render(shader, MOde, id,i);
+            Meshes[i].Render(shader, MOde, id, i);
         }
     }
 
@@ -205,7 +205,7 @@ namespace Eclipse
             }
             else
             {
-                Meshes.push_back(Mesh(it.vertices, it.indices, it.Diffuse, it.Specular,it.NoTextures));
+                Meshes.push_back(Mesh(it.vertices, it.indices, it.Diffuse, it.Specular, it.Ambient, it.NoTextures));
             }
         }
 
@@ -295,6 +295,11 @@ namespace Eclipse
                 vertex.TextureCoodinates = glm::vec2(0.0f);
             }
 
+            if (mesh->mColors[0])
+            {
+                vertex.m_Color = mesh->mColors[0][i];
+            }
+
             AllVertices.push_back(vertex.Position);
             vertices.push_back(vertex);
 
@@ -358,6 +363,11 @@ namespace Eclipse
                     aiColor4D spec(1.0f);
                     aiGetMaterialColor(material, AI_MATKEY_COLOR_SPECULAR, &spec);
                     newMesh.Specular = spec;
+
+                    // specular color
+                    aiColor4D ambientColor(1.0f);
+                    aiGetMaterialColor(material, AI_MATKEY_COLOR_AMBIENT, &ambientColor);
+                    newMesh.Ambient = ambientColor;
 
                     meshData.push_back(newMesh);
                     MeshIndex++;

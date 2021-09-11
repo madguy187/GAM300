@@ -17,15 +17,27 @@ namespace Eclipse
 			auto relativePath = relative(path, "src//");
 			std::string FolderName = relativePath.filename().string();
 
-			std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/" + "scene.gltf").c_str();
-			TestPath(PathName);
+			std::string GoIntoModelFolder = ("src/Assets/ASSModels/" + FolderName);
 
-			std::unique_ptr<AssimpModel> ptr(new AssimpModel(false));
-			ptr->SetProperties(FolderName, ModelType::MT_ANIMAL);
-			ptr->LoadAssimpModel(PathName);
+			for (auto& dirEntry : std::filesystem::directory_iterator(GoIntoModelFolder))
+			{
+				const auto& FbxOrGltf = dirEntry.path();
+				auto relativePath = relative(FbxOrGltf, "src//");
+				std::string FbxOrGltfName = relativePath.filename().string();
 
-			AssimpLoadedModels.emplace(FolderName, std::move(ptr));
-			ModelMap.emplace(FolderName, PathName);
+				if ( FbxOrGltfName.find("gltf") != std::string::npos || FbxOrGltfName.find("fbx") != std::string::npos)
+				{
+					std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/" + FbxOrGltfName).c_str();
+					std::cout << "found!" << '\n';
+
+					std::unique_ptr<AssimpModel> ptr(new AssimpModel(false));
+					ptr->SetProperties(FolderName, ModelType::MT_ANIMAL);
+					ptr->LoadAssimpModel(PathName);
+
+					AssimpLoadedModels.emplace(FolderName, std::move(ptr));
+					ModelMap.emplace(FolderName, PathName);
+				}
+			}
 		}
 
 		int i = 0;

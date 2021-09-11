@@ -28,12 +28,13 @@ namespace Eclipse
         Setup();
     }
 
-    Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiColor4D diffuse, aiColor4D specular, bool in)
+    Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiColor4D diffuse, aiColor4D specular, aiColor4D ambient, bool in)
         :
         Vertices(vertices),
         Indices(indices),
         Diffuse(diffuse),
         Specular(specular),
+        Ambient(ambient),
         NoTex(in)
     {
         Setup();
@@ -54,7 +55,7 @@ namespace Eclipse
             GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
             GLuint tex_loc = shader.GetLocation("uTex2d");
             GLuint diff0 = shader.GetLocation("sdiffuse");
-            GLuint spec = shader.GetLocation("specular0");
+            GLuint spec = shader.GetLocation("sspecular");
             GLuint Texture = shader.GetLocation("noTex");
 
             glUniform1i(uniform_var_loc3, true);
