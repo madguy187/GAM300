@@ -293,16 +293,17 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     // SpotLight
     case 14:
     {
+        //engine->LightManager.CreateLights(Eclipse::TypesOfLights::SPOTLIGHT, ID);
+
         engine->world.AddComponent(ID, MaterialComponent{});
         engine->world.AddComponent(ID, MeshComponent3D{});
-        //engine->world.AddComponent(ID, TextureComponent{});
 
         MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
         MeshComponent3D& sprite = engine->world.GetComponent<MeshComponent3D>(ID);
 
         mat.Modeltype = MaterialComponent::ModelType::Models3D;
         sprite.ID = ID;
-        sprite.Key = engine->AssimpManager.GetKey("Bed");
+        sprite.Key = engine->AssimpManager.GetKey("Lamp");
         engine->AssimpManager.InsertModel(ID);
     }
     break;

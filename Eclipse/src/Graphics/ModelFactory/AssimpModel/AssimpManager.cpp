@@ -28,7 +28,6 @@ namespace Eclipse
 				if ( FbxOrGltfName.find("gltf") != std::string::npos || FbxOrGltfName.find("fbx") != std::string::npos)
 				{
 					std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/" + FbxOrGltfName).c_str();
-					std::cout << "found!" << '\n';
 
 					std::unique_ptr<AssimpModel> ptr(new AssimpModel(false));
 					ptr->SetProperties(FolderName, ModelType::MT_ANIMAL);
@@ -364,10 +363,10 @@ namespace Eclipse
 
 	void AssimpModelManager::PrintLoadedModels()
 	{
+		// Check How Many Models are Loaded
 		std::cout << std::endl;
 		std::cout << "Loaded Models Count " << AssimpLoadedModels.size() << std::endl;
 		std::cout << "-------------------------------------------------------------------" << std::endl;
-
 		for (auto const& Models : AssimpLoadedModels)
 		{
 			auto& InvidualModels = *(Models.second);
@@ -377,13 +376,12 @@ namespace Eclipse
 			InvidualModels.GetTextureNames();
 			std::cout << std::endl;
 		}
-
 		std::cout << "-------------------------------------------------------------------" << std::endl;
-
 		std::cout << std::endl;
+
+		// Check How Many Textures are Loaded and which meshes are they mapped to?
 		std::cout << "Loaded Textures Count " << LoadedTexturesV2.size() << std::endl;
 		std::cout << "-------------------------------------------------------------------" << std::endl;
-
 		for (auto const& Model : LoadedTexturesV2)
 		{
 			auto& ModelName = (Model.first);
@@ -400,7 +398,19 @@ namespace Eclipse
 			}
 			std::cout << std::endl;
 		}
+		std::cout << "-------------------------------------------------------------------" << std::endl;
+		std::cout << std::endl;
 
+		// ModelInformation loaded
+		std::cout << "Loaded ModelMap Count " << ModelMap.size() << std::endl;
+		std::cout << "-------------------------------------------------------------------" << std::endl;
+		for (auto const& Model : ModelMap)
+		{
+			auto& ModelName = (Model.first); // Folder Name too
+			auto& ModelPath = (Model.second);
+
+			std::cout << "Model Name : " << ModelName << " ==== " << ModelPath << std::endl;
+		}
 		std::cout << "-------------------------------------------------------------------" << std::endl;
 		std::cout << std::endl;
 	}
