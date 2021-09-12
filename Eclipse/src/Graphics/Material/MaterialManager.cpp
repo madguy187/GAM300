@@ -285,6 +285,15 @@ namespace Eclipse
         }
     }
 
+    void MaterialManager::Highlight3DModels(MaterialComponent& in, unsigned int EntityId, unsigned int FrameBufferID)
+    {
+        if (in.Highlight == true)
+        {
+            engine->MaterialManager.UpdateStencilWith_Outline(EntityId);
+            engine->MaterialManager.Highlight3DModels(FrameBufferID, EntityId, GL_FILL);
+        }
+    }
+
     void MaterialManager::UpdateShininess(MaterialComponent& in)
     {
         auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
@@ -452,13 +461,14 @@ namespace Eclipse
             return;
 
         auto& mesh = engine->world.GetComponent<MeshComponent3D>(index);
+        auto& ModelInfo = engine->world.GetComponent<ModeLInforComponent>(index);
 
         // Insert
         if (MeshHighLightContainer.insert(std::pair<unsigned int, MeshComponent3D*>(index, &mesh)).second == true)
         {
             mat.RegisterForHighlight = true;
 
-            std::string Success = ("Model [" + mesh.NameOfModel + "] Registered For Highlighting ! ").c_str();
+            std::string Success = ("Model [" + ModelInfo.NameOfModel + "] Registered For Highlighting ! ").c_str();
             ENGINE_CORE_INFO(Success);
 
             std::cout << "HighLight Container Size : " << ModelHighlightContainer.size() << std::endl;
@@ -517,5 +527,34 @@ namespace Eclipse
         glUniform4f(SpecularMaterial, in.specular.getX(), in.specular.getY(), in.specular.getZ(), 1);
 
         shdrpgm.UnUse();
+    }
+
+    void MaterialManager::Highlight3DModels(unsigned int FrameBufferID, unsigned int ModelID, GLenum mode)
+    {
+        if (EnableHighlight == true)
+        {
+            auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+
+            glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
+            auto shdrpgm = Graphics::shaderpgms["OutLineShader"];
+            shdrpgm.Use();
+
+            auto& highlight = engine->world.GetComponent<MaterialComponent>(ModelID);
+            auto& InvidualModels = engine->world.GetComponent<MeshComponent3D>(ModelID);
+
+            // Check Main Uniforms For each Model
+            // Translation done here for each model
+            CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ModelID);
+
+            // Materials Update
+            engine->MaterialManager.CheckUnniformLocation(shdrpgm, highlight);
+
+            // Render
+            engine->AssimpManager.Render(shdrpgm, mode, FrameBufferID, InvidualModels, ModelID);
+
+            // Part 5: Clean up
+            glBindVertexArray(0);
+            shdrpgm.UnUse();
+        }
     }
 }

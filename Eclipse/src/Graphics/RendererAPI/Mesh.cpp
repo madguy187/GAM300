@@ -92,24 +92,12 @@ namespace Eclipse
                         break;
                     }
 
-                    //GLint uniform_var_loc2 = shader.GetLocation("uColor");
                     GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
-                    //GLuint tex_loc = shader.GetLocation("uTex2d");
                     GLuint diff0 = shader.GetLocation("diffuse0");
                     GLuint spec = shader.GetLocation("specular0");
                     GLuint dsa = shader.GetLocation("noTex");
 
-                    //if (uniform_var_loc2 >= 0)
-                    //{
-                    //    glUniform4f(uniform_var_loc2, 0.5, 0, 0, 1);
-                    //}
-
-                    if (uniform_var_loc3 >= 0)
-                    {
-                        glUniform1i(uniform_var_loc3, true);
-                    }
-
-                    //glUniform1i(tex_loc, i);
+                    glUniform1i(uniform_var_loc3, true);
                     glUniform1i(diff0, i);
                     glUniform1i(spec, i);
                     glUniform1i(dsa, false);

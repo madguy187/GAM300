@@ -8,5 +8,6 @@ namespace Eclipse
     {
         std::string NameOfModel;
         std::string Directory;
+        ModelType type = ModelType::MT_UNASSIGNED;
     };
 }
