@@ -157,7 +157,7 @@ namespace Eclipse
         auto shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
         shdrpgm.Use();
 
-        glBindVertexArray(Graphics::models["sphere"]->GetVaoID());
+        glBindVertexArray(Graphics::models["Sphere"]->GetVaoID());
 
         glEnable(GL_BLEND);
         glPolygonMode(GL_FRONT_AND_BACK, mode);
@@ -169,8 +169,8 @@ namespace Eclipse
 
         if (in->visible)
         {
-            GLCall(glDrawElements(Graphics::models["sphere"]->GetPrimitiveType(),
-                Graphics::models["sphere"]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
+            GLCall(glDrawElements(Graphics::models["Sphere"]->GetPrimitiveType(),
+                Graphics::models["Sphere"]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
         }
 
         glBindVertexArray(0);

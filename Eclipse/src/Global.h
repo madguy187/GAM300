@@ -107,18 +107,18 @@ enum class TextureType
 // Please keep this
 enum class LoadingModels : unsigned int
 {
-    square = 0,
-    triangle = 1,
-    circle = 2,
-    lines = 3,
-    lightsquare = 4,
-    sphere = 5,
-    plane = 6,
-    cube = 7,
-    cylinder = 8,
-    cone = 9,
-    torus = 10,
-    pyramid = 11,
-    lines3D = 12,
+    Square = 0,
+    Triangle = 1,
+    Circle = 2,
+    Lines = 3,
+    Lightsquare = 4,
+    Sphere = 5,
+    Plane = 6,
+    Cube = 7,
+    Cylinder = 8,
+    Cone = 9,
+    Torus = 10,
+    Pyramid = 11,
+    Lines3D = 12,
     MAXCOUNT
 };

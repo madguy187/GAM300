@@ -48,7 +48,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-        sprite.modelRef = Graphics::models.find("square")->first;
+        sprite.modelRef = Graphics::models.find("Square")->first;
         sprite.isQuad = true;
 
     }
@@ -64,7 +64,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-        sprite.modelRef = Graphics::models.find("circle")->first;
+        sprite.modelRef = Graphics::models.find("Circle")->first;
     }
     break;
     case 2:
@@ -77,7 +77,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-        sprite.modelRef = Graphics::models.find("triangle")->first;
+        sprite.modelRef = Graphics::models.find("Triangle")->first;
     }
     break;
     case 3:
@@ -90,7 +90,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-        sprite.modelRef = Graphics::models.find("lines")->first;
+        sprite.modelRef = Graphics::models.find("Lines")->first;
     }
     break;
     case 4:
@@ -106,7 +106,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-        sprite.modelRef = Graphics::models.find("sphere")->first;
+        sprite.modelRef = Graphics::models.find("Sphere")->first;
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
 
         text.hasTexture = true;
@@ -128,7 +128,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-        sprite.modelRef = Graphics::models.find("cube")->first;
+        sprite.modelRef = Graphics::models.find("Cube")->first;
         text.hasTexture = true;
         text.textureRef = Graphics::textures.find("orange")->first;
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
@@ -144,7 +144,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-        sprite.modelRef = Graphics::models.find("cylinder")->first;
+        sprite.modelRef = Graphics::models.find("Cylinder")->first;
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
@@ -158,7 +158,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-        sprite.modelRef = Graphics::models.find("cone")->first;
+        sprite.modelRef = Graphics::models.find("Cone")->first;
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
@@ -172,7 +172,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
         sprite.ID = ID;
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-        sprite.modelRef = Graphics::models.find("torus")->first;
+        sprite.modelRef = Graphics::models.find("Torus")->first;
         Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
@@ -514,59 +514,59 @@ std::string Eclipse::GraphicsManager::GetModelName(unsigned int modelname)
     switch (modelname)
     {
     case 0:
-        return "square";
+        return "Square";
         break;
 
     case 1:
-        return "triangle";
+        return "Triangle";
         break;
 
     case 2:
-        return "circle";
+        return "Circle";
         break;
 
     case 3:
-        return "lines";
+        return "Lines";
         break;
 
     case 4:
-        return "lightsquare";
+        return "Lightsquare";
         break;
 
     case 5:
-        return "sphere";
+        return "Sphere";
         break;
 
     case 6:
-        return "plane";
+        return "Plane";
         break;
 
     case 7:
-        return "cube";
+        return "Cube";
         break;
 
     case 8:
-        return "cylinder";
+        return "Cylinder";
         break;
 
     case 9:
-        return "cone";
+        return "Cone";
         break;
 
     case 10:
-        return "torus";
+        return "Torus";
         break;
 
     case 11:
-        return "pyramid";
+        return "Pyramid";
         break;
 
     case 12:
-        return "lines3D";
+        return "Lines3D";
         break;
 
     case 13:
-        return "frustum";
+        return "Frustum";
         break;
     }
 
