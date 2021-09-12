@@ -20,12 +20,8 @@ namespace Eclipse
 		Type = EditorWindowType::EWT_SWITCHVIEW_TOP;
 		WindowName = "Top Switch View";
 		IsVisible = false;
-
-		m_frameBuffer_TOP = std::make_shared<FrameBuffer>
-			(*engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SWITCHINGVIEWS_TOP));
-
+		m_frameBuffer_TOP = engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SWITCHINGVIEWS_TOP);
 		mProjectionView_List.push_back("Orthographic");
-		mProjectionView_List.push_back("Perspective");
 	}
 
 	void TopSwitchViewWindow::RunMainWindow()
@@ -49,14 +45,10 @@ namespace Eclipse
 	{
 		RenderSettingsHeader();
 		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer_TOP->GetTextureColourBufferID())),
-			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+			ImVec2{ mViewportSize.x, mViewportSize.y * 0.92f }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 		if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
-		{
 			OnGizmoUpdateEvent();
-			/*m_frameBuffer_TOP->SetRenderMode(FrameBuffer::RenderMode::Fill_Mode);*/
-			//engine->gCamera.SetViewCameraProjectionType()
-		}
 		
 		if (ECGui::IsItemHovered())
 		{
@@ -69,25 +61,9 @@ namespace Eclipse
 
 	void TopSwitchViewWindow::RenderSettingsHeader()
 	{
-		static size_t projIndex = 0;
+		size_t projIndex = 0;
 		ComboListSettings settings{ "ProjectionComboList" };
 		ECGui::CreateComboList(settings, mProjectionView_List, projIndex);
-
-		if (projIndex == static_cast<size_t>(CameraComponent::ProjectionType::Perspective))
-		{
-			mProjectionView_Bits.set(0, 0);
-			mProjectionView_Bits.set(1, 1);
-			engine->gCamera.SetViewCameraProjectionType(CameraComponent::CameraType::TopView_Camera,
-				CameraComponent::ProjectionType::Perspective);
-		}
-		else
-		{
-			mProjectionView_Bits.set(1, 0);
-			mProjectionView_Bits.set(0, 1);
-			engine->gCamera.SetViewCameraProjectionType(CameraComponent::CameraType::TopView_Camera,
-				CameraComponent::ProjectionType::Orthographic);
-		}
-
 		ECGui::InsertSameLine();
 		ECGui::CheckBoxBool("Wireframe", &IsWireframeMode, false);
 
@@ -183,14 +159,6 @@ namespace Eclipse
 			(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
 			nullptr, io.KeyCtrl ? glm::value_ptr(snapValues) : nullptr);
 
-		/*static const float identityMatrix[16] =
-		{ 1.f, 0.f, 0.f, 0.f,
-			0.f, 1.f, 0.f, 0.f,
-			0.f, 0.f, 1.f, 0.f,
-			0.f, 0.f, 0.f, 1.f };
-
-		ImGuizmo::DrawGrid(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx), identityMatrix, 100.f);*/
-
 		if (ImGuizmo::IsUsing() && ECGui::IsItemHovered())
 		{
 			glm::vec3 translation, rotation, scale;
@@ -227,51 +195,24 @@ namespace Eclipse
 	{
 		ImGuiIO& io = ImGui::GetIO();
 
-		// Perspective
-		if (mProjectionView_Bits.test(1))
+		if (io.MouseWheel != 0.0f)
 		{
-			if (io.MouseWheel != 0.0f)
-			{
-				// ImGui Scroll Up Detection
-				if (io.MouseWheel > 0.0f)
-					engine->gCamera.GetViewInput().set(6, 1);
-				else
-					engine->gCamera.GetViewInput().set(6, 0);
-
-				// ImGui Scroll Down Detection
-				if (io.MouseWheel < 0.0f)
-					engine->gCamera.GetViewInput().set(7, 1);
-				else
-					engine->gCamera.GetViewInput().set(7, 0);
-			}
+			// ImGui Scroll Up Detection
+			if (io.MouseWheel > 0.0f)
+				engine->gCamera.GetViewInput().set(4, 1);
 			else
-			{
-				engine->gCamera.GetViewInput().set(6, 0);
-				engine->gCamera.GetViewInput().set(7, 0);
-			}
-		}
-		// Orthographic
-		else if (mProjectionView_Bits.test(0))
-		{
-			if (io.MouseWheel != 0.0f)
-			{
-				// ImGui Scroll Up Detection
-				if (io.MouseWheel > 0.0f)
-					engine->gCamera.GetViewInput().set(4, 1);
-				else
-					engine->gCamera.GetViewInput().set(4, 0);
-
-				// ImGui Scroll Down Detection
-				if (io.MouseWheel < 0.0f)
-					engine->gCamera.GetViewInput().set(5, 1);
-				else
-					engine->gCamera.GetViewInput().set(5, 0);
-			}
-			else
-			{
 				engine->gCamera.GetViewInput().set(4, 0);
+
+			// ImGui Scroll Down Detection
+			if (io.MouseWheel < 0.0f)
+				engine->gCamera.GetViewInput().set(5, 1);
+			else
 				engine->gCamera.GetViewInput().set(5, 0);
-			}
+		}
+		else
+		{
+			engine->gCamera.GetViewInput().set(4, 0);
+			engine->gCamera.GetViewInput().set(5, 0);
 		}
 	}
 

@@ -30,17 +30,17 @@ namespace Eclipse
 	void EditorManager::InitGUIWindows()
 	{
 		AddWindow<eGameViewWindow>("GameView");
-		AddWindow<SceneWindow>("Scene");
+		AddWindow<SceneWindow>("Main Scene Viewport");
 		AddWindow<InspectorWindow>("Inspector");
 		AddWindow<HierarchyWindow>("Hierarchy");
 		AddWindow<ProfilerWindow>("Profiler");
-		AddWindow<AssetBrowserWindow>("AssetBrowser");
+		AddWindow<AssetBrowserWindow>("Asset Browser");
 		AddWindow<LoggerWindow>("Log");
 		AddWindow<DebugWindow>("Debug");
-		AddWindow<TopSwitchViewWindow>("TopSwitchView");
-		AddWindow<BottomSwitchViewWindow>("BottomSwitchViews");
-		AddWindow<LeftSwitchViewWindow>("LeftSwitchViews");
-		AddWindow<RightSwitchViewWindow>("RightSwitchViews");
+		AddWindow<TopSwitchViewWindow>("Top Viewport");
+		AddWindow<BottomSwitchViewWindow>("Bottom Viewport");
+		AddWindow<LeftSwitchViewWindow>("Left Viewport");
+		AddWindow<RightSwitchViewWindow>("Right Viewport");
 	}
 
 	void EditorManager::InitMenu()
@@ -98,7 +98,7 @@ namespace Eclipse
 		engine->world.AddComponent(ID, TransformComponent{});
 
 		// Check this please - Rachel
-		if(type!=EntityType::ENT_GAMECAMERA)
+		if(type != EntityType::ENT_GAMECAMERA)
 		{
 			auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
 			engine->gPicker.GenerateAabb(ID, _transform, type);

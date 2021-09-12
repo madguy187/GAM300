@@ -19,13 +19,8 @@ namespace Eclipse
 		void OnCameraMoveEvent();
 	private:
 		glm::vec2 mViewportSize;
-		std::shared_ptr<FrameBuffer> m_frameBuffer_TOP;
+		FrameBuffer* m_frameBuffer_TOP;
 		int m_GizmoType{ 0 };
-		/*************************************
-		           0  ->  Ortho
-				   1  ->  Persp
-		**************************************/
-		std::bitset<2> mProjectionView_Bits;
 		std::vector<std::string> mProjectionView_List;
 		bool IsWireframeMode{ false };
 	};

@@ -21,7 +21,7 @@ namespace Eclipse
 		Type = EditorWindowType::EWT_SCENE;
 		WindowName = "Scene";
 
-		m_frameBuffer = std::make_shared<FrameBuffer>(*engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SCENEVIEW));
+		m_frameBuffer = engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SCENEVIEW);
 	}
 
 	void SceneWindow::RunMainWindow()
