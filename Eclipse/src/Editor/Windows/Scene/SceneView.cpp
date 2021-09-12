@@ -104,9 +104,6 @@ namespace Eclipse
 	{
 		Entity selectedEntity = engine->editorManager->GetSelectedEntity();
 
-		// Rachel said to comment out.
-		//engine->gPicker.UpdateAabb(selectedEntity);
-
 		ImGuizmo::SetOrthographic(false);
 		ImGuizmo::SetDrawlist();
 
@@ -174,8 +171,6 @@ namespace Eclipse
 			ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(translation),
 				glm::value_ptr(rotation), glm::value_ptr(scale));
 
-			//Math::DecomposeTransform(transform, translation, rotation, scale);
-
 			glm::vec3 deltaRotation = rotation - transCom.rotation.ConvertToGlmVec3Type();
 
 			switch (m_GizmoType)
@@ -196,7 +191,7 @@ namespace Eclipse
 				break;
 			}
 		}
-		else if (ImGuizmo::IsOver())
+		else if (ImGuizmo::IsOver() && ImGui::IsMouseReleased(0))
 		{
 			CommandHistory::DisableMergeForMostRecentCommand();
 		}

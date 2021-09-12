@@ -12,11 +12,21 @@ namespace Eclipse
 		TopSwitchViewWindow();
 		void RunMainWindow();
 		void RunFrameBuffer();
+		void RenderSettingsHeader();
+		void OnKeyPressedEvent();
 		void OnGizmoUpdateEvent();
+		void OnCameraZoomEvent();
+		void OnCameraMoveEvent();
 	private:
 		glm::vec2 mViewportSize;
-		// Hold Frame Buffer Objects
 		std::shared_ptr<FrameBuffer> m_frameBuffer_TOP;
 		int m_GizmoType{ 0 };
+		/*************************************
+		           0  ->  Ortho
+				   1  ->  Persp
+		**************************************/
+		std::bitset<2> mProjectionView_Bits;
+		std::vector<std::string> mProjectionView_List;
+		bool IsWireframeMode{ false };
 	};
 }
