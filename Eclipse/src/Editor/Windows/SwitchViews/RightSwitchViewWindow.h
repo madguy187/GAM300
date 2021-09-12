@@ -12,10 +12,17 @@ namespace Eclipse
 		RightSwitchViewWindow();
 		void RunMainWindow();
 		void RunFrameBuffer();
+		void RenderSettingsHeader();
+		void OnKeyPressedEvent();
+		void OnGizmoUpdateEvent();
+		void OnCameraZoomEvent();
+		void OnCameraMoveEvent();
 	private:
 		glm::vec2 mViewportSize;
-		// Hold Frame Buffer Objects
-		std::shared_ptr<FrameBuffer> m_frameBuffer_RIGHT;
+        FrameBuffer* m_frameBuffer_RIGHT;
+		int m_GizmoType{ 0 };
+		std::vector<std::string> mProjectionView_List;
+		bool IsWireframeMode{ false };
 	};
 }
 #pragma once
