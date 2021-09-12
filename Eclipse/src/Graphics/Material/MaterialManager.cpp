@@ -383,6 +383,22 @@ namespace Eclipse
         }
     }
 
+    void MaterialManager::ClearContainer()
+    {
+        MeshHighLightContainer.clear();
+    }
+
+    bool MaterialManager::InsertContainer(MeshComponent3D& in)
+    {
+        // Insert
+        if (MeshHighLightContainer.insert({ in.ID , &in }).second == true)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     void MaterialManager::UpdateStencilWithActualObject(unsigned int ID)
     {
         // We allow EACH object to pass the stencil test uniquely

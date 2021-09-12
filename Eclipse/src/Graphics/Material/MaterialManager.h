@@ -84,6 +84,13 @@ namespace Eclipse
         bool HighlightClick(unsigned int ModelID);
         bool UnHighlight(unsigned int ModelID);
         void RegisterMeshForHighlight(unsigned int ID);
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // For Jian Herng
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        void ClearContainer();
+        bool InsertContainer(MeshComponent3D& in);
+
     private:
         void CheckUnniformLocation(Shader& in, MaterialComponent& inside);
         void CheckUniformLoc(RenderComponent& sprite, Shader& in, unsigned int id, unsigned int framebufferID);
