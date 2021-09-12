@@ -355,6 +355,18 @@ namespace Eclipse
 
 				ECGui::DrawTextWidget<const char*>("Transparency", "");
 				ECGui::DrawSliderFloatWidget("Render Transparency", &_Render.transparency, true, 0.0f, 200.0f);
+
+
+
+				//THIS IS WORK IN PROGRESS TESTING OUT FUNCITONALITIES AND ARE NOT MEANT TO BE IN THE FINAL
+				//VERSION *NOT FOR FINAL VERSION* - TIAN YU
+				std::string nameString = _Render.modelRef + " (Mesh Filter)";
+				if (filter.PassFilter(nameString.c_str()) && ECGui::CreateCollapsingHeader(nameString.c_str()))
+				{
+					ECGui::DrawTextWidget<const char*>("Mesh ", "");
+					ECGui::InsertSameLine();
+					ChangeMeshController(_Render);
+				}
 			}
 		}
 		
@@ -608,6 +620,73 @@ namespace Eclipse
 			}
 		}
 
+	}
+
+	void InspectorWindow::ChangeMeshController(RenderComponent& Item)
+	{
+		ImVec2 buttonSize = { 180,20 };
+		if (ImGui::Button((Item.modelRef.c_str()), buttonSize))
+		{
+			ImGui::OpenPopup("Mesh Changer");
+		}
+		if (ImGui::BeginPopup("Mesh Changer"))
+		{
+			ImGui::SetScrollY(5);
+			ChildSettings settings{ "Mesh Changer", ImVec2{ 250,250 } };
+			ECGui::DrawChildWindow<void(RenderComponent&)>(settings, std::bind(&InspectorWindow::MeshList,
+				this, std::placeholders::_1), Item);
+			
+			ImGui::EndPopup();
+		}
+	}
+
+	void InspectorWindow::MeshList(RenderComponent& Item)
+	{
+		static ImGuiTextFilter AddComponentFilter;
+		AddComponentFilter.Draw("Filter", 160);
+		std::vector<std::string> tempNamesForMesh
+			= { {"square"},{"triangle"},{"circle"},{"lines"},{"lightsquare"},{"sphere"},{"plane"}
+				,{"cube"},{"cylinder"},{"cone"},{"torus"} ,{"pyramid"} ,{"lines3D"} };
+		
+		TextureComponent FolderIcon;
+		FolderIcon.textureRef = Graphics::textures.find("FolderIcon")->first;
+		//use image button to change the Graphics::models.find["models"]->find;
+		TextureComponent icon = FolderIcon;
+		static float padding = 16.0f;
+		static float thumbnaimsize = 50;
+		float cellsize = thumbnaimsize + padding;
+		float panelwidth = ImGui::GetContentRegionAvail().x;
+		int columncount = (int)(panelwidth / cellsize);
+		if (thumbnaimsize <= 30)
+		{
+			columncount = 1;
+		}
+		if (columncount < 1)
+		{
+			columncount = 1;
+		}
+		ImGui::SliderFloat("Size: ", &thumbnaimsize, 10, 200);
+		ImGui::Columns(columncount, NULL, true);
+		for (int i = 0 ; i <  tempNamesForMesh.size() ; ++i)
+		{
+			if (AddComponentFilter.PassFilter(tempNamesForMesh[i].c_str()))
+			{
+				ImGui::ImageButton((void*)Graphics::textures[(icon).textureRef].GetHandle(),
+					{thumbnaimsize,thumbnaimsize},
+					{ 1,0 },
+					{ 2,1 });
+
+				if (ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
+				{
+					Item.modelRef = Graphics::models.find((tempNamesForMesh[i].c_str()))->first;
+					AddComponentFilter.Clear();
+				}
+
+				ImGui::TextWrapped(tempNamesForMesh[i].c_str());
+				ImGui::NextColumn();
+			}
+
+		}
 	}
 	
 	template <typename TComponents>
