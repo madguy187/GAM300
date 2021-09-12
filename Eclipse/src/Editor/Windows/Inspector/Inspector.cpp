@@ -49,14 +49,13 @@ namespace Eclipse
 			ShowDirectionalLightProperty("DirectionalLight", currEnt, CompFilter);
 			ShowRigidBodyProperty("RigidBody", currEnt, CompFilter);
 			ShowEditorCameraProperty("Camera", currEnt, CompFilter);
-			//tianyu testing will delete later
-			//todo
-			if (engine->world.CheckComponent<testComponent>(currEnt))
-			{
-				if (CompFilter.PassFilter("test") && ECGui::CreateCollapsingHeader("test"))
-				{
-				}
-			}
+			ShowTextureProperty("Texture", currEnt, CompFilter);
+			ShowRenderProperty("Render", currEnt, CompFilter);
+			ShowMaterialProperty("Material", currEnt, CompFilter);
+			ShowMesh3DProperty("Mesh", currEnt, CompFilter);
+			ShowModelInfoProperty("ModelInfo", currEnt, CompFilter);
+
+			
 			AddComponentsController(currEnt);
 			RemoveComponentsController(currEnt);
 		}
@@ -167,10 +166,10 @@ namespace Eclipse
 				ECGui::DrawSliderFloatWidget("Linear", &_PointLight.linear, true, 0.0f, 50.0f);
 
 				ECGui::DrawTextWidget<const char*>("Quadratic", "");
-				ECGui::DrawSliderFloatWidget("Linear", &_PointLight.quadratic, true, 0.0f, 50.0f);
+				ECGui::DrawSliderFloatWidget("Quadratic", &_PointLight.quadratic, true, 0.0f, 50.0f);
 
 				ECGui::DrawTextWidget<const char*>("Radius", "");
-				ECGui::DrawSliderFloatWidget("Linear", &_PointLight.radius, true, 0.0f, 50.0f);
+				ECGui::DrawSliderFloatWidget("Radius", &_PointLight.radius, true, 0.0f, 50.0f);
 
 				ImGui::Columns(2, NULL, true);
 				ECGui::DrawTextWidget<const char*>("Enable Blinn Phong", "");
@@ -232,10 +231,10 @@ namespace Eclipse
 				ECGui::DrawSliderFloatWidget("Linear", &_SpotLight.linear, true, 0.0f, 50.0f);
 
 				ECGui::DrawTextWidget<const char*>("Quadratic", "");
-				ECGui::DrawSliderFloatWidget("Linear", &_SpotLight.quadratic, true, 0.0f, 50.0f);
+				ECGui::DrawSliderFloatWidget("Quadratic", &_SpotLight.quadratic, true, 0.0f, 50.0f);
 
 				ECGui::DrawTextWidget<const char*>("Radius", "");
-				ECGui::DrawSliderFloatWidget("Linear", &_SpotLight.radius, true, 0.0f, 50.0f);
+				ECGui::DrawSliderFloatWidget("Radius", &_SpotLight.radius, true, 0.0f, 50.0f);
 
 				ImGui::Columns(2, NULL, true);
 				ECGui::DrawTextWidget<const char*>("Enable Blinn Phong", "");
@@ -307,13 +306,6 @@ namespace Eclipse
 			{
 				auto& _Camera = engine->world.GetComponent<CameraComponent>(ID);
 
-				//if(engine->gCamera.GetGameCameraID() == ID)
-				//{
-				//	ECGui::DrawTextWidget<const char*>("Near Plane", "");
-				//	ECGui::DrawSliderFloatWidget("Near Plane", &_Camera.nearPlane, false, 0, 1000);
-				//	ECGui::DrawTextWidget<const char*>("Far Plane", "");
-				//	ECGui::DrawSliderFloatWidget("Far Plane", &_Camera.farPlane,false,0,1000);
-				//}
 				ECGui::DrawTextWidget<const char*>("Camera Speed", "");
 				ECGui::DrawSliderFloatWidget("Camera Speed", &_Camera.cameraSpeed);
 				
@@ -322,6 +314,159 @@ namespace Eclipse
 
 		return false;
 	}
+
+	bool InspectorWindow::ShowTextureProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+	{
+		if (engine->world.CheckComponent<TextureComponent>(ID))
+		{
+			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+			{
+				auto& _Texture = engine->world.GetComponent<TextureComponent>(ID);
+				
+				std::vector<std::string> _TextureVector = { "TT_UNASSIGNED","TT_2D","BasicPrimitives","TT_3D" };
+
+				std::map<std::string, TextureType> _Map = { {"TT_UNASSIGNED",TextureType::TT_UNASSIGNED}, {"TT_2D",TextureType::TT_2D},
+															{"TT_3D",TextureType::TT_3D} };
+
+				ComboListSettings settings = { "Texture Type"  , _TextureVector[_Texture.ComboIndex].c_str(),false };
+
+				ECGui::DrawTextWidget<const char*>("KEY ID: ", "");
+				ECGui::InsertSameLine();
+				ECGui::DrawTextWidget<const char*>(std::to_string(_Texture.ID).c_str(), "");
+				
+				ECGui::DrawTextWidget<const char*>("Texture Type", "");
+				ECGui::CreateComboList(settings, _TextureVector, _Texture.ComboIndex);
+				_Texture.Type = _Map[_TextureVector[_Texture.ComboIndex]];
+				
+				//TODO
+				//Display all textures on the inspector
+			}
+		}
+		
+		return false;
+	}
+
+	bool InspectorWindow::ShowRenderProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+	{
+		if (engine->world.CheckComponent<RenderComponent>(ID))
+		{
+			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+			{
+				auto& _Render = engine->world.GetComponent<RenderComponent>(ID);
+
+				ECGui::DrawTextWidget<const char*>("Transparency", "");
+				ECGui::DrawSliderFloatWidget("Render Transparency", &_Render.transparency, true, 0.0f, 200.0f);
+
+
+
+				//THIS IS WORK IN PROGRESS TESTING OUT FUNCITONALITIES AND ARE NOT MEANT TO BE IN THE FINAL
+				//VERSION *NOT FOR FINAL VERSION* - TIAN YU
+				std::string nameString = _Render.modelRef + " (Mesh Filter)";
+				if (filter.PassFilter(nameString.c_str()) && ECGui::CreateCollapsingHeader(nameString.c_str()))
+				{
+					ECGui::DrawTextWidget<const char*>("Mesh ", "");
+					ECGui::InsertSameLine();
+					ChangeMeshController(_Render);
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	bool InspectorWindow::ShowMaterialProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+	{
+		if (engine->world.CheckComponent<MaterialComponent>(ID))
+		{
+			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+			{
+				
+				auto& _Material = engine->world.GetComponent<MaterialComponent>(ID);
+
+				std::vector<std::string> _ModelVector = { "None","BasicPrimitives","Models3D"};
+
+				std::map<std::string, MaterialComponent::ModelType> _Map = { {"None",MaterialComponent::ModelType::None}, {"BasicPrimitives",MaterialComponent::ModelType::BasicPrimitives},
+															{"Models3D",MaterialComponent::ModelType::Models3D}};
+				
+				ComboListSettings settings = {"Model Type" , _ModelVector[_Material.ComboIndex].c_str(),false};
+
+				ECGui::DrawTextWidget<const char*>("Model Type", "");
+				ECGui::CreateComboList(settings, _ModelVector, _Material.ComboIndex);
+				_Material.Modeltype = _Map[_ModelVector[_Material.ComboIndex]];
+				
+				ECGui::DrawTextWidget<const char*>("Ambient", "");
+				ECGui::DrawSliderFloat3Widget("Material Ambient", &_Material.ambient, true, 0.0f, 1.0f);
+
+				ECGui::DrawTextWidget<const char*>("Diffuse", "");
+				ECGui::DrawSliderFloat3Widget("Material Diffuse", &_Material.diffuse, true, 0.0f, 1.0f);
+
+				ECGui::DrawTextWidget<const char*>("Specular", "");
+				ECGui::DrawSliderFloat3Widget("Material Specular", &_Material.specular, true, 0.0f, 1.0f);
+
+				ECGui::DrawTextWidget<const char*>("MaximumShininess", "");
+				ECGui::DrawSliderFloatWidget("Material MaximumShininess", &_Material.MaximumShininess, true, 0.0f, 200.0f);
+
+				ECGui::DrawTextWidget<const char*>("Thickness", "");
+				ECGui::DrawSliderFloatWidget("Material Thickness", &_Material.Thickness, true, 0.0f, 200.0f);
+
+				ECGui::DrawTextWidget<const char*>("ScaleUp", "");
+				ECGui::DrawSliderFloatWidget("Material ScaleUp", &_Material.ScaleUp, true, 0.0f, 200.0f);
+				
+				ImGui::Columns(2, NULL, true);
+				ECGui::DrawTextWidget<const char*>("Highlight", "");
+				ImGui::NextColumn();
+				ECGui::CheckBoxBool("Enable Blinn Phong", &_Material.Highlight);
+				ImGui::Columns(1, NULL, true);
+			}
+		}
+		
+		return false;
+	}
+	
+	bool InspectorWindow::ShowMesh3DProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+	{
+		if (engine->world.CheckComponent<MeshComponent3D>(ID))
+		{
+			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+			{
+				auto& _Mesh3D = engine->world.GetComponent<MeshComponent3D>(ID);
+
+			}
+		}
+		return false;
+	}
+
+	bool InspectorWindow::ShowModelInfoProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+	{
+		if (engine->world.CheckComponent<ModeLInforComponent>(ID))
+		{
+			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+			{
+				std::vector<std::string> _ModelInfoVector = { "MT_UNASSIGNED","MT_HUMAN","MT_ANIMAL","MT_HOUSE","MT_ENVIRONMENT" };
+
+				std::map<std::string, ModelType> _Map = { {"MT_UNASSIGNED",ModelType::MT_UNASSIGNED}, {"MT_HUMAN",ModelType::MT_HUMAN},
+															{"MT_ANIMAL",ModelType::MT_ANIMAL},{"MT_HOUSE",ModelType::MT_HOUSE},
+															{"MT_ENVIRONMENT",ModelType::MT_ENVIRONMENT} };
+
+				auto& _ModelInfo = engine->world.GetComponent<ModeLInforComponent>(ID);
+
+				ComboListSettings settings = { "Texture Type"  , _ModelInfoVector[_ModelInfo.ComboIndex].c_str(),false };
+				
+				ECGui::DrawTextWidget<const char*>("Model Directory: ", "");
+				ECGui::InsertSameLine();
+				ECGui::DrawTextWidget<const char*>(_ModelInfo.Directory.c_str(), "");
+				ECGui::DrawTextWidget<const char*>("Model Name: ", "");
+				ECGui::InsertSameLine();
+				ECGui::DrawTextWidget<const char*>(_ModelInfo.NameOfModel.c_str(), "");
+				
+				ECGui::DrawTextWidget<const char*>("Model Type", "");
+				ECGui::CreateComboList(settings, _ModelInfoVector, _ModelInfo.ComboIndex);
+				_ModelInfo.type = _Map[_ModelInfoVector[_ModelInfo.ComboIndex]];
+			}
+		}
+		return false;
+	}
+	
 	void InspectorWindow::AddComponentsController( Entity ID)
 	{
 		ImVec2 buttonSize = {180,20};
@@ -338,6 +483,7 @@ namespace Eclipse
 			ImGui::EndPopup();
 		}
 	}
+	
 	void InspectorWindow::RemoveComponentsController(Entity ID)
 	{
 		ImVec2 buttonSize = { 180,20 };
@@ -355,6 +501,7 @@ namespace Eclipse
 			ImGui::EndPopup();
 		}
 	}
+	
 	void InspectorWindow::ShowAddComponentList(Entity ID)
 	{
 		static ImGuiTextFilter AddComponentFilter;
@@ -407,8 +554,12 @@ namespace Eclipse
 						ComponentRegistry<RigidBodyComponent>("RigidBodyComponent", ID, entCom.Name,
 							EditComponent::EC_ADDCOMPONENT);
 						break;
-					case str2int("testComponent"):
-						ComponentRegistry<testComponent>("testComponent", ID, entCom.Name,
+					case str2int("TextureComponent"):
+						ComponentRegistry<TextureComponent>("TextureComponent", ID, entCom.Name,
+							EditComponent::EC_ADDCOMPONENT);
+						break;
+					case str2int("MeshComponent3D"):
+						ComponentRegistry<MeshComponent3D>("MeshComponent3D", ID, entCom.Name,
 							EditComponent::EC_ADDCOMPONENT);
 						break;
 					}
@@ -418,51 +569,19 @@ namespace Eclipse
 		
 	}
 
-	template <typename TComponents>
-	void InspectorWindow::AddComponentsFeedback(const char* Components, const std::string& name, Entity ID, bool exist)
-	{
-		if(!exist)
-		{
-			engine->world.AddComponent(ID, TComponents{});
-			std::string Comp = my_strcat(std::string{ Components }, " Added For ", name, ID, " Add Succeed");
-			EDITOR_LOG_INFO(Comp.c_str());
-		}
-		else
-		{
-			std::string Comp = my_strcat(std::string{ Components }, " Already Exists in ", name, ID, " Add Failed");
-			EDITOR_LOG_WARN(Comp.c_str());
-		}
-	}
-
-	template <typename TComponents>
-	void InspectorWindow::RemoveComponentsFeedback(const char* Components, const std::string& name, Entity ID,bool exist)
-	{
-		if(exist)
-		{
-			std::string Comp = my_strcat(std::string{ Components }, " Removed For ", name, ID, " Remove Succeed");
-			EDITOR_LOG_INFO(Comp.c_str());
-			engine->world.DestroyComponent<TComponents>(ID);
-		}
-		else
-		{
-			std::string Comp = my_strcat(std::string{ Components }, " Does Not Exists in ", name, ID, " Remove Failed");
-			EDITOR_LOG_WARN(Comp.c_str());
-		}
-	}
-
 	void InspectorWindow::ShowRemoveComponentList(Entity ID)
 	{
 		static ImGuiTextFilter RemoveComponentFilter;
-		
+
 		auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
-		
+
 		RemoveComponentFilter.Draw("Filter", 160);
 
 		for (int i = 0; i < engine->world.GetAllComponentNames().size(); i++)
 		{
 			if (RemoveComponentFilter.PassFilter(engine->world.GetAllComponentNames()[i].c_str()))
 			{
-				if(ImGui::Button(engine->world.GetAllComponentNames()[i].c_str(), ImVec2(200, 0)))
+				if (ImGui::Button(engine->world.GetAllComponentNames()[i].c_str(), ImVec2(200, 0)))
 				{
 					switch (str2int(engine->world.GetAllComponentNames()[i].c_str()))
 					{
@@ -502,15 +621,123 @@ namespace Eclipse
 						ComponentRegistry<RigidBodyComponent>("RigidBodyComponent", ID, entCom.Name,
 							EditComponent::EC_REMOVECOMPONENT);
 						break;
-					case str2int("testComponent"):
-						ComponentRegistry<testComponent>("testComponent", ID, entCom.Name,
+					case str2int("TextureComponent"):
+						ComponentRegistry<TextureComponent>("TextureComponent", ID, entCom.Name,
+							EditComponent::EC_REMOVECOMPONENT);
+						break;
+					case str2int("MeshComponent3D"):
+						ComponentRegistry<MeshComponent3D>("MeshComponent3D", ID, entCom.Name,
 							EditComponent::EC_REMOVECOMPONENT);
 						break;
 					}
 				}
 			}
 		}
-		
+
 	}
+
+	void InspectorWindow::ChangeMeshController(RenderComponent& Item)
+	{
+		ImVec2 buttonSize = { 180,20 };
+		if (ImGui::Button((Item.modelRef.c_str()), buttonSize))
+		{
+			ImGui::OpenPopup("Mesh Changer");
+		}
+		if (ImGui::BeginPopup("Mesh Changer"))
+		{
+			ImGui::SetScrollY(5);
+			ChildSettings settings{ "Mesh Changer", ImVec2{ 250,250 } };
+			ECGui::DrawChildWindow<void(RenderComponent&)>(settings, std::bind(&InspectorWindow::MeshList,
+				this, std::placeholders::_1), Item);
+			
+			ImGui::EndPopup();
+		}
+	}
+
+	void InspectorWindow::MeshList(RenderComponent& Item)
+	{
+		static ImGuiTextFilter AddComponentFilter;
+		AddComponentFilter.Draw("Filter", 160);
+		std::vector<std::string> tempNamesForMesh
+			= { {"Square"},{"Triangle"},{"Circle"},{"Lines"},{"Lightsquare"},{"Sphere"},{"Plane"}
+				,{"Cube"},{"Cylinder"},{"Cone"},{"Torus"} ,{"Pyramid"} ,{"Lines3D"} };
+		
+		TextureComponent FolderIcon;
+		FolderIcon.textureRef = Graphics::textures.find("FolderIcon")->first;
+		//use image button to change the Graphics::models.find["models"]->find;
+		TextureComponent icon = FolderIcon;
+		static float padding = 16.0f;
+		static float thumbnaimsize = 50;
+		float cellsize = thumbnaimsize + padding;
+		float panelwidth = ImGui::GetContentRegionAvail().x;
+		int columncount = (int)(panelwidth / cellsize);
+		if (thumbnaimsize <= 30)
+		{
+			columncount = 1;
+		}
+		if (columncount < 1)
+		{
+			columncount = 1;
+		}
+		ImGui::SliderFloat("Size: ", &thumbnaimsize, 10, 200);
+		ImGui::Columns(columncount, NULL, true);
+		for (int i = 0 ; i <  tempNamesForMesh.size() ; ++i)
+		{
+			/*TextureComponent FolderIcon;
+			FolderIcon.textureRef = Graphics::textures.find(tempNamesForMesh[i].c_str())->first;
+			TextureComponent icon = FolderIcon;*/
+
+			if (AddComponentFilter.PassFilter(tempNamesForMesh[i].c_str()))
+			{
+				ImGui::ImageButton((void*)Graphics::textures[(icon).textureRef].GetHandle(),
+					{thumbnaimsize,thumbnaimsize},
+					{ 1,0 },
+					{ 2,1 });
+
+				if (ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
+				{
+					Item.modelRef = Graphics::models.find((tempNamesForMesh[i].c_str()))->first;
+					AddComponentFilter.Clear();
+				}
+
+				ImGui::TextWrapped(tempNamesForMesh[i].c_str());
+				ImGui::NextColumn();
+			}
+
+		}
+	}
+	
+	template <typename TComponents>
+	void InspectorWindow::AddComponentsFeedback(const char* Components, const std::string& name, Entity ID, bool exist)
+	{
+		if(!exist)
+		{
+			engine->world.AddComponent(ID, TComponents{});
+			std::string Comp = my_strcat(std::string{ Components }, " Added For ", name, ID, " Add Succeed");
+			EDITOR_LOG_INFO(Comp.c_str());
+		}
+		else
+		{
+			std::string Comp = my_strcat(std::string{ Components }, " Already Exists in ", name, ID, " Add Failed");
+			EDITOR_LOG_WARN(Comp.c_str());
+		}
+	}
+
+	template <typename TComponents>
+	void InspectorWindow::RemoveComponentsFeedback(const char* Components, const std::string& name, Entity ID,bool exist)
+	{
+		if(exist)
+		{
+			std::string Comp = my_strcat(std::string{ Components }, " Removed For ", name, ID, " Remove Succeed");
+			EDITOR_LOG_INFO(Comp.c_str());
+			engine->world.DestroyComponent<TComponents>(ID);
+		}
+		else
+		{
+			std::string Comp = my_strcat(std::string{ Components }, " Does Not Exists in ", name, ID, " Remove Failed");
+			EDITOR_LOG_WARN(Comp.c_str());
+		}
+	}
+
 
 }

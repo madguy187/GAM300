@@ -22,13 +22,17 @@ namespace Eclipse
 		bool ShowTextureProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowRenderProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowMaterialProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
-		bool ShowMeshProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowMesh3DProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowModelInfoProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 
 		void AddComponentsController(Entity ID);
 		void RemoveComponentsController(Entity ID);
 		void ShowAddComponentList(Entity ID);
 		void ShowRemoveComponentList(Entity ID);
 
+		void ChangeMeshController(RenderComponent& Item);
+		void MeshList(RenderComponent& Item);
+		
 		template <typename TComponents>
 		void AddComponentsFeedback(const char* Components, const std::string& name, Entity ID, bool exist);
 		

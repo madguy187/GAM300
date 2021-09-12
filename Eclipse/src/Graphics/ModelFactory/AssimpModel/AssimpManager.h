@@ -8,9 +8,21 @@
 
 #include <vector>
 #include "AssimpModel/AssimpModel.h"
-#include "ECS/ComponentManager/Components/EntityComponent.h"
 #include "Graphics/Grid/AABBTree.h"
+
+#include "ECS/ComponentManager/Components/EntityComponent.h"
 #include "ECS/ComponentManager/Components/TextureComponent.h"
+#include "ECS/ComponentManager/Components/ModelInfoComponent.h"
+
+
+/*************************************************************************
+  0: AssimpModelContainerV2
+     Creates an instance of every model with everything , Mesh , Textures and materials
+
+  1:
+
+*************************************************************************/
+
 namespace Eclipse
 {
     typedef std::unordered_map<unsigned int, AssimpModel*> AssimpModelContainer;
@@ -30,12 +42,14 @@ namespace Eclipse
         // Container to store Models who are loaded once
         std::unordered_map<std::string, std::unique_ptr<AssimpModel>> AssimpLoadedModels;
 
-        // Version 1 Container that stores AssimpModel*
-        AssimpModelContainer AssimpModelContainer_;
-
         // Name of Model , < MeshIndex, Texture Container > 
         std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>> >LoadedTexturesV2;
-        std::multimap<std::string, std::unique_ptr<Texture>> LoadedTextures;
+
+        // Model Information
+        std::unordered_map<std::string, std::string> ModelMap;
+
+        // Version 1 Container that stores AssimpModel*
+        AssimpModelContainer AssimpModelContainer_;
     public:
         // Get Current MeshComponent Container
         MeshModelContainer GetMeshContainer();
@@ -44,7 +58,7 @@ namespace Eclipse
         // Get Current Model Factory Count
         unsigned int MeshFactoryCount();
         // Load All Models Once
-        void LoadAllModels();
+        void Init();
         // Render Function that uses the Container that stores MeshComponent 
         void MeshDraw(unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
         // Upload to Shader
@@ -61,6 +75,7 @@ namespace Eclipse
         void TestPath(std::string& path);
         // Draw function that takes in Mesh Component
         void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent3D& in, unsigned int inin);
+        void InsertModelMap(std::string& NameofModel, std::string& Directory);
         // Using MeshComponent into Container , Pass in key please
         void InsertModel(unsigned int ID);
         // Model Factory to load all models
@@ -90,7 +105,7 @@ namespace Eclipse
 
     public:
         // TEXTURES PUT HERE FIRST
-        
+        unsigned int Index = 0; // mesh index.
         void SetTexturesForModel(TextureComponent& in, std::string& passinkey);
         void InsertTextures(std::string& NameofModel, std::unique_ptr<Texture> in, unsigned int MeshId);
     };

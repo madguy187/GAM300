@@ -144,6 +144,7 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\MeshComponent3D.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\TextureComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AABBComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\ModeLInfoComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ParentChildComponent.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.h" />
   </ItemGroup>
