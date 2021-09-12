@@ -538,6 +538,9 @@
     <ClInclude Include="src\Editor\Windows\SwitchViews\BottomSwitchViewWindow.h" />
     <ClInclude Include="src\Editor\Windows\SwitchViews\LeftSwitchViewWindow.h" />
     <ClInclude Include="src\Editor\Windows\SwitchViews\RightSwitchViewWindow.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\ModeLInfoComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\ParentChildComponent.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -783,6 +786,7 @@
     <ClCompile Include="src\Graphics\Grid\AABB.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp" />
     <ClCompile Include="src\Editor\Utilities\OpenFileDialog.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.cpp" />
     <ClCompile Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.cpp" />
     <ClCompile Include="src\Editor\ECGuiAPI\ECGuiInputHandler.cpp" />
     <ClCompile Include="src\Editor\Windows\SwitchViews\TopSwitchViewWindow.cpp" />

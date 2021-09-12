@@ -111,9 +111,9 @@ namespace Eclipse
         "Pyramid",
         "Lines3D",
         "Planes",
-        "Point Light",
-        "Directional Light",
-        "Spot Light",
+        "PointLight",
+        "DirectionalLight",
+        "SpotLight",
         "Camera",
         "NULL"
     };

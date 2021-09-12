@@ -10,7 +10,7 @@ namespace Eclipse
             return;
         }
 
-        Entity newCam = engine->editorManager->CreateDefaultEntity(EntityType::ENT_CAMERA);
+        Entity newCam = engine->editorManager->CreateDefaultEntity(EntityType::ENT_GAMECAMERA);
     	
         //engine->world.AddComponent(newCam, EntityComponent{EntityType::ENT_CAMERA,
         // lexical_cast_toStr<EntityType>(EntityType::ENT_CAMERA)});

@@ -59,7 +59,7 @@ namespace Eclipse
         auto& shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
         shdrpgm.Use();
 
-        glBindVertexArray(Graphics::models["sphere"]->GetVaoID());
+        glBindVertexArray(Graphics::models["Sphere"]->GetVaoID());
 
         glEnable(GL_BLEND);
         glPolygonMode(GL_FRONT_AND_BACK, mode);
@@ -70,8 +70,8 @@ namespace Eclipse
 
         if (in->visible)
         {
-            GLCall(glDrawElements(Graphics::models["sphere"]->GetPrimitiveType(),
-                Graphics::models["sphere"]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
+            GLCall(glDrawElements(Graphics::models["Sphere"]->GetPrimitiveType(),
+                Graphics::models["Sphere"]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
         }
 
         glBindVertexArray(0);
@@ -141,21 +141,22 @@ namespace Eclipse
 
     void DirectionalLight::FirstGlobalLight()
     {
-        // Add Components
-        auto& GetWorld = engine->world;
-        Entity CreatedID = GetWorld.CreateEntity();
-        engine->world.AddComponent(CreatedID, DirectionalLightComponent{});
-        engine->world.AddComponent(CreatedID, TransformComponent{});
+        auto FirstGlobalLight = engine->editorManager->CreateDefaultEntity(EntityType::ENT_LIGHT_DIRECTIONAL);
 
-        // Assign
-        DirectionalLightComponent& _global = engine->world.GetComponent<DirectionalLightComponent>(CreatedID);
-        _global.Counter = CreatedID;
-        _global.ID = counter;
+        // Add DirectionalLight Component
+        engine->world.AddComponent(FirstGlobalLight, DirectionalLightComponent{});
 
-        // Success
-        _DirectionalLight.insert({ _global.ID,&_global });
-        EDITOR_LOG_INFO("DirectionalLight Created Successfully");
-        counter++;
+        DirectionalLightComponent& _GlobalLight = engine->world.GetComponent<DirectionalLightComponent>(FirstGlobalLight);
+        _GlobalLight.ID = FirstGlobalLight;
+        _GlobalLight.Counter = counter;
+
+        if (_DirectionalLight.insert({ _GlobalLight.ID ,&_GlobalLight }).second == true)
+        {
+            EDITOR_LOG_WARN("First GlobalLight Created ");
+            counter++;
+        }
+
+        std::cout << " Number of Directional Lights : " << _DirectionalLight.size() << std::endl;
     }
 
     bool DirectionalLight::InsertDirectionalLight(DirectionalLightComponent& in)
