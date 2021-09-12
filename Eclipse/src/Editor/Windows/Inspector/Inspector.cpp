@@ -395,10 +395,10 @@ namespace Eclipse
 				_Material.Modeltype = _Map[_ModelVector[_Material.ComboIndex]];
 				
 				ECGui::DrawTextWidget<const char*>("Ambient", "");
-				ECGui::DrawSliderFloat3Widget("Material Specular", &_Material.ambient, true, 0.0f, 1.0f);
+				ECGui::DrawSliderFloat3Widget("Material Ambient", &_Material.ambient, true, 0.0f, 1.0f);
 
 				ECGui::DrawTextWidget<const char*>("Diffuse", "");
-				ECGui::DrawSliderFloat3Widget("Material Specular", &_Material.diffuse, true, 0.0f, 1.0f);
+				ECGui::DrawSliderFloat3Widget("Material Diffuse", &_Material.diffuse, true, 0.0f, 1.0f);
 
 				ECGui::DrawTextWidget<const char*>("Specular", "");
 				ECGui::DrawSliderFloat3Widget("Material Specular", &_Material.specular, true, 0.0f, 1.0f);
