@@ -55,7 +55,6 @@ namespace Eclipse
 			ShowMesh3DProperty("Mesh", currEnt, CompFilter);
 			ShowModelInfoProperty("ModelInfo", currEnt, CompFilter);
 
-			
 			AddComponentsController(currEnt);
 			RemoveComponentsController(currEnt);
 		}
