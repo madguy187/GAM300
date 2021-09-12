@@ -53,6 +53,7 @@ namespace Eclipse
 			ShowRenderProperty("Render", currEnt, CompFilter);
 			ShowMaterialProperty("Material", currEnt, CompFilter);
 			ShowMesh3DProperty("Mesh", currEnt, CompFilter);
+			ShowModelInfoProperty("ModelInfo", currEnt, CompFilter);
 
 			
 			AddComponentsController(currEnt);
@@ -430,24 +431,37 @@ namespace Eclipse
 			{
 				auto& _Mesh3D = engine->world.GetComponent<MeshComponent3D>(ID);
 
-				std::vector<std::string> _Mesh3DVector = { "MT_UNASSIGNED","MT_HUMAN","MT_ANIMAL","MT_HOUSE","MT_ENVIRONMENT"};
+			}
+		}
+		return false;
+	}
+
+	bool InspectorWindow::ShowModelInfoProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+	{
+		if (engine->world.CheckComponent<ModeLInforComponent>(ID))
+		{
+			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+			{
+				std::vector<std::string> _ModelInfoVector = { "MT_UNASSIGNED","MT_HUMAN","MT_ANIMAL","MT_HOUSE","MT_ENVIRONMENT" };
 
 				std::map<std::string, ModelType> _Map = { {"MT_UNASSIGNED",ModelType::MT_UNASSIGNED}, {"MT_HUMAN",ModelType::MT_HUMAN},
 															{"MT_ANIMAL",ModelType::MT_ANIMAL},{"MT_HOUSE",ModelType::MT_HOUSE},
 															{"MT_ENVIRONMENT",ModelType::MT_ENVIRONMENT} };
 
-				ComboListSettings settings = { "Texture Type"  , _Mesh3DVector[_Mesh3D.ComboIndex].c_str(),false };
+				auto& _ModelInfo = engine->world.GetComponent<ModeLInforComponent>(ID);
 
-				ECGui::DrawTextWidget<const char*>("KEY ID: ", "");
+				ComboListSettings settings = { "Texture Type"  , _ModelInfoVector[_ModelInfo.ComboIndex].c_str(),false };
+				
+				ECGui::DrawTextWidget<const char*>("Model Directory: ", "");
 				ECGui::InsertSameLine();
-				ECGui::DrawTextWidget<const char*>(std::to_string(_Mesh3D.ID).c_str(), "");
-				ECGui::DrawTextWidget<const char*>("MODEL NAME: ", "");
+				ECGui::DrawTextWidget<const char*>(_ModelInfo.Directory.c_str(), "");
+				ECGui::DrawTextWidget<const char*>("Model Name: ", "");
 				ECGui::InsertSameLine();
-				ECGui::DrawTextWidget<const char*>(_Mesh3D.NameOfModel.c_str(), "");
-
+				ECGui::DrawTextWidget<const char*>(_ModelInfo.NameOfModel.c_str(), "");
+				
 				ECGui::DrawTextWidget<const char*>("Model Type", "");
-				ECGui::CreateComboList(settings, _Mesh3DVector, _Mesh3D.ComboIndex);
-				_Mesh3D.type = _Map[_Mesh3DVector[_Mesh3D.ComboIndex]];
+				ECGui::CreateComboList(settings, _ModelInfoVector, _ModelInfo.ComboIndex);
+				_ModelInfo.type = _Map[_ModelInfoVector[_ModelInfo.ComboIndex]];
 			}
 		}
 		return false;
@@ -645,8 +659,8 @@ namespace Eclipse
 		static ImGuiTextFilter AddComponentFilter;
 		AddComponentFilter.Draw("Filter", 160);
 		std::vector<std::string> tempNamesForMesh
-			= { {"square"},{"triangle"},{"circle"},{"lines"},{"lightsquare"},{"sphere"},{"plane"}
-				,{"cube"},{"cylinder"},{"cone"},{"torus"} ,{"pyramid"} ,{"lines3D"} };
+			= { {"Square"},{"Triangle"},{"Circle"},{"Lines"},{"Lightsquare"},{"Sphere"},{"Plane"}
+				,{"Cube"},{"Cylinder"},{"Cone"},{"Torus"} ,{"Pyramid"} ,{"Lines3D"} };
 		
 		TextureComponent FolderIcon;
 		FolderIcon.textureRef = Graphics::textures.find("FolderIcon")->first;
@@ -669,6 +683,10 @@ namespace Eclipse
 		ImGui::Columns(columncount, NULL, true);
 		for (int i = 0 ; i <  tempNamesForMesh.size() ; ++i)
 		{
+			/*TextureComponent FolderIcon;
+			FolderIcon.textureRef = Graphics::textures.find(tempNamesForMesh[i].c_str())->first;
+			TextureComponent icon = FolderIcon;*/
+
 			if (AddComponentFilter.PassFilter(tempNamesForMesh[i].c_str()))
 			{
 				ImGui::ImageButton((void*)Graphics::textures[(icon).textureRef].GetHandle(),
