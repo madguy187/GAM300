@@ -48,24 +48,22 @@ namespace Eclipse
 		// TOP RIGHT
 		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer_TOP->GetTextureColourBufferID())),
 			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+
 		if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
 		{
 			OnGizmoUpdateEvent();
 		}
+		
 		if (ECGui::IsItemHovered())
 		{
 			// Do all the future stuff here
 			// ImGuizmo Logic
-			
 		}
 	}
 
 	void TopSwitchViewWindow::OnGizmoUpdateEvent()
 	{
 		Entity selectedEntity = engine->editorManager->GetSelectedEntity();
-
-		// Rachel said to comment out.
-		//engine->gPicker.UpdateAabb(selectedEntity);
 
 		ImGuizmo::SetOrthographic(true);
 		ImGuizmo::SetDrawlist();
@@ -127,7 +125,7 @@ namespace Eclipse
 
 		ImGuizmo::DrawGrid(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx), identityMatrix, 100.f);*/
 
-		if (ImGuizmo::IsUsing())
+		if (ImGuizmo::IsUsing() && ECGui::IsItemHovered())
 		{
 			glm::vec3 translation, rotation, scale;
 			ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(translation),

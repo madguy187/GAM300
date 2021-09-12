@@ -55,16 +55,17 @@ namespace Eclipse
 		// Set Image size
 		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
 			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+
+		//// ImGuizmo Logic
+		if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
+		{
+			OnGizmoUpdateEvent();
+		}
 		
 		if (ECGui::IsItemHovered() /*&& ImGui::IsWindowFocused() *//*temp fix*/)
 		{
-			// ImGuizmo Logic
-			if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
-			{
-			//	OnGizmoUpdateEvent();
-			}
-
 			// Do all the future stuff here when hovering on window
+			// ImGuizmo Logic
 			OnKeyPressedEvent();
 			OnCameraMoveEvent();
 			OnCameraZoomEvent();
@@ -167,7 +168,7 @@ namespace Eclipse
 
 		ImGuizmo::DrawGrid(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx), identityMatrix, 100.f);*/
 
-		if (ImGuizmo::IsUsing())
+		if (ImGuizmo::IsUsing() && ECGui::IsItemHovered())
 		{
 			glm::vec3 translation, rotation, scale;
 			ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(translation),
