@@ -107,5 +107,6 @@ namespace Eclipse
 		std::bitset<8>& GetViewInput();
 
 		void ResetScene();
+		void ReInitCameraList(CameraComponent::CameraType _camType, unsigned int ID);
 	};
 }

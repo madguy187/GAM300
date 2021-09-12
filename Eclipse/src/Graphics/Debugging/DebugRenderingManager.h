@@ -11,12 +11,13 @@ namespace Eclipse
 		std::map<unsigned int, std::any> debugShapes;
 		void CheckUniformLoc(Shader*_shdrpgm, CameraComponent& _camera);
 	public:
-		void AddCameraFrustum(unsigned int ID, CameraComponent& _camera);
+		void AddCameraFrustum(unsigned int ID);
 		void DrawFrustum(unsigned int ID, unsigned int framebufferID);
 		void SetDebugShape(unsigned int ID, std::any newShape);
 
 		void DrawDebugShapes(unsigned int framebufferID);
-
+		
+		void DeleteDebugShape(unsigned int ID);
 		void ClearDebugShapes();
 	};
 }

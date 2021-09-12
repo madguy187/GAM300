@@ -664,7 +664,24 @@ namespace Eclipse
 
         engine->gCamera.CreateGameCamera();
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetGameCameraID());
-        engine->gDebugManager.AddCameraFrustum(engine->gCamera.GetGameCameraID(), _camera);
+        engine->gDebugManager.AddCameraFrustum(engine->gCamera.GetGameCameraID());
         engine->gCamera.SetFarPlane(_camera, 100.0f);
+    }
+
+    void CameraManager::ReInitCameraList(CameraComponent::CameraType _camType, unsigned int ID)
+    {
+        if (_camType == CameraComponent::CameraType::Game_Camera)
+        {
+            engine->gDebugManager.DeleteDebugShape(GetGameCameraID());
+
+            gameCamID = ID;
+            engine->gDebugManager.AddCameraFrustum(ID);
+        }
+        else if (_camType == CameraComponent::CameraType::Editor_Camera)
+        {
+            editorCamID = ID;
+        }
+
+        cameraList[_camType] = ID;
     }
 }
