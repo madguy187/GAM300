@@ -18,8 +18,8 @@
 /*************************************************************************
   0: AssimpModelContainerV2
      Creates an instance of every model with everything , Mesh , Textures and materials
-  
-  1:  
+
+  1:
 
 *************************************************************************/
 

@@ -19,17 +19,17 @@ namespace Eclipse
     {
         if (engine->GridManager->GetGridSystemIsRunning())
         {
-            for (auto& EntityId : mEntities)
-            {
-                auto& aabb = engine->world.GetComponent<AABBComponent>(EntityId);
-                auto& Transform = engine->world.GetComponent<TransformComponent>(EntityId);
-                auto& ModelVsGrid = engine->CollisionGridTree.CheckOverlapAgainstGrid(DYN_AABB::SetAABB(Transform, aabb));
+            //for (auto& EntityId : mEntities)
+            //{
+            //    auto& aabb = engine->world.GetComponent<AABBComponent>(EntityId);
+            //    auto& Transform = engine->world.GetComponent<TransformComponent>(EntityId);
+            //    auto& ModelVsGrid = engine->CollisionGridTree.CheckOverlapAgainstGrid(DYN_AABB::SetAABB(Transform, aabb));
 
-                if (engine->CollisionGridTree.NumberOfIntersections(ModelVsGrid))
-                {
-                    engine->GridManager->SetPosition(Transform, ModelVsGrid[0]);
-                }
-            }
+            //    if (engine->CollisionGridTree.NumberOfIntersections(ModelVsGrid))
+            //    {
+            //        engine->GridManager->SetPosition(Transform, ModelVsGrid[0]);
+            //    }
+            //}
 
             //// Testing Code == Testing Picking Against my Grid  TESTING ONLY BUT WORKS
             //auto& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
