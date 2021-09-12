@@ -113,6 +113,7 @@ namespace Eclipse
 		EntityHierarchyList_.push_back(ID);
 		EntityToIndexMap_.insert(std::pair<Entity, int>(ID, static_cast<int>(EntityHierarchyList_.size() - 1)));
 		GEHIndex_ = EntityHierarchyList_.size() - 1;
+		SetSelectedEntity(ID);
 
 		return ID;
 	}
