@@ -56,12 +56,11 @@ namespace Eclipse
 		bool ResetTreeNodeOpen = false;
 		bool CopyFilesAndFolder = false;
 		////////////////////////////////
-		
 	public:
-		
 		//main update function
 		////////////////////////////////
 		void Update() override;
+		void Init() override;
 		void Unload() override;
 		AssetBrowserWindow();
 		void DrawImpl();

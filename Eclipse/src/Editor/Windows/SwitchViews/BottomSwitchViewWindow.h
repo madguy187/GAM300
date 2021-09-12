@@ -1,27 +1,14 @@
 #pragma once
 
-#include "../Interface/ECGuiWindow.h"
+#include "BaseSwitchView.h"
 
 namespace Eclipse
 {
-	class BottomSwitchViewWindow final : public ECGuiWindow
+	class BottomSwitchViewWindow final : public BaseSwitchViewWindow
 	{
 	public:
 		void Update() override;
+		void Init() override;
 		void Unload() override;
-		BottomSwitchViewWindow();
-		void RunMainWindow();
-		void RunFrameBuffer();
-		void RenderSettingsHeader();
-		void OnKeyPressedEvent();
-		void OnGizmoUpdateEvent();
-		void OnCameraZoomEvent();
-		void OnCameraMoveEvent();
-	private:
-		glm::vec2 mViewportSize;
-		FrameBuffer* m_frameBuffer_BOTTOM;
-		int m_GizmoType{ 0 };
-		std::vector<std::string> mProjectionView_List;
-		bool IsWireframeMode{ false };
 	};
 }

@@ -11,17 +11,17 @@ namespace Eclipse
 			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&SceneWindow::RunMainWindow, this));
 	}
 
-	void SceneWindow::Unload()
+	void SceneWindow::Init()
 	{
-	}
-
-	SceneWindow::SceneWindow() :
-		mViewportSize{}, mSceneBufferSize{}
-	{
+		mViewportSize = glm::vec2{}; 
+		mSceneBufferSize = glm::vec2{};
 		Type = EditorWindowType::EWT_SCENE;
 		WindowName = "Scene";
-
 		m_frameBuffer = engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SCENEVIEW);
+	}
+
+	void SceneWindow::Unload()
+	{
 	}
 
 	void SceneWindow::RunMainWindow()

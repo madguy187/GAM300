@@ -15,17 +15,16 @@ namespace Eclipse
 		//timer.ContainerAddTime(timer.tracker);
 	}
 
-	void eGameViewWindow::Unload()
+	void eGameViewWindow::Init()
 	{
-	}
-
-	eGameViewWindow::eGameViewWindow() :
-		mViewportSize{ 0.0f, 0.0f }
-	{
+		mViewportSize = glm::vec2{ 0.0f, 0.0f };
 		Type = EditorWindowType::EWT_GAMEVIEW;
 		WindowName = "Game View";
-
 		m_frameBuffer = std::make_shared<FrameBuffer>(*engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::GAMEVIEW));
+	}
+
+	void eGameViewWindow::Unload()
+	{
 	}
 
 	void eGameViewWindow::RunMainWindow()

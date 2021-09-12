@@ -9,8 +9,8 @@ namespace Eclipse
 	{
 	public:
 		void Update() override;
+		void Init() override;
 		void Unload() override;
-		LoggerWindow();
 		void DrawImpl();
 
 		static std::shared_ptr<ConsoleData>& GetEditorLogger();

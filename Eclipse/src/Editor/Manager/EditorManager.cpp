@@ -29,7 +29,7 @@ namespace Eclipse
 
 	void EditorManager::InitGUIWindows()
 	{
-		AddWindow<eGameViewWindow>("GameView");
+		AddWindow<eGameViewWindow>("Game Viewport");
 		AddWindow<SceneWindow>("Main Scene Viewport");
 		AddWindow<InspectorWindow>("Inspector");
 		AddWindow<HierarchyWindow>("Hierarchy");
@@ -41,6 +41,11 @@ namespace Eclipse
 		AddWindow<BottomSwitchViewWindow>("Bottom Viewport");
 		AddWindow<LeftSwitchViewWindow>("Left Viewport");
 		AddWindow<RightSwitchViewWindow>("Right Viewport");
+
+		for (const auto& window : Windows_)
+		{
+			window->Init();
+		}
 	}
 
 	void EditorManager::InitMenu()
