@@ -34,7 +34,7 @@ namespace Eclipse
 		}
 
 		for (int index = static_cast<int>(EntityType::ENT_LIGHT_POINT); 
-			index != static_cast<int>(EntityType::ENT_CAMERA); ++index)
+			index != static_cast<int>(EntityType::ENT_GAMECAMERA); ++index)
 		{
 			EntityType temp = static_cast<EntityType>(index);
 			TagList_[1].push_back(lexical_cast_toStr<EntityType>(temp));
@@ -109,9 +109,10 @@ namespace Eclipse
 					engine->editorManager->SetGlobalIndex(index);
 				}
 
-				engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexSwapping", static_cast<int>(index));
-				engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexSwapping", static_cast<int>(index), 
-					"Entity positions swapped!");
+				engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit", 
+					static_cast<int>(index));
+				engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit", 
+					static_cast<int>(index), entCom.IsActive);
 			}
 		}
 	}
@@ -161,7 +162,6 @@ namespace Eclipse
 
 						ECGui::EndTreeNode();
 					}
-
 					break;
 				}
 				default:
