@@ -77,13 +77,11 @@ namespace Eclipse
 
     void Grid::DebugPrint()
     {
-        std::cout << "Grid Debug Print" << std::endl;
+        std::cout << "Grid Properties" << std::endl;
         std::cout << "===========================" << std::endl;
         std::cout << "Grid ID : " << GridID << std::endl;
-        std::cout << "Per Square Scale : " << GridScale << std::endl;
-        std::cout << "Inner Ratio : " << InnerRatio << std::endl;
-        std::cout << "How Many Squares inside each Grid : " << GridScale / InnerRatio << std::endl;
-        std::cout << "Grid Colour : " << GridColour.getX() << " " << GridColour.getY() << " " << GridColour.getZ() << std::endl;
+        std::cout << "Size of each tile : " << GridScale << std::endl;
+        std::cout << "How Many Small Squares inside each Tile : " << GridScale / InnerRatio << std::endl;
         std::cout << "Visible ? : " << Visible << std::endl;
         std::cout << "===========================" << std::endl;
     }

@@ -15,6 +15,7 @@ namespace Eclipse
         glm::vec3 Position;
         glm::vec3 Normal;
         glm::vec2 TextureCoodinates;
+        aiColor4D m_Color;
         static std::vector<Vertex> GenList(float* vertices, int noVertices);
     };
 
@@ -28,6 +29,7 @@ namespace Eclipse
         std::vector<Texture> Textures;
         aiColor4D Diffuse;
         aiColor4D Specular;
+        aiColor4D Ambient;
         std::vector<Vertex> Vertices;
         std::vector<unsigned int> Indices;
         void Setup();
@@ -35,6 +37,7 @@ namespace Eclipse
         Mesh(std::vector<Texture> textures = {});
         Mesh(aiColor4D diff, aiColor4D spec);
         Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures = {});
+        Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiColor4D diffuse, aiColor4D specular, aiColor4D ambient, bool in);
         Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiColor4D diffuse, aiColor4D spec, bool in);
         void SetMaterialDiffuse(float x, float y, float z);
         void SetMaterialSpecular(float x, float y, float z);

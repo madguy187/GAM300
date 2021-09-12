@@ -76,12 +76,21 @@ namespace Eclipse
         void RegisterMeshForHighlighting(unsigned int index);
         void MeshHighlight(unsigned int FrameBufferID, GLenum Mode);
         void UpdateMaterial(MaterialComponent& in);
+        void Highlight3DModels(unsigned int FrameBufferID, unsigned int ModelID, GLenum mode);
         void UpdateStencilWith_Outline(unsigned int ID);
         void UpdateStencilWithActualObject(unsigned int ID);
         void HighlightBasicPrimitives(MaterialComponent& in, unsigned int EntityId, unsigned int FrameBufferID);
+        void Highlight3DModels(MaterialComponent& in, unsigned int EntityId, unsigned int FrameBufferID);
         bool HighlightClick(unsigned int ModelID);
         bool UnHighlight(unsigned int ModelID);
         void RegisterMeshForHighlight(unsigned int ID);
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // For Jian Herng
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        void ClearContainer();
+        bool InsertContainer(MeshComponent3D& in);
+
     private:
         void CheckUnniformLocation(Shader& in, MaterialComponent& inside);
         void CheckUniformLoc(RenderComponent& sprite, Shader& in, unsigned int id, unsigned int framebufferID);
