@@ -7,6 +7,12 @@
 #include "ECS/ComponentManager/Components/MeshComponent.h"
 #include "AssimpModel/AssimpModel.h"
 
+// Views
+#include "Editor/Windows/SwitchViews/TopSwitchViewWindow.h"
+#include "Editor/Windows/SwitchViews/BottomSwitchViewWindow.h"
+#include "Editor/Windows/SwitchViews/LeftSwitchViewWindow.h"
+#include "Editor/Windows/SwitchViews/RightSwitchViewWindow.h"
+
 namespace Eclipse
 {
 	void RenderSystem::Init()
@@ -107,15 +113,15 @@ namespace Eclipse
 					*************************************************************************/
 
 					// Top View Port
-					if (engine->editorManager->GetAllWindowsByRef()[8]->IsVisible)
-					{
+					if (engine->editorManager->GetEditorWindow<TopSwitchViewWindow>()->IsVisible)
+					{					
 						engine->AssimpManager.MeshDraw(entityID, engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SWITCHINGVIEWS_TOP)->GetFrameBufferID(),
 							engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_TOP)->GetRenderMode(),
 							&box, CameraComponent::CameraType::TopView_Camera);
 					}
 
 					// Bottom View port
-					if (engine->editorManager->GetAllWindowsByRef()[9]->IsVisible)
+					if (engine->editorManager->GetEditorWindow<BottomSwitchViewWindow>()->IsVisible)
 					{
 						engine->AssimpManager.MeshDraw(entityID, engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SWITCHINGVIEWS_BOTTOM)->GetFrameBufferID(),
 							engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_BOTTOM)->GetRenderMode(),
@@ -123,7 +129,7 @@ namespace Eclipse
 					}
 
 					// Left View Port
-					if (engine->editorManager->GetAllWindowsByRef()[10]->IsVisible)
+					if (engine->editorManager->GetEditorWindow<LeftSwitchViewWindow>()->IsVisible)
 					{
 						engine->AssimpManager.MeshDraw(entityID, engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SWITCHINGVIEWS_RIGHT)->GetFrameBufferID(),
 							engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_RIGHT)->GetRenderMode(),
@@ -131,7 +137,7 @@ namespace Eclipse
 					}
 
 					// Right ViewPort
-					if (engine->editorManager->GetAllWindowsByRef()[11]->IsVisible)
+					if (engine->editorManager->GetEditorWindow<RightSwitchViewWindow>()->IsVisible)
 					{
 						engine->AssimpManager.MeshDraw(entityID, engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SWITCHINGVIEWS_LEFT)->GetFrameBufferID(),
 							engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_LEFT)->GetRenderMode(),
