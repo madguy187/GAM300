@@ -327,7 +327,7 @@ namespace Eclipse
 				std::map<std::string, TextureType> _Map = { {"TT_UNASSIGNED",TextureType::TT_UNASSIGNED}, {"TT_2D",TextureType::TT_2D},
 															{"TT_3D",TextureType::TT_3D} };
 
-				ComboListSettings settings = { "Texture Type"  , _TextureVector[_Texture.ComboIndex].c_str(),false };
+				ComboListSettings settings = { "Texture Type"};
 
 				ECGui::DrawTextWidget<const char*>("KEY ID: ", "");
 				ECGui::InsertSameLine();
@@ -389,7 +389,7 @@ namespace Eclipse
 				std::map<std::string, MaterialComponent::ModelType> _Map = { {"None",MaterialComponent::ModelType::None}, {"BasicPrimitives",MaterialComponent::ModelType::BasicPrimitives},
 															{"Models3D",MaterialComponent::ModelType::Models3D}};
 				
-				ComboListSettings settings = {"Model Type" , _ModelVector[_Material.ComboIndex].c_str(),false};
+				ComboListSettings settings = {"Model Type"};
 
 				ECGui::DrawTextWidget<const char*>("Model Type", "");
 				ECGui::CreateComboList(settings, _ModelVector, _Material.ComboIndex);
@@ -451,7 +451,7 @@ namespace Eclipse
 
 				auto& _ModelInfo = engine->world.GetComponent<ModeLInforComponent>(ID);
 
-				ComboListSettings settings = { "Texture Type"  , _ModelInfoVector[_ModelInfo.ComboIndex].c_str(),false };
+				ComboListSettings settings = { "Texture Type"};
 				
 				ECGui::DrawTextWidget<const char*>("Model Directory: ", "");
 				ECGui::InsertSameLine();
@@ -559,6 +559,10 @@ namespace Eclipse
 						ComponentRegistry<TextureComponent>("TextureComponent", ID, entCom.Name,
 							EditComponent::EC_ADDCOMPONENT);
 						break;
+					case str2int("ModeLInforComponent"):
+						ComponentRegistry<ModeLInforComponent>("ModeLInforComponent", ID, entCom.Name,
+							EditComponent::EC_ADDCOMPONENT);
+						break;
 					}
 				}
 			}
@@ -620,6 +624,10 @@ namespace Eclipse
 						break;
 					case str2int("TextureComponent"):
 						ComponentRegistry<TextureComponent>("TextureComponent", ID, entCom.Name,
+							EditComponent::EC_REMOVECOMPONENT);
+						break;
+					case str2int("ModeLInforComponent"):
+						ComponentRegistry<ModeLInforComponent>("ModeLInforComponent", ID, entCom.Name,
 							EditComponent::EC_REMOVECOMPONENT);
 						break;
 					}
