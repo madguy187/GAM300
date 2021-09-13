@@ -24,6 +24,7 @@ namespace Eclipse
 		bool ShowMaterialProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowMesh3DProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowModelInfoProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowScriptProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 
 		void AddComponentsController(Entity ID);
 		void RemoveComponentsController(Entity ID);
@@ -35,6 +36,7 @@ namespace Eclipse
 		
 		void ChangeMeshController(MeshComponent& Item);
 		void MeshList(MeshComponent& Item);
+		void RemoveElementFromVectorStringList(std::vector<std::string> & vecList);
 		
 		template <typename TComponents>
 		void AddComponentsFeedback(const char* Components, const std::string& name, Entity ID, bool exist);
@@ -66,6 +68,7 @@ namespace Eclipse
 		}
 	private:
 		ECVec2 WindowSize_{};
+		std::vector<std::string> ScriptListGuiTest;
 	};
 
 }
