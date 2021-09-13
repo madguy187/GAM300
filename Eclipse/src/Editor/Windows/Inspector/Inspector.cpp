@@ -490,13 +490,8 @@ namespace Eclipse
 				if (ECGui::ButtonBool("Add Script"))
 				{
 					static std::string fucknicosmother;
-					static std::string fucknicosmother2;
 					fucknicosmother.reserve(256);
-					fucknicosmother2.reserve(256);
-					fucknicosmother = "lmao";
-					fucknicosmother2 = "LOL";
 					entCom.ScriptListComTest.push_back(fucknicosmother);
-					entCom.ScriptListComTest.push_back(fucknicosmother2);
 				}
 				
 				ECGui::InsertSameLine();
