@@ -30,6 +30,9 @@ namespace Eclipse
 		void ShowAddComponentList(Entity ID);
 		void ShowRemoveComponentList(Entity ID);
 
+		void ChangeTextureController(TextureComponent& Item);
+		void TextureList(TextureComponent& Item);
+		
 		void ChangeMeshController(RenderComponent& Item);
 		void MeshList(RenderComponent& Item);
 		
