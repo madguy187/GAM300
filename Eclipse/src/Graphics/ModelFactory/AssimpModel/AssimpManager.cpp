@@ -121,8 +121,6 @@ namespace Eclipse
 		shdrpgm.Use();
 		RenderComponent& ModelMesh = engine->world.GetComponent<RenderComponent>(ID);
 
-		engine->MaterialManager.UpdateStencilWithActualObject(ID);
-
 		// Check Main Uniforms For each Model
 		// Translation done here for each model
 		CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ID, box);
@@ -142,38 +140,43 @@ namespace Eclipse
 
 	void AssimpModelManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID, AABB_* box)
 	{
-		MaterialComponent& material = engine->world.GetComponent<MaterialComponent>(ModelID);
-		GLint uniform_var_loc1 = _shdrpgm.GetLocation("material.shininess");
-		GLint uniform_var_loc2 = _shdrpgm.GetLocation("material.MaximumShininess");
-
-		GLCall(glUniform1f(uniform_var_loc1, material.shininess));
-		GLCall(glUniform1f(uniform_var_loc2, material.MaximumShininess));
-
-
-		TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(ModelID);
-		GLint uModelToNDC_ = _shdrpgm.GetLocation("uModelToNDC");
-		GLuint model_ = _shdrpgm.GetLocation("model");
-		GLuint dsa = _shdrpgm.GetLocation("noTex");
-
-		if (uModelToNDC_ >= 0)
+		if (engine->world.CheckComponent<MaterialComponent>(ModelID))
 		{
-			glm::mat4 mModelNDC;
-			glm::mat4 model = glm::mat4(1.0f);
-			model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
-			model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-			model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-			model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-			model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
+			MaterialComponent& material = engine->world.GetComponent<MaterialComponent>(ModelID);
+			GLint uniform_var_loc1 = _shdrpgm.GetLocation("material.shininess");
+			GLint uniform_var_loc2 = _shdrpgm.GetLocation("material.MaximumShininess");
 
-			BoundingRegion br(Transform.position.ConvertToGlmVec3Type(), Transform.scale.ConvertToGlmVec3Type());
-			box->AddInstance(br);
-
-			mModelNDC = _camera.projMtx * _camera.viewMtx * model;
-			glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
-			glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
+			GLCall(glUniform1f(uniform_var_loc1, material.shininess));
+			GLCall(glUniform1f(uniform_var_loc2, material.MaximumShininess));
 		}
 
-		glUniform1i(dsa, 0);
+		if (engine->world.CheckComponent<TransformComponent>(ModelID))
+		{
+			TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(ModelID);
+			GLint uModelToNDC_ = _shdrpgm.GetLocation("uModelToNDC");
+			GLuint model_ = _shdrpgm.GetLocation("model");
+
+			if (uModelToNDC_ >= 0)
+			{
+				glm::mat4 mModelNDC;
+				glm::mat4 model = glm::mat4(1.0f);
+				model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
+				model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+				model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+				model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+				model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
+
+				BoundingRegion br(Transform.position.ConvertToGlmVec3Type(), Transform.scale.ConvertToGlmVec3Type());
+				box->AddInstance(br);
+
+				mModelNDC = _camera.projMtx * _camera.viewMtx * model;
+				glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
+				glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
+			}
+		}
+
+		GLuint NoTexures = _shdrpgm.GetLocation("noTex");
+		glUniform1i(NoTexures, 0);
 	}
 
 	MeshModelContainer AssimpModelManager::GetMeshContainer()

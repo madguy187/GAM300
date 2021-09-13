@@ -14,6 +14,7 @@
 #include "ECS/ComponentManager/Components/TextureComponent.h"
 #include "ECS/ComponentManager/Components/ModelInfoComponent.h"
 #include "ECS/ComponentManager/Components/ParentChildComponent.h"
+#include "ECS/ComponentManager/Components/LightComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
@@ -79,6 +80,7 @@ namespace Eclipse
         world.RegisterComponent<TextureComponent>();
         world.RegisterComponent<ModeLInforComponent>();
         world.RegisterComponent<ParentChildComponent>();
+        world.RegisterComponent<LightComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
@@ -98,10 +100,7 @@ namespace Eclipse
         world.RegisterSystemSignature<CameraSystem>(hi2);
 
         Signature hi3;
-        hi3.set(world.GetComponentType<TransformComponent>(), 1);
-        hi3.set(world.GetComponentType<PointLightComponent>(), 1);
-        hi3.set(world.GetComponentType<DirectionalLightComponent>(), 1);
-        hi3.set(world.GetComponentType<SpotLightComponent>(), 1);
+        hi3.set(world.GetComponentType<LightComponent>(), 1);
         world.RegisterSystemSignature<LightingSystem>(hi3);
 
         Signature mat;

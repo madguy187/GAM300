@@ -25,7 +25,7 @@ namespace Eclipse
         unsigned int SkyCount = 0;
         bool CheckRender = true;
         bool EnableGammaCorrection = true;
-        bool DrawSky = false;
+        bool DrawSky = true;
 
     public:
         std::map<std::string, std::vector<std::string>> ShaderMap;
