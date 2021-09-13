@@ -420,10 +420,11 @@ namespace Eclipse
                 textures.push_back(tex);
                 Textures_loaded.push_back(tex);
 
+                Graphics::textures.emplace(NameOfModel, tex);
+
                 std::unique_ptr<Texture> ptr(new Texture(tex));
                 engine->AssimpManager.InsertTextures(NameOfModel, std::move(ptr), MeshIndex);
 
-                Graphics::textures.emplace(str.C_Str(), tex);
             }
         }
         return textures;
