@@ -25,7 +25,7 @@ namespace Eclipse
 				auto relativePath = relative(FbxOrGltf, "src//");
 				std::string FbxOrGltfName = relativePath.filename().string();
 
-				if ( FbxOrGltfName.find("gltf") != std::string::npos || FbxOrGltfName.find("fbx") != std::string::npos)
+				if (FbxOrGltfName.find("gltf") != std::string::npos || FbxOrGltfName.find("fbx") != std::string::npos)
 				{
 					std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/" + FbxOrGltfName).c_str();
 
@@ -111,7 +111,7 @@ namespace Eclipse
 		return AssimpLoadedModels[in]->GetName();
 	}
 
-	void AssimpModelManager::MeshDraw(unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
+	void AssimpModelManager::MeshDraw(unsigned int ID, unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
 	{
 		auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
 
@@ -119,28 +119,22 @@ namespace Eclipse
 		auto shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
 
 		shdrpgm.Use();
+		RenderComponent& ModelMesh = engine->world.GetComponent<RenderComponent>(ID);
 
-		for (auto const& Models : AssimpModelContainerV2)
+		engine->MaterialManager.UpdateStencilWithActualObject(ID);
+
+		// Check Main Uniforms For each Model
+		// Translation done here for each model
+		CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ID, box);
+
+		if (_renderMode == FrameBuffer::RenderMode::Fill_Mode)
 		{
-			auto& ID = Models.first;
-			MeshComponent3D& ModelMesh = *(Models.second);
-
-			engine->MaterialManager.UpdateStencilWithActualObject(ID);
-
-			// Check Main Uniforms For each Model
-			// Translation done here for each model
-			CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ID, box);
-
-			if (_renderMode == FrameBuffer::RenderMode::Fill_Mode)
-			{
-				// Render
-				Render(shdrpgm, GL_FILL, FrameBufferID, ModelMesh, ID);
-			}
-			else
-			{
-				Render(shdrpgm, GL_LINE, FrameBufferID, ModelMesh, ID);
-			}
-
+			// Render
+			Render(shdrpgm, GL_FILL, FrameBufferID, ModelMesh, ID);
+		}
+		else
+		{
+			Render(shdrpgm, GL_LINE, FrameBufferID, ModelMesh, ID);
 		}
 
 		shdrpgm.UnUse();
@@ -286,19 +280,19 @@ namespace Eclipse
 
 	void AssimpModelManager::CleanUpAllModelsMeshes()
 	{
-		for (auto const& Models : AssimpModelContainerV2)
-		{
-			auto& InvidualModels = *(Models.second);
-			Cleanup(InvidualModels);
-		}
+		//for (auto const& Models : AssimpModelContainerV2)
+		//{
+		//	auto& InvidualModels = *(Models.second);
+		//	Cleanup(InvidualModels);
+		//}
 	}
 
-	void AssimpModelManager::Cleanup(MeshComponent3D& in)
+	void AssimpModelManager::Cleanup(RenderComponent& in)
 	{
-		for (unsigned int i = 0; i < in.Meshes.size(); i++)
-		{
-			in.Meshes[i].Cleanup();
-		}
+		//for (unsigned int i = 0; i < in.Meshes.size(); i++)
+		//{
+		//	in.Meshes[i].Cleanup();
+		//}
 	}
 
 	AssimpModelManager::~AssimpModelManager()
@@ -314,11 +308,11 @@ namespace Eclipse
 
 	bool AssimpModelManager::InsertMesh(MeshComponent3D& in)
 	{
-		// Insert
-		if (AssimpModelContainerV2.insert({ in.ID , &in }).second == true)
-		{
-			return true;
-		}
+		//// Insert
+		//if (AssimpModelContainerV2.insert({ in.ID , &in }).second == true)
+		//{
+		//	return true;
+		//}
 
 		return false;
 	}
@@ -326,7 +320,7 @@ namespace Eclipse
 	void AssimpModelManager::InsertModel(unsigned int id)
 	{
 		// Should already have the model name as key.
-		auto& sprite = engine->world.GetComponent<MeshComponent3D>(id);
+		auto& sprite = engine->world.GetComponent<RenderComponent>(id);
 
 		// Assign ModelInfoComponent
 		auto& ModelInformation = engine->world.GetComponent<ModeLInforComponent>(id);
@@ -341,13 +335,13 @@ namespace Eclipse
 		//sprite.type = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetType();
 		//sprite.NoTextures = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->CheckNoTextures();
 
-		if (AssimpModelContainerV2.insert({ sprite.ID ,&sprite }).second == true)
-		{
-			EDITOR_LOG_INFO(("Model : " + ModelInformation.NameOfModel + "Created Successfully").c_str());
-		}
+		//if (AssimpModelContainerV2.insert({ sprite.ID ,&sprite }).second == true)
+		//{
+		//	EDITOR_LOG_INFO(("Model : " + ModelInformation.NameOfModel + "Created Successfully").c_str());
+		//}
 
 		// All Models are allowed to highlight
-		engine->MaterialManager.RegisterMeshForHighlight(sprite.ID);
+		//engine->MaterialManager.RegisterMeshForHighlight(sprite.ID);
 
 		// If got TextureComponent
 		if (engine->world.CheckComponent<TextureComponent>(id))
@@ -371,7 +365,7 @@ namespace Eclipse
 		}
 	}
 
-	void AssimpModelManager::Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent3D& in, unsigned int ModelID)
+	void AssimpModelManager::Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, RenderComponent& in, unsigned int ModelID)
 	{
 		for (unsigned int i = 0; i < in.Meshes.size(); i++)
 		{
@@ -381,7 +375,7 @@ namespace Eclipse
 
 	void AssimpModelManager::InsertModelMap(std::string& NameofModel, std::string& Directory)
 	{
-		ModelMap.insert({ NameofModel,Directory});
+		ModelMap.insert({ NameofModel,Directory });
 	}
 
 	// ==

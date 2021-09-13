@@ -5,13 +5,13 @@ namespace Eclipse
 {
     struct MeshComponent3D
     {
-        unsigned int ID = 0;
+        //unsigned int ID = 0;
 
-        // Store key
-        std::string Key;
+        //// Store key
+        //std::string Key;
   
-        // Meshes
-        std::vector<Mesh> Meshes;
-        std::vector<Texture> Textures_loaded;
+        //// Meshes
+        //std::vector<Mesh> Meshes;
+        //std::vector<Texture> Textures_loaded;
     };
 }

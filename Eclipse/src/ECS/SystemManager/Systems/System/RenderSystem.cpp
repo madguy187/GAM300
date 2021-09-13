@@ -9,105 +9,112 @@
 
 namespace Eclipse
 {
-    void RenderSystem::Init()
-    {
-        // Outlining Preparation ============================= 
-        glEnable(GL_STENCIL_TEST);
-        glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	void RenderSystem::Init()
+	{
+		// Outlining Preparation ============================= 
+		glEnable(GL_STENCIL_TEST);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
-        // Graphics Init =============================
-        EDITOR_LOG_INFO("RenderSystem Init");
-        engine->GraphicsManager.DebugPrintFrameBuffers();
+		// Graphics Init =============================
+		EDITOR_LOG_INFO("RenderSystem Init");
+		engine->GraphicsManager.DebugPrintFrameBuffers();
 
-        // Load All Models =============================
-        engine->AssimpManager.Init();
+		// Load All Models =============================
+		engine->AssimpManager.Init();
 
-        // Create SKY =============================
-        engine->GraphicsManager.CreateSky("src/Assets/Sky");
+		// Create SKY =============================
+		engine->GraphicsManager.CreateSky("src/Assets/Sky");
 
-        // Create AABB Boxes =============================
-        engine->GraphicsManager.AllAABBs.Init();
-    }
+		// Create AABB Boxes =============================
+		engine->GraphicsManager.AllAABBs.Init();
+	}
 
-    Signature RenderSystem::RegisterAll()
-    {
-        Signature SystemSignature;
+	Signature RenderSystem::RegisterAll()
+	{
+		Signature SystemSignature;
 
-        SystemSignature.set(engine->world.GetComponentType<TransformComponent>(), 1);
-        SystemSignature.set(engine->world.GetComponentType<RenderComponent>(), 1);
-        engine->world.RegisterSystemSignature<RenderSystem>(SystemSignature);
+		SystemSignature.set(engine->world.GetComponentType<TransformComponent>(), 1);
+		SystemSignature.set(engine->world.GetComponentType<RenderComponent>(), 1);
+		engine->world.RegisterSystemSignature<RenderSystem>(SystemSignature);
 
-        return SystemSignature;
-    }
+		return SystemSignature;
+	}
 
-    void RenderSystem::Update()
-    {
-        ProfilerWindow timer;
-        timer.SetName({ SystemName::RENDER });
-        timer.tracker.system_start = glfwGetTime();
+	void RenderSystem::Update()
+	{
+		ProfilerWindow timer;
+		timer.SetName({ SystemName::RENDER });
+		timer.tracker.system_start = glfwGetTime();
 
-        engine->GraphicsManager.UploadGlobalUniforms();
+		engine->GraphicsManager.UploadGlobalUniforms();
 
-        if (engine->GraphicsManager.CheckRender == true)
-        {
-            // SKY Render Start =============================
-            engine->MaterialManager.DoNotUpdateStencil();
-            engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
-            // SKY Reder End ===============================
+		if (engine->GraphicsManager.CheckRender == true)
+		{
+			// SKY Render Start =============================
+			engine->MaterialManager.DoNotUpdateStencil();
+			engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+			// SKY Reder End ===============================
 
-            // Basic Primitives Render Start =============================
-            for (auto const& entityID : mEntities) // - using RenderComponent and TransformComponent
-            {
-                RenderComponent& _Sprites = engine->world.GetComponent<RenderComponent>(entityID);
+			// Basic Primitives Render Start =============================
+			for (auto const& entityID : mEntities) // - using RenderComponent and TransformComponent
+			{
+				RenderComponent& _Sprites = engine->world.GetComponent<RenderComponent>(entityID);
 
-                engine->MaterialManager.UpdateStencilWithActualObject(entityID);
-                engine->GraphicsManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL, entityID);
+				if (!engine->world.CheckComponent<ModeLInforComponent>(entityID))
+				{
 
-                engine->MaterialManager.DoNotUpdateStencil();
-                engine->GraphicsManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL, entityID);
-            }
-            // Basic Primitives Render End ==============================
+					engine->MaterialManager.UpdateStencilWithActualObject(entityID);
+					engine->GraphicsManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL, entityID);
+
+					engine->MaterialManager.DoNotUpdateStencil();
+					engine->GraphicsManager.Draw(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetFrameBufferID(), &_Sprites, GL_FILL, entityID);
+				}
+				else
+				{
+					engine->AssimpManager.MeshDraw(entityID, engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SCENEVIEW)->GetFrameBufferID(),
+						engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetRenderMode(),
+						&engine->GraphicsManager.AllAABBs, CameraComponent::CameraType::Editor_Camera);
+				}
+			}
+			// Basic Primitives Render End ==============================
 
 
-            // CAMERA Render Start =============================
-            engine->MaterialManager.DoNotUpdateStencil();
-            engine->gDebugManager.DrawDebugShapes(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
-            // CAMERA Render End ===============================
+			// CAMERA Render Start =============================
+			engine->MaterialManager.DoNotUpdateStencil();
+			engine->gDebugManager.DrawDebugShapes(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+			// CAMERA Render End ===============================
 
-            // MODELS Render  Start =============================
-            engine->AssimpManager.MeshDraw(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SCENEVIEW)->GetFrameBufferID(),
-                engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetRenderMode(),
-                &engine->GraphicsManager.AllAABBs, CameraComponent::CameraType::Editor_Camera);
+			// MODELS Render  Start =============================
 
-            // If Switch Views are visible , If not we dont render
-            if (engine->editorManager->GetAllWindowsByRef()[8]->IsVisible)
-            {
-                engine->MaterialManager.DoNotUpdateStencil();
-                engine->AssimpManager.MeshDraw(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::GAMEVIEW)->GetFrameBufferID(),
-                    engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetRenderMode(),
-                    &box, CameraComponent::CameraType::Game_Camera);
-                engine->AssimpManager.MeshDraw(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SWITCHINGVIEWS_TOP)->GetFrameBufferID(),
-                    engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_TOP)->GetRenderMode(),
-                    &box, CameraComponent::CameraType::TopView_Camera);
-                engine->AssimpManager.MeshDraw(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SWITCHINGVIEWS_BOTTOM)->GetFrameBufferID(),
-                    engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_BOTTOM)->GetRenderMode(),
-                    &box, CameraComponent::CameraType::BottomView_Camera);
-                engine->AssimpManager.MeshDraw(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SWITCHINGVIEWS_LEFT)->GetFrameBufferID(),
-                    engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_LEFT)->GetRenderMode(),
-                    &box, CameraComponent::CameraType::RightView_camera);
-                engine->AssimpManager.MeshDraw(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SWITCHINGVIEWS_RIGHT)->GetFrameBufferID(),
-                    engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_RIGHT)->GetRenderMode(),
-                    &box, CameraComponent::CameraType::LeftView_Camera);
-            }
-            // MODELS Render  End ===============================
+			// If Switch Views are visible , If not we dont render
+			//if (engine->editorManager->GetAllWindowsByRef()[8]->IsVisible)
+			//{
+			//    engine->MaterialManager.DoNotUpdateStencil();
+			//    engine->AssimpManager.MeshDraw(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::GAMEVIEW)->GetFrameBufferID(),
+			//        engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::GAMEVIEW)->GetRenderMode(),
+			//        &box, CameraComponent::CameraType::Game_Camera);
+			//    engine->AssimpManager.MeshDraw(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SWITCHINGVIEWS_TOP)->GetFrameBufferID(),
+			//        engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_TOP)->GetRenderMode(),
+			//        &box, CameraComponent::CameraType::TopView_Camera);
+			//    engine->AssimpManager.MeshDraw(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SWITCHINGVIEWS_BOTTOM)->GetFrameBufferID(),
+			//        engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_BOTTOM)->GetRenderMode(),
+			//        &box, CameraComponent::CameraType::BottomView_Camera);
+			//    engine->AssimpManager.MeshDraw(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SWITCHINGVIEWS_LEFT)->GetFrameBufferID(),
+			//        engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_LEFT)->GetRenderMode(),
+			//        &box, CameraComponent::CameraType::RightView_camera);
+			//    engine->AssimpManager.MeshDraw(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SWITCHINGVIEWS_RIGHT)->GetFrameBufferID(),
+			//        engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SWITCHINGVIEWS_RIGHT)->GetRenderMode(),
+			//        &box, CameraComponent::CameraType::LeftView_Camera);
+			//}
+			// MODELS Render  End ===============================
 
-            // Debug Boxes Draw Start =============================
-            engine->MaterialManager.DoNotUpdateStencil();
-            engine->GraphicsManager.DrawDebugBoxes();
-            // Debug Boxes Draw End ===============================
-        }
+			// Debug Boxes Draw Start =============================
+			engine->MaterialManager.DoNotUpdateStencil();
+			engine->GraphicsManager.DrawDebugBoxes();
+			// Debug Boxes Draw End ===============================
+		}
 
-        timer.tracker.system_end = glfwGetTime();
-        timer.ContainerAddTime(timer.tracker);
-    }
+		timer.tracker.system_end = glfwGetTime();
+		timer.ContainerAddTime(timer.tracker);
+	}
 }

@@ -390,11 +390,11 @@ namespace Eclipse
 
     bool MaterialManager::InsertContainer(MeshComponent3D& in)
     {
-        // Insert
-        if (MeshHighLightContainer.insert({ in.ID , &in }).second == true)
-        {
-            return true;
-        }
+        //// Insert
+        //if (MeshHighLightContainer.insert({ in.ID , &in }).second == true)
+        //{
+        //    return true;
+        //}
 
         return false;
     }
@@ -522,7 +522,7 @@ namespace Eclipse
                 engine->MaterialManager.CheckUnniformLocation(shdrpgm, highlight);
 
                 // Render
-                engine->AssimpManager.Render(shdrpgm, Mode, FrameBufferID, InvidualModels, ID);
+                //engine->AssimpManager.Render(shdrpgm, Mode, FrameBufferID, InvidualModels, ID);
             }
         }
 
@@ -556,7 +556,7 @@ namespace Eclipse
             shdrpgm.Use();
 
             auto& highlight = engine->world.GetComponent<MaterialComponent>(ModelID);
-            auto& InvidualModels = engine->world.GetComponent<MeshComponent3D>(ModelID);
+            auto& InvidualModels = engine->world.GetComponent<RenderComponent>(ModelID);
 
             // Check Main Uniforms For each Model
             // Translation done here for each model
