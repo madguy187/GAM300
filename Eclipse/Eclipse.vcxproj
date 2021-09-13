@@ -182,6 +182,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\System.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\Test.h" />
     <ClInclude Include="src\ECS\World.h" />
     <ClInclude Include="src\Editor\ECGuiAPI\ECGui.h" />
     <ClInclude Include="src\Editor\ECGuiAPI\ECGuiInputHandler.h" />
@@ -310,6 +311,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\Test.cpp" />
     <ClCompile Include="src\ECS\World.cpp" />
     <ClCompile Include="src\Editor\ECGuiAPI\ECGui.cpp" />
     <ClCompile Include="src\Editor\ECGuiAPI\ECGuiInputHandler.cpp" />

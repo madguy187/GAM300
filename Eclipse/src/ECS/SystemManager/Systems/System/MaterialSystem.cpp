@@ -23,14 +23,16 @@ namespace Eclipse
                 // Update Materials ===============================
                 engine->MaterialManager.UpdateMaterial(material);
 
-                // HighLight Basic Models Start ===============================
-                engine->MaterialManager.HighlightBasicPrimitives(material, entity, engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
-                // HighLight Basic Models End ===============================
-
                 if (engine->world.CheckComponent<ModeLInforComponent>(entity))
                 {
                     // HighLight Basic Models Start ===============================
                     engine->MaterialManager.Highlight3DModels(material, entity, engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+                    // HighLight Basic Models End ===============================
+                }
+                else
+                {
+                    // HighLight Basic Models Start ===============================
+                    engine->MaterialManager.HighlightBasicPrimitives(material, entity, engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
                     // HighLight Basic Models End ===============================
                 }
             }

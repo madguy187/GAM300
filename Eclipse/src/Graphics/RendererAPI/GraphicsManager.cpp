@@ -201,18 +201,6 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         //sprite.Key = engine->AssimpManager.GetKey("testhouse");
         //engine->AssimpManager.InsertModel(ID);
 
-        engine->world.AddComponent(ID, ModeLInforComponent{});
-        engine->world.AddComponent(ID, MaterialComponent{});
-        engine->world.AddComponent(ID, MeshComponent3D{});
-        //engine->world.AddComponent(ID, TextureComponent{});
-
-        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
-        MeshComponent3D& sprite = engine->world.GetComponent<MeshComponent3D>(ID);
-
-        mat.Modeltype = MaterialComponent::ModelType::Models3D;
-        sprite.ID = ID;
-        sprite.Key = engine->AssimpManager.GetKey("Bed");
-        engine->AssimpManager.InsertModel(ID);
     }
     break;
     case 10:
@@ -227,19 +215,6 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         //sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         //sprite.modelRef = Graphics::models.find("lines3D")->first;
         //Graphics::sprites.emplace(sprite.layerNum, &sprite);
-
-        engine->world.AddComponent(ID, ModeLInforComponent{});
-        engine->world.AddComponent(ID, MaterialComponent{ID});
-        engine->world.AddComponent(ID, MeshComponent3D{ID});
-        engine->world.AddComponent(ID, TextureComponent{ID});
-
-        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
-        MeshComponent3D& sprite = engine->world.GetComponent<MeshComponent3D>(ID);
-
-        mat.Modeltype = MaterialComponent::ModelType::Models3D;
-        sprite.ID = ID;
-        sprite.Key = engine->AssimpManager.GetKey("lotr_troll");
-        engine->AssimpManager.InsertModel(ID);
     }
     break;
     case 11:
@@ -266,19 +241,6 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         //sprite.ID = ID;
         //sprite.Key = engine->AssimpManager.GetKey("m4a1");
         //engine->AssimpManager.InsertModel(ID);
-
-        engine->world.AddComponent(ID, ModeLInforComponent{});
-        engine->world.AddComponent(ID, MaterialComponent{});
-        engine->world.AddComponent(ID, MeshComponent3D{});
-        engine->world.AddComponent(ID, TextureComponent{});
-
-        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
-        MeshComponent3D& sprite = engine->world.GetComponent<MeshComponent3D>(ID);
-
-        mat.Modeltype = MaterialComponent::ModelType::Models3D;
-        sprite.ID = ID;
-        sprite.Key = engine->AssimpManager.GetKey("hi");
-        engine->AssimpManager.InsertModel(ID);
     }
     break;
     // pointlight
@@ -309,11 +271,11 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
 
         engine->world.AddComponent(ID, ModeLInforComponent{});
         engine->world.AddComponent(ID, MaterialComponent{});
-        engine->world.AddComponent(ID, MeshComponent3D{});
+        engine->world.AddComponent(ID, RenderComponent{});
         engine->world.AddComponent(ID, TextureComponent{});
 
         MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
-        MeshComponent3D& sprite = engine->world.GetComponent<MeshComponent3D>(ID);
+        RenderComponent& sprite = engine->world.GetComponent<RenderComponent>(ID);
 
         mat.Modeltype = MaterialComponent::ModelType::Models3D;
         sprite.ID = ID;
@@ -380,6 +342,8 @@ void Eclipse::GraphicsManager::DrawIndexed(RenderComponent* in, GLenum mode)
 
 void Eclipse::GraphicsManager::CheckTexture(unsigned int ID)
 {
+    glActiveTexture(GL_TEXTURE0);
+
     if (engine->world.CheckComponent<TextureComponent>(ID))
     {
         TextureComponent& tex = engine->world.GetComponent<TextureComponent>(ID);
@@ -397,6 +361,8 @@ void Eclipse::GraphicsManager::CheckTexture(unsigned int ID)
             glTextureParameteri(Graphics::textures[tex.textureRef].GetHandle(), GL_TEXTURE_WRAP_T, GL_REPEAT);
         }
     }
+
+    glActiveTexture(GL_TEXTURE0);
 }
 
 void Eclipse::GraphicsManager::CheckUniformLoc(Shader* _shdrpgm, RenderComponent& sprite, unsigned int id, unsigned int framebufferID)

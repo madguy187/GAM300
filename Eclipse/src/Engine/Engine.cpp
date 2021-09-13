@@ -23,6 +23,7 @@
 #include "ImGui/Setup/ImGuiSetup.h"
 #include "ECS/SystemManager/Systems/System/MaterialSystem.h"
 #include "ECS/SystemManager/Systems/System/GridSystem.h"
+#include "ECS/SystemManager/Systems/System/Test.h"
 bool Tester1(const Test1& e)
 {
     std::cout << "Engine.cpp Tester1" << std::endl;
@@ -87,6 +88,7 @@ namespace Eclipse
         world.RegisterSystem<MaterialSystem>();
         world.RegisterSystem<GridSystem>();
         world.RegisterSystem<PickingSystem>();
+        world.RegisterSystem<TEST>();
 
         // Render System
         Signature RenderSys = RenderSystem::RegisterAll();
@@ -118,6 +120,10 @@ namespace Eclipse
         gridCol.set(world.GetComponentType<AABBComponent>(), 1);
         gridCol.set(world.GetComponentType<TransformComponent>(), 1);
         world.RegisterSystemSignature<GridSystem>(gridCol);
+
+        Signature dasda;
+        dasda.set(world.GetComponentType<ModeLInforComponent>(), 1);
+        world.RegisterSystemSignature<TEST>(dasda);
 
         mono.Init();
 
@@ -196,6 +202,8 @@ namespace Eclipse
 
             // RENDERSYSTEM =============================
             world.Update<RenderSystem>();
+
+            world.Update<TEST>();
 
             // Material SYstem =============================
             world.Update<MaterialSystem>();

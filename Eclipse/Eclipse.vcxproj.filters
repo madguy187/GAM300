@@ -98,6 +98,7 @@
     <ClCompile Include="src\Time\Clock.cpp" />
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\Editor\Windows\SwitchViews\BaseSwitchView.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h" />
@@ -242,6 +243,7 @@
     <ClInclude Include="src\TypeID\TypeID.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Editor\Windows\SwitchViews\BaseSwitchView.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\Test.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\AABB.frag" />

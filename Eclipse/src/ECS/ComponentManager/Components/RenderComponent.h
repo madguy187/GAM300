@@ -5,6 +5,14 @@ namespace Eclipse
 {
     struct RenderComponent
     {
+        // Store key
+        std::string Key;
+
+        // Meshes
+        std::vector<Mesh> Meshes;
+        std::vector<Texture> Textures_loaded;
+
+        /// /////////////////////////////
         ECVec3 color{ 1.0f, 1.0f, 1.0f };
         ECVec2 textureIdx{ 0.0, 0.0 };
 

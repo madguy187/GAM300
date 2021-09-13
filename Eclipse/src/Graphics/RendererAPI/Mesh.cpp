@@ -105,16 +105,18 @@ namespace Eclipse
                     // bind texture
                     tex.HoldingTextures[MeshIndex][i].Bind();
                 }
+
+                // reset
+                glActiveTexture(GL_TEXTURE0);
             }
+            glActiveTexture(GL_TEXTURE0);
         }
+        glActiveTexture(GL_TEXTURE0);
 
         // EBO stuff
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
-
-        // reset
-        glActiveTexture(GL_TEXTURE0);
     }
 
     void Mesh::Cleanup()
