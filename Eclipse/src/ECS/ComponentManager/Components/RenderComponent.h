@@ -15,7 +15,6 @@ namespace Eclipse
         std::vector<Mesh> Meshes;
         std::vector<Texture> Textures_loaded;
 
-
         //---------------------------------------
         // Anything Else Other than Assimp Models
         //---------------------------------------

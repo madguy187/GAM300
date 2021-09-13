@@ -39,7 +39,6 @@ namespace Eclipse
 			}
 		}
 
-		int i = 0;
 		// First file path so i shd be src/assets/assmodels
 		//for (auto& dirEntry : std::filesystem::directory_iterator("src//Assets//ASSModels"))
 		//{
@@ -179,16 +178,6 @@ namespace Eclipse
 		glUniform1i(NoTexures, 0);
 	}
 
-	MeshModelContainer AssimpModelManager::GetMeshContainer()
-	{
-		return AssimpModelContainerV2;
-	}
-
-	unsigned int AssimpModelManager::MeshModelCount()
-	{
-		return AssimpModelContainerV2.size();
-	}
-
 	unsigned int AssimpModelManager::MeshFactoryCount()
 	{
 		return AssimpLoadedModels.size();
@@ -219,12 +208,6 @@ namespace Eclipse
 	void AssimpModelManager::InsertTextures(std::string& NameofModel, std::unique_ptr<Texture> in, unsigned int MeshId)
 	{
 		LoadedTexturesV2[NameofModel][MeshId].push_back(std::move(in));
-	}
-
-	void AssimpModelManager::DeleteItem(unsigned int index)
-	{
-		AssimpMeshIT it = AssimpModelContainerV2.find(index);
-		AssimpModelContainerV2.erase(index);
 	}
 
 	void AssimpModelManager::PrintLoadedModels()
@@ -281,21 +264,12 @@ namespace Eclipse
 		std::cout << std::endl;
 	}
 
-	void AssimpModelManager::CleanUpAllModelsMeshes()
-	{
-		//for (auto const& Models : AssimpModelContainerV2)
-		//{
-		//	auto& InvidualModels = *(Models.second);
-		//	Cleanup(InvidualModels);
-		//}
-	}
-
 	void AssimpModelManager::Cleanup(RenderComponent& in)
 	{
-		//for (unsigned int i = 0; i < in.Meshes.size(); i++)
-		//{
-		//	in.Meshes[i].Cleanup();
-		//}
+		for (unsigned int i = 0; i < in.Meshes.size(); i++)
+		{
+			in.Meshes[i].Cleanup();
+		}
 	}
 
 	AssimpModelManager::~AssimpModelManager()
@@ -309,17 +283,6 @@ namespace Eclipse
 		//}
 	}
 
-	bool AssimpModelManager::InsertMesh(MeshComponent3D& in)
-	{
-		//// Insert
-		//if (AssimpModelContainerV2.insert({ in.ID , &in }).second == true)
-		//{
-		//	return true;
-		//}
-
-		return false;
-	}
-
 	void AssimpModelManager::InsertModel(unsigned int id)
 	{
 		// Should already have the model name as key.
@@ -330,21 +293,8 @@ namespace Eclipse
 		ModelInformation.NameOfModel = sprite.Key;
 		ModelInformation.Directory = ModelMap[sprite.Key];
 
-		// Assign MeshComponent
-		//sprite.Directory = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetDirectory();
 		sprite.Meshes = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetMesh();
-		//sprite.NameOfModel = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetName();
 		sprite.Textures_loaded = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetTextures();
-		//sprite.type = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetType();
-		//sprite.NoTextures = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->CheckNoTextures();
-
-		//if (AssimpModelContainerV2.insert({ sprite.ID ,&sprite }).second == true)
-		//{
-		//	EDITOR_LOG_INFO(("Model : " + ModelInformation.NameOfModel + "Created Successfully").c_str());
-		//}
-
-		// All Models are allowed to highlight
-		//engine->MaterialManager.RegisterMeshForHighlight(sprite.ID);
 
 		// If got TextureComponent
 		if (engine->world.CheckComponent<TextureComponent>(id))
@@ -352,8 +302,6 @@ namespace Eclipse
 			auto& tex = engine->world.GetComponent<TextureComponent>(id);
 			engine->AssimpManager.SetTexturesForModel(tex, sprite.Key);
 		}
-
-		std::cout << "Current Model Container Size " << AssimpModelContainerV2.size() << std::endl;
 	}
 
 	void AssimpModelManager::TestPath(std::string& path)
@@ -380,8 +328,9 @@ namespace Eclipse
 	{
 		ModelMap.insert({ NameofModel,Directory });
 	}
-
-	// ==
+}
+namespace Eclipse
+{
 	void AssimpModelManager::Draw(unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
 	{
 		auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
@@ -555,5 +504,41 @@ namespace Eclipse
 		}
 
 		return false;
+	}
+
+	MeshModelContainer AssimpModelManager::GetMeshContainer()
+	{
+		return AssimpModelContainerV2;
+	}
+
+	unsigned int AssimpModelManager::MeshModelCount()
+	{
+		return AssimpModelContainerV2.size();
+	}
+
+	void AssimpModelManager::DeleteItem(unsigned int index)
+	{
+		AssimpMeshIT it = AssimpModelContainerV2.find(index);
+		AssimpModelContainerV2.erase(index);
+	}
+
+	bool AssimpModelManager::InsertMesh(MeshComponent3D& in)
+	{
+		//// Insert
+		//if (AssimpModelContainerV2.insert({ in.ID , &in }).second == true)
+		//{
+		//	return true;
+		//}
+
+		return false;
+	}
+
+	void AssimpModelManager::CleanUpAllModelsMeshes()
+	{
+		for (auto const& Models : AssimpModelContainerV2)
+		{
+			auto& InvidualModels = *(Models.second);
+			//Cleanup(InvidualModels);
+		}
 	}
 }

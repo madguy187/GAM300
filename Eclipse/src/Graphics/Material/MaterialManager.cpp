@@ -555,18 +555,24 @@ namespace Eclipse
             auto shdrpgm = Graphics::shaderpgms["OutLineShader"];
             shdrpgm.Use();
 
-            auto& highlight = engine->world.GetComponent<MaterialComponent>(ModelID);
-            auto& InvidualModels = engine->world.GetComponent<RenderComponent>(ModelID);
+            if (engine->world.CheckComponent<MaterialComponent>(ModelID))
+            {
+                auto& highlight = engine->world.GetComponent<MaterialComponent>(ModelID);
 
-            // Check Main Uniforms For each Model
-            // Translation done here for each model
-            CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ModelID);
+                // Check Main Uniforms For each Model
+                // Translation done here for each model
+                CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ModelID);
 
-            // Materials Update
-            engine->MaterialManager.CheckUnniformLocation(shdrpgm, highlight);
+                // Materials Update
+                engine->MaterialManager.CheckUnniformLocation(shdrpgm, highlight);
+            }
 
             // Render
-            engine->AssimpManager.Render(shdrpgm, mode, FrameBufferID, InvidualModels, ModelID);
+            if (engine->world.CheckComponent<RenderComponent>(ModelID))
+            {
+                auto& InvidualModels = engine->world.GetComponent<RenderComponent>(ModelID);
+                engine->AssimpManager.Render(shdrpgm, mode, FrameBufferID, InvidualModels, ModelID);
+            }
 
             // Part 5: Clean up
             glBindVertexArray(0);
