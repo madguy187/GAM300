@@ -78,10 +78,12 @@ namespace Eclipse
 		~AssimpModelManager();
 
 		///////////////////////////////////////////////////////////////////////////////////////////
-		// For Jian Herng
+		// FDebug PrintOuts
 		///////////////////////////////////////////////////////////////////////////////////////////
-		bool InsertMesh(MeshComponent& in);
-		bool ClearContainer();
+		void PrintOutModelsLoadedOnce(); // Print Out the names of all the models loaded once
+		void PrintOutModelTextureMap();  // Print out the names of the textures mapped to the MeshIndex of the model
+		void PrintOutModelMap(); // Print out Model Name and Directory of the loaded Models
+		void PrintOutAllTextures(); 
 
 	private:
 		//
@@ -106,6 +108,12 @@ namespace Eclipse
 		AssimpModelContainer AssimpModelContainer_;
 		// Version 2 Container that stores AssimpModel*
 		MeshModelContainer AssimpModelContainerV2;
+
+		///////////////////////////////////////////////////////////////////////////////////////////
+		// For Jian Herng
+		///////////////////////////////////////////////////////////////////////////////////////////
+		bool InsertMesh(MeshComponent& in);
+		bool ClearContainer();
 
 	};
 }

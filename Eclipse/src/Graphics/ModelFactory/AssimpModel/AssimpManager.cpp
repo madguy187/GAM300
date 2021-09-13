@@ -212,56 +212,10 @@ namespace Eclipse
 
     void AssimpModelManager::PrintLoadedModels()
     {
-        // Check How Many Models are Loaded
-        std::cout << std::endl;
-        std::cout << "Loaded Models Count " << AssimpLoadedModels.size() << std::endl;
-        std::cout << "-------------------------------------------------------------------" << std::endl;
-        for (auto const& Models : AssimpLoadedModels)
-        {
-            auto& InvidualModels = *(Models.second);
-            std::cout << " Model Name : " << InvidualModels.GetName() << std::endl;
-            std::cout << " Model Directory : " << InvidualModels.GetDirectory() << std::endl;
-            std::cout << " Number of Textures : " << InvidualModels.GetNumberOfTextures() << std::endl;
-            InvidualModels.GetTextureNames();
-            std::cout << std::endl;
-        }
-        std::cout << "-------------------------------------------------------------------" << std::endl;
-        std::cout << std::endl;
-
-        // Check How Many Textures are Loaded and which meshes are they mapped to?
-        std::cout << "Loaded Textures Count " << LoadedTexturesV2.size() << std::endl;
-        std::cout << "-------------------------------------------------------------------" << std::endl;
-        for (auto const& Model : LoadedTexturesV2)
-        {
-            auto& ModelName = (Model.first);
-            auto& MapWithMeshIndexAndTextures = (Model.second);
-
-            std::cout << "Model Name : " << ModelName << std::endl;
-
-            for (auto& i : MapWithMeshIndexAndTextures)
-            {
-                for (auto& EachTextures : i.second)
-                {
-                    std::cout << "MeshIndex [" << i.first << "] " << EachTextures->GetPath() << std::endl;
-                }
-            }
-            std::cout << std::endl;
-        }
-        std::cout << "-------------------------------------------------------------------" << std::endl;
-        std::cout << std::endl;
-
-        // ModelInformation loaded
-        std::cout << "Loaded ModelMap Count " << ModelMap.size() << std::endl;
-        std::cout << "-------------------------------------------------------------------" << std::endl;
-        for (auto const& Model : ModelMap)
-        {
-            auto& ModelName = (Model.first); // Folder Name too
-            auto& ModelPath = (Model.second);
-
-            std::cout << "Model Name : " << ModelName << " ==== " << ModelPath << std::endl;
-        }
-        std::cout << "-------------------------------------------------------------------" << std::endl;
-        std::cout << std::endl;
+        //PrintOutModelsLoadedOnce();
+        //PrintOutModelTextureMap();
+        //PrintOutModelMap();
+        PrintOutAllTextures();
     }
 
     void AssimpModelManager::Cleanup(MeshComponent& in)
@@ -328,7 +282,83 @@ namespace Eclipse
     {
         ModelMap.insert({ NameofModel,Directory });
     }
+
+    void AssimpModelManager::PrintOutModelsLoadedOnce()
+    {
+        // Check How Many Models are Loaded
+        std::cout << std::endl;
+        std::cout << "Loaded Models Count " << AssimpLoadedModels.size() << std::endl;
+        std::cout << "-------------------------------------------------------------------" << std::endl;
+        for (auto const& Models : AssimpLoadedModels)
+        {
+            auto& InvidualModels = *(Models.second);
+            std::cout << " Model Name : " << InvidualModels.GetName() << std::endl;
+            std::cout << " Model Directory : " << InvidualModels.GetDirectory() << std::endl;
+            std::cout << " Number of Textures : " << InvidualModels.GetNumberOfTextures() << std::endl;
+            InvidualModels.GetTextureNames();
+            std::cout << std::endl;
+        }
+        std::cout << "-------------------------------------------------------------------" << std::endl;
+        std::cout << std::endl;
+    }
+
+    void AssimpModelManager::PrintOutModelTextureMap()
+    {
+        // Check How Many Textures are Loaded and which meshes are they mapped to?
+        std::cout << "Loaded Textures Count " << LoadedTexturesV2.size() << std::endl;
+        std::cout << "-------------------------------------------------------------------" << std::endl;
+        for (auto const& Model : LoadedTexturesV2)
+        {
+            auto& ModelName = (Model.first);
+            auto& MapWithMeshIndexAndTextures = (Model.second);
+
+            std::cout << "Model Name : " << ModelName << std::endl;
+
+            for (auto& i : MapWithMeshIndexAndTextures)
+            {
+                for (auto& EachTextures : i.second)
+                {
+                    std::cout << "MeshIndex [" << i.first << "] " << EachTextures->GetPath() << std::endl;
+                }
+            }
+            std::cout << std::endl;
+        }
+        std::cout << "-------------------------------------------------------------------" << std::endl;
+        std::cout << std::endl;
+    }
+
+    void AssimpModelManager::PrintOutModelMap()
+    {
+        // ModelInformation loaded
+        std::cout << "Loaded ModelMap Count " << ModelMap.size() << std::endl;
+        std::cout << "-------------------------------------------------------------------" << std::endl;
+        for (auto const& Model : ModelMap)
+        {
+            auto& ModelName = (Model.first); // Folder Name too
+            auto& ModelPath = (Model.second);
+
+            std::cout << "Model Name : " << ModelName << " ==== " << ModelPath << std::endl;
+        }
+        std::cout << "-------------------------------------------------------------------" << std::endl;
+        std::cout << std::endl;
+    }
+
+    void AssimpModelManager::PrintOutAllTextures()
+    {
+        std::cout << "Loaded ModelMap Count " << Graphics::textures.size() << std::endl;
+        std::cout << "-------------------------------------------------------------------" << std::endl;
+        for (const auto& i : Graphics::textures)
+        {
+            auto& TextureName = i.first;
+            auto& TextureItself = i.second;
+
+            std::cout << "Texture Name " << TextureName << std::endl;
+        }
+        std::cout << "-------------------------------------------------------------------" << std::endl;
+        std::cout << std::endl;
+    }
 }
+
 namespace Eclipse
 {
     void AssimpModelManager::Draw(unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)

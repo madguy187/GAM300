@@ -422,9 +422,10 @@ namespace Eclipse
 
                 std::unique_ptr<Texture> ptr(new Texture(tex));
                 engine->AssimpManager.InsertTextures(NameOfModel, std::move(ptr), MeshIndex);
+
+                Graphics::textures.emplace(str.C_Str(), tex);
             }
         }
-
         return textures;
     }
 }
