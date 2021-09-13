@@ -6,7 +6,6 @@ namespace Eclipse
 {
     struct TextureComponent
     {
-
         //TODO
         //ComboIndex if for imgui combolist to select the correct texture type - Tian Yu
         size_t ComboIndex = 0;

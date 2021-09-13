@@ -105,16 +105,28 @@ namespace Eclipse
                     // bind texture
                     tex.HoldingTextures[MeshIndex][i].Bind();
                 }
+
+                // If no Textures , We leave it blank until it has textures
+                if (tex.HoldingTextures[MeshIndex].size() == 0)
+                {
+                    GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
+                    glUniform1i(uniform_var_loc3, false);
+                }
+            }
+            else
+            {
+                GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
+                glUniform1i(uniform_var_loc3, false);
             }
         }
+
+        // reset
+        glActiveTexture(GL_TEXTURE0);
 
         // EBO stuff
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
-
-        // reset
-        glActiveTexture(GL_TEXTURE0);
     }
 
     void Mesh::Cleanup()

@@ -58,30 +58,6 @@ namespace Eclipse
         return ApplyLighting;
     }
 
-    bool LightManager::InsertPointLight(PointLightComponent& in)
-    {
-        return _allpointlights.InsertPointLight(in);
-    }
-
-    bool LightManager::InsertDirectionalLight(DirectionalLightComponent& in)
-    {
-        return _DirectionalLights.InsertDirectionalLight(in);
-    }
-
-    bool LightManager::InsertSpotLightLight(SpotLightComponent& in)
-    {
-        return _allspotlights.InsertSpotLightLight(in);
-    }
-
-    bool LightManager::ClearAllContainer()
-    {
-        _allpointlights.ClearContainer();
-        _DirectionalLights.ClearContainer();
-        _allspotlights.ClearContainer();
-
-        return true;
-    }
-
     void LightManager::DrawPointLights(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
     {
         _allpointlights.Draw(in, framebufferID, indexID, mode);
@@ -95,16 +71,6 @@ namespace Eclipse
     void LightManager::DrawSpotLight(SpotLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
     {
         _allspotlights.Draw(in, framebufferID, indexID, mode);
-    }
-
-    DirectionalLightContainer LightManager::GetDirectionalLightContainer()
-    {
-        return _DirectionalLights.GetContainer();
-    }
-
-    SpotLightContainer LightManager::GetSpotLightsContainer()
-    {
-        return _allspotlights.GetContainer();
     }
 
     void LightManager::CreateAttenuationLevels()
@@ -125,10 +91,5 @@ namespace Eclipse
         // Largest Range
 
         ENGINE_CORE_INFO("Attentuation Levels Created!");
-    }
-
-    PointLightContainer LightManager::GetPointLightsContainer()
-    {
-        return _allpointlights.GetContainer();
     }
 }
