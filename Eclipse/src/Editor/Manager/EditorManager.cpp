@@ -55,9 +55,14 @@ namespace Eclipse
 		file.AddItems("Open");
 		file.AddItems("Save As...");
 		file.AddItems("Exit");
-		MenuComponent window{ "Windows", EditorMenuType::WINDOWS };
-
 		MenuBar_.AddMenuComponents(file);
+
+		MenuComponent edit{ "Edit", EditorMenuType::EDIT };
+		edit.AddItems("Undo");
+		edit.AddItems("Redo");
+		MenuBar_.AddMenuComponents(edit);
+
+		MenuComponent window{ "Windows", EditorMenuType::WINDOWS };
 		MenuBar_.AddMenuComponents(window);
 	}
 
@@ -113,6 +118,7 @@ namespace Eclipse
 		EntityHierarchyList_.push_back(ID);
 		EntityToIndexMap_.insert(std::pair<Entity, int>(ID, static_cast<int>(EntityHierarchyList_.size() - 1)));
 		GEHIndex_ = EntityHierarchyList_.size() - 1;
+		SetSelectedEntity(ID);
 
 		return ID;
 	}
@@ -122,6 +128,7 @@ namespace Eclipse
 		EntityHierarchyList_.push_back(ID);
 		EntityToIndexMap_.insert(std::pair<Entity, int>(ID, static_cast<int>(EntityHierarchyList_.size() - 1)));
 		GEHIndex_ = EntityHierarchyList_.size() - 1;
+		SetSelectedEntity(ID);
 	}
 
 	void EditorManager::DestroyEntity(Entity ID)
