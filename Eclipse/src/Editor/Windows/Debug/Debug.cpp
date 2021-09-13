@@ -10,15 +10,15 @@ namespace Eclipse
 			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&DebugWindow::DrawImpl, this));
 	}
 
-	void DebugWindow::Unload()
-	{
-	}
-
-	DebugWindow::DebugWindow()
+	void DebugWindow::Init()
 	{
 		Type = EditorWindowType::EWT_DEBUG;
 		WindowName = "Debug";
 		IsVisible = false;
+	}
+
+	void DebugWindow::Unload()
+	{
 	}
 
 	void DebugWindow::DrawImpl()

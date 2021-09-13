@@ -26,7 +26,7 @@ namespace Eclipse
 		void Delete(Entity ent)
 		{
 			unsigned lastElement = set.GetSize();
-			std::swap(components[ent], components[--lastElement]);
+			std::swap(components[set.Search(ent)], components[--lastElement]);
 			set.Delete(ent);
 		}
 

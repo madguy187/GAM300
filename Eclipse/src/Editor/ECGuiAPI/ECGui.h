@@ -15,7 +15,6 @@ namespace Eclipse
 	struct ComboListSettings
 	{
 		const char* Name{ nullptr };
-		const char* CurrentPreview{ nullptr };
 		bool HideName{ true };
 		ImGuiWindowFlags flags{ 0 };
 	};

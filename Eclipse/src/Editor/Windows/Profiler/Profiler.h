@@ -20,9 +20,8 @@ namespace Eclipse
 		inline static std::map<SystemName, std::vector<float>> time_container;
 		
 		void Update() override;
+		void Init() override;
 		void Unload() override;
-		
-		ProfilerWindow();
 
 		void DrawImpl();
 

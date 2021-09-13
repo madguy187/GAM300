@@ -12,14 +12,14 @@ namespace Eclipse
 			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&InspectorWindow::DrawImpl, this));
 	}
 
-	void InspectorWindow::Unload()
-	{
-	}
-
-	InspectorWindow::InspectorWindow()
+	void InspectorWindow::Init()
 	{
 		Type = EditorWindowType::EWT_INSPECTOR;
 		WindowName = "Inspector";
+	}
+
+	void InspectorWindow::Unload()
+	{
 	}
 
 	void InspectorWindow::DrawImpl()
@@ -55,7 +55,6 @@ namespace Eclipse
 			ShowMesh3DProperty("Mesh", currEnt, CompFilter);
 			ShowModelInfoProperty("ModelInfo", currEnt, CompFilter);
 
-			
 			AddComponentsController(currEnt);
 			RemoveComponentsController(currEnt);
 		}

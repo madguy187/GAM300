@@ -11,17 +11,17 @@ namespace Eclipse
 			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&SceneWindow::RunMainWindow, this));
 	}
 
-	void SceneWindow::Unload()
+	void SceneWindow::Init()
 	{
-	}
-
-	SceneWindow::SceneWindow() :
-		mViewportSize{}, mSceneBufferSize{}
-	{
+		mViewportSize = glm::vec2{}; 
+		mSceneBufferSize = glm::vec2{};
 		Type = EditorWindowType::EWT_SCENE;
 		WindowName = "Scene";
+		m_frameBuffer = engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SCENEVIEW);
+	}
 
-		m_frameBuffer = std::make_shared<FrameBuffer>(*engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SCENEVIEW));
+	void SceneWindow::Unload()
+	{
 	}
 
 	void SceneWindow::RunMainWindow()
@@ -56,7 +56,7 @@ namespace Eclipse
 		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
 			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
-		// ImGuizmo Logic
+		//// ImGuizmo Logic
 		if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
 		{
 			OnGizmoUpdateEvent();
@@ -65,6 +65,7 @@ namespace Eclipse
 		if (ECGui::IsItemHovered() /*&& ImGui::IsWindowFocused() *//*temp fix*/)
 		{
 			// Do all the future stuff here when hovering on window
+			// ImGuizmo Logic
 			OnKeyPressedEvent();
 			OnCameraMoveEvent();
 			OnCameraZoomEvent();
@@ -102,9 +103,6 @@ namespace Eclipse
 	void SceneWindow::OnGizmoUpdateEvent()
 	{
 		Entity selectedEntity = engine->editorManager->GetSelectedEntity();
-
-		// Rachel said to comment out.
-		//engine->gPicker.UpdateAabb(selectedEntity);
 
 		ImGuizmo::SetOrthographic(false);
 		ImGuizmo::SetDrawlist();
@@ -167,13 +165,11 @@ namespace Eclipse
 
 		ImGuizmo::DrawGrid(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx), identityMatrix, 100.f);*/
 
-		if (ImGuizmo::IsUsing())
+		if (ImGuizmo::IsUsing() && ECGui::IsItemHovered())
 		{
 			glm::vec3 translation, rotation, scale;
 			ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(translation),
 				glm::value_ptr(rotation), glm::value_ptr(scale));
-
-			//Math::DecomposeTransform(transform, translation, rotation, scale);
 
 			glm::vec3 deltaRotation = rotation - transCom.rotation.ConvertToGlmVec3Type();
 
@@ -195,7 +191,7 @@ namespace Eclipse
 				break;
 			}
 		}
-		else if (ImGuizmo::IsOver())
+		else if (ImGuizmo::IsOver() && ImGui::IsMouseReleased(0))
 		{
 			CommandHistory::DisableMergeForMostRecentCommand();
 		}
@@ -297,6 +293,18 @@ namespace Eclipse
 				engine->gCamera.GetInput().set(0, 1);
 			else
 				engine->gCamera.GetInput().set(0, 0);
+
+			// Camera Move Up
+			if (ImGui::IsKeyDown(ImGui::GetKeyIndex(ImGuiKey_Q)))
+				engine->gCamera.GetInput().set(10, 1);
+			else
+				engine->gCamera.GetInput().set(10, 0);
+
+			// Camera Move Down
+			if (ImGui::IsKeyDown(ImGui::GetKeyIndex(ImGuiKey_E)))
+				engine->gCamera.GetInput().set(11, 1);
+			else
+				engine->gCamera.GetInput().set(11, 0);
 		}
 		else
 		{
@@ -308,6 +316,8 @@ namespace Eclipse
 			engine->gCamera.GetInput().set(5, 0);
 			engine->gCamera.GetInput().set(6, 0);
 			engine->gCamera.GetInput().set(7, 0);
+			engine->gCamera.GetInput().set(10, 0);
+			engine->gCamera.GetInput().set(11, 0);
 		}
 	}
 

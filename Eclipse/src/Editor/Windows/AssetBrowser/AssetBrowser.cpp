@@ -2,29 +2,28 @@
 #include "AssetBrowser.h"
 namespace Eclipse
 {
-	AssetBrowserWindow::AssetBrowserWindow()
-		:CurrentDir(AllDir), AllDir(AssetPath), padding(16.0f), thumbnailSize(120.0f),sprite(),FolderIcon()
-	{
-		Type = EditorWindowType::EWT_ASSETBROWSER;
-
-		WindowName = "AssetBrowser";
-	
-		memset(searchItemBuffer, 0, 128);
-
-		memset(searchFolderBuffer, 0, 128);
-
-		buttonSize = { thumbnailSize,thumbnailSize };
-
-		ScanAll();
-	}
-
 	void AssetBrowserWindow::Update()
 	{
 		if (IsVisible)
 			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&AssetBrowserWindow::DrawImpl, this));
 	}
 
+	void AssetBrowserWindow::Init()
+	{
+		Type = EditorWindowType::EWT_ASSETBROWSER;
+		WindowName = "AssetBrowser";
+		memset(searchItemBuffer, 0, 128);
+		memset(searchFolderBuffer, 0, 128);
+		buttonSize = { thumbnailSize,thumbnailSize };
+		ScanAll();
+	}
+
 	void AssetBrowserWindow::Unload()
+	{
+	}
+
+	AssetBrowserWindow::AssetBrowserWindow()
+		:CurrentDir(AllDir), AllDir(AssetPath), padding(16.0f), thumbnailSize(120.0f), sprite(), FolderIcon()
 	{
 	}
 

@@ -64,7 +64,6 @@ namespace Eclipse
         return gameCamID;
     }
 
-
     void CameraManager::CreateViewCamera(CameraComponent::CameraType _camType)
     {
         Entity newCam = engine->world.CreateEntity();

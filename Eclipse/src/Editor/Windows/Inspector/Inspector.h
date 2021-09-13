@@ -8,8 +8,8 @@ namespace Eclipse
 	{
 	public:
 		void Update() override;
+		void Init() override;
 		void Unload() override;
-		InspectorWindow();
 		void DrawImpl();
 
 		bool ShowEntityProperty(const char* name, Entity ID, ImGuiTextFilter& filter);

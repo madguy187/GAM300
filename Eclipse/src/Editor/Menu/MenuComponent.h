@@ -19,5 +19,6 @@ namespace Eclipse
 		int ID;
 		std::vector<std::string> List_;
 		std::map<int, const char*> ListToName_;
+		bool IsExiting{ false };
 	};
 }
