@@ -26,9 +26,9 @@
 namespace Eclipse
 {
 	typedef std::unordered_map<unsigned int, AssimpModel*> AssimpModelContainer;
-	typedef std::unordered_map<unsigned int, MeshComponent3D*> MeshModelContainer;
+	typedef std::unordered_map<unsigned int, MeshComponent*> MeshModelContainer;
 	using AssimpIT = std::unordered_map<unsigned int, AssimpModel&>::iterator;
-	using AssimpMeshIT = std::unordered_map<unsigned int, MeshComponent3D*>::iterator;
+	using AssimpMeshIT = std::unordered_map<unsigned int, MeshComponent*>::iterator;
 	using TextureIT = std::unordered_map<std::string, std::vector< std::unique_ptr<Texture>>>::iterator;
 
 	class AssimpModelManager
@@ -62,11 +62,11 @@ namespace Eclipse
 		// Destory buffers
 		void CleanUpAllModelsMeshes();
 		// Cleanup
-		void Cleanup(RenderComponent& in);
+		void Cleanup(MeshComponent& in);
 		// Check Current path is correct
 		void TestPath(std::string& path);
 		// Draw function that takes in Mesh Component
-		void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, RenderComponent& in, unsigned int inin);
+		void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent& in, unsigned int inin);
 		void InsertModelMap(std::string& NameofModel, std::string& Directory);
 		// Using MeshComponent into Container , Pass in key please
 		void InsertModel(unsigned int ID);
@@ -80,7 +80,7 @@ namespace Eclipse
 		///////////////////////////////////////////////////////////////////////////////////////////
 		// For Jian Herng
 		///////////////////////////////////////////////////////////////////////////////////////////
-		bool InsertMesh(MeshComponent3D& in);
+		bool InsertMesh(MeshComponent& in);
 		bool ClearContainer();
 
 	private:

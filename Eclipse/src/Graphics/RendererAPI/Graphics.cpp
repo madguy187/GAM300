@@ -13,7 +13,7 @@ using namespace Eclipse;
 std::unordered_map<std::string, Shader> Graphics::shaderpgms;
 std::unordered_map<std::string, std::unique_ptr<IModel>> Graphics::models;
 std::unordered_map<std::string, Texture> Graphics::textures;
-std::multimap<unsigned int, RenderComponent*> Graphics::sprites;
+std::multimap<unsigned int, MeshComponent*> Graphics::sprites;
 std::set<unsigned int> Graphics::sortedID;
 
 void Graphics::load()

@@ -1,9 +1,9 @@
 #pragma once
-#include "Library/Math/Vector.h" 
+#include "Library/Math/Vector.h"
 
 namespace Eclipse
 {
-    struct RenderComponent
+    struct MeshComponent
     {
         //--------------------------------------
         // 3D Models

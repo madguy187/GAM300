@@ -4,7 +4,7 @@
 
 //Components
 #include "ECS/ComponentManager/Components/TransformComponent.h"
-#include "ECS/ComponentManager/Components/RenderComponent.h"
+#include "ECS/ComponentManager/Components/MeshComponent.h"
 #include "AssimpModel/AssimpModel.h"
 
 namespace Eclipse
@@ -34,7 +34,7 @@ namespace Eclipse
 		Signature SystemSignature;
 
 		SystemSignature.set(engine->world.GetComponentType<TransformComponent>(), 1);
-		SystemSignature.set(engine->world.GetComponentType<RenderComponent>(), 1);
+		SystemSignature.set(engine->world.GetComponentType<MeshComponent>(), 1);
 		engine->world.RegisterSystemSignature<RenderSystem>(SystemSignature);
 
 		return SystemSignature;
@@ -60,7 +60,7 @@ namespace Eclipse
 			// Basic Primitives Render Start =============================
 			for (auto const& entityID : mEntities)
 			{
-				RenderComponent& _Sprites = engine->world.GetComponent<RenderComponent>(entityID);
+				MeshComponent& _Sprites = engine->world.GetComponent<MeshComponent>(entityID);
 
 				// Basic Primitives
 				if (!engine->world.CheckComponent<ModeLInforComponent>(entityID))

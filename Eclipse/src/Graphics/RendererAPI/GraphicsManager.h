@@ -1,8 +1,7 @@
 #ifndef GRAPHICS_MANAGER_H
 #define GRAPHICS_MANAGER_H
 
-#include "ECS/ComponentManager/Components/RenderComponent.h"
-#include "ECS/ComponentManager/Components/MeshComponent3D.h"
+#include "ECS/ComponentManager/Components/MeshComponent.h"
 #include "AssimpModel/AssimpModel.h"
 #include "Graphics/InputHandler/InputWrapper.h"
 #include "Graphics/ModelFactory/Sky/CubeMap.h"
@@ -36,8 +35,8 @@ namespace Eclipse
         void Unload();
         void GlobalFrmeBufferDraw();
         void GlobalFrameBufferBind();
-        void Draw(unsigned int FrameBufferID, RenderComponent* _spritecomponent, GLenum mode, unsigned int ID);
-        void DrawIndexed(RenderComponent* in, GLenum mode);
+        void Draw(unsigned int FrameBufferID, MeshComponent* _spritecomponent, GLenum mode, unsigned int ID);
+        void DrawIndexed(MeshComponent* in, GLenum mode);
         void CheckTexture(unsigned int ID);
         void CreatePrimitives(Entity ID, int ModelType);
         void CreateSky(std::string _Dir);
@@ -46,7 +45,7 @@ namespace Eclipse
         float GetGammaCorrection();
         void SetGammaCorrection(float in);
         void UploadGlobalUniforms();
-        void CheckUniformLoc(Shader* _shdrpgm , RenderComponent& sprite, unsigned int id, unsigned int framebufferID);
+        void CheckUniformLoc(Shader* _shdrpgm , MeshComponent& sprite, unsigned int id, unsigned int framebufferID);
         // Reset Boxes so we can prepare to add
         void ResetInstancedDebugBoxes();
         // Draw Debug Boxes
