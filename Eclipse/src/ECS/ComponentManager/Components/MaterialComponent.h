@@ -13,13 +13,7 @@ namespace Eclipse
             Models3D = 2,
             Maxcount
         };  
-
-    	//TODO
-    	//ComboIndex if for imgui combolist to select the correct model type - Tian Yu
-        size_t ComboIndex;
-
-    	
-        unsigned int ID = 0;
+    
         ModelType Modeltype = ModelType::None;
         ECVec3 ambient{ 0.0f,0.0f,0.0f };
         ECVec3 diffuse{ 1.0f,1.0f,1.0f };
@@ -36,5 +30,10 @@ namespace Eclipse
 
         // Only for 3D Primitives
         float ScaleUp = 1.05f;
+
+        //TODO
+        //ComboIndex if for imgui combolist to select the correct model type - Tian Yu
+        size_t ComboIndex;
+
     };
 }

@@ -3,7 +3,7 @@
 
 #include "ECS/ComponentManager/Components/MaterialComponent.h"
 #include "Graphics/ModelFactory/AssimpModel/AssimpModel.h"
-#include "ECS/ComponentManager/Components/MeshComponent3D.h"
+#include "ECS/ComponentManager/Components/MeshComponent.h"
 
 namespace Eclipse
 {
@@ -16,8 +16,8 @@ namespace Eclipse
     typedef std::unordered_map<int, AssimpModel*> ModelHighLight;
     using HighlightModelIT = std::unordered_map<int, AssimpModel*>::iterator;
 
-    typedef std::unordered_map<unsigned int, MeshComponent3D*> MeshHighLight;
-    using MeshHighlightModelIT = std::unordered_map<int, MeshComponent3D*>::iterator;
+    typedef std::unordered_map<unsigned int, MeshComponent*> MeshHighLight;
+    using MeshHighlightModelIT = std::unordered_map<int, MeshComponent*>::iterator;
 
     struct Material
     {
@@ -89,11 +89,11 @@ namespace Eclipse
         // For Jian Herng
         ///////////////////////////////////////////////////////////////////////////////////////////
         void ClearContainer();
-        bool InsertContainer(MeshComponent3D& in);
+        bool InsertContainer(MeshComponent& in);
 
     private:
         void CheckUnniformLocation(Shader& in, MaterialComponent& inside);
-        void CheckUniformLoc(RenderComponent& sprite, Shader& in, unsigned int id, unsigned int framebufferID);
+        void CheckUniformLoc(MeshComponent& sprite, Shader& in, unsigned int id, unsigned int framebufferID);
         void Highlight(unsigned int FrameBufferID, unsigned int ModelID, GLenum mode);
     };
 }

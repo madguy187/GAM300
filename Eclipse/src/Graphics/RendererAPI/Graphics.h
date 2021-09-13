@@ -17,7 +17,7 @@
 #include "FrameBuffer.h"
 #include "../src/ECS/SystemManager/Systems/System/System.h"
 #include "Graphics/OpenGL/OpenGL_Context.h"
-#include "ECS/ComponentManager/Components/RenderComponent.h"
+#include "ECS/ComponentManager/Components/MeshComponent.h"
 
 const int maxParticles = 10000;
 
@@ -51,7 +51,7 @@ namespace Eclipse
         static std::unordered_map<std::string, Texture> textures;
 
         //container for sprites
-        static std::multimap<unsigned int, RenderComponent*> sprites;
+        static std::multimap<unsigned int, MeshComponent*> sprites;
         static std::set<unsigned int> sortedID;
 
         //Container for shader programs and helper functions

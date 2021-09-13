@@ -52,7 +52,7 @@ namespace Eclipse
 			ShowTextureProperty("Texture", currEnt, CompFilter);
 			ShowRenderProperty("Render", currEnt, CompFilter);
 			ShowMaterialProperty("Material", currEnt, CompFilter);
-			ShowMesh3DProperty("Mesh", currEnt, CompFilter);
+			//ShowMesh3DProperty("Mesh", currEnt, CompFilter);
 			ShowModelInfoProperty("ModelInfo", currEnt, CompFilter);
 
 			AddComponentsController(currEnt);
@@ -339,6 +339,8 @@ namespace Eclipse
 				
 				//TODO
 				//Display all textures on the inspector
+
+				ChangeTextureController(_Texture);
 			}
 		}
 		
@@ -347,11 +349,11 @@ namespace Eclipse
 
 	bool InspectorWindow::ShowRenderProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
 	{
-		if (engine->world.CheckComponent<RenderComponent>(ID))
+		if (engine->world.CheckComponent<MeshComponent>(ID))
 		{
 			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
 			{
-				auto& _Render = engine->world.GetComponent<RenderComponent>(ID);
+				auto& _Render = engine->world.GetComponent<MeshComponent>(ID);
 
 				ECGui::DrawTextWidget<const char*>("Transparency", "");
 				ECGui::DrawSliderFloatWidget("Render Transparency", &_Render.transparency, true, 0.0f, 200.0f);
@@ -424,14 +426,14 @@ namespace Eclipse
 	
 	bool InspectorWindow::ShowMesh3DProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
 	{
-		if (engine->world.CheckComponent<MeshComponent3D>(ID))
-		{
-			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
-			{
-				auto& _Mesh3D = engine->world.GetComponent<MeshComponent3D>(ID);
+		//if (engine->world.CheckComponent<MeshComponent3D>(ID))
+		//{
+		//	if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+		//	{
+		//		auto& _Mesh3D = engine->world.GetComponent<MeshComponent3D>(ID);
 
-			}
-		}
+		//	}
+		//}
 		return false;
 	}
 
@@ -521,8 +523,8 @@ namespace Eclipse
 						ComponentRegistry<TransformComponent>("TransformComponent", ID, entCom.Name,
 							EditComponent::EC_ADDCOMPONENT);
 						break;
-					case str2int("RenderComponent"):
-						ComponentRegistry<RenderComponent>("RenderComponent", ID, entCom.Name,
+					case str2int("MeshComponent"):
+						ComponentRegistry<MeshComponent>("MeshComponent", ID, entCom.Name,
 							EditComponent::EC_ADDCOMPONENT);
 						break;
 					case str2int("CameraComponent"):
@@ -555,10 +557,6 @@ namespace Eclipse
 						break;
 					case str2int("TextureComponent"):
 						ComponentRegistry<TextureComponent>("TextureComponent", ID, entCom.Name,
-							EditComponent::EC_ADDCOMPONENT);
-						break;
-					case str2int("MeshComponent3D"):
-						ComponentRegistry<MeshComponent3D>("MeshComponent3D", ID, entCom.Name,
 							EditComponent::EC_ADDCOMPONENT);
 						break;
 					}
@@ -588,8 +586,8 @@ namespace Eclipse
 						ComponentRegistry<TransformComponent>("TransformComponent", ID, entCom.Name,
 							EditComponent::EC_REMOVECOMPONENT);
 						break;
-					case str2int("RenderComponent"):
-						ComponentRegistry<RenderComponent>("RenderComponent", ID, entCom.Name,
+					case str2int("MeshComponent"):
+						ComponentRegistry<MeshComponent>("MeshComponent", ID, entCom.Name,
 							EditComponent::EC_REMOVECOMPONENT);
 						break;
 					case str2int("CameraComponent"):
@@ -624,10 +622,6 @@ namespace Eclipse
 						ComponentRegistry<TextureComponent>("TextureComponent", ID, entCom.Name,
 							EditComponent::EC_REMOVECOMPONENT);
 						break;
-					case str2int("MeshComponent3D"):
-						ComponentRegistry<MeshComponent3D>("MeshComponent3D", ID, entCom.Name,
-							EditComponent::EC_REMOVECOMPONENT);
-						break;
 					}
 				}
 			}
@@ -635,7 +629,85 @@ namespace Eclipse
 
 	}
 
-	void InspectorWindow::ChangeMeshController(RenderComponent& Item)
+	void InspectorWindow::ChangeTextureController(TextureComponent& Item)
+	{
+		ImVec2 buttonSize = { 180,20 };
+		ECGui::DrawTextWidget<const char*>("Texture  ", "");
+		ECGui::InsertSameLine();
+		if (ImGui::Button((Item.textureRef.c_str()), buttonSize))
+		{
+			ImGui::OpenPopup("Texture Changer");
+		}
+		if (ImGui::BeginPopup("Texture Changer"))
+		{
+			ImGui::SetScrollY(5);
+			ChildSettings settings{ "Texture Changer", ImVec2{ 250,250 } };
+			ECGui::DrawChildWindow<void(TextureComponent&)>(settings, std::bind(&InspectorWindow::TextureList,
+				this, std::placeholders::_1), Item);
+
+			ImGui::EndPopup();
+		}
+	}
+
+	void InspectorWindow::TextureList(TextureComponent& Item)
+	{
+		static ImGuiTextFilter AddComponentFilter;
+		TextureComponent FolderIcon;
+		//FolderIcon.textureRef = Graphics::textures.find("FolderIcon")->first;
+		//use image button to change the Graphics::models.find["models"]->find;
+		std::vector<std::string> textureNames;
+		textureNames.reserve(Graphics::textures.size());
+		TextureComponent icon = FolderIcon;
+		static float padding = 16.0f;
+		static float thumbnaimsize = 50;
+		float cellsize = thumbnaimsize + padding;
+		float panelwidth = ImGui::GetContentRegionAvail().x;
+		int columncount = (int)(panelwidth / cellsize);
+		AddComponentFilter.Draw("Filter", 160);
+		if (thumbnaimsize <= 30)
+		{
+			columncount = 1;
+		}
+		if (columncount < 1)
+		{
+			columncount = 1;
+		}
+		ImGui::SliderFloat("Size: ", &thumbnaimsize, 10, 200);
+		ImGui::Columns(columncount, NULL, true);
+		for (auto it : Graphics::textures) 
+		{
+			textureNames.push_back(it.first);
+		}
+
+		for (int i = 0 ; i < textureNames.size(); ++i)
+		{
+
+			FolderIcon.textureRef = Graphics::textures.find(textureNames[i].c_str())->first;
+			TextureComponent icon = FolderIcon;
+
+			if (AddComponentFilter.PassFilter(textureNames[i].c_str()))
+			{
+				ImGui::ImageButton((void*)Graphics::textures[(icon).textureRef].GetHandle(),
+					{thumbnaimsize,thumbnaimsize},
+					{ 1,0 },
+					{ 2,1 });
+
+				if (ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
+				{
+					Item.textureRef = Graphics::textures.find((textureNames[i].c_str()))->first;
+					AddComponentFilter.Clear();
+					ImGui::CloseCurrentPopup();
+				}
+
+				ImGui::TextWrapped(textureNames[i].c_str());
+				ImGui::NextColumn();
+			}
+
+		}
+		
+	}
+
+	void InspectorWindow::ChangeMeshController(MeshComponent& Item)
 	{
 		ImVec2 buttonSize = { 180,20 };
 		if (ImGui::Button((Item.modelRef.c_str()), buttonSize))
@@ -646,14 +718,14 @@ namespace Eclipse
 		{
 			ImGui::SetScrollY(5);
 			ChildSettings settings{ "Mesh Changer", ImVec2{ 250,250 } };
-			ECGui::DrawChildWindow<void(RenderComponent&)>(settings, std::bind(&InspectorWindow::MeshList,
+			ECGui::DrawChildWindow<void(MeshComponent&)>(settings, std::bind(&InspectorWindow::MeshList,
 				this, std::placeholders::_1), Item);
 			
 			ImGui::EndPopup();
 		}
 	}
 
-	void InspectorWindow::MeshList(RenderComponent& Item)
+	void InspectorWindow::MeshList(MeshComponent& Item)
 	{
 		static ImGuiTextFilter AddComponentFilter;
 		AddComponentFilter.Draw("Filter", 160);

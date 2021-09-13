@@ -30,8 +30,11 @@ namespace Eclipse
 		void ShowAddComponentList(Entity ID);
 		void ShowRemoveComponentList(Entity ID);
 
-		void ChangeMeshController(RenderComponent& Item);
-		void MeshList(RenderComponent& Item);
+		void ChangeTextureController(TextureComponent& Item);
+		void TextureList(TextureComponent& Item);
+		
+		void ChangeMeshController(MeshComponent& Item);
+		void MeshList(MeshComponent& Item);
 		
 		template <typename TComponents>
 		void AddComponentsFeedback(const char* Components, const std::string& name, Entity ID, bool exist);

@@ -230,7 +230,7 @@ namespace Eclipse
 
     }
 
-    void MaterialManager::CheckUniformLoc(RenderComponent& sprite, Shader& in, unsigned int id, unsigned int framebufferID)
+    void MaterialManager::CheckUniformLoc(MeshComponent& sprite, Shader& in, unsigned int id, unsigned int framebufferID)
     {
         CameraComponent camera;
         TransformComponent camerapos;
@@ -277,7 +277,7 @@ namespace Eclipse
     {
         if (in.Highlight == true)
         {
-            if (engine->world.CheckComponent<RenderComponent>(EntityId))
+            if (engine->world.CheckComponent<MeshComponent>(EntityId))
             {
                 engine->MaterialManager.UpdateStencilWith_Outline(EntityId);
                 engine->MaterialManager.Highlight(FrameBufferID, EntityId, GL_FILL);
@@ -312,7 +312,7 @@ namespace Eclipse
 
             shdrpgm.Use();
 
-            auto& _spritecomponent = engine->world.GetComponent<RenderComponent>(ModelID);
+            auto& _spritecomponent = engine->world.GetComponent<MeshComponent>(ModelID);
             auto& highlight = engine->world.GetComponent<MaterialComponent>(ModelID);
 
             // Part 2: Bind the object's VAO handle using glBindVertexArray          
@@ -388,13 +388,13 @@ namespace Eclipse
         MeshHighLightContainer.clear();
     }
 
-    bool MaterialManager::InsertContainer(MeshComponent3D& in)
+    bool MaterialManager::InsertContainer(MeshComponent& in)
     {
-        // Insert
-        if (MeshHighLightContainer.insert({ in.ID , &in }).second == true)
-        {
-            return true;
-        }
+        //// Insert
+        //if (MeshHighLightContainer.insert({ in.ID , &in }).second == true)
+        //{
+        //    return true;
+        //}
 
         return false;
     }
@@ -476,11 +476,11 @@ namespace Eclipse
         if (mat.RegisterForHighlight == true)
             return;
 
-        auto& mesh = engine->world.GetComponent<MeshComponent3D>(index);
+        auto& mesh = engine->world.GetComponent<MeshComponent>(index);
         auto& ModelInfo = engine->world.GetComponent<ModeLInforComponent>(index);
 
         // Insert
-        if (MeshHighLightContainer.insert(std::pair<unsigned int, MeshComponent3D*>(index, &mesh)).second == true)
+        if (MeshHighLightContainer.insert(std::pair<unsigned int, MeshComponent*>(index, &mesh)).second == true)
         {
             mat.RegisterForHighlight = true;
 
@@ -522,7 +522,7 @@ namespace Eclipse
                 engine->MaterialManager.CheckUnniformLocation(shdrpgm, highlight);
 
                 // Render
-                engine->AssimpManager.Render(shdrpgm, Mode, FrameBufferID, InvidualModels, ID);
+                //engine->AssimpManager.Render(shdrpgm, Mode, FrameBufferID, InvidualModels, ID);
             }
         }
 
@@ -555,18 +555,24 @@ namespace Eclipse
             auto shdrpgm = Graphics::shaderpgms["OutLineShader"];
             shdrpgm.Use();
 
-            auto& highlight = engine->world.GetComponent<MaterialComponent>(ModelID);
-            auto& InvidualModels = engine->world.GetComponent<MeshComponent3D>(ModelID);
+            if (engine->world.CheckComponent<MaterialComponent>(ModelID))
+            {
+                auto& highlight = engine->world.GetComponent<MaterialComponent>(ModelID);
 
-            // Check Main Uniforms For each Model
-            // Translation done here for each model
-            CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ModelID);
+                // Check Main Uniforms For each Model
+                // Translation done here for each model
+                CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ModelID);
 
-            // Materials Update
-            engine->MaterialManager.CheckUnniformLocation(shdrpgm, highlight);
+                // Materials Update
+                engine->MaterialManager.CheckUnniformLocation(shdrpgm, highlight);
+            }
 
             // Render
-            engine->AssimpManager.Render(shdrpgm, mode, FrameBufferID, InvidualModels, ModelID);
+            if (engine->world.CheckComponent<MeshComponent>(ModelID))
+            {
+                auto& InvidualModels = engine->world.GetComponent<MeshComponent>(ModelID);
+                engine->AssimpManager.Render(shdrpgm, mode, FrameBufferID, InvidualModels, ModelID);
+            }
 
             // Part 5: Clean up
             glBindVertexArray(0);

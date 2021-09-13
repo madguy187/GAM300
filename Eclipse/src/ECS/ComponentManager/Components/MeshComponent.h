@@ -1,10 +1,23 @@
 #pragma once
-#include "Library/Math/Vector.h" 
+#include "Library/Math/Vector.h"
 
 namespace Eclipse
 {
-    struct RenderComponent
+    struct MeshComponent
     {
+        //--------------------------------------
+        // 3D Models
+        //--------------------------------------
+        // Store key
+        std::string Key;
+
+        // Meshes
+        std::vector<Mesh> Meshes;
+        std::vector<Texture> Textures_loaded;
+
+        //---------------------------------------
+        // Anything Else Other than Assimp Models
+        //---------------------------------------
         ECVec3 color{ 1.0f, 1.0f, 1.0f };
         ECVec2 textureIdx{ 0.0, 0.0 };
 
