@@ -154,6 +154,16 @@ namespace Eclipse
 					ECGui::EndTreeNode();
 				}
 
+				// FOR TIAN YU
+
+				/*if (png)
+				*  dragdropfn("PNG")
+				* else if (cs)
+				*  // put in file name without extension
+				*  dragdropfn("cs")
+				* ...
+				*/
+
 				engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
 
 				if (!jumpDir && /*ImGui::IsMouseDoubleClicked(0) &&*/ ImGui::IsItemClicked(0))

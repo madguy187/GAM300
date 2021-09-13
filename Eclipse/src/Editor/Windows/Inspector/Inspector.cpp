@@ -3,6 +3,7 @@
 #include "ECS/ComponentManager/Components/EntityComponent.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RigidBodyComponent.h"
+#include "Editor/Windows/SwitchViews/TopSwitchViewWindow.h"
 
 namespace Eclipse
 {
@@ -16,6 +17,7 @@ namespace Eclipse
 	{
 		Type = EditorWindowType::EWT_INSPECTOR;
 		WindowName = "Inspector";
+		ScriptListGuiTest.push_back( std::string{} );
 	}
 
 	void InspectorWindow::Unload()
@@ -53,7 +55,8 @@ namespace Eclipse
 			ShowRenderProperty("Render", currEnt, CompFilter);
 			ShowMaterialProperty("Material", currEnt, CompFilter);
 			ShowMesh3DProperty("Mesh", currEnt, CompFilter);
-			ShowModelInfoProperty("ModelInfo", currEnt, CompFilter);
+			ShowModelInfoProperty("Model Info", currEnt, CompFilter);
+			ShowScriptProperty("Script Details", currEnt, CompFilter);
 
 			AddComponentsController(currEnt);
 			RemoveComponentsController(currEnt);
@@ -90,10 +93,7 @@ namespace Eclipse
 					CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<std::string>{ oldName, entCom.Name });
 				}
 
-				/*static char test[256];
-				static std::string testtest;
-				ECGui::DrawInputTextHintWidget("test", "testtest", test, 256);
-				engine->editorManager->Item_.GenericPayloadTarget("TESTING", testtest, "SUCCESSFUL");
+				/*engine->editorManager->Item_.GenericPayloadTarget("TESTING", testtest, "SUCCESSFUL");
 				strcpy(test, testtest.c_str());*/
 			}
 		}
@@ -449,7 +449,7 @@ namespace Eclipse
 
 				auto& _ModelInfo = engine->world.GetComponent<ModeLInforComponent>(ID);
 
-				ComboListSettings settings = { "Texture Type"  , _ModelInfoVector[_ModelInfo.ComboIndex].c_str(),false };
+				ComboListSettings settings{ "Texture Type"};
 				
 				ECGui::DrawTextWidget<const char*>("Model Directory: ", "");
 				ECGui::InsertSameLine();
@@ -463,6 +463,48 @@ namespace Eclipse
 				_ModelInfo.type = _Map[_ModelInfoVector[_ModelInfo.ComboIndex]];
 			}
 		}
+		return false;
+	}
+
+	bool InspectorWindow::ShowScriptProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+	{
+		if (engine->world.CheckComponent<EntityComponent>(ID))
+		{
+			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+			{
+				auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
+
+				ECGui::DrawTextWidget<const char*>(my_strcat("List of Scripts (", 
+					entCom.ScriptListComTest.size(), "):").c_str(), "");
+
+				for (size_t i = 0; i < entCom.ScriptListComTest.size(); ++i)
+				{
+					ECGui::DrawInputTextHintWidget(my_strcat("ScriptName", i).c_str(), "Drag Script files here",
+						const_cast<char*>(entCom.ScriptListComTest[i].c_str()), 256,
+						true, ImGuiInputTextFlags_ReadOnly);
+					//engine->editorManager->DragAndDropInst_.StringPayloadTarget("CSFiles", entCom.ScriptListComTest[i], "Script File inserted.");
+				}
+
+				if (ECGui::ButtonBool("Add Script"))
+				{
+					static std::string fucknicosmother;
+					static std::string fucknicosmother2;
+					fucknicosmother.reserve(256);
+					fucknicosmother2.reserve(256);
+					fucknicosmother = "lmao";
+					fucknicosmother2 = "LOL";
+					entCom.ScriptListComTest.push_back(fucknicosmother);
+					entCom.ScriptListComTest.push_back(fucknicosmother2);
+				}
+				
+				ECGui::InsertSameLine();
+				PopUpButtonSettings settings{ "Remove Script", "Removing script" };
+				ECGui::BeginPopUpButtonList<void(std::vector<std::string>&)>(settings, 
+					std::bind(&InspectorWindow::RemoveElementFromVectorStringList,
+					this, std::placeholders::_1), entCom.ScriptListComTest);
+			}
+		}
+
 		return false;
 	}
 	
@@ -705,6 +747,20 @@ namespace Eclipse
 
 		}
 	}
+
+	void InspectorWindow::RemoveElementFromVectorStringList(std::vector<std::string>& vecList)
+	{
+		for (size_t i = 0; i < vecList.size(); ++i)
+		{
+			bool selected = false;
+
+			if (ECGui::CreateSelectableButton(vecList[i].c_str(), &selected))
+			{
+				auto pos = vecList.begin() + i;
+				vecList.erase(pos);
+			}
+		}
+	}
 	
 	template <typename TComponents>
 	void InspectorWindow::AddComponentsFeedback(const char* Components, const std::string& name, Entity ID, bool exist)
@@ -737,6 +793,4 @@ namespace Eclipse
 			EDITOR_LOG_WARN(Comp.c_str());
 		}
 	}
-
-
 }

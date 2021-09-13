@@ -303,9 +303,10 @@ namespace Eclipse
 		return false;
 	}
 
-	bool ECGui::DrawInputTextHintWidget(const char* name, const char* hintText, char* buffer, size_t bufferSize, bool hideName)
+	bool ECGui::DrawInputTextHintWidget(const char* name, const char* hintText, char* buffer, size_t bufferSize, 
+		bool hideName, ImGuiInputTextFlags flags)
 	{
-		if (ImGuiAPI::InputTextWithHint(name, hintText, buffer, bufferSize, hideName))
+		if (ImGuiAPI::InputTextWithHint(name, hintText, buffer, bufferSize, hideName, flags))
 		{
 			CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<char*>{ buffer, buffer });
 			return true;

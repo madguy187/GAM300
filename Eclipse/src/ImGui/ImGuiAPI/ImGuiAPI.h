@@ -64,7 +64,7 @@ namespace Eclipse
 		static bool InputFloat3(const char* name, float vector[3], bool hideName = true);
 		static bool InputFloat4(const char* name, float vector[4], bool hideName = true);
 		static bool InputTextWithHint(const char* name, const char* hintText, char* buffer,
-			                   size_t bufferSize, bool hideName = true);
+			                   size_t bufferSize, bool hideName = true, ImGuiInputTextFlags flags = 0);
 		static bool InputText(const char* name, char* buffer, size_t bufferSize,
 			ImGuiInputTextFlags flag = 0, bool hideName = true);
 
