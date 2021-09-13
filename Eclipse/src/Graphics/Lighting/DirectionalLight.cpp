@@ -3,174 +3,159 @@
 
 namespace Eclipse
 {
-    DirectionalLightContainer DirectionalLight::GetContainer()
-    {
-        return _DirectionalLight;
-    }
+	void DirectionalLight::CreateDirectionalLight(unsigned int CreatedID)
+	{
+		// Check if already have Directional Light , If yes , Do not continue
+		if (DirectionalLightcounter == 1)
+		{
+			EDITOR_LOG_WARN("Already Have Directional Light");
+			return;
+		}
 
-    void DirectionalLight::CreateDirectionalLight(unsigned int CreatedID)
-    {
-        // Check if already have Directional Light , If yes , Do not continue
-        if (_DirectionalLight.size() == 1)
-        {
-            EDITOR_LOG_WARN("Already Have Directional Light");
-            return;
-        }
+		// Add DirectionalLight Component
+		engine->world.AddComponent(CreatedID, LightComponent{});
+		engine->world.AddComponent(CreatedID, DirectionalLightComponent{ CreatedID,DirectionalLightcounter });
 
-        // Add DirectionalLight Component
-        engine->world.AddComponent(CreatedID, DirectionalLightComponent{});
+		EDITOR_LOG_WARN("Directional Light Created Successfully");
+		DirectionalLightcounter++;
+	}
 
-        DirectionalLightComponent& _GlobalLight = engine->world.GetComponent<DirectionalLightComponent>(CreatedID);
-        _GlobalLight.ID = CreatedID;
-        _GlobalLight.Counter = counter;
+	void DirectionalLight::Draw(DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
 
-        // Insert into container
-        if (_DirectionalLight.insert({ _GlobalLight.ID ,&_GlobalLight }).second == true)
-        {
-            EDITOR_LOG_INFO("DirectionalLight Created Successfully");
-            counter++;
-        }
+		auto& shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
+		shdrpgm.Use();
 
-        std::cout << " Number of Directional Lights : " << _DirectionalLight.size() << std::endl;
-    }
+		glBindVertexArray(Graphics::models["Sphere"]->GetVaoID());
 
-    bool DirectionalLight::DeleteDirectionalLight(unsigned int EntityID)
-    {
-        DLIT it = _DirectionalLight.find(EntityID);
+		glEnable(GL_BLEND);
+		glPolygonMode(GL_FRONT_AND_BACK, mode);
+		glDisable(GL_CULL_FACE);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        if (it == _DirectionalLight.end())
-        {
-            return false;
-        }
-        else
-        {
-            _DirectionalLight.erase(EntityID);
-            --counter;
+		CheckUniformLoc(&shdrpgm, *in, indexID, DirectionalLightcounter);
 
-            EDITOR_LOG_INFO("DirectionalLight Removed Successfully");
-            return true;
-        }
-    }
+		if (in->visible)
+		{
+			GLCall(glDrawElements(Graphics::models["Sphere"]->GetPrimitiveType(),
+				Graphics::models["Sphere"]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
+		}
 
-    void DirectionalLight::Draw(DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
-    {
-        glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
+		glBindVertexArray(0);
+		shdrpgm.UnUse();
+	}
 
-        auto& shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
-        shdrpgm.Use();
+	void DirectionalLight::CheckUniformLoc(Shader* _shdrpgm, DirectionalLightComponent& in_light, int index, unsigned int containersize)
+	{
+		// We should only have 1 but lets see how
+		std::string number = std::to_string(index);
 
-        glBindVertexArray(Graphics::models["Sphere"]->GetVaoID());
+		// First Check if it Affects World
+		GLint uniform_var_loc11 = _shdrpgm->GetLocation(("directionlight[" + number + "].AffectsWorld").c_str());
+		GLint uniform_var_loc5 = _shdrpgm->GetLocation("uModelToNDC");
+		GLuint uniform_var_lo6 = _shdrpgm->GetLocation("model");
 
-        glEnable(GL_BLEND);
-        glPolygonMode(GL_FRONT_AND_BACK, mode);
-        glDisable(GL_CULL_FACE);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		TransformComponent& trans = engine->world.GetComponent<TransformComponent>(in_light.ID);
+		CameraComponent camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 
-        CheckUniformLoc(&shdrpgm, *in, indexID, _DirectionalLight.size());
+		// mModelNDC and model 
+		glm::mat4 mModelNDC;
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, trans.position.ConvertToGlmVec3Type());
+		model = glm::rotate(model, glm::radians(trans.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(trans.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(trans.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::scale(model, trans.scale.ConvertToGlmVec3Type());
+		mModelNDC = camera.projMtx * camera.viewMtx * model;
+		GLCall(glUniformMatrix4fv(uniform_var_loc5, 1, GL_FALSE, glm::value_ptr(mModelNDC)));
+		GLCall(glUniformMatrix4fv(uniform_var_lo6, 1, GL_FALSE, glm::value_ptr(model)));
+		GLCall(glUniform1i(uniform_var_loc11, in_light.AffectsWorld));
 
-        if (in->visible)
-        {
-            GLCall(glDrawElements(Graphics::models["Sphere"]->GetPrimitiveType(),
-                Graphics::models["Sphere"]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
-        }
+		if (in_light.AffectsWorld == true)
+		{
+			GLint uniform_var_loc1 = _shdrpgm->GetLocation(("directionlight[" + number + "].direction").c_str());
+			GLint uniform_var_loc2 = _shdrpgm->GetLocation(("directionlight[" + number + "].ambient").c_str());
+			GLint uniform_var_loc3 = _shdrpgm->GetLocation(("directionlight[" + number + "].diffuse").c_str());
+			GLint uniform_var_loc4 = _shdrpgm->GetLocation(("directionlight[" + number + "].specular").c_str());
+			GLint uniform_var_loc5 = _shdrpgm->GetLocation("uModelToNDC");
+			GLuint uniform_var_lo6 = _shdrpgm->GetLocation("model");
+			GLint uniform_var_loc8 = _shdrpgm->GetLocation(("directionlight[" + number + "].lightColor").c_str());
+			GLint uniform_var_loc10 = _shdrpgm->GetLocation("uColor");
+			GLint useBlinn_ = _shdrpgm->GetLocation("useBlinn");
 
-        glBindVertexArray(0);
-        shdrpgm.UnUse();
-    }
+			// Direction
+			GLCall(glUniform3f(uniform_var_loc1, in_light.Direction.getX(), in_light.Direction.getY(), in_light.Direction.getZ()));
 
-    void DirectionalLight::CheckUniformLoc(Shader* _shdrpgm, DirectionalLightComponent& in_light, int index, unsigned int containersize)
-    {
-        // We should only have 1 but lets see how
-        std::string number = std::to_string(index);
+			// ambient
+			GLCall(glUniform3f(uniform_var_loc2, in_light.ambient.getX(), in_light.ambient.getY(), in_light.ambient.getZ()));
 
-        // First Check if it Affects World
-        GLint uniform_var_loc11 = _shdrpgm->GetLocation(("directionlight[" + number + "].AffectsWorld").c_str());
-        GLint uniform_var_loc5 = _shdrpgm->GetLocation("uModelToNDC");
-        GLuint uniform_var_lo6 = _shdrpgm->GetLocation("model");
+			// diffuse
+			GLCall(glUniform3f(uniform_var_loc3, in_light.diffuse.getX(), in_light.diffuse.getY(), in_light.diffuse.getZ()));
 
-        TransformComponent& trans = engine->world.GetComponent<TransformComponent>(in_light.ID);
-        CameraComponent camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+			// specular
+			GLCall(glUniform3f(uniform_var_loc4, in_light.specular.getX(), in_light.specular.getY(), in_light.specular.getZ()));
 
-        // mModelNDC and model 
-        glm::mat4 mModelNDC;
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, trans.position.ConvertToGlmVec3Type());
-        model = glm::rotate(model, glm::radians(trans.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(trans.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(trans.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::scale(model, trans.scale.ConvertToGlmVec3Type());
-        mModelNDC = camera.projMtx * camera.viewMtx * model;
-        GLCall(glUniformMatrix4fv(uniform_var_loc5, 1, GL_FALSE, glm::value_ptr(mModelNDC)));
-        GLCall(glUniformMatrix4fv(uniform_var_lo6, 1, GL_FALSE, glm::value_ptr(model)));
-        GLCall(glUniform1i(uniform_var_loc11, in_light.AffectsWorld));
+			// LightColor
+			GLCall(glUniform3f(uniform_var_loc8, in_light.lightColor.getX(), in_light.lightColor.getY(), in_light.lightColor.getX()));
 
-        if (in_light.AffectsWorld == true)
-        {
-            GLint uniform_var_loc1 = _shdrpgm->GetLocation(("directionlight[" + number + "].direction").c_str());
-            GLint uniform_var_loc2 = _shdrpgm->GetLocation(("directionlight[" + number + "].ambient").c_str());
-            GLint uniform_var_loc3 = _shdrpgm->GetLocation(("directionlight[" + number + "].diffuse").c_str());
-            GLint uniform_var_loc4 = _shdrpgm->GetLocation(("directionlight[" + number + "].specular").c_str());
-            GLint uniform_var_loc5 = _shdrpgm->GetLocation("uModelToNDC");
-            GLuint uniform_var_lo6 = _shdrpgm->GetLocation("model");
-            GLint uniform_var_loc8 = _shdrpgm->GetLocation(("directionlight[" + number + "].lightColor").c_str());
-            GLint uniform_var_loc10 = _shdrpgm->GetLocation("uColor");
-            GLint useBlinn_ = _shdrpgm->GetLocation("useBlinn");
+			// Own Color
+			GLCall(glUniform4f(uniform_var_loc10, in_light.Color.x, in_light.Color.y, in_light.Color.z, in_light.Color.w));
 
-            // Direction
-            GLCall(glUniform3f(uniform_var_loc1, in_light.Direction.getX(), in_light.Direction.getY(), in_light.Direction.getZ()));
+			// Blinn phong
+			GLCall(glUniform1i(useBlinn_, in_light.EnableBlinnPhong));
+		}
+	}
 
-            // ambient
-            GLCall(glUniform3f(uniform_var_loc2, in_light.ambient.getX(), in_light.ambient.getY(), in_light.ambient.getZ()));
+	void DirectionalLight::FirstGlobalLight()
+	{
+		auto FirstGlobalLight = engine->editorManager->CreateDefaultEntity(EntityType::ENT_LIGHT_DIRECTIONAL);
 
-            // diffuse
-            GLCall(glUniform3f(uniform_var_loc3, in_light.diffuse.getX(), in_light.diffuse.getY(), in_light.diffuse.getZ()));
+		// Add DirectionalLight Component
+		engine->world.AddComponent(FirstGlobalLight, LightComponent{});
+		engine->world.AddComponent(FirstGlobalLight, DirectionalLightComponent{ FirstGlobalLight , DirectionalLightcounter });
 
-            // specular
-            GLCall(glUniform3f(uniform_var_loc4, in_light.specular.getX(), in_light.specular.getY(), in_light.specular.getZ()));
+		EDITOR_LOG_WARN("First GlobalLight Created ");
+		DirectionalLightcounter++;
+	}
+}
+namespace Eclipse
+{
+	bool DirectionalLight::InsertDirectionalLight(DirectionalLightComponent& in)
+	{
+		if (_DirectionalLight.insert({ in.ID , &in }).second == true)
+		{
+			return true;
+		}
 
-            // LightColor
-            GLCall(glUniform3f(uniform_var_loc8, in_light.lightColor.getX(), in_light.lightColor.getY(), in_light.lightColor.getX()));
+		return false;
+	}
 
-            // Own Color
-            GLCall(glUniform4f(uniform_var_loc10, in_light.Color.x, in_light.Color.y, in_light.Color.z, in_light.Color.w));
+	void DirectionalLight::ClearContainer()
+	{
+		_DirectionalLight.clear();
+	}
 
-            // Blinn phong
-            GLCall(glUniform1i(useBlinn_, in_light.EnableBlinnPhong));
-        }
-    }
+	DirectionalLightContainer DirectionalLight::GetContainer()
+	{
+		return _DirectionalLight;
+	}
 
-    void DirectionalLight::FirstGlobalLight()
-    {
-        auto FirstGlobalLight = engine->editorManager->CreateDefaultEntity(EntityType::ENT_LIGHT_DIRECTIONAL);
+	bool DirectionalLight::DeleteDirectionalLight(unsigned int EntityID)
+	{
+		DLIT it = _DirectionalLight.find(EntityID);
 
-        // Add DirectionalLight Component
-        engine->world.AddComponent(FirstGlobalLight, DirectionalLightComponent{});
+		if (it == _DirectionalLight.end())
+		{
+			return false;
+		}
+		else
+		{
+			_DirectionalLight.erase(EntityID);
+			--DirectionalLightcounter;
 
-        DirectionalLightComponent& _GlobalLight = engine->world.GetComponent<DirectionalLightComponent>(FirstGlobalLight);
-        _GlobalLight.ID = FirstGlobalLight;
-        _GlobalLight.Counter = counter;
-
-        if (_DirectionalLight.insert({ _GlobalLight.ID ,&_GlobalLight }).second == true)
-        {
-            EDITOR_LOG_WARN("First GlobalLight Created ");
-            counter++;
-        }
-
-        std::cout << " Number of Directional Lights : " << _DirectionalLight.size() << std::endl;
-    }
-
-    bool DirectionalLight::InsertDirectionalLight(DirectionalLightComponent& in)
-    {
-        if (_DirectionalLight.insert({ in.ID , &in }).second == true)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    void DirectionalLight::ClearContainer()
-    {
-        _DirectionalLight.clear();
-    }
+			EDITOR_LOG_INFO("DirectionalLight Removed Successfully");
+			return true;
+		}
+	}
 }

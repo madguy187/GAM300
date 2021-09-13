@@ -33,8 +33,8 @@ namespace Eclipse
 		void ChangeTextureController(TextureComponent& Item);
 		void TextureList(TextureComponent& Item);
 		
-		void ChangeMeshController(RenderComponent& Item);
-		void MeshList(RenderComponent& Item);
+		void ChangeMeshController(MeshComponent& Item);
+		void MeshList(MeshComponent& Item);
 		
 		template <typename TComponents>
 		void AddComponentsFeedback(const char* Components, const std::string& name, Entity ID, bool exist);

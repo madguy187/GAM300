@@ -9,20 +9,22 @@ namespace Eclipse
     class SpotLight
     {
     private:
-        inline static int counter = 0;
-        InputWrapper inputhandler;
-        inline static SpotLightContainer _spotlights;
+        inline static unsigned int SpotLightCounter = 0;
 
     public:
-        SpotLightContainer GetContainer();
         unsigned int GetNumberOfSpotLights();
         static void CreateSpotLight(unsigned int CreatedID);
-        static bool DeleteSpotLight(unsigned int EntityID);
         void DrawSpotLights(unsigned int framebufferID);
         void Draw(SpotLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
-        bool InsertSpotLightLight(SpotLightComponent& in);
-        void ClearContainer();
     private:
         void CheckUniformLoc(Shader* _shdrpgm, SpotLightComponent& hi, int index, unsigned int containersize);
+
+    private:
+        inline static SpotLightContainer _spotlights;
+        SpotLightContainer GetContainer();
+        static bool DeleteSpotLight(unsigned int EntityID);
+        bool InsertSpotLightLight(SpotLightComponent& in);
+        void ClearContainer();
+
     };
 }
