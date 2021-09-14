@@ -11,13 +11,7 @@ namespace Eclipse
 			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&HierarchyWindow::DrawImpl, this));
 	}
 
-	void HierarchyWindow::Unload()
-	{
-		CurrEnt_.Clear();
-		PrevEnt_.Clear();
-	}
-
-	HierarchyWindow::HierarchyWindow()
+	void HierarchyWindow::Init()
 	{
 		Type = EditorWindowType::EWT_HIERARCHY;
 		WindowName = "Hierarchy";
@@ -33,12 +27,18 @@ namespace Eclipse
 			TagList_[0].push_back(lexical_cast_toStr<EntityType>(temp));
 		}
 
-		for (int index = static_cast<int>(EntityType::ENT_LIGHT_POINT); 
-			index != static_cast<int>(EntityType::ENT_CAMERA); ++index)
+		for (int index = static_cast<int>(EntityType::ENT_LIGHT_POINT);
+			index != static_cast<int>(EntityType::ENT_GAMECAMERA); ++index)
 		{
 			EntityType temp = static_cast<EntityType>(index);
 			TagList_[1].push_back(lexical_cast_toStr<EntityType>(temp));
 		}
+	}
+
+	void HierarchyWindow::Unload()
+	{
+		CurrEnt_.Clear();
+		PrevEnt_.Clear();
 	}
 
 	void HierarchyWindow::DrawImpl()

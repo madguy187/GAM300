@@ -3,7 +3,7 @@
 
 #include "ECS/ComponentManager/Components/MaterialComponent.h"
 #include "Graphics/ModelFactory/AssimpModel/AssimpModel.h"
-#include "ECS/ComponentManager/Components/MeshComponent3D.h"
+#include "ECS/ComponentManager/Components/MeshComponent.h"
 
 namespace Eclipse
 {
@@ -16,8 +16,8 @@ namespace Eclipse
     typedef std::unordered_map<int, AssimpModel*> ModelHighLight;
     using HighlightModelIT = std::unordered_map<int, AssimpModel*>::iterator;
 
-    typedef std::unordered_map<unsigned int, MeshComponent3D*> MeshHighLight;
-    using MeshHighlightModelIT = std::unordered_map<int, MeshComponent3D*>::iterator;
+    typedef std::unordered_map<unsigned int, MeshComponent*> MeshHighLight;
+    using MeshHighlightModelIT = std::unordered_map<int, MeshComponent*>::iterator;
 
     struct Material
     {
@@ -76,15 +76,24 @@ namespace Eclipse
         void RegisterMeshForHighlighting(unsigned int index);
         void MeshHighlight(unsigned int FrameBufferID, GLenum Mode);
         void UpdateMaterial(MaterialComponent& in);
+        void Highlight3DModels(unsigned int FrameBufferID, unsigned int ModelID, GLenum mode);
         void UpdateStencilWith_Outline(unsigned int ID);
         void UpdateStencilWithActualObject(unsigned int ID);
         void HighlightBasicPrimitives(MaterialComponent& in, unsigned int EntityId, unsigned int FrameBufferID);
+        void Highlight3DModels(MaterialComponent& in, unsigned int EntityId, unsigned int FrameBufferID);
         bool HighlightClick(unsigned int ModelID);
         bool UnHighlight(unsigned int ModelID);
         void RegisterMeshForHighlight(unsigned int ID);
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // For Jian Herng
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        void ClearContainer();
+        bool InsertContainer(MeshComponent& in);
+
     private:
         void CheckUnniformLocation(Shader& in, MaterialComponent& inside);
-        void CheckUniformLoc(RenderComponent& sprite, Shader& in, unsigned int id, unsigned int framebufferID);
+        void CheckUniformLoc(MeshComponent& sprite, Shader& in, unsigned int id, unsigned int framebufferID);
         void Highlight(unsigned int FrameBufferID, unsigned int ModelID, GLenum mode);
     };
 }

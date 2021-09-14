@@ -53,8 +53,10 @@ namespace Eclipse
     template<typename T>
     std::istream& operator>>(std::istream& str, enumRefHolder<T> const& data)
     {
-        std::string value;
-        str >> value;
+        char buffer[256];
+        str.read(buffer, 256);
+        buffer[str.gcount()] = '\0';
+        std::string value{ buffer };
 
         static auto begin = std::begin(enumStrings<T>::data);
         static auto end = std::end(enumStrings<T>::data);
@@ -109,9 +111,9 @@ namespace Eclipse
         "Pyramid",
         "Lines3D",
         "Planes",
-        "Point Light",
-        "Directional Light",
-        "Spot Light",
+        "PointLight",
+        "DirectionalLight",
+        "SpotLight",
         "Camera",
         "NULL"
     };

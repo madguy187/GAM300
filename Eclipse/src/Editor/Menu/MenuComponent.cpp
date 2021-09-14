@@ -66,33 +66,29 @@ namespace Eclipse
 
 			if (ECGui::CreateMenuItem(key, &selected))
 			{
-				glfwSetWindowShouldClose(OpenGL_Context::GetWindow(), 1);
+				engine->editorManager->GetMenuBar().SetExitStatus(true);
 			}
 		}
-		/*if (!strcmp(key, "Scene"))
+		
+		if (!strcmp(key, "Undo"))
 		{
-			auto* scene = engine->editorManager->GetEditorWindow<Scene>();
+			bool selected = false;
 
-			if (ECGui::CreateMenuItem(key, &scene->IsVisible))
+			if (ECGui::CreateMenuItem(key, &selected))
 			{
-				if (scene->IsVisible)
-					scene->IsVisible = true;
-				else
-					scene->IsVisible = false;
+				CommandHistory::Undo();
 			}
 		}
-		else if (!strcmp(key, "GameView"))
-		{
-			auto* game = engine->editorManager->GetEditorWindow<eGameView>();
 
-			if (ECGui::CreateMenuItem(key, &game->IsVisible))
+		if (!strcmp(key, "Redo"))
+		{
+			bool selected = false;
+
+			if (ECGui::CreateMenuItem(key, &selected))
 			{
-				if (game->IsVisible)
-					game->IsVisible = true;
-				else
-					game->IsVisible = false;
+				CommandHistory::Redo();
 			}
-		}*/
+		}
 	}
 
 	void MenuComponent::DrawGuiWindows()

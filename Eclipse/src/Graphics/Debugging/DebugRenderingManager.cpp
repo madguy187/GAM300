@@ -18,7 +18,7 @@ void Eclipse::DebugRenderingManager::CheckUniformLoc(Shader*_shdrpgm, CameraComp
     }
 }
 
-void Eclipse::DebugRenderingManager::AddCameraFrustum(unsigned int ID, CameraComponent& _camera)
+void Eclipse::DebugRenderingManager::AddCameraFrustum(unsigned int ID)
 {
     Frustum newFrustum;
     SetDebugShape(ID, newFrustum);
@@ -78,6 +78,11 @@ void Eclipse::DebugRenderingManager::DrawDebugShapes(unsigned int framebufferID)
             DrawFrustum(it.first, framebufferID);
         }
     }
+}
+
+void Eclipse::DebugRenderingManager::DeleteDebugShape(unsigned int ID)
+{
+    debugShapes.erase(ID);
 }
 
 void Eclipse::DebugRenderingManager::ClearDebugShapes()

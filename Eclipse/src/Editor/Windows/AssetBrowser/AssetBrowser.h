@@ -48,6 +48,7 @@ namespace Eclipse
 		std::string searchItemsLowerCase;
 		std::string searchFoldersLowerCase;
 		std::string folderString;
+		std::vector<std::string> allExtensions;
 		bool found = false;
 		bool searchItemMode = false;
 		bool searchFolderMode = false;
@@ -56,12 +57,11 @@ namespace Eclipse
 		bool ResetTreeNodeOpen = false;
 		bool CopyFilesAndFolder = false;
 		////////////////////////////////
-		
 	public:
-		
 		//main update function
 		////////////////////////////////
 		void Update() override;
+		void Init() override;
 		void Unload() override;
 		AssetBrowserWindow();
 		void DrawImpl();
@@ -106,6 +106,8 @@ namespace Eclipse
 		// converting to small case letters
 		////////////////////////////////
 		std::string LowerCase(const char* buffer);
+
+		static std::string GetFileName(const char* buffer);
 		////////////////////////////////
 	};
 }

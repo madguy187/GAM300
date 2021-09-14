@@ -3,15 +3,17 @@
 
 #include "ECS/ComponentManager/Components/EntityComponent.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"
-#include "ECS/ComponentManager/Components/RenderComponent.h"
 #include "ECS/ComponentManager/Components/CameraComponent.h"
 #include "ECS/ComponentManager/Components/AABBComponent.h"
 #include "ECS/ComponentManager/Components/DirectionalLightComponent.h"
 #include "ECS/ComponentManager/Components/SpotLightComponent.h"
 #include "ECS/ComponentManager/Components/MaterialComponent.h"
-#include "ECS/ComponentManager/Components/MeshComponent3D.h"
+#include "ECS/ComponentManager/Components/MeshComponent.h"
 #include "ECS/ComponentManager/Components/RigidBodyComponent.h"
 #include "ECS/ComponentManager/Components/TextureComponent.h"
+#include "ECS/ComponentManager/Components/ModelInfoComponent.h"
+#include "ECS/ComponentManager/Components/ParentChildComponent.h"
+#include "ECS/ComponentManager/Components/LightComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
@@ -66,17 +68,18 @@ namespace Eclipse
         // register component
         world.RegisterComponent<EntityComponent>();
         world.RegisterComponent<TransformComponent>();
-        world.RegisterComponent<RenderComponent>();
+        world.RegisterComponent<MeshComponent>();
         world.RegisterComponent<CameraComponent>();
         world.RegisterComponent<PointLightComponent>();
         world.RegisterComponent<DirectionalLightComponent>();
         world.RegisterComponent<AABBComponent>();
         world.RegisterComponent<SpotLightComponent>();
         world.RegisterComponent<MaterialComponent>();
-        world.RegisterComponent<testComponent>();
-        world.RegisterComponent<MeshComponent3D>();
         world.RegisterComponent<RigidBodyComponent>();
         world.RegisterComponent<TextureComponent>();
+        world.RegisterComponent<ModeLInforComponent>();
+        world.RegisterComponent<ParentChildComponent>();
+        world.RegisterComponent<LightComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
@@ -97,10 +100,7 @@ namespace Eclipse
         world.RegisterSystemSignature<CameraSystem>(hi2);
 
         Signature hi3;
-        hi3.set(world.GetComponentType<TransformComponent>(), 1);
-        hi3.set(world.GetComponentType<PointLightComponent>(), 1);
-        hi3.set(world.GetComponentType<DirectionalLightComponent>(), 1);
-        hi3.set(world.GetComponentType<SpotLightComponent>(), 1);
+        hi3.set(world.GetComponentType<LightComponent>(), 1);
         world.RegisterSystemSignature<LightingSystem>(hi3);
 
         Signature mat;

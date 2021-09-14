@@ -11,7 +11,10 @@
 #include "Editor/Windows/AssetBrowser/AssetBrowser.h"
 #include "Editor/Windows/Log/Log.h"
 #include "Editor/Windows/Profiler/Profiler.h"
-#include "Editor/Windows/SwitchViews/SwitchViews.h"
+#include "Editor/Windows/SwitchViews/TopSwitchViewWindow.h"
+#include "Editor/Windows/SwitchViews/BottomSwitchViewWindow.h"
+#include "Editor/Windows/SwitchViews/LeftSwitchViewWindow.h"
+#include "Editor/Windows/SwitchViews/RightSwitchViewWindow.h"
 
 namespace Eclipse
 {
@@ -27,15 +30,23 @@ namespace Eclipse
 
 	void EditorManager::InitGUIWindows()
 	{
-		AddWindow<eGameViewWindow>("GameView");
-		AddWindow<SceneWindow>("Scene");
+		AddWindow<eGameViewWindow>("Game Viewport");
+		AddWindow<SceneWindow>("Main Scene Viewport");
 		AddWindow<InspectorWindow>("Inspector");
 		AddWindow<HierarchyWindow>("Hierarchy");
 		AddWindow<ProfilerWindow>("Profiler");
-		AddWindow<AssetBrowserWindow>("AssetBrowser");
+		AddWindow<AssetBrowserWindow>("Asset Browser");
 		AddWindow<LoggerWindow>("Log");
 		AddWindow<DebugWindow>("Debug");
-		AddWindow<SwitchViewsWindow>("SwitchViews");
+		AddWindow<TopSwitchViewWindow>("Top Viewport");
+		AddWindow<BottomSwitchViewWindow>("Bottom Viewport");
+		AddWindow<LeftSwitchViewWindow>("Left Viewport");
+		AddWindow<RightSwitchViewWindow>("Right Viewport");
+
+		for (const auto& window : Windows_)
+		{
+			window->Init();
+		}
 	}
 
 	void EditorManager::InitMenu()
@@ -45,9 +56,14 @@ namespace Eclipse
 		file.AddItems("Open");
 		file.AddItems("Save As...");
 		file.AddItems("Exit");
-		MenuComponent window{ "Windows", EditorMenuType::WINDOWS };
-
 		MenuBar_.AddMenuComponents(file);
+
+		MenuComponent edit{ "Edit", EditorMenuType::EDIT };
+		edit.AddItems("Undo");
+		edit.AddItems("Redo");
+		MenuBar_.AddMenuComponents(edit);
+
+		MenuComponent window{ "Windows", EditorMenuType::WINDOWS };
 		MenuBar_.AddMenuComponents(window);
 	}
 
@@ -93,7 +109,7 @@ namespace Eclipse
 		engine->world.AddComponent(ID, TransformComponent{});
 
 		// Check this please - Rachel
-		if(type!=EntityType::ENT_CAMERA)
+		if(type != EntityType::ENT_GAMECAMERA)
 		{
 			auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
 			engine->gPicker.GenerateAabb(ID, _transform, type);
@@ -103,6 +119,7 @@ namespace Eclipse
 		EntityHierarchyList_.push_back(ID);
 		EntityToIndexMap_.insert(std::pair<Entity, int>(ID, static_cast<int>(EntityHierarchyList_.size() - 1)));
 		GEHIndex_ = EntityHierarchyList_.size() - 1;
+		SetSelectedEntity(ID);
 
 		return ID;
 	}
@@ -112,6 +129,7 @@ namespace Eclipse
 		EntityHierarchyList_.push_back(ID);
 		EntityToIndexMap_.insert(std::pair<Entity, int>(ID, static_cast<int>(EntityHierarchyList_.size() - 1)));
 		GEHIndex_ = EntityHierarchyList_.size() - 1;
+		SetSelectedEntity(ID);
 	}
 
 	void EditorManager::DestroyEntity(Entity ID)

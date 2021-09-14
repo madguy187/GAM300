@@ -8,8 +8,8 @@ namespace Eclipse
 	{
 	public:
 		void Update() override;
+		void Init() override;
 		void Unload() override;
-		InspectorWindow();
 		void DrawImpl();
 
 		bool ShowEntityProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
@@ -19,44 +19,47 @@ namespace Eclipse
 		bool ShowDirectionalLightProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowRigidBodyProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowEditorCameraProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowTextureProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowRenderProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowMaterialProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowMesh3DProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowModelInfoProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowScriptProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 
 		void AddComponentsController(Entity ID);
 		void RemoveComponentsController(Entity ID);
 		void ShowAddComponentList(Entity ID);
-		void AddComponentsSuccess(const char* Components, const std::string& name, Entity ID);
-		void AddComponentsFailed(const char* Components, const std::string& name, Entity ID);
 		void ShowRemoveComponentList(Entity ID);
-		void RemoveComponentsSuccess(const char* Components, const std::string& name, Entity ID);
-		void RemoveComponentsFailed(const char* Components, const std::string& name, Entity ID);
+
+		void ChangeTextureController(TextureComponent& Item);
+		void TextureList(TextureComponent& Item);
+		
+		void ChangeMeshController(MeshComponent& Item);
+		void MeshList(MeshComponent& Item);
+		void RemoveElementFromVectorStringList(std::vector<std::string> & vecList);
+		
+		template <typename TComponents>
+		void AddComponentsFeedback(const char* Components, const std::string& name, Entity ID, bool exist);
+		
+		template <typename TComponents>
+		void RemoveComponentsFeedback(const char* Components, const std::string& name, Entity ID, bool exist);
 
 		template <typename TComponents>
 		void ComponentRegistry(const char* CompName, Entity ID,
 			const std::string EntityName, EditComponent method)
 		{
+			bool isExist = engine->world.CheckComponent<TComponents>(ID);
+
 			if (method == EditComponent::EC_ADDCOMPONENT)
 			{
-				if (!engine->world.CheckComponent<TComponents>(ID))
-				{
-					AddComponentsSuccess(CompName, EntityName, ID);
-					engine->world.AddComponent(ID, TComponents{});
-				}
-				else
-				{
-					AddComponentsFailed(CompName, EntityName, ID);
-				}
+				AddComponentsFeedback<TComponents>(CompName, EntityName, ID, isExist);
 			}
 			else
 			{
-				if (engine->world.CheckComponent<TComponents>(ID))
-				{
-					RemoveComponentsSuccess(CompName, EntityName, ID);
-					engine->world.DestroyComponent<TComponents>(ID);
-				}
-				else
-				{
-					RemoveComponentsFailed(CompName, EntityName, ID);
-				}
+				RemoveComponentsFeedback<TComponents>(CompName, EntityName, ID, isExist);
 			}
+
+			ImGui::CloseCurrentPopup();
 		}
 
 		static constexpr unsigned int str2int(const char* str, int h = 0)
@@ -65,6 +68,8 @@ namespace Eclipse
 		}
 	private:
 		ECVec2 WindowSize_{};
+		std::vector<std::string> ScriptListGuiTest;
+		bool IsRemovingScripts{ false };
 	};
 
 }

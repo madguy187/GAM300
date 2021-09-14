@@ -15,6 +15,7 @@ namespace Eclipse
 
 		// Generates all the scripts into a dll
 		void GenerateDLL();
+		void CreateScriptObjects();
 
 	public:
 		void Init();

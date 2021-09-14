@@ -13,15 +13,14 @@ namespace Eclipse
             Models3D = 2,
             Maxcount
         };  
-
-        unsigned int ID = 0;
+    
+        ModelType Modeltype = ModelType::None;
         ECVec3 ambient{ 0.0f,0.0f,0.0f };
-        ECVec3 diffuse{ 0.0f,0.0f,0.0f };
-        ECVec3 specular{ 0.1f,0.1f,0.1f };
+        ECVec3 diffuse{ 1.0f,1.0f,1.0f };
+        ECVec3 specular{ 1.0f,1.0f,1.0f };
         ECVec3 HighlightColour{ 1.0f,0.0f,0.0f };
         float shininess = 0.25f;
         float MaximumShininess = 128.0f;
-        ModelType Modeltype = ModelType::None;
         bool RegisterForHighlight = false;
         bool Highlight = false;
         bool NoTextures = true;
@@ -31,5 +30,10 @@ namespace Eclipse
 
         // Only for 3D Primitives
         float ScaleUp = 1.05f;
+
+        //TODO
+        //ComboIndex if for imgui combolist to select the correct model type - Tian Yu
+        size_t ComboIndex;
+
     };
 }

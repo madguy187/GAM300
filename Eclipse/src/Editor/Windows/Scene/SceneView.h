@@ -15,8 +15,9 @@ namespace Eclipse
 	{
 	public:
 		void Update() override;
+		void Init() override;
 		void Unload() override;
-		SceneWindow();
+
 		void RunMainWindow();
 		void RunFrameBuffer();
 		void OnKeyPressedEvent();
@@ -36,9 +37,7 @@ namespace Eclipse
 		ECVec2 mSceneBufferPos;
 		ECVec2 mCursorScreenPos;
 		SnapValueSettings mSnapSettings;
-		// Hold Frame Buffer Object
-		std::shared_ptr<FrameBuffer> m_frameBuffer;
-		// Hold Gizmo Type
+		FrameBuffer* m_frameBuffer;
 		int m_GizmoType{ 0 };
 	};
 }

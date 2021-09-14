@@ -99,7 +99,7 @@ namespace Eclipse
 	void ECGui::CreateComboList(ComboListSettings settings, const std::vector<std::string>& vecStr, size_t& index)
 	{
 		const char* combo_label = vecStr[index].c_str();
-		if (ImGuiAPI::BeginComboList(settings.Name, settings.CurrentPreview, settings.HideName, settings.flags))
+		if (ImGuiAPI::BeginComboList(settings.Name, combo_label, settings.HideName, settings.flags))
 		{
 			for (size_t n = 0; n < vecStr.size(); n++)
 			{
@@ -303,9 +303,10 @@ namespace Eclipse
 		return false;
 	}
 
-	bool ECGui::DrawInputTextHintWidget(const char* name, const char* hintText, char* buffer, size_t bufferSize, bool hideName)
+	bool ECGui::DrawInputTextHintWidget(const char* name, const char* hintText, char* buffer, size_t bufferSize, 
+		bool hideName, ImGuiInputTextFlags flags)
 	{
-		if (ImGuiAPI::InputTextWithHint(name, hintText, buffer, bufferSize, hideName))
+		if (ImGuiAPI::InputTextWithHint(name, hintText, buffer, bufferSize, hideName, flags))
 		{
 			CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<char*>{ buffer, buffer });
 			return true;

@@ -1,30 +1,31 @@
 #include "pch.h"
 #include "AssetBrowser.h"
+#include "Editor/Windows/Inspector/Inspector.h"
 namespace Eclipse
 {
-	AssetBrowserWindow::AssetBrowserWindow()
-		:CurrentDir(AllDir), AllDir(AssetPath), padding(16.0f), thumbnailSize(120.0f),sprite(),FolderIcon()
-	{
-		Type = EditorWindowType::EWT_ASSETBROWSER;
-
-		WindowName = "AssetBrowser";
-	
-		memset(searchItemBuffer, 0, 128);
-
-		memset(searchFolderBuffer, 0, 128);
-
-		buttonSize = { thumbnailSize,thumbnailSize };
-
-		ScanAll();
-	}
-
 	void AssetBrowserWindow::Update()
 	{
 		if (IsVisible)
 			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&AssetBrowserWindow::DrawImpl, this));
 	}
 
+	void AssetBrowserWindow::Init()
+	{
+		Type = EditorWindowType::EWT_ASSETBROWSER;
+		WindowName = "AssetBrowser";
+		memset(searchItemBuffer, 0, 128);
+		memset(searchFolderBuffer, 0, 128);
+		buttonSize = { thumbnailSize,thumbnailSize };
+		allExtensions = { {"cs"},{"png"},{"txt"} };
+		ScanAll();
+	}
+
 	void AssetBrowserWindow::Unload()
+	{
+	}
+
+	AssetBrowserWindow::AssetBrowserWindow()
+		:CurrentDir(AllDir), AllDir(AssetPath), padding(16.0f), thumbnailSize(120.0f), sprite(), FolderIcon()
 	{
 	}
 
@@ -150,13 +151,20 @@ namespace Eclipse
 								ECGui::EndTreeNode();
 							}
 							engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), secondEntry, refresh, pathMap, CopyFilesAndFolder);
+							for (size_t i = 0; i < allExtensions.size(); ++i)
+							{
+								engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget(allExtensions[i].c_str(), paths, AssetPath.string(), secondEntry, refresh, pathMap, CopyFilesAndFolder);
+							}
 						}
 					}
 					ECGui::EndTreeNode();
 				}
 
 				engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
-
+				for (size_t i = 0; i < allExtensions.size(); ++i)
+				{
+					engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget(allExtensions[i].c_str(), paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
+				}
 				if (!jumpDir && /*ImGui::IsMouseDoubleClicked(0) &&*/ ImGui::IsItemClicked(0))
 				{
 					NextPath(CurrentDir, path);
@@ -353,7 +361,30 @@ namespace Eclipse
 				{ 2,1 });
 			//drag drop
 			engine->editorManager->DragAndDropInst_.StringPayloadSource("ITEM", relativePath.string());
+			//
+ 			//
 
+			std::string temp;
+			temp = relativePath.filename().string().c_str();
+
+			switch (InspectorWindow::str2int(temp.substr(temp.find_last_of(".") + 1).c_str()))
+			{
+			case InspectorWindow::str2int("png"):
+				engine->editorManager->DragAndDropInst_.StringPayloadSource("png", relativePath.string());
+				break;
+			case InspectorWindow::str2int("cs"):
+				engine->editorManager->DragAndDropInst_.StringPayloadSource("cs", relativePath.string());
+				break;
+			case InspectorWindow::str2int("txt"):
+				engine->editorManager->DragAndDropInst_.StringPayloadSource("txt", relativePath.string());
+				break;
+			}
+
+			// GetFileName(relativePath.filename().string().c_str())
+			for (size_t i = 0; i < allExtensions.size(); ++i)
+			{
+				engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget(allExtensions[i].c_str(), paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
+			}
 			engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
 
 			if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
@@ -364,6 +395,9 @@ namespace Eclipse
 				}
 				else
 				{
+					std::string temp;
+					temp = GetFileName(relativePath.filename().string().c_str());
+					EDITOR_LOG_INFO(temp.c_str());
 					//do stuff
 				}
 			}
@@ -724,6 +758,21 @@ namespace Eclipse
 		}
 
 		return lowerCaseString.substr(0, lastdot);
+	}
+
+	std::string AssetBrowserWindow::GetFileName(const char* buffer)
+	{
+
+		std::string fileName(buffer);
+
+		size_t lastdot = fileName.find_last_of(".");
+
+		if (lastdot == std::string::npos)
+		{
+			return fileName;
+		}
+
+		return fileName.substr(0, lastdot);
 	}
 
 	bool AssetBrowserWindow::BuffIsEmpty(const char* buffer)

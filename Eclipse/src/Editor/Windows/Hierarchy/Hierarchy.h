@@ -20,8 +20,8 @@ namespace Eclipse
 	{
 	public:
 		void Update() override;
+		void Init() override;
 		void Unload() override;
-		HierarchyWindow();
 		void DrawImpl();
 		void TrackEntitySelection(const std::vector<Entity>& list, EntitySelectionTracker& prev,
 			EntitySelectionTracker& curr, ImGuiTextFilter& filter);
