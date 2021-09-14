@@ -58,10 +58,10 @@ namespace Eclipse
 			SerializeComponent<PointLightComponent>(comp);
 		}
 
-		if (w.CheckComponent<RenderComponent>(ent))
+		if (w.CheckComponent<MeshComponent>(ent))
 		{
-			auto& comp = w.GetComponent<RenderComponent>(ent);
-			SerializeComponent<RenderComponent>(comp);
+			auto& comp = w.GetComponent<MeshComponent>(ent);
+			SerializeComponent<MeshComponent>(comp);
 		}
 
 		if (w.CheckComponent<RigidBodyComponent>(ent))
@@ -86,12 +86,6 @@ namespace Eclipse
 		{
 			auto& comp = w.GetComponent<AABBComponent>(ent);
 			SerializeComponent<AABBComponent>(comp);
-		}
-
-		if (w.CheckComponent<MeshComponent3D>(ent))
-		{
-			auto& comp = w.GetComponent<MeshComponent3D>(ent);
-			SerializeComponent<MeshComponent3D>(comp);
 		}
 
 		if (w.CheckComponent<TextureComponent>(ent))
@@ -119,10 +113,10 @@ namespace Eclipse
 			dsz.CloseElement();
 		}
 
-		if (dsz.StartElement("RenderComponent"))
+		if (dsz.StartElement("MeshComponent"))
 		{
-			RenderComponent comp;
-			DeserializeComponent<RenderComponent>(ent, comp);
+			MeshComponent comp;
+			DeserializeComponent<MeshComponent>(ent, comp);
 			engine->world.AddComponent(ent, comp);
 			dsz.CloseElement();
 		}
@@ -151,20 +145,20 @@ namespace Eclipse
 			dsz.CloseElement();
 		}
 
-		/*if (dsz.StartElement("CameraComponent"))
+		if (dsz.StartElement("CameraComponent"))
 		{
 			CameraComponent comp;
 			DeserializeComponent<CameraComponent>(ent, comp);
 			engine->world.AddComponent(ent, comp);
+			engine->gCamera.ReInitCameraList(comp.camType, ent);
 			dsz.CloseElement();
 		}
-		*/
+
 		if (dsz.StartElement("PointLightComponent"))
 		{
 			PointLightComponent comp;
 			DeserializeComponent<PointLightComponent>(ent, comp);
 			engine->world.AddComponent(ent, comp);
-			engine->LightManager.InsertPointLight(engine->world.GetComponent<PointLightComponent>(ent));
 			dsz.CloseElement();
 		}
 		
@@ -173,7 +167,6 @@ namespace Eclipse
 			SpotLightComponent comp;
 			DeserializeComponent<SpotLightComponent>(ent, comp);
 			engine->world.AddComponent(ent, comp);
-			engine->LightManager.InsertSpotLightLight(engine->world.GetComponent<SpotLightComponent>(ent));
 			dsz.CloseElement();
 		}
 		
@@ -182,7 +175,6 @@ namespace Eclipse
 			DirectionalLightComponent comp;
 			DeserializeComponent<DirectionalLightComponent>(ent, comp);
 			engine->world.AddComponent(ent, comp);
-			engine->LightManager.InsertDirectionalLight(engine->world.GetComponent<DirectionalLightComponent>(ent));
 			dsz.CloseElement();
 		}
 
@@ -191,15 +183,6 @@ namespace Eclipse
 			TextureComponent comp;
 			DeserializeComponent<TextureComponent>(ent, comp);
 			engine->world.AddComponent(ent, comp);
-			dsz.CloseElement();
-		}
-
-		if (dsz.StartElement("MeshComponent3D"))
-		{
-			MeshComponent3D comp;
-			DeserializeComponent<MeshComponent3D>(ent, comp);
-			engine->world.AddComponent(ent, comp);
-			engine->AssimpManager.InsertModel(comp.ID);
 			dsz.CloseElement();
 		}
 	}

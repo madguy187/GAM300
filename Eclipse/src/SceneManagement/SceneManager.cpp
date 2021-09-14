@@ -176,7 +176,6 @@ namespace Eclipse
 		}
 		engine->AssimpManager.ClearContainer();
 		engine->world.Clear();
-		engine->LightManager.ClearAllContainer();
 		engine->gCamera.ResetScene();
 	}
 

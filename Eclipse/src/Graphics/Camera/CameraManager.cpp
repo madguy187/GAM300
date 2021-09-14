@@ -673,12 +673,13 @@ namespace Eclipse
         if (_camType == CameraComponent::CameraType::Game_Camera)
         {
             engine->gDebugManager.DeleteDebugShape(GetGameCameraID());
-
+            //engine->world.DestroyEntity(gameCamID);
             gameCamID = ID;
             engine->gDebugManager.AddCameraFrustum(ID);
         }
         else if (_camType == CameraComponent::CameraType::Editor_Camera)
         {
+            //engine->world.DestroyEntity(editorCamID);
             editorCamID = ID;
         }
 

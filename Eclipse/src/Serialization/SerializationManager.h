@@ -8,12 +8,11 @@
 #include "../ECS/ComponentManager/Components/DirectionalLightComponent.h"
 #include "../ECS/ComponentManager/Components/MaterialComponent.h"
 #include "../ECS/ComponentManager/Components/PointLightComponent.h"
-#include "../ECS/ComponentManager/Components/RenderComponent.h"
+#include "../ECS/ComponentManager/Components/MeshComponent.h"
 #include "../ECS/ComponentManager/Components/RigidBodyComponent.h"
 #include "../ECS/ComponentManager/Components/SpotLightComponent.h"
 #include "../ECS/ComponentManager/Components/TransformComponent.h"
 #include "../ECS/ComponentManager/Components/TextureComponent.h"
-#include "../ECS/ComponentManager/Components/MeshComponent3D.h"
 
 namespace Eclipse
 {
@@ -67,10 +66,11 @@ namespace Eclipse
 		}
 
 		template <>
-		inline void SerializeComponent<RenderComponent>(const RenderComponent& data)
+		inline void SerializeComponent<MeshComponent>(const MeshComponent& data)
 		{
-			sz.StartElement("RenderComponent");
+			sz.StartElement("MeshComponent");
 			SerializeData(
+				"Key", data.Key,
 				"Color", data.color,
 				"TextureIdx", data.textureIdx,
 				"IsQuad", data.isQuad,
@@ -110,14 +110,13 @@ namespace Eclipse
 		{
 			sz.StartElement("MaterialComponent");
 			SerializeData(
-				"ID", data.ID,
+				"Modeltype", data.Modeltype,
 				"Ambient", data.ambient,
 				"Diffuse", data.diffuse,
 				"Specular", data.specular,
 				"HighlightColor", data.HighlightColour,
 				"Shininess", data.shininess,
 				"MaximumShininess", data.MaximumShininess,
-				"Modeltype", data.Modeltype,
 				"RegisterForHighlight", data.RegisterForHighlight,
 				"Highlight", data.Highlight,
 				"NoTextures", data.NoTextures,
@@ -259,18 +258,6 @@ namespace Eclipse
 			sz.CloseElement();
 		}
 		
-		template <>
-		inline void SerializeComponent<MeshComponent3D>(const MeshComponent3D& data)
-		{
-			sz.StartElement("MeshComponent3D");
-			SerializeData(
-				"ID", data.ID,
-				"Key", data.Key
-			);
-
-			sz.CloseElement();
-		}
-
 		template <typename T>
 		inline void DeserializeComponent(const Entity& ent, T& comp)
 		{
@@ -324,7 +311,7 @@ namespace Eclipse
 		}
 
 		template<>
-		inline void DeserializeComponent<RenderComponent>(const Entity& ent, RenderComponent& comp)
+		inline void DeserializeComponent<MeshComponent>(const Entity& ent, MeshComponent& comp)
 		{
 			if (dsz.StartElement("Color"))
 			{
@@ -398,7 +385,12 @@ namespace Eclipse
 		template<>
 		inline void DeserializeComponent<MaterialComponent>(const Entity& ent, MaterialComponent& comp)
 		{
-			comp.ID = ent;
+			if (dsz.StartElement("Modeltype"))
+			{
+				dsz.ReadAttributeFromElement("value", comp.Modeltype);
+				comp.ComboIndex = static_cast<size_t>(comp.Modeltype);
+				dsz.CloseElement();
+			}
 
 			if (dsz.StartElement("Ambient"))
 			{
@@ -448,12 +440,6 @@ namespace Eclipse
 				dsz.CloseElement();
 			}
 			
-			if (dsz.StartElement("Modeltype"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.Modeltype);
-				dsz.CloseElement();
-			}
-
 			if (dsz.StartElement("Thickness"))
 			{
 				dsz.ReadAttributeFromElement("value", comp.Thickness);
@@ -989,18 +975,6 @@ namespace Eclipse
 			}
 		}
 		
-		template<>
-		inline void DeserializeComponent<MeshComponent3D>(const Entity& ent, MeshComponent3D& comp)
-		{
-			comp.ID = ent;
-
-			if (dsz.StartElement("Key"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.Key);
-				dsz.CloseElement();
-			}
-		}
-
 		void SerializeEntity(const Entity& ent, const size_t& counter);
 
 		void DeserializeEntity(const size_t& counter);

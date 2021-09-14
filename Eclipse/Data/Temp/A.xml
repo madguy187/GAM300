@@ -4,7 +4,7 @@
         <EntityComponent>
             <Name value="Camera" />
             <Tag value="Camera" />
-            <IsActive value="true" />
+            <IsActive value="false" />
         </EntityComponent>
         <CameraComponent>
             <EyeAlpha value="0" />
@@ -42,38 +42,57 @@
     </Entity_0>
     <Entity_1 ID="6">
         <EntityComponent>
-            <Name value="Camera" />
-            <Tag value="Camera" />
-            <IsActive value="false" />
+            <Name value="DirectionalLight" />
+            <Tag value="DirectionalLight" />
+            <IsActive value="true" />
         </EntityComponent>
+        <DirectionalLightComponent>
+            <ID value="6" />
+            <Counter value="0" />
+            <Visible value="false" />
+            <AffectsWorld value="true" />
+            <EnableBlinnPhong value="true" />
+            <LightColor x="1" y="1" z="1" />
+            <Direction x="-1" y="-1" z="-1" />
+            <Ambient x="1" y="1" z="1" />
+            <Diffuse x="0.4" y="0.4" z="0.4" />
+            <Specular x="0.5" y="0.5" z="0.5" />
+            <Color x="1" y="1" z="1" w="1" />
+            <ModelNDC_xform Col="4" Row="4">
+                <Col0 _00="0" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="0" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="0" _23="0" />
+                <Col3 _30="0" _31="0" _32="0" _33="0" />
+            </ModelNDC_xform>
+        </DirectionalLightComponent>
         <TransformComponent>
-            <Position x="0" y="20" z="40" />
-            <Rotation x="-40" y="-90" z="0" />
+            <Position x="0" y="0" z="0" />
+            <Rotation x="0" y="0" z="0" />
             <Scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_1>
     <Entity_2 ID="7">
         <EntityComponent>
-            <Name value="Cube" />
-            <Tag value="Cube" />
-            <IsActive value="true" />
+            <Name value="Cylinder" />
+            <Tag value="Cylinder" />
+            <IsActive value="false" />
         </EntityComponent>
         <MaterialComponent>
-            <ID value="7" />
+            <Modeltype value="BasicPrimitives" />
             <Ambient x="0" y="0" z="0" />
-            <Diffuse x="0" y="0" z="0" />
-            <Specular x="0.1" y="0.1" z="0.1" />
+            <Diffuse x="1" y="1" z="1" />
+            <Specular x="1" y="1" z="1" />
             <HighlightColor x="1" y="0" z="0" />
             <Shininess value="0.25" />
             <MaximumShininess value="128" />
-            <Modeltype value="BasicPrimitives" />
             <RegisterForHighlight value="false" />
-            <Highlight value="true" />
+            <Highlight value="false" />
             <NoTextures value="true" />
             <Thickness value="0.05" />
             <ScaleUp value="1.05" />
         </MaterialComponent>
-        <RenderComponent>
+        <MeshComponent>
+            <Key value="" />
             <Color x="1" y="1" z="1" />
             <TextureIdx x="0" y="0" />
             <IsQuad value="false" />
@@ -83,7 +102,7 @@
                 <Col2 _20="0" _21="0" _22="0" _23="0" />
                 <Col3 _30="0" _31="0" _32="0" _33="0" />
             </ModelNDC_XForm>
-            <ModelRef value="cube" />
+            <ModelRef value="Cylinder" />
             <ShaderRef value="shader3DShdrpgm" />
             <ID value="7" />
             <Name value="" />
@@ -91,66 +110,74 @@
             <LayerNum value="0" />
             <Transparency value="1" />
             <LightColor x="1" y="1" z="1" w="1" />
-        </RenderComponent>
+        </MeshComponent>
         <TransformComponent>
-            <Position x="-17.5" y="2.5" z="2.5" />
+            <Position x="0" y="0" z="0" />
             <Rotation x="0" y="0" z="0" />
             <Scale x="5" y="5" z="5" />
         </TransformComponent>
         <AABBComponent>
-            <Center x="-17.5" y="2.5" z="2.5" />
-            <Min x="-20" y="0" z="0" />
-            <Max x="-15" y="5" z="5" />
+            <Center x="0" y="0" z="0" />
+            <Min x="-2.5" y="-2.5" z="-2.5" />
+            <Max x="2.5" y="2.5" z="2.5" />
         </AABBComponent>
-        <TextureComponent>
-            <ID value="7" />
-            <TextureType value="TT_UNASSIGNED" />
-            <TextureKey value="" />
-            <HasTexture value="true" />
-            <TextureRef value="orange" />
-        </TextureComponent>
     </Entity_2>
     <Entity_3 ID="8">
         <EntityComponent>
-            <Name value="Pyramid" />
-            <Tag value="Pyramid" />
+            <Name value="Cube" />
+            <Tag value="Cube" />
             <IsActive value="false" />
         </EntityComponent>
         <MaterialComponent>
-            <ID value="8" />
+            <Modeltype value="BasicPrimitives" />
             <Ambient x="0" y="0" z="0" />
-            <Diffuse x="0" y="0" z="0" />
-            <Specular x="0.1" y="0.1" z="0.1" />
+            <Diffuse x="1" y="1" z="1" />
+            <Specular x="1" y="1" z="1" />
             <HighlightColor x="1" y="0" z="0" />
             <Shininess value="0.25" />
             <MaximumShininess value="128" />
-            <Modeltype value="Models3D" />
-            <RegisterForHighlight value="true" />
+            <RegisterForHighlight value="false" />
             <Highlight value="false" />
             <NoTextures value="true" />
             <Thickness value="0.05" />
             <ScaleUp value="1.05" />
         </MaterialComponent>
+        <MeshComponent>
+            <Key value="" />
+            <Color x="1" y="1" z="1" />
+            <TextureIdx x="0" y="0" />
+            <IsQuad value="false" />
+            <ModelNDC_XForm Col="4" Row="4">
+                <Col0 _00="0" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="0" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="0" _23="0" />
+                <Col3 _30="0" _31="0" _32="0" _33="0" />
+            </ModelNDC_XForm>
+            <ModelRef value="Cube" />
+            <ShaderRef value="shader3DShdrpgm" />
+            <ID value="8" />
+            <Name value="" />
+            <NewLayer value="0" />
+            <LayerNum value="0" />
+            <Transparency value="1" />
+            <LightColor x="1" y="1" z="1" w="1" />
+        </MeshComponent>
         <TransformComponent>
-            <Position x="7.5" y="2.5" z="2.5" />
+            <Position x="11.5289" y="0" z="2.82145" />
             <Rotation x="0" y="0" z="0" />
             <Scale x="5" y="5" z="5" />
         </TransformComponent>
         <AABBComponent>
-            <Center x="7.5" y="2.5" z="2.5" />
-            <Min x="5" y="0" z="0" />
-            <Max x="10" y="5" z="5" />
+            <Center x="11.5289" y="0" z="2.82145" />
+            <Min x="9.02894" y="-2.5" z="0.321454" />
+            <Max x="14.0289" y="2.5" z="5.32145" />
         </AABBComponent>
-        <MeshComponent3D>
-            <ID value="8" />
-            <Key value="testhouse" />
-        </MeshComponent3D>
         <TextureComponent>
-            <ID value="8" />
+            <ID value="0" />
             <TextureType value="TT_UNASSIGNED" />
-            <TextureKey value="testhouse" />
-            <HasTexture value="false" />
-            <TextureRef value="" />
+            <TextureKey value="" />
+            <HasTexture value="true" />
+            <TextureRef value="orange" />
         </TextureComponent>
     </Entity_3>
     <Entity_4 ID="9">
@@ -160,21 +187,21 @@
             <IsActive value="false" />
         </EntityComponent>
         <MaterialComponent>
-            <ID value="9" />
+            <Modeltype value="BasicPrimitives" />
             <Ambient x="0" y="0" z="0" />
-            <Diffuse x="0" y="0" z="0" />
-            <Specular x="0.1" y="0.1" z="0.1" />
+            <Diffuse x="1" y="1" z="1" />
+            <Specular x="1" y="1" z="1" />
             <HighlightColor x="1" y="0" z="0" />
             <Shininess value="0.25" />
             <MaximumShininess value="128" />
-            <Modeltype value="BasicPrimitives" />
             <RegisterForHighlight value="false" />
             <Highlight value="false" />
             <NoTextures value="true" />
             <Thickness value="0.05" />
             <ScaleUp value="1.05" />
         </MaterialComponent>
-        <RenderComponent>
+        <MeshComponent>
+            <Key value="" />
             <Color x="1" y="1" z="1" />
             <TextureIdx x="0" y="0" />
             <IsQuad value="false" />
@@ -184,7 +211,7 @@
                 <Col2 _20="0" _21="0" _22="0" _23="0" />
                 <Col3 _30="0" _31="0" _32="0" _33="0" />
             </ModelNDC_XForm>
-            <ModelRef value="sphere" />
+            <ModelRef value="Sphere" />
             <ShaderRef value="shader3DShdrpgm" />
             <ID value="9" />
             <Name value="" />
@@ -192,19 +219,19 @@
             <LayerNum value="0" />
             <Transparency value="1" />
             <LightColor x="1" y="1" z="1" w="1" />
-        </RenderComponent>
+        </MeshComponent>
         <TransformComponent>
-            <Position x="-7.5" y="2.5" z="17.5" />
+            <Position x="-12.8933" y="0" z="7.06406" />
             <Rotation x="0" y="0" z="0" />
             <Scale x="5" y="5" z="5" />
         </TransformComponent>
         <AABBComponent>
-            <Center x="-7.5" y="2.5" z="17.5" />
-            <Min x="-10" y="0" z="15" />
-            <Max x="-5" y="5" z="20" />
+            <Center x="0" y="0" z="0" />
+            <Min x="-2.5" y="-2.5" z="-2.5" />
+            <Max x="2.5" y="2.5" z="2.5" />
         </AABBComponent>
         <TextureComponent>
-            <ID value="9" />
+            <ID value="0" />
             <TextureType value="TT_UNASSIGNED" />
             <TextureKey value="" />
             <HasTexture value="true" />
