@@ -53,9 +53,9 @@ namespace Eclipse
 
         engine->GraphicsManager.Pre_Render();
     	
-        ImGuiSetup::Init(EditorState);
+        ImGuiSetup::Init(IsEditorActive);
 
-        if (EditorState)
+        if (IsEditorActive)
             editorManager = std::make_unique<EditorManager>();
 
         /*bool x = false;
@@ -172,7 +172,7 @@ namespace Eclipse
 
             currTime = newTime;
 
-            ImGuiSetup::Begin(EditorState);
+            ImGuiSetup::Begin(IsEditorActive);
 
             if (Game_Clock.get_timeSteps() > 10)
             {
@@ -214,7 +214,7 @@ namespace Eclipse
             // FRAMEBUFFER DRAW ==========================
             engine->GraphicsManager.GlobalFrmeBufferDraw();
 
-            ImGuiSetup::End(EditorState);
+            ImGuiSetup::End(IsEditorActive);
             OpenGL_Context::post_render();
             Timer.tracker.system_end = glfwGetTime();
             Timer.EngineTimer(Timer.tracker);
@@ -224,12 +224,47 @@ namespace Eclipse
         mono.StopMono();
         GraphicsManager.End();
         AssimpManager.CleanUpAllModelsMeshes();
-        ImGuiSetup::Destroy(EditorState);
+        ImGuiSetup::Destroy(IsEditorActive);
         CommandHistory::Clear();
     }
 
     bool Engine::GetEditorState()
     {
-        return EditorState;
+        return IsEditorActive;
+    }
+
+    bool Engine::GetPlayState()
+    {
+        return IsPlaying;
+    }
+
+    bool Engine::GetPauseState()
+    {
+        return IsPaused;
+    }
+
+    bool Engine::GetStepState()
+    {
+        return IsStepping;
+    }
+
+    void Engine::SetEditorState(bool check)
+    {
+        IsEditorActive = check;
+    }
+
+    void Engine::SetPlayState(bool check)
+    {
+        IsPlaying = check;
+    }
+
+    void Engine::SetPauseState(bool check)
+    {
+        IsPaused = check;
+    }
+
+    void Engine::SetStepState(bool check)
+    {
+        IsStepping = check;
     }
 }

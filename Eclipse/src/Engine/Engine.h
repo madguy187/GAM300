@@ -36,9 +36,19 @@ namespace Eclipse
         void Run();
 		PhysicsManager gPhysics;
 
-
         bool GetEditorState();
+        bool GetPlayState();
+        bool GetPauseState();
+        bool GetStepState();
+
+        void SetEditorState(bool check);
+        void SetPlayState(bool check);
+        void SetPauseState(bool check);
+        void SetStepState(bool check);
     private:
-        bool EditorState{ true };
+        bool IsEditorActive{ true };
+        bool IsPlaying{ false };
+        bool IsPaused{ false };
+        bool IsStepping{ false };
     };
 }
