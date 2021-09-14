@@ -257,19 +257,20 @@ namespace Eclipse
 		return ImGui::InputFloat4(finalID.c_str(), vector);
 	}
 
-	bool ImGuiAPI::InputTextWithHint(const char* name, const char* hintText, char* buffer, size_t bufferSize, bool hideName)
+	bool ImGuiAPI::InputTextWithHint(const char* name, const char* hintText, char* buffer, size_t bufferSize,
+		bool hideName, ImGuiInputTextFlags flags)
 	{
 		//Text(name);
 		std::string finalID = HideWidgetName(name, true);
-		InsertSameLine();
-		return ImGui::InputTextWithHint(finalID.c_str(), hintText, buffer, bufferSize);
+		/*InsertSameLine();*/
+		return ImGui::InputTextWithHint(finalID.c_str(), hintText, buffer, bufferSize, flags);
 	}
 
 	bool ImGuiAPI::InputText(const char* name, char* buffer, size_t bufferSize, ImGuiInputTextFlags flag, bool hideName)
 	{
 		//Text(name);
 		std::string finalID = HideWidgetName(name, true);
-		InsertSameLine();
+		/*InsertSameLine();*/
 		return ImGui::InputText(finalID.c_str(), buffer, bufferSize, flag);
 	}
 

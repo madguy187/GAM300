@@ -3,6 +3,7 @@
 #include "ECS/ComponentManager/Components/EntityComponent.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RigidBodyComponent.h"
+#include "Editor/Windows/SwitchViews/TopSwitchViewWindow.h"
 
 namespace Eclipse
 {
@@ -16,6 +17,7 @@ namespace Eclipse
 	{
 		Type = EditorWindowType::EWT_INSPECTOR;
 		WindowName = "Inspector";
+		ScriptListGuiTest.push_back( std::string{} );
 	}
 
 	void InspectorWindow::Unload()
@@ -54,6 +56,7 @@ namespace Eclipse
 			ShowMaterialProperty("Material", currEnt, CompFilter);
 			//ShowMesh3DProperty("Mesh", currEnt, CompFilter);
 			ShowModelInfoProperty("ModelInfo", currEnt, CompFilter);
+			ShowScriptProperty("Script Details", currEnt, CompFilter);
 
 			AddComponentsController(currEnt);
 			RemoveComponentsController(currEnt);
@@ -90,10 +93,7 @@ namespace Eclipse
 					CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<std::string>{ oldName, entCom.Name });
 				}
 
-				/*static char test[256];
-				static std::string testtest;
-				ECGui::DrawInputTextHintWidget("test", "testtest", test, 256);
-				engine->editorManager->Item_.GenericPayloadTarget("TESTING", testtest, "SUCCESSFUL");
+				/*engine->editorManager->Item_.GenericPayloadTarget("TESTING", testtest, "SUCCESSFUL");
 				strcpy(test, testtest.c_str());*/
 			}
 		}
@@ -327,7 +327,7 @@ namespace Eclipse
 				std::map<std::string, TextureType> _Map = { {"TT_UNASSIGNED",TextureType::TT_UNASSIGNED}, {"TT_2D",TextureType::TT_2D},
 															{"TT_3D",TextureType::TT_3D} };
 
-				ComboListSettings settings = { "Texture Type"  , _TextureVector[_Texture.ComboIndex].c_str(),false };
+				ComboListSettings settings = { "Texture Type"};
 
 				ECGui::DrawTextWidget<const char*>("KEY ID: ", "");
 				ECGui::InsertSameLine();
@@ -389,7 +389,7 @@ namespace Eclipse
 				std::map<std::string, MaterialComponent::ModelType> _Map = { {"None",MaterialComponent::ModelType::None}, {"BasicPrimitives",MaterialComponent::ModelType::BasicPrimitives},
 															{"Models3D",MaterialComponent::ModelType::Models3D}};
 				
-				ComboListSettings settings = {"Model Type" , _ModelVector[_Material.ComboIndex].c_str(),false};
+				ComboListSettings settings = {"Model Type"};
 
 				ECGui::DrawTextWidget<const char*>("Model Type", "");
 				ECGui::CreateComboList(settings, _ModelVector, _Material.ComboIndex);
@@ -451,7 +451,7 @@ namespace Eclipse
 
 				auto& _ModelInfo = engine->world.GetComponent<ModeLInforComponent>(ID);
 
-				ComboListSettings settings = { "Texture Type"  , _ModelInfoVector[_ModelInfo.ComboIndex].c_str(),false };
+				ComboListSettings settings{ "Texture Type"};
 				
 				ECGui::DrawTextWidget<const char*>("Model Directory: ", "");
 				ECGui::InsertSameLine();
@@ -465,6 +465,77 @@ namespace Eclipse
 				_ModelInfo.type = _Map[_ModelInfoVector[_ModelInfo.ComboIndex]];
 			}
 		}
+		return false;
+	}
+
+	bool InspectorWindow::ShowScriptProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+	{
+		/*
+		* FOR NICO
+		* When script comp is up, just replace the entity com here with ur script,
+		* and the vector with the vector of stdstrings in ur script com
+		*/
+		if (engine->world.CheckComponent<EntityComponent>(ID))
+		{
+			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+			{
+				auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
+
+				ECGui::DrawTextWidget<const char*>(my_strcat("List of Scripts (", 
+					entCom.ScriptListComTest.size(), "):").c_str(), "");
+
+				for (size_t i = 0; i < entCom.ScriptListComTest.size(); ++i)
+				{
+					if (!IsRemovingScripts)
+					{
+						ECGui::DrawInputTextHintWidget(my_strcat("ScriptName", i + 1).c_str(), "Drag Script files here",
+							const_cast<char*>(entCom.ScriptListComTest[i].c_str()), 256,
+							true, ImGuiInputTextFlags_ReadOnly);
+						engine->editorManager->DragAndDropInst_.StringPayloadTarget("cs", entCom.ScriptListComTest[i], "Script File inserted.");
+					}
+					else
+					{
+						bool selected = false;
+
+						if (ECGui::CreateSelectableButton(my_strcat(entCom.ScriptListComTest[i], " ", i + 1).c_str(), &selected))
+						{
+							auto posItr = entCom.ScriptListComTest.begin() + i;
+							entCom.ScriptListComTest.erase(posItr);
+						}
+					}
+				}
+
+				if (!IsRemovingScripts)
+				{
+					if (ECGui::ButtonBool("Add Script"))
+					{
+						std::string fucknicosmother;
+						fucknicosmother.reserve(256);
+						entCom.ScriptListComTest.push_back(fucknicosmother);
+					}
+
+					ECGui::InsertSameLine();
+
+					if (ECGui::ButtonBool("Remove Script"))
+					{
+						IsRemovingScripts = true;
+					}
+				}
+				else
+				{
+					if (ECGui::ButtonBool("Cancel Remove"))
+					{
+						IsRemovingScripts = false;
+					}
+				}
+				
+				/*PopUpButtonSettings settings{ "Remove Script", "Removing script" };
+				ECGui::BeginPopUpButtonList<void(std::vector<std::string>&)>(settings, 
+					std::bind(&InspectorWindow::RemoveElementFromVectorStringList,
+					this, std::placeholders::_1), entCom.ScriptListComTest);*/
+			}
+		}
+
 		return false;
 	}
 	
@@ -559,6 +630,10 @@ namespace Eclipse
 						ComponentRegistry<TextureComponent>("TextureComponent", ID, entCom.Name,
 							EditComponent::EC_ADDCOMPONENT);
 						break;
+					case str2int("ModeLInforComponent"):
+						ComponentRegistry<ModeLInforComponent>("ModeLInforComponent", ID, entCom.Name,
+							EditComponent::EC_ADDCOMPONENT);
+						break;
 					}
 				}
 			}
@@ -620,6 +695,10 @@ namespace Eclipse
 						break;
 					case str2int("TextureComponent"):
 						ComponentRegistry<TextureComponent>("TextureComponent", ID, entCom.Name,
+							EditComponent::EC_REMOVECOMPONENT);
+						break;
+					case str2int("ModeLInforComponent"):
+						ComponentRegistry<ModeLInforComponent>("ModeLInforComponent", ID, entCom.Name,
 							EditComponent::EC_REMOVECOMPONENT);
 						break;
 					}
@@ -777,6 +856,20 @@ namespace Eclipse
 
 		}
 	}
+
+	void InspectorWindow::RemoveElementFromVectorStringList(std::vector<std::string>& vecList)
+	{
+		for (size_t i = 0; i < vecList.size(); ++i)
+		{
+			bool selected = false;
+
+			if (ECGui::CreateSelectableButton(vecList[i].c_str(), &selected))
+			{
+				auto pos = vecList.begin() + i;
+				vecList.erase(pos);
+			}
+		}
+	}
 	
 	template <typename TComponents>
 	void InspectorWindow::AddComponentsFeedback(const char* Components, const std::string& name, Entity ID, bool exist)
@@ -809,6 +902,4 @@ namespace Eclipse
 			EDITOR_LOG_WARN(Comp.c_str());
 		}
 	}
-
-
 }
