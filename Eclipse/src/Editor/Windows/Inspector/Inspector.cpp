@@ -481,24 +481,53 @@ namespace Eclipse
 
 				for (size_t i = 0; i < entCom.ScriptListComTest.size(); ++i)
 				{
-					ECGui::DrawInputTextHintWidget(my_strcat("ScriptName", i).c_str(), "Drag Script files here",
-						const_cast<char*>(entCom.ScriptListComTest[i].c_str()), 256,
-						true, ImGuiInputTextFlags_ReadOnly);
-					engine->editorManager->DragAndDropInst_.StringPayloadTarget("cs", entCom.ScriptListComTest[i], "Script File inserted.");
+					if (!IsRemovingScripts)
+					{
+						ECGui::DrawInputTextHintWidget(my_strcat("ScriptName", i + 1).c_str(), "Drag Script files here",
+							const_cast<char*>(entCom.ScriptListComTest[i].c_str()), 256,
+							true, ImGuiInputTextFlags_ReadOnly);
+						engine->editorManager->DragAndDropInst_.StringPayloadTarget("cs", entCom.ScriptListComTest[i], "Script File inserted.");
+					}
+					else
+					{
+						bool selected = false;
+
+						if (ECGui::CreateSelectableButton(my_strcat(entCom.ScriptListComTest[i], " ", i + 1).c_str(), &selected))
+						{
+							auto posItr = entCom.ScriptListComTest.begin() + i;
+							entCom.ScriptListComTest.erase(posItr);
+						}
+					}
 				}
 
-				if (ECGui::ButtonBool("Add Script"))
+				if (!IsRemovingScripts)
 				{
-					static std::string fucknicosmother;
-					fucknicosmother.reserve(256);
-					entCom.ScriptListComTest.push_back(fucknicosmother);
+					if (ECGui::ButtonBool("Add Script"))
+					{
+						std::string fucknicosmother;
+						fucknicosmother.reserve(256);
+						entCom.ScriptListComTest.push_back(fucknicosmother);
+					}
+
+					ECGui::InsertSameLine();
+
+					if (ECGui::ButtonBool("Remove Script"))
+					{
+						IsRemovingScripts = true;
+					}
+				}
+				else
+				{
+					if (ECGui::ButtonBool("Cancel Remove"))
+					{
+						IsRemovingScripts = false;
+					}
 				}
 				
-				ECGui::InsertSameLine();
-				PopUpButtonSettings settings{ "Remove Script", "Removing script" };
+				/*PopUpButtonSettings settings{ "Remove Script", "Removing script" };
 				ECGui::BeginPopUpButtonList<void(std::vector<std::string>&)>(settings, 
 					std::bind(&InspectorWindow::RemoveElementFromVectorStringList,
-					this, std::placeholders::_1), entCom.ScriptListComTest);
+					this, std::placeholders::_1), entCom.ScriptListComTest);*/
 			}
 		}
 

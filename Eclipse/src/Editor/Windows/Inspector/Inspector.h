@@ -69,6 +69,7 @@ namespace Eclipse
 	private:
 		ECVec2 WindowSize_{};
 		std::vector<std::string> ScriptListGuiTest;
+		bool IsRemovingScripts{ false };
 	};
 
 }
