@@ -212,10 +212,10 @@ namespace Eclipse
 
     void AssimpModelManager::PrintLoadedModels()
     {
-        //PrintOutModelsLoadedOnce();
+        PrintOutModelsLoadedOnce();
         //PrintOutModelTextureMap();
         //PrintOutModelMap();
-        PrintOutAllTextures();
+        //PrintOutAllTextures();
     }
 
     void AssimpModelManager::Cleanup(MeshComponent& in)
@@ -295,6 +295,7 @@ namespace Eclipse
             std::cout << " Model Name : " << InvidualModels.GetName() << std::endl;
             std::cout << " Model Directory : " << InvidualModels.GetDirectory() << std::endl;
             std::cout << " Number of Textures : " << InvidualModels.GetNumberOfTextures() << std::endl;
+            std::cout << " Number of Meshes : " << InvidualModels.GetMesh().size() << std::endl;
             InvidualModels.GetTextureNames();
             std::cout << std::endl;
         }

@@ -14,15 +14,6 @@
 #include "ECS/ComponentManager/Components/TextureComponent.h"
 #include "ECS/ComponentManager/Components/ModelInfoComponent.h"
 
-
-/*************************************************************************
-  0: AssimpModelContainerV2
-	 Creates an instance of every model with everything , Mesh , Textures and materials
-
-  1:
-
-*************************************************************************/
-
 namespace Eclipse
 {
 	typedef std::unordered_map<unsigned int, AssimpModel*> AssimpModelContainer;
@@ -42,6 +33,9 @@ namespace Eclipse
 
 		// Model Information
 		std::unordered_map<std::string, std::string> ModelMap;
+
+		// Single Meshes
+		std::unordered_map<std::string, std::unique_ptr<Mesh>> SingleMeshMap;
 	public:
 		// Get Current MeshComponent Container
 		MeshModelContainer GetMeshContainer();

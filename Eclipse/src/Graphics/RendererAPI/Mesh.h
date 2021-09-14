@@ -32,12 +32,14 @@ namespace Eclipse
         aiColor4D Ambient;
         std::vector<Vertex> Vertices;
         std::vector<unsigned int> Indices;
+        std::string MeshName;
+
         void Setup();
     public:
         Mesh(std::vector<Texture> textures = {});
         Mesh(aiColor4D diff, aiColor4D spec);
-        Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures = {});
-        Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiColor4D diffuse, aiColor4D specular, aiColor4D ambient, bool in);
+        Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::string namein , std::vector<Texture> textures = {});
+        Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiColor4D diffuse, aiColor4D specular, aiColor4D ambient, bool in, std::string namein);
         Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiColor4D diffuse, aiColor4D spec, bool in);
         void SetMaterialDiffuse(float x, float y, float z);
         void SetMaterialSpecular(float x, float y, float z);

@@ -27,6 +27,7 @@ namespace Eclipse
 
         bool NoTextures = false;
         std::vector<Texture> textures;
+        std::string MeshName;
     };
 
     class AssimpModel
@@ -44,7 +45,7 @@ namespace Eclipse
         std::vector<glm::vec3> AllVertices;
         std::vector<MeshData> meshData;
 
-        void ProcessMesh(aiMesh* mesh, const aiScene* scene);
+        void ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string& MeshName);
         std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type);
         void ProcessNode(aiNode* node, const aiScene* scene);
         float GetLargestAxisValue(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);

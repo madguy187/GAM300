@@ -77,13 +77,15 @@ namespace Eclipse
         // process all meshes
         for (unsigned int i = 0; i < node->mNumMeshes; i++)
         {
+            std::string NodeName = node->mName.data;
             aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-            ProcessMesh(mesh, scene);
+            ProcessMesh(mesh, scene, NodeName);
         }
 
         // process all child nodes
         for (unsigned int i = 0; i < node->mNumChildren; i++)
         {
+            //std::cout << NameOfModel << " : " << node->mChildren[i]->mName.data << std::endl;
             ProcessNode(node->mChildren[i], scene);
         }
     }
@@ -201,11 +203,11 @@ namespace Eclipse
 
             if (it.NoTextures == false)
             {
-                Meshes.push_back(Mesh(it.vertices, it.indices, it.textures));
+                Meshes.push_back(Mesh(it.vertices, it.indices, it.MeshName, it.textures));
             }
             else
             {
-                Meshes.push_back(Mesh(it.vertices, it.indices, it.Diffuse, it.Specular, it.Ambient, it.NoTextures));
+                Meshes.push_back(Mesh(it.vertices, it.indices, it.Diffuse, it.Specular, it.Ambient, it.NoTextures, it.MeshName));
             }
         }
 
@@ -265,7 +267,7 @@ namespace Eclipse
         return NameOfModel;
     }
 
-    void AssimpModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
+    void AssimpModel::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string& MeshName)
     {
         std::vector<Vertex> vertices;
         std::vector<unsigned int> indices;
@@ -273,6 +275,8 @@ namespace Eclipse
 
         //TEST CODE
         MeshData newMesh;
+
+        newMesh.MeshName = MeshName;
 
         // vertices
         for (unsigned int i = 0; i < mesh->mNumVertices; i++)
