@@ -470,6 +470,11 @@ namespace Eclipse
 
 	bool InspectorWindow::ShowScriptProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
 	{
+		/*
+		* FOR NICO
+		* When script comp is up, just replace the entity com here with ur script,
+		* and the vector with the vector of stdstrings in ur script com
+		*/
 		if (engine->world.CheckComponent<EntityComponent>(ID))
 		{
 			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
