@@ -203,10 +203,12 @@ namespace Eclipse
 
             if (it.NoTextures == false)
             {
+                //auto MeshID = engine->world.CreateEntity();
                 Meshes.push_back(Mesh(it.vertices, it.indices, it.MeshName, it.textures));
             }
             else
             {
+                //auto MeshID = engine->world.CreateEntity();
                 Meshes.push_back(Mesh(it.vertices, it.indices, it.Diffuse, it.Specular, it.Ambient, it.NoTextures, it.MeshName));
             }
         }

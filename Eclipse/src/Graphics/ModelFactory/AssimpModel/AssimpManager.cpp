@@ -122,7 +122,7 @@ namespace Eclipse
 
         // Check Main Uniforms For each Model
         // Translation done here for each model
-        CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ID, box);
+        (shdrpgm, _camera, FrameBufferID, ID, box);
 
         if (_renderMode == FrameBuffer::RenderMode::Fill_Mode)
         {
@@ -134,7 +134,6 @@ namespace Eclipse
             Render(shdrpgm, GL_LINE, FrameBufferID, ModelMesh, ID);
         }
 
-        shdrpgm.UnUse();
     }
 
     void AssimpModelManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID, AABB_* box)
@@ -250,6 +249,13 @@ namespace Eclipse
         sprite.Meshes = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetMesh();
         sprite.Textures_loaded = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetTextures();
 
+        for (int i = 0; i < sprite.Meshes.size(); i++)
+        {
+            auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
+            engine->world.AddComponent(MeshID, ChildTransformComponent{});
+            sprite.Meshes[i].SetID(MeshID);
+        }
+
         // If got TextureComponent
         if (engine->world.CheckComponent<TextureComponent>(id))
         {
@@ -274,6 +280,33 @@ namespace Eclipse
     {
         for (unsigned int i = 0; i < in.Meshes.size(); i++)
         {
+            if (!engine->world.CheckComponent<ChildTransformComponent>(in.Meshes[i].GetMeshID()))
+                continue;
+
+            GLint uModelToNDC_ = shader.GetLocation("uModelToNDC");
+            GLuint model_ = shader.GetLocation("model");
+
+            auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+            auto& Transform = engine->world.GetComponent<ChildTransformComponent>(in.Meshes[i].GetMeshID());
+
+            glm::vec3 pos = { 0,5,0 };
+            glm::vec3 Scale = { 5,5,5 };
+
+            if (uModelToNDC_ >= 0)
+            {
+                glm::mat4 mModelNDC;
+                glm::mat4 model = glm::mat4(1.0f);
+                model = glm::translate(model, Transform.ChildPosition.ConvertToGlmVec3Type());
+                model = glm::rotate(model, glm::radians(Transform.ChildRotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+                model = glm::rotate(model, glm::radians(Transform.ChildRotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+                model = glm::rotate(model, glm::radians(Transform.ChildRotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+                model = glm::scale(model, Transform.ChildScale.ConvertToGlmVec3Type());
+                mModelNDC = _camera.projMtx * _camera.viewMtx * model;
+                glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
+                glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
+            }
+
+            // Each Mesh Render
             in.Meshes[i].Render(shader, MOde, ModelID, i);
         }
     }

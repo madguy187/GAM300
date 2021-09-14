@@ -13,6 +13,8 @@
 #include "Graphics/Grid/IAABB.h"
 #include "Graphics/Grid/AABB.h"
 
+#include "ECS/ComponentManager/Components/ChildTransformComponent.h"
+
 namespace Eclipse
 {
     //TEST CODE
@@ -61,7 +63,7 @@ namespace Eclipse
         AssimpModel(bool noTex, std::string& NameOfModels, std::string& Directorys, std::vector<Mesh> Meshess, std::vector<Texture> Textures_loadeds);
 
         void LoadAssimpModel(std::string path);
-        void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID , unsigned int id);
+        void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, unsigned int id);
         void Cleanup();
         void SetName(std::string& name);
         std::string GetName();

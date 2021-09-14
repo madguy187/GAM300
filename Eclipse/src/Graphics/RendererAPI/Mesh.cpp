@@ -146,6 +146,16 @@ namespace Eclipse
         }
     }
 
+    unsigned int Mesh::GetMeshID()
+    {
+        return ID;
+    }
+
+    void Mesh::SetID(unsigned int MeshId)
+    {
+        ID = MeshId;
+    }
+
     std::vector<Vertex>& Mesh::GetVertices()
     {
         return Vertices;

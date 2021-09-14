@@ -238,7 +238,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
 
         engine->world.AddComponent(ID, ModeLInforComponent{});
         engine->world.AddComponent(ID, MaterialComponent{ MaterialComponent::ModelType::Models3D });
-        engine->world.AddComponent(ID, MeshComponent{ engine->AssimpManager.GetKey("dog") });
+        engine->world.AddComponent(ID, MeshComponent{ engine->AssimpManager.GetKey("testhouse") });
         engine->world.AddComponent(ID, TextureComponent{});
         engine->AssimpManager.InsertModel(ID);
     }

@@ -14,6 +14,7 @@
 #include "ECS/ComponentManager/Components/ModelInfoComponent.h"
 #include "ECS/ComponentManager/Components/ParentChildComponent.h"
 #include "ECS/ComponentManager/Components/LightComponent.h"
+#include "ECS/ComponentManager/Components/ChildTransformComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
@@ -80,6 +81,7 @@ namespace Eclipse
         world.RegisterComponent<ModeLInforComponent>();
         world.RegisterComponent<ParentChildComponent>();
         world.RegisterComponent<LightComponent>();
+        world.RegisterComponent<ChildTransformComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();

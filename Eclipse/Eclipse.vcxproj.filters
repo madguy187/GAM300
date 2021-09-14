@@ -617,6 +617,7 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\ChildTransformComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -911,5 +912,9 @@
       <Filter>Time</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Assets\Shaders\Mesh\Mesh.frag" />
+    <None Include="src\Assets\Shaders\Mesh\Mesh.vert" />
   </ItemGroup>
 </Project>

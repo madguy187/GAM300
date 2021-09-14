@@ -57,6 +57,7 @@ namespace Eclipse
 			//ShowMesh3DProperty("Mesh", currEnt, CompFilter);
 			ShowModelInfoProperty("ModelInfo", currEnt, CompFilter);
 			ShowScriptProperty("Script Details", currEnt, CompFilter);
+			ShowChildTransformProperty("ChildTransform", currEnt, CompFilter);
 
 			AddComponentsController(currEnt);
 			RemoveComponentsController(currEnt);
@@ -117,6 +118,28 @@ namespace Eclipse
 
 				ECGui::DrawTextWidget<const char*>("Scale", "");
 				ECGui::DrawSliderFloat3Widget("TransScale", &transCom.scale);
+			}
+		}
+
+		return false;
+	}
+
+	bool InspectorWindow::ShowChildTransformProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+	{
+		if (engine->world.CheckComponent<ChildTransformComponent>(ID))
+		{
+			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+			{
+				auto& transCom = engine->world.GetComponent<ChildTransformComponent>(ID);
+
+				ECGui::DrawTextWidget<const char*>("Position", "");
+				ECGui::DrawSliderFloat3Widget("TransVec", &transCom.ChildPosition, true, -50.f, 50.f);
+
+				ECGui::DrawTextWidget<const char*>("Rotation", "");
+				ECGui::DrawSliderFloat3Widget("TransRot", &transCom.ChildRotation, true, -360.f, 360.f);
+
+				ECGui::DrawTextWidget<const char*>("Scale", "");
+				ECGui::DrawSliderFloat3Widget("TransScale", &transCom.ChildScale);
 			}
 		}
 
