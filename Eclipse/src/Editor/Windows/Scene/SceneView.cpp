@@ -51,10 +51,11 @@ namespace Eclipse
 		/*std::cout << "SceneBuffer Size: " << mSceneBufferSize.x << " " << mSceneBufferSize.y << std::endl;*/
 		/*std::cout << "SceneBuffer Pos: " << mSceneBufferPos.x << " " << mSceneBufferPos.y << std::endl;
 		std::cout << "CursorScreen Pos: " << mCursorScreenPos.x << " " << mCursorScreenPos.y << std::endl;*/
+		RenderSceneHeader();
 
 		// Set Image size
 		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
-			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+			ImVec2{ mViewportSize.x, mViewportSize.y * 0.93f }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 		//// ImGuizmo Logic
 		if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
@@ -235,6 +236,18 @@ namespace Eclipse
 			if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
 				engine->editorManager->SetSelectedEntity(engine->gPicker.GetCurrentCollisionID());
 		}
+	}
+
+	void SceneWindow::RenderSceneHeader()
+	{
+		ECGui::InsertSameLine(mViewportSize.x / 2.35f);
+		if (ECGui::ButtonBool("Play " ICON_FA_PLAY)) {}
+
+		ECGui::InsertSameLine();
+		if (ECGui::ButtonBool("Pause " ICON_FA_PAUSE)) {}
+
+		ECGui::InsertSameLine();
+		if (ECGui::ButtonBool("Step " ICON_FA_STEP_FORWARD)) {}
 	}
 
 	void SceneWindow::OnCameraMoveEvent()
