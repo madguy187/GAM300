@@ -25,8 +25,6 @@ namespace Eclipse
 	class AssimpModelManager
 	{
 	private:
-		// Container to store Models who are loaded once
-		std::unordered_map<std::string, std::unique_ptr<AssimpModel>> AssimpLoadedModels;
 
 		// Name of Model , < MeshIndex, Texture Container > 
 		std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>> >LoadedTexturesV2;
@@ -34,9 +32,13 @@ namespace Eclipse
 		// Model Information
 		std::unordered_map<std::string, std::string> ModelMap;
 
+	public:
 		// Single Meshes
 		std::unordered_map<std::string, std::unique_ptr<Mesh>> SingleMeshMap;
-	public:
+
+		// Container to store Models who are loaded once
+		std::unordered_map<std::string, std::unique_ptr<AssimpModel>> AssimpLoadedModels;
+
 		// Get Current MeshComponent Container
 		MeshModelContainer GetMeshContainer();
 		// Ger how many Models in Container
@@ -70,6 +72,9 @@ namespace Eclipse
 		std::string GetKey(const std::string& in);
 		// Destructor
 		~AssimpModelManager();
+		void SetMeshComponent(unsigned int ID, std::string);
+		void Render(Shader& shader, GLenum mode, unsigned int id, MeshComponent& in);
+		void SetSingleMesh(unsigned int ID, std::string& MeshName);
 
 		///////////////////////////////////////////////////////////////////////////////////////////
 		// FDebug PrintOuts
@@ -77,7 +82,9 @@ namespace Eclipse
 		void PrintOutModelsLoadedOnce(); // Print Out the names of all the models loaded once
 		void PrintOutModelTextureMap();  // Print out the names of the textures mapped to the MeshIndex of the model
 		void PrintOutModelMap(); // Print out Model Name and Directory of the loaded Models
-		void PrintOutAllTextures(); 
+		void PrintOutAllTextures();
+		void PrintOutAllMeshes();
+
 
 	private:
 		//

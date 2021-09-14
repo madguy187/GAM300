@@ -22,22 +22,21 @@ namespace Eclipse
     class Mesh
     {
     private:
+        void Setup();
+    public:
+        std::string MeshName;
         unsigned int VBO;
         unsigned int VAO;
         unsigned int EBO;
         bool NoTex;
-        std::vector<Texture> Textures;
         aiColor4D Diffuse;
         aiColor4D Specular;
         aiColor4D Ambient;
         std::vector<Vertex> Vertices;
         std::vector<unsigned int> Indices;
-
-        std::string MeshName;
+        std::vector<Texture> Textures;
         unsigned int ID = 0; // Entity ID 
 
-        void Setup();
-    public:
         Mesh(std::vector<Texture> textures = {});
         Mesh(aiColor4D diff, aiColor4D spec);
         Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::string namein, std::vector<Texture> textures);
@@ -49,6 +48,7 @@ namespace Eclipse
         void GetAllTextures();
         unsigned int GetMeshID();
         void SetID(unsigned int MeshId);
+        std::string GetMeshName();
 
         std::vector<Vertex>& GetVertices();
         unsigned int GetVBOID();

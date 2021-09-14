@@ -235,13 +235,32 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     case 14:
     {
         //engine->LightManager.CreateLights(Eclipse::TypesOfLights::SPOTLIGHT, ID);
-        //engine->world.DestroyEntity(ID);
 
-        engine->world.AddComponent(ID, ModeLInforComponent{});
+        // Single Mesh
+        engine->world.AddComponent(ID, MeshComponent{});
+        engine->AssimpManager.SetMeshComponent(ID, "Object_5");
+        auto& Mesh = engine->world.GetComponent<MeshComponent>(ID);
+        engine->world.AddComponent(ID, ModeLInforComponent{ Mesh.MeshName });
         engine->world.AddComponent(ID, MaterialComponent{ MaterialComponent::ModelType::Models3D });
-        engine->world.AddComponent(ID, MeshComponent{ engine->AssimpManager.GetKey("testhouse") });
         engine->world.AddComponent(ID, TextureComponent{});
-        engine->AssimpManager.InsertModel(ID);
+        engine->AssimpManager.SetSingleMesh(ID);
+
+        // Prefabs
+        std::string hhi = engine->AssimpManager.GetKey("testhouse");
+        for (int i = 0; i < engine->AssimpManager.AssimpLoadedModels["testhouse"]->GetMesh().size(); i++)
+        {
+            auto& name = engine->AssimpManager.AssimpLoadedModels["testhouse"]->GetMesh()[i].GetMeshName();
+
+            auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
+            engine->world.AddComponent(MeshID, MeshComponent{});
+            engine->AssimpManager.SetMeshComponent(MeshID, name);
+            auto& Mesh = engine->world.GetComponent<MeshComponent>(MeshID);
+            engine->world.AddComponent(MeshID, ModeLInforComponent{ Mesh.MeshName });
+            engine->world.AddComponent(MeshID, MaterialComponent{ MaterialComponent::ModelType::Models3D });
+            engine->world.AddComponent(MeshID, TextureComponent{});
+            engine->AssimpManager.SetSingleMesh(MeshID, name);
+        }
+
     }
     break;
     }

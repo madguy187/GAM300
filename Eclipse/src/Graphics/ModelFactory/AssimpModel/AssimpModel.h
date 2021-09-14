@@ -48,7 +48,7 @@ namespace Eclipse
         std::vector<MeshData> meshData;
 
         void ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string& MeshName);
-        std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type);
+        std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type, std::string& MeshName);
         void ProcessNode(aiNode* node, const aiScene* scene);
         float GetLargestAxisValue(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         void ComputeAxisMinMax(std::vector<glm::vec3>& vertices, std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);

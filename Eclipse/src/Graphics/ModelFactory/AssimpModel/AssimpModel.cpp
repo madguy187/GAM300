@@ -203,13 +203,15 @@ namespace Eclipse
 
             if (it.NoTextures == false)
             {
-                //auto MeshID = engine->world.CreateEntity();
-                Meshes.push_back(Mesh(it.vertices, it.indices, it.MeshName, it.textures));
+                Mesh NewMesh(it.vertices, it.indices, it.MeshName, it.textures);
+                Meshes.push_back(NewMesh);
+                engine->AssimpManager.SingleMeshMap.emplace(it.MeshName, std::make_unique<Mesh>(NewMesh));
             }
             else
             {
-                //auto MeshID = engine->world.CreateEntity();
-                Meshes.push_back(Mesh(it.vertices, it.indices, it.Diffuse, it.Specular, it.Ambient, it.NoTextures, it.MeshName));
+                Mesh NewMesh(it.vertices, it.indices, it.Diffuse, it.Specular, it.Ambient, it.NoTextures, it.MeshName);
+                Meshes.push_back(NewMesh);
+                engine->AssimpManager.SingleMeshMap.emplace(it.MeshName,std::make_unique<Mesh>(NewMesh));
             }
         }
 
@@ -345,12 +347,12 @@ namespace Eclipse
                 newMesh.NoTextures = false;
 
                 // diffuse maps
-                std::vector<Texture> diffuseMaps = LoadTextures(material, aiTextureType_DIFFUSE);
+                std::vector<Texture> diffuseMaps = LoadTextures(material, aiTextureType_DIFFUSE, newMesh.MeshName);
                 textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
                 newMesh.textures.insert(newMesh.textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
                 // specular maps
-                std::vector<Texture> specularMaps = LoadTextures(material, aiTextureType_SPECULAR);
+                std::vector<Texture> specularMaps = LoadTextures(material, aiTextureType_SPECULAR, newMesh.MeshName);
                 textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
                 newMesh.textures.insert(newMesh.textures.end(), specularMaps.begin(), specularMaps.end());
 
@@ -389,7 +391,7 @@ namespace Eclipse
         // return Mesh(vertices, indices, textures);
     }
 
-    std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType type)
+    std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType type , std::string& MeshName)
     {
         std::vector<Texture> textures;
 
@@ -412,7 +414,7 @@ namespace Eclipse
                 {
                     textures.push_back(Textures_loaded[j]);
                     std::unique_ptr<Texture> ptr(new Texture(Textures_loaded[j]));
-                    engine->AssimpManager.InsertTextures(NameOfModel, std::move(ptr), MeshIndex);
+                    engine->AssimpManager.InsertTextures(MeshName, std::move(ptr), MeshIndex);
 
                     skip = true;
                     break;
@@ -426,10 +428,10 @@ namespace Eclipse
                 textures.push_back(tex);
                 Textures_loaded.push_back(tex);
 
-                Graphics::textures.emplace(NameOfModel, tex);
+                Graphics::textures.emplace(MeshName, tex);
 
                 std::unique_ptr<Texture> ptr(new Texture(tex));
-                engine->AssimpManager.InsertTextures(NameOfModel, std::move(ptr), MeshIndex);
+                engine->AssimpManager.InsertTextures(MeshName, std::move(ptr), MeshIndex);
 
             }
         }

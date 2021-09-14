@@ -156,6 +156,11 @@ namespace Eclipse
         ID = MeshId;
     }
 
+    std::string Mesh::GetMeshName()
+    {
+        return MeshName;
+    }
+
     std::vector<Vertex>& Mesh::GetVertices()
     {
         return Vertices;
