@@ -16,6 +16,7 @@ namespace Eclipse
 		memset(searchItemBuffer, 0, 128);
 		memset(searchFolderBuffer, 0, 128);
 		buttonSize = { thumbnailSize,thumbnailSize };
+		allExtensions = { {"cs"},{"png"},{"txt"} };
 		ScanAll();
 	}
 
@@ -150,13 +151,20 @@ namespace Eclipse
 								ECGui::EndTreeNode();
 							}
 							engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), secondEntry, refresh, pathMap, CopyFilesAndFolder);
+							for (size_t i = 0; i < allExtensions.size(); ++i)
+							{
+								engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget(allExtensions[i].c_str(), paths, AssetPath.string(), secondEntry, refresh, pathMap, CopyFilesAndFolder);
+							}
 						}
 					}
 					ECGui::EndTreeNode();
 				}
 
 				engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
-
+				for (size_t i = 0; i < allExtensions.size(); ++i)
+				{
+					engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget(allExtensions[i].c_str(), paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
+				}
 				if (!jumpDir && /*ImGui::IsMouseDoubleClicked(0) &&*/ ImGui::IsItemClicked(0))
 				{
 					NextPath(CurrentDir, path);
@@ -353,38 +361,31 @@ namespace Eclipse
 				{ 2,1 });
 			//drag drop
 			engine->editorManager->DragAndDropInst_.StringPayloadSource("ITEM", relativePath.string());
+			//
+ 			//
 
- 
-			engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
+			std::string temp;
+			temp = relativePath.filename().string().c_str();
 
-			// FOR TIAN YU
-
-			/*if (png)
-			*  dragdropfn("PNG")
-			* else if (cs)
-			*  // put in file name without extension
-			*  dragdropfn("cs")
-			* ...
-			*/
-			if (ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
+			switch (InspectorWindow::str2int(temp.substr(temp.find_last_of(".") + 1).c_str()))
 			{
-				std::string temp;
-				temp =relativePath.filename().string().c_str();
-
-				switch (InspectorWindow::str2int(temp.substr(temp.find_last_of(".") + 1).c_str()))
-				{
-				case InspectorWindow::str2int("png"):
-					engine->editorManager->DragAndDropInst_.StringPayloadSource("png", relativePath.string());
-					break;
-				case InspectorWindow::str2int("cs"):
-					engine->editorManager->DragAndDropInst_.StringPayloadSource("cs", relativePath.string());
-					break;
-				case InspectorWindow::str2int("txt"):
-					engine->editorManager->DragAndDropInst_.StringPayloadSource("txt", relativePath.string());
-					break;
-				}
+			case InspectorWindow::str2int("png"):
+				engine->editorManager->DragAndDropInst_.StringPayloadSource("png", relativePath.string());
+				break;
+			case InspectorWindow::str2int("cs"):
+				engine->editorManager->DragAndDropInst_.StringPayloadSource("cs", relativePath.string());
+				break;
+			case InspectorWindow::str2int("txt"):
+				engine->editorManager->DragAndDropInst_.StringPayloadSource("txt", relativePath.string());
+				break;
 			}
 
+			// GetFileName(relativePath.filename().string().c_str())
+			for (size_t i = 0; i < allExtensions.size(); ++i)
+			{
+				engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget(allExtensions[i].c_str(), paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
+			}
+			engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
 
 			if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
 			{
