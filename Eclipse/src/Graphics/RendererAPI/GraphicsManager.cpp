@@ -235,6 +235,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     case 14:
     {
         //engine->LightManager.CreateLights(Eclipse::TypesOfLights::SPOTLIGHT, ID);
+        //engine->world.DestroyEntity(ID);
 
         engine->world.AddComponent(ID, ModeLInforComponent{});
         engine->world.AddComponent(ID, MaterialComponent{ MaterialComponent::ModelType::Models3D });

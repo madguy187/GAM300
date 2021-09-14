@@ -122,7 +122,7 @@ namespace Eclipse
 
         // Check Main Uniforms For each Model
         // Translation done here for each model
-        (shdrpgm, _camera, FrameBufferID, ID, box);
+        CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ID, box);
 
         if (_renderMode == FrameBuffer::RenderMode::Fill_Mode)
         {
@@ -148,30 +148,30 @@ namespace Eclipse
             GLCall(glUniform1f(uniform_var_loc2, material.MaximumShininess));
         }
 
-        if (engine->world.CheckComponent<TransformComponent>(ModelID))
-        {
-            TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(ModelID);
-            GLint uModelToNDC_ = _shdrpgm.GetLocation("uModelToNDC");
-            GLuint model_ = _shdrpgm.GetLocation("model");
+        //if (engine->world.CheckComponent<TransformComponent>(ModelID))
+        //{
+        //    TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(ModelID);
+        //    GLint uModelToNDC_ = _shdrpgm.GetLocation("uModelToNDC");
+        //    GLuint model_ = _shdrpgm.GetLocation("model");
 
-            if (uModelToNDC_ >= 0)
-            {
-                glm::mat4 mModelNDC;
-                glm::mat4 model = glm::mat4(1.0f);
-                model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
-                model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-                model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-                model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-                model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
+        //    if (uModelToNDC_ >= 0)
+        //    {
+        //        glm::mat4 mModelNDC;
+        //        glm::mat4 model = glm::mat4(1.0f);
+        //        model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
+        //        model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+        //        model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+        //        model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+        //        model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
 
-                BoundingRegion br(Transform.position.ConvertToGlmVec3Type(), Transform.scale.ConvertToGlmVec3Type());
-                box->AddInstance(br);
+        //        BoundingRegion br(Transform.position.ConvertToGlmVec3Type(), Transform.scale.ConvertToGlmVec3Type());
+        //        box->AddInstance(br);
 
-                mModelNDC = _camera.projMtx * _camera.viewMtx * model;
-                glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
-                glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
-            }
-        }
+        //        mModelNDC = _camera.projMtx * _camera.viewMtx * model;
+        //        glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
+        //        glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
+        //    }
+        //}
 
         GLuint NoTexures = _shdrpgm.GetLocation("noTex");
         glUniform1i(NoTexures, 0);
@@ -252,7 +252,6 @@ namespace Eclipse
         for (int i = 0; i < sprite.Meshes.size(); i++)
         {
             auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
-            engine->world.AddComponent(MeshID, ChildTransformComponent{});
             sprite.Meshes[i].SetID(MeshID);
         }
 
@@ -280,27 +279,24 @@ namespace Eclipse
     {
         for (unsigned int i = 0; i < in.Meshes.size(); i++)
         {
-            if (!engine->world.CheckComponent<ChildTransformComponent>(in.Meshes[i].GetMeshID()))
+            if (!engine->world.CheckComponent<TransformComponent>(in.Meshes[i].GetMeshID()))
                 continue;
 
             GLint uModelToNDC_ = shader.GetLocation("uModelToNDC");
             GLuint model_ = shader.GetLocation("model");
 
             auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
-            auto& Transform = engine->world.GetComponent<ChildTransformComponent>(in.Meshes[i].GetMeshID());
-
-            glm::vec3 pos = { 0,5,0 };
-            glm::vec3 Scale = { 5,5,5 };
+            auto& Transform = engine->world.GetComponent<TransformComponent>(in.Meshes[i].GetMeshID());
 
             if (uModelToNDC_ >= 0)
             {
                 glm::mat4 mModelNDC;
                 glm::mat4 model = glm::mat4(1.0f);
-                model = glm::translate(model, Transform.ChildPosition.ConvertToGlmVec3Type());
-                model = glm::rotate(model, glm::radians(Transform.ChildRotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-                model = glm::rotate(model, glm::radians(Transform.ChildRotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-                model = glm::rotate(model, glm::radians(Transform.ChildRotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-                model = glm::scale(model, Transform.ChildScale.ConvertToGlmVec3Type());
+                model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
+                model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+                model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+                model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+                model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
                 mModelNDC = _camera.projMtx * _camera.viewMtx * model;
                 glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
                 glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
