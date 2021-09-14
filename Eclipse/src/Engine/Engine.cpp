@@ -180,6 +180,8 @@ namespace Eclipse
             }
 
             EditorSystem::Update();
+            // GRID SYSTEM =============================
+            world.Update<GridSystem>();
 
             for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
             {
@@ -192,9 +194,6 @@ namespace Eclipse
 
             // Reset DebugBoxes =============================
             engine->GraphicsManager.ResetInstancedDebugBoxes();
-
-            // GRID SYSTEM =============================
-            world.Update<GridSystem>();
 
             // LIGHTINGSYSTEM =============================
             world.Update<LightingSystem>();

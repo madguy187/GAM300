@@ -85,6 +85,7 @@ namespace Eclipse
 			Px_Actors[ent] = Px_Physics->createRigidStatic(PxTransform(temptrans));
 
 		AddActorToScene(ent);
+		AttachBoxToActor(ent, 2.5f, 2.5f, 2.5f);
 	}
 
 	void PhysicsManager::ChangeRigidStatic(Entity ent)
@@ -158,7 +159,7 @@ namespace Eclipse
 			std::cout << "creatematerial failed" << std::endl;
 			return;
 		}
-		PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*dynamic_cast<PxRigidActor*>(Px_Actors[ent]), PxBoxGeometry{ hx,hy,hz }, *tempmat);
+		PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(Px_Actors[ent]), PxBoxGeometry{ hx,hy,hz }, *tempmat);
 	}
 
 	void PhysicsManager::AttachSphereToActor(Entity ent, float radius)
@@ -172,7 +173,7 @@ namespace Eclipse
 			std::cout << "creatematerial failed" << std::endl;
 			return;
 		}
-		PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*dynamic_cast<PxRigidActor*>(Px_Actors[ent]), PxSphereGeometry{ radius }, *tempmat);
+		PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(Px_Actors[ent]), PxSphereGeometry{ radius }, *tempmat);
 	}
 
 	void PhysicsManager::AttachCapsuleToActor(Entity ent, float radius,float halfheight)
@@ -213,10 +214,6 @@ namespace Eclipse
 	ECVec3 PhysicsManager::QuattoAngles(PxQuat quat)
 	{
 		ECVec3 temp{0,0,0};
-
-		std::cout << quat.x << std::endl;
-		std::cout << quat.y << std::endl;
-		std::cout << quat.z << std::endl;
 		//x rotation
 		float sinr_cosp = 2 * (quat.w * quat.x + quat.y * quat.z);
 		float cosr_cosp = 1 - 2 * (quat.x * quat.x + quat.y * quat.y);
@@ -297,8 +294,8 @@ namespace Eclipse
 			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setForceAndTorque(tempforce, { 0,0,0 });
 			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setMass(rigid.mass);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setActorFlag(PxActorFlag::eDISABLE_GRAVITY,rigid.enableGravity ? false : true);
-			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setAngularVelocity(tempangVelo);
-			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setAngularDamping(0.f);
+			//static_cast<PxRigidDynamic*>(Px_Actors[ent])->setAngularVelocity(tempangVelo);
+			//static_cast<PxRigidDynamic*>(Px_Actors[ent])->setAngularDamping(0.f);
 		}
 	}
 
@@ -315,6 +312,12 @@ namespace Eclipse
 		transform.position.setZ(temp.p.z);
 		
 		transform.rotation = QuattoAngles(temp.q);
+		
+
+		PxVec3 rb = static_cast<PxRigidBody*>(Px_Actors[ent])->getLinearVelocity();
+		rigid.velocity.setX(rb.x);
+		rigid.velocity.setY(rb.y);
+		rigid.velocity.setZ(rb.z);
 	}
 
 	void PhysicsManager::Simulate()
