@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "MenuComponent.h"
 
-#include "Editor/Utilities/OpenFileDialog.h"
+#include "Editor/Utilities/OpenFileDialog/OpenFileDialog.h"
 #include "Editor/Windows/Scene/SceneView.h"
 #include "Editor/Windows/GameView/GameView.h"
 
