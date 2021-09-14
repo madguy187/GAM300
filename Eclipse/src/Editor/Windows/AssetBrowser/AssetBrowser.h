@@ -105,6 +105,8 @@ namespace Eclipse
 		// converting to small case letters
 		////////////////////////////////
 		std::string LowerCase(const char* buffer);
+
+		std::string GetFileName(const char* buffer);
 		////////////////////////////////
 	};
 }

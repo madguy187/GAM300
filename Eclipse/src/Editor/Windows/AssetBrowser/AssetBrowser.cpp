@@ -154,16 +154,6 @@ namespace Eclipse
 					ECGui::EndTreeNode();
 				}
 
-				// FOR TIAN YU
-
-				/*if (png)
-				*  dragdropfn("PNG")
-				* else if (cs)
-				*  // put in file name without extension
-				*  dragdropfn("cs")
-				* ...
-				*/
-
 				engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
 
 				if (!jumpDir && /*ImGui::IsMouseDoubleClicked(0) &&*/ ImGui::IsItemClicked(0))
@@ -365,6 +355,19 @@ namespace Eclipse
 
 			engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
 
+			// FOR TIAN YU
+
+			/*if (png)
+			*  dragdropfn("PNG")
+			* else if (cs)
+			*  // put in file name without extension
+			*  dragdropfn("cs")
+			* ...
+			*/
+
+
+
+
 			if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
 			{
 				if (dirEntry.is_directory())
@@ -373,6 +376,9 @@ namespace Eclipse
 				}
 				else
 				{
+					std::string temp;
+					temp = GetFileName(relativePath.filename().string().c_str());
+					EDITOR_LOG_INFO(temp.c_str());
 					//do stuff
 				}
 			}
@@ -733,6 +739,21 @@ namespace Eclipse
 		}
 
 		return lowerCaseString.substr(0, lastdot);
+	}
+
+	std::string AssetBrowserWindow::GetFileName(const char* buffer)
+	{
+
+		std::string fileName(buffer);
+
+		size_t lastdot = fileName.find_last_of(".");
+
+		if (lastdot == std::string::npos)
+		{
+			return fileName;
+		}
+
+		return fileName.substr(0, lastdot);
 	}
 
 	bool AssetBrowserWindow::BuffIsEmpty(const char* buffer)
