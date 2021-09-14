@@ -354,7 +354,6 @@ namespace Eclipse
 			//drag drop
 			engine->editorManager->DragAndDropInst_.StringPayloadSource("ITEM", relativePath.string());
 
- 
 			engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
 
 			// FOR TIAN YU
