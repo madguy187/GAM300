@@ -98,6 +98,9 @@
     <ClCompile Include="src\Time\Clock.cpp" />
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\Editor\Windows\SwitchViews\BaseSwitchView.cpp" />
+    <ClCompile Include="src\Editor\Utilities\DragAndDrop\DragAndDrop.cpp" />
+    <ClCompile Include="src\Editor\Utilities\OpenFileDialog\OpenFileDialog.cpp" />
+    <ClCompile Include="src\Editor\Utilities\ParentChild\ParentChild.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h" />
@@ -242,6 +245,9 @@
     <ClInclude Include="src\TypeID\TypeID.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Editor\Windows\SwitchViews\BaseSwitchView.h" />
+    <ClInclude Include="src\Editor\Utilities\DragAndDrop\DragAndDrop.h" />
+    <ClInclude Include="src\Editor\Utilities\OpenFileDialog\OpenFileDialog.h" />
+    <ClInclude Include="src\Editor\Utilities\ParentChild\ParentChild.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\AABB.frag" />
