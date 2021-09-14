@@ -221,7 +221,7 @@ namespace Eclipse
 		static bool DrawInputFloat4Widget(const char* name, ECVec4* vector,
 			bool hideName = true);
 		static bool DrawInputTextHintWidget(const char* name, const char* hintText,
-			char* buffer, size_t bufferSize, bool hideName = true);
+			char* buffer, size_t bufferSize, bool hideName = true, ImGuiInputTextFlags flags = 0);
 		static bool DrawInputTextWidget(const char* name, char* buffer,
 			size_t bufferSize, ImGuiInputTextFlags flag = 0, bool hideName = true);
 

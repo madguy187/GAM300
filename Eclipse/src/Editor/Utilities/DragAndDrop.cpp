@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "DragAndDrop.h"
+#include"Editor/Windows/AssetBrowser/AssetBrowser.h"
 
 namespace Eclipse
 {
@@ -60,7 +61,15 @@ namespace Eclipse
 				switch (type)
 				{
 				case PayloadTargetType::PTT_WIDGET:
-					destination = (const char*)payload->Data;
+					if (id == "cs")
+					{
+						std::filesystem::path temp = ((const char*)payload->Data);
+						destination = AssetBrowserWindow::GetFileName(temp.filename().string().c_str());
+					}
+					else
+					{
+						destination = (const char*)payload->Data;
+					}
 					break;
 				// Create Meshes and instances
 				case PayloadTargetType::PTT_WINDOW:
