@@ -111,11 +111,16 @@ namespace Eclipse
 
 				if (ImGui::BeginPopup("IndexJobList"))
 				{
+					
 					for (int i = 0; i < IM_ARRAYSIZE(IndexJobNames); ++i)
 					{
+					
 						bool selected = false;
+						
 						if (ECGui::CreateSelectableButton(IndexJobNames[i], &selected))
 						{
+							
+							
 							switch (i)
 							{
 							// Move index
@@ -133,6 +138,8 @@ namespace Eclipse
 								break;
 							// Parent Child
 							case 2:
+								
+								engine->editorManager->AddToChild(DestinationIndex_, SourceIndex_);
 								IsIndexJobSelected = false;
 								break;
 							// Cancel

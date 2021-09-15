@@ -259,4 +259,67 @@ namespace Eclipse
 			window->Unload();
 		}
 	}
+
+	void EditorManager::AddToChild(int& parent, int& child)
+	{
+		auto& c = engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(child));
+		auto& p = engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(parent));
+
+		if(p.Child.size() == 0)
+		{
+			p.Child.push_back(c);
+		}
+		else
+		{
+			for (auto it : p.Child)
+			{
+				if (it.Name != c.Name)
+				{
+					p.Child.push_back(c);
+				}
+			}
+		}
+	}
+
+	void EditorManager::GetAllChild(EntityComponent& parent)
+	{
+		//check if parent got child
+
+		for (auto& it : parent.Child)
+		{
+
+			if (ECGui::BeginTreeNode(it.Name.c_str()))
+			{
+				//check if child got child
+				for (auto& childEntity : it.Child)
+				{
+
+					if (ECGui::BeginTreeNode(childEntity.Name.c_str()))
+					{
+
+						GetAllChild(childEntity);
+						
+						ECGui::EndTreeNode();
+					}
+				}
+
+				ECGui::EndTreeNode();
+			}
+			
+		}
+		
+
+	}
+
+	bool EditorManager::HasChild(EntityComponent& parent)
+	{
+		if (parent.Child.size() != 0)
+		{
+			return true;
+		}
+		
+		return false;
+	}
+
+
 }
