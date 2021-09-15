@@ -571,7 +571,7 @@ namespace Eclipse
             if (engine->world.CheckComponent<MeshComponent>(ModelID))
             {
                 auto& InvidualModels = engine->world.GetComponent<MeshComponent>(ModelID);
-                engine->AssimpManager.Render(shdrpgm, mode, FrameBufferID, InvidualModels, ModelID);
+                engine->AssimpManager.Render(shdrpgm, mode, FrameBufferID, InvidualModels, ModelID , CameraComponent::CameraType::Editor_Camera);
             }
 
             // Part 5: Clean up

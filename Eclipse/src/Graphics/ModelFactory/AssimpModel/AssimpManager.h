@@ -62,7 +62,7 @@ namespace Eclipse
 		// Check Current path is correct
 		void TestPath(std::string& path);
 		// Draw function that takes in Mesh Component
-		void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent& in, unsigned int inin);
+		void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent& , unsigned int ,CameraComponent::CameraType );
 		void InsertModelMap(std::string& NameofModel, std::string& Directory);
 		// Using MeshComponent into Container , Pass in key please
 		void InsertModel(unsigned int ID);

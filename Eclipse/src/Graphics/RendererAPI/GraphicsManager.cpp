@@ -236,7 +236,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     {
         //engine->LightManager.CreateLights(Eclipse::TypesOfLights::SPOTLIGHT, ID);
 
-        // Single Mesh
+        //Single Mesh
         std::string hi = "Object_5";
         engine->world.AddComponent(ID, MeshComponent{});
         engine->AssimpManager.SetMeshComponent(ID, hi);
@@ -248,9 +248,9 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
 
         // Prefabs
         //std::string hhi = engine->AssimpManager.GetKey("testhouse");
-        //for (int i = 0; i < engine->AssimpManager.AssimpLoadedModels["testhouse"]->GetMesh().size(); i++)
+        //for (int i = 0; i < engine->AssimpManager.AssimpLoadedModels[hhi]->GetMesh().size(); i++)
         //{
-        //    auto& name = engine->AssimpManager.AssimpLoadedModels["testhouse"]->GetMesh()[i].GetMeshName();
+        //    auto& name = engine->AssimpManager.AssimpLoadedModels[hhi]->GetMesh()[i].GetMeshName();
 
         //    auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
         //    engine->world.AddComponent(MeshID, MeshComponent{});

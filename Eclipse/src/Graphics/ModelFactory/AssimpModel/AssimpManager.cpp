@@ -129,11 +129,11 @@ namespace Eclipse
         if (_renderMode == FrameBuffer::RenderMode::Fill_Mode)
         {
             // Render
-            Render(shdrpgm, GL_FILL, FrameBufferID, ModelMesh, ID);
+            Render(shdrpgm, GL_FILL, FrameBufferID, ModelMesh, ID , _camType);
         }
         else
         {
-            Render(shdrpgm, GL_LINE, FrameBufferID, ModelMesh, ID);
+            Render(shdrpgm, GL_LINE, FrameBufferID, ModelMesh, ID, _camType);
         }
 
     }
@@ -221,8 +221,8 @@ namespace Eclipse
         //PrintOutModelsLoadedOnce();
         //PrintOutModelTextureMap();
         //PrintOutModelMap();
-        PrintOutAllTextures();
-        //PrintOutAllMeshes();
+        //PrintOutAllTextures();
+        PrintOutAllMeshes();
     }
 
     void AssimpModelManager::Cleanup(MeshComponent& in)
@@ -283,7 +283,7 @@ namespace Eclipse
         }
     }
 
-    void AssimpModelManager::Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent& in, unsigned int ModelID)
+    void AssimpModelManager::Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent& in, unsigned int ModelID , CameraComponent::CameraType _camType)
     {
         if (!engine->world.CheckComponent<TransformComponent>(ModelID))
             return;
@@ -291,7 +291,7 @@ namespace Eclipse
         GLint uModelToNDC_ = shader.GetLocation("uModelToNDC");
         GLuint model_ = shader.GetLocation("model");
 
-        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
         auto& Transform = engine->world.GetComponent<TransformComponent>(ModelID);
 
         if (uModelToNDC_ >= 0)
@@ -437,22 +437,22 @@ namespace Eclipse
         glPolygonMode(GL_FRONT_AND_BACK, mode);
 
         // If dont have textures ( Flagged as True )
-        if (0) //NoTex && (!engine->world.CheckComponent<TextureComponent>(id)))
+        if (in.NoTex && (!engine->world.CheckComponent<TextureComponent>(id)))
         {
-            //GLint uniform_var_loc1 = shader.GetLocation("BasicPrimitives");
-            //GLint uniform_var_loc2 = shader.GetLocation("uColor");
-            //GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
-            //GLuint tex_loc = shader.GetLocation("uTex2d");
-            //GLuint diff0 = shader.GetLocation("sdiffuse");
-            //GLuint spec = shader.GetLocation("sspecular");
-            //GLuint Texture = shader.GetLocation("noTex");
+            GLint uniform_var_loc1 = shader.GetLocation("BasicPrimitives");
+            GLint uniform_var_loc2 = shader.GetLocation("uColor");
+            GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
+            GLuint tex_loc = shader.GetLocation("uTex2d");
+            GLuint diff0 = shader.GetLocation("sdiffuse");
+            GLuint spec = shader.GetLocation("sspecular");
+            GLuint Texture = shader.GetLocation("noTex");
 
-            //glUniform1i(uniform_var_loc3, true);
-            //glUniform4f(diff0, Diffuse.r, Diffuse.g, Diffuse.b, Diffuse.a);
-            //glUniform4f(spec, Specular.r, Specular.g, Specular.b, Specular.a);
-            //glUniform1i(Texture, true);
-            //glUniform1i(tex_loc, false);
-            //glUniform1i(uniform_var_loc1, false);
+            glUniform1i(uniform_var_loc3, true);
+            glUniform4f(diff0, in.Diffuse.r, in.Diffuse.g, in.Diffuse.b, in.Diffuse.a);
+            glUniform4f(spec, in.Specular.r, in.Specular.g, in.Specular.b, in.Specular.a);
+            glUniform1i(Texture, true);
+            glUniform1i(tex_loc, false);
+            glUniform1i(uniform_var_loc1, false);
         }
         else
         {
