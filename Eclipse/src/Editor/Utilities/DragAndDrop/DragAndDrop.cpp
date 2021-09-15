@@ -40,6 +40,7 @@ namespace Eclipse
 				break;
 			case PayloadSourceType::PST_IMAGE:
 				// For rendering 2D Image -> Need ask Graphics side
+				std::cout << "hi";
 				break;
 			default:
 				break;
@@ -94,7 +95,6 @@ namespace Eclipse
 
 			if (payload)
 			{
-				std::cout << destination;
 				SourceIndex_ = *((int*)payload->Data);
 				DestinationIndex_ = destination;
 				IsIndexJobSelected = true;
@@ -140,6 +140,7 @@ namespace Eclipse
 								DestinationEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(DestinationIndex_));
 								SourceEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(SourceIndex_));
 								DestinationEntCom->Child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
+								DestinationEntCom->isParent = true;
 								SourceEntCom->IsAChild = true;
 								IsIndexJobSelected = false;
 								break;
