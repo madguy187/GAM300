@@ -94,6 +94,7 @@ namespace Eclipse
 
 			if (payload)
 			{
+				std::cout << destination;
 				SourceIndex_ = *((int*)payload->Data);
 				DestinationIndex_ = destination;
 				IsIndexJobSelected = true;
@@ -116,6 +117,9 @@ namespace Eclipse
 						bool selected = false;
 						if (ECGui::CreateSelectableButton(IndexJobNames[i], &selected))
 						{
+							EntityComponent* DestinationEntCom = nullptr;
+							EntityComponent* SourceEntCom = nullptr;
+
 							switch (i)
 							{
 							// Move index
@@ -133,6 +137,10 @@ namespace Eclipse
 								break;
 							// Parent Child
 							case 2:
+								DestinationEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(DestinationIndex_));
+								SourceEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(SourceIndex_));
+								DestinationEntCom->Child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
+								SourceEntCom->IsAChild = true;
 								IsIndexJobSelected = false;
 								break;
 							// Cancel

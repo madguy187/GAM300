@@ -13,5 +13,6 @@ namespace Eclipse
 		// For Script Testing
 		std::vector<std::string> ScriptListComTest;
 		std::vector<Entity> Child;
+		bool IsAChild = false;
 	};
 }

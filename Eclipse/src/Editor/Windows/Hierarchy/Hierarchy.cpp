@@ -74,38 +74,45 @@ namespace Eclipse
 
 			if (filter.PassFilter(entCom.Name.c_str()))
 			{
+
 				entityName = my_strcat(entCom.Name, " ", list[index]);
-				if (ECGui::CreateSelectableButton(entityName.c_str(), &entCom.IsActive))
+
+				TreeNodeRecursion(entityName, entCom,prev,curr,index);
+
+				if (entCom.Child.empty() && !entCom.IsAChild
+					&& ECGui::CreateSelectableButton(entityName.c_str(), &entCom.IsActive))
 				{
 					if (curr.index == list[index])
 					{
 						entCom.IsActive = true;
 						continue;
 					}
-
+				
 					if (!curr.name.empty())
 					{
 						prev.name = curr.name;
 						prev.index = curr.index;
 					}
-
+				
 					curr.name = entityName;
 					curr.index = list[index];
-
+				
 					if (!prev.name.empty() && curr.name != prev.name)
 					{
 						bool deleted = true;
-
+				
 						if (std::find(list.begin(), list.end(), prev.index) != list.end())
+						{
 							deleted = false;
-
+						}
+				
 						if (!deleted)
 						{
 							auto& prevEntCom = engine->world.GetComponent<EntityComponent>(prev.index);
 							prevEntCom.IsActive = false;
 						}
 					}
-
+				
 					engine->editorManager->SetGlobalIndex(index);
 				}
 
@@ -188,4 +195,67 @@ namespace Eclipse
 			entCom.IsActive = true;
 		}
 	}
+
+	void HierarchyWindow::TreeNodeRecursion(std::string parent, EntityComponent& entCom, EntitySelectionTracker& prev, EntitySelectionTracker& curr,size_t index)
+	{
+		if (!entCom.Child.empty())
+		{
+
+			if (!entCom.IsAChild && ImGui::TreeNodeEx(parent.c_str(), ImGuiTreeNodeFlags_Selected))
+			{
+				for (size_t i = 0; i < entCom.Child.size(); ++i)
+				{
+					auto& entCom1 = engine->world.GetComponent<EntityComponent>(entCom.Child[i]);
+					std::string name = my_strcat(entCom1.Name, " ", entCom.Child[i]);
+
+					if (!entCom1.Child.empty())
+					{
+						TreeNodeRecursion(name, entCom1, prev, curr,index);
+					}
+					else
+					{
+						if (ECGui::CreateSelectableButton(name.c_str(), &entCom.IsActive))
+						{
+							if (curr.index == entCom.Child[i])
+							{
+								entCom.IsActive = true;
+								continue;
+							}
+
+							if (!curr.name.empty())
+							{
+								prev.name = curr.name;
+								prev.index = curr.index;
+							}
+
+							curr.name = name;
+							curr.index = entCom.Child[i];
+
+							if (!prev.name.empty() && curr.name != prev.name)
+							{
+								bool deleted = true;
+
+								if (std::find(entCom.Child.begin(), entCom.Child.end(), prev.index) != entCom.Child.end())
+									deleted = false;
+
+								if (!deleted)
+								{
+									auto& prevEntCom = engine->world.GetComponent<EntityComponent>(prev.index);
+									prevEntCom.IsActive = false;
+								}
+							}
+
+							engine->editorManager->SetGlobalIndex(i);
+						}
+
+					}
+				}
+
+				ECGui::EndTreeNode();
+			}
+		}
+	}
+	
+
 }
+
