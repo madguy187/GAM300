@@ -44,8 +44,6 @@ namespace Eclipse
 		template <typename TComponents>
 		void RemoveComponentsFeedback(const char* Components, const std::string& name, Entity ID, bool exist);
 
-		void viewChild(const char* name, Entity ID, ImGuiTextFilter& filter);
-
 		template <typename TComponents>
 		void ComponentRegistry(const char* CompName, Entity ID,
 			const std::string EntityName, EditComponent method)

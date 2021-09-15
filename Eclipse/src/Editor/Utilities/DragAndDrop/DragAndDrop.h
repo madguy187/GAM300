@@ -21,7 +21,6 @@ namespace Eclipse
 			std::vector<std::filesystem::path>> pathMap,bool& CopyMode);
 
 		void ClearAllFiles(std::string& folderName, std::string& parentPath, bool& refreshBrowser);
-
 	private:
 		std::map< std::string, std::string> files;
 		std::map< std::string, std::string> deletefiles;

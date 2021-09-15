@@ -45,7 +45,6 @@ namespace Eclipse
 
 			ECGui::PushItemWidth(WindowSize_.getX());
 			ShowEntityProperty("Tag", currEnt, CompFilter);
-			viewChild("Parent-Child", currEnt, CompFilter);
 			ShowTransformProperty("Transform", currEnt, CompFilter);
 			ShowPointLightProperty("PointLight", currEnt, CompFilter);
 			ShowSpotLightProperty("SpotLight", currEnt, CompFilter);
@@ -591,10 +590,6 @@ namespace Eclipse
 				{
 					switch (str2int(engine->world.GetAllComponentNames()[i].c_str()))
 					{
-					case str2int("EntityComponent"):
-						ComponentRegistry<EntityComponent>("EntityComponent", ID, entCom.Name,
-							EditComponent::EC_ADDCOMPONENT);
-						break;
 					case str2int("TransformComponent"):
 						ComponentRegistry<TransformComponent>("TransformComponent", ID, entCom.Name,
 							EditComponent::EC_ADDCOMPONENT);
@@ -874,26 +869,6 @@ namespace Eclipse
 				vecList.erase(pos);
 			}
 		}
-	}
-
-	void InspectorWindow::viewChild(const char* name, Entity ID, ImGuiTextFilter& filter)
-	{
-		if (engine->world.CheckComponent<EntityComponent>(ID))
-		{
-			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
-			{
-				auto& _entity = engine->world.GetComponent<EntityComponent>(ID);
-
-				if (ECGui::BeginTreeNode("Default Scene"))
-				{
-
-					engine->editorManager->GetAllChild(_entity);
-
-					ECGui::EndTreeNode();
-				}
-			}
-		}
-
 	}
 	
 	template <typename TComponents>

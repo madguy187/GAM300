@@ -3,7 +3,6 @@
 #include "Editor/Windows/Interface/ECGuiWindow.h"
 #include "Editor/Menu/MenuBar.h"
 #include <Editor/Utilities/DragAndDrop/DragAndDrop.h>
-#include "ECS/ComponentManager/Components/EntityComponent.h"
 
 namespace Eclipse
 {
@@ -11,7 +10,7 @@ namespace Eclipse
 	{
 	public:
 		EditorManager();
-		
+
 		// Intialization
 		void InitGUIWindows();
 		void InitMenu();
@@ -63,11 +62,6 @@ namespace Eclipse
 
 		// std::map<const char*, const char*> DataComponentFilter_;
 		DragAndDrop DragAndDropInst_;
-
-		//ParentChild
-		void AddToChild(int & parent, int& child);
-		void GetAllChild(EntityComponent& parent);
-		bool HasChild(EntityComponent& parent);
 	private:
 		std::vector<std::unique_ptr<ECGuiWindow>> Windows_;
 		MenuBar MenuBar_;

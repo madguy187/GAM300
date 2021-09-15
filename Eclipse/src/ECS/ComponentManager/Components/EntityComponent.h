@@ -12,6 +12,6 @@ namespace Eclipse
 		bool IsActive{ false };
 		// For Script Testing
 		std::vector<std::string> ScriptListComTest;
-		std::vector<EntityComponent> Child;
+		std::vector<Entity> Child;
 	};
 }

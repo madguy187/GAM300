@@ -75,7 +75,6 @@ namespace Eclipse
 			if (filter.PassFilter(entCom.Name.c_str()))
 			{
 				entityName = my_strcat(entCom.Name, " ", list[index]);
-
 				if (ECGui::CreateSelectableButton(entityName.c_str(), &entCom.IsActive))
 				{
 					if (curr.index == list[index])
@@ -83,35 +82,37 @@ namespace Eclipse
 						entCom.IsActive = true;
 						continue;
 					}
-				
+
 					if (!curr.name.empty())
 					{
 						prev.name = curr.name;
 						prev.index = curr.index;
 					}
-				
+
 					curr.name = entityName;
 					curr.index = list[index];
-				
+
 					if (!prev.name.empty() && curr.name != prev.name)
 					{
 						bool deleted = true;
-				
+
 						if (std::find(list.begin(), list.end(), prev.index) != list.end())
 							deleted = false;
-				
+
 						if (!deleted)
 						{
 							auto& prevEntCom = engine->world.GetComponent<EntityComponent>(prev.index);
 							prevEntCom.IsActive = false;
 						}
 					}
-				
+
 					engine->editorManager->SetGlobalIndex(index);
 				}
-				engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit", static_cast<int>(index));
-				engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit", static_cast<int>(index), entCom.IsActive);
 
+				engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit", 
+					static_cast<int>(index));
+				engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit", 
+					static_cast<int>(index), entCom.IsActive);
 			}
 		}
 	}
