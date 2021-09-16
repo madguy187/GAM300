@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IconsFontAwesome.h"
+#include "IconsMaterialDesignIcons.h"
 #include "Global.h"
 
 namespace Eclipse

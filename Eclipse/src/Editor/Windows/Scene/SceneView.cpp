@@ -241,13 +241,43 @@ namespace Eclipse
 	void SceneWindow::RenderSceneHeader()
 	{
 		ECGui::InsertSameLine(mViewportSize.x / 2.35f);
-		if (ECGui::ButtonBool("Play " ICON_FA_PLAY)) {}
+		if (ECGui::ButtonBool("Play " ICON_FA_PLAY)) 
+		{
+			if (engine->GetPlayState())
+			{
+				engine->SetPlayState(false);
+			}
+			else
+			{
+				engine->SetPlayState(true);
+			}
+		}
 
 		ECGui::InsertSameLine();
-		if (ECGui::ButtonBool("Pause " ICON_FA_PAUSE)) {}
+		if (ECGui::ButtonBool("Pause " ICON_FA_PAUSE)) 
+		{
+			if (engine->GetPauseState())
+			{
+				engine->SetPauseState(false);
+			}
+			else
+			{
+				engine->SetPauseState(true);
+			}
+		}
 
 		ECGui::InsertSameLine();
-		if (ECGui::ButtonBool("Step " ICON_FA_STEP_FORWARD)) {}
+		if (ECGui::ButtonBool("Step " ICON_FA_STEP_FORWARD))
+		{
+			if (engine->GetStepState())
+			{
+				engine->SetStepState(false);
+			}
+			else
+			{
+				engine->SetStepState(true);
+			}
+		}
 	}
 
 	void SceneWindow::OnCameraMoveEvent()
