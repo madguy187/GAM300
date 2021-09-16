@@ -40,6 +40,7 @@ namespace Eclipse
         bool GetPlayState();
         bool GetPauseState();
         bool GetStepState();
+		bool IsScenePlaying();
 
         void SetEditorState(bool check);
         void SetPlayState(bool check);
@@ -47,8 +48,8 @@ namespace Eclipse
         void SetStepState(bool check);
     private:
         bool IsEditorActive{ true };
-        bool IsPlaying{ false };
-        bool IsPaused{ false };
-        bool IsStepping{ false };
+        bool IsInPlayState{ false };
+        bool IsInPauseState{ false };
+        bool IsInStepState{ false };
     };
 }

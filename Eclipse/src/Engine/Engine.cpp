@@ -132,12 +132,18 @@ namespace Eclipse
         GridSystem::Init();
         gPhysics.Init();
 
+        if (IsEditorActive)
+            IsInPlayState = false;
+        else
+            IsInPlayState = true;
+
         float currTime = static_cast<float>(clock());
         float accumulatedTime = 0.0f;
         int framecount = 0;
         float dt = 0.0f;
         float updaterate = 4.0f;
         ProfilerWindow Timer;
+
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
            
@@ -174,19 +180,30 @@ namespace Eclipse
 
             ImGuiSetup::Begin(IsEditorActive);
 
-            if (Game_Clock.get_timeSteps() > 10)
+            if (IsInStepState)
             {
-                Game_Clock.set_timeSteps(10);
+                Game_Clock.set_timeSteps(1);
+                IsInPauseState = false;
+            }
+            else
+            {
+                if (Game_Clock.get_timeSteps() > 10)
+                {
+                    Game_Clock.set_timeSteps(10);
+                }
             }
 
             EditorSystem::Update();
             // GRID SYSTEM =============================
             world.Update<GridSystem>();
 
-            for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
+            if (IsScenePlaying())
             {
-                world.Update<CameraSystem>();
-                world.Update<PhysicsSystem>();
+                for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
+                {
+                    world.Update<CameraSystem>();
+                    world.Update<PhysicsSystem>();
+                }
             }
 
             // FRAMEBUFFER BIND =============================
@@ -218,6 +235,12 @@ namespace Eclipse
             OpenGL_Context::post_render();
             Timer.tracker.system_end = glfwGetTime();
             Timer.EngineTimer(Timer.tracker);
+
+            if (IsInStepState)
+            {
+                IsInStepState = false;
+                IsInPauseState = true;
+            }
         }
 
         // unLoad
@@ -235,17 +258,22 @@ namespace Eclipse
 
     bool Engine::GetPlayState()
     {
-        return IsPlaying;
+        return IsInPlayState;
     }
 
     bool Engine::GetPauseState()
     {
-        return IsPaused;
+        return IsInPauseState;
     }
 
     bool Engine::GetStepState()
     {
-        return IsStepping;
+        return IsInStepState;
+    }
+
+    bool Engine::IsScenePlaying()
+    {
+        return IsInPlayState && !IsInPauseState;
     }
 
     void Engine::SetEditorState(bool check)
@@ -255,16 +283,16 @@ namespace Eclipse
 
     void Engine::SetPlayState(bool check)
     {
-        IsPlaying = check;
+        IsInPlayState = check;
     }
 
     void Engine::SetPauseState(bool check)
     {
-        IsPaused = check;
+        IsInPauseState = check;
     }
 
     void Engine::SetStepState(bool check)
     {
-        IsStepping = check;
+        IsInStepState = check;
     }
 }
