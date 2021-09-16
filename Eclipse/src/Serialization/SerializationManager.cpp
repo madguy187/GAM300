@@ -28,71 +28,27 @@ namespace Eclipse
 	{
 		World& w = engine->world;
 
-		if (w.CheckComponent<EntityComponent>(ent))
-		{
-			auto& comp = w.GetComponent<EntityComponent>(ent);
-			SerializeComponent<EntityComponent>(comp);
-		}
+		SerializeComponent<EntityComponent>(w, ent);
 
-		if (w.CheckComponent<CameraComponent>(ent))
-		{
-			auto& comp = w.GetComponent<CameraComponent>(ent);
-			SerializeComponent<CameraComponent>(comp);
-		}
+		SerializeComponent<CameraComponent>(w, ent);
+		
+		SerializeComponent<DirectionalLightComponent>(w, ent);
+		
+		SerializeComponent<MaterialComponent>(w, ent);
+		
+		SerializeComponent<PointLightComponent>(w, ent);
+		
+		SerializeComponent<MeshComponent>(w, ent);
 
-		if (w.CheckComponent<DirectionalLightComponent>(ent))
-		{
-			auto& comp = w.GetComponent<DirectionalLightComponent>(ent);
-			SerializeComponent<DirectionalLightComponent>(comp);
-		}
+		SerializeComponent<RigidBodyComponent>(w, ent);
 
-		if (w.CheckComponent<MaterialComponent>(ent))
-		{
-			auto& comp = w.GetComponent<MaterialComponent>(ent);
-			SerializeComponent<MaterialComponent>(comp);
-		}
+		SerializeComponent<SpotLightComponent>(w, ent);
 
-		if (w.CheckComponent<PointLightComponent>(ent))
-		{
-			auto& comp = w.GetComponent<PointLightComponent>(ent);
-			SerializeComponent<PointLightComponent>(comp);
-		}
+		SerializeComponent<TransformComponent>(w, ent);
 
-		if (w.CheckComponent<MeshComponent>(ent))
-		{
-			auto& comp = w.GetComponent<MeshComponent>(ent);
-			SerializeComponent<MeshComponent>(comp);
-		}
+		SerializeComponent<AABBComponent>(w, ent);
 
-		if (w.CheckComponent<RigidBodyComponent>(ent))
-		{
-			auto& comp = w.GetComponent<RigidBodyComponent>(ent);
-			SerializeComponent<RigidBodyComponent>(comp);
-		}
-
-		if (w.CheckComponent<SpotLightComponent>(ent))
-		{
-			auto& comp = w.GetComponent<SpotLightComponent>(ent);
-			SerializeComponent<SpotLightComponent>(comp);
-		}
-
-		if (w.CheckComponent<TransformComponent>(ent))
-		{
-			auto& comp = w.GetComponent<TransformComponent>(ent);
-			SerializeComponent<TransformComponent>(comp);
-		}
-
-		if (w.CheckComponent<AABBComponent>(ent))
-		{
-			auto& comp = w.GetComponent<AABBComponent>(ent);
-			SerializeComponent<AABBComponent>(comp);
-		}
-
-		if (w.CheckComponent<TextureComponent>(ent))
-		{
-			auto& comp = w.GetComponent<TextureComponent>(ent);
-			SerializeComponent<TextureComponent>(comp);
-		}
+		SerializeComponent<TextureComponent>(w, ent);
 	}
 
 	void SerializationManager::DeserializeAllComponents(const Entity& ent)

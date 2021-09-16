@@ -306,7 +306,6 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Serialization\Serializer.h" />
     <ClInclude Include="src\Serialization\TinyXML\tinystr.h" />
     <ClInclude Include="src\Serialization\TinyXML\tinyxml.h" />
-    <ClInclude Include="src\Serialization\TypenameCast.h" />
     <ClInclude Include="src\SparseSet\SparseSet.hpp" />
     <ClInclude Include="src\Time\Clock.h" />
     <ClInclude Include="src\TypeID\TypeID.h" />

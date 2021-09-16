@@ -34,7 +34,7 @@ namespace Eclipse
 		}
 
 		template <typename CompType>
-		inline void SerializeComponent(const CompType& data)
+		inline void SerializeComponentData(const CompType& data)
 		{
 			sz.StartElement(typeid(data).name());
 			sz.AddAttributeToElement("Unavailable", true);
@@ -42,7 +42,7 @@ namespace Eclipse
 		}
 
 		template <>
-		inline void SerializeComponent<EntityComponent>(const EntityComponent& data)
+		inline void SerializeComponentData<EntityComponent>(const EntityComponent& data)
 		{
 			sz.StartElement("EntityComponent");
 			SerializeData(
@@ -54,7 +54,7 @@ namespace Eclipse
 		}
 
 		template <>
-		inline void SerializeComponent<TransformComponent>(const TransformComponent& data)
+		inline void SerializeComponentData<TransformComponent>(const TransformComponent& data)
 		{
 			sz.StartElement("TransformComponent");
 			SerializeData(
@@ -66,7 +66,7 @@ namespace Eclipse
 		}
 
 		template <>
-		inline void SerializeComponent<MeshComponent>(const MeshComponent& data)
+		inline void SerializeComponentData<MeshComponent>(const MeshComponent& data)
 		{
 			sz.StartElement("MeshComponent");
 			SerializeData(
@@ -88,7 +88,7 @@ namespace Eclipse
 		}
 
 		template <>
-		inline void SerializeComponent<RigidBodyComponent>(const RigidBodyComponent& data)
+		inline void SerializeComponentData<RigidBodyComponent>(const RigidBodyComponent& data)
 		{
 			sz.StartElement("RigidBodyComponent");
 			SerializeData(
@@ -106,7 +106,7 @@ namespace Eclipse
 		}
 
 		template <>
-		inline void SerializeComponent<MaterialComponent>(const MaterialComponent& data)
+		inline void SerializeComponentData<MaterialComponent>(const MaterialComponent& data)
 		{
 			sz.StartElement("MaterialComponent");
 			SerializeData(
@@ -127,7 +127,7 @@ namespace Eclipse
 		}
 
 		template <>
-		inline void SerializeComponent<AABBComponent>(const AABBComponent& data)
+		inline void SerializeComponentData<AABBComponent>(const AABBComponent& data)
 		{
 			sz.StartElement("AABBComponent");
 			SerializeData(
@@ -139,7 +139,7 @@ namespace Eclipse
 		}
 
 		template <>
-		inline void SerializeComponent<CameraComponent>(const CameraComponent& data)
+		inline void SerializeComponentData<CameraComponent>(const CameraComponent& data)
 		{
 			sz.StartElement("CameraComponent");
 			SerializeData(
@@ -164,7 +164,7 @@ namespace Eclipse
 		}
 
 		template <>
-		inline void SerializeComponent<SpotLightComponent>(const SpotLightComponent& data)
+		inline void SerializeComponentData<SpotLightComponent>(const SpotLightComponent& data)
 		{
 			sz.StartElement("SpotLightComponent");
 			SerializeData(
@@ -195,7 +195,7 @@ namespace Eclipse
 		}
 		
 		template <>
-		inline void SerializeComponent<PointLightComponent>(const PointLightComponent& data)
+		inline void SerializeComponentData<PointLightComponent>(const PointLightComponent& data)
 		{
 			sz.StartElement("PointLightComponent");
 			SerializeData(
@@ -222,7 +222,7 @@ namespace Eclipse
 		}
 
 		template <>
-		inline void SerializeComponent<DirectionalLightComponent>(const DirectionalLightComponent& data)
+		inline void SerializeComponentData<DirectionalLightComponent>(const DirectionalLightComponent& data)
 		{
 			sz.StartElement("DirectionalLightComponent");
 			SerializeData(
@@ -244,7 +244,7 @@ namespace Eclipse
 		}
 
 		template <>
-		inline void SerializeComponent<TextureComponent>(const TextureComponent& data)
+		inline void SerializeComponentData<TextureComponent>(const TextureComponent& data)
 		{
 			sz.StartElement("TextureComponent");
 			SerializeData(
@@ -258,12 +258,20 @@ namespace Eclipse
 			sz.CloseElement();
 		}
 		
+		/*
+		template <typename T>
+		inline void DeserializeData(const std::string& ele_name, T& data)
+		{
+
+		}
+		*/
+
 		template <typename T>
 		inline void DeserializeComponent(const Entity& ent, T& comp)
 		{
 			std::string msg = typeid(T).name();
 			msg += " is invalid as a component.";
-			ENGINE_CORE_ERROR(false, msg.c_str());
+			EDITOR_LOG_INFO(false, msg.c_str());
 		}
 
 		template<>
@@ -974,7 +982,17 @@ namespace Eclipse
 				dsz.CloseElement();
 			}
 		}
-		
+	
+		template <typename CompType>
+		inline void SerializeComponent(World& w, const Entity& ent)
+		{
+			if (w.CheckComponent<CompType>(ent))
+			{
+				auto& comp = w.GetComponent<CompType>(ent);
+				SerializeComponentData<CompType>(comp);
+			}
+		}
+
 		void SerializeEntity(const Entity& ent, const size_t& counter);
 
 		void DeserializeEntity(const size_t& counter);
