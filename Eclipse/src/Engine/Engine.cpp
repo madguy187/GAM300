@@ -20,6 +20,7 @@
 #include "ECS/SystemManager/Systems/System/EditorSystem.h"
 #include "ECS/SystemManager/Systems/System/LightingSystem.h"
 #include "ECS/SystemManager/Systems/System/PickingSystem.h"
+#include "ECS/SystemManager/Systems/System/PhysicsSystem.h"
 #include "ImGui/Setup/ImGuiSetup.h"
 #include "ECS/SystemManager/Systems/System/MaterialSystem.h"
 #include "Serialization/SerializationManager.h"
@@ -88,6 +89,7 @@ namespace Eclipse
         world.RegisterSystem<MaterialSystem>();
         world.RegisterSystem<GridSystem>();
         world.RegisterSystem<PickingSystem>();
+        world.RegisterSystem<PhysicsSystem>();
 
         // Render System
         Signature RenderSys = RenderSystem::RegisterAll();
@@ -117,6 +119,11 @@ namespace Eclipse
         gridCol.set(world.GetComponentType<TransformComponent>(), 1);
         world.RegisterSystemSignature<GridSystem>(gridCol);
 
+        Signature hi4;
+        hi4.set(world.GetComponentType<TransformComponent>(), 1);
+        hi4.set(world.GetComponentType<RigidBodyComponent>(), 1);
+        world.RegisterSystemSignature<PhysicsSystem>(hi4);
+
         mono.Init();
 
         //Check this! - Rachel
@@ -124,6 +131,8 @@ namespace Eclipse
         CameraSystem::Init();
         LightingSystem::Init();
         GridSystem::Init();
+        gPhysics.Init();
+
         float currTime = static_cast<float>(clock());
         float accumulatedTime = 0.0f;
         int framecount = 0;
@@ -175,10 +184,13 @@ namespace Eclipse
             }
 
             EditorSystem::Update();
+            // GRID SYSTEM =============================
+            world.Update<GridSystem>();
 
             for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
             {
                 world.Update<CameraSystem>();
+                world.Update<PhysicsSystem>();
             }
 
             // FRAMEBUFFER BIND =============================
@@ -186,9 +198,6 @@ namespace Eclipse
 
             // Reset DebugBoxes =============================
             engine->GraphicsManager.ResetInstancedDebugBoxes();
-
-            // GRID SYSTEM =============================
-            world.Update<GridSystem>();
 
             // LIGHTINGSYSTEM =============================
             world.Update<LightingSystem>();
