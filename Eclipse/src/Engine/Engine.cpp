@@ -197,11 +197,12 @@ namespace Eclipse
             // GRID SYSTEM =============================
             world.Update<GridSystem>();
 
+            world.Update<CameraSystem>();
+
             if (IsScenePlaying())
             {
                 for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
                 {
-                    world.Update<CameraSystem>();
                     world.Update<PhysicsSystem>();
                 }
             }
