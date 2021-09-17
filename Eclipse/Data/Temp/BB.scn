@@ -73,8 +73,8 @@
     </Entity_1>
     <Entity_2 ID="7">
         <EntityComponent>
-            <Name value="Sphere" />
-            <Tag value="Sphere" />
+            <Name value="Cylinder" />
+            <Tag value="Cylinder" />
             <IsActive value="false" />
         </EntityComponent>
         <MaterialComponent>
@@ -102,7 +102,7 @@
                 <Col2 _20="0" _21="0" _22="0" _23="0" />
                 <Col3 _30="0" _31="0" _32="0" _33="0" />
             </ModelNDC_XForm>
-            <ModelRef value="Sphere" />
+            <ModelRef value="Cylinder" />
             <ShaderRef value="shader3DShdrpgm" />
             <ID value="7" />
             <Name value="" />
@@ -112,22 +112,15 @@
             <LightColor x="1" y="1" z="1" w="1" />
         </MeshComponent>
         <TransformComponent>
-            <Position x="-16.0637" y="0" z="17.6555" />
+            <Position x="-18.9742" y="0" z="13.2982" />
             <Rotation x="0" y="0" z="0" />
             <Scale x="5" y="5" z="5" />
         </TransformComponent>
         <AABBComponent>
-            <Center x="-16.0637" y="0" z="17.6555" />
-            <Min x="-18.5637" y="-2.5" z="15.1555" />
-            <Max x="-13.5637" y="2.5" z="20.1555" />
+            <Center x="-18.9742" y="0" z="13.2982" />
+            <Min x="-21.4742" y="-2.5" z="10.7982" />
+            <Max x="-16.4742" y="2.5" z="15.7982" />
         </AABBComponent>
-        <TextureComponent>
-            <ID value="0" />
-            <TextureType value="TT_UNASSIGNED" />
-            <TextureKey value="" />
-            <HasTexture value="true" />
-            <TextureRef value="orange" />
-        </TextureComponent>
     </Entity_2>
     <Entity_3 ID="8">
         <EntityComponent>
@@ -170,7 +163,7 @@
             <LightColor x="1" y="1" z="1" w="1" />
         </MeshComponent>
         <TransformComponent>
-            <Position x="12.5235" y="0" z="18.7613" />
+            <Position x="9.93679" y="0" z="23.8954" />
             <Rotation x="0" y="0" z="0" />
             <Scale x="5" y="5" z="5" />
         </TransformComponent>
