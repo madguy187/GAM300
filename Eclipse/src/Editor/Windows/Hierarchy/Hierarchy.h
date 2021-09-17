@@ -27,6 +27,7 @@ namespace Eclipse
 			EntitySelectionTracker& curr, ImGuiTextFilter& filter);
 		void ShowEntityCreationList();
 		void UpdateEntityTracker(Entity ID);
+		size_t GetEntityListPos(size_t data);
 		void TreeNodeRecursion(std::string parent, EntityComponent& entCom,EntitySelectionTracker& prev,EntitySelectionTracker& curr, size_t index);
 	private:
 		ImGuiTreeNodeFlags temp = ImGuiTreeNodeFlags_OpenOnDoubleClick;

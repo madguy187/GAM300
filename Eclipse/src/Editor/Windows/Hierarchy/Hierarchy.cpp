@@ -77,7 +77,7 @@ namespace Eclipse
 
 				entityName = my_strcat(entCom.Name, " ", list[index]);
 
-				if(!entCom.IsAChild)
+				if(!entCom.IsAChild && !entCom.Child.empty())
 				{
 					TreeNodeRecursion(entityName, entCom, prev, curr, index);
 				}
@@ -117,59 +117,15 @@ namespace Eclipse
 							prevEntCom.IsActive = false;
 						}
 					}
-
-				}
-				if (entCom.IsAChild)
-				{
-					engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit",
-						static_cast<int>(index - 1));
-					engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
-						static_cast<int>(index - 1), entCom.IsActive);
-					engine->editorManager->SetGlobalIndex(index - 1);
-				}
-				else
-				{
-					std::cout << index;
-					engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit",
-						static_cast<int>(index));
-					engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
-						static_cast<int>(index), entCom.IsActive);
 					engine->editorManager->SetGlobalIndex(index);
+
 				}
+				engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit",
+					static_cast<int>(index));
+				engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
+					static_cast<int>(index), entCom.IsActive);
+				
 			}
-
-			auto& entCom12 = engine->world.GetComponent<EntityComponent>(list[index]);
-			//if (ImGui::IsItemClicked(0))
-			//{
-			//	if (entCom12.isParent)
-			//	{
-			//		entCom12.IsActive = true;
-			//		temp |= ImGuiTreeNodeFlags_Selected;
-			//	}
-			//	else
-			//	{
-			//		entCom12.IsActive = false;
-			//		temp = ImGuiTreeNodeFlags_OpenOnDoubleClick;
-			//	}
-			//}
-
-			//if (entCom12.IsAChild)
-			//{
-			//	engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit",
-			//		static_cast<int>(index - 1));
-			//	engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
-			//		static_cast<int>(index - 1), entCom.IsActive);
-			//	engine->editorManager->SetGlobalIndex(index-1);
-			//}
-			//else
-			//{
-			//	std::cout << index;
-			//	engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit",
-			//		static_cast<int>(index));
-			//	engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
-			//		static_cast<int>(index), entCom.IsActive);
-			//	engine->editorManager->SetGlobalIndex(index);
-			//}
 		}
 	}
 
@@ -245,93 +201,103 @@ namespace Eclipse
 		}
 	}
 
+	size_t HierarchyWindow::GetEntityListPos(size_t data)
+	{
+		auto it = std::find(engine->editorManager->GetEntityListByConstRef().begin(), engine->editorManager->GetEntityListByConstRef().end(), data);
+
+		if (it != engine->editorManager->GetEntityListByConstRef().end())
+		{
+			size_t index = it - engine->editorManager->GetEntityListByConstRef().begin();
+
+			return index;
+		}
+		return 0;
+	}
+
 	void HierarchyWindow::TreeNodeRecursion(std::string parent, EntityComponent& entCom, EntitySelectionTracker& prev, EntitySelectionTracker& curr,size_t index)
 	{
-		if (!entCom.Child.empty())
+
+		if (ImGui::TreeNodeEx(parent.c_str(), temp))
 		{
-			if (ImGui::TreeNodeEx(parent.c_str(), temp))
+
+			for (size_t i = 0; i < entCom.Child.size(); ++i)
 			{
-				if(ImGui::IsItemActive())
+				auto& entCom1 = engine->world.GetComponent<EntityComponent>(entCom.Child[i]);
+				std::string name = my_strcat(entCom1.Name, " ", entCom.Child[i]);
+
+				if (!entCom1.Child.empty())
 				{
-					entCom.IsActive = true;
+					TreeNodeRecursion(name, entCom1, prev, curr,index);
 				}
-				for (size_t i = 0; i < entCom.Child.size(); ++i)
+				else
 				{
-					auto& entCom1 = engine->world.GetComponent<EntityComponent>(entCom.Child[i]);
-					std::string name = my_strcat(entCom1.Name, " ", entCom.Child[i]);
-
-					if (!entCom1.Child.empty())
+					if (ECGui::CreateSelectableButton(name.c_str(), &entCom.IsActive))
 					{
-						TreeNodeRecursion(name, entCom1, prev, curr,index);
-					}
-					else
-					{
-						if (ECGui::CreateSelectableButton(name.c_str(), &entCom.IsActive))
+						if (curr.index == entCom.Child[i])
 						{
-							if (curr.index == entCom.Child[i])
-							{
-								entCom.IsActive = true;
-								continue;
-							}
-
-							if (!curr.name.empty())
-							{
-								prev.name = curr.name;
-								prev.index = curr.index;
-							}
-
-							curr.name = name;
-							curr.index = entCom.Child[i];
-
-							if (!prev.name.empty() && curr.name != prev.name)
-							{
-								bool deleted = true;
-
-								if (std::find(entCom.Child.begin(), entCom.Child.end(), prev.index) != entCom.Child.end())
-									deleted = false;
-
-								if (!deleted)
-								{
-									auto& prevEntCom = engine->world.GetComponent<EntityComponent>(prev.index);
-									prevEntCom.IsActive = false;
-								}
-							}
-
-							engine->editorManager->SetGlobalIndex(i);
+							entCom.IsActive = true;
+							engine->editorManager->SetGlobalIndex(GetEntityListPos(curr.index));
+							continue;
 						}
 
+						if (!curr.name.empty())
+						{
+							prev.name = curr.name;
+							prev.index = curr.index;
+						}
+
+						curr.name = name;
+						curr.index = entCom.Child[i];
+
+						if (!prev.name.empty() && curr.name != prev.name)
+						{
+							bool deleted = true;
+
+							if (std::find(entCom.Child.begin(), entCom.Child.end(), prev.index) != entCom.Child.end())
+								deleted = false;
+
+							if (!deleted)
+							{
+								auto& prevEntCom = engine->world.GetComponent<EntityComponent>(prev.index);
+								prevEntCom.IsActive = false;
+							}
+						}
+						engine->editorManager->SetGlobalIndex(i);
 					}
+
 				}
-
-					engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit",
-						static_cast<int>(index));
-					engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
-						static_cast<int>(index), entCom.IsActive);
-					engine->editorManager->SetGlobalIndex(index);
-				
-
-
-				ECGui::EndTreeNode();
 			}
-
+				engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit",
+					static_cast<int>(index));
+				engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
+					static_cast<int>(index), entCom.IsActive);
+				ECGui::EndTreeNode();
 		}
-		if (ImGui::IsItemClicked(0))
+		else
 		{
-
+		
 			auto& s = engine->world.GetComponent<EntityComponent>(curr.index);
-			s.IsActive = false;
-			curr.name = prev.name;
-			curr.index = prev.index;
-
+			s.IsActive = true;
+			entCom.IsActive = false;
+		
+			if (!curr.name.empty())
+			{
+				prev.name = curr.name;
+				prev.index = curr.index;
+		
+			}
 			engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit",
 				static_cast<int>(curr.index));
-
+		
 			engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
 				static_cast<int>(curr.index), entCom.IsActive);
-
-			engine->editorManager->SetGlobalIndex(curr.index);
-			//engine->editorManager->SetGlobalIndex(engine->editorManager->GetEntityIndex(entCom..index));
+		
+			engine->editorManager->SetGlobalIndex(GetEntityListPos(entCom.IsActive));
+		
 		}
+
+		
+
 	}
 	
 
