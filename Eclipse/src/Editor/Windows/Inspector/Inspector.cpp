@@ -354,7 +354,7 @@ namespace Eclipse
 
 				ECGui::DrawTextWidget<const char*>("KEY ID: ", "");
 				ECGui::InsertSameLine();
-				ECGui::DrawTextWidget<const char*>(std::to_string(_Texture.ID).c_str(), "");
+				//ECGui::DrawTextWidget<const char*>(std::to_string(_Texture.ID).c_str(), "");
 				
 				ECGui::DrawTextWidget<const char*>("Texture Type", "");
 				ECGui::CreateComboList(settings, _TextureVector, _Texture.ComboIndex);
@@ -409,8 +409,8 @@ namespace Eclipse
 
 				std::vector<std::string> _ModelVector = { "None","BasicPrimitives","Models3D"};
 
-				std::map<std::string, MaterialComponent::ModelType> _Map = { {"None",MaterialComponent::ModelType::None}, {"BasicPrimitives",MaterialComponent::ModelType::BasicPrimitives},
-															{"Models3D",MaterialComponent::ModelType::Models3D}};
+				std::map<std::string, MaterialModelType> _Map = { {"None",MaterialModelType::MT_NONE}, {"BasicPrimitives",MaterialModelType::MT_BASIC},
+															{"Models3D",MaterialModelType::MT_MODELS3D}};
 				
 				ComboListSettings settings = {"Model Type"};
 

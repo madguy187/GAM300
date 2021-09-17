@@ -13,6 +13,7 @@
 #include "ECS/ComponentManager/Components/EntityComponent.h"
 #include "ECS/ComponentManager/Components/TextureComponent.h"
 #include "ECS/ComponentManager/Components/ModelInfoComponent.h"
+#include "ECS/ComponentManager/Components/MaterialComponent.h"
 
 namespace Eclipse
 {
@@ -102,9 +103,8 @@ namespace Eclipse
 	public:
 		// TEXTURES PUT HERE FIRST
 		unsigned int Index = 0; // mesh index.
-		void SetTexturesForModel(TextureComponent& in, std::string& passinkey);
 		void InsertTextures(std::string& NameofModel, std::unique_ptr<Texture> in, unsigned int MeshId);
-
+		void SetTexturesForModel(MaterialComponent& in, std::string& passkey);
 	private:
 		// Version 1 Container that stores AssimpModel*
 		AssimpModelContainer AssimpModelContainer_;

@@ -71,7 +71,7 @@ namespace Eclipse
         {
             if (engine->world.CheckComponent<TextureComponent>(id))
             {
-                TextureComponent& tex = engine->world.GetComponent<TextureComponent>(id);
+                auto& tex = engine->world.GetComponent<MaterialComponent>(id);
 
                 // textures
                 unsigned int diffuseIdx = 0;

@@ -11,12 +11,12 @@ namespace Eclipse
         size_t ComboIndex = 0;
 
         // See if need or not
-        unsigned int ID = 0;
+        //unsigned int ID = 0;
         TextureType Type = TextureType::TT_UNASSIGNED;
 
         // Assimp Models
-        std::string TextureKey;
-        std::map<unsigned int, std::vector<Texture>> HoldingTextures;
+        //std::string TextureKey;
+        //std::map<unsigned int, std::vector<Texture>> HoldingTextures;
 
         // Basic Primitives
         bool hasTexture = false;

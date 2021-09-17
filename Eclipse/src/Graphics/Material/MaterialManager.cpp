@@ -344,8 +344,8 @@ namespace Eclipse
         {
             MaterialComponent& PrepareToHighlight = engine->world.GetComponent<MaterialComponent>(ModelID);
 
-            if (PrepareToHighlight.Modeltype == MaterialComponent::ModelType::BasicPrimitives ||
-                PrepareToHighlight.Modeltype == MaterialComponent::ModelType::Models3D)
+            if (PrepareToHighlight.Modeltype == MaterialModelType::MT_BASIC ||
+                PrepareToHighlight.Modeltype == MaterialModelType::MT_MODELS3D)
             {
                 PrepareToHighlight.Highlight = true;
                 return true;
@@ -471,25 +471,25 @@ namespace Eclipse
 
     void MaterialManager::RegisterMeshForHighlighting(unsigned int index)
     {
-        auto& mat = engine->world.GetComponent<MaterialComponent>(index);
+        //auto& mat = engine->world.GetComponent<MaterialComponent>(index);
 
-        if (mat.RegisterForHighlight == true)
-            return;
+        //if (mat.RegisterForHighlight == true)
+        //    return;
 
-        auto& mesh = engine->world.GetComponent<MeshComponent>(index);
-        auto& ModelInfo = engine->world.GetComponent<ModeLInforComponent>(index);
+        //auto& mesh = engine->world.GetComponent<MeshComponent>(index);
+        //auto& ModelInfo = engine->world.GetComponent<ModeLInforComponent>(index);
 
-        // Insert
-        if (MeshHighLightContainer.insert(std::pair<unsigned int, MeshComponent*>(index, &mesh)).second == true)
-        {
-            mat.RegisterForHighlight = true;
+        //// Insert
+        //if (MeshHighLightContainer.insert(std::pair<unsigned int, MeshComponent*>(index, &mesh)).second == true)
+        //{
+        //    mat.RegisterForHighlight = true;
 
-            std::string Success = ("Model [" + ModelInfo.NameOfModel + "] Registered For Highlighting ! ").c_str();
-            ENGINE_CORE_INFO(Success);
+        //    std::string Success = ("Model [" + ModelInfo.NameOfModel + "] Registered For Highlighting ! ").c_str();
+        //    ENGINE_CORE_INFO(Success);
 
-            std::cout << "HighLight Container Size : " << ModelHighlightContainer.size() << std::endl;
-            return;
-        }
+        //    std::cout << "HighLight Container Size : " << ModelHighlightContainer.size() << std::endl;
+        //    return;
+        //}
     }
 
     void MaterialManager::MeshHighlight(unsigned int FrameBufferID, GLenum Mode)
