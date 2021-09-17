@@ -28,7 +28,10 @@ namespace Eclipse
 			if (nextScene == RELOAD)
 			{
 				nextScene = curScene;
-				engine->szManager.LoadSceneFile(mapNameToPath[sceneList[curScene]].c_str());
+				if (curScene != 0)
+				{
+					engine->szManager.LoadSceneFile(mapNameToPath[sceneList[curScene]].c_str());
+				}
 			}
 			else if (nextScene == 0)
 			{
@@ -192,5 +195,7 @@ namespace Eclipse
 		{
 			ReloadScene();
 		}
+		std::string msg("New Scene is openned.");
+		EDITOR_LOG_INFO(msg.c_str())
 	}
 }
