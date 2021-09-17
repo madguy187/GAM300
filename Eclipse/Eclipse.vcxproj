@@ -175,6 +175,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\ECS\ComponentManager\Components\ParentChildComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\PointLightComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\ScriptComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\SpotLightComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\TextureComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\TransformComponent.h" />

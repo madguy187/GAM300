@@ -3,6 +3,7 @@
 #include "ECS/ComponentManager/Components/EntityComponent.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RigidBodyComponent.h"
+#include "ECS/ComponentManager/Components/ScriptComponent.h"
 #include "Editor/Windows/SwitchViews/TopSwitchViewWindow.h"
 
 namespace Eclipse
@@ -475,32 +476,32 @@ namespace Eclipse
 		* When script comp is up, just replace the entity com here with ur script,
 		* and the vector with the vector of stdstrings in ur script com
 		*/
-		if (engine->world.CheckComponent<EntityComponent>(ID))
+		if (engine->world.CheckComponent<ScriptComponent>(ID))
 		{
 			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
 			{
-				auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
+				auto& scriptCom = engine->world.GetComponent<ScriptComponent>(ID);
 
 				ECGui::DrawTextWidget<const char*>(my_strcat("List of Scripts (", 
-					entCom.ScriptListComTest.size(), "):").c_str(), "");
+					scriptCom.ScriptListComTest.size(), "):").c_str(), "");
 
-				for (size_t i = 0; i < entCom.ScriptListComTest.size(); ++i)
+				for (size_t i = 0; i < scriptCom.ScriptListComTest.size(); ++i)
 				{
 					if (!IsRemovingScripts)
 					{
 						ECGui::DrawInputTextHintWidget(my_strcat("ScriptName", i + 1).c_str(), "Drag Script files here",
-							const_cast<char*>(entCom.ScriptListComTest[i].c_str()), 256,
+							const_cast<char*>(scriptCom.ScriptListComTest[i].c_str()), 256,
 							true, ImGuiInputTextFlags_ReadOnly);
-						engine->editorManager->DragAndDropInst_.StringPayloadTarget("cs", entCom.ScriptListComTest[i], "Script File inserted.");
+						engine->editorManager->DragAndDropInst_.StringPayloadTarget("cs", scriptCom.ScriptListComTest[i], "Script File inserted.");
 					}
 					else
 					{
 						bool selected = false;
 
-						if (ECGui::CreateSelectableButton(my_strcat(entCom.ScriptListComTest[i], " ", i + 1).c_str(), &selected))
+						if (ECGui::CreateSelectableButton(my_strcat(scriptCom.ScriptListComTest[i], " ", i + 1).c_str(), &selected))
 						{
-							auto posItr = entCom.ScriptListComTest.begin() + i;
-							entCom.ScriptListComTest.erase(posItr);
+							auto posItr = scriptCom.ScriptListComTest.begin() + i;
+							scriptCom.ScriptListComTest.erase(posItr);
 						}
 					}
 				}
@@ -509,9 +510,9 @@ namespace Eclipse
 				{
 					if (ECGui::ButtonBool("Add Script"))
 					{
-						std::string fucknicosmother;
-						fucknicosmother.reserve(256);
-						entCom.ScriptListComTest.push_back(fucknicosmother);
+						std::string scriptName;
+						scriptName.reserve(256);
+						scriptCom.ScriptListComTest.push_back(scriptName);
 					}
 
 					ECGui::InsertSameLine();
@@ -581,7 +582,7 @@ namespace Eclipse
 		auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
 		
 		AddComponentFilter.Draw("Filter",160);
-
+		std::vector<std::string> str = engine->world.GetAllComponentNames();
 		for (int i = 0; i < engine->world.GetAllComponentNames().size(); i++)
 		{
 			if (AddComponentFilter.PassFilter(engine->world.GetAllComponentNames()[i].c_str()))
@@ -632,6 +633,10 @@ namespace Eclipse
 						break;
 					case str2int("ModeLInforComponent"):
 						ComponentRegistry<ModeLInforComponent>("ModeLInforComponent", ID, entCom.Name,
+							EditComponent::EC_ADDCOMPONENT);
+						break;
+					case str2int("ScriptComponent"):
+						ComponentRegistry<ScriptComponent>("ScriptComponent", ID, entCom.Name,
 							EditComponent::EC_ADDCOMPONENT);
 						break;
 					}
@@ -699,6 +704,10 @@ namespace Eclipse
 						break;
 					case str2int("ModeLInforComponent"):
 						ComponentRegistry<ModeLInforComponent>("ModeLInforComponent", ID, entCom.Name,
+							EditComponent::EC_REMOVECOMPONENT);
+						break;
+					case str2int("ScriptComponent"):
+						ComponentRegistry<ModeLInforComponent>("ScriptComponent", ID, entCom.Name,
 							EditComponent::EC_REMOVECOMPONENT);
 						break;
 					}

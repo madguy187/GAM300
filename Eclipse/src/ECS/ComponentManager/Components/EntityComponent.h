@@ -10,7 +10,5 @@ namespace Eclipse
 		std::string Name{"Untagged Entity"};
 		// DONT USE, FOR EDITOR STUFF
 		bool IsActive{ false };
-		// For Script Testing
-		std::vector<std::string> ScriptListComTest;
 	};
 }
