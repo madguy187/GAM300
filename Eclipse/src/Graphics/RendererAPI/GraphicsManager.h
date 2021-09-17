@@ -35,7 +35,7 @@ namespace Eclipse
         void Unload();
         void GlobalFrmeBufferDraw();
         void GlobalFrameBufferBind();
-        void Draw(unsigned int FrameBufferID, MeshComponent* _spritecomponent, GLenum mode, unsigned int ID);
+        void Draw(unsigned int FrameBufferID, MeshComponent* _spritecomponent, GLenum mode, unsigned int ID, CameraComponent::CameraType _camType);
         void DrawIndexed(MeshComponent* in, GLenum mode);
         void CheckTexture(unsigned int ID);
         void CreatePrimitives(Entity ID, int ModelType);
@@ -45,14 +45,14 @@ namespace Eclipse
         float GetGammaCorrection();
         void SetGammaCorrection(float in);
         void UploadGlobalUniforms();
-        void CheckUniformLoc(Shader* _shdrpgm , MeshComponent& sprite, unsigned int id, unsigned int framebufferID);
+        void CheckUniformLoc(Shader* _shdrpgm , MeshComponent& sprite, unsigned int id, unsigned int framebufferID, CameraComponent& camera);
         // Reset Boxes so we can prepare to add
         void ResetInstancedDebugBoxes();
         // Draw Debug Boxes
         void DrawDebugBoxes();
-
         std::string GetModelName(unsigned int modelname);
-
+        unsigned int GetFrameBufferID(FrameBufferMode mode);
+        FrameBuffer::RenderMode GetRenderMode(FrameBufferMode mode);
     private:
         float GammaCorrection = 1.0f;
         void UpdateFrameBuffer();

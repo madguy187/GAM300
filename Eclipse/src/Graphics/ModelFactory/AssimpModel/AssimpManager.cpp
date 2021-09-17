@@ -112,15 +112,13 @@ namespace Eclipse
         return AssimpLoadedModels[in]->GetName();
     }
 
-    void AssimpModelManager::MeshDraw(unsigned int ID, unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
+    void AssimpModelManager::MeshDraw(MeshComponent& ModelMesh , unsigned int ID, unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
     {
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
 
         glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
         auto shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
-
         shdrpgm.Use();
-        MeshComponent& ModelMesh = engine->world.GetComponent<MeshComponent>(ID);
 
         // Check Main Uniforms For each Model
         // Translation done here for each model
@@ -129,7 +127,7 @@ namespace Eclipse
         if (_renderMode == FrameBuffer::RenderMode::Fill_Mode)
         {
             // Render
-            Render(shdrpgm, GL_FILL, FrameBufferID, ModelMesh, ID , _camType);
+            Render(shdrpgm, GL_FILL, FrameBufferID, ModelMesh, ID, _camType);
         }
         else
         {
@@ -150,32 +148,22 @@ namespace Eclipse
             GLCall(glUniform1f(uniform_var_loc2, material.MaximumShininess));
         }
 
-        //if (engine->world.CheckComponent<TransformComponent>(ModelID))
-        //{
-        //    TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(ModelID);
-        //    GLint uModelToNDC_ = _shdrpgm.GetLocation("uModelToNDC");
-        //    GLuint model_ = _shdrpgm.GetLocation("model");
-
-        //    if (uModelToNDC_ >= 0)
-        //    {
-        //        glm::mat4 mModelNDC;
-        //        glm::mat4 model = glm::mat4(1.0f);
-        //        model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
-        //        model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-        //        model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-        //        model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-        //        model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
-
-        //        BoundingRegion br(Transform.position.ConvertToGlmVec3Type(), Transform.scale.ConvertToGlmVec3Type());
-        //        box->AddInstance(br);
-
-        //        mModelNDC = _camera.projMtx * _camera.viewMtx * model;
-        //        glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
-        //        glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
-        //    }
-        //}
-
+        GLint uModelToNDC_ = _shdrpgm.GetLocation("uModelToNDC");
+        GLuint model_ = _shdrpgm.GetLocation("model");
         GLuint NoTexures = _shdrpgm.GetLocation("noTex");
+
+        auto& Transform = engine->world.GetComponent<TransformComponent>(ModelID);
+
+        glm::mat4 mModelNDC;
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
+        model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
+        mModelNDC = _camera.projMtx * _camera.viewMtx * model;
+        glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
+        glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
         glUniform1i(NoTexures, 0);
     }
 
@@ -251,8 +239,8 @@ namespace Eclipse
 
         // Assign ModelInfoComponent
         auto& ModelInformation = engine->world.GetComponent<ModeLInforComponent>(id);
-        ModelInformation.NameOfModel = sprite.Key;
-        ModelInformation.Directory = ModelMap[sprite.Key];
+        //ModelInformation.NameOfModel = sprite.Key;
+        //ModelInformation.Directory = ModelMap[sprite.Key];
 
         //sprite.Meshes = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetMesh();
         //sprite.Textures_loaded = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetTextures();
@@ -267,7 +255,7 @@ namespace Eclipse
         if (engine->world.CheckComponent<TextureComponent>(id))
         {
             auto& tex = engine->world.GetComponent<TextureComponent>(id);
-            engine->AssimpManager.SetTexturesForModel(tex, sprite.Key);
+            //engine->AssimpManager.SetTexturesForModel(tex, sprite.Key);
         }
     }
 
@@ -283,31 +271,8 @@ namespace Eclipse
         }
     }
 
-    void AssimpModelManager::Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent& in, unsigned int ModelID , CameraComponent::CameraType _camType)
+    void AssimpModelManager::Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent& in, unsigned int ModelID, CameraComponent::CameraType _camType)
     {
-        if (!engine->world.CheckComponent<TransformComponent>(ModelID))
-            return;
-
-        GLint uModelToNDC_ = shader.GetLocation("uModelToNDC");
-        GLuint model_ = shader.GetLocation("model");
-
-        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
-        auto& Transform = engine->world.GetComponent<TransformComponent>(ModelID);
-
-        if (uModelToNDC_ >= 0)
-        {
-            glm::mat4 mModelNDC;
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
-            model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-            model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-            model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-            model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
-            mModelNDC = _camera.projMtx * _camera.viewMtx * model;
-            glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
-            glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
-        }
-
         // Each Mesh Render
         Render(shader, MOde, ModelID, in);
     }
@@ -511,6 +476,19 @@ namespace Eclipse
 
         // reset
         glActiveTexture(GL_TEXTURE0);
+
+        // EBO stuff
+        glBindVertexArray(in.VAO);
+        glDrawElements(GL_TRIANGLES, in.Indices.size(), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+    }
+
+    void AssimpModelManager::Render(GLenum mode , MeshComponent& in)
+    {
+        glEnable(GL_BLEND);
+        glEnable(GL_DEPTH_TEST);
+        glDisable(GL_CULL_FACE);
+        glPolygonMode(GL_FRONT_AND_BACK, mode);
 
         // EBO stuff
         glBindVertexArray(in.VAO);

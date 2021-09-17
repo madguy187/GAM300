@@ -48,7 +48,7 @@ namespace Eclipse
 		// Load All Models Once
 		void Init();
 		// Render Function that uses the Container that stores MeshComponent 
-		void MeshDraw(unsigned int ID, unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
+		void MeshDraw(MeshComponent& ModelMesh , unsigned int ID, unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
 		// Upload to Shader
 		void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID, AABB_* box);
 		// Delete Model from MeshContainer Using ID
@@ -74,6 +74,7 @@ namespace Eclipse
 		~AssimpModelManager();
 		void SetMeshComponent(unsigned int ID, std::string);
 		void Render(Shader& shader, GLenum mode, unsigned int id, MeshComponent& in);
+		void Render(GLenum mode, MeshComponent& in);
 		void SetSingleMesh(unsigned int ID, std::string& MeshName);
 
 		///////////////////////////////////////////////////////////////////////////////////////////

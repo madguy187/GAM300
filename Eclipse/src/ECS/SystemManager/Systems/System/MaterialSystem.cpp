@@ -20,27 +20,20 @@ namespace Eclipse
 				// Update Shininess ===============================
 				engine->MaterialManager.UpdateShininess(material);
 
-				// Update Materials ===============================
-				engine->MaterialManager.UpdateMaterial(material);
-
 				if (engine->world.CheckComponent<ModeLInforComponent>(entity))
 				{
 					// HighLight Basic Models Start ===============================
-					engine->MaterialManager.Highlight3DModels(material, entity, engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+					engine->MaterialManager.Highlight3DModels(material, entity, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::SCENEVIEW));
 					// HighLight Basic Models End ===============================
 				}
 				else
 				{
 					// HighLight Basic Models Start ===============================
-					engine->MaterialManager.HighlightBasicPrimitives(material, entity, engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+					engine->MaterialManager.HighlightBasicPrimitives(material, entity, engine->GraphicsManager.GetFrameBufferID(Eclipse::FrameBufferMode::SCENEVIEW));
 					// HighLight Basic Models End ===============================
 
 				}
 			}
-
-			// // HighLight Models Start ===============================
-			// engine->MaterialManager.MeshHighlight(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL);
-			// // HighLight Models End ===============================
 
 			engine->MaterialManager.StencilBufferClear();
 		}

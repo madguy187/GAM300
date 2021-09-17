@@ -9,7 +9,7 @@ namespace Eclipse
         // 3D Models
         //--------------------------------------
         // Store key
-        std::string Key;
+        //std::string Key;
 
         std::string MeshName;
         unsigned int VBO;
@@ -31,12 +31,12 @@ namespace Eclipse
         glm::mat4 modelNDC_xform{ 0 };
         std::string modelRef;
         std::string shaderRef;
-        //std::string textureRef;
-        unsigned int ID = 0;
-        std::string name;
-        unsigned int newLayer{ 0 };
-        unsigned int layerNum{ 0 };
         float transparency{ 1.0f };
-        ECVec4 lightColor{ 1.0f,1.0f,1.0f,1.0f };
+
+        //unsigned int ID = 0;
+        //std::string name;
+        //unsigned int newLayer{ 0 };
+        //unsigned int layerNum{ 0 };
+        //ECVec4 lightColor{ 1.0f,1.0f,1.0f,1.0f };
     };
 }

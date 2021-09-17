@@ -328,7 +328,7 @@ namespace Eclipse
             // Materials Update
             engine->MaterialManager.CheckUnniformLocation(shdrpgm, highlight);
 
-            CheckUniformLoc(_spritecomponent, shdrpgm, _spritecomponent.ID, FrameBufferID);
+            CheckUniformLoc(_spritecomponent, shdrpgm, ModelID, FrameBufferID);
 
             engine->GraphicsManager.DrawIndexed(&_spritecomponent, GL_UNSIGNED_SHORT);
 
@@ -537,7 +537,10 @@ namespace Eclipse
         GLuint DifuseMaterial = shdrpgm.GetLocation("sdiffuse");
         GLuint SpecularMaterial = shdrpgm.GetLocation("sspecular");
         GLuint NoTextures = shdrpgm.GetLocation("noTex");
+        GLint uniform_var_loc1 = shdrpgm.GetLocation("BasicPrimitives");
 
+
+        glUniform1i(uniform_var_loc1, true);
         glUniform1i(NoTextures, in.NoTextures);
         glUniform4f(DifuseMaterial, in.diffuse.getX(), in.diffuse.getY(), in.diffuse.getZ(), 1);
         glUniform4f(SpecularMaterial, in.specular.getX(), in.specular.getY(), in.specular.getZ(), 1);
@@ -571,7 +574,7 @@ namespace Eclipse
             if (engine->world.CheckComponent<MeshComponent>(ModelID))
             {
                 auto& InvidualModels = engine->world.GetComponent<MeshComponent>(ModelID);
-                engine->AssimpManager.Render(shdrpgm, mode, FrameBufferID, InvidualModels, ModelID , CameraComponent::CameraType::Editor_Camera);
+                engine->AssimpManager.Render(mode , InvidualModels);
             }
 
             // Part 5: Clean up
