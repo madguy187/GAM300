@@ -83,7 +83,7 @@ namespace Eclipse
 		}
 		
 		template <typename T, size_t N>
-		inline void ReadAttributeFromElement(Vector<T, N>& att_data)
+		inline void ReadAttributeFromElement(const std::string& att_name, Vector<T, N>& att_data)
 		{
 			std::string vecNames[4] = { {"x"}, {"y"}, {"z"}, {"w"} };
 			void (Vector<T, N>::*v[4])(T) = { &Vector<T, N>::setX, &Vector<T, N>::setY, &Vector<T, N>::setZ, &Vector<T, N>::setW };
@@ -95,7 +95,7 @@ namespace Eclipse
 		}
 
 		template <typename T, size_t N1, size_t N2, glm::qualifier GLM>
-		inline void ReadAttributeFromElement(glm::mat<N1, N2, T, GLM>& att_data)
+		inline void ReadAttributeFromElement(const std::string& att_name, glm::mat<N1, N2, T, GLM>& att_data)
 		{
 			std::string name{ "Col" };
 			for (size_t i = 0; i < N1; ++i)
@@ -113,7 +113,7 @@ namespace Eclipse
 		}
 
 		template <typename T, size_t N, glm::qualifier GLM>
-		inline void ReadAttributeFromElement(glm::vec<N, T, GLM>& att_data)
+		inline void ReadAttributeFromElement(const std::string& att_name, glm::vec<N, T, GLM>& att_data)
 		{
 			std::string vecNames[4] = { {"x"}, {"y"}, {"z"}, {"w"} };
 			for (size_t i = 0; i < N; ++i)

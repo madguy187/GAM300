@@ -22,7 +22,7 @@ namespace Eclipse
 		Serializer sz;
 		Deserializer dsz;
 
-		void SerializeData() {}
+		inline void SerializeData() {}
 
 		template <typename T, typename... Args>
 		inline void SerializeData(const char* name, T element, Args... elements)
@@ -92,15 +92,17 @@ namespace Eclipse
 		{
 			sz.StartElement("RigidBodyComponent");
 			SerializeData(
+				"Velocity", data.velocity,
+				"AngVelocity", data.Angvelocity,
+				"Forces", data.forces,
+				"Mass", data.mass,
+				"Drag", data.drag,
+				"AngDrag", data.angdrag,
 				"IsStatic", data._Static,
 				"IsKinematic", data._Kinematic,
 				"IsEnableGravity", data.enableGravity,
 				"IsEnableRotation", data.enableRotation,
-				"Mass", data.mass,
-				"Drag", data.drag,
-				"AngDrag", data.angdrag,
-				"Velocity", data.velocity,
-				"Forces", data.forces
+				"InScene", data.inScene
 			);
 			sz.CloseElement();
 		}
@@ -258,13 +260,26 @@ namespace Eclipse
 			sz.CloseElement();
 		}
 		
-		/*
-		template <typename T>
-		inline void DeserializeData(const std::string& ele_name, T& data)
-		{
+		inline bool DeserializeData() { return true; }
 
+		template <typename T, typename... Args>
+		inline bool DeserializeData(const std::string& ele_name, T& data, Args... elements)
+		{
+			bool isSuccess = false;
+			if (dsz.StartElement(ele_name))
+			{
+				dsz.ReadAttributeFromElement("value", data);
+				dsz.CloseElement();
+				isSuccess = true;
+			}
+
+			if (isSuccess)
+			{
+				isSuccess = DeserializeData(elements...);
+			}
+
+			return isSuccess;
 		}
-		*/
 
 		template <typename T>
 		inline void DeserializeComponent(const Entity& ent, T& comp)
@@ -277,710 +292,194 @@ namespace Eclipse
 		template<>
 		inline void DeserializeComponent<EntityComponent>(const Entity& ent, EntityComponent& comp)
 		{
-			if (dsz.StartElement("Name"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.Name);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Tag"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.Tag);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("IsActive"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.IsActive);
-				dsz.CloseElement();
-			}
+			DeserializeData(
+				"Name", comp.Name,
+				"Tag", comp.Tag,
+				"IsActive", comp.IsActive
+			);
 		}
 
 		template<>
 		inline void DeserializeComponent<TransformComponent>(const Entity& ent, TransformComponent& comp)
 		{
-			if (dsz.StartElement("Position"))
-			{
-				dsz.ReadAttributeFromElement(comp.position);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Rotation"))
-			{
-				dsz.ReadAttributeFromElement(comp.rotation);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Scale"))
-			{
-				dsz.ReadAttributeFromElement(comp.scale);
-				dsz.CloseElement();
-			}
+			DeserializeData(
+				"Position", comp.position,
+				"Rotation", comp.rotation,
+				"Scale", comp.scale
+			);
 		}
 
 		template<>
 		inline void DeserializeComponent<MeshComponent>(const Entity& ent, MeshComponent& comp)
 		{
-			if (dsz.StartElement("Color"))
-			{
-				dsz.ReadAttributeFromElement(comp.color);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("TextureIdx"))
-			{
-				dsz.ReadAttributeFromElement(comp.textureIdx);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("IsQuad"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.isQuad);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("ModelNDC_XForm"))
-			{
-				dsz.ReadAttributeFromElement(comp.modelNDC_xform);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("ModelRef"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.modelRef);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("ShaderRef"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.shaderRef);
-				dsz.CloseElement();
-			}
-
+			DeserializeData(
+				"Color", comp.color,
+				"TextureIdx", comp.textureIdx,
+				"IsQuad", comp.isQuad,
+				"ModelNDC_XForm", comp.modelNDC_xform,
+				"ModelRef", comp.modelRef,
+				"ShaderRef", comp.shaderRef,
+				"Name", comp.name,
+				"NewLayer", comp.newLayer,
+				"LayerNum", comp.layerNum,
+				"Transparency", comp.transparency,
+				"LightColor", comp.lightColor
+			);
 			comp.ID = ent;
-
-			if (dsz.StartElement("Name"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.name);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("NewLayer"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.newLayer);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("LayerNum"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.layerNum);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("Transparency"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.transparency);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("LightColor"))
-			{
-				dsz.ReadAttributeFromElement(comp.lightColor);
-				dsz.CloseElement();
-			}
 		}
 		
 		template<>
 		inline void DeserializeComponent<MaterialComponent>(const Entity& ent, MaterialComponent& comp)
 		{
-			if (dsz.StartElement("Modeltype"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.Modeltype);
-				comp.ComboIndex = static_cast<size_t>(comp.Modeltype);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Ambient"))
-			{
-				dsz.ReadAttributeFromElement(comp.ambient);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Diffuse"))
-			{
-				dsz.ReadAttributeFromElement(comp.diffuse);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Specular"))
-			{
-				dsz.ReadAttributeFromElement(comp.specular);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("HighlightColor"))
-			{
-				dsz.ReadAttributeFromElement(comp.HighlightColour);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Shininess"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.shininess);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("MaximumShininess"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.MaximumShininess);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("RegisterForHighlight"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.RegisterForHighlight);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Highlight"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.Highlight);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("Thickness"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.Thickness);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("NoTextures"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.NoTextures);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("ScaleUp"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.ScaleUp);
-				dsz.CloseElement();
-			}
+			DeserializeData(
+				"Modeltype", comp.Modeltype,
+				"Ambient", comp.ambient,
+				"Diffuse", comp.diffuse,
+				"Specular", comp.specular,
+				"HighlightColor", comp.HighlightColour,
+				"Shininess", comp.shininess,
+				"MaximumShininess", comp.MaximumShininess,
+				"RegisterForHighlight", comp.RegisterForHighlight,
+				"Highlight", comp.Highlight,
+				"Thickness", comp.Thickness,
+				"NoTextures", comp.NoTextures,
+				"ScaleUp", comp.ScaleUp
+			);
+			comp.ComboIndex = static_cast<size_t>(comp.Modeltype);
 		}
 		
 		template<>
 		inline void DeserializeComponent<AABBComponent>(const Entity& ent, AABBComponent& comp)
 		{
-			if (dsz.StartElement("Center"))
-			{
-				dsz.ReadAttributeFromElement(comp.center);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Min"))
-			{
-				dsz.ReadAttributeFromElement(comp.min);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Max"))
-			{
-				dsz.ReadAttributeFromElement(comp.max);
-				dsz.CloseElement();
-			}
+			DeserializeData(
+				"Center", comp.center,
+				"Min", comp.min,
+				"Max", comp.max
+			);
 		}
 		
 		template<>
 		inline void DeserializeComponent<RigidBodyComponent>(const Entity& ent, RigidBodyComponent& comp)
-		{			
-			if (dsz.StartElement("IsStatic"))
-			{
-				dsz.ReadAttributeFromElement("value", comp._Static);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("IsKinematic"))
-			{
-				dsz.ReadAttributeFromElement("value", comp._Kinematic);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("IsEnableGravity"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.enableGravity);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("IsEnableGravity"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.enableGravity);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("IsEnableRotation"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.enableRotation);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("Mass"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.mass);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("Drag"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.drag);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("AngDrag"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.angdrag);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Velocity"))
-			{
-				dsz.ReadAttributeFromElement(comp.velocity);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Forces"))
-			{
-				dsz.ReadAttributeFromElement(comp.forces);
-				dsz.CloseElement();
-			}
+		{
+			DeserializeData(
+				"Velocity", comp.velocity,
+				"AngVelocity", comp.Angvelocity,
+				"Forces", comp.forces,
+				"Mass", comp.mass,
+				"Drag", comp.drag,
+				"AngDrag", comp.angdrag,
+				"IsStatic", comp._Static,
+				"IsKinematic", comp._Kinematic,
+				"IsEnableGravity", comp.enableGravity,
+				"IsEnableRotation", comp.enableRotation,
+				"InScene", comp.inScene
+			);
 		}
 		
 		template<>
 		inline void DeserializeComponent<CameraComponent>(const Entity& ent, CameraComponent& comp)
 		{
-			if (dsz.StartElement("EyeAlpha"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.eyeAlpha);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("EyeBeta"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.eyeBeta);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("FOV"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.fov);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("NearPlane"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.nearPlane);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("FarPlane"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.farPlane);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("Aspect"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.aspect);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("EyePos"))
-			{
-				dsz.ReadAttributeFromElement(comp.eyePos);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("EyeFront"))
-			{
-				dsz.ReadAttributeFromElement(comp.eyeFront);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("UpVec"))
-			{
-				dsz.ReadAttributeFromElement(comp.upVec);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("RightVec"))
-			{
-				dsz.ReadAttributeFromElement(comp.rightVec);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("WorldUp"))
-			{
-				dsz.ReadAttributeFromElement(comp.worldUp);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("ViewMtx"))
-			{
-				dsz.ReadAttributeFromElement(comp.viewMtx);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("ProjMtx"))
-			{
-				dsz.ReadAttributeFromElement(comp.projMtx);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("CameraSpeed"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.cameraSpeed);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("CameraType"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.camType);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("ProjectionType"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.projType);
-				dsz.CloseElement();
-			}
+			DeserializeData(
+				"EyeAlpha", comp.eyeAlpha,
+				"EyeBeta", comp.eyeBeta,
+				"FOV", comp.fov,
+				"NearPlane", comp.nearPlane,
+				"FarPlane", comp.farPlane,
+				"Aspect", comp.aspect,
+				"EyePos", comp.eyePos,
+				"EyeFront", comp.eyeFront,
+				"UpVec", comp.upVec,
+				"RightVec", comp.rightVec,
+				"WorldUp", comp.worldUp,
+				"ViewMtx", comp.viewMtx,
+				"ProjMtx", comp.projMtx,
+				"CameraSpeed", comp.cameraSpeed,
+				"CameraType", comp.camType,
+				"ProjectionType", comp.projType
+			);
 		}
 
 		template<>
 		inline void DeserializeComponent<SpotLightComponent>(const Entity& ent, SpotLightComponent& comp)
 		{
 			comp.ID = ent;
-
-			if (dsz.StartElement("Counter"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.Counter);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("LightColor"))
-			{
-				dsz.ReadAttributeFromElement(comp.lightColor);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Direction"))
-			{
-				dsz.ReadAttributeFromElement(comp.direction);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("Ambient"))
-			{
-				dsz.ReadAttributeFromElement(comp.ambient);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("Diffuse"))
-			{
-				dsz.ReadAttributeFromElement(comp.diffuse);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("Specular"))
-			{
-				dsz.ReadAttributeFromElement(comp.specular);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Color"))
-			{
-				dsz.ReadAttributeFromElement(comp.Color);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("IntensityStrength"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.IntensityStrength);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Radius"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.radius);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("CutOff"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.cutOff);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("OuterCutOff"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.outerCutOff);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("Constant"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.constant);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("Linear"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.linear);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("Quadratic"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.quadratic);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("AttenuationLevel"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.AttenuationLevel);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("SurroundingAttenuationLevel"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.SurroundingAttenuationLevel);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("EnableBlinnPhong"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.EnableBlinnPhong);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("HasTexture"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.hasTexture);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("Visible"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.visible);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("AffectsWorld"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.AffectsWorld);
-				dsz.CloseElement();
-			}
+			DeserializeData(
+				"Counter", comp.Counter,
+				"LightColor", comp.lightColor,
+				"Direction", comp.direction,
+				"Ambient", comp.ambient,
+				"Diffuse", comp.diffuse,
+				"Specular", comp.specular,
+				"Color", comp.Color,
+				"IntensityStrength", comp.IntensityStrength,
+				"Radius", comp.radius,
+				"CutOff", comp.cutOff,
+				"OuterCutOff", comp.outerCutOff,
+				"Constant", comp.constant,
+				"Linear", comp.linear,
+				"Quadratic", comp.quadratic,
+				"AttenuationLevel", comp.AttenuationLevel,
+				"SurroundingAttenuationLevel", comp.SurroundingAttenuationLevel,
+				"EnableBlinnPhong", comp.EnableBlinnPhong,
+				"HasTexture", comp.hasTexture,
+				"Visible", comp.visible,
+				"AffectsWorld", comp.AffectsWorld
+			);
 		}
 
 		template<>
 		inline void DeserializeComponent<PointLightComponent>(const Entity& ent, PointLightComponent& comp)
 		{
 			comp.ID = ent;
-
-			if (dsz.StartElement("Counter"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.Counter);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Ambient"))
-			{
-				dsz.ReadAttributeFromElement(comp.ambient);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Diffuse"))
-			{
-				dsz.ReadAttributeFromElement(comp.diffuse);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Specular"))
-			{
-				dsz.ReadAttributeFromElement(comp.specular);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("LightColor"))
-			{
-				dsz.ReadAttributeFromElement(comp.lightColor);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Color"))
-			{
-				dsz.ReadAttributeFromElement(comp.Color);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("IntensityStrength"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.IntensityStrength);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Constant"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.constant);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Linear"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.linear);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Quadratic"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.quadratic);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Radius"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.radius);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("AttenuationLevel"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.AttenuationLevel);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("EnableBlinnPhong"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.EnableBlinnPhong);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("HasTexture"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.hasTexture);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Visible"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.visible);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("AffectsWorld"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.AffectsWorld);
-				dsz.CloseElement();
-			}
+			DeserializeData(
+				"Counter", comp.Counter,
+				"Ambient", comp.ambient,
+				"Diffuse", comp.diffuse,
+				"Specular", comp.specular,
+				"LightColor", comp.lightColor,
+				"Color", comp.Color,
+				"IntensityStrength", comp.IntensityStrength,
+				"Constant", comp.constant,
+				"Linear", comp.linear,
+				"Quadratic", comp.quadratic,
+				"Radius", comp.radius,
+				"AttenuationLevel", comp.AttenuationLevel,
+				"EnableBlinnPhong", comp.EnableBlinnPhong,
+				"HasTexture", comp.hasTexture,
+				"Visible", comp.visible,
+				"AffectsWorld", comp.AffectsWorld
+			);
 		}
 
 		template<>
 		inline void DeserializeComponent<DirectionalLightComponent>(const Entity& ent, DirectionalLightComponent& comp)
 		{
 			comp.ID = ent;
-
-			if (dsz.StartElement("Counter"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.Counter);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Visible"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.visible);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("AffectsWorld"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.AffectsWorld);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("EnableBlinnPhong"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.EnableBlinnPhong);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("LightColor"))
-			{
-				dsz.ReadAttributeFromElement(comp.lightColor);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("Direction"))
-			{
-				dsz.ReadAttributeFromElement(comp.Direction);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Ambient"))
-			{
-				dsz.ReadAttributeFromElement(comp.ambient);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Diffuse"))
-			{
-				dsz.ReadAttributeFromElement(comp.diffuse);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Specular"))
-			{
-				dsz.ReadAttributeFromElement(comp.specular);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("Color"))
-			{
-				dsz.ReadAttributeFromElement(comp.Color);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("ModelNDC_xform"))
-			{
-				dsz.ReadAttributeFromElement(comp.modelNDC_xform);
-				dsz.CloseElement();
-			}
+			DeserializeData(
+				"Counter", comp.Counter,
+				"Visible", comp.visible,
+				"AffectsWorld", comp.AffectsWorld,
+				"EnableBlinnPhong", comp.EnableBlinnPhong,
+				"LightColor", comp.lightColor,
+				"Direction", comp.Direction,
+				"Ambient", comp.ambient,
+				"Diffuse", comp.diffuse,
+				"Specular", comp.specular,
+				"Color", comp.Color,
+				"ModelNDC_xform", comp.modelNDC_xform
+			);
 		}
 		
 		template<>
 		inline void DeserializeComponent<TextureComponent>(const Entity& ent, TextureComponent& comp)
 		{
 			comp.ID = ent;
-
-			if (dsz.StartElement("TextureType"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.Type);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("TextureKey"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.TextureKey);
-				dsz.CloseElement();
-			}
-			
-			if (dsz.StartElement("HasTexture"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.hasTexture);
-				dsz.CloseElement();
-			}
-
-			if (dsz.StartElement("TextureRef"))
-			{
-				dsz.ReadAttributeFromElement("value", comp.textureRef);
-				dsz.CloseElement();
-			}
+			DeserializeData(
+				"TextureType", comp.Type,
+				"TextureKey", comp.TextureKey,
+				"HasTexture", comp.hasTexture,
+				"TextureRef", comp.textureRef
+			);
 		}
 	
 		template <typename CompType>
