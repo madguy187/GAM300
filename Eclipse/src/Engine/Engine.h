@@ -10,6 +10,7 @@
 #include "Graphics/Material/MaterialManager.h"
 #include "Graphics/Picker/PickingManager.h"
 #include "Graphics/Grid/AABBTree.h"
+#include "Physics/PhysicsManager.h"
 #include "Editor/Windows/AssetBrowser/AssetBrowser.h"
 
 namespace Eclipse
@@ -33,6 +34,8 @@ namespace Eclipse
 		AssetBrowserWindow gAssetB;
         void Init();
         void Run();
+		PhysicsManager gPhysics;
+
 
         bool GetEditorState();
     private:

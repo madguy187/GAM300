@@ -117,10 +117,25 @@ namespace Eclipse
 							prevEntCom.IsActive = false;
 						}
 					}
-				
+
+				}
+				if (entCom.IsAChild)
+				{
+					engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit",
+						static_cast<int>(index - 1));
+					engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
+						static_cast<int>(index - 1), entCom.IsActive);
+					engine->editorManager->SetGlobalIndex(index - 1);
+				}
+				else
+				{
+					std::cout << index;
+					engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit",
+						static_cast<int>(index));
+					engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
+						static_cast<int>(index), entCom.IsActive);
 					engine->editorManager->SetGlobalIndex(index);
 				}
-
 			}
 
 			auto& entCom12 = engine->world.GetComponent<EntityComponent>(list[index]);
@@ -138,23 +153,23 @@ namespace Eclipse
 			//	}
 			//}
 
-			if (entCom12.IsAChild)
-			{
-				engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit",
-					static_cast<int>(index - 1));
-				engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
-					static_cast<int>(index - 1), entCom.IsActive);
-				//engine->editorManager->SetGlobalIndex(index-1);
-			}
-			else
-			{
-				std::cout << index;
-				engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit",
-					static_cast<int>(index));
-				engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
-					static_cast<int>(index), entCom.IsActive);
-				//engine->editorManager->SetGlobalIndex(index);
-			}
+			//if (entCom12.IsAChild)
+			//{
+			//	engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit",
+			//		static_cast<int>(index - 1));
+			//	engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
+			//		static_cast<int>(index - 1), entCom.IsActive);
+			//	engine->editorManager->SetGlobalIndex(index-1);
+			//}
+			//else
+			//{
+			//	std::cout << index;
+			//	engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit",
+			//		static_cast<int>(index));
+			//	engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
+			//		static_cast<int>(index), entCom.IsActive);
+			//	engine->editorManager->SetGlobalIndex(index);
+			//}
 		}
 	}
 
@@ -314,7 +329,7 @@ namespace Eclipse
 			engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
 				static_cast<int>(curr.index), entCom.IsActive);
 
-			engine->editorManager->SetGlobalIndex(index);
+			engine->editorManager->SetGlobalIndex(curr.index);
 			//engine->editorManager->SetGlobalIndex(engine->editorManager->GetEntityIndex(entCom..index));
 		}
 	}

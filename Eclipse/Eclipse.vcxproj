@@ -93,9 +93,13 @@
       <AdditionalLibraryDirectories>..\Dep\GLFW\lib-vc2019;..\Dep\GLEW\lib\Release\x64;..\Dep\PhysX\Debug;..\Dep\mono\lib;..\Dep\ASSIMP;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\Dep\PhysX\Debug\PhysX_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Debug\PhysX_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Debug\PhysX_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
+      <Command>IF EXIST ..\Dep\PhysX\Debug\glut32.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Debug\glut32.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Debug\glut32.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\PhysX\Debug\PhysX_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Debug\PhysX_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Debug\PhysX_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\PhysX\Debug\PhysXCommon_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Debug\PhysXCommon_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Debug\PhysXCommon_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\PhysX\Debug\PhysXCooking_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Debug\PhysXCooking_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Debug\PhysXCooking_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\PhysX\Debug\PhysXDevice64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Debug\PhysXDevice64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Debug\PhysXDevice64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\PhysX\Debug\PhysXFoundation_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Debug\PhysXFoundation_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Debug\PhysXFoundation_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\PhysX\Debug\PhysXGpu_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Debug\PhysXGpu_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Debug\PhysXGpu_64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\mono-2.0-sgen.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\mono\bin\mono-2.0-sgen.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\assimp-vc142-mtd.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\ASSIMP\assimp-vc142-mtd.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)</Command>
     </PostBuildEvent>
@@ -120,12 +124,16 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>mono-2.0-sgen.lib;opengl32.lib;glew32.lib;glfw3dll.lib;LowLevel_static_64.lib;LowLevelAABB_static_64.lib;LowLevelDynamics_static_64.lib;PhysX_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXCommon_64.lib;PhysXCooking_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;PhysXTask_static_64.lib;PhysXVehicle_static_64.lib;SampleBase_static_64.lib;SampleFramework_static_64.lib;SamplesToolkit_static_64.lib;SceneQuery_static_64.lib;SimulationController_static_64.lib;SnippetRender_static_64.lib;SnippetUtils_static_64.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\Dep\GLFW\lib-vc2019;..\Dep\GLEW\lib\Release\x64;..\Dep\PhysX\Debug;..\Dep\mono\lib;..\Dep\ASSIMP;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Dep\GLFW\lib-vc2019;..\Dep\GLEW\lib\Release\x64;..\Dep\PhysX\Release;..\Dep\mono\lib;..\Dep\ASSIMP;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\Dep\PhysX\Release\PhysX_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Release\PhysX_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Release\PhysX_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
+      <Command>IF EXIST ..\Dep\PhysX\Release\glut32.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Release\glut32.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Release\glut32.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\PhysX\Release\PhysX_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Release\PhysX_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Release\PhysX_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\PhysX\Release\PhysXCommon_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Release\PhysXCommon_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Release\PhysXCommon_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\PhysX\Release\PhysXCooking_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Release\PhysXCooking_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Release\PhysXCooking_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\PhysX\Release\PhysXDevice64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Release\PhysXDevice64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Release\PhysXDevice64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\PhysX\Release\PhysXFoundation_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Release\PhysXFoundation_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Release\PhysXFoundation_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\PhysX\Release\PhysXGpu_64.dll\ (xcopy /Q /E /Y /I ..\Dep\PhysX\Release\PhysXGpu_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\PhysX\Release\PhysXGpu_64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\mono\bin\mono-2.0-sgen.dll\ (xcopy /Q /E /Y /I ..\Dep\mono\bin\mono-2.0-sgen.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\mono\bin\mono-2.0-sgen.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\assimp-vc142-mtd.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\ASSIMP\assimp-vc142-mtd.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)</Command>
     </PostBuildEvent>
@@ -149,24 +157,23 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>mono-2.0-sgen.lib;opengl32.lib;glew32.lib;glfw3dll.lib;LowLevel_static_64.lib;LowLevelAABB_static_64.lib;LowLevelDynamics_static_64.lib;PhysX_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXCommon_64.lib;PhysXCooking_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;PhysXTask_static_64.lib;PhysXVehicle_static_64.lib;SampleBase_static_64.lib;SampleFramework_static_64.lib;SamplesToolkit_static_64.lib;SceneQuery_static_64.lib;SimulationController_static_64.lib;SnippetRender_static_64.lib;SnippetUtils_static_64.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\Dep\GLFW\lib-vc2019;..\Dep\GLEW\lib\Release\x64;..\Dep\PhysX\Debug;..\Dep\mono\lib;..\Dep\ASSIMP;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\AABBComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\CollisionComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentBase.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\DirectionalLightComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\EntityComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\LightComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\MaterialComponent.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\ParentChildComponent.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\MeshComponent3D.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\MeshComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ModeLInfoComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\ParentChildComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\PointLightComponent.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\RenderComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\SpotLightComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\TextureComponent.h" />
@@ -179,6 +186,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\ECS\SystemManager\Systems\System\LightingSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\System.h" />
@@ -223,10 +231,10 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\FrameBuffer\WindowConstraint.h" />
     <ClInclude Include="src\Graphics\Grid\AABB.h" />
     <ClInclude Include="src\Graphics\Grid\AABBTree.h" />
-    <ClInclude Include="src\Graphics\Grid\bounds.h" />
     <ClInclude Include="src\Graphics\Grid\Box.h" />
     <ClInclude Include="src\Graphics\Grid\Grid.h" />
     <ClInclude Include="src\Graphics\Grid\IAABB.h" />
+    <ClInclude Include="src\Graphics\Grid\bounds.h" />
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h" />
     <ClInclude Include="src\Graphics\InputHandler\InputWrapper.h" />
     <ClInclude Include="src\Graphics\Lighting\DirectionalLight.h" />
@@ -309,6 +317,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp" />
     <ClCompile Include="src\ECS\World.cpp" />
@@ -342,9 +351,9 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\FrameBuffer\WindowConstraint.cpp" />
     <ClCompile Include="src\Graphics\Grid\AABB.cpp" />
     <ClCompile Include="src\Graphics\Grid\AABBTree.cpp" />
-    <ClCompile Include="src\Graphics\Grid\bounds.cpp" />
-    <ClCompile Include="src\Graphics\Grid\Grid.cpp" />
     <ClCompile Include="src\Graphics\Grid\Box.cpp" />
+    <ClCompile Include="src\Graphics\Grid\Grid.cpp" />
+    <ClCompile Include="src\Graphics\Grid\bounds.cpp" />
     <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp" />
     <ClCompile Include="src\Graphics\Lighting\DirectionalLight.cpp" />
     <ClCompile Include="src\Graphics\Lighting\LightManager.cpp" />
@@ -399,26 +408,6 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\Assets\Shaders\AABB.frag" />
-    <None Include="src\Assets\Shaders\AABB.vert" />
-    <None Include="src\Assets\Shaders\AssimpShader3D.frag" />
-    <None Include="src\Assets\Shaders\AssimpShader3D.vert" />
-    <None Include="src\Assets\Shaders\BasicFrag.frag" />
-    <None Include="src\Assets\Shaders\BasicVtx.vert" />
-    <None Include="src\Assets\Shaders\DebugFrag.frag" />
-    <None Include="src\Assets\Shaders\DebugVtx.vert" />
-    <None Include="src\Assets\Shaders\light.frag" />
-    <None Include="src\Assets\Shaders\light.vert" />
-    <None Include="src\Assets\Shaders\LightFrag.frag" />
-    <None Include="src\Assets\Shaders\LightVtx.vert" />
-    <None Include="src\Assets\Shaders\ParticlesFrag.frag" />
-    <None Include="src\Assets\Shaders\ParticlesVtx.vert" />
-    <None Include="src\Assets\Shaders\Shaders.json" />
-    <None Include="src\Assets\Shaders\textFrag.frag" />
-    <None Include="src\Assets\Shaders\textVtx.vert" />
-    <None Include="src\Mono\ScriptAPI\MonoVec3.cs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
