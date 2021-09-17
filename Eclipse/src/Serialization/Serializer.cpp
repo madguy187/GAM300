@@ -50,6 +50,8 @@ namespace Eclipse
 		std::filesystem::path p{ savePath };
 		std::filesystem::create_directories(p.remove_filename());
 		_doc.SaveFile(savePath.c_str());
+		_doc.Clear();
+		_currElement = nullptr;
 	}
 
 	Serializer::~Serializer()

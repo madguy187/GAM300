@@ -13,6 +13,7 @@
 #include "../ECS/ComponentManager/Components/SpotLightComponent.h"
 #include "../ECS/ComponentManager/Components/TransformComponent.h"
 #include "../ECS/ComponentManager/Components/TextureComponent.h"
+#include "../ECS/ComponentManager/Components/LightComponent.h"
 
 namespace Eclipse
 {
@@ -36,39 +37,32 @@ namespace Eclipse
 		template <typename CompType>
 		inline void SerializeComponentData(const CompType& data)
 		{
-			sz.StartElement(typeid(data).name());
 			sz.AddAttributeToElement("Unavailable", true);
-			sz.CloseElement();
 		}
 
 		template <>
 		inline void SerializeComponentData<EntityComponent>(const EntityComponent& data)
 		{
-			sz.StartElement("EntityComponent");
 			SerializeData(
 				"Name", data.Name,
 				"Tag", data.Tag,
 				"IsActive", data.IsActive
 			);
-			sz.CloseElement();
 		}
 
 		template <>
 		inline void SerializeComponentData<TransformComponent>(const TransformComponent& data)
 		{
-			sz.StartElement("TransformComponent");
 			SerializeData(
 				"Position", data.position,
 				"Rotation", data.rotation,
 				"Scale", data.scale
 			);
-			sz.CloseElement();
 		}
 
 		template <>
 		inline void SerializeComponentData<MeshComponent>(const MeshComponent& data)
 		{
-			sz.StartElement("MeshComponent");
 			SerializeData(
 				"Key", data.Key,
 				"Color", data.color,
@@ -84,13 +78,11 @@ namespace Eclipse
 				"Transparency", data.transparency,
 				"LightColor", data.lightColor
 			);
-			sz.CloseElement();
 		}
 
 		template <>
 		inline void SerializeComponentData<RigidBodyComponent>(const RigidBodyComponent& data)
 		{
-			sz.StartElement("RigidBodyComponent");
 			SerializeData(
 				"Velocity", data.velocity,
 				"AngVelocity", data.Angvelocity,
@@ -104,13 +96,11 @@ namespace Eclipse
 				"IsEnableRotation", data.enableRotation,
 				"InScene", data.inScene
 			);
-			sz.CloseElement();
 		}
 
 		template <>
 		inline void SerializeComponentData<MaterialComponent>(const MaterialComponent& data)
 		{
-			sz.StartElement("MaterialComponent");
 			SerializeData(
 				"Modeltype", data.Modeltype,
 				"Ambient", data.ambient,
@@ -125,25 +115,21 @@ namespace Eclipse
 				"Thickness", data.Thickness,
 				"ScaleUp", data.ScaleUp
 			);
-			sz.CloseElement();
 		}
 
 		template <>
 		inline void SerializeComponentData<AABBComponent>(const AABBComponent& data)
 		{
-			sz.StartElement("AABBComponent");
 			SerializeData(
 				"Center", data.center,
 				"Min", data.min,
 				"Max", data.max
 			);
-			sz.CloseElement();
 		}
 
 		template <>
 		inline void SerializeComponentData<CameraComponent>(const CameraComponent& data)
 		{
-			sz.StartElement("CameraComponent");
 			SerializeData(
 				"EyeAlpha", data.eyeAlpha,
 				"EyeBeta", data.eyeBeta,
@@ -162,13 +148,11 @@ namespace Eclipse
 				"CameraType", data.camType,
 				"ProjectionType", data.projType
 			);
-			sz.CloseElement();
 		}
 
 		template <>
 		inline void SerializeComponentData<SpotLightComponent>(const SpotLightComponent& data)
 		{
-			sz.StartElement("SpotLightComponent");
 			SerializeData(
 				"ID", data.ID,
 				"Counter", data.Counter,
@@ -192,14 +176,11 @@ namespace Eclipse
 				"Visible", data.visible,
 				"AffectsWorld", data.AffectsWorld
 			);
-
-			sz.CloseElement();
 		}
 		
 		template <>
 		inline void SerializeComponentData<PointLightComponent>(const PointLightComponent& data)
 		{
-			sz.StartElement("PointLightComponent");
 			SerializeData(
 				"ID", data.ID,
 				"Counter", data.Counter,
@@ -219,14 +200,11 @@ namespace Eclipse
 				"Visible", data.visible,
 				"AffectsWorld", data.AffectsWorld
 			);
-
-			sz.CloseElement();
 		}
 
 		template <>
 		inline void SerializeComponentData<DirectionalLightComponent>(const DirectionalLightComponent& data)
 		{
-			sz.StartElement("DirectionalLightComponent");
 			SerializeData(
 				"ID", data.ID,
 				"Counter", data.Counter,
@@ -241,14 +219,11 @@ namespace Eclipse
 				"Color", data.Color,
 				"ModelNDC_xform", data.modelNDC_xform
 			);
-
-			sz.CloseElement();
 		}
 
 		template <>
 		inline void SerializeComponentData<TextureComponent>(const TextureComponent& data)
 		{
-			sz.StartElement("TextureComponent");
 			SerializeData(
 				"ID", data.ID,
 				"TextureType", data.Type,
@@ -256,8 +231,11 @@ namespace Eclipse
 				"HasTexture", data.hasTexture,
 				"TextureRef", data.textureRef
 			);
-
-			sz.CloseElement();
+		}
+		
+		template <>
+		inline void SerializeComponentData<LightComponent>(const LightComponent& data)
+		{
 		}
 		
 		inline bool DeserializeData() { return true; }
@@ -282,37 +260,43 @@ namespace Eclipse
 		}
 
 		template <typename T>
-		inline void DeserializeComponent(const Entity& ent, T& comp)
+		inline bool DeserializeComponentData(const Entity& ent, T& comp)
 		{
 			std::string msg = typeid(T).name();
-			msg += " is invalid as a component.";
-			EDITOR_LOG_INFO(false, msg.c_str());
+			msg += " is an invalid component.";
+			EDITOR_LOG_WARN(false, msg.c_str());
+
+			return false;
 		}
 
 		template<>
-		inline void DeserializeComponent<EntityComponent>(const Entity& ent, EntityComponent& comp)
+		inline bool DeserializeComponentData<EntityComponent>(const Entity& ent, EntityComponent& comp)
 		{
-			DeserializeData(
+			bool isSuccess = DeserializeData(
 				"Name", comp.Name,
 				"Tag", comp.Tag,
 				"IsActive", comp.IsActive
 			);
+
+			return isSuccess;
 		}
 
 		template<>
-		inline void DeserializeComponent<TransformComponent>(const Entity& ent, TransformComponent& comp)
+		inline bool DeserializeComponentData<TransformComponent>(const Entity& ent, TransformComponent& comp)
 		{
-			DeserializeData(
+			bool isSuccess = DeserializeData(
 				"Position", comp.position,
 				"Rotation", comp.rotation,
 				"Scale", comp.scale
 			);
+
+			return isSuccess;
 		}
 
 		template<>
-		inline void DeserializeComponent<MeshComponent>(const Entity& ent, MeshComponent& comp)
+		inline bool DeserializeComponentData<MeshComponent>(const Entity& ent, MeshComponent& comp)
 		{
-			DeserializeData(
+			bool isSuccess = DeserializeData(
 				"Color", comp.color,
 				"TextureIdx", comp.textureIdx,
 				"IsQuad", comp.isQuad,
@@ -325,13 +309,16 @@ namespace Eclipse
 				"Transparency", comp.transparency,
 				"LightColor", comp.lightColor
 			);
+
 			comp.ID = ent;
+
+			return isSuccess;
 		}
 		
 		template<>
-		inline void DeserializeComponent<MaterialComponent>(const Entity& ent, MaterialComponent& comp)
+		inline bool DeserializeComponentData<MaterialComponent>(const Entity& ent, MaterialComponent& comp)
 		{
-			DeserializeData(
+			bool isSuccess = DeserializeData(
 				"Modeltype", comp.Modeltype,
 				"Ambient", comp.ambient,
 				"Diffuse", comp.diffuse,
@@ -345,23 +332,27 @@ namespace Eclipse
 				"NoTextures", comp.NoTextures,
 				"ScaleUp", comp.ScaleUp
 			);
+
+			return isSuccess;
 			comp.ComboIndex = static_cast<size_t>(comp.Modeltype);
 		}
 		
 		template<>
-		inline void DeserializeComponent<AABBComponent>(const Entity& ent, AABBComponent& comp)
+		inline bool DeserializeComponentData<AABBComponent>(const Entity& ent, AABBComponent& comp)
 		{
-			DeserializeData(
+			bool isSuccess = DeserializeData(
 				"Center", comp.center,
 				"Min", comp.min,
 				"Max", comp.max
 			);
+
+			return isSuccess;
 		}
 		
 		template<>
-		inline void DeserializeComponent<RigidBodyComponent>(const Entity& ent, RigidBodyComponent& comp)
+		inline bool DeserializeComponentData<RigidBodyComponent>(const Entity& ent, RigidBodyComponent& comp)
 		{
-			DeserializeData(
+			bool isSuccess = DeserializeData(
 				"Velocity", comp.velocity,
 				"AngVelocity", comp.Angvelocity,
 				"Forces", comp.forces,
@@ -374,12 +365,14 @@ namespace Eclipse
 				"IsEnableRotation", comp.enableRotation,
 				"InScene", comp.inScene
 			);
+
+			return isSuccess;
 		}
 		
 		template<>
-		inline void DeserializeComponent<CameraComponent>(const Entity& ent, CameraComponent& comp)
+		inline bool DeserializeComponentData<CameraComponent>(const Entity& ent, CameraComponent& comp)
 		{
-			DeserializeData(
+			bool isSuccess = DeserializeData(
 				"EyeAlpha", comp.eyeAlpha,
 				"EyeBeta", comp.eyeBeta,
 				"FOV", comp.fov,
@@ -397,13 +390,14 @@ namespace Eclipse
 				"CameraType", comp.camType,
 				"ProjectionType", comp.projType
 			);
+
+			return isSuccess;
 		}
 
 		template<>
-		inline void DeserializeComponent<SpotLightComponent>(const Entity& ent, SpotLightComponent& comp)
+		inline bool DeserializeComponentData<SpotLightComponent>(const Entity& ent, SpotLightComponent& comp)
 		{
-			comp.ID = ent;
-			DeserializeData(
+			bool isSuccess = DeserializeData(
 				"Counter", comp.Counter,
 				"LightColor", comp.lightColor,
 				"Direction", comp.direction,
@@ -425,13 +419,16 @@ namespace Eclipse
 				"Visible", comp.visible,
 				"AffectsWorld", comp.AffectsWorld
 			);
+
+			comp.ID = ent;
+
+			return isSuccess;
 		}
 
 		template<>
-		inline void DeserializeComponent<PointLightComponent>(const Entity& ent, PointLightComponent& comp)
+		inline bool DeserializeComponentData<PointLightComponent>(const Entity& ent, PointLightComponent& comp)
 		{
-			comp.ID = ent;
-			DeserializeData(
+			bool isSuccess = DeserializeData(
 				"Counter", comp.Counter,
 				"Ambient", comp.ambient,
 				"Diffuse", comp.diffuse,
@@ -449,13 +446,16 @@ namespace Eclipse
 				"Visible", comp.visible,
 				"AffectsWorld", comp.AffectsWorld
 			);
+
+			comp.ID = ent;
+
+			return isSuccess;
 		}
 
 		template<>
-		inline void DeserializeComponent<DirectionalLightComponent>(const Entity& ent, DirectionalLightComponent& comp)
+		inline bool DeserializeComponentData<DirectionalLightComponent>(const Entity& ent, DirectionalLightComponent& comp)
 		{
-			comp.ID = ent;
-			DeserializeData(
+			bool isSuccess = DeserializeData(
 				"Counter", comp.Counter,
 				"Visible", comp.visible,
 				"AffectsWorld", comp.AffectsWorld,
@@ -468,18 +468,31 @@ namespace Eclipse
 				"Color", comp.Color,
 				"ModelNDC_xform", comp.modelNDC_xform
 			);
+
+			comp.ID = ent;
+
+			return isSuccess;
 		}
 		
 		template<>
-		inline void DeserializeComponent<TextureComponent>(const Entity& ent, TextureComponent& comp)
+		inline bool DeserializeComponentData<TextureComponent>(const Entity& ent, TextureComponent& comp)
 		{
-			comp.ID = ent;
-			DeserializeData(
+			bool isSuccess = DeserializeData(
 				"TextureType", comp.Type,
 				"TextureKey", comp.TextureKey,
 				"HasTexture", comp.hasTexture,
 				"TextureRef", comp.textureRef
 			);
+
+			comp.ID = ent;
+
+			return isSuccess;
+		}
+	
+		template<>
+		inline bool DeserializeComponentData<LightComponent>(const Entity& ent, LightComponent& comp)
+		{
+			return true;
 		}
 	
 		template <typename CompType>
@@ -487,9 +500,37 @@ namespace Eclipse
 		{
 			if (w.CheckComponent<CompType>(ent))
 			{
+				auto index = static_cast<unsigned int>(w.GetComponentType<CompType>());
+				auto name = w.GetAllComponentNames()[index];
 				auto& comp = w.GetComponent<CompType>(ent);
+				sz.StartElement(name);
 				SerializeComponentData<CompType>(comp);
+				sz.CloseElement();
 			}
+		}
+
+		template <typename CompType>
+		inline bool DeserializeComponent(World& w, const Entity& ent)
+		{
+			auto index = static_cast<unsigned int>(w.GetComponentType<CompType>());
+			auto name = w.GetAllComponentNames()[index];
+			bool isSuccess = true;
+
+			if (dsz.StartElement(name))
+			{
+				CompType comp;
+				if (DeserializeComponentData<CompType>(ent, comp))
+				{
+					w.AddComponent(ent, comp);
+				}
+				else
+				{
+					isSuccess = false;
+				}
+				dsz.CloseElement();
+			}
+
+			return isSuccess;
 		}
 
 		void SerializeEntity(const Entity& ent, const size_t& counter);
@@ -498,7 +539,7 @@ namespace Eclipse
 
 		void SerializeAllComponents(const Entity& ent);
 
-		void DeserializeAllComponents(const Entity& ent);
+		bool DeserializeAllComponents(const Entity& ent);
 
 		void SerializeAllEntity(const char* fullpath);
 

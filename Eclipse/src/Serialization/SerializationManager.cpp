@@ -18,8 +18,10 @@ namespace Eclipse
 		if (dsz.StartElement("Entity_", true, counter))
 		{
 			Entity ent = engine->world.CreateEntity();
-			DeserializeAllComponents(ent);
-			engine->editorManager->RegisterExistingEntity(ent);
+			if (DeserializeAllComponents(ent))
+			{
+				engine->editorManager->RegisterExistingEntity(ent);
+			}
 			dsz.CloseElement();
 		}
 	}
@@ -49,98 +51,52 @@ namespace Eclipse
 		SerializeComponent<AABBComponent>(w, ent);
 
 		SerializeComponent<TextureComponent>(w, ent);
+
+		SerializeComponent<LightComponent>(w, ent);
 	}
 
-	void SerializationManager::DeserializeAllComponents(const Entity& ent)
+	bool SerializationManager::DeserializeAllComponents(const Entity& ent)
 	{
-		if (dsz.StartElement("EntityComponent"))
-		{
-			EntityComponent comp;
-			DeserializeComponent<EntityComponent>(ent, comp);
-			engine->world.AddComponent(ent, comp);
-			dsz.CloseElement();
-		}
+		bool isSuccess = false;
+		World& w = engine->world;
 
-		if (dsz.StartElement("TransformComponent"))
+		if (DeserializeComponent<EntityComponent>(w, ent) &&
+			DeserializeComponent<TransformComponent>(w, ent) &&
+			DeserializeComponent<MeshComponent>(w, ent) &&
+			DeserializeComponent<MaterialComponent>(w, ent) &&
+			DeserializeComponent<AABBComponent>(w, ent) &&
+			DeserializeComponent<RigidBodyComponent>(w, ent) &&
+			DeserializeComponent<CameraComponent>(w, ent) &&
+			DeserializeComponent<PointLightComponent>(w, ent) &&
+			DeserializeComponent<SpotLightComponent>(w, ent) &&
+			DeserializeComponent<DirectionalLightComponent>(w, ent) &&
+			DeserializeComponent<TextureComponent>(w, ent) &&
+			DeserializeComponent<LightComponent>(w, ent))
 		{
-			TransformComponent comp;
-			DeserializeComponent<TransformComponent>(ent, comp);
-			engine->world.AddComponent(ent, comp);
-			dsz.CloseElement();
+			if (w.CheckComponent<CameraComponent>(ent))
+			{
+				auto& camera = w.GetComponent<CameraComponent>(ent);
+				engine->gCamera.ReInitCameraList(camera.camType, ent);
+			}
+			isSuccess = true;
 		}
-
-		if (dsz.StartElement("MeshComponent"))
+		else
 		{
-			MeshComponent comp;
-			DeserializeComponent<MeshComponent>(ent, comp);
-			engine->world.AddComponent(ent, comp);
-			dsz.CloseElement();
+			if (w.CheckComponent<EntityComponent>(ent))
+			{
+				auto& entity = w.GetComponent<EntityComponent>(ent);
+				std::string msg = "Entity \"";
+				msg += entity.Name + "\" cannot be deserialized due to corrupted component.";
+				EDITOR_LOG_WARN(msg.c_str())
+			}
+			else
+			{
+				std::string msg = "Unknown entity cannot be deserialized due to corrupted component.";
+				EDITOR_LOG_WARN(msg.c_str())
+			}
+			w.DestroyEntity(ent);
 		}
-
-		if (dsz.StartElement("MaterialComponent"))
-		{
-			MaterialComponent comp;
-			DeserializeComponent<MaterialComponent>(ent, comp);
-			engine->world.AddComponent(ent, comp);
-			dsz.CloseElement();
-		}
-
-		if (dsz.StartElement("AABBComponent"))
-		{
-			AABBComponent comp;
-			DeserializeComponent<AABBComponent>(ent, comp);
-			engine->world.AddComponent(ent, comp);
-			dsz.CloseElement();
-		}
-
-		if (dsz.StartElement("RigidBodyComponent"))
-		{
-			RigidBodyComponent comp;
-			DeserializeComponent<RigidBodyComponent>(ent, comp);
-			engine->world.AddComponent(ent, comp);
-			dsz.CloseElement();
-		}
-
-		if (dsz.StartElement("CameraComponent"))
-		{
-			CameraComponent comp;
-			DeserializeComponent<CameraComponent>(ent, comp);
-			engine->world.AddComponent(ent, comp);
-			engine->gCamera.ReInitCameraList(comp.camType, ent);
-			dsz.CloseElement();
-		}
-
-		if (dsz.StartElement("PointLightComponent"))
-		{
-			PointLightComponent comp;
-			DeserializeComponent<PointLightComponent>(ent, comp);
-			engine->world.AddComponent(ent, comp);
-			dsz.CloseElement();
-		}
-		
-		if (dsz.StartElement("SpotLightComponent"))
-		{
-			SpotLightComponent comp;
-			DeserializeComponent<SpotLightComponent>(ent, comp);
-			engine->world.AddComponent(ent, comp);
-			dsz.CloseElement();
-		}
-		
-		if (dsz.StartElement("DirectionalLightComponent"))
-		{
-			DirectionalLightComponent comp;
-			DeserializeComponent<DirectionalLightComponent>(ent, comp);
-			engine->world.AddComponent(ent, comp);
-			dsz.CloseElement();
-		}
-
-		if (dsz.StartElement("TextureComponent"))
-		{
-			TextureComponent comp;
-			DeserializeComponent<TextureComponent>(ent, comp);
-			engine->world.AddComponent(ent, comp);
-			dsz.CloseElement();
-		}
+		return isSuccess;
 	}
 
 	void SerializationManager::SerializeAllEntity(const char* fullpath)

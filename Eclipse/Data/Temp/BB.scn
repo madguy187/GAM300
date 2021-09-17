@@ -1,5 +1,5 @@
 <Entities Size="4">
-    <Entity_0 ID="6">
+    <Entity_0 ID="0">
         <EntityComponent>
             <Name value="Camera" />
             <Tag value="Camera" />
@@ -39,14 +39,14 @@
             <Scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_0>
-    <Entity_1 ID="7">
+    <Entity_1 ID="6">
         <EntityComponent>
             <Name value="DirectionalLight" />
             <Tag value="DirectionalLight" />
             <IsActive value="false" />
         </EntityComponent>
         <DirectionalLightComponent>
-            <ID value="7" />
+            <ID value="6" />
             <Counter value="0" />
             <Visible value="false" />
             <AffectsWorld value="true" />
@@ -71,7 +71,7 @@
         </TransformComponent>
         <LightComponent />
     </Entity_1>
-    <Entity_2 ID="8">
+    <Entity_2 ID="7">
         <EntityComponent>
             <Name value="Sphere" />
             <Tag value="Sphere" />
@@ -104,7 +104,7 @@
             </ModelNDC_XForm>
             <ModelRef value="Sphere" />
             <ShaderRef value="shader3DShdrpgm" />
-            <ID value="8" />
+            <ID value="7" />
             <Name value="" />
             <NewLayer value="0" />
             <LayerNum value="0" />
@@ -122,14 +122,14 @@
             <Max x="-13.5637" y="2.5" z="20.1555" />
         </AABBComponent>
         <TextureComponent>
-            <ID value="8" />
+            <ID value="0" />
             <TextureType value="TT_UNASSIGNED" />
             <TextureKey value="" />
             <HasTexture value="true" />
             <TextureRef value="orange" />
         </TextureComponent>
     </Entity_2>
-    <Entity_3 ID="9">
+    <Entity_3 ID="8">
         <EntityComponent>
             <Name value="Cube" />
             <Tag value="Cube" />
@@ -162,7 +162,7 @@
             </ModelNDC_XForm>
             <ModelRef value="Cube" />
             <ShaderRef value="shader3DShdrpgm" />
-            <ID value="9" />
+            <ID value="8" />
             <Name value="" />
             <NewLayer value="0" />
             <LayerNum value="0" />
@@ -180,7 +180,7 @@
             <Max x="2.5" y="2.5" z="2.5" />
         </AABBComponent>
         <TextureComponent>
-            <ID value="9" />
+            <ID value="0" />
             <TextureType value="TT_UNASSIGNED" />
             <TextureKey value="" />
             <HasTexture value="true" />

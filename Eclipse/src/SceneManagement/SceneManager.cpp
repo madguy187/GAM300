@@ -63,7 +63,8 @@ namespace Eclipse
 
 		if (CheckSceneAvailable(fileName))
 		{
-			EDITOR_LOG_WARN(false, "Scene is already registered.");
+			std::string msg = "Scene is already registered.";
+			EDITOR_LOG_WARN(msg.c_str());
 			return GetSceneIndex(fileName);
 		}
 
