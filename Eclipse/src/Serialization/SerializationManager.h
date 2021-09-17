@@ -263,7 +263,7 @@ namespace Eclipse
 		inline bool DeserializeData() { return true; }
 
 		template <typename T, typename... Args>
-		inline bool DeserializeData(const std::string& ele_name, T& data, Args... elements)
+		inline bool DeserializeData(const std::string& ele_name, T& data, Args&... elements)
 		{
 			bool isSuccess = false;
 			if (dsz.StartElement(ele_name))
