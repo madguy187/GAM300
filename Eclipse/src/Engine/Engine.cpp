@@ -23,6 +23,7 @@
 #include "ECS/SystemManager/Systems/System/PhysicsSystem.h"
 #include "ImGui/Setup/ImGuiSetup.h"
 #include "ECS/SystemManager/Systems/System/MaterialSystem.h"
+#include "Serialization/SerializationManager.h"
 #include "ECS/SystemManager/Systems/System/GridSystem.h"
 bool Tester1(const Test1& e)
 {
@@ -144,9 +145,11 @@ namespace Eclipse
         float updaterate = 4.0f;
         ProfilerWindow Timer;
 
+        SceneManager::Initialize();
+        //Deserialization(temp)
+
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
-           
             Timer.tracker.system_start = glfwGetTime();
             glfwPollEvents();
             engine->GraphicsManager.mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });
@@ -234,6 +237,7 @@ namespace Eclipse
 
             ImGuiSetup::End(IsEditorActive);
             OpenGL_Context::post_render();
+            SceneManager::ProcessScene();
             Timer.tracker.system_end = glfwGetTime();
             Timer.EngineTimer(Timer.tracker);
 
@@ -243,6 +247,9 @@ namespace Eclipse
                 IsInPauseState = true;
             }
         }
+
+        //Serialization(Temp)
+        szManager.SaveSceneFile();
 
         // unLoad
         mono.StopMono();

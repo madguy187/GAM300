@@ -25,13 +25,14 @@ namespace Eclipse
 		std::unique_ptr<EditorManager> editorManager;
 		LightManager LightManager;
 		MonoManager mono;
-	    AssimpModelManager AssimpManager;
+	  AssimpModelManager AssimpManager;
 		PickingManager gPicker;
-        MaterialManager MaterialManager{ true , true };
+    MaterialManager MaterialManager{ true , true };
 		AABBTree CollisionGridTree{ 150 };
 		std::unique_ptr<Grid> GridManager;
 		DebugRenderingManager gDebugManager;
 		AssetBrowserWindow gAssetB;
+		SerializationManager szManager;
         void Init();
         void Run();
 		PhysicsManager gPhysics;
