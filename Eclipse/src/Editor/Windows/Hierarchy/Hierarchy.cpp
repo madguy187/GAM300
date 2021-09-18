@@ -120,10 +120,14 @@ namespace Eclipse
 					engine->editorManager->SetGlobalIndex(index);
 
 				}
-				engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit",
-					static_cast<int>(index));
+				if(!entCom.IsAChild)
+				{
+					engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit",
+						static_cast<int>(index));
+				}
 				engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
 					static_cast<int>(index), entCom.IsActive);
+				//engine->editorManager->SetGlobalIndex(index);
 				
 			}
 		}
@@ -201,7 +205,7 @@ namespace Eclipse
 		}
 	}
 
-	size_t HierarchyWindow::GetEntityListPos(size_t data)
+	size_t HierarchyWindow::GetEntityGlobalIndex(size_t data)
 	{
 		auto it = std::find(engine->editorManager->GetEntityListByConstRef().begin(), engine->editorManager->GetEntityListByConstRef().end(), data);
 
@@ -216,9 +220,13 @@ namespace Eclipse
 
 	void HierarchyWindow::TreeNodeRecursion(std::string parent, EntityComponent& entCom, EntitySelectionTracker& prev, EntitySelectionTracker& curr,size_t index)
 	{
+		bool nodeOpen = ImGui::TreeNodeEx(parent.c_str(), temp);
 
-		if (ImGui::TreeNodeEx(parent.c_str(), temp))
+		if (nodeOpen)
 		{
+			temp |= ImGuiTreeNodeFlags_Selected;
+
+			entCom.IsActive = true;
 
 			for (size_t i = 0; i < entCom.Child.size(); ++i)
 			{
@@ -231,12 +239,12 @@ namespace Eclipse
 				}
 				else
 				{
-					if (ECGui::CreateSelectableButton(name.c_str(), &entCom.IsActive))
+					if (ECGui::CreateSelectableButton(name.c_str(), &entCom1.IsActive))
 					{
 						if (curr.index == entCom.Child[i])
 						{
 							entCom.IsActive = true;
-							engine->editorManager->SetGlobalIndex(GetEntityListPos(curr.index));
+							engine->editorManager->SetGlobalIndex(GetEntityGlobalIndex(curr.index));
 							continue;
 						}
 
@@ -262,37 +270,55 @@ namespace Eclipse
 								prevEntCom.IsActive = false;
 							}
 						}
+						entCom.IsActive = false;
 						engine->editorManager->SetGlobalIndex(i);
 					}
 
 				}
 			}
-				engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit",
-					static_cast<int>(index));
-				engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
-					static_cast<int>(index), entCom.IsActive);
+			//engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit",
+			//	static_cast<int>(index));
+			//if(entCom.IsAChild)
+			//{
+			//	auto& parentComp = engine->world.GetComponent<EntityComponent>(entCom.Parent[0]);
+			//	engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
+			//		static_cast<int>(entCom.Parent[0]), parentComp.IsActive);
+			//}
+			//else
+			//{
+			//	engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
+			//		static_cast<int>(index), entCom.IsActive);
+			//}
+
 				ECGui::EndTreeNode();
 		}
 		else
 		{
-		
-			auto& s = engine->world.GetComponent<EntityComponent>(curr.index);
-			s.IsActive = true;
-			entCom.IsActive = false;
-		
-			if (!curr.name.empty())
+			if (ImGui::IsItemClicked(0))
 			{
-				prev.name = curr.name;
-				prev.index = curr.index;
-		
+				engine->editorManager->SetGlobalIndex(index);
 			}
-			engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit",
-				static_cast<int>(curr.index));
 		
-			engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
-				static_cast<int>(curr.index), entCom.IsActive);
+			//auto& s = engine->world.GetComponent<EntityComponent>(curr.index);
+			//s.IsActive = true;
+
+			////engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit",
+			////	static_cast<int>(curr.index));
+
+			//if (entCom.IsAChild)
+			//{
+			//	auto& parentComp = engine->world.GetComponent<EntityComponent>(entCom.Parent[0]);
+			//	engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
+			//		static_cast<int>(entCom.Parent[0]), parentComp.IsActive);
+			//}
+			//else
+			//{
+			//	engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
+			//		static_cast<int>(index), entCom.IsActive);
+			//	//engine->editorManager->SetGlobalIndex(GetEntityGlobalIndex(curr.index));
+			//}
 		
-			engine->editorManager->SetGlobalIndex(GetEntityListPos(entCom.IsActive));
+			////
 		
 		}
 

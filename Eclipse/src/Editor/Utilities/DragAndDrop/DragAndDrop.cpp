@@ -32,6 +32,7 @@ namespace Eclipse
 		if (ImGui::BeginDragDropSource())
 		{
 			ImGui::SetDragDropPayload(id, &source, sizeof(source));
+			std::cout << source;
 
 			switch (type)
 			{
@@ -140,8 +141,8 @@ namespace Eclipse
 								DestinationEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(DestinationIndex_));
 								SourceEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(SourceIndex_));
 								DestinationEntCom->Child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
-								DestinationEntCom->isParent = true;
 								SourceEntCom->IsAChild = true;
+								SourceEntCom->Parent.push_back(engine->editorManager->GetEntityID(DestinationIndex_));
 								IsIndexJobSelected = false;
 								break;
 							// Cancel
