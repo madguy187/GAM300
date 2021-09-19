@@ -33,6 +33,8 @@ namespace Eclipse
 
         // Create AABB Boxes =============================
         engine->GraphicsManager.AllAABBs.Init();
+
+        engine->GraphicsManager.uo = std::make_unique<SphereCull>();
     }
 
     Signature RenderSystem::RegisterAll()
@@ -66,6 +68,11 @@ namespace Eclipse
             // Basic Primitives Render Start =============================
             for (auto const& entityID : mEntities)
             {
+                auto& Trans = engine->world.GetComponent<TransformComponent>(entityID);
+
+                if (!engine->GraphicsManager.uo->isOnFrustum(engine->GraphicsManager.CreateFrustum(), Trans))
+                    continue;
+
                 MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
 
                 engine->MaterialManager.UpdateShininess(entityID);
@@ -169,8 +176,9 @@ namespace Eclipse
             /*************************************************************************
               Render Without Stencer , Frustrum to Scene View
             *************************************************************************/
-            engine->MaterialManager.DoNotUpdateStencil();
+            //engine->MaterialManager.DoNotUpdateStencil();
             engine->gDebugManager.DrawDebugShapes(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
+            engine->GraphicsManager.CreateFrustum();
 
             /*************************************************************************
               Render Without Stencer , Instanced Debug Boxes to Scene View

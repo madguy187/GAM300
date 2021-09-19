@@ -217,7 +217,7 @@ namespace Eclipse
             engine->GraphicsManager.GlobalFrameBufferBind();
 
             // Reset DebugBoxes =============================
-            engine->GraphicsManager.ResetInstancedDebugBoxes();
+            //engine->GraphicsManager.ResetInstancedDebugBoxes();
 
             // LIGHTINGSYSTEM =============================
             world.Update<LightingSystem>();

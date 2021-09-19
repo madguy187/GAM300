@@ -7,6 +7,27 @@ bool shakeScreen = 1.0f;
 
 glm::vec3 spherepos;
 
+FrustumCull Eclipse::GraphicsManager::CreateFrustum()
+{
+    auto& cam = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Game_Camera));
+    auto& trans = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Game_Camera));
+
+    FrustumCull frustum;
+    const float halfVSide = 500.0f * tanf(glm::radians(cam.fov) * .5f);
+    const float halfHSide = halfVSide * cam.aspect;;
+    const glm::vec3 frontMultFar = 500.0f * cam.eyeFront;
+
+    frustum.nearFace = { trans.position.ConvertToGlmVec3Type() + 0.1f * cam.eyeFront, cam.eyeFront };
+    frustum.farFace = { trans.position.ConvertToGlmVec3Type() + frontMultFar, -cam.eyeFront };
+    frustum.rightFace = { trans.position.ConvertToGlmVec3Type(), glm::cross(cam.upVec, frontMultFar + cam.rightVec * halfHSide) };
+    frustum.leftFace = { trans.position.ConvertToGlmVec3Type(), glm::cross(frontMultFar - cam.rightVec * halfHSide, cam.upVec) };
+    frustum.topFace = { trans.position.ConvertToGlmVec3Type(), glm::cross(cam.rightVec, frontMultFar - cam.upVec * halfVSide) };
+    frustum.bottomFace = { trans.position.ConvertToGlmVec3Type(), glm::cross(frontMultFar + cam.upVec * halfVSide, cam.rightVec) };
+
+
+    return frustum;
+}
+
 void Eclipse::GraphicsManager::Pre_Render()
 {
     // Loading Configuration
@@ -96,16 +117,32 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     break;
     case 5:
     {
-        engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
-        engine->world.AddComponent(ID, MeshComponent{});
+        for (int i = 0; i < 9000; i++)
+        {
+            auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_GEO_CUBE);
+            engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_BASIC });
+            engine->world.AddComponent(MeshID, MeshComponent{});
 
-        MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-        sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-        sprite.modelRef = Graphics::models.find("Cube")->first;
+            MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(MeshID);
+            sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
+            sprite.modelRef = Graphics::models.find("Cube")->first;
 
-        MaterialComponent& Mat = engine->world.GetComponent<MaterialComponent>(ID);
-        Mat.hasTexture = true;
-        Mat.TextureRef = Graphics::textures.find("orange")->first;
+            MaterialComponent& Mat = engine->world.GetComponent<MaterialComponent>(MeshID);
+            Mat.hasTexture = true;
+            Mat.TextureRef = Graphics::textures.find("orange")->first;
+        }
+
+        //auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
+        //engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
+        //engine->world.AddComponent(ID, MeshComponent{});
+
+        //MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
+        //sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
+        //sprite.modelRef = Graphics::models.find("Cube")->first;
+
+        //MaterialComponent& Mat = engine->world.GetComponent<MaterialComponent>(ID);
+        //Mat.hasTexture = true;
+        //Mat.TextureRef = Graphics::textures.find("orange")->first;
     }
     break;
     case 6:
@@ -501,6 +538,55 @@ FrameBuffer::RenderMode Eclipse::GraphicsManager::GetRenderMode(FrameBufferMode 
     return mRenderContext.GetFramebuffer(mode)->GetRenderMode();
 }
 
+//float getSignedDistanceToPlan(const glm::vec3& point) const
+//{
+//    return glm::dot(normal, point) - distance;
+//}
+//
+//bool isOnOrForwardPlan(const Plan& plan) const
+//{
+//    return plan.getSignedDistanceToPlan(center) > -radius;
+//}
+//
+//
+//bool isOnFrustum(const Frustum& camFrustum, const TransformComponent& transform)
+//{
+//    auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+//    auto& Transform = engine->world.GetComponent<TransformComponent>(1);
+//
+//    glm::mat4 mModelNDC;
+//    glm::mat4 model = glm::mat4(1.0f);
+//    model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
+//    model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+//    model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+//    model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+//    model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
+//    mModelNDC = _camera.projMtx * _camera.viewMtx * model;
+//
+//
+//    //Get global scale is computed by doing the magnitude of
+//    //X, Y and Z model matrix's column.
+//    const glm::vec3 globalScale = transform.scale.ConvertToGlmVec3Type());
+//
+//    //Get our global center with process it with the global model matrix of our transform
+//    const glm::vec3 globalCenter{ mModelNDC * glm::vec4(Transform.position.ConvertToGlmVec3Type(), 1.f) };
+//
+//    //To wrap correctly our shape, we need the maximum scale scalar.
+//    const float maxScale = max(max(globalScale.x, globalScale.y), globalScale.z);
+//
+//    //Max scale is assuming for the diameter. So, we need the half to apply it to our radius
+//    Sphere globalSphere(globalCenter, radius * (maxScale * 0.5f));
+//
+//    //Check Firstly the result that have the most chance
+//    //to faillure to avoid to call all functions.
+//    return (globalSphere.isOnOrForwardPlan(camFrustum.leftFace) &&
+//        globalSphere.isOnOrForwardPlan(camFrustum.rightFace) &&
+//        globalSphere.isOnOrForwardPlan(camFrustum.farFace) &&
+//        globalSphere.isOnOrForwardPlan(camFrustum.nearFace) &&
+//        globalSphere.isOnOrForwardPlan(camFrustum.topFace) &&
+//        globalSphere.isOnOrForwardPlan(camFrustum.bottomFace));
+//};
+
 /*************************************************************************
   FrameBuffer Things
 *************************************************************************/
@@ -598,3 +684,51 @@ void Eclipse::GraphicsManager::GlobalFrmeBufferDraw()
 }
 
 #endif
+
+
+bool Eclipse::SphereCull::isOnOrForwardPlan(const Plan& plan) const
+{
+    return plan.getSignedDistanceToPlan(center) > -radius;
+}
+
+bool Eclipse::SphereCull::isOnFrustum(const FrustumCull& camFrustum, const TransformComponent& Transform) const
+{
+    auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Game_Camera));
+
+    glm::mat4 mModelNDC;
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
+    model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+    model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
+    mModelNDC = _camera.projMtx * _camera.viewMtx * model;
+
+    //Get global scale thanks to our transform
+    const glm::vec3 globalScale = Transform.scale.ConvertToGlmVec3Type();
+
+    //Get our global center with process it with the global model matrix of our transform
+    const glm::vec3 globalCenter{ mModelNDC * glm::vec4(Transform.position.ConvertToGlmVec3Type(), 1.f) };
+
+    //To wrap correctly our shape, we need the maximum scale scalar.
+    const float maxScale = max(max(globalScale.x, globalScale.y), globalScale.z);
+
+    //Max scale is assuming for the diameter. So, we need the half to apply it to our radius
+    //     SphereCull globalSphere(globalCenter, radius * (maxScale * 0.5f));
+    SphereCull globalSphere(Transform.position.ConvertToGlmVec3Type(), (maxScale * 0.5f));
+
+    //std::cout << "Results Of Culling : " << (globalSphere.isOnOrForwardPlan(camFrustum.leftFace) &&
+    //    globalSphere.isOnOrForwardPlan(camFrustum.rightFace) &&
+    //    globalSphere.isOnOrForwardPlan(camFrustum.farFace) &&
+    //    globalSphere.isOnOrForwardPlan(camFrustum.nearFace) &&
+    //    globalSphere.isOnOrForwardPlan(camFrustum.topFace) &&
+    //    globalSphere.isOnOrForwardPlan(camFrustum.bottomFace)) << std::endl;
+
+    //Check Firstly the result that have the most chance to faillure to avoid to call all functions.
+    return (globalSphere.isOnOrForwardPlan(camFrustum.leftFace) &&
+        globalSphere.isOnOrForwardPlan(camFrustum.rightFace) &&
+        globalSphere.isOnOrForwardPlan(camFrustum.farFace) &&
+        globalSphere.isOnOrForwardPlan(camFrustum.nearFace) &&
+        globalSphere.isOnOrForwardPlan(camFrustum.topFace) &&
+        globalSphere.isOnOrForwardPlan(camFrustum.bottomFace));
+}
