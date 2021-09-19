@@ -246,10 +246,12 @@ namespace Eclipse
 			if (engine->GetPlayState())
 			{
 				engine->SetPlayState(false);
+				EDITOR_LOG_INFO("Scene is playing...");
 			}
 			else
 			{
 				engine->SetPlayState(true);
+				EDITOR_LOG_INFO("Scene has stopped playing. Reverting to original state...");
 			}
 		}
 
@@ -259,10 +261,12 @@ namespace Eclipse
 			if (engine->GetPauseState())
 			{
 				engine->SetPauseState(false);
+				EDITOR_LOG_INFO("Scene is paused!");
 			}
 			else
 			{
 				engine->SetPauseState(true);
+				EDITOR_LOG_INFO("Scene is unpaused!");
 			}
 		}
 
@@ -276,6 +280,7 @@ namespace Eclipse
 			else
 			{
 				engine->SetStepState(true);
+				EDITOR_LOG_INFO("Stepped scene.");
 			}
 		}
 	}
