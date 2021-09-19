@@ -257,6 +257,7 @@ namespace Eclipse
         GraphicsManager.End();
         AssimpManager.CleanUpAllModelsMeshes();
         ImGuiSetup::Destroy(IsEditorActive);
+        gPhysics.Unload();
         CommandHistory::Clear();
     }
 
