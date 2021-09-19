@@ -85,6 +85,7 @@
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <DisableSpecificWarnings>4311;4302;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -118,6 +119,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <DisableSpecificWarnings>4311;4302;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -152,6 +154,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <DisableSpecificWarnings>4311;4302;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -298,9 +301,11 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Logger\Logger.h" />
     <ClInclude Include="src\Mono\Manager\MonoManager.h" />
     <ClInclude Include="src\Physics\PhysicsManager.h" />
-    <ClInclude Include="src\Reflection\complex_support.h" />
-    <ClInclude Include="src\Reflection\primitive_support.h" />
-    <ClInclude Include="src\Reflection\registration.h" />
+    <ClInclude Include="src\Reflection\Meta.h" />
+    <ClInclude Include="src\Reflection\RemTypeQual.h" />
+    <ClInclude Include="src\Reflection\Variant\RefVariant.h" />
+    <ClInclude Include="src\Reflection\Variant\Variant.h" />
+    <ClInclude Include="src\Reflection\Variant\VariantBase.h" />
     <ClInclude Include="src\SceneManagement\SceneManager.h" />
     <ClInclude Include="src\Serialization\Deserializer.h" />
     <ClInclude Include="src\Serialization\SerializationManager.h" />
@@ -315,6 +320,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp" />
     <ClCompile Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.cpp" />
+    <ClCompile Include="src\ECS\ComponentManager\Components\ComponentsRegistration.cpp" />
     <ClCompile Include="src\ECS\EntityManager\EntityManager.cpp" />
     <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem.cpp" />
@@ -409,6 +415,10 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Logger\Logger.cpp" />
     <ClCompile Include="src\Mono\Manager\MonoManager.cpp" />
     <ClCompile Include="src\Physics\PhysicsManager.cpp" />
+    <ClCompile Include="src\Reflection\Meta.cpp" />
+    <ClCompile Include="src\Reflection\Variant\RefVariant.cpp" />
+    <ClCompile Include="src\Reflection\Variant\Variant.cpp" />
+    <ClCompile Include="src\Reflection\Variant\VariantBase.cpp" />
     <ClCompile Include="src\SceneManagement\SceneManager.cpp" />
     <ClCompile Include="src\Serialization\Deserializer.cpp" />
     <ClCompile Include="src\Serialization\SerializationManager.cpp" />

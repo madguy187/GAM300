@@ -50,8 +50,9 @@ namespace Eclipse
 	}
 
 	void DragAndDrop::StringPayloadTarget(const char* id, std::string& destination,
-		const char* cMsg, PayloadTargetType type)
+		const char* cMsg, PayloadTargetType type, Entity ID)
 	{
+		(void)ID;
 		if (ImGui::BeginDragDropTarget())
 		{
 			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(id);
@@ -63,6 +64,7 @@ namespace Eclipse
 				case PayloadTargetType::PTT_WIDGET:
 					if (id == "cs")
 					{
+						// Put it here Nico, ur script instance thing
 						std::filesystem::path temp = ((const char*)payload->Data);
 						destination = AssetBrowserWindow::GetFileName(temp.filename().string().c_str());
 					}

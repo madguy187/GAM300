@@ -607,15 +607,6 @@
     <ClInclude Include="src\Physics\PhysicsManager.h">
       <Filter>Physics</Filter>
     </ClInclude>
-    <ClInclude Include="src\Reflection\complex_support.h">
-      <Filter>Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Reflection\primitive_support.h">
-      <Filter>Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Reflection\registration.h">
-      <Filter>Reflection</Filter>
-    </ClInclude>
     <ClInclude Include="src\SceneManagement\SceneManager.h">
       <Filter>SceneManagement</Filter>
     </ClInclude>
@@ -645,6 +636,11 @@
     </ClInclude>
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ChildTransformComponent.h" />
+    <ClInclude Include="src\Reflection\RemTypeQual.h" />
+    <ClInclude Include="src\Reflection\Meta.h" />
+    <ClInclude Include="src\Reflection\Variant\Variant.h" />
+    <ClInclude Include="src\Reflection\Variant\VariantBase.h" />
+    <ClInclude Include="src\Reflection\Variant\RefVariant.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -963,6 +959,11 @@
       <Filter>Time</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\Reflection\Meta.cpp" />
+    <ClCompile Include="src\Reflection\Variant\Variant.cpp" />
+    <ClCompile Include="src\Reflection\Variant\VariantBase.cpp" />
+    <ClCompile Include="src\Reflection\Variant\RefVariant.cpp" />
+    <ClCompile Include="src\ECS\ComponentManager\Components\ComponentsRegistration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\Mesh\Mesh.frag" />

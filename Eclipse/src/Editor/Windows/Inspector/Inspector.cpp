@@ -514,7 +514,8 @@ namespace Eclipse
 						ECGui::DrawInputTextHintWidget(my_strcat("ScriptName", i + 1).c_str(), "Drag Script files here",
 							const_cast<char*>(entCom.ScriptListComTest[i].c_str()), 256,
 							true, ImGuiInputTextFlags_ReadOnly);
-						engine->editorManager->DragAndDropInst_.StringPayloadTarget("cs", entCom.ScriptListComTest[i], "Script File inserted.");
+						engine->editorManager->DragAndDropInst_.StringPayloadTarget("cs", entCom.ScriptListComTest[i], 
+							"Script File inserted.", PayloadTargetType::PTT_WIDGET, ID);
 					}
 					else
 					{

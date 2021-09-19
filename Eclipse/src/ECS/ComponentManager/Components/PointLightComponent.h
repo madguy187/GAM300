@@ -1,11 +1,14 @@
 #pragma once
 #include "pch.h"
 #include "Library/Math/Vector.h" 
+#include "Reflection/Meta.h"
+#include "Reflection/RemTypeQual.h"
 
 namespace Eclipse
 {
     struct PointLightComponent
     {
+        META_DATA(PointLightComponent);
         unsigned int ID = 0; // Store Entity ID
         unsigned int Counter = 0; // To iterate in Shaders
 

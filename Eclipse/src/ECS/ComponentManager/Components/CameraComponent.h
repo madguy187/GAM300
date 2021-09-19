@@ -2,11 +2,14 @@
 
 #include "GLEW/include/GL/glew.h"
 #include "GLM/glm/glm.hpp"
+#include "Reflection/Meta.h"
+#include "Reflection/RemTypeQual.h"
 
 namespace Eclipse
 {
 	struct CameraComponent
 	{
+		META_DATA(CameraComponent);
 		float eyeAlpha{ 0.0f }; //pitch
 		float eyeBeta{ -90.0f }; //yaw
 
