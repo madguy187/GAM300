@@ -160,7 +160,12 @@ namespace Eclipse
         test2.SetPropertyValue<CameraComponent::CameraType>("camType", CameraComponent::CameraType::TopView_Camera);
 
         std::cout << lexical_cast_toStr(test.camType) << std::endl;
-        std::cout << lexical_cast_toStr(test2.GetPropertyValue<CameraComponent::CameraType>("camType")) << std::endl;*/
+        std::cout << lexical_cast_toStr(test2.GetPropertyValue<CameraComponent::CameraType>("camType")) << std::endl;
+
+        TextureComponent test3;
+        RefVariant refv = test3;
+
+        std::map<unsigned int, std::vector<Texture>> foo = refv.GetPropertyValue<std::map<unsigned int, std::vector<Texture>>>("HoldingTextures");*/
 
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
