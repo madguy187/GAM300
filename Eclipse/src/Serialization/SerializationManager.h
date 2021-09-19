@@ -64,19 +64,19 @@ namespace Eclipse
 		inline void SerializeComponentData<MeshComponent>(const MeshComponent& data)
 		{
 			SerializeData(
-				"Key", data.Key,
+				//"Key", data.Key,
 				"Color", data.color,
 				"TextureIdx", data.textureIdx,
 				"IsQuad", data.isQuad,
 				"ModelNDC_XForm", data.modelNDC_xform,
 				"ModelRef", data.modelRef,
 				"ShaderRef", data.shaderRef,
-				"ID", data.ID,
-				"Name", data.name,
-				"NewLayer", data.newLayer,
-				"LayerNum", data.layerNum,
-				"Transparency", data.transparency,
-				"LightColor", data.lightColor
+				//"ID", data.ID,
+				//"Name", data.name,
+				//"NewLayer", data.newLayer,
+				//"LayerNum", data.layerNum,
+				"Transparency", data.transparency
+				//"LightColor", data.lightColor
 			);
 		}
 
@@ -109,7 +109,7 @@ namespace Eclipse
 				"HighlightColor", data.HighlightColour,
 				"Shininess", data.shininess,
 				"MaximumShininess", data.MaximumShininess,
-				"RegisterForHighlight", data.RegisterForHighlight,
+				//"RegisterForHighlight", data.RegisterForHighlight,
 				"Highlight", data.Highlight,
 				"NoTextures", data.NoTextures,
 				"Thickness", data.Thickness,
@@ -225,9 +225,9 @@ namespace Eclipse
 		inline void SerializeComponentData<TextureComponent>(const TextureComponent& data)
 		{
 			SerializeData(
-				"ID", data.ID,
+				//"ID", data.ID,
 				"TextureType", data.Type,
-				"TextureKey", data.TextureKey,
+				//"TextureKey", data.TextureKey,
 				"HasTexture", data.hasTexture,
 				"TextureRef", data.textureRef
 			);
@@ -302,15 +302,15 @@ namespace Eclipse
 				"IsQuad", comp.isQuad,
 				"ModelNDC_XForm", comp.modelNDC_xform,
 				"ModelRef", comp.modelRef,
-				"ShaderRef", comp.shaderRef,
-				"Name", comp.name,
-				"NewLayer", comp.newLayer,
-				"LayerNum", comp.layerNum,
-				"Transparency", comp.transparency,
-				"LightColor", comp.lightColor
+				"ShaderRef", comp.shaderRef
+				//"Name", comp.name,
+				//"NewLayer", comp.newLayer,
+				//"LayerNum", comp.layerNum,
+				//"Transparency", comp.transparency,
+				//"LightColor", comp.lightColor
 			);
 
-			comp.ID = ent;
+			//comp.ID = ent;
 
 			return isSuccess;
 		}
@@ -326,7 +326,7 @@ namespace Eclipse
 				"HighlightColor", comp.HighlightColour,
 				"Shininess", comp.shininess,
 				"MaximumShininess", comp.MaximumShininess,
-				"RegisterForHighlight", comp.RegisterForHighlight,
+				//"RegisterForHighlight", comp.RegisterForHighlight,
 				"Highlight", comp.Highlight,
 				"Thickness", comp.Thickness,
 				"NoTextures", comp.NoTextures,
@@ -479,12 +479,12 @@ namespace Eclipse
 		{
 			bool isSuccess = DeserializeData(
 				"TextureType", comp.Type,
-				"TextureKey", comp.TextureKey,
+				//"TextureKey", comp.TextureKey,
 				"HasTexture", comp.hasTexture,
 				"TextureRef", comp.textureRef
 			);
 
-			comp.ID = ent;
+			//comp.ID = ent;
 
 			return isSuccess;
 		}
