@@ -246,41 +246,49 @@ namespace Eclipse
 			if (engine->GetPlayState())
 			{
 				engine->SetPlayState(false);
-				EDITOR_LOG_INFO("Scene is playing...");
+				engine->SetPauseState(false);
+				EDITOR_LOG_INFO("Scene has stopped playing. Reverting to original state...");
 			}
 			else
 			{
 				engine->SetPlayState(true);
-				EDITOR_LOG_INFO("Scene has stopped playing. Reverting to original state...");
+				EDITOR_LOG_INFO("Scene is playing...");
 			}
 		}
 
 		ECGui::InsertSameLine();
 		if (ECGui::ButtonBool("Pause " ICON_FA_PAUSE)) 
 		{
-			if (engine->GetPauseState())
+			if (engine->GetPlayState())
 			{
-				engine->SetPauseState(false);
-				EDITOR_LOG_INFO("Scene is paused!");
+				if (engine->GetPauseState())
+				{
+					engine->SetPauseState(false);
+					EDITOR_LOG_INFO("Scene is unpaused!");
+				}
+				else
+				{
+					engine->SetPauseState(true);
+					EDITOR_LOG_INFO("Scene is paused!");
+				}
 			}
 			else
 			{
-				engine->SetPauseState(true);
-				EDITOR_LOG_INFO("Scene is unpaused!");
+				EDITOR_LOG_WARN("Scene has to be playing first.");
 			}
 		}
 
 		ECGui::InsertSameLine();
 		if (ECGui::ButtonBool("Step " ICON_FA_STEP_FORWARD))
 		{
-			if (engine->GetStepState())
-			{
-				engine->SetStepState(false);
-			}
-			else
+			if (engine->GetPlayState())
 			{
 				engine->SetStepState(true);
 				EDITOR_LOG_INFO("Stepped scene.");
+			}
+			else
+			{
+				EDITOR_LOG_WARN("Scene has to be playing first.");
 			}
 		}
 	}

@@ -183,6 +183,8 @@ namespace Eclipse
 
             ImGuiSetup::Begin(IsEditorActive);
 
+            EditorSystem::Update();
+
             if (IsInStepState)
             {
                 Game_Clock.set_timeSteps(1);
@@ -196,7 +198,6 @@ namespace Eclipse
                 }
             }
 
-            EditorSystem::Update();
             // GRID SYSTEM =============================
             world.Update<GridSystem>();
 
