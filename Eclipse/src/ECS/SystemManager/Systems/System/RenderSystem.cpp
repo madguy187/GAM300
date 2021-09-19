@@ -61,7 +61,7 @@ namespace Eclipse
               Render Sky to Sceneview
             *************************************************************************/
             engine->MaterialManager.DoNotUpdateStencil();
-            engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+            engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
 
             // Basic Primitives Render Start =============================
             for (auto const& entityID : mEntities)
@@ -81,7 +81,7 @@ namespace Eclipse
                     *************************************************************************/
                     engine->MaterialManager.UpdateStencilWithActualObject(entityID);
                     engine->GraphicsManager.Draw(
-                        engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::SCENEVIEW),
+                        engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE),
                         &Mesh, GL_FILL, entityID, CameraComponent::CameraType::Editor_Camera);
 
                     /*************************************************************************
@@ -89,14 +89,11 @@ namespace Eclipse
                     *************************************************************************/
                     engine->MaterialManager.DoNotUpdateStencil();
                     engine->GraphicsManager.Draw(
-                        engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::GAMEVIEW),
+                        engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_GAME),
                         &Mesh, GL_FILL, entityID, CameraComponent::CameraType::Game_Camera);
 
-                    if (engine->world.CheckComponent<MaterialComponent>(entityID))
-                    {
-                        auto& material = engine->world.GetComponent<MaterialComponent>(entityID);
-                        engine->MaterialManager.HighlightBasicPrimitives(material, entityID, engine->GraphicsManager.GetFrameBufferID(Eclipse::FrameBufferMode::SCENEVIEW));
-                    }
+                    engine->MaterialManager.HighlightBasicPrimitives(entityID,
+                        engine->GraphicsManager.GetFrameBufferID(Eclipse::FrameBufferMode::FBM_SCENE));
                 }
                 else
                 {
@@ -106,8 +103,8 @@ namespace Eclipse
                     *************************************************************************/
                     engine->MaterialManager.UpdateStencilWithActualObject(entityID);
                     engine->AssimpManager.MeshDraw(Mesh, entityID,
-                        engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::SCENEVIEW),
-                        engine->GraphicsManager.GetRenderMode(Eclipse::FrameBufferMode::SCENEVIEW),
+                        engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE),
+                        engine->GraphicsManager.GetRenderMode(Eclipse::FrameBufferMode::FBM_SCENE),
                         &engine->GraphicsManager.AllAABBs, CameraComponent::CameraType::Editor_Camera);
 
                     /*************************************************************************
@@ -115,8 +112,8 @@ namespace Eclipse
                     *************************************************************************/
                     engine->MaterialManager.DoNotUpdateStencil();
                     engine->AssimpManager.MeshDraw(Mesh, entityID,
-                        engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::GAMEVIEW),
-                        engine->GraphicsManager.GetRenderMode(FrameBufferMode::GAMEVIEW),
+                        engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_GAME),
+                        engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_GAME),
                         &box, CameraComponent::CameraType::Game_Camera);
 
                     /*************************************************************************
@@ -132,8 +129,8 @@ namespace Eclipse
                     if (engine->editorManager->GetEditorWindow<TopSwitchViewWindow>()->IsVisible)
                     {
                         engine->AssimpManager.MeshDraw(Mesh, entityID,
-                            engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::SWITCHINGVIEWS_TOP),
-                            engine->GraphicsManager.GetRenderMode(FrameBufferMode::SWITCHINGVIEWS_TOP),
+                            engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_TOP),
+                            engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_TOP),
                             &box, CameraComponent::CameraType::TopView_Camera);
                     }
 
@@ -141,8 +138,8 @@ namespace Eclipse
                     if (engine->editorManager->GetEditorWindow<BottomSwitchViewWindow>()->IsVisible)
                     {
                         engine->AssimpManager.MeshDraw(Mesh, entityID,
-                            engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::SWITCHINGVIEWS_BOTTOM),
-                            engine->GraphicsManager.GetRenderMode(FrameBufferMode::SWITCHINGVIEWS_BOTTOM),
+                            engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_BOTTOM),
+                            engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_BOTTOM),
                             &box, CameraComponent::CameraType::BottomView_Camera);
                     }
 
@@ -150,8 +147,8 @@ namespace Eclipse
                     if (engine->editorManager->GetEditorWindow<LeftSwitchViewWindow>()->IsVisible)
                     {
                         engine->AssimpManager.MeshDraw(Mesh, entityID,
-                            engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::SWITCHINGVIEWS_RIGHT),
-                            engine->GraphicsManager.GetRenderMode(FrameBufferMode::SWITCHINGVIEWS_RIGHT),
+                            engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_RIGHT),
+                            engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_RIGHT),
                             &box, CameraComponent::CameraType::RightView_camera);
                     }
 
@@ -159,16 +156,13 @@ namespace Eclipse
                     if (engine->editorManager->GetEditorWindow<RightSwitchViewWindow>()->IsVisible)
                     {
                         engine->AssimpManager.MeshDraw(Mesh, entityID,
-                            engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::SWITCHINGVIEWS_LEFT),
-                            engine->GraphicsManager.GetRenderMode(FrameBufferMode::SWITCHINGVIEWS_LEFT),
+                            engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_LEFT),
+                            engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_LEFT),
                             &box, CameraComponent::CameraType::LeftView_Camera);
                     }
 
-                    if (engine->world.CheckComponent<MaterialComponent>(entityID))
-                    {
-                        auto& material = engine->world.GetComponent<MaterialComponent>(entityID);
-                        engine->MaterialManager.Highlight3DModels(material, entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::SCENEVIEW));
-                    }
+                    engine->MaterialManager.Highlight3DModels(entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE));
+
                 }
             }
 
@@ -176,7 +170,7 @@ namespace Eclipse
               Render Without Stencer , Frustrum to Scene View
             *************************************************************************/
             engine->MaterialManager.DoNotUpdateStencil();
-            engine->gDebugManager.DrawDebugShapes(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+            engine->gDebugManager.DrawDebugShapes(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
 
             /*************************************************************************
               Render Without Stencer , Instanced Debug Boxes to Scene View

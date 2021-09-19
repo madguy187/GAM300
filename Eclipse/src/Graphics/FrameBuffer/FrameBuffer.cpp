@@ -29,7 +29,7 @@ namespace Eclipse
 			std::exit(EXIT_FAILURE);
 		}
 
-		if (in == Eclipse::FrameBufferMode::NONE || in == Eclipse::FrameBufferMode::MAXCOUNT)
+		if (in == Eclipse::FrameBufferMode::FBM_NONE || in == Eclipse::FrameBufferMode::MAXCOUNT)
 		{
 			ENGINE_LOG_ASSERT(false, "Creating FrameBuffer with Invalid Type");
 			std::exit(EXIT_FAILURE);
@@ -68,7 +68,7 @@ namespace Eclipse
 	void Eclipse::FrameBuffer::Resize(unsigned width, unsigned height)
 	{
 		DeletCurrentFrameBuffer();
-		Eclipse::OpenGL_Context::CreateFrameBuffers(width, height, Eclipse::FrameBufferMode::GAMEVIEW);
+		Eclipse::OpenGL_Context::CreateFrameBuffers(width, height, Eclipse::FrameBufferMode::FBM_GAME);
 		EDITOR_LOG_INFO("Resize Successful");
 	}
 
@@ -154,27 +154,27 @@ namespace Eclipse
 	{
 		switch (in)
 		{
-		case FrameBufferMode::GAMEVIEW:
+		case FrameBufferMode::FBM_GAME:
 			os << "Game FrameBuffer";
 			break;
 
-		case FrameBufferMode::SCENEVIEW:
+		case FrameBufferMode::FBM_SCENE:
 			os << "Scene FrameBuffer";
 			break;
 
-		case FrameBufferMode::SWITCHINGVIEWS_BOTTOM:
+		case FrameBufferMode::FBM_BOTTOM:
 			os << "SWITCHINGVIEWS_BOTTOM FrameBuffer";
 			break;
 
-		case FrameBufferMode::SWITCHINGVIEWS_LEFT:
+		case FrameBufferMode::FBM_LEFT:
 			os << "SWITCHINGVIEWS_LEFT FrameBuffer";
 			break;
 
-		case FrameBufferMode::SWITCHINGVIEWS_RIGHT:
+		case FrameBufferMode::FBM_RIGHT:
 			os << "SWITCHINGVIEWS_RIGHT FrameBuffer";
 			break;
 
-		case FrameBufferMode::SWITCHINGVIEWS_TOP:
+		case FrameBufferMode::FBM_TOP:
 			os << "SWITCHINGVIEWS_TOP FrameBuffer";
 			break;
 		}

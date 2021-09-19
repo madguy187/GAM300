@@ -79,8 +79,8 @@ namespace Eclipse
         void Highlight3DModels(unsigned int FrameBufferID, unsigned int ModelID, GLenum mode);
         void UpdateStencilWith_Outline(unsigned int ID);
         void UpdateStencilWithActualObject(unsigned int ID);
-        void HighlightBasicPrimitives(MaterialComponent& in, unsigned int EntityId, unsigned int FrameBufferID);
-        void Highlight3DModels(MaterialComponent& in, unsigned int EntityId, unsigned int FrameBufferID);
+        void HighlightBasicPrimitives(unsigned int EntityId, unsigned int FrameBufferID);
+        void Highlight3DModels(unsigned int EntityId, unsigned int FrameBufferID);
         bool HighlightClick(unsigned int ModelID);
         bool UnHighlight(unsigned int ModelID);
         void RegisterMeshForHighlight(unsigned int ID);

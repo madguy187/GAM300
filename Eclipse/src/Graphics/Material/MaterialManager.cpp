@@ -235,7 +235,7 @@ namespace Eclipse
         CameraComponent camera;
         TransformComponent camerapos;
 
-        if (framebufferID == engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID())
+        if (framebufferID == engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_SCENE)->GetFrameBufferID())
         {
             camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
             camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetEditorCameraID());
@@ -273,10 +273,12 @@ namespace Eclipse
 
     }
 
-    void MaterialManager::HighlightBasicPrimitives(MaterialComponent& Mesh, unsigned int EntityId, unsigned int FrameBufferID)
+    void MaterialManager::HighlightBasicPrimitives(unsigned int EntityId, unsigned int FrameBufferID)
     {
         if (!engine->world.CheckComponent< MaterialComponent>(EntityId))
             return;
+
+        auto& Mesh = engine->world.GetComponent<MaterialComponent>(EntityId);
 
         if (Mesh.Highlight == true)
         {
@@ -288,9 +290,14 @@ namespace Eclipse
         }
     }
 
-    void MaterialManager::Highlight3DModels(MaterialComponent& in, unsigned int EntityId, unsigned int FrameBufferID)
+    void MaterialManager::Highlight3DModels(unsigned int EntityId, unsigned int FrameBufferID)
     {
-        if (in.Highlight == true)
+        if (!engine->world.CheckComponent< MaterialComponent>(EntityId))
+            return;
+
+        auto& Mesh = engine->world.GetComponent<MaterialComponent>(EntityId);
+
+        if (Mesh.Highlight == true)
         {
             engine->MaterialManager.UpdateStencilWith_Outline(EntityId);
             engine->MaterialManager.Highlight3DModels(FrameBufferID, EntityId, GL_FILL);
@@ -582,7 +589,7 @@ namespace Eclipse
             if (engine->world.CheckComponent<MeshComponent>(ModelID))
             {
                 auto& InvidualModels = engine->world.GetComponent<MeshComponent>(ModelID);
-                engine->AssimpManager.Render(mode , InvidualModels);
+                engine->AssimpManager.Render(mode, InvidualModels);
             }
 
             // Part 5: Clean up
