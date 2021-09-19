@@ -339,11 +339,11 @@ namespace Eclipse
 
 	bool InspectorWindow::ShowTextureProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
 	{
-		if (engine->world.CheckComponent<TextureComponent>(ID))
+		if (engine->world.CheckComponent<MaterialComponent>(ID))
 		{
 			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
 			{
-				auto& _Texture = engine->world.GetComponent<TextureComponent>(ID);
+				auto& _Texture = engine->world.GetComponent<MaterialComponent>(ID);
 				
 				std::vector<std::string> _TextureVector = { "TT_UNASSIGNED","TT_2D","BasicPrimitives","TT_3D" };
 
@@ -731,12 +731,12 @@ namespace Eclipse
 
 	}
 
-	void InspectorWindow::ChangeTextureController(TextureComponent& Item)
+	void InspectorWindow::ChangeTextureController(MaterialComponent& Item)
 	{
 		ImVec2 buttonSize = { 180,20 };
 		ECGui::DrawTextWidget<const char*>("Texture  ", "");
 		ECGui::InsertSameLine();
-		if (ImGui::Button((Item.textureRef.c_str()), buttonSize))
+		if (ImGui::Button((Item.TextureRef.c_str()), buttonSize))
 		{
 			ImGui::OpenPopup("Texture Changer");
 		}
@@ -744,22 +744,22 @@ namespace Eclipse
 		{
 			ImGui::SetScrollY(5);
 			ChildSettings settings{ "Texture Changer", ImVec2{ 250,250 } };
-			ECGui::DrawChildWindow<void(TextureComponent&)>(settings, std::bind(&InspectorWindow::TextureList,
+			ECGui::DrawChildWindow<void(MaterialComponent&)>(settings, std::bind(&InspectorWindow::TextureList,
 				this, std::placeholders::_1), Item);
 
 			ImGui::EndPopup();
 		}
 	}
 
-	void InspectorWindow::TextureList(TextureComponent& Item)
+	void InspectorWindow::TextureList(MaterialComponent& Item)
 	{
 		static ImGuiTextFilter AddComponentFilter;
-		TextureComponent FolderIcon;
+		MaterialComponent FolderIcon;
 		//FolderIcon.textureRef = Graphics::textures.find("FolderIcon")->first;
 		//use image button to change the Graphics::models.find["models"]->find;
 		std::vector<std::string> textureNames;
 		textureNames.reserve(Graphics::textures.size());
-		TextureComponent icon = FolderIcon;
+		MaterialComponent icon = FolderIcon;
 		static float padding = 16.0f;
 		static float thumbnaimsize = 50;
 		float cellsize = thumbnaimsize + padding;
@@ -784,19 +784,19 @@ namespace Eclipse
 		for (int i = 0 ; i < textureNames.size(); ++i)
 		{
 
-			FolderIcon.textureRef = Graphics::textures.find(textureNames[i].c_str())->first;
-			TextureComponent icon = FolderIcon;
+			FolderIcon.TextureRef = Graphics::textures.find(textureNames[i].c_str())->first;
+			MaterialComponent icon = FolderIcon;
 
 			if (AddComponentFilter.PassFilter(textureNames[i].c_str()))
 			{
-				ImGui::ImageButton((void*)Graphics::textures[(icon).textureRef].GetHandle(),
+				ImGui::ImageButton((void*)Graphics::textures[(icon).TextureRef].GetHandle(),
 					{thumbnaimsize,thumbnaimsize},
 					{ 1,0 },
 					{ 2,1 });
 
 				if (ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
 				{
-					Item.textureRef = Graphics::textures.find((textureNames[i].c_str()))->first;
+					Item.TextureRef = Graphics::textures.find((textureNames[i].c_str()))->first;
 					AddComponentFilter.Clear();
 					ImGui::CloseCurrentPopup();
 				}

@@ -68,7 +68,7 @@ namespace Eclipse
 
     public:
         float GetCurrentShininess(MaterialComponent& in);
-        void UpdateShininess(MaterialComponent& in);
+        void UpdateShininess(unsigned int EntityID);
 
         void DoNotUpdateStencil();
         void StencilBufferClear();

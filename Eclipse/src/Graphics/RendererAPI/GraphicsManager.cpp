@@ -40,13 +40,10 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     {
     case 0:
     {
-        engine->world.AddComponent(ID, MaterialComponent{});
-        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
-        mat.Modeltype = MaterialModelType::MT_BASIC;
-
+        engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
         engine->world.AddComponent(ID, MeshComponent{});
+
         MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-        //sprite.ID = ID;
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         sprite.modelRef = Graphics::models.find("Square")->first;
         sprite.isQuad = true;
@@ -55,111 +52,80 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     break;
     case 1:
     {
-        //engine->world.AddComponent(ID, TextureComponent{});
-        engine->world.AddComponent(ID, MaterialComponent{});
-        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
-        mat.Modeltype = MaterialModelType::MT_BASIC;
-
+        engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
         engine->world.AddComponent(ID, MeshComponent{});
+
         MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-        //sprite.ID = ID;
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         sprite.modelRef = Graphics::models.find("Circle")->first;
     }
     break;
     case 2:
     {
-        engine->world.AddComponent(ID, MaterialComponent{});
-        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
-        mat.Modeltype = MaterialModelType::MT_BASIC;
-
+        engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
         engine->world.AddComponent(ID, MeshComponent{});
+
         MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-        //sprite.ID = ID;
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         sprite.modelRef = Graphics::models.find("Triangle")->first;
     }
     break;
     case 3:
     {
-        engine->world.AddComponent(ID, MaterialComponent{});
-        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
-        mat.Modeltype = MaterialModelType::MT_BASIC;
-
+        engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
         engine->world.AddComponent(ID, MeshComponent{});
+
         MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-        //sprite.ID = ID;
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         sprite.modelRef = Graphics::models.find("Lines")->first;
     }
     break;
     case 4:
     {
-        engine->world.AddComponent(ID, TextureComponent{});
-        TextureComponent& text = engine->world.GetComponent<TextureComponent>(ID);
-
-        engine->world.AddComponent(ID, MaterialComponent{});
-        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
-        mat.Modeltype = MaterialModelType::MT_BASIC;
-
+        engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
         engine->world.AddComponent(ID, MeshComponent{});
+
         MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-        //sprite.ID = ID;
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         sprite.modelRef = Graphics::models.find("Sphere")->first;
-        //Graphics::sprites.emplace(sprite.layerNum, &sprite);
 
-        text.hasTexture = true;
-        text.textureRef = Graphics::textures.find("orange")->first;
-        //Graphics::sprites.emplace(sprite.layerNum, &sprite);
+        MaterialComponent& Mat = engine->world.GetComponent<MaterialComponent>(ID);
+        Mat.hasTexture = true;
+        Mat.TextureRef = Graphics::textures.find("orange")->first;
     }
     break;
     case 5:
     {
-        engine->world.AddComponent(ID, TextureComponent{});
-        TextureComponent& text = engine->world.GetComponent<TextureComponent>(ID);
-
+        engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
         engine->world.AddComponent(ID, MeshComponent{});
-        engine->world.AddComponent(ID, MaterialComponent{});
-
-        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
-        mat.Modeltype = MaterialModelType::MT_BASIC;
 
         MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-        //sprite.ID = ID;
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         sprite.modelRef = Graphics::models.find("Cube")->first;
-        text.hasTexture = true;
-        text.textureRef = Graphics::textures.find("orange")->first;
-        //Graphics::sprites.emplace(sprite.layerNum, &sprite);
+
+        MaterialComponent& Mat = engine->world.GetComponent<MaterialComponent>(ID);
+        Mat.hasTexture = true;
+        Mat.TextureRef = Graphics::textures.find("orange")->first;
     }
     break;
     case 6:
     {
-        engine->world.AddComponent(ID, MaterialComponent{});
-        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
-        mat.Modeltype = MaterialModelType::MT_BASIC;
-
+        engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
         engine->world.AddComponent(ID, MeshComponent{});
+
         MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-        //sprite.ID = ID;
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         sprite.modelRef = Graphics::models.find("Cylinder")->first;
-        //Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
     case 7:
     {
-        engine->world.AddComponent(ID, MaterialComponent{});
-        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
-        mat.Modeltype = MaterialModelType::MT_BASIC;
-
+        engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
         engine->world.AddComponent(ID, MeshComponent{});
+
         MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-        //sprite.ID = ID;
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         sprite.modelRef = Graphics::models.find("Cone")->first;
-        //Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
     case 8:
@@ -331,7 +297,6 @@ void Eclipse::GraphicsManager::Draw(unsigned int FrameBufferID, MeshComponent* _
     glPolygonMode(GL_FRONT_AND_BACK, mode);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    CheckTexture(ID);
     CheckUniformLoc(&shdrpgm, *(_spritecomponent), ID, FrameBufferID, _camera);
     DrawIndexed(_spritecomponent, GL_UNSIGNED_SHORT);
 
@@ -348,21 +313,21 @@ void Eclipse::GraphicsManager::DrawIndexed(MeshComponent* in, GLenum mode)
 
 void Eclipse::GraphicsManager::CheckTexture(unsigned int ID)
 {
-    if (engine->world.CheckComponent<TextureComponent>(ID))
+    if (engine->world.CheckComponent<MaterialComponent>(ID))
     {
-        TextureComponent& tex = engine->world.GetComponent<TextureComponent>(ID);
+        MaterialComponent& tex = engine->world.GetComponent<MaterialComponent>(ID);
 
         if (tex.hasTexture)
         {
 
-            glBindTexture(GL_TEXTURE_2D, Graphics::textures[tex.textureRef].GetHandle());
+            glBindTexture(GL_TEXTURE_2D, Graphics::textures[tex.TextureRef].GetHandle());
 
             glEnable(GL_BLEND);
 
-            glTextureParameteri(Graphics::textures[tex.textureRef].GetHandle(), GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTextureParameteri(Graphics::textures[tex.textureRef].GetHandle(), GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTextureParameteri(Graphics::textures[tex.textureRef].GetHandle(), GL_TEXTURE_WRAP_S, GL_REPEAT);
-            glTextureParameteri(Graphics::textures[tex.textureRef].GetHandle(), GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTextureParameteri(Graphics::textures[tex.TextureRef].GetHandle(), GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTextureParameteri(Graphics::textures[tex.TextureRef].GetHandle(), GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTextureParameteri(Graphics::textures[tex.TextureRef].GetHandle(), GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTextureParameteri(Graphics::textures[tex.TextureRef].GetHandle(), GL_TEXTURE_WRAP_T, GL_REPEAT);
         }
     }
 }
@@ -414,9 +379,9 @@ void Eclipse::GraphicsManager::CheckUniformLoc(Shader* _shdrpgm, MeshComponent& 
         glUniform4f(uniform_var_loc2, sprite.color.getX(), sprite.color.getY(), sprite.color.getZ(), sprite.transparency);
     }
 
-    if (engine->world.CheckComponent<TextureComponent>(id))
+    if (engine->world.CheckComponent<MaterialComponent>(id))
     {
-        TextureComponent& tex = engine->world.GetComponent<TextureComponent>(id);
+        MaterialComponent& tex = engine->world.GetComponent<MaterialComponent>(id);
         glUniform1i(uniform_var_loc3, tex.hasTexture);
     }
     else

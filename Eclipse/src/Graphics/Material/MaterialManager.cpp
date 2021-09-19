@@ -273,9 +273,12 @@ namespace Eclipse
 
     }
 
-    void MaterialManager::HighlightBasicPrimitives(MaterialComponent& in, unsigned int EntityId, unsigned int FrameBufferID)
+    void MaterialManager::HighlightBasicPrimitives(MaterialComponent& Mesh, unsigned int EntityId, unsigned int FrameBufferID)
     {
-        if (in.Highlight == true)
+        if (!engine->world.CheckComponent< MaterialComponent>(EntityId))
+            return;
+
+        if (Mesh.Highlight == true)
         {
             if (engine->world.CheckComponent<MeshComponent>(EntityId))
             {
@@ -294,11 +297,16 @@ namespace Eclipse
         }
     }
 
-    void MaterialManager::UpdateShininess(MaterialComponent& in)
+    void MaterialManager::UpdateShininess(unsigned int EntityID)
     {
+        if (!engine->world.CheckComponent< MaterialComponent>(EntityID))
+            return;
+
+        auto& Mat = engine->world.GetComponent<MaterialComponent>(EntityID);
+
         auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
         shdrpgm->second.Use();
-        CheckUnniformLocation(shdrpgm->second, in);
+        CheckUnniformLocation(shdrpgm->second, Mat);
         shdrpgm->second.UnUse();
     }
 

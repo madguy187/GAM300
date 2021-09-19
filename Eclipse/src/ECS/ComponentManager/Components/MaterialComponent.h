@@ -20,9 +20,8 @@ namespace Eclipse
           Components for Highlighting
         *************************************************************************/
         float Thickness = 0.05f; // Check Highlighting
-        float ScaleUp = 1.05f; // Only for 3D Primitives
+        float ScaleUp = 1.05f;   // Only for 3D Primitives
 
-        //TODO
         //ComboIndex if for imgui combolist to select the correct model type - Tian Yu
         size_t ComboIndex;
 
@@ -30,7 +29,6 @@ namespace Eclipse
           Components for a Texture
         *************************************************************************/
 
-        //TODO
         //ComboIndex if for imgui combolist to select the correct model type - Tian Yu
         size_t TextureComboIndex;
         TextureType Type = TextureType::TT_UNASSIGNED;

@@ -201,7 +201,7 @@ namespace Eclipse
             }
 
             // GRID SYSTEM =============================
-            world.Update<GridSystem>();
+            //world.Update<GridSystem>();
 
             world.Update<CameraSystem>();
 
@@ -228,7 +228,7 @@ namespace Eclipse
             world.Update<RenderSystem>();
 
             // Material SYstem =============================
-            world.Update<MaterialSystem>();
+            //world.Update<MaterialSystem>();
 
             // GRID DRAW ============================= Must be last of All Renders
             engine->GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());

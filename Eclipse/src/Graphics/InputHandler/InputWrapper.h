@@ -24,7 +24,7 @@ namespace Eclipse
     // Probably missing this:
     friend std::ostream& operator << (std::ostream& os, const InputKeycode& in);
 
-      InputWrapper();
+   InputWrapper();
 
     // Check if Current Key is triggered
     bool GetKeyTriggered(InputKeycode keycode);

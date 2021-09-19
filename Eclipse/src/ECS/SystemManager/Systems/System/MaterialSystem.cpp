@@ -18,7 +18,7 @@ namespace Eclipse
 				MaterialComponent& material = engine->world.GetComponent<MaterialComponent>(entity);
 
 				// Update Shininess ===============================
-				engine->MaterialManager.UpdateShininess(material);
+				engine->MaterialManager.UpdateShininess(entity);
 
 				if (engine->world.CheckComponent<ModeLInforComponent>(entity))
 				{

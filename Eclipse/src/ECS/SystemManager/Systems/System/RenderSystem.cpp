@@ -68,24 +68,35 @@ namespace Eclipse
             {
                 MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
 
+                engine->MaterialManager.UpdateShininess(entityID);
+
                 // Basic Primitives
                 if (!engine->world.CheckComponent<ModeLInforComponent>(entityID))
                 {
+                    engine->GraphicsManager.CheckTexture(entityID);
+
                     /*************************************************************************
                       Render With Stencer So we prepare to Hihlight in material System
                       Render Primitives to SceneView
                     *************************************************************************/
                     engine->MaterialManager.UpdateStencilWithActualObject(entityID);
-                    engine->GraphicsManager.Draw(engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::SCENEVIEW), &Mesh, GL_FILL, entityID, CameraComponent::CameraType::Editor_Camera);
+                    engine->GraphicsManager.Draw(
+                        engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::SCENEVIEW),
+                        &Mesh, GL_FILL, entityID, CameraComponent::CameraType::Editor_Camera);
 
                     /*************************************************************************
                       Render Without Stencer , Render Primitivies to GameView
                     *************************************************************************/
                     engine->MaterialManager.DoNotUpdateStencil();
                     engine->GraphicsManager.Draw(
-                        engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::GAMEVIEW), 
-                        &Mesh, GL_FILL, entityID, 
-                        CameraComponent::CameraType::Game_Camera);
+                        engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::GAMEVIEW),
+                        &Mesh, GL_FILL, entityID, CameraComponent::CameraType::Game_Camera);
+
+                    if (engine->world.CheckComponent<MaterialComponent>(entityID))
+                    {
+                        auto& material = engine->world.GetComponent<MaterialComponent>(entityID);
+                        engine->MaterialManager.HighlightBasicPrimitives(material, entityID, engine->GraphicsManager.GetFrameBufferID(Eclipse::FrameBufferMode::SCENEVIEW));
+                    }
                 }
                 else
                 {
@@ -152,6 +163,12 @@ namespace Eclipse
                             engine->GraphicsManager.GetRenderMode(FrameBufferMode::SWITCHINGVIEWS_LEFT),
                             &box, CameraComponent::CameraType::LeftView_Camera);
                     }
+
+                    if (engine->world.CheckComponent<MaterialComponent>(entityID))
+                    {
+                        auto& material = engine->world.GetComponent<MaterialComponent>(entityID);
+                        engine->MaterialManager.Highlight3DModels(material, entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::SCENEVIEW));
+                    }
                 }
             }
 
@@ -166,6 +183,8 @@ namespace Eclipse
             *************************************************************************/
             engine->MaterialManager.DoNotUpdateStencil();
             engine->GraphicsManager.DrawDebugBoxes();
+
+            engine->MaterialManager.StencilBufferClear();
         }
 
         timer.tracker.system_end = glfwGetTime();
