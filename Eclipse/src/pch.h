@@ -87,6 +87,12 @@
 #include "Reflection/primitive_support.h"
 #include "Reflection/complex_support.h"
 
+// Serialization
+#include "Serialization/SerializationManager.h"
+
+//SceneManager
+#include "SceneManagement/SceneManager.h"
+
 // Editor API
 #include "Editor/ECGuiAPI/ECGui.h"
 #include "ImGuizmo/ImGuizmo.h" 
