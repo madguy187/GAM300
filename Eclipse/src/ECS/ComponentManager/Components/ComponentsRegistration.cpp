@@ -17,6 +17,9 @@
 
 namespace Eclipse
 {
+	/*************************************************************************/
+	/*                      REGISTERING DATA MEMBERS                         */
+	/*************************************************************************/
 	DEFINE_META(AABBComponent)
 	{
 		ADD_MEMBER(center);
@@ -195,6 +198,9 @@ namespace Eclipse
 		ADD_MEMBER(scale);
 	}
 
+	/*************************************************************************/
+	/*               REGISTERING DATA TYPE - NO NEED TOUCH                   */
+	/*************************************************************************/
 	DEFINE_META_POD(int);
 	DEFINE_META_POD(int*);
 	DEFINE_META_POD(unsigned int);
