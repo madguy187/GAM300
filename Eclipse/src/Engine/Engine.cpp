@@ -148,8 +148,9 @@ namespace Eclipse
 
         SceneManager::Initialize();
         //Deserialization(temp)
-
+        
         /*CameraComponent test;
+        RefVariant foo{ test };
         RefVariant test2 = test;
 
         for (const auto& prop : test2.GetProperties())
