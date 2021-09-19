@@ -11,38 +11,41 @@
 // Strips down qualified types/references/pointers to a single unqualified type, for passing into
 // a templated type as a typename parameter.
 // Ensures metadata of all types of T is the same.
-template <typename T>
-struct RemTypeQual
+namespace Eclipse
 {
-	typedef T type;
-};
+	template <typename T>
+	struct RemTypeQual
+	{
+		typedef T type;
+	};
 
-template <typename T>
-struct RemTypeQual<const T>
-{
-	typedef typename RemTypeQual<T>::type type;
-};
+	template <typename T>
+	struct RemTypeQual<const T>
+	{
+		typedef typename RemTypeQual<T>::type type;
+	};
 
-template <typename T>
-struct RemTypeQual<T&>
-{
-	typedef typename RemTypeQual<T>::type type;
-};
+	template <typename T>
+	struct RemTypeQual<T&>
+	{
+		typedef typename RemTypeQual<T>::type type;
+	};
 
-template <typename T>
-struct RemTypeQual<const T&>
-{
-	typedef typename RemTypeQual<T>::type type;
-};
+	template <typename T>
+	struct RemTypeQual<const T&>
+	{
+		typedef typename RemTypeQual<T>::type type;
+	};
 
-template <typename T>
-struct RemTypeQual<T&&>
-{
-	typedef typename RemTypeQual<T>::type type;
-};
+	template <typename T>
+	struct RemTypeQual<T&&>
+	{
+		typedef typename RemTypeQual<T>::type type;
+	};
 
-template <typename T>
-struct RemTypeQual<const T*>
-{
-	typedef typename RemTypeQual<T*>::type type;
-};
+	template <typename T>
+	struct RemTypeQual<const T*>
+	{
+		typedef typename RemTypeQual<T*>::type type;
+	};
+}

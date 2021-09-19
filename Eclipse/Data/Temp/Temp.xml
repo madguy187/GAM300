@@ -1,10 +1,10 @@
 <?xml version="1.0" ?>
-<Entities Size="1">
+<Entities Size="2">
     <Entity_0 ID="0">
         <EntityComponent>
             <Name value="Camera" />
             <Tag value="Camera" />
-            <IsActive value="true" />
+            <IsActive value="false" />
         </EntityComponent>
         <CameraComponent>
             <EyeAlpha value="0" />
@@ -12,32 +12,64 @@
             <FOV value="45" />
             <NearPlane value="1" />
             <FarPlane value="500" />
-            <Aspect value="1" />
-            <EyePos x="0" y="0" z="0" />
-            <EyeFront x="0" y="0" z="-1" />
-            <UpVec x="0" y="1" z="0" />
-            <RightVec x="1" y="0" z="0" />
+            <Aspect value="1.92708" />
+            <EyePos x="-0.537563" y="16.8226" z="36.5612" />
+            <EyeFront x="0.263859" y="-0.484046" z="-0.834313" />
+            <UpVec x="0.145958" y="0.875043" z="-0.461516" />
+            <RightVec x="0.953454" y="-0" z="0.301538" />
             <WorldUp x="0" y="1" z="0" />
             <ViewMtx Col="4" Row="4">
-                <Col0 _00="0" _01="0" _02="0" _03="0" />
-                <Col1 _10="0" _11="0" _12="0" _13="0" />
-                <Col2 _20="0" _21="0" _22="0" _23="0" />
-                <Col3 _30="0" _31="0" _32="0" _33="0" />
+                <Col0 _00="0.953454" _01="0.145959" _02="-0.263859" _03="0" />
+                <Col1 _10="5.21541e-08" _11="0.875042" _12="0.484047" _13="0" />
+                <Col2 _20="0.301538" _21="-0.461517" _22="0.834312" _23="0" />
+                <Col3 _30="-10.5121" _31="2.23161" _32="-38.7882" _33="1" />
             </ViewMtx>
             <ProjMtx Col="4" Row="4">
-                <Col0 _00="0" _01="0" _02="0" _03="0" />
-                <Col1 _10="0" _11="0" _12="0" _13="0" />
-                <Col2 _20="0" _21="0" _22="0" _23="0" />
-                <Col3 _30="0" _31="0" _32="0" _33="0" />
+                <Col0 _00="1.25278" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="2.41421" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="-1.00401" _23="-1" />
+                <Col3 _30="0" _31="0" _32="-2.00401" _33="0" />
             </ProjMtx>
             <CameraSpeed value="50" />
             <CameraType value="Editor_Camera" />
             <ProjectionType value="Perspective" />
         </CameraComponent>
         <TransformComponent>
-            <Position x="0" y="20" z="40" />
+            <Position x="-0.537563" y="16.8226" z="36.5612" />
             <Rotation x="-40" y="-90" z="0" />
             <Scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_0>
+    <Entity_1 ID="6">
+        <EntityComponent>
+            <Name value="DirectionalLight" />
+            <Tag value="DirectionalLight" />
+            <IsActive value="true" />
+        </EntityComponent>
+        <DirectionalLightComponent>
+            <ID value="6" />
+            <Counter value="0" />
+            <Visible value="false" />
+            <AffectsWorld value="true" />
+            <EnableBlinnPhong value="true" />
+            <LightColor x="1" y="1" z="1" />
+            <Direction x="-1" y="-1" z="-1" />
+            <Ambient x="0.2" y="0.2" z="0.2" />
+            <Diffuse x="0.4" y="0.4" z="0.4" />
+            <Specular x="0.5" y="0.5" z="0.5" />
+            <Color x="1" y="1" z="1" w="1" />
+            <ModelNDC_xform Col="4" Row="4">
+                <Col0 _00="0" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="0" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="0" _23="0" />
+                <Col3 _30="0" _31="0" _32="0" _33="0" />
+            </ModelNDC_xform>
+        </DirectionalLightComponent>
+        <TransformComponent>
+            <Position x="0" y="0" z="0" />
+            <Rotation x="0" y="0" z="0" />
+            <Scale x="5" y="5" z="5" />
+        </TransformComponent>
+        <LightComponent />
+    </Entity_1>
 </Entities>

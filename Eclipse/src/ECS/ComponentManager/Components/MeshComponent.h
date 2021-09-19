@@ -1,10 +1,13 @@
 #pragma once
 #include "Library/Math/Vector.h"
+#include "Reflection/Meta.h"
+#include "Reflection/RemTypeQual.h"
 
 namespace Eclipse
 {
     struct MeshComponent
     {
+        META_DATA(MeshComponent);
         //--------------------------------------
         // 3D Models
         //--------------------------------------

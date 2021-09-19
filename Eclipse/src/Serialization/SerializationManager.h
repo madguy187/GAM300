@@ -122,8 +122,8 @@ namespace Eclipse
 		{
 			SerializeData(
 				"Center", data.center,
-				"Min", data.min,
-				"Max", data.max
+				"Min", data.Min,
+				"Max", data.Max
 			);
 		}
 
@@ -342,8 +342,8 @@ namespace Eclipse
 		{
 			bool isSuccess = DeserializeData(
 				"Center", comp.center,
-				"Min", comp.min,
-				"Max", comp.max
+				"Min", comp.Min,
+				"Max", comp.Max
 			);
 
 			return isSuccess;

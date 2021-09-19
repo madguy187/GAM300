@@ -1,11 +1,14 @@
 #pragma once
 #include "pch.h"
 #include "Library/Math/Vector.h" 
+#include "Reflection/Meta.h"
+#include "Reflection/RemTypeQual.h"
 
 namespace Eclipse
 {
     struct DirectionalLightComponent
     {
+        META_DATA(DirectionalLightComponent);
         unsigned int ID = 0;
         unsigned int Counter = 0;
 

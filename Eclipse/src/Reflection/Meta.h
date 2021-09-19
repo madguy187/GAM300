@@ -3,7 +3,7 @@
 namespace Eclipse
 {
     class RefVariant;
-    typedef void (*SerializeFn)(std::ostream&, RefVariant);
+   /* typedef void (*SerializeFn)(std::ostream&, RefVariant);*/
 
     // Setting up the definition of the RegisterMetaData function, so that the 
     // ADD_MEMBER macro calls are actually lines of code placed within the definition
@@ -131,10 +131,10 @@ namespace Eclipse
             Get()->AddMember(new Member(memberName, memberOffset, meta));
         }
 
-        static void SetSerializeFn(SerializeFn fn)
+        /*static void SetSerializeFn(SerializeFn fn)
         {
             Get()->SetSerialize(fn);
-        }
+        }*/
 
         // Return a pointer to NULL(memory address zero) of some type
         static Metatype* NullCast()

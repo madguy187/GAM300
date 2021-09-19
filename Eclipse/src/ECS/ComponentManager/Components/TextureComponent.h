@@ -1,11 +1,14 @@
 #pragma once
 #include "pch.h"
-#include "Library/Math/Vector.h" 
+#include "Library/Math/Vector.h"
+#include "Reflection/Meta.h"
+#include "Reflection/RemTypeQual.h"
 
 namespace Eclipse
 {
     struct TextureComponent
     {
+        META_DATA(TextureComponent);
         //TODO
         //ComboIndex if for imgui combolist to select the correct texture type - Tian Yu
         size_t ComboIndex = 0;

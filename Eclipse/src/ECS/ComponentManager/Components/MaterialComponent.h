@@ -1,11 +1,16 @@
 #pragma once
+
 #include "pch.h"
 #include "Library/Math/Vector.h" 
+#include "Reflection/Meta.h"
+#include "Reflection/RemTypeQual.h"
 
 namespace Eclipse
 {
     struct MaterialComponent
     {
+        META_DATA(MaterialComponent);
+
         enum class ModelType
         {
             None = 0,

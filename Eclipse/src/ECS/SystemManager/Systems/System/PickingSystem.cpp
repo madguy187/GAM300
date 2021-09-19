@@ -20,7 +20,7 @@ void Eclipse::PickingSystem::EditorUpdate()
 
 		float t;
 		glm::vec3 rayDir = engine->gPicker.ComputeCursorRayDirection();
-		bool collision = engine->gPicker.RayAabb(camera.eyePos, rayDir, aabb.min.ConvertToGlmVec3Type(), aabb.max.ConvertToGlmVec3Type(), t);
+		bool collision = engine->gPicker.RayAabb(camera.eyePos, rayDir, aabb.Min.ConvertToGlmVec3Type(), aabb.Max.ConvertToGlmVec3Type(), t);
 
 		if (collision)
 		{

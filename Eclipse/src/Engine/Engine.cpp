@@ -25,6 +25,7 @@
 #include "ECS/SystemManager/Systems/System/MaterialSystem.h"
 #include "Serialization/SerializationManager.h"
 #include "ECS/SystemManager/Systems/System/GridSystem.h"
+
 bool Tester1(const Test1& e)
 {
     std::cout << "Engine.cpp Tester1" << std::endl;
@@ -147,6 +148,19 @@ namespace Eclipse
 
         SceneManager::Initialize();
         //Deserialization(temp)
+
+        /*CameraComponent test;
+        RefVariant test2 = test;
+
+        for (const auto& prop : test2.GetProperties())
+        {
+            std::cout << prop.GetName() << std::endl;
+        }
+
+        test2.SetPropertyValue<CameraComponent::CameraType>("camType", CameraComponent::CameraType::TopView_Camera);
+
+        std::cout << lexical_cast_toStr(test.camType) << std::endl;
+        std::cout << lexical_cast_toStr(test2.GetPropertyValue<CameraComponent::CameraType>("camType")) << std::endl;*/
 
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {

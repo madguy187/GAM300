@@ -1,10 +1,14 @@
 #pragma once
 #include "Global.h"
 #include "PxPhysicsAPI.h"
+#include "Reflection/Meta.h"
+#include "Reflection/RemTypeQual.h"
+
 namespace Eclipse
 {
 	struct RigidBodyComponent
 	{
+		META_DATA(RigidBodyComponent);
 		ECVec3 velocity{ 0,0,0 };
 		ECVec3 Angvelocity{ 0,0,0 };
 		ECVec3 forces{ 0,0,0 };
