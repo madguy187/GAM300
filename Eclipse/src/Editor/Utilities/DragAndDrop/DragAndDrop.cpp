@@ -32,7 +32,6 @@ namespace Eclipse
 		if (ImGui::BeginDragDropSource())
 		{
 			ImGui::SetDragDropPayload(id, &source, sizeof(source));
-			std::cout << source;
 
 			switch (type)
 			{

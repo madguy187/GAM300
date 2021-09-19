@@ -74,7 +74,7 @@ namespace Eclipse
 
 			if (filter.PassFilter(entCom.Name.c_str()))
 			{
-
+				temp = 0;
 				entityName = my_strcat(entCom.Name, " ", list[index]);
 
 				if(!entCom.IsAChild && !entCom.Child.empty())
@@ -118,15 +118,17 @@ namespace Eclipse
 						}
 					}
 					engine->editorManager->SetGlobalIndex(index);
+					UpdateEntityTracker(engine->editorManager->GetEntityID(index));
 
 				}
 				if(!entCom.IsAChild)
 				{
 					engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit",
 						static_cast<int>(index));
+					engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
+						static_cast<int>(index), entCom.IsActive);
 				}
-				engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
-					static_cast<int>(index), entCom.IsActive);
+
 				//engine->editorManager->SetGlobalIndex(index);
 				
 			}
@@ -220,13 +222,16 @@ namespace Eclipse
 
 	void HierarchyWindow::TreeNodeRecursion(std::string parent, EntityComponent& entCom, EntitySelectionTracker& prev, EntitySelectionTracker& curr,size_t index)
 	{
+		if (entCom.IsActive)
+		{
+			temp |= ImGuiTreeNodeFlags_Selected;
+		}
+
 		bool nodeOpen = ImGui::TreeNodeEx(parent.c_str(), temp);
 
 		if (nodeOpen)
 		{
-			temp |= ImGuiTreeNodeFlags_Selected;
 
-			entCom.IsActive = true;
 
 			for (size_t i = 0; i < entCom.Child.size(); ++i)
 			{
@@ -271,7 +276,8 @@ namespace Eclipse
 							}
 						}
 						entCom.IsActive = false;
-						engine->editorManager->SetGlobalIndex(i);
+						engine->editorManager->SetGlobalIndex(GetEntityGlobalIndex(curr.index));
+						UpdateEntityTracker(engine->editorManager->GetEntityID(GetEntityGlobalIndex(static_cast<int>(curr.index))));
 					}
 
 				}
@@ -297,6 +303,7 @@ namespace Eclipse
 			if (ImGui::IsItemClicked(0))
 			{
 				engine->editorManager->SetGlobalIndex(index);
+				UpdateEntityTracker(engine->editorManager->GetEntityID(static_cast<int>(index)));
 			}
 		
 			//auto& s = engine->world.GetComponent<EntityComponent>(curr.index);
