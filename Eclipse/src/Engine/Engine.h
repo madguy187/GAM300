@@ -25,20 +25,32 @@ namespace Eclipse
 		std::unique_ptr<EditorManager> editorManager;
 		LightManager LightManager;
 		MonoManager mono;
-	    AssimpModelManager AssimpManager;
+	  AssimpModelManager AssimpManager;
 		PickingManager gPicker;
-        MaterialManager MaterialManager{ true , true };
+    MaterialManager MaterialManager{ true , true };
 		AABBTree CollisionGridTree{ 150 };
 		std::unique_ptr<Grid> GridManager;
 		DebugRenderingManager gDebugManager;
 		AssetBrowserWindow gAssetB;
+		SerializationManager szManager;
         void Init();
         void Run();
 		PhysicsManager gPhysics;
 
-
         bool GetEditorState();
+        bool GetPlayState();
+        bool GetPauseState();
+        bool GetStepState();
+		bool IsScenePlaying();
+
+        void SetEditorState(bool check);
+        void SetPlayState(bool check);
+        void SetPauseState(bool check);
+        void SetStepState(bool check);
     private:
-        bool EditorState{ true };
+        bool IsEditorActive{ true };
+        bool IsInPlayState{ false };
+        bool IsInPauseState{ false };
+        bool IsInStepState{ false };
     };
 }

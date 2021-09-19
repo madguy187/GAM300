@@ -24,6 +24,7 @@
 #include "ECS/SystemManager/Systems/System/PhysicsSystem.h"
 #include "ImGui/Setup/ImGuiSetup.h"
 #include "ECS/SystemManager/Systems/System/MaterialSystem.h"
+#include "Serialization/SerializationManager.h"
 #include "ECS/SystemManager/Systems/System/GridSystem.h"
 bool Tester1(const Test1& e)
 {
@@ -54,9 +55,9 @@ namespace Eclipse
 
         engine->GraphicsManager.Pre_Render();
     	
-        ImGuiSetup::Init(EditorState);
+        ImGuiSetup::Init(IsEditorActive);
 
-        if (EditorState)
+        if (IsEditorActive)
             editorManager = std::make_unique<EditorManager>();
 
         /*bool x = false;
@@ -134,15 +135,23 @@ namespace Eclipse
         GridSystem::Init();
         gPhysics.Init();
 
+        if (IsEditorActive)
+            IsInPlayState = false;
+        else
+            IsInPlayState = true;
+
         float currTime = static_cast<float>(clock());
         float accumulatedTime = 0.0f;
         int framecount = 0;
         float dt = 0.0f;
         float updaterate = 4.0f;
         ProfilerWindow Timer;
+
+        SceneManager::Initialize();
+        //Deserialization(temp)
+
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
-           
             Timer.tracker.system_start = glfwGetTime();
             glfwPollEvents();
             engine->GraphicsManager.mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });
@@ -174,21 +183,34 @@ namespace Eclipse
 
             currTime = newTime;
 
-            ImGuiSetup::Begin(EditorState);
-
-            if (Game_Clock.get_timeSteps() > 10)
-            {
-                Game_Clock.set_timeSteps(10);
-            }
+            ImGuiSetup::Begin(IsEditorActive);
 
             EditorSystem::Update();
+
+            if (IsInStepState)
+            {
+                Game_Clock.set_timeSteps(1);
+                IsInPauseState = false;
+            }
+            else
+            {
+                if (Game_Clock.get_timeSteps() > 10)
+                {
+                    Game_Clock.set_timeSteps(10);
+                }
+            }
+
             // GRID SYSTEM =============================
             world.Update<GridSystem>();
 
-            for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
+            world.Update<CameraSystem>();
+
+            if (IsScenePlaying())
             {
-                world.Update<CameraSystem>();
-                world.Update<PhysicsSystem>();
+                for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
+                {
+                    world.Update<PhysicsSystem>();
+                }
             }
 
             // FRAMEBUFFER BIND =============================
@@ -216,22 +238,73 @@ namespace Eclipse
             // FRAMEBUFFER DRAW ==========================
             engine->GraphicsManager.GlobalFrmeBufferDraw();
 
-            ImGuiSetup::End(EditorState);
+            ImGuiSetup::End(IsEditorActive);
             OpenGL_Context::post_render();
+            SceneManager::ProcessScene();
             Timer.tracker.system_end = glfwGetTime();
             Timer.EngineTimer(Timer.tracker);
+
+            if (IsInStepState)
+            {
+                IsInStepState = false;
+                IsInPauseState = true;
+            }
         }
+
+        //Serialization(Temp)
+        szManager.SaveSceneFile();
 
         // unLoad
         mono.StopMono();
         GraphicsManager.End();
         AssimpManager.CleanUpAllModelsMeshes();
-        ImGuiSetup::Destroy(EditorState);
+        ImGuiSetup::Destroy(IsEditorActive);
+        gPhysics.Unload();
         CommandHistory::Clear();
     }
 
     bool Engine::GetEditorState()
     {
-        return EditorState;
+        return IsEditorActive;
+    }
+
+    bool Engine::GetPlayState()
+    {
+        return IsInPlayState;
+    }
+
+    bool Engine::GetPauseState()
+    {
+        return IsInPauseState;
+    }
+
+    bool Engine::GetStepState()
+    {
+        return IsInStepState;
+    }
+
+    bool Engine::IsScenePlaying()
+    {
+        return IsInPlayState && !IsInPauseState;
+    }
+
+    void Engine::SetEditorState(bool check)
+    {
+        IsEditorActive = check;
+    }
+
+    void Engine::SetPlayState(bool check)
+    {
+        IsInPlayState = check;
+    }
+
+    void Engine::SetPauseState(bool check)
+    {
+        IsInPauseState = check;
+    }
+
+    void Engine::SetStepState(bool check)
+    {
+        IsInStepState = check;
     }
 }

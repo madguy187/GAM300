@@ -84,7 +84,7 @@ namespace Eclipse
 
 		// Utilities
 		// Mostly used together with the static widgets
-		static void InsertSameLine();
+		static void InsertSameLine(float offset_from_start_x = 0.0f, float spacing = -1.0f);
 		static void InsertHorizontalLineSeperator();
 		static void PushItemWidth(float value);
 		static bool IsItemHovered();

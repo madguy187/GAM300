@@ -382,9 +382,9 @@ namespace Eclipse
         return nullptr;
     }
 
-    bool AssimpModelManager::ClearContainer()
-    {
-        AssimpModelContainer_.clear();
+	bool AssimpModelManager::ClearContainer()
+	{
+		AssimpModelContainerV2.clear();
 
         return true;
     }
