@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "MonoManager.h"
 #include "mono/metadata/assembly.h"
+#include <mono/metadata/mono-gc.h>
 #include <mono/metadata/debug-helpers.h>
 
 #include "ECS/ComponentManager/Components/TransformComponent.h"
@@ -135,6 +136,24 @@ namespace Eclipse
 			//mono_runtime_object_init(obj);
 			//mono_runtime_invoke(ctor_method, obj, args, NULL);
 		}
+	}
+
+	void MonoManager::RestartMono()
+	{
+		mono_image_close(ScriptImage);
+		mono_image_close(APIImage);
+		objects.clear();
+
+		MonoDomain* old_domain = mono_domain_get();
+		if (old_domain && old_domain != mono_get_root_domain()) {
+			if (!mono_domain_set(mono_get_root_domain(), false))
+				ENGINE_CORE_WARN("Error: Domain could not be set");
+
+			mono_domain_unload(old_domain);
+		}
+
+		//unloading a domain is also a nice point in time to have the GC run.
+		mono_gc_collect(mono_gc_max_generation());
 	}
 
 	void MonoManager::StopMono()
