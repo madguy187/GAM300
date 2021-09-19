@@ -220,6 +220,26 @@ namespace Eclipse
 		return 0;
 	}
 
+	std::string HierarchyWindow::GetEntityComponentEntityNumber(std::string EntityName)
+	{
+		size_t bracked = EntityName.find_last_of(" ");
+
+		if (bracked == std::string::npos)
+		{
+			return EntityName;
+		}
+
+		return EntityName.substr(bracked + 1);
+	}
+
+	size_t HierarchyWindow::ConvertEntityStringtoNumber(std::string EntityNumber)
+	{
+		size_t result;
+		std::stringstream sstream(EntityNumber);
+		sstream >> result;
+		return result;
+	}
+
 	void HierarchyWindow::TreeNodeRecursion(std::string parent, EntityComponent& entCom, EntitySelectionTracker& prev, EntitySelectionTracker& curr,size_t index)
 	{
 		if (entCom.IsActive)
@@ -277,7 +297,7 @@ namespace Eclipse
 						}
 						entCom.IsActive = false;
 						engine->editorManager->SetGlobalIndex(GetEntityGlobalIndex(curr.index));
-						UpdateEntityTracker(engine->editorManager->GetEntityID(GetEntityGlobalIndex(static_cast<int>(curr.index))));
+						UpdateEntityTracker(engine->editorManager->GetEntityID(GetEntityGlobalIndex(static_cast<size_t>(curr.index))));
 					}
 
 				}
@@ -302,8 +322,10 @@ namespace Eclipse
 		{
 			if (ImGui::IsItemClicked(0))
 			{
-				engine->editorManager->SetGlobalIndex(index);
-				UpdateEntityTracker(engine->editorManager->GetEntityID(static_cast<int>(index)));
+				//std::cout << GetEntityComponentEntityNumber(parent);
+				size_t currIndex = ConvertEntityStringtoNumber(GetEntityComponentEntityNumber(parent));
+				engine->editorManager->SetGlobalIndex(engine->editorManager->GetEntityIndex(currIndex));
+				UpdateEntityTracker(engine->editorManager->GetEntityID(engine->editorManager->GetEntityIndex(currIndex)));
 			}
 		
 			//auto& s = engine->world.GetComponent<EntityComponent>(curr.index);

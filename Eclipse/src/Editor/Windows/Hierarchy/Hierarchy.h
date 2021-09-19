@@ -28,7 +28,8 @@ namespace Eclipse
 		void ShowEntityCreationList();
 		void UpdateEntityTracker(Entity ID);
 		size_t GetEntityGlobalIndex(size_t data);
-
+		std::string GetEntityComponentEntityNumber(std::string EntityName);
+		size_t ConvertEntityStringtoNumber(std::string EntityNumber);
 		void TreeNodeRecursion(std::string parent, EntityComponent& entCom,EntitySelectionTracker& prev,EntitySelectionTracker& curr, size_t index);
 	private:
 		ImGuiTreeNodeFlags temp;
