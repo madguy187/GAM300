@@ -178,6 +178,15 @@
     <Filter Include="Reflection">
       <UniqueIdentifier>{104FCF04-FC06-1152-650E-EAAD51E5AB42}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SceneManagement">
+      <UniqueIdentifier>{D0EEDB6A-3C7A-492F-458B-CC23B195A52F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Serialization">
+      <UniqueIdentifier>{2319AF09-8FD9-2A40-5814-74BDC4936F1C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Serialization\TinyXML">
+      <UniqueIdentifier>{A79CE5FB-1309-A1F6-DCFC-38544828C35E}</UniqueIdentifier>
+    </Filter>
     <Filter Include="SparseSet">
       <UniqueIdentifier>{FF3F5950-6BAA-0DC7-B4E8-BE6C2092EB1B}</UniqueIdentifier>
     </Filter>
@@ -707,6 +716,24 @@
     <ClInclude Include="src\Reflection\registration.h">
       <Filter>Reflection</Filter>
     </ClInclude>
+    <ClInclude Include="src\SceneManagement\SceneManager.h">
+      <Filter>SceneManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Serialization\Deserializer.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Serialization\SerializationManager.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Serialization\Serializer.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Serialization\TinyXML\tinystr.h">
+      <Filter>Serialization\TinyXML</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Serialization\TinyXML\tinyxml.h">
+      <Filter>Serialization\TinyXML</Filter>
+    </ClInclude>
     <ClInclude Include="src\SparseSet\SparseSet.hpp">
       <Filter>SparseSet</Filter>
     </ClInclude>
@@ -1010,6 +1037,30 @@
     </ClCompile>
     <ClCompile Include="src\Physics\PhysicsManager.cpp">
       <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SceneManagement\SceneManager.cpp">
+      <Filter>SceneManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Serialization\Deserializer.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Serialization\SerializationManager.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Serialization\Serializer.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Serialization\TinyXML\tinystr.cpp">
+      <Filter>Serialization\TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Serialization\TinyXML\tinyxml.cpp">
+      <Filter>Serialization\TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Serialization\TinyXML\tinyxmlerror.cpp">
+      <Filter>Serialization\TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Serialization\TinyXML\tinyxmlparser.cpp">
+      <Filter>Serialization\TinyXML</Filter>
     </ClCompile>
     <ClCompile Include="src\Time\Clock.cpp">
       <Filter>Time</Filter>

@@ -18,4 +18,5 @@ namespace Eclipse
 			engine->editorManager->GetMenuBar().Update();
 		}
 	}
+
 }

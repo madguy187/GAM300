@@ -4,7 +4,7 @@ class FileDialog
 {
 public:
 
-	static std::string FileBrowser();
-	
-	static std::string SaveFile();
+  static std::string FileBrowser();
+
+  static std::string SaveFile();
 };

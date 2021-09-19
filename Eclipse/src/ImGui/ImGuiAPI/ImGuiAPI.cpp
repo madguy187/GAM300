@@ -314,9 +314,9 @@ namespace Eclipse
 		return ImGui::Button(name);
 	}
 
-	void ImGuiAPI::InsertSameLine()
+	void ImGuiAPI::InsertSameLine(float offset_from_start_x, float spacing)
 	{
-		ImGui::SameLine();
+		ImGui::SameLine(offset_from_start_x, spacing);
 	}
 
 	void ImGuiAPI::InsertHorizontalLineSeperator()
