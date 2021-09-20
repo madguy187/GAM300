@@ -21,6 +21,8 @@ namespace Eclipse
 		
 	public:
 
+		unsigned int it = 0;
+
 		inline static std::map<SystemName, std::vector<float>> time_container;
 		
 		void Update() override;
@@ -44,6 +46,8 @@ namespace Eclipse
 		void SetName(SystemName key);
 		
 		float GetOffsetTime(TimerTracker inputTracker);
+
+		void UpdateTimeContainer(TimerTracker inputTracker);
 
 		float GetFPS();
 		

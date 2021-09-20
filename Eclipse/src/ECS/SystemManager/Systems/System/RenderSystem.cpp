@@ -189,6 +189,6 @@ namespace Eclipse
         }
 
         engine->Timer.tracker.system_end = glfwGetTime();
-        engine->Timer.ContainerAddTime(engine->Timer.tracker);
+        engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
     }
 }

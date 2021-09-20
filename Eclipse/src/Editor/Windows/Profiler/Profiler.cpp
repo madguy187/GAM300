@@ -21,22 +21,19 @@ namespace Eclipse
 
 	void ProfilerWindow::ContainerAddTime(TimerTracker inputTracker)
 	{
-		static int i = 0;
-
+	
 		auto search = ProfilerWindow::time_container.find(inputTracker.SystemName_);
 
 		inputTracker.system_offset = GetOffsetTime(inputTracker);
 
-		++i;
-
 		if (search != this->time_container.end())
 		{
-			//search->second.push_back(inputTracker.system_offset);
-			if (i == 50)
-			{
-				search->second.push_back(inputTracker.system_offset);
-				i = 0;
-			}
+			search->second.push_back(inputTracker.system_offset);
+			//if (i == 50)
+			//{
+			//	search->second.push_back(inputTracker.system_offset);
+			//	i = 0;
+			//}
 			
 			if (search->second.size() == 50)
 			{
@@ -85,6 +82,16 @@ namespace Eclipse
 
 		return (inputTracker.system_offset)*1000;
 		//return inputTracker.system_offset;
+	}
+	void ProfilerWindow::UpdateTimeContainer(TimerTracker inputTracker)
+	{
+		++it;
+
+		if (it == 5)
+		{
+			ContainerAddTime(inputTracker);
+			it = 0;
+		}
 	}
 	float ProfilerWindow::GetFPS()
 	{
