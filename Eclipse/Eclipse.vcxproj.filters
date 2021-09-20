@@ -641,6 +641,7 @@
     <ClInclude Include="src\Reflection\Variant\Variant.h" />
     <ClInclude Include="src\Reflection\Variant\VariantBase.h" />
     <ClInclude Include="src\Reflection\Variant\RefVariant.h" />
+    <ClInclude Include="src\Graphics\Culling\CullingManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -964,6 +965,7 @@
     <ClCompile Include="src\Reflection\Variant\VariantBase.cpp" />
     <ClCompile Include="src\Reflection\Variant\RefVariant.cpp" />
     <ClCompile Include="src\ECS\ComponentManager\Components\ComponentsRegistration.cpp" />
+    <ClCompile Include="src\Graphics\Culling\CullingManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\Mesh\Mesh.frag" />
