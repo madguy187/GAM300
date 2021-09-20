@@ -21,15 +21,24 @@ namespace Eclipse
 
 	void ProfilerWindow::ContainerAddTime(TimerTracker inputTracker)
 	{
+		static int i = 0;
+
 		auto search = ProfilerWindow::time_container.find(inputTracker.SystemName_);
 
 		inputTracker.system_offset = GetOffsetTime(inputTracker);
 
+		++i;
+
 		if (search != this->time_container.end())
 		{
-			search->second.push_back(inputTracker.system_offset);
+			//search->second.push_back(inputTracker.system_offset);
+			if (i == 50)
+			{
+				search->second.push_back(inputTracker.system_offset);
+				i = 0;
+			}
 			
-			if (search->second.size() == 100)
+			if (search->second.size() == 50)
 			{
 				search->second.clear();
 			}
@@ -56,6 +65,10 @@ namespace Eclipse
 		ECGui::PlotHistogram("Lighting System", ProfilerWindow::time_container[SystemName::LIGHTING], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
 		ECGui::PlotHistogram("Render System", ProfilerWindow::time_container[SystemName::RENDER], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
 		ECGui::PlotHistogram("Camera System", ProfilerWindow::time_container[SystemName::CAMERA], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
+		ECGui::PlotHistogram("Grid System", ProfilerWindow::time_container[SystemName::GRID], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
+		ECGui::PlotHistogram("Physics System", ProfilerWindow::time_container[SystemName::PHYSICS], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
+		ECGui::PlotHistogram("Picking System", ProfilerWindow::time_container[SystemName::PICKING], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
+		ECGui::PlotHistogram("Editor System", ProfilerWindow::time_container[SystemName::EDITOR], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
 		ECGui::EndChildWindow();
 	}
 
@@ -70,12 +83,11 @@ namespace Eclipse
 		inputTracker.system_offset = inputTracker.system_end - inputTracker.system_start;
 		//float percentage = (inputTracker.systemOffset / inputTracker.engineTimerOffset) * 100.0f;
 
-		return (inputTracker.system_offset / engine_time) * 100;
+		return (inputTracker.system_offset)*1000;
 		//return inputTracker.system_offset;
 	}
 	float ProfilerWindow::GetFPS()
 	{
-
 		return engine->Game_Clock.getFPS();
 	}
 	void ProfilerWindow::EngineTimer(TimerTracker timer)

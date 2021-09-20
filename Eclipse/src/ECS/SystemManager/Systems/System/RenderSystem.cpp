@@ -51,9 +51,8 @@ namespace Eclipse
 
     void RenderSystem::Update()
     {
-        ProfilerWindow timer;
-        timer.SetName({ SystemName::RENDER });
-        timer.tracker.system_start = glfwGetTime();
+        engine->Timer.SetName({ SystemName::RENDER });
+        engine->Timer.tracker.system_start = glfwGetTime();
 
         engine->GraphicsManager.UploadGlobalUniforms();
 
@@ -189,7 +188,7 @@ namespace Eclipse
             engine->MaterialManager.StencilBufferClear();
         }
 
-        timer.tracker.system_end = glfwGetTime();
-        timer.ContainerAddTime(timer.tracker);
+        engine->Timer.tracker.system_end = glfwGetTime();
+        engine->Timer.ContainerAddTime(engine->Timer.tracker);
     }
 }

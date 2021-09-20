@@ -8,9 +8,13 @@ namespace Eclipse
 		LIGHTING,
 		RENDER,
 		CAMERA,
+		GRID,
+		PHYSICS,
+		PICKING,
+		EDITOR,
 		COUNTER
 	};
-	
+
 	class ProfilerWindow final : public ECGuiWindow
 	{
 		inline static float engine_time = 0.0f;

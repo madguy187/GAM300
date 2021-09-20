@@ -17,6 +17,10 @@ namespace Eclipse
 
 	void GridSystem::Update()
 	{
+		engine->Timer.SetName({ SystemName::GRID });
+		engine->Timer.tracker.system_start = glfwGetTime();
+
+
 		if (engine->GridManager->GetGridSystemIsRunning())
 		{
 			//for (auto& EntityId : mEntities)
@@ -52,5 +56,9 @@ namespace Eclipse
 			//    }
 			//}
 		}
+
+
+		engine->Timer.tracker.system_end = glfwGetTime();
+		engine->Timer.ContainerAddTime(engine->Timer.tracker);
 	}
 }

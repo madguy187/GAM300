@@ -72,9 +72,6 @@
 
 #include "Graphics.h"
 
-// Profiler
-#include "Editor/Windows/Profiler/Profiler.h"
-
 // Custom Libraries
 #include "Library/Math/Vector.h"
 #include "Library/Math/Matrix.h"
