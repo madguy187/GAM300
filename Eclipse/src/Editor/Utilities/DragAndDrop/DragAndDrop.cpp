@@ -40,6 +40,7 @@ namespace Eclipse
 				break;
 			case PayloadSourceType::PST_IMAGE:
 				// For rendering 2D Image -> Need ask Graphics side
+				std::cout << "hi";
 				break;
 			default:
 				break;
@@ -118,6 +119,9 @@ namespace Eclipse
 						bool selected = false;
 						if (ECGui::CreateSelectableButton(IndexJobNames[i], &selected))
 						{
+							EntityComponent* DestinationEntCom = nullptr;
+							EntityComponent* SourceEntCom = nullptr;
+
 							switch (i)
 							{
 							// Move index
@@ -135,6 +139,11 @@ namespace Eclipse
 								break;
 							// Parent Child
 							case 2:
+								DestinationEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(DestinationIndex_));
+								SourceEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(SourceIndex_));
+								DestinationEntCom->Child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
+								SourceEntCom->IsAChild = true;
+								SourceEntCom->Parent.push_back(engine->editorManager->GetEntityID(DestinationIndex_));
 								IsIndexJobSelected = false;
 								break;
 							// Cancel

@@ -44,6 +44,7 @@ namespace Eclipse
 			CompFilter.Draw();
 
 			ECGui::PushItemWidth(WindowSize_.getX());
+			//std::cout<<engine->editorManager->GetSelectedEntity();
 			ShowEntityProperty("Tag", currEnt, CompFilter);
 			ShowTransformProperty("Transform", currEnt, CompFilter);
 			ShowPointLightProperty("PointLight", currEnt, CompFilter);
