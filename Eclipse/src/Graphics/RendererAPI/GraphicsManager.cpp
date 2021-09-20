@@ -259,8 +259,6 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
             engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
             //engine->world.AddComponent(MeshID, TextureComponent{});
             engine->AssimpManager.SetSingleMesh(MeshID, name);
-
-            std::cout << "Texture Size " << Graphics::textures.size() << std::endl;
         }
 
     }
