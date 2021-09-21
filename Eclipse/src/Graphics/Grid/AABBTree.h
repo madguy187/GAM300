@@ -25,7 +25,7 @@ namespace Eclipse
 
     class AABBTree
     {
-    private:
+    public:
         std::map<std::shared_ptr<IAABB>, unsigned int> AABBToNodeMap;
         std::unordered_map<unsigned int, AABBNode> AllNodes;
         unsigned int RootNodeIndex = 0;
