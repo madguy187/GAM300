@@ -364,8 +364,10 @@ namespace Eclipse
 		float values[50] = {0};
 		//static double refresh_time = 0.0;
 		std::copy(value.begin(), value.end(), values);
+		//ImGui::TextColored(ImVec4(0.9f, 0.6f, 0.1f, 1.0f), "%.2f %%", ((values[1]) / (engine_time)));
 		//ImGui::PlotLines("Frame Times", values, IM_ARRAYSIZE(values));
 		//ImGui::TextColored(ImVec4(0.9f, 0.6f, 0.1f, 1.0f), "%.2f %%", values[1]);
+		engine->Timer.PrintCpuPercentage(values[1]);
 		ImGui::PlotLines(name, values, IM_ARRAYSIZE(values), values_offset, overlay_text, scale_min, scale_max, graph_size,stride);
 	}
 }

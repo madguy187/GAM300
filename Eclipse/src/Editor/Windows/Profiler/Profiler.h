@@ -24,6 +24,8 @@ namespace Eclipse
 		unsigned int it = 0;
 
 		inline static std::map<SystemName, std::vector<float>> time_container;
+
+	/*	inline static std::vector<float> Totaltime_container;*/
 		
 		void Update() override;
 		void Init() override;
@@ -50,8 +52,11 @@ namespace Eclipse
 		void UpdateTimeContainer(TimerTracker inputTracker);
 
 		float GetFPS();
+
+		void PrintCpuPercentage(float value);
 		
 		void EngineTimer(TimerTracker timer);
+
 	};
 
 
