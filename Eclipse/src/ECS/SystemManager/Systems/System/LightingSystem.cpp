@@ -34,7 +34,7 @@ namespace Eclipse
 			{
 				auto& Light = engine->world.GetComponent<LightComponent>(LightEntityID);
 
-				Light.Render = engine->gCullingManager->ToRenderOrNot(LightEntityID);
+				Light.Render = true; // engine->gCullingManager->ToRenderOrNot(LightEntityID);
 
 				if (engine->world.CheckComponent<DirectionalLightComponent>(LightEntityID))
 				{

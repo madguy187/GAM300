@@ -186,8 +186,8 @@ namespace Eclipse
 
         glm::vec3 Half = { 2,2,2 };
         glm::vec3 scale = glm::vec3{ _camera.farPlane, _camera.farPlane,_camera.farPlane };
-        glm::vec3 position = (Transform.position.ConvertToGlmVec3Type() - scale)/Half ;
 
+        glm::vec3 position = (Transform.position.ConvertToGlmVec3Type()) / Half;
         glm::vec3 halfExt = scale / 2.0f;
         glm::vec3 min{ position.x - halfExt.x, position.y - halfExt.y, position.z - halfExt.z };
         glm::vec3 max{ position.x + halfExt.x, position.y + halfExt.y, position.z + halfExt.z };

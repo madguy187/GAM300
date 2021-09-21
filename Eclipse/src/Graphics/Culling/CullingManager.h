@@ -42,12 +42,12 @@ namespace Eclipse
     private:
         glm::vec3 Center{ 0.f, 0.f, 0.f };
         float Radius = 0.f;
-        AABBTree FrustrumCollisionTree{ 5000 };
         bool GameFrustumCull = false;
         bool SceneFrustumCull = true;
         std::unordered_map<unsigned int, std::shared_ptr< AABBCulling>> CullContainer;
 
     public:
+        AABBTree FrustrumCollisionTree{ 5000 };
 
         CullingManager();
         CullingManager(const glm::vec3& inCenter, float inRadius);
