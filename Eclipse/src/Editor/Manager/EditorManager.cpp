@@ -32,7 +32,7 @@ namespace Eclipse
 	void EditorManager::InitGUIWindows()
 	{
 		AddWindow<eGameViewWindow>("Game Viewport");
-		AddWindow<SceneWindow>("Main Scene Viewport");
+		AddWindow<SceneWindow>("Scene Viewport");
 		AddWindow<InspectorWindow>("Inspector");
 		AddWindow<HierarchyWindow>("Hierarchy");
 		AddWindow<ProfilerWindow>("Profiler");

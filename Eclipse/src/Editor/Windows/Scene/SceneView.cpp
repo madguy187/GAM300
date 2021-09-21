@@ -16,7 +16,7 @@ namespace Eclipse
 		mViewportSize = glm::vec2{}; 
 		mSceneBufferSize = glm::vec2{};
 		Type = EditorWindowType::EWT_SCENE;
-		WindowName = "Scene";
+		WindowName = "Scene View";
 		m_frameBuffer = engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE);
 	}
 
@@ -252,6 +252,7 @@ namespace Eclipse
 			else
 			{
 				engine->SetPlayState(true);
+				ImGui::SetWindowFocus("Game View");
 				EDITOR_LOG_INFO("Scene is playing...");
 			}
 		}
