@@ -16,7 +16,7 @@ namespace Eclipse
 
         // 3D Textures =============================
     private:
-        unsigned int Id;
+        //unsigned int Id;
         aiTextureType Type;
         std::string Directory;
         std::string Path;

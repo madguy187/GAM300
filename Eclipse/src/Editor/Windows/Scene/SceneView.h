@@ -25,6 +25,7 @@ namespace Eclipse
 		void OnCameraMoveEvent();
 		void OnCameraZoomEvent();
 		void OnSelectEntityEvent();
+		void RenderSceneHeader();
 
 		SnapValueSettings& GetRefToSnapSettings();
 		SnapValueSettings GetSnapSettings();

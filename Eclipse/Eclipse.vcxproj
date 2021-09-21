@@ -85,6 +85,7 @@
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <DisableSpecificWarnings>4311;4302;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -118,6 +119,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <DisableSpecificWarnings>4311;4302;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -152,6 +154,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <DisableSpecificWarnings>4311;4302;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -163,6 +166,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\ChildTransformComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\CollisionComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentBase.h" />
@@ -196,8 +200,9 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Editor\Manager\EditorManager.h" />
     <ClInclude Include="src\Editor\Menu\MenuBar.h" />
     <ClInclude Include="src\Editor\Menu\MenuComponent.h" />
-    <ClInclude Include="src\Editor\Utilities\DragAndDrop.h" />
-    <ClInclude Include="src\Editor\Utilities\OpenFileDialog.h" />
+    <ClInclude Include="src\Editor\Utilities\DragAndDrop\DragAndDrop.h" />
+    <ClInclude Include="src\Editor\Utilities\OpenFileDialog\OpenFileDialog.h" />
+    <ClInclude Include="src\Editor\Utilities\ParentChild\ParentChild.h" />
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.h" />
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec2DeltaCommand.h" />
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec3DeltaCommand.h" />
@@ -225,6 +230,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Events\Events.h" />
     <ClInclude Include="src\Global.h" />
     <ClInclude Include="src\Graphics\Camera\CameraManager.h" />
+    <ClInclude Include="src\Graphics\Culling\CullingManager.h" />
     <ClInclude Include="src\Graphics\Debugging\DebugRenderingManager.h" />
     <ClInclude Include="src\Graphics\FrameBuffer\FrameBuffer.h" />
     <ClInclude Include="src\Graphics\FrameBuffer\WindowConstraint.h" />
@@ -297,9 +303,17 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Logger\Logger.h" />
     <ClInclude Include="src\Mono\Manager\MonoManager.h" />
     <ClInclude Include="src\Physics\PhysicsManager.h" />
-    <ClInclude Include="src\Reflection\complex_support.h" />
-    <ClInclude Include="src\Reflection\primitive_support.h" />
-    <ClInclude Include="src\Reflection\registration.h" />
+    <ClInclude Include="src\Reflection\Meta.h" />
+    <ClInclude Include="src\Reflection\RemTypeQual.h" />
+    <ClInclude Include="src\Reflection\Variant\RefVariant.h" />
+    <ClInclude Include="src\Reflection\Variant\Variant.h" />
+    <ClInclude Include="src\Reflection\Variant\VariantBase.h" />
+    <ClInclude Include="src\SceneManagement\SceneManager.h" />
+    <ClInclude Include="src\Serialization\Deserializer.h" />
+    <ClInclude Include="src\Serialization\SerializationManager.h" />
+    <ClInclude Include="src\Serialization\Serializer.h" />
+    <ClInclude Include="src\Serialization\TinyXML\tinystr.h" />
+    <ClInclude Include="src\Serialization\TinyXML\tinyxml.h" />
     <ClInclude Include="src\SparseSet\SparseSet.hpp" />
     <ClInclude Include="src\Time\Clock.h" />
     <ClInclude Include="src\TypeID\TypeID.h" />
@@ -308,6 +322,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp" />
     <ClCompile Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.cpp" />
+    <ClCompile Include="src\ECS\ComponentManager\Components\ComponentsRegistration.cpp" />
     <ClCompile Include="src\ECS\EntityManager\EntityManager.cpp" />
     <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem.cpp" />
@@ -325,8 +340,9 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Editor\Manager\EditorManager.cpp" />
     <ClCompile Include="src\Editor\Menu\MenuBar.cpp" />
     <ClCompile Include="src\Editor\Menu\MenuComponent.cpp" />
-    <ClCompile Include="src\Editor\Utilities\DragAndDrop.cpp" />
-    <ClCompile Include="src\Editor\Utilities\OpenFileDialog.cpp" />
+    <ClCompile Include="src\Editor\Utilities\DragAndDrop\DragAndDrop.cpp" />
+    <ClCompile Include="src\Editor\Utilities\OpenFileDialog\OpenFileDialog.cpp" />
+    <ClCompile Include="src\Editor\Utilities\ParentChild\ParentChild.cpp" />
     <ClCompile Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.cpp" />
     <ClCompile Include="src\Editor\Windows\AssetBrowser\AssetBrowser.cpp" />
     <ClCompile Include="src\Editor\Windows\Debug\Debug.cpp" />
@@ -344,6 +360,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Engine\Engine.cpp" />
     <ClCompile Include="src\EntryPoint\EntryPoint.cpp" />
     <ClCompile Include="src\Graphics\Camera\CameraManager.cpp" />
+    <ClCompile Include="src\Graphics\Culling\CullingManager.cpp" />
     <ClCompile Include="src\Graphics\Debugging\DebugRenderingManager.cpp" />
     <ClCompile Include="src\Graphics\FrameBuffer\FrameBuffer.cpp" />
     <ClCompile Include="src\Graphics\FrameBuffer\WindowConstraint.cpp" />
@@ -402,10 +419,26 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Logger\Logger.cpp" />
     <ClCompile Include="src\Mono\Manager\MonoManager.cpp" />
     <ClCompile Include="src\Physics\PhysicsManager.cpp" />
+    <ClCompile Include="src\Reflection\Meta.cpp" />
+    <ClCompile Include="src\Reflection\Variant\RefVariant.cpp" />
+    <ClCompile Include="src\Reflection\Variant\Variant.cpp" />
+    <ClCompile Include="src\Reflection\Variant\VariantBase.cpp" />
+    <ClCompile Include="src\SceneManagement\SceneManager.cpp" />
+    <ClCompile Include="src\Serialization\Deserializer.cpp" />
+    <ClCompile Include="src\Serialization\SerializationManager.cpp" />
+    <ClCompile Include="src\Serialization\Serializer.cpp" />
+    <ClCompile Include="src\Serialization\TinyXML\tinystr.cpp" />
+    <ClCompile Include="src\Serialization\TinyXML\tinyxml.cpp" />
+    <ClCompile Include="src\Serialization\TinyXML\tinyxmlerror.cpp" />
+    <ClCompile Include="src\Serialization\TinyXML\tinyxmlparser.cpp" />
     <ClCompile Include="src\Time\Clock.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Assets\Shaders\Mesh\Mesh.frag" />
+    <None Include="src\Assets\Shaders\Mesh\Mesh.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -27,7 +27,13 @@ namespace Eclipse
 			EntitySelectionTracker& curr, ImGuiTextFilter& filter);
 		void ShowEntityCreationList();
 		void UpdateEntityTracker(Entity ID);
+		size_t GetEntityGlobalIndex(size_t data);
+		std::string GetEntityComponentEntityNumber(std::string EntityName);
+		size_t ConvertEntityStringtoNumber(std::string EntityNumber);
+		void HightLightParentAndChild(EntityComponent& Parent);
+		void TreeNodeRecursion(std::string parent, EntityComponent& entCom,EntitySelectionTracker& prev,EntitySelectionTracker& curr, size_t index);
 	private:
+		ImGuiTreeNodeFlags temp;
 		EntitySelectionTracker CurrEnt_;
 		EntitySelectionTracker PrevEnt_;
 		std::vector<std::vector<std::string>> TagList_;

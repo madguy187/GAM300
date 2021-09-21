@@ -14,7 +14,7 @@ namespace Eclipse
 		Type = EditorWindowType::EWT_SWITCHVIEW_TOP;
 		WindowName = "Top Switch View";
 		IsVisible = false;
-		m_frameBuffer = engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SWITCHINGVIEWS_TOP);
+		m_frameBuffer = engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_TOP);
 		mProjectionView_List.push_back("Orthographic");
 	}
 

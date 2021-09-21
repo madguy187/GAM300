@@ -44,6 +44,7 @@ namespace Eclipse
 			CompFilter.Draw();
 
 			ECGui::PushItemWidth(WindowSize_.getX());
+			//std::cout<<engine->editorManager->GetSelectedEntity();
 			ShowEntityProperty("Tag", currEnt, CompFilter);
 			ShowTransformProperty("Transform", currEnt, CompFilter);
 			ShowPointLightProperty("PointLight", currEnt, CompFilter);
@@ -57,6 +58,7 @@ namespace Eclipse
 			//ShowMesh3DProperty("Mesh", currEnt, CompFilter);
 			ShowModelInfoProperty("ModelInfo", currEnt, CompFilter);
 			ShowScriptProperty("Script Details", currEnt, CompFilter);
+			ShowChildTransformProperty("ChildTransform", currEnt, CompFilter);
 
 			AddComponentsController(currEnt);
 			RemoveComponentsController(currEnt);
@@ -117,6 +119,28 @@ namespace Eclipse
 
 				ECGui::DrawTextWidget<const char*>("Scale", "");
 				ECGui::DrawSliderFloat3Widget("TransScale", &transCom.scale);
+			}
+		}
+
+		return false;
+	}
+
+	bool InspectorWindow::ShowChildTransformProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+	{
+		if (engine->world.CheckComponent<ChildTransformComponent>(ID))
+		{
+			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+			{
+				auto& transCom = engine->world.GetComponent<ChildTransformComponent>(ID);
+
+				ECGui::DrawTextWidget<const char*>("Position", "");
+				ECGui::DrawSliderFloat3Widget("TransVec", &transCom.ChildPosition, true, -50.f, 50.f);
+
+				ECGui::DrawTextWidget<const char*>("Rotation", "");
+				ECGui::DrawSliderFloat3Widget("TransRot", &transCom.ChildRotation, true, -360.f, 360.f);
+
+				ECGui::DrawTextWidget<const char*>("Scale", "");
+				ECGui::DrawSliderFloat3Widget("TransScale", &transCom.ChildScale);
 			}
 		}
 
@@ -316,11 +340,11 @@ namespace Eclipse
 
 	bool InspectorWindow::ShowTextureProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
 	{
-		if (engine->world.CheckComponent<TextureComponent>(ID))
+		if (engine->world.CheckComponent<MaterialComponent>(ID))
 		{
 			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
 			{
-				auto& _Texture = engine->world.GetComponent<TextureComponent>(ID);
+				auto& _Texture = engine->world.GetComponent<MaterialComponent>(ID);
 				
 				std::vector<std::string> _TextureVector = { "TT_UNASSIGNED","TT_2D","BasicPrimitives","TT_3D" };
 
@@ -331,7 +355,7 @@ namespace Eclipse
 
 				ECGui::DrawTextWidget<const char*>("KEY ID: ", "");
 				ECGui::InsertSameLine();
-				ECGui::DrawTextWidget<const char*>(std::to_string(_Texture.ID).c_str(), "");
+				//ECGui::DrawTextWidget<const char*>(std::to_string(_Texture.ID).c_str(), "");
 				
 				ECGui::DrawTextWidget<const char*>("Texture Type", "");
 				ECGui::CreateComboList(settings, _TextureVector, _Texture.ComboIndex);
@@ -386,8 +410,8 @@ namespace Eclipse
 
 				std::vector<std::string> _ModelVector = { "None","BasicPrimitives","Models3D"};
 
-				std::map<std::string, MaterialComponent::ModelType> _Map = { {"None",MaterialComponent::ModelType::None}, {"BasicPrimitives",MaterialComponent::ModelType::BasicPrimitives},
-															{"Models3D",MaterialComponent::ModelType::Models3D}};
+				std::map<std::string, MaterialModelType> _Map = { {"None",MaterialModelType::MT_NONE}, {"BasicPrimitives",MaterialModelType::MT_BASIC},
+															{"Models3D",MaterialModelType::MT_MODELS3D}};
 				
 				ComboListSettings settings = {"Model Type"};
 
@@ -491,7 +515,8 @@ namespace Eclipse
 						ECGui::DrawInputTextHintWidget(my_strcat("ScriptName", i + 1).c_str(), "Drag Script files here",
 							const_cast<char*>(entCom.ScriptListComTest[i].c_str()), 256,
 							true, ImGuiInputTextFlags_ReadOnly);
-						engine->editorManager->DragAndDropInst_.StringPayloadTarget("cs", entCom.ScriptListComTest[i], "Script File inserted.");
+						engine->editorManager->DragAndDropInst_.StringPayloadTarget("cs", entCom.ScriptListComTest[i], 
+							"Script File inserted.", PayloadTargetType::PTT_WIDGET, ID);
 					}
 					else
 					{
@@ -708,12 +733,12 @@ namespace Eclipse
 
 	}
 
-	void InspectorWindow::ChangeTextureController(TextureComponent& Item)
+	void InspectorWindow::ChangeTextureController(MaterialComponent& Item)
 	{
 		ImVec2 buttonSize = { 180,20 };
 		ECGui::DrawTextWidget<const char*>("Texture  ", "");
 		ECGui::InsertSameLine();
-		if (ImGui::Button((Item.textureRef.c_str()), buttonSize))
+		if (ImGui::Button((Item.TextureRef.c_str()), buttonSize))
 		{
 			ImGui::OpenPopup("Texture Changer");
 		}
@@ -721,22 +746,22 @@ namespace Eclipse
 		{
 			ImGui::SetScrollY(5);
 			ChildSettings settings{ "Texture Changer", ImVec2{ 250,250 } };
-			ECGui::DrawChildWindow<void(TextureComponent&)>(settings, std::bind(&InspectorWindow::TextureList,
+			ECGui::DrawChildWindow<void(MaterialComponent&)>(settings, std::bind(&InspectorWindow::TextureList,
 				this, std::placeholders::_1), Item);
 
 			ImGui::EndPopup();
 		}
 	}
 
-	void InspectorWindow::TextureList(TextureComponent& Item)
+	void InspectorWindow::TextureList(MaterialComponent& Item)
 	{
 		static ImGuiTextFilter AddComponentFilter;
-		TextureComponent FolderIcon;
+		MaterialComponent FolderIcon;
 		//FolderIcon.textureRef = Graphics::textures.find("FolderIcon")->first;
 		//use image button to change the Graphics::models.find["models"]->find;
 		std::vector<std::string> textureNames;
 		textureNames.reserve(Graphics::textures.size());
-		TextureComponent icon = FolderIcon;
+		MaterialComponent icon = FolderIcon;
 		static float padding = 16.0f;
 		static float thumbnaimsize = 50;
 		float cellsize = thumbnaimsize + padding;
@@ -761,19 +786,19 @@ namespace Eclipse
 		for (int i = 0 ; i < textureNames.size(); ++i)
 		{
 
-			FolderIcon.textureRef = Graphics::textures.find(textureNames[i].c_str())->first;
-			TextureComponent icon = FolderIcon;
+			FolderIcon.TextureRef = Graphics::textures.find(textureNames[i].c_str())->first;
+			MaterialComponent icon = FolderIcon;
 
 			if (AddComponentFilter.PassFilter(textureNames[i].c_str()))
 			{
-				ImGui::ImageButton((void*)Graphics::textures[(icon).textureRef].GetHandle(),
+				ImGui::ImageButton((void*)Graphics::textures[(icon).TextureRef].GetHandle(),
 					{thumbnaimsize,thumbnaimsize},
 					{ 1,0 },
 					{ 2,1 });
 
 				if (ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
 				{
-					Item.textureRef = Graphics::textures.find((textureNames[i].c_str()))->first;
+					Item.TextureRef = Graphics::textures.find((textureNames[i].c_str()))->first;
 					AddComponentFilter.Clear();
 					ImGui::CloseCurrentPopup();
 				}

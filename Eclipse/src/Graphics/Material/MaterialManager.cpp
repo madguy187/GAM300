@@ -235,7 +235,7 @@ namespace Eclipse
         CameraComponent camera;
         TransformComponent camerapos;
 
-        if (framebufferID == engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID())
+        if (framebufferID == engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_SCENE)->GetFrameBufferID())
         {
             camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
             camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetEditorCameraID());
@@ -273,9 +273,14 @@ namespace Eclipse
 
     }
 
-    void MaterialManager::HighlightBasicPrimitives(MaterialComponent& in, unsigned int EntityId, unsigned int FrameBufferID)
+    void MaterialManager::HighlightBasicPrimitives(unsigned int EntityId, unsigned int FrameBufferID)
     {
-        if (in.Highlight == true)
+        if (!engine->world.CheckComponent< MaterialComponent>(EntityId))
+            return;
+
+        auto& Mesh = engine->world.GetComponent<MaterialComponent>(EntityId);
+
+        if (Mesh.Highlight == true)
         {
             if (engine->world.CheckComponent<MeshComponent>(EntityId))
             {
@@ -285,20 +290,30 @@ namespace Eclipse
         }
     }
 
-    void MaterialManager::Highlight3DModels(MaterialComponent& in, unsigned int EntityId, unsigned int FrameBufferID)
+    void MaterialManager::Highlight3DModels(unsigned int EntityId, unsigned int FrameBufferID)
     {
-        if (in.Highlight == true)
+        if (!engine->world.CheckComponent< MaterialComponent>(EntityId))
+            return;
+
+        auto& Mesh = engine->world.GetComponent<MaterialComponent>(EntityId);
+
+        if (Mesh.Highlight == true)
         {
             engine->MaterialManager.UpdateStencilWith_Outline(EntityId);
             engine->MaterialManager.Highlight3DModels(FrameBufferID, EntityId, GL_FILL);
         }
     }
 
-    void MaterialManager::UpdateShininess(MaterialComponent& in)
+    void MaterialManager::UpdateShininess(unsigned int EntityID)
     {
+        if (!engine->world.CheckComponent< MaterialComponent>(EntityID))
+            return;
+
+        auto& Mat = engine->world.GetComponent<MaterialComponent>(EntityID);
+
         auto shdrpgm = Graphics::shaderpgms.find("shader3DShdrpgm");
         shdrpgm->second.Use();
-        CheckUnniformLocation(shdrpgm->second, in);
+        CheckUnniformLocation(shdrpgm->second, Mat);
         shdrpgm->second.UnUse();
     }
 
@@ -328,7 +343,7 @@ namespace Eclipse
             // Materials Update
             engine->MaterialManager.CheckUnniformLocation(shdrpgm, highlight);
 
-            CheckUniformLoc(_spritecomponent, shdrpgm, _spritecomponent.ID, FrameBufferID);
+            CheckUniformLoc(_spritecomponent, shdrpgm, ModelID, FrameBufferID);
 
             engine->GraphicsManager.DrawIndexed(&_spritecomponent, GL_UNSIGNED_SHORT);
 
@@ -344,8 +359,8 @@ namespace Eclipse
         {
             MaterialComponent& PrepareToHighlight = engine->world.GetComponent<MaterialComponent>(ModelID);
 
-            if (PrepareToHighlight.Modeltype == MaterialComponent::ModelType::BasicPrimitives ||
-                PrepareToHighlight.Modeltype == MaterialComponent::ModelType::Models3D)
+            if (PrepareToHighlight.Modeltype == MaterialModelType::MT_BASIC ||
+                PrepareToHighlight.Modeltype == MaterialModelType::MT_MODELS3D)
             {
                 PrepareToHighlight.Highlight = true;
                 return true;
@@ -471,25 +486,25 @@ namespace Eclipse
 
     void MaterialManager::RegisterMeshForHighlighting(unsigned int index)
     {
-        auto& mat = engine->world.GetComponent<MaterialComponent>(index);
+        //auto& mat = engine->world.GetComponent<MaterialComponent>(index);
 
-        if (mat.RegisterForHighlight == true)
-            return;
+        //if (mat.RegisterForHighlight == true)
+        //    return;
 
-        auto& mesh = engine->world.GetComponent<MeshComponent>(index);
-        auto& ModelInfo = engine->world.GetComponent<ModeLInforComponent>(index);
+        //auto& mesh = engine->world.GetComponent<MeshComponent>(index);
+        //auto& ModelInfo = engine->world.GetComponent<ModeLInforComponent>(index);
 
-        // Insert
-        if (MeshHighLightContainer.insert(std::pair<unsigned int, MeshComponent*>(index, &mesh)).second == true)
-        {
-            mat.RegisterForHighlight = true;
+        //// Insert
+        //if (MeshHighLightContainer.insert(std::pair<unsigned int, MeshComponent*>(index, &mesh)).second == true)
+        //{
+        //    mat.RegisterForHighlight = true;
 
-            std::string Success = ("Model [" + ModelInfo.NameOfModel + "] Registered For Highlighting ! ").c_str();
-            ENGINE_CORE_INFO(Success);
+        //    std::string Success = ("Model [" + ModelInfo.NameOfModel + "] Registered For Highlighting ! ").c_str();
+        //    ENGINE_CORE_INFO(Success);
 
-            std::cout << "HighLight Container Size : " << ModelHighlightContainer.size() << std::endl;
-            return;
-        }
+        //    std::cout << "HighLight Container Size : " << ModelHighlightContainer.size() << std::endl;
+        //    return;
+        //}
     }
 
     void MaterialManager::MeshHighlight(unsigned int FrameBufferID, GLenum Mode)
@@ -537,7 +552,10 @@ namespace Eclipse
         GLuint DifuseMaterial = shdrpgm.GetLocation("sdiffuse");
         GLuint SpecularMaterial = shdrpgm.GetLocation("sspecular");
         GLuint NoTextures = shdrpgm.GetLocation("noTex");
+        GLint uniform_var_loc1 = shdrpgm.GetLocation("BasicPrimitives");
 
+
+        glUniform1i(uniform_var_loc1, true);
         glUniform1i(NoTextures, in.NoTextures);
         glUniform4f(DifuseMaterial, in.diffuse.getX(), in.diffuse.getY(), in.diffuse.getZ(), 1);
         glUniform4f(SpecularMaterial, in.specular.getX(), in.specular.getY(), in.specular.getZ(), 1);
@@ -571,7 +589,7 @@ namespace Eclipse
             if (engine->world.CheckComponent<MeshComponent>(ModelID))
             {
                 auto& InvidualModels = engine->world.GetComponent<MeshComponent>(ModelID);
-                engine->AssimpManager.Render(shdrpgm, mode, FrameBufferID, InvidualModels, ModelID);
+                engine->AssimpManager.Render(mode, InvidualModels);
             }
 
             // Part 5: Clean up

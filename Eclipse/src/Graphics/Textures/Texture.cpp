@@ -13,7 +13,7 @@ Texture::Texture(std::string dir, std::string path, aiTextureType type) :
 
 void Texture::Generate()
 {
-    glGenTextures(1, &Id);
+    glGenTextures(1, &handle);
 }
 
 void Texture::Load(bool flip)
@@ -26,7 +26,7 @@ void Texture::Load(bool flip)
 
     GLenum colorMode = GL_RGB;
 
-    switch (nChannels) 
+    switch (nChannels)
     {
     case 1:
         colorMode = GL_RED;
@@ -38,8 +38,8 @@ void Texture::Load(bool flip)
 
     if (data)
     {
-        glGenTextures(1, &Id);
-        glBindTexture(GL_TEXTURE_2D, Id);
+        glGenTextures(1, &handle);
+        glBindTexture(GL_TEXTURE_2D, handle);
         glTexImage2D(GL_TEXTURE_2D, 0, colorMode, width, height, 0, colorMode, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -58,7 +58,7 @@ void Texture::Load(bool flip)
 
 void Texture::Bind()
 {
-    glBindTexture(GL_TEXTURE_2D, Id);
+    glBindTexture(GL_TEXTURE_2D, handle);
 }
 
 void Eclipse::Texture::SetDirectory(std::string dir)
@@ -93,7 +93,7 @@ aiTextureType Eclipse::Texture::GetType()
 
 unsigned int Eclipse::Texture::GetId()
 {
-    return Id;
+    return handle;
 }
 
 Texture::Texture(std::string pathname) :

@@ -1,12 +1,14 @@
 #pragma once
-#include "Library/Math/Vector.h"
+#include "Reflection/Meta.h"
+#include "Reflection/RemTypeQual.h"
 
 namespace Eclipse
 {
 	struct AABBComponent
 	{
+		META_DATA(AABBComponent);
 		ECVec3 center{ 0.0f, 0.0f, 0.0f };
-		ECVec3 min{ 0.0f, 0.0f, 0.0f };
-		ECVec3 max{ 0.0f, 0.0f, 0.0f };
+		ECVec3 Min{ 0.0f, 0.0f, 0.0f };
+		ECVec3 Max{ 0.0f, 0.0f, 0.0f };
 	};
 }

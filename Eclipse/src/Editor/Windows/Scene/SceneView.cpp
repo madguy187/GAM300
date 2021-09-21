@@ -17,7 +17,7 @@ namespace Eclipse
 		mSceneBufferSize = glm::vec2{};
 		Type = EditorWindowType::EWT_SCENE;
 		WindowName = "Scene";
-		m_frameBuffer = engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SCENEVIEW);
+		m_frameBuffer = engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE);
 	}
 
 	void SceneWindow::Unload()
@@ -51,10 +51,11 @@ namespace Eclipse
 		/*std::cout << "SceneBuffer Size: " << mSceneBufferSize.x << " " << mSceneBufferSize.y << std::endl;*/
 		/*std::cout << "SceneBuffer Pos: " << mSceneBufferPos.x << " " << mSceneBufferPos.y << std::endl;
 		std::cout << "CursorScreen Pos: " << mCursorScreenPos.x << " " << mCursorScreenPos.y << std::endl;*/
+		RenderSceneHeader();
 
 		// Set Image size
 		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
-			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+			ImVec2{ mViewportSize.x, mViewportSize.y * 0.93f }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 		//// ImGuizmo Logic
 		if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
@@ -234,6 +235,61 @@ namespace Eclipse
 
 			if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
 				engine->editorManager->SetSelectedEntity(engine->gPicker.GetCurrentCollisionID());
+		}
+	}
+
+	void SceneWindow::RenderSceneHeader()
+	{
+		ECGui::InsertSameLine(mViewportSize.x / 2.35f);
+		if (ECGui::ButtonBool("Play " ICON_FA_PLAY)) 
+		{
+			if (engine->GetPlayState())
+			{
+				engine->SetPlayState(false);
+				engine->SetPauseState(false);
+				EDITOR_LOG_INFO("Scene has stopped playing. Reverting to original state...");
+			}
+			else
+			{
+				engine->SetPlayState(true);
+				EDITOR_LOG_INFO("Scene is playing...");
+			}
+		}
+
+		ECGui::InsertSameLine();
+		if (ECGui::ButtonBool("Pause " ICON_FA_PAUSE)) 
+		{
+			if (engine->GetPlayState())
+			{
+				if (engine->GetPauseState())
+				{
+					engine->SetPauseState(false);
+					EDITOR_LOG_INFO("Scene is unpaused!");
+				}
+				else
+				{
+					engine->SetPauseState(true);
+					EDITOR_LOG_INFO("Scene is paused!");
+				}
+			}
+			else
+			{
+				EDITOR_LOG_WARN("Scene has to be playing first.");
+			}
+		}
+
+		ECGui::InsertSameLine();
+		if (ECGui::ButtonBool("Step " ICON_FA_STEP_FORWARD))
+		{
+			if (engine->GetPlayState())
+			{
+				engine->SetStepState(true);
+				EDITOR_LOG_INFO("Stepped scene.");
+			}
+			else
+			{
+				EDITOR_LOG_WARN("Scene has to be playing first.");
+			}
 		}
 	}
 

@@ -14,6 +14,7 @@
 #include "ECS/ComponentManager/Components/ModelInfoComponent.h"
 #include "ECS/ComponentManager/Components/ParentChildComponent.h"
 #include "ECS/ComponentManager/Components/LightComponent.h"
+#include "ECS/ComponentManager/Components/ChildTransformComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
@@ -23,7 +24,9 @@
 #include "ECS/SystemManager/Systems/System/PhysicsSystem.h"
 #include "ImGui/Setup/ImGuiSetup.h"
 #include "ECS/SystemManager/Systems/System/MaterialSystem.h"
+#include "Serialization/SerializationManager.h"
 #include "ECS/SystemManager/Systems/System/GridSystem.h"
+
 bool Tester1(const Test1& e)
 {
     std::cout << "Engine.cpp Tester1" << std::endl;
@@ -53,9 +56,9 @@ namespace Eclipse
 
         engine->GraphicsManager.Pre_Render();
     	
-        ImGuiSetup::Init(EditorState);
+        ImGuiSetup::Init(IsEditorActive);
 
-        if (EditorState)
+        if (IsEditorActive)
             editorManager = std::make_unique<EditorManager>();
 
         /*bool x = false;
@@ -80,6 +83,7 @@ namespace Eclipse
         world.RegisterComponent<ModeLInforComponent>();
         world.RegisterComponent<ParentChildComponent>();
         world.RegisterComponent<LightComponent>();
+        world.RegisterComponent<ChildTransformComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
@@ -132,15 +136,23 @@ namespace Eclipse
         GridSystem::Init();
         gPhysics.Init();
 
+        if (IsEditorActive)
+            IsInPlayState = false;
+        else
+            IsInPlayState = true;
+
         float currTime = static_cast<float>(clock());
         float accumulatedTime = 0.0f;
         int framecount = 0;
         float dt = 0.0f;
         float updaterate = 4.0f;
         ProfilerWindow Timer;
+
+        SceneManager::Initialize();
+        //Deserialization(temp)
+
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
-           
             Timer.tracker.system_start = glfwGetTime();
             glfwPollEvents();
             engine->GraphicsManager.mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });
@@ -172,28 +184,41 @@ namespace Eclipse
 
             currTime = newTime;
 
-            ImGuiSetup::Begin(EditorState);
-
-            if (Game_Clock.get_timeSteps() > 10)
-            {
-                Game_Clock.set_timeSteps(10);
-            }
+            ImGuiSetup::Begin(IsEditorActive);
 
             EditorSystem::Update();
-            // GRID SYSTEM =============================
-            world.Update<GridSystem>();
 
-            for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
+            if (IsInStepState)
             {
-                world.Update<CameraSystem>();
-                world.Update<PhysicsSystem>();
+                Game_Clock.set_timeSteps(1);
+                IsInPauseState = false;
+            }
+            else
+            {
+                if (Game_Clock.get_timeSteps() > 10)
+                {
+                    Game_Clock.set_timeSteps(10);
+                }
+            }
+
+            // GRID SYSTEM =============================
+            //world.Update<GridSystem>();
+
+            world.Update<CameraSystem>();
+
+            if (IsScenePlaying())
+            {
+                for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
+                {
+                    world.Update<PhysicsSystem>();
+                }
             }
 
             // FRAMEBUFFER BIND =============================
             engine->GraphicsManager.GlobalFrameBufferBind();
 
             // Reset DebugBoxes =============================
-            engine->GraphicsManager.ResetInstancedDebugBoxes();
+            //engine->GraphicsManager.ResetInstancedDebugBoxes();
 
             // LIGHTINGSYSTEM =============================
             world.Update<LightingSystem>();
@@ -204,32 +229,83 @@ namespace Eclipse
             world.Update<RenderSystem>();
 
             // Material SYstem =============================
-            world.Update<MaterialSystem>();
+            //world.Update<MaterialSystem>();
 
             // GRID DRAW ============================= Must be last of All Renders
-            engine->GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+            engine->GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
 
             mono.Update();
 
             // FRAMEBUFFER DRAW ==========================
             engine->GraphicsManager.GlobalFrmeBufferDraw();
 
-            ImGuiSetup::End(EditorState);
+            ImGuiSetup::End(IsEditorActive);
             OpenGL_Context::post_render();
+            SceneManager::ProcessScene();
             Timer.tracker.system_end = glfwGetTime();
             Timer.EngineTimer(Timer.tracker);
+
+            if (IsInStepState)
+            {
+                IsInStepState = false;
+                IsInPauseState = true;
+            }
         }
+
+        //Serialization(Temp)
+        szManager.SaveSceneFile();
 
         // unLoad
         mono.StopMono();
         GraphicsManager.End();
         AssimpManager.CleanUpAllModelsMeshes();
-        ImGuiSetup::Destroy(EditorState);
+        ImGuiSetup::Destroy(IsEditorActive);
+        gPhysics.Unload();
         CommandHistory::Clear();
     }
 
     bool Engine::GetEditorState()
     {
-        return EditorState;
+        return IsEditorActive;
+    }
+
+    bool Engine::GetPlayState()
+    {
+        return IsInPlayState;
+    }
+
+    bool Engine::GetPauseState()
+    {
+        return IsInPauseState;
+    }
+
+    bool Engine::GetStepState()
+    {
+        return IsInStepState;
+    }
+
+    bool Engine::IsScenePlaying()
+    {
+        return IsInPlayState && !IsInPauseState;
+    }
+
+    void Engine::SetEditorState(bool check)
+    {
+        IsEditorActive = check;
+    }
+
+    void Engine::SetPlayState(bool check)
+    {
+        IsInPlayState = check;
+    }
+
+    void Engine::SetPauseState(bool check)
+    {
+        IsInPauseState = check;
+    }
+
+    void Engine::SetStepState(bool check)
+    {
+        IsInStepState = check;
     }
 }

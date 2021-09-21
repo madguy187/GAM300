@@ -39,6 +39,8 @@ namespace Eclipse
             }
         }
 
+        int i = 0;
+
         // First file path so i shd be src/assets/assmodels
         //for (auto& dirEntry : std::filesystem::directory_iterator("src//Assets//ASSModels"))
         //{
@@ -110,15 +112,13 @@ namespace Eclipse
         return AssimpLoadedModels[in]->GetName();
     }
 
-    void AssimpModelManager::MeshDraw(unsigned int ID, unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
+    void AssimpModelManager::MeshDraw(MeshComponent& ModelMesh, unsigned int ID, unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
     {
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
 
         glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
         auto shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
-
         shdrpgm.Use();
-        MeshComponent& ModelMesh = engine->world.GetComponent<MeshComponent>(ID);
 
         // Check Main Uniforms For each Model
         // Translation done here for each model
@@ -127,14 +127,13 @@ namespace Eclipse
         if (_renderMode == FrameBuffer::RenderMode::Fill_Mode)
         {
             // Render
-            Render(shdrpgm, GL_FILL, FrameBufferID, ModelMesh, ID);
+            Render(shdrpgm, GL_FILL, FrameBufferID, ModelMesh, ID, _camType);
         }
         else
         {
-            Render(shdrpgm, GL_LINE, FrameBufferID, ModelMesh, ID);
+            Render(shdrpgm, GL_LINE, FrameBufferID, ModelMesh, ID, _camType);
         }
 
-        shdrpgm.UnUse();
     }
 
     void AssimpModelManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID, AABB_* box)
@@ -149,32 +148,22 @@ namespace Eclipse
             GLCall(glUniform1f(uniform_var_loc2, material.MaximumShininess));
         }
 
-        if (engine->world.CheckComponent<TransformComponent>(ModelID))
-        {
-            TransformComponent& Transform = engine->world.GetComponent<TransformComponent>(ModelID);
-            GLint uModelToNDC_ = _shdrpgm.GetLocation("uModelToNDC");
-            GLuint model_ = _shdrpgm.GetLocation("model");
-
-            if (uModelToNDC_ >= 0)
-            {
-                glm::mat4 mModelNDC;
-                glm::mat4 model = glm::mat4(1.0f);
-                model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
-                model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-                model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-                model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-                model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
-
-                BoundingRegion br(Transform.position.ConvertToGlmVec3Type(), Transform.scale.ConvertToGlmVec3Type());
-                box->AddInstance(br);
-
-                mModelNDC = _camera.projMtx * _camera.viewMtx * model;
-                glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
-                glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
-            }
-        }
-
+        GLint uModelToNDC_ = _shdrpgm.GetLocation("uModelToNDC");
+        GLuint model_ = _shdrpgm.GetLocation("model");
         GLuint NoTexures = _shdrpgm.GetLocation("noTex");
+
+        auto& Transform = engine->world.GetComponent<TransformComponent>(ModelID);
+
+        glm::mat4 mModelNDC;
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
+        model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
+        mModelNDC = _camera.projMtx * _camera.viewMtx * model;
+        glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
+        glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
         glUniform1i(NoTexures, 0);
     }
 
@@ -183,24 +172,16 @@ namespace Eclipse
         return AssimpLoadedModels.size();
     }
 
-    void AssimpModelManager::SetTexturesForModel(TextureComponent& in, std::string& passkey)
+    void AssimpModelManager::SetTexturesForModel(MaterialComponent& in, std::string& passkey)
     {
         in.TextureKey = passkey;
 
-        for (int i = 0; i <= LoadedTexturesV2[passkey][i].size(); i++)
+        // See if can find texture or not
+        if (Graphics::textures.find(passkey) != Graphics::textures.end())
         {
-            if (LoadedTexturesV2.find(passkey) != LoadedTexturesV2.end())
+            for (int i = 0; i < 2; i++)
             {
-                if (LoadedTexturesV2[passkey][i].size() == 0)
-                {
-                    EDITOR_LOG_WARN("No Textures Found for Current Model");
-                    continue;
-                }
-
-                for (int EachTexture = 0; EachTexture < LoadedTexturesV2[passkey][i].size(); EachTexture++)
-                {
-                    in.HoldingTextures[i].push_back(*LoadedTexturesV2[passkey][i][EachTexture]);
-                }
+                in.HoldingTextures[i].push_back(Graphics::textures[passkey]);
             }
         }
     }
@@ -212,6 +193,84 @@ namespace Eclipse
 
     void AssimpModelManager::PrintLoadedModels()
     {
+        PrintOutModelsLoadedOnce();
+        PrintOutModelTextureMap();
+        PrintOutModelMap();
+        PrintOutAllTextures();
+        PrintOutAllMeshes();
+    }
+
+    void AssimpModelManager::Cleanup(MeshComponent& in)
+    {
+        //for (unsigned int i = 0; i < in.Meshes.size(); i++)
+        //{
+        //    in.Meshes[i].Cleanup();
+        //}
+    }
+
+    AssimpModelManager::~AssimpModelManager()
+    {
+        //for (auto i : AssimpModelContainerV2)
+        //{
+        //    if (i.second != nullptr)
+        //    {
+        //        delete i.second;
+        //    }
+        //}
+    }
+
+    void AssimpModelManager::InsertModel(unsigned int id)
+    {
+        // Should already have the model name as key.
+        auto& sprite = engine->world.GetComponent<MeshComponent>(id);
+
+        // Assign ModelInfoComponent
+        auto& ModelInformation = engine->world.GetComponent<ModeLInforComponent>(id);
+        //ModelInformation.NameOfModel = sprite.Key;
+        //ModelInformation.Directory = ModelMap[sprite.Key];
+
+        //sprite.Meshes = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetMesh();
+        //sprite.Textures_loaded = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetTextures();
+
+        //for (int i = 0; i < sprite.Meshes.size(); i++)
+        //{
+        //    auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
+        //    sprite.Meshes[i].SetID(MeshID);
+        //}
+
+        // If got TextureComponent
+        if (engine->world.CheckComponent<TextureComponent>(id))
+        {
+            auto& tex = engine->world.GetComponent<TextureComponent>(id);
+            //engine->AssimpManager.SetTexturesForModel(tex, sprite.Key);
+        }
+    }
+
+    void AssimpModelManager::TestPath(std::string& path)
+    {
+        std::ifstream test(path);
+
+        if (!test)
+        {
+            std::string Error = ("The file path " + path + " doesnt exist! ").c_str();
+            ENGINE_LOG_ASSERT(false, Error);
+            std::exit(EXIT_FAILURE);
+        }
+    }
+
+    void AssimpModelManager::Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent& in, unsigned int ModelID, CameraComponent::CameraType _camType)
+    {
+        // Each Mesh Render
+        Render(shader, MOde, ModelID, in);
+    }
+
+    void AssimpModelManager::InsertModelMap(std::string& NameofModel, std::string& Directory)
+    {
+        ModelMap.insert({ NameofModel,Directory });
+    }
+
+    void AssimpModelManager::PrintOutModelsLoadedOnce()
+    {
         // Check How Many Models are Loaded
         std::cout << std::endl;
         std::cout << "Loaded Models Count " << AssimpLoadedModels.size() << std::endl;
@@ -222,12 +281,16 @@ namespace Eclipse
             std::cout << " Model Name : " << InvidualModels.GetName() << std::endl;
             std::cout << " Model Directory : " << InvidualModels.GetDirectory() << std::endl;
             std::cout << " Number of Textures : " << InvidualModels.GetNumberOfTextures() << std::endl;
+            std::cout << " Number of Meshes : " << InvidualModels.GetMesh().size() << std::endl;
             InvidualModels.GetTextureNames();
             std::cout << std::endl;
         }
         std::cout << "-------------------------------------------------------------------" << std::endl;
         std::cout << std::endl;
+    }
 
+    void AssimpModelManager::PrintOutModelTextureMap()
+    {
         // Check How Many Textures are Loaded and which meshes are they mapped to?
         std::cout << "Loaded Textures Count " << LoadedTexturesV2.size() << std::endl;
         std::cout << "-------------------------------------------------------------------" << std::endl;
@@ -249,7 +312,10 @@ namespace Eclipse
         }
         std::cout << "-------------------------------------------------------------------" << std::endl;
         std::cout << std::endl;
+    }
 
+    void AssimpModelManager::PrintOutModelMap()
+    {
         // ModelInformation loaded
         std::cout << "Loaded ModelMap Count " << ModelMap.size() << std::endl;
         std::cout << "-------------------------------------------------------------------" << std::endl;
@@ -264,71 +330,175 @@ namespace Eclipse
         std::cout << std::endl;
     }
 
-    void AssimpModelManager::Cleanup(MeshComponent& in)
+    void AssimpModelManager::PrintOutAllTextures()
     {
-        for (unsigned int i = 0; i < in.Meshes.size(); i++)
+        std::cout << "Loaded Textures Count " << Graphics::textures.size() << std::endl;
+        std::cout << "-------------------------------------------------------------------" << std::endl;
+        for (const auto& i : Graphics::textures)
         {
-            in.Meshes[i].Cleanup();
+            auto& TextureName = i.first;
+            auto& TextureItself = i.second;
+
+            std::cout << "Texture Name " << TextureName << std::endl;
+        }
+        std::cout << "-------------------------------------------------------------------" << std::endl;
+        std::cout << std::endl;
+    }
+
+    void AssimpModelManager::PrintOutAllMeshes()
+    {
+        std::cout << "loaded Meshes Count " << SingleMeshMap.size() << std::endl;
+        std::cout << "-------------------------------------------------------------------" << std::endl;
+        for (const auto& i : SingleMeshMap)
+        {
+            auto& MeshName = i.first;
+            auto& Mesh = i.second;
+
+            std::cout << "Mesh Name " << MeshName << std::endl;
+            std::cout << "Mesh Vertices " << Mesh->GetVertices().size() << std::endl;
+            std::cout << std::endl;
+        }
+        std::cout << "-------------------------------------------------------------------" << std::endl;
+        std::cout << std::endl;
+    }
+
+    void AssimpModelManager::SetMeshComponent(unsigned int ID, std::string in)
+    {
+        if (engine->world.CheckComponent<MeshComponent>(ID))
+        {
+            auto& Mesh = engine->world.GetComponent<MeshComponent>(ID);
+
+            Mesh.MeshName = SingleMeshMap[in]->MeshName;
+            Mesh.VBO = SingleMeshMap[in]->VBO;
+            Mesh.VAO = SingleMeshMap[in]->VAO;
+            Mesh.EBO = SingleMeshMap[in]->EBO;
+            Mesh.NoTex = SingleMeshMap[in]->NoTex;
+            Mesh.Diffuse = SingleMeshMap[in]->Diffuse;
+            Mesh.Specular = SingleMeshMap[in]->Specular;
+            Mesh.Ambient = SingleMeshMap[in]->Ambient;
+            Mesh.Vertices = SingleMeshMap[in]->Vertices;
+            Mesh.Indices = SingleMeshMap[in]->Indices;
         }
     }
 
-    AssimpModelManager::~AssimpModelManager()
+    void AssimpModelManager::Render(Shader& shader, GLenum mode, unsigned int id, MeshComponent& in)
     {
-        //for (auto i : AssimpModelContainerV2)
-        //{
-        //    if (i.second != nullptr)
-        //    {
-        //        delete i.second;
-        //    }
-        //}
+        glEnable(GL_BLEND);
+        glEnable(GL_DEPTH_TEST);
+        glDisable(GL_CULL_FACE);
+        glPolygonMode(GL_FRONT_AND_BACK, mode);
+
+        // If dont have textures ( Flagged as True )
+        if (in.NoTex && (!engine->world.CheckComponent<TextureComponent>(id)))
+        {
+            GLint uniform_var_loc1 = shader.GetLocation("BasicPrimitives");
+            GLint uniform_var_loc2 = shader.GetLocation("uColor");
+            GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
+            GLuint tex_loc = shader.GetLocation("uTex2d");
+            GLuint diff0 = shader.GetLocation("sdiffuse");
+            GLuint spec = shader.GetLocation("sspecular");
+            GLuint Texture = shader.GetLocation("noTex");
+
+            glUniform1i(uniform_var_loc3, true);
+            glUniform4f(diff0, in.Diffuse.r, in.Diffuse.g, in.Diffuse.b, in.Diffuse.a);
+            glUniform4f(spec, in.Specular.r, in.Specular.g, in.Specular.b, in.Specular.a);
+            glUniform1i(Texture, true);
+            glUniform1i(tex_loc, false);
+            glUniform1i(uniform_var_loc1, false);
+        }
+        else
+        {
+            if (engine->world.CheckComponent<MaterialComponent>(id))
+            {
+                MaterialComponent& tex = engine->world.GetComponent<MaterialComponent>(id);
+
+                // textures
+                unsigned int diffuseIdx = 0;
+                unsigned int specularIdx = 0;
+
+                for (unsigned int i = 0; i < tex.HoldingTextures[i].size(); i++)
+                {
+                    // activate texture
+                    glActiveTexture(GL_TEXTURE0 + i);
+
+                    // retrieve texture info
+                    std::string name;
+                    switch (tex.HoldingTextures[i][i].GetType())
+                    {
+                    case aiTextureType_DIFFUSE:
+                        name = "diffuse" + std::to_string(diffuseIdx++);
+                        break;
+                    case aiTextureType_SPECULAR:
+                        name = "specular" + std::to_string(specularIdx++);
+                        break;
+                    }
+
+                    GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
+                    GLuint diff0 = shader.GetLocation("diffuse0");
+                    GLuint spec = shader.GetLocation("specular0");
+                    GLuint dsa = shader.GetLocation("noTex");
+
+                    glUniform1i(uniform_var_loc3, true);
+                    glUniform1i(diff0, i);
+                    glUniform1i(spec, i);
+                    glUniform1i(dsa, false);
+
+                    // bind texture
+                    tex.HoldingTextures[i][i].Bind();
+                }
+
+                // If no Textures , We leave it blank until it has textures
+                if (tex.HoldingTextures[0].size() == 0)
+                {
+                    GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
+                    glUniform1i(uniform_var_loc3, false);
+                }
+            }
+            else
+            {
+                GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
+                glUniform1i(uniform_var_loc3, false);
+            }
+        }
+
+        // reset
+        glActiveTexture(GL_TEXTURE0);
+
+        // EBO stuff
+        glBindVertexArray(in.VAO);
+        glDrawElements(GL_TRIANGLES, in.Indices.size(), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
     }
 
-    void AssimpModelManager::InsertModel(unsigned int id)
+    void AssimpModelManager::Render(GLenum mode, MeshComponent& in)
     {
-        // Should already have the model name as key.
-        auto& sprite = engine->world.GetComponent<MeshComponent>(id);
+        glEnable(GL_BLEND);
+        glEnable(GL_DEPTH_TEST);
+        glDisable(GL_CULL_FACE);
+        glPolygonMode(GL_FRONT_AND_BACK, mode);
 
-        // Assign ModelInfoComponent
-        auto& ModelInformation = engine->world.GetComponent<ModeLInforComponent>(id);
-        ModelInformation.NameOfModel = sprite.Key;
-        ModelInformation.Directory = ModelMap[sprite.Key];
+        // EBO stuff
+        glBindVertexArray(in.VAO);
+        glDrawElements(GL_TRIANGLES, in.Indices.size(), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+    }
 
-        sprite.Meshes = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetMesh();
-        sprite.Textures_loaded = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetTextures();
+    void AssimpModelManager::SetSingleMesh(unsigned int ID, std::string& MeshName)
+    {
+        auto& Mesh = engine->world.GetComponent<MeshComponent>(ID);
+        engine->AssimpManager.SetMeshComponent(ID, MeshName);
 
         // If got TextureComponent
-        if (engine->world.CheckComponent<TextureComponent>(id))
+        if (engine->world.CheckComponent<MaterialComponent>(ID))
         {
-            auto& tex = engine->world.GetComponent<TextureComponent>(id);
-            engine->AssimpManager.SetTexturesForModel(tex, sprite.Key);
+            auto& tex = engine->world.GetComponent<MaterialComponent>(ID);
+            engine->AssimpManager.SetTexturesForModel(tex, Mesh.MeshName);
         }
+
     }
 
-    void AssimpModelManager::TestPath(std::string& path)
-    {
-        std::ifstream test(path);
-
-        if (!test)
-        {
-            std::string Error = ("The file path " + path + " doesnt exist! ").c_str();
-            ENGINE_LOG_ASSERT(false, Error);
-            std::exit(EXIT_FAILURE);
-        }
-    }
-
-    void AssimpModelManager::Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent& in, unsigned int ModelID)
-    {
-        for (unsigned int i = 0; i < in.Meshes.size(); i++)
-        {
-            in.Meshes[i].Render(shader, MOde, ModelID, i);
-        }
-    }
-
-    void AssimpModelManager::InsertModelMap(std::string& NameofModel, std::string& Directory)
-    {
-        ModelMap.insert({ NameofModel,Directory });
-    }
 }
+
 namespace Eclipse
 {
     void AssimpModelManager::Draw(unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
@@ -400,7 +570,7 @@ namespace Eclipse
         Transform.scale.setZ(5);
 
         MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
-        mat.Modeltype = MaterialComponent::ModelType::Models3D;
+        mat.Modeltype = MaterialModelType::MT_MODELS3D;
         // ----------------------------------------------------------------------------------------------------------
 
         // Create path

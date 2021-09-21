@@ -40,10 +40,10 @@ namespace Eclipse
 
 		if (!sceneDesc.cpuDispatcher)
 		{
-			PxDefaultCpuDispatcher* mCpuDispatcher = PxDefaultCpuDispatcherCreate(2);
-			if (!mCpuDispatcher)
+			Px_Dispatcher = PxDefaultCpuDispatcherCreate(2);
+			if (!Px_Dispatcher)
 				std::cout << "PxDefaultCpuDispatcherCreate failed!" << std::endl;
-			sceneDesc.cpuDispatcher = mCpuDispatcher;
+			sceneDesc.cpuDispatcher = Px_Dispatcher;
 		}
 		if (!sceneDesc.filterShader)
 			sceneDesc.filterShader = PxDefaultSimulationFilterShader;
@@ -328,6 +328,8 @@ namespace Eclipse
 
 	void PhysicsManager::Unload()
 	{
+		Px_Scene->release();
+		Px_Dispatcher->release();
 		Px_Cooking->release();
 		Px_Physics->release();
 		Px_Foundation->release();
