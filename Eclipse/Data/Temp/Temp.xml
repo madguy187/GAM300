@@ -9,24 +9,24 @@
         <CameraComponent>
             <EyeAlpha value="0" />
             <EyeBeta value="-90" />
-            <FOV value="48.35" />
+            <FOV value="45" />
             <NearPlane value="0.1" />
             <FarPlane value="500" />
             <Aspect value="1.92708" />
-            <EyePos x="-5.83106" y="19.9693" z="39.4309" />
-            <EyeFront x="0.0827805" y="-0.573577" z="-0.814959" />
-            <UpVec x="0.0579635" y="0.819152" z="-0.57064" />
-            <RightVec x="0.994881" y="-0" z="0.101056" />
+            <EyePos x="-16.656" y="19.3318" z="34.6139" />
+            <EyeFront x="0.392358" y="-0.396347" z="-0.830039" />
+            <UpVec x="0.169382" y="0.918101" z="-0.35833" />
+            <RightVec x="0.904083" y="-0" z="0.427358" />
             <WorldUp x="0" y="1" z="0" />
             <ViewMtx Col="4" Row="4">
-                <Col0 _00="0.994881" _01="0.0579636" _02="-0.0827805" _03="0" />
-                <Col1 _10="2.23517e-08" _11="0.819152" _12="0.573577" _13="0" />
-                <Col2 _20="0.101056" _21="-0.570641" _22="0.814958" _23="0" />
-                <Col3 _30="1.81646" _31="6.481" _32="-44.0712" _33="1" />
+                <Col0 _00="0.904083" _01="0.169382" _02="-0.392357" _03="0" />
+                <Col1 _10="-4.17233e-07" _11="0.918101" _12="0.396347" _13="0" />
+                <Col2 _20="0.427357" _21="-0.35833" _22="0.83004" _23="0" />
+                <Col3 _30="0.265942" _31="-2.52407" _32="-42.9281" _33="1" />
             </ViewMtx>
             <ProjMtx Col="4" Row="4">
-                <Col0 _00="1.156" _01="0" _02="0" _03="0" />
-                <Col1 _10="0" _11="2.2277" _12="0" _13="0" />
+                <Col0 _00="1.25278" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="2.41421" _12="0" _13="0" />
                 <Col2 _20="0" _21="0" _22="-1.0004" _23="-1" />
                 <Col3 _30="0" _31="0" _32="-0.20004" _33="0" />
             </ProjMtx>
@@ -35,7 +35,7 @@
             <ProjectionType value="Perspective" />
         </CameraComponent>
         <TransformComponent>
-            <Position x="-5.83106" y="19.9693" z="39.4309" />
+            <Position x="-16.656" y="19.3318" z="34.6139" />
             <Rotation x="-40" y="-90" z="0" />
             <Scale x="5" y="5" z="5" />
         </TransformComponent>
@@ -74,42 +74,54 @@
     </Entity_1>
     <Entity_2 ID="7">
         <EntityComponent>
-            <Name value="PointLight" />
-            <Tag value="PointLight" />
+            <Name value="SpotLight" />
+            <Tag value="SpotLight" />
             <IsActive value="false" />
         </EntityComponent>
-        <PointLightComponent>
-            <ID value="7" />
-            <Counter value="0" />
-            <Ambient x="0.2" y="0.2" z="0.2" />
-            <Diffuse x="0.5" y="0.5" z="0.5" />
-            <Specular x="0.1" y="0.1" z="0.1" />
-            <LightColor x="1" y="1" z="1" />
-            <Color x="1" y="1" z="1" w="1" />
-            <IntensityStrength value="10" />
-            <Constant value="1" />
-            <Linear value="0.07" />
-            <Quadratic value="0.017" />
-            <Radius value="0" />
-            <AttenuationLevel value="5" />
-            <EnableBlinnPhong value="true" />
-            <HasTexture value="false" />
-            <Visible value="true" />
-            <AffectsWorld value="true" />
-        </PointLightComponent>
         <TransformComponent>
             <Position x="0" y="0" z="0" />
             <Rotation x="0" y="0" z="0" />
-            <Scale x="0.1" y="0.1" z="0.1" />
+            <Scale x="5" y="5" z="5" />
         </TransformComponent>
-        <LightComponent />
+        <AABBComponent>
+            <Center x="0" y="0" z="0" />
+            <Min x="-2.5" y="-2.5" z="-2.5" />
+            <Max x="2.5" y="2.5" z="2.5" />
+        </AABBComponent>
     </Entity_2>
     <Entity_3 ID="8">
         <EntityComponent>
-            <Name value="SpotLight" />
-            <Tag value="SpotLight" />
-            <IsActive value="true" />
+            <Name value="NULL" />
+            <Tag value="NULL" />
+            <IsActive value="false" />
         </EntityComponent>
+        <MaterialComponent>
+            <Modeltype value="Models3D" />
+            <Ambient x="0" y="0" z="0" />
+            <Diffuse x="1" y="1" z="1" />
+            <Specular x="1" y="1" z="1" />
+            <HighlightColor x="1" y="0" z="0" />
+            <Shininess value="0.25" />
+            <MaximumShininess value="128" />
+            <Highlight value="false" />
+            <NoTextures value="true" />
+            <Thickness value="0.05" />
+            <ScaleUp value="1.05" />
+        </MaterialComponent>
+        <MeshComponent>
+            <Color x="1" y="1" z="1" />
+            <TextureIdx x="0" y="0" />
+            <IsQuad value="false" />
+            <ModelNDC_XForm Col="4" Row="4">
+                <Col0 _00="0" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="0" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="0" _23="0" />
+                <Col3 _30="0" _31="0" _32="0" _33="0" />
+            </ModelNDC_XForm>
+            <ModelRef value="" />
+            <ShaderRef value="" />
+            <Transparency value="1" />
+        </MeshComponent>
         <TransformComponent>
             <Position x="0" y="0" z="0" />
             <Rotation x="0" y="0" z="0" />
@@ -507,14 +519,14 @@
             <Transparency value="1" />
         </MeshComponent>
         <TransformComponent>
-            <Position x="0" y="0" z="0" />
+            <Position x="-0.0098381" y="8.2367" z="0.0209885" />
             <Rotation x="0" y="0" z="0" />
             <Scale x="5" y="5" z="5" />
         </TransformComponent>
         <AABBComponent>
-            <Center x="0" y="0" z="0" />
-            <Min x="-2.5" y="-2.5" z="-2.5" />
-            <Max x="2.5" y="2.5" z="2.5" />
+            <Center x="-0.0098381" y="8.2367" z="0.0209885" />
+            <Min x="-2.50984" y="5.7367" z="-2.47901" />
+            <Max x="2.49016" y="10.7367" z="2.52099" />
         </AABBComponent>
     </Entity_12>
     <Entity_13 ID="18">
@@ -551,21 +563,21 @@
             <Transparency value="1" />
         </MeshComponent>
         <TransformComponent>
-            <Position x="0" y="0" z="0" />
+            <Position x="0" y="9.64118" z="0" />
             <Rotation x="0" y="0" z="0" />
             <Scale x="5" y="5" z="5" />
         </TransformComponent>
         <AABBComponent>
-            <Center x="0" y="0" z="0" />
-            <Min x="-2.5" y="-2.5" z="-2.5" />
-            <Max x="2.5" y="2.5" z="2.5" />
+            <Center x="0" y="9.64118" z="0" />
+            <Min x="-2.5" y="7.14118" z="-2.5" />
+            <Max x="2.5" y="12.1412" z="2.5" />
         </AABBComponent>
     </Entity_13>
     <Entity_14 ID="19">
         <EntityComponent>
-            <Name value="NULL" />
-            <Tag value="NULL" />
-            <IsActive value="false" />
+            <Name value="Planes" />
+            <Tag value="Planes" />
+            <IsActive value="true" />
         </EntityComponent>
         <MaterialComponent>
             <Modeltype value="Models3D" />
@@ -575,7 +587,7 @@
             <HighlightColor x="1" y="0" z="0" />
             <Shininess value="0.25" />
             <MaximumShininess value="128" />
-            <Highlight value="false" />
+            <Highlight value="true" />
             <NoTextures value="true" />
             <Thickness value="0.05" />
             <ScaleUp value="1.05" />
@@ -595,7 +607,7 @@
             <Transparency value="1" />
         </MeshComponent>
         <RigidBodyComponent>
-            <Velocity x="0" y="-146.005" z="0" />
+            <Velocity x="0" y="-22.563" z="0" />
             <AngVelocity x="0" y="0" z="0" />
             <Forces x="0" y="0" z="0" />
             <Mass value="1" />
@@ -608,7 +620,7 @@
             <InScene value="true" />
         </RigidBodyComponent>
         <TransformComponent>
-            <Position x="0" y="-1087.74" z="0" />
+            <Position x="0" y="-12.2604" z="0" />
             <Rotation x="0" y="0" z="0" />
             <Scale x="5" y="5" z="5" />
         </TransformComponent>
@@ -617,5 +629,6 @@
             <Min x="-2.5" y="-2.5" z="-2.5" />
             <Max x="2.5" y="2.5" z="2.5" />
         </AABBComponent>
+        <TextureComponent Unavailable="true" />
     </Entity_14>
 </Entities>

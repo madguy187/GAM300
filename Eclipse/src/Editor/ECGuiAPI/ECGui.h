@@ -53,6 +53,8 @@ namespace Eclipse
 		}
 
 		static bool BeginMainWindow(const char* name);
+		static bool BeginMainWindowWithFlag(const char* name, bool* p_open = NULL,
+			ImGuiWindowFlags flags = 0);
 		static void EndMainWindow();
 		static bool BeginChildWindow(ChildSettings settings);
 		static void EndChildWindow();

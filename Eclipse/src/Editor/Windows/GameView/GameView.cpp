@@ -46,10 +46,10 @@ namespace Eclipse
 
 	void eGameViewWindow::RunFrameBuffer()
 	{
-		RenderGameHeader();
+		//RenderGameHeader();
 		// Set Image size
 		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())), 
-			ImVec2{ mViewportSize.x, mViewportSize.y * 0.93f }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 		if (ECGui::IsItemHovered())
 		{
