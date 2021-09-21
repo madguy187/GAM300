@@ -56,7 +56,7 @@ namespace Eclipse
         return Face.getSignedDistanceToPlan(Center) > -Radius;
     }
 
-    bool CullingManager::CheckOnFrustum(const TransformComponent& Transform , CameraComponent::CameraType CameraType)
+    bool CullingManager::CheckOnFrustum(const TransformComponent& Transform, CameraComponent::CameraType CameraType)
     {
         auto& camFrustum = engine->gCullingManager->FrustrumFaceInfo(CameraType);
 
@@ -80,7 +80,62 @@ namespace Eclipse
     {
         auto& Transform = engine->world.GetComponent<TransformComponent>(ID);
 
-        return (CheckOnFrustum(Transform, CameraComponent::CameraType::Game_Camera) && 
-                CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera));
+        if (GameFrustumCull)
+        {
+            return CheckOnFrustum(Transform, CameraComponent::CameraType::Game_Camera);
+        }
+        else if (SceneFrustumCull)
+        {
+            return CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera);
+        }
+        else if (GameFrustumCull && SceneFrustumCull)
+        {
+            return CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera) &&
+                CheckOnFrustum(Transform, CameraComponent::CameraType::Game_Camera);
+        }
+        //std::cout << " ON GAME FRUSTRUM : " << CheckOnFrustum(Transform, CameraComponent::CameraType::Game_Camera) << std::endl;
+        //std::cout << " ON SCENE FRUSTRUM : " << CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera) << std::endl;
+        //return CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera);
+    }
+
+    void CullingManager::Insert(AABBComponent& In, unsigned int ID)
+    {
+        std::shared_ptr< AABBComponent> SameAABB = std::make_shared<AABBComponent>(In);
+        std::shared_ptr< AABBCulling> hi = std::make_shared<AABBCulling>();
+        hi->Obj = &In;
+        engine->gCullingManager->CullContainer.emplace(ID, hi);
+        engine->gCullingManager->CullContainer[ID]->AABB.SetMaxMin(In.Max, In.Min, ID);
+        FrustrumCollisionTree.InsertObject(engine->gCullingManager->CullContainer[ID]);
+    }
+
+    std::vector<unsigned int> CullingManager::ReturnContacted()
+    {
+        return FrustrumCollisionTree.QueryAgainstTrustrum(DYN_AABB::SetFrustrumAABB(CameraComponent::CameraType::Editor_Camera));
+    }
+
+    CameraComponent::CameraType CullingManager::GetCamera()
+    {
+        if (GameFrustumCull)
+        {
+            return CameraComponent::CameraType::Game_Camera;
+        }
+        else if (SceneFrustumCull)
+        {
+            return CameraComponent::CameraType::Editor_Camera;
+        }
+        else
+        {
+            return CameraComponent::CameraType::Editor_Camera;
+        }
+    }
+
+    void CullingManager::UpdateDYN_AABB(AABBComponent& _aabb, unsigned int ID)
+    {
+        CullContainer[ID]->AABB.SetMaxMin(_aabb.Max, _aabb.Min, ID);
+    }
+
+    DYN_AABB AABBCulling::getAABB() const
+    {
+        return AABB;
     }
 }

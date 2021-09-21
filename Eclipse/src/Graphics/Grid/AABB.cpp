@@ -177,4 +177,26 @@ namespace Eclipse
         return aabbin;
     }
 
+    AABBComponent& DYN_AABB::SetFrustrumAABB(CameraComponent::CameraType CameraType)
+    {
+        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraType));
+        auto& Transform = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraType));
+
+        AABBComponent Frustrum;
+
+        glm::vec3 Half = { 2,2,2 };
+        glm::vec3 scale = glm::vec3{ _camera.farPlane, _camera.farPlane,_camera.farPlane };
+        glm::vec3 position = (Transform.position.ConvertToGlmVec3Type() - scale)/Half ;
+
+        glm::vec3 halfExt = scale / 2.0f;
+        glm::vec3 min{ position.x - halfExt.x, position.y - halfExt.y, position.z - halfExt.z };
+        glm::vec3 max{ position.x + halfExt.x, position.y + halfExt.y, position.z + halfExt.z };
+
+        Frustrum.center = ECVec3{ position.x , position.y , position.z };
+        Frustrum.Min = ECVec3{ min.x,min.y,min.z };
+        Frustrum.Max = ECVec3{ max.x,max.y,max.z };
+
+        return Frustrum;
+    }
+
 }

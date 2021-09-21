@@ -23,7 +23,7 @@ namespace Eclipse
 			//{
 			//	auto& aabb = engine->world.GetComponent<AABBComponent>(EntityId);
 			//	auto& Transform = engine->world.GetComponent<TransformComponent>(EntityId);
-			//	auto& ModelVsGrid = engine->CollisionGridTree.CheckOverlapAgainstGrid(DYN_AABB::SetAABB(Transform, aabb));
+				//auto& ModelVsGrid = engine->CollisionGridTree.CheckOverlapAgainstGrid(DYN_AABB::SetAABB(Transform, aabb));
 
 			//	if (engine->CollisionGridTree.NumberOfIntersections(ModelVsGrid))
 			//	{
