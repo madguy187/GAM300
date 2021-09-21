@@ -11,22 +11,16 @@ namespace Eclipse
     {
         // Must haev the ability to check type of textures next
         // will need to redo some parts as i need to load in fbx textures seperately
-    public:
-
 
         // 3D Textures =============================
-    private:
-        //unsigned int Id;
-        aiTextureType Type;
-        std::string Directory;
-        std::string Path;
-
     public:
         Texture() {};
         Texture(std::string dir, std::string path, aiTextureType type);
 
         void Generate();
         void Load(bool flip = true);
+        void LoadUncompressedTextures(bool flip);
+        bool LoadCompressedTextures(bool flip);
         void Bind();
         void SetDirectory(std::string dir);
         void SetPath(std::string pathhh);
@@ -36,11 +30,18 @@ namespace Eclipse
         aiTextureType GetType();
         unsigned int GetId();
 
+    private:
+        //unsigned int Id;
+        aiTextureType Type;
+        std::string Directory;
+        std::string Path;
 
         // 2D Textures =============================
     public:
         Texture(std::string pathname);
         void initTexture(std::string pathname);
+        void LoadUncompressedTextures(std::string pathname);
+        bool LoadCompressedTextures(std::string pathname);
 
         GLuint GetHandle();
         GLint GetWidth();
