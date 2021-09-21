@@ -33,8 +33,8 @@ namespace Eclipse
 
     FrustrumFaces CullingManager::FrustrumFaceInfo(CameraComponent::CameraType CameraType)
     {
-        auto& cam = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Game_Camera));
-        auto& trans = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Game_Camera));
+        auto& cam = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraType));
+        auto& trans = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraType));
 
         FrustrumFaces frustum;
         const float halfVSide = 500.0f * tanf(glm::radians(cam.fov) * .5f);
@@ -56,9 +56,11 @@ namespace Eclipse
         return Face.getSignedDistanceToPlan(Center) > -Radius;
     }
 
-    bool CullingManager::CheckOnFrustum(FrustrumFaces& camFrustum, const TransformComponent& Transform)
+    bool CullingManager::CheckOnFrustum(const TransformComponent& Transform , CameraComponent::CameraType CameraType)
     {
-        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Game_Camera));
+        auto& camFrustum = engine->gCullingManager->FrustrumFaceInfo(CameraType);
+
+        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraType));
 
         glm::vec3 globalScale = Transform.scale.ConvertToGlmVec3Type();
 
@@ -78,6 +80,7 @@ namespace Eclipse
     {
         auto& Transform = engine->world.GetComponent<TransformComponent>(ID);
 
-        return (CheckOnFrustum(FrustrumFaceInfo(CameraComponent::CameraType::Editor_Camera), Transform));
+        return (CheckOnFrustum(Transform, CameraComponent::CameraType::Game_Camera) && 
+                CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera));
     }
 }

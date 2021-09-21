@@ -73,7 +73,7 @@ namespace Eclipse
 				auto& Transform = engine->world.GetComponent<TransformComponent>(entityID);
 				engine->gPicker.UpdateAabb(entityID);
 
-				if (engine->gCullingManager->CheckOnFrustum(engine->gCullingManager->FrustrumFaceInfo(CameraComponent::CameraType::Editor_Camera), Transform))
+				if (engine->gCullingManager->ToRenderOrNot(entityID))
 				{
 					MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
 

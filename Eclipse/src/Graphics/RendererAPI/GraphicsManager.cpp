@@ -91,31 +91,31 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     break;
     case 5:
     {
-        //for (int i = 0; i < 9000; i++)
-        //{
-        //    auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_GEO_CUBE);
-        //    engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_BASIC });
-        //    engine->world.AddComponent(MeshID, MeshComponent{});
+        for (int i = 0; i < 5000; i++)
+        {
+            auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_GEO_CUBE);
+            engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_BASIC });
+            engine->world.AddComponent(MeshID, MeshComponent{});
 
-        //    MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(MeshID);
-        //    sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-        //    sprite.modelRef = Graphics::models.find("Cube")->first;
+            MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(MeshID);
+            sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
+            sprite.modelRef = Graphics::models.find("Cube")->first;
 
-        //    MaterialComponent& Mat = engine->world.GetComponent<MaterialComponent>(MeshID);
-        //    Mat.hasTexture = true;
-        //    Mat.TextureRef = Graphics::textures.find("orange")->first;
-        //}
+            MaterialComponent& Mat = engine->world.GetComponent<MaterialComponent>(MeshID);
+            Mat.hasTexture = true;
+            Mat.TextureRef = Graphics::textures.find("orange")->first;
+        }
 
-        engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
-        engine->world.AddComponent(ID, MeshComponent{});
+        //engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
+        //engine->world.AddComponent(ID, MeshComponent{});
 
-        MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-        sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-        sprite.modelRef = Graphics::models.find("Cube")->first;
+        //MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
+        //sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
+        //sprite.modelRef = Graphics::models.find("Cube")->first;
 
-        MaterialComponent& Mat = engine->world.GetComponent<MaterialComponent>(ID);
-        Mat.hasTexture = true;
-        Mat.TextureRef = Graphics::textures.find("orange")->first;
+        //MaterialComponent& Mat = engine->world.GetComponent<MaterialComponent>(ID);
+        //Mat.hasTexture = true;
+        //Mat.TextureRef = Graphics::textures.find("orange")->first;
     }
     break;
     case 6:
