@@ -32,7 +32,7 @@ namespace Eclipse
 
 		// Model Information
 		std::unordered_map<std::string, std::string> ModelMap;
-
+		
 	public:
 		// Single Meshes
 		std::unordered_map<std::string, std::unique_ptr<Mesh>> SingleMeshMap;
