@@ -16,6 +16,7 @@
 #include "Editor/Windows/SwitchViews/BottomSwitchViewWindow.h"
 #include "Editor/Windows/SwitchViews/LeftSwitchViewWindow.h"
 #include "Editor/Windows/SwitchViews/RightSwitchViewWindow.h"
+#include "Editor/Windows/Header/HeaderWindow.h"
 
 namespace Eclipse
 {
@@ -43,6 +44,7 @@ namespace Eclipse
 		AddWindow<BottomSwitchViewWindow>("Bottom Viewport");
 		AddWindow<LeftSwitchViewWindow>("Left Viewport");
 		AddWindow<RightSwitchViewWindow>("Right Viewport");
+		AddWindow<HeaderWindow>("Header");
 
 		for (const auto& window : Windows_)
 		{
