@@ -8,6 +8,12 @@ namespace Eclipse
 		return ImGuiAPI::BeginMainWindow(name);
 	}
 
+	bool ECGui::BeginMainWindowWithFlag(const char* name, bool* p_open, 
+		ImGuiWindowFlags flags)
+	{
+		return ImGuiAPI::BeginMainWindowWithFlag(name, p_open, flags);
+	}
+
 	void ECGui::EndMainWindow()
 	{
 		ImGuiAPI::EndMainWindow();
