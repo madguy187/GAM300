@@ -5,6 +5,37 @@
 namespace Eclipse
 {
 	using namespace physx;
+	class ContactReportCallback : public PxSimulationEventCallback
+	{
+		void onConstraintBreak(PxConstraintInfo* constraints, PxU32 count) { PX_UNUSED(constraints); PX_UNUSED(count); }
+		void onWake(PxActor** actors, PxU32 count) { PX_UNUSED(actors); PX_UNUSED(count); }
+		void onSleep(PxActor** actors, PxU32 count) { PX_UNUSED(actors); PX_UNUSED(count); }
+		void onTrigger(PxTriggerPair* pairs, PxU32 count) { PX_UNUSED(pairs); PX_UNUSED(count); }
+		void onAdvance(const PxRigidBody* const*, const PxTransform*, const PxU32) {}
+		void onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 nbPairs)
+		{
+			/*PX_UNUSED((pairHeader));
+			std::vector<PxContactPairPoint> contactPoints;
+
+			for (PxU32 i = 0; i < nbPairs; i++)
+			{
+				PxU32 contactCount = pairs[i].contactCount;
+				if (contactCount)
+				{
+					contactPoints.resize(contactCount);
+					pairs[i].extractContacts(&contactPoints[0], contactCount);
+
+					for (PxU32 j = 0; j < contactCount; j++)
+					{
+						gContactPositions.push_back(contactPoints[j].position);
+						gContactImpulses.push_back(contactPoints[j].impulse);
+					}
+				}
+			}*/
+		}
+	};
+
+
 	class PhysicsManager
 	{
 		PxFoundation* Px_Foundation;
@@ -30,5 +61,10 @@ namespace Eclipse
 		void ChangeStaticRigid(Entity ent);
 		void AddActorToScene(Entity ent);
 		void RemoveActorFromScene(Entity ent);
+		PxFilterFlags contactReportFilterShader(PxFilterObjectAttributes attributes0, PxFilterData filterData0,
+			PxFilterObjectAttributes attributes1, PxFilterData filterData1,
+			PxPairFlags& pairFlags, const void* constantBlock, PxU32 constantBlockSize);
+
+
 	};
 }
