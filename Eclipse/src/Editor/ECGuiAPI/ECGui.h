@@ -116,7 +116,7 @@ namespace Eclipse
 		static void CreateComboList(ComboListSettings settings,
 			                        const std::vector<std::string>& vecStr,
 			                        size_t& index);
-		static bool CreateMenuItem(const char* name, bool* open);
+		static bool CreateMenuItem(const char* name, bool* open, const char* shortcut = "");
 
 		/*************************************************************************/
 		/*                           Static Widgets                              */

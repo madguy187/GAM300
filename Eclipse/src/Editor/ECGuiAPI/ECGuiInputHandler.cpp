@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Editor/Utilities/OpenFileDialog/OpenFileDialog.h"
 #include "ECGuiInputHandler.h"
 
 namespace Eclipse
@@ -26,5 +27,10 @@ namespace Eclipse
 				}
 			}
 		}
+		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_O)) && io.KeyCtrl)
+			FileDialog::FileBrowser();
+		// File Saving
+		/*else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_S)) && io.KeyCtrl)
+			FileDialog::FileBrowser();*/
 	}
 }
