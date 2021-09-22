@@ -16,7 +16,7 @@ namespace Eclipse
 		mViewportSize = glm::vec2{}; 
 		mSceneBufferSize = glm::vec2{};
 		Type = EditorWindowType::EWT_SCENE;
-		WindowName = "Scene";
+		WindowName = "Scene View";
 		m_frameBuffer = engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE);
 	}
 
@@ -51,11 +51,11 @@ namespace Eclipse
 		/*std::cout << "SceneBuffer Size: " << mSceneBufferSize.x << " " << mSceneBufferSize.y << std::endl;*/
 		/*std::cout << "SceneBuffer Pos: " << mSceneBufferPos.x << " " << mSceneBufferPos.y << std::endl;
 		std::cout << "CursorScreen Pos: " << mCursorScreenPos.x << " " << mCursorScreenPos.y << std::endl;*/
-		RenderSceneHeader();
+		//RenderSceneHeader();
 
 		// Set Image size
 		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
-			ImVec2{ mViewportSize.x, mViewportSize.y * 0.93f }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 		//// ImGuizmo Logic
 		if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
@@ -252,6 +252,7 @@ namespace Eclipse
 			else
 			{
 				engine->SetPlayState(true);
+				ImGui::SetWindowFocus("Game View");
 				EDITOR_LOG_INFO("Scene is playing...");
 			}
 		}

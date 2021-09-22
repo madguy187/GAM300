@@ -11,6 +11,8 @@ namespace Eclipse
 	public:
 		// Window Creations
 		static bool BeginMainWindow(const char* name);
+		static bool BeginMainWindowWithFlag(const char* name, bool* p_open = NULL, 
+			ImGuiWindowFlags flags = 0);
 		static void EndMainWindow();
 		static bool BeginChildWindow(const char* name, ImVec2 size = ImVec2(0, 0),
 			                  bool border = false, ImGuiWindowFlags flag = 0);

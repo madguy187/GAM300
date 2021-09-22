@@ -12,6 +12,7 @@ namespace Eclipse
 		void Unload() override;
 		void RunMainWindow();
 		void RunFrameBuffer();
+		void RenderGameHeader();
 	private:
 		glm::vec2 mViewportSize;
 		// Hold Frame Buffer Object
