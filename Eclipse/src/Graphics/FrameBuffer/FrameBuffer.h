@@ -5,13 +5,13 @@ namespace Eclipse
 {
     enum class FrameBufferMode
     {
-        NONE = 0,
-        GAMEVIEW = 1,
-        SCENEVIEW = 2,
-        SWITCHINGVIEWS_TOP = 3,
-        SWITCHINGVIEWS_BOTTOM = 4,
-        SWITCHINGVIEWS_LEFT = 5,
-        SWITCHINGVIEWS_RIGHT = 6,
+        FBM_NONE = 0,
+        FBM_GAME = 1,
+        FBM_SCENE = 2,
+        FBM_TOP = 3,
+        FBM_BOTTOM = 4,
+        FBM_LEFT = 5,
+        FBM_RIGHT = 6,
         MAXCOUNT
     };
 

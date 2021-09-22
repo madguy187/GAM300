@@ -12,7 +12,7 @@
 #include "../ECS/ComponentManager/Components/RigidBodyComponent.h"
 #include "../ECS/ComponentManager/Components/SpotLightComponent.h"
 #include "../ECS/ComponentManager/Components/TransformComponent.h"
-#include "../ECS/ComponentManager/Components/TextureComponent.h"
+//#include "../ECS/ComponentManager/Components/TextureComponent.h"
 #include "../ECS/ComponentManager/Components/LightComponent.h"
 
 namespace Eclipse
@@ -64,19 +64,19 @@ namespace Eclipse
 		inline void SerializeComponentData<MeshComponent>(const MeshComponent& data)
 		{
 			SerializeData(
-				"Key", data.Key,
+				//"Key", data.Key,
 				"Color", data.color,
 				"TextureIdx", data.textureIdx,
 				"IsQuad", data.isQuad,
 				"ModelNDC_XForm", data.modelNDC_xform,
 				"ModelRef", data.modelRef,
 				"ShaderRef", data.shaderRef,
-				"ID", data.ID,
-				"Name", data.name,
-				"NewLayer", data.newLayer,
-				"LayerNum", data.layerNum,
-				"Transparency", data.transparency,
-				"LightColor", data.lightColor
+				//"ID", data.ID,
+				//"Name", data.name,
+				//"NewLayer", data.newLayer,
+				//"LayerNum", data.layerNum,
+				"Transparency", data.transparency
+				//"LightColor", data.lightColor
 			);
 		}
 
@@ -109,7 +109,7 @@ namespace Eclipse
 				"HighlightColor", data.HighlightColour,
 				"Shininess", data.shininess,
 				"MaximumShininess", data.MaximumShininess,
-				"RegisterForHighlight", data.RegisterForHighlight,
+				//"RegisterForHighlight", data.RegisterForHighlight,
 				"Highlight", data.Highlight,
 				"NoTextures", data.NoTextures,
 				"Thickness", data.Thickness,
@@ -122,8 +122,8 @@ namespace Eclipse
 		{
 			SerializeData(
 				"Center", data.center,
-				"Min", data.min,
-				"Max", data.max
+				"Min", data.Min,
+				"Max", data.Max
 			);
 		}
 
@@ -221,17 +221,17 @@ namespace Eclipse
 			);
 		}
 
-		template <>
-		inline void SerializeComponentData<TextureComponent>(const TextureComponent& data)
-		{
-			SerializeData(
-				"ID", data.ID,
-				"TextureType", data.Type,
-				"TextureKey", data.TextureKey,
-				"HasTexture", data.hasTexture,
-				"TextureRef", data.textureRef
-			);
-		}
+		//template <>
+		//inline void SerializeComponentData<TextureComponent>(const TextureComponent& data)
+		//{
+		//	SerializeData(
+		//		"ID", data.ID,
+		//		"TextureType", data.Type,
+		//		"TextureKey", data.TextureKey,
+		//		"HasTexture", data.hasTexture,
+		//		"TextureRef", data.textureRef
+		//	);
+		//}
 		
 		template <>
 		inline void SerializeComponentData<LightComponent>(const LightComponent& data)
@@ -264,7 +264,7 @@ namespace Eclipse
 		{
 			std::string msg = typeid(T).name();
 			msg += " is an invalid component.";
-			EDITOR_LOG_WARN(false, msg.c_str());
+			//EDITOR_LOG_WARN(false, msg.c_str());
 
 			return false;
 		}
@@ -303,14 +303,14 @@ namespace Eclipse
 				"ModelNDC_XForm", comp.modelNDC_xform,
 				"ModelRef", comp.modelRef,
 				"ShaderRef", comp.shaderRef,
-				"Name", comp.name,
-				"NewLayer", comp.newLayer,
-				"LayerNum", comp.layerNum,
-				"Transparency", comp.transparency,
-				"LightColor", comp.lightColor
+				//"Name", comp.name,
+				//"NewLayer", comp.newLayer,
+				//"LayerNum", comp.layerNum,
+				"Transparency", comp.transparency
+				//"LightColor", comp.lightColor
 			);
 
-			comp.ID = ent;
+			//comp.ID = ent;
 
 			return isSuccess;
 		}
@@ -326,7 +326,7 @@ namespace Eclipse
 				"HighlightColor", comp.HighlightColour,
 				"Shininess", comp.shininess,
 				"MaximumShininess", comp.MaximumShininess,
-				"RegisterForHighlight", comp.RegisterForHighlight,
+				//"RegisterForHighlight", comp.RegisterForHighlight,
 				"Highlight", comp.Highlight,
 				"Thickness", comp.Thickness,
 				"NoTextures", comp.NoTextures,
@@ -342,8 +342,8 @@ namespace Eclipse
 		{
 			bool isSuccess = DeserializeData(
 				"Center", comp.center,
-				"Min", comp.min,
-				"Max", comp.max
+				"Min", comp.Min,
+				"Max", comp.Max
 			);
 
 			return isSuccess;
@@ -474,20 +474,20 @@ namespace Eclipse
 			return isSuccess;
 		}
 		
-		template<>
-		inline bool DeserializeComponentData<TextureComponent>(const Entity& ent, TextureComponent& comp)
-		{
-			bool isSuccess = DeserializeData(
-				"TextureType", comp.Type,
-				"TextureKey", comp.TextureKey,
-				"HasTexture", comp.hasTexture,
-				"TextureRef", comp.textureRef
-			);
+		//template<>
+		//inline bool DeserializeComponentData<TextureComponent>(const Entity& ent, TextureComponent& comp)
+		//{
+		//	bool isSuccess = DeserializeData(
+		//		"TextureType", comp.Type,
+		//		"TextureKey", comp.TextureKey,
+		//		"HasTexture", comp.hasTexture,
+		//		"TextureRef", comp.textureRef
+		//	);
 
-			comp.ID = ent;
+		//	comp.ID = ent;
 
-			return isSuccess;
-		}
+		//	return isSuccess;
+		//}
 	
 		template<>
 		inline bool DeserializeComponentData<LightComponent>(const Entity& ent, LightComponent& comp)

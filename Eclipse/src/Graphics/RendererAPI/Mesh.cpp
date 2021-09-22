@@ -18,24 +18,26 @@ namespace Eclipse
 
     }
 
-    Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures)
+    Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::string namein, std::vector<Texture> textures)
         :
         Vertices(vertices),
         Indices(indices),
         Textures(textures),
-        NoTex(false)
+        NoTex(false),
+        MeshName(namein)
     {
         Setup();
     }
 
-    Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiColor4D diffuse, aiColor4D specular, aiColor4D ambient, bool in)
+    Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiColor4D diffuse, aiColor4D specular, aiColor4D ambient, bool in, std::string namein)
         :
         Vertices(vertices),
         Indices(indices),
         Diffuse(diffuse),
         Specular(specular),
         Ambient(ambient),
-        NoTex(in)
+        NoTex(in),
+        MeshName(namein)
     {
         Setup();
     }
@@ -69,7 +71,7 @@ namespace Eclipse
         {
             if (engine->world.CheckComponent<TextureComponent>(id))
             {
-                TextureComponent& tex = engine->world.GetComponent<TextureComponent>(id);
+                auto& tex = engine->world.GetComponent<MaterialComponent>(id);
 
                 // textures
                 unsigned int diffuseIdx = 0;
@@ -142,6 +144,21 @@ namespace Eclipse
         {
             std::cout << " Texture Name " << Textures[i].GetPath() << std::endl;
         }
+    }
+
+    unsigned int Mesh::GetMeshID()
+    {
+        return ID;
+    }
+
+    void Mesh::SetID(unsigned int MeshId)
+    {
+        ID = MeshId;
+    }
+
+    std::string Mesh::GetMeshName()
+    {
+        return MeshName;
     }
 
     std::vector<Vertex>& Mesh::GetVertices()

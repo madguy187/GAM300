@@ -23,7 +23,7 @@ void Eclipse::OpenGL_Context::on_key(int key, int scancode, int action, int mods
 
 static void on_scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-   // std::cout << "Mouse scroll wheel offset: (" << xoffset << ", " << yoffset << ")" << std::endl;
+    // std::cout << "Mouse scroll wheel offset: (" << xoffset << ", " << yoffset << ")" << std::endl;
 }
 
 static void on_window_size_callback(GLFWwindow* window, int width, int height)
@@ -153,7 +153,7 @@ bool Eclipse::OpenGL_Context::init(std::string configFile)
     windowRatioY = static_cast<float>(OpenGL_Context::height) / static_cast<float>(OpenGL_Context::prevHeight);
 
     int contextX, contextY;
-    glfwGetWindowPos(ptr_window,&contextX, &contextY);
+    glfwGetWindowPos(ptr_window, &contextX, &contextY);
     winPosX = contextX;
     winPosY = contextY;
 
@@ -364,18 +364,18 @@ double Eclipse::OpenGL_Context::update_time(double fps_calc_interval)
 
 void Eclipse::OpenGL_Context::CreateFrameBuffers()
 {
-    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::GAMEVIEW);
-    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::SCENEVIEW);
-    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::SWITCHINGVIEWS_TOP);
-    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::SWITCHINGVIEWS_BOTTOM);
-    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::SWITCHINGVIEWS_LEFT);
-    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::SWITCHINGVIEWS_RIGHT);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::FBM_GAME);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::FBM_SCENE);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::FBM_TOP);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::FBM_BOTTOM);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::FBM_LEFT);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::FBM_RIGHT);
 }
 
 void Eclipse::OpenGL_Context::CreateFrameBuffers(unsigned int width, unsigned int height, Eclipse::FrameBufferMode in)
 {
-    if (in == Eclipse::FrameBufferMode::NONE || in == Eclipse::FrameBufferMode::MAXCOUNT)
-    { 
+    if (in == Eclipse::FrameBufferMode::FBM_NONE || in == Eclipse::FrameBufferMode::MAXCOUNT)
+    {
         ENGINE_LOG_ASSERT(false, "Creating FrameBuffer with Invalid Type");
         std::exit(EXIT_FAILURE);
     }

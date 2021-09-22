@@ -134,7 +134,7 @@ namespace Eclipse
       "Perspective"
     };
     
-    template<> char const* enumStrings<MaterialComponent::ModelType>::data[] = 
+    template<> char const* enumStrings<MaterialModelType>::data[] =
     {
       "None",
       "BasicPrimitives",

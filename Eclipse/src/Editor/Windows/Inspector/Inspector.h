@@ -14,6 +14,7 @@ namespace Eclipse
 
 		bool ShowEntityProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowTransformProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowChildTransformProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowPointLightProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowSpotLightProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowDirectionalLightProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
@@ -31,8 +32,8 @@ namespace Eclipse
 		void ShowAddComponentList(Entity ID);
 		void ShowRemoveComponentList(Entity ID);
 
-		void ChangeTextureController(TextureComponent& Item);
-		void TextureList(TextureComponent& Item);
+		void ChangeTextureController(MaterialComponent& Item);
+		void TextureList(MaterialComponent& Item);
 		
 		void ChangeMeshController(MeshComponent& Item);
 		void MeshList(MeshComponent& Item);

@@ -2,6 +2,8 @@
 #include "pch.h"
 
 #define EPSILON 0.000001f
+#define PTR_ADD( PTR, OFFSET ) \
+  ((void *)(((char *)(PTR)) + (OFFSET)))
 
 // Entities
 using Entity = uint32_t;
@@ -135,4 +137,12 @@ enum class EditComponent
 {
     EC_ADDCOMPONENT,
     EC_REMOVECOMPONENT
+};
+
+enum class MaterialModelType
+{
+    MT_NONE = 0,
+    MT_BASIC = 1,
+    MT_MODELS3D = 2,
+    MT_MAXCOUNT
 };

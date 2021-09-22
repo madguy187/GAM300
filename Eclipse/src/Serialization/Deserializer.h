@@ -69,10 +69,10 @@ namespace Eclipse
 		}
 		
 		template <>
-		inline void ReadAttributeFromElement(const std::string& att_name, MaterialComponent::ModelType& att_data)
+		inline void ReadAttributeFromElement(const std::string& att_name, MaterialModelType& att_data)
 		{
 			std::string str = GetAttributeValue(att_name);
-			att_data = lexical_cast_toEnum<MaterialComponent::ModelType>(str);
+			att_data = lexical_cast_toEnum<MaterialModelType>(str);
 		}
 
 		template <>

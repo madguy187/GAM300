@@ -15,6 +15,7 @@
 #include "ECS/ComponentManager/Components/ParentChildComponent.h"
 #include "ECS/ComponentManager/Components/LightComponent.h"
 #include "ECS/ComponentManager/Components/ScriptComponent.h"
+#include "ECS/ComponentManager/Components/ChildTransformComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
@@ -26,6 +27,7 @@
 #include "ECS/SystemManager/Systems/System/MaterialSystem.h"
 #include "Serialization/SerializationManager.h"
 #include "ECS/SystemManager/Systems/System/GridSystem.h"
+
 bool Tester1(const Test1& e)
 {
     std::cout << "Engine.cpp Tester1" << std::endl;
@@ -83,6 +85,7 @@ namespace Eclipse
         world.RegisterComponent<ParentChildComponent>();
         world.RegisterComponent<LightComponent>();
         world.RegisterComponent<ScriptComponent>();
+        world.RegisterComponent<ChildTransformComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
@@ -201,7 +204,7 @@ namespace Eclipse
             }
 
             // GRID SYSTEM =============================
-            world.Update<GridSystem>();
+            //world.Update<GridSystem>();
 
             world.Update<CameraSystem>();
 
@@ -217,7 +220,7 @@ namespace Eclipse
             engine->GraphicsManager.GlobalFrameBufferBind();
 
             // Reset DebugBoxes =============================
-            engine->GraphicsManager.ResetInstancedDebugBoxes();
+            //engine->GraphicsManager.ResetInstancedDebugBoxes();
 
             // LIGHTINGSYSTEM =============================
             world.Update<LightingSystem>();
@@ -228,10 +231,10 @@ namespace Eclipse
             world.Update<RenderSystem>();
 
             // Material SYstem =============================
-            world.Update<MaterialSystem>();
+            //world.Update<MaterialSystem>();
 
             // GRID DRAW ============================= Must be last of All Renders
-            engine->GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
+            engine->GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
 
             mono.Update();
 

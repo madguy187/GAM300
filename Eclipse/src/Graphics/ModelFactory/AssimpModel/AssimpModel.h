@@ -13,6 +13,8 @@
 #include "Graphics/Grid/IAABB.h"
 #include "Graphics/Grid/AABB.h"
 
+#include "ECS/ComponentManager/Components/ChildTransformComponent.h"
+
 namespace Eclipse
 {
     //TEST CODE
@@ -27,6 +29,7 @@ namespace Eclipse
 
         bool NoTextures = false;
         std::vector<Texture> textures;
+        std::string MeshName;
     };
 
     class AssimpModel
@@ -44,8 +47,8 @@ namespace Eclipse
         std::vector<glm::vec3> AllVertices;
         std::vector<MeshData> meshData;
 
-        void ProcessMesh(aiMesh* mesh, const aiScene* scene);
-        std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type);
+        void ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string& MeshName);
+        std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type, std::string& MeshName);
         void ProcessNode(aiNode* node, const aiScene* scene);
         float GetLargestAxisValue(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         void ComputeAxisMinMax(std::vector<glm::vec3>& vertices, std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
@@ -60,7 +63,7 @@ namespace Eclipse
         AssimpModel(bool noTex, std::string& NameOfModels, std::string& Directorys, std::vector<Mesh> Meshess, std::vector<Texture> Textures_loadeds);
 
         void LoadAssimpModel(std::string path);
-        void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID , unsigned int id);
+        void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, unsigned int id);
         void Cleanup();
         void SetName(std::string& name);
         std::string GetName();

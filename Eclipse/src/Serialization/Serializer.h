@@ -100,9 +100,9 @@ namespace Eclipse
 		}
 		
 		template <>
-		inline void AddAttributeToElement(const std::string& att_name, const MaterialComponent::ModelType& att_data)
+		inline void AddAttributeToElement(const std::string& att_name, const MaterialModelType& att_data)
 		{
-			_currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<MaterialComponent::ModelType>(const_cast<MaterialComponent::ModelType&>(att_data)).c_str());
+			_currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<MaterialModelType>(const_cast<MaterialModelType&>(att_data)).c_str());
 		}
 		
 		template <>

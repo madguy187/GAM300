@@ -376,13 +376,13 @@ namespace Eclipse
 
     void Grid::SetDistance(AABBNode& Nodein, AABBComponent& aabbin, unsigned int id)
     {
-        Nodein.aabb.DistanceToObject = Nodein.aabb.Max.x - aabbin.max.getX();
+        Nodein.aabb.DistanceToObject = Nodein.aabb.Max.x - aabbin.Max.getX();
         /*engine->GridManager->*/gridArray[Nodein.aabb.GetEntityID()].aabb.DistanceToObject = Nodein.aabb.DistanceToObject;
     }
 
     void Grid::SetDistance(AABBNode& Nodein, AABBComponent& aabbin)
     {
-        Nodein.aabb.DistanceToObject = Nodein.aabb.Max.x - aabbin.max.getX();
+        Nodein.aabb.DistanceToObject = Nodein.aabb.Max.x - aabbin.Max.getX();
     }
 
     void Grid::SetDistance(AABBNode& Nodein, DYN_AABB& aabbin )

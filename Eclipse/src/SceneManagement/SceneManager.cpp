@@ -178,7 +178,7 @@ namespace Eclipse
 			engine->gPicker.ResetScene();
 			CommandHistory::Clear();
 		}
-		engine->AssimpManager.ClearContainer();
+		//engine->AssimpManager.ClearContainer();
 		engine->world.Clear();
 		engine->gCamera.ResetScene();
 	}

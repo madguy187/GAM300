@@ -120,8 +120,8 @@ void main ()
 
         if( BasicPrimitives == 1)
         {
- 		  texDiff = texture(uTex2d, TxtCoord) * sdiffuse;
-		  texSpec = texture(uTex2d, TxtCoord) * sspecular;           
+ 		  texDiff = texture(uTex2d, TxtCoord); // * sdiffuse;
+		  texSpec = texture(uTex2d, TxtCoord); // * sspecular;           
         }
         else
         {

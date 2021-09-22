@@ -40,6 +40,7 @@ namespace Eclipse
 				break;
 			case PayloadSourceType::PST_IMAGE:
 				// For rendering 2D Image -> Need ask Graphics side
+				std::cout << "hi";
 				break;
 			default:
 				break;
@@ -50,8 +51,9 @@ namespace Eclipse
 	}
 
 	void DragAndDrop::StringPayloadTarget(const char* id, std::string& destination,
-		const char* cMsg, PayloadTargetType type)
+		const char* cMsg, PayloadTargetType type, Entity ID)
 	{
+		(void)ID;
 		if (ImGui::BeginDragDropTarget())
 		{
 			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(id);
@@ -63,6 +65,7 @@ namespace Eclipse
 				case PayloadTargetType::PTT_WIDGET:
 					if (id == "cs")
 					{
+						// Put it here Nico, ur script instance thing
 						std::filesystem::path temp = ((const char*)payload->Data);
 						destination = AssetBrowserWindow::GetFileName(temp.filename().string().c_str());
 					}
@@ -116,6 +119,9 @@ namespace Eclipse
 						bool selected = false;
 						if (ECGui::CreateSelectableButton(IndexJobNames[i], &selected))
 						{
+							EntityComponent* DestinationEntCom = nullptr;
+							EntityComponent* SourceEntCom = nullptr;
+
 							switch (i)
 							{
 							// Move index
@@ -133,6 +139,11 @@ namespace Eclipse
 								break;
 							// Parent Child
 							case 2:
+								DestinationEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(DestinationIndex_));
+								SourceEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(SourceIndex_));
+								DestinationEntCom->Child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
+								SourceEntCom->IsAChild = true;
+								SourceEntCom->Parent.push_back(engine->editorManager->GetEntityID(DestinationIndex_));
 								IsIndexJobSelected = false;
 								break;
 							// Cancel

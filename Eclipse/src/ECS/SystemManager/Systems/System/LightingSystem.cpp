@@ -38,7 +38,7 @@ namespace Eclipse
 
 					engine->LightManager.DrawDirectionalLight(
 						&DirectionalLight, // DirectionalLightComponent
-						engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), // FrameBufferID
+						engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_SCENE)->GetFrameBufferID(), // FrameBufferID
 						DirectionalLight.Counter, // ID used to loop in shaders
 						GL_FILL);
 				}
@@ -48,7 +48,7 @@ namespace Eclipse
 
 					engine->LightManager.DrawSpotLight(
 						&SpotLight, // SpotLightComponent
-						engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), // FrameBuffer ID
+						engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_SCENE)->GetFrameBufferID(), // FrameBuffer ID
 						SpotLight.Counter, // ID used to loop in shaders
 						GL_FILL);
 				}
@@ -58,7 +58,7 @@ namespace Eclipse
 
 					engine->LightManager.DrawPointLights(
 						&PointLight, // PointLightComponent
-						engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), // FrameBufferID
+						engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_SCENE)->GetFrameBufferID(), // FrameBufferID
 						PointLight.Counter, // ID used to loop in shaders
 						GL_FILL);
 				}

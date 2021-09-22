@@ -18,8 +18,8 @@ void Eclipse::PickingManager::GenerateAabb(unsigned int ID, TransformComponent& 
 
 	glm::vec3 halfExt = scale / 2.0f;
 	_aabb.center = ECVec3{ position.x, position.y, position.z };
-	_aabb.min = ECVec3{ position.x - halfExt.x, position.y - halfExt.y, position.z - halfExt.z };
-	_aabb.max = ECVec3{ position.x + halfExt.x, position.y + halfExt.y, position.z + halfExt.z };
+	_aabb.Min = ECVec3{ position.x - halfExt.x, position.y - halfExt.y, position.z - halfExt.z };
+	_aabb.Max = ECVec3{ position.x + halfExt.x, position.y + halfExt.y, position.z + halfExt.z };
 }
 
 void Eclipse::PickingManager::UpdateAabb(unsigned int ID)
@@ -32,8 +32,8 @@ void Eclipse::PickingManager::UpdateAabb(unsigned int ID)
 
 	glm::vec3 halfExt = scale / 2.0f;
 	_aabb.center = ECVec3{ position.x, position.y, position.z };
-	_aabb.min = ECVec3{ position.x - halfExt.x, position.y - halfExt.y, position.z - halfExt.z };
-	_aabb.max = ECVec3{ position.x + halfExt.x, position.y + halfExt.y, position.z + halfExt.z };
+	_aabb.Min = ECVec3{ position.x - halfExt.x, position.y - halfExt.y, position.z - halfExt.z };
+	_aabb.Max = ECVec3{ position.x + halfExt.x, position.y + halfExt.y, position.z + halfExt.z };
 }
 
 glm::vec3 Eclipse::PickingManager::ComputeCursorRayDirection()
