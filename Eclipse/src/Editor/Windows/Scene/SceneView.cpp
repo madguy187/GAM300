@@ -192,7 +192,8 @@ namespace Eclipse
 				break;
 			}
 		}
-		else if (ImGuizmo::IsOver() && ImGui::IsMouseReleased(0))
+		else if (!ImGuizmo::IsUsing() && ImGui::IsMouseReleased(0)
+			&& ECGui::IsItemHovered())
 		{
 			CommandHistory::DisableMergeForMostRecentCommand();
 		}
