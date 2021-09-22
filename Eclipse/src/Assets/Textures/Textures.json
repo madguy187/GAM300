@@ -17,6 +17,12 @@
       "path": "src/Assets/Textures/Folder_Icon.png",
       "spriteDimensions": [ 997, 743 ],
       "spriteIndex": [ 0, 0 ]
+    },
+	{
+      "textureName": "DDS_DX5",
+      "path": "src/Assets/Textures/TestDDS_DXT5.dds",
+      "spriteDimensions": [ 512, 444 ],
+      "spriteIndex": [ 0, 0 ]
     }
   ]
 }
