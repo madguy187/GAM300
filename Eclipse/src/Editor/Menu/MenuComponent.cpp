@@ -44,7 +44,19 @@ namespace Eclipse
 		{
 			bool selected = false;
 
-			if (ECGui::CreateMenuItem(key, &selected))
+			if (ECGui::CreateMenuItem(key, &selected, "CTRL+O"))
+			{
+				FileDialog::FileBrowser();
+			}
+		
+		
+		}
+
+		if (!strcmp(key, "Save"))
+		{
+			bool selected = false;
+
+			if (ECGui::CreateMenuItem(key, &selected, "CTRL+S"))
 			{
 				FileDialog::FileBrowser();
 			}
@@ -74,7 +86,7 @@ namespace Eclipse
 		{
 			bool selected = false;
 
-			if (ECGui::CreateMenuItem(key, &selected))
+			if (ECGui::CreateMenuItem(key, &selected, "CTRL+Z"))
 			{
 				CommandHistory::Undo();
 			}
@@ -84,7 +96,7 @@ namespace Eclipse
 		{
 			bool selected = false;
 
-			if (ECGui::CreateMenuItem(key, &selected))
+			if (ECGui::CreateMenuItem(key, &selected, "CTRL+Y"))
 			{
 				CommandHistory::Redo();
 			}

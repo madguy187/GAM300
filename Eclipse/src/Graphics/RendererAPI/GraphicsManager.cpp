@@ -511,6 +511,19 @@ FrameBuffer::RenderMode Eclipse::GraphicsManager::GetRenderMode(FrameBufferMode 
     return mRenderContext.GetFramebuffer(mode)->GetRenderMode();
 }
 
+void Eclipse::GraphicsManager::WindowCloseCallback(GLFWwindow* window)
+{
+    if (engine->GetEditorState())
+    {
+        engine->editorManager->GetMenuBar().SetExitStatus(true);
+        glfwSetWindowShouldClose(OpenGL_Context::GetWindow(), GLFW_FALSE);
+    }
+    else
+    {
+        glfwSetWindowShouldClose(OpenGL_Context::GetWindow(), GLFW_TRUE);
+    }
+}
+
 //float getSignedDistanceToPlan(const glm::vec3& point) const
 //{
 //    return glm::dot(normal, point) - distance;

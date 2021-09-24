@@ -26,6 +26,7 @@
 #include "ECS/SystemManager/Systems/System/MaterialSystem.h"
 #include "Serialization/SerializationManager.h"
 #include "ECS/SystemManager/Systems/System/GridSystem.h"
+#include "Editor/ECGuiAPI/ECGuiInputHandler.h"
 
 bool Tester1(const Test1& e)
 {
@@ -64,6 +65,7 @@ namespace Eclipse
         /*bool x = false;
         std::string msg = "woo";
         ENGINE_LOG_ASSERT(x, msg.c_str());*/
+        glfwSetWindowCloseCallback(OpenGL_Context::GetWindow(), GraphicsManager.WindowCloseCallback);
     }
 
     void Engine::Run()
@@ -93,7 +95,7 @@ namespace Eclipse
         world.RegisterSystem<GridSystem>();
         world.RegisterSystem<PickingSystem>();
         world.RegisterSystem<PhysicsSystem>();
-
+       
         // Render System
         Signature RenderSys = RenderSystem::RegisterAll();
         world.RegisterSystemSignature<RenderSystem>(RenderSys);
@@ -183,6 +185,7 @@ namespace Eclipse
             }
 
             currTime = newTime;
+            ECGuiInputHandler::Update();
 
             ImGuiSetup::Begin(IsEditorActive);
 

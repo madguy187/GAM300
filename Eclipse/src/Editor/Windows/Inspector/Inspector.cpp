@@ -86,9 +86,8 @@ namespace Eclipse
 				ECGui::DrawTextWidget<std::string>("Entity Tag", lexical_cast_toStr<EntityType>(entCom.Tag));
 				ECGui::DrawTextWidget<const char*>("Edit Name:", "");
 				ECGui::InsertSameLine();
-				ECGui::DrawInputTextHintWidget("InputEntityName", "Enter Entity Name", entNameInput, 256);
-
-				if (ECGui::ButtonBool("Set Name"))
+				if (ECGui::DrawInputTextHintWidget("InputEntityName", "Enter Entity Name", entNameInput,
+					256, true, ImGuiInputTextFlags_EnterReturnsTrue))
 				{
 					std::string oldName = entCom.Name;
 					entCom.Name = entNameInput;

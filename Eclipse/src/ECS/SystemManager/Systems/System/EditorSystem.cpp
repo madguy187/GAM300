@@ -8,8 +8,6 @@ namespace Eclipse
 	{
 		if (engine->GetEditorState())
 		{
-			ECGuiInputHandler::Update();
-
 			for (const auto& window : engine->editorManager->GetAllWindowsByRef())
 			{
 				window->Update();

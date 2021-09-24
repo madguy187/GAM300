@@ -124,9 +124,9 @@ namespace Eclipse
 		}
 	}
 
-	bool ECGui::CreateMenuItem(const char* name, bool* open)
+	bool ECGui::CreateMenuItem(const char* name, bool* open, const char* shortcut)
 	{
-		return ImGuiAPI::CreateMenuItem(name, open);
+		return ImGuiAPI::CreateMenuItem(name, open, shortcut);
 	}
 
 	bool ECGui::DrawDataHeader(const char* varname, ImGuiTextFilter& filter)
