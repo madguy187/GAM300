@@ -56,43 +56,44 @@ namespace Eclipse
         return Face.getSignedDistanceToPlan(Center) > -Radius;
     }
 
+    bool CullingManager::CheckOnFace(EachFace& Face, glm::vec3 Center, float Radius)
+    {
+        return Face.getSignedDistanceToPlan(Center) > -Radius;
+    }
+
     bool CullingManager::CheckOnFrustum(const TransformComponent& Transform, CameraComponent::CameraType CameraType)
     {
+        int CollisionFlag = 0;
+
         auto& camFrustum = engine->gCullingManager->FrustrumFaceInfo(CameraType);
-
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraType));
-
         glm::vec3 globalScale = Transform.scale.ConvertToGlmVec3Type();
-
         float maxScale = max(max(globalScale.x, globalScale.y), globalScale.z);
 
-        CullingManager globalSphere(Transform.position.ConvertToGlmVec3Type(), (maxScale * 0.5f));
+        glm::vec3 Center = Transform.position.ConvertToGlmVec3Type();
+        float Radius = maxScale * 0.5f;
 
-        return (globalSphere.CheckOnFace(camFrustum.LeftFace) &&
-            globalSphere.CheckOnFace(camFrustum.RightFace) &&
-            globalSphere.CheckOnFace(camFrustum.FarFace) &&
-            globalSphere.CheckOnFace(camFrustum.NearFace) &&
-            globalSphere.CheckOnFace(camFrustum.TopFace) &&
-            globalSphere.CheckOnFace(camFrustum.BottomFace));
+        //CollisionFlag |= CheckOnFace(camFrustum.LeftFace, Center, Radius);
+        //CollisionFlag |= CheckOnFace(camFrustum.RightFace, Center, Radius);
+        //CollisionFlag |= CheckOnFace(camFrustum.FarFace, Center, Radius);
+        //CollisionFlag |= CheckOnFace(camFrustum.NearFace, Center, Radius);
+        //CollisionFlag |= CheckOnFace(camFrustum.TopFace, Center, Radius);
+        //CollisionFlag |= CheckOnFace(camFrustum.BottomFace, Center, Radius);
+
+
+        return (CheckOnFace(camFrustum.LeftFace, Center, Radius) &&
+            CheckOnFace(camFrustum.RightFace, Center, Radius) &&
+            CheckOnFace(camFrustum.FarFace, Center, Radius) &&
+            CheckOnFace(camFrustum.NearFace, Center, Radius) &&
+            CheckOnFace(camFrustum.TopFace, Center, Radius) &&
+            CheckOnFace(camFrustum.BottomFace, Center, Radius));
     }
 
     bool CullingManager::ToRenderOrNot(unsigned int ID)
     {
         auto& Transform = engine->world.GetComponent<TransformComponent>(ID);
+        return CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera);
 
-        if (GameFrustumCull)
-        {
-            return CheckOnFrustum(Transform, CameraComponent::CameraType::Game_Camera);
-        }
-        else if (SceneFrustumCull)
-        {
-            return CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera);
-        }
-        else if (GameFrustumCull && SceneFrustumCull)
-        {
-            return CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera) &&
-                CheckOnFrustum(Transform, CameraComponent::CameraType::Game_Camera);
-        }
         //std::cout << " ON GAME FRUSTRUM : " << CheckOnFrustum(Transform, CameraComponent::CameraType::Game_Camera) << std::endl;
         //std::cout << " ON SCENE FRUSTRUM : " << CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera) << std::endl;
         //return CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera);
