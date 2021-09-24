@@ -391,7 +391,7 @@ namespace Eclipse
 				{
 					ECGui::DrawTextWidget<const char*>("Mesh ", "");
 					ECGui::InsertSameLine();
-					ChangeMeshController(_Render);
+					ChangeMeshController(ID);
 				}
 				ImGui::PopStyleColor();
 			}
@@ -812,42 +812,46 @@ namespace Eclipse
 		
 	}
 
-	void InspectorWindow::ChangeMeshController(MeshComponent& Item)
+	void InspectorWindow::ChangeMeshController(Entity ID)
 	{
+		auto& Item = engine->world.GetComponent<MeshComponent>(ID);
+
 		ImVec2 buttonSize = { 180,20 };
-		if (ImGui::Button((Item.modelRef.c_str()), buttonSize))
+
+		if (engine->world.CheckComponent<ModeLInforComponent>(ID))
 		{
-			ImGui::OpenPopup("Mesh Changer");
+			if (ImGui::Button((Item.MeshName.c_str()), buttonSize))
+			{
+				ImGui::OpenPopup("Mesh Changer");
+			}
+		}
+		else
+		{
+			if (ImGui::Button((Item.modelRef.c_str()), buttonSize))
+			{
+				ImGui::OpenPopup("Mesh Changer");
+			}
 		}
 		if (ImGui::BeginPopup("Mesh Changer"))
 		{
 			ImGui::SetScrollY(5);
 			ChildSettings settings{ "Mesh Changer", ImVec2{ 250,250 } };
-			ECGui::DrawChildWindow<void(MeshComponent&)>(settings, std::bind(&InspectorWindow::MeshList,
-				this, std::placeholders::_1), Item);
+			ECGui::DrawChildWindow<void(Entity&)>(settings, std::bind(&InspectorWindow::MeshList,
+				this, std::placeholders::_1), ID);
 			
 			ImGui::EndPopup();
 		}
 	}
 
-	void InspectorWindow::MeshList(MeshComponent& Item)
+	void InspectorWindow::MeshList(Entity ID)
 	{
+		auto& Item = engine->world.GetComponent<MeshComponent>(ID);
 		static ImGuiTextFilter AddComponentFilter;
-		AddComponentFilter.Draw("Filter", 160);
-
-		// Single Meshes
-		//std::unordered_map<std::string, std::unique_ptr<Mesh>> SingleMeshMap;
-
-		// Container to store Models who are loaded once
-		//std::unordered_map<std::string, std::unique_ptr<AssimpModel>> AssimpLoadedModels;
-
-		std::vector<std::string> tempNamesForMesh
-			= { {"Square"},{"Triangle"},{"Circle"},{"Lines"},{"Lightsquare"},{"Sphere"},{"Plane"}
-				,{"Cube"},{"Cylinder"},{"Cone"},{"Torus"} ,{"Pyramid"} ,{"Lines3D"} };
-		
 		TextureComponent FolderIcon;
+
+
+		AddComponentFilter.Draw("Filter", 160);
 		FolderIcon.textureRef = Graphics::textures.find("FolderIcon")->first;
-		//use image button to change the Graphics::models.find["models"]->find;
 		TextureComponent icon = FolderIcon;
 		static float padding = 16.0f;
 		static float thumbnaimsize = 50;
@@ -868,30 +872,62 @@ namespace Eclipse
 
 		//use model info component to identify if the dude is basic or not 
 
-		for (int i = 0 ; i <  Graphics::models.size() ; ++i)
+		if (!engine->world.CheckComponent<ModeLInforComponent>(ID))
 		{
-			/*TextureComponent FolderIcon;
-			FolderIcon.textureRef = Graphics::textures.find(tempNamesForMesh[i].c_str())->first;
-			TextureComponent icon = FolderIcon;*/
-
-			if (AddComponentFilter.PassFilter((tempNamesForMesh[i].c_str())))
+			for (int i = 0; i < engine->AssimpManager.AllPrimitiveModelsNames.size(); ++i)
 			{
-				ImGui::ImageButton((void*)Graphics::textures[(icon).textureRef].GetHandle(),
-					{thumbnaimsize,thumbnaimsize},
-					{ 1,0 },
-					{ 2,1 });
+				/*TextureComponent FolderIcon;
+				FolderIcon.textureRef = Graphics::textures.find(tempNamesForMesh[i].c_str())->first;
+				TextureComponent icon = FolderIcon;*/
 
-				if (ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
+				if (AddComponentFilter.PassFilter((engine->AssimpManager.AllPrimitiveModelsNames[i].c_str())))
 				{
-					Item.modelRef = Graphics::models.find((tempNamesForMesh[i].c_str()))->first;
-					AddComponentFilter.Clear();
+					ImGui::ImageButton((void*)Graphics::textures[(icon).textureRef].GetHandle(),
+						{ thumbnaimsize,thumbnaimsize },
+						{ 1,0 },
+						{ 2,1 });
+
+					if (ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
+					{
+						Item.modelRef = Graphics::models.find((engine->AssimpManager.AllPrimitiveModelsNames[i].c_str()))->first;
+						AddComponentFilter.Clear();
+					}
+
+					ImGui::TextWrapped(engine->AssimpManager.AllPrimitiveModelsNames[i].c_str());
+					ImGui::NextColumn();
 				}
 
-				ImGui::TextWrapped(tempNamesForMesh[i].c_str());
-				ImGui::NextColumn();
 			}
-
 		}
+		else
+		{
+			for (int i = 0; i < engine->AssimpManager.AllMeshNames.size(); ++i)
+			{
+				/*TextureComponent FolderIcon;
+				FolderIcon.textureRef = Graphics::textures.find(tempNamesForMesh[i].c_str())->first;
+				TextureComponent icon = FolderIcon;*/
+
+				if (AddComponentFilter.PassFilter((engine->AssimpManager.AllMeshNames[i].c_str())))
+				{
+					ImGui::ImageButton((void*)Graphics::textures[(icon).textureRef].GetHandle(),
+						{ thumbnaimsize,thumbnaimsize },
+						{ 1,0 },
+						{ 2,1 });
+
+					if (ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
+					{
+						engine->AssimpManager.SetMeshComponent(ID, engine->AssimpManager.AllMeshNames[i].c_str());
+						//Item.MeshName = Graphics::models.find((engine->AssimpManager.AllMeshNames[i].c_str()))->first;
+						AddComponentFilter.Clear();
+					}
+
+					ImGui::TextWrapped(engine->AssimpManager.AllMeshNames[i].c_str());
+					ImGui::NextColumn();
+				}
+
+			}
+		}
+
 	}
 
 	void InspectorWindow::RemoveElementFromVectorStringList(std::vector<std::string>& vecList)
