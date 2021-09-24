@@ -33,6 +33,7 @@ namespace Eclipse
 		{
 			if (engine->GetPlayState())
 			{
+				//Do temp save.
 				engine->SetPlayState(false);
 				engine->SetPauseState(false);
 				ImGui::SetWindowFocus("Scene View");

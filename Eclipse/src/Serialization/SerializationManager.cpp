@@ -75,7 +75,6 @@ namespace Eclipse
 			DeserializeComponent<PointLightComponent>(w, ent) &&
 			DeserializeComponent<SpotLightComponent>(w, ent) &&
 			DeserializeComponent<DirectionalLightComponent>(w, ent) &&
-			DeserializeComponent<TextureComponent>(w, ent) &&
 			DeserializeComponent<LightComponent>(w, ent))
 		{
 			if (w.CheckComponent<CameraComponent>(ent))
