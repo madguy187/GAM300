@@ -32,6 +32,9 @@ namespace Eclipse
 		glm::vec2 GetSceneBufferPos();
 		glm::vec2 GetSceneBufferSize();
 		glm::vec2 GetCursorScreenPos();
+		int GetGizmoType();
+
+		void SetGizmoType(int type);
 	private:
 		glm::vec2 mViewportSize;
 		glm::vec2 mSceneBufferSize;

@@ -403,4 +403,14 @@ namespace Eclipse
 	{
 		return mCursorScreenPos.ConvertToGlmVec2Type();
 	}
+
+	int SceneWindow::GetGizmoType()
+	{
+		return m_GizmoType;
+	}
+
+	void SceneWindow::SetGizmoType(int type)
+	{
+		m_GizmoType = type;
+	}
 }

@@ -26,6 +26,7 @@ namespace Eclipse
 	void BaseSwitchViewWindow::RunMainWindow()
 	{
 		ImVec2 viewportPanelSize = ECGui::GetWindowSize();
+		int GizmoType = (engine->editorManager->GetEditorWindow<SceneWindow>())->GetGizmoType();
 
 		if (mViewportSize != *((glm::vec2*)&viewportPanelSize))
 		{
@@ -37,17 +38,19 @@ namespace Eclipse
 		ChildSettings settings;
 		settings.Name = "RightSwitchViewFrameBuffers";
 		settings.Size = ImVec2{ mViewportSize.x, mViewportSize.y };
-		ECGui::DrawChildWindow<void()>(settings, std::bind(&BaseSwitchViewWindow::RunFrameBuffer, this));
+		ECGui::DrawChildWindow<void(int)>(settings, 
+			std::bind(&BaseSwitchViewWindow::RunFrameBuffer, this, std::placeholders::_1),
+			GizmoType);
 	}
 
-	void BaseSwitchViewWindow::RunFrameBuffer()
+	void BaseSwitchViewWindow::RunFrameBuffer(int GizmoType)
 	{
 		RenderSettingsHeader();
 		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
 			ImVec2{ mViewportSize.x, mViewportSize.y * 0.92f }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
-		if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
-			OnGizmoUpdateEvent();
+		if (!engine->editorManager->IsEntityListEmpty() && GizmoType != -1)
+			OnGizmoUpdateEvent(GizmoType);
 
 		if (ECGui::IsItemHovered())
 		{
@@ -77,32 +80,32 @@ namespace Eclipse
 
 	void BaseSwitchViewWindow::OnKeyPressedEvent()
 	{
-		ImGuiIO& io = ImGui::GetIO();
+		//ImGuiIO& io = ImGui::GetIO();
 
-		// Gizmos
-		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Q)))
-		{
-			if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
-				m_GizmoType = -1;
-		}
-		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_W)))
-		{
-			if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
-				m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
-		}
-		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_E)))
-		{
-			if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
-				m_GizmoType = ImGuizmo::OPERATION::SCALE;
-		}
-		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_R)))
-		{
-			if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
-				m_GizmoType = ImGuizmo::OPERATION::ROTATE;
-		}
+		//// Gizmos
+		//if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Q)))
+		//{
+		//	if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
+		//		m_GizmoType = -1;
+		//}
+		//else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_W)))
+		//{
+		//	if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
+		//		m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+		//}
+		//else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_E)))
+		//{
+		//	if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
+		//		m_GizmoType = ImGuizmo::OPERATION::SCALE;
+		//}
+		//else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_R)))
+		//{
+		//	if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
+		//		m_GizmoType = ImGuizmo::OPERATION::ROTATE;
+		//}
 	}
 
-	void BaseSwitchViewWindow::OnGizmoUpdateEvent()
+	void BaseSwitchViewWindow::OnGizmoUpdateEvent(int GizmoType)
 	{
 		Entity selectedEntity = engine->editorManager->GetSelectedEntity();
 
@@ -128,7 +131,7 @@ namespace Eclipse
 		// Snapping
 		glm::vec3 snapValues{};
 
-		switch (m_GizmoType)
+		switch (GizmoType)
 		{
 		case ImGuizmo::OPERATION::TRANSLATE:
 			snapValues =
@@ -155,7 +158,7 @@ namespace Eclipse
 		ImGuiIO& io = ImGui::GetIO();
 
 		ImGuizmo::Manipulate(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx),
-			(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
+			(ImGuizmo::OPERATION)GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
 			nullptr, io.KeyCtrl ? glm::value_ptr(snapValues) : nullptr);
 
 		if (ImGuizmo::IsUsing() && ECGui::IsItemHovered())
@@ -166,7 +169,7 @@ namespace Eclipse
 
 			glm::vec3 deltaRotation = rotation - transCom.rotation.ConvertToGlmVec3Type();
 
-			switch (m_GizmoType)
+			switch (GizmoType)
 			{
 			case ImGuizmo::OPERATION::TRANSLATE:
 				transCom.position = translation;
