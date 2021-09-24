@@ -37,7 +37,8 @@ namespace Eclipse
 
 		PxSceneDesc sceneDesc(Px_Physics->getTolerancesScale());
 		sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
-
+		sceneDesc.filterShader = contactReportFilterShader;
+		sceneDesc.simulationEventCallback = &Px_ContactReportCallback;
 		if (!sceneDesc.cpuDispatcher)
 		{
 			PxDefaultCpuDispatcher* mCpuDispatcher = PxDefaultCpuDispatcherCreate(2);
