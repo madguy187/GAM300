@@ -165,6 +165,32 @@ namespace Eclipse
 		objects.clear();
 	}
 
+	MonoObject* MonoManager::CreateMonoObject(std::string scriptName, Entity entity)
+	{
+		MonoClass* base = mono_class_from_name(APIImage, "Eclipse", scriptName.c_str());
+		MonoMethod* method = mono_class_get_method_from_name(base, "InitBehavior", -1);
+		if (method == nullptr) {
+			std::cout << "Failed loading class method" << std::endl;
+			return nullptr;
+		}
+
+		MonoObject* obj = mono_object_new(mono_domain_get(), base);
+
+		if (obj == nullptr) {
+			std::cout << "Failed loading class instance " << mono_class_get_name(base) << std::endl;
+			return nullptr;
+		}
+
+		void* args[2];
+		uint32_t handle = mono_gchandle_new(obj, true);
+		args[0] = &handle;
+		Entity ent = entity;
+		args[1] = &ent;
+		mono_runtime_invoke(method, obj, args, NULL);
+
+		return obj;
+	}
+
 	void MonoManager::GenerateDLL()
 	{
 		ENGINE_CORE_INFO("Mono: Generating DLLs");

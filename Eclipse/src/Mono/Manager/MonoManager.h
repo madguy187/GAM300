@@ -3,6 +3,12 @@
 
 namespace Eclipse
 {
+	struct MonoScript
+	{
+		std::string scriptName;
+		MonoObject* obj;
+	};
+
 	class MonoManager
 	{
 		MonoDomain* domain;
@@ -22,6 +28,7 @@ namespace Eclipse
 		void Update();
 		void RestartMono();
 		void StopMono();
+		MonoObject* CreateMonoObject(std::string scriptName, Entity entity);
 
 		// Gets image containing all API Scripts
 		MonoImage* GetAPIImage();

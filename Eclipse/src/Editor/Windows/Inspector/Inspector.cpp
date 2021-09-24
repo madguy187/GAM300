@@ -3,6 +3,7 @@
 #include "ECS/ComponentManager/Components/EntityComponent.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RigidBodyComponent.h"
+#include "ECS/ComponentManager/Components/ScriptComponent.h"
 #include "Editor/Windows/SwitchViews/TopSwitchViewWindow.h"
 
 namespace Eclipse
@@ -499,33 +500,33 @@ namespace Eclipse
 		* When script comp is up, just replace the entity com here with ur script,
 		* and the vector with the vector of stdstrings in ur script com
 		*/
-		if (engine->world.CheckComponent<EntityComponent>(ID))
+		if (engine->world.CheckComponent<ScriptComponent>(ID))
 		{
 			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
 			{
-				auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
+				auto& scriptCom = engine->world.GetComponent<ScriptComponent>(ID);
 
 				ECGui::DrawTextWidget<const char*>(my_strcat("List of Scripts (", 
-					entCom.ScriptListComTest.size(), "):").c_str(), "");
+					scriptCom.scriptList.size(), "):").c_str(), "");
 
-				for (size_t i = 0; i < entCom.ScriptListComTest.size(); ++i)
+				for (size_t i = 0; i < scriptCom.scriptList.size(); ++i)
 				{
 					if (!IsRemovingScripts)
 					{
 						ECGui::DrawInputTextHintWidget(my_strcat("ScriptName", i + 1).c_str(), "Drag Script files here",
-							const_cast<char*>(entCom.ScriptListComTest[i].c_str()), 256,
+							const_cast<char*>(scriptCom.scriptList[i].scriptName.c_str()), 256,
 							true, ImGuiInputTextFlags_ReadOnly);
-						engine->editorManager->DragAndDropInst_.StringPayloadTarget("cs", entCom.ScriptListComTest[i], 
+						engine->editorManager->DragAndDropInst_.StringPayloadTarget("cs", scriptCom.scriptList[i].scriptName,
 							"Script File inserted.", PayloadTargetType::PTT_WIDGET, ID);
 					}
 					else
 					{
 						bool selected = false;
 
-						if (ECGui::CreateSelectableButton(my_strcat(entCom.ScriptListComTest[i], " ", i + 1).c_str(), &selected))
+						if (ECGui::CreateSelectableButton(my_strcat(scriptCom.scriptList[i].scriptName.c_str(), " ", i + 1).c_str(), &selected))
 						{
-							auto posItr = entCom.ScriptListComTest.begin() + i;
-							entCom.ScriptListComTest.erase(posItr);
+							auto posItr = scriptCom.scriptList.begin() + i;
+							scriptCom.scriptList.erase(posItr);
 						}
 					}
 				}
@@ -536,7 +537,8 @@ namespace Eclipse
 					{
 						std::string fucknicosmother;
 						fucknicosmother.reserve(256);
-						entCom.ScriptListComTest.push_back(fucknicosmother);
+						scriptCom.scriptList.push_back({});
+						scriptCom.scriptList.back().scriptName = fucknicosmother;
 					}
 
 					ECGui::InsertSameLine();

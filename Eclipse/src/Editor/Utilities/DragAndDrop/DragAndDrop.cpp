@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "DragAndDrop.h"
 #include"Editor/Windows/AssetBrowser/AssetBrowser.h"
+#include "ECS/ComponentManager/Components/ScriptComponent.h"
 
 namespace Eclipse
 {
@@ -68,6 +69,10 @@ namespace Eclipse
 						// Put it here Nico, ur script instance thing
 						std::filesystem::path temp = ((const char*)payload->Data);
 						destination = AssetBrowserWindow::GetFileName(temp.filename().string().c_str());
+						auto& scriptCom = engine->world.GetComponent<ScriptComponent>(ID);
+						scriptCom.scriptList.push_back({});
+						scriptCom.scriptList.back().scriptName = destination;
+						
 					}
 					else
 					{
