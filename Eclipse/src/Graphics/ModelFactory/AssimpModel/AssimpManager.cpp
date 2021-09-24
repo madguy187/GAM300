@@ -193,11 +193,11 @@ namespace Eclipse
 
     void AssimpModelManager::PrintLoadedModels()
     {
-        PrintOutModelsLoadedOnce();
-        PrintOutModelTextureMap();
+        // PrintOutModelsLoadedOnce();
+        // PrintOutModelTextureMap();
         PrintOutModelMap();
-        PrintOutAllTextures();
-        PrintOutAllMeshes();
+        // PrintOutAllTextures();
+         //PrintOutAllMeshes();
     }
 
     void AssimpModelManager::Cleanup(MeshComponent& in)
@@ -325,6 +325,16 @@ namespace Eclipse
             auto& ModelPath = (Model.second);
 
             std::cout << "Model Name : " << ModelName << " ==== " << ModelPath << std::endl;
+        }
+        std::cout << "-------------------------------------------------------------------" << std::endl;
+        std::cout << std::endl;
+
+        // ModelInformation loaded
+        std::cout << "All Meshes Count " << AllMeshNames.size() << std::endl;
+        std::cout << "-------------------------------------------------------------------" << std::endl;
+        for (auto const& Model : AllMeshNames)
+        {
+            std::cout << "Model Name : " << Model << std::endl;
         }
         std::cout << "-------------------------------------------------------------------" << std::endl;
         std::cout << std::endl;

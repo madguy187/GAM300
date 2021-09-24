@@ -112,9 +112,9 @@ namespace Eclipse
 		bool CheckApplyLighting();
 
 		// Draws =============================
-		void DrawPointLights(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
-		void DrawDirectionalLight(DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
-		void DrawSpotLight(SpotLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
+		void DrawPointLights(unsigned int EntityId,PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
+		void DrawDirectionalLight(unsigned int EntityId,DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
+		void DrawSpotLight(unsigned int EntityId,SpotLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
 
 		// LightProperties =============================
 		void CreateAttenuationLevels();

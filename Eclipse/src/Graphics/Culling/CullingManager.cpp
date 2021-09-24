@@ -33,8 +33,8 @@ namespace Eclipse
 
     FrustrumFaces CullingManager::FrustrumFaceInfo(CameraComponent::CameraType CameraType)
     {
-        auto& cam = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Game_Camera));
-        auto& trans = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Game_Camera));
+        auto& cam = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraType));
+        auto& trans = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraType));
 
         FrustrumFaces frustum;
         const float halfVSide = 500.0f * tanf(glm::radians(cam.fov) * .5f);
@@ -56,9 +56,11 @@ namespace Eclipse
         return Face.getSignedDistanceToPlan(Center) > -Radius;
     }
 
-    bool CullingManager::CheckOnFrustum(FrustrumFaces& camFrustum, const TransformComponent& Transform)
+    bool CullingManager::CheckOnFrustum(const TransformComponent& Transform, CameraComponent::CameraType CameraType)
     {
-        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Game_Camera));
+        auto& camFrustum = engine->gCullingManager->FrustrumFaceInfo(CameraType);
+
+        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraType));
 
         glm::vec3 globalScale = Transform.scale.ConvertToGlmVec3Type();
 
@@ -78,6 +80,62 @@ namespace Eclipse
     {
         auto& Transform = engine->world.GetComponent<TransformComponent>(ID);
 
-        return (CheckOnFrustum(FrustrumFaceInfo(CameraComponent::CameraType::Editor_Camera), Transform));
+        if (GameFrustumCull)
+        {
+            return CheckOnFrustum(Transform, CameraComponent::CameraType::Game_Camera);
+        }
+        else if (SceneFrustumCull)
+        {
+            return CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera);
+        }
+        else if (GameFrustumCull && SceneFrustumCull)
+        {
+            return CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera) &&
+                CheckOnFrustum(Transform, CameraComponent::CameraType::Game_Camera);
+        }
+        //std::cout << " ON GAME FRUSTRUM : " << CheckOnFrustum(Transform, CameraComponent::CameraType::Game_Camera) << std::endl;
+        //std::cout << " ON SCENE FRUSTRUM : " << CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera) << std::endl;
+        //return CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera);
+    }
+
+    void CullingManager::Insert(AABBComponent& In, unsigned int ID)
+    {
+        std::shared_ptr< AABBComponent> SameAABB = std::make_shared<AABBComponent>(In);
+        std::shared_ptr< AABBCulling> hi = std::make_shared<AABBCulling>();
+        hi->Obj = &In;
+        engine->gCullingManager->CullContainer.emplace(ID, hi);
+        engine->gCullingManager->CullContainer[ID]->AABB.SetMaxMin(In.Max, In.Min, ID);
+        FrustrumCollisionTree.InsertObject(engine->gCullingManager->CullContainer[ID]);
+    }
+
+    std::vector<unsigned int> CullingManager::ReturnContacted()
+    {
+        return FrustrumCollisionTree.QueryAgainstTrustrum(DYN_AABB::SetFrustrumAABB(CameraComponent::CameraType::Editor_Camera));
+    }
+
+    CameraComponent::CameraType CullingManager::GetCamera()
+    {
+        if (GameFrustumCull)
+        {
+            return CameraComponent::CameraType::Game_Camera;
+        }
+        else if (SceneFrustumCull)
+        {
+            return CameraComponent::CameraType::Editor_Camera;
+        }
+        else
+        {
+            return CameraComponent::CameraType::Editor_Camera;
+        }
+    }
+
+    void CullingManager::UpdateDYN_AABB(AABBComponent& _aabb, unsigned int ID)
+    {
+        CullContainer[ID]->AABB.SetMaxMin(_aabb.Max, _aabb.Min, ID);
+    }
+
+    DYN_AABB AABBCulling::getAABB() const
+    {
+        return AABB;
     }
 }

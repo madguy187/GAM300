@@ -79,6 +79,10 @@ namespace Eclipse
         {
             std::string NodeName = node->mName.data;
             aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+
+            // For Tianyu
+            engine->AssimpManager.AllMeshNames.push_back(NodeName);
+
             ProcessMesh(mesh, scene, NodeName);
         }
 
@@ -400,7 +404,7 @@ namespace Eclipse
         //tex.load(false);
         //textures.push_back(tex);
         //textures_loaded.push_back(tex);
-
+        
         for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
         {
             aiString str;
@@ -424,6 +428,9 @@ namespace Eclipse
             if (!skip)
             {
                 Texture tex(Directory, str.C_Str(), type);
+                std::cout << "Directory: " << Directory << std::endl;
+                std::cout << "Path: " << str.C_Str() << std::endl;
+
                 tex.Load(false);
                 textures.push_back(tex);
                 Textures_loaded.push_back(tex);

@@ -32,13 +32,16 @@ namespace Eclipse
 
 		// Model Information
 		std::unordered_map<std::string, std::string> ModelMap;
-
+		
 	public:
 		// Single Meshes
 		std::unordered_map<std::string, std::unique_ptr<Mesh>> SingleMeshMap;
 
 		// Container to store Models who are loaded once
 		std::unordered_map<std::string, std::unique_ptr<AssimpModel>> AssimpLoadedModels;
+
+		// Container to store all mesh names
+		std::vector<std::string> AllMeshNames;
 
 		// Get Current MeshComponent Container
 		MeshModelContainer GetMeshContainer();
