@@ -40,6 +40,9 @@ namespace Eclipse
 		// Container to store Models who are loaded once
 		std::unordered_map<std::string, std::unique_ptr<AssimpModel>> AssimpLoadedModels;
 
+		// Container to store all mesh names
+		std::vector<std::string> AllMeshNames;
+
 		// Get Current MeshComponent Container
 		MeshModelContainer GetMeshContainer();
 		// Ger how many Models in Container
