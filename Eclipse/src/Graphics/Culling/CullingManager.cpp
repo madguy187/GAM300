@@ -14,6 +14,7 @@ namespace Eclipse
     {
 
     }
+
     float EachFace::getSignedDistanceToPlan(const glm::vec3& point)
     {
         return (glm::dot(Normal, point) - Distance);
@@ -40,13 +41,14 @@ namespace Eclipse
         const float halfVSide = 500.0f * tanf(glm::radians(cam.fov) * .5f);
         const float halfHSide = halfVSide * cam.aspect;;
         const glm::vec3 frontMultFar = 500.0f * cam.eyeFront;
+        const glm::vec3 CameraPosition = trans.position.ConvertToGlmVec3Type();
 
-        frustum.NearFace = { trans.position.ConvertToGlmVec3Type() + cam.nearPlane * cam.eyeFront, cam.eyeFront };
-        frustum.FarFace = { trans.position.ConvertToGlmVec3Type() + frontMultFar, -cam.eyeFront };
-        frustum.RightFace = { trans.position.ConvertToGlmVec3Type(), glm::cross(cam.upVec, frontMultFar + cam.rightVec * halfHSide) };
-        frustum.LeftFace = { trans.position.ConvertToGlmVec3Type(), glm::cross(frontMultFar - cam.rightVec * halfHSide, cam.upVec) };
-        frustum.TopFace = { trans.position.ConvertToGlmVec3Type(), glm::cross(cam.rightVec, frontMultFar - cam.upVec * halfVSide) };
-        frustum.BottomFace = { trans.position.ConvertToGlmVec3Type(), glm::cross(frontMultFar + cam.upVec * halfVSide, cam.rightVec) };
+        frustum.NearFace = { CameraPosition + cam.nearPlane * cam.eyeFront, cam.eyeFront };
+        frustum.FarFace = { CameraPosition + frontMultFar, -cam.eyeFront };
+        frustum.RightFace = { CameraPosition, glm::cross(cam.upVec, frontMultFar + cam.rightVec * halfHSide) };
+        frustum.LeftFace = { CameraPosition, glm::cross(frontMultFar - cam.rightVec * halfHSide, cam.upVec) };
+        frustum.TopFace = { CameraPosition, glm::cross(cam.rightVec, frontMultFar - cam.upVec * halfVSide) };
+        frustum.BottomFace = { CameraPosition, glm::cross(frontMultFar + cam.upVec * halfVSide, cam.rightVec) };
 
         return frustum;
     }
@@ -56,43 +58,38 @@ namespace Eclipse
         return Face.getSignedDistanceToPlan(Center) > -Radius;
     }
 
+    bool CullingManager::CheckOnFace(EachFace& Face, glm::vec3 Center, float Radius)
+    {
+        return Face.getSignedDistanceToPlan(Center) > -Radius;
+    }
+
     bool CullingManager::CheckOnFrustum(const TransformComponent& Transform, CameraComponent::CameraType CameraType)
     {
-        auto& camFrustum = engine->gCullingManager->FrustrumFaceInfo(CameraType);
+        int ColisionFlag = 0;
 
-        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraType));
-
+        FrustrumFaces& camFrustum = engine->gCullingManager->FrustrumFaceInfo(CameraType);
+        CameraComponent& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraType));
         glm::vec3 globalScale = Transform.scale.ConvertToGlmVec3Type();
-
         float maxScale = max(max(globalScale.x, globalScale.y), globalScale.z);
 
-        CullingManager globalSphere(Transform.position.ConvertToGlmVec3Type(), (maxScale * 0.5f));
+        glm::vec3 Center{ Transform.position.ConvertToGlmVec3Type() };
+        float ProposedRadius = maxScale * 0.5f;
 
-        return (globalSphere.CheckOnFace(camFrustum.LeftFace) &&
-            globalSphere.CheckOnFace(camFrustum.RightFace) &&
-            globalSphere.CheckOnFace(camFrustum.FarFace) &&
-            globalSphere.CheckOnFace(camFrustum.NearFace) &&
-            globalSphere.CheckOnFace(camFrustum.TopFace) &&
-            globalSphere.CheckOnFace(camFrustum.BottomFace));
+        ColisionFlag |= (CheckOnFace(camFrustum.LeftFace, Center, ProposedRadius));
+        ColisionFlag |= (CheckOnFace(camFrustum.RightFace, Center, ProposedRadius));
+        ColisionFlag |= (CheckOnFace(camFrustum.FarFace, Center, ProposedRadius));
+        ColisionFlag |= (CheckOnFace(camFrustum.NearFace, Center, ProposedRadius));
+        ColisionFlag |= (CheckOnFace(camFrustum.TopFace, Center, ProposedRadius));
+        ColisionFlag |= (CheckOnFace(camFrustum.BottomFace, Center, ProposedRadius));
+
+        return ColisionFlag;
     }
 
     bool CullingManager::ToRenderOrNot(unsigned int ID)
     {
         auto& Transform = engine->world.GetComponent<TransformComponent>(ID);
+        return CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera);
 
-        if (GameFrustumCull)
-        {
-            return CheckOnFrustum(Transform, CameraComponent::CameraType::Game_Camera);
-        }
-        else if (SceneFrustumCull)
-        {
-            return CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera);
-        }
-        else if (GameFrustumCull && SceneFrustumCull)
-        {
-            return CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera) &&
-                CheckOnFrustum(Transform, CameraComponent::CameraType::Game_Camera);
-        }
         //std::cout << " ON GAME FRUSTRUM : " << CheckOnFrustum(Transform, CameraComponent::CameraType::Game_Camera) << std::endl;
         //std::cout << " ON SCENE FRUSTRUM : " << CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera) << std::endl;
         //return CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera);

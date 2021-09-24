@@ -61,7 +61,7 @@ namespace Eclipse
         if (engine->GraphicsManager.CheckRender == true)
         {
             // Estiamtion which models are in our frustrum
-            auto& RenderablesVsFrustrum = engine->gCullingManager->ReturnContacted(); 
+            auto& RenderablesVsFrustrum = engine->gCullingManager->ReturnContacted();
 
             /*************************************************************************
               Render Without Stencer
