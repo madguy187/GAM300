@@ -16,6 +16,7 @@
 #include "Editor/Windows/SwitchViews/BottomSwitchViewWindow.h"
 #include "Editor/Windows/SwitchViews/LeftSwitchViewWindow.h"
 #include "Editor/Windows/SwitchViews/RightSwitchViewWindow.h"
+#include "Editor/Windows/Header/HeaderWindow.h"
 
 namespace Eclipse
 {
@@ -32,7 +33,7 @@ namespace Eclipse
 	void EditorManager::InitGUIWindows()
 	{
 		AddWindow<eGameViewWindow>("Game Viewport");
-		AddWindow<SceneWindow>("Main Scene Viewport");
+		AddWindow<SceneWindow>("Scene Viewport");
 		AddWindow<InspectorWindow>("Inspector");
 		AddWindow<HierarchyWindow>("Hierarchy");
 		AddWindow<ProfilerWindow>("Profiler");
@@ -43,6 +44,7 @@ namespace Eclipse
 		AddWindow<BottomSwitchViewWindow>("Bottom Viewport");
 		AddWindow<LeftSwitchViewWindow>("Left Viewport");
 		AddWindow<RightSwitchViewWindow>("Right Viewport");
+		AddWindow<HeaderWindow>("Header");
 
 		for (const auto& window : Windows_)
 		{
@@ -55,6 +57,7 @@ namespace Eclipse
 		MenuComponent file{ "File", EditorMenuType::FILE };
 		file.AddItems("New");
 		file.AddItems("Open");
+		file.AddItems("Save");
 		file.AddItems("Save As...");
 		file.AddItems("Exit");
 		MenuBar_.AddMenuComponents(file);
@@ -77,7 +80,7 @@ namespace Eclipse
 		text_config.OversampleH = 2;
 		text_config.OversampleV = 2;
 		text_config.GlyphExtraSpacing.x = 1.0f;
-		io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/OpenSans-SemiBold.ttf", 14.0f, &text_config);
+		io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/OpenSans-SemiBold.ttf", 16.0f, &text_config);
 		unsigned char* pixels;
 		int width, height, bytes_per_pixels;
 		io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height, &bytes_per_pixels);
@@ -100,11 +103,11 @@ namespace Eclipse
 		/*static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
 		ImFontConfig icons_config; icons_config.MergeMode = true; icons_config.PixelSnapH = true;
 		io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/fontawesome-webfont.ttf", 12.0f, &icons_config, icons_ranges);*/
-		static const ImWchar icons_ranges[] = { ICON_MIN_MDI, ICON_MAX_MDI, 0 };
+		//static const ImWchar icons_ranges[] = { ICON_MIN_MDI, ICON_MAX_MDI, 0 };
 		static const ImWchar icons_ranges2[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
 		ImFontConfig icons_config; icons_config.MergeMode = true; icons_config.PixelSnapH = true;
-		io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/materialdesignicons-webfont.ttf", 12.0f, &icons_config, icons_ranges);
-		io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/fontawesome-webfont.ttf", 12.0f, &icons_config, icons_ranges2);
+		//io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/materialdesignicons-webfont.ttf", 12.0f, &icons_config, icons_ranges);
+		io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/fontawesome-webfont.ttf", 14.0f, &icons_config, icons_ranges2);
 	}
 
 	Entity EditorManager::CreateDefaultEntity(EntityType type)
@@ -241,6 +244,25 @@ namespace Eclipse
 	bool EditorManager::IsEntityListEmpty() const
 	{
 		return EntityHierarchyList_.empty();
+	}
+
+	bool EditorManager::IsAnyGizmoWindowActive()
+	{
+		auto* scene = dynamic_cast<SceneWindow*>(Windows_[1].get());
+		auto* sv1 = dynamic_cast<TopSwitchViewWindow*>(Windows_[8].get());
+		auto* sv2 = dynamic_cast<BottomSwitchViewWindow*>(Windows_[9].get());
+		auto* sv3 = dynamic_cast<LeftSwitchViewWindow*>(Windows_[10].get());
+		auto* sv4 = dynamic_cast<RightSwitchViewWindow*>(Windows_[11].get());
+
+		if (scene->GetIsWindowActive() || sv1->GetIsWindowActive() || sv2->GetIsWindowActive()
+			|| sv3->GetIsWindowActive())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	void EditorManager::SetSelectedEntity(Entity ID)

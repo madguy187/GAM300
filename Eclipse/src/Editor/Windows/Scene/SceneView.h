@@ -32,6 +32,10 @@ namespace Eclipse
 		glm::vec2 GetSceneBufferPos();
 		glm::vec2 GetSceneBufferSize();
 		glm::vec2 GetCursorScreenPos();
+		int GetGizmoType();
+		bool GetIsWindowActive();
+
+		void SetGizmoType(int type);
 	private:
 		glm::vec2 mViewportSize;
 		glm::vec2 mSceneBufferSize;
@@ -40,5 +44,6 @@ namespace Eclipse
 		SnapValueSettings mSnapSettings;
 		FrameBuffer* m_frameBuffer;
 		int m_GizmoType{ 0 };
+		bool IsWindowActive{ false };
 	};
 }

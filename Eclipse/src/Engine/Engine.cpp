@@ -66,6 +66,7 @@ namespace Eclipse
         /*bool x = false;
         std::string msg = "woo";
         ENGINE_LOG_ASSERT(x, msg.c_str());*/
+        glfwSetWindowCloseCallback(OpenGL_Context::GetWindow(), GraphicsManager.WindowCloseCallback);
     }
 
     void Engine::Run()

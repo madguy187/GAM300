@@ -38,13 +38,14 @@ namespace Eclipse
 		int GetEntityIndex(Entity ID);
 		Entity GetEntityID(int index);
 		bool IsEntityListEmpty() const;
+		bool IsAnyGizmoWindowActive();
 
 		// Setters
 		void SetSelectedEntity(Entity ID);
 		void SetGlobalIndex(size_t index);
 
-		void SaveTemp(const char* fullpath = "Data/Temp/Temp.xml");
-		void LoadTemp(const char* fullpath = "Data/Temp/Temp.xml");
+		//void SaveTemp(const char* fullpath = "Data/Temp/Temp.xml");
+		//void LoadTemp(const char* fullpath = "Data/Temp/Temp.xml");
 
 		template <typename TWindow>
 		TWindow* GetEditorWindow()
@@ -76,7 +77,6 @@ namespace Eclipse
 		std::unordered_map<Entity, int> EntityToIndexMap_;
 		size_t GEHIndex_{ 0 };
 
-		
 		template <typename TWindow>
 		inline void AddWindow(const char* title)
 		{

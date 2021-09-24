@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Editor/Utilities/OpenFileDialog/OpenFileDialog.h"
 #include "ECGuiInputHandler.h"
 
 namespace Eclipse
@@ -26,5 +27,37 @@ namespace Eclipse
 				}
 			}
 		}
+		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_O)) && io.KeyCtrl)
+		{
+			FileDialog::FileBrowser();
+		}
+		// ImGuizmo Change
+		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Q)))
+		{
+			if (engine->editorManager->IsAnyGizmoWindowActive())
+				if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
+					engine->editorManager->GetEditorWindow<SceneWindow>()->SetGizmoType(-1);
+		}
+		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_W)))
+		{
+			if (engine->editorManager->IsAnyGizmoWindowActive())
+				if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
+					engine->editorManager->GetEditorWindow<SceneWindow>()->SetGizmoType(ImGuizmo::OPERATION::TRANSLATE);
+		}
+		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_E)))
+		{
+			if (engine->editorManager->IsAnyGizmoWindowActive())
+				if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
+					engine->editorManager->GetEditorWindow<SceneWindow>()->SetGizmoType(ImGuizmo::OPERATION::SCALE);
+		}
+		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_R)))
+		{
+			if (engine->editorManager->IsAnyGizmoWindowActive())
+				if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
+					engine->editorManager->GetEditorWindow<SceneWindow>()->SetGizmoType(ImGuizmo::OPERATION::ROTATE);
+		}
+		// File Saving
+		/*else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_S)) && io.KeyCtrl)
+			FileDialog::FileBrowser();*/
 	}
 }

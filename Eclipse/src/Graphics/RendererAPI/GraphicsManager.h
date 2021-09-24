@@ -54,6 +54,7 @@ namespace Eclipse
         std::string GetModelName(unsigned int modelname);
         unsigned int GetFrameBufferID(FrameBufferMode mode);
         FrameBuffer::RenderMode GetRenderMode(FrameBufferMode mode);
+        static void WindowCloseCallback(GLFWwindow* window);
     private:
         float GammaCorrection = 1.0f;
         void UpdateFrameBuffer();

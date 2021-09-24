@@ -8,6 +8,12 @@ namespace Eclipse
 		return ImGuiAPI::BeginMainWindow(name);
 	}
 
+	bool ECGui::BeginMainWindowWithFlag(const char* name, bool* p_open, 
+		ImGuiWindowFlags flags)
+	{
+		return ImGuiAPI::BeginMainWindowWithFlag(name, p_open, flags);
+	}
+
 	void ECGui::EndMainWindow()
 	{
 		ImGuiAPI::EndMainWindow();
@@ -118,9 +124,9 @@ namespace Eclipse
 		}
 	}
 
-	bool ECGui::CreateMenuItem(const char* name, bool* open)
+	bool ECGui::CreateMenuItem(const char* name, bool* open, const char* shortcut)
 	{
-		return ImGuiAPI::CreateMenuItem(name, open);
+		return ImGuiAPI::CreateMenuItem(name, open, shortcut);
 	}
 
 	bool ECGui::DrawDataHeader(const char* varname, ImGuiTextFilter& filter)

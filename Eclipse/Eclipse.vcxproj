@@ -211,6 +211,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Editor\Windows\AssetBrowser\AssetBrowser.h" />
     <ClInclude Include="src\Editor\Windows\Debug\Debug.h" />
     <ClInclude Include="src\Editor\Windows\GameView\GameView.h" />
+    <ClInclude Include="src\Editor\Windows\Header\HeaderWindow.h" />
     <ClInclude Include="src\Editor\Windows\Hierarchy\Hierarchy.h" />
     <ClInclude Include="src\Editor\Windows\Inspector\Inspector.h" />
     <ClInclude Include="src\Editor\Windows\Interface\ECGuiWindow.h" />
@@ -347,6 +348,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Editor\Windows\AssetBrowser\AssetBrowser.cpp" />
     <ClCompile Include="src\Editor\Windows\Debug\Debug.cpp" />
     <ClCompile Include="src\Editor\Windows\GameView\GameView.cpp" />
+    <ClCompile Include="src\Editor\Windows\Header\HeaderWindow.cpp" />
     <ClCompile Include="src\Editor\Windows\Hierarchy\Hierarchy.cpp" />
     <ClCompile Include="src\Editor\Windows\Inspector\Inspector.cpp" />
     <ClCompile Include="src\Editor\Windows\Log\Log.cpp" />

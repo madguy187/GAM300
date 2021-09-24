@@ -16,7 +16,7 @@ namespace Eclipse
 		mViewportSize = glm::vec2{}; 
 		mSceneBufferSize = glm::vec2{};
 		Type = EditorWindowType::EWT_SCENE;
-		WindowName = "Scene";
+		WindowName = "Scene View";
 		m_frameBuffer = engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE);
 	}
 
@@ -51,11 +51,11 @@ namespace Eclipse
 		/*std::cout << "SceneBuffer Size: " << mSceneBufferSize.x << " " << mSceneBufferSize.y << std::endl;*/
 		/*std::cout << "SceneBuffer Pos: " << mSceneBufferPos.x << " " << mSceneBufferPos.y << std::endl;
 		std::cout << "CursorScreen Pos: " << mCursorScreenPos.x << " " << mCursorScreenPos.y << std::endl;*/
-		RenderSceneHeader();
+		//RenderSceneHeader();
 
 		// Set Image size
 		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
-			ImVec2{ mViewportSize.x, mViewportSize.y * 0.93f }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 		//// ImGuizmo Logic
 		if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
@@ -72,6 +72,11 @@ namespace Eclipse
 			OnCameraZoomEvent();
 			OnSelectEntityEvent();
 		}
+
+		if (ImGui::IsItemActive())
+			IsWindowActive = true;
+		else
+			IsWindowActive = false;
 	}
 
 	void SceneWindow::OnKeyPressedEvent()
@@ -192,7 +197,8 @@ namespace Eclipse
 				break;
 			}
 		}
-		else if (ImGuizmo::IsOver() && ImGui::IsMouseReleased(0))
+		else if (!ImGuizmo::IsUsing() && ImGui::IsMouseReleased(0)
+			&& ECGui::IsItemHovered())
 		{
 			CommandHistory::DisableMergeForMostRecentCommand();
 		}
@@ -252,6 +258,7 @@ namespace Eclipse
 			else
 			{
 				engine->SetPlayState(true);
+				ImGui::SetWindowFocus("Game View");
 				EDITOR_LOG_INFO("Scene is playing...");
 			}
 		}
@@ -400,5 +407,20 @@ namespace Eclipse
 	glm::vec2 SceneWindow::GetCursorScreenPos()
 	{
 		return mCursorScreenPos.ConvertToGlmVec2Type();
+	}
+
+	int SceneWindow::GetGizmoType()
+	{
+		return m_GizmoType;
+	}
+
+	bool SceneWindow::GetIsWindowActive()
+	{
+		return IsWindowActive;
+	}
+
+	void SceneWindow::SetGizmoType(int type)
+	{
+		m_GizmoType = type;
 	}
 }
