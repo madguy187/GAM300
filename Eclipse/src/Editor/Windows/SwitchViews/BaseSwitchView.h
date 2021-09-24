@@ -13,8 +13,6 @@ namespace Eclipse
 
 		void RunMainWindow();
 		void RunFrameBuffer(int GizmoType);
-		void RenderSettingsHeader();
-		void OnKeyPressedEvent();
 		void OnGizmoUpdateEvent(int GizmoType);
 		void OnCameraZoomEvent();
 		void OnCameraMoveEvent();

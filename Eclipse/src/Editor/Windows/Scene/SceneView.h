@@ -20,12 +20,10 @@ namespace Eclipse
 
 		void RunMainWindow();
 		void RunFrameBuffer();
-		void OnKeyPressedEvent();
 		void OnGizmoUpdateEvent();
 		void OnCameraMoveEvent();
 		void OnCameraZoomEvent();
 		void OnSelectEntityEvent();
-		void RenderSceneHeader();
 
 		SnapValueSettings& GetRefToSnapSettings();
 		SnapValueSettings GetSnapSettings();

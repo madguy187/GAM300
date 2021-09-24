@@ -32,7 +32,6 @@ namespace Eclipse
         AABBTree CollisionGridTree{ 150 };
         std::unique_ptr<Grid> GridManager;
         DebugRenderingManager gDebugManager;
-        AssetBrowserWindow gAssetB;
         SerializationManager szManager;
         void Init();
         void Run();

@@ -45,7 +45,6 @@ namespace Eclipse
 
 	void BaseSwitchViewWindow::RunFrameBuffer(int GizmoType)
 	{
-		RenderSettingsHeader();
 		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
 			ImVec2{ mViewportSize.x, mViewportSize.y * 0.92f }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
@@ -55,7 +54,6 @@ namespace Eclipse
 		if (ECGui::IsItemHovered())
 		{
 			// Do all the future stuff here
-			OnKeyPressedEvent();
 			OnCameraZoomEvent();
 			OnCameraMoveEvent();
 		}
@@ -68,50 +66,6 @@ namespace Eclipse
 		{
 			IsWindowActive = false;
 		}
-	}
-
-	void BaseSwitchViewWindow::RenderSettingsHeader()
-	{
-		size_t projIndex = 0;
-		ComboListSettings settings{ "ProjectionComboList" };
-		ECGui::CreateComboList(settings, mProjectionView_List, projIndex);
-		ECGui::InsertSameLine();
-		ECGui::CheckBoxBool("Wireframe", &IsWireframeMode, false);
-
-		if (ImGui::IsItemDeactivated())
-		{
-			if (IsWireframeMode)
-				m_frameBuffer->SetRenderMode(FrameBuffer::RenderMode::Wireframe_Mode);
-			else
-				m_frameBuffer->SetRenderMode(FrameBuffer::RenderMode::Fill_Mode);
-		}
-	}
-
-	void BaseSwitchViewWindow::OnKeyPressedEvent()
-	{
-		//ImGuiIO& io = ImGui::GetIO();
-
-		//// Gizmos
-		//if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Q)))
-		//{
-		//	if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
-		//		m_GizmoType = -1;
-		//}
-		//else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_W)))
-		//{
-		//	if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
-		//		m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
-		//}
-		//else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_E)))
-		//{
-		//	if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
-		//		m_GizmoType = ImGuizmo::OPERATION::SCALE;
-		//}
-		//else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_R)))
-		//{
-		//	if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
-		//		m_GizmoType = ImGuizmo::OPERATION::ROTATE;
-		//}
 	}
 
 	void BaseSwitchViewWindow::OnGizmoUpdateEvent(int GizmoType)
