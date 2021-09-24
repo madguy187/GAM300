@@ -107,9 +107,6 @@ namespace Eclipse
 
 		/*TransformComponent& trans2 = engine->world.GetComponent<TransformComponent>(ent);
 		std::cout << trans2.position.x << std::endl;*/
-
-		CreateScriptObjects();
-		std::cout << "Successfully pushed" << std::endl;
 	}
 
 	void MonoManager::Update(MonoScript* obj)
@@ -148,7 +145,6 @@ namespace Eclipse
 			mono_domain_unload(old_domain);
 		}
 
-		//unloading a domain is also a nice point in time to have the GC run.
 		mono_gc_collect(mono_gc_max_generation());
 	}
 

@@ -136,7 +136,7 @@ namespace Eclipse
         hi5.set(world.GetComponentType<ScriptComponent>(), 1);
         world.RegisterSystemSignature<MonoSystem>(hi5);
 
-        mono.Init();
+        //mono.Init();
 
         //Check this! - Rachel
         RenderSystem::Init();

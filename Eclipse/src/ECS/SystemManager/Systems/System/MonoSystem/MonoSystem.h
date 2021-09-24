@@ -10,5 +10,6 @@ namespace Eclipse
 	public:
 		void Init();
 		void Update() override;
+		void Terminate();
 	};
 }
