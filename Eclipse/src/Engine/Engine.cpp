@@ -185,8 +185,8 @@ namespace Eclipse
             }
 
             currTime = newTime;
-            ECGuiInputHandler::Update();
 
+            ECGuiInputHandler::Update();
             ImGuiSetup::Begin(IsEditorActive);
 
             EditorSystem::Update();
