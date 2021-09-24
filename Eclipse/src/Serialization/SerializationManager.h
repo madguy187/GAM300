@@ -14,10 +14,10 @@
 #include "../ECS/ComponentManager/Components/TransformComponent.h"
 //#include "../ECS/ComponentManager/Components/TextureComponent.h"
 #include "../ECS/ComponentManager/Components/LightComponent.h"
+#include "Reflection/Variant/RefVariant.h"
 
 namespace Eclipse
 {
-
 	class SerializationManager
 	{
 		Serializer sz;
@@ -557,5 +557,44 @@ namespace Eclipse
 		void SaveSceneFile(const char* fullpath = "Data/Temp/Temp.xml");
 
 		void LoadSceneFile(const char* fullpath = "Data/Temp/Temp.xml");
+
+		template <typename T>
+		inline static void TestSerialize(const char* name, RefVariant refv)
+		{
+			//if (typeid(T) == typeid(ECVec3))
+			//{
+			//	std::cout << name << std::endl;
+			//	std::cout << refv.ValueRegistry<ECVec3>().getX() << " " << refv.ValueRegistry<ECVec3>().getY() << " " << refv.ValueRegistry<ECVec3>().getZ() << std::endl;
+			//}
+			//else if constexpr (std::is_fundamental<T>::value /*|| std::is_enum<T>::value*/)
+			//{
+			//	std::cout << refv.ValueRegistry<RemTypeQual<T>::type>() << std::endl;
+			//}
+			//else if constexpr (std::is_enum<T>::value)
+			//{
+
+			//}
+			/*std::cout << refv.ValueRegistry<RemTypeQual<T>::type>() << std::endl;*/
+			z.StartElement(name);
+			sz.AddAttributeToElement("value", refv.ValueRegistry<RemTypeQual<T>::type>());
+			sz.CloseElement();
+		}
+
+		inline static void TestSerializeCompData(RefVariant refv)
+		{
+			const MetaData* meta = refv.Meta();
+			void* data = refv.Data();
+
+			assert(meta->HasMembers());
+
+			const Member* mem = meta->Members();
+
+			while (mem)
+			{
+				void* offsetData = PTR_ADD(refv.Data(), mem->Offset());
+				mem->Meta()->Serialize(mem->GetName().c_str(), RefVariant(mem->Meta(), offsetData));
+				mem = mem->Next();
+			}
+		}
 	};
 }

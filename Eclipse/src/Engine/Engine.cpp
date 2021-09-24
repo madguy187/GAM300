@@ -152,6 +152,8 @@ namespace Eclipse
 
         SceneManager::Initialize();
         //Deserialization(temp)
+        TransformComponent trans;
+        SerializationManager::TestSerializeCompData(RefVariant{ trans });
 
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {

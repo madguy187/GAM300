@@ -3,7 +3,7 @@
 namespace Eclipse
 {
     class RefVariant;
-   /* typedef void (*SerializeFn)(std::ostream&, RefVariant);*/
+    typedef void (*SerializeFn)(const char*, RefVariant);
 
     // Setting up the definition of the RegisterMetaData function, so that the 
     // ADD_MEMBER macro calls are actually lines of code placed within the definition
@@ -27,14 +27,14 @@ namespace Eclipse
   MetaCreator<RemTypeQual<T>::type> NAME_GENERATOR()( #T, sizeof( T )); \
   void MetaCreator<RemTypeQual<T>::type>::RegisterMetaData() \
   { \
-    /*MetaCreator<RemTypeQual<T>::type>::SetSerializeFn(TextSerializePrim<RemTypeQual<T>::type>);*/ \
+    MetaCreator<RemTypeQual<T>::type>::SetSerializeFn(SerializationManager::TestSerialize<RemTypeQual<T>::type>);\
   }
 
 #define ADD_MEMBER(MEMBER) \
   AddMember(#MEMBER, (unsigned)(&(NullCast()->MEMBER)), META( NullCast()->MEMBER))
 
-//#define SET_SERIALIZE(FN) \
-//  MetaCreator<RemTypeQual<TYPE>::type>::SetSerializeFn(FN)
+#define SET_SERIALIZE(FN) \
+  MetaCreator<RemTypeQual<TYPE>::type>::SetSerializeFn(FN)
 
 // Using this to generate unique names each time the macro is used
 #define PASTE_TOKENS_2(_, __) _##__
@@ -99,11 +99,11 @@ namespace Eclipse
         const Member* Members() const;
         void PrintMembers(std::ostream& os) const;
 
-        /*void SetSerialize(SerializeFn fn = NULL);
-        void Serialize(std::ostream& os, RefVariant) const;*/
+        void SetSerialize(SerializeFn fn = NULL);
+        void Serialize(const char*, RefVariant) const;
 
     private:
-        /*SerializeFn serialize;*/
+        SerializeFn serialize;
         Member* members;
         Member* lastMember;
         std::string name;
@@ -131,10 +131,10 @@ namespace Eclipse
             Get()->AddMember(new Member(memberName, memberOffset, meta));
         }
 
-        /*static void SetSerializeFn(SerializeFn fn)
+        static void SetSerializeFn(SerializeFn fn)
         {
             Get()->SetSerialize(fn);
-        }*/
+        }
 
         // Return a pointer to NULL(memory address zero) of some type
         static Metatype* NullCast()
