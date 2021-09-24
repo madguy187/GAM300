@@ -53,8 +53,6 @@ namespace Eclipse
         CullingManager(const glm::vec3& inCenter, float inRadius);
         FrustrumFaces FrustrumFaceInfo(CameraComponent::CameraType CameraType);
         bool CheckOnFace(EachFace& plan);
-        bool CheckOnFace(EachFace& Face, glm::vec3 Center, float Radius);
-        bool CheckOnFace(glm::vec3 Center, float InRadius);
         bool CheckOnFrustum(const TransformComponent& transform, CameraComponent::CameraType CameraType);
         bool ToRenderOrNot(unsigned int ID);
         void Insert(AABBComponent& In, unsigned int ID);

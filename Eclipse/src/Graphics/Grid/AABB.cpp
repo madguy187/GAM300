@@ -199,10 +199,4 @@ namespace Eclipse
         return Frustrum;
     }
 
-    //bool DYN_AABB::Overlaps(const DYN_AABB& other) const
-    //{
-    //    return Max.x > other.Min.x && Min.x < other.Max.x&&
-    //        Max.y > other.Min.y && Min.y < other.Max.y&&
-    //        Max.z > other.Min.z && Min.z < other.Max.z;
-    //}
 }
