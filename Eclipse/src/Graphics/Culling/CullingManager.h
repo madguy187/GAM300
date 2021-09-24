@@ -48,6 +48,8 @@ namespace Eclipse
 
     public:
         AABBTree FrustrumCollisionTree{ 5000 };
+        DYN_AABB CameraAABB;
+        std::shared_ptr<FrustrumFaces> frustum;
 
         CullingManager();
         CullingManager(const glm::vec3& inCenter, float inRadius);
@@ -60,5 +62,6 @@ namespace Eclipse
         std::vector<unsigned int> ReturnContacted();
         CameraComponent::CameraType GetCamera();
         void UpdateDYN_AABB(AABBComponent& in, unsigned int ID);
+        AABBComponent& SetFrustrumAABB(CameraComponent::CameraType CameraType);
     };
 }
