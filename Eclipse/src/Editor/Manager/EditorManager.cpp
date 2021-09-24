@@ -80,7 +80,7 @@ namespace Eclipse
 		text_config.OversampleH = 2;
 		text_config.OversampleV = 2;
 		text_config.GlyphExtraSpacing.x = 1.0f;
-		io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/OpenSans-SemiBold.ttf", 14.0f, &text_config);
+		io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/OpenSans-SemiBold.ttf", 16.0f, &text_config);
 		unsigned char* pixels;
 		int width, height, bytes_per_pixels;
 		io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height, &bytes_per_pixels);
@@ -103,11 +103,11 @@ namespace Eclipse
 		/*static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
 		ImFontConfig icons_config; icons_config.MergeMode = true; icons_config.PixelSnapH = true;
 		io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/fontawesome-webfont.ttf", 12.0f, &icons_config, icons_ranges);*/
-		static const ImWchar icons_ranges[] = { ICON_MIN_MDI, ICON_MAX_MDI, 0 };
+		//static const ImWchar icons_ranges[] = { ICON_MIN_MDI, ICON_MAX_MDI, 0 };
 		static const ImWchar icons_ranges2[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
 		ImFontConfig icons_config; icons_config.MergeMode = true; icons_config.PixelSnapH = true;
-		io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/materialdesignicons-webfont.ttf", 12.0f, &icons_config, icons_ranges);
-		io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/fontawesome-webfont.ttf", 12.0f, &icons_config, icons_ranges2);
+		//io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/materialdesignicons-webfont.ttf", 12.0f, &icons_config, icons_ranges);
+		io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/fontawesome-webfont.ttf", 14.0f, &icons_config, icons_ranges2);
 	}
 
 	Entity EditorManager::CreateDefaultEntity(EntityType type)

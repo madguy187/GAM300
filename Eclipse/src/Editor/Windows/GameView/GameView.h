@@ -16,6 +16,6 @@ namespace Eclipse
 	private:
 		glm::vec2 mViewportSize;
 		// Hold Frame Buffer Object
-		std::shared_ptr<FrameBuffer> m_frameBuffer;
+		FrameBuffer* m_frameBuffer;
 	};
 }
