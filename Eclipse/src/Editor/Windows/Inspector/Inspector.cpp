@@ -874,7 +874,7 @@ namespace Eclipse
 			FolderIcon.textureRef = Graphics::textures.find(tempNamesForMesh[i].c_str())->first;
 			TextureComponent icon = FolderIcon;*/
 
-			if (AddComponentFilter.PassFilter((tempNamesForMesh[i].c_str()))
+			if (AddComponentFilter.PassFilter((tempNamesForMesh[i].c_str())))
 			{
 				ImGui::ImageButton((void*)Graphics::textures[(icon).textureRef].GetHandle(),
 					{thumbnaimsize,thumbnaimsize},
