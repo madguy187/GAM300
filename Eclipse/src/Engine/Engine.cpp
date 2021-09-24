@@ -27,6 +27,7 @@
 #include "ECS/SystemManager/Systems/System/MaterialSystem.h"
 #include "Serialization/SerializationManager.h"
 #include "ECS/SystemManager/Systems/System/GridSystem.h"
+#include "ECS/SystemManager/Systems/System/MonoSystem/MonoSystem.h"
 
 bool Tester1(const Test1& e)
 {
@@ -95,6 +96,7 @@ namespace Eclipse
         world.RegisterSystem<GridSystem>();
         world.RegisterSystem<PickingSystem>();
         world.RegisterSystem<PhysicsSystem>();
+        world.RegisterSystem<MonoSystem>();
 
         // Render System
         Signature RenderSys = RenderSystem::RegisterAll();
@@ -128,6 +130,10 @@ namespace Eclipse
         hi4.set(world.GetComponentType<TransformComponent>(), 1);
         hi4.set(world.GetComponentType<RigidBodyComponent>(), 1);
         world.RegisterSystemSignature<PhysicsSystem>(hi4);
+
+        Signature hi5;
+        hi5.set(world.GetComponentType<ScriptComponent>(), 1);
+        world.RegisterSystemSignature<MonoSystem>(hi5);
 
         mono.Init();
 
@@ -236,7 +242,15 @@ namespace Eclipse
             // GRID DRAW ============================= Must be last of All Renders
             engine->GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
 
-            mono.Update();
+            if (IsScenePlaying())
+            {
+                for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
+                {
+                    world.Update<PhysicsSystem>();
+                }
+            }
+
+            world.Update<MonoSystem>();
 
             // FRAMEBUFFER DRAW ==========================
             engine->GraphicsManager.GlobalFrmeBufferDraw();

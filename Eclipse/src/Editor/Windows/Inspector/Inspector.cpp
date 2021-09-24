@@ -517,7 +517,7 @@ namespace Eclipse
 							const_cast<char*>(scriptCom.scriptList[i].scriptName.c_str()), 256,
 							true, ImGuiInputTextFlags_ReadOnly);
 						engine->editorManager->DragAndDropInst_.StringPayloadTarget("cs", scriptCom.scriptList[i].scriptName,
-							"Script File inserted.", PayloadTargetType::PTT_WIDGET, ID);
+							"Script File inserted.", PayloadTargetType::PTT_WIDGET, ID, i);
 					}
 					else
 					{
@@ -661,6 +661,10 @@ namespace Eclipse
 						ComponentRegistry<ModeLInforComponent>("ModeLInforComponent", ID, entCom.Name,
 							EditComponent::EC_ADDCOMPONENT);
 						break;
+					case str2int("ScriptComponent"):
+						ComponentRegistry<ScriptComponent>("ScriptComponent", ID, entCom.Name,
+							EditComponent::EC_ADDCOMPONENT);
+						break;
 					}
 				}
 			}
@@ -726,6 +730,10 @@ namespace Eclipse
 						break;
 					case str2int("ModeLInforComponent"):
 						ComponentRegistry<ModeLInforComponent>("ModeLInforComponent", ID, entCom.Name,
+							EditComponent::EC_REMOVECOMPONENT);
+						break;
+					case str2int("ScriptComponent"):
+						ComponentRegistry<ScriptComponent>("ScriptComponent", ID, entCom.Name,
 							EditComponent::EC_REMOVECOMPONENT);
 						break;
 					}

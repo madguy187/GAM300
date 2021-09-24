@@ -52,7 +52,7 @@ namespace Eclipse
 	}
 
 	void DragAndDrop::StringPayloadTarget(const char* id, std::string& destination,
-		const char* cMsg, PayloadTargetType type, Entity ID)
+		const char* cMsg, PayloadTargetType type, Entity ID, size_t arrayIndex)
 	{
 		(void)ID;
 		if (ImGui::BeginDragDropTarget())
@@ -70,8 +70,7 @@ namespace Eclipse
 						std::filesystem::path temp = ((const char*)payload->Data);
 						destination = AssetBrowserWindow::GetFileName(temp.filename().string().c_str());
 						auto& scriptCom = engine->world.GetComponent<ScriptComponent>(ID);
-						scriptCom.scriptList.push_back({});
-						scriptCom.scriptList.back().scriptName = destination;
+						scriptCom.scriptList[arrayIndex].scriptName = destination;
 						
 					}
 					else

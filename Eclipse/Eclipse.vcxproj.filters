@@ -43,6 +43,15 @@
     <Filter Include="Editor\Utilities">
       <UniqueIdentifier>{F7DD8FC0-E3D6-AE12-0C09-9497F8608E1E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editor\Utilities\DragAndDrop">
+      <UniqueIdentifier>{2C9DF5A9-1858-E555-C10F-5EA0ADA92FE6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Utilities\OpenFileDialog">
+      <UniqueIdentifier>{E84BB6BE-542F-C5FE-5D32-F33AC9948B4F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Utilities\ParentChild">
+      <UniqueIdentifier>{5460141D-401B-04C9-E9D2-7C13D56C4E59}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Editor\Utilities\UndoAndRedo">
       <UniqueIdentifier>{99D07E34-858B-6EE0-2E43-E72A1ADDB870}</UniqueIdentifier>
     </Filter>
@@ -93,6 +102,9 @@
     </Filter>
     <Filter Include="Graphics\Camera">
       <UniqueIdentifier>{CED20E8B-3A5E-7C4F-436F-FF43AF79D84F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Culling">
+      <UniqueIdentifier>{13F3811B-FFEB-A06D-281E-86F214768079}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\Debugging">
       <UniqueIdentifier>{51443AC7-3D28-FB1C-A688-F56F928BE59E}</UniqueIdentifier>
@@ -178,6 +190,9 @@
     <Filter Include="Reflection">
       <UniqueIdentifier>{104FCF04-FC06-1152-650E-EAAD51E5AB42}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Reflection\Variant">
+      <UniqueIdentifier>{B46A2A39-A04E-EB8E-09AF-E5E1F5B1D510}</UniqueIdentifier>
+    </Filter>
     <Filter Include="SceneManagement">
       <UniqueIdentifier>{D0EEDB6A-3C7A-492F-458B-CC23B195A52F}</UniqueIdentifier>
     </Filter>
@@ -196,106 +211,6 @@
     <Filter Include="TypeID">
       <UniqueIdentifier>{54109DD4-40B2-C7AA-296D-DBFE15AE4EFB}</UniqueIdentifier>
     </Filter>
-    <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp" />
-    <ClCompile Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.cpp" />
-    <ClCompile Include="src\ECS\EntityManager\EntityManager.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\EditorSystem.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\GridSystem.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp" />
-    <ClCompile Include="src\ECS\World.cpp" />
-    <ClCompile Include="src\Editor\ECGuiAPI\ECGui.cpp" />
-    <ClCompile Include="src\Editor\ECGuiAPI\ECGuiInputHandler.cpp" />
-    <ClCompile Include="src\Editor\Manager\EditorManager.cpp" />
-    <ClCompile Include="src\Editor\Menu\MenuBar.cpp" />
-    <ClCompile Include="src\Editor\Menu\MenuComponent.cpp" />
-    <ClCompile Include="src\Editor\Utilities\DragAndDrop.cpp" />
-    <ClCompile Include="src\Editor\Utilities\OpenFileDialog.cpp" />
-    <ClCompile Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.cpp" />
-    <ClCompile Include="src\Editor\Windows\AssetBrowser\AssetBrowser.cpp" />
-    <ClCompile Include="src\Editor\Windows\Debug\Debug.cpp" />
-    <ClCompile Include="src\Editor\Windows\GameView\GameView.cpp" />
-    <ClCompile Include="src\Editor\Windows\Hierarchy\Hierarchy.cpp" />
-    <ClCompile Include="src\Editor\Windows\Inspector\Inspector.cpp" />
-    <ClCompile Include="src\Editor\Windows\Log\Log.cpp" />
-    <ClCompile Include="src\Editor\Windows\Profiler\Profiler.cpp" />
-    <ClCompile Include="src\Editor\Windows\Scene\SceneView.cpp" />
-    <ClCompile Include="src\Editor\Windows\SwitchViews\BottomSwitchViewWindow.cpp" />
-    <ClCompile Include="src\Editor\Windows\SwitchViews\LeftSwitchViewWindow.cpp" />
-    <ClCompile Include="src\Editor\Windows\SwitchViews\RightSwitchViewWindow.cpp" />
-    <ClCompile Include="src\Editor\Windows\SwitchViews\TopSwitchViewWindow.cpp" />
-    <ClCompile Include="src\Engine\Engine.cpp" />
-    <ClCompile Include="src\EntryPoint\EntryPoint.cpp" />
-    <ClCompile Include="src\Graphics\Camera\CameraManager.cpp" />
-    <ClCompile Include="src\Graphics\Debugging\DebugRenderingManager.cpp" />
-    <ClCompile Include="src\Graphics\FrameBuffer\FrameBuffer.cpp" />
-    <ClCompile Include="src\Graphics\FrameBuffer\WindowConstraint.cpp" />
-    <ClCompile Include="src\Graphics\Grid\AABB.cpp" />
-    <ClCompile Include="src\Graphics\Grid\AABBTree.cpp" />
-    <ClCompile Include="src\Graphics\Grid\bounds.cpp" />
-    <ClCompile Include="src\Graphics\Grid\Grid.cpp" />
-    <ClCompile Include="src\Graphics\Grid\Box.cpp" />
-    <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp" />
-    <ClCompile Include="src\Graphics\Lighting\DirectionalLight.cpp" />
-    <ClCompile Include="src\Graphics\Lighting\LightManager.cpp" />
-    <ClCompile Include="src\Graphics\Lighting\PointLight.cpp" />
-    <ClCompile Include="src\Graphics\Lighting\SpotLight.cpp" />
-    <ClCompile Include="src\Graphics\Material\MaterialManager.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cone.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cube.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cylinder.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Frustum.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\LightQuad.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Lines.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Lines3D.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Particles.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Plane.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Pyramid.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Quad.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Sphere.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Torus.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Triangle.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\ModelFactory.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\Sky\CubeMap.cpp" />
-    <ClCompile Include="src\Graphics\OpenGL\OpenGL_Context.cpp" />
-    <ClCompile Include="src\Graphics\Parser\Parser.cpp" />
-    <ClCompile Include="src\Graphics\Picker\PickingManager.cpp" />
-    <ClCompile Include="src\Graphics\RendererAPI\Graphics.cpp" />
-    <ClCompile Include="src\Graphics\RendererAPI\GraphicsManager.cpp" />
-    <ClCompile Include="src\Graphics\RendererAPI\Mesh.cpp" />
-    <ClCompile Include="src\Graphics\RendererAPI\Shader.cpp" />
-    <ClCompile Include="src\Graphics\Textures\Texture.cpp" />
-    <ClCompile Include="src\Graphics\Textures\stb_image.cpp" />
-    <ClCompile Include="src\ImGui\ImGuiAPI\ImGuiAPI.cpp" />
-    <ClCompile Include="src\ImGui\Setup\ImGuiSetup.cpp" />
-    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImCurveEdit.cpp" />
-    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImGradient.cpp" />
-    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImGuizmo.cpp" />
-    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImSequencer.cpp" />
-    <ClCompile Include="src\ImGui\Vendor\imgui.cpp" />
-    <ClCompile Include="src\ImGui\Vendor\imgui_demo.cpp" />
-    <ClCompile Include="src\ImGui\Vendor\imgui_draw.cpp" />
-    <ClCompile Include="src\ImGui\Vendor\imgui_impl_glfw.cpp" />
-    <ClCompile Include="src\ImGui\Vendor\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="src\ImGui\Vendor\imgui_widgets.cpp" />
-    <ClCompile Include="src\Library\Math\Matrix.cpp" />
-    <ClCompile Include="src\Logger\Logger.cpp" />
-    <ClCompile Include="src\Mono\Manager\MonoManager.cpp" />
-    <ClCompile Include="src\Physics\PhysicsManager.cpp" />
-    <ClCompile Include="src\Time\Clock.cpp" />
-    <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\Editor\Windows\SwitchViews\BaseSwitchView.cpp" />
-    <ClCompile Include="src\Editor\Utilities\DragAndDrop\DragAndDrop.cpp" />
-    <ClCompile Include="src\Editor\Utilities\OpenFileDialog\OpenFileDialog.cpp" />
-    <ClCompile Include="src\Editor\Utilities\ParentChild\ParentChild.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h">
@@ -305,6 +220,9 @@
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\ChildTransformComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\CollisionComponent.h">
@@ -341,6 +259,9 @@
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\ScriptComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\SpotLightComponent.h">
@@ -406,11 +327,14 @@
     <ClInclude Include="src\Editor\Menu\MenuComponent.h">
       <Filter>Editor\Menu</Filter>
     </ClInclude>
-    <ClInclude Include="src\Editor\Utilities\DragAndDrop.h">
-      <Filter>Editor\Utilities</Filter>
+    <ClInclude Include="src\Editor\Utilities\DragAndDrop\DragAndDrop.h">
+      <Filter>Editor\Utilities\DragAndDrop</Filter>
     </ClInclude>
-    <ClInclude Include="src\Editor\Utilities\OpenFileDialog.h">
-      <Filter>Editor\Utilities</Filter>
+    <ClInclude Include="src\Editor\Utilities\OpenFileDialog\OpenFileDialog.h">
+      <Filter>Editor\Utilities\OpenFileDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Utilities\ParentChild\ParentChild.h">
+      <Filter>Editor\Utilities\ParentChild</Filter>
     </ClInclude>
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.h">
       <Filter>Editor\Utilities\UndoAndRedo</Filter>
@@ -490,6 +414,9 @@
     <ClInclude Include="src\Global.h" />
     <ClInclude Include="src\Graphics\Camera\CameraManager.h">
       <Filter>Graphics\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Culling\CullingManager.h">
+      <Filter>Graphics\Culling</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\Debugging\DebugRenderingManager.h">
       <Filter>Graphics\Debugging</Filter>
@@ -707,14 +634,20 @@
     <ClInclude Include="src\Physics\PhysicsManager.h">
       <Filter>Physics</Filter>
     </ClInclude>
-    <ClInclude Include="src\Reflection\complex_support.h">
+    <ClInclude Include="src\Reflection\Meta.h">
       <Filter>Reflection</Filter>
     </ClInclude>
-    <ClInclude Include="src\Reflection\primitive_support.h">
+    <ClInclude Include="src\Reflection\RemTypeQual.h">
       <Filter>Reflection</Filter>
     </ClInclude>
-    <ClInclude Include="src\Reflection\registration.h">
-      <Filter>Reflection</Filter>
+    <ClInclude Include="src\Reflection\Variant\RefVariant.h">
+      <Filter>Reflection\Variant</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Reflection\Variant\Variant.h">
+      <Filter>Reflection\Variant</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Reflection\Variant\VariantBase.h">
+      <Filter>Reflection\Variant</Filter>
     </ClInclude>
     <ClInclude Include="src\SceneManagement\SceneManager.h">
       <Filter>SceneManagement</Filter>
@@ -744,18 +677,7 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\ChildTransformComponent.h" />
-    <ClInclude Include="src\Reflection\RemTypeQual.h" />
-    <ClInclude Include="src\Reflection\Meta.h" />
-    <ClInclude Include="src\Reflection\Variant\Variant.h" />
-    <ClInclude Include="src\Reflection\Variant\VariantBase.h" />
-    <ClInclude Include="src\Reflection\Variant\RefVariant.h" />
-    <ClInclude Include="src\Graphics\Culling\CullingManager.h" />
-    <ClInclude Include="src\Editor\Windows\SwitchViews\BaseSwitchView.h" />
-    <ClInclude Include="src\Editor\Utilities\DragAndDrop\DragAndDrop.h" />
-    <ClInclude Include="src\Editor\Utilities\OpenFileDialog\OpenFileDialog.h" />
-    <ClInclude Include="src\Editor\Utilities\ParentChild\ParentChild.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\ScriptComponent.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -763,6 +685,9 @@
     </ClCompile>
     <ClCompile Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.cpp">
       <Filter>ECS\ComponentManager\Components\ComponentArray</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\ComponentManager\Components\ComponentsRegistration.cpp">
+      <Filter>ECS\ComponentManager\Components</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\EntityManager\EntityManager.cpp">
       <Filter>ECS\EntityManager</Filter>
@@ -815,11 +740,14 @@
     <ClCompile Include="src\Editor\Menu\MenuComponent.cpp">
       <Filter>Editor\Menu</Filter>
     </ClCompile>
-    <ClCompile Include="src\Editor\Utilities\DragAndDrop.cpp">
-      <Filter>Editor\Utilities</Filter>
+    <ClCompile Include="src\Editor\Utilities\DragAndDrop\DragAndDrop.cpp">
+      <Filter>Editor\Utilities\DragAndDrop</Filter>
     </ClCompile>
-    <ClCompile Include="src\Editor\Utilities\OpenFileDialog.cpp">
-      <Filter>Editor\Utilities</Filter>
+    <ClCompile Include="src\Editor\Utilities\OpenFileDialog\OpenFileDialog.cpp">
+      <Filter>Editor\Utilities\OpenFileDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Utilities\ParentChild\ParentChild.cpp">
+      <Filter>Editor\Utilities\ParentChild</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.cpp">
       <Filter>Editor\Utilities\UndoAndRedo</Filter>
@@ -871,6 +799,9 @@
     </ClCompile>
     <ClCompile Include="src\Graphics\Camera\CameraManager.cpp">
       <Filter>Graphics\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Culling\CullingManager.cpp">
+      <Filter>Graphics\Culling</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\Debugging\DebugRenderingManager.cpp">
       <Filter>Graphics\Debugging</Filter>
@@ -1046,6 +977,18 @@
     <ClCompile Include="src\Physics\PhysicsManager.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
+    <ClCompile Include="src\Reflection\Meta.cpp">
+      <Filter>Reflection</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Reflection\Variant\RefVariant.cpp">
+      <Filter>Reflection\Variant</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Reflection\Variant\Variant.cpp">
+      <Filter>Reflection\Variant</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Reflection\Variant\VariantBase.cpp">
+      <Filter>Reflection\Variant</Filter>
+    </ClCompile>
     <ClCompile Include="src\SceneManagement\SceneManager.cpp">
       <Filter>SceneManagement</Filter>
     </ClCompile>
@@ -1074,15 +1017,6 @@
       <Filter>Time</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\Reflection\Meta.cpp" />
-    <ClCompile Include="src\Reflection\Variant\Variant.cpp" />
-    <ClCompile Include="src\Reflection\Variant\VariantBase.cpp" />
-    <ClCompile Include="src\Reflection\Variant\RefVariant.cpp" />
-    <ClCompile Include="src\ECS\ComponentManager\Components\ComponentsRegistration.cpp" />
-    <ClCompile Include="src\Graphics\Culling\CullingManager.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\Assets\Shaders\Mesh\Mesh.frag" />
-    <None Include="src\Assets\Shaders\Mesh\Mesh.vert" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.cpp" />
   </ItemGroup>
 </Project>

@@ -25,7 +25,7 @@ namespace Eclipse
 
 	public:
 		void Init();
-		void Update();
+		void Update(MonoScript* obj);
 		void RestartMono();
 		void StopMono();
 		MonoObject* CreateMonoObject(std::string scriptName, Entity entity);

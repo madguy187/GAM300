@@ -112,30 +112,26 @@ namespace Eclipse
 		std::cout << "Successfully pushed" << std::endl;
 	}
 
-	void MonoManager::Update()
+	void MonoManager::Update(MonoScript* obj)
 	{
 		/*DumpInfoFromImage(engine->mono.GetAPIImage());
 		DumpInfoFromImage(engine->mono.GetScriptImage());*/
-		for (auto& obj : objects)
-		{
-			MonoClass* klass = mono_class_from_name(engine->mono.GetScriptImage(), "", "Dog");
+		MonoClass* klass = mono_class_from_name(engine->mono.GetScriptImage(), "", obj->scriptName.c_str());
 
-			if (klass == nullptr) {
-				std::cout << "Failed loading class, MonoVec3" << std::endl;
-				continue;
-			}
-
-			MonoMethod* ctor_method = mono_class_get_method_from_name(klass, "Update", -1);
-			if (!ctor_method)
-			{
-				std::cout << "Failed to get method" << std::endl;
-				continue;
-			}
-
-			void* args[1];
-			//mono_runtime_object_init(obj);
-			//mono_runtime_invoke(ctor_method, obj, args, NULL);
+		if (klass == nullptr) {
+			std::cout << "Failed loading class, MonoVec3" << std::endl;
+			return;
 		}
+
+		MonoMethod* m_update = mono_class_get_method_from_name(klass, "Update", -1);
+		if (!m_update)
+		{
+			std::cout << "Failed to get method" << std::endl;
+			return;
+		}
+
+		void* args[1];
+		mono_runtime_invoke(m_update, obj, args, NULL);
 	}
 
 	void MonoManager::RestartMono()
@@ -168,6 +164,12 @@ namespace Eclipse
 	MonoObject* MonoManager::CreateMonoObject(std::string scriptName, Entity entity)
 	{
 		MonoClass* base = mono_class_from_name(APIImage, "Eclipse", scriptName.c_str());
+		if (!base)
+		{
+			std::cout << "Failed loading class" << std::endl;
+			return nullptr;
+		}
+
 		MonoMethod* method = mono_class_get_method_from_name(base, "InitBehavior", -1);
 		if (method == nullptr) {
 			std::cout << "Failed loading class method" << std::endl;
@@ -175,7 +177,6 @@ namespace Eclipse
 		}
 
 		MonoObject* obj = mono_object_new(mono_domain_get(), base);
-
 		if (obj == nullptr) {
 			std::cout << "Failed loading class instance " << mono_class_get_name(base) << std::endl;
 			return nullptr;

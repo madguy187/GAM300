@@ -67,7 +67,6 @@ namespace Eclipse
         ADD_MEMBER(Tag);
         ADD_MEMBER(Name);
         ADD_MEMBER(IsActive);
-        ADD_MEMBER(ScriptListComTest);
     }
 
     DEFINE_META(MaterialComponent)
