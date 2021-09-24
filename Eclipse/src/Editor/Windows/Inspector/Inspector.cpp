@@ -849,10 +849,11 @@ namespace Eclipse
 		static ImGuiTextFilter AddComponentFilter;
 		TextureComponent FolderIcon;
 
-
 		AddComponentFilter.Draw("Filter", 160);
 		FolderIcon.textureRef = Graphics::textures.find("FolderIcon")->first;
+
 		TextureComponent icon = FolderIcon;
+
 		static float padding = 16.0f;
 		static float thumbnaimsize = 50;
 		float cellsize = thumbnaimsize + padding;
@@ -876,9 +877,6 @@ namespace Eclipse
 		{
 			for (int i = 0; i < engine->AssimpManager.AllPrimitiveModelsNames.size(); ++i)
 			{
-				/*TextureComponent FolderIcon;
-				FolderIcon.textureRef = Graphics::textures.find(tempNamesForMesh[i].c_str())->first;
-				TextureComponent icon = FolderIcon;*/
 
 				if (AddComponentFilter.PassFilter((engine->AssimpManager.AllPrimitiveModelsNames[i].c_str())))
 				{
@@ -907,6 +905,7 @@ namespace Eclipse
 				FolderIcon.textureRef = Graphics::textures.find(tempNamesForMesh[i].c_str())->first;
 				TextureComponent icon = FolderIcon;*/
 
+
 				if (AddComponentFilter.PassFilter((engine->AssimpManager.AllMeshNames[i].c_str())))
 				{
 					ImGui::ImageButton((void*)Graphics::textures[(icon).textureRef].GetHandle(),
@@ -917,6 +916,7 @@ namespace Eclipse
 					if (ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
 					{
 						engine->AssimpManager.SetMeshComponent(ID, engine->AssimpManager.AllMeshNames[i].c_str());
+						engine->AssimpManager.SetSingleMesh(ID, engine->AssimpManager.AllMeshNames[i]);
 						//Item.MeshName = Graphics::models.find((engine->AssimpManager.AllMeshNames[i].c_str()))->first;
 						AddComponentFilter.Clear();
 					}
