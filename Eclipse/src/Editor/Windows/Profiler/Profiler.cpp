@@ -28,6 +28,7 @@ namespace Eclipse
 
 		if (search != this->time_container.end())
 		{
+			//std::cout << inputTracker.system_offset<<std::endl;
 			search->second.push_back(inputTracker.system_offset);
 
 			if (search->second.size() == 50)

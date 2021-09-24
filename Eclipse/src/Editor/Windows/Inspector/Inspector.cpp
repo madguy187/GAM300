@@ -55,7 +55,7 @@ namespace Eclipse
 			ShowTextureProperty("Texture", currEnt, CompFilter);
 			ShowRenderProperty("Render", currEnt, CompFilter);
 			ShowMaterialProperty("Material", currEnt, CompFilter);
-			//ShowMesh3DProperty("Mesh", currEnt, CompFilter);
+			ShowMesh3DProperty("Mesh", currEnt, CompFilter);
 			ShowModelInfoProperty("ModelInfo", currEnt, CompFilter);
 			ShowScriptProperty("Script Details", currEnt, CompFilter);
 			ShowChildTransformProperty("ChildTransform", currEnt, CompFilter);
@@ -299,6 +299,7 @@ namespace Eclipse
 
 		return false;
 	}
+
 	bool InspectorWindow::ShowRigidBodyProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
 	{
 		if (engine->world.CheckComponent<RigidBodyComponent>(ID))
@@ -321,6 +322,7 @@ namespace Eclipse
 
 		return false;
 	}
+
 	bool InspectorWindow::ShowEditorCameraProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
 	{
 		if (engine->world.CheckComponent<CameraComponent>(ID))
@@ -361,9 +363,6 @@ namespace Eclipse
 				ECGui::CreateComboList(settings, _TextureVector, _Texture.ComboIndex);
 				_Texture.Type = _Map[_TextureVector[_Texture.ComboIndex]];
 				
-				//TODO
-				//Display all textures on the inspector
-
 				ChangeTextureController(_Texture);
 			}
 		}
@@ -383,16 +382,18 @@ namespace Eclipse
 				ECGui::DrawSliderFloatWidget("Render Transparency", &_Render.transparency, true, 0.0f, 200.0f);
 
 
-
+				//sceneloaded models
 				//THIS IS WORK IN PROGRESS TESTING OUT FUNCITONALITIES AND ARE NOT MEANT TO BE IN THE FINAL
 				//VERSION *NOT FOR FINAL VERSION* - TIAN YU
 				std::string nameString = _Render.modelRef + " (Mesh Filter)";
+				ImGui::PushStyleColor(ImGuiCol_Header, IM_COL32(0,1,1,1));
 				if (filter.PassFilter(nameString.c_str()) && ECGui::CreateCollapsingHeader(nameString.c_str()))
 				{
 					ECGui::DrawTextWidget<const char*>("Mesh ", "");
 					ECGui::InsertSameLine();
 					ChangeMeshController(_Render);
 				}
+				ImGui::PopStyleColor();
 			}
 		}
 		
@@ -450,14 +451,14 @@ namespace Eclipse
 	
 	bool InspectorWindow::ShowMesh3DProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
 	{
-		//if (engine->world.CheckComponent<MeshComponent3D>(ID))
-		//{
-		//	if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
-		//	{
-		//		auto& _Mesh3D = engine->world.GetComponent<MeshComponent3D>(ID);
+		if (engine->world.CheckComponent<MeshComponent>(ID))
+		{
+			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+			{
+				auto& _Mesh = engine->world.GetComponent<MeshComponent>(ID);
 
-		//	}
-		//}
+			}
+		}
 		return false;
 	}
 
@@ -833,6 +834,13 @@ namespace Eclipse
 	{
 		static ImGuiTextFilter AddComponentFilter;
 		AddComponentFilter.Draw("Filter", 160);
+
+		// Single Meshes
+		//std::unordered_map<std::string, std::unique_ptr<Mesh>> SingleMeshMap;
+
+		// Container to store Models who are loaded once
+		//std::unordered_map<std::string, std::unique_ptr<AssimpModel>> AssimpLoadedModels;
+
 		std::vector<std::string> tempNamesForMesh
 			= { {"Square"},{"Triangle"},{"Circle"},{"Lines"},{"Lightsquare"},{"Sphere"},{"Plane"}
 				,{"Cube"},{"Cylinder"},{"Cone"},{"Torus"} ,{"Pyramid"} ,{"Lines3D"} };
@@ -855,14 +863,18 @@ namespace Eclipse
 			columncount = 1;
 		}
 		ImGui::SliderFloat("Size: ", &thumbnaimsize, 10, 200);
+
 		ImGui::Columns(columncount, NULL, true);
-		for (int i = 0 ; i <  tempNamesForMesh.size() ; ++i)
+
+		//use model info component to identify if the dude is basic or not 
+
+		for (int i = 0 ; i <  Graphics::models.size() ; ++i)
 		{
 			/*TextureComponent FolderIcon;
 			FolderIcon.textureRef = Graphics::textures.find(tempNamesForMesh[i].c_str())->first;
 			TextureComponent icon = FolderIcon;*/
 
-			if (AddComponentFilter.PassFilter(tempNamesForMesh[i].c_str()))
+			if (AddComponentFilter.PassFilter((tempNamesForMesh[i].c_str()))
 			{
 				ImGui::ImageButton((void*)Graphics::textures[(icon).textureRef].GetHandle(),
 					{thumbnaimsize,thumbnaimsize},
