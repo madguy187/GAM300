@@ -18,11 +18,13 @@ namespace Eclipse
 		void OnGizmoUpdateEvent(int GizmoType);
 		void OnCameraZoomEvent();
 		void OnCameraMoveEvent();
+		bool GetIsWindowActive();
 	protected:
 		glm::vec2 mViewportSize;
 		FrameBuffer* m_frameBuffer;
 		std::vector<std::string> mProjectionView_List;
 		bool IsWireframeMode{ false };
+		bool IsWindowActive{ false };
 	};
 }
 #pragma once

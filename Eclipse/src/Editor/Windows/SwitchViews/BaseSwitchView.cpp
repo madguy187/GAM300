@@ -59,6 +59,15 @@ namespace Eclipse
 			OnCameraZoomEvent();
 			OnCameraMoveEvent();
 		}
+
+		if (ImGui::IsItemActive())
+		{
+			IsWindowActive = true;
+		}
+		else
+		{
+			IsWindowActive = false;
+		}
 	}
 
 	void BaseSwitchViewWindow::RenderSettingsHeader()
@@ -167,7 +176,7 @@ namespace Eclipse
 			ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(translation),
 				glm::value_ptr(rotation), glm::value_ptr(scale));
 
-			glm::vec3 deltaRotation = rotation - transCom.rotation.ConvertToGlmVec3Type();
+			//glm::vec3 deltaRotation = rotation - transCom.rotation.ConvertToGlmVec3Type();
 
 			switch (GizmoType)
 			{
@@ -176,7 +185,7 @@ namespace Eclipse
 				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.position, transCom.position });
 				break;
 			case ImGuizmo::OPERATION::ROTATE:
-				transCom.rotation += deltaRotation;
+				transCom.rotation = rotation;
 				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.rotation, transCom.rotation });
 				break;
 			case ImGuizmo::OPERATION::SCALE:
@@ -260,5 +269,10 @@ namespace Eclipse
 			engine->gCamera.GetViewInput().set(2, 0);
 			engine->gCamera.GetViewInput().set(3, 0);
 		}
+	}
+
+	bool BaseSwitchViewWindow::GetIsWindowActive()
+	{
+		return IsWindowActive;
 	}
 }

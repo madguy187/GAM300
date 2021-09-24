@@ -72,6 +72,11 @@ namespace Eclipse
 			OnCameraZoomEvent();
 			OnSelectEntityEvent();
 		}
+
+		if (ImGui::IsItemActive())
+			IsWindowActive = true;
+		else
+			IsWindowActive = false;
 	}
 
 	void SceneWindow::OnKeyPressedEvent()
@@ -407,6 +412,11 @@ namespace Eclipse
 	int SceneWindow::GetGizmoType()
 	{
 		return m_GizmoType;
+	}
+
+	bool SceneWindow::GetIsWindowActive()
+	{
+		return IsWindowActive;
 	}
 
 	void SceneWindow::SetGizmoType(int type)
