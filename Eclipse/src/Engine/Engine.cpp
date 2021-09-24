@@ -244,13 +244,8 @@ namespace Eclipse
 
             if (IsScenePlaying())
             {
-                for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
-                {
-                    world.Update<PhysicsSystem>();
-                }
+                world.Update<MonoSystem>();
             }
-
-            world.Update<MonoSystem>();
 
             // FRAMEBUFFER DRAW ==========================
             engine->GraphicsManager.GlobalFrmeBufferDraw();
