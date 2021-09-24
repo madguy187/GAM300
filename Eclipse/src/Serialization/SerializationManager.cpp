@@ -5,6 +5,11 @@ namespace Eclipse
 {
 	SerializationManager::SerializationManager() {}
 
+	void SerializationManager::LogError(const std::string& msg)
+	{
+		EDITOR_LOG_WARN(msg.c_str());
+	}
+
 	void SerializationManager::SerializeEntity(const Entity& ent, const size_t& counter)
 	{
 		sz.StartElement("Entity_", true, counter);
@@ -50,7 +55,7 @@ namespace Eclipse
 
 		SerializeComponent<AABBComponent>(w, ent);
 
-		SerializeComponent<TextureComponent>(w, ent);
+		//SerializeComponent<TextureComponent>(w, ent);
 
 		SerializeComponent<LightComponent>(w, ent);
 	}

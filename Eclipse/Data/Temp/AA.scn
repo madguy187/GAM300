@@ -1,5 +1,6 @@
+<?xml version="1.0" ?>
 <Entities Size="3">
-    <Entity_0 ID="6">
+    <Entity_0 ID="0">
         <EntityComponent>
             <Name value="Camera" />
             <Tag value="Camera" />
@@ -9,7 +10,7 @@
             <EyeAlpha value="0" />
             <EyeBeta value="-90" />
             <FOV value="45" />
-            <NearPlane value="1" />
+            <NearPlane value="0.1" />
             <FarPlane value="500" />
             <Aspect value="1.92708" />
             <EyePos x="0" y="20" z="40" />
@@ -26,8 +27,8 @@
             <ProjMtx Col="4" Row="4">
                 <Col0 _00="1.25278" _01="0" _02="0" _03="0" />
                 <Col1 _10="0" _11="2.41421" _12="0" _13="0" />
-                <Col2 _20="0" _21="0" _22="-1.00401" _23="-1" />
-                <Col3 _30="0" _31="0" _32="-2.00401" _33="0" />
+                <Col2 _20="0" _21="0" _22="-1.0004" _23="-1" />
+                <Col3 _30="0" _31="0" _32="-0.20004" _33="0" />
             </ProjMtx>
             <CameraSpeed value="50" />
             <CameraType value="Editor_Camera" />
@@ -39,14 +40,14 @@
             <Scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_0>
-    <Entity_1 ID="7">
+    <Entity_1 ID="6">
         <EntityComponent>
             <Name value="DirectionalLight" />
             <Tag value="DirectionalLight" />
             <IsActive value="false" />
         </EntityComponent>
         <DirectionalLightComponent>
-            <ID value="7" />
+            <ID value="6" />
             <Counter value="0" />
             <Visible value="false" />
             <AffectsWorld value="true" />
@@ -71,10 +72,10 @@
         </TransformComponent>
         <LightComponent />
     </Entity_1>
-    <Entity_2 ID="8">
+    <Entity_2 ID="7">
         <EntityComponent>
-            <Name value="Cylinder" />
-            <Tag value="Cylinder" />
+            <Name value="Cube" />
+            <Tag value="Cube" />
             <IsActive value="true" />
         </EntityComponent>
         <MaterialComponent>
@@ -83,16 +84,16 @@
             <Diffuse x="1" y="1" z="1" />
             <Specular x="1" y="1" z="1" />
             <HighlightColor x="1" y="0" z="0" />
-            <Shininess value="0.25" />
-            <MaximumShininess value="128" />
-            <RegisterForHighlight value="false" />
             <Highlight value="false" />
             <NoTextures value="true" />
+            <Shininess value="0.25" />
+            <MaximumShininess value="128" />
             <Thickness value="0.05" />
             <ScaleUp value="1.05" />
+            <HasTexture value="true" />
+            <TextureRef value="orange" />
         </MaterialComponent>
         <MeshComponent>
-            <Key value="" />
             <Color x="1" y="1" z="1" />
             <TextureIdx x="0" y="0" />
             <IsQuad value="false" />
@@ -102,24 +103,19 @@
                 <Col2 _20="0" _21="0" _22="0" _23="0" />
                 <Col3 _30="0" _31="0" _32="0" _33="0" />
             </ModelNDC_XForm>
-            <ModelRef value="Cylinder" />
+            <ModelRef value="Cube" />
             <ShaderRef value="shader3DShdrpgm" />
-            <ID value="8" />
-            <Name value="" />
-            <NewLayer value="0" />
-            <LayerNum value="0" />
             <Transparency value="1" />
-            <LightColor x="1" y="1" z="1" w="1" />
         </MeshComponent>
         <TransformComponent>
-            <Position x="10.889" y="0" z="20.54" />
+            <Position x="-12.8681" y="0" z="10.0377" />
             <Rotation x="0" y="0" z="0" />
             <Scale x="5" y="5" z="5" />
         </TransformComponent>
         <AABBComponent>
-            <Center x="0" y="0" z="0" />
-            <Min x="-2.5" y="-2.5" z="-2.5" />
-            <Max x="2.5" y="2.5" z="2.5" />
+            <Center x="5.39106" y="0" z="10.2829" />
+            <Min x="2.89106" y="-2.5" z="7.78289" />
+            <Max x="7.89106" y="2.5" z="12.7829" />
         </AABBComponent>
     </Entity_2>
 </Entities>
