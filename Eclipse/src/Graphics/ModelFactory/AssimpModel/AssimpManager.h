@@ -42,6 +42,7 @@ namespace Eclipse
 
 		// Container to store all mesh names
 		std::vector<std::string> AllMeshNames;
+		std::vector<std::string> AllPrimitiveModelsNames;
 
 		// Get Current MeshComponent Container
 		MeshModelContainer GetMeshContainer();
