@@ -118,7 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Eclipse\src\Graphics;$(SolutionDir)Dep\ASSIMP\include\assimp;$(SolutionDir)Eclipse\src\Graphics\RendererAPI;$(SolutionDir)Dep\GLM\glm;$(SolutionDir)Dep\GLM;$(SolutionDir)Dep\GLEW;$(SolutionDir)Dep;$(SolutionDir)Eclipse\src\Graphics\Textures;$(SolutionDir)Compiler;$(SolutionDir)Dep\ASSIMP;$(SolutionDir)Compiler\GemometryCompiler</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Eclipse\src\Graphics;$(SolutionDir)Dep\ASSIMP\include\assimp;$(SolutionDir)Eclipse\src\Graphics\RendererAPI;$(SolutionDir)Dep\GLM\glm;$(SolutionDir)Dep\GLM;$(SolutionDir)Dep\GLEW;$(SolutionDir)Dep;$(SolutionDir)Eclipse\src\Graphics\Textures;$(SolutionDir)Compiler;$(SolutionDir)Dep\ASSIMP;$(SolutionDir)Compiler\GemometryCompiler;$(SolutionDir)Compiler\Compiler\Geometry;$(SolutionDir)Compiler\Compiler\ICompiler;$(SolutionDir)Compiler\Assimp;$(SolutionDir)Compiler\Source</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -138,7 +138,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Eclipse\src\Graphics;$(SolutionDir)Dep\ASSIMP\include\assimp;$(SolutionDir)Eclipse\src\Graphics\RendererAPI;$(SolutionDir)Dep\GLM\glm;$(SolutionDir)Dep\GLM;$(SolutionDir)Dep\GLEW;$(SolutionDir)Dep;$(SolutionDir)Eclipse\src\Graphics\Textures;$(SolutionDir)Compiler;$(SolutionDir)Dep\ASSIMP;$(SolutionDir)Compiler\GemometryCompiler</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Eclipse\src\Graphics;$(SolutionDir)Dep\ASSIMP\include\assimp;$(SolutionDir)Eclipse\src\Graphics\RendererAPI;$(SolutionDir)Dep\GLM\glm;$(SolutionDir)Dep\GLM;$(SolutionDir)Dep\GLEW;$(SolutionDir)Dep;$(SolutionDir)Eclipse\src\Graphics\Textures;$(SolutionDir)Compiler;$(SolutionDir)Dep\ASSIMP;$(SolutionDir)Compiler\GemometryCompiler;$(SolutionDir)Compiler\Compiler\Geometry;$(SolutionDir)Compiler\Compiler\ICompiler;$(SolutionDir)Compiler\Assimp;$(SolutionDir)Compiler\Source</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -153,27 +153,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AssimpLoader.cpp" />
-    <ClCompile Include="Compilers.cpp" />
-    <ClCompile Include="GeometryCompiler.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Assimp\AssimpLoader.cpp" />
+    <ClCompile Include="Compiler\Geometry\GeometryCompiler.cpp" />
+    <ClCompile Include="Compiler\ICompiler\Compilers.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TinyXML\tinystr.cpp" />
-    <ClCompile Include="TinyXML\tinyxml.cpp" />
-    <ClCompile Include="TinyXML\tinyxmlerror.cpp" />
-    <ClCompile Include="TinyXML\tinyxmlparser.cpp" />
+    <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="TextureCompiler.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AssimpLoader.h" />
-    <ClInclude Include="Compilers.h" />
-    <ClInclude Include="GeometryCompiler.h" />
+    <ClInclude Include="Assimp\AssimpLoader.h" />
+    <ClInclude Include="Compiler\Geometry\GeometryCompiler.h" />
+    <ClInclude Include="Compiler\ICompiler\Compilers.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="CompilerSerializer.h" />
-    <ClInclude Include="TinyXML\tinystr.h" />
-    <ClInclude Include="TinyXML\tinyxml.h" />
+    <ClInclude Include="TextureCompiler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

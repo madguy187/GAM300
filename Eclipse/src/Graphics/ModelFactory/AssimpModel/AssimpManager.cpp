@@ -193,11 +193,11 @@ namespace Eclipse
 
     void AssimpModelManager::PrintLoadedModels()
     {
-        PrintOutModelsLoadedOnce();
-        // PrintOutModelTextureMap();
-        PrintOutModelMap();
-        // PrintOutAllTextures();
-         //PrintOutAllMeshes();
+        //PrintOutModelsLoadedOnce();
+        PrintOutModelTextureMap();
+        //PrintOutModelMap();
+        PrintOutAllTextures();
+        //PrintOutAllMeshes();
     }
 
     void AssimpModelManager::Cleanup(MeshComponent& in)

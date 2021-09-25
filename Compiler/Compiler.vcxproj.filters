@@ -21,47 +21,41 @@
     <Filter Include="Compiler\ICompiler">
       <UniqueIdentifier>{76f65c24-9a2d-4643-a231-7755eccfbc60}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Compiler\Texture">
+      <UniqueIdentifier>{50ef52f6-24fa-48e0-8f3c-9902291dd540}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="TinyXML\tinystr.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Compiler\Geometry\GeometryCompiler.cpp">
+      <Filter>Compiler\Geometry</Filter>
     </ClCompile>
-    <ClCompile Include="TinyXML\tinyxml.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TinyXML\tinyxmlerror.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TinyXML\tinyxmlparser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AssimpLoader.cpp">
-      <Filter>Assimp</Filter>
-    </ClCompile>
-    <ClCompile Include="Compilers.cpp">
+    <ClCompile Include="Compiler\ICompiler\Compilers.cpp">
       <Filter>Compiler\ICompiler</Filter>
     </ClCompile>
-    <ClCompile Include="GeometryCompiler.cpp">
-      <Filter>Compiler\Geometry</Filter>
+    <ClCompile Include="Assimp\AssimpLoader.cpp">
+      <Filter>Assimp</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureCompiler.cpp">
+      <Filter>Compiler\Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="CompilerSerializer.h" />
-    <ClInclude Include="TinyXML\tinystr.h" />
-    <ClInclude Include="TinyXML\tinyxml.h" />
-    <ClInclude Include="AssimpLoader.h">
-      <Filter>Assimp</Filter>
+    <ClInclude Include="Compiler\Geometry\GeometryCompiler.h">
+      <Filter>Compiler\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="Compilers.h">
+    <ClInclude Include="Compiler\ICompiler\Compilers.h">
       <Filter>Compiler\ICompiler</Filter>
     </ClInclude>
-    <ClInclude Include="GeometryCompiler.h">
-      <Filter>Compiler\Geometry</Filter>
+    <ClInclude Include="Assimp\AssimpLoader.h">
+      <Filter>Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureCompiler.h">
+      <Filter>Compiler\Texture</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
