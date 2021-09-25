@@ -18,7 +18,7 @@ namespace Eclipse
 		// Create Directional Light
 		static void CreateDirectionalLight(unsigned int CreatedID);
 		// Directional Light Draw
-		void Draw(DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
+		void Draw(unsigned int EntityId,DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
 		// First Created Light
 		void FirstGlobalLight();
 

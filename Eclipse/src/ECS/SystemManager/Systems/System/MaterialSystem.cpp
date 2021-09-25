@@ -38,4 +38,5 @@ namespace Eclipse
             engine->MaterialManager.StencilBufferClear();
         }
     }
+
 }

@@ -106,7 +106,7 @@ namespace Eclipse
 		}
 	}
 
-	void PointLight::Draw(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
+	void PointLight::Draw(unsigned int EntityId, PointLightComponent* in, unsigned int framebufferID, unsigned int IndexID, GLenum mode)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
 
@@ -121,9 +121,11 @@ namespace Eclipse
 		glEnable(GL_LINE_SMOOTH);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		CheckUniformLoc(&shdrpgm, *in, indexID, PointLightCounter);
+		CheckUniformLoc(&shdrpgm, *in, IndexID, PointLightCounter);
 
-		if (in->visible)
+		auto& Light = engine->world.GetComponent<LightComponent>(EntityId);
+
+		if (in->visible && Light.Render)
 		{
 			GLCall(glDrawElements(Graphics::models["Sphere"]->GetPrimitiveType(),
 				Graphics::models["Sphere"]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
@@ -186,7 +188,7 @@ namespace Eclipse
 	{
 		for (auto& it : _pointlights)
 		{
-			Draw(it.second, framebufferID, it.first, GL_FILL);
+			Draw(it.first, it.second, framebufferID, it.first, GL_FILL);
 		}
 	}
 }
