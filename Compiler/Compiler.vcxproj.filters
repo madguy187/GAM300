@@ -36,17 +36,20 @@
     <ClCompile Include="TinyXML\tinyxmlparser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Compilers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssimpLoader.h">
       <Filter>Compiler</Filter>
     </ClInclude>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Compilers.h">
-      <Filter>Compiler\MainBody</Filter>
-    </ClInclude>
     <ClInclude Include="CompilerSerializer.h" />
     <ClInclude Include="TinyXML\tinystr.h" />
     <ClInclude Include="TinyXML\tinyxml.h" />
+    <ClInclude Include="Compilers.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

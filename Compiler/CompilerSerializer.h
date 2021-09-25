@@ -9,6 +9,7 @@ namespace EclipseCompiler
 {
     class Serializer
     {
+    public:
         TiXmlDocument _doc;
         TiXmlElement* _currElement;
 
@@ -118,5 +119,81 @@ namespace EclipseCompiler
         {
             _currElement->SetAttribute(att_name.c_str(), att_data ? "true" : "false");
         }
+
+        template <typename T, size_t N1, size_t N2, glm::qualifier GLM>
+        inline void AddAttributeToElement(const std::string& att_name, const glm::mat<N1, N2, T, GLM>& att_data)
+        {
+            AddAttributeToElement<size_t>("Col", N1);
+            AddAttributeToElement<size_t>("Row", N2);
+            std::string name{ "Col" };
+            for (size_t i = 0; i < N1; ++i)
+            {
+                std::string dataName{ "_" + std::to_string(i) };
+                StartElement(name, true, i);
+                for (size_t j = 0; j < N2; ++j)
+                {
+                    AddAttributeToElement<T>(dataName + std::to_string(j), att_data[i][j]);
+                }
+                CloseElement();
+            }
+        }
+
+        template <typename T>
+        inline void AddAttributeToElement(const std::string& att_name, const std::vector<T>& att_data)
+        {
+            size_t counter = 0;
+            std::string name{ att_name + " member" };
+            for (const T& data : att_data)
+            {
+                StartElement(name, true, counter++);
+                AddAttributeToElement<T>("member", data);
+                CloseElement();
+            }
+        }
+
+        template <typename T, size_t N, glm::qualifier GLM>
+        inline void AddAttributeToElement(const std::string& att_name, const glm::vec<N, T, GLM>& att_data)
+        {
+            std::string vecNames[4] = { {"x"}, {"y"}, {"z"}, {"w"} };
+            for (size_t i = 0; i < N; ++i)
+            {
+                AddAttributeToElement<T>(vecNames[i], att_data[i]);
+            }
+        }
+
+        //inline void SerializeData() {}
+
+        //template <typename T, typename... Args>
+        //inline void SerializeData(const char* name, T element, Args... elements)
+        //{
+        //    StartElement(name);
+        //    AddAttributeToElement("value", element);
+        //    CloseElement();
+        //    SerializeData(elements...);
+        //}
+
+        //template <typename CompType>
+        //inline void SerializeComponentData(const CompType& data)
+        //{
+        //    AddAttributeToElement("Unavailable", true);
+        //}
+
+        //template <>
+        //inline void SerializeComponentData<Mesh>(const Mesh& data)
+        //{
+        //    SerializeData(
+        //        "MeshName", data.MeshName,
+        //        "NoTextures", data.NoTex,
+        //        "Diffuse", data.Diffuse
+        //    );
+        //}
+
+        //template <typename CompType>
+        //inline void SerializeComponent(Mesh& ent)
+        //{
+        //    StartElement("MeshTest");
+        //    SerializeComponentData<Mesh>(ent);
+        //    CloseElement();
+        //}
     };
 }

@@ -1,14 +1,1 @@
 <?xml version="1.0" ?>
-<HelloWorld>
-    <A0 int="0" string="Hoopa" double="1" float="1" size_t="0" char="A" bool="true" />
-    <A1 int="0" string="Hoopa" double="1" float="1" size_t="1" char="A" bool="true" />
-    <A2 int="0" string="Hoopa" double="1" float="1" size_t="2" char="A" bool="true" />
-    <A3 int="0" string="Hoopa" double="1" float="1" size_t="3" char="A" bool="true" />
-    <A4 int="0" string="Hoopa" double="1" float="1" size_t="4" char="A" bool="true" />
-    <A5 int="0" string="Hoopa" double="1" float="1" size_t="5" char="A" bool="true" />
-    <A6 int="0" string="Hoopa" double="1" float="1" size_t="6" char="A" bool="true" />
-    <A7 int="0" string="Hoopa" double="1" float="1" size_t="7" char="A" bool="true" />
-    <A8 int="0" string="Hoopa" double="1" float="1" size_t="8" char="A" bool="true" />
-    <A9 int="0" string="Hoopa" double="1" float="1" size_t="9" char="A" bool="true" />
-</HelloWorld>
-<ByeWorld />

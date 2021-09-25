@@ -309,7 +309,10 @@ namespace Eclipse
 
             if (mesh->mColors[0])
             {
-                vertex.m_Color = mesh->mColors[0][i];
+                vertex.m_Color.x = mesh->mColors[0][i].r;
+                vertex.m_Color.y = mesh->mColors[0][i].g;
+                vertex.m_Color.z = mesh->mColors[0][i].b;
+                vertex.m_Color.w = mesh->mColors[0][i].a;
             }
 
             AllVertices.push_back(vertex.Position);
@@ -369,17 +372,26 @@ namespace Eclipse
                     // diffuse color
                     aiColor4D diff(1.0f);
                     aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diff);
-                    newMesh.Diffuse = diff;
+                    newMesh.Diffuse.x = diff.r;
+                    newMesh.Diffuse.y = diff.g;
+                    newMesh.Diffuse.z = diff.b;
+                    newMesh.Diffuse.w = diff.a;
 
                     // specular color
                     aiColor4D spec(1.0f);
                     aiGetMaterialColor(material, AI_MATKEY_COLOR_SPECULAR, &spec);
-                    newMesh.Specular = spec;
+                    newMesh.Specular.x = spec.r;
+                    newMesh.Specular.y = spec.g;
+                    newMesh.Specular.z = spec.b;
+                    newMesh.Specular.w = spec.a;
 
                     // specular color
                     aiColor4D ambientColor(1.0f);
                     aiGetMaterialColor(material, AI_MATKEY_COLOR_AMBIENT, &ambientColor);
-                    newMesh.Ambient = ambientColor;
+                    newMesh.Ambient.x = ambientColor.r;
+                    newMesh.Ambient.y = ambientColor.g;
+                    newMesh.Ambient.z = ambientColor.b;
+                    newMesh.Ambient.w = ambientColor.a;
 
                     meshData.push_back(newMesh);
                     MeshIndex++;

@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Eclipse", "Eclipse\Eclipse.vcxproj", "{8A89FEB1-F668-7D4D-FF80-08246BDFE3AE}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Compiler", "Compiler\Compiler.vcxproj", "{B08D9762-DBAD-42B2-9F7D-F1D2BF5B5FC0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8A89FEB1-F668-7D4D-FF80-08246BDFE3AE} = {8A89FEB1-F668-7D4D-FF80-08246BDFE3AE}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

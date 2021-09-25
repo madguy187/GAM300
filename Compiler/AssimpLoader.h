@@ -29,20 +29,17 @@ namespace EclipseCompiler
         glm::vec3 Position;
         glm::vec3 Normal;
         glm::vec2 TextureCoodinates;
-        aiColor4D m_Color;
+        glm::vec4 m_Color;
     };
 
     class Mesh
     {
     public:
         std::string MeshName;
-        unsigned int VBO;
-        unsigned int VAO;
-        unsigned int EBO;
         bool NoTex;
-        aiColor4D Diffuse;
-        aiColor4D Specular;
-        aiColor4D Ambient;
+        glm::vec4 Diffuse;
+        glm::vec4 Specular;
+        glm::vec4 Ambient;
         std::vector<Vertex> Vertices;
         std::vector<unsigned int> Indices;
         std::vector<Texture> Textures;
@@ -55,10 +52,9 @@ namespace EclipseCompiler
             NoTex(false),
             MeshName(namein)
         {
-
         }
 
-        Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiColor4D diffuse, aiColor4D specular, aiColor4D ambient, bool in, std::string namein)
+        Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, glm::vec4  diffuse, glm::vec4  specular, glm::vec4  ambient, bool in, std::string namein)
             :
             Vertices(vertices),
             Indices(indices),
@@ -76,9 +72,9 @@ namespace EclipseCompiler
     {
         std::vector<Vertex> vertices;
         std::vector<unsigned int> indices;
-        aiColor4D Diffuse;
-        aiColor4D Specular;
-        aiColor4D Ambient;
+        glm::vec4 Diffuse;
+        glm::vec4 Specular;
+        glm::vec4 Ambient;
         bool NoTextures = false;
         std::string MeshName;
         std::vector<Texture> textures;
@@ -86,7 +82,7 @@ namespace EclipseCompiler
 
     class AssimpLoader
     {
-    private:
+    public:
         unsigned int MeshIndex = 0;
         unsigned int ID = 0;
         std::string NameOfModel;
@@ -99,14 +95,13 @@ namespace EclipseCompiler
     public:
         std::unordered_map<std::string, std::string> ModelMap;
 
-        void LoadModels(const std::string& modelFile);
-        void LoadAssimpModel(std::string path);
+        void LoadAssimpModel(std::string path, std::unordered_map<std::string, std::unique_ptr<Mesh>>& GeometryContainer);
         void ProcessNode(aiNode* node, const aiScene* scene);
         void ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string& MeshName);
         std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type, std::string& MeshName);
         float GetLargestAxisValue(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         void ComputeAxisMinMax(std::vector<glm::vec3>& vertices, std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         glm::vec3 ComputeCentroid(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
-        void LoadNewModel();
+        void LoadNewModel(std::unordered_map<std::string, std::unique_ptr<Mesh>>& GeometryContainer);
     };
 }

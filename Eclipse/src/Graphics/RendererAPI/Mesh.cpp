@@ -10,7 +10,7 @@ namespace Eclipse
 
     }
 
-    Eclipse::Mesh::Mesh(aiColor4D diff, aiColor4D spec) :
+    Eclipse::Mesh::Mesh(glm::vec4 diff, glm::vec4 spec) :
         Diffuse(diff),
         Specular(spec),
         NoTex(true)
@@ -29,7 +29,7 @@ namespace Eclipse
         Setup();
     }
 
-    Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiColor4D diffuse, aiColor4D specular, aiColor4D ambient, bool in, std::string namein)
+    Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, glm::vec4 diffuse, glm::vec4 specular, glm::vec4 ambient, bool in, std::string namein)
         :
         Vertices(vertices),
         Indices(indices),

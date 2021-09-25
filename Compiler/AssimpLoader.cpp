@@ -5,32 +5,7 @@
 
 namespace EclipseCompiler
 {
-    void AssimpLoader::LoadModels(const std::string& modelFile)
-    {
-        for (auto& dirEntry : std::filesystem::directory_iterator(modelFile))
-        {
-            const auto& path = dirEntry.path();
-            auto relativePath = relative(path, "..//Eclipse//src//");
-            std::string FolderName = relativePath.filename().string();
-
-            std::string GoIntoModelFolder = ("..//Eclipse//src/Assets/ASSModels/" + FolderName);
-
-            for (auto& dirEntry : std::filesystem::directory_iterator(GoIntoModelFolder))
-            {
-                const auto& FbxOrGltf = dirEntry.path();
-                auto relativePath = relative(FbxOrGltf, "..//Eclipse//src//");
-                std::string FbxOrGltfName = relativePath.filename().string();
-
-                if (FbxOrGltfName.find("gltf") != std::string::npos || FbxOrGltfName.find("fbx") != std::string::npos)
-                {
-                    std::string PathName = ("..//Eclipse//src/Assets/ASSModels/" + FolderName + "/" + FbxOrGltfName).c_str();
-                    ModelMap.emplace(FolderName, PathName);
-                }
-            }
-        }
-    }
-
-    void AssimpLoader::LoadAssimpModel(std::string path)
+    void AssimpLoader::LoadAssimpModel(std::string path, std::unordered_map<std::string, std::unique_ptr<Mesh>>& GeometryContainer)
     {
         unsigned int importOptions =
             aiProcess_Triangulate |
@@ -57,7 +32,7 @@ namespace EclipseCompiler
 
         Directory = path.substr(0, path.find_last_of("/"));
         ProcessNode(scene->mRootNode, scene);
-        LoadNewModel();
+        LoadNewModel(GeometryContainer);
     }
 
     void AssimpLoader::ProcessNode(aiNode* node, const aiScene* scene)
@@ -108,7 +83,10 @@ namespace EclipseCompiler
 
             if (mesh->mColors[0])
             {
-                vertex.m_Color = mesh->mColors[0][i];
+                vertex.m_Color.x = mesh->mColors[0][i].r;
+                vertex.m_Color.y = mesh->mColors[0][i].g;
+                vertex.m_Color.z = mesh->mColors[0][i].b;
+                vertex.m_Color.w = mesh->mColors[0][i].a;
             }
 
             AllVertices.push_back(vertex.Position);
@@ -156,17 +134,26 @@ namespace EclipseCompiler
                 // diffuse color
                 aiColor4D diff(1.0f);
                 aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diff);
-                newMesh.Diffuse = diff;
+                newMesh.Diffuse.x = diff.r;
+                newMesh.Diffuse.y = diff.g;
+                newMesh.Diffuse.z = diff.b;
+                newMesh.Diffuse.w = diff.a;
 
                 // specular color
                 aiColor4D spec(1.0f);
                 aiGetMaterialColor(material, AI_MATKEY_COLOR_SPECULAR, &spec);
-                newMesh.Specular = spec;
+                newMesh.Specular.x = spec.r;
+                newMesh.Specular.y = spec.g;
+                newMesh.Specular.z = spec.b;
+                newMesh.Specular.w = spec.a;
 
                 // specular color
                 aiColor4D ambientColor(1.0f);
                 aiGetMaterialColor(material, AI_MATKEY_COLOR_AMBIENT, &ambientColor);
-                newMesh.Ambient = ambientColor;
+                newMesh.Ambient.x = ambientColor.r;
+                newMesh.Ambient.y = ambientColor.g;
+                newMesh.Ambient.z = ambientColor.b;
+                newMesh.Ambient.w = ambientColor.a;
 
                 meshData.push_back(newMesh);
                 MeshIndex++;
@@ -210,8 +197,6 @@ namespace EclipseCompiler
             if (!skip)
             {
                 Texture tex(Directory, str.C_Str(), type);
-                std::cout << "Directory: " << Directory << std::endl;
-                std::cout << "Path: " << str.C_Str() << std::endl;
                 textures.push_back(tex);
                 Textures_loaded.push_back(tex);
             }
@@ -266,7 +251,7 @@ namespace EclipseCompiler
         return centroid;
     }
 
-    void AssimpLoader::LoadNewModel()
+    void AssimpLoader::LoadNewModel(std::unordered_map<std::string, std::unique_ptr<Mesh>>& GeometryContainer)
     {
         std::vector<glm::vec3> combinedVertices;
 
@@ -302,11 +287,13 @@ namespace EclipseCompiler
             {
                 Mesh NewMesh(it.vertices, it.indices, it.MeshName, it.textures);
                 Meshes.push_back(NewMesh);
+                GeometryContainer.emplace(it.MeshName, std::make_unique<Mesh>(NewMesh));
             }
             else
             {
                 Mesh NewMesh(it.vertices, it.indices, it.Diffuse, it.Specular, it.Ambient, it.NoTextures, it.MeshName);
                 Meshes.push_back(NewMesh);
+                GeometryContainer.emplace(it.MeshName, std::make_unique<Mesh>(NewMesh));
             }
         }
 
