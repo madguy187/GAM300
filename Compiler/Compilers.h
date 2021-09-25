@@ -1,22 +1,17 @@
 #pragma once
-#include "AssimpLoader.h"
-#include "CompilerSerializer.h"
 
 namespace EclipseCompiler
 {
     class Compilers
     {
     public:
-        bool RegisterName = false;
-        bool RegisterNoTex = false;
-        bool RegisterDiffuse = false;
-        bool RegisterSpecular = false;
-        bool RegisterAmbient = false;
+        void ProcessVec4(std::string& s, glm::vec4& vec4);
+        void ProcessVec3(std::string& s, glm::vec3& vec3);
+        void ProcessVec2(std::string& s, glm::vec2& vec2);
 
-        std::unordered_map<std::string, std::unique_ptr<Mesh>> Geometry;
-        AssimpLoader Loader;
-
-        void LoadModels(const std::string& modelFile);
+        glm::vec3 ReturnVec4(std::string& s);
+        glm::vec3 ReturnVec3(std::string& s);
+        glm::vec2 ReturnVec2(std::string& s);
     };
 
     class CompilerManager

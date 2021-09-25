@@ -12,16 +12,19 @@
     <Filter Include="Compiler">
       <UniqueIdentifier>{d1435499-4604-46b6-933a-c5638a33f1e6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Compiler\MainBody">
-      <UniqueIdentifier>{41487570-82fa-4809-a648-e86a4d1c00b2}</UniqueIdentifier>
+    <Filter Include="Assimp">
+      <UniqueIdentifier>{6715851a-b2bc-409b-b4d9-45b713fef1c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Compiler\Geometry">
+      <UniqueIdentifier>{993d1861-ff54-417c-8b52-d4af137e0358}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Compiler\ICompiler">
+      <UniqueIdentifier>{76f65c24-9a2d-4643-a231-7755eccfbc60}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AssimpLoader.cpp">
-      <Filter>Compiler</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="TinyXML\tinystr.cpp">
@@ -36,20 +39,29 @@
     <ClCompile Include="TinyXML\tinyxmlparser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AssimpLoader.cpp">
+      <Filter>Assimp</Filter>
+    </ClCompile>
     <ClCompile Include="Compilers.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Compiler\ICompiler</Filter>
+    </ClCompile>
+    <ClCompile Include="GeometryCompiler.cpp">
+      <Filter>Compiler\Geometry</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AssimpLoader.h">
-      <Filter>Compiler</Filter>
-    </ClInclude>
     <ClInclude Include="pch.h" />
     <ClInclude Include="CompilerSerializer.h" />
     <ClInclude Include="TinyXML\tinystr.h" />
     <ClInclude Include="TinyXML\tinyxml.h" />
+    <ClInclude Include="AssimpLoader.h">
+      <Filter>Assimp</Filter>
+    </ClInclude>
     <ClInclude Include="Compilers.h">
-      <Filter>Source Files</Filter>
+      <Filter>Compiler\ICompiler</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryCompiler.h">
+      <Filter>Compiler\Geometry</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
