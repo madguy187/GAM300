@@ -45,7 +45,7 @@ namespace Eclipse
 {
     void Engine::Init()
     {
-        //mono.Init();
+        mono.Init();
 
         // multiple listener calls
         EventSystem<Test1>::registerListener(Tester1);

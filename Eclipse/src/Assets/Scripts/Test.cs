@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Collections.Generic;
 using Eclipse;
 
-public class Dog : EclipseBehavior
+public class Test : EclipseBehavior
 {
     static public void Type()
     {

@@ -17,15 +17,16 @@ namespace Eclipse
 		MonoImage* ScriptImage;
 		MonoImage* APIImage;
 
-		std::vector<MonoObject*> objects;
-
 		// Generates all the scripts into a dll
 		void GenerateDLL();
-		void CreateScriptObjects();
+
+		MonoDomain* LoadDomain();
+		void UnloadDomain();
 
 	public:
 		void Init();
 		void Update(MonoScript* obj);
+		void ResetMono();
 		void RestartMono();
 		void StopMono();
 		MonoObject* CreateMonoObject(std::string scriptName, Entity entity);
