@@ -193,7 +193,7 @@ namespace Eclipse
 
     void AssimpModelManager::PrintLoadedModels()
     {
-        // PrintOutModelsLoadedOnce();
+        PrintOutModelsLoadedOnce();
         // PrintOutModelTextureMap();
         PrintOutModelMap();
         // PrintOutAllTextures();
