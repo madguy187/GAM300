@@ -35,6 +35,7 @@ namespace EclipseCompiler
     class Mesh
     {
     public:
+        Mesh() {};
         std::string MeshName;
         bool NoTex;
         glm::vec4 Diffuse;
