@@ -137,9 +137,11 @@ namespace Eclipse
         deserialize = fn;
     }
 
-    void MetaData::Deserialize(const char*name, RefVariant var) const
+    bool MetaData::Deserialize(const char* name, RefVariant var) const
     {
         if (deserialize)
-            deserialize(name, var);
+            return deserialize(name, var);
+        else
+            return false;
     }
 }

@@ -4,7 +4,7 @@ namespace Eclipse
 {
     class RefVariant;
     typedef void (*SerializeFn)(const char*, RefVariant);
-    typedef void (*DeserializeFn)(const char*, RefVariant);
+    typedef bool (*DeserializeFn)(const char*, RefVariant);
 
     // Setting up the definition of the RegisterMetaData function, so that the 
     // ADD_MEMBER macro calls are actually lines of code placed within the definition
@@ -107,7 +107,7 @@ namespace Eclipse
         void SetSerialize(SerializeFn fn = NULL);
         void Serialize(const char*, RefVariant) const;
         void SetDeserialize(DeserializeFn fn = NULL);
-        void Deserialize(const char*, RefVariant) const;
+        bool Deserialize(const char*, RefVariant) const;
 
     private:
         SerializeFn serialize;
@@ -144,7 +144,7 @@ namespace Eclipse
             Get()->SetSerialize(fn);
         }
 
-        static void SetDeserializeFn(SerializeFn fn)
+        static void SetDeserializeFn(DeserializeFn fn)
         {
             Get()->SetDeserialize(fn);
         }

@@ -3,6 +3,9 @@
 
 namespace Eclipse
 {
+	Serializer SerializationManager::sz;
+	Deserializer SerializationManager::dsz;
+
 	SerializationManager::SerializationManager() {}
 
 	void SerializationManager::SerializeEntity(const Entity& ent, const size_t& counter)

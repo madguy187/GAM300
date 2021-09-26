@@ -69,6 +69,10 @@ namespace Eclipse
         ADD_MEMBER(Name);
     }
 
+    DEFINE_META(LightComponent)
+    {
+    }
+
     DEFINE_META(MaterialComponent)
     {
         ADD_MEMBER(Modeltype);
@@ -80,6 +84,7 @@ namespace Eclipse
         ADD_MEMBER(MaximumShininess);
         ADD_MEMBER(Highlight);
         ADD_MEMBER(NoTextures);
+        ADD_MEMBER(Thickness);
         ADD_MEMBER(ScaleUp);
         ADD_MEMBER(ComboIndex);
     }
@@ -170,16 +175,10 @@ namespace Eclipse
         ADD_MEMBER(AffectsWorld);
     }
 
-    //DEFINE_META(TextureComponent)
-    //{
-    //	ADD_MEMBER(ComboIndex);
-    //	ADD_MEMBER(ID);
-    //	ADD_MEMBER(Type);
-    //	ADD_MEMBER(TextureKey);
-    //	ADD_MEMBER(HoldingTextures);
-    //	ADD_MEMBER(hasTexture);
-    //	ADD_MEMBER(textureRef);
-    //}
+    DEFINE_META(TextureComponent)
+    {
+    	ADD_MEMBER(textureRef);
+    }
 
     DEFINE_META(TransformComponent)
     {
@@ -201,15 +200,15 @@ namespace Eclipse
     DEFINE_META_POD(double);
     DEFINE_META_POD(size_t);
     DEFINE_META_POD(std::string);
-    DEFINE_META_POD(std::vector<std::string>);
-    DEFINE_META_POD(std::vector<Mesh>);
-    DEFINE_META_POD(std::vector<Texture>);
+    //DEFINE_META_POD(std::vector<std::string>);
+    //DEFINE_META_POD(std::vector<Mesh>);
+    //DEFINE_META_POD(std::vector<Texture>);
     //DEFINE_META_POD(std::map<unsigned int, std::vector<Texture>>);
     DEFINE_META_POD(ECVec2);
     DEFINE_META_POD(ECVec3);
     DEFINE_META_POD(ECVec4);
-    DEFINE_META_POD(Mesh);
-    DEFINE_META_POD(Texture);
+    //DEFINE_META_POD(Mesh);
+    //DEFINE_META_POD(Texture);
     DEFINE_META_POD(glm::vec3);
     DEFINE_META_POD(glm::mat4);
     DEFINE_META_POD(CameraComponent::CameraType);
