@@ -195,9 +195,9 @@ namespace Eclipse
     {
         //PrintOutModelsLoadedOnce();
         PrintOutModelTextureMap();
-        //PrintOutModelMap();
+        PrintOutModelMap();
         PrintOutAllTextures();
-        //PrintOutAllMeshes();
+        PrintOutAllMeshes();
     }
 
     void AssimpModelManager::Cleanup(MeshComponent& in)

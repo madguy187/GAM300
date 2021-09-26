@@ -85,7 +85,6 @@ namespace EclipseCompiler
     {
     public:
         unsigned int MeshIndex = 0;
-        unsigned int ID = 0;
         std::string NameOfModel;
         std::string Directory;
         std::vector<Mesh> Meshes;
@@ -94,17 +93,20 @@ namespace EclipseCompiler
         std::vector<Texture> Textures_loaded;
 
     public:
-        std::unordered_map<std::string, std::string> ModelMap;
 
-        void LoadAssimpModel(std::string path, std::unordered_map<std::string, std::unique_ptr<Mesh>>& GeometryContainer, bool isGeometryCompiler = true);
-        void LoadAssimpModelForTextures(std::string path, bool isGeometryCompiler);
-        void ProcessNode(aiNode* node, const aiScene* scene, bool isGeometryCompiler = true);
-        std::vector<Texture> ProcessTextures(aiMesh* mesh, const aiScene* scene, std::string& MeshName);
+        void LoadAssimpModel(std::string path, std::unordered_map<std::string, std::unique_ptr<Mesh>>& GeometryContainer);
+        void ProcessGeometry(aiNode* node, const aiScene* scene, bool isGeometryCompiler = true);
         void ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string& MeshName);
-        std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type, std::string& MeshName);
         float GetLargestAxisValue(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         void ComputeAxisMinMax(std::vector<glm::vec3>& vertices, std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         glm::vec3 ComputeCentroid(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         void LoadNewModel(std::unordered_map<std::string, std::unique_ptr<Mesh>>& GeometryContainer);
+
+    public:
+        std::vector<Texture> ExtractTextures(aiMesh* mesh, const aiScene* scene, std::string& MeshName, std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>&);
+        void LoadAssimpModelForTextures(std::string path, std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>&);
+        void ProcessTextures(aiNode* node, const aiScene* scene, std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>& TextureContainer);
+        std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type, std::string& MeshName);
+        std::vector<Texture> LoadTexturesForCompiler(aiMaterial* mat, aiTextureType type, std::string& MeshName , std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>&);
     };
 }

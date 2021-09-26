@@ -2,7 +2,7 @@
 
 namespace EclipseCompiler
 {
-    class Compilers
+    class Helper
     {
     public:
         void ProcessVec4(std::string& s, glm::vec4& vec4);
@@ -14,9 +14,24 @@ namespace EclipseCompiler
         glm::vec2 ReturnVec2(std::string& s);
     };
 
-    class CompilerManager
+    class ICompiler
     {
     public:
-        std::vector<std::unique_ptr<Compilers>> AllCompilers;
+        virtual void LoadFile(const std::string& modelFile) = 0;
+        virtual void Init() = 0;
+        virtual void ReleaseFile(std::string& in) = 0;
+        virtual void Write() = 0;
+    };
+
+    class CompilerManager
+    {
+    private:
+        std::vector<ICompiler*> AllCompilerContainer;
+
+    public:
+        void Register(ICompiler& in);
+        void Initialise();
+        void ProduceFile(std::string& in);
+
     };
 }

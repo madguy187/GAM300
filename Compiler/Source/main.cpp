@@ -6,11 +6,15 @@ using namespace EclipseCompiler;
 
 int main()
 {
+    CompilerManager Manager;
+
     std::unique_ptr<GeometryCompiler> cGeometryCompiler = std::make_unique<GeometryCompiler>();
     std::unique_ptr<TextureCompiler> cTextureCompiler = std::make_unique<TextureCompiler>();
 
-    cGeometryCompiler->Init();
-    cTextureCompiler->Init();
+    Manager.Register(*cGeometryCompiler);
+    Manager.Register(*cTextureCompiler);
+
+    Manager.Initialise();
 
     while (1)
     {
@@ -21,7 +25,7 @@ int main()
         std::cout << "[3] : Exit " << std::endl << std::endl << std::endl;
         std::cin >> Check;
 
-        cGeometryCompiler->ReleaseFile(Check);
+        Manager.ProduceFile(Check);
 
         if (Check == "3")
         {

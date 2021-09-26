@@ -23,14 +23,32 @@ namespace EclipseCompiler
                 {
                     std::string PathName = ("..//Eclipse//src/Assets/ASSModels/" + FolderName + "/" + FbxOrGltfName).c_str();
                     std::unique_ptr<AssimpLoader> ptr = std::make_unique< AssimpLoader>();
-                    ptr->LoadAssimpModelForTextures(PathName,false);
-
-                    auto& jj = ptr;
-
-                    int i = 0;
+                    ptr->LoadAssimpModelForTextures(PathName, Textures);
                 }
             }
         }
+
+        // Check How Many Textures are Loaded and which meshes are they mapped to?
+        std::cout << "Loaded Textures Count " << Textures.size() << std::endl;
+        std::cout << "-------------------------------------------------------------------" << std::endl;
+        for (auto const& Model : Textures)
+        {
+            auto& ModelName = (Model.first);
+            auto& MapWithMeshIndexAndTextures = (Model.second);
+
+            std::cout << "Model Name : " << ModelName << std::endl;
+
+            for (auto& i : MapWithMeshIndexAndTextures)
+            {
+                for (auto& EachTextures : i.second)
+                {
+                    std::cout << "MeshIndex [" << i.first << "] " << EachTextures->TexturePath << std::endl;
+                }
+            }
+            std::cout << std::endl;
+        }
+        std::cout << "-------------------------------------------------------------------" << std::endl;
+        std::cout << std::endl;
     }
 
     void TextureCompiler::Init()
@@ -40,6 +58,45 @@ namespace EclipseCompiler
 
     void TextureCompiler::ReleaseFile(std::string& in)
     {
+        if (in == "2")
+        {
+            if (Textures.empty())
+            {
+                std::cout << "No Textures Loaded" << std::endl << std::endl;
+                return;
+            }
 
+            WriteToFile(Textures);
+            std::cout << "Textures File Produced" << std::endl << std::endl;
+        }
+    }
+
+    void TextureCompiler::Write()
+    {
+
+    }
+
+    void TextureCompiler::WriteToFile(std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>& LoadedTextures)
+    {
+        TextureFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+
+        try
+        {
+            TextureFile.open("../Eclipse/src/Assets/Compilers/TextureFile/Texture.txt", std::fstream::in | std::fstream::out | std::fstream::binary | std::ios::trunc);
+        }
+        catch (std::ifstream::failure e)
+        {
+            std::cout << "Exception opening/reading file" << e.what();
+        }
+
+        for (auto& i : LoadedTextures)
+        {
+            TextureFile << "Hi" << std::endl;
+        }
+    }
+
+    void TextureCompiler::InsertTextures(std::string& NameofModel, std::unique_ptr<Texture> in, unsigned int MeshId)
+    {
+        Textures[NameofModel][MeshId].push_back(std::move(in));
     }
 }

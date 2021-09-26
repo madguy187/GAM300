@@ -83,9 +83,19 @@ namespace EclipseCompiler
     {
         if (in == "1")
         {
+            if (Geometry.empty())
+            {
+                std::cout << "No Geometry Loaded" << std::endl << std::endl;
+                return;
+            }
+
             WriteToFile(Geometry);
             std::cout << "Geometry File Produced" << std::endl << std::endl;
         }
+    }
+
+    void GeometryCompiler::Write()
+    {
     }
 
     void GeometryCompiler::ReadFile()

@@ -5,7 +5,7 @@
 
 namespace EclipseCompiler
 {
-    class GeometryCompiler : public Compilers
+    class GeometryCompiler : public Helper, public ICompiler
     {
     public:
         std::unordered_map<std::string, std::unique_ptr<Mesh>> Geometry;
@@ -13,12 +13,13 @@ namespace EclipseCompiler
         std::fstream GeometryFileWrite;
 
     private:
-        void LoadFile(const std::string& modelFile);
         void WriteToFile(std::unordered_map<std::string, std::unique_ptr<Mesh>>&);
         void ReadFile();
 
     public:
-        void Init();
-        void ReleaseFile(std::string& in);
+        void LoadFile(const std::string& modelFile) override;
+        void Init() override;
+        void ReleaseFile(std::string& in) override;
+        void Write() override;
     };
 }

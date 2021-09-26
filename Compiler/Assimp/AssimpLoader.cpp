@@ -5,7 +5,7 @@
 
 namespace EclipseCompiler
 {
-    void AssimpLoader::LoadAssimpModel(std::string path, std::unordered_map<std::string, std::unique_ptr<Mesh>>& GeometryContainer, bool isGeometryCompiler)
+    void AssimpLoader::LoadAssimpModel(std::string path, std::unordered_map<std::string, std::unique_ptr<Mesh>>& GeometryContainer)
     {
         unsigned int importOptions =
             aiProcess_Triangulate |
@@ -31,11 +31,11 @@ namespace EclipseCompiler
         }
 
         Directory = path.substr(0, path.find_last_of("/"));
-        ProcessNode(scene->mRootNode, scene, isGeometryCompiler);
+        ProcessGeometry(scene->mRootNode, scene);
         LoadNewModel(GeometryContainer);
     }
 
-    void AssimpLoader::LoadAssimpModelForTextures(std::string path, bool isGeometryCompiler)
+    void AssimpLoader::LoadAssimpModelForTextures(std::string path, std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>& textureContainer)
     {
         unsigned int importOptions =
             aiProcess_Triangulate |
@@ -61,33 +61,40 @@ namespace EclipseCompiler
         }
 
         Directory = path.substr(0, path.find_last_of("/"));
-        ProcessNode(scene->mRootNode, scene, isGeometryCompiler);
+        ProcessTextures(scene->mRootNode, scene, textureContainer);
     }
 
-    void AssimpLoader::ProcessNode(aiNode* node, const aiScene* scene, bool isGeometryCompiler )
+    void AssimpLoader::ProcessGeometry(aiNode* node, const aiScene* scene, bool isGeometryCompiler)
     {
         for (unsigned int i = 0; i < node->mNumMeshes; i++)
         {
             std::string NodeName = node->mName.data;
             aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-
-            if (isGeometryCompiler)
-            {
-                ProcessMesh(mesh, scene, NodeName);
-            }
-            else
-            {
-                ProcessTextures(mesh, scene, NodeName);
-            }
+            ProcessMesh(mesh, scene, NodeName);
         }
 
         for (unsigned int i = 0; i < node->mNumChildren; i++)
         {
-            ProcessNode(node->mChildren[i], scene);
+            ProcessGeometry(node->mChildren[i], scene);
         }
     }
 
-    std::vector<Texture> AssimpLoader::ProcessTextures(aiMesh* mesh, const aiScene* scene, std::string& MeshName)
+    void AssimpLoader::ProcessTextures(aiNode* node, const aiScene* scene, std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>& TextureContainer)
+    {
+        for (unsigned int i = 0; i < node->mNumMeshes; i++)
+        {
+            std::string NodeName = node->mName.data;
+            aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+            ExtractTextures(mesh, scene, NodeName, TextureContainer);
+        }
+
+        for (unsigned int i = 0; i < node->mNumChildren; i++)
+        {
+            ProcessTextures(node->mChildren[i], scene, TextureContainer);
+        }
+    }
+
+    std::vector<Texture> AssimpLoader::ExtractTextures(aiMesh* mesh, const aiScene* scene, std::string& MeshName, std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>& TextureContainer)
     {
         std::vector<Texture> textures;
 
@@ -100,14 +107,15 @@ namespace EclipseCompiler
             material->Get(AI_MATKEY_TEXTURE(aiTextureType_DIFFUSE, 0), texture_file);
 
             // diffuse maps
-            std::vector<Texture> diffuseMaps = LoadTextures(material, aiTextureType_DIFFUSE, MeshName);
+            std::vector<Texture> diffuseMaps = LoadTexturesForCompiler(material, aiTextureType_DIFFUSE, MeshName, TextureContainer);
             textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
             // specular maps
-            std::vector<Texture> specularMaps = LoadTextures(material, aiTextureType_SPECULAR, MeshName);
+            std::vector<Texture> specularMaps = LoadTexturesForCompiler(material, aiTextureType_SPECULAR, MeshName, TextureContainer);
             textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
         }
 
+        MeshIndex++;
         return textures;
     }
 
@@ -250,6 +258,9 @@ namespace EclipseCompiler
                 {
                     textures.push_back(Textures_loaded[j]);
                     std::unique_ptr<Texture> ptr(new Texture(Textures_loaded[j]));
+
+                    //Textures[MeshName][MeshId].push_back(std::move(in));
+
                     skip = true;
                     break;
                 }
@@ -262,6 +273,44 @@ namespace EclipseCompiler
                 Textures_loaded.push_back(tex);
             }
         }
+        return textures;
+    }
+
+    std::vector<Texture> AssimpLoader::LoadTexturesForCompiler(aiMaterial* mat, aiTextureType type, std::string& MeshName , std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>& In)
+    {
+        std::vector<Texture> textures;
+
+        for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
+        {
+            aiString str;
+            mat->GetTexture(type, i, &str);
+
+            // prevent duplicate loading
+            bool skip = false;
+            for (unsigned int j = 0; j < Textures_loaded.size(); j++)
+            {
+                if (std::strcmp(Textures_loaded[j].TexturePath.data(), str.C_Str()) == 0)
+                {
+                    textures.push_back(Textures_loaded[j]);
+                    std::unique_ptr<Texture> ptr(new Texture(Textures_loaded[j]));
+                    In[MeshName][MeshIndex].push_back(std::move(ptr));
+
+                    skip = true;
+                    break;
+                }
+            }
+
+            if (!skip)
+            {
+                Texture tex(Directory, str.C_Str(), type);
+                textures.push_back(tex);
+                Textures_loaded.push_back(tex);
+
+                std::unique_ptr<Texture> ptr(new Texture(tex));
+                In[MeshName][MeshIndex].push_back(std::move(ptr));
+            }
+        }
+
         return textures;
     }
 
