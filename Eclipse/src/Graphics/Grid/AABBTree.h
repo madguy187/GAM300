@@ -25,7 +25,7 @@ namespace Eclipse
 
     class AABBTree
     {
-    private:
+    public:
         std::map<std::shared_ptr<IAABB>, unsigned int> AABBToNodeMap;
         std::unordered_map<unsigned int, AABBNode> AllNodes;
         unsigned int RootNodeIndex = 0;
@@ -42,6 +42,7 @@ namespace Eclipse
         void RemoveObject(const std::shared_ptr<IAABB>& object);
         void UpdateObject(const std::shared_ptr<IAABB>& object);
         std::vector<unsigned int> CheckOverlapAgainstGrid(DYN_AABB& object);
+        std::vector<unsigned int> QueryAgainstTrustrum(AABBComponent& object);
         std::vector<unsigned int> CheckOverlapAgainstGrid(AABBComponent& object);
         std::vector<unsigned int> CheckOverlap(DYN_AABB& object);
         std::vector<unsigned int> CheckMouseOverlapAgainstGrid(glm::vec3& rayStart, glm::vec3& rayDir, float& t);

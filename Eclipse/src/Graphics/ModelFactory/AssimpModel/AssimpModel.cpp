@@ -79,6 +79,10 @@ namespace Eclipse
         {
             std::string NodeName = node->mName.data;
             aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+
+            // For Tianyu
+            engine->AssimpManager.AllMeshNames.push_back(NodeName);
+
             ProcessMesh(mesh, scene, NodeName);
         }
 

@@ -35,8 +35,8 @@ namespace Eclipse
 		void ChangeTextureController(MaterialComponent& Item);
 		void TextureList(MaterialComponent& Item);
 		
-		void ChangeMeshController(MeshComponent& Item);
-		void MeshList(MeshComponent& Item);
+		void ChangeMeshController(Entity ID);
+		void MeshList(Entity ID);
 		void RemoveElementFromVectorStringList(std::vector<std::string> & vecList);
 		
 		template <typename TComponents>

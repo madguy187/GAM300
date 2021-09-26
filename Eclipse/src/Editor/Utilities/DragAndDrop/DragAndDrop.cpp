@@ -33,7 +33,6 @@ namespace Eclipse
 		if (ImGui::BeginDragDropSource())
 		{
 			ImGui::SetDragDropPayload(id, &source, sizeof(source));
-
 			switch (type)
 			{
 			case PayloadSourceType::PST_TEXT:
@@ -41,7 +40,6 @@ namespace Eclipse
 				break;
 			case PayloadSourceType::PST_IMAGE:
 				// For rendering 2D Image -> Need ask Graphics side
-				std::cout << "hi";
 				break;
 			default:
 				break;

@@ -27,6 +27,7 @@
 #include "ECS/SystemManager/Systems/System/MaterialSystem.h"
 #include "Serialization/SerializationManager.h"
 #include "ECS/SystemManager/Systems/System/GridSystem.h"
+#include "Editor/ECGuiAPI/ECGuiInputHandler.h"
 #include "ECS/SystemManager/Systems/System/MonoSystem/MonoSystem.h"
 
 bool Tester1(const Test1& e)
@@ -180,7 +181,6 @@ namespace Eclipse
         int framecount = 0;
         float dt = 0.0f;
         float updaterate = 4.0f;
-        ProfilerWindow Timer;
 
         SceneManager::Initialize();
         //Deserialization(temp)
@@ -217,6 +217,7 @@ namespace Eclipse
             }
 
             currTime = newTime;
+            ECGuiInputHandler::Update();
 
             ImGuiSetup::Begin(IsEditorActive);
 

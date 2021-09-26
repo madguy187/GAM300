@@ -91,7 +91,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     break;
     case 5:
     {
-        //for (int i = 0; i < 9000; i++)
+        //for (int i = 0; i < 5000; i++)
         //{
         //    auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_GEO_CUBE);
         //    engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_BASIC });
