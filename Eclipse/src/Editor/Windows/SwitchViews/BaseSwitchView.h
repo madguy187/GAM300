@@ -12,18 +12,17 @@ namespace Eclipse
 		void Unload() override;
 
 		void RunMainWindow();
-		void RunFrameBuffer();
-		void RenderSettingsHeader();
-		void OnKeyPressedEvent();
-		void OnGizmoUpdateEvent();
+		void RunFrameBuffer(int GizmoType);
+		void OnGizmoUpdateEvent(int GizmoType);
 		void OnCameraZoomEvent();
 		void OnCameraMoveEvent();
+		bool GetIsWindowActive();
 	protected:
 		glm::vec2 mViewportSize;
 		FrameBuffer* m_frameBuffer;
-		int m_GizmoType{ 0 };
 		std::vector<std::string> mProjectionView_List;
 		bool IsWireframeMode{ false };
+		bool IsWindowActive{ false };
 	};
 }
 #pragma once

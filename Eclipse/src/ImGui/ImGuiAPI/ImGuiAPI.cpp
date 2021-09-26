@@ -94,9 +94,9 @@ namespace Eclipse
 		ImGui::EndMainMenuBar();
 	}
 
-	bool ImGuiAPI::CreateMenuItem(const char* name, bool* open)
+	bool ImGuiAPI::CreateMenuItem(const char* name, bool* open, const char* shortcut)
 	{
-		return ImGui::MenuItem(name, "", open);
+		return ImGui::MenuItem(name, shortcut, open);
 	}
 
 	bool ImGuiAPI::BeginMenuComponents(const char* name)

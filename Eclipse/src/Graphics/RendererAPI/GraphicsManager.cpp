@@ -91,7 +91,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     break;
     case 5:
     {
-        //for (int i = 0; i < 9000; i++)
+        //for (int i = 0; i < 5000; i++)
         //{
         //    auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_GEO_CUBE);
         //    engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_BASIC });
@@ -509,6 +509,19 @@ unsigned int Eclipse::GraphicsManager::GetFrameBufferID(FrameBufferMode mode)
 FrameBuffer::RenderMode Eclipse::GraphicsManager::GetRenderMode(FrameBufferMode mode)
 {
     return mRenderContext.GetFramebuffer(mode)->GetRenderMode();
+}
+
+void Eclipse::GraphicsManager::WindowCloseCallback(GLFWwindow* window)
+{
+    if (engine->GetEditorState())
+    {
+        engine->editorManager->GetMenuBar().SetExitStatus(true);
+        glfwSetWindowShouldClose(OpenGL_Context::GetWindow(), GLFW_FALSE);
+    }
+    else
+    {
+        glfwSetWindowShouldClose(OpenGL_Context::GetWindow(), GLFW_TRUE);
+    }
 }
 
 //float getSignedDistanceToPlan(const glm::vec3& point) const

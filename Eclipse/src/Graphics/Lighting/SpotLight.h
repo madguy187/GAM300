@@ -15,7 +15,7 @@ namespace Eclipse
         unsigned int GetNumberOfSpotLights();
         static void CreateSpotLight(unsigned int CreatedID);
         void DrawSpotLights(unsigned int framebufferID);
-        void Draw(SpotLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
+        void Draw(unsigned int EntityId,SpotLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
     private:
         void CheckUniformLoc(Shader* _shdrpgm, SpotLightComponent& hi, int index, unsigned int containersize);
 

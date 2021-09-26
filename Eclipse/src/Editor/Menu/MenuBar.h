@@ -16,7 +16,7 @@ namespace Eclipse
 		bool GetExitStatus();
 		void SetExitStatus(bool check);
 	private:
-		std::vector<MenuComponent> MenuComponents_;
 		bool IsExiting{ false };
+		std::vector<MenuComponent> MenuComponents_;
 	};
 }

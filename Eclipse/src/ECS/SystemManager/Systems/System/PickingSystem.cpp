@@ -12,6 +12,9 @@ void Eclipse::PickingSystem::Update()
 
 void Eclipse::PickingSystem::EditorUpdate()
 {
+	engine->Timer.SetName({ SystemName::PICKING });
+	engine->Timer.tracker.system_start = glfwGetTime();
+
 	auto& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 
 	for (auto& it : mEntities)
@@ -37,4 +40,7 @@ void Eclipse::PickingSystem::EditorUpdate()
 
 		engine->gPicker.UpdateAabb(it);
 	}
+
+	engine->Timer.tracker.system_end = glfwGetTime();
+	engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
 }

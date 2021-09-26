@@ -9,31 +9,36 @@ void Eclipse::PickingManager::GenerateAabb(unsigned int ID, TransformComponent& 
         return;
     }
 
-	engine->world.AddComponent(ID, AABBComponent{});
-	auto& _aabb = engine->world.GetComponent<AABBComponent>(ID);
+    engine->world.AddComponent(ID, AABBComponent{});
+    auto& _aabb = engine->world.GetComponent<AABBComponent>(ID);
     //std::cout << "Generate AABB ID: " << ID << std::endl;
 
-	glm::vec3 scale = _transform.scale.ConvertToGlmVec3Type();
-	glm::vec3 position = _transform.position.ConvertToGlmVec3Type();
+    glm::vec3 scale = _transform.scale.ConvertToGlmVec3Type();
+    glm::vec3 position = _transform.position.ConvertToGlmVec3Type();
 
-	glm::vec3 halfExt = scale / 2.0f;
-	_aabb.center = ECVec3{ position.x, position.y, position.z };
-	_aabb.Min = ECVec3{ position.x - halfExt.x, position.y - halfExt.y, position.z - halfExt.z };
-	_aabb.Max = ECVec3{ position.x + halfExt.x, position.y + halfExt.y, position.z + halfExt.z };
+    glm::vec3 halfExt = scale / 2.0f;
+    _aabb.center = ECVec3{ position.x, position.y, position.z };
+    _aabb.Min = ECVec3{ position.x - halfExt.x, position.y - halfExt.y, position.z - halfExt.z };
+    _aabb.Max = ECVec3{ position.x + halfExt.x, position.y + halfExt.y, position.z + halfExt.z };
+
+    // Darren - Culling
+    engine->gCullingManager->Insert(_aabb, ID);
 }
 
 void Eclipse::PickingManager::UpdateAabb(unsigned int ID)
 {
-	auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
-	auto& _aabb = engine->world.GetComponent<AABBComponent>(ID);
+    auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
+    auto& _aabb = engine->world.GetComponent<AABBComponent>(ID);
 
-	glm::vec3 scale = _transform.scale.ConvertToGlmVec3Type();
-	glm::vec3 position = _transform.position.ConvertToGlmVec3Type();
+    glm::vec3 scale = _transform.scale.ConvertToGlmVec3Type();
+    glm::vec3 position = _transform.position.ConvertToGlmVec3Type();
 
-	glm::vec3 halfExt = scale / 2.0f;
-	_aabb.center = ECVec3{ position.x, position.y, position.z };
-	_aabb.Min = ECVec3{ position.x - halfExt.x, position.y - halfExt.y, position.z - halfExt.z };
-	_aabb.Max = ECVec3{ position.x + halfExt.x, position.y + halfExt.y, position.z + halfExt.z };
+    glm::vec3 halfExt = scale / 2.0f;
+    _aabb.center = ECVec3{ position.x, position.y, position.z };
+    _aabb.Min = ECVec3{ position.x - halfExt.x, position.y - halfExt.y, position.z - halfExt.z };
+    _aabb.Max = ECVec3{ position.x + halfExt.x, position.y + halfExt.y, position.z + halfExt.z };
+
+    engine->gCullingManager->UpdateDYN_AABB(_aabb, ID);
 }
 
 glm::vec3 Eclipse::PickingManager::ComputeCursorRayDirection()
@@ -55,7 +60,7 @@ glm::vec3 Eclipse::PickingManager::ComputeCursorRayDirection()
                             1.0f - (2.0f * mouseYOffset) / scene->GetSceneBufferSize().y,
                             -1.0f,
                             1.0f };
- 
+
     glm::vec4 rayEye = glm::inverse(camera.projMtx) * rayStartNDC;
     rayEye = glm::vec4(rayEye.x, rayEye.y, -1.0, 0.0);
 
@@ -63,7 +68,7 @@ glm::vec3 Eclipse::PickingManager::ComputeCursorRayDirection()
     glm::vec3 rayWorld = glm::vec3{ ray.x, ray.y, ray.z };
     rayWorld = glm::normalize(rayWorld);
 
-	return rayWorld;
+    return rayWorld;
 
 }
 
@@ -76,14 +81,14 @@ bool Eclipse::PickingManager::RayAabb(glm::vec3& rayStart, glm::vec3& rayDir, gl
     {
         if (rayDir[static_cast<glm::length_t>(i)] == 0)
         {
-            if ((rayStart[static_cast<glm::length_t>(i)] >= aabbMin[static_cast<glm::length_t>(i)]) && 
+            if ((rayStart[static_cast<glm::length_t>(i)] >= aabbMin[static_cast<glm::length_t>(i)]) &&
                 (rayStart[static_cast<glm::length_t>(i)] <= aabbMax[static_cast<glm::length_t>(i)]))
             {
                 continue;
             }
             else
             {
-               // std::cout << "false" << std::endl;
+                // std::cout << "false" << std::endl;
                 return false;
             }
         }

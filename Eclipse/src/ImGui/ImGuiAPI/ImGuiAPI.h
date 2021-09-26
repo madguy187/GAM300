@@ -42,7 +42,7 @@ namespace Eclipse
 		// Semi-Dynamic Widgets (Don't need an end function for it)
 		static bool CreateCollapsingHeader(const char* name);
 		static bool CreateSelectableButton(const char* label, bool* active, ImGuiSelectableFlags flags = 0);
-		static bool CreateMenuItem(const char* name, bool* open);
+		static bool CreateMenuItem(const char* name, bool* open, const char* shortcut = "");
 
 		// Static Widgets
 		// For Printing out on the windows

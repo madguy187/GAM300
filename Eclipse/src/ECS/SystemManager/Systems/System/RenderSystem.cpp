@@ -6,6 +6,7 @@
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/MeshComponent.h"
 #include "AssimpModel/AssimpModel.h"
+#include "ECS/ComponentManager/Components/AABBComponent.h"
 
 // Views
 #include "Editor/Windows/SwitchViews/TopSwitchViewWindow.h"
@@ -51,14 +52,16 @@ namespace Eclipse
 
     void RenderSystem::Update()
     {
-        ProfilerWindow timer;
-        timer.SetName({ SystemName::RENDER });
-        timer.tracker.system_start = glfwGetTime();
+        engine->Timer.SetName({ SystemName::RENDER });
+        engine->Timer.tracker.system_start = glfwGetTime();
 
         engine->GraphicsManager.UploadGlobalUniforms();
 
         if (engine->GraphicsManager.CheckRender == true)
         {
+            // Estiamtion which models are in our frustrum
+            auto& RenderablesVsFrustrum = engine->gCullingManager->ReturnContacted(); 
+
             /*************************************************************************
               Render Without Stencer
               Render Sky to Sceneview
@@ -67,110 +70,113 @@ namespace Eclipse
             engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
 
             // Basic Primitives Render Start =============================
-            for (auto const& entityID : mEntities)
+            for (auto const& entityID : RenderablesVsFrustrum)
             {
                 auto& Transform = engine->world.GetComponent<TransformComponent>(entityID);
+                engine->gPicker.UpdateAabb(entityID);
 
-                if (engine->gCullingManager->CheckOnFrustum(engine->gCullingManager->FrustrumFaceInfo(CameraComponent::CameraType::Editor_Camera), Transform))
+                if (engine->gCullingManager->ToRenderOrNot(entityID) == false)
                 {
-                    MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
+                    continue;
+                }
 
-                    engine->MaterialManager.UpdateShininess(entityID);
+                MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
 
-                    // Basic Primitives
-                    if (!engine->world.CheckComponent<ModeLInforComponent>(entityID))
+                engine->MaterialManager.UpdateShininess(entityID);
+
+                // Basic Primitives
+                if (!engine->world.CheckComponent<ModeLInforComponent>(entityID))
+                {
+                    engine->GraphicsManager.CheckTexture(entityID);
+
+                    /*************************************************************************
+                      Render With Stencer So we prepare to Hihlight in material System
+                      Render Primitives to SceneView
+                    *************************************************************************/
+                    engine->MaterialManager.UpdateStencilWithActualObject(entityID);
+                    engine->GraphicsManager.Draw(
+                        engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE),
+                        &Mesh, GL_FILL, entityID, CameraComponent::CameraType::Editor_Camera);
+
+                    /*************************************************************************
+                      Render Without Stencer , Render Primitivies to GameView
+                    *************************************************************************/
+                    engine->MaterialManager.DoNotUpdateStencil();
+                    engine->GraphicsManager.Draw(
+                        engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_GAME),
+                        &Mesh, GL_FILL, entityID, CameraComponent::CameraType::Game_Camera);
+
+                    engine->MaterialManager.HighlightBasicPrimitives(entityID,
+                        engine->GraphicsManager.GetFrameBufferID(Eclipse::FrameBufferMode::FBM_SCENE));
+                }
+                else
+                {
+                    /*************************************************************************
+                      Render With Stencer So we prepare to Hihlight in material System
+                      Render Models to SceneView
+                    *************************************************************************/
+                    engine->MaterialManager.UpdateStencilWithActualObject(entityID);
+                    engine->AssimpManager.MeshDraw(Mesh, entityID,
+                        engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE),
+                        engine->GraphicsManager.GetRenderMode(Eclipse::FrameBufferMode::FBM_SCENE),
+                        &engine->GraphicsManager.AllAABBs, CameraComponent::CameraType::Editor_Camera);
+
+                    /*************************************************************************
+                      Render Without Stencer , Render Models to GameView
+                    *************************************************************************/
+                    engine->MaterialManager.DoNotUpdateStencil();
+                    engine->AssimpManager.MeshDraw(Mesh, entityID,
+                        engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_GAME),
+                        engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_GAME),
+                        &box, CameraComponent::CameraType::Game_Camera);
+
+                    /*************************************************************************
+                      Render Without Stencer
+                      Render Models to Different vewports
+                      0: Top View Port
+                      1: Bottom View Port
+                      2: Left View Port
+                      3: RIght View Port
+                    *************************************************************************/
+
+                    // Top View Port
+                    if (engine->editorManager->GetEditorWindow<TopSwitchViewWindow>()->IsVisible)
                     {
-                        engine->GraphicsManager.CheckTexture(entityID);
-
-                        /*************************************************************************
-                          Render With Stencer So we prepare to Hihlight in material System
-                          Render Primitives to SceneView
-                        *************************************************************************/
-                        engine->MaterialManager.UpdateStencilWithActualObject(entityID);
-                        engine->GraphicsManager.Draw(
-                            engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE),
-                            &Mesh, GL_FILL, entityID, CameraComponent::CameraType::Editor_Camera);
-
-                        /*************************************************************************
-                          Render Without Stencer , Render Primitivies to GameView
-                        *************************************************************************/
-                        engine->MaterialManager.DoNotUpdateStencil();
-                        engine->GraphicsManager.Draw(
-                            engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_GAME),
-                            &Mesh, GL_FILL, entityID, CameraComponent::CameraType::Game_Camera);
-
-                        engine->MaterialManager.HighlightBasicPrimitives(entityID,
-                            engine->GraphicsManager.GetFrameBufferID(Eclipse::FrameBufferMode::FBM_SCENE));
+                        engine->AssimpManager.MeshDraw(Mesh, entityID,
+                            engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_TOP),
+                            engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_TOP),
+                            &box, CameraComponent::CameraType::TopView_Camera);
                     }
-                    else
+
+                    // Bottom View port
+                    if (engine->editorManager->GetEditorWindow<BottomSwitchViewWindow>()->IsVisible)
                     {
-                        /*************************************************************************
-                          Render With Stencer So we prepare to Hihlight in material System
-                          Render Models to SceneView
-                        *************************************************************************/
-                        engine->MaterialManager.UpdateStencilWithActualObject(entityID);
                         engine->AssimpManager.MeshDraw(Mesh, entityID,
-                            engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE),
-                            engine->GraphicsManager.GetRenderMode(Eclipse::FrameBufferMode::FBM_SCENE),
-                            &engine->GraphicsManager.AllAABBs, CameraComponent::CameraType::Editor_Camera);
-
-                        /*************************************************************************
-                          Render Without Stencer , Render Models to GameView
-                        *************************************************************************/
-                        engine->MaterialManager.DoNotUpdateStencil();
-                        engine->AssimpManager.MeshDraw(Mesh, entityID,
-                            engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_GAME),
-                            engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_GAME),
-                            &box, CameraComponent::CameraType::Game_Camera);
-
-                        /*************************************************************************
-                          Render Without Stencer
-                          Render Models to Different vewports
-                          0: Top View Port
-                          1: Bottom View Port
-                          2: Left View Port
-                          3: RIght View Port
-                        *************************************************************************/
-
-                        // Top View Port
-                        if (engine->editorManager->GetEditorWindow<TopSwitchViewWindow>()->IsVisible)
-                        {
-                            engine->AssimpManager.MeshDraw(Mesh, entityID,
-                                engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_TOP),
-                                engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_TOP),
-                                &box, CameraComponent::CameraType::TopView_Camera);
-                        }
-
-                        // Bottom View port
-                        if (engine->editorManager->GetEditorWindow<BottomSwitchViewWindow>()->IsVisible)
-                        {
-                            engine->AssimpManager.MeshDraw(Mesh, entityID,
-                                engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_BOTTOM),
-                                engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_BOTTOM),
-                                &box, CameraComponent::CameraType::BottomView_Camera);
-                        }
-
-                        // Left View Port
-                        if (engine->editorManager->GetEditorWindow<LeftSwitchViewWindow>()->IsVisible)
-                        {
-                            engine->AssimpManager.MeshDraw(Mesh, entityID,
-                                engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_RIGHT),
-                                engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_RIGHT),
-                                &box, CameraComponent::CameraType::RightView_camera);
-                        }
-
-                        // Right ViewPort
-                        if (engine->editorManager->GetEditorWindow<RightSwitchViewWindow>()->IsVisible)
-                        {
-                            engine->AssimpManager.MeshDraw(Mesh, entityID,
-                                engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_LEFT),
-                                engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_LEFT),
-                                &box, CameraComponent::CameraType::LeftView_Camera);
-                        }
-
-                        engine->MaterialManager.Highlight3DModels(entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE));
-
+                            engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_BOTTOM),
+                            engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_BOTTOM),
+                            &box, CameraComponent::CameraType::BottomView_Camera);
                     }
+
+                    // Left View Port
+                    if (engine->editorManager->GetEditorWindow<LeftSwitchViewWindow>()->IsVisible)
+                    {
+                        engine->AssimpManager.MeshDraw(Mesh, entityID,
+                            engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_RIGHT),
+                            engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_RIGHT),
+                            &box, CameraComponent::CameraType::RightView_camera);
+                    }
+
+                    // Right ViewPort
+                    if (engine->editorManager->GetEditorWindow<RightSwitchViewWindow>()->IsVisible)
+                    {
+                        engine->AssimpManager.MeshDraw(Mesh, entityID,
+                            engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_LEFT),
+                            engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_LEFT),
+                            &box, CameraComponent::CameraType::LeftView_Camera);
+                    }
+
+                    engine->MaterialManager.Highlight3DModels(entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE));
+
                 }
             }
 
@@ -189,7 +195,7 @@ namespace Eclipse
             engine->MaterialManager.StencilBufferClear();
         }
 
-        timer.tracker.system_end = glfwGetTime();
-        timer.ContainerAddTime(timer.tracker);
+        engine->Timer.tracker.system_end = glfwGetTime();
+        engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
     }
 }
