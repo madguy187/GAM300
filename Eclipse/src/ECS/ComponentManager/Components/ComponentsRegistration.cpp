@@ -47,6 +47,11 @@ namespace Eclipse
         ADD_MEMBER(projType);
     }
 
+    DEFINE_META(CollisionComponent)
+    {
+        
+    }
+
     DEFINE_META(DirectionalLightComponent)
     {
         ADD_MEMBER(ID);

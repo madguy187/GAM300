@@ -425,12 +425,6 @@
     <ClInclude Include="src\Editor\Menu\MenuComponent.h">
       <Filter>Editor\Menu</Filter>
     </ClInclude>
-    <ClInclude Include="src\Editor\Utilities\DragAndDrop.h">
-      <Filter>Editor\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Editor\Utilities\OpenFileDialog.h">
-      <Filter>Editor\Utilities</Filter>
-    </ClInclude>
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.h">
       <Filter>Editor\Utilities\UndoAndRedo</Filter>
     </ClInclude>
@@ -785,6 +779,7 @@
     <ClInclude Include="src\Editor\Utilities\ParentChild\ParentChild.h" />
     <ClInclude Include="src\Editor\Windows\Header\HeaderWindow.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.h" />
+    <ClInclude Include="src\ECS\ComponentManager\ComponentList.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -1133,8 +1128,6 @@
     <ClCompile Include="src\Editor\Windows\Header\HeaderWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\Assets\Shaders\Mesh\Mesh.frag" />
-    <None Include="src\Assets\Shaders\Mesh\Mesh.vert" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.cpp" />
   </ItemGroup>
 </Project>

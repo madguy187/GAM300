@@ -104,5 +104,22 @@ namespace Eclipse
 			std::cout << "World.h TempFunc" << std::endl;
 			return false;
 		}
+
+		template <typename ...T>
+		void CopyEntity(World& dest, Entity oldEnt, TypeList<T...>)
+		{
+			Entity newEnt = dest.CreateEntity();
+			((CopyEntityComponent<T>(dest, newEnt, oldEnt)), ...);
+		}
+
+		template <typename T>
+		void CopyEntityComponent(World& world, Entity newEnt, Entity oldEnt)
+		{
+			if (CheckComponent<T>(oldEnt))
+			{
+				world.AddComponent<T>(newEnt, GetComponent<T>(oldEnt));
+			}
+			//std::cout << typeid(T).name() << std::endl;
+		}
 	};
 }
