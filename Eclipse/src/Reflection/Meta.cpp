@@ -32,7 +32,7 @@ namespace Eclipse
     }
 
     MetaData::MetaData(std::string string, unsigned val)
-        : name(string), size(val), /*serialize(NULL),*/
+        : name(string), size(val), serialize(NULL),
         members(NULL), lastMember(NULL)
     {
     }
@@ -119,16 +119,29 @@ namespace Eclipse
         }
     }
 
-    //void MetaData::SetSerialize(SerializeFn fn)
-    //{
-    //    serialize = fn;
-    //}
-    //
-    //void MetaData::Serialize(std::ostream& os, RefVariant var) const
-    //{
-    //    if (serialize)
-    //        serialize(os, var);
-    //    else
-    //        TextSerialize(os, var);
-    //}
+    void MetaData::SetSerialize(SerializeFn fn)
+    {
+        serialize = fn;
+    }
+    
+    void MetaData::Serialize(const char* name, RefVariant var) const
+    {
+        if (serialize)
+            serialize(name, var);
+        /*else
+            TextSerialize(var);*/
+    }
+
+    void MetaData::SetDeserialize(DeserializeFn fn)
+    {
+        deserialize = fn;
+    }
+
+    bool MetaData::Deserialize(const char* name, RefVariant var) const
+    {
+        if (deserialize)
+            return deserialize(name, var);
+        else
+            return false;
+    }
 }

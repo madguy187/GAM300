@@ -151,6 +151,9 @@ namespace Eclipse
 
         SceneManager::Initialize();
         //Deserialization(temp)
+        /*TransformComponent trans;
+        SerializationManager::TestDeserializeCompData(RefVariant{ trans });
+        std::cout << trans.position << std::endl;*/
 
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
@@ -184,8 +187,8 @@ namespace Eclipse
             }
 
             currTime = newTime;
-            ECGuiInputHandler::Update();
 
+            ECGuiInputHandler::Update();
             ImGuiSetup::Begin(IsEditorActive);
 
             EditorSystem::Update();

@@ -3,6 +3,9 @@
 
 namespace Eclipse
 {
+	Serializer SerializationManager::sz;
+	Deserializer SerializationManager::dsz;
+
 	SerializationManager::SerializationManager() {}
 
 	void SerializationManager::LogError(const std::string& msg)
