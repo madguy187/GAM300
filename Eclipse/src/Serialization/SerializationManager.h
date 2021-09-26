@@ -575,9 +575,32 @@ namespace Eclipse
 
 			//}
 			/*std::cout << refv.ValueRegistry<RemTypeQual<T>::type>() << std::endl;*/
-			z.StartElement(name);
+
+			/*sz.StartElement(name);
 			sz.AddAttributeToElement("value", refv.ValueRegistry<RemTypeQual<T>::type>());
-			sz.CloseElement();
+			sz.CloseElement();*/
+		}
+
+		template <typename T>
+		inline static void TestDeserialize(const char* name, RefVariant refv)
+		{
+			/*bool isSuccess = false;
+
+			if (dsz.StartElement(name))
+			{
+				dsz.ReadAttributeFromElement("value", refv.ValueRegistry<RemTypeQual<T>::type>());
+				dsz.CloseElement();
+				isSuccess = true;
+			}
+
+			return isSuccess;*/
+
+			//if (typeid(T) == typeid(ECVec3))
+			//{
+			//	refv.ValueRegistry<RemTypeQual<ECVec3>::type>().setX(1000.0f);
+			//	//std::cout << name << std::endl;
+			//	//std::cout << refv.ValueRegistry<ECVec3>().getX() << " " << refv.ValueRegistry<ECVec3>().getY() << " " << refv.ValueRegistry<ECVec3>().getZ() << std::endl;
+			//}
 		}
 
 		inline static void TestSerializeCompData(RefVariant refv)
@@ -593,6 +616,23 @@ namespace Eclipse
 			{
 				void* offsetData = PTR_ADD(refv.Data(), mem->Offset());
 				mem->Meta()->Serialize(mem->GetName().c_str(), RefVariant(mem->Meta(), offsetData));
+				mem = mem->Next();
+			}
+		}
+
+		inline static void TestDeserializeCompData(RefVariant refv)
+		{
+			const MetaData* meta = refv.Meta();
+			void* data = refv.Data();
+
+			assert(meta->HasMembers());
+
+			const Member* mem = meta->Members();
+
+			while (mem)
+			{
+				void* offsetData = PTR_ADD(refv.Data(), mem->Offset());
+				mem->Meta()->Deserialize(mem->GetName().c_str(), RefVariant(mem->Meta(), offsetData));
 				mem = mem->Next();
 			}
 		}

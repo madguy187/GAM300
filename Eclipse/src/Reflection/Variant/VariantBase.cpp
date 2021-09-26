@@ -57,6 +57,11 @@ namespace Eclipse
 		meta->Serialize(name, RefVariant(meta, data));
 	}
 
+	void VariantBase::Deserialize(const char* name) const
+	{
+		meta->Deserialize(name, RefVariant(meta, data));
+	}
+
 	void* VariantBase::Data() const
 	{
 		return data;

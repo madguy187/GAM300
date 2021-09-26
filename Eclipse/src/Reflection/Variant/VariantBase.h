@@ -10,6 +10,7 @@ namespace Eclipse
 		const MetaData* Meta() const;
 		void* Data() const;
 		void Serialize(const char* name) const;
+		void Deserialize(const char* name) const;
 
 		// Getters
 		template <typename T>

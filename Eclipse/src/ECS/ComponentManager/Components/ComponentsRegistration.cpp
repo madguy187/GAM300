@@ -60,14 +60,13 @@ namespace Eclipse
         ADD_MEMBER(diffuse);
         ADD_MEMBER(specular);
         ADD_MEMBER(Color);
+        ADD_MEMBER(modelNDC_xform);
     }
 
     DEFINE_META(EntityComponent)
     {
         ADD_MEMBER(Tag);
         ADD_MEMBER(Name);
-        ADD_MEMBER(IsActive);
-        ADD_MEMBER(ScriptListComTest);
     }
 
     DEFINE_META(MaterialComponent)
@@ -79,7 +78,6 @@ namespace Eclipse
         ADD_MEMBER(HighlightColour);
         ADD_MEMBER(shininess);
         ADD_MEMBER(MaximumShininess);
-        //ADD_MEMBER(RegisterForHighlight);
         ADD_MEMBER(Highlight);
         ADD_MEMBER(NoTextures);
         ADD_MEMBER(ScaleUp);
@@ -88,16 +86,6 @@ namespace Eclipse
 
     DEFINE_META(MeshComponent)
     {
-        ADD_MEMBER(MeshName);
-        ADD_MEMBER(VBO);
-        ADD_MEMBER(VAO);
-        ADD_MEMBER(EBO);
-        ADD_MEMBER(NoTex);
-        ADD_MEMBER(Diffuse);
-        ADD_MEMBER(Specular);
-        ADD_MEMBER(Ambient);
-        ADD_MEMBER(Vertices);
-        ADD_MEMBER(Indices);
         ADD_MEMBER(color);
         ADD_MEMBER(textureIdx);
         ADD_MEMBER(isQuad);
