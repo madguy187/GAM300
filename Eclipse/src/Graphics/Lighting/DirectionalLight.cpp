@@ -20,7 +20,7 @@ namespace Eclipse
 		DirectionalLightcounter++;
 	}
 
-	void DirectionalLight::Draw(DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
+	void DirectionalLight::Draw(unsigned int EntityId,DirectionalLightComponent* in, unsigned int framebufferID, unsigned int IndexID, GLenum mode)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
 
@@ -34,9 +34,11 @@ namespace Eclipse
 		glDisable(GL_CULL_FACE);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		CheckUniformLoc(&shdrpgm, *in, indexID, DirectionalLightcounter);
+		CheckUniformLoc(&shdrpgm, *in, IndexID, DirectionalLightcounter);
 
-		if (in->visible)
+		auto& Light = engine->world.GetComponent<LightComponent>(EntityId);
+
+		if (in->visible && Light.Render)
 		{
 			GLCall(glDrawElements(Graphics::models["Sphere"]->GetPrimitiveType(),
 				Graphics::models["Sphere"]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
