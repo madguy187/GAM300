@@ -8,16 +8,24 @@ namespace Eclipse
 		LIGHTING,
 		RENDER,
 		CAMERA,
+		GRID,
+		PHYSICS,
+		PICKING,
+		EDITOR,
 		COUNTER
 	};
-	
+
 	class ProfilerWindow final : public ECGuiWindow
 	{
 		inline static float engine_time = 0.0f;
 		
 	public:
 
+		unsigned int it = 0;
+
 		inline static std::map<SystemName, std::vector<float>> time_container;
+
+	/*	inline static std::vector<float> Totaltime_container;*/
 		
 		void Update() override;
 		void Init() override;
@@ -41,9 +49,14 @@ namespace Eclipse
 		
 		float GetOffsetTime(TimerTracker inputTracker);
 
+		void UpdateTimeContainer(TimerTracker inputTracker);
+
 		float GetFPS();
+
+		void PrintCpuPercentage(float value);
 		
 		void EngineTimer(TimerTracker timer);
+
 	};
 
 

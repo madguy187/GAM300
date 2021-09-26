@@ -148,7 +148,6 @@ namespace Eclipse
         int framecount = 0;
         float dt = 0.0f;
         float updaterate = 4.0f;
-        ProfilerWindow Timer;
 
         SceneManager::Initialize();
         //Deserialization(temp)

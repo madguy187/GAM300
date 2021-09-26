@@ -95,8 +95,8 @@ namespace Eclipse
         // Starting position of the Grid using bottom left most Tile
         ECVec3 StartingPosition{ 0.0f,0.0f,0.0f };
         // Vector of all the Tiles
-        std::vector<Tile> GridArray;
-        std::unordered_map<unsigned int, Tile> gridArray; //key = the grid count;
+        std::vector<std::shared_ptr<Tile>> GridArray;
+        std::unordered_map<unsigned int,std::shared_ptr<Tile>> gridArray; //key = the grid count;
 
         bool GridSystemIsRunning = true;
 
@@ -156,7 +156,7 @@ namespace Eclipse
         // Calculate Starting Point for the Grid which we going to use bottom left
         void CalculateStartingPoint(ECVec3& MinimumIn, ECVec3& Maximum);
         // Print All the Coordinates of each Tile in the Grid
-        void DebugPrintCoorindates(std::vector<Tile>& in);
+        void DebugPrintCoorindates(std::vector<std::shared_ptr<Tile>>& in);
         // Insert Grid Outline
         void InsertAsDebugBox();
         // Check Current Tile Occupied or not
