@@ -137,33 +137,6 @@ namespace Eclipse
         hi5.set(world.GetComponentType<ScriptComponent>(), 1);
         world.RegisterSystemSignature<MonoSystem>(hi5);
 
-        World test;
-        test.RegisterComponent<EntityComponent>();
-        test.RegisterComponent<TransformComponent>();
-        test.RegisterComponent<MeshComponent>();
-        test.RegisterComponent<CameraComponent>();
-        test.RegisterComponent<PointLightComponent>();
-        test.RegisterComponent<DirectionalLightComponent>();
-        test.RegisterComponent<AABBComponent>();
-        test.RegisterComponent<SpotLightComponent>();
-        test.RegisterComponent<MaterialComponent>();
-        test.RegisterComponent<RigidBodyComponent>();
-        test.RegisterComponent<TextureComponent>();
-        test.RegisterComponent<ModeLInforComponent>();
-        test.RegisterComponent<ParentChildComponent>();
-        test.RegisterComponent<LightComponent>();
-        test.RegisterComponent<ScriptComponent>();
-        test.RegisterComponent<ChildTransformComponent>();
-
-        Entity wee = world.CreateEntity();
-        world.AddComponent<TransformComponent>(wee, TransformComponent{});
-        world.AddComponent<RigidBodyComponent>(wee, RigidBodyComponent{});
-
-        ComponentList list;
-        world.CopyEntity(test, wee, list);
-        //world.test(list);
-        //mono.Init();
-
         //Check this! - Rachel
         RenderSystem::Init();
         CameraSystem::Init();

@@ -119,7 +119,6 @@ namespace Eclipse
 			{
 				world.AddComponent<T>(newEnt, GetComponent<T>(oldEnt));
 			}
-			//std::cout << typeid(T).name() << std::endl;
 		}
 	};
 }
