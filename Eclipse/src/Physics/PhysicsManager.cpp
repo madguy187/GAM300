@@ -37,7 +37,7 @@ namespace Eclipse
 
 		PxSceneDesc sceneDesc(Px_Physics->getTolerancesScale());
 		sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
-		sceneDesc.filterShader = contactReportFilterShader;
+		//sceneDesc.filterShader = contactReportFilterShader;
 		sceneDesc.simulationEventCallback = &Px_ContactReportCallback;
 		if (!sceneDesc.cpuDispatcher)
 		{
@@ -154,7 +154,7 @@ namespace Eclipse
 		if (Px_Actors[ent] == nullptr)
 			return;
 
-		PxMaterial* tempmat = Px_Physics->createMaterial(0.5, 0.5, 0.1);
+		PxMaterial* tempmat = Px_Physics->createMaterial(0.5f, 0.5f, 0.1f);
 		if (!tempmat)
 		{
 			std::cout << "creatematerial failed" << std::endl;
@@ -168,7 +168,7 @@ namespace Eclipse
 		if (Px_Actors[ent] == nullptr)
 			return;
 
-		PxMaterial* tempmat = Px_Physics->createMaterial(0.5, 0.5, 0.1);
+		PxMaterial* tempmat = Px_Physics->createMaterial(0.5f, 0.5f, 0.1f);
 		if (!tempmat)
 		{
 			std::cout << "creatematerial failed" << std::endl;
@@ -182,7 +182,7 @@ namespace Eclipse
 		if (Px_Actors[ent] == nullptr)
 			return;
 
-		PxMaterial* tempmat = Px_Physics->createMaterial(0.5, 0.5, 0.1);
+		PxMaterial* tempmat = Px_Physics->createMaterial(0.5f, 0.5f, 0.1f);
 		if (!tempmat)
 		{
 			std::cout << "creatematerial failed" << std::endl;
@@ -194,17 +194,17 @@ namespace Eclipse
 
 	PxQuat PhysicsManager::AnglestoQuat(float degreeX, float degreeY, float degreeZ)
 	{
-		float yaw = degreeZ * (M_PI/180);
-		float pitch = degreeY * (M_PI/180);
-		float roll = degreeX * (M_PI/180);
+		float yaw = static_cast<float>(degreeZ * (M_PI/180));
+		float pitch = static_cast<float>(degreeY * (M_PI/180));
+		float roll = static_cast<float>(degreeX * (M_PI/180));
 
 
-		float cy = cosf(yaw * 0.5);
-		float sy = sinf(yaw * 0.5);
-		float cp = cosf(pitch * 0.5);
-		float sp = sinf(pitch * 0.5);
-		float cr = cosf(roll * 0.5);
-		float sr = sinf(roll* 0.5);
+		float cy = cosf(yaw * 0.5f);
+		float sy = sinf(yaw * 0.5f);
+		float cp = cosf(pitch * 0.5f);
+		float sp = sinf(pitch * 0.5f);
+		float cr = cosf(roll * 0.5f);
+		float sr = sinf(roll* 0.5f);
 
 		return PxQuat(sr * cp * cy - cr * sp * sy ,//X
 					  cr * sp * cy + sr * cp * sy ,//Y
@@ -219,19 +219,19 @@ namespace Eclipse
 		float sinr_cosp = 2 * (quat.w * quat.x + quat.y * quat.z);
 		float cosr_cosp = 1 - 2 * (quat.x * quat.x + quat.y * quat.y);
 		
-		temp.setX(std::atan2f(sinr_cosp, cosr_cosp) * (180.0/M_PI));
+		temp.setX(static_cast<float>(std::atan2f(sinr_cosp, cosr_cosp) * (180.0f/M_PI)));
 
 		//y rotation
 		float sinp = 2 * (quat.w * quat.y - quat.z * quat.x);
 		if (std::abs(sinp) >= 1)
 			temp.setY(static_cast<float>(std::copysign(M_PI / 2, sinp) * (180.0/M_PI)));
 		else
-			temp.setY(std::asinf(sinp) * (180.0/M_PI));
+			temp.setY(static_cast<float>(std::asinf(sinp) * (180.0f/M_PI)));
 
 		float siny_cosp = 2 * (quat.w * quat.z + quat.x * quat.y);
 		float cosy_cosp = 1 - 2 * (quat.y * quat.y + quat.z * quat.z);
 
-		temp.setZ(std::atan2f(siny_cosp, cosy_cosp) * (180.0/M_PI));
+		temp.setZ(static_cast<float>(std::atan2f(siny_cosp, cosy_cosp) * (180.0f/M_PI)));
 
 		return temp;
 	}
@@ -295,8 +295,8 @@ namespace Eclipse
 			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setForceAndTorque(tempforce, { 0,0,0 });
 			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setMass(rigid.mass);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setActorFlag(PxActorFlag::eDISABLE_GRAVITY,rigid.enableGravity ? false : true);
-			//static_cast<PxRigidDynamic*>(Px_Actors[ent])->setAngularVelocity(tempangVelo);
-			//static_cast<PxRigidDynamic*>(Px_Actors[ent])->setAngularDamping(0.f);
+			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setAngularVelocity(tempangVelo);
+			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setAngularDamping(0.f);
 		}
 	}
 
