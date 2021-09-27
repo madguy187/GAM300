@@ -25,7 +25,7 @@ namespace Eclipse
                 auto relativePath = relative(FbxOrGltf, "src//");
                 std::string FbxOrGltfName = relativePath.filename().string();
 
-                if (FbxOrGltfName.find("gltf") != std::string::npos || FbxOrGltfName.find("fbx") != std::string::npos)
+                if (FbxOrGltfName.find("gltf") != std::string::npos || FbxOrGltfName.find("fbx") != std::string::npos || FbxOrGltfName.find("obj") != std::string::npos)
                 {
                     std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/" + FbxOrGltfName).c_str();
 

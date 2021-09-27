@@ -154,31 +154,61 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     break;
     case 9:
     {
-        engine->world.AddComponent(ID, MaterialComponent{});
-        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
-        mat.Modeltype = MaterialModelType::MT_BASIC;
+        //engine->world.AddComponent(ID, MaterialComponent{});
+        //MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+        //mat.Modeltype = MaterialModelType::MT_BASIC;
 
-        engine->world.AddComponent(ID, MeshComponent{});
-        MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-        //sprite.ID = ID;
-        sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-        sprite.modelRef = Graphics::models.find("pyramid")->first;
-        //Graphics::sprites.emplace(sprite.layerNum, &sprite);
+        //engine->world.AddComponent(ID, MeshComponent{});
+        //MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
+        ////sprite.ID = ID;
+        //sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
+        //sprite.modelRef = Graphics::models.find("pyramid")->first;
+        ////Graphics::sprites.emplace(sprite.layerNum, &sprite);
+
+        std::string hhi = engine->AssimpManager.GetKey("testhouse");
+        for (int i = 0; i < engine->AssimpManager.AssimpLoadedModels[hhi]->GetMesh().size(); i++)
+        {
+            auto& name = engine->AssimpManager.AssimpLoadedModels[hhi]->GetMesh()[i].GetMeshName();
+
+            auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
+            engine->world.AddComponent(MeshID, MeshComponent{});
+            engine->AssimpManager.SetMeshComponent(MeshID, name);
+            auto& Mesh = engine->world.GetComponent<MeshComponent>(MeshID);
+            engine->world.AddComponent(MeshID, ModeLInforComponent{ Mesh.MeshName });
+            engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
+            engine->world.AddComponent(MeshID, TextureComponent{});
+            engine->AssimpManager.SetSingleMesh(MeshID, name);
+        }
 
     }
     break;
     case 10:
     {
-        engine->world.AddComponent(ID, MaterialComponent{});
-        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
-        mat.Modeltype = MaterialModelType::MT_BASIC;
+        //engine->world.AddComponent(ID, MaterialComponent{});
+        //MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+        //mat.Modeltype = MaterialModelType::MT_BASIC;
 
-        engine->world.AddComponent(ID, MeshComponent{});
-        MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-        //sprite.ID = ID;
-        sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-        sprite.modelRef = Graphics::models.find("lines3D")->first;
-        // Graphics::sprites.emplace(sprite.layerNum, &sprite);
+        //engine->world.AddComponent(ID, MeshComponent{});
+        //MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
+        ////sprite.ID = ID;
+        //sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
+        //sprite.modelRef = Graphics::models.find("lines3D")->first;
+
+        //std::string hhi = engine->AssimpManager.GetKey("testhouse");
+        //for (int i = 0; i < engine->AssimpManager.AssimpLoadedModels[hhi]->GetMesh().size(); i++)
+        //{
+        //    auto& name = engine->AssimpManager.AssimpLoadedModels[hhi]->GetMesh()[i].GetMeshName();
+
+        //    auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
+        //    engine->world.AddComponent(MeshID, MeshComponent{});
+        //    engine->AssimpManager.SetMeshComponent(MeshID, name);
+        //    auto& Mesh = engine->world.GetComponent<MeshComponent>(MeshID);
+        //    engine->world.AddComponent(MeshID, ModeLInforComponent{ Mesh.MeshName });
+        //    engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
+        //    engine->world.AddComponent(MeshID, TextureComponent{});
+        //    engine->AssimpManager.SetSingleMesh(MeshID, name);
+        //}
+
     }
     break;
     case 11:
@@ -193,14 +223,29 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         //sprite.modelRef = Graphics::models.find("plane")->first;
 
         //Single Mesh
-        std::string hi = "Dog1";
-        engine->world.AddComponent(ID, MeshComponent{});
-        engine->AssimpManager.SetMeshComponent(ID, hi);
-        auto& Mesh = engine->world.GetComponent<MeshComponent>(ID);
-        engine->world.AddComponent(ID, ModeLInforComponent{ Mesh.MeshName });
-        engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
-        engine->world.AddComponent(ID, TextureComponent{});
-        engine->AssimpManager.SetSingleMesh(ID, hi);
+        //std::string hi = "Dog1";
+        //engine->world.AddComponent(ID, MeshComponent{});
+        //engine->AssimpManager.SetMeshComponent(ID, hi);
+        //auto& Mesh = engine->world.GetComponent<MeshComponent>(ID);
+        //engine->world.AddComponent(ID, ModeLInforComponent{ Mesh.MeshName });
+        //engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
+        //engine->world.AddComponent(ID, TextureComponent{});
+        //engine->AssimpManager.SetSingleMesh(ID, hi);
+
+        std::string hhi = engine->AssimpManager.GetKey("survival_guitar_backpack_low_poly");
+        for (int i = 0; i < engine->AssimpManager.AssimpLoadedModels[hhi]->GetMesh().size(); i++)
+        {
+            auto& name = engine->AssimpManager.AssimpLoadedModels[hhi]->GetMesh()[i].GetMeshName();
+
+            auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
+            engine->world.AddComponent(MeshID, MeshComponent{});
+            engine->AssimpManager.SetMeshComponent(MeshID, name);
+            auto& Mesh = engine->world.GetComponent<MeshComponent>(MeshID);
+            engine->world.AddComponent(MeshID, ModeLInforComponent{ Mesh.MeshName });
+            engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
+            engine->world.AddComponent(MeshID, TextureComponent{});
+            engine->AssimpManager.SetSingleMesh(MeshID, name);
+        }
     }
     break;
     // pointlight

@@ -29,6 +29,16 @@ namespace EclipseCompiler
             //strcpy(MeshName, namein.c_str());
             MeshName[namein.length()] = '\0';
 
+            offSetsforObject = {
+                0,
+                std::strlen(MeshName) + 1,
+                sizeof(NoTex),
+                sizeof(Diffuse),
+                sizeof(Specular),
+                sizeof(Ambient),
+                Vertices.size() * sizeof(Vertex),
+                Indices.size() * sizeof(unsigned int)
+            };
         }
 
         Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, glm::vec4  diffuse, glm::vec4  specular, glm::vec4  ambient, bool in, std::string namein)
@@ -45,9 +55,22 @@ namespace EclipseCompiler
             strcpy_s(MeshName, namein.length() + 1, namein.c_str());
             //strcpy(MeshName, namein.c_str());
             MeshName[namein.length()] = '/0';
+
+            offSetsforObject = {
+                0,
+                std::strlen(MeshName) + 1,
+                sizeof(NoTex),
+                sizeof(Diffuse),
+                sizeof(Specular),
+                sizeof(Ambient),
+                Vertices.size() * sizeof(Vertex),
+                Indices.size() * sizeof(unsigned int)
+            };
         }
 
         ~Mesh() {};
+
+        std::vector<size_t> offSetsforObject;
     };
 
     struct MeshData

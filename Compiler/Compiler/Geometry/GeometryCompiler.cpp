@@ -101,26 +101,38 @@ namespace EclipseCompiler
 		}
 
 		#ifndef NEW_IMPLEMENTATION
-		for (auto& i : Geometry)
+		//int LoopCounter = 0;
+		//std::unordered_map<std::string, std::unique_ptr<Mesh>>::iterator hi;
+
+		for (auto i = Geometry.begin() ; i != Geometry.end() ; i++ )
 		{
-			auto& MeshName = i.second->MeshName;
-			auto NoTextures = i.second->NoTex;
+			std::cout <<  std::addressof(i->second.get()->MeshName) << std::endl;
+			std::cout << ((unsigned char*)i->second.get()) << std::endl;
 
-			// Mesh Name
-			int SizeOfMeshName = std::strlen(i.second->MeshName)+1;
-			GeometryFile.write(reinterpret_cast<const char*>(&SizeOfMeshName), sizeof(int));
-			GeometryFile.write(reinterpret_cast<const char*>(i.second->MeshName), SizeOfMeshName);
+			//// debug this
+			//for (size_t Internal = 0; Internal < 1 ; ++Internal)
+			//{
+			//	//auto mesh = reinterpret_cast<void*>(i->second.get());
+			//	//char* Start = reinterpret_cast<char*>(mesh) + i->second->offSetsforObject[Internal];
+			//	GeometryFile.write(reinterpret_cast<const char*>(&i->second->offSetsforObject[Internal + 1]), sizeof(int));
+			//	GeometryFile.write(reinterpret_cast<const char*>(i->second.get()), i->second->offSetsforObject[Internal + 1]);
+			//}
 
-			// HasTexture
-			int SizeOfBoolean = sizeof(NoTextures);
-			GeometryFile.write(reinterpret_cast<const char*>(&SizeOfBoolean), sizeof(bool));
-			GeometryFile.write(reinterpret_cast<const char*>(&i.second->NoTex), SizeOfBoolean);
+			//// Mesh Name
+			//int SizeOfMeshName = std::strlen(i.second->MeshName)+1;
+			//GeometryFile.write(reinterpret_cast<const char*>(&SizeOfMeshName), sizeof(int));
+			//GeometryFile.write(reinterpret_cast<const char*>(i.second->MeshName), SizeOfMeshName);
+
+			//// HasTexture
+			//int SizeOfBoolean = sizeof(NoTextures);
+			//GeometryFile.write(reinterpret_cast<const char*>(&SizeOfBoolean), sizeof(bool));
+			//GeometryFile.write(reinterpret_cast<const char*>(&i.second->NoTex), SizeOfBoolean);
 
 		}
 		GeometryFile.close();
 
 		ReadFile();
-		#else
+#else
 		for (auto& i : In)
 		{
 			// Name , NoTextures , Diffuse , Specular , Ambient
@@ -144,10 +156,10 @@ namespace EclipseCompiler
 			for (auto& Indices : i.second->Indices)
 			{
 				GeometryFile << Indices << std::endl;
-	}
+			}
 			GeometryFile << "---" << std::endl;
 
-}
+		}
 		GeometryFile.close();
 #endif
 	}
@@ -204,9 +216,14 @@ namespace EclipseCompiler
 		GeometryFileWrite.read(reinterpret_cast<char*>(&MeshNameSize), sizeof(int));
 		GeometryFileWrite.read(reinterpret_cast<char*>(TestCreateModelFromCompiler.MeshName), MeshNameSize);
 
-		int NoTextureSize = 0;
-		GeometryFileWrite.read(reinterpret_cast<char*>(&NoTextureSize), sizeof(bool));
-		GeometryFileWrite.read(reinterpret_cast<char*>(&TestCreateModelFromCompiler.NoTex), NoTextureSize);
+		//int NoTextureSize = 0;
+		//GeometryFileWrite.read(reinterpret_cast<char*>(&NoTextureSize), sizeof(bool));
+		//GeometryFileWrite.read(reinterpret_cast<char*>(&TestCreateModelFromCompiler.NoTex), NoTextureSize);
+
+		//int TestDiffuseSize = 0;
+		//glm::vec3 TestDiffuse;
+		//GeometryFileWrite.read(reinterpret_cast<char*>(&TestDiffuseSize), sizeof(glm::vec3));
+		//GeometryFileWrite.read(reinterpret_cast<char*>(&TestDiffuse), TestDiffuseSize);
 
 		int i = 0;
 
@@ -275,7 +292,7 @@ namespace EclipseCompiler
 				}
 
 				Model.Indices.push_back(std::atoi(eachline.c_str()));
-	}
+			}
 
 			Geometry.emplace(Model.MeshName, std::make_unique<Mesh>(Model));
 		}
