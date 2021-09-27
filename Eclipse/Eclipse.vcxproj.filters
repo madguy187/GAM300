@@ -43,6 +43,15 @@
     <Filter Include="Editor\Utilities">
       <UniqueIdentifier>{F7DD8FC0-E3D6-AE12-0C09-9497F8608E1E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editor\Utilities\DragAndDrop">
+      <UniqueIdentifier>{2C9DF5A9-1858-E555-C10F-5EA0ADA92FE6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Utilities\OpenFileDialog">
+      <UniqueIdentifier>{E84BB6BE-542F-C5FE-5D32-F33AC9948B4F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Utilities\ParentChild">
+      <UniqueIdentifier>{5460141D-401B-04C9-E9D2-7C13D56C4E59}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Editor\Utilities\UndoAndRedo">
       <UniqueIdentifier>{99D07E34-858B-6EE0-2E43-E72A1ADDB870}</UniqueIdentifier>
     </Filter>
@@ -93,6 +102,9 @@
     </Filter>
     <Filter Include="Graphics\Camera">
       <UniqueIdentifier>{CED20E8B-3A5E-7C4F-436F-FF43AF79D84F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Culling">
+      <UniqueIdentifier>{13F3811B-FFEB-A06D-281E-86F214768079}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\Debugging">
       <UniqueIdentifier>{51443AC7-3D28-FB1C-A688-F56F928BE59E}</UniqueIdentifier>
@@ -177,6 +189,9 @@
     </Filter>
     <Filter Include="Reflection">
       <UniqueIdentifier>{104FCF04-FC06-1152-650E-EAAD51E5AB42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Reflection\Variant">
+      <UniqueIdentifier>{B46A2A39-A04E-EB8E-09AF-E5E1F5B1D510}</UniqueIdentifier>
     </Filter>
     <Filter Include="SceneManagement">
       <UniqueIdentifier>{D0EEDB6A-3C7A-492F-458B-CC23B195A52F}</UniqueIdentifier>
@@ -305,6 +320,9 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\ChildTransformComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\CollisionComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
@@ -339,6 +357,9 @@
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\ScriptComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\SpotLightComponent.h">
@@ -482,6 +503,9 @@
     <ClInclude Include="src\Global.h" />
     <ClInclude Include="src\Graphics\Camera\CameraManager.h">
       <Filter>Graphics\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Culling\CullingManager.h">
+      <Filter>Graphics\Culling</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\Debugging\DebugRenderingManager.h">
       <Filter>Graphics\Debugging</Filter>
@@ -699,6 +723,21 @@
     <ClInclude Include="src\Physics\PhysicsManager.h">
       <Filter>Physics</Filter>
     </ClInclude>
+    <ClInclude Include="src\Reflection\Meta.h">
+      <Filter>Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Reflection\RemTypeQual.h">
+      <Filter>Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Reflection\Variant\RefVariant.h">
+      <Filter>Reflection\Variant</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Reflection\Variant\Variant.h">
+      <Filter>Reflection\Variant</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Reflection\Variant\VariantBase.h">
+      <Filter>Reflection\Variant</Filter>
+    </ClInclude>
     <ClInclude Include="src\SceneManagement\SceneManager.h">
       <Filter>SceneManagement</Filter>
     </ClInclude>
@@ -739,6 +778,8 @@
     <ClInclude Include="src\Editor\Utilities\OpenFileDialog\OpenFileDialog.h" />
     <ClInclude Include="src\Editor\Utilities\ParentChild\ParentChild.h" />
     <ClInclude Include="src\Editor\Windows\Header\HeaderWindow.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.h" />
+    <ClInclude Include="src\ECS\ComponentManager\ComponentList.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -746,6 +787,9 @@
     </ClCompile>
     <ClCompile Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.cpp">
       <Filter>ECS\ComponentManager\Components\ComponentArray</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\ComponentManager\Components\ComponentsRegistration.cpp">
+      <Filter>ECS\ComponentManager\Components</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\EntityManager\EntityManager.cpp">
       <Filter>ECS\EntityManager</Filter>
@@ -798,11 +842,14 @@
     <ClCompile Include="src\Editor\Menu\MenuComponent.cpp">
       <Filter>Editor\Menu</Filter>
     </ClCompile>
-    <ClCompile Include="src\Editor\Utilities\DragAndDrop.cpp">
-      <Filter>Editor\Utilities</Filter>
+    <ClCompile Include="src\Editor\Utilities\DragAndDrop\DragAndDrop.cpp">
+      <Filter>Editor\Utilities\DragAndDrop</Filter>
     </ClCompile>
-    <ClCompile Include="src\Editor\Utilities\OpenFileDialog.cpp">
-      <Filter>Editor\Utilities</Filter>
+    <ClCompile Include="src\Editor\Utilities\OpenFileDialog\OpenFileDialog.cpp">
+      <Filter>Editor\Utilities\OpenFileDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Utilities\ParentChild\ParentChild.cpp">
+      <Filter>Editor\Utilities\ParentChild</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.cpp">
       <Filter>Editor\Utilities\UndoAndRedo</Filter>
@@ -854,6 +901,9 @@
     </ClCompile>
     <ClCompile Include="src\Graphics\Camera\CameraManager.cpp">
       <Filter>Graphics\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Culling\CullingManager.cpp">
+      <Filter>Graphics\Culling</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\Debugging\DebugRenderingManager.cpp">
       <Filter>Graphics\Debugging</Filter>
@@ -1029,6 +1079,18 @@
     <ClCompile Include="src\Physics\PhysicsManager.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
+    <ClCompile Include="src\Reflection\Meta.cpp">
+      <Filter>Reflection</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Reflection\Variant\RefVariant.cpp">
+      <Filter>Reflection\Variant</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Reflection\Variant\Variant.cpp">
+      <Filter>Reflection\Variant</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Reflection\Variant\VariantBase.cpp">
+      <Filter>Reflection\Variant</Filter>
+    </ClCompile>
     <ClCompile Include="src\SceneManagement\SceneManager.cpp">
       <Filter>SceneManagement</Filter>
     </ClCompile>
@@ -1066,7 +1128,6 @@
     <ClCompile Include="src\Editor\Windows\Header\HeaderWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\Assets\Shaders\Mesh\Mesh.frag" />
-    <None Include="src\Assets\Shaders\Mesh\Mesh.vert" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.cpp" />
   </ItemGroup>
 </Project>

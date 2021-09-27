@@ -14,6 +14,7 @@
 #include "ECS/ComponentManager/Components/ModelInfoComponent.h"
 #include "ECS/ComponentManager/Components/ParentChildComponent.h"
 #include "ECS/ComponentManager/Components/LightComponent.h"
+#include "ECS/ComponentManager/Components/ScriptComponent.h"
 #include "ECS/ComponentManager/Components/ChildTransformComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
@@ -27,6 +28,7 @@
 #include "Serialization/SerializationManager.h"
 #include "ECS/SystemManager/Systems/System/GridSystem.h"
 #include "Editor/ECGuiAPI/ECGuiInputHandler.h"
+#include "ECS/SystemManager/Systems/System/MonoSystem/MonoSystem.h"
 
 bool Tester1(const Test1& e)
 {
@@ -44,7 +46,7 @@ namespace Eclipse
 {
     void Engine::Init()
     {
-        //mono.Init();
+        mono.Init();
 
         // multiple listener calls
         EventSystem<Test1>::registerListener(Tester1);
@@ -85,6 +87,7 @@ namespace Eclipse
         world.RegisterComponent<ModeLInforComponent>();
         world.RegisterComponent<ParentChildComponent>();
         world.RegisterComponent<LightComponent>();
+        world.RegisterComponent<ScriptComponent>();
         world.RegisterComponent<ChildTransformComponent>();
 
         // registering system
@@ -95,7 +98,8 @@ namespace Eclipse
         world.RegisterSystem<GridSystem>();
         world.RegisterSystem<PickingSystem>();
         world.RegisterSystem<PhysicsSystem>();
-       
+        world.RegisterSystem<MonoSystem>();
+
         // Render System
         Signature RenderSys = RenderSystem::RegisterAll();
         world.RegisterSystemSignature<RenderSystem>(RenderSys);
@@ -129,7 +133,11 @@ namespace Eclipse
         hi4.set(world.GetComponentType<RigidBodyComponent>(), 1);
         world.RegisterSystemSignature<PhysicsSystem>(hi4);
 
-        mono.Init();
+        Signature hi5;
+        hi5.set(world.GetComponentType<ScriptComponent>(), 1);
+        world.RegisterSystemSignature<MonoSystem>(hi5);
+
+        world.test(all_component_list);
 
         //Check this! - Rachel
         RenderSystem::Init();
@@ -236,7 +244,10 @@ namespace Eclipse
             // GRID DRAW ============================= Must be last of All Renders
             engine->GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
 
-            mono.Update();
+            if (IsScenePlaying())
+            {
+                world.Update<MonoSystem>();
+            }
 
             // FRAMEBUFFER DRAW ==========================
             engine->GraphicsManager.GlobalFrmeBufferDraw();
