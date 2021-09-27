@@ -100,24 +100,27 @@ namespace EclipseCompiler
 			std::cout << "Exception opening/reading file" << e.what();
 		}
 
-#ifndef NEW_IMPLEMENTATION
-
-		int LoopCounter = 0;
-
-		int yo = 40;
-
+		#ifndef NEW_IMPLEMENTATION
 		for (auto& i : Geometry)
 		{
-			int size = std::strlen(i.second->MeshName)+1;
-			GeometryFile.write(reinterpret_cast<const char*>(&size), sizeof(int));
-			GeometryFile.write(reinterpret_cast<const char*>(i.second->MeshName), size);
+			auto& MeshName = i.second->MeshName;
+			auto NoTextures = i.second->NoTex;
 
-			OffSetsForObject[LoopCounter++];
+			// Mesh Name
+			int SizeOfMeshName = std::strlen(i.second->MeshName)+1;
+			GeometryFile.write(reinterpret_cast<const char*>(&SizeOfMeshName), sizeof(int));
+			GeometryFile.write(reinterpret_cast<const char*>(i.second->MeshName), SizeOfMeshName);
+
+			// HasTexture
+			int SizeOfBoolean = sizeof(NoTextures);
+			GeometryFile.write(reinterpret_cast<const char*>(&SizeOfBoolean), sizeof(bool));
+			GeometryFile.write(reinterpret_cast<const char*>(&i.second->NoTex), SizeOfBoolean);
+
 		}
 		GeometryFile.close();
 
 		ReadFile();
-#else
+		#else
 		for (auto& i : In)
 		{
 			// Name , NoTextures , Diffuse , Specular , Ambient
@@ -174,7 +177,7 @@ namespace EclipseCompiler
 		for (auto& Model : Geometry)
 		{
 			OffSetsForObject.push_back(sizeof(Model.first));
-			//OffSetsForObject.push_back(sizeof(Model.second->NoTex));
+			OffSetsForObject.push_back(sizeof(Model.second->NoTex));
 			//OffSetsForObject.push_back(sizeof(Model.second->Diffuse));
 			//OffSetsForObject.push_back(sizeof(Model.second->Specular));
 			//OffSetsForObject.push_back(sizeof(Model.second->Ambient));
@@ -194,32 +197,19 @@ namespace EclipseCompiler
 
 #ifndef NEW_IMPLEMENTATION
 
-		//int One = 0;
-		//int Two = 0;
-		//int Three = 0;
-		//GeometryFileWrite.read(reinterpret_cast<char*>(&One), 3 * sizeof(int));
-		//GeometryFileWrite.read(reinterpret_cast<char*>(&Two), sizeof(int));
-		//GeometryFileWrite.read(reinterpret_cast<char*>(&Three), sizeof(int));
+		Mesh TestCreateModelFromCompiler;
 
-		//int LoopCounter = 0;
-		
-		int Size = 0;
-		GeometryFileWrite.read(reinterpret_cast<char*>(&Size), sizeof(int));
+		int MeshNameSize = 0;
+		TestCreateModelFromCompiler.MeshName = new char[MeshNameSize];
+		GeometryFileWrite.read(reinterpret_cast<char*>(&MeshNameSize), sizeof(int));
+		GeometryFileWrite.read(reinterpret_cast<char*>(TestCreateModelFromCompiler.MeshName), MeshNameSize);
 
-		char* TestSee = new char[Size];
-		GeometryFileWrite.read(reinterpret_cast<char*>(TestSee), Size);
-
-		//GeometryFileWrite.read(reinterpret_cast<char*>(&Test.MeshName), sizeof(OffSetsForObject[LoopCounter]));
+		int NoTextureSize = 0;
+		GeometryFileWrite.read(reinterpret_cast<char*>(&NoTextureSize), sizeof(bool));
+		GeometryFileWrite.read(reinterpret_cast<char*>(&TestCreateModelFromCompiler.NoTex), NoTextureSize);
 
 		int i = 0;
 
-		//for (auto& i : Geometry)
-		//{
-		//	char* address = reinterpret_cast<char*>(*i.first.data());
-		//	GeometryFileWrite.read(reinterpret_cast<char*>(&address), sizeof(OffSetsForObject[LoopCounter]));
-
-		//	OffSetsForObject[LoopCounter]++;
-		//}
 #else   
 		// This getline is to getName
 		while (!GeometryFile.eof())
