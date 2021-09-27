@@ -85,6 +85,7 @@ namespace Eclipse
 		else
 			Px_Actors[ent] = Px_Physics->createRigidStatic(PxTransform(temptrans));
 
+		Px_Actors[ent]->setName(std::to_string(ent).c_str());
 		AddActorToScene(ent);
 		AttachBoxToActor(ent, 2.5f, 2.5f, 2.5f);
 	}

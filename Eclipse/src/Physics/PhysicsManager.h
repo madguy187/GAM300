@@ -39,6 +39,7 @@ namespace Eclipse
 			void onAdvance(const PxRigidBody* const*, const PxTransform*, const PxU32) {}
 			void onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 nbPairs)
 			{
+				pairHeader.actors
 				/*PX_UNUSED((pairHeader));
 				std::vector<PxContactPairPoint> contactPoints;
 
@@ -66,6 +67,7 @@ namespace Eclipse
 		PxScene* Px_Scene;
 		ContactReportCallback Px_ContactReportCallback;
 		std::array<physx::PxActor*, MAX_ENTITY> Px_Actors;
+		std::vector<std::pair<Entity, Entity>> CollisionPairs;
 	public:
 		void Init();
 		void Simulate();
