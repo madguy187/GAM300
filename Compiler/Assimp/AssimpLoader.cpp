@@ -5,7 +5,7 @@
 
 namespace EclipseCompiler
 {
-    void AssimpLoader::LoadAssimpModel(std::string path, std::unordered_map<std::string, std::unique_ptr<Mesh>>& GeometryContainer)
+    void AssimpLoader::LoadAssimpModel(std::string path, std::unordered_map<std::string, Mesh>& GeometryContainer)
     {
         unsigned int importOptions =
             aiProcess_Triangulate |
@@ -361,7 +361,7 @@ namespace EclipseCompiler
         return centroid;
     }
 
-    void AssimpLoader::LoadNewModel(std::unordered_map<std::string, std::unique_ptr<Mesh>>& GeometryContainer)
+    void AssimpLoader::LoadNewModel(std::unordered_map<std::string,Mesh>& GeometryContainer)
     {
         std::vector<glm::vec3> combinedVertices;
 
@@ -397,13 +397,13 @@ namespace EclipseCompiler
             {
                 Mesh NewMesh(it.vertices, it.indices, it.MeshName, it.textures);
                 Meshes.push_back(NewMesh);
-                GeometryContainer.emplace(it.MeshName, std::make_unique<Mesh>(NewMesh));
+                GeometryContainer.emplace(it.MeshName, (NewMesh));
             }
             else
             {
                 Mesh NewMesh(it.vertices, it.indices, it.Diffuse, it.Specular, it.Ambient, it.NoTextures, it.MeshName);
                 Meshes.push_back(NewMesh);
-                GeometryContainer.emplace(it.MeshName, std::make_unique<Mesh>(NewMesh));
+                GeometryContainer.emplace(it.MeshName, (NewMesh));
             }
         }
 

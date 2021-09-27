@@ -3,18 +3,70 @@
 
 namespace EclipseCompiler
 {
-    class Mesh 
+
+    struct vec3
+    {
+        float x = 30;
+        float y = 40;
+        float z = 50;
+    };
+
+    struct MeshA
+    {
+        char* MeshName;
+        bool noTex{ true };
+        glm::vec4 Diffuse{ 30,40,50,60 };
+
+        std::vector<int> offSetsforObject;
+
+        MeshA()
+        {
+            MeshName = new char[20];
+            strcpy_s(MeshName, 5, "poop");
+            MeshName[5] = '\0';
+
+            offSetsforObject = {
+            0,
+            20,
+            sizeof(noTex),
+            16
+            };
+        };
+
+    };
+
+    struct Mesh
     {
     public:
-        Mesh() {};
         char* MeshName;
-        bool NoTex;
-        glm::vec4 Diffuse;
-        glm::vec4 Specular;
+        bool NoTex{ false };
+        glm::vec4 Diffuse{ 0,0,0,0 };
+        glm::vec4 Specular{ 0,0,0,0 };
         glm::vec4 Ambient;
         std::vector<Vertex> Vertices;
         std::vector<unsigned int> Indices;
         std::vector<Texture> Textures;
+
+        Mesh()
+        {
+            MeshName = new char[20];
+            strcpy_s(MeshName, 5, "poop");
+            MeshName[5] = '\0';
+
+            offSetsforObject = {
+    0,
+    20,
+    sizeof(NoTex),
+    sizeof(Diffuse),
+    sizeof(Specular),
+    sizeof(Ambient),
+    Vertices.size() * sizeof(Vertex),
+    Indices.size() * sizeof(unsigned int)
+            };
+
+            //strcpy_s(MeshName, 20, "");
+            //MeshName[20] = '\0';
+        };
 
         Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::string namein, std::vector<Texture> textures)
             :
@@ -23,15 +75,19 @@ namespace EclipseCompiler
             Textures(textures),
             NoTex(false)
         {
-            auto l = namein.length() + 1;
-            MeshName = new char[namein.length()+1];
-            strcpy_s(MeshName, namein.length() + 1, namein.c_str());
-            //strcpy(MeshName, namein.c_str());
-            MeshName[namein.length()] = '\0';
+            //auto l = namein.length() + 1;
+            //MeshName = new char[namein.length()+1];
+            //strcpy_s(MeshName, namein.length() + 1, namein.c_str());
+            ////strcpy(MeshName, namein.c_str());
+            //MeshName[namein.length()] = '\0';
+
+            MeshName = new char[20];
+            strcpy_s(MeshName, 5, "poop");
+            MeshName[5] = '\0';
 
             offSetsforObject = {
                 0,
-                std::strlen(MeshName) + 1,
+                20,
                 sizeof(NoTex),
                 sizeof(Diffuse),
                 sizeof(Specular),
@@ -50,15 +106,19 @@ namespace EclipseCompiler
             Ambient(ambient),
             NoTex(in)
         {
-            auto l = namein.length() + 1;
-            MeshName = new char[namein.length() + 1];
-            strcpy_s(MeshName, namein.length() + 1, namein.c_str());
-            //strcpy(MeshName, namein.c_str());
-            MeshName[namein.length()] = '/0';
+            //auto l = namein.length() + 1;
+            //MeshName = new char[namein.length() + 1];
+            //strcpy_s(MeshName, namein.length() + 1, namein.c_str());
+            ////strcpy(MeshName, namein.c_str());
+            //MeshName[namein.length()] = '/0';
+
+            MeshName = new char[20];
+            strcpy_s(MeshName, 5, "poop");
+            MeshName[5] = '\0';
 
             offSetsforObject = {
                 0,
-                std::strlen(MeshName) + 1,
+                20,
                 sizeof(NoTex),
                 sizeof(Diffuse),
                 sizeof(Specular),
@@ -98,13 +158,13 @@ namespace EclipseCompiler
 
     public:
 
-        void LoadAssimpModel(std::string path, std::unordered_map<std::string, std::unique_ptr<Mesh>>& GeometryContainer);
+        void LoadAssimpModel(std::string path, std::unordered_map<std::string, Mesh>& GeometryContainer);
         void ProcessGeometry(aiNode* node, const aiScene* scene, bool isGeometryCompiler = true);
         void ProcessMesh(aiMesh* mesh, const aiScene* scene, const char* MeshName);
         float GetLargestAxisValue(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         void ComputeAxisMinMax(std::vector<glm::vec3>& vertices, std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         glm::vec3 ComputeCentroid(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
-        void LoadNewModel(std::unordered_map<std::string, std::unique_ptr<Mesh>>& GeometryContainer);
+        void LoadNewModel(std::unordered_map<std::string, Mesh>& GeometryContainer);
 
     public:
         std::vector<Texture> ExtractTextures(aiMesh* mesh, const aiScene* scene, std::string& MeshName, std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>&);
