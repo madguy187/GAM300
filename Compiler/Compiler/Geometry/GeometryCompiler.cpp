@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "GeometryCompiler.h"
+#include <string> 
 
 using namespace std;
 
@@ -37,7 +38,7 @@ namespace EclipseCompiler
 
         try
         {
-            GeometryFile.open("../Eclipse/src/Assets/Compilers/GeometryFile/Geometry.txt", std::fstream::in | std::fstream::out | std::fstream::binary | std::ios::trunc);
+            GeometryFile.open("../Eclipse/src/Assets/Compilers/GeometryFile/Geometry.txt", std::fstream::in | std::fstream::out | std::fstream::binary | std::ios::trunc | std::ios::binary);
         }
         catch (std::ifstream::failure e)
         {
@@ -100,7 +101,7 @@ namespace EclipseCompiler
 
     void GeometryCompiler::ReadFile()
     {
-        GeometryFileWrite.open("../Eclipse/src/Assets/Compilers/GeometryFile/Geometry.txt", std::ios::out | std::ios::in);
+        GeometryFileWrite.open("../Eclipse/src/Assets/Compilers/GeometryFile/Geometry.txt", std::ios::out | std::ios::in | ios::binary);
         std::string eachline;
 
         // This getline is to getName
@@ -135,14 +136,14 @@ namespace EclipseCompiler
             ProcessVec4(eachline, Model.Ambient);
 
             std::getline(GeometryFileWrite, eachline);
-            if (eachline == "-")
-                std::cout << "Vertices Next" << std::endl;
+            //if (eachline == "-")
+                //std::cout << "Vertices Next" << std::endl;
 
             while (std::getline(GeometryFileWrite, eachline))
             {
                 if (eachline == "--")
                 {
-                    std::cout << "Indices Next" << std::endl;
+                    //std::cout << "Indices Next" << std::endl;
                     break;
                 }
 
@@ -162,12 +163,13 @@ namespace EclipseCompiler
             {
                 if (eachline == "---")
                 {
-                    std::cout << "Next Model" << std::endl;
+                    //std::cout << "Next Model" << std::endl;
                     break;
                 }
 
                 Model.Indices.push_back(std::atoi(eachline.c_str()));
             }
+
             Geometry.emplace(Model.MeshName, std::make_unique<Mesh>(Model));
         }
     }

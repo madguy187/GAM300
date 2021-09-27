@@ -11,6 +11,8 @@ namespace EclipseCompiler
     class Texture
     {
     public:
+        Texture() {}
+
         Texture(std::string dir, std::string path, aiTextureType type) :
             TextureDirectory(dir),
             TexturePath(path),
@@ -53,6 +55,7 @@ namespace EclipseCompiler
             NoTex(false),
             MeshName(namein)
         {
+
         }
 
         Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, glm::vec4  diffuse, glm::vec4  specular, glm::vec4  ambient, bool in, std::string namein)
@@ -107,6 +110,6 @@ namespace EclipseCompiler
         void LoadAssimpModelForTextures(std::string path, std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>&);
         void ProcessTextures(aiNode* node, const aiScene* scene, std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>& TextureContainer);
         std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type, std::string& MeshName);
-        std::vector<Texture> LoadTexturesForCompiler(aiMaterial* mat, aiTextureType type, std::string& MeshName , std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>&);
+        std::vector<Texture> LoadTexturesForCompiler(aiMaterial* mat, aiTextureType type, std::string& MeshName, std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>&);
     };
 }

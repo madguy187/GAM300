@@ -276,7 +276,7 @@ namespace EclipseCompiler
         return textures;
     }
 
-    std::vector<Texture> AssimpLoader::LoadTexturesForCompiler(aiMaterial* mat, aiTextureType type, std::string& MeshName , std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>& In)
+    std::vector<Texture> AssimpLoader::LoadTexturesForCompiler(aiMaterial* mat, aiTextureType type, std::string& MeshName, std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>& In)
     {
         std::vector<Texture> textures;
 

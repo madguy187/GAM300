@@ -156,19 +156,19 @@
     <ClCompile Include="Assimp\AssimpLoader.cpp" />
     <ClCompile Include="Compiler\Geometry\GeometryCompiler.cpp" />
     <ClCompile Include="Compiler\ICompiler\Compilers.cpp" />
+    <ClCompile Include="Compiler\Texture\TextureCompiler.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\main.cpp" />
-    <ClCompile Include="TextureCompiler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assimp\AssimpLoader.h" />
     <ClInclude Include="Compiler\Geometry\GeometryCompiler.h" />
     <ClInclude Include="Compiler\ICompiler\Compilers.h" />
+    <ClInclude Include="Compiler\Texture\TextureCompiler.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="TextureCompiler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

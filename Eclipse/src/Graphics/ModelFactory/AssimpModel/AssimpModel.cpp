@@ -424,18 +424,18 @@ namespace Eclipse
 
             // prevent duplicate loading
             bool skip = false;
-            for (unsigned int j = 0; j < Textures_loaded.size(); j++)
-            {
-                if (std::strcmp(Textures_loaded[j].GetPath().data(), str.C_Str()) == 0)
-                {
-                    textures.push_back(Textures_loaded[j]);
-                    std::unique_ptr<Texture> ptr(new Texture(Textures_loaded[j]));
-                    engine->AssimpManager.InsertTextures(MeshName, std::move(ptr), MeshIndex);
+            //for (unsigned int j = 0; j < Textures_loaded.size(); j++)
+            //{
+            //    if (std::strcmp(Textures_loaded[j].GetPath().data(), str.C_Str()) == 0)
+            //    {
+            //        textures.push_back(Textures_loaded[j]);
+            //        std::unique_ptr<Texture> ptr(new Texture(Textures_loaded[j]));
+            //        engine->AssimpManager.InsertTextures(MeshName, std::move(ptr), MeshIndex);
 
-                    skip = true;
-                    break;
-                }
-            }
+            //        skip = true;
+            //        break;
+            //    }
+            //}
 
             if (!skip)
             {

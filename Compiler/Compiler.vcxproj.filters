@@ -39,7 +39,7 @@
     <ClCompile Include="Source\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TextureCompiler.cpp">
+    <ClCompile Include="Compiler\Texture\TextureCompiler.cpp">
       <Filter>Compiler\Texture</Filter>
     </ClCompile>
   </ItemGroup>
@@ -54,7 +54,7 @@
     <ClInclude Include="Assimp\AssimpLoader.h">
       <Filter>Assimp</Filter>
     </ClInclude>
-    <ClInclude Include="TextureCompiler.h">
+    <ClInclude Include="Compiler\Texture\TextureCompiler.h">
       <Filter>Compiler\Texture</Filter>
     </ClInclude>
   </ItemGroup>
