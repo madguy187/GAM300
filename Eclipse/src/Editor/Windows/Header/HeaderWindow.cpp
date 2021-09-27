@@ -108,17 +108,41 @@ namespace Eclipse
 			//ECGui::DrawInputTextHintWidget("Tranalsate","Select and Translate Objects(W)",100);
 			EDITOR_LOG_INFO("Translate");
 		}
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::BeginTooltip();
+			ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+			ImGui::TextUnformatted("Select and Translate Objects (W)");
+			ImGui::PopTextWrapPos();
+			ImGui::EndTooltip();
+		}
 		ECGui::InsertSameLine();
 
 		if (ImGui::Button(ICON_FA_SPINNER ICON_FA_REPLY, ImVec2{ 50,20 }))
 		{
 			HeaderWindow::Rotate();
 		}
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::BeginTooltip();
+			ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+			ImGui::TextUnformatted("Select and Rotate Objects (E)");
+			ImGui::PopTextWrapPos();
+			ImGui::EndTooltip();
+		}
 		ECGui::InsertSameLine();
 
 		if (ImGui::Button(ICON_FA_EXPAND, ImVec2{ 50,20 }))
 		{
 			HeaderWindow::Scale();
+		}
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::BeginTooltip();
+			ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+			ImGui::TextUnformatted("Select and Scale Objects (R)");
+			ImGui::PopTextWrapPos();
+			ImGui::EndTooltip();
 		}
 		ECGui::InsertSameLine();
 
@@ -132,6 +156,15 @@ namespace Eclipse
 			ChildSettings settings{ "Camera Setting",ImVec2{100,100} };
 			ECGui::DrawChildWindow<void()>(settings, std::bind(&HeaderWindow::CameraSetting,this));
 			ImGui::EndPopup();
+		}
+
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::BeginTooltip();
+			ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+			ImGui::TextUnformatted("Camera Settings");
+			ImGui::PopTextWrapPos();
+			ImGui::EndTooltip();
 		}
 	}
 
