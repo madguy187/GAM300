@@ -19,7 +19,7 @@
 
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
-#include "ECS/SystemManager/Systems/System/EditorSystem.h"
+#include "ECS/SystemManager/Systems/System/Editor/EditorSystem.h"
 #include "ECS/SystemManager/Systems/System/LightingSystem.h"
 #include "ECS/SystemManager/Systems/System/PickingSystem.h"
 #include "ECS/SystemManager/Systems/System/PhysicsSystem.h"
