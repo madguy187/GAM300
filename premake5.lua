@@ -70,7 +70,8 @@ project "Eclipse"
 		"Dep/PhysX/include/vehicle",
         "Dep/mono/include/mono-2.0",
 		"Dep/ASSIMP/include/assimp",
-	    "Dep/ASSIMP"
+	    "Dep/ASSIMP",
+		"Dep/Fmod/core/inc"
 	}
 
 	filter "system:windows"
@@ -95,7 +96,6 @@ project "Eclipse"
 	"Dep/PhysX/Debug",
     "Dep/mono/lib/",
 	"Dep/ASSIMP/",
-	"Dep/Fmod/core/inc",
 	"Dep/Fmod/core/lib/x64"
   }
 
@@ -160,7 +160,6 @@ project "Eclipse"
 	"Dep/PhysX/Release",
     "Dep/mono/lib/",
 	"Dep/ASSIMP/",
-	"Dep/Fmod/core/inc",
 	"Dep/Fmod/core/lib/x64"
   }
 
