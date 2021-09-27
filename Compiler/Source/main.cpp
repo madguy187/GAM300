@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "GeometryCompiler.h"
-#include "TextureCompiler.h"
+#include "Compiler/Texture/TextureCompiler.h"
 
 using namespace EclipseCompiler;
 
@@ -8,13 +8,14 @@ int main()
 {
     CompilerManager Manager;
 
-    std::unique_ptr<GeometryCompiler> cGeometryCompiler = std::make_unique<GeometryCompiler>();
     std::unique_ptr<TextureCompiler> cTextureCompiler = std::make_unique<TextureCompiler>();
+    std::unique_ptr<GeometryCompiler> cGeometryCompiler = std::make_unique<GeometryCompiler>();
 
     Manager.Register(*cGeometryCompiler);
     Manager.Register(*cTextureCompiler);
 
     Manager.Initialise();
+    Manager.CalculateOffSets();
 
     while (1)
     {

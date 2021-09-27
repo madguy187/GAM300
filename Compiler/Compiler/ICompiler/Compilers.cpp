@@ -149,4 +149,12 @@ namespace EclipseCompiler
             i->ReleaseFile(in);
         }
     }
+
+    void CompilerManager::CalculateOffSets()
+    {
+        for (auto& i : AllCompilerContainer)
+        {
+            i->CalculateOffsets();
+        }
+    }
 }

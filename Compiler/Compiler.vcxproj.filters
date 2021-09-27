@@ -24,6 +24,12 @@
     <Filter Include="Compiler\Texture">
       <UniqueIdentifier>{50ef52f6-24fa-48e0-8f3c-9902291dd540}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Global">
+      <UniqueIdentifier>{0a1de947-7372-45e3-961f-42d39f05ed4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Compiler\BinarySettings">
+      <UniqueIdentifier>{0d446b90-c5c7-4b58-93b9-ed6644c93ea0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -54,8 +60,14 @@
     <ClInclude Include="Assimp\AssimpLoader.h">
       <Filter>Assimp</Filter>
     </ClInclude>
+    <ClInclude Include="Global.h">
+      <Filter>Global</Filter>
+    </ClInclude>
     <ClInclude Include="Compiler\Texture\TextureCompiler.h">
       <Filter>Compiler\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="BinarySettings.h">
+      <Filter>Compiler\BinarySettings</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

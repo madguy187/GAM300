@@ -72,7 +72,12 @@ namespace EclipseCompiler
 
     void TextureCompiler::Write()
     {
+        int i = 0;
+    }
 
+    void TextureCompiler::CalculateOffsets()
+    {
+        //OffSetsForObject = { 4, sizeof(y), 4, sizeof(a) };
     }
 
     void TextureCompiler::WriteToFile(std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>& LoadedTextures)

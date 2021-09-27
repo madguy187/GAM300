@@ -17,10 +17,13 @@ namespace EclipseCompiler
     class ICompiler
     {
     public:
+        std::vector<size_t> OffSetsForObject;
+
         virtual void LoadFile(const std::string& modelFile) = 0;
         virtual void Init() = 0;
         virtual void ReleaseFile(std::string& in) = 0;
         virtual void Write() = 0;
+        virtual void CalculateOffsets() = 0;
     };
 
     class CompilerManager
@@ -32,6 +35,7 @@ namespace EclipseCompiler
         void Register(ICompiler& in);
         void Initialise();
         void ProduceFile(std::string& in);
+        void CalculateOffSets();
 
     };
 }

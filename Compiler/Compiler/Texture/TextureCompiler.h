@@ -22,5 +22,6 @@ namespace EclipseCompiler
         void Init() override;
         void ReleaseFile(std::string& in) override;
         void Write() override;
+        void CalculateOffsets() override;
     };
 }

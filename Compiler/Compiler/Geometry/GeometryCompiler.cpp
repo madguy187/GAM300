@@ -2,175 +2,293 @@
 #include "GeometryCompiler.h"
 #include <string> 
 
-using namespace std;
+
+//struct Class1
+//{
+//    int x;
+//    float y;
+//    float z;
+//    std::string a = "11111111111111111111";
+//
+//    std::vector<size_t> offSetsforObject;
+//
+//    Class1()
+//    {
+//        offSetsforObject = { 4, sizeof(y), 4, sizeof(a) };
+//    }
+//};
+//
+//struct FileManager
+//{
+//    Class1* obj = new Class1;
+//    std::ofstream GeometryFile;
+//
+//    for (int i = 0; i < 3; ++i)
+//    {
+//        char* address = reinterpret_cast<char*>(obj) + obj->offSetsforObject[i];
+//        GeometryFile.write(reinterpret_cast<const char*>(address), obj->offSetsforObject[i]);
+//    }
+//};
+
+//    void WriteToBinary(const char* path)
+//    {
+//
+//       f.open("../Eclipse/src/Assets/Compilers/GeometryFile/Geometry.bin",
+//                std::fstream::out |
+//                std::fstream::binary |
+//                std::ios::trunc |
+//                std::ios::binary);
+//
+//        GeometryFile.write(reinterpret_cast<const char*>(&x), sizeof(int));
+//        GeometryFile.write(reinterpret_cast<const char*>(&y), sizeof(float));
+//        GeometryFile.write(reinterpret_cast<const char*>(&z), sizeof(float));
+//        GeometryFile.close();
+//    }
+//    void ReadFile()
+//    {
+//        GeometryFile.write(reinterpret_cast<const char*>(&x), sizeof(int));
+//        GeometryFile.write(reinterpret_cast<const char*>(&y), sizeof(float));
+//        GeometryFile.write(reinterpret_cast<const char*>(&z), sizeof(float));
+//    }
 
 namespace EclipseCompiler
 {
-    void GeometryCompiler::LoadFile(const std::string& modelFile)
-    {
-        for (auto& dirEntry : std::filesystem::directory_iterator(modelFile))
-        {
-            const auto& path = dirEntry.path();
-            auto relativePath = relative(path, "..//Eclipse//src//");
-            std::string FolderName = relativePath.filename().string();
+	void GeometryCompiler::Init()
+	{
+		LoadFile("..//Eclipse//src//Assets//ASSModels");
+	}
 
-            std::string GoIntoModelFolder = ("..//Eclipse//src/Assets/ASSModels/" + FolderName);
+	void GeometryCompiler::LoadFile(const std::string& modelFile)
+	{
+		for (auto& dirEntry : std::filesystem::directory_iterator(modelFile))
+		{
+			const auto& path = dirEntry.path();
+			auto relativePath = relative(path, "..//Eclipse//src//");
+			std::string FolderName = relativePath.filename().string();
 
-            for (auto& dirEntry : std::filesystem::directory_iterator(GoIntoModelFolder))
-            {
-                const auto& FbxOrGltf = dirEntry.path();
-                auto relativePath = relative(FbxOrGltf, "..//Eclipse//src//");
-                std::string FbxOrGltfName = relativePath.filename().string();
+			std::string GoIntoModelFolder = ("..//Eclipse//src/Assets/ASSModels/" + FolderName);
 
-                if (FbxOrGltfName.find("gltf") != std::string::npos || FbxOrGltfName.find("fbx") != std::string::npos)
-                {
-                    std::string PathName = ("..//Eclipse//src/Assets/ASSModels/" + FolderName + "/" + FbxOrGltfName).c_str();
-                    std::unique_ptr<AssimpLoader> ptr = std::make_unique< AssimpLoader>();
-                    ptr->LoadAssimpModel(PathName, Geometry);
-                }
-            }
-        }
-    }
+			for (auto& dirEntry : std::filesystem::directory_iterator(GoIntoModelFolder))
+			{
+				const auto& FbxOrGltf = dirEntry.path();
+				auto relativePath = relative(FbxOrGltf, "..//Eclipse//src//");
+				std::string FbxOrGltfName = relativePath.filename().string();
 
-    void GeometryCompiler::WriteToFile(std::unordered_map<std::string, std::unique_ptr<Mesh>>& In)
-    {
-        GeometryFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+				if (FbxOrGltfName.find("gltf") != std::string::npos || FbxOrGltfName.find("fbx") != std::string::npos)
+				{
+					std::string PathName = ("..//Eclipse//src/Assets/ASSModels/" + FolderName + "/" + FbxOrGltfName).c_str();
+					std::unique_ptr<AssimpLoader> ptr = std::make_unique< AssimpLoader>();
+					ptr->LoadAssimpModel(PathName, Geometry);
+				}
+			}
+		}
+	}
 
-        try
-        {
-            GeometryFile.open("../Eclipse/src/Assets/Compilers/GeometryFile/Geometry.txt", std::fstream::in | std::fstream::out | std::fstream::binary | std::ios::trunc | std::ios::binary);
-        }
-        catch (std::ifstream::failure e)
-        {
-            std::cout << "Exception opening/reading file" << e.what();
-        }
+	void GeometryCompiler::WriteToFile(std::unordered_map<std::string, std::unique_ptr<Mesh>>& In)
+	{
+		GeometryFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 
-        for (auto& i : In)
-        {
-            // Name , NoTextures , Diffuse , Specular , Ambient
-            GeometryFile << i.first << std::endl;
-            GeometryFile << (i.second->NoTex ? 1 : 0) << std::endl;
-            GeometryFile << i.second->Diffuse.x << " " << i.second->Diffuse.y << " " << i.second->Diffuse.z << " " << i.second->Diffuse.w << std::endl;
-            GeometryFile << i.second->Specular.x << " " << i.second->Specular.y << " " << i.second->Specular.z << " " << i.second->Specular.w << std::endl;
-            GeometryFile << i.second->Ambient.x << " " << i.second->Ambient.y << " " << i.second->Ambient.z << " " << i.second->Ambient.z << std::endl;
-            GeometryFile << "-" << std::endl;
+		try
+		{
+			GeometryFile.open("../Eclipse/src/Assets/Compilers/GeometryFile/Geometry.bin",
+				std::fstream::out |
+				std::ios::trunc |
+				std::ios::binary);
+		}
+		catch (std::ifstream::failure e)
+		{
+			std::cout << "Exception opening/reading file" << e.what();
+		}
 
-            // Vertices
-            // Position , Normal , TextureCoordinates
-            for (auto& Vertices : i.second->Vertices)
-            {
-                GeometryFile << Vertices.Position.x << " " << Vertices.Position.y << " " << Vertices.Position.z << std::endl;
-                GeometryFile << Vertices.Normal.x << " " << Vertices.Normal.y << " " << Vertices.Normal.z << std::endl;
-                GeometryFile << Vertices.TextureCoodinates.x << " " << Vertices.TextureCoodinates.y << std::endl;
-            }
-            GeometryFile << "--" << std::endl;
+#ifndef NEW_IMPLEMENTATION
 
-            for (auto& Indices : i.second->Indices)
-            {
-                GeometryFile << Indices << std::endl;
-            }
-            GeometryFile << "---" << std::endl;
+		int LoopCounter = 0;
 
-        }
-        GeometryFile.close();
-    }
+		int yo = 40;
 
-    void GeometryCompiler::Init()
-    {
-        LoadFile("..//Eclipse//src//Assets//ASSModels");
-    }
+		for (auto& i : Geometry)
+		{
+			int size = std::strlen(i.second->MeshName)+1;
+			GeometryFile.write(reinterpret_cast<const char*>(&size), sizeof(int));
+			GeometryFile.write(reinterpret_cast<const char*>(i.second->MeshName), size);
 
-    void GeometryCompiler::ReleaseFile(std::string& in)
-    {
-        if (in == "1")
-        {
-            if (Geometry.empty())
-            {
-                std::cout << "No Geometry Loaded" << std::endl << std::endl;
-                return;
-            }
+			OffSetsForObject[LoopCounter++];
+		}
+		GeometryFile.close();
 
-            WriteToFile(Geometry);
-            std::cout << "Geometry File Produced" << std::endl << std::endl;
-        }
-    }
+		ReadFile();
+#else
+		for (auto& i : In)
+		{
+			// Name , NoTextures , Diffuse , Specular , Ambient
+			GeometryFile << i.first << std::endl;
+			GeometryFile << (i.second->NoTex ? 1 : 0) << std::endl;
+			GeometryFile << i.second->Diffuse.x << " " << i.second->Diffuse.y << " " << i.second->Diffuse.z << " " << i.second->Diffuse.w << std::endl;
+			GeometryFile << i.second->Specular.x << " " << i.second->Specular.y << " " << i.second->Specular.z << " " << i.second->Specular.w << std::endl;
+			GeometryFile << i.second->Ambient.x << " " << i.second->Ambient.y << " " << i.second->Ambient.z << " " << i.second->Ambient.z << std::endl;
+			GeometryFile << "-" << std::endl;
 
-    void GeometryCompiler::Write()
-    {
-    }
+			// Vertices
+			// Position , Normal , TextureCoordinates
+			for (auto& Vertices : i.second->Vertices)
+			{
+				GeometryFile << Vertices.Position.x << " " << Vertices.Position.y << " " << Vertices.Position.z << std::endl;
+				GeometryFile << Vertices.Normal.x << " " << Vertices.Normal.y << " " << Vertices.Normal.z << std::endl;
+				GeometryFile << Vertices.TextureCoodinates.x << " " << Vertices.TextureCoodinates.y << std::endl;
+			}
+			GeometryFile << "--" << std::endl;
 
-    void GeometryCompiler::ReadFile()
-    {
-        GeometryFileWrite.open("../Eclipse/src/Assets/Compilers/GeometryFile/Geometry.txt", std::ios::out | std::ios::in | ios::binary);
-        std::string eachline;
+			for (auto& Indices : i.second->Indices)
+			{
+				GeometryFile << Indices << std::endl;
+	}
+			GeometryFile << "---" << std::endl;
 
-        // This getline is to getName
-        while (!GeometryFile.eof())
-        {
-            std::getline(GeometryFileWrite, eachline);
+}
+		GeometryFile.close();
+#endif
+	}
 
-            if (eachline == "")
-            {
-                break;
-            }
+	void GeometryCompiler::ReleaseFile(std::string& in)
+	{
+		if (in == "1")
+		{
+			if (Geometry.empty())
+			{
+				std::cout << "No Geometry Loaded" << std::endl << std::endl;
+				return;
+			}
 
-            Mesh Model;
+			WriteToFile(Geometry);
+			std::cout << "Geometry File Produced" << std::endl << std::endl;
+		}
+	}
 
-            // Name
-            Model.MeshName = eachline;
+	void GeometryCompiler::Write()
+	{
 
-            // NoTextures
-            std::getline(GeometryFileWrite, eachline);
-            Model.NoTex = std::atoi(eachline.c_str());
+	}
 
-            // Diffuse
-            std::getline(GeometryFileWrite, eachline);
-            ProcessVec4(eachline, Model.Diffuse);
+	void GeometryCompiler::CalculateOffsets()
+	{
+		for (auto& Model : Geometry)
+		{
+			OffSetsForObject.push_back(sizeof(Model.first));
+			//OffSetsForObject.push_back(sizeof(Model.second->NoTex));
+			//OffSetsForObject.push_back(sizeof(Model.second->Diffuse));
+			//OffSetsForObject.push_back(sizeof(Model.second->Specular));
+			//OffSetsForObject.push_back(sizeof(Model.second->Ambient));
+			//OffSetsForObject.push_back(Model.second->Vertices.size() * sizeof(Vertex));
+			//OffSetsForObject.push_back(Model.second->Indices.size() * sizeof(unsigned int));
+			//OffsetContainer.push_back(OffSetsForObject);
+		}
+	}
 
-            // Specular
-            std::getline(GeometryFileWrite, eachline);
-            ProcessVec4(eachline, Model.Specular);
+	void GeometryCompiler::ReadFile()
+	{
+		GeometryFileWrite.open("../Eclipse/src/Assets/Compilers/GeometryFile/Geometry.bin",
+			std::ios::in |
+			std::ios::binary);
 
-            // Ambient
-            std::getline(GeometryFileWrite, eachline);
-            ProcessVec4(eachline, Model.Ambient);
+		std::string eachline;
 
-            std::getline(GeometryFileWrite, eachline);
-            //if (eachline == "-")
-                //std::cout << "Vertices Next" << std::endl;
+#ifndef NEW_IMPLEMENTATION
 
-            while (std::getline(GeometryFileWrite, eachline))
-            {
-                if (eachline == "--")
-                {
-                    //std::cout << "Indices Next" << std::endl;
-                    break;
-                }
+		//int One = 0;
+		//int Two = 0;
+		//int Three = 0;
+		//GeometryFileWrite.read(reinterpret_cast<char*>(&One), 3 * sizeof(int));
+		//GeometryFileWrite.read(reinterpret_cast<char*>(&Two), sizeof(int));
+		//GeometryFileWrite.read(reinterpret_cast<char*>(&Three), sizeof(int));
 
-                Vertex A;
-                A.Position = ReturnVec3(eachline);
+		//int LoopCounter = 0;
+		
+		int Size = 0;
+		GeometryFileWrite.read(reinterpret_cast<char*>(&Size), sizeof(int));
 
-                std::getline(GeometryFileWrite, eachline);
-                A.Normal = ReturnVec3(eachline);
+		char* TestSee = new char[Size];
+		GeometryFileWrite.read(reinterpret_cast<char*>(TestSee), Size);
 
-                std::getline(GeometryFileWrite, eachline);
-                A.TextureCoodinates = ReturnVec2(eachline);
+		//GeometryFileWrite.read(reinterpret_cast<char*>(&Test.MeshName), sizeof(OffSetsForObject[LoopCounter]));
 
-                Model.Vertices.push_back(A);
-            }
+		int i = 0;
 
-            while (std::getline(GeometryFileWrite, eachline))
-            {
-                if (eachline == "---")
-                {
-                    //std::cout << "Next Model" << std::endl;
-                    break;
-                }
+		//for (auto& i : Geometry)
+		//{
+		//	char* address = reinterpret_cast<char*>(*i.first.data());
+		//	GeometryFileWrite.read(reinterpret_cast<char*>(&address), sizeof(OffSetsForObject[LoopCounter]));
 
-                Model.Indices.push_back(std::atoi(eachline.c_str()));
-            }
+		//	OffSetsForObject[LoopCounter]++;
+		//}
+#else   
+		// This getline is to getName
+		while (!GeometryFile.eof())
+		{
+			std::getline(GeometryFileWrite, eachline);
 
-            Geometry.emplace(Model.MeshName, std::make_unique<Mesh>(Model));
-        }
-    }
+			if (eachline == "")
+			{
+				break;
+			}
+
+			Mesh Model;
+
+			// Name
+			Model.MeshName = eachline;
+
+			// NoTextures
+			std::getline(GeometryFileWrite, eachline);
+			Model.NoTex = std::atoi(eachline.c_str());
+
+			// Diffuse
+			std::getline(GeometryFileWrite, eachline);
+			ProcessVec4(eachline, Model.Diffuse);
+
+			// Specular
+			std::getline(GeometryFileWrite, eachline);
+			ProcessVec4(eachline, Model.Specular);
+
+			// Ambient
+			std::getline(GeometryFileWrite, eachline);
+			ProcessVec4(eachline, Model.Ambient);
+
+			std::getline(GeometryFileWrite, eachline);
+			//if (eachline == "-")
+				//std::cout << "Vertices Next" << std::endl;
+
+			while (std::getline(GeometryFileWrite, eachline))
+			{
+				if (eachline == "--")
+				{
+					//std::cout << "Indices Next" << std::endl;
+					break;
+				}
+
+				Vertex A;
+				A.Position = ReturnVec3(eachline);
+
+				std::getline(GeometryFileWrite, eachline);
+				A.Normal = ReturnVec3(eachline);
+
+				std::getline(GeometryFileWrite, eachline);
+				A.TextureCoodinates = ReturnVec2(eachline);
+
+				Model.Vertices.push_back(A);
+			}
+
+			while (std::getline(GeometryFileWrite, eachline))
+			{
+				if (eachline == "---")
+				{
+					//std::cout << "Next Model" << std::endl;
+					break;
+				}
+
+				Model.Indices.push_back(std::atoi(eachline.c_str()));
+	}
+
+			Geometry.emplace(Model.MeshName, std::make_unique<Mesh>(Model));
+		}
+#endif
+	}
 }

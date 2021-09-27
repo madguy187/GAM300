@@ -1,44 +1,13 @@
 #pragma once
-
-// Assimp
-#include "ASSIMP/include/assimp/Importer.hpp"
-#include "ASSIMP/include/assimp/scene.h"
-#include "ASSIMP/include/assimp/postprocess.h"
-#include "ASSIMP/include/assimp/mesh.h"
+#include "BinarySettings.h"
 
 namespace EclipseCompiler
 {
-    class Texture
-    {
-    public:
-        Texture() {}
-
-        Texture(std::string dir, std::string path, aiTextureType type) :
-            TextureDirectory(dir),
-            TexturePath(path),
-            Type(type)
-        {
-
-        }
-
-        aiTextureType Type;
-        std::string TexturePath;
-        std::string TextureDirectory;
-    };
-
-    struct Vertex
-    {
-        glm::vec3 Position;
-        glm::vec3 Normal;
-        glm::vec2 TextureCoodinates;
-        glm::vec4 m_Color;
-    };
-
-    class Mesh
+    class Mesh 
     {
     public:
         Mesh() {};
-        std::string MeshName;
+        char* MeshName;
         bool NoTex;
         glm::vec4 Diffuse;
         glm::vec4 Specular;
@@ -52,9 +21,13 @@ namespace EclipseCompiler
             Vertices(vertices),
             Indices(indices),
             Textures(textures),
-            NoTex(false),
-            MeshName(namein)
+            NoTex(false)
         {
+            auto l = namein.length() + 1;
+            MeshName = new char[namein.length()+1];
+            strcpy_s(MeshName, namein.length() + 1, namein.c_str());
+            //strcpy(MeshName, namein.c_str());
+            MeshName[namein.length()] = '\0';
 
         }
 
@@ -65,11 +38,16 @@ namespace EclipseCompiler
             Diffuse(diffuse),
             Specular(specular),
             Ambient(ambient),
-            NoTex(in),
-            MeshName(namein)
+            NoTex(in)
         {
-
+            auto l = namein.length() + 1;
+            MeshName = new char[namein.length() + 1];
+            strcpy_s(MeshName, namein.length() + 1, namein.c_str());
+            //strcpy(MeshName, namein.c_str());
+            MeshName[namein.length()] = '/0';
         }
+
+        ~Mesh() {};
     };
 
     struct MeshData
@@ -80,7 +58,7 @@ namespace EclipseCompiler
         glm::vec4 Specular;
         glm::vec4 Ambient;
         bool NoTextures = false;
-        std::string MeshName;
+        const char* MeshName;
         std::vector<Texture> textures;
     };
 
@@ -99,7 +77,7 @@ namespace EclipseCompiler
 
         void LoadAssimpModel(std::string path, std::unordered_map<std::string, std::unique_ptr<Mesh>>& GeometryContainer);
         void ProcessGeometry(aiNode* node, const aiScene* scene, bool isGeometryCompiler = true);
-        void ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string& MeshName);
+        void ProcessMesh(aiMesh* mesh, const aiScene* scene, const char* MeshName);
         float GetLargestAxisValue(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         void ComputeAxisMinMax(std::vector<glm::vec3>& vertices, std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         glm::vec3 ComputeCentroid(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
@@ -109,7 +87,7 @@ namespace EclipseCompiler
         std::vector<Texture> ExtractTextures(aiMesh* mesh, const aiScene* scene, std::string& MeshName, std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>&);
         void LoadAssimpModelForTextures(std::string path, std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>&);
         void ProcessTextures(aiNode* node, const aiScene* scene, std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>& TextureContainer);
-        std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type, std::string& MeshName);
+        std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type, const char* MeshName);
         std::vector<Texture> LoadTexturesForCompiler(aiMaterial* mat, aiTextureType type, std::string& MeshName, std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>&);
     };
 }

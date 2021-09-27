@@ -165,9 +165,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assimp\AssimpLoader.h" />
+    <ClInclude Include="BinarySettings.h" />
     <ClInclude Include="Compiler\Geometry\GeometryCompiler.h" />
     <ClInclude Include="Compiler\ICompiler\Compilers.h" />
     <ClInclude Include="Compiler\Texture\TextureCompiler.h" />
+    <ClInclude Include="Global.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

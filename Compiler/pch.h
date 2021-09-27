@@ -1,4 +1,5 @@
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS
 
 #include <iostream>
 
@@ -46,3 +47,11 @@
 #include <fstream>
 #include <bitset>
 #include <any>
+
+#include "ASSIMP/include/assimp/Importer.hpp"
+#include "ASSIMP/include/assimp/scene.h"
+#include "ASSIMP/include/assimp/postprocess.h"
+#include "ASSIMP/include/assimp/mesh.h"
+
+// Global
+#include "Global.h"

@@ -68,7 +68,7 @@ namespace EclipseCompiler
     {
         for (unsigned int i = 0; i < node->mNumMeshes; i++)
         {
-            std::string NodeName = node->mName.data;
+            const char* NodeName = node->mName.data;
             aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
             ProcessMesh(mesh, scene, NodeName);
         }
@@ -119,7 +119,7 @@ namespace EclipseCompiler
         return textures;
     }
 
-    void AssimpLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string& MeshName)
+    void AssimpLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, const char* MeshName)
     {
         MeshData newMesh;
         std::vector<Vertex> vertices;
@@ -235,7 +235,7 @@ namespace EclipseCompiler
         return;
     }
 
-    std::vector<Texture> AssimpLoader::LoadTextures(aiMaterial* mat, aiTextureType type, std::string& MeshName)
+    std::vector<Texture> AssimpLoader::LoadTextures(aiMaterial* mat, aiTextureType type, const char* MeshName)
     {
         std::vector<Texture> textures;
 
