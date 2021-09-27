@@ -264,6 +264,9 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\ScriptComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\SpotLightComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
@@ -680,6 +683,20 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\ChildTransformComponent.h" />
+    <ClInclude Include="src\Reflection\RemTypeQual.h" />
+    <ClInclude Include="src\Reflection\Meta.h" />
+    <ClInclude Include="src\Reflection\Variant\Variant.h" />
+    <ClInclude Include="src\Reflection\Variant\VariantBase.h" />
+    <ClInclude Include="src\Reflection\Variant\RefVariant.h" />
+    <ClInclude Include="src\Graphics\Culling\CullingManager.h" />
+    <ClInclude Include="src\Editor\Windows\SwitchViews\BaseSwitchView.h" />
+    <ClInclude Include="src\Editor\Utilities\DragAndDrop\DragAndDrop.h" />
+    <ClInclude Include="src\Editor\Utilities\OpenFileDialog\OpenFileDialog.h" />
+    <ClInclude Include="src\Editor\Utilities\ParentChild\ParentChild.h" />
+    <ClInclude Include="src\Editor\Windows\Header\HeaderWindow.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.h" />
+    <ClInclude Include="src\ECS\ComponentManager\ComponentList.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
@@ -1022,5 +1039,15 @@
       <Filter>Time</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\Reflection\Meta.cpp" />
+    <ClCompile Include="src\Reflection\Variant\Variant.cpp" />
+    <ClCompile Include="src\Reflection\Variant\VariantBase.cpp" />
+    <ClCompile Include="src\Reflection\Variant\RefVariant.cpp" />
+    <ClCompile Include="src\ECS\ComponentManager\Components\ComponentsRegistration.cpp" />
+    <ClCompile Include="src\Graphics\Culling\CullingManager.cpp" />
+    <ClCompile Include="src\Editor\Windows\Header\HeaderWindow.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.cpp" />
   </ItemGroup>
 </Project>

@@ -160,6 +160,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\ECS\ComponentManager\ComponentList.h" />
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h" />
@@ -176,6 +177,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\ECS\ComponentManager\Components\ParentChildComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\PointLightComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\ScriptComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\SpotLightComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\TextureComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\TransformComponent.h" />
@@ -186,6 +188,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\ECS\SystemManager\Systems\System\GridSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\LightingSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem.h" />
@@ -328,6 +331,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\ECS\SystemManager\Systems\System\GridSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp" />

@@ -24,9 +24,8 @@ namespace Eclipse
 	*************************************************************************/
 	void LightingSystem::Update()
 	{
-		ProfilerWindow timer;
-		timer.SetName({ SystemName::LIGHTING });
-		timer.tracker.system_start = glfwGetTime();
+		engine->Timer.SetName({ SystemName::LIGHTING });
+		engine->Timer.tracker.system_start = glfwGetTime();
 
 		if (engine->LightManager.CheckApplyLighting() == true)
 		{
@@ -72,7 +71,7 @@ namespace Eclipse
 			}
 		}
 
-		timer.tracker.system_end = glfwGetTime();
-		timer.ContainerAddTime(timer.tracker);
+		engine->Timer.tracker.system_end = glfwGetTime();
+		engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
 	}
 }
