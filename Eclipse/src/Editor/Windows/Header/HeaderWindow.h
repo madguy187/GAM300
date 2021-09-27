@@ -11,6 +11,11 @@ namespace Eclipse
 		void Init() override;
 		void Unload() override;
 		void RunPlayPauseStep();
+		void UtilitiesButtons();
+		void CameraSetting();
+		void Translate();
+		void Rotate();
+		void Scale();
 		void HideTabBar(bool active);
 	private:
 		bool IsTabBarHidden{ false };

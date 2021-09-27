@@ -12,6 +12,7 @@ namespace Eclipse
 			/*ImGuiWindowFlags_NoTitleBar |*/ ImGuiWindowFlags_NoScrollbar)
 		{
 			RunPlayPauseStep();
+			UtilitiesButtons();
 		}
 
 		ECGui::EndMainWindow();
@@ -29,7 +30,7 @@ namespace Eclipse
 
 	void HeaderWindow::RunPlayPauseStep()
 	{
-		ECGui::InsertSameLine(ECGui::GetWindowSize().x / 2.25f);
+		ECGui::InsertSameLine(ECGui::GetWindowSize().x / 2.f);
 
 		if (!engine->GetPlayState())
 		{
@@ -93,6 +94,94 @@ namespace Eclipse
 			{
 				EDITOR_LOG_WARN("Scene has to be playing first.");
 			}
+		}
+		ImGui::NewLine();
+	}
+
+	void HeaderWindow::UtilitiesButtons()
+	{
+
+		ECGui::InsertSameLine(ECGui::GetWindowSize().x/1.25f);
+		if (ImGui::Button(ICON_FA_ARROWS_ALT, ImVec2{ 50,20 }))
+		{
+			HeaderWindow::Translate();
+			//ECGui::DrawInputTextHintWidget("Tranalsate","Select and Translate Objects(W)",100);
+			EDITOR_LOG_INFO("Translate");
+		}
+		ECGui::InsertSameLine();
+
+		if (ImGui::Button(ICON_FA_SPINNER ICON_FA_REPLY, ImVec2{ 50,20 }))
+		{
+			HeaderWindow::Rotate();
+		}
+		ECGui::InsertSameLine();
+
+		if (ImGui::Button(ICON_FA_EXPAND, ImVec2{ 50,20 }))
+		{
+			HeaderWindow::Scale();
+		}
+		ECGui::InsertSameLine();
+
+		if (ImGui::Button(ICON_FA_VIDEO_CAMERA, ImVec2{50,20}))
+		{
+			ImGui::OpenPopup("Camera Setting");
+		}
+		if (ImGui::BeginPopup("Camera Setting"))
+		{
+			ImGui::SetScrollY(5);
+			ChildSettings settings{ "Camera Setting",ImVec2{100,100} };
+			ECGui::DrawChildWindow<void()>(settings, std::bind(&HeaderWindow::CameraSetting,this));
+			ImGui::EndPopup();
+		}
+	}
+
+	void HeaderWindow::CameraSetting()
+	{
+		if (engine->gCamera.GetEditorCameraID() != MAX_ENTITY)
+		{
+			auto& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+
+			ECGui::DrawTextWidget<const char*>("Camera Speed:", "");		
+
+			ECGui::DrawSliderFloatWidget("CamSpeed", &camera.cameraSpeed, true, 1.f, 200.f);
+
+		}
+	}
+
+	void HeaderWindow::Translate()
+	{
+			Entity item = engine->editorManager->GetSelectedEntity();
+
+			auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
+
+			if (engine->world.CheckComponent<TransformComponent>(item))
+			{
+				scene->SetGizmoType(ImGuizmo::OPERATION::TRANSLATE);
+			}
+
+	}
+
+	void HeaderWindow::Rotate()
+	{
+		Entity item = engine->editorManager->GetSelectedEntity();
+
+		auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
+
+		if (engine->world.CheckComponent<TransformComponent>(item))
+		{
+			scene->SetGizmoType(ImGuizmo::OPERATION::ROTATE);
+		}
+	}
+
+	void HeaderWindow::Scale()
+	{
+		Entity item = engine->editorManager->GetSelectedEntity();
+
+		auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
+
+		if (engine->world.CheckComponent<TransformComponent>(item))
+		{
+			scene->SetGizmoType(ImGuizmo::OPERATION::SCALE);
 		}
 	}
 
