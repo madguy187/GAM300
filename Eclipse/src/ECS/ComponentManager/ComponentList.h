@@ -45,5 +45,7 @@ namespace Eclipse
 	>;
 
 	template <typename ...Types>
-	constexpr ComponentList component_list{};
+	constexpr ComponentTypeList<Types...> component_list{};
+	
+	constexpr ComponentList all_component_list{};
 }

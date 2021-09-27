@@ -137,6 +137,8 @@ namespace Eclipse
         hi5.set(world.GetComponentType<ScriptComponent>(), 1);
         world.RegisterSystemSignature<MonoSystem>(hi5);
 
+        world.test(all_component_list);
+
         //Check this! - Rachel
         RenderSystem::Init();
         CameraSystem::Init();
