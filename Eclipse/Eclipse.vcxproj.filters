@@ -707,6 +707,7 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Audio\FmodAPI\FmodAPI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Audio\AudioManager.cpp">
@@ -1058,5 +1059,6 @@
       <Filter>Time</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\Audio\FmodAPI\FmodAPI.cpp" />
   </ItemGroup>
 </Project>

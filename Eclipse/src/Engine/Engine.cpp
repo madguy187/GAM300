@@ -29,6 +29,7 @@
 #include "ECS/SystemManager/Systems/System/GridSystem.h"
 #include "Editor/ECGuiAPI/ECGuiInputHandler.h"
 #include "ECS/SystemManager/Systems/System/MonoSystem/MonoSystem.h"
+#include "ECS/SystemManager/Systems/System/Audio/AudioSystem.h"
 
 bool Tester1(const Test1& e)
 {
@@ -99,6 +100,7 @@ namespace Eclipse
         world.RegisterSystem<PickingSystem>();
         world.RegisterSystem<PhysicsSystem>();
         world.RegisterSystem<MonoSystem>();
+        world.RegisterSystem<AudioSystem>();
 
         // Render System
         Signature RenderSys = RenderSystem::RegisterAll();
@@ -157,7 +159,7 @@ namespace Eclipse
 
         SceneManager::Initialize();
         //Deserialization(temp)
-
+        audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
             Timer.tracker.system_start = glfwGetTime();
@@ -232,6 +234,9 @@ namespace Eclipse
             world.Update<LightingSystem>();
 
             world.Update<PickingSystem>();
+
+            // AUDIOSYSTEM =============================
+            world.Update<AudioSystem>();
 
             // RENDERSYSTEM =============================
             world.Update<RenderSystem>();

@@ -168,6 +168,7 @@ IF EXIST ..\Dep\Fmod\core\lib\x64\fmodstudio64.dll\ (xcopy /Q /E /Y /I ..\Dep\Fm
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Audio\AudioManager.h" />
+    <ClInclude Include="src\Audio\FmodAPI\FmodAPI.h" />
     <ClInclude Include="src\ECS\ComponentManager\ComponentList.h" />
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
@@ -331,6 +332,7 @@ IF EXIST ..\Dep\Fmod\core\lib\x64\fmodstudio64.dll\ (xcopy /Q /E /Y /I ..\Dep\Fm
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Audio\AudioManager.cpp" />
+    <ClCompile Include="src\Audio\FmodAPI\FmodAPI.cpp" />
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp" />
     <ClCompile Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.cpp" />
     <ClCompile Include="src\ECS\ComponentManager\Components\ComponentsRegistration.cpp" />
