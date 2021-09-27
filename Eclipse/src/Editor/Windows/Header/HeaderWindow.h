@@ -13,6 +13,10 @@ namespace Eclipse
 		void RunPlayPauseStep();
 		void UtilitiesButtons();
 		void CameraSetting();
+		void SnappingManager(bool& isActive);
+		//void SetPosSnap();
+		//void SetRotSnap();
+		//void SetScaleSnap();
 		void Translate();
 		void Rotate();
 		void Scale();
