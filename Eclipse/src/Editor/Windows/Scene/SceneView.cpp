@@ -67,38 +67,15 @@ namespace Eclipse
 		{
 			// Do all the future stuff here when hovering on window
 			// ImGuizmo Logic
-			OnKeyPressedEvent();
 			OnCameraMoveEvent();
 			OnCameraZoomEvent();
 			OnSelectEntityEvent();
 		}
-	}
 
-	void SceneWindow::OnKeyPressedEvent()
-	{
-		ImGuiIO& io = ImGui::GetIO();
-
-		// Gizmos
-		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Q)))
-		{
-			if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
-				m_GizmoType = -1;
-		}
-		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_W)))
-		{
-			if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
-				m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
-		}
-		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_E)))
-		{
-			if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
-				m_GizmoType = ImGuizmo::OPERATION::SCALE;
-		}
-		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_R)))
-		{
-			if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
-				m_GizmoType = ImGuizmo::OPERATION::ROTATE;
-		}
+		if (ImGui::IsItemActive())
+			IsWindowActive = true;
+		else
+			IsWindowActive = false;
 	}
 
 	void SceneWindow::OnGizmoUpdateEvent()
@@ -153,10 +130,11 @@ namespace Eclipse
 		}
 
 		ImGuiIO& io = ImGui::GetIO();
+		IsSnapping = io.KeyCtrl;
 
 		ImGuizmo::Manipulate(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx),
 			(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
-			nullptr, io.KeyCtrl ? glm::value_ptr(snapValues) : nullptr);
+			nullptr, IsSnapping ? glm::value_ptr(snapValues) : nullptr);
 
 		/*static const float identityMatrix[16] =
 		{ 1.f, 0.f, 0.f, 0.f,
@@ -236,62 +214,6 @@ namespace Eclipse
 
 			if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
 				engine->editorManager->SetSelectedEntity(engine->gPicker.GetCurrentCollisionID());
-		}
-	}
-
-	void SceneWindow::RenderSceneHeader()
-	{
-		ECGui::InsertSameLine(mViewportSize.x / 2.35f);
-		if (ECGui::ButtonBool("Play " ICON_FA_PLAY)) 
-		{
-			if (engine->GetPlayState())
-			{
-				engine->SetPlayState(false);
-				engine->SetPauseState(false);
-				EDITOR_LOG_INFO("Scene has stopped playing. Reverting to original state...");
-			}
-			else
-			{
-				engine->SetPlayState(true);
-				ImGui::SetWindowFocus("Game View");
-				EDITOR_LOG_INFO("Scene is playing...");
-			}
-		}
-
-		ECGui::InsertSameLine();
-		if (ECGui::ButtonBool("Pause " ICON_FA_PAUSE)) 
-		{
-			if (engine->GetPlayState())
-			{
-				if (engine->GetPauseState())
-				{
-					engine->SetPauseState(false);
-					EDITOR_LOG_INFO("Scene is unpaused!");
-				}
-				else
-				{
-					engine->SetPauseState(true);
-					EDITOR_LOG_INFO("Scene is paused!");
-				}
-			}
-			else
-			{
-				EDITOR_LOG_WARN("Scene has to be playing first.");
-			}
-		}
-
-		ECGui::InsertSameLine();
-		if (ECGui::ButtonBool("Step " ICON_FA_STEP_FORWARD))
-		{
-			if (engine->GetPlayState())
-			{
-				engine->SetStepState(true);
-				EDITOR_LOG_INFO("Stepped scene.");
-			}
-			else
-			{
-				EDITOR_LOG_WARN("Scene has to be playing first.");
-			}
 		}
 	}
 
@@ -402,5 +324,30 @@ namespace Eclipse
 	glm::vec2 SceneWindow::GetCursorScreenPos()
 	{
 		return mCursorScreenPos.ConvertToGlmVec2Type();
+	}
+
+	int SceneWindow::GetGizmoType() const
+	{
+		return m_GizmoType;
+	}
+
+	bool SceneWindow::GetIsWindowActive() const
+	{
+		return IsWindowActive;
+	}
+
+	bool SceneWindow::GetSnapping() const
+	{
+		return IsSnapping;
+	}
+
+	void SceneWindow::SetGizmoType(int type)
+	{
+		m_GizmoType = type;
+	}
+
+	void SceneWindow::SetSnapping(bool active)
+	{
+		IsSnapping = active;
 	}
 }
