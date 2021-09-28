@@ -150,16 +150,11 @@ namespace EclipseCompiler
         }
     }
 
-    void CompilerManager::CalculateOffSets()
+    void CompilerManager::ReadFile(std::string& in)
     {
         for (auto& i : AllCompilerContainer)
         {
-            i->CalculateOffsets();
+            i->ReadFile(in);
         }
-    }
-
-    void CompilerManager::ReadFile(std::string& in)
-    {
-
     }
 }

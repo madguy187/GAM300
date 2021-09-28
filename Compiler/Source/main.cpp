@@ -15,7 +15,6 @@ int main()
     Manager.Register(*cTextureCompiler);
 
     Manager.Initialise();
-    Manager.CalculateOffSets();
 
     while (1)
     {
@@ -27,6 +26,7 @@ int main()
         std::cin >> Check;
 
         Manager.ProduceFile(Check);
+        Manager.ReadFile(Check);
 
         if (Check == "3")
         {

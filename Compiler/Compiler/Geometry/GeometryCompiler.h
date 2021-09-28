@@ -22,7 +22,6 @@ namespace EclipseCompiler
         void LoadFile(const std::string& modelFile) override;
         void Init() override;
         void ReleaseFile(std::string& in) override;
-        void Write() override;
-        void CalculateOffsets() override;
+        void ReadFile(std::string& in) override;
     };
 }
