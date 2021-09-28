@@ -243,7 +243,7 @@
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h">
       <Filter>ECS\ComponentManager</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h">
+    <ClInclude Include="src\ECS\ComponentManager\Components\AABBComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h">

@@ -173,7 +173,7 @@ IF EXIST ..\Dep\Fmod\core\lib\x64\fmodstudio64.dll\ (xcopy /Q /E /Y /I ..\Dep\Fm
     <ClInclude Include="src\Audio\FmodAPI\FmodAPI.h" />
     <ClInclude Include="src\ECS\ComponentManager\ComponentList.h" />
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\AABBComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ChildTransformComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\CollisionComponent.h" />
