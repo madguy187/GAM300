@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Audio">
+      <UniqueIdentifier>{9718D90C-032D-01BE-CCAE-A41D3882FDEE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Audio\FmodAPI">
+      <UniqueIdentifier>{2653ADA8-9213-29DF-5B4E-725CC7CD6DBB}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ECS">
       <UniqueIdentifier>{60E1870B-CCEA-877C-5566-9E7CC16E937C}</UniqueIdentifier>
     </Filter>
@@ -24,6 +30,15 @@
     </Filter>
     <Filter Include="ECS\SystemManager\Systems\System">
       <UniqueIdentifier>{2AA091FC-16F1-7C3E-3F55-6B002B0510A8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\Audio">
+      <UniqueIdentifier>{AB25D4DE-9777-ABCE-8096-E8DE6C87C4B7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\Editor">
+      <UniqueIdentifier>{20CA7CC1-8C59-3EAC-9555-1FC4016479B8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\MonoSystem">
+      <UniqueIdentifier>{377B9766-A3E0-2AED-2CB9-CCC5981D205C}</UniqueIdentifier>
     </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\ParentChild">
       <UniqueIdentifier>{0707B837-F319-B890-9C03-957D88F554DE}</UniqueIdentifier>
@@ -216,6 +231,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Audio\AudioManager.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Audio\FmodAPI\FmodAPI.h">
+      <Filter>Audio\FmodAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\ComponentList.h">
+      <Filter>ECS\ComponentManager</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h">
       <Filter>ECS\ComponentManager</Filter>
     </ClInclude>
@@ -282,11 +306,14 @@
     <ClInclude Include="src\ECS\SystemManager\SystemManager.h">
       <Filter>ECS\SystemManager</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\Audio</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\EditorSystem.h">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\Editor</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\GridSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
@@ -296,6 +323,9 @@
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\MonoSystem</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.h">
       <Filter>ECS\SystemManager\Systems\System\ParentChild</Filter>
@@ -683,22 +713,14 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\ChildTransformComponent.h" />
-    <ClInclude Include="src\Reflection\RemTypeQual.h" />
-    <ClInclude Include="src\Reflection\Meta.h" />
-    <ClInclude Include="src\Reflection\Variant\Variant.h" />
-    <ClInclude Include="src\Reflection\Variant\VariantBase.h" />
-    <ClInclude Include="src\Reflection\Variant\RefVariant.h" />
-    <ClInclude Include="src\Graphics\Culling\CullingManager.h" />
-    <ClInclude Include="src\Editor\Windows\SwitchViews\BaseSwitchView.h" />
-    <ClInclude Include="src\Editor\Utilities\DragAndDrop\DragAndDrop.h" />
-    <ClInclude Include="src\Editor\Utilities\OpenFileDialog\OpenFileDialog.h" />
-    <ClInclude Include="src\Editor\Utilities\ParentChild\ParentChild.h" />
-    <ClInclude Include="src\Editor\Windows\Header\HeaderWindow.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.h" />
-    <ClInclude Include="src\ECS\ComponentManager\ComponentList.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Audio\AudioManager.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Audio\FmodAPI\FmodAPI.cpp">
+      <Filter>Audio\FmodAPI</Filter>
+    </ClCompile>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
       <Filter>ECS\ComponentManager</Filter>
     </ClCompile>
@@ -714,11 +736,14 @@
     <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp">
       <Filter>ECS\SystemManager</Filter>
     </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\Audio</Filter>
+    </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\EditorSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\Editor</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\GridSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
@@ -728,6 +753,9 @@
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\MonoSystem</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\ParentChild</Filter>
@@ -1039,15 +1067,5 @@
       <Filter>Time</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\Reflection\Meta.cpp" />
-    <ClCompile Include="src\Reflection\Variant\Variant.cpp" />
-    <ClCompile Include="src\Reflection\Variant\VariantBase.cpp" />
-    <ClCompile Include="src\Reflection\Variant\RefVariant.cpp" />
-    <ClCompile Include="src\ECS\ComponentManager\Components\ComponentsRegistration.cpp" />
-    <ClCompile Include="src\Graphics\Culling\CullingManager.cpp" />
-    <ClCompile Include="src\Editor\Windows\Header\HeaderWindow.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.cpp" />
   </ItemGroup>
 </Project>
