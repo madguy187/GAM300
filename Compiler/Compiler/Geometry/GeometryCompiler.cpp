@@ -185,9 +185,20 @@ namespace EclipseCompiler
         A.MeshName[5] = '\0';
 
         A.Diffuse = glm::vec4{ 1.1, 1.2, 1.3, 11.4 };
+        A.Specular = glm::vec4{ 5.5, 6.6 , 7.7 , 8.8 };
+        A.Ambient = glm::vec4{ 3,4,5,6 };
+
+        Vertex C;
+        C.Position = { 1,2,3 };
+        C.Normal = { 4,5,6 };
+        C.TextureCoodinates = { 7,8 };
+        C.m_Color = { 9,10,11,12 };
+
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
 
         // debug this
-        for (int i = 0; i < A.offSetsforObject.size()-1; ++i)
+        for (int i = 0; i < static_cast<int>(GeometryIndex::GI_AMBIENT); ++i)
         {
             totaloffset += A.offSetsforObject[i];
             int size = A.offSetsforObject[i + 1];
@@ -199,7 +210,30 @@ namespace EclipseCompiler
             GeometryFile.write(reinterpret_cast<const char*>(v), size);
         }
 
-        //}
+        int totaloffset = 0;
+        A.offSetsforVertices.push_back(totaloffset);
+
+        for (int i = 0; i < A.Vertices.size(); i++) 
+        {
+            A.offSetsforVertices.push_back(sizeof( A.Vertices[i].Position));
+            totaloffset += A.offSetsforVertices[i];
+            int size = A.offSetsforVertices[i + 1];
+
+            char* data = reinterpret_cast<char*>(&A) + totaloffset;
+            void* v = reinterpret_cast<void*>(data);
+            GeometryFile.write(reinterpret_cast<const char*>(&A.offSetsforVertices[i + 1]), sizeof(A.offSetsforVertices[i + 1]));
+            GeometryFile.write(reinterpret_cast<const char*>(v), size);
+
+            A.offSetsforVertices.push_back(sizeof(A.Vertices[i].Normal));
+            totaloffset += A.offSetsforVertices[i];
+            int size = A.offSetsforVertices[i + 1 + 1];
+
+            char* data = reinterpret_cast<char*>(&A) + totaloffset;
+            void* v = reinterpret_cast<void*>(data);
+            GeometryFile.write(reinterpret_cast<const char*>(&A.offSetsforVertices[i + 1]), sizeof(A.offSetsforVertices[i + 1 + 1]));
+            GeometryFile.write(reinterpret_cast<const char*>(v), size);
+        }
+
         GeometryFile.close();
 
         GeometryFileWrite.open("../Eclipse/src/Assets/Compilers/GeometryFile/Geometry.bin",
@@ -207,10 +241,9 @@ namespace EclipseCompiler
             std::ios_base::binary);
 
         MeshA B;
-
         int offset = 0;
 
-        for (int i = 0; i < B.offSetsforObject.size()-1; ++i)
+        for (int i = 0; i < B.offSetsforObject.size() - 2; ++i)
         {
             int size = 0;
             char* data = reinterpret_cast<char*>(&B) + offset;
@@ -224,44 +257,7 @@ namespace EclipseCompiler
             offset += size;
         }
 
-        //std::cout << B.MeshName << std::endl;
-
-        std::cout << B.Diffuse.x << std::endl;
-        //if (GeometryFile)
-        //{
-        //    int offset = 0;
-
-        //    A.x = 123;
-        //    A.y = 456;
-        //    A.z.x = 10000;
-        //    A.j = true;
-        //    strcpy_s(A.mystring, 5, "hell");
-        //    A.mystring[5] = '\0';
-        //    A.offsets[4] = 5;
-
-        //    for (int i = 0; i < A.offsets.size() - 1; ++i)
-        //    {
-        //        offset += A.offsets[i];
-        //        int size = A.offsets[i + 1];
-
-        //        char* data = reinterpret_cast<char*>(&A) + offset;
-        //        void* v = reinterpret_cast<void*>(data);
-
-        //        GeometryFile.write(reinterpret_cast<const char*>(&A.offsets[i + 1]), sizeof(A.offsets[i + 1]));
-        //        GeometryFile.write(reinterpret_cast<const char*>(v), size);
-        //    }
-
-        //    std::cout << "--------WRITING FILE--------" << std::endl;
-        //    std::cout << "Bool: " << A.j << std::endl;
-        //    std::cout << "float: " << A.x << std::endl;
-        //    std::cout << "Int : " << A.y << std::endl;
-        //    std::cout << "Vec3 : " << A.z.x << std::endl;
-        //    std::cout << "String : " << A.mystring << std::endl;
-        //}
-
-        //GeometryFile.close();
-
-        //ReadFile();
+        GeometryFileWrite.close();
 #else
         for (auto& i : In)
         {
@@ -289,10 +285,10 @@ namespace EclipseCompiler
             }
             GeometryFile << "---" << std::endl;
 
-        }
+    }
         GeometryFile.close();
 #endif
-    }
+}
 
     void GeometryCompiler::ReleaseFile(std::string& in)
     {
@@ -448,7 +444,7 @@ namespace EclipseCompiler
             }
 
             Geometry.emplace(Model.MeshName, std::make_unique<Mesh>(Model));
-        }
+    }
 #endif
     }
 }

@@ -21,8 +21,14 @@ public:
 
 struct Vertex
 {
-    glm::vec3 Position;
-    glm::vec3 Normal;
-    glm::vec2 TextureCoodinates;
-    glm::vec4 m_Color;
+    glm::vec3 Position{0,0,0 };
+    glm::vec3 Normal{ 0,0,0 };
+    glm::vec2 TextureCoodinates{ 0,0 };
+    glm::vec4 m_Color{ 0,0,0,0 };
+    size_t CheckSize;
+
+    Vertex()
+    {
+         CheckSize = sizeof(Position) + sizeof(Normal) + sizeof(TextureCoodinates) + sizeof(m_Color);
+    }
 };

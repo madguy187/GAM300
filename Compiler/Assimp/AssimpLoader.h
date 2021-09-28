@@ -3,12 +3,18 @@
 
 namespace EclipseCompiler
 {
-
-    struct vec3
+    enum class GeometryIndex : int
     {
-        float x = 30;
-        float y = 40;
-        float z = 50;
+        GI_NONE = 0,
+        GI_MESHNAME = 1,
+        GI_NOTEX = 2,
+        GI_DIFFUSE = 3,
+        GI_SPECULAR = 4,
+        GI_AMBIENT = 5,
+
+        GI_VERTICES_POSITION = 6,
+
+        GI_MAXCOUNT
     };
 
     struct MeshA
@@ -16,8 +22,12 @@ namespace EclipseCompiler
         char* MeshName;
         bool noTex{ true };
         glm::vec4 Diffuse{ 30,40,50,60 };
+        glm::vec4 Specular{ 70,80,90,70 };
+        glm::vec4 Ambient{ 1,2,3,4 };
 
+        std::vector<Vertex> Vertices;
         std::vector<int> offSetsforObject;
+        std::vector<int> offSetsforVertices;
 
         MeshA()
         {
@@ -29,10 +39,13 @@ namespace EclipseCompiler
             0,
             20,
             sizeof(noTex),
-            16
+            sizeof(Diffuse),
+            sizeof(Specular),
+            sizeof(Ambient)
             };
         };
 
+        ~MeshA() {};
     };
 
     struct Mesh
