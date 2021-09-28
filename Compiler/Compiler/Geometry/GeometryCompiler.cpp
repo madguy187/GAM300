@@ -37,10 +37,16 @@ namespace EclipseCompiler
 
     void GeometryCompiler::WriteToFile(std::unordered_map<std::string, Mesh>& In)
     {
-        GeometryFile.open("../Eclipse/src/Assets/Compilers/GeometryFile/Geometry.bin",
+        GeometryFile.open(Path + "GeometryFile/Geometry" + FileName,
             std::ios_base::out |
             std::ios_base::trunc |
             std::ios_base::binary);
+
+        if (GeometryFile.fail())
+        {
+            std::cout << "Fail To Open Geometry File" << std::endl << std::endl;
+            return;
+        }
 
         int NumberOfModels = In.size();
         GeometryFile.write(reinterpret_cast<const char*>(&NumberOfModels), sizeof(NumberOfModels));
@@ -83,18 +89,22 @@ namespace EclipseCompiler
         if (in == "Geo")
         {
             ReadFile();
+
+            std::cout << "Read File " << std::endl << std::endl;
         }
     }
 
     void GeometryCompiler::ReadFile()
     {
-        GeometryFileWrite.open("../Eclipse/src/Assets/Compilers/GeometryFile/Geometry.bin",
+        GeometryFileWrite.open(Path + "GeometryFile/Geometry" + FileName,
             std::ios::in |
             std::ios::binary);
 
-        std::string eachline;
-
-        Mesh B;
+        if (GeometryFileWrite.fail())
+        {
+            std::cout << "Fail To Open Geometry File" << std::endl << std::endl;
+            return;
+        }
 
         int VerticesSize = 0;
         int IndicesSize = 0;
@@ -105,6 +115,8 @@ namespace EclipseCompiler
 
         for (int i = 0; i < TotalNumberOfModels; i++)
         {
+            Mesh B;
+
             GeometryFileWrite.read(reinterpret_cast<char*>(&B), offsetof(Mesh, Vertices));
 
             GeometryFileWrite.read(reinterpret_cast<char*>(&VerticesSize), sizeof(VerticesSize));
