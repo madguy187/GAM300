@@ -17,7 +17,7 @@ namespace EclipseCompiler
     class ICompiler
     {
     public:
-        std::vector<size_t> OffSetsForObject;
+        std::string EngineFileName;
 
         virtual void LoadFile(const std::string& modelFile) = 0;
         virtual void Init() = 0;

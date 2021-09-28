@@ -118,66 +118,7 @@ namespace EclipseCompiler
             std::ios_base::binary);
 
 
-#ifndef NEW_IMPLEMENTATION
-        //int LoopCounter = 0;
-        //std::unordered_map<std::string, std::unique_ptr<Mesh>>::iterator hi;
-
-        //Test A;
-        //int SizeOfBoolean = sizeof(glm::vec3);
-        //GeometryFile.write(reinterpret_cast<const char*>(&SizeOfBoolean), sizeof(int));
-        //GeometryFile.write(reinterpret_cast<const char*>(&A.Hi), SizeOfBoolean);
-
-        //GeometryFile.close();
-
-        //for (auto i = Geometry.begin(); i != Geometry.end(); i++)
-        //{
-        //    std::cout << std::addressof(i->second.get()->MeshName) << std::endl;
-        //    std::cout << ((unsigned char*)i->second.get()) << std::endl;
-
-        //    glm::vec4 Hi = glm::vec4(1.1, 2.2, 3.3, 4.2);
-
-        //    i->second.get()->NoTex = true;
-        //    i->second.get()->Diffuse = Hi;
-
-        //    // debug this
-        //    for (size_t Internal = 0; Internal < 3; ++Internal)
-        //    {
-        //        char* obj;
-
-        //        if (Internal == 0)
-        //        {
-        //            obj = *(reinterpret_cast<char**>(i->second.get())) + i->second->offSetsforObject[Internal];
-        //        }
-        //        else
-        //        {
-        //            obj = reinterpret_cast<char*>(i->second.get()) + i->second->offSetsforObject[Internal];
-        //        }
-
-        //        GeometryFile.write(reinterpret_cast<const char*>(&i->second->offSetsforObject[Internal + 1]), sizeof(int));
-        //        GeometryFile.write(obj, i->second->offSetsforObject[Internal + 1]);
-        //    }
-
-        //    //// Mesh Name
-        //    //int SizeOfMeshName = std::strlen(i.second->MeshName)+1;
-        //    //GeometryFile.write(reinterpret_cast<const char*>(&SizeOfMeshName), sizeof(int));
-        //    //GeometryFile.write(reinterpret_cast<const char*>(i.second->MeshName), SizeOfMeshName);
-
-        //    //// HasTexture
-        //    //int SizeOfBoolean = sizeof(NoTextures);
-        //    //GeometryFile.write(reinterpret_cast<const char*>(&SizeOfBoolean), sizeof(bool));
-        //    //GeometryFile.write(reinterpret_cast<const char*>(&i.second->NoTex), SizeOfBoolean);
-
-        //}
-        //GeometryFile.close();
-
-        //Test A;
-        //int SizeOfBoolean = sizeof(glm::vec3);
-        //GeometryFile.write(reinterpret_cast<const char*>(&SizeOfBoolean), sizeof(int));
-        //GeometryFile.write(reinterpret_cast<const char*>(&A.Hi), SizeOfBoolean);
-
-        //for (auto i = Geometry.begin(); i != Geometry.end(); i++)
-        //{
-        //    i->second.NoTex = true;
+        #ifndef NEW_IMPLEMENTATION
         int totaloffset = 0;
 
         MeshA A;
@@ -197,35 +138,16 @@ namespace EclipseCompiler
         A.Vertices.push_back(C);
         A.Vertices.push_back(C);
 
-        A.offSetsforObject[6] = sizeof(Vertex) * 2;
-
         GeometryFile.write(reinterpret_cast<const char*>(&A), offsetof(MeshA, Vertices) );
         int Size = A.Vertices.size();
         GeometryFile.write(reinterpret_cast<const char*>(&Size), sizeof(Size) );
         GeometryFile.write(reinterpret_cast<const char*>(A.Vertices.data()), sizeof(Vertex) * Size);
         GeometryFile.close();
 
-        GeometryFileWrite.open("../Eclipse/src/Assets/Compilers/GeometryFile/Geometry.bin",
-            std::ios_base::in |
-            std::ios_base::binary);
+        // Test
+        ReadFile();
 
-        MeshA B;
-        int offset = 0;
-
-        GeometryFileWrite.read(reinterpret_cast<char*>(&B), offsetof(MeshA, Vertices));
-        GeometryFileWrite.read(reinterpret_cast<char*>(&Size), sizeof(Size));
-        B.Vertices.resize(Size);
-        GeometryFileWrite.read(reinterpret_cast<char*>(B.Vertices.data()), sizeof(Vertex)* Size);
-
-        // For vector of vertices
-        int size = 0;
-      //  GeometryFileWrite.read(reinterpret_cast<char*>(&size), sizeof(size));
-     //   B.Vertices.resize(size/ sizeof(Vertex));
-        auto i = sizeof(decltype(B.Vertices)::value_type) * size;
-       // GeometryFileWrite.read(reinterpret_cast<char*>(B.Vertices.data()), sizeof(Vertex) * 2);
-
-        int x = 0;
-#else
+        #else
         for (auto& i : In)
         {
             // Name , NoTextures , Diffuse , Specular , Ambient
@@ -254,7 +176,7 @@ namespace EclipseCompiler
 
     }
         GeometryFile.close();
-#endif
+        #endif
 }
 
     void GeometryCompiler::ReleaseFile(std::string& in)
@@ -289,61 +211,17 @@ namespace EclipseCompiler
 
         std::string eachline;
 
-#ifndef NEW_IMPLEMENTATION
+        #ifndef NEW_IMPLEMENTATION
 
-        //if (GeometryFileWrite)
-        //{
-        //    Test B;
-        //    int offset = 0;
+        MeshA B;
 
-        //    for (int i = 0; i < B.offsets.size(); ++i)
-        //    {
-        //        int size = 0;
-        //        char* data = reinterpret_cast<char*>(&B) + offset;
-        //        void* v = reinterpret_cast<void*>(data);
+        int EngineSize = 0;
+        GeometryFileWrite.read(reinterpret_cast<char*>(&B), offsetof(MeshA, Vertices));
+        GeometryFileWrite.read(reinterpret_cast<char*>(&EngineSize), sizeof(EngineSize));
+        B.Vertices.resize(EngineSize);
+        GeometryFileWrite.read(reinterpret_cast<char*>(B.Vertices.data()), sizeof(Vertex) * EngineSize);
 
-        //        GeometryFileWrite.read(reinterpret_cast<char*>(&size), sizeof(size));
-
-        //        // Read all the data
-        //        GeometryFileWrite.read(reinterpret_cast<char*>(v), size);
-
-        //        offset += size;
-        //    }
-
-        //    std::cout << "--------READING FILE--------" << std::endl;
-        //    std::cout << "Bool: " << B.j << std::endl;
-        //    std::cout << "float: " << B.x << std::endl;
-        //    std::cout << "Int : " << B.y << std::endl;
-        //    std::cout << "Vec3 : " << B.z.x << std::endl;
-        //    std::cout << "String : " << B.mystring << std::endl;
-
-        //}
-        //GeometryFileWrite.close();
-
-        //Mesh TestCreateModelFromCompiler;
-
-        //int MeshNameSize = 0;
-        ////TestCreateModelFromCompiler.MeshName = new char[MeshNameSize];
-        //GeometryFileWrite.read(reinterpret_cast<char*>(&MeshNameSize), sizeof(int));
-        //GeometryFileWrite.read(reinterpret_cast<char*>(&TestCreateModelFromCompiler.MeshName), MeshNameSize);
-        //    
-        //std::cout << "Test " << TestCreateModelFromCompiler.MeshName;
-
-        //int NoTextureSize = 0;
-        //GeometryFileWrite.read(reinterpret_cast<char*>(&NoTextureSize), sizeof(int));
-        //GeometryFileWrite.read(reinterpret_cast<char*>(&TestCreateModelFromCompiler.NoTex), NoTextureSize);
-
-        //std::cout << "Test Booleamn " << TestCreateModelFromCompiler.NoTex << std::endl;
-
-        //int TestDiffuseSize = 0;
-        //glm::vec4 TestDiffuse{ 0,0,0,0 };
-        //glm::vec4 y;
-        //GeometryFileWrite.read(reinterpret_cast<char*>(&TestDiffuseSize), sizeof(int));
-        //GeometryFileWrite.read(reinterpret_cast<char*>(&y), 16);
-
-        int i = 0;
-
-#else   
+        #else   
         // This getline is to getName
         while (!GeometryFile.eof())
         {
@@ -412,6 +290,6 @@ namespace EclipseCompiler
 
             Geometry.emplace(Model.MeshName, std::make_unique<Mesh>(Model));
     }
-#endif
+            #endif
     }
 }
