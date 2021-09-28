@@ -157,4 +157,9 @@ namespace EclipseCompiler
             i->CalculateOffsets();
         }
     }
+
+    void CompilerManager::ReadFile(std::string& in)
+    {
+
+    }
 }

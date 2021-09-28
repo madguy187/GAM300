@@ -36,6 +36,6 @@ namespace EclipseCompiler
         void Initialise();
         void ProduceFile(std::string& in);
         void CalculateOffSets();
-
+        void ReadFile(std::string& in);
     };
 }

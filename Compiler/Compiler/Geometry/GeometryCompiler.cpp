@@ -144,9 +144,6 @@ namespace EclipseCompiler
         GeometryFile.write(reinterpret_cast<const char*>(A.Vertices.data()), sizeof(Vertex) * Size);
         GeometryFile.close();
 
-        // Test
-        ReadFile();
-
         #else
         for (auto& i : In)
         {
