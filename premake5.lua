@@ -98,6 +98,12 @@ project "Eclipse"
 	"Dep/ASSIMP/",
 	"Dep/Fmod/core/lib/x64"
   }
+  
+  disablewarnings 
+  { 
+    "4302",
+    "4311"	
+  }
 
   links
   {
@@ -161,6 +167,12 @@ project "Eclipse"
     "Dep/mono/lib/",
 	"Dep/ASSIMP/",
 	"Dep/Fmod/core/lib/x64"
+  }
+  
+  disablewarnings 
+  { 
+    "4302",
+    "4311"	
   }
 
   links
