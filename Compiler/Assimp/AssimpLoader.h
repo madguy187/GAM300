@@ -25,8 +25,8 @@ namespace EclipseCompiler
 		glm::vec4               Ambient{ 1,2,3,4 };
 		std::array<char, 128>   MeshName;
 		bool                    noTex{ true };
-
 		std::vector<Vertex>     Vertices;
+		std::vector<unsigned int> Indices;
 
 		MeshA()
 		{

@@ -2,80 +2,6 @@
 #include "GeometryCompiler.h"
 #include <string> 
 
-struct vec3
-{
-    float x = 30;
-    float y = 40;
-    float z = 50;
-};
-
-class Test
-{
-public:
-    bool j = false; //OK
-    float x = 10;
-    int y = 20;
-    vec3 z;
-    char* mystring;
-
-    std::array<int, 6> offsets;
-    Test()
-    {
-        mystring = new char[20];
-        strcpy_s(mystring, 5, "poop");
-        mystring[5] = '\0';
-        offsets = { 0, sizeof(bool), sizeof(x), sizeof(y), sizeof(z), 20 };
-    }
-};
-
-//struct Class1
-//{
-//    int x;
-//    float y;
-//    float z;
-//    std::string a = "11111111111111111111";
-//
-//    std::vector<size_t> offSetsforObject;
-//
-//    Class1()
-//    {
-//        offSetsforObject = { 4, sizeof(y), 4, sizeof(a) };
-//    }
-//};
-//
-//struct FileManager
-//{
-//    Class1* obj = new Class1;
-//    std::ofstream GeometryFile;
-//
-//    for (int i = 0; i < 3; ++i)
-//    {
-//        char* address = reinterpret_cast<char*>(obj) + obj->offSetsforObject[i];
-//        GeometryFile.write(reinterpret_cast<const char*>(address), obj->offSetsforObject[i]);
-//    }
-//};
-
-//    void WriteToBinary(const char* path)
-//    {
-//
-//       f.open("../Eclipse/src/Assets/Compilers/GeometryFile/Geometry.bin",
-//                std::fstream::out |
-//                std::fstream::binary |
-//                std::ios::trunc |
-//                std::ios::binary);
-//
-//        GeometryFile.write(reinterpret_cast<const char*>(&x), sizeof(int));
-//        GeometryFile.write(reinterpret_cast<const char*>(&y), sizeof(float));
-//        GeometryFile.write(reinterpret_cast<const char*>(&z), sizeof(float));
-//        GeometryFile.close();
-//    }
-//    void ReadFile()
-//    {
-//        GeometryFile.write(reinterpret_cast<const char*>(&x), sizeof(int));
-//        GeometryFile.write(reinterpret_cast<const char*>(&y), sizeof(float));
-//        GeometryFile.write(reinterpret_cast<const char*>(&z), sizeof(float));
-//    }
-
 namespace EclipseCompiler
 {
     void GeometryCompiler::Init()
@@ -117,8 +43,11 @@ namespace EclipseCompiler
             std::ios_base::trunc |
             std::ios_base::binary);
 
+        for (auto& i : In)
+        {
 
-        #ifndef NEW_IMPLEMENTATION
+        }
+#ifndef NEW_IMPLEMENTATION
         int totaloffset = 0;
 
         MeshA A;
@@ -137,14 +66,112 @@ namespace EclipseCompiler
 
         A.Vertices.push_back(C);
         A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
+        A.Vertices.push_back(C);
 
-        GeometryFile.write(reinterpret_cast<const char*>(&A), offsetof(MeshA, Vertices) );
-        int Size = A.Vertices.size();
-        GeometryFile.write(reinterpret_cast<const char*>(&Size), sizeof(Size) );
-        GeometryFile.write(reinterpret_cast<const char*>(A.Vertices.data()), sizeof(Vertex) * Size);
+
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(1);
+        A.Indices.push_back(2);
+        A.Indices.push_back(2);
+
+        // Writing 
+        // Diffuse , Specular , Ambient , Meshname , NoTex
+        // glm::vec4 , glm::vec4 , glm::vec4 , 
+        GeometryFile.write(reinterpret_cast<const char*>(&A), offsetof(MeshA, Vertices));
+
+        int VertexSize = A.Vertices.size();
+        GeometryFile.write(reinterpret_cast<const char*>(&VertexSize), sizeof(VertexSize));
+        GeometryFile.write(reinterpret_cast<const char*>(A.Vertices.data()), sizeof(Vertex) * VertexSize);
+
+        int IndicesSize = A.Indices.size();
+        GeometryFile.write(reinterpret_cast<const char*>(&IndicesSize), sizeof(IndicesSize));
+        GeometryFile.write(reinterpret_cast<const char*>(A.Indices.data()), sizeof(unsigned int) * IndicesSize);
+
         GeometryFile.close();
 
-        #else
+        ReadFile();
+#else
         for (auto& i : In)
         {
             // Name , NoTextures , Diffuse , Specular , Ambient
@@ -171,10 +198,10 @@ namespace EclipseCompiler
             }
             GeometryFile << "---" << std::endl;
 
-    }
+        }
         GeometryFile.close();
-        #endif
-}
+#endif
+    }
 
     void GeometryCompiler::ReleaseFile(std::string& in)
     {
@@ -208,17 +235,25 @@ namespace EclipseCompiler
 
         std::string eachline;
 
-        #ifndef NEW_IMPLEMENTATION
+#ifndef NEW_IMPLEMENTATION
 
         MeshA B;
 
-        int EngineSize = 0;
-        GeometryFileWrite.read(reinterpret_cast<char*>(&B), offsetof(MeshA, Vertices));
-        GeometryFileWrite.read(reinterpret_cast<char*>(&EngineSize), sizeof(EngineSize));
-        B.Vertices.resize(EngineSize);
-        GeometryFileWrite.read(reinterpret_cast<char*>(B.Vertices.data()), sizeof(Vertex) * EngineSize);
+        int VerticesSize = 0;
+        int IndicesSize = 0;
 
-        #else   
+        GeometryFileWrite.read(reinterpret_cast<char*>(&B), offsetof(MeshA, Vertices));
+
+        GeometryFileWrite.read(reinterpret_cast<char*>(&VerticesSize), sizeof(VerticesSize));
+        B.Vertices.resize(VerticesSize);
+        GeometryFileWrite.read(reinterpret_cast<char*>(B.Vertices.data()), sizeof(Vertex) * VerticesSize);
+
+        GeometryFileWrite.read(reinterpret_cast<char*>(&IndicesSize), sizeof(IndicesSize));
+        B.Indices.resize(IndicesSize);
+        GeometryFileWrite.read(reinterpret_cast<char*>(B.Indices.data()), sizeof(unsigned int) * IndicesSize);
+
+        int i = 0;
+#else   
         // This getline is to getName
         while (!GeometryFile.eof())
         {
@@ -287,6 +322,6 @@ namespace EclipseCompiler
 
             Geometry.emplace(Model.MeshName, std::make_unique<Mesh>(Model));
     }
-            #endif
-    }
+#endif
+}
 }
