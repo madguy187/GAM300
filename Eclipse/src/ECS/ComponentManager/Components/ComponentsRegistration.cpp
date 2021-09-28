@@ -47,6 +47,11 @@ namespace Eclipse
         ADD_MEMBER(projType);
     }
 
+    DEFINE_META(CollisionComponent)
+    {
+        
+    }
+
     DEFINE_META(DirectionalLightComponent)
     {
         ADD_MEMBER(ID);
@@ -67,6 +72,7 @@ namespace Eclipse
     {
         ADD_MEMBER(Tag);
         ADD_MEMBER(Name);
+        ADD_MEMBER(IsActive);
     }
 
     DEFINE_META(LightComponent)

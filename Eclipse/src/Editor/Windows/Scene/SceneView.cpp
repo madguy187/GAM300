@@ -130,10 +130,11 @@ namespace Eclipse
 		}
 
 		ImGuiIO& io = ImGui::GetIO();
+		IsSnapping = io.KeyCtrl;
 
 		ImGuizmo::Manipulate(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx),
 			(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
-			nullptr, io.KeyCtrl ? glm::value_ptr(snapValues) : nullptr);
+			nullptr, IsSnapping ? glm::value_ptr(snapValues) : nullptr);
 
 		/*static const float identityMatrix[16] =
 		{ 1.f, 0.f, 0.f, 0.f,
@@ -325,18 +326,28 @@ namespace Eclipse
 		return mCursorScreenPos.ConvertToGlmVec2Type();
 	}
 
-	int SceneWindow::GetGizmoType()
+	int SceneWindow::GetGizmoType() const
 	{
 		return m_GizmoType;
 	}
 
-	bool SceneWindow::GetIsWindowActive()
+	bool SceneWindow::GetIsWindowActive() const
 	{
 		return IsWindowActive;
+	}
+
+	bool SceneWindow::GetSnapping() const
+	{
+		return IsSnapping;
 	}
 
 	void SceneWindow::SetGizmoType(int type)
 	{
 		m_GizmoType = type;
+	}
+
+	void SceneWindow::SetSnapping(bool active)
+	{
+		IsSnapping = active;
 	}
 }

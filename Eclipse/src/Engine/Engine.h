@@ -14,6 +14,7 @@
 #include "Editor/Windows/AssetBrowser/AssetBrowser.h"
 #include "Graphics/Culling/CullingManager.h"
 #include "Editor/Windows/Profiler/Profiler.h"
+#include "Audio/AudioManager.h"
 
 namespace Eclipse
 {
@@ -35,6 +36,7 @@ namespace Eclipse
         std::unique_ptr<Grid> GridManager;
         DebugRenderingManager gDebugManager;
         SerializationManager szManager;
+        AudioManager audioManager;
         void Init();
         void Run();
         PhysicsManager gPhysics;

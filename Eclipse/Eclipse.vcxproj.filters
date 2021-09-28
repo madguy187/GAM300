@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Audio">
+      <UniqueIdentifier>{9718D90C-032D-01BE-CCAE-A41D3882FDEE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Audio\FmodAPI">
+      <UniqueIdentifier>{2653ADA8-9213-29DF-5B4E-725CC7CD6DBB}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ECS">
       <UniqueIdentifier>{60E1870B-CCEA-877C-5566-9E7CC16E937C}</UniqueIdentifier>
     </Filter>
@@ -25,6 +31,15 @@
     <Filter Include="ECS\SystemManager\Systems\System">
       <UniqueIdentifier>{2AA091FC-16F1-7C3E-3F55-6B002B0510A8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\Audio">
+      <UniqueIdentifier>{AB25D4DE-9777-ABCE-8096-E8DE6C87C4B7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\Editor">
+      <UniqueIdentifier>{20CA7CC1-8C59-3EAC-9555-1FC4016479B8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\MonoSystem">
+      <UniqueIdentifier>{377B9766-A3E0-2AED-2CB9-CCC5981D205C}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\ParentChild">
       <UniqueIdentifier>{0707B837-F319-B890-9C03-957D88F554DE}</UniqueIdentifier>
     </Filter>
@@ -43,6 +58,15 @@
     <Filter Include="Editor\Utilities">
       <UniqueIdentifier>{F7DD8FC0-E3D6-AE12-0C09-9497F8608E1E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editor\Utilities\DragAndDrop">
+      <UniqueIdentifier>{2C9DF5A9-1858-E555-C10F-5EA0ADA92FE6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Utilities\OpenFileDialog">
+      <UniqueIdentifier>{E84BB6BE-542F-C5FE-5D32-F33AC9948B4F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Utilities\ParentChild">
+      <UniqueIdentifier>{5460141D-401B-04C9-E9D2-7C13D56C4E59}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Editor\Utilities\UndoAndRedo">
       <UniqueIdentifier>{99D07E34-858B-6EE0-2E43-E72A1ADDB870}</UniqueIdentifier>
     </Filter>
@@ -57,6 +81,9 @@
     </Filter>
     <Filter Include="Editor\Windows\GameView">
       <UniqueIdentifier>{6A8AA614-D6C1-EEAB-DFCB-52CF4B8215A5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Windows\Header">
+      <UniqueIdentifier>{3E5DFD23-AAC9-B81E-73BD-507CDFE8DA86}</UniqueIdentifier>
     </Filter>
     <Filter Include="Editor\Windows\Hierarchy">
       <UniqueIdentifier>{D40C5037-C031-9FB7-E97C-8447D5009ED5}</UniqueIdentifier>
@@ -93,6 +120,9 @@
     </Filter>
     <Filter Include="Graphics\Camera">
       <UniqueIdentifier>{CED20E8B-3A5E-7C4F-436F-FF43AF79D84F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Culling">
+      <UniqueIdentifier>{13F3811B-FFEB-A06D-281E-86F214768079}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\Debugging">
       <UniqueIdentifier>{51443AC7-3D28-FB1C-A688-F56F928BE59E}</UniqueIdentifier>
@@ -178,6 +208,9 @@
     <Filter Include="Reflection">
       <UniqueIdentifier>{104FCF04-FC06-1152-650E-EAAD51E5AB42}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Reflection\Variant">
+      <UniqueIdentifier>{B46A2A39-A04E-EB8E-09AF-E5E1F5B1D510}</UniqueIdentifier>
+    </Filter>
     <Filter Include="SceneManagement">
       <UniqueIdentifier>{D0EEDB6A-3C7A-492F-458B-CC23B195A52F}</UniqueIdentifier>
     </Filter>
@@ -196,106 +229,17 @@
     <Filter Include="TypeID">
       <UniqueIdentifier>{54109DD4-40B2-C7AA-296D-DBFE15AE4EFB}</UniqueIdentifier>
     </Filter>
-    <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp" />
-    <ClCompile Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.cpp" />
-    <ClCompile Include="src\ECS\EntityManager\EntityManager.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\EditorSystem.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\GridSystem.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp" />
-    <ClCompile Include="src\ECS\World.cpp" />
-    <ClCompile Include="src\Editor\ECGuiAPI\ECGui.cpp" />
-    <ClCompile Include="src\Editor\ECGuiAPI\ECGuiInputHandler.cpp" />
-    <ClCompile Include="src\Editor\Manager\EditorManager.cpp" />
-    <ClCompile Include="src\Editor\Menu\MenuBar.cpp" />
-    <ClCompile Include="src\Editor\Menu\MenuComponent.cpp" />
-    <ClCompile Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.cpp" />
-    <ClCompile Include="src\Editor\Windows\AssetBrowser\AssetBrowser.cpp" />
-    <ClCompile Include="src\Editor\Windows\Debug\Debug.cpp" />
-    <ClCompile Include="src\Editor\Windows\GameView\GameView.cpp" />
-    <ClCompile Include="src\Editor\Windows\Hierarchy\Hierarchy.cpp" />
-    <ClCompile Include="src\Editor\Windows\Inspector\Inspector.cpp" />
-    <ClCompile Include="src\Editor\Windows\Log\Log.cpp" />
-    <ClCompile Include="src\Editor\Windows\Profiler\Profiler.cpp" />
-    <ClCompile Include="src\Editor\Windows\Scene\SceneView.cpp" />
-    <ClCompile Include="src\Editor\Windows\SwitchViews\BottomSwitchViewWindow.cpp" />
-    <ClCompile Include="src\Editor\Windows\SwitchViews\LeftSwitchViewWindow.cpp" />
-    <ClCompile Include="src\Editor\Windows\SwitchViews\RightSwitchViewWindow.cpp" />
-    <ClCompile Include="src\Editor\Windows\SwitchViews\TopSwitchViewWindow.cpp" />
-    <ClCompile Include="src\Engine\Engine.cpp" />
-    <ClCompile Include="src\EntryPoint\EntryPoint.cpp" />
-    <ClCompile Include="src\Graphics\Camera\CameraManager.cpp" />
-    <ClCompile Include="src\Graphics\Debugging\DebugRenderingManager.cpp" />
-    <ClCompile Include="src\Graphics\FrameBuffer\FrameBuffer.cpp" />
-    <ClCompile Include="src\Graphics\FrameBuffer\WindowConstraint.cpp" />
-    <ClCompile Include="src\Graphics\Grid\AABB.cpp" />
-    <ClCompile Include="src\Graphics\Grid\AABBTree.cpp" />
-    <ClCompile Include="src\Graphics\Grid\bounds.cpp" />
-    <ClCompile Include="src\Graphics\Grid\Grid.cpp" />
-    <ClCompile Include="src\Graphics\Grid\Box.cpp" />
-    <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp" />
-    <ClCompile Include="src\Graphics\Lighting\DirectionalLight.cpp" />
-    <ClCompile Include="src\Graphics\Lighting\LightManager.cpp" />
-    <ClCompile Include="src\Graphics\Lighting\PointLight.cpp" />
-    <ClCompile Include="src\Graphics\Lighting\SpotLight.cpp" />
-    <ClCompile Include="src\Graphics\Material\MaterialManager.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cone.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cube.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cylinder.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Frustum.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\LightQuad.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Lines.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Lines3D.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Particles.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Plane.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Pyramid.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Quad.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Sphere.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Torus.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Triangle.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\ModelFactory.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\Sky\CubeMap.cpp" />
-    <ClCompile Include="src\Graphics\OpenGL\OpenGL_Context.cpp" />
-    <ClCompile Include="src\Graphics\Parser\Parser.cpp" />
-    <ClCompile Include="src\Graphics\Picker\PickingManager.cpp" />
-    <ClCompile Include="src\Graphics\RendererAPI\Graphics.cpp" />
-    <ClCompile Include="src\Graphics\RendererAPI\GraphicsManager.cpp" />
-    <ClCompile Include="src\Graphics\RendererAPI\Mesh.cpp" />
-    <ClCompile Include="src\Graphics\RendererAPI\Shader.cpp" />
-    <ClCompile Include="src\Graphics\Textures\Texture.cpp" />
-    <ClCompile Include="src\Graphics\Textures\stb_image.cpp" />
-    <ClCompile Include="src\ImGui\ImGuiAPI\ImGuiAPI.cpp" />
-    <ClCompile Include="src\ImGui\Setup\ImGuiSetup.cpp" />
-    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImCurveEdit.cpp" />
-    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImGradient.cpp" />
-    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImGuizmo.cpp" />
-    <ClCompile Include="src\ImGui\Vendor\ImGuizmo\ImSequencer.cpp" />
-    <ClCompile Include="src\ImGui\Vendor\imgui.cpp" />
-    <ClCompile Include="src\ImGui\Vendor\imgui_demo.cpp" />
-    <ClCompile Include="src\ImGui\Vendor\imgui_draw.cpp" />
-    <ClCompile Include="src\ImGui\Vendor\imgui_impl_glfw.cpp" />
-    <ClCompile Include="src\ImGui\Vendor\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="src\ImGui\Vendor\imgui_widgets.cpp" />
-    <ClCompile Include="src\Library\Math\Matrix.cpp" />
-    <ClCompile Include="src\Logger\Logger.cpp" />
-    <ClCompile Include="src\Mono\Manager\MonoManager.cpp" />
-    <ClCompile Include="src\Physics\PhysicsManager.cpp" />
-    <ClCompile Include="src\Time\Clock.cpp" />
-    <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\Editor\Windows\SwitchViews\BaseSwitchView.cpp" />
-    <ClCompile Include="src\Editor\Utilities\DragAndDrop\DragAndDrop.cpp" />
-    <ClCompile Include="src\Editor\Utilities\OpenFileDialog\OpenFileDialog.cpp" />
-    <ClCompile Include="src\Editor\Utilities\ParentChild\ParentChild.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Audio\AudioManager.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Audio\FmodAPI\FmodAPI.h">
+      <Filter>Audio\FmodAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\ComponentList.h">
+      <Filter>ECS\ComponentManager</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h">
       <Filter>ECS\ComponentManager</Filter>
     </ClInclude>
@@ -303,6 +247,9 @@
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\ChildTransformComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\CollisionComponent.h">
@@ -341,6 +288,9 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\ScriptComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\SpotLightComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
@@ -356,11 +306,14 @@
     <ClInclude Include="src\ECS\SystemManager\SystemManager.h">
       <Filter>ECS\SystemManager</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\Audio</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\EditorSystem.h">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\Editor</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\GridSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
@@ -370,6 +323,9 @@
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\MonoSystem</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.h">
       <Filter>ECS\SystemManager\Systems\System\ParentChild</Filter>
@@ -404,6 +360,15 @@
     <ClInclude Include="src\Editor\Menu\MenuComponent.h">
       <Filter>Editor\Menu</Filter>
     </ClInclude>
+    <ClInclude Include="src\Editor\Utilities\DragAndDrop\DragAndDrop.h">
+      <Filter>Editor\Utilities\DragAndDrop</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Utilities\OpenFileDialog\OpenFileDialog.h">
+      <Filter>Editor\Utilities\OpenFileDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Utilities\ParentChild\ParentChild.h">
+      <Filter>Editor\Utilities\ParentChild</Filter>
+    </ClInclude>
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.h">
       <Filter>Editor\Utilities\UndoAndRedo</Filter>
     </ClInclude>
@@ -430,6 +395,9 @@
     </ClInclude>
     <ClInclude Include="src\Editor\Windows\GameView\GameView.h">
       <Filter>Editor\Windows\GameView</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\Header\HeaderWindow.h">
+      <Filter>Editor\Windows\Header</Filter>
     </ClInclude>
     <ClInclude Include="src\Editor\Windows\Hierarchy\Hierarchy.h">
       <Filter>Editor\Windows\Hierarchy</Filter>
@@ -482,6 +450,9 @@
     <ClInclude Include="src\Global.h" />
     <ClInclude Include="src\Graphics\Camera\CameraManager.h">
       <Filter>Graphics\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Culling\CullingManager.h">
+      <Filter>Graphics\Culling</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\Debugging\DebugRenderingManager.h">
       <Filter>Graphics\Debugging</Filter>
@@ -699,6 +670,21 @@
     <ClInclude Include="src\Physics\PhysicsManager.h">
       <Filter>Physics</Filter>
     </ClInclude>
+    <ClInclude Include="src\Reflection\Meta.h">
+      <Filter>Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Reflection\RemTypeQual.h">
+      <Filter>Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Reflection\Variant\RefVariant.h">
+      <Filter>Reflection\Variant</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Reflection\Variant\Variant.h">
+      <Filter>Reflection\Variant</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Reflection\Variant\VariantBase.h">
+      <Filter>Reflection\Variant</Filter>
+    </ClInclude>
     <ClInclude Include="src\SceneManagement\SceneManager.h">
       <Filter>SceneManagement</Filter>
     </ClInclude>
@@ -727,25 +713,22 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\ChildTransformComponent.h" />
-    <ClInclude Include="src\Reflection\RemTypeQual.h" />
-    <ClInclude Include="src\Reflection\Meta.h" />
-    <ClInclude Include="src\Reflection\Variant\Variant.h" />
-    <ClInclude Include="src\Reflection\Variant\VariantBase.h" />
-    <ClInclude Include="src\Reflection\Variant\RefVariant.h" />
-    <ClInclude Include="src\Graphics\Culling\CullingManager.h" />
-    <ClInclude Include="src\Editor\Windows\SwitchViews\BaseSwitchView.h" />
-    <ClInclude Include="src\Editor\Utilities\DragAndDrop\DragAndDrop.h" />
-    <ClInclude Include="src\Editor\Utilities\OpenFileDialog\OpenFileDialog.h" />
-    <ClInclude Include="src\Editor\Utilities\ParentChild\ParentChild.h" />
-    <ClInclude Include="src\Editor\Windows\Header\HeaderWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Audio\AudioManager.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Audio\FmodAPI\FmodAPI.cpp">
+      <Filter>Audio\FmodAPI</Filter>
+    </ClCompile>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
       <Filter>ECS\ComponentManager</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.cpp">
       <Filter>ECS\ComponentManager\Components\ComponentArray</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\ComponentManager\Components\ComponentsRegistration.cpp">
+      <Filter>ECS\ComponentManager\Components</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\EntityManager\EntityManager.cpp">
       <Filter>ECS\EntityManager</Filter>
@@ -753,11 +736,14 @@
     <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp">
       <Filter>ECS\SystemManager</Filter>
     </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\Audio</Filter>
+    </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\EditorSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\Editor</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\GridSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
@@ -767,6 +753,9 @@
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\MonoSystem</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\ParentChild</Filter>
@@ -798,11 +787,14 @@
     <ClCompile Include="src\Editor\Menu\MenuComponent.cpp">
       <Filter>Editor\Menu</Filter>
     </ClCompile>
-    <ClCompile Include="src\Editor\Utilities\DragAndDrop.cpp">
-      <Filter>Editor\Utilities</Filter>
+    <ClCompile Include="src\Editor\Utilities\DragAndDrop\DragAndDrop.cpp">
+      <Filter>Editor\Utilities\DragAndDrop</Filter>
     </ClCompile>
-    <ClCompile Include="src\Editor\Utilities\OpenFileDialog.cpp">
-      <Filter>Editor\Utilities</Filter>
+    <ClCompile Include="src\Editor\Utilities\OpenFileDialog\OpenFileDialog.cpp">
+      <Filter>Editor\Utilities\OpenFileDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Utilities\ParentChild\ParentChild.cpp">
+      <Filter>Editor\Utilities\ParentChild</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.cpp">
       <Filter>Editor\Utilities\UndoAndRedo</Filter>
@@ -815,6 +807,9 @@
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\GameView\GameView.cpp">
       <Filter>Editor\Windows\GameView</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\Header\HeaderWindow.cpp">
+      <Filter>Editor\Windows\Header</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\Hierarchy\Hierarchy.cpp">
       <Filter>Editor\Windows\Hierarchy</Filter>
@@ -854,6 +849,9 @@
     </ClCompile>
     <ClCompile Include="src\Graphics\Camera\CameraManager.cpp">
       <Filter>Graphics\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Culling\CullingManager.cpp">
+      <Filter>Graphics\Culling</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\Debugging\DebugRenderingManager.cpp">
       <Filter>Graphics\Debugging</Filter>
@@ -1029,6 +1027,18 @@
     <ClCompile Include="src\Physics\PhysicsManager.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
+    <ClCompile Include="src\Reflection\Meta.cpp">
+      <Filter>Reflection</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Reflection\Variant\RefVariant.cpp">
+      <Filter>Reflection\Variant</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Reflection\Variant\Variant.cpp">
+      <Filter>Reflection\Variant</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Reflection\Variant\VariantBase.cpp">
+      <Filter>Reflection\Variant</Filter>
+    </ClCompile>
     <ClCompile Include="src\SceneManagement\SceneManager.cpp">
       <Filter>SceneManagement</Filter>
     </ClCompile>
@@ -1057,16 +1067,5 @@
       <Filter>Time</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\Reflection\Meta.cpp" />
-    <ClCompile Include="src\Reflection\Variant\Variant.cpp" />
-    <ClCompile Include="src\Reflection\Variant\VariantBase.cpp" />
-    <ClCompile Include="src\Reflection\Variant\RefVariant.cpp" />
-    <ClCompile Include="src\ECS\ComponentManager\Components\ComponentsRegistration.cpp" />
-    <ClCompile Include="src\Graphics\Culling\CullingManager.cpp" />
-    <ClCompile Include="src\Editor\Windows\Header\HeaderWindow.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\Assets\Shaders\Mesh\Mesh.frag" />
-    <None Include="src\Assets\Shaders\Mesh\Mesh.vert" />
   </ItemGroup>
 </Project>
