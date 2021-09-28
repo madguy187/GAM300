@@ -54,7 +54,6 @@ namespace Eclipse
 
     DEFINE_META(DirectionalLightComponent)
     {
-        ADD_MEMBER(ID);
         ADD_MEMBER(Counter);
         ADD_MEMBER(visible);
         ADD_MEMBER(AffectsWorld);
@@ -73,6 +72,9 @@ namespace Eclipse
         ADD_MEMBER(Tag);
         ADD_MEMBER(Name);
         ADD_MEMBER(IsActive);
+        ADD_MEMBER(Child);
+        ADD_MEMBER(Parent);
+        ADD_MEMBER(IsAChild);
     }
 
     DEFINE_META(LightComponent)
@@ -86,13 +88,15 @@ namespace Eclipse
         ADD_MEMBER(diffuse);
         ADD_MEMBER(specular);
         ADD_MEMBER(HighlightColour);
-        ADD_MEMBER(shininess);
-        ADD_MEMBER(MaximumShininess);
         ADD_MEMBER(Highlight);
         ADD_MEMBER(NoTextures);
+        ADD_MEMBER(shininess);
+        ADD_MEMBER(MaximumShininess);
         ADD_MEMBER(Thickness);
         ADD_MEMBER(ScaleUp);
         ADD_MEMBER(ComboIndex);
+        ADD_MEMBER(hasTexture);
+        ADD_MEMBER(TextureRef);
     }
 
     DEFINE_META(MeshComponent)
@@ -108,10 +112,10 @@ namespace Eclipse
 
     DEFINE_META(ModeLInforComponent)
     {
-        ADD_MEMBER(ComboIndex);
         ADD_MEMBER(NameOfModel);
         ADD_MEMBER(Directory);
         ADD_MEMBER(type);
+        ADD_MEMBER(ComboIndex);
     }
 
     DEFINE_META(ParentChildComponent)
@@ -122,7 +126,6 @@ namespace Eclipse
 
     DEFINE_META(PointLightComponent)
     {
-        ADD_MEMBER(ID);
         ADD_MEMBER(Counter);
         ADD_MEMBER(ambient);
         ADD_MEMBER(diffuse);
@@ -158,7 +161,6 @@ namespace Eclipse
 
     DEFINE_META(SpotLightComponent)
     {
-        ADD_MEMBER(ID);
         ADD_MEMBER(Counter);
         ADD_MEMBER(lightColor);
         ADD_MEMBER(direction);
