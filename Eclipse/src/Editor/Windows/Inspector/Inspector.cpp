@@ -3,6 +3,7 @@
 #include "ECS/ComponentManager/Components/EntityComponent.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RigidBodyComponent.h"
+#include "ECS/ComponentManager/Components/ScriptComponent.h"
 #include "Editor/Windows/SwitchViews/TopSwitchViewWindow.h"
 
 namespace Eclipse
@@ -55,7 +56,7 @@ namespace Eclipse
 			ShowTextureProperty("Texture", currEnt, CompFilter);
 			ShowRenderProperty("Render", currEnt, CompFilter);
 			ShowMaterialProperty("Material", currEnt, CompFilter);
-			//ShowMesh3DProperty("Mesh", currEnt, CompFilter);
+			ShowMesh3DProperty("Mesh", currEnt, CompFilter);
 			ShowModelInfoProperty("ModelInfo", currEnt, CompFilter);
 			ShowScriptProperty("Script Details", currEnt, CompFilter);
 			ShowChildTransformProperty("ChildTransform", currEnt, CompFilter);
@@ -298,6 +299,7 @@ namespace Eclipse
 
 		return false;
 	}
+
 	bool InspectorWindow::ShowRigidBodyProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
 	{
 		if (engine->world.CheckComponent<RigidBodyComponent>(ID))
@@ -320,6 +322,7 @@ namespace Eclipse
 
 		return false;
 	}
+
 	bool InspectorWindow::ShowEditorCameraProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
 	{
 		if (engine->world.CheckComponent<CameraComponent>(ID))
@@ -360,9 +363,6 @@ namespace Eclipse
 				ECGui::CreateComboList(settings, _TextureVector, _Texture.ComboIndex);
 				_Texture.Type = _Map[_TextureVector[_Texture.ComboIndex]];
 				
-				//TODO
-				//Display all textures on the inspector
-
 				ChangeTextureController(_Texture);
 			}
 		}
@@ -382,16 +382,18 @@ namespace Eclipse
 				ECGui::DrawSliderFloatWidget("Render Transparency", &_Render.transparency, true, 0.0f, 200.0f);
 
 
-
+				//sceneloaded models
 				//THIS IS WORK IN PROGRESS TESTING OUT FUNCITONALITIES AND ARE NOT MEANT TO BE IN THE FINAL
 				//VERSION *NOT FOR FINAL VERSION* - TIAN YU
 				std::string nameString = _Render.modelRef + " (Mesh Filter)";
+				ImGui::PushStyleColor(ImGuiCol_Header, IM_COL32(0,1,1,1));
 				if (filter.PassFilter(nameString.c_str()) && ECGui::CreateCollapsingHeader(nameString.c_str()))
 				{
 					ECGui::DrawTextWidget<const char*>("Mesh ", "");
 					ECGui::InsertSameLine();
-					ChangeMeshController(_Render);
+					ChangeMeshController(ID);
 				}
+				ImGui::PopStyleColor();
 			}
 		}
 		
@@ -449,14 +451,14 @@ namespace Eclipse
 	
 	bool InspectorWindow::ShowMesh3DProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
 	{
-		//if (engine->world.CheckComponent<MeshComponent3D>(ID))
-		//{
-		//	if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
-		//	{
-		//		auto& _Mesh3D = engine->world.GetComponent<MeshComponent3D>(ID);
+		if (engine->world.CheckComponent<MeshComponent>(ID))
+		{
+			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+			{
+				auto& _Mesh = engine->world.GetComponent<MeshComponent>(ID);
 
-		//	}
-		//}
+			}
+		}
 		return false;
 	}
 
@@ -498,33 +500,33 @@ namespace Eclipse
 		* When script comp is up, just replace the entity com here with ur script,
 		* and the vector with the vector of stdstrings in ur script com
 		*/
-		if (engine->world.CheckComponent<EntityComponent>(ID))
+		if (engine->world.CheckComponent<ScriptComponent>(ID))
 		{
 			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
 			{
-				auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
+				auto& scriptCom = engine->world.GetComponent<ScriptComponent>(ID);
 
 				ECGui::DrawTextWidget<const char*>(my_strcat("List of Scripts (", 
-					entCom.ScriptListComTest.size(), "):").c_str(), "");
+					scriptCom.scriptList.size(), "):").c_str(), "");
 
-				for (size_t i = 0; i < entCom.ScriptListComTest.size(); ++i)
+				for (size_t i = 0; i < scriptCom.scriptList.size(); ++i)
 				{
 					if (!IsRemovingScripts)
 					{
 						ECGui::DrawInputTextHintWidget(my_strcat("ScriptName", i + 1).c_str(), "Drag Script files here",
-							const_cast<char*>(entCom.ScriptListComTest[i].c_str()), 256,
+							const_cast<char*>(scriptCom.scriptList[i].scriptName.c_str()), 256,
 							true, ImGuiInputTextFlags_ReadOnly);
-						engine->editorManager->DragAndDropInst_.StringPayloadTarget("cs", entCom.ScriptListComTest[i], 
-							"Script File inserted.", PayloadTargetType::PTT_WIDGET, ID);
+						engine->editorManager->DragAndDropInst_.StringPayloadTarget("cs", scriptCom.scriptList[i].scriptName,
+							"Script File inserted.", PayloadTargetType::PTT_WIDGET, ID, i);
 					}
 					else
 					{
 						bool selected = false;
 
-						if (ECGui::CreateSelectableButton(my_strcat(entCom.ScriptListComTest[i], " ", i + 1).c_str(), &selected))
+						if (ECGui::CreateSelectableButton(my_strcat(scriptCom.scriptList[i].scriptName.c_str(), " ", i + 1).c_str(), &selected))
 						{
-							auto posItr = entCom.ScriptListComTest.begin() + i;
-							entCom.ScriptListComTest.erase(posItr);
+							auto posItr = scriptCom.scriptList.begin() + i;
+							scriptCom.scriptList.erase(posItr);
 						}
 					}
 				}
@@ -535,7 +537,8 @@ namespace Eclipse
 					{
 						std::string fucknicosmother;
 						fucknicosmother.reserve(256);
-						entCom.ScriptListComTest.push_back(fucknicosmother);
+						scriptCom.scriptList.push_back({});
+						scriptCom.scriptList.back().scriptName = fucknicosmother;
 					}
 
 					ECGui::InsertSameLine();
@@ -658,6 +661,10 @@ namespace Eclipse
 						ComponentRegistry<ModeLInforComponent>("ModeLInforComponent", ID, entCom.Name,
 							EditComponent::EC_ADDCOMPONENT);
 						break;
+					case str2int("ScriptComponent"):
+						ComponentRegistry<ScriptComponent>("ScriptComponent", ID, entCom.Name,
+							EditComponent::EC_ADDCOMPONENT);
+						break;
 					}
 				}
 			}
@@ -723,6 +730,10 @@ namespace Eclipse
 						break;
 					case str2int("ModeLInforComponent"):
 						ComponentRegistry<ModeLInforComponent>("ModeLInforComponent", ID, entCom.Name,
+							EditComponent::EC_REMOVECOMPONENT);
+						break;
+					case str2int("ScriptComponent"):
+						ComponentRegistry<ScriptComponent>("ScriptComponent", ID, entCom.Name,
 							EditComponent::EC_REMOVECOMPONENT);
 						break;
 					}
@@ -810,36 +821,48 @@ namespace Eclipse
 		
 	}
 
-	void InspectorWindow::ChangeMeshController(MeshComponent& Item)
+	void InspectorWindow::ChangeMeshController(Entity ID)
 	{
+		auto& Item = engine->world.GetComponent<MeshComponent>(ID);
+
 		ImVec2 buttonSize = { 180,20 };
-		if (ImGui::Button((Item.modelRef.c_str()), buttonSize))
+
+		if (engine->world.CheckComponent<ModeLInforComponent>(ID))
 		{
-			ImGui::OpenPopup("Mesh Changer");
+			if (ImGui::Button((Item.MeshName.c_str()), buttonSize))
+			{
+				ImGui::OpenPopup("Mesh Changer");
+			}
+		}
+		else
+		{
+			if (ImGui::Button((Item.modelRef.c_str()), buttonSize))
+			{
+				ImGui::OpenPopup("Mesh Changer");
+			}
 		}
 		if (ImGui::BeginPopup("Mesh Changer"))
 		{
 			ImGui::SetScrollY(5);
 			ChildSettings settings{ "Mesh Changer", ImVec2{ 250,250 } };
-			ECGui::DrawChildWindow<void(MeshComponent&)>(settings, std::bind(&InspectorWindow::MeshList,
-				this, std::placeholders::_1), Item);
+			ECGui::DrawChildWindow<void(Entity&)>(settings, std::bind(&InspectorWindow::MeshList,
+				this, std::placeholders::_1), ID);
 			
 			ImGui::EndPopup();
 		}
 	}
 
-	void InspectorWindow::MeshList(MeshComponent& Item)
+	void InspectorWindow::MeshList(Entity ID)
 	{
+		auto& Item = engine->world.GetComponent<MeshComponent>(ID);
 		static ImGuiTextFilter AddComponentFilter;
-		AddComponentFilter.Draw("Filter", 160);
-		std::vector<std::string> tempNamesForMesh
-			= { {"Square"},{"Triangle"},{"Circle"},{"Lines"},{"Lightsquare"},{"Sphere"},{"Plane"}
-				,{"Cube"},{"Cylinder"},{"Cone"},{"Torus"} ,{"Pyramid"} ,{"Lines3D"} };
-		
 		TextureComponent FolderIcon;
+
+		AddComponentFilter.Draw("Filter", 160);
 		FolderIcon.textureRef = Graphics::textures.find("FolderIcon")->first;
-		//use image button to change the Graphics::models.find["models"]->find;
+
 		TextureComponent icon = FolderIcon;
+
 		static float padding = 16.0f;
 		static float thumbnaimsize = 50;
 		float cellsize = thumbnaimsize + padding;
@@ -854,31 +877,66 @@ namespace Eclipse
 			columncount = 1;
 		}
 		ImGui::SliderFloat("Size: ", &thumbnaimsize, 10, 200);
+
 		ImGui::Columns(columncount, NULL, true);
-		for (int i = 0 ; i <  tempNamesForMesh.size() ; ++i)
+
+		//use model info component to identify if the dude is basic or not 
+
+		if (!engine->world.CheckComponent<ModeLInforComponent>(ID))
 		{
-			/*TextureComponent FolderIcon;
-			FolderIcon.textureRef = Graphics::textures.find(tempNamesForMesh[i].c_str())->first;
-			TextureComponent icon = FolderIcon;*/
-
-			if (AddComponentFilter.PassFilter(tempNamesForMesh[i].c_str()))
+			for (int i = 0; i < engine->AssimpManager.AllPrimitiveModelsNames.size(); ++i)
 			{
-				ImGui::ImageButton((void*)Graphics::textures[(icon).textureRef].GetHandle(),
-					{thumbnaimsize,thumbnaimsize},
-					{ 1,0 },
-					{ 2,1 });
 
-				if (ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
+				if (AddComponentFilter.PassFilter((engine->AssimpManager.AllPrimitiveModelsNames[i].c_str())))
 				{
-					Item.modelRef = Graphics::models.find((tempNamesForMesh[i].c_str()))->first;
-					AddComponentFilter.Clear();
+					ImGui::ImageButton((void*)Graphics::textures[(icon).textureRef].GetHandle(),
+						{ thumbnaimsize,thumbnaimsize },
+						{ 1,0 },
+						{ 2,1 });
+
+					if (ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
+					{
+						Item.modelRef = Graphics::models.find((engine->AssimpManager.AllPrimitiveModelsNames[i].c_str()))->first;
+						AddComponentFilter.Clear();
+					}
+
+					ImGui::TextWrapped(engine->AssimpManager.AllPrimitiveModelsNames[i].c_str());
+					ImGui::NextColumn();
 				}
 
-				ImGui::TextWrapped(tempNamesForMesh[i].c_str());
-				ImGui::NextColumn();
 			}
-
 		}
+		else
+		{
+			for (int i = 0; i < engine->AssimpManager.AllMeshNames.size(); ++i)
+			{
+				/*TextureComponent FolderIcon;
+				FolderIcon.textureRef = Graphics::textures.find(tempNamesForMesh[i].c_str())->first;
+				TextureComponent icon = FolderIcon;*/
+
+
+				if (AddComponentFilter.PassFilter((engine->AssimpManager.AllMeshNames[i].c_str())))
+				{
+					ImGui::ImageButton((void*)Graphics::textures[(icon).textureRef].GetHandle(),
+						{ thumbnaimsize,thumbnaimsize },
+						{ 1,0 },
+						{ 2,1 });
+
+					if (ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
+					{
+						engine->AssimpManager.SetMeshComponent(ID, engine->AssimpManager.AllMeshNames[i].c_str());
+						engine->AssimpManager.SetSingleMesh(ID, engine->AssimpManager.AllMeshNames[i]);
+						//Item.MeshName = Graphics::models.find((engine->AssimpManager.AllMeshNames[i].c_str()))->first;
+						AddComponentFilter.Clear();
+					}
+
+					ImGui::TextWrapped(engine->AssimpManager.AllMeshNames[i].c_str());
+					ImGui::NextColumn();
+				}
+
+			}
+		}
+
 	}
 
 	void InspectorWindow::RemoveElementFromVectorStringList(std::vector<std::string>& vecList)

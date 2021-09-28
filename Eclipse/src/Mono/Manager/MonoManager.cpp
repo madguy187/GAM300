@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "MonoManager.h"
 #include "mono/metadata/assembly.h"
+#include <mono/metadata/mono-gc.h>
 #include <mono/metadata/debug-helpers.h>
+#include <mono/metadata/mono-config.h>
 
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 
@@ -70,12 +72,49 @@ namespace Eclipse
 	{
 		ENGINE_CORE_INFO("Mono: Initialising");
 
+		mono_config_parse(NULL);
+
 		mono_set_dirs("../Dep/mono/lib", "../Dep/mono/etc");
 
 		domain = mono_jit_init("Manager");
 		assert(domain, "Domain could not be created");
+	}
 
+	void MonoManager::Update(MonoScript* obj)
+	{
+		//DumpInfoFromImage(engine->mono.GetAPIImage());
+		//DumpInfoFromImage(engine->mono.GetScriptImage());
+		MonoClass* klass = mono_class_from_name(engine->mono.GetScriptImage(), "", obj->scriptName.c_str());
+
+		if (klass == nullptr) {
+			std::cout << "Failed loading class, MonoVec3" << std::endl;
+			return;
+		}
+
+		MonoMethod* m_update = mono_class_get_method_from_name(klass, "Update", -1);
+		if (!m_update)
+		{
+			std::cout << "Failed to get method" << std::endl;
+			return;
+		}
+
+		void* args[1];
+		mono_runtime_invoke(m_update, obj, args, NULL);
+	}
+
+	void MonoManager::ResetMono()
+	{
+		mono_image_close(ScriptImage);
+		mono_image_close(APIImage);
+
+		UnloadDomain();
+	}
+
+	void MonoManager::RestartMono()
+	{
 		GenerateDLL();
+
+		LoadDomain();
 
 		// Load API
 		APIAssembly = mono_domain_assembly_open(domain, "../EclipseScriptsAPI.dll");
@@ -90,60 +129,42 @@ namespace Eclipse
 
 		ScriptImage = mono_assembly_get_image(ScriptAssembly);
 		assert(ScriptImage, "Script Image failed");
-
-		ENGINE_CORE_INFO("Mono: Successfully Initialise");
-
-		// adding internal call
-		mono_add_internal_call("Eclipse.TransformComponent::GetTranslate", GetTranslate);
-
-		/*Entity ent = engine->world.CreateEntity();
-		TransformComponent trans;
-		trans.position.x = 1.0f;
-		trans.position.y = 2.0f;
-		trans.position.z = 3.0f;*/
-		
-		/*engine->world.AddComponent<TransformComponent>(ent, trans);*/
-
-		/*TransformComponent& trans2 = engine->world.GetComponent<TransformComponent>(ent);
-		std::cout << trans2.position.x << std::endl;*/
-
-		CreateScriptObjects();
-		std::cout << "Successfully pushed" << std::endl;
-	}
-
-	void MonoManager::Update()
-	{
-		/*DumpInfoFromImage(engine->mono.GetAPIImage());
-		DumpInfoFromImage(engine->mono.GetScriptImage());*/
-		for (auto& obj : objects)
-		{
-			MonoClass* klass = mono_class_from_name(engine->mono.GetScriptImage(), "", "Dog");
-
-			if (klass == nullptr) {
-				std::cout << "Failed loading class, MonoVec3" << std::endl;
-				continue;
-			}
-
-			MonoMethod* ctor_method = mono_class_get_method_from_name(klass, "Update", -1);
-			if (!ctor_method)
-			{
-				std::cout << "Failed to get method" << std::endl;
-				continue;
-			}
-
-			void* args[1];
-			//mono_runtime_object_init(obj);
-			//mono_runtime_invoke(ctor_method, obj, args, NULL);
-		}
 	}
 
 	void MonoManager::StopMono()
 	{
 		mono_jit_cleanup(domain);
-		/*mono_image_close(ScriptImage);
-		mono_image_close(APIImage);*/
-		
-		objects.clear();
+	}
+
+	MonoObject* MonoManager::CreateMonoObject(std::string scriptName, Entity entity)
+	{
+		MonoClass* base = mono_class_from_name(APIImage, "Eclipse", scriptName.c_str());
+		if (!base)
+		{
+			std::cout << "Failed loading class" << std::endl;
+			return nullptr;
+		}
+
+		MonoMethod* method = mono_class_get_method_from_name(base, "InitBehavior", -1);
+		if (method == nullptr) {
+			std::cout << "Failed loading class method" << std::endl;
+			return nullptr;
+		}
+
+		MonoObject* obj = mono_object_new(mono_domain_get(), base);
+		if (obj == nullptr) {
+			std::cout << "Failed loading class instance " << mono_class_get_name(base) << std::endl;
+			return nullptr;
+		}
+
+		void* args[2];
+		uint32_t handle = mono_gchandle_new(obj, true);
+		args[0] = &handle;
+		Entity ent = entity;
+		args[1] = &ent;
+		mono_runtime_invoke(method, obj, args, NULL);
+
+		return obj;
 	}
 
 	void MonoManager::GenerateDLL()
@@ -154,47 +175,47 @@ namespace Eclipse
 		ENGINE_CORE_INFO("Mono: Successfully Generate DLLs");
 	}
 
-	void MonoManager::CreateScriptObjects()
+	MonoDomain* MonoManager::LoadDomain()
 	{
-		std::list<MonoClass*> objs = GetAssemblyClassList(ScriptImage);
-		objs.pop_front();
+		MonoDomain* newDomain = mono_domain_create_appdomain("Child Domain", NULL);
 
-		MonoClass* base = mono_class_from_name(APIImage, "Eclipse", "EclipseBehavior");
-		MonoMethod* method = mono_class_get_method_from_name(base, "InitBehavior", -1);
-		if (method == nullptr) {
-			std::cout << "Failed loading class method" << std::endl;
-			return;
+		if (!newDomain) {
+			printf("Error creating domain\n");
+			return nullptr;
 		}
 
-		for (auto it = objs.begin(); it != objs.end(); it++)
-		{
-			DumpInfoFromClass(*it);
-			MonoObject* obj = mono_object_new(mono_domain_get(), *it);
-
-			if (obj == nullptr) {
-				std::cout << "Failed loading class instance " << mono_class_get_name(*it) << std::endl;
-				return;
-			}
-
-			objects.push_back(obj);
-
-			void* args[2];
-			uint32_t handle = mono_gchandle_new(obj, true);
-			args[0] = &handle;
-			Entity ent = 0;
-			args[1] = &ent;
-			
-			mono_runtime_invoke(method, obj, args, NULL);
+		if (!mono_domain_set(newDomain, false)) {
+			printf("Error setting domain\n");
+			return nullptr;
 		}
+
+		domain = newDomain;
+		return mono_domain_get();
 	}
+
+	void MonoManager::UnloadDomain()
+	{
+		MonoDomain* old_domain = mono_domain_get();
+		if (old_domain && old_domain != mono_get_root_domain()) {
+			if (!mono_domain_set(mono_get_root_domain(), false))
+				printf("Error setting domain\n");
+
+			mono_domain_unload(old_domain);
+		}
+
+		mono_gc_collect(mono_gc_max_generation());
+	}
+
 	MonoImage* MonoManager::GetAPIImage()
 	{
 		return APIImage;
 	}
+
 	MonoImage* MonoManager::GetScriptImage()
 	{
 		return ScriptImage;
 	}
+
 	void MonoManager::DumpInfoFromImage(MonoImage* _image)
 	{
 		std::cout << "#####################################" << std::endl;
@@ -217,6 +238,7 @@ namespace Eclipse
 			std::cout << std::endl;
 		}
 	}
+
 	void MonoManager::DumpInfoFromClass(MonoClass* _class)
 	{
 		std::cout << "#####################################" << std::endl;

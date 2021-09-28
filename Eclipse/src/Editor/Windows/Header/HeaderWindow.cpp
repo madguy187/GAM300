@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "HeaderWindow.h"
+#include "ECS/SystemManager/Systems/System/MonoSystem/MonoSystem.h"
 
 namespace Eclipse
 {
@@ -29,20 +30,32 @@ namespace Eclipse
 	void HeaderWindow::RunPlayPauseStep()
 	{
 		ECGui::InsertSameLine(ECGui::GetWindowSize().x / 2.25f);
-		if (ECGui::ButtonBool("Play " ICON_FA_PLAY))
+
+		if (!engine->GetPlayState())
 		{
-			if (engine->GetPlayState())
+			if (ECGui::ButtonBool("Play " ICON_FA_PLAY))
 			{
+				engine->mono.RestartMono();
+				auto& mono = engine->world.GetSystem<MonoSystem>();
+				mono->Init();
+
+				engine->SetPlayState(true);
+				ImGui::SetWindowFocus("Game View");
+				EDITOR_LOG_INFO("Scene is playing...");
+			}
+		}
+		else
+		{
+			if (ECGui::ButtonBool("Stop " ICON_FA_STOP))
+			{
+				auto& mono = engine->world.GetSystem<MonoSystem>();
+				mono->Terminate();
+				engine->mono.ResetMono();
+
 				engine->SetPlayState(false);
 				engine->SetPauseState(false);
 				ImGui::SetWindowFocus("Scene View");
 				EDITOR_LOG_INFO("Scene has stopped playing. Reverting to original state...");
-			}
-			else
-			{
-				engine->SetPlayState(true);
-				ImGui::SetWindowFocus("Game View");
-				EDITOR_LOG_INFO("Scene is playing...");
 			}
 		}
 

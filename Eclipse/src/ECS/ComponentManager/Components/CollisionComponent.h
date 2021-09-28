@@ -5,6 +5,6 @@ namespace Eclipse
 {
 	struct CollisionComponent
 	{
-
+		META_DATA(CollisionComponent);
 	};
 }

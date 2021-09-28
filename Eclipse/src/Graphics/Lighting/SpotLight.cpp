@@ -26,7 +26,7 @@ namespace Eclipse
 		SpotLightCounter++;
 	}
 
-	void SpotLight::Draw(SpotLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
+	void SpotLight::Draw(unsigned int EntityId,SpotLightComponent* in, unsigned int framebufferID, unsigned int IndexId, GLenum mode)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
 
@@ -40,9 +40,11 @@ namespace Eclipse
 		glDisable(GL_CULL_FACE);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		CheckUniformLoc(&shdrpgm, *in, indexID, SpotLightCounter);
+		CheckUniformLoc(&shdrpgm, *in, IndexId, SpotLightCounter);
 
-		if (in->visible)
+		auto& Light = engine->world.GetComponent<LightComponent>(EntityId);
+
+		if (in->visible && Light.Render)
 		{
 			GLCall(glDrawElements(Graphics::models["Sphere"]->GetPrimitiveType(),
 				Graphics::models["Sphere"]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
@@ -195,7 +197,7 @@ namespace Eclipse
 	{
 		for (auto& it : _spotlights)
 		{
-			Draw(it.second, framebufferID, it.first, GL_FILL);
+			Draw(it.first,it.second, framebufferID, it.first, GL_FILL);
 		}
 	}
 

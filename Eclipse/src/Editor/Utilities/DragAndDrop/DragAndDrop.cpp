@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "DragAndDrop.h"
 #include"Editor/Windows/AssetBrowser/AssetBrowser.h"
+#include "ECS/ComponentManager/Components/ScriptComponent.h"
 
 namespace Eclipse
 {
@@ -32,7 +33,6 @@ namespace Eclipse
 		if (ImGui::BeginDragDropSource())
 		{
 			ImGui::SetDragDropPayload(id, &source, sizeof(source));
-
 			switch (type)
 			{
 			case PayloadSourceType::PST_TEXT:
@@ -40,7 +40,6 @@ namespace Eclipse
 				break;
 			case PayloadSourceType::PST_IMAGE:
 				// For rendering 2D Image -> Need ask Graphics side
-				std::cout << "hi";
 				break;
 			default:
 				break;
@@ -51,7 +50,7 @@ namespace Eclipse
 	}
 
 	void DragAndDrop::StringPayloadTarget(const char* id, std::string& destination,
-		const char* cMsg, PayloadTargetType type, Entity ID)
+		const char* cMsg, PayloadTargetType type, Entity ID, size_t arrayIndex)
 	{
 		(void)ID;
 		if (ImGui::BeginDragDropTarget())
@@ -68,6 +67,9 @@ namespace Eclipse
 						// Put it here Nico, ur script instance thing
 						std::filesystem::path temp = ((const char*)payload->Data);
 						destination = AssetBrowserWindow::GetFileName(temp.filename().string().c_str());
+						auto& scriptCom = engine->world.GetComponent<ScriptComponent>(ID);
+						scriptCom.scriptList[arrayIndex].scriptName = destination;
+						
 					}
 					else
 					{

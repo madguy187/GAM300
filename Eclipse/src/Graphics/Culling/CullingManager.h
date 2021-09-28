@@ -1,7 +1,20 @@
 #pragma once
+#include "Graphics/Grid/IAABB.h"
+#include "Graphics/Grid/AABB.h"
 
 namespace Eclipse
 {
+    struct DYN_AABB;
+
+    class AABBCulling : public IAABB
+    {
+    public:
+        DYN_AABB AABB;
+        AABBComponent* Obj;
+
+        DYN_AABB getAABB() const override;
+    };
+
     class EachFace
     {
     private:
@@ -29,13 +42,23 @@ namespace Eclipse
     private:
         glm::vec3 Center{ 0.f, 0.f, 0.f };
         float Radius = 0.f;
+        bool GameFrustumCull = false;
+        bool SceneFrustumCull = true;
+        std::unordered_map<unsigned int, std::shared_ptr< AABBCulling>> CullContainer;
 
     public:
+        AABBTree FrustrumCollisionTree{ 5000 };
+
         CullingManager();
         CullingManager(const glm::vec3& inCenter, float inRadius);
         FrustrumFaces FrustrumFaceInfo(CameraComponent::CameraType CameraType);
         bool CheckOnFace(EachFace& plan);
-        bool CheckOnFrustum(FrustrumFaces& camFrustum, const TransformComponent& transform);
+        bool CheckOnFace(EachFace& Face, glm::vec3 Center, float Radius);
+        bool CheckOnFrustum(const TransformComponent& transform, CameraComponent::CameraType CameraType);
         bool ToRenderOrNot(unsigned int ID);
+        void Insert(AABBComponent& In, unsigned int ID);
+        std::vector<unsigned int> ReturnContacted();
+        CameraComponent::CameraType GetCamera();
+        void UpdateDYN_AABB(AABBComponent& in, unsigned int ID);
     };
 }

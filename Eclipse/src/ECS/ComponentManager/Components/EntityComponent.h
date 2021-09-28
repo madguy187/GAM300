@@ -14,7 +14,6 @@ namespace Eclipse
 		// DONT USE, FOR EDITOR STUFF
 		bool IsActive{ false };
 		// For Script Testing
-		std::vector<std::string> ScriptListComTest;
 		std::vector<Entity> Child;
 		std::vector<Entity> Parent;
 		bool IsAChild = false;
