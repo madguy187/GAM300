@@ -17,22 +17,22 @@ namespace EclipseCompiler
         GI_MAXCOUNT
     };
 
-    struct MeshA
+    class MeshA
     {
-        char* MeshName;
-        bool noTex{ true };
-        glm::vec4 Diffuse{ 30,40,50,60 };
-        glm::vec4 Specular{ 70,80,90,70 };
-        glm::vec4 Ambient{ 1,2,3,4 };
+    public:
+        glm::vec4               Diffuse{ 30,40,50,60 };
+        glm::vec4               Specular{ 70,80,90,70 };
+        glm::vec4               Ambient{ 1,2,3,4 };
+        std::array<char, 128>   MeshName;
+        bool                    noTex{ true };
 
-        std::vector<Vertex> Vertices;
-        std::vector<int> offSetsforObject;
-        std::vector<int> offSetsforVertices;
+        std::vector<Vertex>     Vertices;
+        std::vector<int>        offSetsforObject;
+        std::vector<int>        offSetsforVertices;
 
         MeshA()
         {
-            MeshName = new char[20];
-            strcpy_s(MeshName, 5, "poop");
+            strcpy_s(MeshName.data(), MeshName.size(), "poop");
             MeshName[5] = '\0';
 
             offSetsforObject = {
@@ -41,11 +41,10 @@ namespace EclipseCompiler
             sizeof(noTex),
             sizeof(Diffuse),
             sizeof(Specular),
-            sizeof(Ambient)
+            sizeof(Ambient),
+            112
             };
         };
-
-        ~MeshA() {};
     };
 
     struct Mesh

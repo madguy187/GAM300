@@ -181,7 +181,7 @@ namespace EclipseCompiler
         int totaloffset = 0;
 
         MeshA A;
-        strcpy_s(A.MeshName, 5, "hell");
+        strcpy_s(A.MeshName.data(), A.MeshName.size(), "hell");
         A.MeshName[5] = '\0';
 
         A.Diffuse = glm::vec4{ 1.1, 1.2, 1.3, 11.4 };
@@ -197,43 +197,12 @@ namespace EclipseCompiler
         A.Vertices.push_back(C);
         A.Vertices.push_back(C);
 
-        // debug this
-        for (int i = 0; i < static_cast<int>(GeometryIndex::GI_AMBIENT); ++i)
-        {
-            totaloffset += A.offSetsforObject[i];
-            int size = A.offSetsforObject[i + 1];
+        A.offSetsforObject[6] = sizeof(Vertex) * 2;
 
-            char* data = reinterpret_cast<char*>(&A) + totaloffset;
-            void* v = reinterpret_cast<void*>(data);
-
-            GeometryFile.write(reinterpret_cast<const char*>(&A.offSetsforObject[i + 1]), sizeof(A.offSetsforObject[i + 1]));
-            GeometryFile.write(reinterpret_cast<const char*>(v), size);
-        }
-
-        int totaloffset2 = 0;
-        A.offSetsforVertices.push_back(totaloffset);
-
-        for (int i = 0; i < A.Vertices.size(); i++) 
-        {
-            A.offSetsforVertices.push_back(sizeof( A.Vertices[i].Position));
-            totaloffset2 += A.offSetsforVertices[i];
-            int size = A.offSetsforVertices[i + 1];
-
-            char* data = reinterpret_cast<char*>(&A) + totaloffset2;
-            void* v = reinterpret_cast<void*>(data);
-            GeometryFile.write(reinterpret_cast<const char*>(&A.offSetsforVertices[i + 1]), sizeof(A.offSetsforVertices[i + 1]));
-            GeometryFile.write(reinterpret_cast<const char*>(v), size);
-
-            A.offSetsforVertices.push_back(sizeof(A.Vertices[i].Normal));
-            totaloffset2 += A.offSetsforVertices[i];
-            int size2 = A.offSetsforVertices[i + 1 + 1];
-
-            char* data2 = reinterpret_cast<char*>(&A) + totaloffset;
-            void* v2 = reinterpret_cast<void*>(data2);
-            GeometryFile.write(reinterpret_cast<const char*>(&A.offSetsforVertices[i + 1]), sizeof(A.offSetsforVertices[i + 1 + 1]));
-            GeometryFile.write(reinterpret_cast<const char*>(v2), size2);
-        }
-
+        GeometryFile.write(reinterpret_cast<const char*>(&A), offsetof(MeshA, Vertices) );
+        int Size = A.Vertices.size();
+        GeometryFile.write(reinterpret_cast<const char*>(&Size), sizeof(Size) );
+        GeometryFile.write(reinterpret_cast<const char*>(A.Vertices.data()), sizeof(Vertex) * Size);
         GeometryFile.close();
 
         GeometryFileWrite.open("../Eclipse/src/Assets/Compilers/GeometryFile/Geometry.bin",
@@ -243,21 +212,19 @@ namespace EclipseCompiler
         MeshA B;
         int offset = 0;
 
-        for (int i = 0; i < B.offSetsforObject.size() - 2; ++i)
-        {
-            int size = 0;
-            char* data = reinterpret_cast<char*>(&B) + offset;
-            void* v = reinterpret_cast<void*>(data);
+        GeometryFileWrite.read(reinterpret_cast<char*>(&B), offsetof(MeshA, Vertices));
+        GeometryFileWrite.read(reinterpret_cast<char*>(&Size), sizeof(Size));
+        B.Vertices.resize(Size);
+        GeometryFileWrite.read(reinterpret_cast<char*>(B.Vertices.data()), sizeof(Vertex)* Size);
 
-            GeometryFileWrite.read(reinterpret_cast<char*>(&size), sizeof(size));
+        // For vector of vertices
+        int size = 0;
+      //  GeometryFileWrite.read(reinterpret_cast<char*>(&size), sizeof(size));
+     //   B.Vertices.resize(size/ sizeof(Vertex));
+        auto i = sizeof(decltype(B.Vertices)::value_type) * size;
+       // GeometryFileWrite.read(reinterpret_cast<char*>(B.Vertices.data()), sizeof(Vertex) * 2);
 
-            // Read all the data
-            GeometryFileWrite.read(reinterpret_cast<char*>(v), size);
-
-            offset += size;
-        }
-
-        GeometryFileWrite.close();
+        int x = 0;
 #else
         for (auto& i : In)
         {
