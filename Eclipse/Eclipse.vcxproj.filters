@@ -4,6 +4,9 @@
     <Filter Include="Audio">
       <UniqueIdentifier>{9718D90C-032D-01BE-CCAE-A41D3882FDEE}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Audio\FmodAPI">
+      <UniqueIdentifier>{2653ADA8-9213-29DF-5B4E-725CC7CD6DBB}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ECS">
       <UniqueIdentifier>{60E1870B-CCEA-877C-5566-9E7CC16E937C}</UniqueIdentifier>
     </Filter>
@@ -230,6 +233,9 @@
   <ItemGroup>
     <ClInclude Include="src\Audio\AudioManager.h">
       <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Audio\FmodAPI\FmodAPI.h">
+      <Filter>Audio\FmodAPI</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\ComponentList.h">
       <Filter>ECS\ComponentManager</Filter>
@@ -707,11 +713,13 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\Audio\FmodAPI\FmodAPI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Audio\AudioManager.cpp">
       <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Audio\FmodAPI\FmodAPI.cpp">
+      <Filter>Audio\FmodAPI</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
       <Filter>ECS\ComponentManager</Filter>
@@ -1059,6 +1067,5 @@
       <Filter>Time</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\Audio\FmodAPI\FmodAPI.cpp" />
   </ItemGroup>
 </Project>
