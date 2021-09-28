@@ -18,7 +18,7 @@ namespace Eclipse
 		bool Init();
 		void DeserializeSounds();
 		void SerializeSounds();
-		void TerminateChannelsAndEvents();
+		void Terminate();
 
 		void LoadSound(const std::string& sound_name, bool looping = false, bool is3d = false, bool stream = false);
 		void LoadEvent(const std::string& event_name);

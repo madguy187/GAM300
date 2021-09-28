@@ -43,7 +43,7 @@ namespace Eclipse
 
 	void AudioManager::SerializeSounds() {}
 
-	void AudioManager::TerminateChannelsAndEvents()
+	void AudioManager::Terminate()
 	{
 		StopAllChannels();
 		for (auto& elem : FmodAPI->m_Events)

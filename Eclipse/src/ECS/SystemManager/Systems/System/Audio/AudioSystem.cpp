@@ -17,7 +17,7 @@ namespace Eclipse
 		}
 		else
 		{
-			engine->audioManager.TerminateChannelsAndEvents();
+			engine->audioManager.Terminate();
 		}*/
 
 		engine->audioManager.UpdateSystems();
