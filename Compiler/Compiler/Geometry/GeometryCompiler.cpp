@@ -210,28 +210,28 @@ namespace EclipseCompiler
             GeometryFile.write(reinterpret_cast<const char*>(v), size);
         }
 
-        int totaloffset = 0;
+        int totaloffset2 = 0;
         A.offSetsforVertices.push_back(totaloffset);
 
         for (int i = 0; i < A.Vertices.size(); i++) 
         {
             A.offSetsforVertices.push_back(sizeof( A.Vertices[i].Position));
-            totaloffset += A.offSetsforVertices[i];
+            totaloffset2 += A.offSetsforVertices[i];
             int size = A.offSetsforVertices[i + 1];
 
-            char* data = reinterpret_cast<char*>(&A) + totaloffset;
+            char* data = reinterpret_cast<char*>(&A) + totaloffset2;
             void* v = reinterpret_cast<void*>(data);
             GeometryFile.write(reinterpret_cast<const char*>(&A.offSetsforVertices[i + 1]), sizeof(A.offSetsforVertices[i + 1]));
             GeometryFile.write(reinterpret_cast<const char*>(v), size);
 
             A.offSetsforVertices.push_back(sizeof(A.Vertices[i].Normal));
-            totaloffset += A.offSetsforVertices[i];
-            int size = A.offSetsforVertices[i + 1 + 1];
+            totaloffset2 += A.offSetsforVertices[i];
+            int size2 = A.offSetsforVertices[i + 1 + 1];
 
-            char* data = reinterpret_cast<char*>(&A) + totaloffset;
-            void* v = reinterpret_cast<void*>(data);
+            char* data2 = reinterpret_cast<char*>(&A) + totaloffset;
+            void* v2 = reinterpret_cast<void*>(data2);
             GeometryFile.write(reinterpret_cast<const char*>(&A.offSetsforVertices[i + 1]), sizeof(A.offSetsforVertices[i + 1 + 1]));
-            GeometryFile.write(reinterpret_cast<const char*>(v), size);
+            GeometryFile.write(reinterpret_cast<const char*>(v2), size2);
         }
 
         GeometryFile.close();
