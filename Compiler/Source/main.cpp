@@ -27,6 +27,9 @@ int main()
         std::cout << "[1] : Geometry " << std::endl;
         std::cout << "[2] : Texture " << std::endl;
         std::cout << "[3] : Prefabs " << std::endl;
+        std::cout << "[Geo] : Test Read Geometry " << std::endl;
+        std::cout << "[Tex] : Test Read Textures " << std::endl;
+        std::cout << "[Pre] : Test Read Prefabs " << std::endl;
         std::cout << "[4] : Exit " << std::endl << std::endl << std::endl;
         std::cin >> Check;
 

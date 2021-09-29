@@ -48,7 +48,7 @@ namespace EclipseCompiler
 
         if (PrefabsFileRead.fail())
         {
-            std::cout << "Fail To Open Geometry File" << std::endl << std::endl;
+            std::cout << "Fail To Open Prefabs File" << std::endl << std::endl;
             return;
         }
 
@@ -94,7 +94,14 @@ namespace EclipseCompiler
     {
         if (in == "3")
         {
+            if (Prefabs.empty())
+            {
+                std::cout << "No Models Loaded" << std::endl << std::endl;
+                return;
+            }
+
             WriteToFile();
+            std::cout << "Prefabs File Compiled" << std::endl << std::endl;
         }
 
     }
@@ -103,6 +110,12 @@ namespace EclipseCompiler
     {
         if (in == "Pre")
         {
+            if (Prefabs.empty())
+            {
+                std::cout << "No Models Loaded" << std::endl << std::endl;
+                return;
+            }
+
             ReadFile();
         }
     }

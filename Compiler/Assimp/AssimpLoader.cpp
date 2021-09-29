@@ -303,9 +303,6 @@ namespace EclipseCompiler
             if (!skip)
             {
                 Texture tex(Directory, str.C_Str(), type);
-                std::cout << "Directory: " << Directory << std::endl;
-                std::cout << "Path: " << str.C_Str() << std::endl;
-
                 textures.push_back(tex);
                 Textures_loaded.push_back(tex);
 

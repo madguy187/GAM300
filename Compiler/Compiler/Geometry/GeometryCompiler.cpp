@@ -49,7 +49,7 @@ namespace EclipseCompiler
 
         if (GeometryFileWrite.fail())
         {
-            std::cout << "Fail To Open Geometry File" << std::endl << std::endl;
+            std::cout << "Fail To Open Geometry Compiled File" << std::endl << std::endl;
             return;
         }
 
@@ -80,12 +80,12 @@ namespace EclipseCompiler
         {
             if (Geometry.empty())
             {
-                std::cout << "No Geometry Loaded" << std::endl << std::endl;
+                std::cout << "No Models Loaded" << std::endl << std::endl;
                 return;
             }
 
             WriteToFile(Geometry);
-            std::cout << "Geometry File Produced" << std::endl << std::endl;
+            std::cout << "Geometry File Compiled" << std::endl << std::endl;
         }
     }
 
@@ -93,8 +93,13 @@ namespace EclipseCompiler
     {
         if (in == "Geo")
         {
-            ReadFile();
+            if (Geometry.empty())
+            {
+                std::cout << "No Models Loaded" << std::endl << std::endl;
+                return;
+            }
 
+            ReadFile();
             std::cout << "Read File " << std::endl << std::endl;
         }
     }
