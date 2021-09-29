@@ -114,12 +114,13 @@ namespace Eclipse
 		template <typename T>
 		inline void AddAttributeToElement(const std::string& att_name, const std::vector<T>& att_data)
 		{
+			AddAttributeToElement("size", att_data.size());
 			size_t counter = 0;
-			std::string name{att_name + " member"};
+			std::string name{"Member"};
 			for (const T& data : att_data)
 			{
 				StartElement(name, true, counter++);
-				AddAttributeToElement<T>("member", data);
+				AddAttributeToElement<T>("value", data);
 				CloseElement();
 			}
 		}

@@ -212,6 +212,7 @@ namespace Eclipse
     //DEFINE_META_POD(std::vector<Mesh>);
     //DEFINE_META_POD(std::vector<Texture>);
     //DEFINE_META_POD(std::map<unsigned int, std::vector<Texture>>);
+    DEFINE_META_POD(std::vector<Entity>);
     DEFINE_META_POD(ECVec2);
     DEFINE_META_POD(ECVec3);
     DEFINE_META_POD(ECVec4);

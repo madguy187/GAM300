@@ -48,7 +48,7 @@ std::string FileDialog::FileBrowser()
 	}
 	return std::string();
 }
-std::string FileDialog::SaveFile()
+std::string FileDialog::SaveAsFile()
 {
   OPENFILENAMEA openFileName;
   char fileName[MAX_PATH] = "";
@@ -94,4 +94,37 @@ std::string FileDialog::SaveFile()
 		return  _path.string();
 	}
 	return std::string();
+}
+
+std::string FileDialog::SaveFile()
+{
+  //If current scene is empty(new, not saved) scene, redirect
+  //to save as.
+  if (SceneManager::CheckCurrentScene(SceneManager::EMPTY))
+  {
+    return SaveAsFile();
+  }
+
+  std::string fileName = SceneManager::GetCurrentSceneName();
+  std::filesystem::path _path = SceneManager::GetScenePath(fileName);
+
+  //If the path doesnt exist, cleanup the scenelist and redirect to 
+  //save as.
+  if (!std::filesystem::exists(_path))
+  {
+    SceneManager::DeregisterCurrentScene();
+    return SaveAsFile();
+  }
+  else
+  {
+    _path.replace_extension(".scn");
+    engine->szManager.SaveSceneFile(_path.string().c_str());
+
+    std::string msg = "File ";
+    msg += _path.filename().string() + "is overwritten successfully";
+    EDITOR_LOG_INFO(msg.c_str());
+  }
+  //save file  (serialize here)
+  EDITOR_LOG_INFO(_path.string().c_str());
+  return  _path.string();
 }
