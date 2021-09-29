@@ -10,8 +10,11 @@ namespace EclipseCompiler
     public:
         // I will use textures that are not assigned first to use index more than 100
         std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>> Textures;
-        std::ofstream TextureFile;
-        std::fstream TextureFileWrite;
+        std::ofstream TextureFileWrite;
+        std::fstream TextureFileRead;
+
+        // Texture Container
+        std::unordered_map<std::string, Texture> TextureCotainer;
 
     private:
         void ReadFile();

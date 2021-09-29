@@ -23,43 +23,22 @@ namespace EclipseCompiler
                 {
                     std::string PathName = ("..//Eclipse//src/Assets/ASSModels/" + FolderName + "/" + FbxOrGltfName).c_str();
                     std::unique_ptr<AssimpLoader> ptr = std::make_unique< AssimpLoader>();
-                    ptr->LoadAssimpModelForTextures(PathName, Textures);
+                    ptr->LoadAssimpModelForTextures(PathName, TextureCotainer);
                 }
             }
         }
-
-        //// Check How Many Textures are Loaded and which meshes are they mapped to?
-        //std::cout << "Loaded Textures Count " << Textures.size() << std::endl;
-        //std::cout << "-------------------------------------------------------------------" << std::endl;
-        //for (auto const& Model : Textures)
-        //{
-        //    auto& ModelName = (Model.first);
-        //    auto& MapWithMeshIndexAndTextures = (Model.second);
-
-        //    std::cout << "Model Name : " << ModelName << std::endl;
-
-        //    for (auto& i : MapWithMeshIndexAndTextures)
-        //    {
-        //        for (auto& EachTextures : i.second)
-        //        {
-        //            std::cout << "MeshIndex [" << i.first << "] " << EachTextures->TexturePath << std::endl;
-        //        }
-        //    }
-        //    std::cout << std::endl;
-        //}
     }
 
     void TextureCompiler::Init()
     {
         LoadFile("..//Eclipse//src//Assets//ASSModels");
-        ReadFile();
     }
 
     void TextureCompiler::ReleaseFile(std::string& in)
     {
         if (in == "2")
         {
-            if (Textures.empty())
+            if (TextureCotainer.empty())
             {
                 std::cout << "No Textures Loaded" << std::endl << std::endl;
                 return;
@@ -72,91 +51,97 @@ namespace EclipseCompiler
 
     void TextureCompiler::ReadFile(std::string& in)
     {
-
+        if (in == "Tex")
+        {
+            ReadFile();
+        }
     }
 
     void TextureCompiler::WriteToFile(std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>& LoadedTextures)
     {
-        TextureFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+        TextureFileWrite.open(Path + "TextureFile/Texture" + FileName,
+            std::ios_base::out |
+            std::ios_base::trunc |
+            std::ios_base::binary);
 
-        try
+        if (TextureFileWrite.fail())
         {
-            TextureFile.open("../Eclipse/src/Assets/Compilers/TextureFile/Texture.txt", std::fstream::in | std::fstream::out | std::fstream::binary | std::ios::trunc);
+            std::cout << "Fail To Open Geometry File" << std::endl << std::endl;
+            return;
         }
-        catch (std::ifstream::failure e)
+
+        // Number Of Textures
+        int NumberOfTextures = TextureCotainer.size();
+        TextureFileWrite.write(reinterpret_cast<const char*>(&NumberOfTextures), sizeof(NumberOfTextures));
+
+        for (auto const Textures : TextureCotainer)
         {
-            std::cout << "Exception opening/reading file" << e.what();
+            // Mesh Name
+            std::array<char, 128> MeshName;
+            strcpy_s(MeshName.data(), MeshName.size(), Textures.first.data());
+            MeshName[MeshName.size() - 1] = '\0';
+            TextureFileWrite.write(reinterpret_cast<const char*>(&MeshName), sizeof(MeshName));
+
+            // Number Of Textures
+            int TextureType = Textures.second.Type;
+            TextureFileWrite.write(reinterpret_cast<const char*>(&TextureType), sizeof(TextureType));
+
+            // Texture Directory
+            std::array<char, 128> TextureDirectory;
+            strcpy_s(TextureDirectory.data(), TextureDirectory.size(), Textures.second.TextureDirectory.data());
+            TextureDirectory[TextureDirectory.size() - 1] = '\0';
+            TextureFileWrite.write(reinterpret_cast<const char*>(&TextureDirectory), sizeof(TextureDirectory));
+
+            // Texture Path
+            std::array<char, 128> TexturePath;
+            strcpy_s(TexturePath.data(), TexturePath.size(), Textures.second.TexturePath.data());
+            TexturePath[TexturePath.size() - 1] = '\0';
+            TextureFileWrite.write(reinterpret_cast<const char*>(&TexturePath), sizeof(TexturePath));
         }
 
-        for (auto const& Model : LoadedTextures)
-        {
-            // Save Name of Model
-            auto& ModelName = (Model.first);
-            TextureFile << ModelName << std::endl;
-
-            auto& MapWithMeshIndexAndTextures = (Model.second);
-
-            for (auto& i : MapWithMeshIndexAndTextures)
-            {
-                TextureFile << i.first << std::endl;
-                //std::cout << "MeshIndex " << i.first << std::endl;
-
-                TextureFile << i.second[0]->Type << std::endl;
-                //std::cout << "Type " << i.second[0]->Type << std::endl;
-
-                TextureFile << i.second[0]->TexturePath << std::endl;
-                TextureFile << i.second[0]->TextureDirectory << std::endl;
-                //std::cout << "Texture Path " << i.second[0]->TexturePath << std::endl;
-                //std::cout << "Texture Dire " << i.second[0]->TextureDirectory << std::endl;
-            }
-
-            TextureFile << "---" << std::endl;
-        }
+        TextureFileWrite.close();
     }
 
     void TextureCompiler::ReadFile()
     {
-        TextureFileWrite.open("../Eclipse/src/Assets/Compilers/TextureFile/Texture.txt", std::ios::out | std::ios::in);
-        std::string eachline;
+        std::unordered_map<std::string, Texture> TestRead;
 
-        // This getline is to getName
-        while (!TextureFileWrite.eof())
+        TextureFileRead.open(Path + "TextureFile/Texture" + FileName,
+            std::ios::in |
+            std::ios::binary);
+
+        if (TextureFileRead.fail())
         {
-            std::getline(TextureFileWrite, eachline);
-
-            if (eachline == "")
-            {
-                break;
-            }
-
-            std::unique_ptr<Texture> TestTexture(new Texture());
-
-            // Get Name of Mesh
-            std::string Name = eachline;
-
-            // Mesh Index
-            std::getline(TextureFileWrite, eachline);
-            int MeshIndex = std::atoi(eachline.c_str());
-
-            // Type
-            std::getline(TextureFileWrite, eachline);
-            TestTexture->Type = static_cast<aiTextureType>(std::atoi(eachline.c_str()));
-
-            // Path
-            std::getline(TextureFileWrite, eachline);
-            TestTexture->TexturePath = eachline;
-
-            // Directory
-            std::getline(TextureFileWrite, eachline);
-            TestTexture->TextureDirectory = eachline;
-
-            //Check isit End of A texture for mesh
-            std::getline(TextureFileWrite, eachline);
-            if (eachline == "---")
-            {
-                // Insert here
-                continue;
-            }
+            std::cout << "Fail To Open Texture File" << std::endl << std::endl;
+            return;
         }
+
+        // Number Of Textures
+        int NumberOfTextures = 0;
+        TextureFileRead.read(reinterpret_cast<char*>(&NumberOfTextures), sizeof(NumberOfTextures));
+
+        for (int i = 0; i < NumberOfTextures; i++)
+        {
+            // Mesh Name
+            std::array<char, 128> MeshName;
+            TextureFileRead.read(reinterpret_cast<char*>(&MeshName), sizeof(MeshName));
+
+            // Number Of Textures
+            int TextureType = 0;
+            TextureFileRead.read(reinterpret_cast<char*>(&TextureType), sizeof(TextureType));
+
+            // Texture Directory
+            std::array<char, 128> TextureDirectory;
+            TextureFileRead.read(reinterpret_cast<char*>(&TextureDirectory), sizeof(TextureDirectory));
+
+            // Texture DirecPathtory
+            std::array<char, 128> TexturePath;
+            TextureFileRead.read(reinterpret_cast<char*>(&TexturePath), sizeof(TexturePath));
+
+            Texture tex(TextureDirectory.data(), TexturePath.data(), static_cast<aiTextureType>(TextureType));
+            TestRead.emplace(MeshName.data(), tex);
+        }
+
+        TextureFileRead.close();
     }
 }

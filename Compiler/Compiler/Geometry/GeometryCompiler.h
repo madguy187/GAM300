@@ -15,8 +15,6 @@ namespace EclipseCompiler
 
         // Prefab Container Names
         std::unordered_map<std::string, std::vector<std::string>> Prefabs;
-        //std::ofstream PrefabsFileWrite;
-        //std::fstream PrefabsFileRead;
 
     private:
         void WriteToFile(std::unordered_map<std::string, Mesh>&);

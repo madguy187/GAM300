@@ -15,8 +15,8 @@ public:
     }
 
     aiTextureType Type;
-    std::string TexturePath;
     std::string TextureDirectory;
+    std::string TexturePath;
 };
 
 struct Vertex

@@ -407,7 +407,7 @@ namespace Eclipse
         // return Mesh(vertices, indices, textures);
     }
 
-    std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType type , std::string& MeshName)
+    std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType type, std::string& MeshName)
     {
         std::vector<Texture> textures;
 
@@ -416,7 +416,7 @@ namespace Eclipse
         //tex.load(false);
         //textures.push_back(tex);
         //textures_loaded.push_back(tex);
-        
+
         for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
         {
             aiString str;

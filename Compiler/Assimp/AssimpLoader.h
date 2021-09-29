@@ -21,7 +21,7 @@ namespace EclipseCompiler
         Mesh()
         {
             strcpy_s(MeshName.data(), MeshName.size(), "Mesh");
-            MeshName[MeshName.size()-1] = '\0';
+            MeshName[MeshName.size() - 1] = '\0';
         };
 
         Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::string namein, std::vector<Texture> textures)
@@ -32,7 +32,7 @@ namespace EclipseCompiler
             NoTex(false)
         {
             strcpy_s(MeshName.data(), MeshName.size(), namein.data());
-            MeshName[MeshName.size()-1] = '\0';
+            MeshName[MeshName.size() - 1] = '\0';
         }
 
         Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, glm::vec4  diffuse, glm::vec4  specular, glm::vec4  ambient, bool in, std::string namein)
@@ -45,7 +45,7 @@ namespace EclipseCompiler
             NoTex(in)
         {
             strcpy_s(MeshName.data(), MeshName.size(), namein.data());
-            MeshName[MeshName.size()-1] = '\0';
+            MeshName[MeshName.size() - 1] = '\0';
         }
 
         ~Mesh() {};
@@ -85,10 +85,10 @@ namespace EclipseCompiler
         void LoadNewModel(std::unordered_map<std::string, Mesh>& GeometryContainer);
 
     public:
-        std::vector<Texture> ExtractTextures(aiMesh* mesh, const aiScene* scene, std::string& MeshName, std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>&);
-        void LoadAssimpModelForTextures(std::string path, std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>&);
-        void ProcessTextures(aiNode* node, const aiScene* scene, std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>& TextureContainer);
+        void LoadAssimpModelForTextures(std::string path, std::unordered_map<std::string, Texture>&);
+        void ProcessTextures(aiNode* node, const aiScene* scene, std::unordered_map<std::string, Texture>& TextureContainer);
+        std::vector<Texture> ExtractTextures(aiMesh* mesh, const aiScene* scene, std::string& MeshName, std::unordered_map<std::string, Texture>& TextureContainer);
         std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type, const char* MeshName);
-        std::vector<Texture> LoadTexturesForCompiler(aiMaterial* mat, aiTextureType type, std::string& MeshName, std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>&);
+        std::vector<Texture> LoadTexturesForCompiler(aiMaterial* mat, aiTextureType type, std::string& MeshName, std::unordered_map<std::string, Texture>&);
     };
 }
