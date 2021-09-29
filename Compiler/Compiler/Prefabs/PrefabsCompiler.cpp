@@ -26,7 +26,7 @@ namespace EclipseCompiler
             ParentName[ParentName.size() - 1] = '\0';
             PrefabsFileWrite.write(reinterpret_cast<const char*>(&ParentName), sizeof(ParentName));
 
-            int NumberOfSubMeshes = 3;
+            int NumberOfSubMeshes = i.second.size();
             PrefabsFileWrite.write(reinterpret_cast<const char*>(&NumberOfSubMeshes), sizeof(NumberOfSubMeshes));
 
             for (auto EachMeshName : i.second)
