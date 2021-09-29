@@ -197,7 +197,7 @@ namespace Eclipse
         //PrintOutModelTextureMap();
         //PrintOutModelMap();
         //PrintOutAllTextures();
-        PrintOutAllMeshes();
+        //PrintOutAllMeshes();
     }
 
     void AssimpModelManager::Cleanup(MeshComponent& in)
@@ -516,11 +516,10 @@ namespace Eclipse
         // Loading Eclipse File
         std::fstream GeometryFileRead;
 
-
         std::string Path = "../Eclipse/src/Assets/Compilers/";
         std::string FileName = ".bin";
 
-        GeometryFileRead.open("src/Assets/Compilers/GeometryFile/Geometry.txt",
+        GeometryFileRead.open("src/Assets/Compilers/GeometryFile/Geometry.eclipse",
             std::ios::in |
             std::ios::binary);
 
@@ -542,11 +541,11 @@ namespace Eclipse
             VerticesSize = 0;
             IndicesSize = 0;
 
-            MeshGeometry B;
+            Mesh B;
 
             auto hh = sizeof(B);
 
-            GeometryFileRead.read(reinterpret_cast<char*>(&B), offsetof(MeshGeometry, Vertices));
+            GeometryFileRead.read(reinterpret_cast<char*>(&B), offsetof(Mesh, Vertices));
 
             GeometryFileRead.read(reinterpret_cast<char*>(&VerticesSize), sizeof(VerticesSize));
             B.Vertices.resize(VerticesSize);
@@ -568,7 +567,7 @@ namespace Eclipse
             {
                 Mesh NewMesh(B.Vertices, B.Indices, B.Diffuse, B.Specular, B.Ambient, B.NoTex, B.MeshName.data());
                 std::string name = B.MeshName.data();
-                engine->AssimpManager.SingleMeshMap.emplace(name,std::make_unique<Mesh>(NewMesh));
+               SingleMeshMap.emplace(name,std::make_unique<Mesh>(NewMesh));
             }
         }
 

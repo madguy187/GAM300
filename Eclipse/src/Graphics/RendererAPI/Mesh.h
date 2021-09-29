@@ -16,55 +16,7 @@ namespace Eclipse
         glm::vec3 Normal{ 0,0,0 };
         glm::vec2 TextureCoodinates{ 0,0 };
         glm::vec4 m_Color{ 0,0,0,0 };
-        //static std::vector<Vertex> GenList(float* vertices, int noVertices);
-    };
-
-    struct MeshGeometry
-    {
-    public:
-        glm::vec4 Diffuse{ 0,0,0,0 };
-        glm::vec4 Specular{ 0,0,0,0 };
-        glm::vec4 Ambient{ 0,0,0,0 };
-        std::array<char, 10> MeshName;
-        bool NoTex{ true };
-        std::vector<Vertex> Vertices;
-        std::vector<unsigned int> Indices;
-        std::vector<Texture> Textures;
-        unsigned int VBO = 0;
-        unsigned int VAO = 0;
-        unsigned int EBO = 0;
-
-        MeshGeometry()
-        {
-            strcpy_s(MeshName.data(), MeshName.size(), "Mesh");
-            MeshName[MeshName.size() - 1] = '\0';
-        };
-
-        MeshGeometry(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::string namein, std::vector<Texture> textures)
-            :
-            Vertices(vertices),
-            Indices(indices),
-            Textures(textures),
-            NoTex(false)
-        {
-            strcpy_s(MeshName.data(), MeshName.size(), namein.data());
-            MeshName[MeshName.size() - 1] = '\0';
-        }
-
-        MeshGeometry(std::vector<Vertex> vertices, std::vector<unsigned int> indices, glm::vec4  diffuse, glm::vec4  specular, glm::vec4  ambient, bool in, std::string namein)
-            :
-            Vertices(vertices),
-            Indices(indices),
-            Diffuse(diffuse),
-            Specular(specular),
-            Ambient(ambient),
-            NoTex(in)
-        {
-            strcpy_s(MeshName.data(), MeshName.size(), namein.data());
-            MeshName[MeshName.size() - 1] = '\0';
-        }
-
-        ~MeshGeometry() {};
+        static std::vector<Vertex> GenList(float* vertices, int noVertices);
     };
 
     class Mesh
@@ -73,7 +25,7 @@ namespace Eclipse
         glm::vec4 Diffuse{ 0,0,0,0 };
         glm::vec4 Specular{ 0,0,0,0 };
         glm::vec4 Ambient{ 0,0,0,0 };
-        std::array<char, 10> MeshName;
+        std::array<char, 128> MeshName;
         bool NoTex{ true };
         std::vector<Vertex> Vertices;
         std::vector<unsigned int> Indices;

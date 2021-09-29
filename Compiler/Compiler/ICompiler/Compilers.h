@@ -18,7 +18,7 @@ namespace EclipseCompiler
     {
     public:
         std::string Path = "../Eclipse/src/Assets/Compilers/";
-        std::string FileName = ".txt";
+        std::string FileName = ".eclipse";
 
         virtual void LoadFile(const std::string& modelFile) = 0;
         virtual void Init() = 0;

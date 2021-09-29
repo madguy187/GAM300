@@ -106,8 +106,6 @@ namespace EclipseCompiler
             return;
         }
 
-        int VerticesSize = 0;
-        int IndicesSize = 0;
         int TotalNumberOfModels = 0;
 
         // See how many Models
@@ -115,9 +113,10 @@ namespace EclipseCompiler
 
         for (int i = 0; i < TotalNumberOfModels; i++)
         {
-            MeshGeometry B;
+            int VerticesSize = 0;
+            int IndicesSize = 0;
 
-            auto p = sizeof(B);
+            Mesh B;
 
             GeometryFileRead.read(reinterpret_cast<char*>(&B), offsetof(Mesh, Vertices));
 
