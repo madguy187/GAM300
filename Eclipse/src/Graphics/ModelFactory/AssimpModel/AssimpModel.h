@@ -13,8 +13,6 @@
 #include "Graphics/Grid/IAABB.h"
 #include "Graphics/Grid/AABB.h"
 
-#include "ECS/ComponentManager/Components/ChildTransformComponent.h"
-
 namespace Eclipse
 {
     //TEST CODE

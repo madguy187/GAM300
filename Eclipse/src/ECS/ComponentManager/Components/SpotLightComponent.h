@@ -9,7 +9,6 @@ namespace Eclipse
     struct SpotLightComponent
     {
         META_DATA(SpotLightComponent);
-        unsigned int ID = 0;
         unsigned int Counter = 0;
 
         ECVec3 lightColor{ 1.0f,1.0f,1.0f };
@@ -33,11 +32,5 @@ namespace Eclipse
         bool hasTexture = false;
         bool visible = false;
         bool AffectsWorld = true;
-
-        // Not needed
-        //IModel* modelRef;
-        //Shader* shaderRef;
-        //Texture* textureRef;
-        //glm::mat4 modelNDC_xform{ 0 };
     };
 }

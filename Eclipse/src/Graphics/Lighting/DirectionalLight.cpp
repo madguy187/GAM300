@@ -14,7 +14,7 @@ namespace Eclipse
 
 		// Add DirectionalLight Component
 		engine->world.AddComponent(CreatedID, LightComponent{});
-		engine->world.AddComponent(CreatedID, DirectionalLightComponent{ CreatedID,DirectionalLightcounter });
+		engine->world.AddComponent(CreatedID, DirectionalLightComponent{ DirectionalLightcounter });
 
 		EDITOR_LOG_WARN("Directional Light Created Successfully");
 		DirectionalLightcounter++;
@@ -34,7 +34,7 @@ namespace Eclipse
 		glDisable(GL_CULL_FACE);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		CheckUniformLoc(&shdrpgm, *in, IndexID, DirectionalLightcounter);
+		CheckUniformLoc(&shdrpgm, *in, IndexID, DirectionalLightcounter , EntityId);
 
 		auto& Light = engine->world.GetComponent<LightComponent>(EntityId);
 
@@ -48,7 +48,7 @@ namespace Eclipse
 		shdrpgm.UnUse();
 	}
 
-	void DirectionalLight::CheckUniformLoc(Shader* _shdrpgm, DirectionalLightComponent& in_light, int index, unsigned int containersize)
+	void DirectionalLight::CheckUniformLoc(Shader* _shdrpgm, DirectionalLightComponent& in_light, int index, unsigned int containersize , unsigned int EntityId)
 	{
 		// We should only have 1 but lets see how
 		std::string number = std::to_string(index);
@@ -58,7 +58,7 @@ namespace Eclipse
 		GLint uniform_var_loc5 = _shdrpgm->GetLocation("uModelToNDC");
 		GLuint uniform_var_lo6 = _shdrpgm->GetLocation("model");
 
-		TransformComponent& trans = engine->world.GetComponent<TransformComponent>(in_light.ID);
+		TransformComponent& trans = engine->world.GetComponent<TransformComponent>(EntityId);
 		CameraComponent camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 
 		// mModelNDC and model 
@@ -115,7 +115,7 @@ namespace Eclipse
 
 		// Add DirectionalLight Component
 		engine->world.AddComponent(FirstGlobalLight, LightComponent{});
-		engine->world.AddComponent(FirstGlobalLight, DirectionalLightComponent{ FirstGlobalLight , DirectionalLightcounter });
+		engine->world.AddComponent(FirstGlobalLight, DirectionalLightComponent{ DirectionalLightcounter });
 
 		EDITOR_LOG_WARN("First GlobalLight Created ");
 		DirectionalLightcounter++;
@@ -125,10 +125,10 @@ namespace Eclipse
 {
 	bool DirectionalLight::InsertDirectionalLight(DirectionalLightComponent& in)
 	{
-		if (_DirectionalLight.insert({ in.ID , &in }).second == true)
-		{
-			return true;
-		}
+		//if (_DirectionalLight.insert({ in.ID , &in }).second == true)
+		//{
+		//	return true;
+		//}
 
 		return false;
 	}
