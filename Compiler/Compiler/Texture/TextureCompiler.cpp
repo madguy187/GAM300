@@ -71,7 +71,7 @@ namespace EclipseCompiler
         }
 
         // Number Of Textures
-        int NumberOfTextures = TextureCotainer.size();
+        size_t NumberOfTextures = TextureCotainer.size();
         TextureFileWrite.write(reinterpret_cast<const char*>(&NumberOfTextures), sizeof(NumberOfTextures));
 
         for (auto const Textures : TextureCotainer)

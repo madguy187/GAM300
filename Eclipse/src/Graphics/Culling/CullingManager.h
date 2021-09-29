@@ -4,7 +4,7 @@
 
 namespace Eclipse
 {
-    struct DYN_AABB;
+    class DYN_AABB;
 
     class AABBCulling : public IAABB
     {

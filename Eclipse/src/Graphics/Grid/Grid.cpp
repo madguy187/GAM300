@@ -179,11 +179,11 @@ namespace Eclipse
 		// Only max have this number of tiles
 		GridArray.reserve(TotalTiles);
 
-		for (int y = 0; y < TotalTiles; y += (GridSize * GridSize))
+		for (unsigned int y = 0; y < TotalTiles; y += (GridSize * GridSize))
 		{
-			for (int z = 0; z < GridSize; z++)
+			for (unsigned int z = 0; z < GridSize; z++)
 			{
-				for (int x = 0; x < GridSize; x++)
+				for (unsigned int x = 0; x < GridSize; x++)
 				{
 					unsigned int Index = (z * GridSize) + x + y;
 					float HalfExtent = (GridScale / 2);
@@ -273,11 +273,11 @@ namespace Eclipse
 		if (PrintDebug == false)
 			return;
 
-		for (int y = 0; y < TotalTiles; y += (GridSize * GridSize))
+		for (unsigned int y = 0; y < TotalTiles; y += (GridSize * GridSize))
 		{
-			for (int z = 0; z < GridSize; z++)
+			for (unsigned int z = 0; z < GridSize; z++)
 			{
-				for (int x = 0; x < GridSize; x++)
+				for (unsigned int x = 0; x < GridSize; x++)
 				{
 					unsigned int Index = (z * GridSize) + x + y;
 

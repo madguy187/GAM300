@@ -1,19 +1,21 @@
 #include "pch.h"
 #include "MaterialManager.h"
 
+#pragma warning( disable : 4305 )
+
 namespace Eclipse
 {
     Material Material::Emerald =
     {
-        ECVec3(0.0215, 0.1745, 0.0215),
-        ECVec3(0.07568, 0.61424, 0.07568),
-        ECVec3(0.633, 0.727811, 0.633),
+        ECVec3(0.0215f, 0.1745f, 0.0215f),
+        ECVec3(0.07568f, 0.61424f, 0.07568f),
+        ECVec3(0.633f, 0.727811f, 0.633f),
         0.6
     };
 
     Material Material::Jade =
     {
-        ECVec3(0.135, 0.2225, 0.1575),
+        ECVec3(0.135f, 0.2225, 0.1575),
         ECVec3(0.54, 0.89, 0.63),
         ECVec3(0.316228, 0.316228, 0.316228),
         0.1

@@ -5,7 +5,7 @@ namespace EclipseCompiler
 {
     void Helper::ProcessVec4(std::string& s, glm::vec4& vec4)
     {
-        std::vector<int> T;
+        std::vector<float> T;
         std::string Finding = " ";
 
         size_t pos = 0;
@@ -25,7 +25,7 @@ namespace EclipseCompiler
 
     void Helper::ProcessVec3(std::string& s, glm::vec3& vec3)
     {
-        std::vector<int> T;
+        std::vector<float> T;
         std::string Finding = " ";
 
         size_t pos = 0;
@@ -45,7 +45,7 @@ namespace EclipseCompiler
 
     void Helper::ProcessVec2(std::string& s, glm::vec2& vec2)
     {
-        std::vector<int> T;
+        std::vector<float> T;
         std::string Finding = " ";
 
         size_t pos = 0;
@@ -109,7 +109,7 @@ namespace EclipseCompiler
 
     glm::vec2 Helper::ReturnVec2(std::string& s)
     {
-        std::vector<int> T;
+        std::vector<float> T;
         glm::vec2 NewT;
         std::string Finding = " ";
 

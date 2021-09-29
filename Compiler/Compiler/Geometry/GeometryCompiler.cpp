@@ -55,7 +55,7 @@ namespace EclipseCompiler
             return;
         }
 
-        int NumberOfModels = In.size();
+        size_t NumberOfModels = In.size();
         GeometryFileWrite.write(reinterpret_cast<const char*>(&NumberOfModels), sizeof(NumberOfModels));
 
         for (auto i : In)
@@ -64,11 +64,11 @@ namespace EclipseCompiler
 
             GeometryFileWrite.write(reinterpret_cast<const char*>(&SaveModel), offsetof(Mesh, Vertices));
 
-            int VertexSize = SaveModel.Vertices.size();
+            size_t VertexSize = SaveModel.Vertices.size();
             GeometryFileWrite.write(reinterpret_cast<const char*>(&VertexSize), sizeof(VertexSize));
             GeometryFileWrite.write(reinterpret_cast<const char*>(SaveModel.Vertices.data()), sizeof(Vertex) * VertexSize);
 
-            int IndicesSize = SaveModel.Indices.size();
+            size_t IndicesSize = SaveModel.Indices.size();
             GeometryFileWrite.write(reinterpret_cast<const char*>(&IndicesSize), sizeof(IndicesSize));
             GeometryFileWrite.write(reinterpret_cast<const char*>(SaveModel.Indices.data()), sizeof(unsigned int) * IndicesSize);
         }
