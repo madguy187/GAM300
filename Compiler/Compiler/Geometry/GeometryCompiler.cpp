@@ -37,36 +37,36 @@ namespace EclipseCompiler
 
     void GeometryCompiler::WriteToFile(std::unordered_map<std::string, Mesh>& In)
     {
-        GeometryFile.open(Path + "GeometryFile/Geometry" + FileName,
+        GeometryFileWrite.open(Path + "GeometryFile/Geometry" + FileName,
             std::ios_base::out |
             std::ios_base::trunc |
             std::ios_base::binary);
 
-        if (GeometryFile.fail())
+        if (GeometryFileWrite.fail())
         {
             std::cout << "Fail To Open Geometry File" << std::endl << std::endl;
             return;
         }
 
         int NumberOfModels = In.size();
-        GeometryFile.write(reinterpret_cast<const char*>(&NumberOfModels), sizeof(NumberOfModels));
+        GeometryFileWrite.write(reinterpret_cast<const char*>(&NumberOfModels), sizeof(NumberOfModels));
 
         for (auto i : In)
         {
             Mesh SaveModel = i.second;
 
-            GeometryFile.write(reinterpret_cast<const char*>(&SaveModel), offsetof(Mesh, Vertices));
+            GeometryFileWrite.write(reinterpret_cast<const char*>(&SaveModel), offsetof(Mesh, Vertices));
 
             int VertexSize = SaveModel.Vertices.size();
-            GeometryFile.write(reinterpret_cast<const char*>(&VertexSize), sizeof(VertexSize));
-            GeometryFile.write(reinterpret_cast<const char*>(SaveModel.Vertices.data()), sizeof(Vertex) * VertexSize);
+            GeometryFileWrite.write(reinterpret_cast<const char*>(&VertexSize), sizeof(VertexSize));
+            GeometryFileWrite.write(reinterpret_cast<const char*>(SaveModel.Vertices.data()), sizeof(Vertex) * VertexSize);
 
             int IndicesSize = SaveModel.Indices.size();
-            GeometryFile.write(reinterpret_cast<const char*>(&IndicesSize), sizeof(IndicesSize));
-            GeometryFile.write(reinterpret_cast<const char*>(SaveModel.Indices.data()), sizeof(unsigned int) * IndicesSize);
+            GeometryFileWrite.write(reinterpret_cast<const char*>(&IndicesSize), sizeof(IndicesSize));
+            GeometryFileWrite.write(reinterpret_cast<const char*>(SaveModel.Indices.data()), sizeof(unsigned int) * IndicesSize);
         }
 
-        GeometryFile.close();
+        GeometryFileWrite.close();
     }
 
     void GeometryCompiler::ReleaseFile(std::string& in)
@@ -96,11 +96,11 @@ namespace EclipseCompiler
 
     void GeometryCompiler::ReadFile()
     {
-        GeometryFileWrite.open(Path + "GeometryFile/Geometry" + FileName,
+        GeometryFileRead.open(Path + "GeometryFile/Geometry" + FileName,
             std::ios::in |
             std::ios::binary);
 
-        if (GeometryFileWrite.fail())
+        if (GeometryFileRead.fail())
         {
             std::cout << "Fail To Open Geometry File" << std::endl << std::endl;
             return;
@@ -111,21 +111,25 @@ namespace EclipseCompiler
         int TotalNumberOfModels = 0;
 
         // See how many Models
-        GeometryFileWrite.read(reinterpret_cast<char*>(&TotalNumberOfModels), sizeof(int));
+        GeometryFileRead.read(reinterpret_cast<char*>(&TotalNumberOfModels), sizeof(int));
 
         for (int i = 0; i < TotalNumberOfModels; i++)
         {
-            Mesh B;
+            MeshGeometry B;
 
-            GeometryFileWrite.read(reinterpret_cast<char*>(&B), offsetof(Mesh, Vertices));
+            auto p = sizeof(B);
 
-            GeometryFileWrite.read(reinterpret_cast<char*>(&VerticesSize), sizeof(VerticesSize));
+            GeometryFileRead.read(reinterpret_cast<char*>(&B), offsetof(Mesh, Vertices));
+
+            GeometryFileRead.read(reinterpret_cast<char*>(&VerticesSize), sizeof(VerticesSize));
             B.Vertices.resize(VerticesSize);
-            GeometryFileWrite.read(reinterpret_cast<char*>(B.Vertices.data()), sizeof(Vertex) * VerticesSize);
+            GeometryFileRead.read(reinterpret_cast<char*>(B.Vertices.data()), sizeof(Vertex) * VerticesSize);
 
-            GeometryFileWrite.read(reinterpret_cast<char*>(&IndicesSize), sizeof(IndicesSize));
+            GeometryFileRead.read(reinterpret_cast<char*>(&IndicesSize), sizeof(IndicesSize));
             B.Indices.resize(IndicesSize);
-            GeometryFileWrite.read(reinterpret_cast<char*>(B.Indices.data()), sizeof(unsigned int) * IndicesSize);
+            GeometryFileRead.read(reinterpret_cast<char*>(B.Indices.data()), sizeof(unsigned int) * IndicesSize);
         }
+
+        GeometryFileRead.close();
     }
 }

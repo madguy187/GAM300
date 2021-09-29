@@ -3,38 +3,72 @@
 
 namespace EclipseCompiler
 {
-    enum class GeometryIndex : int
-    {
-        GI_NONE = 0,
-        GI_MESHNAME = 1,
-        GI_NOTEX = 2,
-        GI_DIFFUSE = 3,
-        GI_SPECULAR = 4,
-        GI_AMBIENT = 5,
-
-        GI_VERTICES_POSITION = 6,
-
-        GI_MAXCOUNT
-    };
-
     class MeshA
     {
     public:
         glm::vec4 Diffuse{ 0,0,0,0 };
         glm::vec4 Specular{ 0,0,0,0 };
         glm::vec4 Ambient{ 0,0,0,0 };
-        std::array<char, 128> MeshName;
+        std::array<char, 108> MeshName;
         bool noTex{ true };
         std::vector<Vertex> Vertices;
         std::vector<unsigned int> Indices;
 
         MeshA()
         {
-            strcpy_s(MeshName.data(), MeshName.size(), "DefaultMesh");
-            MeshName[5] = '\0';
+            strcpy_s(MeshName.data(), MeshName.size(), "Mesh");
+            MeshName[MeshName.size()-1] = '\0';
         };
 
         ~MeshA() { };
+    };
+
+    struct MeshGeometry
+    {
+    public:
+        glm::vec4 Diffuse{ 0,0,0,0 };
+        glm::vec4 Specular{ 0,0,0,0 };
+        glm::vec4 Ambient{ 0,0,0,0 };
+        std::array<char, 10> MeshName;
+        bool NoTex{ true };
+        std::vector<Vertex> Vertices;
+        std::vector<unsigned int> Indices;
+        std::vector<Texture> Textures;
+        unsigned int VBO = 0;
+        unsigned int VAO = 0;
+        unsigned int EBO = 0;
+
+        MeshGeometry()
+        {
+            strcpy_s(MeshName.data(), MeshName.size(), "Mesh");
+            MeshName[MeshName.size() - 1] = '\0';
+        };
+
+        MeshGeometry(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::string namein, std::vector<Texture> textures)
+            :
+            Vertices(vertices),
+            Indices(indices),
+            Textures(textures),
+            NoTex(false)
+        {
+            strcpy_s(MeshName.data(), MeshName.size(), namein.data());
+            MeshName[MeshName.size() - 1] = '\0';
+        }
+
+        MeshGeometry(std::vector<Vertex> vertices, std::vector<unsigned int> indices, glm::vec4  diffuse, glm::vec4  specular, glm::vec4  ambient, bool in, std::string namein)
+            :
+            Vertices(vertices),
+            Indices(indices),
+            Diffuse(diffuse),
+            Specular(specular),
+            Ambient(ambient),
+            NoTex(in)
+        {
+            strcpy_s(MeshName.data(), MeshName.size(), namein.data());
+            MeshName[MeshName.size() - 1] = '\0';
+        }
+
+        ~MeshGeometry() {};
     };
 
     struct Mesh
@@ -43,16 +77,19 @@ namespace EclipseCompiler
         glm::vec4 Diffuse{ 0,0,0,0 };
         glm::vec4 Specular{ 0,0,0,0 };
         glm::vec4 Ambient{ 0,0,0,0 };
-        std::array<char, 128> MeshName;
+        std::array<char, 10> MeshName;
         bool NoTex{ true };
         std::vector<Vertex> Vertices;
         std::vector<unsigned int> Indices;
         std::vector<Texture> Textures;
+        unsigned int VBO = 0;
+        unsigned int VAO = 0;
+        unsigned int EBO = 0;
 
         Mesh()
         {
-            strcpy_s(MeshName.data(), MeshName.size(), "DefaultMesh");
-            MeshName[5] = '\0';
+            strcpy_s(MeshName.data(), MeshName.size(), "Mesh");
+            MeshName[MeshName.size()-1] = '\0';
         };
 
         Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::string namein, std::vector<Texture> textures)
@@ -62,8 +99,8 @@ namespace EclipseCompiler
             Textures(textures),
             NoTex(false)
         {
-            strcpy_s(MeshName.data(), MeshName.size(), "DefaultMesh");
-            MeshName[5] = '\0';
+            strcpy_s(MeshName.data(), MeshName.size(), namein.data());
+            MeshName[MeshName.size()-1] = '\0';
         }
 
         Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, glm::vec4  diffuse, glm::vec4  specular, glm::vec4  ambient, bool in, std::string namein)
@@ -75,13 +112,11 @@ namespace EclipseCompiler
             Ambient(ambient),
             NoTex(in)
         {
-            strcpy_s(MeshName.data(), MeshName.size(), "DefaultMesh");
-            MeshName[5] = '\0';
+            strcpy_s(MeshName.data(), MeshName.size(), namein.data());
+            MeshName[MeshName.size()-1] = '\0';
         }
 
         ~Mesh() {};
-
-        std::vector<size_t> offSetsforObject;
     };
 
     struct MeshData

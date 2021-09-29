@@ -174,7 +174,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
             engine->world.AddComponent(MeshID, MeshComponent{});
             engine->AssimpManager.SetMeshComponent(MeshID, name);
             auto& Mesh = engine->world.GetComponent<MeshComponent>(MeshID);
-            engine->world.AddComponent(MeshID, ModeLInforComponent{ Mesh.MeshName });
+            engine->world.AddComponent(MeshID, ModeLInforComponent{ Mesh.MeshName.data() });
             engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
             engine->world.AddComponent(MeshID, TextureComponent{});
             engine->AssimpManager.SetSingleMesh(MeshID, name);
@@ -232,7 +232,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         //engine->world.AddComponent(ID, TextureComponent{});
         //engine->AssimpManager.SetSingleMesh(ID, hi);
 
-        std::string hhi = engine->AssimpManager.GetKey("survival_guitar_backpack_low_poly");
+        std::string hhi = engine->AssimpManager.GetKey("dog");
         for (int i = 0; i < engine->AssimpManager.AssimpLoadedModels[hhi]->GetMesh().size(); i++)
         {
             auto& name = engine->AssimpManager.AssimpLoadedModels[hhi]->GetMesh()[i].GetMeshName();
@@ -241,7 +241,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
             engine->world.AddComponent(MeshID, MeshComponent{});
             engine->AssimpManager.SetMeshComponent(MeshID, name);
             auto& Mesh = engine->world.GetComponent<MeshComponent>(MeshID);
-            engine->world.AddComponent(MeshID, ModeLInforComponent{ Mesh.MeshName });
+            engine->world.AddComponent(MeshID, ModeLInforComponent{ Mesh.MeshName.data() });
             engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
             engine->world.AddComponent(MeshID, TextureComponent{});
             engine->AssimpManager.SetSingleMesh(MeshID, name);
@@ -268,7 +268,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
             engine->world.AddComponent(MeshID, MeshComponent{});
             engine->AssimpManager.SetMeshComponent(MeshID, name);
             auto& Mesh = engine->world.GetComponent<MeshComponent>(MeshID);
-            engine->world.AddComponent(MeshID, ModeLInforComponent{ Mesh.MeshName });
+            engine->world.AddComponent(MeshID, ModeLInforComponent{ Mesh.MeshName.data() });
             engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
             engine->world.AddComponent(MeshID, TextureComponent{});
             engine->AssimpManager.SetSingleMesh(MeshID, name);
@@ -300,7 +300,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
             engine->world.AddComponent(MeshID, MeshComponent{});
             engine->AssimpManager.SetMeshComponent(MeshID, name);
             auto& Mesh = engine->world.GetComponent<MeshComponent>(MeshID);
-            engine->world.AddComponent(MeshID, ModeLInforComponent{ Mesh.MeshName });
+            engine->world.AddComponent(MeshID, ModeLInforComponent{ Mesh.MeshName.data() });
             engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
             //engine->world.AddComponent(MeshID, TextureComponent{});
             engine->AssimpManager.SetSingleMesh(MeshID, name);

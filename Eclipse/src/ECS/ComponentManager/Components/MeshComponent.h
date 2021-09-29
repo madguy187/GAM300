@@ -14,7 +14,7 @@ namespace Eclipse
         // Store key
         //std::string Key;
 
-        std::string MeshName;
+        std::array<char, 128> MeshName;
         unsigned int VBO;
         unsigned int VAO;
         unsigned int EBO;

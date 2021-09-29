@@ -12,8 +12,8 @@ namespace EclipseCompiler
         std::unordered_map<std::string,Mesh> Geometry;
         // Container storing each offsets for each geometry
         std::vector<std::vector<int>> OffsetContainer;
-        std::ofstream GeometryFile;
-        std::fstream GeometryFileWrite;
+        std::ofstream GeometryFileWrite;
+        std::fstream GeometryFileRead;
     private:
         void WriteToFile(std::unordered_map<std::string, Mesh>&);
         void ReadFile();

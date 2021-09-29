@@ -7,7 +7,8 @@ namespace Eclipse
         Textures(textures),
         NoTex(false)
     {
-
+        strcpy_s(MeshName.data(), MeshName.size(), "Mesh");
+        MeshName[MeshName.size() - 1] = '\0';
     }
 
     Eclipse::Mesh::Mesh(glm::vec4 diff, glm::vec4 spec) :
@@ -23,9 +24,11 @@ namespace Eclipse
         Vertices(vertices),
         Indices(indices),
         Textures(textures),
-        NoTex(false),
-        MeshName(namein)
+        NoTex(false)
     {
+        strcpy_s(MeshName.data(), MeshName.size(), namein.data());
+        MeshName[MeshName.size()-1] = '\0';
+
         Setup();
     }
 
@@ -36,9 +39,10 @@ namespace Eclipse
         Diffuse(diffuse),
         Specular(specular),
         Ambient(ambient),
-        NoTex(in),
-        MeshName(namein)
+        NoTex(in)
     {
+        strcpy_s(MeshName.data(), MeshName.size(), namein.data());
+        MeshName[MeshName.size()-1] = '\0';
         Setup();
     }
 
@@ -146,19 +150,9 @@ namespace Eclipse
         }
     }
 
-    unsigned int Mesh::GetMeshID()
-    {
-        return ID;
-    }
-
-    void Mesh::SetID(unsigned int MeshId)
-    {
-        ID = MeshId;
-    }
-
     std::string Mesh::GetMeshName()
     {
-        return MeshName;
+        return MeshName.data();
     }
 
     std::vector<Vertex>& Mesh::GetVertices()
@@ -216,19 +210,19 @@ namespace Eclipse
         Specular.b = z;
     }
 
-    std::vector<Vertex> Vertex::GenList(float* vertices, int noVertices)
-    {
-        std::vector<Vertex> ret(noVertices);
+    //std::vector<Vertex> Vertex::GenList(float* vertices, int noVertices)
+    //{
+    //    std::vector<Vertex> ret(noVertices);
 
-        int stride = sizeof(Vertex) / sizeof(float);
+    //    int stride = sizeof(Vertex) / sizeof(float);
 
-        for (int i = 0; i < noVertices; i++)
-        {
-            ret[i].Position = glm::vec3(vertices[i * stride + 0], vertices[i * stride + 1], vertices[i * stride + 2]);
-            ret[i].Normal = glm::vec3(vertices[i * stride + 3], vertices[i * stride + 4], vertices[i * stride + 5]);
-            ret[i].TextureCoodinates = glm::vec2(vertices[i * stride + 6], vertices[i * stride + 7]);
-        }
+    //    for (int i = 0; i < noVertices; i++)
+    //    {
+    //        ret[i].Position = glm::vec3(vertices[i * stride + 0], vertices[i * stride + 1], vertices[i * stride + 2]);
+    //        ret[i].Normal = glm::vec3(vertices[i * stride + 3], vertices[i * stride + 4], vertices[i * stride + 5]);
+    //        ret[i].TextureCoodinates = glm::vec2(vertices[i * stride + 6], vertices[i * stride + 7]);
+    //    }
 
-        return ret;
-    }
+    //    return ret;
+    //}
 }

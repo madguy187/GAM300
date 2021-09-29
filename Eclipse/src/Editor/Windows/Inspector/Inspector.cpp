@@ -829,7 +829,7 @@ namespace Eclipse
 
 		if (engine->world.CheckComponent<ModeLInforComponent>(ID))
 		{
-			if (ImGui::Button((Item.MeshName.c_str()), buttonSize))
+			if (ImGui::Button((Item.MeshName.data()), buttonSize))
 			{
 				ImGui::OpenPopup("Mesh Changer");
 			}

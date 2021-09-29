@@ -39,7 +39,7 @@ namespace Eclipse
             }
         }
 
-        int i = 0;
+        LoadGeometry();
 
         // First file path so i shd be src/assets/assmodels
         //for (auto& dirEntry : std::filesystem::directory_iterator("src//Assets//ASSModels"))
@@ -194,9 +194,9 @@ namespace Eclipse
     void AssimpModelManager::PrintLoadedModels()
     {
         //PrintOutModelsLoadedOnce();
-        PrintOutModelTextureMap();
-        PrintOutModelMap();
-        PrintOutAllTextures();
+        //PrintOutModelTextureMap();
+        //PrintOutModelMap();
+        //PrintOutAllTextures();
         PrintOutAllMeshes();
     }
 
@@ -378,7 +378,9 @@ namespace Eclipse
         {
             auto& Mesh = engine->world.GetComponent<MeshComponent>(ID);
 
-            Mesh.MeshName = SingleMeshMap[in]->MeshName;
+            char* Name = in.data();
+            strcpy_s(Mesh.MeshName.data(), Mesh.MeshName.size(), Name);
+
             Mesh.VBO = SingleMeshMap[in]->VBO;
             Mesh.VAO = SingleMeshMap[in]->VAO;
             Mesh.EBO = SingleMeshMap[in]->EBO;
@@ -502,9 +504,75 @@ namespace Eclipse
         if (engine->world.CheckComponent<MaterialComponent>(ID))
         {
             auto& tex = engine->world.GetComponent<MaterialComponent>(ID);
-            engine->AssimpManager.SetTexturesForModel(tex, Mesh.MeshName);
+
+            std::string MeshName = Mesh.MeshName.data();
+            engine->AssimpManager.SetTexturesForModel(tex, MeshName);
         }
 
+    }
+
+    void AssimpModelManager::LoadGeometry()
+    {
+        // Loading Eclipse File
+        std::fstream GeometryFileRead;
+
+
+        std::string Path = "../Eclipse/src/Assets/Compilers/";
+        std::string FileName = ".bin";
+
+        GeometryFileRead.open("src/Assets/Compilers/GeometryFile/Geometry.txt",
+            std::ios::in |
+            std::ios::binary);
+
+        if (GeometryFileRead.fail())
+        {
+            std::cout << "Fail To Open Geometry File" << std::endl << std::endl;
+            return;
+        }
+
+        unsigned int TotalNumberOfModels = 0;
+        unsigned int VerticesSize = 0;
+        unsigned int IndicesSize = 0;
+
+        // See how many Models
+        GeometryFileRead.read(reinterpret_cast<char*>(&TotalNumberOfModels), sizeof(TotalNumberOfModels));
+
+        for (int i = 0; i < TotalNumberOfModels; i++)
+        {
+            VerticesSize = 0;
+            IndicesSize = 0;
+
+            MeshGeometry B;
+
+            auto hh = sizeof(B);
+
+            GeometryFileRead.read(reinterpret_cast<char*>(&B), offsetof(MeshGeometry, Vertices));
+
+            GeometryFileRead.read(reinterpret_cast<char*>(&VerticesSize), sizeof(VerticesSize));
+            B.Vertices.resize(VerticesSize);
+            GeometryFileRead.read(reinterpret_cast<char*>(B.Vertices.data()), sizeof(Vertex) * VerticesSize);
+
+            GeometryFileRead.read(reinterpret_cast<char*>(&IndicesSize), sizeof(IndicesSize));
+
+            B.Indices.resize(IndicesSize);
+            GeometryFileRead.read(reinterpret_cast<char*>(B.Indices.data()), sizeof(unsigned int) * IndicesSize);
+
+
+            if (B.NoTex == false)
+            {
+                Mesh NewMesh(B.Vertices, B.Indices, B.MeshName.data(), B.Textures);
+                std::string name = B.MeshName.data();
+                SingleMeshMap.emplace(name, std::make_unique<Mesh>(NewMesh));
+            }
+            else
+            {
+                Mesh NewMesh(B.Vertices, B.Indices, B.Diffuse, B.Specular, B.Ambient, B.NoTex, B.MeshName.data());
+                std::string name = B.MeshName.data();
+                engine->AssimpManager.SingleMeshMap.emplace(name,std::make_unique<Mesh>(NewMesh));
+            }
+        }
+
+        GeometryFileRead.close();
     }
 
 }

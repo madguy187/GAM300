@@ -209,13 +209,13 @@ namespace Eclipse
             {
                 Mesh NewMesh(it.vertices, it.indices, it.MeshName, it.textures);
                 Meshes.push_back(NewMesh);
-                engine->AssimpManager.SingleMeshMap.emplace(it.MeshName, std::make_unique<Mesh>(NewMesh));
+                //engine->AssimpManager.SingleMeshMap.emplace(it.MeshName, std::make_unique<Mesh>(NewMesh));
             }
             else
             {
                 Mesh NewMesh(it.vertices, it.indices, it.Diffuse, it.Specular, it.Ambient, it.NoTextures, it.MeshName);
                 Meshes.push_back(NewMesh);
-                engine->AssimpManager.SingleMeshMap.emplace(it.MeshName,std::make_unique<Mesh>(NewMesh));
+                //engine->AssimpManager.SingleMeshMap.emplace(it.MeshName,std::make_unique<Mesh>(NewMesh));
             }
         }
 

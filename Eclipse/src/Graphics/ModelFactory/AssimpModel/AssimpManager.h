@@ -29,10 +29,8 @@ namespace Eclipse
 
 		// Name of Model , < MeshIndex, Texture Container > 
 		std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>> >LoadedTexturesV2;
-
 		// Model Information
 		std::unordered_map<std::string, std::string> ModelMap;
-		
 	public:
 		// Single Meshes
 		std::unordered_map<std::string, std::unique_ptr<Mesh>> SingleMeshMap;
@@ -81,6 +79,7 @@ namespace Eclipse
 		void Render(Shader& shader, GLenum mode, unsigned int id, MeshComponent& in);
 		void Render(GLenum mode, MeshComponent& in);
 		void SetSingleMesh(unsigned int ID, std::string& MeshName);
+		void LoadGeometry();
 
 		///////////////////////////////////////////////////////////////////////////////////////////
 		// FDebug PrintOuts
