@@ -81,7 +81,7 @@ namespace Eclipse
             aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 
             // For Tianyu
-            engine->AssimpManager.AllMeshNames.push_back(NodeName);
+            engine->AssimpManager.InsertMeshName(NodeName);
 
             ProcessMesh(mesh, scene, NodeName);
         }

@@ -5,50 +5,23 @@ namespace Eclipse
 {
     void AssimpModelManager::Init()
     {
-        LoadModels("src//Assets//ASSModels");
+        LoadCompilers();
         PrintLoadedModels();
     }
 
-    void AssimpModelManager::LoadModels(const std::string& modelFile)
+    void AssimpModelManager::LoadCompilers()
     {
-        //for (auto& dirEntry : std::filesystem::directory_iterator(modelFile))
-        //{
-        //    const auto& path = dirEntry.path();
-        //    auto relativePath = relative(path, "src//");
-        //    std::string FolderName = relativePath.filename().string();
-
-        //    std::string GoIntoModelFolder = ("src/Assets/ASSModels/" + FolderName);
-
-        //    for (auto& dirEntry : std::filesystem::directory_iterator(GoIntoModelFolder))
-        //    {
-        //        const auto& FbxOrGltf = dirEntry.path();
-        //        auto relativePath = relative(FbxOrGltf, "src//");
-        //        std::string FbxOrGltfName = relativePath.filename().string();
-
-        //        if (FbxOrGltfName.find("gltf") != std::string::npos || FbxOrGltfName.find("fbx") != std::string::npos || FbxOrGltfName.find("obj") != std::string::npos)
-        //        {
-        //            std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/" + FbxOrGltfName).c_str();
-
-        //            std::unique_ptr<AssimpModel> ptr(new AssimpModel(false));
-        //            ptr->SetProperties(FolderName, ModelType::MT_ANIMAL);
-        //            ptr->LoadAssimpModel(PathName);
-
-        //            AssimpLoadedModels.emplace(FolderName, std::move(ptr));
-        //            ModelMap.emplace(FolderName, PathName);
-        //        }
-        //    }
-        //}
-
+        // Geometry Compiler
         LoadGeometry();
+        // Parent Model Mappings
         LoadPrefabs();
+        // Texture Compiler
         LoadTextures();
 
-        ENGINE_CORE_INFO("All Assimp Models Loaded Once");
-    }
-
-    std::string AssimpModelManager::GetKey(const std::string& in)
-    {
-        return AssimpLoadedModels[in]->GetName();
+        if (CheckCompilers())
+        {
+            ENGINE_CORE_INFO("All Compilers Loaded");
+        }
     }
 
     void AssimpModelManager::MeshDraw(MeshComponent& ModelMesh, unsigned int ID, unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
@@ -156,33 +129,6 @@ namespace Eclipse
         //        delete i.second;
         //    }
         //}
-    }
-
-    void AssimpModelManager::InsertModel(unsigned int id)
-    {
-        // Should already have the model name as key.
-        auto& sprite = engine->world.GetComponent<MeshComponent>(id);
-
-        // Assign ModelInfoComponent
-        auto& ModelInformation = engine->world.GetComponent<ModeLInforComponent>(id);
-        //ModelInformation.NameOfModel = sprite.Key;
-        //ModelInformation.Directory = ModelMap[sprite.Key];
-
-        //sprite.Meshes = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetMesh();
-        //sprite.Textures_loaded = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetTextures();
-
-        //for (int i = 0; i < sprite.Meshes.size(); i++)
-        //{
-        //    auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
-        //    sprite.Meshes[i].SetID(MeshID);
-        //}
-
-        // If got TextureComponent
-        if (engine->world.CheckComponent<TextureComponent>(id))
-        {
-            auto& tex = engine->world.GetComponent<TextureComponent>(id);
-            //engine->AssimpManager.SetTexturesForModel(tex, sprite.Key);
-        }
     }
 
     void AssimpModelManager::TestPath(std::string& path)
@@ -296,9 +242,9 @@ namespace Eclipse
 
     void AssimpModelManager::PrintOutAllMeshes()
     {
-        std::cout << "loaded Meshes Count " << SingleMeshMap.size() << std::endl;
+        std::cout << "loaded Meshes Count " << Geometry.size() << std::endl;
         std::cout << "-------------------------------------------------------------------" << std::endl;
-        for (const auto& i : SingleMeshMap)
+        for (const auto& i : Geometry)
         {
             auto& MeshName = i.first;
             auto& Mesh = i.second;
@@ -320,15 +266,15 @@ namespace Eclipse
             char* Name = in.data();
             strcpy_s(Mesh.MeshName.data(), Mesh.MeshName.size(), Name);
 
-            Mesh.VBO = SingleMeshMap[in]->VBO;
-            Mesh.VAO = SingleMeshMap[in]->VAO;
-            Mesh.EBO = SingleMeshMap[in]->EBO;
-            Mesh.NoTex = SingleMeshMap[in]->NoTex;
-            Mesh.Diffuse = SingleMeshMap[in]->Diffuse;
-            Mesh.Specular = SingleMeshMap[in]->Specular;
-            Mesh.Ambient = SingleMeshMap[in]->Ambient;
-            Mesh.Vertices = SingleMeshMap[in]->Vertices;
-            Mesh.Indices = SingleMeshMap[in]->Indices;
+            Mesh.VBO = Geometry[in]->VBO;
+            Mesh.VAO = Geometry[in]->VAO;
+            Mesh.EBO = Geometry[in]->EBO;
+            Mesh.NoTex = Geometry[in]->NoTex;
+            Mesh.Diffuse = Geometry[in]->Diffuse;
+            Mesh.Specular = Geometry[in]->Specular;
+            Mesh.Ambient = Geometry[in]->Ambient;
+            Mesh.Vertices = Geometry[in]->Vertices;
+            Mesh.Indices = Geometry[in]->Indices;
         }
     }
 
@@ -500,13 +446,13 @@ namespace Eclipse
             {
                 Mesh NewMesh(B.Vertices, B.Indices, B.MeshName.data(), B.Textures);
                 std::string name = B.MeshName.data();
-                SingleMeshMap.emplace(name, std::make_unique<Mesh>(NewMesh));
+                Geometry.emplace(name, std::make_unique<Mesh>(NewMesh));
             }
             else
             {
                 Mesh NewMesh(B.Vertices, B.Indices, B.Diffuse, B.Specular, B.Ambient, B.NoTex, B.MeshName.data());
                 std::string name = B.MeshName.data();
-                SingleMeshMap.emplace(name, std::make_unique<Mesh>(NewMesh));
+                Geometry.emplace(name, std::make_unique<Mesh>(NewMesh));
             }
         }
 
@@ -779,6 +725,82 @@ namespace Eclipse
         return false;
     }
 
+    bool AssimpModelManager::CheckCompilers()
+    {
+        if (Geometry.size() == 0 && Prefabs.size() == 0)
+        {
+            EDITOR_LOG_WARN("No Geometries Loaded , Please Check Compiler again");
+            return false;
+        }
+
+        return true;
+    }
+
+    void AssimpModelManager::CreateModel(unsigned int ID, const std::string& ModelName)
+    {
+        if (CheckCompilers())
+        {
+            if (Prefabs.find(ModelName) == Prefabs.end())
+            {
+                // Cannot Find this as a parent
+                std::string Name = ModelName;
+                engine->world.AddComponent(ID, MeshComponent{});
+                engine->world.AddComponent(ID, ModeLInforComponent{});
+                engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
+                engine->world.AddComponent(ID, TextureComponent{});
+                SetSingleMesh(ID, Name);
+            }
+            else
+            {
+                if (Prefabs[ModelName].size() == 0)
+                {
+                    ENGINE_LOG_ASSERT(false, "Cannot Find Model");
+                    return;
+                }
+
+                // Is a prefab since its a parent
+                std::string NameOfFolder = ModelName;
+                for (int i = 0; i < Prefabs[NameOfFolder].size(); i++)
+                {
+                    auto& name = Prefabs[NameOfFolder][i];
+                    auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
+
+                    engine->world.AddComponent(MeshID, MeshComponent{});
+                    engine->world.AddComponent(MeshID, ModeLInforComponent{});
+                    engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
+                    engine->world.AddComponent(MeshID, TextureComponent{});
+
+                    SetSingleMesh(MeshID, name);
+                }
+            }
+        }
+    }
+
+    std::unordered_map<std::string, std::vector<std::string>>& AssimpModelManager::GetPrefabs()
+    {
+        return Prefabs;
+    }
+
+    void AssimpModelManager::InsertPrimitiveName(const std::string& in)
+    {
+        AllPrimitiveModelsNames.push_back(in);
+    }
+
+    void AssimpModelManager::InsertMeshName(const std::string& in)
+    {
+        AllMeshNames.push_back(in);
+    }
+
+    std::vector<std::string>& AssimpModelManager::GetMeshNames()
+    {
+        return AllMeshNames;
+    }
+
+    std::vector<std::string>& AssimpModelManager::GetPrimitiveNames()
+    {
+        return AllPrimitiveModelsNames;
+    }
+
     MeshModelContainer AssimpModelManager::GetMeshContainer()
     {
         return AssimpModelContainerV2;
@@ -812,6 +834,38 @@ namespace Eclipse
         {
             auto& InvidualModels = *(Models.second);
             //Cleanup(InvidualModels);
+        }
+    }
+
+    std::string AssimpModelManager::GetKey(const std::string& in)
+    {
+        return AssimpLoadedModels[in]->GetName();
+    }
+
+    void AssimpModelManager::InsertModel(unsigned int id)
+    {
+        // Should already have the model name as key.
+        auto& sprite = engine->world.GetComponent<MeshComponent>(id);
+
+        // Assign ModelInfoComponent
+        auto& ModelInformation = engine->world.GetComponent<ModeLInforComponent>(id);
+        //ModelInformation.NameOfModel = sprite.Key;
+        //ModelInformation.Directory = ModelMap[sprite.Key];
+
+        //sprite.Meshes = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetMesh();
+        //sprite.Textures_loaded = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetTextures();
+
+        //for (int i = 0; i < sprite.Meshes.size(); i++)
+        //{
+        //    auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
+        //    sprite.Meshes[i].SetID(MeshID);
+        //}
+
+        // If got TextureComponent
+        if (engine->world.CheckComponent<TextureComponent>(id))
+        {
+            auto& tex = engine->world.GetComponent<TextureComponent>(id);
+            //engine->AssimpManager.SetTexturesForModel(tex, sprite.Key);
         }
     }
 }

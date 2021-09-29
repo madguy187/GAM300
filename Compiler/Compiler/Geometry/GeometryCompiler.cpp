@@ -11,6 +11,7 @@ namespace EclipseCompiler
 
     void GeometryCompiler::LoadFile(const std::string& modelFile)
     {
+        // We will do main Loading here
         for (auto& dirEntry : std::filesystem::directory_iterator(modelFile))
         {
             const auto& path = dirEntry.path();
@@ -31,6 +32,7 @@ namespace EclipseCompiler
                     std::unique_ptr<AssimpLoader> ptr = std::make_unique< AssimpLoader>();
                     ptr->LoadAssimpModel(PathName, Geometry);
 
+                    // Get the Prefabs Mapping
                     for (auto& i : ptr->Meshes)
                     {
                         Prefabs[FolderName].push_back(i.MeshName.data());
