@@ -96,6 +96,10 @@ namespace Eclipse
                 in.HoldingTextures[i].push_back(Graphics::textures[passkey]);
             }
         }
+        else
+        {
+            EDITOR_LOG_WARN("No Textures Found for this Mesh , Please Run Texture Compiler");
+        }
     }
 
     void AssimpModelManager::InsertTextures(std::string& NameofModel, std::unique_ptr<Texture> in, unsigned int MeshId)
@@ -389,7 +393,6 @@ namespace Eclipse
         if (engine->world.CheckComponent<MaterialComponent>(ID))
         {
             auto& tex = engine->world.GetComponent<MaterialComponent>(ID);
-
             std::string MeshName = Mesh.MeshName.data();
             engine->AssimpManager.SetTexturesForModel(tex, MeshName);
         }
@@ -727,9 +730,9 @@ namespace Eclipse
 
     bool AssimpModelManager::CheckCompilers()
     {
-        if (Geometry.size() == 0 && Prefabs.size() == 0)
+        if (Geometry.size() == 0 || Prefabs.size() == 0)
         {
-            EDITOR_LOG_WARN("No Geometries Loaded , Please Check Compiler again");
+            EDITOR_LOG_WARN("No Geometries Loaded , Please Run Geometry Compiler");
             return false;
         }
 
