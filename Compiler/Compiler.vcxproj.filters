@@ -30,6 +30,9 @@
     <Filter Include="Compiler\BinarySettings">
       <UniqueIdentifier>{0d446b90-c5c7-4b58-93b9-ed6644c93ea0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Compiler\Prefabs">
+      <UniqueIdentifier>{e8978dd0-2989-41fc-aebf-643a1dcc4adb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -47,6 +50,9 @@
     </ClCompile>
     <ClCompile Include="Compiler\Texture\TextureCompiler.cpp">
       <Filter>Compiler\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Compiler\Prefabs\PrefabsCompiler.cpp">
+      <Filter>Compiler\Prefabs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +74,9 @@
     </ClInclude>
     <ClInclude Include="BinarySettings.h">
       <Filter>Compiler\BinarySettings</Filter>
+    </ClInclude>
+    <ClInclude Include="Compiler\Prefabs\PrefabsCompiler.h">
+      <Filter>Compiler\Prefabs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

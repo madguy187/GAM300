@@ -11,98 +11,36 @@ namespace Eclipse
 
     void AssimpModelManager::LoadModels(const std::string& modelFile)
     {
-        for (auto& dirEntry : std::filesystem::directory_iterator(modelFile))
-        {
-            const auto& path = dirEntry.path();
-            auto relativePath = relative(path, "src//");
-            std::string FolderName = relativePath.filename().string();
-
-            std::string GoIntoModelFolder = ("src/Assets/ASSModels/" + FolderName);
-
-            for (auto& dirEntry : std::filesystem::directory_iterator(GoIntoModelFolder))
-            {
-                const auto& FbxOrGltf = dirEntry.path();
-                auto relativePath = relative(FbxOrGltf, "src//");
-                std::string FbxOrGltfName = relativePath.filename().string();
-
-                if (FbxOrGltfName.find("gltf") != std::string::npos || FbxOrGltfName.find("fbx") != std::string::npos || FbxOrGltfName.find("obj") != std::string::npos)
-                {
-                    std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/" + FbxOrGltfName).c_str();
-
-                    std::unique_ptr<AssimpModel> ptr(new AssimpModel(false));
-                    ptr->SetProperties(FolderName, ModelType::MT_ANIMAL);
-                    ptr->LoadAssimpModel(PathName);
-
-                    AssimpLoadedModels.emplace(FolderName, std::move(ptr));
-                    ModelMap.emplace(FolderName, PathName);
-                }
-            }
-        }
+        // for (auto& dirEntry : std::filesystem::directory_iterator(modelFile))
+        // {
+        //     const auto& path = dirEntry.path();
+        //     auto relativePath = relative(path, "src//");
+        //     std::string FolderName = relativePath.filename().string();
+        //
+        //     std::string GoIntoModelFolder = ("src/Assets/ASSModels/" + FolderName);
+        //
+        //     for (auto& dirEntry : std::filesystem::directory_iterator(GoIntoModelFolder))
+        //     {
+        //         const auto& FbxOrGltf = dirEntry.path();
+        //         auto relativePath = relative(FbxOrGltf, "src//");
+        //         std::string FbxOrGltfName = relativePath.filename().string();
+        //
+        //         if (FbxOrGltfName.find("gltf") != std::string::npos || FbxOrGltfName.find("fbx") != std::string::npos || FbxOrGltfName.find("obj") != std::string::npos)
+        //         {
+        //             std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/" + FbxOrGltfName).c_str();
+        //
+        //             std::unique_ptr<AssimpModel> ptr(new AssimpModel(false));
+        //             ptr->SetProperties(FolderName, ModelType::MT_ANIMAL);
+        //             ptr->LoadAssimpModel(PathName);
+        //
+        //             AssimpLoadedModels.emplace(FolderName, std::move(ptr));
+        //             ModelMap.emplace(FolderName, PathName);
+        //         }
+        //     }
+        // }
 
         LoadGeometry();
-
-        // First file path so i shd be src/assets/assmodels
-        //for (auto& dirEntry : std::filesystem::directory_iterator("src//Assets//ASSModels"))
-        //{
-        //    const auto& path = dirEntry.path();
-        //    auto relativePath = relative(path, "src//");
-        //    std::string FolderName = relativePath.filename().string(); // Return me the name of the folder of my model
-        //    std::string PathName = ("src/Assets/ASSModels/" + FolderName + "/").c_str();
-
-        //    for (auto& dirEntry : std::filesystem::directory_iterator(PathName))
-        //    {
-        //        const auto& path = dirEntry.path();
-        //        auto relativePath = relative(path, "src//");
-        //        std::string NextFolderName = relativePath.filename().string();
-
-        //        if (NextFolderName == "textures")
-        //        {
-        //            std::string InsideModelFolder = ("src/Assets/ASSModels/" + FolderName).c_str();
-        //            std::string InsideTextures = ("src/Assets/ASSModels/" + FolderName + "/" + NextFolderName).c_str();
-
-        //            unsigned int Index = 0;
-
-        //            std::unique_ptr<Texture> LastTracked;
-
-        //            std::string TexturePath;
-
-        //            for (auto& dirEntry : std::filesystem::directory_iterator(InsideTextures))
-        //            {
-        //                const auto& path = dirEntry.path();
-        //                auto relativePath = relative(path, "src//");
-        //                std::string TextureName = relativePath.filename().string();
-
-        //                 TexturePath = NextFolderName + "/" + TextureName;
-        //                // If i find the first base colour , i insert.
-        //                if (TextureName.find("baseColor") != std::string::npos)
-        //                {
-        //                    Texture tex(InsideModelFolder, TexturePath, aiTextureType_DIFFUSE);
-        //                    std::unique_ptr<Texture> ptr(new Texture(tex));
-        //                    ptr->Load(false);
-        //                    engine->AssimpManager.InsertTextures(FolderName, std::move(ptr), Index);
-
-        //                    std::unique_ptr<Texture> ptr2(new Texture(tex));
-        //                    engine->AssimpManager.InsertTextures(FolderName, std::move(ptr2), Index);
-
-        //                    LastTracked = std::unique_ptr<Texture>((new Texture(tex)));
-
-        //                    Index++;
-        //                }
-        //            }
-
-        //            if (AssimpLoadedModels[FolderName]->GetMesh().size() != Index)
-        //            {
-        //                Texture tex(InsideModelFolder, TexturePath, aiTextureType_DIFFUSE);
-        //                std::unique_ptr<Texture> ptr(new Texture(tex));
-        //                ptr->Load(false);
-        //                engine->AssimpManager.InsertTextures(FolderName, std::move(ptr), Index);
-
-        //                std::unique_ptr<Texture> ptr2(new Texture(tex));
-        //                engine->AssimpManager.InsertTextures(FolderName, std::move(ptr2), Index);
-        //            }
-        //        }
-        //    }
-        //}
+        LoadPrefabs();
 
         ENGINE_CORE_INFO("All Assimp Models Loaded Once");
     }
@@ -567,11 +505,53 @@ namespace Eclipse
             {
                 Mesh NewMesh(B.Vertices, B.Indices, B.Diffuse, B.Specular, B.Ambient, B.NoTex, B.MeshName.data());
                 std::string name = B.MeshName.data();
-               SingleMeshMap.emplace(name,std::make_unique<Mesh>(NewMesh));
+                SingleMeshMap.emplace(name, std::make_unique<Mesh>(NewMesh));
             }
         }
 
         GeometryFileRead.close();
+    }
+
+    void AssimpModelManager::LoadPrefabs()
+    {
+        // Prefab Container Names
+        std::ofstream PrefabsFileWrite;
+        std::fstream PrefabsFileRead;
+
+        PrefabsFileRead.open("src/Assets/Compilers/PrefabsFile/Prefabs.eclipse",
+            std::ios::in |
+            std::ios::binary);
+
+        if (PrefabsFileRead.fail())
+        {
+            std::cout << "Fail To Open Geometry File" << std::endl << std::endl;
+            return;
+        }
+
+        int TotalNumberOfPrefabs = 0;
+
+        // See how many Prefabs
+        PrefabsFileRead.read(reinterpret_cast<char*>(&TotalNumberOfPrefabs), sizeof(int));
+
+        for (int i = 0; i < TotalNumberOfPrefabs; i++)
+        {
+            std::array<char, 128> ParentName;
+            PrefabsFileRead.read(reinterpret_cast<char*>(&ParentName), sizeof(ParentName));
+            ParentName[ParentName.size() - 1] = '\0';
+
+            int NumberOfSubMeshes = 0;
+            PrefabsFileRead.read(reinterpret_cast<char*>(&NumberOfSubMeshes), sizeof(NumberOfSubMeshes));
+
+            for (int i = 0; i < NumberOfSubMeshes; i++)
+            {
+                std::array<char, 128> MeshName;
+                PrefabsFileRead.read(reinterpret_cast<char*>(&MeshName), sizeof(MeshName));
+                MeshName[MeshName.size() - 1] = '\0';
+
+                Prefabs[ParentName.data()].push_back(MeshName.data());
+            }
+        }
+        PrefabsFileRead.close();
     }
 
 }

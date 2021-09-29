@@ -5,21 +5,16 @@
 
 namespace EclipseCompiler
 {
-    class GeometryCompiler : public Helper, public ICompiler
+    class PrefabsCompiler : public Helper, public ICompiler
     {
     public:
-        // Geometry Container
-        std::unordered_map<std::string,Mesh> Geometry;
-        std::ofstream GeometryFileWrite;
-        std::fstream GeometryFileRead;
-
         // Prefab Container Names
         std::unordered_map<std::string, std::vector<std::string>> Prefabs;
-        //std::ofstream PrefabsFileWrite;
-        //std::fstream PrefabsFileRead;
+        std::ofstream PrefabsFileWrite;
+        std::fstream PrefabsFileRead;
 
     private:
-        void WriteToFile(std::unordered_map<std::string, Mesh>&);
+        void WriteToFile();
         void ReadFile();
 
     public:
@@ -27,5 +22,6 @@ namespace EclipseCompiler
         void Init() override;
         void ReleaseFile(std::string& in) override;
         void ReadFile(std::string& in) override;
+        void GetPrefabs(std::unordered_map<std::string, std::vector<std::string>>& in);
     };
 }

@@ -42,6 +42,9 @@ namespace Eclipse
 		std::vector<std::string> AllMeshNames;
 		std::vector<std::string> AllPrimitiveModelsNames;
 
+		// Prefabs
+		std::unordered_map<std::string, std::vector<std::string>> Prefabs;
+
 		// Get Current MeshComponent Container
 		MeshModelContainer GetMeshContainer();
 		// Ger how many Models in Container
@@ -80,6 +83,7 @@ namespace Eclipse
 		void Render(GLenum mode, MeshComponent& in);
 		void SetSingleMesh(unsigned int ID, std::string& MeshName);
 		void LoadGeometry();
+		void LoadPrefabs();
 
 		///////////////////////////////////////////////////////////////////////////////////////////
 		// FDebug PrintOuts

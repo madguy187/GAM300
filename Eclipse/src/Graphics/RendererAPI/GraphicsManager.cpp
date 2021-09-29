@@ -232,14 +232,13 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         //engine->world.AddComponent(ID, TextureComponent{});
         //engine->AssimpManager.SetSingleMesh(ID, hi);
 
-        std::string hhi = engine->AssimpManager.GetKey("dog");
-        for (int i = 0; i < engine->AssimpManager.AssimpLoadedModels[hhi]->GetMesh().size(); i++)
+        std::string hhi = "testhouse";
+        for (int i = 0; i < engine->AssimpManager.Prefabs[hhi].size(); i++)
         {
-            auto& name = engine->AssimpManager.AssimpLoadedModels[hhi]->GetMesh()[i].GetMeshName();
+            auto& name = engine->AssimpManager.Prefabs[hhi][i];
 
             auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
             engine->world.AddComponent(MeshID, MeshComponent{});
-            engine->AssimpManager.SetMeshComponent(MeshID, name);
             auto& Mesh = engine->world.GetComponent<MeshComponent>(MeshID);
             engine->world.AddComponent(MeshID, ModeLInforComponent{ Mesh.MeshName.data() });
             engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
@@ -251,28 +250,27 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     // pointlight
     case 12:
     {
-        engine->LightManager.CreateLights(Eclipse::TypesOfLights::POINTLIGHT, ID);
-    }
-    break;
-    // Directional
-    case 13:
-    {
-        //engine->LightManager.CreateLights(Eclipse::TypesOfLights::DIRECTIONAL, ID);
-
-        std::string hhi = engine->AssimpManager.GetKey("testhouse");
-        for (int i = 0; i < engine->AssimpManager.AssimpLoadedModels[hhi]->GetMesh().size(); i++)
+        std::string hhi = "dog";
+        for (int i = 0; i < engine->AssimpManager.Prefabs[hhi].size(); i++)
         {
-            auto& name = engine->AssimpManager.AssimpLoadedModels[hhi]->GetMesh()[i].GetMeshName();
+            auto& name = engine->AssimpManager.Prefabs[hhi][i];
 
             auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
             engine->world.AddComponent(MeshID, MeshComponent{});
-            engine->AssimpManager.SetMeshComponent(MeshID, name);
             auto& Mesh = engine->world.GetComponent<MeshComponent>(MeshID);
             engine->world.AddComponent(MeshID, ModeLInforComponent{ Mesh.MeshName.data() });
             engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
             engine->world.AddComponent(MeshID, TextureComponent{});
             engine->AssimpManager.SetSingleMesh(MeshID, name);
         }
+
+        //engine->LightManager.CreateLights(Eclipse::TypesOfLights::POINTLIGHT, ID);
+    }
+    break;
+    // Directional
+    case 13:
+    {
+        engine->LightManager.CreateLights(Eclipse::TypesOfLights::DIRECTIONAL, ID);
     }
     break;
     // SpotLight

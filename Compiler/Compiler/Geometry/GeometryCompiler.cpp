@@ -30,6 +30,11 @@ namespace EclipseCompiler
                     std::string PathName = ("..//Eclipse//src/Assets/ASSModels/" + FolderName + "/" + FbxOrGltfName).c_str();
                     std::unique_ptr<AssimpLoader> ptr = std::make_unique< AssimpLoader>();
                     ptr->LoadAssimpModel(PathName, Geometry);
+
+                    for (auto& i : ptr->Meshes)
+                    {
+                        Prefabs[FolderName].push_back(i.MeshName.data());
+                    }
                 }
             }
         }
