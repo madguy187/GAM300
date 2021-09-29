@@ -84,6 +84,7 @@ namespace Eclipse
 		void SetSingleMesh(unsigned int ID, std::string& MeshName);
 		void LoadGeometry();
 		void LoadPrefabs();
+		void LoadTextures();
 
 		///////////////////////////////////////////////////////////////////////////////////////////
 		// FDebug PrintOuts

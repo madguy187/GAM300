@@ -41,6 +41,7 @@ namespace Eclipse
 
         LoadGeometry();
         LoadPrefabs();
+        LoadTextures();
 
         ENGINE_CORE_INFO("All Assimp Models Loaded Once");
     }
@@ -552,6 +553,51 @@ namespace Eclipse
             }
         }
         PrefabsFileRead.close();
+    }
+
+    void AssimpModelManager::LoadTextures()
+    {
+        std::ofstream TextureFileWrite;
+        std::fstream TextureFileRead;
+
+        TextureFileRead.open("src/Assets/Compilers/TextureFile/Texture.eclipse",
+            std::ios::in |
+            std::ios::binary);
+
+        if (TextureFileRead.fail())
+        {
+            std::cout << "Fail To Open Texture File" << std::endl << std::endl;
+            return;
+        }
+
+        // Number Of Textures
+        int NumberOfTextures = 0;
+        TextureFileRead.read(reinterpret_cast<char*>(&NumberOfTextures), sizeof(NumberOfTextures));
+
+        for (int i = 0; i < NumberOfTextures; i++)
+        {
+            // Mesh Name
+            std::array<char, 128> MeshName;
+            TextureFileRead.read(reinterpret_cast<char*>(&MeshName), sizeof(MeshName));
+
+            // Number Of Textures
+            int TextureType = 0;
+            TextureFileRead.read(reinterpret_cast<char*>(&TextureType), sizeof(TextureType));
+
+            // Texture Directory
+            std::array<char, 128> TextureDirectory;
+            TextureFileRead.read(reinterpret_cast<char*>(&TextureDirectory), sizeof(TextureDirectory));
+
+            // Texture DirecPathtory
+            std::array<char, 128> TexturePath;
+            TextureFileRead.read(reinterpret_cast<char*>(&TexturePath), sizeof(TexturePath));
+
+            Texture tex(TextureDirectory.data(), TexturePath.data(), static_cast<aiTextureType>(TextureType));
+            tex.Load(false);
+            Graphics::textures.emplace(MeshName.data(), tex);
+        }
+
+        TextureFileRead.close();
     }
 
 }
