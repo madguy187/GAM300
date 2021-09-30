@@ -104,7 +104,6 @@ namespace Eclipse
 		temptrans.x = transform.position.x;
 		temptrans.y = transform.position.y;
 		temptrans.z = transform.position.z;
-
 		PxRigidStatic* temp = Px_Physics->createRigidStatic(PxTransform(temptrans));
 
 
