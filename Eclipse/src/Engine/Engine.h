@@ -23,6 +23,7 @@ namespace Eclipse
     {
     public:
         World world;
+        World prefabWorld;
         CameraManager gCamera;
         GraphicsManager GraphicsManager;
         ProfilerWindow Timer;

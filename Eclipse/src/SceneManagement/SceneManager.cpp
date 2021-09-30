@@ -8,6 +8,7 @@ namespace Eclipse
 	SceneManager::SceneIndex SceneManager::prevScene = SceneManager::EMPTY;
 	SceneManager::SceneIndex SceneManager::curScene = SceneManager::EMPTY;
 	SceneManager::SceneIndex SceneManager::nextScene = SceneManager::EMPTY;
+	SceneManager::SceneIndex SceneManager::tempScene = SceneManager::EMPTY;
 	bool SceneManager::isQuit = false;
 	bool SceneManager::isReload = false;
 	std::vector<std::string> SceneManager::sceneList;
@@ -78,6 +79,33 @@ namespace Eclipse
 		mapNameToPath.insert({ fileName, path });
 
 		return numOfScene++;
+	}
+
+	SceneManager::SceneIndex SceneManager::RegisterTempScene(const std::string& path)
+	{
+		if (tempScene == EMPTY)
+		{
+			tempScene = RegisterTempScene(path);
+			EDITOR_LOG_INFO("Temp.scn is created.")
+		}
+		else
+		{
+			EDITOR_LOG_WARN("Creation of Temp.scn failed. Temp.scn is already available.")
+		}
+		return tempScene;
+	}
+
+	void SceneManager::DeregisterTempScene()
+	{
+		if (tempScene != EMPTY)
+		{
+			DeregisterScene(tempScene);
+			EDITOR_LOG_INFO("Temp.scn is deregistered.")
+		}
+		else
+		{
+			EDITOR_LOG_WARN("Deregisteration of Temp.scn failed. Temp.scn is already deregistered.")
+		}
 	}
 
 	SceneManager::SceneIndex SceneManager::GetPreviousScene()

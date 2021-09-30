@@ -17,6 +17,9 @@ static constexpr ComponentType MAX_COMPONENT = 32;
 using Signature = std::bitset<MAX_COMPONENT>;
 static constexpr unsigned MAX_PAGE_SIZE = 10;
 
+static const char* SCENE_EXTENSION = ".scn";
+static const char* TEMP_PATH = "Data\\Temp\\";
+
 enum class EditorWindowType
 {
     EWT_HIERARCHY,

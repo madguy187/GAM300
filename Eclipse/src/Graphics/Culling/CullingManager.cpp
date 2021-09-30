@@ -98,11 +98,6 @@ namespace Eclipse
 
     void CullingManager::Clear()
     {
-        for (auto& i : CullContainer)
-        {
-            engine->world.DestroyComponent<AABBComponent>(i.first);
-        }
-
         CullContainer.clear();
         FrustrumCollisionTree.ClearTree();
     }
