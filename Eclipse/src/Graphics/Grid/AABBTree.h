@@ -47,6 +47,7 @@ namespace Eclipse
         std::vector<unsigned int> CheckOverlap(DYN_AABB& object);
         std::vector<unsigned int> CheckMouseOverlapAgainstGrid(glm::vec3& rayStart, glm::vec3& rayDir, float& t);
         size_t NumberOfIntersections(std::vector<unsigned int>& in);
+        void Clear();
 
     private:
         unsigned AllocateNode();
