@@ -197,6 +197,7 @@ IF EXIST ..\Dep\Fmod\core\lib\x64\fmodstudio64.dll\ (xcopy /Q /E /Y /I ..\Dep\Fm
     <ClInclude Include="src\ECS\SystemManager\SystemManager.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\Collision\CollisionSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\GridSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\LightingSystem.h" />
@@ -344,6 +345,7 @@ IF EXIST ..\Dep\Fmod\core\lib\x64\fmodstudio64.dll\ (xcopy /Q /E /Y /I ..\Dep\Fm
     <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\Collision\CollisionSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\GridSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem.cpp" />

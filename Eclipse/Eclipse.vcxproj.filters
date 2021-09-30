@@ -712,6 +712,7 @@
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\AI\AIManager.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AIComponent.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\Collision\CollisionSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Audio\AudioManager.cpp">
@@ -1067,6 +1068,7 @@
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\AI\AIManager.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\Collision\CollisionSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Compilers\GeometryFile\Geometry.eclipse" />
