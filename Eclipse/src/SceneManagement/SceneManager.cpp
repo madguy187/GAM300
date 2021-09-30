@@ -242,6 +242,7 @@ namespace Eclipse
 		//engine->AssimpManager.ClearContainer();
 		engine->world.Clear();
 		engine->gCamera.ResetScene();
+		engine->gCullingManager->Clear();
 	}
 
 	void SceneManager::ReloadScene()

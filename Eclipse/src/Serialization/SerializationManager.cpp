@@ -85,6 +85,12 @@ namespace Eclipse
 				auto& camera = w.GetComponent<CameraComponent>(ent);
 				engine->gCamera.ReInitCameraList(camera.camType, ent);
 			}
+
+			if (w.CheckComponent<AABBComponent>(ent))
+			{
+				auto& aabb = w.GetComponent<AABBComponent>(ent);
+				engine->gCullingManager->Insert(aabb, ent);
+			}
 			isSuccess = true;
 		}
 		else

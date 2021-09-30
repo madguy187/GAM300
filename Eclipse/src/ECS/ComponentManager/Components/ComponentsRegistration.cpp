@@ -64,7 +64,6 @@ namespace Eclipse
         ADD_MEMBER(diffuse);
         ADD_MEMBER(specular);
         ADD_MEMBER(Color);
-        ADD_MEMBER(modelNDC_xform);
     }
 
     DEFINE_META(EntityComponent)

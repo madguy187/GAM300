@@ -2,18 +2,6 @@
 #include "Global.h"
 #include "Serializer.h"
 #include "Deserializer.h"
-#include "../ECS/ComponentManager/Components/EntityComponent.h"
-#include "../ECS/ComponentManager/Components/AabbComponent.h"
-#include "../ECS/ComponentManager/Components/CameraComponent.h"
-#include "../ECS/ComponentManager/Components/DirectionalLightComponent.h"
-#include "../ECS/ComponentManager/Components/MaterialComponent.h"
-#include "../ECS/ComponentManager/Components/PointLightComponent.h"
-#include "../ECS/ComponentManager/Components/MeshComponent.h"
-#include "../ECS/ComponentManager/Components/RigidBodyComponent.h"
-#include "../ECS/ComponentManager/Components/SpotLightComponent.h"
-#include "../ECS/ComponentManager/Components/TransformComponent.h"
-//#include "../ECS/ComponentManager/Components/TextureComponent.h"
-#include "../ECS/ComponentManager/Components/LightComponent.h"
 #include "Reflection/Variant/RefVariant.h"
 
 namespace Eclipse

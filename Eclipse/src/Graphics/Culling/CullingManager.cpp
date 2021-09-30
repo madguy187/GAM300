@@ -99,6 +99,7 @@ namespace Eclipse
     void CullingManager::Clear()
     {
         CullContainer.clear();
+        FrustrumCollisionTree.ClearTree();
     }
 
     std::vector<unsigned int> CullingManager::ReturnContacted()

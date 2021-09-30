@@ -63,12 +63,6 @@
             <diffuse x="0.4" y="0.4" z="0.4" />
             <specular x="0.5" y="0.5" z="0.5" />
             <Color x="1" y="1" z="1" w="1" />
-            <modelNDC_xform Col="4" Row="4">
-                <Col0 _00="0" _01="0" _02="0" _03="0" />
-                <Col1 _10="0" _11="0" _12="0" _13="0" />
-                <Col2 _20="0" _21="0" _22="0" _23="0" />
-                <Col3 _30="0" _31="0" _32="0" _33="0" />
-            </modelNDC_xform>
         </DirectionalLightComponent>
         <TransformComponent>
             <position x="0" y="0" z="0" />
