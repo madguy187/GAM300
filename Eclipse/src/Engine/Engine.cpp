@@ -29,6 +29,7 @@
 #include "Editor/ECGuiAPI/ECGuiInputHandler.h"
 #include "ECS/SystemManager/Systems/System/MonoSystem/MonoSystem.h"
 #include "ECS/SystemManager/Systems/System/Audio/AudioSystem.h"
+#include "ECS/SystemManager/Systems/System/FileWatchSystem/FileWatchSystem.h"
 
 bool Tester1(const Test1& e)
 {
@@ -99,6 +100,7 @@ namespace Eclipse
         world.RegisterSystem<PhysicsSystem>();
         world.RegisterSystem<MonoSystem>();
         world.RegisterSystem<AudioSystem>();
+        world.RegisterSystem<FileWatchSystem>();
 
         // Render System
         Signature RenderSys = RenderSystem::RegisterAll();
@@ -143,6 +145,7 @@ namespace Eclipse
         LightingSystem::Init();
         GridSystem::Init();
         gPhysics.Init();
+        FileWatchSystem::Init();
 
         if (IsEditorActive)
             IsInPlayState = false;
@@ -220,6 +223,8 @@ namespace Eclipse
                     world.Update<PhysicsSystem>();
                 }
             }
+
+            world.Update<FileWatchSystem>();
 
             // FRAMEBUFFER BIND =============================
             engine->GraphicsManager.GlobalFrameBufferBind();

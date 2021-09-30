@@ -19,16 +19,17 @@ namespace Eclipse
 		MAXCOUNT
 	};
 
-	class FileWatcher
+	class EclipseFileWatcher
 	{
-	private:
-		std::unordered_map<std::string, std::filesystem::file_time_type> paths_;
-		bool Running = true;
-		bool contains(const std::string& key);
-
 	public:
-		std::string path_to_watch;
-		std::chrono::duration<int, std::milli> delay;
-		FileWatcher(std::string path_to_watch, std::chrono::duration<int, std::milli> delay);
+		std::string PathToWatch;
+		std::chrono::duration<int, std::milli> Delays;
+		std::unordered_map<std::string, std::filesystem::file_time_type> paths_;
+
+		EclipseFileWatcher();
+		EclipseFileWatcher(std::string path_to_watch, std::chrono::duration<int, std::milli> delay);
+		void Start(const std::function<void(std::string, FileStatus)>& action);
+		bool Contains(const std::string& key);
+
 	};
 }

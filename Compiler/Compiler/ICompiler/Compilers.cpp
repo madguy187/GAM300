@@ -142,11 +142,11 @@ namespace EclipseCompiler
         }
     }
 
-    void CompilerManager::ProduceFile(std::string& in)
+    void CompilerManager::ProduceFile()
     {
         for (auto& i : AllCompilerContainer)
         {
-            i->ReleaseFile(in);
+            i->ReleaseFile();
         }
     }
 
