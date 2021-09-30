@@ -575,6 +575,39 @@ namespace Eclipse
         }
 
         TextureFileRead.close();
+
+        ////////////////////////////
+
+        TextureFileRead.open("src/Assets/Compilers/BasicTextureFile/Texture.eclipse",
+            std::ios::in |
+            std::ios::binary);
+
+        if (TextureFileRead.fail())
+        {
+            std::cout << "Fail To Open Texture File" << std::endl << std::endl;
+            return;
+        }
+
+        // Number Of Textures
+        int NumberOfBasicTextures = 0;
+        TextureFileRead.read(reinterpret_cast<char*>(&NumberOfBasicTextures), sizeof(NumberOfBasicTextures));
+
+        for (int i = 0; i < NumberOfBasicTextures; i++)
+        {
+            // Texture Name
+            std::array<char, 128> TextureName;
+            TextureFileRead.read(reinterpret_cast<char*>(&TextureName), sizeof(TextureName));
+
+            // Texture DirecPathtory
+            std::array<char, 128> TexturePath;
+            TextureFileRead.read(reinterpret_cast<char*>(&TexturePath), sizeof(TexturePath));
+
+            Texture tex(TexturePath.data());
+            Graphics::textures.emplace(TextureName.data(), tex);
+        }
+
+        TextureFileRead.close();
+        ///////////////////////////
     }
 
 }
