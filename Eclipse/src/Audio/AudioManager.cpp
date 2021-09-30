@@ -8,11 +8,6 @@ namespace Eclipse
 		FmodAPI->Update();
 		FmodAPI->m_System->update();
 	}
-		
-	AudioManager::AudioManager()
-	{
-		ENGINE_LOG_ASSERT(Init(), "Failed to instantiate Audio Manager");
-	}
 
 	AudioManager::~AudioManager()
 	{
@@ -20,7 +15,7 @@ namespace Eclipse
 		StopAllChannels();
 	}
 
-	bool AudioManager::Init()
+	void AudioManager::Init()
 	{
 		FmodAPI = std::make_unique<FmodAPI_Impl>();
 
@@ -33,10 +28,7 @@ namespace Eclipse
 		/*LoadBank("Assets/Audio/Master Bank.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);
 		LoadBank("Assets/Audio/Master Bank.strings.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);*/
 
-		if (FmodAPI.get())
-			return true;
-		else
-			return false;
+		ENGINE_LOG_ASSERT(FmodAPI.get(), "Failed to instantiate Audio Manager");
 	}
 
 	void AudioManager::DeserializeSounds() {}
