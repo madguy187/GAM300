@@ -10,6 +10,6 @@ namespace Eclipse
 
 	struct CollisionComponent
 	{
-
+		std::vector<Entity> Collided;
 	};
 }

@@ -6,8 +6,6 @@ namespace Eclipse
 {
 	using namespace physx;
 	
-
-
 	class PhysicsManager
 	{
 		PxFilterFlags contactReportFilterShader(PxFilterObjectAttributes attributes0, PxFilterData filterData0,
@@ -32,6 +30,10 @@ namespace Eclipse
 
 		class ContactReportCallback : public PxSimulationEventCallback
 		{
+		public:
+			std::vector<std::pair<Entity, Entity>> CollisionPairs;
+
+		private:
 			void onConstraintBreak(PxConstraintInfo* constraints, PxU32 count) { PX_UNUSED(constraints); PX_UNUSED(count); }
 			void onWake(PxActor** actors, PxU32 count) { PX_UNUSED(actors); PX_UNUSED(count); }
 			void onSleep(PxActor** actors, PxU32 count) { PX_UNUSED(actors); PX_UNUSED(count); }
@@ -39,7 +41,16 @@ namespace Eclipse
 			void onAdvance(const PxRigidBody* const*, const PxTransform*, const PxU32) {}
 			void onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 nbPairs)
 			{
-				pairHeader.actors
+				Entity Collided1;
+				Entity Collided2;
+				std::stringstream ent1{ pairHeader.actors[0]->getName() };
+				std::stringstream ent2{ pairHeader.actors[1]->getName() };
+
+				ent1 >> Collided1;
+				ent2 >> Collided2;
+
+				CollisionPairs.push_back(std::make_pair(Collided1,Collided2));
+
 				/*PX_UNUSED((pairHeader));
 				std::vector<PxContactPairPoint> contactPoints;
 
@@ -60,14 +71,12 @@ namespace Eclipse
 				}*/
 			}
 		};
-
 		PxFoundation* Px_Foundation;
 		PxPhysics* Px_Physics;
 		PxCooking* Px_Cooking;
 		PxScene* Px_Scene;
 		ContactReportCallback Px_ContactReportCallback;
 		std::array<physx::PxActor*, MAX_ENTITY> Px_Actors;
-		std::vector<std::pair<Entity, Entity>> CollisionPairs;
 	public:
 		void Init();
 		void Simulate();

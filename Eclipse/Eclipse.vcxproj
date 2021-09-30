@@ -163,6 +163,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\AI\AIManager.h" />
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\AIComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\CollisionComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.h" />
