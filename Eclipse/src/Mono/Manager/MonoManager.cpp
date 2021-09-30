@@ -133,7 +133,8 @@ namespace Eclipse
 
 	void MonoManager::StopMono()
 	{
-		mono_jit_cleanup(domain);
+		UnloadDomain();
+		mono_jit_cleanup(mono_get_root_domain());
 	}
 
 	MonoObject* MonoManager::CreateMonoObject(std::string scriptName, Entity entity)
@@ -189,14 +190,15 @@ namespace Eclipse
 			return nullptr;
 		}
 
-		domain = newDomain;
 		return mono_domain_get();
 	}
 
 	void MonoManager::UnloadDomain()
 	{
 		MonoDomain* old_domain = mono_domain_get();
-		if (old_domain && old_domain != mono_get_root_domain()) {
+		MonoDomain* root_domain = mono_get_root_domain();
+		if (old_domain && old_domain != root_domain) {
+
 			if (!mono_domain_set(mono_get_root_domain(), false))
 				printf("Error setting domain\n");
 

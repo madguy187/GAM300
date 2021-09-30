@@ -14,12 +14,15 @@ namespace Eclipse
 	class ComponentArray : public IComponentArray
 	{
 		SparseSet<Entity, MAX_PAGE_SIZE> set;
-		std::array<T, MAX_ENTITY> components;
+		std::vector<T> components;
 
 	public:
 		void Insert(Entity ent, T component)
 		{
 			unsigned index = set.Insert(ent);
+			while(index >= components.size())
+				components.push_back(T{});
+
 			components[index] = component;
 		}
 
