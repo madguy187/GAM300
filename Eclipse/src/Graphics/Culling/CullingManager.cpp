@@ -96,11 +96,6 @@ namespace Eclipse
         FrustrumCollisionTree.InsertObject(engine->gCullingManager->CullContainer[ID]);
     }
 
-    void CullingManager::Clear()
-    {
-        engine->gCullingManager->CullContainer.clear(); 
-    }
-
     std::vector<unsigned int> CullingManager::ReturnContacted()
     {
         return FrustrumCollisionTree.QueryAgainstTrustrum(SetFrustrumAABB(CameraComponent::CameraType::Editor_Camera));
