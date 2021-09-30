@@ -19,7 +19,6 @@ x64/Debug/GAM300.exe
 *.pch
 *.iobj
 *.ipdb
-*.exe
 /Libraries
 Eclipse/Logs/Crash Report.txt
 Eclipse/mcs_script_output.txt
