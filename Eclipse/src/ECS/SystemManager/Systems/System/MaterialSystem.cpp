@@ -3,46 +3,47 @@
 
 namespace Eclipse
 {
-	void MaterialSystem::Init()
-	{
-		EDITOR_LOG_INFO("MaterialSystem Init");
-	}
+    void MaterialSystem::Init()
+    {
+        EDITOR_LOG_INFO("MaterialSystem Init");
+    }
 
-	void MaterialSystem::Update()
-	{
-		if (engine->MaterialManager.EnableHighlight == true)
-		{
-			// Materials Update ===============================
-			for (auto const& entity : mEntities)
-			{
-				MaterialComponent& material = engine->world.GetComponent<MaterialComponent>(entity);
+    void MaterialSystem::Update()
+    {
+        engine->Timer.SetName({ SystemName::MATERIAL });
+        engine->Timer.tracker.system_start = glfwGetTime();
 
-				// Update Shininess ===============================
-				engine->MaterialManager.UpdateShininess(material);
+        if (engine->MaterialManager.EnableHighlight == true)
+        {
+            // Materials Update ===============================
+            for (auto const& entity : mEntities)
+            {
+                MaterialComponent& material = engine->world.GetComponent<MaterialComponent>(entity);
 
-				// Update Materials ===============================
-				engine->MaterialManager.UpdateMaterial(material);
+                // Update Shininess ===============================
+                engine->MaterialManager.UpdateShininess(entity);
 
-				if (engine->world.CheckComponent<ModeLInforComponent>(entity))
-				{
-					// HighLight Basic Models Start ===============================
-					engine->MaterialManager.Highlight3DModels(material, entity, engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
-					// HighLight Basic Models End ===============================
-				}
-				else
-				{
-					// HighLight Basic Models Start ===============================
-					engine->MaterialManager.HighlightBasicPrimitives(material, entity, engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID());
-					// HighLight Basic Models End ===============================
+                if (engine->world.CheckComponent<ModeLInforComponent>(entity))
+                {
+                    // HighLight Basic Models Start ===============================
+                    engine->MaterialManager.Highlight3DModels(entity, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE));
+                    // HighLight Basic Models End ===============================
+                }
+                else
+                {
+                    // HighLight Basic Models Start ===============================
+                    engine->MaterialManager.HighlightBasicPrimitives(entity, engine->GraphicsManager.GetFrameBufferID(Eclipse::FrameBufferMode::FBM_SCENE));
+                    // HighLight Basic Models End ===============================
 
-				}
-			}
+                }
+            }
 
-			// // HighLight Models Start ===============================
-			// engine->MaterialManager.MeshHighlight(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::SCENEVIEW)->GetFrameBufferID(), GL_FILL);
-			// // HighLight Models End ===============================
+            engine->MaterialManager.StencilBufferClear();
+        }
 
-			engine->MaterialManager.StencilBufferClear();
-		}
-	}
+        engine->Timer.tracker.system_end = glfwGetTime();
+        engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
+    }
+
+
 }

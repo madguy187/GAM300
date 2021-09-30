@@ -21,12 +21,13 @@ namespace Eclipse
         std::vector<Vertex> vertices;
         std::vector<unsigned int> indices;
 
-        aiColor4D Diffuse;
-        aiColor4D Specular;
-        aiColor4D Ambient;
+        glm::vec4 Diffuse;
+        glm::vec4 Specular;
+        glm::vec4 Ambient;
 
         bool NoTextures = false;
         std::vector<Texture> textures;
+        std::string MeshName;
     };
 
     class AssimpModel
@@ -34,9 +35,7 @@ namespace Eclipse
     private:
         unsigned int MeshIndex = 0;
         unsigned int ID = 0;
-        //bool NoTextures = false; // Set False if model got textures
         ModelType type = ModelType::MT_UNASSIGNED;
-        // Take Note , i will use folder name as key
         std::string NameOfModel;
         std::string Directory;
         std::vector<Mesh> Meshes;
@@ -44,14 +43,13 @@ namespace Eclipse
         std::vector<glm::vec3> AllVertices;
         std::vector<MeshData> meshData;
 
-        void ProcessMesh(aiMesh* mesh, const aiScene* scene);
-        std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type);
+        void LoadNewModel();
         void ProcessNode(aiNode* node, const aiScene* scene);
+        void ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string& MeshName);
+        std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type, std::string& MeshName);
         float GetLargestAxisValue(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         void ComputeAxisMinMax(std::vector<glm::vec3>& vertices, std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         glm::vec3 ComputeCentroid(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
-
-        void LoadNewModel();
 
     public:
 
@@ -60,7 +58,7 @@ namespace Eclipse
         AssimpModel(bool noTex, std::string& NameOfModels, std::string& Directorys, std::vector<Mesh> Meshess, std::vector<Texture> Textures_loadeds);
 
         void LoadAssimpModel(std::string path);
-        void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID , unsigned int id);
+        void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, unsigned int id);
         void Cleanup();
         void SetName(std::string& name);
         std::string GetName();

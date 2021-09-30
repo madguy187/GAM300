@@ -12,6 +12,9 @@ void Eclipse::PickingSystem::Update()
 
 void Eclipse::PickingSystem::EditorUpdate()
 {
+	engine->Timer.SetName({ SystemName::PICKING });
+	engine->Timer.tracker.system_start = glfwGetTime();
+
 	auto& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 
 	for (auto& it : mEntities)
@@ -20,7 +23,7 @@ void Eclipse::PickingSystem::EditorUpdate()
 
 		float t;
 		glm::vec3 rayDir = engine->gPicker.ComputeCursorRayDirection();
-		bool collision = engine->gPicker.RayAabb(camera.eyePos, rayDir, aabb.min.ConvertToGlmVec3Type(), aabb.max.ConvertToGlmVec3Type(), t);
+		bool collision = engine->gPicker.RayAabb(camera.eyePos, rayDir, aabb.Min.ConvertToGlmVec3Type(), aabb.Max.ConvertToGlmVec3Type(), t);
 
 		if (collision)
 		{
@@ -37,4 +40,7 @@ void Eclipse::PickingSystem::EditorUpdate()
 
 		engine->gPicker.UpdateAabb(it);
 	}
+
+	engine->Timer.tracker.system_end = glfwGetTime();
+	engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
 }

@@ -70,7 +70,8 @@ project "Eclipse"
 		"Dep/PhysX/include/vehicle",
         "Dep/mono/include/mono-2.0",
 		"Dep/ASSIMP/include/assimp",
-	    "Dep/ASSIMP"
+	    "Dep/ASSIMP",
+		"Dep/Fmod/core/inc"
 	}
 
 	filter "system:windows"
@@ -92,9 +93,16 @@ project "Eclipse"
   {
     "Dep/GLFW/lib-vc2019",
     "Dep/GLEW/lib/Release/x64",
-	  "Dep/PhysX/Debug",
+	"Dep/PhysX/Debug",
     "Dep/mono/lib/",
-	"Dep/ASSIMP/"
+	"Dep/ASSIMP/",
+	"Dep/Fmod/core/lib/x64"
+  }
+  
+  disablewarnings 
+  { 
+    "4302",
+    "4311"	
   }
 
   links
@@ -122,7 +130,11 @@ project "Eclipse"
 	  "SimulationController_static_64.lib",
 	  "SnippetRender_static_64.lib",
 	  "SnippetUtils_static_64.lib",
-	  "assimp-vc142-mtd"
+	  "assimp-vc142-mtd",
+	  "fmodL_vc.lib",
+	  "fmodL.lib",
+	  "fmodstudioL64_vc.lib",
+	  "fmodstudioL_vc.lib"
   }
     postbuildcommands
     {
@@ -134,7 +146,11 @@ project "Eclipse"
       "{COPY} ../Dep/PhysX/Debug/PhysXFoundation_64.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/PhysX/Debug/PhysXGpu_64.dll %{cfg.targetdir}",
       "{COPY} ../Dep/mono/bin/mono-2.0-sgen.dll %{cfg.targetdir}",
-	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.dll %{cfg.targetdir}"
+	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.dll %{cfg.targetdir}",
+	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodL.dll %{cfg.targetdir}",
+	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodL64.dll %{cfg.targetdir}",
+	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodstudioL64.dll %{cfg.targetdir}",
+	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodstudioL.dll %{cfg.targetdir}"
     }
 	
 	
@@ -147,9 +163,16 @@ project "Eclipse"
   {
     "Dep/GLFW/lib-vc2019",
     "Dep/GLEW/lib/Release/x64",
-	  "Dep/PhysX/Release",
+	"Dep/PhysX/Release",
     "Dep/mono/lib/",
-	"Dep/ASSIMP/"
+	"Dep/ASSIMP/",
+	"Dep/Fmod/core/lib/x64"
+  }
+  
+  disablewarnings 
+  { 
+    "4302",
+    "4311"	
   }
 
   links
@@ -177,7 +200,9 @@ project "Eclipse"
 	  "SimulationController_static_64.lib",
 	  "SnippetRender_static_64.lib",
 	  "SnippetUtils_static_64.lib",
-	  "assimp-vc142-mtd"
+	  "assimp-vc142-mtd",
+	  "fmod_vc.lib",
+      "fmodstudio64_vc.lib"
   }
 
     postbuildcommands
@@ -190,7 +215,10 @@ project "Eclipse"
       "{COPY} ../Dep/PhysX/Release/PhysXFoundation_64.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/PhysX/Release/PhysXGpu_64.dll %{cfg.targetdir}",
       "{COPY} ../Dep/mono/bin/mono-2.0-sgen.dll %{cfg.targetdir}",
-	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.dll %{cfg.targetdir}"
+	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.dll %{cfg.targetdir}",
+	  "{COPY} ../Dep/Fmod/core/lib/x64/fmod.dll %{cfg.targetdir}",
+	  "{COPY} ../Dep/Fmod/core/lib/x64/fmod64.dll %{cfg.targetdir}",
+	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodstudio64.dll %{cfg.targetdir}"
     }
 
 	filter "configurations:Dist"

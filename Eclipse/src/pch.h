@@ -72,9 +72,6 @@
 
 #include "Graphics.h"
 
-// Profiler
-#include "Editor/Windows/Profiler/Profiler.h"
-
 // Custom Libraries
 #include "Library/Math/Vector.h"
 #include "Library/Math/Matrix.h"
@@ -83,9 +80,19 @@
 #include "Library/Strings/StringsConcatenate.h"
 
 // Reflection
-#include "Reflection/registration.h"
-#include "Reflection/primitive_support.h"
-#include "Reflection/complex_support.h"
+//#include "Reflection/registration.h"
+//#include "Reflection/primitive_support.h"
+//#include "Reflection/complex_support.h"
+//#include "Reflection/Meta.h"
+#include "Reflection/RemTypeQual.h"
+#include "Reflection/Variant/RefVariant.h"
+#include "Reflection/Variant/Variant.h"
+
+// Serialization
+#include "Serialization/SerializationManager.h"
+
+//SceneManager
+#include "SceneManagement/SceneManager.h"
 
 // Editor API
 #include "Editor/ECGuiAPI/ECGui.h"

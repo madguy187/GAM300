@@ -1,25 +1,14 @@
 #pragma once
 #include "pch.h"
-#include "Library/Math/Vector.h" 
+#include "Library/Math/Vector.h"
+#include "Reflection/Meta.h"
+#include "Reflection/RemTypeQual.h"
 
 namespace Eclipse
 {
     struct TextureComponent
     {
-        //TODO
-        //ComboIndex if for imgui combolist to select the correct texture type - Tian Yu
-        size_t ComboIndex = 0;
-
-        // See if need or not
-        unsigned int ID = 0;
-        TextureType Type = TextureType::TT_UNASSIGNED;
-
-        // Assimp Models
-        std::string TextureKey;
-        std::map<unsigned int, std::vector<Texture>> HoldingTextures;
-
-        // Basic Primitives
-        bool hasTexture = false;
+        META_DATA(TextureComponent);
         std::string textureRef;
     };
 }

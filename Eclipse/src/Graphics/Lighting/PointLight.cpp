@@ -7,7 +7,7 @@ namespace Eclipse
 	{
 		// Add PointLightComponent
 		engine->world.AddComponent(CreatedID, LightComponent{});
-		engine->world.AddComponent(CreatedID, PointLightComponent{ CreatedID ,PointLightCounter });
+		engine->world.AddComponent(CreatedID, PointLightComponent{ PointLightCounter });
 
 		auto& AdjustSize = engine->world.GetComponent<TransformComponent>(CreatedID);
 		AdjustSize.scale = ECVec3{ 0.1f,0.1f,0.1f };
@@ -20,14 +20,14 @@ namespace Eclipse
 		PointLightCounter++;
 	}
 
-	void PointLight::CheckUniformLoc(Shader* _shdrpgm, PointLightComponent& in_pointlight, int index, unsigned int containersize)
+	void PointLight::CheckUniformLoc(Shader* _shdrpgm, PointLightComponent& in_pointlight, int index, unsigned int containersize, unsigned int EntityId)
 	{
 		GLint uniform_var_loc8 = _shdrpgm->GetLocation("uModelToNDC");
 		GLint uniform_var_loc9 = _shdrpgm->GetLocation("NumberOfPointLights");
 		GLuint uniform_var_loc10 = _shdrpgm->GetLocation("model");
 
 		// SpotLight Position
-		TransformComponent& PointlightTransform = engine->world.GetComponent<TransformComponent>(in_pointlight.ID);
+		TransformComponent& PointlightTransform = engine->world.GetComponent<TransformComponent>(EntityId);
 
 		// Which Camera's matrix
 		CameraComponent& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
@@ -106,7 +106,7 @@ namespace Eclipse
 		}
 	}
 
-	void PointLight::Draw(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
+	void PointLight::Draw(unsigned int EntityId, PointLightComponent* in, unsigned int framebufferID, unsigned int IndexID, GLenum mode)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
 
@@ -121,9 +121,11 @@ namespace Eclipse
 		glEnable(GL_LINE_SMOOTH);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		CheckUniformLoc(&shdrpgm, *in, indexID, PointLightCounter);
+		CheckUniformLoc(&shdrpgm, *in, IndexID, PointLightCounter, EntityId);
 
-		if (in->visible)
+		auto& Light = engine->world.GetComponent<LightComponent>(EntityId);
+
+		if (in->visible && Light.Render)
 		{
 			GLCall(glDrawElements(Graphics::models["Sphere"]->GetPrimitiveType(),
 				Graphics::models["Sphere"]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
@@ -144,12 +146,12 @@ namespace Eclipse
 {
 	bool PointLight::InsertPointLight(PointLightComponent& in)
 	{
-		if (_pointlights.insert({ in.ID , &in }).second == true)
-		{
-			std::cout << _pointlights.size() << std::endl;
+		//if (_pointlights.insert({ in.ID , &in }).second == true)
+		//{
+		//	std::cout << _pointlights.size() << std::endl;
 
-			return true;
-		}
+		//	return true;
+		//}
 
 		return false;
 	}
@@ -186,7 +188,7 @@ namespace Eclipse
 	{
 		for (auto& it : _pointlights)
 		{
-			Draw(it.second, framebufferID, it.first, GL_FILL);
+			Draw(it.first, it.second, framebufferID, it.first, GL_FILL);
 		}
 	}
 }

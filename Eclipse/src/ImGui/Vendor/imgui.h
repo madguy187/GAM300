@@ -1131,6 +1131,7 @@ enum ImGuiKey_
     ImGuiKey_R,                 
     ImGuiKey_S,                 
     ImGuiKey_D,                                
+    ImGuiKey_O,                                
     ImGuiKey_COUNT
 };
 

@@ -77,13 +77,19 @@ namespace Eclipse
         // process all meshes
         for (unsigned int i = 0; i < node->mNumMeshes; i++)
         {
+            std::string NodeName = node->mName.data;
             aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-            ProcessMesh(mesh, scene);
+
+            // For Tianyu
+            engine->AssimpManager.InsertMeshName(NodeName);
+
+            ProcessMesh(mesh, scene, NodeName);
         }
 
         // process all child nodes
         for (unsigned int i = 0; i < node->mNumChildren; i++)
         {
+            //std::cout << NameOfModel << " : " << node->mChildren[i]->mName.data << std::endl;
             ProcessNode(node->mChildren[i], scene);
         }
     }
@@ -201,11 +207,15 @@ namespace Eclipse
 
             if (it.NoTextures == false)
             {
-                Meshes.push_back(Mesh(it.vertices, it.indices, it.textures));
+                Mesh NewMesh(it.vertices, it.indices, it.MeshName, it.textures);
+                Meshes.push_back(NewMesh);
+                //engine->AssimpManager.SingleMeshMap.emplace(it.MeshName, std::make_unique<Mesh>(NewMesh));
             }
             else
             {
-                Meshes.push_back(Mesh(it.vertices, it.indices, it.Diffuse, it.Specular, it.Ambient, it.NoTextures));
+                Mesh NewMesh(it.vertices, it.indices, it.Diffuse, it.Specular, it.Ambient, it.NoTextures, it.MeshName);
+                Meshes.push_back(NewMesh);
+                //engine->AssimpManager.SingleMeshMap.emplace(it.MeshName,std::make_unique<Mesh>(NewMesh));
             }
         }
 
@@ -265,7 +275,7 @@ namespace Eclipse
         return NameOfModel;
     }
 
-    void AssimpModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
+    void AssimpModel::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string& MeshName)
     {
         std::vector<Vertex> vertices;
         std::vector<unsigned int> indices;
@@ -273,6 +283,8 @@ namespace Eclipse
 
         //TEST CODE
         MeshData newMesh;
+
+        newMesh.MeshName = MeshName;
 
         // vertices
         for (unsigned int i = 0; i < mesh->mNumVertices; i++)
@@ -297,7 +309,10 @@ namespace Eclipse
 
             if (mesh->mColors[0])
             {
-                vertex.m_Color = mesh->mColors[0][i];
+                vertex.m_Color.x = mesh->mColors[0][i].r;
+                vertex.m_Color.y = mesh->mColors[0][i].g;
+                vertex.m_Color.z = mesh->mColors[0][i].b;
+                vertex.m_Color.w = mesh->mColors[0][i].a;
             }
 
             AllVertices.push_back(vertex.Position);
@@ -339,12 +354,12 @@ namespace Eclipse
                 newMesh.NoTextures = false;
 
                 // diffuse maps
-                std::vector<Texture> diffuseMaps = LoadTextures(material, aiTextureType_DIFFUSE);
+                std::vector<Texture> diffuseMaps = LoadTextures(material, aiTextureType_DIFFUSE, newMesh.MeshName);
                 textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
                 newMesh.textures.insert(newMesh.textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
                 // specular maps
-                std::vector<Texture> specularMaps = LoadTextures(material, aiTextureType_SPECULAR);
+                std::vector<Texture> specularMaps = LoadTextures(material, aiTextureType_SPECULAR, newMesh.MeshName);
                 textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
                 newMesh.textures.insert(newMesh.textures.end(), specularMaps.begin(), specularMaps.end());
 
@@ -357,17 +372,26 @@ namespace Eclipse
                     // diffuse color
                     aiColor4D diff(1.0f);
                     aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diff);
-                    newMesh.Diffuse = diff;
+                    newMesh.Diffuse.x = diff.r;
+                    newMesh.Diffuse.y = diff.g;
+                    newMesh.Diffuse.z = diff.b;
+                    newMesh.Diffuse.w = diff.a;
 
                     // specular color
                     aiColor4D spec(1.0f);
                     aiGetMaterialColor(material, AI_MATKEY_COLOR_SPECULAR, &spec);
-                    newMesh.Specular = spec;
+                    newMesh.Specular.x = spec.r;
+                    newMesh.Specular.y = spec.g;
+                    newMesh.Specular.z = spec.b;
+                    newMesh.Specular.w = spec.a;
 
                     // specular color
                     aiColor4D ambientColor(1.0f);
                     aiGetMaterialColor(material, AI_MATKEY_COLOR_AMBIENT, &ambientColor);
-                    newMesh.Ambient = ambientColor;
+                    newMesh.Ambient.x = ambientColor.r;
+                    newMesh.Ambient.y = ambientColor.g;
+                    newMesh.Ambient.z = ambientColor.b;
+                    newMesh.Ambient.w = ambientColor.a;
 
                     meshData.push_back(newMesh);
                     MeshIndex++;
@@ -383,7 +407,7 @@ namespace Eclipse
         // return Mesh(vertices, indices, textures);
     }
 
-    std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType type)
+    std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType type, std::string& MeshName)
     {
         std::vector<Texture> textures;
 
@@ -400,31 +424,36 @@ namespace Eclipse
 
             // prevent duplicate loading
             bool skip = false;
-            for (unsigned int j = 0; j < Textures_loaded.size(); j++)
-            {
-                if (std::strcmp(Textures_loaded[j].GetPath().data(), str.C_Str()) == 0)
-                {
-                    textures.push_back(Textures_loaded[j]);
-                    std::unique_ptr<Texture> ptr(new Texture(Textures_loaded[j]));
-                    engine->AssimpManager.InsertTextures(NameOfModel, std::move(ptr), MeshIndex);
+            //for (unsigned int j = 0; j < Textures_loaded.size(); j++)
+            //{
+            //    if (std::strcmp(Textures_loaded[j].GetPath().data(), str.C_Str()) == 0)
+            //    {
+            //        textures.push_back(Textures_loaded[j]);
+            //        std::unique_ptr<Texture> ptr(new Texture(Textures_loaded[j]));
+            //        engine->AssimpManager.InsertTextures(MeshName, std::move(ptr), MeshIndex);
 
-                    skip = true;
-                    break;
-                }
-            }
+            //        skip = true;
+            //        break;
+            //    }
+            //}
 
             if (!skip)
             {
                 Texture tex(Directory, str.C_Str(), type);
+                std::cout << "Directory: " << Directory << std::endl;
+                std::cout << "Path: " << str.C_Str() << std::endl;
+
                 tex.Load(false);
                 textures.push_back(tex);
                 Textures_loaded.push_back(tex);
 
+                Graphics::textures.emplace(MeshName, tex);
+
                 std::unique_ptr<Texture> ptr(new Texture(tex));
-                engine->AssimpManager.InsertTextures(NameOfModel, std::move(ptr), MeshIndex);
+                engine->AssimpManager.InsertTextures(MeshName, std::move(ptr), MeshIndex);
+
             }
         }
-
         return textures;
     }
 }

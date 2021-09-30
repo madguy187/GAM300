@@ -18,13 +18,13 @@ namespace Eclipse
 		// Create Directional Light
 		static void CreateDirectionalLight(unsigned int CreatedID);
 		// Directional Light Draw
-		void Draw(DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
+		void Draw(unsigned int EntityId,DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
 		// First Created Light
 		void FirstGlobalLight();
 
 	private:
 		// Update Shader Variables
-		void CheckUniformLoc(Shader* _shdrpgm, DirectionalLightComponent& hi, int index, unsigned int containersize);
+		void CheckUniformLoc(Shader* _shdrpgm, DirectionalLightComponent& hi, int index, unsigned int containersize, unsigned int EntityId);
 
 	private:
 		// Directional Light Container

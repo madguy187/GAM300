@@ -2,7 +2,9 @@
 
 #include "Editor/Windows/Interface/ECGuiWindow.h"
 #include "Editor/Menu/MenuBar.h"
-#include <Editor/Utilities/DragAndDrop.h>
+#include <Editor/Utilities/DragAndDrop/DragAndDrop.h>
+
+#include "Serialization/SerializationManager.h"
 
 namespace Eclipse
 {
@@ -36,10 +38,14 @@ namespace Eclipse
 		int GetEntityIndex(Entity ID);
 		Entity GetEntityID(int index);
 		bool IsEntityListEmpty() const;
+		bool IsAnyGizmoWindowActive();
 
 		// Setters
 		void SetSelectedEntity(Entity ID);
 		void SetGlobalIndex(size_t index);
+
+		//void SaveTemp(const char* fullpath = "Data/Temp/Temp.xml");
+		//void LoadTemp(const char* fullpath = "Data/Temp/Temp.xml");
 
 		template <typename TWindow>
 		TWindow* GetEditorWindow()

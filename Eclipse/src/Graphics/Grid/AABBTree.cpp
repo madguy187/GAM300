@@ -132,7 +132,7 @@ namespace Eclipse
                     {
                         unsigned int hi = overlaps[0];
                         node.aabb.DistanceToObject = node.aabb.Max.x - testAabb.Max.x;
-                        float yo = engine->GridManager->GetDistanceToObject(hi); // gridArray[hi].aabb.DistanceToObject;
+                        float yo = engine->GridManager->GetDistanceToObject(hi);
 
                         if (abs(node.aabb.DistanceToObject) > abs(yo))
                         {
@@ -151,6 +151,40 @@ namespace Eclipse
                         engine->GridManager->SetDistance(node, object);
                         overlaps.push_back(node.aabb.GetEntityID());
                     }
+                }
+                else
+                {
+                    stack.push(node.leftNodeIndex);
+                    stack.push(node.rightNodeIndex);
+                }
+            }
+        }
+
+        return overlaps;
+    }
+
+    std::vector<unsigned int> AABBTree::QueryAgainstTrustrum(AABBComponent& object)
+    {
+        std::vector<unsigned int> overlaps;
+        std::stack<unsigned> stack;
+        AABBComponent& CheckedObjectAgsintTree = object;
+
+        stack.push(RootNodeIndex);
+        while (!stack.empty())
+        {
+            unsigned nodeIndex = stack.top();
+            stack.pop();
+
+            if (nodeIndex == AABB_NULL_NODE)
+                continue;
+
+            AABBNode& node = AllNodes[nodeIndex];
+
+            if (node.aabb.Overlaps(CheckedObjectAgsintTree))
+            {
+                if (node.isLeaf())
+                {
+                    overlaps.push_back(node.aabb.GetEntityID());
                 }
                 else
                 {
@@ -187,7 +221,7 @@ namespace Eclipse
                     if (overlaps.size() != 0)
                     {
                         unsigned int FirstTileRegistered = overlaps[0];
-                        engine->GridManager->SetDistance(node, CheckedObjectAgsintTree);                
+                        engine->GridManager->SetDistance(node, CheckedObjectAgsintTree);
                         float RegisteredTileDistance = engine->GridManager->GetDistanceToObject(FirstTileRegistered);
 
                         if (abs(node.aabb.DistanceToObject) > abs(RegisteredTileDistance))
@@ -292,6 +326,17 @@ namespace Eclipse
     unsigned int AABBTree::NumberOfIntersections(std::vector<unsigned int>& in)
     {
         return in.size();
+    }
+
+    void AABBTree::ClearTree()
+    {
+        AABBToNodeMap.clear();
+        AllNodes.clear();
+        RootNodeIndex = 0;
+        AllocatedNodeCount = 0;
+        NextFreeNoedIndex = 0;
+        NodeCapacity = 0;
+        GrowthSize = 0;
     }
 
     void AABBTree::InsertLeaf(unsigned leafNodeIndex)

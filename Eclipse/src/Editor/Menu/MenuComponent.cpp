@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "MenuComponent.h"
 
-#include "Editor/Utilities/OpenFileDialog.h"
+#include "Editor/Utilities/OpenFileDialog/OpenFileDialog.h"
 #include "Editor/Windows/Scene/SceneView.h"
 #include "Editor/Windows/GameView/GameView.h"
 
@@ -36,7 +36,7 @@ namespace Eclipse
 
 			if (ECGui::CreateMenuItem(key, &selected))
 			{
-				
+				SceneManager::NewScene();
 			}
 		}
 		
@@ -44,7 +44,19 @@ namespace Eclipse
 		{
 			bool selected = false;
 
-			if (ECGui::CreateMenuItem(key, &selected))
+			if (ECGui::CreateMenuItem(key, &selected, "CTRL+O"))
+			{
+				FileDialog::FileBrowser();
+			}
+		
+		
+		}
+
+		if (!strcmp(key, "Save"))
+		{
+			bool selected = false;
+
+			if (ECGui::CreateMenuItem(key, &selected, "CTRL+S"))
 			{
 				FileDialog::FileBrowser();
 			}
@@ -74,7 +86,7 @@ namespace Eclipse
 		{
 			bool selected = false;
 
-			if (ECGui::CreateMenuItem(key, &selected))
+			if (ECGui::CreateMenuItem(key, &selected, "CTRL+Z"))
 			{
 				CommandHistory::Undo();
 			}
@@ -84,7 +96,7 @@ namespace Eclipse
 		{
 			bool selected = false;
 
-			if (ECGui::CreateMenuItem(key, &selected))
+			if (ECGui::CreateMenuItem(key, &selected, "CTRL+Y"))
 			{
 				CommandHistory::Redo();
 			}

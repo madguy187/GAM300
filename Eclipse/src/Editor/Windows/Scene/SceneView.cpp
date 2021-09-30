@@ -16,8 +16,8 @@ namespace Eclipse
 		mViewportSize = glm::vec2{}; 
 		mSceneBufferSize = glm::vec2{};
 		Type = EditorWindowType::EWT_SCENE;
-		WindowName = "Scene";
-		m_frameBuffer = engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::SCENEVIEW);
+		WindowName = "Scene View";
+		m_frameBuffer = engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE);
 	}
 
 	void SceneWindow::Unload()
@@ -51,6 +51,7 @@ namespace Eclipse
 		/*std::cout << "SceneBuffer Size: " << mSceneBufferSize.x << " " << mSceneBufferSize.y << std::endl;*/
 		/*std::cout << "SceneBuffer Pos: " << mSceneBufferPos.x << " " << mSceneBufferPos.y << std::endl;
 		std::cout << "CursorScreen Pos: " << mCursorScreenPos.x << " " << mCursorScreenPos.y << std::endl;*/
+		//RenderSceneHeader();
 
 		// Set Image size
 		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
@@ -66,38 +67,15 @@ namespace Eclipse
 		{
 			// Do all the future stuff here when hovering on window
 			// ImGuizmo Logic
-			OnKeyPressedEvent();
 			OnCameraMoveEvent();
 			OnCameraZoomEvent();
 			OnSelectEntityEvent();
 		}
-	}
 
-	void SceneWindow::OnKeyPressedEvent()
-	{
-		ImGuiIO& io = ImGui::GetIO();
-
-		// Gizmos
-		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Q)))
-		{
-			if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
-				m_GizmoType = -1;
-		}
-		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_W)))
-		{
-			if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
-				m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
-		}
-		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_E)))
-		{
-			if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
-				m_GizmoType = ImGuizmo::OPERATION::SCALE;
-		}
-		else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_R)))
-		{
-			if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
-				m_GizmoType = ImGuizmo::OPERATION::ROTATE;
-		}
+		if (ImGui::IsItemActive())
+			IsWindowActive = true;
+		else
+			IsWindowActive = false;
 	}
 
 	void SceneWindow::OnGizmoUpdateEvent()
@@ -152,10 +130,14 @@ namespace Eclipse
 		}
 
 		ImGuiIO& io = ImGui::GetIO();
+		if(ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_LeftControl)))
+		{
+			IsSnapping = io.KeyCtrl;
+		}
 
 		ImGuizmo::Manipulate(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx),
 			(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
-			nullptr, io.KeyCtrl ? glm::value_ptr(snapValues) : nullptr);
+			nullptr, IsSnapping ? glm::value_ptr(snapValues) : nullptr);
 
 		/*static const float identityMatrix[16] =
 		{ 1.f, 0.f, 0.f, 0.f,
@@ -191,7 +173,8 @@ namespace Eclipse
 				break;
 			}
 		}
-		else if (ImGuizmo::IsOver() && ImGui::IsMouseReleased(0))
+		else if (!ImGuizmo::IsUsing() && ImGui::IsMouseReleased(0)
+			&& ECGui::IsItemHovered())
 		{
 			CommandHistory::DisableMergeForMostRecentCommand();
 		}
@@ -344,5 +327,30 @@ namespace Eclipse
 	glm::vec2 SceneWindow::GetCursorScreenPos()
 	{
 		return mCursorScreenPos.ConvertToGlmVec2Type();
+	}
+
+	int SceneWindow::GetGizmoType() const
+	{
+		return m_GizmoType;
+	}
+
+	bool SceneWindow::GetIsWindowActive() const
+	{
+		return IsWindowActive;
+	}
+
+	bool SceneWindow::GetSnapping() const
+	{
+		return IsSnapping;
+	}
+
+	void SceneWindow::SetGizmoType(int type)
+	{
+		m_GizmoType = type;
+	}
+
+	void SceneWindow::SetSnapping(bool active)
+	{
+		IsSnapping = active;
 	}
 }

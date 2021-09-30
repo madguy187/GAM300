@@ -1,12 +1,14 @@
 #pragma once
 #include "pch.h"
 #include "Library/Math/Vector.h" 
+#include "Reflection/Meta.h"
+#include "Reflection/RemTypeQual.h"
 
 namespace Eclipse
 {
     struct DirectionalLightComponent
     {
-        unsigned int ID = 0;
+        META_DATA(DirectionalLightComponent);
         unsigned int Counter = 0;
 
         bool visible = false;
@@ -19,12 +21,5 @@ namespace Eclipse
         ECVec3 diffuse{ 0.4f,0.4f,0.4f };
         ECVec3 specular{ 0.5f,0.5f,0.5f };
         ECVec4 Color{ 1.0f,1.0f,1.0f,1 };
-
-        glm::mat4 modelNDC_xform{ 0 };
-
-        // Not Needed For now
-        //IModel* modelRef;
-        //Shader* shaderRef;
-        //Texture* textureRef;
     };
 }

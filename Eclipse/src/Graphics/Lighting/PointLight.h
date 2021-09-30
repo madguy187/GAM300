@@ -19,11 +19,11 @@ namespace Eclipse
 		// Create PointLight
 		static void CreatePointLight(unsigned int CreatedID);
 		// PointLight
-		void Draw(PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
+		void Draw(unsigned int EntityId ,PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
 
 	private:
 		// Update Shader Variables
-		void CheckUniformLoc(Shader* _shdrpgm, PointLightComponent& hi, int index, unsigned int containersize);
+		void CheckUniformLoc(Shader* _shdrpgm, PointLightComponent& hi, int index, unsigned int containersize, unsigned int EntityId);
 
 	private:
 		// Container for all Pointlights

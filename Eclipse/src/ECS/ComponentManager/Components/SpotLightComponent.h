@@ -1,12 +1,14 @@
 #pragma once
 #include "pch.h"
 #include "Library/Math/Vector.h" 
+#include "Reflection/Meta.h"
+#include "Reflection/RemTypeQual.h"
 
 namespace Eclipse
 {
     struct SpotLightComponent
     {
-        unsigned int ID = 0;
+        META_DATA(SpotLightComponent);
         unsigned int Counter = 0;
 
         ECVec3 lightColor{ 1.0f,1.0f,1.0f };
@@ -30,11 +32,5 @@ namespace Eclipse
         bool hasTexture = false;
         bool visible = false;
         bool AffectsWorld = true;
-
-        // Not needed
-        //IModel* modelRef;
-        //Shader* shaderRef;
-        //Texture* textureRef;
-        //glm::mat4 modelNDC_xform{ 0 };
     };
 }

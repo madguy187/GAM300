@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Audio">
+      <UniqueIdentifier>{9718D90C-032D-01BE-CCAE-A41D3882FDEE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Audio\FmodAPI">
+      <UniqueIdentifier>{2653ADA8-9213-29DF-5B4E-725CC7CD6DBB}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ECS">
       <UniqueIdentifier>{60E1870B-CCEA-877C-5566-9E7CC16E937C}</UniqueIdentifier>
     </Filter>
@@ -25,6 +31,15 @@
     <Filter Include="ECS\SystemManager\Systems\System">
       <UniqueIdentifier>{2AA091FC-16F1-7C3E-3F55-6B002B0510A8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\Audio">
+      <UniqueIdentifier>{AB25D4DE-9777-ABCE-8096-E8DE6C87C4B7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\Editor">
+      <UniqueIdentifier>{20CA7CC1-8C59-3EAC-9555-1FC4016479B8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\MonoSystem">
+      <UniqueIdentifier>{377B9766-A3E0-2AED-2CB9-CCC5981D205C}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\ParentChild">
       <UniqueIdentifier>{0707B837-F319-B890-9C03-957D88F554DE}</UniqueIdentifier>
     </Filter>
@@ -43,6 +58,15 @@
     <Filter Include="Editor\Utilities">
       <UniqueIdentifier>{F7DD8FC0-E3D6-AE12-0C09-9497F8608E1E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editor\Utilities\DragAndDrop">
+      <UniqueIdentifier>{2C9DF5A9-1858-E555-C10F-5EA0ADA92FE6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Utilities\OpenFileDialog">
+      <UniqueIdentifier>{E84BB6BE-542F-C5FE-5D32-F33AC9948B4F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Utilities\ParentChild">
+      <UniqueIdentifier>{5460141D-401B-04C9-E9D2-7C13D56C4E59}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Editor\Utilities\UndoAndRedo">
       <UniqueIdentifier>{99D07E34-858B-6EE0-2E43-E72A1ADDB870}</UniqueIdentifier>
     </Filter>
@@ -57,6 +81,9 @@
     </Filter>
     <Filter Include="Editor\Windows\GameView">
       <UniqueIdentifier>{6A8AA614-D6C1-EEAB-DFCB-52CF4B8215A5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Windows\Header">
+      <UniqueIdentifier>{3E5DFD23-AAC9-B81E-73BD-507CDFE8DA86}</UniqueIdentifier>
     </Filter>
     <Filter Include="Editor\Windows\Hierarchy">
       <UniqueIdentifier>{D40C5037-C031-9FB7-E97C-8447D5009ED5}</UniqueIdentifier>
@@ -93,6 +120,9 @@
     </Filter>
     <Filter Include="Graphics\Camera">
       <UniqueIdentifier>{CED20E8B-3A5E-7C4F-436F-FF43AF79D84F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Culling">
+      <UniqueIdentifier>{13F3811B-FFEB-A06D-281E-86F214768079}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\Debugging">
       <UniqueIdentifier>{51443AC7-3D28-FB1C-A688-F56F928BE59E}</UniqueIdentifier>
@@ -178,6 +208,18 @@
     <Filter Include="Reflection">
       <UniqueIdentifier>{104FCF04-FC06-1152-650E-EAAD51E5AB42}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Reflection\Variant">
+      <UniqueIdentifier>{B46A2A39-A04E-EB8E-09AF-E5E1F5B1D510}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SceneManagement">
+      <UniqueIdentifier>{D0EEDB6A-3C7A-492F-458B-CC23B195A52F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Serialization">
+      <UniqueIdentifier>{2319AF09-8FD9-2A40-5814-74BDC4936F1C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Serialization\TinyXML">
+      <UniqueIdentifier>{A79CE5FB-1309-A1F6-DCFC-38544828C35E}</UniqueIdentifier>
+    </Filter>
     <Filter Include="SparseSet">
       <UniqueIdentifier>{FF3F5950-6BAA-0DC7-B4E8-BE6C2092EB1B}</UniqueIdentifier>
     </Filter>
@@ -189,6 +231,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Audio\AudioManager.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Audio\FmodAPI\FmodAPI.h">
+      <Filter>Audio\FmodAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\ComponentList.h">
+      <Filter>ECS\ComponentManager</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h">
       <Filter>ECS\ComponentManager</Filter>
     </ClInclude>
@@ -234,6 +285,9 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\ScriptComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\SpotLightComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
@@ -249,11 +303,14 @@
     <ClInclude Include="src\ECS\SystemManager\SystemManager.h">
       <Filter>ECS\SystemManager</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\Audio</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\EditorSystem.h">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\Editor</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\GridSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
@@ -263,6 +320,9 @@
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\MonoSystem</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.h">
       <Filter>ECS\SystemManager\Systems\System\ParentChild</Filter>
@@ -297,11 +357,14 @@
     <ClInclude Include="src\Editor\Menu\MenuComponent.h">
       <Filter>Editor\Menu</Filter>
     </ClInclude>
-    <ClInclude Include="src\Editor\Utilities\DragAndDrop.h">
-      <Filter>Editor\Utilities</Filter>
+    <ClInclude Include="src\Editor\Utilities\DragAndDrop\DragAndDrop.h">
+      <Filter>Editor\Utilities\DragAndDrop</Filter>
     </ClInclude>
-    <ClInclude Include="src\Editor\Utilities\OpenFileDialog.h">
-      <Filter>Editor\Utilities</Filter>
+    <ClInclude Include="src\Editor\Utilities\OpenFileDialog\OpenFileDialog.h">
+      <Filter>Editor\Utilities\OpenFileDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Utilities\ParentChild\ParentChild.h">
+      <Filter>Editor\Utilities\ParentChild</Filter>
     </ClInclude>
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.h">
       <Filter>Editor\Utilities\UndoAndRedo</Filter>
@@ -329,6 +392,9 @@
     </ClInclude>
     <ClInclude Include="src\Editor\Windows\GameView\GameView.h">
       <Filter>Editor\Windows\GameView</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\Header\HeaderWindow.h">
+      <Filter>Editor\Windows\Header</Filter>
     </ClInclude>
     <ClInclude Include="src\Editor\Windows\Hierarchy\Hierarchy.h">
       <Filter>Editor\Windows\Hierarchy</Filter>
@@ -381,6 +447,9 @@
     <ClInclude Include="src\Global.h" />
     <ClInclude Include="src\Graphics\Camera\CameraManager.h">
       <Filter>Graphics\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Culling\CullingManager.h">
+      <Filter>Graphics\Culling</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\Debugging\DebugRenderingManager.h">
       <Filter>Graphics\Debugging</Filter>
@@ -598,14 +667,38 @@
     <ClInclude Include="src\Physics\PhysicsManager.h">
       <Filter>Physics</Filter>
     </ClInclude>
-    <ClInclude Include="src\Reflection\complex_support.h">
+    <ClInclude Include="src\Reflection\Meta.h">
       <Filter>Reflection</Filter>
     </ClInclude>
-    <ClInclude Include="src\Reflection\primitive_support.h">
+    <ClInclude Include="src\Reflection\RemTypeQual.h">
       <Filter>Reflection</Filter>
     </ClInclude>
-    <ClInclude Include="src\Reflection\registration.h">
-      <Filter>Reflection</Filter>
+    <ClInclude Include="src\Reflection\Variant\RefVariant.h">
+      <Filter>Reflection\Variant</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Reflection\Variant\Variant.h">
+      <Filter>Reflection\Variant</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Reflection\Variant\VariantBase.h">
+      <Filter>Reflection\Variant</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SceneManagement\SceneManager.h">
+      <Filter>SceneManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Serialization\Deserializer.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Serialization\SerializationManager.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Serialization\Serializer.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Serialization\TinyXML\tinystr.h">
+      <Filter>Serialization\TinyXML</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Serialization\TinyXML\tinyxml.h">
+      <Filter>Serialization\TinyXML</Filter>
     </ClInclude>
     <ClInclude Include="src\SparseSet\SparseSet.hpp">
       <Filter>SparseSet</Filter>
@@ -621,11 +714,20 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\AIComponent.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Audio\AudioManager.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Audio\FmodAPI\FmodAPI.cpp">
+      <Filter>Audio\FmodAPI</Filter>
+    </ClCompile>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
       <Filter>ECS\ComponentManager</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.cpp">
       <Filter>ECS\ComponentManager\Components\ComponentArray</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\ComponentManager\Components\ComponentsRegistration.cpp">
+      <Filter>ECS\ComponentManager\Components</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\EntityManager\EntityManager.cpp">
       <Filter>ECS\EntityManager</Filter>
@@ -633,11 +735,14 @@
     <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp">
       <Filter>ECS\SystemManager</Filter>
     </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\Audio</Filter>
+    </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\EditorSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\Editor</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\GridSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
@@ -647,6 +752,9 @@
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\MonoSystem</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\ParentChild</Filter>
@@ -678,11 +786,14 @@
     <ClCompile Include="src\Editor\Menu\MenuComponent.cpp">
       <Filter>Editor\Menu</Filter>
     </ClCompile>
-    <ClCompile Include="src\Editor\Utilities\DragAndDrop.cpp">
-      <Filter>Editor\Utilities</Filter>
+    <ClCompile Include="src\Editor\Utilities\DragAndDrop\DragAndDrop.cpp">
+      <Filter>Editor\Utilities\DragAndDrop</Filter>
     </ClCompile>
-    <ClCompile Include="src\Editor\Utilities\OpenFileDialog.cpp">
-      <Filter>Editor\Utilities</Filter>
+    <ClCompile Include="src\Editor\Utilities\OpenFileDialog\OpenFileDialog.cpp">
+      <Filter>Editor\Utilities\OpenFileDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Utilities\ParentChild\ParentChild.cpp">
+      <Filter>Editor\Utilities\ParentChild</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.cpp">
       <Filter>Editor\Utilities\UndoAndRedo</Filter>
@@ -695,6 +806,9 @@
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\GameView\GameView.cpp">
       <Filter>Editor\Windows\GameView</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\Header\HeaderWindow.cpp">
+      <Filter>Editor\Windows\Header</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\Hierarchy\Hierarchy.cpp">
       <Filter>Editor\Windows\Hierarchy</Filter>
@@ -734,6 +848,9 @@
     </ClCompile>
     <ClCompile Include="src\Graphics\Camera\CameraManager.cpp">
       <Filter>Graphics\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Culling\CullingManager.cpp">
+      <Filter>Graphics\Culling</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\Debugging\DebugRenderingManager.cpp">
       <Filter>Graphics\Debugging</Filter>
@@ -909,10 +1026,49 @@
     <ClCompile Include="src\Physics\PhysicsManager.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
+    <ClCompile Include="src\Reflection\Meta.cpp">
+      <Filter>Reflection</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Reflection\Variant\RefVariant.cpp">
+      <Filter>Reflection\Variant</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Reflection\Variant\Variant.cpp">
+      <Filter>Reflection\Variant</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Reflection\Variant\VariantBase.cpp">
+      <Filter>Reflection\Variant</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SceneManagement\SceneManager.cpp">
+      <Filter>SceneManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Serialization\Deserializer.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Serialization\SerializationManager.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Serialization\Serializer.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Serialization\TinyXML\tinystr.cpp">
+      <Filter>Serialization\TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Serialization\TinyXML\tinyxml.cpp">
+      <Filter>Serialization\TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Serialization\TinyXML\tinyxmlerror.cpp">
+      <Filter>Serialization\TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Serialization\TinyXML\tinyxmlparser.cpp">
+      <Filter>Serialization\TinyXML</Filter>
+    </ClCompile>
     <ClCompile Include="src\Time\Clock.cpp">
       <Filter>Time</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\AI\AIManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Assets\Compilers\GeometryFile\Geometry.eclipse" />
   </ItemGroup>
 </Project>

@@ -53,6 +53,8 @@ namespace Eclipse
 		}
 
 		static bool BeginMainWindow(const char* name);
+		static bool BeginMainWindowWithFlag(const char* name, bool* p_open = NULL,
+			ImGuiWindowFlags flags = 0);
 		static void EndMainWindow();
 		static bool BeginChildWindow(ChildSettings settings);
 		static void EndChildWindow();
@@ -114,7 +116,7 @@ namespace Eclipse
 		static void CreateComboList(ComboListSettings settings,
 			                        const std::vector<std::string>& vecStr,
 			                        size_t& index);
-		static bool CreateMenuItem(const char* name, bool* open);
+		static bool CreateMenuItem(const char* name, bool* open, const char* shortcut = "");
 
 		/*************************************************************************/
 		/*                           Static Widgets                              */
@@ -233,7 +235,7 @@ namespace Eclipse
 		/*                           Utilities                                   */
 		/*************************************************************************/
 		// Mostly used together with the static widgets
-		static void InsertSameLine();
+		static void InsertSameLine(float offset_from_start_x = 0.0f, float spacing = -1.0f);
 		static void InsertHorizontalLineSeperator();
 		static void PushItemWidth(float value);
 		static bool IsItemHovered();

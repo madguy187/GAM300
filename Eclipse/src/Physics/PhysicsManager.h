@@ -72,6 +72,7 @@ namespace Eclipse
 			}
 		};
 		PxFoundation* Px_Foundation;
+		PxDefaultCpuDispatcher* Px_Dispatcher;
 		PxPhysics* Px_Physics;
 		PxCooking* Px_Cooking;
 		PxScene* Px_Scene;

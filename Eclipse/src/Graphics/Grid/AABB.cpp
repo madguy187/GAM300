@@ -124,9 +124,9 @@ namespace Eclipse
 
     bool DYN_AABB::Overlaps(const AABBComponent& other) const
     {
-        return Max.x > other.min.getX() && Min.x < other.max.getX() &&
-            Max.y > other.min.getY() && Min.y < other.max.getY() &&
-            Max.z > other.min.getZ() && Min.z < other.max.getZ();
+        return Max.x > other.Min.getX() && Min.x < other.Max.getX() &&
+            Max.y > other.Min.getY() && Min.y < other.Max.getY() &&
+            Max.z > other.Min.getZ() && Min.z < other.Max.getZ();
     }
 
     bool DYN_AABB::Overlaps(const DYN_AABB& other) const
@@ -171,8 +171,8 @@ namespace Eclipse
         glm::vec3 max{ position.x + halfExt.x, position.y + halfExt.y, position.z + halfExt.z };
 
         aabbin.center = ECVec3{ position.x , position.y , position.z };
-        aabbin.min = ECVec3{ min.x,min.y,min.z };
-        aabbin.max = ECVec3{ max.x,max.y,max.z };
+        aabbin.Min = ECVec3{ min.x,min.y,min.z };
+        aabbin.Max = ECVec3{ max.x,max.y,max.z };
 
         return aabbin;
     }

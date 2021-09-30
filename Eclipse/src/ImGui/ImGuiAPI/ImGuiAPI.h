@@ -11,6 +11,8 @@ namespace Eclipse
 	public:
 		// Window Creations
 		static bool BeginMainWindow(const char* name);
+		static bool BeginMainWindowWithFlag(const char* name, bool* p_open = NULL, 
+			ImGuiWindowFlags flags = 0);
 		static void EndMainWindow();
 		static bool BeginChildWindow(const char* name, ImVec2 size = ImVec2(0, 0),
 			                  bool border = false, ImGuiWindowFlags flag = 0);
@@ -40,7 +42,7 @@ namespace Eclipse
 		// Semi-Dynamic Widgets (Don't need an end function for it)
 		static bool CreateCollapsingHeader(const char* name);
 		static bool CreateSelectableButton(const char* label, bool* active, ImGuiSelectableFlags flags = 0);
-		static bool CreateMenuItem(const char* name, bool* open);
+		static bool CreateMenuItem(const char* name, bool* open, const char* shortcut = "");
 
 		// Static Widgets
 		// For Printing out on the windows
@@ -84,7 +86,7 @@ namespace Eclipse
 
 		// Utilities
 		// Mostly used together with the static widgets
-		static void InsertSameLine();
+		static void InsertSameLine(float offset_from_start_x = 0.0f, float spacing = -1.0f);
 		static void InsertHorizontalLineSeperator();
 		static void PushItemWidth(float value);
 		static bool IsItemHovered();

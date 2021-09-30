@@ -12,7 +12,7 @@ namespace Eclipse
 	{
 		// Add SpotLightComponent
 		engine->world.AddComponent(CreatedID, LightComponent{});
-		engine->world.AddComponent(CreatedID, SpotLightComponent{ CreatedID , SpotLightCounter });
+		engine->world.AddComponent(CreatedID, SpotLightComponent{ SpotLightCounter });
 
 		// SpotLightComponent
 		SpotLightComponent& SpotLight = engine->world.GetComponent<SpotLightComponent>(CreatedID);
@@ -26,7 +26,7 @@ namespace Eclipse
 		SpotLightCounter++;
 	}
 
-	void SpotLight::Draw(SpotLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
+	void SpotLight::Draw(unsigned int EntityId,SpotLightComponent* in, unsigned int framebufferID, unsigned int IndexId, GLenum mode)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
 
@@ -40,9 +40,11 @@ namespace Eclipse
 		glDisable(GL_CULL_FACE);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		CheckUniformLoc(&shdrpgm, *in, indexID, SpotLightCounter);
+		CheckUniformLoc(&shdrpgm, *in, IndexId, SpotLightCounter, EntityId);
 
-		if (in->visible)
+		auto& Light = engine->world.GetComponent<LightComponent>(EntityId);
+
+		if (in->visible && Light.Render)
 		{
 			GLCall(glDrawElements(Graphics::models["Sphere"]->GetPrimitiveType(),
 				Graphics::models["Sphere"]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
@@ -52,13 +54,13 @@ namespace Eclipse
 		shdrpgm.UnUse();
 	}
 
-	void SpotLight::CheckUniformLoc(Shader* _shdrpgm, SpotLightComponent& in_spot, int index, unsigned int containersize)
+	void SpotLight::CheckUniformLoc(Shader* _shdrpgm, SpotLightComponent& in_spot, int index, unsigned int containersize , unsigned int EntityId)
 	{
 		GLint uniform_var_loc8 = _shdrpgm->GetLocation("uModelToNDC");
 		GLuint uniform_var_loc10 = _shdrpgm->GetLocation("model");
 
 		// SpotLight Position
-		TransformComponent& SpotlightTransform = engine->world.GetComponent<TransformComponent>(in_spot.ID);
+		TransformComponent& SpotlightTransform = engine->world.GetComponent<TransformComponent>(EntityId);
 
 		// Which Camera's matrix
 		CameraComponent& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
@@ -160,10 +162,10 @@ namespace Eclipse
 
 	bool SpotLight::InsertSpotLightLight(SpotLightComponent& in)
 	{
-		if (_spotlights.insert({ in.ID , &in }).second == true)
-		{
-			return true;
-		}
+		//if (_spotlights.insert({ in.ID , &in }).second == true)
+		//{
+		//	return true;
+		//}
 
 		return false;
 	}
@@ -195,7 +197,7 @@ namespace Eclipse
 	{
 		for (auto& it : _spotlights)
 		{
-			Draw(it.second, framebufferID, it.first, GL_FILL);
+			Draw(it.first,it.second, framebufferID, it.first, GL_FILL);
 		}
 	}
 
