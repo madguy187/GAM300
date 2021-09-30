@@ -22,9 +22,6 @@ namespace Eclipse
 
 	void EclipseFileWatcher::Start(const std::function<void(std::string, FileStatus)>& action)
 	{
-		// Wait for "delay" milliseconds
-		//std::this_thread::sleep_for(delay);
-
 		auto it = paths_.begin();
 
 		while (it != paths_.end())
@@ -33,11 +30,10 @@ namespace Eclipse
 			{
 				action(it->first, FileStatus::FS_ERASED);
 				it = paths_.erase(it);
-
 			}
-			else {
+			else
+			{
 				it++;
-
 			}
 
 		}
@@ -45,20 +41,20 @@ namespace Eclipse
 		// Check if a file was created or modified
 		for (auto& file : std::filesystem::recursive_directory_iterator(PathToWatch))
 		{
-			auto current_file_last_write_time = std::filesystem::last_write_time(file);
+			auto CurrentFileLastWriteTime = std::filesystem::last_write_time(file);
 
 			// File creation
 			if (Contains(file.path().string()) == false)
 			{
-				paths_[file.path().string()] = current_file_last_write_time;
+				paths_[file.path().string()] = CurrentFileLastWriteTime;
 				action(file.path().string(), FileStatus::FS_CREATED);
 				// File modification
 			}
 			else
 			{
-				if (paths_[file.path().string()] != current_file_last_write_time)
+				if (paths_[file.path().string()] != CurrentFileLastWriteTime)
 				{
-					paths_[file.path().string()] = current_file_last_write_time;
+					paths_[file.path().string()] = CurrentFileLastWriteTime;
 					action(file.path().string(), FileStatus::FS_MODIFIED);
 				}
 
@@ -72,5 +68,25 @@ namespace Eclipse
 		auto el = paths_.find(key);
 		return el != paths_.end();
 
+	}
+
+	std::chrono::duration<int, std::milli> EclipseFileWatcher::InputTime(unsigned int in)
+	{
+		unsigned int Caclulated = in * 1000;
+		return std::chrono::milliseconds(Caclulated);
+	}
+
+	bool EclipseFileWatcher::UpdateTimer()
+	{
+		if (Timer <= 5.0f)
+		{
+			Timer += engine->Game_Clock.get_fixedDeltaTime();
+			return false;
+		}
+		else
+		{
+			Timer = 0.0f;
+			return true;
+		}
 	}
 }
