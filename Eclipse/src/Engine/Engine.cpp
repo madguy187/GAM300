@@ -160,7 +160,6 @@ namespace Eclipse
         audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
-            Timer.tracker.system_start = glfwGetTime();
             glfwPollEvents();
             engine->GraphicsManager.mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });
 
@@ -256,8 +255,8 @@ namespace Eclipse
             ImGuiSetup::End(IsEditorActive);
             OpenGL_Context::post_render();
             SceneManager::ProcessScene();
-            Timer.tracker.system_end = glfwGetTime();
-            Timer.EngineTimer(Timer.tracker);
+
+            ProfilerWindow::engine_time = 0;
 
             if (IsInStepState)
             {

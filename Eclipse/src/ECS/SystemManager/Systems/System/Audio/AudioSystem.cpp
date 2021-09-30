@@ -5,6 +5,9 @@ namespace Eclipse
 {
 	void AudioSystem::Update()
 	{
+		engine->Timer.SetName({ SystemName::AUDIO });
+		engine->Timer.tracker.system_start = glfwGetTime();
+
 		if (engine->audioManager.GetBGMVolume() != engine->audioManager.OldBGMVolumeToTrack())
 		{
 			engine->audioManager.SetBGMVolume(engine->audioManager.GetBGMVolume());
@@ -21,5 +24,9 @@ namespace Eclipse
 		}*/
 
 		engine->audioManager.UpdateSystems();
+
+
+		engine->Timer.tracker.system_end = glfwGetTime();
+		engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
 	}
 }
