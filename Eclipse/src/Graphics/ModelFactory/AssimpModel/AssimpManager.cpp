@@ -11,6 +11,10 @@ namespace Eclipse
 
     void AssimpModelManager::LoadCompilers()
     {
+        // I will start Compiler here first
+        std::string command = "start Compiler.exe";
+        system(command.c_str());
+
         // Geometry Compiler
         LoadGeometry();
         // Parent Model Mappings
