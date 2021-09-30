@@ -32,7 +32,7 @@ namespace Eclipse
 
     private:
         //unsigned int Id;
-        aiTextureType Type = aiTextureType::aiTextureType_NONE;
+        aiTextureType Type;
         std::string Directory;
         std::string Path;
 
@@ -55,14 +55,14 @@ namespace Eclipse
         void setSpriteHeight(GLint _spriteHeight);
         void DeleteTexture();
     private:
-        GLuint handle = 0;
-        GLint sheetWidth = 0;
-        GLint sheetHeight = 0;
-        GLint channels = 0;
-        GLint spriteWidth = 0;
-        GLint spriteHeight = 0;
-        GLint numCols = 0;
-        GLint numRows = 0;
+        GLuint handle;
+        GLint sheetWidth;
+        GLint sheetHeight;
+        GLint channels;
+        GLint spriteWidth;
+        GLint spriteHeight;
+        GLint numCols;
+        GLint numRows;
     };
 }
 

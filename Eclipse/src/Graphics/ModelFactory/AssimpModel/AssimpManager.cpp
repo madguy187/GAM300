@@ -79,7 +79,7 @@ namespace Eclipse
         glUniform1i(NoTexures, 0);
     }
 
-    size_t AssimpModelManager::MeshFactoryCount()
+    unsigned int AssimpModelManager::MeshFactoryCount()
     {
         return AssimpLoadedModels.size();
     }
@@ -424,7 +424,7 @@ namespace Eclipse
         // See how many Models
         GeometryFileRead.read(reinterpret_cast<char*>(&TotalNumberOfModels), sizeof(TotalNumberOfModels));
 
-        for (unsigned int i = 0; i < TotalNumberOfModels; i++)
+        for (int i = 0; i < TotalNumberOfModels; i++)
         {
             VerticesSize = 0;
             IndicesSize = 0;
@@ -686,7 +686,7 @@ namespace Eclipse
         return AssimpModelContainer_;
     }
 
-    size_t AssimpModelManager::AssimpModelCount()
+    unsigned int AssimpModelManager::AssimpModelCount()
     {
         return AssimpModelContainer_.size();
     }
@@ -809,7 +809,7 @@ namespace Eclipse
         return AssimpModelContainerV2;
     }
 
-    size_t AssimpModelManager::MeshModelCount()
+    unsigned int AssimpModelManager::MeshModelCount()
     {
         return AssimpModelContainerV2.size();
     }

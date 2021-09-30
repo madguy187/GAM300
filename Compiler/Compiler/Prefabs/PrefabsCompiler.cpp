@@ -16,7 +16,7 @@ namespace EclipseCompiler
             return;
         }
 
-        size_t NumberOfPrefabs = Prefabs.size();
+        int NumberOfPrefabs = Prefabs.size();
         PrefabsFileWrite.write(reinterpret_cast<const char*>(&NumberOfPrefabs), sizeof(NumberOfPrefabs));
 
         for (auto i : Prefabs)
@@ -26,7 +26,7 @@ namespace EclipseCompiler
             ParentName[ParentName.size() - 1] = '\0';
             PrefabsFileWrite.write(reinterpret_cast<const char*>(&ParentName), sizeof(ParentName));
 
-            size_t NumberOfSubMeshes = i.second.size();
+            int NumberOfSubMeshes = i.second.size();
             PrefabsFileWrite.write(reinterpret_cast<const char*>(&NumberOfSubMeshes), sizeof(NumberOfSubMeshes));
 
             for (auto EachMeshName : i.second)

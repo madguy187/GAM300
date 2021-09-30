@@ -151,12 +151,12 @@ namespace Eclipse
         return Directory;
     }
 
-    size_t Eclipse::AssimpModel::GetNumberOfTextures()
+    unsigned int Eclipse::AssimpModel::GetNumberOfTextures()
     {
         return Textures_loaded.size();
     }
 
-    size_t Eclipse::AssimpModel::GetNumberOfMeshes()
+    unsigned int Eclipse::AssimpModel::GetNumberOfMeshes()
     {
         return Meshes.size();
     }

@@ -175,7 +175,7 @@ namespace Eclipse
         return HasTextures;
     }
 
-    size_t Eclipse::CubeMap::GetFaceCount()
+    unsigned int Eclipse::CubeMap::GetFaceCount()
     {
         return Faces.size();
     }

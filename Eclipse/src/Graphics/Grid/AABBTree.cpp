@@ -323,7 +323,7 @@ namespace Eclipse
         return overlaps;
     }
 
-    size_t AABBTree::NumberOfIntersections(std::vector<unsigned int>& in)
+    unsigned int AABBTree::NumberOfIntersections(std::vector<unsigned int>& in)
     {
         return in.size();
     }

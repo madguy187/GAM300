@@ -1065,4 +1065,7 @@
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Assets\Compilers\GeometryFile\Geometry.eclipse" />
+  </ItemGroup>
 </Project>

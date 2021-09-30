@@ -14,7 +14,7 @@ public:
 
     }
 
-    aiTextureType Type = aiTextureType::aiTextureType_NONE;
+    aiTextureType Type;
     std::string TextureDirectory;
     std::string TexturePath;
 };

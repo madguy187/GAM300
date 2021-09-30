@@ -78,11 +78,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)GenerateCompilers</OutDir>
+    <OutDir>$(SolutionDir)Eclipse</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)GenerateCompilers</OutDir>
+    <OutDir>$(SolutionDir)Eclipse</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -166,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assimp\AssimpLoader.h" />
+    <ClInclude Include="BinarySettings.h" />
     <ClInclude Include="Compiler\Geometry\GeometryCompiler.h" />
     <ClInclude Include="Compiler\ICompiler\Compilers.h" />
     <ClInclude Include="Compiler\Prefabs\PrefabsCompiler.h" />

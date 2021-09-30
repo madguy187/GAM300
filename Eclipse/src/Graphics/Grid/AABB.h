@@ -6,7 +6,7 @@
 
 namespace Eclipse
 {
-    struct DYN_AABB
+    class DYN_AABB
     {
     public:
         glm::vec3 Min;
