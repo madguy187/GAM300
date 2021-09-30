@@ -1,5 +1,4 @@
 #pragma once
-#include "BinarySettings.h"
 
 namespace EclipseCompiler
 {

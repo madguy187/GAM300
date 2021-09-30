@@ -91,9 +91,14 @@ namespace Eclipse
         std::shared_ptr< AABBComponent> SameAABB = std::make_shared<AABBComponent>(In);
         std::shared_ptr< AABBCulling> hi = std::make_shared<AABBCulling>();
         hi->Obj = &In;
-        engine->gCullingManager->CullContainer.emplace(ID, hi);
-        engine->gCullingManager->CullContainer[ID]->AABB.SetMaxMin(In.Max, In.Min, ID);
+        CullContainer.emplace(ID, hi);
+        CullContainer[ID]->AABB.SetMaxMin(In.Max, In.Min, ID);
         FrustrumCollisionTree.InsertObject(engine->gCullingManager->CullContainer[ID]);
+    }
+
+    void CullingManager::Clear()
+    {
+        CullContainer.clear();
     }
 
     std::vector<unsigned int> CullingManager::ReturnContacted()

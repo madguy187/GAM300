@@ -59,6 +59,7 @@ namespace Eclipse
         bool CheckOnFrustum(const TransformComponent& transform, CameraComponent::CameraType CameraType);
         bool ToRenderOrNot(unsigned int ID);
         void Insert(AABBComponent& In, unsigned int ID);
+        void Clear();
         std::vector<unsigned int> ReturnContacted();
         CameraComponent::CameraType GetCamera();
         void UpdateDYN_AABB(AABBComponent& in, unsigned int ID);
