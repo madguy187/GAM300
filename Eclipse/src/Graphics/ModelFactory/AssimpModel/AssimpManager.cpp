@@ -298,15 +298,15 @@ namespace Eclipse
             char* Name = in.data();
             strcpy_s(Mesh.MeshName.data(), Mesh.MeshName.size(), Name);
 
-            Mesh.VBO = Geometry[in]->VBO;
-            Mesh.VAO = Geometry[in]->VAO;
-            Mesh.EBO = Geometry[in]->EBO;
-            Mesh.NoTex = Geometry[in]->NoTex;
-            Mesh.Diffuse = Geometry[in]->Diffuse;
-            Mesh.Specular = Geometry[in]->Specular;
-            Mesh.Ambient = Geometry[in]->Ambient;
-            Mesh.Vertices = Geometry[in]->Vertices;
-            Mesh.Indices = Geometry[in]->Indices;
+            //Mesh.VBO = Geometry[in]->VBO;
+            //Mesh.VAO = Geometry[in]->VAO;
+            //Mesh.EBO = Geometry[in]->EBO;
+            //Mesh.NoTex = Geometry[in]->NoTex;
+            //Mesh.Diffuse = Geometry[in]->Diffuse;
+            //Mesh.Specular = Geometry[in]->Specular;
+            //Mesh.Ambient = Geometry[in]->Ambient;
+            //Mesh.Vertices = Geometry[in]->Vertices;
+            //Mesh.Indices = Geometry[in]->Indices;
         }
     }
 
@@ -329,8 +329,16 @@ namespace Eclipse
             GLuint Texture = shader.GetLocation("noTex");
 
             glUniform1i(uniform_var_loc3, true);
-            glUniform4f(diff0, in.Diffuse.r, in.Diffuse.g, in.Diffuse.b, in.Diffuse.a);
-            glUniform4f(spec, in.Specular.r, in.Specular.g, in.Specular.b, in.Specular.a);
+            glUniform4f(diff0,
+                engine->AssimpManager.Geometry[in.MeshName.data()]->Diffuse.r,
+                engine->AssimpManager.Geometry[in.MeshName.data()]->Diffuse.g,
+                engine->AssimpManager.Geometry[in.MeshName.data()]->Diffuse.b,
+                engine->AssimpManager.Geometry[in.MeshName.data()]->Diffuse.a);
+            glUniform4f(spec,
+                engine->AssimpManager.Geometry[in.MeshName.data()]->Specular.r,
+                engine->AssimpManager.Geometry[in.MeshName.data()]->Specular.g,
+                engine->AssimpManager.Geometry[in.MeshName.data()]->Specular.b,
+                engine->AssimpManager.Geometry[in.MeshName.data()]->Specular.a);
             glUniform1i(Texture, true);
             glUniform1i(tex_loc, false);
             glUniform1i(uniform_var_loc1, false);
@@ -394,8 +402,8 @@ namespace Eclipse
         glActiveTexture(GL_TEXTURE0);
 
         // EBO stuff
-        glBindVertexArray(in.VAO);
-        glDrawElements(GL_TRIANGLES, in.Indices.size(), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(engine->AssimpManager.Geometry[in.MeshName.data()]->VAO);
+        glDrawElements(GL_TRIANGLES, engine->AssimpManager.Geometry[in.MeshName.data()]->Indices.size(), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
     }
 
