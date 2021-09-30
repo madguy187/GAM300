@@ -1,23 +1,32 @@
 #include "pch.h"
 #include "GameView.h"
+#include "imgui_internal.h"
 
 namespace Eclipse
 {
 	void eGameViewWindow::Update()
 	{
-		//Profiler timer;
-		//timer.SetName({ SystemName::TEST });
-		//timer.tracker.system_start = glfwGetTime();
 		if (IsVisible)
+		{
+			if (IsViewFullscreen && !IsViewBackToOriginalState)
+			{
+				SetFullScreenViewport();
+			}
+			else if (IsViewBackToOriginalState && !IsViewFullscreen)
+			{
+				ImGui::SetNextWindowDockID(DockIDTracker);
+				AlreadySetDockIDTracker = false;
+			}
+
 			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&eGameViewWindow::RunMainWindow, this));
-		//timer.tracker.system_end = glfwGetTime();
-		//
-		//timer.ContainerAddTime(timer.tracker);
+		}
 	}
 
 	void eGameViewWindow::Init()
 	{
 		mViewportSize = glm::vec2{ 0.0f, 0.0f };
+		ogViewportSize = glm::vec2{ 0.0f, 0.0f };
+		ogViewportPos = glm::vec2{ 0.0f, 0.0f };
 		Type = EditorWindowType::EWT_GAMEVIEW;
 		WindowName = "Game View";
 		m_frameBuffer = engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_GAME);
@@ -30,6 +39,9 @@ namespace Eclipse
 	void eGameViewWindow::RunMainWindow()
 	{
 		ImVec2 viewportPanelSize = ECGui::GetWindowSize();
+
+		if (!AlreadySetDockIDTracker)
+			DockIDTracker = ImGui::GetWindowDockID();
 
 		if (mViewportSize != *((glm::vec2*)&viewportPanelSize))
 		{
@@ -58,59 +70,30 @@ namespace Eclipse
 		}
 	}
 
-	void eGameViewWindow::RenderGameHeader()
+	void eGameViewWindow::SetFullScreenViewport()
 	{
-		ECGui::InsertSameLine(mViewportSize.x / 2.35f);
-		if (ECGui::ButtonBool("Play " ICON_FA_PLAY))
-		{
-			if (engine->GetPlayState())
-			{
-				engine->SetPlayState(false);
-				engine->SetPauseState(false);
-				ImGui::SetWindowFocus("Scene View");
-				EDITOR_LOG_INFO("Scene has stopped playing. Reverting to original state...");
-			}
-			else
-			{
-				engine->SetPlayState(true);
-				EDITOR_LOG_INFO("Scene is playing...");
-			}
-		}
+		RECT desktop;
+		// Get a handle to the desktop window
+		const HWND hDesktop = GetDesktopWindow();
+		// Get the size of screen to the variable desktop
+		GetWindowRect(hDesktop, &desktop);
+		ImGui::SetNextWindowPos(ImVec2(.0f, .0f), ImGuiCond_Always);
+		ImGui::SetNextWindowSize(ImVec2((float)(desktop.right), (float)(desktop.bottom)), ImGuiCond_Always);
+		AlreadySetDockIDTracker = true;
+	}
 
-		ECGui::InsertSameLine();
-		if (ECGui::ButtonBool("Pause " ICON_FA_PAUSE))
-		{
-			if (engine->GetPlayState())
-			{
-				if (engine->GetPauseState())
-				{
-					engine->SetPauseState(false);
-					EDITOR_LOG_INFO("Scene is unpaused!");
-				}
-				else
-				{
-					engine->SetPauseState(true);
-					EDITOR_LOG_INFO("Scene is paused!");
-				}
-			}
-			else
-			{
-				EDITOR_LOG_WARN("Scene has to be playing first.");
-			}
-		}
+	bool eGameViewWindow::GetIsViewFullscreen()
+	{
+		return IsViewFullscreen;
+	}
 
-		ECGui::InsertSameLine();
-		if (ECGui::ButtonBool("Step " ICON_FA_STEP_FORWARD))
-		{
-			if (engine->GetPlayState())
-			{
-				engine->SetStepState(true);
-				EDITOR_LOG_INFO("Stepped scene.");
-			}
-			else
-			{
-				EDITOR_LOG_WARN("Scene has to be playing first.");
-			}
-		}
+	void eGameViewWindow::SetViewToFullscreen(bool active)
+	{
+		IsViewFullscreen = active;
+	}
+
+	void eGameViewWindow::SetViewToOriginalState(bool active)
+	{
+		IsViewBackToOriginalState = active;
 	}
 }

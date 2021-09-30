@@ -145,6 +145,7 @@ namespace Eclipse
         LightingSystem::Init();
         GridSystem::Init();
         gPhysics.Init();
+        audioManager.Init();
 
         if (IsEditorActive)
             IsInPlayState = false;
@@ -159,7 +160,7 @@ namespace Eclipse
 
         SceneManager::Initialize();
         //Deserialization(temp)
-        audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);
+        /*audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);*/
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
             Timer.tracker.system_start = glfwGetTime();
