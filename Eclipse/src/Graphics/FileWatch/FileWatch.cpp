@@ -58,12 +58,6 @@ namespace Eclipse
                 }
             }
         }
-
-        //if (Modified)
-        //{
-        //    std::cout << " Hot " << std::endl;
-        //    //engine->AssimpManager.HotReload();
-        //}
     }
 
     bool EclipseFileWatcher::Contains(const std::string& key)
@@ -90,6 +84,55 @@ namespace Eclipse
         {
             Timer = 0.0f;
             return true;
+        }
+    }
+
+    void EclipseFileWatcher::Resolutions(FileStatus status , std::string& PATH_TO_WATCH)
+    {
+        switch (status)
+        {
+        case FileStatus::FS_CREATED:
+        {
+            std::cout << "File created: " << PATH_TO_WATCH << '\n';
+            engine->AssimpManager.HotReload();
+        }
+        break;
+
+        case FileStatus::FS_MODIFIED:
+        {
+            std::cout << "File modified: " << PATH_TO_WATCH << '\n';
+            engine->AssimpManager.HotReload();
+            engine->gFileWatchManager->Modified = true;
+        }
+        break;
+
+        case FileStatus::FS_ERASED:
+        {
+            std::cout << "File erased: " << PATH_TO_WATCH << '\n';
+            engine->AssimpManager.HotReload();
+        }
+        break;
+
+        default:
+            std::cout << "Weird Error\n";
+
+        }
+    }
+
+    void EclipseFileWatcher::HardReset(float in)
+    {
+        if (Modified == true)
+        {
+            if (HotReloadCooldown <= in)
+            {
+                HotReloadCooldown += engine->Game_Clock.get_fixedDeltaTime();
+            }
+            else
+            {
+                HotReloadCooldown = 0.0f;
+                Modified = false;
+                engine->AssimpManager.ResetHotReloadFlag();
+            }
         }
     }
 }
