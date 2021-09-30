@@ -375,4 +375,23 @@ namespace Eclipse
 		parentPath.clear();
 		refreshBrowser = true;
 	}
+	void DragAndDrop::CreateEmptyFolder(std::string folderName, std::string folderPath)
+	{
+		std::string fileLocation = folderPath + folderName;
+		std::string outputLog;
+		if (std::filesystem::exists(fileLocation))
+		{
+			outputLog = "FOLDER ALREADY EXIST AT: ";
+			outputLog += fileLocation;
+			EDITOR_LOG_WARN(outputLog.c_str());
+		}
+		else
+		{
+			outputLog = "FOLDER CREATED AT: ";
+			outputLog += fileLocation;
+			std::filesystem::create_directories(fileLocation);
+			EDITOR_LOG_INFO(outputLog.c_str());
+		}
+	}
+
 }
