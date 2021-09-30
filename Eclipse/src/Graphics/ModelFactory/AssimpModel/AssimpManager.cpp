@@ -46,6 +46,7 @@ namespace Eclipse
 
             if (CheckCompilers())
             {
+                HotReloadFlag = true;
                 ENGINE_CORE_INFO("All Assets Recompiled");
             }
         }
