@@ -6,7 +6,7 @@ namespace Eclipse
 {
     void FileWatchSystem::Init()
     {
-        EclipseFileWatcher watch{ "src/Assets/ASSModels", engine->gFileWatchManager->InputTime(5) };
+        EclipseFileWatcher watch{ "src/Assets", engine->gFileWatchManager->InputTime(5) };
         engine->gFileWatchManager = std::make_unique<EclipseFileWatcher>(watch);
     }
 

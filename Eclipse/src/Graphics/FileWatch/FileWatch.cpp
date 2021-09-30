@@ -109,6 +109,7 @@ namespace Eclipse
         case FileStatus::FS_ERASED:
         {
             std::cout << "File erased: " << PATH_TO_WATCH << '\n';
+            engine->AssimpManager.HotReload();
         }
         break;
 
