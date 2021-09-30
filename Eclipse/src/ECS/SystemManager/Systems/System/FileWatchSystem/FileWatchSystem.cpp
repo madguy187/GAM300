@@ -26,46 +26,13 @@ namespace Eclipse
 
                     // Hot Reloading
                     if (engine->AssimpManager.GetHotReloadFlag())
-                    {
                         return;
-                    }
 
-                    switch (status)
-                    {
-                    case FileStatus::FS_CREATED:
-                        std::cout << "File created: " << PATH_TO_WATCH << '\n';
-                        break;
-                    case FileStatus::FS_MODIFIED:
-                    {
-                        std::cout << "File modified: " << PATH_TO_WATCH << '\n';
-                        engine->AssimpManager.HotReload();
-                        engine->gFileWatchManager->Modified = true;
-                    }
-                    break;
-                    case FileStatus::FS_ERASED:
-                        std::cout << "File erased: " << PATH_TO_WATCH << '\n';
-                        break;
-                    default:
-                        std::cout << "Weird Error\n";
-
-                    }
+                    engine->gFileWatchManager->Resolutions(status, PATH_TO_WATCH);
                 }
                 );
             }
-
-            if (engine->gFileWatchManager->Modified == true)
-            {
-                if (engine->gFileWatchManager->HotReloadCooldown <= 5.0f)
-                {
-                    engine->gFileWatchManager->HotReloadCooldown += engine->Game_Clock.get_fixedDeltaTime();
-                }
-                else
-                {
-                    engine->gFileWatchManager->HotReloadCooldown = 0.0f;
-                    engine->gFileWatchManager->Modified = false;
-                    engine->AssimpManager.ResetHotReloadFlag();
-                }
-            }
+            engine->gFileWatchManager->HardReset(engine->gFileWatchManager->HardResetTime);
         }
     }
 }
