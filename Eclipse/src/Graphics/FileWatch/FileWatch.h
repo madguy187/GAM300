@@ -22,6 +22,7 @@ namespace Eclipse
 	class EclipseFileWatcher
 	{
 	public:
+		bool Modified = false;
 		float Timer = 0.0f;
 		std::string PathToWatch;
 		std::chrono::duration<int, std::milli> Delays;

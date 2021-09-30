@@ -29,26 +29,25 @@ namespace Eclipse
     // Hope its not a fail...
     void AssimpModelManager::HotReload()
     {
-        if (HotReloadFlag)
-            return;
-
-        Geometry.clear();
-        Prefabs.clear();
-        Graphics::textures.clear();
-
-        // I Will Load First
-        system("start Compiler.exe");
-        // Geometry Compiler
-        LoadGeometry();
-        // Parent Model Mappings
-        LoadPrefabs();
-        // Texture Compiler
-        LoadTextures();
-
-        if (CheckCompilers())
+        if (HotReloadFlag == false)
         {
-            HotReloadFlag = true;
-            ENGINE_CORE_INFO("All Assets Recompiled");
+            Geometry.clear();
+            Prefabs.clear();
+            Graphics::textures.clear();
+
+            // I Will Load First
+            system("start Compiler.exe");
+            // Geometry Compiler
+            LoadGeometry();
+            // Parent Model Mappings
+            LoadPrefabs();
+            // Texture Compiler
+            LoadTextures();
+
+            if (CheckCompilers())
+            {
+                ENGINE_CORE_INFO("All Assets Recompiled");
+            }
         }
     }
 
@@ -753,6 +752,11 @@ namespace Eclipse
             return true;
         }
 
+        return false;
+    }
+
+    bool AssimpModelManager::GetHotReloadFlag()
+    {
         return false;
     }
 

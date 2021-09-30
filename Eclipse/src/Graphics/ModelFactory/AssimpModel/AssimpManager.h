@@ -34,6 +34,7 @@ namespace Eclipse
 	private:
 
 	public:
+		bool GetHotReloadFlag();
 		void ResetHotReloadFlag();
 		bool CheckCompilers();
 		void CreateModel(unsigned int ID, const std::string& ModelName);

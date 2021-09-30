@@ -23,10 +23,16 @@ void Eclipse::PickingManager::GenerateAabb(unsigned int ID, TransformComponent& 
 
     // Darren - Culling
     engine->gCullingManager->Insert(_aabb, ID);
+
+    // Called Clear
+    engine->gCullingManager->Clear();
 }
 
 void Eclipse::PickingManager::UpdateAabb(unsigned int ID)
 {
+    if (!engine->world.CheckComponent<AABBComponent>(ID))
+        return;
+
     auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
     auto& _aabb = engine->world.GetComponent<AABBComponent>(ID);
 
