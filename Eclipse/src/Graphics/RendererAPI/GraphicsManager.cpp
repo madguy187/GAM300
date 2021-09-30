@@ -94,6 +94,8 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         MaterialComponent& Mat = engine->world.GetComponent<MaterialComponent>(ID);
         Mat.hasTexture = true;
         Mat.TextureRef = Graphics::textures.find("orange")->first;
+
+        std::cout << " ID " << ID;
     }
     break;
     case 6:

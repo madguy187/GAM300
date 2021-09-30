@@ -166,6 +166,13 @@ namespace Eclipse
     std::vector<unsigned int> AABBTree::QueryAgainstTrustrum(AABBComponent& object)
     {
         std::vector<unsigned int> overlaps;
+
+        if (AABBToNodeMap.size() == 0)
+            return overlaps;
+
+        if (AllNodes.size() == 0)
+            return overlaps;
+
         std::stack<unsigned> stack;
         AABBComponent& CheckedObjectAgsintTree = object;
 

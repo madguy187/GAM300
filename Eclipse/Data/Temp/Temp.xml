@@ -2,72 +2,66 @@
 <Entities Size="2">
     <Entity_0 ID="0">
         <EntityComponent>
-            <Tag value="Camera" />
             <Name value="Camera" />
+            <Tag value="Camera" />
             <IsActive value="false" />
-            <Child size="0" />
-            <Parent size="0" />
-            <IsAChild value="false" />
         </EntityComponent>
         <CameraComponent>
-            <eyeAlpha value="0" />
-            <eyeBeta value="-90" />
-            <fov value="45" />
-            <nearPlane value="0.1" />
-            <farPlane value="500" />
-            <aspect value="1.92708" />
-            <eyePos x="0" y="20" z="40" />
-            <eyeFront x="-3.34849e-08" y="-0.642788" z="-0.766045" />
-            <upVec x="-2.80971e-08" y="0.766044" z="-0.642788" />
-            <rightVec x="1" y="0" z="-4.37114e-08" />
-            <worldUp x="0" y="1" z="0" />
-            <viewMtx Col="4" Row="4">
-                <Col0 _00="1" _01="-2.80971e-08" _02="3.34849e-08" _03="0" />
-                <Col1 _10="0" _11="0.766044" _12="0.642788" _13="0" />
-                <Col2 _20="-4.37114e-08" _21="-0.642788" _22="0.766044" _23="0" />
-                <Col3 _30="1.74846e-06" _31="10.3906" _32="-43.4975" _33="1" />
-            </viewMtx>
-            <projMtx Col="4" Row="4">
+            <EyeAlpha value="0" />
+            <EyeBeta value="-90" />
+            <FOV value="45" />
+            <NearPlane value="0.1" />
+            <FarPlane value="500" />
+            <Aspect value="1.92708" />
+            <EyePos x="-32.0052" y="40.2319" z="59.1991" />
+            <EyeFront x="0.39535" y="-0.619779" z="-0.677918" />
+            <UpVec x="0.312229" y="0.784776" z="-0.535387" />
+            <RightVec x="0.863835" y="-0" z="0.503774" />
+            <WorldUp x="0" y="1" z="0" />
+            <ViewMtx Col="4" Row="4">
+                <Col0 _00="0.863836" _01="0.312228" _02="-0.39535" _03="0" />
+                <Col1 _10="-1.93715e-07" _11="0.784777" _12="0.619778" _13="0" />
+                <Col2 _20="0.503774" _21="-0.535387" _22="0.677918" _23="0" />
+                <Col3 _30="-2.1757" _31="10.1143" _32="-77.7203" _33="1" />
+            </ViewMtx>
+            <ProjMtx Col="4" Row="4">
                 <Col0 _00="1.25278" _01="0" _02="0" _03="0" />
                 <Col1 _10="0" _11="2.41421" _12="0" _13="0" />
                 <Col2 _20="0" _21="0" _22="-1.0004" _23="-1" />
                 <Col3 _30="0" _31="0" _32="-0.20004" _33="0" />
-            </projMtx>
-            <cameraSpeed value="50" />
-            <camType value="Editor_Camera" />
-            <projType value="Perspective" />
+            </ProjMtx>
+            <CameraSpeed value="50" />
+            <CameraType value="Editor_Camera" />
+            <ProjectionType value="Perspective" />
         </CameraComponent>
         <TransformComponent>
-            <position x="0" y="20" z="40" />
-            <rotation x="-40" y="-90" z="0" />
-            <scale x="5" y="5" z="5" />
+            <Position x="-32.0052" y="40.2319" z="59.1991" />
+            <Rotation x="-40" y="-90" z="0" />
+            <Scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_0>
     <Entity_1 ID="6">
         <EntityComponent>
-            <Tag value="DirectionalLight" />
             <Name value="DirectionalLight" />
+            <Tag value="DirectionalLight" />
             <IsActive value="true" />
-            <Child size="0" />
-            <Parent size="0" />
-            <IsAChild value="false" />
         </EntityComponent>
         <DirectionalLightComponent>
             <Counter value="0" />
-            <visible value="false" />
+            <Visible value="false" />
             <AffectsWorld value="true" />
             <EnableBlinnPhong value="true" />
-            <lightColor x="1" y="1" z="1" />
+            <LightColor x="1" y="1" z="1" />
             <Direction x="-1" y="-1" z="-1" />
-            <ambient x="0.2" y="0.2" z="0.2" />
-            <diffuse x="0.4" y="0.4" z="0.4" />
-            <specular x="0.5" y="0.5" z="0.5" />
+            <Ambient x="0.2" y="0.2" z="0.2" />
+            <Diffuse x="0.4" y="0.4" z="0.4" />
+            <Specular x="0.5" y="0.5" z="0.5" />
             <Color x="1" y="1" z="1" w="1" />
         </DirectionalLightComponent>
         <TransformComponent>
-            <position x="0" y="0" z="0" />
-            <rotation x="0" y="0" z="0" />
-            <scale x="5" y="5" z="5" />
+            <Position x="0" y="0" z="0" />
+            <Rotation x="0" y="0" z="0" />
+            <Scale x="5" y="5" z="5" />
         </TransformComponent>
         <LightComponent />
     </Entity_1>

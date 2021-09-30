@@ -11,6 +11,8 @@ namespace Eclipse
 
     void AssimpModelManager::LoadCompilers()
     {
+        // I Will Load First
+        system("start Compiler.exe");
         // Geometry Compiler
         LoadGeometry();
         // Parent Model Mappings
@@ -21,6 +23,31 @@ namespace Eclipse
         if (CheckCompilers())
         {
             ENGINE_CORE_INFO("All Compilers Loaded");
+        }
+    }
+
+    // Hope its not a fail...
+    void AssimpModelManager::HotReload()
+    {
+        if (HotReloadFlag == false)
+        {
+            Geometry.clear();
+            Prefabs.clear();
+            Graphics::textures.clear();
+
+            // I Will Load First
+            system("start Compiler.exe");
+            // Geometry Compiler
+            LoadGeometry();
+            // Parent Model Mappings
+            LoadPrefabs();
+            // Texture Compiler
+            LoadTextures();
+
+            if (CheckCompilers())
+            {
+                ENGINE_CORE_INFO("All Assets Recompiled");
+            }
         }
     }
 
@@ -726,6 +753,16 @@ namespace Eclipse
         }
 
         return false;
+    }
+
+    bool AssimpModelManager::GetHotReloadFlag()
+    {
+        return false;
+    }
+
+    void AssimpModelManager::ResetHotReloadFlag()
+    {
+        HotReloadFlag = false;
     }
 
     bool AssimpModelManager::CheckCompilers()

@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "ECS/ComponentManager/Components/CameraComponent.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"
-#include "ECS/SystemManager/Systems/System/RenderSystem.h"
+#include "ECS/SystemManager/Systems/System/RenderSystem/RenderSystem.h"
 
 namespace Eclipse
 {
