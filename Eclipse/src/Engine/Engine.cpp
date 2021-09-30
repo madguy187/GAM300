@@ -15,21 +15,21 @@
 #include "ECS/ComponentManager/Components/ParentChildComponent.h"
 #include "ECS/ComponentManager/Components/LightComponent.h"
 #include "ECS/ComponentManager/Components/ScriptComponent.h"
-#include "ECS/ComponentManager/Components/ChildTransformComponent.h"
 
-#include "ECS/SystemManager/Systems/System/RenderSystem.h"
+#include "ECS/SystemManager/Systems/System/RenderSystem/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
 #include "ECS/SystemManager/Systems/System/Editor/EditorSystem.h"
-#include "ECS/SystemManager/Systems/System/LightingSystem.h"
+#include "ECS/SystemManager/Systems/System/LightingSystem/LightingSystem.h"
 #include "ECS/SystemManager/Systems/System/PickingSystem.h"
 #include "ECS/SystemManager/Systems/System/PhysicsSystem.h"
 #include "ImGui/Setup/ImGuiSetup.h"
-#include "ECS/SystemManager/Systems/System/MaterialSystem.h"
+#include "ECS/SystemManager/Systems/System/MaterialSystem/MaterialSystem.h"
 #include "Serialization/SerializationManager.h"
-#include "ECS/SystemManager/Systems/System/GridSystem.h"
+#include "ECS/SystemManager/Systems/System/GridSystem/GridSystem.h"
 #include "Editor/ECGuiAPI/ECGuiInputHandler.h"
 #include "ECS/SystemManager/Systems/System/MonoSystem/MonoSystem.h"
 #include "ECS/SystemManager/Systems/System/Audio/AudioSystem.h"
+#include "ECS/SystemManager/Systems/System/FileWatchSystem/FileWatchSystem.h"
 
 bool Tester1(const Test1& e)
 {
@@ -89,7 +89,6 @@ namespace Eclipse
         world.RegisterComponent<ParentChildComponent>();
         world.RegisterComponent<LightComponent>();
         world.RegisterComponent<ScriptComponent>();
-        world.RegisterComponent<ChildTransformComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
@@ -101,6 +100,7 @@ namespace Eclipse
         world.RegisterSystem<PhysicsSystem>();
         world.RegisterSystem<MonoSystem>();
         world.RegisterSystem<AudioSystem>();
+        world.RegisterSystem<FileWatchSystem>();
 
         // Render System
         Signature RenderSys = RenderSystem::RegisterAll();
@@ -145,6 +145,8 @@ namespace Eclipse
         LightingSystem::Init();
         GridSystem::Init();
         gPhysics.Init();
+        audioManager.Init();
+        FileWatchSystem::Init();
 
         if (IsEditorActive)
             IsInPlayState = false;
@@ -159,7 +161,7 @@ namespace Eclipse
 
         SceneManager::Initialize();
         //Deserialization(temp)
-        //audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);
+        /*audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);*/
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
             glfwPollEvents();
@@ -222,6 +224,8 @@ namespace Eclipse
                     world.Update<PhysicsSystem>();
                 }
             }
+
+            world.Update<FileWatchSystem>();
 
             // FRAMEBUFFER BIND =============================
             engine->GraphicsManager.GlobalFrameBufferBind();

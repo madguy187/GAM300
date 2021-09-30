@@ -154,7 +154,6 @@ namespace Eclipse
 		inline void SerializeComponentData<SpotLightComponent>(const SpotLightComponent& data)
 		{
 			SerializeData(
-				"ID", data.ID,
 				"Counter", data.Counter,
 				"LightColor", data.lightColor,
 				"Direction", data.direction,
@@ -182,7 +181,6 @@ namespace Eclipse
 		inline void SerializeComponentData<PointLightComponent>(const PointLightComponent& data)
 		{
 			SerializeData(
-				"ID", data.ID,
 				"Counter", data.Counter,
 				"Ambient", data.ambient,
 				"Diffuse", data.diffuse,
@@ -206,7 +204,6 @@ namespace Eclipse
 		inline void SerializeComponentData<DirectionalLightComponent>(const DirectionalLightComponent& data)
 		{
 			SerializeData(
-				"ID", data.ID,
 				"Counter", data.Counter,
 				"Visible", data.visible,
 				"AffectsWorld", data.AffectsWorld,
@@ -216,8 +213,7 @@ namespace Eclipse
 				"Ambient", data.ambient,
 				"Diffuse", data.diffuse,
 				"Specular", data.specular,
-				"Color", data.Color,
-				"ModelNDC_xform", data.modelNDC_xform
+				"Color", data.Color
 			);
 		}
 
@@ -420,8 +416,6 @@ namespace Eclipse
 				"AffectsWorld", comp.AffectsWorld
 			);
 
-			comp.ID = ent;
-
 			return isSuccess;
 		}
 
@@ -447,8 +441,6 @@ namespace Eclipse
 				"AffectsWorld", comp.AffectsWorld
 			);
 
-			comp.ID = ent;
-
 			return isSuccess;
 		}
 
@@ -465,11 +457,8 @@ namespace Eclipse
 				"Ambient", comp.ambient,
 				"Diffuse", comp.diffuse,
 				"Specular", comp.specular,
-				"Color", comp.Color,
-				"ModelNDC_xform", comp.modelNDC_xform
+				"Color", comp.Color
 			);
-
-			comp.ID = ent;
 
 			return isSuccess;
 		}

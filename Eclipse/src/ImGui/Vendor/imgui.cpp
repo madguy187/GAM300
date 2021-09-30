@@ -7010,6 +7010,13 @@ ImGuiID ImGui::GetWindowDockID()
     return g.CurrentWindow->DockId;
 }
 
+//ImGuiDockNode* ImGui::GetDockspaceInformation(ImGuiID ID)
+//{
+//    ImGuiContext& g = *GImGui;
+//    ImGuiDockNode* node = (ImGuiDockNode*)g.DockContext.Nodes.Data[ID].val_p;
+//    return node;
+//}
+
 bool ImGui::IsWindowDocked()
 {
     ImGuiContext& g = *GImGui;

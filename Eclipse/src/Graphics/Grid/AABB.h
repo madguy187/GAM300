@@ -42,7 +42,6 @@ namespace Eclipse
         ECVec3 GetMinimum(TransformComponent& in);
         ECVec3 GetMaximum(TransformComponent& in);
         void UpdateMinMax(TransformComponent& in);
-        static AABBComponent& SetFrustrumAABB(CameraComponent::CameraType CameraType);
 
     private:
         float CalculateSurfaceArea();

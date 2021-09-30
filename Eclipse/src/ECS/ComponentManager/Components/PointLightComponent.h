@@ -9,7 +9,6 @@ namespace Eclipse
     struct PointLightComponent
     {
         META_DATA(PointLightComponent);
-        unsigned int ID = 0; // Store Entity ID
         unsigned int Counter = 0; // To iterate in Shaders
 
         ECVec3 ambient{ 0.2f , 0.2f, 0.2f };
@@ -29,11 +28,5 @@ namespace Eclipse
         bool hasTexture = false;
         bool visible = true;
         bool AffectsWorld = true;
-
-        // Not Needed For now
-        //IModel* modelRef;
-        //Shader* shaderRef;
-        //Texture* textureRef;
-
     };
 }

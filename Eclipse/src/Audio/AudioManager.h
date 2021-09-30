@@ -12,10 +12,10 @@ namespace Eclipse
 	public:
 		void UpdateSystems();
 
-		AudioManager();
+		AudioManager() = default;
 		~AudioManager();
 
-		bool Init();
+		void Init();
 		void DeserializeSounds();
 		void SerializeSounds();
 		void Terminate();

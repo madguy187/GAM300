@@ -23,7 +23,7 @@ namespace Eclipse
 
 	private:
 		// Update Shader Variables
-		void CheckUniformLoc(Shader* _shdrpgm, PointLightComponent& hi, int index, unsigned int containersize);
+		void CheckUniformLoc(Shader* _shdrpgm, PointLightComponent& hi, int index, unsigned int containersize, unsigned int EntityId);
 
 	private:
 		// Container for all Pointlights

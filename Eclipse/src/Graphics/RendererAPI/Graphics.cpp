@@ -78,33 +78,33 @@ void Graphics::LoadModels()
         auto& ModelName = engine->GraphicsManager.GetModelName(i);
         models.emplace(ModelName, ModelFactory::create(i));
 
-        engine->AssimpManager.AllPrimitiveModelsNames.push_back(ModelName);
+        engine->AssimpManager.InsertPrimitiveName(ModelName);
     }
 }
 
 void Graphics::LoadTextures(std::string textureFile)
 {
-    Parser input;
-    input.ParseFile(textureFile);
-
-    std::string textureName;
-    std::string path;
-    glm::ivec2 spriteDimensions, spriteIndex;
-
-    for (auto& it : input.doc["textures"].GetArray())
-    {
-        textureName = (it)["textureName"].GetString();
-        path = (it)["path"].GetString();
-        spriteDimensions = { (it)["spriteDimensions"][rapidjson::SizeType(0)].GetInt(),
-                             (it)["spriteDimensions"][rapidjson::SizeType(1)].GetInt() };
-        spriteIndex = { (it)["spriteIndex"][rapidjson::SizeType(0)].GetInt(),
-                        (it)["spriteIndex"][rapidjson::SizeType(1)].GetInt() };
-
-        Texture newTex(path);
-        newTex.setSpriteWidth(spriteDimensions.x);
-        newTex.setSpriteHeight(spriteDimensions.y);
-        textures.emplace(textureName, newTex);
-    }
+   //Parser input;
+   //input.ParseFile(textureFile);
+   //
+   //std::string textureName;
+   //std::string path;
+   //glm::ivec2 spriteDimensions, spriteIndex;
+   //
+   //for (auto& it : input.doc["textures"].GetArray())
+   //{
+   //    textureName = (it)["textureName"].GetString();
+   //    path = (it)["path"].GetString();
+   //    spriteDimensions = { (it)["spriteDimensions"][rapidjson::SizeType(0)].GetInt(),
+   //                         (it)["spriteDimensions"][rapidjson::SizeType(1)].GetInt() };
+   //    spriteIndex = { (it)["spriteIndex"][rapidjson::SizeType(0)].GetInt(),
+   //                    (it)["spriteIndex"][rapidjson::SizeType(1)].GetInt() };
+   //
+   //    Texture newTex(path);
+   //    newTex.setSpriteWidth(spriteDimensions.x);
+   //    newTex.setSpriteHeight(spriteDimensions.y);
+   //    textures.emplace(textureName, newTex);
+   //}
 }
 
 /******************************************************************************/

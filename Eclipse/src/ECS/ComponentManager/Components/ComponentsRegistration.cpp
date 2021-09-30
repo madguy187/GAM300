@@ -54,7 +54,6 @@ namespace Eclipse
 
     DEFINE_META(DirectionalLightComponent)
     {
-        ADD_MEMBER(ID);
         ADD_MEMBER(Counter);
         ADD_MEMBER(visible);
         ADD_MEMBER(AffectsWorld);
@@ -127,7 +126,6 @@ namespace Eclipse
 
     DEFINE_META(PointLightComponent)
     {
-        ADD_MEMBER(ID);
         ADD_MEMBER(Counter);
         ADD_MEMBER(ambient);
         ADD_MEMBER(diffuse);
@@ -163,7 +161,6 @@ namespace Eclipse
 
     DEFINE_META(SpotLightComponent)
     {
-        ADD_MEMBER(ID);
         ADD_MEMBER(Counter);
         ADD_MEMBER(lightColor);
         ADD_MEMBER(direction);
