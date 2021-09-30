@@ -78,7 +78,7 @@ void Graphics::LoadModels()
         auto& ModelName = engine->GraphicsManager.GetModelName(i);
         models.emplace(ModelName, ModelFactory::create(i));
 
-        engine->AssimpManager.AllPrimitiveModelsNames.push_back(ModelName);
+        engine->AssimpManager.InsertPrimitiveName(ModelName);
     }
 }
 

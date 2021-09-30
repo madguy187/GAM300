@@ -10,6 +10,9 @@ namespace Eclipse
 
     void MaterialSystem::Update()
     {
+        engine->Timer.SetName({ SystemName::MATERIAL });
+        engine->Timer.tracker.system_start = glfwGetTime();
+
         if (engine->MaterialManager.EnableHighlight == true)
         {
             // Materials Update ===============================
@@ -37,6 +40,10 @@ namespace Eclipse
 
             engine->MaterialManager.StencilBufferClear();
         }
+
+        engine->Timer.tracker.system_end = glfwGetTime();
+        engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
     }
+
 
 }

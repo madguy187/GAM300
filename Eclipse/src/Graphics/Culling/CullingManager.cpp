@@ -21,7 +21,7 @@ namespace Eclipse
 
     CullingManager::CullingManager()
     {
-
+        frustum = std::make_shared<FrustrumFaces>();
     }
 
     CullingManager::CullingManager(const glm::vec3& inCenter, float inRadius) :
@@ -36,19 +36,18 @@ namespace Eclipse
         auto& cam = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraType));
         auto& trans = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraType));
 
-        FrustrumFaces frustum;
         const float halfVSide = 500.0f * tanf(glm::radians(cam.fov) * .5f);
         const float halfHSide = halfVSide * cam.aspect;;
         const glm::vec3 frontMultFar = 500.0f * cam.eyeFront;
 
-        frustum.NearFace = { trans.position.ConvertToGlmVec3Type() + cam.nearPlane * cam.eyeFront, cam.eyeFront };
-        frustum.FarFace = { trans.position.ConvertToGlmVec3Type() + frontMultFar, -cam.eyeFront };
-        frustum.RightFace = { trans.position.ConvertToGlmVec3Type(), glm::cross(cam.upVec, frontMultFar + cam.rightVec * halfHSide) };
-        frustum.LeftFace = { trans.position.ConvertToGlmVec3Type(), glm::cross(frontMultFar - cam.rightVec * halfHSide, cam.upVec) };
-        frustum.TopFace = { trans.position.ConvertToGlmVec3Type(), glm::cross(cam.rightVec, frontMultFar - cam.upVec * halfVSide) };
-        frustum.BottomFace = { trans.position.ConvertToGlmVec3Type(), glm::cross(frontMultFar + cam.upVec * halfVSide, cam.rightVec) };
+        frustum->NearFace = { trans.position.ConvertToGlmVec3Type() + cam.nearPlane * cam.eyeFront, cam.eyeFront };
+        frustum->FarFace = { trans.position.ConvertToGlmVec3Type() + frontMultFar, -cam.eyeFront };
+        frustum->RightFace = { trans.position.ConvertToGlmVec3Type(), glm::cross(cam.upVec, frontMultFar + cam.rightVec * halfHSide) };
+        frustum->LeftFace = { trans.position.ConvertToGlmVec3Type(), glm::cross(frontMultFar - cam.rightVec * halfHSide, cam.upVec) };
+        frustum->TopFace = { trans.position.ConvertToGlmVec3Type(), glm::cross(cam.rightVec, frontMultFar - cam.upVec * halfVSide) };
+        frustum->BottomFace = { trans.position.ConvertToGlmVec3Type(), glm::cross(frontMultFar + cam.upVec * halfVSide, cam.rightVec) };
 
-        return frustum;
+        return *(frustum);
     }
 
     bool CullingManager::CheckOnFace(EachFace& Face)
@@ -73,14 +72,6 @@ namespace Eclipse
         glm::vec3 Center = Transform.position.ConvertToGlmVec3Type();
         float Radius = maxScale * 0.5f;
 
-        //CollisionFlag |= CheckOnFace(camFrustum.LeftFace, Center, Radius);
-        //CollisionFlag |= CheckOnFace(camFrustum.RightFace, Center, Radius);
-        //CollisionFlag |= CheckOnFace(camFrustum.FarFace, Center, Radius);
-        //CollisionFlag |= CheckOnFace(camFrustum.NearFace, Center, Radius);
-        //CollisionFlag |= CheckOnFace(camFrustum.TopFace, Center, Radius);
-        //CollisionFlag |= CheckOnFace(camFrustum.BottomFace, Center, Radius);
-
-
         return (CheckOnFace(camFrustum.LeftFace, Center, Radius) &&
             CheckOnFace(camFrustum.RightFace, Center, Radius) &&
             CheckOnFace(camFrustum.FarFace, Center, Radius) &&
@@ -93,10 +84,6 @@ namespace Eclipse
     {
         auto& Transform = engine->world.GetComponent<TransformComponent>(ID);
         return CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera);
-
-        //std::cout << " ON GAME FRUSTRUM : " << CheckOnFrustum(Transform, CameraComponent::CameraType::Game_Camera) << std::endl;
-        //std::cout << " ON SCENE FRUSTRUM : " << CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera) << std::endl;
-        //return CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera);
     }
 
     void CullingManager::Insert(AABBComponent& In, unsigned int ID)
@@ -104,14 +91,19 @@ namespace Eclipse
         std::shared_ptr< AABBComponent> SameAABB = std::make_shared<AABBComponent>(In);
         std::shared_ptr< AABBCulling> hi = std::make_shared<AABBCulling>();
         hi->Obj = &In;
-        engine->gCullingManager->CullContainer.emplace(ID, hi);
-        engine->gCullingManager->CullContainer[ID]->AABB.SetMaxMin(In.Max, In.Min, ID);
+        CullContainer.emplace(ID, hi);
+        CullContainer[ID]->AABB.SetMaxMin(In.Max, In.Min, ID);
         FrustrumCollisionTree.InsertObject(engine->gCullingManager->CullContainer[ID]);
+    }
+
+    void CullingManager::Clear()
+    {
+        CullContainer.clear();
     }
 
     std::vector<unsigned int> CullingManager::ReturnContacted()
     {
-        return FrustrumCollisionTree.QueryAgainstTrustrum(DYN_AABB::SetFrustrumAABB(CameraComponent::CameraType::Editor_Camera));
+        return FrustrumCollisionTree.QueryAgainstTrustrum(SetFrustrumAABB(CameraComponent::CameraType::Editor_Camera));
     }
 
     CameraComponent::CameraType CullingManager::GetCamera()
@@ -138,5 +130,27 @@ namespace Eclipse
     DYN_AABB AABBCulling::getAABB() const
     {
         return AABB;
+    }
+
+    AABBComponent& CullingManager::SetFrustrumAABB(CameraComponent::CameraType CameraType)
+    {
+        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraType));
+        auto& Transform = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraType));
+
+        glm::vec3 Half{ 2,2,2 };
+        glm::vec3 scale{ _camera.farPlane / Half.x , _camera.farPlane / Half.y,_camera.farPlane };
+
+        glm::vec3 position = glm::vec3{ Transform.position.getX() , Transform.position.getY(),Transform.position.getZ() };
+        position /= Half;
+        glm::vec3 halfExt = scale / 2.0f;
+        glm::vec3 min = glm::vec3{ position.x - halfExt.x, position.y - halfExt.y, position.z - halfExt.z };
+        glm::vec3 max = glm::vec3{ position.x + halfExt.x, position.y + halfExt.y, position.z + halfExt.z };
+
+        AABBComponent Frustrum;
+        Frustrum.center = ECVec3{ position.x , position.y , position.z };
+        Frustrum.Min = ECVec3{ min.x,min.y,min.z };
+        Frustrum.Max = ECVec3{ max.x,max.y,max.z };
+
+        return Frustrum;
     }
 }

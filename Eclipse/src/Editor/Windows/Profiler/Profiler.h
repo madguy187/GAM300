@@ -12,18 +12,22 @@ namespace Eclipse
 		PHYSICS,
 		PICKING,
 		EDITOR,
+		MATERIAL,
+		AUDIO,
+		MONO,
 		COUNTER
 	};
 
 	class ProfilerWindow final : public ECGuiWindow
 	{
-		inline static float engine_time = 0.0f;
 		
 	public:
+		inline static float engine_time = 0.0f;
 
 		unsigned int it = 0;
 
 		inline static std::map<SystemName, std::vector<float>> time_container;
+
 
 	/*	inline static std::vector<float> Totaltime_container;*/
 		
@@ -55,7 +59,8 @@ namespace Eclipse
 
 		void PrintCpuPercentage(float value);
 		
-		void EngineTimer(TimerTracker timer);
+		//void EngineTimer(TimerTracker timer);
+		void EngineTimer();
 
 	};
 

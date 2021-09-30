@@ -75,6 +75,11 @@ namespace Eclipse
                 auto& Transform = engine->world.GetComponent<TransformComponent>(entityID);
                 engine->gPicker.UpdateAabb(entityID);
 
+                if (!engine->world.CheckComponent<MeshComponent>(entityID))
+                {
+                    continue;
+                }
+
                 if (engine->gCullingManager->ToRenderOrNot(entityID) == false)
                 {
                     continue;

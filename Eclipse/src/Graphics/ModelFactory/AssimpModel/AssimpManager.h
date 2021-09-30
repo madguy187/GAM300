@@ -26,24 +26,20 @@ namespace Eclipse
 	class AssimpModelManager
 	{
 	private:
-
-		// Name of Model , < MeshIndex, Texture Container > 
-		std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>> >LoadedTexturesV2;
-
-		// Model Information
-		std::unordered_map<std::string, std::string> ModelMap;
-		
-	public:
-		// Single Meshes
-		std::unordered_map<std::string, std::unique_ptr<Mesh>> SingleMeshMap;
-
-		// Container to store Models who are loaded once
-		std::unordered_map<std::string, std::unique_ptr<AssimpModel>> AssimpLoadedModels;
-
-		// Container to store all mesh names
-		std::vector<std::string> AllMeshNames;
+		std::unordered_map<std::string, std::unique_ptr<Mesh>> Geometry;
 		std::vector<std::string> AllPrimitiveModelsNames;
+		std::unordered_map<std::string, std::vector<std::string>> Prefabs;
+		std::vector<std::string> AllMeshNames;
+	private:
 
+	public:
+		bool CheckCompilers();
+		void CreateModel(unsigned int ID, const std::string& ModelName);
+		std::unordered_map<std::string, std::vector<std::string>>& GetPrefabs();
+		void InsertPrimitiveName(const std::string& in);
+		void InsertMeshName(const std::string& in);
+		std::vector<std::string>& GetMeshNames();
+		std::vector<std::string>& GetPrimitiveNames();
 		// Get Current MeshComponent Container
 		MeshModelContainer GetMeshContainer();
 		// Ger how many Models in Container
@@ -69,18 +65,17 @@ namespace Eclipse
 		// Draw function that takes in Mesh Component
 		void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent& , unsigned int ,CameraComponent::CameraType );
 		void InsertModelMap(std::string& NameofModel, std::string& Directory);
-		// Using MeshComponent into Container , Pass in key please
-		void InsertModel(unsigned int ID);
 		// Model Factory to load all models
-		void LoadModels(const std::string& modelFile);
-		// Get Key
-		std::string GetKey(const std::string& in);
+		void LoadCompilers();
 		// Destructor
 		~AssimpModelManager();
 		void SetMeshComponent(unsigned int ID, std::string);
 		void Render(Shader& shader, GLenum mode, unsigned int id, MeshComponent& in);
 		void Render(GLenum mode, MeshComponent& in);
 		void SetSingleMesh(unsigned int ID, std::string& MeshName);
+		void LoadGeometry();
+		void LoadPrefabs();
+		void LoadTextures();
 
 		///////////////////////////////////////////////////////////////////////////////////////////
 		// FDebug PrintOuts
@@ -92,8 +87,20 @@ namespace Eclipse
 		void PrintOutAllMeshes();
 
 
+	public:
+		// TEXTURES PUT HERE FIRST
+		unsigned int Index = 0; // mesh index.
+		void InsertTextures(std::string& NameofModel, std::unique_ptr<Texture> in, unsigned int MeshId);
+		void SetTexturesForModel(MaterialComponent& in, std::string& passkey);
+
 	private:
-		//
+		AssimpModelContainer AssimpModelContainer_;
+		MeshModelContainer AssimpModelContainerV2;
+		std::unordered_map<std::string, std::unique_ptr<AssimpModel>> AssimpLoadedModels;
+		std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>> >LoadedTexturesV2;
+		std::unordered_map<std::string, std::string> ModelMap;
+		bool InsertMesh(MeshComponent& in);
+		bool ClearContainer();
 		void CleanUpAllModels();
 		unsigned int AssimpModelCount();
 		bool InsertModel(AssimpModel& in);
@@ -103,23 +110,8 @@ namespace Eclipse
 		void Draw(unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
 		void HighlihtDraw(unsigned int FrameBufferID, GLenum Mode);
 		void DeleteItem(unsigned int index, AssimpModel* model_ptr);
-
-	public:
-		// TEXTURES PUT HERE FIRST
-		unsigned int Index = 0; // mesh index.
-		void InsertTextures(std::string& NameofModel, std::unique_ptr<Texture> in, unsigned int MeshId);
-		void SetTexturesForModel(MaterialComponent& in, std::string& passkey);
-	private:
-		// Version 1 Container that stores AssimpModel*
-		AssimpModelContainer AssimpModelContainer_;
-		// Version 2 Container that stores AssimpModel*
-		MeshModelContainer AssimpModelContainerV2;
-
-		///////////////////////////////////////////////////////////////////////////////////////////
-		// For Jian Herng
-		///////////////////////////////////////////////////////////////////////////////////////////
-		bool InsertMesh(MeshComponent& in);
-		bool ClearContainer();
+		std::string GetKey(const std::string& in);
+		void InsertModel(unsigned int ID);
 
 	};
 }

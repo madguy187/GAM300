@@ -15,7 +15,6 @@
 #include "ECS/ComponentManager/Components/ParentChildComponent.h"
 #include "ECS/ComponentManager/Components/LightComponent.h"
 #include "ECS/ComponentManager/Components/ScriptComponent.h"
-#include "ECS/ComponentManager/Components/ChildTransformComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
@@ -89,7 +88,6 @@ namespace Eclipse
         world.RegisterComponent<ParentChildComponent>();
         world.RegisterComponent<LightComponent>();
         world.RegisterComponent<ScriptComponent>();
-        world.RegisterComponent<ChildTransformComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
@@ -161,7 +159,6 @@ namespace Eclipse
         audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
-            Timer.tracker.system_start = glfwGetTime();
             glfwPollEvents();
             engine->GraphicsManager.mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });
 
@@ -257,8 +254,8 @@ namespace Eclipse
             ImGuiSetup::End(IsEditorActive);
             OpenGL_Context::post_render();
             SceneManager::ProcessScene();
-            Timer.tracker.system_end = glfwGetTime();
-            Timer.EngineTimer(Timer.tracker);
+
+            ProfilerWindow::engine_time = 0;
 
             if (IsInStepState)
             {

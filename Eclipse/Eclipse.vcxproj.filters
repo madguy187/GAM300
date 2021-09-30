@@ -249,9 +249,6 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\ComponentManager\Components\ChildTransformComponent.h">
-      <Filter>ECS\ComponentManager\Components</Filter>
-    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\CollisionComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
@@ -1067,5 +1064,8 @@
       <Filter>Time</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Assets\Compilers\GeometryFile\Geometry.eclipse" />
   </ItemGroup>
 </Project>

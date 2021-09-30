@@ -37,6 +37,7 @@ namespace Eclipse
         DebugRenderingManager gDebugManager;
         SerializationManager szManager;
         AudioManager audioManager;
+        DragAndDrop dragDrop;
         void Init();
         void Run();
         PhysicsManager gPhysics;

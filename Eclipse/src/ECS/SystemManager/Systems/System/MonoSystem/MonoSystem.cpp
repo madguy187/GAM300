@@ -20,6 +20,9 @@ namespace Eclipse
 
 	void MonoSystem::Update()
 	{
+		engine->Timer.SetName({ SystemName::MONO });
+		engine->Timer.tracker.system_start = glfwGetTime();
+
 		for (auto entity : mEntities)
 		{
 			ScriptComponent& scriptCom = engine->world.GetComponent<ScriptComponent>(entity);
@@ -29,6 +32,9 @@ namespace Eclipse
 				engine->mono.Update(&script);
 			}
 		}
+
+		engine->Timer.tracker.system_end = glfwGetTime();
+		engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
 	}
 
 	void MonoSystem::Terminate()

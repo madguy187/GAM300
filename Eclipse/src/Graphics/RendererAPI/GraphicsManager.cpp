@@ -37,7 +37,6 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     {
         engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
         engine->world.AddComponent(ID, MeshComponent{});
-
         MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         sprite.modelRef = Graphics::models.find("Square")->first;
@@ -49,7 +48,6 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     {
         engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
         engine->world.AddComponent(ID, MeshComponent{});
-
         MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         sprite.modelRef = Graphics::models.find("Circle")->first;
@@ -59,7 +57,6 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     {
         engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
         engine->world.AddComponent(ID, MeshComponent{});
-
         MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         sprite.modelRef = Graphics::models.find("Triangle")->first;
@@ -69,7 +66,6 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     {
         engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
         engine->world.AddComponent(ID, MeshComponent{});
-
         MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         sprite.modelRef = Graphics::models.find("Lines")->first;
@@ -79,11 +75,9 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     {
         engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
         engine->world.AddComponent(ID, MeshComponent{});
-
         MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         sprite.modelRef = Graphics::models.find("Sphere")->first;
-
         MaterialComponent& Mat = engine->world.GetComponent<MaterialComponent>(ID);
         Mat.hasTexture = true;
         Mat.TextureRef = Graphics::textures.find("orange")->first;
@@ -91,28 +85,12 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     break;
     case 5:
     {
-        //for (int i = 0; i < 5000; i++)
-        //{
-        //    auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_GEO_CUBE);
-        //    engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_BASIC });
-        //    engine->world.AddComponent(MeshID, MeshComponent{});
-
-        //    MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(MeshID);
-        //    sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-        //    sprite.modelRef = Graphics::models.find("Cube")->first;
-
-        //    MaterialComponent& Mat = engine->world.GetComponent<MaterialComponent>(MeshID);
-        //    Mat.hasTexture = true;
-        //    Mat.TextureRef = Graphics::textures.find("orange")->first;
-        //}
-
         engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
         engine->world.AddComponent(ID, MeshComponent{});
 
         MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         sprite.modelRef = Graphics::models.find("Cube")->first;
-
         MaterialComponent& Mat = engine->world.GetComponent<MaterialComponent>(ID);
         Mat.hasTexture = true;
         Mat.TextureRef = Graphics::textures.find("orange")->first;
@@ -122,7 +100,6 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     {
         engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
         engine->world.AddComponent(ID, MeshComponent{});
-
         MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         sprite.modelRef = Graphics::models.find("Cylinder")->first;
@@ -132,7 +109,6 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     {
         engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
         engine->world.AddComponent(ID, MeshComponent{});
-
         MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         sprite.modelRef = Graphics::models.find("Cone")->first;
@@ -143,13 +119,10 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         engine->world.AddComponent(ID, MaterialComponent{});
         MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
         mat.Modeltype = MaterialModelType::MT_BASIC;
-
         engine->world.AddComponent(ID, MeshComponent{});
         MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-        // sprite.ID = ID;
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         sprite.modelRef = Graphics::models.find("Torus")->first;
-        //Graphics::sprites.emplace(sprite.layerNum, &sprite);
     }
     break;
     case 9:
@@ -160,10 +133,8 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
 
         engine->world.AddComponent(ID, MeshComponent{});
         MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-        //sprite.ID = ID;
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         sprite.modelRef = Graphics::models.find("pyramid")->first;
-        //Graphics::sprites.emplace(sprite.layerNum, &sprite);
 
     }
     break;
@@ -178,7 +149,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         //sprite.ID = ID;
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         sprite.modelRef = Graphics::models.find("lines3D")->first;
-        // Graphics::sprites.emplace(sprite.layerNum, &sprite);
+
     }
     break;
     case 11:
@@ -192,15 +163,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         //sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         //sprite.modelRef = Graphics::models.find("plane")->first;
 
-        //Single Mesh
-        std::string hi = "Dog1";
-        engine->world.AddComponent(ID, MeshComponent{});
-        engine->AssimpManager.SetMeshComponent(ID, hi);
-        auto& Mesh = engine->world.GetComponent<MeshComponent>(ID);
-        engine->world.AddComponent(ID, ModeLInforComponent{ Mesh.MeshName });
-        engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
-        engine->world.AddComponent(ID, TextureComponent{});
-        engine->AssimpManager.SetSingleMesh(ID, hi);
+        engine->AssimpManager.CreateModel(ID, "dog3");
     }
     break;
     // pointlight
@@ -212,55 +175,13 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
     // Directional
     case 13:
     {
-        //engine->LightManager.CreateLights(Eclipse::TypesOfLights::DIRECTIONAL, ID);
-
-        std::string hhi = engine->AssimpManager.GetKey("testhouse");
-        for (int i = 0; i < engine->AssimpManager.AssimpLoadedModels[hhi]->GetMesh().size(); i++)
-        {
-            auto& name = engine->AssimpManager.AssimpLoadedModels[hhi]->GetMesh()[i].GetMeshName();
-
-            auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
-            engine->world.AddComponent(MeshID, MeshComponent{});
-            engine->AssimpManager.SetMeshComponent(MeshID, name);
-            auto& Mesh = engine->world.GetComponent<MeshComponent>(MeshID);
-            engine->world.AddComponent(MeshID, ModeLInforComponent{ Mesh.MeshName });
-            engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
-            engine->world.AddComponent(MeshID, TextureComponent{});
-            engine->AssimpManager.SetSingleMesh(MeshID, name);
-        }
+        engine->LightManager.CreateLights(Eclipse::TypesOfLights::DIRECTIONAL, ID);
     }
     break;
     // SpotLight
     case 14:
     {
-        //engine->LightManager.CreateLights(Eclipse::TypesOfLights::SPOTLIGHT, ID);
-
-        //Single Mesh
-        //std::string hi = "Object_5";
-        //engine->world.AddComponent(ID, MeshComponent{});
-        //engine->AssimpManager.SetMeshComponent(ID, hi);
-        //auto& Mesh = engine->world.GetComponent<MeshComponent>(ID);
-        //engine->world.AddComponent(ID, ModeLInforComponent{ Mesh.MeshName });
-        //engine->world.AddComponent(ID, MaterialComponent{ MaterialComponent::ModelType::Models3D });
-        //engine->world.AddComponent(ID, TextureComponent{});
-        //engine->AssimpManager.SetSingleMesh(ID, hi);
-
-        // Prefabs
-        std::string hhi = engine->AssimpManager.GetKey("m4a1");
-        for (int i = 0; i < engine->AssimpManager.AssimpLoadedModels[hhi]->GetMesh().size(); i++)
-        {
-            auto& name = engine->AssimpManager.AssimpLoadedModels[hhi]->GetMesh()[i].GetMeshName();
-
-            auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
-            engine->world.AddComponent(MeshID, MeshComponent{});
-            engine->AssimpManager.SetMeshComponent(MeshID, name);
-            auto& Mesh = engine->world.GetComponent<MeshComponent>(MeshID);
-            engine->world.AddComponent(MeshID, ModeLInforComponent{ Mesh.MeshName });
-            engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
-            //engine->world.AddComponent(MeshID, TextureComponent{});
-            engine->AssimpManager.SetSingleMesh(MeshID, name);
-        }
-
+        engine->LightManager.CreateLights(Eclipse::TypesOfLights::SPOTLIGHT, ID);
     }
     break;
     }
@@ -523,55 +444,6 @@ void Eclipse::GraphicsManager::WindowCloseCallback(GLFWwindow* window)
         glfwSetWindowShouldClose(OpenGL_Context::GetWindow(), GLFW_TRUE);
     }
 }
-
-//float getSignedDistanceToPlan(const glm::vec3& point) const
-//{
-//    return glm::dot(normal, point) - distance;
-//}
-//
-//bool isOnOrForwardPlan(const Plan& plan) const
-//{
-//    return plan.getSignedDistanceToPlan(center) > -radius;
-//}
-//
-//
-//bool isOnFrustum(const Frustum& camFrustum, const TransformComponent& transform)
-//{
-//    auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
-//    auto& Transform = engine->world.GetComponent<TransformComponent>(1);
-//
-//    glm::mat4 mModelNDC;
-//    glm::mat4 model = glm::mat4(1.0f);
-//    model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
-//    model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-//    model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-//    model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-//    model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
-//    mModelNDC = _camera.projMtx * _camera.viewMtx * model;
-//
-//
-//    //Get global scale is computed by doing the magnitude of
-//    //X, Y and Z model matrix's column.
-//    const glm::vec3 globalScale = transform.scale.ConvertToGlmVec3Type());
-//
-//    //Get our global center with process it with the global model matrix of our transform
-//    const glm::vec3 globalCenter{ mModelNDC * glm::vec4(Transform.position.ConvertToGlmVec3Type(), 1.f) };
-//
-//    //To wrap correctly our shape, we need the maximum scale scalar.
-//    const float maxScale = max(max(globalScale.x, globalScale.y), globalScale.z);
-//
-//    //Max scale is assuming for the diameter. So, we need the half to apply it to our radius
-//    Sphere globalSphere(globalCenter, radius * (maxScale * 0.5f));
-//
-//    //Check Firstly the result that have the most chance
-//    //to faillure to avoid to call all functions.
-//    return (globalSphere.isOnOrForwardPlan(camFrustum.leftFace) &&
-//        globalSphere.isOnOrForwardPlan(camFrustum.rightFace) &&
-//        globalSphere.isOnOrForwardPlan(camFrustum.farFace) &&
-//        globalSphere.isOnOrForwardPlan(camFrustum.nearFace) &&
-//        globalSphere.isOnOrForwardPlan(camFrustum.topFace) &&
-//        globalSphere.isOnOrForwardPlan(camFrustum.bottomFace));
-//};
 
 /*************************************************************************
   FrameBuffer Things

@@ -13,8 +13,6 @@
 #include "Graphics/Grid/IAABB.h"
 #include "Graphics/Grid/AABB.h"
 
-#include "ECS/ComponentManager/Components/ChildTransformComponent.h"
-
 namespace Eclipse
 {
     //TEST CODE
@@ -23,9 +21,9 @@ namespace Eclipse
         std::vector<Vertex> vertices;
         std::vector<unsigned int> indices;
 
-        aiColor4D Diffuse;
-        aiColor4D Specular;
-        aiColor4D Ambient;
+        glm::vec4 Diffuse;
+        glm::vec4 Specular;
+        glm::vec4 Ambient;
 
         bool NoTextures = false;
         std::vector<Texture> textures;
@@ -37,9 +35,7 @@ namespace Eclipse
     private:
         unsigned int MeshIndex = 0;
         unsigned int ID = 0;
-        //bool NoTextures = false; // Set False if model got textures
         ModelType type = ModelType::MT_UNASSIGNED;
-        // Take Note , i will use folder name as key
         std::string NameOfModel;
         std::string Directory;
         std::vector<Mesh> Meshes;
@@ -47,14 +43,13 @@ namespace Eclipse
         std::vector<glm::vec3> AllVertices;
         std::vector<MeshData> meshData;
 
+        void LoadNewModel();
+        void ProcessNode(aiNode* node, const aiScene* scene);
         void ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string& MeshName);
         std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type, std::string& MeshName);
-        void ProcessNode(aiNode* node, const aiScene* scene);
         float GetLargestAxisValue(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         void ComputeAxisMinMax(std::vector<glm::vec3>& vertices, std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         glm::vec3 ComputeCentroid(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
-
-        void LoadNewModel();
 
     public:
 

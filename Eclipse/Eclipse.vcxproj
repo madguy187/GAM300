@@ -175,7 +175,6 @@ IF EXIST ..\Dep\Fmod\core\lib\x64\fmodstudio64.dll\ (xcopy /Q /E /Y /I ..\Dep\Fm
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\ChildTransformComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\CollisionComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentBase.h" />
@@ -453,6 +452,9 @@ IF EXIST ..\Dep\Fmod\core\lib\x64\fmodstudio64.dll\ (xcopy /Q /E /Y /I ..\Dep\Fm
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Assets\Compilers\GeometryFile\Geometry.eclipse" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

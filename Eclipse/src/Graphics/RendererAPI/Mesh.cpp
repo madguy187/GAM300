@@ -7,10 +7,11 @@ namespace Eclipse
         Textures(textures),
         NoTex(false)
     {
-
+        strcpy_s(MeshName.data(), MeshName.size(), "Mesh");
+        MeshName[MeshName.size() - 1] = '\0';
     }
 
-    Eclipse::Mesh::Mesh(aiColor4D diff, aiColor4D spec) :
+    Eclipse::Mesh::Mesh(glm::vec4 diff, glm::vec4 spec) :
         Diffuse(diff),
         Specular(spec),
         NoTex(true)
@@ -23,22 +24,25 @@ namespace Eclipse
         Vertices(vertices),
         Indices(indices),
         Textures(textures),
-        NoTex(false),
-        MeshName(namein)
+        NoTex(false)
     {
+        strcpy_s(MeshName.data(), MeshName.size(), namein.data());
+        MeshName[MeshName.size() - 1] = '\0';
+
         Setup();
     }
 
-    Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiColor4D diffuse, aiColor4D specular, aiColor4D ambient, bool in, std::string namein)
+    Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, glm::vec4 diffuse, glm::vec4 specular, glm::vec4 ambient, bool in, std::string namein)
         :
         Vertices(vertices),
         Indices(indices),
         Diffuse(diffuse),
         Specular(specular),
         Ambient(ambient),
-        NoTex(in),
-        MeshName(namein)
+        NoTex(in)
     {
+        strcpy_s(MeshName.data(), MeshName.size(), namein.data());
+        MeshName[MeshName.size() - 1] = '\0';
         Setup();
     }
 
@@ -146,19 +150,9 @@ namespace Eclipse
         }
     }
 
-    unsigned int Mesh::GetMeshID()
-    {
-        return ID;
-    }
-
-    void Mesh::SetID(unsigned int MeshId)
-    {
-        ID = MeshId;
-    }
-
     std::string Mesh::GetMeshName()
     {
-        return MeshName;
+        return MeshName.data();
     }
 
     std::vector<Vertex>& Mesh::GetVertices()
