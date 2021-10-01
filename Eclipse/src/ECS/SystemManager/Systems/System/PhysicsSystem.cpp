@@ -3,6 +3,7 @@
 
 void PhysicsSystem::Update()
 {
+	ZoneScopedN("Physics System")
 
 	engine->Timer.SetName({ SystemName::PHYSICS });
 	engine->Timer.tracker.system_start = glfwGetTime();
@@ -25,4 +26,6 @@ void PhysicsSystem::Update()
 
 	engine->Timer.tracker.system_end = glfwGetTime();
 	engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
+
+	FrameMark
 }
