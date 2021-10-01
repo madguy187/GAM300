@@ -121,27 +121,30 @@ namespace Eclipse
 		GenerateDLL();
 
 		MonoDomain* childDomain = LoadDomain();
+		LoadDLLImage("../EclipseScriptsAPI.dll", APIImage, APIAssembly);
+		LoadDLLImage("../EclipseScripts.dll", ScriptImage, ScriptAssembly);
 
-		// Load API
-		APIAssembly = mono_domain_assembly_open(domain, "../EclipseScriptsAPI.dll");
-		assert(APIAssembly, "API Assembly could not be opened");
 
-		APIImage = mono_assembly_get_image(APIAssembly);
-		assert(APIImage, "API Image failed");
+		//// Load API
+		//APIAssembly = mono_domain_assembly_open(childDomain, "../EclipseScriptsAPI.dll");
+		//assert(APIAssembly, "API Assembly could not be opened");
 
-		// Load Scripts
-		ScriptAssembly = mono_domain_assembly_open(domain, "../EclipseScripts.dll");
-		assert(ScriptAssembly, "Script Assembly could not be opened");
+		//APIImage = mono_assembly_get_image(APIAssembly);
+		//assert(APIImage, "API Image failed");
 
-		ScriptImage = mono_assembly_get_image(ScriptAssembly);
-		assert(ScriptImage, "Script Image failed");
+		//// Load Scripts
+		//ScriptAssembly = mono_domain_assembly_open(childDomain, "../EclipseScripts.dll");
+		//assert(ScriptAssembly, "Script Assembly could not be opened");
+
+		//ScriptImage = mono_assembly_get_image(ScriptAssembly);
+		//assert(ScriptImage, "Script Image failed");
 	}
 
 	void MonoManager::StopMono()
 	{
 		//UnloadDomain();
-		mono_image_close(APIImage);
-		mono_image_close(ScriptImage);
+		/*mono_image_close(APIImage);
+		mono_image_close(ScriptImage);*/
 		mono_jit_cleanup(domain);
 	}
 
@@ -216,6 +219,42 @@ namespace Eclipse
 		system("sh -c ../Dep/mono/bin/mcs_api.bat");
 		system("sh -c ../Dep/mono/bin/mcs_scripts.bat");
 		ENGINE_CORE_INFO("Mono: Successfully Generate DLLs");
+	}
+
+	bool MonoManager::LoadDLLImage(const char* filename, MonoImage*& image, MonoAssembly*& assembly)
+	{
+		/*std::ifstream t(filename);
+		std::string str((std::istreambuf_iterator<char>(t)),
+			std::istreambuf_iterator<char>());*/
+
+		char* arr = nullptr;
+		uint32_t len = 0;
+		std::ifstream file(filename, std::ifstream::binary);
+		if (file) {
+			// get length of file:
+			file.seekg(0, file.end);
+			auto length = file.tellg();
+			len = static_cast<uint32_t>(length);
+			file.seekg(0, file.beg);
+
+			arr = new char[length];
+			file.read(arr, length);
+			file.close();
+		}
+
+		MonoImageOpenStatus status;
+		image = nullptr;
+		//image = mono_image_open_from_data_with_name(&str.front(), str.length(), true /* copy data */, &status, false /* ref only */, filename);
+		image = mono_image_open_from_data_with_name(arr, len, true /* copy data */, &status, false /* ref only */, filename);
+		bool result = true;
+		if (image)
+			assembly = mono_assembly_load_from_full(image, filename, &status, false);
+		else
+		{
+			result = false;
+		}
+
+		return result;
 	}
 
 	MonoImage* MonoManager::GetAPIImage()
