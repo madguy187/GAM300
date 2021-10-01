@@ -333,14 +333,19 @@ namespace Eclipse
                 ComboListSettings settings = { "Texture Type" };
 
                 ECGui::DrawTextWidget<const char*>("KEY ID: ", "");
+                ECGui::DrawTextWidget<const char*>("Enable Texture", "");
                 ECGui::InsertSameLine();
+                ECGui::CheckBoxBool("HasTexture", &_Texture.hasTexture);
                 //ECGui::DrawTextWidget<const char*>(std::to_string(_Texture.ID).c_str(), "");
 
-                ECGui::DrawTextWidget<const char*>("Texture Type", "");
-                ECGui::CreateComboList(settings, _TextureVector, _Texture.ComboIndex);
-                _Texture.Type = _Map[_TextureVector[_Texture.ComboIndex]];
+                if (_Texture.hasTexture)
+                {
+                    ECGui::DrawTextWidget<const char*>("Texture Type", "");
+                    ECGui::CreateComboList(settings, _TextureVector, _Texture.ComboIndex);
+                    _Texture.Type = _Map[_TextureVector[_Texture.ComboIndex]];
 
-                ChangeTextureController(_Texture);
+                    ChangeTextureController(_Texture);
+                }
             }
         }
 
@@ -725,7 +730,8 @@ namespace Eclipse
         ImVec2 buttonSize = { 180,20 };
         ECGui::DrawTextWidget<const char*>("Texture  ", "");
         ECGui::InsertSameLine();
-        if (ImGui::Button((Item.TextureRef.c_str()), buttonSize))
+
+        if (ImGui::Button((Item.TextureRef.c_str()), buttonSize) || (ImGui::IsItemClicked() && ImGui::IsItemHovered()) )
         {
             ImGui::OpenPopup("Texture Changer");
         }

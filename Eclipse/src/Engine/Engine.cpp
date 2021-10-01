@@ -74,6 +74,7 @@ namespace Eclipse
 
     void Engine::Run()
     {
+       ZoneScopedN("Engine")
         // register component
         world.RegisterComponent<EntityComponent>();
         world.RegisterComponent<TransformComponent>();
@@ -287,6 +288,8 @@ namespace Eclipse
         ImGuiSetup::Destroy(IsEditorActive);
         gPhysics.Unload();
         CommandHistory::Clear();
+
+        FrameMark
     }
 
     bool Engine::GetEditorState()

@@ -19,6 +19,7 @@ namespace Eclipse
         LoadPrefabs();
         // Texture Compiler
         LoadTextures();
+        LoadBasicTextures();
 
         if (CheckCompilers())
         {
@@ -46,7 +47,6 @@ namespace Eclipse
 
             if (CheckCompilers())
             {
-                HotReloadFlag = true;
                 ENGINE_CORE_INFO("All Assets Recompiled");
             }
         }
@@ -298,15 +298,15 @@ namespace Eclipse
             char* Name = in.data();
             strcpy_s(Mesh.MeshName.data(), Mesh.MeshName.size(), Name);
 
-            Mesh.VBO = Geometry[in]->VBO;
-            Mesh.VAO = Geometry[in]->VAO;
-            Mesh.EBO = Geometry[in]->EBO;
-            Mesh.NoTex = Geometry[in]->NoTex;
-            Mesh.Diffuse = Geometry[in]->Diffuse;
-            Mesh.Specular = Geometry[in]->Specular;
-            Mesh.Ambient = Geometry[in]->Ambient;
-            Mesh.Vertices = Geometry[in]->Vertices;
-            Mesh.Indices = Geometry[in]->Indices;
+            //Mesh.VBO = Geometry[in]->VBO;
+            //Mesh.VAO = Geometry[in]->VAO;
+            //Mesh.EBO = Geometry[in]->EBO;
+            //Mesh.NoTex = Geometry[in]->NoTex;
+            //Mesh.Diffuse = Geometry[in]->Diffuse;
+            //Mesh.Specular = Geometry[in]->Specular;
+            //Mesh.Ambient = Geometry[in]->Ambient;
+            //Mesh.Vertices = Geometry[in]->Vertices;
+            //Mesh.Indices = Geometry[in]->Indices;
         }
     }
 
@@ -329,8 +329,16 @@ namespace Eclipse
             GLuint Texture = shader.GetLocation("noTex");
 
             glUniform1i(uniform_var_loc3, true);
-            glUniform4f(diff0, in.Diffuse.r, in.Diffuse.g, in.Diffuse.b, in.Diffuse.a);
-            glUniform4f(spec, in.Specular.r, in.Specular.g, in.Specular.b, in.Specular.a);
+            glUniform4f(diff0,
+                engine->AssimpManager.Geometry[in.MeshName.data()]->Diffuse.r,
+                engine->AssimpManager.Geometry[in.MeshName.data()]->Diffuse.g,
+                engine->AssimpManager.Geometry[in.MeshName.data()]->Diffuse.b,
+                engine->AssimpManager.Geometry[in.MeshName.data()]->Diffuse.a);
+            glUniform4f(spec,
+                engine->AssimpManager.Geometry[in.MeshName.data()]->Specular.r,
+                engine->AssimpManager.Geometry[in.MeshName.data()]->Specular.g,
+                engine->AssimpManager.Geometry[in.MeshName.data()]->Specular.b,
+                engine->AssimpManager.Geometry[in.MeshName.data()]->Specular.a);
             glUniform1i(Texture, true);
             glUniform1i(tex_loc, false);
             glUniform1i(uniform_var_loc1, false);
@@ -394,8 +402,8 @@ namespace Eclipse
         glActiveTexture(GL_TEXTURE0);
 
         // EBO stuff
-        glBindVertexArray(in.VAO);
-        glDrawElements(GL_TRIANGLES, in.Indices.size(), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(engine->AssimpManager.Geometry[in.MeshName.data()]->VAO);
+        glDrawElements(GL_TRIANGLES, engine->AssimpManager.Geometry[in.MeshName.data()]->Indices.size(), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
     }
 
@@ -432,10 +440,7 @@ namespace Eclipse
         // Loading Eclipse File
         std::fstream GeometryFileRead;
 
-        std::string Path = "../Eclipse/src/Assets/Compilers/";
-        std::string FileName = ".bin";
-
-        GeometryFileRead.open("src/Assets/Compilers/GeometryFile/Geometry.eclipse",
+        GeometryFileRead.open("../Compiler/CompilerKeyFiles/GeometryFile/Geometry.eclipse",
             std::ios::in |
             std::ios::binary);
 
@@ -496,7 +501,7 @@ namespace Eclipse
         std::ofstream PrefabsFileWrite;
         std::fstream PrefabsFileRead;
 
-        PrefabsFileRead.open("src/Assets/Compilers/PrefabsFile/Prefabs.eclipse",
+        PrefabsFileRead.open("../Compiler/CompilerKeyFiles/PrefabsFile/Prefabs.eclipse",
             std::ios::in |
             std::ios::binary);
 
@@ -537,7 +542,7 @@ namespace Eclipse
         std::ofstream TextureFileWrite;
         std::fstream TextureFileRead;
 
-        TextureFileRead.open("src/Assets/Compilers/TextureFile/Texture.eclipse",
+        TextureFileRead.open("../Compiler/CompilerKeyFiles/TextureFile/Texture.eclipse",
             std::ios::in |
             std::ios::binary);
 
@@ -575,39 +580,6 @@ namespace Eclipse
         }
 
         TextureFileRead.close();
-
-        ////////////////////////////
-
-        TextureFileRead.open("src/Assets/Compilers/BasicTextureFile/Texture.eclipse",
-            std::ios::in |
-            std::ios::binary);
-
-        if (TextureFileRead.fail())
-        {
-            std::cout << "Fail To Open Texture File" << std::endl << std::endl;
-            return;
-        }
-
-        // Number Of Textures
-        int NumberOfBasicTextures = 0;
-        TextureFileRead.read(reinterpret_cast<char*>(&NumberOfBasicTextures), sizeof(NumberOfBasicTextures));
-
-        for (int i = 0; i < NumberOfBasicTextures; i++)
-        {
-            // Texture Name
-            std::array<char, 128> TextureName;
-            TextureFileRead.read(reinterpret_cast<char*>(&TextureName), sizeof(TextureName));
-
-            // Texture DirecPathtory
-            std::array<char, 128> TexturePath;
-            TextureFileRead.read(reinterpret_cast<char*>(&TexturePath), sizeof(TexturePath));
-
-            Texture tex(TexturePath.data());
-            Graphics::textures.emplace(TextureName.data(), tex);
-        }
-
-        TextureFileRead.close();
-        ///////////////////////////
     }
 
 }
@@ -787,6 +759,42 @@ namespace Eclipse
         }
 
         return false;
+    }
+
+    void AssimpModelManager::LoadBasicTextures()
+    {
+        std::fstream TextureFileRead;
+
+        TextureFileRead.open("../Compiler/CompilerKeyFiles/BasicTextureFile/Texture.eclipse",
+            std::ios::in |
+            std::ios::binary);
+
+        if (TextureFileRead.fail())
+        {
+            std::cout << "Fail To Open Texture File" << std::endl << std::endl;
+            return;
+        }
+
+        // Number Of Textures
+        int NumberOfBasicTextures = 0;
+        TextureFileRead.read(reinterpret_cast<char*>(&NumberOfBasicTextures), sizeof(NumberOfBasicTextures));
+
+        for (int i = 0; i < NumberOfBasicTextures; i++)
+        {
+            // Texture Name
+            std::array<char, 128> TextureName;
+            TextureFileRead.read(reinterpret_cast<char*>(&TextureName), sizeof(TextureName));
+
+            // Texture DirecPathtory
+            std::array<char, 128> TexturePath;
+            TextureFileRead.read(reinterpret_cast<char*>(&TexturePath), sizeof(TexturePath));
+
+            Texture tex(TexturePath.data());
+            Graphics::textures.emplace(TextureName.data(), tex);
+        }
+
+        TextureFileRead.close();
+        ///////////////////////////
     }
 
     bool AssimpModelManager::GetHotReloadFlag()

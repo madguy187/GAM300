@@ -21,6 +21,8 @@ void Eclipse::CameraSystem::Init()
 
 void Eclipse::CameraSystem::Update()
 {
+	ZoneScopedN("Camera System")
+
 	engine->Timer.SetName({ SystemName::CAMERA });
 	engine->Timer.tracker.system_start = glfwGetTime();
 	for (auto& it : mEntities)
@@ -47,5 +49,7 @@ void Eclipse::CameraSystem::Update()
 	engine->Timer.tracker.system_end = glfwGetTime();
 
 	engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
+
+	FrameMark
 
 }
