@@ -249,9 +249,6 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\ComponentManager\Components\ChildTransformComponent.h">
-      <Filter>ECS\ComponentManager\Components</Filter>
-    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\CollisionComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
@@ -315,15 +312,6 @@
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.h">
       <Filter>ECS\SystemManager\Systems\System\Editor</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\GridSystem.h">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\LightingSystem.h">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem.h">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
-    </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.h">
       <Filter>ECS\SystemManager\Systems\System\MonoSystem</Filter>
     </ClInclude>
@@ -334,9 +322,6 @@
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem.h">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\System.h">
@@ -714,6 +699,12 @@
     </ClInclude>
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Tracy\Tracy.hpp" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\FileWatchSystem\FileWatchSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\GridSystem\GridSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem\MaterialSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem\RenderSystem.h" />
+    <ClInclude Include="src\Graphics\FileWatch\FileWatch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Audio\AudioManager.cpp">
@@ -746,15 +737,6 @@
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\Editor</Filter>
     </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\GridSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
-    </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\MonoSystem</Filter>
     </ClCompile>
@@ -765,9 +747,6 @@
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\World.cpp">
@@ -1069,5 +1048,14 @@
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\Tracy\TracyClient.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\FileWatchSystem\FileWatchSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\GridSystem\GridSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem\MaterialSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem\RenderSystem.cpp" />
+    <ClCompile Include="src\Graphics\FileWatch\FileWatch.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Assets\Compilers\GeometryFile\Geometry.eclipse" />
   </ItemGroup>
 </Project>
