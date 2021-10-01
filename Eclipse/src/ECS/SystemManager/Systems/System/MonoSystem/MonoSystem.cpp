@@ -46,7 +46,5 @@ namespace Eclipse
 			for (auto& script : scriptCom.scriptList)
 				script.obj = nullptr;
 		}
-
-		engine->mono.RestartMono();
 	}
 }
