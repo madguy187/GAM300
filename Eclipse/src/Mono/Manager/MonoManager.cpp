@@ -142,9 +142,6 @@ namespace Eclipse
 
 	void MonoManager::StopMono()
 	{
-		//UnloadDomain();
-		/*mono_image_close(APIImage);
-		mono_image_close(ScriptImage);*/
 		mono_jit_cleanup(domain);
 	}
 
