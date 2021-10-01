@@ -22,7 +22,5 @@ int WinMain()
 
     // We will produce our own resource files which will be named .eclipse
     Manager.ProduceFile();
-
-    return 0;
 }
 

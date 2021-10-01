@@ -94,22 +94,21 @@ namespace Eclipse
         case FileStatus::FS_CREATED:
         {
             std::cout << "File created: " << PATH_TO_WATCH << '\n';
-            engine->AssimpManager.HotReload();
+            Counter++;
         }
         break;
 
         case FileStatus::FS_MODIFIED:
         {
             std::cout << "File modified: " << PATH_TO_WATCH << '\n';
-            engine->AssimpManager.HotReload();
-            engine->gFileWatchManager->Modified = true;
+            Counter++;
         }
         break;
 
         case FileStatus::FS_ERASED:
         {
             std::cout << "File erased: " << PATH_TO_WATCH << '\n';
-            engine->AssimpManager.HotReload();
+            Counter++;
         }
         break;
 
@@ -121,18 +120,10 @@ namespace Eclipse
 
     void EclipseFileWatcher::HardReset(float in)
     {
-        if (Modified == true)
+        if (Counter)
         {
-            if (HotReloadCooldown <= in)
-            {
-                HotReloadCooldown += engine->Game_Clock.get_fixedDeltaTime();
-            }
-            else
-            {
-                HotReloadCooldown = 0.0f;
-                Modified = false;
-                engine->AssimpManager.ResetHotReloadFlag();
-            }
+            engine->AssimpManager.HotReload();
+            Counter = 0;
         }
     }
 }

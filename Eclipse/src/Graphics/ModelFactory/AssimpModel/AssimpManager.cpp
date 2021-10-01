@@ -46,7 +46,6 @@ namespace Eclipse
 
             if (CheckCompilers())
             {
-                HotReloadFlag = true;
                 ENGINE_CORE_INFO("All Assets Recompiled");
             }
         }
@@ -440,10 +439,7 @@ namespace Eclipse
         // Loading Eclipse File
         std::fstream GeometryFileRead;
 
-        std::string Path = "../Eclipse/src/Assets/Compilers/";
-        std::string FileName = ".bin";
-
-        GeometryFileRead.open("src/Assets/Compilers/GeometryFile/Geometry.eclipse",
+        GeometryFileRead.open("../Compiler/CompilerKeyFiles/GeometryFile/Geometry.eclipse",
             std::ios::in |
             std::ios::binary);
 
@@ -504,7 +500,7 @@ namespace Eclipse
         std::ofstream PrefabsFileWrite;
         std::fstream PrefabsFileRead;
 
-        PrefabsFileRead.open("src/Assets/Compilers/PrefabsFile/Prefabs.eclipse",
+        PrefabsFileRead.open("../Compiler/CompilerKeyFiles/PrefabsFile/Prefabs.eclipse",
             std::ios::in |
             std::ios::binary);
 
@@ -545,7 +541,7 @@ namespace Eclipse
         std::ofstream TextureFileWrite;
         std::fstream TextureFileRead;
 
-        TextureFileRead.open("src/Assets/Compilers/TextureFile/Texture.eclipse",
+        TextureFileRead.open("../Compiler/CompilerKeyFiles/TextureFile/Texture.eclipse",
             std::ios::in |
             std::ios::binary);
 
@@ -586,7 +582,7 @@ namespace Eclipse
 
         ////////////////////////////
 
-        TextureFileRead.open("src/Assets/Compilers/BasicTextureFile/Texture.eclipse",
+        TextureFileRead.open("../Compiler/CompilerKeyFiles/BasicTextureFile/Texture.eclipse",
             std::ios::in |
             std::ios::binary);
 
