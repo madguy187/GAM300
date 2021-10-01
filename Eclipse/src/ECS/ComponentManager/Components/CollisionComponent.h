@@ -15,6 +15,7 @@ namespace Eclipse
 
 	struct CollisionComponent
 	{
+		META_DATA(CollisionComponent);
 		std::vector<Entity> Collided;
 		EC_Shape shape;
 	};

@@ -14,7 +14,7 @@
 #include "SpotLightComponent.h"
 #include "TextureComponent.h"
 #include "TransformComponent.h"
-
+#include "CollisionComponent.h"
 namespace Eclipse
 {
     /*************************************************************************/
@@ -49,7 +49,8 @@ namespace Eclipse
 
     DEFINE_META(CollisionComponent)
     {
-        
+        ADD_MEMBER(Collided);
+        Add_MEMBER(shape);
     }
 
     DEFINE_META(DirectionalLightComponent)
@@ -152,7 +153,6 @@ namespace Eclipse
         ADD_MEMBER(mass);
         ADD_MEMBER(drag);
         ADD_MEMBER(angdrag);
-        ADD_MEMBER(_Static);
         ADD_MEMBER(_Kinematic);
         ADD_MEMBER(enableGravity);
         ADD_MEMBER(enableRotation);

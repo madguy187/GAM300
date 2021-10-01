@@ -66,7 +66,7 @@ namespace Eclipse
 	{
 		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
 
-		if (Px_Actors[ent] != nullptr)
+		if (Px_Actors[ent].actor != nullptr)
 			return;
 
 		PxVec3 temptrans;
@@ -76,30 +76,30 @@ namespace Eclipse
 
 		if (engine->world.CheckComponent<RigidBodyComponent>(ent))
 		{
-			auto& rigidbody = engine->world.GetComponent<RigidBodyComponent>(ent);
-			if(rigidbody._Static)
-				Px_Actors[ent] = Px_Physics->createRigidStatic(PxTransform(temptrans));
-			else
-				Px_Actors[ent] = Px_Physics->createRigidDynamic(PxTransform(temptrans));
+			Px_Actors[ent].actor = Px_Physics->createRigidDynamic(PxTransform(temptrans));
+			Px_Actors[ent].type = ActorType::ACTOR_DYNAMIC;
 		}
 		else
-			Px_Actors[ent] = Px_Physics->createRigidStatic(PxTransform(temptrans));
+		{
+			Px_Actors[ent].actor = Px_Physics->createRigidStatic(PxTransform(temptrans));
+			Px_Actors[ent].type = ActorType::ACTOR_STATIC;
+		}
 
-		Px_Actors[ent]->setName(std::to_string(ent).c_str());
+		Px_Actors[ent].actor->setName(std::to_string(ent).c_str());
 		AddActorToScene(ent);
 		AttachBoxToActor(ent, 2.5f, 2.5f, 2.5f);
 	}
 
-	void PhysicsManager::ChangeRigidStatic(Entity ent)
+	void PhysicsManager::ChangeDynamicStatic(Entity ent)
 	{
 		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
 		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
 
 		if(rigid.inScene)
 			RemoveActorFromScene(ent);
-		PxShape** shapes = new PxShape*[dynamic_cast<PxRigidActor*>(Px_Actors[ent])->getNbShapes()];
+		PxShape** shapes = new PxShape*[dynamic_cast<PxRigidActor*>(Px_Actors[ent].actor)->getNbShapes()];
 
-		dynamic_cast<PxRigidActor*>(Px_Actors[ent])->getShapes(shapes, dynamic_cast<PxRigidActor*>(Px_Actors[ent])->getNbShapes());
+		dynamic_cast<PxRigidActor*>(Px_Actors[ent].actor)->getShapes(shapes, dynamic_cast<PxRigidActor*>(Px_Actors[ent].actor)->getNbShapes());
 		PxVec3 temptrans;
 		temptrans.x = transform.position.x;
 		temptrans.y = transform.position.y;
@@ -114,21 +114,21 @@ namespace Eclipse
 			shapeit++;
 		}
 
-		Px_Actors[ent]->release();
-		Px_Actors[ent] = temp;
+		Px_Actors[ent].actor->release();
+		Px_Actors[ent].actor = temp;
 		AddActorToScene(ent);
 	}
 
-	void PhysicsManager::ChangeStaticRigid(Entity ent)
+	void PhysicsManager::ChangeStaticDynamic(Entity ent)
 	{
 		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
 		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
 
 		if (rigid.inScene)
 			RemoveActorFromScene(ent);
-		PxShape** shapes = new PxShape * [dynamic_cast<PxRigidActor*>(Px_Actors[ent])->getNbShapes()];
+		PxShape** shapes = new PxShape * [dynamic_cast<PxRigidActor*>(Px_Actors[ent].actor)->getNbShapes()];
 
-		dynamic_cast<PxRigidActor*>(Px_Actors[ent])->getShapes(shapes, dynamic_cast<PxRigidActor*>(Px_Actors[ent])->getNbShapes());
+		dynamic_cast<PxRigidActor*>(Px_Actors[ent].actor)->getShapes(shapes, dynamic_cast<PxRigidActor*>(Px_Actors[ent].actor)->getNbShapes());
 		PxVec3 temptrans;
 		temptrans.x = transform.position.x;
 		temptrans.y = transform.position.y;
@@ -144,14 +144,14 @@ namespace Eclipse
 			shapeit++;
 		}
 
-		Px_Actors[ent]->release();
-		Px_Actors[ent] = temp;
+		Px_Actors[ent].actor->release();
+		Px_Actors[ent].actor = temp;
 		AddActorToScene(ent);
 	}
 
 	void PhysicsManager::AttachBoxToActor(Entity ent, float hx, float hy, float hz)
 	{
-		if (Px_Actors[ent] == nullptr)
+		if (Px_Actors[ent].actor == nullptr)
 			return;
 
 		PxMaterial* tempmat = Px_Physics->createMaterial(0.5f, 0.5f, 0.1f);
@@ -160,12 +160,12 @@ namespace Eclipse
 			std::cout << "creatematerial failed" << std::endl;
 			return;
 		}
-		PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(Px_Actors[ent]), PxBoxGeometry{ hx,hy,hz }, *tempmat);
+		PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(Px_Actors[ent].actor), PxBoxGeometry{ hx,hy,hz }, *tempmat);
 	}
 
 	void PhysicsManager::AttachSphereToActor(Entity ent, float radius)
 	{
-		if (Px_Actors[ent] == nullptr)
+		if (Px_Actors[ent].actor == nullptr)
 			return;
 
 		PxMaterial* tempmat = Px_Physics->createMaterial(0.5f, 0.5f, 0.1f);
@@ -174,12 +174,28 @@ namespace Eclipse
 			std::cout << "creatematerial failed" << std::endl;
 			return;
 		}
-		PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(Px_Actors[ent]), PxSphereGeometry{ radius }, *tempmat);
+		PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(Px_Actors[ent].actor), PxSphereGeometry{ radius }, *tempmat);
+	}
+
+	void PhysicsManager::ChangeType(Entity ent)
+	{
+		if (engine->world.CheckComponent<RigidBodyComponent>(ent))
+		{
+			if (Px_Actors[ent].type == ActorType::ACTOR_STATIC)
+				ChangeStaticDynamic(ent);
+		}
+		else
+		{
+			if (Px_Actors[ent].type == ActorType::ACTOR_DYNAMIC)
+			{
+				ChangeDynamicStatic(ent);
+			}
+		}
 	}
 
 	void PhysicsManager::AttachCapsuleToActor(Entity ent, float radius,float halfheight)
 	{
-		if (Px_Actors[ent] == nullptr)
+		if (Px_Actors[ent].actor == nullptr)
 			return;
 
 		PxMaterial* tempmat = Px_Physics->createMaterial(0.5f, 0.5f, 0.1f);
@@ -189,7 +205,7 @@ namespace Eclipse
 			return;
 		}
 
-		PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*dynamic_cast<PxRigidActor*>(Px_Actors[ent]), PxCapsuleGeometry{ radius,halfheight }, *tempmat);
+		PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*dynamic_cast<PxRigidActor*>(Px_Actors[ent].actor), PxCapsuleGeometry{ radius,halfheight }, *tempmat);
 	}
 
 	PxQuat PhysicsManager::AnglestoQuat(float degreeX, float degreeY, float degreeZ)
@@ -242,8 +258,9 @@ namespace Eclipse
 	void PhysicsManager::AddActorToScene(Entity ent)
 	{
 		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
-
-		Px_Scene->addActor(*Px_Actors[ent]);
+		if (rigid.inScene)
+			return;
+		Px_Scene->addActor(*Px_Actors[ent].actor);
 		rigid.inScene = true;
 	}
 
@@ -251,7 +268,7 @@ namespace Eclipse
 	{
 		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
 
-		Px_Scene->removeActor(*Px_Actors[ent]);
+		Px_Scene->removeActor(*Px_Actors[ent].actor);
 		rigid.inScene = false;
 	}
 
@@ -259,17 +276,18 @@ namespace Eclipse
 	{
 		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
 		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
-		if (rigid._Static)
+		if (!engine->world.CheckComponent<RigidBodyComponent>(ent))
 		{
+			//static object
 			PxVec3 temptrans;
 			temptrans.x = transform.position.x;
 			temptrans.y = transform.position.y;
 			temptrans.z = transform.position.z;
 
-			static_cast<PxRigidStatic*>(Px_Actors[ent])->setGlobalPose(PxTransform{ temptrans });
+			static_cast<PxRigidStatic*>(Px_Actors[ent].actor)->setGlobalPose(PxTransform{ temptrans });
 			return;
 		}
-		if (Px_Actors[ent] != nullptr)
+		if (Px_Actors[ent].actor != nullptr)
 		{
 			PxVec3 tempforce{ 0,0,0 };
 			PxVec3 tempangVelo{ 0,0,0 };
@@ -291,23 +309,21 @@ namespace Eclipse
 
 			temprot = AnglestoQuat(transform.rotation.getX(),transform.rotation.getY(),transform.rotation.getZ());
 	
-			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setGlobalPose(PxTransform{ temptrans,temprot});
-			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setForceAndTorque(tempforce, { 0,0,0 });
-			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setMass(rigid.mass);
-			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setActorFlag(PxActorFlag::eDISABLE_GRAVITY,rigid.enableGravity ? false : true);
-			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setAngularVelocity(tempangVelo);
-			static_cast<PxRigidDynamic*>(Px_Actors[ent])->setAngularDamping(0.f);
+			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setGlobalPose(PxTransform{ temptrans,temprot});
+			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setForceAndTorque(tempforce, { 0,0,0 });
+			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setMass(rigid.mass);
+			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setActorFlag(PxActorFlag::eDISABLE_GRAVITY,rigid.enableGravity ? false : true);
+			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setAngularVelocity(tempangVelo);
+			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setAngularDamping(0.f);
 		}
 	}
 
 	void PhysicsManager::GetActorPosition(Entity ent)
 	{
 		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
-		if (rigid._Static)
-			return;
 		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
 
-		PxTransform temp = static_cast<PxRigidDynamic*>(Px_Actors[ent])->getGlobalPose();
+		PxTransform temp = static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->getGlobalPose();
 		transform.position.setX(temp.p.x);
 		transform.position.setY(temp.p.y);
 		transform.position.setZ(temp.p.z);
@@ -315,7 +331,7 @@ namespace Eclipse
 		transform.rotation = QuattoAngles(temp.q);
 		
 
-		PxVec3 rb = static_cast<PxRigidBody*>(Px_Actors[ent])->getLinearVelocity();
+		PxVec3 rb = static_cast<PxRigidBody*>(Px_Actors[ent].actor)->getLinearVelocity();
 		rigid.velocity.setX(rb.x);
 		rigid.velocity.setY(rb.y);
 		rigid.velocity.setZ(rb.z);

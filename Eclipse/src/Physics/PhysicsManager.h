@@ -6,6 +6,12 @@ namespace Eclipse
 {
 	using namespace physx;
 	
+	struct EC_Actor
+	{
+		PxActor* actor;
+		ActorType type;
+	};
+
 	class PhysicsManager
 	{
 		PxFilterFlags contactReportFilterShader(PxFilterObjectAttributes attributes0, PxFilterData filterData0,
@@ -77,7 +83,7 @@ namespace Eclipse
 		PxCooking* Px_Cooking;
 		PxScene* Px_Scene;
 		ContactReportCallback Px_ContactReportCallback;
-		std::array<physx::PxActor*, MAX_ENTITY> Px_Actors;
+		std::array<EC_Actor, MAX_ENTITY> Px_Actors;
 	public:
 		void Init();
 		void Simulate();
@@ -92,9 +98,10 @@ namespace Eclipse
 		void InitActor(Entity ent);
 		void UpdateActor(Entity ent);
 		void GetActorPosition(Entity ent);
-		void ChangeRigidStatic(Entity ent);
-		void ChangeStaticRigid(Entity ent);
+		void ChangeDynamicStatic(Entity ent);
+		void ChangeStaticDynamic(Entity ent);
 		void AddActorToScene(Entity ent);
 		void RemoveActorFromScene(Entity ent);
+		void ChangeType(Entity ent);
 	};
 }

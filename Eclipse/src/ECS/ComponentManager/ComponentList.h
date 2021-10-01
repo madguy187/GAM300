@@ -15,6 +15,7 @@ namespace Eclipse
 	struct PointLightComponent;
 	struct RigidBodyComponent;
 	struct ScriptComponent;
+	struct CollisionComponent;
 
 	template<typename ...T>
 	struct TypeList
@@ -41,7 +42,8 @@ namespace Eclipse
 		ParentChildComponent,
 		PointLightComponent,
 		RigidBodyComponent,
-		ScriptComponent
+		ScriptComponent,
+		CollisionComponent
 	>;
 
 	template <typename ...Types>
