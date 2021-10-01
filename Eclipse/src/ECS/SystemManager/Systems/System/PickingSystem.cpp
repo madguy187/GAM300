@@ -16,17 +16,19 @@ void Eclipse::PickingSystem::EditorUpdate()
 	engine->Timer.tracker.system_start = glfwGetTime();
 
 	auto& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+	float tMin = (std::numeric_limits<float>::max)();
 
 	for (auto& it : mEntities)
 	{
 		auto& aabb = engine->world.GetComponent<AABBComponent>(it);
 
-		float t;
+		float t = 0.0f;
 		glm::vec3 rayDir = engine->gPicker.ComputeCursorRayDirection();
 		bool collision = engine->gPicker.RayAabb(camera.eyePos, rayDir, aabb.Min.ConvertToGlmVec3Type(), aabb.Max.ConvertToGlmVec3Type(), t);
 
-		if (collision)
+		if (collision && (t < tMin))
 		{
+			tMin = t;
 			auto& material = engine->world.GetComponent<MaterialComponent>(it);
 
 			if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
@@ -36,9 +38,10 @@ void Eclipse::PickingSystem::EditorUpdate()
 
 			engine->gPicker.SetCurrentCollisionID(it);
 			engine->MaterialManager.HighlightClick(it);
-		}
 
-		engine->gPicker.UpdateAabb(it);
+			engine->gPicker.UpdateAabb(it);
+			//engine->gDynamicAABBTree.UpdateData(it);
+		}
 	}
 
 	engine->Timer.tracker.system_end = glfwGetTime();

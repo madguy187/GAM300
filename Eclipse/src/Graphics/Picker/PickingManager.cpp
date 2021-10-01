@@ -88,7 +88,6 @@ bool Eclipse::PickingManager::RayAabb(glm::vec3& rayStart, glm::vec3& rayDir, gl
             }
             else
             {
-                // std::cout << "false" << std::endl;
                 return false;
             }
         }

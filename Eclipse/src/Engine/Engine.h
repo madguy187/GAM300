@@ -15,6 +15,7 @@
 #include "Graphics/Culling/CullingManager.h"
 #include "Editor/Windows/Profiler/Profiler.h"
 #include "Audio/AudioManager.h"
+#include "Graphics/Picker/DynamicAABBTree.h"
 
 namespace Eclipse
 {
@@ -37,6 +38,8 @@ namespace Eclipse
         DebugRenderingManager gDebugManager;
         SerializationManager szManager;
         AudioManager audioManager;
+        DynamicAABBTree gDynamicAABBTree;
+
         void Init();
         void Run();
         PhysicsManager gPhysics;
