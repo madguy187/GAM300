@@ -14,14 +14,14 @@ namespace Eclipse
         // Store key
         //std::string Key;
 
-        std::string MeshName;
+        std::array<char, 128> MeshName;
         unsigned int VBO;
         unsigned int VAO;
         unsigned int EBO;
         bool NoTex;
-        aiColor4D Diffuse;
-        aiColor4D Specular;
-        aiColor4D Ambient;
+        glm::vec4 Diffuse;
+        glm::vec4 Specular;
+        glm::vec4 Ambient;
         std::vector<Vertex> Vertices;
         std::vector<unsigned int> Indices;
 

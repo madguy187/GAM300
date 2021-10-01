@@ -166,6 +166,13 @@ namespace Eclipse
     std::vector<unsigned int> AABBTree::QueryAgainstTrustrum(AABBComponent& object)
     {
         std::vector<unsigned int> overlaps;
+
+        if (AABBToNodeMap.size() == 0)
+            return overlaps;
+
+        if (AllNodes.size() == 0)
+            return overlaps;
+
         std::stack<unsigned> stack;
         AABBComponent& CheckedObjectAgsintTree = object;
 
@@ -221,7 +228,7 @@ namespace Eclipse
                     if (overlaps.size() != 0)
                     {
                         unsigned int FirstTileRegistered = overlaps[0];
-                        engine->GridManager->SetDistance(node, CheckedObjectAgsintTree);                
+                        engine->GridManager->SetDistance(node, CheckedObjectAgsintTree);
                         float RegisteredTileDistance = engine->GridManager->GetDistanceToObject(FirstTileRegistered);
 
                         if (abs(node.aabb.DistanceToObject) > abs(RegisteredTileDistance))
@@ -327,6 +334,17 @@ namespace Eclipse
     unsigned int AABBTree::NumberOfIntersections(std::vector<unsigned int>& in)
     {
         return in.size();
+    }
+
+    void AABBTree::ClearTree()
+    {
+        AABBToNodeMap.clear();
+        //AllNodes.clear();
+        RootNodeIndex = 0;
+        AllocatedNodeCount = 0;
+        NextFreeNoedIndex = 0;
+        NodeCapacity = 0;
+        GrowthSize = 0;
     }
 
     void AABBTree::InsertLeaf(unsigned leafNodeIndex)

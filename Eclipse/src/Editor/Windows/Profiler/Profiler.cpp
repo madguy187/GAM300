@@ -46,11 +46,14 @@ namespace Eclipse
 	void ProfilerWindow::DrawImpl()
 	{
 		//static float* pvalues= &PerformanceTimer::timeContainer[SystemName::egame][0] ;
-		ECGui::BeginChildWindow({ "System Performance",ImVec2(0,500),true });
+		ECGui::BeginChildWindow({ "System Performance",ImVec2(0,800),true });
 		ImGui::Dummy(ImVec2(0.0f, 10.0f));
 		ImGui::TextColored(ImVec4(0.9f, 0.6f, 0.1f, 1.0f), "FPS: %.2f", GetFPS());
 		ECGui::InsertHorizontalLineSeperator();
 		//ImGui::Columns(2, NULL, true);
+
+		EngineTimer();
+
 		ECGui::PlotHistogram("Lighting System", ProfilerWindow::time_container[SystemName::LIGHTING], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
 		ECGui::InsertHorizontalLineSeperator();
 		ECGui::PlotHistogram("Render System", ProfilerWindow::time_container[SystemName::RENDER], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
@@ -64,6 +67,12 @@ namespace Eclipse
 		ECGui::PlotHistogram("Picking System", ProfilerWindow::time_container[SystemName::PICKING], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
 		ECGui::InsertHorizontalLineSeperator();
 		ECGui::PlotHistogram("Editor System", ProfilerWindow::time_container[SystemName::EDITOR], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
+		ECGui::InsertHorizontalLineSeperator();
+		ECGui::PlotHistogram("Material System", ProfilerWindow::time_container[SystemName::MATERIAL], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
+		ECGui::InsertHorizontalLineSeperator();
+		ECGui::PlotHistogram("Audio System", ProfilerWindow::time_container[SystemName::AUDIO], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
+		ECGui::InsertHorizontalLineSeperator();
+		ECGui::PlotHistogram("Mono System", ProfilerWindow::time_container[SystemName::MONO], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
 		//ImGui::NextColumn();
 		//ImGui::TextColored(ImVec4(0.9f, 0.6f, 0.1f, 1.0f), "%.2f %%", ((ProfilerWindow::time_container[SystemName::LIGHTING][0]) / (engine_time)));
 		ECGui::EndChildWindow();
@@ -79,7 +88,7 @@ namespace Eclipse
 		//inputTracker.engineTimerOffset = inputTracker.engineTimerEnd - inputTracker.engineTimerStart;
 		inputTracker.system_offset = inputTracker.system_end - inputTracker.system_start;
 
-		engine_time = inputTracker.system_offset * 1000;
+		engine_time = inputTracker.system_offset*1000;
 		//float percentage = (inputTracker.systemOffset / inputTracker.engineTimerOffset) * 100.0f;
 
 		return engine_time;
@@ -87,29 +96,30 @@ namespace Eclipse
 	}
 	void ProfilerWindow::UpdateTimeContainer(TimerTracker inputTracker)
 	{
-		++it;
 
-		if (it == 5)
-		{
-			ContainerAddTime(inputTracker);
-			it = 0;
-		}
+		ContainerAddTime(inputTracker);
 	}
 	float ProfilerWindow::GetFPS()
 	{
 		return engine->Game_Clock.getFPS();
 	}
 
-	void ProfilerWindow::EngineTimer(TimerTracker timer)
+	void ProfilerWindow::EngineTimer()
 	{
-		engine_time = timer.system_end - timer.system_start;
+		for(auto& it : time_container)
+		{
+			if(!it.second.empty())
+			{
+				engine_time += it.second[0];
+			}
+		}
 	}
 
 
 	void ProfilerWindow::PrintCpuPercentage(float value)
 	{
 
-		ImGui::TextColored(ImVec4(0.9f, 0.6f, 0.1f, 1.0f), "CUP USAGE :%.2f %%", ((value) / (engine_time)));
+		ImGui::TextColored(ImVec4(0.9f, 0.6f, 0.1f, 1.0f), "CUP USAGE :%.2f %%", (((value) / ProfilerWindow::engine_time) * 100));
 	}
 }
 	
