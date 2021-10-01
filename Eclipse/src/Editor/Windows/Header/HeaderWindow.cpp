@@ -36,12 +36,7 @@ namespace Eclipse
 		{
 			if (ECGui::ButtonBool("Play " ICON_FA_PLAY))
 			{
-				std::string path = TEMP_PATH;
-				path += SceneManager::GetCurrentSceneName();
-				path += "_temp";
-				path += SCENE_EXTENSION;
-				engine->szManager.SaveSceneFile(TEMP_PATH);
-
+				engine->szManager.SaveBackupFile();
 
 				engine->mono.RestartMono();
 				auto& mono = engine->world.GetSystem<MonoSystem>();
@@ -65,7 +60,6 @@ namespace Eclipse
 				engine->SetPauseState(false);
 				ImGui::SetWindowFocus("Scene View");
 
-				engine->szManager.LoadSceneFile();
 				EDITOR_LOG_INFO("Scene has stopped playing. Reverting to original state...");
 			}
 		}
@@ -415,7 +409,7 @@ namespace Eclipse
 			windowClass.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_AutoHideTabBar;
 			ImGui::SetNextWindowClass(&windowClass);
 			IsTabBarHidden = true;
-
 		}
 	}
+
 }

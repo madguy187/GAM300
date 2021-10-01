@@ -1,13 +1,3 @@
-/*
-Attribute available to serialize for each data:
-int series, size_t
-char
-bool
-string
-const char*
-float, double
-***/
-
 #pragma once
 #include "Global.h"
 #include "TinyXML/tinyxml.h"
@@ -16,7 +6,6 @@ float, double
 #include <iostream>
 #include <string>
 #include <type_traits>
-//#include "../Reflection/registration.h"
 
 namespace Eclipse
 {
@@ -25,6 +14,11 @@ namespace Eclipse
         TiXmlDocument _doc;
         TiXmlElement* _currElement;
 
+        void GenerateDirectories(const std::string& path);
+
+        void BaseSave(const std::string& savePath);
+
+        void CleanUp();
     public:
 
         Serializer();
@@ -34,6 +28,8 @@ namespace Eclipse
         void CloseElement();
 
         void SaveXML(const std::string& savePath);
+
+        void SaveBackup(TiXmlDocument& backup, std::string& path);
 
         ~Serializer();
 

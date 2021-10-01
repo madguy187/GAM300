@@ -112,10 +112,9 @@ namespace Eclipse
 		return isSuccess;
 	}
 
-	void SerializationManager::SerializeAllEntity(const char* fullpath)
+	void SerializationManager::SerializeAllEntity()
 	{
 		const std::vector<Entity>& entities = engine->editorManager->GetEntityListByConstRef();
-		std::filesystem::path p(fullpath);
 
 		sz.StartElement("Entities");
 		sz.AddAttributeToElement("Size", entities.size());
@@ -127,10 +126,8 @@ namespace Eclipse
 		sz.CloseElement();
 	}
 
-	void SerializationManager::DeserializeAllEntity(const char* fullpath)
+	void SerializationManager::DeserializeAllEntity()
 	{
-		std::filesystem::path p(fullpath);
-
 		if (dsz.StartElement("Entities"))
 		{
 			size_t size = 0;
@@ -162,7 +159,7 @@ namespace Eclipse
 
 	void SerializationManager::SaveSceneFile(const char* fullpath)
 	{
-		SerializeAllEntity(fullpath);
+		SerializeAllEntity();
 		SaveFile(fullpath);
 	}
 
@@ -170,8 +167,27 @@ namespace Eclipse
 	{
 		if (LoadFile(fullpath))
 		{
-			DeserializeAllEntity(fullpath);
+			DeserializeAllEntity();
 		}
 	}
 
+	void SerializationManager::Backup::SaveBackup(Serializer& sz)
+	{
+		backUpPath = TEMP_PATH;
+		backUpPath += SceneManager::GetCurrentSceneName();
+		backUpPath += "Temp";
+		backUpPath += SCENE_EXTENSION;
+		sz.SaveBackup(_backup, backUpPath);
+	}
+
+	void SerializationManager::SaveBackupFile()
+	{
+		SerializeAllEntity();
+		backup.SaveBackup(sz);
+	}
+
+	void SerializationManager::Backup::LoadBackup(Deserializer& dz)
+	{
+
+	}
 }

@@ -8,6 +8,16 @@ namespace Eclipse
 {
 	class SerializationManager
 	{
+		class Backup
+		{
+			TiXmlDocument _backup;
+			std::string backUpPath;
+		public:
+			void SaveBackup(Serializer&);
+			void LoadBackup(Deserializer&);
+		};
+		Backup backup;
+
 		inline void SerializeData() {}
 
 		void LogError(const std::string& msg);
@@ -497,9 +507,9 @@ namespace Eclipse
 
 		bool DeserializeAllComponents(const Entity& ent);
 
-		void SerializeAllEntity(const char* fullpath);
+		void SerializeAllEntity();
 
-		void DeserializeAllEntity(const char* fullpath);
+		void DeserializeAllEntity();
 
 		void SaveFile(const char* fullpath);
 
@@ -513,9 +523,11 @@ namespace Eclipse
 
 		~SerializationManager();
 
-		void SaveSceneFile(const char* fullpath = "Data/Temp/Temp.xml");
+		void SaveBackupFile();
 
-		void LoadSceneFile(const char* fullpath = "Data/Temp/Temp.xml");
+		void SaveSceneFile(const char* fullpath = "Data/Temp/Temp.scn");
+
+		void LoadSceneFile(const char* fullpath = "Data/Temp/Temp.scn");
 
 		template <typename T>
 		inline static void TestSerialize(const char* name, RefVariant refv)

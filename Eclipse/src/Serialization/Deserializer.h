@@ -21,6 +21,8 @@ namespace Eclipse
 
 		const char* GetAttributeValue(const std::string& name);
 
+		
+
 	public:
 		Deserializer();
 
@@ -141,6 +143,8 @@ namespace Eclipse
 		void IterateChildrenOfElement();
 
 		bool LoadXML(const std::string& savePath);
+
+		bool LoadBackup(TiXmlDocument& target, std::string& path);
 
 		~Deserializer();
 	};
