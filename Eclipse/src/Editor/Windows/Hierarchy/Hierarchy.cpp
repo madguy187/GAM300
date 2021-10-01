@@ -43,6 +43,13 @@ namespace Eclipse
 
 	void HierarchyWindow::DrawImpl()
 	{
+		//TODO for darren
+		//ComboListSettings settingsss = { "TEST FOR DARREN" };
+		//std::vector<std::string> hiDarrenVector = { "HI DARREN","FROM TIAN YU" };
+		//static size_t comboindex = 0;
+		//ECGui::CreateComboList(settingsss, hiDarrenVector, comboindex);
+		//how to apply the index change
+		//std::cout << comboindex << std::endl;
 		PopUpButtonSettings settings{ "Add Entity", "EntityCreationListBegin" };
 		ECGui::BeginPopUpButtonList<void()>(settings, std::bind(&HierarchyWindow::ShowEntityCreationList, this));
 		ECGui::InsertHorizontalLineSeperator();

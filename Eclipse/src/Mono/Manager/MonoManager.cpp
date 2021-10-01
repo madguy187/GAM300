@@ -108,15 +108,18 @@ namespace Eclipse
 		mono_runtime_invoke(m_update, obj, args, NULL);
 	}
 
-	void MonoManager::ResetMono()
+	void MonoManager::StopMono()
 	{
 		mono_image_close(ScriptImage);
+		ScriptImage = nullptr;
+
 		mono_image_close(APIImage);
+		APIImage = nullptr;
 
 		UnloadDomain();
 	}
 
-	void MonoManager::RestartMono()
+	void MonoManager::StartMono()
 	{
 		GenerateDLL();
 
@@ -140,11 +143,14 @@ namespace Eclipse
 		//assert(ScriptImage, "Script Image failed");
 	}
 
-	void MonoManager::StopMono()
+	void MonoManager::Terminate()
 	{
-		//UnloadDomain();
-		/*mono_image_close(APIImage);
-		mono_image_close(ScriptImage);*/
+		if (ScriptImage)
+			mono_image_close(ScriptImage);
+
+		if (APIImage)
+			mono_image_close(APIImage);
+			
 		mono_jit_cleanup(domain);
 	}
 

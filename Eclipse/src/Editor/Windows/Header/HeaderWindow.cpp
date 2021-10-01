@@ -30,13 +30,13 @@ namespace Eclipse
 
 	void HeaderWindow::RunPlayPauseStep()
 	{
-		ECGui::InsertSameLine(ECGui::GetWindowSize().x / 2.f);
+		ECGui::InsertSameLine(ECGui::GetWindowSize().x / 2.3f);
 
 		if (!engine->GetPlayState())
 		{
 			if (ECGui::ButtonBool("Play " ICON_FA_PLAY))
 			{
-				engine->mono.RestartMono();
+				engine->mono.StartMono();
 				auto& mono = engine->world.GetSystem<MonoSystem>();
 				mono->Init();
 
@@ -51,7 +51,7 @@ namespace Eclipse
 			{
 				auto& mono = engine->world.GetSystem<MonoSystem>();
 				mono->Terminate();
-				engine->mono.ResetMono();
+				engine->mono.StopMono();
 
 				engine->SetPlayState(false);
 				engine->SetPauseState(false);
@@ -101,8 +101,11 @@ namespace Eclipse
 	{
 		ImGui::NewLine();
 
-		ECGui::InsertSameLine(ECGui::GetWindowSize().x /1.4f);
-
+		ECGui::InsertSameLine(ECGui::GetWindowSize().x /3.0f);
+		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_W)))
+		{
+			HeaderWindow::Translate();
+		}
 		if (ImGui::Button(ICON_FA_ARROWS_ALT, ImVec2{ 100,20 }))
 		{
 
@@ -119,6 +122,10 @@ namespace Eclipse
 		}
 
 		ECGui::InsertSameLine();
+		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_E)))
+		{
+			HeaderWindow::Rotate();
+		}
 		if (ImGui::Button(ICON_FA_SPINNER ICON_FA_REPLY, ImVec2{ 100,20 }))
 		{
 
@@ -135,6 +142,10 @@ namespace Eclipse
 		}
 
 		ECGui::InsertSameLine();
+		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_R)))
+		{
+			HeaderWindow::Scale();
+		}
 		if (ImGui::Button(ICON_FA_EXPAND, ImVec2{ 100,20 }))
 		{
 
@@ -150,9 +161,8 @@ namespace Eclipse
 			ImGui::EndTooltip();
 		}
 
-		ImGui::NewLine();
+		ECGui::InsertSameLine();
 
-		ECGui::InsertSameLine(ECGui::GetWindowSize().x / 1.32f);
 		if (ImGui::Button(ICON_FA_VIDEO_CAMERA, ImVec2{ 100,20}))
 		{
 			ImGui::OpenPopup("Camera Setting");

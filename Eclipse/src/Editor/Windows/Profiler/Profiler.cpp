@@ -76,6 +76,12 @@ namespace Eclipse
 		//ImGui::NextColumn();
 		//ImGui::TextColored(ImVec4(0.9f, 0.6f, 0.1f, 1.0f), "%.2f %%", ((ProfilerWindow::time_container[SystemName::LIGHTING][0]) / (engine_time)));
 		ECGui::EndChildWindow();
+
+		if (ECGui::ButtonBool("More Details"))
+		{
+			system("start src/Tracy_Server/Tracy.exe");
+		}
+
 	}
 
 	void ProfilerWindow::SetName(SystemName key)
