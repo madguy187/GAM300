@@ -14,6 +14,7 @@
 #include "SpotLightComponent.h"
 #include "TextureComponent.h"
 #include "TransformComponent.h"
+#include "AudioComponent.h"
 
 namespace Eclipse
 {
@@ -25,6 +26,10 @@ namespace Eclipse
         ADD_MEMBER(center);
         ADD_MEMBER(Min);
         ADD_MEMBER(Max);
+    }
+
+    DEFINE_META(AudioComponent)
+    {
     }
 
     DEFINE_META(CameraComponent)

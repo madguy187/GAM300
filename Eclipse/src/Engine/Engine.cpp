@@ -15,6 +15,7 @@
 #include "ECS/ComponentManager/Components/ParentChildComponent.h"
 #include "ECS/ComponentManager/Components/LightComponent.h"
 #include "ECS/ComponentManager/Components/ScriptComponent.h"
+#include "ECS/ComponentManager/Components/AudioComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
@@ -89,6 +90,7 @@ namespace Eclipse
         world.RegisterComponent<ParentChildComponent>();
         world.RegisterComponent<LightComponent>();
         world.RegisterComponent<ScriptComponent>();
+        world.RegisterComponent<AudioComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
@@ -138,6 +140,10 @@ namespace Eclipse
         Signature hi5;
         hi5.set(world.GetComponentType<ScriptComponent>(), 1);
         world.RegisterSystemSignature<MonoSystem>(hi5);
+
+        Signature audioSignature;
+        audioSignature.set(world.GetComponentType<AudioComponent>(), 1);
+        world.RegisterSystemSignature<AudioSystem>(audioSignature);
 
         //Check this! - Rachel
         RenderSystem::Init();
