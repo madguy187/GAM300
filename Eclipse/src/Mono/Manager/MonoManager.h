@@ -19,6 +19,7 @@ namespace Eclipse
 
 		// Generates all the scripts into a dll
 		void GenerateDLL();
+		bool LoadDLLImage(const char* filename, MonoImage*& image, MonoAssembly*& assembly);
 
 		MonoDomain* LoadDomain();
 		void UnloadDomain();

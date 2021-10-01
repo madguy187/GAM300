@@ -27,7 +27,7 @@ namespace Eclipse
 	void SceneWindow::RunMainWindow()
 	{
 		ImVec2 viewportPanelSize = ECGui::GetWindowSize();
-
+		//std::cout << "Scene View: " << ImGui::GetWindowDockID() << std::endl;
 		if (mViewportSize != *((glm::vec2*)&viewportPanelSize))
 		{
 			// Resize the framebuffer based on the size of the imgui window
@@ -47,11 +47,6 @@ namespace Eclipse
 		mSceneBufferSize = glm::vec2{ ECGui::GetWindowWidth(), ECGui::GetWindowHeight() };
 		mSceneBufferPos = ECGui::GetWindowPos();
 		mCursorScreenPos = ECGui::GetCursorScreenPos();
-
-		/*std::cout << "SceneBuffer Size: " << mSceneBufferSize.x << " " << mSceneBufferSize.y << std::endl;*/
-		/*std::cout << "SceneBuffer Pos: " << mSceneBufferPos.x << " " << mSceneBufferPos.y << std::endl;
-		std::cout << "CursorScreen Pos: " << mCursorScreenPos.x << " " << mCursorScreenPos.y << std::endl;*/
-		//RenderSceneHeader();
 
 		// Set Image size
 		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
