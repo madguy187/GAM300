@@ -87,28 +87,42 @@ namespace Eclipse
         }
     }
 
+    bool EclipseFileWatcher::CheckBasicTexture(std::string& in)
+    {
+        if (in.find("src/Assets\\Textures\\") != std::string::npos)
+        {
+            BasicTextureCounter++;
+            return true;
+        }
+
+        return false;
+    }
+
     void EclipseFileWatcher::Resolutions(FileStatus status , std::string& PATH_TO_WATCH)
     {
         switch (status)
         {
         case FileStatus::FS_CREATED:
         {
-            std::cout << "File created: " << PATH_TO_WATCH << '\n';
-            Counter++;
+            //std::cout << "File created: " << PATH_TO_WATCH << '\n';
+            AssetCounter++;
+            CheckBasicTexture(PATH_TO_WATCH);
         }
         break;
 
         case FileStatus::FS_MODIFIED:
         {
-            std::cout << "File modified: " << PATH_TO_WATCH << '\n';
-            Counter++;
+            //std::cout << "File modified: " << PATH_TO_WATCH << '\n';
+            AssetCounter++;
+            CheckBasicTexture(PATH_TO_WATCH);
         }
         break;
 
         case FileStatus::FS_ERASED:
         {
-            std::cout << "File erased: " << PATH_TO_WATCH << '\n';
-            Counter++;
+            //std::cout << "File erased: " << PATH_TO_WATCH << '\n';
+            AssetCounter++;
+            CheckBasicTexture(PATH_TO_WATCH);
         }
         break;
 
@@ -120,10 +134,16 @@ namespace Eclipse
 
     void EclipseFileWatcher::HardReset(float in)
     {
-        if (Counter)
+        if (AssetCounter)
         {
             engine->AssimpManager.HotReload();
-            Counter = 0;
+            AssetCounter = 0;
+        }
+
+        if (BasicTextureCounter)
+        {
+            engine->AssimpManager.LoadBasicTextures();
+            BasicTextureCounter = 0;
         }
     }
 }

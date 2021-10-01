@@ -17,7 +17,7 @@ namespace Eclipse
         {
             if (engine->gFileWatchManager->UpdateTimer())
             {
-                if (engine->gFileWatchManager->Counter != 0)
+                if (engine->gFileWatchManager->AssetCounter != 0 || engine->gFileWatchManager->BasicTextureCounter != 0)
                     return;
 
                 engine->gFileWatchManager->Start([](std::string PATH_TO_WATCH, FileStatus status) -> void
@@ -35,6 +35,7 @@ namespace Eclipse
                 }
                 );
             }
+
             engine->gFileWatchManager->HardReset(engine->gFileWatchManager->HardResetTime);
         }
     }
