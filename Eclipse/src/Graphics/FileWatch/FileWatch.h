@@ -26,6 +26,8 @@ namespace Eclipse
 		float Timer = 0.0f;
 		float HotReloadCooldown = 0.0f;
 		float HardResetTime = 5.0f;
+		unsigned int AssetCounter = 0;
+		unsigned int BasicTextureCounter = 0;
 		std::string PathToWatch;
 		std::chrono::duration<int, std::milli> Delays;
 		std::unordered_map<std::string, std::filesystem::file_time_type> paths_;
@@ -36,6 +38,7 @@ namespace Eclipse
 		bool Contains(const std::string& key);
 		std::chrono::duration<int, std::milli> InputTime(unsigned int in);
 		bool UpdateTimer();
+		bool CheckBasicTexture(std::string& in);
 		void Resolutions(FileStatus status, std::string& PATH_TO_WATCH);
 		void HardReset(float in);
 	};
