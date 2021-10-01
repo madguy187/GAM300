@@ -52,6 +52,7 @@ namespace Eclipse
 
     void RenderSystem::Update()
     {
+        ZoneScopedN("Render System")
         engine->Timer.SetName({ SystemName::RENDER });
         engine->Timer.tracker.system_start = glfwGetTime();
 
@@ -197,5 +198,7 @@ namespace Eclipse
 
         engine->Timer.tracker.system_end = glfwGetTime();
         engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
+
+        FrameMark
     }
 }
