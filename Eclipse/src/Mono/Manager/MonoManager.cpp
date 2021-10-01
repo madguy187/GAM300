@@ -1,11 +1,15 @@
 #include "pch.h"
 #include "MonoManager.h"
-#include "mono/metadata/assembly.h"
-#include <mono/metadata/mono-gc.h>
-#include <mono/metadata/debug-helpers.h>
+
 #include <mono/metadata/mono-config.h>
+#include <mono/metadata/threads.h>
+#include <mono/metadata/assembly.h>
+#include <mono/metadata/mono-gc.h>
+#include <mono/metadata/environment.h>
+#include <mono/metadata/debug-helpers.h>
 
 #include "ECS/ComponentManager/Components/TransformComponent.h"
+
 
 namespace Eclipse
 {
@@ -76,7 +80,9 @@ namespace Eclipse
 
 		mono_set_dirs("../Dep/mono/lib", "../Dep/mono/etc");
 
-		domain = mono_jit_init("Manager");
+		domain = mono_jit_init_version("Manager", "v4.0.30319");
+		mono_thread_set_main(mono_thread_current());
+
 		assert(domain, "Domain could not be created");
 	}
 
@@ -114,7 +120,7 @@ namespace Eclipse
 	{
 		GenerateDLL();
 
-		LoadDomain();
+		MonoDomain* childDomain = LoadDomain();
 
 		// Load API
 		APIAssembly = mono_domain_assembly_open(domain, "../EclipseScriptsAPI.dll");
@@ -133,8 +139,10 @@ namespace Eclipse
 
 	void MonoManager::StopMono()
 	{
-		UnloadDomain();
-		mono_jit_cleanup(mono_get_root_domain());
+		//UnloadDomain();
+		mono_image_close(APIImage);
+		mono_image_close(ScriptImage);
+		mono_jit_cleanup(domain);
 	}
 
 	MonoObject* MonoManager::CreateMonoObject(std::string scriptName, Entity entity)
@@ -158,6 +166,8 @@ namespace Eclipse
 			return nullptr;
 		}
 
+		mono_runtime_object_init(obj);
+
 		void* args[2];
 		uint32_t handle = mono_gchandle_new(obj, true);
 		args[0] = &handle;
@@ -166,14 +176,6 @@ namespace Eclipse
 		mono_runtime_invoke(method, obj, args, NULL);
 
 		return obj;
-	}
-
-	void MonoManager::GenerateDLL()
-	{
-		ENGINE_CORE_INFO("Mono: Generating DLLs");
-		system("sh -c ../Dep/mono/bin/mcs_api.bat");
-		system("sh -c ../Dep/mono/bin/mcs_scripts.bat");
-		ENGINE_CORE_INFO("Mono: Successfully Generate DLLs");
 	}
 
 	MonoDomain* MonoManager::LoadDomain()
@@ -206,6 +208,14 @@ namespace Eclipse
 		}
 
 		mono_gc_collect(mono_gc_max_generation());
+	}
+
+	void MonoManager::GenerateDLL()
+	{
+		ENGINE_CORE_INFO("Mono: Generating DLLs");
+		system("sh -c ../Dep/mono/bin/mcs_api.bat");
+		system("sh -c ../Dep/mono/bin/mcs_scripts.bat");
+		ENGINE_CORE_INFO("Mono: Successfully Generate DLLs");
 	}
 
 	MonoImage* MonoManager::GetAPIImage()
