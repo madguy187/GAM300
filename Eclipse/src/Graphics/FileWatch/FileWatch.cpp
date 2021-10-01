@@ -18,6 +18,8 @@ namespace Eclipse
             paths_[file.path().string()] = std::filesystem::last_write_time(file);
 
         }
+
+        int i = 0;
     }
 
     void EclipseFileWatcher::Start(const std::function<void(std::string, FileStatus)>& action)

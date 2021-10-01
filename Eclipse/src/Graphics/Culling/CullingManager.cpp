@@ -14,6 +14,7 @@ namespace Eclipse
     {
 
     }
+
     float EachFace::getSignedDistanceToPlan(const glm::vec3& point)
     {
         return (glm::dot(Normal, point) - Distance);

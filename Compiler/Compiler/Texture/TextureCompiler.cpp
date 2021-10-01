@@ -52,7 +52,7 @@ namespace EclipseCompiler
 
             std::string NewPath = "src/Assets/Textures/";
 
-            if (TextureName.find("png") != std::string::npos || TextureName.find("jpeg") != std::string::npos)
+            if (TextureName.find("png") != std::string::npos || TextureName.find("jpeg") != std::string::npos || TextureName.find("dds") != std::string::npos)
             {
                 std::string NewCombined = NewPath + TextureName;
                 std::string Name = process(TextureName);
