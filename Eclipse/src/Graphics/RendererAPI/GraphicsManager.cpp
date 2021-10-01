@@ -93,7 +93,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.modelRef = Graphics::models.find("Cube")->first;
         MaterialComponent& Mat = engine->world.GetComponent<MaterialComponent>(ID);
         Mat.hasTexture = true;
-        Mat.TextureRef = Graphics::textures.find("FolderIcon")->first;
+        Mat.TextureRef = Graphics::textures.find("brick")->first;
     }
     break;
     case 6:

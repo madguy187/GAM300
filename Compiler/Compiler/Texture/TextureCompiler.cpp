@@ -60,8 +60,6 @@ namespace EclipseCompiler
                 AllOtherTextureCotainer.emplace(Name, tex);
             }
         }
-
-        int i = 0;
     }
 
     void TextureCompiler::Init()
@@ -149,7 +147,6 @@ namespace EclipseCompiler
 
         // Number Of Textures
         int NumberOfBasicTextures = AllOtherTextureCotainer.size();
-        std::cout << "Writing " << NumberOfBasicTextures << std::endl;
         TextureFileWrite.write(reinterpret_cast<const char*>(&NumberOfBasicTextures), sizeof(NumberOfBasicTextures));
 
         for (auto const Textures : AllOtherTextureCotainer)

@@ -12,8 +12,6 @@ void Eclipse::PickingSystem::Update()
 
 void Eclipse::PickingSystem::EditorUpdate()
 {
-	ZoneScopedN("Picking System")
-
 	engine->Timer.SetName({ SystemName::PICKING });
 	engine->Timer.tracker.system_start = glfwGetTime();
 
@@ -45,6 +43,4 @@ void Eclipse::PickingSystem::EditorUpdate()
 
 	engine->Timer.tracker.system_end = glfwGetTime();
 	engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
-
-	FrameMark
 }
