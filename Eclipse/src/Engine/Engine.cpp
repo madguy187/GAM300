@@ -276,7 +276,7 @@ namespace Eclipse
         szManager.SaveSceneFile();
 
         // unLoad
-        mono.StopMono();
+        mono.Terminate();
         GraphicsManager.End();
         AssimpManager.CleanUpAllModelsMeshes();
         ImGuiSetup::Destroy(IsEditorActive);
