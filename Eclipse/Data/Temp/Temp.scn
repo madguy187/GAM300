@@ -1,6 +1,5 @@
-<?xml version="1.0" ?>
 <Entities Size="3">
-    <Entity_0 ID="0">
+    <Entity_0 ID="6">
         <EntityComponent>
             <Tag value="Camera" />
             <Name value="Camera" />
@@ -43,7 +42,7 @@
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_0>
-    <Entity_1 ID="6">
+    <Entity_1 ID="7">
         <EntityComponent>
             <Tag value="DirectionalLight" />
             <Name value="DirectionalLight" />
@@ -71,10 +70,10 @@
         </TransformComponent>
         <LightComponent />
     </Entity_1>
-    <Entity_2 ID="7">
+    <Entity_2 ID="8">
         <EntityComponent>
-            <Tag value="Cube" />
-            <Name value="Cube" />
+            <Tag value="Sphere" />
+            <Name value="Sphere" />
             <IsActive value="true" />
             <Child size="0" />
             <Parent size="0" />
@@ -106,19 +105,19 @@
                 <Col2 _20="0" _21="0" _22="0" _23="0" />
                 <Col3 _30="0" _31="0" _32="0" _33="0" />
             </modelNDC_xform>
-            <modelRef value="Cube" />
+            <modelRef value="Sphere" />
             <shaderRef value="shader3DShdrpgm" />
             <transparency value="1" />
         </MeshComponent>
         <TransformComponent>
-            <position x="0" y="0" z="0" />
+            <position x="5.63982" y="-1.90735e-06" z="9.46847" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
         <AABBComponent>
-            <center x="0" y="0" z="0" />
-            <Min x="-2.5" y="-2.5" z="-2.5" />
-            <Max x="2.5" y="2.5" z="2.5" />
+            <center x="5.63982" y="-1.90735e-06" z="9.46847" />
+            <Min x="3.13982" y="-2.5" z="6.96847" />
+            <Max x="8.13982" y="2.5" z="11.9685" />
         </AABBComponent>
     </Entity_2>
 </Entities>

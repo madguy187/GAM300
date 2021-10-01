@@ -55,10 +55,11 @@ namespace Eclipse
 				mono->Terminate();
 				engine->mono.ResetMono();
 
-				//Do temp save.
 				engine->SetPlayState(false);
 				engine->SetPauseState(false);
 				ImGui::SetWindowFocus("Scene View");
+
+				engine->szManager.LoadBackupFile();
 
 				EDITOR_LOG_INFO("Scene has stopped playing. Reverting to original state...");
 			}

@@ -525,6 +525,8 @@ namespace Eclipse
 
 		void SaveBackupFile();
 
+		void LoadBackupFile();
+
 		void SaveSceneFile(const char* fullpath = "Data/Temp/Temp.scn");
 
 		void LoadSceneFile(const char* fullpath = "Data/Temp/Temp.scn");

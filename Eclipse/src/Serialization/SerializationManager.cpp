@@ -8,11 +8,6 @@ namespace Eclipse
 
 	SerializationManager::SerializationManager() {}
 
-	void SerializationManager::LogError(const std::string& msg)
-	{
-		EDITOR_LOG_WARN(msg.c_str());
-	}
-
 	void SerializationManager::SerializeEntity(const Entity& ent, const size_t& counter)
 	{
 		sz.StartElement("Entity_", true, counter);
@@ -171,23 +166,33 @@ namespace Eclipse
 		}
 	}
 
-	void SerializationManager::Backup::SaveBackup(Serializer& sz)
-	{
-		backUpPath = TEMP_PATH;
-		backUpPath += SceneManager::GetCurrentSceneName();
-		backUpPath += "Temp";
-		backUpPath += SCENE_EXTENSION;
-		sz.SaveBackup(_backup, backUpPath);
-	}
-
 	void SerializationManager::SaveBackupFile()
 	{
 		SerializeAllEntity();
 		backup.SaveBackup(sz);
 	}
 
+	void SerializationManager::LoadBackupFile()
+	{
+		SceneManager::Clear();
+		backup.LoadBackup(dsz);
+		DeserializeAllEntity();
+		std::filesystem::remove_all(TEMP_PATH);
+	}
+
+	void SerializationManager::Backup::SaveBackup(Serializer& sz)
+	{
+		backUpPath = TEMP_PATH;
+		backUpPath += SceneManager::GetCurrentSceneName();
+		backUpPath += "RunningTemp";
+		backUpPath += SCENE_EXTENSION;
+		sz.SaveBackup(_backup, backUpPath);
+	}
+
 	void SerializationManager::Backup::LoadBackup(Deserializer& dz)
 	{
-
+		dsz.LoadBackup(_backup, backUpPath);
+		backUpPath.clear();
+		_backup.Clear();
 	}
 }

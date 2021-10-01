@@ -109,10 +109,13 @@ namespace Eclipse
 	{
 		if (std::filesystem::exists(path))
 		{
-			hasFile = backup.LoadFile(path.c_str());
+			_doc = backup;
+			hasFile = true;
+			//hasFile = backup.LoadFile(path.c_str());
 		}
 		else
 		{
+			hasFile = false;
 			EDITOR_LOG_INFO("Temp.scn does not exist.")
 		}
 
