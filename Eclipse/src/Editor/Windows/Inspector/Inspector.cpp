@@ -60,6 +60,7 @@ namespace Eclipse
             ShowModelInfoProperty("ModelInfo", currEnt, CompFilter);
             ShowScriptProperty("Script Details", currEnt, CompFilter);
 
+            ECGui::InsertHorizontalLineSeperator();
             AddComponentsController(currEnt);
             RemoveComponentsController(currEnt);
         }
@@ -258,11 +259,12 @@ namespace Eclipse
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
                 auto& _DLight = engine->world.GetComponent<DirectionalLightComponent>(ID);
-
+                ECGui::PushItemWidth(WindowSize_.getX() - 100.f);
                 ECGui::DrawTextWidget<const char*>("Light Colour", "");
                 ImGui::ColorPicker3("DLightColor", (float*)&_DLight.lightColor,
                     ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
 
+                ECGui::PushItemWidth(WindowSize_.getX());
                 ECGui::DrawTextWidget<const char*>("DLight Ambient", "");
                 ECGui::DrawSliderFloat3Widget("DLightAmbientVec", &_DLight.ambient, true, 0.0f, 1.0f);
 
