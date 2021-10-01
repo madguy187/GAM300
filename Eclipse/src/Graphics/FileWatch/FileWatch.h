@@ -24,6 +24,8 @@ namespace Eclipse
 	public:
 		bool Modified = false;
 		float Timer = 0.0f;
+		float HotReloadCooldown = 0.0f;
+		float HardResetTime = 5.0f;
 		std::string PathToWatch;
 		std::chrono::duration<int, std::milli> Delays;
 		std::unordered_map<std::string, std::filesystem::file_time_type> paths_;
@@ -34,5 +36,7 @@ namespace Eclipse
 		bool Contains(const std::string& key);
 		std::chrono::duration<int, std::milli> InputTime(unsigned int in);
 		bool UpdateTimer();
+		void Resolutions(FileStatus status, std::string& PATH_TO_WATCH);
+		void HardReset(float in);
 	};
 }

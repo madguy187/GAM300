@@ -145,6 +145,7 @@ namespace Eclipse
         LightingSystem::Init();
         GridSystem::Init();
         gPhysics.Init();
+        audioManager.Init();
         FileWatchSystem::Init();
 
         if (IsEditorActive)
@@ -159,7 +160,8 @@ namespace Eclipse
         float updaterate = 4.0f;
 
         SceneManager::Initialize();
-        audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);
+        
+        /*audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);*/
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
             glfwPollEvents();

@@ -80,7 +80,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.modelRef = Graphics::models.find("Sphere")->first;
         MaterialComponent& Mat = engine->world.GetComponent<MaterialComponent>(ID);
         Mat.hasTexture = true;
-        Mat.TextureRef = Graphics::textures.find("orange")->first;
+        Mat.TextureRef = Graphics::textures.find("brick")->first;
     }
     break;
     case 5:
@@ -93,9 +93,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.modelRef = Graphics::models.find("Cube")->first;
         MaterialComponent& Mat = engine->world.GetComponent<MaterialComponent>(ID);
         Mat.hasTexture = true;
-        Mat.TextureRef = Graphics::textures.find("orange")->first;
-
-        std::cout << " ID " << ID;
+        Mat.TextureRef = Graphics::textures.find("brick")->first;
     }
     break;
     case 6:

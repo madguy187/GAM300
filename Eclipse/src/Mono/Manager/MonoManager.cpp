@@ -1,11 +1,15 @@
 #include "pch.h"
 #include "MonoManager.h"
-#include "mono/metadata/assembly.h"
-#include <mono/metadata/mono-gc.h>
-#include <mono/metadata/debug-helpers.h>
+
 #include <mono/metadata/mono-config.h>
+#include <mono/metadata/threads.h>
+#include <mono/metadata/assembly.h>
+#include <mono/metadata/mono-gc.h>
+#include <mono/metadata/environment.h>
+#include <mono/metadata/debug-helpers.h>
 
 #include "ECS/ComponentManager/Components/TransformComponent.h"
+
 
 namespace Eclipse
 {
@@ -76,7 +80,9 @@ namespace Eclipse
 
 		mono_set_dirs("../Dep/mono/lib", "../Dep/mono/etc");
 
-		domain = mono_jit_init("Manager");
+		domain = mono_jit_init_version("Manager", "v4.0.30319");
+		mono_thread_set_main(mono_thread_current());
+
 		assert(domain, "Domain could not be created");
 	}
 
@@ -114,25 +120,31 @@ namespace Eclipse
 	{
 		GenerateDLL();
 
-		LoadDomain();
+		MonoDomain* childDomain = LoadDomain();
+		LoadDLLImage("../EclipseScriptsAPI.dll", APIImage, APIAssembly);
+		LoadDLLImage("../EclipseScripts.dll", ScriptImage, ScriptAssembly);
 
-		// Load API
-		APIAssembly = mono_domain_assembly_open(domain, "../EclipseScriptsAPI.dll");
-		assert(APIAssembly, "API Assembly could not be opened");
 
-		APIImage = mono_assembly_get_image(APIAssembly);
-		assert(APIImage, "API Image failed");
+		//// Load API
+		//APIAssembly = mono_domain_assembly_open(childDomain, "../EclipseScriptsAPI.dll");
+		//assert(APIAssembly, "API Assembly could not be opened");
 
-		// Load Scripts
-		ScriptAssembly = mono_domain_assembly_open(domain, "../EclipseScripts.dll");
-		assert(ScriptAssembly, "Script Assembly could not be opened");
+		//APIImage = mono_assembly_get_image(APIAssembly);
+		//assert(APIImage, "API Image failed");
 
-		ScriptImage = mono_assembly_get_image(ScriptAssembly);
-		assert(ScriptImage, "Script Image failed");
+		//// Load Scripts
+		//ScriptAssembly = mono_domain_assembly_open(childDomain, "../EclipseScripts.dll");
+		//assert(ScriptAssembly, "Script Assembly could not be opened");
+
+		//ScriptImage = mono_assembly_get_image(ScriptAssembly);
+		//assert(ScriptImage, "Script Image failed");
 	}
 
 	void MonoManager::StopMono()
 	{
+		//UnloadDomain();
+		/*mono_image_close(APIImage);
+		mono_image_close(ScriptImage);*/
 		mono_jit_cleanup(domain);
 	}
 
@@ -157,6 +169,8 @@ namespace Eclipse
 			return nullptr;
 		}
 
+		mono_runtime_object_init(obj);
+
 		void* args[2];
 		uint32_t handle = mono_gchandle_new(obj, true);
 		args[0] = &handle;
@@ -165,14 +179,6 @@ namespace Eclipse
 		mono_runtime_invoke(method, obj, args, NULL);
 
 		return obj;
-	}
-
-	void MonoManager::GenerateDLL()
-	{
-		ENGINE_CORE_INFO("Mono: Generating DLLs");
-		system("sh -c ../Dep/mono/bin/mcs_api.bat");
-		system("sh -c ../Dep/mono/bin/mcs_scripts.bat");
-		ENGINE_CORE_INFO("Mono: Successfully Generate DLLs");
 	}
 
 	MonoDomain* MonoManager::LoadDomain()
@@ -189,14 +195,15 @@ namespace Eclipse
 			return nullptr;
 		}
 
-		domain = newDomain;
 		return mono_domain_get();
 	}
 
 	void MonoManager::UnloadDomain()
 	{
 		MonoDomain* old_domain = mono_domain_get();
-		if (old_domain && old_domain != mono_get_root_domain()) {
+		MonoDomain* root_domain = mono_get_root_domain();
+		if (old_domain && old_domain != root_domain) {
+
 			if (!mono_domain_set(mono_get_root_domain(), false))
 				printf("Error setting domain\n");
 
@@ -204,6 +211,50 @@ namespace Eclipse
 		}
 
 		mono_gc_collect(mono_gc_max_generation());
+	}
+
+	void MonoManager::GenerateDLL()
+	{
+		ENGINE_CORE_INFO("Mono: Generating DLLs");
+		system("sh -c ../Dep/mono/bin/mcs_api.bat");
+		system("sh -c ../Dep/mono/bin/mcs_scripts.bat");
+		ENGINE_CORE_INFO("Mono: Successfully Generate DLLs");
+	}
+
+	bool MonoManager::LoadDLLImage(const char* filename, MonoImage*& image, MonoAssembly*& assembly)
+	{
+		/*std::ifstream t(filename);
+		std::string str((std::istreambuf_iterator<char>(t)),
+			std::istreambuf_iterator<char>());*/
+
+		char* arr = nullptr;
+		uint32_t len = 0;
+		std::ifstream file(filename, std::ifstream::binary);
+		if (file) {
+			// get length of file:
+			file.seekg(0, file.end);
+			auto length = file.tellg();
+			len = static_cast<uint32_t>(length);
+			file.seekg(0, file.beg);
+
+			arr = new char[length];
+			file.read(arr, length);
+			file.close();
+		}
+
+		MonoImageOpenStatus status;
+		image = nullptr;
+		//image = mono_image_open_from_data_with_name(&str.front(), str.length(), true /* copy data */, &status, false /* ref only */, filename);
+		image = mono_image_open_from_data_with_name(arr, len, true /* copy data */, &status, false /* ref only */, filename);
+		bool result = true;
+		if (image)
+			assembly = mono_assembly_load_from_full(image, filename, &status, false);
+		else
+		{
+			result = false;
+		}
+
+		return result;
 	}
 
 	MonoImage* MonoManager::GetAPIImage()

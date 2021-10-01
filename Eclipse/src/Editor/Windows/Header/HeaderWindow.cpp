@@ -415,6 +415,7 @@ namespace Eclipse
 			windowClass.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_AutoHideTabBar;
 			ImGui::SetNextWindowClass(&windowClass);
 			IsTabBarHidden = true;
+
 		}
 	}
 }

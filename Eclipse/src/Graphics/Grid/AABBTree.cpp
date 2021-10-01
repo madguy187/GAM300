@@ -338,6 +338,7 @@ namespace Eclipse
     void AABBTree::ClearTree()
     {
         AABBToNodeMap.clear();
+        //AllNodes.clear();
         RootNodeIndex = 0;
         AllocatedNodeCount = 0;
         NextFreeNoedIndex = 0;

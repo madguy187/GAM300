@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Editor/Utilities/OpenFileDialog/OpenFileDialog.h"
+#include "Editor/Windows/GameView/GameView.h"
 #include "ECGuiInputHandler.h"
 
 namespace Eclipse
@@ -57,6 +58,24 @@ namespace Eclipse
 				if (engine->editorManager->IsAnyGizmoWindowActive())
 					if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
 						engine->editorManager->GetEditorWindow<SceneWindow>()->SetGizmoType(ImGuizmo::OPERATION::ROTATE);
+			}
+			else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_F11)))
+			{
+				if (engine->GetPlayState())
+				{
+					auto* gv = engine->editorManager->GetEditorWindow<eGameViewWindow>();
+
+					if (!gv->GetIsViewFullscreen())
+					{
+						gv->SetViewToFullscreen(true);
+						gv->SetViewToOriginalState(false);
+					}
+					else
+					{
+						gv->SetViewToFullscreen(false);
+						gv->SetViewToOriginalState(true);
+					}
+				}
 			}
 			// File Saving
 			else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_S)) && io.KeyCtrl)

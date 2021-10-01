@@ -34,6 +34,7 @@ namespace Eclipse
 	private:
 
 	public:
+		float HotReloadCooldown = 0.0f;
 		bool GetHotReloadFlag();
 		void ResetHotReloadFlag();
 		bool CheckCompilers();

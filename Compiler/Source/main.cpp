@@ -5,24 +5,24 @@
 
 using namespace EclipseCompiler;
 
-int main()
+int WinMain()
 {
-	CompilerManager Manager;
+    CompilerManager Manager;
 
-	std::unique_ptr<TextureCompiler> cTextureCompiler = std::make_unique<TextureCompiler>();
-	std::unique_ptr<GeometryCompiler> cGeometryCompiler = std::make_unique<GeometryCompiler>();
-	std::unique_ptr<PrefabsCompiler> cPrefabsCompiler = std::make_unique<PrefabsCompiler>();
+    std::unique_ptr<TextureCompiler> cTextureCompiler = std::make_unique<TextureCompiler>();
+    std::unique_ptr<GeometryCompiler> cGeometryCompiler = std::make_unique<GeometryCompiler>();
+    std::unique_ptr<PrefabsCompiler> cPrefabsCompiler = std::make_unique<PrefabsCompiler>();
 
-	Manager.Register(*cGeometryCompiler);
-	Manager.Register(*cTextureCompiler);
-	Manager.Register(*cPrefabsCompiler);
+    Manager.Register(*cGeometryCompiler);
+    Manager.Register(*cTextureCompiler);
+    Manager.Register(*cPrefabsCompiler);
 
-	Manager.Initialise();
-	cPrefabsCompiler->GetPrefabs(cGeometryCompiler->Prefabs);
+    Manager.Initialise();
+    cPrefabsCompiler->GetPrefabs(cGeometryCompiler->Prefabs);
 
-	// We will produce our own resource files which will be named .eclipse
-	Manager.ProduceFile();
+    // We will produce our own resource files which will be named .eclipse
+    Manager.ProduceFile();
 
-	return 0;
+    return 0;
 }
 
