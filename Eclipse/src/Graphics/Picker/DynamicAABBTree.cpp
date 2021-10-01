@@ -63,74 +63,75 @@ namespace Eclipse
 		}
 	}
 
-	void DynamicAABBTree::BalanceAVLTree(std::shared_ptr<Node> oldParent)
+	void DynamicAABBTree::BalanceAVLTree(Node* oldParent)
 	{
-		//if (!oldParent)
-		//{
-		//	return;
-		//}
-		//
-		//size_t heightDiff = std::abs(static_cast<int>(oldParent->mLeft->mHeight - oldParent->mRight->mHeight));
-		//
-		//if (heightDiff > 1)
-		//{
-		//	std::shared_ptr<Node*> pivot = std::make_shared<Node*>();
-		//	
-		//	if (oldParent->mLeft->mHeight > oldParent->mRight->mHeight)
-		//	{
-		//		pivot = std::reinterpret_pointer_cast<Node*>(oldParent->mLeft);
-		//	}
-		//	else
-		//	{
-		//		pivot = std::reinterpret_pointer_cast<Node*>(oldParent->mRight);
-		//	}
-		//	
-		//	std::shared_ptr<Node*> smallPivot = std::make_shared<Node*>();
-		//	
-		//	if ((*pivot)->mLeft->mHeight < (*pivot)->mRight->mHeight)
-		//	{
-		//		smallPivot = std::reinterpret_pointer_cast<Node*>((*pivot)->mLeft);
-		//	}
-		//	else
-		//	{
-		//		smallPivot = std::reinterpret_pointer_cast<Node*>((*pivot)->mRight);
-		//	}
-		//	
-		//	std::shared_ptr<Node> grandParent;
-		//	grandParent = oldParent->mParent;
-		//	oldParent->mParent = std::reinterpret_pointer_cast<Node>(pivot);
-		//	(*smallPivot)->mParent = oldParent;
-		//	*pivot = *smallPivot;
-		//	
-		//	if (grandParent)
-		//	{
-		//		if (grandParent->mLeft == oldParent)
-		//		{
-		//			grandParent->mLeft = oldParent->mParent;
-		//		}
-		//		else if (grandParent->mRight == oldParent)
-		//		{
-		//			grandParent->mRight = oldParent->mParent;
-		//		}
-		//	}
-		//	
-		//	smallPivot = std::reinterpret_pointer_cast<Node*>(oldParent);
-		//	
-		//	if (oldParent == root)
-		//	{
-		//		root = oldParent->mParent;
-		//	}
-		//	
-		//	oldParent->mAabb = Aabb::Combine(oldParent->mLeft->mAabb, oldParent->mRight->mAabb);
-		//	oldParent->mHeight = 1 + (std::max)(Height(oldParent->mLeft), Height(oldParent->mRight));
-		//}
-		//else
-		//{
-		//	oldParent->mAabb = Aabb::Combine(oldParent->mLeft->mAabb, oldParent->mRight->mAabb);
-		//	oldParent->mHeight = 1 + (std::max)(Height(oldParent->mLeft), Height(oldParent->mRight));
-		//}
-		//
-		//BalanceAVLTree(oldParent->mParent);
+		if (!oldParent)
+		{
+			return;
+		}
+
+		size_t heightDiff = std::abs(static_cast<int>(oldParent->mLeft->mHeight - oldParent->mRight->mHeight));
+
+		if (heightDiff > 1)
+		{
+			Node** pivot = nullptr;
+
+			if (oldParent->mLeft->mHeight > oldParent->mRight->mHeight)
+			{
+				pivot = &oldParent->mLeft;
+			}
+			else
+			{
+				pivot = &oldParent->mRight;
+			}
+
+			Node** smallPivot = nullptr;
+
+			if ((*pivot)->mLeft->mHeight < (*pivot)->mRight->mHeight)
+			{
+				smallPivot = &(*pivot)->mLeft;
+			}
+			else
+			{
+				smallPivot = &(*pivot)->mRight;
+			}
+
+			Node* grandParent = oldParent->mParent;
+			(*pivot)->mParent = grandParent;
+			oldParent->mParent = *pivot;
+			(*smallPivot)->mParent = oldParent;
+			*pivot = *smallPivot;
+
+
+			if (grandParent)
+			{
+				if (grandParent->mLeft == oldParent)
+				{
+					grandParent->mLeft = oldParent->mParent;
+				}
+				else if (grandParent->mRight == oldParent)
+				{
+					grandParent->mRight = oldParent->mParent;
+				}
+			}
+
+			*smallPivot = oldParent;
+
+			if (oldParent == root)
+			{
+				root = oldParent->mParent;
+			}
+
+			oldParent->mAabb = Aabb::Combine(oldParent->mLeft->mAabb, oldParent->mRight->mAabb);
+			oldParent->mHeight = 1 + (std::max)(Height(oldParent->mLeft), Height(oldParent->mRight));
+		}
+		else
+		{
+			oldParent->mAabb = Aabb::Combine(oldParent->mLeft->mAabb, oldParent->mRight->mAabb);
+			oldParent->mHeight = 1 + (std::max)(Height(oldParent->mLeft), Height(oldParent->mRight));
+		}
+
+		BalanceAVLTree(oldParent->mParent);
 	}
 
 	bool DynamicAABBTree::isExternalNode(Node* node)
@@ -153,147 +154,149 @@ namespace Eclipse
 		return node->mHeight;
 	}
 
-	std::shared_ptr<DynamicAABBTree::Node> DynamicAABBTree::FindNode(std::shared_ptr<Node> currNode, unsigned int ID)
+	DynamicAABBTree::Node* DynamicAABBTree::FindNode(unsigned int ID)
 	{
-		//if (currNode->ID == ID)
-		//{
-		//	return currNode;
-		//}
-		//
-		//if (currNode->mLeft)
-		//{
-		//	return FindNode(currNode->mLeft, ID);
-		//}
-		//else if (currNode->mRight)
-		//{
-		//	return FindNode(currNode->mRight, ID);
-		//}
-		//
-		return nullptr;
+		return TreeNodes[ID];
 	}
 
-	void DynamicAABBTree::RemoveData(std::shared_ptr<Node> node)
+	void DynamicAABBTree::RemoveData(unsigned int ID)
 	{
-		//std::shared_ptr<Node> removeNode = std::make_shared<Node>();
-		//removeNode = node;
-		//
-		//std::shared_ptr<Node> parent = std::make_shared<Node>();
-		//parent = removeNode->mParent;
-		//
-		//if (parent)
-		//{
-		//	std::shared_ptr<Node> sibling = std::make_shared<Node>();
-		//
-		//	if (removeNode == parent->mLeft)
-		//	{
-		//		sibling = parent->mRight;
-		//	}
-		//	else
-		//	{
-		//		sibling = parent->mLeft;
-		//	}
-		//
-		//	std::shared_ptr<Node> grandParent = std::make_shared<Node>();
-		//	grandParent = parent->mParent;
-		//
-		//	if (grandParent)
-		//	{
-		//		if (grandParent->mLeft == parent)
-		//		{
-		//			grandParent->mLeft = sibling;
-		//		}
-		//		else
-		//		{
-		//			grandParent->mRight = sibling;
-		//		}
-		//
-		//		sibling->mParent = grandParent;
-		//
-		//		grandParent->mAabb = Aabb::Combine(grandParent->mLeft->mAabb, grandParent->mRight->mAabb);
-		//
-		//		BalanceAVLTree(grandParent);
-		//	}
-		//	else
-		//	{
-		//		root = sibling;
-		//		sibling->mParent = nullptr;
-		//	}
-		//}
-		//else
-		//{
-		//	//Empty tree
-		//	root = nullptr;
-		//}
+		Node* removeNode = FindNode(ID);
+		Node* parent = removeNode->mParent;
+
+		if (parent)
+		{
+			Node* sibling = nullptr;
+
+			if (removeNode == parent->mLeft)
+			{
+				sibling = parent->mRight;
+			}
+			else
+			{
+				sibling = parent->mLeft;
+			}
+
+			Node* grandParent = parent->mParent;
+
+			if (grandParent)
+			{
+				if (grandParent->mLeft == parent)
+				{
+					grandParent->mLeft = sibling;
+				}
+				else
+				{
+					grandParent->mRight = sibling;
+				}
+
+				sibling->mParent = grandParent;
+
+				grandParent->mAabb = Aabb::Combine(grandParent->mLeft->mAabb, grandParent->mRight->mAabb);
+
+				BalanceAVLTree(grandParent);
+			}
+			else
+			{
+				root = sibling;
+				sibling->mParent = nullptr;
+			}
+
+			delete parent;
+		}
+		else
+		{
+			//Empty tree
+			root = nullptr;
+		}
+
+		delete removeNode;
 	}
 
 	void DynamicAABBTree::InsertData(unsigned int ID)
 	{
-		//auto& AABB = engine->world.GetComponent<AABBComponent>(ID);
-		//
-		//glm::vec3 halfExt = (AABB.Max.ConvertToGlmVec3Type() - AABB.Min.ConvertToGlmVec3Type()) * 0.5f;
-		//halfExt *= DynamicAABBTree::mFatteningFactor;
-		//
-		//Aabb newAabb = Aabb::BuildFromCenterAndHalfExtents(AABB.center.ConvertToGlmVec3Type(), halfExt);
-		//
-		//std::shared_ptr<Node> newData = std::make_shared<Node>();
-		//newData->ID = ID;
-		//newData->mAabb = newAabb;
-		//newData->mLeft = nullptr;
-		//newData->mRight = nullptr;
-		//newData->mParent = nullptr;
-		//newData->mHeight = 0;
-		//
-		//InsertNode(std::move(newData), root);
+		auto& AABB = engine->world.GetComponent<AABBComponent>(ID);
+		
+		glm::vec3 halfExt = (AABB.Max.ConvertToGlmVec3Type() - AABB.Min.ConvertToGlmVec3Type()) * 0.5f;
+		halfExt *= DynamicAABBTree::mFatteningFactor;
+		
+		Aabb newAabb = Aabb::BuildFromCenterAndHalfExtents(AABB.center.ConvertToGlmVec3Type(), halfExt);
+		
+		Node* newData = new Node;
+		newData->ID = ID;
+		newData->mAabb = newAabb;
+		newData->mLeft = nullptr;
+		newData->mRight = nullptr;
+		newData->mParent = nullptr;
+		newData->mHeight = 0;
+		
+		TreeNodes.emplace(ID, newData);
 
-		//if (newData->mParent && newData->mParent->mParent && newData->mParent->mParent->mParent)
-		//{
-		//	BalanceAVLTree(newData->mParent->mParent->mParent);
-		//}
+		InsertNode(newData, root);
+
+		if (newData->mParent && newData->mParent->mParent && newData->mParent->mParent->mParent)
+		{
+			BalanceAVLTree(newData->mParent->mParent->mParent);
+		}
+
+		std::cout << "TreeNodes size: " << TreeNodes.size() << std::endl;
 	}
 
 	void DynamicAABBTree::UpdateData(unsigned int ID)
 	{
-		//std::shared_ptr<Node> node = FindNode(root, ID);
-		//
-		//auto& AABB = engine->world.GetComponent<AABBComponent>(ID);
-		//glm::vec3 halfExt = (AABB.Max.ConvertToGlmVec3Type() - AABB.Min.ConvertToGlmVec3Type()) * 0.5f;
-		//halfExt *= DynamicAABBTree::mFatteningFactor;
-		//
-		//Aabb newAabb = Aabb::BuildFromCenterAndHalfExtents(AABB.center.ConvertToGlmVec3Type(), halfExt);
-		//
-		//if (!node->mAabb.Contains(newAabb))
-		//{
-		//	RemoveData(node);
-		//	InsertData(ID);
-		//}
+		Node* node = FindNode(ID);
+
+		auto& AABB = engine->world.GetComponent<AABBComponent>(ID);
+		glm::vec3 halfExt = (AABB.Max.ConvertToGlmVec3Type() - AABB.Min.ConvertToGlmVec3Type()) * 0.5f;
+		halfExt *= DynamicAABBTree::mFatteningFactor;
+
+		Aabb newAabb = Aabb::BuildFromCenterAndHalfExtents(AABB.center.ConvertToGlmVec3Type(), halfExt);
+
+		if (!node->mAabb.Contains(newAabb))
+		{
+			std::cout << "Re-insert!" << std::endl;
+			RemoveData(ID);
+			InsertData(ID);
+		}
 	}
 
-	unsigned int DynamicAABBTree::RayCast(std::shared_ptr<Node> node, glm::vec3 rayStart, glm::vec3 rayDir)
+	unsigned int DynamicAABBTree::RayCast(Node* node, glm::vec3 rayStart, glm::vec3 rayDir)
 	{
-		//static unsigned int nodeID = MAX_ENTITY;
-		//
-		//if (!node)
-		//{
-		//	return nodeID;
-		//}
-		//
-		//float time;
-		//bool checkIntersect = engine->gPicker.RayAabb(rayStart, rayDir, node->mAabb.mMin, node->mAabb.mMax, time);
-		//
-		//if (!checkIntersect)
-		//{
-		//	return nodeID;
-		//}
-		//else
-		//{
-		//	if (!isExternalNode(node))
-		//	{
-		//		RayCast(node->mLeft, rayStart, rayDir);
-		//		RayCast(node->mRight, rayStart, rayDir);
-		//	}
-		//}
+		std::cout << "Raycast outside" << std::endl;
 
-		return 0;
+		static unsigned int nodeID = MAX_ENTITY;
+		
+		if (!node)
+		{
+			return nodeID;
+		}
+		
+		float time;
+		bool checkIntersect = engine->gPicker.RayAabb(rayStart, rayDir, node->mAabb.mMin, node->mAabb.mMax, time);
+		
+		if (!checkIntersect)
+		{
+			return nodeID;
+		}
+		else
+		{
+			if (!isExternalNode(node))
+			{
+				std::cout << "Raycast inner" << std::endl;
+				RayCast(node->mLeft, rayStart, rayDir);
+				RayCast(node->mRight, rayStart, rayDir);
+			}
+			else
+			{
+				std::cout << "Collide node" << std::endl;
+				return node->ID;
+			}
+		}
+	}
+
+	DynamicAABBTree::Node* DynamicAABBTree::GetTreeRoot()
+	{
+		return root;
 	}
 
 	DynamicAABBTree::Aabb::Aabb()

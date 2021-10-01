@@ -46,18 +46,19 @@ namespace Eclipse
 		Node* root = nullptr;
 
 		void InsertNode(Node* newNode, Node*& currNode);
-		void BalanceAVLTree(std::shared_ptr<Node> oldParent);
+		void BalanceAVLTree(Node* oldParent);
 		bool isExternalNode(Node* node);
 		size_t Height(Node* node);
-		std::shared_ptr<Node> FindNode(std::shared_ptr<Node> currNode, unsigned int ID);
-		void RemoveData(std::shared_ptr<Node> node);
-
+		Node* FindNode(unsigned int ID);
+		void RemoveData(unsigned int ID);
 
 		std::unordered_map<unsigned int, Node*> TreeNodes;
 	public:
 		void InsertData(unsigned int ID);
 		void UpdateData(unsigned int ID);
-		unsigned int RayCast(std::shared_ptr<Node> node, glm::vec3 rayStart, glm::vec3 rayDir);
+		unsigned int RayCast(Node* node, glm::vec3 rayStart, glm::vec3 rayDir);
+
+		Node* GetTreeRoot();
 	};
 }
 
