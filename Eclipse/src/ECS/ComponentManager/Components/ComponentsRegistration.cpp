@@ -50,7 +50,7 @@ namespace Eclipse
     DEFINE_META(CollisionComponent)
     {
         ADD_MEMBER(Collided);
-        Add_MEMBER(shape);
+        ADD_MEMBER(shape);
     }
 
     DEFINE_META(DirectionalLightComponent)
