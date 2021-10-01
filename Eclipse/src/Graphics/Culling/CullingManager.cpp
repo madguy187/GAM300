@@ -138,7 +138,7 @@ namespace Eclipse
         return AABB;
     }
 
-    AABBComponent& CullingManager::SetFrustrumAABB(CameraComponent::CameraType CameraType)
+    AABBComponent CullingManager::SetFrustrumAABB(CameraComponent::CameraType CameraType)
     {
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraType));
         auto& Transform = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraType));
