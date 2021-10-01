@@ -24,6 +24,7 @@ namespace Eclipse
 	*************************************************************************/
 	void LightingSystem::Update()
 	{
+		ZoneScopedN("Lighting System")
 		engine->Timer.SetName({ SystemName::LIGHTING });
 		engine->Timer.tracker.system_start = glfwGetTime();
 
@@ -73,5 +74,7 @@ namespace Eclipse
 
 		engine->Timer.tracker.system_end = glfwGetTime();
 		engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
+
+		FrameMark
 	}
 }
