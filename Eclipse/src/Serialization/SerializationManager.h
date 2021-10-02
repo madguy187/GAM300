@@ -3,6 +3,7 @@
 #include "Serializer.h"
 #include "Deserializer.h"
 #include "Reflection/Variant/RefVariant.h"
+#include "ECS//ComponentManager/Components/PrefabComponent.h"
 
 namespace Eclipse
 {

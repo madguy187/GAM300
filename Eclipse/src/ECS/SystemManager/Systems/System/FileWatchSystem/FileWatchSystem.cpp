@@ -12,7 +12,7 @@ namespace Eclipse
 
     void FileWatchSystem::Update()
     {
-        ZoneScopedN("FileWatch System")
+        //ZoneScopedN("FileWatch System");
         engine->Timer.SetName({ SystemName::FILEWATCH });
         engine->Timer.tracker.system_start = glfwGetTime();
 
@@ -40,6 +40,6 @@ namespace Eclipse
         engine->Timer.tracker.system_end = glfwGetTime();
         engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
 
-        FrameMark
+        //FrameMark
     }
 }

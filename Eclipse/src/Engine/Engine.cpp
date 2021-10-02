@@ -73,7 +73,7 @@ namespace Eclipse
 
     void Engine::Run()
     {
-       ZoneScopedN("Engine")
+       //ZoneScopedN("Engine")
         // register component
         world.RegisterComponent<EntityComponent>();
         world.RegisterComponent<TransformComponent>();
@@ -90,6 +90,24 @@ namespace Eclipse
         world.RegisterComponent<ParentChildComponent>();
         world.RegisterComponent<LightComponent>();
         world.RegisterComponent<ScriptComponent>();
+        world.RegisterComponent<PrefabComponent>();
+
+        prefabWorld.RegisterComponent<EntityComponent>();
+        prefabWorld.RegisterComponent<TransformComponent>();
+        prefabWorld.RegisterComponent<MeshComponent>();
+        prefabWorld.RegisterComponent<CameraComponent>();
+        prefabWorld.RegisterComponent<PointLightComponent>();
+        prefabWorld.RegisterComponent<DirectionalLightComponent>();
+        prefabWorld.RegisterComponent<AABBComponent>();
+        prefabWorld.RegisterComponent<SpotLightComponent>();
+        prefabWorld.RegisterComponent<MaterialComponent>();
+        prefabWorld.RegisterComponent<RigidBodyComponent>();
+        prefabWorld.RegisterComponent<TextureComponent>();
+        prefabWorld.RegisterComponent<ModeLInforComponent>();
+        prefabWorld.RegisterComponent<ParentChildComponent>();
+        prefabWorld.RegisterComponent<LightComponent>();
+        prefabWorld.RegisterComponent<ScriptComponent>();
+        prefabWorld.RegisterComponent<PrefabComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
@@ -285,7 +303,7 @@ namespace Eclipse
         gPhysics.Unload();
         CommandHistory::Clear();
 
-        FrameMark
+        //FrameMark
     }
 
     bool Engine::GetEditorState()
