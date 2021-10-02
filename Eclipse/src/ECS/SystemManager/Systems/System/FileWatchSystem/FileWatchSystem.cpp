@@ -6,7 +6,7 @@ namespace Eclipse
 {
     void FileWatchSystem::Init()
     {
-        EclipseFileWatcher watch{ "src/Assets", engine->gFileWatchManager->InputTime(5) };
+        EclipseFileWatcher watch{ "src/Assets", 2.0f };
         engine->gFileWatchManager = std::make_unique<EclipseFileWatcher>(watch);
     }
 
@@ -17,8 +17,7 @@ namespace Eclipse
         {
             if (engine->gFileWatchManager->UpdateTimer())
             {
-                if (engine->gFileWatchManager->AssetCounter != 0 || engine->gFileWatchManager->BasicTextureCounter != 0)
-                    return;
+                engine->gFileWatchManager->CheckReloadStatus();
 
                 engine->gFileWatchManager->Start([](std::string PATH_TO_WATCH, FileStatus status) -> void
                 {
@@ -27,16 +26,11 @@ namespace Eclipse
                         return;
                     }
 
-                    // Hot Reloading
-                    if (engine->AssimpManager.GetHotReloadFlag())
-                        return;
-
                     engine->gFileWatchManager->Resolutions(status, PATH_TO_WATCH);
                 }
                 );
             }
-
-            engine->gFileWatchManager->HardReset(engine->gFileWatchManager->HardResetTime);
+            engine->gFileWatchManager->HardReset();
         }
     }
 }

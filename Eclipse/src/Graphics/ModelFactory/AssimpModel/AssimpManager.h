@@ -34,6 +34,7 @@ namespace Eclipse
 	private:
 
 	public:
+		void ClearGeometry();
 		void LoadBasicTextures();
 		float HotReloadCooldown = 0.0f;
 		bool GetHotReloadFlag();

@@ -9,7 +9,7 @@ namespace Eclipse
 
     }
 
-    EclipseFileWatcher::EclipseFileWatcher(std::string path_to_watch, std::chrono::duration<int, std::milli> delay) :
+    EclipseFileWatcher::EclipseFileWatcher(std::string path_to_watch, float delay) :
         PathToWatch{ path_to_watch },
         Delays{ delay }
     {
@@ -77,7 +77,7 @@ namespace Eclipse
 
     bool EclipseFileWatcher::UpdateTimer()
     {
-        if (Timer <= 2.0f)
+        if (Timer <= Delays)
         {
             Timer += engine->Game_Clock.get_fixedDeltaTime();
             return false;
@@ -89,63 +89,109 @@ namespace Eclipse
         }
     }
 
-    bool EclipseFileWatcher::CheckBasicTexture(std::string& in)
+    void EclipseFileWatcher::ReloadType(std::string& in)
     {
-        if (in.find("src/Assets\\Textures\\") != std::string::npos)
+        switch (CheckFolder(in))
+        {
+        case ReloadTypes::RT_BASICTEXTURES:
         {
             BasicTextureCounter++;
-            return true;
         }
+        break;
 
-        return false;
+        case ReloadTypes::RT_MODELS:
+        {
+            AssetCounter++;
+        }
+        break;
+        }
     }
 
-    void EclipseFileWatcher::Resolutions(FileStatus status , std::string& PATH_TO_WATCH)
+    void EclipseFileWatcher::Resolutions(FileStatus status, std::string& PATH_TO_WATCH)
     {
         switch (status)
         {
         case FileStatus::FS_CREATED:
         {
             //std::cout << "File created: " << PATH_TO_WATCH << '\n';
-            AssetCounter++;
-            CheckBasicTexture(PATH_TO_WATCH);
+            ReloadType(PATH_TO_WATCH);
+            Create++;
         }
         break;
 
         case FileStatus::FS_MODIFIED:
         {
             //std::cout << "File modified: " << PATH_TO_WATCH << '\n';
-            AssetCounter++;
-            CheckBasicTexture(PATH_TO_WATCH);
+            ReloadType(PATH_TO_WATCH);
         }
         break;
 
         case FileStatus::FS_ERASED:
         {
             //std::cout << "File erased: " << PATH_TO_WATCH << '\n';
-            AssetCounter++;
-            CheckBasicTexture(PATH_TO_WATCH);
+            ReloadType(PATH_TO_WATCH);
+            Delete++;
         }
         break;
 
         default:
             std::cout << "Weird Error\n";
-
         }
     }
 
-    void EclipseFileWatcher::HardReset(float in)
+    void EclipseFileWatcher::CheckReloadStatus()
+    {
+        if (AssetCounter != 0 || BasicTextureCounter != 0)
+            return;
+    }
+
+    void EclipseFileWatcher::HardReset()
     {
         if (AssetCounter)
         {
-            engine->AssimpManager.HotReload();
+            EDITOR_LOG_INFO("Preparing to Recompile Models");
+
+            if (Create || Delete)
+            {
+                system("start Compiler.exe");
+                engine->AssimpManager.HotReload();
+                engine->AssimpManager.HotReload();
+                Create = 0;
+                Delete = 0;
+            }
+            else
+            {
+                EDITOR_LOG_INFO("Preparing to Recompile Models");
+                engine->AssimpManager.HotReload();
+            }
+
             AssetCounter = 0;
+            EDITOR_LOG_INFO("All Models Recompiled");
         }
 
         if (BasicTextureCounter)
         {
+            EDITOR_LOG_INFO("Preparing to Recompile Textures");
+            Graphics::textures.clear();
+            system("start Compiler.exe");
+            engine->AssimpManager.LoadTextures();
             engine->AssimpManager.LoadBasicTextures();
             BasicTextureCounter = 0;
+            EDITOR_LOG_INFO("All Textures Recompiled");
         }
     }
+
+    ReloadTypes EclipseFileWatcher::CheckFolder(std::string const& inString)
+    {
+        if (inString.find("src/Assets\\Textures\\") != std::string::npos)
+        {
+            return ReloadTypes::RT_BASICTEXTURES;
+        }
+
+        if (inString.find("src/Assets\\Models\\") != std::string::npos)
+        {
+            return ReloadTypes::RT_MODELS;
+        }
+    }
+
 }
