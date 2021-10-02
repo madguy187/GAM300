@@ -51,10 +51,15 @@ namespace Eclipse
             std::vector<std::string> hiDarrenVector = engine->AssimpManager.GetMeshNames();
             static size_t comboindex = 0;
             ECGui::CreateComboList(settingsss, hiDarrenVector, comboindex);
+
+            bool selected = false;
+
+            if (ECGui::CreateSelectableButton(hiDarrenVector[comboindex].c_str(), &selected))
+            {
+                auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
+                engine->AssimpManager.CreateModel(MeshID, hiDarrenVector[comboindex].c_str());
+            }
         }
-        //how to apply the index change
-        //std::cout << comboindex << std::endl;
-        ////////////////////
 
         PopUpButtonSettings settings{ "Add Entity", "EntityCreationListBegin" };
         ECGui::BeginPopUpButtonList<void()>(settings, std::bind(&HierarchyWindow::ShowEntityCreationList, this));
