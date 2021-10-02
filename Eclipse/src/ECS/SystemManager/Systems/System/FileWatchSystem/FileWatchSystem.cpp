@@ -12,6 +12,10 @@ namespace Eclipse
 
     void FileWatchSystem::Update()
     {
+        ZoneScopedN("FileWatch System")
+        engine->Timer.SetName({ SystemName::FILEWATCH });
+        engine->Timer.tracker.system_start = glfwGetTime();
+
         // I only run in editor state
         if (engine->GetEditorState())
         {
@@ -32,5 +36,10 @@ namespace Eclipse
             }
             engine->gFileWatchManager->HardReset();
         }
+
+        engine->Timer.tracker.system_end = glfwGetTime();
+        engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
+
+        FrameMark
     }
 }
