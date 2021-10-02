@@ -141,6 +141,7 @@ namespace Eclipse
         world.RegisterSystemSignature<MonoSystem>(hi5);
 
         //Check this! - Rachel
+        GridSystem::Init();
         RenderSystem::Init();
         CameraSystem::Init();
         gPhysics.Init();
