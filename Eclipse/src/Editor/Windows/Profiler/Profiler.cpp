@@ -78,9 +78,10 @@ namespace Eclipse
 		ECGui::EndChildWindow();
 
 		if (ECGui::ButtonBool("More Details"))
-        {
-            system("start src/Tracy_Server/Tracy.exe");
-        }
+		{
+			system("start src/Tracy_Server/Tracy.exe");
+		}
+
 	}
 
 	void ProfilerWindow::SetName(SystemName key)

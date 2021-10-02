@@ -276,9 +276,6 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\ComponentManager\Components\ChildTransformComponent.h">
-      <Filter>ECS\ComponentManager\Components</Filter>
-    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\CollisionComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
@@ -377,13 +374,8 @@
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
-<<<<<<< Updated upstream
     <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
-=======
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem\RenderSystem.h">
-      <Filter>ECS\SystemManager\Systems\System\RenderSystem</Filter>
->>>>>>> Stashed changes
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\System.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
@@ -848,8 +840,6 @@
     <ClInclude Include="src\pch.h" />
 <<<<<<< Updated upstream
     <ClInclude Include="src\Tracy\Tracy.hpp" />
-=======
->>>>>>> Stashed changes
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Audio\AudioManager.cpp">
@@ -882,7 +872,6 @@
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\Editor</Filter>
     </ClCompile>
-<<<<<<< Updated upstream
     <ClCompile Include="src\ECS\SystemManager\Systems\System\GridSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
@@ -891,19 +880,6 @@
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
-=======
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\FileWatchSystem\FileWatchSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System\FileWatchSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\GridSystem\GridSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System\GridSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System\LightingSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem\MaterialSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System\MaterialSystem</Filter>
->>>>>>> Stashed changes
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\MonoSystem</Filter>
@@ -917,13 +893,8 @@
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
-<<<<<<< Updated upstream
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
-=======
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem\RenderSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System\RenderSystem</Filter>
->>>>>>> Stashed changes
     </ClCompile>
     <ClCompile Include="src\ECS\World.cpp">
       <Filter>ECS</Filter>
@@ -1261,7 +1232,5 @@
     <ClCompile Include="src\pch.cpp" />
 <<<<<<< Updated upstream
     <ClCompile Include="src\Tracy\TracyClient.cpp" />
-=======
->>>>>>> Stashed changes
   </ItemGroup>
 </Project>
