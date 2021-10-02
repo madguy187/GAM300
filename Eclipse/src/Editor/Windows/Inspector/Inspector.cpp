@@ -61,7 +61,9 @@ namespace Eclipse
             ShowScriptProperty("Script Details", currEnt, CompFilter);
 
             ECGui::InsertHorizontalLineSeperator();
+            /*ECGui::PushItemWidth(WindowSize_.getX());*/
             AddComponentsController(currEnt);
+            ECGui::InsertSameLine();
             RemoveComponentsController(currEnt);
         }
         else
@@ -552,8 +554,8 @@ namespace Eclipse
 
     void InspectorWindow::AddComponentsController(Entity ID)
     {
-        ImVec2 buttonSize = { 180,20 };
-        if (ImGui::Button(("Add Component"), buttonSize))
+        //ImVec2 buttonSize = { 180,20 };
+        if (ImGui::Button(("Add Component")))
         {
             ImGui::OpenPopup("Add Component");
         }
@@ -569,9 +571,9 @@ namespace Eclipse
 
     void InspectorWindow::RemoveComponentsController(Entity ID)
     {
-        ImVec2 buttonSize = { 180,20 };
+        //ImVec2 buttonSize = { 180,20 };
 
-        if (ImGui::Button(("Remove Component"), buttonSize))
+        if (ImGui::Button(("Remove Component")))
         {
             ImGui::OpenPopup("Remove Component");
         }
