@@ -170,7 +170,8 @@ project "Eclipse"
 	"Dep/PhysX/Release",
     "Dep/mono/lib/",
 	"Dep/ASSIMP/",
-	"Dep/Fmod/core/lib/x64"
+	"Dep/Fmod/core/lib/x64",
+	"Dep/Tracy"
   }
   
   disablewarnings 
