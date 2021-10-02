@@ -42,6 +42,8 @@ namespace EclipseCompiler
                     std::string PathName = ("..//Eclipse//src/Assets/Models/" + FolderName + "/" + FbxOrGltfName).c_str();
                     std::unique_ptr<AssimpLoader> ptr = std::make_unique< AssimpLoader>();
                     ptr->LoadAssimpModelForTextures(PathName, TextureCotainer);
+
+                    int i = 0;
                 }
             }
         }

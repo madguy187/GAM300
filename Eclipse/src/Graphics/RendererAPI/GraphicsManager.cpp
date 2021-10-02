@@ -178,7 +178,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         //sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         //sprite.modelRef = Graphics::models.find("plane")->first;
 
-        engine->AssimpManager.CreateModel(ID, "dog");
+        engine->AssimpManager.CreateModel(ID, "Bed");
     }
     break;
     // pointlight

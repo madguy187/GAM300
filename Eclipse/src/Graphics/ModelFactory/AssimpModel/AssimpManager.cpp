@@ -336,7 +336,7 @@ namespace Eclipse
         glPolygonMode(GL_FRONT_AND_BACK, mode);
 
         // If dont have textures ( Flagged as True )
-        if (in.NoTex && (!engine->world.CheckComponent<TextureComponent>(id)))
+        if (engine->AssimpManager.Geometry[in.MeshName.data()]->NoTex && (!engine->world.CheckComponent<TextureComponent>(id)))
         {
             GLint uniform_var_loc1 = shader.GetLocation("BasicPrimitives");
             GLint uniform_var_loc2 = shader.GetLocation("uColor");
@@ -856,7 +856,7 @@ namespace Eclipse
                 engine->world.AddComponent(ID, MeshComponent{});
                 engine->world.AddComponent(ID, ModeLInforComponent{});
                 engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
-                engine->world.AddComponent(ID, TextureComponent{});
+                //engine->world.AddComponent(ID, TextureComponent{});
                 SetSingleMesh(ID, Name);
             }
             else
@@ -877,7 +877,7 @@ namespace Eclipse
                     engine->world.AddComponent(MeshID, MeshComponent{});
                     engine->world.AddComponent(MeshID, ModeLInforComponent{});
                     engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
-                    engine->world.AddComponent(MeshID, TextureComponent{});
+                    //engine->world.AddComponent(MeshID, TextureComponent{});
 
                     SetSingleMesh(MeshID, name);
                 }
