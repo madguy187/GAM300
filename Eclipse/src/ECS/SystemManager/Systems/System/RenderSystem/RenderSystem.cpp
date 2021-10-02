@@ -18,13 +18,16 @@ namespace Eclipse
 {
     void RenderSystem::Init()
     {
+        // Register Threads
+        engine->GraphicsManager.RegisterThreads();
+
         // Outlining Preparation ============================= 
         glEnable(GL_STENCIL_TEST);
         glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
         // Graphics Init =============================
         EDITOR_LOG_INFO("RenderSystem Init");
-        engine->GraphicsManager.DebugPrintFrameBuffers();
+        //engine->GraphicsManager.DebugPrintFrameBuffers();
 
         // Load All Models =============================
         engine->AssimpManager.Init();
@@ -52,6 +55,7 @@ namespace Eclipse
 
     void RenderSystem::Update()
     {
+        ZoneScopedN("Render System")
         engine->Timer.SetName({ SystemName::RENDER });
         engine->Timer.tracker.system_start = glfwGetTime();
 
@@ -202,5 +206,7 @@ namespace Eclipse
 
         engine->Timer.tracker.system_end = glfwGetTime();
         engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
+
+        FrameMark
     }
 }

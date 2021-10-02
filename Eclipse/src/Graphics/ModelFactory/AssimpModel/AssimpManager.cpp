@@ -9,20 +9,29 @@ namespace Eclipse
         PrintLoadedModels();
     }
 
-    void AssimpModelManager::LoadCompilers()
+    void AssimpModelManager::ExecuteCompiler()
     {
         // I Will Load First
-        system("start Compiler.exe");
+        system("Compiler.exe");
+        EDITOR_LOG_INFO("Compiler Finish Excution");
+    }
+
+    void AssimpModelManager::LoadCompilers()
+    {
+        std::thread CompilerWait{ &AssimpModelManager::ExecuteCompiler };
+        CompilerWait.join();
+
         // Geometry Compiler
         LoadGeometry();
         // Parent Model Mappings
         LoadPrefabs();
         // Texture Compiler
         LoadTextures();
+        LoadBasicTextures();
 
         if (CheckCompilers())
         {
-            ENGINE_CORE_INFO("All Compilers Loaded");
+            EDITOR_LOG_INFO("All Compilers Loaded");
         }
     }
 
@@ -31,25 +40,34 @@ namespace Eclipse
     {
         if (HotReloadFlag == false)
         {
+            AllMeshNames.clear();
             Geometry.clear();
             Prefabs.clear();
             Graphics::textures.clear();
 
-            // I Will Load First
-            system("start Compiler.exe");
+            std::thread CompilerWait{ &AssimpModelManager::ExecuteCompiler };
+            CompilerWait.join();
+
             // Geometry Compiler
             LoadGeometry();
             // Parent Model Mappings
             LoadPrefabs();
             // Texture Compiler
             LoadTextures();
-
-            if (CheckCompilers())
-            {
-                HotReloadFlag = true;
-                ENGINE_CORE_INFO("All Assets Recompiled");
-            }
+            LoadBasicTextures();
         }
+    }
+
+    void AssimpModelManager::HotReloadTetxures()
+    {
+        Graphics::textures.clear();
+
+        // I Will Load First
+        std::thread CompilerWait{ &AssimpModelManager::ExecuteCompiler };
+        CompilerWait.join();
+
+        engine->AssimpManager.LoadTextures();
+        engine->AssimpManager.LoadBasicTextures();
     }
 
     void AssimpModelManager::MeshDraw(MeshComponent& ModelMesh, unsigned int ID, unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
@@ -318,7 +336,7 @@ namespace Eclipse
         glPolygonMode(GL_FRONT_AND_BACK, mode);
 
         // If dont have textures ( Flagged as True )
-        if (in.NoTex && (!engine->world.CheckComponent<TextureComponent>(id)))
+        if (engine->AssimpManager.Geometry[in.MeshName.data()]->NoTex && (!engine->world.CheckComponent<TextureComponent>(id)))
         {
             GLint uniform_var_loc1 = shader.GetLocation("BasicPrimitives");
             GLint uniform_var_loc2 = shader.GetLocation("uColor");
@@ -415,8 +433,8 @@ namespace Eclipse
         glPolygonMode(GL_FRONT_AND_BACK, mode);
 
         // EBO stuff
-        glBindVertexArray(in.VAO);
-        glDrawElements(GL_TRIANGLES, in.Indices.size(), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(engine->AssimpManager.Geometry[in.MeshName.data()]->VAO);
+        glDrawElements(GL_TRIANGLES, engine->AssimpManager.Geometry[in.MeshName.data()]->Indices.size(), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
     }
 
@@ -440,10 +458,7 @@ namespace Eclipse
         // Loading Eclipse File
         std::fstream GeometryFileRead;
 
-        std::string Path = "../Eclipse/src/Assets/Compilers/";
-        std::string FileName = ".bin";
-
-        GeometryFileRead.open("src/Assets/Compilers/GeometryFile/Geometry.eclipse",
+        GeometryFileRead.open("../Compiler/CompilerKeyFiles/GeometryFile/Geometry.eclipse",
             std::ios::in |
             std::ios::binary);
 
@@ -486,12 +501,14 @@ namespace Eclipse
                 Mesh NewMesh(B.Vertices, B.Indices, B.MeshName.data(), B.Textures);
                 std::string name = B.MeshName.data();
                 Geometry.emplace(name, std::make_unique<Mesh>(NewMesh));
+                AllMeshNames.push_back(name);
             }
             else
             {
                 Mesh NewMesh(B.Vertices, B.Indices, B.Diffuse, B.Specular, B.Ambient, B.NoTex, B.MeshName.data());
                 std::string name = B.MeshName.data();
                 Geometry.emplace(name, std::make_unique<Mesh>(NewMesh));
+                AllMeshNames.push_back(name);
             }
         }
 
@@ -504,7 +521,7 @@ namespace Eclipse
         std::ofstream PrefabsFileWrite;
         std::fstream PrefabsFileRead;
 
-        PrefabsFileRead.open("src/Assets/Compilers/PrefabsFile/Prefabs.eclipse",
+        PrefabsFileRead.open("../Compiler/CompilerKeyFiles/PrefabsFile/Prefabs.eclipse",
             std::ios::in |
             std::ios::binary);
 
@@ -536,6 +553,8 @@ namespace Eclipse
 
                 Prefabs[ParentName.data()].push_back(MeshName.data());
             }
+
+            AllMeshNames.push_back(ParentName.data());
         }
         PrefabsFileRead.close();
     }
@@ -545,7 +564,7 @@ namespace Eclipse
         std::ofstream TextureFileWrite;
         std::fstream TextureFileRead;
 
-        TextureFileRead.open("src/Assets/Compilers/TextureFile/Texture.eclipse",
+        TextureFileRead.open("../Compiler/CompilerKeyFiles/TextureFile/Texture.eclipse",
             std::ios::in |
             std::ios::binary);
 
@@ -583,39 +602,6 @@ namespace Eclipse
         }
 
         TextureFileRead.close();
-
-        ////////////////////////////
-
-        TextureFileRead.open("src/Assets/Compilers/BasicTextureFile/Texture.eclipse",
-            std::ios::in |
-            std::ios::binary);
-
-        if (TextureFileRead.fail())
-        {
-            std::cout << "Fail To Open Texture File" << std::endl << std::endl;
-            return;
-        }
-
-        // Number Of Textures
-        int NumberOfBasicTextures = 0;
-        TextureFileRead.read(reinterpret_cast<char*>(&NumberOfBasicTextures), sizeof(NumberOfBasicTextures));
-
-        for (int i = 0; i < NumberOfBasicTextures; i++)
-        {
-            // Texture Name
-            std::array<char, 128> TextureName;
-            TextureFileRead.read(reinterpret_cast<char*>(&TextureName), sizeof(TextureName));
-
-            // Texture DirecPathtory
-            std::array<char, 128> TexturePath;
-            TextureFileRead.read(reinterpret_cast<char*>(&TexturePath), sizeof(TexturePath));
-
-            Texture tex(TexturePath.data());
-            Graphics::textures.emplace(TextureName.data(), tex);
-        }
-
-        TextureFileRead.close();
-        ///////////////////////////
     }
 
 }
@@ -797,6 +783,47 @@ namespace Eclipse
         return false;
     }
 
+    void AssimpModelManager::ClearGeometry()
+    {
+        Geometry.clear();
+    }
+
+    void AssimpModelManager::LoadBasicTextures()
+    {
+        std::fstream TextureFileRead;
+
+        TextureFileRead.open("../Compiler/CompilerKeyFiles/BasicTextureFile/Texture.eclipse",
+            std::ios::in |
+            std::ios::binary);
+
+        if (TextureFileRead.fail())
+        {
+            std::cout << "Fail To Open Texture File" << std::endl << std::endl;
+            return;
+        }
+
+        // Number Of Textures
+        int NumberOfBasicTextures = 0;
+        TextureFileRead.read(reinterpret_cast<char*>(&NumberOfBasicTextures), sizeof(NumberOfBasicTextures));
+
+        for (int i = 0; i < NumberOfBasicTextures; i++)
+        {
+            // Texture Name
+            std::array<char, 128> TextureName;
+            TextureFileRead.read(reinterpret_cast<char*>(&TextureName), sizeof(TextureName));
+
+            // Texture DirecPathtory
+            std::array<char, 128> TexturePath;
+            TextureFileRead.read(reinterpret_cast<char*>(&TexturePath), sizeof(TexturePath));
+
+            Texture tex(TexturePath.data());
+            Graphics::textures.emplace(TextureName.data(), tex);
+        }
+
+        TextureFileRead.close();
+        ///////////////////////////
+    }
+
     bool AssimpModelManager::GetHotReloadFlag()
     {
         return false;
@@ -829,7 +856,7 @@ namespace Eclipse
                 engine->world.AddComponent(ID, MeshComponent{});
                 engine->world.AddComponent(ID, ModeLInforComponent{});
                 engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
-                engine->world.AddComponent(ID, TextureComponent{});
+                //engine->world.AddComponent(ID, TextureComponent{});
                 SetSingleMesh(ID, Name);
             }
             else
@@ -850,7 +877,7 @@ namespace Eclipse
                     engine->world.AddComponent(MeshID, MeshComponent{});
                     engine->world.AddComponent(MeshID, ModeLInforComponent{});
                     engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
-                    engine->world.AddComponent(MeshID, TextureComponent{});
+                    //engine->world.AddComponent(MeshID, TextureComponent{});
 
                     SetSingleMesh(MeshID, name);
                 }

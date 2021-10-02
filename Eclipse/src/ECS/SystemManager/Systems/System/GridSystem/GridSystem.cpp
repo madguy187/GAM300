@@ -12,7 +12,6 @@ namespace Eclipse
 
 		// Create Grid =============================
 		engine->GridManager->Init();
-		engine->GridManager->DebugPrint();
 	}
 
 	void GridSystem::Update()

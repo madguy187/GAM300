@@ -9,13 +9,16 @@ namespace Eclipse
 
     }
 
-    EclipseFileWatcher::EclipseFileWatcher(std::string path_to_watch, std::chrono::duration<int, std::milli> delay) :
+    EclipseFileWatcher::EclipseFileWatcher(std::string path_to_watch, float delay) :
         PathToWatch{ path_to_watch },
         Delays{ delay }
     {
         for (auto& file : std::filesystem::recursive_directory_iterator(path_to_watch))
         {
-            paths_[file.path().string()] = std::filesystem::last_write_time(file);
+            if (ExcludePath(file.path().string()))
+            {
+                paths_[file.path().string()] = std::filesystem::last_write_time(file);
+            }
 
         }
     }
@@ -75,7 +78,7 @@ namespace Eclipse
 
     bool EclipseFileWatcher::UpdateTimer()
     {
-        if (Timer <= 2.0f)
+        if (Timer <= Delays)
         {
             Timer += engine->Game_Clock.get_fixedDeltaTime();
             return false;
@@ -87,52 +90,119 @@ namespace Eclipse
         }
     }
 
-    void EclipseFileWatcher::Resolutions(FileStatus status , std::string& PATH_TO_WATCH)
+    void EclipseFileWatcher::ReloadType(std::string& in)
+    {
+        switch (CheckFolder(in))
+        {
+        case ReloadTypes::RT_BASICTEXTURES:
+        {
+            BasicTextureCounter++;
+        }
+        break;
+
+        case ReloadTypes::RT_MODELS:
+        {
+            AssetCounter++;
+        }
+        break;
+        }
+    }
+
+    void EclipseFileWatcher::Resolutions(FileStatus status, std::string& PATH_TO_WATCH)
     {
         switch (status)
         {
         case FileStatus::FS_CREATED:
         {
-            std::cout << "File created: " << PATH_TO_WATCH << '\n';
-            engine->AssimpManager.HotReload();
+            //std::cout << "File created: " << PATH_TO_WATCH << '\n';
+            ReloadType(PATH_TO_WATCH);
+            Create++;
         }
         break;
 
         case FileStatus::FS_MODIFIED:
         {
-            std::cout << "File modified: " << PATH_TO_WATCH << '\n';
-            engine->AssimpManager.HotReload();
-            engine->gFileWatchManager->Modified = true;
+            //std::cout << "File modified: " << PATH_TO_WATCH << '\n';
+            ReloadType(PATH_TO_WATCH);
         }
         break;
 
         case FileStatus::FS_ERASED:
         {
-            std::cout << "File erased: " << PATH_TO_WATCH << '\n';
-            engine->AssimpManager.HotReload();
+            //std::cout << "File erased: " << PATH_TO_WATCH << '\n';
+            ReloadType(PATH_TO_WATCH);
+            Delete++;
         }
         break;
 
         default:
             std::cout << "Weird Error\n";
-
         }
     }
 
-    void EclipseFileWatcher::HardReset(float in)
+    void EclipseFileWatcher::CheckReloadStatus()
     {
-        if (Modified == true)
+        if (AssetCounter != 0 || BasicTextureCounter != 0)
+            return;
+    }
+
+    void EclipseFileWatcher::HardReset()
+    {
+        if (AssetCounter)
         {
-            if (HotReloadCooldown <= in)
+            EDITOR_LOG_INFO("Preparing to Recompile Models");
+
+            if (Create || Delete)
             {
-                HotReloadCooldown += engine->Game_Clock.get_fixedDeltaTime();
+                engine->AssimpManager.HotReload();
+                Create = 0;
+                Delete = 0;
             }
             else
             {
-                HotReloadCooldown = 0.0f;
-                Modified = false;
-                engine->AssimpManager.ResetHotReloadFlag();
+                EDITOR_LOG_INFO("Preparing to Recompile Models");
+                engine->AssimpManager.HotReload();
             }
+
+            AssetCounter = 0;
+            EDITOR_LOG_INFO("All Models Recompiled");
         }
+
+        if (BasicTextureCounter)
+        {
+            EDITOR_LOG_INFO("Preparing to Recompile Textures");
+            engine->AssimpManager.HotReloadTetxures();
+            BasicTextureCounter = 0;
+            EDITOR_LOG_INFO("All Textures Recompiled");
+        }
+    }
+
+    ReloadTypes EclipseFileWatcher::CheckFolder(std::string const& inString)
+    {
+        if (inString.find("src/Assets\\Textures\\") != std::string::npos)
+        {
+            return ReloadTypes::RT_BASICTEXTURES;
+        }
+
+        if (inString.find("src/Assets\\Models\\") != std::string::npos)
+        {
+            return ReloadTypes::RT_MODELS;
+        }
+    }
+
+    bool EclipseFileWatcher::ExcludePath(std::string const& inString)
+    {
+        if (inString.find("src/Assets\\Fonts") != std::string::npos ||
+            inString.find("src/Assets\\meshes") != std::string::npos ||
+            inString.find("src/Assets\\Scripts") != std::string::npos ||
+            inString.find("src/Assets\\Shaders") != std::string::npos ||
+            inString.find("src/Assets\\Sounds") != std::string::npos ||
+            inString.find("src/Assets\\Test Drag DRop") != std::string::npos)
+        {
+            //std::cout << "Find" << std::endl;
+            return false;
+        }
+
+        return true;
     }
 }

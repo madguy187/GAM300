@@ -15,7 +15,6 @@
 #include "ECS/ComponentManager/Components/ParentChildComponent.h"
 #include "ECS/ComponentManager/Components/LightComponent.h"
 #include "ECS/ComponentManager/Components/ScriptComponent.h"
-#include "ECS/ComponentManager/Components/PrefabComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
@@ -74,6 +73,7 @@ namespace Eclipse
 
     void Engine::Run()
     {
+       ZoneScopedN("Engine")
         // register component
         world.RegisterComponent<EntityComponent>();
         world.RegisterComponent<TransformComponent>();
@@ -90,26 +90,6 @@ namespace Eclipse
         world.RegisterComponent<ParentChildComponent>();
         world.RegisterComponent<LightComponent>();
         world.RegisterComponent<ScriptComponent>();
-        world.RegisterComponent<PrefabComponent>();
-
-        //PrefabWorld registration
-        prefabWorld.RegisterComponent<EntityComponent>();
-        prefabWorld.RegisterComponent<TransformComponent>();
-        prefabWorld.RegisterComponent<MeshComponent>();
-        prefabWorld.RegisterComponent<CameraComponent>();
-        prefabWorld.RegisterComponent<PointLightComponent>();
-        prefabWorld.RegisterComponent<DirectionalLightComponent>();
-        prefabWorld.RegisterComponent<AABBComponent>();
-        prefabWorld.RegisterComponent<SpotLightComponent>();
-        prefabWorld.RegisterComponent<MaterialComponent>();
-        prefabWorld.RegisterComponent<RigidBodyComponent>();
-        prefabWorld.RegisterComponent<TextureComponent>();
-        prefabWorld.RegisterComponent<ModeLInforComponent>();
-        prefabWorld.RegisterComponent<ParentChildComponent>();
-        prefabWorld.RegisterComponent<LightComponent>();
-        prefabWorld.RegisterComponent<ScriptComponent>();
-        prefabWorld.RegisterComponent<PrefabComponent>();
-
 
         // registering system
         world.RegisterSystem<RenderSystem>();
@@ -161,13 +141,11 @@ namespace Eclipse
         world.RegisterSystemSignature<MonoSystem>(hi5);
 
         //Check this! - Rachel
+        GridSystem::Init();
         RenderSystem::Init();
         CameraSystem::Init();
-        LightingSystem::Init();
-        GridSystem::Init();
         gPhysics.Init();
         audioManager.Init();
-        FileWatchSystem::Init();
 
         if (IsEditorActive)
             IsInPlayState = false;
@@ -181,7 +159,11 @@ namespace Eclipse
         float updaterate = 4.0f;
 
         SceneManager::Initialize();
-        
+
+        // Darren - Please keep this before Game Loop
+        engine->GraphicsManager.MassInit();
+
+        //Deserialization(temp)
         /*audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);*/
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
@@ -296,12 +278,14 @@ namespace Eclipse
         szManager.SaveSceneFile();
 
         // unLoad
-        mono.StopMono();
+        mono.Terminate();
         GraphicsManager.End();
         AssimpManager.CleanUpAllModelsMeshes();
         ImGuiSetup::Destroy(IsEditorActive);
         gPhysics.Unload();
         CommandHistory::Clear();
+
+        FrameMark
     }
 
     bool Engine::GetEditorState()
