@@ -65,5 +65,6 @@ namespace Eclipse
         bool Contains(const std::string& key);
         void ReloadType(std::string& in);
         ReloadTypes CheckFolder(std::string const& inString);
+        bool ExcludePath(std::string const& inString);
     };
 }

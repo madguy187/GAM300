@@ -15,11 +15,12 @@ namespace Eclipse
     {
         for (auto& file : std::filesystem::recursive_directory_iterator(path_to_watch))
         {
-            paths_[file.path().string()] = std::filesystem::last_write_time(file);
+            if (ExcludePath(file.path().string()))
+            {
+                paths_[file.path().string()] = std::filesystem::last_write_time(file);
+            }
 
         }
-
-        int i = 0;
     }
 
     void EclipseFileWatcher::Start(const std::function<void(std::string, FileStatus)>& action)
@@ -194,4 +195,19 @@ namespace Eclipse
         }
     }
 
+    bool EclipseFileWatcher::ExcludePath(std::string const& inString)
+    {
+        if (inString.find("src/Assets\\Fonts") != std::string::npos ||
+            inString.find("src/Assets\\meshes") != std::string::npos ||
+            inString.find("src/Assets\\Scripts") != std::string::npos ||
+            inString.find("src/Assets\\Shaders") != std::string::npos ||
+            inString.find("src/Assets\\Sounds") != std::string::npos ||
+            inString.find("src/Assets\\Test Drag DRop") != std::string::npos)
+        {
+            //std::cout << "Find" << std::endl;
+            return false;
+        }
+
+        return true;
+    }
 }
