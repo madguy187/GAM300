@@ -141,11 +141,8 @@ namespace Eclipse
         //Check this! - Rachel
         RenderSystem::Init();
         CameraSystem::Init();
-        LightingSystem::Init();
-        GridSystem::Init();
         gPhysics.Init();
         audioManager.Init();
-        FileWatchSystem::Init();
 
         if (IsEditorActive)
             IsInPlayState = false;
@@ -159,6 +156,10 @@ namespace Eclipse
         float updaterate = 4.0f;
 
         SceneManager::Initialize();
+
+        // Darren - Please keep this before Game Loop
+        engine->GraphicsManager.MassInit();
+
         //Deserialization(temp)
         /*audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);*/
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))

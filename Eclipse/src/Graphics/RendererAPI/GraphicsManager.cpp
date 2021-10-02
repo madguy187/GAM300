@@ -2,6 +2,21 @@
 #include "Graphics/RendererAPI/GraphicsManager.h"
 #include "EntryPoint/EntryPoint.h"
 
+void Eclipse::GraphicsManager::MassInit()
+{
+    for (auto& i : GraphicThreads)
+    {
+        i.second->join();
+    }
+}
+
+void Eclipse::GraphicsManager::RegisterThreads()
+{
+   GraphicThreads.emplace("Grid", std::make_unique<std::thread>(std::thread{ &GridSystem::Init}));
+   GraphicThreads.emplace("Lighting", std::make_unique<std::thread>(std::thread{ &LightingSystem::Init }));
+   GraphicThreads.emplace("FileWatch", std::make_unique<std::thread>(std::thread{ &FileWatchSystem::Init }));
+}
+
 void Eclipse::GraphicsManager::Pre_Render()
 {
     // Loading Configuration
@@ -163,7 +178,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         //sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         //sprite.modelRef = Graphics::models.find("plane")->first;
 
-        engine->AssimpManager.CreateModel(ID, "dog");
+        engine->AssimpManager.CreateModel(ID, "Bed");
     }
     break;
     // pointlight
@@ -199,6 +214,11 @@ void Eclipse::GraphicsManager::CreateSky(std::string _Dir)
     Sky->CreateSky(_Dir);
 
     SkyCount++;
+}
+
+void Eclipse::GraphicsManager::LoadSky()
+{
+    engine->GraphicsManager.CreateSky("src/Assets/Sky");
 }
 
 void Eclipse::GraphicsManager::RenderSky(unsigned int FrameBufferID)

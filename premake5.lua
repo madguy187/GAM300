@@ -82,7 +82,8 @@ project "Eclipse"
 		defines
 		{
 			"ENGINE_PLATFORM_WINDOWS",
-      "_CRT_SECURE_NO_WARNINGS"
+      "_CRT_SECURE_NO_WARNINGS",
+	  "TRACY_ENABLE"
 		}
 
 	filter "configurations:Debug"
@@ -96,7 +97,8 @@ project "Eclipse"
 	"Dep/PhysX/Debug",
     "Dep/mono/lib/",
 	"Dep/ASSIMP/",
-	"Dep/Fmod/core/lib/x64"
+	"Dep/Fmod/core/lib/x64",
+	"Dep/Tracy"
   }
   
   disablewarnings 
@@ -134,7 +136,8 @@ project "Eclipse"
 	  "fmodL_vc.lib",
 	  "fmodL.lib",
 	  "fmodstudioL64_vc.lib",
-	  "fmodstudioL_vc.lib"
+	  "fmodstudioL_vc.lib",
+	  "TracyProfiler.lib"
   }
     postbuildcommands
     {
@@ -150,7 +153,8 @@ project "Eclipse"
 	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodL.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodL64.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodstudioL64.dll %{cfg.targetdir}",
-	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodstudioL.dll %{cfg.targetdir}"
+	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodstudioL.dll %{cfg.targetdir}",
+	  "{COPY} ../Dep/Tracy/TracyProfiler.dll %{cfg.targetdir}"
     }
 	
 	
@@ -202,7 +206,8 @@ project "Eclipse"
 	  "SnippetUtils_static_64.lib",
 	  "assimp-vc142-mtd",
 	  "fmod_vc.lib",
-      "fmodstudio64_vc.lib"
+      "fmodstudio64_vc.lib",
+	  "TracyProfiler.lib"
   }
 
     postbuildcommands
@@ -218,7 +223,8 @@ project "Eclipse"
 	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/Fmod/core/lib/x64/fmod.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/Fmod/core/lib/x64/fmod64.dll %{cfg.targetdir}",
-	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodstudio64.dll %{cfg.targetdir}"
+	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodstudio64.dll %{cfg.targetdir}",
+	  "{COPY} ../Dep/Tracy/TracyProfiler.dll %{cfg.targetdir}"
     }
 
 	filter "configurations:Dist"

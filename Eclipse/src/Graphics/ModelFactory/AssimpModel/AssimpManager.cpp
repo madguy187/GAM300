@@ -9,10 +9,18 @@ namespace Eclipse
         PrintLoadedModels();
     }
 
-    void AssimpModelManager::LoadCompilers()
+    void AssimpModelManager::ExecuteCompiler()
     {
         // I Will Load First
-        system("start Compiler.exe");
+        system("Compiler.exe");
+        EDITOR_LOG_INFO("Compiler Finish Excution");
+    }
+
+    void AssimpModelManager::LoadCompilers()
+    {
+        std::thread CompilerWait{ &AssimpModelManager::ExecuteCompiler };
+        CompilerWait.join();
+
         // Geometry Compiler
         LoadGeometry();
         // Parent Model Mappings
@@ -37,8 +45,8 @@ namespace Eclipse
             Prefabs.clear();
             Graphics::textures.clear();
 
-            // I Will Load First
-            system("start Compiler.exe");
+            std::thread CompilerWait{ &AssimpModelManager::ExecuteCompiler };
+            CompilerWait.join();
 
             // Geometry Compiler
             LoadGeometry();
@@ -48,6 +56,18 @@ namespace Eclipse
             LoadTextures();
             LoadBasicTextures();
         }
+    }
+
+    void AssimpModelManager::HotReloadTetxures()
+    {
+        Graphics::textures.clear();
+
+        // I Will Load First
+        std::thread CompilerWait{ &AssimpModelManager::ExecuteCompiler };
+        CompilerWait.join();
+
+        engine->AssimpManager.LoadTextures();
+        engine->AssimpManager.LoadBasicTextures();
     }
 
     void AssimpModelManager::MeshDraw(MeshComponent& ModelMesh, unsigned int ID, unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
@@ -316,7 +336,7 @@ namespace Eclipse
         glPolygonMode(GL_FRONT_AND_BACK, mode);
 
         // If dont have textures ( Flagged as True )
-        if (in.NoTex && (!engine->world.CheckComponent<TextureComponent>(id)))
+        if (engine->AssimpManager.Geometry[in.MeshName.data()]->NoTex && (!engine->world.CheckComponent<TextureComponent>(id)))
         {
             GLint uniform_var_loc1 = shader.GetLocation("BasicPrimitives");
             GLint uniform_var_loc2 = shader.GetLocation("uColor");
@@ -413,8 +433,8 @@ namespace Eclipse
         glPolygonMode(GL_FRONT_AND_BACK, mode);
 
         // EBO stuff
-        glBindVertexArray(in.VAO);
-        glDrawElements(GL_TRIANGLES, in.Indices.size(), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(engine->AssimpManager.Geometry[in.MeshName.data()]->VAO);
+        glDrawElements(GL_TRIANGLES, engine->AssimpManager.Geometry[in.MeshName.data()]->Indices.size(), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
     }
 
@@ -533,6 +553,8 @@ namespace Eclipse
 
                 Prefabs[ParentName.data()].push_back(MeshName.data());
             }
+
+            AllMeshNames.push_back(ParentName.data());
         }
         PrefabsFileRead.close();
     }
@@ -834,7 +856,7 @@ namespace Eclipse
                 engine->world.AddComponent(ID, MeshComponent{});
                 engine->world.AddComponent(ID, ModeLInforComponent{});
                 engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
-                engine->world.AddComponent(ID, TextureComponent{});
+                //engine->world.AddComponent(ID, TextureComponent{});
                 SetSingleMesh(ID, Name);
             }
             else
@@ -855,7 +877,7 @@ namespace Eclipse
                     engine->world.AddComponent(MeshID, MeshComponent{});
                     engine->world.AddComponent(MeshID, ModeLInforComponent{});
                     engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
-                    engine->world.AddComponent(MeshID, TextureComponent{});
+                    //engine->world.AddComponent(MeshID, TextureComponent{});
 
                     SetSingleMesh(MeshID, name);
                 }

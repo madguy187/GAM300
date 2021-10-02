@@ -154,8 +154,6 @@ namespace Eclipse
 
             if (Create || Delete)
             {
-                system("start Compiler.exe");
-                engine->AssimpManager.HotReload();
                 engine->AssimpManager.HotReload();
                 Create = 0;
                 Delete = 0;
@@ -173,10 +171,7 @@ namespace Eclipse
         if (BasicTextureCounter)
         {
             EDITOR_LOG_INFO("Preparing to Recompile Textures");
-            Graphics::textures.clear();
-            system("start Compiler.exe");
-            engine->AssimpManager.LoadTextures();
-            engine->AssimpManager.LoadBasicTextures();
+            engine->AssimpManager.HotReloadTetxures();
             BasicTextureCounter = 0;
             EDITOR_LOG_INFO("All Textures Recompiled");
         }

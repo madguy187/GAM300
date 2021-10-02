@@ -9,6 +9,12 @@
 #include "Graphics/Grid/Box.h"
 #include "BasicPrimitives/Frustum.h"
 
+// systems
+#include "ECS/SystemManager/Systems/System/GridSystem/GridSystem.h"
+#include "ECS/SystemManager/Systems/System/LightingSystem/LightingSystem.h"
+#include "ECS/SystemManager/Systems/System/FileWatchSystem/FileWatchSystem.h"
+#include "ECS/SystemManager/Systems/System/CameraSystem.h"
+
 namespace Eclipse
 {
     class GraphicsManager
@@ -29,7 +35,10 @@ namespace Eclipse
 
     public:
         std::map<std::string, std::vector<std::string>> ShaderMap;
+        std::unordered_map<std::string,std::unique_ptr<std::thread>> GraphicThreads;
 
+        void MassInit();
+        void RegisterThreads();
         void Pre_Render();
         void Post_Render();
         void End();
@@ -41,6 +50,7 @@ namespace Eclipse
         void CheckTexture(unsigned int ID);
         void CreatePrimitives(Entity ID, int ModelType);
         void CreateSky(std::string _Dir);
+        static void LoadSky();
         void RenderSky(unsigned int FrameBufferID);
         void DebugPrintFrameBuffers();
         float GetGammaCorrection();
@@ -56,7 +66,7 @@ namespace Eclipse
         FrameBuffer::RenderMode GetRenderMode(FrameBufferMode mode);
         static void WindowCloseCallback(GLFWwindow* window);
     private:
-        float GammaCorrection = 1.0f;
+        float GammaCorrection = 2.0f;
         void UpdateFrameBuffer();
         void FrameBufferDraw();
     };
