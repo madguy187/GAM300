@@ -177,6 +177,7 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\ChildComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\CollisionComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentBase.h" />
@@ -186,7 +187,7 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClInclude Include="src\ECS\ComponentManager\Components\MaterialComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\MeshComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ModeLInfoComponent.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\ParentChildComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\ParentComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\PointLightComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ScriptComponent.h" />
@@ -203,7 +204,8 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClInclude Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem\MaterialSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ChildSystem\ChildSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem\ParentSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem\RenderSystem.h" />
@@ -379,7 +381,8 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem\MaterialSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ChildSystem\ChildSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem\ParentSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem\RenderSystem.cpp" />
