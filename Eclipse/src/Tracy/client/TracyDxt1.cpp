@@ -639,3 +639,4 @@ void CompressImageDxt1( const char* src, char* dst, int w, int h )
 }
 
 }
+#include "pch.h"

@@ -765,3 +765,4 @@ CallstackEntryData DecodeCallstackPtr( uint64_t ptr )
 }
 
 #endif
+#include "pch.h"
