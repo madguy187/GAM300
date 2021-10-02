@@ -20,21 +20,24 @@ void Eclipse::PickingSystem::EditorUpdate()
 	auto& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 	float tMin = (std::numeric_limits<float>::max)();
 
-	glm::vec3 rayDir2 = engine->gPicker.ComputeCursorRayDirection();
-	unsigned int collision2 = engine->gDynamicAABBTree.RayCast(engine->gDynamicAABBTree.GetTreeRoot(), camera.eyePos, rayDir2);
+	glm::vec3 rayDir = engine->gPicker.ComputeCursorRayDirection();
+	unsigned int collisionID = engine->gDynamicAABBTree.RayCast(engine->gDynamicAABBTree.GetTreeRoot(), camera.eyePos, rayDir);
 
-	if (collision2 != MAX_ENTITY)
+	std::cout << "Collision ID: " << collisionID << std::endl;
+	std::cout << std::endl;
+
+	if (collisionID != MAX_ENTITY)
 	{
 		if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
 		{
 			engine->MaterialManager.UnHighlight(engine->gPicker.GetCurrentCollisionID());
 		}
 
-		engine->gPicker.SetCurrentCollisionID(collision2);
-		engine->MaterialManager.HighlightClick(collision2);
+		engine->gPicker.SetCurrentCollisionID(collisionID);
+		engine->MaterialManager.HighlightClick(collisionID);
 
-		engine->gPicker.UpdateAabb(collision2);
-		engine->gDynamicAABBTree.UpdateData(collision2);
+		engine->gPicker.UpdateAabb(collisionID);
+		engine->gDynamicAABBTree.UpdateData(collisionID);
 	}
 
 	//for (auto& it : mEntities)

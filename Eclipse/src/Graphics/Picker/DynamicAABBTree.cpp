@@ -37,6 +37,7 @@ namespace Eclipse
 			{
 				Node* newCombined = new Node;
 				newCombined->mAabb = Aabb::Combine(currNode->mAabb, newNode->mAabb);
+				newCombined->ID = 10001;
 				newCombined->mLeft = currNode;
 				newCombined->mRight = newNode;
 				newCombined->mParent = currNode->mParent;
@@ -53,6 +54,8 @@ namespace Eclipse
 				newNode->mRight = nullptr;
 
 				currNode = newCombined;
+
+				std::cout << "NewCombined ID: " << newCombined->ID << std::endl;
 
 				if (currNode->mParent)
 				{
@@ -211,10 +214,13 @@ namespace Eclipse
 		}
 
 		delete removeNode;
+		TreeNodes.erase(ID);
 	}
 
 	void DynamicAABBTree::InsertData(unsigned int ID)
 	{
+		std::cout << "Start inserting data!" << std::endl;
+
 		auto& AABB = engine->world.GetComponent<AABBComponent>(ID);
 		
 		glm::vec3 halfExt = (AABB.Max.ConvertToGlmVec3Type() - AABB.Min.ConvertToGlmVec3Type()) * 0.5f;
@@ -229,13 +235,14 @@ namespace Eclipse
 		newData->mRight = nullptr;
 		newData->mParent = nullptr;
 		newData->mHeight = 0;
-		
+
 		TreeNodes.emplace(ID, newData);
 
 		InsertNode(newData, root);
 
 		if (newData->mParent && newData->mParent->mParent && newData->mParent->mParent->mParent)
 		{
+			std::cout << "Balancing tree.." << std::endl;
 			BalanceAVLTree(newData->mParent->mParent->mParent);
 		}
 
@@ -254,20 +261,23 @@ namespace Eclipse
 
 		if (!node->mAabb.Contains(newAabb))
 		{
-			std::cout << "Re-insert!" << std::endl;
+			std::cout << "Removing data.." << std::endl;
 			RemoveData(ID);
+			std::cout << "Re-inserting data.." << std::endl;
 			InsertData(ID);
 		}
 	}
 
 	unsigned int DynamicAABBTree::RayCast(Node* node, glm::vec3 rayStart, glm::vec3 rayDir)
 	{
-		std::cout << "Raycast outside" << std::endl;
+		std::cout << "Entering Raycast function.." << std::endl;
 
 		static unsigned int nodeID = MAX_ENTITY;
 		
 		if (!node)
 		{
+			std::cout << "Node is null! Node ID: " << nodeID << std::endl;
+			std::cout << std::endl;
 			return nodeID;
 		}
 		
@@ -276,19 +286,26 @@ namespace Eclipse
 		
 		if (!checkIntersect)
 		{
+			std::cout << "No intersection! Node ID: " << nodeID << std::endl;
+			std::cout << std::endl;
 			return nodeID;
 		}
 		else
 		{
 			if (!isExternalNode(node))
 			{
-				std::cout << "Raycast inner" << std::endl;
+				std::cout << "Recursive raycast" << std::endl;
 				RayCast(node->mLeft, rayStart, rayDir);
 				RayCast(node->mRight, rayStart, rayDir);
 			}
 			else
 			{
-				std::cout << "Collide node" << std::endl;
+				nodeID = node->ID;
+
+				std::cout << "Node ID: " << node->ID << " collided!" << std::endl;
+				std::cout << "Current node ID: " << nodeID << std::endl;
+				std::cout << std::endl;
+
 				return node->ID;
 			}
 		}
@@ -329,9 +346,9 @@ namespace Eclipse
 
 	bool DynamicAABBTree::Aabb::Contains(const Aabb& aabb) const
 	{
-		if (aabb.mMax.x < this->mMax.x && aabb.mMin.x > this->mMin.x &&
-			aabb.mMax.y < this->mMax.y && aabb.mMin.y > this->mMin.y &&
-			aabb.mMax.z < this->mMax.z && aabb.mMin.z > this->mMin.z)
+		if (aabb.mMax.x <= this->mMax.x && aabb.mMin.x >= this->mMin.x &&
+			aabb.mMax.y <= this->mMax.y && aabb.mMin.y >= this->mMin.y &&
+			aabb.mMax.z <= this->mMax.z && aabb.mMin.z >= this->mMin.z)
 		{
 			return true;
 		}
