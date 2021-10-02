@@ -168,6 +168,7 @@ namespace Eclipse
 				break;
 			}
 
+			//Update for DynamicAABB Tree -Rachel
 			engine->gPicker.UpdateAabb(selectedEntity);
 			engine->gDynamicAABBTree.UpdateData(selectedEntity);
 		}

@@ -10,7 +10,6 @@ namespace Eclipse
 
 	DynamicAABBTree::~DynamicAABBTree()
 	{
-		std::cout << "Destroy tree!" << std::endl;
 		DeleteTree(root);
 		TreeNodes.clear();
 	}
@@ -61,8 +60,6 @@ namespace Eclipse
 				newNode->mRight = nullptr;
 
 				currNode = newCombined;
-
-				std::cout << "NewCombined ID: " << newCombined->ID << std::endl;
 
 				if (currNode->mParent)
 				{
@@ -226,8 +223,6 @@ namespace Eclipse
 
 	void DynamicAABBTree::InsertData(unsigned int ID)
 	{
-		std::cout << "Start inserting data!" << std::endl;
-
 		auto& AABB = engine->world.GetComponent<AABBComponent>(ID);
 		
 		glm::vec3 halfExt = (AABB.Max.ConvertToGlmVec3Type() - AABB.Min.ConvertToGlmVec3Type()) * 0.5f;
@@ -243,24 +238,18 @@ namespace Eclipse
 		newData->mParent = nullptr;
 		newData->mHeight = 0;
 
-		TreeNodes.emplace(ID, newData);
+		TreeNodes.insert(std::pair<unsigned int, Node*>(ID, newData));
 
 		InsertNode(newData, root);
 
 		if (newData->mParent && newData->mParent->mParent && newData->mParent->mParent->mParent)
 		{
-			std::cout << "Balancing tree.." << std::endl;
 			BalanceAVLTree(newData->mParent->mParent->mParent);
 		}
-
-		std::cout << "TreeNodes size: " << TreeNodes.size() << std::endl;
 	}
 
 	void DynamicAABBTree::UpdateData(unsigned int ID)
 	{
-		std::cout << "Updating AABTree Data: " << ID << std::endl; 
-		std::cout << std::endl;
-
 		Node* node = FindNode(ID);
 
 		auto& AABB = engine->world.GetComponent<AABBComponent>(ID);
@@ -271,52 +260,43 @@ namespace Eclipse
 
 		if (!node->mAabb.Contains(newAabb))
 		{
-			std::cout << "Removing data.." << std::endl;
 			RemoveData(ID);
-			std::cout << "Re-inserting data.." << std::endl;
 			InsertData(ID);
 		}
 	}
 
-	unsigned int DynamicAABBTree::RayCast(Node* node, glm::vec3 rayStart, glm::vec3 rayDir)
+	unsigned int DynamicAABBTree::RayCast(Node* node, glm::vec3 rayStart, glm::vec3 rayDir, float tMin)
 	{
-		std::cout << "Entering Raycast function.." << std::endl;
-
 		static unsigned int nodeID = MAX_ENTITY;
-		
+
 		if (!node)
 		{
-			std::cout << "Node is null! Node ID: " << nodeID << std::endl;
-			std::cout << std::endl;
 			return nodeID;
 		}
 		
 		float time;
 		bool checkIntersect = engine->gPicker.RayAabb(rayStart, rayDir, node->mAabb.mMin, node->mAabb.mMax, time);
-		
+
 		if (!checkIntersect)
 		{
-			std::cout << "No intersection! Node ID: " << nodeID << std::endl;
-			std::cout << std::endl;
 			return nodeID;
 		}
 		else
 		{
 			if (!isExternalNode(node))
 			{
-				std::cout << "Recursive raycast" << std::endl;
-				RayCast(node->mLeft, rayStart, rayDir);
-				RayCast(node->mRight, rayStart, rayDir);
+				RayCast(node->mLeft, rayStart, rayDir, tMin);
+				RayCast(node->mRight, rayStart, rayDir, tMin);
 			}
 			else
 			{
-				nodeID = node->ID;
+				if (time > tMin)
+				{
+					nodeID = node->ID;
+					tMin = time;
+				}
 
-				std::cout << "Node ID: " << node->ID << " collided!" << std::endl;
-				std::cout << "Current node ID: " << nodeID << std::endl;
-				std::cout << std::endl;
-
-				return node->ID;
+				return nodeID;
 			}
 		}
 	}
@@ -332,6 +312,8 @@ namespace Eclipse
 		{
 			DeleteTree(node->mLeft);
 			DeleteTree(node->mRight);
+
+			delete node;
 		}
 	}
 

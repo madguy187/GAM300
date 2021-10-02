@@ -122,11 +122,6 @@ namespace Eclipse
 		{
 			auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
 			engine->gPicker.GenerateAabb(ID, _transform, type);
-
-			if ((type != EntityType::ENT_LIGHT_POINT) && (type != EntityType::ENT_LIGHT_DIRECTIONAL))
-			{
-				engine->gDynamicAABBTree.InsertData(ID);
-			}
 		}
 		
 		EntityHierarchyList_.push_back(ID);

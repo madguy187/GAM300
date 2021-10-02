@@ -21,6 +21,8 @@ void Eclipse::PickingManager::GenerateAabb(unsigned int ID, TransformComponent& 
     _aabb.Min = ECVec3{ position.x - halfExt.x, position.y - halfExt.y, position.z - halfExt.z };
     _aabb.Max = ECVec3{ position.x + halfExt.x, position.y + halfExt.y, position.z + halfExt.z };
 
+    engine->gDynamicAABBTree.InsertData(ID);
+
     // Darren - Culling
     engine->gCullingManager->Insert(_aabb, ID);
 }
@@ -29,8 +31,6 @@ void Eclipse::PickingManager::UpdateAabb(unsigned int ID)
 {
     if (!engine->world.CheckComponent<AABBComponent>(ID))
         return;
-
-    std::cout << "Updating AABB component ID: " << ID << std::endl;
 
     auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
     auto& _aabb = engine->world.GetComponent<AABBComponent>(ID);

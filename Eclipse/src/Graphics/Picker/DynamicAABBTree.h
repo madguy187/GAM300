@@ -48,6 +48,7 @@ namespace Eclipse
 		size_t Height(Node* node);
 		Node* FindNode(unsigned int ID);
 		void RemoveData(unsigned int ID);
+		void DeleteTree(Node* node);
 
 		std::unordered_map<unsigned int, Node*> TreeNodes;
 	public:
@@ -56,10 +57,9 @@ namespace Eclipse
 
 		void InsertData(unsigned int ID);
 		void UpdateData(unsigned int ID);
-		unsigned int RayCast(Node* node, glm::vec3 rayStart, glm::vec3 rayDir);
+		unsigned int RayCast(Node* node, glm::vec3 rayStart, glm::vec3 rayDir, float tMin);
 
 		Node* GetTreeRoot();
-		void DeleteTree(Node* node);
 	};
 }
 
