@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AssimpManager.h"
+#include<thread>
 
 namespace Eclipse
 {
@@ -9,10 +10,15 @@ namespace Eclipse
         PrintLoadedModels();
     }
 
-    void AssimpModelManager::LoadCompilers()
+    void AssimpModelManager::ExecuteCompiler()
     {
         // I Will Load First
-        system("start Compiler.exe");
+        system("Compiler.exe");
+    }
+
+    void AssimpModelManager::LoadCompilers()
+    {
+        ExecuteCompiler();
         // Geometry Compiler
         LoadGeometry();
         // Parent Model Mappings
@@ -37,9 +43,7 @@ namespace Eclipse
             Prefabs.clear();
             Graphics::textures.clear();
 
-            // I Will Load First
-            system("start Compiler.exe");
-
+            ExecuteCompiler();
             // Geometry Compiler
             LoadGeometry();
             // Parent Model Mappings
@@ -48,6 +52,16 @@ namespace Eclipse
             LoadTextures();
             LoadBasicTextures();
         }
+    }
+
+    void AssimpModelManager::HotReloadTetxures()
+    {
+        Graphics::textures.clear();
+
+        // I Will Load First
+        ExecuteCompiler();
+        engine->AssimpManager.LoadTextures();
+        engine->AssimpManager.LoadBasicTextures();
     }
 
     void AssimpModelManager::MeshDraw(MeshComponent& ModelMesh, unsigned int ID, unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
@@ -413,8 +427,8 @@ namespace Eclipse
         glPolygonMode(GL_FRONT_AND_BACK, mode);
 
         // EBO stuff
-        glBindVertexArray(in.VAO);
-        glDrawElements(GL_TRIANGLES, in.Indices.size(), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(engine->AssimpManager.Geometry[in.MeshName.data()]->VAO);
+        glDrawElements(GL_TRIANGLES, engine->AssimpManager.Geometry[in.MeshName.data()]->Indices.size(), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
     }
 
@@ -533,6 +547,8 @@ namespace Eclipse
 
                 Prefabs[ParentName.data()].push_back(MeshName.data());
             }
+
+            AllMeshNames.push_back(ParentName.data());
         }
         PrefabsFileRead.close();
     }

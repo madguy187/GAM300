@@ -22,17 +22,5 @@ int WinMain()
 
     // We will produce our own resource files which will be named .eclipse
     Manager.ProduceFile();
-
-    //while (1)
-    //{
-    //    std::string hi;
-    //    std::cin >> hi;
-
-    //    if (hi == "1")
-    //    {
-    //        std::exit(1);
-    //    }
-    //}
-
 }
 
