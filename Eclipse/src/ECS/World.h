@@ -106,10 +106,11 @@ namespace Eclipse
 		}
 
 		template <typename ...T>
-		void CopyEntity(World& dest, Entity oldEnt, TypeList<T...>)
+		Entity CopyEntity(World& dest, Entity oldEnt, TypeList<T...>)
 		{
 			Entity newEnt = dest.CreateEntity();
 			((CopyEntityComponent<T>(dest, newEnt, oldEnt)), ...);
+			return newEnt;
 		}
 
 		template <typename T>

@@ -712,6 +712,8 @@
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Graphics\FileWatch\FileWatch.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\FileWatchSystem\FileWatchSystem.h" />
+    <ClInclude Include="src\PrefabManager\PrefabManager.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\PrefabComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Audio\AudioManager.cpp">
@@ -1068,6 +1070,7 @@
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\Graphics\FileWatch\FileWatch.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\FileWatchSystem\FileWatchSystem.cpp" />
+    <ClCompile Include="src\PrefabManager\PrefabManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Compilers\GeometryFile\Geometry.eclipse" />

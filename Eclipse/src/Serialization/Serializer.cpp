@@ -6,6 +6,11 @@ namespace Eclipse
 	Serializer::Serializer()
 		: _currElement{ 0 }
 	{
+		Init();
+	}
+
+	void Serializer::Init()
+	{
 		TiXmlDeclaration* decl = new TiXmlDeclaration("1.0", "", "");
 		_doc.LinkEndChild(decl);
 	}
@@ -26,6 +31,7 @@ namespace Eclipse
 	{
 		_doc.Clear();
 		_currElement = nullptr;
+		Init();
 	}
 
 	void Serializer::StartElement(const std::string& ele_name, bool isMultiple, size_t counter)

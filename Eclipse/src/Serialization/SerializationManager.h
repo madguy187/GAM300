@@ -18,6 +18,7 @@ namespace Eclipse
 		};
 		Backup backup;
 
+		/*
 		inline void SerializeData() {}
 
 		void LogError(const std::string& msg);
@@ -30,7 +31,6 @@ namespace Eclipse
 			sz.CloseElement();
 			SerializeData(elements...);
 		}
-		/*
 		template <>
 		inline void SerializeComponentData<EntityComponent>(const EntityComponent& data)
 		{
@@ -499,13 +499,13 @@ namespace Eclipse
 			return isSuccess;
 		}
 
-		void SerializeEntity(const Entity& ent, const size_t& counter);
+		void SerializeEntity(World& w, const Entity& ent, const size_t& counter);
 
-		void DeserializeEntity(const size_t& counter);
+		void DeserializeEntity(World& w, const size_t& counter);
 
-		void SerializeAllComponents(const Entity& ent);
+		void SerializeAllComponents(World& w, const Entity& ent);
 
-		bool DeserializeAllComponents(const Entity& ent);
+		bool DeserializeAllComponents(World& w, const Entity& ent);
 
 		void SerializeAllEntity();
 
@@ -514,6 +514,10 @@ namespace Eclipse
 		void SaveFile(const char* fullpath);
 
 		bool LoadFile(const char* fullpath);
+
+		void SavePrefab(int prefabID, std::vector<Entity>& prefabContents);
+
+		void LoadPrefab(const char* path);
 
 	public:
 		static Serializer sz;
@@ -526,6 +530,8 @@ namespace Eclipse
 		void SaveBackupFile();
 
 		void LoadBackupFile();
+
+		void SavePrefabFile(int prefabID, std::vector<Entity>& prefabContents, const char* path);
 
 		void SaveSceneFile(const char* fullpath = "Data/Temp/Temp.scn");
 

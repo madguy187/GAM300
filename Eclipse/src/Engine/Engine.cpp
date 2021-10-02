@@ -90,6 +90,24 @@ namespace Eclipse
         world.RegisterComponent<LightComponent>();
         world.RegisterComponent<ScriptComponent>();
 
+        //PrefabWorld registration
+        prefabWorld.RegisterComponent<EntityComponent>();
+        prefabWorld.RegisterComponent<TransformComponent>();
+        prefabWorld.RegisterComponent<MeshComponent>();
+        prefabWorld.RegisterComponent<CameraComponent>();
+        prefabWorld.RegisterComponent<PointLightComponent>();
+        prefabWorld.RegisterComponent<DirectionalLightComponent>();
+        prefabWorld.RegisterComponent<AABBComponent>();
+        prefabWorld.RegisterComponent<SpotLightComponent>();
+        prefabWorld.RegisterComponent<MaterialComponent>();
+        prefabWorld.RegisterComponent<RigidBodyComponent>();
+        prefabWorld.RegisterComponent<TextureComponent>();
+        prefabWorld.RegisterComponent<ModeLInforComponent>();
+        prefabWorld.RegisterComponent<ParentChildComponent>();
+        prefabWorld.RegisterComponent<LightComponent>();
+        prefabWorld.RegisterComponent<ScriptComponent>();
+
+
         // registering system
         world.RegisterSystem<RenderSystem>();
         world.RegisterSystem<CameraSystem>();

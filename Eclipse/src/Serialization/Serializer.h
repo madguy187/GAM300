@@ -14,6 +14,8 @@ namespace Eclipse
         TiXmlDocument _doc;
         TiXmlElement* _currElement;
 
+        void Init();
+
         void GenerateDirectories(const std::string& path);
 
         void BaseSave(const std::string& savePath);

@@ -14,6 +14,7 @@
 #include "SpotLightComponent.h"
 #include "TextureComponent.h"
 #include "TransformComponent.h"
+#include "PrefabComponent.h"
 
 namespace Eclipse
 {
@@ -184,7 +185,7 @@ namespace Eclipse
 
     DEFINE_META(TextureComponent)
     {
-    	ADD_MEMBER(textureRef);
+    	  ADD_MEMBER(textureRef);
     }
 
     DEFINE_META(TransformComponent)
@@ -192,6 +193,12 @@ namespace Eclipse
         ADD_MEMBER(position);
         ADD_MEMBER(rotation);
         ADD_MEMBER(scale);
+    }
+
+    DEFINE_META(PrefabComponent)
+    {
+        ADD_MEMBER(IsChild);
+        ADD_MEMBER(PrefabID);
     }
 
     /*************************************************************************/
