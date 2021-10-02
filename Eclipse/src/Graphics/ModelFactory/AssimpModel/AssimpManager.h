@@ -54,7 +54,7 @@ namespace Eclipse
 		unsigned int MeshFactoryCount();
 		// Load All Models Once
 		void Init();
-		static void ExecuteCompiler();
+	    static void ExecuteCompiler();
 		void HotReload();
 		void HotReloadTetxures();
 		// Render Function that uses the Container that stores MeshComponent 

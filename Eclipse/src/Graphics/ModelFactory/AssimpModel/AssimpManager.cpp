@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "AssimpManager.h"
-#include<thread>
 
 namespace Eclipse
 {
