@@ -14,11 +14,14 @@ namespace Eclipse
     {
         // I Will Load First
         system("Compiler.exe");
+        EDITOR_LOG_INFO("Compiler Finish Excution");
     }
 
     void AssimpModelManager::LoadCompilers()
     {
-        ExecuteCompiler();
+        std::thread CompilerWait{ &AssimpModelManager::ExecuteCompiler };
+        CompilerWait.join();
+
         // Geometry Compiler
         LoadGeometry();
         // Parent Model Mappings
@@ -43,7 +46,9 @@ namespace Eclipse
             Prefabs.clear();
             Graphics::textures.clear();
 
-            ExecuteCompiler();
+            std::thread CompilerWait{ &AssimpModelManager::ExecuteCompiler };
+            CompilerWait.join();
+
             // Geometry Compiler
             LoadGeometry();
             // Parent Model Mappings
@@ -59,7 +64,9 @@ namespace Eclipse
         Graphics::textures.clear();
 
         // I Will Load First
-        ExecuteCompiler();
+        std::thread CompilerWait{ &AssimpModelManager::ExecuteCompiler };
+        CompilerWait.join();
+
         engine->AssimpManager.LoadTextures();
         engine->AssimpManager.LoadBasicTextures();
     }
