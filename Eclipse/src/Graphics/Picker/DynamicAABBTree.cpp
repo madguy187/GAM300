@@ -251,6 +251,9 @@ namespace Eclipse
 
 	void DynamicAABBTree::UpdateData(unsigned int ID)
 	{
+		std::cout << "Updating AABTree Data: " << ID << std::endl; 
+		std::cout << std::endl;
+
 		Node* node = FindNode(ID);
 
 		auto& AABB = engine->world.GetComponent<AABBComponent>(ID);
