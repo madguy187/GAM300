@@ -101,6 +101,10 @@ namespace Eclipse
 
     DEFINE_META(MeshComponent)
     {
+        ADD_MEMBER(MeshName);
+        ADD_MEMBER(Diffuse);
+        ADD_MEMBER(Specular);
+        ADD_MEMBER(Ambient);
         ADD_MEMBER(color);
         ADD_MEMBER(textureIdx);
         ADD_MEMBER(isQuad);
@@ -219,12 +223,14 @@ namespace Eclipse
     //DEFINE_META_POD(std::vector<Texture>);
     //DEFINE_META_POD(std::map<unsigned int, std::vector<Texture>>);
     DEFINE_META_POD(std::vector<Entity>);
+    DEFINE_META_POD(MeshComponent::MeshNameType);
     DEFINE_META_POD(ECVec2);
     DEFINE_META_POD(ECVec3);
     DEFINE_META_POD(ECVec4);
     //DEFINE_META_POD(Mesh);
     //DEFINE_META_POD(Texture);
     DEFINE_META_POD(glm::vec3);
+    DEFINE_META_POD(glm::vec4);
     DEFINE_META_POD(glm::mat4);
     DEFINE_META_POD(CameraComponent::CameraType);
     DEFINE_META_POD(CameraComponent::ProjectionType);

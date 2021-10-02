@@ -140,6 +140,22 @@ namespace Eclipse
 			}
 		}
 
+		template <typename T, size_t N>
+		inline void ReadAttributeFromElement(const std::string& att_name, std::array<T, N>& att_data)
+		{
+			std::string str = GetAttributeValue("size");
+			size_t size = lexical_cast<size_t>(str);
+			std::string name{ "Member" };
+			for (size_t i = 0; i < size; ++i)
+			{
+				StartElement(name, true, i);
+				T data;
+				ReadAttributeFromElement("value", data);
+				att_data[i] = data;
+				CloseElement();
+			}
+		}
+
 		void IterateChildrenOfElement();
 
 		bool LoadXML(const std::string& savePath);

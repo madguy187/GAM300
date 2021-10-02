@@ -97,6 +97,139 @@
             <TextureRef value="brick" />
         </MaterialComponent>
         <MeshComponent>
+            <MeshName size="128">
+                <Member0 value="Ì" />
+                <Member1 value="Ì" />
+                <Member2 value="Ì" />
+                <Member3 value="Ì" />
+                <Member4 value="Ì" />
+                <Member5 value="Ì" />
+                <Member6 value="Ì" />
+                <Member7 value="Ì" />
+                <Member8 value="Ì" />
+                <Member9 value="Ì" />
+                <Member10 value="Ì" />
+                <Member11 value="Ì" />
+                <Member12 value="Ì" />
+                <Member13 value="Ì" />
+                <Member14 value="Ì" />
+                <Member15 value="Ì" />
+                <Member16 value="Ì" />
+                <Member17 value="Ì" />
+                <Member18 value="Ì" />
+                <Member19 value="Ì" />
+                <Member20 value="Ì" />
+                <Member21 value="Ì" />
+                <Member22 value="Ì" />
+                <Member23 value="Ì" />
+                <Member24 value="Ì" />
+                <Member25 value="Ì" />
+                <Member26 value="Ì" />
+                <Member27 value="Ì" />
+                <Member28 value="Ì" />
+                <Member29 value="Ì" />
+                <Member30 value="Ì" />
+                <Member31 value="Ì" />
+                <Member32 value="Ì" />
+                <Member33 value="Ì" />
+                <Member34 value="Ì" />
+                <Member35 value="Ì" />
+                <Member36 value="Ì" />
+                <Member37 value="Ì" />
+                <Member38 value="Ì" />
+                <Member39 value="Ì" />
+                <Member40 value="Ì" />
+                <Member41 value="Ì" />
+                <Member42 value="Ì" />
+                <Member43 value="Ì" />
+                <Member44 value="Ì" />
+                <Member45 value="Ì" />
+                <Member46 value="Ì" />
+                <Member47 value="Ì" />
+                <Member48 value="Ì" />
+                <Member49 value="Ì" />
+                <Member50 value="Ì" />
+                <Member51 value="Ì" />
+                <Member52 value="Ì" />
+                <Member53 value="Ì" />
+                <Member54 value="Ì" />
+                <Member55 value="Ì" />
+                <Member56 value="Ì" />
+                <Member57 value="Ì" />
+                <Member58 value="Ì" />
+                <Member59 value="Ì" />
+                <Member60 value="Ì" />
+                <Member61 value="Ì" />
+                <Member62 value="Ì" />
+                <Member63 value="Ì" />
+                <Member64 value="Ì" />
+                <Member65 value="Ì" />
+                <Member66 value="Ì" />
+                <Member67 value="Ì" />
+                <Member68 value="Ì" />
+                <Member69 value="Ì" />
+                <Member70 value="Ì" />
+                <Member71 value="Ì" />
+                <Member72 value="Ì" />
+                <Member73 value="Ì" />
+                <Member74 value="Ì" />
+                <Member75 value="Ì" />
+                <Member76 value="Ì" />
+                <Member77 value="Ì" />
+                <Member78 value="Ì" />
+                <Member79 value="Ì" />
+                <Member80 value="Ì" />
+                <Member81 value="Ì" />
+                <Member82 value="Ì" />
+                <Member83 value="Ì" />
+                <Member84 value="Ì" />
+                <Member85 value="Ì" />
+                <Member86 value="Ì" />
+                <Member87 value="Ì" />
+                <Member88 value="Ì" />
+                <Member89 value="Ì" />
+                <Member90 value="Ì" />
+                <Member91 value="Ì" />
+                <Member92 value="Ì" />
+                <Member93 value="Ì" />
+                <Member94 value="Ì" />
+                <Member95 value="Ì" />
+                <Member96 value="Ì" />
+                <Member97 value="Ì" />
+                <Member98 value="Ì" />
+                <Member99 value="Ì" />
+                <Member100 value="Ì" />
+                <Member101 value="Ì" />
+                <Member102 value="Ì" />
+                <Member103 value="Ì" />
+                <Member104 value="Ì" />
+                <Member105 value="Ì" />
+                <Member106 value="Ì" />
+                <Member107 value="Ì" />
+                <Member108 value="Ì" />
+                <Member109 value="Ì" />
+                <Member110 value="Ì" />
+                <Member111 value="Ì" />
+                <Member112 value="Ì" />
+                <Member113 value="Ì" />
+                <Member114 value="Ì" />
+                <Member115 value="Ì" />
+                <Member116 value="Ì" />
+                <Member117 value="Ì" />
+                <Member118 value="Ì" />
+                <Member119 value="Ì" />
+                <Member120 value="Ì" />
+                <Member121 value="Ì" />
+                <Member122 value="Ì" />
+                <Member123 value="Ì" />
+                <Member124 value="Ì" />
+                <Member125 value="Ì" />
+                <Member126 value="Ì" />
+                <Member127 value="Ì" />
+            </MeshName>
+            <Diffuse x="0" y="0" z="0" w="0" />
+            <Specular x="0" y="0" z="0" w="0" />
+            <Ambient x="0" y="0" z="0" w="0" />
             <color x="1" y="1" z="1" />
             <textureIdx x="0" y="0" />
             <isQuad value="false" />
@@ -111,14 +244,14 @@
             <transparency value="1" />
         </MeshComponent>
         <TransformComponent>
-            <position x="11.74" y="0" z="18.9183" />
+            <position x="0" y="0" z="0" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
         <AABBComponent>
-            <center x="11.74" y="0" z="18.9183" />
-            <Min x="9.24" y="-2.5" z="16.4183" />
-            <Max x="14.24" y="2.5" z="21.4183" />
+            <center x="0" y="0" z="0" />
+            <Min x="-2.5" y="-2.5" z="-2.5" />
+            <Max x="2.5" y="2.5" z="2.5" />
         </AABBComponent>
     </Entity_2>
 </Entities>

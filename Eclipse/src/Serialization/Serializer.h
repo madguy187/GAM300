@@ -122,7 +122,7 @@ namespace Eclipse
 				CloseElement();
 			}
 		}
-
+        
         template <typename T, size_t N>
         inline void AddAttributeToElement(const std::string& att_name, const Vector<T, N>& att_data)
         {
@@ -165,6 +165,20 @@ namespace Eclipse
             for (size_t i = 0; i < N; ++i)
             {
                 AddAttributeToElement<T>(vecNames[i], att_data[i]);
+            }
+        }
+
+        template <typename T, size_t N>
+        inline void AddAttributeToElement(const std::string& att_name, const std::array<T, N>& att_data)
+        {
+            AddAttributeToElement("size", N);
+            size_t counter = 0;
+            std::string name{ "Member" };
+            for (const T& data : att_data)
+            {
+                StartElement(name, true, counter++);
+                AddAttributeToElement<T>("value", data);
+                CloseElement();
             }
         }
     };
