@@ -115,7 +115,7 @@ namespace Eclipse
 
 		mono_image_close(APIImage);
 		APIImage = nullptr;
-
+		
 		UnloadDomain();
 	}
 
@@ -145,10 +145,10 @@ namespace Eclipse
 
 	void MonoManager::Terminate()
 	{
-		//if (ScriptImage)
+		if (ScriptImage)
 			mono_image_close(ScriptImage);
 
-		//if (APIImage)
+		if (APIImage)
 			mono_image_close(APIImage);
 			
 		mono_jit_cleanup(domain);
