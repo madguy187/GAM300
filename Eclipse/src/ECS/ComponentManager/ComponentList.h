@@ -46,7 +46,8 @@ namespace Eclipse
 		RigidBodyComponent,
 		ScriptComponent,
 		SpotLightComponent,
-		TransformComponent
+		TransformComponent,
+		PrefabComponent
 	>;
 
 	template <typename ...Types>

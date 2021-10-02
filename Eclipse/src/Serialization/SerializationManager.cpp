@@ -71,12 +71,13 @@ namespace Eclipse
 		//SerializeComponent<TextureComponent>(w, ent);
 
 		SerializeComponent<LightComponent>(w, ent);
+
+		SerializeComponent<PrefabComponent>(w, ent);
 	}
 
 	bool SerializationManager::DeserializeAllComponents(World& w, const Entity& ent)
 	{
 		bool isSuccess = false;
-		World& w = engine->world;
 
 		if (DeserializeComponent<EntityComponent>(w, ent) &&
 			DeserializeComponent<TransformComponent>(w, ent) &&
@@ -88,7 +89,8 @@ namespace Eclipse
 			DeserializeComponent<PointLightComponent>(w, ent) &&
 			DeserializeComponent<SpotLightComponent>(w, ent) &&
 			DeserializeComponent<DirectionalLightComponent>(w, ent) &&
-			DeserializeComponent<LightComponent>(w, ent))
+			DeserializeComponent<LightComponent>(w, ent) &&
+			DeserializeComponent<PrefabComponent>(w, ent))
 		{
 			if (w.CheckComponent<CameraComponent>(ent))
 			{

@@ -42,8 +42,8 @@ namespace Eclipse
 				copyQueue.push(child);
 			}
 			*/
-			Entity newEnt = w.CopyEntity(prefabW, entity, all_component_list);
-			contents.push_back(newEnt);
+			/*Entity newEnt = w.CopyEntity(prefabW, entity, all_component_list);
+			contents.push_back(newEnt);*/
 		}
 
 		auto& prefabComp = w.GetComponent<PrefabComponent>(ent);
