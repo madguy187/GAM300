@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{3824E0A7-24C6-0A7E-0D81-1ED2F9C191CE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\ASSModels">
+      <UniqueIdentifier>{524256D1-3E3B-7523-676D-5AA853C5542F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\ASSModels\Bed">
+      <UniqueIdentifier>{4C078E3C-3896-1706-E1B4-2B01CD2228AC}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Audio">
       <UniqueIdentifier>{9718D90C-032D-01BE-CCAE-A41D3882FDEE}</UniqueIdentifier>
     </Filter>
@@ -37,11 +46,32 @@
     <Filter Include="ECS\SystemManager\Systems\System\Editor">
       <UniqueIdentifier>{20CA7CC1-8C59-3EAC-9555-1FC4016479B8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\FileWatchSystem">
+      <UniqueIdentifier>{15C0BC50-0169-2480-2AFF-3FFF16073FC1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\GridSystem">
+      <UniqueIdentifier>{C4A2C3BF-3008-5746-B9E0-F81E25454CB5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\LightingSystem">
+      <UniqueIdentifier>{D405CA0A-4041-2ACE-4936-A75DB5F0AEFE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\MaterialSystem">
+      <UniqueIdentifier>{ADCFCD30-190B-2EF4-2200-AB838EBAB224}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\MonoSystem">
       <UniqueIdentifier>{377B9766-A3E0-2AED-2CB9-CCC5981D205C}</UniqueIdentifier>
     </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\ParentChild">
       <UniqueIdentifier>{0707B837-F319-B890-9C03-957D88F554DE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\ParentChild\ChildSystem">
+      <UniqueIdentifier>{1F03CB27-0BD8-12DB-3487-52D720BB20F2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\ParentChild\ParentSystem">
+      <UniqueIdentifier>{E59692BB-5109-D5D7-9A9D-0A5C064F9FD0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\RenderSystem">
+      <UniqueIdentifier>{BE95B25F-2A06-B5D8-F324-2F615F54EDD9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Editor">
       <UniqueIdentifier>{8C1A20B0-78BC-4A86-6177-5EDA4DB8D1D6}</UniqueIdentifier>
@@ -126,6 +156,9 @@
     </Filter>
     <Filter Include="Graphics\Debugging">
       <UniqueIdentifier>{51443AC7-3D28-FB1C-A688-F56F928BE59E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\FileWatch">
+      <UniqueIdentifier>{5CAA893C-488E-4A92-B1EE-44E59DF13414}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\FrameBuffer">
       <UniqueIdentifier>{2AC125F8-1650-AFC1-BF6E-C3BCABDCBF67}</UniqueIdentifier>
@@ -226,6 +259,120 @@
     <Filter Include="Time">
       <UniqueIdentifier>{74EC8C7C-6023-8E0D-0910-7410F5250A0F}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tracy">
+      <UniqueIdentifier>{88372F0E-F44B-57BF-BDCD-FA1E29A153F0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\capture">
+      <UniqueIdentifier>{AB8DDE7A-174E-5AB1-E088-A32E4C089F8D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\capture\src">
+      <UniqueIdentifier>{42298FBD-AE3F-8D53-F7B6-1875630C5EDB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\client">
+      <UniqueIdentifier>{B6F2C11B-A255-51C0-4BDB-8976371D1D43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\common">
+      <UniqueIdentifier>{E08FFA1B-CCF2-89C0-7578-C27661BA5543}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\csvexport">
+      <UniqueIdentifier>{C5116FF4-319D-DCB8-3AAE-5FADA6B838B9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\csvexport\src">
+      <UniqueIdentifier>{5C2A98D5-C88B-75E3-51F9-BB95BD59ACA2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\examples">
+      <UniqueIdentifier>{367E3076-224C-247C-0BE0-94A2F74C00E1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\examples\OpenCLVectorAdd">
+      <UniqueIdentifier>{82B8FA40-6EDE-C4A7-5724-4A7343E9E973}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\examples\ToyPathTracer">
+      <UniqueIdentifier>{0F72BFD7-FB2C-AF83-A4E4-27CE907EF913}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\examples\ToyPathTracer\Source">
+      <UniqueIdentifier>{2FB92EDF-9B72-9989-24D2-B363908A4FF9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\examples\ToyPathTracer\Source\enkiTS">
+      <UniqueIdentifier>{0CDBE747-F842-AE15-61AE-C22B4D35C501}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\examples\ToyPathTracer\Windows">
+      <UniqueIdentifier>{49BB69EA-35A2-2BE2-DEF2-91FFCAB8A448}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\extra">
+      <UniqueIdentifier>{FBA776D2-675D-EFC7-F051-E99E5C06E6CB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\extra\uarch">
+      <UniqueIdentifier>{9D431080-095A-0E16-52D1-9937BE26DF9D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\getopt">
+      <UniqueIdentifier>{AA1C9E24-967F-2DC9-3F05-667F2B47F94B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\imgui">
+      <UniqueIdentifier>{F2CAB8D2-5E80-31C8-E774-2B9F532928CC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\imgui\misc">
+      <UniqueIdentifier>{0D85D7AF-F97D-F601-22B0-DB860E08D60D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\imgui\misc\freetype">
+      <UniqueIdentifier>{608227E3-CC44-5B6D-15F5-E9F981F6334B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\import-chrome">
+      <UniqueIdentifier>{DDC6428E-4928-209C-D295-664E3EF6565B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\import-chrome\src">
+      <UniqueIdentifier>{74ABF0ED-E0E2-3885-E9EC-9CA855A35F7E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\libbacktrace">
+      <UniqueIdentifier>{6EEBA404-5ACF-655A-C32F-60ADAF3250DC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\nfd">
+      <UniqueIdentifier>{CF62AB7A-3BCD-5FF1-840B-1197F0B43D46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\profiler">
+      <UniqueIdentifier>{FAED4CEF-E6BB-40F5-CF4F-B11BBBBC1C5A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\profiler\libs">
+      <UniqueIdentifier>{933E2280-FF9F-FF8D-880D-4640F46D364D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\profiler\libs\gl3w">
+      <UniqueIdentifier>{9F1FACDF-8B44-FB5F-B48F-E0EFA013FA7D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\profiler\libs\gl3w\GL">
+      <UniqueIdentifier>{A1C083E1-0DCE-B1C7-96B4-ADB202C17D7E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\profiler\libs\gl3w\KHR">
+      <UniqueIdentifier>{93E5FB11-7FA0-EBBD-2858-640814F2354E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\profiler\src">
+      <UniqueIdentifier>{1119C387-FDFC-83DD-665D-7E3052606E5F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\server">
+      <UniqueIdentifier>{CE079B40-BA6A-2AE5-63F0-629B4F32F667}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\test">
+      <UniqueIdentifier>{17051BD0-03BD-5C1D-6CC4-3579589BF70D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\update">
+      <UniqueIdentifier>{DA610446-C6C4-93EA-6F4A-CCA05B8C5F6D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\update\src">
+      <UniqueIdentifier>{F17CD192-DD75-F0E4-06A8-D569F2FFCFF0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\zstd">
+      <UniqueIdentifier>{FC8A1ED0-E842-601D-514A-39793D21FB0D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\zstd\common">
+      <UniqueIdentifier>{D4F8E2E0-400F-E176-8986-6C98F5DBB1FE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\zstd\compress">
+      <UniqueIdentifier>{7755BCA5-E3B6-99B3-6C24-E065D884D072}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\zstd\decompress">
+      <UniqueIdentifier>{80B2E5EA-EC1E-A1E5-B512-3943213EC34D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tracy\zstd\dictBuilder">
+      <UniqueIdentifier>{16BF1112-02B9-3A64-EB25-D174D7BEA0D0}</UniqueIdentifier>
+    </Filter>
     <Filter Include="TypeID">
       <UniqueIdentifier>{54109DD4-40B2-C7AA-296D-DBFE15AE4EFB}</UniqueIdentifier>
     </Filter>
@@ -247,6 +394,9 @@
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\ChildComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\CollisionComponent.h">
@@ -276,7 +426,7 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\ModeLInfoComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\ComponentManager\Components\ParentChildComponent.h">
+    <ClInclude Include="src\ECS\ComponentManager\Components\ParentComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\PointLightComponent.h">
@@ -312,17 +462,35 @@
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.h">
       <Filter>ECS\SystemManager\Systems\System\Editor</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\FileWatchSystem\FileWatchSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\FileWatchSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\GridSystem\GridSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\GridSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\LightingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem\MaterialSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\MaterialSystem</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.h">
       <Filter>ECS\SystemManager\Systems\System\MonoSystem</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.h">
-      <Filter>ECS\SystemManager\Systems\System\ParentChild</Filter>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChild\ChildSystem\ChildSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\ParentChild\ChildSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentSystem\ParentSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\ParentChild\ParentSystem</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem\RenderSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\RenderSystem</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\System.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
@@ -441,6 +609,9 @@
     </ClInclude>
     <ClInclude Include="src\Graphics\Debugging\DebugRenderingManager.h">
       <Filter>Graphics\Debugging</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\FileWatch\FileWatch.h">
+      <Filter>Graphics\FileWatch</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\FrameBuffer\FrameBuffer.h">
       <Filter>Graphics\FrameBuffer</Filter>
@@ -694,19 +865,477 @@
     <ClInclude Include="src\Time\Clock.h">
       <Filter>Time</Filter>
     </ClInclude>
+    <ClInclude Include="src\Tracy\Tracy.hpp">
+      <Filter>Tracy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\TracyC.h">
+      <Filter>Tracy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\TracyD3D11.hpp">
+      <Filter>Tracy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\TracyD3D12.hpp">
+      <Filter>Tracy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\TracyLua.hpp">
+      <Filter>Tracy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\TracyOpenCL.hpp">
+      <Filter>Tracy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\TracyOpenGL.hpp">
+      <Filter>Tracy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\TracyVulkan.hpp">
+      <Filter>Tracy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracyArmCpuTable.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracyCallstack.h">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracyCallstack.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracyDxt1.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracyFastVector.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracyLock.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracyProfiler.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracyRingBuffer.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracyScoped.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracySysTime.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracySysTrace.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracySysTracePayload.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracyThread.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\tracy_concurrentqueue.h">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\tracy_rpmalloc.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\common\TracyAlign.hpp">
+      <Filter>Tracy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\common\TracyAlloc.hpp">
+      <Filter>Tracy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\common\TracyApi.h">
+      <Filter>Tracy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\common\TracyColor.hpp">
+      <Filter>Tracy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\common\TracyForceInline.hpp">
+      <Filter>Tracy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\common\TracyMutex.hpp">
+      <Filter>Tracy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\common\TracyProtocol.hpp">
+      <Filter>Tracy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\common\TracyQueue.hpp">
+      <Filter>Tracy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\common\TracySocket.hpp">
+      <Filter>Tracy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\common\TracySystem.hpp">
+      <Filter>Tracy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\common\tracy_lz4.hpp">
+      <Filter>Tracy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\common\tracy_lz4hc.hpp">
+      <Filter>Tracy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\examples\ToyPathTracer\Source\Config.h">
+      <Filter>Tracy\examples\ToyPathTracer\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\examples\ToyPathTracer\Source\MathSimd.h">
+      <Filter>Tracy\examples\ToyPathTracer\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\examples\ToyPathTracer\Source\Maths.h">
+      <Filter>Tracy\examples\ToyPathTracer\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\examples\ToyPathTracer\Source\Test.h">
+      <Filter>Tracy\examples\ToyPathTracer\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\examples\ToyPathTracer\Source\enkiTS\Atomics.h">
+      <Filter>Tracy\examples\ToyPathTracer\Source\enkiTS</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\examples\ToyPathTracer\Source\enkiTS\LockLessMultiReadPipe.h">
+      <Filter>Tracy\examples\ToyPathTracer\Source\enkiTS</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\examples\ToyPathTracer\Source\enkiTS\TaskScheduler.h">
+      <Filter>Tracy\examples\ToyPathTracer\Source\enkiTS</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\examples\ToyPathTracer\Source\enkiTS\TaskScheduler_c.h">
+      <Filter>Tracy\examples\ToyPathTracer\Source\enkiTS</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\examples\ToyPathTracer\Source\enkiTS\Threads.h">
+      <Filter>Tracy\examples\ToyPathTracer\Source\enkiTS</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\extra\uarch\TracyMicroArchitecture.hpp">
+      <Filter>Tracy\extra\uarch</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\getopt\getopt.h">
+      <Filter>Tracy\getopt</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\imgui\imconfig.h">
+      <Filter>Tracy\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\imgui\imgui.h">
+      <Filter>Tracy\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\imgui\imgui_internal.h">
+      <Filter>Tracy\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\imgui\imstb_rectpack.h">
+      <Filter>Tracy\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\imgui\imstb_textedit.h">
+      <Filter>Tracy\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\imgui\imstb_truetype.h">
+      <Filter>Tracy\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\imgui\misc\freetype\imgui_freetype.h">
+      <Filter>Tracy\imgui\misc\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\import-chrome\src\json.hpp">
+      <Filter>Tracy\import-chrome\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\libbacktrace\backtrace.hpp">
+      <Filter>Tracy\libbacktrace</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\libbacktrace\config.h">
+      <Filter>Tracy\libbacktrace</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\libbacktrace\filenames.hpp">
+      <Filter>Tracy\libbacktrace</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\libbacktrace\internal.hpp">
+      <Filter>Tracy\libbacktrace</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\nfd\common.h">
+      <Filter>Tracy\nfd</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\nfd\nfd.h">
+      <Filter>Tracy\nfd</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\nfd\nfd_common.h">
+      <Filter>Tracy\nfd</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\profiler\libs\gl3w\GL\gl3w.h">
+      <Filter>Tracy\profiler\libs\gl3w\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\profiler\libs\gl3w\GL\glcorearb.h">
+      <Filter>Tracy\profiler\libs\gl3w\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\profiler\libs\gl3w\KHR\khrplatform.h">
+      <Filter>Tracy\profiler\libs\gl3w\KHR</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\profiler\src\Arimo.hpp">
+      <Filter>Tracy\profiler\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\profiler\src\Cousine.hpp">
+      <Filter>Tracy\profiler\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\profiler\src\FontAwesomeSolid.hpp">
+      <Filter>Tracy\profiler\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\profiler\src\HttpRequest.hpp">
+      <Filter>Tracy\profiler\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\profiler\src\NativeWindow.hpp">
+      <Filter>Tracy\profiler\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\profiler\src\ResolvService.hpp">
+      <Filter>Tracy\profiler\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\profiler\src\icon.hpp">
+      <Filter>Tracy\profiler\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\profiler\src\imgui_impl_glfw.h">
+      <Filter>Tracy\profiler\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\profiler\src\imgui_impl_opengl3.h">
+      <Filter>Tracy\profiler\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\profiler\src\stb_image.h">
+      <Filter>Tracy\profiler\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\IconsFontAwesome5.h">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyBadVersion.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyBuzzAnim.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyCharUtil.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyColor.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyDecayValue.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyEvent.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyFileHeader.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyFileRead.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyFileWrite.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyFilesystem.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyImGui.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyMemory.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyMicroArchitecture.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyMmap.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyMouse.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyPopcnt.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyPrint.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyShortPtr.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracySlab.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracySort.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracySortedVector.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracySourceContents.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracySourceTokenizer.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracySourceView.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyStackFrames.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyStorage.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyStringDiscovery.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyTaskDispatch.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyTexture.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyTextureCompression.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyThreadCompress.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyUserData.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyVarArray.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyVector.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyVersion.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyView.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyViewData.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyWorker.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\TracyYield.hpp">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\tracy_pdqsort.h">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\tracy_robin_hood.h">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\tracy_xxh3.h">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\server\tracy_xxhash.h">
+      <Filter>Tracy\server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\test\stb_image.h">
+      <Filter>Tracy\test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\common\bitstream.h">
+      <Filter>Tracy\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\common\compiler.h">
+      <Filter>Tracy\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\common\cpu.h">
+      <Filter>Tracy\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\common\debug.h">
+      <Filter>Tracy\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\common\error_private.h">
+      <Filter>Tracy\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\common\fse.h">
+      <Filter>Tracy\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\common\huf.h">
+      <Filter>Tracy\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\common\mem.h">
+      <Filter>Tracy\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\common\pool.h">
+      <Filter>Tracy\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\common\threading.h">
+      <Filter>Tracy\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\common\xxhash.h">
+      <Filter>Tracy\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\common\zstd_deps.h">
+      <Filter>Tracy\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\common\zstd_internal.h">
+      <Filter>Tracy\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\common\zstd_trace.h">
+      <Filter>Tracy\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\compress\hist.h">
+      <Filter>Tracy\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\compress\zstd_compress_internal.h">
+      <Filter>Tracy\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\compress\zstd_compress_literals.h">
+      <Filter>Tracy\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\compress\zstd_compress_sequences.h">
+      <Filter>Tracy\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\compress\zstd_compress_superblock.h">
+      <Filter>Tracy\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\compress\zstd_cwksp.h">
+      <Filter>Tracy\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\compress\zstd_double_fast.h">
+      <Filter>Tracy\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\compress\zstd_fast.h">
+      <Filter>Tracy\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\compress\zstd_lazy.h">
+      <Filter>Tracy\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\compress\zstd_ldm.h">
+      <Filter>Tracy\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\compress\zstd_ldm_geartab.h">
+      <Filter>Tracy\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\compress\zstd_opt.h">
+      <Filter>Tracy\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\compress\zstdmt_compress.h">
+      <Filter>Tracy\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\decompress\zstd_ddict.h">
+      <Filter>Tracy\zstd\decompress</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\decompress\zstd_decompress_block.h">
+      <Filter>Tracy\zstd\decompress</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\decompress\zstd_decompress_internal.h">
+      <Filter>Tracy\zstd\decompress</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\dictBuilder\cover.h">
+      <Filter>Tracy\zstd\dictBuilder</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\dictBuilder\divsufsort.h">
+      <Filter>Tracy\zstd\dictBuilder</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\zdict.h">
+      <Filter>Tracy\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\zstd.h">
+      <Filter>Tracy\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\zstd\zstd_errors.h">
+      <Filter>Tracy\zstd</Filter>
+    </ClInclude>
     <ClInclude Include="src\TypeID\TypeID.h">
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\Tracy\Tracy.hpp" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\FileWatchSystem\FileWatchSystem.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\GridSystem\GridSystem.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem\MaterialSystem.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem\RenderSystem.h" />
-    <ClInclude Include="src\Graphics\FileWatch\FileWatch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Assets\ASSModels\Bed\AssimpModel.cpp">
+      <Filter>Assets\ASSModels\Bed</Filter>
+    </ClCompile>
     <ClCompile Include="src\Audio\AudioManager.cpp">
       <Filter>Audio</Filter>
     </ClCompile>
@@ -737,17 +1366,35 @@
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\Editor</Filter>
     </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\FileWatchSystem\FileWatchSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\FileWatchSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\GridSystem\GridSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\GridSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\LightingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem\MaterialSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\MaterialSystem</Filter>
+    </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\MonoSystem</Filter>
     </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System\ParentChild</Filter>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChild\ChildSystem\ChildSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\ParentChild\ChildSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentSystem\ParentSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\ParentChild\ParentSystem</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem\RenderSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\RenderSystem</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\World.cpp">
       <Filter>ECS</Filter>
@@ -835,6 +1482,9 @@
     </ClCompile>
     <ClCompile Include="src\Graphics\Debugging\DebugRenderingManager.cpp">
       <Filter>Graphics\Debugging</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\FileWatch\FileWatch.cpp">
+      <Filter>Graphics\FileWatch</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\FrameBuffer\FrameBuffer.cpp">
       <Filter>Graphics\FrameBuffer</Filter>
@@ -1046,16 +1696,216 @@
     <ClCompile Include="src\Time\Clock.cpp">
       <Filter>Time</Filter>
     </ClCompile>
+    <ClCompile Include="src\Tracy\TracyClient.cpp">
+      <Filter>Tracy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\capture\src\capture.cpp">
+      <Filter>Tracy\capture\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\client\TracyCallstack.cpp">
+      <Filter>Tracy\client</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\client\TracyDxt1.cpp">
+      <Filter>Tracy\client</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\client\TracyProfiler.cpp">
+      <Filter>Tracy\client</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\client\TracySysTime.cpp">
+      <Filter>Tracy\client</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\client\TracySysTrace.cpp">
+      <Filter>Tracy\client</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\client\tracy_rpmalloc.cpp">
+      <Filter>Tracy\client</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\common\TracySocket.cpp">
+      <Filter>Tracy\common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\common\TracySystem.cpp">
+      <Filter>Tracy\common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\common\tracy_lz4.cpp">
+      <Filter>Tracy\common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\common\tracy_lz4hc.cpp">
+      <Filter>Tracy\common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\csvexport\src\csvexport.cpp">
+      <Filter>Tracy\csvexport\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\examples\OpenCLVectorAdd\OpenCLVectorAdd.cpp">
+      <Filter>Tracy\examples\OpenCLVectorAdd</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\examples\ToyPathTracer\Source\Maths.cpp">
+      <Filter>Tracy\examples\ToyPathTracer\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\examples\ToyPathTracer\Source\Test.cpp">
+      <Filter>Tracy\examples\ToyPathTracer\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\examples\ToyPathTracer\Source\enkiTS\TaskScheduler.cpp">
+      <Filter>Tracy\examples\ToyPathTracer\Source\enkiTS</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\examples\ToyPathTracer\Source\enkiTS\TaskScheduler_c.cpp">
+      <Filter>Tracy\examples\ToyPathTracer\Source\enkiTS</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\examples\ToyPathTracer\Windows\TestWin.cpp">
+      <Filter>Tracy\examples\ToyPathTracer\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\extra\color.cpp">
+      <Filter>Tracy\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\extra\identify.cpp">
+      <Filter>Tracy\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\extra\uarch\uarch.cpp">
+      <Filter>Tracy\extra\uarch</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\extra\version.cpp">
+      <Filter>Tracy\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\imgui\imgui.cpp">
+      <Filter>Tracy\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\imgui\imgui_demo.cpp">
+      <Filter>Tracy\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\imgui\imgui_draw.cpp">
+      <Filter>Tracy\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\imgui\imgui_tables.cpp">
+      <Filter>Tracy\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\imgui\imgui_widgets.cpp">
+      <Filter>Tracy\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\imgui\misc\freetype\imgui_freetype.cpp">
+      <Filter>Tracy\imgui\misc\freetype</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\import-chrome\src\import-chrome.cpp">
+      <Filter>Tracy\import-chrome\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\libbacktrace\alloc.cpp">
+      <Filter>Tracy\libbacktrace</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\libbacktrace\dwarf.cpp">
+      <Filter>Tracy\libbacktrace</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\libbacktrace\elf.cpp">
+      <Filter>Tracy\libbacktrace</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\libbacktrace\fileline.cpp">
+      <Filter>Tracy\libbacktrace</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\libbacktrace\macho.cpp">
+      <Filter>Tracy\libbacktrace</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\libbacktrace\mmapio.cpp">
+      <Filter>Tracy\libbacktrace</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\libbacktrace\posix.cpp">
+      <Filter>Tracy\libbacktrace</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\libbacktrace\sort.cpp">
+      <Filter>Tracy\libbacktrace</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\libbacktrace\state.cpp">
+      <Filter>Tracy\libbacktrace</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\nfd\nfd_win.cpp">
+      <Filter>Tracy\nfd</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\profiler\src\HttpRequest.cpp">
+      <Filter>Tracy\profiler\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\profiler\src\NativeWindow.cpp">
+      <Filter>Tracy\profiler\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\profiler\src\ResolvService.cpp">
+      <Filter>Tracy\profiler\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\profiler\src\imgui_impl_glfw.cpp">
+      <Filter>Tracy\profiler\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\profiler\src\imgui_impl_opengl3.cpp">
+      <Filter>Tracy\profiler\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\profiler\src\main.cpp">
+      <Filter>Tracy\profiler\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\profiler\src\winmain.cpp">
+      <Filter>Tracy\profiler\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\profiler\src\winmainArchDiscovery.cpp">
+      <Filter>Tracy\profiler\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\server\TracyBadVersion.cpp">
+      <Filter>Tracy\server</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\server\TracyColor.cpp">
+      <Filter>Tracy\server</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\server\TracyFilesystem.cpp">
+      <Filter>Tracy\server</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\server\TracyMemory.cpp">
+      <Filter>Tracy\server</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\server\TracyMicroArchitecture.cpp">
+      <Filter>Tracy\server</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\server\TracyMmap.cpp">
+      <Filter>Tracy\server</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\server\TracyMouse.cpp">
+      <Filter>Tracy\server</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\server\TracyPrint.cpp">
+      <Filter>Tracy\server</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\server\TracySourceContents.cpp">
+      <Filter>Tracy\server</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\server\TracySourceTokenizer.cpp">
+      <Filter>Tracy\server</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\server\TracySourceView.cpp">
+      <Filter>Tracy\server</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\server\TracyStackFrames.cpp">
+      <Filter>Tracy\server</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\server\TracyStorage.cpp">
+      <Filter>Tracy\server</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\server\TracyTaskDispatch.cpp">
+      <Filter>Tracy\server</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\server\TracyTexture.cpp">
+      <Filter>Tracy\server</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\server\TracyTextureCompression.cpp">
+      <Filter>Tracy\server</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\server\TracyThreadCompress.cpp">
+      <Filter>Tracy\server</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\server\TracyUserData.cpp">
+      <Filter>Tracy\server</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\server\TracyView.cpp">
+      <Filter>Tracy\server</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\server\TracyWorker.cpp">
+      <Filter>Tracy\server</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\test\test.cpp">
+      <Filter>Tracy\test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\update\src\update.cpp">
+      <Filter>Tracy\update\src</Filter>
+    </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\Tracy\TracyClient.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\FileWatchSystem\FileWatchSystem.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\GridSystem\GridSystem.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem\MaterialSystem.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem\RenderSystem.cpp" />
-    <ClCompile Include="src\Graphics\FileWatch\FileWatch.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\Assets\Compilers\GeometryFile\Geometry.eclipse" />
   </ItemGroup>
 </Project>

@@ -80,9 +80,9 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <DisableSpecificWarnings>4302;4311;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;_CRT_SECURE_NO_WARNINGS;ENGINE_DEBUG;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;_CRT_SECURE_NO_WARNINGS;ENGINE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\Dep;src;..\Dep\RAPIDJSON\rapidjson-master\include\rapidjson;..\Dep\GLEW\include\GL;..\Dep\STB\stb-master;..\Dep\GLM\glm;..\Dep\GLFW\include\GLFW;..\Dep\GLM\glm\gtc;..\Dep\GLM\glm\gtx;..\Dep\GLEW\lib\Release\x64;..\Dep\spdlog\include;src\Graphics\Still_Cleaning;src\Graphics\RendererAPI;src\Graphics\Parser;src\Graphics\ModelFactory\BasicPrimitives;src\Graphics\ModelFactory;src\Graphics\FrameBuffer;src\Graphics\OpenGL;src\ImGui\Vendor;src\ImGui\Vendor\ImGuizmo;..\Dep\PhysX\include;..\Dep\PhysX\include\characterkinematic;..\Dep\PhysX\include\collision;..\Dep\PhysX\include\common;..\Dep\PhysX\include\cooking;..\Dep\PhysX\include\cudamanager;..\Dep\PhysX\include\extensions;..\Dep\PhysX\include\filebuf;..\Dep\PhysX\include\foundation;..\Dep\PhysX\include\geometry;..\Dep\PhysX\include\geomutils;..\Dep\PhysX\include\gpu;..\Dep\PhysX\include\pvd;..\Dep\PhysX\include\solver;..\Dep\PhysX\include\task;..\Dep\PhysX\include\vehicle;..\Dep\mono\include\mono-2.0;..\Dep\ASSIMP\include\assimp;..\Dep\ASSIMP;..\Dep\Fmod\core\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -175,6 +175,7 @@ IF EXIST ..\Dep\Fmod\core\lib\x64\fmodstudio64.dll\ (xcopy /Q /E /Y /I ..\Dep\Fm
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\ChildComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\CollisionComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentArray.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ComponentArray\ComponentBase.h" />
@@ -184,7 +185,7 @@ IF EXIST ..\Dep\Fmod\core\lib\x64\fmodstudio64.dll\ (xcopy /Q /E /Y /I ..\Dep\Fm
     <ClInclude Include="src\ECS\ComponentManager\Components\MaterialComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\MeshComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ModeLInfoComponent.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\ParentChildComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\ParentComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\PointLightComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ScriptComponent.h" />
@@ -201,7 +202,8 @@ IF EXIST ..\Dep\Fmod\core\lib\x64\fmodstudio64.dll\ (xcopy /Q /E /Y /I ..\Dep\Fm
     <ClInclude Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem\MaterialSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChild\ChildSystem\ChildSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentSystem\ParentSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem\RenderSystem.h" />
@@ -331,10 +333,164 @@ IF EXIST ..\Dep\Fmod\core\lib\x64\fmodstudio64.dll\ (xcopy /Q /E /Y /I ..\Dep\Fm
     <ClInclude Include="src\SparseSet\SparseSet.hpp" />
     <ClInclude Include="src\Time\Clock.h" />
     <ClInclude Include="src\Tracy\Tracy.hpp" />
+    <ClInclude Include="src\Tracy\TracyC.h" />
+    <ClInclude Include="src\Tracy\TracyD3D11.hpp" />
+    <ClInclude Include="src\Tracy\TracyD3D12.hpp" />
+    <ClInclude Include="src\Tracy\TracyLua.hpp" />
+    <ClInclude Include="src\Tracy\TracyOpenCL.hpp" />
+    <ClInclude Include="src\Tracy\TracyOpenGL.hpp" />
+    <ClInclude Include="src\Tracy\TracyVulkan.hpp" />
+    <ClInclude Include="src\Tracy\client\TracyArmCpuTable.hpp" />
+    <ClInclude Include="src\Tracy\client\TracyCallstack.h" />
+    <ClInclude Include="src\Tracy\client\TracyCallstack.hpp" />
+    <ClInclude Include="src\Tracy\client\TracyDxt1.hpp" />
+    <ClInclude Include="src\Tracy\client\TracyFastVector.hpp" />
+    <ClInclude Include="src\Tracy\client\TracyLock.hpp" />
+    <ClInclude Include="src\Tracy\client\TracyProfiler.hpp" />
+    <ClInclude Include="src\Tracy\client\TracyRingBuffer.hpp" />
+    <ClInclude Include="src\Tracy\client\TracyScoped.hpp" />
+    <ClInclude Include="src\Tracy\client\TracySysTime.hpp" />
+    <ClInclude Include="src\Tracy\client\TracySysTrace.hpp" />
+    <ClInclude Include="src\Tracy\client\TracySysTracePayload.hpp" />
+    <ClInclude Include="src\Tracy\client\TracyThread.hpp" />
+    <ClInclude Include="src\Tracy\client\tracy_concurrentqueue.h" />
+    <ClInclude Include="src\Tracy\client\tracy_rpmalloc.hpp" />
+    <ClInclude Include="src\Tracy\common\TracyAlign.hpp" />
+    <ClInclude Include="src\Tracy\common\TracyAlloc.hpp" />
+    <ClInclude Include="src\Tracy\common\TracyApi.h" />
+    <ClInclude Include="src\Tracy\common\TracyColor.hpp" />
+    <ClInclude Include="src\Tracy\common\TracyForceInline.hpp" />
+    <ClInclude Include="src\Tracy\common\TracyMutex.hpp" />
+    <ClInclude Include="src\Tracy\common\TracyProtocol.hpp" />
+    <ClInclude Include="src\Tracy\common\TracyQueue.hpp" />
+    <ClInclude Include="src\Tracy\common\TracySocket.hpp" />
+    <ClInclude Include="src\Tracy\common\TracySystem.hpp" />
+    <ClInclude Include="src\Tracy\common\tracy_lz4.hpp" />
+    <ClInclude Include="src\Tracy\common\tracy_lz4hc.hpp" />
+    <ClInclude Include="src\Tracy\examples\ToyPathTracer\Source\Config.h" />
+    <ClInclude Include="src\Tracy\examples\ToyPathTracer\Source\MathSimd.h" />
+    <ClInclude Include="src\Tracy\examples\ToyPathTracer\Source\Maths.h" />
+    <ClInclude Include="src\Tracy\examples\ToyPathTracer\Source\Test.h" />
+    <ClInclude Include="src\Tracy\examples\ToyPathTracer\Source\enkiTS\Atomics.h" />
+    <ClInclude Include="src\Tracy\examples\ToyPathTracer\Source\enkiTS\LockLessMultiReadPipe.h" />
+    <ClInclude Include="src\Tracy\examples\ToyPathTracer\Source\enkiTS\TaskScheduler.h" />
+    <ClInclude Include="src\Tracy\examples\ToyPathTracer\Source\enkiTS\TaskScheduler_c.h" />
+    <ClInclude Include="src\Tracy\examples\ToyPathTracer\Source\enkiTS\Threads.h" />
+    <ClInclude Include="src\Tracy\extra\uarch\TracyMicroArchitecture.hpp" />
+    <ClInclude Include="src\Tracy\getopt\getopt.h" />
+    <ClInclude Include="src\Tracy\imgui\imconfig.h" />
+    <ClInclude Include="src\Tracy\imgui\imgui.h" />
+    <ClInclude Include="src\Tracy\imgui\imgui_internal.h" />
+    <ClInclude Include="src\Tracy\imgui\imstb_rectpack.h" />
+    <ClInclude Include="src\Tracy\imgui\imstb_textedit.h" />
+    <ClInclude Include="src\Tracy\imgui\imstb_truetype.h" />
+    <ClInclude Include="src\Tracy\imgui\misc\freetype\imgui_freetype.h" />
+    <ClInclude Include="src\Tracy\import-chrome\src\json.hpp" />
+    <ClInclude Include="src\Tracy\libbacktrace\backtrace.hpp" />
+    <ClInclude Include="src\Tracy\libbacktrace\config.h" />
+    <ClInclude Include="src\Tracy\libbacktrace\filenames.hpp" />
+    <ClInclude Include="src\Tracy\libbacktrace\internal.hpp" />
+    <ClInclude Include="src\Tracy\nfd\common.h" />
+    <ClInclude Include="src\Tracy\nfd\nfd.h" />
+    <ClInclude Include="src\Tracy\nfd\nfd_common.h" />
+    <ClInclude Include="src\Tracy\profiler\libs\gl3w\GL\gl3w.h" />
+    <ClInclude Include="src\Tracy\profiler\libs\gl3w\GL\glcorearb.h" />
+    <ClInclude Include="src\Tracy\profiler\libs\gl3w\KHR\khrplatform.h" />
+    <ClInclude Include="src\Tracy\profiler\src\Arimo.hpp" />
+    <ClInclude Include="src\Tracy\profiler\src\Cousine.hpp" />
+    <ClInclude Include="src\Tracy\profiler\src\FontAwesomeSolid.hpp" />
+    <ClInclude Include="src\Tracy\profiler\src\HttpRequest.hpp" />
+    <ClInclude Include="src\Tracy\profiler\src\NativeWindow.hpp" />
+    <ClInclude Include="src\Tracy\profiler\src\ResolvService.hpp" />
+    <ClInclude Include="src\Tracy\profiler\src\icon.hpp" />
+    <ClInclude Include="src\Tracy\profiler\src\imgui_impl_glfw.h" />
+    <ClInclude Include="src\Tracy\profiler\src\imgui_impl_opengl3.h" />
+    <ClInclude Include="src\Tracy\profiler\src\stb_image.h" />
+    <ClInclude Include="src\Tracy\server\IconsFontAwesome5.h" />
+    <ClInclude Include="src\Tracy\server\TracyBadVersion.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyBuzzAnim.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyCharUtil.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyColor.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyDecayValue.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyEvent.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyFileHeader.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyFileRead.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyFileWrite.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyFilesystem.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyImGui.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyMemory.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyMicroArchitecture.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyMmap.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyMouse.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyPopcnt.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyPrint.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyShortPtr.hpp" />
+    <ClInclude Include="src\Tracy\server\TracySlab.hpp" />
+    <ClInclude Include="src\Tracy\server\TracySort.hpp" />
+    <ClInclude Include="src\Tracy\server\TracySortedVector.hpp" />
+    <ClInclude Include="src\Tracy\server\TracySourceContents.hpp" />
+    <ClInclude Include="src\Tracy\server\TracySourceTokenizer.hpp" />
+    <ClInclude Include="src\Tracy\server\TracySourceView.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyStackFrames.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyStorage.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyStringDiscovery.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyTaskDispatch.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyTexture.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyTextureCompression.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyThreadCompress.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyUserData.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyVarArray.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyVector.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyVersion.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyView.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyViewData.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyWorker.hpp" />
+    <ClInclude Include="src\Tracy\server\TracyYield.hpp" />
+    <ClInclude Include="src\Tracy\server\tracy_pdqsort.h" />
+    <ClInclude Include="src\Tracy\server\tracy_robin_hood.h" />
+    <ClInclude Include="src\Tracy\server\tracy_xxh3.h" />
+    <ClInclude Include="src\Tracy\server\tracy_xxhash.h" />
+    <ClInclude Include="src\Tracy\test\stb_image.h" />
+    <ClInclude Include="src\Tracy\zstd\common\bitstream.h" />
+    <ClInclude Include="src\Tracy\zstd\common\compiler.h" />
+    <ClInclude Include="src\Tracy\zstd\common\cpu.h" />
+    <ClInclude Include="src\Tracy\zstd\common\debug.h" />
+    <ClInclude Include="src\Tracy\zstd\common\error_private.h" />
+    <ClInclude Include="src\Tracy\zstd\common\fse.h" />
+    <ClInclude Include="src\Tracy\zstd\common\huf.h" />
+    <ClInclude Include="src\Tracy\zstd\common\mem.h" />
+    <ClInclude Include="src\Tracy\zstd\common\pool.h" />
+    <ClInclude Include="src\Tracy\zstd\common\threading.h" />
+    <ClInclude Include="src\Tracy\zstd\common\xxhash.h" />
+    <ClInclude Include="src\Tracy\zstd\common\zstd_deps.h" />
+    <ClInclude Include="src\Tracy\zstd\common\zstd_internal.h" />
+    <ClInclude Include="src\Tracy\zstd\common\zstd_trace.h" />
+    <ClInclude Include="src\Tracy\zstd\compress\hist.h" />
+    <ClInclude Include="src\Tracy\zstd\compress\zstd_compress_internal.h" />
+    <ClInclude Include="src\Tracy\zstd\compress\zstd_compress_literals.h" />
+    <ClInclude Include="src\Tracy\zstd\compress\zstd_compress_sequences.h" />
+    <ClInclude Include="src\Tracy\zstd\compress\zstd_compress_superblock.h" />
+    <ClInclude Include="src\Tracy\zstd\compress\zstd_cwksp.h" />
+    <ClInclude Include="src\Tracy\zstd\compress\zstd_double_fast.h" />
+    <ClInclude Include="src\Tracy\zstd\compress\zstd_fast.h" />
+    <ClInclude Include="src\Tracy\zstd\compress\zstd_lazy.h" />
+    <ClInclude Include="src\Tracy\zstd\compress\zstd_ldm.h" />
+    <ClInclude Include="src\Tracy\zstd\compress\zstd_ldm_geartab.h" />
+    <ClInclude Include="src\Tracy\zstd\compress\zstd_opt.h" />
+    <ClInclude Include="src\Tracy\zstd\compress\zstdmt_compress.h" />
+    <ClInclude Include="src\Tracy\zstd\decompress\zstd_ddict.h" />
+    <ClInclude Include="src\Tracy\zstd\decompress\zstd_decompress_block.h" />
+    <ClInclude Include="src\Tracy\zstd\decompress\zstd_decompress_internal.h" />
+    <ClInclude Include="src\Tracy\zstd\dictBuilder\cover.h" />
+    <ClInclude Include="src\Tracy\zstd\dictBuilder\divsufsort.h" />
+    <ClInclude Include="src\Tracy\zstd\zdict.h" />
+    <ClInclude Include="src\Tracy\zstd\zstd.h" />
+    <ClInclude Include="src\Tracy\zstd\zstd_errors.h" />
     <ClInclude Include="src\TypeID\TypeID.h" />
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Assets\ASSModels\Bed\AssimpModel.cpp" />
     <ClCompile Include="src\Audio\AudioManager.cpp" />
     <ClCompile Include="src\Audio\FmodAPI\FmodAPI.cpp" />
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp" />
@@ -350,7 +506,8 @@ IF EXIST ..\Dep\Fmod\core\lib\x64\fmodstudio64.dll\ (xcopy /Q /E /Y /I ..\Dep\Fm
     <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem\MaterialSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChild\ChildSystem\ChildSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentSystem\ParentSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem\RenderSystem.cpp" />
@@ -398,7 +555,9 @@ IF EXIST ..\Dep\Fmod\core\lib\x64\fmodstudio64.dll\ (xcopy /Q /E /Y /I ..\Dep\Fm
     <ClCompile Include="src\Graphics\Lighting\SpotLight.cpp" />
     <ClCompile Include="src\Graphics\Material\MaterialManager.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.cpp">
+      <ObjectFileName>$(IntDir)\AssimpModel1.obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cone.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Cube.cpp" />
@@ -454,15 +613,93 @@ IF EXIST ..\Dep\Fmod\core\lib\x64\fmodstudio64.dll\ (xcopy /Q /E /Y /I ..\Dep\Fm
     <ClCompile Include="src\Serialization\TinyXML\tinyxmlerror.cpp" />
     <ClCompile Include="src\Serialization\TinyXML\tinyxmlparser.cpp" />
     <ClCompile Include="src\Time\Clock.cpp" />
+    <ClCompile Include="src\Tracy\TracyClient.cpp" />
+    <ClCompile Include="src\Tracy\capture\src\capture.cpp" />
+    <ClCompile Include="src\Tracy\client\TracyCallstack.cpp" />
+    <ClCompile Include="src\Tracy\client\TracyDxt1.cpp" />
+    <ClCompile Include="src\Tracy\client\TracyProfiler.cpp" />
+    <ClCompile Include="src\Tracy\client\TracySysTime.cpp" />
+    <ClCompile Include="src\Tracy\client\TracySysTrace.cpp" />
+    <ClCompile Include="src\Tracy\client\tracy_rpmalloc.cpp" />
+    <ClCompile Include="src\Tracy\common\TracySocket.cpp" />
+    <ClCompile Include="src\Tracy\common\TracySystem.cpp" />
+    <ClCompile Include="src\Tracy\common\tracy_lz4.cpp" />
+    <ClCompile Include="src\Tracy\common\tracy_lz4hc.cpp" />
+    <ClCompile Include="src\Tracy\csvexport\src\csvexport.cpp" />
+    <ClCompile Include="src\Tracy\examples\OpenCLVectorAdd\OpenCLVectorAdd.cpp" />
+    <ClCompile Include="src\Tracy\examples\ToyPathTracer\Source\Maths.cpp" />
+    <ClCompile Include="src\Tracy\examples\ToyPathTracer\Source\Test.cpp" />
+    <ClCompile Include="src\Tracy\examples\ToyPathTracer\Source\enkiTS\TaskScheduler.cpp" />
+    <ClCompile Include="src\Tracy\examples\ToyPathTracer\Source\enkiTS\TaskScheduler_c.cpp" />
+    <ClCompile Include="src\Tracy\examples\ToyPathTracer\Windows\TestWin.cpp" />
+    <ClCompile Include="src\Tracy\extra\color.cpp" />
+    <ClCompile Include="src\Tracy\extra\identify.cpp" />
+    <ClCompile Include="src\Tracy\extra\uarch\uarch.cpp" />
+    <ClCompile Include="src\Tracy\extra\version.cpp" />
+    <ClCompile Include="src\Tracy\imgui\imgui.cpp">
+      <ObjectFileName>$(IntDir)\imgui1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\imgui\imgui_demo.cpp">
+      <ObjectFileName>$(IntDir)\imgui_demo1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\imgui\imgui_draw.cpp">
+      <ObjectFileName>$(IntDir)\imgui_draw1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\imgui\imgui_tables.cpp" />
+    <ClCompile Include="src\Tracy\imgui\imgui_widgets.cpp">
+      <ObjectFileName>$(IntDir)\imgui_widgets1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\imgui\misc\freetype\imgui_freetype.cpp" />
+    <ClCompile Include="src\Tracy\import-chrome\src\import-chrome.cpp" />
+    <ClCompile Include="src\Tracy\libbacktrace\alloc.cpp" />
+    <ClCompile Include="src\Tracy\libbacktrace\dwarf.cpp" />
+    <ClCompile Include="src\Tracy\libbacktrace\elf.cpp" />
+    <ClCompile Include="src\Tracy\libbacktrace\fileline.cpp" />
+    <ClCompile Include="src\Tracy\libbacktrace\macho.cpp" />
+    <ClCompile Include="src\Tracy\libbacktrace\mmapio.cpp" />
+    <ClCompile Include="src\Tracy\libbacktrace\posix.cpp" />
+    <ClCompile Include="src\Tracy\libbacktrace\sort.cpp" />
+    <ClCompile Include="src\Tracy\libbacktrace\state.cpp" />
+    <ClCompile Include="src\Tracy\nfd\nfd_win.cpp" />
+    <ClCompile Include="src\Tracy\profiler\src\HttpRequest.cpp" />
+    <ClCompile Include="src\Tracy\profiler\src\NativeWindow.cpp" />
+    <ClCompile Include="src\Tracy\profiler\src\ResolvService.cpp" />
+    <ClCompile Include="src\Tracy\profiler\src\imgui_impl_glfw.cpp">
+      <ObjectFileName>$(IntDir)\imgui_impl_glfw1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\profiler\src\imgui_impl_opengl3.cpp">
+      <ObjectFileName>$(IntDir)\imgui_impl_opengl31.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\profiler\src\main.cpp" />
+    <ClCompile Include="src\Tracy\profiler\src\winmain.cpp" />
+    <ClCompile Include="src\Tracy\profiler\src\winmainArchDiscovery.cpp" />
+    <ClCompile Include="src\Tracy\server\TracyBadVersion.cpp" />
+    <ClCompile Include="src\Tracy\server\TracyColor.cpp" />
+    <ClCompile Include="src\Tracy\server\TracyFilesystem.cpp" />
+    <ClCompile Include="src\Tracy\server\TracyMemory.cpp" />
+    <ClCompile Include="src\Tracy\server\TracyMicroArchitecture.cpp" />
+    <ClCompile Include="src\Tracy\server\TracyMmap.cpp" />
+    <ClCompile Include="src\Tracy\server\TracyMouse.cpp" />
+    <ClCompile Include="src\Tracy\server\TracyPrint.cpp" />
+    <ClCompile Include="src\Tracy\server\TracySourceContents.cpp" />
+    <ClCompile Include="src\Tracy\server\TracySourceTokenizer.cpp" />
+    <ClCompile Include="src\Tracy\server\TracySourceView.cpp" />
+    <ClCompile Include="src\Tracy\server\TracyStackFrames.cpp" />
+    <ClCompile Include="src\Tracy\server\TracyStorage.cpp" />
+    <ClCompile Include="src\Tracy\server\TracyTaskDispatch.cpp" />
+    <ClCompile Include="src\Tracy\server\TracyTexture.cpp" />
+    <ClCompile Include="src\Tracy\server\TracyTextureCompression.cpp" />
+    <ClCompile Include="src\Tracy\server\TracyThreadCompress.cpp" />
+    <ClCompile Include="src\Tracy\server\TracyUserData.cpp" />
+    <ClCompile Include="src\Tracy\server\TracyView.cpp" />
+    <ClCompile Include="src\Tracy\server\TracyWorker.cpp" />
+    <ClCompile Include="src\Tracy\test\test.cpp">
+      <ObjectFileName>$(IntDir)\test1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\Tracy\update\src\update.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\Tracy\TracyClient.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\Assets\Compilers\GeometryFile\Geometry.eclipse" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
