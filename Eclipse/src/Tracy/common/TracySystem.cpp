@@ -284,3 +284,4 @@ TRACY_API void ___tracy_set_thread_name( const char* name ) { tracy::SetThreadNa
 #ifdef __cplusplus
 }
 #endif
+#include "pch.h"

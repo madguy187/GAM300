@@ -30,6 +30,7 @@ namespace Eclipse
         static void LoadShaders(std::string shaderFile);
         static void LoadModels();
         static void LoadTextures(std::string textureFile);
+        static void LoadAllShaders();
 
         //Loads the image and creates texture object
         static GLuint setup_texobj(std::string pathname);

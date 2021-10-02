@@ -2490,3 +2490,4 @@ char* LZ4_slideInputBuffer (void* state)
 #endif   /* LZ4_COMMONDEFS_ONLY */
 
 }
+#include "pch.h"
