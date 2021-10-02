@@ -30,7 +30,7 @@ namespace Eclipse
 
 	void HeaderWindow::RunPlayPauseStep()
 	{
-		ECGui::InsertSameLine(ECGui::GetWindowSize().x / 2.f);
+		ECGui::InsertSameLine(ECGui::GetWindowSize().x / 2.3f);
 
 		if (!engine->GetPlayState())
 		{
@@ -101,7 +101,7 @@ namespace Eclipse
 	{
 		ImGui::NewLine();
 
-		ECGui::InsertSameLine(ECGui::GetWindowSize().x /1.4f);
+		ECGui::InsertSameLine(ECGui::GetWindowSize().x / 3.0f);
 
 		if (ImGui::Button(ICON_FA_ARROWS_ALT, ImVec2{ 100,20 }))
 		{
@@ -149,10 +149,7 @@ namespace Eclipse
 			ImGui::PopTextWrapPos();
 			ImGui::EndTooltip();
 		}
-
-		ImGui::NewLine();
-
-		ECGui::InsertSameLine(ECGui::GetWindowSize().x / 1.32f);
+		ECGui::InsertSameLine();
 		if (ImGui::Button(ICON_FA_VIDEO_CAMERA, ImVec2{ 100,20}))
 		{
 			ImGui::OpenPopup("Camera Setting");
