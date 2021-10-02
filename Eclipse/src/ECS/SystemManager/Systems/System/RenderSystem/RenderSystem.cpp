@@ -77,7 +77,6 @@ namespace Eclipse
             for (auto const& entityID : RenderablesVsFrustrum)
             {
                 auto& Transform = engine->world.GetComponent<TransformComponent>(entityID);
-                //std::cout << "Rendersytem!" << std::endl;
                 //engine->gPicker.UpdateAabb(entityID);
 
                 if (!engine->world.CheckComponent<MeshComponent>(entityID))

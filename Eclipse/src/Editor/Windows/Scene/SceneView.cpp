@@ -167,6 +167,9 @@ namespace Eclipse
 			default:
 				break;
 			}
+
+			engine->gPicker.UpdateAabb(selectedEntity);
+			engine->gDynamicAABBTree.UpdateData(selectedEntity);
 		}
 		else if (!ImGuizmo::IsUsing() && ImGui::IsMouseReleased(0)
 			&& ECGui::IsItemHovered())

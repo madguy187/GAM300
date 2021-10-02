@@ -3,10 +3,17 @@
 
 namespace Eclipse
 {
-	//DynamicAABBTree::~DynamicAABBTree()
-	//{
-	//
-	//}
+
+	DynamicAABBTree::DynamicAABBTree()
+	{
+	}
+
+	DynamicAABBTree::~DynamicAABBTree()
+	{
+		std::cout << "Destroy tree!" << std::endl;
+		DeleteTree(root);
+		TreeNodes.clear();
+	}
 
 	void DynamicAABBTree::InsertNode(Node* newNode, Node*& currNode)
 	{
@@ -317,6 +324,15 @@ namespace Eclipse
 	DynamicAABBTree::Node* DynamicAABBTree::GetTreeRoot()
 	{
 		return root;
+	}
+
+	void DynamicAABBTree::DeleteTree(Node* node)
+	{
+		if (node)
+		{
+			DeleteTree(node->mLeft);
+			DeleteTree(node->mRight);
+		}
 	}
 
 	DynamicAABBTree::Aabb::Aabb()

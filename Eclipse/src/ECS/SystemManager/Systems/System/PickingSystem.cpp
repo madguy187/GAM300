@@ -26,45 +26,45 @@ void Eclipse::PickingSystem::EditorUpdate()
 	std::cout << "Collision ID: " << collisionID << std::endl;
 	std::cout << std::endl;
 
-	//if (collisionID != MAX_ENTITY)
-	//{
-	//	if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
-	//	{
-	//		engine->MaterialManager.UnHighlight(engine->gPicker.GetCurrentCollisionID());
-	//	}
-	//
-	//	engine->gPicker.SetCurrentCollisionID(collisionID);
-	//	engine->MaterialManager.HighlightClick(collisionID);
-	//
-	//	engine->gPicker.UpdateAabb(collisionID);
-	//	engine->gDynamicAABBTree.UpdateData(collisionID);
-	//}
-
-
-	for (auto& it : mEntities)
+	if (collisionID != MAX_ENTITY)
 	{
-		auto& aabb = engine->world.GetComponent<AABBComponent>(it);
-	
-		float t = 0.0f;
-		glm::vec3 rayDir = engine->gPicker.ComputeCursorRayDirection();
-		bool collision = engine->gPicker.RayAabb(camera.eyePos, rayDir, aabb.Min.ConvertToGlmVec3Type(), aabb.Max.ConvertToGlmVec3Type(), t);
-	
-		if (collision && (t < tMin))
+		if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
 		{
-			tMin = t;
-			auto& material = engine->world.GetComponent<MaterialComponent>(it);
-	
-			if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
-			{
-				engine->MaterialManager.UnHighlight(engine->gPicker.GetCurrentCollisionID());
-			}
-	
-			engine->gPicker.SetCurrentCollisionID(it);
-			engine->MaterialManager.HighlightClick(it);
-	
-			engine->gPicker.UpdateAabb(it);
+			engine->MaterialManager.UnHighlight(engine->gPicker.GetCurrentCollisionID());
 		}
+	
+		engine->gPicker.SetCurrentCollisionID(collisionID);
+		engine->MaterialManager.HighlightClick(collisionID);
+	
+		//engine->gPicker.UpdateAabb(collisionID);
+		//engine->gDynamicAABBTree.UpdateData(collisionID);
 	}
+
+
+	//for (auto& it : mEntities)
+	//{
+	//	auto& aabb = engine->world.GetComponent<AABBComponent>(it);
+	//
+	//	float t = 0.0f;
+	//	glm::vec3 rayDir = engine->gPicker.ComputeCursorRayDirection();
+	//	bool collision = engine->gPicker.RayAabb(camera.eyePos, rayDir, aabb.Min.ConvertToGlmVec3Type(), aabb.Max.ConvertToGlmVec3Type(), t);
+	//
+	//	if (collision && (t < tMin))
+	//	{
+	//		tMin = t;
+	//		auto& material = engine->world.GetComponent<MaterialComponent>(it);
+	//
+	//		if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
+	//		{
+	//			engine->MaterialManager.UnHighlight(engine->gPicker.GetCurrentCollisionID());
+	//		}
+	//
+	//		engine->gPicker.SetCurrentCollisionID(it);
+	//		engine->MaterialManager.HighlightClick(it);
+	//
+	//		engine->gPicker.UpdateAabb(it);
+	//	}
+	//}
 
 	engine->Timer.tracker.system_end = glfwGetTime();
 	engine->Timer.UpdateTimeContainer(engine->Timer.tracker);

@@ -13,9 +13,6 @@ namespace Eclipse
 	{
 		const float mFatteningFactor = 1.1f;
 
-		//DynamicAABBTree();
-		//~DynamicAABBTree();
-
 		struct Aabb
 		{
 			Aabb();
@@ -54,11 +51,15 @@ namespace Eclipse
 
 		std::unordered_map<unsigned int, Node*> TreeNodes;
 	public:
+		DynamicAABBTree();
+		~DynamicAABBTree();
+
 		void InsertData(unsigned int ID);
 		void UpdateData(unsigned int ID);
 		unsigned int RayCast(Node* node, glm::vec3 rayStart, glm::vec3 rayDir);
 
 		Node* GetTreeRoot();
+		void DeleteTree(Node* node);
 	};
 }
 
