@@ -23,7 +23,7 @@ namespace Eclipse
 
         if (CheckCompilers())
         {
-            ENGINE_CORE_INFO("All Compilers Loaded");
+            EDITOR_LOG_INFO("All Compilers Loaded");
         }
     }
 
@@ -32,23 +32,21 @@ namespace Eclipse
     {
         if (HotReloadFlag == false)
         {
+            AllMeshNames.clear();
             Geometry.clear();
             Prefabs.clear();
             Graphics::textures.clear();
 
             // I Will Load First
             system("start Compiler.exe");
+
             // Geometry Compiler
             LoadGeometry();
             // Parent Model Mappings
             LoadPrefabs();
             // Texture Compiler
             LoadTextures();
-
-            if (CheckCompilers())
-            {
-                ENGINE_CORE_INFO("All Assets Recompiled");
-            }
+            LoadBasicTextures();
         }
     }
 
@@ -483,12 +481,14 @@ namespace Eclipse
                 Mesh NewMesh(B.Vertices, B.Indices, B.MeshName.data(), B.Textures);
                 std::string name = B.MeshName.data();
                 Geometry.emplace(name, std::make_unique<Mesh>(NewMesh));
+                AllMeshNames.push_back(name);
             }
             else
             {
                 Mesh NewMesh(B.Vertices, B.Indices, B.Diffuse, B.Specular, B.Ambient, B.NoTex, B.MeshName.data());
                 std::string name = B.MeshName.data();
                 Geometry.emplace(name, std::make_unique<Mesh>(NewMesh));
+                AllMeshNames.push_back(name);
             }
         }
 
@@ -759,6 +759,11 @@ namespace Eclipse
         }
 
         return false;
+    }
+
+    void AssimpModelManager::ClearGeometry()
+    {
+        Geometry.clear();
     }
 
     void AssimpModelManager::LoadBasicTextures()

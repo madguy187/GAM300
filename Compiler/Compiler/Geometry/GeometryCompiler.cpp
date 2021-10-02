@@ -4,140 +4,149 @@
 
 namespace EclipseCompiler
 {
-	void GeometryCompiler::Init()
-	{
-		LoadFile("..//Eclipse//src//Assets//ASSModels");
-	}
+    void GeometryCompiler::Init()
+    {
+        LoadFile("..//Eclipse//src//Assets//Models");
+    }
 
-	void GeometryCompiler::LoadFile(const std::string& modelFile)
-	{
-		// We will do main Loading here
-		for (auto& dirEntry : std::filesystem::directory_iterator(modelFile))
-		{
-			const auto& path = dirEntry.path();
-			auto relativePath = relative(path, "..//Eclipse//src//");
-			std::string FolderName = relativePath.filename().string();
+    void GeometryCompiler::LoadFile(const std::string& modelFile)
+    {
+        // We will do main Loading here
+        for (auto& dirEntry : std::filesystem::directory_iterator(modelFile))
+        {
+            const auto& path = dirEntry.path();
+            auto relativePath = relative(path, "..//Eclipse//src//");
+            std::string FolderName = relativePath.filename().string();
 
-			std::string GoIntoModelFolder = ("..//Eclipse//src/Assets/ASSModels/" + FolderName);
+            std::string GoIntoModelFolder = ("..//Eclipse//src/Assets/Models/" + FolderName);
 
-			for (auto& dirEntry : std::filesystem::directory_iterator(GoIntoModelFolder))
-			{
-				const auto& FbxOrGltf = dirEntry.path();
-				auto relativePath = relative(FbxOrGltf, "..//Eclipse//src//");
-				std::string FbxOrGltfName = relativePath.filename().string();
+            if (GoIntoModelFolder.find("HardReset.txt") != std::string::npos)
+            {
+                continue;
+            }
 
-				if (FbxOrGltfName.find("gltf") != std::string::npos || FbxOrGltfName.find("fbx") != std::string::npos)
-				{
-					std::string PathName = ("..//Eclipse//src/Assets/ASSModels/" + FolderName + "/" + FbxOrGltfName).c_str();
-					std::unique_ptr<AssimpLoader> ptr = std::make_unique< AssimpLoader>();
-					ptr->LoadAssimpModel(PathName, Geometry);
+            for (auto& dirEntry : std::filesystem::directory_iterator(GoIntoModelFolder))
+            {
+                const auto& FbxOrGltf = dirEntry.path();
+                auto relativePath = relative(FbxOrGltf, "..//Eclipse//src//");
+                std::string FbxOrGltfName = relativePath.filename().string();
 
-					// Get the Prefabs Mapping
-					for (auto& i : ptr->Meshes)
-					{
-						Prefabs[FolderName].push_back(i.MeshName.data());
-					}
-				}
-			}
-		}
-	}
+                if (FbxOrGltfName.find("gltf") != std::string::npos || FbxOrGltfName.find("fbx") != std::string::npos)
+                {
+                    std::string PathName = ("..//Eclipse//src/Assets/Models/" + FolderName + "/" + FbxOrGltfName).c_str();
+                    std::unique_ptr<AssimpLoader> ptr = std::make_unique< AssimpLoader>();
+                    ptr->LoadAssimpModel(PathName, Geometry);
 
-	void GeometryCompiler::WriteToFile(std::unordered_map<std::string, Mesh>& In)
-	{
-		GeometryFileWrite.open(Path + "GeometryFile/Geometry" + FileName,
-			std::ios_base::out |
-			std::ios_base::trunc |
-			std::ios_base::binary);
+                    // Get the Prefabs Mapping
+                    for (auto& i : ptr->Meshes)
+                    {
+                        Prefabs[FolderName].push_back(i.MeshName.data());
+                    }
+                }
+            }
+        }
+    }
 
-		if (GeometryFileWrite.fail())
-		{
-			std::cout << "Fail To Open Geometry Compiled File" << std::endl << std::endl;
-			return;
-		}
+    void GeometryCompiler::WriteToFile(std::unordered_map<std::string, Mesh>& In)
+    {
+        GeometryFileWrite.open(Path + "GeometryFile/Geometry" + FileName,
+            std::ios_base::out |
+            std::ios_base::trunc |
+            std::ios_base::binary);
 
-		int NumberOfModels = In.size();
-		GeometryFileWrite.write(reinterpret_cast<const char*>(&NumberOfModels), sizeof(NumberOfModels));
+        if (GeometryFileWrite.fail())
+        {
+            std::cout << "Fail To Open Geometry Compiled File" << std::endl << std::endl;
+            return;
+        }
 
-		for (auto i : In)
-		{
-			Mesh SaveModel = i.second;
+        std::cout << "Writing to Geometry File " << std::endl;
 
-			GeometryFileWrite.write(reinterpret_cast<const char*>(&SaveModel), offsetof(Mesh, Vertices));
+        int NumberOfModels = In.size();
+        std::cout << "Detected Geometry Size " << NumberOfModels << std::endl;
+        GeometryFileWrite.write(reinterpret_cast<const char*>(&NumberOfModels), sizeof(NumberOfModels));
 
-			int VertexSize = SaveModel.Vertices.size();
-			GeometryFileWrite.write(reinterpret_cast<const char*>(&VertexSize), sizeof(VertexSize));
-			GeometryFileWrite.write(reinterpret_cast<const char*>(SaveModel.Vertices.data()), sizeof(Vertex) * VertexSize);
+        for (auto i : In)
+        {
+            Mesh SaveModel = i.second;
 
-			int IndicesSize = SaveModel.Indices.size();
-			GeometryFileWrite.write(reinterpret_cast<const char*>(&IndicesSize), sizeof(IndicesSize));
-			GeometryFileWrite.write(reinterpret_cast<const char*>(SaveModel.Indices.data()), sizeof(unsigned int) * IndicesSize);
-		}
+            GeometryFileWrite.write(reinterpret_cast<const char*>(&SaveModel), offsetof(Mesh, Vertices));
 
-		GeometryFileWrite.close();
-	}
+            int VertexSize = SaveModel.Vertices.size();
+            GeometryFileWrite.write(reinterpret_cast<const char*>(&VertexSize), sizeof(VertexSize));
+            GeometryFileWrite.write(reinterpret_cast<const char*>(SaveModel.Vertices.data()), sizeof(Vertex) * VertexSize);
 
-	void GeometryCompiler::ReleaseFile()
-	{
-		if (Geometry.empty())
-		{
-			std::cout << "No Models Loaded" << std::endl << std::endl;
-			return;
-		}
+            int IndicesSize = SaveModel.Indices.size();
+            GeometryFileWrite.write(reinterpret_cast<const char*>(&IndicesSize), sizeof(IndicesSize));
+            GeometryFileWrite.write(reinterpret_cast<const char*>(SaveModel.Indices.data()), sizeof(unsigned int) * IndicesSize);
+        }
 
-		WriteToFile(Geometry);
-		std::cout << "Geometry File Compiled" << std::endl << std::endl;
-	}
+        GeometryFileWrite.close();
+        std::cout << "Done Writing to Geometry File " << std::endl;
+    }
 
-	void GeometryCompiler::ReadFile(std::string& in)
-	{
-		if (in == "Geo")
-		{
-			if (Geometry.empty())
-			{
-				std::cout << "No Models Loaded" << std::endl << std::endl;
-				return;
-			}
+    void GeometryCompiler::ReleaseFile()
+    {
+        if (Geometry.empty())
+        {
+            std::cout << "No Models Loaded" << std::endl << std::endl;
+            return;
+        }
 
-			ReadFile();
-			std::cout << "Read File " << std::endl << std::endl;
-		}
-	}
+        WriteToFile(Geometry);
+        std::cout << "Geometry File Compiled" << std::endl << std::endl;
+    }
 
-	void GeometryCompiler::ReadFile()
-	{
-		GeometryFileRead.open(Path + "GeometryFile/Geometry" + FileName,
-			std::ios::in |
-			std::ios::binary);
+    void GeometryCompiler::ReadFile(std::string& in)
+    {
+        if (in == "Geo")
+        {
+            if (Geometry.empty())
+            {
+                std::cout << "No Models Loaded" << std::endl << std::endl;
+                return;
+            }
 
-		if (GeometryFileRead.fail())
-		{
-			std::cout << "Fail To Open Geometry File" << std::endl << std::endl;
-			return;
-		}
+            ReadFile();
+            std::cout << "Read File " << std::endl << std::endl;
+        }
+    }
 
-		int TotalNumberOfModels = 0;
+    void GeometryCompiler::ReadFile()
+    {
+        GeometryFileRead.open(Path + "GeometryFile/Geometry" + FileName,
+            std::ios::in |
+            std::ios::binary);
 
-		// See how many Models
-		GeometryFileRead.read(reinterpret_cast<char*>(&TotalNumberOfModels), sizeof(int));
+        if (GeometryFileRead.fail())
+        {
+            std::cout << "Fail To Open Geometry File" << std::endl << std::endl;
+            return;
+        }
 
-		for (int i = 0; i < TotalNumberOfModels; i++)
-		{
-			int VerticesSize = 0;
-			int IndicesSize = 0;
+        int TotalNumberOfModels = 0;
 
-			Mesh B;
+        // See how many Models
+        GeometryFileRead.read(reinterpret_cast<char*>(&TotalNumberOfModels), sizeof(int));
 
-			GeometryFileRead.read(reinterpret_cast<char*>(&B), offsetof(Mesh, Vertices));
+        for (int i = 0; i < TotalNumberOfModels; i++)
+        {
+            int VerticesSize = 0;
+            int IndicesSize = 0;
 
-			GeometryFileRead.read(reinterpret_cast<char*>(&VerticesSize), sizeof(VerticesSize));
-			B.Vertices.resize(VerticesSize);
-			GeometryFileRead.read(reinterpret_cast<char*>(B.Vertices.data()), sizeof(Vertex) * VerticesSize);
+            Mesh B;
 
-			GeometryFileRead.read(reinterpret_cast<char*>(&IndicesSize), sizeof(IndicesSize));
-			B.Indices.resize(IndicesSize);
-			GeometryFileRead.read(reinterpret_cast<char*>(B.Indices.data()), sizeof(unsigned int) * IndicesSize);
-		}
+            GeometryFileRead.read(reinterpret_cast<char*>(&B), offsetof(Mesh, Vertices));
 
-		GeometryFileRead.close();
-	}
+            GeometryFileRead.read(reinterpret_cast<char*>(&VerticesSize), sizeof(VerticesSize));
+            B.Vertices.resize(VerticesSize);
+            GeometryFileRead.read(reinterpret_cast<char*>(B.Vertices.data()), sizeof(Vertex) * VerticesSize);
+
+            GeometryFileRead.read(reinterpret_cast<char*>(&IndicesSize), sizeof(IndicesSize));
+            B.Indices.resize(IndicesSize);
+            GeometryFileRead.read(reinterpret_cast<char*>(B.Indices.data()), sizeof(unsigned int) * IndicesSize);
+        }
+
+        GeometryFileRead.close();
+    }
 }

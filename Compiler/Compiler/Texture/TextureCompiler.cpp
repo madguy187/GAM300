@@ -24,7 +24,12 @@ namespace EclipseCompiler
             auto relativePath = relative(path, "..//Eclipse//src//");
             std::string FolderName = relativePath.filename().string();
 
-            std::string GoIntoModelFolder = ("..//Eclipse//src/Assets/ASSModels/" + FolderName);
+            std::string GoIntoModelFolder = ("..//Eclipse//src/Assets/Models/" + FolderName);
+
+            if (GoIntoModelFolder.find("HardReset.txt") != std::string::npos)
+            {
+                continue;
+            }
 
             for (auto& dirEntry : std::filesystem::directory_iterator(GoIntoModelFolder))
             {
@@ -34,7 +39,7 @@ namespace EclipseCompiler
 
                 if (FbxOrGltfName.find("gltf") != std::string::npos || FbxOrGltfName.find("fbx") != std::string::npos)
                 {
-                    std::string PathName = ("..//Eclipse//src/Assets/ASSModels/" + FolderName + "/" + FbxOrGltfName).c_str();
+                    std::string PathName = ("..//Eclipse//src/Assets/Models/" + FolderName + "/" + FbxOrGltfName).c_str();
                     std::unique_ptr<AssimpLoader> ptr = std::make_unique< AssimpLoader>();
                     ptr->LoadAssimpModelForTextures(PathName, TextureCotainer);
                 }
@@ -66,7 +71,7 @@ namespace EclipseCompiler
 
     void TextureCompiler::Init()
     {
-        LoadFile("..//Eclipse//src//Assets//ASSModels");
+        LoadFile("..//Eclipse//src//Assets//Models");
         LoadBasicTextures("..//Eclipse//src//Assets//Textures");
     }
 
