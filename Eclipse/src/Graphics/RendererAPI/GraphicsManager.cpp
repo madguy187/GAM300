@@ -12,7 +12,7 @@ void Eclipse::GraphicsManager::MassInit()
 
 void Eclipse::GraphicsManager::RegisterThreads()
 {
-   //GraphicThreads.emplace("Grid", std::make_unique<std::thread>(std::thread{ &GridSystem::Init}));
+   GraphicThreads.emplace("Grid", std::make_unique<std::thread>(std::thread{ &GridSystem::Init}));
    GraphicThreads.emplace("Lighting", std::make_unique<std::thread>(std::thread{ &LightingSystem::Init }));
    GraphicThreads.emplace("FileWatch", std::make_unique<std::thread>(std::thread{ &FileWatchSystem::Init }));
 }
@@ -270,15 +270,14 @@ void Eclipse::GraphicsManager::CheckTexture(unsigned int ID)
 
         if (tex.hasTexture)
         {
-
-            glBindTexture(GL_TEXTURE_2D, Graphics::textures[tex.TextureRef].GetHandle());
+            glBindTexture(GL_TEXTURE_2D, Graphics::FindTextures(tex.TextureRef).GetHandle());
 
             glEnable(GL_BLEND);
 
-            glTextureParameteri(Graphics::textures[tex.TextureRef].GetHandle(), GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTextureParameteri(Graphics::textures[tex.TextureRef].GetHandle(), GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTextureParameteri(Graphics::textures[tex.TextureRef].GetHandle(), GL_TEXTURE_WRAP_S, GL_REPEAT);
-            glTextureParameteri(Graphics::textures[tex.TextureRef].GetHandle(), GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTextureParameteri( Graphics::FindTextures(tex.TextureRef).GetHandle(), GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTextureParameteri( Graphics::FindTextures(tex.TextureRef).GetHandle(), GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTextureParameteri( Graphics::FindTextures(tex.TextureRef).GetHandle(), GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTextureParameteri( Graphics::FindTextures(tex.TextureRef).GetHandle(), GL_TEXTURE_WRAP_T, GL_REPEAT);
         }
     }
 }

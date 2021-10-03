@@ -22,6 +22,7 @@ namespace Eclipse
         void LoadUncompressedTextures(bool flip);
         bool LoadCompressedTextures(bool flip);
         void Bind();
+        void BindModel();
         void SetDirectory(std::string dir);
         void SetPath(std::string pathhh);
         void SetType(aiTextureType in);
@@ -34,10 +35,11 @@ namespace Eclipse
         //unsigned int Id;
         aiTextureType Type;
         std::string Directory;
-        std::string Path;
+        unsigned int id;
 
         // 2D Textures =============================
     public:
+        std::string Path;
         Texture(std::string pathname);
         void initTexture(std::string pathname);
         void LoadUncompressedTextures(std::string pathname);
@@ -55,7 +57,7 @@ namespace Eclipse
         void setSpriteHeight(GLint _spriteHeight);
         void DeleteTexture();
     private:
-        GLuint handle;
+        unsigned int handle;
         GLint sheetWidth;
         GLint sheetHeight;
         GLint channels;
