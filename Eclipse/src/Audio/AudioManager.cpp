@@ -433,6 +433,17 @@ namespace Eclipse
 		}
 	}
 
+	void AudioManager::Set3DConeSettings(const std::string& sound_name, float* InnerConeAngle, 
+		float* OuterConeAngle, float* OuterVolume)
+	{
+		FmodAPI->m_Sounds[sound_name]->get3DConeSettings(InnerConeAngle, OuterConeAngle, OuterVolume);
+	}
+
+	void AudioManager::Set3DMinMaxSettings(const std::string& sound_name, float min, float max)
+	{
+		FmodAPI->m_Sounds[sound_name]->set3DMinMaxDistance(min, max);
+	}
+
 	float AudioManager::OldBGMVolumeToTrack() const
 	{
 		return FmodAPI->m_ogCurr_Vol;

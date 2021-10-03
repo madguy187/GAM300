@@ -4,6 +4,7 @@
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RigidBodyComponent.h"
 #include "ECS/ComponentManager/Components/ScriptComponent.h"
+#include "ECS/ComponentManager/Components/AudioComponent.h"
 #include "Editor/Windows/SwitchViews/TopSwitchViewWindow.h"
 
 namespace Eclipse
@@ -59,6 +60,7 @@ namespace Eclipse
             ShowMesh3DProperty("Mesh", currEnt, CompFilter);
             ShowModelInfoProperty("ModelInfo", currEnt, CompFilter);
             ShowScriptProperty("Script Details", currEnt, CompFilter);
+            ShowAudioProperty("Audio", currEnt, CompFilter);
 
             ECGui::InsertHorizontalLineSeperator();
             /*ECGui::PushItemWidth(WindowSize_.getX());*/
@@ -552,6 +554,105 @@ namespace Eclipse
         return false;
     }
 
+    bool InspectorWindow::ShowAudioProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+    {
+        if (engine->world.CheckComponent<AudioComponent>(ID))
+        {
+            if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+            {
+                static bool IsAudioPlaying = false;
+                auto& audio = engine->world.GetComponent<AudioComponent>(ID);
+
+                if (!IsAudioPlaying)
+                {
+                    if (audio.AudioPath.max_size() <= 0)
+                        audio.AudioPath.reserve(256);
+
+                    if (ECGui::ButtonBool("Play"))
+                    {
+                        if (!audio.AudioPath.empty())
+                        {
+                            SimulateAudio(ID, audio);
+                            IsAudioPlaying = true;
+                            EDITOR_LOG_INFO("Playing sound...");
+                        }
+                        else
+                        {
+                            EDITOR_LOG_WARN("No audio path detected. Please specify and audio file.");
+                        }
+                    }
+
+                    ECGui::DrawInputTextHintWidget("AudioPath", "Drag Audio files here",
+                        const_cast<char*>(audio.AudioPath.c_str()), 256,
+                        true, ImGuiInputTextFlags_ReadOnly);
+
+                    if (ECGui::ButtonBool("Clear Audio"))
+                    {
+                        audio.AudioPath.clear();
+                    }
+
+                    ECGui::DrawTextWidget<const char*>("Volume: ", "");
+                    ECGui::DrawSliderFloatWidget("Volume", &audio.Volume, true, 0.f, 1.0f);
+
+                    // Pitch value, 0.5 = half pitch, 2.0 = double pitch, etc default = 1.0.
+                    ECGui::DrawTextWidget<const char*>("Pitch: ", "");
+                    ECGui::DrawSliderFloatWidget("Pitch", &audio.Pitch, true, 0.f, 2.0f);
+
+                    // Relative speed of the song from 0.01 to 100.0. 0.5 = half speed, 
+                    // 2.0 = double speed. Default = 1.0.
+                    ECGui::DrawTextWidget<const char*>("Speed: ", "");
+                    ECGui::DrawSliderFloatWidget("Speed", &audio.Speed, true, 0.f, 100.0f);
+
+                    ECGui::CheckBoxBool("Loop", &audio.IsLooping, false);
+                    ECGui::CheckBoxBool("Is3D", &audio.Is3D, false);
+
+                    if (audio.Is3D)
+                    {
+                        // Inside cone angle, in degrees, from 0 to 360. 
+                        // This is the angle within which the sound is at its normal volume. 
+                        // Must not be greater than outsideconeangle. Default = 360.
+                        ECGui::DrawTextWidget<const char*>("Inner Cone Angle: ", "");
+                        ECGui::DrawSliderFloatWidget("InnerConeAngle", &audio.InnerConeAngle, true, 0.f, 360.0f);
+
+                        // Outside cone angle, in degrees, from 0 to 360. 
+                        // This is the angle outside of which the sound is at its outside volume.
+                        // Must not be less than insideconeangle. Default = 360.
+                        ECGui::DrawTextWidget<const char*>("Outer Cone Angle: ", "");
+                        ECGui::DrawSliderFloatWidget("OuterConeAngle", &audio.OuterConeAngle, true, 0.f, 360.f);
+
+                        // The volume of the sound outside the outside angle of the sound projection cone.
+                        ECGui::DrawTextWidget<const char*>("Outer Volume: ", "");
+                        ECGui::DrawSliderFloatWidget("OuterVolume", &audio.OuterVolume, true, 0.f, 1.f);
+
+                        ECGui::InsertHorizontalLineSeperator();
+
+                        // Increase the mindistance of a sound to make it 'louder' in a 3D world, 
+                        // and decrease it to make it 'quieter' in a 3D world.
+                        // Maxdistance is effectively obsolete unless you need the sound to stop 
+                        // fading out at a certain point. 
+                        // Do not adjust this from the default if you dont need to.
+                        // Summary:
+                        // Min -> min dist where it will start growing louder when getting closer
+                        // Max -> max dist where it will stop fading
+                        ECGui::DrawTextWidget<const char*>("Sound Attenuation: ", "");
+                        ECGui::DrawSliderFloatWidget("Min", &audio.Min, false, 0.f, 10000.f);
+                        ECGui::DrawSliderFloatWidget("Max", &audio.Max, false, 0.f, 10000.f);
+                    }
+                }
+                else
+                {
+                    if (ECGui::ButtonBool("Stop"))
+                    {
+                        engine->audioManager.UnloadSound(audio.AudioPath);
+                        IsAudioPlaying = false;
+                        EDITOR_LOG_INFO("Stopping sound...");
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     void InspectorWindow::AddComponentsController(Entity ID)
     {
         //ImVec2 buttonSize = { 180,20 };
@@ -651,6 +752,10 @@ namespace Eclipse
                         ComponentRegistry<ScriptComponent>("ScriptComponent", ID, entCom.Name,
                             EditComponent::EC_ADDCOMPONENT);
                         break;
+                    case str2int("AudioComponent"):
+                        ComponentRegistry<ScriptComponent>("AudioComponent", ID, entCom.Name,
+                            EditComponent::EC_ADDCOMPONENT);
+                        break;
                     }
                 }
             }
@@ -720,6 +825,10 @@ namespace Eclipse
                         break;
                     case str2int("ScriptComponent"):
                         ComponentRegistry<ScriptComponent>("ScriptComponent", ID, entCom.Name,
+                            EditComponent::EC_REMOVECOMPONENT);
+                        break;
+                    case str2int("AudioComponent"):
+                        ComponentRegistry<ScriptComponent>("AudioComponent", ID, entCom.Name,
                             EditComponent::EC_REMOVECOMPONENT);
                         break;
                     }
@@ -937,6 +1046,29 @@ namespace Eclipse
                 auto pos = vecList.begin() + i;
                 vecList.erase(pos);
             }
+        }
+    }
+
+    void InspectorWindow::SimulateAudio(Entity ID, AudioComponent& audioCom)
+    {
+        if (audioCom.Is3D)
+        {
+            auto& trans = engine->world.GetComponent<TransformComponent>(ID);
+            engine->audioManager.LoadSound(audioCom.AudioPath,
+                audioCom.Is3D, audioCom.IsLooping, false);
+            engine->audioManager.Set3DConeSettings(audioCom.AudioPath,
+                &audioCom.InnerConeAngle, &audioCom.OuterConeAngle, &audioCom.OuterVolume);
+            engine->audioManager.Set3DMinMaxSettings(audioCom.AudioPath,
+                audioCom.Min, audioCom.Max);
+            audioCom.ChannelID = engine->audioManager.Play3DSounds(audioCom.AudioPath, trans.position,
+                audioCom.Volume, audioCom.IsLooping);
+        }
+        else
+        {
+            engine->audioManager.LoadSound(audioCom.AudioPath, audioCom.Is3D,
+                audioCom.IsLooping, false);
+            audioCom.ChannelID = engine->audioManager.Play2DSounds(audioCom.AudioPath, audioCom.Volume,
+                audioCom.IsLooping);
         }
     }
 
