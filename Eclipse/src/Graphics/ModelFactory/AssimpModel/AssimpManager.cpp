@@ -398,9 +398,11 @@ namespace Eclipse
                         GLuint diff0 = shader.GetLocation("diffuse0");
                         GLuint spec = shader.GetLocation("specular0");
                         GLuint dsa = shader.GetLocation("noTex");
+                        GLuint CheckNormapMap = shader.GetLocation("checkNormalMap");
 
                         glUniform1i(dsa, false);
                         glUniform1i(uniform_var_loc3, true);
+                        glUniform1i(CheckNormapMap, false);
                         glUniform1i(diff0, it);
                         glUniform1i(spec, it);
                         tex.HoldingTextures[it].Bind();
