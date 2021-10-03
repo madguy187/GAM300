@@ -5,7 +5,9 @@ namespace Eclipse
 	struct AIComponent
 	{
 		std::vector<Entity> waypoints;
-		Entity Target;
-		bool patrolling;
+		size_t target{ 0 };
+		float MinDisttoChange{ 10.0f };
+		float PatrolSpeed{ 50.0f };
+		bool patrolling{false};
 	};
 }
