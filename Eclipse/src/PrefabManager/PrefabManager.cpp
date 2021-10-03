@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "PrefabManager.h"
 #include "../ECS/ComponentManager/Components/PrefabComponent.h"
+#include "../ECS/ComponentManager/Components/ParentComponent.h"
+#include "../ECS/ComponentManager/Components/ChildComponent.h"
+#include "../ECS/ComponentManager/Components/ScriptComponent.h"
 
 namespace Eclipse
 {
@@ -12,7 +15,7 @@ namespace Eclipse
 
 	void PrefabManager::LoadPrefab()
 	{
-
+		
 	}
 
 	void PrefabManager::GeneratePrefab(const Entity& ent, const char* path)

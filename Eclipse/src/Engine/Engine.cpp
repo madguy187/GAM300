@@ -14,6 +14,9 @@
 #include "ECS/ComponentManager/Components/ModelInfoComponent.h"
 #include "ECS/ComponentManager/Components/LightComponent.h"
 #include "ECS/ComponentManager/Components/ScriptComponent.h"
+#include "ECS/ComponentManager/Components/PrefabComponent.h"
+#include "ECS/ComponentManager/Components/ParentComponent.h"
+#include "ECS/ComponentManager/Components/ChildComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
@@ -88,6 +91,8 @@ namespace Eclipse
         world.RegisterComponent<ModeLInforComponent>();
         world.RegisterComponent<LightComponent>();
         world.RegisterComponent<ScriptComponent>();
+        world.RegisterComponent<ParentComponent>();
+        world.RegisterComponent<ChildComponent>();
         world.RegisterComponent<PrefabComponent>();
 
         prefabWorld.RegisterComponent<EntityComponent>();
@@ -102,9 +107,10 @@ namespace Eclipse
         prefabWorld.RegisterComponent<RigidBodyComponent>();
         prefabWorld.RegisterComponent<TextureComponent>();
         prefabWorld.RegisterComponent<ModeLInforComponent>();
-        prefabWorld.RegisterComponent<ParentChildComponent>();
         prefabWorld.RegisterComponent<LightComponent>();
         prefabWorld.RegisterComponent<ScriptComponent>();
+        prefabWorld.RegisterComponent<ParentComponent>();
+        prefabWorld.RegisterComponent<ChildComponent>();
         prefabWorld.RegisterComponent<PrefabComponent>();
 
         // registering system

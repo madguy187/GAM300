@@ -42,7 +42,7 @@ namespace Eclipse
 		ModeLInforComponent,
 		PointLightComponent,
 		RigidBodyComponent,
-		//ScriptComponent,
+		ScriptComponent,
 		ParentComponent,
 		ChildComponent,
 		SpotLightComponent,
