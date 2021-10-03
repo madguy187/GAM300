@@ -17,7 +17,7 @@
 #include "FrameBuffer.h"
 #include "../src/ECS/SystemManager/Systems/System/System.h"
 #include "Graphics/OpenGL/OpenGL_Context.h"
-#include "ECS/ComponentManager/Components/MeshComponent.h"
+#include "ECS/ComponentManager/Components/MaterialComponent.h"
 
 const int maxParticles = 10000;
 
@@ -49,7 +49,7 @@ namespace Eclipse
         static void DeleteAllSprites();
 
         //container for textures
-        static std::unordered_map<std::string, Texture> textures;
+        static std::multimap<std::string, Texture> textures;
 
         //container for sprites
         static std::multimap<unsigned int, MeshComponent*> sprites;
@@ -63,6 +63,9 @@ namespace Eclipse
 
         static modelIt FindModel(std::string);
         static shaderIt FindShaders(std::string);
+
+        static Texture FindTextures(std::string);
+        static void GetTexuresForModels(std::string in , MaterialComponent com);
     };
 }
 

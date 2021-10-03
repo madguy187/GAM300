@@ -355,7 +355,7 @@ namespace Eclipse
 
 			TextureComponent icon = dirEntry.is_directory() ? FolderIcon : sprite;
 
-			ImGui::ImageButton((void*)Graphics::textures[icon.textureRef].GetHandle(),
+			ImGui::ImageButton((void*)Graphics::FindTextures(icon.textureRef).GetHandle(),
 				buttonSize,
 				{ 1,0 },
 				{ 2,1 });
@@ -670,7 +670,7 @@ namespace Eclipse
 				{
 					TextureComponent icon = std::filesystem::is_directory(pair2) ? FolderIcon : sprite;
 
-					ImGui::ImageButton((void*)Graphics::textures[icon.textureRef].GetHandle(),
+					ImGui::ImageButton((void*)Graphics::FindTextures(icon.textureRef).GetHandle(),
 						buttonSize,
 						{ 1,0 },
 						{ 2,1 });
@@ -714,7 +714,7 @@ namespace Eclipse
 				{
 					TextureComponent icon = std::filesystem::is_directory(tempPath) ? FolderIcon : sprite;
 
-					ImGui::ImageButton((void*)Graphics::textures[icon.textureRef].GetHandle(),
+					ImGui::ImageButton((void*)Graphics::FindTextures(icon.textureRef).GetHandle(),
 						buttonSize,
 						{ 1,0 },
 						{ 2,1 });

@@ -122,6 +122,10 @@ namespace Eclipse
 
                 ECGui::DrawTextWidget<const char*>("Scale", "");
                 ECGui::DrawSliderFloat3Widget("TransScale", &transCom.scale);
+
+                //Update for DynamicAABB Tree -Rachel
+                engine->gPicker.UpdateAabb(ID);
+                engine->gDynamicAABBTree.UpdateData(ID);
             }
         }
 
@@ -901,7 +905,7 @@ namespace Eclipse
 
             if (AddComponentFilter.PassFilter(textureNames[i].c_str()))
             {
-                ImGui::ImageButton((void*)Graphics::textures[(icon).TextureRef].GetHandle(),
+                ImGui::ImageButton((void*)Graphics::FindTextures((icon).TextureRef).GetHandle(),
                     { thumbnaimsize,thumbnaimsize },
                     { 1,0 },
                     { 2,1 });
@@ -989,7 +993,7 @@ namespace Eclipse
 
                 if (AddComponentFilter.PassFilter((engine->AssimpManager.GetPrimitiveNames()[i].c_str())))
                 {
-                    ImGui::ImageButton((void*)Graphics::textures[(icon).textureRef].GetHandle(),
+                    ImGui::ImageButton((void*)Graphics::FindTextures(icon.textureRef).GetHandle(),
                         { thumbnaimsize,thumbnaimsize },
                         { 1,0 },
                         { 2,1 });
@@ -1017,7 +1021,7 @@ namespace Eclipse
 
                 if (AddComponentFilter.PassFilter((engine->AssimpManager.GetMeshNames()[i].c_str())))
                 {
-                    ImGui::ImageButton((void*)Graphics::textures[(icon).textureRef].GetHandle(),
+                    ImGui::ImageButton((void*)Graphics::FindTextures((icon).textureRef).GetHandle(),
                         { thumbnaimsize,thumbnaimsize },
                         { 1,0 },
                         { 2,1 });

@@ -14,7 +14,7 @@ namespace EclipseCompiler
         std::fstream TextureFileRead;
 
         // Texture Container
-        std::unordered_map<std::string, Texture> TextureCotainer;
+        std::vector <std::pair<std::string, Texture>> NewTextureContainer;
 
         // All Other Textures
         std::unordered_map<std::string, Texture> AllOtherTextureCotainer;

@@ -145,7 +145,6 @@ namespace Eclipse
         world.RegisterSystemSignature<AudioSystem>(audioSignature);
 
         //Check this! - Rachel
-        GridSystem::Init();
         RenderSystem::Init();
         CameraSystem::Init();
         gPhysics.Init();

@@ -3,6 +3,8 @@
 
 namespace Eclipse
 {
+    typedef std::multimap<std::string, Texture>::iterator MMAPIterator;
+
     void AssimpModelManager::Init()
     {
         LoadCompilers();
@@ -133,18 +135,13 @@ namespace Eclipse
     void AssimpModelManager::SetTexturesForModel(MaterialComponent& in, std::string& passkey)
     {
         in.TextureKey = passkey;
+        int Index = 0;
 
-        // See if can find texture or not
-        if (Graphics::textures.find(passkey) != Graphics::textures.end())
+        std::pair<MMAPIterator, MMAPIterator> result = Graphics::textures.equal_range(passkey);
+
+        for (MMAPIterator it = result.first; it != result.second; it++)
         {
-            for (int i = 0; i < 2; i++)
-            {
-                in.HoldingTextures[i].push_back(Graphics::textures[passkey]);
-            }
-        }
-        else
-        {
-            EDITOR_LOG_WARN("No Textures Found for this Mesh , Please Run Texture Compiler");
+            in.HoldingTextures.push_back(it->second);
         }
     }
 
@@ -370,40 +367,62 @@ namespace Eclipse
                 // textures
                 unsigned int diffuseIdx = 0;
                 unsigned int specularIdx = 0;
+                unsigned int normalIdx = 0;
 
-                for (unsigned int i = 0; i < tex.HoldingTextures[i].size(); i++)
+                for (unsigned int it = 0; it < tex.HoldingTextures.size(); it++)
                 {
-                    // activate texture
-                    glActiveTexture(GL_TEXTURE0 + i);
-
                     // retrieve texture info
                     std::string name;
-                    switch (tex.HoldingTextures[i][i].GetType())
+                    switch (tex.HoldingTextures[it].GetType())
                     {
                     case aiTextureType_DIFFUSE:
+                        // activate texture
+                        glActiveTexture(GL_TEXTURE0 + it);
                         name = "diffuse" + std::to_string(diffuseIdx++);
                         break;
                     case aiTextureType_SPECULAR:
+                        // activate texture
+                        glActiveTexture(GL_TEXTURE0 + it);
                         name = "specular" + std::to_string(specularIdx++);
+                        break;
+                    case aiTextureType_NORMALS:
+                        // activate texture
+                        glActiveTexture(GL_TEXTURE0 + it);
+                        name = "normal" + std::to_string(normalIdx++);
                         break;
                     }
 
-                    GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
-                    GLuint diff0 = shader.GetLocation("diffuse0");
-                    GLuint spec = shader.GetLocation("specular0");
-                    GLuint dsa = shader.GetLocation("noTex");
+                    if (tex.HoldingTextures[it].GetType() != aiTextureType_NORMALS)
+                    {
+                        GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
+                        GLuint diff0 = shader.GetLocation("diffuse0");
+                        GLuint spec = shader.GetLocation("specular0");
+                        GLuint dsa = shader.GetLocation("noTex");
+                        GLuint CheckNormapMap = shader.GetLocation("checkNormalMap");
 
-                    glUniform1i(uniform_var_loc3, true);
-                    glUniform1i(diff0, i);
-                    glUniform1i(spec, i);
-                    glUniform1i(dsa, false);
-
-                    // bind texture
-                    tex.HoldingTextures[i][i].Bind();
+                        glUniform1i(dsa, false);
+                        glUniform1i(uniform_var_loc3, true);
+                        glUniform1i(CheckNormapMap, false);
+                        glUniform1i(diff0, it);
+                        glUniform1i(spec, it);
+                        tex.HoldingTextures[it].Bind();
+                    }
+                    else
+                    {
+                        GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
+                        GLuint CheckNoTex = shader.GetLocation("noTex");
+                        GLuint CheckNormapMap = shader.GetLocation("checkNormalMap");
+                        GLuint normal0 = shader.GetLocation("normal0");
+                        glUniform1i(uniform_var_loc3, true);
+                        glUniform1i(CheckNoTex, false);
+                        glUniform1i(CheckNormapMap, true);
+                        glUniform1i(normal0, it);
+                        tex.HoldingTextures[it].Bind();
+                    }
                 }
 
                 // If no Textures , We leave it blank until it has textures
-                if (tex.HoldingTextures[0].size() == 0)
+                if (tex.HoldingTextures.size() == 0)
                 {
                     GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
                     glUniform1i(uniform_var_loc3, false);
@@ -416,13 +435,14 @@ namespace Eclipse
             }
         }
 
-        // reset
-        glActiveTexture(GL_TEXTURE0);
-
         // EBO stuff
         glBindVertexArray(engine->AssimpManager.Geometry[in.MeshName.data()]->VAO);
         glDrawElements(GL_TRIANGLES, engine->AssimpManager.Geometry[in.MeshName.data()]->Indices.size(), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
+
+        // reset
+        glActiveTexture(GL_TEXTURE0);
+
     }
 
     void AssimpModelManager::Render(GLenum mode, MeshComponent& in)
@@ -600,7 +620,6 @@ namespace Eclipse
             tex.Load(false);
             Graphics::textures.emplace(MeshName.data(), tex);
         }
-
         TextureFileRead.close();
     }
 

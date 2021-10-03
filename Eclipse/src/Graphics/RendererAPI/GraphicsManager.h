@@ -26,6 +26,7 @@ namespace Eclipse
         GLenum GlobalMode = GL_FILL;
         std::unique_ptr<CubeMap> Sky;
         AABB_ AllAABBs;
+        std::unique_ptr<Quad> GridQuad;
 
         unsigned int createdID;
         unsigned int SkyCount = 0;
