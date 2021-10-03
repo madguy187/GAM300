@@ -622,6 +622,9 @@
     <ClInclude Include="src\Graphics\Parser\Parser.h">
       <Filter>Graphics\Parser</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\Picker\DynamicAABBTree.h">
+      <Filter>Graphics\Picker</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\Picker\PickingManager.h">
       <Filter>Graphics\Picker</Filter>
     </ClInclude>
@@ -1095,6 +1098,9 @@
     </ClCompile>
     <ClCompile Include="src\Graphics\Parser\Parser.cpp">
       <Filter>Graphics\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Picker\DynamicAABBTree.cpp">
+      <Filter>Graphics\Picker</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\Picker\PickingManager.cpp">
       <Filter>Graphics\Picker</Filter>
