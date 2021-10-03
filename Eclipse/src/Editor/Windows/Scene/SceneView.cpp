@@ -39,6 +39,8 @@ namespace Eclipse
 		settings.Name = "SceneFrameBuffer";
 		settings.Size = ImVec2{ mViewportSize.x, mViewportSize.y };
 		ECGui::DrawChildWindow<void()>(settings, std::bind(&SceneWindow::RunFrameBuffer, this));
+		engine->editorManager->DragAndDropInst_.StringPayloadTarget("prefab", std::string{},
+			"Created Prefab!", PayloadTargetType::PTT_WINDOW);
 	}
 
 	void SceneWindow::RunFrameBuffer()
