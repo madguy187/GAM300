@@ -12,7 +12,7 @@ void Eclipse::GraphicsManager::MassInit()
 
 void Eclipse::GraphicsManager::RegisterThreads()
 {
-   GraphicThreads.emplace("Grid", std::make_unique<std::thread>(std::thread{ &GridSystem::Init}));
+   //GraphicThreads.emplace("Grid", std::make_unique<std::thread>(std::thread{ &GridSystem::Init}));
    GraphicThreads.emplace("Lighting", std::make_unique<std::thread>(std::thread{ &LightingSystem::Init }));
    GraphicThreads.emplace("FileWatch", std::make_unique<std::thread>(std::thread{ &FileWatchSystem::Init }));
 }
