@@ -12,7 +12,7 @@ void Eclipse::GraphicsManager::MassInit()
 
 void Eclipse::GraphicsManager::RegisterThreads()
 {
-   //GraphicThreads.emplace("Grid", std::make_unique<std::thread>(std::thread{ &GridSystem::Init}));
+   GraphicThreads.emplace("Grid", std::make_unique<std::thread>(std::thread{ &GridSystem::Init}));
    GraphicThreads.emplace("Lighting", std::make_unique<std::thread>(std::thread{ &LightingSystem::Init }));
    GraphicThreads.emplace("FileWatch", std::make_unique<std::thread>(std::thread{ &FileWatchSystem::Init }));
 }
@@ -27,6 +27,9 @@ void Eclipse::GraphicsManager::Pre_Render()
 
     // Clear the View
     mRenderContext.pre_render();
+
+    // For grid
+    GridQuad = std::make_unique<Quad>();
 }
 
 void Eclipse::GraphicsManager::Post_Render()
