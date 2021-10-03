@@ -190,6 +190,7 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClInclude Include="src\ECS\ComponentManager\Components\ModeLInfoComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ParentComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\PointLightComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\PrefabComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ScriptComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\SpotLightComponent.h" />
@@ -209,6 +210,7 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem\ParentSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\PrefabSystem\PrefabSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem\RenderSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\System.h" />
     <ClInclude Include="src\ECS\World.h" />
@@ -323,6 +325,7 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClInclude Include="src\Logger\Logger.h" />
     <ClInclude Include="src\Mono\Manager\MonoManager.h" />
     <ClInclude Include="src\Physics\PhysicsManager.h" />
+    <ClInclude Include="src\PrefabManager\PrefabManager.h" />
     <ClInclude Include="src\Reflection\Meta.h" />
     <ClInclude Include="src\Reflection\RemTypeQual.h" />
     <ClInclude Include="src\Reflection\Variant\RefVariant.h" />
@@ -387,6 +390,7 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem\ParentSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\PrefabSystem\PrefabSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem\RenderSystem.cpp" />
     <ClCompile Include="src\ECS\World.cpp" />
     <ClCompile Include="src\Editor\ECGuiAPI\ECGui.cpp" />
@@ -476,6 +480,7 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClCompile Include="src\Logger\Logger.cpp" />
     <ClCompile Include="src\Mono\Manager\MonoManager.cpp" />
     <ClCompile Include="src\Physics\PhysicsManager.cpp" />
+    <ClCompile Include="src\PrefabManager\PrefabManager.cpp" />
     <ClCompile Include="src\Reflection\Meta.cpp" />
     <ClCompile Include="src\Reflection\Variant\RefVariant.cpp" />
     <ClCompile Include="src\Reflection\Variant\Variant.cpp" />

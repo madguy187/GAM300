@@ -61,6 +61,9 @@
     <Filter Include="ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem">
       <UniqueIdentifier>{EA575631-56EB-B7DF-5FD2-2796CBE44EA7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\PrefabSystem">
+      <UniqueIdentifier>{8EB76F07-FA27-7280-C346-EC082F76AA81}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\RenderSystem">
       <UniqueIdentifier>{BE95B25F-2A06-B5D8-F324-2F615F54EDD9}</UniqueIdentifier>
     </Filter>
@@ -383,6 +386,9 @@
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\PrefabSystem\PrefabSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\PrefabSystem</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem\RenderSystem.h">
       <Filter>ECS\SystemManager\Systems\System\RenderSystem</Filter>
@@ -854,7 +860,6 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\PrefabSystem\PrefabSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Audio\AudioManager.cpp">
@@ -913,6 +918,9 @@
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\PrefabSystem\PrefabSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\PrefabSystem</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem\RenderSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\RenderSystem</Filter>
@@ -1257,6 +1265,5 @@
       <Filter>Tracy\common</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\PrefabSystem\PrefabSystem.cpp" />
   </ItemGroup>
 </Project>
