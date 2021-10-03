@@ -7,7 +7,7 @@
 
 namespace Eclipse
 {
-	const std::string PrefabManager::PrefabPath = "src//Assets//Prefabs";
+	const std::string PrefabManager::PrefabPath = "src//Assets//Prefabs//";
 
 	PrefabManager::PrefabManager()
 		:CountID{ 0 }
@@ -15,10 +15,31 @@ namespace Eclipse
 		std::filesystem::create_directories(PrefabPath);
 	}
 
+	void PrefabManager::LoadAllPrefab()
+	{
+		for (auto& entry : std::filesystem::recursive_directory_iterator())
+		{
+			auto& extension = entry.path().extension().string();
+			if (!extension.compare(".prefab"))
+			{
+				//LoadPrefab(entry.path().string().c_str());
+			}
+		}
+	}
+
 	void PrefabManager::LoadPrefab(const char* path)
 	{
-		
-		
+		int PrefabID = engine->szManager.LoadPrefabFile(path) >= 0;
+		if (PrefabID >= 0)
+		{
+			mapPathToID[path] = PrefabID;
+		}
+		else
+		{
+			std::string msg = path;
+			msg += " is unable to be loaded as prefab.";
+			EDITOR_LOG_WARN(msg.c_str());
+		}
 	}
 
 	void PrefabManager::GeneratePrefab(const Entity& ent, const char* path)

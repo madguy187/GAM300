@@ -213,7 +213,7 @@ namespace Eclipse
 		sz.CloseElement();
 	}
 
-	int SerializationManager::LoadPrefab(const char* path)
+	int SerializationManager::LoadPrefab()
 	{
 		World& prefabW = engine->prefabWorld;
 		int PrefabID = -1;
@@ -244,9 +244,35 @@ namespace Eclipse
 		int PrefabID = -1;
 		if (LoadFile(fullpath))
 		{
-			PrefabID =  LoadPrefab(fullpath);
+			PrefabID =  LoadPrefab();
 		}
 		
 		return PrefabID;
+	}
+
+	//Debug purpose
+	void SerializationManager::SavePrefabWorld(const std::vector<Entity>& entities)
+	{
+		World& prefabW = engine->prefabWorld;
+
+		sz.StartElement("Entities");
+		sz.AddAttributeToElement("Size", entities.size());
+		size_t counter = 0;
+		for (auto const& ent : entities)
+		{
+			if(prefabW.CheckComponent<PrefabComponent>(ent))
+			{
+				SerializeEntity(prefabW, ent, counter++);
+			}
+		}
+		sz.CloseElement();
+	}
+
+	void SerializationManager::SavePrefabWorldFile(const std::vector<Entity>& entities)
+	{
+		SavePrefabWorld(entities);
+		std::string path = PrefabManager::PrefabPath;
+		path += "List.xml";
+		SaveFile(path.c_str());
 	}
 }

@@ -518,7 +518,9 @@ namespace Eclipse
 
 		void SavePrefab(int prefabID, std::vector<Entity>& prefabContents);
 
-		int LoadPrefab(const char* path);
+		int LoadPrefab();
+
+		void SavePrefabWorld(const std::vector<Entity>& entities);
 
 	public:
 		static Serializer sz;
@@ -539,6 +541,8 @@ namespace Eclipse
 		void SaveSceneFile(const char* fullpath = "Data/Temp/Temp.scn");
 
 		void LoadSceneFile(const char* fullpath = "Data/Temp/Temp.scn");
+
+		void SavePrefabWorldFile(const std::vector<Entity>& entities);
 
 		template <typename T>
 		inline static void TestSerialize(const char* name, RefVariant refv)

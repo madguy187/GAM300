@@ -32,6 +32,7 @@
 #include "ECS/SystemManager/Systems/System/MonoSystem/MonoSystem.h"
 #include "ECS/SystemManager/Systems/System/Audio/AudioSystem.h"
 #include "ECS/SystemManager/Systems/System/FileWatchSystem/FileWatchSystem.h"
+#include "ECS/SystemManager/Systems/System/PrefabSystem/PrefabSystem.h"
 
 bool Tester1(const Test1& e)
 {
@@ -124,6 +125,9 @@ namespace Eclipse
         world.RegisterSystem<MonoSystem>();
         world.RegisterSystem<AudioSystem>();
         world.RegisterSystem<FileWatchSystem>();
+        world.RegisterSystem<PrefabSystem>();
+
+        prefabWorld.RegisterSystem<PrefabSystem>();
 
         // Render System
         Signature RenderSys = RenderSystem::RegisterAll();
@@ -162,11 +166,19 @@ namespace Eclipse
         hi5.set(world.GetComponentType<ScriptComponent>(), 1);
         world.RegisterSystemSignature<MonoSystem>(hi5);
 
+        Signature prefabSig;
+        prefabSig.set(world.GetComponentType<PrefabComponent>());
+        world.RegisterSystemSignature<PrefabSystem>(prefabSig);
+
+        prefabWorld.RegisterSystemSignature<PrefabSystem>(prefabSig);
+
         //Check this! - Rachel
         RenderSystem::Init();
         CameraSystem::Init();
         gPhysics.Init();
         audioManager.Init();
+
+        pfManager.LoadAllPrefab();
 
         if (IsEditorActive)
             IsInPlayState = false;

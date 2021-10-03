@@ -851,6 +851,7 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\PrefabSystem\PrefabSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Audio\AudioManager.cpp">
@@ -1253,5 +1254,6 @@
       <Filter>Tracy\common</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\PrefabSystem\PrefabSystem.cpp" />
   </ItemGroup>
 </Project>

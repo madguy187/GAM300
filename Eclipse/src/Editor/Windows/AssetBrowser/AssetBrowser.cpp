@@ -344,7 +344,6 @@ namespace Eclipse
 	{
 		for (auto& dirEntry : std::filesystem::directory_iterator(CurrentDir))
 		{
-
 			const auto& path = dirEntry.path();
 
 			auto relativePath = std::filesystem::relative(path, AssetPath);

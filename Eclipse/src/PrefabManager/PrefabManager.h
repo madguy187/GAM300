@@ -9,12 +9,14 @@ namespace Eclipse
 		std::unordered_map<std::string, Entity> mapPathToID;
 		int CountID;
 
+		void LoadPrefab(const char* path);
+
 	public:
 		static const std::string PrefabPath;
 
 		PrefabManager();
 
-		void LoadPrefab(const char* path);
+		void LoadAllPrefab();
 
 		void GeneratePrefab(const Entity& ent, const char* path);
 
