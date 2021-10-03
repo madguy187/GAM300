@@ -16,6 +16,7 @@
 #include "Editor/Windows/Profiler/Profiler.h"
 #include "Audio/AudioManager.h"
 #include "Graphics/FileWatch/FileWatch.h"
+#include "PrefabManager/PrefabManager.h"
 
 namespace Eclipse
 {
@@ -40,6 +41,8 @@ namespace Eclipse
         SerializationManager szManager;
         AudioManager audioManager;
         DragAndDrop dragDrop;
+        PrefabManager pfManager;
+
         void Init();
         void Run();
         PhysicsManager gPhysics;
