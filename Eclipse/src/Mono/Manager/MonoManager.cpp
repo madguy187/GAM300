@@ -115,7 +115,7 @@ namespace Eclipse
 
 		mono_image_close(APIImage);
 		APIImage = nullptr;
-
+		
 		UnloadDomain();
 	}
 
@@ -248,6 +248,7 @@ namespace Eclipse
 			file.close();
 		}
 
+		delete[] arr;
 		MonoImageOpenStatus status;
 		image = nullptr;
 		//image = mono_image_open_from_data_with_name(&str.front(), str.length(), true /* copy data */, &status, false /* ref only */, filename);

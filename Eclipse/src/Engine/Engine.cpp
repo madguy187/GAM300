@@ -12,7 +12,6 @@
 #include "ECS/ComponentManager/Components/RigidBodyComponent.h"
 #include "ECS/ComponentManager/Components/TextureComponent.h"
 #include "ECS/ComponentManager/Components/ModelInfoComponent.h"
-#include "ECS/ComponentManager/Components/ParentChildComponent.h"
 #include "ECS/ComponentManager/Components/LightComponent.h"
 #include "ECS/ComponentManager/Components/ScriptComponent.h"
 
@@ -87,7 +86,6 @@ namespace Eclipse
         world.RegisterComponent<RigidBodyComponent>();
         world.RegisterComponent<TextureComponent>();
         world.RegisterComponent<ModeLInforComponent>();
-        world.RegisterComponent<ParentChildComponent>();
         world.RegisterComponent<LightComponent>();
         world.RegisterComponent<ScriptComponent>();
 
