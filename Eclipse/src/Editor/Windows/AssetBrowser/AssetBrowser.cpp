@@ -226,6 +226,8 @@ namespace Eclipse
 		//folders and items
 
 		ECGui::DrawChildWindow<void()>({ "Scrolling" }, std::bind(&AssetBrowserWindow::FoldersAndItems, this));
+		engine->editorManager->DragAndDropInst_.StringPayloadTarget("PrefabGeneration", CurrentDir.string(), 
+			"Prefab generated", PayloadTargetType::PTT_ASSETS);
 	}
 
 	void AssetBrowserWindow::FoldersAndItems()
@@ -376,6 +378,12 @@ namespace Eclipse
 				break;
 			case InspectorWindow::str2int("txt"):
 				engine->editorManager->DragAndDropInst_.StringPayloadSource("txt", relativePath.string());
+				break;
+			case InspectorWindow::str2int("wav"):
+				engine->editorManager->DragAndDropInst_.StringPayloadSource("wav", "src\\Assets\\" + relativePath.string());
+				break;
+			case InspectorWindow::str2int("prefab"):
+				engine->editorManager->DragAndDropInst_.StringPayloadSource("prefab", relativePath.string());
 				break;
 			}
 

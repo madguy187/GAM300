@@ -21,6 +21,7 @@ namespace EclipseCompiler
 
     private:
         void ReadFile();
+        // Fikrul detected cancer here
         void WriteToFile(std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>& LoadedTextures);
 
     public:

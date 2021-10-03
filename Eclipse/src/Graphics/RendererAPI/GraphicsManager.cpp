@@ -304,6 +304,9 @@ void Eclipse::GraphicsManager::CheckUniformLoc(Shader* _shdrpgm, MeshComponent& 
     GLuint hi = _shdrpgm->GetLocation("noTex");
     glUniform1i(hi, true);
 
+    GLuint CheckNormapMap = _shdrpgm->GetLocation("checkNormalMap");
+    glUniform1i(CheckNormapMap, false);
+
     GLint uniform_var_loc10 = _shdrpgm->GetLocation("BasicPrimitives");
     glUniform1i(uniform_var_loc10, true);
 
