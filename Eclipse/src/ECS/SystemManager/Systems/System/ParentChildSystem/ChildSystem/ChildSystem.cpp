@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "ChildSystem.h"
+#include "ECS/ComponentManager/Components/ParentComponent.h"
+#include "ECS/ComponentManager/Components/ChildComponent.h"
 
 namespace Eclipse
 {

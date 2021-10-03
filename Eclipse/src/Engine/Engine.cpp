@@ -14,6 +14,8 @@
 #include "ECS/ComponentManager/Components/ModelInfoComponent.h"
 #include "ECS/ComponentManager/Components/LightComponent.h"
 #include "ECS/ComponentManager/Components/ScriptComponent.h"
+#include "ECS/ComponentManager/Components/ParentComponent.h"
+#include "ECS/ComponentManager/Components/ChildComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
@@ -29,6 +31,8 @@
 #include "ECS/SystemManager/Systems/System/MonoSystem/MonoSystem.h"
 #include "ECS/SystemManager/Systems/System/Audio/AudioSystem.h"
 #include "ECS/SystemManager/Systems/System/FileWatchSystem/FileWatchSystem.h"
+#include "ECS/SystemManager/Systems/System/ParentChildSystem/ChildSystem/ChildSystem.h"
+#include "ECS/SystemManager/Systems/System/ParentChildSystem/ParentSystem/ParentSystem.h"
 
 bool Tester1(const Test1& e)
 {
@@ -100,6 +104,11 @@ namespace Eclipse
         world.RegisterSystem<MonoSystem>();
         world.RegisterSystem<AudioSystem>();
         world.RegisterSystem<FileWatchSystem>();
+        world.RegisterSystem<ChildSystem>();
+        world.RegisterSystem<ParentSystem>();
+
+        World test;
+        world.CopyEntity(test, 0, all_component_list);
 
         // Render System
         Signature RenderSys = RenderSystem::RegisterAll();
@@ -137,6 +146,14 @@ namespace Eclipse
         Signature hi5;
         hi5.set(world.GetComponentType<ScriptComponent>(), 1);
         world.RegisterSystemSignature<MonoSystem>(hi5);
+
+        Signature hi6;
+        hi6.set(world.GetComponentType<ParentComponent>(), 1);
+        world.RegisterSystemSignature<ParentSystem>(hi6);
+
+        Signature hi7;
+        hi6.set(world.GetComponentType<ChildComponent>(), 1);
+        world.RegisterSystemSignature<ChildSystem>(hi7);
 
         //Check this! - Rachel
         GridSystem::Init();
@@ -227,6 +244,9 @@ namespace Eclipse
             }
 
             world.Update<FileWatchSystem>();
+
+            /*world.Update<ParentSystem>();
+            world.Update<ChildSystem>();*/
 
             // FRAMEBUFFER BIND =============================
             engine->GraphicsManager.GlobalFrameBufferBind();

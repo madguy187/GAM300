@@ -4,7 +4,6 @@ namespace Eclipse
 {
 	struct AABBComponent;
 	struct CameraComponent;
-	struct ChildTransformComponent;
 	struct DirectionalLightComponent;
 	struct EntityComponent;
 	struct LightComponent;
@@ -32,7 +31,6 @@ namespace Eclipse
 	using ComponentList = ComponentTypeList<
 		AABBComponent,
 		CameraComponent,
-		ChildTransformComponent,
 		DirectionalLightComponent,
 		EntityComponent,
 		LightComponent,
