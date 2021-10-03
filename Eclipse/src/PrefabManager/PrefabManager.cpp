@@ -22,7 +22,7 @@ namespace Eclipse
 			auto& extension = entry.path().extension().string();
 			if (!extension.compare(".prefab"))
 			{
-				//LoadPrefab(entry.path().string().c_str());
+				LoadPrefab(entry.path().string().c_str());
 			}
 		}
 	}

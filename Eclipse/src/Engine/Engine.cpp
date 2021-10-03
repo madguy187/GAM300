@@ -178,7 +178,7 @@ namespace Eclipse
         gPhysics.Init();
         audioManager.Init();
 
-        pfManager.LoadAllPrefab();
+        //pfManager.LoadAllPrefab();
 
         if (IsEditorActive)
             IsInPlayState = false;
