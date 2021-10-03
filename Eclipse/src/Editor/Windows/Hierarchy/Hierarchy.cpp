@@ -142,14 +142,14 @@ namespace Eclipse
                 }
                 if (!entCom.IsAChild)
                 {
-                    engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit",
-                        static_cast<int>(index));
-                    engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
+                    //engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity", static_cast<int>(curr.index), PayloadSourceType::PST_ENTITY);
+                    engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
+                        static_cast<int>(index), PayloadSourceType::PST_ENTITY);
+                    engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
                         static_cast<int>(index), entCom.IsActive);
                 }
 
                 //engine->editorManager->SetGlobalIndex(index);
-                engine->editorManager->DragAndDropInst_.IndexPayloadSource("PrefabGeneration", static_cast<int>(curr.index), PayloadSourceType::PST_ENTITY);
             }
         }
     }

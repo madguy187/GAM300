@@ -226,7 +226,7 @@ namespace Eclipse
 		//folders and items
 
 		ECGui::DrawChildWindow<void()>({ "Scrolling" }, std::bind(&AssetBrowserWindow::FoldersAndItems, this));
-		engine->editorManager->DragAndDropInst_.StringPayloadTarget("PrefabGeneration", CurrentDir.string(), 
+		engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity", CurrentDir.string(), 
 			"Prefab generated", PayloadTargetType::PTT_ASSETS);
 	}
 
