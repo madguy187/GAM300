@@ -185,28 +185,10 @@ namespace Eclipse
 
 		ECGui::InsertSameLine();
 		auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
-		//scene->SetSnapping(true);
-		static bool isActive;
-		ImGuiIO& io = ImGui::GetIO();
-		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_LeftControl)))
-		{
-			if (!isActive)
-			{
-				isActive = true;
-				scene->SetSnapping(isActive);
-				EDITOR_LOG_INFO("Snapping is turned off.")
-			}
-			else
-			{
-				isActive = false;
-				scene->SetSnapping(isActive);
-				EDITOR_LOG_INFO("Snapping is turned off.")
-			}
-		}
+		static bool isActive = false;
 
 		if(scene->GetSnapping())
 		{
-
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(ImColor(0, 0, 0)));
 			if (ImGui::Button("Snap " ICON_FA_ODNOKLASSNIKI_SQUARE, ImVec2{ 100,20 }))
 			{
@@ -217,7 +199,7 @@ namespace Eclipse
 			if (ImGui::BeginPopup("Snapping"))
 			{
 				ChildSettings settings{ "Snapping",ImVec2{400,170} };
-				ECGui::DrawChildWindow<void(bool&)>(settings, std::bind(&HeaderWindow::SnappingManager, this, std::placeholders::_1), isActive);
+				ECGui::DrawChildWindow<void()>(settings, std::bind(&HeaderWindow::SnappingManager, this));
 
 				ImGui::EndPopup();
 			}
@@ -233,12 +215,13 @@ namespace Eclipse
 			if (ImGui::BeginPopup("Snapping"))
 			{
 				ChildSettings settings{ "Snapping",ImVec2{400,170} };
-				ECGui::DrawChildWindow<void(bool&)>(settings, std::bind(&HeaderWindow::SnappingManager, this, std::placeholders::_1), isActive);
+				ECGui::DrawChildWindow<void()>(settings, std::bind(&HeaderWindow::SnappingManager, this));
 
 				ImGui::EndPopup();
 			}
 
 		}
+
 		if (ImGui::IsItemHovered())
 		{
 			ImGui::BeginTooltip();
@@ -247,72 +230,6 @@ namespace Eclipse
 			ImGui::PopTextWrapPos();
 			ImGui::EndTooltip();
 		}
-
-		//ECGui::InsertSameLine();
-		//int posSnapVal = static_cast<int>(scene->GetSnapSettings().mPosSnapValue);
-		//if (ImGui::Button(std::to_string(posSnapVal).c_str(), ImVec2{ 50,20 }))
-		//{
-		//	ImGui::OpenPopup("Set Pos Snap");
-		//}
-		//if (ImGui::BeginPopup("Set Pos Snap"))
-		//{
-		//	ChildSettings settings{ "Set Pos Snap",ImVec2{200,45} };
-		//	ECGui::DrawChildWindow<void()>(settings, std::bind(&HeaderWindow::SetPosSnap, this));
-		//	ImGui::EndPopup();
-		//}
-		//if (ImGui::IsItemHovered())
-		//{
-		//	ImGui::BeginTooltip();
-		//	ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
-		//	ImGui::TextUnformatted("Set the Position Grid Snap Value.");
-		//	ImGui::PopTextWrapPos();
-		//	ImGui::EndTooltip();
-		//}
-		//
-		//ECGui::InsertSameLine();
-		//int RotSnapVal = static_cast<int>(scene->GetSnapSettings().mRotSnapValue);
-		//std::string temp = std::to_string(RotSnapVal);
-		//const char* degree = "*";
-		//std::string c = temp + degree;
-		//if (ImGui::Button(c.c_str(), ImVec2{50,20}))
-		//{
-		//	ImGui::OpenPopup("Set Rot Snap");
-		//}
-		//if (ImGui::BeginPopup("Set Rot Snap"))
-		//{
-		//	ChildSettings settings{ "Set Rot Snap",ImVec2{200,45} };
-		//	ECGui::DrawChildWindow<void()>(settings, std::bind(&HeaderWindow::SetRotSnap, this));
-		//	ImGui::EndPopup();
-		//}
-		//if (ImGui::IsItemHovered())
-		//{
-		//	ImGui::BeginTooltip();
-		//	ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
-		//	ImGui::TextUnformatted("Set the Rotation Grid Snap Value.");
-		//	ImGui::PopTextWrapPos();
-		//	ImGui::EndTooltip();
-		//}
-		//
-		//ECGui::InsertSameLine();
-		//int scaleSnapVal = static_cast<int>(scene->GetSnapSettings().mScaleSnapValue);
-		//if (ImGui::Button(std::to_string(scaleSnapVal).c_str(), ImVec2{ 50,20 }))
-		//{
-		//	ImGui::OpenPopup("Set Scale Snap");
-		//}
-		//if (ImGui::BeginPopup("Set Scale Snap"))
-		//{
-		//	ChildSettings settings{ "Set Scale Snap",ImVec2{200,45} };
-		//	ECGui::DrawChildWindow<void()>(settings, std::bind(&HeaderWindow::SetScaleSnap, this));
-		//	ImGui::EndPopup();
-		//}
-		//if (ImGui::IsItemHovered())
-		//{
-		//	ImGui::BeginTooltip();
-		//	ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
-		//	ImGui::TextUnformatted("Set the Scale Grid Snap Value.");
-		//	ImGui::PopTextWrapPos();
-		//	ImGui::EndTooltip();
-		//}
 	}
 
 	void HeaderWindow::CameraSetting()
@@ -328,12 +245,15 @@ namespace Eclipse
 		}
 	}
 
-	void HeaderWindow::SnappingManager(bool& isActive)
+	void HeaderWindow::SnappingManager()
 	{
 		auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
+		static bool IsActive = false;
 
-		ECGui::CheckBoxBool("Enable Snapping", &isActive,false);
-		scene->SetSnapping(isActive);
+		if (ECGui::CheckBoxBool("Enable Snapping", &IsActive, false))
+		{
+			scene->SetSnapping(IsActive);
+		}
 
 		ECGui::DrawTextWidget<const char*>("Pos Snap:", "");
 		ECGui::DrawSliderFloatWidget("Pos Snap", &scene->GetRefToSnapSettings().mPosSnapValue, true, 1.f, 100.f);

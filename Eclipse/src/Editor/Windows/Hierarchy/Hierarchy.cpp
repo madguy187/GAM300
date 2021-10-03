@@ -149,7 +149,7 @@ namespace Eclipse
                 }
 
                 //engine->editorManager->SetGlobalIndex(index);
-
+                engine->editorManager->DragAndDropInst_.IndexPayloadSource("PrefabGeneration", static_cast<int>(curr.index), PayloadSourceType::PST_ENTITY);
             }
         }
     }

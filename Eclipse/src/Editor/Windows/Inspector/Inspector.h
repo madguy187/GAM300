@@ -1,6 +1,7 @@
 //#pragma once
 
 #include "../Interface/ECGuiWindow.h"
+#include "ECS/ComponentManager/Components/AudioComponent.h"
 
 namespace Eclipse
 {
@@ -25,6 +26,7 @@ namespace Eclipse
 		bool ShowMesh3DProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowModelInfoProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowScriptProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowAudioProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 
 		void AddComponentsController(Entity ID);
 		void RemoveComponentsController(Entity ID);
@@ -36,7 +38,8 @@ namespace Eclipse
 		
 		void ChangeMeshController(Entity ID);
 		void MeshList(Entity ID);
-		void RemoveElementFromVectorStringList(std::vector<std::string> & vecList);
+
+		void SimulateAudio(Entity ID, AudioComponent& audioCom);
 		
 		template <typename TComponents>
 		void AddComponentsFeedback(const char* Components, const std::string& name, Entity ID, bool exist);
