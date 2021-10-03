@@ -14,16 +14,21 @@ namespace EclipseCompiler
         std::fstream TextureFileRead;
 
         // Texture Container
-        std::unordered_map<std::string, Texture> TextureCotainer;
+        std::vector <std::pair<std::string, Texture>> NewTextureContainer;
+
+        // All Other Textures
+        std::unordered_map<std::string, Texture> AllOtherTextureCotainer;
 
     private:
         void ReadFile();
         void WriteToFile(std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>& LoadedTextures);
 
     public:
+        std::string process(std::string const& s);
         void LoadFile(const std::string& modelFile) override;
+        void LoadBasicTextures(const std::string& modelFile);
         void Init() override;
-        void ReleaseFile(std::string& in) override;
+        void ReleaseFile() override;
         void ReadFile(std::string& in) override;
     };
 }

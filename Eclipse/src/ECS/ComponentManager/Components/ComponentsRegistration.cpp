@@ -8,7 +8,6 @@
 #include "MaterialComponent.h"
 #include "MeshComponent.h"
 #include "ModeLInfoComponent.h"
-#include "ParentChildComponent.h"
 #include "PointLightComponent.h"
 #include "RigidBodyComponent.h"
 #include "SpotLightComponent.h"
@@ -118,12 +117,6 @@ namespace Eclipse
         ADD_MEMBER(NameOfModel);
         ADD_MEMBER(Directory);
         ADD_MEMBER(type);
-    }
-
-    DEFINE_META(ParentChildComponent)
-    {
-        ADD_MEMBER(parentIndex);
-        ADD_MEMBER(offset);
     }
 
     DEFINE_META(PointLightComponent)

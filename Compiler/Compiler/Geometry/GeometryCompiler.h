@@ -23,7 +23,7 @@ namespace EclipseCompiler
     public:
         void LoadFile(const std::string& modelFile) override;
         void Init() override;
-        void ReleaseFile(std::string& in) override;
+        void ReleaseFile() override;
         void ReadFile(std::string& in) override;
     };
 }

@@ -17,12 +17,12 @@ namespace EclipseCompiler
     class ICompiler
     {
     public:
-        std::string Path = "../Eclipse/src/Assets/Compilers/";
+        std::string Path = "../Compiler/CompilerKeyFiles/";
         std::string FileName = ".eclipse";
 
         virtual void LoadFile(const std::string& modelFile) = 0;
         virtual void Init() = 0;
-        virtual void ReleaseFile(std::string& in) = 0;
+        virtual void ReleaseFile() = 0;
         virtual void ReadFile(std::string& in) = 0;
     };
 
@@ -34,7 +34,7 @@ namespace EclipseCompiler
     public:
         void Register(ICompiler& in);
         void Initialise();
-        void ProduceFile(std::string& in);
+        void ProduceFile();
         void ReadFile(std::string& in);
     };
 }

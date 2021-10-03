@@ -63,6 +63,6 @@ namespace Eclipse
         std::vector<unsigned int> ReturnContacted();
         CameraComponent::CameraType GetCamera();
         void UpdateDYN_AABB(AABBComponent& in, unsigned int ID);
-        AABBComponent& SetFrustrumAABB(CameraComponent::CameraType CameraType);
+        AABBComponent SetFrustrumAABB(CameraComponent::CameraType CameraType);
     };
 }

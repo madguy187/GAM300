@@ -4,6 +4,8 @@
 #include "Graphics.h"
 #include "type_ptr.hpp"
 #include "matrix_transform_2d.hpp"
+#include <algorithm>
+
 
 /*                                                   objects with file scope
 ----------------------------------------------------------------------------- */
@@ -12,9 +14,11 @@ using namespace Eclipse;
 
 std::unordered_map<std::string, Shader> Graphics::shaderpgms;
 std::unordered_map<std::string, std::unique_ptr<IModel>> Graphics::models;
-std::unordered_map<std::string, Texture> Graphics::textures;
+std::multimap<std::string, Texture> Graphics::textures;
 std::multimap<unsigned int, MeshComponent*> Graphics::sprites;
 std::set<unsigned int> Graphics::sortedID;
+
+typedef std::multimap<std::string, Texture>::iterator MMAPIterator;
 
 void Graphics::load()
 {
@@ -23,9 +27,6 @@ void Graphics::load()
 
     //Loads all models listed
     LoadModels();
-
-    //Loads all textures listed
-    LoadTextures("src/Assets/Textures/Textures.json");
 
     ENGINE_CORE_INFO("Loaded Models , Shaders and Textures Successful");
 }
@@ -84,27 +85,27 @@ void Graphics::LoadModels()
 
 void Graphics::LoadTextures(std::string textureFile)
 {
-    Parser input;
-    input.ParseFile(textureFile);
-
-    std::string textureName;
-    std::string path;
-    glm::ivec2 spriteDimensions, spriteIndex;
-
-    for (auto& it : input.doc["textures"].GetArray())
-    {
-        textureName = (it)["textureName"].GetString();
-        path = (it)["path"].GetString();
-        spriteDimensions = { (it)["spriteDimensions"][rapidjson::SizeType(0)].GetInt(),
-                             (it)["spriteDimensions"][rapidjson::SizeType(1)].GetInt() };
-        spriteIndex = { (it)["spriteIndex"][rapidjson::SizeType(0)].GetInt(),
-                        (it)["spriteIndex"][rapidjson::SizeType(1)].GetInt() };
-
-        Texture newTex(path);
-        newTex.setSpriteWidth(spriteDimensions.x);
-        newTex.setSpriteHeight(spriteDimensions.y);
-        textures.emplace(textureName, newTex);
-    }
+    //Parser input;
+    //input.ParseFile(textureFile);
+    //
+    //std::string textureName;
+    //std::string path;
+    //glm::ivec2 spriteDimensions, spriteIndex;
+    //
+    //for (auto& it : input.doc["textures"].GetArray())
+    //{
+    //    textureName = (it)["textureName"].GetString();
+    //    path = (it)["path"].GetString();
+    //    spriteDimensions = { (it)["spriteDimensions"][rapidjson::SizeType(0)].GetInt(),
+    //                         (it)["spriteDimensions"][rapidjson::SizeType(1)].GetInt() };
+    //    spriteIndex = { (it)["spriteIndex"][rapidjson::SizeType(0)].GetInt(),
+    //                    (it)["spriteIndex"][rapidjson::SizeType(1)].GetInt() };
+    //
+    //    Texture newTex(path);
+    //    newTex.setSpriteWidth(spriteDimensions.x);
+    //    newTex.setSpriteHeight(spriteDimensions.y);
+    //    textures.emplace(textureName, newTex);
+    //}
 }
 
 /******************************************************************************/
@@ -209,4 +210,23 @@ typename Graphics::modelIt Graphics::FindModel(std::string name)
 typename Graphics::shaderIt Graphics::FindShaders(std::string name)
 {
     return shaderpgms.find(name);
+}
+
+Texture Eclipse::Graphics::FindTextures(std::string in)
+{
+    for (auto itr = textures.find(in); itr != textures.end(); itr++)
+    {
+        return itr->second;
+    }
+}
+
+void Eclipse::Graphics::GetTexuresForModels(std::string in , MaterialComponent com)
+{
+    int Index = 0;
+    std::pair<MMAPIterator, MMAPIterator> result = textures.equal_range(in);
+
+    for (MMAPIterator it = result.first; it != result.second; it++)
+    {
+        com.HoldingTextures.push_back(it->second);
+    }
 }

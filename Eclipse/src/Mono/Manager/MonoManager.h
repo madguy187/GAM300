@@ -19,6 +19,7 @@ namespace Eclipse
 
 		// Generates all the scripts into a dll
 		void GenerateDLL();
+		bool LoadDLLImage(const char* filename, MonoImage*& image, MonoAssembly*& assembly);
 
 		MonoDomain* LoadDomain();
 		void UnloadDomain();
@@ -26,9 +27,9 @@ namespace Eclipse
 	public:
 		void Init();
 		void Update(MonoScript* obj);
-		void ResetMono();
-		void RestartMono();
 		void StopMono();
+		void StartMono();
+		void Terminate();
 		MonoObject* CreateMonoObject(std::string scriptName, Entity entity);
 
 		// Gets image containing all API Scripts

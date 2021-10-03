@@ -56,13 +56,12 @@ namespace Eclipse
 		if (ImGui::BeginDragDropTarget())
 		{
 			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(id);
-
 			if (payload)
 			{
 				switch (type)
 				{
 				case PayloadTargetType::PTT_WIDGET:
-					if (id == "cs")
+					if (std::strcmp(id,"cs") == 0)
 					{
 						// Put it here Nico, ur script instance thing
 						std::filesystem::path temp = ((const char*)payload->Data);

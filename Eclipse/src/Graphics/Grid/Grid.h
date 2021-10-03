@@ -72,7 +72,7 @@ namespace Eclipse
         // Whole Grid Colour
         ECVec3 GridColour{ 0.3f,0.3f,0.3f };
         // What Shape am i using to Render the Grid
-        Quad* WholeGrid = nullptr;
+        std::unique_ptr<Quad> WholeGrid = nullptr;
         // Shader Reference 
         Shader* ShaderRef = nullptr;
 
@@ -101,8 +101,6 @@ namespace Eclipse
         bool GridSystemIsRunning = true;
 
     public:
-        // Get Model Reference
-        Quad* GetModelReference();
         // Get Model Reference
         Shader* GetShaderReference();
         // Get Grid Colour

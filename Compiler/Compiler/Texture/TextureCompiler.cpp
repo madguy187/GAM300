@@ -3,6 +3,19 @@
 
 namespace EclipseCompiler
 {
+    std::string TextureCompiler::process(std::string const& s)
+    {
+        std::string::size_type pos = s.find('.');
+        if (pos != std::string::npos)
+        {
+            return s.substr(0, pos);
+        }
+        else
+        {
+            return s;
+        }
+    }
+
     void TextureCompiler::LoadFile(const std::string& modelFile)
     {
         for (auto& dirEntry : std::filesystem::directory_iterator(modelFile))
@@ -11,7 +24,12 @@ namespace EclipseCompiler
             auto relativePath = relative(path, "..//Eclipse//src//");
             std::string FolderName = relativePath.filename().string();
 
-            std::string GoIntoModelFolder = ("..//Eclipse//src/Assets/ASSModels/" + FolderName);
+            std::string GoIntoModelFolder = ("..//Eclipse//src/Assets/Models/" + FolderName);
+
+            if (GoIntoModelFolder.find("HardReset.txt") != std::string::npos)
+            {
+                continue;
+            }
 
             for (auto& dirEntry : std::filesystem::directory_iterator(GoIntoModelFolder))
             {
@@ -21,32 +39,54 @@ namespace EclipseCompiler
 
                 if (FbxOrGltfName.find("gltf") != std::string::npos || FbxOrGltfName.find("fbx") != std::string::npos)
                 {
-                    std::string PathName = ("..//Eclipse//src/Assets/ASSModels/" + FolderName + "/" + FbxOrGltfName).c_str();
+                    std::string PathName = ("..//Eclipse//src/Assets/Models/" + FolderName + "/" + FbxOrGltfName).c_str();
                     std::unique_ptr<AssimpLoader> ptr = std::make_unique< AssimpLoader>();
-                    ptr->LoadAssimpModelForTextures(PathName, TextureCotainer);
+                    ptr->LoadAssimpModelForTextures(PathName, NewTextureContainer);
+
+                    int i = 0;
                 }
             }
         }
     }
 
-    void TextureCompiler::Init()
+    void TextureCompiler::LoadBasicTextures(const std::string& modelFile)
     {
-        LoadFile("..//Eclipse//src//Assets//ASSModels");
+        for (auto& dirEntry : std::filesystem::directory_iterator(modelFile))
+        {
+            const auto& path = dirEntry.path();
+            auto relativePath = relative(path, "..//Eclipse//src//");
+            std::string TextureName = relativePath.filename().string();
+
+            std::string NewPath = "src/Assets/Textures/";
+
+            if (TextureName.find("png") != std::string::npos || TextureName.find("jpeg") != std::string::npos || TextureName.find("dds") != std::string::npos)
+            {
+                std::string NewCombined = NewPath + TextureName;
+                std::string Name = process(TextureName);
+                Texture tex(NewCombined);
+                AllOtherTextureCotainer.emplace(Name, tex);
+            }
+        }
+
+        int i = 0;
     }
 
-    void TextureCompiler::ReleaseFile(std::string& in)
+    void TextureCompiler::Init()
     {
-        if (in == "2")
-        {
-            if (TextureCotainer.empty())
-            {
-                std::cout << "No Textures Loaded" << std::endl << std::endl;
-                return;
-            }
+        LoadFile("..//Eclipse//src//Assets//Models");
+        LoadBasicTextures("..//Eclipse//src//Assets//Textures");
+    }
 
-            WriteToFile(Textures);
-            std::cout << "Textures File Produced" << std::endl << std::endl;
+    void TextureCompiler::ReleaseFile()
+    {
+        if (NewTextureContainer.empty())
+        {
+            std::cout << "No Textures Loaded" << std::endl << std::endl;
+            return;
         }
+
+        WriteToFile(Textures);
+        std::cout << "Textures File Produced" << std::endl << std::endl;
     }
 
     void TextureCompiler::ReadFile(std::string& in)
@@ -71,10 +111,10 @@ namespace EclipseCompiler
         }
 
         // Number Of Textures
-        int NumberOfTextures = TextureCotainer.size();
+        int NumberOfTextures = NewTextureContainer.size();
         TextureFileWrite.write(reinterpret_cast<const char*>(&NumberOfTextures), sizeof(NumberOfTextures));
 
-        for (auto const Textures : TextureCotainer)
+        for (auto const Textures : NewTextureContainer)
         {
             // Mesh Name
             std::array<char, 128> MeshName;
@@ -100,6 +140,42 @@ namespace EclipseCompiler
         }
 
         TextureFileWrite.close();
+
+        /////////////////////
+
+        TextureFileWrite.open(Path + "BasicTextureFile/Texture" + FileName,
+            std::ios_base::out |
+            std::ios_base::trunc |
+            std::ios_base::binary);
+
+        if (TextureFileWrite.fail())
+        {
+            std::cout << "Fail To Open Texture File" << std::endl << std::endl;
+            return;
+        }
+
+        // Number Of Textures
+        int NumberOfBasicTextures = AllOtherTextureCotainer.size();
+        std::cout << "Writing " << NumberOfBasicTextures << std::endl;
+        TextureFileWrite.write(reinterpret_cast<const char*>(&NumberOfBasicTextures), sizeof(NumberOfBasicTextures));
+
+        for (auto const Textures : AllOtherTextureCotainer)
+        {
+            // Texture Name
+            std::array<char, 128> TextureName;
+            strcpy_s(TextureName.data(), TextureName.size(), Textures.first.data());
+            TextureName[TextureName.size() - 1] = '\0';
+            TextureFileWrite.write(reinterpret_cast<const char*>(&TextureName), sizeof(TextureName));
+
+            // Texture Path
+            std::array<char, 128> TexturePath;
+            strcpy_s(TexturePath.data(), TexturePath.size(), Textures.second.TexturePath.data());
+            TexturePath[TexturePath.size() - 1] = '\0';
+            TextureFileWrite.write(reinterpret_cast<const char*>(&TexturePath), sizeof(TexturePath));
+        }
+
+        TextureFileWrite.close();
+        ///////////////////////
     }
 
     void TextureCompiler::ReadFile()

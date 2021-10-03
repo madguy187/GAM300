@@ -40,10 +40,10 @@ namespace Eclipse
 
         // Basic Meshes
         bool hasTexture = false;
-        std::string TextureRef;
+        std::string TextureRef = "Default";
 
         // Models
         std::string TextureKey;
-        std::map<unsigned int, std::vector<Texture>> HoldingTextures;
+        std::vector<Texture> HoldingTextures;
     };
 }

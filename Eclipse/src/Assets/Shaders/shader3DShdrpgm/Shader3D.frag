@@ -22,6 +22,7 @@ uniform int BasicPrimitives;
 // Structs
 uniform sampler2D diffuse0;
 uniform sampler2D specular0;
+uniform int CheckNormapMap;
 uniform int noTex;
 
 struct Material 
@@ -125,13 +126,18 @@ void main ()
         }
         else
         {
+          if(CheckNormapMap == 1)
+          {
+
+          }
+
           texDiff = sdiffuse;
           texSpec = sspecular;  
         }
 	} 
     else 
     {
-		texDiff = texture(diffuse0, TxtCoord);
+        texDiff = texture(diffuse0, TxtCoord);
 		texSpec = texture(specular0, TxtCoord);
 	}
 

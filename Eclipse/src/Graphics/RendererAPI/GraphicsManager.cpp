@@ -2,6 +2,21 @@
 #include "Graphics/RendererAPI/GraphicsManager.h"
 #include "EntryPoint/EntryPoint.h"
 
+void Eclipse::GraphicsManager::MassInit()
+{
+    for (auto& i : GraphicThreads)
+    {
+        i.second->join();
+    }
+}
+
+void Eclipse::GraphicsManager::RegisterThreads()
+{
+   GraphicThreads.emplace("Grid", std::make_unique<std::thread>(std::thread{ &GridSystem::Init}));
+   GraphicThreads.emplace("Lighting", std::make_unique<std::thread>(std::thread{ &LightingSystem::Init }));
+   GraphicThreads.emplace("FileWatch", std::make_unique<std::thread>(std::thread{ &FileWatchSystem::Init }));
+}
+
 void Eclipse::GraphicsManager::Pre_Render()
 {
     // Loading Configuration
@@ -12,6 +27,9 @@ void Eclipse::GraphicsManager::Pre_Render()
 
     // Clear the View
     mRenderContext.pre_render();
+
+    // For grid
+    GridQuad = std::make_unique<Quad>();
 }
 
 void Eclipse::GraphicsManager::Post_Render()
@@ -80,7 +98,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.modelRef = Graphics::models.find("Sphere")->first;
         MaterialComponent& Mat = engine->world.GetComponent<MaterialComponent>(ID);
         Mat.hasTexture = true;
-        Mat.TextureRef = Graphics::textures.find("orange")->first;
+        Mat.TextureRef = Graphics::textures.find("brick")->first;
     }
     break;
     case 5:
@@ -93,7 +111,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         sprite.modelRef = Graphics::models.find("Cube")->first;
         MaterialComponent& Mat = engine->world.GetComponent<MaterialComponent>(ID);
         Mat.hasTexture = true;
-        Mat.TextureRef = Graphics::textures.find("orange")->first;
+        Mat.TextureRef = Graphics::textures.find("FolderIcon")->first;
     }
     break;
     case 6:
@@ -163,7 +181,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         //sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
         //sprite.modelRef = Graphics::models.find("plane")->first;
 
-        engine->AssimpManager.CreateModel(ID, "dog3");
+        engine->AssimpManager.CreateModel(ID, "Bed");
     }
     break;
     // pointlight
@@ -199,6 +217,11 @@ void Eclipse::GraphicsManager::CreateSky(std::string _Dir)
     Sky->CreateSky(_Dir);
 
     SkyCount++;
+}
+
+void Eclipse::GraphicsManager::LoadSky()
+{
+    engine->GraphicsManager.CreateSky("src/Assets/Sky");
 }
 
 void Eclipse::GraphicsManager::RenderSky(unsigned int FrameBufferID)
@@ -250,15 +273,14 @@ void Eclipse::GraphicsManager::CheckTexture(unsigned int ID)
 
         if (tex.hasTexture)
         {
-
-            glBindTexture(GL_TEXTURE_2D, Graphics::textures[tex.TextureRef].GetHandle());
+            glBindTexture(GL_TEXTURE_2D, Graphics::FindTextures(tex.TextureRef).GetHandle());
 
             glEnable(GL_BLEND);
 
-            glTextureParameteri(Graphics::textures[tex.TextureRef].GetHandle(), GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTextureParameteri(Graphics::textures[tex.TextureRef].GetHandle(), GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTextureParameteri(Graphics::textures[tex.TextureRef].GetHandle(), GL_TEXTURE_WRAP_S, GL_REPEAT);
-            glTextureParameteri(Graphics::textures[tex.TextureRef].GetHandle(), GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTextureParameteri( Graphics::FindTextures(tex.TextureRef).GetHandle(), GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTextureParameteri( Graphics::FindTextures(tex.TextureRef).GetHandle(), GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTextureParameteri( Graphics::FindTextures(tex.TextureRef).GetHandle(), GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTextureParameteri( Graphics::FindTextures(tex.TextureRef).GetHandle(), GL_TEXTURE_WRAP_T, GL_REPEAT);
         }
     }
 }

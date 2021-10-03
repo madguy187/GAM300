@@ -166,6 +166,13 @@ namespace Eclipse
     std::vector<unsigned int> AABBTree::QueryAgainstTrustrum(AABBComponent& object)
     {
         std::vector<unsigned int> overlaps;
+
+        if (AABBToNodeMap.size() == 0)
+            return overlaps;
+
+        if (AllNodes.size() == 0)
+            return overlaps;
+
         std::stack<unsigned> stack;
         AABBComponent& CheckedObjectAgsintTree = object;
 
@@ -304,7 +311,8 @@ namespace Eclipse
             glm::vec3 AABBmin = { node.aabb.Min.x,node.aabb.Min.y , node.aabb.Min.z };
             glm::vec3 AABBmax = { node.aabb.Max.x ,node.aabb.Max.y , node.aabb.Max.z };
 
-            bool collision = PickingManager::RayAabb(rayStart, rayDir, AABBmin, AABBmax, t);
+            //bool collision = PickingManager::RayAabb(rayStart, rayDir, AABBmin, AABBmax, t);      
+            bool collision = engine->gPicker.RayAabb(rayStart, rayDir, AABBmin, AABBmax, t);
 
             if (collision)
             {
@@ -331,7 +339,7 @@ namespace Eclipse
     void AABBTree::ClearTree()
     {
         AABBToNodeMap.clear();
-        AllNodes.clear();
+        //AllNodes.clear();
         RootNodeIndex = 0;
         AllocatedNodeCount = 0;
         NextFreeNoedIndex = 0;

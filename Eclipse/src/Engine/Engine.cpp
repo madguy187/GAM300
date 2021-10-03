@@ -12,23 +12,23 @@
 #include "ECS/ComponentManager/Components/RigidBodyComponent.h"
 #include "ECS/ComponentManager/Components/TextureComponent.h"
 #include "ECS/ComponentManager/Components/ModelInfoComponent.h"
-#include "ECS/ComponentManager/Components/ParentChildComponent.h"
 #include "ECS/ComponentManager/Components/LightComponent.h"
 #include "ECS/ComponentManager/Components/ScriptComponent.h"
 
-#include "ECS/SystemManager/Systems/System/RenderSystem.h"
+#include "ECS/SystemManager/Systems/System/RenderSystem/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
 #include "ECS/SystemManager/Systems/System/Editor/EditorSystem.h"
-#include "ECS/SystemManager/Systems/System/LightingSystem.h"
+#include "ECS/SystemManager/Systems/System/LightingSystem/LightingSystem.h"
 #include "ECS/SystemManager/Systems/System/PickingSystem.h"
 #include "ECS/SystemManager/Systems/System/PhysicsSystem.h"
 #include "ImGui/Setup/ImGuiSetup.h"
-#include "ECS/SystemManager/Systems/System/MaterialSystem.h"
+#include "ECS/SystemManager/Systems/System/MaterialSystem/MaterialSystem.h"
 #include "Serialization/SerializationManager.h"
-#include "ECS/SystemManager/Systems/System/GridSystem.h"
+#include "ECS/SystemManager/Systems/System/GridSystem/GridSystem.h"
 #include "Editor/ECGuiAPI/ECGuiInputHandler.h"
 #include "ECS/SystemManager/Systems/System/MonoSystem/MonoSystem.h"
 #include "ECS/SystemManager/Systems/System/Audio/AudioSystem.h"
+#include "ECS/SystemManager/Systems/System/FileWatchSystem/FileWatchSystem.h"
 #include "ECS/SystemManager/Systems/System/Collision/CollisionSystem.h"
 
 bool Tester1(const Test1& e)
@@ -73,6 +73,7 @@ namespace Eclipse
 
     void Engine::Run()
     {
+       ZoneScopedN("Engine")
         // register component
         world.RegisterComponent<EntityComponent>();
         world.RegisterComponent<TransformComponent>();
@@ -86,7 +87,6 @@ namespace Eclipse
         world.RegisterComponent<RigidBodyComponent>();
         world.RegisterComponent<TextureComponent>();
         world.RegisterComponent<ModeLInforComponent>();
-        world.RegisterComponent<ParentChildComponent>();
         world.RegisterComponent<LightComponent>();
         world.RegisterComponent<ScriptComponent>();
         world.RegisterComponent<CollisionComponent>();
@@ -101,6 +101,7 @@ namespace Eclipse
         world.RegisterSystem<PhysicsSystem>();
         world.RegisterSystem<MonoSystem>();
         world.RegisterSystem<AudioSystem>();
+        world.RegisterSystem<FileWatchSystem>();
         world.RegisterSystem<CollisionSystem>();
 
         // Render System
@@ -147,9 +148,8 @@ namespace Eclipse
         //Check this! - Rachel
         RenderSystem::Init();
         CameraSystem::Init();
-        LightingSystem::Init();
-        GridSystem::Init();
         gPhysics.Init();
+        audioManager.Init();
 
         if (IsEditorActive)
             IsInPlayState = false;
@@ -163,8 +163,12 @@ namespace Eclipse
         float updaterate = 4.0f;
 
         SceneManager::Initialize();
+
+        // Darren - Please keep this before Game Loop
+        engine->GraphicsManager.MassInit();
+
         //Deserialization(temp)
-        audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);
+        /*audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);*/
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
             glfwPollEvents();
@@ -228,6 +232,8 @@ namespace Eclipse
                 }
             }
 
+            world.Update<FileWatchSystem>();
+
             // FRAMEBUFFER BIND =============================
             engine->GraphicsManager.GlobalFrameBufferBind();
 
@@ -276,12 +282,14 @@ namespace Eclipse
         szManager.SaveSceneFile();
 
         // unLoad
-        mono.StopMono();
+        mono.Terminate();
         GraphicsManager.End();
         AssimpManager.CleanUpAllModelsMeshes();
         ImGuiSetup::Destroy(IsEditorActive);
         gPhysics.Unload();
         CommandHistory::Clear();
+
+        FrameMark
     }
 
     bool Engine::GetEditorState()

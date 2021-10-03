@@ -11,10 +11,11 @@ namespace Eclipse
 	struct MaterialComponent;
 	struct MeshComponent;
 	struct ModeLInforComponent;
-	struct ParentChildComponent;
 	struct PointLightComponent;
 	struct RigidBodyComponent;
 	struct ScriptComponent;
+	struct ParentComponent;
+	struct ChildComponent;
 	struct CollisionComponent;
 	struct AIComponent;
 
@@ -40,9 +41,11 @@ namespace Eclipse
 		MaterialComponent,
 		MeshComponent,
 		ModeLInforComponent,
-		ParentChildComponent,
 		PointLightComponent,
 		RigidBodyComponent,
+		ScriptComponent,
+		ParentComponent,
+		ChildComponent,
 		ScriptComponent,
 		CollisionComponent,
 		AIComponent
