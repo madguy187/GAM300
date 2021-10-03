@@ -16,7 +16,7 @@ namespace Eclipse
 		void GenerateAabb(unsigned int ID, TransformComponent& _transform, EntityType _type);
 		void UpdateAabb(unsigned int ID);
 		glm::vec3 ComputeCursorRayDirection();
-		static bool RayAabb(glm::vec3& rayStart, glm::vec3& rayDir, glm::vec3& aabbMin, glm::vec3& aabbMax, float& t);
+		bool RayAabb(glm::vec3& rayStart, glm::vec3& rayDir, glm::vec3& aabbMin, glm::vec3& aabbMax, float& t);
 		unsigned int GetCurrentCollisionID();
 		void SetCurrentCollisionID(unsigned int ID);
 

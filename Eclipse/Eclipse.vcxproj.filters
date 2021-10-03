@@ -52,8 +52,14 @@
     <Filter Include="ECS\SystemManager\Systems\System\MonoSystem">
       <UniqueIdentifier>{377B9766-A3E0-2AED-2CB9-CCC5981D205C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ECS\SystemManager\Systems\System\ParentChild">
-      <UniqueIdentifier>{0707B837-F319-B890-9C03-957D88F554DE}</UniqueIdentifier>
+    <Filter Include="ECS\SystemManager\Systems\System\ParentChildSystem">
+      <UniqueIdentifier>{ECBBA3DE-D84F-9986-4114-F33A2DC7D378}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\ParentChildSystem\ChildSystem">
+      <UniqueIdentifier>{8437E859-700D-6F57-59B7-89AA452CA2F8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem">
+      <UniqueIdentifier>{EA575631-56EB-B7DF-5FD2-2796CBE44EA7}</UniqueIdentifier>
     </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\RenderSystem">
       <UniqueIdentifier>{BE95B25F-2A06-B5D8-F324-2F615F54EDD9}</UniqueIdentifier>
@@ -279,6 +285,9 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\ChildComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\CollisionComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
@@ -306,7 +315,7 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\ModeLInfoComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\ComponentManager\Components\ParentChildComponent.h">
+    <ClInclude Include="src\ECS\ComponentManager\Components\ParentComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\PointLightComponent.h">
@@ -360,8 +369,11 @@
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.h">
       <Filter>ECS\SystemManager\Systems\System\MonoSystem</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.h">
-      <Filter>ECS\SystemManager\Systems\System\ParentChild</Filter>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ChildSystem\ChildSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\ParentChildSystem\ChildSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem\ParentSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
@@ -799,8 +811,11 @@
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\MonoSystem</Filter>
     </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChild\ParentChildSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System\ParentChild</Filter>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ChildSystem\ChildSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\ParentChildSystem\ChildSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem\ParentSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>

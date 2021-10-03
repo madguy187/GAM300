@@ -4,6 +4,8 @@
 #include "Graphics.h"
 #include "type_ptr.hpp"
 #include "matrix_transform_2d.hpp"
+#include <algorithm>
+
 
 /*                                                   objects with file scope
 ----------------------------------------------------------------------------- */
@@ -12,9 +14,11 @@ using namespace Eclipse;
 
 std::unordered_map<std::string, Shader> Graphics::shaderpgms;
 std::unordered_map<std::string, std::unique_ptr<IModel>> Graphics::models;
-std::unordered_map<std::string, Texture> Graphics::textures;
+std::multimap<std::string, Texture> Graphics::textures;
 std::multimap<unsigned int, MeshComponent*> Graphics::sprites;
 std::set<unsigned int> Graphics::sortedID;
+
+typedef std::multimap<std::string, Texture>::iterator MMAPIterator;
 
 void Graphics::load()
 {
@@ -206,4 +210,23 @@ typename Graphics::modelIt Graphics::FindModel(std::string name)
 typename Graphics::shaderIt Graphics::FindShaders(std::string name)
 {
     return shaderpgms.find(name);
+}
+
+Texture Eclipse::Graphics::FindTextures(std::string in)
+{
+    for (auto itr = textures.find(in); itr != textures.end(); itr++)
+    {
+        return itr->second;
+    }
+}
+
+void Eclipse::Graphics::GetTexuresForModels(std::string in , MaterialComponent com)
+{
+    int Index = 0;
+    std::pair<MMAPIterator, MMAPIterator> result = textures.equal_range(in);
+
+    for (MMAPIterator it = result.first; it != result.second; it++)
+    {
+        com.HoldingTextures.push_back(it->second);
+    }
 }

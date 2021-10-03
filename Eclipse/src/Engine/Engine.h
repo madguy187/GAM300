@@ -16,6 +16,7 @@
 #include "Editor/Windows/Profiler/Profiler.h"
 #include "Audio/AudioManager.h"
 #include "Graphics/FileWatch/FileWatch.h"
+#include "Graphics/Picker/DynamicAABBTree.h"
 #include "PrefabManager/PrefabManager.h"
 
 namespace Eclipse
@@ -40,6 +41,7 @@ namespace Eclipse
         DebugRenderingManager gDebugManager;
         SerializationManager szManager;
         AudioManager audioManager;
+        DynamicAABBTree gDynamicAABBTree;
         DragAndDrop dragDrop;
         PrefabManager pfManager;
 

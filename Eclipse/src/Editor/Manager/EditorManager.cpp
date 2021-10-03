@@ -122,7 +122,6 @@ namespace Eclipse
 		{
 			auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
 			engine->gPicker.GenerateAabb(ID, _transform, type);
-
 		}
 		
 		EntityHierarchyList_.push_back(ID);

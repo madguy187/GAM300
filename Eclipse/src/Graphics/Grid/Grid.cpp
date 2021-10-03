@@ -148,11 +148,6 @@ namespace Eclipse
 		ZAxisColour = in;
 	}
 
-	Quad* Grid::GetModelReference()
-	{
-		return WholeGrid;
-	}
-
 	Shader* Grid::GetShaderReference()
 	{
 		return ShaderRef;
@@ -162,7 +157,8 @@ namespace Eclipse
 	{
 		InsertAsDebugBox();
 
-		WholeGrid = new Quad;
+		WholeGrid = std::move(engine->GraphicsManager.GridQuad);
+
 		ShaderRef = &(Graphics::shaderpgms["Grid"]);
 
 		if (WholeGrid != nullptr && CalculateGridSettings() && CalculateGridCoordinates())
@@ -362,10 +358,10 @@ namespace Eclipse
 	Grid::~Grid()
 	{
 		// Handle Memory for WholeGrid*
-		if (WholeGrid != nullptr)
-		{
-			delete WholeGrid;
-		}
+		//if (WholeGrid != nullptr)
+		//{
+		//	delete WholeGrid;
+		//}
 	}
 
 	float Grid::GetDistanceToObject(unsigned int indexIn)

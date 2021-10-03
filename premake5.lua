@@ -89,6 +89,7 @@ project "Eclipse"
 	filter "configurations:Debug"
 		defines "ENGINE_DEBUG"
 		symbols "On"
+    editAndContinue "Off"
 
 	libdirs
   {

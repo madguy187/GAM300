@@ -41,7 +41,7 @@ namespace EclipseCompiler
                 {
                     std::string PathName = ("..//Eclipse//src/Assets/Models/" + FolderName + "/" + FbxOrGltfName).c_str();
                     std::unique_ptr<AssimpLoader> ptr = std::make_unique< AssimpLoader>();
-                    ptr->LoadAssimpModelForTextures(PathName, TextureCotainer);
+                    ptr->LoadAssimpModelForTextures(PathName, NewTextureContainer);
 
                     int i = 0;
                 }
@@ -77,7 +77,7 @@ namespace EclipseCompiler
 
     void TextureCompiler::ReleaseFile()
     {
-        if (TextureCotainer.empty())
+        if (NewTextureContainer.empty())
         {
             std::cout << "No Textures Loaded" << std::endl << std::endl;
             return;
@@ -109,10 +109,10 @@ namespace EclipseCompiler
         }
 
         // Number Of Textures
-        int NumberOfTextures = TextureCotainer.size();
+        int NumberOfTextures = NewTextureContainer.size();
         TextureFileWrite.write(reinterpret_cast<const char*>(&NumberOfTextures), sizeof(NumberOfTextures));
 
-        for (auto const Textures : TextureCotainer)
+        for (auto const Textures : NewTextureContainer)
         {
             // Mesh Name
             std::array<char, 128> MeshName;

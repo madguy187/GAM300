@@ -13,6 +13,8 @@ namespace Eclipse
 	struct PointLightComponent;
 	struct RigidBodyComponent;
 	struct ScriptComponent;
+	struct ParentComponent;
+	struct ChildComponent;
 	struct SpotLightComponent;
 	struct TransformComponent;
 	struct PrefabComponent;
@@ -41,6 +43,8 @@ namespace Eclipse
 		PointLightComponent,
 		RigidBodyComponent,
 		//ScriptComponent,
+		ParentComponent,
+		ChildComponent,
 		SpotLightComponent,
 		TransformComponent,
 		PrefabComponent
