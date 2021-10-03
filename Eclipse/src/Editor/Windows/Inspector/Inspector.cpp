@@ -4,7 +4,6 @@
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/RigidBodyComponent.h"
 #include "ECS/ComponentManager/Components/ScriptComponent.h"
-#include "ECS/ComponentManager/Components/AudioComponent.h"
 #include "Editor/Windows/SwitchViews/TopSwitchViewWindow.h"
 
 namespace Eclipse
@@ -566,7 +565,9 @@ namespace Eclipse
                 if (!IsAudioPlaying)
                 {
                     if (audio.AudioPath.max_size() <= 0)
+                    {
                         audio.AudioPath.reserve(256);
+                    }
 
                     if (ECGui::ButtonBool("Play"))
                     {
@@ -585,6 +586,9 @@ namespace Eclipse
                     ECGui::DrawInputTextHintWidget("AudioPath", "Drag Audio files here",
                         const_cast<char*>(audio.AudioPath.c_str()), 256,
                         true, ImGuiInputTextFlags_ReadOnly);
+
+                    engine->editorManager->DragAndDropInst_.StringPayloadTarget("wav", audio.AudioPath,
+                        "Wav File inserted.");
 
                     if (ECGui::ButtonBool("Clear Audio"))
                     {
@@ -753,7 +757,7 @@ namespace Eclipse
                             EditComponent::EC_ADDCOMPONENT);
                         break;
                     case str2int("AudioComponent"):
-                        ComponentRegistry<ScriptComponent>("AudioComponent", ID, entCom.Name,
+                        ComponentRegistry<AudioComponent>("AudioComponent", ID, entCom.Name,
                             EditComponent::EC_ADDCOMPONENT);
                         break;
                     }
@@ -828,7 +832,7 @@ namespace Eclipse
                             EditComponent::EC_REMOVECOMPONENT);
                         break;
                     case str2int("AudioComponent"):
-                        ComponentRegistry<ScriptComponent>("AudioComponent", ID, entCom.Name,
+                        ComponentRegistry<AudioComponent>("AudioComponent", ID, entCom.Name,
                             EditComponent::EC_REMOVECOMPONENT);
                         break;
                     }
@@ -1035,20 +1039,6 @@ namespace Eclipse
 
     }
 
-    void InspectorWindow::RemoveElementFromVectorStringList(std::vector<std::string>& vecList)
-    {
-        for (size_t i = 0; i < vecList.size(); ++i)
-        {
-            bool selected = false;
-
-            if (ECGui::CreateSelectableButton(vecList[i].c_str(), &selected))
-            {
-                auto pos = vecList.begin() + i;
-                vecList.erase(pos);
-            }
-        }
-    }
-
     void InspectorWindow::SimulateAudio(Entity ID, AudioComponent& audioCom)
     {
         if (audioCom.Is3D)
@@ -1056,6 +1046,7 @@ namespace Eclipse
             auto& trans = engine->world.GetComponent<TransformComponent>(ID);
             engine->audioManager.LoadSound(audioCom.AudioPath,
                 audioCom.Is3D, audioCom.IsLooping, false);
+            engine->audioManager.SetSpeed(audioCom.AudioPath, audioCom.Speed);
             engine->audioManager.Set3DConeSettings(audioCom.AudioPath,
                 &audioCom.InnerConeAngle, &audioCom.OuterConeAngle, &audioCom.OuterVolume);
             engine->audioManager.Set3DMinMaxSettings(audioCom.AudioPath,
@@ -1067,6 +1058,7 @@ namespace Eclipse
         {
             engine->audioManager.LoadSound(audioCom.AudioPath, audioCom.Is3D,
                 audioCom.IsLooping, false);
+            engine->audioManager.SetSpeed(audioCom.AudioPath, audioCom.Speed);
             audioCom.ChannelID = engine->audioManager.Play2DSounds(audioCom.AudioPath, audioCom.Volume,
                 audioCom.IsLooping);
         }

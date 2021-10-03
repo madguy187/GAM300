@@ -188,20 +188,18 @@ namespace Eclipse
 		//scene->SetSnapping(true);
 		static bool isActive;
 		ImGuiIO& io = ImGui::GetIO();
-		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_LeftControl)))
+
+		if (!isActive)
 		{
-			if (!isActive)
-			{
-				isActive = true;
-				scene->SetSnapping(isActive);
-				EDITOR_LOG_INFO("Snapping is turned off.")
-			}
-			else
-			{
-				isActive = false;
-				scene->SetSnapping(isActive);
-				EDITOR_LOG_INFO("Snapping is turned off.")
-			}
+			isActive = true;
+			scene->SetSnapping(isActive);
+			EDITOR_LOG_INFO("Snapping is turned off.")
+		}
+		else
+		{
+			isActive = false;
+			scene->SetSnapping(isActive);
+			EDITOR_LOG_INFO("Snapping is turned off.")
 		}
 
 		if(scene->GetSnapping())

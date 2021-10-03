@@ -378,6 +378,9 @@ namespace Eclipse
 			case InspectorWindow::str2int("txt"):
 				engine->editorManager->DragAndDropInst_.StringPayloadSource("txt", relativePath.string());
 				break;
+			case InspectorWindow::str2int("wav"):
+				engine->editorManager->DragAndDropInst_.StringPayloadSource("wav", "src\\Assets\\" + relativePath.string());
+				break;
 			}
 
 			// GetFileName(relativePath.filename().string().c_str())

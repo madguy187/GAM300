@@ -1,6 +1,7 @@
 //#pragma once
 
 #include "../Interface/ECGuiWindow.h"
+#include "ECS/ComponentManager/Components/AudioComponent.h"
 
 namespace Eclipse
 {
@@ -37,7 +38,6 @@ namespace Eclipse
 		
 		void ChangeMeshController(Entity ID);
 		void MeshList(Entity ID);
-		void RemoveElementFromVectorStringList(std::vector<std::string> & vecList);
 
 		void SimulateAudio(Entity ID, AudioComponent& audioCom);
 		

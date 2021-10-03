@@ -122,7 +122,7 @@ namespace Eclipse
 
 		ImGuizmo::Manipulate(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx),
 			(ImGuizmo::OPERATION)GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
-			nullptr, io.KeyCtrl ? glm::value_ptr(snapValues) : nullptr);
+			nullptr, engine->editorManager->GetEditorWindow<SceneWindow>()->GetSnapping() ? glm::value_ptr(snapValues) : nullptr);
 
 		if (ImGuizmo::IsUsing() && ECGui::IsItemHovered())
 		{

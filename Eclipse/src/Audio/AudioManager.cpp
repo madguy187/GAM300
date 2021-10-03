@@ -149,7 +149,7 @@ namespace Eclipse
 		int channel_id = FmodAPI->m_NextChannel_ID++;
 		auto sound_it = FmodAPI->m_Sounds.find(sound_name);
 
-		if (sound_it == FmodAPI->m_Sounds.end() || looping)
+		if (sound_it == FmodAPI->m_Sounds.end() /*|| looping*/)
 		{
 			LoadSound(sound_name, true, looping);
 			sound_it = FmodAPI->m_Sounds.find(sound_name);
@@ -442,6 +442,15 @@ namespace Eclipse
 	void AudioManager::Set3DMinMaxSettings(const std::string& sound_name, float min, float max)
 	{
 		FmodAPI->m_Sounds[sound_name]->set3DMinMaxDistance(min, max);
+	}
+
+	void AudioManager::SetPitch(const std::string& sound_name, float pitch)
+	{
+	}
+
+	void AudioManager::SetSpeed(const std::string& sound_name, float speed)
+	{
+		FmodAPI->m_Sounds[sound_name]->setMusicSpeed(speed);
 	}
 
 	float AudioManager::OldBGMVolumeToTrack() const
