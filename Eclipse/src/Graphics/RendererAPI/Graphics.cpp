@@ -24,9 +24,6 @@ void Graphics::load()
     //Loads all models listed
     LoadModels();
 
-    //Loads all textures listed
-    LoadTextures("src/Assets/Textures/Textures.json");
-
     ENGINE_CORE_INFO("Loaded Models , Shaders and Textures Successful");
 }
 
@@ -84,27 +81,27 @@ void Graphics::LoadModels()
 
 void Graphics::LoadTextures(std::string textureFile)
 {
-   //Parser input;
-   //input.ParseFile(textureFile);
-   //
-   //std::string textureName;
-   //std::string path;
-   //glm::ivec2 spriteDimensions, spriteIndex;
-   //
-   //for (auto& it : input.doc["textures"].GetArray())
-   //{
-   //    textureName = (it)["textureName"].GetString();
-   //    path = (it)["path"].GetString();
-   //    spriteDimensions = { (it)["spriteDimensions"][rapidjson::SizeType(0)].GetInt(),
-   //                         (it)["spriteDimensions"][rapidjson::SizeType(1)].GetInt() };
-   //    spriteIndex = { (it)["spriteIndex"][rapidjson::SizeType(0)].GetInt(),
-   //                    (it)["spriteIndex"][rapidjson::SizeType(1)].GetInt() };
-   //
-   //    Texture newTex(path);
-   //    newTex.setSpriteWidth(spriteDimensions.x);
-   //    newTex.setSpriteHeight(spriteDimensions.y);
-   //    textures.emplace(textureName, newTex);
-   //}
+    //Parser input;
+    //input.ParseFile(textureFile);
+    //
+    //std::string textureName;
+    //std::string path;
+    //glm::ivec2 spriteDimensions, spriteIndex;
+    //
+    //for (auto& it : input.doc["textures"].GetArray())
+    //{
+    //    textureName = (it)["textureName"].GetString();
+    //    path = (it)["path"].GetString();
+    //    spriteDimensions = { (it)["spriteDimensions"][rapidjson::SizeType(0)].GetInt(),
+    //                         (it)["spriteDimensions"][rapidjson::SizeType(1)].GetInt() };
+    //    spriteIndex = { (it)["spriteIndex"][rapidjson::SizeType(0)].GetInt(),
+    //                    (it)["spriteIndex"][rapidjson::SizeType(1)].GetInt() };
+    //
+    //    Texture newTex(path);
+    //    newTex.setSpriteWidth(spriteDimensions.x);
+    //    newTex.setSpriteHeight(spriteDimensions.y);
+    //    textures.emplace(textureName, newTex);
+    //}
 }
 
 /******************************************************************************/

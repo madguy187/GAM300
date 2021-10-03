@@ -111,15 +111,15 @@ void Texture::Load(bool flip)
 
     if (textureFile.extension().compare(".dds") == 0)
     {
-        std::cout << "Loading compressed texture.." << std::endl;
-        std::cout << std::endl;
+       // std::cout << "Loading compressed texture.." << std::endl;
+        //std::cout << std::endl;
 
         LoadCompressedTextures(flip);
     }
     else
     {
-        std::cout << "Loading uncompressed texture.." << std::endl;
-        std::cout << std::endl;
+        //std::cout << "Loading uncompressed texture.." << std::endl;
+        //std::cout << std::endl;
 
         LoadUncompressedTextures(flip);
     }
@@ -349,20 +349,20 @@ Texture::Texture(std::string pathname) :
 
 void Texture::initTexture(std::string pathname)
 {
-    std::cout << "Path: " << pathname << std::endl;
+    //std::cout << "Path: " << pathname << std::endl;
     std::filesystem::path textureFile{ pathname };
 
     if (textureFile.extension().compare(".dds") == 0)
     {
-        std::cout << "Loading compressed texture.." << std::endl;
-        std::cout << std::endl;
+        //std::cout << "Loading compressed texture.." << std::endl;
+        //std::cout << std::endl;
 
         LoadCompressedTextures(pathname);
     }
     else
     {
-        std::cout << "Loading uncompressed texture.." << std::endl;
-        std::cout << std::endl;
+        //std::cout << "Loading uncompressed texture.." << std::endl;
+        //std::cout << std::endl;
 
         LoadUncompressedTextures(pathname);
     }

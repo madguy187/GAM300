@@ -15,6 +15,7 @@ namespace Eclipse
 		MATERIAL,
 		AUDIO,
 		MONO,
+		FILEWATCH,
 		COUNTER
 	};
 

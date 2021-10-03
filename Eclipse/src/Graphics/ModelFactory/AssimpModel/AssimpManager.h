@@ -34,6 +34,7 @@ namespace Eclipse
 	private:
 
 	public:
+		void ClearGeometry();
 		void LoadBasicTextures();
 		float HotReloadCooldown = 0.0f;
 		bool GetHotReloadFlag();
@@ -53,7 +54,9 @@ namespace Eclipse
 		unsigned int MeshFactoryCount();
 		// Load All Models Once
 		void Init();
+	    static void ExecuteCompiler();
 		void HotReload();
+		void HotReloadTetxures();
 		// Render Function that uses the Container that stores MeshComponent 
 		void MeshDraw(MeshComponent& ModelMesh , unsigned int ID, unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
 		// Upload to Shader
@@ -82,6 +85,7 @@ namespace Eclipse
 		void LoadGeometry();
 		void LoadPrefabs();
 		void LoadTextures();
+	    AssimpModelManager() {};
 
 		///////////////////////////////////////////////////////////////////////////////////////////
 		// FDebug PrintOuts

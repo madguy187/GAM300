@@ -27,9 +27,9 @@ namespace Eclipse
 	public:
 		void Init();
 		void Update(MonoScript* obj);
-		void ResetMono();
-		void RestartMono();
 		void StopMono();
+		void StartMono();
+		void Terminate();
 		MonoObject* CreateMonoObject(std::string scriptName, Entity entity);
 
 		// Gets image containing all API Scripts

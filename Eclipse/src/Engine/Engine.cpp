@@ -12,7 +12,6 @@
 #include "ECS/ComponentManager/Components/RigidBodyComponent.h"
 #include "ECS/ComponentManager/Components/TextureComponent.h"
 #include "ECS/ComponentManager/Components/ModelInfoComponent.h"
-#include "ECS/ComponentManager/Components/ParentChildComponent.h"
 #include "ECS/ComponentManager/Components/LightComponent.h"
 #include "ECS/ComponentManager/Components/ScriptComponent.h"
 #include "ECS/ComponentManager/Components/AudioComponent.h"
@@ -88,7 +87,6 @@ namespace Eclipse
         world.RegisterComponent<RigidBodyComponent>();
         world.RegisterComponent<TextureComponent>();
         world.RegisterComponent<ModeLInforComponent>();
-        world.RegisterComponent<ParentChildComponent>();
         world.RegisterComponent<LightComponent>();
         world.RegisterComponent<ScriptComponent>();
         world.RegisterComponent<AudioComponent>();
@@ -147,13 +145,11 @@ namespace Eclipse
         world.RegisterSystemSignature<AudioSystem>(audioSignature);
 
         //Check this! - Rachel
+        GridSystem::Init();
         RenderSystem::Init();
         CameraSystem::Init();
-        LightingSystem::Init();
-        GridSystem::Init();
         gPhysics.Init();
         audioManager.Init();
-        FileWatchSystem::Init();
 
         if (IsEditorActive)
             IsInPlayState = false;
@@ -167,6 +163,10 @@ namespace Eclipse
         float updaterate = 4.0f;
 
         SceneManager::Initialize();
+
+        // Darren - Please keep this before Game Loop
+        engine->GraphicsManager.MassInit();
+
         //Deserialization(temp)
         /*audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);*/
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
@@ -282,7 +282,7 @@ namespace Eclipse
         szManager.SaveSceneFile();
 
         // unLoad
-        mono.StopMono();
+        mono.Terminate();
         GraphicsManager.End();
         AssimpManager.CleanUpAllModelsMeshes();
         ImGuiSetup::Destroy(IsEditorActive);

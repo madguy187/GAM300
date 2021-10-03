@@ -36,7 +36,7 @@ namespace Eclipse
 		{
 			if (ECGui::ButtonBool("Play " ICON_FA_PLAY))
 			{
-				engine->mono.RestartMono();
+				engine->mono.StartMono();
 				auto& mono = engine->world.GetSystem<MonoSystem>();
 				mono->Init();
 
@@ -51,7 +51,7 @@ namespace Eclipse
 			{
 				auto& mono = engine->world.GetSystem<MonoSystem>();
 				mono->Terminate();
-				engine->mono.ResetMono();
+				engine->mono.StopMono();
 
 				engine->SetPlayState(false);
 				engine->SetPauseState(false);
