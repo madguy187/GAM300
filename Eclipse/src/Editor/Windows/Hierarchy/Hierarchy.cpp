@@ -340,7 +340,7 @@ namespace Eclipse
                         }
                         entCom.IsActive = false;
                         engine->editorManager->SetGlobalIndex(GetEntityGlobalIndex(curr.index));
-                        UpdateEntityTracker(engine->editorManager->GetEntityID(GetEntityGlobalIndex(static_cast<size_t>(curr.index))));
+                        UpdateEntityTracker(engine->editorManager->GetEntityID(static_cast<int>(GetEntityGlobalIndex(static_cast<size_t>(curr.index)))));
                     }
 
                 }

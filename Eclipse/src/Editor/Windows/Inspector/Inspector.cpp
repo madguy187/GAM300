@@ -651,6 +651,14 @@ namespace Eclipse
                         ComponentRegistry<ScriptComponent>("ScriptComponent", ID, entCom.Name,
                             EditComponent::EC_ADDCOMPONENT);
                         break;
+                    //case str2int("ParentComponent"):
+                    //    ComponentRegistry<ParentComponent>("ParentComponent", ID, entCom.Name,
+                    //        EditComponent::EC_ADDCOMPONENT);
+                    //    break;
+                    //case str2int("ChildComponent"):
+                    //    ComponentRegistry<ChildComponent>("ChildComponent", ID, entCom.Name,
+                    //        EditComponent::EC_ADDCOMPONENT);
+                    //    break;
                     }
                 }
             }
@@ -722,6 +730,14 @@ namespace Eclipse
                         ComponentRegistry<ScriptComponent>("ScriptComponent", ID, entCom.Name,
                             EditComponent::EC_REMOVECOMPONENT);
                         break;
+                    //case str2int("ParentComponent"):
+                    //    ComponentRegistry<ParentComponent>("ParentComponent", ID, entCom.Name,
+                    //        EditComponent::EC_REMOVECOMPONENT);
+                    //    break;
+                    //case str2int("ChildComponent"):
+                    //    ComponentRegistry<ChildComponent>("ChildComponent", ID, entCom.Name,
+                    //        EditComponent::EC_REMOVECOMPONENT);
+                    //    break;
                     }
                 }
             }
@@ -788,7 +804,7 @@ namespace Eclipse
 
             if (AddComponentFilter.PassFilter(textureNames[i].c_str()))
             {
-                ImGui::ImageButton((void*)Graphics::FindTextures((icon).TextureRef).GetHandle(),
+                ImGui::ImageButton((void*)(intptr_t)Graphics::FindTextures((icon).TextureRef).GetHandle(),
                     { thumbnaimsize,thumbnaimsize },
                     { 1,0 },
                     { 2,1 });
@@ -876,7 +892,7 @@ namespace Eclipse
 
                 if (AddComponentFilter.PassFilter((engine->AssimpManager.GetPrimitiveNames()[i].c_str())))
                 {
-                    ImGui::ImageButton((void*)Graphics::FindTextures(icon.textureRef).GetHandle(),
+                    ImGui::ImageButton((void*)(intptr_t)Graphics::FindTextures(icon.textureRef).GetHandle(),
                         { thumbnaimsize,thumbnaimsize },
                         { 1,0 },
                         { 2,1 });
@@ -904,7 +920,7 @@ namespace Eclipse
 
                 if (AddComponentFilter.PassFilter((engine->AssimpManager.GetMeshNames()[i].c_str())))
                 {
-                    ImGui::ImageButton((void*)Graphics::FindTextures((icon).textureRef).GetHandle(),
+                    ImGui::ImageButton((void*)(intptr_t)Graphics::FindTextures((icon).textureRef).GetHandle(),
                         { thumbnaimsize,thumbnaimsize },
                         { 1,0 },
                         { 2,1 });

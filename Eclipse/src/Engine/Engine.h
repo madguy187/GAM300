@@ -40,7 +40,6 @@ namespace Eclipse
         SerializationManager szManager;
         AudioManager audioManager;
         DynamicAABBTree gDynamicAABBTree;
-        DragAndDrop dragDrop;
         void Init();
         void Run();
         PhysicsManager gPhysics;
