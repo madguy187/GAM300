@@ -15,6 +15,8 @@
 #include "ECS/ComponentManager/Components/LightComponent.h"
 #include "ECS/ComponentManager/Components/ScriptComponent.h"
 #include "ECS/ComponentManager/Components/AudioComponent.h"
+#include "ECS/ComponentManager/Components/ParentComponent.h"
+#include "ECS/ComponentManager/Components/ChildComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
@@ -30,6 +32,8 @@
 #include "ECS/SystemManager/Systems/System/MonoSystem/MonoSystem.h"
 #include "ECS/SystemManager/Systems/System/Audio/AudioSystem.h"
 #include "ECS/SystemManager/Systems/System/FileWatchSystem/FileWatchSystem.h"
+#include <ECS/SystemManager/Systems/System/ParentChildSystem/ParentSystem/ParentSystem.h>
+#include <ECS/SystemManager/Systems/System/ParentChildSystem/ChildSystem/ChildSystem.h>
 
 bool Tester1(const Test1& e)
 {
@@ -90,6 +94,8 @@ namespace Eclipse
         world.RegisterComponent<LightComponent>();
         world.RegisterComponent<ScriptComponent>();
         world.RegisterComponent<AudioComponent>();
+        world.RegisterComponent<ParentComponent>();
+        world.RegisterComponent<ChildComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
@@ -102,6 +108,8 @@ namespace Eclipse
         world.RegisterSystem<MonoSystem>();
         world.RegisterSystem<AudioSystem>();
         world.RegisterSystem<FileWatchSystem>();
+        world.RegisterSystem<ParentSystem>();
+        world.RegisterSystem<ChildSystem>();
 
         // Render System
         Signature RenderSys = RenderSystem::RegisterAll();

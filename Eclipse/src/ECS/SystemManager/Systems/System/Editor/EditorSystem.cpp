@@ -7,7 +7,7 @@ namespace Eclipse
 	void EditorSystem::Update()
 	{
 		engine->Timer.SetName({ SystemName::EDITOR });
-		engine->Timer.tracker.system_start = glfwGetTime();
+		engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
 		if (engine->GetEditorState())
 		{
@@ -19,7 +19,7 @@ namespace Eclipse
 			engine->editorManager->GetMenuBar().Update();
 		}
 
-		engine->Timer.tracker.system_end = glfwGetTime();
+		engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());
 		engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
 	}
 

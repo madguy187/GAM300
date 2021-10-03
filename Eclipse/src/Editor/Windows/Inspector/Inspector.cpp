@@ -5,7 +5,8 @@
 #include "ECS/ComponentManager/Components/RigidBodyComponent.h"
 #include "ECS/ComponentManager/Components/ScriptComponent.h"
 #include "Editor/Windows/SwitchViews/TopSwitchViewWindow.h"
-
+#include "ECS/ComponentManager/Components/ParentComponent.h"
+#include "ECS/ComponentManager/Components/ChildComponent.h"
 namespace Eclipse
 {
     void InspectorWindow::Update()
@@ -764,6 +765,14 @@ namespace Eclipse
                         ComponentRegistry<AudioComponent>("AudioComponent", ID, entCom.Name,
                             EditComponent::EC_ADDCOMPONENT);
                         break;
+                    case str2int("ParentComponent"):
+                        ComponentRegistry<ParentComponent>("ParentComponent", ID, entCom.Name,
+                            EditComponent::EC_ADDCOMPONENT);
+                        break;
+                    case str2int("ChildComponent"):
+                        ComponentRegistry<ChildComponent>("ChildComponent", ID, entCom.Name,
+                            EditComponent::EC_ADDCOMPONENT);
+                        break;
                     }
                 }
             }
@@ -837,6 +846,14 @@ namespace Eclipse
                         break;
                     case str2int("AudioComponent"):
                         ComponentRegistry<AudioComponent>("AudioComponent", ID, entCom.Name,
+                            EditComponent::EC_REMOVECOMPONENT);
+                        break;
+                    case str2int("ParentComponent"):
+                        ComponentRegistry<ParentComponent>("ParentComponent", ID, entCom.Name,
+                            EditComponent::EC_REMOVECOMPONENT);
+                        break;
+                    case str2int("ChildComponent"):
+                        ComponentRegistry<ChildComponent>("ChildComponent", ID, entCom.Name,
                             EditComponent::EC_REMOVECOMPONENT);
                         break;
                     }
