@@ -118,6 +118,10 @@ namespace Eclipse
 
                 ECGui::DrawTextWidget<const char*>("Scale", "");
                 ECGui::DrawSliderFloat3Widget("TransScale", &transCom.scale);
+
+                //Update for DynamicAABB Tree -Rachel
+                engine->gPicker.UpdateAabb(ID);
+                engine->gDynamicAABBTree.UpdateData(ID);
             }
         }
 

@@ -175,7 +175,7 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClInclude Include="src\Audio\FmodAPI\FmodAPI.h" />
     <ClInclude Include="src\ECS\ComponentManager\ComponentList.h" />
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\AABBComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ChildComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\CollisionComponent.h" />
@@ -290,6 +290,7 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClInclude Include="src\Graphics\ModelFactory\Sky\CubeMap.h" />
     <ClInclude Include="src\Graphics\OpenGL\OpenGL_Context.h" />
     <ClInclude Include="src\Graphics\Parser\Parser.h" />
+    <ClInclude Include="src\Graphics\Picker\DynamicAABBTree.h" />
     <ClInclude Include="src\Graphics\Picker\PickingManager.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Graphics.h" />
     <ClInclude Include="src\Graphics\RendererAPI\GraphicsManager.h" />
@@ -450,6 +451,7 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClCompile Include="src\Graphics\ModelFactory\Sky\CubeMap.cpp" />
     <ClCompile Include="src\Graphics\OpenGL\OpenGL_Context.cpp" />
     <ClCompile Include="src\Graphics\Parser\Parser.cpp" />
+    <ClCompile Include="src\Graphics\Picker\DynamicAABBTree.cpp" />
     <ClCompile Include="src\Graphics\Picker\PickingManager.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\Graphics.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\GraphicsManager.cpp" />
