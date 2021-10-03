@@ -250,6 +250,11 @@ namespace Eclipse
 
 	void DynamicAABBTree::UpdateData(unsigned int ID)
 	{
+		if (!engine->world.CheckComponent<AABBComponent>(ID))
+		{
+			return;
+		}
+
 		Node* node = FindNode(ID);
 
 		auto& AABB = engine->world.GetComponent<AABBComponent>(ID);
