@@ -1,7 +1,7 @@
 #pragma once
 // printing for console
 #include <iostream>
-
+#include <Tracy/Tracy.hpp>
 // for defines
 #include <stdint.h>
 

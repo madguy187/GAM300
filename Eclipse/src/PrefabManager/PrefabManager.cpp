@@ -7,14 +7,17 @@
 
 namespace Eclipse
 {
+	const std::string PrefabManager::PrefabPath = "src//Assets//Prefabs";
+
 	PrefabManager::PrefabManager()
 		:CountID{ 0 }
 	{
-		std::filesystem::create_directories(AssetPath);
+		std::filesystem::create_directories(PrefabPath);
 	}
 
-	void PrefabManager::LoadPrefab()
+	void PrefabManager::LoadPrefab(const char* path)
 	{
+		
 		
 	}
 
@@ -57,7 +60,12 @@ namespace Eclipse
 
 	//Create object using prefab, by passing in the prefab data.
 	//Currently 
-	void PrefabManager::CreatePrefabInstance(const Entity& ent)
+	Entity PrefabManager::CreatePrefabInstance(const char* path)
+	{
+		return 0;
+	}
+
+	PrefabManager::~PrefabManager()
 	{
 
 	}

@@ -854,7 +854,7 @@ namespace Eclipse
     {
         if (Geometry.size() == 0 || Prefabs.size() == 0)
         {
-            EDITOR_LOG_WARN("No Geometries Loaded , Please Run Geometry Compiler");
+            //EDITOR_LOG_WARN("No Geometries Loaded , Please Run Geometry Compiler");
             return false;
         }
 

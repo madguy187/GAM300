@@ -181,5 +181,12 @@ namespace Eclipse
                 CloseElement();
             }
         }
+
+        template <size_t N>
+        inline void AddAttributeToElement(const std::string& att_name, const std::array<char, N>& att_data)
+        {
+            std::string data = att_data.data();
+            AddAttributeToElement("value", data);
+        }
     };
 }

@@ -75,7 +75,7 @@ namespace Eclipse
 
     void Engine::Run()
     {
-       //ZoneScopedN("Engine")
+       ZoneScopedN("Engine")
         // register component
         world.RegisterComponent<EntityComponent>();
         world.RegisterComponent<TransformComponent>();
@@ -306,7 +306,7 @@ namespace Eclipse
         gPhysics.Unload();
         CommandHistory::Clear();
 
-        //FrameMark
+        FrameMark
     }
 
     bool Engine::GetEditorState()

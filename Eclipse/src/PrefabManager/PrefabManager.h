@@ -5,17 +5,21 @@ namespace Eclipse
 {
 	class PrefabManager
 	{
-		const std::string AssetPath = "src//Assets//Prefabs";
-		std::priority_queue<unsigned int> freeID;
-		unsigned int CountID;
+		std::priority_queue<int> freeID;
+		std::unordered_map<std::string, Entity> mapPathToID;
+		int CountID;
 
 	public:
+		static const std::string PrefabPath;
+
 		PrefabManager();
 
-		void LoadPrefab();
+		void LoadPrefab(const char* path);
 
 		void GeneratePrefab(const Entity& ent, const char* path);
 
-		void CreatePrefabInstance(const Entity& ent);
+		Entity CreatePrefabInstance(const char* path);
+
+		~PrefabManager();
 	};
 }

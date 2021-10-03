@@ -763,6 +763,90 @@
     <ClInclude Include="src\Time\Clock.h">
       <Filter>Time</Filter>
     </ClInclude>
+    <ClInclude Include="src\Tracy\Tracy.hpp">
+      <Filter>Tracy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracyArmCpuTable.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracyCallstack.h">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracyCallstack.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracyDxt1.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracyFastVector.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracyLock.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracyProfiler.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracyRingBuffer.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracyScoped.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracySysTime.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracySysTrace.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracySysTracePayload.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\TracyThread.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\tracy_concurrentqueue.h">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\client\tracy_rpmalloc.hpp">
+      <Filter>Tracy\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\common\TracyAlign.hpp">
+      <Filter>Tracy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\common\TracyAlloc.hpp">
+      <Filter>Tracy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\common\TracyApi.h">
+      <Filter>Tracy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\common\TracyColor.hpp">
+      <Filter>Tracy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\common\TracyForceInline.hpp">
+      <Filter>Tracy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\common\TracyMutex.hpp">
+      <Filter>Tracy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\common\TracyProtocol.hpp">
+      <Filter>Tracy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\common\TracyQueue.hpp">
+      <Filter>Tracy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\common\TracySocket.hpp">
+      <Filter>Tracy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\common\TracySystem.hpp">
+      <Filter>Tracy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\common\tracy_lz4.hpp">
+      <Filter>Tracy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracy\common\tracy_lz4hc.hpp">
+      <Filter>Tracy\common</Filter>
+    </ClInclude>
     <ClInclude Include="src\TypeID\TypeID.h">
       <Filter>TypeID</Filter>
     </ClInclude>

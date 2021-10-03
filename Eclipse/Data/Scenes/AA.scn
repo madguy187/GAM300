@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <Entities Size="3">
-    <Entity_0 ID="0">
+    <Entity_0 ID="6">
         <EntityComponent>
             <Tag value="DirectionalLight" />
             <Name value="DirectionalLight" />
@@ -28,7 +28,7 @@
         </TransformComponent>
         <LightComponent />
     </Entity_0>
-    <Entity_1 ID="1">
+    <Entity_1 ID="7">
         <EntityComponent>
             <Tag value="Camera" />
             <Name value="Camera" />
@@ -71,10 +71,10 @@
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_1>
-    <Entity_2 ID="7">
+    <Entity_2 ID="8">
         <EntityComponent>
-            <Tag value="Cube" />
-            <Name value="Cube" />
+            <Tag value="Sphere" />
+            <Name value="Sphere" />
             <IsActive value="true" />
             <Child size="0" />
             <Parent size="0" />
@@ -97,136 +97,7 @@
             <TextureRef value="brick" />
         </MaterialComponent>
         <MeshComponent>
-            <MeshName size="128">
-                <Member0 value="" />
-                <Member1 value="" />
-                <Member2 value="" />
-                <Member3 value="" />
-                <Member4 value="" />
-                <Member5 value="" />
-                <Member6 value="" />
-                <Member7 value="" />
-                <Member8 value="" />
-                <Member9 value="" />
-                <Member10 value="" />
-                <Member11 value="" />
-                <Member12 value="" />
-                <Member13 value="" />
-                <Member14 value="" />
-                <Member15 value="" />
-                <Member16 value="" />
-                <Member17 value="" />
-                <Member18 value="" />
-                <Member19 value="" />
-                <Member20 value="" />
-                <Member21 value="" />
-                <Member22 value="" />
-                <Member23 value="" />
-                <Member24 value="" />
-                <Member25 value="" />
-                <Member26 value="" />
-                <Member27 value="" />
-                <Member28 value="" />
-                <Member29 value="" />
-                <Member30 value="" />
-                <Member31 value="" />
-                <Member32 value="" />
-                <Member33 value="" />
-                <Member34 value="" />
-                <Member35 value="" />
-                <Member36 value="" />
-                <Member37 value="" />
-                <Member38 value="" />
-                <Member39 value="" />
-                <Member40 value="" />
-                <Member41 value="" />
-                <Member42 value="" />
-                <Member43 value="" />
-                <Member44 value="" />
-                <Member45 value="" />
-                <Member46 value="" />
-                <Member47 value="" />
-                <Member48 value="" />
-                <Member49 value="" />
-                <Member50 value="" />
-                <Member51 value="" />
-                <Member52 value="" />
-                <Member53 value="" />
-                <Member54 value="" />
-                <Member55 value="" />
-                <Member56 value="" />
-                <Member57 value="" />
-                <Member58 value="" />
-                <Member59 value="" />
-                <Member60 value="" />
-                <Member61 value="" />
-                <Member62 value="" />
-                <Member63 value="" />
-                <Member64 value="" />
-                <Member65 value="" />
-                <Member66 value="" />
-                <Member67 value="" />
-                <Member68 value="" />
-                <Member69 value="" />
-                <Member70 value="" />
-                <Member71 value="" />
-                <Member72 value="" />
-                <Member73 value="" />
-                <Member74 value="" />
-                <Member75 value="" />
-                <Member76 value="" />
-                <Member77 value="" />
-                <Member78 value="" />
-                <Member79 value="" />
-                <Member80 value="" />
-                <Member81 value="" />
-                <Member82 value="" />
-                <Member83 value="" />
-                <Member84 value="" />
-                <Member85 value="" />
-                <Member86 value="" />
-                <Member87 value="" />
-                <Member88 value="" />
-                <Member89 value="" />
-                <Member90 value="" />
-                <Member91 value="" />
-                <Member92 value="" />
-                <Member93 value="" />
-                <Member94 value="" />
-                <Member95 value="" />
-                <Member96 value="" />
-                <Member97 value="" />
-                <Member98 value="" />
-                <Member99 value="" />
-                <Member100 value="" />
-                <Member101 value="" />
-                <Member102 value="" />
-                <Member103 value="" />
-                <Member104 value="" />
-                <Member105 value="" />
-                <Member106 value="" />
-                <Member107 value="" />
-                <Member108 value="" />
-                <Member109 value="" />
-                <Member110 value="" />
-                <Member111 value="" />
-                <Member112 value="" />
-                <Member113 value="" />
-                <Member114 value="" />
-                <Member115 value="" />
-                <Member116 value="" />
-                <Member117 value="" />
-                <Member118 value="" />
-                <Member119 value="" />
-                <Member120 value="" />
-                <Member121 value="" />
-                <Member122 value="" />
-                <Member123 value="" />
-                <Member124 value="" />
-                <Member125 value="" />
-                <Member126 value="" />
-                <Member127 value="" />
-            </MeshName>
+            <MeshName value="" />
             <Diffuse x="0" y="0" z="0" w="0" />
             <Specular x="0" y="0" z="0" w="0" />
             <Ambient x="0" y="0" z="0" w="0" />
@@ -239,7 +110,7 @@
                 <Col2 _20="0" _21="0" _22="0" _23="0" />
                 <Col3 _30="0" _31="0" _32="0" _33="0" />
             </modelNDC_xform>
-            <modelRef value="Cube" />
+            <modelRef value="Sphere" />
             <shaderRef value="shader3DShdrpgm" />
             <transparency value="1" />
         </MeshComponent>

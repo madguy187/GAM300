@@ -37,7 +37,7 @@ namespace Eclipse
 	{
 		if (dsz.StartElement("Entity_", true, counter))
 		{
-			Entity ent = engine->world.CreateEntity();
+			Entity ent = w.CreateEntity();
 			if (DeserializeAllComponents(w, ent))
 			{
 				engine->editorManager->RegisterExistingEntity(ent);
@@ -205,6 +205,7 @@ namespace Eclipse
 
 		sz.StartElement("Prefab");
 		sz.AddAttributeToElement("PrefabID", prefabID);
+		sz.AddAttributeToElement("Size", prefabContents.size());
 		for (auto ent : prefabContents)
 		{
 			SerializeEntity(prefabW, ent, counter++);
@@ -212,14 +213,40 @@ namespace Eclipse
 		sz.CloseElement();
 	}
 
-	void SerializationManager::LoadPrefab(const char* path)
+	int SerializationManager::LoadPrefab(const char* path)
 	{
+		World& prefabW = engine->prefabWorld;
+		int PrefabID = -1;
 
+		if(dsz.StartElement("Prefab"))
+		{
+			size_t size = 0;
+			dsz.ReadAttributeFromElement("Size", size);
+			dsz.ReadAttributeFromElement("PrefabID", PrefabID);
+			for (size_t i = 0; i < size; ++i)
+			{
+				DeserializeEntity(prefabW, i);
+			}
+			dsz.CloseElement();
+		}
+
+		return PrefabID;
 	}
 
 	void SerializationManager::SavePrefabFile(int prefabID, std::vector<Entity>& prefabContents, const char* path)
 	{
 		SavePrefab(prefabID, prefabContents);
 		SaveFile(path);
+	}
+
+	int SerializationManager::LoadPrefabFile(const char* fullpath)
+	{
+		int PrefabID = -1;
+		if (LoadFile(fullpath))
+		{
+			PrefabID =  LoadPrefab(fullpath);
+		}
+		
+		return PrefabID;
 	}
 }
