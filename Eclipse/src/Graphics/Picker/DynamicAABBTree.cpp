@@ -43,7 +43,7 @@ namespace Eclipse
 			{
 				Node* newCombined = new Node;
 				newCombined->mAabb = Aabb::Combine(currNode->mAabb, newNode->mAabb);
-				newCombined->ID = 10001;
+				newCombined->ID = COMBINE_NODE;
 				newCombined->mLeft = currNode;
 				newCombined->mRight = newNode;
 				newCombined->mParent = currNode->mParent;
@@ -265,7 +265,7 @@ namespace Eclipse
 		}
 	}
 
-	unsigned int DynamicAABBTree::RayCast(Node* node, glm::vec3 rayStart, glm::vec3 rayDir, float tMin)
+	unsigned int DynamicAABBTree::RayCast(Node* node, glm::vec3 rayStart, glm::vec3 rayDir, float& tMin)
 	{
 		static unsigned int nodeID = MAX_ENTITY;
 
@@ -283,6 +283,12 @@ namespace Eclipse
 		}
 		else
 		{
+			if ((node->ID != COMBINE_NODE) && time < tMin)
+			{
+				nodeID = node->ID;
+				tMin = time;
+			}
+
 			if (!isExternalNode(node))
 			{
 				RayCast(node->mLeft, rayStart, rayDir, tMin);
@@ -290,12 +296,6 @@ namespace Eclipse
 			}
 			else
 			{
-				if (time > tMin)
-				{
-					nodeID = node->ID;
-					tMin = time;
-				}
-
 				return nodeID;
 			}
 		}

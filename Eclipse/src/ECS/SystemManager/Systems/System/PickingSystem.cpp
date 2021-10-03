@@ -18,7 +18,7 @@ void Eclipse::PickingSystem::EditorUpdate()
 	engine->Timer.tracker.system_start = glfwGetTime();
 
 	auto& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
-	float tMin = (std::numeric_limits<float>::min)();
+	float tMin = (std::numeric_limits<float>::max)();
 
 	glm::vec3 rayDir = engine->gPicker.ComputeCursorRayDirection();
 	unsigned int collisionID = engine->gDynamicAABBTree.RayCast(engine->gDynamicAABBTree.GetTreeRoot(), camera.eyePos, rayDir, tMin);

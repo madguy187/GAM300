@@ -11,6 +11,7 @@ namespace Eclipse
 {
 	class DynamicAABBTree
 	{
+		static constexpr unsigned int COMBINE_NODE = 10001;
 		const float mFatteningFactor = 1.1f;
 
 		struct Aabb
@@ -57,7 +58,7 @@ namespace Eclipse
 
 		void InsertData(unsigned int ID);
 		void UpdateData(unsigned int ID);
-		unsigned int RayCast(Node* node, glm::vec3 rayStart, glm::vec3 rayDir, float tMin);
+		unsigned int RayCast(Node* node, glm::vec3 rayStart, glm::vec3 rayDir, float& tMin);
 
 		Node* GetTreeRoot();
 	};
