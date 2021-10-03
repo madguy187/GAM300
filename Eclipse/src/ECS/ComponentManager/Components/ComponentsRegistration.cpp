@@ -29,6 +29,18 @@ namespace Eclipse
 
     DEFINE_META(AudioComponent)
     {
+        ADD_MEMBER(AudioPath);
+        ADD_MEMBER(ChannelID);
+        ADD_MEMBER(Volume);
+        ADD_MEMBER(Pitch);
+        ADD_MEMBER(Speed);
+        ADD_MEMBER(IsLooping);
+        ADD_MEMBER(Is3D);
+        ADD_MEMBER(InnerConeAngle);
+        ADD_MEMBER(OuterConeAngle);
+        ADD_MEMBER(OuterVolume);
+        ADD_MEMBER(Min);
+        ADD_MEMBER(Max);
     }
 
     DEFINE_META(CameraComponent)
