@@ -29,6 +29,7 @@
 #include "Editor/ECGuiAPI/ECGuiInputHandler.h"
 #include "ECS/SystemManager/Systems/System/MonoSystem/MonoSystem.h"
 #include "ECS/SystemManager/Systems/System/Audio/AudioSystem.h"
+#include "ECS/SystemManager/Systems/System/Collision/CollisionSystem.h"
 
 bool Tester1(const Test1& e)
 {
@@ -88,6 +89,7 @@ namespace Eclipse
         world.RegisterComponent<ParentChildComponent>();
         world.RegisterComponent<LightComponent>();
         world.RegisterComponent<ScriptComponent>();
+        world.RegisterComponent<CollisionComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
@@ -99,6 +101,7 @@ namespace Eclipse
         world.RegisterSystem<PhysicsSystem>();
         world.RegisterSystem<MonoSystem>();
         world.RegisterSystem<AudioSystem>();
+        world.RegisterSystem<CollisionSystem>();
 
         // Render System
         Signature RenderSys = RenderSystem::RegisterAll();
@@ -136,6 +139,10 @@ namespace Eclipse
         Signature hi5;
         hi5.set(world.GetComponentType<ScriptComponent>(), 1);
         world.RegisterSystemSignature<MonoSystem>(hi5);
+
+        Signature hi6;
+        hi6.set(world.GetComponentType<CollisionComponent>(), 1);
+        world.RegisterSystemSignature<CollisionSystem>(hi6);
 
         //Check this! - Rachel
         RenderSystem::Init();
@@ -212,7 +219,7 @@ namespace Eclipse
             //world.Update<GridSystem>();
 
             world.Update<CameraSystem>();
-
+            world.Update<CollisionSystem>();
             if (IsScenePlaying())
             {
                 for (int step = 0; step < Game_Clock.get_timeSteps(); step++)

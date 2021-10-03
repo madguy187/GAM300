@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "PxPhysicsAPI.h"
 #include "ECS/ComponentManager/Components/RigidBodyComponent.h"
+#include "ECS/ComponentManager/Components/CollisionComponent.h"
 namespace Eclipse
 {
 	using namespace physx;
@@ -97,6 +98,8 @@ namespace Eclipse
 		ECVec3 QuattoAngles(PxQuat quat);
 		void InitActor(Entity ent);
 		void UpdateActor(Entity ent);
+		void CreateShape(Entity ent);
+		void UpdateShapes(Entity ent);
 		void GetActorPosition(Entity ent);
 		void ChangeDynamicStatic(Entity ent);
 		void ChangeStaticDynamic(Entity ent);
