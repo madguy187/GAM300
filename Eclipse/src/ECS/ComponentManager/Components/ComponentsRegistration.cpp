@@ -15,6 +15,7 @@
 #include "TransformComponent.h"
 #include "AudioComponent.h"
 #include "CollisionComponent.h"
+#include "AIComponent.h"
 namespace Eclipse
 {
     /*************************************************************************/
@@ -65,9 +66,18 @@ namespace Eclipse
 
     DEFINE_META(CollisionComponent)
     {
-        ADD_MEMBER(created);
         ADD_MEMBER(Collided);
         ADD_MEMBER(shape);
+        ADD_MEMBER(created);
+    }
+
+    DEFINE_META(AIComponent)
+    {
+        ADD_MEMBER(waypoints);
+        ADD_MEMBER(target);
+        ADD_MEMBER(MinDisttoChange);
+        ADD_MEMBER(PatrolSpeed);
+        ADD_MEMBER(patrolling);
     }
 
     DEFINE_META(DirectionalLightComponent)
