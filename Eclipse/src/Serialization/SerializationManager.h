@@ -82,7 +82,6 @@ namespace Eclipse
 				"Mass", data.mass,
 				"Drag", data.drag,
 				"AngDrag", data.angdrag,
-				"IsStatic", data._Static,
 				"IsKinematic", data._Kinematic,
 				"IsEnableGravity", data.enableGravity,
 				"IsEnableRotation", data.enableRotation,
@@ -332,7 +331,6 @@ namespace Eclipse
 				"Mass", comp.mass,
 				"Drag", comp.drag,
 				"AngDrag", comp.angdrag,
-				"IsStatic", comp._Static,
 				"IsKinematic", comp._Kinematic,
 				"IsEnableGravity", comp.enableGravity,
 				"IsEnableRotation", comp.enableRotation,
@@ -520,7 +518,7 @@ namespace Eclipse
 
 		int LoadPrefab();
 
-		void SavePrefabWorld(const std::vector<Entity>& entities);
+		void SavePrefabWorld(const std::set<Entity>& entities);
 
 	public:
 		static Serializer sz;
@@ -542,7 +540,7 @@ namespace Eclipse
 
 		void LoadSceneFile(const char* fullpath = "Data/Temp/Temp.scn");
 
-		void SavePrefabWorldFile(const std::vector<Entity>& entities);
+		void SavePrefabWorldFile(const std::set<Entity>& entities);
 
 		template <typename T>
 		inline static void TestSerialize(const char* name, RefVariant refv)

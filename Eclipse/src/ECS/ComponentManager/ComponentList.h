@@ -15,6 +15,8 @@ namespace Eclipse
 	struct ScriptComponent;
 	struct ParentComponent;
 	struct ChildComponent;
+	struct CollisionComponent;
+	struct AIComponent;
 	struct SpotLightComponent;
 	struct TransformComponent;
 	struct PrefabComponent;
@@ -45,6 +47,8 @@ namespace Eclipse
 		ScriptComponent,
 		ParentComponent,
 		ChildComponent,
+		CollisionComponent,
+		AIComponent,
 		SpotLightComponent,
 		TransformComponent,
 		PrefabComponent

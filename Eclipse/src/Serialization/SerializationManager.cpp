@@ -252,7 +252,7 @@ namespace Eclipse
 	}
 
 	//Debug purpose
-	void SerializationManager::SavePrefabWorld(const std::vector<Entity>& entities)
+	void SerializationManager::SavePrefabWorld(const std::set<Entity>& entities)
 	{
 		World& prefabW = engine->prefabWorld;
 
@@ -269,7 +269,7 @@ namespace Eclipse
 		sz.CloseElement();
 	}
 
-	void SerializationManager::SavePrefabWorldFile(const std::vector<Entity>& entities)
+	void SerializationManager::SavePrefabWorldFile(const std::set<Entity>& entities)
 	{
 		SavePrefabWorld(entities);
 		std::string path = PrefabManager::PrefabPath;

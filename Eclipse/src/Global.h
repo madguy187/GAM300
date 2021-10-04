@@ -50,6 +50,24 @@ enum class EditorMenuType
     UNASSIGNED
 };
 
+enum class ActorType
+{
+    ACTOR_UNASSIGNED,
+    ACTOR_DYNAMIC,
+    ACTOR_STATIC
+};
+
+enum class PxShapeType
+{
+    Px_SQUARE,
+    Px_CIRCLE,
+    Px_TRIANGLE,
+    Px_LINE,
+    Px_SPHERE,
+    Px_CUBE,
+    Px_CYLINDER,
+};
+
 enum class EntityType
 {
     ENT_GEO_SQUARE,

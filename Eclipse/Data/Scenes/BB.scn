@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <Entities Size="3">
-    <Entity_0 ID="6">
+    <Entity_0 ID="0">
         <EntityComponent>
             <Tag value="DirectionalLight" />
             <Name value="DirectionalLight" />
@@ -28,7 +28,7 @@
         </TransformComponent>
         <LightComponent />
     </Entity_0>
-    <Entity_1 ID="7">
+    <Entity_1 ID="1">
         <EntityComponent>
             <Tag value="Camera" />
             <Name value="Camera" />
@@ -71,7 +71,7 @@
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_1>
-    <Entity_2 ID="8">
+    <Entity_2 ID="7">
         <EntityComponent>
             <Tag value="Cube" />
             <Name value="Cube" />
@@ -115,14 +115,14 @@
             <transparency value="1" />
         </MeshComponent>
         <TransformComponent>
-            <position x="13.81" y="0" z="6.04862" />
+            <position x="-1.70018" y="0" z="11.9771" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
         <AABBComponent>
-            <center x="13.81" y="0" z="6.04862" />
-            <Min x="11.31" y="-2.5" z="3.54862" />
-            <Max x="16.31" y="2.5" z="8.54862" />
+            <center x="-1.70018" y="0" z="11.9771" />
+            <Min x="-4.20018" y="-2.5" z="9.47707" />
+            <Max x="0.799824" y="2.5" z="14.4771" />
         </AABBComponent>
     </Entity_2>
 </Entities>

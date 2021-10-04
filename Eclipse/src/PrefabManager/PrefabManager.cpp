@@ -4,6 +4,8 @@
 #include "../ECS/ComponentManager/Components/ParentComponent.h"
 #include "../ECS/ComponentManager/Components/ChildComponent.h"
 #include "../ECS/ComponentManager/Components/ScriptComponent.h"
+#include "../ECS/ComponentManager/Components/AIComponent.h"
+#include "ECS/SystemManager/Systems/System/PrefabSystem/PrefabSystem.h"
 
 namespace Eclipse
 {
@@ -22,7 +24,7 @@ namespace Eclipse
 			auto& extension = entry.path().extension().string();
 			if (!extension.compare(".prefab"))
 			{
-				LoadPrefab(entry.path().string().c_str());
+				//LoadPrefab(entry.path().string().c_str());
 			}
 		}
 	}
@@ -88,6 +90,6 @@ namespace Eclipse
 
 	PrefabManager::~PrefabManager()
 	{
-
+		//engine->szManager.SavePrefabWorldFile(engine->prefabWorld.GetSystem<PrefabSystem>()->mEntities);
 	}
 }

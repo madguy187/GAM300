@@ -33,6 +33,7 @@
 #include "ECS/SystemManager/Systems/System/MonoSystem/MonoSystem.h"
 #include "ECS/SystemManager/Systems/System/Audio/AudioSystem.h"
 #include "ECS/SystemManager/Systems/System/FileWatchSystem/FileWatchSystem.h"
+#include "ECS/SystemManager/Systems/System/Collision/CollisionSystem.h"
 #include "ECS/SystemManager/Systems/System/PrefabSystem/PrefabSystem.h"
 
 bool Tester1(const Test1& e)
@@ -94,6 +95,7 @@ namespace Eclipse
         world.RegisterComponent<LightComponent>();
         world.RegisterComponent<ScriptComponent>();
         world.RegisterComponent<AudioComponent>();
+        world.RegisterComponent<CollisionComponent>();
         world.RegisterComponent<ParentComponent>();
         world.RegisterComponent<ChildComponent>();
         world.RegisterComponent<PrefabComponent>();
@@ -127,6 +129,7 @@ namespace Eclipse
         world.RegisterSystem<MonoSystem>();
         world.RegisterSystem<AudioSystem>();
         world.RegisterSystem<FileWatchSystem>();
+        world.RegisterSystem<CollisionSystem>();
         world.RegisterSystem<PrefabSystem>();
 
         prefabWorld.RegisterSystem<PrefabSystem>();
@@ -167,6 +170,10 @@ namespace Eclipse
         Signature hi5;
         hi5.set(world.GetComponentType<ScriptComponent>(), 1);
         world.RegisterSystemSignature<MonoSystem>(hi5);
+
+        Signature hi6;
+        hi6.set(world.GetComponentType<CollisionComponent>(), 1);
+        world.RegisterSystemSignature<CollisionSystem>(hi6);
 
         Signature audioSignature;
         audioSignature.set(world.GetComponentType<AudioComponent>(), 1);
@@ -258,7 +265,7 @@ namespace Eclipse
             //world.Update<GridSystem>();
 
             world.Update<CameraSystem>();
-
+            world.Update<CollisionSystem>();
             if (IsScenePlaying())
             {
                 for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
