@@ -7,7 +7,7 @@
 #include "LightComponent.h"
 #include "MaterialComponent.h"
 #include "MeshComponent.h"
-#include "ModeLInfoComponent.h"
+#include "ModelComponent.h"
 #include "PointLightComponent.h"
 #include "RigidBodyComponent.h"
 #include "SpotLightComponent.h"
@@ -121,15 +121,15 @@ namespace Eclipse
     DEFINE_META(MeshComponent)
     {
         ADD_MEMBER(MeshName);
-        ADD_MEMBER(VBO);
-        ADD_MEMBER(VAO);
-        ADD_MEMBER(EBO);
-        ADD_MEMBER(NoTex);
-        ADD_MEMBER(Diffuse);
-        ADD_MEMBER(Specular);
-        ADD_MEMBER(Ambient);
-        ADD_MEMBER(Vertices);
-        ADD_MEMBER(Indices);
+        //ADD_MEMBER(VBO);
+        //ADD_MEMBER(VAO);
+        //ADD_MEMBER(EBO);
+        //ADD_MEMBER(NoTex);
+        //ADD_MEMBER(Diffuse);
+        //ADD_MEMBER(Specular);
+        //ADD_MEMBER(Ambient);
+        //ADD_MEMBER(Vertices);
+        //ADD_MEMBER(Indices);
         ADD_MEMBER(color);
         ADD_MEMBER(textureIdx);
         ADD_MEMBER(isQuad);
@@ -139,7 +139,7 @@ namespace Eclipse
         ADD_MEMBER(transparency);
     }
 
-    DEFINE_META(ModeLInforComponent)
+    DEFINE_META(ModelComponent)
     {
         ADD_MEMBER(ComboIndex);
         ADD_MEMBER(NameOfModel);

@@ -874,7 +874,7 @@ namespace Eclipse
                 // Cannot Find this as a parent
                 std::string Name = ModelName;
                 engine->world.AddComponent(MeshID, MeshComponent{});
-                engine->world.AddComponent(MeshID, ModeLInforComponent{});
+                engine->world.AddComponent(MeshID, ModelComponent{});
                 engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
                 SetSingleMesh(MeshID, Name);
             }
@@ -894,7 +894,7 @@ namespace Eclipse
                     auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
 
                     engine->world.AddComponent(MeshID, MeshComponent{});
-                    engine->world.AddComponent(MeshID, ModeLInforComponent{});
+                    engine->world.AddComponent(MeshID, ModelComponent{});
                     engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
                     SetSingleMesh(MeshID, name);
                 }
@@ -974,7 +974,7 @@ namespace Eclipse
         auto& sprite = engine->world.GetComponent<MeshComponent>(id);
 
         // Assign ModelInfoComponent
-        auto& ModelInformation = engine->world.GetComponent<ModeLInforComponent>(id);
+        auto& ModelInformation = engine->world.GetComponent<ModelComponent>(id);
         //ModelInformation.NameOfModel = sprite.Key;
         //ModelInformation.Directory = ModelMap[sprite.Key];
 

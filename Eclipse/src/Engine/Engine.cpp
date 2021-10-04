@@ -11,7 +11,7 @@
 #include "ECS/ComponentManager/Components/MeshComponent.h"
 #include "ECS/ComponentManager/Components/RigidBodyComponent.h"
 #include "ECS/ComponentManager/Components/TextureComponent.h"
-#include "ECS/ComponentManager/Components/ModelInfoComponent.h"
+#include "ECS/ComponentManager/Components/ModelComponent.h"
 #include "ECS/ComponentManager/Components/LightComponent.h"
 #include "ECS/ComponentManager/Components/ScriptComponent.h"
 #include "ECS/ComponentManager/Components/AudioComponent.h"
@@ -87,7 +87,7 @@ namespace Eclipse
         world.RegisterComponent<MaterialComponent>();
         world.RegisterComponent<RigidBodyComponent>();
         world.RegisterComponent<TextureComponent>();
-        world.RegisterComponent<ModeLInforComponent>();
+        world.RegisterComponent<ModelComponent>();
         world.RegisterComponent<LightComponent>();
         world.RegisterComponent<ScriptComponent>();
         world.RegisterComponent<AudioComponent>();

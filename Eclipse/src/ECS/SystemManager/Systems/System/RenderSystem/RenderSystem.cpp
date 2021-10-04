@@ -94,7 +94,7 @@ namespace Eclipse
                 engine->MaterialManager.UpdateShininess(entityID);
 
                 // Basic Primitives
-                if (!engine->world.CheckComponent<ModeLInforComponent>(entityID))
+                if (!engine->world.CheckComponent<ModelComponent>(entityID))
                 {
                     engine->GraphicsManager.CheckTexture(entityID);
 

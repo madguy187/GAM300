@@ -12,7 +12,7 @@
 
 #include "ECS/ComponentManager/Components/EntityComponent.h"
 #include "ECS/ComponentManager/Components/TextureComponent.h"
-#include "ECS/ComponentManager/Components/ModelInfoComponent.h"
+#include "ECS/ComponentManager/Components/ModelComponent.h"
 #include "ECS/ComponentManager/Components/MaterialComponent.h"
 
 namespace Eclipse

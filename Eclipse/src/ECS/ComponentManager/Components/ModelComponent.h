@@ -6,9 +6,9 @@
 
 namespace Eclipse
 {
-    struct ModeLInforComponent
+    struct ModelComponent
     {
-        META_DATA(ModeLInforComponent);
+        META_DATA(ModelComponent);
         
         std::string NameOfModel;
         std::string Directory;

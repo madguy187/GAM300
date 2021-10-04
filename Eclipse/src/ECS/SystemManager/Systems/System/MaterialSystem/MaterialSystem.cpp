@@ -25,7 +25,7 @@ namespace Eclipse
                 // Update Shininess ===============================
                 engine->MaterialManager.UpdateShininess(entity);
 
-                if (engine->world.CheckComponent<ModeLInforComponent>(entity))
+                if (engine->world.CheckComponent<ModelComponent>(entity))
                 {
                     // HighLight Basic Models Start ===============================
                     engine->MaterialManager.Highlight3DModels(entity, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE));
