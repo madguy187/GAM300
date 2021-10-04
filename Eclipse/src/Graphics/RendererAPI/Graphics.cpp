@@ -218,6 +218,8 @@ Texture Eclipse::Graphics::FindTextures(std::string in)
     {
         return itr->second;
     }
+
+    return nullptr;
 }
 
 void Eclipse::Graphics::GetTexuresForModels(std::string in , MaterialComponent com)

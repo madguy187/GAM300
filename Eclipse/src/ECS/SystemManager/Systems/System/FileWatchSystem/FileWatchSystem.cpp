@@ -36,7 +36,7 @@ namespace Eclipse
             engine->gFileWatchManager->HardReset();
         }
 
-        engine->Timer.tracker.system_end = glfwGetTime();
+        engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());
         engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
 
         FrameMark

@@ -63,9 +63,9 @@ namespace Eclipse
         void SetName(std::string& name);
         std::string GetName();
         std::string GetDirectory();
-        unsigned int GetNumberOfTextures();
+        size_t GetNumberOfTextures();
         void GetTextureNames();
-        unsigned int GetNumberOfMeshes();
+        size_t GetNumberOfMeshes();
         ModelType GetType();
         void SetModelType(ModelType in);
         std::vector<glm::vec3> GetVertices();

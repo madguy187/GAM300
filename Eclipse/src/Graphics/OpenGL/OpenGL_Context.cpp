@@ -148,7 +148,7 @@ bool Eclipse::OpenGL_Context::init(std::string configFile)
 
     // Create the window and store this window as window pointer
     // so that we can use it in callback functions
-    ptr_window = glfwCreateWindow(width, height, title.c_str(), NULL(), NULL);
+    ptr_window = glfwCreateWindow(width, height, title.c_str(), 0, 0);
     windowRatioX = static_cast<float>(OpenGL_Context::width) / static_cast<float>(OpenGL_Context::prevWidth);
     windowRatioY = static_cast<float>(OpenGL_Context::height) / static_cast<float>(OpenGL_Context::prevHeight);
 

@@ -15,7 +15,7 @@ void Eclipse::PickingSystem::EditorUpdate()
 	ZoneScopedN("Picking System")
 
 	engine->Timer.SetName({ SystemName::PICKING });
-	engine->Timer.tracker.system_start = glfwGetTime();
+	engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
 	auto& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 	float tMin = (std::numeric_limits<float>::max)();
@@ -37,7 +37,7 @@ void Eclipse::PickingSystem::EditorUpdate()
 		//engine->gDynamicAABBTree.UpdateData(collisionID);
 	}
 
-	engine->Timer.tracker.system_end = glfwGetTime();
+	engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());
 	engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
 
 	FrameMark

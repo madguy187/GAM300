@@ -49,9 +49,9 @@ namespace Eclipse
 		// Get Current MeshComponent Container
 		MeshModelContainer GetMeshContainer();
 		// Ger how many Models in Container
-		unsigned int MeshModelCount();
+		size_t MeshModelCount();
 		// Get Current Model Factory Count
-		unsigned int MeshFactoryCount();
+		size_t MeshFactoryCount();
 		// Load All Models Once
 		void Init();
 	    static void ExecuteCompiler();
@@ -112,7 +112,7 @@ namespace Eclipse
 		bool InsertMesh(MeshComponent& in);
 		bool ClearContainer();
 		void CleanUpAllModels();
-		unsigned int AssimpModelCount();
+		size_t AssimpModelCount();
 		bool InsertModel(AssimpModel& in);
 		AssimpModelContainer GetContainer();
 		AssimpModel* GetModel(unsigned int ID);

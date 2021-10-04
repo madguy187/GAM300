@@ -127,7 +127,7 @@ namespace Eclipse
         glUniform1i(NoTexures, 0);
     }
 
-    unsigned int AssimpModelManager::MeshFactoryCount()
+    size_t AssimpModelManager::MeshFactoryCount()
     {
         return AssimpLoadedModels.size();
     }
@@ -437,7 +437,7 @@ namespace Eclipse
 
         // EBO stuff
         glBindVertexArray(engine->AssimpManager.Geometry[in.MeshName.data()]->VAO);
-        glDrawElements(GL_TRIANGLES, engine->AssimpManager.Geometry[in.MeshName.data()]->Indices.size(), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES,static_cast<GLsizei>(engine->AssimpManager.Geometry[in.MeshName.data()]->Indices.size()), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
 
         // reset
@@ -454,7 +454,7 @@ namespace Eclipse
 
         // EBO stuff
         glBindVertexArray(engine->AssimpManager.Geometry[in.MeshName.data()]->VAO);
-        glDrawElements(GL_TRIANGLES, engine->AssimpManager.Geometry[in.MeshName.data()]->Indices.size(), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(engine->AssimpManager.Geometry[in.MeshName.data()]->Indices.size()), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
     }
 
@@ -495,7 +495,7 @@ namespace Eclipse
         // See how many Models
         GeometryFileRead.read(reinterpret_cast<char*>(&TotalNumberOfModels), sizeof(TotalNumberOfModels));
 
-        for (int i = 0; i < TotalNumberOfModels; i++)
+        for (unsigned int i = 0; i < TotalNumberOfModels; i++)
         {
             VerticesSize = 0;
             IndicesSize = 0;
@@ -760,7 +760,7 @@ namespace Eclipse
         return AssimpModelContainer_;
     }
 
-    unsigned int AssimpModelManager::AssimpModelCount()
+    size_t AssimpModelManager::AssimpModelCount()
     {
         return AssimpModelContainer_.size();
     }
@@ -932,7 +932,7 @@ namespace Eclipse
         return AssimpModelContainerV2;
     }
 
-    unsigned int AssimpModelManager::MeshModelCount()
+    size_t AssimpModelManager::MeshModelCount()
     {
         return AssimpModelContainerV2.size();
     }
