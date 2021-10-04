@@ -71,7 +71,7 @@ namespace Eclipse
               Render Sky to Sceneview
             *************************************************************************/
             engine->MaterialManager.DoNotUpdateStencil();
-            engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
+            engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
 
             // Basic Primitives Render Start =============================
             for (auto const& entityID : RenderablesVsFrustrum)
@@ -116,7 +116,7 @@ namespace Eclipse
                         &Mesh, GL_FILL, entityID, CameraComponent::CameraType::Game_Camera);
 
                     engine->MaterialManager.HighlightBasicPrimitives(entityID,
-                        engine->GraphicsManager.GetFrameBufferID(Eclipse::FrameBufferMode::FBM_SCENE));
+                        engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE));
                 }
                 else
                 {
@@ -127,7 +127,7 @@ namespace Eclipse
                     engine->MaterialManager.UpdateStencilWithActualObject(entityID);
                     engine->AssimpManager.MeshDraw(Mesh, entityID,
                         engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE),
-                        engine->GraphicsManager.GetRenderMode(Eclipse::FrameBufferMode::FBM_SCENE),
+                        engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_SCENE),
                         &engine->GraphicsManager.AllAABBs, CameraComponent::CameraType::Editor_Camera);
 
                     /*************************************************************************

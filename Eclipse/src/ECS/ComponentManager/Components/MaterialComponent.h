@@ -38,4 +38,4 @@ namespace Eclipse
         std::vector<Texture> HoldingTextures;
     };
 }
-#endif /* DIRECTIONALIGHTCOMPONENT_H */
+#endif /* materialCOMPONENT_H */

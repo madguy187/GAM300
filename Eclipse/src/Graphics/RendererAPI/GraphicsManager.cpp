@@ -346,7 +346,7 @@ void Eclipse::GraphicsManager::ResetInstancedDebugBoxes()
 void Eclipse::GraphicsManager::DrawDebugBoxes()
 {
     // render boxes
-    engine->GraphicsManager.AllAABBs.DrawAll(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
+    engine->GraphicsManager.AllAABBs.DrawAll(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
 }
 
 std::string Eclipse::GraphicsManager::GetModelName(unsigned int modelname)
@@ -418,7 +418,7 @@ unsigned int Eclipse::GraphicsManager::GetFrameBufferID(FrameBufferMode mode)
     return mRenderContext.GetFramebuffer(mode)->GetFrameBufferID();
 }
 
-FrameBuffer::RenderMode Eclipse::GraphicsManager::GetRenderMode(FrameBufferMode mode)
+RenderMode Eclipse::GraphicsManager::GetRenderMode(FrameBufferMode mode)
 {
     return mRenderContext.GetFramebuffer(mode)->GetRenderMode();
 }
@@ -444,7 +444,7 @@ void Eclipse::GraphicsManager::SetBackGroundColour()
 
 void Eclipse::GraphicsManager::DrawEntireGrid()
 {
-    engine->GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
+    engine->GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
 }
 
 /*************************************************************************
@@ -527,12 +527,12 @@ FrameBuffer* Eclipse::OpenGL_Context::GetFramebuffer(FrameBufferMode mode)
 
 void Eclipse::GraphicsManager::FrameBufferDraw()
 {
-    FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_GAME)), "GameView");
-    FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_SCENE)), "SceneView");
-    FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_TOP)), "SceneView_Top");
-    FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_BOTTOM)), "SceneView_Bottom");
-    FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_LEFT)), "SceneView_Left");
-    FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_RIGHT)), "SceneView_Right");
+    FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(FrameBufferMode::FBM_GAME)), "GameView");
+    FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)), "SceneView");
+    FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(FrameBufferMode::FBM_TOP)), "SceneView_Top");
+    FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(FrameBufferMode::FBM_BOTTOM)), "SceneView_Bottom");
+    FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(FrameBufferMode::FBM_LEFT)), "SceneView_Left");
+    FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(FrameBufferMode::FBM_RIGHT)), "SceneView_Right");
 
 }
 

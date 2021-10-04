@@ -364,17 +364,17 @@ double Eclipse::OpenGL_Context::update_time(double fps_calc_interval)
 
 void Eclipse::OpenGL_Context::CreateFrameBuffers()
 {
-    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::FBM_GAME);
-    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::FBM_SCENE);
-    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::FBM_TOP);
-    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::FBM_BOTTOM);
-    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::FBM_LEFT);
-    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::FBM_RIGHT);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height,FrameBufferMode::FBM_GAME);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height,FrameBufferMode::FBM_SCENE);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height,FrameBufferMode::FBM_TOP);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height,FrameBufferMode::FBM_BOTTOM);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height,FrameBufferMode::FBM_LEFT);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height,FrameBufferMode::FBM_RIGHT);
 }
 
-void Eclipse::OpenGL_Context::CreateFrameBuffers(unsigned int width, unsigned int height, Eclipse::FrameBufferMode in)
+void Eclipse::OpenGL_Context::CreateFrameBuffers(unsigned int width, unsigned int height, FrameBufferMode in)
 {
-    if (in == Eclipse::FrameBufferMode::FBM_NONE || in == Eclipse::FrameBufferMode::MAXCOUNT)
+    if (in == FrameBufferMode::FBM_NONE || in == FrameBufferMode::MAXCOUNT)
     {
         ENGINE_LOG_ASSERT(false, "Creating FrameBuffer with Invalid Type");
         std::exit(EXIT_FAILURE);

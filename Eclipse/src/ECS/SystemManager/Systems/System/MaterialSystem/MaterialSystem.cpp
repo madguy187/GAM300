@@ -11,8 +11,8 @@ namespace Eclipse
     void MaterialSystem::Update()
     {
         ZoneScopedN("Material System")
-            
-        engine->Timer.SetName({ SystemName::MATERIAL });
+
+            engine->Timer.SetName({ SystemName::MATERIAL });
         engine->Timer.tracker.system_start = glfwGetTime();
 
         if (engine->MaterialManager.EnableHighlight == true)
@@ -34,7 +34,7 @@ namespace Eclipse
                 else
                 {
                     // HighLight Basic Models Start ===============================
-                    engine->MaterialManager.HighlightBasicPrimitives(entity, engine->GraphicsManager.GetFrameBufferID(Eclipse::FrameBufferMode::FBM_SCENE));
+                    engine->MaterialManager.HighlightBasicPrimitives(entity, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE));
                     // HighLight Basic Models End ===============================
 
                 }

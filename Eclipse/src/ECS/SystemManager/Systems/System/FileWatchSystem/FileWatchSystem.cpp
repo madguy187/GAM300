@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "../FileWatchSystem/FileWatchSystem.h"
-#include "Graphics/FileWatch/FileWatch.h"
 
 namespace Eclipse
 {

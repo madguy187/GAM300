@@ -1,6 +1,5 @@
-#pragma once
-#include "pch.h"
-#include "Library/Math/Vector.h"
+#ifndef TEXTURECOMPONENT_H
+#define TEXTURECOMPONENT_H
 #include "Reflection/Meta.h"
 #include "Reflection/RemTypeQual.h"
 
@@ -12,3 +11,5 @@ namespace Eclipse
         std::string textureRef;
     };
 }
+
+#endif /* TEXTURECOMPONENT_H */

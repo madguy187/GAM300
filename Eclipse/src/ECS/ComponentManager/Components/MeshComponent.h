@@ -1,5 +1,6 @@
-#pragma once
-#include "Library/Math/Vector.h"
+#ifndef MESHCOMPONENT_H
+#define MESHCOMPONENT_H
+
 #include "Reflection/Meta.h"
 #include "Reflection/RemTypeQual.h"
 
@@ -25,3 +26,4 @@ namespace Eclipse
         float transparency{ 1.0f };
     };
 }
+#endif /* MESHCOMPONENT_H */

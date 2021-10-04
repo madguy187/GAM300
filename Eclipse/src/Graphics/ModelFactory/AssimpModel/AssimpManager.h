@@ -58,7 +58,7 @@ namespace Eclipse
 		void HotReload();
 		void HotReloadTetxures();
 		// Render Function that uses the Container that stores MeshComponent 
-		void MeshDraw(MeshComponent& ModelMesh , unsigned int ID, unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
+		void MeshDraw(MeshComponent& ModelMesh , unsigned int ID, unsigned int FrameBufferID, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
 		// Upload to Shader
 		void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID, AABB_* box);
 		// Delete Model from MeshContainer Using ID
@@ -117,7 +117,7 @@ namespace Eclipse
 		AssimpModelContainer GetContainer();
 		AssimpModel* GetModel(unsigned int ID);
 		void CreateModel(unsigned int ID, std::string name, std::string path, std::string filename);
-		void Draw(unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
+		void Draw(unsigned int FrameBufferID, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
 		void HighlihtDraw(unsigned int FrameBufferID, GLenum Mode);
 		void DeleteItem(unsigned int index, AssimpModel* model_ptr);
 		std::string GetKey(const std::string& in);

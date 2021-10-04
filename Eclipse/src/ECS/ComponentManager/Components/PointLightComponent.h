@@ -1,6 +1,6 @@
-#pragma once
-#include "pch.h"
-#include "Library/Math/Vector.h" 
+#ifndef POINTLIGHTCOMPONENT_H
+#define POINTLIGHTCOMPONENT_H
+
 #include "Reflection/Meta.h"
 #include "Reflection/RemTypeQual.h"
 
@@ -32,3 +32,4 @@ namespace Eclipse
         float Exposure = 1.0f;
     };
 }
+#endif /* POINTLIGHTCOMPONENT_H */

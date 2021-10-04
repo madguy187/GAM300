@@ -66,7 +66,7 @@ namespace Eclipse
         void DrawDebugBoxes();
         std::string GetModelName(unsigned int modelname);
         unsigned int GetFrameBufferID(FrameBufferMode mode);
-        FrameBuffer::RenderMode GetRenderMode(FrameBufferMode mode);
+        RenderMode GetRenderMode(FrameBufferMode mode);
         static void WindowCloseCallback(GLFWwindow* window);
         void SetBackGroundColour();
         void DrawEntireGrid();
