@@ -249,46 +249,33 @@ namespace Eclipse
 	{
 		auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
 		static bool IsActive = false;
-
+		static size_t posValueIndex = 0;
+		static size_t rotValueIndex = 0;
+		static size_t scaleValueIndex = 0;
 		if (ECGui::CheckBoxBool("Enable Snapping", &IsActive, false))
 		{
 			scene->SetSnapping(IsActive);
 		}
 
 		ECGui::DrawTextWidget<const char*>("Pos Snap:", "");
-		ECGui::DrawSliderFloatWidget("Pos Snap", &scene->GetRefToSnapSettings().mPosSnapValue, true, 1.f, 100.f);
-		ECGui::DrawTextWidget<const char*>("Rot Snap:", "");
-		ECGui::DrawSliderFloatWidget("Rot Snap", &scene->GetRefToSnapSettings().mRotSnapValue, true, 1.f, 100.f);
-		ECGui::DrawTextWidget<const char*>("Scale Snap:", "");
-		ECGui::DrawSliderFloatWidget("Scale Snap", &scene->GetRefToSnapSettings().mScaleSnapValue, true, 1.f, 100.f);
-	}
+		std::vector<std::string> posValues = { "1","5","10","50","100","500","1000","5000","10000" };
+		ECGui::CreateComboList({"Pos Snap:"}, posValues, posValueIndex);
+		scene->GetRefToSnapSettings().mPosSnapValue = std::stoi(posValues[posValueIndex]);
 
-	//void HeaderWindow::SetPosSnap()
-	//{
-	//	auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
-	//
-	//	ECGui::DrawTextWidget<const char*>("Pos Snap:", "");
-	//
-	//	ECGui::DrawSliderFloatWidget("Pos Snap", &scene->GetRefToSnapSettings().mPosSnapValue, true, 1.f, 100.f);
-	//}
-	//
-	//void HeaderWindow::SetRotSnap()
-	//{
-	//	auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
-	//
-	//	ECGui::DrawTextWidget<const char*>("Rot Snap:", "");
-	//
-	//	ECGui::DrawSliderFloatWidget("Rot Snap", &scene->GetRefToSnapSettings().mRotSnapValue, true, 1.f, 100.f);
-	//}
-	//
-	//void HeaderWindow::SetScaleSnap()
-	//{
-	//	auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
-	//
-	//	ECGui::DrawTextWidget<const char*>("Scale Snap:", "");
-	//
-	//	ECGui::DrawSliderFloatWidget("Scale Snap", &scene->GetRefToSnapSettings().mScaleSnapValue, true, 1.f, 100.f);
-	//}
+		//ECGui::DrawSliderFloatWidget("Pos Snap", &scene->GetRefToSnapSettings().mPosSnapValue, true, 1.f, 100.f);
+		ECGui::DrawTextWidget<const char*>("Rot Snap:", "");
+		std::vector<std::string> rotValues = { "5","10","15","30","45","60","90","120"};
+		ECGui::CreateComboList({ "Rot Snap:" }, rotValues, rotValueIndex);
+		scene->GetRefToSnapSettings().mRotSnapValue = std::stoi(rotValues[rotValueIndex]);
+
+		//ECGui::DrawSliderFloatWidget("Rot Snap", &scene->GetRefToSnapSettings().mRotSnapValue, true, 1.f, 100.f);
+		ECGui::DrawTextWidget<const char*>("Scale Snap:", "");
+		std::vector<std::string> scaleValues = { "10","1","0.5","0.25","0.125","0.0625","0.03125"};
+		ECGui::CreateComboList({ "Scale Snap:" }, scaleValues, scaleValueIndex);
+		scene->GetRefToSnapSettings().mScaleSnapValue = std::stof(scaleValues[scaleValueIndex]);
+
+		//ECGui::DrawSliderFloatWidget("Scale Snap", &scene->GetRefToSnapSettings().mScaleSnapValue, true, 1.f, 100.f);
+	}
 
 	void HeaderWindow::Translate()
 	{
