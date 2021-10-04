@@ -20,6 +20,5 @@ namespace Eclipse
 		bool _Kinematic{ false };
 		bool enableGravity{ false };
 		bool enableRotation{ false };
-		bool inScene{ false };
 	};
 }

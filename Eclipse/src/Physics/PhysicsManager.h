@@ -11,6 +11,7 @@ namespace Eclipse
 	{
 		PxActor* actor;
 		ActorType type;
+		bool InScene;
 	};
 
 	class PhysicsManager

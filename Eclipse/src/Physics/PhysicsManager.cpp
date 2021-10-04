@@ -97,7 +97,7 @@ namespace Eclipse
 		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
 		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
 
-		if(rigid.inScene)
+		if (Px_Actors[ent].InScene)
 			RemoveActorFromScene(ent);
 		PxShape** shapes = nullptr;
 
@@ -127,7 +127,7 @@ namespace Eclipse
 		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
 		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
 
-		if (rigid.inScene)
+		if (Px_Actors[ent].InScene)
 			RemoveActorFromScene(ent);
 		PxShape** shapes = nullptr;
 		static_cast<PxRigidActor*>(Px_Actors[ent].actor)->getShapes(shapes, static_cast<PxRigidActor*>(Px_Actors[ent].actor)->getNbShapes());
@@ -264,19 +264,16 @@ namespace Eclipse
 
 	void PhysicsManager::AddActorToScene(Entity ent)
 	{
-		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
-		if (rigid.inScene)
+		if(Px_Actors[ent].InScene)
 			return;
 		Px_Scene->addActor(*Px_Actors[ent].actor);
-		rigid.inScene = true;
+		Px_Actors[ent].InScene = true;
 	}
 
 	void PhysicsManager::RemoveActorFromScene(Entity ent)
 	{
-		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
-
 		Px_Scene->removeActor(*Px_Actors[ent].actor);
-		rigid.inScene = false;
+		Px_Actors[ent].InScene = false;
 	}
 
 	void PhysicsManager::UpdateActor(Entity ent)

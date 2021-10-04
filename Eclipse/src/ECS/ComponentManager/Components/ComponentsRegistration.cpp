@@ -177,7 +177,6 @@ namespace Eclipse
         ADD_MEMBER(_Kinematic);
         ADD_MEMBER(enableGravity);
         ADD_MEMBER(enableRotation);
-        ADD_MEMBER(inScene);
     }
 
     DEFINE_META(SpotLightComponent)
