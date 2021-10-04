@@ -20,19 +20,6 @@ namespace Eclipse
 
     void RenderSystem::Init()
     {
-        float rectangleVertices[] =
-        {
-            // Coords    // texCoords
-             1.0f, -1.0f,  1.0f, 0.0f,
-            -1.0f, -1.0f,  0.0f, 0.0f,
-            -1.0f,  1.0f,  0.0f, 1.0f,
-
-             1.0f,  1.0f,  1.0f, 1.0f,
-             1.0f, -1.0f,  1.0f, 0.0f,
-            -1.0f,  1.0f,  0.0f, 1.0f
-        };
-
-
         // Register Threads
         engine->GraphicsManager.RegisterThreads();
 

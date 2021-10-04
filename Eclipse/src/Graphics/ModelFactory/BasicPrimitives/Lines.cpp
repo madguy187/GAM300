@@ -142,7 +142,11 @@ void Lines::CreateVBO()
 
 void Lines::CreateEBO()
 {
-
+    glCreateBuffers(1, &eboID);
+    glNamedBufferStorage(eboID, sizeof(GLushort) * IdxVec.size(),
+        reinterpret_cast<GLvoid*>(IdxVec.data()), GL_DYNAMIC_STORAGE_BIT);
+    glVertexArrayElementBuffer(vaoID, eboID);
+    glBindVertexArray(0);
 }
 
 void Lines::CreateBuffers()
