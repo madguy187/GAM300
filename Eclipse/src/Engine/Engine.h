@@ -42,7 +42,6 @@ namespace Eclipse
         SerializationManager szManager;
         AudioManager audioManager;
         DynamicAABBTree gDynamicAABBTree;
-        DragAndDrop dragDrop;
         PrefabManager pfManager;
 
         void Init();

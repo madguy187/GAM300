@@ -49,6 +49,7 @@ namespace Eclipse
 
             ECGui::PushItemWidth(WindowSize_.getX());
             //std::cout<<engine->editorManager->GetSelectedEntity();
+            ShowPrefebProperty("Prefeb", currEnt, CompFilter);
             ShowEntityProperty("Tag", currEnt, CompFilter);
             ShowTransformProperty("Transform", currEnt, CompFilter);
             ShowPointLightProperty("PointLight", currEnt, CompFilter);
@@ -710,6 +711,30 @@ namespace Eclipse
         return false;
     }
 
+    bool InspectorWindow::ShowPrefebProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+    {
+        if (engine->world.CheckComponent<PrefabComponent>(ID))
+        {
+            ECGui::InsertHorizontalLineSeperator();
+            ECGui::DrawTextWidget<const char*>("Prefeb: ", "");
+            ECGui::InsertSameLine();
+            if (ECGui::ButtonBool("Apply changes to all"))
+            {
+                //do something
+            }
+            if (ImGui::IsItemHovered())
+            {
+                ImGui::BeginTooltip();
+                ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+                ImGui::TextUnformatted("Apply changes to all prefeb instances.");
+                ImGui::PopTextWrapPos();
+                ImGui::EndTooltip();
+            }
+            ECGui::InsertHorizontalLineSeperator();
+        }
+        return false;
+    }
+
     void InspectorWindow::AddComponentsController(Entity ID)
     {
         //ImVec2 buttonSize = { 180,20 };
@@ -825,6 +850,10 @@ namespace Eclipse
                         ComponentRegistry<CollisionComponent>("CollisionComponent", ID, entCom.Name,
                             EditComponent::EC_ADDCOMPONENT);
                         break;
+                    case str2int("PrefabComponent"):
+                        ComponentRegistry<PrefabComponent>("PrefabComponent", ID, entCom.Name,
+                            EditComponent::EC_ADDCOMPONENT);
+                        break;
                     }
                 }
             }
@@ -910,6 +939,10 @@ namespace Eclipse
                         break;
                     case str2int("CollisionComponent"):
                         ComponentRegistry<CollisionComponent>("CollisionComponent", ID, entCom.Name,
+                            EditComponent::EC_REMOVECOMPONENT);
+                        break;
+                    case str2int("PrefabComponent"):
+                        ComponentRegistry<PrefabComponent>("PrefabComponent", ID, entCom.Name,
                             EditComponent::EC_REMOVECOMPONENT);
                         break;
                     }
