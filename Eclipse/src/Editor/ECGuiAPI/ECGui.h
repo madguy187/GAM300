@@ -240,6 +240,8 @@ namespace Eclipse
 		static void PushItemWidth(float value);
 		static bool IsItemHovered();
 		static void SetToolTip(const char* message);
+		static bool IsMouseDoubleClicked(ImGuiMouseButton button);
+		static bool IsItemClicked(ImGuiMouseButton mouse_button);
 
 		/*************************************************************************/
 		/*                         Graph Widgets                                 */

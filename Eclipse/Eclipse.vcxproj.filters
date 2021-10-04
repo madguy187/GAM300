@@ -37,6 +37,9 @@
     <Filter Include="ECS\SystemManager\Systems\System\Audio">
       <UniqueIdentifier>{AB25D4DE-9777-ABCE-8096-E8DE6C87C4B7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\CameraSystem">
+      <UniqueIdentifier>{87EE28BF-F35E-2B38-BC7D-A5C028AD6339}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\Collision">
       <UniqueIdentifier>{C59188A0-B1F9-4E6E-1A65-638406EC655A}</UniqueIdentifier>
     </Filter>
@@ -66,6 +69,12 @@
     </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem">
       <UniqueIdentifier>{EA575631-56EB-B7DF-5FD2-2796CBE44EA7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\PhysicsSystem">
+      <UniqueIdentifier>{41BEE182-2D3C-321C-1634-F0B302517444}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\PickingSystem">
+      <UniqueIdentifier>{A34BA2A8-8FC9-F241-78C1-B0D964DE346A}</UniqueIdentifier>
     </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\PrefabSystem">
       <UniqueIdentifier>{8EB76F07-FA27-7280-C346-EC082F76AA81}</UniqueIdentifier>
@@ -357,6 +366,9 @@
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.h">
       <Filter>ECS\SystemManager\Systems\System\Audio</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem\CameraSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\CameraSystem</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Collision\CollisionSystem.h">
       <Filter>ECS\SystemManager\Systems\System\Collision</Filter>
     </ClInclude>
@@ -385,10 +397,10 @@
       <Filter>ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem\PhysicsSystem.h">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
+      <Filter>ECS\SystemManager\Systems\System\PhysicsSystem</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem\PickingSystem.h">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
+      <Filter>ECS\SystemManager\Systems\System\PickingSystem</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PrefabSystem\PrefabSystem.h">
       <Filter>ECS\SystemManager\Systems\System\PrefabSystem</Filter>
@@ -526,6 +538,9 @@
     <ClInclude Include="src\Graphics\Grid\AABBTree.h">
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\Grid\BoundingBox.h">
+      <Filter>Graphics\Grid</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\Grid\Box.h">
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
@@ -533,9 +548,6 @@
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\Grid\IAABB.h">
-      <Filter>Graphics\Grid</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Graphics\Grid\BoundingBox.h">
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h">
@@ -808,6 +820,9 @@
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem\CameraSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\CameraSystem</Filter>
+    </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Collision\CollisionSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\Collision</Filter>
     </ClCompile>
@@ -836,10 +851,10 @@
       <Filter>ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem\PhysicsSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
+      <Filter>ECS\SystemManager\Systems\System\PhysicsSystem</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem\PickingSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
+      <Filter>ECS\SystemManager\Systems\System\PickingSystem</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PrefabSystem\PrefabSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\PrefabSystem</Filter>
@@ -946,13 +961,13 @@
     <ClCompile Include="src\Graphics\Grid\AABBTree.cpp">
       <Filter>Graphics\Grid</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\Grid\BoundingBox.cpp">
+      <Filter>Graphics\Grid</Filter>
+    </ClCompile>
     <ClCompile Include="src\Graphics\Grid\Box.cpp">
       <Filter>Graphics\Grid</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\Grid\Grid.cpp">
-      <Filter>Graphics\Grid</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\Grid\BoundingBox.cpp">
       <Filter>Graphics\Grid</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp">
@@ -1154,6 +1169,5 @@
       <Filter>Tracy</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem\CameraSystem.cpp" />
   </ItemGroup>
 </Project>
