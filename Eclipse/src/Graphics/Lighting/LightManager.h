@@ -1,5 +1,5 @@
-#pragma once
-#include <map>
+#ifndef LIGHT_MANAGER_H
+#define LIGHT_MANAGER_H
 #include "Graphics/Lighting/PointLight.h"
 #include "Graphics/Lighting/DirectionalLight.h"
 #include "Graphics/Lighting/SpotLight.h"
@@ -105,8 +105,7 @@ namespace Eclipse
 	public:
 		bool ApplyLighting = true;
 
-		void init();
-		void Update();
+		void Init();
 		void CreateLights(TypesOfLights in, unsigned int CreatedID);
 		void SetApplyLightingFlag(bool in);
 		bool CheckApplyLighting();
@@ -146,3 +145,5 @@ namespace Eclipse
 
 #include "Graphics/Lighting/LightProperties.hpp"
 }
+
+#endif /* LIGHT_MANAGER_H */

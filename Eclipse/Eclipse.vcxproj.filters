@@ -321,7 +321,7 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\MeshComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\ComponentManager\Components\ModeLInfoComponent.h">
+    <ClInclude Include="src\ECS\ComponentManager\Components\ModelComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\ParentComponent.h">
@@ -357,9 +357,6 @@
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.h">
       <Filter>ECS\SystemManager\Systems\System\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem.h">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
-    </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Collision\CollisionSystem.h">
       <Filter>ECS\SystemManager\Systems\System\Collision</Filter>
     </ClInclude>
@@ -387,10 +384,10 @@
     <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem\ParentSystem.h">
       <Filter>ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.h">
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem\PhysicsSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem.h">
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem\PickingSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PrefabSystem\PrefabSystem.h">
@@ -538,7 +535,7 @@
     <ClInclude Include="src\Graphics\Grid\IAABB.h">
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\Grid\bounds.h">
+    <ClInclude Include="src\Graphics\Grid\BoundingBox.h">
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h">
@@ -811,9 +808,6 @@
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
-    </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Collision\CollisionSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\Collision</Filter>
     </ClCompile>
@@ -841,10 +835,10 @@
     <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem\ParentSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem</Filter>
     </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.cpp">
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem\PhysicsSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp">
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem\PickingSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PrefabSystem\PrefabSystem.cpp">
@@ -958,7 +952,7 @@
     <ClCompile Include="src\Graphics\Grid\Grid.cpp">
       <Filter>Graphics\Grid</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\Grid\bounds.cpp">
+    <ClCompile Include="src\Graphics\Grid\BoundingBox.cpp">
       <Filter>Graphics\Grid</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp">
@@ -1160,5 +1154,6 @@
       <Filter>Tracy</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem\CameraSystem.cpp" />
   </ItemGroup>
 </Project>

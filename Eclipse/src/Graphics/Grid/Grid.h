@@ -84,8 +84,6 @@ namespace Eclipse
         bool AddDebugBoxes = false;
         // Flag to Print out all the Coordinates of each tile
         bool PrintDebug = false;
-        // Flag to Render Grid
-        bool Visible = true;
         // X,Y,Z Grid Scale
         ECVec3 XYZ_Length{ 0.0f , 0.0f, 0.0f };
         // Grid Minimum Point
@@ -97,10 +95,12 @@ namespace Eclipse
         // Vector of all the Tiles
         std::vector<std::shared_ptr<Tile>> GridArray;
         std::unordered_map<unsigned int,std::shared_ptr<Tile>> gridArray; //key = the grid count;
-
         bool GridSystemIsRunning = true;
 
     public:
+        // Flag to Render Grid
+        bool Visible = true;
+
         // Get Model Reference
         Shader* GetShaderReference();
         // Get Grid Colour

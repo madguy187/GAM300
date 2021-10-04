@@ -188,6 +188,8 @@ namespace Eclipse
         {
             return ReloadTypes::RT_MODELS;
         }
+
+        return ReloadTypes::RT_NONE;
     }
 
     bool EclipseFileWatcher::ExcludePath(std::string const& inString)

@@ -1,5 +1,5 @@
-#pragma once
-
+#ifndef GRIDSYSTEM_H
+#define GRIDSYSTEM_H
 #include "../System.h"
 
 namespace Eclipse
@@ -11,3 +11,4 @@ namespace Eclipse
         void Update() override;
     };
 }
+#endif /* GRIDSYSTEM_H */

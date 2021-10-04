@@ -1,6 +1,5 @@
-#pragma once
-
-#include "Global.h"
+#ifndef LIGHTCOMPONENT_H
+#define LIGHTCOMPONENT_H
 
 namespace Eclipse
 {
@@ -12,5 +11,6 @@ namespace Eclipse
 		// and iterating in my lighting system
 		bool Render = false;
 
-	};
+    };
 }
+#endif /* LIGHTCOMPONENT_H */

@@ -27,6 +27,7 @@ namespace Eclipse
 						currEnt != engine->gCamera.GetGameCameraID())
 					{
 						engine->editorManager->DestroyEntity(currEnt);
+						engine->gCullingManager->Remove(currEnt);
 					}
 				}
 			}
