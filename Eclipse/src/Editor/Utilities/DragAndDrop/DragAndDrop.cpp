@@ -94,6 +94,7 @@ namespace Eclipse
 				case PayloadTargetType::PTT_WINDOW:
 					// Load Stuff here in the future
 					path = ((const char*)payload->Data);
+					engine->pfManager.CreatePrefabInstance(path.c_str());
 					// FOR JIAN HERNG for creating prefab on scene buffer, take the path
 					break;
 				case PayloadTargetType::PTT_ASSETS:

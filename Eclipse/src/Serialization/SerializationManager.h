@@ -500,11 +500,11 @@ namespace Eclipse
 
 		void SerializeEntity(World& w, const Entity& ent, const size_t& counter);
 
-		void DeserializeEntity(World& w, const size_t& counter);
+		Entity DeserializeEntity(World& w, const size_t& counter, bool PrefabUse = false);
 
 		void SerializeAllComponents(World& w, const Entity& ent);
 
-		bool DeserializeAllComponents(World& w, const Entity& ent);
+		bool DeserializeAllComponents(World& w, const Entity& ent, bool PrefabUse = false);
 
 		void SerializeAllEntity();
 
@@ -516,7 +516,7 @@ namespace Eclipse
 
 		void SavePrefab(int prefabID, std::vector<Entity>& prefabContents);
 
-		int LoadPrefab();
+		long long unsigned int LoadPrefab(Entity& dszEnt);
 
 		void SavePrefabWorld(const std::set<Entity>& entities);
 
@@ -532,9 +532,9 @@ namespace Eclipse
 
 		void LoadBackupFile();
 
-		void SavePrefabFile(int prefabID, std::vector<Entity>& prefabContents, const char* path);
+		void SavePrefabFile(unsigned long long int prefabID, std::vector<Entity>& prefabContents, const char* path);
 
-		int LoadPrefabFile(const char* fullpath);
+		long long unsigned int LoadPrefabFile(Entity& dszEnt, const char* fullpath);
 
 		void SaveSceneFile(const char* fullpath = "Data/Temp/Temp.scn");
 

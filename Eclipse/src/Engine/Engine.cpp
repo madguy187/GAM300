@@ -102,8 +102,6 @@ namespace Eclipse
         world.RegisterComponent<ParentComponent>();
         world.RegisterComponent<ChildComponent>();
         world.RegisterComponent<CollisionComponent>();
-        world.RegisterComponent<ParentComponent>();
-        world.RegisterComponent<ChildComponent>();
         world.RegisterComponent<PrefabComponent>();
 
         prefabWorld.RegisterComponent<EntityComponent>();
@@ -121,9 +119,9 @@ namespace Eclipse
         prefabWorld.RegisterComponent<LightComponent>();
         prefabWorld.RegisterComponent<ScriptComponent>();
         prefabWorld.RegisterComponent<AudioComponent>();
-        prefabWorld.RegisterComponent<CollisionComponent>();
         prefabWorld.RegisterComponent<ParentComponent>();
         prefabWorld.RegisterComponent<ChildComponent>();
+        prefabWorld.RegisterComponent<CollisionComponent>();
         prefabWorld.RegisterComponent<PrefabComponent>();
 
         // registering system

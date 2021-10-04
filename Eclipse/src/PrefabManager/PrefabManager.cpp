@@ -7,43 +7,51 @@
 #include "../ECS/ComponentManager/Components/AIComponent.h"
 #include "ECS/SystemManager/Systems/System/PrefabSystem/PrefabSystem.h"
 
-
 namespace Eclipse
 {
 	const std::string PrefabManager::PrefabPath = "src//Assets//Prefabs//";
+	long long unsigned int PrefabManager::CountID = 0;
 
 	PrefabManager::PrefabManager()
-		:CountID{ 0 }
 	{
 		std::filesystem::create_directories(PrefabPath);
 	}
 
+	long long unsigned int PrefabManager::GetUniqueIdentifier(PrefabComponent& prefab)
+	{
+		return reinterpret_cast<long long unsigned int>(&prefab) + CountID++;
+	}
+
 	void PrefabManager::LoadAllPrefab()
 	{
-		for (auto& entry : std::filesystem::recursive_directory_iterator("src\\Assets"))
+		const char* AssetsPath = "src//Assets";
+		for (auto& entry : std::filesystem::recursive_directory_iterator(AssetsPath))
 		{
 			auto& extension = entry.path().extension().string();
 			if (!extension.compare(".prefab"))
 			{
-				std::filesystem::path t = "D:\\GAM300\\GAM300\\Eclipse\\src\\Assets\\Camera.prefab";
-				std::cout << t.relative_path() << std::endl;
-				if (!entry.path().relative_path().compare(t.relative_path()))
-				{
-					std::cout << "Hello" << std::endl;
-				}
-
-				std::cout << entry.path() << std::endl;
-				//LoadPrefab(entry.path().string().c_str());
+				LoadPrefab(entry.path().string().c_str());
 			}
 		}
 	}
 
 	void PrefabManager::LoadPrefab(const char* path)
 	{
-		int PrefabID = engine->szManager.LoadPrefabFile(path) >= 0;
-		if (PrefabID >= 0)
+		Entity ent = MAX_ENTITY;
+		long long unsigned int PrefabID = engine->szManager.LoadPrefabFile(ent, path);
+
+		if (PrefabID != 0)
 		{
-			mapPathToID[path] = PrefabID;
+			if (PrefabIDSet.find(PrefabID) == PrefabIDSet.end())
+			{
+				mapPathToID[path] = PrefabID;
+				PrefabIDSet.insert(PrefabID);
+				mapPIDToEID[PrefabID] = ent;
+			}
+			else
+			{
+				ENGINE_CORE_ERROR(false, "Prefab crashes, same ID.")
+			}
 		}
 		else
 		{
@@ -56,14 +64,14 @@ namespace Eclipse
 	std::string PrefabManager::GenerateFileName(EntityComponent& entComp, const char* path)
 	{
 		std::string& name = entComp.Name;
-		std::string prefabName = "\\" + name + ".prefab";
+		std::string prefabName = "//" + name + ".prefab";
 		std::string checkPath = path + prefabName;
 		std::string tempName;
 		size_t count = 0;
 		while (std::filesystem::exists(checkPath))
 		{
 			tempName = name + lexical_cast<std::string>(++count);
-			prefabName = "\\" + tempName + ".prefab";
+			prefabName = "//" + tempName + ".prefab";
 			checkPath = path + prefabName;
 		}
 
@@ -82,11 +90,11 @@ namespace Eclipse
 		World& w = engine->world;
 		std::queue<Entity> copyQueue;
 		std::vector<Entity> contents;
-		int generatedID = CountID++;
+		PrefabComponent comp;
+		long long unsigned int generatedID = GetUniqueIdentifier(comp);
 
 		if (!w.CheckComponent<PrefabComponent>(ent))
 		{
-			PrefabComponent comp;
 			comp.PrefabID = generatedID;
 			w.AddComponent(ent, comp);
 		}
@@ -94,7 +102,7 @@ namespace Eclipse
 		{
 			auto& existing = w.GetComponent<PrefabComponent>(ent);
 			existing.IsChild = false;
-			existing.PrefabID = generatedID;
+			existing.PrefabID = GetUniqueIdentifier(existing);
 		}
 
 		//Push the first entity
@@ -123,6 +131,8 @@ namespace Eclipse
 		auto& entComp = prefabW.GetComponent<EntityComponent>(contents[0]);
 		std::string destPath = GenerateFileName(entComp, path);
 		mapPathToID[destPath] =  generatedID;
+		PrefabIDSet.insert(generatedID);
+		mapPIDToEID[generatedID] = contents[0];
 
 		engine->szManager.SavePrefabFile(prefabComp.PrefabID, contents, destPath.c_str());
 	}
@@ -131,7 +141,52 @@ namespace Eclipse
 	//Currently 
 	Entity PrefabManager::CreatePrefabInstance(const char* path)
 	{
-		return 0;
+		if (!std::filesystem::exists(path))
+		{
+			std::string msg = path;
+			msg += " does not exist.";
+			EDITOR_LOG_WARN(msg.c_str());
+			return MAX_ENTITY;
+		}
+
+		World& prefabW = engine->prefabWorld;
+		World& w = engine->world;
+		std::string source = path;
+		Entity ent = mapPIDToEID[mapPathToID[source]];
+
+		//Remember do for parent and child function in future.
+		Entity newEnt = prefabW.CopyEntity(w, ent, all_component_list);
+
+		RegisterForNewInstance(newEnt);
+
+		return newEnt;
+	}
+
+	void PrefabManager::RegisterForNewInstance(Entity ent)
+	{
+		World& w = engine->world;
+		TransformComponent defaultComp;
+		auto& transformComp = w.GetComponent<TransformComponent>(ent);
+		transformComp = defaultComp;
+
+		auto& prefabComp = w.GetComponent<PrefabComponent>(ent);
+		prefabComp.IsChild = true;
+
+
+		engine->editorManager->RegisterExistingEntity(ent);
+
+		if (w.CheckComponent<CameraComponent>(ent))
+		{
+			auto& camera = w.GetComponent<CameraComponent>(ent);
+			engine->gCamera.ReInitCameraList(camera.camType, ent);
+		}
+
+		if (w.CheckComponent<AABBComponent>(ent))
+		{
+			auto& aabb = w.GetComponent<AABBComponent>(ent);
+			engine->gCullingManager->Insert(aabb, ent);
+			engine->gDynamicAABBTree.InsertData(ent);
+		}
 	}
 
 	void PrefabManager::Test()

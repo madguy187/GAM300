@@ -9,6 +9,6 @@ namespace Eclipse
 		META_DATA(PrefabComponent);
 		bool IsChild = false;
 		
-		int PrefabID = -1;
+		long long unsigned int PrefabID = 0;
 	};
 }

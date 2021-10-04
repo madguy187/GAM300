@@ -1,0 +1,61 @@
+<?xml version="1.0" ?>
+<Prefab PrefabID="1801901236" Size="1">
+    <Entity_0 ID="2">
+        <EntityComponent>
+            <Tag value="Cube" />
+            <Name value="Cube2" />
+            <IsActive value="true" />
+            <Child size="0" />
+            <Parent size="0" />
+            <IsAChild value="false" />
+        </EntityComponent>
+        <MaterialComponent>
+            <Modeltype value="BasicPrimitives" />
+            <ambient x="0" y="0" z="0" />
+            <diffuse x="1" y="1" z="1" />
+            <specular x="1" y="1" z="1" />
+            <HighlightColour x="1" y="0" z="0" />
+            <Highlight value="false" />
+            <NoTextures value="true" />
+            <shininess value="0.25" />
+            <MaximumShininess value="128" />
+            <Thickness value="0.05" />
+            <ScaleUp value="1.05" />
+            <ComboIndex value="0" />
+            <hasTexture value="true" />
+            <TextureRef value="brick" />
+        </MaterialComponent>
+        <MeshComponent>
+            <MeshName value="" />
+            <Diffuse x="0" y="0" z="0" w="0" />
+            <Specular x="0" y="0" z="0" w="0" />
+            <Ambient x="0" y="0" z="0" w="0" />
+            <color x="1" y="1" z="1" />
+            <textureIdx x="0" y="0" />
+            <isQuad value="false" />
+            <modelNDC_xform Col="4" Row="4">
+                <Col0 _00="0" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="0" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="0" _23="0" />
+                <Col3 _30="0" _31="0" _32="0" _33="0" />
+            </modelNDC_xform>
+            <modelRef value="Cube" />
+            <shaderRef value="shader3DShdrpgm" />
+            <transparency value="1" />
+        </MeshComponent>
+        <TransformComponent>
+            <position x="0" y="0" z="0" />
+            <rotation x="0" y="0" z="0" />
+            <scale x="5" y="5" z="5" />
+        </TransformComponent>
+        <AABBComponent>
+            <center x="0" y="0" z="0" />
+            <Min x="-2.5" y="-2.5" z="-2.5" />
+            <Max x="2.5" y="2.5" z="2.5" />
+        </AABBComponent>
+        <PrefabComponent>
+            <IsChild value="false" />
+            <PrefabID value="1900177446068" />
+        </PrefabComponent>
+    </Entity_0>
+</Prefab>
