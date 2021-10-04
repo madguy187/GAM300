@@ -87,6 +87,11 @@ namespace Eclipse
 		ImGuiAPI::SetNextWindowClass(window_class);
 	}
 
+	bool ECGui::IsItemActive()
+	{
+		return ImGuiAPI::IsItemActive();;
+	}
+
 	ImGuiViewport* ECGui::GetMainViewport()
 	{
 		return ImGuiAPI::GetMainViewport();
@@ -529,7 +534,6 @@ namespace Eclipse
 		const ImVec2& uv1, const ImVec4& tint_col, const ImVec4& border_col)
 	{
 		ImGuiAPI::Image(user_texture_id, size, uv0, uv1, tint_col, border_col);
-		return ImGuiAPI::IsItemClicked(mouse_button);
 	}
 
 	void ECGui::PlotHistogram(const char* name, std::vector<float> value, int values_offset, const char* overlay_text, float scale_min, float scale_max, ImVec2 graph_size, int stride)
