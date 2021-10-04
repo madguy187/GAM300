@@ -12,13 +12,15 @@ namespace Eclipse
 		static SceneIndex prevScene;
 		static SceneIndex curScene;
 		static SceneIndex nextScene;
+		static SceneIndex tempScene;
 		static bool isReload;
 		static bool isQuit;
 
+	public:
+		const static SceneIndex EMPTY = INT_MIN;
 		const static SceneIndex QUIT = INT_MAX;
 		const static SceneIndex RELOAD = INT_MAX - 1;
 
-	public:
 		static void Initialize();
 
 		static void ProcessScene();
@@ -29,11 +31,21 @@ namespace Eclipse
 
 		static SceneIndex RegisterScene(const std::string& path);
 
+		static SceneIndex RegisterTempScene(const std::string& path);
+
 		static SceneIndex GetCurrentScene();
 
 		static SceneIndex GetPreviousScene();
 
 		static SceneIndex GetNextScene();
+
+		static std::string GetCurrentSceneName();
+
+		static std::string GetPreviousSceneName();
+
+		static std::string GetNextSceneSceneName();
+
+		static std::string GetScenePath(const std::string& name);
 
 		static bool CheckSceneAvailable(const std::string& name);
 
@@ -42,6 +54,10 @@ namespace Eclipse
 		static bool CheckCurrentScene(const std::string& name);
 
 		static void DeregisterScene(const SceneIndex& idx);
+
+		static void DeregisterTempScene();
+
+		static void DeregisterCurrentScene();
 
 		static void DeregisterScene(const std::string& name);
 

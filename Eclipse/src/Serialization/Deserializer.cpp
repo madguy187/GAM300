@@ -85,9 +85,9 @@ namespace Eclipse
 	bool Deserializer::LoadXML(const std::string& loadPath)
 	{
 		_path = loadPath;
-		bool result = _doc.LoadFile(loadPath.c_str());
-		hasFile = result;
-		if (!result)
+		hasFile = _doc.LoadFile(loadPath.c_str());
+
+		if (!hasFile)
 		{
 			std::ostringstream os;
 			os << "Fail to load the file \"" << _path.filename() << "\"." <<
@@ -102,7 +102,33 @@ namespace Eclipse
 			EDITOR_LOG_INFO(os.str().c_str())
 		}
 
-		return result;
+		return hasFile;
+	}
+
+	bool Deserializer::LoadBackup(TiXmlDocument& backup, std::string& path)
+	{
+		if (std::filesystem::exists(path))
+		{
+			_doc = backup;
+			hasFile = true;
+			//hasFile = backup.LoadFile(path.c_str());
+		}
+		else
+		{
+			hasFile = false;
+			EDITOR_LOG_INFO("Temp.scn does not exist.")
+		}
+
+		if (!hasFile)
+		{
+			EDITOR_LOG_INFO("Failed to load backup Temp.scn.")
+		}
+		else
+		{
+
+		}
+
+		return hasFile;
 	}
 
 	Deserializer::~Deserializer()

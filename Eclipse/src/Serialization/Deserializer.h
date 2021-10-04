@@ -21,6 +21,8 @@ namespace Eclipse
 
 		const char* GetAttributeValue(const std::string& name);
 
+		
+
 	public:
 		Deserializer();
 
@@ -82,6 +84,22 @@ namespace Eclipse
 			att_data = lexical_cast_toEnum<TextureType>(str);
 		}
 		
+		template <typename T>
+		inline void ReadAttributeFromElement(const std::string& att_name, std::vector<T> att_data)
+		{
+			std::string str = GetAttributeValue("size");
+			size_t size = lexical_cast<size_t>(str);
+			std::string name{ "Member" };
+			for (size_t i = 0; i < size; ++i)
+			{
+				StartElement(name, true, i);
+				T data;
+				ReadAttributeFromElement("value", data);
+				att_data.push_back(data);
+				CloseElement();
+			}
+		}
+
 		template <typename T, size_t N>
 		inline void ReadAttributeFromElement(const std::string& att_name, Vector<T, N>& att_data)
 		{
@@ -109,7 +127,6 @@ namespace Eclipse
 				}
 				CloseElement();
 			}
-
 		}
 
 		template <typename T, size_t N, glm::qualifier GLM>
@@ -123,9 +140,37 @@ namespace Eclipse
 			}
 		}
 
+		template <typename T, size_t N>
+		inline void ReadAttributeFromElement(const std::string& att_name, std::array<T, N>& att_data)
+		{
+			std::string str = GetAttributeValue("size");
+			att_data.fill(0);
+			size_t size = lexical_cast<size_t>(str);
+			std::string name{ "Member" };
+			for (size_t i = 0; i < size; ++i)
+			{
+				StartElement(name, true, i);
+				T data = 0;
+				ReadAttributeFromElement("value", data);
+				att_data[i] = data;
+				CloseElement();
+			}
+		}
+
+		template <size_t N>
+		inline void ReadAttributeFromElement(const std::string& att_name, std::array<char, N>& att_data)
+		{
+			att_data.fill(0);
+			std::string data;
+			ReadAttributeFromElement("value", data);
+			strcpy(att_data.data(), data.c_str());
+		}
+
 		void IterateChildrenOfElement();
 
 		bool LoadXML(const std::string& savePath);
+
+		bool LoadBackup(TiXmlDocument& target, std::string& path);
 
 		~Deserializer();
 	};

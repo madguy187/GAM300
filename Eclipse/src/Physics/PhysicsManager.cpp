@@ -88,7 +88,6 @@ namespace Eclipse
 
 		Px_Actors[ent].actor->setName(std::to_string(ent).c_str());
 		AddActorToScene(ent);
-		engine->world.AddComponent(ent, CollisionComponent{});
 		//AttachBoxToActor(ent, 2.5f, 2.5f, 2.5f);
 	}
 
@@ -97,7 +96,7 @@ namespace Eclipse
 		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
 		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
 
-		if(rigid.inScene)
+		if(Px_Actors[ent].InScene)
 			RemoveActorFromScene(ent);
 		PxShape** shapes = nullptr;
 
@@ -127,7 +126,7 @@ namespace Eclipse
 		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
 		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
 
-		if (rigid.inScene)
+		if (Px_Actors[ent].InScene)
 			RemoveActorFromScene(ent);
 		PxShape** shapes = nullptr;
 		static_cast<PxRigidActor*>(Px_Actors[ent].actor)->getShapes(shapes, static_cast<PxRigidActor*>(Px_Actors[ent].actor)->getNbShapes());
@@ -264,24 +263,20 @@ namespace Eclipse
 
 	void PhysicsManager::AddActorToScene(Entity ent)
 	{
-		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
-		if (rigid.inScene)
+		if (Px_Actors[ent].InScene)
 			return;
 		Px_Scene->addActor(*Px_Actors[ent].actor);
-		rigid.inScene = true;
+		Px_Actors[ent].InScene = true;
 	}
 
 	void PhysicsManager::RemoveActorFromScene(Entity ent)
 	{
-		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
-
 		Px_Scene->removeActor(*Px_Actors[ent].actor);
-		rigid.inScene = false;
+		Px_Actors[ent].InScene = false;
 	}
 
 	void PhysicsManager::UpdateActor(Entity ent)
 	{
-		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
 		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
 		if (!engine->world.CheckComponent<RigidBodyComponent>(ent))
 		{
@@ -296,6 +291,7 @@ namespace Eclipse
 			static_cast<PxRigidStatic*>(Px_Actors[ent].actor)->setGlobalPose(PxTransform{ temptrans });
 			return;
 		}
+		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
 		if (Px_Actors[ent].actor != nullptr)
 		{
 			PxVec3 tempforce{ 0,0,0 };

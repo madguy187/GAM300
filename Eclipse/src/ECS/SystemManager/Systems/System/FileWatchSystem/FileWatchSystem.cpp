@@ -11,7 +11,7 @@ namespace Eclipse
 
     void FileWatchSystem::Update()
     {
-        ZoneScopedN("FileWatch System")
+        ZoneScopedN("FileWatch System");
         engine->Timer.SetName({ SystemName::FILEWATCH });
         engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 

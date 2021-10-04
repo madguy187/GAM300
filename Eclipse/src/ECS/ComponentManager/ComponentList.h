@@ -4,7 +4,6 @@ namespace Eclipse
 {
 	struct AABBComponent;
 	struct CameraComponent;
-	struct ChildTransformComponent;
 	struct DirectionalLightComponent;
 	struct EntityComponent;
 	struct LightComponent;
@@ -18,6 +17,9 @@ namespace Eclipse
 	struct ChildComponent;
 	struct CollisionComponent;
 	struct AIComponent;
+	struct SpotLightComponent;
+	struct TransformComponent;
+	struct PrefabComponent;
 
 	template<typename ...T>
 	struct TypeList
@@ -34,7 +36,6 @@ namespace Eclipse
 	using ComponentList = ComponentTypeList<
 		AABBComponent,
 		CameraComponent,
-		ChildTransformComponent,
 		DirectionalLightComponent,
 		EntityComponent,
 		LightComponent,
@@ -46,9 +47,11 @@ namespace Eclipse
 		ScriptComponent,
 		ParentComponent,
 		ChildComponent,
-		ScriptComponent,
 		CollisionComponent,
-		AIComponent
+		AIComponent,
+		SpotLightComponent,
+		TransformComponent,
+		PrefabComponent
 	>;
 
 	template <typename ...Types>

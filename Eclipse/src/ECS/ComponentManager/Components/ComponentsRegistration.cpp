@@ -16,6 +16,8 @@
 #include "AudioComponent.h"
 #include "CollisionComponent.h"
 #include "AIComponent.h"
+#include "PrefabComponent.h"
+
 namespace Eclipse
 {
     /*************************************************************************/
@@ -99,6 +101,13 @@ namespace Eclipse
         ADD_MEMBER(Tag);
         ADD_MEMBER(Name);
         ADD_MEMBER(IsActive);
+        ADD_MEMBER(Child);
+        ADD_MEMBER(Parent);
+        ADD_MEMBER(IsAChild);
+    }
+
+    DEFINE_META(LightComponent)
+    {
     }
 
     DEFINE_META(MaterialComponent)
@@ -115,6 +124,8 @@ namespace Eclipse
         ADD_MEMBER(NoTextures);
         //ADD_MEMBER(ScaleUp);
         ADD_MEMBER(ComboIndex);
+        ADD_MEMBER(hasTexture);
+        ADD_MEMBER(TextureRef);
     }
 
     DEFINE_META(MeshComponent)
@@ -140,10 +151,10 @@ namespace Eclipse
 
     DEFINE_META(ModelComponent)
     {
-        ADD_MEMBER(ComboIndex);
         ADD_MEMBER(NameOfModel);
         ADD_MEMBER(Directory);
         ADD_MEMBER(type);
+        ADD_MEMBER(ComboIndex);
     }
 
     DEFINE_META(PointLightComponent)
@@ -177,7 +188,6 @@ namespace Eclipse
         ADD_MEMBER(_Kinematic);
         ADD_MEMBER(enableGravity);
         ADD_MEMBER(enableRotation);
-        ADD_MEMBER(inScene);
     }
 
     DEFINE_META(SpotLightComponent)
@@ -204,22 +214,22 @@ namespace Eclipse
         ADD_MEMBER(AffectsWorld);
     }
 
-    //DEFINE_META(TextureComponent)
-    //{
-    //	ADD_MEMBER(ComboIndex);
-    //	ADD_MEMBER(ID);
-    //	ADD_MEMBER(Type);
-    //	ADD_MEMBER(TextureKey);
-    //	ADD_MEMBER(HoldingTextures);
-    //	ADD_MEMBER(hasTexture);
-    //	ADD_MEMBER(textureRef);
-    //}
+    DEFINE_META(TextureComponent)
+    {
+    	  ADD_MEMBER(textureRef);
+    }
 
     DEFINE_META(TransformComponent)
     {
         ADD_MEMBER(position);
         ADD_MEMBER(rotation);
         ADD_MEMBER(scale);
+    }
+
+    DEFINE_META(PrefabComponent)
+    {
+        ADD_MEMBER(IsChild);
+        ADD_MEMBER(PrefabID);
     }
 
     /*************************************************************************/
@@ -235,16 +245,19 @@ namespace Eclipse
     DEFINE_META_POD(double);
     DEFINE_META_POD(size_t);
     DEFINE_META_POD(std::string);
-    DEFINE_META_POD(std::vector<std::string>);
-    DEFINE_META_POD(std::vector<Mesh>);
-    DEFINE_META_POD(std::vector<Texture>);
+    //DEFINE_META_POD(std::vector<std::string>);
+    //DEFINE_META_POD(std::vector<Mesh>);
+    //DEFINE_META_POD(std::vector<Texture>);
     //DEFINE_META_POD(std::map<unsigned int, std::vector<Texture>>);
+    DEFINE_META_POD(std::vector<Entity>);
+    //DEFINE_META_POD(MeshComponent::MeshNameType);
     DEFINE_META_POD(ECVec2);
     DEFINE_META_POD(ECVec3);
     DEFINE_META_POD(ECVec4);
-    DEFINE_META_POD(Mesh);
-    DEFINE_META_POD(Texture);
+    //DEFINE_META_POD(Mesh);
+    //DEFINE_META_POD(Texture);
     DEFINE_META_POD(glm::vec3);
+    DEFINE_META_POD(glm::vec4);
     DEFINE_META_POD(glm::mat4);
     DEFINE_META_POD(CameraComponent::CameraType);
     DEFINE_META_POD(CameraComponent::ProjectionType);
