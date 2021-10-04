@@ -47,6 +47,24 @@ enum class EditorMenuType
     UNASSIGNED
 };
 
+enum class ActorType
+{
+    ACTOR_UNASSIGNED,
+    ACTOR_DYNAMIC,
+    ACTOR_STATIC
+};
+
+enum class PxShapeType
+{
+    Px_SQUARE,
+    Px_CIRCLE,
+    Px_TRIANGLE,
+    Px_LINE,
+    Px_SPHERE,
+    Px_CUBE,
+    Px_CYLINDER,
+};
+
 enum class EntityType
 {
     ENT_GEO_SQUARE,
@@ -80,6 +98,7 @@ enum class PayloadSourceType
 {
     PST_TEXT,
     PST_IMAGE,
+    PST_ENTITY,
     PST_UNASSIGNED
 };
 
@@ -88,6 +107,7 @@ enum class PayloadTargetType
 	PTT_WIDGET,
 	PTT_WINDOW,
 	PTT_INDEXEDIT,
+    PTT_ASSETS,
 	PTT_UNASSIGNED
 };
 

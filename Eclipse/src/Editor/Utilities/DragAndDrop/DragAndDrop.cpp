@@ -41,7 +41,9 @@ namespace Eclipse
 			case PayloadSourceType::PST_IMAGE:
 				// For rendering 2D Image -> Need ask Graphics side
 				break;
-			default:
+			case PayloadSourceType::PST_ENTITY:
+				auto& entCom = engine->world.GetComponent<EntityComponent>(static_cast<Entity>(source));
+				ImGui::TextUnformatted(lexical_cast_toStr<EntityType>(entCom.Tag).c_str());
 				break;
 			}
 
@@ -56,6 +58,7 @@ namespace Eclipse
 		if (ImGui::BeginDragDropTarget())
 		{
 			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(id);
+			std::string path;
 			if (payload)
 			{
 				switch (type)
@@ -78,8 +81,13 @@ namespace Eclipse
 				// Create Meshes and instances
 				case PayloadTargetType::PTT_WINDOW:
 					// Load Stuff here in the future
+					path = ((const char*)payload->Data);
+					// FOR JIAN HERNG for creating prefab on scene buffer, take the path
 					break;
-				default:
+				case PayloadTargetType::PTT_ASSETS:
+					Entity entID = static_cast<Entity>(*((int*)payload->Data));
+					// FOR JIAN HERNG entID for entity number and destination for path
+					// to generate prefab file in asset browser
 					break;
 				}
 

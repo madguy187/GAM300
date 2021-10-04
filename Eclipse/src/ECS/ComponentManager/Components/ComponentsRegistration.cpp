@@ -13,7 +13,9 @@
 #include "SpotLightComponent.h"
 #include "TextureComponent.h"
 #include "TransformComponent.h"
-
+#include "AudioComponent.h"
+#include "CollisionComponent.h"
+#include "AIComponent.h"
 namespace Eclipse
 {
     /*************************************************************************/
@@ -22,6 +24,22 @@ namespace Eclipse
     DEFINE_META(AABBComponent)
     {
         ADD_MEMBER(center);
+        ADD_MEMBER(Min);
+        ADD_MEMBER(Max);
+    }
+
+    DEFINE_META(AudioComponent)
+    {
+        ADD_MEMBER(AudioPath);
+        ADD_MEMBER(ChannelID);
+        ADD_MEMBER(Volume);
+        ADD_MEMBER(Pitch);
+        ADD_MEMBER(Speed);
+        ADD_MEMBER(IsLooping);
+        ADD_MEMBER(Is3D);
+        ADD_MEMBER(InnerConeAngle);
+        ADD_MEMBER(OuterConeAngle);
+        ADD_MEMBER(OuterVolume);
         ADD_MEMBER(Min);
         ADD_MEMBER(Max);
     }
@@ -48,7 +66,18 @@ namespace Eclipse
 
     DEFINE_META(CollisionComponent)
     {
-        
+        ADD_MEMBER(Collided);
+        ADD_MEMBER(shape);
+        ADD_MEMBER(created);
+    }
+
+    DEFINE_META(AIComponent)
+    {
+        ADD_MEMBER(waypoints);
+        ADD_MEMBER(target);
+        ADD_MEMBER(MinDisttoChange);
+        ADD_MEMBER(PatrolSpeed);
+        ADD_MEMBER(patrolling);
     }
 
     DEFINE_META(DirectionalLightComponent)
@@ -147,7 +176,6 @@ namespace Eclipse
         ADD_MEMBER(mass);
         ADD_MEMBER(drag);
         ADD_MEMBER(angdrag);
-        ADD_MEMBER(_Static);
         ADD_MEMBER(_Kinematic);
         ADD_MEMBER(enableGravity);
         ADD_MEMBER(enableRotation);

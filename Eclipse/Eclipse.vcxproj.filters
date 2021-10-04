@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="AI">
+      <UniqueIdentifier>{EF725900-DBFE-870B-44AD-880B3058880B}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Audio">
       <UniqueIdentifier>{9718D90C-032D-01BE-CCAE-A41D3882FDEE}</UniqueIdentifier>
     </Filter>
@@ -33,6 +36,9 @@
     </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\Audio">
       <UniqueIdentifier>{AB25D4DE-9777-ABCE-8096-E8DE6C87C4B7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\Collision">
+      <UniqueIdentifier>{C59188A0-B1F9-4E6E-1A65-638406EC655A}</UniqueIdentifier>
     </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\Editor">
       <UniqueIdentifier>{20CA7CC1-8C59-3EAC-9555-1FC4016479B8}</UniqueIdentifier>
@@ -264,6 +270,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\AI\AIManager.h">
+      <Filter>AI</Filter>
+    </ClInclude>
     <ClInclude Include="src\Audio\AudioManager.h">
       <Filter>Audio</Filter>
     </ClInclude>
@@ -276,7 +285,13 @@
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h">
       <Filter>ECS\ComponentManager</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\AIComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\AudioComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h">
@@ -344,6 +359,9 @@
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\Collision\CollisionSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\Collision</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.h">
       <Filter>ECS\SystemManager\Systems\System\Editor</Filter>
@@ -619,6 +637,9 @@
     <ClInclude Include="src\Graphics\Parser\Parser.h">
       <Filter>Graphics\Parser</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\Picker\DynamicAABBTree.h">
+      <Filter>Graphics\Picker</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\Picker\PickingManager.h">
       <Filter>Graphics\Picker</Filter>
     </ClInclude>
@@ -841,6 +862,9 @@
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\AI\AIManager.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
     <ClCompile Include="src\Audio\AudioManager.cpp">
       <Filter>Audio</Filter>
     </ClCompile>
@@ -867,6 +891,9 @@
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\Collision\CollisionSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\Collision</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\Editor</Filter>
@@ -1092,6 +1119,9 @@
     </ClCompile>
     <ClCompile Include="src\Graphics\Parser\Parser.cpp">
       <Filter>Graphics\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Picker\DynamicAABBTree.cpp">
+      <Filter>Graphics\Picker</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\Picker\PickingManager.cpp">
       <Filter>Graphics\Picker</Filter>

@@ -39,6 +39,8 @@ namespace Eclipse
 		settings.Name = "SceneFrameBuffer";
 		settings.Size = ImVec2{ mViewportSize.x, mViewportSize.y };
 		ECGui::DrawChildWindow<void()>(settings, std::bind(&SceneWindow::RunFrameBuffer, this));
+		engine->editorManager->DragAndDropInst_.StringPayloadTarget("prefab", std::string{},
+			"Created Prefab!", PayloadTargetType::PTT_WINDOW);
 	}
 
 	void SceneWindow::RunFrameBuffer()
@@ -125,10 +127,6 @@ namespace Eclipse
 		}
 
 		ImGuiIO& io = ImGui::GetIO();
-		if(ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_LeftControl)))
-		{
-			IsSnapping = io.KeyCtrl;
-		}
 
 		ImGuizmo::Manipulate(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx),
 			(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),

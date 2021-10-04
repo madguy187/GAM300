@@ -14,6 +14,7 @@
 #include "ECS/ComponentManager/Components/ModelInfoComponent.h"
 #include "ECS/ComponentManager/Components/LightComponent.h"
 #include "ECS/ComponentManager/Components/ScriptComponent.h"
+#include "ECS/ComponentManager/Components/AudioComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
@@ -29,6 +30,7 @@
 #include "ECS/SystemManager/Systems/System/MonoSystem/MonoSystem.h"
 #include "ECS/SystemManager/Systems/System/Audio/AudioSystem.h"
 #include "ECS/SystemManager/Systems/System/FileWatchSystem/FileWatchSystem.h"
+#include "ECS/SystemManager/Systems/System/Collision/CollisionSystem.h"
 
 bool Tester1(const Test1& e)
 {
@@ -88,6 +90,8 @@ namespace Eclipse
         world.RegisterComponent<ModeLInforComponent>();
         world.RegisterComponent<LightComponent>();
         world.RegisterComponent<ScriptComponent>();
+        world.RegisterComponent<AudioComponent>();
+        world.RegisterComponent<CollisionComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
@@ -100,6 +104,7 @@ namespace Eclipse
         world.RegisterSystem<MonoSystem>();
         world.RegisterSystem<AudioSystem>();
         world.RegisterSystem<FileWatchSystem>();
+        world.RegisterSystem<CollisionSystem>();
 
         // Render System
         Signature RenderSys = RenderSystem::RegisterAll();
@@ -137,6 +142,14 @@ namespace Eclipse
         Signature hi5;
         hi5.set(world.GetComponentType<ScriptComponent>(), 1);
         world.RegisterSystemSignature<MonoSystem>(hi5);
+
+        Signature hi6;
+        hi6.set(world.GetComponentType<CollisionComponent>(), 1);
+        world.RegisterSystemSignature<CollisionSystem>(hi6);
+
+        Signature audioSignature;
+        audioSignature.set(world.GetComponentType<AudioComponent>(), 1);
+        world.RegisterSystemSignature<AudioSystem>(audioSignature);
 
         //Check this! - Rachel
         RenderSystem::Init();
@@ -216,7 +229,7 @@ namespace Eclipse
             //world.Update<GridSystem>();
 
             world.Update<CameraSystem>();
-
+            world.Update<CollisionSystem>();
             if (IsScenePlaying())
             {
                 for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
