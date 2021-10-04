@@ -1,16 +1,17 @@
 #pragma once
 
-#include "System.h"
+#include "../System.h"
 #include "Graphics/Camera/CameraManager.h"
 #include "Graphics/InputHandler/InputWrapper.h"
 #include "Graphics/Debugging/DebugRenderingManager.h"
 
 namespace Eclipse
 {
-    class CameraSystem : public System
+    class PickingSystem : public System
     {
     public:
         static void Init();
         void Update() override;
+        void EditorUpdate();
     };
 }

@@ -31,15 +31,9 @@ namespace Eclipse
 		std::vector<std::string> AllPrimitiveModelsNames;
 		std::unordered_map<std::string, std::vector<std::string>> Prefabs;
 		std::vector<std::string> AllMeshNames;
-	private:
 
 	public:
-		void ClearGeometry();
-		void LoadBasicTextures();
 		float HotReloadCooldown = 0.0f;
-		bool GetHotReloadFlag();
-		void ResetHotReloadFlag();
-		bool CheckCompilers();
 		void CreateModel(unsigned int ID, const std::string& ModelName);
 		std::unordered_map<std::string, std::vector<std::string>>& GetPrefabs();
 		void InsertPrimitiveName(const std::string& in);
@@ -82,9 +76,6 @@ namespace Eclipse
 		void Render(Shader& shader, GLenum mode, unsigned int id, MeshComponent& in);
 		void Render(GLenum mode, MeshComponent& in);
 		void SetSingleMesh(unsigned int ID, std::string& MeshName);
-		void LoadGeometry();
-		void LoadPrefabs();
-		void LoadTextures();
 	    AssimpModelManager() {};
 
 		///////////////////////////////////////////////////////////////////////////////////////////
@@ -96,6 +87,17 @@ namespace Eclipse
 		void PrintOutAllTextures();
 		void PrintOutAllMeshes();
 
+		///////////////////////////////////////////////////////////////////////////////////////////
+		// Compilers
+		///////////////////////////////////////////////////////////////////////////////////////////
+		void LoadGeometry();
+		void LoadPrefabs();
+		void LoadTextures();
+		void ClearGeometry();
+		void LoadBasicTextures();
+		bool GetHotReloadFlag();
+		void ResetHotReloadFlag();
+		bool CheckCompilers();
 
 	public:
 		// TEXTURES PUT HERE FIRST
@@ -109,7 +111,6 @@ namespace Eclipse
 		std::unordered_map<std::string, std::unique_ptr<AssimpModel>> AssimpLoadedModels;
 		std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>> >LoadedTexturesV2;
 		std::unordered_map<std::string, std::string> ModelMap;
-		bool InsertMesh(MeshComponent& in);
 		bool ClearContainer();
 		void CleanUpAllModels();
 		size_t AssimpModelCount();
@@ -121,8 +122,6 @@ namespace Eclipse
 		void HighlihtDraw(unsigned int FrameBufferID, GLenum Mode);
 		void DeleteItem(unsigned int index, AssimpModel* model_ptr);
 		std::string GetKey(const std::string& in);
-		void InsertModel(unsigned int ID);
-
 	};
 }
 #endif // ASSIMP_MANAGER_H

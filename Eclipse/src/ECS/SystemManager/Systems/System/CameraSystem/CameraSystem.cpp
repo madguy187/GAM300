@@ -1,6 +1,5 @@
 #include "pch.h"
-#include "CameraSystem.h"
-
+#include "../CameraSystem/CameraSystem.h"
 
 void Eclipse::CameraSystem::Init()
 {

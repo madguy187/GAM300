@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "SceneManager.h"
-#include "../ECS/SystemManager/Systems/System/CameraSystem.h"
+#include "../ECS/SystemManager/Systems/System/CameraSystem/CameraSystem.h"
 
 namespace Eclipse
 {

@@ -7,10 +7,7 @@ namespace Eclipse
 {
 
     AssimpModel::AssimpModel(bool noTex)
-        //:
-        //NoTextures(noTex)
     {
-        //GlobalMode = GL_FILL;
     }
 
     AssimpModel::AssimpModel(bool noTex, std::string& NameOfModels, std::string& Directorys, std::vector<Mesh> Meshess, std::vector<Texture> Textures_loadeds) :
@@ -82,14 +79,12 @@ namespace Eclipse
 
             // For Tianyu
             engine->AssimpManager.InsertMeshName(NodeName);
-
             ProcessMesh(mesh, scene, NodeName);
         }
 
         // process all child nodes
         for (unsigned int i = 0; i < node->mNumChildren; i++)
         {
-            //std::cout << NameOfModel << " : " << node->mChildren[i]->mName.data << std::endl;
             ProcessNode(node->mChildren[i], scene);
         }
     }
@@ -424,18 +419,18 @@ namespace Eclipse
 
             // prevent duplicate loading
             bool skip = false;
-            //for (unsigned int j = 0; j < Textures_loaded.size(); j++)
-            //{
-            //    if (std::strcmp(Textures_loaded[j].GetPath().data(), str.C_Str()) == 0)
-            //    {
-            //        textures.push_back(Textures_loaded[j]);
-            //        std::unique_ptr<Texture> ptr(new Texture(Textures_loaded[j]));
-            //        engine->AssimpManager.InsertTextures(MeshName, std::move(ptr), MeshIndex);
+            for (unsigned int j = 0; j < Textures_loaded.size(); j++)
+            {
+                if (std::strcmp(Textures_loaded[j].GetPath().data(), str.C_Str()) == 0)
+                {
+                    textures.push_back(Textures_loaded[j]);
+                    std::unique_ptr<Texture> ptr(new Texture(Textures_loaded[j]));
+                    engine->AssimpManager.InsertTextures(MeshName, std::move(ptr), MeshIndex);
 
-            //        skip = true;
-            //        break;
-            //    }
-            //}
+                    skip = true;
+                    break;
+                }
+            }
 
             if (!skip)
             {

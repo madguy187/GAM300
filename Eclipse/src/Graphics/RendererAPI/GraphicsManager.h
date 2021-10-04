@@ -13,7 +13,7 @@
 #include "ECS/SystemManager/Systems/System/GridSystem/GridSystem.h"
 #include "ECS/SystemManager/Systems/System/LightingSystem/LightingSystem.h"
 #include "ECS/SystemManager/Systems/System/FileWatchSystem/FileWatchSystem.h"
-#include "ECS/SystemManager/Systems/System/CameraSystem.h"
+#include "ECS/SystemManager/Systems/System/CameraSystem/CameraSystem.h"
 
 namespace Eclipse
 {

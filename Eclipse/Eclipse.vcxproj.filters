@@ -354,9 +354,6 @@
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.h">
       <Filter>ECS\SystemManager\Systems\System\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem.h">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
-    </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Collision\CollisionSystem.h">
       <Filter>ECS\SystemManager\Systems\System\Collision</Filter>
     </ClInclude>
@@ -384,10 +381,10 @@
     <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem\ParentSystem.h">
       <Filter>ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.h">
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem\PhysicsSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem.h">
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem\PickingSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem\RenderSystem.h">
@@ -857,6 +854,7 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem\CameraSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -886,9 +884,6 @@
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
-    </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Collision\CollisionSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\Collision</Filter>
     </ClCompile>
@@ -916,10 +911,10 @@
     <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem\ParentSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem</Filter>
     </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.cpp">
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem\PhysicsSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp">
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem\PickingSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem\RenderSystem.cpp">
@@ -1262,5 +1257,6 @@
       <Filter>Tracy\common</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem\CameraSystem.cpp" />
   </ItemGroup>
 </Project>

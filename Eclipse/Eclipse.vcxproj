@@ -199,7 +199,7 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClInclude Include="src\ECS\EntityManager\EntityManager.h" />
     <ClInclude Include="src\ECS\SystemManager\SystemManager.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem\CameraSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Collision\CollisionSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\FileWatchSystem\FileWatchSystem.h" />
@@ -209,8 +209,8 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ChildSystem\ChildSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem\ParentSystem.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem\PhysicsSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem\PickingSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem\RenderSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\System.h" />
     <ClInclude Include="src\ECS\World.h" />
@@ -379,7 +379,7 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClCompile Include="src\ECS\EntityManager\EntityManager.cpp" />
     <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem\CameraSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Collision\CollisionSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\FileWatchSystem\FileWatchSystem.cpp" />
@@ -389,8 +389,8 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ChildSystem\ChildSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem\ParentSystem.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem\PhysicsSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem\PickingSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem\RenderSystem.cpp" />
     <ClCompile Include="src\ECS\World.cpp" />
     <ClCompile Include="src\Editor\ECGuiAPI\ECGui.cpp" />

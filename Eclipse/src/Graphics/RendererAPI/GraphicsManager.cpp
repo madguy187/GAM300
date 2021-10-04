@@ -108,7 +108,6 @@ namespace Eclipse
         {
             engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
             engine->world.AddComponent(ID, MeshComponent{});
-
             MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
             sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
             sprite.modelRef = Graphics::models.find("Cube")->first;
@@ -151,7 +150,6 @@ namespace Eclipse
             engine->world.AddComponent(ID, MaterialComponent{});
             MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
             mat.Modeltype = MaterialModelType::MT_BASIC;
-
             engine->world.AddComponent(ID, MeshComponent{});
             MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
             sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
@@ -164,7 +162,6 @@ namespace Eclipse
             engine->world.AddComponent(ID, MaterialComponent{});
             MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
             mat.Modeltype = MaterialModelType::MT_BASIC;
-
             engine->world.AddComponent(ID, MeshComponent{});
             MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
             sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
@@ -177,7 +174,6 @@ namespace Eclipse
             engine->world.AddComponent(ID, MaterialComponent{});
             MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
             mat.Modeltype = MaterialModelType::MT_BASIC;
-
             engine->world.AddComponent(ID, MeshComponent{});
             MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
             sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
@@ -296,34 +292,27 @@ namespace Eclipse
         GLuint tex_loc = _shdrpgm->GetLocation("uTex2d");
         GLuint cam = _shdrpgm->GetLocation("camPos");
         GLuint model2 = _shdrpgm->GetLocation("model");
-        GLuint hi = _shdrpgm->GetLocation("noTex");
-        glUniform1i(hi, true);
-
+        GLuint noTex = _shdrpgm->GetLocation("noTex");
         GLuint CheckNormapMap = _shdrpgm->GetLocation("checkNormalMap");
-        glUniform1i(CheckNormapMap, false);
-
         GLint uniform_var_loc10 = _shdrpgm->GetLocation("BasicPrimitives");
+
+        glUniform1i(noTex, true);
+        glUniform1i(CheckNormapMap, false);
         glUniform1i(uniform_var_loc10, true);
 
-        if (uniform_var_loc1 >= 0)
-        {
-            glm::mat4 mModelNDC;
 
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, trans.position.ConvertToGlmVec3Type());
-            model = glm::rotate(model, glm::radians(trans.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-            model = glm::rotate(model, glm::radians(trans.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-            model = glm::rotate(model, glm::radians(trans.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-            model = glm::scale(model, trans.scale.ConvertToGlmVec3Type());
-            mModelNDC = camera.projMtx * camera.viewMtx * model;
-            glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(mModelNDC));
-            glUniformMatrix4fv(model2, 1, GL_FALSE, glm::value_ptr(model));
-        }
+        glm::mat4 mModelNDC;
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, trans.position.ConvertToGlmVec3Type());
+        model = glm::rotate(model, glm::radians(trans.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(trans.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(trans.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, trans.scale.ConvertToGlmVec3Type());
+        mModelNDC = camera.projMtx * camera.viewMtx * model;
+        glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(mModelNDC));
+        glUniformMatrix4fv(model2, 1, GL_FALSE, glm::value_ptr(model));
 
-        if (uniform_var_loc2 >= 0)
-        {
-            glUniform4f(uniform_var_loc2, sprite.color.getX(), sprite.color.getY(), sprite.color.getZ(), sprite.transparency);
-        }
+        glUniform4f(uniform_var_loc2, sprite.color.getX(), sprite.color.getY(), sprite.color.getZ(), sprite.transparency);
 
         if (engine->world.CheckComponent<MaterialComponent>(id))
         {
@@ -335,10 +324,7 @@ namespace Eclipse
             glUniform1i(uniform_var_loc3, false);
         }
 
-        if (tex_loc >= 0)
-        {
-            glUniform1i(tex_loc, false);
-        }
+        glUniform1i(tex_loc, false);
     }
 
     void Eclipse::GraphicsManager::ResetInstancedDebugBoxes()
