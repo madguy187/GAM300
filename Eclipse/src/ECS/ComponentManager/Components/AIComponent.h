@@ -4,6 +4,7 @@ namespace Eclipse
 {
 	struct AIComponent
 	{
+		META_DATA(AIComponent);
 		std::vector<Entity> waypoints;
 		size_t target{ 0 };
 		float MinDisttoChange{ 10.0f };

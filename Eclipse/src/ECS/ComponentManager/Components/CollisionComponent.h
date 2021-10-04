@@ -6,9 +6,9 @@ namespace Eclipse
 	struct EC_Shape
 	{
 		PxShapeType shape{PxShapeType::Px_CUBE};
-		float hx{0.5f};
-		float hy{0.5f};
-		float hz{0.5};
+		float hx{2.5f};
+		float hy{2.5f};
+		float hz{2.5f};
 		float radius{1};
 		float hheight{1};
 	};
@@ -16,8 +16,8 @@ namespace Eclipse
 	struct CollisionComponent
 	{
 		META_DATA(CollisionComponent);
-		bool created{false};
 		std::vector<Entity> Collided;
 		EC_Shape shape;
+		bool created{ false };
 	};
 }

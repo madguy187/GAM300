@@ -88,6 +88,7 @@ namespace Eclipse
 
 		Px_Actors[ent].actor->setName(std::to_string(ent).c_str());
 		AddActorToScene(ent);
+		engine->world.AddComponent(ent, CollisionComponent{});
 		//AttachBoxToActor(ent, 2.5f, 2.5f, 2.5f);
 	}
 
@@ -331,28 +332,30 @@ namespace Eclipse
 		auto& collision = engine->world.GetComponent<CollisionComponent>(ent);
 		if (!collision.created)
 			return;
-
-		PxShape** shapes = nullptr;
-		static_cast<PxRigidActor*>(Px_Actors[ent].actor)->getShapes(shapes, static_cast<PxRigidActor*>(Px_Actors[ent].actor)->getNbShapes());
-		PxShape** shapeit = shapes;
-		while (shapeit != nullptr)
+		PxU32 numofshapes = static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->getNbShapes();
+		if (numofshapes > 0)
 		{
-			switch (collision.shape.shape)
+			PxShape** shapes = new PxShape * [numofshapes];
+			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->getShapes(shapes, numofshapes);
+			for (PxU32 i = 0; i < numofshapes; ++i)
 			{
-			case PxShapeType::Px_CUBE :
-				if ((**shapeit).getGeometryType() == PxGeometryType::eBOX)
+				switch (collision.shape.shape)
 				{
-					(**shapeit).setGeometry(PxBoxGeometry{ collision.shape.hx,collision.shape.hy,collision.shape.hz });
+				case PxShapeType::Px_CUBE:
+					if (shapes[i]->getGeometryType() == PxGeometryType::eBOX)
+					{
+						shapes[i]->setGeometry(PxBoxGeometry{ collision.shape.hx,collision.shape.hy,collision.shape.hz });
+					}
+					break;
+				case PxShapeType::Px_SPHERE:
+					if (shapes[i]->getGeometryType() == PxGeometryType::eSPHERE)
+					{
+						shapes[i]->setGeometry(PxSphereGeometry{ collision.shape.radius });
+					}
+					break;
 				}
-				break;
-			case PxShapeType::Px_SPHERE:
-				if ((**shapeit).getGeometryType() == PxGeometryType::eSPHERE)
-				{
-					(**shapeit).setGeometry(PxSphereGeometry{collision.shape.radius});
-				}
-				break;
 			}
-			shapeit++;
+			delete[] shapes;
 		}
 	}
 
