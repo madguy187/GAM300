@@ -39,31 +39,31 @@ namespace Eclipse
 	{
 		if (active)
 		{
-			ImGui::OpenPopup("Exit?");
+			ECGui::OpenPopup("Exit?");
 
-			ImVec2 center = ImGui::GetMainViewport()->GetCenter();
-			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+			ImVec2 center = ECGui::GetMainViewport()->GetCenter();
+			ECGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
-			if (ImGui::BeginPopupModal("Exit?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+			if (ECGui::BeginPopupModal("Exit?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 			{
-				ImGui::Text("Are you sure you want to exit the engine?\nAll unsaved work cannot be recovered.\n\n");
-				ImGui::Separator();
+				ECGui::DrawTextWidget<const char*>("Are you sure you want to exit the engine?\nAll unsaved work cannot be recovered.\n\n", EMPTY_STRING);
+				ECGui::InsertHorizontalLineSeperator();
 
-				if (ImGui::Button("OK", ImVec2(120, 0)))
+				if (ECGui::ButtonBool("OK", ImVec2(120, 0)))
 				{
 					EDITOR_LOG_INFO("Exiting application...");
 					glfwSetWindowShouldClose(OpenGL_Context::GetWindow(), 1);
 				}
 
-				ImGui::SameLine();
+				ECGui::InsertSameLine();
 
-				if (ImGui::Button("Cancel", ImVec2(120, 0)))
+				if (ECGui::ButtonBool("Cancel", ImVec2(120, 0)))
 				{
 					IsExiting = false;
-					ImGui::CloseCurrentPopup();
+					ECGui::CloseCurrentPopup();
 				}
 
-				ImGui::EndPopup();
+				ECGui::EndPopup();
 			}
 		}
 	}

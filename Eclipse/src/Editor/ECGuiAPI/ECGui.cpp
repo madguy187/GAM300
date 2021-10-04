@@ -62,6 +62,16 @@ namespace Eclipse
 		ImGuiAPI::SetWindowSize(width, height);
 	}
 
+	void ECGui::SetNextWindowPos(const ImVec2& pos, ImGuiCond cond, const ImVec2& pivot)
+	{
+		ImGuiAPI::SetNextWindowPos(pos, cond, pivot);
+	}
+
+	ImGuiViewport* ECGui::GetMainViewport()
+	{
+		return ImGuiAPI::GetMainViewport();
+	}
+
 	bool ECGui::BeginPopUpButtonList(PopUpButtonSettings settings)
 	{
 		return ImGuiAPI::BeginPopUpButtonList(settings.Name, settings.ID);
@@ -129,6 +139,26 @@ namespace Eclipse
 		return ImGuiAPI::CreateMenuItem(name, open, shortcut);
 	}
 
+	void ECGui::OpenPopup(const char* str_id, ImGuiPopupFlags popup_flags)
+	{
+		ImGuiAPI::OpenPopup(str_id, popup_flags);
+	}
+
+	void ECGui::EndPopup()
+	{
+		ImGuiAPI::EndPopup();
+	}
+
+	bool ECGui::BeginPopupModal(const char* name, bool* p_open, ImGuiWindowFlags flags)
+	{
+		return ImGuiAPI::BeginPopupModal(name, p_open, flags);
+	}
+
+	void ECGui::CloseCurrentPopup()
+	{
+		ImGuiAPI::CloseCurrentPopup();
+	}
+
 	bool ECGui::DrawDataHeader(const char* varname, ImGuiTextFilter& filter)
 	{
 		if (filter.PassFilter(varname))
@@ -161,6 +191,11 @@ namespace Eclipse
 	void ECGui::EndTreeNode()
 	{
 		ImGuiAPI::EndTreeNode();
+	}
+
+	void ECGui::TextUnformatted(const char* text, const char* text_end)
+	{
+		ImGui::TextUnformatted(text, text_end);
 	}
 
 	bool ECGui::DrawSliderIntWidget(const char* name, int* var, bool hideName, int minrange, int maxrange)
@@ -330,14 +365,59 @@ namespace Eclipse
 		return ImGuiAPI::InputText(name, buffer, bufferSize, flag, hideName);
 	}
 
+	bool ECGui::IsKeyPressed(int KeyIndex, bool repeat)
+	{
+		return ImGuiAPI::IsKeyPressed(KeyIndex, repeat);
+	}
+
+	int ECGui::GetKeyIndex(ImGuiKey key)
+	{
+		return ImGuiAPI::GetKeyIndex(key);
+	}
+
+	bool ECGui::IsMouseDown(ImGuiMouseButton button)
+	{
+		return ImGuiAPI::IsMouseDown(button);
+	}
+
 	bool ECGui::CheckBoxBool(const char* name, bool* var, bool hideName)
 	{
 		return ImGuiAPI::CheckBoxBool(name, var, hideName);
 	}
 
-	bool ECGui::ButtonBool(const char* name)
+	bool ECGui::ButtonBool(const char* name, const ImVec2& size)
 	{
-		return ImGuiAPI::ButtonBool(name);
+		return ImGuiAPI::ButtonBool(name, size);
+	}
+
+	bool ECGui::BeginDragDropSource()
+	{
+		return ImGui::BeginDragDropSource();
+	}
+
+	void ECGui::EndDragDropSource()
+	{
+		ImGui::EndDragDropSource();
+	}
+
+	void ECGui::SetDragDropPayload(const char* type, const void* data, size_t sz, ImGuiCond cond)
+	{
+		ImGui::SetDragDropPayload(type, data, sz, cond);
+	}
+
+	bool ECGui::BeginDragDropTarget()
+	{
+		return ImGui::BeginDragDropTarget();
+	}
+
+	void ECGui::EndDragDropTarget()
+	{
+		ImGui::EndDragDropTarget();
+	}
+
+	const ImGuiPayload* ECGui::AcceptDragDropPayload(const char* type, ImGuiDragDropFlags flags)
+	{
+		return ImGui::AcceptDragDropPayload(type, flags);
 	}
 
 	void ECGui::InsertSameLine(float offset_from_start_x, float spacing)

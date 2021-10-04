@@ -20,9 +20,12 @@ namespace Eclipse
 		static ImVec2 GetWindowSize();
 		static ImVec2 GetWindowPos();
 		static ImVec2 GetCursorScreenPos();
+		static ImGuiViewport* GetMainViewport();
 		static float GetWindowHeight();
 		static float GetWindowWidth();
 		static void SetWindowSize(float width, float height);
+		static void SetNextWindowPos(const ImVec2& pos, ImGuiCond cond = 0, 
+			const ImVec2& pivot = ImVec2(0, 0));
 
 		// Dynamic Widgets
 		static bool BeginPopUpButtonList(const char* name, const char* id);
@@ -38,6 +41,10 @@ namespace Eclipse
 		static void EndComboList();
 		static bool BeginTreeNode(const char* name);
 		static void EndTreeNode();
+		static void OpenPopup(const char* str_id, ImGuiPopupFlags popup_flags = 0);
+		static void EndPopup();
+		static bool BeginPopupModal(const char* name, bool* p_open = NULL, ImGuiWindowFlags flags = 0);
+		static void CloseCurrentPopup();
 
 		// Semi-Dynamic Widgets (Don't need an end function for it)
 		static bool CreateCollapsingHeader(const char* name);
@@ -80,9 +87,15 @@ namespace Eclipse
 			              float minrange = 0.0f, float maxrange = 1000.0f);
 		static bool SliderFloat4(const char* name, float vector[4], bool hideName = true,
 			              float minrange = 0.0f, float maxrange = 1000.0f);
+
+		// Input
+		static bool IsKeyPressed(int KeyIndex, bool repeat = true);
+		static int GetKeyIndex(ImGuiKey key);
+		static bool IsMouseDown(ImGuiMouseButton button);
+
 		// Misc
 		static bool CheckBoxBool(const char* name, bool* var, bool hideName = true);
-		static bool ButtonBool(const char* name);
+		static bool ButtonBool(const char* name, const ImVec2& size = ImVec2(0, 0));
 
 		// Utilities
 		// Mostly used together with the static widgets

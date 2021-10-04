@@ -8,14 +8,14 @@ namespace Eclipse
 	void DragAndDrop::StringPayloadSource(const char* id, const std::string& source,
 		PayloadSourceType type)
 	{
-		if (ImGui::BeginDragDropSource())
+		if (ECGui::BeginDragDropSource())
 		{
-			ImGui::SetDragDropPayload(id, source.c_str(), source.size() + 1);
+			ECGui::SetDragDropPayload(id, source.c_str(), source.size() + 1);
 
 			switch (type)
 			{
 				case PayloadSourceType::PST_TEXT:
-					ImGui::TextUnformatted(source.c_str());
+					ECGui::TextUnformatted(source.c_str());
 					break;
 				case PayloadSourceType::PST_IMAGE:
 					// For rendering 2D Image -> Need ask Graphics side
@@ -24,19 +24,19 @@ namespace Eclipse
 					break;
 			}
 
-			ImGui::EndDragDropSource();
+			ECGui::EndDragDropSource();
 		}
 	}
 
 	void DragAndDrop::IndexPayloadSource(const char* id, const int& source, PayloadSourceType type)
 	{
-		if (ImGui::BeginDragDropSource())
+		if (ECGui::BeginDragDropSource())
 		{
-			ImGui::SetDragDropPayload(id, &source, sizeof(source));
+			ECGui::SetDragDropPayload(id, &source, sizeof(source));
 			switch (type)
 			{
 			case PayloadSourceType::PST_TEXT:
-				ImGui::TextUnformatted(lexical_cast<std::string>(source).c_str());
+				ECGui::TextUnformatted(lexical_cast<std::string>(source).c_str());
 				break;
 			case PayloadSourceType::PST_IMAGE:
 				// For rendering 2D Image -> Need ask Graphics side
@@ -47,17 +47,16 @@ namespace Eclipse
 				break;
 			}
 
-			ImGui::EndDragDropSource();
+			ECGui::EndDragDropSource();
 		}
 	}
 
 	void DragAndDrop::StringPayloadTarget(const char* id, std::string& destination,
 		const char* cMsg, PayloadTargetType type, Entity ID, size_t arrayIndex)
 	{
-		(void)ID;
-		if (ImGui::BeginDragDropTarget())
+		if (ECGui::BeginDragDropTarget())
 		{
-			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(id);
+			const ImGuiPayload* payload = ECGui::AcceptDragDropPayload(id);
 			std::string path;
 			if (payload)
 			{
@@ -94,15 +93,15 @@ namespace Eclipse
 				EDITOR_LOG_INFO(cMsg);
 			}
 
-			ImGui::EndDragDropTarget();
+			ECGui::EndDragDropTarget();
 		}
 	}
 
 	void DragAndDrop::IndexPayloadTarget(const char* id, const int& destination, bool IsSelected, PayloadTargetType type)
 	{
-		if (ImGui::BeginDragDropTarget())
+		if (ECGui::BeginDragDropTarget())
 		{
-			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(id);
+			const ImGuiPayload* payload = ECGui::AcceptDragDropPayload(id);
 
 			if (payload)
 			{
@@ -111,7 +110,7 @@ namespace Eclipse
 				IsIndexJobSelected = true;
 			}
 
-			ImGui::EndDragDropTarget();
+			ECGui::EndDragDropTarget();
 		}
 		else if (IsSelected && IsIndexJobSelected)
 		{
@@ -182,9 +181,9 @@ namespace Eclipse
 
 		std::filesystem::path itemPaths = AssetPath.c_str();
 
-		if (ImGui::BeginDragDropTarget())
+		if (ECGui::BeginDragDropTarget())
 		{
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(type))
+			if (const ImGuiPayload* payload = ECGui::AcceptDragDropPayload(type))
 			{
 				try
 				{
@@ -371,7 +370,7 @@ namespace Eclipse
 					ClearAllFiles(folderName,parentPath, refreshBrowser);
 				}
 			}
-			ImGui::EndDragDropTarget();
+			ECGui::EndDragDropTarget();
 		}
 	}
 	void DragAndDrop::ClearAllFiles(std::string& folderName, std::string& parentPath, bool& refreshBrowser)

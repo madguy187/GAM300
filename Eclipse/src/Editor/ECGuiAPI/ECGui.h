@@ -2,6 +2,8 @@
 
 #include "ImGui/ImGuiAPI/ImGuiAPI.h"
 
+#define EMPTY_STRING ""
+
 namespace Eclipse
 {
 	struct ChildSettings
@@ -61,9 +63,12 @@ namespace Eclipse
 		static ImVec2 GetWindowSize();
 		static ECVec2 GetWindowPos();
 		static ECVec2 GetCursorScreenPos();
+		static ImGuiViewport* GetMainViewport();
 		static float GetWindowHeight();
 		static float GetWindowWidth();
 		static void SetWindowSize(float width, float height);
+		static void SetNextWindowPos(const ImVec2& pos, ImGuiCond cond = 0,
+			const ImVec2& pivot = ImVec2(0, 0));
 
 		/*************************************************************************/
 		/*                           Dynamic Widgets                             */
@@ -117,6 +122,10 @@ namespace Eclipse
 			                        const std::vector<std::string>& vecStr,
 			                        size_t& index);
 		static bool CreateMenuItem(const char* name, bool* open, const char* shortcut = "");
+		static void OpenPopup(const char* str_id, ImGuiPopupFlags popup_flags = 0);
+		static void EndPopup();
+		static bool BeginPopupModal(const char* name, bool* p_open = NULL, ImGuiWindowFlags flags = 0);
+		static void CloseCurrentPopup();
 
 		/*************************************************************************/
 		/*                           Static Widgets                              */
@@ -199,6 +208,8 @@ namespace Eclipse
 			ImGuiAPI::TextMat4(varname, var);
 		}
 
+		static void TextUnformatted(const char* text, const char* text_end = NULL);
+
 		// Supports Int and float only
 		static bool DrawSliderIntWidget(const char* name, int* var,
 			bool hideName = true, int minrange = 0.0f, int maxrange = 50.0f);
@@ -227,9 +238,27 @@ namespace Eclipse
 		static bool DrawInputTextWidget(const char* name, char* buffer,
 			size_t bufferSize, ImGuiInputTextFlags flag = 0, bool hideName = true);
 
+		// Input Controls
+		static bool IsKeyPressed(int KeyIndex, bool repeat = true);
+		static int GetKeyIndex(ImGuiKey key);
+		static bool IsMouseDown(ImGuiMouseButton button);
+
 		// Misc
 		static bool CheckBoxBool(const char* name, bool* var, bool hideName = true);
-		static bool ButtonBool(const char* name);
+		static bool ButtonBool(const char* name, const ImVec2& size = ImVec2(0, 0));
+
+		/*************************************************************************/
+		/*                            DRAG & DROP                                */
+		/*************************************************************************/
+		static bool BeginDragDropSource();
+		static void EndDragDropSource();
+		static void SetDragDropPayload(const char* type, 
+			const void* data, size_t sz, ImGuiCond cond = 0);
+
+		static bool BeginDragDropTarget();
+		static void EndDragDropTarget();
+		static const ImGuiPayload* AcceptDragDropPayload(const char* type, 
+			ImGuiDragDropFlags flags = 0);
 
 		/*************************************************************************/
 		/*                           Utilities                                   */

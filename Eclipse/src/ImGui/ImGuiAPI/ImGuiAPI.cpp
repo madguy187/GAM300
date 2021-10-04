@@ -61,6 +61,16 @@ namespace Eclipse
 		ImGui::SetNextWindowSize(ImVec2(width, height));
 	}
 
+	void ImGuiAPI::SetNextWindowPos(const ImVec2& pos, ImGuiCond cond, const ImVec2& pivot)
+	{
+		ImGui::SetNextWindowPos(pos, cond, pivot);
+	}
+
+	ImGuiViewport* ImGuiAPI::GetMainViewport()
+	{
+		return  ImGui::GetMainViewport();
+	}
+
 	bool ImGuiAPI::BeginPopUpButtonList(const char* name, const char* id)
 	{
 		if (ButtonBool(name))
@@ -134,6 +144,26 @@ namespace Eclipse
 	void ImGuiAPI::EndTreeNode()
 	{
 		ImGui::TreePop();
+	}
+
+	void ImGuiAPI::OpenPopup(const char* str_id, ImGuiPopupFlags popup_flags)
+	{
+		ImGui::OpenPopup(str_id, popup_flags);
+	}
+
+	void ImGuiAPI::EndPopup()
+	{
+		ImGui::EndPopup();
+	}
+
+	bool ImGuiAPI::BeginPopupModal(const char* name, bool* p_open, ImGuiWindowFlags flags)
+	{
+		return ImGui::BeginPopupModal(name, p_open, flags);
+	}
+
+	void ImGuiAPI::CloseCurrentPopup()
+	{
+		ImGui::CloseCurrentPopup();
 	}
 
 	bool ImGuiAPI::CreateCollapsingHeader(const char* name)
@@ -310,14 +340,29 @@ namespace Eclipse
 		return ImGui::SliderFloat4(finalID.c_str(), vector, minrange, maxrange);
 	}
 
+	bool ImGuiAPI::IsKeyPressed(int KeyIndex, bool repeat)
+	{
+		return ImGui::IsKeyPressed(KeyIndex, repeat);
+	}
+
+	int ImGuiAPI::GetKeyIndex(ImGuiKey key)
+	{
+		return ImGui::GetKeyIndex(key);
+	}
+
+	bool ImGuiAPI::IsMouseDown(ImGuiMouseButton button)
+	{
+		return ImGui::IsMouseDown(button);
+	}
+
 	bool ImGuiAPI::CheckBoxBool(const char* name, bool* var, bool hideName)
 	{
 		std::string finalID = HideWidgetName(name, hideName);
 		return ImGui::Checkbox(finalID.c_str(), var);
 	}
-	bool ImGuiAPI::ButtonBool(const char* name)
+	bool ImGuiAPI::ButtonBool(const char* name, const ImVec2& size)
 	{
-		return ImGui::Button(name);
+		return ImGui::Button(name, size);
 	}
 
 	void ImGuiAPI::InsertSameLine(float offset_from_start_x, float spacing)
