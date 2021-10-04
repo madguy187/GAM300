@@ -51,7 +51,7 @@ namespace Eclipse
 		mCursorScreenPos = ECGui::GetCursorScreenPos();
 
 		// Set Image size
-		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
+		ECGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
 			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 		//// ImGuizmo Logic

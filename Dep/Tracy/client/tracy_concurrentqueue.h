@@ -846,7 +846,9 @@ private:
 			if (compile_time_condition<BLOCK_SIZE <= EXPLICIT_BLOCK_EMPTY_COUNTER_THRESHOLD>::value) {
 				// Reset flags
 				for (size_t i = 0; i != BLOCK_SIZE; ++i) {
-					emptyFlags[i].store(false, std::memory_order_relaxed);
+
+					if(i !=65535)
+						emptyFlags[i].store(false, std::memory_order_relaxed);
 				}
 			}
 			else {
@@ -1153,10 +1155,10 @@ private:
 
 		struct BlockIndexHeader
 		{
-			size_t size;
-			std::atomic<size_t> front;		// Current slot (not next, like pr_blockIndexFront)
-			BlockIndexEntry* entries;
-			void* prev;
+			size_t size = 0;
+			std::atomic<size_t> front = 0;		// Current slot (not next, like pr_blockIndexFront)
+			BlockIndexEntry* entries{};
+			void* prev = (void*) 0;
 		};
 
 

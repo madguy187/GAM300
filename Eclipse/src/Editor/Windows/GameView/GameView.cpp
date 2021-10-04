@@ -14,7 +14,7 @@ namespace Eclipse
 			}
 			else if (IsViewBackToOriginalState && !IsViewFullscreen)
 			{
-				ImGui::SetNextWindowDockID(DockIDTracker);
+				ECGui::SetNextWindowDockID(DockIDTracker);
 				AlreadySetDockIDTracker = false;
 			}
 
@@ -60,7 +60,7 @@ namespace Eclipse
 	{
 		//RenderGameHeader();
 		// Set Image size
-		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())), 
+		ECGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
 			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 		if (ECGui::IsItemHovered())
@@ -77,8 +77,9 @@ namespace Eclipse
 		const HWND hDesktop = GetDesktopWindow();
 		// Get the size of screen to the variable desktop
 		GetWindowRect(hDesktop, &desktop);
-		ImGui::SetNextWindowPos(ImVec2(.0f, .0f), ImGuiCond_Always);
-		ImGui::SetNextWindowSize(ImVec2((float)(desktop.right), (float)(desktop.bottom)), ImGuiCond_Always);
+		ECGui::SetNextWindowPos(ImVec2(.0f, .0f), ImGuiCond_Always);
+		ECGui::SetNextWindowSize(ImVec2((float)(desktop.right), (float)(desktop.bottom)), 
+			ImGuiCond_Always);
 		AlreadySetDockIDTracker = true;
 	}
 

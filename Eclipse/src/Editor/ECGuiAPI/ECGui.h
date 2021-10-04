@@ -2,6 +2,8 @@
 
 #include "ImGui/ImGuiAPI/ImGuiAPI.h"
 
+#define EMPTY_STRING ""
+
 namespace Eclipse
 {
 	struct ChildSettings
@@ -61,9 +63,16 @@ namespace Eclipse
 		static ImVec2 GetWindowSize();
 		static ECVec2 GetWindowPos();
 		static ECVec2 GetCursorScreenPos();
+		static ImGuiViewport* GetMainViewport();
 		static float GetWindowHeight();
 		static float GetWindowWidth();
 		static void SetWindowSize(float width, float height);
+		static void SetNextWindowPos(const ImVec2& pos, ImGuiCond cond = 0,
+			const ImVec2& pivot = ImVec2(0, 0));
+		static void SetNextWindowSize(const ImVec2& size, ImGuiCond cond = 0);
+		static void SetNextWindowDockID(ImGuiID dock_id, ImGuiCond cond = 0);
+		static void SetWindowFocus(const char* name);
+		static void SetNextWindowClass(const ImGuiWindowClass* window_class);
 
 		/*************************************************************************/
 		/*                           Dynamic Widgets                             */
@@ -117,6 +126,11 @@ namespace Eclipse
 			                        const std::vector<std::string>& vecStr,
 			                        size_t& index);
 		static bool CreateMenuItem(const char* name, bool* open, const char* shortcut = "");
+		static void OpenPopup(const char* str_id, ImGuiPopupFlags popup_flags = 0);
+		static bool BeginPopup(const char* str_id, ImGuiWindowFlags flags = 0);
+		static void EndPopup();
+		static bool BeginPopupModal(const char* name, bool* p_open = NULL, ImGuiWindowFlags flags = 0);
+		static void CloseCurrentPopup();
 
 		/*************************************************************************/
 		/*                           Static Widgets                              */
@@ -199,6 +213,8 @@ namespace Eclipse
 			ImGuiAPI::TextMat4(varname, var);
 		}
 
+		static void TextUnformatted(const char* text, const char* text_end = NULL);
+
 		// Supports Int and float only
 		static bool DrawSliderIntWidget(const char* name, int* var,
 			bool hideName = true, int minrange = 0.0f, int maxrange = 50.0f);
@@ -227,9 +243,27 @@ namespace Eclipse
 		static bool DrawInputTextWidget(const char* name, char* buffer,
 			size_t bufferSize, ImGuiInputTextFlags flag = 0, bool hideName = true);
 
+		// Input Controls
+		static bool IsKeyPressed(int KeyIndex, bool repeat = true);
+		static int GetKeyIndex(ImGuiKey key);
+		static bool IsMouseDown(ImGuiMouseButton button);
+
 		// Misc
 		static bool CheckBoxBool(const char* name, bool* var, bool hideName = true);
-		static bool ButtonBool(const char* name);
+		static bool ButtonBool(const char* name, const ImVec2& size = ImVec2(0, 0));
+
+		/*************************************************************************/
+		/*                            DRAG & DROP                                */
+		/*************************************************************************/
+		static bool BeginDragDropSource();
+		static void EndDragDropSource();
+		static void SetDragDropPayload(const char* type, 
+			const void* data, size_t sz, ImGuiCond cond = 0);
+
+		static bool BeginDragDropTarget();
+		static void EndDragDropTarget();
+		static const ImGuiPayload* AcceptDragDropPayload(const char* type, 
+			ImGuiDragDropFlags flags = 0);
 
 		/*************************************************************************/
 		/*                           Utilities                                   */
@@ -240,10 +274,25 @@ namespace Eclipse
 		static void PushItemWidth(float value);
 		static bool IsItemHovered();
 		static void SetToolTip(const char* message);
+		static void NewLine();
+		static void BeginToolTip();
+		static void EndTooltip();
+		static void PopTextWrapPos();
+		static void PushTextWrapPos(float wrap_pos_x);
+		static void SetScrollY(float scroll_y);
+		static float GetFontSize();
+		static void PushStyleColor(ImGuiCol idx, const ImVec4& col);
+		static void PopStyleColor();
+		static bool IsMouseDoubleClicked(ImGuiMouseButton button);
+		static bool IsItemClicked(ImGuiMouseButton mouse_button);
 
 		/*************************************************************************/
-		/*                         Graph Widgets                                 */
+		/*                         Visual Widgets                                */
 		/*************************************************************************/
+		static void Image(ImTextureID user_texture_id, const ImVec2& size, 
+			const ImVec2& uv0 = ImVec2(0, 0), const ImVec2& uv1 = ImVec2(1, 1), 
+			const ImVec4& tint_col = ImVec4(1, 1, 1, 1), 
+			const ImVec4& border_col = ImVec4(0, 0, 0, 0));
 		static void PlotHistogram(const char* label, std::vector<float> values, 
 			int values_offset = 0, const char* overlay_text = NULL, 
 			float scale_min = FLT_MAX, float scale_max = FLT_MAX, ImVec2 graph_size = ImVec2(0, 0), 

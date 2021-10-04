@@ -12,12 +12,12 @@ namespace Eclipse
 			ImGuiIO& io = ImGui::GetIO();
 
 			// REDO/UNDO
-			if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Z)) && io.KeyCtrl)
+			if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_Z)) && io.KeyCtrl)
 				CommandHistory::Undo();
-			else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Y)) && io.KeyCtrl)
+			else if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_Y)) && io.KeyCtrl)
 				CommandHistory::Redo();
 			// Delete Entity
-			else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Delete)))
+			else if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_Delete)))
 			{
 				if (!engine->editorManager->IsEntityListEmpty())
 				{
@@ -31,36 +31,36 @@ namespace Eclipse
 					}
 				}
 			}
-			else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_O)) && io.KeyCtrl)
+			else if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_O)) && io.KeyCtrl)
 			{
 				FileDialog::FileBrowser();
 			}
 			// ImGuizmo Change
-			else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Q)))
+			else if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_Q)))
 			{
 				if (engine->editorManager->IsAnyGizmoWindowActive())
-					if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
+					if (!ImGuizmo::IsUsing() && !ECGui::IsMouseDown(1))
 						engine->editorManager->GetEditorWindow<SceneWindow>()->SetGizmoType(-1);
 			}
-			else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_W)))
+			else if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_W)))
 			{
 				if (engine->editorManager->IsAnyGizmoWindowActive())
-					if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
+					if (!ImGuizmo::IsUsing() && !ECGui::IsMouseDown(1))
 						engine->editorManager->GetEditorWindow<SceneWindow>()->SetGizmoType(ImGuizmo::OPERATION::TRANSLATE);
 			}
-			else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_E)))
+			else if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_E)))
 			{
 				if (engine->editorManager->IsAnyGizmoWindowActive())
-					if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
+					if (!ImGuizmo::IsUsing() && !ECGui::IsMouseDown(1))
 						engine->editorManager->GetEditorWindow<SceneWindow>()->SetGizmoType(ImGuizmo::OPERATION::SCALE);
 			}
-			else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_R)))
+			else if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_R)))
 			{
 				if (engine->editorManager->IsAnyGizmoWindowActive())
-					if (!ImGuizmo::IsUsing() && !ImGui::IsMouseDown(1))
+					if (!ImGuizmo::IsUsing() && !ECGui::IsMouseDown(1))
 						engine->editorManager->GetEditorWindow<SceneWindow>()->SetGizmoType(ImGuizmo::OPERATION::ROTATE);
 			}
-			else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_F11)))
+			else if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_F11)))
 			{
 				if (engine->GetPlayState())
 				{
@@ -79,8 +79,8 @@ namespace Eclipse
 				}
 			}
 			// File Saving
-			else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_S)) && io.KeyCtrl)
-				FileDialog::SaveAsFile();
+			else if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_S)) && io.KeyCtrl)
+				FileDialog::SaveFile();
 		}
 	}
 }

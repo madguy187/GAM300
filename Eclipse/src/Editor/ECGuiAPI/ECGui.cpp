@@ -62,6 +62,36 @@ namespace Eclipse
 		ImGuiAPI::SetWindowSize(width, height);
 	}
 
+	void ECGui::SetNextWindowPos(const ImVec2& pos, ImGuiCond cond, const ImVec2& pivot)
+	{
+		ImGuiAPI::SetNextWindowPos(pos, cond, pivot);
+	}
+
+	void ECGui::SetNextWindowSize(const ImVec2& size, ImGuiCond cond)
+	{
+		ImGui::SetNextWindowSize(size, cond);
+	}
+
+	void ECGui::SetNextWindowDockID(ImGuiID dock_id, ImGuiCond cond)
+	{
+		ImGuiAPI::SetNextWindowDockID(dock_id, cond);
+	}
+
+	void ECGui::SetWindowFocus(const char* name)
+	{
+		ImGuiAPI::SetWindowFocus(name);
+	}
+
+	void ECGui::SetNextWindowClass(const ImGuiWindowClass* window_class)
+	{
+		ImGuiAPI::SetNextWindowClass(window_class);
+	}
+
+	ImGuiViewport* ECGui::GetMainViewport()
+	{
+		return ImGuiAPI::GetMainViewport();
+	}
+
 	bool ECGui::BeginPopUpButtonList(PopUpButtonSettings settings)
 	{
 		return ImGuiAPI::BeginPopUpButtonList(settings.Name, settings.ID);
@@ -129,6 +159,31 @@ namespace Eclipse
 		return ImGuiAPI::CreateMenuItem(name, open, shortcut);
 	}
 
+	void ECGui::OpenPopup(const char* str_id, ImGuiPopupFlags popup_flags)
+	{
+		ImGuiAPI::OpenPopup(str_id, popup_flags);
+	}
+
+	bool ECGui::BeginPopup(const char* str_id, ImGuiWindowFlags flags)
+	{
+		return ImGuiAPI::BeginPopup(str_id, flags);
+	}
+
+	void ECGui::EndPopup()
+	{
+		ImGuiAPI::EndPopup();
+	}
+
+	bool ECGui::BeginPopupModal(const char* name, bool* p_open, ImGuiWindowFlags flags)
+	{
+		return ImGuiAPI::BeginPopupModal(name, p_open, flags);
+	}
+
+	void ECGui::CloseCurrentPopup()
+	{
+		ImGuiAPI::CloseCurrentPopup();
+	}
+
 	bool ECGui::DrawDataHeader(const char* varname, ImGuiTextFilter& filter)
 	{
 		if (filter.PassFilter(varname))
@@ -161,6 +216,11 @@ namespace Eclipse
 	void ECGui::EndTreeNode()
 	{
 		ImGuiAPI::EndTreeNode();
+	}
+
+	void ECGui::TextUnformatted(const char* text, const char* text_end)
+	{
+		ImGui::TextUnformatted(text, text_end);
 	}
 
 	bool ECGui::DrawSliderIntWidget(const char* name, int* var, bool hideName, int minrange, int maxrange)
@@ -330,14 +390,59 @@ namespace Eclipse
 		return ImGuiAPI::InputText(name, buffer, bufferSize, flag, hideName);
 	}
 
+	bool ECGui::IsKeyPressed(int KeyIndex, bool repeat)
+	{
+		return ImGuiAPI::IsKeyPressed(KeyIndex, repeat);
+	}
+
+	int ECGui::GetKeyIndex(ImGuiKey key)
+	{
+		return ImGuiAPI::GetKeyIndex(key);
+	}
+
+	bool ECGui::IsMouseDown(ImGuiMouseButton button)
+	{
+		return ImGuiAPI::IsMouseDown(button);
+	}
+
 	bool ECGui::CheckBoxBool(const char* name, bool* var, bool hideName)
 	{
 		return ImGuiAPI::CheckBoxBool(name, var, hideName);
 	}
 
-	bool ECGui::ButtonBool(const char* name)
+	bool ECGui::ButtonBool(const char* name, const ImVec2& size)
 	{
-		return ImGuiAPI::ButtonBool(name);
+		return ImGuiAPI::ButtonBool(name, size);
+	}
+
+	bool ECGui::BeginDragDropSource()
+	{
+		return ImGuiAPI::BeginDragDropSource();
+	}
+
+	void ECGui::EndDragDropSource()
+	{
+		ImGuiAPI::EndDragDropSource();
+	}
+
+	void ECGui::SetDragDropPayload(const char* type, const void* data, size_t sz, ImGuiCond cond)
+	{
+		ImGuiAPI::SetDragDropPayload(type, data, sz, cond);
+	}
+
+	bool ECGui::BeginDragDropTarget()
+	{
+		return ImGuiAPI::BeginDragDropTarget();
+	}
+
+	void ECGui::EndDragDropTarget()
+	{
+		ImGuiAPI::EndDragDropTarget();
+	}
+
+	const ImGuiPayload* ECGui::AcceptDragDropPayload(const char* type, ImGuiDragDropFlags flags)
+	{
+		return ImGuiAPI::AcceptDragDropPayload(type, flags);
 	}
 
 	void ECGui::InsertSameLine(float offset_from_start_x, float spacing)
@@ -363,6 +468,67 @@ namespace Eclipse
 	void ECGui::SetToolTip(const char* message)
 	{
 		ImGuiAPI::SetToolTip(message);
+	}
+
+	void ECGui::NewLine()
+	{
+		ImGuiAPI::NewLine();
+	}
+
+	void ECGui::BeginToolTip()
+	{
+		ImGuiAPI::BeginToolTip();
+	}
+
+	void ECGui::EndTooltip()
+	{
+		ImGuiAPI::EndTooltip();
+	}
+
+	void ECGui::PopTextWrapPos()
+	{
+		ImGuiAPI::PopTextWrapPos();
+	}
+
+	void ECGui::PushTextWrapPos(float wrap_pos_x)
+	{
+		ImGuiAPI::PushTextWrapPos(wrap_pos_x);
+	}
+
+	void ECGui::SetScrollY(float scroll_y)
+	{
+		ImGuiAPI::SetScrollY(scroll_y);
+	}
+
+	float ECGui::GetFontSize()
+	{
+		return ImGuiAPI::GetFontSize();
+	}
+
+	void ECGui::PushStyleColor(ImGuiCol idx, const ImVec4& col)
+	{
+		ImGuiAPI::PushStyleColor(idx, col);
+	}
+
+	void ECGui::PopStyleColor()
+	{
+		ImGuiAPI::PopStyleColor();
+	}
+
+	bool ECGui::IsMouseDoubleClicked(ImGuiMouseButton button)
+	{
+		return ImGui::IsMouseDoubleClicked(button);
+	}
+
+	bool ECGui::IsItemClicked(ImGuiMouseButton mouse_button)
+	{
+		return ImGui::IsItemClicked(mouse_button);
+	}
+
+	void ECGui::Image(ImTextureID user_texture_id, const ImVec2& size, const ImVec2& uv0, 
+		const ImVec2& uv1, const ImVec4& tint_col, const ImVec4& border_col)
+	{
+		ImGuiAPI::Image(user_texture_id, size, uv0, uv1, tint_col, border_col);
 	}
 
 	void ECGui::PlotHistogram(const char* name, std::vector<float> value, int values_offset, const char* overlay_text, float scale_min, float scale_max, ImVec2 graph_size, int stride)
