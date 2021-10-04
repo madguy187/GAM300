@@ -125,6 +125,8 @@ namespace Eclipse
         glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
         glUniform1i(NoTexures, 0);
+
+
     }
 
     size_t AssimpModelManager::MeshFactoryCount()
