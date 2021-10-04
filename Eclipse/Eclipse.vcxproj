@@ -177,7 +177,7 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClInclude Include="src\ECS\ComponentManager\ComponentList.h" />
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AIComponent.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\AABBComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AudioComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ChildComponent.h" />

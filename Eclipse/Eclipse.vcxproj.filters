@@ -94,9 +94,6 @@
     <Filter Include="Editor\Utilities\OpenFileDialog">
       <UniqueIdentifier>{E84BB6BE-542F-C5FE-5D32-F33AC9948B4F}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Editor\Utilities\ParentChild">
-      <UniqueIdentifier>{5460141D-401B-04C9-E9D2-7C13D56C4E59}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Editor\Utilities\UndoAndRedo">
       <UniqueIdentifier>{99D07E34-858B-6EE0-2E43-E72A1ADDB870}</UniqueIdentifier>
     </Filter>
@@ -297,6 +294,9 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\AudioComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
@@ -431,9 +431,6 @@
     </ClInclude>
     <ClInclude Include="src\Editor\Utilities\OpenFileDialog\OpenFileDialog.h">
       <Filter>Editor\Utilities\OpenFileDialog</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Editor\Utilities\ParentChild\ParentChild.h">
-      <Filter>Editor\Utilities\ParentChild</Filter>
     </ClInclude>
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.h">
       <Filter>Editor\Utilities\UndoAndRedo</Filter>
@@ -872,7 +869,6 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\AudioComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -967,9 +963,6 @@
     </ClCompile>
     <ClCompile Include="src\Editor\Utilities\OpenFileDialog\OpenFileDialog.cpp">
       <Filter>Editor\Utilities\OpenFileDialog</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Utilities\ParentChild\ParentChild.cpp">
-      <Filter>Editor\Utilities\ParentChild</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.cpp">
       <Filter>Editor\Utilities\UndoAndRedo</Filter>
