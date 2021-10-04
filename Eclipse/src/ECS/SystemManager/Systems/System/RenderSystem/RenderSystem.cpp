@@ -122,6 +122,12 @@ namespace Eclipse
                 }
                 else
                 {
+                    engine->MaterialManager.DoNotUpdateStencil();
+                    engine->AssimpManager.TestMeshDraw(Mesh, entityID,
+                        engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE),
+                        engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_SCENE),
+                        &engine->GraphicsManager.AllAABBs, CameraComponent::CameraType::Editor_Camera);
+
                     /*************************************************************************
                       Render With Stencer So we prepare to Hihlight in material System
                       Render Models to SceneView

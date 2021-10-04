@@ -476,6 +476,8 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\Assets\Shaders\CubeMap\CubeMap.frag" />
+    <None Include="src\Assets\Shaders\CubeMap\CubeMap.vert" />
     <None Include="src\Assets\Shaders\framebuffer\framebuffer.frag" />
     <None Include="src\Assets\Shaders\framebuffer\framebuffer.vert" />
   </ItemGroup>

@@ -55,6 +55,8 @@ namespace Eclipse
 		void MeshDraw(MeshComponent& ModelMesh , unsigned int ID, unsigned int FrameBufferID, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
 		// Upload to Shader
 		void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID, AABB_* box);
+		void TestMeshDraw(MeshComponent& ModelMesh, unsigned int ID, unsigned int FrameBufferID, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
+		void CubeMapCheck(CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID);
 		// Delete Model from MeshContainer Using ID
 		void DeleteItem(unsigned int index);
 		// Print out all the Loaded Model details

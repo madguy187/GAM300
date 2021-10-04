@@ -1169,4 +1169,10 @@
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Assets\Shaders\framebuffer\framebuffer.frag" />
+    <None Include="src\Assets\Shaders\framebuffer\framebuffer.vert" />
+    <None Include="src\Assets\Shaders\CubeMap\CubeMap.frag" />
+    <None Include="src\Assets\Shaders\CubeMap\CubeMap.vert" />
+  </ItemGroup>
 </Project>
