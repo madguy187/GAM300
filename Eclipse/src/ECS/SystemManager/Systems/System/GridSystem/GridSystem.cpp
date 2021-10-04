@@ -16,8 +16,6 @@ namespace Eclipse
 
 	void GridSystem::Update()
 	{
-		ZoneScopedN("Grid System")
-
 		engine->Timer.SetName({ SystemName::GRID });
 		engine->Timer.tracker.system_start = glfwGetTime();
 
@@ -61,7 +59,5 @@ namespace Eclipse
 
 		engine->Timer.tracker.system_end = glfwGetTime();
 		engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
-
-		FrameMark
 	}
 }

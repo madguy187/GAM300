@@ -58,7 +58,7 @@ namespace Eclipse
 
 			if (ECGui::CreateMenuItem(key, &selected, "CTRL+S"))
 			{
-				FileDialog::FileBrowser();
+				FileDialog::SaveFile();
 			}
 		}
 
@@ -68,7 +68,7 @@ namespace Eclipse
 
 			if (ECGui::CreateMenuItem(key, &selected))
 			{
-				FileDialog::SaveFile();
+				FileDialog::SaveAsFile();
 			}
 		}
 

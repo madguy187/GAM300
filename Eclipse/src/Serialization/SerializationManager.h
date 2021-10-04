@@ -2,28 +2,27 @@
 #include "Global.h"
 #include "Serializer.h"
 #include "Deserializer.h"
-#include "../ECS/ComponentManager/Components/EntityComponent.h"
-#include "../ECS/ComponentManager/Components/AabbComponent.h"
-#include "../ECS/ComponentManager/Components/CameraComponent.h"
-#include "../ECS/ComponentManager/Components/DirectionalLightComponent.h"
-#include "../ECS/ComponentManager/Components/MaterialComponent.h"
-#include "../ECS/ComponentManager/Components/PointLightComponent.h"
-#include "../ECS/ComponentManager/Components/MeshComponent.h"
-#include "../ECS/ComponentManager/Components/RigidBodyComponent.h"
-#include "../ECS/ComponentManager/Components/SpotLightComponent.h"
-#include "../ECS/ComponentManager/Components/TransformComponent.h"
-//#include "../ECS/ComponentManager/Components/TextureComponent.h"
-#include "../ECS/ComponentManager/Components/LightComponent.h"
+#include "Reflection/Variant/RefVariant.h"
+#include "ECS//ComponentManager/Components/PrefabComponent.h"
 
 namespace Eclipse
 {
-
 	class SerializationManager
 	{
-		Serializer sz;
-		Deserializer dsz;
+		class Backup
+		{
+			TiXmlDocument _backup;
+			std::string backUpPath;
+		public:
+			void SaveBackup(Serializer&);
+			void LoadBackup(Deserializer&);
+		};
+		Backup backup;
 
+		/*
 		inline void SerializeData() {}
+
+		void LogError(const std::string& msg);
 
 		template <typename T, typename... Args>
 		inline void SerializeData(const char* name, T element, Args... elements)
@@ -33,13 +32,6 @@ namespace Eclipse
 			sz.CloseElement();
 			SerializeData(elements...);
 		}
-
-		template <typename CompType>
-		inline void SerializeComponentData(const CompType& data)
-		{
-			sz.AddAttributeToElement("Unavailable", true);
-		}
-
 		template <>
 		inline void SerializeComponentData<EntityComponent>(const EntityComponent& data)
 		{
@@ -215,17 +207,13 @@ namespace Eclipse
 			);
 		}
 
-		//template <>
-		//inline void SerializeComponentData<TextureComponent>(const TextureComponent& data)
-		//{
-		//	SerializeData(
-		//		"ID", data.ID,
-		//		"TextureType", data.Type,
-		//		"TextureKey", data.TextureKey,
-		//		"HasTexture", data.hasTexture,
-		//		"TextureRef", data.textureRef
-		//	);
-		//}
+		template <>
+		inline void SerializeComponentData<TextureComponent>(const TextureComponent& data)
+		{
+			SerializeData(
+				"TextureRef", data.textureRef
+			);
+		}
 		
 		template <>
 		inline void SerializeComponentData<LightComponent>(const LightComponent& data)
@@ -253,23 +241,12 @@ namespace Eclipse
 			return isSuccess;
 		}
 
-		template <typename T>
-		inline bool DeserializeComponentData(const Entity& ent, T& comp)
-		{
-			std::string msg = typeid(T).name();
-			msg += " is an invalid component.";
-			//EDITOR_LOG_WARN(false, msg.c_str());
-
-			return false;
-		}
-
 		template<>
 		inline bool DeserializeComponentData<EntityComponent>(const Entity& ent, EntityComponent& comp)
 		{
 			bool isSuccess = DeserializeData(
 				"Name", comp.Name,
-				"Tag", comp.Tag,
-				"IsActive", comp.IsActive
+				"Tag", comp.Tag
 			);
 
 			return isSuccess;
@@ -459,27 +436,28 @@ namespace Eclipse
 			return isSuccess;
 		}
 		
-		//template<>
-		//inline bool DeserializeComponentData<TextureComponent>(const Entity& ent, TextureComponent& comp)
-		//{
-		//	bool isSuccess = DeserializeData(
-		//		"TextureType", comp.Type,
-		//		"TextureKey", comp.TextureKey,
-		//		"HasTexture", comp.hasTexture,
-		//		"TextureRef", comp.textureRef
-		//	);
+		template<>
+		inline bool DeserializeComponentData<TextureComponent>(const Entity& ent, TextureComponent& comp)
+		{
+			bool isSuccess = DeserializeData(
+				"TextureType", comp.Type,
+				"TextureKey", comp.TextureKey,
+				"HasTexture", comp.hasTexture,
+				"TextureRef", comp.textureRef
+			);
 
-		//	comp.ID = ent;
+			comp.ID = ent;
 
-		//	return isSuccess;
-		//}
+			return isSuccess;
+		}
 	
 		template<>
 		inline bool DeserializeComponentData<LightComponent>(const Entity& ent, LightComponent& comp)
 		{
 			return true;
 		}
-	
+		*/
+		
 		template <typename CompType>
 		inline void SerializeComponent(World& w, const Entity& ent)
 		{
@@ -489,7 +467,7 @@ namespace Eclipse
 				auto name = w.GetAllComponentNames()[index];
 				auto& comp = w.GetComponent<CompType>(ent);
 				sz.StartElement(name);
-				SerializeComponentData<CompType>(comp);
+				SerializeComponentData(RefVariant{ comp });
 				sz.CloseElement();
 			}
 		}
@@ -504,7 +482,7 @@ namespace Eclipse
 			if (dsz.StartElement(name))
 			{
 				CompType comp;
-				if (DeserializeComponentData<CompType>(ent, comp))
+				if (DeserializeComponentData(RefVariant{ comp }))
 				{
 					w.AddComponent(ent, comp);
 				}
@@ -518,29 +496,168 @@ namespace Eclipse
 			return isSuccess;
 		}
 
-		void SerializeEntity(const Entity& ent, const size_t& counter);
+		void SerializeEntity(World& w, const Entity& ent, const size_t& counter);
 
-		void DeserializeEntity(const size_t& counter);
+		void DeserializeEntity(World& w, const size_t& counter);
 
-		void SerializeAllComponents(const Entity& ent);
+		void SerializeAllComponents(World& w, const Entity& ent);
 
-		bool DeserializeAllComponents(const Entity& ent);
+		bool DeserializeAllComponents(World& w, const Entity& ent);
 
-		void SerializeAllEntity(const char* fullpath);
+		void SerializeAllEntity();
 
-		void DeserializeAllEntity(const char* fullpath);
+		void DeserializeAllEntity();
 
 		void SaveFile(const char* fullpath);
 
 		bool LoadFile(const char* fullpath);
 
+		void SavePrefab(int prefabID, std::vector<Entity>& prefabContents);
+
+		int LoadPrefab();
+
+		void SavePrefabWorld(const std::set<Entity>& entities);
+
 	public:
+		static Serializer sz;
+		static Deserializer dsz;
+
 		SerializationManager();
 
 		~SerializationManager();
 
-		void SaveSceneFile(const char* fullpath = "Data/Temp/Temp.xml");
+		void SaveBackupFile();
 
-		void LoadSceneFile(const char* fullpath = "Data/Temp/Temp.xml");
+		void LoadBackupFile();
+
+		void SavePrefabFile(int prefabID, std::vector<Entity>& prefabContents, const char* path);
+
+		int LoadPrefabFile(const char* fullpath);
+
+		void SaveSceneFile(const char* fullpath = "Data/Temp/Temp.scn");
+
+		void LoadSceneFile(const char* fullpath = "Data/Temp/Temp.scn");
+
+		void SavePrefabWorldFile(const std::set<Entity>& entities);
+
+		template <typename T>
+		inline static void TestSerialize(const char* name, RefVariant refv)
+		{
+			//if (typeid(T) == typeid(ECVec3))
+			//{
+			//	std::cout << name << std::endl;
+			//	std::cout << refv.ValueRegistry<ECVec3>().getX() << " " << refv.ValueRegistry<ECVec3>().getY() << " " << refv.ValueRegistry<ECVec3>().getZ() << std::endl;
+			//}
+			//else if constexpr (std::is_fundamental<T>::value /*|| std::is_enum<T>::value*/)
+			//{
+			//	std::cout << refv.ValueRegistry<RemTypeQual<T>::type>() << std::endl;
+			//}
+			//else if constexpr (std::is_enum<T>::value)
+			//{
+			//}
+			//std::cout << refv.ValueRegistry<RemTypeQual<T>::type>() << std::endl;
+
+			sz.StartElement(name);
+			sz.AddAttributeToElement("value", refv.ValueRegistry<RemTypeQual<T>::type>());
+			sz.CloseElement();
+		}
+
+		template <typename T>
+		inline static bool TestDeserialize(const char* name, RefVariant refv)
+		{
+			bool isSuccess = false;
+
+			if (dsz.StartElement(name))
+			{
+				if constexpr (!std::is_pointer<T>::value)
+					dsz.ReadAttributeFromElement("value", refv.ValueRegistry<RemTypeQual<T>::type>());
+				dsz.CloseElement();
+				isSuccess = true;
+			}
+
+			return isSuccess;
+
+			//if (typeid(T) == typeid(ECVec3))
+			//{
+			//	refv.ValueRegistry<RemTypeQual<ECVec3>::type>().setX(1000.0f);
+			//	//std::cout << name << std::endl;
+			//	//std::cout << refv.ValueRegistry<ECVec3>().getX() << " " << refv.ValueRegistry<ECVec3>().getY() << " " << refv.ValueRegistry<ECVec3>().getZ() << std::endl;
+			//}
+		}
+
+		/*inline static void TestSerializeCompData(RefVariant refv)
+		{
+			const MetaData* meta = refv.Meta();
+			void* data = refv.Data();
+
+			assert(meta->HasMembers());
+
+			const Member* mem = meta->Members();
+
+			while (mem)
+			{
+				void* offsetData = PTR_ADD(refv.Data(), mem->Offset());
+				mem->Meta()->Serialize(mem->GetName().c_str(), RefVariant(mem->Meta(), offsetData));
+				mem = mem->Next();
+			}
+		}
+
+		inline static void TestDeserializeCompData(RefVariant refv)
+		{
+			const MetaData* meta = refv.Meta();
+			void* data = refv.Data();
+
+			assert(meta->HasMembers());
+
+			const Member* mem = meta->Members();
+
+			while (mem)
+			{
+				void* offsetData = PTR_ADD(refv.Data(), mem->Offset());
+				mem->Meta()->Deserialize(mem->GetName().c_str(), RefVariant(mem->Meta(), offsetData));
+				mem = mem->Next();
+			}
+		}*/
+
+		inline static void SerializeComponentData(RefVariant data)
+		{
+			const MetaData* meta = data.Meta();
+
+			if (meta->HasMembers())
+			{
+				const Member* mem = meta->Members();
+
+				while (mem)
+				{
+					void* offsetData = PTR_ADD(data.Data(), mem->Offset());
+					mem->Meta()->Serialize(mem->GetName().c_str(), RefVariant(mem->Meta(), offsetData));
+					mem = mem->Next();
+				}
+			}
+		}
+
+		inline static bool DeserializeComponentData(RefVariant data)
+		{
+			bool IsSuccess = false;
+			const MetaData* meta = data.Meta();
+
+			if (meta->HasMembers())
+			{
+				const Member* mem = meta->Members();
+
+				while (mem)
+				{
+					void* offsetData = PTR_ADD(data.Data(), mem->Offset());
+					IsSuccess = mem->Meta()->Deserialize(mem->GetName().c_str(), RefVariant(mem->Meta(), offsetData));
+
+					if (!IsSuccess)
+						return false;
+
+					mem = mem->Next();
+				}
+			}
+
+			return true;
+		}
 	};
 }

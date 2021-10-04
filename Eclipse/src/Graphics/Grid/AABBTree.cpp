@@ -343,8 +343,6 @@ namespace Eclipse
         RootNodeIndex = 0;
         AllocatedNodeCount = 0;
         NextFreeNoedIndex = 0;
-        NodeCapacity = 0;
-        GrowthSize = 0;
     }
 
     void AABBTree::InsertLeaf(unsigned leafNodeIndex)

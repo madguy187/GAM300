@@ -79,7 +79,7 @@ namespace Eclipse
 			}
 			// File Saving
 			else if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_S)) && io.KeyCtrl)
-				FileDialog::SaveFile();
+				FileDialog::SaveAsFile();
 		}
 	}
 }
