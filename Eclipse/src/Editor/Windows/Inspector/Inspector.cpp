@@ -850,10 +850,6 @@ namespace Eclipse
                         ComponentRegistry<CollisionComponent>("CollisionComponent", ID, entCom.Name,
                             EditComponent::EC_ADDCOMPONENT);
                         break;
-                    case str2int("PrefabComponent"):
-                        ComponentRegistry<PrefabComponent>("PrefabComponent", ID, entCom.Name,
-                            EditComponent::EC_ADDCOMPONENT);
-                        break;
                     }
                 }
             }
@@ -939,10 +935,6 @@ namespace Eclipse
                         break;
                     case str2int("CollisionComponent"):
                         ComponentRegistry<CollisionComponent>("CollisionComponent", ID, entCom.Name,
-                            EditComponent::EC_REMOVECOMPONENT);
-                        break;
-                    case str2int("PrefabComponent"):
-                        ComponentRegistry<PrefabComponent>("PrefabComponent", ID, entCom.Name,
                             EditComponent::EC_REMOVECOMPONENT);
                         break;
                     }
