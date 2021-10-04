@@ -139,13 +139,7 @@ namespace Eclipse
         auto shdrpgm = Graphics::shaderpgms["CubeMap"];
         shdrpgm.Use();
 
-        // Check Main Uniforms For each Model
-        // Translation done here for each model
-        //CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ID, box);
-
-        GLint uModelToNDC_ = shdrpgm.GetLocation("uModelToNDC");
         GLuint model_ = shdrpgm.GetLocation("model");
-        GLuint NoTexures = shdrpgm.GetLocation("noTex");
         GLuint view = shdrpgm.GetLocation("view");
         GLuint cameraPos = shdrpgm.GetLocation("cameraPos");
         GLint projection = shdrpgm.GetLocation("projection");
@@ -160,22 +154,12 @@ namespace Eclipse
         model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
         mModelNDC = _camera.projMtx * _camera.viewMtx * model;
-        glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
-        glUniform1i(NoTexures, 0);
         glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
         glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
         GLCall(glUniform3f(cameraPos, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ()));
 
-        if (_renderMode == RenderMode::Fill_Mode)
-        {
-            // Render
-            Render(shdrpgm, GL_FILL, FrameBufferID, ModelMesh, ID, _camType);
-        }
-        else
-        {
-            Render(shdrpgm, GL_LINE, FrameBufferID, ModelMesh, ID, _camType);
-        }
+        Render(shdrpgm, GL_FILL, FrameBufferID, ModelMesh, ID, _camType);
     }
 
     size_t AssimpModelManager::MeshFactoryCount()
