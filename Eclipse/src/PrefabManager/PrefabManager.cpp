@@ -9,7 +9,7 @@
 
 namespace Eclipse
 {
-	const std::string PrefabManager::PrefabPath = "src//Assets//Prefabs//";
+	const std::string PrefabManager::PrefabPath = "src\\Assets\\Prefabs\\";
 	long long unsigned int PrefabManager::CountID = 0;
 
 	PrefabManager::PrefabManager()
@@ -24,7 +24,7 @@ namespace Eclipse
 
 	void PrefabManager::LoadAllPrefab()
 	{
-		const char* AssetsPath = "src//Assets";
+		const char* AssetsPath = "src\\Assets";
 		for (auto& entry : std::filesystem::recursive_directory_iterator(AssetsPath))
 		{
 			auto& extension = entry.path().extension().string();
@@ -64,14 +64,14 @@ namespace Eclipse
 	std::string PrefabManager::GenerateFileName(EntityComponent& entComp, const char* path)
 	{
 		std::string& name = entComp.Name;
-		std::string prefabName = "//" + name + ".prefab";
+		std::string prefabName = "\\" + name + ".prefab";
 		std::string checkPath = path + prefabName;
 		std::string tempName;
 		size_t count = 0;
 		while (std::filesystem::exists(checkPath))
 		{
 			tempName = name + lexical_cast<std::string>(++count);
-			prefabName = "//" + tempName + ".prefab";
+			prefabName = "\\" + tempName + ".prefab";
 			checkPath = path + prefabName;
 		}
 
@@ -167,7 +167,7 @@ namespace Eclipse
 		World& w = engine->world;
 		TransformComponent defaultComp;
 		auto& transformComp = w.GetComponent<TransformComponent>(ent);
-		transformComp = defaultComp;
+		transformComp.position = defaultComp.position;
 
 		auto& prefabComp = w.GetComponent<PrefabComponent>(ent);
 		prefabComp.IsChild = true;
@@ -186,6 +186,47 @@ namespace Eclipse
 			auto& aabb = w.GetComponent<AABBComponent>(ent);
 			engine->gCullingManager->Insert(aabb, ent);
 			engine->gDynamicAABBTree.InsertData(ent);
+		}
+	}
+
+	void PrefabManager::Equalize(World& sourceWorld, World& targetWorld, Entity sourceEnt, Entity targetEnt)
+	{
+		auto& sourceTrans = sourceWorld.GetComponent<TransformComponent>(sourceEnt);
+		auto& targetTrans = targetWorld.GetComponent<TransformComponent>(targetEnt);
+
+		targetTrans.rotation = sourceTrans.rotation;
+		targetTrans.scale = sourceTrans.scale;
+
+		EqualizeEntity(sourceWorld, targetWorld, sourceEnt, targetEnt, list);
+	}
+
+	void PrefabManager::ApplyChangesToAll(Entity ent)
+	{
+		World& prefabW = engine->prefabWorld;
+		World& w = engine->world;
+
+		std::vector<Entity> changingEntities;
+
+		auto& samplePrefabComp = w.GetComponent<PrefabComponent>(ent);
+		if (PrefabIDSet.find(samplePrefabComp.PrefabID) != PrefabIDSet.end())
+		{
+			Entity prefabOwner = mapPIDToEID[samplePrefabComp.PrefabID];
+
+			Equalize(w, prefabW, ent, prefabOwner);
+
+			for (auto entity : w.GetSystem<PrefabSystem>()->mEntities)
+			{
+				auto& prefabComp = w.GetComponent<PrefabComponent>(entity);
+				if (samplePrefabComp.PrefabID == prefabComp.PrefabID)
+				{
+					changingEntities.push_back(entity);
+				}
+			}
+		}
+
+		for (auto entity : changingEntities)
+		{
+			Equalize(w, w, ent, entity);
 		}
 	}
 

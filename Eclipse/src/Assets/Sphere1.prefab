@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
-<Prefab PrefabID="1801901236" Size="1">
-    <Entity_0 ID="2">
+<Prefab PrefabID="25676867672" Size="1">
+    <Entity_0 ID="3">
         <EntityComponent>
-            <Tag value="Cube" />
-            <Name value="Cube2" />
+            <Tag value="Sphere" />
+            <Name value="Sphere1" />
             <IsActive value="true" />
             <Child size="0" />
             <Parent size="0" />
@@ -39,7 +39,7 @@
                 <Col2 _20="0" _21="0" _22="0" _23="0" />
                 <Col3 _30="0" _31="0" _32="0" _33="0" />
             </modelNDC_xform>
-            <modelRef value="Cube" />
+            <modelRef value="Sphere" />
             <shaderRef value="shader3DShdrpgm" />
             <transparency value="1" />
         </MeshComponent>
@@ -55,7 +55,7 @@
         </AABBComponent>
         <PrefabComponent>
             <IsChild value="false" />
-            <PrefabID value="1900177446068" />
+            <PrefabID value="25676867672" />
         </PrefabComponent>
     </Entity_0>
 </Prefab>

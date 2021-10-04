@@ -514,7 +514,7 @@ namespace Eclipse
 
 		bool LoadFile(const char* fullpath);
 
-		void SavePrefab(int prefabID, std::vector<Entity>& prefabContents);
+		void SavePrefab(long long unsigned int  prefabID, std::vector<Entity>& prefabContents);
 
 		long long unsigned int LoadPrefab(Entity& dszEnt);
 

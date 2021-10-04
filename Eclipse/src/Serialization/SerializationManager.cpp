@@ -207,7 +207,7 @@ namespace Eclipse
 		std::filesystem::remove_all(TEMP_PATH);
 	}
 
-	void SerializationManager::SavePrefab(int prefabID, std::vector<Entity>& prefabContents)
+	void SerializationManager::SavePrefab(long long unsigned int prefabID, std::vector<Entity>& prefabContents)
 	{
 		World& prefabW = engine->prefabWorld;
 		size_t counter = 0;

@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<Prefab PrefabID="1801901234" Size="1">
+<Prefab PrefabID="2213369554994" Size="1">
     <Entity_0 ID="1">
         <EntityComponent>
             <Tag value="Cube" />
@@ -55,7 +55,7 @@
         </AABBComponent>
         <PrefabComponent>
             <IsChild value="false" />
-            <PrefabID value="1900177446066" />
+            <PrefabID value="2213369554994" />
         </PrefabComponent>
     </Entity_0>
 </Prefab>
