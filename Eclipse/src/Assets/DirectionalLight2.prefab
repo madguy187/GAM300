@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
-<Prefab PrefabID="3" Size="1">
-    <Entity_0 ID="3">
+<Prefab PrefabID="0" Size="1">
+    <Entity_0 ID="0">
         <EntityComponent>
             <Tag value="DirectionalLight" />
-            <Name value="DirectionalLight1" />
+            <Name value="DirectionalLight2" />
             <IsActive value="true" />
             <Child size="0" />
             <Parent size="0" />
@@ -28,8 +28,8 @@
         </TransformComponent>
         <LightComponent />
         <PrefabComponent>
-            <IsChild value="true" />
-            <PrefabID value="3" />
+            <IsChild value="false" />
+            <PrefabID value="0" />
         </PrefabComponent>
     </Entity_0>
 </Prefab>

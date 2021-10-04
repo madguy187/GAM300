@@ -24,6 +24,6 @@ namespace Eclipse
 
 		Entity CreatePrefabInstance(const char* path);
 
-		~PrefabManager();
+		void Test();
 	};
 }

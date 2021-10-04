@@ -326,7 +326,7 @@ namespace Eclipse
 
         //Serialization(Temp)
         szManager.SaveSceneFile();
-
+        pfManager.Test();
         // unLoad
         mono.Terminate();
         GraphicsManager.End();

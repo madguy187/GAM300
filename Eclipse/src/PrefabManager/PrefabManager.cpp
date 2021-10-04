@@ -74,9 +74,20 @@ namespace Eclipse
 		World& w = engine->world;
 		std::queue<Entity> copyQueue;
 		std::vector<Entity> contents;
-		PrefabComponent comp;
-		comp.PrefabID = CountID++;
-		w.AddComponent(ent, comp);
+		int generatedID = CountID++;
+
+		if (!w.CheckComponent<PrefabComponent>(ent))
+		{
+			PrefabComponent comp;
+			comp.PrefabID = generatedID;
+			w.AddComponent(ent, comp);
+		}
+		else
+		{
+			auto& existing = w.GetComponent<PrefabComponent>(ent);
+			existing.IsChild = false;
+			existing.PrefabID = generatedID;
+		}
 
 		//Push the first entity
 		copyQueue.push(ent);
@@ -114,7 +125,7 @@ namespace Eclipse
 		return 0;
 	}
 
-	PrefabManager::~PrefabManager()
+	void PrefabManager::Test()
 	{
 		engine->szManager.SavePrefabWorldFile(engine->prefabWorld.GetSystem<PrefabSystem>()->mEntities);
 	}
