@@ -270,6 +270,14 @@ namespace Eclipse
 		}
 	}
 
+	void DynamicAABBTree::ResetTree()
+	{
+		DeleteTree(root);
+		TreeNodes.clear();
+
+		root = nullptr;
+	}
+
 	unsigned int DynamicAABBTree::RayCast(Node* node, glm::vec3 rayStart, glm::vec3 rayDir, float& tMin)
 	{
 		static unsigned int nodeID = MAX_ENTITY;
