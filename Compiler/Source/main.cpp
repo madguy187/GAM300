@@ -20,19 +20,10 @@ int main()
     Manager.Initialise();
     cPrefabsCompiler->GetPrefabs(cGeometryCompiler->Prefabs);
 
+    std::cout << "======================================================" << std::endl;
     // We will produce our own resource files which will be named .eclipse
     Manager.ProduceFile();
-
-    while (1)
-    {
-        std::string Test;
-        std::cin >> Test;
-
-        if (Test == "1")
-        {
-            return 0;
-        }
-    }
+    std::cout << "======================================================" << std::endl;
 
     return 0;
 }
