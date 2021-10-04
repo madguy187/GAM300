@@ -71,10 +71,11 @@ namespace Eclipse
         static void WindowCloseCallback(GLFWwindow* window);
         void SetBackGroundColour();
         void DrawEntireGrid();
-
+        static void CreateCompilerFolders();
     private:
         void UpdateFrameBuffer();
         void FrameBufferDraw();
+        static void CreateEmptyFolder(std::string folderName, std::string folderPath = "..//Compiler//CompilerKeyFiles\\");
     };
 }
 

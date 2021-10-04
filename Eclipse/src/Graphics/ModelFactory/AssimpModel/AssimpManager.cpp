@@ -126,7 +126,8 @@ namespace Eclipse
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
         glUniform1i(NoTexures, 0);
 
-
+        BoundingRegion br(Transform.position.ConvertToGlmVec3Type(), Transform.scale.ConvertToGlmVec3Type());
+        box->AddInstance(br);
     }
 
     size_t AssimpModelManager::MeshFactoryCount()
@@ -439,7 +440,7 @@ namespace Eclipse
 
         // EBO stuff
         glBindVertexArray(engine->AssimpManager.Geometry[in.MeshName.data()]->VAO);
-        glDrawElements(GL_TRIANGLES,static_cast<GLsizei>(engine->AssimpManager.Geometry[in.MeshName.data()]->Indices.size()), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(engine->AssimpManager.Geometry[in.MeshName.data()]->Indices.size()), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
 
         // reset
