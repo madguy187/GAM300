@@ -92,7 +92,6 @@ namespace Eclipse
         ADD_MEMBER(diffuse);
         ADD_MEMBER(specular);
         ADD_MEMBER(Color);
-        ADD_MEMBER(Exposure);
     }
 
     DEFINE_META(EntityComponent)
@@ -165,7 +164,6 @@ namespace Eclipse
         ADD_MEMBER(hasTexture);
         ADD_MEMBER(visible);
         ADD_MEMBER(AffectsWorld);
-        ADD_MEMBER(Exposure);
     }
 
     DEFINE_META(RigidBodyComponent)
@@ -204,7 +202,6 @@ namespace Eclipse
         ADD_MEMBER(hasTexture);
         ADD_MEMBER(visible);
         ADD_MEMBER(AffectsWorld);
-        ADD_MEMBER(Exposure);
     }
 
     //DEFINE_META(TextureComponent)

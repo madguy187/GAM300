@@ -18,6 +18,7 @@ uniform float gamma;
 uniform bool EnableGammaCorrection;
 uniform bool CheckApplyLighting;
 uniform int BasicPrimitives;
+uniform float Exposure;
 
 in TANGENT_VAR{
 	vec3 TangentViewPos;
@@ -216,8 +217,7 @@ void main ()
 
         if(EnableGammaCorrection == true )
         {
-			float exposure = 1.0f;
-			vec3 toneMapped = vec3(1.0f) - exp(-fFragClr.rgb * exposure);
+			vec3 toneMapped = vec3(1.0f) - exp(-fFragClr.rgb * Exposure);
             fFragClr.rgb = pow(toneMapped, vec3(1.0/gamma));
         }
         

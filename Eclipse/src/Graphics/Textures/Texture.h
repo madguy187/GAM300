@@ -27,14 +27,14 @@ namespace Eclipse
         void SetType(aiTextureType in);
         std::string GetDirectory();
         std::string GetPath();
-        aiTextureType GetType();
+        unsigned int GetType();
         unsigned int GetId();
 
     private:
         //unsigned int Id;
-        aiTextureType Type;
+        unsigned int Type; //aiTextureType
         std::string Directory;
-        unsigned int id;
+        unsigned int id = 0;
 
         // 2D Textures =============================
     public:

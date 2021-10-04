@@ -72,6 +72,11 @@ namespace Eclipse
             ECGui::DrawTextWidget<const char*>("Draw Grid", "");
             ECGui::InsertSameLine();
             ECGui::CheckBoxBool("DrawGrid", &engine->GridManager->Visible);
+
+            ImGui::Dummy({ 1,1 });
+            ECGui::DrawTextWidget<const char*>("HDR Exposure", "");
+            ECGui::InsertSameLine();
+            ECGui::DrawSliderFloatWidget("HDR Exposure", &engine->GraphicsManager.Exposure, true, 0.1f, 10.5f);
         }
     }
 }

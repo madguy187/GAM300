@@ -500,10 +500,12 @@ void Eclipse::GraphicsManager::UploadGlobalUniforms()
     GLint uniform_var_loc1 = shdrpgm.GetLocation("gamma");
     GLint uniform_var_loc2 = shdrpgm.GetLocation("EnableGammaCorrection");
     GLint uniform_var_loc3 = shdrpgm.GetLocation("camPos");
+    GLint uniform_var_loc4 = shdrpgm.GetLocation("Exposure");
 
     GLCall(glUniform1f(uniform_var_loc1, engine->GraphicsManager.GetGammaCorrection()));
     GLCall(glUniform1i(uniform_var_loc2, engine->GraphicsManager.EnableGammaCorrection));
     GLCall(glUniform3f(uniform_var_loc3, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ()));
+    GLCall(glUniform1f(uniform_var_loc4, engine->GraphicsManager.Exposure));
     shdrpgm.UnUse();
 }
 

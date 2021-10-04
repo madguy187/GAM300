@@ -35,6 +35,7 @@ namespace Eclipse
         bool DrawSky = true;
         float GammaCorrection = 2.2f;
         ECVec3 BackGroundColour{ 0.1f,0.2f,0.3f };
+        float Exposure = 1.0f;
 
     public:
         std::map<std::string, std::vector<std::string>> ShaderMap;
