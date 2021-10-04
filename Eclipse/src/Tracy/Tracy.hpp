@@ -1,8 +1,8 @@
 #ifndef __TRACY_HPP__
 #define __TRACY_HPP__
 
-#include "common/TracyColor.hpp"
-#include "common/TracySystem.hpp"
+#include "../../Dep/Tracy/common/TracyColor.hpp"
+#include "../../Dep/Tracy/common/TracySystem.hpp"
 
 #ifndef TRACY_ENABLE
 
@@ -101,9 +101,9 @@
 
 #include <string.h>
 
-#include "client/TracyLock.hpp"
-#include "client/TracyProfiler.hpp"
-#include "client/TracyScoped.hpp"
+#include "../../Dep/Tracy/client/TracyLock.hpp"
+#include "../../Dep/Tracy/client/TracyProfiler.hpp"
+#include "../../Dep/Tracy/client/TracyScoped.hpp"
 
 #if defined TRACY_HAS_CALLSTACK && defined TRACY_CALLSTACK
 #  define ZoneNamed( varname, active ) static constexpr tracy::SourceLocationData TracyConcat(__tracy_source_location,__LINE__) { nullptr, __FUNCTION__,  __FILE__, (uint32_t)__LINE__, 0 }; tracy::ScopedZone varname( &TracyConcat(__tracy_source_location,__LINE__), TRACY_CALLSTACK, active );

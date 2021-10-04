@@ -177,7 +177,7 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClInclude Include="src\ECS\ComponentManager\ComponentList.h" />
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AIComponent.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\AABBComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AudioComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ChildComponent.h" />
@@ -342,33 +342,6 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClInclude Include="src\SparseSet\SparseSet.hpp" />
     <ClInclude Include="src\Time\Clock.h" />
     <ClInclude Include="src\Tracy\Tracy.hpp" />
-    <ClInclude Include="src\Tracy\client\TracyArmCpuTable.hpp" />
-    <ClInclude Include="src\Tracy\client\TracyCallstack.h" />
-    <ClInclude Include="src\Tracy\client\TracyCallstack.hpp" />
-    <ClInclude Include="src\Tracy\client\TracyDxt1.hpp" />
-    <ClInclude Include="src\Tracy\client\TracyFastVector.hpp" />
-    <ClInclude Include="src\Tracy\client\TracyLock.hpp" />
-    <ClInclude Include="src\Tracy\client\TracyProfiler.hpp" />
-    <ClInclude Include="src\Tracy\client\TracyRingBuffer.hpp" />
-    <ClInclude Include="src\Tracy\client\TracyScoped.hpp" />
-    <ClInclude Include="src\Tracy\client\TracySysTime.hpp" />
-    <ClInclude Include="src\Tracy\client\TracySysTrace.hpp" />
-    <ClInclude Include="src\Tracy\client\TracySysTracePayload.hpp" />
-    <ClInclude Include="src\Tracy\client\TracyThread.hpp" />
-    <ClInclude Include="src\Tracy\client\tracy_concurrentqueue.h" />
-    <ClInclude Include="src\Tracy\client\tracy_rpmalloc.hpp" />
-    <ClInclude Include="src\Tracy\common\TracyAlign.hpp" />
-    <ClInclude Include="src\Tracy\common\TracyAlloc.hpp" />
-    <ClInclude Include="src\Tracy\common\TracyApi.h" />
-    <ClInclude Include="src\Tracy\common\TracyColor.hpp" />
-    <ClInclude Include="src\Tracy\common\TracyForceInline.hpp" />
-    <ClInclude Include="src\Tracy\common\TracyMutex.hpp" />
-    <ClInclude Include="src\Tracy\common\TracyProtocol.hpp" />
-    <ClInclude Include="src\Tracy\common\TracyQueue.hpp" />
-    <ClInclude Include="src\Tracy\common\TracySocket.hpp" />
-    <ClInclude Include="src\Tracy\common\TracySystem.hpp" />
-    <ClInclude Include="src\Tracy\common\tracy_lz4.hpp" />
-    <ClInclude Include="src\Tracy\common\tracy_lz4hc.hpp" />
     <ClInclude Include="src\TypeID\TypeID.h" />
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
@@ -498,16 +471,6 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClCompile Include="src\Serialization\TinyXML\tinyxmlparser.cpp" />
     <ClCompile Include="src\Time\Clock.cpp" />
     <ClCompile Include="src\Tracy\TracyClient.cpp" />
-    <ClCompile Include="src\Tracy\client\TracyCallstack.cpp" />
-    <ClCompile Include="src\Tracy\client\TracyDxt1.cpp" />
-    <ClCompile Include="src\Tracy\client\TracyProfiler.cpp" />
-    <ClCompile Include="src\Tracy\client\TracySysTime.cpp" />
-    <ClCompile Include="src\Tracy\client\TracySysTrace.cpp" />
-    <ClCompile Include="src\Tracy\client\tracy_rpmalloc.cpp" />
-    <ClCompile Include="src\Tracy\common\TracySocket.cpp" />
-    <ClCompile Include="src\Tracy\common\TracySystem.cpp" />
-    <ClCompile Include="src\Tracy\common\tracy_lz4.cpp" />
-    <ClCompile Include="src\Tracy\common\tracy_lz4hc.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -515,4 +478,4 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-</Project>
+</Project> 
