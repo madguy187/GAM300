@@ -67,6 +67,26 @@ namespace Eclipse
 		ImGuiAPI::SetNextWindowPos(pos, cond, pivot);
 	}
 
+	void ECGui::SetNextWindowSize(const ImVec2& size, ImGuiCond cond)
+	{
+		ImGui::SetNextWindowSize(size, cond);
+	}
+
+	void ECGui::SetNextWindowDockID(ImGuiID dock_id, ImGuiCond cond)
+	{
+		ImGuiAPI::SetNextWindowDockID(dock_id, cond);
+	}
+
+	void ECGui::SetWindowFocus(const char* name)
+	{
+		ImGuiAPI::SetWindowFocus(name);
+	}
+
+	void ECGui::SetNextWindowClass(const ImGuiWindowClass* window_class)
+	{
+		ImGuiAPI::SetNextWindowClass(window_class);
+	}
+
 	ImGuiViewport* ECGui::GetMainViewport()
 	{
 		return ImGuiAPI::GetMainViewport();
@@ -142,6 +162,11 @@ namespace Eclipse
 	void ECGui::OpenPopup(const char* str_id, ImGuiPopupFlags popup_flags)
 	{
 		ImGuiAPI::OpenPopup(str_id, popup_flags);
+	}
+
+	bool ECGui::BeginPopup(const char* str_id, ImGuiWindowFlags flags)
+	{
+		return ImGuiAPI::BeginPopup(str_id, flags);
 	}
 
 	void ECGui::EndPopup()
@@ -392,32 +417,32 @@ namespace Eclipse
 
 	bool ECGui::BeginDragDropSource()
 	{
-		return ImGui::BeginDragDropSource();
+		return ImGuiAPI::BeginDragDropSource();
 	}
 
 	void ECGui::EndDragDropSource()
 	{
-		ImGui::EndDragDropSource();
+		ImGuiAPI::EndDragDropSource();
 	}
 
 	void ECGui::SetDragDropPayload(const char* type, const void* data, size_t sz, ImGuiCond cond)
 	{
-		ImGui::SetDragDropPayload(type, data, sz, cond);
+		ImGuiAPI::SetDragDropPayload(type, data, sz, cond);
 	}
 
 	bool ECGui::BeginDragDropTarget()
 	{
-		return ImGui::BeginDragDropTarget();
+		return ImGuiAPI::BeginDragDropTarget();
 	}
 
 	void ECGui::EndDragDropTarget()
 	{
-		ImGui::EndDragDropTarget();
+		ImGuiAPI::EndDragDropTarget();
 	}
 
 	const ImGuiPayload* ECGui::AcceptDragDropPayload(const char* type, ImGuiDragDropFlags flags)
 	{
-		return ImGui::AcceptDragDropPayload(type, flags);
+		return ImGuiAPI::AcceptDragDropPayload(type, flags);
 	}
 
 	void ECGui::InsertSameLine(float offset_from_start_x, float spacing)
@@ -443,6 +468,57 @@ namespace Eclipse
 	void ECGui::SetToolTip(const char* message)
 	{
 		ImGuiAPI::SetToolTip(message);
+	}
+
+	void ECGui::NewLine()
+	{
+		ImGuiAPI::NewLine();
+	}
+
+	void ECGui::BeginToolTip()
+	{
+		ImGuiAPI::BeginToolTip();
+	}
+
+	void ECGui::EndTooltip()
+	{
+		ImGuiAPI::PopTextWrapPos();
+	}
+
+	void ECGui::PopTextWrapPos()
+	{
+		ImGuiAPI::EndTooltip();
+	}
+
+	void ECGui::PushTextWrapPos(float wrap_pos_x)
+	{
+		ImGuiAPI::PushTextWrapPos(wrap_pos_x);
+	}
+
+	void ECGui::SetScrollY(float scroll_y)
+	{
+		ImGuiAPI::SetScrollY(scroll_y);
+	}
+
+	float ECGui::GetFontSize()
+	{
+		return ImGui::GetFontSize();
+	}
+
+	void ECGui::PushStyleColor(ImGuiCol idx, const ImVec4& col)
+	{
+		ImGuiAPI::PushStyleColor(idx, col);
+	}
+
+	void ECGui::PopStyleColor()
+	{
+		ImGuiAPI::PopStyleColor();
+	}
+
+	void ECGui::Image(ImTextureID user_texture_id, const ImVec2& size, const ImVec2& uv0, 
+		const ImVec2& uv1, const ImVec4& tint_col, const ImVec4& border_col)
+	{
+		ImGuiAPI::Image(user_texture_id, size, uv0, uv1, tint_col, border_col);
 	}
 
 	void ECGui::PlotHistogram(const char* name, std::vector<float> value, int values_offset, const char* overlay_text, float scale_min, float scale_max, ImVec2 graph_size, int stride)

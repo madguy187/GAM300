@@ -66,6 +66,21 @@ namespace Eclipse
 		ImGui::SetNextWindowPos(pos, cond, pivot);
 	}
 
+	void ImGuiAPI::SetNextWindowDockID(ImGuiID dock_id, ImGuiCond cond)
+	{
+		ImGui::SetNextWindowDockID(dock_id, cond);
+	}
+
+	void ImGuiAPI::SetWindowFocus(const char* name)
+	{
+		ImGui::SetWindowFocus(name);
+	}
+
+	void ImGuiAPI::SetNextWindowClass(const ImGuiWindowClass* window_class)
+	{
+		ImGui::SetNextWindowClass(window_class);
+	}
+
 	ImGuiViewport* ImGuiAPI::GetMainViewport()
 	{
 		return  ImGui::GetMainViewport();
@@ -149,6 +164,11 @@ namespace Eclipse
 	void ImGuiAPI::OpenPopup(const char* str_id, ImGuiPopupFlags popup_flags)
 	{
 		ImGui::OpenPopup(str_id, popup_flags);
+	}
+
+	bool ImGuiAPI::BeginPopup(const char* str_id, ImGuiWindowFlags flags)
+	{
+		return ImGui::BeginPopup(str_id, flags);
 	}
 
 	void ImGuiAPI::EndPopup()
@@ -365,6 +385,36 @@ namespace Eclipse
 		return ImGui::Button(name, size);
 	}
 
+	bool ImGuiAPI::BeginDragDropSource()
+	{
+		return ImGui::BeginDragDropSource();
+	}
+
+	void ImGuiAPI::EndDragDropSource()
+	{
+		ImGui::EndDragDropSource();
+	}
+
+	void ImGuiAPI::SetDragDropPayload(const char* type, const void* data, size_t sz, ImGuiCond cond)
+	{
+		ImGui::SetDragDropPayload(type, data, sz, cond);
+	}
+
+	bool ImGuiAPI::BeginDragDropTarget()
+	{
+		return ImGui::BeginDragDropTarget();
+	}
+
+	void ImGuiAPI::EndDragDropTarget()
+	{
+		ImGui::EndDragDropTarget();
+	}
+
+	const ImGuiPayload* ImGuiAPI::AcceptDragDropPayload(const char* type, ImGuiDragDropFlags flags)
+	{
+		return ImGui::AcceptDragDropPayload(type, flags);
+	}
+
 	void ImGuiAPI::InsertSameLine(float offset_from_start_x, float spacing)
 	{
 		ImGui::SameLine(offset_from_start_x, spacing);
@@ -403,6 +453,56 @@ namespace Eclipse
 			ImGui::PopTextWrapPos();
 			ImGui::EndTooltip();
 		}
+	}
+
+	void ImGuiAPI::NewLine()
+	{
+		ImGui::NewLine();
+	}
+
+	void ImGuiAPI::BeginToolTip()
+	{
+		ImGui::BeginTooltip();
+	}
+
+	void ImGuiAPI::EndTooltip()
+	{
+		ImGui::EndTooltip();
+	}
+
+	void ImGuiAPI::PopTextWrapPos()
+	{
+		ImGui::PopTextWrapPos();
+	}
+
+	void ImGuiAPI::PushTextWrapPos(float wrap_pos_x)
+	{
+		ImGui::PushTextWrapPos(wrap_pos_x);
+	}
+
+	void ImGuiAPI::SetScrollY(float scroll_y)
+	{
+		ImGui::SetScrollY(scroll_y);
+	}
+
+	float ImGuiAPI::GetFontSize()
+	{
+		return ImGui::GetFontSize();
+	}
+
+	void ImGuiAPI::PushStyleColor(ImGuiCol idx, const ImVec4& col)
+	{
+		ImGui::PushStyleColor(idx, col);
+	}
+
+	void ImGuiAPI::PopStyleColor()
+	{
+		ImGui::PopStyleColor();
+	}
+
+	void ImGuiAPI::Image(ImTextureID user_texture_id, const ImVec2& size, const ImVec2& uv0, const ImVec2& uv1, const ImVec4& tint_col, const ImVec4& border_col)
+	{
+		ImGui::Image(user_texture_id, size, uv0, uv1, tint_col, border_col);
 	}
 
 	void ImGuiAPI::PlotHistogram(const char* label, const float* values, int values_count, int values_offset, const char* overlay_text, float scale_min, float scale_max, ImVec2 graph_size, int stride)

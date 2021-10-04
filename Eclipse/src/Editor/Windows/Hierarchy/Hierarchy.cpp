@@ -101,7 +101,6 @@ namespace Eclipse
                     TreeNodeRecursion(entityName, entCom, prev, curr, index);
                 }
 
-
                 if (entCom.Child.empty() && !entCom.IsAChild
                     && ECGui::CreateSelectableButton(entityName.c_str(), &entCom.IsActive))
                 {
@@ -148,7 +147,6 @@ namespace Eclipse
                         static_cast<int>(index), entCom.IsActive);
                 }
 
-                //engine->editorManager->SetGlobalIndex(index);
                 engine->editorManager->DragAndDropInst_.IndexPayloadSource("PrefabGeneration", static_cast<int>(curr.index), PayloadSourceType::PST_ENTITY);
             }
         }
@@ -290,6 +288,7 @@ namespace Eclipse
         {
             temp |= ImGuiTreeNodeFlags_Selected;
         }
+
         HightLightParentAndChild(entCom);
 
         bool nodeOpen = ImGui::TreeNodeEx(parent.c_str(), temp);
@@ -345,25 +344,16 @@ namespace Eclipse
 
                 }
             }
-
             ECGui::EndTreeNode();
         }
         else
         {
-
             if (ImGui::IsItemClicked(0))
             {
                 size_t currIndex = ConvertEntityStringtoNumber(GetEntityComponentEntityNumber(parent));
                 engine->editorManager->SetGlobalIndex(engine->editorManager->GetEntityIndex(static_cast<Entity>(currIndex)));
                 UpdateEntityTracker(engine->editorManager->GetEntityID(engine->editorManager->GetEntityIndex(static_cast<Entity>(currIndex))));
             }
-
         }
-
-
-
     }
-
-
 }
-

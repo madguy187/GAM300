@@ -69,6 +69,10 @@ namespace Eclipse
 		static void SetWindowSize(float width, float height);
 		static void SetNextWindowPos(const ImVec2& pos, ImGuiCond cond = 0,
 			const ImVec2& pivot = ImVec2(0, 0));
+		static void SetNextWindowSize(const ImVec2& size, ImGuiCond cond = 0);
+		static void SetNextWindowDockID(ImGuiID dock_id, ImGuiCond cond = 0);
+		static void SetWindowFocus(const char* name);
+		static void SetNextWindowClass(const ImGuiWindowClass* window_class);
 
 		/*************************************************************************/
 		/*                           Dynamic Widgets                             */
@@ -123,6 +127,7 @@ namespace Eclipse
 			                        size_t& index);
 		static bool CreateMenuItem(const char* name, bool* open, const char* shortcut = "");
 		static void OpenPopup(const char* str_id, ImGuiPopupFlags popup_flags = 0);
+		static bool BeginPopup(const char* str_id, ImGuiWindowFlags flags = 0);
 		static void EndPopup();
 		static bool BeginPopupModal(const char* name, bool* p_open = NULL, ImGuiWindowFlags flags = 0);
 		static void CloseCurrentPopup();
@@ -269,10 +274,23 @@ namespace Eclipse
 		static void PushItemWidth(float value);
 		static bool IsItemHovered();
 		static void SetToolTip(const char* message);
+		static void NewLine();
+		static void BeginToolTip();
+		static void EndTooltip();
+		static void PopTextWrapPos();
+		static void PushTextWrapPos(float wrap_pos_x);
+		static void SetScrollY(float scroll_y);
+		static float GetFontSize();
+		static void PushStyleColor(ImGuiCol idx, const ImVec4& col);
+		static void PopStyleColor();
 
 		/*************************************************************************/
-		/*                         Graph Widgets                                 */
+		/*                         Visual Widgets                                */
 		/*************************************************************************/
+		static void Image(ImTextureID user_texture_id, const ImVec2& size, 
+			const ImVec2& uv0 = ImVec2(0, 0), const ImVec2& uv1 = ImVec2(1, 1), 
+			const ImVec4& tint_col = ImVec4(1, 1, 1, 1), 
+			const ImVec4& border_col = ImVec4(0, 0, 0, 0));
 		static void PlotHistogram(const char* label, std::vector<float> values, 
 			int values_offset = 0, const char* overlay_text = NULL, 
 			float scale_min = FLT_MAX, float scale_max = FLT_MAX, ImVec2 graph_size = ImVec2(0, 0), 
