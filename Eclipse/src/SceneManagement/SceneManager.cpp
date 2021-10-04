@@ -271,6 +271,7 @@ namespace Eclipse
 		engine->world.Clear();
 		engine->gCamera.ResetScene();
 		engine->gCullingManager->Clear();
+		engine->gDynamicAABBTree.ResetTree();
 	}
 
 	void SceneManager::ReloadScene()

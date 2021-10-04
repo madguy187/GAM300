@@ -102,6 +102,7 @@ namespace Eclipse
 			{
 				auto& aabb = w.GetComponent<AABBComponent>(ent);
 				engine->gCullingManager->Insert(aabb, ent);
+				engine->gDynamicAABBTree.InsertData(ent);
 			}
 			isSuccess = true;
 		}

@@ -115,14 +115,14 @@
             <transparency value="1" />
         </MeshComponent>
         <TransformComponent>
-            <position x="0" y="0" z="0" />
+            <position x="0.708357" y="0" z="9.07885" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
         <AABBComponent>
-            <center x="0" y="0" z="0" />
-            <Min x="-2.5" y="-2.5" z="-2.5" />
-            <Max x="2.5" y="2.5" z="2.5" />
+            <center x="0.708357" y="0" z="9.07885" />
+            <Min x="-1.79164" y="-2.5" z="6.57885" />
+            <Max x="3.20836" y="2.5" z="11.5789" />
         </AABBComponent>
     </Entity_2>
 </Entities>
