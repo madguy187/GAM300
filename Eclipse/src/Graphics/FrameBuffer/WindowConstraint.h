@@ -1,9 +1,9 @@
-#pragma once
+#ifndef WINDOWCONSTRAINT_H
+#define WINDOWCONSTRAINT_H
 
-#include "imgui.h"
-
-namespace CustomConstraint
+namespace Eclipse
 {
   void ResizeCallBack(ImGuiSizeCallbackData* data);
 }
 
+#endif//WINDOWCONSTRAINT_H

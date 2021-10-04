@@ -13,7 +13,7 @@ namespace Eclipse
     {
         ZoneScopedN("FileWatch System")
         engine->Timer.SetName({ SystemName::FILEWATCH });
-        engine->Timer.tracker.system_start = glfwGetTime();
+        engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
         // I only run in editor state
         if (engine->GetEditorState())

@@ -19,7 +19,7 @@ namespace Eclipse
         ZoneScopedN("Grid System")
 
         engine->Timer.SetName({ SystemName::GRID });
-        engine->Timer.tracker.system_start = glfwGetTime();
+        engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
 
         if (engine->GridManager->GetGridSystemIsRunning())

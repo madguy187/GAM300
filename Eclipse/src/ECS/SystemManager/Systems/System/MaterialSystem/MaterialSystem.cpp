@@ -12,8 +12,8 @@ namespace Eclipse
     {
         ZoneScopedN("Material System")
 
-            engine->Timer.SetName({ SystemName::MATERIAL });
-        engine->Timer.tracker.system_start = glfwGetTime();
+        engine->Timer.SetName({ SystemName::MATERIAL });
+        engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
         if (engine->MaterialManager.EnableHighlight == true)
         {

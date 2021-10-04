@@ -535,7 +535,7 @@
     <ClInclude Include="src\Graphics\Grid\IAABB.h">
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\Grid\bounds.h">
+    <ClInclude Include="src\Graphics\Grid\BoundingBox.h">
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h">
@@ -1033,7 +1033,7 @@
     <ClCompile Include="src\Graphics\Grid\Grid.cpp">
       <Filter>Graphics\Grid</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\Grid\bounds.cpp">
+    <ClCompile Include="src\Graphics\Grid\BoundingBox.cpp">
       <Filter>Graphics\Grid</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp">

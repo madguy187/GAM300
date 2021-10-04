@@ -47,9 +47,6 @@ namespace Eclipse
     {
         glBindFramebuffer(GL_FRAMEBUFFER, m_data.frameBufferID);
         glViewport(0, 0, OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight());
-        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // | GL_STENCIL_BUFFER_BIT);
-        //glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-
     }
 
     void FrameBuffer::Unbind() const
@@ -79,8 +76,6 @@ namespace Eclipse
 
         //  bind back to default framebuffer and draw with the attached framebuffer
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        //glDisable(GL_DEPTH_TEST);
-        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glBindTexture(GL_TEXTURE_2D, g.GetTextureColourBufferID());
     }
 
@@ -104,7 +99,6 @@ namespace Eclipse
         glBindRenderbuffer(GL_RENDERBUFFER, m_data.depthBufferID);
         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, p_width, p_height);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_data.depthBufferID);
-        //glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
         if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         {

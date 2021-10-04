@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Graphics/Grid/bounds.h"
+#include "Graphics/Grid/BoundingBox.h"
 
 namespace Eclipse
 {

@@ -97,13 +97,14 @@ namespace Eclipse
         FrustrumCollisionTree.InsertObject(engine->gCullingManager->CullContainer[ID]);
     }
 
+    void CullingManager::Remove(unsigned int ID)
+    {
+        FrustrumCollisionTree.RemoveObject(engine->gCullingManager->CullContainer[ID]);
+        engine->gCullingManager->CullContainer.erase(ID);
+    }
+
     void CullingManager::Clear()
     {
-        //for (auto& i : CullContainer)
-        //{
-        //    engine->world.DestroyComponent<AABBComponent>(i.first);
-        //}
-
         CullContainer.clear();
         FrustrumCollisionTree.ClearTree();
     }

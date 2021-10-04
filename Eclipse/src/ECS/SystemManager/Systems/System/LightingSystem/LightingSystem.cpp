@@ -26,7 +26,7 @@ namespace Eclipse
 	{
 		ZoneScopedN("Lighting System")
 		engine->Timer.SetName({ SystemName::LIGHTING });
-		engine->Timer.tracker.system_start = glfwGetTime();
+		engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
 		if (engine->LightManager.CheckApplyLighting() == true)
 		{

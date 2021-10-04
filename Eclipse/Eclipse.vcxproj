@@ -260,7 +260,7 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClInclude Include="src\Graphics\Grid\Box.h" />
     <ClInclude Include="src\Graphics\Grid\Grid.h" />
     <ClInclude Include="src\Graphics\Grid\IAABB.h" />
-    <ClInclude Include="src\Graphics\Grid\bounds.h" />
+    <ClInclude Include="src\Graphics\Grid\BoundingBox.h" />
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h" />
     <ClInclude Include="src\Graphics\InputHandler\InputWrapper.h" />
     <ClInclude Include="src\Graphics\Lighting\DirectionalLight.h" />
@@ -428,7 +428,7 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClCompile Include="src\Graphics\Grid\AABBTree.cpp" />
     <ClCompile Include="src\Graphics\Grid\Box.cpp" />
     <ClCompile Include="src\Graphics\Grid\Grid.cpp" />
-    <ClCompile Include="src\Graphics\Grid\bounds.cpp" />
+    <ClCompile Include="src\Graphics\Grid\BoundingBox.cpp" />
     <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp" />
     <ClCompile Include="src\Graphics\Lighting\DirectionalLight.cpp" />
     <ClCompile Include="src\Graphics\Lighting\LightManager.cpp" />
