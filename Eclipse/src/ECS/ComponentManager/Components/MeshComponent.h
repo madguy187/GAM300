@@ -12,7 +12,8 @@ namespace Eclipse
         //--------------------------------------
         // 3D Models
         //--------------------------------------
-        std::array<char, 128> MeshName;
+        using MeshNameType = std::array<char, 128>;
+        MeshNameType MeshName;
 
         //---------------------------------------
         // Anything Else Other than Assimp Models

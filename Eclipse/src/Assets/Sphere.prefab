@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
-<Prefab PrefabID="736833301531" Size="1">
-    <Entity_0 ID="2">
+<Prefab PrefabID="572103060520" Size="1">
+    <Entity_0 ID="0">
         <EntityComponent>
             <Tag value="Sphere" />
             <Name value="Sphere" />
@@ -14,22 +14,16 @@
             <ambient x="0" y="0" z="0" />
             <diffuse x="1" y="1" z="1" />
             <specular x="1" y="1" z="1" />
-            <HighlightColour x="1" y="0" z="0" />
-            <Highlight value="false" />
-            <NoTextures value="true" />
             <shininess value="0.25" />
             <MaximumShininess value="128" />
-            <Thickness value="0.05" />
-            <ScaleUp value="1.05" />
+            <Highlight value="true" />
+            <NoTextures value="true" />
             <ComboIndex value="0" />
             <hasTexture value="true" />
             <TextureRef value="brick" />
         </MaterialComponent>
         <MeshComponent>
             <MeshName value="" />
-            <Diffuse x="0" y="0" z="0" w="0" />
-            <Specular x="0" y="0" z="0" w="0" />
-            <Ambient x="0" y="0" z="0" w="0" />
             <color x="1" y="1" z="1" />
             <textureIdx x="0" y="0" />
             <isQuad value="false" />
@@ -46,16 +40,16 @@
         <TransformComponent>
             <position x="0" y="0" z="0" />
             <rotation x="0" y="0" z="0" />
-            <scale x="23.75" y="5" z="5" />
+            <scale x="19.118" y="5" z="5" />
         </TransformComponent>
         <AABBComponent>
-            <center x="0" y="0" z="0" />
-            <Min x="-11.875" y="-2.5" z="-2.5" />
-            <Max x="11.875" y="2.5" z="2.5" />
+            <center x="-20.9604" y="0" z="11.5179" />
+            <Min x="-30.5194" y="-2.5" z="9.01792" />
+            <Max x="-11.4014" y="2.5" z="14.0179" />
         </AABBComponent>
         <PrefabComponent>
             <IsChild value="false" />
-            <PrefabID value="736833301531" />
+            <PrefabID value="572103060520" />
         </PrefabComponent>
     </Entity_0>
 </Prefab>

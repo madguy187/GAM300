@@ -17,7 +17,7 @@ namespace Eclipse
 			LightComponent,
 			MaterialComponent,
 			MeshComponent,
-			ModeLInforComponent,
+			ModelComponent,
 			PointLightComponent,
 			RigidBodyComponent,
 			ScriptComponent,
