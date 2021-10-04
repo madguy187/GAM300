@@ -117,7 +117,7 @@ namespace Eclipse
         prefabWorld.RegisterComponent<MaterialComponent>();
         prefabWorld.RegisterComponent<RigidBodyComponent>();
         prefabWorld.RegisterComponent<TextureComponent>();
-        prefabWorld.RegisterComponent<ModeLInforComponent>();
+        prefabWorld.RegisterComponent<ModelComponent>();
         prefabWorld.RegisterComponent<LightComponent>();
         prefabWorld.RegisterComponent<ScriptComponent>();
         prefabWorld.RegisterComponent<AudioComponent>();
