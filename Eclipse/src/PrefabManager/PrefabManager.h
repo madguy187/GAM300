@@ -6,7 +6,8 @@ namespace Eclipse
 	class PrefabManager
 	{
 		std::priority_queue<int> freeID;
-		std::unordered_map<std::string, Entity> mapPathToID;
+		std::unordered_map<int, Entity> mapPIDToEID;
+		std::unordered_map<std::string, int> mapPathToID;
 		int CountID;
 
 		void LoadPrefab(const char* path);

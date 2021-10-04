@@ -4,7 +4,7 @@
         <EntityComponent>
             <Tag value="DirectionalLight" />
             <Name value="DirectionalLight" />
-            <IsActive value="true" />
+            <IsActive value="false" />
             <Child size="0" />
             <Parent size="0" />
             <IsAChild value="false" />
@@ -27,16 +27,12 @@
             <scale x="5" y="5" z="5" />
         </TransformComponent>
         <LightComponent />
-        <PrefabComponent>
-            <IsChild value="true" />
-            <PrefabID value="2" />
-        </PrefabComponent>
     </Entity_0>
     <Entity_1 ID="1">
         <EntityComponent>
             <Tag value="Camera" />
             <Name value="Camera" />
-            <IsActive value="false" />
+            <IsActive value="true" />
             <Child size="0" />
             <Parent size="0" />
             <IsAChild value="false" />

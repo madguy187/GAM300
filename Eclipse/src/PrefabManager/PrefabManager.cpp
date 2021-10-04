@@ -20,11 +20,19 @@ namespace Eclipse
 
 	void PrefabManager::LoadAllPrefab()
 	{
-		for (auto& entry : std::filesystem::recursive_directory_iterator())
+		for (auto& entry : std::filesystem::recursive_directory_iterator("src\\Assets"))
 		{
 			auto& extension = entry.path().extension().string();
 			if (!extension.compare(".prefab"))
 			{
+				std::filesystem::path t = "D:\\GAM300\\GAM300\\Eclipse\\src\\Assets\\Camera.prefab";
+				std::cout << t.relative_path() << std::endl;
+				if (!entry.path().relative_path().compare(t.relative_path()))
+				{
+					std::cout << "Hello" << std::endl;
+				}
+
+				std::cout << entry.path() << std::endl;
 				//LoadPrefab(entry.path().string().c_str());
 			}
 		}
@@ -114,6 +122,7 @@ namespace Eclipse
 
 		auto& entComp = prefabW.GetComponent<EntityComponent>(contents[0]);
 		std::string destPath = GenerateFileName(entComp, path);
+		mapPathToID[destPath] =  generatedID;
 
 		engine->szManager.SavePrefabFile(prefabComp.PrefabID, contents, destPath.c_str());
 	}
