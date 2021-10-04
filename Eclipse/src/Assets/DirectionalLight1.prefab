@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<Prefab PrefabID="0" Size="1">
+    <Entity_0 ID="0">
+        <EntityComponent>
+            <Tag value="DirectionalLight" />
+            <Name value="DirectionalLight1" />
+            <IsActive value="true" />
+            <Child size="0" />
+            <Parent size="0" />
+            <IsAChild value="false" />
+        </EntityComponent>
+        <DirectionalLightComponent>
+            <Counter value="0" />
+            <visible value="false" />
+            <AffectsWorld value="true" />
+            <EnableBlinnPhong value="true" />
+            <lightColor x="1" y="1" z="1" />
+            <Direction x="-1" y="-1" z="-1" />
+            <ambient x="0.2" y="0.2" z="0.2" />
+            <diffuse x="0.4" y="0.4" z="0.4" />
+            <specular x="0.5" y="0.5" z="0.5" />
+            <Color x="1" y="1" z="1" w="1" />
+        </DirectionalLightComponent>
+        <TransformComponent>
+            <position x="0" y="0" z="0" />
+            <rotation x="0" y="0" z="0" />
+            <scale x="5" y="5" z="5" />
+        </TransformComponent>
+        <LightComponent />
+        <PrefabComponent>
+            <IsChild value="false" />
+            <PrefabID value="0" />
+        </PrefabComponent>
+    </Entity_0>
+</Prefab>

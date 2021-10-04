@@ -7,6 +7,7 @@
 #include "../ECS/ComponentManager/Components/AIComponent.h"
 #include "ECS/SystemManager/Systems/System/PrefabSystem/PrefabSystem.h"
 
+
 namespace Eclipse
 {
 	const std::string PrefabManager::PrefabPath = "src//Assets//Prefabs//";
@@ -44,6 +45,28 @@ namespace Eclipse
 		}
 	}
 
+	std::string PrefabManager::GenerateFileName(EntityComponent& entComp, const char* path)
+	{
+		std::string& name = entComp.Name;
+		std::string prefabName = "\\" + name + ".prefab";
+		std::string checkPath = path + prefabName;
+		std::string tempName;
+		size_t count = 0;
+		while (std::filesystem::exists(checkPath))
+		{
+			tempName = name + lexical_cast<std::string>(++count);
+			prefabName = "\\" + tempName + ".prefab";
+			checkPath = path + prefabName;
+		}
+
+		if (count)
+		{
+			name = tempName;
+		}
+
+		return checkPath;
+	}
+
 	void PrefabManager::GeneratePrefab(const Entity& ent, const char* path)
 	{
 		//Declaration
@@ -78,7 +101,10 @@ namespace Eclipse
 		auto& prefabComp = w.GetComponent<PrefabComponent>(ent);
 		prefabComp.IsChild = true;
 
-		engine->szManager.SavePrefabFile(prefabComp.PrefabID, contents, path);
+		auto& entComp = prefabW.GetComponent<EntityComponent>(contents[0]);
+		std::string destPath = GenerateFileName(entComp, path);
+
+		engine->szManager.SavePrefabFile(prefabComp.PrefabID, contents, destPath.c_str());
 	}
 
 	//Create object using prefab, by passing in the prefab data.
@@ -90,6 +116,6 @@ namespace Eclipse
 
 	PrefabManager::~PrefabManager()
 	{
-		//engine->szManager.SavePrefabWorldFile(engine->prefabWorld.GetSystem<PrefabSystem>()->mEntities);
+		engine->szManager.SavePrefabWorldFile(engine->prefabWorld.GetSystem<PrefabSystem>()->mEntities);
 	}
 }

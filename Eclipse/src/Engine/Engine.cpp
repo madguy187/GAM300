@@ -114,6 +114,8 @@ namespace Eclipse
         prefabWorld.RegisterComponent<ModeLInforComponent>();
         prefabWorld.RegisterComponent<LightComponent>();
         prefabWorld.RegisterComponent<ScriptComponent>();
+        prefabWorld.RegisterComponent<AudioComponent>();
+        prefabWorld.RegisterComponent<CollisionComponent>();
         prefabWorld.RegisterComponent<ParentComponent>();
         prefabWorld.RegisterComponent<ChildComponent>();
         prefabWorld.RegisterComponent<PrefabComponent>();
@@ -180,10 +182,12 @@ namespace Eclipse
         world.RegisterSystemSignature<AudioSystem>(audioSignature);
 
         Signature prefabSig;
-        prefabSig.set(world.GetComponentType<PrefabComponent>());
+        prefabSig.set(world.GetComponentType<PrefabComponent>(), 1);
         world.RegisterSystemSignature<PrefabSystem>(prefabSig);
 
-        prefabWorld.RegisterSystemSignature<PrefabSystem>(prefabSig);
+        Signature prefabSig2;
+        prefabSig2.set(prefabWorld.GetComponentType<PrefabComponent>(), 1);
+        prefabWorld.RegisterSystemSignature<PrefabSystem>(prefabSig2);
 
         //Check this! - Rachel
         RenderSystem::Init();

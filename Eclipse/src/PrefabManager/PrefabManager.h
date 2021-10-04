@@ -11,6 +11,8 @@ namespace Eclipse
 
 		void LoadPrefab(const char* path);
 
+		std::string GenerateFileName(EntityComponent& entComp, const char* path);
+
 	public:
 		static const std::string PrefabPath;
 
