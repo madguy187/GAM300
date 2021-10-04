@@ -48,7 +48,6 @@ namespace Eclipse
 		bool isExternalNode(Node* node);
 		size_t Height(Node* node);
 		Node* FindNode(unsigned int ID);
-		void RemoveData(unsigned int ID);
 		void DeleteTree(Node* node);
 
 		std::unordered_map<unsigned int, Node*> TreeNodes;
@@ -57,6 +56,7 @@ namespace Eclipse
 		~DynamicAABBTree();
 
 		void InsertData(unsigned int ID);
+		void RemoveData(unsigned int ID);
 		void UpdateData(unsigned int ID);
 		void ResetTree();
 		unsigned int RayCast(Node* node, glm::vec3 rayStart, glm::vec3 rayDir, float& tMin);

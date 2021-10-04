@@ -28,6 +28,12 @@ namespace Eclipse
 					{
 						engine->editorManager->DestroyEntity(currEnt);
 						engine->gCullingManager->Remove(currEnt);
+
+						//Remove function for DynamicAABBTree. -Rachel
+						engine->gDynamicAABBTree.RemoveData(currEnt);
+
+						//Please check this! Resets the selected object's ID to MAX_ENTITY. - Rachel
+						engine->gPicker.SetCurrentCollisionID(MAX_ENTITY);
 					}
 				}
 			}
