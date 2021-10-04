@@ -28,7 +28,7 @@ namespace Eclipse
 		}
 	}
 
-	void DragAndDrop::IndexPayloadSource(const char* id, const int& source, PayloadSourceType type)
+	void DragAndDrop::IndexPayloadSource(const char* id, const int& source, PayloadSourceType type, Entity ID)
 	{
 		if (ImGui::BeginDragDropSource())
 		{
@@ -42,8 +42,20 @@ namespace Eclipse
 				// For rendering 2D Image -> Need ask Graphics side
 				break;
 			case PayloadSourceType::PST_ENTITY:
-				auto& entCom = engine->world.GetComponent<EntityComponent>(static_cast<Entity>(source));
-				ImGui::TextUnformatted(lexical_cast_toStr<EntityType>(entCom.Tag).c_str());
+				if (engine->world.CheckComponent<EntityComponent>(ID))
+				{
+					auto& entCom = engine->world.GetComponent<EntityComponent>(static_cast<Entity>(ID));
+
+					if (entCom.Name != "Untagged Entity")
+						ImGui::TextUnformatted(entCom.Name.c_str());
+					else
+						ImGui::TextUnformatted(lexical_cast_toStr<EntityType>(entCom.Tag).c_str());
+				}
+				else
+				{
+					ImGui::TextUnformatted(lexical_cast<std::string>(ID).c_str());
+				}
+				PrefabID = ID;
 				break;
 			}
 
@@ -85,10 +97,9 @@ namespace Eclipse
 					// FOR JIAN HERNG for creating prefab on scene buffer, take the path
 					break;
 				case PayloadTargetType::PTT_ASSETS:
-					Entity entID = static_cast<Entity>(*((int*)payload->Data));
 					// FOR JIAN HERNG entID for entity number and destination for path
 					// to generate prefab file in asset browser
-					engine->pfManager.GeneratePrefab(entID, destination.c_str());
+					engine->pfManager.GeneratePrefab(PrefabID, destination.c_str());
 					break;
 				}
 

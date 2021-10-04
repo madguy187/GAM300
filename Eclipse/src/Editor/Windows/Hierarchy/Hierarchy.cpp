@@ -142,9 +142,8 @@ namespace Eclipse
                 }
                 if (!entCom.IsAChild)
                 {
-                    //engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity", static_cast<int>(curr.index), PayloadSourceType::PST_ENTITY);
                     engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
-                        static_cast<int>(index), PayloadSourceType::PST_ENTITY);
+                        static_cast<int>(index), PayloadSourceType::PST_ENTITY, curr.index);
                     engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
                         static_cast<int>(index), entCom.IsActive);
                 }
