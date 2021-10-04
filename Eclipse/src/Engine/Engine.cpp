@@ -105,24 +105,24 @@ namespace Eclipse
         Signature RenderSys = RenderSystem::RegisterAll();
         world.RegisterSystemSignature<RenderSystem>(RenderSys);
 
-        Signature hi2;
-        hi2.set(world.GetComponentType<TransformComponent>(), 1);
-        hi2.set(world.GetComponentType<CameraComponent>(), 1);
-        world.RegisterSystemSignature<CameraSystem>(hi2);
+        Signature CameraSys;
+        CameraSys.set(world.GetComponentType<TransformComponent>(), 1);
+        CameraSys.set(world.GetComponentType<CameraComponent>(), 1);
+        world.RegisterSystemSignature<CameraSystem>(CameraSys);
 
-        Signature hi3;
-        hi3.set(world.GetComponentType<LightComponent>(), 1);
-        world.RegisterSystemSignature<LightingSystem>(hi3);
+        Signature LightingSys;
+        LightingSys.set(world.GetComponentType<LightComponent>(), 1);
+        world.RegisterSystemSignature<LightingSystem>(LightingSys);
 
-        Signature mat;
-        mat.set(world.GetComponentType<MaterialComponent>(), 1);
-        world.RegisterSystemSignature<MaterialSystem>(mat);
+        Signature MateriakSys;
+        MateriakSys.set(world.GetComponentType<MaterialComponent>(), 1);
+        world.RegisterSystemSignature<MaterialSystem>(MateriakSys);
 
-        Signature picking;
-        picking.set(world.GetComponentType<AABBComponent>(), 1);
-        picking.set(world.GetComponentType<TransformComponent>(), 1);
-        picking.set(world.GetComponentType<MaterialComponent>(), 1);
-        world.RegisterSystemSignature<PickingSystem>(picking);
+        Signature PickingSys;
+        PickingSys.set(world.GetComponentType<AABBComponent>(), 1);
+        PickingSys.set(world.GetComponentType<TransformComponent>(), 1);
+        PickingSys.set(world.GetComponentType<MaterialComponent>(), 1);
+        world.RegisterSystemSignature<PickingSystem>(PickingSys);
 
         Signature gridCol;
         gridCol.set(world.GetComponentType<AABBComponent>(), 1);
@@ -165,7 +165,7 @@ namespace Eclipse
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
             glfwPollEvents();
-            engine->GraphicsManager.mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });
+            engine->GraphicsManager.SetBackGroundColour();
 
             Game_Clock.set_timeSteps(0);
             framecount++;
@@ -244,11 +244,8 @@ namespace Eclipse
             // RENDERSYSTEM =============================
             world.Update<RenderSystem>();
 
-            // Material SYstem =============================
-            //world.Update<MaterialSystem>();
-
-            // GRID DRAW ============================= Must be last of All Renders
-            engine->GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
+            // GRID DRAW ================================ Must be last of All Renders
+            engine->GraphicsManager.DrawEntireGrid(); 
 
             if (IsScenePlaying())
             {

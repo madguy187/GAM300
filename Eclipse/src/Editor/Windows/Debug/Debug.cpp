@@ -54,5 +54,24 @@ namespace Eclipse
 				ECGui::DrawSliderFloatWidget("CamSpeed", &camCom.cameraSpeed, true, 1.f, 200.f);
 			}
 		}
+
+		ECGui::DrawTextWidget<const char*>("Render Settings:", "");
+		{
+			ECGui::DrawTextWidget<const char*>("Gamma", "");
+			ECGui::InsertSameLine();
+			ECGui::DrawSliderFloatWidget("Gamma", &engine->GraphicsManager.GammaCorrection, true, 0.5f, 2.5f);
+
+			ImGui::Dummy;
+
+			ECGui::DrawTextWidget<const char*>("BackGroundColour", "");
+			ECGui::InsertSameLine();
+			ECGui::DrawSliderFloat3Widget("BackGroundColour", &engine->GraphicsManager.BackGroundColour, true, 0.f, 1.0f);
+
+			ImGui::Dummy;
+
+			ECGui::DrawTextWidget<const char*>("Draw Grid", "");
+			ECGui::InsertSameLine();
+			ECGui::CheckBoxBool("DrawGrid", &engine->GridManager->Visible);
+		}
 	}
 }

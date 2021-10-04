@@ -66,6 +66,13 @@ namespace Eclipse
         ModelHighLight ModelHighlightContainer;
         MeshHighLight MeshHighLightContainer;
 
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // Highlighting
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        float Thickness = 0.008f; // Check Highlighting
+        float ScaleUp = 1.02f;   // Only for 3D Primitives
+        ECVec3 HighlightColour{ 1.0f,0.0f,1.0f };
+
     public:
         float GetCurrentShininess(MaterialComponent& in);
         void UpdateShininess(unsigned int EntityID);

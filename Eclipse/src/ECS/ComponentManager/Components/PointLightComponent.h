@@ -28,5 +28,7 @@ namespace Eclipse
         bool hasTexture = false;
         bool visible = true;
         bool AffectsWorld = true;
+
+        float Exposure = 1.0f;
     };
 }

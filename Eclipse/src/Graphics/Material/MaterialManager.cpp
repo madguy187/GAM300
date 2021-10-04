@@ -225,9 +225,12 @@ namespace Eclipse
 
         GLCall(glUniform1f(uniform_var_loc1, inside.shininess));
         GLCall(glUniform1f(uniform_var_loc2, inside.MaximumShininess));
-        GLCall(glUniform1f(uniformloc3, inside.Thickness));
-        GLCall(glUniform3f(uniformloc4, inside.HighlightColour.getX(), inside.HighlightColour.getY(), inside.HighlightColour.getZ()));
+        GLCall(glUniform1f(uniformloc3, engine->MaterialManager.Thickness));
 
+        GLCall(glUniform3f(uniformloc4,
+            engine->MaterialManager.HighlightColour.getX(),
+            engine->MaterialManager.HighlightColour.getY(),
+            engine->MaterialManager.HighlightColour.getZ()));
     }
 
     void MaterialManager::CheckUniformLoc(MeshComponent& sprite, Shader& in, unsigned int id, unsigned int framebufferID)
@@ -266,7 +269,7 @@ namespace Eclipse
             model = glm::rotate(model, glm::radians(trans.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
             model = glm::rotate(model, glm::radians(trans.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
             model = glm::rotate(model, glm::radians(trans.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-            model = glm::scale(model, { trans.scale.getX() * outline.ScaleUp , trans.scale.getY() * outline.ScaleUp, trans.scale.getZ() * outline.ScaleUp });
+            model = glm::scale(model, { trans.scale.getX() * engine->MaterialManager.ScaleUp , trans.scale.getY() * engine->MaterialManager.ScaleUp, trans.scale.getZ() * engine->MaterialManager.ScaleUp });
             mModelNDC = camera.projMtx * camera.viewMtx * model;
             glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(mModelNDC));
         }

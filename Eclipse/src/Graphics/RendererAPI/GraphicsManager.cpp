@@ -12,9 +12,9 @@ void Eclipse::GraphicsManager::MassInit()
 
 void Eclipse::GraphicsManager::RegisterThreads()
 {
-   GraphicThreads.emplace("Grid", std::make_unique<std::thread>(std::thread{ &GridSystem::Init}));
-   GraphicThreads.emplace("Lighting", std::make_unique<std::thread>(std::thread{ &LightingSystem::Init }));
-   GraphicThreads.emplace("FileWatch", std::make_unique<std::thread>(std::thread{ &FileWatchSystem::Init }));
+    GraphicThreads.emplace("Grid", std::make_unique<std::thread>(std::thread{ &GridSystem::Init }));
+    GraphicThreads.emplace("Lighting", std::make_unique<std::thread>(std::thread{ &LightingSystem::Init }));
+    GraphicThreads.emplace("FileWatch", std::make_unique<std::thread>(std::thread{ &FileWatchSystem::Init }));
 }
 
 void Eclipse::GraphicsManager::Pre_Render()
@@ -152,7 +152,7 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
         engine->world.AddComponent(ID, MeshComponent{});
         MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-        sprite.modelRef = Graphics::models.find("pyramid")->first;
+        sprite.modelRef = Graphics::models.find("Pyramid")->first;
 
     }
     break;
@@ -164,24 +164,21 @@ void Eclipse::GraphicsManager::CreatePrimitives(Entity ID, int ModelType)
 
         engine->world.AddComponent(ID, MeshComponent{});
         MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-        //sprite.ID = ID;
         sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-        sprite.modelRef = Graphics::models.find("lines3D")->first;
+        sprite.modelRef = Graphics::models.find("Lines3D")->first;
 
     }
     break;
     case 11:
     {
-        //engine->world.AddComponent(ID, MaterialComponent{});
-        //MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
-        //mat.Modeltype = MaterialComponent::ModelType::BasicPrimitives;
+        engine->world.AddComponent(ID, MaterialComponent{});
+        MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+        mat.Modeltype = MaterialModelType::MT_BASIC;
 
-        //engine->world.AddComponent(ID, MeshComponent{});
-        //MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-        //sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-        //sprite.modelRef = Graphics::models.find("plane")->first;
-
-        engine->AssimpManager.CreateModel(ID, "Bed");
+        engine->world.AddComponent(ID, MeshComponent{});
+        MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
+        sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
+        sprite.modelRef = Graphics::models.find("Plane")->first;
     }
     break;
     // pointlight
@@ -271,16 +268,16 @@ void Eclipse::GraphicsManager::CheckTexture(unsigned int ID)
     {
         MaterialComponent& tex = engine->world.GetComponent<MaterialComponent>(ID);
 
-        if (tex.hasTexture)
+        if (tex.hasTexture && tex.TextureRef != "Default")
         {
             glBindTexture(GL_TEXTURE_2D, Graphics::FindTextures(tex.TextureRef).GetHandle());
 
             glEnable(GL_BLEND);
 
-            glTextureParameteri( Graphics::FindTextures(tex.TextureRef).GetHandle(), GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTextureParameteri( Graphics::FindTextures(tex.TextureRef).GetHandle(), GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTextureParameteri( Graphics::FindTextures(tex.TextureRef).GetHandle(), GL_TEXTURE_WRAP_S, GL_REPEAT);
-            glTextureParameteri( Graphics::FindTextures(tex.TextureRef).GetHandle(), GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTextureParameteri(Graphics::FindTextures(tex.TextureRef).GetHandle(), GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTextureParameteri(Graphics::FindTextures(tex.TextureRef).GetHandle(), GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTextureParameteri(Graphics::FindTextures(tex.TextureRef).GetHandle(), GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTextureParameteri(Graphics::FindTextures(tex.TextureRef).GetHandle(), GL_TEXTURE_WRAP_T, GL_REPEAT);
         }
     }
 }
@@ -288,19 +285,14 @@ void Eclipse::GraphicsManager::CheckTexture(unsigned int ID)
 void Eclipse::GraphicsManager::CheckUniformLoc(Shader* _shdrpgm, MeshComponent& sprite, unsigned int id, unsigned int framebufferID, CameraComponent& camera)
 {
     TransformComponent camerapos;
-    //camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetEditorCameraID());
-
     TransformComponent& trans = engine->world.GetComponent<TransformComponent>(id);
 
     GLint uniform_var_loc1 = _shdrpgm->GetLocation("uModelToNDC");
     GLint uniform_var_loc2 = _shdrpgm->GetLocation("uColor");
     GLint uniform_var_loc3 = _shdrpgm->GetLocation("uTextureCheck");
-    //GLint uniform_var_loc4 = sprite.shaderRef->second.GetLocation("TextureIndex");
-    //GLint uniform_var_loc5 = sprite.shaderRef->second.GetLocation("TextureDimensions");
     GLuint tex_loc = _shdrpgm->GetLocation("uTex2d");
     GLuint cam = _shdrpgm->GetLocation("camPos");
     GLuint model2 = _shdrpgm->GetLocation("model");
-
     GLuint hi = _shdrpgm->GetLocation("noTex");
     glUniform1i(hi, true);
 
@@ -325,11 +317,6 @@ void Eclipse::GraphicsManager::CheckUniformLoc(Shader* _shdrpgm, MeshComponent& 
         glUniformMatrix4fv(model2, 1, GL_FALSE, glm::value_ptr(model));
     }
 
-    //if (cam >= 0)
-    //{
-    //    glUniform3f(cam, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ());
-    //}
-
     if (uniform_var_loc2 >= 0)
     {
         glUniform4f(uniform_var_loc2, sprite.color.getX(), sprite.color.getY(), sprite.color.getZ(), sprite.transparency);
@@ -344,27 +331,6 @@ void Eclipse::GraphicsManager::CheckUniformLoc(Shader* _shdrpgm, MeshComponent& 
     {
         glUniform1i(uniform_var_loc3, false);
     }
-
-    //if (uniform_var_loc4 >= 0)
-    //{
-    //    GLCall(glUniform2f(uniform_var_loc4, sprite.textureIdx.getX(), sprite.textureIdx.getY()));
-    //}
-
-    //if (sprite.hasTexture)
-    //{
-    //    if (sprite.textureRef != Graphics::textures.end())
-    //    {
-    //        if (uniform_var_loc5 >= 0)
-    //        {
-    //            GLCall(glUniform2f(uniform_var_loc5, sprite.textureRef->second.GetCols(), sprite.textureRef->second.GetRows()));
-    //        }
-    //        else
-    //        {
-    //            std::cout << "Uniform variable doesn't exist!!!\n";
-    //            std::exit(EXIT_FAILURE);
-    //        }
-    //    }
-    //}
 
     if (tex_loc >= 0)
     {
@@ -470,6 +436,17 @@ void Eclipse::GraphicsManager::WindowCloseCallback(GLFWwindow* window)
     }
 }
 
+void Eclipse::GraphicsManager::SetBackGroundColour()
+{
+    //mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.0f });
+    mRenderContext.SetClearColor({ BackGroundColour.getX(),  BackGroundColour.getY(),  BackGroundColour.getZ(), 1.0f });
+}
+
+void Eclipse::GraphicsManager::DrawEntireGrid()
+{
+    engine->GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
+}
+
 /*************************************************************************
   FrameBuffer Things
 *************************************************************************/
@@ -545,13 +522,11 @@ FrameBuffer* Eclipse::OpenGL_Context::GetFramebuffer(FrameBufferMode mode)
     }
 
     auto& selectfb = _Framebuffers[mode];
-
     return selectfb;
 }
 
 void Eclipse::GraphicsManager::FrameBufferDraw()
 {
-
     FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_GAME)), "GameView");
     FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_SCENE)), "SceneView");
     FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_TOP)), "SceneView_Top");

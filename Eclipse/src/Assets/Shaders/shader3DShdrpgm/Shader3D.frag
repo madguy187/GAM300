@@ -80,7 +80,7 @@ struct SpotLight
   
     vec3 ambient;
     vec3 diffuse;
-    vec3 specular;       
+    vec3 specular;
 };
 
 #define NR_POINT_LIGHTS 4  
@@ -105,7 +105,6 @@ vec3 CalcPointLight(PointLight light, vec3 normala, vec3 fragPos, vec3 viewDira,
 vec3 CalcDirLight(DirectionalLight light, vec3 normala, vec3 viewDira, vec4 texDiff, vec4 texSpec);
 vec3 CalcSpotLight(SpotLight light, vec3 normala, vec3 fragPos, vec3 viewDira , vec4 texDiff, vec4 texSpec);
 
-
 void main () 
 {
 	if(!uTextureCheck)
@@ -118,8 +117,8 @@ void main ()
      vec3 result;
 
      // properties
-     vec3 norm = normalize(normal_from_vtxShader);
-     vec3 viewDir = normalize(camPos - crntPos);
+    vec3 norm = normalize(normal_from_vtxShader);
+    vec3 viewDir = normalize(camPos - crntPos);
 	
     vec4 texDiff;
 	vec4 texSpec;
@@ -213,11 +212,13 @@ void main ()
         }
     }
 
-        fFragClr = vec4(result,1.0f);
+		 fFragClr = vec4(result,1.0f);
 
         if(EnableGammaCorrection == true )
         {
-            fFragClr.rgb = pow(fFragClr.rgb, vec3(1.0/gamma));
+			float exposure = 1.0f;
+			vec3 toneMapped = vec3(1.0f) - exp(-fFragClr.rgb * exposure);
+            fFragClr.rgb = pow(toneMapped, vec3(1.0/gamma));
         }
         
     }

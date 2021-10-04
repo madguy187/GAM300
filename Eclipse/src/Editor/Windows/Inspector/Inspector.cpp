@@ -418,11 +418,11 @@ namespace Eclipse
                 ECGui::DrawTextWidget<const char*>("MaximumShininess", "");
                 ECGui::DrawSliderFloatWidget("Material MaximumShininess", &_Material.MaximumShininess, true, 0.0f, 200.0f);
 
-                ECGui::DrawTextWidget<const char*>("Thickness", "");
-                ECGui::DrawSliderFloatWidget("Material Thickness", &_Material.Thickness, true, 0.0f, 200.0f);
+                //ECGui::DrawTextWidget<const char*>("Thickness", "");
+                //ECGui::DrawSliderFloatWidget("Material Thickness", &_Material.Thickness, true, 0.0f, 200.0f);
 
-                ECGui::DrawTextWidget<const char*>("ScaleUp", "");
-                ECGui::DrawSliderFloatWidget("Material ScaleUp", &_Material.ScaleUp, true, 0.0f, 200.0f);
+                //ECGui::DrawTextWidget<const char*>("ScaleUp", "");
+                //ECGui::DrawSliderFloatWidget("Material ScaleUp", &_Material.ScaleUp, true, 0.0f, 200.0f);
 
                 ImGui::Columns(2, NULL, true);
                 ECGui::DrawTextWidget<const char*>("Highlight", "");
@@ -735,7 +735,7 @@ namespace Eclipse
         ECGui::DrawTextWidget<const char*>("Texture  ", "");
         ECGui::InsertSameLine();
 
-        if (ImGui::Button((Item.TextureRef.c_str()), buttonSize) || (ImGui::IsItemClicked() && ImGui::IsItemHovered()) )
+        if (ImGui::Button((Item.TextureRef.c_str()), buttonSize) || (ImGui::IsItemClicked() && ImGui::IsItemHovered()))
         {
             ImGui::OpenPopup("Texture Changer");
         }

@@ -33,10 +33,12 @@ namespace Eclipse
         bool CheckRender = true;
         bool EnableGammaCorrection = true;
         bool DrawSky = true;
+        float GammaCorrection = 2.2f;
+        ECVec3 BackGroundColour{ 0.1f,0.2f,0.3f };
 
     public:
         std::map<std::string, std::vector<std::string>> ShaderMap;
-        std::unordered_map<std::string,std::unique_ptr<std::thread>> GraphicThreads;
+        std::unordered_map<std::string, std::unique_ptr<std::thread>> GraphicThreads;
 
         void MassInit();
         void RegisterThreads();
@@ -66,8 +68,10 @@ namespace Eclipse
         unsigned int GetFrameBufferID(FrameBufferMode mode);
         FrameBuffer::RenderMode GetRenderMode(FrameBufferMode mode);
         static void WindowCloseCallback(GLFWwindow* window);
+        void SetBackGroundColour();
+        void DrawEntireGrid();
+
     private:
-        float GammaCorrection = 2.0f;
         void UpdateFrameBuffer();
         void FrameBufferDraw();
     };

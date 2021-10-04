@@ -63,6 +63,7 @@ namespace Eclipse
         ADD_MEMBER(diffuse);
         ADD_MEMBER(specular);
         ADD_MEMBER(Color);
+        ADD_MEMBER(Exposure);
     }
 
     DEFINE_META(EntityComponent)
@@ -78,13 +79,13 @@ namespace Eclipse
         ADD_MEMBER(ambient);
         ADD_MEMBER(diffuse);
         ADD_MEMBER(specular);
-        ADD_MEMBER(HighlightColour);
+        //ADD_MEMBER(HighlightColour);
         ADD_MEMBER(shininess);
         ADD_MEMBER(MaximumShininess);
         //ADD_MEMBER(RegisterForHighlight);
         ADD_MEMBER(Highlight);
         ADD_MEMBER(NoTextures);
-        ADD_MEMBER(ScaleUp);
+        //ADD_MEMBER(ScaleUp);
         ADD_MEMBER(ComboIndex);
     }
 
@@ -135,6 +136,7 @@ namespace Eclipse
         ADD_MEMBER(hasTexture);
         ADD_MEMBER(visible);
         ADD_MEMBER(AffectsWorld);
+        ADD_MEMBER(Exposure);
     }
 
     DEFINE_META(RigidBodyComponent)
@@ -174,6 +176,7 @@ namespace Eclipse
         ADD_MEMBER(hasTexture);
         ADD_MEMBER(visible);
         ADD_MEMBER(AffectsWorld);
+        ADD_MEMBER(Exposure);
     }
 
     //DEFINE_META(TextureComponent)

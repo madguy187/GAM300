@@ -21,5 +21,7 @@ namespace Eclipse
         ECVec3 diffuse{ 0.4f,0.4f,0.4f };
         ECVec3 specular{ 0.5f,0.5f,0.5f };
         ECVec4 Color{ 1.0f,1.0f,1.0f,1 };
+
+        float Exposure = 1.0f;
     };
 }

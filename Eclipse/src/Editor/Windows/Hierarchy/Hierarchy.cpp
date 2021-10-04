@@ -56,8 +56,7 @@ namespace Eclipse
 
             if (ECGui::CreateSelectableButton(hiDarrenVector[comboindex].c_str(), &selected))
             {
-                auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
-                engine->AssimpManager.CreateModel(MeshID, hiDarrenVector[comboindex].c_str());
+                engine->AssimpManager.CreateModel(0, hiDarrenVector[comboindex].c_str());
             }
         }
         /// ///////////////////

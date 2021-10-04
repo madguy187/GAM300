@@ -870,13 +870,13 @@ namespace Eclipse
         {
             if (Prefabs.find(ModelName) == Prefabs.end())
             {
+                auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
                 // Cannot Find this as a parent
                 std::string Name = ModelName;
-                engine->world.AddComponent(ID, MeshComponent{});
-                engine->world.AddComponent(ID, ModeLInforComponent{});
-                engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
-                //engine->world.AddComponent(ID, TextureComponent{});
-                SetSingleMesh(ID, Name);
+                engine->world.AddComponent(MeshID, MeshComponent{});
+                engine->world.AddComponent(MeshID, ModeLInforComponent{});
+                engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
+                SetSingleMesh(MeshID, Name);
             }
             else
             {
@@ -896,8 +896,6 @@ namespace Eclipse
                     engine->world.AddComponent(MeshID, MeshComponent{});
                     engine->world.AddComponent(MeshID, ModeLInforComponent{});
                     engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
-                    //engine->world.AddComponent(MeshID, TextureComponent{});
-
                     SetSingleMesh(MeshID, name);
                 }
             }
