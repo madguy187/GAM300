@@ -45,7 +45,7 @@ namespace Eclipse
 
 	void BaseSwitchViewWindow::RunFrameBuffer(int GizmoType)
 	{
-		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
+		ECGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
 			ImVec2{ mViewportSize.x, mViewportSize.y * 0.92f }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 		if (!engine->editorManager->IsEntityListEmpty() && GizmoType != -1)
@@ -58,7 +58,7 @@ namespace Eclipse
 			OnCameraMoveEvent();
 		}
 
-		if (ImGui::IsItemActive())
+		if (ECGui::IsItemActive())
 		{
 			IsWindowActive = true;
 		}

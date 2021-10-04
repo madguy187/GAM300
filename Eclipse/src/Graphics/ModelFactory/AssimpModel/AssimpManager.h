@@ -12,7 +12,7 @@
 
 #include "ECS/ComponentManager/Components/EntityComponent.h"
 #include "ECS/ComponentManager/Components/TextureComponent.h"
-#include "ECS/ComponentManager/Components/ModelInfoComponent.h"
+#include "ECS/ComponentManager/Components/ModelComponent.h"
 #include "ECS/ComponentManager/Components/MaterialComponent.h"
 
 namespace Eclipse
@@ -31,15 +31,9 @@ namespace Eclipse
 		std::vector<std::string> AllPrimitiveModelsNames;
 		std::unordered_map<std::string, std::vector<std::string>> Prefabs;
 		std::vector<std::string> AllMeshNames;
-	private:
 
 	public:
-		void ClearGeometry();
-		void LoadBasicTextures();
 		float HotReloadCooldown = 0.0f;
-		bool GetHotReloadFlag();
-		void ResetHotReloadFlag();
-		bool CheckCompilers();
 		void CreateModel(unsigned int ID, const std::string& ModelName);
 		std::unordered_map<std::string, std::vector<std::string>>& GetPrefabs();
 		void InsertPrimitiveName(const std::string& in);
@@ -49,16 +43,16 @@ namespace Eclipse
 		// Get Current MeshComponent Container
 		MeshModelContainer GetMeshContainer();
 		// Ger how many Models in Container
-		unsigned int MeshModelCount();
+		size_t MeshModelCount();
 		// Get Current Model Factory Count
-		unsigned int MeshFactoryCount();
+		size_t MeshFactoryCount();
 		// Load All Models Once
 		void Init();
 	    static void ExecuteCompiler();
 		void HotReload();
 		void HotReloadTetxures();
 		// Render Function that uses the Container that stores MeshComponent 
-		void MeshDraw(MeshComponent& ModelMesh , unsigned int ID, unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
+		void MeshDraw(MeshComponent& ModelMesh , unsigned int ID, unsigned int FrameBufferID, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
 		// Upload to Shader
 		void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID, AABB_* box);
 		// Delete Model from MeshContainer Using ID
@@ -82,9 +76,6 @@ namespace Eclipse
 		void Render(Shader& shader, GLenum mode, unsigned int id, MeshComponent& in);
 		void Render(GLenum mode, MeshComponent& in);
 		void SetSingleMesh(unsigned int ID, std::string& MeshName);
-		void LoadGeometry();
-		void LoadPrefabs();
-		void LoadTextures();
 	    AssimpModelManager() {};
 
 		///////////////////////////////////////////////////////////////////////////////////////////
@@ -96,6 +87,17 @@ namespace Eclipse
 		void PrintOutAllTextures();
 		void PrintOutAllMeshes();
 
+		///////////////////////////////////////////////////////////////////////////////////////////
+		// Compilers
+		///////////////////////////////////////////////////////////////////////////////////////////
+		void LoadGeometry();
+		void LoadPrefabs();
+		void LoadTextures();
+		void ClearGeometry();
+		void LoadBasicTextures();
+		bool GetHotReloadFlag();
+		void ResetHotReloadFlag();
+		bool CheckCompilers();
 
 	public:
 		// TEXTURES PUT HERE FIRST
@@ -109,20 +111,17 @@ namespace Eclipse
 		std::unordered_map<std::string, std::unique_ptr<AssimpModel>> AssimpLoadedModels;
 		std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>> >LoadedTexturesV2;
 		std::unordered_map<std::string, std::string> ModelMap;
-		bool InsertMesh(MeshComponent& in);
 		bool ClearContainer();
 		void CleanUpAllModels();
-		unsigned int AssimpModelCount();
+		size_t AssimpModelCount();
 		bool InsertModel(AssimpModel& in);
 		AssimpModelContainer GetContainer();
 		AssimpModel* GetModel(unsigned int ID);
 		void CreateModel(unsigned int ID, std::string name, std::string path, std::string filename);
-		void Draw(unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
+		void Draw(unsigned int FrameBufferID, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
 		void HighlihtDraw(unsigned int FrameBufferID, GLenum Mode);
 		void DeleteItem(unsigned int index, AssimpModel* model_ptr);
 		std::string GetKey(const std::string& in);
-		void InsertModel(unsigned int ID);
-
 	};
 }
 #endif // ASSIMP_MANAGER_H

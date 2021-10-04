@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Scene.h"
-#include "ECS/SystemManager/Systems/System/PickingSystem.h"
+#include "ECS/SystemManager/Systems/System/PickingSystem/PickingSystem.h"
 #include "ImGuizmo/ImGuizmo.h"
 
 namespace Eclipse
@@ -51,7 +51,7 @@ namespace Eclipse
 		mCursorScreenPos = ECGui::GetCursorScreenPos();
 
 		// Set Image size
-		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
+		ECGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
 			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 		//// ImGuizmo Logic
@@ -60,7 +60,7 @@ namespace Eclipse
 			OnGizmoUpdateEvent();
 		}
 		
-		if (ECGui::IsItemHovered() /*&& ImGui::IsWindowFocused() *//*temp fix*/)
+		if (ECGui::IsItemHovered())
 		{
 			// Do all the future stuff here when hovering on window
 			// ImGuizmo Logic
@@ -69,7 +69,7 @@ namespace Eclipse
 			OnSelectEntityEvent();
 		}
 
-		if (ImGui::IsItemActive())
+		if (ECGui::IsItemActive())
 			IsWindowActive = true;
 		else
 			IsWindowActive = false;
@@ -132,14 +132,6 @@ namespace Eclipse
 			(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
 			nullptr, IsSnapping ? glm::value_ptr(snapValues) : nullptr);
 
-		/*static const float identityMatrix[16] =
-		{ 1.f, 0.f, 0.f, 0.f,
-			0.f, 1.f, 0.f, 0.f,
-			0.f, 0.f, 1.f, 0.f,
-			0.f, 0.f, 0.f, 1.f };
-
-		ImGuizmo::DrawGrid(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx), identityMatrix, 100.f);*/
-
 		if (ImGuizmo::IsUsing() && ECGui::IsItemHovered())
 		{
 			glm::vec3 translation, rotation, scale;
@@ -175,16 +167,13 @@ namespace Eclipse
 		{
 			CommandHistory::DisableMergeForMostRecentCommand();
 		}
-
-		/*ImGuiIO& io = ImGui::GetIO();
-		ImGuizmo::ViewManipulate(const_cast<float*>(glm::value_ptr(camCom.viewMtx)), camCom.fov, ImVec2(io.DisplaySize.x - 128, 0), ImVec2(128, 128), 0x10101010);*/
 	}
 
 	void SceneWindow::OnCameraZoomEvent()
 	{
 		ImGuiIO& io = ImGui::GetIO();
 
-		if (io.MouseWheel != 0.0f/* && io.KeyCtrl*/)
+		if (io.MouseWheel != 0.0f)
 		{
 			// ImGui Scroll Up Detection
 			if (io.MouseWheel > 0.0f)

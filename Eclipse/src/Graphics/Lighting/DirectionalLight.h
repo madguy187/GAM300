@@ -1,5 +1,5 @@
-#pragma once
-#include <map>
+#ifndef DIRECTIONAL_LIGHT_H
+#define DIRECTIONAL_LIGHT_H
 #include "ECS/ComponentManager/Components/DirectionalLightComponent.h"
 #include "ECS/ComponentManager/Components/LightComponent.h"
 
@@ -40,3 +40,4 @@ namespace Eclipse
 
 	};
 }
+#endif /* DIRECTIONAL_LIGHT_H */

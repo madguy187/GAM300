@@ -30,6 +30,8 @@
 #include <memory>
 #include <filesystem>
 #include<thread>
+#include <chrono>
+#include <functional>
 
 // functional
 #include <algorithm>

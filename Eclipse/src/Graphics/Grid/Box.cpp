@@ -130,7 +130,7 @@ namespace Eclipse
 
         // render instanced data
         glBindVertexArray(VAO);
-        glDrawElementsInstanced(GL_LINES, Indices.size(), GL_UNSIGNED_INT, 0, size);
+        glDrawElementsInstanced(GL_LINES, static_cast<GLsizei>(Indices.size()), GL_UNSIGNED_INT, 0, size);
         glBindVertexArray(0);
     }
 

@@ -56,8 +56,7 @@ namespace Eclipse
 
             if (ECGui::CreateSelectableButton(hiDarrenVector[comboindex].c_str(), &selected))
             {
-                auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
-                engine->AssimpManager.CreateModel(MeshID, hiDarrenVector[comboindex].c_str());
+                engine->AssimpManager.CreateModel(0, hiDarrenVector[comboindex].c_str());
             }
         }
         /// ///////////////////
@@ -100,7 +99,6 @@ namespace Eclipse
                 {
                     TreeNodeRecursion(entityName, entCom, prev, curr, index);
                 }
-
 
                 if (entCom.Child.empty() && !entCom.IsAChild
                     && ECGui::CreateSelectableButton(entityName.c_str(), &entCom.IsActive))
@@ -289,6 +287,7 @@ namespace Eclipse
         {
             temp |= ImGuiTreeNodeFlags_Selected;
         }
+
         HightLightParentAndChild(entCom);
 
         bool nodeOpen = ImGui::TreeNodeEx(parent.c_str(), temp);
@@ -344,25 +343,16 @@ namespace Eclipse
 
                 }
             }
-
             ECGui::EndTreeNode();
         }
         else
         {
-
             if (ImGui::IsItemClicked(0))
             {
                 size_t currIndex = ConvertEntityStringtoNumber(GetEntityComponentEntityNumber(parent));
                 engine->editorManager->SetGlobalIndex(engine->editorManager->GetEntityIndex(static_cast<Entity>(currIndex)));
                 UpdateEntityTracker(engine->editorManager->GetEntityID(engine->editorManager->GetEntityIndex(static_cast<Entity>(currIndex))));
             }
-
         }
-
-
-
     }
-
-
 }
-

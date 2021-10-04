@@ -172,3 +172,21 @@ enum class MaterialModelType
     MT_MODELS3D = 2,
     MT_MAXCOUNT
 };
+
+enum class FrameBufferMode
+{
+    FBM_NONE = 0,
+    FBM_GAME = 1,
+    FBM_SCENE = 2,
+    FBM_TOP = 3,
+    FBM_BOTTOM = 4,
+    FBM_LEFT = 5,
+    FBM_RIGHT = 6,
+    MAXCOUNT
+};
+
+enum class RenderMode
+{
+    Fill_Mode,
+    Wireframe_Mode
+};

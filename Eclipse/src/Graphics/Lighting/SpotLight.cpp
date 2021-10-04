@@ -160,16 +160,6 @@ namespace Eclipse
 		return _spotlights;
 	}
 
-	bool SpotLight::InsertSpotLightLight(SpotLightComponent& in)
-	{
-		//if (_spotlights.insert({ in.ID , &in }).second == true)
-		//{
-		//	return true;
-		//}
-
-		return false;
-	}
-
 	void SpotLight::ClearContainer()
 	{
 		_spotlights.clear();

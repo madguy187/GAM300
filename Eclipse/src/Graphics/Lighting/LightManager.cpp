@@ -4,17 +4,12 @@
 
 namespace Eclipse
 {
-    void LightManager::init()
+    void LightManager::Init()
     {
         // LightManager Init =============================
         ENGINE_CORE_INFO("LightManager Init");
         CreateAttenuationLevels();
         _DirectionalLights.FirstGlobalLight();
-    }
-
-    void LightManager::Update()
-    {
-
     }
 
     void LightManager::CreateLights(TypesOfLights in, unsigned int CreatedID)
