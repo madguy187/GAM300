@@ -16,6 +16,8 @@ namespace Eclipse
 	struct ScriptComponent;
 	struct ParentComponent;
 	struct ChildComponent;
+	struct CollisionComponent;
+	struct AIComponent;
 
 	template<typename ...T>
 	struct TypeList
@@ -43,7 +45,10 @@ namespace Eclipse
 		RigidBodyComponent,
 		ScriptComponent,
 		ParentComponent,
-		ChildComponent
+		ChildComponent,
+		ScriptComponent,
+		CollisionComponent,
+		AIComponent
 	>;
 
 	template <typename ...Types>

@@ -17,7 +17,6 @@ namespace Eclipse
 		float drag{0.0f};
 		float angdrag{0.0f};
 
-		bool _Static{ false };
 		bool _Kinematic{ false };
 		bool enableGravity{ false };
 		bool enableRotation{ false };
