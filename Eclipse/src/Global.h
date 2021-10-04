@@ -98,6 +98,7 @@ enum class PayloadSourceType
 {
     PST_TEXT,
     PST_IMAGE,
+    PST_ENTITY,
     PST_UNASSIGNED
 };
 
@@ -106,6 +107,7 @@ enum class PayloadTargetType
 	PTT_WIDGET,
 	PTT_WINDOW,
 	PTT_INDEXEDIT,
+    PTT_ASSETS,
 	PTT_UNASSIGNED
 };
 

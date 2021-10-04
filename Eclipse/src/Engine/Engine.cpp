@@ -14,6 +14,7 @@
 #include "ECS/ComponentManager/Components/ModelInfoComponent.h"
 #include "ECS/ComponentManager/Components/LightComponent.h"
 #include "ECS/ComponentManager/Components/ScriptComponent.h"
+#include "ECS/ComponentManager/Components/AudioComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem.h"
@@ -89,6 +90,7 @@ namespace Eclipse
         world.RegisterComponent<ModeLInforComponent>();
         world.RegisterComponent<LightComponent>();
         world.RegisterComponent<ScriptComponent>();
+        world.RegisterComponent<AudioComponent>();
         world.RegisterComponent<CollisionComponent>();
 
         // registering system
@@ -144,6 +146,10 @@ namespace Eclipse
         Signature hi6;
         hi6.set(world.GetComponentType<CollisionComponent>(), 1);
         world.RegisterSystemSignature<CollisionSystem>(hi6);
+
+        Signature audioSignature;
+        audioSignature.set(world.GetComponentType<AudioComponent>(), 1);
+        world.RegisterSystemSignature<AudioSystem>(audioSignature);
 
         //Check this! - Rachel
         RenderSystem::Init();

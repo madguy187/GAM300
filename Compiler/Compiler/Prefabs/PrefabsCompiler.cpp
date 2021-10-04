@@ -57,6 +57,7 @@ namespace EclipseCompiler
 		int TotalNumberOfPrefabs = 0;
 
 		// See how many Prefabs
+		// Fikrul was here
 		PrefabsFileRead.read(reinterpret_cast<char*>(&TotalNumberOfPrefabs), sizeof(int));
 
 		for (int i = 0; i < TotalNumberOfPrefabs; i++)
