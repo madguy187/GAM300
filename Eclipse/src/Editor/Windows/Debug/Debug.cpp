@@ -84,7 +84,7 @@ namespace Eclipse
             if (engine->GraphicsManager.PostProcess->AllowPostProcess)
             {
                 ECGui::InsertSameLine();
-                std::vector<std::string> Methods = { "NONE" , "INVERSE" , "GREYSCALE" ,"PPT_KERNEL" };
+                std::vector<std::string> Methods = { "NONE" , "INVERSE" , "GREYSCALE" ,"KERNEL" , "BLUR"};
                 ComboListSettings settingsss = { "PostProcess Methods" };
                 static size_t comboindex = 0;
                 ECGui::CreateComboList(settingsss, Methods, comboindex);

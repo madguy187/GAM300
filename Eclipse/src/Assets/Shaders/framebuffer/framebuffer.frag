@@ -23,6 +23,12 @@ float kernel[9] = float[]
     1,  1, 1
 );
 
+float blurkernel[9] = float[](
+    1.0 / 16, 2.0 / 16, 1.0 / 16,
+    2.0 / 16, 4.0 / 16, 2.0 / 16,
+    1.0 / 16, 2.0 / 16, 1.0 / 16  
+);
+
 void main()
 {
     if(Type ==  1)
@@ -46,4 +52,16 @@ void main()
 
         FragColor = vec4(color, 1.0f);
     }
+    else if( Type == 4)
+    {
+         vec3 color = vec3(0.0f);
+
+        for(int i = 0; i < 9; i++)
+        {
+          color += vec3(texture(screenTexture, texCoords.st + offsets[i])) * blurkernel[i];
+        }
+
+        FragColor = vec4(color, 1.0f);
+    }
+
 }

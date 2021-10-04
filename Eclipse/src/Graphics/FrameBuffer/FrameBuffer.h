@@ -68,6 +68,7 @@ namespace Eclipse
             PPT_INVERSE = 1,
             PPT_GREY = 2,
             PPT_KERNEL = 3,
+            PPT_BLUR = 4,
             PPT_MAXCOUNT
         };
 
