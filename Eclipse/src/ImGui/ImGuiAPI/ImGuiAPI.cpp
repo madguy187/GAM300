@@ -360,6 +360,16 @@ namespace Eclipse
 		}
 	}
 
+	bool ImGuiAPI::IsMouseDoubleClicked(ImGuiMouseButton button)
+	{
+		return ImGui::IsMouseDoubleClicked(button);
+	}
+
+	bool ImGuiAPI::IsItemClicked(ImGuiMouseButton mouse_button)
+	{
+		return ImGui::IsItemClicked(mouse_button);
+	}
+
 	void ImGuiAPI::PlotHistogram(const char* label, const float* values, int values_count, int values_offset, const char* overlay_text, float scale_min, float scale_max, ImVec2 graph_size, int stride)
 	{
 		ImGui::PlotHistogram(label, values, values_count, values_offset, overlay_text, scale_min, scale_max, graph_size, stride);

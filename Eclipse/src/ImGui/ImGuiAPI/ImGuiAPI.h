@@ -92,6 +92,8 @@ namespace Eclipse
 		static bool IsItemHovered();
 		static void SetToolTip(const char* message);
 		static void HelpMarker(const char* message);
+		static bool IsMouseDoubleClicked(ImGuiMouseButton button);
+		static bool IsItemClicked(ImGuiMouseButton mouse_button);
 
 		//Plot Widgets
 		static void PlotHistogram(const char* label, const float* values, int values_count, 

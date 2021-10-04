@@ -367,12 +367,12 @@ namespace Eclipse
 
 	bool ECGui::IsMouseDoubleClicked(ImGuiMouseButton button)
 	{
-		return ImGui::IsMouseDoubleClicked(button);
+		return ImGuiAPI::IsMouseDoubleClicked(button);
 	}
 
 	bool ECGui::IsItemClicked(ImGuiMouseButton mouse_button)
 	{
-		return IsItemClicked(mouse_button);
+		return ImGuiAPI::IsItemClicked(mouse_button);
 	}
 
 	void ECGui::PlotHistogram(const char* name, std::vector<float> value, int values_offset, const char* overlay_text, float scale_min, float scale_max, ImVec2 graph_size, int stride)
