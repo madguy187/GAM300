@@ -312,6 +312,8 @@ namespace Eclipse
 				return nodeID;
 			}
 		}
+
+		return nodeID;
 	}
 
 	DynamicAABBTree::Node* DynamicAABBTree::GetTreeRoot()
@@ -376,8 +378,8 @@ namespace Eclipse
 
 		for (size_t i = 0; i < 3; ++i)
 		{
-			result.mMin[i] = (std::min)(lhs.mMin[i], rhs.mMin[i]);
-			result.mMax[i] = (std::max)(lhs.mMax[i], rhs.mMax[i]);
+			result.mMin[static_cast<glm::length_t>(i)] = (std::min)(lhs.mMin[static_cast<glm::length_t>(i)], rhs.mMin[static_cast<glm::length_t>(i)]);
+			result.mMax[static_cast<glm::length_t>(i)] = (std::max)(lhs.mMax[static_cast<glm::length_t>(i)], rhs.mMax[static_cast<glm::length_t>(i)]);
 		}
 
 		return result;;
