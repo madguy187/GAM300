@@ -74,9 +74,24 @@ namespace Eclipse
             ECGui::CheckBoxBool("DrawGrid", &engine->GridManager->Visible);
 
             ImGui::Dummy({ 1,1 });
+
             ECGui::DrawTextWidget<const char*>("HDR Exposure", "");
             ECGui::InsertSameLine();
             ECGui::DrawSliderFloatWidget("HDR Exposure", &engine->GraphicsManager.Exposure, true, 0.1f, 10.5f);
+
+            ImGui::Dummy({ 1,1 });
+            ECGui::DrawTextWidget<const char*>("Enable PostProcess", "");
+            ECGui::CheckBoxBool("Enable PostProcess", &engine->GraphicsManager.PostProcess->AllowPostProcess);
+
+            if (engine->GraphicsManager.PostProcess->AllowPostProcess)
+            {
+                ImGui::Dummy({ 1,1 });
+                std::vector<std::string> Methods = { "NONE" , "INVERSE" , "GREYSCALE" ,"PPT_KERNEL" };
+                ComboListSettings settingsss = { "PostProcess Methods" };
+                static size_t comboindex = 0;
+                ECGui::CreateComboList(settingsss, Methods, comboindex);
+                engine->GraphicsManager.PostProcess->PPType_ = static_cast<FrameBuffer::PostProcessType>(comboindex);
+            }
         }
     }
 }

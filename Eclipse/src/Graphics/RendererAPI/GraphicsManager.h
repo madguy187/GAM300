@@ -37,6 +37,9 @@ namespace Eclipse
         ECVec3 BackGroundColour{ 0.1f,0.2f,0.3f };
         float Exposure = 1.0f;
 
+        // Seperate FBO for Post Process
+        std::unique_ptr<FrameBuffer> PostProcess;
+
     public:
         std::map<std::string, std::vector<std::string>> ShaderMap;
         std::unordered_map<std::string, std::unique_ptr<std::thread>> GraphicThreads;
@@ -67,11 +70,14 @@ namespace Eclipse
         void DrawDebugBoxes();
         std::string GetModelName(unsigned int modelname);
         unsigned int GetFrameBufferID(FrameBufferMode mode);
+        unsigned int GetTextureID(FrameBufferMode mode);
         RenderMode GetRenderMode(FrameBufferMode mode);
         static void WindowCloseCallback(GLFWwindow* window);
         void SetBackGroundColour();
         void DrawEntireGrid();
         static void CreateCompilerFolders();
+        void RenderPostProcess();
+
     private:
         void UpdateFrameBuffer();
         void FrameBufferDraw();

@@ -374,11 +374,14 @@ namespace Eclipse
 	{
 		Aabb result;
 
-		for (size_t i = 0; i < 3; ++i)
-		{
-			result.mMin[i] = (std::min)(lhs.mMin[i], rhs.mMin[i]);
-			result.mMax[i] = (std::max)(lhs.mMax[i], rhs.mMax[i]);
-		}
+		result.mMin.x = (std::min)(lhs.mMin.x, rhs.mMin.x);
+		result.mMax.x = (std::min)(lhs.mMax.x, rhs.mMax.x);
+
+		result.mMin.y = (std::min)(lhs.mMin.y, rhs.mMin.y);
+		result.mMax.y = (std::min)(lhs.mMax.y, rhs.mMax.y);
+
+		result.mMin.z = (std::min)(lhs.mMin.z, rhs.mMin.z);
+		result.mMax.z = (std::min)(lhs.mMax.z, rhs.mMax.z);
 
 		return result;;
 	}

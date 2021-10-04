@@ -497,6 +497,7 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClCompile Include="src\Serialization\TinyXML\tinyxmlerror.cpp" />
     <ClCompile Include="src\Serialization\TinyXML\tinyxmlparser.cpp" />
     <ClCompile Include="src\Time\Clock.cpp" />
+    <ClCompile Include="src\Tracy\common\tracy_lz4hc.cpp" />
     <ClCompile Include="src\Tracy\TracyClient.cpp" />
     <ClCompile Include="src\Tracy\client\TracyCallstack.cpp" />
     <ClCompile Include="src\Tracy\client\TracyDxt1.cpp" />
@@ -507,10 +508,13 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClCompile Include="src\Tracy\common\TracySocket.cpp" />
     <ClCompile Include="src\Tracy\common\TracySystem.cpp" />
     <ClCompile Include="src\Tracy\common\tracy_lz4.cpp" />
-    <ClCompile Include="src\Tracy\common\tracy_lz4hc.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Assets\Shaders\framebuffer\framebuffer.frag" />
+    <None Include="src\Assets\Shaders\framebuffer\framebuffer.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
