@@ -25,15 +25,15 @@ namespace Eclipse
 		
 		//button settings
 		////////////////////////////////
-		char searchItemBuffer[128];
-		char searchFolderBuffer[128];
+		char searchItemBuffer[128] = "";
+		char searchFolderBuffer[128] = "";
 		ImVec2 buttonSize;
-		float padding;
-		float thumbnailSize;
-		float cellSize;
-		float panelWidth;
-		int columnCount;
-		const char* paths;
+		float padding = 0.0f;
+		float thumbnailSize = 0.0f;
+		float cellSize = 0.0f;
+		float panelWidth = 0.0f;
+		int columnCount = 0;
+		const char* paths = nullptr;
 		////////////////////////////////
 
 		//Searching

@@ -41,7 +41,7 @@ namespace Eclipse
 		GLint uniform_var_loc11 = ShaderRef->GetLocation("XAxis_Colour");
 		GLint uniform_var_loc12 = ShaderRef->GetLocation("ZAxis_Colour");
 
-		GLCall(glUniform1i(uniform_var_loc1, GridScale));
+		GLCall(glUniform1i(uniform_var_loc1, static_cast<GLint>(GridScale)));
 		glUniformMatrix4fv(uniform_var_loc2, 1, GL_FALSE, glm::value_ptr(camera.viewMtx));
 		glUniformMatrix4fv(uniform_var_loc3, 1, GL_FALSE, glm::value_ptr(camera.projMtx));
 		GLCall(glUniform3f(uniform_var_loc4, GridColour.getX(), GridColour.getY(), GridColour.getZ()));
@@ -175,11 +175,11 @@ namespace Eclipse
 		// Only max have this number of tiles
 		GridArray.reserve(TotalTiles);
 
-		for (int y = 0; y < TotalTiles; y += (GridSize * GridSize))
+		for (unsigned int y = 0; y < TotalTiles; y += (GridSize * GridSize))
 		{
-			for (int z = 0; z < GridSize; z++)
+			for (unsigned int z = 0; z < GridSize; z++)
 			{
-				for (int x = 0; x < GridSize; x++)
+				for (unsigned int x = 0; x < GridSize; x++)
 				{
 					unsigned int Index = (z * GridSize) + x + y;
 					float HalfExtent = (GridScale / 2);
@@ -269,11 +269,11 @@ namespace Eclipse
 		if (PrintDebug == false)
 			return;
 
-		for (int y = 0; y < TotalTiles; y += (GridSize * GridSize))
+		for (unsigned int y = 0; y < TotalTiles; y += (GridSize * GridSize))
 		{
-			for (int z = 0; z < GridSize; z++)
+			for (unsigned int z = 0; z < GridSize; z++)
 			{
-				for (int x = 0; x < GridSize; x++)
+				for (unsigned int x = 0; x < GridSize; x++)
 				{
 					unsigned int Index = (z * GridSize) + x + y;
 

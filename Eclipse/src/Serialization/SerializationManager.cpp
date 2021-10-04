@@ -3,22 +3,42 @@
 
 namespace Eclipse
 {
+	Serializer SerializationManager::sz;
+	Deserializer SerializationManager::dsz;
+
 	SerializationManager::SerializationManager() {}
 
-	void SerializationManager::SerializeEntity(const Entity& ent, const size_t& counter)
+	void SerializationManager::Backup::SaveBackup(Serializer& sz)
+	{
+		backUpPath = TEMP_PATH;
+		backUpPath += SceneManager::GetCurrentSceneName();
+		backUpPath += "RunningTemp";
+		backUpPath += SCENE_EXTENSION;
+		sz.SaveBackup(_backup, backUpPath);
+	}
+
+	void SerializationManager::Backup::LoadBackup(Deserializer& dz)
+	{
+		dsz.LoadBackup(_backup, backUpPath);
+		backUpPath.clear();
+		_backup.Clear();
+	}
+
+
+	void SerializationManager::SerializeEntity(World& w, const Entity& ent, const size_t& counter)
 	{
 		sz.StartElement("Entity_", true, counter);
 		sz.AddAttributeToElement("ID", ent);
-		SerializeAllComponents(ent);
+		SerializeAllComponents(w, ent);
 		sz.CloseElement();
 	}
 
-	void SerializationManager::DeserializeEntity(const size_t& counter)
+	void SerializationManager::DeserializeEntity(World& w, const size_t& counter)
 	{
 		if (dsz.StartElement("Entity_", true, counter))
 		{
-			Entity ent = engine->world.CreateEntity();
-			if (DeserializeAllComponents(ent))
+			Entity ent = w.CreateEntity();
+			if (DeserializeAllComponents(w, ent))
 			{
 				engine->editorManager->RegisterExistingEntity(ent);
 			}
@@ -26,10 +46,8 @@ namespace Eclipse
 		}
 	}
 
-	void SerializationManager::SerializeAllComponents(const Entity& ent)
+	void SerializationManager::SerializeAllComponents(World& w, const Entity& ent)
 	{
-		World& w = engine->world;
-
 		SerializeComponent<EntityComponent>(w, ent);
 
 		SerializeComponent<CameraComponent>(w, ent);
@@ -50,15 +68,16 @@ namespace Eclipse
 
 		SerializeComponent<AABBComponent>(w, ent);
 
-		SerializeComponent<TextureComponent>(w, ent);
+		//SerializeComponent<TextureComponent>(w, ent);
 
 		SerializeComponent<LightComponent>(w, ent);
+
+		SerializeComponent<PrefabComponent>(w, ent);
 	}
 
-	bool SerializationManager::DeserializeAllComponents(const Entity& ent)
+	bool SerializationManager::DeserializeAllComponents(World& w, const Entity& ent)
 	{
 		bool isSuccess = false;
-		World& w = engine->world;
 
 		if (DeserializeComponent<EntityComponent>(w, ent) &&
 			DeserializeComponent<TransformComponent>(w, ent) &&
@@ -70,13 +89,20 @@ namespace Eclipse
 			DeserializeComponent<PointLightComponent>(w, ent) &&
 			DeserializeComponent<SpotLightComponent>(w, ent) &&
 			DeserializeComponent<DirectionalLightComponent>(w, ent) &&
-			DeserializeComponent<TextureComponent>(w, ent) &&
-			DeserializeComponent<LightComponent>(w, ent))
+			DeserializeComponent<LightComponent>(w, ent) &&
+			DeserializeComponent<PrefabComponent>(w, ent))
 		{
 			if (w.CheckComponent<CameraComponent>(ent))
 			{
 				auto& camera = w.GetComponent<CameraComponent>(ent);
 				engine->gCamera.ReInitCameraList(camera.camType, ent);
+			}
+
+			if (w.CheckComponent<AABBComponent>(ent))
+			{
+				auto& aabb = w.GetComponent<AABBComponent>(ent);
+				engine->gCullingManager->Insert(aabb, ent);
+				engine->gDynamicAABBTree.InsertData(ent);
 			}
 			isSuccess = true;
 		}
@@ -99,24 +125,24 @@ namespace Eclipse
 		return isSuccess;
 	}
 
-	void SerializationManager::SerializeAllEntity(const char* fullpath)
+	void SerializationManager::SerializeAllEntity()
 	{
 		const std::vector<Entity>& entities = engine->editorManager->GetEntityListByConstRef();
-		std::filesystem::path p(fullpath);
+		World& w = engine->world;
 
 		sz.StartElement("Entities");
 		sz.AddAttributeToElement("Size", entities.size());
 		size_t counter = 0;
 		for (auto const& ent : entities)
 		{
-			SerializeEntity(ent, counter++);
+			SerializeEntity(w, ent, counter++);
 		}
 		sz.CloseElement();
 	}
 
-	void SerializationManager::DeserializeAllEntity(const char* fullpath)
+	void SerializationManager::DeserializeAllEntity()
 	{
-		std::filesystem::path p(fullpath);
+		World& w = engine->world;
 
 		if (dsz.StartElement("Entities"))
 		{
@@ -125,10 +151,8 @@ namespace Eclipse
 
 			for (size_t i = 0; i < size; ++i)
 			{
-				DeserializeEntity(i);
+				DeserializeEntity(w, i);
 			}
-
-			//dsz.IterateChildrenOfElement();
 		}
 		dsz.CloseElement();
 	}
@@ -149,7 +173,7 @@ namespace Eclipse
 
 	void SerializationManager::SaveSceneFile(const char* fullpath)
 	{
-		SerializeAllEntity(fullpath);
+		SerializeAllEntity();
 		SaveFile(fullpath);
 	}
 
@@ -157,8 +181,99 @@ namespace Eclipse
 	{
 		if (LoadFile(fullpath))
 		{
-			DeserializeAllEntity(fullpath);
+			DeserializeAllEntity();
 		}
 	}
 
+	void SerializationManager::SaveBackupFile()
+	{
+		SerializeAllEntity();
+		backup.SaveBackup(sz);
+	}
+
+	void SerializationManager::LoadBackupFile()
+	{
+		SceneManager::Clear();
+		backup.LoadBackup(dsz);
+		DeserializeAllEntity();
+		std::filesystem::remove_all(TEMP_PATH);
+	}
+
+	void SerializationManager::SavePrefab(int prefabID, std::vector<Entity>& prefabContents)
+	{
+		World& prefabW = engine->prefabWorld;
+		size_t counter = 0;
+
+		sz.StartElement("Prefab");
+		sz.AddAttributeToElement("PrefabID", prefabID);
+		sz.AddAttributeToElement("Size", prefabContents.size());
+		for (auto ent : prefabContents)
+		{
+			SerializeEntity(prefabW, ent, counter++);
+		}
+		sz.CloseElement();
+	}
+
+	int SerializationManager::LoadPrefab()
+	{
+		World& prefabW = engine->prefabWorld;
+		int PrefabID = -1;
+
+		if(dsz.StartElement("Prefab"))
+		{
+			size_t size = 0;
+			dsz.ReadAttributeFromElement("Size", size);
+			dsz.ReadAttributeFromElement("PrefabID", PrefabID);
+			for (size_t i = 0; i < size; ++i)
+			{
+				DeserializeEntity(prefabW, i);
+			}
+			dsz.CloseElement();
+		}
+
+		return PrefabID;
+	}
+
+	void SerializationManager::SavePrefabFile(int prefabID, std::vector<Entity>& prefabContents, const char* path)
+	{
+		SavePrefab(prefabID, prefabContents);
+		SaveFile(path);
+	}
+
+	int SerializationManager::LoadPrefabFile(const char* fullpath)
+	{
+		int PrefabID = -1;
+		if (LoadFile(fullpath))
+		{
+			PrefabID =  LoadPrefab();
+		}
+		
+		return PrefabID;
+	}
+
+	//Debug purpose
+	void SerializationManager::SavePrefabWorld(const std::set<Entity>& entities)
+	{
+		World& prefabW = engine->prefabWorld;
+
+		sz.StartElement("Entities");
+		sz.AddAttributeToElement("Size", entities.size());
+		size_t counter = 0;
+		for (auto const& ent : entities)
+		{
+			if(prefabW.CheckComponent<PrefabComponent>(ent))
+			{
+				SerializeEntity(prefabW, ent, counter++);
+			}
+		}
+		sz.CloseElement();
+	}
+
+	void SerializationManager::SavePrefabWorldFile(const std::set<Entity>& entities)
+	{
+		SavePrefabWorld(entities);
+		std::string path = PrefabManager::PrefabPath;
+		path += "List.xml";
+		SaveFile(path.c_str());
+	}
 }

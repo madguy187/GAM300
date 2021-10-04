@@ -52,10 +52,15 @@ namespace Eclipse
 		return meta;
 	}
 
-	//void VariantBase::Serialize(std::ostream& os) const
-	//{
-	//	meta->Serialize(os, RefVariant(meta, data));
-	//}
+	void VariantBase::Serialize(const char* name) const
+	{
+		meta->Serialize(name, RefVariant(meta, data));
+	}
+
+	bool VariantBase::Deserialize(const char* name) const
+	{
+		return meta->Deserialize(name, RefVariant(meta, data));
+	}
 
 	void* VariantBase::Data() const
 	{

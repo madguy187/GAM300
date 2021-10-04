@@ -5,6 +5,9 @@
 #include "ECS/ComponentManager/Components/RigidBodyComponent.h"
 #include "ECS/ComponentManager/Components/ScriptComponent.h"
 #include "Editor/Windows/SwitchViews/TopSwitchViewWindow.h"
+#include "ECS/ComponentManager/Components/ParentComponent.h"
+#include "ECS/ComponentManager/Components/ChildComponent.h"
+#include "ECS/SystemManager/Systems/System/Collision/CollisionSystem.h"
 
 namespace Eclipse
 {
@@ -46,6 +49,7 @@ namespace Eclipse
 
             ECGui::PushItemWidth(WindowSize_.getX());
             //std::cout<<engine->editorManager->GetSelectedEntity();
+            ShowPrefebProperty("Prefeb", currEnt, CompFilter);
             ShowEntityProperty("Tag", currEnt, CompFilter);
             ShowTransformProperty("Transform", currEnt, CompFilter);
             ShowPointLightProperty("PointLight", currEnt, CompFilter);
@@ -60,6 +64,7 @@ namespace Eclipse
             ShowModelInfoProperty("ModelInfo", currEnt, CompFilter);
             ShowScriptProperty("Script Details", currEnt, CompFilter);
             ShowAudioProperty("Audio", currEnt, CompFilter);
+            ShowCollisionProperty("Collision", currEnt, CompFilter);
 
             ECGui::InsertHorizontalLineSeperator();
             /*ECGui::PushItemWidth(WindowSize_.getX());*/
@@ -342,19 +347,14 @@ namespace Eclipse
                 ComboListSettings settings = { "Texture Type" };
 
                 ECGui::DrawTextWidget<const char*>("KEY ID: ", "");
-                ECGui::DrawTextWidget<const char*>("Enable Texture", "");
                 ECGui::InsertSameLine();
-                ECGui::CheckBoxBool("HasTexture", &_Texture.hasTexture);
                 //ECGui::DrawTextWidget<const char*>(std::to_string(_Texture.ID).c_str(), "");
 
-                if (_Texture.hasTexture)
-                {
-                    ECGui::DrawTextWidget<const char*>("Texture Type", "");
-                    ECGui::CreateComboList(settings, _TextureVector, _Texture.ComboIndex);
-                    _Texture.Type = _Map[_TextureVector[_Texture.ComboIndex]];
+                ECGui::DrawTextWidget<const char*>("Texture Type", "");
+                ECGui::CreateComboList(settings, _TextureVector, _Texture.ComboIndex);
+                _Texture.Type = _Map[_TextureVector[_Texture.ComboIndex]];
 
-                    ChangeTextureController(_Texture);
-                }
+                ChangeTextureController(_Texture);
             }
         }
 
@@ -423,11 +423,11 @@ namespace Eclipse
                 ECGui::DrawTextWidget<const char*>("MaximumShininess", "");
                 ECGui::DrawSliderFloatWidget("Material MaximumShininess", &_Material.MaximumShininess, true, 0.0f, 200.0f);
 
-                ECGui::DrawTextWidget<const char*>("Thickness", "");
-                ECGui::DrawSliderFloatWidget("Material Thickness", &_Material.Thickness, true, 0.0f, 200.0f);
+                //ECGui::DrawTextWidget<const char*>("Thickness", "");
+                //ECGui::DrawSliderFloatWidget("Material Thickness", &_Material.Thickness, true, 0.0f, 200.0f);
 
-                ECGui::DrawTextWidget<const char*>("ScaleUp", "");
-                ECGui::DrawSliderFloatWidget("Material ScaleUp", &_Material.ScaleUp, true, 0.0f, 200.0f);
+                //ECGui::DrawTextWidget<const char*>("ScaleUp", "");
+                //ECGui::DrawSliderFloatWidget("Material ScaleUp", &_Material.ScaleUp, true, 0.0f, 200.0f);
 
                 ImGui::Columns(2, NULL, true);
                 ECGui::DrawTextWidget<const char*>("Highlight", "");
@@ -455,7 +455,7 @@ namespace Eclipse
 
     bool InspectorWindow::ShowModelInfoProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
     {
-        if (engine->world.CheckComponent<ModeLInforComponent>(ID))
+        if (engine->world.CheckComponent<ModelComponent>(ID))
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
@@ -465,7 +465,7 @@ namespace Eclipse
                                                             {"MT_ANIMAL",ModelType::MT_ANIMAL},{"MT_HOUSE",ModelType::MT_HOUSE},
                                                             {"MT_ENVIRONMENT",ModelType::MT_ENVIRONMENT} };
 
-                auto& _ModelInfo = engine->world.GetComponent<ModeLInforComponent>(ID);
+                auto& _ModelInfo = engine->world.GetComponent<ModelComponent>(ID);
 
                 ComboListSettings settings{ "Texture Type" };
 
@@ -661,6 +661,80 @@ namespace Eclipse
         return false;
     }
 
+    bool InspectorWindow::ShowCollisionProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+    {
+        char hxValue[256];
+        char hyValue[256];
+        char hzValue[256];
+        char radiusValue[256];
+        if (engine->world.CheckComponent<CollisionComponent>(ID))
+        {
+            if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+            {
+
+                auto& _Collision = engine->world.GetComponent<CollisionComponent>(ID);
+
+                switch (_Collision.shape.shape)
+                {
+                case PxShapeType::Px_CUBE:
+                    ECGui::DrawTextWidget<const char*>("CUBE ", "");
+                    ECGui::InsertHorizontalLineSeperator();
+
+                    ECGui::DrawTextWidget<const char*>("Hx: ", "");
+                    ECGui::InsertSameLine();
+                    snprintf(hxValue, 256, "%f", _Collision.shape.hx);
+                    ECGui::DrawInputTextWidget("Hx: ", hxValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
+                    _Collision.shape.hx = atof(hxValue);
+                    ECGui::DrawTextWidget<const char*>("Hy: ", "");
+                    ECGui::InsertSameLine();
+                    snprintf(hyValue, 256, "%f", _Collision.shape.hy);
+                    ECGui::DrawInputTextWidget("Hy: ", hyValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
+                    _Collision.shape.hy = atof(hyValue);
+                    ECGui::DrawTextWidget<const char*>("Hz: ", "");
+                    ECGui::InsertSameLine();
+                    snprintf(hzValue, 256, "%f", _Collision.shape.hz);
+                    ECGui::DrawInputTextWidget("Hz: ", hzValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
+                    _Collision.shape.hz = atof(hzValue);
+                    break;
+                case PxShapeType::Px_SPHERE:
+                    ECGui::DrawTextWidget<const char*>("SPHERE ", "");
+                    ECGui::InsertHorizontalLineSeperator();
+                    ECGui::DrawTextWidget<const char*>("Radius: ", "");
+                    ECGui::InsertSameLine();
+                    snprintf(radiusValue, 256, "%f", _Collision.shape.radius);
+                    ECGui::DrawInputTextWidget("Radius: ", radiusValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
+                    _Collision.shape.radius = atof(radiusValue);
+                    break;
+                }
+            }
+        }
+        return false;
+    }
+
+    bool InspectorWindow::ShowPrefebProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+    {
+        if (engine->world.CheckComponent<PrefabComponent>(ID))
+        {
+            ECGui::InsertHorizontalLineSeperator();
+            ECGui::DrawTextWidget<const char*>("Prefeb: ", "");
+            ECGui::InsertSameLine();
+            if (ECGui::ButtonBool("Apply changes to all"))
+            {
+                //do something
+            }
+            if (ImGui::IsItemHovered())
+            {
+                ImGui::BeginTooltip();
+                ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+                ImGui::TextUnformatted("Apply changes to all prefeb instances.");
+                ImGui::PopTextWrapPos();
+                ImGui::EndTooltip();
+            }
+            ECGui::InsertHorizontalLineSeperator();
+        }
+        return false;
+    }
+
     void InspectorWindow::AddComponentsController(Entity ID)
     {
         //ImVec2 buttonSize = { 180,20 };
@@ -752,8 +826,8 @@ namespace Eclipse
                         ComponentRegistry<TextureComponent>("TextureComponent", ID, entCom.Name,
                             EditComponent::EC_ADDCOMPONENT);
                         break;
-                    case str2int("ModeLInforComponent"):
-                        ComponentRegistry<ModeLInforComponent>("ModeLInforComponent", ID, entCom.Name,
+                    case str2int("ModelComponent"):
+                        ComponentRegistry<ModelComponent>("ModelComponent", ID, entCom.Name,
                             EditComponent::EC_ADDCOMPONENT);
                         break;
                     case str2int("ScriptComponent"):
@@ -762,6 +836,18 @@ namespace Eclipse
                         break;
                     case str2int("AudioComponent"):
                         ComponentRegistry<AudioComponent>("AudioComponent", ID, entCom.Name,
+                            EditComponent::EC_ADDCOMPONENT);
+                        break;
+                    case str2int("ParentComponent"):
+                        ComponentRegistry<ParentComponent>("ParentComponent", ID, entCom.Name,
+                            EditComponent::EC_ADDCOMPONENT);
+                        break;
+                    case str2int("ChildComponent"):
+                        ComponentRegistry<ChildComponent>("ChildComponent", ID, entCom.Name,
+                            EditComponent::EC_ADDCOMPONENT);
+                        break;
+                    case str2int("CollisionComponent"):
+                        ComponentRegistry<CollisionComponent>("CollisionComponent", ID, entCom.Name,
                             EditComponent::EC_ADDCOMPONENT);
                         break;
                     }
@@ -827,8 +913,8 @@ namespace Eclipse
                         ComponentRegistry<TextureComponent>("TextureComponent", ID, entCom.Name,
                             EditComponent::EC_REMOVECOMPONENT);
                         break;
-                    case str2int("ModeLInforComponent"):
-                        ComponentRegistry<ModeLInforComponent>("ModeLInforComponent", ID, entCom.Name,
+                    case str2int("ModelComponent"):
+                        ComponentRegistry<ModelComponent>("ModelComponent", ID, entCom.Name,
                             EditComponent::EC_REMOVECOMPONENT);
                         break;
                     case str2int("ScriptComponent"):
@@ -837,6 +923,18 @@ namespace Eclipse
                         break;
                     case str2int("AudioComponent"):
                         ComponentRegistry<AudioComponent>("AudioComponent", ID, entCom.Name,
+                            EditComponent::EC_REMOVECOMPONENT);
+                        break;
+                    case str2int("ParentComponent"):
+                        ComponentRegistry<ParentComponent>("ParentComponent", ID, entCom.Name,
+                            EditComponent::EC_REMOVECOMPONENT);
+                        break;
+                    case str2int("ChildComponent"):
+                        ComponentRegistry<ChildComponent>("ChildComponent", ID, entCom.Name,
+                            EditComponent::EC_REMOVECOMPONENT);
+                        break;
+                    case str2int("CollisionComponent"):
+                        ComponentRegistry<CollisionComponent>("CollisionComponent", ID, entCom.Name,
                             EditComponent::EC_REMOVECOMPONENT);
                         break;
                     }
@@ -852,7 +950,7 @@ namespace Eclipse
         ECGui::DrawTextWidget<const char*>("Texture  ", "");
         ECGui::InsertSameLine();
 
-        if (ImGui::Button((Item.TextureRef.c_str()), buttonSize) || (ImGui::IsItemClicked() && ImGui::IsItemHovered()) )
+        if (ImGui::Button((Item.TextureRef.c_str()), buttonSize) || (ImGui::IsItemClicked() && ImGui::IsItemHovered()))
         {
             ImGui::OpenPopup("Texture Changer");
         }
@@ -905,7 +1003,7 @@ namespace Eclipse
 
             if (AddComponentFilter.PassFilter(textureNames[i].c_str()))
             {
-                ImGui::ImageButton((void*)Graphics::FindTextures((icon).TextureRef).GetHandle(),
+                ImGui::ImageButton((void*)(intptr_t)Graphics::FindTextures((icon).TextureRef).GetHandle(),
                     { thumbnaimsize,thumbnaimsize },
                     { 1,0 },
                     { 2,1 });
@@ -931,7 +1029,7 @@ namespace Eclipse
 
         ImVec2 buttonSize = { 180,20 };
 
-        if (engine->world.CheckComponent<ModeLInforComponent>(ID))
+        if (engine->world.CheckComponent<ModelComponent>(ID))
         {
             if (ImGui::Button((Item.MeshName.data()), buttonSize))
             {
@@ -986,14 +1084,14 @@ namespace Eclipse
 
         //use model info component to identify if the dude is basic or not 
 
-        if (!engine->world.CheckComponent<ModeLInforComponent>(ID))
+        if (!engine->world.CheckComponent<ModelComponent>(ID))
         {
             for (int i = 0; i < engine->AssimpManager.GetPrimitiveNames().size(); ++i)
             {
 
                 if (AddComponentFilter.PassFilter((engine->AssimpManager.GetPrimitiveNames()[i].c_str())))
                 {
-                    ImGui::ImageButton((void*)Graphics::FindTextures(icon.textureRef).GetHandle(),
+                    ImGui::ImageButton((void*)(intptr_t)Graphics::FindTextures(icon.textureRef).GetHandle(),
                         { thumbnaimsize,thumbnaimsize },
                         { 1,0 },
                         { 2,1 });
@@ -1014,14 +1112,10 @@ namespace Eclipse
         {
             for (int i = 0; i < engine->AssimpManager.GetMeshNames().size(); ++i)
             {
-                /*TextureComponent FolderIcon;
-                FolderIcon.textureRef = Graphics::textures.find(tempNamesForMesh[i].c_str())->first;
-                TextureComponent icon = FolderIcon;*/
-
 
                 if (AddComponentFilter.PassFilter((engine->AssimpManager.GetMeshNames()[i].c_str())))
                 {
-                    ImGui::ImageButton((void*)Graphics::FindTextures((icon).textureRef).GetHandle(),
+                    ImGui::ImageButton((void*)(intptr_t)Graphics::FindTextures((icon).textureRef).GetHandle(),
                         { thumbnaimsize,thumbnaimsize },
                         { 1,0 },
                         { 2,1 });

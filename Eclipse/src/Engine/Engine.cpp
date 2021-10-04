@@ -11,17 +11,22 @@
 #include "ECS/ComponentManager/Components/MeshComponent.h"
 #include "ECS/ComponentManager/Components/RigidBodyComponent.h"
 #include "ECS/ComponentManager/Components/TextureComponent.h"
-#include "ECS/ComponentManager/Components/ModelInfoComponent.h"
+#include "ECS/ComponentManager/Components/ModelComponent.h"
 #include "ECS/ComponentManager/Components/LightComponent.h"
 #include "ECS/ComponentManager/Components/ScriptComponent.h"
+#include "ECS/ComponentManager/Components/PrefabComponent.h"
+#include "ECS/ComponentManager/Components/ParentComponent.h"
+#include "ECS/ComponentManager/Components/ChildComponent.h"
 #include "ECS/ComponentManager/Components/AudioComponent.h"
+#include "ECS/ComponentManager/Components/ParentComponent.h"
+#include "ECS/ComponentManager/Components/ChildComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem/RenderSystem.h"
-#include "ECS/SystemManager/Systems/System/CameraSystem.h"
+#include "ECS/SystemManager/Systems/System/CameraSystem/CameraSystem.h"
 #include "ECS/SystemManager/Systems/System/Editor/EditorSystem.h"
 #include "ECS/SystemManager/Systems/System/LightingSystem/LightingSystem.h"
-#include "ECS/SystemManager/Systems/System/PickingSystem.h"
-#include "ECS/SystemManager/Systems/System/PhysicsSystem.h"
+#include "ECS/SystemManager/Systems/System/PickingSystem/PickingSystem.h"
+#include "ECS/SystemManager/Systems/System/PhysicsSystem/PhysicsSystem.h"
 #include "ImGui/Setup/ImGuiSetup.h"
 #include "ECS/SystemManager/Systems/System/MaterialSystem/MaterialSystem.h"
 #include "Serialization/SerializationManager.h"
@@ -31,6 +36,9 @@
 #include "ECS/SystemManager/Systems/System/Audio/AudioSystem.h"
 #include "ECS/SystemManager/Systems/System/FileWatchSystem/FileWatchSystem.h"
 #include "ECS/SystemManager/Systems/System/Collision/CollisionSystem.h"
+#include <ECS/SystemManager/Systems/System/ParentChildSystem/ParentSystem/ParentSystem.h>
+#include <ECS/SystemManager/Systems/System/ParentChildSystem/ChildSystem/ChildSystem.h>
+#include "ECS/SystemManager/Systems/System/PrefabSystem/PrefabSystem.h"
 
 bool Tester1(const Test1& e)
 {
@@ -87,11 +95,36 @@ namespace Eclipse
         world.RegisterComponent<MaterialComponent>();
         world.RegisterComponent<RigidBodyComponent>();
         world.RegisterComponent<TextureComponent>();
-        world.RegisterComponent<ModeLInforComponent>();
+        world.RegisterComponent<ModelComponent>();
         world.RegisterComponent<LightComponent>();
         world.RegisterComponent<ScriptComponent>();
         world.RegisterComponent<AudioComponent>();
+        world.RegisterComponent<ParentComponent>();
+        world.RegisterComponent<ChildComponent>();
         world.RegisterComponent<CollisionComponent>();
+        world.RegisterComponent<ParentComponent>();
+        world.RegisterComponent<ChildComponent>();
+        world.RegisterComponent<PrefabComponent>();
+
+        prefabWorld.RegisterComponent<EntityComponent>();
+        prefabWorld.RegisterComponent<TransformComponent>();
+        prefabWorld.RegisterComponent<MeshComponent>();
+        prefabWorld.RegisterComponent<CameraComponent>();
+        prefabWorld.RegisterComponent<PointLightComponent>();
+        prefabWorld.RegisterComponent<DirectionalLightComponent>();
+        prefabWorld.RegisterComponent<AABBComponent>();
+        prefabWorld.RegisterComponent<SpotLightComponent>();
+        prefabWorld.RegisterComponent<MaterialComponent>();
+        prefabWorld.RegisterComponent<RigidBodyComponent>();
+        prefabWorld.RegisterComponent<TextureComponent>();
+        prefabWorld.RegisterComponent<ModelComponent>();
+        prefabWorld.RegisterComponent<LightComponent>();
+        prefabWorld.RegisterComponent<ScriptComponent>();
+        prefabWorld.RegisterComponent<AudioComponent>();
+        prefabWorld.RegisterComponent<CollisionComponent>();
+        prefabWorld.RegisterComponent<ParentComponent>();
+        prefabWorld.RegisterComponent<ChildComponent>();
+        prefabWorld.RegisterComponent<PrefabComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
@@ -104,30 +137,35 @@ namespace Eclipse
         world.RegisterSystem<MonoSystem>();
         world.RegisterSystem<AudioSystem>();
         world.RegisterSystem<FileWatchSystem>();
+        world.RegisterSystem<ParentSystem>();
+        world.RegisterSystem<ChildSystem>();
         world.RegisterSystem<CollisionSystem>();
+        world.RegisterSystem<PrefabSystem>();
+
+        prefabWorld.RegisterSystem<PrefabSystem>();
 
         // Render System
         Signature RenderSys = RenderSystem::RegisterAll();
         world.RegisterSystemSignature<RenderSystem>(RenderSys);
 
-        Signature hi2;
-        hi2.set(world.GetComponentType<TransformComponent>(), 1);
-        hi2.set(world.GetComponentType<CameraComponent>(), 1);
-        world.RegisterSystemSignature<CameraSystem>(hi2);
+        Signature CameraSys;
+        CameraSys.set(world.GetComponentType<TransformComponent>(), 1);
+        CameraSys.set(world.GetComponentType<CameraComponent>(), 1);
+        world.RegisterSystemSignature<CameraSystem>(CameraSys);
 
-        Signature hi3;
-        hi3.set(world.GetComponentType<LightComponent>(), 1);
-        world.RegisterSystemSignature<LightingSystem>(hi3);
+        Signature LightingSys;
+        LightingSys.set(world.GetComponentType<LightComponent>(), 1);
+        world.RegisterSystemSignature<LightingSystem>(LightingSys);
 
-        Signature mat;
-        mat.set(world.GetComponentType<MaterialComponent>(), 1);
-        world.RegisterSystemSignature<MaterialSystem>(mat);
+        Signature MateriakSys;
+        MateriakSys.set(world.GetComponentType<MaterialComponent>(), 1);
+        world.RegisterSystemSignature<MaterialSystem>(MateriakSys);
 
-        Signature picking;
-        picking.set(world.GetComponentType<AABBComponent>(), 1);
-        picking.set(world.GetComponentType<TransformComponent>(), 1);
-        picking.set(world.GetComponentType<MaterialComponent>(), 1);
-        world.RegisterSystemSignature<PickingSystem>(picking);
+        Signature PickingSys;
+        PickingSys.set(world.GetComponentType<AABBComponent>(), 1);
+        PickingSys.set(world.GetComponentType<TransformComponent>(), 1);
+        PickingSys.set(world.GetComponentType<MaterialComponent>(), 1);
+        world.RegisterSystemSignature<PickingSystem>(PickingSys);
 
         Signature gridCol;
         gridCol.set(world.GetComponentType<AABBComponent>(), 1);
@@ -151,11 +189,21 @@ namespace Eclipse
         audioSignature.set(world.GetComponentType<AudioComponent>(), 1);
         world.RegisterSystemSignature<AudioSystem>(audioSignature);
 
+        Signature prefabSig;
+        prefabSig.set(world.GetComponentType<PrefabComponent>(), 1);
+        world.RegisterSystemSignature<PrefabSystem>(prefabSig);
+
+        Signature prefabSig2;
+        prefabSig2.set(prefabWorld.GetComponentType<PrefabComponent>(), 1);
+        prefabWorld.RegisterSystemSignature<PrefabSystem>(prefabSig2);
+
         //Check this! - Rachel
         RenderSystem::Init();
         CameraSystem::Init();
         gPhysics.Init();
         audioManager.Init();
+
+        //pfManager.LoadAllPrefab();
 
         if (IsEditorActive)
             IsInPlayState = false;
@@ -178,7 +226,7 @@ namespace Eclipse
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
             glfwPollEvents();
-            engine->GraphicsManager.mRenderContext.SetClearColor({ 0.1f, 0.2f, 0.3f, 1.f });
+            engine->GraphicsManager.SetBackGroundColour();
 
             Game_Clock.set_timeSteps(0);
             framecount++;
@@ -244,7 +292,7 @@ namespace Eclipse
             engine->GraphicsManager.GlobalFrameBufferBind();
 
             // Reset DebugBoxes =============================
-            //engine->GraphicsManager.ResetInstancedDebugBoxes();
+            engine->GraphicsManager.ResetInstancedDebugBoxes();
 
             // LIGHTINGSYSTEM =============================
             world.Update<LightingSystem>();
@@ -257,11 +305,8 @@ namespace Eclipse
             // RENDERSYSTEM =============================
             world.Update<RenderSystem>();
 
-            // Material SYstem =============================
-            //world.Update<MaterialSystem>();
-
-            // GRID DRAW ============================= Must be last of All Renders
-            engine->GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
+            // GRID DRAW ================================ Must be last of All Renders
+            engine->GraphicsManager.DrawEntireGrid(); 
 
             if (IsScenePlaying())
             {
@@ -286,7 +331,7 @@ namespace Eclipse
 
         //Serialization(Temp)
         szManager.SaveSceneFile();
-
+        pfManager.Test();
         // unLoad
         mono.Terminate();
         GraphicsManager.End();

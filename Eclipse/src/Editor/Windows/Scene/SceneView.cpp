@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Scene.h"
-#include "ECS/SystemManager/Systems/System/PickingSystem.h"
+#include "ECS/SystemManager/Systems/System/PickingSystem/PickingSystem.h"
 #include "ImGuizmo/ImGuizmo.h"
 
 namespace Eclipse

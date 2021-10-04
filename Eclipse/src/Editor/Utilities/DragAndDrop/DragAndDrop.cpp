@@ -87,6 +87,7 @@ namespace Eclipse
 					Entity entID = static_cast<Entity>(*((int*)payload->Data));
 					// FOR JIAN HERNG entID for entity number and destination for path
 					// to generate prefab file in asset browser
+					engine->pfManager.GeneratePrefab(entID, destination.c_str());
 					break;
 				}
 

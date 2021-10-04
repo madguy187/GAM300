@@ -226,7 +226,7 @@ namespace Eclipse
 		//folders and items
 
 		ECGui::DrawChildWindow<void()>({ "Scrolling" }, std::bind(&AssetBrowserWindow::FoldersAndItems, this));
-		engine->editorManager->DragAndDropInst_.StringPayloadTarget("PrefabGeneration", CurrentDir.string(), 
+		engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity", CurrentDir.string(), 
 			"Prefab generated", PayloadTargetType::PTT_ASSETS);
 	}
 
@@ -346,7 +346,6 @@ namespace Eclipse
 	{
 		for (auto& dirEntry : std::filesystem::directory_iterator(CurrentDir))
 		{
-
 			const auto& path = dirEntry.path();
 
 			auto relativePath = std::filesystem::relative(path, AssetPath);
@@ -357,7 +356,7 @@ namespace Eclipse
 
 			TextureComponent icon = dirEntry.is_directory() ? FolderIcon : sprite;
 
-			ImGui::ImageButton((void*)Graphics::FindTextures(icon.textureRef).GetHandle(),
+			ImGui::ImageButton((void*)(intptr_t)Graphics::FindTextures(icon.textureRef).GetHandle(),
 				buttonSize,
 				{ 1,0 },
 				{ 2,1 });
@@ -395,7 +394,7 @@ namespace Eclipse
 			}
 			engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
 
-			if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
+			if (ECGui::IsMouseDoubleClicked(0) && ECGui::IsItemClicked(0) && ECGui::IsItemHovered())
 			{
 				if (dirEntry.is_directory())
 				{
@@ -490,7 +489,7 @@ namespace Eclipse
 		// If element was found
 		if (it != container.end())
 		{
-			pos = it - container.begin();
+			pos = static_cast<int>(it - container.begin());
 		}
 	}
 
@@ -675,7 +674,7 @@ namespace Eclipse
 				{
 					TextureComponent icon = std::filesystem::is_directory(pair2) ? FolderIcon : sprite;
 
-					ImGui::ImageButton((void*)Graphics::FindTextures(icon.textureRef).GetHandle(),
+					ImGui::ImageButton((void*)(intptr_t)Graphics::FindTextures(icon.textureRef).GetHandle(),
 						buttonSize,
 						{ 1,0 },
 						{ 2,1 });
@@ -719,7 +718,7 @@ namespace Eclipse
 				{
 					TextureComponent icon = std::filesystem::is_directory(tempPath) ? FolderIcon : sprite;
 
-					ImGui::ImageButton((void*)Graphics::FindTextures(icon.textureRef).GetHandle(),
+					ImGui::ImageButton((void*)(intptr_t)Graphics::FindTextures(icon.textureRef).GetHandle(),
 						buttonSize,
 						{ 1,0 },
 						{ 2,1 });

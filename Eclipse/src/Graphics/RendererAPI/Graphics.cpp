@@ -15,8 +15,6 @@ using namespace Eclipse;
 std::unordered_map<std::string, Shader> Graphics::shaderpgms;
 std::unordered_map<std::string, std::unique_ptr<IModel>> Graphics::models;
 std::multimap<std::string, Texture> Graphics::textures;
-std::multimap<unsigned int, MeshComponent*> Graphics::sprites;
-std::set<unsigned int> Graphics::sortedID;
 
 typedef std::multimap<std::string, Texture>::iterator MMAPIterator;
 
@@ -83,31 +81,6 @@ void Graphics::LoadModels()
     }
 }
 
-void Graphics::LoadTextures(std::string textureFile)
-{
-    //Parser input;
-    //input.ParseFile(textureFile);
-    //
-    //std::string textureName;
-    //std::string path;
-    //glm::ivec2 spriteDimensions, spriteIndex;
-    //
-    //for (auto& it : input.doc["textures"].GetArray())
-    //{
-    //    textureName = (it)["textureName"].GetString();
-    //    path = (it)["path"].GetString();
-    //    spriteDimensions = { (it)["spriteDimensions"][rapidjson::SizeType(0)].GetInt(),
-    //                         (it)["spriteDimensions"][rapidjson::SizeType(1)].GetInt() };
-    //    spriteIndex = { (it)["spriteIndex"][rapidjson::SizeType(0)].GetInt(),
-    //                    (it)["spriteIndex"][rapidjson::SizeType(1)].GetInt() };
-    //
-    //    Texture newTex(path);
-    //    newTex.setSpriteWidth(spriteDimensions.x);
-    //    newTex.setSpriteHeight(spriteDimensions.y);
-    //    textures.emplace(textureName, newTex);
-    //}
-}
-
 /******************************************************************************/
 /*!
     This function sets up the shader program by loading the shader files and
@@ -138,33 +111,6 @@ void Graphics::initShaderpgms(std::string shdrpgm_name,
     Graphics::shaderpgms[shdrpgm_name] = shdrpgm;
 }
 
-void Graphics::DeleteSprite(unsigned int id)
-{
-    //auto handle = _world->GetComponentManager().GetComponent<Sprite>(id);
-
-    //if (!handle.has())
-    //{
-    //  return;
-    //}
-
-    //auto& targetSprite = handle.get();
-
-    //for (auto iterator = std::begin(sprites); iterator != std::end(sprites); ++iterator)
-    //{
-    //  if (((*iterator).first == targetSprite.layerNum) && ((*iterator).second->ID == targetSprite.ID))
-    //  {
-    //    sprites.erase(iterator);
-    //    sortedID.erase(targetSprite.ID);
-    //    return;
-    //  }
-    //}
-}
-
-void Graphics::DeleteAllSprites()
-{
-    sprites.clear();
-    sortedID.clear();
-}
 /******************************************************************************/
 /*!
     This function loads the image using stb_image and creates the texture object.
@@ -218,9 +164,11 @@ Texture Eclipse::Graphics::FindTextures(std::string in)
     {
         return itr->second;
     }
+
+    return nullptr;
 }
 
-void Eclipse::Graphics::GetTexuresForModels(std::string in , MaterialComponent com)
+void Eclipse::Graphics::GetTexuresForModels(std::string in, MaterialComponent com)
 {
     int Index = 0;
     std::pair<MMAPIterator, MMAPIterator> result = textures.equal_range(in);

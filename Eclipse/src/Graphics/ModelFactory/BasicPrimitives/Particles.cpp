@@ -101,7 +101,7 @@ void Particles::CreateBuffers()
 
     glGenBuffers(1, &vboID);
     glBindBuffer(GL_ARRAY_BUFFER, vboID);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * maxParticles, nullptr, GL_DYNAMIC_DRAW);
+    //glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * maxParticles, nullptr, GL_DYNAMIC_DRAW);
 
 
     glEnableVertexAttribArray(0);
@@ -113,7 +113,7 @@ void Particles::CreateBuffers()
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, UV));
 
-    GenerateIndices(maxParticles);
+    //GenerateIndices(maxParticles);
 
     glCreateBuffers(1, &indexID);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexID);

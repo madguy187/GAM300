@@ -283,6 +283,8 @@ namespace Eclipse
 		static float GetFontSize();
 		static void PushStyleColor(ImGuiCol idx, const ImVec4& col);
 		static void PopStyleColor();
+		static bool IsMouseDoubleClicked(ImGuiMouseButton button);
+		static bool IsItemClicked(ImGuiMouseButton mouse_button);
 
 		/*************************************************************************/
 		/*                         Visual Widgets                                */

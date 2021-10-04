@@ -13,7 +13,7 @@
 #include "ECS/SystemManager/Systems/System/GridSystem/GridSystem.h"
 #include "ECS/SystemManager/Systems/System/LightingSystem/LightingSystem.h"
 #include "ECS/SystemManager/Systems/System/FileWatchSystem/FileWatchSystem.h"
-#include "ECS/SystemManager/Systems/System/CameraSystem.h"
+#include "ECS/SystemManager/Systems/System/CameraSystem/CameraSystem.h"
 
 namespace Eclipse
 {
@@ -33,10 +33,13 @@ namespace Eclipse
         bool CheckRender = true;
         bool EnableGammaCorrection = true;
         bool DrawSky = true;
+        float GammaCorrection = 2.2f;
+        ECVec3 BackGroundColour{ 0.1f,0.2f,0.3f };
+        float Exposure = 1.0f;
 
     public:
         std::map<std::string, std::vector<std::string>> ShaderMap;
-        std::unordered_map<std::string,std::unique_ptr<std::thread>> GraphicThreads;
+        std::unordered_map<std::string, std::unique_ptr<std::thread>> GraphicThreads;
 
         void MassInit();
         void RegisterThreads();
@@ -64,12 +67,15 @@ namespace Eclipse
         void DrawDebugBoxes();
         std::string GetModelName(unsigned int modelname);
         unsigned int GetFrameBufferID(FrameBufferMode mode);
-        FrameBuffer::RenderMode GetRenderMode(FrameBufferMode mode);
+        RenderMode GetRenderMode(FrameBufferMode mode);
         static void WindowCloseCallback(GLFWwindow* window);
+        void SetBackGroundColour();
+        void DrawEntireGrid();
+        static void CreateCompilerFolders();
     private:
-        float GammaCorrection = 2.0f;
         void UpdateFrameBuffer();
         void FrameBufferDraw();
+        static void CreateEmptyFolder(std::string folderName, std::string folderPath = "..//Compiler//CompilerKeyFiles\\");
     };
 }
 

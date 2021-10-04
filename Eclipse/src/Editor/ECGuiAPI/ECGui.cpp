@@ -482,12 +482,12 @@ namespace Eclipse
 
 	void ECGui::EndTooltip()
 	{
-		ImGuiAPI::PopTextWrapPos();
+		ImGuiAPI::EndTooltip();
 	}
 
 	void ECGui::PopTextWrapPos()
 	{
-		ImGuiAPI::EndTooltip();
+		ImGuiAPI::PopTextWrapPos();
 	}
 
 	void ECGui::PushTextWrapPos(float wrap_pos_x)
@@ -513,6 +513,16 @@ namespace Eclipse
 	void ECGui::PopStyleColor()
 	{
 		ImGuiAPI::PopStyleColor();
+	}
+
+	bool ECGui::IsMouseDoubleClicked(ImGuiMouseButton button)
+	{
+		return ImGui::IsMouseDoubleClicked(button);
+	}
+
+	bool ECGui::IsItemClicked(ImGuiMouseButton mouse_button)
+	{
+		return ImGui::IsItemClicked(mouse_button);
 	}
 
 	void ECGui::Image(ImTextureID user_texture_id, const ImVec2& size, const ImVec2& uv0, 

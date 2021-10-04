@@ -17,6 +17,9 @@ static constexpr ComponentType MAX_COMPONENT = 32;
 using Signature = std::bitset<MAX_COMPONENT>;
 static constexpr unsigned MAX_PAGE_SIZE = 10;
 
+static const char* SCENE_EXTENSION = ".scn";
+static const char* TEMP_PATH = "Data\\Temp\\";
+
 enum class EditorWindowType
 {
     EWT_HIERARCHY,
@@ -168,4 +171,22 @@ enum class MaterialModelType
     MT_BASIC = 1,
     MT_MODELS3D = 2,
     MT_MAXCOUNT
+};
+
+enum class FrameBufferMode
+{
+    FBM_NONE = 0,
+    FBM_GAME = 1,
+    FBM_SCENE = 2,
+    FBM_TOP = 3,
+    FBM_BOTTOM = 4,
+    FBM_LEFT = 5,
+    FBM_RIGHT = 6,
+    MAXCOUNT
+};
+
+enum class RenderMode
+{
+    Fill_Mode,
+    Wireframe_Mode
 };

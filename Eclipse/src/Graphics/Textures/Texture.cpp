@@ -330,7 +330,7 @@ std::string Eclipse::Texture::GetPath()
     return Path;
 }
 
-aiTextureType Eclipse::Texture::GetType()
+unsigned int Eclipse::Texture::GetType()
 {
     return Type;
 }

@@ -6,8 +6,32 @@ namespace Eclipse
 	Serializer::Serializer()
 		: _currElement{ 0 }
 	{
+		Init();
+	}
+
+	void Serializer::Init()
+	{
 		TiXmlDeclaration* decl = new TiXmlDeclaration("1.0", "", "");
 		_doc.LinkEndChild(decl);
+	}
+
+	void Serializer::GenerateDirectories(const std::string& path)
+	{
+		std::filesystem::path p{ path };
+		std::filesystem::create_directories(p.remove_filename());
+	}
+
+	void Serializer::BaseSave(const std::string& savePath)
+	{
+		GenerateDirectories(savePath);
+		_doc.SaveFile(savePath.c_str());
+	}
+
+	void Serializer::CleanUp()
+	{
+		_doc.Clear();
+		_currElement = nullptr;
+		Init();
 	}
 
 	void Serializer::StartElement(const std::string& ele_name, bool isMultiple, size_t counter)
@@ -47,11 +71,15 @@ namespace Eclipse
 
 	void Serializer::SaveXML(const std::string& savePath)
 	{
-		std::filesystem::path p{ savePath };
-		std::filesystem::create_directories(p.remove_filename());
-		_doc.SaveFile(savePath.c_str());
-		_doc.Clear();
-		_currElement = nullptr;
+		BaseSave(savePath);
+		CleanUp();
+	}
+
+	void Serializer::SaveBackup(TiXmlDocument& backup, std::string& path)
+	{
+		BaseSave(path);
+		backup = _doc;
+		CleanUp();
 	}
 
 	Serializer::~Serializer()

@@ -56,8 +56,7 @@ namespace Eclipse
 
             if (ECGui::CreateSelectableButton(hiDarrenVector[comboindex].c_str(), &selected))
             {
-                auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
-                engine->AssimpManager.CreateModel(MeshID, hiDarrenVector[comboindex].c_str());
+                engine->AssimpManager.CreateModel(0, hiDarrenVector[comboindex].c_str());
             }
         }
         /// ///////////////////
@@ -141,13 +140,14 @@ namespace Eclipse
                 }
                 if (!entCom.IsAChild)
                 {
-                    engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit",
-                        static_cast<int>(index));
-                    engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
+                    //engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity", static_cast<int>(curr.index), PayloadSourceType::PST_ENTITY);
+                    engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
+                        static_cast<int>(index), PayloadSourceType::PST_ENTITY);
+                    engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
                         static_cast<int>(index), entCom.IsActive);
                 }
 
-                engine->editorManager->DragAndDropInst_.IndexPayloadSource("PrefabGeneration", static_cast<int>(curr.index), PayloadSourceType::PST_ENTITY);
+                //engine->editorManager->SetGlobalIndex(index);
             }
         }
     }
@@ -339,7 +339,7 @@ namespace Eclipse
                         }
                         entCom.IsActive = false;
                         engine->editorManager->SetGlobalIndex(GetEntityGlobalIndex(curr.index));
-                        UpdateEntityTracker(engine->editorManager->GetEntityID(GetEntityGlobalIndex(static_cast<size_t>(curr.index))));
+                        UpdateEntityTracker(engine->editorManager->GetEntityID(static_cast<int>(GetEntityGlobalIndex(static_cast<size_t>(curr.index)))));
                     }
 
                 }
