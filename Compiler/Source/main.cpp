@@ -5,7 +5,7 @@
 
 using namespace EclipseCompiler;
 
-int WinMain()
+int main()
 {
     CompilerManager Manager;
 
@@ -22,6 +22,17 @@ int WinMain()
 
     // We will produce our own resource files which will be named .eclipse
     Manager.ProduceFile();
+
+    while (1)
+    {
+        std::string Test;
+        std::cin >> Test;
+
+        if (Test == "1")
+        {
+            return 0;
+        }
+    }
 
     return 0;
 }

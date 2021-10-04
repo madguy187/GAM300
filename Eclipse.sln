@@ -5,6 +5,11 @@ VisualStudioVersion = 16.0.31613.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Eclipse", "Eclipse\Eclipse.vcxproj", "{8A89FEB1-F668-7D4D-FF80-08246BDFE3AE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9348E12D-65D2-4DD2-97CE-49942B656F68}"
+	ProjectSection(SolutionItems) = preProject
+		Compiler\Compiler.pdb = Compiler\Compiler.pdb
+	EndProjectSection
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Compiler", "Compiler\Compiler.vcxproj", "{B08D9762-DBAD-42B2-9F7D-F1D2BF5B5FC0}"
 EndProject
 Global
@@ -43,6 +48,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {7B0D5C75-2CD9-4F67-B534-588233458CFB}
+		SolutionGuid = {42FFF1B7-9FF1-4E24-8C62-714783A3A6B4}
 	EndGlobalSection
 EndGlobal
