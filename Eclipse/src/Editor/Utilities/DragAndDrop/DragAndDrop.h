@@ -10,7 +10,7 @@ namespace Eclipse
 		void StringPayloadSource(const char* id, const std::string& source,
 			PayloadSourceType type = PayloadSourceType::PST_TEXT);
 		void IndexPayloadSource(const char* id, const int& source,
-			PayloadSourceType type = PayloadSourceType::PST_UNASSIGNED);
+			PayloadSourceType type = PayloadSourceType::PST_UNASSIGNED, Entity ID = MAX_ENTITY);
 
 		void StringPayloadTarget(const char* id, std::string& destination,
 			const char* cMsg, PayloadTargetType type = PayloadTargetType::PTT_WIDGET, Entity ID = MAX_ENTITY + 1, size_t arrayIndex = -1);
@@ -29,5 +29,6 @@ namespace Eclipse
 		bool IsIndexJobSelected{ false };
 		int SourceIndex_{ 0 };
 		int DestinationIndex_{ 0 };
+		Entity PrefabID{ 0 };
 	};
 }
