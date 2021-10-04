@@ -73,6 +73,7 @@ namespace Eclipse
 		static void SetNextWindowDockID(ImGuiID dock_id, ImGuiCond cond = 0);
 		static void SetWindowFocus(const char* name);
 		static void SetNextWindowClass(const ImGuiWindowClass* window_class);
+		static bool IsItemActive();
 
 		/*************************************************************************/
 		/*                           Dynamic Widgets                             */

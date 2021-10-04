@@ -87,6 +87,11 @@ namespace Eclipse
 		ImGuiAPI::SetNextWindowClass(window_class);
 	}
 
+	bool ECGui::IsItemActive()
+	{
+		return ImGuiAPI::IsItemActive();;
+	}
+
 	ImGuiViewport* ECGui::GetMainViewport()
 	{
 		return ImGuiAPI::GetMainViewport();
