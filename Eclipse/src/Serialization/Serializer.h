@@ -1,13 +1,3 @@
-/*
-Attribute available to serialize for each data:
-int series, size_t
-char
-bool
-string
-const char*
-float, double
-***/
-
 #pragma once
 #include "Global.h"
 #include "TinyXML/tinyxml.h"
@@ -16,7 +6,6 @@ float, double
 #include <iostream>
 #include <string>
 #include <type_traits>
-//#include "../Reflection/registration.h"
 
 namespace Eclipse
 {
@@ -25,6 +14,13 @@ namespace Eclipse
         TiXmlDocument _doc;
         TiXmlElement* _currElement;
 
+        void Init();
+
+        void GenerateDirectories(const std::string& path);
+
+        void BaseSave(const std::string& savePath);
+
+        void CleanUp();
     public:
 
         Serializer();
@@ -34,6 +30,8 @@ namespace Eclipse
         void CloseElement();
 
         void SaveXML(const std::string& savePath);
+
+        void SaveBackup(TiXmlDocument& backup, std::string& path);
 
         ~Serializer();
 
@@ -111,19 +109,20 @@ namespace Eclipse
             _currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<TextureType>(const_cast<TextureType&>(att_data)).c_str());
         }
 
-        template <typename T>
-        inline void AddAttributeToElement(const std::string& att_name, const std::vector<T>& att_data)
-        {
-            size_t counter = 0;
-            std::string name{ att_name + " member" };
-            for (const T& data : att_data)
-            {
-                StartElement(name, true, counter++);
-                AddAttributeToElement<T>("member", data);
-                CloseElement();
-            }
-        }
-
+		template <typename T>
+		inline void AddAttributeToElement(const std::string& att_name, const std::vector<T>& att_data)
+		{
+			AddAttributeToElement("size", att_data.size());
+			size_t counter = 0;
+			std::string name{"Member"};
+			for (const T& data : att_data)
+			{
+				StartElement(name, true, counter++);
+				AddAttributeToElement<T>("value", data);
+				CloseElement();
+			}
+		}
+        
         template <typename T, size_t N>
         inline void AddAttributeToElement(const std::string& att_name, const Vector<T, N>& att_data)
         {
@@ -167,6 +166,27 @@ namespace Eclipse
             {
                 AddAttributeToElement<T>(vecNames[i], att_data[i]);
             }
+        }
+
+        template <typename T, size_t N>
+        inline void AddAttributeToElement(const std::string& att_name, const std::array<T, N>& att_data)
+        {
+            AddAttributeToElement("size", N);
+            size_t counter = 0;
+            std::string name{ "Member" };
+            for (const T& data : att_data)
+            {
+                StartElement(name, true, counter++);
+                AddAttributeToElement<T>("value", data);
+                CloseElement();
+            }
+        }
+
+        template <size_t N>
+        inline void AddAttributeToElement(const std::string& att_name, const std::array<char, N>& att_data)
+        {
+            std::string data = att_data.data();
+            AddAttributeToElement("value", data);
         }
     };
 }

@@ -13,8 +13,8 @@ namespace Eclipse
         //--------------------------------------
         // Store key
         //std::string Key;
-
-        std::array<char, 128> MeshName;
+        using MeshNameType = std::array<char, 128>;
+        MeshNameType MeshName;
         unsigned int VBO;
         unsigned int VAO;
         unsigned int EBO;

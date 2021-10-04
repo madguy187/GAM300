@@ -58,6 +58,7 @@ namespace Eclipse
 
 		void InsertData(unsigned int ID);
 		void UpdateData(unsigned int ID);
+		void ResetTree();
 		unsigned int RayCast(Node* node, glm::vec3 rayStart, glm::vec3 rayDir, float& tMin);
 
 		Node* GetTreeRoot();

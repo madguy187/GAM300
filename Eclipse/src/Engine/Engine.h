@@ -17,6 +17,7 @@
 #include "Audio/AudioManager.h"
 #include "Graphics/FileWatch/FileWatch.h"
 #include "Graphics/Picker/DynamicAABBTree.h"
+#include "PrefabManager/PrefabManager.h"
 
 namespace Eclipse
 {
@@ -24,6 +25,7 @@ namespace Eclipse
     {
     public:
         World world;
+        World prefabWorld;
         CameraManager gCamera;
         GraphicsManager GraphicsManager;
         ProfilerWindow Timer;
@@ -40,6 +42,9 @@ namespace Eclipse
         SerializationManager szManager;
         AudioManager audioManager;
         DynamicAABBTree gDynamicAABBTree;
+        DragAndDrop dragDrop;
+        PrefabManager pfManager;
+
         void Init();
         void Run();
         PhysicsManager gPhysics;

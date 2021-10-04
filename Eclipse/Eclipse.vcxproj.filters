@@ -67,6 +67,9 @@
     <Filter Include="ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem">
       <UniqueIdentifier>{EA575631-56EB-B7DF-5FD2-2796CBE44EA7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\PrefabSystem">
+      <UniqueIdentifier>{8EB76F07-FA27-7280-C346-EC082F76AA81}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\RenderSystem">
       <UniqueIdentifier>{BE95B25F-2A06-B5D8-F324-2F615F54EDD9}</UniqueIdentifier>
     </Filter>
@@ -235,6 +238,9 @@
     <Filter Include="Physics">
       <UniqueIdentifier>{888B590D-F46A-D8A8-FD82-637F69E13E0A}</UniqueIdentifier>
     </Filter>
+    <Filter Include="PrefabManager">
+      <UniqueIdentifier>{D0AEB7E6-3C6F-331D-05AA-7C9A712978F9}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Reflection">
       <UniqueIdentifier>{104FCF04-FC06-1152-650E-EAAD51E5AB42}</UniqueIdentifier>
     </Filter>
@@ -291,9 +297,6 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\ComponentManager\Components\AudioComponent.h">
-      <Filter>ECS\ComponentManager\Components</Filter>
-    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
@@ -331,6 +334,9 @@
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\PointLightComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\PrefabComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h">
@@ -392,6 +398,9 @@
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem.h">
       <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\PrefabSystem\PrefabSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\PrefabSystem</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem\RenderSystem.h">
       <Filter>ECS\SystemManager\Systems\System\RenderSystem</Filter>
@@ -733,6 +742,9 @@
     <ClInclude Include="src\Physics\PhysicsManager.h">
       <Filter>Physics</Filter>
     </ClInclude>
+    <ClInclude Include="src\PrefabManager\PrefabManager.h">
+      <Filter>PrefabManager</Filter>
+    </ClInclude>
     <ClInclude Include="src\Reflection\Meta.h">
       <Filter>Reflection</Filter>
     </ClInclude>
@@ -860,6 +872,7 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\AudioComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -924,6 +937,9 @@
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\PrefabSystem\PrefabSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\PrefabSystem</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem\RenderSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\RenderSystem</Filter>
@@ -1191,6 +1207,9 @@
     </ClCompile>
     <ClCompile Include="src\Physics\PhysicsManager.cpp">
       <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PrefabManager\PrefabManager.cpp">
+      <Filter>PrefabManager</Filter>
     </ClCompile>
     <ClCompile Include="src\Reflection\Meta.cpp">
       <Filter>Reflection</Filter>

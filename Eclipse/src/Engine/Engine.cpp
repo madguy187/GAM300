@@ -14,6 +14,9 @@
 #include "ECS/ComponentManager/Components/ModelInfoComponent.h"
 #include "ECS/ComponentManager/Components/LightComponent.h"
 #include "ECS/ComponentManager/Components/ScriptComponent.h"
+#include "ECS/ComponentManager/Components/PrefabComponent.h"
+#include "ECS/ComponentManager/Components/ParentComponent.h"
+#include "ECS/ComponentManager/Components/ChildComponent.h"
 #include "ECS/ComponentManager/Components/AudioComponent.h"
 #include "ECS/ComponentManager/Components/ParentComponent.h"
 #include "ECS/ComponentManager/Components/ChildComponent.h"
@@ -35,6 +38,7 @@
 #include "ECS/SystemManager/Systems/System/Collision/CollisionSystem.h"
 #include <ECS/SystemManager/Systems/System/ParentChildSystem/ParentSystem/ParentSystem.h>
 #include <ECS/SystemManager/Systems/System/ParentChildSystem/ChildSystem/ChildSystem.h>
+#include "ECS/SystemManager/Systems/System/PrefabSystem/PrefabSystem.h"
 
 bool Tester1(const Test1& e)
 {
@@ -98,6 +102,29 @@ namespace Eclipse
         world.RegisterComponent<ParentComponent>();
         world.RegisterComponent<ChildComponent>();
         world.RegisterComponent<CollisionComponent>();
+        world.RegisterComponent<ParentComponent>();
+        world.RegisterComponent<ChildComponent>();
+        world.RegisterComponent<PrefabComponent>();
+
+        prefabWorld.RegisterComponent<EntityComponent>();
+        prefabWorld.RegisterComponent<TransformComponent>();
+        prefabWorld.RegisterComponent<MeshComponent>();
+        prefabWorld.RegisterComponent<CameraComponent>();
+        prefabWorld.RegisterComponent<PointLightComponent>();
+        prefabWorld.RegisterComponent<DirectionalLightComponent>();
+        prefabWorld.RegisterComponent<AABBComponent>();
+        prefabWorld.RegisterComponent<SpotLightComponent>();
+        prefabWorld.RegisterComponent<MaterialComponent>();
+        prefabWorld.RegisterComponent<RigidBodyComponent>();
+        prefabWorld.RegisterComponent<TextureComponent>();
+        prefabWorld.RegisterComponent<ModeLInforComponent>();
+        prefabWorld.RegisterComponent<LightComponent>();
+        prefabWorld.RegisterComponent<ScriptComponent>();
+        prefabWorld.RegisterComponent<AudioComponent>();
+        prefabWorld.RegisterComponent<CollisionComponent>();
+        prefabWorld.RegisterComponent<ParentComponent>();
+        prefabWorld.RegisterComponent<ChildComponent>();
+        prefabWorld.RegisterComponent<PrefabComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
@@ -113,6 +140,9 @@ namespace Eclipse
         world.RegisterSystem<ParentSystem>();
         world.RegisterSystem<ChildSystem>();
         world.RegisterSystem<CollisionSystem>();
+        world.RegisterSystem<PrefabSystem>();
+
+        prefabWorld.RegisterSystem<PrefabSystem>();
 
         // Render System
         Signature RenderSys = RenderSystem::RegisterAll();
@@ -159,11 +189,21 @@ namespace Eclipse
         audioSignature.set(world.GetComponentType<AudioComponent>(), 1);
         world.RegisterSystemSignature<AudioSystem>(audioSignature);
 
+        Signature prefabSig;
+        prefabSig.set(world.GetComponentType<PrefabComponent>(), 1);
+        world.RegisterSystemSignature<PrefabSystem>(prefabSig);
+
+        Signature prefabSig2;
+        prefabSig2.set(prefabWorld.GetComponentType<PrefabComponent>(), 1);
+        prefabWorld.RegisterSystemSignature<PrefabSystem>(prefabSig2);
+
         //Check this! - Rachel
         RenderSystem::Init();
         CameraSystem::Init();
         gPhysics.Init();
         audioManager.Init();
+
+        //pfManager.LoadAllPrefab();
 
         if (IsEditorActive)
             IsInPlayState = false;
@@ -294,7 +334,7 @@ namespace Eclipse
 
         //Serialization(Temp)
         szManager.SaveSceneFile();
-
+        pfManager.Test();
         // unLoad
         mono.Terminate();
         GraphicsManager.End();

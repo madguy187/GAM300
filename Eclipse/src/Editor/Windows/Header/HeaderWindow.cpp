@@ -36,6 +36,7 @@ namespace Eclipse
 		{
 			if (ECGui::ButtonBool("Play " ICON_FA_PLAY))
 			{
+				engine->szManager.SaveBackupFile();
 				engine->mono.StartMono();
 				auto& mono = engine->world.GetSystem<MonoSystem>();
 				mono->Init();
@@ -56,6 +57,7 @@ namespace Eclipse
 				engine->SetPlayState(false);
 				engine->SetPauseState(false);
 				ImGui::SetWindowFocus("Scene View");
+				engine->szManager.LoadBackupFile();
 				EDITOR_LOG_INFO("Scene has stopped playing. Reverting to original state...");
 			}
 		}
