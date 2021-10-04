@@ -126,8 +126,12 @@ namespace Eclipse
 
 	void ProfilerWindow::PrintCpuPercentage(float value)
 	{
-
-		ImGui::TextColored(ImVec4(0.9f, 0.6f, 0.1f, 1.0f), "CUP USAGE :%.2f %%", static_cast<float>(((value / ProfilerWindow::engine_time) * 100.f)));
+		std::stringstream stream;
+		float temp = value / ProfilerWindow::engine_time * 100.f;
+		stream << std::fixed << std::setprecision(2) << temp;
+		std::string tempstr = { "CUP USAGE :" };
+		tempstr += stream.str() + "%";
+		ImGui::TextColored(ImVec4(0.9f, 0.6f, 0.1f, 1.0f), tempstr.c_str());
 	}
 }
 	
