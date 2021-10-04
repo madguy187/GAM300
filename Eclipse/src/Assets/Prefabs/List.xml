@@ -15,7 +15,7 @@
             <diffuse x="1" y="1" z="1" />
             <specular x="1" y="1" z="1" />
             <HighlightColour x="1" y="0" z="0" />
-            <Highlight value="true" />
+            <Highlight value="false" />
             <NoTextures value="true" />
             <shininess value="0.25" />
             <MaximumShininess value="128" />
@@ -46,12 +46,12 @@
         <TransformComponent>
             <position x="0" y="0" z="0" />
             <rotation x="0" y="0" z="0" />
-            <scale x="2.5" y="3.75" z="5" />
+            <scale x="5" y="5" z="5" />
         </TransformComponent>
         <AABBComponent>
-            <center x="-2.66487" y="0" z="23.6493" />
-            <Min x="-3.91487" y="-1.875" z="21.1493" />
-            <Max x="-1.41487" y="1.875" z="26.1493" />
+            <center x="0" y="0" z="0" />
+            <Min x="-2.5" y="-2.5" z="-2.5" />
+            <Max x="2.5" y="2.5" z="2.5" />
         </AABBComponent>
         <PrefabComponent>
             <IsChild value="false" />
@@ -73,7 +73,7 @@
             <diffuse x="1" y="1" z="1" />
             <specular x="1" y="1" z="1" />
             <HighlightColour x="1" y="0" z="0" />
-            <Highlight value="true" />
+            <Highlight value="false" />
             <NoTextures value="true" />
             <shininess value="0.25" />
             <MaximumShininess value="128" />
@@ -104,12 +104,12 @@
         <TransformComponent>
             <position x="0" y="0" z="0" />
             <rotation x="0" y="0" z="0" />
-            <scale x="11.875" y="5" z="5" />
+            <scale x="26.875" y="5" z="5" />
         </TransformComponent>
         <AABBComponent>
-            <center x="12.7558" y="0" z="9.22963" />
-            <Min x="6.81827" y="-2.5" z="6.72963" />
-            <Max x="18.6933" y="2.5" z="11.7296" />
+            <center x="0" y="0" z="0" />
+            <Min x="-13.4375" y="-2.5" z="-2.5" />
+            <Max x="13.4375" y="2.5" z="2.5" />
         </AABBComponent>
         <PrefabComponent>
             <IsChild value="false" />
@@ -162,12 +162,12 @@
         <TransformComponent>
             <position x="0" y="0" z="0" />
             <rotation x="0" y="0" z="0" />
-            <scale x="5" y="5" z="5" />
+            <scale x="23.75" y="5" z="5" />
         </TransformComponent>
         <AABBComponent>
             <center x="0" y="0" z="0" />
-            <Min x="-2.5" y="-2.5" z="-2.5" />
-            <Max x="2.5" y="2.5" z="2.5" />
+            <Min x="-11.875" y="-2.5" z="-2.5" />
+            <Max x="11.875" y="2.5" z="2.5" />
         </AABBComponent>
         <PrefabComponent>
             <IsChild value="false" />

@@ -230,8 +230,62 @@ namespace Eclipse
 		}
 	}
 
-	void PrefabManager::Test()
+	void PrefabManager::OverwritePrefab(const Entity& ent, const char* path)
 	{
-		engine->szManager.SavePrefabWorldFile(engine->prefabWorld.GetSystem<PrefabSystem>()->mEntities);
+		World& prefabW = engine->prefabWorld;
+		std::queue<Entity> copyQueue;
+		std::vector<Entity> contents;
+
+		//Push the first entity
+		copyQueue.push(ent);
+
+		//Putting child into queue eventually for prefab saving.
+		while (!copyQueue.empty())
+		{
+			Entity entity = copyQueue.front();
+			copyQueue.pop();
+			/*
+			//Uncomment when parent child is up and implement
+
+			for (auto& child : children)
+			{
+				copyQueue.push(child);
+			}
+			*/
+			contents.push_back(entity);
+		}
+
+		auto& prefabComp = prefabW.GetComponent<PrefabComponent>(ent);
+
+		engine->szManager.SavePrefabFile(prefabComp.PrefabID, contents, path);
+	}
+
+	std::string PrefabManager::GetPath(long long unsigned int id)
+	{
+		std::string path;
+		for (auto it = mapPathToID.begin(); it != mapPathToID.end(); ++it)
+		{
+			if (it->second == id)
+			{
+				path = it->first;
+				break;
+			}
+		}
+		return path;
+	}
+
+	void PrefabManager::UnloadSaving()
+	{
+		auto& entities = engine->prefabWorld.GetSystem<PrefabSystem>()->mEntities;
+		for(auto ent : entities)
+		{
+			auto& prefabComp = engine->prefabWorld.GetComponent<PrefabComponent>(ent);
+			std::string path = GetPath(prefabComp.PrefabID);
+			if(std::filesystem::exists(path))
+			{
+				OverwritePrefab(ent, path.c_str());
+			}
+		}
+		engine->szManager.SavePrefabWorldFile(entities);
 	}
 }

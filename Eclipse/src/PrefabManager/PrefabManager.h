@@ -72,6 +72,10 @@ namespace Eclipse
 			}
 		}
 
+		std::string GetPath(long long unsigned int id);
+
+		void OverwritePrefab(const Entity& ent, const char* path);
+
 	public:
 		static const std::string PrefabPath;
 
@@ -85,6 +89,6 @@ namespace Eclipse
 
 		Entity CreatePrefabInstance(const char* path);
 
-		void Test();
+		void UnloadSaving();
 	};
 }

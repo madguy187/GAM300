@@ -46,12 +46,12 @@
         <TransformComponent>
             <position x="0" y="0" z="0" />
             <rotation x="0" y="0" z="0" />
-            <scale x="5" y="5" z="5" />
+            <scale x="26.875" y="5" z="5" />
         </TransformComponent>
         <AABBComponent>
             <center x="0" y="0" z="0" />
-            <Min x="-2.5" y="-2.5" z="-2.5" />
-            <Max x="2.5" y="2.5" z="2.5" />
+            <Min x="-13.4375" y="-2.5" z="-2.5" />
+            <Max x="13.4375" y="2.5" z="2.5" />
         </AABBComponent>
         <PrefabComponent>
             <IsChild value="false" />
