@@ -7,6 +7,8 @@
 #include "Editor/Windows/SwitchViews/TopSwitchViewWindow.h"
 #include "ECS/ComponentManager/Components/ParentComponent.h"
 #include "ECS/ComponentManager/Components/ChildComponent.h"
+#include "ECS/SystemManager/Systems/System/Collision/CollisionSystem.h"
+
 namespace Eclipse
 {
     void InspectorWindow::Update()
@@ -61,6 +63,7 @@ namespace Eclipse
             ShowModelInfoProperty("ModelInfo", currEnt, CompFilter);
             ShowScriptProperty("Script Details", currEnt, CompFilter);
             ShowAudioProperty("Audio", currEnt, CompFilter);
+            ShowCollisionProperty("Collision", currEnt, CompFilter);
 
             ECGui::InsertHorizontalLineSeperator();
             /*ECGui::PushItemWidth(WindowSize_.getX());*/
@@ -662,6 +665,56 @@ namespace Eclipse
         return false;
     }
 
+    bool InspectorWindow::ShowCollisionProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+    {
+        char hxValue[256];
+        char hyValue[256];
+        char hzValue[256];
+        char radiusValue[256];
+        if (engine->world.CheckComponent<CollisionComponent>(ID))
+        {
+            if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+            {
+
+                auto& _Collision = engine->world.GetComponent<CollisionComponent>(ID);
+
+                switch (_Collision.shape.shape)
+                {
+                case PxShapeType::Px_CUBE:
+                    ECGui::DrawTextWidget<const char*>("CUBE ", "");
+                    ECGui::InsertHorizontalLineSeperator();
+
+                    ECGui::DrawTextWidget<const char*>("Hx: ", "");
+                    ECGui::InsertSameLine();
+                    snprintf(hxValue, 256, "%f", _Collision.shape.hx);
+                    ECGui::DrawInputTextWidget("Hx: ", hxValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
+                    _Collision.shape.hx = atof(hxValue);
+                    ECGui::DrawTextWidget<const char*>("Hy: ", "");
+                    ECGui::InsertSameLine();
+                    snprintf(hyValue, 256, "%f", _Collision.shape.hy);
+                    ECGui::DrawInputTextWidget("Hy: ", hyValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
+                    _Collision.shape.hy = atof(hyValue);
+                    ECGui::DrawTextWidget<const char*>("Hz: ", "");
+                    ECGui::InsertSameLine();
+                    snprintf(hzValue, 256, "%f", _Collision.shape.hz);
+                    ECGui::DrawInputTextWidget("Hz: ", hzValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
+                    _Collision.shape.hz = atof(hzValue);
+                    break;
+                case PxShapeType::Px_SPHERE:
+                    ECGui::DrawTextWidget<const char*>("SPHERE ", "");
+                    ECGui::InsertHorizontalLineSeperator();
+                    ECGui::DrawTextWidget<const char*>("Radius: ", "");
+                    ECGui::InsertSameLine();
+                    snprintf(radiusValue, 256, "%f", _Collision.shape.radius);
+                    ECGui::DrawInputTextWidget("Radius: ", radiusValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
+                    _Collision.shape.radius = atof(radiusValue);
+                    break;
+                }
+            }
+        }
+        return false;
+    }
+
     void InspectorWindow::AddComponentsController(Entity ID)
     {
         //ImVec2 buttonSize = { 180,20 };
@@ -773,6 +826,10 @@ namespace Eclipse
                         ComponentRegistry<ChildComponent>("ChildComponent", ID, entCom.Name,
                             EditComponent::EC_ADDCOMPONENT);
                         break;
+                    case str2int("CollisionComponent"):
+                        ComponentRegistry<CollisionComponent>("CollisionComponent", ID, entCom.Name,
+                            EditComponent::EC_ADDCOMPONENT);
+                        break;
                     }
                 }
             }
@@ -854,6 +911,10 @@ namespace Eclipse
                         break;
                     case str2int("ChildComponent"):
                         ComponentRegistry<ChildComponent>("ChildComponent", ID, entCom.Name,
+                            EditComponent::EC_REMOVECOMPONENT);
+                        break;
+                    case str2int("CollisionComponent"):
+                        ComponentRegistry<CollisionComponent>("CollisionComponent", ID, entCom.Name,
                             EditComponent::EC_REMOVECOMPONENT);
                         break;
                     }
@@ -1031,10 +1092,6 @@ namespace Eclipse
         {
             for (int i = 0; i < engine->AssimpManager.GetMeshNames().size(); ++i)
             {
-                /*TextureComponent FolderIcon;
-                FolderIcon.textureRef = Graphics::textures.find(tempNamesForMesh[i].c_str())->first;
-                TextureComponent icon = FolderIcon;*/
-
 
                 if (AddComponentFilter.PassFilter((engine->AssimpManager.GetMeshNames()[i].c_str())))
                 {

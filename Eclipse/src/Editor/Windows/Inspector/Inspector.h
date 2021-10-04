@@ -27,6 +27,8 @@ namespace Eclipse
 		bool ShowModelInfoProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowScriptProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowAudioProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowCollisionProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+
 
 		void AddComponentsController(Entity ID);
 		void RemoveComponentsController(Entity ID);
