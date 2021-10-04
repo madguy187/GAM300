@@ -34,8 +34,8 @@ namespace Eclipse
         // For grid
         GridQuad = std::make_unique<Quad>();
 
-        //PostProcess = std::make_unique<FrameBuffer>();
-        //PostProcess->CreatePostProcessFramebuffer();
+        PostProcess = std::make_unique<FrameBuffer>();
+        PostProcess->CreatePostProcessFramebuffer();
     }
 
     void Eclipse::GraphicsManager::Post_Render()
@@ -442,8 +442,8 @@ namespace Eclipse
     {
         engine->GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
 
-        //PostProcess->UpdatePP();
-        //engine->MaterialManager.StencilBufferClear();
+        PostProcess->UpdatePP();
+        engine->MaterialManager.StencilBufferClear();
     }
 
     void Eclipse::GraphicsManager::CreateCompilerFolders()
