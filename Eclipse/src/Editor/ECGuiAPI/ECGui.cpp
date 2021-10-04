@@ -502,7 +502,7 @@ namespace Eclipse
 
 	float ECGui::GetFontSize()
 	{
-		return ImGui::GetFontSize();
+		return ImGuiAPI::GetFontSize();
 	}
 
 	void ECGui::PushStyleColor(ImGuiCol idx, const ImVec4& col)
