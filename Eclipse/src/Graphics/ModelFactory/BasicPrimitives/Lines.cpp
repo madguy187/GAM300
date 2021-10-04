@@ -20,7 +20,7 @@ void Lines::InsertPosVtx()
 {
     GLfloat lineSeg[] =
     {
-        0.0f, 0.0, 
+        0.0f, 0.0,
         1.0f, 0.0f
     };
 
@@ -143,8 +143,8 @@ void Lines::CreateVBO()
 void Lines::CreateEBO()
 {
     glCreateBuffers(1, &eboID);
-    glNamedBufferStorage(eboID, sizeof(GLushort) * IdxVec.size(),
-        reinterpret_cast<GLvoid*>(IdxVec.data()), GL_DYNAMIC_STORAGE_BIT);
+    glNamedBufferStorage(eboID, sizeof(GLushort) * PosVec.size(),
+        reinterpret_cast<GLvoid*>(PosVec.data()), GL_DYNAMIC_STORAGE_BIT);
     glVertexArrayElementBuffer(vaoID, eboID);
     glBindVertexArray(0);
 }
