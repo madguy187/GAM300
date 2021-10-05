@@ -789,6 +789,7 @@
     </ClInclude>
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AudioComponent.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\AI\AISystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem\CameraSystem.h" />
     <ClInclude Include="src\Graphics\EngineCompiler\EngineCompiler.h" />
   </ItemGroup>
@@ -1174,5 +1175,6 @@
   <ItemGroup>
     <None Include="src\Assets\Shaders\FrameBuffer\framebuffer.frag" />
     <None Include="src\Assets\Shaders\FrameBuffer\framebuffer.vert" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\AI\AISystem.cpp" />
   </ItemGroup>
 </Project>

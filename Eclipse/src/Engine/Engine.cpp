@@ -39,6 +39,7 @@
 #include <ECS/SystemManager/Systems/System/ParentChildSystem/ParentSystem/ParentSystem.h>
 #include <ECS/SystemManager/Systems/System/ParentChildSystem/ChildSystem/ChildSystem.h>
 #include "ECS/SystemManager/Systems/System/PrefabSystem/PrefabSystem.h"
+#include "ECS/SystemManager/Systems/System/AI/AISystem.h"
 
 bool Tester1(const Test1& e)
 {
@@ -105,6 +106,7 @@ namespace Eclipse
         world.RegisterComponent<ParentComponent>();
         world.RegisterComponent<ChildComponent>();
         world.RegisterComponent<PrefabComponent>();
+        world.RegisterComponent<AIComponent>();
 
         prefabWorld.RegisterComponent<EntityComponent>();
         prefabWorld.RegisterComponent<TransformComponent>();
@@ -125,6 +127,7 @@ namespace Eclipse
         prefabWorld.RegisterComponent<ParentComponent>();
         prefabWorld.RegisterComponent<ChildComponent>();
         prefabWorld.RegisterComponent<PrefabComponent>();
+        prefabWorld.RegisterComponent<AIComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
@@ -141,6 +144,7 @@ namespace Eclipse
         world.RegisterSystem<ChildSystem>();
         world.RegisterSystem<CollisionSystem>();
         world.RegisterSystem<PrefabSystem>();
+        world.RegisterSystem<AISystem>();
 
         prefabWorld.RegisterSystem<PrefabSystem>();
 
@@ -196,6 +200,12 @@ namespace Eclipse
         Signature prefabSig2;
         prefabSig2.set(prefabWorld.GetComponentType<PrefabComponent>(), 1);
         prefabWorld.RegisterSystemSignature<PrefabSystem>(prefabSig2);
+
+        Signature AIsig;
+        AIsig.set(world.GetComponentType<AIComponent>(), 1);
+        AIsig.set(world.GetComponentType<TransformComponent>(), 1);
+        AIsig.set(world.GetComponentType<RigidBodyComponent>(), 1);
+        world.RegisterSystemSignature<AISystem>(AIsig);
 
         //Check this! - Rachel
         RenderSystem::Init();
@@ -277,6 +287,7 @@ namespace Eclipse
             //world.Update<GridSystem>();
 
             world.Update<CameraSystem>();
+            world.Update<AISystem>();
             world.Update<CollisionSystem>();
             if (IsScenePlaying())
             {

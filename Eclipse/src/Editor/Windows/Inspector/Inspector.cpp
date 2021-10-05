@@ -62,6 +62,7 @@ namespace Eclipse
             ShowScriptProperty("Script Details", currEnt, CompFilter);
             ShowAudioProperty("Audio", currEnt, CompFilter);
             ShowCollisionProperty("Collision", currEnt, CompFilter);
+            ShowAIProperty("AI Properties", currEnt, CompFilter);
 
             ECGui::InsertHorizontalLineSeperator();
             /*ECGui::PushItemWidth(WindowSize_.getX());*/
@@ -761,6 +762,30 @@ namespace Eclipse
         return false;
     }
 
+    bool InspectorWindow::ShowAIProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+    {
+        if (engine->world.CheckComponent<AIComponent>(ID))
+        {
+            if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+            {
+                auto& ai = engine->world.GetComponent<AIComponent>(ID);
+                static std::string registeredEnt;
+
+                ECGui::DrawTextWidget<const char*>("Register Entity as Waypoint: ", EMPTY_STRING);
+                ECGui::DrawTextWidget<size_t>("Total Count", ai.waypoints.size());
+                AddWaypointController(registeredEnt);
+
+                if (ECGui::ButtonBool("Register"))
+                {
+                    if(registeredEnt != EMPTY_STRING)
+                        engine->gAI.AddWaypoint(ID, lexical_cast<Entity>(registeredEnt));
+                }
+            }
+        }
+
+        return false;
+    }
+
     void InspectorWindow::AddComponentsController(Entity ID)
     {
         //ImVec2 buttonSize = { 180,20 };
@@ -876,6 +901,10 @@ namespace Eclipse
                         ComponentRegistry<CollisionComponent>("CollisionComponent", ID, entCom.Name,
                             EditComponent::EC_ADDCOMPONENT);
                         break;
+                    case str2int("AIComponent"):
+                        ComponentRegistry<AIComponent>("AIComponent", ID, entCom.Name,
+                            EditComponent::EC_ADDCOMPONENT);
+                        break;
                     }
                 }
             }
@@ -961,6 +990,10 @@ namespace Eclipse
                         break;
                     case str2int("CollisionComponent"):
                         ComponentRegistry<CollisionComponent>("CollisionComponent", ID, entCom.Name,
+                            EditComponent::EC_REMOVECOMPONENT);
+                        break;
+                    case str2int("AIComponent"):
+                        ComponentRegistry<AIComponent>("AIComponent", ID, entCom.Name,
                             EditComponent::EC_REMOVECOMPONENT);
                         break;
                     }
@@ -1187,6 +1220,40 @@ namespace Eclipse
             engine->audioManager.SetSpeed(audioCom.AudioPath, audioCom.Speed);
             audioCom.ChannelID = engine->audioManager.Play2DSounds(audioCom.AudioPath, audioCom.Volume,
                 audioCom.IsLooping);
+        }
+    }
+
+    void InspectorWindow::AddWaypointController(std::string& currentSelection)
+    {
+       /* for (size_t i = 0; i < engine->gAI.GetTargetPoints().size(); ++i)
+        {
+            bool selected = false;
+            auto& entCom = engine->world.GetComponent<EntityComponent>(engine->gAI.GetTargetPoints()[i]);
+     
+            if (ECGui::CreateSelectableButton(entCom.Name.c_str(), &selected))
+                currentSelection = lexical_cast<std::string>(engine->gAI.GetTargetPoints()[i]);
+        }*/
+
+        static size_t index = 0;
+
+        if (ImGuiAPI::BeginComboList("WaypointListBegin", currentSelection.c_str(), true))
+        {
+            for (size_t n = 0; n < engine->gAI.GetTargetPoints().size(); n++)
+            {
+                auto& entCom = engine->world.GetComponent<EntityComponent>(engine->gAI.GetTargetPoints()[n]);
+                const bool is_selected = (index == n);
+
+                if (ImGui::Selectable(my_strcat(entCom.Name, " ", engine->gAI.GetTargetPoints()[n]).c_str(), is_selected))
+                {
+                    index = n;
+                    currentSelection = lexical_cast<std::string>(engine->gAI.GetTargetPoints()[n]);
+                }
+
+                if (is_selected)
+                    ImGui::SetItemDefaultFocus();
+            }
+
+            ImGuiAPI::EndComboList();
         }
     }
 

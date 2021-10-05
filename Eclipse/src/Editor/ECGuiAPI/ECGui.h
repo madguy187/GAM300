@@ -144,6 +144,9 @@ namespace Eclipse
 		static void SetNextItemOpen(bool is_open, ImGuiCond cond = 0);
 		static ImGuiStyle& GetStyle();
 
+		static bool BeginComboList(const char* name, const char* previewCurrent, bool hideName = true,
+			ImGuiComboFlags flags = 0);
+		static void EndComboList();
 
 		/*************************************************************************/
 		/*                           Static Widgets                              */
