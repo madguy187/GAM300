@@ -18,6 +18,7 @@
 #include "Graphics/FileWatch/FileWatch.h"
 #include "Graphics/Picker/DynamicAABBTree.h"
 #include "PrefabManager/PrefabManager.h"
+#include "AI/AIManager.h"
 
 namespace Eclipse
 {
@@ -47,6 +48,7 @@ namespace Eclipse
         void Init();
         void Run();
         PhysicsManager gPhysics;
+        AIManager gAI;
         std::unique_ptr<CullingManager> gCullingManager;
         std::unique_ptr<EclipseFileWatcher> gFileWatchManager;
 

@@ -432,9 +432,6 @@
     <ClInclude Include="src\Editor\Utilities\OpenFileDialog\OpenFileDialog.h">
       <Filter>Editor\Utilities\OpenFileDialog</Filter>
     </ClInclude>
-    <ClInclude Include="src\Editor\Utilities\ParentChild\ParentChild.h">
-      <Filter>Editor\Utilities\ParentChild</Filter>
-    </ClInclude>
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.h">
       <Filter>Editor\Utilities\UndoAndRedo</Filter>
     </ClInclude>
@@ -873,6 +870,7 @@
     </ClInclude>
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AudioComponent.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\AI\AISystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -967,9 +965,6 @@
     </ClCompile>
     <ClCompile Include="src\Editor\Utilities\OpenFileDialog\OpenFileDialog.cpp">
       <Filter>Editor\Utilities\OpenFileDialog</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Utilities\ParentChild\ParentChild.cpp">
-      <Filter>Editor\Utilities\ParentChild</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.cpp">
       <Filter>Editor\Utilities\UndoAndRedo</Filter>
@@ -1284,5 +1279,6 @@
       <Filter>Tracy\common</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\AI\AISystem.cpp" />
   </ItemGroup>
 </Project>

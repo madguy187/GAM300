@@ -1,17 +1,19 @@
 #include "pch.h"
 #include "CollisionSystem.h"
-
-void CollisionSystem::Update()
+namespace Eclipse
 {
-	for (auto const& entity : mEntities)
+	void CollisionSystem::Update()
 	{
-		engine->gPhysics.InitActor(entity);
-		engine->gPhysics.CreateShape(entity);
-		engine->gPhysics.UpdateShapes(entity);
-		engine->gPhysics.ChangeType(entity);
-		if (!engine->world.CheckComponent<RigidBodyComponent>(entity))
+		for (auto const& entity : mEntities)
 		{
-			engine->gPhysics.UpdateActor(entity);
+			engine->gPhysics.InitActor(entity);
+			engine->gPhysics.CreateShape(entity);
+			engine->gPhysics.UpdateShapes(entity);
+			engine->gPhysics.ChangeType(entity);
+			if (!engine->world.CheckComponent<RigidBodyComponent>(entity))
+			{
+				engine->gPhysics.UpdateActor(entity);
+			}
 		}
 	}
 }

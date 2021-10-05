@@ -27,3 +27,9 @@ void AIManager::patrol(Entity ent)
 	}
 
 }
+
+void AIManager::AddWaypoint(Entity AItoaddto, Entity waypointent)
+{
+	auto& AI = engine->world.GetComponent<AIComponent>(AItoaddto);
+	AI.waypoints.push_back(waypointent);
+}
