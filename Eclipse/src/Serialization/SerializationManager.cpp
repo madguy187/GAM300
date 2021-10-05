@@ -8,18 +8,18 @@ namespace Eclipse
 
 	SerializationManager::SerializationManager() {}
 
-	void SerializationManager::Backup::SaveBackup(Serializer& sz)
+	void SerializationManager::Backup::SaveBackup(Serializer& targetSz)
 	{
 		backUpPath = TEMP_PATH;
 		backUpPath += SceneManager::GetCurrentSceneName();
 		backUpPath += "RunningTemp";
 		backUpPath += SCENE_EXTENSION;
-		sz.SaveBackup(_backup, backUpPath);
+		targetSz.SaveBackup(_backup, backUpPath);
 	}
 
-	void SerializationManager::Backup::LoadBackup(Deserializer& dz)
+	void SerializationManager::Backup::LoadBackup(Deserializer& targetDsz)
 	{
-		dsz.LoadBackup(_backup, backUpPath);
+		targetDsz.LoadBackup(_backup, backUpPath);
 		backUpPath.clear();
 		_backup.Clear();
 	}

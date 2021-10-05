@@ -108,6 +108,7 @@ namespace Eclipse
 		template <>
 		inline void ReadAttributeFromElement(const std::string& att_name, Texture& att_data)
 		{
+			(void)att_name;
 			ReadAttributeFromElement("Type", att_data.Type);
 			ReadAttributeFromElement("Directory", att_data.Directory);
 			ReadAttributeFromElement("Handle", att_data.handle);
@@ -116,6 +117,7 @@ namespace Eclipse
 		template <>
 		inline void ReadAttributeFromElement(const std::string& att_name, EC_Shape& att_data)
 		{
+			(void)att_name;
 			ReadAttributeFromElement("Shape", att_data.shape);
 			ReadAttributeFromElement("Hx", att_data.hx);
 			ReadAttributeFromElement("Hy", att_data.hy);
@@ -127,6 +129,7 @@ namespace Eclipse
 		template <typename T>
 		inline void ReadAttributeFromElement(const std::string& att_name, std::vector<T>& att_data)
 		{
+			(void)att_name;
 			std::string str = GetAttributeValue("size");
 			size_t size = lexical_cast<size_t>(str);
 			std::string name{ "Member" };
@@ -143,6 +146,7 @@ namespace Eclipse
 		template <typename T, size_t N>
 		inline void ReadAttributeFromElement(const std::string& att_name, Vector<T, N>& att_data)
 		{
+			(void)att_name;
 			std::string vecNames[4] = { {"x"}, {"y"}, {"z"}, {"w"} };
 			void (Vector<T, N>::*v[4])(T) = { &Vector<T, N>::setX, &Vector<T, N>::setY, &Vector<T, N>::setZ, &Vector<T, N>::setW };
 			for (size_t i = 0; i < N; ++i)
@@ -155,6 +159,7 @@ namespace Eclipse
 		template <typename T, size_t N1, size_t N2, glm::qualifier GLM>
 		inline void ReadAttributeFromElement(const std::string& att_name, glm::mat<N1, N2, T, GLM>& att_data)
 		{
+			(void)att_name;
 			std::string name{ "Col" };
 			for (auto i = 0; i < N1; ++i)
 			{
@@ -172,6 +177,7 @@ namespace Eclipse
 		template <typename T, size_t N, glm::qualifier GLM>
 		inline void ReadAttributeFromElement(const std::string& att_name, glm::vec<N, T, GLM>& att_data)
 		{
+			(void)att_name;
 			std::string vecNames[4] = { {"x"}, {"y"}, {"z"}, {"w"} };
 			for (auto i = 0; i < N; ++i)
 			{
@@ -200,6 +206,7 @@ namespace Eclipse
 		template <size_t N>
 		inline void ReadAttributeFromElement(const std::string& att_name, std::array<char, N>& att_data)
 		{
+			(void)att_name;
 			att_data.fill(0);
 			std::string data;
 			ReadAttributeFromElement("value", data);

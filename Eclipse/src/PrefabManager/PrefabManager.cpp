@@ -27,7 +27,7 @@ namespace Eclipse
 		const char* AssetsPath = "src\\Assets";
 		for (auto& entry : std::filesystem::recursive_directory_iterator(AssetsPath))
 		{
-			auto& extension = entry.path().extension().string();
+			auto extension = entry.path().extension().string();
 			if (!extension.compare(".prefab"))
 			{
 				LoadPrefab(entry.path().string().c_str());

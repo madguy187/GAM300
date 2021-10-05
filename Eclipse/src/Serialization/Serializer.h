@@ -132,6 +132,7 @@ namespace Eclipse
         template <>
         inline void AddAttributeToElement(const std::string& att_name, const Texture& att_data)
         {
+            (void)att_name;
             AddAttributeToElement("Type", att_data.Type);
             AddAttributeToElement("Directory", att_data.Directory);
             AddAttributeToElement("Handle", att_data.handle);
@@ -140,6 +141,7 @@ namespace Eclipse
         template <>
         inline void AddAttributeToElement(const std::string& att_name, const EC_Shape& att_data)
         {
+            (void)att_name;
             AddAttributeToElement("Shape", att_data.shape);
             AddAttributeToElement("Hx", att_data.hx);
             AddAttributeToElement("Hy", att_data.hy);
@@ -151,6 +153,7 @@ namespace Eclipse
 		template <typename T>
 		inline void AddAttributeToElement(const std::string& att_name, const std::vector<T>& att_data)
 		{
+            (void)att_name;
 			AddAttributeToElement("size", att_data.size());
 			size_t counter = 0;
 			std::string name{"Member"};
@@ -165,6 +168,7 @@ namespace Eclipse
         template <typename T, size_t N>
         inline void AddAttributeToElement(const std::string& att_name, const Vector<T, N>& att_data)
         {
+            (void)att_name;
             std::string vecNames[4] = { {"x"}, {"y"}, {"z"}, {"w"} };
             for (size_t i = 0; i < N; ++i)
             {
@@ -175,13 +179,7 @@ namespace Eclipse
         template <typename T, size_t N1, size_t N2, glm::qualifier GLM>
         inline void AddAttributeToElement(const std::string& att_name, const glm::mat<N1, N2, T, GLM>& att_data)
         {
-            //Col x Row
-            /*2x3
-                        Col1 Col2
-            Row1
-            Row2
-            Row3
-            */
+            (void)att_name;
             AddAttributeToElement<size_t>("Col", N1);
             AddAttributeToElement<size_t>("Row", N2);
             std::string name{ "Col" };
@@ -200,6 +198,7 @@ namespace Eclipse
         template <typename T, size_t N, glm::qualifier GLM>
         inline void AddAttributeToElement(const std::string& att_name, const glm::vec<N, T, GLM>& att_data)
         {
+            (void)att_name;
             std::string vecNames[4] = { {"x"}, {"y"}, {"z"}, {"w"} };
             for (auto i = 0; i < N; ++i)
             {
@@ -224,6 +223,7 @@ namespace Eclipse
         template <size_t N>
         inline void AddAttributeToElement(const std::string& att_name, const std::array<char, N>& att_data)
         {
+            (void)att_name;
             std::string data = att_data.data();
             AddAttributeToElement("value", data);
         }
