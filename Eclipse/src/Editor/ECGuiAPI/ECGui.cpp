@@ -575,6 +575,11 @@ namespace Eclipse
 		ImGuiAPI::PushStyleColor(idx, col);
 	}
 
+	void ECGui::PushStyleColor(ImGuiCol idx, ImU32 col)
+	{
+		ImGuiAPI::PushStyleColor(idx, col);
+	}
+
 	void ECGui::PopStyleColor(int count)
 	{
 		ImGuiAPI::PopStyleColor(count);
@@ -613,6 +618,11 @@ namespace Eclipse
 	void ECGui::PopID()
 	{
 		ImGuiAPI::PopID();
+	}
+
+	bool ECGui::ColorPicker3(const char* label, float col[3], ImGuiColorEditFlags flags)
+	{
+		return ImGuiAPI::ColorPicker3(label, col, flags);
 	}
 
 	void ECGui::Image(ImTextureID user_texture_id, const ImVec2& size, const ImVec2& uv0, 

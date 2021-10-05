@@ -565,6 +565,11 @@ namespace Eclipse
 		ImGui::PushStyleColor(idx, col);
 	}
 
+	void ImGuiAPI::PushStyleColor(ImGuiCol idx, ImU32 col)
+	{
+		ImGui::PushStyleColor(idx,col);
+	}
+
 	void ImGuiAPI::PopStyleColor(int count)
 	{
 		ImGui::PopStyleColor(count);
@@ -608,6 +613,11 @@ namespace Eclipse
 	void ImGuiAPI::PopID()
 	{
 		ImGui::PopID();
+	}
+
+	bool ImGuiAPI::ColorPicker3(const char* label, float col[3], ImGuiColorEditFlags flags)
+	{
+		return ImGui::ColorPicker3(label,col, flags);
 	}
 
 	void ImGuiAPI::PlotHistogram(const char* label, const float* values, int values_count, int values_offset, const char* overlay_text, float scale_min, float scale_max, ImVec2 graph_size, int stride)

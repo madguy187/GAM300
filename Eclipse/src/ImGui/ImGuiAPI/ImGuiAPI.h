@@ -145,6 +145,7 @@ namespace Eclipse
 		static void SetScrollY(float scroll_y);
 		static float GetFontSize();
 		static void PushStyleColor(ImGuiCol idx, const ImVec4& col);
+		static void PushStyleColor(ImGuiCol idx, ImU32 col);
 		static void PopStyleColor(int count = 1);
 		static bool IsMouseDoubleClicked(ImGuiMouseButton button);
 		static bool IsItemClicked(ImGuiMouseButton mouse_button);
@@ -153,6 +154,7 @@ namespace Eclipse
 		static void PushID(const void* ptr_id);
 		static void PushID(int int_id);
 		static void PopID();
+		static bool ColorPicker3(const char* label, float col[3], ImGuiColorEditFlags flags = 0);
 		//Plot Widgets
 		static void Image(ImTextureID user_texture_id, const ImVec2& size,
 			const ImVec2& uv0 = ImVec2(0, 0), const ImVec2& uv1 = ImVec2(1, 1),
