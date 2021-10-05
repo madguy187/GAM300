@@ -27,8 +27,8 @@ namespace Eclipse
 
         enum class MapType
         {
-            MT_REFLECT = 0,
-            MT_REFRACT = 1
+            MT_REFLECT ,
+            MT_REFRACT 
         };
 
         bool ENV_MAP = false;

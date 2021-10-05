@@ -165,9 +165,9 @@ namespace Eclipse
 	  "MT_MAXCOUNT"
 	};
 
-	template<> char const* enumStrings<MeshComponent::MapType>::data[] =
-	{
-	  "MT_REFLECT",
-	  "MT_REFRACT"
-	};
+	//template<> char const* enumStrings<MeshComponent::MapType>::data[] =
+	//{
+	//  "MT_REFLECT",
+	//  "MT_REFRACT"
+	//};
 }
