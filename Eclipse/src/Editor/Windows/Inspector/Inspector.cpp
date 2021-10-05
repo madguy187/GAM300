@@ -61,7 +61,7 @@ namespace Eclipse
 			//ShowRenderProperty("Render", currEnt, CompFilter);
 			ShowMaterialProperty("Material", currEnt, CompFilter);
 			ShowMesh3DProperty("Mesh", currEnt, CompFilter);
-			ShowModelInfoProperty("ModelInfo", currEnt, CompFilter);
+			//ShowModelInfoProperty("ModelInfo", currEnt, CompFilter);
 			ShowScriptProperty("Script Details", currEnt, CompFilter);
 			ShowAudioProperty("Audio", currEnt, CompFilter);
 			ShowCollisionProperty("Collision", currEnt, CompFilter);

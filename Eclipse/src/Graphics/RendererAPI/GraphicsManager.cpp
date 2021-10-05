@@ -470,13 +470,7 @@ namespace Eclipse
 	{
 		std::string fileLocation = folderPath + folderName;
 		std::string outputLog;
-		if (std::filesystem::exists(fileLocation))
-		{
-			outputLog = "FOLDER ALREADY EXIST AT: ";
-			outputLog += fileLocation;
-			EDITOR_LOG_WARN(outputLog.c_str());
-		}
-		else
+		if (std::filesystem::exists(fileLocation) == false)
 		{
 			outputLog = "FOLDER CREATED AT: ";
 			outputLog += fileLocation;

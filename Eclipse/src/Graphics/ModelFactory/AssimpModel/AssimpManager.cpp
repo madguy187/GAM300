@@ -5,72 +5,149 @@ namespace Eclipse
 {
 	typedef std::multimap<std::string, Texture>::iterator MMAPIterator;
 
-	void AssimpModelManager::Init()
+	void AssimpModelManager::ClearGeometry()
 	{
-		LoadCompilers();
-		PrintLoadedModels();
+		Geometry.clear();
 	}
 
-	void AssimpModelManager::ExecuteCompiler()
+	void AssimpModelManager::LoadBasicTextures()
 	{
-		// I Will Load First
-		system("Compiler.exe");
-		EDITOR_LOG_INFO("Compiler Finish Excution");
+		std::fstream TextureFileRead;
+
+		TextureFileRead.open("../Compiler/CompilerKeyFiles/BasicTextureFile/Texture.eclipse",
+			std::ios::in |
+			std::ios::binary);
+
+		if (TextureFileRead.fail())
+		{
+			std::cout << "Fail To Open Texture File" << std::endl << std::endl;
+			return;
+		}
+
+		// Number Of Textures
+		int NumberOfBasicTextures = 0;
+		TextureFileRead.read(reinterpret_cast<char*>(&NumberOfBasicTextures), sizeof(NumberOfBasicTextures));
+
+		for (int i = 0; i < NumberOfBasicTextures; i++)
+		{
+			// Texture Name
+			std::array<char, 128> TextureName;
+			TextureFileRead.read(reinterpret_cast<char*>(&TextureName), sizeof(TextureName));
+
+			// Texture DirecPathtory
+			std::array<char, 128> TexturePath;
+			TextureFileRead.read(reinterpret_cast<char*>(&TexturePath), sizeof(TexturePath));
+
+			Texture tex(TexturePath.data());
+			Graphics::textures.emplace(TextureName.data(), tex);
+		}
+
+		TextureFileRead.close();
+		///////////////////////////
 	}
 
-	void AssimpModelManager::LoadCompilers()
+	bool AssimpModelManager::GetHotReloadFlag()
 	{
-		std::thread CompilerWait{ &AssimpModelManager::ExecuteCompiler };
-		CompilerWait.join();
+		return false;
+	}
 
-		// Geometry Compiler
-		LoadGeometry();
-		// Parent Model Mappings
-		LoadPrefabs();
-		// Texture Compiler
-		LoadTextures();
-		LoadBasicTextures();
+	void AssimpModelManager::ResetHotReloadFlag()
+	{
+		HotReloadFlag = false;
+	}
 
+	bool AssimpModelManager::CheckCompilers()
+	{
+		if (Geometry.size() == 0 || Prefabs.size() == 0)
+		{
+			//EDITOR_LOG_WARN("No Geometries Loaded , Please Run Geometry Compiler");
+			return false;
+		}
+
+		return true;
+	}
+
+	void AssimpModelManager::CreateModel(unsigned int ID, const std::string& ModelName)
+	{
 		if (CheckCompilers())
 		{
-			EDITOR_LOG_INFO("All Compilers Loaded");
+			if (Prefabs.find(ModelName) == Prefabs.end())
+			{
+				auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
+				// Cannot Find this as a parent
+				std::string Name = ModelName;
+				engine->world.AddComponent(MeshID, MeshComponent{});
+				engine->world.AddComponent(MeshID, ModelComponent{});
+				engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
+				SetSingleMesh(MeshID, Name);
+			}
+			else
+			{
+				if (Prefabs[ModelName].size() == 0)
+				{
+					ENGINE_LOG_ASSERT(false, "Cannot Find Model");
+					return;
+				}
+
+				// Is a prefab since its a parent
+				std::string NameOfFolder = ModelName;
+				for (int i = 0; i < Prefabs[NameOfFolder].size(); i++)
+				{
+					auto& name = Prefabs[NameOfFolder][i];
+					auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
+
+					engine->world.AddComponent(MeshID, MeshComponent{});
+					engine->world.AddComponent(MeshID, ModelComponent{});
+					engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
+					SetSingleMesh(MeshID, name);
+				}
+			}
 		}
 	}
 
-	// Hope its not a fail...
-	void AssimpModelManager::HotReload()
+	void AssimpModelManager::Init()
 	{
-		if (HotReloadFlag == false)
-		{
-			AllMeshNames.clear();
-			Geometry.clear();
-			Prefabs.clear();
-			Graphics::textures.clear();
-
-			std::thread CompilerWait{ &AssimpModelManager::ExecuteCompiler };
-			CompilerWait.join();
-
-			// Geometry Compiler
-			LoadGeometry();
-			// Parent Model Mappings
-			LoadPrefabs();
-			// Texture Compiler
-			LoadTextures();
-			LoadBasicTextures();
-		}
+		engine->gEngineCompiler->LoadCompilers();
 	}
 
-	void AssimpModelManager::HotReloadTetxures()
-	{
-		Graphics::textures.clear();
+	//void AssimpModelManager::ExecuteCompiler()
+	//{
+	//	// I Will Load First
+	//	system("Compiler.exe");
+	//	EDITOR_LOG_INFO("Compiler Finish Excution");
+	//}
 
-		// I Will Load First
-		std::thread CompilerWait{ &AssimpModelManager::ExecuteCompiler };
-		CompilerWait.join();
+	//// Hope its not a fail...
+	//void AssimpModelManager::HotReload()
+	//{
+	//	AllMeshNames.clear();
+	//	Geometry.clear();
+	//	Prefabs.clear();
+	//	Graphics::textures.clear();
 
-		engine->AssimpManager.LoadTextures();
-		engine->AssimpManager.LoadBasicTextures();
-	}
+	//	std::thread CompilerWait{ &AssimpModelManager::ExecuteCompiler };
+	//	CompilerWait.join();
+
+	//	// Geometry Compiler
+	//	LoadGeometry();
+	//	// Parent Model Mappings
+	//	LoadPrefabs();
+	//	// Texture Compiler
+	//	LoadTextures();
+	//	LoadBasicTextures();
+	//}
+
+	//void AssimpModelManager::HotReloadTetxures()
+	//{
+	//	Graphics::textures.clear();
+
+	//	// I Will Load First
+	//	std::thread CompilerWait{ &AssimpModelManager::ExecuteCompiler };
+	//	CompilerWait.join();
+
+	//	engine->AssimpManager.LoadTextures();
+	//	engine->AssimpManager.LoadBasicTextures();
+	//}
 
 	void AssimpModelManager::MeshDraw(MeshComponent& ModelMesh, unsigned int ID, unsigned int FrameBufferID, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
 	{
@@ -86,7 +163,7 @@ namespace Eclipse
 		{
 			if (engine->GraphicsManager.CheckFrameBuffer(FrameBufferID, FrameBufferMode::FBM_SCENE))
 			{
-				shdrpgm = Graphics::shaderpgms["CubeMap"];
+				shdrpgm = Graphics::shaderpgms["EnvironmentMap"];
 				shdrpgm.Use();
 				GLuint view = shdrpgm.GetLocation("view");
 				GLuint cameraPos = shdrpgm.GetLocation("cameraPos");
@@ -112,39 +189,30 @@ namespace Eclipse
 		}
 	}
 
-	void AssimpModelManager::TestMeshDraw(MeshComponent& ModelMesh, unsigned int ID, unsigned int FrameBufferID, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
+	std::unordered_map<std::string, std::vector<std::string>>& AssimpModelManager::GetPrefabs()
 	{
-		auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
-		TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetEditorCameraID());
-
-		glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
-
-		auto shdrpgm = Graphics::shaderpgms["CubeMap"];
-		shdrpgm.Use();
-
-		GLuint model_ = shdrpgm.GetLocation("model");
-		GLuint view = shdrpgm.GetLocation("view");
-		GLuint cameraPos = shdrpgm.GetLocation("cameraPos");
-		GLint projection = shdrpgm.GetLocation("projection");
-
-		auto& Transform = engine->world.GetComponent<TransformComponent>(ID);
-
-		glm::mat4 mModelNDC;
-		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
-		model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-		model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
-		mModelNDC = _camera.projMtx * _camera.viewMtx * model;
-		glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
-		glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
-		glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
-		GLCall(glUniform3f(cameraPos, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ()));
-
-		Render(shdrpgm, GL_FILL, FrameBufferID, ModelMesh, ID, _camType);
+		return Prefabs;
 	}
 
+	void AssimpModelManager::InsertPrimitiveName(const std::string& in)
+	{
+		AllPrimitiveModelsNames.push_back(in);
+	}
+
+	void AssimpModelManager::InsertMeshName(const std::string& in)
+	{
+		AllMeshNames.push_back(in);
+	}
+
+	std::vector<std::string>& AssimpModelManager::GetMeshNames()
+	{
+		return AllMeshNames;
+	}
+
+	std::vector<std::string>& AssimpModelManager::GetPrimitiveNames()
+	{
+		return AllPrimitiveModelsNames;
+	}
 
 	void AssimpModelManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID, AABB_* box)
 	{
@@ -180,11 +248,6 @@ namespace Eclipse
 		box->AddInstance(br);
 	}
 
-	size_t AssimpModelManager::MeshFactoryCount()
-	{
-		return AssimpLoadedModels.size();
-	}
-
 	void AssimpModelManager::SetTexturesForModel(MaterialComponent& in, std::string& passkey)
 	{
 		in.TextureKey = passkey;
@@ -196,11 +259,6 @@ namespace Eclipse
 		{
 			in.HoldingTextures.push_back(it->second);
 		}
-	}
-
-	void AssimpModelManager::InsertTextures(std::string& NameofModel, std::unique_ptr<Texture> in, unsigned int MeshId)
-	{
-		LoadedTexturesV2[NameofModel][MeshId].push_back(std::move(in));
 	}
 
 	void AssimpModelManager::PrintLoadedModels()
@@ -240,82 +298,6 @@ namespace Eclipse
 	{
 		// Each Mesh Render
 		Render(shader, MOde, ModelID, in);
-	}
-
-	void AssimpModelManager::InsertModelMap(std::string& NameofModel, std::string& Directory)
-	{
-		ModelMap.insert({ NameofModel,Directory });
-	}
-
-	void AssimpModelManager::PrintOutModelsLoadedOnce()
-	{
-		// Check How Many Models are Loaded
-		std::cout << std::endl;
-		std::cout << "Loaded Models Count " << AssimpLoadedModels.size() << std::endl;
-		std::cout << "-------------------------------------------------------------------" << std::endl;
-		for (auto const& Models : AssimpLoadedModels)
-		{
-			auto& InvidualModels = *(Models.second);
-			std::cout << " Model Name : " << InvidualModels.GetName() << std::endl;
-			std::cout << " Model Directory : " << InvidualModels.GetDirectory() << std::endl;
-			std::cout << " Number of Textures : " << InvidualModels.GetNumberOfTextures() << std::endl;
-			std::cout << " Number of Meshes : " << InvidualModels.GetMesh().size() << std::endl;
-			InvidualModels.GetTextureNames();
-			std::cout << std::endl;
-		}
-		std::cout << "-------------------------------------------------------------------" << std::endl;
-		std::cout << std::endl;
-	}
-
-	void AssimpModelManager::PrintOutModelTextureMap()
-	{
-		// Check How Many Textures are Loaded and which meshes are they mapped to?
-		std::cout << "Loaded Textures Count " << LoadedTexturesV2.size() << std::endl;
-		std::cout << "-------------------------------------------------------------------" << std::endl;
-		for (auto const& Model : LoadedTexturesV2)
-		{
-			auto& ModelName = (Model.first);
-			auto& MapWithMeshIndexAndTextures = (Model.second);
-
-			std::cout << "Model Name : " << ModelName << std::endl;
-
-			for (auto& i : MapWithMeshIndexAndTextures)
-			{
-				for (auto& EachTextures : i.second)
-				{
-					std::cout << "MeshIndex [" << i.first << "] " << EachTextures->GetPath() << std::endl;
-				}
-			}
-			std::cout << std::endl;
-		}
-		std::cout << "-------------------------------------------------------------------" << std::endl;
-		std::cout << std::endl;
-	}
-
-	void AssimpModelManager::PrintOutModelMap()
-	{
-		// ModelInformation loaded
-		std::cout << "Loaded ModelMap Count " << ModelMap.size() << std::endl;
-		std::cout << "-------------------------------------------------------------------" << std::endl;
-		for (auto const& Model : ModelMap)
-		{
-			auto& ModelName = (Model.first); // Folder Name too
-			auto& ModelPath = (Model.second);
-
-			std::cout << "Model Name : " << ModelName << " ==== " << ModelPath << std::endl;
-		}
-		std::cout << "-------------------------------------------------------------------" << std::endl;
-		std::cout << std::endl;
-
-		// ModelInformation loaded
-		std::cout << "All Meshes Count " << AllMeshNames.size() << std::endl;
-		std::cout << "-------------------------------------------------------------------" << std::endl;
-		for (auto const& Model : AllMeshNames)
-		{
-			std::cout << "Model Name : " << Model << std::endl;
-		}
-		std::cout << "-------------------------------------------------------------------" << std::endl;
-		std::cout << std::endl;
 	}
 
 	void AssimpModelManager::PrintOutAllTextures()
@@ -573,8 +555,6 @@ namespace Eclipse
 
 	void AssimpModelManager::LoadPrefabs()
 	{
-		// Prefab Container Names
-		std::ofstream PrefabsFileWrite;
 		std::fstream PrefabsFileRead;
 
 		PrefabsFileRead.open("../Compiler/CompilerKeyFiles/PrefabsFile/Prefabs.eclipse",
@@ -838,131 +818,6 @@ namespace Eclipse
 		return false;
 	}
 
-	void AssimpModelManager::ClearGeometry()
-	{
-		Geometry.clear();
-	}
-
-	void AssimpModelManager::LoadBasicTextures()
-	{
-		std::fstream TextureFileRead;
-
-		TextureFileRead.open("../Compiler/CompilerKeyFiles/BasicTextureFile/Texture.eclipse",
-			std::ios::in |
-			std::ios::binary);
-
-		if (TextureFileRead.fail())
-		{
-			std::cout << "Fail To Open Texture File" << std::endl << std::endl;
-			return;
-		}
-
-		// Number Of Textures
-		int NumberOfBasicTextures = 0;
-		TextureFileRead.read(reinterpret_cast<char*>(&NumberOfBasicTextures), sizeof(NumberOfBasicTextures));
-
-		for (int i = 0; i < NumberOfBasicTextures; i++)
-		{
-			// Texture Name
-			std::array<char, 128> TextureName;
-			TextureFileRead.read(reinterpret_cast<char*>(&TextureName), sizeof(TextureName));
-
-			// Texture DirecPathtory
-			std::array<char, 128> TexturePath;
-			TextureFileRead.read(reinterpret_cast<char*>(&TexturePath), sizeof(TexturePath));
-
-			Texture tex(TexturePath.data());
-			Graphics::textures.emplace(TextureName.data(), tex);
-		}
-
-		TextureFileRead.close();
-		///////////////////////////
-	}
-
-	bool AssimpModelManager::GetHotReloadFlag()
-	{
-		return false;
-	}
-
-	void AssimpModelManager::ResetHotReloadFlag()
-	{
-		HotReloadFlag = false;
-	}
-
-	bool AssimpModelManager::CheckCompilers()
-	{
-		if (Geometry.size() == 0 || Prefabs.size() == 0)
-		{
-			//EDITOR_LOG_WARN("No Geometries Loaded , Please Run Geometry Compiler");
-			return false;
-		}
-
-		return true;
-	}
-
-	void AssimpModelManager::CreateModel(unsigned int ID, const std::string& ModelName)
-	{
-		if (CheckCompilers())
-		{
-			if (Prefabs.find(ModelName) == Prefabs.end())
-			{
-				auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
-				// Cannot Find this as a parent
-				std::string Name = ModelName;
-				engine->world.AddComponent(MeshID, MeshComponent{});
-				engine->world.AddComponent(MeshID, ModelComponent{});
-				engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
-				SetSingleMesh(MeshID, Name);
-			}
-			else
-			{
-				if (Prefabs[ModelName].size() == 0)
-				{
-					ENGINE_LOG_ASSERT(false, "Cannot Find Model");
-					return;
-				}
-
-				// Is a prefab since its a parent
-				std::string NameOfFolder = ModelName;
-				for (int i = 0; i < Prefabs[NameOfFolder].size(); i++)
-				{
-					auto& name = Prefabs[NameOfFolder][i];
-					auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
-
-					engine->world.AddComponent(MeshID, MeshComponent{});
-					engine->world.AddComponent(MeshID, ModelComponent{});
-					engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
-					SetSingleMesh(MeshID, name);
-				}
-			}
-		}
-	}
-
-	std::unordered_map<std::string, std::vector<std::string>>& AssimpModelManager::GetPrefabs()
-	{
-		return Prefabs;
-	}
-
-	void AssimpModelManager::InsertPrimitiveName(const std::string& in)
-	{
-		AllPrimitiveModelsNames.push_back(in);
-	}
-
-	void AssimpModelManager::InsertMeshName(const std::string& in)
-	{
-		AllMeshNames.push_back(in);
-	}
-
-	std::vector<std::string>& AssimpModelManager::GetMeshNames()
-	{
-		return AllMeshNames;
-	}
-
-	std::vector<std::string>& AssimpModelManager::GetPrimitiveNames()
-	{
-		return AllPrimitiveModelsNames;
-	}
-
 	MeshModelContainer AssimpModelManager::GetMeshContainer()
 	{
 		return AssimpModelContainerV2;
@@ -1000,5 +855,91 @@ namespace Eclipse
 		}
 
 		return false;
+	}
+
+	void AssimpModelManager::InsertModelMap(std::string& NameofModel, std::string& Directory)
+	{
+		ModelMap.insert({ NameofModel,Directory });
+	}
+
+	void AssimpModelManager::PrintOutModelsLoadedOnce()
+	{
+		// Check How Many Models are Loaded
+		std::cout << std::endl;
+		std::cout << "Loaded Models Count " << AssimpLoadedModels.size() << std::endl;
+		std::cout << "-------------------------------------------------------------------" << std::endl;
+		for (auto const& Models : AssimpLoadedModels)
+		{
+			auto& InvidualModels = *(Models.second);
+			std::cout << " Model Name : " << InvidualModels.GetName() << std::endl;
+			std::cout << " Model Directory : " << InvidualModels.GetDirectory() << std::endl;
+			std::cout << " Number of Textures : " << InvidualModels.GetNumberOfTextures() << std::endl;
+			std::cout << " Number of Meshes : " << InvidualModels.GetMesh().size() << std::endl;
+			InvidualModels.GetTextureNames();
+			std::cout << std::endl;
+		}
+		std::cout << "-------------------------------------------------------------------" << std::endl;
+		std::cout << std::endl;
+	}
+
+	void AssimpModelManager::PrintOutModelTextureMap()
+	{
+		// Check How Many Textures are Loaded and which meshes are they mapped to?
+		std::cout << "Loaded Textures Count " << LoadedTexturesV2.size() << std::endl;
+		std::cout << "-------------------------------------------------------------------" << std::endl;
+		for (auto const& Model : LoadedTexturesV2)
+		{
+			auto& ModelName = (Model.first);
+			auto& MapWithMeshIndexAndTextures = (Model.second);
+
+			std::cout << "Model Name : " << ModelName << std::endl;
+
+			for (auto& i : MapWithMeshIndexAndTextures)
+			{
+				for (auto& EachTextures : i.second)
+				{
+					std::cout << "MeshIndex [" << i.first << "] " << EachTextures->GetPath() << std::endl;
+				}
+			}
+			std::cout << std::endl;
+		}
+		std::cout << "-------------------------------------------------------------------" << std::endl;
+		std::cout << std::endl;
+	}
+
+	void AssimpModelManager::PrintOutModelMap()
+	{
+		// ModelInformation loaded
+		std::cout << "Loaded ModelMap Count " << ModelMap.size() << std::endl;
+		std::cout << "-------------------------------------------------------------------" << std::endl;
+		for (auto const& Model : ModelMap)
+		{
+			auto& ModelName = (Model.first); // Folder Name too
+			auto& ModelPath = (Model.second);
+
+			std::cout << "Model Name : " << ModelName << " ==== " << ModelPath << std::endl;
+		}
+		std::cout << "-------------------------------------------------------------------" << std::endl;
+		std::cout << std::endl;
+
+		// ModelInformation loaded
+		std::cout << "All Meshes Count " << AllMeshNames.size() << std::endl;
+		std::cout << "-------------------------------------------------------------------" << std::endl;
+		for (auto const& Model : AllMeshNames)
+		{
+			std::cout << "Model Name : " << Model << std::endl;
+		}
+		std::cout << "-------------------------------------------------------------------" << std::endl;
+		std::cout << std::endl;
+	}
+
+	size_t AssimpModelManager::MeshFactoryCount()
+	{
+		return AssimpLoadedModels.size();
+	}
+
+	void AssimpModelManager::InsertTextures(std::string& NameofModel, std::unique_ptr<Texture> in, unsigned int MeshId)
+	{
+		LoadedTexturesV2[NameofModel][MeshId].push_back(std::move(in));
 	}
 }

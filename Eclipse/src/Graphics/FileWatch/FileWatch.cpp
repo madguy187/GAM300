@@ -154,14 +154,14 @@ namespace Eclipse
 
             if (Create || Delete)
             {
-                engine->AssimpManager.HotReload();
+                engine->gEngineCompiler->HotReload();
                 Create = 0;
                 Delete = 0;
             }
             else
             {
                 EDITOR_LOG_INFO("Preparing to Recompile Models");
-                engine->AssimpManager.HotReload();
+                engine->gEngineCompiler->HotReload();
             }
 
             AssetCounter = 0;
@@ -171,7 +171,7 @@ namespace Eclipse
         if (BasicTextureCounter)
         {
             EDITOR_LOG_INFO("Preparing to Recompile Textures");
-            engine->AssimpManager.HotReloadTetxures();
+            engine->gEngineCompiler->HotReloadTetxures();
             BasicTextureCounter = 0;
             EDITOR_LOG_INFO("All Textures Recompiled");
         }

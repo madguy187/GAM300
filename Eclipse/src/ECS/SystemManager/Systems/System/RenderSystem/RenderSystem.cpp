@@ -16,12 +16,13 @@
 
 namespace Eclipse
 {
-	//unsigned int rectVAO, rectVBO;
-
 	void RenderSystem::Init()
 	{
 		// Register Threads
 		engine->GraphicsManager.RegisterThreads();
+
+		// Compilers ===========================
+		engine->gEngineCompiler = std::make_unique<EngineCompiler>();
 
 		// Outlining Preparation ============================= 
 		glEnable(GL_STENCIL_TEST);

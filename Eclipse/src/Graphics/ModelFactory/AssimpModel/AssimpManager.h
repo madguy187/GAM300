@@ -25,7 +25,7 @@ namespace Eclipse
 
 	class AssimpModelManager
 	{
-	private:
+	public:
 		bool HotReloadFlag = false;
 		std::unordered_map<std::string, std::unique_ptr<Mesh>> Geometry;
 		std::vector<std::string> AllPrimitiveModelsNames;
@@ -49,12 +49,11 @@ namespace Eclipse
 		size_t MeshFactoryCount();
 		// Load All Models Once
 		void Init();
-		static void ExecuteCompiler();
-		void HotReload();
-		void HotReloadTetxures();
+		//static void ExecuteCompiler();
+		//void HotReload();
+		//void HotReloadTetxures();
 		// Render Function that uses the Container that stores MeshComponent 
 		void MeshDraw(MeshComponent& ModelMesh, unsigned int ID, unsigned int FrameBufferID, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
-		void TestMeshDraw(MeshComponent& ModelMesh, unsigned int ID, unsigned int FrameBufferID, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
 		// Upload to Shader
 		void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID, AABB_* box);
 		// Delete Model from MeshContainer Using ID
