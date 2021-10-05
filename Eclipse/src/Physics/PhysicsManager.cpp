@@ -98,9 +98,9 @@ namespace Eclipse
 		if(Px_Actors[ent].InScene)
 			RemoveActorFromScene(ent);
 		PxVec3 temptrans;
-		temptrans.x = transform.position.x;
-		temptrans.y = transform.position.y;
-		temptrans.z = transform.position.z;
+		temptrans.x = transform.position.getX();
+		temptrans.y = transform.position.getY();
+		temptrans.z = transform.position.getZ();
 		PxRigidStatic* temp = Px_Physics->createRigidStatic(PxTransform(temptrans));
 		PxU32 numofshapes = static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->getNbShapes();
 
@@ -111,7 +111,6 @@ namespace Eclipse
 
 			for (PxU32 i = 0; i < numofshapes; ++i)
 			{
-				static_cast<PxRigidActor*>(Px_Actors[ent].actor)->detachShape(*shapes[i]);
 				PxMaterial* tempmat = Px_Physics->createMaterial(0.5f, 0.5f, 0.1f);
 				if (!tempmat)
 				{
@@ -119,7 +118,16 @@ namespace Eclipse
 					return;
 				}
 				
-				PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(temp), PxBoxGeometry{ collision.shape.hx,collision.shape.hy,collision.shape.hz }, *tempmat);
+				switch (collision.shape.shape)
+				{
+				case PxShapeType::Px_CUBE :
+					PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(temp), PxBoxGeometry{ collision.shape.hx,collision.shape.hy,collision.shape.hz }, *tempmat);
+					break;
+				case PxShapeType::Px_SPHERE :
+					PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(temp), PxSphereGeometry{ collision.shape.radius }, *tempmat);
+					break;
+				}
+				
 			}
 
 		}
@@ -131,16 +139,16 @@ namespace Eclipse
 
 	void PhysicsManager::ChangeStaticDynamic(Entity ent)
 	{
-		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
 		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
+		auto& collision = engine->world.GetComponent<CollisionComponent>(ent);
 
 		if (Px_Actors[ent].InScene)
 			RemoveActorFromScene(ent);
 		PxU32 numofshapes = static_cast<PxRigidActor*>(Px_Actors[ent].actor)->getNbShapes();
 		PxVec3 temptrans;
-		temptrans.x = transform.position.x;
-		temptrans.y = transform.position.y;
-		temptrans.z = transform.position.z;
+		temptrans.x = transform.position.getX();
+		temptrans.y = transform.position.getY();
+		temptrans.z = transform.position.getZ();
 		PxRigidDynamic* temp = Px_Physics->createRigidDynamic(PxTransform(temptrans));
 		if (numofshapes > 0)
 		{
@@ -148,9 +156,22 @@ namespace Eclipse
 			static_cast<PxRigidActor*>(Px_Actors[ent].actor)->getShapes(shapes, numofshapes);
 			for (PxU32 i = 0; i < numofshapes; ++i)
 			{
-				//static_cast<PxRigidStatic*>(Px_Actors[ent].actor)->detachShape(*shapes[i]);
-				temp->attachShape(*shapes[i]);
-				shapes[i]->release();
+				PxMaterial* tempmat = Px_Physics->createMaterial(0.5f, 0.5f, 0.1f);
+				if (!tempmat)
+				{
+					std::cout << "creatematerial failed" << std::endl;
+					return;
+				}
+
+				switch (collision.shape.shape)
+				{
+				case PxShapeType::Px_CUBE:
+					PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(temp), PxBoxGeometry{ collision.shape.hx,collision.shape.hy,collision.shape.hz }, *tempmat);
+					break;
+				case PxShapeType::Px_SPHERE:
+					PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(temp), PxSphereGeometry{ collision.shape.radius }, *tempmat);
+					break;
+				}
 			}
 		}
 		Px_Actors[ent].actor->release();
@@ -171,7 +192,7 @@ namespace Eclipse
 			std::cout << "creatematerial failed" << std::endl;
 			return;
 		}
-		PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(Px_Actors[ent].actor), PxBoxGeometry{ hx,hy,hz }, *tempmat);
+		PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(Px_Actors[ent].actor), PxBoxGeometry{ hx,hy,hz }, *tempmat);
 		collision.created = true;
 	}
 
@@ -187,7 +208,7 @@ namespace Eclipse
 			std::cout << "creatematerial failed" << std::endl;
 			return;
 		}
-		PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(Px_Actors[ent].actor), PxSphereGeometry{ radius }, *tempmat);
+		PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(Px_Actors[ent].actor), PxSphereGeometry{ radius }, *tempmat);
 		collision.created = true;
 	}
 
