@@ -16,9 +16,10 @@ namespace EclipseCompiler
 			return;
 		}
 
+		std::cout << "Writing to Prefabs File " << std::endl;
 		int NumberOfPrefabs = Prefabs.size();
 		PrefabsFileWrite.write(reinterpret_cast<const char*>(&NumberOfPrefabs), sizeof(NumberOfPrefabs));
-
+		std::cout << "Detected Prefabs Size " << NumberOfPrefabs << std::endl;
 		for (auto i : Prefabs)
 		{
 			std::array<char, 128> ParentName;
@@ -38,6 +39,7 @@ namespace EclipseCompiler
 			}
 		}
 		PrefabsFileWrite.close();
+		std::cout << "Done Writing to Prefabs File " << std::endl;
 	}
 
 	void PrefabsCompiler::ReadFile()
