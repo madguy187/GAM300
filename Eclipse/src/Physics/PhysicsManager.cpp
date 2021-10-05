@@ -82,8 +82,8 @@ namespace Eclipse
 		else
 		{
 			//need to change to static but do dynamic first
-			Px_Actors[ent].actor = Px_Physics->createRigidDynamic(PxTransform(temptrans));
-			Px_Actors[ent].type = ActorType::ACTOR_DYNAMIC;
+			Px_Actors[ent].actor = Px_Physics->createRigidStatic(PxTransform(temptrans));
+			Px_Actors[ent].type = ActorType::ACTOR_STATIC;
 		}
 
 		Px_Actors[ent].actor->setName(std::to_string(ent).c_str());
@@ -93,31 +93,39 @@ namespace Eclipse
 
 	void PhysicsManager::ChangeDynamicStatic(Entity ent)
 	{
-		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
 		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
-
+		auto& collision = engine->world.GetComponent<CollisionComponent>(ent);
 		if(Px_Actors[ent].InScene)
 			RemoveActorFromScene(ent);
-		PxShape** shapes = nullptr;
-
-		static_cast<PxRigidActor*>(Px_Actors[ent].actor)->getShapes(shapes, static_cast<PxRigidActor*>(Px_Actors[ent].actor)->getNbShapes());
 		PxVec3 temptrans;
 		temptrans.x = transform.position.x;
 		temptrans.y = transform.position.y;
 		temptrans.z = transform.position.z;
 		PxRigidStatic* temp = Px_Physics->createRigidStatic(PxTransform(temptrans));
+		PxU32 numofshapes = static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->getNbShapes();
 
-
-		PxShape** shapeit = shapes;
-		while (shapeit != nullptr)
+		if (numofshapes > 0)
 		{
-			static_cast<PxRigidActor*>(Px_Actors[ent].actor)->detachShape(**shapeit);
-			temp->attachShape(**shapeit);
-			shapeit++;
-		}
+			PxShape** shapes = new PxShape * [numofshapes];
+			static_cast<PxRigidActor*>(Px_Actors[ent].actor)->getShapes(shapes, numofshapes);
 
+			for (PxU32 i = 0; i < numofshapes; ++i)
+			{
+				static_cast<PxRigidActor*>(Px_Actors[ent].actor)->detachShape(*shapes[i]);
+				PxMaterial* tempmat = Px_Physics->createMaterial(0.5f, 0.5f, 0.1f);
+				if (!tempmat)
+				{
+					std::cout << "creatematerial failed" << std::endl;
+					return;
+				}
+				
+				PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(temp), PxBoxGeometry{ collision.shape.hx,collision.shape.hy,collision.shape.hz }, *tempmat);
+			}
+
+		}
 		Px_Actors[ent].actor->release();
 		Px_Actors[ent].actor = temp;
+		Px_Actors[ent].type = ActorType::ACTOR_STATIC;
 		AddActorToScene(ent);
 	}
 
@@ -128,26 +136,26 @@ namespace Eclipse
 
 		if (Px_Actors[ent].InScene)
 			RemoveActorFromScene(ent);
-		PxShape** shapes = nullptr;
-		static_cast<PxRigidActor*>(Px_Actors[ent].actor)->getShapes(shapes, static_cast<PxRigidActor*>(Px_Actors[ent].actor)->getNbShapes());
+		PxU32 numofshapes = static_cast<PxRigidActor*>(Px_Actors[ent].actor)->getNbShapes();
 		PxVec3 temptrans;
 		temptrans.x = transform.position.x;
 		temptrans.y = transform.position.y;
 		temptrans.z = transform.position.z;
-
 		PxRigidDynamic* temp = Px_Physics->createRigidDynamic(PxTransform(temptrans));
-
-
-		PxShape** shapeit = shapes;
-		while (shapeit != nullptr)
+		if (numofshapes > 0)
 		{
-			static_cast<PxRigidActor*>(Px_Actors[ent].actor)->detachShape(**shapeit);
-			temp->attachShape(**shapeit);
-			shapeit++;
+			PxShape** shapes = new PxShape * [numofshapes];
+			static_cast<PxRigidActor*>(Px_Actors[ent].actor)->getShapes(shapes, numofshapes);
+			for (PxU32 i = 0; i < numofshapes; ++i)
+			{
+				//static_cast<PxRigidStatic*>(Px_Actors[ent].actor)->detachShape(*shapes[i]);
+				temp->attachShape(*shapes[i]);
+				shapes[i]->release();
+			}
 		}
-
 		Px_Actors[ent].actor->release();
 		Px_Actors[ent].actor = temp;
+		Px_Actors[ent].type = ActorType::ACTOR_DYNAMIC;
 		AddActorToScene(ent);
 	}
 

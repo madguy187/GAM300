@@ -8,6 +8,7 @@ void CollisionSystem::Update()
 		engine->gPhysics.InitActor(entity);
 		engine->gPhysics.CreateShape(entity);
 		engine->gPhysics.UpdateShapes(entity);
+		engine->gPhysics.ChangeType(entity);
 		if (!engine->world.CheckComponent<RigidBodyComponent>(entity))
 		{
 			engine->gPhysics.UpdateActor(entity);
