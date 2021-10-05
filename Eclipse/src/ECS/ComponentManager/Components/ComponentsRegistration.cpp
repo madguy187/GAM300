@@ -175,6 +175,7 @@ namespace Eclipse
         ADD_MEMBER(velocity);
         ADD_MEMBER(Angvelocity);
         ADD_MEMBER(forces);
+        ADD_MEMBER(MaxVelocity);
         ADD_MEMBER(mass);
         ADD_MEMBER(drag);
         ADD_MEMBER(angdrag);

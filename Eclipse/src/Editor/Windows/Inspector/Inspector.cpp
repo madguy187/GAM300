@@ -62,6 +62,7 @@ namespace Eclipse
             ShowScriptProperty("Script Details", currEnt, CompFilter);
             ShowAudioProperty("Audio", currEnt, CompFilter);
             ShowCollisionProperty("Collision", currEnt, CompFilter);
+            ShowAIProperty("AI Properties", currEnt, CompFilter);
 
             ECGui::InsertHorizontalLineSeperator();
             /*ECGui::PushItemWidth(WindowSize_.getX());*/
@@ -710,17 +711,17 @@ namespace Eclipse
                     ECGui::InsertSameLine();
                     snprintf(hxValue, 256, "%f", _Collision.shape.hx);
                     ECGui::DrawInputTextWidget("Hx: ", hxValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
-                    _Collision.shape.hx = atof(hxValue);
+                    _Collision.shape.hx = static_cast<float>(atof(hxValue));
                     ECGui::DrawTextWidget<const char*>("Hy: ", "");
                     ECGui::InsertSameLine();
                     snprintf(hyValue, 256, "%f", _Collision.shape.hy);
                     ECGui::DrawInputTextWidget("Hy: ", hyValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
-                    _Collision.shape.hy = atof(hyValue);
+                    _Collision.shape.hy = static_cast<float>(atof(hyValue));
                     ECGui::DrawTextWidget<const char*>("Hz: ", "");
                     ECGui::InsertSameLine();
                     snprintf(hzValue, 256, "%f", _Collision.shape.hz);
                     ECGui::DrawInputTextWidget("Hz: ", hzValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
-                    _Collision.shape.hz = atof(hzValue);
+                    _Collision.shape.hz = static_cast<float>(atof(hzValue));
                     break;
                 case PxShapeType::Px_SPHERE:
                     ECGui::DrawTextWidget<const char*>("SPHERE ", "");
@@ -729,7 +730,7 @@ namespace Eclipse
                     ECGui::InsertSameLine();
                     snprintf(radiusValue, 256, "%f", _Collision.shape.radius);
                     ECGui::DrawInputTextWidget("Radius: ", radiusValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
-                    _Collision.shape.radius = atof(radiusValue);
+                    _Collision.shape.radius = static_cast<float>(atof(radiusValue));
                     break;
                 }
             }
@@ -758,6 +759,30 @@ namespace Eclipse
             }
             ECGui::InsertHorizontalLineSeperator();
         }
+        return false;
+    }
+
+    bool InspectorWindow::ShowAIProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+    {
+        if (engine->world.CheckComponent<AIComponent>(ID))
+        {
+            if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+            {
+                auto& ai = engine->world.GetComponent<AIComponent>(ID);
+                static std::string registeredEnt;
+
+                ECGui::DrawTextWidget<const char*>("Register Entity as Waypoint: ", EMPTY_STRING);
+                ECGui::DrawTextWidget<size_t>("Total Count", ai.waypoints.size());
+                AddWaypointController(registeredEnt);
+
+                if (ECGui::ButtonBool("Register"))
+                {
+                    if(registeredEnt != EMPTY_STRING)
+                        engine->gAI.AddWaypoint(ID, lexical_cast<Entity>(registeredEnt));
+                }
+            }
+        }
+
         return false;
     }
 
@@ -876,6 +901,10 @@ namespace Eclipse
                         ComponentRegistry<CollisionComponent>("CollisionComponent", ID, entCom.Name,
                             EditComponent::EC_ADDCOMPONENT);
                         break;
+                    case str2int("AIComponent"):
+                        ComponentRegistry<AIComponent>("AIComponent", ID, entCom.Name,
+                            EditComponent::EC_ADDCOMPONENT);
+                        break;
                     }
                 }
             }
@@ -963,6 +992,10 @@ namespace Eclipse
                         ComponentRegistry<CollisionComponent>("CollisionComponent", ID, entCom.Name,
                             EditComponent::EC_REMOVECOMPONENT);
                         break;
+                    case str2int("AIComponent"):
+                        ComponentRegistry<AIComponent>("AIComponent", ID, entCom.Name,
+                            EditComponent::EC_REMOVECOMPONENT);
+                        break;
                     }
                 }
             }
@@ -1014,7 +1047,7 @@ namespace Eclipse
         {
             columncount = 1;
         }
-        ECGui::DrawSliderFloatWidget("Size: ", &thumbnaimsize, 10, 200);
+        ECGui::DrawSliderFloatWidget("Size: ", &thumbnaimsize,false, 10, 200);
         ECGui::SetColumns(columncount, NULL, true);
         for (auto it : Graphics::textures)
         {
@@ -1104,7 +1137,7 @@ namespace Eclipse
         {
             columncount = 1;
         }
-        ECGui::DrawSliderFloatWidget("Size: ", &thumbnaimsize, 10, 200);
+        ECGui::DrawSliderFloatWidget("Size: ", &thumbnaimsize,false, 10, 200);
 
         ECGui::SetColumns(columncount, NULL, true);
 
@@ -1187,6 +1220,40 @@ namespace Eclipse
             engine->audioManager.SetSpeed(audioCom.AudioPath, audioCom.Speed);
             audioCom.ChannelID = engine->audioManager.Play2DSounds(audioCom.AudioPath, audioCom.Volume,
                 audioCom.IsLooping);
+        }
+    }
+
+    void InspectorWindow::AddWaypointController(std::string& currentSelection)
+    {
+       /* for (size_t i = 0; i < engine->gAI.GetTargetPoints().size(); ++i)
+        {
+            bool selected = false;
+            auto& entCom = engine->world.GetComponent<EntityComponent>(engine->gAI.GetTargetPoints()[i]);
+     
+            if (ECGui::CreateSelectableButton(entCom.Name.c_str(), &selected))
+                currentSelection = lexical_cast<std::string>(engine->gAI.GetTargetPoints()[i]);
+        }*/
+
+        static size_t index = 0;
+
+        if (ImGuiAPI::BeginComboList("WaypointListBegin", currentSelection.c_str(), true))
+        {
+            for (size_t n = 0; n < engine->gAI.GetTargetPoints().size(); n++)
+            {
+                auto& entCom = engine->world.GetComponent<EntityComponent>(engine->gAI.GetTargetPoints()[n]);
+                const bool is_selected = (index == n);
+
+                if (ImGui::Selectable(my_strcat(entCom.Name, " ", engine->gAI.GetTargetPoints()[n]).c_str(), is_selected))
+                {
+                    index = n;
+                    currentSelection = lexical_cast<std::string>(engine->gAI.GetTargetPoints()[n]);
+                }
+
+                if (is_selected)
+                    ImGui::SetItemDefaultFocus();
+            }
+
+            ImGuiAPI::EndComboList();
         }
     }
 

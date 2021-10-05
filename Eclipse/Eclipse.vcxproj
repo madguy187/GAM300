@@ -200,6 +200,7 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClInclude Include="src\ECS\ComponentManager\Components\TransformComponent.h" />
     <ClInclude Include="src\ECS\EntityManager\EntityManager.h" />
     <ClInclude Include="src\ECS\SystemManager\SystemManager.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\AI\AISystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem\CameraSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Collision\CollisionSystem.h" />
@@ -355,6 +356,7 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClCompile Include="src\ECS\ComponentManager\Components\ComponentsRegistration.cpp" />
     <ClCompile Include="src\ECS\EntityManager\EntityManager.cpp" />
     <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\AI\AISystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem\CameraSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Collision\CollisionSystem.cpp" />

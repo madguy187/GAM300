@@ -20,6 +20,8 @@ namespace Eclipse
         TagList_.push_back(std::vector<std::string>());
         // For Lights
         TagList_.push_back(std::vector<std::string>());
+        // For Target Point
+        TagList_.push_back(std::vector<std::string>());
 
         for (int index = 0; index != static_cast<int>(EntityType::ENT_LIGHT_POINT); ++index)
         {
@@ -33,6 +35,9 @@ namespace Eclipse
             EntityType temp = static_cast<EntityType>(index);
             TagList_[1].push_back(lexical_cast_toStr<EntityType>(temp));
         }
+
+        EntityType tp = EntityType::ENT_TARGETPOINT;
+        TagList_[2].push_back(lexical_cast_toStr<EntityType>(tp));
     }
 
     void HierarchyWindow::Unload()
@@ -125,9 +130,8 @@ namespace Eclipse
                 }
                 if (!entCom.IsAChild)
                 {
-                    //engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity", static_cast<int>(curr.index), PayloadSourceType::PST_ENTITY);
                     engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
-                        static_cast<int>(index), PayloadSourceType::PST_ENTITY);
+                        static_cast<int>(index), PayloadSourceType::PST_ENTITY, curr.index);
                     engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
                         static_cast<int>(index), entCom.IsActive);
                 }
@@ -183,6 +187,22 @@ namespace Eclipse
                     ECGui::EndTreeNode();
                 }
                 break;
+            }
+            case 2:
+            {
+                bool selected = false;
+
+                if (ECGui::BeginTreeNode("Other Actors"))
+                {
+                    if (ECGui::CreateSelectableButton(TagList_[i][0].c_str(), &selected))
+                    {
+                        Entity ID = engine->editorManager->CreateDefaultEntity(lexical_cast_toEnum<EntityType>(TagList_[i][0]));
+                        engine->gAI.AddTargetPointEntity(ID);
+                        UpdateEntityTracker(ID);
+                    }
+
+                    ECGui::EndTreeNode();
+                }
             }
             default:
                 break;

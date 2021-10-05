@@ -84,8 +84,7 @@ namespace Eclipse
 				"AngDrag", data.angdrag,
 				"IsKinematic", data._Kinematic,
 				"IsEnableGravity", data.enableGravity,
-				"IsEnableRotation", data.enableRotation,
-				"InScene", data.inScene
+				"IsEnableRotation", data.enableRotation
 			);
 		}
 
@@ -329,8 +328,7 @@ namespace Eclipse
 				"AngDrag", comp.angdrag,
 				"IsKinematic", comp._Kinematic,
 				"IsEnableGravity", comp.enableGravity,
-				"IsEnableRotation", comp.enableRotation,
-				"InScene", comp.inScene
+				"IsEnableRotation", comp.enableRotation
 			);
 
 			return isSuccess;
