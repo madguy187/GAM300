@@ -1,13 +1,6 @@
 <?xml version="1.0" ?>
-<Entities Size="4">
+<Entities Size="3">
     <Entity_0 ID="6">
-        <EntityComponent>
-            <Tag value="DirectionalLight" />
-            <Name value="DirectionalLight" />
-            <Child size="0" />
-            <Parent size="0" />
-            <IsAChild value="false" />
-        </EntityComponent>
         <DirectionalLightComponent>
             <Counter value="0" />
             <visible value="false" />
@@ -20,21 +13,21 @@
             <specular x="0.5" y="0.5" z="0.5" />
             <Color x="1" y="1" z="1" w="1" />
         </DirectionalLightComponent>
+        <EntityComponent>
+            <Tag value="DirectionalLight" />
+            <Name value="DirectionalLight" />
+            <Child size="0" />
+            <Parent size="0" />
+            <IsAChild value="false" />
+        </EntityComponent>
+        <LightComponent />
         <TransformComponent>
             <position x="0" y="0" z="0" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
-        <LightComponent />
     </Entity_0>
     <Entity_1 ID="7">
-        <EntityComponent>
-            <Tag value="Camera" />
-            <Name value="Camera" />
-            <Child size="0" />
-            <Parent size="0" />
-            <IsAChild value="false" />
-        </EntityComponent>
         <CameraComponent>
             <eyeAlpha value="0" />
             <eyeBeta value="-90" />
@@ -63,6 +56,13 @@
             <camType value="Editor_Camera" />
             <projType value="Perspective" />
         </CameraComponent>
+        <EntityComponent>
+            <Tag value="Camera" />
+            <Name value="Camera" />
+            <Child size="0" />
+            <Parent size="0" />
+            <IsAChild value="false" />
+        </EntityComponent>
         <TransformComponent>
             <position x="0" y="20" z="40" />
             <rotation x="-40" y="-90" z="0" />
@@ -70,59 +70,26 @@
         </TransformComponent>
     </Entity_1>
     <Entity_2 ID="8">
-        <EntityComponent>
-            <Tag value="Cube" />
-            <Name value="Cube" />
-            <Child size="0" />
-            <Parent size="0" />
-            <IsAChild value="false" />
-        </EntityComponent>
-        <MaterialComponent>
-            <Modeltype value="BasicPrimitives" />
-            <ambient x="0" y="0" z="0" />
-            <diffuse x="1" y="1" z="1" />
-            <specular x="1" y="1" z="1" />
-            <NoTextures value="true" />
-            <shininess value="0.25" />
-            <MaximumShininess value="128" />
-            <ComboIndex value="0" />
-            <TextureComboIndex value="0" />
-            <Type value="TT_UNASSIGNED" />
-            <hasTexture value="true" />
-            <TextureRef value="FolderIcon" />
-            <TextureKey value="" />
-            <HoldingTextures size="0" />
-        </MaterialComponent>
-        <MeshComponent>
-            <MeshName value="" />
-            <color x="1" y="1" z="1" />
-            <textureIdx x="0" y="0" />
-            <isQuad value="false" />
-            <modelNDC_xform Col="4" Row="4">
-                <Col0 _00="0" _01="0" _02="0" _03="0" />
-                <Col1 _10="0" _11="0" _12="0" _13="0" />
-                <Col2 _20="0" _21="0" _22="0" _23="0" />
-                <Col3 _30="0" _31="0" _32="0" _33="0" />
-            </modelNDC_xform>
-            <modelRef value="Cube" />
-            <shaderRef value="shader3DShdrpgm" />
-            <transparency value="1" />
-        </MeshComponent>
-        <TransformComponent>
-            <position x="15.504" y="0" z="11.7718" />
-            <rotation x="0" y="0" z="0" />
-            <scale x="5" y="5" z="5" />
-        </TransformComponent>
         <AABBComponent>
-            <center x="15.504" y="0" z="11.7718" />
-            <Min x="13.004" y="-2.5" z="9.27182" />
-            <Max x="18.004" y="2.5" z="14.2718" />
+            <center x="0" y="0" z="0" />
+            <Min x="-2.5" y="-2.5" z="-2.5" />
+            <Max x="2.5" y="2.5" z="2.5" />
         </AABBComponent>
-    </Entity_2>
-    <Entity_3 ID="9">
+        <AIComponent>
+            <waypoints size="0" />
+            <target value="0" />
+            <MinDisttoChange value="5" />
+            <PatrolSpeed value="20" />
+            <patrolling value="true" />
+        </AIComponent>
+        <CollisionComponent>
+            <Collided size="0" />
+            <shape Shape="Px_CUBE" Hx="2.5" Hy="2.5" Hz="2.5" Radius="1" Hheight="1" />
+            <created value="true" />
+        </CollisionComponent>
         <EntityComponent>
-            <Tag value="NULL" />
-            <Name value="NULL" />
+            <Tag value="TargetPoint" />
+            <Name value="TargetPoint" />
             <Child size="0" />
             <Parent size="0" />
             <IsAChild value="false" />
@@ -135,7 +102,7 @@
             <NoTextures value="true" />
             <shininess value="0.25" />
             <MaximumShininess value="128" />
-            <ComboIndex value="0" />
+            <ComboIndex value="1" />
             <TextureComboIndex value="0" />
             <Type value="TT_UNASSIGNED" />
             <hasTexture value="false" />
@@ -160,16 +127,23 @@
             <modelRef value="" />
             <shaderRef value="" />
             <transparency value="1" />
+            <ENV_MAP value="false" />
+            <ENV_TYPE value="MT_REFLECT" />
         </MeshComponent>
+        <ModelComponent>
+            <NameOfModel value="" />
+            <Directory value="" />
+            <type value="MT_UNASSIGNED" />
+            <ComboIndex value="0" />
+        </ModelComponent>
+        <PrefabComponent>
+            <IsChild value="true" />
+            <PrefabID value="1039837030696" />
+        </PrefabComponent>
         <TransformComponent>
             <position x="0" y="0" z="0" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
-        <AABBComponent>
-            <center x="0" y="0" z="0" />
-            <Min x="-2.5" y="-2.5" z="-2.5" />
-            <Max x="2.5" y="2.5" z="2.5" />
-        </AABBComponent>
-    </Entity_3>
+    </Entity_2>
 </Entities>

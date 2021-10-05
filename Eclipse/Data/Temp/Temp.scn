@@ -1,14 +1,6 @@
 <?xml version="1.0" ?>
-<Entities Size="6">
+<Entities Size="7">
     <Entity_0 ID="0">
-        <EntityComponent>
-            <Tag value="DirectionalLight" />
-            <Name value="DirectionalLight" />
-            <IsActive value="true" />
-            <Child size="0" />
-            <Parent size="0" />
-            <IsAChild value="false" />
-        </EntityComponent>
         <DirectionalLightComponent>
             <Counter value="0" />
             <visible value="false" />
@@ -21,22 +13,21 @@
             <specular x="0.5" y="0.5" z="0.5" />
             <Color x="1" y="1" z="1" w="1" />
         </DirectionalLightComponent>
+        <EntityComponent>
+            <Tag value="DirectionalLight" />
+            <Name value="DirectionalLight" />
+            <Child size="0" />
+            <Parent size="0" />
+            <IsAChild value="false" />
+        </EntityComponent>
+        <LightComponent />
         <TransformComponent>
             <position x="0" y="0" z="0" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
-        <LightComponent />
     </Entity_0>
     <Entity_1 ID="1">
-        <EntityComponent>
-            <Tag value="Camera" />
-            <Name value="Camera" />
-            <IsActive value="false" />
-            <Child size="0" />
-            <Parent size="0" />
-            <IsAChild value="false" />
-        </EntityComponent>
         <CameraComponent>
             <eyeAlpha value="0" />
             <eyeBeta value="-90" />
@@ -44,16 +35,16 @@
             <nearPlane value="0.1" />
             <farPlane value="500" />
             <aspect value="1.92708" />
-            <eyePos x="0.447886" y="16.2562" z="34.7066" />
-            <eyeFront x="0.0759419" y="-0.56928" z="-0.818629" />
-            <upVec x="0.0525847" y="0.822144" z="-0.566846" />
-            <rightVec x="0.995725" y="-0" z="0.0923706" />
+            <eyePos x="0" y="20" z="40" />
+            <eyeFront x="-3.34849e-08" y="-0.642788" z="-0.766045" />
+            <upVec x="-2.80971e-08" y="0.766044" z="-0.642788" />
+            <rightVec x="1" y="0" z="-4.37114e-08" />
             <worldUp x="0" y="1" z="0" />
             <viewMtx Col="4" Row="4">
-                <Col0 _00="0.995725" _01="0.0525846" _02="-0.0759418" _03="0" />
-                <Col1 _10="-7.07805e-08" _11="0.822144" _12="0.569279" _13="0" />
-                <Col2 _20="0.0923705" _21="-0.566845" _22="0.818629" _23="0" />
-                <Col3 _30="-3.65183" _31="6.28474" _32="-37.6321" _33="1" />
+                <Col0 _00="1" _01="-2.80971e-08" _02="3.34849e-08" _03="0" />
+                <Col1 _10="0" _11="0.766044" _12="0.642788" _13="0" />
+                <Col2 _20="-4.37114e-08" _21="-0.642788" _22="0.766044" _23="0" />
+                <Col3 _30="1.74846e-06" _31="10.3906" _32="-43.4975" _33="1" />
             </viewMtx>
             <projMtx Col="4" Row="4">
                 <Col0 _00="1.25278" _01="0" _02="0" _03="0" />
@@ -65,90 +56,352 @@
             <camType value="Editor_Camera" />
             <projType value="Perspective" />
         </CameraComponent>
+        <EntityComponent>
+            <Tag value="Camera" />
+            <Name value="Camera" />
+            <Child size="0" />
+            <Parent size="0" />
+            <IsAChild value="false" />
+        </EntityComponent>
         <TransformComponent>
-            <position x="0.447886" y="16.2562" z="34.7066" />
+            <position x="0" y="20" z="40" />
             <rotation x="-40" y="-90" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_1>
     <Entity_2 ID="7">
+        <AABBComponent>
+            <center x="-12.0879" y="0" z="5.81127" />
+            <Min x="-14.5879" y="-2.5" z="3.31127" />
+            <Max x="-9.58794" y="2.5" z="8.31127" />
+        </AABBComponent>
+        <CollisionComponent>
+            <Collided size="0" />
+            <shape Shape="Px_CUBE" Hx="2.5" Hy="2.5" Hz="2.5" Radius="1" Hheight="1" />
+            <created value="true" />
+        </CollisionComponent>
         <EntityComponent>
             <Tag value="TargetPoint" />
             <Name value="TargetPoint" />
-            <IsActive value="false" />
             <Child size="0" />
             <Parent size="0" />
             <IsAChild value="false" />
         </EntityComponent>
+        <MaterialComponent>
+            <Modeltype value="Models3D" />
+            <ambient x="0" y="0" z="0" />
+            <diffuse x="1" y="1" z="1" />
+            <specular x="1" y="1" z="1" />
+            <NoTextures value="true" />
+            <shininess value="0.25" />
+            <MaximumShininess value="128" />
+            <ComboIndex value="1" />
+            <TextureComboIndex value="0" />
+            <Type value="TT_UNASSIGNED" />
+            <hasTexture value="false" />
+            <TextureRef value="" />
+            <TextureKey value="Sketchfab_model2" />
+            <HoldingTextures size="2">
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/dog2" Handle="8" />
+                <Member1 Type="6" Directory="..//Eclipse//src/Assets/Models/dog2" Handle="9" />
+            </HoldingTextures>
+        </MaterialComponent>
+        <MeshComponent>
+            <MeshName value="Sketchfab_model2" />
+            <color x="1" y="1" z="1" />
+            <textureIdx x="0" y="0" />
+            <isQuad value="false" />
+            <modelNDC_xform Col="4" Row="4">
+                <Col0 _00="0" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="0" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="0" _23="0" />
+                <Col3 _30="0" _31="0" _32="0" _33="0" />
+            </modelNDC_xform>
+            <modelRef value="" />
+            <shaderRef value="" />
+            <transparency value="1" />
+            <ENV_MAP value="false" />
+            <ENV_TYPE value="MT_REFLECT" />
+        </MeshComponent>
+        <ModelComponent>
+            <NameOfModel value="" />
+            <Directory value="" />
+            <type value="MT_UNASSIGNED" />
+            <ComboIndex value="0" />
+        </ModelComponent>
+        <PrefabComponent>
+            <IsChild value="true" />
+            <PrefabID value="1039837030696" />
+        </PrefabComponent>
         <TransformComponent>
-            <position x="9.92486" y="0" z="17.96" />
+            <position x="-12.0879" y="0" z="5.81127" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
-        <AABBComponent>
-            <center x="9.92486" y="0" z="17.96" />
-            <Min x="7.42486" y="-2.5" z="15.46" />
-            <Max x="12.4249" y="2.5" z="20.46" />
-        </AABBComponent>
     </Entity_2>
     <Entity_3 ID="8">
+        <AABBComponent>
+            <center x="11.7578" y="0" z="-4.91463" />
+            <Min x="9.25777" y="-2.5" z="-7.41463" />
+            <Max x="14.2578" y="2.5" z="-2.41463" />
+        </AABBComponent>
+        <CollisionComponent>
+            <Collided size="0" />
+            <shape Shape="Px_CUBE" Hx="2.5" Hy="2.5" Hz="2.5" Radius="1" Hheight="1" />
+            <created value="true" />
+        </CollisionComponent>
         <EntityComponent>
             <Tag value="TargetPoint" />
             <Name value="TargetPoint" />
-            <IsActive value="false" />
             <Child size="0" />
             <Parent size="0" />
             <IsAChild value="false" />
         </EntityComponent>
+        <MaterialComponent>
+            <Modeltype value="Models3D" />
+            <ambient x="0" y="0" z="0" />
+            <diffuse x="1" y="1" z="1" />
+            <specular x="1" y="1" z="1" />
+            <NoTextures value="true" />
+            <shininess value="0.25" />
+            <MaximumShininess value="128" />
+            <ComboIndex value="1" />
+            <TextureComboIndex value="0" />
+            <Type value="TT_UNASSIGNED" />
+            <hasTexture value="false" />
+            <TextureRef value="" />
+            <TextureKey value="Sketchfab_model2" />
+            <HoldingTextures size="2">
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/dog2" Handle="8" />
+                <Member1 Type="6" Directory="..//Eclipse//src/Assets/Models/dog2" Handle="9" />
+            </HoldingTextures>
+        </MaterialComponent>
+        <MeshComponent>
+            <MeshName value="Sketchfab_model2" />
+            <color x="1" y="1" z="1" />
+            <textureIdx x="0" y="0" />
+            <isQuad value="false" />
+            <modelNDC_xform Col="4" Row="4">
+                <Col0 _00="0" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="0" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="0" _23="0" />
+                <Col3 _30="0" _31="0" _32="0" _33="0" />
+            </modelNDC_xform>
+            <modelRef value="" />
+            <shaderRef value="" />
+            <transparency value="1" />
+            <ENV_MAP value="false" />
+            <ENV_TYPE value="MT_REFLECT" />
+        </MeshComponent>
+        <ModelComponent>
+            <NameOfModel value="" />
+            <Directory value="" />
+            <type value="MT_UNASSIGNED" />
+            <ComboIndex value="0" />
+        </ModelComponent>
+        <PrefabComponent>
+            <IsChild value="true" />
+            <PrefabID value="1039837030696" />
+        </PrefabComponent>
         <TransformComponent>
-            <position x="0" y="0" z="22.5055" />
+            <position x="11.7578" y="0" z="-4.91463" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
-        <AABBComponent>
-            <center x="0" y="0" z="22.5055" />
-            <Min x="-2.5" y="-2.5" z="20.0055" />
-            <Max x="2.5" y="2.5" z="25.0055" />
-        </AABBComponent>
     </Entity_3>
     <Entity_4 ID="9">
+        <AABBComponent>
+            <center x="14.9881" y="0" z="9.11544" />
+            <Min x="12.4881" y="-2.5" z="6.61544" />
+            <Max x="17.4881" y="2.5" z="11.6154" />
+        </AABBComponent>
         <EntityComponent>
             <Tag value="TargetPoint" />
             <Name value="TargetPoint" />
-            <IsActive value="false" />
             <Child size="0" />
             <Parent size="0" />
             <IsAChild value="false" />
         </EntityComponent>
+        <MaterialComponent>
+            <Modeltype value="Models3D" />
+            <ambient x="0" y="0" z="0" />
+            <diffuse x="1" y="1" z="1" />
+            <specular x="1" y="1" z="1" />
+            <NoTextures value="true" />
+            <shininess value="0.25" />
+            <MaximumShininess value="128" />
+            <ComboIndex value="1" />
+            <TextureComboIndex value="0" />
+            <Type value="TT_UNASSIGNED" />
+            <hasTexture value="false" />
+            <TextureRef value="" />
+            <TextureKey value="Sketchfab_model3" />
+            <HoldingTextures size="2">
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/dog3" Handle="10" />
+                <Member1 Type="6" Directory="..//Eclipse//src/Assets/Models/dog3" Handle="11" />
+            </HoldingTextures>
+        </MaterialComponent>
+        <MeshComponent>
+            <MeshName value="Sketchfab_model3" />
+            <color x="1" y="1" z="1" />
+            <textureIdx x="0" y="0" />
+            <isQuad value="false" />
+            <modelNDC_xform Col="4" Row="4">
+                <Col0 _00="0" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="0" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="0" _23="0" />
+                <Col3 _30="0" _31="0" _32="0" _33="0" />
+            </modelNDC_xform>
+            <modelRef value="" />
+            <shaderRef value="" />
+            <transparency value="1" />
+            <ENV_MAP value="false" />
+            <ENV_TYPE value="MT_REFLECT" />
+        </MeshComponent>
+        <ModelComponent>
+            <NameOfModel value="" />
+            <Directory value="" />
+            <type value="MT_UNASSIGNED" />
+            <ComboIndex value="0" />
+        </ModelComponent>
+        <PrefabComponent>
+            <IsChild value="true" />
+            <PrefabID value="385409345352" />
+        </PrefabComponent>
         <TransformComponent>
-            <position x="0" y="0" z="0" />
+            <position x="14.9881" y="0" z="9.11544" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
-        <AABBComponent>
-            <center x="0" y="0" z="0" />
-            <Min x="-2.5" y="-2.5" z="-2.5" />
-            <Max x="2.5" y="2.5" z="2.5" />
-        </AABBComponent>
     </Entity_4>
     <Entity_5 ID="10">
+        <AABBComponent>
+            <center x="-14.5108" y="0" z="24.4841" />
+            <Min x="-17.0108" y="-2.5" z="21.9841" />
+            <Max x="-12.0108" y="2.5" z="26.9841" />
+        </AABBComponent>
         <EntityComponent>
             <Tag value="TargetPoint" />
-            <Name value="TargetPoint" />
-            <IsActive value="false" />
+            <Name value="TargetPoint1" />
             <Child size="0" />
             <Parent size="0" />
             <IsAChild value="false" />
         </EntityComponent>
+        <MaterialComponent>
+            <Modeltype value="Models3D" />
+            <ambient x="0" y="0" z="0" />
+            <diffuse x="1" y="1" z="1" />
+            <specular x="1" y="1" z="1" />
+            <NoTextures value="true" />
+            <shininess value="0.25" />
+            <MaximumShininess value="128" />
+            <ComboIndex value="1" />
+            <TextureComboIndex value="0" />
+            <Type value="TT_UNASSIGNED" />
+            <hasTexture value="false" />
+            <TextureRef value="" />
+            <TextureKey value="Sketchfab_model3" />
+            <HoldingTextures size="2">
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/dog3" Handle="10" />
+                <Member1 Type="6" Directory="..//Eclipse//src/Assets/Models/dog3" Handle="11" />
+            </HoldingTextures>
+        </MaterialComponent>
+        <MeshComponent>
+            <MeshName value="Sketchfab_model3" />
+            <color x="1" y="1" z="1" />
+            <textureIdx x="0" y="0" />
+            <isQuad value="false" />
+            <modelNDC_xform Col="4" Row="4">
+                <Col0 _00="0" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="0" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="0" _23="0" />
+                <Col3 _30="0" _31="0" _32="0" _33="0" />
+            </modelNDC_xform>
+            <modelRef value="" />
+            <shaderRef value="" />
+            <transparency value="1" />
+            <ENV_MAP value="false" />
+            <ENV_TYPE value="MT_REFLECT" />
+        </MeshComponent>
+        <ModelComponent>
+            <NameOfModel value="" />
+            <Directory value="" />
+            <type value="MT_UNASSIGNED" />
+            <ComboIndex value="0" />
+        </ModelComponent>
+        <PrefabComponent>
+            <IsChild value="true" />
+            <PrefabID value="385409345352" />
+        </PrefabComponent>
         <TransformComponent>
-            <position x="0" y="0" z="0" />
+            <position x="-14.5108" y="0" z="24.4841" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
-        <AABBComponent>
-            <center x="0" y="0" z="0" />
-            <Min x="-2.5" y="-2.5" z="-2.5" />
-            <Max x="2.5" y="2.5" z="2.5" />
-        </AABBComponent>
     </Entity_5>
+    <Entity_6 ID="11">
+        <AABBComponent>
+            <center x="6.29749" y="0" z="23.8803" />
+            <Min x="3.79749" y="-2.5" z="21.3803" />
+            <Max x="8.79749" y="2.5" z="26.3803" />
+        </AABBComponent>
+        <EntityComponent>
+            <Tag value="TargetPoint" />
+            <Name value="TargetPoint1" />
+            <Child size="0" />
+            <Parent size="0" />
+            <IsAChild value="false" />
+        </EntityComponent>
+        <MaterialComponent>
+            <Modeltype value="Models3D" />
+            <ambient x="0" y="0" z="0" />
+            <diffuse x="1" y="1" z="1" />
+            <specular x="1" y="1" z="1" />
+            <NoTextures value="true" />
+            <shininess value="0.25" />
+            <MaximumShininess value="128" />
+            <ComboIndex value="1" />
+            <TextureComboIndex value="0" />
+            <Type value="TT_UNASSIGNED" />
+            <hasTexture value="false" />
+            <TextureRef value="" />
+            <TextureKey value="Sketchfab_model3" />
+            <HoldingTextures size="2">
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/dog3" Handle="10" />
+                <Member1 Type="6" Directory="..//Eclipse//src/Assets/Models/dog3" Handle="11" />
+            </HoldingTextures>
+        </MaterialComponent>
+        <MeshComponent>
+            <MeshName value="Sketchfab_model3" />
+            <color x="1" y="1" z="1" />
+            <textureIdx x="0" y="0" />
+            <isQuad value="false" />
+            <modelNDC_xform Col="4" Row="4">
+                <Col0 _00="0" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="0" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="0" _23="0" />
+                <Col3 _30="0" _31="0" _32="0" _33="0" />
+            </modelNDC_xform>
+            <modelRef value="" />
+            <shaderRef value="" />
+            <transparency value="1" />
+            <ENV_MAP value="false" />
+            <ENV_TYPE value="MT_REFLECT" />
+        </MeshComponent>
+        <ModelComponent>
+            <NameOfModel value="" />
+            <Directory value="" />
+            <type value="MT_UNASSIGNED" />
+            <ComboIndex value="0" />
+        </ModelComponent>
+        <PrefabComponent>
+            <IsChild value="true" />
+            <PrefabID value="385409345352" />
+        </PrefabComponent>
+        <TransformComponent>
+            <position x="6.29749" y="0" z="23.8803" />
+            <rotation x="0" y="0" z="0" />
+            <scale x="5" y="5" z="5" />
+        </TransformComponent>
+    </Entity_6>
 </Entities>

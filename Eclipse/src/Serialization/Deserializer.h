@@ -6,7 +6,7 @@
 #include <iostream>
 #include <string>
 #include <type_traits>
-
+#include "ECS/ComponentManager/Components/CollisionComponent.h"
 
 namespace Eclipse
 {
@@ -83,6 +83,27 @@ namespace Eclipse
 			std::string str = GetAttributeValue(att_name);
 			att_data = lexical_cast_toEnum<TextureType>(str);
 		}
+
+		template <>
+		inline void ReadAttributeFromElement(const std::string& att_name, MeshComponent::MapType& att_data)
+		{
+			std::string str = GetAttributeValue(att_name);
+			att_data = lexical_cast_toEnum<MeshComponent::MapType>(str);
+		}
+		
+		template <>
+		inline void ReadAttributeFromElement(const std::string& att_name, ModelType& att_data)
+		{
+			std::string str = GetAttributeValue(att_name);
+			att_data = lexical_cast_toEnum<ModelType>(str);
+		}
+		
+		template <>
+		inline void ReadAttributeFromElement(const std::string& att_name, PxShapeType& att_data)
+		{
+			std::string str = GetAttributeValue(att_name);
+			att_data = lexical_cast_toEnum<PxShapeType>(str);
+		}
 		
 		template <>
 		inline void ReadAttributeFromElement(const std::string& att_name, Texture& att_data)
@@ -91,9 +112,20 @@ namespace Eclipse
 			ReadAttributeFromElement("Directory", att_data.Directory);
 			ReadAttributeFromElement("Handle", att_data.handle);
 		}
+
+		template <>
+		inline void ReadAttributeFromElement(const std::string& att_name, EC_Shape& att_data)
+		{
+			ReadAttributeFromElement("Shape", att_data.shape);
+			ReadAttributeFromElement("Hx", att_data.hx);
+			ReadAttributeFromElement("Hy", att_data.hy);
+			ReadAttributeFromElement("Hz", att_data.hz);
+			ReadAttributeFromElement("Radius", att_data.radius);
+			ReadAttributeFromElement("Hheight", att_data.hheight);
+		}
 		
 		template <typename T>
-		inline void ReadAttributeFromElement(const std::string& att_name, std::vector<T> att_data)
+		inline void ReadAttributeFromElement(const std::string& att_name, std::vector<T>& att_data)
 		{
 			std::string str = GetAttributeValue("size");
 			size_t size = lexical_cast<size_t>(str);

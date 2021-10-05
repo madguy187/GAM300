@@ -6,6 +6,8 @@
 #include <iostream>
 #include <string>
 #include <type_traits>
+#include "ECS/ComponentManager/Components/CollisionComponent.h"
+
 
 namespace Eclipse
 {
@@ -110,11 +112,40 @@ namespace Eclipse
         }
         
         template <>
+        inline void AddAttributeToElement(const std::string& att_name, const MeshComponent::MapType& att_data)
+        {
+            _currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<MeshComponent::MapType>(const_cast<MeshComponent::MapType&>(att_data)).c_str());
+        }
+        
+        template <>
+        inline void AddAttributeToElement(const std::string& att_name, const ModelType& att_data)
+        {
+            _currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<ModelType>(const_cast<ModelType&>(att_data)).c_str());
+        }
+        
+        template <>
+        inline void AddAttributeToElement(const std::string& att_name, const PxShapeType& att_data)
+        {
+            _currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<PxShapeType>(const_cast<PxShapeType&>(att_data)).c_str());
+        }
+        
+        template <>
         inline void AddAttributeToElement(const std::string& att_name, const Texture& att_data)
         {
             AddAttributeToElement("Type", att_data.Type);
             AddAttributeToElement("Directory", att_data.Directory);
             AddAttributeToElement("Handle", att_data.handle);
+        }
+
+        template <>
+        inline void AddAttributeToElement(const std::string& att_name, const EC_Shape& att_data)
+        {
+            AddAttributeToElement("Shape", att_data.shape);
+            AddAttributeToElement("Hx", att_data.hx);
+            AddAttributeToElement("Hy", att_data.hy);
+            AddAttributeToElement("Hz", att_data.hz);
+            AddAttributeToElement("Radius", att_data.radius);
+            AddAttributeToElement("Hheight", att_data.hheight);
         }
 
 		template <typename T>
