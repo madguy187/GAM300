@@ -11,6 +11,7 @@ namespace Eclipse
 
 	void BaseSwitchViewWindow::Init()
 	{
+		mCamType = CameraComponent::CameraType::TopView_Camera;
 		mViewportSize = glm::vec2{ 0.f, 0.f };
 		Type = EditorWindowType::EWT_SWITCHVIEW_RIGHT;
 		WindowName = "Right Switch View";
@@ -46,7 +47,7 @@ namespace Eclipse
 	void BaseSwitchViewWindow::RunFrameBuffer(int GizmoType)
 	{
 		ECGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
-			ImVec2{ mViewportSize.x, mViewportSize.y * 0.92f }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 		if (!engine->editorManager->IsEntityListEmpty() && GizmoType != -1)
 			OnGizmoUpdateEvent(GizmoType);
@@ -80,7 +81,7 @@ namespace Eclipse
 		ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
 
 		// Camera
-		Entity cameraEntity = static_cast<Entity>(engine->gCamera.GetCameraID(CameraComponent::CameraType::TopView_Camera));
+		Entity cameraEntity = static_cast<Entity>(engine->gCamera.GetCameraID(mCamType));
 		const auto& camCom = engine->world.GetComponent<CameraComponent>(cameraEntity);
 		// Selected Entity Transform
 		auto& transCom = engine->world.GetComponent<TransformComponent>(selectedEntity);
