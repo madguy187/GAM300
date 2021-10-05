@@ -47,6 +47,11 @@ namespace Eclipse
 		return pos;
 	}
 
+	ImVec2 ECGui::GetContentRegionAvail()
+	{
+		return 	ImGuiAPI::GetContentRegionAvail();
+	}
+
 	float ECGui::GetWindowHeight()
 	{
 		return ImGuiAPI::GetWindowHeight();
@@ -92,9 +97,49 @@ namespace Eclipse
 		return ImGuiAPI::IsItemActive();;
 	}
 
+	void ECGui::SetColumns(int count, const char* id, bool border)
+	{
+		ImGuiAPI::SetColumns(count, id, border);
+	}
+
+	void ECGui::SetColumnOffset(int column_index, float offset_x)
+	{
+		ImGuiAPI::SetColumnOffset(column_index, offset_x);
+	}
+
+	void ECGui::NextColumn()
+	{
+		ImGuiAPI::NextColumn();
+	}
+
+	void ECGui::SetNextItemOpen(bool is_open, ImGuiCond cond)
+	{
+		ImGuiAPI::SetNextItemOpen(is_open, cond);
+	}
+
+	ImGuiStyle& ECGui::GetStyle()
+	{
+		return ImGuiAPI::GetStyle();
+	}
+
 	ImGuiViewport* ECGui::GetMainViewport()
 	{
 		return ImGuiAPI::GetMainViewport();
+	}
+
+	ImDrawList* ECGui::GetWindowDrawList()
+	{
+		return ImGuiAPI::GetWindowDrawList();
+	}
+
+	ImVec2 ECGui::GetItemRectMin()
+	{
+		return ImGuiAPI::GetItemRectMin();
+	}
+
+	ImVec2 ECGui::GetItemRectMax()
+	{
+		return ImGuiAPI::GetItemRectMax();
 	}
 
 	bool ECGui::BeginPopUpButtonList(PopUpButtonSettings settings)
@@ -174,6 +219,11 @@ namespace Eclipse
 		return ImGuiAPI::BeginPopup(str_id, flags);
 	}
 
+	bool ECGui::BeginPopupContextWindow(const char* str_id, ImGuiMouseButton mb, bool over_items)
+	{
+		return ImGuiAPI::BeginPopupContextWindow(str_id, mb, over_items);
+	}
+
 	void ECGui::EndPopup()
 	{
 		ImGuiAPI::EndPopup();
@@ -187,6 +237,16 @@ namespace Eclipse
 	void ECGui::CloseCurrentPopup()
 	{
 		ImGuiAPI::CloseCurrentPopup();
+	}
+
+	bool ECGui::BeginComboList(const char* name, const char* previewCurrent, bool hideName, ImGuiComboFlags flags)
+	{
+		return ImGuiAPI::BeginComboList(name, previewCurrent, hideName, flags);
+	}
+
+	void ECGui::EndComboList()
+	{
+		ImGuiAPI::EndComboList();
 	}
 
 	bool ECGui::DrawDataHeader(const char* varname, ImGuiTextFilter& filter)
@@ -420,6 +480,16 @@ namespace Eclipse
 		return ImGuiAPI::ButtonBool(name, size);
 	}
 
+	bool ECGui::SmallButton(const char* label)
+	{
+		return ImGuiAPI::SmallButton(label);
+	}
+
+	bool ECGui::ImageButton(ImTextureID user_texture_id, const ImVec2& size, const ImVec2& uv0, const ImVec2& uv1, int frame_padding, const ImVec4& bg_col, const ImVec4& tint_col)
+	{
+		return ImGuiAPI::ImageButton(user_texture_id, size, uv0, uv1, frame_padding, bg_col, tint_col);
+	}
+
 	bool ECGui::BeginDragDropSource()
 	{
 		return ImGuiAPI::BeginDragDropSource();
@@ -515,9 +585,14 @@ namespace Eclipse
 		ImGuiAPI::PushStyleColor(idx, col);
 	}
 
-	void ECGui::PopStyleColor()
+	void ECGui::PushStyleColor(ImGuiCol idx, ImU32 col)
 	{
-		ImGuiAPI::PopStyleColor();
+		ImGuiAPI::PushStyleColor(idx, col);
+	}
+
+	void ECGui::PopStyleColor(int count)
+	{
+		ImGuiAPI::PopStyleColor(count);
 	}
 
 	bool ECGui::IsMouseDoubleClicked(ImGuiMouseButton button)
@@ -528,6 +603,41 @@ namespace Eclipse
 	bool ECGui::IsItemClicked(ImGuiMouseButton mouse_button)
 	{
 		return ImGui::IsItemClicked(mouse_button);
+	}
+
+	void ECGui::PushID(const char* str_id)
+	{
+		ImGuiAPI::PushID(str_id);
+	}
+
+	void ECGui::PushID(const char* str_id_begin, const char* str_id_end)
+	{
+		ImGuiAPI::PushID(str_id_begin, str_id_end);
+	}
+
+	void ECGui::PushID(const void* ptr_id)
+	{
+		ImGuiAPI::PushID(ptr_id);
+	}
+
+	void ECGui::PushID(int int_id)
+	{
+		ImGuiAPI::PushID(int_id);
+	}
+
+	void ECGui::PopID()
+	{
+		ImGuiAPI::PopID();
+	}
+
+	void ECGui::Dummy(const ImVec2& size)
+	{
+		ImGuiAPI::Dummy(size);
+	}
+
+	bool ECGui::ColorPicker3(const char* label, float col[3], ImGuiColorEditFlags flags)
+	{
+		return ImGuiAPI::ColorPicker3(label, col, flags);
 	}
 
 	void ECGui::Image(ImTextureID user_texture_id, const ImVec2& size, const ImVec2& uv0, 

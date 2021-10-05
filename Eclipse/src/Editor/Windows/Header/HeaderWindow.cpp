@@ -262,13 +262,13 @@ namespace Eclipse
 		ECGui::DrawTextWidget<const char*>("Pos Snap:", "");
 		std::vector<std::string> posValues = { "1","5","10","50","100","500","1000","5000","10000" };
 		ECGui::CreateComboList({"Pos Snap:"}, posValues, posValueIndex);
-		scene->GetRefToSnapSettings().mPosSnapValue = std::stoi(posValues[posValueIndex]);
+		scene->GetRefToSnapSettings().mPosSnapValue = static_cast<float>(std::stoi(posValues[posValueIndex]));
 
 		//ECGui::DrawSliderFloatWidget("Pos Snap", &scene->GetRefToSnapSettings().mPosSnapValue, true, 1.f, 100.f);
 		ECGui::DrawTextWidget<const char*>("Rot Snap:", "");
 		std::vector<std::string> rotValues = { "5","10","15","30","45","60","90","120"};
 		ECGui::CreateComboList({ "Rot Snap:" }, rotValues, rotValueIndex);
-		scene->GetRefToSnapSettings().mRotSnapValue = std::stoi(rotValues[rotValueIndex]);
+		scene->GetRefToSnapSettings().mRotSnapValue = static_cast<float>(std::stoi(rotValues[rotValueIndex]));
 
 		//ECGui::DrawSliderFloatWidget("Rot Snap", &scene->GetRefToSnapSettings().mRotSnapValue, true, 1.f, 100.f);
 		ECGui::DrawTextWidget<const char*>("Scale Snap:", "");

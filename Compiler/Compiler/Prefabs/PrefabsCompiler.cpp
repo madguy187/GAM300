@@ -95,12 +95,6 @@ namespace EclipseCompiler
 
 	void PrefabsCompiler::ReleaseFile()
 	{
-		if (Prefabs.empty())
-		{
-			std::cout << "No Models Loaded" << std::endl << std::endl;
-			return;
-		}
-
 		WriteToFile();
 		std::cout << "Prefabs File Compiled" << std::endl << std::endl;
 	}

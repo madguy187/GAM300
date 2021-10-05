@@ -25,6 +25,15 @@ namespace Eclipse
         std::string modelRef;
         std::string shaderRef;
         float transparency{ 1.0f };
+
+        enum class MapType
+        {
+            MT_REFLECT ,
+            MT_REFRACT 
+        };
+
+        bool ENV_MAP = false;
+        MapType ENV_TYPE = MapType::MT_REFLECT;
     };
 }
 #endif /* MESHCOMPONENT_H */

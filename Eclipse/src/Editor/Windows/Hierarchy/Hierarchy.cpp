@@ -20,6 +20,8 @@ namespace Eclipse
         TagList_.push_back(std::vector<std::string>());
         // For Lights
         TagList_.push_back(std::vector<std::string>());
+        // For Target Point
+        TagList_.push_back(std::vector<std::string>());
 
         for (int index = 0; index != static_cast<int>(EntityType::ENT_LIGHT_POINT); ++index)
         {
@@ -33,6 +35,9 @@ namespace Eclipse
             EntityType temp = static_cast<EntityType>(index);
             TagList_[1].push_back(lexical_cast_toStr<EntityType>(temp));
         }
+
+        EntityType tp = EntityType::ENT_TARGETPOINT;
+        TagList_[2].push_back(lexical_cast_toStr<EntityType>(tp));
     }
 
     void HierarchyWindow::Unload()
@@ -43,26 +48,11 @@ namespace Eclipse
 
     void HierarchyWindow::DrawImpl()
     {
-        ////////////////////
-        //TODO for darren
-        if (engine->AssimpManager.CheckCompilers())
-        {
-            ComboListSettings settingsss = { "Models Testing" };
-            std::vector<std::string> hiDarrenVector = engine->AssimpManager.GetMeshNames();
-            static size_t comboindex = 0;
-            ECGui::CreateComboList(settingsss, hiDarrenVector, comboindex);
-
-            bool selected = false;
-
-            if (ECGui::CreateSelectableButton(hiDarrenVector[comboindex].c_str(), &selected))
-            {
-                engine->AssimpManager.CreateModel(0, hiDarrenVector[comboindex].c_str());
-            }
-        }
-        /// ///////////////////
-
-        PopUpButtonSettings settings{ "Add Entity", "EntityCreationListBegin" };
-        ECGui::BeginPopUpButtonList<void()>(settings, std::bind(&HierarchyWindow::ShowEntityCreationList, this));
+        PopUpButtonSettings EntSettings{ "Add Entity", "EntityCreationListBegin" };
+        PopUpButtonSettings ModSettings{ "Create Model",  "ModelCreationListBegin" };
+        ECGui::BeginPopUpButtonList<void()>(EntSettings, std::bind(&HierarchyWindow::ShowEntityCreationList, this));
+        ECGui::InsertSameLine();
+        ECGui::BeginPopUpButtonList<void()>(ModSettings, std::bind(&HierarchyWindow::ShowCreateModelList, this));
         ECGui::InsertHorizontalLineSeperator();
 
         ECGui::DrawTextWidget<size_t>("Entity Count", engine->editorManager->GetEntityListSize());
@@ -197,6 +187,22 @@ namespace Eclipse
                     ECGui::EndTreeNode();
                 }
                 break;
+            }
+            case 2:
+            {
+                bool selected = false;
+
+                if (ECGui::BeginTreeNode("Other Actors"))
+                {
+                    if (ECGui::CreateSelectableButton(TagList_[i][0].c_str(), &selected))
+                    {
+                        Entity ID = engine->editorManager->CreateDefaultEntity(lexical_cast_toEnum<EntityType>(TagList_[i][0]));
+                        engine->gAI.AddTargetPointEntity(ID);
+                        UpdateEntityTracker(ID);
+                    }
+
+                    ECGui::EndTreeNode();
+                }
             }
             default:
                 break;
@@ -347,12 +353,23 @@ namespace Eclipse
         }
         else
         {
-            if (ImGui::IsItemClicked(0))
+            if (ECGui::IsItemClicked(0))
             {
                 size_t currIndex = ConvertEntityStringtoNumber(GetEntityComponentEntityNumber(parent));
                 engine->editorManager->SetGlobalIndex(engine->editorManager->GetEntityIndex(static_cast<Entity>(currIndex)));
                 UpdateEntityTracker(engine->editorManager->GetEntityID(engine->editorManager->GetEntityIndex(static_cast<Entity>(currIndex))));
             }
+        }
+    }
+
+    void HierarchyWindow::ShowCreateModelList()
+    {
+        for (size_t i = 0; i < engine->AssimpManager.GetMeshNames().size(); ++i)
+        {
+            bool selected = false;
+
+            if (ECGui::CreateSelectableButton(engine->AssimpManager.GetMeshNames()[i].c_str(), &selected))
+                engine->AssimpManager.CreateModel(0, engine->AssimpManager.GetMeshNames()[i]);
         }
     }
 }

@@ -32,16 +32,15 @@ namespace Eclipse
 
     private:
         //unsigned int Id;
-        unsigned int id = 0;
 
         // 2D Textures =============================
     public:
         /// Public for now - from Jian Herng.
         unsigned int Type; //aiTextureType
         std::string Directory;
-        std::string Path;
         unsigned int handle = 0;
         ///
+        std::string Path;
         Texture(std::string pathname);
         void initTexture(std::string pathname);
         void LoadUncompressedTextures(std::string pathname);

@@ -130,15 +130,6 @@ namespace Eclipse
     DEFINE_META(MeshComponent)
     {
         ADD_MEMBER(MeshName);
-        //ADD_MEMBER(VBO);
-        //ADD_MEMBER(VAO);
-        //ADD_MEMBER(EBO);
-        //ADD_MEMBER(NoTex);
-        //ADD_MEMBER(Diffuse);
-        //ADD_MEMBER(Specular);
-        //ADD_MEMBER(Ambient);
-        //ADD_MEMBER(Vertices);
-        //ADD_MEMBER(Indices);
         ADD_MEMBER(color);
         ADD_MEMBER(textureIdx);
         ADD_MEMBER(isQuad);
@@ -146,6 +137,8 @@ namespace Eclipse
         ADD_MEMBER(modelRef);
         ADD_MEMBER(shaderRef);
         ADD_MEMBER(transparency);
+        ADD_MEMBER(ENV_MAP);
+        ADD_MEMBER(ENV_TYPE);
     }
 
     DEFINE_META(ModelComponent)
@@ -181,6 +174,7 @@ namespace Eclipse
         ADD_MEMBER(velocity);
         ADD_MEMBER(Angvelocity);
         ADD_MEMBER(forces);
+        ADD_MEMBER(MaxVelocity);
         ADD_MEMBER(mass);
         ADD_MEMBER(drag);
         ADD_MEMBER(angdrag);
@@ -244,16 +238,12 @@ namespace Eclipse
     DEFINE_META_POD(double);
     DEFINE_META_POD(size_t);
     DEFINE_META_POD(std::string);
-    //DEFINE_META_POD(std::vector<std::string>);
-    //DEFINE_META_POD(std::vector<Mesh>);
     DEFINE_META_POD(std::vector<Texture>);
-    //DEFINE_META_POD(std::map<unsigned int, std::vector<Texture>>);
     DEFINE_META_POD(std::vector<Entity>);
     DEFINE_META_POD(MeshComponent::MeshNameType);
     DEFINE_META_POD(ECVec2);
     DEFINE_META_POD(ECVec3);
     DEFINE_META_POD(ECVec4);
-    //DEFINE_META_POD(Mesh);
     DEFINE_META_POD(Texture);
     DEFINE_META_POD(glm::vec3);
     DEFINE_META_POD(glm::vec4);

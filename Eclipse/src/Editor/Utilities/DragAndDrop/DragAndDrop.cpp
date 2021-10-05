@@ -14,14 +14,14 @@ namespace Eclipse
 
 			switch (type)
 			{
-				case PayloadSourceType::PST_TEXT:
-					ECGui::TextUnformatted(source.c_str());
-					break;
-				case PayloadSourceType::PST_IMAGE:
-					// For rendering 2D Image -> Need ask Graphics side
-					break;
-				default:
-					break;
+			case PayloadSourceType::PST_TEXT:
+				ECGui::TextUnformatted(source.c_str());
+				break;
+			case PayloadSourceType::PST_IMAGE:
+				// For rendering 2D Image -> Need ask Graphics side
+				break;
+			default:
+				break;
 			}
 
 			ECGui::EndDragDropSource();
@@ -75,21 +75,20 @@ namespace Eclipse
 				switch (type)
 				{
 				case PayloadTargetType::PTT_WIDGET:
-					if (std::strcmp(id,"cs") == 0)
+					if (std::strcmp(id, "cs") == 0)
 					{
 						// Put it here Nico, ur script instance thing
 						std::filesystem::path temp = ((const char*)payload->Data);
 						destination = AssetBrowserWindow::GetFileName(temp.filename().string().c_str());
 						auto& scriptCom = engine->world.GetComponent<ScriptComponent>(ID);
 						scriptCom.scriptList[arrayIndex].scriptName = destination;
-						
 					}
 					else
 					{
 						destination = (const char*)payload->Data;
 					}
 					break;
-				// Create Meshes and instances
+					// Create Meshes and instances
 				case PayloadTargetType::PTT_WINDOW:
 					// Load Stuff here in the future
 					path = ((const char*)payload->Data);
@@ -145,20 +144,20 @@ namespace Eclipse
 
 							switch (i)
 							{
-							// Move index
+								// Move index
 							case 0:
 								engine->editorManager->InsertExistingEntity(static_cast<size_t>(DestinationIndex_),
 									engine->editorManager->GetEntityID(SourceIndex_));
 								IsIndexJobSelected = false;
 								EDITOR_LOG_INFO("Entity moved.");
 								break;
-							// Swap index
+								// Swap index
 							case 1:
 								engine->editorManager->SwapEntities(static_cast<size_t>(SourceIndex_), static_cast<size_t>(DestinationIndex_));
 								IsIndexJobSelected = false;
 								EDITOR_LOG_INFO("Entity positions swapped.");
 								break;
-							// Parent Child
+								// Parent Child
 							case 2:
 								DestinationEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(DestinationIndex_));
 								SourceEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(SourceIndex_));
@@ -167,7 +166,7 @@ namespace Eclipse
 								SourceEntCom->Parent.push_back(engine->editorManager->GetEntityID(DestinationIndex_));
 								IsIndexJobSelected = false;
 								break;
-							// Cancel
+								// Cancel
 							default:
 								IsIndexJobSelected = false;
 								break;
@@ -183,9 +182,9 @@ namespace Eclipse
 			}
 		}
 	}
-	
-	void DragAndDrop::AssetBrowerFilesAndFoldersTarget(const char* type, const char* paths, 
-		std::string AssetPath, std::filesystem::directory_entry dirEntry, bool& refreshBrowser, 
+
+	void DragAndDrop::AssetBrowerFilesAndFoldersTarget(const char* type, const char* paths,
+		std::string AssetPath, std::filesystem::directory_entry dirEntry, bool& refreshBrowser,
 		std::map<std::filesystem::path, std::vector<std::filesystem::path>> pathMap, bool& CopyMode)
 	{
 		static std::string folderName;
@@ -202,14 +201,14 @@ namespace Eclipse
 				{
 					paths = (const char*)payload->Data;
 
-					if(std::filesystem::is_directory(itemPaths.string() + "\\" + paths))
+					if (std::filesystem::is_directory(itemPaths.string() + "\\" + paths))
 					{
 						parentPath = std::filesystem::path(itemPaths / paths).string();
 						bool baseFile = false;
 						size_t pos = 0;
 						int fileSize = 0;
 						parentPath = parentPath.substr(0, parentPath.find_last_of("/\\"));
-						if(parentPath ==  AssetPath)
+						if (parentPath == AssetPath)
 						{
 							parentPath = std::filesystem::path(itemPaths / paths).string();
 							baseFile = true;
@@ -244,9 +243,9 @@ namespace Eclipse
 											}
 											else
 											{
-												if(baseFile)
+												if (baseFile)
 												{
-													files.insert(std::pair<std::string, std::string>(dirEntry.path().string()+ "\\"  + std::filesystem::path(parentPath).filename().string() + folderName, dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName));
+													files.insert(std::pair<std::string, std::string>(dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName, dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName));
 												}
 												else
 												{
@@ -278,7 +277,7 @@ namespace Eclipse
 												// If found then erase it from string
 												folderName.erase(pos, parentPath.length());
 											}
-											
+
 											if (baseFile)
 											{
 												deletefiles.insert(std::pair<std::string, std::string>(pair2.string(), pair2.string()));
@@ -293,11 +292,11 @@ namespace Eclipse
 
 												std::filesystem::create_directories(dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string());
 												std::filesystem::copy(pair2, dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName);
-								
+
 											}
 											else
 											{
-												
+
 												if (files.find((parentPath + folderName).c_str()) != files.end())
 												{
 													folderName = files.at((parentPath + folderName).c_str());
@@ -310,12 +309,12 @@ namespace Eclipse
 											}
 										}
 									}
-									if(fileSize == -1 )
+									if (fileSize == -1)
 									{
 										break;
 									}
 								}
-								
+
 								if (!CopyMode)
 								{
 									for (auto const& it : deletefiles)
@@ -323,7 +322,7 @@ namespace Eclipse
 										std::filesystem::remove_all(std::filesystem::path(it.first.c_str()));
 									}
 								}
-							
+
 								if (baseFile)
 								{
 									baseFile = false;
@@ -334,7 +333,7 @@ namespace Eclipse
 								}
 							}
 						}
-						
+
 						folderName = std::filesystem::path(paths).filename().string();
 
 						bool once = true;
@@ -344,19 +343,19 @@ namespace Eclipse
 							const auto copyOptions = std::filesystem::copy_options::update_existing
 								| std::filesystem::copy_options::recursive;
 
-							if(std::filesystem::is_directory(std::filesystem::path(itemPaths / paths)) && once)
+							if (std::filesystem::is_directory(std::filesystem::path(itemPaths / paths)) && once)
 							{
 								std::filesystem::create_directories(dirEntry.path().string() + "\\" + std::filesystem::path(itemPaths / paths).filename().string());
 								once = false;
 							}
 							std::filesystem::copy(std::filesystem::path(itemPaths / paths), dirEntry.path().string() + "//" + folderName, copyOptions);
 						}
-						
+
 						if (!CopyMode)
 						{
 							std::filesystem::remove_all(std::filesystem::path(itemPaths / paths));
 						}
-						
+
 						//resetting for the next moving of files
 						ClearAllFiles(folderName, parentPath, refreshBrowser);
 					}
@@ -364,7 +363,7 @@ namespace Eclipse
 					{
 						std::filesystem::copy(std::filesystem::path(itemPaths / paths), dirEntry.path());
 
-						if(!CopyMode)
+						if (!CopyMode)
 						{
 							std::filesystem::remove(std::filesystem::path(itemPaths / paths));
 						}
@@ -380,7 +379,7 @@ namespace Eclipse
 						std::filesystem::remove_all(std::filesystem::path(itemPaths / paths));
 					}
 
-					ClearAllFiles(folderName,parentPath, refreshBrowser);
+					ClearAllFiles(folderName, parentPath, refreshBrowser);
 				}
 			}
 			ECGui::EndDragDropTarget();

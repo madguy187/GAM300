@@ -95,13 +95,13 @@ void main()
 		mat3 TBN = transpose(mat3(T,B,N));
 		
 		//PointLights
-		for(unsigned int i = 0; i < NumberOfPointLights; ++i)
+		for(int i = 0; i < NumberOfPointLights; ++i)
 		{
 			TangentPointLight[i] = TBN * pointLights[i].position; 
 		}
 		
 		//SpotLights
-		for(unsigned int i = 0; i < NumberOfSpotLights; ++i)
+		for(int i = 0; i < NumberOfSpotLights; ++i)
 		{
 			TangentSpotLight[i] = TBN * spotLights[i].position;
 		}

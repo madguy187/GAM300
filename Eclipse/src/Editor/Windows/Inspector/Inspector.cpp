@@ -21,7 +21,6 @@ namespace Eclipse
     {
         Type = EditorWindowType::EWT_INSPECTOR;
         WindowName = "Inspector";
-        ScriptListGuiTest.push_back(std::string{});
     }
 
     void InspectorWindow::Unload()
@@ -58,13 +57,12 @@ namespace Eclipse
             ShowRigidBodyProperty("RigidBody", currEnt, CompFilter);
             ShowEditorCameraProperty("Camera", currEnt, CompFilter);
             ShowTextureProperty("Texture", currEnt, CompFilter);
-            ShowRenderProperty("Render", currEnt, CompFilter);
             ShowMaterialProperty("Material", currEnt, CompFilter);
             ShowMesh3DProperty("Mesh", currEnt, CompFilter);
-            ShowModelInfoProperty("ModelInfo", currEnt, CompFilter);
             ShowScriptProperty("Script Details", currEnt, CompFilter);
             ShowAudioProperty("Audio", currEnt, CompFilter);
             ShowCollisionProperty("Collision", currEnt, CompFilter);
+            ShowAIProperty("AI Properties", currEnt, CompFilter);
 
             ECGui::InsertHorizontalLineSeperator();
             /*ECGui::PushItemWidth(WindowSize_.getX());*/
@@ -150,7 +148,7 @@ namespace Eclipse
 
                 ECGui::DrawTextWidget<const char*>("Light Colour", "");
 
-                ImGui::ColorPicker3("PLightColor", (float*)&_PointLight.Color,
+                ECGui::ColorPicker3("PLightColor", (float*)&_PointLight.Color,
                     ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
                 //ECGui::DrawSliderFloat4Widget("ColourVec", &_PointLight.Color, true, 0.0f, 1.0f);
                 engine->LightManager.SetLightColor(_PointLight,
@@ -184,15 +182,15 @@ namespace Eclipse
                 ECGui::DrawTextWidget<const char*>("Radius", "");
                 ECGui::DrawSliderFloatWidget("Radius", &_PointLight.radius, true, 0.0f, 50.0f);
 
-                ImGui::Columns(2, NULL, true);
+                ECGui::SetColumns(2, NULL, true);
                 ECGui::DrawTextWidget<const char*>("Enable Blinn Phong", "");
                 ECGui::DrawTextWidget<const char*>("Visible", "");
                 ECGui::DrawTextWidget<const char*>("Affects World", "");
-                ImGui::NextColumn();
+                ECGui::NextColumn();
                 ECGui::CheckBoxBool("Enable Blinn Phong", &_PointLight.EnableBlinnPhong);
                 ECGui::CheckBoxBool("Enable Blinn PhongVisible", &_PointLight.visible);
                 ECGui::CheckBoxBool("Affects World", &_PointLight.AffectsWorld);
-                ImGui::Columns(1, NULL, true);
+                ECGui::SetColumns(1, NULL, true);
 
             }
         }
@@ -212,7 +210,7 @@ namespace Eclipse
                 ECGui::DrawSliderFloatWidget("IntensityFloat", &_SpotLight.IntensityStrength, true, 0.f, 150.f);
 
                 ECGui::DrawTextWidget<const char*>("Light Colour", "");
-                ImGui::ColorPicker3("SLightColor", (float*)&_SpotLight.lightColor,
+                ECGui::ColorPicker3("SLightColor", (float*)&_SpotLight.lightColor,
                     ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
 
                 ECGui::DrawTextWidget<const char*>("Attenuation Level", "");
@@ -249,15 +247,15 @@ namespace Eclipse
                 ECGui::DrawTextWidget<const char*>("Radius", "");
                 ECGui::DrawSliderFloatWidget("Radius", &_SpotLight.radius, true, 0.0f, 50.0f);
 
-                ImGui::Columns(2, NULL, true);
+                ECGui::SetColumns(2, NULL, true);
                 ECGui::DrawTextWidget<const char*>("Enable Blinn Phong", "");
                 ECGui::DrawTextWidget<const char*>("Visible", "");
                 ECGui::DrawTextWidget<const char*>("Affects World", "");
-                ImGui::NextColumn();
+                ECGui::NextColumn();
                 ECGui::CheckBoxBool("Enable Blinn Phong", &_SpotLight.EnableBlinnPhong);
                 ECGui::CheckBoxBool("Enable Blinn PhongVisible", &_SpotLight.visible);
                 ECGui::CheckBoxBool("Affects World", &_SpotLight.AffectsWorld);
-                ImGui::Columns(1, NULL, true);
+                ECGui::SetColumns(1, NULL, true);
             }
         }
 
@@ -273,7 +271,7 @@ namespace Eclipse
                 auto& _DLight = engine->world.GetComponent<DirectionalLightComponent>(ID);
                 ECGui::PushItemWidth(WindowSize_.getX() - 100.f);
                 ECGui::DrawTextWidget<const char*>("Light Colour", "");
-                ImGui::ColorPicker3("DLightColor", (float*)&_DLight.lightColor,
+                ECGui::ColorPicker3("DLightColor", (float*)&_DLight.lightColor,
                     ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
 
                 ECGui::PushItemWidth(WindowSize_.getX());
@@ -377,14 +375,14 @@ namespace Eclipse
                 //THIS IS WORK IN PROGRESS TESTING OUT FUNCITONALITIES AND ARE NOT MEANT TO BE IN THE FINAL
                 //VERSION *NOT FOR FINAL VERSION* - TIAN YU
                 std::string nameString = _Render.modelRef + " (Mesh Filter)";
-                ImGui::PushStyleColor(ImGuiCol_Header, IM_COL32(0, 1, 1, 1));
+                ECGui::PushStyleColor(ImGuiCol_Header, IM_COL32(0, 1, 1, 1));
                 if (filter.PassFilter(nameString.c_str()) && ECGui::CreateCollapsingHeader(nameString.c_str()))
                 {
                     ECGui::DrawTextWidget<const char*>("Mesh ", "");
                     ECGui::InsertSameLine();
                     ChangeMeshController(ID);
                 }
-                ImGui::PopStyleColor();
+                ECGui::PopStyleColor();
             }
         }
 
@@ -429,11 +427,11 @@ namespace Eclipse
                 //ECGui::DrawTextWidget<const char*>("ScaleUp", "");
                 //ECGui::DrawSliderFloatWidget("Material ScaleUp", &_Material.ScaleUp, true, 0.0f, 200.0f);
 
-                ImGui::Columns(2, NULL, true);
+                ECGui::SetColumns(2, NULL, true);
                 ECGui::DrawTextWidget<const char*>("Highlight", "");
-                ImGui::NextColumn();
+                ECGui::NextColumn();
                 ECGui::CheckBoxBool("Enable Blinn Phong", &_Material.Highlight);
-                ImGui::Columns(1, NULL, true);
+                ECGui::SetColumns(1, NULL, true);
             }
         }
 
@@ -442,14 +440,43 @@ namespace Eclipse
 
     bool InspectorWindow::ShowMesh3DProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
     {
-        if (engine->world.CheckComponent<MeshComponent>(ID))
-        {
-            if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
-            {
-                auto& _Mesh = engine->world.GetComponent<MeshComponent>(ID);
+		if (engine->world.CheckComponent<MeshComponent>(ID))
+		{
+			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+			{
+				auto& _Mesh = engine->world.GetComponent<MeshComponent>(ID);
 
-            }
-        }
+				ECGui::DrawTextWidget<const char*>("Model Name: ", "");
+				ECGui::InsertSameLine();
+				ECGui::DrawTextWidget<const char*>(_Mesh.MeshName.data(), "");
+
+				ECGui::DrawTextWidget<const char*>("Environment Map", "");
+				ECGui::InsertSameLine();
+				ECGui::CheckBoxBool("Environment Map", &_Mesh.ENV_MAP);
+
+				if (_Mesh.ENV_MAP)
+				{
+					static size_t comboindex = 0;
+					std::vector<std::string> MapVector = { "REFLECT", "REFRACT" };
+					ComboListSettings settings = { "Map Type" };
+					ECGui::DrawTextWidget<const char*>("Map Type", "");
+					ECGui::CreateComboList(settings, MapVector, comboindex);
+					_Mesh.ENV_TYPE = static_cast<MeshComponent::MapType>(comboindex);
+				}
+
+				ImGui::Dummy({ 2,2 });
+
+				std::string nameString = _Mesh.modelRef + " (Mesh Filter)";
+				ImGui::PushStyleColor(ImGuiCol_Header, IM_COL32(0, 1, 1, 1));
+				if (filter.PassFilter(nameString.c_str()) && ECGui::CreateCollapsingHeader(nameString.c_str()))
+				{
+					ECGui::DrawTextWidget<const char*>("Mesh ", "");
+					ECGui::InsertSameLine();
+					ChangeMeshController(ID);
+				}
+				ImGui::PopStyleColor();
+			}
+		}
         return false;
     }
 
@@ -684,17 +711,17 @@ namespace Eclipse
                     ECGui::InsertSameLine();
                     snprintf(hxValue, 256, "%f", _Collision.shape.hx);
                     ECGui::DrawInputTextWidget("Hx: ", hxValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
-                    _Collision.shape.hx = atof(hxValue);
+                    _Collision.shape.hx = static_cast<float>(atof(hxValue));
                     ECGui::DrawTextWidget<const char*>("Hy: ", "");
                     ECGui::InsertSameLine();
                     snprintf(hyValue, 256, "%f", _Collision.shape.hy);
                     ECGui::DrawInputTextWidget("Hy: ", hyValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
-                    _Collision.shape.hy = atof(hyValue);
+                    _Collision.shape.hy = static_cast<float>(atof(hyValue));
                     ECGui::DrawTextWidget<const char*>("Hz: ", "");
                     ECGui::InsertSameLine();
                     snprintf(hzValue, 256, "%f", _Collision.shape.hz);
                     ECGui::DrawInputTextWidget("Hz: ", hzValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
-                    _Collision.shape.hz = atof(hzValue);
+                    _Collision.shape.hz = static_cast<float>(atof(hzValue));
                     break;
                 case PxShapeType::Px_SPHERE:
                     ECGui::DrawTextWidget<const char*>("SPHERE ", "");
@@ -703,7 +730,7 @@ namespace Eclipse
                     ECGui::InsertSameLine();
                     snprintf(radiusValue, 256, "%f", _Collision.shape.radius);
                     ECGui::DrawInputTextWidget("Radius: ", radiusValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
-                    _Collision.shape.radius = atof(radiusValue);
+                    _Collision.shape.radius = static_cast<float>(atof(radiusValue));
                     break;
                 }
             }
@@ -723,33 +750,57 @@ namespace Eclipse
             {
                 engine->pfManager.ApplyChangesToAll(ID);
             }
-            if (ImGui::IsItemHovered())
+            if (ECGui::IsItemHovered())
             {
-                ImGui::BeginTooltip();
-                ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
-                ImGui::TextUnformatted("Apply changes to all prefeb instances.");
-                ImGui::PopTextWrapPos();
-                ImGui::EndTooltip();
+                ECGui::BeginToolTip();
+                ECGui::PushTextWrapPos(ECGui::GetFontSize() * 35.0f);
+                ECGui::TextUnformatted("Apply changes to all prefeb instances.");
+                ECGui::PopTextWrapPos();
+                ECGui::EndTooltip();
             }
             ECGui::InsertHorizontalLineSeperator();
         }
         return false;
     }
 
+    bool InspectorWindow::ShowAIProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+    {
+        if (engine->world.CheckComponent<AIComponent>(ID))
+        {
+            if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+            {
+                auto& ai = engine->world.GetComponent<AIComponent>(ID);
+                static std::string registeredEnt;
+
+                ECGui::DrawTextWidget<const char*>("Register Entity as Waypoint: ", EMPTY_STRING);
+                ECGui::DrawTextWidget<size_t>("Total Count", ai.waypoints.size());
+                AddWaypointController(registeredEnt);
+
+                if (ECGui::ButtonBool("Register"))
+                {
+                    if(registeredEnt != EMPTY_STRING)
+                        engine->gAI.AddWaypoint(ID, lexical_cast<Entity>(registeredEnt));
+                }
+            }
+        }
+
+        return false;
+    }
+
     void InspectorWindow::AddComponentsController(Entity ID)
     {
         //ImVec2 buttonSize = { 180,20 };
-        if (ImGui::Button(("Add Component")))
+        if (ECGui::ButtonBool(("Add Component")))
         {
-            ImGui::OpenPopup("Add Component");
+            ECGui::OpenPopup("Add Component");
         }
-        if (ImGui::BeginPopup("Add Component"))
+        if (ECGui::BeginPopup("Add Component"))
         {
-            ImGui::SetScrollY(5);
+            ECGui::SetScrollY(5);
             ChildSettings settings{ "Add Components", ImVec2{ 250,200 } };
             ECGui::DrawChildWindow<void(Entity)>(settings, std::bind(&InspectorWindow::ShowAddComponentList,
                 this, std::placeholders::_1), ID);
-            ImGui::EndPopup();
+            ECGui::EndPopup();
         }
     }
 
@@ -757,17 +808,17 @@ namespace Eclipse
     {
         //ImVec2 buttonSize = { 180,20 };
 
-        if (ImGui::Button(("Remove Component")))
+        if (ECGui::ButtonBool(("Remove Component")))
         {
-            ImGui::OpenPopup("Remove Component");
+            ECGui::OpenPopup("Remove Component");
         }
-        if (ImGui::BeginPopup("Remove Component"))
+        if (ECGui::BeginPopup("Remove Component"))
         {
-            ImGui::SetScrollY(5);
+            ECGui::SetScrollY(5);
             ChildSettings settings{ "Remove Components", ImVec2{ 250,200 } };
             ECGui::DrawChildWindow<void(Entity)>(settings, std::bind(&InspectorWindow::ShowRemoveComponentList,
                 this, std::placeholders::_1), ID);
-            ImGui::EndPopup();
+            ECGui::EndPopup();
         }
     }
 
@@ -783,7 +834,7 @@ namespace Eclipse
         {
             if (AddComponentFilter.PassFilter(engine->world.GetAllComponentNames()[i].c_str()))
             {
-                if (ImGui::Button(engine->world.GetAllComponentNames()[i].c_str(), ImVec2(200, 0)))
+                if (ECGui::ButtonBool(engine->world.GetAllComponentNames()[i].c_str(), ImVec2(200, 0)))
                 {
                     switch (str2int(engine->world.GetAllComponentNames()[i].c_str()))
                     {
@@ -849,6 +900,10 @@ namespace Eclipse
                         break;
                     case str2int("CollisionComponent"):
                         ComponentRegistry<CollisionComponent>("CollisionComponent", ID, entCom.Name,
+                            EditComponent::EC_ADDCOMPONENT);
+                        break;
+                    case str2int("AIComponent"):
+                        ComponentRegistry<AIComponent>("AIComponent", ID, entCom.Name,
                             EditComponent::EC_ADDCOMPONENT);
                         break;
                     }
@@ -870,7 +925,7 @@ namespace Eclipse
         {
             if (RemoveComponentFilter.PassFilter(engine->world.GetAllComponentNames()[i].c_str()))
             {
-                if (ImGui::Button(engine->world.GetAllComponentNames()[i].c_str(), ImVec2(200, 0)))
+                if (ECGui::ButtonBool(engine->world.GetAllComponentNames()[i].c_str(), ImVec2(200, 0)))
                 {
                     switch (str2int(engine->world.GetAllComponentNames()[i].c_str()))
                     {
@@ -938,6 +993,10 @@ namespace Eclipse
                         ComponentRegistry<CollisionComponent>("CollisionComponent", ID, entCom.Name,
                             EditComponent::EC_REMOVECOMPONENT);
                         break;
+                    case str2int("AIComponent"):
+                        ComponentRegistry<AIComponent>("AIComponent", ID, entCom.Name,
+                            EditComponent::EC_REMOVECOMPONENT);
+                        break;
                     }
                 }
             }
@@ -951,18 +1010,18 @@ namespace Eclipse
         ECGui::DrawTextWidget<const char*>("Texture  ", "");
         ECGui::InsertSameLine();
 
-        if (ImGui::Button((Item.TextureRef.c_str()), buttonSize) || (ImGui::IsItemClicked() && ImGui::IsItemHovered()))
+        if (ECGui::ButtonBool((Item.TextureRef.c_str()), buttonSize) || (ECGui::IsItemClicked(0) && ECGui::IsItemHovered()))
         {
-            ImGui::OpenPopup("Texture Changer");
+            ECGui::OpenPopup("Texture Changer");
         }
-        if (ImGui::BeginPopup("Texture Changer"))
+        if (ECGui::BeginPopup("Texture Changer"))
         {
-            ImGui::SetScrollY(5);
+            ECGui::SetScrollY(5);
             ChildSettings settings{ "Texture Changer", ImVec2{ 250,250 } };
             ECGui::DrawChildWindow<void(MaterialComponent&)>(settings, std::bind(&InspectorWindow::TextureList,
                 this, std::placeholders::_1), Item);
 
-            ImGui::EndPopup();
+            ECGui::EndPopup();
         }
     }
 
@@ -978,7 +1037,7 @@ namespace Eclipse
         static float padding = 16.0f;
         static float thumbnaimsize = 50;
         float cellsize = thumbnaimsize + padding;
-        float panelwidth = ImGui::GetContentRegionAvail().x;
+        float panelwidth = ECGui::GetContentRegionAvail().x;
         int columncount = (int)(panelwidth / cellsize);
         AddComponentFilter.Draw("Filter", 160);
         if (thumbnaimsize <= 30)
@@ -989,8 +1048,8 @@ namespace Eclipse
         {
             columncount = 1;
         }
-        ImGui::SliderFloat("Size: ", &thumbnaimsize, 10, 200);
-        ImGui::Columns(columncount, NULL, true);
+        ECGui::DrawSliderFloatWidget("Size: ", &thumbnaimsize,false, 10, 200);
+        ECGui::SetColumns(columncount, NULL, true);
         for (auto it : Graphics::textures)
         {
             textureNames.push_back(it.first);
@@ -1004,20 +1063,20 @@ namespace Eclipse
 
             if (AddComponentFilter.PassFilter(textureNames[i].c_str()))
             {
-                ImGui::ImageButton((void*)(intptr_t)Graphics::FindTextures((icon).TextureRef).GetHandle(),
+                ECGui::ImageButton((void*)(intptr_t)Graphics::FindTextures((icon).TextureRef).GetHandle(),
                     { thumbnaimsize,thumbnaimsize },
                     { 1,0 },
                     { 2,1 });
 
-                if (ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
+                if (ECGui::IsItemClicked(0) && ECGui::IsItemHovered())
                 {
                     Item.TextureRef = Graphics::textures.find((textureNames[i].c_str()))->first;
                     AddComponentFilter.Clear();
-                    ImGui::CloseCurrentPopup();
+                    ECGui::CloseCurrentPopup();
                 }
 
-                ImGui::TextWrapped(textureNames[i].c_str());
-                ImGui::NextColumn();
+                ECGui::DrawTextWrappedWidget(textureNames[i].c_str(),"");
+                ECGui::NextColumn();
             }
 
         }
@@ -1032,26 +1091,26 @@ namespace Eclipse
 
         if (engine->world.CheckComponent<ModelComponent>(ID))
         {
-            if (ImGui::Button((Item.MeshName.data()), buttonSize))
+            if (ECGui::ButtonBool((Item.MeshName.data()), buttonSize))
             {
-                ImGui::OpenPopup("Mesh Changer");
+                ECGui::OpenPopup("Mesh Changer");
             }
         }
         else
         {
-            if (ImGui::Button((Item.modelRef.c_str()), buttonSize))
+            if (ECGui::ButtonBool((Item.modelRef.c_str()), buttonSize))
             {
-                ImGui::OpenPopup("Mesh Changer");
+                ECGui::OpenPopup("Mesh Changer");
             }
         }
-        if (ImGui::BeginPopup("Mesh Changer"))
+        if (ECGui::BeginPopup("Mesh Changer"))
         {
-            ImGui::SetScrollY(5);
+            ECGui::SetScrollY(5);
             ChildSettings settings{ "Mesh Changer", ImVec2{ 250,250 } };
             ECGui::DrawChildWindow<void(Entity&)>(settings, std::bind(&InspectorWindow::MeshList,
                 this, std::placeholders::_1), ID);
 
-            ImGui::EndPopup();
+            ECGui::EndPopup();
         }
     }
 
@@ -1069,7 +1128,7 @@ namespace Eclipse
         static float padding = 16.0f;
         static float thumbnaimsize = 50;
         float cellsize = thumbnaimsize + padding;
-        float panelwidth = ImGui::GetContentRegionAvail().x;
+        float panelwidth = ECGui::GetContentRegionAvail().x;
         int columncount = (int)(panelwidth / cellsize);
         if (thumbnaimsize <= 30)
         {
@@ -1079,9 +1138,9 @@ namespace Eclipse
         {
             columncount = 1;
         }
-        ImGui::SliderFloat("Size: ", &thumbnaimsize, 10, 200);
+        ECGui::DrawSliderFloatWidget("Size: ", &thumbnaimsize,false, 10, 200);
 
-        ImGui::Columns(columncount, NULL, true);
+        ECGui::SetColumns(columncount, NULL, true);
 
         //use model info component to identify if the dude is basic or not 
 
@@ -1092,19 +1151,19 @@ namespace Eclipse
 
                 if (AddComponentFilter.PassFilter((engine->AssimpManager.GetPrimitiveNames()[i].c_str())))
                 {
-                    ImGui::ImageButton((void*)(intptr_t)Graphics::FindTextures(icon.textureRef).GetHandle(),
+                    ECGui::ImageButton((void*)(intptr_t)Graphics::FindTextures(icon.textureRef).GetHandle(),
                         { thumbnaimsize,thumbnaimsize },
                         { 1,0 },
                         { 2,1 });
 
-                    if (ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
+                    if (ECGui::IsItemClicked(0) && ECGui::IsItemHovered())
                     {
                         Item.modelRef = Graphics::models.find((engine->AssimpManager.GetPrimitiveNames()[i].c_str()))->first;
                         AddComponentFilter.Clear();
                     }
 
-                    ImGui::TextWrapped(engine->AssimpManager.GetPrimitiveNames()[i].c_str());
-                    ImGui::NextColumn();
+                    ECGui::DrawTextWrappedWidget(engine->AssimpManager.GetPrimitiveNames()[i].c_str(),"");
+                    ECGui::NextColumn();
                 }
 
             }
@@ -1113,15 +1172,17 @@ namespace Eclipse
         {
             for (int i = 0; i < engine->AssimpManager.GetMeshNames().size(); ++i)
             {
+                if (engine->AssimpManager.GeometryContainerCheck(engine->AssimpManager.GetMeshNames()[i].c_str()) == false)
+                    continue;
 
                 if (AddComponentFilter.PassFilter((engine->AssimpManager.GetMeshNames()[i].c_str())))
                 {
-                    ImGui::ImageButton((void*)(intptr_t)Graphics::FindTextures((icon).textureRef).GetHandle(),
+                    ECGui::ImageButton((void*)(intptr_t)Graphics::FindTextures((icon).textureRef).GetHandle(),
                         { thumbnaimsize,thumbnaimsize },
                         { 1,0 },
                         { 2,1 });
 
-                    if (ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
+                    if (ECGui::IsItemClicked(0) && ECGui::IsItemHovered())
                     {
                         engine->AssimpManager.SetMeshComponent(ID, engine->AssimpManager.GetMeshNames()[i].c_str());
                         engine->AssimpManager.SetSingleMesh(ID, engine->AssimpManager.GetMeshNames()[i]);
@@ -1129,8 +1190,8 @@ namespace Eclipse
                         AddComponentFilter.Clear();
                     }
 
-                    ImGui::TextWrapped(engine->AssimpManager.GetMeshNames()[i].c_str());
-                    ImGui::NextColumn();
+                    ECGui::DrawTextWrappedWidget(engine->AssimpManager.GetMeshNames()[i].c_str(),"");
+                    ECGui::NextColumn();
                 }
 
             }
@@ -1160,6 +1221,40 @@ namespace Eclipse
             engine->audioManager.SetSpeed(audioCom.AudioPath, audioCom.Speed);
             audioCom.ChannelID = engine->audioManager.Play2DSounds(audioCom.AudioPath, audioCom.Volume,
                 audioCom.IsLooping);
+        }
+    }
+
+    void InspectorWindow::AddWaypointController(std::string& currentSelection)
+    {
+       /* for (size_t i = 0; i < engine->gAI.GetTargetPoints().size(); ++i)
+        {
+            bool selected = false;
+            auto& entCom = engine->world.GetComponent<EntityComponent>(engine->gAI.GetTargetPoints()[i]);
+     
+            if (ECGui::CreateSelectableButton(entCom.Name.c_str(), &selected))
+                currentSelection = lexical_cast<std::string>(engine->gAI.GetTargetPoints()[i]);
+        }*/
+
+        static size_t index = 0;
+
+        if (ImGuiAPI::BeginComboList("WaypointListBegin", currentSelection.c_str(), true))
+        {
+            for (size_t n = 0; n < engine->gAI.GetTargetPoints().size(); n++)
+            {
+                auto& entCom = engine->world.GetComponent<EntityComponent>(engine->gAI.GetTargetPoints()[n]);
+                const bool is_selected = (index == n);
+
+                if (ImGui::Selectable(my_strcat(entCom.Name, " ", engine->gAI.GetTargetPoints()[n]).c_str(), is_selected))
+                {
+                    index = n;
+                    currentSelection = lexical_cast<std::string>(engine->gAI.GetTargetPoints()[n]);
+                }
+
+                if (is_selected)
+                    ImGui::SetItemDefaultFocus();
+            }
+
+            ImGuiAPI::EndComboList();
         }
     }
 
