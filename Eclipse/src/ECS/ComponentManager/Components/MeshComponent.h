@@ -24,6 +24,9 @@ namespace Eclipse
         std::string modelRef;
         std::string shaderRef;
         float transparency{ 1.0f };
+
+        // For Environmental Mapping
+        bool ENV_MAP = true;
     };
 }
 #endif /* MESHCOMPONENT_H */

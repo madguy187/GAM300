@@ -410,6 +410,14 @@ namespace Eclipse
         return mRenderContext.GetFramebuffer(mode)->GetFrameBufferID();
     }
 
+    bool GraphicsManager::CheckFrameBuffer(unsigned int ID, FrameBufferMode mode)
+    {
+        if (mRenderContext.GetFramebuffer(mode)->GetFrameBufferID() == ID)
+            return true;
+
+        return false;
+    }
+
     unsigned int Eclipse::GraphicsManager::GetTextureID(FrameBufferMode mode)
     {
         return mRenderContext.GetFramebuffer(mode)->GetTextureColourBufferID();
@@ -574,6 +582,5 @@ namespace Eclipse
     {
         Eclipse::GraphicsManager::FrameBufferDraw();
     }
-
 #endif
 }

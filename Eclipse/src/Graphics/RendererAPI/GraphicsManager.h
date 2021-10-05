@@ -76,6 +76,7 @@ namespace Eclipse
         void SetBackGroundColour();
         void DrawEntireGrid();
         static void CreateCompilerFolders();
+        bool CheckFrameBuffer(unsigned int ID, FrameBufferMode mode);
         void RenderPostProcess();
 
     private:

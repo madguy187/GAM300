@@ -131,15 +131,6 @@ namespace Eclipse
     DEFINE_META(MeshComponent)
     {
         ADD_MEMBER(MeshName);
-        //ADD_MEMBER(VBO);
-        //ADD_MEMBER(VAO);
-        //ADD_MEMBER(EBO);
-        //ADD_MEMBER(NoTex);
-        //ADD_MEMBER(Diffuse);
-        //ADD_MEMBER(Specular);
-        //ADD_MEMBER(Ambient);
-        //ADD_MEMBER(Vertices);
-        //ADD_MEMBER(Indices);
         ADD_MEMBER(color);
         ADD_MEMBER(textureIdx);
         ADD_MEMBER(isQuad);
@@ -147,6 +138,7 @@ namespace Eclipse
         ADD_MEMBER(modelRef);
         ADD_MEMBER(shaderRef);
         ADD_MEMBER(transparency);
+        ADD_MEMBER(ENV_MAP);
     }
 
     DEFINE_META(ModelComponent)
