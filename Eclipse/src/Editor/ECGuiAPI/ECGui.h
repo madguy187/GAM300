@@ -75,6 +75,7 @@ namespace Eclipse
 		static void SetNextWindowClass(const ImGuiWindowClass* window_class);
 		static bool IsItemActive();
 
+
 		/*************************************************************************/
 		/*                           Dynamic Widgets                             */
 		/*************************************************************************/
@@ -132,6 +133,8 @@ namespace Eclipse
 		static void EndPopup();
 		static bool BeginPopupModal(const char* name, bool* p_open = NULL, ImGuiWindowFlags flags = 0);
 		static void CloseCurrentPopup();
+		static void SetColumns(int count = 1, const char* id = NULL, bool border = true);
+		static void SetColumnOffset(int column_index, float offset_x);
 
 		/*************************************************************************/
 		/*                           Static Widgets                              */

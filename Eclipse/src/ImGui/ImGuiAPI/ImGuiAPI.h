@@ -50,7 +50,8 @@ namespace Eclipse
 		static void EndPopup();
 		static bool BeginPopupModal(const char* name, bool* p_open = NULL, ImGuiWindowFlags flags = 0);
 		static void CloseCurrentPopup();
-
+		static void SetColumns(int count = 1, const char* id = NULL, bool border = true);
+		static void SetColumnOffset(int column_index, float offset_x);
 		// Semi-Dynamic Widgets (Don't need an end function for it)
 		static bool CreateCollapsingHeader(const char* name);
 		static bool CreateSelectableButton(const char* label, bool* active, ImGuiSelectableFlags flags = 0);

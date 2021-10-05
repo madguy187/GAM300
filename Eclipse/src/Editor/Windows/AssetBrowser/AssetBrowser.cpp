@@ -33,9 +33,9 @@ namespace Eclipse
 	{
 		//temp render components test phase
 
-		ImGui::Columns(2);
+		ECGui::SetColumns(2);
 
-		ImGui::SetColumnOffset(1, 150);
+		ECGui::SetColumnOffset(1, 150);
 
 		//left side
 		ECGui::DrawChildWindow<void()>({ "##folders_common" }, std::bind(&AssetBrowserWindow::LeftFolderHierarchy, this));

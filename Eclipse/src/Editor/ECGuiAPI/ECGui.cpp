@@ -92,6 +92,16 @@ namespace Eclipse
 		return ImGuiAPI::IsItemActive();;
 	}
 
+	void ECGui::SetColumns(int count, const char* id, bool border)
+	{
+		ImGuiAPI::SetColumns(count, id, border);
+	}
+
+	void ECGui::SetColumnOffset(int column_index, float offset_x)
+	{
+		ImGuiAPI::SetColumnOffset(column_index, offset_x);
+	}
+
 	ImGuiViewport* ECGui::GetMainViewport()
 	{
 		return ImGuiAPI::GetMainViewport();

@@ -12,7 +12,7 @@ namespace Eclipse
 	AudioManager::~AudioManager()
 	{
 		// SerializeSounds();
-		StopAllChannels();
+		//StopAllChannels();
 	}
 
 	void AudioManager::Init()
