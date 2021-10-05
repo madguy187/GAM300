@@ -13,7 +13,7 @@ namespace Eclipse
     void DebugWindow::Init()
     {
         Type = EditorWindowType::EWT_DEBUG;
-        WindowName = "Debug";
+        WindowName = "Settings";
         IsVisible = false;
     }
 
@@ -23,40 +23,6 @@ namespace Eclipse
 
     void DebugWindow::DrawImpl()
     {
-        auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
-        ECGui::PushItemWidth(ECGui::GetWindowSize().x / 3.5f);
-
-        ECGui::DrawTextWidget<const char*>("Snap Settings:", "");
-        {
-            ECGui::DrawTextWidget<const char*>("Pos", "");
-            ECGui::InsertSameLine();
-            ECGui::DrawInputFloatWidget("PosSnap", &scene->GetRefToSnapSettings().mPosSnapValue, true, 0.5f);
-            ECGui::InsertSameLine();
-
-            ECGui::DrawTextWidget<const char*>("Scale", "");
-            ECGui::InsertSameLine();
-            ECGui::DrawInputFloatWidget("ScaleSnap", &scene->GetRefToSnapSettings().mScaleSnapValue, true, 0.5f);
-            ECGui::InsertSameLine();
-
-            ECGui::DrawTextWidget<const char*>("Rot", "");
-            ECGui::InsertSameLine();
-            ECGui::DrawInputFloatWidget("RotSnap", &scene->GetRefToSnapSettings().mRotSnapValue, true, 45.f);
-        }
-
-        if (engine->gCamera.GetEditorCameraID() != MAX_ENTITY)
-        {
-            auto& camCom = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
-
-            ECGui::DrawTextWidget<const char*>("Camera Speed:", "");
-            {
-                ECGui::DrawTextWidget<const char*>("Speed", "");
-                ECGui::InsertSameLine();
-                ECGui::DrawSliderFloatWidget("CamSpeed", &camCom.cameraSpeed, true, 1.f, 200.f);
-            }
-
-            ImGui::Dummy({ 5,5 });
-        }
-
         ECGui::DrawTextWidget<const char*>("Render Settings:", "");
         {
 

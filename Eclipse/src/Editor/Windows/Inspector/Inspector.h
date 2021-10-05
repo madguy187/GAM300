@@ -51,30 +51,34 @@ namespace Eclipse
 
 		template <typename TComponents>
 		void ComponentRegistry(const char* CompName, Entity ID,
-			const std::string EntityName, EditComponent method)
-		{
-			bool isExist = engine->world.CheckComponent<TComponents>(ID);
+			const std::string EntityName, EditComponent method);
 
-			if (method == EditComponent::EC_ADDCOMPONENT)
-			{
-				AddComponentsFeedback<TComponents>(CompName, EntityName, ID, isExist);
-			}
-			else
-			{
-				RemoveComponentsFeedback<TComponents>(CompName, EntityName, ID, isExist);
-			}
-
-			ImGui::CloseCurrentPopup();
-		}
-
-		static constexpr unsigned int str2int(const char* str, int h = 0)
-		{
-			return !str[h] ? 5381 : (str2int(str, h + 1) * 33) ^ str[h];
-		}
+		static constexpr unsigned int str2int(const char* str, int h = 0);
 	private:
 		ECVec2 WindowSize_{};
-		std::vector<std::string> ScriptListGuiTest;
 		bool IsRemovingScripts{ false };
 	};
 
+	template <typename TComponents>
+	void InspectorWindow::ComponentRegistry(const char* CompName, Entity ID,
+		const std::string EntityName, EditComponent method)
+	{
+		bool isExist = engine->world.CheckComponent<TComponents>(ID);
+
+		if (method == EditComponent::EC_ADDCOMPONENT)
+		{
+			AddComponentsFeedback<TComponents>(CompName, EntityName, ID, isExist);
+		}
+		else
+		{
+			RemoveComponentsFeedback<TComponents>(CompName, EntityName, ID, isExist);
+		}
+
+		ImGui::CloseCurrentPopup();
+	}
+
+	constexpr unsigned int InspectorWindow::str2int(const char* str, int h)
+	{
+		return !str[h] ? 5381 : (str2int(str, h + 1) * 33) ^ str[h];
+	}
 }

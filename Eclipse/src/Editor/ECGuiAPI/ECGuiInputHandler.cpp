@@ -23,7 +23,7 @@ namespace Eclipse
 				{
 					Entity currEnt = engine->editorManager->GetSelectedEntity();
 
-					if (currEnt != engine->gCamera.GetEditorCameraID() ||
+					if (currEnt != engine->gCamera.GetEditorCameraID() &&
 						currEnt != engine->gCamera.GetGameCameraID())
 					{
 						engine->editorManager->DestroyEntity(currEnt);
