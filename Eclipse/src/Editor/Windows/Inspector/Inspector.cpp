@@ -11,240 +11,239 @@
 
 namespace Eclipse
 {
-	void InspectorWindow::Update()
-	{
-		if (IsVisible)
-			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&InspectorWindow::DrawImpl, this));
-	}
+    void InspectorWindow::Update()
+    {
+        if (IsVisible)
+            ECGui::DrawMainWindow<void()>(WindowName, std::bind(&InspectorWindow::DrawImpl, this));
+    }
 
-	void InspectorWindow::Init()
-	{
-		Type = EditorWindowType::EWT_INSPECTOR;
-		WindowName = "Inspector";
-		ScriptListGuiTest.push_back(std::string{});
-	}
+    void InspectorWindow::Init()
+    {
+        Type = EditorWindowType::EWT_INSPECTOR;
+        WindowName = "Inspector";
+    }
 
-	void InspectorWindow::Unload()
-	{
-	}
+    void InspectorWindow::Unload()
+    {
+    }
 
-	void InspectorWindow::DrawImpl()
-	{
-		WindowSize_.setX(ECGui::GetWindowSize().x);
-		WindowSize_.setY(ECGui::GetWindowSize().y);
+    void InspectorWindow::DrawImpl()
+    {
+        WindowSize_.setX(ECGui::GetWindowSize().x);
+        WindowSize_.setY(ECGui::GetWindowSize().y);
 
-		if (!engine->editorManager->IsEntityListEmpty())
-		{
-			Entity currEnt = engine->editorManager->GetSelectedEntity();
-			auto& entcom = engine->world.GetComponent<EntityComponent>(currEnt);
-			std::string entityName = entcom.Name + " " + std::to_string(currEnt);
+        if (!engine->editorManager->IsEntityListEmpty())
+        {
+            Entity currEnt = engine->editorManager->GetSelectedEntity();
+            auto& entcom = engine->world.GetComponent<EntityComponent>(currEnt);
+            std::string entityName = entcom.Name + " " + std::to_string(currEnt);
 
-			ECGui::DrawInputTextWidget("EntityName", const_cast<char*>(entityName.c_str()),
-				entityName.size(), ImGuiInputTextFlags_ReadOnly);
+            ECGui::DrawInputTextWidget("EntityName", const_cast<char*>(entityName.c_str()),
+                entityName.size(), ImGuiInputTextFlags_ReadOnly);
 
-			ECGui::InsertHorizontalLineSeperator();
+            ECGui::InsertHorizontalLineSeperator();
 
-			static ImGuiTextFilter CompFilter;
-			CompFilter.Draw();
+            static ImGuiTextFilter CompFilter;
+            CompFilter.Draw();
 
-			ECGui::PushItemWidth(WindowSize_.getX());
-			//std::cout<<engine->editorManager->GetSelectedEntity();
-			ShowPrefebProperty("Prefeb", currEnt, CompFilter);
-			ShowEntityProperty("Tag", currEnt, CompFilter);
-			ShowTransformProperty("Transform", currEnt, CompFilter);
-			ShowPointLightProperty("PointLight", currEnt, CompFilter);
-			ShowSpotLightProperty("SpotLight", currEnt, CompFilter);
-			ShowDirectionalLightProperty("DirectionalLight", currEnt, CompFilter);
-			ShowRigidBodyProperty("RigidBody", currEnt, CompFilter);
-			ShowEditorCameraProperty("Camera", currEnt, CompFilter);
-			ShowTextureProperty("Texture", currEnt, CompFilter);
-			//ShowRenderProperty("Render", currEnt, CompFilter);
-			ShowMaterialProperty("Material", currEnt, CompFilter);
-			ShowMesh3DProperty("Mesh", currEnt, CompFilter);
-			//ShowModelInfoProperty("ModelInfo", currEnt, CompFilter);
-			ShowScriptProperty("Script Details", currEnt, CompFilter);
-			ShowAudioProperty("Audio", currEnt, CompFilter);
-			ShowCollisionProperty("Collision", currEnt, CompFilter);
+            ECGui::PushItemWidth(WindowSize_.getX());
+            //std::cout<<engine->editorManager->GetSelectedEntity();
+            ShowPrefebProperty("Prefeb", currEnt, CompFilter);
+            ShowEntityProperty("Tag", currEnt, CompFilter);
+            ShowTransformProperty("Transform", currEnt, CompFilter);
+            ShowPointLightProperty("PointLight", currEnt, CompFilter);
+            ShowSpotLightProperty("SpotLight", currEnt, CompFilter);
+            ShowDirectionalLightProperty("DirectionalLight", currEnt, CompFilter);
+            ShowRigidBodyProperty("RigidBody", currEnt, CompFilter);
+            ShowEditorCameraProperty("Camera", currEnt, CompFilter);
+            ShowTextureProperty("Texture", currEnt, CompFilter);
+            ShowRenderProperty("Render", currEnt, CompFilter);
+            ShowMaterialProperty("Material", currEnt, CompFilter);
+            ShowMesh3DProperty("Mesh", currEnt, CompFilter);
+            //ShowModelInfoProperty("ModelInfo", currEnt, CompFilter);
+            ShowScriptProperty("Script Details", currEnt, CompFilter);
+            ShowAudioProperty("Audio", currEnt, CompFilter);
+            ShowCollisionProperty("Collision", currEnt, CompFilter);
 
-			ECGui::InsertHorizontalLineSeperator();
-			/*ECGui::PushItemWidth(WindowSize_.getX());*/
-			AddComponentsController(currEnt);
-			ECGui::InsertSameLine();
-			RemoveComponentsController(currEnt);
-		}
-		else
-		{
-			const char* entName = "No Entities";
+            ECGui::InsertHorizontalLineSeperator();
+            /*ECGui::PushItemWidth(WindowSize_.getX());*/
+            AddComponentsController(currEnt);
+            ECGui::InsertSameLine();
+            RemoveComponentsController(currEnt);
+        }
+        else
+        {
+            const char* entName = "No Entities";
 
-			ECGui::DrawInputTextWidget("EntityName", const_cast<char*>(entName),
-				strlen(entName), ImGuiInputTextFlags_ReadOnly);
-		}
+            ECGui::DrawInputTextWidget("EntityName", const_cast<char*>(entName),
+                strlen(entName), ImGuiInputTextFlags_ReadOnly);
+        }
 
-		ECGui::InsertHorizontalLineSeperator();
-	}
+        ECGui::InsertHorizontalLineSeperator();
+    }
 
-	bool InspectorWindow::ShowEntityProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
-	{
-		if (engine->world.CheckComponent<EntityComponent>(ID))
-		{
-			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
-			{
-				static char entNameInput[256];
-				auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
+    bool InspectorWindow::ShowEntityProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+    {
+        if (engine->world.CheckComponent<EntityComponent>(ID))
+        {
+            if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+            {
+                static char entNameInput[256];
+                auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
 
-				ECGui::DrawTextWidget<std::string>("Entity Tag", lexical_cast_toStr<EntityType>(entCom.Tag));
-				ECGui::DrawTextWidget<const char*>("Edit Name:", "");
-				ECGui::InsertSameLine();
-				if (ECGui::DrawInputTextHintWidget("InputEntityName", "Enter Entity Name", entNameInput,
-					256, true, ImGuiInputTextFlags_EnterReturnsTrue))
-				{
-					std::string oldName = entCom.Name;
-					entCom.Name = entNameInput;
-					CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<std::string>{ oldName, entCom.Name });
-				}
+                ECGui::DrawTextWidget<std::string>("Entity Tag", lexical_cast_toStr<EntityType>(entCom.Tag));
+                ECGui::DrawTextWidget<const char*>("Edit Name:", "");
+                ECGui::InsertSameLine();
+                if (ECGui::DrawInputTextHintWidget("InputEntityName", "Enter Entity Name", entNameInput,
+                    256, true, ImGuiInputTextFlags_EnterReturnsTrue))
+                {
+                    std::string oldName = entCom.Name;
+                    entCom.Name = entNameInput;
+                    CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<std::string>{ oldName, entCom.Name });
+                }
 
-				/*engine->editorManager->Item_.GenericPayloadTarget("TESTING", testtest, "SUCCESSFUL");
-				strcpy(test, testtest.c_str());*/
-			}
-		}
+                /*engine->editorManager->Item_.GenericPayloadTarget("TESTING", testtest, "SUCCESSFUL");
+                strcpy(test, testtest.c_str());*/
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	bool InspectorWindow::ShowTransformProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
-	{
-		if (engine->world.CheckComponent<TransformComponent>(ID))
-		{
-			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
-			{
-				auto& transCom = engine->world.GetComponent<TransformComponent>(ID);
+    bool InspectorWindow::ShowTransformProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+    {
+        if (engine->world.CheckComponent<TransformComponent>(ID))
+        {
+            if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+            {
+                auto& transCom = engine->world.GetComponent<TransformComponent>(ID);
 
-				ECGui::DrawTextWidget<const char*>("Position", "");
-				ECGui::DrawSliderFloat3Widget("TransVec", &transCom.position, true, -50.f, 50.f);
+                ECGui::DrawTextWidget<const char*>("Position", "");
+                ECGui::DrawSliderFloat3Widget("TransVec", &transCom.position, true, -50.f, 50.f);
 
-				ECGui::DrawTextWidget<const char*>("Rotation", "");
-				ECGui::DrawSliderFloat3Widget("TransRot", &transCom.rotation, true, -360.f, 360.f);
+                ECGui::DrawTextWidget<const char*>("Rotation", "");
+                ECGui::DrawSliderFloat3Widget("TransRot", &transCom.rotation, true, -360.f, 360.f);
 
-				ECGui::DrawTextWidget<const char*>("Scale", "");
-				ECGui::DrawSliderFloat3Widget("TransScale", &transCom.scale);
+                ECGui::DrawTextWidget<const char*>("Scale", "");
+                ECGui::DrawSliderFloat3Widget("TransScale", &transCom.scale);
 
-				//Update for DynamicAABB Tree -Rachel
-				engine->gPicker.UpdateAabb(ID);
-				engine->gDynamicAABBTree.UpdateData(ID);
-			}
-		}
+                //Update for DynamicAABB Tree -Rachel
+                engine->gPicker.UpdateAabb(ID);
+                engine->gDynamicAABBTree.UpdateData(ID);
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	bool InspectorWindow::ShowPointLightProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
-	{
-		if (engine->world.CheckComponent<PointLightComponent>(ID))
-		{
-			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
-			{
-				auto& _PointLight = engine->world.GetComponent<PointLightComponent>(ID);
+    bool InspectorWindow::ShowPointLightProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+    {
+        if (engine->world.CheckComponent<PointLightComponent>(ID))
+        {
+            if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+            {
+                auto& _PointLight = engine->world.GetComponent<PointLightComponent>(ID);
 
-				ECGui::DrawTextWidget<const char*>("IntensityStrength", "");
-				ECGui::DrawSliderFloatWidget("IntensityFloat", &_PointLight.IntensityStrength, true, 0.f, 150.f);
+                ECGui::DrawTextWidget<const char*>("IntensityStrength", "");
+                ECGui::DrawSliderFloatWidget("IntensityFloat", &_PointLight.IntensityStrength, true, 0.f, 150.f);
 
-				ECGui::DrawTextWidget<const char*>("Light Colour", "");
+                ECGui::DrawTextWidget<const char*>("Light Colour", "");
 
-				ImGui::ColorPicker3("PLightColor", (float*)&_PointLight.Color,
-					ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
-				//ECGui::DrawSliderFloat4Widget("ColourVec", &_PointLight.Color, true, 0.0f, 1.0f);
-				engine->LightManager.SetLightColor(_PointLight,
-					{ _PointLight.Color.getX() ,_PointLight.Color.getY() , _PointLight.Color.getZ() , 1.0f });
+                ImGui::ColorPicker3("PLightColor", (float*)&_PointLight.Color,
+                    ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
+                //ECGui::DrawSliderFloat4Widget("ColourVec", &_PointLight.Color, true, 0.0f, 1.0f);
+                engine->LightManager.SetLightColor(_PointLight,
+                    { _PointLight.Color.getX() ,_PointLight.Color.getY() , _PointLight.Color.getZ() , 1.0f });
 
-				ECGui::DrawTextWidget<const char*>("Attenuation Level", "");
-				ECGui::DrawSliderIntWidget("PLightColourVec", &_PointLight.AttenuationLevel, true, 0, 10);
-				engine->LightManager.SetAttenuation(_PointLight, _PointLight.AttenuationLevel);
+                ECGui::DrawTextWidget<const char*>("Attenuation Level", "");
+                ECGui::DrawSliderIntWidget("PLightColourVec", &_PointLight.AttenuationLevel, true, 0, 10);
+                engine->LightManager.SetAttenuation(_PointLight, _PointLight.AttenuationLevel);
 
-				ECGui::DrawTextWidget<const char*>("Light Ambient", "");
-				ECGui::DrawSliderFloat3Widget("PLightAmbientVec", &_PointLight.ambient, true, 0.0f, 1.0f);
+                ECGui::DrawTextWidget<const char*>("Light Ambient", "");
+                ECGui::DrawSliderFloat3Widget("PLightAmbientVec", &_PointLight.ambient, true, 0.0f, 1.0f);
 
-				ECGui::DrawTextWidget<const char*>("Light Diffuse", "");
-				ECGui::DrawSliderFloat3Widget("PLightDiffuseVec", &_PointLight.diffuse, true, 0.0f, 1.0f);
+                ECGui::DrawTextWidget<const char*>("Light Diffuse", "");
+                ECGui::DrawSliderFloat3Widget("PLightDiffuseVec", &_PointLight.diffuse, true, 0.0f, 1.0f);
 
-				ECGui::DrawTextWidget<const char*>("Light Specular", "");
-				ECGui::DrawSliderFloat3Widget("PLightSpecularVec", &_PointLight.specular, true, 0.0f, 1.0f);
+                ECGui::DrawTextWidget<const char*>("Light Specular", "");
+                ECGui::DrawSliderFloat3Widget("PLightSpecularVec", &_PointLight.specular, true, 0.0f, 1.0f);
 
-				ECGui::DrawTextWidget<const char*>("Intensity Strength", "");
-				ECGui::DrawSliderFloatWidget("Intensity Strength", &_PointLight.IntensityStrength, true, 0.0f, 50.0f);
+                ECGui::DrawTextWidget<const char*>("Intensity Strength", "");
+                ECGui::DrawSliderFloatWidget("Intensity Strength", &_PointLight.IntensityStrength, true, 0.0f, 50.0f);
 
-				ECGui::DrawTextWidget<const char*>("Constant", "");
-				ECGui::DrawSliderFloatWidget("Constant", &_PointLight.constant, true, 0.0f, 50.0f);
+                ECGui::DrawTextWidget<const char*>("Constant", "");
+                ECGui::DrawSliderFloatWidget("Constant", &_PointLight.constant, true, 0.0f, 50.0f);
 
-				ECGui::DrawTextWidget<const char*>("Linear", "");
-				ECGui::DrawSliderFloatWidget("Linear", &_PointLight.linear, true, 0.0f, 50.0f);
+                ECGui::DrawTextWidget<const char*>("Linear", "");
+                ECGui::DrawSliderFloatWidget("Linear", &_PointLight.linear, true, 0.0f, 50.0f);
 
-				ECGui::DrawTextWidget<const char*>("Quadratic", "");
-				ECGui::DrawSliderFloatWidget("Quadratic", &_PointLight.quadratic, true, 0.0f, 50.0f);
+                ECGui::DrawTextWidget<const char*>("Quadratic", "");
+                ECGui::DrawSliderFloatWidget("Quadratic", &_PointLight.quadratic, true, 0.0f, 50.0f);
 
-				ECGui::DrawTextWidget<const char*>("Radius", "");
-				ECGui::DrawSliderFloatWidget("Radius", &_PointLight.radius, true, 0.0f, 50.0f);
+                ECGui::DrawTextWidget<const char*>("Radius", "");
+                ECGui::DrawSliderFloatWidget("Radius", &_PointLight.radius, true, 0.0f, 50.0f);
 
-				ImGui::Columns(2, NULL, true);
-				ECGui::DrawTextWidget<const char*>("Enable Blinn Phong", "");
-				ECGui::DrawTextWidget<const char*>("Visible", "");
-				ECGui::DrawTextWidget<const char*>("Affects World", "");
-				ImGui::NextColumn();
-				ECGui::CheckBoxBool("Enable Blinn Phong", &_PointLight.EnableBlinnPhong);
-				ECGui::CheckBoxBool("Enable Blinn PhongVisible", &_PointLight.visible);
-				ECGui::CheckBoxBool("Affects World", &_PointLight.AffectsWorld);
-				ImGui::Columns(1, NULL, true);
+                ImGui::Columns(2, NULL, true);
+                ECGui::DrawTextWidget<const char*>("Enable Blinn Phong", "");
+                ECGui::DrawTextWidget<const char*>("Visible", "");
+                ECGui::DrawTextWidget<const char*>("Affects World", "");
+                ImGui::NextColumn();
+                ECGui::CheckBoxBool("Enable Blinn Phong", &_PointLight.EnableBlinnPhong);
+                ECGui::CheckBoxBool("Enable Blinn PhongVisible", &_PointLight.visible);
+                ECGui::CheckBoxBool("Affects World", &_PointLight.AffectsWorld);
+                ImGui::Columns(1, NULL, true);
 
-			}
-		}
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	bool InspectorWindow::ShowSpotLightProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
-	{
-		if (engine->world.CheckComponent<SpotLightComponent>(ID))
-		{
-			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
-			{
-				auto& _SpotLight = engine->world.GetComponent<SpotLightComponent>(ID);
+    bool InspectorWindow::ShowSpotLightProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+    {
+        if (engine->world.CheckComponent<SpotLightComponent>(ID))
+        {
+            if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+            {
+                auto& _SpotLight = engine->world.GetComponent<SpotLightComponent>(ID);
 
-				ECGui::DrawTextWidget<const char*>("IntensityStrength", "");
-				ECGui::DrawSliderFloatWidget("IntensityFloat", &_SpotLight.IntensityStrength, true, 0.f, 150.f);
+                ECGui::DrawTextWidget<const char*>("IntensityStrength", "");
+                ECGui::DrawSliderFloatWidget("IntensityFloat", &_SpotLight.IntensityStrength, true, 0.f, 150.f);
 
-				ECGui::DrawTextWidget<const char*>("Light Colour", "");
-				ImGui::ColorPicker3("SLightColor", (float*)&_SpotLight.lightColor,
-					ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
+                ECGui::DrawTextWidget<const char*>("Light Colour", "");
+                ImGui::ColorPicker3("SLightColor", (float*)&_SpotLight.lightColor,
+                    ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
 
-				ECGui::DrawTextWidget<const char*>("Attenuation Level", "");
-				ECGui::DrawSliderIntWidget("PLightColourVec", &_SpotLight.AttenuationLevel, true, 0, 10);
-				engine->LightManager.SetAttenuation(_SpotLight, _SpotLight.AttenuationLevel);
+                ECGui::DrawTextWidget<const char*>("Attenuation Level", "");
+                ECGui::DrawSliderIntWidget("PLightColourVec", &_SpotLight.AttenuationLevel, true, 0, 10);
+                engine->LightManager.SetAttenuation(_SpotLight, _SpotLight.AttenuationLevel);
 
-				ECGui::DrawTextWidget<const char*>("Light Ambient", "");
-				ECGui::DrawSliderFloat3Widget("PLightAmbientVec", &_SpotLight.ambient, true, 0.0f, 1.0f);
+                ECGui::DrawTextWidget<const char*>("Light Ambient", "");
+                ECGui::DrawSliderFloat3Widget("PLightAmbientVec", &_SpotLight.ambient, true, 0.0f, 1.0f);
 
-				ECGui::DrawTextWidget<const char*>("Light Diffuse", "");
-				ECGui::DrawSliderFloat3Widget("PLightDiffuseVec", &_SpotLight.diffuse, true, 0.0f, 1.0f);
+                ECGui::DrawTextWidget<const char*>("Light Diffuse", "");
+                ECGui::DrawSliderFloat3Widget("PLightDiffuseVec", &_SpotLight.diffuse, true, 0.0f, 1.0f);
 
-				ECGui::DrawTextWidget<const char*>("Light Specular", "");
-				ECGui::DrawSliderFloat3Widget("PLightSpecularVec", &_SpotLight.specular, true, 0.0f, 1.0f);
+                ECGui::DrawTextWidget<const char*>("Light Specular", "");
+                ECGui::DrawSliderFloat3Widget("PLightSpecularVec", &_SpotLight.specular, true, 0.0f, 1.0f);
 
-				ECGui::DrawTextWidget<const char*>("OuterCutOff", "");
-				ECGui::DrawSliderFloatWidget("SLightOuterCutOffFloat", &_SpotLight.outerCutOff, true, 0.f, 50.0f);
+                ECGui::DrawTextWidget<const char*>("OuterCutOff", "");
+                ECGui::DrawSliderFloatWidget("SLightOuterCutOffFloat", &_SpotLight.outerCutOff, true, 0.f, 50.0f);
 
-				ECGui::DrawTextWidget<const char*>("CutOff", "");
-				ECGui::DrawSliderFloatWidget("SLightCutOffFloat", &_SpotLight.cutOff, true, 0.f, (_SpotLight.outerCutOff - 5.0f));
+                ECGui::DrawTextWidget<const char*>("CutOff", "");
+                ECGui::DrawSliderFloatWidget("SLightCutOffFloat", &_SpotLight.cutOff, true, 0.f, (_SpotLight.outerCutOff - 5.0f));
 
-				ECGui::DrawTextWidget<const char*>("Direction", "");
-				ECGui::DrawSliderFloat3Widget("SLightDirectionVec", &_SpotLight.direction, true, 0.f, 150.f);
+                ECGui::DrawTextWidget<const char*>("Direction", "");
+                ECGui::DrawSliderFloat3Widget("SLightDirectionVec", &_SpotLight.direction, true, 0.f, 150.f);
 
-				ECGui::DrawTextWidget<const char*>("Constant", "");
-				ECGui::DrawSliderFloatWidget("Constant", &_SpotLight.constant, true, 0.0f, 50.0f);
+                ECGui::DrawTextWidget<const char*>("Constant", "");
+                ECGui::DrawSliderFloatWidget("Constant", &_SpotLight.constant, true, 0.0f, 50.0f);
 
-				ECGui::DrawTextWidget<const char*>("Linear", "");
-				ECGui::DrawSliderFloatWidget("Linear", &_SpotLight.linear, true, 0.0f, 50.0f);
+                ECGui::DrawTextWidget<const char*>("Linear", "");
+                ECGui::DrawSliderFloatWidget("Linear", &_SpotLight.linear, true, 0.0f, 50.0f);
 
-				ECGui::DrawTextWidget<const char*>("Quadratic", "");
-				ECGui::DrawSliderFloatWidget("Quadratic", &_SpotLight.quadratic, true, 0.0f, 50.0f);
+                ECGui::DrawTextWidget<const char*>("Quadratic", "");
+                ECGui::DrawSliderFloatWidget("Quadratic", &_SpotLight.quadratic, true, 0.0f, 50.0f);
 
 				ECGui::DrawTextWidget<const char*>("Radius", "");
 				ECGui::DrawSliderFloatWidget("Radius", &_SpotLight.radius, true, 0.0f, 50.0f);

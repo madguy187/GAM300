@@ -28,7 +28,8 @@ namespace Eclipse
 	{
 		ImVec2 viewportPanelSize = ECGui::GetWindowSize();
 		//std::cout << "Scene View: " << ImGui::GetWindowDockID() << std::endl;
-		if (mViewportSize != *((glm::vec2*)&viewportPanelSize))
+		if (mViewportSize.getX() != viewportPanelSize.x || 
+			mViewportSize.getY() != viewportPanelSize.y)
 		{
 			// Resize the framebuffer based on the size of the imgui window
 			//m_frameBuffer->Resize(static_cast<unsigned>(viewportPanelSize.x), static_cast<unsigned>(viewportPanelSize.y));
@@ -307,7 +308,7 @@ namespace Eclipse
 
 	glm::vec2 SceneWindow::GetSceneBufferSize()
 	{
-		return mSceneBufferSize;
+		return mSceneBufferSize.ConvertToGlmVec2Type();
 	}
 
 	glm::vec2 SceneWindow::GetCursorScreenPos()

@@ -10,6 +10,7 @@ namespace Eclipse
 
 	void TopSwitchViewWindow::Init()
 	{
+		mCamType = CameraComponent::CameraType::TopView_Camera;
 		mViewportSize = glm::vec2{ 0.0f, 0.0f };
 		Type = EditorWindowType::EWT_SWITCHVIEW_TOP;
 		WindowName = "Top Switch View";
