@@ -238,17 +238,10 @@ namespace Eclipse
     DEFINE_META_POD(double);
     DEFINE_META_POD(size_t);
     DEFINE_META_POD(std::string);
-    //DEFINE_META_POD(std::vector<std::string>);
-    //DEFINE_META_POD(std::vector<Mesh>);
-    //DEFINE_META_POD(std::vector<Texture>);
-    //DEFINE_META_POD(std::map<unsigned int, std::vector<Texture>>);
     DEFINE_META_POD(std::vector<Entity>);
-    //DEFINE_META_POD(MeshComponent::MeshNameType);
     DEFINE_META_POD(ECVec2);
     DEFINE_META_POD(ECVec3);
     DEFINE_META_POD(ECVec4);
-    //DEFINE_META_POD(Mesh);
-    //DEFINE_META_POD(Texture);
     DEFINE_META_POD(glm::vec3);
     DEFINE_META_POD(glm::vec4);
     DEFINE_META_POD(glm::mat4);
@@ -257,5 +250,4 @@ namespace Eclipse
     DEFINE_META_POD(EntityType);
     DEFINE_META_POD(TextureType);
     DEFINE_META_POD(MaterialModelType);
-    //DEFINE_META_POD(MeshComponent::MapType);
 }
