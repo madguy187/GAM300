@@ -790,6 +790,7 @@
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AudioComponent.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem\CameraSystem.h" />
+    <ClInclude Include="src\Graphics\EngineCompiler\EngineCompiler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1168,5 +1169,10 @@
       <Filter>Tracy</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\Graphics\EngineCompiler\EngineCompiler.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Assets\Shaders\FrameBuffer\framebuffer.frag" />
+    <None Include="src\Assets\Shaders\FrameBuffer\framebuffer.vert" />
   </ItemGroup>
 </Project>

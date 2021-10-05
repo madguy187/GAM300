@@ -57,10 +57,8 @@ namespace Eclipse
             ShowRigidBodyProperty("RigidBody", currEnt, CompFilter);
             ShowEditorCameraProperty("Camera", currEnt, CompFilter);
             ShowTextureProperty("Texture", currEnt, CompFilter);
-            ShowRenderProperty("Render", currEnt, CompFilter);
             ShowMaterialProperty("Material", currEnt, CompFilter);
             ShowMesh3DProperty("Mesh", currEnt, CompFilter);
-            ShowModelInfoProperty("ModelInfo", currEnt, CompFilter);
             ShowScriptProperty("Script Details", currEnt, CompFilter);
             ShowAudioProperty("Audio", currEnt, CompFilter);
             ShowCollisionProperty("Collision", currEnt, CompFilter);
@@ -441,14 +439,43 @@ namespace Eclipse
 
     bool InspectorWindow::ShowMesh3DProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
     {
-        if (engine->world.CheckComponent<MeshComponent>(ID))
-        {
-            if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
-            {
-                auto& _Mesh = engine->world.GetComponent<MeshComponent>(ID);
+		if (engine->world.CheckComponent<MeshComponent>(ID))
+		{
+			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+			{
+				auto& _Mesh = engine->world.GetComponent<MeshComponent>(ID);
 
-            }
-        }
+				ECGui::DrawTextWidget<const char*>("Model Name: ", "");
+				ECGui::InsertSameLine();
+				ECGui::DrawTextWidget<const char*>(_Mesh.MeshName.data(), "");
+
+				ECGui::DrawTextWidget<const char*>("Environment Map", "");
+				ECGui::InsertSameLine();
+				ECGui::CheckBoxBool("Environment Map", &_Mesh.ENV_MAP);
+
+				if (_Mesh.ENV_MAP)
+				{
+					static size_t comboindex = 0;
+					std::vector<std::string> MapVector = { "REFLECT", "REFRACT" };
+					ComboListSettings settings = { "Map Type" };
+					ECGui::DrawTextWidget<const char*>("Map Type", "");
+					ECGui::CreateComboList(settings, MapVector, comboindex);
+					_Mesh.ENV_TYPE = static_cast<MeshComponent::MapType>(comboindex);
+				}
+
+				ImGui::Dummy({ 2,2 });
+
+				std::string nameString = _Mesh.modelRef + " (Mesh Filter)";
+				ImGui::PushStyleColor(ImGuiCol_Header, IM_COL32(0, 1, 1, 1));
+				if (filter.PassFilter(nameString.c_str()) && ECGui::CreateCollapsingHeader(nameString.c_str()))
+				{
+					ECGui::DrawTextWidget<const char*>("Mesh ", "");
+					ECGui::InsertSameLine();
+					ChangeMeshController(ID);
+				}
+				ImGui::PopStyleColor();
+			}
+		}
         return false;
     }
 
@@ -1111,6 +1138,8 @@ namespace Eclipse
         {
             for (int i = 0; i < engine->AssimpManager.GetMeshNames().size(); ++i)
             {
+                if (engine->AssimpManager.GeometryContainerCheck(engine->AssimpManager.GetMeshNames()[i].c_str()) == false)
+                    continue;
 
                 if (AddComponentFilter.PassFilter((engine->AssimpManager.GetMeshNames()[i].c_str())))
                 {

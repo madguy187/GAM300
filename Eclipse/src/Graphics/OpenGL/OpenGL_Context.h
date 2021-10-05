@@ -68,5 +68,6 @@ namespace Eclipse
     private:
         void Init();
         void Clear();      
+        bool CheckFrameBuffer(unsigned int ID, FrameBufferMode mode);
     };
 }
