@@ -116,16 +116,17 @@ namespace Eclipse
         ADD_MEMBER(ambient);
         ADD_MEMBER(diffuse);
         ADD_MEMBER(specular);
-        //ADD_MEMBER(HighlightColour);
-        ADD_MEMBER(shininess);
-        ADD_MEMBER(MaximumShininess);
-        //ADD_MEMBER(RegisterForHighlight);
         ADD_MEMBER(Highlight);
         ADD_MEMBER(NoTextures);
-        //ADD_MEMBER(ScaleUp);
+        ADD_MEMBER(shininess);
+        ADD_MEMBER(MaximumShininess);
         ADD_MEMBER(ComboIndex);
+        ADD_MEMBER(TextureComboIndex);
+        ADD_MEMBER(Type);
         ADD_MEMBER(hasTexture);
         ADD_MEMBER(TextureRef);
+        ADD_MEMBER(TextureKey);
+        ADD_MEMBER(HoldingTextures);
     }
 
     DEFINE_META(MeshComponent)

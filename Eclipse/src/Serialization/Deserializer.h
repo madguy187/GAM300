@@ -84,6 +84,14 @@ namespace Eclipse
 			att_data = lexical_cast_toEnum<TextureType>(str);
 		}
 		
+		template <>
+		inline void ReadAttributeFromElement(const std::string& att_name, Texture& att_data)
+		{
+			ReadAttributeFromElement("Type", att_data.Type);
+			ReadAttributeFromElement("Directory", att_data.Directory);
+			ReadAttributeFromElement("Handle", att_data.handle);
+		}
+		
 		template <typename T>
 		inline void ReadAttributeFromElement(const std::string& att_name, std::vector<T> att_data)
 		{
@@ -116,11 +124,11 @@ namespace Eclipse
 		inline void ReadAttributeFromElement(const std::string& att_name, glm::mat<N1, N2, T, GLM>& att_data)
 		{
 			std::string name{ "Col" };
-			for (size_t i = 0; i < N1; ++i)
+			for (auto i = 0; i < N1; ++i)
 			{
 				std::string dataName{ "_" + std::to_string(i) };
 				StartElement(name, true, i);
-				for (size_t j = 0; j < N2; ++j)
+				for (auto j = 0; j < N2; ++j)
 				{
 					std::string str = GetAttributeValue(dataName + std::to_string(j));
 					att_data[i][j] = lexical_cast<T>(str);
@@ -133,7 +141,7 @@ namespace Eclipse
 		inline void ReadAttributeFromElement(const std::string& att_name, glm::vec<N, T, GLM>& att_data)
 		{
 			std::string vecNames[4] = { {"x"}, {"y"}, {"z"}, {"w"} };
-			for (size_t i = 0; i < N; ++i)
+			for (auto i = 0; i < N; ++i)
 			{
 				std::string str = GetAttributeValue(vecNames[i]);
 				att_data[i] = lexical_cast<T>(str);

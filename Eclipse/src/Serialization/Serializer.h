@@ -108,6 +108,14 @@ namespace Eclipse
         {
             _currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<TextureType>(const_cast<TextureType&>(att_data)).c_str());
         }
+        
+        template <>
+        inline void AddAttributeToElement(const std::string& att_name, const Texture& att_data)
+        {
+            AddAttributeToElement("Type", att_data.Type);
+            AddAttributeToElement("Directory", att_data.Directory);
+            AddAttributeToElement("Handle", att_data.handle);
+        }
 
 		template <typename T>
 		inline void AddAttributeToElement(const std::string& att_name, const std::vector<T>& att_data)
@@ -146,11 +154,11 @@ namespace Eclipse
             AddAttributeToElement<size_t>("Col", N1);
             AddAttributeToElement<size_t>("Row", N2);
             std::string name{ "Col" };
-            for (size_t i = 0; i < N1; ++i)
+            for (auto i = 0; i < N1; ++i)
             {
                 std::string dataName{ "_" + std::to_string(i) };
                 StartElement(name, true, i);
-                for (size_t j = 0; j < N2; ++j)
+                for (auto j = 0; j < N2; ++j)
                 {
                     AddAttributeToElement<T>(dataName + std::to_string(j), att_data[i][j]);
                 }
@@ -162,7 +170,7 @@ namespace Eclipse
         inline void AddAttributeToElement(const std::string& att_name, const glm::vec<N, T, GLM>& att_data)
         {
             std::string vecNames[4] = { {"x"}, {"y"}, {"z"}, {"w"} };
-            for (size_t i = 0; i < N; ++i)
+            for (auto i = 0; i < N; ++i)
             {
                 AddAttributeToElement<T>(vecNames[i], att_data[i]);
             }

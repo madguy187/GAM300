@@ -32,13 +32,16 @@ namespace Eclipse
 
     private:
         //unsigned int Id;
-        unsigned int Type; //aiTextureType
-        std::string Directory;
         unsigned int id = 0;
 
         // 2D Textures =============================
     public:
+        /// Public for now - from Jian Herng.
+        unsigned int Type; //aiTextureType
+        std::string Directory;
         std::string Path;
+        unsigned int handle = 0;
+        ///
         Texture(std::string pathname);
         void initTexture(std::string pathname);
         void LoadUncompressedTextures(std::string pathname);
@@ -56,7 +59,6 @@ namespace Eclipse
         void setSpriteHeight(GLint _spriteHeight);
         void DeleteTexture();
     private:
-        unsigned int handle = 0;
         GLint sheetWidth = 0;
         GLint sheetHeight = 0;
         GLint channels = 0;
