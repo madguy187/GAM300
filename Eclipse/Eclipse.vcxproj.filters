@@ -37,6 +37,9 @@
     <Filter Include="ECS\SystemManager\Systems\System\Audio">
       <UniqueIdentifier>{AB25D4DE-9777-ABCE-8096-E8DE6C87C4B7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\CameraSystem">
+      <UniqueIdentifier>{87EE28BF-F35E-2B38-BC7D-A5C028AD6339}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\Collision">
       <UniqueIdentifier>{C59188A0-B1F9-4E6E-1A65-638406EC655A}</UniqueIdentifier>
     </Filter>
@@ -67,6 +70,12 @@
     <Filter Include="ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem">
       <UniqueIdentifier>{EA575631-56EB-B7DF-5FD2-2796CBE44EA7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\PhysicsSystem">
+      <UniqueIdentifier>{41BEE182-2D3C-321C-1634-F0B302517444}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\PickingSystem">
+      <UniqueIdentifier>{A34BA2A8-8FC9-F241-78C1-B0D964DE346A}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\PrefabSystem">
       <UniqueIdentifier>{8EB76F07-FA27-7280-C346-EC082F76AA81}</UniqueIdentifier>
     </Filter>
@@ -93,9 +102,6 @@
     </Filter>
     <Filter Include="Editor\Utilities\OpenFileDialog">
       <UniqueIdentifier>{E84BB6BE-542F-C5FE-5D32-F33AC9948B4F}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Editor\Utilities\ParentChild">
-      <UniqueIdentifier>{5460141D-401B-04C9-E9D2-7C13D56C4E59}</UniqueIdentifier>
     </Filter>
     <Filter Include="Editor\Utilities\UndoAndRedo">
       <UniqueIdentifier>{99D07E34-858B-6EE0-2E43-E72A1ADDB870}</UniqueIdentifier>
@@ -265,12 +271,6 @@
     <Filter Include="Tracy">
       <UniqueIdentifier>{88372F0E-F44B-57BF-BDCD-FA1E29A153F0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tracy\client">
-      <UniqueIdentifier>{B6F2C11B-A255-51C0-4BDB-8976371D1D43}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tracy\common">
-      <UniqueIdentifier>{E08FFA1B-CCF2-89C0-7578-C27661BA5543}</UniqueIdentifier>
-    </Filter>
     <Filter Include="TypeID">
       <UniqueIdentifier>{54109DD4-40B2-C7AA-296D-DBFE15AE4EFB}</UniqueIdentifier>
     </Filter>
@@ -327,7 +327,7 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\MeshComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\ComponentManager\Components\ModeLInfoComponent.h">
+    <ClInclude Include="src\ECS\ComponentManager\Components\ModelComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\ParentComponent.h">
@@ -363,8 +363,8 @@
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.h">
       <Filter>ECS\SystemManager\Systems\System\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem.h">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem\CameraSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\CameraSystem</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Collision\CollisionSystem.h">
       <Filter>ECS\SystemManager\Systems\System\Collision</Filter>
@@ -393,11 +393,11 @@
     <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem\ParentSystem.h">
       <Filter>ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.h">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem\PhysicsSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\PhysicsSystem</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem.h">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem\PickingSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\PickingSystem</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PrefabSystem\PrefabSystem.h">
       <Filter>ECS\SystemManager\Systems\System\PrefabSystem</Filter>
@@ -535,6 +535,9 @@
     <ClInclude Include="src\Graphics\Grid\AABBTree.h">
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\Grid\BoundingBox.h">
+      <Filter>Graphics\Grid</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\Grid\Box.h">
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
@@ -542,9 +545,6 @@
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\Grid\IAABB.h">
-      <Filter>Graphics\Grid</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Graphics\Grid\bounds.h">
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h">
@@ -784,93 +784,13 @@
     <ClInclude Include="src\Tracy\Tracy.hpp">
       <Filter>Tracy</Filter>
     </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracyArmCpuTable.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracyCallstack.h">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracyCallstack.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracyDxt1.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracyFastVector.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracyLock.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracyProfiler.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracyRingBuffer.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracyScoped.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracySysTime.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracySysTrace.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracySysTracePayload.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracyThread.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\tracy_concurrentqueue.h">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\tracy_rpmalloc.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\common\TracyAlign.hpp">
-      <Filter>Tracy\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\common\TracyAlloc.hpp">
-      <Filter>Tracy\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\common\TracyApi.h">
-      <Filter>Tracy\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\common\TracyColor.hpp">
-      <Filter>Tracy\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\common\TracyForceInline.hpp">
-      <Filter>Tracy\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\common\TracyMutex.hpp">
-      <Filter>Tracy\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\common\TracyProtocol.hpp">
-      <Filter>Tracy\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\common\TracyQueue.hpp">
-      <Filter>Tracy\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\common\TracySocket.hpp">
-      <Filter>Tracy\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\common\TracySystem.hpp">
-      <Filter>Tracy\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\common\tracy_lz4.hpp">
-      <Filter>Tracy\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\common\tracy_lz4hc.hpp">
-      <Filter>Tracy\common</Filter>
-    </ClInclude>
     <ClInclude Include="src\TypeID\TypeID.h">
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AudioComponent.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\AI\AISystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem\CameraSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -900,8 +820,8 @@
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem\CameraSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\CameraSystem</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Collision\CollisionSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\Collision</Filter>
@@ -930,11 +850,11 @@
     <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem\ParentSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem</Filter>
     </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem\PhysicsSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\PhysicsSystem</Filter>
     </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem\PickingSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\PickingSystem</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PrefabSystem\PrefabSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\PrefabSystem</Filter>
@@ -1041,13 +961,13 @@
     <ClCompile Include="src\Graphics\Grid\AABBTree.cpp">
       <Filter>Graphics\Grid</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\Grid\BoundingBox.cpp">
+      <Filter>Graphics\Grid</Filter>
+    </ClCompile>
     <ClCompile Include="src\Graphics\Grid\Box.cpp">
       <Filter>Graphics\Grid</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\Grid\Grid.cpp">
-      <Filter>Graphics\Grid</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\Grid\bounds.cpp">
       <Filter>Graphics\Grid</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp">
@@ -1247,36 +1167,6 @@
     </ClCompile>
     <ClCompile Include="src\Tracy\TracyClient.cpp">
       <Filter>Tracy</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tracy\client\TracyCallstack.cpp">
-      <Filter>Tracy\client</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tracy\client\TracyDxt1.cpp">
-      <Filter>Tracy\client</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tracy\client\TracyProfiler.cpp">
-      <Filter>Tracy\client</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tracy\client\TracySysTime.cpp">
-      <Filter>Tracy\client</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tracy\client\TracySysTrace.cpp">
-      <Filter>Tracy\client</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tracy\client\tracy_rpmalloc.cpp">
-      <Filter>Tracy\client</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tracy\common\TracySocket.cpp">
-      <Filter>Tracy\common</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tracy\common\TracySystem.cpp">
-      <Filter>Tracy\common</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tracy\common\tracy_lz4.cpp">
-      <Filter>Tracy\common</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tracy\common\tracy_lz4hc.cpp">
-      <Filter>Tracy\common</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\AI\AISystem.cpp" />

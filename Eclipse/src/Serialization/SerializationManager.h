@@ -96,14 +96,12 @@ namespace Eclipse
 				"Ambient", data.ambient,
 				"Diffuse", data.diffuse,
 				"Specular", data.specular,
-				"HighlightColor", data.HighlightColour,
+				//"HighlightColor", data.HighlightColour,
 				"Shininess", data.shininess,
 				"MaximumShininess", data.MaximumShininess,
 				//"RegisterForHighlight", data.RegisterForHighlight,
 				"Highlight", data.Highlight,
-				"NoTextures", data.NoTextures,
-				"Thickness", data.Thickness,
-				"ScaleUp", data.ScaleUp
+				"NoTextures", data.NoTextures
 			);
 		}
 
@@ -294,14 +292,12 @@ namespace Eclipse
 				"Ambient", comp.ambient,
 				"Diffuse", comp.diffuse,
 				"Specular", comp.specular,
-				"HighlightColor", comp.HighlightColour,
+				//"HighlightColor", comp.HighlightColour,
 				"Shininess", comp.shininess,
 				"MaximumShininess", comp.MaximumShininess,
 				//"RegisterForHighlight", comp.RegisterForHighlight,
 				"Highlight", comp.Highlight,
-				"Thickness", comp.Thickness,
-				"NoTextures", comp.NoTextures,
-				"ScaleUp", comp.ScaleUp
+				"NoTextures", comp.NoTextures
 			);
 
 			return isSuccess;
