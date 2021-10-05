@@ -297,6 +297,7 @@ namespace Eclipse
             // LIGHTINGSYSTEM =============================
             world.Update<LightingSystem>();
 
+            // PICKINGSYSTEM =============================
             world.Update<PickingSystem>();
 
             // AUDIOSYSTEM =============================
@@ -305,8 +306,9 @@ namespace Eclipse
             // RENDERSYSTEM =============================
             world.Update<RenderSystem>();
 
-            // GRID DRAW ================================ Must be last of All Renders
+            // GRID DRAW ================================ 
             engine->GraphicsManager.DrawEntireGrid(); 
+            engine->GraphicsManager.PostProcessUpdate();
 
             if (IsScenePlaying())
             {

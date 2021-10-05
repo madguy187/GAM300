@@ -64,9 +64,7 @@ namespace Eclipse
         void SetGammaCorrection(float in);
         void UploadGlobalUniforms();
         void CheckUniformLoc(Shader* _shdrpgm, MeshComponent& sprite, unsigned int id, unsigned int framebufferID, CameraComponent& camera);
-        // Reset Boxes so we can prepare to add
         void ResetInstancedDebugBoxes();
-        // Draw Debug Boxes
         void DrawDebugBoxes();
         std::string GetModelName(unsigned int modelname);
         unsigned int GetFrameBufferID(FrameBufferMode mode);
@@ -75,11 +73,11 @@ namespace Eclipse
         static void WindowCloseCallback(GLFWwindow* window);
         void SetBackGroundColour();
         void DrawEntireGrid();
-        static void CreateCompilerFolders();
         bool CheckFrameBuffer(unsigned int ID, FrameBufferMode mode);
-        void RenderPostProcess();
+        void PostProcessUpdate();
 
     private:
+        static void CreateCompilerFolders();
         void UpdateFrameBuffer();
         void FrameBufferDraw();
         static void CreateEmptyFolder(std::string folderName, std::string folderPath = "..//Compiler//CompilerKeyFiles\\");

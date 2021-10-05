@@ -31,6 +31,7 @@ namespace Eclipse
 		std::vector<std::string> AllPrimitiveModelsNames;
 		std::unordered_map<std::string, std::vector<std::string>> Prefabs;
 		std::vector<std::string> AllMeshNames;
+		std::vector<std::string> AllGeometryNames;
 
 	public:
 		float HotReloadCooldown = 0.0f;
@@ -48,11 +49,11 @@ namespace Eclipse
 		size_t MeshFactoryCount();
 		// Load All Models Once
 		void Init();
-	    static void ExecuteCompiler();
+		static void ExecuteCompiler();
 		void HotReload();
 		void HotReloadTetxures();
 		// Render Function that uses the Container that stores MeshComponent 
-		void MeshDraw(MeshComponent& ModelMesh , unsigned int ID, unsigned int FrameBufferID, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
+		void MeshDraw(MeshComponent& ModelMesh, unsigned int ID, unsigned int FrameBufferID, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
 		void TestMeshDraw(MeshComponent& ModelMesh, unsigned int ID, unsigned int FrameBufferID, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
 		// Upload to Shader
 		void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID, AABB_* box);
@@ -67,7 +68,7 @@ namespace Eclipse
 		// Check Current path is correct
 		void TestPath(std::string& path);
 		// Draw function that takes in Mesh Component
-		void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent& , unsigned int ,CameraComponent::CameraType );
+		void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent&, unsigned int, CameraComponent::CameraType);
 		void InsertModelMap(std::string& NameofModel, std::string& Directory);
 		// Model Factory to load all models
 		void LoadCompilers();
@@ -77,7 +78,7 @@ namespace Eclipse
 		void Render(Shader& shader, GLenum mode, unsigned int id, MeshComponent& in);
 		void Render(GLenum mode, MeshComponent& in);
 		void SetSingleMesh(unsigned int ID, std::string& MeshName);
-	    AssimpModelManager() {};
+		AssimpModelManager() {};
 
 		///////////////////////////////////////////////////////////////////////////////////////////
 		// FDebug PrintOuts
@@ -105,6 +106,7 @@ namespace Eclipse
 		unsigned int Index = 0; // mesh index.
 		void InsertTextures(std::string& NameofModel, std::unique_ptr<Texture> in, unsigned int MeshId);
 		void SetTexturesForModel(MaterialComponent& in, std::string& passkey);
+		bool GeometryContainerCheck(const std::string& in);
 
 	private:
 		AssimpModelContainer AssimpModelContainer_;

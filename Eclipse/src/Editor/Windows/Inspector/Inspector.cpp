@@ -58,7 +58,7 @@ namespace Eclipse
 			ShowRigidBodyProperty("RigidBody", currEnt, CompFilter);
 			ShowEditorCameraProperty("Camera", currEnt, CompFilter);
 			ShowTextureProperty("Texture", currEnt, CompFilter);
-			ShowRenderProperty("Render", currEnt, CompFilter);
+			//ShowRenderProperty("Render", currEnt, CompFilter);
 			ShowMaterialProperty("Material", currEnt, CompFilter);
 			ShowMesh3DProperty("Mesh", currEnt, CompFilter);
 			ShowModelInfoProperty("ModelInfo", currEnt, CompFilter);
@@ -465,6 +465,18 @@ namespace Eclipse
 					ECGui::CreateComboList(settings, MapVector, comboindex);
 					_Mesh.ENV_TYPE = static_cast<MeshComponent::MapType>(comboindex);
 				}
+
+				ImGui::Dummy({ 2,2 });
+
+				std::string nameString = _Mesh.modelRef + " (Mesh Filter)";
+				ImGui::PushStyleColor(ImGuiCol_Header, IM_COL32(0, 1, 1, 1));
+				if (filter.PassFilter(nameString.c_str()) && ECGui::CreateCollapsingHeader(nameString.c_str()))
+				{
+					ECGui::DrawTextWidget<const char*>("Mesh ", "");
+					ECGui::InsertSameLine();
+					ChangeMeshController(ID);
+				}
+				ImGui::PopStyleColor();
 			}
 		}
 		return false;
@@ -1129,6 +1141,8 @@ namespace Eclipse
 		{
 			for (int i = 0; i < engine->AssimpManager.GetMeshNames().size(); ++i)
 			{
+				if (engine->AssimpManager.GeometryContainerCheck(engine->AssimpManager.GetMeshNames()[i].c_str()) == false)
+					continue;
 
 				if (AddComponentFilter.PassFilter((engine->AssimpManager.GetMeshNames()[i].c_str())))
 				{

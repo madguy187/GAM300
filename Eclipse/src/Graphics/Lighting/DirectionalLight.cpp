@@ -16,7 +16,7 @@ namespace Eclipse
 		engine->world.AddComponent(CreatedID, LightComponent{});
 		engine->world.AddComponent(CreatedID, DirectionalLightComponent{ DirectionalLightcounter });
 
-		EDITOR_LOG_WARN("Directional Light Created Successfully");
+		EDITOR_LOG_INFO("Directional Light Created Successfully");
 		DirectionalLightcounter++;
 	}
 
@@ -117,7 +117,7 @@ namespace Eclipse
 		engine->world.AddComponent(FirstGlobalLight, LightComponent{});
 		engine->world.AddComponent(FirstGlobalLight, DirectionalLightComponent{ DirectionalLightcounter });
 
-		EDITOR_LOG_WARN("First GlobalLight Created ");
+		EDITOR_LOG_INFO("Directional Light Created Successfully");
 		DirectionalLightcounter++;
 	}
 }

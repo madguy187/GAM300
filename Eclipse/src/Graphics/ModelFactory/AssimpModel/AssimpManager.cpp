@@ -557,13 +557,14 @@ namespace Eclipse
 				std::string name = B.MeshName.data();
 				Geometry.emplace(name, std::make_unique<Mesh>(NewMesh));
 				AllMeshNames.push_back(name);
+				AllGeometryNames.push_back(name);
 			}
 			else
 			{
 				Mesh NewMesh(B.Vertices, B.Indices, B.Diffuse, B.Specular, B.Ambient, B.NoTex, B.MeshName.data());
 				std::string name = B.MeshName.data();
 				Geometry.emplace(name, std::make_unique<Mesh>(NewMesh));
-				AllMeshNames.push_back(name);
+				AllGeometryNames.push_back(name);
 			}
 		}
 
@@ -989,5 +990,15 @@ namespace Eclipse
 	std::string AssimpModelManager::GetKey(const std::string& in)
 	{
 		return AssimpLoadedModels[in]->GetName();
+	}
+
+	bool AssimpModelManager::GeometryContainerCheck(const std::string& in)
+	{
+		if (Geometry.find(in) != engine->AssimpManager.Geometry.end())
+		{
+			return true;
+		}
+
+		return false;
 	}
 }
