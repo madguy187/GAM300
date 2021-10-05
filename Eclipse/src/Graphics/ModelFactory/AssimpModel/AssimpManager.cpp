@@ -5,71 +5,39 @@ namespace Eclipse
 {
 	typedef std::multimap<std::string, Texture>::iterator MMAPIterator;
 
+	bool AssimpModelManager::GeometryContainerCheck(const std::string& in)
+	{
+		if (Geometry.find(in) != engine->AssimpManager.Geometry.end())
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	void AssimpModelManager::InsertTextures(std::string& NameofModel, std::unique_ptr<Texture> in, unsigned int MeshId)
+	{
+		LoadedTexturesV2[NameofModel][MeshId].push_back(std::move(in));
+	}
+
 	void AssimpModelManager::ClearGeometry()
 	{
 		Geometry.clear();
 	}
 
-	void AssimpModelManager::LoadBasicTextures()
+	void AssimpModelManager::ClearAllMeshNames()
 	{
-		std::fstream TextureFileRead;
-
-		TextureFileRead.open("../Compiler/CompilerKeyFiles/BasicTextureFile/Texture.eclipse",
-			std::ios::in |
-			std::ios::binary);
-
-		if (TextureFileRead.fail())
-		{
-			std::cout << "Fail To Open Texture File" << std::endl << std::endl;
-			return;
-		}
-
-		// Number Of Textures
-		int NumberOfBasicTextures = 0;
-		TextureFileRead.read(reinterpret_cast<char*>(&NumberOfBasicTextures), sizeof(NumberOfBasicTextures));
-
-		for (int i = 0; i < NumberOfBasicTextures; i++)
-		{
-			// Texture Name
-			std::array<char, 128> TextureName;
-			TextureFileRead.read(reinterpret_cast<char*>(&TextureName), sizeof(TextureName));
-
-			// Texture DirecPathtory
-			std::array<char, 128> TexturePath;
-			TextureFileRead.read(reinterpret_cast<char*>(&TexturePath), sizeof(TexturePath));
-
-			Texture tex(TexturePath.data());
-			Graphics::textures.emplace(TextureName.data(), tex);
-		}
-
-		TextureFileRead.close();
-		///////////////////////////
+		AllMeshNames.clear();
 	}
 
-	bool AssimpModelManager::GetHotReloadFlag()
+	void AssimpModelManager::ClearAllPrefabs()
 	{
-		return false;
-	}
-
-	void AssimpModelManager::ResetHotReloadFlag()
-	{
-		HotReloadFlag = false;
-	}
-
-	bool AssimpModelManager::CheckCompilers()
-	{
-		if (Geometry.size() == 0 || Prefabs.size() == 0)
-		{
-			//EDITOR_LOG_WARN("No Geometries Loaded , Please Run Geometry Compiler");
-			return false;
-		}
-
-		return true;
+		Prefabs.clear();
 	}
 
 	void AssimpModelManager::CreateModel(unsigned int ID, const std::string& ModelName)
 	{
-		if (CheckCompilers())
+		if (engine->gEngineCompiler->AreAllCompiled())
 		{
 			if (Prefabs.find(ModelName) == Prefabs.end())
 			{
@@ -104,50 +72,6 @@ namespace Eclipse
 			}
 		}
 	}
-
-	void AssimpModelManager::Init()
-	{
-		engine->gEngineCompiler->LoadCompilers();
-	}
-
-	//void AssimpModelManager::ExecuteCompiler()
-	//{
-	//	// I Will Load First
-	//	system("Compiler.exe");
-	//	EDITOR_LOG_INFO("Compiler Finish Excution");
-	//}
-
-	//// Hope its not a fail...
-	//void AssimpModelManager::HotReload()
-	//{
-	//	AllMeshNames.clear();
-	//	Geometry.clear();
-	//	Prefabs.clear();
-	//	Graphics::textures.clear();
-
-	//	std::thread CompilerWait{ &AssimpModelManager::ExecuteCompiler };
-	//	CompilerWait.join();
-
-	//	// Geometry Compiler
-	//	LoadGeometry();
-	//	// Parent Model Mappings
-	//	LoadPrefabs();
-	//	// Texture Compiler
-	//	LoadTextures();
-	//	LoadBasicTextures();
-	//}
-
-	//void AssimpModelManager::HotReloadTetxures()
-	//{
-	//	Graphics::textures.clear();
-
-	//	// I Will Load First
-	//	std::thread CompilerWait{ &AssimpModelManager::ExecuteCompiler };
-	//	CompilerWait.join();
-
-	//	engine->AssimpManager.LoadTextures();
-	//	engine->AssimpManager.LoadBasicTextures();
-	//}
 
 	void AssimpModelManager::MeshDraw(MeshComponent& ModelMesh, unsigned int ID, unsigned int FrameBufferID, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
 	{
@@ -202,6 +126,21 @@ namespace Eclipse
 	void AssimpModelManager::InsertMeshName(const std::string& in)
 	{
 		AllMeshNames.push_back(in);
+	}
+
+	void AssimpModelManager::InsertGeometry(const std::string& name, Mesh& NewMesh)
+	{
+		Geometry.emplace(name, std::make_unique<Mesh>(NewMesh));
+	}
+
+	void AssimpModelManager::InsertPrefabs(const std::string& Index, const std::string& MeshName)
+	{
+		Prefabs[Index].push_back(MeshName.data());
+	}
+
+	void AssimpModelManager::InsertGeometryName(const std::string& MeshName_)
+	{
+		AllGeometryNames.push_back(MeshName_);
 	}
 
 	std::vector<std::string>& AssimpModelManager::GetMeshNames()
@@ -259,15 +198,6 @@ namespace Eclipse
 		{
 			in.HoldingTextures.push_back(it->second);
 		}
-	}
-
-	void AssimpModelManager::PrintLoadedModels()
-	{
-		//PrintOutModelsLoadedOnce();
-		//PrintOutModelTextureMap();
-		//PrintOutModelMap();
-		//PrintOutAllTextures();
-		//PrintOutAllMeshes();
 	}
 
 	void AssimpModelManager::Cleanup(MeshComponent& in)
@@ -489,156 +419,6 @@ namespace Eclipse
 		}
 
 	}
-
-	void AssimpModelManager::LoadGeometry()
-	{
-		// Loading Eclipse File
-		std::fstream GeometryFileRead;
-
-		GeometryFileRead.open("../Compiler/CompilerKeyFiles/GeometryFile/Geometry.eclipse",
-			std::ios::in |
-			std::ios::binary);
-
-		if (GeometryFileRead.fail())
-		{
-			std::cout << "Fail To Open Geometry File" << std::endl << std::endl;
-			return;
-		}
-
-		unsigned int TotalNumberOfModels = 0;
-		unsigned int VerticesSize = 0;
-		unsigned int IndicesSize = 0;
-
-		// See how many Models
-		GeometryFileRead.read(reinterpret_cast<char*>(&TotalNumberOfModels), sizeof(TotalNumberOfModels));
-
-		for (unsigned int i = 0; i < TotalNumberOfModels; i++)
-		{
-			VerticesSize = 0;
-			IndicesSize = 0;
-
-			Mesh B;
-
-			auto hh = sizeof(B);
-
-			GeometryFileRead.read(reinterpret_cast<char*>(&B), offsetof(Mesh, Vertices));
-
-			GeometryFileRead.read(reinterpret_cast<char*>(&VerticesSize), sizeof(VerticesSize));
-			B.Vertices.resize(VerticesSize);
-			GeometryFileRead.read(reinterpret_cast<char*>(B.Vertices.data()), sizeof(Vertex) * VerticesSize);
-
-			GeometryFileRead.read(reinterpret_cast<char*>(&IndicesSize), sizeof(IndicesSize));
-
-			B.Indices.resize(IndicesSize);
-			GeometryFileRead.read(reinterpret_cast<char*>(B.Indices.data()), sizeof(unsigned int) * IndicesSize);
-
-
-			if (B.NoTex == false)
-			{
-				Mesh NewMesh(B.Vertices, B.Indices, B.MeshName.data(), B.Textures);
-				std::string name = B.MeshName.data();
-				Geometry.emplace(name, std::make_unique<Mesh>(NewMesh));
-				AllMeshNames.push_back(name);
-				AllGeometryNames.push_back(name);
-			}
-			else
-			{
-				Mesh NewMesh(B.Vertices, B.Indices, B.Diffuse, B.Specular, B.Ambient, B.NoTex, B.MeshName.data());
-				std::string name = B.MeshName.data();
-				Geometry.emplace(name, std::make_unique<Mesh>(NewMesh));
-				AllGeometryNames.push_back(name);
-			}
-		}
-
-		GeometryFileRead.close();
-	}
-
-	void AssimpModelManager::LoadPrefabs()
-	{
-		std::fstream PrefabsFileRead;
-
-		PrefabsFileRead.open("../Compiler/CompilerKeyFiles/PrefabsFile/Prefabs.eclipse",
-			std::ios::in |
-			std::ios::binary);
-
-		if (PrefabsFileRead.fail())
-		{
-			std::cout << "Fail To Open Geometry File" << std::endl << std::endl;
-			return;
-		}
-
-		int TotalNumberOfPrefabs = 0;
-
-		// See how many Prefabs
-		PrefabsFileRead.read(reinterpret_cast<char*>(&TotalNumberOfPrefabs), sizeof(int));
-
-		for (int i = 0; i < TotalNumberOfPrefabs; i++)
-		{
-			std::array<char, 128> ParentName;
-			PrefabsFileRead.read(reinterpret_cast<char*>(&ParentName), sizeof(ParentName));
-			ParentName[ParentName.size() - 1] = '\0';
-
-			int NumberOfSubMeshes = 0;
-			PrefabsFileRead.read(reinterpret_cast<char*>(&NumberOfSubMeshes), sizeof(NumberOfSubMeshes));
-
-			for (int i = 0; i < NumberOfSubMeshes; i++)
-			{
-				std::array<char, 128> MeshName;
-				PrefabsFileRead.read(reinterpret_cast<char*>(&MeshName), sizeof(MeshName));
-				MeshName[MeshName.size() - 1] = '\0';
-
-				Prefabs[ParentName.data()].push_back(MeshName.data());
-			}
-
-			AllMeshNames.push_back(ParentName.data());
-		}
-		PrefabsFileRead.close();
-	}
-
-	void AssimpModelManager::LoadTextures()
-	{
-		std::ofstream TextureFileWrite;
-		std::fstream TextureFileRead;
-
-		TextureFileRead.open("../Compiler/CompilerKeyFiles/TextureFile/Texture.eclipse",
-			std::ios::in |
-			std::ios::binary);
-
-		if (TextureFileRead.fail())
-		{
-			std::cout << "Fail To Open Texture File" << std::endl << std::endl;
-			return;
-		}
-
-		// Number Of Textures
-		int NumberOfTextures = 0;
-		TextureFileRead.read(reinterpret_cast<char*>(&NumberOfTextures), sizeof(NumberOfTextures));
-
-		for (int i = 0; i < NumberOfTextures; i++)
-		{
-			// Mesh Name
-			std::array<char, 128> MeshName;
-			TextureFileRead.read(reinterpret_cast<char*>(&MeshName), sizeof(MeshName));
-
-			// Number Of Textures
-			int TextureType = 0;
-			TextureFileRead.read(reinterpret_cast<char*>(&TextureType), sizeof(TextureType));
-
-			// Texture Directory
-			std::array<char, 128> TextureDirectory;
-			TextureFileRead.read(reinterpret_cast<char*>(&TextureDirectory), sizeof(TextureDirectory));
-
-			// Texture DirecPathtory
-			std::array<char, 128> TexturePath;
-			TextureFileRead.read(reinterpret_cast<char*>(&TexturePath), sizeof(TexturePath));
-
-			Texture tex(TextureDirectory.data(), TexturePath.data(), static_cast<aiTextureType>(TextureType));
-			tex.Load(false);
-			Graphics::textures.emplace(MeshName.data(), tex);
-		}
-		TextureFileRead.close();
-	}
-
 }
 
 namespace Eclipse
@@ -847,16 +627,6 @@ namespace Eclipse
 		return AssimpLoadedModels[in]->GetName();
 	}
 
-	bool AssimpModelManager::GeometryContainerCheck(const std::string& in)
-	{
-		if (Geometry.find(in) != engine->AssimpManager.Geometry.end())
-		{
-			return true;
-		}
-
-		return false;
-	}
-
 	void AssimpModelManager::InsertModelMap(std::string& NameofModel, std::string& Directory)
 	{
 		ModelMap.insert({ NameofModel,Directory });
@@ -938,8 +708,4 @@ namespace Eclipse
 		return AssimpLoadedModels.size();
 	}
 
-	void AssimpModelManager::InsertTextures(std::string& NameofModel, std::unique_ptr<Texture> in, unsigned int MeshId)
-	{
-		LoadedTexturesV2[NameofModel][MeshId].push_back(std::move(in));
-	}
 }

@@ -25,7 +25,7 @@ namespace Eclipse
 
 	class AssimpModelManager
 	{
-	public:
+	private:
 		bool HotReloadFlag = false;
 		std::unordered_map<std::string, std::unique_ptr<Mesh>> Geometry;
 		std::vector<std::string> AllPrimitiveModelsNames;
@@ -38,7 +38,6 @@ namespace Eclipse
 		void CreateModel(unsigned int ID, const std::string& ModelName);
 		std::unordered_map<std::string, std::vector<std::string>>& GetPrefabs();
 		void InsertPrimitiveName(const std::string& in);
-		void InsertMeshName(const std::string& in);
 		std::vector<std::string>& GetMeshNames();
 		std::vector<std::string>& GetPrimitiveNames();
 		// Get Current MeshComponent Container
@@ -47,19 +46,12 @@ namespace Eclipse
 		size_t MeshModelCount();
 		// Get Current Model Factory Count
 		size_t MeshFactoryCount();
-		// Load All Models Once
-		void Init();
-		//static void ExecuteCompiler();
-		//void HotReload();
-		//void HotReloadTetxures();
 		// Render Function that uses the Container that stores MeshComponent 
 		void MeshDraw(MeshComponent& ModelMesh, unsigned int ID, unsigned int FrameBufferID, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
 		// Upload to Shader
 		void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID, AABB_* box);
 		// Delete Model from MeshContainer Using ID
 		void DeleteItem(unsigned int index);
-		// Print out all the Loaded Model details
-		void PrintLoadedModels();
 		// Destory buffers
 		void CleanUpAllModelsMeshes();
 		// Cleanup
@@ -69,8 +61,6 @@ namespace Eclipse
 		// Draw function that takes in Mesh Component
 		void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent&, unsigned int, CameraComponent::CameraType);
 		void InsertModelMap(std::string& NameofModel, std::string& Directory);
-		// Model Factory to load all models
-		void LoadCompilers();
 		// Destructor
 		~AssimpModelManager();
 		void SetMeshComponent(unsigned int ID, std::string);
@@ -91,14 +81,13 @@ namespace Eclipse
 		///////////////////////////////////////////////////////////////////////////////////////////
 		// Compilers
 		///////////////////////////////////////////////////////////////////////////////////////////
-		void LoadGeometry();
-		void LoadPrefabs();
-		void LoadTextures();
 		void ClearGeometry();
-		void LoadBasicTextures();
-		bool GetHotReloadFlag();
-		void ResetHotReloadFlag();
-		bool CheckCompilers();
+		void ClearAllMeshNames();
+		void ClearAllPrefabs();
+		void InsertGeometryName(const std::string& MeshName_);
+		void InsertMeshName(const std::string& in);
+		void InsertGeometry(const std::string& name, Mesh& NewMesh);
+		void InsertPrefabs(const std::string& Index, const std::string& MeshName);
 
 	public:
 		// TEXTURES PUT HERE FIRST

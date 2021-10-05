@@ -32,8 +32,8 @@ namespace Eclipse
 		EDITOR_LOG_INFO("RenderSystem Init");
 		//engine->GraphicsManager.DebugPrintFrameBuffers();
 
-		// Load All Models =============================
-		engine->AssimpManager.Init();
+		// Load All Compilers =============================
+		engine->gEngineCompiler->Init();
 
 		// Create SKY =============================
 		engine->GraphicsManager.CreateSky("src/Assets/Sky");

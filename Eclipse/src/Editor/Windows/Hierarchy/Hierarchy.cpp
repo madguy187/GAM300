@@ -45,7 +45,7 @@ namespace Eclipse
     {
         ////////////////////
         //TODO for darren
-        if (engine->AssimpManager.CheckCompilers())
+        if (engine->gEngineCompiler->AreAllCompiled())
         {
             ComboListSettings settingsss = { "Models Testing" };
             std::vector<std::string> hiDarrenVector = engine->AssimpManager.GetMeshNames();

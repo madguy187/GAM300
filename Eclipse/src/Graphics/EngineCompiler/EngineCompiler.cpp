@@ -85,16 +85,17 @@ namespace Eclipse
 			{
 				Mesh NewMesh(B.Vertices, B.Indices, B.MeshName.data(), B.Textures);
 				std::string name = B.MeshName.data();
-				engine->AssimpManager.Geometry.emplace(name, std::make_unique<Mesh>(NewMesh));
-				engine->AssimpManager.AllMeshNames.push_back(name);
-				engine->AssimpManager.AllGeometryNames.push_back(name);
+				engine->AssimpManager.InsertGeometry(name, NewMesh);
+				engine->AssimpManager.InsertMeshName(name);
+				engine->AssimpManager.InsertGeometryName(name);
 			}
 			else
 			{
 				Mesh NewMesh(B.Vertices, B.Indices, B.Diffuse, B.Specular, B.Ambient, B.NoTex, B.MeshName.data());
 				std::string name = B.MeshName.data();
-				engine->AssimpManager.Geometry.emplace(name, std::make_unique<Mesh>(NewMesh));
-				engine->AssimpManager.AllGeometryNames.push_back(name);
+				engine->AssimpManager.InsertGeometry(name, NewMesh);
+				engine->AssimpManager.InsertMeshName(name);
+				engine->AssimpManager.InsertGeometryName(name);
 			}
 		}
 
@@ -130,10 +131,10 @@ namespace Eclipse
 				PrefabsFileRead.read(reinterpret_cast<char*>(&MeshName), sizeof(MeshName));
 				MeshName[MeshName.size() - 1] = '\0';
 
-				engine->AssimpManager.Prefabs[ParentName.data()].push_back(MeshName.data());
+				engine->AssimpManager.InsertPrefabs(ParentName.data(), MeshName.data());
 			}
 
-			engine->AssimpManager.AllMeshNames.push_back(ParentName.data());
+			engine->AssimpManager.InsertMeshName(ParentName.data());
 		}
 
 		CloseFile(PrefabsFileRead, AllNames[1]);
@@ -257,9 +258,9 @@ namespace Eclipse
 
 	void EngineCompiler::HotReload()
 	{
-		engine->AssimpManager.AllMeshNames.clear();
-		engine->AssimpManager.Geometry.clear();
-		engine->AssimpManager.Prefabs.clear();
+		engine->AssimpManager.ClearAllMeshNames();
+		engine->AssimpManager.ClearGeometry();
+		engine->AssimpManager.ClearAllPrefabs();
 		Graphics::textures.clear();
 
 		std::thread CompilerWait{ &EngineCompiler::RunCompiler };
@@ -280,5 +281,10 @@ namespace Eclipse
 
 		LoadModelTextures();
 		LoadBasicTextures();
+	}
+
+	void EngineCompiler::Init()
+	{
+		LoadCompilers();
 	}
 }
