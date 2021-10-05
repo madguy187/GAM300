@@ -129,6 +129,14 @@ namespace Eclipse
 		prefabComp.IsChild = true;
 
 		auto& entComp = prefabW.GetComponent<EntityComponent>(contents[0]);
+		entComp.IsActive = false;
+
+		if (prefabW.CheckComponent<MaterialComponent>(contents[0]))
+		{
+			auto& matComp = prefabW.GetComponent<MaterialComponent>(contents[0]);
+			matComp.Highlight = false;
+		}
+
 		std::string destPath = GenerateFileName(entComp, path);
 		mapPathToID[destPath] =  generatedID;
 		PrefabIDSet.insert(generatedID);
@@ -185,6 +193,7 @@ namespace Eclipse
 		{
 			auto& aabb = w.GetComponent<AABBComponent>(ent);
 			engine->gCullingManager->Insert(aabb, ent);
+			engine->gPicker.UpdateAabb(ent);
 			engine->gDynamicAABBTree.InsertData(ent);
 		}
 	}
@@ -226,7 +235,24 @@ namespace Eclipse
 
 		for (auto entity : changingEntities)
 		{
+			if (ent == entity)
+			{
+				continue;
+			}
+
 			Equalize(w, w, ent, entity);
+
+			auto& entComp = w.GetComponent<EntityComponent>(entity);
+			entComp.IsActive = false;
+
+			if (w.CheckComponent<MaterialComponent>(entity))
+			{
+				auto& matComp = w.GetComponent<MaterialComponent>(entity);
+				matComp.Highlight = false;
+			}
+
+			engine->gPicker.UpdateAabb(ent);
+			engine->gDynamicAABBTree.UpdateData(ent);
 		}
 	}
 

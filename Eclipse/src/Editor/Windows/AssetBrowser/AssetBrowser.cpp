@@ -269,7 +269,7 @@ namespace Eclipse
 		}
 		else
 		{
-			if (CurrentDir == "src//Assets")
+			if (CurrentDir == "src\\Assets")
 			{
 				SearchInBaseFolder();
 			}

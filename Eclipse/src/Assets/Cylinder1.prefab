@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<Prefab PrefabID="2174381475442" Size="1">
+    <Entity_0 ID="1">
+        <EntityComponent>
+            <Tag value="Cylinder" />
+            <Name value="Cylinder1" />
+            <IsActive value="true" />
+            <Child size="0" />
+            <Parent size="0" />
+            <IsAChild value="false" />
+        </EntityComponent>
+        <MaterialComponent>
+            <Modeltype value="None" />
+            <ambient x="0" y="0" z="0" />
+            <diffuse x="1" y="1" z="1" />
+            <specular x="1" y="1" z="1" />
+            <shininess value="0.25" />
+            <MaximumShininess value="128" />
+            <Highlight value="false" />
+            <NoTextures value="true" />
+            <ComboIndex value="0" />
+            <hasTexture value="false" />
+            <TextureRef value="" />
+        </MaterialComponent>
+        <MeshComponent>
+            <MeshName value="" />
+            <color x="1" y="1" z="1" />
+            <textureIdx x="0" y="0" />
+            <isQuad value="false" />
+            <modelNDC_xform Col="4" Row="4">
+                <Col0 _00="0" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="0" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="0" _23="0" />
+                <Col3 _30="0" _31="0" _32="0" _33="0" />
+            </modelNDC_xform>
+            <modelRef value="Circle" />
+            <shaderRef value="shader3DShdrpgm" />
+            <transparency value="1" />
+        </MeshComponent>
+        <TransformComponent>
+            <position x="11.3982" y="0" z="13.2404" />
+            <rotation x="0" y="0" z="0" />
+            <scale x="5" y="5" z="5" />
+        </TransformComponent>
+        <AABBComponent>
+            <center x="-16.953" y="0" z="20.0177" />
+            <Min x="-19.453" y="-2.5" z="17.5177" />
+            <Max x="-14.453" y="2.5" z="22.5177" />
+        </AABBComponent>
+        <PrefabComponent>
+            <IsChild value="false" />
+            <PrefabID value="2174381475442" />
+        </PrefabComponent>
+    </Entity_0>
+</Prefab>

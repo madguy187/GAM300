@@ -9,7 +9,7 @@ namespace Eclipse
 	{
 		//Path and Dir
 		////////////////////////////////
-		const std::filesystem::path AssetPath = "src//Assets";
+		const std::filesystem::path AssetPath = "src\\Assets";
 		std::filesystem::path AllDir;
 		std::filesystem::path CurrentDir;
 		std::filesystem::path NextDir;
