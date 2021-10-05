@@ -702,7 +702,7 @@ namespace Eclipse
                     ECGui::InsertSameLine();
                     snprintf(radiusValue, 256, "%f", _Collision.shape.radius);
                     ECGui::DrawInputTextWidget("Radius: ", radiusValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
-                    _Collision.shape.radius = atof(radiusValue);
+                    _Collision.shape.radius = static_cast<float>(atof(radiusValue));
                     break;
                 }
             }
