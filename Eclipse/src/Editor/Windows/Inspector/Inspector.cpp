@@ -21,7 +21,6 @@ namespace Eclipse
     {
         Type = EditorWindowType::EWT_INSPECTOR;
         WindowName = "Inspector";
-        ScriptListGuiTest.push_back(std::string{});
     }
 
     void InspectorWindow::Unload()
@@ -423,11 +422,11 @@ namespace Eclipse
                 ECGui::DrawTextWidget<const char*>("MaximumShininess", "");
                 ECGui::DrawSliderFloatWidget("Material MaximumShininess", &_Material.MaximumShininess, true, 0.0f, 200.0f);
 
-                ECGui::DrawTextWidget<const char*>("Thickness", "");
-                ECGui::DrawSliderFloatWidget("Material Thickness", &_Material.Thickness, true, 0.0f, 200.0f);
+                //ECGui::DrawTextWidget<const char*>("Thickness", "");
+                //ECGui::DrawSliderFloatWidget("Material Thickness", &_Material.Thickness, true, 0.0f, 200.0f);
 
-                ECGui::DrawTextWidget<const char*>("ScaleUp", "");
-                ECGui::DrawSliderFloatWidget("Material ScaleUp", &_Material.ScaleUp, true, 0.0f, 200.0f);
+                //ECGui::DrawTextWidget<const char*>("ScaleUp", "");
+                //ECGui::DrawSliderFloatWidget("Material ScaleUp", &_Material.ScaleUp, true, 0.0f, 200.0f);
 
                 ImGui::Columns(2, NULL, true);
                 ECGui::DrawTextWidget<const char*>("Highlight", "");
@@ -455,7 +454,7 @@ namespace Eclipse
 
     bool InspectorWindow::ShowModelInfoProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
     {
-        if (engine->world.CheckComponent<ModeLInforComponent>(ID))
+        if (engine->world.CheckComponent<ModelComponent>(ID))
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
@@ -465,7 +464,7 @@ namespace Eclipse
                                                             {"MT_ANIMAL",ModelType::MT_ANIMAL},{"MT_HOUSE",ModelType::MT_HOUSE},
                                                             {"MT_ENVIRONMENT",ModelType::MT_ENVIRONMENT} };
 
-                auto& _ModelInfo = engine->world.GetComponent<ModeLInforComponent>(ID);
+                auto& _ModelInfo = engine->world.GetComponent<ModelComponent>(ID);
 
                 ComboListSettings settings{ "Texture Type" };
 
@@ -826,8 +825,8 @@ namespace Eclipse
                         ComponentRegistry<TextureComponent>("TextureComponent", ID, entCom.Name,
                             EditComponent::EC_ADDCOMPONENT);
                         break;
-                    case str2int("ModeLInforComponent"):
-                        ComponentRegistry<ModeLInforComponent>("ModeLInforComponent", ID, entCom.Name,
+                    case str2int("ModelComponent"):
+                        ComponentRegistry<ModelComponent>("ModelComponent", ID, entCom.Name,
                             EditComponent::EC_ADDCOMPONENT);
                         break;
                     case str2int("ScriptComponent"):
@@ -913,8 +912,8 @@ namespace Eclipse
                         ComponentRegistry<TextureComponent>("TextureComponent", ID, entCom.Name,
                             EditComponent::EC_REMOVECOMPONENT);
                         break;
-                    case str2int("ModeLInforComponent"):
-                        ComponentRegistry<ModeLInforComponent>("ModeLInforComponent", ID, entCom.Name,
+                    case str2int("ModelComponent"):
+                        ComponentRegistry<ModelComponent>("ModelComponent", ID, entCom.Name,
                             EditComponent::EC_REMOVECOMPONENT);
                         break;
                     case str2int("ScriptComponent"):
@@ -949,7 +948,8 @@ namespace Eclipse
         ImVec2 buttonSize = { 180,20 };
         ECGui::DrawTextWidget<const char*>("Texture  ", "");
         ECGui::InsertSameLine();
-        if (ImGui::Button((Item.TextureRef.c_str()), buttonSize))
+
+        if (ImGui::Button((Item.TextureRef.c_str()), buttonSize) || (ImGui::IsItemClicked() && ImGui::IsItemHovered()))
         {
             ImGui::OpenPopup("Texture Changer");
         }
@@ -1028,7 +1028,7 @@ namespace Eclipse
 
         ImVec2 buttonSize = { 180,20 };
 
-        if (engine->world.CheckComponent<ModeLInforComponent>(ID))
+        if (engine->world.CheckComponent<ModelComponent>(ID))
         {
             if (ImGui::Button((Item.MeshName.data()), buttonSize))
             {
@@ -1083,7 +1083,7 @@ namespace Eclipse
 
         //use model info component to identify if the dude is basic or not 
 
-        if (!engine->world.CheckComponent<ModeLInforComponent>(ID))
+        if (!engine->world.CheckComponent<ModelComponent>(ID))
         {
             for (int i = 0; i < engine->AssimpManager.GetPrimitiveNames().size(); ++i)
             {

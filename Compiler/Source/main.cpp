@@ -5,7 +5,7 @@
 
 using namespace EclipseCompiler;
 
-int WinMain()
+int main()
 {
     CompilerManager Manager;
 
@@ -20,8 +20,10 @@ int WinMain()
     Manager.Initialise();
     cPrefabsCompiler->GetPrefabs(cGeometryCompiler->Prefabs);
 
+    std::cout << "======================================================" << std::endl;
     // We will produce our own resource files which will be named .eclipse
     Manager.ProduceFile();
+    std::cout << "======================================================" << std::endl;
 
     return 0;
 }

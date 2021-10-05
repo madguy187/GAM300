@@ -66,7 +66,7 @@ namespace EclipseCompiler
         ProcessTextures(scene->mRootNode, scene, textureContainer);
     }
 
-    void AssimpLoader::ProcessGeometry(aiNode* node, const aiScene* scene, bool isGeometryCompiler)
+    void AssimpLoader::ProcessGeometry(aiNode* node, const aiScene* scene)
     {
         for (unsigned int i = 0; i < node->mNumMeshes; i++)
         {
@@ -197,16 +197,16 @@ namespace EclipseCompiler
             newMesh.NoTextures = false;
 
             // diffuse maps
-            std::vector<Texture> diffuseMaps = LoadTextures(material, aiTextureType_DIFFUSE, newMesh.MeshName);
+            std::vector<Texture> diffuseMaps = LoadTextures(material, aiTextureType_DIFFUSE);
             textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
             newMesh.textures.insert(newMesh.textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
             // specular maps
-            std::vector<Texture> specularMaps = LoadTextures(material, aiTextureType_SPECULAR, newMesh.MeshName);
+            std::vector<Texture> specularMaps = LoadTextures(material, aiTextureType_SPECULAR);
             textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
             newMesh.textures.insert(newMesh.textures.end(), specularMaps.begin(), specularMaps.end());
 
-            std::vector<Texture> normalMaps = LoadTextures(material, aiTextureType_NORMALS, newMesh.MeshName);
+            std::vector<Texture> normalMaps = LoadTextures(material, aiTextureType_NORMALS);
             textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
 
             // If no textures are found , we get the material
@@ -250,7 +250,7 @@ namespace EclipseCompiler
         return;
     }
 
-    std::vector<Texture> AssimpLoader::LoadTextures(aiMaterial* mat, aiTextureType type, const char* MeshName)
+    std::vector<Texture> AssimpLoader::LoadTextures(aiMaterial* mat, aiTextureType type)
     {
         std::vector<Texture> textures;
 

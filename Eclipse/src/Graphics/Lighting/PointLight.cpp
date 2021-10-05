@@ -144,18 +144,6 @@ namespace Eclipse
 
 namespace Eclipse
 {
-	bool PointLight::InsertPointLight(PointLightComponent& in)
-	{
-		//if (_pointlights.insert({ in.ID , &in }).second == true)
-		//{
-		//	std::cout << _pointlights.size() << std::endl;
-
-		//	return true;
-		//}
-
-		return false;
-	}
-
 	void PointLight::ClearContainer()
 	{
 		_pointlights.clear();

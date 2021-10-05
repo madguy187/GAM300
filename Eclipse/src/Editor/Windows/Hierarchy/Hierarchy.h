@@ -32,6 +32,7 @@ namespace Eclipse
 		size_t ConvertEntityStringtoNumber(std::string EntityNumber);
 		void HightLightParentAndChild(EntityComponent& Parent);
 		void TreeNodeRecursion(std::string parent, EntityComponent& entCom,EntitySelectionTracker& prev,EntitySelectionTracker& curr, size_t index);
+		void ShowCreateModelList();
 	private:
 		ImGuiTreeNodeFlags temp;
 		EntitySelectionTracker CurrEnt_;

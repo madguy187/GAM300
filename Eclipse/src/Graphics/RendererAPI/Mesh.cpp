@@ -131,7 +131,7 @@ namespace Eclipse
 
         // EBO stuff
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(Indices.size()), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
     }
 

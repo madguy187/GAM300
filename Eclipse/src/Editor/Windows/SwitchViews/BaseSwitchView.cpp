@@ -11,6 +11,7 @@ namespace Eclipse
 
 	void BaseSwitchViewWindow::Init()
 	{
+		mCamType = CameraComponent::CameraType::TopView_Camera;
 		mViewportSize = glm::vec2{ 0.f, 0.f };
 		Type = EditorWindowType::EWT_SWITCHVIEW_RIGHT;
 		WindowName = "Right Switch View";
@@ -28,7 +29,8 @@ namespace Eclipse
 		ImVec2 viewportPanelSize = ECGui::GetWindowSize();
 		int GizmoType = (engine->editorManager->GetEditorWindow<SceneWindow>())->GetGizmoType();
 
-		if (mViewportSize != *((glm::vec2*)&viewportPanelSize))
+		if (mViewportSize.getX() != viewportPanelSize.x ||
+			mViewportSize.getY() != viewportPanelSize.y)
 		{
 			// Resize the framebuffer based on the size of the imgui window
 			//m_frameBuffer->Resize(static_cast<unsigned>(viewportPanelSize.x), static_cast<unsigned>(viewportPanelSize.y));
@@ -45,8 +47,8 @@ namespace Eclipse
 
 	void BaseSwitchViewWindow::RunFrameBuffer(int GizmoType)
 	{
-		ImGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
-			ImVec2{ mViewportSize.x, mViewportSize.y * 0.92f }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+		ECGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
+			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 		if (!engine->editorManager->IsEntityListEmpty() && GizmoType != -1)
 			OnGizmoUpdateEvent(GizmoType);
@@ -58,7 +60,7 @@ namespace Eclipse
 			OnCameraMoveEvent();
 		}
 
-		if (ImGui::IsItemActive())
+		if (ECGui::IsItemActive())
 		{
 			IsWindowActive = true;
 		}
@@ -80,7 +82,7 @@ namespace Eclipse
 		ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
 
 		// Camera
-		Entity cameraEntity = static_cast<Entity>(engine->gCamera.GetCameraID(CameraComponent::CameraType::TopView_Camera));
+		Entity cameraEntity = static_cast<Entity>(engine->gCamera.GetCameraID(mCamType));
 		const auto& camCom = engine->world.GetComponent<CameraComponent>(cameraEntity);
 		// Selected Entity Transform
 		auto& transCom = engine->world.GetComponent<TransformComponent>(selectedEntity);

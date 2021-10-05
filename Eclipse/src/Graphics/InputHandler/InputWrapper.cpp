@@ -554,6 +554,7 @@ namespace Eclipse
             return false;
         }
 
+        return false;
 #else
         return false;
 #endif

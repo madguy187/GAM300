@@ -9,7 +9,7 @@ namespace Eclipse
 	struct LightComponent;
 	struct MaterialComponent;
 	struct MeshComponent;
-	struct ModeLInforComponent;
+	struct ModelComponent;
 	struct PointLightComponent;
 	struct RigidBodyComponent;
 	struct ScriptComponent;
@@ -41,7 +41,7 @@ namespace Eclipse
 		LightComponent,
 		MaterialComponent,
 		MeshComponent,
-		ModeLInforComponent,
+		ModelComponent,
 		PointLightComponent,
 		RigidBodyComponent,
 		ScriptComponent,

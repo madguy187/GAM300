@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Graphics/Grid/bounds.h"
+#include "Graphics/Grid/BoundingBox.h"
 
 #define UPPER_BOUND 50000
 

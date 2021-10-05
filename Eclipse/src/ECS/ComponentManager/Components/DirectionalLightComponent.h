@@ -1,6 +1,5 @@
-#pragma once
-#include "pch.h"
-#include "Library/Math/Vector.h" 
+#ifndef DIRECTIONALIGHTCOMPONENT_H
+#define DIRECTIONALIGHTCOMPONENT_H
 #include "Reflection/Meta.h"
 #include "Reflection/RemTypeQual.h"
 
@@ -9,12 +8,13 @@ namespace Eclipse
     struct DirectionalLightComponent
     {
         META_DATA(DirectionalLightComponent);
+        // To Loop In Container in Shaders
         unsigned int Counter = 0;
 
+        // Properties
         bool visible = false;
         bool AffectsWorld = true;
         bool EnableBlinnPhong = true;
-
         ECVec3 lightColor{ 1.0f,1.0f,1.0f };
         ECVec3 Direction{ -1.0f,-1.0f,-1.0f };
         ECVec3 ambient{ 0.2f , 0.2f, 0.2f };
@@ -23,3 +23,4 @@ namespace Eclipse
         ECVec4 Color{ 1.0f,1.0f,1.0f,1 };
     };
 }
+#endif /* DIRECTIONALIGHTCOMPONENT_H */

@@ -16,6 +16,8 @@
 
 namespace Eclipse
 {
+    //unsigned int rectVAO, rectVBO;
+
     void RenderSystem::Init()
     {
         // Register Threads
@@ -56,22 +58,22 @@ namespace Eclipse
     void RenderSystem::Update()
     {
         ZoneScopedN("Render System")
-        engine->Timer.SetName({ SystemName::RENDER });
-        engine->Timer.tracker.system_start = glfwGetTime();
+            engine->Timer.SetName({ SystemName::RENDER });
+        engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
         engine->GraphicsManager.UploadGlobalUniforms();
 
         if (engine->GraphicsManager.CheckRender == true)
         {
             // Estiamtion which models are in our frustrum
-            auto& RenderablesVsFrustrum = engine->gCullingManager->ReturnContacted(); 
+            auto& RenderablesVsFrustrum = engine->gCullingManager->ReturnContacted();
 
             /*************************************************************************
               Render Without Stencer
               Render Sky to Sceneview
             *************************************************************************/
             engine->MaterialManager.DoNotUpdateStencil();
-            engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(Eclipse::FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
+            engine->GraphicsManager.RenderSky(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
 
             // Basic Primitives Render Start =============================
             for (auto const& entityID : RenderablesVsFrustrum)
@@ -94,7 +96,7 @@ namespace Eclipse
                 engine->MaterialManager.UpdateShininess(entityID);
 
                 // Basic Primitives
-                if (!engine->world.CheckComponent<ModeLInforComponent>(entityID))
+                if (!engine->world.CheckComponent<ModelComponent>(entityID))
                 {
                     engine->GraphicsManager.CheckTexture(entityID);
 
@@ -116,7 +118,7 @@ namespace Eclipse
                         &Mesh, GL_FILL, entityID, CameraComponent::CameraType::Game_Camera);
 
                     engine->MaterialManager.HighlightBasicPrimitives(entityID,
-                        engine->GraphicsManager.GetFrameBufferID(Eclipse::FrameBufferMode::FBM_SCENE));
+                        engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE));
                 }
                 else
                 {
@@ -127,7 +129,7 @@ namespace Eclipse
                     engine->MaterialManager.UpdateStencilWithActualObject(entityID);
                     engine->AssimpManager.MeshDraw(Mesh, entityID,
                         engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE),
-                        engine->GraphicsManager.GetRenderMode(Eclipse::FrameBufferMode::FBM_SCENE),
+                        engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_SCENE),
                         &engine->GraphicsManager.AllAABBs, CameraComponent::CameraType::Editor_Camera);
 
                     /*************************************************************************
@@ -184,8 +186,9 @@ namespace Eclipse
                             &box, CameraComponent::CameraType::LeftView_Camera);
                     }
 
-                    engine->MaterialManager.Highlight3DModels(entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE));
+                    //engine->GraphicsManager.PostProcess->UpdatePP();
 
+                    engine->MaterialManager.Highlight3DModels(entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE));
                 }
             }
 
@@ -204,7 +207,7 @@ namespace Eclipse
             engine->MaterialManager.StencilBufferClear();
         }
 
-        engine->Timer.tracker.system_end = glfwGetTime();
+        engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());
         engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
 
         FrameMark

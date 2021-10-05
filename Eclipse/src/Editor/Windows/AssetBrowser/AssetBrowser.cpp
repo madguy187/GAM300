@@ -394,7 +394,7 @@ namespace Eclipse
 			}
 			engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
 
-			if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemClicked(0) && ImGui::IsItemHovered())
+			if (ECGui::IsMouseDoubleClicked(0) && ECGui::IsItemClicked(0) && ECGui::IsItemHovered())
 			{
 				if (dirEntry.is_directory())
 				{

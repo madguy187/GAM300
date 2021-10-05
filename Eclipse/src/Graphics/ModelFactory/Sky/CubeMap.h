@@ -31,7 +31,7 @@ namespace Eclipse
         unsigned int GetEboID();
         void SetTextureFlag(bool in);
         bool GetTextureFlag();
-        unsigned int GetFaceCount();
+        size_t GetFaceCount();
         void SetVisible(bool in);
         bool GetVisibllity();
 

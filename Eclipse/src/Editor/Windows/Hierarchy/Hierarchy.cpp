@@ -43,27 +43,11 @@ namespace Eclipse
 
     void HierarchyWindow::DrawImpl()
     {
-        ////////////////////
-        //TODO for darren
-        if (engine->AssimpManager.CheckCompilers())
-        {
-            ComboListSettings settingsss = { "Models Testing" };
-            std::vector<std::string> hiDarrenVector = engine->AssimpManager.GetMeshNames();
-            static size_t comboindex = 0;
-            ECGui::CreateComboList(settingsss, hiDarrenVector, comboindex);
-
-            bool selected = false;
-
-            if (ECGui::CreateSelectableButton(hiDarrenVector[comboindex].c_str(), &selected))
-            {
-                auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
-                engine->AssimpManager.CreateModel(MeshID, hiDarrenVector[comboindex].c_str());
-            }
-        }
-        /// ///////////////////
-
-        PopUpButtonSettings settings{ "Add Entity", "EntityCreationListBegin" };
-        ECGui::BeginPopUpButtonList<void()>(settings, std::bind(&HierarchyWindow::ShowEntityCreationList, this));
+        PopUpButtonSettings EntSettings{ "Add Entity", "EntityCreationListBegin" };
+        PopUpButtonSettings ModSettings{ "Create Model",  "ModelCreationListBegin" };
+        ECGui::BeginPopUpButtonList<void()>(EntSettings, std::bind(&HierarchyWindow::ShowEntityCreationList, this));
+        ECGui::InsertSameLine();
+        ECGui::BeginPopUpButtonList<void()>(ModSettings, std::bind(&HierarchyWindow::ShowCreateModelList, this));
         ECGui::InsertHorizontalLineSeperator();
 
         ECGui::DrawTextWidget<size_t>("Entity Count", engine->editorManager->GetEntityListSize());
@@ -100,7 +84,6 @@ namespace Eclipse
                 {
                     TreeNodeRecursion(entityName, entCom, prev, curr, index);
                 }
-
 
                 if (entCom.Child.empty() && !entCom.IsAChild
                     && ECGui::CreateSelectableButton(entityName.c_str(), &entCom.IsActive))
@@ -290,6 +273,7 @@ namespace Eclipse
         {
             temp |= ImGuiTreeNodeFlags_Selected;
         }
+
         HightLightParentAndChild(entCom);
 
         bool nodeOpen = ImGui::TreeNodeEx(parent.c_str(), temp);
@@ -345,25 +329,27 @@ namespace Eclipse
 
                 }
             }
-
             ECGui::EndTreeNode();
         }
         else
         {
-
             if (ImGui::IsItemClicked(0))
             {
                 size_t currIndex = ConvertEntityStringtoNumber(GetEntityComponentEntityNumber(parent));
                 engine->editorManager->SetGlobalIndex(engine->editorManager->GetEntityIndex(static_cast<Entity>(currIndex)));
                 UpdateEntityTracker(engine->editorManager->GetEntityID(engine->editorManager->GetEntityIndex(static_cast<Entity>(currIndex))));
             }
-
         }
-
-
-
     }
 
+    void HierarchyWindow::ShowCreateModelList()
+    {
+        for (size_t i = 0; i < engine->AssimpManager.GetMeshNames().size(); ++i)
+        {
+            bool selected = false;
 
+            if (ECGui::CreateSelectableButton(engine->AssimpManager.GetMeshNames()[i].c_str(), &selected))
+                engine->AssimpManager.CreateModel(0, engine->AssimpManager.GetMeshNames()[i]);
+        }
+    }
 }
-

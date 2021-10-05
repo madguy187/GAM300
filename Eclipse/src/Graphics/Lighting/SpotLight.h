@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SPOTLIGHT_H
+#define SPOTLIGHT_H
 #include "ECS/ComponentManager/Components/SpotLightComponent.h"
 
 namespace Eclipse
@@ -23,8 +24,7 @@ namespace Eclipse
         inline static SpotLightContainer _spotlights;
         SpotLightContainer GetContainer();
         static bool DeleteSpotLight(unsigned int EntityID);
-        bool InsertSpotLightLight(SpotLightComponent& in);
         void ClearContainer();
-
     };
 }
+#endif /* SPOTLIGHT_H */

@@ -71,7 +71,8 @@ project "Eclipse"
         "Dep/mono/include/mono-2.0",
 		"Dep/ASSIMP/include/assimp",
 	    "Dep/ASSIMP",
-		"Dep/Fmod/core/inc"
+		"Dep/Fmod/core/inc",
+		"Dep/Tracy"
 	}
 
 	filter "system:windows"

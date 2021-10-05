@@ -7,7 +7,7 @@
 #include "LightComponent.h"
 #include "MaterialComponent.h"
 #include "MeshComponent.h"
-#include "ModeLInfoComponent.h"
+#include "ModelComponent.h"
 #include "PointLightComponent.h"
 #include "RigidBodyComponent.h"
 #include "SpotLightComponent.h"
@@ -116,13 +116,13 @@ namespace Eclipse
         ADD_MEMBER(ambient);
         ADD_MEMBER(diffuse);
         ADD_MEMBER(specular);
-        ADD_MEMBER(HighlightColour);
-        ADD_MEMBER(Highlight);
-        ADD_MEMBER(NoTextures);
+        //ADD_MEMBER(HighlightColour);
         ADD_MEMBER(shininess);
         ADD_MEMBER(MaximumShininess);
-        ADD_MEMBER(Thickness);
-        ADD_MEMBER(ScaleUp);
+        //ADD_MEMBER(RegisterForHighlight);
+        ADD_MEMBER(Highlight);
+        ADD_MEMBER(NoTextures);
+        //ADD_MEMBER(ScaleUp);
         ADD_MEMBER(ComboIndex);
         ADD_MEMBER(hasTexture);
         ADD_MEMBER(TextureRef);
@@ -131,9 +131,15 @@ namespace Eclipse
     DEFINE_META(MeshComponent)
     {
         ADD_MEMBER(MeshName);
-        ADD_MEMBER(Diffuse);
-        ADD_MEMBER(Specular);
-        ADD_MEMBER(Ambient);
+        //ADD_MEMBER(VBO);
+        //ADD_MEMBER(VAO);
+        //ADD_MEMBER(EBO);
+        //ADD_MEMBER(NoTex);
+        //ADD_MEMBER(Diffuse);
+        //ADD_MEMBER(Specular);
+        //ADD_MEMBER(Ambient);
+        //ADD_MEMBER(Vertices);
+        //ADD_MEMBER(Indices);
         ADD_MEMBER(color);
         ADD_MEMBER(textureIdx);
         ADD_MEMBER(isQuad);
@@ -143,7 +149,7 @@ namespace Eclipse
         ADD_MEMBER(transparency);
     }
 
-    DEFINE_META(ModeLInforComponent)
+    DEFINE_META(ModelComponent)
     {
         ADD_MEMBER(NameOfModel);
         ADD_MEMBER(Directory);
@@ -244,7 +250,7 @@ namespace Eclipse
     //DEFINE_META_POD(std::vector<Texture>);
     //DEFINE_META_POD(std::map<unsigned int, std::vector<Texture>>);
     DEFINE_META_POD(std::vector<Entity>);
-    DEFINE_META_POD(MeshComponent::MeshNameType);
+    //DEFINE_META_POD(MeshComponent::MeshNameType);
     DEFINE_META_POD(ECVec2);
     DEFINE_META_POD(ECVec3);
     DEFINE_META_POD(ECVec4);

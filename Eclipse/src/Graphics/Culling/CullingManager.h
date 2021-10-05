@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CULLING_MANAGER_H
+#define CULLING_MANAGER_H
 #include "Graphics/Grid/IAABB.h"
 #include "Graphics/Grid/AABB.h"
 
@@ -11,7 +12,6 @@ namespace Eclipse
     public:
         DYN_AABB AABB;
         AABBComponent* Obj;
-
         DYN_AABB getAABB() const override;
     };
 
@@ -59,6 +59,7 @@ namespace Eclipse
         bool CheckOnFrustum(const TransformComponent& transform, CameraComponent::CameraType CameraType);
         bool ToRenderOrNot(unsigned int ID);
         void Insert(AABBComponent& In, unsigned int ID);
+        void Remove(unsigned int ID);
         void Clear();
         std::vector<unsigned int> ReturnContacted();
         CameraComponent::CameraType GetCamera();
@@ -66,3 +67,4 @@ namespace Eclipse
         AABBComponent SetFrustrumAABB(CameraComponent::CameraType CameraType);
     };
 }
+#endif // CULLING_MANAGER_H

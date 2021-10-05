@@ -331,7 +331,7 @@ namespace Eclipse
         return overlaps;
     }
 
-    unsigned int AABBTree::NumberOfIntersections(std::vector<unsigned int>& in)
+    size_t AABBTree::NumberOfIntersections(std::vector<unsigned int>& in)
     {
         return in.size();
     }
@@ -339,7 +339,6 @@ namespace Eclipse
     void AABBTree::ClearTree()
     {
         AABBToNodeMap.clear();
-        //AllNodes.clear();
         RootNodeIndex = 0;
         AllocatedNodeCount = 0;
         NextFreeNoedIndex = 0;

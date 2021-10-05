@@ -72,7 +72,7 @@ namespace Eclipse
         engine->AssimpManager.LoadBasicTextures();
     }
 
-    void AssimpModelManager::MeshDraw(MeshComponent& ModelMesh, unsigned int ID, unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
+    void AssimpModelManager::MeshDraw(MeshComponent& ModelMesh, unsigned int ID, unsigned int FrameBufferID, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
     {
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
 
@@ -84,7 +84,7 @@ namespace Eclipse
         // Translation done here for each model
         CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ID, box);
 
-        if (_renderMode == FrameBuffer::RenderMode::Fill_Mode)
+        if (_renderMode == RenderMode::Fill_Mode)
         {
             // Render
             Render(shdrpgm, GL_FILL, FrameBufferID, ModelMesh, ID, _camType);
@@ -93,7 +93,6 @@ namespace Eclipse
         {
             Render(shdrpgm, GL_LINE, FrameBufferID, ModelMesh, ID, _camType);
         }
-
     }
 
     void AssimpModelManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID, AABB_* box)
@@ -125,9 +124,12 @@ namespace Eclipse
         glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
         glUniform1i(NoTexures, 0);
+
+        BoundingRegion br(Transform.position.ConvertToGlmVec3Type(), Transform.scale.ConvertToGlmVec3Type());
+        box->AddInstance(br);
     }
 
-    unsigned int AssimpModelManager::MeshFactoryCount()
+    size_t AssimpModelManager::MeshFactoryCount()
     {
         return AssimpLoadedModels.size();
     }
@@ -169,13 +171,6 @@ namespace Eclipse
 
     AssimpModelManager::~AssimpModelManager()
     {
-        //for (auto i : AssimpModelContainerV2)
-        //{
-        //    if (i.second != nullptr)
-        //    {
-        //        delete i.second;
-        //    }
-        //}
     }
 
     void AssimpModelManager::TestPath(std::string& path)
@@ -312,16 +307,6 @@ namespace Eclipse
 
             char* Name = in.data();
             strcpy_s(Mesh.MeshName.data(), Mesh.MeshName.size(), Name);
-
-            //Mesh.VBO = Geometry[in]->VBO;
-            //Mesh.VAO = Geometry[in]->VAO;
-            //Mesh.EBO = Geometry[in]->EBO;
-            //Mesh.NoTex = Geometry[in]->NoTex;
-            //Mesh.Diffuse = Geometry[in]->Diffuse;
-            //Mesh.Specular = Geometry[in]->Specular;
-            //Mesh.Ambient = Geometry[in]->Ambient;
-            //Mesh.Vertices = Geometry[in]->Vertices;
-            //Mesh.Indices = Geometry[in]->Indices;
         }
     }
 
@@ -397,10 +382,10 @@ namespace Eclipse
                         GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
                         GLuint diff0 = shader.GetLocation("diffuse0");
                         GLuint spec = shader.GetLocation("specular0");
-                        GLuint dsa = shader.GetLocation("noTex");
+                        GLuint noTex = shader.GetLocation("noTex");
                         GLuint CheckNormapMap = shader.GetLocation("checkNormalMap");
 
-                        glUniform1i(dsa, false);
+                        glUniform1i(noTex, false);
                         glUniform1i(uniform_var_loc3, true);
                         glUniform1i(CheckNormapMap, false);
                         glUniform1i(diff0, it);
@@ -437,12 +422,11 @@ namespace Eclipse
 
         // EBO stuff
         glBindVertexArray(engine->AssimpManager.Geometry[in.MeshName.data()]->VAO);
-        glDrawElements(GL_TRIANGLES, engine->AssimpManager.Geometry[in.MeshName.data()]->Indices.size(), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(engine->AssimpManager.Geometry[in.MeshName.data()]->Indices.size()), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
 
         // reset
         glActiveTexture(GL_TEXTURE0);
-
     }
 
     void AssimpModelManager::Render(GLenum mode, MeshComponent& in)
@@ -454,7 +438,7 @@ namespace Eclipse
 
         // EBO stuff
         glBindVertexArray(engine->AssimpManager.Geometry[in.MeshName.data()]->VAO);
-        glDrawElements(GL_TRIANGLES, engine->AssimpManager.Geometry[in.MeshName.data()]->Indices.size(), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(engine->AssimpManager.Geometry[in.MeshName.data()]->Indices.size()), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
     }
 
@@ -495,7 +479,7 @@ namespace Eclipse
         // See how many Models
         GeometryFileRead.read(reinterpret_cast<char*>(&TotalNumberOfModels), sizeof(TotalNumberOfModels));
 
-        for (int i = 0; i < TotalNumberOfModels; i++)
+        for (unsigned int i = 0; i < TotalNumberOfModels; i++)
         {
             VerticesSize = 0;
             IndicesSize = 0;
@@ -627,7 +611,7 @@ namespace Eclipse
 
 namespace Eclipse
 {
-    void AssimpModelManager::Draw(unsigned int FrameBufferID, FrameBuffer::RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
+    void AssimpModelManager::Draw(unsigned int FrameBufferID, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
     {
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
 
@@ -647,7 +631,7 @@ namespace Eclipse
             // Translation done here for each model
             CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ID, box);
 
-            if (_renderMode == FrameBuffer::RenderMode::Fill_Mode)
+            if (_renderMode == RenderMode::Fill_Mode)
             {
                 // Render
                 InvidualModels.Render(shdrpgm, GL_FILL, FrameBufferID, ID);
@@ -760,7 +744,7 @@ namespace Eclipse
         return AssimpModelContainer_;
     }
 
-    unsigned int AssimpModelManager::AssimpModelCount()
+    size_t AssimpModelManager::AssimpModelCount()
     {
         return AssimpModelContainer_.size();
     }
@@ -870,13 +854,13 @@ namespace Eclipse
         {
             if (Prefabs.find(ModelName) == Prefabs.end())
             {
+                auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
                 // Cannot Find this as a parent
                 std::string Name = ModelName;
-                engine->world.AddComponent(ID, MeshComponent{});
-                engine->world.AddComponent(ID, ModeLInforComponent{});
-                engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
-                //engine->world.AddComponent(ID, TextureComponent{});
-                SetSingleMesh(ID, Name);
+                engine->world.AddComponent(MeshID, MeshComponent{});
+                engine->world.AddComponent(MeshID, ModelComponent{});
+                engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
+                SetSingleMesh(MeshID, Name);
             }
             else
             {
@@ -894,10 +878,8 @@ namespace Eclipse
                     auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
 
                     engine->world.AddComponent(MeshID, MeshComponent{});
-                    engine->world.AddComponent(MeshID, ModeLInforComponent{});
+                    engine->world.AddComponent(MeshID, ModelComponent{});
                     engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
-                    //engine->world.AddComponent(MeshID, TextureComponent{});
-
                     SetSingleMesh(MeshID, name);
                 }
             }
@@ -934,7 +916,7 @@ namespace Eclipse
         return AssimpModelContainerV2;
     }
 
-    unsigned int AssimpModelManager::MeshModelCount()
+    size_t AssimpModelManager::MeshModelCount()
     {
         return AssimpModelContainerV2.size();
     }
@@ -945,55 +927,16 @@ namespace Eclipse
         AssimpModelContainerV2.erase(index);
     }
 
-    bool AssimpModelManager::InsertMesh(MeshComponent& in)
-    {
-        //// Insert
-        //if (AssimpModelContainerV2.insert({ in.ID , &in }).second == true)
-        //{
-        //	return true;
-        //}
-
-        return false;
-    }
-
     void AssimpModelManager::CleanUpAllModelsMeshes()
     {
         for (auto const& Models : AssimpModelContainerV2)
         {
             auto& InvidualModels = *(Models.second);
-            //Cleanup(InvidualModels);
         }
     }
 
     std::string AssimpModelManager::GetKey(const std::string& in)
     {
         return AssimpLoadedModels[in]->GetName();
-    }
-
-    void AssimpModelManager::InsertModel(unsigned int id)
-    {
-        // Should already have the model name as key.
-        auto& sprite = engine->world.GetComponent<MeshComponent>(id);
-
-        // Assign ModelInfoComponent
-        auto& ModelInformation = engine->world.GetComponent<ModeLInforComponent>(id);
-        //ModelInformation.NameOfModel = sprite.Key;
-        //ModelInformation.Directory = ModelMap[sprite.Key];
-
-        //sprite.Meshes = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetMesh();
-        //sprite.Textures_loaded = engine->AssimpManager.AssimpLoadedModels[sprite.Key]->GetTextures();
-
-        //for (int i = 0; i < sprite.Meshes.size(); i++)
-        //{
-        //    auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
-        //    sprite.Meshes[i].SetID(MeshID);
-        //}
-
-        // If got TextureComponent
-        if (engine->world.CheckComponent<TextureComponent>(id))
-        {
-            auto& tex = engine->world.GetComponent<TextureComponent>(id);
-            //engine->AssimpManager.SetTexturesForModel(tex, sprite.Key);
-        }
     }
 }
