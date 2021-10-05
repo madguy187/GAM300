@@ -683,17 +683,17 @@ namespace Eclipse
                     ECGui::InsertSameLine();
                     snprintf(hxValue, 256, "%f", _Collision.shape.hx);
                     ECGui::DrawInputTextWidget("Hx: ", hxValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
-                    _Collision.shape.hx = atof(hxValue);
+                    _Collision.shape.hx = static_cast<float>(atof(hxValue));
                     ECGui::DrawTextWidget<const char*>("Hy: ", "");
                     ECGui::InsertSameLine();
                     snprintf(hyValue, 256, "%f", _Collision.shape.hy);
                     ECGui::DrawInputTextWidget("Hy: ", hyValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
-                    _Collision.shape.hy = atof(hyValue);
+                    _Collision.shape.hy = static_cast<float>(atof(hyValue));
                     ECGui::DrawTextWidget<const char*>("Hz: ", "");
                     ECGui::InsertSameLine();
                     snprintf(hzValue, 256, "%f", _Collision.shape.hz);
                     ECGui::DrawInputTextWidget("Hz: ", hzValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
-                    _Collision.shape.hz = atof(hzValue);
+                    _Collision.shape.hz = static_cast<float>(atof(hzValue));
                     break;
                 case PxShapeType::Px_SPHERE:
                     ECGui::DrawTextWidget<const char*>("SPHERE ", "");
@@ -987,7 +987,7 @@ namespace Eclipse
         {
             columncount = 1;
         }
-        ECGui::DrawSliderFloatWidget("Size: ", &thumbnaimsize, 10, 200);
+        ECGui::DrawSliderFloatWidget("Size: ", &thumbnaimsize,false, 10, 200);
         ECGui::SetColumns(columncount, NULL, true);
         for (auto it : Graphics::textures)
         {
@@ -1077,7 +1077,7 @@ namespace Eclipse
         {
             columncount = 1;
         }
-        ECGui::DrawSliderFloatWidget("Size: ", &thumbnaimsize, 10, 200);
+        ECGui::DrawSliderFloatWidget("Size: ", &thumbnaimsize,false, 10, 200);
 
         ECGui::SetColumns(columncount, NULL, true);
 
