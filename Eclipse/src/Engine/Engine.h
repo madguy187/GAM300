@@ -19,6 +19,7 @@
 #include "Graphics/Picker/DynamicAABBTree.h"
 #include "PrefabManager/PrefabManager.h"
 #include "Graphics/EngineCompiler/EngineCompiler.h"
+#include "AI/AIManager.h"
 
 namespace Eclipse
 {
@@ -45,6 +46,7 @@ namespace Eclipse
 		DynamicAABBTree gDynamicAABBTree;
 		PrefabManager pfManager;
 		PhysicsManager gPhysics;
+		AIManager gAI;
 		std::unique_ptr<CullingManager> gCullingManager;
 		std::unique_ptr<EclipseFileWatcher> gFileWatchManager;
 		std::unique_ptr<EngineCompiler> gEngineCompiler;
