@@ -155,13 +155,13 @@ void main ()
 			normalMap = texture(normal0, TxtCoord).rgb;
 			normalMap = normalize(normalMap * 2.0 - 1.0);
 			
-			for(unsigned int i = 0; i < NumberOfPointLights; ++i)
+			for(int i = 0; i < NumberOfPointLights; ++i)
 			{
 				tangentPointLights[i] = pointLights[i];
 				tangentPointLights[i].position = TangentPointLight[i];
 			}
 			
-			for(unsigned int i = 0; i < NumberOfSpotLights; ++i)
+			for(int i = 0; i < NumberOfSpotLights; ++i)
 			{
 				tangentSpotLights[i] = spotLights[i];
 				tangentSpotLights[i].position = TangentSpotLight[i];

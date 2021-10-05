@@ -21,36 +21,37 @@
 
 namespace Eclipse
 {
-    class Graphics
-    {
-        static void LoadShaders(std::string shaderFile);
-        static void LoadModels();
+	class Graphics
+	{
+		static void LoadShaders(std::string shaderFile);
+		static void LoadModels();
 
-        //Loads the image and creates texture object
-        static GLuint setup_texobj(std::string pathname);
+		//Loads the image and creates texture object
+		static GLuint setup_texobj(std::string pathname);
 
-    public:
-        std::set<Entity> mEntities;
-        static std::unordered_map<std::string, std::unique_ptr<IModel>> models;
-        using modelIt = std::unordered_map<std::string, std::unique_ptr<IModel>>::iterator;
-        using shaderIt = std::unordered_map<std::string, Shader>::iterator;
-        using TextureIt = std::unordered_map<std::string, Texture>::iterator;
+	public:
+		std::set<Entity> mEntities;
+		static std::unordered_map<std::string, std::unique_ptr<IModel>> models;
+		using modelIt = std::unordered_map<std::string, std::unique_ptr<IModel>>::iterator;
+		using shaderIt = std::unordered_map<std::string, Shader>::iterator;
+		using TextureIt = std::unordered_map<std::string, Texture>::iterator;
 
-        static void load();
-        static void unload();
+		static void load();
+		static void unload();
+		static void ThreadLoadShaders();
 
-        //container for textures
-        static std::multimap<std::string, Texture> textures;
+		//container for textures
+		static std::multimap<std::string, Texture> textures;
 
-        //Container for shader programs and helper functions
-        static std::unordered_map<std::string, Shader> shaderpgms;
-        using shaderVec = std::vector<std::pair<std::string, std::string>>;
-        static void initShaderpgms(std::string shdrpgm_name, std::string vtx_shdr, std::string frg_shdr);
-        static modelIt FindModel(std::string);
-        static shaderIt FindShaders(std::string);
-        static Texture FindTextures(std::string);
-        static void GetTexuresForModels(std::string in, MaterialComponent com);
-    };
+		//Container for shader programs and helper functions
+		static std::unordered_map<std::string, Shader> shaderpgms;
+		using shaderVec = std::vector<std::pair<std::string, std::string>>;
+		static void initShaderpgms(std::string shdrpgm_name, std::string vtx_shdr, std::string frg_shdr);
+		static modelIt FindModel(std::string);
+		static shaderIt FindShaders(std::string);
+		static Texture FindTextures(std::string);
+		static void GetTexuresForModels(std::string in, MaterialComponent com);
+	};
 }
 
 #endif /* GRAPHICS_H */

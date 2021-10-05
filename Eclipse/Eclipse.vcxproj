@@ -255,6 +255,7 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClInclude Include="src\Graphics\Camera\CameraManager.h" />
     <ClInclude Include="src\Graphics\Culling\CullingManager.h" />
     <ClInclude Include="src\Graphics\Debugging\DebugRenderingManager.h" />
+    <ClInclude Include="src\Graphics\EngineCompiler\EngineCompiler.h" />
     <ClInclude Include="src\Graphics\FileWatch\FileWatch.h" />
     <ClInclude Include="src\Graphics\FrameBuffer\FrameBuffer.h" />
     <ClInclude Include="src\Graphics\FrameBuffer\WindowConstraint.h" />
@@ -399,6 +400,7 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClCompile Include="src\Graphics\Camera\CameraManager.cpp" />
     <ClCompile Include="src\Graphics\Culling\CullingManager.cpp" />
     <ClCompile Include="src\Graphics\Debugging\DebugRenderingManager.cpp" />
+    <ClCompile Include="src\Graphics\EngineCompiler\EngineCompiler.cpp" />
     <ClCompile Include="src\Graphics\FileWatch\FileWatch.cpp" />
     <ClCompile Include="src\Graphics\FrameBuffer\FrameBuffer.cpp" />
     <ClCompile Include="src\Graphics\FrameBuffer\WindowConstraint.cpp" />
@@ -478,8 +480,8 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\Assets\Shaders\framebuffer\framebuffer.frag" />
-    <None Include="src\Assets\Shaders\framebuffer\framebuffer.vert" />
+    <None Include="src\Assets\Shaders\FrameBuffer\framebuffer.frag" />
+    <None Include="src\Assets\Shaders\FrameBuffer\framebuffer.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

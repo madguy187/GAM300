@@ -90,6 +90,7 @@ enum class EntityType
     ENT_LIGHT_SPOT, // LAST
     // END OF LIGHTS
     ENT_GAMECAMERA,
+    ENT_MODEL,
     ENT_TARGETPOINT,
     ENT_UNASSIGNED
 };

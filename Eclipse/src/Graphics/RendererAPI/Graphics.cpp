@@ -20,7 +20,7 @@ typedef std::multimap<std::string, Texture>::iterator MMAPIterator;
 
 void Graphics::load()
 {
-    //Loads all the shader programs listed in the shader file
+    ////Loads all the shader programs listed in the shader file
     LoadShaders("src//Assets//Shaders");
 
     //Loads all models listed
@@ -79,6 +79,12 @@ void Graphics::LoadModels()
 
         engine->AssimpManager.InsertPrimitiveName(ModelName);
     }
+}
+
+void Eclipse::Graphics::ThreadLoadShaders()
+{
+    //Loads all the shader programs listed in the shader file
+    LoadShaders("src//Assets//Shaders");
 }
 
 /******************************************************************************/

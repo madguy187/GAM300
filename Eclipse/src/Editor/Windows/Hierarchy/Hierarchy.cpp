@@ -353,7 +353,7 @@ namespace Eclipse
         }
         else
         {
-            if (ImGui::IsItemClicked(0))
+            if (ECGui::IsItemClicked(0))
             {
                 size_t currIndex = ConvertEntityStringtoNumber(GetEntityComponentEntityNumber(parent));
                 engine->editorManager->SetGlobalIndex(engine->editorManager->GetEntityIndex(static_cast<Entity>(currIndex)));
