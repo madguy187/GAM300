@@ -16,6 +16,8 @@
 
 namespace Eclipse
 {
+    //unsigned int rectVAO, rectVBO;
+
     void RenderSystem::Init()
     {
         // Register Threads
@@ -56,7 +58,7 @@ namespace Eclipse
     void RenderSystem::Update()
     {
         ZoneScopedN("Render System")
-        engine->Timer.SetName({ SystemName::RENDER });
+            engine->Timer.SetName({ SystemName::RENDER });
         engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
         engine->GraphicsManager.UploadGlobalUniforms();
@@ -64,7 +66,7 @@ namespace Eclipse
         if (engine->GraphicsManager.CheckRender == true)
         {
             // Estiamtion which models are in our frustrum
-            auto& RenderablesVsFrustrum = engine->gCullingManager->ReturnContacted(); 
+            auto& RenderablesVsFrustrum = engine->gCullingManager->ReturnContacted();
 
             /*************************************************************************
               Render Without Stencer
@@ -184,8 +186,9 @@ namespace Eclipse
                             &box, CameraComponent::CameraType::LeftView_Camera);
                     }
 
-                    engine->MaterialManager.Highlight3DModels(entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE));
+                    //engine->GraphicsManager.PostProcess->UpdatePP();
 
+                    engine->MaterialManager.Highlight3DModels(entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE));
                 }
             }
 

@@ -33,6 +33,9 @@ namespace Eclipse
 
         // For grid
         GridQuad = std::make_unique<Quad>();
+
+        PostProcess = std::make_unique<FrameBuffer>();
+        PostProcess->CreatePostProcessFramebuffer();
     }
 
     void Eclipse::GraphicsManager::Post_Render()
@@ -407,6 +410,11 @@ namespace Eclipse
         return mRenderContext.GetFramebuffer(mode)->GetFrameBufferID();
     }
 
+    unsigned int Eclipse::GraphicsManager::GetTextureID(FrameBufferMode mode)
+    {
+        return mRenderContext.GetFramebuffer(mode)->GetTextureColourBufferID();
+
+    }
     RenderMode Eclipse::GraphicsManager::GetRenderMode(FrameBufferMode mode)
     {
         return mRenderContext.GetFramebuffer(mode)->GetRenderMode();
@@ -433,6 +441,9 @@ namespace Eclipse
     void Eclipse::GraphicsManager::DrawEntireGrid()
     {
         engine->GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
+
+        PostProcess->UpdatePP();
+        engine->MaterialManager.StencilBufferClear();
     }
 
     void Eclipse::GraphicsManager::CreateCompilerFolders()
@@ -442,6 +453,11 @@ namespace Eclipse
         CreateEmptyFolder("GeometryFile");
         CreateEmptyFolder("PrefabsFile");
         CreateEmptyFolder("TextureFile");
+    }
+
+    void GraphicsManager::RenderPostProcess()
+    {
+        PostProcess->UpdatePP();
     }
 
     void GraphicsManager::CreateEmptyFolder(std::string folderName, std::string folderPath)

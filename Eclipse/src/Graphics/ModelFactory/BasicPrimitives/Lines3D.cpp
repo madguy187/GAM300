@@ -121,7 +121,11 @@ void Lines3D::CreateVBO()
 
 void Lines3D::CreateEBO()
 {
-
+    glCreateBuffers(1, &eboID);
+    glNamedBufferStorage(eboID, sizeof(GLushort) * PosVec.size(),
+        reinterpret_cast<GLvoid*>(PosVec.data()), GL_DYNAMIC_STORAGE_BIT);
+    glVertexArrayElementBuffer(vaoID, eboID);
+    glBindVertexArray(0);
 }
 
 void Lines3D::CreateBuffers()

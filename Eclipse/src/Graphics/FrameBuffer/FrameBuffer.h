@@ -17,6 +17,7 @@ namespace Eclipse
 
     class FrameBuffer
     {
+
     private:
         struct FramebufferData
         {
@@ -39,6 +40,7 @@ namespace Eclipse
         std::string getStringForEnum(int enum_val);
 
     public:
+        FrameBuffer() {};
         FrameBuffer(const glm::uvec2& p_size, FrameBufferMode in);
         FrameBuffer(unsigned int p_width, unsigned int p_height, FrameBufferMode in);
         ~FrameBuffer();
@@ -56,6 +58,26 @@ namespace Eclipse
         void Resize(unsigned width, unsigned height);
         static void ShowWindow(FrameBuffer g, const char* input);
         void CreateFrameBuffer(unsigned int p_width, unsigned int p_height);
+
+
+    public:
+        // POST PROCESS HERE ==========================
+        enum class PostProcessType : unsigned int
+        {
+            PPT_NONE = 0,
+            PPT_INVERSE = 1,
+            PPT_GREY = 2,
+            PPT_KERNEL = 3,
+            PPT_BLUR = 4,
+            PPT_MAXCOUNT
+        };
+
+        PostProcessType PPType_ = PostProcessType::PPT_NONE;
+        bool AllowPostProcess = false;
+        unsigned int rectVAO = 0;
+        unsigned int rectVBO = 0;
+        void CreatePostProcessFramebuffer();
+        void UpdatePP();
     };
 }
 #endif//FRAMEBUFFER_H
