@@ -172,12 +172,6 @@ namespace Eclipse
 			engine->MaterialManager.DoNotUpdateStencil();
 			engine->gDebugManager.DrawDebugShapes(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
 
-			/*************************************************************************
-			  Render Without Stencer , Instanced Debug Boxes to Scene View
-			*************************************************************************/
-			engine->MaterialManager.DoNotUpdateStencil();
-			engine->GraphicsManager.DrawDebugBoxes();
-
 			engine->MaterialManager.StencilBufferClear();
 		}
 

@@ -306,9 +306,8 @@ namespace Eclipse
             // RENDERSYSTEM =============================
             world.Update<RenderSystem>();
 
-            // GRID DRAW ================================ 
-            engine->GraphicsManager.DrawEntireGrid(); 
-            engine->GraphicsManager.PostProcessUpdate();
+            // Final DRAW ================================ 
+            engine->GraphicsManager.FinalRender();
 
             if (IsScenePlaying())
             {

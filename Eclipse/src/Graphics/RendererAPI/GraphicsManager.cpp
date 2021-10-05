@@ -446,8 +446,22 @@ namespace Eclipse
 		mRenderContext.SetClearColor({ BackGroundColour.getX(),  BackGroundColour.getY(),  BackGroundColour.getZ(), 1.0f });
 	}
 
+	void Eclipse::GraphicsManager::FinalRender()
+	{
+		engine->MaterialManager.DoNotUpdateStencil();
+		DrawDebugBoxes();
+
+		engine->MaterialManager.DoNotUpdateStencil();
+		engine->GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
+
+		PostProcessUpdate();
+	}
+
 	void Eclipse::GraphicsManager::DrawEntireGrid()
 	{
+		engine->MaterialManager.DoNotUpdateStencil();
+		engine->GraphicsManager.DrawDebugBoxes();
+
 		engine->GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
 	}
 

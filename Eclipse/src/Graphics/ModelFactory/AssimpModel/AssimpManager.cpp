@@ -41,7 +41,7 @@ namespace Eclipse
 		{
 			if (Prefabs.find(ModelName) == Prefabs.end())
 			{
-				auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
+				auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_MODEL);
 				// Cannot Find this as a parent
 				std::string Name = ModelName;
 				engine->world.AddComponent(MeshID, MeshComponent{});
@@ -62,7 +62,7 @@ namespace Eclipse
 				for (int i = 0; i < Prefabs[NameOfFolder].size(); i++)
 				{
 					auto& name = Prefabs[NameOfFolder][i];
-					auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
+					auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_MODEL);
 
 					engine->world.AddComponent(MeshID, MeshComponent{});
 					engine->world.AddComponent(MeshID, ModelComponent{});
@@ -87,6 +87,7 @@ namespace Eclipse
 		{
 			if (engine->GraphicsManager.CheckFrameBuffer(FrameBufferID, FrameBufferMode::FBM_SCENE))
 			{
+				//engine->MaterialManager.DoNotUpdateStencil();
 				shdrpgm = Graphics::shaderpgms["EnvironmentMap"];
 				shdrpgm.Use();
 				GLuint view = shdrpgm.GetLocation("view");

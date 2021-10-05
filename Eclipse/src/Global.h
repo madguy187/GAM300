@@ -87,6 +87,7 @@ enum class EntityType
     ENT_LIGHT_SPOT,
     // ADD ON LIGHTS HERE
     ENT_GAMECAMERA,
+    ENT_MODEL,
     ENT_UNASSIGNED
 };
 

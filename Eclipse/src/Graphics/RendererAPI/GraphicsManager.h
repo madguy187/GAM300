@@ -17,71 +17,72 @@
 
 namespace Eclipse
 {
-    class GraphicsManager
-    {
-    public:
-        OpenGL_Context mRenderContext;
-        std::vector<AssimpModel*> ModelContainer;
-        InputWrapper InputHandler;
-        GLenum GlobalMode = GL_FILL;
-        std::unique_ptr<CubeMap> Sky;
-        AABB_ AllAABBs;
-        std::unique_ptr<Quad> GridQuad;
+	class GraphicsManager
+	{
+	public:
+		OpenGL_Context mRenderContext;
+		std::vector<AssimpModel*> ModelContainer;
+		InputWrapper InputHandler;
+		GLenum GlobalMode = GL_FILL;
+		std::unique_ptr<CubeMap> Sky;
+		AABB_ AllAABBs;
+		std::unique_ptr<Quad> GridQuad;
 
-        unsigned int createdID;
-        unsigned int SkyCount = 0;
-        bool CheckRender = true;
-        bool EnableGammaCorrection = true;
-        bool DrawSky = true;
-        float GammaCorrection = 2.2f;
-        ECVec3 BackGroundColour{ 0.1f,0.2f,0.3f };
-        float Exposure = 1.0f;
+		unsigned int createdID;
+		unsigned int SkyCount = 0;
+		bool CheckRender = true;
+		bool EnableGammaCorrection = true;
+		bool DrawSky = true;
+		float GammaCorrection = 2.2f;
+		ECVec3 BackGroundColour{ 0.1f,0.2f,0.3f };
+		float Exposure = 1.0f;
 
-        // Seperate FBO for Post Process
-        std::unique_ptr<FrameBuffer> PostProcess;
+		// Seperate FBO for Post Process
+		std::unique_ptr<FrameBuffer> PostProcess;
 
-    public:
-        std::map<std::string, std::vector<std::string>> ShaderMap;
-        std::unordered_map<std::string, std::unique_ptr<std::thread>> GraphicThreads;
+	public:
+		std::map<std::string, std::vector<std::string>> ShaderMap;
+		std::unordered_map<std::string, std::unique_ptr<std::thread>> GraphicThreads;
 
-        void MassInit();
-        void RegisterThreads();
-        void Pre_Render();
-        void Post_Render();
-        void End();
-        void Unload();
-        void GlobalFrmeBufferDraw();
-        void GlobalFrameBufferBind();
-        void Draw(unsigned int FrameBufferID, MeshComponent* _spritecomponent, GLenum mode, unsigned int ID, CameraComponent::CameraType _camType);
-        void DrawIndexed(MeshComponent* in, GLenum mode);
-        void CheckTexture(unsigned int ID);
-        void CreatePrimitives(Entity ID, int ModelType);
-        void CreateSky(std::string _Dir);
-        static void LoadSky();
-        void RenderSky(unsigned int FrameBufferID);
-        void DebugPrintFrameBuffers();
-        float GetGammaCorrection();
-        void SetGammaCorrection(float in);
-        void UploadGlobalUniforms();
-        void CheckUniformLoc(Shader* _shdrpgm, MeshComponent& sprite, unsigned int id, unsigned int framebufferID, CameraComponent& camera);
-        void ResetInstancedDebugBoxes();
-        void DrawDebugBoxes();
-        std::string GetModelName(unsigned int modelname);
-        unsigned int GetFrameBufferID(FrameBufferMode mode);
-        unsigned int GetTextureID(FrameBufferMode mode);
-        RenderMode GetRenderMode(FrameBufferMode mode);
-        static void WindowCloseCallback(GLFWwindow* window);
-        void SetBackGroundColour();
-        void DrawEntireGrid();
-        bool CheckFrameBuffer(unsigned int ID, FrameBufferMode mode);
-        void PostProcessUpdate();
+		void MassInit();
+		void RegisterThreads();
+		void Pre_Render();
+		void Post_Render();
+		void End();
+		void Unload();
+		void GlobalFrmeBufferDraw();
+		void GlobalFrameBufferBind();
+		void Draw(unsigned int FrameBufferID, MeshComponent* _spritecomponent, GLenum mode, unsigned int ID, CameraComponent::CameraType _camType);
+		void DrawIndexed(MeshComponent* in, GLenum mode);
+		void CheckTexture(unsigned int ID);
+		void CreatePrimitives(Entity ID, int ModelType);
+		void CreateSky(std::string _Dir);
+		static void LoadSky();
+		void RenderSky(unsigned int FrameBufferID);
+		void DebugPrintFrameBuffers();
+		float GetGammaCorrection();
+		void SetGammaCorrection(float in);
+		void UploadGlobalUniforms();
+		void CheckUniformLoc(Shader* _shdrpgm, MeshComponent& sprite, unsigned int id, unsigned int framebufferID, CameraComponent& camera);
+		void ResetInstancedDebugBoxes();
+		void DrawDebugBoxes();
+		std::string GetModelName(unsigned int modelname);
+		unsigned int GetFrameBufferID(FrameBufferMode mode);
+		unsigned int GetTextureID(FrameBufferMode mode);
+		RenderMode GetRenderMode(FrameBufferMode mode);
+		static void WindowCloseCallback(GLFWwindow* window);
+		void SetBackGroundColour();
+		void FinalRender();
+		void DrawEntireGrid();
+		bool CheckFrameBuffer(unsigned int ID, FrameBufferMode mode);
+		void PostProcessUpdate();
 
-    private:
-        static void CreateCompilerFolders();
-        void UpdateFrameBuffer();
-        void FrameBufferDraw();
-        static void CreateEmptyFolder(std::string folderName, std::string folderPath = "..//Compiler//CompilerKeyFiles\\");
-    };
+	private:
+		static void CreateCompilerFolders();
+		void UpdateFrameBuffer();
+		void FrameBufferDraw();
+		static void CreateEmptyFolder(std::string folderName, std::string folderPath = "..//Compiler//CompilerKeyFiles\\");
+	};
 }
 
 #endif

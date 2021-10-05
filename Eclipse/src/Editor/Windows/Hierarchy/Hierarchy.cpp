@@ -48,15 +48,15 @@ namespace Eclipse
         if (engine->gEngineCompiler->AreAllCompiled())
         {
             ComboListSettings settingsss = { "Models Testing" };
-            std::vector<std::string> hiDarrenVector = engine->AssimpManager.GetMeshNames();
+            std::vector<std::string> MeshContainer = engine->AssimpManager.GetMeshNames();
             static size_t comboindex = 0;
-            ECGui::CreateComboList(settingsss, hiDarrenVector, comboindex);
+            ECGui::CreateComboList(settingsss, MeshContainer, comboindex);
 
             bool selected = false;
 
-            if (ECGui::CreateSelectableButton(hiDarrenVector[comboindex].c_str(), &selected))
+            if (ECGui::CreateSelectableButton(MeshContainer[comboindex].c_str(), &selected))
             {
-                engine->AssimpManager.CreateModel(0, hiDarrenVector[comboindex].c_str());
+                engine->AssimpManager.CreateModel(0, MeshContainer[comboindex].c_str());
             }
         }
         /// ///////////////////
