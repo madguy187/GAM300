@@ -343,6 +343,7 @@ namespace Eclipse
 		ImGui::TextWrapped("%s ", varname);
 	}
 
+
 	bool ImGuiAPI::InputInt(const char* name, int* var, bool hideName, int snapValue)
 	{
 		std::string finalID = HideWidgetName(name, hideName);
@@ -618,6 +619,11 @@ namespace Eclipse
 	bool ImGuiAPI::ColorPicker3(const char* label, float col[3], ImGuiColorEditFlags flags)
 	{
 		return ImGui::ColorPicker3(label,col, flags);
+	}
+
+	void ImGuiAPI::Dummy(const ImVec2& size)
+	{
+		ImGui::Dummy(size);
 	}
 
 	void ImGuiAPI::PlotHistogram(const char* label, const float* values, int values_count, int values_offset, const char* overlay_text, float scale_min, float scale_max, ImVec2 graph_size, int stride)

@@ -620,6 +620,11 @@ namespace Eclipse
 		ImGuiAPI::PopID();
 	}
 
+	void ECGui::Dummy(const ImVec2& size)
+	{
+		ImGuiAPI::Dummy(size);
+	}
+
 	bool ECGui::ColorPicker3(const char* label, float col[3], ImGuiColorEditFlags flags)
 	{
 		return ImGuiAPI::ColorPicker3(label, col, flags);

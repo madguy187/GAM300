@@ -85,6 +85,12 @@ namespace Eclipse
 		static void Text(const char* varname);
 		static void TextWrapped(const char* varname);
 
+		template <typename T>
+		static void TextColored(const ImVec4& col, const char* varname, const T& data)
+		{
+			ImGui::TextColored(col, varname, data);
+		}
+
 		// Manipulate Variables
 		static bool InputInt(const char* name, int* var, bool hideName = true, int snapValue = 0);
 		static bool InputFloat(const char* name, float* var, bool hideName = true, float snapValue = 0.0f);
@@ -154,6 +160,7 @@ namespace Eclipse
 		static void PushID(const void* ptr_id);
 		static void PushID(int int_id);
 		static void PopID();
+		static void Dummy(const ImVec2& size);
 		static bool ColorPicker3(const char* label, float col[3], ImGuiColorEditFlags flags = 0);
 		//Plot Widgets
 		static void Image(ImTextureID user_texture_id, const ImVec2& size,

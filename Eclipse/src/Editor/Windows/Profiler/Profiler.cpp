@@ -47,8 +47,8 @@ namespace Eclipse
 	{
 		//static float* pvalues= &PerformanceTimer::timeContainer[SystemName::egame][0] ;
 		ECGui::BeginChildWindow({ "System Performance",ImVec2(0,800),true });
-		ImGui::Dummy(ImVec2(0.0f, 10.0f));
-		ImGui::TextColored(ImVec4(0.9f, 0.6f, 0.1f, 1.0f), "FPS: %.2f", GetFPS());
+		ECGui::Dummy(ImVec2(0.0f, 10.0f));
+		ECGui::TextColored(ImVec4(0.9f, 0.6f, 0.1f, 1.0f), "FPS: %.2f", GetFPS());
 		ECGui::InsertHorizontalLineSeperator();
 		//ImGui::Columns(2, NULL, true);
 
@@ -129,9 +129,9 @@ namespace Eclipse
 		std::stringstream stream;
 		float temp = value / ProfilerWindow::engine_time * 100.f;
 		stream << std::fixed << std::setprecision(2) << temp;
-		std::string tempstr = { "CUP USAGE :" };
-		tempstr += stream.str() + "%";
-		ImGui::TextColored(ImVec4(0.9f, 0.6f, 0.1f, 1.0f), tempstr.c_str());
+		std::string tempstr = { "CPU USAGE :" };
+		tempstr += stream.str() + "%%";
+		ECGui::TextColored(ImVec4(0.9f, 0.6f, 0.1f, 1.0f), tempstr.c_str(), std::placeholders::_1);
 	}
 }
 	

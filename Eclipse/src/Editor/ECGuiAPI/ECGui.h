@@ -232,6 +232,12 @@ namespace Eclipse
 			ImGuiAPI::TextWrapped(varname);
 		}
 
+		template<typename T>
+		static void TextColored(const ImVec4& col, const char* varname, const T& data)
+		{
+			ImGuiAPI::TextColored(col,varname,data);
+		}
+
 		static void TextUnformatted(const char* text, const char* text_end = NULL);
 
 		// Supports Int and float only
@@ -314,6 +320,7 @@ namespace Eclipse
 		static void PushID(const void* ptr_id);
 		static void PushID(int int_id);
 		static void PopID();
+		static void Dummy(const ImVec2& size);
 		static bool ColorPicker3(const char* label, float col[3], ImGuiColorEditFlags flags = 0);
 
 
