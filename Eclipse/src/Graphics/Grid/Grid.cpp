@@ -161,7 +161,7 @@ namespace Eclipse
 
 		ShaderRef = &(Graphics::shaderpgms["Grid"]);
 
-		if (WholeGrid != nullptr && CalculateGridSettings() && CalculateGridCoordinates())
+		if (WholeGrid != nullptr && CalculateGridSettings())
 		{
 			EDITOR_LOG_INFO("Grid Created");
 		}

@@ -115,13 +115,6 @@ namespace Eclipse
 				}
 				else
 				{
-
-					//engine->MaterialManager.UpdateStencilWithActualObject(entityID);
-					//engine->AssimpManager.TestMeshDraw(Mesh, entityID,
-					//	engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE),
-					//	engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_SCENE),
-					//	&engine->GraphicsManager.AllAABBs, CameraComponent::CameraType::Editor_Camera);
-
 					/*************************************************************************
 					  Render Models to SceneView
 					*************************************************************************/

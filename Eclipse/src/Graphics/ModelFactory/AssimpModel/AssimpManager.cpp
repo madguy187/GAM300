@@ -91,10 +91,12 @@ namespace Eclipse
 				GLuint view = shdrpgm.GetLocation("view");
 				GLuint cameraPos = shdrpgm.GetLocation("cameraPos");
 				GLint projection = shdrpgm.GetLocation("projection");
+				GLint TypeOfMap = shdrpgm.GetLocation("Type");
 
 				glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
 				glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
 				GLCall(glUniform3f(cameraPos, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ()));
+				glUniform1i(TypeOfMap, static_cast<GLint>(ModelMesh.ENV_TYPE));
 			}
 		}
 

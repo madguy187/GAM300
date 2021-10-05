@@ -448,9 +448,23 @@ namespace Eclipse
 			{
 				auto& _Mesh = engine->world.GetComponent<MeshComponent>(ID);
 
+				ECGui::DrawTextWidget<const char*>("Model Name: ", "");
+				ECGui::InsertSameLine();
+				ECGui::DrawTextWidget<const char*>(_Mesh.MeshName.data(), "");
+
 				ECGui::DrawTextWidget<const char*>("Environment Map", "");
-				ImGui::NextColumn();
+				ECGui::InsertSameLine();
 				ECGui::CheckBoxBool("Environment Map", &_Mesh.ENV_MAP);
+
+				if (_Mesh.ENV_MAP)
+				{
+					static size_t comboindex = 0;
+					std::vector<std::string> MapVector = { "REFLECT", "REFRACT" };
+					ComboListSettings settings = { "Map Type" };
+					ECGui::DrawTextWidget<const char*>("Map Type", "");
+					ECGui::CreateComboList(settings, MapVector, comboindex);
+					_Mesh.ENV_TYPE = static_cast<MeshComponent::MapType>(comboindex);
+				}
 			}
 		}
 		return false;

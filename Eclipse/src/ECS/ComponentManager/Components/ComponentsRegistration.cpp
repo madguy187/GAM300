@@ -139,6 +139,7 @@ namespace Eclipse
         ADD_MEMBER(shaderRef);
         ADD_MEMBER(transparency);
         ADD_MEMBER(ENV_MAP);
+        ADD_MEMBER(ENV_TYPE);
     }
 
     DEFINE_META(ModelComponent)
@@ -256,4 +257,5 @@ namespace Eclipse
     DEFINE_META_POD(EntityType);
     DEFINE_META_POD(TextureType);
     DEFINE_META_POD(MaterialModelType);
+    //DEFINE_META_POD(MeshComponent::MapType);
 }
