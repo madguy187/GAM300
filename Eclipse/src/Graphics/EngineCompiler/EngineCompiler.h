@@ -33,7 +33,7 @@ namespace Eclipse
 		static void RunCompiler();
 		void LoadCompilers();
 		bool OpenFile(std::fstream& FileIn, std::string& Path);
-		void CloseFile(std::fstream& FileIn, std::string& FileName);
+		void CloseFile(std::fstream& FileIn, std::string& FileName , unsigned int ContainerSize);
 	public:
 		EngineCompiler();
 		bool IsGeometryCompiled();

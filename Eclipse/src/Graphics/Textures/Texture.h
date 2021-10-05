@@ -34,7 +34,6 @@ namespace Eclipse
         //unsigned int Id;
         unsigned int Type; //aiTextureType
         std::string Directory;
-        unsigned int id = 0;
 
         // 2D Textures =============================
     public:
