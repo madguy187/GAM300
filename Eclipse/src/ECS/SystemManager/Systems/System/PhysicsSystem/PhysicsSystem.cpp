@@ -5,7 +5,7 @@ void PhysicsSystem::Update()
 {
 
 	engine->Timer.SetName({ SystemName::PHYSICS });
-	engine->Timer.tracker.system_start = glfwGetTime();
+	engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
 	for (auto const& entity : mEntities)
 	{
@@ -23,6 +23,6 @@ void PhysicsSystem::Update()
 		engine->gPhysics.GetActorPosition(entity);
 	}
 
-	engine->Timer.tracker.system_end = glfwGetTime();
+	engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());
 	engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
 }

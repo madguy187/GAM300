@@ -6,6 +6,9 @@ void AIManager::patrol(Entity ent)
 	if (!AI.patrolling || AI.waypoints.empty())
 		return;
 	auto& transform = engine->world.GetComponent<TransformComponent>(ent);
+	if(engine->world.CheckComponent<TransformComponent>(AI.waypoints[AI.target]))
+		RemoveDeletedWaypoints(ent, AI.waypoints[AI.target]);
+
 	auto& targettransform = engine->world.GetComponent<TransformComponent>(AI.waypoints[AI.target]);
 	auto& rigidbody = engine->world.GetComponent<RigidBodyComponent>(ent);
 
@@ -33,12 +36,23 @@ void AIManager::patrol(Entity ent)
 void AIManager::AddWaypoint(Entity AItoaddto, Entity waypointent)
 {
 	auto& AI = engine->world.GetComponent<AIComponent>(AItoaddto);
-	AI.waypoints.push_back(waypointent);
+	if(std::find(AI.waypoints.begin(),AI.waypoints.end(),waypointent) != AI.waypoints.end())
+		AI.waypoints.push_back(waypointent);
 }
 
 void AIManager::AddTargetPointEntity(Entity ent)
 {
 	TargetPoints.push_back(ent);
+}
+
+void AIManager::RemoveDeletedWaypoints(Entity ent,Entity deleteent)
+{
+	auto& AI = engine->world.GetComponent<AIComponent>(ent);
+	AI.waypoints.erase(std::remove(AI.waypoints.begin(), AI.waypoints.end(), deleteent), AI.waypoints.end());
+	if (AI.target >= AI.waypoints.size() - 1)
+		AI.target = 0;
+	else
+		AI.target++;
 }
 
 const std::vector<Entity>& AIManager::GetTargetPoints()
