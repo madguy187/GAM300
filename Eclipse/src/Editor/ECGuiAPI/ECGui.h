@@ -132,6 +132,9 @@ namespace Eclipse
 		static void EndPopup();
 		static bool BeginPopupModal(const char* name, bool* p_open = NULL, ImGuiWindowFlags flags = 0);
 		static void CloseCurrentPopup();
+		static bool BeginComboList(const char* name, const char* previewCurrent, bool hideName = true,
+			ImGuiComboFlags flags = 0);
+		static void EndComboList();
 
 		/*************************************************************************/
 		/*                           Static Widgets                              */

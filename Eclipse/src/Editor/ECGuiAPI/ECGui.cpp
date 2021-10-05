@@ -189,6 +189,16 @@ namespace Eclipse
 		ImGuiAPI::CloseCurrentPopup();
 	}
 
+	bool ECGui::BeginComboList(const char* name, const char* previewCurrent, bool hideName, ImGuiComboFlags flags)
+	{
+		return ImGuiAPI::BeginComboList(name, previewCurrent, hideName, flags);
+	}
+
+	void ECGui::EndComboList()
+	{
+		ImGuiAPI::EndComboList();
+	}
+
 	bool ECGui::DrawDataHeader(const char* varname, ImGuiTextFilter& filter)
 	{
 		if (filter.PassFilter(varname))

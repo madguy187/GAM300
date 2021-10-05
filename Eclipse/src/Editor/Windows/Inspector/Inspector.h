@@ -29,6 +29,7 @@ namespace Eclipse
 		bool ShowAudioProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowCollisionProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowPrefebProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowAIProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 
 		void AddComponentsController(Entity ID);
 		void RemoveComponentsController(Entity ID);
@@ -42,7 +43,8 @@ namespace Eclipse
 		void MeshList(Entity ID);
 
 		void SimulateAudio(Entity ID, AudioComponent& audioCom);
-		
+		void AddWaypointController(std::string& currentSelection);
+
 		template <typename TComponents>
 		void AddComponentsFeedback(const char* Components, const std::string& name, Entity ID, bool exist);
 		

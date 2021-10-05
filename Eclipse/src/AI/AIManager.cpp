@@ -33,3 +33,13 @@ void AIManager::AddWaypoint(Entity AItoaddto, Entity waypointent)
 	auto& AI = engine->world.GetComponent<AIComponent>(AItoaddto);
 	AI.waypoints.push_back(waypointent);
 }
+
+void AIManager::AddTargetPointEntity(Entity ent)
+{
+	TargetPoints.push_back(ent);
+}
+
+const std::vector<Entity>& AIManager::GetTargetPoints()
+{
+	return TargetPoints;
+}

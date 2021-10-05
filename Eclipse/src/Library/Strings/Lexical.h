@@ -127,6 +127,7 @@ namespace Eclipse
         "DirectionalLight",
         "SpotLight",
         "Camera",
+        "TargetPoint",
         "NULL"
     };
     
