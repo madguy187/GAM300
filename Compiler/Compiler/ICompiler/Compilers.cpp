@@ -136,18 +136,35 @@ namespace EclipseCompiler
 
     void CompilerManager::Initialise()
     {
-        for (auto& i : AllCompilerContainer)
+        //for (auto& i : AllCompilerContainer)
+        //{
+        //    i->Init();
+        //}
+
+        CompilerThreads.emplace("InitGeometry", std::make_unique<std::thread>(std::thread{ &CompilerManager::InitGeometry }));
+        CompilerThreads.emplace("InitTextures", std::make_unique<std::thread>(std::thread{ &CompilerManager::InitTextures }));
+        CompilerThreads.emplace("InitPrefabs", std::make_unique<std::thread>(std::thread{ &CompilerManager::InitPrefabs }));
+
+        for (auto& i : CompilerThreads)
         {
-            i->Init();
+            i.second->join();
         }
+
+        CompilerThreads.clear();
     }
 
     void CompilerManager::ProduceFile()
     {
-        for (auto& i : AllCompilerContainer)
+        CompilerThreads.emplace("ReleaseGeometry", std::make_unique<std::thread>(std::thread{ &CompilerManager::ReleaseGeometry }));
+        CompilerThreads.emplace("ReleaseTextures", std::make_unique<std::thread>(std::thread{ &CompilerManager::ReleaseTextures }));
+        CompilerThreads.emplace("ReleasePrefabs", std::make_unique<std::thread>(std::thread{ &CompilerManager::ReleasePrefabs }));
+
+        for (auto& i : CompilerThreads)
         {
-            i->ReleaseFile();
+            i.second->join();
         }
+
+        CompilerThreads.clear();
     }
 
     void CompilerManager::ReadFile(std::string& in)
@@ -156,5 +173,35 @@ namespace EclipseCompiler
         {
             i->ReadFile(in);
         }
+    }
+
+    void CompilerManager::InitGeometry()
+    {
+        AllCompilerContainer[0]->Init();
+    }
+
+    void CompilerManager::InitTextures()
+    {
+        AllCompilerContainer[1]->Init();
+    }
+
+    void CompilerManager::InitPrefabs()
+    {
+        AllCompilerContainer[2]->Init();
+    }
+
+    void CompilerManager::ReleaseGeometry()
+    {
+        AllCompilerContainer[0]->ReleaseFile();
+    }
+
+    void CompilerManager::ReleaseTextures()
+    {
+        AllCompilerContainer[1]->ReleaseFile();
+    }
+
+    void CompilerManager::ReleasePrefabs()
+    {
+        AllCompilerContainer[2]->ReleaseFile();
     }
 }

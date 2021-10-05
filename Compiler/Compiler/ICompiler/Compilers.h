@@ -1,4 +1,5 @@
 #pragma once
+#include <thread>
 
 namespace EclipseCompiler
 {
@@ -29,12 +30,20 @@ namespace EclipseCompiler
     class CompilerManager
     {
     private:
-        std::vector<ICompiler*> AllCompilerContainer;
+        static inline std::vector<ICompiler*> AllCompilerContainer;
+        static inline std::unordered_map<std::string, std::unique_ptr<std::thread>> CompilerThreads;
 
     public:
         void Register(ICompiler& in);
         void Initialise();
         void ProduceFile();
         void ReadFile(std::string& in);
+
+        static void InitGeometry();
+        static void InitTextures();
+        static void InitPrefabs();
+        static void ReleaseGeometry();
+        static void ReleaseTextures();
+        static void ReleasePrefabs();
     };
 }
