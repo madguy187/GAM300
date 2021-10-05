@@ -750,7 +750,8 @@ namespace Eclipse
 
                 if (ECGui::ButtonBool("Register"))
                 {
-                    engine->gAI.AddWaypoint(ID, lexical_cast<Entity>(registeredEnt));
+                    if(registeredEnt != EMPTY_STRING)
+                        engine->gAI.AddWaypoint(ID, lexical_cast<Entity>(registeredEnt));
                 }
             }
         }

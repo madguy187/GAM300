@@ -345,6 +345,7 @@ namespace Eclipse
 	
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setGlobalPose(PxTransform{ temptrans,temprot});
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setForceAndTorque(tempforce, { 0,0,0 });
+			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setMaxLinearVelocity(static_cast<PxReal>(rigid.MaxVelocity));
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setMass(rigid.mass);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setActorFlag(PxActorFlag::eDISABLE_GRAVITY,rigid.enableGravity ? false : true);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setAngularVelocity(tempangVelo);

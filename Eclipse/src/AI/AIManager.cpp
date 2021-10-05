@@ -3,6 +3,8 @@
 void AIManager::patrol(Entity ent)
 {
 	auto& AI = engine->world.GetComponent<AIComponent>(ent);
+	if (!AI.patrolling || AI.waypoints.empty())
+		return;
 	auto& transform = engine->world.GetComponent<TransformComponent>(ent);
 	auto& targettransform = engine->world.GetComponent<TransformComponent>(AI.waypoints[AI.target]);
 	auto& rigidbody = engine->world.GetComponent<RigidBodyComponent>(ent);
