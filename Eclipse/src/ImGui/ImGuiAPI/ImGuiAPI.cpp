@@ -46,6 +46,11 @@ namespace Eclipse
 		return ImGui::GetCursorScreenPos();
 	}
 
+	ImVec2 ImGuiAPI::GetContentRegionAvail()
+	{
+		return ImGui::GetContentRegionAvail();
+	}
+
 	float ImGuiAPI::GetWindowHeight()
 	{
 		return ImGui::GetWindowHeight();
@@ -96,9 +101,39 @@ namespace Eclipse
 		ImGui::SetColumnOffset(column_index, offset_x);
 	}
 
+	void ImGuiAPI::NextColumn()
+	{
+		ImGui::NextColumn();
+	}
+
+	void ImGuiAPI::SetNextItemOpen(bool is_open, ImGuiCond cond)
+	{
+		ImGui::SetNextItemOpen(is_open, cond);
+	}
+
+	ImGuiStyle& ImGuiAPI::GetStyle()
+	{
+		return ImGui::GetStyle();
+	}
+
 	ImGuiViewport* ImGuiAPI::GetMainViewport()
 	{
 		return  ImGui::GetMainViewport();
+	}
+
+	ImDrawList* ImGuiAPI::GetWindowDrawList()
+	{
+		return ImGui::GetWindowDrawList();
+	}
+
+	ImVec2 ImGuiAPI::GetItemRectMin()
+	{
+		return ImGui::GetItemRectMin();
+	}
+
+	ImVec2 ImGuiAPI::GetItemRectMax()
+	{
+		return ImGui::GetItemRectMax();
 	}
 
 	bool ImGuiAPI::BeginPopUpButtonList(const char* name, const char* id)
@@ -174,6 +209,11 @@ namespace Eclipse
 	void ImGuiAPI::EndTreeNode()
 	{
 		ImGui::TreePop();
+	}
+
+	bool ImGuiAPI::BeginPopupContextWindow(const char* str_id, ImGuiMouseButton mb, bool over_items)
+	{
+		return ImGui::BeginPopupContextWindow(str_id, mb, over_items);
 	}
 
 	void ImGuiAPI::OpenPopup(const char* str_id, ImGuiPopupFlags popup_flags)
@@ -298,6 +338,11 @@ namespace Eclipse
 		ImGui::Text("%s ", varname);
 	}
 
+	void ImGuiAPI::TextWrapped(const char* varname)
+	{
+		ImGui::TextWrapped("%s ", varname);
+	}
+
 	bool ImGuiAPI::InputInt(const char* name, int* var, bool hideName, int snapValue)
 	{
 		std::string finalID = HideWidgetName(name, hideName);
@@ -398,6 +443,16 @@ namespace Eclipse
 	bool ImGuiAPI::ButtonBool(const char* name, const ImVec2& size)
 	{
 		return ImGui::Button(name, size);
+	}
+
+	bool ImGuiAPI::SmallButton(const char* label)
+	{
+		return ImGui::SmallButton(label);
+	}
+
+	bool ImGuiAPI::ImageButton(ImTextureID user_texture_id, const ImVec2& size, const ImVec2& uv0, const ImVec2& uv1, int frame_padding, const ImVec4& bg_col, const ImVec4& tint_col)
+	{
+		return ImGui::ImageButton(user_texture_id, size, uv0, uv1, frame_padding, bg_col, tint_col);
 	}
 
 	bool ImGuiAPI::BeginDragDropSource()
@@ -510,9 +565,9 @@ namespace Eclipse
 		ImGui::PushStyleColor(idx, col);
 	}
 
-	void ImGuiAPI::PopStyleColor()
+	void ImGuiAPI::PopStyleColor(int count)
 	{
-		ImGui::PopStyleColor();
+		ImGui::PopStyleColor(count);
 	}
 
 	void ImGuiAPI::Image(ImTextureID user_texture_id, const ImVec2& size, const ImVec2& uv0, const ImVec2& uv1, const ImVec4& tint_col, const ImVec4& border_col)
@@ -528,6 +583,31 @@ namespace Eclipse
 	bool ImGuiAPI::IsItemClicked(ImGuiMouseButton mouse_button)
 	{
 		return ImGui::IsItemClicked(mouse_button);
+	}
+
+	void ImGuiAPI::PushID(const char* str_id)
+	{
+		ImGui::PushID(str_id);
+	}
+
+	void ImGuiAPI::PushID(const char* str_id_begin, const char* str_id_end)
+	{
+		ImGui::PushID(str_id_begin, str_id_end);
+	}
+
+	void ImGuiAPI::PushID(const void* ptr_id)
+	{
+		ImGui::PushID(ptr_id);
+	}
+
+	void ImGuiAPI::PushID(int int_id)
+	{
+		ImGui::PushID(int_id);
+	}
+
+	void ImGuiAPI::PopID()
+	{
+		ImGui::PopID();
 	}
 
 	void ImGuiAPI::PlotHistogram(const char* label, const float* values, int values_count, int values_offset, const char* overlay_text, float scale_min, float scale_max, ImVec2 graph_size, int stride)

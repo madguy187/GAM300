@@ -63,7 +63,11 @@ namespace Eclipse
 		static ImVec2 GetWindowSize();
 		static ECVec2 GetWindowPos();
 		static ECVec2 GetCursorScreenPos();
+		static ImVec2 GetContentRegionAvail();
 		static ImGuiViewport* GetMainViewport();
+		static ImDrawList* GetWindowDrawList();
+		static ImVec2 GetItemRectMin();
+		static ImVec2 GetItemRectMax();
 		static float GetWindowHeight();
 		static float GetWindowWidth();
 		static void SetWindowSize(float width, float height);
@@ -130,11 +134,16 @@ namespace Eclipse
 		static bool CreateMenuItem(const char* name, bool* open, const char* shortcut = "");
 		static void OpenPopup(const char* str_id, ImGuiPopupFlags popup_flags = 0);
 		static bool BeginPopup(const char* str_id, ImGuiWindowFlags flags = 0);
+		static bool BeginPopupContextWindow(const char* str_id, ImGuiMouseButton mb, bool over_items);
 		static void EndPopup();
 		static bool BeginPopupModal(const char* name, bool* p_open = NULL, ImGuiWindowFlags flags = 0);
 		static void CloseCurrentPopup();
 		static void SetColumns(int count = 1, const char* id = NULL, bool border = true);
 		static void SetColumnOffset(int column_index, float offset_x);
+		static void NextColumn();
+		static void SetNextItemOpen(bool is_open, ImGuiCond cond = 0);
+		static ImGuiStyle& GetStyle();
+
 
 		/*************************************************************************/
 		/*                           Static Widgets                              */
@@ -217,6 +226,12 @@ namespace Eclipse
 			ImGuiAPI::TextMat4(varname, var);
 		}
 
+		template<typename T>
+		static void DrawTextWrappedWidget(const char* varname, const T&)
+		{
+			ImGuiAPI::TextWrapped(varname);
+		}
+
 		static void TextUnformatted(const char* text, const char* text_end = NULL);
 
 		// Supports Int and float only
@@ -255,6 +270,10 @@ namespace Eclipse
 		// Misc
 		static bool CheckBoxBool(const char* name, bool* var, bool hideName = true);
 		static bool ButtonBool(const char* name, const ImVec2& size = ImVec2(0, 0));
+		static bool SmallButton(const char* label);
+		static bool ImageButton(ImTextureID user_texture_id, const ImVec2& size, const ImVec2& uv0 = ImVec2(0, 0), const ImVec2& uv1 = ImVec2(1, 1),
+			int frame_padding = -1, const ImVec4& bg_col = ImVec4(0, 0, 0, 0), const ImVec4& tint_col = ImVec4(1, 1, 1, 1));
+
 
 		/*************************************************************************/
 		/*                            DRAG & DROP                                */
@@ -286,9 +305,14 @@ namespace Eclipse
 		static void SetScrollY(float scroll_y);
 		static float GetFontSize();
 		static void PushStyleColor(ImGuiCol idx, const ImVec4& col);
-		static void PopStyleColor();
+		static void PopStyleColor(int count = 1);
 		static bool IsMouseDoubleClicked(ImGuiMouseButton button);
 		static bool IsItemClicked(ImGuiMouseButton mouse_button);
+		static void PushID(const char* str_id);
+		static void PushID(const char* str_id_begin, const char* str_id_end);
+		static void PushID(const void* ptr_id);
+		static void PushID(int int_id);
+		static void PopID();
 
 		/*************************************************************************/
 		/*                         Visual Widgets                                */
