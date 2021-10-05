@@ -44,29 +44,11 @@ namespace Eclipse
 		void SetSelectedEntity(Entity ID);
 		void SetGlobalIndex(size_t index);
 
-		//void SaveTemp(const char* fullpath = "Data/Temp/Temp.xml");
-		//void LoadTemp(const char* fullpath = "Data/Temp/Temp.xml");
-
 		template <typename TWindow>
-		TWindow* GetEditorWindow()
-		{
-			TWindow* temp = nullptr;
-
-			for (const auto& window : Windows_)
-			{
-				temp = dynamic_cast<TWindow*>(window.get());
-
-				if (temp)
-					break;
-			}
-
-			return temp;
-		}
-		
+		TWindow* GetEditorWindow();
 		// Cleaning Up
 		void Clear();
 
-		// std::map<const char*, const char*> DataComponentFilter_;
 		DragAndDrop DragAndDropInst_;
 	private:
 		std::vector<std::unique_ptr<ECGuiWindow>> Windows_;
@@ -78,14 +60,33 @@ namespace Eclipse
 		size_t GEHIndex_{ 0 };
 
 		template <typename TWindow>
-		inline void AddWindow(const char* title)
-		{
-			static_assert(std::is_base_of_v<ECGuiWindow, TWindow>, "Type is not an ECGui Window!");
-			Windows_.emplace_back(std::make_unique<TWindow>());
-
-			auto* com = MenuBar_.GetMenuComponent(EditorMenuType::WINDOWS);
-			com->AddItems(title);
-			Size_++;
-		}
+		inline void AddWindow(const char* title);
 	};
+
+	template <typename TWindow>
+	TWindow* EditorManager::GetEditorWindow()
+	{
+		TWindow* temp = nullptr;
+
+		for (const auto& window : Windows_)
+		{
+			temp = dynamic_cast<TWindow*>(window.get());
+
+			if (temp)
+				break;
+		}
+
+		return temp;
+	}
+
+	template <typename TWindow>
+	void EditorManager::AddWindow(const char* title)
+	{
+		static_assert(std::is_base_of_v<ECGuiWindow, TWindow>, "Type is not an ECGui Window!");
+		Windows_.emplace_back(std::make_unique<TWindow>());
+
+		auto* com = MenuBar_.GetMenuComponent(EditorMenuType::WINDOWS);
+		com->AddItems(title);
+		Size_++;
+	}
 }

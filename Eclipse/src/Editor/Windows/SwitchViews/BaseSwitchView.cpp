@@ -29,7 +29,8 @@ namespace Eclipse
 		ImVec2 viewportPanelSize = ECGui::GetWindowSize();
 		int GizmoType = (engine->editorManager->GetEditorWindow<SceneWindow>())->GetGizmoType();
 
-		if (mViewportSize != *((glm::vec2*)&viewportPanelSize))
+		if (mViewportSize.getX() != viewportPanelSize.x ||
+			mViewportSize.getY() != viewportPanelSize.y)
 		{
 			// Resize the framebuffer based on the size of the imgui window
 			//m_frameBuffer->Resize(static_cast<unsigned>(viewportPanelSize.x), static_cast<unsigned>(viewportPanelSize.y));

@@ -21,7 +21,6 @@ namespace Eclipse
     {
         Type = EditorWindowType::EWT_INSPECTOR;
         WindowName = "Inspector";
-        ScriptListGuiTest.push_back(std::string{});
     }
 
     void InspectorWindow::Unload()
