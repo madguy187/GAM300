@@ -4,6 +4,8 @@
 #include "Deserializer.h"
 #include "Reflection/Variant/RefVariant.h"
 #include "ECS//ComponentManager/Components/PrefabComponent.h"
+#include "ECS//ComponentManager/Components/AudioComponent.h"
+#include "ECS//ComponentManager/Components/AIComponent.h"
 
 namespace Eclipse
 {

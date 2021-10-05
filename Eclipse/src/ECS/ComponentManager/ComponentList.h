@@ -20,6 +20,7 @@ namespace Eclipse
 	struct SpotLightComponent;
 	struct TransformComponent;
 	struct PrefabComponent;
+	struct AudioComponent;
 
 	template<typename ...T>
 	struct TypeList
@@ -48,7 +49,8 @@ namespace Eclipse
 		ParentComponent,
 		ChildComponent,
 		CollisionComponent,
-		AIComponent,
+		AudioComponent,
+		AIComponent, 
 		SpotLightComponent,
 		TransformComponent,
 		PrefabComponent

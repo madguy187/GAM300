@@ -100,7 +100,6 @@ namespace Eclipse
     {
         ADD_MEMBER(Tag);
         ADD_MEMBER(Name);
-        ADD_MEMBER(IsActive);
         ADD_MEMBER(Child);
         ADD_MEMBER(Parent);
         ADD_MEMBER(IsAChild);
@@ -116,7 +115,6 @@ namespace Eclipse
         ADD_MEMBER(ambient);
         ADD_MEMBER(diffuse);
         ADD_MEMBER(specular);
-        ADD_MEMBER(Highlight);
         ADD_MEMBER(NoTextures);
         ADD_MEMBER(shininess);
         ADD_MEMBER(MaximumShininess);
@@ -248,7 +246,7 @@ namespace Eclipse
     DEFINE_META_POD(std::string);
     //DEFINE_META_POD(std::vector<std::string>);
     //DEFINE_META_POD(std::vector<Mesh>);
-    //DEFINE_META_POD(std::vector<Texture>);
+    DEFINE_META_POD(std::vector<Texture>);
     //DEFINE_META_POD(std::map<unsigned int, std::vector<Texture>>);
     DEFINE_META_POD(std::vector<Entity>);
     DEFINE_META_POD(MeshComponent::MeshNameType);
@@ -256,7 +254,7 @@ namespace Eclipse
     DEFINE_META_POD(ECVec3);
     DEFINE_META_POD(ECVec4);
     //DEFINE_META_POD(Mesh);
-    //DEFINE_META_POD(Texture);
+    DEFINE_META_POD(Texture);
     DEFINE_META_POD(glm::vec3);
     DEFINE_META_POD(glm::vec4);
     DEFINE_META_POD(glm::mat4);

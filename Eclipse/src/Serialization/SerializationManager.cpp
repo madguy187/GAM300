@@ -53,49 +53,59 @@ namespace Eclipse
 
 	void SerializationManager::SerializeAllComponents(World& w, const Entity& ent)
 	{
-		SerializeComponent<EntityComponent>(w, ent);
-
-		SerializeComponent<CameraComponent>(w, ent);
-		
-		SerializeComponent<DirectionalLightComponent>(w, ent);
-		
-		SerializeComponent<MaterialComponent>(w, ent);
-		
-		SerializeComponent<PointLightComponent>(w, ent);
-		
-		SerializeComponent<MeshComponent>(w, ent);
-
-		SerializeComponent<RigidBodyComponent>(w, ent);
-
-		SerializeComponent<SpotLightComponent>(w, ent);
-
-		SerializeComponent<TransformComponent>(w, ent);
-
 		SerializeComponent<AABBComponent>(w, ent);
 
-		//SerializeComponent<TextureComponent>(w, ent);
+		SerializeComponent<AIComponent>(w, ent);
+		
+		SerializeComponent<AudioComponent>(w, ent);
+
+		SerializeComponent<CameraComponent>(w, ent);
+
+		SerializeComponent<CollisionComponent>(w, ent);
+
+		SerializeComponent<DirectionalLightComponent>(w, ent);
+
+		SerializeComponent<EntityComponent>(w, ent);
 
 		SerializeComponent<LightComponent>(w, ent);
 
+		SerializeComponent<MaterialComponent>(w, ent);
+
+		SerializeComponent<MeshComponent>(w, ent);
+
+		SerializeComponent<ModelComponent>(w, ent);
+
+		SerializeComponent<PointLightComponent>(w, ent);
+
 		SerializeComponent<PrefabComponent>(w, ent);
+		
+		SerializeComponent<RigidBodyComponent>(w, ent);
+		
+		SerializeComponent<SpotLightComponent>(w, ent);
+
+		SerializeComponent<TransformComponent>(w, ent);
 	}
 
 	bool SerializationManager::DeserializeAllComponents(World& w, const Entity& ent, bool PrefabUse)
 	{
 		bool isSuccess = false;
 
-		if (DeserializeComponent<EntityComponent>(w, ent) &&
-			DeserializeComponent<TransformComponent>(w, ent) &&
-			DeserializeComponent<MeshComponent>(w, ent) &&
-			DeserializeComponent<MaterialComponent>(w, ent) &&
-			DeserializeComponent<AABBComponent>(w, ent) &&
-			DeserializeComponent<RigidBodyComponent>(w, ent) &&
+		if (DeserializeComponent<AABBComponent>(w, ent) &&
+			DeserializeComponent<AIComponent>(w, ent) &&
+			DeserializeComponent<AudioComponent>(w, ent) &&
 			DeserializeComponent<CameraComponent>(w, ent) &&
-			DeserializeComponent<PointLightComponent>(w, ent) &&
-			DeserializeComponent<SpotLightComponent>(w, ent) &&
+			DeserializeComponent<CollisionComponent>(w, ent) &&
 			DeserializeComponent<DirectionalLightComponent>(w, ent) &&
+			DeserializeComponent<EntityComponent>(w, ent) &&
 			DeserializeComponent<LightComponent>(w, ent) &&
-			DeserializeComponent<PrefabComponent>(w, ent))
+			DeserializeComponent<MaterialComponent>(w, ent) &&
+			DeserializeComponent<MeshComponent>(w, ent) &&
+			DeserializeComponent<ModelComponent>(w, ent) &&
+			DeserializeComponent<PointLightComponent>(w, ent) &&
+			DeserializeComponent<PrefabComponent>(w, ent) &&
+			DeserializeComponent<RigidBodyComponent>(w, ent) &&
+			DeserializeComponent<SpotLightComponent>(w, ent) &&
+			DeserializeComponent<TransformComponent>(w, ent))
 		{
 			if (!PrefabUse)
 			{

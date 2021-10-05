@@ -129,14 +129,7 @@ namespace Eclipse
 		prefabComp.IsChild = true;
 
 		auto& entComp = prefabW.GetComponent<EntityComponent>(contents[0]);
-		entComp.IsActive = false;
-
-		if (prefabW.CheckComponent<MaterialComponent>(contents[0]))
-		{
-			auto& matComp = prefabW.GetComponent<MaterialComponent>(contents[0]);
-			matComp.Highlight = false;
-		}
-
+		
 		std::string destPath = GenerateFileName(entComp, path);
 		mapPathToID[destPath] =  generatedID;
 		PrefabIDSet.insert(generatedID);
