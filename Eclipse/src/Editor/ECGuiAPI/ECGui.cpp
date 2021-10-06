@@ -184,6 +184,7 @@ namespace Eclipse
 
 	void ECGui::CreateComboList(ComboListSettings settings, const std::vector<std::string>& vecStr, size_t& index)
 	{
+		ENGINE_LOG_ASSERT(index >= vecStr.size(), "Accessing out of the vector's index");
 		const char* combo_label = vecStr[index].c_str();
 		if (ImGuiAPI::BeginComboList(settings.Name, combo_label, settings.HideName, settings.flags))
 		{

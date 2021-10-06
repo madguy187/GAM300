@@ -1237,12 +1237,12 @@ namespace Eclipse
         if (!exist)
         {
             engine->world.AddComponent(ID, TComponents{});
-            std::string Comp = my_strcat(std::string{ Components }, " Added For ", name, ID, " Add Succeed");
+            std::string Comp = my_strcat(Components, " added for ", name, ". Add component succeeded.");
             EDITOR_LOG_INFO(Comp.c_str());
         }
         else
         {
-            std::string Comp = my_strcat(std::string{ Components }, " Already Exists in ", name, ID, " Add Failed");
+            std::string Comp = my_strcat(Components, " already exists in ", name ". Add component failed.");
             EDITOR_LOG_WARN(Comp.c_str());
         }
     }
