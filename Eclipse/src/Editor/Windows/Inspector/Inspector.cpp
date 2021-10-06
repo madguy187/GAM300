@@ -337,22 +337,25 @@ namespace Eclipse
             {
                 auto& _Texture = engine->world.GetComponent<MaterialComponent>(ID);
 
-                std::vector<std::string> _TextureVector = { "TT_UNASSIGNED","TT_2D","BasicPrimitives","TT_3D" };
-
-                std::map<std::string, TextureType> _Map = { {"TT_UNASSIGNED",TextureType::TT_UNASSIGNED}, {"TT_2D",TextureType::TT_2D},
-                                                            {"TT_3D",TextureType::TT_3D} };
-
-                ComboListSettings settings = { "Texture Type" };
-
-                ECGui::DrawTextWidget<const char*>("KEY ID: ", "");
+                ECGui::DrawTextWidget<const char*>("hasTexture", "");
                 ECGui::InsertSameLine();
-                //ECGui::DrawTextWidget<const char*>(std::to_string(_Texture.ID).c_str(), "");
+                ECGui::CheckBoxBool("hasTexture", &_Texture.hasTexture);
 
-                ECGui::DrawTextWidget<const char*>("Texture Type", "");
-                ECGui::CreateComboList(settings, _TextureVector, _Texture.ComboIndex);
-                _Texture.Type = _Map[_TextureVector[_Texture.ComboIndex]];
+                if (_Texture.hasTexture)
+                {
+                    std::vector<std::string> _TextureVector = { "TT_UNASSIGNED","TT_2D","BasicPrimitives","TT_3D" };
 
-                ChangeTextureController(_Texture);
+                    std::map<std::string, TextureType> _Map = { {"TT_UNASSIGNED",TextureType::TT_UNASSIGNED}, {"TT_2D",TextureType::TT_2D},
+                                                                {"TT_3D",TextureType::TT_3D} };
+
+                    ComboListSettings settings = { "Texture Type" };
+
+                    ECGui::DrawTextWidget<const char*>("Texture Type", "");
+                    ECGui::CreateComboList(settings, _TextureVector, _Texture.ComboIndex);
+                    _Texture.Type = _Map[_TextureVector[_Texture.ComboIndex]];
+
+                    ChangeTextureController(_Texture);
+                }
             }
         }
 
