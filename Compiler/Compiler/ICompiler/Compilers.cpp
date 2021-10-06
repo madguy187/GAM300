@@ -136,11 +136,6 @@ namespace EclipseCompiler
 
     void CompilerManager::Initialise()
     {
-        //for (auto& i : AllCompilerContainer)
-        //{
-        //    i->Init();
-        //}
-
         CompilerThreads.emplace("InitGeometry", std::make_unique<std::thread>(std::thread{ &CompilerManager::InitGeometry }));
         CompilerThreads.emplace("InitTextures", std::make_unique<std::thread>(std::thread{ &CompilerManager::InitTextures }));
         CompilerThreads.emplace("InitPrefabs", std::make_unique<std::thread>(std::thread{ &CompilerManager::InitPrefabs }));

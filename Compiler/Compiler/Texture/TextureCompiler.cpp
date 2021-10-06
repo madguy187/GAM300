@@ -78,7 +78,7 @@ namespace EclipseCompiler
     void TextureCompiler::ReleaseFile()
     {
         WriteToFile(Textures);
-        std::cout << "Textures File Produced" << std::endl << std::endl;
+        //std::cout << "Textures File Produced" << std::endl << std::endl;
     }
 
     void TextureCompiler::ReadFile(std::string& in)
@@ -102,11 +102,11 @@ namespace EclipseCompiler
             return;
         }
 
-        std::cout << "Writing to Texture File " << std::endl;
+        //std::cout << "Writing to Texture File " << std::endl;
         // Number Of Textures
         int NumberOfTextures = NewTextureContainer.size();
         TextureFileWrite.write(reinterpret_cast<const char*>(&NumberOfTextures), sizeof(NumberOfTextures));
-        std::cout << "Detected Assimp Texture Size " << NumberOfTextures << std::endl;
+        //std::cout << "Detected Assimp Texture Size " << NumberOfTextures << std::endl << std::endl;
         for (auto const Textures : NewTextureContainer)
         {
             // Mesh Name
@@ -150,7 +150,7 @@ namespace EclipseCompiler
         // Number Of Textures
         int NumberOfBasicTextures = AllOtherTextureCotainer.size();
         TextureFileWrite.write(reinterpret_cast<const char*>(&NumberOfBasicTextures), sizeof(NumberOfBasicTextures));
-        std::cout << "Detected Basic Textures Size " << NumberOfBasicTextures << std::endl;
+        //std::cout << "Detected Basic Textures Size " << NumberOfBasicTextures << std::endl << std::endl;
         for (auto const Textures : AllOtherTextureCotainer)
         {
             // Texture Name
@@ -168,7 +168,7 @@ namespace EclipseCompiler
 
         TextureFileWrite.close();
         ///////////////////////
-        std::cout << "Done Writing to Texture File " << std::endl;
+        //std::cout << "Done Writing to Texture File " << std::endl;
     }
 
     void TextureCompiler::ReadFile()

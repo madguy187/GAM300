@@ -249,19 +249,17 @@ namespace Eclipse
 
         //CompilerThreads.emplace("LoadGeometry", std::make_unique<std::thread>(std::thread{ &EngineCompiler::LoadGeometry }));
         //CompilerThreads.emplace("LoadPrefabs", std::make_unique<std::thread>(std::thread{ &EngineCompiler::LoadPrefabs }));
-        //CompilerThreads.emplace("LoadModelTextures", std::make_unique<std::thread>(std::thread{ &EngineCompiler::LoadModelTextures }));
-        //CompilerThreads.emplace("LoadBasicTextures", std::make_unique<std::thread>(std::thread{ &EngineCompiler::LoadBasicTextures }));
+         //CompilerThreads.emplace("LoadModelTextures", std::make_unique<std::thread>(std::thread{ &EngineCompiler::LoadModelTextures }));
+         //CompilerThreads.emplace("LoadBasicTextures", std::make_unique<std::thread>(std::thread{ &EngineCompiler::LoadBasicTextures }));
+
+        //CompilerThreads["LoadGeometry"]->join();
+        //CompilerThreads["LoadPrefabs"]->join();
 
         // Geometry Compiler
         LoadGeometry();
         LoadPrefabs();
         LoadModelTextures();
         LoadBasicTextures();
-
-        for (auto& i : CompilerThreads)
-        {
-            i.second->join();
-        }
 
         if (AreAllCompiled() == true)
         {
