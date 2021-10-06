@@ -25,15 +25,15 @@ namespace Eclipse
 
         for (int index = 0; index != static_cast<int>(EntityType::ENT_LIGHT_POINT); ++index)
         {
-            EntityType temp = static_cast<EntityType>(index);
-            TagList_[0].push_back(lexical_cast_toStr<EntityType>(temp));
+            EntityType temps = static_cast<EntityType>(index);
+            TagList_[0].push_back(lexical_cast_toStr<EntityType>(temps));
         }
 
         for (int index = static_cast<int>(EntityType::ENT_LIGHT_POINT);
             index != static_cast<int>(EntityType::ENT_GAMECAMERA); ++index)
         {
-            EntityType temp = static_cast<EntityType>(index);
-            TagList_[1].push_back(lexical_cast_toStr<EntityType>(temp));
+            EntityType temps = static_cast<EntityType>(index);
+            TagList_[1].push_back(lexical_cast_toStr<EntityType>(temps));
         }
 
         EntityType tp = EntityType::ENT_TARGETPOINT;
@@ -203,6 +203,7 @@ namespace Eclipse
 
                     ECGui::EndTreeNode();
                 }
+                break;
             }
             default:
                 break;

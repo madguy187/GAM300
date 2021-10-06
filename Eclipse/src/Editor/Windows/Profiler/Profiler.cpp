@@ -114,11 +114,11 @@ namespace Eclipse
 
 	void ProfilerWindow::EngineTimer()
 	{
-		for(auto& it : time_container)
+		for(auto& it_ : time_container)
 		{
-			if(!it.second.empty())
+			if(!it_.second.empty())
 			{
-				engine_time += it.second[0];
+				engine_time += it_.second[0];
 			}
 		}
 	}

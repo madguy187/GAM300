@@ -80,7 +80,7 @@ namespace Eclipse
 		void Path();
 		void ItemsAndFolders();
 		void BackToParentPath(std::filesystem::path &CurrentPath);
-		void NextPath(std::filesystem::path& CurrentPath,std::filesystem::path paths);
+		void NextPath(std::filesystem::path& CurrentPath,std::filesystem::path pathsofItem);
 		////////////////////////////////
 
 		
@@ -96,7 +96,7 @@ namespace Eclipse
 		void SearchInBaseFolder();
 		void SearchInFolders();
 		void MainSearchLogic(std::map<std::filesystem::path, std::vector<std::filesystem::path>>::value_type Key);
-		void MainSearchLogic(std::vector<std::string> subDirItemsPath);
+		void MainSearchLogic(std::vector<std::string> subDirItemsPaths);
 		bool BuffIsEmpty(const char* buffer);
 		std::map<std::filesystem::path, std::vector<std::filesystem::path>> getFolderMap();
 		std::map<std::filesystem::path, std::vector<std::filesystem::path>> getPathMap();
