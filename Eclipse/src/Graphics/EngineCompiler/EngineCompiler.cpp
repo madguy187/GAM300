@@ -14,7 +14,7 @@ namespace Eclipse
 
         if (FileIn.fail())
         {
-            EDITOR_LOG_WARN(("Fail to Open " + Path).c_str());
+            EDITOR_LOG_WARN(("FAIL TO OPEN " + Path).c_str());
             return false;
         }
 
@@ -24,10 +24,11 @@ namespace Eclipse
     void EngineCompiler::CloseFile(std::fstream& FileIn, std::string& FileName, unsigned int ContainerSize)
     {
         FileIn.close();
-        EDITOR_LOG_INFO((FileName + "File Closed").c_str());
 
         if (ContainerSize != 0)
         {
+            EDITOR_LOG_INFO((FileName + "FILE CONSUMED BY ENGINE").c_str());
+
             if (FileName == AllNames[0])
             {
                 CompilerFlags.set(0, 1);
@@ -54,7 +55,7 @@ namespace Eclipse
 
         CompilerFlags.set(0, 0);
 
-        EDITOR_LOG_INFO("Geometry File Open For Reading");
+        //EDITOR_LOG_INFO("Geometry File Open For Reading");
 
         unsigned int TotalNumberOfModels = 0;
         unsigned int VerticesSize = 0;
@@ -112,7 +113,7 @@ namespace Eclipse
 
         CompilerFlags.set(1, 0);
 
-        EDITOR_LOG_INFO("Prefabs File Open For Reading");
+        //EDITOR_LOG_INFO("Prefabs File Open For Reading");
 
         int TotalNumberOfPrefabs = 0;
 
@@ -150,7 +151,7 @@ namespace Eclipse
 
         CompilerFlags.set(2, 0);
 
-        EDITOR_LOG_INFO("Texture File Open For Reading");
+        //EDITOR_LOG_INFO("Texture File Open For Reading");
 
         // Number Of Textures
         int NumberOfBasicTextures = 0;
@@ -180,7 +181,7 @@ namespace Eclipse
 
         CompilerFlags.set(3, 0);
 
-        EDITOR_LOG_INFO("Texture File Open For Reading");
+        //EDITOR_LOG_INFO("Texture File Open For Reading");
 
         // Number Of Textures
         int NumberOfTextures = 0;
@@ -269,22 +270,22 @@ namespace Eclipse
         {
             if (IsGeometryCompiled() == false)
             {
-                EDITOR_LOG_WARN("GEOMETRY FILE NOT LOADED , YOU CANNOT CREATE MODELS");
+                EDITOR_LOG_WARN("GEOMETRY FAILED TO COMPILE,CANNOT CREATE MODELS");
             }
 
             if (IsPrefabsCompiled() == false)
             {
-                EDITOR_LOG_WARN("PREFABS FILE NOT LOADED , YOU CANNOT CREATE MODELS");
+                EDITOR_LOG_WARN("PREFABS FAILED TO COMPILE,CANNOT CREATE MODELS");
             }
 
             if (IsModelTexturesCompiled() == false)
             {
-                EDITOR_LOG_WARN("MODEL TEXTURES NOT LOADED , YOU CANNOT CREATE MODELS WITH TEXTURES");
+                EDITOR_LOG_WARN("MODELTEXTURES FAILED TO COMPILE,CANNOT CREATE TEXTURES FOR MODELS");
             }
 
             if (IsBasicTexturesCompiled() == false)
             {
-                EDITOR_LOG_WARN("BASIC TEXTURES NOT LOADED , YOU CANNOT CREATE USE BASIC TEXTURES");
+                EDITOR_LOG_WARN("BASICTEXTURES FAILED TO COMPILE,CANNOT CREATE BASIC TEXTURES");
             }
         }
     }
