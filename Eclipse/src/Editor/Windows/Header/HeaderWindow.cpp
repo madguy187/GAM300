@@ -38,8 +38,8 @@ namespace Eclipse
 			{
 				engine->szManager.SaveBackupFile();
 				engine->mono.StartMono();
-				std::shared_ptr<MonoSystem>& mono = engine->world.GetSystem<MonoSystem>();
-				mono->Init();
+				//auto& mono = engine->world.GetSystem<MonoSystem>();
+				engine->world.GetSystem<MonoSystem>()->Init();
 
 				engine->SetPlayState(true);
 				ECGui::SetWindowFocus("Game View");
@@ -50,8 +50,8 @@ namespace Eclipse
 		{
 			if (ECGui::ButtonBool("Stop " ICON_FA_STOP))
 			{
-				std::shared_ptr<MonoSystem>& mono = engine->world.GetSystem<MonoSystem>();
-				mono->Terminate();
+				//auto& mono = engine->world.GetSystem<MonoSystem>();
+				engine->world.GetSystem<MonoSystem>()->Terminate();
 				engine->mono.StopMono();
 
 				engine->SetPlayState(false);

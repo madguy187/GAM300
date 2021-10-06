@@ -47,7 +47,9 @@ namespace Eclipse
 		FolderIcon.textureRef = Graphics::textures.find("FolderIcon")->first;
 		
 		//right side
+	
 		ECGui::DrawChildWindow<void()>({ "##directory_structure", ImVec2(0, ECGui::GetWindowHeight() - 65) }, std::bind(&AssetBrowserWindow::RightFoldersAndItems, this));
+		
 
 		if (refresh == true)
 		{
@@ -218,20 +220,23 @@ namespace Eclipse
 
 	void AssetBrowserWindow::RightFoldersAndItems()
 	{
+		
 		//top path 
 		ECGui::DrawChildWindow<void()>({ "##top_bar", ImVec2(0, 70) }, std::bind(&AssetBrowserWindow::PathAndSearches, this));
 
 		ECGui::InsertHorizontalLineSeperator();
-
+	
 		//folders and items
 		std::string thisDir = CurrentDir.string();
 		ECGui::DrawChildWindow<void()>({ "Scrolling" }, std::bind(&AssetBrowserWindow::FoldersAndItems, this));
 		engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity", thisDir,
-			"Prefab generated", PayloadTargetType::PTT_ASSETS);
+		"Prefab generated", PayloadTargetType::PTT_ASSETS);
+		
 	}
 
 	void AssetBrowserWindow::FoldersAndItems()
 	{
+	
 		//rightside with told path
 
 		cellSize = thumbnailSize + padding;
@@ -280,7 +285,7 @@ namespace Eclipse
 
 		ECGui::PopStyleColor(2);
 
-
+		
 	}
 
 	void AssetBrowserWindow::PathAndSearches()
@@ -592,7 +597,10 @@ namespace Eclipse
 
 		ECGui::InsertSameLine();
 
-		ECGui::SetToolTip("When ticked Copy of files and folder Else Moving of files and folder to destination  ");
+		if (ECGui::IsItemHovered())
+		{
+			ECGui::SetToolTip("When ticked copy of files and folder else moving of files and folder to destination.");
+		}
 
 		//left side search for all files & folders in that current dir
 		//right side search for all folders

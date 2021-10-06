@@ -48,7 +48,7 @@ namespace Eclipse
 
             ECGui::PushItemWidth(WindowSize_.getX());
             //std::cout<<engine->editorManager->GetSelectedEntity();
-            ShowPrefebProperty("Prefeb", currEnt, CompFilter);
+            ShowPrefebProperty(currEnt);
             ShowEntityProperty("Tag", currEnt, CompFilter);
             ShowTransformProperty("Transform", currEnt, CompFilter);
             ShowPointLightProperty("PointLight", currEnt, CompFilter);
