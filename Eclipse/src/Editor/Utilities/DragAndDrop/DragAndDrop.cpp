@@ -215,6 +215,7 @@ namespace Eclipse
 						}
 						for (const auto& file : std::filesystem::recursive_directory_iterator(std::filesystem::path(itemPaths / paths)))
 						{
+							(void)file;
 							fileSize++;
 						}
 						for (auto const& pair : pathMap)
