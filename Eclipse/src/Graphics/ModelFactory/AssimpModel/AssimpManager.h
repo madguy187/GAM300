@@ -95,6 +95,7 @@ namespace Eclipse
 		void InsertTextures(std::string& NameofModel, std::unique_ptr<Texture> in, unsigned int MeshId);
 		void SetTexturesForModel(MaterialComponent& in, std::string& passkey);
 		bool GeometryContainerCheck(const std::string& in);
+		bool CheckGeometryExist(MeshComponent& in);
 
 	private:
 		AssimpModelContainer AssimpModelContainer_;
@@ -107,7 +108,6 @@ namespace Eclipse
 		size_t AssimpModelCount();
 		bool InsertModel(AssimpModel& in);
 		AssimpModelContainer GetContainer();
-		AssimpModel* GetModel(unsigned int ID);
 		void CreateModel(unsigned int ID, std::string name, std::string path, std::string filename);
 		void Draw(unsigned int FrameBufferID, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
 		void HighlihtDraw(unsigned int FrameBufferID, GLenum Mode);

@@ -606,6 +606,14 @@ namespace Eclipse
 		return AssimpLoadedModels[in]->GetName();
 	}
 
+	bool AssimpModelManager::CheckGeometryExist(MeshComponent& in)
+	{
+		if (Geometry.find(in.MeshName.data()) == Geometry.end())
+			return false;
+
+		return true;
+	}
+
 	void AssimpModelManager::InsertModelMap(std::string& NameofModel, std::string& Directory)
 	{
 		ModelMap.insert({ NameofModel,Directory });
