@@ -41,13 +41,13 @@
 #include "ECS/SystemManager/Systems/System/PrefabSystem/PrefabSystem.h"
 #include "ECS/SystemManager/Systems/System/AI/AISystem.h"
 
-bool Tester1(const Test1& e)
+bool Tester1(const Test1&)
 {
     std::cout << "Engine.cpp Tester1" << std::endl;
     return false;
 }
 
-bool Tester2(const Test1& e)
+bool Tester2(const Test1&)
 {
     std::cout << "Engine.cpp Tester2" << std::endl;
     return false;
@@ -64,9 +64,9 @@ namespace Eclipse
         EventSystem<Test1>::registerListener(Tester2);
         EventSystem<Test1>::registerListener(std::bind(&World::TempFunc, &world, std::placeholders::_1));
 
-        struct Test1 t {};
-        EventSystem<Test1>::dispatchEvent(t);
-        std::cout << "ENDED" << std::endl;
+        // struct Test1 t {};
+        // EventSystem<Test1>::dispatchEvent(t);
+        //std::cout << "ENDED" << std::endl;
 
         engine->GraphicsManager.Pre_Render();
     	
@@ -75,9 +75,6 @@ namespace Eclipse
         if (IsEditorActive)
             editorManager = std::make_unique<EditorManager>();
 
-        /*bool x = false;
-        std::string msg = "woo";
-        ENGINE_LOG_ASSERT(x, msg.c_str());*/
         glfwSetWindowCloseCallback(OpenGL_Context::GetWindow(), GraphicsManager.WindowCloseCallback);
     }
 

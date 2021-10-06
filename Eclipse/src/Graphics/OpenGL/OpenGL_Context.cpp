@@ -197,8 +197,10 @@ bool Eclipse::OpenGL_Context::init(std::string configFile)
 
     if (GLEW_VERSION_4_4)
     {
-        std::cout << "Using glew version: " << glewGetString(GLEW_VERSION) << std::endl;
-        std::cout << "Driver supports OpenGL 4.5\n" << std::endl;
+        ENGINE_CORE_INFO(my_strcat("Using glew version: ", glewGetString(GLEW_VERSION)));
+        ENGINE_CORE_INFO("Driver supports OpenGL 4.5");
+        /*std::cout << "Using glew version: " << glewGetString(GLEW_VERSION) << std::endl;
+        std::cout << "Driver supports OpenGL 4.5\n" << std::endl;*/
     }
     else
     {
