@@ -61,9 +61,9 @@ void Plane_::InsertIdxVtx()
                 PosVec[i2]))
             {
 
-                IdxVec.push_back(i2);
-                IdxVec.push_back(i1);
-                IdxVec.push_back(i0);
+                IdxVec.push_back(static_cast<GLushort>(i2));
+                IdxVec.push_back(static_cast<GLushort>(i1));
+                IdxVec.push_back(static_cast<GLushort>(i0));
 
                 ++TriCount;
             }
@@ -78,9 +78,9 @@ void Plane_::InsertIdxVtx()
                 PosVec[i4],
                 PosVec[i5]))
             {
-                IdxVec.push_back(i5);
-                IdxVec.push_back(i4);
-                IdxVec.push_back(i3);
+                IdxVec.push_back(static_cast<GLushort>(i5));
+                IdxVec.push_back(static_cast<GLushort>(i4));
+                IdxVec.push_back(static_cast<GLushort>(i3));
 
                 ++TriCount;
             }

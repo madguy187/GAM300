@@ -15,8 +15,10 @@ namespace Eclipse
 		glBindFramebuffer(GL_FRAMEBUFFER, FramebufferID);
 	}
 
-	void Grid::CheckUniformLocation(unsigned int GridID)
+	void Grid::CheckUniformLocation(unsigned int GridID_)
 	{
+		(void)GridID_;
+
 		// Be in line with Editor Settings
 		auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
 		float SnapValue = scene->GetSnapSettings().mPosSnapValue;
@@ -192,15 +194,15 @@ namespace Eclipse
 					GridArray[Index]->CenterPoint = ECVec3{ Center.x, Center.y, Center.z };
 
 					// Set Maximum Point
-					glm::vec3 Maximum = { Center.x + HalfExtent , Center.y + HalfExtent , Center.z + HalfExtent };
-					GridArray[Index]->MaximumPoint = ECVec3{ Maximum.x, Maximum.y, Maximum.z };
+					glm::vec3 Maximum_ = { Center.x + HalfExtent , Center.y + HalfExtent , Center.z + HalfExtent };
+					GridArray[Index]->MaximumPoint = ECVec3{ Maximum_.x, Maximum_.y, Maximum_.z };
 
 					// Set Minimum Point
-					glm::vec3 Minimum = { Center.x - HalfExtent , Center.y - HalfExtent , Center.z - HalfExtent };
-					GridArray[Index]->MinimumPoint = ECVec3{ Minimum.x, Minimum.y, Minimum.z };
+					glm::vec3 Minimum_ = { Center.x - HalfExtent , Center.y - HalfExtent , Center.z - HalfExtent };
+					GridArray[Index]->MinimumPoint = ECVec3{ Minimum_.x, Minimum_.y, Minimum_.z };
 
 					// Set Width
-					GridArray[Index]->Width = Maximum.x - Minimum.x;
+					GridArray[Index]->Width = Maximum_.x - Minimum_.x;
 
 					if (AddDebugBoxes)
 					{
@@ -257,15 +259,17 @@ namespace Eclipse
 		return true;
 	}
 
-	void Grid::CalculateStartingPoint(ECVec3& MinimumIn, ECVec3& Maximum)
+	void Grid::CalculateStartingPoint(ECVec3& MinimumIn, ECVec3& Maximum_)
 	{
 		StartingPosition.setX((MinimumIn.getX() + (MinimumIn.getX() + GridScale)) / 2);
 		StartingPosition.setY((MinimumIn.getY() + (MinimumIn.getY() + GridScale)) / 2);
-		StartingPosition.setZ((Maximum.getZ() + (Maximum.getZ() - GridScale)) / 2);
+		StartingPosition.setZ((Maximum_.getZ() + (Maximum_.getZ() - GridScale)) / 2);
 	}
 
 	void Grid::DebugPrintCoorindates(std::vector<std::shared_ptr<Tile>>& in)
 	{
+		(void)in;
+
 		if (PrintDebug == false)
 			return;
 
@@ -371,6 +375,8 @@ namespace Eclipse
 
 	void Grid::SetDistance(AABBNode& Nodein, AABBComponent& aabbin, unsigned int id)
 	{
+		(void)id;
+
 		Nodein.aabb.DistanceToObject = Nodein.aabb.Max.x - aabbin.Max.getX();
 		/*engine->GridManager->*/gridArray[Nodein.aabb.GetEntityID()]->aabb.DistanceToObject = Nodein.aabb.DistanceToObject;
 	}

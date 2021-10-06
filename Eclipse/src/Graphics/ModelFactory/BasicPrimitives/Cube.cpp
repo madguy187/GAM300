@@ -70,7 +70,7 @@ void Cube::InsertIdxVtx()
     {
         for (int j = 0; j < 6; ++j)
         {
-            IdxVec.push_back(planemesh.IdxVec[j] + 4 * i);
+            IdxVec.push_back(static_cast<GLushort>(planemesh.IdxVec[j] + 4 * i));
         }
     }
 }

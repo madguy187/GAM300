@@ -31,17 +31,17 @@ void Graphics::load()
 
 void Graphics::unload()
 {
-    for (auto& it = shaderpgms.begin(); it != shaderpgms.end(); ++it)
+    for (auto it = shaderpgms.begin(); it != shaderpgms.end(); ++it)
     {
         it->second.DeleteShaderProgram();
     }
 
-    for (auto& it = models.begin(); it != models.end(); ++it)
+    for (auto it = models.begin(); it != models.end(); ++it)
     {
         it->second->DeleteModel();
     }
 
-    for (auto& fb : OpenGL_Context::_Framebuffers)
+    for (auto fb : OpenGL_Context::_Framebuffers)
     {
         delete fb.second;
     }
@@ -56,11 +56,11 @@ void Graphics::LoadShaders(std::string shaderFile)
         std::string FolderName = relativePath.filename().string();
         std::string PathName = ("src/Assets/Shaders/" + FolderName).c_str();
 
-        for (auto& dirEntry : std::filesystem::directory_iterator(PathName))
+        for (auto& dirEntry_ : std::filesystem::directory_iterator(PathName))
         {
-            const auto& path = dirEntry.path();
-            auto relativePath = relative(path, "src//");
-            std::string ShaderFragOrVert = relativePath.filename().string();
+            const auto& path_ = dirEntry_.path();
+            auto relativePath_ = relative(path_, "src//");
+            std::string ShaderFragOrVert = relativePath_.filename().string();
             std::string ShaderFragConcatenate = "src/Assets/Shaders/" + FolderName + "/" + ShaderFragOrVert;
             engine->GraphicsManager.ShaderMap[FolderName].push_back(ShaderFragConcatenate);
         }
@@ -74,7 +74,7 @@ void Graphics::LoadModels()
 {
     for (unsigned int i = 0; i < static_cast<unsigned int>(LoadingModels::MAXCOUNT); i++)
     {
-        auto& ModelName = engine->GraphicsManager.GetModelName(i);
+        auto ModelName = engine->GraphicsManager.GetModelName(i);
         models.emplace(ModelName, ModelFactory::create(i));
 
         engine->AssimpManager.InsertPrimitiveName(ModelName);
@@ -128,7 +128,6 @@ GLuint Graphics::setup_texobj(std::string pathname)
 {
     int width = 0;
     int height = 0;
-    int clrChannels = 0;
     unsigned char* data = nullptr; // stbi_load(pathname.c_str(), &width, &height, &clrChannels, 0);
 
     if (data)
@@ -176,7 +175,6 @@ Texture Eclipse::Graphics::FindTextures(std::string in)
 
 void Eclipse::Graphics::GetTexuresForModels(std::string in, MaterialComponent com)
 {
-    int Index = 0;
     std::pair<MMAPIterator, MMAPIterator> result = textures.equal_range(in);
 
     for (MMAPIterator it = result.first; it != result.second; it++)

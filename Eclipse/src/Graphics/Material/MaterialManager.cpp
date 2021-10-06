@@ -236,6 +236,8 @@ namespace Eclipse
 
     void MaterialManager::CheckUniformLoc(MeshComponent& sprite, Shader& in, unsigned int id, unsigned int framebufferID)
     {
+        (void)sprite;
+
         CameraComponent camera;
         TransformComponent camerapos;
 
@@ -257,7 +259,6 @@ namespace Eclipse
         }
 
         TransformComponent& trans = engine->world.GetComponent<TransformComponent>(id);
-        MaterialComponent& outline = engine->world.GetComponent<MaterialComponent>(id);
 
         GLint uniform_var_loc1 = in.GetLocation("uModelToNDC");
 
@@ -394,28 +395,9 @@ namespace Eclipse
         return false;
     }
 
-    void MaterialManager::RegisterMeshForHighlight(unsigned int ID)
-    {
-        if (InitRegisterHighlight == true)
-        {
-            RegisterMeshForHighlighting(ID);
-        }
-    }
-
     void MaterialManager::ClearContainer()
     {
         MeshHighLightContainer.clear();
-    }
-
-    bool MaterialManager::InsertContainer(MeshComponent& in)
-    {
-        //// Insert
-        //if (MeshHighLightContainer.insert({ in.ID , &in }).second == true)
-        //{
-        //    return true;
-        //}
-
-        return false;
     }
 
     void MaterialManager::UpdateStencilWithActualObject(unsigned int ID)
@@ -457,6 +439,8 @@ namespace Eclipse
 
     void MaterialManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID)
     {
+        (void)FrameBufferID;
+
         MaterialComponent& material = engine->world.GetComponent<MaterialComponent>(ModelID);
         GLint uniform_var_loc1 = _shdrpgm.GetLocation("material.shininess");
         GLint uniform_var_loc2 = _shdrpgm.GetLocation("material.MaximumShininess");
@@ -488,31 +472,10 @@ namespace Eclipse
         glUniform1i(dsa, 0);
     }
 
-    void MaterialManager::RegisterMeshForHighlighting(unsigned int index)
-    {
-        //auto& mat = engine->world.GetComponent<MaterialComponent>(index);
-
-        //if (mat.RegisterForHighlight == true)
-        //    return;
-
-        //auto& mesh = engine->world.GetComponent<MeshComponent>(index);
-        //auto& ModelInfo = engine->world.GetComponent<ModeLInforComponent>(index);
-
-        //// Insert
-        //if (MeshHighLightContainer.insert(std::pair<unsigned int, MeshComponent*>(index, &mesh)).second == true)
-        //{
-        //    mat.RegisterForHighlight = true;
-
-        //    std::string Success = ("Model [" + ModelInfo.NameOfModel + "] Registered For Highlighting ! ").c_str();
-        //    ENGINE_CORE_INFO(Success);
-
-        //    std::cout << "HighLight Container Size : " << ModelHighlightContainer.size() << std::endl;
-        //    return;
-        //}
-    }
-
     void MaterialManager::MeshHighlight(unsigned int FrameBufferID, GLenum Mode)
     {
+        (void)Mode;
+
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 
         glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
@@ -523,7 +486,6 @@ namespace Eclipse
         for (auto const& Models : MeshHighLightContainer)
         {
             auto& ID = Models.first;
-            auto& InvidualModels = *(Models.second);
 
             engine->MaterialManager.UpdateStencilWith_Outline(ID);
 
@@ -531,8 +493,6 @@ namespace Eclipse
 
             if (highlight.Highlight == true)
             {
-                auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
-
                 // Check Main Uniforms For each Model
                 // Translation done here for each model
                 CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ID);

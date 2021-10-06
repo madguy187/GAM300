@@ -80,7 +80,6 @@ namespace Eclipse
         void DoNotUpdateStencil();
         void StencilBufferClear();
         void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID);
-        void RegisterMeshForHighlighting(unsigned int index);
         void MeshHighlight(unsigned int FrameBufferID, GLenum Mode);
         void UpdateMaterial(MaterialComponent& in);
         void Highlight3DModels(unsigned int FrameBufferID, unsigned int ModelID, GLenum mode);
@@ -90,13 +89,11 @@ namespace Eclipse
         void Highlight3DModels(unsigned int EntityId, unsigned int FrameBufferID);
         bool HighlightClick(unsigned int ModelID);
         bool UnHighlight(unsigned int ModelID);
-        void RegisterMeshForHighlight(unsigned int ID);
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // For Jian Herng
         ///////////////////////////////////////////////////////////////////////////////////////////
         void ClearContainer();
-        bool InsertContainer(MeshComponent& in);
 
     private:
         void CheckUnniformLocation(Shader& in, MaterialComponent& inside);

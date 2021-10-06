@@ -163,7 +163,7 @@ namespace Eclipse
         return overlaps;
     }
 
-    std::vector<unsigned int> AABBTree::QueryAgainstTrustrum(AABBComponent& object)
+    std::vector<unsigned int> AABBTree::QueryAgainstTrustrum(AABBComponent object)
     {
         std::vector<unsigned int> overlaps;
 

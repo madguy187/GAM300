@@ -545,7 +545,6 @@ namespace Eclipse
         if (IsKeyPressed(Hold))
         {
             bool single = false;
-            size_t test = HoldKeyContainer.size();
             RegisterHoldInput(keycode, Hold, single, InputState::Key_HOLD);
         }
         else if (IsKeyReleased(Hold))
@@ -573,7 +572,6 @@ namespace Eclipse
 
                 if (Message == keycode && (InputState_ == InputState::Key_PRESSED))
                 {
-                    auto& Press = ((*KeyIT).first.second);
                     auto& SingleFlag = ((*KeyIT).second.first);
 
                     InputState_ = InputState::Key_RELEASED;
@@ -602,7 +600,6 @@ namespace Eclipse
 
                 if (Message == keycode)
                 {
-                    auto& Press = ((*KeyIT).first.second);
                     auto& SingleFlag = ((*KeyIT).second.first);
 
                     InputState_ = InputState::Key_RELEASED;
@@ -637,6 +634,10 @@ namespace Eclipse
 
     void Eclipse::InputWrapper::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
     {
-
+        (void)window;
+        (void)key;
+        (void)scancode;
+        (void)action;
+        (void)mods;
     }
 }

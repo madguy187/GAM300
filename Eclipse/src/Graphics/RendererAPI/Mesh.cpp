@@ -48,16 +48,18 @@ namespace Eclipse
 
     void Mesh::Render(Shader& shader, GLenum mode, unsigned int id, unsigned int MeshIndex)
     {
+        (void)MeshIndex;
+
         glEnable(GL_BLEND);
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_CULL_FACE);
         glPolygonMode(GL_FRONT_AND_BACK, mode);
 
         // If dont have textures ( Flagged as True )
-        if (NoTex && (!engine->world.CheckComponent<TextureComponent>(id)))
+        if (NoTex && (engine->world.CheckComponent<TextureComponent>(id) == false))
         {
             GLint uniform_var_loc1 = shader.GetLocation("BasicPrimitives");
-            GLint uniform_var_loc2 = shader.GetLocation("uColor");
+            //GLint uniform_var_loc2 = shader.GetLocation("uColor");
             GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
             GLuint tex_loc = shader.GetLocation("uTex2d");
             GLuint diff0 = shader.GetLocation("sdiffuse");

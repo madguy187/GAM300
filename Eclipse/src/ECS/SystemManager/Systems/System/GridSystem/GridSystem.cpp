@@ -28,7 +28,7 @@ namespace Eclipse
             {
                 auto& aabb = engine->world.GetComponent<AABBComponent>(EntityId);
                 auto& Transform = engine->world.GetComponent<TransformComponent>(EntityId);
-                auto& ModelVsGrid = engine->CollisionGridTree.CheckOverlapAgainstGrid(DYN_AABB::SetAABB(Transform, aabb));
+                auto ModelVsGrid = engine->CollisionGridTree.CheckOverlapAgainstGrid(DYN_AABB::SetAABB(Transform, aabb));
 
                 if (engine->CollisionGridTree.NumberOfIntersections(ModelVsGrid))
                 {
@@ -43,7 +43,7 @@ namespace Eclipse
             {
                 glm::vec3 rayDir = engine->gPicker.ComputeCursorRayDirection();
                 float t;
-                auto& MouseVsGrid = engine->CollisionGridTree.CheckMouseOverlapAgainstGrid(camera.eyePos, rayDir, t);
+                auto MouseVsGrid = engine->CollisionGridTree.CheckMouseOverlapAgainstGrid(camera.eyePos, rayDir, t);
 
                 // Test Code
                 if (MouseVsGrid.size() >= 1)

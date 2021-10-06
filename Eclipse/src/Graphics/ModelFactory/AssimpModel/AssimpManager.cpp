@@ -37,6 +37,8 @@ namespace Eclipse
 
 	void AssimpModelManager::CreateModel(unsigned int ID, const std::string& ModelName)
 	{
+		(void)ID;
+
 		if (engine->gEngineCompiler->AreAllCompiled())
 		{
 			if (Prefabs.find(ModelName) == Prefabs.end())
@@ -134,9 +136,9 @@ namespace Eclipse
 		Geometry.emplace(name, std::make_unique<Mesh>(NewMesh));
 	}
 
-	void AssimpModelManager::InsertPrefabs(const std::string& Index, const std::string& MeshName)
+	void AssimpModelManager::InsertPrefabs(const std::string& Index_, const std::string& MeshName_)
 	{
-		Prefabs[Index].push_back(MeshName.data());
+		Prefabs[Index_].push_back(MeshName_.data());
 	}
 
 	void AssimpModelManager::InsertGeometryName(const std::string& MeshName_)
@@ -156,6 +158,8 @@ namespace Eclipse
 
 	void AssimpModelManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID, AABB_* box)
 	{
+		(void)FrameBufferID;
+
 		if (engine->world.CheckComponent<MaterialComponent>(ModelID))
 		{
 			MaterialComponent& material = engine->world.GetComponent<MaterialComponent>(ModelID);
@@ -191,7 +195,6 @@ namespace Eclipse
 	void AssimpModelManager::SetTexturesForModel(MaterialComponent& in, std::string& passkey)
 	{
 		in.TextureKey = passkey;
-		int Index = 0;
 
 		std::pair<MMAPIterator, MMAPIterator> result = Graphics::textures.equal_range(passkey);
 
@@ -203,6 +206,8 @@ namespace Eclipse
 
 	void AssimpModelManager::Cleanup(MeshComponent& in)
 	{
+		(void)in;
+
 		//for (unsigned int i = 0; i < in.Meshes.size(); i++)
 		//{
 		//    in.Meshes[i].Cleanup();
@@ -227,6 +232,9 @@ namespace Eclipse
 
 	void AssimpModelManager::Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent& in, unsigned int ModelID, CameraComponent::CameraType _camType)
 	{
+		(void)_camType;
+		(void)FrameBufferID;
+
 		// Each Mesh Render
 		Render(shader, MOde, ModelID, in);
 	}
@@ -238,7 +246,6 @@ namespace Eclipse
 		for (const auto& i : Graphics::textures)
 		{
 			auto& TextureName = i.first;
-			auto& TextureItself = i.second;
 
 			std::cout << "Texture Name " << TextureName << std::endl;
 		}
@@ -285,7 +292,7 @@ namespace Eclipse
 		if (engine->AssimpManager.Geometry[in.MeshName.data()]->NoTex && (!engine->world.CheckComponent<TextureComponent>(id)))
 		{
 			GLint uniform_var_loc1 = shader.GetLocation("BasicPrimitives");
-			GLint uniform_var_loc2 = shader.GetLocation("uColor");
+			//GLint uniform_var_loc2 = shader.GetLocation("uColor");
 			GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
 			GLuint tex_loc = shader.GetLocation("uTex2d");
 			GLuint diff0 = shader.GetLocation("sdiffuse");
@@ -406,17 +413,17 @@ namespace Eclipse
 		glBindVertexArray(0);
 	}
 
-	void AssimpModelManager::SetSingleMesh(unsigned int ID, std::string& MeshName)
+	void AssimpModelManager::SetSingleMesh(unsigned int ID, std::string& MeshName_)
 	{
 		auto& Mesh = engine->world.GetComponent<MeshComponent>(ID);
-		engine->AssimpManager.SetMeshComponent(ID, MeshName);
+		engine->AssimpManager.SetMeshComponent(ID, MeshName_);
 
 		// If got TextureComponent
 		if (engine->world.CheckComponent<MaterialComponent>(ID))
 		{
 			auto& tex = engine->world.GetComponent<MaterialComponent>(ID);
-			std::string MeshName = Mesh.MeshName.data();
-			engine->AssimpManager.SetTexturesForModel(tex, MeshName);
+			std::string MeshNameh = Mesh.MeshName.data();
+			engine->AssimpManager.SetTexturesForModel(tex, MeshNameh);
 		}
 
 	}
@@ -457,22 +464,6 @@ namespace Eclipse
 		}
 
 		shdrpgm.UnUse();
-	}
-
-	AssimpModel* AssimpModelManager::GetModel(unsigned int ID)
-	{
-		for (auto const& it : AssimpModelContainer_)
-		{
-			auto& ID = (it.first);
-			auto& SelectedModel = *(it.second);
-
-			if (ID == ID)
-			{
-				return &SelectedModel;
-			}
-		}
-
-		return nullptr;
 	}
 
 	bool AssimpModelManager::ClearContainer()
@@ -516,17 +507,12 @@ namespace Eclipse
 			ENGINE_CORE_INFO(Success);
 		}
 
-		// ----------------------------------------------------------------------------------------------------------
-		engine->MaterialManager.RegisterMeshForHighlighting(ID);
-		// ----------------------------------------------------------------------------------------------------------
 	}
 
 	void AssimpModelManager::HighlihtDraw(unsigned int FrameBufferID, GLenum Mode)
 	{
 		if (0) // if highlight is true
 		{
-			auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
-
 			glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
 			auto shdrpgm = Graphics::shaderpgms.find("OutLineShader");
 
@@ -613,14 +599,6 @@ namespace Eclipse
 	{
 		AssimpMeshIT it = AssimpModelContainerV2.find(index);
 		AssimpModelContainerV2.erase(index);
-	}
-
-	void AssimpModelManager::CleanUpAllModelsMeshes()
-	{
-		for (auto const& Models : AssimpModelContainerV2)
-		{
-			auto& InvidualModels = *(Models.second);
-		}
 	}
 
 	std::string AssimpModelManager::GetKey(const std::string& in)

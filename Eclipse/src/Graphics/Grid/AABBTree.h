@@ -42,7 +42,7 @@ namespace Eclipse
         void RemoveObject(const std::shared_ptr<IAABB>& object);
         void UpdateObject(const std::shared_ptr<IAABB>& object);
         std::vector<unsigned int> CheckOverlapAgainstGrid(DYN_AABB& object);
-        std::vector<unsigned int> QueryAgainstTrustrum(AABBComponent& object);
+        std::vector<unsigned int> QueryAgainstTrustrum(AABBComponent object);
         std::vector<unsigned int> CheckOverlapAgainstGrid(AABBComponent& object);
         std::vector<unsigned int> CheckOverlap(DYN_AABB& object);
         std::vector<unsigned int> CheckMouseOverlapAgainstGrid(glm::vec3& rayStart, glm::vec3& rayDir, float& t);

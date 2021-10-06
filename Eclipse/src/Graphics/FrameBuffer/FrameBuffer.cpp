@@ -68,6 +68,8 @@ namespace Eclipse
 
 	void FrameBuffer::ShowWindow(FrameBuffer g, const char* input)
 	{
+		(void)(input);
+
 		if (&g == nullptr)
 		{
 			ENGINE_LOG_ASSERT(false, "FrameBuffer is Nullptr");

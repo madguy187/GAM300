@@ -147,8 +147,10 @@ namespace Eclipse
         prefabWorld.RegisterSystem<PrefabSystem>();
 
         // Render System
-        Signature RenderSys = RenderSystem::RegisterAll();
-        world.RegisterSystemSignature<RenderSystem>(RenderSys);
+        Signature SystemSignature;
+        SystemSignature.set(engine->world.GetComponentType<TransformComponent>(), 1);
+        SystemSignature.set(engine->world.GetComponentType<MeshComponent>(), 1);
+        engine->world.RegisterSystemSignature<RenderSystem>(SystemSignature);
 
         Signature CameraSys;
         CameraSys.set(world.GetComponentType<TransformComponent>(), 1);

@@ -20,12 +20,10 @@ namespace Eclipse
             // Materials Update ===============================
             for (auto const& entity : mEntities)
             {
-                MaterialComponent& material = engine->world.GetComponent<MaterialComponent>(entity);
-
                 // Update Shininess ===============================
                 engine->MaterialManager.UpdateShininess(entity);
 
-                if (engine->world.CheckComponent<ModelComponent>(entity))
+                if (engine->world.CheckComponent<ModelComponent>(entity) == true)
                 {
                     // HighLight Basic Models Start ===============================
                     engine->MaterialManager.Highlight3DModels(entity, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE));

@@ -78,9 +78,9 @@ void Sphere::InsertIdxVtx()
                 PosVec[i2]))
             {
 
-                IdxVec.push_back(i0);
-                IdxVec.push_back(i1);
-                IdxVec.push_back(i2);
+                IdxVec.push_back(static_cast<GLushort>(i0));
+                IdxVec.push_back(static_cast<GLushort>(i1));
+                IdxVec.push_back(static_cast<GLushort>(i2));
 
                 ++TriCount;
             }
@@ -95,9 +95,9 @@ void Sphere::InsertIdxVtx()
                 PosVec[i1],
                 PosVec[i2]))
             {
-                IdxVec.push_back(i0);
-                IdxVec.push_back(i1);
-                IdxVec.push_back(i2);
+                IdxVec.push_back(static_cast<GLushort>(i0));
+                IdxVec.push_back(static_cast<GLushort>(i1));
+                IdxVec.push_back(static_cast<GLushort>(i2));
 
                 ++TriCount;
             }

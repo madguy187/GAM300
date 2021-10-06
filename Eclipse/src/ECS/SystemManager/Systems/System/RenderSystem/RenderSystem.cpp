@@ -45,17 +45,6 @@ namespace Eclipse
 		engine->gCullingManager = std::make_unique<CullingManager>();
 	}
 
-	Signature RenderSystem::RegisterAll()
-	{
-		Signature SystemSignature;
-
-		SystemSignature.set(engine->world.GetComponentType<TransformComponent>(), 1);
-		SystemSignature.set(engine->world.GetComponentType<MeshComponent>(), 1);
-		engine->world.RegisterSystemSignature<RenderSystem>(SystemSignature);
-
-		return SystemSignature;
-	}
-
 	void RenderSystem::Update()
 	{
 		ZoneScopedN("Render System")
@@ -67,7 +56,7 @@ namespace Eclipse
 		if (engine->GraphicsManager.CheckRender == true)
 		{
 			// Estiamtion which models are in our frustrum
-			auto& RenderablesVsFrustrum = engine->gCullingManager->ReturnContacted();
+			auto RenderablesVsFrustrum = engine->gCullingManager->ReturnContacted();
 
 			/*************************************************************************
 			  Render Without Stencer

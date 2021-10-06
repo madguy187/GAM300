@@ -260,6 +260,8 @@ namespace Eclipse
 
 	void Eclipse::GraphicsManager::DrawIndexed(MeshComponent* in, GLenum mode)
 	{
+		(void)mode;
+
 		GLCall(glDrawElements(Graphics::models[in->modelRef]->GetPrimitiveType(),
 			Graphics::models[in->modelRef]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
 	}
@@ -286,6 +288,8 @@ namespace Eclipse
 
 	void Eclipse::GraphicsManager::CheckUniformLoc(Shader* _shdrpgm, MeshComponent& sprite, unsigned int id, unsigned int framebufferID, CameraComponent& camera)
 	{
+		(void)framebufferID;
+
 		TransformComponent camerapos;
 		TransformComponent& trans = engine->world.GetComponent<TransformComponent>(id);
 
@@ -293,7 +297,6 @@ namespace Eclipse
 		GLint uniform_var_loc2 = _shdrpgm->GetLocation("uColor");
 		GLint uniform_var_loc3 = _shdrpgm->GetLocation("uTextureCheck");
 		GLuint tex_loc = _shdrpgm->GetLocation("uTex2d");
-		GLuint cam = _shdrpgm->GetLocation("camPos");
 		GLuint model2 = _shdrpgm->GetLocation("model");
 		GLuint noTex = _shdrpgm->GetLocation("noTex");
 		GLuint CheckNormapMap = _shdrpgm->GetLocation("checkNormalMap");
@@ -430,6 +433,8 @@ namespace Eclipse
 
 	void Eclipse::GraphicsManager::WindowCloseCallback(GLFWwindow* window)
 	{
+		(void)window;
+
 		if (engine->GetEditorState())
 		{
 			engine->editorManager->GetMenuBar().SetExitStatus(true);

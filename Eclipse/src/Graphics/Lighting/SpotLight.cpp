@@ -90,8 +90,6 @@ namespace Eclipse
 			GLint uniform_var_loc5 = _shdrpgm->GetLocation(("spotLights[" + number + "].constant").c_str());
 			GLint uniform_var_loc6 = _shdrpgm->GetLocation(("spotLights[" + number + "].linear").c_str());
 			GLint uniform_var_loc7 = _shdrpgm->GetLocation(("spotLights[" + number + "].quadratic").c_str());
-			GLint uniform_var_loc8 = _shdrpgm->GetLocation("uModelToNDC");
-			GLuint uniform_var_loc10 = _shdrpgm->GetLocation("model");
 			GLint uniform_var_loc11 = _shdrpgm->GetLocation("uTextureCheck");
 			GLint uniform_var_loc12 = _shdrpgm->GetLocation(("spotLights[" + number + "].lightColor").c_str());
 			GLint uniform_var_loc13 = _shdrpgm->GetLocation("uColor");

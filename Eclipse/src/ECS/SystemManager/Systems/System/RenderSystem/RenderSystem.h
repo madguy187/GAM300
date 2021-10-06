@@ -20,7 +20,6 @@ namespace Eclipse
         static inline AABB_ box;
 
         static void Init();
-        static Signature RegisterAll();
 
     private:
         void Update() override;

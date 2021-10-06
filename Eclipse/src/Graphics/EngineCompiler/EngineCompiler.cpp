@@ -71,8 +71,6 @@ namespace Eclipse
 
             Mesh B;
 
-            auto hh = sizeof(B);
-
             GeometryFileRead.read(reinterpret_cast<char*>(&B), offsetof(Mesh, Vertices));
 
             GeometryFileRead.read(reinterpret_cast<char*>(&VerticesSize), sizeof(VerticesSize));
@@ -103,7 +101,7 @@ namespace Eclipse
             }
         }
 
-        CloseFile(std::move(GeometryFileRead), AllNames[0], TotalNumberOfModels);
+        CloseFile(GeometryFileRead, AllNames[0], TotalNumberOfModels);
     }
 
     void EngineCompiler::LoadPrefabs()
@@ -129,7 +127,7 @@ namespace Eclipse
             int NumberOfSubMeshes = 0;
             PrefabsFileRead.read(reinterpret_cast<char*>(&NumberOfSubMeshes), sizeof(NumberOfSubMeshes));
 
-            for (int i = 0; i < NumberOfSubMeshes; i++)
+            for (int j = 0; j < NumberOfSubMeshes; j++)
             {
                 std::array<char, 128> MeshName;
                 PrefabsFileRead.read(reinterpret_cast<char*>(&MeshName), sizeof(MeshName));
@@ -164,10 +162,10 @@ namespace Eclipse
             TextureFileRead.read(reinterpret_cast<char*>(&TextureName), sizeof(TextureName));
 
             // Texture DirecPathtory
-            std::array<char, 128> TexturePath;
-            TextureFileRead.read(reinterpret_cast<char*>(&TexturePath), sizeof(TexturePath));
+            std::array<char, 128> TexturePath_;
+            TextureFileRead.read(reinterpret_cast<char*>(&TexturePath_), sizeof(TexturePath_));
 
-            Texture tex(TexturePath.data());
+            Texture tex(TexturePath_.data());
             Graphics::textures.emplace(TextureName.data(), tex);
         }
 
@@ -202,10 +200,10 @@ namespace Eclipse
             ModelTextureFileRead.read(reinterpret_cast<char*>(&TextureDirectory), sizeof(TextureDirectory));
 
             // Texture DirecPathtory
-            std::array<char, 128> TexturePath;
-            ModelTextureFileRead.read(reinterpret_cast<char*>(&TexturePath), sizeof(TexturePath));
+            std::array<char, 128> TexturePath_;
+            ModelTextureFileRead.read(reinterpret_cast<char*>(&TexturePath_), sizeof(TexturePath_));
 
-            Texture tex(TextureDirectory.data(), TexturePath.data(), static_cast<aiTextureType>(TextureType));
+            Texture tex(TextureDirectory.data(), TexturePath_.data(), static_cast<aiTextureType>(TextureType));
             tex.Load(false);
             Graphics::textures.emplace(MeshName.data(), tex);
         }

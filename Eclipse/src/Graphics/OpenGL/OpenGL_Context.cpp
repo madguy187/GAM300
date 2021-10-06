@@ -16,6 +16,10 @@ static void on_key_callback(GLFWwindow* window, int key, int scancode, int actio
 
 void Eclipse::OpenGL_Context::on_key(int key, int scancode, int action, int mods)
 {
+    (void)key;
+    (void)scancode;
+    (void)mods;
+
     if (action == GLFW_PRESS)
     {
     }
@@ -23,6 +27,9 @@ void Eclipse::OpenGL_Context::on_key(int key, int scancode, int action, int mods
 
 static void on_scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
+    (void)window;
+    (void)xoffset;
+    (void)yoffset;
     // std::cout << "Mouse scroll wheel offset: (" << xoffset << ", " << yoffset << ")" << std::endl;
 }
 
@@ -32,16 +39,18 @@ static void on_window_size_callback(GLFWwindow* window, int width, int height)
     pWindow->on_resize(width, height);
 }
 
-void Eclipse::OpenGL_Context::on_resize(int width, int height)
+void Eclipse::OpenGL_Context::on_resize(int width_, int height_)
 {
-    width = width;
-    height = height;
+    width = width_;
+    height = height_;
 
     glViewport(0, 0, width, height);
 }
 
 static void on_window_close_callback(GLFWwindow* window)
 {
+    (void)window;
+
     OpenGL_Context::on_close();
 }
 
@@ -372,7 +381,7 @@ void Eclipse::OpenGL_Context::CreateFrameBuffers()
     Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height,FrameBufferMode::FBM_RIGHT);
 }
 
-void Eclipse::OpenGL_Context::CreateFrameBuffers(unsigned int width, unsigned int height, FrameBufferMode in)
+void Eclipse::OpenGL_Context::CreateFrameBuffers(unsigned int width_, unsigned int height_, FrameBufferMode in)
 {
     if (in == FrameBufferMode::FBM_NONE || in == FrameBufferMode::MAXCOUNT)
     {
@@ -380,7 +389,7 @@ void Eclipse::OpenGL_Context::CreateFrameBuffers(unsigned int width, unsigned in
         std::exit(EXIT_FAILURE);
     }
 
-    FrameBuffer* m_frameBuffer = new FrameBuffer(width, height, in);
+    FrameBuffer* m_frameBuffer = new FrameBuffer(width_, height_, in);
     _Framebuffers.insert({ in , m_frameBuffer });
     //delete m_frameBuffer;
     ENGINE_CORE_INFO("FrameBuffer Ready For Use");

@@ -114,10 +114,10 @@ namespace Eclipse
             glm::vec3 rad = calculateDimensions() / 2.0f;
             glm::vec3 radBr = br.calculateDimensions() / 2.0f;
 
-            glm::vec3 center = calculateCenter();
+            glm::vec3 center_ = calculateCenter();
             glm::vec3 centerBr = br.calculateCenter();
 
-            glm::vec3 dist = abs(center - centerBr);
+            glm::vec3 dist = abs(center_ - centerBr);
 
             for (int i = 0; i < 3; i++)
             {

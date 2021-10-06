@@ -105,9 +105,9 @@ void Cylinder::InsertPosVtx()
         TextVec.push_back(v3_texVtx);
 
         //Add index
-        IdxVec.push_back(18 + j);
-        IdxVec.push_back(18 + j + 1);
-        IdxVec.push_back(18 + j + 2);
+        IdxVec.push_back(static_cast<GLushort>(18 + j));
+        IdxVec.push_back(static_cast<GLushort>(18 + j + 1));
+        IdxVec.push_back(static_cast<GLushort>(18 + j + 2));
 
         //CapBottom
         //Position
@@ -148,9 +148,9 @@ void Cylinder::InsertPosVtx()
         TextVec.push_back(v6_texVtx);
 
         //Add index
-        IdxVec.push_back(18 + j + 3);
-        IdxVec.push_back(18 + j + 4);
-        IdxVec.push_back(18 + j + 5);
+        IdxVec.push_back(static_cast<GLushort>(18 + j + 3));
+        IdxVec.push_back(static_cast<GLushort>(18 + j + 4));
+        IdxVec.push_back(static_cast<GLushort>(18 + j + 5));
     }
 }
 
@@ -173,9 +173,9 @@ void Cylinder::InsertIdxVtx()
             /*  Ignore degenerate triangle */
             if (!DegenerateTri(PosVec[i0], PosVec[i1], PosVec[i2]))
             {
-                IdxVec.push_back(i2);
-                IdxVec.push_back(i1);
-                IdxVec.push_back(i0);
+                IdxVec.push_back(static_cast<GLushort>(i2));
+                IdxVec.push_back(static_cast<GLushort>(i1));
+                IdxVec.push_back(static_cast<GLushort>(i0));
                 ++TriCount;
             }
 
@@ -187,9 +187,9 @@ void Cylinder::InsertIdxVtx()
             /*  Ignore degenerate triangle */
             if (!DegenerateTri(PosVec[i3], PosVec[i4], PosVec[i5]))
             {
-                IdxVec.push_back(i5);
-                IdxVec.push_back(i4);
-                IdxVec.push_back(i3);
+                IdxVec.push_back(static_cast<GLushort>(i5));
+                IdxVec.push_back(static_cast<GLushort>(i4));
+                IdxVec.push_back(static_cast<GLushort>(i3));
                 ++TriCount;
             }
         }

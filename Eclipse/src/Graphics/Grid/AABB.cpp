@@ -98,10 +98,10 @@ namespace Eclipse
         IsGrid = in;
     }
 
-    void DYN_AABB::SetMaxMin(ECVec3& Max, ECVec3& Min, unsigned int id)
+    void DYN_AABB::SetMaxMin(ECVec3& Max_, ECVec3& Min_, unsigned int id)
     {
-        SetMaximum(Max);
-        SetMinimum(Min);
+        SetMaximum(Max_);
+        SetMinimum(Min_);
         SetEntityID(id);
 
         surfaceArea = CalculateSurfaceArea();
@@ -138,6 +138,8 @@ namespace Eclipse
 
     bool DYN_AABB::MouseOverlaps(glm::vec3 mousepos, const DYN_AABB& other) const
     {
+        (void)mousepos;
+
         return Max.x > other.Min.x && Min.x < other.Max.x&&
             Max.y > other.Min.y && Min.y < other.Max.y&&
             Max.z > other.Min.z && Min.z < other.Max.z;

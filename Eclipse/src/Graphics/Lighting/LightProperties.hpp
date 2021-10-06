@@ -58,7 +58,7 @@ inline void Eclipse::LightManager::SetDiffuse(TypeOfLight& OBJ, ECVec3 in)
 template<typename TypeOfLight>
 inline void Eclipse::LightManager::SetAttenuation(TypeOfLight& OBJ, unsigned int in)
 {
-    if (constexpr(has_attenuation<TypeOfLight>::value == true))
+    if constexpr((has_attenuation<TypeOfLight>::value == true))
     {
         OBJ.constant = AttenuationLevels[in].second.Constant_;
         OBJ.linear = AttenuationLevels[in].second.Linear_;
@@ -69,7 +69,7 @@ inline void Eclipse::LightManager::SetAttenuation(TypeOfLight& OBJ, unsigned int
 template<typename TypeOfLight>
 inline void Eclipse::LightManager::SetSpecular(TypeOfLight& OBJ, ECVec3 in)
 {
-    if (constexpr(has_Specular<TypeOfLight>::value == true))
+    if constexpr ((has_Specular<TypeOfLight>::value == true))
     {
         OBJ.specular.setX(in.x);
         OBJ.specular.setY(in.y);

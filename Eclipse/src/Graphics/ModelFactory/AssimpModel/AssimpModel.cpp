@@ -8,6 +8,7 @@ namespace Eclipse
 
     AssimpModel::AssimpModel(bool noTex)
     {
+        noTex = false;
     }
 
     AssimpModel::AssimpModel(bool noTex, std::string& NameOfModels, std::string& Directorys, std::vector<Mesh> Meshess, std::vector<Texture> Textures_loadeds) :
@@ -17,11 +18,13 @@ namespace Eclipse
         Meshes(Meshess),
         Textures_loaded(Textures_loadeds)
     {
-
+        (void)noTex;
     }
 
     void AssimpModel::Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, unsigned int id)
     {
+        (void)FrameBufferID;
+
         for (unsigned int i = 0; i < Meshes.size(); i++)
         {
             Meshes[i].Render(shader, MOde, id, i);
@@ -402,7 +405,7 @@ namespace Eclipse
         // return Mesh(vertices, indices, textures);
     }
 
-    std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType type, std::string& MeshName)
+    std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* mat, aiTextureType type_, std::string& MeshName)
     {
         std::vector<Texture> textures;
 
@@ -412,10 +415,10 @@ namespace Eclipse
         //textures.push_back(tex);
         //textures_loaded.push_back(tex);
 
-        for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
+        for (unsigned int i = 0; i < mat->GetTextureCount(type_); i++)
         {
             aiString str;
-            mat->GetTexture(type, i, &str);
+            mat->GetTexture(type_, i, &str);
 
             // prevent duplicate loading
             bool skip = false;
@@ -434,7 +437,7 @@ namespace Eclipse
 
             if (!skip)
             {
-                Texture tex(Directory, str.C_Str(), type);
+                Texture tex(Directory, str.C_Str(), type_);
                 std::cout << "Directory: " << Directory << std::endl;
                 std::cout << "Path: " << str.C_Str() << std::endl;
 
