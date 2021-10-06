@@ -15,8 +15,10 @@ namespace Eclipse
 		glBindFramebuffer(GL_FRAMEBUFFER, FramebufferID);
 	}
 
-	void Grid::CheckUniformLocation(unsigned int GridID)
+	void Grid::CheckUniformLocation(unsigned int GridID_)
 	{
+		(void)GridID_;
+
 		// Be in line with Editor Settings
 		auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
 		float SnapValue = scene->GetSnapSettings().mPosSnapValue;
@@ -41,7 +43,7 @@ namespace Eclipse
 		GLint uniform_var_loc11 = ShaderRef->GetLocation("XAxis_Colour");
 		GLint uniform_var_loc12 = ShaderRef->GetLocation("ZAxis_Colour");
 
-		GLCall(glUniform1i(uniform_var_loc1, GridScale));
+		GLCall(glUniform1i(uniform_var_loc1, static_cast<GLint>(GridScale)));
 		glUniformMatrix4fv(uniform_var_loc2, 1, GL_FALSE, glm::value_ptr(camera.viewMtx));
 		glUniformMatrix4fv(uniform_var_loc3, 1, GL_FALSE, glm::value_ptr(camera.projMtx));
 		GLCall(glUniform3f(uniform_var_loc4, GridColour.getX(), GridColour.getY(), GridColour.getZ()));
@@ -148,11 +150,6 @@ namespace Eclipse
 		ZAxisColour = in;
 	}
 
-	Quad* Grid::GetModelReference()
-	{
-		return WholeGrid;
-	}
-
 	Shader* Grid::GetShaderReference()
 	{
 		return ShaderRef;
@@ -162,10 +159,11 @@ namespace Eclipse
 	{
 		InsertAsDebugBox();
 
-		WholeGrid = new Quad;
+		WholeGrid = std::move(engine->GraphicsManager.GridQuad);
+
 		ShaderRef = &(Graphics::shaderpgms["Grid"]);
 
-		if (WholeGrid != nullptr && CalculateGridSettings() && CalculateGridCoordinates())
+		if (WholeGrid != nullptr && CalculateGridSettings())
 		{
 			EDITOR_LOG_INFO("Grid Created");
 		}
@@ -179,11 +177,11 @@ namespace Eclipse
 		// Only max have this number of tiles
 		GridArray.reserve(TotalTiles);
 
-		for (int y = 0; y < TotalTiles; y += (GridSize * GridSize))
+		for (unsigned int y = 0; y < TotalTiles; y += (GridSize * GridSize))
 		{
-			for (int z = 0; z < GridSize; z++)
+			for (unsigned int z = 0; z < GridSize; z++)
 			{
-				for (int x = 0; x < GridSize; x++)
+				for (unsigned int x = 0; x < GridSize; x++)
 				{
 					unsigned int Index = (z * GridSize) + x + y;
 					float HalfExtent = (GridScale / 2);
@@ -196,15 +194,15 @@ namespace Eclipse
 					GridArray[Index]->CenterPoint = ECVec3{ Center.x, Center.y, Center.z };
 
 					// Set Maximum Point
-					glm::vec3 Maximum = { Center.x + HalfExtent , Center.y + HalfExtent , Center.z + HalfExtent };
-					GridArray[Index]->MaximumPoint = ECVec3{ Maximum.x, Maximum.y, Maximum.z };
+					glm::vec3 Maximum_ = { Center.x + HalfExtent , Center.y + HalfExtent , Center.z + HalfExtent };
+					GridArray[Index]->MaximumPoint = ECVec3{ Maximum_.x, Maximum_.y, Maximum_.z };
 
 					// Set Minimum Point
-					glm::vec3 Minimum = { Center.x - HalfExtent , Center.y - HalfExtent , Center.z - HalfExtent };
-					GridArray[Index]->MinimumPoint = ECVec3{ Minimum.x, Minimum.y, Minimum.z };
+					glm::vec3 Minimum_ = { Center.x - HalfExtent , Center.y - HalfExtent , Center.z - HalfExtent };
+					GridArray[Index]->MinimumPoint = ECVec3{ Minimum_.x, Minimum_.y, Minimum_.z };
 
 					// Set Width
-					GridArray[Index]->Width = Maximum.x - Minimum.x;
+					GridArray[Index]->Width = Maximum_.x - Minimum_.x;
 
 					if (AddDebugBoxes)
 					{
@@ -261,23 +259,25 @@ namespace Eclipse
 		return true;
 	}
 
-	void Grid::CalculateStartingPoint(ECVec3& MinimumIn, ECVec3& Maximum)
+	void Grid::CalculateStartingPoint(ECVec3& MinimumIn, ECVec3& Maximum_)
 	{
 		StartingPosition.setX((MinimumIn.getX() + (MinimumIn.getX() + GridScale)) / 2);
 		StartingPosition.setY((MinimumIn.getY() + (MinimumIn.getY() + GridScale)) / 2);
-		StartingPosition.setZ((Maximum.getZ() + (Maximum.getZ() - GridScale)) / 2);
+		StartingPosition.setZ((Maximum_.getZ() + (Maximum_.getZ() - GridScale)) / 2);
 	}
 
 	void Grid::DebugPrintCoorindates(std::vector<std::shared_ptr<Tile>>& in)
 	{
+		(void)in;
+
 		if (PrintDebug == false)
 			return;
 
-		for (int y = 0; y < TotalTiles; y += (GridSize * GridSize))
+		for (unsigned int y = 0; y < TotalTiles; y += (GridSize * GridSize))
 		{
-			for (int z = 0; z < GridSize; z++)
+			for (unsigned int z = 0; z < GridSize; z++)
 			{
-				for (int x = 0; x < GridSize; x++)
+				for (unsigned int x = 0; x < GridSize; x++)
 				{
 					unsigned int Index = (z * GridSize) + x + y;
 
@@ -362,10 +362,10 @@ namespace Eclipse
 	Grid::~Grid()
 	{
 		// Handle Memory for WholeGrid*
-		if (WholeGrid != nullptr)
-		{
-			delete WholeGrid;
-		}
+		//if (WholeGrid != nullptr)
+		//{
+		//	delete WholeGrid;
+		//}
 	}
 
 	float Grid::GetDistanceToObject(unsigned int indexIn)
@@ -375,6 +375,8 @@ namespace Eclipse
 
 	void Grid::SetDistance(AABBNode& Nodein, AABBComponent& aabbin, unsigned int id)
 	{
+		(void)id;
+
 		Nodein.aabb.DistanceToObject = Nodein.aabb.Max.x - aabbin.Max.getX();
 		/*engine->GridManager->*/gridArray[Nodein.aabb.GetEntityID()]->aabb.DistanceToObject = Nodein.aabb.DistanceToObject;
 	}

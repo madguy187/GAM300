@@ -6,7 +6,7 @@
 
 namespace Eclipse
 {
-    class DYN_AABB
+    struct DYN_AABB
     {
     public:
         glm::vec3 Min;
@@ -37,7 +37,7 @@ namespace Eclipse
         unsigned int GetEntityID();
         bool CheckIsGrid();
         void SetIsGrid(bool in);
-        void SetMaxMin(ECVec3& Max, ECVec3& Min , unsigned int id);
+        void SetMaxMin(ECVec3& Max, ECVec3& Min, unsigned int id);
         void SetEntityID(unsigned int id);
         ECVec3 GetMinimum(TransformComponent& in);
         ECVec3 GetMaximum(TransformComponent& in);

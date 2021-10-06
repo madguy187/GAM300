@@ -18,10 +18,18 @@ uniform float gamma;
 uniform bool EnableGammaCorrection;
 uniform bool CheckApplyLighting;
 uniform int BasicPrimitives;
+uniform float Exposure;
+
+in TANGENT_VAR{
+	vec3 TangentViewPos;
+	vec3 TangentCrntPos;
+} tangent_varFS;
 
 // Structs
 uniform sampler2D diffuse0;
 uniform sampler2D specular0;
+uniform sampler2D normal0;
+uniform int checkNormalMap;
 uniform int noTex;
 
 struct Material 
@@ -73,7 +81,7 @@ struct SpotLight
   
     vec3 ambient;
     vec3 diffuse;
-    vec3 specular;       
+    vec3 specular;
 };
 
 #define NR_POINT_LIGHTS 4  
@@ -89,11 +97,14 @@ uniform DirectionalLight directionlight[NR_DIRECTIONAL_LIGHTS];
 
 uniform Material material;
 
+in vec3 TangentSpotLight[NR_SPOTLIGHTS];
+in vec3 TangentPointLight[NR_POINT_LIGHTS];
+in vec3 TangentDirectionalLight[NR_DIRECTIONAL_LIGHTS];
+
 // Function Headers
 vec3 CalcPointLight(PointLight light, vec3 normala, vec3 fragPos, vec3 viewDira, vec4 texDiff, vec4 texSpec);
 vec3 CalcDirLight(DirectionalLight light, vec3 normala, vec3 viewDira, vec4 texDiff, vec4 texSpec);
 vec3 CalcSpotLight(SpotLight light, vec3 normala, vec3 fragPos, vec3 viewDira , vec4 texDiff, vec4 texSpec);
-
 
 void main () 
 {
@@ -107,11 +118,16 @@ void main ()
      vec3 result;
 
      // properties
-     vec3 norm = normalize(normal_from_vtxShader);
-     vec3 viewDir = normalize(camPos - crntPos);
-
+    vec3 norm = normalize(normal_from_vtxShader);
+    vec3 viewDir = normalize(camPos - crntPos);
+	
     vec4 texDiff;
 	vec4 texSpec;
+	vec3 normalMap;
+
+	PointLight tangentPointLights[NR_POINT_LIGHTS];
+	SpotLight tangentSpotLights[NR_SPOTLIGHTS];
+	DirectionalLight tangentDirectionalLight[NR_DIRECTIONAL_LIGHTS];
 
 	if (noTex == 1) 
     {
@@ -131,33 +147,78 @@ void main ()
 	} 
     else 
     {
-		texDiff = texture(diffuse0, TxtCoord);
+        texDiff = texture(diffuse0, TxtCoord);
 		texSpec = texture(specular0, TxtCoord);
+		
+		if(checkNormalMap == 1)
+        {		
+			normalMap = texture(normal0, TxtCoord).rgb;
+			normalMap = normalize(normalMap * 2.0 - 1.0);
+			
+			for(int i = 0; i < NumberOfPointLights; ++i)
+			{
+				tangentPointLights[i] = pointLights[i];
+				tangentPointLights[i].position = TangentPointLight[i];
+			}
+			
+			for(int i = 0; i < NumberOfSpotLights; ++i)
+			{
+				tangentSpotLights[i] = spotLights[i];
+				tangentSpotLights[i].position = TangentSpotLight[i];
+			}
+			
+			tangentDirectionalLight[0] = directionlight[0];
+			tangentDirectionalLight[0].direction = TangentDirectionalLight[0];
+			
+			viewDir = normalize(tangent_varFS.TangentViewPos - tangent_varFS.TangentCrntPos);
+        }
 	}
 
     if( CheckApplyLighting == true )
     {
         if( directionlight[0].AffectsWorld == true )
         {
-            result = CalcDirLight(directionlight[0], norm, viewDir,texDiff, texSpec);
+			if(checkNormalMap == 1)
+			{
+				result = CalcDirLight(tangentDirectionalLight[0], normalMap, viewDir, texDiff, texSpec);	
+			}
+			else
+			{
+				result = CalcDirLight(directionlight[0], norm, viewDir, texDiff, texSpec);
+			}		
         }
 
         for(int i = 0 ; i < NumberOfPointLights ; i++ )
         {
-             result += CalcPointLight( pointLights[i], norm, crntPos, viewDir , texDiff, texSpec);
+			if(checkNormalMap == 1)
+			{
+				result += CalcPointLight(tangentPointLights[i], normalMap, tangent_varFS.TangentCrntPos, viewDir, texDiff, texSpec);
+			}
+			else
+			{
+				result += CalcPointLight( pointLights[i], norm, crntPos, viewDir , texDiff, texSpec);
+			}     
         }
 
         for(int i = 0 ; i < NumberOfSpotLights ; i++ )
         {
-             result += CalcSpotLight( spotLights[i], norm, crntPos, viewDir , texDiff, texSpec);
+			if(checkNormalMap == 1)
+			{
+				result += CalcSpotLight(tangentSpotLights[i], normalMap, tangent_varFS.TangentCrntPos, viewDir, texDiff, texSpec);
+			}
+			else
+			{
+				result += CalcSpotLight( spotLights[i], norm, crntPos, viewDir , texDiff, texSpec);
+			}		       
         }
     }
 
-        fFragClr = vec4(result,1.0f);
+		 fFragClr = vec4(result,1.0f);
 
         if(EnableGammaCorrection == true )
         {
-            fFragClr.rgb = pow(fFragClr.rgb, vec3(1.0/gamma));
+			vec3 toneMapped = vec3(1.0f) - exp(-fFragClr.rgb * Exposure);
+            fFragClr.rgb = pow(toneMapped, vec3(1.0/gamma));
         }
         
     }

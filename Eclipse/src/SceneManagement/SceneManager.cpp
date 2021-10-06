@@ -1,13 +1,14 @@
 #include "pch.h"
 #include "SceneManager.h"
-#include "../ECS/SystemManager/Systems/System/CameraSystem.h"
+#include "../ECS/SystemManager/Systems/System/CameraSystem/CameraSystem.h"
 
 namespace Eclipse
 {
 	SceneManager::SceneIndex SceneManager::numOfScene = 0;
-	SceneManager::SceneIndex SceneManager::prevScene = 0;
-	SceneManager::SceneIndex SceneManager::curScene = 0;
-	SceneManager::SceneIndex SceneManager::nextScene = 0;
+	SceneManager::SceneIndex SceneManager::prevScene = SceneManager::EMPTY;
+	SceneManager::SceneIndex SceneManager::curScene = SceneManager::EMPTY;
+	SceneManager::SceneIndex SceneManager::nextScene = SceneManager::EMPTY;
+	SceneManager::SceneIndex SceneManager::tempScene = SceneManager::EMPTY;
 	bool SceneManager::isQuit = false;
 	bool SceneManager::isReload = false;
 	std::vector<std::string> SceneManager::sceneList;
@@ -15,9 +16,7 @@ namespace Eclipse
 
 	void SceneManager::Initialize()
 	{
-		sceneList.push_back("Empty");
-		mapNameToPath.insert({ "Empty", "Empty" });
-		numOfScene++;
+
 	}
 
 	void SceneManager::ProcessScene()
@@ -28,13 +27,14 @@ namespace Eclipse
 			if (nextScene == RELOAD)
 			{
 				nextScene = curScene;
-				if (curScene != 0)
+				if (curScene != EMPTY)
 				{
 					engine->szManager.LoadSceneFile(mapNameToPath[sceneList[curScene]].c_str());
 				}
 			}
-			else if (nextScene == 0)
+			else if (nextScene == EMPTY)
 			{
+				curScene = nextScene;
 				return;
 			}
 			else if (nextScene != QUIT)
@@ -42,6 +42,10 @@ namespace Eclipse
 				prevScene = curScene;
 				curScene = nextScene;
 				engine->szManager.LoadSceneFile(mapNameToPath[sceneList[curScene]].c_str());
+			}
+			else if (nextScene == QUIT)
+			{
+
 			}
 		}
 
@@ -77,6 +81,33 @@ namespace Eclipse
 		return numOfScene++;
 	}
 
+	SceneManager::SceneIndex SceneManager::RegisterTempScene(const std::string& path)
+	{
+		if (tempScene == EMPTY)
+		{
+			tempScene = RegisterTempScene(path);
+			EDITOR_LOG_INFO("Temp.scn is created.")
+		}
+		else
+		{
+			EDITOR_LOG_WARN("Creation of Temp.scn failed. Temp.scn is already available.")
+		}
+		return tempScene;
+	}
+
+	void SceneManager::DeregisterTempScene()
+	{
+		if (tempScene != EMPTY)
+		{
+			DeregisterScene(tempScene);
+			EDITOR_LOG_INFO("Temp.scn is deregistered.")
+		}
+		else
+		{
+			EDITOR_LOG_WARN("Deregisteration of Temp.scn failed. Temp.scn is already deregistered.")
+		}
+	}
+
 	SceneManager::SceneIndex SceneManager::GetPreviousScene()
 	{
 		return prevScene;
@@ -90,6 +121,42 @@ namespace Eclipse
 	SceneManager::SceneIndex SceneManager::GetNextScene()
 	{
 		return nextScene;
+	}
+
+	std::string SceneManager::GetCurrentSceneName()
+	{
+		if (curScene == EMPTY)
+		{
+			return {};
+		}
+
+		return sceneList[curScene];
+	}
+
+	std::string SceneManager::GetPreviousSceneName()
+	{
+		if (prevScene == EMPTY)
+		{
+			return {};
+		}
+
+		return sceneList[prevScene];
+	}
+
+	std::string SceneManager::GetNextSceneSceneName()
+	{
+		if (nextScene == EMPTY || nextScene == QUIT || 
+			nextScene == RELOAD)
+		{
+			return {};
+		}
+
+		return sceneList[nextScene];
+	}
+
+	std::string SceneManager::GetScenePath(const std::string& name)
+	{
+		return mapNameToPath[name];
 	}
 
 	bool SceneManager::CheckSceneAvailable(const std::string& name)
@@ -106,17 +173,38 @@ namespace Eclipse
 
 	bool SceneManager::CheckCurrentScene(const std::string& name)
 	{
+		if (curScene == EMPTY)
+		{
+			return false;
+		}
+
 		return sceneList[curScene] == name ? true : false;
 	}
 
 	void SceneManager::DeregisterScene(const SceneIndex& idx)
 	{
+		if (idx == EMPTY || idx == RELOAD || idx == QUIT)
+		{
+			return;
+		}
 
+		std::string deleting = sceneList[idx];
+
+		sceneList.erase(std::next(sceneList.begin(), idx));
+		numOfScene--;
+		mapNameToPath.erase(deleting);
 	}
 
 	void SceneManager::DeregisterScene(const std::string& name)
 	{
+		(void)name;
+	}
 
+	void SceneManager::DeregisterCurrentScene()
+	{
+		DeregisterScene(curScene);
+		curScene = EMPTY;
+		nextScene = EMPTY;
 	}
 
 	SceneManager::SceneIndex SceneManager::GetSceneIndex(const std::string& name)
@@ -135,7 +223,8 @@ namespace Eclipse
 	}
 	void SceneManager::LoadScene(const SceneIndex& idx)
 	{
-		if (idx < 0 || idx >= numOfScene)
+		if (idx != QUIT && idx != RELOAD && idx != EMPTY &&
+			(idx < 0 || idx >= numOfScene))
 		{
 			EDITOR_LOG_WARN(false, "Fail to load scene.");
 			return;
@@ -181,6 +270,8 @@ namespace Eclipse
 		//engine->AssimpManager.ClearContainer();
 		engine->world.Clear();
 		engine->gCamera.ResetScene();
+		engine->gCullingManager->Clear();
+		engine->gDynamicAABBTree.ResetTree();
 	}
 
 	void SceneManager::ReloadScene()
@@ -190,7 +281,7 @@ namespace Eclipse
 
 	void SceneManager::NewScene()
 	{
-		nextScene = 0;
+		nextScene = EMPTY;
 		if (curScene == nextScene)
 		{
 			ReloadScene();

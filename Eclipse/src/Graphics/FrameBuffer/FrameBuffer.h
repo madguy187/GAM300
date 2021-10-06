@@ -1,78 +1,85 @@
-#ifndef VIEW_H
-#define VIEW_H
+#ifndef FRAMEBUFFER_H
+#define FRAMEBUFFER_H
 
 namespace Eclipse
 {
-    enum class FrameBufferMode
-    {
-        FBM_NONE = 0,
-        FBM_GAME = 1,
-        FBM_SCENE = 2,
-        FBM_TOP = 3,
-        FBM_BOTTOM = 4,
-        FBM_LEFT = 5,
-        FBM_RIGHT = 6,
-        MAXCOUNT
-    };
-
     static const char* enum_FrameBufferMode_str[] =
     {
-      "NONE", "GAMEVIEW", "SCENEVIEW",
-      "SWITCHINGVIEWS_TOP", "SWITCHINGVIEWS_BOTTOM", "SWITCHINGVIEWS_LEFT", "SWITCHINGVIEWS_RIGHT",
+      "NONE",
+      "GAMEVIEW",
+      "SCENEVIEW",
+      "SWITCHINGVIEWS_TOP",
+      "SWITCHINGVIEWS_BOTTOM",
+      "SWITCHINGVIEWS_LEFT",
+      "SWITCHINGVIEWS_RIGHT",
       "MAXCOUNT"
     };
 
     class FrameBuffer
     {
-    public:
-        enum class RenderMode
+
+    private:
+        struct FramebufferData
         {
-            Fill_Mode,
-            Wireframe_Mode
+            unsigned int frameBufferID = 0;
+            unsigned int depthBufferID = 0;
+            unsigned int TextureColourBuffer = 0;
+            FrameBufferMode hiddentype = FrameBufferMode::FBM_NONE;
         };
+
+        FrameBufferMode FrameBufferType = FrameBufferMode::FBM_NONE;
+        FramebufferData m_data;
+        RenderMode m_renderMode = RenderMode::Fill_Mode;
+        ECVec2 windowPos{ 0,0 };
+        ECVec2 frameBufferPosition{ 0,0 };
+        glm::uvec2 m_size{ 0,0 };
+        unsigned int m_width = 0;
+        unsigned int m_height = 0;
+        std::string Name;
+
+        friend std::ostream& operator << (std::ostream& os, const FrameBufferMode& in);
+        std::string getStringForEnum(int enum_val);
+
+    public:
+        FrameBuffer() {};
 
         FrameBuffer(const glm::uvec2& p_size, FrameBufferMode in);
         FrameBuffer(unsigned int p_width, unsigned int p_height, FrameBufferMode in);
         ~FrameBuffer();
-
-        void Bind() const;
-        void Unbind() const;
-        void Clear() const;
-        void Resize(unsigned width, unsigned height);
-
-        static void ShowWindow(FrameBuffer g, const char* input);
-
+        void SetRenderMode(RenderMode _renderMode);
+        RenderMode GetRenderMode();
+        void DeletCurrentFrameBuffer();
         unsigned int GetFrameBufferID();
         unsigned int GetTextureColourBufferID();
         unsigned int GetDepthBufferID();
         FrameBufferMode GetFrameBufferType();
         std::string GetName();
-        void DeletCurrentFrameBuffer();
+        void Bind() const;
+        void Unbind() const;
+        void Clear() const;
+        void Resize(unsigned width, unsigned height);
+        static void ShowWindow(FrameBuffer g, const char* input);
+        void CreateFrameBuffer(unsigned int p_width, unsigned int p_height);
 
-        void SetRenderMode(RenderMode _renderMode);
-        RenderMode GetRenderMode();
-    private:
 
-        struct FramebufferData
+    public:
+        // POST PROCESS HERE ==========================
+        enum class PostProcessType : unsigned int
         {
-            unsigned int frameBufferID;
-            unsigned int depthBufferID;
-            unsigned int TextureColourBuffer;
-            FrameBufferMode hiddentype;
+            PPT_NONE = 0,
+            PPT_INVERSE = 1,
+            PPT_GREY = 2,
+            PPT_KERNEL = 3,
+            PPT_BLUR = 4,
+            PPT_MAXCOUNT
         };
 
-        FrameBufferMode FrameBufferType;
-        FramebufferData m_data;
-        RenderMode m_renderMode = RenderMode::Fill_Mode;
-        ECVec2 windowPos;
-        ECVec2 frameBufferPosition;
-        glm::uvec2 m_size;
-        unsigned int m_width, m_height;
-        std::string Name;
-
-        friend std::ostream& operator << (std::ostream& os, const FrameBufferMode& in);
-        void CreateFrameBuffer(unsigned int p_width, unsigned int p_height);
-        std::string getStringForEnum(int enum_val);
+        PostProcessType PPType_ = PostProcessType::PPT_NONE;
+        bool AllowPostProcess = false;
+        unsigned int rectVAO = 0;
+        unsigned int rectVBO = 0;
+        void CreatePostProcessFramebuffer();
+        void UpdatePP();
     };
 }
-#endif//VIEW_H
+#endif//FRAMEBUFFER_H

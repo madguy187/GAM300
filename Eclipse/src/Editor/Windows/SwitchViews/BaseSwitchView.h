@@ -18,7 +18,8 @@ namespace Eclipse
 		void OnCameraMoveEvent();
 		bool GetIsWindowActive();
 	protected:
-		glm::vec2 mViewportSize;
+		CameraComponent::CameraType mCamType;
+		ECVec2 mViewportSize;
 		FrameBuffer* m_frameBuffer;
 		std::vector<std::string> mProjectionView_List;
 		bool IsWireframeMode{ false };

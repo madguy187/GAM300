@@ -10,13 +10,17 @@ namespace Eclipse
 	struct LightComponent;
 	struct MaterialComponent;
 	struct MeshComponent;
-	struct ModeLInforComponent;
+	struct ModelComponent;
 	struct PointLightComponent;
 	struct RigidBodyComponent;
 	struct ParentComponent;
 	struct ChildComponent;
+	struct CollisionComponent;
+	struct AIComponent;
 	struct SpotLightComponent;
 	struct TransformComponent;
+	struct PrefabComponent;
+	struct AudioComponent;
 
 	template<typename ...T>
 	struct TypeList
@@ -38,14 +42,18 @@ namespace Eclipse
 		LightComponent,
 		MaterialComponent,
 		MeshComponent,
-		ModeLInforComponent,
+		ModelComponent,
 		PointLightComponent,
 		RigidBodyComponent,
 		ScriptComponent,
 		ParentComponent,
 		ChildComponent,
+		CollisionComponent,
+		AudioComponent,
+		AIComponent, 
 		SpotLightComponent,
-		TransformComponent
+		TransformComponent,
+		PrefabComponent
 	>;
 
 	template <typename ...Types>

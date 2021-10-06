@@ -16,49 +16,57 @@
 #include "Editor/Windows/Profiler/Profiler.h"
 #include "Audio/AudioManager.h"
 #include "Graphics/FileWatch/FileWatch.h"
+#include "Graphics/Picker/DynamicAABBTree.h"
+#include "PrefabManager/PrefabManager.h"
+#include "Graphics/EngineCompiler/EngineCompiler.h"
+#include "AI/AIManager.h"
 
 namespace Eclipse
 {
-    class Engine
-    {
-    public:
-        World world;
-        CameraManager gCamera;
-        GraphicsManager GraphicsManager;
-        ProfilerWindow Timer;
-        Clock Game_Clock;
-        std::unique_ptr<EditorManager> editorManager;
-        LightManager LightManager;
-        MonoManager mono;
-        AssimpModelManager AssimpManager;
-        PickingManager gPicker;
-        MaterialManager MaterialManager{ true , true };
-        AABBTree CollisionGridTree{ 150 };
-        std::unique_ptr<Grid> GridManager;
-        DebugRenderingManager gDebugManager;
-        SerializationManager szManager;
-        AudioManager audioManager;
-        DragAndDrop dragDrop;
-        void Init();
-        void Run();
-        PhysicsManager gPhysics;
-        std::unique_ptr<CullingManager> gCullingManager;
-        std::unique_ptr<EclipseFileWatcher> gFileWatchManager;
+	class Engine
+	{
+	public:
+		World world;
+		World prefabWorld;
+		CameraManager gCamera;
+		GraphicsManager GraphicsManager;
+		ProfilerWindow Timer;
+		Clock Game_Clock;
+		std::unique_ptr<EditorManager> editorManager;
+		LightManager LightManager;
+		MonoManager mono;
+		AssimpModelManager AssimpManager;
+		PickingManager gPicker;
+		MaterialManager MaterialManager{ true , true };
+		AABBTree CollisionGridTree{ 150 };
+		std::unique_ptr<Grid> GridManager;
+		DebugRenderingManager gDebugManager;
+		SerializationManager szManager;
+		AudioManager audioManager;
+		DynamicAABBTree gDynamicAABBTree;
+		PrefabManager pfManager;
+		PhysicsManager gPhysics;
+		AIManager gAI;
+		std::unique_ptr<CullingManager> gCullingManager;
+		std::unique_ptr<EclipseFileWatcher> gFileWatchManager;
+		std::unique_ptr<EngineCompiler> gEngineCompiler;
 
-        bool GetEditorState();
-        bool GetPlayState();
-        bool GetPauseState();
-        bool GetStepState();
-        bool IsScenePlaying();
+		void Init();
+		void Run();
+		bool GetEditorState();
+		bool GetPlayState();
+		bool GetPauseState();
+		bool GetStepState();
+		bool IsScenePlaying();
 
-        void SetEditorState(bool check);
-        void SetPlayState(bool check);
-        void SetPauseState(bool check);
-        void SetStepState(bool check);
-    private:
-        bool IsEditorActive{ true };
-        bool IsInPlayState{ false };
-        bool IsInPauseState{ false };
-        bool IsInStepState{ false };
-    };
+		void SetEditorState(bool check);
+		void SetPlayState(bool check);
+		void SetPauseState(bool check);
+		void SetStepState(bool check);
+	private:
+		bool IsEditorActive{ true };
+		bool IsInPlayState{ false };
+		bool IsInPauseState{ false };
+		bool IsInStepState{ false };
+	};
 }

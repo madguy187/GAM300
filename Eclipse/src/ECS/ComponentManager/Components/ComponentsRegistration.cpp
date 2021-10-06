@@ -7,12 +7,16 @@
 #include "LightComponent.h"
 #include "MaterialComponent.h"
 #include "MeshComponent.h"
-#include "ModeLInfoComponent.h"
+#include "ModelComponent.h"
 #include "PointLightComponent.h"
 #include "RigidBodyComponent.h"
 #include "SpotLightComponent.h"
 #include "TextureComponent.h"
 #include "TransformComponent.h"
+#include "AudioComponent.h"
+#include "CollisionComponent.h"
+#include "AIComponent.h"
+#include "PrefabComponent.h"
 #include "ScriptComponent.h"
 
 namespace Eclipse
@@ -23,6 +27,22 @@ namespace Eclipse
     DEFINE_META(AABBComponent)
     {
         ADD_MEMBER(center);
+        ADD_MEMBER(Min);
+        ADD_MEMBER(Max);
+    }
+
+    DEFINE_META(AudioComponent)
+    {
+        ADD_MEMBER(AudioPath);
+        ADD_MEMBER(ChannelID);
+        ADD_MEMBER(Volume);
+        ADD_MEMBER(Pitch);
+        ADD_MEMBER(Speed);
+        ADD_MEMBER(IsLooping);
+        ADD_MEMBER(Is3D);
+        ADD_MEMBER(InnerConeAngle);
+        ADD_MEMBER(OuterConeAngle);
+        ADD_MEMBER(OuterVolume);
         ADD_MEMBER(Min);
         ADD_MEMBER(Max);
     }
@@ -49,7 +69,18 @@ namespace Eclipse
 
     DEFINE_META(CollisionComponent)
     {
-        
+        ADD_MEMBER(Collided);
+        ADD_MEMBER(shape);
+        ADD_MEMBER(created);
+    }
+
+    DEFINE_META(AIComponent)
+    {
+        ADD_MEMBER(waypoints);
+        ADD_MEMBER(target);
+        ADD_MEMBER(MinDisttoChange);
+        ADD_MEMBER(PatrolSpeed);
+        ADD_MEMBER(patrolling);
     }
 
     DEFINE_META(DirectionalLightComponent)
@@ -70,12 +101,18 @@ namespace Eclipse
     {
         ADD_MEMBER(Tag);
         ADD_MEMBER(Name);
-        ADD_MEMBER(IsActive);
+        ADD_MEMBER(Child);
+        ADD_MEMBER(Parent);
+        ADD_MEMBER(IsAChild);
     }
 
     DEFINE_META(ScriptComponent)
     {
         ADD_MEMBER(scriptList);
+    }
+
+    DEFINE_META(LightComponent)
+    {
     }
 
     DEFINE_META(MaterialComponent)
@@ -84,28 +121,21 @@ namespace Eclipse
         ADD_MEMBER(ambient);
         ADD_MEMBER(diffuse);
         ADD_MEMBER(specular);
-        ADD_MEMBER(HighlightColour);
+        ADD_MEMBER(NoTextures);
         ADD_MEMBER(shininess);
         ADD_MEMBER(MaximumShininess);
-        //ADD_MEMBER(RegisterForHighlight);
-        ADD_MEMBER(Highlight);
-        ADD_MEMBER(NoTextures);
-        ADD_MEMBER(ScaleUp);
         ADD_MEMBER(ComboIndex);
+        ADD_MEMBER(TextureComboIndex);
+        ADD_MEMBER(Type);
+        ADD_MEMBER(hasTexture);
+        ADD_MEMBER(TextureRef);
+        ADD_MEMBER(TextureKey);
+        ADD_MEMBER(HoldingTextures);
     }
 
     DEFINE_META(MeshComponent)
     {
         ADD_MEMBER(MeshName);
-        ADD_MEMBER(VBO);
-        ADD_MEMBER(VAO);
-        ADD_MEMBER(EBO);
-        ADD_MEMBER(NoTex);
-        ADD_MEMBER(Diffuse);
-        ADD_MEMBER(Specular);
-        ADD_MEMBER(Ambient);
-        ADD_MEMBER(Vertices);
-        ADD_MEMBER(Indices);
         ADD_MEMBER(color);
         ADD_MEMBER(textureIdx);
         ADD_MEMBER(isQuad);
@@ -113,14 +143,16 @@ namespace Eclipse
         ADD_MEMBER(modelRef);
         ADD_MEMBER(shaderRef);
         ADD_MEMBER(transparency);
+        ADD_MEMBER(ENV_MAP);
+        ADD_MEMBER(ENV_TYPE);
     }
 
-    DEFINE_META(ModeLInforComponent)
+    DEFINE_META(ModelComponent)
     {
-        ADD_MEMBER(ComboIndex);
         ADD_MEMBER(NameOfModel);
         ADD_MEMBER(Directory);
         ADD_MEMBER(type);
+        ADD_MEMBER(ComboIndex);
     }
 
     DEFINE_META(PointLightComponent)
@@ -148,14 +180,13 @@ namespace Eclipse
         ADD_MEMBER(velocity);
         ADD_MEMBER(Angvelocity);
         ADD_MEMBER(forces);
+        ADD_MEMBER(MaxVelocity);
         ADD_MEMBER(mass);
         ADD_MEMBER(drag);
         ADD_MEMBER(angdrag);
-        ADD_MEMBER(_Static);
         ADD_MEMBER(_Kinematic);
         ADD_MEMBER(enableGravity);
         ADD_MEMBER(enableRotation);
-        ADD_MEMBER(inScene);
     }
 
     DEFINE_META(SpotLightComponent)
@@ -182,22 +213,22 @@ namespace Eclipse
         ADD_MEMBER(AffectsWorld);
     }
 
-    //DEFINE_META(TextureComponent)
-    //{
-    //	ADD_MEMBER(ComboIndex);
-    //	ADD_MEMBER(ID);
-    //	ADD_MEMBER(Type);
-    //	ADD_MEMBER(TextureKey);
-    //	ADD_MEMBER(HoldingTextures);
-    //	ADD_MEMBER(hasTexture);
-    //	ADD_MEMBER(textureRef);
-    //}
+    DEFINE_META(TextureComponent)
+    {
+    	  ADD_MEMBER(textureRef);
+    }
 
     DEFINE_META(TransformComponent)
     {
         ADD_MEMBER(position);
         ADD_MEMBER(rotation);
         ADD_MEMBER(scale);
+    }
+
+    DEFINE_META(PrefabComponent)
+    {
+        ADD_MEMBER(IsChild);
+        ADD_MEMBER(PrefabID);
     }
 
     /*************************************************************************/
@@ -213,20 +244,23 @@ namespace Eclipse
     DEFINE_META_POD(double);
     DEFINE_META_POD(size_t);
     DEFINE_META_POD(std::string);
-    DEFINE_META_POD(std::vector<std::string>);
-    DEFINE_META_POD(std::vector<Mesh>);
     DEFINE_META_POD(std::vector<Texture>);
-    //DEFINE_META_POD(std::map<unsigned int, std::vector<Texture>>);
+    DEFINE_META_POD(std::vector<Entity>);
+    DEFINE_META_POD(MeshComponent::MeshNameType);
     DEFINE_META_POD(ECVec2);
     DEFINE_META_POD(ECVec3);
     DEFINE_META_POD(ECVec4);
-    DEFINE_META_POD(Mesh);
     DEFINE_META_POD(Texture);
     DEFINE_META_POD(glm::vec3);
+    DEFINE_META_POD(glm::vec4);
     DEFINE_META_POD(glm::mat4);
     DEFINE_META_POD(CameraComponent::CameraType);
     DEFINE_META_POD(CameraComponent::ProjectionType);
     DEFINE_META_POD(EntityType);
     DEFINE_META_POD(TextureType);
     DEFINE_META_POD(MaterialModelType);
+    DEFINE_META_POD(MeshComponent::MapType);
+    DEFINE_META_POD(ModelType);
+    DEFINE_META_POD(PxShapeType);
+    DEFINE_META_POD(EC_Shape);
 }

@@ -2,7 +2,7 @@
 
 // printing for console
 #include <iostream>
-#include "Tracy/Tracy.hpp"
+#include <Tracy/Tracy.hpp>
 // for defines
 #include <stdint.h>
 
@@ -28,6 +28,8 @@
 #include <memory>
 #include <filesystem>
 #include<thread>
+#include <chrono>
+#include <functional>
 
 // functional
 #include <algorithm>

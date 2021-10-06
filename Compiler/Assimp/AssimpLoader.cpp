@@ -19,7 +19,8 @@ namespace EclipseCompiler
             aiProcess_GenUVCoords |
             aiProcess_TransformUVCoords |
             aiProcess_FindInstances |
-            aiProcess_PreTransformVertices;
+            aiProcess_PreTransformVertices |
+            aiProcess_CalcTangentSpace;
 
         Assimp::Importer import;
         const aiScene* scene = import.ReadFile(path, importOptions);
@@ -35,7 +36,7 @@ namespace EclipseCompiler
         LoadNewModel(GeometryContainer);
     }
 
-    void AssimpLoader::LoadAssimpModelForTextures(std::string path, std::unordered_map<std::string, Texture>& textureContainer)
+    void AssimpLoader::LoadAssimpModelForTextures(std::string path, std::vector < std::pair<std::string, Texture>>& textureContainer)
     {
         unsigned int importOptions =
             aiProcess_Triangulate |
@@ -49,7 +50,8 @@ namespace EclipseCompiler
             aiProcess_GenUVCoords |
             aiProcess_TransformUVCoords |
             aiProcess_FindInstances |
-            aiProcess_PreTransformVertices;
+            aiProcess_PreTransformVertices | 
+            aiProcess_CalcTangentSpace;
 
         Assimp::Importer import;
         const aiScene* scene = import.ReadFile(path, importOptions);
@@ -64,7 +66,7 @@ namespace EclipseCompiler
         ProcessTextures(scene->mRootNode, scene, textureContainer);
     }
 
-    void AssimpLoader::ProcessGeometry(aiNode* node, const aiScene* scene, bool isGeometryCompiler)
+    void AssimpLoader::ProcessGeometry(aiNode* node, const aiScene* scene)
     {
         for (unsigned int i = 0; i < node->mNumMeshes; i++)
         {
@@ -79,7 +81,7 @@ namespace EclipseCompiler
         }
     }
 
-    void AssimpLoader::ProcessTextures(aiNode* node, const aiScene* scene, std::unordered_map<std::string, Texture>& TextureContainer)
+    void AssimpLoader::ProcessTextures(aiNode* node, const aiScene* scene, std::vector < std::pair<std::string, Texture>>& TextureContainer)
     {
         for (unsigned int i = 0; i < node->mNumMeshes; i++)
         {
@@ -94,7 +96,7 @@ namespace EclipseCompiler
         }
     }
 
-    std::vector<Texture> AssimpLoader::ExtractTextures(aiMesh* mesh, const aiScene* scene, std::string& MeshName, std::unordered_map<std::string, Texture>& TextureContainer)
+    std::vector<Texture> AssimpLoader::ExtractTextures(aiMesh* mesh, const aiScene* scene, std::string& MeshName, std::vector <std::pair<std::string, Texture>>& TextureContainer)
     {
         std::vector<Texture> textures;
 
@@ -113,6 +115,9 @@ namespace EclipseCompiler
             // specular maps
             std::vector<Texture> specularMaps = LoadTexturesForCompiler(material, aiTextureType_SPECULAR, MeshName, TextureContainer);
             textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+
+            std::vector<Texture> normalMaps = LoadTexturesForCompiler(material, aiTextureType_NORMALS, MeshName, TextureContainer);
+            textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
         }
 
         MeshIndex++;
@@ -158,6 +163,13 @@ namespace EclipseCompiler
                 vertex.m_Color.w = mesh->mColors[0][i].a;
             }
 
+            // tangent vector
+            vertex.Tangents = {
+                mesh->mTangents[i].x,
+                mesh->mTangents[i].y,
+                mesh->mTangents[i].z
+            };
+
             AllVertices.push_back(vertex.Position);
             vertices.push_back(vertex);
             newMesh.vertices.push_back(vertex);
@@ -185,14 +197,17 @@ namespace EclipseCompiler
             newMesh.NoTextures = false;
 
             // diffuse maps
-            std::vector<Texture> diffuseMaps = LoadTextures(material, aiTextureType_DIFFUSE, newMesh.MeshName);
+            std::vector<Texture> diffuseMaps = LoadTextures(material, aiTextureType_DIFFUSE);
             textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
             newMesh.textures.insert(newMesh.textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
             // specular maps
-            std::vector<Texture> specularMaps = LoadTextures(material, aiTextureType_SPECULAR, newMesh.MeshName);
+            std::vector<Texture> specularMaps = LoadTextures(material, aiTextureType_SPECULAR);
             textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
             newMesh.textures.insert(newMesh.textures.end(), specularMaps.begin(), specularMaps.end());
+
+            std::vector<Texture> normalMaps = LoadTextures(material, aiTextureType_NORMALS);
+            textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
 
             // If no textures are found , we get the material
             if (newMesh.textures.empty())
@@ -235,7 +250,7 @@ namespace EclipseCompiler
         return;
     }
 
-    std::vector<Texture> AssimpLoader::LoadTextures(aiMaterial* mat, aiTextureType type, const char* MeshName)
+    std::vector<Texture> AssimpLoader::LoadTextures(aiMaterial* mat, aiTextureType type)
     {
         std::vector<Texture> textures;
 
@@ -276,7 +291,7 @@ namespace EclipseCompiler
         return textures;
     }
 
-    std::vector<Texture> AssimpLoader::LoadTexturesForCompiler(aiMaterial* mat, aiTextureType type, std::string& MeshName, std::unordered_map<std::string, Texture>& In)
+    std::vector<Texture> AssimpLoader::LoadTexturesForCompiler(aiMaterial* mat, aiTextureType type, std::string& MeshName, std::vector < std::pair<std::string, Texture>>& In)
     {
         std::vector<Texture> textures;
 
@@ -287,26 +302,22 @@ namespace EclipseCompiler
 
             // prevent duplicate loading
             bool skip = false;
-            //for (unsigned int j = 0; j < Textures_loaded.size(); j++)
-            //{
-            //    if (std::strcmp(Textures_loaded[j].TexturePath.data(), str.C_Str()) == 0)
-            //    {
-            //        textures.push_back(Textures_loaded[j]);
-            //        std::unique_ptr<Texture> ptr(new Texture(Textures_loaded[j]));
-            //        //In[MeshName][MeshIndex].push_back(std::move(ptr));
-
-            //        skip = true;
-            //        break;
-            //    }
-            //}
+            for (unsigned int j = 0; j < Textures_loaded.size(); j++)
+            {
+                if (std::strcmp(Textures_loaded[j].TexturePath.data(), str.C_Str()) == 0)
+                {
+                    textures.push_back(Textures_loaded[j]);
+                    skip = true;
+                    break;
+                }
+            }
 
             if (!skip)
             {
                 Texture tex(Directory, str.C_Str(), type);
                 textures.push_back(tex);
                 Textures_loaded.push_back(tex);
-
-                 In.emplace(MeshName, tex);
+                In.push_back({ MeshName,tex });
             }
         }
 

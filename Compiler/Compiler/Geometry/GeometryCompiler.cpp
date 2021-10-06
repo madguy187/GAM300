@@ -31,7 +31,7 @@ namespace EclipseCompiler
                 auto relativePath = relative(FbxOrGltf, "..//Eclipse//src//");
                 std::string FbxOrGltfName = relativePath.filename().string();
 
-                if (FbxOrGltfName.find("gltf") != std::string::npos || FbxOrGltfName.find("fbx") != std::string::npos)
+                if (FbxOrGltfName.find("gltf") != std::string::npos || FbxOrGltfName.find("fbx") != std::string::npos || FbxOrGltfName.find("obj") != std::string::npos)
                 {
                     std::string PathName = ("..//Eclipse//src/Assets/Models/" + FolderName + "/" + FbxOrGltfName).c_str();
                     std::unique_ptr<AssimpLoader> ptr = std::make_unique< AssimpLoader>();
@@ -60,10 +60,10 @@ namespace EclipseCompiler
             return;
         }
 
-        std::cout << "Writing to Geometry File " << std::endl;
+        //std::cout << "Writing to Geometry File " << std::endl;
 
         int NumberOfModels = In.size();
-        std::cout << "Detected Geometry Size " << NumberOfModels << std::endl;
+        //std::cout << "Detected Geometry Size " << NumberOfModels << std::endl << std::endl;
         GeometryFileWrite.write(reinterpret_cast<const char*>(&NumberOfModels), sizeof(NumberOfModels));
 
         for (auto i : In)
@@ -82,19 +82,13 @@ namespace EclipseCompiler
         }
 
         GeometryFileWrite.close();
-        std::cout << "Done Writing to Geometry File " << std::endl;
+        // std::cout << "Done Writing to Geometry File " << std::endl;
     }
 
     void GeometryCompiler::ReleaseFile()
     {
-        if (Geometry.empty())
-        {
-            std::cout << "No Models Loaded" << std::endl << std::endl;
-            return;
-        }
-
         WriteToFile(Geometry);
-        std::cout << "Geometry File Compiled" << std::endl << std::endl;
+        //std::cout << "Geometry File Compiled" << std::endl << std::endl;
     }
 
     void GeometryCompiler::ReadFile(std::string& in)

@@ -76,7 +76,7 @@ namespace EclipseCompiler
     public:
 
         void LoadAssimpModel(std::string path, std::unordered_map<std::string, Mesh>& GeometryContainer);
-        void ProcessGeometry(aiNode* node, const aiScene* scene, bool isGeometryCompiler = true);
+        void ProcessGeometry(aiNode* node, const aiScene* scene);
         void ProcessMesh(aiMesh* mesh, const aiScene* scene, const char* MeshName);
         float GetLargestAxisValue(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         void ComputeAxisMinMax(std::vector<glm::vec3>& vertices, std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
@@ -84,10 +84,10 @@ namespace EclipseCompiler
         void LoadNewModel(std::unordered_map<std::string, Mesh>& GeometryContainer);
 
     public:
-        void LoadAssimpModelForTextures(std::string path, std::unordered_map<std::string, Texture>&);
-        void ProcessTextures(aiNode* node, const aiScene* scene, std::unordered_map<std::string, Texture>& TextureContainer);
-        std::vector<Texture> ExtractTextures(aiMesh* mesh, const aiScene* scene, std::string& MeshName, std::unordered_map<std::string, Texture>& TextureContainer);
-        std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type, const char* MeshName);
-        std::vector<Texture> LoadTexturesForCompiler(aiMaterial* mat, aiTextureType type, std::string& MeshName, std::unordered_map<std::string, Texture>&);
+        void LoadAssimpModelForTextures(std::string path, std::vector < std::pair<std::string, Texture>>&);
+        void ProcessTextures(aiNode* node, const aiScene* scene, std::vector < std::pair<std::string, Texture>>& TextureContainer);
+        std::vector<Texture> ExtractTextures(aiMesh* mesh, const aiScene* scene, std::string& MeshName, std::vector < std::pair<std::string, Texture>>& TextureContainer);
+        std::vector<Texture> LoadTextures(aiMaterial* mat, aiTextureType type);
+        std::vector<Texture> LoadTexturesForCompiler(aiMaterial* mat, aiTextureType type, std::string& MeshName, std::vector < std::pair<std::string, Texture>>&);
     };
 }

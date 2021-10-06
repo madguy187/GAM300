@@ -57,7 +57,7 @@ void Pyramid::InsertIdxVtx()
 
     for (int i = 0; i <= 18; i++)
     {
-        IdxVec.push_back(_indices[i]);
+        IdxVec.push_back(static_cast<GLushort>(_indices[i]));
     }
 }
 

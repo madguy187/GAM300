@@ -46,6 +46,11 @@ namespace Eclipse
 		return ImGui::GetCursorScreenPos();
 	}
 
+	ImVec2 ImGuiAPI::GetContentRegionAvail()
+	{
+		return ImGui::GetContentRegionAvail();
+	}
+
 	float ImGuiAPI::GetWindowHeight()
 	{
 		return ImGui::GetWindowHeight();
@@ -59,6 +64,76 @@ namespace Eclipse
 	void ImGuiAPI::SetWindowSize(float width, float height)
 	{
 		ImGui::SetNextWindowSize(ImVec2(width, height));
+	}
+
+	void ImGuiAPI::SetNextWindowPos(const ImVec2& pos, ImGuiCond cond, const ImVec2& pivot)
+	{
+		ImGui::SetNextWindowPos(pos, cond, pivot);
+	}
+
+	void ImGuiAPI::SetNextWindowDockID(ImGuiID dock_id, ImGuiCond cond)
+	{
+		ImGui::SetNextWindowDockID(dock_id, cond);
+	}
+
+	void ImGuiAPI::SetWindowFocus(const char* name)
+	{
+		ImGui::SetWindowFocus(name);
+	}
+
+	void ImGuiAPI::SetNextWindowClass(const ImGuiWindowClass* window_class)
+	{
+		ImGui::SetNextWindowClass(window_class);
+	}
+
+	bool ImGuiAPI::IsItemActive()
+	{
+		return ImGui::IsItemActive();
+	}
+
+	void ImGuiAPI::SetColumns(int count, const char* id, bool border)
+	{
+		 ImGui::Columns(count, id, border);
+	}
+
+	void ImGuiAPI::SetColumnOffset(int column_index, float offset_x)
+	{
+		ImGui::SetColumnOffset(column_index, offset_x);
+	}
+
+	void ImGuiAPI::NextColumn()
+	{
+		ImGui::NextColumn();
+	}
+
+	void ImGuiAPI::SetNextItemOpen(bool is_open, ImGuiCond cond)
+	{
+		ImGui::SetNextItemOpen(is_open, cond);
+	}
+
+	ImGuiStyle& ImGuiAPI::GetStyle()
+	{
+		return ImGui::GetStyle();
+	}
+
+	ImGuiViewport* ImGuiAPI::GetMainViewport()
+	{
+		return  ImGui::GetMainViewport();
+	}
+
+	ImDrawList* ImGuiAPI::GetWindowDrawList()
+	{
+		return ImGui::GetWindowDrawList();
+	}
+
+	ImVec2 ImGuiAPI::GetItemRectMin()
+	{
+		return ImGui::GetItemRectMin();
+	}
+
+	ImVec2 ImGuiAPI::GetItemRectMax()
+	{
+		return ImGui::GetItemRectMax();
 	}
 
 	bool ImGuiAPI::BeginPopUpButtonList(const char* name, const char* id)
@@ -134,6 +209,36 @@ namespace Eclipse
 	void ImGuiAPI::EndTreeNode()
 	{
 		ImGui::TreePop();
+	}
+
+	bool ImGuiAPI::BeginPopupContextWindow(const char* str_id, ImGuiMouseButton mb, bool over_items)
+	{
+		return ImGui::BeginPopupContextWindow(str_id, mb, over_items);
+	}
+
+	void ImGuiAPI::OpenPopup(const char* str_id, ImGuiPopupFlags popup_flags)
+	{
+		ImGui::OpenPopup(str_id, popup_flags);
+	}
+
+	bool ImGuiAPI::BeginPopup(const char* str_id, ImGuiWindowFlags flags)
+	{
+		return ImGui::BeginPopup(str_id, flags);
+	}
+
+	void ImGuiAPI::EndPopup()
+	{
+		ImGui::EndPopup();
+	}
+
+	bool ImGuiAPI::BeginPopupModal(const char* name, bool* p_open, ImGuiWindowFlags flags)
+	{
+		return ImGui::BeginPopupModal(name, p_open, flags);
+	}
+
+	void ImGuiAPI::CloseCurrentPopup()
+	{
+		ImGui::CloseCurrentPopup();
 	}
 
 	bool ImGuiAPI::CreateCollapsingHeader(const char* name)
@@ -233,6 +338,12 @@ namespace Eclipse
 		ImGui::Text("%s ", varname);
 	}
 
+	void ImGuiAPI::TextWrapped(const char* varname)
+	{
+		ImGui::TextWrapped("%s ", varname);
+	}
+
+
 	bool ImGuiAPI::InputInt(const char* name, int* var, bool hideName, int snapValue)
 	{
 		std::string finalID = HideWidgetName(name, hideName);
@@ -310,14 +421,69 @@ namespace Eclipse
 		return ImGui::SliderFloat4(finalID.c_str(), vector, minrange, maxrange);
 	}
 
+	bool ImGuiAPI::IsKeyPressed(int KeyIndex, bool repeat)
+	{
+		return ImGui::IsKeyPressed(KeyIndex, repeat);
+	}
+
+	int ImGuiAPI::GetKeyIndex(ImGuiKey key)
+	{
+		return ImGui::GetKeyIndex(key);
+	}
+
+	bool ImGuiAPI::IsMouseDown(ImGuiMouseButton button)
+	{
+		return ImGui::IsMouseDown(button);
+	}
+
 	bool ImGuiAPI::CheckBoxBool(const char* name, bool* var, bool hideName)
 	{
 		std::string finalID = HideWidgetName(name, hideName);
 		return ImGui::Checkbox(finalID.c_str(), var);
 	}
-	bool ImGuiAPI::ButtonBool(const char* name)
+	bool ImGuiAPI::ButtonBool(const char* name, const ImVec2& size)
 	{
-		return ImGui::Button(name);
+		return ImGui::Button(name, size);
+	}
+
+	bool ImGuiAPI::SmallButton(const char* label)
+	{
+		return ImGui::SmallButton(label);
+	}
+
+	bool ImGuiAPI::ImageButton(ImTextureID user_texture_id, const ImVec2& size, const ImVec2& uv0, const ImVec2& uv1, int frame_padding, const ImVec4& bg_col, const ImVec4& tint_col)
+	{
+		return ImGui::ImageButton(user_texture_id, size, uv0, uv1, frame_padding, bg_col, tint_col);
+	}
+
+	bool ImGuiAPI::BeginDragDropSource()
+	{
+		return ImGui::BeginDragDropSource();
+	}
+
+	void ImGuiAPI::EndDragDropSource()
+	{
+		ImGui::EndDragDropSource();
+	}
+
+	void ImGuiAPI::SetDragDropPayload(const char* type, const void* data, size_t sz, ImGuiCond cond)
+	{
+		ImGui::SetDragDropPayload(type, data, sz, cond);
+	}
+
+	bool ImGuiAPI::BeginDragDropTarget()
+	{
+		return ImGui::BeginDragDropTarget();
+	}
+
+	void ImGuiAPI::EndDragDropTarget()
+	{
+		ImGui::EndDragDropTarget();
+	}
+
+	const ImGuiPayload* ImGuiAPI::AcceptDragDropPayload(const char* type, ImGuiDragDropFlags flags)
+	{
+		return ImGui::AcceptDragDropPayload(type, flags);
 	}
 
 	void ImGuiAPI::InsertSameLine(float offset_from_start_x, float spacing)
@@ -358,6 +524,106 @@ namespace Eclipse
 			ImGui::PopTextWrapPos();
 			ImGui::EndTooltip();
 		}
+	}
+
+	void ImGuiAPI::NewLine()
+	{
+		ImGui::NewLine();
+	}
+
+	void ImGuiAPI::BeginToolTip()
+	{
+		ImGui::BeginTooltip();
+	}
+
+	void ImGuiAPI::EndTooltip()
+	{
+		ImGui::EndTooltip();
+	}
+
+	void ImGuiAPI::PopTextWrapPos()
+	{
+		ImGui::PopTextWrapPos();
+	}
+
+	void ImGuiAPI::PushTextWrapPos(float wrap_pos_x)
+	{
+		ImGui::PushTextWrapPos(wrap_pos_x);
+	}
+
+	void ImGuiAPI::SetScrollY(float scroll_y)
+	{
+		ImGui::SetScrollY(scroll_y);
+	}
+
+	float ImGuiAPI::GetFontSize()
+	{
+		return ImGui::GetFontSize();
+	}
+
+	void ImGuiAPI::PushStyleColor(ImGuiCol idx, const ImVec4& col)
+	{
+		ImGui::PushStyleColor(idx, col);
+	}
+
+	void ImGuiAPI::PushStyleColor(ImGuiCol idx, ImU32 col)
+	{
+		ImGui::PushStyleColor(idx,col);
+	}
+
+	void ImGuiAPI::PopStyleColor(int count)
+	{
+		ImGui::PopStyleColor(count);
+	}
+
+	void ImGuiAPI::Image(ImTextureID user_texture_id, const ImVec2& size, const ImVec2& uv0, const ImVec2& uv1, const ImVec4& tint_col, const ImVec4& border_col)
+	{
+		ImGui::Image(user_texture_id, size, uv0, uv1, tint_col, border_col);
+	}
+
+	bool ImGuiAPI::IsMouseDoubleClicked(ImGuiMouseButton button)
+	{
+		return ImGui::IsMouseDoubleClicked(button);
+	}
+
+	bool ImGuiAPI::IsItemClicked(ImGuiMouseButton mouse_button)
+	{
+		return ImGui::IsItemClicked(mouse_button);
+	}
+
+	void ImGuiAPI::PushID(const char* str_id)
+	{
+		ImGui::PushID(str_id);
+	}
+
+	void ImGuiAPI::PushID(const char* str_id_begin, const char* str_id_end)
+	{
+		ImGui::PushID(str_id_begin, str_id_end);
+	}
+
+	void ImGuiAPI::PushID(const void* ptr_id)
+	{
+		ImGui::PushID(ptr_id);
+	}
+
+	void ImGuiAPI::PushID(int int_id)
+	{
+		ImGui::PushID(int_id);
+	}
+
+	void ImGuiAPI::PopID()
+	{
+		ImGui::PopID();
+	}
+
+	bool ImGuiAPI::ColorPicker3(const char* label, float col[3], ImGuiColorEditFlags flags)
+	{
+		return ImGui::ColorPicker3(label,col, flags);
+	}
+
+	void ImGuiAPI::Dummy(const ImVec2& size)
+	{
+		ImGui::Dummy(size);
 	}
 
 	void ImGuiAPI::PlotHistogram(const char* label, const float* values, int values_count, int values_offset, const char* overlay_text, float scale_min, float scale_max, ImVec2 graph_size, int stride)

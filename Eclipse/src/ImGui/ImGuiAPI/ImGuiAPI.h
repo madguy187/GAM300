@@ -20,9 +20,20 @@ namespace Eclipse
 		static ImVec2 GetWindowSize();
 		static ImVec2 GetWindowPos();
 		static ImVec2 GetCursorScreenPos();
+		static ImVec2 GetContentRegionAvail();
+		static ImGuiViewport* GetMainViewport();
+		static ImDrawList* GetWindowDrawList();
+		static ImVec2 GetItemRectMin();
+		static ImVec2 GetItemRectMax();
 		static float GetWindowHeight();
 		static float GetWindowWidth();
 		static void SetWindowSize(float width, float height);
+		static void SetNextWindowPos(const ImVec2& pos, ImGuiCond cond = 0, 
+			const ImVec2& pivot = ImVec2(0, 0));
+		static void SetNextWindowDockID(ImGuiID dock_id, ImGuiCond cond = 0);
+		static void SetWindowFocus(const char* name);
+		static void SetNextWindowClass(const ImGuiWindowClass* window_class);
+		static bool IsItemActive();
 
 		// Dynamic Widgets
 		static bool BeginPopUpButtonList(const char* name, const char* id);
@@ -38,6 +49,19 @@ namespace Eclipse
 		static void EndComboList();
 		static bool BeginTreeNode(const char* name);
 		static void EndTreeNode();
+		static bool BeginPopupContextWindow(const char* str_id, ImGuiMouseButton mb, bool over_items);
+		static void OpenPopup(const char* str_id, ImGuiPopupFlags popup_flags = 0);
+		static bool BeginPopup(const char* str_id, ImGuiWindowFlags flags = 0);
+		static void EndPopup();
+		static bool BeginPopupModal(const char* name, bool* p_open = NULL, ImGuiWindowFlags flags = 0);
+		static void CloseCurrentPopup();
+		static void SetColumns(int count = 1, const char* id = NULL, bool border = true);
+		static void SetColumnOffset(int column_index, float offset_x);
+		static void NextColumn();
+		static void SetNextItemOpen(bool is_open, ImGuiCond cond = 0);
+		static ImGuiStyle& GetStyle();
+
+
 
 		// Semi-Dynamic Widgets (Don't need an end function for it)
 		static bool CreateCollapsingHeader(const char* name);
@@ -59,6 +83,14 @@ namespace Eclipse
 		static void TextMat3(const char* varname, const ECMat3& var);
 		static void TextMat4(const char* varname, const ECMat4& var);
 		static void Text(const char* varname);
+		static void TextWrapped(const char* varname);
+
+		template <typename T>
+		static void TextColored(const ImVec4& col, const char* varname, const T& data)
+		{
+			ImGui::TextColored(col, varname, data);
+		}
+
 		// Manipulate Variables
 		static bool InputInt(const char* name, int* var, bool hideName = true, int snapValue = 0);
 		static bool InputFloat(const char* name, float* var, bool hideName = true, float snapValue = 0.0f);
@@ -80,9 +112,28 @@ namespace Eclipse
 			              float minrange = 0.0f, float maxrange = 1000.0f);
 		static bool SliderFloat4(const char* name, float vector[4], bool hideName = true,
 			              float minrange = 0.0f, float maxrange = 1000.0f);
+
+		// Input
+		static bool IsKeyPressed(int KeyIndex, bool repeat = true);
+		static int GetKeyIndex(ImGuiKey key);
+		static bool IsMouseDown(ImGuiMouseButton button);
+
 		// Misc
 		static bool CheckBoxBool(const char* name, bool* var, bool hideName = true);
-		static bool ButtonBool(const char* name);
+		static bool ButtonBool(const char* name, const ImVec2& size = ImVec2(0, 0));
+		static bool SmallButton(const char* label);
+		static bool ImageButton(ImTextureID user_texture_id, const ImVec2& size, const ImVec2& uv0 = ImVec2(0, 0), const ImVec2& uv1 = ImVec2(1, 1), 
+								int frame_padding = -1, const ImVec4& bg_col = ImVec4(0, 0, 0, 0), const ImVec4& tint_col = ImVec4(1, 1, 1, 1));
+		// Drag & Drop
+		static bool BeginDragDropSource();
+		static void EndDragDropSource();
+		static void SetDragDropPayload(const char* type,
+			const void* data, size_t sz, ImGuiCond cond = 0);
+
+		static bool BeginDragDropTarget();
+		static void EndDragDropTarget();
+		static const ImGuiPayload* AcceptDragDropPayload(const char* type,
+			ImGuiDragDropFlags flags = 0);
 
 		// Utilities
 		// Mostly used together with the static widgets
@@ -92,8 +143,30 @@ namespace Eclipse
 		static bool IsItemHovered();
 		static void SetToolTip(const char* message);
 		static void HelpMarker(const char* message);
-
+		static void NewLine();
+		static void BeginToolTip();
+		static void EndTooltip();
+		static void PopTextWrapPos();
+		static void PushTextWrapPos(float wrap_pos_x);
+		static void SetScrollY(float scroll_y);
+		static float GetFontSize();
+		static void PushStyleColor(ImGuiCol idx, const ImVec4& col);
+		static void PushStyleColor(ImGuiCol idx, ImU32 col);
+		static void PopStyleColor(int count = 1);
+		static bool IsMouseDoubleClicked(ImGuiMouseButton button);
+		static bool IsItemClicked(ImGuiMouseButton mouse_button);
+		static void PushID(const char* str_id);
+		static void PushID(const char* str_id_begin, const char* str_id_end);
+		static void PushID(const void* ptr_id);
+		static void PushID(int int_id);
+		static void PopID();
+		static void Dummy(const ImVec2& size);
+		static bool ColorPicker3(const char* label, float col[3], ImGuiColorEditFlags flags = 0);
 		//Plot Widgets
+		static void Image(ImTextureID user_texture_id, const ImVec2& size,
+			const ImVec2& uv0 = ImVec2(0, 0), const ImVec2& uv1 = ImVec2(1, 1),
+			const ImVec4& tint_col = ImVec4(1, 1, 1, 1),
+			const ImVec4& border_col = ImVec4(0, 0, 0, 0));
 		static void PlotHistogram(const char* label, const float* values, int values_count, 
 			int values_offset = 0, const char* overlay_text = NULL, float scale_min = FLT_MAX, 
 			float scale_max = FLT_MAX, ImVec2 graph_size = ImVec2(0, 0), int stride = sizeof(float));

@@ -17,53 +17,41 @@
 #include "FrameBuffer.h"
 #include "../src/ECS/SystemManager/Systems/System/System.h"
 #include "Graphics/OpenGL/OpenGL_Context.h"
-#include "ECS/ComponentManager/Components/MeshComponent.h"
-
-const int maxParticles = 10000;
-
-class World;
+#include "ECS/ComponentManager/Components/MaterialComponent.h"
 
 namespace Eclipse
 {
-    class Graphics
-    {
-        static void LoadShaders(std::string shaderFile);
-        static void LoadModels();
-        static void LoadTextures(std::string textureFile);
-        static void LoadAllShaders();
+	class Graphics
+	{
+		static void LoadShaders(std::string shaderFile);
+		static void LoadModels();
 
-        //Loads the image and creates texture object
-        static GLuint setup_texobj(std::string pathname);
+		//Loads the image and creates texture object
+		static GLuint setup_texobj(std::string pathname);
 
-    public:
-        std::set<Entity> mEntities;
+	public:
+		std::set<Entity> mEntities;
+		static std::unordered_map<std::string, std::unique_ptr<IModel>> models;
+		using modelIt = std::unordered_map<std::string, std::unique_ptr<IModel>>::iterator;
+		using shaderIt = std::unordered_map<std::string, Shader>::iterator;
+		using TextureIt = std::unordered_map<std::string, Texture>::iterator;
 
-        static std::unordered_map<std::string, std::unique_ptr<IModel>> models;
-        using modelIt = std::unordered_map<std::string, std::unique_ptr<IModel>>::iterator;
-        using shaderIt = std::unordered_map<std::string, Shader>::iterator;
-        using TextureIt = std::unordered_map<std::string, Texture>::iterator;
+		static void load();
+		static void unload();
+		static void ThreadLoadShaders();
 
-        static void load();
-        static void unload();
-        static void DeleteSprite(unsigned int id);
-        static void DeleteAllSprites();
+		//container for textures
+		static std::multimap<std::string, Texture> textures;
 
-        //container for textures
-        static std::unordered_map<std::string, Texture> textures;
-
-        //container for sprites
-        static std::multimap<unsigned int, MeshComponent*> sprites;
-        static std::set<unsigned int> sortedID;
-
-        //Container for shader programs and helper functions
-        static std::unordered_map<std::string, Shader> shaderpgms;
-        using shaderVec = std::vector<std::pair<std::string, std::string>>;
-        static void initShaderpgms(std::string shdrpgm_name,
-            std::string vtx_shdr, std::string frg_shdr);
-
-        static modelIt FindModel(std::string);
-        static shaderIt FindShaders(std::string);
-    };
+		//Container for shader programs and helper functions
+		static std::unordered_map<std::string, Shader> shaderpgms;
+		using shaderVec = std::vector<std::pair<std::string, std::string>>;
+		static void initShaderpgms(std::string shdrpgm_name, std::string vtx_shdr, std::string frg_shdr);
+		static modelIt FindModel(std::string);
+		static shaderIt FindShaders(std::string);
+		static Texture FindTextures(std::string);
+		static void GetTexuresForModels(std::string in, MaterialComponent com);
+	};
 }
 
 #endif /* GRAPHICS_H */

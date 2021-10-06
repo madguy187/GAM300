@@ -9,7 +9,7 @@ namespace Eclipse
 		HideTabBar(IsTabBarHidden);
 
 		if (ECGui::BeginMainWindowWithFlag(WindowName), NULL,
-			/*ImGuiWindowFlags_NoTitleBar |*/ ImGuiWindowFlags_NoScrollbar)
+			ImGuiWindowFlags_NoScrollbar)
 		{
 			RunPlayPauseStep();
 			UtilitiesButtons();
@@ -36,12 +36,13 @@ namespace Eclipse
 		{
 			if (ECGui::ButtonBool("Play " ICON_FA_PLAY))
 			{
+				engine->szManager.SaveBackupFile();
 				engine->mono.StartMono();
-				auto& mono = engine->world.GetSystem<MonoSystem>();
-				mono->Init();
+				//auto& mono = engine->world.GetSystem<MonoSystem>();
+				engine->world.GetSystem<MonoSystem>()->Init();
 
 				engine->SetPlayState(true);
-				ImGui::SetWindowFocus("Game View");
+				ECGui::SetWindowFocus("Game View");
 				EDITOR_LOG_INFO("Scene is playing...");
 			}
 		}
@@ -49,13 +50,14 @@ namespace Eclipse
 		{
 			if (ECGui::ButtonBool("Stop " ICON_FA_STOP))
 			{
-				auto& mono = engine->world.GetSystem<MonoSystem>();
-				mono->Terminate();
+				//auto& mono = engine->world.GetSystem<MonoSystem>();
+				engine->world.GetSystem<MonoSystem>()->Terminate();
 				engine->mono.StopMono();
 
 				engine->SetPlayState(false);
 				engine->SetPauseState(false);
-				ImGui::SetWindowFocus("Scene View");
+				ECGui::SetWindowFocus("Scene View");
+				engine->szManager.LoadBackupFile();
 				EDITOR_LOG_INFO("Scene has stopped playing. Reverting to original state...");
 			}
 		}
@@ -99,220 +101,140 @@ namespace Eclipse
 
 	void HeaderWindow::UtilitiesButtons()
 	{
-		ImGui::NewLine();
+		ECGui::NewLine();
+		ECGui::InsertSameLine(ECGui::GetWindowSize().x / 3.0f);
 
-		ECGui::InsertSameLine(ECGui::GetWindowSize().x /3.0f);
-		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_W)))
+		if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_W)))
 		{
 			HeaderWindow::Translate();
 		}
-		if (ImGui::Button(ICON_FA_ARROWS_ALT, ImVec2{ 100,20 }))
+		if (ECGui::ButtonBool(ICON_FA_ARROWS_ALT, ImVec2{ 100,20 }))
 		{
 
 			HeaderWindow::Translate();
 
 		}
-		if (ImGui::IsItemHovered())
+		if (ECGui::IsItemHovered())
 		{
-			ImGui::BeginTooltip();
-			ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
-			ImGui::TextUnformatted("Select and translate objects (W)");
-			ImGui::PopTextWrapPos();
-			ImGui::EndTooltip();
+			ECGui::BeginToolTip();
+			ECGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+			ECGui::TextUnformatted("Select and translate objects (W)");
+			ECGui::PopTextWrapPos();
+			ECGui::EndTooltip();
 		}
 
 		ECGui::InsertSameLine();
-		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_E)))
+		if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_E)))
 		{
 			HeaderWindow::Rotate();
 		}
-		if (ImGui::Button(ICON_FA_SPINNER ICON_FA_REPLY, ImVec2{ 100,20 }))
+		if (ECGui::ButtonBool(ICON_FA_SPINNER ICON_FA_REPLY, ImVec2{ 100,20 }))
 		{
 
 			HeaderWindow::Rotate();
 
 		}
-		if (ImGui::IsItemHovered())
+		if (ECGui::IsItemHovered())
 		{
-			ImGui::BeginTooltip();
-			ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
-			ImGui::TextUnformatted("Select and rotate objects (E)");
-			ImGui::PopTextWrapPos();
-			ImGui::EndTooltip();
-		}
-
-		ECGui::InsertSameLine();
-		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_R)))
-		{
-			HeaderWindow::Scale();
-		}
-		if (ImGui::Button(ICON_FA_EXPAND, ImVec2{ 100,20 }))
-		{
-
-			HeaderWindow::Scale();
-
-		}
-		if (ImGui::IsItemHovered())
-		{
-			ImGui::BeginTooltip();
-			ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
-			ImGui::TextUnformatted("Select and scale objects (R)");
-			ImGui::PopTextWrapPos();
-			ImGui::EndTooltip();
+			ECGui::BeginToolTip();
+			ECGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+			ECGui::TextUnformatted("Select and rotate objects (E)");
+			ECGui::PopTextWrapPos();
+			ECGui::EndTooltip();
 		}
 
 		ECGui::InsertSameLine();
 
-		if (ImGui::Button(ICON_FA_VIDEO_CAMERA, ImVec2{ 100,20}))
+		if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_R)))
 		{
-			ImGui::OpenPopup("Camera Setting");
+			HeaderWindow::Scale();
 		}
+
+		if (ECGui::ButtonBool(ICON_FA_EXPAND, ImVec2{ 100,20 }))
+		{
+
+			HeaderWindow::Scale();
+
+		}
+
+		if (ECGui::IsItemHovered())
+		{
+			ECGui::BeginToolTip();
+			ECGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+			ECGui::TextUnformatted("Select and scale objects (R)");
+			ECGui::PopTextWrapPos();
+			ECGui::EndTooltip();
+		}
+
+		ECGui::InsertSameLine();
+
+		if (ECGui::ButtonBool(ICON_FA_VIDEO_CAMERA, ImVec2{ 100,20}))
+		{
+			ECGui::OpenPopup("Camera Setting");
+		}
+
 		if (ImGui::BeginPopup("Camera Setting"))
 		{
-			ImGui::SetScrollY(5);
+			ECGui::SetScrollY(5);
 			ChildSettings settings{ "Camera Setting",ImVec2{200,45} };
 			ECGui::DrawChildWindow<void()>(settings, std::bind(&HeaderWindow::CameraSetting,this));
-			ImGui::EndPopup();
+			ECGui::EndPopup();
 		}
-		if (ImGui::IsItemHovered())
+
+		if (ECGui::IsItemHovered())
 		{
-			ImGui::BeginTooltip();
-			ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
-			ImGui::TextUnformatted("Camera Settings");
-			ImGui::PopTextWrapPos();
-			ImGui::EndTooltip();
+			ECGui::BeginToolTip();
+			ECGui::PushTextWrapPos(ECGui::GetFontSize() * 35.0f);
+			ECGui::TextUnformatted("Camera Settings");
+			ECGui::PopTextWrapPos();
+			ECGui::EndTooltip();
 		}
 
 		ECGui::InsertSameLine();
 		auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
-		//scene->SetSnapping(true);
-		static bool isActive;
-		ImGuiIO& io = ImGui::GetIO();
-		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_LeftControl)))
-		{
-			if (!isActive)
-			{
-				isActive = true;
-				scene->SetSnapping(isActive);
-				EDITOR_LOG_INFO("Snapping is turned off.")
-			}
-			else
-			{
-				isActive = false;
-				scene->SetSnapping(isActive);
-				EDITOR_LOG_INFO("Snapping is turned off.")
-			}
-		}
+		static bool isActive = false;
 
 		if(scene->GetSnapping())
 		{
+			ECGui::PushStyleColor(ImGuiCol_Text, ImVec4(ImColor(0, 0, 0)));
 
-			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(ImColor(0, 0, 0)));
-			if (ImGui::Button("Snap " ICON_FA_ODNOKLASSNIKI_SQUARE, ImVec2{ 100,20 }))
+			if (ECGui::ButtonBool("Snap " ICON_FA_ODNOKLASSNIKI_SQUARE, ImVec2{ 100,20 }))
 			{
-				ImGui::OpenPopup("Snapping");
+				ECGui::OpenPopup("Snapping");
 			}
-			ImGui::PopStyleColor();
 
-			if (ImGui::BeginPopup("Snapping"))
+			ECGui::PopStyleColor();
+
+			if (ECGui::BeginPopup("Snapping"))
 			{
 				ChildSettings settings{ "Snapping",ImVec2{400,170} };
-				ECGui::DrawChildWindow<void(bool&)>(settings, std::bind(&HeaderWindow::SnappingManager, this, std::placeholders::_1), isActive);
-
-				ImGui::EndPopup();
+				ECGui::DrawChildWindow<void()>(settings, std::bind(&HeaderWindow::SnappingManager, this));
+				ECGui::EndPopup();
 			}
 		}
 		else
 		{
-
-			if (ImGui::Button("Snap " ICON_FA_ODNOKLASSNIKI_SQUARE, ImVec2{ 100,20 }))
+			if (ECGui::ButtonBool("Snap " ICON_FA_ODNOKLASSNIKI_SQUARE, ImVec2{ 100,20 }))
 			{
-				ImGui::OpenPopup("Snapping");
+				ECGui::OpenPopup("Snapping");
 			}
 
-			if (ImGui::BeginPopup("Snapping"))
+			if (ECGui::BeginPopup("Snapping"))
 			{
 				ChildSettings settings{ "Snapping",ImVec2{400,170} };
-				ECGui::DrawChildWindow<void(bool&)>(settings, std::bind(&HeaderWindow::SnappingManager, this, std::placeholders::_1), isActive);
-
-				ImGui::EndPopup();
+				ECGui::DrawChildWindow<void()>(settings, std::bind(&HeaderWindow::SnappingManager, this));
+				ECGui::EndPopup();
 			}
-
 		}
-		if (ImGui::IsItemHovered())
+
+		if (ECGui::IsItemHovered())
 		{
-			ImGui::BeginTooltip();
-			ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
-			ImGui::TextUnformatted("Enable or disables snapping to the grid when dragging objects around.\n Changes POS,ROT,SCALE of snap.");
-			ImGui::PopTextWrapPos();
-			ImGui::EndTooltip();
+			ECGui::BeginToolTip();
+			ECGui::PushTextWrapPos(ECGui::GetFontSize() * 35.0f);
+			ECGui::TextUnformatted("Enable or disables snapping to the grid when dragging objects around.\n Changes POS,ROT,SCALE of snap.");
+			ECGui::PopTextWrapPos();
+			ECGui::EndTooltip();
 		}
-
-		//ECGui::InsertSameLine();
-		//int posSnapVal = static_cast<int>(scene->GetSnapSettings().mPosSnapValue);
-		//if (ImGui::Button(std::to_string(posSnapVal).c_str(), ImVec2{ 50,20 }))
-		//{
-		//	ImGui::OpenPopup("Set Pos Snap");
-		//}
-		//if (ImGui::BeginPopup("Set Pos Snap"))
-		//{
-		//	ChildSettings settings{ "Set Pos Snap",ImVec2{200,45} };
-		//	ECGui::DrawChildWindow<void()>(settings, std::bind(&HeaderWindow::SetPosSnap, this));
-		//	ImGui::EndPopup();
-		//}
-		//if (ImGui::IsItemHovered())
-		//{
-		//	ImGui::BeginTooltip();
-		//	ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
-		//	ImGui::TextUnformatted("Set the Position Grid Snap Value.");
-		//	ImGui::PopTextWrapPos();
-		//	ImGui::EndTooltip();
-		//}
-		//
-		//ECGui::InsertSameLine();
-		//int RotSnapVal = static_cast<int>(scene->GetSnapSettings().mRotSnapValue);
-		//std::string temp = std::to_string(RotSnapVal);
-		//const char* degree = "*";
-		//std::string c = temp + degree;
-		//if (ImGui::Button(c.c_str(), ImVec2{50,20}))
-		//{
-		//	ImGui::OpenPopup("Set Rot Snap");
-		//}
-		//if (ImGui::BeginPopup("Set Rot Snap"))
-		//{
-		//	ChildSettings settings{ "Set Rot Snap",ImVec2{200,45} };
-		//	ECGui::DrawChildWindow<void()>(settings, std::bind(&HeaderWindow::SetRotSnap, this));
-		//	ImGui::EndPopup();
-		//}
-		//if (ImGui::IsItemHovered())
-		//{
-		//	ImGui::BeginTooltip();
-		//	ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
-		//	ImGui::TextUnformatted("Set the Rotation Grid Snap Value.");
-		//	ImGui::PopTextWrapPos();
-		//	ImGui::EndTooltip();
-		//}
-		//
-		//ECGui::InsertSameLine();
-		//int scaleSnapVal = static_cast<int>(scene->GetSnapSettings().mScaleSnapValue);
-		//if (ImGui::Button(std::to_string(scaleSnapVal).c_str(), ImVec2{ 50,20 }))
-		//{
-		//	ImGui::OpenPopup("Set Scale Snap");
-		//}
-		//if (ImGui::BeginPopup("Set Scale Snap"))
-		//{
-		//	ChildSettings settings{ "Set Scale Snap",ImVec2{200,45} };
-		//	ECGui::DrawChildWindow<void()>(settings, std::bind(&HeaderWindow::SetScaleSnap, this));
-		//	ImGui::EndPopup();
-		//}
-		//if (ImGui::IsItemHovered())
-		//{
-		//	ImGui::BeginTooltip();
-		//	ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
-		//	ImGui::TextUnformatted("Set the Scale Grid Snap Value.");
-		//	ImGui::PopTextWrapPos();
-		//	ImGui::EndTooltip();
-		//}
 	}
 
 	void HeaderWindow::CameraSetting()
@@ -320,73 +242,55 @@ namespace Eclipse
 		if (engine->gCamera.GetEditorCameraID() != MAX_ENTITY)
 		{
 			auto& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
-
 			ECGui::DrawTextWidget<const char*>("Camera Speed:", "");		
-
 			ECGui::DrawSliderFloatWidget("CamSpeed", &camera.cameraSpeed, true, 1.f, 200.f);
-
 		}
 	}
 
-	void HeaderWindow::SnappingManager(bool& isActive)
+	void HeaderWindow::SnappingManager()
 	{
 		auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
-
-		ECGui::CheckBoxBool("Enable Snapping", &isActive,false);
-		scene->SetSnapping(isActive);
+		static bool IsActive = false;
+		static size_t posValueIndex = 0;
+		static size_t rotValueIndex = 0;
+		static size_t scaleValueIndex = 0;
+		if (ECGui::CheckBoxBool("Enable Snapping", &IsActive, false))
+		{
+			scene->SetSnapping(IsActive);
+		}
 
 		ECGui::DrawTextWidget<const char*>("Pos Snap:", "");
-		ECGui::DrawSliderFloatWidget("Pos Snap", &scene->GetRefToSnapSettings().mPosSnapValue, true, 1.f, 100.f);
-		ECGui::DrawTextWidget<const char*>("Rot Snap:", "");
-		ECGui::DrawSliderFloatWidget("Rot Snap", &scene->GetRefToSnapSettings().mRotSnapValue, true, 1.f, 100.f);
-		ECGui::DrawTextWidget<const char*>("Scale Snap:", "");
-		ECGui::DrawSliderFloatWidget("Scale Snap", &scene->GetRefToSnapSettings().mScaleSnapValue, true, 1.f, 100.f);
-	}
+		std::vector<std::string> posValues = { "1","5","10","50","100","500","1000","5000","10000" };
+		ECGui::CreateComboList({"Pos Snap:"}, posValues, posValueIndex);
+		scene->GetRefToSnapSettings().mPosSnapValue = static_cast<float>(std::stoi(posValues[posValueIndex]));
 
-	//void HeaderWindow::SetPosSnap()
-	//{
-	//	auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
-	//
-	//	ECGui::DrawTextWidget<const char*>("Pos Snap:", "");
-	//
-	//	ECGui::DrawSliderFloatWidget("Pos Snap", &scene->GetRefToSnapSettings().mPosSnapValue, true, 1.f, 100.f);
-	//}
-	//
-	//void HeaderWindow::SetRotSnap()
-	//{
-	//	auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
-	//
-	//	ECGui::DrawTextWidget<const char*>("Rot Snap:", "");
-	//
-	//	ECGui::DrawSliderFloatWidget("Rot Snap", &scene->GetRefToSnapSettings().mRotSnapValue, true, 1.f, 100.f);
-	//}
-	//
-	//void HeaderWindow::SetScaleSnap()
-	//{
-	//	auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
-	//
-	//	ECGui::DrawTextWidget<const char*>("Scale Snap:", "");
-	//
-	//	ECGui::DrawSliderFloatWidget("Scale Snap", &scene->GetRefToSnapSettings().mScaleSnapValue, true, 1.f, 100.f);
-	//}
+		//ECGui::DrawSliderFloatWidget("Pos Snap", &scene->GetRefToSnapSettings().mPosSnapValue, true, 1.f, 100.f);
+		ECGui::DrawTextWidget<const char*>("Rot Snap:", "");
+		std::vector<std::string> rotValues = { "5","10","15","30","45","60","90","120"};
+		ECGui::CreateComboList({ "Rot Snap:" }, rotValues, rotValueIndex);
+		scene->GetRefToSnapSettings().mRotSnapValue = static_cast<float>(std::stoi(rotValues[rotValueIndex]));
+
+		//ECGui::DrawSliderFloatWidget("Rot Snap", &scene->GetRefToSnapSettings().mRotSnapValue, true, 1.f, 100.f);
+		ECGui::DrawTextWidget<const char*>("Scale Snap:", "");
+		std::vector<std::string> scaleValues = { "10","1","0.5","0.25","0.125","0.0625","0.03125"};
+		ECGui::CreateComboList({ "Scale Snap:" }, scaleValues, scaleValueIndex);
+		scene->GetRefToSnapSettings().mScaleSnapValue = std::stof(scaleValues[scaleValueIndex]);
+	}
 
 	void HeaderWindow::Translate()
 	{
 			Entity item = engine->editorManager->GetSelectedEntity();
-
 			auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
 
 			if (engine->world.CheckComponent<TransformComponent>(item))
 			{
 				scene->SetGizmoType(ImGuizmo::OPERATION::TRANSLATE);
 			}
-
 	}
 
 	void HeaderWindow::Rotate()
 	{
 		Entity item = engine->editorManager->GetSelectedEntity();
-
 		auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
 
 		if (engine->world.CheckComponent<TransformComponent>(item))
@@ -398,7 +302,6 @@ namespace Eclipse
 	void HeaderWindow::Scale()
 	{
 		Entity item = engine->editorManager->GetSelectedEntity();
-
 		auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
 
 		if (engine->world.CheckComponent<TransformComponent>(item))
@@ -415,7 +318,6 @@ namespace Eclipse
 			windowClass.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_AutoHideTabBar;
 			ImGui::SetNextWindowClass(&windowClass);
 			IsTabBarHidden = true;
-
 		}
 	}
 }

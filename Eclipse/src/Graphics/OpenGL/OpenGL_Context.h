@@ -43,7 +43,7 @@ namespace Eclipse
         void SetBlendMode(BlendMode p_mode);
         void SetClearColor(const glm::vec4& p_color);
         void SetViewport(unsigned int p_x, unsigned int p_y, unsigned int p_width, unsigned int p_height);
-        static void CreateFrameBuffers(unsigned int width, unsigned int height, Eclipse::FrameBufferMode);
+        static void CreateFrameBuffers(unsigned int width, unsigned int height, FrameBufferMode);
 
         static GLFWwindow* GetWindow();
         static GLint GetWidth();
@@ -68,5 +68,6 @@ namespace Eclipse
     private:
         void Init();
         void Clear();      
+        bool CheckFrameBuffer(unsigned int ID, FrameBufferMode mode);
     };
 }

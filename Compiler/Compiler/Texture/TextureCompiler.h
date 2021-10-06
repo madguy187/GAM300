@@ -14,13 +14,14 @@ namespace EclipseCompiler
         std::fstream TextureFileRead;
 
         // Texture Container
-        std::unordered_map<std::string, Texture> TextureCotainer;
+        std::vector <std::pair<std::string, Texture>> NewTextureContainer;
 
         // All Other Textures
         std::unordered_map<std::string, Texture> AllOtherTextureCotainer;
 
     private:
         void ReadFile();
+        // Fikrul detected cancer here
         void WriteToFile(std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>>>& LoadedTextures);
 
     public:

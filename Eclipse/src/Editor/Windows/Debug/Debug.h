@@ -12,5 +12,6 @@ namespace Eclipse
 		void Unload() override;
 		void DrawImpl();
 	private:
+		void tempwindow();
 	};
 }

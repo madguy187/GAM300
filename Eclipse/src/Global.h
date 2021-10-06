@@ -15,6 +15,9 @@ static constexpr ComponentType MAX_COMPONENT = 32;
 using Signature = std::bitset<MAX_COMPONENT>;
 static constexpr unsigned MAX_PAGE_SIZE = 10;
 
+static const char* SCENE_EXTENSION = ".scn";
+static const char* TEMP_PATH = "Data\\Temp\\";
+
 enum class EditorWindowType
 {
     EWT_HIERARCHY,
@@ -45,9 +48,28 @@ enum class EditorMenuType
     UNASSIGNED
 };
 
+enum class ActorType
+{
+    ACTOR_UNASSIGNED,
+    ACTOR_DYNAMIC,
+    ACTOR_STATIC
+};
+
+enum class PxShapeType
+{
+    Px_SQUARE,
+    Px_CIRCLE,
+    Px_TRIANGLE,
+    Px_LINE,
+    Px_SPHERE,
+    Px_CUBE,
+    Px_CYLINDER,
+};
+
 enum class EntityType
 {
-    ENT_GEO_SQUARE,
+    // START OF GEO
+    ENT_GEO_SQUARE, // FIRST
     ENT_GEO_CIRCLE,
     ENT_GEO_TRIANGLE,
     ENT_GEO_LINES,
@@ -58,12 +80,16 @@ enum class EntityType
     ENT_GEO_TORUS,
     ENT_GEO_PYRAMID,
     ENT_GEO_LINES3D,
-    ENT_GEO_PLANES,
-    ENT_LIGHT_POINT,
+    ENT_GEO_PLANES, // LAST
+    // END OF GEO
+    // START OF LIGHTS
+    ENT_LIGHT_POINT, // FIRST
     ENT_LIGHT_DIRECTIONAL,
-    ENT_LIGHT_SPOT,
-    // ADD ON LIGHTS HERE
+    ENT_LIGHT_SPOT, // LAST
+    // END OF LIGHTS
     ENT_GAMECAMERA,
+    ENT_MODEL,
+    ENT_TARGETPOINT,
     ENT_UNASSIGNED
 };
 
@@ -78,6 +104,7 @@ enum class PayloadSourceType
 {
     PST_TEXT,
     PST_IMAGE,
+    PST_ENTITY,
     PST_UNASSIGNED
 };
 
@@ -86,6 +113,7 @@ enum class PayloadTargetType
 	PTT_WIDGET,
 	PTT_WINDOW,
 	PTT_INDEXEDIT,
+    PTT_ASSETS,
 	PTT_UNASSIGNED
 };
 
@@ -146,4 +174,22 @@ enum class MaterialModelType
     MT_BASIC = 1,
     MT_MODELS3D = 2,
     MT_MAXCOUNT
+};
+
+enum class FrameBufferMode
+{
+    FBM_NONE = 0,
+    FBM_GAME = 1,
+    FBM_SCENE = 2,
+    FBM_TOP = 3,
+    FBM_BOTTOM = 4,
+    FBM_LEFT = 5,
+    FBM_RIGHT = 6,
+    MAXCOUNT
+};
+
+enum class RenderMode
+{
+    Fill_Mode,
+    Wireframe_Mode
 };

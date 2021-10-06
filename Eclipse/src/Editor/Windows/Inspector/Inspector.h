@@ -1,6 +1,7 @@
 //#pragma once
 
 #include "../Interface/ECGuiWindow.h"
+#include "ECS/ComponentManager/Components/AudioComponent.h"
 
 namespace Eclipse
 {
@@ -25,6 +26,10 @@ namespace Eclipse
 		bool ShowMesh3DProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowModelInfoProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowScriptProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowAudioProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowCollisionProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowPrefebProperty(Entity ID);
+		bool ShowAIProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 
 		void AddComponentsController(Entity ID);
 		void RemoveComponentsController(Entity ID);
@@ -36,8 +41,10 @@ namespace Eclipse
 		
 		void ChangeMeshController(Entity ID);
 		void MeshList(Entity ID);
-		void RemoveElementFromVectorStringList(std::vector<std::string> & vecList);
-		
+
+		void SimulateAudio(Entity ID, AudioComponent& audioCom);
+		void AddWaypointController(std::string& currentSelection);
+
 		template <typename TComponents>
 		void AddComponentsFeedback(const char* Components, const std::string& name, Entity ID, bool exist);
 		
@@ -46,30 +53,34 @@ namespace Eclipse
 
 		template <typename TComponents>
 		void ComponentRegistry(const char* CompName, Entity ID,
-			const std::string EntityName, EditComponent method)
-		{
-			bool isExist = engine->world.CheckComponent<TComponents>(ID);
+			const std::string EntityName, EditComponent method);
 
-			if (method == EditComponent::EC_ADDCOMPONENT)
-			{
-				AddComponentsFeedback<TComponents>(CompName, EntityName, ID, isExist);
-			}
-			else
-			{
-				RemoveComponentsFeedback<TComponents>(CompName, EntityName, ID, isExist);
-			}
-
-			ImGui::CloseCurrentPopup();
-		}
-
-		static constexpr unsigned int str2int(const char* str, int h = 0)
-		{
-			return !str[h] ? 5381 : (str2int(str, h + 1) * 33) ^ str[h];
-		}
+		static constexpr unsigned int str2int(const char* str, int h = 0);
 	private:
 		ECVec2 WindowSize_{};
-		std::vector<std::string> ScriptListGuiTest;
 		bool IsRemovingScripts{ false };
 	};
 
+	template <typename TComponents>
+	void InspectorWindow::ComponentRegistry(const char* CompName, Entity ID,
+		const std::string EntityName, EditComponent method)
+	{
+		bool isExist = engine->world.CheckComponent<TComponents>(ID);
+
+		if (method == EditComponent::EC_ADDCOMPONENT)
+		{
+			AddComponentsFeedback<TComponents>(CompName, EntityName, ID, isExist);
+		}
+		else
+		{
+			RemoveComponentsFeedback<TComponents>(CompName, EntityName, ID, isExist);
+		}
+
+		ImGui::CloseCurrentPopup();
+	}
+
+	constexpr unsigned int InspectorWindow::str2int(const char* str, int h)
+	{
+		return !str[h] ? 5381 : (str2int(str, h + 1) * 33) ^ str[h];
+	}
 }

@@ -18,10 +18,10 @@ namespace Eclipse
 		void SetViewToFullscreen(bool active);
 		void SetViewToOriginalState(bool active);
 	private:
-		glm::vec2 mViewportSize;
-		glm::vec2 ogViewportSize;
-		glm::vec2 ogViewportPos;
-		FrameBuffer* m_frameBuffer;
+		glm::vec2 mViewportSize{0.f,0.f};
+		glm::vec2 ogViewportSize{ 0.f,0.f };
+		glm::vec2 ogViewportPos{ 0.f,0.f };
+		FrameBuffer* m_frameBuffer = nullptr;
 		unsigned int DockIDTracker{ 0 };
 		bool IsViewFullscreen{ false };
 		bool IsViewBackToOriginalState{ false };

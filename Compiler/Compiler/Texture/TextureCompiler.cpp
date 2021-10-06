@@ -37,11 +37,11 @@ namespace EclipseCompiler
                 auto relativePath = relative(FbxOrGltf, "..//Eclipse//src//");
                 std::string FbxOrGltfName = relativePath.filename().string();
 
-                if (FbxOrGltfName.find("gltf") != std::string::npos || FbxOrGltfName.find("fbx") != std::string::npos)
+                if (FbxOrGltfName.find("gltf") != std::string::npos || FbxOrGltfName.find("fbx") != std::string::npos || FbxOrGltfName.find("obj") != std::string::npos)
                 {
                     std::string PathName = ("..//Eclipse//src/Assets/Models/" + FolderName + "/" + FbxOrGltfName).c_str();
                     std::unique_ptr<AssimpLoader> ptr = std::make_unique< AssimpLoader>();
-                    ptr->LoadAssimpModelForTextures(PathName, TextureCotainer);
+                    ptr->LoadAssimpModelForTextures(PathName, NewTextureContainer);
 
                     int i = 0;
                 }
@@ -67,8 +67,6 @@ namespace EclipseCompiler
                 AllOtherTextureCotainer.emplace(Name, tex);
             }
         }
-
-        int i = 0;
     }
 
     void TextureCompiler::Init()
@@ -79,14 +77,8 @@ namespace EclipseCompiler
 
     void TextureCompiler::ReleaseFile()
     {
-        if (TextureCotainer.empty())
-        {
-            std::cout << "No Textures Loaded" << std::endl << std::endl;
-            return;
-        }
-
         WriteToFile(Textures);
-        std::cout << "Textures File Produced" << std::endl << std::endl;
+        //std::cout << "Textures File Produced" << std::endl << std::endl;
     }
 
     void TextureCompiler::ReadFile(std::string& in)
@@ -110,11 +102,12 @@ namespace EclipseCompiler
             return;
         }
 
+        //std::cout << "Writing to Texture File " << std::endl;
         // Number Of Textures
-        int NumberOfTextures = TextureCotainer.size();
+        int NumberOfTextures = NewTextureContainer.size();
         TextureFileWrite.write(reinterpret_cast<const char*>(&NumberOfTextures), sizeof(NumberOfTextures));
-
-        for (auto const Textures : TextureCotainer)
+        //std::cout << "Detected Assimp Texture Size " << NumberOfTextures << std::endl << std::endl;
+        for (auto const Textures : NewTextureContainer)
         {
             // Mesh Name
             std::array<char, 128> MeshName;
@@ -156,9 +149,8 @@ namespace EclipseCompiler
 
         // Number Of Textures
         int NumberOfBasicTextures = AllOtherTextureCotainer.size();
-        std::cout << "Writing " << NumberOfBasicTextures << std::endl;
         TextureFileWrite.write(reinterpret_cast<const char*>(&NumberOfBasicTextures), sizeof(NumberOfBasicTextures));
-
+        //std::cout << "Detected Basic Textures Size " << NumberOfBasicTextures << std::endl << std::endl;
         for (auto const Textures : AllOtherTextureCotainer)
         {
             // Texture Name
@@ -176,6 +168,7 @@ namespace EclipseCompiler
 
         TextureFileWrite.close();
         ///////////////////////
+        //std::cout << "Done Writing to Texture File " << std::endl;
     }
 
     void TextureCompiler::ReadFile()

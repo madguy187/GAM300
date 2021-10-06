@@ -12,7 +12,7 @@ namespace Eclipse
 	AudioManager::~AudioManager()
 	{
 		// SerializeSounds();
-		StopAllChannels();
+		//StopAllChannels();
 	}
 
 	void AudioManager::Init()
@@ -42,7 +42,7 @@ namespace Eclipse
 			FmodAPI->ErrorCheck(elem.second->stop(FMOD_STUDIO_STOP_IMMEDIATE));
 	}
 
-	void AudioManager::LoadSound(const std::string& sound_name, bool looping, bool is3d, bool stream)
+	void AudioManager::LoadSound(const std::string& sound_name, bool is3d, bool looping, bool stream)
 	{
 		auto sound_it = FmodAPI->m_Sounds.find(sound_name);
 
@@ -52,7 +52,7 @@ namespace Eclipse
 		FMOD_MODE mode = FMOD_DEFAULT;
 		mode |= is3d ? FMOD_3D : FMOD_2D;
 		mode |= looping ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF;
-		mode |= stream ? FMOD_CREATESTREAM : FMOD_CREATECOMPRESSEDSAMPLE;
+		mode |= stream ? FMOD_CREATESTREAM : FMOD_CREATECOMPRESSEDSAMPLE; 
 
 		FMOD::Sound* sound_ptr = nullptr;
 
@@ -107,14 +107,14 @@ namespace Eclipse
 		FmodAPI->m_Sounds.erase(sound_it);
 	}
 
-	int AudioManager::PlaySounds(const std::string& sound_name, float f_volume, bool looping)
+	int AudioManager::Play2DSounds(const std::string& sound_name, float f_volume, bool looping)
 	{
 		int channel_id = FmodAPI->m_NextChannel_ID++;
 		auto sound_it = FmodAPI->m_Sounds.find(sound_name);
 
 		if (sound_it == FmodAPI->m_Sounds.end() || looping)
 		{
-			LoadSound(sound_name, looping);
+			LoadSound(sound_name, false, looping);
 			sound_it = FmodAPI->m_Sounds.find(sound_name);
 
 			if (sound_it == FmodAPI->m_Sounds.end())
@@ -128,9 +128,48 @@ namespace Eclipse
 		{
 			FMOD_MODE currMode;
 			sound_it->second->getMode(&currMode);
+
+			if (f_volume <= 0.0f)
+			{
+				f_volume = FmodAPI->SFX_Vol;
+			}
+
+			FmodAPI->ErrorCheck(channel_ptr->setVolume(f_volume));
+			FmodAPI->ErrorCheck(channel_ptr->setPaused(false));
+
+			FmodAPI->m_Channels[channel_id] = channel_ptr;
+		}
+
+		return channel_id;
+	}
+
+	int AudioManager::Play3DSounds(const std::string& sound_name, const ECVec3& vPosition, 
+		float f_volume, bool looping)
+	{
+		int channel_id = FmodAPI->m_NextChannel_ID++;
+		auto sound_it = FmodAPI->m_Sounds.find(sound_name);
+
+		if (sound_it == FmodAPI->m_Sounds.end() /*|| looping*/)
+		{
+			LoadSound(sound_name, true, looping);
+			sound_it = FmodAPI->m_Sounds.find(sound_name);
+
+			if (sound_it == FmodAPI->m_Sounds.end())
+				return channel_id;
+		}
+
+		FMOD::Channel* channel_ptr = nullptr;
+		FmodAPI->ErrorCheck(FmodAPI->m_System->playSound(sound_it->second, nullptr, true, &channel_ptr));
+
+		if (channel_ptr)
+		{
+			FMOD_MODE currMode;
+			sound_it->second->getMode(&currMode);
+
 			if (currMode & FMOD_3D)
 			{
-				// Swap modes to 3D. Not implemented as we do not need it.
+				FMOD_VECTOR position = VectorToFmod(vPosition);
+				FmodAPI->ErrorCheck(channel_ptr->set3DAttributes(&position, nullptr));
 			}
 
 			if (f_volume <= 0.0f)
@@ -237,6 +276,15 @@ namespace Eclipse
 		return 20.0f * log10f(f_volume);
 	}
 
+	FMOD_VECTOR AudioManager::VectorToFmod(const ECVec3& vPosition)
+	{
+		FMOD_VECTOR fVec;
+		fVec.x = vPosition.getX();
+		fVec.y = vPosition.getY();
+		fVec.z = vPosition.getZ();
+		return fVec;
+	}
+
 	void AudioManager::GetEventParameter(const std::string& event_name, const std::string& event_parameter, float* parameter)
 	{
 		auto event_it = FmodAPI->m_Events.find(event_name);
@@ -277,6 +325,16 @@ namespace Eclipse
 	float AudioManager::IsSFXMuted() const
 	{
 		return FmodAPI->m_SFXMute;
+	}
+
+	void AudioManager::SetChannel3DPosition(int nChannelId, const ECVec3& vPosition)
+	{
+		auto tFoundIt = FmodAPI->m_Channels.find(nChannelId);
+		if (tFoundIt == FmodAPI->m_Channels.end())
+			return;
+
+		FMOD_VECTOR position = VectorToFmod(vPosition);
+		FmodAPI->ErrorCheck(tFoundIt->second->set3DAttributes(&position, NULL));
 	}
 
 	void AudioManager::SetEventParameter(const std::string& event_name, const std::string& event_parameter, float f_value)
@@ -371,8 +429,28 @@ namespace Eclipse
 		}
 		else
 		{
-			LoadSound(sound_name, false, looping, false);
+			ENGINE_CORE_WARN("Sound does not exist.");
 		}
+	}
+
+	void AudioManager::Set3DConeSettings(const std::string& sound_name, float* InnerConeAngle, 
+		float* OuterConeAngle, float* OuterVolume)
+	{
+		FmodAPI->m_Sounds[sound_name]->get3DConeSettings(InnerConeAngle, OuterConeAngle, OuterVolume);
+	}
+
+	void AudioManager::Set3DMinMaxSettings(const std::string& sound_name, float min, float max)
+	{
+		FmodAPI->m_Sounds[sound_name]->set3DMinMaxDistance(min, max);
+	}
+
+	void AudioManager::SetPitch(const std::string& sound_name, float pitch)
+	{
+	}
+
+	void AudioManager::SetSpeed(const std::string& sound_name, float speed)
+	{
+		FmodAPI->m_Sounds[sound_name]->setMusicSpeed(speed);
 	}
 
 	float AudioManager::OldBGMVolumeToTrack() const

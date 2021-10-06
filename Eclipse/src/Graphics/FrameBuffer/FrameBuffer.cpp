@@ -1,8 +1,5 @@
 #include "pch.h"
 #include "FrameBuffer.h"
-#include "WindowConstraint.h"
-#include "../src/ECS/World.h"
-#include "EntryPoint/EntryPoint.h"
 
 namespace Eclipse
 {
@@ -29,7 +26,7 @@ namespace Eclipse
 			std::exit(EXIT_FAILURE);
 		}
 
-		if (in == Eclipse::FrameBufferMode::FBM_NONE || in == Eclipse::FrameBufferMode::MAXCOUNT)
+		if (in == FrameBufferMode::FBM_NONE || in == FrameBufferMode::MAXCOUNT)
 		{
 			ENGINE_LOG_ASSERT(false, "Creating FrameBuffer with Invalid Type");
 			std::exit(EXIT_FAILURE);
@@ -50,9 +47,6 @@ namespace Eclipse
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, m_data.frameBufferID);
 		glViewport(0, 0, OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight());
-		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // | GL_STENCIL_BUFFER_BIT);
-		//glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-
 	}
 
 	void FrameBuffer::Unbind() const
@@ -68,12 +62,14 @@ namespace Eclipse
 	void Eclipse::FrameBuffer::Resize(unsigned width, unsigned height)
 	{
 		DeletCurrentFrameBuffer();
-		Eclipse::OpenGL_Context::CreateFrameBuffers(width, height, Eclipse::FrameBufferMode::FBM_GAME);
+		Eclipse::OpenGL_Context::CreateFrameBuffers(width, height, FrameBufferMode::FBM_GAME);
 		EDITOR_LOG_INFO("Resize Successful");
 	}
 
 	void FrameBuffer::ShowWindow(FrameBuffer g, const char* input)
 	{
+		(void)(input);
+
 		if (&g == nullptr)
 		{
 			ENGINE_LOG_ASSERT(false, "FrameBuffer is Nullptr");
@@ -82,8 +78,6 @@ namespace Eclipse
 
 		//  bind back to default framebuffer and draw with the attached framebuffer
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		//glDisable(GL_DEPTH_TEST);
-		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glBindTexture(GL_TEXTURE_2D, g.GetTextureColourBufferID());
 	}
 
@@ -97,17 +91,15 @@ namespace Eclipse
 
 		glGenTextures(1, &m_data.TextureColourBuffer);
 		glBindTexture(GL_TEXTURE_2D, m_data.TextureColourBuffer);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, p_width, p_height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16, p_width, p_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glBindTexture(GL_TEXTURE_2D, 0);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_data.TextureColourBuffer, 0);
 
 		glGenRenderbuffers(1, &m_data.depthBufferID);
 		glBindRenderbuffer(GL_RENDERBUFFER, m_data.depthBufferID);
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, p_width, p_height);
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_data.depthBufferID);
-		//glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		{
@@ -117,6 +109,61 @@ namespace Eclipse
 		}
 
 		Unbind();
+	}
+
+	void FrameBuffer::CreatePostProcessFramebuffer()
+	{
+		float RectangleVertices[] =
+		{
+			// Coords    // texCoords
+			 1.0f, -1.0f,  1.0f, 0.0f,
+			-1.0f, -1.0f,  0.0f, 0.0f,
+			-1.0f,  1.0f,  0.0f, 1.0f,
+
+			 1.0f,  1.0f,  1.0f, 1.0f,
+			 1.0f, -1.0f,  1.0f, 0.0f,
+			-1.0f,  1.0f,  0.0f, 1.0f
+		};
+
+		auto& shdrpgm = Graphics::shaderpgms["framebuffer"];
+		shdrpgm.Use();
+		glUniform1i(glGetUniformLocation(shdrpgm.GetHandle(), "screenTexture"), 0);
+
+		// Prepare framebuffer rectangle VBO and VAO
+		glGenVertexArrays(1, &rectVAO);
+		glGenBuffers(1, &rectVBO);
+		glBindVertexArray(rectVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, rectVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(RectangleVertices), &RectangleVertices, GL_STATIC_DRAW);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+	}
+
+	void FrameBuffer::UpdatePP()
+	{
+		if (AllowPostProcess == false)
+			return;
+
+		if (PPType_ == PostProcessType::PPT_NONE)
+			return;
+
+		engine->MaterialManager.DoNotUpdateStencil();
+		glBindFramebuffer(GL_FRAMEBUFFER, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE));
+
+		auto& shdrpgm = Graphics::shaderpgms["FrameBuffer"];
+		shdrpgm.Use();
+
+		GLint Inversion = shdrpgm.GetLocation("Type");
+		GLCall(glUniform1i(Inversion, static_cast<GLint>(PPType_)));
+
+		glBindVertexArray(rectVAO);
+		glDisable(GL_DEPTH_TEST);
+		glBindTexture(GL_TEXTURE_2D, engine->GraphicsManager.GetTextureID(FrameBufferMode::FBM_SCENE));
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+
+		shdrpgm.UnUse();
 	}
 
 	std::string Eclipse::FrameBuffer::getStringForEnum(int enum_val)
@@ -200,7 +247,7 @@ namespace Eclipse
 		m_renderMode = _renderMode;
 	}
 
-	FrameBuffer::RenderMode FrameBuffer::GetRenderMode()
+	RenderMode FrameBuffer::GetRenderMode()
 	{
 		return m_renderMode;
 	}

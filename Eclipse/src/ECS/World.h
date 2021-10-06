@@ -108,17 +108,18 @@ namespace Eclipse
 		}
 
 		template <typename ...T>
-		void CopyEntity(World& dest, Entity oldEnt, TypeList<T...>)
+		Entity CopyEntity(World& dest, Entity oldEnt, TypeList<T...>)
 		{
 			Entity newEnt = dest.CreateEntity();
 			((CopyEntityComponent<T>(dest, newEnt, oldEnt)), ...);
+			return newEnt;
 		}
 
 		template <typename T>
 		void CopyEntityComponent(World& world, Entity newEnt, Entity oldEnt)
 		{
-			std::cout << typeid(T).name() << std::endl;
-			/*if (CheckComponent<T>(oldEnt))
+			//std::cout << typeid(T).name() << std::endl;
+			if (CheckComponent<T>(oldEnt))
 			{
 				world.AddComponent<T>(newEnt, GetComponent<T>(oldEnt));
 			}*/

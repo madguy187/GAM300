@@ -1,11 +1,5 @@
-#pragma once
-
-#include <filesystem>
-#include <chrono>
-#include <thread>
-#include <unordered_map>
-#include <string>
-#include <functional>
+#ifndef FILEWATCH_H
+#define FILEWATCH_H
 
 namespace Eclipse
 {
@@ -33,8 +27,6 @@ namespace Eclipse
 
     class EclipseFileWatcher
     {
-    public:
-
     private:
         // Counter for Reload types
         unsigned int AssetCounter = 0;
@@ -42,7 +34,6 @@ namespace Eclipse
         unsigned int Create = 0;
         unsigned int Delete = 0;
 
-        //
         bool Modified = false;
         float Delays = 0.0f;
         float Timer = 0.0f;
@@ -53,10 +44,10 @@ namespace Eclipse
 
     public:
         EclipseFileWatcher();
-        EclipseFileWatcher(std::string path_to_watch, float delay);
-        void Start(const std::function<void(std::string, FileStatus)>& action);
         bool UpdateTimer();
         void HardReset();
+        EclipseFileWatcher(std::string path_to_watch, float delay);
+        void Start(const std::function<void(std::string, FileStatus)>& action);
         void Resolutions(FileStatus status, std::string& PATH_TO_WATCH);
         void CheckReloadStatus();
         std::chrono::duration<int, std::milli> InputTime(unsigned int in);
@@ -68,3 +59,4 @@ namespace Eclipse
         bool ExcludePath(std::string const& inString);
     };
 }
+#endif /* FILEWATCH_H */

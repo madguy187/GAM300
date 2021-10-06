@@ -10,6 +10,7 @@ namespace Eclipse
 
 	void LeftSwitchViewWindow::Init()
 	{
+		mCamType = CameraComponent::CameraType::LeftView_Camera;
 		mViewportSize = glm::vec2{ 0.0f, 0.0f };
 		Type = EditorWindowType::EWT_SWITCHVIEW_LEFT;
 		WindowName = "Left Switch View";

@@ -52,7 +52,6 @@ namespace Eclipse
         glm::vec3 ComputeCentroid(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
 
     public:
-
         AssimpModel() { }
         AssimpModel(bool noTex = false);
         AssimpModel(bool noTex, std::string& NameOfModels, std::string& Directorys, std::vector<Mesh> Meshess, std::vector<Texture> Textures_loadeds);
@@ -63,9 +62,9 @@ namespace Eclipse
         void SetName(std::string& name);
         std::string GetName();
         std::string GetDirectory();
-        unsigned int GetNumberOfTextures();
+        size_t GetNumberOfTextures();
         void GetTextureNames();
-        unsigned int GetNumberOfMeshes();
+        size_t GetNumberOfMeshes();
         ModelType GetType();
         void SetModelType(ModelType in);
         std::vector<glm::vec3> GetVertices();

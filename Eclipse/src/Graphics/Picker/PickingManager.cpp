@@ -4,7 +4,8 @@
 
 void Eclipse::PickingManager::GenerateAabb(unsigned int ID, TransformComponent& _transform, EntityType _type)
 {
-    if ((_type == EntityType::ENT_LIGHT_POINT) || (_type == EntityType::ENT_LIGHT_DIRECTIONAL))
+    if ((_type == EntityType::ENT_LIGHT_POINT) || (_type == EntityType::ENT_LIGHT_DIRECTIONAL) ||
+        (_type == EntityType::ENT_LIGHT_SPOT))    
     {
         return;
     }
@@ -20,6 +21,8 @@ void Eclipse::PickingManager::GenerateAabb(unsigned int ID, TransformComponent& 
     _aabb.center = ECVec3{ position.x, position.y, position.z };
     _aabb.Min = ECVec3{ position.x - halfExt.x, position.y - halfExt.y, position.z - halfExt.z };
     _aabb.Max = ECVec3{ position.x + halfExt.x, position.y + halfExt.y, position.z + halfExt.z };
+
+    engine->gDynamicAABBTree.InsertData(ID);
 
     // Darren - Culling
     engine->gCullingManager->Insert(_aabb, ID);
@@ -91,7 +94,6 @@ bool Eclipse::PickingManager::RayAabb(glm::vec3& rayStart, glm::vec3& rayDir, gl
             }
             else
             {
-                // std::cout << "false" << std::endl;
                 return false;
             }
         }

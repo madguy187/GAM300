@@ -16,6 +16,10 @@ static void on_key_callback(GLFWwindow* window, int key, int scancode, int actio
 
 void Eclipse::OpenGL_Context::on_key(int key, int scancode, int action, int mods)
 {
+    (void)key;
+    (void)scancode;
+    (void)mods;
+
     if (action == GLFW_PRESS)
     {
     }
@@ -23,6 +27,9 @@ void Eclipse::OpenGL_Context::on_key(int key, int scancode, int action, int mods
 
 static void on_scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
+    (void)window;
+    (void)xoffset;
+    (void)yoffset;
     // std::cout << "Mouse scroll wheel offset: (" << xoffset << ", " << yoffset << ")" << std::endl;
 }
 
@@ -32,16 +39,18 @@ static void on_window_size_callback(GLFWwindow* window, int width, int height)
     pWindow->on_resize(width, height);
 }
 
-void Eclipse::OpenGL_Context::on_resize(int width, int height)
+void Eclipse::OpenGL_Context::on_resize(int width_, int height_)
 {
-    width = width;
-    height = height;
+    width = width_;
+    height = height_;
 
     glViewport(0, 0, width, height);
 }
 
 static void on_window_close_callback(GLFWwindow* window)
 {
+    (void)window;
+
     OpenGL_Context::on_close();
 }
 
@@ -148,7 +157,7 @@ bool Eclipse::OpenGL_Context::init(std::string configFile)
 
     // Create the window and store this window as window pointer
     // so that we can use it in callback functions
-    ptr_window = glfwCreateWindow(width, height, title.c_str(), NULL(), NULL);
+    ptr_window = glfwCreateWindow(width, height, title.c_str(), 0, 0);
     windowRatioX = static_cast<float>(OpenGL_Context::width) / static_cast<float>(OpenGL_Context::prevWidth);
     windowRatioY = static_cast<float>(OpenGL_Context::height) / static_cast<float>(OpenGL_Context::prevHeight);
 
@@ -364,23 +373,23 @@ double Eclipse::OpenGL_Context::update_time(double fps_calc_interval)
 
 void Eclipse::OpenGL_Context::CreateFrameBuffers()
 {
-    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::FBM_GAME);
-    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::FBM_SCENE);
-    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::FBM_TOP);
-    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::FBM_BOTTOM);
-    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::FBM_LEFT);
-    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height, Eclipse::FrameBufferMode::FBM_RIGHT);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height,FrameBufferMode::FBM_GAME);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height,FrameBufferMode::FBM_SCENE);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height,FrameBufferMode::FBM_TOP);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height,FrameBufferMode::FBM_BOTTOM);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height,FrameBufferMode::FBM_LEFT);
+    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height,FrameBufferMode::FBM_RIGHT);
 }
 
-void Eclipse::OpenGL_Context::CreateFrameBuffers(unsigned int width, unsigned int height, Eclipse::FrameBufferMode in)
+void Eclipse::OpenGL_Context::CreateFrameBuffers(unsigned int width_, unsigned int height_, FrameBufferMode in)
 {
-    if (in == Eclipse::FrameBufferMode::FBM_NONE || in == Eclipse::FrameBufferMode::MAXCOUNT)
+    if (in == FrameBufferMode::FBM_NONE || in == FrameBufferMode::MAXCOUNT)
     {
         ENGINE_LOG_ASSERT(false, "Creating FrameBuffer with Invalid Type");
         std::exit(EXIT_FAILURE);
     }
 
-    FrameBuffer* m_frameBuffer = new FrameBuffer(width, height, in);
+    FrameBuffer* m_frameBuffer = new FrameBuffer(width_, height_, in);
     _Framebuffers.insert({ in , m_frameBuffer });
     //delete m_frameBuffer;
     ENGINE_CORE_INFO("FrameBuffer Ready For Use");

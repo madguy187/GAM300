@@ -20,19 +20,24 @@ namespace Eclipse
         TagList_.push_back(std::vector<std::string>());
         // For Lights
         TagList_.push_back(std::vector<std::string>());
+        // For Target Point
+        TagList_.push_back(std::vector<std::string>());
 
         for (int index = 0; index != static_cast<int>(EntityType::ENT_LIGHT_POINT); ++index)
         {
-            EntityType temp = static_cast<EntityType>(index);
-            TagList_[0].push_back(lexical_cast_toStr<EntityType>(temp));
+            EntityType temps = static_cast<EntityType>(index);
+            TagList_[0].push_back(lexical_cast_toStr<EntityType>(temps));
         }
 
         for (int index = static_cast<int>(EntityType::ENT_LIGHT_POINT);
             index != static_cast<int>(EntityType::ENT_GAMECAMERA); ++index)
         {
-            EntityType temp = static_cast<EntityType>(index);
-            TagList_[1].push_back(lexical_cast_toStr<EntityType>(temp));
+            EntityType temps = static_cast<EntityType>(index);
+            TagList_[1].push_back(lexical_cast_toStr<EntityType>(temps));
         }
+
+        EntityType tp = EntityType::ENT_TARGETPOINT;
+        TagList_[2].push_back(lexical_cast_toStr<EntityType>(tp));
     }
 
     void HierarchyWindow::Unload()
@@ -43,27 +48,11 @@ namespace Eclipse
 
     void HierarchyWindow::DrawImpl()
     {
-        ////////////////////
-        //TODO for darren
-        if (engine->AssimpManager.CheckCompilers())
-        {
-            ComboListSettings settingsss = { "Models Testing" };
-            std::vector<std::string> hiDarrenVector = engine->AssimpManager.GetMeshNames();
-            static size_t comboindex = 0;
-            ECGui::CreateComboList(settingsss, hiDarrenVector, comboindex);
-
-            bool selected = false;
-
-            if (ECGui::CreateSelectableButton(hiDarrenVector[comboindex].c_str(), &selected))
-            {
-                auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
-                engine->AssimpManager.CreateModel(MeshID, hiDarrenVector[comboindex].c_str());
-            }
-        }
-        /// ///////////////////
-
-        PopUpButtonSettings settings{ "Add Entity", "EntityCreationListBegin" };
-        ECGui::BeginPopUpButtonList<void()>(settings, std::bind(&HierarchyWindow::ShowEntityCreationList, this));
+        PopUpButtonSettings EntSettings{ "Add Entity", "EntityCreationListBegin" };
+        PopUpButtonSettings ModSettings{ "Create Model",  "ModelCreationListBegin" };
+        ECGui::BeginPopUpButtonList<void()>(EntSettings, std::bind(&HierarchyWindow::ShowEntityCreationList, this));
+        ECGui::InsertSameLine();
+        ECGui::BeginPopUpButtonList<void()>(ModSettings, std::bind(&HierarchyWindow::ShowCreateModelList, this));
         ECGui::InsertHorizontalLineSeperator();
 
         ECGui::DrawTextWidget<size_t>("Entity Count", engine->editorManager->GetEntityListSize());
@@ -100,7 +89,6 @@ namespace Eclipse
                 {
                     TreeNodeRecursion(entityName, entCom, prev, curr, index);
                 }
-
 
                 if (entCom.Child.empty() && !entCom.IsAChild
                     && ECGui::CreateSelectableButton(entityName.c_str(), &entCom.IsActive))
@@ -142,14 +130,13 @@ namespace Eclipse
                 }
                 if (!entCom.IsAChild)
                 {
-                    engine->editorManager->DragAndDropInst_.IndexPayloadSource("HierarchyIndexEdit",
-                        static_cast<int>(index));
-                    engine->editorManager->DragAndDropInst_.IndexPayloadTarget("HierarchyIndexEdit",
+                    engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
+                        static_cast<int>(index), PayloadSourceType::PST_ENTITY, curr.index);
+                    engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
                         static_cast<int>(index), entCom.IsActive);
                 }
 
                 //engine->editorManager->SetGlobalIndex(index);
-
             }
         }
     }
@@ -195,6 +182,23 @@ namespace Eclipse
                             engine->GraphicsManager.CreatePrimitives(ID, static_cast<int>(i * TagList_[i - 1].size() + j));
                             UpdateEntityTracker(ID);
                         }
+                    }
+
+                    ECGui::EndTreeNode();
+                }
+                break;
+            }
+            case 2:
+            {
+                bool selected = false;
+
+                if (ECGui::BeginTreeNode("Other Actors"))
+                {
+                    if (ECGui::CreateSelectableButton(TagList_[i][0].c_str(), &selected))
+                    {
+                        Entity ID = engine->editorManager->CreateDefaultEntity(lexical_cast_toEnum<EntityType>(TagList_[i][0]));
+                        engine->gAI.AddTargetPointEntity(ID);
+                        UpdateEntityTracker(ID);
                     }
 
                     ECGui::EndTreeNode();
@@ -290,6 +294,7 @@ namespace Eclipse
         {
             temp |= ImGuiTreeNodeFlags_Selected;
         }
+
         HightLightParentAndChild(entCom);
 
         bool nodeOpen = ImGui::TreeNodeEx(parent.c_str(), temp);
@@ -340,30 +345,32 @@ namespace Eclipse
                         }
                         entCom.IsActive = false;
                         engine->editorManager->SetGlobalIndex(GetEntityGlobalIndex(curr.index));
-                        UpdateEntityTracker(engine->editorManager->GetEntityID(GetEntityGlobalIndex(static_cast<size_t>(curr.index))));
+                        UpdateEntityTracker(engine->editorManager->GetEntityID(static_cast<int>(GetEntityGlobalIndex(static_cast<size_t>(curr.index)))));
                     }
 
                 }
             }
-
             ECGui::EndTreeNode();
         }
         else
         {
-
-            if (ImGui::IsItemClicked(0))
+            if (ECGui::IsItemClicked(0))
             {
                 size_t currIndex = ConvertEntityStringtoNumber(GetEntityComponentEntityNumber(parent));
                 engine->editorManager->SetGlobalIndex(engine->editorManager->GetEntityIndex(static_cast<Entity>(currIndex)));
                 UpdateEntityTracker(engine->editorManager->GetEntityID(engine->editorManager->GetEntityIndex(static_cast<Entity>(currIndex))));
             }
-
         }
-
-
-
     }
 
+    void HierarchyWindow::ShowCreateModelList()
+    {
+        for (size_t i = 0; i < engine->AssimpManager.GetMeshNames().size(); ++i)
+        {
+            bool selected = false;
 
+            if (ECGui::CreateSelectableButton(engine->AssimpManager.GetMeshNames()[i].c_str(), &selected))
+                engine->AssimpManager.CreateModel(0, engine->AssimpManager.GetMeshNames()[i]);
+        }
+    }
 }
-

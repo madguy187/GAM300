@@ -4,6 +4,8 @@
 #include "Graphics.h"
 #include "type_ptr.hpp"
 #include "matrix_transform_2d.hpp"
+#include <algorithm>
+
 
 /*                                                   objects with file scope
 ----------------------------------------------------------------------------- */
@@ -12,13 +14,13 @@ using namespace Eclipse;
 
 std::unordered_map<std::string, Shader> Graphics::shaderpgms;
 std::unordered_map<std::string, std::unique_ptr<IModel>> Graphics::models;
-std::unordered_map<std::string, Texture> Graphics::textures;
-std::multimap<unsigned int, MeshComponent*> Graphics::sprites;
-std::set<unsigned int> Graphics::sortedID;
+std::multimap<std::string, Texture> Graphics::textures;
+
+typedef std::multimap<std::string, Texture>::iterator MMAPIterator;
 
 void Graphics::load()
 {
-    //Loads all the shader programs listed in the shader file
+    ////Loads all the shader programs listed in the shader file
     LoadShaders("src//Assets//Shaders");
 
     //Loads all models listed
@@ -29,17 +31,17 @@ void Graphics::load()
 
 void Graphics::unload()
 {
-    for (auto& it = shaderpgms.begin(); it != shaderpgms.end(); ++it)
+    for (auto it = shaderpgms.begin(); it != shaderpgms.end(); ++it)
     {
         it->second.DeleteShaderProgram();
     }
 
-    for (auto& it = models.begin(); it != models.end(); ++it)
+    for (auto it = models.begin(); it != models.end(); ++it)
     {
         it->second->DeleteModel();
     }
 
-    for (auto& fb : OpenGL_Context::_Framebuffers)
+    for (auto fb : OpenGL_Context::_Framebuffers)
     {
         delete fb.second;
     }
@@ -54,11 +56,11 @@ void Graphics::LoadShaders(std::string shaderFile)
         std::string FolderName = relativePath.filename().string();
         std::string PathName = ("src/Assets/Shaders/" + FolderName).c_str();
 
-        for (auto& dirEntry : std::filesystem::directory_iterator(PathName))
+        for (auto& dirEntry_ : std::filesystem::directory_iterator(PathName))
         {
-            const auto& path = dirEntry.path();
-            auto relativePath = relative(path, "src//");
-            std::string ShaderFragOrVert = relativePath.filename().string();
+            const auto& path_ = dirEntry_.path();
+            auto relativePath_ = relative(path_, "src//");
+            std::string ShaderFragOrVert = relativePath_.filename().string();
             std::string ShaderFragConcatenate = "src/Assets/Shaders/" + FolderName + "/" + ShaderFragOrVert;
             engine->GraphicsManager.ShaderMap[FolderName].push_back(ShaderFragConcatenate);
         }
@@ -72,36 +74,17 @@ void Graphics::LoadModels()
 {
     for (unsigned int i = 0; i < static_cast<unsigned int>(LoadingModels::MAXCOUNT); i++)
     {
-        auto& ModelName = engine->GraphicsManager.GetModelName(i);
+        auto ModelName = engine->GraphicsManager.GetModelName(i);
         models.emplace(ModelName, ModelFactory::create(i));
 
         engine->AssimpManager.InsertPrimitiveName(ModelName);
     }
 }
 
-void Graphics::LoadTextures(std::string textureFile)
+void Eclipse::Graphics::ThreadLoadShaders()
 {
-    //Parser input;
-    //input.ParseFile(textureFile);
-    //
-    //std::string textureName;
-    //std::string path;
-    //glm::ivec2 spriteDimensions, spriteIndex;
-    //
-    //for (auto& it : input.doc["textures"].GetArray())
-    //{
-    //    textureName = (it)["textureName"].GetString();
-    //    path = (it)["path"].GetString();
-    //    spriteDimensions = { (it)["spriteDimensions"][rapidjson::SizeType(0)].GetInt(),
-    //                         (it)["spriteDimensions"][rapidjson::SizeType(1)].GetInt() };
-    //    spriteIndex = { (it)["spriteIndex"][rapidjson::SizeType(0)].GetInt(),
-    //                    (it)["spriteIndex"][rapidjson::SizeType(1)].GetInt() };
-    //
-    //    Texture newTex(path);
-    //    newTex.setSpriteWidth(spriteDimensions.x);
-    //    newTex.setSpriteHeight(spriteDimensions.y);
-    //    textures.emplace(textureName, newTex);
-    //}
+    //Loads all the shader programs listed in the shader file
+    LoadShaders("src//Assets//Shaders");
 }
 
 /******************************************************************************/
@@ -134,33 +117,6 @@ void Graphics::initShaderpgms(std::string shdrpgm_name,
     Graphics::shaderpgms[shdrpgm_name] = shdrpgm;
 }
 
-void Graphics::DeleteSprite(unsigned int id)
-{
-    //auto handle = _world->GetComponentManager().GetComponent<Sprite>(id);
-
-    //if (!handle.has())
-    //{
-    //  return;
-    //}
-
-    //auto& targetSprite = handle.get();
-
-    //for (auto iterator = std::begin(sprites); iterator != std::end(sprites); ++iterator)
-    //{
-    //  if (((*iterator).first == targetSprite.layerNum) && ((*iterator).second->ID == targetSprite.ID))
-    //  {
-    //    sprites.erase(iterator);
-    //    sortedID.erase(targetSprite.ID);
-    //    return;
-    //  }
-    //}
-}
-
-void Graphics::DeleteAllSprites()
-{
-    sprites.clear();
-    sortedID.clear();
-}
 /******************************************************************************/
 /*!
     This function loads the image using stb_image and creates the texture object.
@@ -172,7 +128,6 @@ GLuint Graphics::setup_texobj(std::string pathname)
 {
     int width = 0;
     int height = 0;
-    int clrChannels = 0;
     unsigned char* data = nullptr; // stbi_load(pathname.c_str(), &width, &height, &clrChannels, 0);
 
     if (data)
@@ -206,4 +161,24 @@ typename Graphics::modelIt Graphics::FindModel(std::string name)
 typename Graphics::shaderIt Graphics::FindShaders(std::string name)
 {
     return shaderpgms.find(name);
+}
+
+Texture Eclipse::Graphics::FindTextures(std::string in)
+{
+    for (auto itr = textures.find(in); itr != textures.end(); itr++)
+    {
+        return itr->second;
+    }
+
+    return nullptr;
+}
+
+void Eclipse::Graphics::GetTexuresForModels(std::string in, MaterialComponent com)
+{
+    std::pair<MMAPIterator, MMAPIterator> result = textures.equal_range(in);
+
+    for (MMAPIterator it = result.first; it != result.second; it++)
+    {
+        com.HoldingTextures.push_back(it->second);
+    }
 }

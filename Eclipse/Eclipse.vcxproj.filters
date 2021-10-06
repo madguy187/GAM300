@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="AI">
+      <UniqueIdentifier>{EF725900-DBFE-870B-44AD-880B3058880B}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Audio">
       <UniqueIdentifier>{9718D90C-032D-01BE-CCAE-A41D3882FDEE}</UniqueIdentifier>
     </Filter>
@@ -31,8 +34,17 @@
     <Filter Include="ECS\SystemManager\Systems\System">
       <UniqueIdentifier>{2AA091FC-16F1-7C3E-3F55-6B002B0510A8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\AI">
+      <UniqueIdentifier>{8378C556-EF31-3001-7891-4ADBE449E670}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\Audio">
       <UniqueIdentifier>{AB25D4DE-9777-ABCE-8096-E8DE6C87C4B7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\CameraSystem">
+      <UniqueIdentifier>{87EE28BF-F35E-2B38-BC7D-A5C028AD6339}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\Collision">
+      <UniqueIdentifier>{C59188A0-B1F9-4E6E-1A65-638406EC655A}</UniqueIdentifier>
     </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\Editor">
       <UniqueIdentifier>{20CA7CC1-8C59-3EAC-9555-1FC4016479B8}</UniqueIdentifier>
@@ -61,6 +73,15 @@
     <Filter Include="ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem">
       <UniqueIdentifier>{EA575631-56EB-B7DF-5FD2-2796CBE44EA7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\PhysicsSystem">
+      <UniqueIdentifier>{41BEE182-2D3C-321C-1634-F0B302517444}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\PickingSystem">
+      <UniqueIdentifier>{A34BA2A8-8FC9-F241-78C1-B0D964DE346A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\PrefabSystem">
+      <UniqueIdentifier>{8EB76F07-FA27-7280-C346-EC082F76AA81}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\RenderSystem">
       <UniqueIdentifier>{BE95B25F-2A06-B5D8-F324-2F615F54EDD9}</UniqueIdentifier>
     </Filter>
@@ -84,9 +105,6 @@
     </Filter>
     <Filter Include="Editor\Utilities\OpenFileDialog">
       <UniqueIdentifier>{E84BB6BE-542F-C5FE-5D32-F33AC9948B4F}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Editor\Utilities\ParentChild">
-      <UniqueIdentifier>{5460141D-401B-04C9-E9D2-7C13D56C4E59}</UniqueIdentifier>
     </Filter>
     <Filter Include="Editor\Utilities\UndoAndRedo">
       <UniqueIdentifier>{99D07E34-858B-6EE0-2E43-E72A1ADDB870}</UniqueIdentifier>
@@ -147,6 +165,9 @@
     </Filter>
     <Filter Include="Graphics\Debugging">
       <UniqueIdentifier>{51443AC7-3D28-FB1C-A688-F56F928BE59E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\EngineCompiler">
+      <UniqueIdentifier>{1654E1F5-828B-298D-8B95-8DB0F74B5086}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\FileWatch">
       <UniqueIdentifier>{5CAA893C-488E-4A92-B1EE-44E59DF13414}</UniqueIdentifier>
@@ -229,6 +250,9 @@
     <Filter Include="Physics">
       <UniqueIdentifier>{888B590D-F46A-D8A8-FD82-637F69E13E0A}</UniqueIdentifier>
     </Filter>
+    <Filter Include="PrefabManager">
+      <UniqueIdentifier>{D0AEB7E6-3C6F-331D-05AA-7C9A712978F9}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Reflection">
       <UniqueIdentifier>{104FCF04-FC06-1152-650E-EAAD51E5AB42}</UniqueIdentifier>
     </Filter>
@@ -253,17 +277,14 @@
     <Filter Include="Tracy">
       <UniqueIdentifier>{88372F0E-F44B-57BF-BDCD-FA1E29A153F0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tracy\client">
-      <UniqueIdentifier>{B6F2C11B-A255-51C0-4BDB-8976371D1D43}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tracy\common">
-      <UniqueIdentifier>{E08FFA1B-CCF2-89C0-7578-C27661BA5543}</UniqueIdentifier>
-    </Filter>
     <Filter Include="TypeID">
       <UniqueIdentifier>{54109DD4-40B2-C7AA-296D-DBFE15AE4EFB}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\AI\AIManager.h">
+      <Filter>AI</Filter>
+    </ClInclude>
     <ClInclude Include="src\Audio\AudioManager.h">
       <Filter>Audio</Filter>
     </ClInclude>
@@ -276,7 +297,13 @@
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h">
       <Filter>ECS\ComponentManager</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\AIComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\AudioComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h">
@@ -309,13 +336,16 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\MeshComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\ComponentManager\Components\ModeLInfoComponent.h">
+    <ClInclude Include="src\ECS\ComponentManager\Components\ModelComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\ParentComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\PointLightComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\PrefabComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\RigidBodyComponent.h">
@@ -339,11 +369,17 @@
     <ClInclude Include="src\ECS\SystemManager\SystemManager.h">
       <Filter>ECS\SystemManager</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\AI\AISystem.h">
+      <Filter>ECS\SystemManager\Systems\System\AI</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.h">
       <Filter>ECS\SystemManager\Systems\System\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem.h">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem\CameraSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\CameraSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\Collision\CollisionSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\Collision</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.h">
       <Filter>ECS\SystemManager\Systems\System\Editor</Filter>
@@ -369,11 +405,14 @@
     <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem\ParentSystem.h">
       <Filter>ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.h">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem\PhysicsSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\PhysicsSystem</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem.h">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\PickingSystem\PickingSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\PickingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\PrefabSystem\PrefabSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\PrefabSystem</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\RenderSystem\RenderSystem.h">
       <Filter>ECS\SystemManager\Systems\System\RenderSystem</Filter>
@@ -404,9 +443,6 @@
     </ClInclude>
     <ClInclude Include="src\Editor\Utilities\OpenFileDialog\OpenFileDialog.h">
       <Filter>Editor\Utilities\OpenFileDialog</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Editor\Utilities\ParentChild\ParentChild.h">
-      <Filter>Editor\Utilities\ParentChild</Filter>
     </ClInclude>
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.h">
       <Filter>Editor\Utilities\UndoAndRedo</Filter>
@@ -496,6 +532,9 @@
     <ClInclude Include="src\Graphics\Debugging\DebugRenderingManager.h">
       <Filter>Graphics\Debugging</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\EngineCompiler\EngineCompiler.h">
+      <Filter>Graphics\EngineCompiler</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\FileWatch\FileWatch.h">
       <Filter>Graphics\FileWatch</Filter>
     </ClInclude>
@@ -511,6 +550,9 @@
     <ClInclude Include="src\Graphics\Grid\AABBTree.h">
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\Grid\BoundingBox.h">
+      <Filter>Graphics\Grid</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\Grid\Box.h">
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
@@ -518,9 +560,6 @@
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\Grid\IAABB.h">
-      <Filter>Graphics\Grid</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Graphics\Grid\bounds.h">
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h">
@@ -619,6 +658,9 @@
     <ClInclude Include="src\Graphics\Parser\Parser.h">
       <Filter>Graphics\Parser</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\Picker\DynamicAABBTree.h">
+      <Filter>Graphics\Picker</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\Picker\PickingManager.h">
       <Filter>Graphics\Picker</Filter>
     </ClInclude>
@@ -712,6 +754,9 @@
     <ClInclude Include="src\Physics\PhysicsManager.h">
       <Filter>Physics</Filter>
     </ClInclude>
+    <ClInclude Include="src\PrefabManager\PrefabManager.h">
+      <Filter>PrefabManager</Filter>
+    </ClInclude>
     <ClInclude Include="src\Reflection\Meta.h">
       <Filter>Reflection</Filter>
     </ClInclude>
@@ -754,93 +799,15 @@
     <ClInclude Include="src\Tracy\Tracy.hpp">
       <Filter>Tracy</Filter>
     </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracyArmCpuTable.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracyCallstack.h">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracyCallstack.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracyDxt1.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracyFastVector.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracyLock.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracyProfiler.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracyRingBuffer.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracyScoped.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracySysTime.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracySysTrace.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracySysTracePayload.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\TracyThread.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\tracy_concurrentqueue.h">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\client\tracy_rpmalloc.hpp">
-      <Filter>Tracy\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\common\TracyAlign.hpp">
-      <Filter>Tracy\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\common\TracyAlloc.hpp">
-      <Filter>Tracy\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\common\TracyApi.h">
-      <Filter>Tracy\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\common\TracyColor.hpp">
-      <Filter>Tracy\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\common\TracyForceInline.hpp">
-      <Filter>Tracy\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\common\TracyMutex.hpp">
-      <Filter>Tracy\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\common\TracyProtocol.hpp">
-      <Filter>Tracy\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\common\TracyQueue.hpp">
-      <Filter>Tracy\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\common\TracySocket.hpp">
-      <Filter>Tracy\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\common\TracySystem.hpp">
-      <Filter>Tracy\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\common\tracy_lz4.hpp">
-      <Filter>Tracy\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tracy\common\tracy_lz4hc.hpp">
-      <Filter>Tracy\common</Filter>
-    </ClInclude>
     <ClInclude Include="src\TypeID\TypeID.h">
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\AI\AIManager.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
     <ClCompile Include="src\Audio\AudioManager.cpp">
       <Filter>Audio</Filter>
     </ClCompile>
@@ -862,11 +829,17 @@
     <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp">
       <Filter>ECS\SystemManager</Filter>
     </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\AI\AISystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\AI</Filter>
+    </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem\CameraSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\CameraSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\Collision\CollisionSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\Collision</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\Editor</Filter>
@@ -892,11 +865,14 @@
     <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem\ParentSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem</Filter>
     </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem\PhysicsSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\PhysicsSystem</Filter>
     </ClCompile>
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem.cpp">
-      <Filter>ECS\SystemManager\Systems\System</Filter>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\PickingSystem\PickingSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\PickingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\PrefabSystem\PrefabSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\PrefabSystem</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\RenderSystem\RenderSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\RenderSystem</Filter>
@@ -924,9 +900,6 @@
     </ClCompile>
     <ClCompile Include="src\Editor\Utilities\OpenFileDialog\OpenFileDialog.cpp">
       <Filter>Editor\Utilities\OpenFileDialog</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Utilities\ParentChild\ParentChild.cpp">
-      <Filter>Editor\Utilities\ParentChild</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Utilities\UndoAndRedo\CommandHistory.cpp">
       <Filter>Editor\Utilities\UndoAndRedo</Filter>
@@ -988,6 +961,9 @@
     <ClCompile Include="src\Graphics\Debugging\DebugRenderingManager.cpp">
       <Filter>Graphics\Debugging</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\EngineCompiler\EngineCompiler.cpp">
+      <Filter>Graphics\EngineCompiler</Filter>
+    </ClCompile>
     <ClCompile Include="src\Graphics\FileWatch\FileWatch.cpp">
       <Filter>Graphics\FileWatch</Filter>
     </ClCompile>
@@ -1003,13 +979,13 @@
     <ClCompile Include="src\Graphics\Grid\AABBTree.cpp">
       <Filter>Graphics\Grid</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\Grid\BoundingBox.cpp">
+      <Filter>Graphics\Grid</Filter>
+    </ClCompile>
     <ClCompile Include="src\Graphics\Grid\Box.cpp">
       <Filter>Graphics\Grid</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\Grid\Grid.cpp">
-      <Filter>Graphics\Grid</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\Grid\bounds.cpp">
       <Filter>Graphics\Grid</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp">
@@ -1093,6 +1069,9 @@
     <ClCompile Include="src\Graphics\Parser\Parser.cpp">
       <Filter>Graphics\Parser</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\Picker\DynamicAABBTree.cpp">
+      <Filter>Graphics\Picker</Filter>
+    </ClCompile>
     <ClCompile Include="src\Graphics\Picker\PickingManager.cpp">
       <Filter>Graphics\Picker</Filter>
     </ClCompile>
@@ -1162,6 +1141,9 @@
     <ClCompile Include="src\Physics\PhysicsManager.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
+    <ClCompile Include="src\PrefabManager\PrefabManager.cpp">
+      <Filter>PrefabManager</Filter>
+    </ClCompile>
     <ClCompile Include="src\Reflection\Meta.cpp">
       <Filter>Reflection</Filter>
     </ClCompile>
@@ -1203,36 +1185,6 @@
     </ClCompile>
     <ClCompile Include="src\Tracy\TracyClient.cpp">
       <Filter>Tracy</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tracy\client\TracyCallstack.cpp">
-      <Filter>Tracy\client</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tracy\client\TracyDxt1.cpp">
-      <Filter>Tracy\client</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tracy\client\TracyProfiler.cpp">
-      <Filter>Tracy\client</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tracy\client\TracySysTime.cpp">
-      <Filter>Tracy\client</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tracy\client\TracySysTrace.cpp">
-      <Filter>Tracy\client</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tracy\client\tracy_rpmalloc.cpp">
-      <Filter>Tracy\client</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tracy\common\TracySocket.cpp">
-      <Filter>Tracy\common</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tracy\common\TracySystem.cpp">
-      <Filter>Tracy\common</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tracy\common\tracy_lz4.cpp">
-      <Filter>Tracy\common</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tracy\common\tracy_lz4hc.cpp">
-      <Filter>Tracy\common</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
   </ItemGroup>

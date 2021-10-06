@@ -163,7 +163,7 @@ namespace Eclipse
         return overlaps;
     }
 
-    std::vector<unsigned int> AABBTree::QueryAgainstTrustrum(AABBComponent& object)
+    std::vector<unsigned int> AABBTree::QueryAgainstTrustrum(AABBComponent object)
     {
         std::vector<unsigned int> overlaps;
 
@@ -311,7 +311,8 @@ namespace Eclipse
             glm::vec3 AABBmin = { node.aabb.Min.x,node.aabb.Min.y , node.aabb.Min.z };
             glm::vec3 AABBmax = { node.aabb.Max.x ,node.aabb.Max.y , node.aabb.Max.z };
 
-            bool collision = PickingManager::RayAabb(rayStart, rayDir, AABBmin, AABBmax, t);
+            //bool collision = PickingManager::RayAabb(rayStart, rayDir, AABBmin, AABBmax, t);      
+            bool collision = engine->gPicker.RayAabb(rayStart, rayDir, AABBmin, AABBmax, t);
 
             if (collision)
             {
@@ -330,7 +331,7 @@ namespace Eclipse
         return overlaps;
     }
 
-    unsigned int AABBTree::NumberOfIntersections(std::vector<unsigned int>& in)
+    size_t AABBTree::NumberOfIntersections(std::vector<unsigned int>& in)
     {
         return in.size();
     }
@@ -338,12 +339,9 @@ namespace Eclipse
     void AABBTree::ClearTree()
     {
         AABBToNodeMap.clear();
-        //AllNodes.clear();
         RootNodeIndex = 0;
         AllocatedNodeCount = 0;
         NextFreeNoedIndex = 0;
-        NodeCapacity = 0;
-        GrowthSize = 0;
     }
 
     void AABBTree::InsertLeaf(unsigned leafNodeIndex)

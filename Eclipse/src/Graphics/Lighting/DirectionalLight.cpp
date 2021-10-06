@@ -16,7 +16,7 @@ namespace Eclipse
 		engine->world.AddComponent(CreatedID, LightComponent{});
 		engine->world.AddComponent(CreatedID, DirectionalLightComponent{ DirectionalLightcounter });
 
-		EDITOR_LOG_WARN("Directional Light Created Successfully");
+		EDITOR_LOG_INFO("Directional Light Created Successfully");
 		DirectionalLightcounter++;
 	}
 
@@ -50,6 +50,8 @@ namespace Eclipse
 
 	void DirectionalLight::CheckUniformLoc(Shader* _shdrpgm, DirectionalLightComponent& in_light, int index, unsigned int containersize , unsigned int EntityId)
 	{
+		(void)containersize;
+
 		// We should only have 1 but lets see how
 		std::string number = std::to_string(index);
 
@@ -80,8 +82,6 @@ namespace Eclipse
 			GLint uniform_var_loc2 = _shdrpgm->GetLocation(("directionlight[" + number + "].ambient").c_str());
 			GLint uniform_var_loc3 = _shdrpgm->GetLocation(("directionlight[" + number + "].diffuse").c_str());
 			GLint uniform_var_loc4 = _shdrpgm->GetLocation(("directionlight[" + number + "].specular").c_str());
-			GLint uniform_var_loc5 = _shdrpgm->GetLocation("uModelToNDC");
-			GLuint uniform_var_lo6 = _shdrpgm->GetLocation("model");
 			GLint uniform_var_loc8 = _shdrpgm->GetLocation(("directionlight[" + number + "].lightColor").c_str());
 			GLint uniform_var_loc10 = _shdrpgm->GetLocation("uColor");
 			GLint useBlinn_ = _shdrpgm->GetLocation("useBlinn");
@@ -117,7 +117,7 @@ namespace Eclipse
 		engine->world.AddComponent(FirstGlobalLight, LightComponent{});
 		engine->world.AddComponent(FirstGlobalLight, DirectionalLightComponent{ DirectionalLightcounter });
 
-		EDITOR_LOG_WARN("First GlobalLight Created ");
+		EDITOR_LOG_INFO("Directional Light Created Successfully");
 		DirectionalLightcounter++;
 	}
 }
@@ -125,6 +125,8 @@ namespace Eclipse
 {
 	bool DirectionalLight::InsertDirectionalLight(DirectionalLightComponent& in)
 	{
+		(void)in;
+
 		//if (_DirectionalLight.insert({ in.ID , &in }).second == true)
 		//{
 		//	return true;

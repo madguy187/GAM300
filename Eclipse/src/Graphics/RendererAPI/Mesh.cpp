@@ -48,16 +48,18 @@ namespace Eclipse
 
     void Mesh::Render(Shader& shader, GLenum mode, unsigned int id, unsigned int MeshIndex)
     {
+        (void)MeshIndex;
+
         glEnable(GL_BLEND);
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_CULL_FACE);
         glPolygonMode(GL_FRONT_AND_BACK, mode);
 
         // If dont have textures ( Flagged as True )
-        if (NoTex && (!engine->world.CheckComponent<TextureComponent>(id)))
+        if (NoTex && (engine->world.CheckComponent<TextureComponent>(id) == false))
         {
             GLint uniform_var_loc1 = shader.GetLocation("BasicPrimitives");
-            GLint uniform_var_loc2 = shader.GetLocation("uColor");
+            //GLint uniform_var_loc2 = shader.GetLocation("uColor");
             GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
             GLuint tex_loc = shader.GetLocation("uTex2d");
             GLuint diff0 = shader.GetLocation("sdiffuse");
@@ -81,14 +83,14 @@ namespace Eclipse
                 unsigned int diffuseIdx = 0;
                 unsigned int specularIdx = 0;
 
-                for (unsigned int i = 0; i < tex.HoldingTextures[MeshIndex].size(); i++)
+                for (unsigned int i = 0; i < tex.HoldingTextures.size(); i++)
                 {
                     // activate texture
                     glActiveTexture(GL_TEXTURE0 + i);
 
                     // retrieve texture info
                     std::string name;
-                    switch (tex.HoldingTextures[MeshIndex][i].GetType())
+                    switch (tex.HoldingTextures[i].GetType())
                     {
                     case aiTextureType_DIFFUSE:
                         name = "diffuse" + std::to_string(diffuseIdx++);
@@ -103,17 +105,17 @@ namespace Eclipse
                     GLuint spec = shader.GetLocation("specular0");
                     GLuint dsa = shader.GetLocation("noTex");
 
+                    // bind texture
+                    tex.HoldingTextures[i].Bind();
+
+                    glUniform1i(dsa, false);
                     glUniform1i(uniform_var_loc3, true);
                     glUniform1i(diff0, i);
                     glUniform1i(spec, i);
-                    glUniform1i(dsa, false);
-
-                    // bind texture
-                    tex.HoldingTextures[MeshIndex][i].Bind();
                 }
 
                 // If no Textures , We leave it blank until it has textures
-                if (tex.HoldingTextures[MeshIndex].size() == 0)
+                if (tex.HoldingTextures.size() == 0)
                 {
                     GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
                     glUniform1i(uniform_var_loc3, false);
@@ -131,7 +133,7 @@ namespace Eclipse
 
         // EBO stuff
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(Indices.size()), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
     }
 
@@ -192,6 +194,10 @@ namespace Eclipse
         // Normsals
         glEnableVertexAttribArray(1);
         glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, Normal)));
+
+        // Tangents
+        glEnableVertexAttribArray(3);
+        glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, Tangents)));
 
         glBindVertexArray(0);
     }

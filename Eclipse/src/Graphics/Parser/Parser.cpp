@@ -33,47 +33,14 @@ void Parser::GenerateFile(std::string outputFile)
 
     if (output)
     {
-        rapidjson::Document  document;
-    	
+        rapidjson::Document  document;	
         std::string tempstring{ outputFile };
-    	
         document.Parse(tempstring.c_str());
-
         FILE* fp = fopen("output.json", "wb"); // non-Windows use "w"
-    	
         char writeBuffer[65536];
-    	
         rapidjson::FileWriteStream os(fp, writeBuffer, sizeof(writeBuffer));
-
         rapidjson::Writer<rapidjson::FileWriteStream> writer(os);
-
         document.Accept(writer);
-
-        //TEST CODE
-        //std::stringstream ss_date;
-        //ss_date << "30 Sep 2020";
-        //
-        //std::vector<std::string> m_vWriteFilePath;
-        //m_vWriteFilePath.push_back("0.mp3");
-        //m_vWriteFilePath.push_back("1.mp3");
-        //m_vWriteFilePath.push_back("2.mp3");
-        //m_vWriteFilePath.push_back("3.mp3");
-        //m_vWriteFilePath.push_back("4.mp3");
-        //
-        //writer.StartObject();
-        //writer.Key("version");
-        //writer.String("1.0");
-        //writer.Key("data");
-        //writer.String(ss_date.str().c_str());
-        //writer.Key("file");
-        //writer.StartArray();
-        //
-        //for (const auto& path : m_vWriteFilePath) {
-        //    writer.String(path.c_str());
-        //}
-        //writer.EndArray();
-        //writer.EndObject();
-
         fclose(fp);
 	    
     }

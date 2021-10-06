@@ -9,7 +9,8 @@ namespace Eclipse
 	public:
 		const MetaData* Meta() const;
 		void* Data() const;
-		/*void Serialize(std::ostream& os) const;*/
+		void Serialize(const char* name) const;
+		bool Deserialize(const char* name) const;
 
 		// Getters
 		template <typename T>

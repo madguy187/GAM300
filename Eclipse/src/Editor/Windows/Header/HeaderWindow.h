@@ -13,14 +13,12 @@ namespace Eclipse
 		void RunPlayPauseStep();
 		void UtilitiesButtons();
 		void CameraSetting();
-		void SnappingManager(bool& isActive);
-		//void SetPosSnap();
-		//void SetRotSnap();
-		//void SetScaleSnap();
+		void SnappingManager();
 		void Translate();
 		void Rotate();
 		void Scale();
 		void HideTabBar(bool active);
+
 	private:
 		bool IsTabBarHidden{ false };
 	};

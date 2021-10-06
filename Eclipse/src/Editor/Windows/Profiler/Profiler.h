@@ -3,7 +3,7 @@
 
 namespace Eclipse
 {
-	enum SystemName
+	enum class SystemName
 	{
 		LIGHTING,
 		RENDER,
@@ -40,7 +40,7 @@ namespace Eclipse
 
 		struct TimerTracker
 		{
-			SystemName SystemName_;
+			SystemName SystemName_ = SystemName::COUNTER;
 			float system_start = 0.0f;
 			float system_end = 0.0f;
 			float system_offset = 0.0f;

@@ -56,29 +56,26 @@ namespace Eclipse
         return Face.getSignedDistanceToPlan(Center) > -Radius;
     }
 
-    bool CullingManager::CheckOnFace(EachFace& Face, glm::vec3 Center, float Radius)
+    bool CullingManager::CheckOnFace(EachFace& Face, glm::vec3 Center_, float Radius_)
     {
-        return Face.getSignedDistanceToPlan(Center) > -Radius;
+        return Face.getSignedDistanceToPlan(Center_) > -Radius_;
     }
 
     bool CullingManager::CheckOnFrustum(const TransformComponent& Transform, CameraComponent::CameraType CameraType)
     {
-        int CollisionFlag = 0;
-
-        auto& camFrustum = engine->gCullingManager->FrustrumFaceInfo(CameraType);
-        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraType));
+        auto camFrustum = engine->gCullingManager->FrustrumFaceInfo(CameraType);
         glm::vec3 globalScale = Transform.scale.ConvertToGlmVec3Type();
         float maxScale = max(max(globalScale.x, globalScale.y), globalScale.z);
 
-        glm::vec3 Center = Transform.position.ConvertToGlmVec3Type();
-        float Radius = maxScale * 0.5f;
+        glm::vec3 Center_ = Transform.position.ConvertToGlmVec3Type();
+        float Radius_ = maxScale * 0.5f;
 
-        return (CheckOnFace(camFrustum.LeftFace, Center, Radius) &&
-            CheckOnFace(camFrustum.RightFace, Center, Radius) &&
-            CheckOnFace(camFrustum.FarFace, Center, Radius) &&
-            CheckOnFace(camFrustum.NearFace, Center, Radius) &&
-            CheckOnFace(camFrustum.TopFace, Center, Radius) &&
-            CheckOnFace(camFrustum.BottomFace, Center, Radius));
+        return (CheckOnFace(camFrustum.LeftFace, Center_, Radius_) &&
+            CheckOnFace(camFrustum.RightFace, Center_, Radius_) &&
+            CheckOnFace(camFrustum.FarFace, Center_, Radius_) &&
+            CheckOnFace(camFrustum.NearFace, Center_, Radius_) &&
+            CheckOnFace(camFrustum.TopFace, Center_, Radius_) &&
+            CheckOnFace(camFrustum.BottomFace, Center_, Radius_));
     }
 
     bool CullingManager::ToRenderOrNot(unsigned int ID)
@@ -97,13 +94,14 @@ namespace Eclipse
         FrustrumCollisionTree.InsertObject(engine->gCullingManager->CullContainer[ID]);
     }
 
+    void CullingManager::Remove(unsigned int ID)
+    {
+        FrustrumCollisionTree.RemoveObject(engine->gCullingManager->CullContainer[ID]);
+        engine->gCullingManager->CullContainer.erase(ID);
+    }
+
     void CullingManager::Clear()
     {
-        //for (auto& i : CullContainer)
-        //{
-        //    engine->world.DestroyComponent<AABBComponent>(i.first);
-        //}
-
         CullContainer.clear();
         FrustrumCollisionTree.ClearTree();
     }

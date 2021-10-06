@@ -1,5 +1,7 @@
-#pragma once
+#ifndef FILEWATCHINGSYSTEM_H
+#define FILEWATCHINGSYSTEM_H
 #include "../System.h"
+#include "Graphics/FileWatch/FileWatch.h"
 
 namespace Eclipse
 {
@@ -10,3 +12,4 @@ namespace Eclipse
         void Update() override;
     };
 }
+#endif /* FILEWATCHINGSYSTEM_H */
