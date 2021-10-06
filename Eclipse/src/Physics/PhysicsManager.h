@@ -106,6 +106,7 @@ namespace Eclipse
 		void ChangeStaticDynamic(Entity ent);
 		void AddActorToScene(Entity ent);
 		void RemoveActorFromScene(Entity ent);
+		void RemoveActor(Entity ent);
 		void ChangeType(Entity ent);
 	};
 }

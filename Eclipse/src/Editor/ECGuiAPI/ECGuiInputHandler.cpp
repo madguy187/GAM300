@@ -31,6 +31,7 @@ namespace Eclipse
 
 						//Remove function for DynamicAABBTree. -Rachel
 						engine->gDynamicAABBTree.RemoveData(currEnt);
+						engine->gPhysics.RemoveActor(currEnt);
 
 						//Please check this! Resets the selected object's ID to MAX_ENTITY. - Rachel
 						engine->gPicker.SetCurrentCollisionID(MAX_ENTITY);

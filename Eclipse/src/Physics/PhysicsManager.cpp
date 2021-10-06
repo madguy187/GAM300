@@ -304,6 +304,15 @@ namespace Eclipse
 		Px_Actors[ent].InScene = false;
 	}
 
+	void PhysicsManager::RemoveActor(Entity ent)
+	{
+		if (Px_Actors[ent].actor == nullptr)
+			return;
+		RemoveActorFromScene(ent);
+		Px_Actors[ent].actor->release();
+		Px_Actors[ent].type = ActorType::ACTOR_UNASSIGNED;
+	}
+
 	void PhysicsManager::UpdateActor(Entity ent)
 	{
 		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
