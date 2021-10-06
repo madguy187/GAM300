@@ -269,7 +269,7 @@ namespace Eclipse
 		}
 		else
 		{
-			if (CurrentDir == "src//Assets")
+			if (CurrentDir == "src\\Assets")
 			{
 				SearchInBaseFolder();
 			}
@@ -361,7 +361,7 @@ namespace Eclipse
 				{ 1,0 },
 				{ 2,1 });
 			//drag drop
-			engine->editorManager->DragAndDropInst_.StringPayloadSource("ITEM", relativePath.string());
+			//engine->editorManager->DragAndDropInst_.StringPayloadSource("ITEM", relativePath.string());
 			//
  			//
 
@@ -383,7 +383,10 @@ namespace Eclipse
 				engine->editorManager->DragAndDropInst_.StringPayloadSource("wav", "src\\Assets\\" + relativePath.string());
 				break;
 			case InspectorWindow::str2int("prefab"):
-				engine->editorManager->DragAndDropInst_.StringPayloadSource("prefab", relativePath.string());
+				engine->editorManager->DragAndDropInst_.StringPayloadSource("prefab", "src\\Assets\\" + relativePath.string());
+				break;
+			default:
+				engine->editorManager->DragAndDropInst_.StringPayloadSource("ITEM", relativePath.string());
 				break;
 			}
 

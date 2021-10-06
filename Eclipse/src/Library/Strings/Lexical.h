@@ -171,4 +171,25 @@ namespace Eclipse
 	  "MT_REFLECT",
 	  "MT_REFRACT"
 	};
+
+	template<> char const* enumStrings<ModelType>::data[] =
+	{
+		"MT_UNASSIGNED",
+		"MT_HUMAN",
+		"MT_ANIMAL",
+		"MT_HOUSE",
+		"MT_ENVIRONMENT",
+		"MT_MAXCOUNT"
+	};
+
+	template<> char const* enumStrings<PxShapeType>::data[] =
+	{
+		"Px_SQUARE",
+		"Px_CIRCLE",
+		"Px_TRIANGLE",
+		"Px_LINE",
+		"Px_SPHERE",
+		"Px_CUBE",
+		"Px_CYLINDER"
+	};
 }

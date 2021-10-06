@@ -100,7 +100,6 @@ namespace Eclipse
     {
         ADD_MEMBER(Tag);
         ADD_MEMBER(Name);
-        ADD_MEMBER(IsActive);
         ADD_MEMBER(Child);
         ADD_MEMBER(Parent);
         ADD_MEMBER(IsAChild);
@@ -116,16 +115,16 @@ namespace Eclipse
         ADD_MEMBER(ambient);
         ADD_MEMBER(diffuse);
         ADD_MEMBER(specular);
-        //ADD_MEMBER(HighlightColour);
+        ADD_MEMBER(NoTextures);
         ADD_MEMBER(shininess);
         ADD_MEMBER(MaximumShininess);
-        //ADD_MEMBER(RegisterForHighlight);
-        ADD_MEMBER(Highlight);
-        ADD_MEMBER(NoTextures);
-        //ADD_MEMBER(ScaleUp);
         ADD_MEMBER(ComboIndex);
+        ADD_MEMBER(TextureComboIndex);
+        ADD_MEMBER(Type);
         ADD_MEMBER(hasTexture);
         ADD_MEMBER(TextureRef);
+        ADD_MEMBER(TextureKey);
+        ADD_MEMBER(HoldingTextures);
     }
 
     DEFINE_META(MeshComponent)
@@ -239,10 +238,13 @@ namespace Eclipse
     DEFINE_META_POD(double);
     DEFINE_META_POD(size_t);
     DEFINE_META_POD(std::string);
+    DEFINE_META_POD(std::vector<Texture>);
     DEFINE_META_POD(std::vector<Entity>);
+    DEFINE_META_POD(MeshComponent::MeshNameType);
     DEFINE_META_POD(ECVec2);
     DEFINE_META_POD(ECVec3);
     DEFINE_META_POD(ECVec4);
+    DEFINE_META_POD(Texture);
     DEFINE_META_POD(glm::vec3);
     DEFINE_META_POD(glm::vec4);
     DEFINE_META_POD(glm::mat4);
@@ -251,4 +253,8 @@ namespace Eclipse
     DEFINE_META_POD(EntityType);
     DEFINE_META_POD(TextureType);
     DEFINE_META_POD(MaterialModelType);
+    DEFINE_META_POD(MeshComponent::MapType);
+    DEFINE_META_POD(ModelType);
+    DEFINE_META_POD(PxShapeType);
+    DEFINE_META_POD(EC_Shape);
 }

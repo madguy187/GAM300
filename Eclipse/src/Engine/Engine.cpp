@@ -103,8 +103,6 @@ namespace Eclipse
         world.RegisterComponent<ParentComponent>();
         world.RegisterComponent<ChildComponent>();
         world.RegisterComponent<CollisionComponent>();
-        world.RegisterComponent<ParentComponent>();
-        world.RegisterComponent<ChildComponent>();
         world.RegisterComponent<PrefabComponent>();
         world.RegisterComponent<AIComponent>();
 
@@ -123,9 +121,9 @@ namespace Eclipse
         prefabWorld.RegisterComponent<LightComponent>();
         prefabWorld.RegisterComponent<ScriptComponent>();
         prefabWorld.RegisterComponent<AudioComponent>();
-        prefabWorld.RegisterComponent<CollisionComponent>();
         prefabWorld.RegisterComponent<ParentComponent>();
         prefabWorld.RegisterComponent<ChildComponent>();
+        prefabWorld.RegisterComponent<CollisionComponent>();
         prefabWorld.RegisterComponent<PrefabComponent>();
         prefabWorld.RegisterComponent<AIComponent>();
 
@@ -213,7 +211,7 @@ namespace Eclipse
         gPhysics.Init();
         audioManager.Init();
 
-        //pfManager.LoadAllPrefab();
+        pfManager.LoadAllPrefab();
 
         if (IsEditorActive)
             IsInPlayState = false;
@@ -343,7 +341,7 @@ namespace Eclipse
 
         //Serialization(Temp)
         szManager.SaveSceneFile();
-        pfManager.Test();
+        pfManager.UnloadSaving();
         // unLoad
         mono.Terminate();
         GraphicsManager.End();
