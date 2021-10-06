@@ -1188,4 +1188,9 @@
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Assets\Shaders\DebugNormals\DebugNormals.frag" />
+    <None Include="src\Assets\Shaders\DebugNormals\DebugNormals.gs" />
+    <None Include="src\Assets\Shaders\DebugNormals\DebugNormals.vert" />
+  </ItemGroup>
 </Project>

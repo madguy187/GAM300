@@ -437,43 +437,43 @@ namespace Eclipse
 
     bool InspectorWindow::ShowMesh3DProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
     {
-		if (engine->world.CheckComponent<MeshComponent>(ID))
-		{
-			if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
-			{
-				auto& _Mesh = engine->world.GetComponent<MeshComponent>(ID);
+        if (engine->world.CheckComponent<MeshComponent>(ID))
+        {
+            if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+            {
+                auto& _Mesh = engine->world.GetComponent<MeshComponent>(ID);
 
-				ECGui::DrawTextWidget<const char*>("Model Name: ", EMPTY_STRING);
-				ECGui::InsertSameLine();
-				ECGui::DrawTextWidget<const char*>(_Mesh.MeshName.data(), EMPTY_STRING);
+                ECGui::DrawTextWidget<const char*>("Model Name: ", EMPTY_STRING);
+                ECGui::InsertSameLine();
+                ECGui::DrawTextWidget<const char*>(_Mesh.MeshName.data(), EMPTY_STRING);
 
-				ECGui::DrawTextWidget<const char*>("Environment Map", EMPTY_STRING);
-				ECGui::InsertSameLine();
-				ECGui::CheckBoxBool("Environment Map", &_Mesh.ENV_MAP);
+                ECGui::DrawTextWidget<const char*>("Environment Map", EMPTY_STRING);
+                ECGui::InsertSameLine();
+                ECGui::CheckBoxBool("Environment Map", &_Mesh.ENV_MAP);
 
-				if (_Mesh.ENV_MAP)
-				{
-					static size_t comboindex = 0;
-					std::vector<std::string> MapVector = { "REFLECT", "REFRACT" };
-					ComboListSettings settings = { "Map Type" };
-					ECGui::DrawTextWidget<const char*>("Map Type", "");
-					ECGui::CreateComboList(settings, MapVector, comboindex);
-					_Mesh.ENV_TYPE = static_cast<MeshComponent::MapType>(comboindex);
-				}
+                if (_Mesh.ENV_MAP)
+                {
+                    static size_t comboindex = 0;
+                    std::vector<std::string> MapVector = { "REFLECT", "REFRACT" };
+                    ComboListSettings settings = { "Map Type" };
+                    ECGui::DrawTextWidget<const char*>("Map Type", "");
+                    ECGui::CreateComboList(settings, MapVector, comboindex);
+                    _Mesh.ENV_TYPE = static_cast<MeshComponent::MapType>(comboindex);
+                }
 
-				ImGui::Dummy({ 2,2 });
+                ImGui::Dummy({ 2,2 });
 
-				std::string nameString = _Mesh.modelRef + " (Mesh Filter)";
-				ImGui::PushStyleColor(ImGuiCol_Header, IM_COL32(0, 1, 1, 1));
-				if (filter.PassFilter(nameString.c_str()) && ECGui::CreateCollapsingHeader(nameString.c_str()))
-				{
-					ECGui::DrawTextWidget<const char*>("Mesh ", EMPTY_STRING);
-					ECGui::InsertSameLine();
-					ChangeMeshController(ID);
-				}
-				ImGui::PopStyleColor();
-			}
-		}
+                std::string nameString = _Mesh.modelRef + " (Mesh Filter)";
+                ImGui::PushStyleColor(ImGuiCol_Header, IM_COL32(0, 1, 1, 1));
+                if (filter.PassFilter(nameString.c_str()) && ECGui::CreateCollapsingHeader(nameString.c_str()))
+                {
+                    ECGui::DrawTextWidget<const char*>("Mesh ", EMPTY_STRING);
+                    ECGui::InsertSameLine();
+                    ChangeMeshController(ID);
+                }
+                ImGui::PopStyleColor();
+            }
+        }
         return false;
     }
 
@@ -1031,7 +1031,7 @@ namespace Eclipse
         {
             columncount = 1;
         }
-        ECGui::DrawSliderFloatWidget("Size: ", &thumbnaimsize,false, 10, 200);
+        ECGui::DrawSliderFloatWidget("Size: ", &thumbnaimsize, false, 10, 200);
         ECGui::SetColumns(columncount, NULL, true);
         for (auto it : Graphics::textures)
         {
@@ -1058,7 +1058,7 @@ namespace Eclipse
                     ECGui::CloseCurrentPopup();
                 }
 
-                ECGui::DrawTextWrappedWidget(textureNames[i].c_str(),"");
+                ECGui::DrawTextWrappedWidget(textureNames[i].c_str(), "");
                 ECGui::NextColumn();
             }
 
@@ -1121,7 +1121,7 @@ namespace Eclipse
         {
             columncount = 1;
         }
-        ECGui::DrawSliderFloatWidget("Size: ", &thumbnaimsize,false, 10, 200);
+        ECGui::DrawSliderFloatWidget("Size: ", &thumbnaimsize, false, 10, 200);
 
         ECGui::SetColumns(columncount, NULL, true);
 
@@ -1144,7 +1144,7 @@ namespace Eclipse
                         AddComponentFilter.Clear();
                     }
 
-                    ECGui::DrawTextWrappedWidget(engine->AssimpManager.GetPrimitiveNames()[i].c_str(),"");
+                    ECGui::DrawTextWrappedWidget(engine->AssimpManager.GetPrimitiveNames()[i].c_str(), "");
                     ECGui::NextColumn();
                 }
 
@@ -1172,7 +1172,7 @@ namespace Eclipse
                         AddComponentFilter.Clear();
                     }
 
-                    ECGui::DrawTextWrappedWidget(engine->AssimpManager.GetMeshNames()[i].c_str(),"");
+                    ECGui::DrawTextWrappedWidget(engine->AssimpManager.GetMeshNames()[i].c_str(), "");
                     ECGui::NextColumn();
                 }
 
@@ -1242,7 +1242,7 @@ namespace Eclipse
         }
         else
         {
-            std::string Comp = my_strcat(Components, " already exists in ", name ". Add component failed.");
+            std::string Comp = my_strcat(Components, " already exists in ", name, ". Add component failed.");
             EDITOR_LOG_WARN(Comp.c_str());
         }
     }

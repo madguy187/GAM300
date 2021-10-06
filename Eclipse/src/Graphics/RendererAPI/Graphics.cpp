@@ -65,8 +65,16 @@ void Graphics::LoadShaders(std::string shaderFile)
             engine->GraphicsManager.ShaderMap[FolderName].push_back(ShaderFragConcatenate);
         }
 
-        initShaderpgms(FolderName, engine->GraphicsManager.ShaderMap[FolderName][1],
-            engine->GraphicsManager.ShaderMap[FolderName][0]);
+        if (engine->GraphicsManager.ShaderMap[FolderName].size() > 2)
+        {
+            initShaderpgms(true, FolderName, engine->GraphicsManager.ShaderMap[FolderName][2],
+                engine->GraphicsManager.ShaderMap[FolderName][0], engine->GraphicsManager.ShaderMap[FolderName][1]);
+        }
+        else
+        {
+            initShaderpgms(false, FolderName, engine->GraphicsManager.ShaderMap[FolderName][1],
+                engine->GraphicsManager.ShaderMap[FolderName][0]);
+        }
     }
 }
 
@@ -94,14 +102,22 @@ void Eclipse::Graphics::ThreadLoadShaders()
     GLSLShader.
  */
  /******************************************************************************/
-void Graphics::initShaderpgms(std::string shdrpgm_name,
-    std::string vtx_shdr, std::string frg_shdr)
+void Graphics::initShaderpgms(bool in, std::string shdrpgm_name,
+    std::string vtx_shdr, std::string frg_shdr, std::string geo)
 {
-    std::vector<std::pair<GLenum, std::string>> shdr_files
+    std::vector<std::pair<GLenum, std::string>> shdr_files;
+
+    if (in == true)
     {
-        std::make_pair(GL_VERTEX_SHADER, vtx_shdr),
-        std::make_pair(GL_FRAGMENT_SHADER, frg_shdr)
-    };
+        shdr_files.push_back(std::make_pair(GL_VERTEX_SHADER, vtx_shdr));
+        shdr_files.push_back(std::make_pair(GL_FRAGMENT_SHADER, frg_shdr));
+        shdr_files.push_back(std::make_pair(GL_GEOMETRY_SHADER, geo));
+    }
+    else
+    {
+        shdr_files.push_back(std::make_pair(GL_VERTEX_SHADER, vtx_shdr));
+        shdr_files.push_back(std::make_pair(GL_FRAGMENT_SHADER, frg_shdr));
+    }
 
     Shader shdrpgm;
     shdrpgm.CompileLinkValidate(shdr_files);

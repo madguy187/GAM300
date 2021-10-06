@@ -48,12 +48,11 @@ namespace Eclipse
 		size_t MeshFactoryCount();
 		// Render Function that uses the Container that stores MeshComponent 
 		void MeshDraw(MeshComponent& ModelMesh, unsigned int ID, unsigned int FrameBufferID, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
+		void DebugNormals(MeshComponent& ModelMesh, unsigned int ID, unsigned int FrameBufferID, CameraComponent::CameraType _camType);
 		// Upload to Shader
 		void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID, AABB_* box);
 		// Delete Model from MeshContainer Using ID
 		void DeleteItem(unsigned int index);
-		// Destory buffers
-		void CleanUpAllModelsMeshes();
 		// Cleanup
 		void Cleanup(MeshComponent& in);
 		// Check Current path is correct

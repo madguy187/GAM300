@@ -46,7 +46,7 @@ namespace Eclipse
 		//Container for shader programs and helper functions
 		static std::unordered_map<std::string, Shader> shaderpgms;
 		using shaderVec = std::vector<std::pair<std::string, std::string>>;
-		static void initShaderpgms(std::string shdrpgm_name, std::string vtx_shdr, std::string frg_shdr);
+		static void initShaderpgms(bool in , std::string shdrpgm_name, std::string vtx_shdr, std::string frg_shdr , std::string geo = "");
 		static modelIt FindModel(std::string);
 		static shaderIt FindShaders(std::string);
 		static Texture FindTextures(std::string);

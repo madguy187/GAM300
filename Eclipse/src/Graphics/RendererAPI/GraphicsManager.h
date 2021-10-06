@@ -36,6 +36,8 @@ namespace Eclipse
 		float GammaCorrection = 2.2f;
 		ECVec3 BackGroundColour{ 0.1f,0.2f,0.3f };
 		float Exposure = 1.0f;
+		bool VisualizeNormalVectors = false;
+		float Magnitude = 0.2f;
 
 		// Seperate FBO for Post Process
 		std::unique_ptr<FrameBuffer> PostProcess;
