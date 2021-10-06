@@ -25,34 +25,25 @@ namespace Eclipse
     {
         ECGui::DrawTextWidget<const char*>("Render Settings:", EMPTY_STRING);
         {
+            ECGui::CheckBoxBool("Draw Grid", &engine->GridManager->Visible, false);
+            ECGui::InsertSameLine();
+            ECGui::CheckBoxBool("Enable PostProcess", &engine->GraphicsManager.PostProcess->AllowPostProcess, false);
 
-            ECGui::DrawTextWidget<const char*>("Draw Grid", EMPTY_STRING);
-            ECGui::InsertSameLine();
-            ECGui::CheckBoxBool("DrawGrid", &engine->GridManager->Visible);
-            ECGui::InsertSameLine();
-            ECGui::DrawTextWidget<const char*>("Enable PostProcess", EMPTY_STRING);
-            ECGui::InsertSameLine();
-            ECGui::CheckBoxBool("Enable PostProcess", &engine->GraphicsManager.PostProcess->AllowPostProcess);
-
-            ECGui::DrawTextWidget<const char*>("Gamma", EMPTY_STRING);
-            ECGui::InsertSameLine();
+            ECGui::DrawTextWidget<const char*>("Gamma:", EMPTY_STRING);
             ECGui::DrawSliderFloatWidget("Gamma", &engine->GraphicsManager.GammaCorrection, true, 0.5f, 2.5f);
-            ECGui::InsertSameLine();
-            ECGui::DrawTextWidget<const char*>("BackGroundColour", EMPTY_STRING);
-            ECGui::InsertSameLine();
+
+            ECGui::DrawTextWidget<const char*>("BackGroundColour:", EMPTY_STRING);
             ECGui::DrawSliderFloat3Widget("BackGroundColour", &engine->GraphicsManager.BackGroundColour, true, 0.f, 1.0f);
 
-            ECGui::DrawTextWidget<const char*>("HDR Exposure", EMPTY_STRING);
-            ECGui::InsertSameLine();
+            ECGui::DrawTextWidget<const char*>("HDR Exposure:", EMPTY_STRING);
             ECGui::DrawSliderFloatWidget("HDR Exposure", &engine->GraphicsManager.Exposure, true, 0.1f, 10.5f);
 
-            ECGui::InsertSameLine();
             if (engine->GraphicsManager.PostProcess->AllowPostProcess)
             {
-                ECGui::InsertSameLine();
                 std::vector<std::string> Methods = { "NONE" , "INVERSE" , "GREYSCALE" ,"KERNEL" , "BLUR"};
                 ComboListSettings settingsss = { "PostProcess Methods" };
                 static size_t comboindex = 0;
+                ECGui::DrawTextWidget<const char*>("PostProcess Types:", EMPTY_STRING);
                 ECGui::CreateComboList(settingsss, Methods, comboindex);
                 engine->GraphicsManager.PostProcess->PPType_ = static_cast<FrameBuffer::PostProcessType>(comboindex);
             }
