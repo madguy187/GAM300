@@ -119,7 +119,6 @@ namespace Eclipse
                         engine->MaterialManager.UpdateStencilWithActualObject(entityID);
                         engine->AssimpManager.DebugNormals(Mesh, entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE), CameraComponent::CameraType::Editor_Camera);
 
-
                         /*************************************************************************
                           Render Without Stencer , Render Models to GameView
                         *************************************************************************/

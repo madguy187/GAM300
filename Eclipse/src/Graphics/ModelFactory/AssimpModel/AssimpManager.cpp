@@ -121,7 +121,6 @@ namespace Eclipse
         if (engine->GraphicsManager.VisualizeNormalVectors == true)
         {
             auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
-            TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(_camType));
 
             glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
 
@@ -145,7 +144,11 @@ namespace Eclipse
             glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
             glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
             GLCall(glUniform1f(uniform_var_loc5, engine->GraphicsManager.Magnitude));
-            Render(shdrpgm, GL_FILL, FrameBufferID, ModelMesh, ID, _camType);
+
+            // EBO stuff
+            glBindVertexArray(engine->AssimpManager.Geometry[ModelMesh.MeshName.data()]->VAO);
+            glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(engine->AssimpManager.Geometry[ModelMesh.MeshName.data()]->Indices.size()), GL_UNSIGNED_INT, 0);
+            glBindVertexArray(0);
         }
     }
 
