@@ -193,7 +193,7 @@ namespace Eclipse
 		else
 			finalID = name;
 
-		return ImGui::BeginCombo(finalID.c_str(), previewCurrent);
+		return ImGui::BeginCombo(finalID.c_str(), previewCurrent, flags);
 	}
 
 	void ImGuiAPI::EndComboList()
@@ -377,17 +377,13 @@ namespace Eclipse
 	bool ImGuiAPI::InputTextWithHint(const char* name, const char* hintText, char* buffer, size_t bufferSize,
 		bool hideName, ImGuiInputTextFlags flags)
 	{
-		//Text(name);
-		std::string finalID = HideWidgetName(name, true);
-		/*InsertSameLine();*/
+		std::string finalID = HideWidgetName(name, hideName);
 		return ImGui::InputTextWithHint(finalID.c_str(), hintText, buffer, bufferSize, flags);
 	}
 
 	bool ImGuiAPI::InputText(const char* name, char* buffer, size_t bufferSize, ImGuiInputTextFlags flag, bool hideName)
 	{
-		//Text(name);
-		std::string finalID = HideWidgetName(name, true);
-		/*InsertSameLine();*/
+		std::string finalID = HideWidgetName(name, hideName);
 		return ImGui::InputText(finalID.c_str(), buffer, bufferSize, flag);
 	}
 
@@ -431,9 +427,29 @@ namespace Eclipse
 		return ImGui::GetKeyIndex(key);
 	}
 
+	bool ImGuiAPI::IsKeyDown(int user_key_index)
+	{
+		return ImGui::IsKeyDown(user_key_index);
+	}
+
 	bool ImGuiAPI::IsMouseDown(ImGuiMouseButton button)
 	{
 		return ImGui::IsMouseDown(button);
+	}
+
+	bool ImGuiAPI::IsMouseClicked(ImGuiMouseButton button, bool repeat)
+	{
+		return ImGui::IsMouseClicked(button, repeat);
+	}
+
+	bool ImGuiAPI::IsMouseDragging(ImGuiMouseButton button, float lock_threshold)
+	{
+		return ImGui::IsMouseDragging(button, lock_threshold);
+	}
+
+	ImVec2 ImGuiAPI::GetMouseDragDelta(ImGuiMouseButton button, float lock_threshold)
+	{
+		return ImGui::GetMouseDragDelta(button, lock_threshold);
 	}
 
 	bool ImGuiAPI::CheckBoxBool(const char* name, bool* var, bool hideName)

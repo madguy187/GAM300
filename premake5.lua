@@ -107,7 +107,8 @@ project "Eclipse"
   disablewarnings 
   { 
     "4302",
-    "4311"	
+    "4311",	
+    "4505"	
   }
 
   links
@@ -180,7 +181,8 @@ project "Eclipse"
   disablewarnings 
   { 
     "4302",
-    "4311"	
+    "4311",	
+    "4505"	
   }
 
   links

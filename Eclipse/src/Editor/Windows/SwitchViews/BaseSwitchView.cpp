@@ -120,7 +120,7 @@ namespace Eclipse
 			break;
 		}
 
-		ImGuiIO& io = ImGui::GetIO();
+		// ImGuiIO& io = ImGui::GetIO();
 
 		ImGuizmo::Manipulate(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx),
 			(ImGuizmo::OPERATION)GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
@@ -188,11 +188,11 @@ namespace Eclipse
 	void BaseSwitchViewWindow::OnCameraMoveEvent()
 	{
 		ImGuiIO& io = ImGui::GetIO();
-		ImVec2 value_with_lock_threshold = ImGui::GetMouseDragDelta(1);
+		ImVec2 value_with_lock_threshold = ECGui::GetMouseDragDelta(1);
 		const float benchmarkValue = 0.0f;
 
 		// ImGui Right Click Detection
-		if (ImGui::IsMouseDragging(1))
+		if (ECGui::IsMouseDragging(1))
 		{
 			// Camera Move Right
 			if (value_with_lock_threshold.x > benchmarkValue && io.MouseDelta.x > 0.0f)
