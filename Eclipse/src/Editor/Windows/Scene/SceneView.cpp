@@ -40,7 +40,8 @@ namespace Eclipse
 		settings.Name = "SceneFrameBuffer";
 		settings.Size = ImVec2{ mViewportSize.x, mViewportSize.y };
 		ECGui::DrawChildWindow<void()>(settings, std::bind(&SceneWindow::RunFrameBuffer, this));
-		engine->editorManager->DragAndDropInst_.StringPayloadTarget("prefab", std::string{},
+		std::string dummy;
+		engine->editorManager->DragAndDropInst_.StringPayloadTarget("prefab", dummy,
 			"Created Prefab!", PayloadTargetType::PTT_WINDOW);
 	}
 
@@ -127,7 +128,7 @@ namespace Eclipse
 			break;
 		}
 
-		ImGuiIO& io = ImGui::GetIO();
+		// ImGuiIO& io = ImGui::GetIO();
 
 		ImGuizmo::Manipulate(glm::value_ptr(camCom.viewMtx), glm::value_ptr(camCom.projMtx),
 			(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
@@ -197,10 +198,9 @@ namespace Eclipse
 
 	void SceneWindow::OnSelectEntityEvent()
 	{
-		if (ImGui::IsMouseClicked(0))
+		if (ECGui::IsMouseClicked(0))
 		{
-			auto& picksys = engine->world.GetSystem<PickingSystem>();
-			picksys->EditorUpdate();
+			engine->world.GetSystem<PickingSystem>()->EditorUpdate();
 
 			if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
 				engine->editorManager->SetSelectedEntity(engine->gPicker.GetCurrentCollisionID());
@@ -210,11 +210,11 @@ namespace Eclipse
 	void SceneWindow::OnCameraMoveEvent()
 	{
 		ImGuiIO& io = ImGui::GetIO();
-		ImVec2 value_with_lock_threshold = ImGui::GetMouseDragDelta(1);
+		ImVec2 value_with_lock_threshold = ECGui::GetMouseDragDelta(1);
 		const float benchmarkValue = 0.0f;
 
 		// ImGui Right Click Detection
-		if (ImGui::IsMouseDragging(1))
+		if (ECGui::IsMouseDragging(1))
 		{
 			// Camera Yaw Right
 			if (value_with_lock_threshold.x > benchmarkValue && io.MouseDelta.x > 0.0f)
@@ -241,37 +241,37 @@ namespace Eclipse
 				engine->gCamera.GetInput().set(4, 0);
 
 			// Camera Move Front
-			if (ImGui::IsKeyDown(ImGui::GetKeyIndex(ImGuiKey_W)))
+			if (ECGui::IsKeyDown(ECGui::GetKeyIndex(ImGuiKey_W)))
 				engine->gCamera.GetInput().set(2, 1);
 			else
 				engine->gCamera.GetInput().set(2, 0);
 
 			// Camera Move Left
-			if (ImGui::IsKeyDown(ImGui::GetKeyIndex(ImGuiKey_A)))
+			if (ECGui::IsKeyDown(ECGui::GetKeyIndex(ImGuiKey_A)))
 				engine->gCamera.GetInput().set(1, 1);
 			else
 				engine->gCamera.GetInput().set(1, 0);
 
 			// Camera Move Back
-			if (ImGui::IsKeyDown(ImGui::GetKeyIndex(ImGuiKey_S)))
+			if (ECGui::IsKeyDown(ECGui::GetKeyIndex(ImGuiKey_S)))
 				engine->gCamera.GetInput().set(3, 1);
 			else
 				engine->gCamera.GetInput().set(3, 0);
 
 			// Camera Move Right
-			if (ImGui::IsKeyDown(ImGui::GetKeyIndex(ImGuiKey_D)))
+			if (ECGui::IsKeyDown(ECGui::GetKeyIndex(ImGuiKey_D)))
 				engine->gCamera.GetInput().set(0, 1);
 			else
 				engine->gCamera.GetInput().set(0, 0);
 
 			// Camera Move Up
-			if (ImGui::IsKeyDown(ImGui::GetKeyIndex(ImGuiKey_Q)))
+			if (ECGui::IsKeyDown(ECGui::GetKeyIndex(ImGuiKey_Q)))
 				engine->gCamera.GetInput().set(10, 1);
 			else
 				engine->gCamera.GetInput().set(10, 0);
 
 			// Camera Move Down
-			if (ImGui::IsKeyDown(ImGui::GetKeyIndex(ImGuiKey_E)))
+			if (ECGui::IsKeyDown(ECGui::GetKeyIndex(ImGuiKey_E)))
 				engine->gCamera.GetInput().set(11, 1);
 			else
 				engine->gCamera.GetInput().set(11, 0);

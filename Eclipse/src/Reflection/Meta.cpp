@@ -124,10 +124,10 @@ namespace Eclipse
         serialize = fn;
     }
     
-    void MetaData::Serialize(const char* name, RefVariant var) const
+    void MetaData::Serialize(const char* Name, RefVariant var) const
     {
         if (serialize)
-            serialize(name, var);
+            serialize(Name, var);
         /*else
             TextSerialize(var);*/
     }
@@ -137,10 +137,10 @@ namespace Eclipse
         deserialize = fn;
     }
 
-    bool MetaData::Deserialize(const char* name, RefVariant var) const
+    bool MetaData::Deserialize(const char* Name, RefVariant var) const
     {
         if (deserialize)
-            return deserialize(name, var);
+            return deserialize(Name, var);
         else
             return false;
     }

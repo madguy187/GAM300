@@ -262,9 +262,7 @@ namespace Eclipse
 
 	bool ECGui::CreateCollapsingHeader(const char* name, bool forInspector)
 	{
-		/*if (forInspector)
-			engine->editorManager->DataComponentFilter_[name] = name;*/
-
+		(void)forInspector;
 		return ImGuiAPI::CreateCollapsingHeader(name);
 	}
 
@@ -465,9 +463,29 @@ namespace Eclipse
 		return ImGuiAPI::GetKeyIndex(key);
 	}
 
+	bool ECGui::IsKeyDown(int user_key_index)
+	{
+		return ImGuiAPI::IsKeyDown(user_key_index);
+	}
+
 	bool ECGui::IsMouseDown(ImGuiMouseButton button)
 	{
 		return ImGuiAPI::IsMouseDown(button);
+	}
+
+	bool ECGui::IsMouseClicked(ImGuiMouseButton button, bool repeat)
+	{
+		return ImGuiAPI::IsMouseClicked(button, repeat);
+	}
+
+	bool ECGui::IsMouseDragging(ImGuiMouseButton button, float lock_threshold)
+	{
+		return ImGuiAPI::IsMouseDragging(button, lock_threshold);
+	}
+
+	ImVec2 ECGui::GetMouseDragDelta(ImGuiMouseButton button, float lock_threshold)
+	{
+		return ImGuiAPI::GetMouseDragDelta(button, lock_threshold);
 	}
 
 	bool ECGui::CheckBoxBool(const char* name, bool* var, bool hideName)

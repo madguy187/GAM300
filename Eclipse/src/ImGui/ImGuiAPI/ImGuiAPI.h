@@ -116,7 +116,11 @@ namespace Eclipse
 		// Input
 		static bool IsKeyPressed(int KeyIndex, bool repeat = true);
 		static int GetKeyIndex(ImGuiKey key);
+		static bool IsKeyDown(int user_key_index);
 		static bool IsMouseDown(ImGuiMouseButton button);
+		static bool IsMouseClicked(ImGuiMouseButton button, bool repeat = false);
+		static bool IsMouseDragging(ImGuiMouseButton button, float lock_threshold = -1.0f);
+		static ImVec2 GetMouseDragDelta(ImGuiMouseButton button = 0, float lock_threshold = -1.0f);
 
 		// Misc
 		static bool CheckBoxBool(const char* name, bool* var, bool hideName = true);
