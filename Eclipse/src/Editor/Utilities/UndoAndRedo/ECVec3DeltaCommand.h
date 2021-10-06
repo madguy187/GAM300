@@ -7,8 +7,8 @@ namespace Eclipse
 	class ECVec3DeltaCommand : public ICommand
 	{
 	public:
-		ECVec3DeltaCommand(ECVec3& ogVec, ECVec3& newVec) :
-			m_Vector{ ogVec }, m_NewVector{ newVec }, m_OldVector{ ECVec3{} }
+		ECVec3DeltaCommand(ECVec3& ogVec, ECVec3& newVec, Entity id = MAX_ENTITY) :
+			m_Vector{ ogVec }, m_NewVector{ newVec }, m_OldVector{ ECVec3{} }, ID{ id }
 		{}
 
 		virtual void Execute() override
@@ -17,6 +17,12 @@ namespace Eclipse
 			m_Vector.setX(m_NewVector.getX());
 			m_Vector.setY(m_NewVector.getY());
 			m_Vector.setZ(m_NewVector.getZ());
+
+			if (ID != MAX_ENTITY)
+			{
+				engine->gPicker.UpdateAabb(ID);
+				engine->gDynamicAABBTree.UpdateData(ID);
+			}
 		}
 
 		virtual void Undo() override
@@ -24,6 +30,12 @@ namespace Eclipse
 			m_Vector.setX(m_OldVector.x);
 			m_Vector.setY(m_OldVector.y);
 			m_Vector.setZ(m_OldVector.z);
+
+			if (ID != MAX_ENTITY)
+			{
+				engine->gPicker.UpdateAabb(ID);
+				engine->gDynamicAABBTree.UpdateData(ID);
+			}
 		}
 
 		virtual bool MergeCmds(ICommand* otherCmd) override
@@ -47,5 +59,6 @@ namespace Eclipse
 		ECVec3& m_Vector;
 		ECVec3 m_NewVector;
 		ECVec3 m_OldVector;
+		Entity ID;
 	};
 }

@@ -146,15 +146,15 @@ namespace Eclipse
 			{
 			case ImGuizmo::OPERATION::TRANSLATE:
 				transCom.position = translation;
-				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.position, transCom.position });
+				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.position, transCom.position, selectedEntity });
 				break;
 			case ImGuizmo::OPERATION::ROTATE:
 				transCom.rotation += deltaRotation;
-				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.rotation, transCom.rotation });
+				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.rotation, transCom.rotation, selectedEntity });
 				break;
 			case ImGuizmo::OPERATION::SCALE:
 				transCom.scale = scale;
-				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.scale, transCom.scale });
+				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.scale, transCom.scale, selectedEntity });
 				break;
 			default:
 				break;
