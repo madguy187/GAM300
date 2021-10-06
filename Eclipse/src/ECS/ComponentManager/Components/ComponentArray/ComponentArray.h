@@ -41,7 +41,7 @@ namespace Eclipse
 		T& GetComponent(Entity ent)
 		{
 			auto index = set.Search(ent);
-			ENGINE_LOG_ASSERT(index != set.NOT_FOUND, "ENTITY DOES NOT EXIST.");
+			assert(index != set.NOT_FOUND);
 			return components[index];
 		}
 	};
