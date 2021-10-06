@@ -122,7 +122,7 @@ namespace Eclipse
 			if (CheckComponent<T>(oldEnt))
 			{
 				world.AddComponent<T>(newEnt, GetComponent<T>(oldEnt));
-			}*/
+			}
 		}
 	};
 }

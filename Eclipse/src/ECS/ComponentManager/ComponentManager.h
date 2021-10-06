@@ -39,7 +39,7 @@ namespace Eclipse
 		template<typename T>
 		ComponentType GetComponentType()
 		{
-			return id.GetID<T>();
+			return static_cast<ComponentType>(id.GetID<T>());
 		}
 
 		template<typename T>

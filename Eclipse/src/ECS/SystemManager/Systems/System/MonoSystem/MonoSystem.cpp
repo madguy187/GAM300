@@ -21,7 +21,7 @@ namespace Eclipse
 	void MonoSystem::Update()
 	{
 		engine->Timer.SetName({ SystemName::MONO });
-		engine->Timer.tracker.system_start = glfwGetTime();
+		engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
 		for (auto entity : mEntities)
 		{
@@ -33,7 +33,7 @@ namespace Eclipse
 			}
 		}
 
-		engine->Timer.tracker.system_end = glfwGetTime();
+		engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());
 		engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
 	}
 

@@ -7,11 +7,11 @@ namespace Eclipse
 {
 	void Eclipse::ChildSystem::Update()
 	{
-		if (!engine->GetPlayState()) return;
+		//if (!engine->GetPlayState()) return;
 
-		for (auto& entity : mEntities)
-		{
-			// calculate offset
-		}
+		//for (auto& entity : mEntities)
+		//{
+		//	// calculate offset
+		//}
 	}
 }
