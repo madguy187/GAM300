@@ -240,7 +240,7 @@ namespace Eclipse
 			return;
 		}
 
-		PxShape* tempshape = PxRigidActorExt::createExclusiveShape(*dynamic_cast<PxRigidActor*>(Px_Actors[ent].actor), PxCapsuleGeometry{ radius,halfheight }, *tempmat);
+		PxRigidActorExt::createExclusiveShape(*dynamic_cast<PxRigidActor*>(Px_Actors[ent].actor), PxCapsuleGeometry{ radius,halfheight }, *tempmat);
 	}
 
 	PxQuat PhysicsManager::AnglestoQuat(float degreeX, float degreeY, float degreeZ)

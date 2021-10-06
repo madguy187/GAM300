@@ -49,6 +49,8 @@ namespace Eclipse
 			void onAdvance(const PxRigidBody* const*, const PxTransform*, const PxU32) {}
 			void onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 nbPairs)
 			{
+				PX_UNUSED(nbPairs);
+				PX_UNUSED(pairs);
 				Entity Collided1;
 				Entity Collided2;
 				std::stringstream ent1{ pairHeader.actors[0]->getName() };
