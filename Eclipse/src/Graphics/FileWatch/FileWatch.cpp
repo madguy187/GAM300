@@ -150,7 +150,7 @@ namespace Eclipse
     {
         if (AssetCounter)
         {
-            EDITOR_LOG_INFO("Preparing to Recompile Models");
+            EDITOR_LOG_INFO("MODELS : HOT-RELOAD BEGIN");
 
             if (Create || Delete)
             {
@@ -160,20 +160,20 @@ namespace Eclipse
             }
             else
             {
-                EDITOR_LOG_INFO("Preparing to Recompile Models");
+                EDITOR_LOG_INFO("MODELS : HOT-RELOAD BEGIN");
                 engine->gEngineCompiler->HotReload();
             }
 
             AssetCounter = 0;
-            EDITOR_LOG_INFO("All Models Recompiled");
+            EDITOR_LOG_INFO("MODELS : HOT-RELOAD DONE");
         }
 
         if (BasicTextureCounter)
         {
-            EDITOR_LOG_INFO("Preparing to Recompile Textures");
+            EDITOR_LOG_INFO("TEXTURES : HOT-RELOAD DONE");
             engine->gEngineCompiler->HotReloadTetxures();
             BasicTextureCounter = 0;
-            EDITOR_LOG_INFO("All Textures Recompiled");
+            EDITOR_LOG_INFO("TEXTURES : HOT-RELOAD DONE");
         }
     }
 

@@ -27,7 +27,7 @@ namespace Eclipse
 
         if (ContainerSize != 0)
         {
-            EDITOR_LOG_INFO((FileName + "FILE CONSUMED BY ENGINE").c_str());
+            EDITOR_LOG_INFO((FileName + " FILE CONSUMED BY ENGINE").c_str());
 
             if (FileName == AllNames[0])
             {
@@ -230,12 +230,12 @@ namespace Eclipse
     }
     bool EngineCompiler::IsModelTexturesCompiled()
     {
-        return CompilerFlags.test(2);
+        return CompilerFlags.test(3);
     }
 
     bool EngineCompiler::IsBasicTexturesCompiled()
     {
-        return CompilerFlags.test(3);
+        return CompilerFlags.test(2);
     }
 
     bool EngineCompiler::AreAllCompiled()
@@ -268,24 +268,31 @@ namespace Eclipse
         }
         else
         {
-            if (IsGeometryCompiled() == false)
+            if (IsGeometryCompiled() == true && IsPrefabsCompiled() == true)
             {
-                EDITOR_LOG_WARN("GEOMETRY FAILED TO COMPILE,CANNOT CREATE MODELS");
+                EDITOR_LOG_INFO("GEOMETRY COMPILERS LOADED , YOU CAN CREATE MODELS");
             }
-
-            if (IsPrefabsCompiled() == false)
+            else
             {
-                EDITOR_LOG_WARN("PREFABS FAILED TO COMPILE,CANNOT CREATE MODELS");
-            }
+                if (IsGeometryCompiled() == false)
+                {
+                    EDITOR_LOG_WARN("GEOMETRY FAILED TO COMPILE,CANNOT CREATE MODELS");
+                }
 
-            if (IsModelTexturesCompiled() == false)
-            {
-                EDITOR_LOG_WARN("MODELTEXTURES FAILED TO COMPILE,CANNOT CREATE TEXTURES FOR MODELS");
-            }
+                if (IsPrefabsCompiled() == false)
+                {
+                    EDITOR_LOG_WARN("PREFABS FAILED TO COMPILE,CANNOT CREATE MODELS");
+                }
 
-            if (IsBasicTexturesCompiled() == false)
-            {
-                EDITOR_LOG_WARN("BASICTEXTURES FAILED TO COMPILE,CANNOT CREATE BASIC TEXTURES");
+                if (IsModelTexturesCompiled() == false)
+                {
+                    EDITOR_LOG_WARN("MODELTEXTURES FAILED TO COMPILE,CANNOT CREATE TEXTURES FOR MODELS");
+                }
+
+                if (IsBasicTexturesCompiled() == false)
+                {
+                    EDITOR_LOG_WARN("BASICTEXTURES FAILED TO COMPILE,CANNOT CREATE BASIC TEXTURES");
+                }
             }
         }
     }
