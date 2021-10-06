@@ -402,11 +402,11 @@ namespace Eclipse
 		return false;
 	}
 
-	bool ECGui::DrawInputFloat3Widget(const char* name, ECVec3* vector, bool hideName)
+	bool ECGui::DrawInputFloat3Widget(const char* name, ECVec3* vector, bool hideName, Entity ID)
 	{
 		if (ImGuiAPI::InputFloat3(name, (float*)vector, hideName))
 		{
-			CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ *vector, *vector });
+			CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ *vector, *vector, ID });
 			return true;
 		}
 		else if (ImGui::IsItemDeactivatedAfterChange())

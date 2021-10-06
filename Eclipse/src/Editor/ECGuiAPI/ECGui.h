@@ -263,7 +263,7 @@ namespace Eclipse
 		static bool DrawInputFloat2Widget(const char* name, ECVec2* vector,
 			bool hideName = true);
 		static bool DrawInputFloat3Widget(const char* name, ECVec3* vector,
-			bool hideName = true);
+			bool hideName = true, Entity ID = MAX_ENTITY);
 		static bool DrawInputFloat4Widget(const char* name, ECVec4* vector,
 			bool hideName = true);
 		static bool DrawInputTextHintWidget(const char* name, const char* hintText,
