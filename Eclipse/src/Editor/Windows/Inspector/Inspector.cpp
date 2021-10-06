@@ -317,7 +317,6 @@ namespace Eclipse
 
                 ECGui::DrawTextWidget<const char*>("Camera Speed", EMPTY_STRING);
                 ECGui::DrawSliderFloatWidget("Camera Speed", &_Camera.cameraSpeed);
-
             }
         }
 
@@ -511,11 +510,6 @@ namespace Eclipse
 
     bool InspectorWindow::ShowScriptProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
     {
-        /*
-        * FOR NICO
-        * When script comp is up, just replace the entity com here with ur script,
-        * and the vector with the vector of stdstrings in ur script com
-        */
         if (engine->world.CheckComponent<ScriptComponent>(ID))
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
