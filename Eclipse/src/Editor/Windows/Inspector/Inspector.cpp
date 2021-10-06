@@ -1290,6 +1290,7 @@ namespace Eclipse
             if (std::string{ Components }.compare("AABBComponent") == 0)
             {
                 engine->gDynamicAABBTree.RemoveData(ID);
+                engine->gCullingManager->Remove(ID);
             }
         }
         else
