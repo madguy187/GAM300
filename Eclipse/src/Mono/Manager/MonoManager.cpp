@@ -83,7 +83,7 @@ namespace Eclipse
 		domain = mono_jit_init_version("Manager", "v4.0.30319");
 		mono_thread_set_main(mono_thread_current());
 
-		assert(domain, "Domain could not be created");
+		ENGINE_LOG_ASSERT(domain, "Domain could not be created");
 	}
 
 	void MonoManager::Update(MonoScript* obj)

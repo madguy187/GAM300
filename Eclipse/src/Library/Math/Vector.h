@@ -107,7 +107,7 @@ namespace Eclipse
 		template <typename U>
 		Vector<T, N>& operator=(const U& rhs)
 		{
-			for (size_t i = 0; i < N; ++i)
+			for (auto i = 0; i < N; ++i)
 			{
 				this->_data[i] = rhs[i];
 

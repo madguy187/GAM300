@@ -16,6 +16,7 @@ project "Eclipse"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"
+	warnings "Extra"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -83,8 +84,8 @@ project "Eclipse"
 		defines
 		{
 			"ENGINE_PLATFORM_WINDOWS",
-      "_CRT_SECURE_NO_WARNINGS",
-	  "TRACY_ENABLE"
+			"_CRT_SECURE_NO_WARNINGS",
+			"TRACY_ENABLE"
 		}
 
 	filter "configurations:Debug"
