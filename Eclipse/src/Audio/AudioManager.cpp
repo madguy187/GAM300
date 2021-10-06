@@ -446,6 +446,8 @@ namespace Eclipse
 
 	void AudioManager::SetPitch(const std::string& sound_name, float pitch)
 	{
+		(void)sound_name;
+		(void)pitch;
 	}
 
 	void AudioManager::SetSpeed(const std::string& sound_name, float speed)

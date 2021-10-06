@@ -35,12 +35,12 @@ namespace Eclipse
 		if (meta)
 		{
 			const Member* mem = meta->Members();
-			void* data = Data();
+			// void* data_ = Data();
 			MetaMap.clear();
 
 			while (mem)
 			{
-				void* offsetData = PTR_ADD(data, mem->Offset());
+				// void* offsetData = PTR_ADD(data_, mem->Offset());
 				MetaMap[mem->GetName().c_str()] = const_cast<Member*>(mem);
 				mem = mem->Next();
 			}
