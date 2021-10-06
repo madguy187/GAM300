@@ -284,7 +284,7 @@ namespace Eclipse
 
 		if (!node)
 		{
-			return nodeID;
+			return MAX_ENTITY;
 		}
 		
 		float time;
