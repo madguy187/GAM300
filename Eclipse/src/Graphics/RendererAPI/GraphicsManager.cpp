@@ -459,6 +459,7 @@ namespace Eclipse
 		engine->MaterialManager.DoNotUpdateStencil();
 		engine->GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
 
+		engine->MaterialManager.DoNotUpdateStencil();
 		PostProcessUpdate();
 	}
 
@@ -571,7 +572,6 @@ namespace Eclipse
 		{
 			ENGINE_LOG_ASSERT(false, " Wrong FrameBuffer Type");
 			std::exit(EXIT_FAILURE);
-			return nullptr;
 		}
 
 		auto& selectfb = _Framebuffers[mode];

@@ -246,19 +246,12 @@ namespace Eclipse
         std::thread CompilerWait{ &EngineCompiler::RunCompiler };
         CompilerWait.join();
 
-        //CompilerThreads.emplace("LoadGeometry", std::make_unique<std::thread>(std::thread{ &EngineCompiler::LoadGeometry }));
-        //CompilerThreads.emplace("LoadPrefabs", std::make_unique<std::thread>(std::thread{ &EngineCompiler::LoadPrefabs }));
-         //CompilerThreads.emplace("LoadModelTextures", std::make_unique<std::thread>(std::thread{ &EngineCompiler::LoadModelTextures }));
-         //CompilerThreads.emplace("LoadBasicTextures", std::make_unique<std::thread>(std::thread{ &EngineCompiler::LoadBasicTextures }));
-
-        //CompilerThreads["LoadGeometry"]->join();
-        //CompilerThreads["LoadPrefabs"]->join();
-
-        // Geometry Compiler
+        CompilerThreads.emplace("LoadPrefabs", std::make_unique<std::thread>(std::thread{ &EngineCompiler::LoadPrefabs }));
         LoadGeometry();
-        LoadPrefabs();
         LoadModelTextures();
         LoadBasicTextures();
+        CompilerThreads["LoadPrefabs"]->join();
+        CompilerThreads.clear();
 
         if (AreAllCompiled() == true)
         {
@@ -305,10 +298,12 @@ namespace Eclipse
         std::thread CompilerWait{ &EngineCompiler::RunCompiler };
         CompilerWait.join();
 
+        CompilerThreads.emplace("LoadPrefabs", std::make_unique<std::thread>(std::thread{ &EngineCompiler::LoadPrefabs }));
         LoadGeometry();
-        LoadPrefabs();
         LoadModelTextures();
         LoadBasicTextures();
+        CompilerThreads["LoadPrefabs"]->join();
+        CompilerThreads.clear();
 
         if (IsGeometryCompiled() == false)
         {
