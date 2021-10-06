@@ -1,4 +1,5 @@
 #pragma once
+
 // printing for console
 #include <iostream>
 #include <Tracy/Tracy.hpp>
@@ -18,10 +19,7 @@
 #include <fstream>
 #include <string>
 #include <cstdlib>
-#include <string>
-#include <vector>
 #include <utility>
-#include <string>
 #include <istream>
 #include <cmath>
 #include <fstream>

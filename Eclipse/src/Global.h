@@ -1,7 +1,5 @@
 #pragma once
-#include "pch.h"
-
-#include "ECS/ComponentManager/ComponentList.h"
+//#include "ECS/ComponentManager/ComponentList.h"
 
 #define EPSILON 0.000001f
 #define PTR_ADD( PTR, OFFSET ) \

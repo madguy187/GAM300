@@ -14,6 +14,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include <iostream>
 #include <array>
 #include <stdexcept>
+#include <glm.hpp>
 
 namespace Eclipse
 {

@@ -35,42 +35,42 @@ namespace Eclipse
 		return class_list;
 	}
 
-	static MonoObject* GetTranslate(Entity ent)
-	{
-		TransformComponent& trans2 = engine->world.GetComponent<TransformComponent>(ent);
-		auto& trans = engine->world.GetComponent<TransformComponent>(ent);
-		void* args[3];
-		args[0] = &trans.position.x;
-		args[1] = &trans.position.y;
-		args[2] = &trans.position.z;
+	//static MonoObject* GetTranslate(Entity ent)
+	//{
+	//	//TransformComponent& trans2 = engine->world.GetComponent<TransformComponent>(ent);
+	//	auto& trans = engine->world.GetComponent<TransformComponent>(ent);
+	//	void* args[3];
+	//	args[0] = &trans.position.x;
+	//	args[1] = &trans.position.y;
+	//	args[2] = &trans.position.z;
 
-		MonoClass* klass = mono_class_from_name(engine->mono.GetAPIImage(), "Eclipse", "MonoVec3");
+	//	MonoClass* klass = mono_class_from_name(engine->mono.GetAPIImage(), "Eclipse", "MonoVec3");
 
-		if (klass == nullptr) {
-			std::cout << "Failed loading class, MonoVec3" << std::endl;
-			return nullptr;
-		}
+	//	if (klass == nullptr) {
+	//		std::cout << "Failed loading class, MonoVec3" << std::endl;
+	//		return nullptr;
+	//	}
 
-		MonoObject* obj = mono_object_new(mono_domain_get(), klass);
-		if (obj == nullptr) {
-			std::cout << "Failed loading class instance, MonoVec3" << std::endl;
-			return nullptr;
-		}
+	//	MonoObject* obj = mono_object_new(mono_domain_get(), klass);
+	//	if (obj == nullptr) {
+	//		std::cout << "Failed loading class instance, MonoVec3" << std::endl;
+	//		return nullptr;
+	//	}
 
-		engine->mono.DumpInfoFromClass(klass);
+	//	engine->mono.DumpInfoFromClass(klass);
 
-		MonoMethod* ctor_method = mono_class_get_method_from_name(klass, ".ctor", -1);
-		if (!ctor_method)
-		{
-			std::cout << "Failed to get method" << std::endl;
-			return nullptr;
-		}
+	//	MonoMethod* ctor_method = mono_class_get_method_from_name(klass, ".ctor", -1);
+	//	if (!ctor_method)
+	//	{
+	//		std::cout << "Failed to get method" << std::endl;
+	//		return nullptr;
+	//	}
 
-		//mono_runtime_object_init(obj);
-		mono_runtime_invoke(ctor_method, obj, args, NULL);
+	//	//mono_runtime_object_init(obj);
+	//	mono_runtime_invoke(ctor_method, obj, args, NULL);
 
-		return obj;
-	}
+	//	return obj;
+	//}
 
 	void MonoManager::Init()
 	{
@@ -123,7 +123,7 @@ namespace Eclipse
 	{
 		GenerateDLL();
 
-		MonoDomain* childDomain = LoadDomain();
+		LoadDomain();
 		LoadDLLImage("../EclipseScriptsAPI.dll", APIImage, APIAssembly);
 		LoadDLLImage("../EclipseScripts.dll", ScriptImage, ScriptAssembly);
 
@@ -286,8 +286,8 @@ namespace Eclipse
 		{
 			std::cout << index << std::endl;
 			void* iter = NULL;
-			MonoMethod* method;
-			while (method = mono_class_get_methods(*it, &iter))
+			MonoMethod* method = nullptr;
+			while (method == mono_class_get_methods(*it, &iter))
 			{
 				std::cout << mono_method_get_name(method) << std::endl;
 				std::cout << mono_method_full_name(method, 1) << std::endl;
@@ -304,8 +304,8 @@ namespace Eclipse
 		std::cout << "#####################################" << std::endl;
 
 		void* iter = NULL;
-		MonoMethod* method;
-		while (method = mono_class_get_methods(_class, &iter))
+		MonoMethod* method = nullptr;
+		while (method == mono_class_get_methods(_class, &iter))
 		{
 			std::cout << mono_method_get_name(method) << std::endl;
 			std::cout << mono_method_full_name(method, 1) << std::endl;

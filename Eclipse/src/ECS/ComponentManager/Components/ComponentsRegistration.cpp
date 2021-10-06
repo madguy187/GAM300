@@ -17,6 +17,7 @@
 #include "CollisionComponent.h"
 #include "AIComponent.h"
 #include "PrefabComponent.h"
+#include "ScriptComponent.h"
 
 namespace Eclipse
 {
@@ -103,6 +104,11 @@ namespace Eclipse
         ADD_MEMBER(Child);
         ADD_MEMBER(Parent);
         ADD_MEMBER(IsAChild);
+    }
+
+    DEFINE_META(ScriptComponent)
+    {
+        ADD_MEMBER(scriptList);
     }
 
     DEFINE_META(LightComponent)
