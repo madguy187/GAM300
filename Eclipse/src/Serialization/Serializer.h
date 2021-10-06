@@ -6,6 +6,8 @@
 #include <iostream>
 #include <string>
 #include <type_traits>
+#include "ECS/ComponentManager/Components/CollisionComponent.h"
+
 
 namespace Eclipse
 {
@@ -108,10 +110,50 @@ namespace Eclipse
         {
             _currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<TextureType>(const_cast<TextureType&>(att_data)).c_str());
         }
+        
+        template <>
+        inline void AddAttributeToElement(const std::string& att_name, const MeshComponent::MapType& att_data)
+        {
+            _currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<MeshComponent::MapType>(const_cast<MeshComponent::MapType&>(att_data)).c_str());
+        }
+        
+        template <>
+        inline void AddAttributeToElement(const std::string& att_name, const ModelType& att_data)
+        {
+            _currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<ModelType>(const_cast<ModelType&>(att_data)).c_str());
+        }
+        
+        template <>
+        inline void AddAttributeToElement(const std::string& att_name, const PxShapeType& att_data)
+        {
+            _currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<PxShapeType>(const_cast<PxShapeType&>(att_data)).c_str());
+        }
+        
+        template <>
+        inline void AddAttributeToElement(const std::string& att_name, const Texture& att_data)
+        {
+            (void)att_name;
+            AddAttributeToElement("Type", att_data.Type);
+            AddAttributeToElement("Directory", att_data.Directory);
+            AddAttributeToElement("Handle", att_data.handle);
+        }
+
+        template <>
+        inline void AddAttributeToElement(const std::string& att_name, const EC_Shape& att_data)
+        {
+            (void)att_name;
+            AddAttributeToElement("Shape", att_data.shape);
+            AddAttributeToElement("Hx", att_data.hx);
+            AddAttributeToElement("Hy", att_data.hy);
+            AddAttributeToElement("Hz", att_data.hz);
+            AddAttributeToElement("Radius", att_data.radius);
+            AddAttributeToElement("Hheight", att_data.hheight);
+        }
 
 		template <typename T>
 		inline void AddAttributeToElement(const std::string& att_name, const std::vector<T>& att_data)
 		{
+            (void)att_name;
 			AddAttributeToElement("size", att_data.size());
 			size_t counter = 0;
 			std::string name{"Member"};
@@ -126,6 +168,7 @@ namespace Eclipse
         template <typename T, size_t N>
         inline void AddAttributeToElement(const std::string& att_name, const Vector<T, N>& att_data)
         {
+            (void)att_name;
             std::string vecNames[4] = { {"x"}, {"y"}, {"z"}, {"w"} };
             for (size_t i = 0; i < N; ++i)
             {
@@ -136,21 +179,15 @@ namespace Eclipse
         template <typename T, size_t N1, size_t N2, glm::qualifier GLM>
         inline void AddAttributeToElement(const std::string& att_name, const glm::mat<N1, N2, T, GLM>& att_data)
         {
-            //Col x Row
-            /*2x3
-                        Col1 Col2
-            Row1
-            Row2
-            Row3
-            */
+            (void)att_name;
             AddAttributeToElement<size_t>("Col", N1);
             AddAttributeToElement<size_t>("Row", N2);
             std::string name{ "Col" };
-            for (size_t i = 0; i < N1; ++i)
+            for (auto i = 0; i < N1; ++i)
             {
                 std::string dataName{ "_" + std::to_string(i) };
                 StartElement(name, true, i);
-                for (size_t j = 0; j < N2; ++j)
+                for (auto j = 0; j < N2; ++j)
                 {
                     AddAttributeToElement<T>(dataName + std::to_string(j), att_data[i][j]);
                 }
@@ -161,8 +198,9 @@ namespace Eclipse
         template <typename T, size_t N, glm::qualifier GLM>
         inline void AddAttributeToElement(const std::string& att_name, const glm::vec<N, T, GLM>& att_data)
         {
+            (void)att_name;
             std::string vecNames[4] = { {"x"}, {"y"}, {"z"}, {"w"} };
-            for (size_t i = 0; i < N; ++i)
+            for (auto i = 0; i < N; ++i)
             {
                 AddAttributeToElement<T>(vecNames[i], att_data[i]);
             }
@@ -185,6 +223,7 @@ namespace Eclipse
         template <size_t N>
         inline void AddAttributeToElement(const std::string& att_name, const std::array<char, N>& att_data)
         {
+            (void)att_name;
             std::string data = att_data.data();
             AddAttributeToElement("value", data);
         }

@@ -8,18 +8,18 @@ namespace Eclipse
 
 	SerializationManager::SerializationManager() {}
 
-	void SerializationManager::Backup::SaveBackup(Serializer& sz)
+	void SerializationManager::Backup::SaveBackup(Serializer& targetSz)
 	{
 		backUpPath = TEMP_PATH;
 		backUpPath += SceneManager::GetCurrentSceneName();
 		backUpPath += "RunningTemp";
 		backUpPath += SCENE_EXTENSION;
-		sz.SaveBackup(_backup, backUpPath);
+		targetSz.SaveBackup(_backup, backUpPath);
 	}
 
-	void SerializationManager::Backup::LoadBackup(Deserializer& dz)
+	void SerializationManager::Backup::LoadBackup(Deserializer& targetDsz)
 	{
-		dsz.LoadBackup(_backup, backUpPath);
+		targetDsz.LoadBackup(_backup, backUpPath);
 		backUpPath.clear();
 		_backup.Clear();
 	}
@@ -33,76 +33,94 @@ namespace Eclipse
 		sz.CloseElement();
 	}
 
-	void SerializationManager::DeserializeEntity(World& w, const size_t& counter)
+	Entity SerializationManager::DeserializeEntity(World& w, const size_t& counter, bool PrefabUse)
 	{
+		Entity ent = MAX_ENTITY;
 		if (dsz.StartElement("Entity_", true, counter))
 		{
-			Entity ent = w.CreateEntity();
-			if (DeserializeAllComponents(w, ent))
+			ent = w.CreateEntity();
+			if (DeserializeAllComponents(w, ent, PrefabUse))
 			{
-				engine->editorManager->RegisterExistingEntity(ent);
+				if (!PrefabUse)
+				{
+					engine->editorManager->RegisterExistingEntity(ent);
+				}
 			}
 			dsz.CloseElement();
 		}
+		return ent;
 	}
 
 	void SerializationManager::SerializeAllComponents(World& w, const Entity& ent)
 	{
-		SerializeComponent<EntityComponent>(w, ent);
-
-		SerializeComponent<CameraComponent>(w, ent);
-		
-		SerializeComponent<DirectionalLightComponent>(w, ent);
-		
-		SerializeComponent<MaterialComponent>(w, ent);
-		
-		SerializeComponent<PointLightComponent>(w, ent);
-		
-		SerializeComponent<MeshComponent>(w, ent);
-
-		SerializeComponent<RigidBodyComponent>(w, ent);
-
-		SerializeComponent<SpotLightComponent>(w, ent);
-
-		SerializeComponent<TransformComponent>(w, ent);
-
 		SerializeComponent<AABBComponent>(w, ent);
 
-		//SerializeComponent<TextureComponent>(w, ent);
+		SerializeComponent<AIComponent>(w, ent);
+		
+		SerializeComponent<AudioComponent>(w, ent);
+
+		SerializeComponent<CameraComponent>(w, ent);
+
+		SerializeComponent<CollisionComponent>(w, ent);
+
+		SerializeComponent<DirectionalLightComponent>(w, ent);
+
+		SerializeComponent<EntityComponent>(w, ent);
 
 		SerializeComponent<LightComponent>(w, ent);
 
+		SerializeComponent<MaterialComponent>(w, ent);
+
+		SerializeComponent<MeshComponent>(w, ent);
+
+		SerializeComponent<ModelComponent>(w, ent);
+
+		SerializeComponent<PointLightComponent>(w, ent);
+
 		SerializeComponent<PrefabComponent>(w, ent);
+		
+		SerializeComponent<RigidBodyComponent>(w, ent);
+		
+		SerializeComponent<SpotLightComponent>(w, ent);
+
+		SerializeComponent<TransformComponent>(w, ent);
 	}
 
-	bool SerializationManager::DeserializeAllComponents(World& w, const Entity& ent)
+	bool SerializationManager::DeserializeAllComponents(World& w, const Entity& ent, bool PrefabUse)
 	{
 		bool isSuccess = false;
 
-		if (DeserializeComponent<EntityComponent>(w, ent) &&
-			DeserializeComponent<TransformComponent>(w, ent) &&
-			DeserializeComponent<MeshComponent>(w, ent) &&
-			DeserializeComponent<MaterialComponent>(w, ent) &&
-			DeserializeComponent<AABBComponent>(w, ent) &&
-			DeserializeComponent<RigidBodyComponent>(w, ent) &&
+		if (DeserializeComponent<AABBComponent>(w, ent) &&
+			DeserializeComponent<AIComponent>(w, ent) &&
+			DeserializeComponent<AudioComponent>(w, ent) &&
 			DeserializeComponent<CameraComponent>(w, ent) &&
-			DeserializeComponent<PointLightComponent>(w, ent) &&
-			DeserializeComponent<SpotLightComponent>(w, ent) &&
+			DeserializeComponent<CollisionComponent>(w, ent) &&
 			DeserializeComponent<DirectionalLightComponent>(w, ent) &&
+			DeserializeComponent<EntityComponent>(w, ent) &&
 			DeserializeComponent<LightComponent>(w, ent) &&
-			DeserializeComponent<PrefabComponent>(w, ent))
+			DeserializeComponent<MaterialComponent>(w, ent) &&
+			DeserializeComponent<MeshComponent>(w, ent) &&
+			DeserializeComponent<ModelComponent>(w, ent) &&
+			DeserializeComponent<PointLightComponent>(w, ent) &&
+			DeserializeComponent<PrefabComponent>(w, ent) &&
+			DeserializeComponent<RigidBodyComponent>(w, ent) &&
+			DeserializeComponent<SpotLightComponent>(w, ent) &&
+			DeserializeComponent<TransformComponent>(w, ent))
 		{
-			if (w.CheckComponent<CameraComponent>(ent))
+			if (!PrefabUse)
 			{
-				auto& camera = w.GetComponent<CameraComponent>(ent);
-				engine->gCamera.ReInitCameraList(camera.camType, ent);
-			}
+				if (w.CheckComponent<CameraComponent>(ent))
+				{
+					auto& camera = w.GetComponent<CameraComponent>(ent);
+					engine->gCamera.ReInitCameraList(camera.camType, ent);
+				}
 
-			if (w.CheckComponent<AABBComponent>(ent))
-			{
-				auto& aabb = w.GetComponent<AABBComponent>(ent);
-				engine->gCullingManager->Insert(aabb, ent);
-				engine->gDynamicAABBTree.InsertData(ent);
+				if (w.CheckComponent<AABBComponent>(ent))
+				{
+					auto& aabb = w.GetComponent<AABBComponent>(ent);
+					engine->gCullingManager->Insert(aabb, ent);
+					engine->gDynamicAABBTree.InsertData(ent);
+				}
 			}
 			isSuccess = true;
 		}
@@ -199,7 +217,7 @@ namespace Eclipse
 		std::filesystem::remove_all(TEMP_PATH);
 	}
 
-	void SerializationManager::SavePrefab(int prefabID, std::vector<Entity>& prefabContents)
+	void SerializationManager::SavePrefab(long long unsigned int prefabID, std::vector<Entity>& prefabContents)
 	{
 		World& prefabW = engine->prefabWorld;
 		size_t counter = 0;
@@ -214,10 +232,10 @@ namespace Eclipse
 		sz.CloseElement();
 	}
 
-	int SerializationManager::LoadPrefab()
+	long long unsigned int SerializationManager::LoadPrefab(Entity& dszEnt)
 	{
 		World& prefabW = engine->prefabWorld;
-		int PrefabID = -1;
+		long long unsigned int PrefabID = 0;
 
 		if(dsz.StartElement("Prefab"))
 		{
@@ -226,7 +244,12 @@ namespace Eclipse
 			dsz.ReadAttributeFromElement("PrefabID", PrefabID);
 			for (size_t i = 0; i < size; ++i)
 			{
-				DeserializeEntity(prefabW, i);
+				Entity ent = DeserializeEntity(prefabW, i, true);
+
+				if (i == 0)
+				{
+					dszEnt = ent;
+				}
 			}
 			dsz.CloseElement();
 		}
@@ -234,18 +257,18 @@ namespace Eclipse
 		return PrefabID;
 	}
 
-	void SerializationManager::SavePrefabFile(int prefabID, std::vector<Entity>& prefabContents, const char* path)
+	void SerializationManager::SavePrefabFile(unsigned long long int prefabID, std::vector<Entity>& prefabContents, const char* path)
 	{
 		SavePrefab(prefabID, prefabContents);
 		SaveFile(path);
 	}
 
-	int SerializationManager::LoadPrefabFile(const char* fullpath)
+	long long unsigned int SerializationManager::LoadPrefabFile(Entity& dszEnt, const char* fullpath)
 	{
-		int PrefabID = -1;
+		long long unsigned int PrefabID = 0;
 		if (LoadFile(fullpath))
 		{
-			PrefabID =  LoadPrefab();
+			PrefabID =  LoadPrefab(dszEnt);
 		}
 		
 		return PrefabID;

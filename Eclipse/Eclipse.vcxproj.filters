@@ -34,6 +34,9 @@
     <Filter Include="ECS\SystemManager\Systems\System">
       <UniqueIdentifier>{2AA091FC-16F1-7C3E-3F55-6B002B0510A8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\AI">
+      <UniqueIdentifier>{8378C556-EF31-3001-7891-4ADBE449E670}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\Audio">
       <UniqueIdentifier>{AB25D4DE-9777-ABCE-8096-E8DE6C87C4B7}</UniqueIdentifier>
     </Filter>
@@ -162,6 +165,9 @@
     </Filter>
     <Filter Include="Graphics\Debugging">
       <UniqueIdentifier>{51443AC7-3D28-FB1C-A688-F56F928BE59E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\EngineCompiler">
+      <UniqueIdentifier>{1654E1F5-828B-298D-8B95-8DB0F74B5086}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\FileWatch">
       <UniqueIdentifier>{5CAA893C-488E-4A92-B1EE-44E59DF13414}</UniqueIdentifier>
@@ -297,6 +303,9 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\AudioComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
@@ -359,6 +368,9 @@
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\SystemManager.h">
       <Filter>ECS\SystemManager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\AI\AISystem.h">
+      <Filter>ECS\SystemManager\Systems\System\AI</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.h">
       <Filter>ECS\SystemManager\Systems\System\Audio</Filter>
@@ -519,6 +531,9 @@
     </ClInclude>
     <ClInclude Include="src\Graphics\Debugging\DebugRenderingManager.h">
       <Filter>Graphics\Debugging</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\EngineCompiler\EngineCompiler.h">
+      <Filter>Graphics\EngineCompiler</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\FileWatch\FileWatch.h">
       <Filter>Graphics\FileWatch</Filter>
@@ -788,10 +803,6 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\AudioComponent.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\AI\AISystem.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem\CameraSystem.h" />
-    <ClInclude Include="src\Graphics\EngineCompiler\EngineCompiler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -817,6 +828,9 @@
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp">
       <Filter>ECS\SystemManager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\AI\AISystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\AI</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\Audio</Filter>
@@ -946,6 +960,9 @@
     </ClCompile>
     <ClCompile Include="src\Graphics\Debugging\DebugRenderingManager.cpp">
       <Filter>Graphics\Debugging</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\EngineCompiler\EngineCompiler.cpp">
+      <Filter>Graphics\EngineCompiler</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\FileWatch\FileWatch.cpp">
       <Filter>Graphics\FileWatch</Filter>
@@ -1170,11 +1187,5 @@
       <Filter>Tracy</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\Graphics\EngineCompiler\EngineCompiler.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\Assets\Shaders\FrameBuffer\framebuffer.frag" />
-    <None Include="src\Assets\Shaders\FrameBuffer\framebuffer.vert" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\AI\AISystem.cpp" />
   </ItemGroup>
 </Project>

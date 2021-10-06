@@ -197,7 +197,7 @@ namespace Eclipse
 
 	void SceneManager::DeregisterScene(const std::string& name)
 	{
-
+		(void)name;
 	}
 
 	void SceneManager::DeregisterCurrentScene()

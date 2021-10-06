@@ -4,6 +4,8 @@
 #include "Deserializer.h"
 #include "Reflection/Variant/RefVariant.h"
 #include "ECS//ComponentManager/Components/PrefabComponent.h"
+#include "ECS//ComponentManager/Components/AudioComponent.h"
+#include "ECS//ComponentManager/Components/AIComponent.h"
 
 namespace Eclipse
 {
@@ -494,11 +496,11 @@ namespace Eclipse
 
 		void SerializeEntity(World& w, const Entity& ent, const size_t& counter);
 
-		void DeserializeEntity(World& w, const size_t& counter);
+		Entity DeserializeEntity(World& w, const size_t& counter, bool PrefabUse = false);
 
 		void SerializeAllComponents(World& w, const Entity& ent);
 
-		bool DeserializeAllComponents(World& w, const Entity& ent);
+		bool DeserializeAllComponents(World& w, const Entity& ent, bool PrefabUse = false);
 
 		void SerializeAllEntity();
 
@@ -508,9 +510,9 @@ namespace Eclipse
 
 		bool LoadFile(const char* fullpath);
 
-		void SavePrefab(int prefabID, std::vector<Entity>& prefabContents);
+		void SavePrefab(long long unsigned int  prefabID, std::vector<Entity>& prefabContents);
 
-		int LoadPrefab();
+		long long unsigned int LoadPrefab(Entity& dszEnt);
 
 		void SavePrefabWorld(const std::set<Entity>& entities);
 
@@ -526,9 +528,9 @@ namespace Eclipse
 
 		void LoadBackupFile();
 
-		void SavePrefabFile(int prefabID, std::vector<Entity>& prefabContents, const char* path);
+		void SavePrefabFile(unsigned long long int prefabID, std::vector<Entity>& prefabContents, const char* path);
 
-		int LoadPrefabFile(const char* fullpath);
+		long long unsigned int LoadPrefabFile(Entity& dszEnt, const char* fullpath);
 
 		void SaveSceneFile(const char* fullpath = "Data/Temp/Temp.scn");
 

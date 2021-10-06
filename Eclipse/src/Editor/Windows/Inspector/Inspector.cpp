@@ -745,9 +745,10 @@ namespace Eclipse
             ECGui::InsertHorizontalLineSeperator();
             ECGui::DrawTextWidget<const char*>("Prefeb: ", "");
             ECGui::InsertSameLine();
+
             if (ECGui::ButtonBool("Apply changes to all"))
             {
-                //do something
+                engine->pfManager.ApplyChangesToAll(ID);
             }
             if (ECGui::IsItemHovered())
             {
