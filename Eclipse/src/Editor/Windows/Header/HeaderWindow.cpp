@@ -242,7 +242,7 @@ namespace Eclipse
 		if (engine->gCamera.GetEditorCameraID() != MAX_ENTITY)
 		{
 			auto& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
-			ECGui::DrawTextWidget<const char*>("Camera Speed:", "");		
+			ECGui::DrawTextWidget<const char*>("Camera Speed:", EMPTY_STRING);
 			ECGui::DrawSliderFloatWidget("CamSpeed", &camera.cameraSpeed, true, 1.f, 200.f);
 		}
 	}
@@ -259,19 +259,19 @@ namespace Eclipse
 			scene->SetSnapping(IsActive);
 		}
 
-		ECGui::DrawTextWidget<const char*>("Pos Snap:", "");
+		ECGui::DrawTextWidget<const char*>("Pos Snap:", EMPTY_STRING);
 		std::vector<std::string> posValues = { "1","5","10","50","100","500","1000","5000","10000" };
 		ECGui::CreateComboList({"Pos Snap:"}, posValues, posValueIndex);
 		scene->GetRefToSnapSettings().mPosSnapValue = static_cast<float>(std::stoi(posValues[posValueIndex]));
 
 		//ECGui::DrawSliderFloatWidget("Pos Snap", &scene->GetRefToSnapSettings().mPosSnapValue, true, 1.f, 100.f);
-		ECGui::DrawTextWidget<const char*>("Rot Snap:", "");
+		ECGui::DrawTextWidget<const char*>("Rot Snap:", EMPTY_STRING);
 		std::vector<std::string> rotValues = { "5","10","15","30","45","60","90","120"};
 		ECGui::CreateComboList({ "Rot Snap:" }, rotValues, rotValueIndex);
 		scene->GetRefToSnapSettings().mRotSnapValue = static_cast<float>(std::stoi(rotValues[rotValueIndex]));
 
 		//ECGui::DrawSliderFloatWidget("Rot Snap", &scene->GetRefToSnapSettings().mRotSnapValue, true, 1.f, 100.f);
-		ECGui::DrawTextWidget<const char*>("Scale Snap:", "");
+		ECGui::DrawTextWidget<const char*>("Scale Snap:", EMPTY_STRING);
 		std::vector<std::string> scaleValues = { "10","1","0.5","0.25","0.125","0.0625","0.03125"};
 		ECGui::CreateComboList({ "Scale Snap:" }, scaleValues, scaleValueIndex);
 		scene->GetRefToSnapSettings().mScaleSnapValue = std::stof(scaleValues[scaleValueIndex]);

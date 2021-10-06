@@ -23,26 +23,26 @@ namespace Eclipse
 
     void DebugWindow::DrawImpl()
     {
-        ECGui::DrawTextWidget<const char*>("Render Settings:", "");
+        ECGui::DrawTextWidget<const char*>("Render Settings:", EMPTY_STRING);
         {
 
-            ECGui::DrawTextWidget<const char*>("Draw Grid", "");
+            ECGui::DrawTextWidget<const char*>("Draw Grid", EMPTY_STRING);
             ECGui::InsertSameLine();
             ECGui::CheckBoxBool("DrawGrid", &engine->GridManager->Visible);
             ECGui::InsertSameLine();
-            ECGui::DrawTextWidget<const char*>("Enable PostProcess", "");
+            ECGui::DrawTextWidget<const char*>("Enable PostProcess", EMPTY_STRING);
             ECGui::InsertSameLine();
             ECGui::CheckBoxBool("Enable PostProcess", &engine->GraphicsManager.PostProcess->AllowPostProcess);
 
-            ECGui::DrawTextWidget<const char*>("Gamma", "");
+            ECGui::DrawTextWidget<const char*>("Gamma", EMPTY_STRING);
             ECGui::InsertSameLine();
             ECGui::DrawSliderFloatWidget("Gamma", &engine->GraphicsManager.GammaCorrection, true, 0.5f, 2.5f);
             ECGui::InsertSameLine();
-            ECGui::DrawTextWidget<const char*>("BackGroundColour", "");
+            ECGui::DrawTextWidget<const char*>("BackGroundColour", EMPTY_STRING);
             ECGui::InsertSameLine();
             ECGui::DrawSliderFloat3Widget("BackGroundColour", &engine->GraphicsManager.BackGroundColour, true, 0.f, 1.0f);
 
-            ECGui::DrawTextWidget<const char*>("HDR Exposure", "");
+            ECGui::DrawTextWidget<const char*>("HDR Exposure", EMPTY_STRING);
             ECGui::InsertSameLine();
             ECGui::DrawSliderFloatWidget("HDR Exposure", &engine->GraphicsManager.Exposure, true, 0.1f, 10.5f);
 

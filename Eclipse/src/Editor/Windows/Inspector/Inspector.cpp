@@ -47,7 +47,6 @@ namespace Eclipse
             CompFilter.Draw();
 
             ECGui::PushItemWidth(WindowSize_.getX());
-            //std::cout<<engine->editorManager->GetSelectedEntity();
             ShowPrefebProperty(currEnt);
             ShowEntityProperty("Tag", currEnt, CompFilter);
             ShowTransformProperty("Transform", currEnt, CompFilter);
@@ -65,7 +64,6 @@ namespace Eclipse
             ShowAIProperty("AI Properties", currEnt, CompFilter);
 
             ECGui::InsertHorizontalLineSeperator();
-            /*ECGui::PushItemWidth(WindowSize_.getX());*/
             AddComponentsController(currEnt);
             ECGui::InsertSameLine();
             RemoveComponentsController(currEnt);
@@ -91,7 +89,7 @@ namespace Eclipse
                 auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
 
                 ECGui::DrawTextWidget<std::string>("Entity Tag", lexical_cast_toStr<EntityType>(entCom.Tag));
-                ECGui::DrawTextWidget<const char*>("Edit Name:", "");
+                ECGui::DrawTextWidget<const char*>("Edit Name:", EMPTY_STRING);
                 ECGui::InsertSameLine();
                 if (ECGui::DrawInputTextHintWidget("InputEntityName", "Enter Entity Name", entNameInput,
                     256, true, ImGuiInputTextFlags_EnterReturnsTrue))
@@ -100,9 +98,6 @@ namespace Eclipse
                     entCom.Name = entNameInput;
                     CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<std::string>{ oldName, entCom.Name });
                 }
-
-                /*engine->editorManager->Item_.GenericPayloadTarget("TESTING", testtest, "SUCCESSFUL");
-                strcpy(test, testtest.c_str());*/
             }
         }
 
@@ -117,13 +112,13 @@ namespace Eclipse
             {
                 auto& transCom = engine->world.GetComponent<TransformComponent>(ID);
 
-                ECGui::DrawTextWidget<const char*>("Position", "");
+                ECGui::DrawTextWidget<const char*>("Position", EMPTY_STRING);
                 ECGui::DrawSliderFloat3Widget("TransVec", &transCom.position, true, -50.f, 50.f);
 
-                ECGui::DrawTextWidget<const char*>("Rotation", "");
+                ECGui::DrawTextWidget<const char*>("Rotation", EMPTY_STRING);
                 ECGui::DrawSliderFloat3Widget("TransRot", &transCom.rotation, true, -360.f, 360.f);
 
-                ECGui::DrawTextWidget<const char*>("Scale", "");
+                ECGui::DrawTextWidget<const char*>("Scale", EMPTY_STRING);
                 ECGui::DrawSliderFloat3Widget("TransScale", &transCom.scale);
 
                 //Update for DynamicAABB Tree -Rachel
@@ -143,10 +138,10 @@ namespace Eclipse
             {
                 auto& _PointLight = engine->world.GetComponent<PointLightComponent>(ID);
 
-                ECGui::DrawTextWidget<const char*>("IntensityStrength", "");
+                ECGui::DrawTextWidget<const char*>("IntensityStrength", EMPTY_STRING);
                 ECGui::DrawSliderFloatWidget("IntensityFloat", &_PointLight.IntensityStrength, true, 0.f, 150.f);
 
-                ECGui::DrawTextWidget<const char*>("Light Colour", "");
+                ECGui::DrawTextWidget<const char*>("Light Colour", EMPTY_STRING);
 
                 ECGui::ColorPicker3("PLightColor", (float*)&_PointLight.Color,
                     ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
@@ -154,38 +149,38 @@ namespace Eclipse
                 engine->LightManager.SetLightColor(_PointLight,
                     { _PointLight.Color.getX() ,_PointLight.Color.getY() , _PointLight.Color.getZ() , 1.0f });
 
-                ECGui::DrawTextWidget<const char*>("Attenuation Level", "");
+                ECGui::DrawTextWidget<const char*>("Attenuation Level", EMPTY_STRING);
                 ECGui::DrawSliderIntWidget("PLightColourVec", &_PointLight.AttenuationLevel, true, 0, 10);
                 engine->LightManager.SetAttenuation(_PointLight, _PointLight.AttenuationLevel);
 
-                ECGui::DrawTextWidget<const char*>("Light Ambient", "");
+                ECGui::DrawTextWidget<const char*>("Light Ambient", EMPTY_STRING);
                 ECGui::DrawSliderFloat3Widget("PLightAmbientVec", &_PointLight.ambient, true, 0.0f, 1.0f);
 
-                ECGui::DrawTextWidget<const char*>("Light Diffuse", "");
+                ECGui::DrawTextWidget<const char*>("Light Diffuse", EMPTY_STRING);
                 ECGui::DrawSliderFloat3Widget("PLightDiffuseVec", &_PointLight.diffuse, true, 0.0f, 1.0f);
 
-                ECGui::DrawTextWidget<const char*>("Light Specular", "");
+                ECGui::DrawTextWidget<const char*>("Light Specular", EMPTY_STRING);
                 ECGui::DrawSliderFloat3Widget("PLightSpecularVec", &_PointLight.specular, true, 0.0f, 1.0f);
 
-                ECGui::DrawTextWidget<const char*>("Intensity Strength", "");
+                ECGui::DrawTextWidget<const char*>("Intensity Strength", EMPTY_STRING);
                 ECGui::DrawSliderFloatWidget("Intensity Strength", &_PointLight.IntensityStrength, true, 0.0f, 50.0f);
 
-                ECGui::DrawTextWidget<const char*>("Constant", "");
+                ECGui::DrawTextWidget<const char*>("Constant", EMPTY_STRING);
                 ECGui::DrawSliderFloatWidget("Constant", &_PointLight.constant, true, 0.0f, 50.0f);
 
-                ECGui::DrawTextWidget<const char*>("Linear", "");
+                ECGui::DrawTextWidget<const char*>("Linear", EMPTY_STRING);
                 ECGui::DrawSliderFloatWidget("Linear", &_PointLight.linear, true, 0.0f, 50.0f);
 
-                ECGui::DrawTextWidget<const char*>("Quadratic", "");
+                ECGui::DrawTextWidget<const char*>("Quadratic", EMPTY_STRING);
                 ECGui::DrawSliderFloatWidget("Quadratic", &_PointLight.quadratic, true, 0.0f, 50.0f);
 
-                ECGui::DrawTextWidget<const char*>("Radius", "");
+                ECGui::DrawTextWidget<const char*>("Radius", EMPTY_STRING);
                 ECGui::DrawSliderFloatWidget("Radius", &_PointLight.radius, true, 0.0f, 50.0f);
 
                 ECGui::SetColumns(2, NULL, true);
-                ECGui::DrawTextWidget<const char*>("Enable Blinn Phong", "");
-                ECGui::DrawTextWidget<const char*>("Visible", "");
-                ECGui::DrawTextWidget<const char*>("Affects World", "");
+                ECGui::DrawTextWidget<const char*>("Enable Blinn Phong", EMPTY_STRING);
+                ECGui::DrawTextWidget<const char*>("Visible", EMPTY_STRING);
+                ECGui::DrawTextWidget<const char*>("Affects World", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::CheckBoxBool("Enable Blinn Phong", &_PointLight.EnableBlinnPhong);
                 ECGui::CheckBoxBool("Enable Blinn PhongVisible", &_PointLight.visible);
@@ -206,51 +201,51 @@ namespace Eclipse
             {
                 auto& _SpotLight = engine->world.GetComponent<SpotLightComponent>(ID);
 
-                ECGui::DrawTextWidget<const char*>("IntensityStrength", "");
+                ECGui::DrawTextWidget<const char*>("IntensityStrength", EMPTY_STRING);
                 ECGui::DrawSliderFloatWidget("IntensityFloat", &_SpotLight.IntensityStrength, true, 0.f, 150.f);
 
-                ECGui::DrawTextWidget<const char*>("Light Colour", "");
+                ECGui::DrawTextWidget<const char*>("Light Colour", EMPTY_STRING);
                 ECGui::ColorPicker3("SLightColor", (float*)&_SpotLight.lightColor,
                     ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
 
-                ECGui::DrawTextWidget<const char*>("Attenuation Level", "");
+                ECGui::DrawTextWidget<const char*>("Attenuation Level", EMPTY_STRING);
                 ECGui::DrawSliderIntWidget("PLightColourVec", &_SpotLight.AttenuationLevel, true, 0, 10);
                 engine->LightManager.SetAttenuation(_SpotLight, _SpotLight.AttenuationLevel);
 
-                ECGui::DrawTextWidget<const char*>("Light Ambient", "");
+                ECGui::DrawTextWidget<const char*>("Light Ambient", EMPTY_STRING);
                 ECGui::DrawSliderFloat3Widget("PLightAmbientVec", &_SpotLight.ambient, true, 0.0f, 1.0f);
 
-                ECGui::DrawTextWidget<const char*>("Light Diffuse", "");
+                ECGui::DrawTextWidget<const char*>("Light Diffuse", EMPTY_STRING);
                 ECGui::DrawSliderFloat3Widget("PLightDiffuseVec", &_SpotLight.diffuse, true, 0.0f, 1.0f);
 
-                ECGui::DrawTextWidget<const char*>("Light Specular", "");
+                ECGui::DrawTextWidget<const char*>("Light Specular", EMPTY_STRING);
                 ECGui::DrawSliderFloat3Widget("PLightSpecularVec", &_SpotLight.specular, true, 0.0f, 1.0f);
 
-                ECGui::DrawTextWidget<const char*>("OuterCutOff", "");
+                ECGui::DrawTextWidget<const char*>("OuterCutOff", EMPTY_STRING);
                 ECGui::DrawSliderFloatWidget("SLightOuterCutOffFloat", &_SpotLight.outerCutOff, true, 0.f, 50.0f);
 
-                ECGui::DrawTextWidget<const char*>("CutOff", "");
+                ECGui::DrawTextWidget<const char*>("CutOff", EMPTY_STRING);
                 ECGui::DrawSliderFloatWidget("SLightCutOffFloat", &_SpotLight.cutOff, true, 0.f, (_SpotLight.outerCutOff - 5.0f));
 
-                ECGui::DrawTextWidget<const char*>("Direction", "");
+                ECGui::DrawTextWidget<const char*>("Direction", EMPTY_STRING);
                 ECGui::DrawSliderFloat3Widget("SLightDirectionVec", &_SpotLight.direction, true, 0.f, 150.f);
 
-                ECGui::DrawTextWidget<const char*>("Constant", "");
+                ECGui::DrawTextWidget<const char*>("Constant", EMPTY_STRING);
                 ECGui::DrawSliderFloatWidget("Constant", &_SpotLight.constant, true, 0.0f, 50.0f);
 
-                ECGui::DrawTextWidget<const char*>("Linear", "");
+                ECGui::DrawTextWidget<const char*>("Linear", EMPTY_STRING);
                 ECGui::DrawSliderFloatWidget("Linear", &_SpotLight.linear, true, 0.0f, 50.0f);
 
-                ECGui::DrawTextWidget<const char*>("Quadratic", "");
+                ECGui::DrawTextWidget<const char*>("Quadratic", EMPTY_STRING);
                 ECGui::DrawSliderFloatWidget("Quadratic", &_SpotLight.quadratic, true, 0.0f, 50.0f);
 
-                ECGui::DrawTextWidget<const char*>("Radius", "");
+                ECGui::DrawTextWidget<const char*>("Radius", EMPTY_STRING);
                 ECGui::DrawSliderFloatWidget("Radius", &_SpotLight.radius, true, 0.0f, 50.0f);
 
                 ECGui::SetColumns(2, NULL, true);
-                ECGui::DrawTextWidget<const char*>("Enable Blinn Phong", "");
-                ECGui::DrawTextWidget<const char*>("Visible", "");
-                ECGui::DrawTextWidget<const char*>("Affects World", "");
+                ECGui::DrawTextWidget<const char*>("Enable Blinn Phong", EMPTY_STRING);
+                ECGui::DrawTextWidget<const char*>("Visible", EMPTY_STRING);
+                ECGui::DrawTextWidget<const char*>("Affects World", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::CheckBoxBool("Enable Blinn Phong", &_SpotLight.EnableBlinnPhong);
                 ECGui::CheckBoxBool("Enable Blinn PhongVisible", &_SpotLight.visible);
@@ -270,18 +265,18 @@ namespace Eclipse
             {
                 auto& _DLight = engine->world.GetComponent<DirectionalLightComponent>(ID);
                 ECGui::PushItemWidth(WindowSize_.getX() - 100.f);
-                ECGui::DrawTextWidget<const char*>("Light Colour", "");
+                ECGui::DrawTextWidget<const char*>("Light Colour", EMPTY_STRING);
                 ECGui::ColorPicker3("DLightColor", (float*)&_DLight.lightColor,
                     ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
 
                 ECGui::PushItemWidth(WindowSize_.getX());
-                ECGui::DrawTextWidget<const char*>("DLight Ambient", "");
+                ECGui::DrawTextWidget<const char*>("DLight Ambient", EMPTY_STRING);
                 ECGui::DrawSliderFloat3Widget("DLightAmbientVec", &_DLight.ambient, true, 0.0f, 1.0f);
 
-                ECGui::DrawTextWidget<const char*>("DLight Diffuse", "");
+                ECGui::DrawTextWidget<const char*>("DLight Diffuse", EMPTY_STRING);
                 ECGui::DrawSliderFloat3Widget("DLightDiffuseVec", &_DLight.diffuse, true, 0.0f, 1.0f);
 
-                ECGui::DrawTextWidget<const char*>("DLight Specular", "");
+                ECGui::DrawTextWidget<const char*>("DLight Specular", EMPTY_STRING);
                 ECGui::DrawSliderFloat3Widget("DLightSpecularVec", &_DLight.specular, true, 0.0f, 1.0f);
             }
         }
@@ -297,13 +292,13 @@ namespace Eclipse
             {
                 auto& _RigidB = engine->world.GetComponent<RigidBodyComponent>(ID);
 
-                ECGui::DrawTextWidget<const char*>("Enable Gravity", "");
+                ECGui::DrawTextWidget<const char*>("Enable Gravity", EMPTY_STRING);
                 ECGui::CheckBoxBool("Rigid Body Enable Gravity", &_RigidB.enableGravity);
 
-                ECGui::DrawTextWidget<const char*>("Forces", "");
+                ECGui::DrawTextWidget<const char*>("Forces", EMPTY_STRING);
                 ECGui::DrawSliderFloat3Widget("Rigid Body Forces", &_RigidB.forces, true, 0.0f, 1.0f);
 
-                ECGui::DrawTextWidget<const char*>("Velocity", "");
+                ECGui::DrawTextWidget<const char*>("Velocity", EMPTY_STRING);
                 ECGui::DrawSliderFloat3Widget("Rigid Body Velocity", &_RigidB.velocity, true, 0.0f, 1.0f);
 
             }
@@ -320,9 +315,8 @@ namespace Eclipse
             {
                 auto& _Camera = engine->world.GetComponent<CameraComponent>(ID);
 
-                ECGui::DrawTextWidget<const char*>("Camera Speed", "");
+                ECGui::DrawTextWidget<const char*>("Camera Speed", EMPTY_STRING);
                 ECGui::DrawSliderFloatWidget("Camera Speed", &_Camera.cameraSpeed);
-
             }
         }
 
@@ -337,7 +331,7 @@ namespace Eclipse
             {
                 auto& _Texture = engine->world.GetComponent<MaterialComponent>(ID);
 
-                ECGui::DrawTextWidget<const char*>("hasTexture", "");
+                ECGui::DrawTextWidget<const char*>("hasTexture", EMPTY_STRING);
                 ECGui::InsertSameLine();
                 ECGui::CheckBoxBool("hasTexture", &_Texture.hasTexture);
 
@@ -350,7 +344,7 @@ namespace Eclipse
 
                     ComboListSettings settings = { "Texture Type" };
 
-                    ECGui::DrawTextWidget<const char*>("Texture Type", "");
+                    ECGui::DrawTextWidget<const char*>("Texture Type", EMPTY_STRING);
                     ECGui::CreateComboList(settings, _TextureVector, _Texture.ComboIndex);
                     _Texture.Type = _Map[_TextureVector[_Texture.ComboIndex]];
 
@@ -370,7 +364,7 @@ namespace Eclipse
             {
                 auto& _Render = engine->world.GetComponent<MeshComponent>(ID);
 
-                ECGui::DrawTextWidget<const char*>("Transparency", "");
+                ECGui::DrawTextWidget<const char*>("Transparency", EMPTY_STRING);
                 ECGui::DrawSliderFloatWidget("Render Transparency", &_Render.transparency, true, 0.0f, 200.0f);
 
 
@@ -381,7 +375,7 @@ namespace Eclipse
                 ECGui::PushStyleColor(ImGuiCol_Header, IM_COL32(0, 1, 1, 1));
                 if (filter.PassFilter(nameString.c_str()) && ECGui::CreateCollapsingHeader(nameString.c_str()))
                 {
-                    ECGui::DrawTextWidget<const char*>("Mesh ", "");
+                    ECGui::DrawTextWidget<const char*>("Mesh ", EMPTY_STRING);
                     ECGui::InsertSameLine();
                     ChangeMeshController(ID);
                 }
@@ -412,16 +406,16 @@ namespace Eclipse
                 ECGui::CreateComboList(settings, _ModelVector, _Material.ComboIndex);
                 _Material.Modeltype = _Map[_ModelVector[_Material.ComboIndex]];
 
-                ECGui::DrawTextWidget<const char*>("Ambient", "");
+                ECGui::DrawTextWidget<const char*>("Ambient", EMPTY_STRING);
                 ECGui::DrawSliderFloat3Widget("Material Ambient", &_Material.ambient, true, 0.0f, 1.0f);
 
-                ECGui::DrawTextWidget<const char*>("Diffuse", "");
+                ECGui::DrawTextWidget<const char*>("Diffuse", EMPTY_STRING);
                 ECGui::DrawSliderFloat3Widget("Material Diffuse", &_Material.diffuse, true, 0.0f, 1.0f);
 
-                ECGui::DrawTextWidget<const char*>("Specular", "");
+                ECGui::DrawTextWidget<const char*>("Specular", EMPTY_STRING);
                 ECGui::DrawSliderFloat3Widget("Material Specular", &_Material.specular, true, 0.0f, 1.0f);
 
-                ECGui::DrawTextWidget<const char*>("MaximumShininess", "");
+                ECGui::DrawTextWidget<const char*>("MaximumShininess", EMPTY_STRING);
                 ECGui::DrawSliderFloatWidget("Material MaximumShininess", &_Material.MaximumShininess, true, 0.0f, 200.0f);
 
                 //ECGui::DrawTextWidget<const char*>("Thickness", "");
@@ -431,7 +425,7 @@ namespace Eclipse
                 //ECGui::DrawSliderFloatWidget("Material ScaleUp", &_Material.ScaleUp, true, 0.0f, 200.0f);
 
                 ECGui::SetColumns(2, NULL, true);
-                ECGui::DrawTextWidget<const char*>("Highlight", "");
+                ECGui::DrawTextWidget<const char*>("Highlight", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::CheckBoxBool("Enable Blinn Phong", &_Material.Highlight);
                 ECGui::SetColumns(1, NULL, true);
@@ -449,11 +443,11 @@ namespace Eclipse
 			{
 				auto& _Mesh = engine->world.GetComponent<MeshComponent>(ID);
 
-				ECGui::DrawTextWidget<const char*>("Model Name: ", "");
+				ECGui::DrawTextWidget<const char*>("Model Name: ", EMPTY_STRING);
 				ECGui::InsertSameLine();
-				ECGui::DrawTextWidget<const char*>(_Mesh.MeshName.data(), "");
+				ECGui::DrawTextWidget<const char*>(_Mesh.MeshName.data(), EMPTY_STRING);
 
-				ECGui::DrawTextWidget<const char*>("Environment Map", "");
+				ECGui::DrawTextWidget<const char*>("Environment Map", EMPTY_STRING);
 				ECGui::InsertSameLine();
 				ECGui::CheckBoxBool("Environment Map", &_Mesh.ENV_MAP);
 
@@ -473,7 +467,7 @@ namespace Eclipse
 				ImGui::PushStyleColor(ImGuiCol_Header, IM_COL32(0, 1, 1, 1));
 				if (filter.PassFilter(nameString.c_str()) && ECGui::CreateCollapsingHeader(nameString.c_str()))
 				{
-					ECGui::DrawTextWidget<const char*>("Mesh ", "");
+					ECGui::DrawTextWidget<const char*>("Mesh ", EMPTY_STRING);
 					ECGui::InsertSameLine();
 					ChangeMeshController(ID);
 				}
@@ -499,14 +493,14 @@ namespace Eclipse
 
                 ComboListSettings settings{ "Texture Type" };
 
-                ECGui::DrawTextWidget<const char*>("Model Directory: ", "");
+                ECGui::DrawTextWidget<const char*>("Model Directory: ", EMPTY_STRING);
                 ECGui::InsertSameLine();
                 ECGui::DrawTextWidget<const char*>(_ModelInfo.Directory.c_str(), "");
-                ECGui::DrawTextWidget<const char*>("Model Name: ", "");
+                ECGui::DrawTextWidget<const char*>("Model Name: ", EMPTY_STRING);
                 ECGui::InsertSameLine();
                 ECGui::DrawTextWidget<const char*>(_ModelInfo.NameOfModel.c_str(), "");
 
-                ECGui::DrawTextWidget<const char*>("Model Type", "");
+                ECGui::DrawTextWidget<const char*>("Model Type", EMPTY_STRING);
                 ECGui::CreateComboList(settings, _ModelInfoVector, _ModelInfo.ComboIndex);
                 _ModelInfo.type = _Map[_ModelInfoVector[_ModelInfo.ComboIndex]];
             }
@@ -516,11 +510,6 @@ namespace Eclipse
 
     bool InspectorWindow::ShowScriptProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
     {
-        /*
-        * FOR NICO
-        * When script comp is up, just replace the entity com here with ur script,
-        * and the vector with the vector of stdstrings in ur script com
-        */
         if (engine->world.CheckComponent<ScriptComponent>(ID))
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
@@ -556,10 +545,10 @@ namespace Eclipse
                 {
                     if (ECGui::ButtonBool("Add Script"))
                     {
-                        std::string fucknicosmother;
-                        fucknicosmother.reserve(256);
+                        std::string scriptName;
+                        scriptName.reserve(256);
                         scriptCom.scriptList.push_back({});
-                        scriptCom.scriptList.back().scriptName = fucknicosmother;
+                        scriptCom.scriptList.back().scriptName = scriptName;
                     }
 
                     ECGui::InsertSameLine();
@@ -576,11 +565,6 @@ namespace Eclipse
                         IsRemovingScripts = false;
                     }
                 }
-
-                /*PopUpButtonSettings settings{ "Remove Script", "Removing script" };
-                ECGui::BeginPopUpButtonList<void(std::vector<std::string>&)>(settings,
-                    std::bind(&InspectorWindow::RemoveElementFromVectorStringList,
-                    this, std::placeholders::_1), entCom.ScriptListComTest);*/
             }
         }
 
@@ -701,35 +685,34 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
-
                 auto& _Collision = engine->world.GetComponent<CollisionComponent>(ID);
 
                 switch (_Collision.shape.shape)
                 {
                 case PxShapeType::Px_CUBE:
-                    ECGui::DrawTextWidget<const char*>("CUBE ", "");
+                    ECGui::DrawTextWidget<const char*>("CUBE ", EMPTY_STRING);
                     ECGui::InsertHorizontalLineSeperator();
 
-                    ECGui::DrawTextWidget<const char*>("Hx: ", "");
+                    ECGui::DrawTextWidget<const char*>("Hx: ", EMPTY_STRING);
                     ECGui::InsertSameLine();
                     snprintf(hxValue, 256, "%f", _Collision.shape.hx);
                     ECGui::DrawInputTextWidget("Hx: ", hxValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
                     _Collision.shape.hx = static_cast<float>(atof(hxValue));
-                    ECGui::DrawTextWidget<const char*>("Hy: ", "");
+                    ECGui::DrawTextWidget<const char*>("Hy: ", EMPTY_STRING);
                     ECGui::InsertSameLine();
                     snprintf(hyValue, 256, "%f", _Collision.shape.hy);
                     ECGui::DrawInputTextWidget("Hy: ", hyValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
                     _Collision.shape.hy = static_cast<float>(atof(hyValue));
-                    ECGui::DrawTextWidget<const char*>("Hz: ", "");
+                    ECGui::DrawTextWidget<const char*>("Hz: ", EMPTY_STRING);
                     ECGui::InsertSameLine();
                     snprintf(hzValue, 256, "%f", _Collision.shape.hz);
                     ECGui::DrawInputTextWidget("Hz: ", hzValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
                     _Collision.shape.hz = static_cast<float>(atof(hzValue));
                     break;
                 case PxShapeType::Px_SPHERE:
-                    ECGui::DrawTextWidget<const char*>("SPHERE ", "");
+                    ECGui::DrawTextWidget<const char*>("SPHERE ", EMPTY_STRING);
                     ECGui::InsertHorizontalLineSeperator();
-                    ECGui::DrawTextWidget<const char*>("Radius: ", "");
+                    ECGui::DrawTextWidget<const char*>("Radius: ", EMPTY_STRING);
                     ECGui::InsertSameLine();
                     snprintf(radiusValue, 256, "%f", _Collision.shape.radius);
                     ECGui::DrawInputTextWidget("Radius: ", radiusValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
@@ -746,7 +729,7 @@ namespace Eclipse
         if (engine->world.CheckComponent<PrefabComponent>(ID))
         {
             ECGui::InsertHorizontalLineSeperator();
-            ECGui::DrawTextWidget<const char*>("Prefeb: ", "");
+            ECGui::DrawTextWidget<const char*>("Prefeb: ", EMPTY_STRING);
             ECGui::InsertSameLine();
 
             if (ECGui::ButtonBool("Apply changes to all"))
@@ -1004,13 +987,12 @@ namespace Eclipse
                 }
             }
         }
-
     }
 
     void InspectorWindow::ChangeTextureController(MaterialComponent& Item)
     {
         ImVec2 buttonSize = { 180,20 };
-        ECGui::DrawTextWidget<const char*>("Texture  ", "");
+        ECGui::DrawTextWidget<const char*>("Texture  ", EMPTY_STRING);
         ECGui::InsertSameLine();
 
         if (ECGui::ButtonBool((Item.TextureRef.c_str()), buttonSize) || (ECGui::IsItemClicked(0) && ECGui::IsItemHovered()))
@@ -1032,8 +1014,6 @@ namespace Eclipse
     {
         static ImGuiTextFilter AddComponentFilter;
         MaterialComponent FolderIcon;
-        //FolderIcon.textureRef = Graphics::textures.find("FolderIcon")->first;
-        //use image button to change the Graphics::models.find["models"]->find;
         std::vector<std::string> textureNames;
         textureNames.reserve(Graphics::textures.size());
         MaterialComponent icon;
@@ -1151,7 +1131,6 @@ namespace Eclipse
         {
             for (int i = 0; i < engine->AssimpManager.GetPrimitiveNames().size(); ++i)
             {
-
                 if (AddComponentFilter.PassFilter((engine->AssimpManager.GetPrimitiveNames()[i].c_str())))
                 {
                     ECGui::ImageButton((void*)(intptr_t)Graphics::FindTextures(icon.textureRef).GetHandle(),
@@ -1229,15 +1208,6 @@ namespace Eclipse
 
     void InspectorWindow::AddWaypointController(std::string& currentSelection)
     {
-       /* for (size_t i = 0; i < engine->gAI.GetTargetPoints().size(); ++i)
-        {
-            bool selected = false;
-            auto& entCom = engine->world.GetComponent<EntityComponent>(engine->gAI.GetTargetPoints()[i]);
-     
-            if (ECGui::CreateSelectableButton(entCom.Name.c_str(), &selected))
-                currentSelection = lexical_cast<std::string>(engine->gAI.GetTargetPoints()[i]);
-        }*/
-
         static size_t index = 0;
 
         if (ImGuiAPI::BeginComboList("WaypointListBegin", currentSelection.c_str(), true))
