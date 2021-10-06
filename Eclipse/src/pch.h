@@ -54,11 +54,6 @@
 // engine extern pointer
 #include "EntryPoint/EntryPoint.h"
 
-// Imgui
-//#include "imgui.h"
-//#include "imgui_impl_opengl3.h"
-//#include "imgui_impl_glfw.h"
-
 // Logger
 #include "Logger/Logger.h"
 
@@ -82,10 +77,6 @@
 #include "Library/Strings/StringsConcatenate.h"
 
 // Reflection
-//#include "Reflection/registration.h"
-//#include "Reflection/primitive_support.h"
-//#include "Reflection/complex_support.h"
-//#include "Reflection/Meta.h"
 #include "Reflection/RemTypeQual.h"
 #include "Reflection/Variant/RefVariant.h"
 #include "Reflection/Variant/Variant.h"
