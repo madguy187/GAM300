@@ -104,6 +104,7 @@ namespace Eclipse
 		bool TempFunc(const Test1& t)
 		{
 			std::cout << "World.h TempFunc" << std::endl;
+			(void)t;
 			return false;
 		}
 
