@@ -309,7 +309,7 @@ namespace Eclipse
         int keyT = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_T);
         int keyG = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_G);
 
-        int keyP = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_P);
+        //int keyP = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_P);
 
         if (InputHandler.GetKeyCurrent(InputKeycode::Key_A))
         {

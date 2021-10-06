@@ -155,7 +155,7 @@ namespace Eclipse
 	{
 		if (!node)
 		{
-			return -1;
+			return static_cast<size_t>(-1);
 		}
 
 		return node->mHeight;
