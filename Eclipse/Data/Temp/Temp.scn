@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
-<Entities Size="3">
-    <Entity_0 ID="6">
+<Entities Size="2">
+    <Entity_0 ID="0">
         <DirectionalLightComponent>
             <Counter value="0" />
             <visible value="false" />
@@ -27,28 +27,28 @@
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_0>
-    <Entity_1 ID="7">
+    <Entity_1 ID="1">
         <CameraComponent>
             <eyeAlpha value="0" />
             <eyeBeta value="-90" />
-            <fov value="45" />
+            <fov value="48.25" />
             <nearPlane value="0.1" />
             <farPlane value="500" />
             <aspect value="1.92708" />
-            <eyePos x="-6.98775" y="5.54517" z="18.4609" />
-            <eyeFront x="0.604819" y="-0.420244" z="-0.676453" />
-            <upVec x="0.280106" y="0.907411" z="-0.313282" />
-            <rightVec x="0.745476" y="-0" z="0.666533" />
+            <eyePos x="0" y="20" z="40" />
+            <eyeFront x="-3.34849e-08" y="-0.642788" z="-0.766045" />
+            <upVec x="-2.80971e-08" y="0.766044" z="-0.642788" />
+            <rightVec x="1" y="0" z="-4.37114e-08" />
             <worldUp x="0" y="1" z="0" />
             <viewMtx Col="4" Row="4">
-                <Col0 _00="0.745476" _01="0.280107" _02="-0.604819" _03="0" />
-                <Col1 _10="5.96046e-08" _11="0.907411" _12="0.420244" _13="0" />
-                <Col2 _20="0.666533" _21="-0.313282" _22="0.676453" _23="0" />
-                <Col3 _30="-7.09558" _31="2.70903" _32="-19.0446" _33="1" />
+                <Col0 _00="1" _01="-2.80971e-08" _02="3.34849e-08" _03="0" />
+                <Col1 _10="0" _11="0.766044" _12="0.642788" _13="0" />
+                <Col2 _20="-4.37114e-08" _21="-0.642788" _22="0.766044" _23="0" />
+                <Col3 _30="1.74846e-06" _31="10.3906" _32="-43.4975" _33="1" />
             </viewMtx>
             <projMtx Col="4" Row="4">
-                <Col0 _00="1.25278" _01="0" _02="0" _03="0" />
-                <Col1 _10="0" _11="2.41421" _12="0" _13="0" />
+                <Col0 _00="1.1587" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="2.23291" _12="0" _13="0" />
                 <Col2 _20="0" _21="0" _22="-1.0004" _23="-1" />
                 <Col3 _30="0" _31="0" _32="-0.20004" _33="0" />
             </projMtx>
@@ -64,70 +64,9 @@
             <IsAChild value="false" />
         </EntityComponent>
         <TransformComponent>
-            <position x="-6.98775" y="5.54517" z="18.4609" />
+            <position x="0" y="20" z="40" />
             <rotation x="-40" y="-90" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_1>
-    <Entity_2 ID="8">
-        <AABBComponent>
-            <center x="0" y="0" z="0" />
-            <Min x="-2.5" y="-2.5" z="-2.5" />
-            <Max x="2.5" y="2.5" z="2.5" />
-        </AABBComponent>
-        <EntityComponent>
-            <Tag value="TargetPoint" />
-            <Name value="TargetPoint" />
-            <Child size="0" />
-            <Parent size="0" />
-            <IsAChild value="false" />
-        </EntityComponent>
-        <MaterialComponent>
-            <Modeltype value="Models3D" />
-            <ambient x="0" y="0" z="0" />
-            <diffuse x="1" y="1" z="1" />
-            <specular x="1" y="1" z="1" />
-            <NoTextures value="true" />
-            <shininess value="0.25" />
-            <MaximumShininess value="128" />
-            <ComboIndex value="1" />
-            <TextureComboIndex value="0" />
-            <Type value="TT_UNASSIGNED" />
-            <hasTexture value="false" />
-            <TextureRef value="Default" />
-            <TextureKey value="Sketchfab_model2" />
-            <HoldingTextures size="2">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/dog2" Handle="8" />
-                <Member1 Type="6" Directory="..//Eclipse//src/Assets/Models/dog2" Handle="9" />
-            </HoldingTextures>
-        </MaterialComponent>
-        <MeshComponent>
-            <MeshName value="Sketchfab_model2" />
-            <color x="1" y="1" z="1" />
-            <textureIdx x="0" y="0" />
-            <isQuad value="false" />
-            <modelNDC_xform Col="4" Row="4">
-                <Col0 _00="0" _01="0" _02="0" _03="0" />
-                <Col1 _10="0" _11="0" _12="0" _13="0" />
-                <Col2 _20="0" _21="0" _22="0" _23="0" />
-                <Col3 _30="0" _31="0" _32="0" _33="0" />
-            </modelNDC_xform>
-            <modelRef value="Cube" />
-            <shaderRef value="shader3DShdrpgm" />
-            <transparency value="1" />
-            <ENV_MAP value="false" />
-            <ENV_TYPE value="MT_REFLECT" />
-        </MeshComponent>
-        <ModelComponent>
-            <NameOfModel value="" />
-            <Directory value="" />
-            <type value="MT_UNASSIGNED" />
-            <ComboIndex value="0" />
-        </ModelComponent>
-        <TransformComponent>
-            <position x="0" y="0" z="0" />
-            <rotation x="0" y="0" z="0" />
-            <scale x="5" y="5" z="5" />
-        </TransformComponent>
-    </Entity_2>
 </Entities>

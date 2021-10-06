@@ -94,7 +94,7 @@ namespace Eclipse
 
         glBindVertexArray(0);
 
-        EDITOR_LOG_INFO("CubeMap : Environment Created");
+        EDITOR_LOG_INFO("CubeMap: Environment created.");
     }
 
     void CubeMap::Render(Shader& shader)

@@ -331,11 +331,12 @@ namespace Eclipse
 		return false;
 	}
 
-	bool ECGui::DrawSliderFloat3Widget(const char* name, ECVec3* vector, bool hideName, float minrange, float maxrange)
+	bool ECGui::DrawSliderFloat3Widget(const char* name, ECVec3* vector, bool hideName, float minrange, float maxrange,
+		Entity ID)
 	{
 		if (ImGuiAPI::SliderFloat3(name, (float*)vector, hideName, minrange, maxrange))
 		{
-			CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ *vector, *vector });
+			CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ *vector, *vector, ID});
 			return true;
 		}
 		else if (ImGui::IsItemDeactivatedAfterChange())

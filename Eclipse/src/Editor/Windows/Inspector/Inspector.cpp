@@ -113,13 +113,13 @@ namespace Eclipse
                 auto& transCom = engine->world.GetComponent<TransformComponent>(ID);
 
                 ECGui::DrawTextWidget<const char*>("Position", EMPTY_STRING);
-                ECGui::DrawSliderFloat3Widget("TransVec", &transCom.position, true, -50.f, 50.f);
+                ECGui::DrawSliderFloat3Widget("TransVec", &transCom.position, true, -100.f, 100.f, ID);
 
                 ECGui::DrawTextWidget<const char*>("Rotation", EMPTY_STRING);
-                ECGui::DrawSliderFloat3Widget("TransRot", &transCom.rotation, true, -360.f, 360.f);
+                ECGui::DrawSliderFloat3Widget("TransRot", &transCom.rotation, true, -360.f, 360.f, ID);
 
                 ECGui::DrawTextWidget<const char*>("Scale", EMPTY_STRING);
-                ECGui::DrawSliderFloat3Widget("TransScale", &transCom.scale);
+                ECGui::DrawSliderFloat3Widget("TransScale", &transCom.scale, true, -100.f, 100.f, ID);
 
                 //Update for DynamicAABB Tree -Rachel
                 engine->gPicker.UpdateAabb(ID);
@@ -1250,23 +1250,27 @@ namespace Eclipse
     template <typename TComponents>
     void InspectorWindow::RemoveComponentsFeedback(const char* Components, const std::string& name, Entity ID, bool exist)
     {
-        if (exist)
+        if (!strcmp(Components, "TransformComponent") || !strcmp(Components, "EntityComponent"))
         {
-            std::string Comp = my_strcat(std::string{ Components }, " Removed For ", name, ID, " Remove Succeed");
+            EDITOR_LOG_WARN("Cannot remove this compulsory component for an Entity.");
+        }
+        else if (!exist)
+        {
+            std::string Comp = my_strcat(Components, " does not exists in ", name, ". Remove component failed.");
+            EDITOR_LOG_WARN(Comp.c_str());
+        }
+        else
+        {
+            std::string Comp = my_strcat(Components, " removed for ", name, ". Remove component succeeded.");
             EDITOR_LOG_INFO(Comp.c_str());
             engine->world.DestroyComponent<TComponents>(ID);
 
             //Remove data from DynamicAABBTree if AABBComponent is deleted - Rachel
-            if (std::string{ Components }.compare("AABBComponent") == 0)
+            if (!strcmp(Components, "AABBComponent"))
             {
                 engine->gDynamicAABBTree.RemoveData(ID);
                 engine->gCullingManager->Remove(ID);
             }
-        }
-        else
-        {
-            std::string Comp = my_strcat(std::string{ Components }, " Does Not Exists in ", name, ID, " Remove Failed");
-            EDITOR_LOG_WARN(Comp.c_str());
         }
     }
 }
