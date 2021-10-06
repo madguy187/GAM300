@@ -181,9 +181,17 @@ typename Graphics::shaderIt Graphics::FindShaders(std::string name)
 
 Texture Eclipse::Graphics::FindTextures(std::string in)
 {
-    for (auto itr = textures.find(in); itr != textures.end(); itr++)
+    std::pair<MMAPIterator, MMAPIterator> result = Graphics::textures.equal_range(in);
+
+    if (textures.find(in) == textures.end())
     {
-        return itr->second;
+        ENGINE_LOG_ASSERT(false, "texture cannot be found.");
+        return textures.begin()->second;
+    }
+    else
+    {
+        MMAPIterator it = result.first;
+        return it->second;
     }
 }
 
