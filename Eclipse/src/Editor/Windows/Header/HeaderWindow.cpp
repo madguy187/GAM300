@@ -38,7 +38,7 @@ namespace Eclipse
 			{
 				engine->szManager.SaveBackupFile();
 				engine->mono.StartMono();
-				auto& mono = engine->world.GetSystem<MonoSystem>();
+				std::shared_ptr<MonoSystem>& mono = engine->world.GetSystem<MonoSystem>();
 				mono->Init();
 
 				engine->SetPlayState(true);
@@ -50,7 +50,7 @@ namespace Eclipse
 		{
 			if (ECGui::ButtonBool("Stop " ICON_FA_STOP))
 			{
-				auto& mono = engine->world.GetSystem<MonoSystem>();
+				std::shared_ptr<MonoSystem>& mono = engine->world.GetSystem<MonoSystem>();
 				mono->Terminate();
 				engine->mono.StopMono();
 

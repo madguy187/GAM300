@@ -253,7 +253,7 @@ namespace Eclipse
 		auto* sv4 = dynamic_cast<RightSwitchViewWindow*>(Windows_[11].get());
 
 		if (scene->GetIsWindowActive() || sv1->GetIsWindowActive() || sv2->GetIsWindowActive()
-			|| sv3->GetIsWindowActive())
+			|| sv3->GetIsWindowActive() || sv4->GetIsWindowActive())
 		{
 			return true;
 		}

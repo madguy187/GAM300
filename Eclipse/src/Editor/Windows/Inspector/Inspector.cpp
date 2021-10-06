@@ -738,7 +738,7 @@ namespace Eclipse
         return false;
     }
 
-    bool InspectorWindow::ShowPrefebProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+    bool InspectorWindow::ShowPrefebProperty(Entity ID)
     {
         if (engine->world.CheckComponent<PrefabComponent>(ID))
         {
@@ -1033,7 +1033,7 @@ namespace Eclipse
         //use image button to change the Graphics::models.find["models"]->find;
         std::vector<std::string> textureNames;
         textureNames.reserve(Graphics::textures.size());
-        MaterialComponent icon = FolderIcon;
+        MaterialComponent icon;
         static float padding = 16.0f;
         static float thumbnaimsize = 50;
         float cellsize = thumbnaimsize + padding;
@@ -1059,7 +1059,7 @@ namespace Eclipse
         {
 
             FolderIcon.TextureRef = Graphics::textures.find(textureNames[i].c_str())->first;
-            MaterialComponent icon = FolderIcon;
+            icon = FolderIcon;
 
             if (AddComponentFilter.PassFilter(textureNames[i].c_str()))
             {

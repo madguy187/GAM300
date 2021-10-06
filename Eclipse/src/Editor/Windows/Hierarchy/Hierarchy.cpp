@@ -203,6 +203,7 @@ namespace Eclipse
 
                     ECGui::EndTreeNode();
                 }
+                break;
             }
             default:
                 break;

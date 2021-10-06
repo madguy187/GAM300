@@ -224,9 +224,9 @@ namespace Eclipse
 		ECGui::InsertHorizontalLineSeperator();
 
 		//folders and items
-
+		std::string thisDir = CurrentDir.string();
 		ECGui::DrawChildWindow<void()>({ "Scrolling" }, std::bind(&AssetBrowserWindow::FoldersAndItems, this));
-		engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity", CurrentDir.string(), 
+		engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity", thisDir,
 			"Prefab generated", PayloadTargetType::PTT_ASSETS);
 	}
 
@@ -260,8 +260,6 @@ namespace Eclipse
 		static ImVec2 button_sz(thumbnailSize, thumbnailSize);
 
 		//ECGui::DragFloat2("size", (float*)&button_sz, 0.5f, 1.0f, 200.0f, "%.0f");
-
-		ImGuiStyle& style = ECGui::GetStyle();
 
 		if (!searchItemMode)
 		{
@@ -405,9 +403,9 @@ namespace Eclipse
 				}
 				else
 				{
-					std::string temp;
-					temp = GetFileName(relativePath.filename().string().c_str());
-					EDITOR_LOG_INFO(temp.c_str());
+					std::string temp1;
+					temp1 = GetFileName(relativePath.filename().string().c_str());
+					EDITOR_LOG_INFO(temp1.c_str());
 					//do stuff
 				}
 			}
@@ -440,13 +438,13 @@ namespace Eclipse
 		CurrentPath = CurrentPath.parent_path();
 	}
 
-	void AssetBrowserWindow::NextPath(std::filesystem::path& CurrentPath, std::filesystem::path paths)
+	void AssetBrowserWindow::NextPath(std::filesystem::path& CurrentPath, std::filesystem::path pathsofItem)
 	{
-		CurrentPath /= paths.filename();
+		CurrentPath /= pathsofItem.filename();
 
 		if (!exists(CurrentPath))
 		{
-			CurrentPath = paths;
+			CurrentPath = pathsofItem;
 		}
 	}
 
@@ -704,13 +702,13 @@ namespace Eclipse
 		}
 	}
 
-	void AssetBrowserWindow::MainSearchLogic(std::vector<std::string> subDirItemsPath)
+	void AssetBrowserWindow::MainSearchLogic(std::vector<std::string> subDirItemsPaths)
 	{
 
 		//path that can be used in the future to get the item
 		std::filesystem::path tempPath;
 
-		for (auto const& pair2 : subDirItemsPath)
+		for (auto const& pair2 : subDirItemsPaths)
 		{
 			tempPath = pair2;
 
@@ -757,7 +755,7 @@ namespace Eclipse
 
 		for (const auto& character : bufferString)
 		{
-			lowerCaseString += std::tolower(character);
+			lowerCaseString += std::to_string(std::tolower(character));
 		}
 
 		size_t lastdot = lowerCaseString.find_last_of(".");
