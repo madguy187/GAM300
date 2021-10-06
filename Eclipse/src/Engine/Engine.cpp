@@ -110,6 +110,9 @@ namespace Eclipse
         World test;
         world.CopyEntity(test, 0, all_component_list);
 
+        //World test;
+        //world.CopyEntity(test, 0, all_component_list);
+
         // Render System
         Signature RenderSys = RenderSystem::RegisterAll();
         world.RegisterSystemSignature<RenderSystem>(RenderSys);

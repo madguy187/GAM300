@@ -7,6 +7,8 @@
 
 //#include "Events/Events.h"
 
+#include "ECS/ComponentManager/ComponentList.h"
+
 namespace Eclipse
 {
 	class World

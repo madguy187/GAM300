@@ -1,6 +1,7 @@
 #pragma once
 #include "Reflection/Meta.h"
 #include "Reflection/RemTypeQual.h"
+#include "Library/Math/Vector.h"
 
 namespace Eclipse
 {

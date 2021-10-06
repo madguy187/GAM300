@@ -1,8 +1,9 @@
 #pragma once
+#include "ECS/ComponentManager/Components/ScriptComponent.h"
+#include "ECS/ComponentManager/Components/AabbComponent.h"
 
 namespace Eclipse
 {
-	struct AABBComponent;
 	struct CameraComponent;
 	struct DirectionalLightComponent;
 	struct EntityComponent;
@@ -12,9 +13,10 @@ namespace Eclipse
 	struct ModeLInforComponent;
 	struct PointLightComponent;
 	struct RigidBodyComponent;
-	struct ScriptComponent;
 	struct ParentComponent;
 	struct ChildComponent;
+	struct SpotLightComponent;
+	struct TransformComponent;
 
 	template<typename ...T>
 	struct TypeList
@@ -41,7 +43,9 @@ namespace Eclipse
 		RigidBodyComponent,
 		ScriptComponent,
 		ParentComponent,
-		ChildComponent
+		ChildComponent,
+		SpotLightComponent,
+		TransformComponent
 	>;
 
 	template <typename ...Types>

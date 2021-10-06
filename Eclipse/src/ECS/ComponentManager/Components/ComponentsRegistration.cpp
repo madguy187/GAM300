@@ -13,6 +13,7 @@
 #include "SpotLightComponent.h"
 #include "TextureComponent.h"
 #include "TransformComponent.h"
+#include "ScriptComponent.h"
 
 namespace Eclipse
 {
@@ -70,6 +71,11 @@ namespace Eclipse
         ADD_MEMBER(Tag);
         ADD_MEMBER(Name);
         ADD_MEMBER(IsActive);
+    }
+
+    DEFINE_META(ScriptComponent)
+    {
+        ADD_MEMBER(scriptList);
     }
 
     DEFINE_META(MaterialComponent)
