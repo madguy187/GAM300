@@ -21,7 +21,7 @@ namespace Eclipse
 	public:
 		__forceinline unsigned GetSize() const { return _size; }
 
-		const T NOT_FOUND = -1;
+		const T NOT_FOUND = static_cast<T>(-1);
 
 		T Search(T index)
 		{
