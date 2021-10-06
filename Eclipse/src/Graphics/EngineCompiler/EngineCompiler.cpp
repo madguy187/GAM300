@@ -14,7 +14,7 @@ namespace Eclipse
 
         if (FileIn.fail())
         {
-            EDITOR_LOG_WARN(("FAIL TO OPEN " + Path).c_str());
+            EDITOR_LOG_WARN(("Failed to open " + Path).c_str());
             return false;
         }
 
@@ -27,7 +27,7 @@ namespace Eclipse
 
         if (ContainerSize != 0)
         {
-            EDITOR_LOG_INFO((FileName + " FILE CONSUMED BY ENGINE").c_str());
+            EDITOR_LOG_INFO((FileName + " file read and loaded into Engine.").c_str());
 
             if (FileName == AllNames[0])
             {
@@ -214,7 +214,7 @@ namespace Eclipse
     void EngineCompiler::RunCompiler()
     {
         system("Compiler.exe");
-        EDITOR_LOG_INFO("FINISH EXECUTING COMPILER");
+        EDITOR_LOG_INFO("Compiler Execution finished.");
     }
 
     bool EngineCompiler::IsGeometryCompiled()
@@ -255,34 +255,34 @@ namespace Eclipse
 
         if (AreAllCompiled() == true)
         {
-            EDITOR_LOG_INFO("ALL COMPILERS LOADED , YOU CAN CREATE MODELS AND TEXTURES");
+            EDITOR_LOG_INFO("All compilers loaded, able to generate Models and Textures.");
         }
         else
         {
             if (IsGeometryCompiled() == true && IsPrefabsCompiled() == true)
             {
-                EDITOR_LOG_INFO("GEOMETRY COMPILERS LOADED , YOU CAN CREATE MODELS");
+                EDITOR_LOG_INFO("Geometry compilers loaded, able to generate Models.");
             }
             else
             {
                 if (IsGeometryCompiled() == false)
                 {
-                    EDITOR_LOG_WARN("GEOMETRY FAILED TO COMPILE,CANNOT CREATE MODELS");
+                    EDITOR_LOG_WARN("Geometry failed to compile, unable to generate models.");
                 }
 
                 if (IsPrefabsCompiled() == false)
                 {
-                    EDITOR_LOG_WARN("PREFABS FAILED TO COMPILE,CANNOT CREATE MODELS");
+                    EDITOR_LOG_WARN("Prefabs failed to compile, unable to generate models.");
                 }
 
                 if (IsModelTexturesCompiled() == false)
                 {
-                    EDITOR_LOG_WARN("MODELTEXTURES FAILED TO COMPILE,CANNOT CREATE TEXTURES FOR MODELS");
+                    EDITOR_LOG_WARN("Model Textures failed to compile, unable to generate Textures for Models.");
                 }
 
                 if (IsBasicTexturesCompiled() == false)
                 {
-                    EDITOR_LOG_WARN("BASICTEXTURES FAILED TO COMPILE,CANNOT CREATE BASIC TEXTURES");
+                    EDITOR_LOG_WARN("Basic Textures failed to compile, unable to generate Basic Textures.");
                 }
             }
         }
@@ -307,22 +307,22 @@ namespace Eclipse
 
         if (IsGeometryCompiled() == false)
         {
-            EDITOR_LOG_WARN("GEOMETRY FILE NOT LOADED , YOU CANNOT CREATE MODELS");
+            EDITOR_LOG_WARN("Geometry failed to load, unable to generate models.");
         }
 
         if (IsPrefabsCompiled() == false)
         {
-            EDITOR_LOG_WARN("PREFABS FILE NOT LOADED , YOU CANNOT CREATE MODELS");
+            EDITOR_LOG_WARN("Prefabs failed to load, unable to generate models.");
         }
 
         if (IsModelTexturesCompiled() == false)
         {
-            EDITOR_LOG_WARN("MODEL TEXTURES NOT LOADED");
+            EDITOR_LOG_WARN("Model Textures failed to load.");
         }
 
         if (IsBasicTexturesCompiled() == false)
         {
-            EDITOR_LOG_WARN("BASIC TEXTURES NOT LOADED");
+            EDITOR_LOG_WARN("Basic Textures failed to load.");
         }
     }
 
@@ -338,12 +338,12 @@ namespace Eclipse
 
         if (IsModelTexturesCompiled() == false)
         {
-            EDITOR_LOG_WARN("MODEL TEXTURES NOT LOADED");
+            EDITOR_LOG_WARN("Model Textures failed to load.");
         }
 
         if (IsBasicTexturesCompiled() == false)
         {
-            EDITOR_LOG_WARN("BASIC TEXTURES NOT LOADED");
+            EDITOR_LOG_WARN("Basic Textures failed to load.");
         }
     }
 

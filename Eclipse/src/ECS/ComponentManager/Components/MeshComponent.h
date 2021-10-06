@@ -22,8 +22,8 @@ namespace Eclipse
         ECVec2 textureIdx{ 0.0, 0.0 };
         bool isQuad = false;
         glm::mat4 modelNDC_xform{ 0 };
-        std::string modelRef;
-        std::string shaderRef;
+        std::string modelRef{ "Cube" };
+        std::string shaderRef{ "shader3DShdrpgm" };
         float transparency{ 1.0f };
 
         enum class MapType

@@ -251,7 +251,7 @@ namespace Eclipse
 		static bool DrawSliderFloat2Widget(const char* name, ECVec2* vector,
 			bool hideName = true, float minrange = 0.0f, float maxrange = 50.0f);
 		static bool DrawSliderFloat3Widget(const char* name, ECVec3* vector,
-			bool hideName = true, float minrange = 0.0f, float maxrange = 50.0f);
+			bool hideName = true, float minrange = 0.0f, float maxrange = 50.0f, Entity ID = MAX_ENTITY);
 		static bool DrawSliderFloat4Widget(const char* name, ECVec4* vector,
 			bool hideName = true, float minrange = 0.0f, float maxrange = 50.0f);
 
@@ -263,7 +263,7 @@ namespace Eclipse
 		static bool DrawInputFloat2Widget(const char* name, ECVec2* vector,
 			bool hideName = true);
 		static bool DrawInputFloat3Widget(const char* name, ECVec3* vector,
-			bool hideName = true);
+			bool hideName = true, Entity ID = MAX_ENTITY);
 		static bool DrawInputFloat4Widget(const char* name, ECVec4* vector,
 			bool hideName = true);
 		static bool DrawInputTextHintWidget(const char* name, const char* hintText,
