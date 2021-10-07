@@ -26,15 +26,23 @@ namespace Eclipse
 					if (currEnt != engine->gCamera.GetEditorCameraID() &&
 						currEnt != engine->gCamera.GetGameCameraID())
 					{
-						engine->editorManager->DestroyEntity(currEnt);
-						engine->gCullingManager->Remove(currEnt);
-
 						//Remove function for DynamicAABBTree. -Rachel
 						engine->gDynamicAABBTree.RemoveData(currEnt);
+						engine->gCullingManager->Remove(currEnt);
+
+						engine->editorManager->DestroyEntity(currEnt);
+
 						engine->gPhysics.RemoveActor(currEnt);
 
+						std::cout << "Before Collision ID: " << engine->gPicker.GetCurrentCollisionID() << std::endl;
+						std::cout << "Editor selected entity (BEFORE): " << engine->editorManager->GetSelectedEntity() << std::endl;
+
 						//Please check this! Resets the selected object's ID to MAX_ENTITY. - Rachel
-						engine->gPicker.SetCurrentCollisionID(MAX_ENTITY);
+						engine->gPicker.SetCurrentCollisionID(engine->editorManager->GetSelectedEntity());
+
+						std::cout << "Editor selected entity (AFTER): " << engine->editorManager->GetSelectedEntity() << std::endl;
+
+						std::cout << "After Collision ID: " << engine->gPicker.GetCurrentCollisionID() << std::endl;
 					}
 				}
 			}

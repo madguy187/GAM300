@@ -168,6 +168,12 @@ namespace Eclipse
 
 	void DynamicAABBTree::RemoveData(unsigned int ID)
 	{
+		if (!engine->world.CheckComponent<AABBComponent>(ID))
+		{
+			std::cout << "FK THIS SHIT" << std::endl;
+			return;
+		}
+
 		Node* removeNode = FindNode(ID);
 		Node* parent = removeNode->mParent;
 
@@ -218,18 +224,20 @@ namespace Eclipse
 		}
 
 		delete removeNode;
+
+		std::cout << "ERASING THE DAMN NODE" << std::endl;
 		TreeNodes.erase(ID);
 	}
 
 	void DynamicAABBTree::InsertData(unsigned int ID)
 	{
 		auto& AABB = engine->world.GetComponent<AABBComponent>(ID);
-		
+
 		glm::vec3 halfExt = (AABB.Max.ConvertToGlmVec3Type() - AABB.Min.ConvertToGlmVec3Type()) * 0.5f;
 		halfExt *= DynamicAABBTree::mFatteningFactor;
-		
+
 		Aabb newAabb = Aabb::BuildFromCenterAndHalfExtents(AABB.center.ConvertToGlmVec3Type(), halfExt);
-		
+
 		Node* newData = new Node;
 		newData->ID = ID;
 		newData->mAabb = newAabb;
@@ -282,23 +290,40 @@ namespace Eclipse
 	{
 		static unsigned int nodeID = MAX_ENTITY;
 
+		if (nodeID != engine->gPicker.GetCurrentCollisionID())
+		{
+			nodeID = engine->gPicker.GetCurrentCollisionID();
+		}
+
+		std::cout << "Inside RayCast (START): " << nodeID << std::endl;
+
 		if (!node)
 		{
+			std::cout << "NODE DOES NOT FKING EXIST" << std::endl;
 			return MAX_ENTITY;
 		}
-		
+
 		float time;
 		bool checkIntersect = engine->gPicker.RayAabb(rayStart, rayDir, node->mAabb.mMin, node->mAabb.mMax, time);
 
 		if (!checkIntersect)
 		{
+			std::cout << "NO FKING COLLISION" << std::endl;
 			return nodeID;
 		}
 		else
 		{
 			if ((node->ID != COMBINE_NODE) && time < tMin)
 			{
+				std::cout << "UPDATING THE FKING NODEID: " << node->ID << std::endl;
 				nodeID = node->ID;
+
+				if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
+				{
+					engine->MaterialManager.UnHighlight(engine->gPicker.GetCurrentCollisionID());
+				}
+
+				engine->gPicker.SetCurrentCollisionID(node->ID);
 				tMin = time;
 			}
 
@@ -309,10 +334,12 @@ namespace Eclipse
 			}
 			else
 			{
+				std::cout << "RETURNING THE DAMN NODEID: " << nodeID << std::endl;
 				return nodeID;
 			}
 		}
 
+		std::cout << "ANOTHER RETURN FOR THE DAMN NODEID " << std::endl;
 		return nodeID;
 	}
 
