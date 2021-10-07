@@ -168,6 +168,11 @@ namespace Eclipse
 
 	void DynamicAABBTree::RemoveData(unsigned int ID)
 	{
+		if (!engine->world.CheckComponent<AABBComponent>(ID))
+		{
+			return;
+		}
+
 		Node* removeNode = FindNode(ID);
 		Node* parent = removeNode->mParent;
 

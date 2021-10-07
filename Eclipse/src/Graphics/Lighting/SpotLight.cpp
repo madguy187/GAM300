@@ -149,6 +149,11 @@ namespace Eclipse
 			GLCall(glUniform1i(useBlinn_, in_spot.EnableBlinnPhong));
 		}
 	}
+
+	void SpotLight::Destroy()
+	{
+		--SpotLightCounter;
+	}
 }
 
 namespace Eclipse

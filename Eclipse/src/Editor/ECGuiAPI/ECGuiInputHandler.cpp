@@ -26,6 +26,9 @@ namespace Eclipse
 					if (currEnt != engine->gCamera.GetEditorCameraID() &&
 						currEnt != engine->gCamera.GetGameCameraID())
 					{
+						// Destroy Lights will update Counter ~ Shaders are not using entity ID to loop
+						engine->LightManager.DestroyLight(currEnt);
+
 						engine->editorManager->DestroyEntity(currEnt);
 						engine->gCullingManager->Remove(currEnt);
 

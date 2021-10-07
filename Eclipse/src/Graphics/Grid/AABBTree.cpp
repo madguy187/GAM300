@@ -472,7 +472,7 @@ namespace Eclipse
         const AABBNode& parentNode = AllNodes[parentNodeIndex];
         unsigned grandParentNodeIndex = parentNode.parentNodeIndex;
         unsigned siblingNodeIndex = parentNode.leftNodeIndex == leafNodeIndex ? parentNode.rightNodeIndex : parentNode.leftNodeIndex;
-        assert(siblingNodeIndex != AABB_NULL_NODE); // we must have a sibling
+            assert(siblingNodeIndex != AABB_NULL_NODE); // we must have a sibling
         AABBNode& siblingNode = AllNodes[siblingNodeIndex];
 
         if (grandParentNodeIndex != AABB_NULL_NODE)

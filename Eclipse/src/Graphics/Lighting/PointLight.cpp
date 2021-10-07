@@ -23,7 +23,7 @@ namespace Eclipse
 	void PointLight::CheckUniformLoc(Shader* _shdrpgm, PointLightComponent& in_pointlight, int index, unsigned int containersize, unsigned int EntityId)
 	{
 		GLint uniform_var_loc8 = _shdrpgm->GetLocation("uModelToNDC");
-		GLint uniform_var_loc9 = _shdrpgm->GetLocation("NumberOfPointLights");
+		//GLint uniform_var_loc9 = _shdrpgm->GetLocation("NumberOfPointLights");
 		GLuint uniform_var_loc10 = _shdrpgm->GetLocation("model");
 
 		// SpotLight Position
@@ -90,7 +90,7 @@ namespace Eclipse
 			GLCall(glUniform1i(uniform_var_loc11, in_pointlight.hasTexture));
 
 			// Number Of PointLights
-			GLCall(glUniform1i(uniform_var_loc9, containersize));
+			//GLCall(glUniform1i(uniform_var_loc9, containersize));
 
 			// Light Color
 			GLCall(glUniform3f(uniform_var_loc12, in_pointlight.lightColor.getX(), in_pointlight.lightColor.getY(), in_pointlight.lightColor.getZ()));
@@ -133,6 +133,11 @@ namespace Eclipse
 
 		glBindVertexArray(0);
 		shdrpgm.UnUse();
+	}
+
+	void PointLight::Destroy()
+	{
+		--PointLightCounter;
 	}
 
 	unsigned int PointLight::GetNumberOfPointLights()
