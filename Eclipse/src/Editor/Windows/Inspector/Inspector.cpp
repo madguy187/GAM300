@@ -1242,7 +1242,7 @@ namespace Eclipse
         }
         else
         {
-            std::string Comp = my_strcat(Components, " already exists in ", name ". Add component failed.");
+            std::string Comp = my_strcat(Components, " already exists in ", name, ". Add component failed.");
             EDITOR_LOG_WARN(Comp.c_str());
         }
     }
