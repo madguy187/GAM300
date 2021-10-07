@@ -152,16 +152,16 @@ namespace Eclipse
                         if (engine->editorManager->GetEditorWindow<LeftSwitchViewWindow>()->IsVisible)
                         {
                             engine->MaterialManager.DoNotUpdateStencil();
-                            engine->AssimpManager.MeshDraw(Mesh, entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_RIGHT), engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_RIGHT),
-                                &box, CameraComponent::CameraType::RightView_camera);
+                            engine->AssimpManager.MeshDraw(Mesh, entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_LEFT), engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_LEFT),
+                                &box, CameraComponent::CameraType::LeftView_Camera);
                         }
 
                         // Right ViewPort
                         if (engine->editorManager->GetEditorWindow<RightSwitchViewWindow>()->IsVisible)
                         {
                             engine->MaterialManager.DoNotUpdateStencil();
-                            engine->AssimpManager.MeshDraw(Mesh, entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_LEFT), engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_LEFT),
-                                &box, CameraComponent::CameraType::LeftView_Camera);
+                            engine->AssimpManager.MeshDraw(Mesh, entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_RIGHT), engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_RIGHT),
+                                &box, CameraComponent::CameraType::RightView_camera);
                         }
 
                         engine->MaterialManager.Highlight3DModels(entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE));
