@@ -22,6 +22,8 @@ namespace Eclipse
 
 	void PointLight::CheckUniformLoc(Shader* _shdrpgm, PointLightComponent& in_pointlight, int index, unsigned int containersize, unsigned int EntityId)
 	{
+		(void)containersize;
+
 		GLint uniform_var_loc8 = _shdrpgm->GetLocation("uModelToNDC");
 		//GLint uniform_var_loc9 = _shdrpgm->GetLocation("NumberOfPointLights");
 		GLuint uniform_var_loc10 = _shdrpgm->GetLocation("model");
