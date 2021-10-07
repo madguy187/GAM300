@@ -205,8 +205,8 @@ namespace Eclipse
         world.RegisterSystemSignature<AISystem>(AIsig);
 
         //Check this! - Rachel
-        RenderSystem::Init();
         CameraSystem::Init();
+        RenderSystem::Init();
         gPhysics.Init();
         audioManager.Init();
 

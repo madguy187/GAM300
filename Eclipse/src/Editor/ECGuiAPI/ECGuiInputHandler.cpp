@@ -34,15 +34,8 @@ namespace Eclipse
 
 						engine->gPhysics.RemoveActor(currEnt);
 
-						std::cout << "Before Collision ID: " << engine->gPicker.GetCurrentCollisionID() << std::endl;
-						std::cout << "Editor selected entity (BEFORE): " << engine->editorManager->GetSelectedEntity() << std::endl;
-
-						//Please check this! Resets the selected object's ID to MAX_ENTITY. - Rachel
+						//Please check this! Resets the selected object's ID to the editor's selected entity. - Rachel
 						engine->gPicker.SetCurrentCollisionID(engine->editorManager->GetSelectedEntity());
-
-						std::cout << "Editor selected entity (AFTER): " << engine->editorManager->GetSelectedEntity() << std::endl;
-
-						std::cout << "After Collision ID: " << engine->gPicker.GetCurrentCollisionID() << std::endl;
 					}
 				}
 			}

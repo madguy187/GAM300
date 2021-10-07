@@ -169,8 +169,11 @@ namespace Eclipse
         }
         else
         {
-            _camera.projMtx = glm::perspective(glm::radians(_camera.fov),
-                _camera.aspect, _camera.nearPlane, _camera.farPlane);
+            if ((OpenGL_Context::GetWidth() != 0) && (OpenGL_Context::GetHeight() != 0))
+            {
+                _camera.projMtx = glm::perspective(glm::radians(_camera.fov),
+                    _camera.aspect, _camera.nearPlane, _camera.farPlane);
+            }
         }
 
     }

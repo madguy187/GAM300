@@ -18,8 +18,6 @@ void Eclipse::PickingSystem::EditorUpdate()
 	auto& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 	float tMin = (std::numeric_limits<float>::max)();
 
-	std::cout << "RayCast (BEFORE) : " << engine->gPicker.GetCurrentCollisionID() << std::endl;
-
 	glm::vec3 rayDir = engine->gPicker.ComputeCursorRayDirection();
 	unsigned int collisionID = engine->gDynamicAABBTree.RayCast(engine->gDynamicAABBTree.GetTreeRoot(), camera.eyePos, rayDir, tMin);
 

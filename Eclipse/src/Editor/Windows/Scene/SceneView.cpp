@@ -200,17 +200,10 @@ namespace Eclipse
 	{
 		if (ECGui::IsMouseClicked(0))
 		{
-			std::cout << "Mouse Click CollisionID (START): " << engine->gPicker.GetCurrentCollisionID() << std::endl;
-
 			engine->world.GetSystem<PickingSystem>()->EditorUpdate();
-
-			std::cout << "Mouse click after Raycast: " << engine->gPicker.GetCurrentCollisionID() << std::endl;
 
 			if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
 				engine->editorManager->SetSelectedEntity(engine->gPicker.GetCurrentCollisionID());
-
-			std::cout << "Mouse Click CollisionID (END): " << engine->gPicker.GetCurrentCollisionID() << std::endl;
-			std::cout << std::endl;
 		}
 	}
 

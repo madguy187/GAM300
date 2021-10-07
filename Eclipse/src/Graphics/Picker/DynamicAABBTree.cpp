@@ -170,7 +170,6 @@ namespace Eclipse
 	{
 		if (!engine->world.CheckComponent<AABBComponent>(ID))
 		{
-			std::cout << "FK THIS SHIT" << std::endl;
 			return;
 		}
 
@@ -225,7 +224,6 @@ namespace Eclipse
 
 		delete removeNode;
 
-		std::cout << "ERASING THE DAMN NODE" << std::endl;
 		TreeNodes.erase(ID);
 	}
 
@@ -295,11 +293,8 @@ namespace Eclipse
 			nodeID = engine->gPicker.GetCurrentCollisionID();
 		}
 
-		std::cout << "Inside RayCast (START): " << nodeID << std::endl;
-
 		if (!node)
 		{
-			std::cout << "NODE DOES NOT FKING EXIST" << std::endl;
 			return MAX_ENTITY;
 		}
 
@@ -308,14 +303,12 @@ namespace Eclipse
 
 		if (!checkIntersect)
 		{
-			std::cout << "NO FKING COLLISION" << std::endl;
 			return nodeID;
 		}
 		else
 		{
 			if ((node->ID != COMBINE_NODE) && time < tMin)
 			{
-				std::cout << "UPDATING THE FKING NODEID: " << node->ID << std::endl;
 				nodeID = node->ID;
 
 				if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
@@ -334,12 +327,10 @@ namespace Eclipse
 			}
 			else
 			{
-				std::cout << "RETURNING THE DAMN NODEID: " << nodeID << std::endl;
 				return nodeID;
 			}
 		}
 
-		std::cout << "ANOTHER RETURN FOR THE DAMN NODEID " << std::endl;
 		return nodeID;
 	}
 
