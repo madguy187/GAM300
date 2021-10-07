@@ -237,3 +237,67 @@ project "Eclipse"
 		defines "ENGINE_DIST"
 		optimize "On"
 	
+
+    workspace "Eclipse"
+    architecture "x64"
+    startproject "Eclipse"
+  
+    configurations
+    {
+      "Debug",
+      "Release",
+      "Dist"
+    }
+  
+  outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+  
+project "Compiler"
+  location "Compiler"
+  kind "ConsoleApp"
+  language "C++"
+  cppdialect "C++17"
+  warnings "Extra"
+
+  targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+  objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+  pchheader "pch.h"
+  pchsource "%{prj.name}/src/pch.cpp"
+
+  files
+  {
+    "%{prj.name}/**.h",
+    "%{prj.name}/**.cpp",
+    "%{prj.name}/**.hpp",
+  }
+
+  includedirs
+  {
+
+  }
+  
+
+  filter "system:windows"
+    cppdialect "C++17"
+    staticruntime "On"
+    systemversion "latest"
+
+    libdirs
+    {
+      "Compiler"
+    }
+
+    links
+    {
+      "assimp-vc142-mtd.dll"
+    }
+
+  filter "configurations:Debug"
+    defines "ENGINE_DEBUG"
+    symbols "On"
+    editAndContinue "Off"
+
+  filter "configurations:Release"
+    defines "ENGINE_RELEASE"
+    optimize "On"
+    
