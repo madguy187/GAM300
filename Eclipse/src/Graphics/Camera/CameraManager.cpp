@@ -161,15 +161,17 @@ namespace Eclipse
             _camera.aspect = static_cast<float>((OpenGL_Context::GetWindowRatioX() * OpenGL_Context::GetWidth()) /
                 (OpenGL_Context::GetWindowRatioY() * OpenGL_Context::GetHeight()));
 
-            if (_camera.projType == CameraComponent::ProjectionType::Orthographic)
-            {
-                _camera.projMtx = glm::ortho(static_cast<float>(-(OpenGL_Context::GetWidth()) * _camera.aspect) / transform.scale.x,
-                    static_cast<float>((OpenGL_Context::GetWidth()) * _camera.aspect) / transform.scale.x,
-                    static_cast<float>(-(OpenGL_Context::GetHeight()) * _camera.aspect) / transform.scale.x,
-                    static_cast<float>((OpenGL_Context::GetHeight()) * _camera.aspect) / transform.scale.x,
-                    editorCam.nearPlane, editorCam.farPlane);
-            }
-            else
+        if (_camera.projType == CameraComponent::ProjectionType::Orthographic)
+        {
+            _camera.projMtx = glm::ortho(static_cast<float>(-(OpenGL_Context::GetWidth()) * _camera.aspect) / transform.scale.x,
+                static_cast<float>((OpenGL_Context::GetWidth()) * _camera.aspect) / transform.scale.x,
+                static_cast<float>(-(OpenGL_Context::GetHeight()) * _camera.aspect) / transform.scale.x,
+                static_cast<float>((OpenGL_Context::GetHeight()) * _camera.aspect) / transform.scale.x,
+                editorCam.nearPlane, editorCam.farPlane);
+        }
+        else
+        {
+            if ((OpenGL_Context::GetWidth() != 0) && (OpenGL_Context::GetHeight() != 0))
             {
                 _camera.projMtx = glm::perspective(glm::radians(_camera.fov),
                     _camera.aspect, _camera.nearPlane, _camera.farPlane);

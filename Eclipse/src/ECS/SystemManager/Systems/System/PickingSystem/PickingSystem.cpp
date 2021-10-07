@@ -28,10 +28,10 @@ void Eclipse::PickingSystem::EditorUpdate()
 		{
 			engine->MaterialManager.UnHighlight(engine->gPicker.GetCurrentCollisionID());
 		}
-	
+
 		engine->gPicker.SetCurrentCollisionID(collisionID);
 		engine->MaterialManager.HighlightClick(collisionID);
-	
+
 		//engine->gPicker.UpdateAabb(collisionID);
 		//engine->gDynamicAABBTree.UpdateData(collisionID);
 	}

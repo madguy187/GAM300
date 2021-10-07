@@ -13,7 +13,7 @@ namespace Eclipse
 
 	void SceneWindow::Init()
 	{
-		mViewportSize = glm::vec2{}; 
+		mViewportSize = glm::vec2{};
 		mSceneBufferSize = glm::vec2{};
 		Type = EditorWindowType::EWT_SCENE;
 		WindowName = "Scene View";
@@ -28,7 +28,7 @@ namespace Eclipse
 	{
 		ImVec2 viewportPanelSize = ECGui::GetWindowSize();
 		//std::cout << "Scene View: " << ImGui::GetWindowDockID() << std::endl;
-		if (mViewportSize.getX() != viewportPanelSize.x || 
+		if (mViewportSize.getX() != viewportPanelSize.x ||
 			mViewportSize.getY() != viewportPanelSize.y)
 		{
 			// Resize the framebuffer based on the size of the imgui window
@@ -61,7 +61,7 @@ namespace Eclipse
 		{
 			OnGizmoUpdateEvent();
 		}
-		
+
 		if (ECGui::IsItemHovered())
 		{
 			// Do all the future stuff here when hovering on window

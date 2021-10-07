@@ -223,18 +223,19 @@ namespace Eclipse
 		}
 
 		delete removeNode;
+
 		TreeNodes.erase(ID);
 	}
 
 	void DynamicAABBTree::InsertData(unsigned int ID)
 	{
 		auto& AABB = engine->world.GetComponent<AABBComponent>(ID);
-		
+
 		glm::vec3 halfExt = (AABB.Max.ConvertToGlmVec3Type() - AABB.Min.ConvertToGlmVec3Type()) * 0.5f;
 		halfExt *= DynamicAABBTree::mFatteningFactor;
-		
+
 		Aabb newAabb = Aabb::BuildFromCenterAndHalfExtents(AABB.center.ConvertToGlmVec3Type(), halfExt);
-		
+
 		Node* newData = new Node;
 		newData->ID = ID;
 		newData->mAabb = newAabb;
@@ -287,11 +288,16 @@ namespace Eclipse
 	{
 		static unsigned int nodeID = MAX_ENTITY;
 
+		if (nodeID != engine->gPicker.GetCurrentCollisionID())
+		{
+			nodeID = engine->gPicker.GetCurrentCollisionID();
+		}
+
 		if (!node)
 		{
 			return MAX_ENTITY;
 		}
-		
+
 		float time;
 		bool checkIntersect = engine->gPicker.RayAabb(rayStart, rayDir, node->mAabb.mMin, node->mAabb.mMax, time);
 
@@ -304,6 +310,13 @@ namespace Eclipse
 			if ((node->ID != COMBINE_NODE) && time < tMin)
 			{
 				nodeID = node->ID;
+
+				if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
+				{
+					engine->MaterialManager.UnHighlight(engine->gPicker.GetCurrentCollisionID());
+				}
+
+				engine->gPicker.SetCurrentCollisionID(node->ID);
 				tMin = time;
 			}
 
