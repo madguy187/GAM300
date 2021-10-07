@@ -65,6 +65,7 @@ enum class PxShapeType
     Px_SPHERE,
     Px_CUBE,
     Px_CYLINDER,
+    PX_PLANE
 };
 
 enum class EntityType

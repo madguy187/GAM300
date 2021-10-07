@@ -97,14 +97,18 @@ namespace Eclipse
 		break;
 		case 4:
 		{
+			CollisionComponent tempcol;
+			tempcol.shape.shape = PxShapeType::Px_SPHERE;
 			engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
 			engine->world.AddComponent(ID, MeshComponent{});
+			engine->world.AddComponent(ID, tempcol);
 			MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
 			sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
 			sprite.modelRef = Graphics::models.find("Sphere")->first;
 			MaterialComponent& Mat = engine->world.GetComponent<MaterialComponent>(ID);
 			Mat.hasTexture = true;
 			Mat.TextureRef = Graphics::textures.find("brick")->first;
+
 		}
 		break;
 		case 5:
