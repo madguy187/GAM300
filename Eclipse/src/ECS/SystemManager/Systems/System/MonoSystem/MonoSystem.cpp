@@ -20,6 +20,7 @@ namespace Eclipse
 
 	void MonoSystem::Update()
 	{
+		ZoneScopedN("Mono System")
 		engine->Timer.SetName({ SystemName::MONO });
 		engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
@@ -35,6 +36,7 @@ namespace Eclipse
 
 		engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());
 		engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
+		FrameMark
 	}
 
 	void MonoSystem::Terminate()

@@ -12,8 +12,12 @@ namespace Eclipse
 	{
 		for (auto& member : MenuComponents_)
 		{
-			ECGui::DrawMenuComponent<void()>(member.GetName(),
-											 [&]() { member.Update(); });
+			if (!strcmp(member.GetName(), "About Eclipse"))
+				ECGui::DrawMenuComponent<void()>(member.GetName(),
+					std::bind(&MenuBar::ShowTeamInformation, this));
+			else
+				ECGui::DrawMenuComponent<void()>(member.GetName(),
+					[&]() { member.Update(); });
 		}
 
 		ShowExitDialogBox(IsExiting);
@@ -66,6 +70,26 @@ namespace Eclipse
 				ECGui::EndPopup();
 			}
 		}
+	}
+
+	void MenuBar::ShowTeamInformation()
+	{
+		ECGui::DrawTextWidget<const char*>("Team Unagi Studios", EMPTY_STRING);
+		ECGui::InsertHorizontalLineSeperator();
+		ECGui::DrawTextWidget<const char*>("[BAGD] " ICON_FA_BOOK, EMPTY_STRING);
+		ECGui::DrawTextWidget<const char*>("Producer/Systems Designer: Janelle Tan", EMPTY_STRING);
+		ECGui::DrawTextWidget<const char*>("Design Lead/UI & UX Designer: Denny Liong", EMPTY_STRING);
+		ECGui::DrawTextWidget<const char*>("Art Lead/Audio Lead/Level Design: Brina Chia", EMPTY_STRING);
+		ECGui::DrawTextWidget<const char*>("\n[BSGD/RTIS] " ICON_FA_STACK_OVERFLOW, EMPTY_STRING);
+		ECGui::DrawTextWidget<const char*>("Tech Lead/Architecture: Nico Wong", EMPTY_STRING);
+		ECGui::DrawTextWidget<const char*>("Editor Lead/Technical Audio Designer: Fikrul Islami", EMPTY_STRING);
+		ECGui::DrawTextWidget<const char*>("Physics/Collision Programmer: Guan Hin", EMPTY_STRING);
+		ECGui::DrawTextWidget<const char*>("Serialization Programmer: Jian Herng", EMPTY_STRING);
+		ECGui::DrawTextWidget<const char*>("Editor Programmer/Level Designer: Tian Yu", EMPTY_STRING);
+		ECGui::DrawTextWidget<const char*>("Graphics Lead: Darren Sim", EMPTY_STRING);
+		ECGui::DrawTextWidget<const char*>("Graphics Programmer: Rachel Lin", EMPTY_STRING);
+		ECGui::InsertHorizontalLineSeperator();
+		ECGui::DrawTextWidget<const char*>("All content copyrighted 2021 DigiPen (SINGAPORE) Corporation, all rights reserved.", EMPTY_STRING);
 	}
 
 	bool MenuBar::GetExitStatus()
