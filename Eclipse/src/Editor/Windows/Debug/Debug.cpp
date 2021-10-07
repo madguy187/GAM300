@@ -28,6 +28,8 @@ namespace Eclipse
             ECGui::CheckBoxBool("Draw Grid", &engine->GridManager->Visible, false);
             ECGui::InsertSameLine();
             ECGui::CheckBoxBool("Enable PostProcess", &engine->GraphicsManager.PostProcess->AllowPostProcess, false);
+            ECGui::InsertSameLine();
+            ECGui::CheckBoxBool("Visualize Normals", &engine->GraphicsManager.VisualizeNormalVectors, false);
 
             ECGui::DrawTextWidget<const char*>("Gamma:", EMPTY_STRING);
             ECGui::DrawSliderFloatWidget("Gamma", &engine->GraphicsManager.GammaCorrection, true, 0.5f, 2.5f);
@@ -46,6 +48,12 @@ namespace Eclipse
                 ECGui::DrawTextWidget<const char*>("PostProcess Types:", EMPTY_STRING);
                 ECGui::CreateComboList(settingsss, Methods, comboindex);
                 engine->GraphicsManager.PostProcess->PPType_ = static_cast<FrameBuffer::PostProcessType>(comboindex);
+            }
+
+            if (engine->GraphicsManager.VisualizeNormalVectors)
+            {
+                ECGui::DrawTextWidget<const char*>("Normals Length:", EMPTY_STRING);
+                ECGui::DrawSliderFloatWidget("Normals Length", &engine->GraphicsManager.Magnitude, true, 0.2f, 1.0f);
             }
         }
     }
