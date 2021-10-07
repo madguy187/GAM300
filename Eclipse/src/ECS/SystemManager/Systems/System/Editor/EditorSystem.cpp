@@ -6,6 +6,7 @@ namespace Eclipse
 {
 	void EditorSystem::Update()
 	{
+		ZoneScopedN("EDITOR SYSTEM")
 		engine->Timer.SetName({ SystemName::EDITOR });
 		engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
@@ -21,6 +22,7 @@ namespace Eclipse
 
 		engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());
 		engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
+		FrameMark
 	}
 
 }
