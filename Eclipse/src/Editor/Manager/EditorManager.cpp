@@ -68,6 +68,22 @@ namespace Eclipse
 
 		MenuComponent window{ "Windows", EditorMenuType::WINDOWS };
 		MenuBar_.AddMenuComponents(window);
+
+		MenuComponent style{ "Style", EditorMenuType::STYLE };
+		style.AddItems("Oppa GuanHin Style");
+		style.AddItems("Oppa Nico Style");
+		style.AddItems("Oppa Fikrul Style");
+		style.AddItems("Oppa TianYu Style");
+		style.AddItems("Oppa Janelle Style");
+		style.AddItems("Oppa Denny Style");
+		style.AddItems("Oppa Brina Style");
+		style.AddItems("Oppa Rachel Style");
+		style.AddItems("Oppa Darren Style");
+		style.AddItems("Oppa JianHerng Style");
+		MenuBar_.AddMenuComponents(style);
+
+		MenuComponent aboutus{ "About Eclipse", EditorMenuType::ABOUTUS };
+		MenuBar_.AddMenuComponents(aboutus);
 	}
 
 	void EditorManager::InitFont()

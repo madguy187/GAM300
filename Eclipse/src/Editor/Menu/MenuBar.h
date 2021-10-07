@@ -12,6 +12,7 @@ namespace Eclipse
 		void AddMenuComponents(MenuComponent com);
 		MenuComponent* GetMenuComponent(EditorMenuType type);
 		void ShowExitDialogBox(bool active);
+		void ShowTeamInformation();
 
 		bool GetExitStatus();
 		void SetExitStatus(bool check);

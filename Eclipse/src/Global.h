@@ -44,7 +44,8 @@ enum class EditorMenuType
     FILE,
     EDIT,
     WINDOWS,
-    HELP,
+    STYLE,
+    ABOUTUS,
     UNASSIGNED
 };
 
