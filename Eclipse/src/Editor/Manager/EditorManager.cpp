@@ -148,10 +148,20 @@ namespace Eclipse
 
 		if (!EntityHierarchyList_.empty())
 		{
-			if (pos == EntityHierarchyList_.size())
+			if (pos >= EntityHierarchyList_.size())
+			{
 				SetSelectedEntity(EntityHierarchyList_[EntityHierarchyList_.size() - 1]);
+			}
 			else
-				SetSelectedEntity(EntityHierarchyList_[pos]);
+			{
+				SetSelectedEntity(EntityHierarchyList_[pos - 1]);
+
+				for (auto& pair : EntityToIndexMap_)
+				{
+					if (pair.second > pos - 1)
+						pair.second--;
+				}
+			}
 		}
 
 		engine->world.DestroyEntity(ID);
