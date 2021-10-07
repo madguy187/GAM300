@@ -214,7 +214,7 @@ namespace Eclipse
     void EngineCompiler::RunCompiler()
     {
         // Please Check this in the future - Darren Sim
-        system("../bin/Debug-windows-x86_64/Compiler/Compiler.exe");
+        system("Compiler.exe");
         EDITOR_LOG_INFO("Compiler Execution finished.");
     }
 

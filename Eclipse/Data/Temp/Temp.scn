@@ -35,16 +35,16 @@
             <nearPlane value="0.1" />
             <farPlane value="500" />
             <aspect value="1.92708" />
-            <eyePos x="-17.5297" y="22.7157" z="37.8991" />
-            <eyeFront x="0.219714" y="-0.490143" z="-0.843496" />
-            <upVec x="0.12355" y="0.871642" z="-0.474316" />
-            <rightVec x="0.967709" y="-0" z="0.252069" />
+            <eyePos x="0" y="20" z="40" />
+            <eyeFront x="-3.34849e-08" y="-0.642788" z="-0.766045" />
+            <upVec x="-2.80971e-08" y="0.766044" z="-0.642788" />
+            <rightVec x="1" y="0" z="-4.37114e-08" />
             <worldUp x="0" y="1" z="0" />
             <viewMtx Col="4" Row="4">
-                <Col0 _00="0.967709" _01="0.12355" _02="-0.219715" _03="0" />
-                <Col1 _10="5.66244e-07" _11="0.871642" _12="0.490143" _13="0" />
-                <Col2 _20="0.25207" _21="-0.474316" _22="0.843496" _23="0" />
-                <Col3 _30="7.41044" _31="0.341946" _32="-46.9532" _33="1" />
+                <Col0 _00="1" _01="-2.80971e-08" _02="3.34849e-08" _03="0" />
+                <Col1 _10="0" _11="0.766044" _12="0.642788" _13="0" />
+                <Col2 _20="-4.37114e-08" _21="-0.642788" _22="0.766044" _23="0" />
+                <Col3 _30="1.74846e-06" _31="10.3906" _32="-43.4975" _33="1" />
             </viewMtx>
             <projMtx Col="4" Row="4">
                 <Col0 _00="1.25278" _01="0" _02="0" _03="0" />
@@ -64,16 +64,16 @@
             <IsAChild value="false" />
         </EntityComponent>
         <TransformComponent>
-            <position x="-17.5297" y="22.7157" z="37.8991" />
+            <position x="0" y="20" z="40" />
             <rotation x="-40" y="-90" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_1>
     <Entity_2 ID="7">
         <AABBComponent>
-            <center x="0" y="0" z="0" />
-            <Min x="-2.5" y="-2.5" z="-2.5" />
-            <Max x="2.5" y="2.5" z="2.5" />
+            <center x="-10.934" y="0" z="2.56106" />
+            <Min x="-13.434" y="-2.5" z="0.0610585" />
+            <Max x="-8.43405" y="2.5" z="5.06106" />
         </AABBComponent>
         <EntityComponent>
             <Tag value="Model" />
@@ -95,14 +95,13 @@
             <Type value="TT_UNASSIGNED" />
             <hasTexture value="false" />
             <TextureRef value="Default" />
-            <TextureKey value="Sketchfab_model3" />
-            <HoldingTextures size="2">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/dog3" Handle="10" />
-                <Member1 Type="6" Directory="..//Eclipse//src/Assets/Models/dog3" Handle="11" />
+            <TextureKey value="Dog1" />
+            <HoldingTextures size="1">
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/dog" Handle="24" />
             </HoldingTextures>
         </MaterialComponent>
         <MeshComponent>
-            <MeshName value="Sketchfab_model3" />
+            <MeshName value="Dog1" />
             <color x="1" y="1" z="1" />
             <textureIdx x="0" y="0" />
             <isQuad value="false" />
@@ -125,7 +124,7 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <TransformComponent>
-            <position x="0" y="0" z="0" />
+            <position x="-10.934" y="0" z="2.56106" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>

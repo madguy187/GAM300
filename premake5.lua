@@ -158,7 +158,9 @@ project "Eclipse"
 	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodL64.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodstudioL64.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodstudioL.dll %{cfg.targetdir}",
-	  "{COPY} ../Dep/Tracy/TracyProfiler.dll %{cfg.targetdir}"
+	  "{COPY} ../Dep/Tracy/TracyProfiler.dll %{cfg.targetdir}",
+	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.dll ../Eclipse",
+	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.lib ../Eclipse"
     }
 	
 	
@@ -230,7 +232,9 @@ project "Eclipse"
 	  "{COPY} ../Dep/Fmod/core/lib/x64/fmod.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/Fmod/core/lib/x64/fmod64.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodstudio64.dll %{cfg.targetdir}",
-	  "{COPY} ../Dep/Tracy/TracyProfiler.dll %{cfg.targetdir}"
+	  "{COPY} ../Dep/Tracy/TracyProfiler.dll %{cfg.targetdir}",
+	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.dll ../Eclipse",
+	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.lib ../Eclipse"
     }
 
 	filter "configurations:Dist"
