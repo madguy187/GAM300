@@ -10,7 +10,11 @@ void Eclipse::PickingManager::GenerateAabb(unsigned int ID, TransformComponent& 
         return;
     }
 
-    engine->world.AddComponent(ID, AABBComponent{});
+    if (!engine->world.CheckComponent<AABBComponent>(ID))
+    {
+        engine->world.AddComponent(ID, AABBComponent{});
+    }
+
     auto& _aabb = engine->world.GetComponent<AABBComponent>(ID);
     //std::cout << "Generate AABB ID: " << ID << std::endl;
 
