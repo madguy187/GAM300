@@ -140,7 +140,7 @@ namespace Eclipse
 			ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(translation),
 				glm::value_ptr(rotation), glm::value_ptr(scale));
 
-			glm::vec3 deltaRotation = rotation - transCom.rotation.ConvertToGlmVec3Type();
+			// glm::vec3 deltaRotation = rotation - transCom.rotation.ConvertToGlmVec3Type();
 
 			switch (m_GizmoType)
 			{
@@ -149,7 +149,7 @@ namespace Eclipse
 				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.position, transCom.position, selectedEntity });
 				break;
 			case ImGuizmo::OPERATION::ROTATE:
-				transCom.rotation += deltaRotation;
+				transCom.rotation = rotation;
 				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.rotation, transCom.rotation, selectedEntity });
 				break;
 			case ImGuizmo::OPERATION::SCALE:
