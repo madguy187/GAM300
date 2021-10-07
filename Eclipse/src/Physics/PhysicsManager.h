@@ -110,5 +110,6 @@ namespace Eclipse
 		void RemoveActorFromScene(Entity ent);
 		void RemoveActor(Entity ent);
 		void ChangeType(Entity ent);
+		void CleanupScene();
 	};
 }

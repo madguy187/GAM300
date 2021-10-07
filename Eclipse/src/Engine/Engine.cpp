@@ -285,11 +285,12 @@ namespace Eclipse
 
             world.Update<CameraSystem>();
             world.Update<AISystem>();
-            world.Update<CollisionSystem>();
+            
             if (IsScenePlaying())
             {
                 for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
                 {
+                    world.Update<CollisionSystem>();
                     world.Update<PhysicsSystem>();
                 }
             }

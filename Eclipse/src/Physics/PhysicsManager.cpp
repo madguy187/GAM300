@@ -228,6 +228,15 @@ namespace Eclipse
 		}
 	}
 
+	void PhysicsManager::CleanupScene()
+	{
+
+		for (auto entity : engine->editorManager->GetEntityListByConstRef())
+		{
+			engine->gPhysics.RemoveActor(entity);
+		}
+	}
+
 	void PhysicsManager::AttachCapsuleToActor(Entity ent, float radius,float halfheight)
 	{
 		if (Px_Actors[ent].actor == nullptr)
@@ -310,6 +319,7 @@ namespace Eclipse
 			return;
 		RemoveActorFromScene(ent);
 		Px_Actors[ent].actor->release();
+		Px_Actors[ent].actor = nullptr;
 		Px_Actors[ent].type = ActorType::ACTOR_UNASSIGNED;
 	}
 
