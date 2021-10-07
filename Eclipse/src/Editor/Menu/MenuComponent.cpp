@@ -101,6 +101,117 @@ namespace Eclipse
 				CommandHistory::Redo();
 			}
 		}
+
+		if (!strcmp(key, "Oppa GuanHin Style"))
+		{
+			bool selected = false;
+
+			if (ECGui::CreateMenuItem(key, &selected))
+			{
+				ImGui::StyleColorsLight();
+			}
+		}
+
+		if (!strcmp(key, "Oppa Nico Style"))
+		{
+			bool selected = false;
+
+			if (ECGui::CreateMenuItem(key, &selected))
+			{
+				ImGui::StyleColorsWooden();
+			}
+		}
+
+		if (!strcmp(key, "Oppa Fikrul Style"))
+		{
+			bool selected = false;
+
+			if (ECGui::CreateMenuItem(key, &selected))
+			{
+				ImGui::StyleColorsCrimson();
+			}
+		}
+
+		if (!strcmp(key, "Oppa TianYu Style"))
+		{
+			bool selected = false;
+
+			if (ECGui::CreateMenuItem(key, &selected))
+			{
+				ImGui::StyleColorsCherry();
+			}
+		}
+
+		if (!strcmp(key, "Oppa Janelle Style"))
+		{
+			bool selected = false;
+
+			if (ECGui::CreateMenuItem(key, &selected))
+			{
+				ImGui::StyleColorsDark();
+			}
+		}
+
+		if (!strcmp(key, "Oppa Denny Style"))
+		{
+			bool selected = false;
+
+			if (ECGui::CreateMenuItem(key, &selected))
+			{
+				ImGui::StyleColorsArmy();
+			}
+		}
+
+		if (!strcmp(key, "Oppa Denny Style"))
+		{
+			bool selected = false;
+
+			if (ECGui::CreateMenuItem(key, &selected))
+			{
+				ImGui::StyleColorsCorporate();
+			}
+		}
+
+		if (!strcmp(key, "Oppa Brina Style"))
+		{
+			bool selected = false;
+
+			if (ECGui::CreateMenuItem(key, &selected))
+			{
+				ImGui::StyleColorsGoldBlack();
+			}
+		}
+
+
+		if (!strcmp(key, "Oppa Rachel Style"))
+		{
+			bool selected = false;
+
+			if (ECGui::CreateMenuItem(key, &selected))
+			{
+				ImGui::StyleColorsRobotBlue();
+			}
+		}
+
+		if (!strcmp(key, "Oppa Darren Style"))
+		{
+			bool selected = false;
+
+			if (ECGui::CreateMenuItem(key, &selected))
+			{
+				ImGui::StyleColorsClassic();
+			}
+		}
+
+		if (!strcmp(key, "Oppa JianHerng Style"))
+		{
+			bool selected = false;
+
+			if (ECGui::CreateMenuItem(key, &selected))
+			{
+				ImGui::StyleColorsArmy();
+			}
+		}
 	}
 
 	void MenuComponent::DrawGuiWindows()
