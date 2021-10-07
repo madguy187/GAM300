@@ -16,6 +16,9 @@ namespace Eclipse
 		engine->world.AddComponent(CreatedID, LightComponent{});
 		engine->world.AddComponent(CreatedID, DirectionalLightComponent{ DirectionalLightcounter });
 
+		auto& Tr = engine->world.GetComponent<TransformComponent>(CreatedID);
+		Tr.position = ECVec3(0.0f, 150.0f, 0.0f);
+
 		EDITOR_LOG_INFO("Directional Light Created Successfully");
 		DirectionalLightcounter++;
 	}
@@ -116,6 +119,9 @@ namespace Eclipse
 		// Add DirectionalLight Component
 		engine->world.AddComponent(FirstGlobalLight, LightComponent{});
 		engine->world.AddComponent(FirstGlobalLight, DirectionalLightComponent{ DirectionalLightcounter });
+
+		auto& Tr = engine->world.GetComponent<TransformComponent>(FirstGlobalLight);
+		Tr.position = ECVec3(0.0f, 150.0f, 0.0f);
 
 		EDITOR_LOG_INFO("Directional Light Created Successfully");
 		DirectionalLightcounter++;
