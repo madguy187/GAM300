@@ -100,6 +100,12 @@ namespace Eclipse
                     engine->MaterialManager.DoNotUpdateStencil();
                     engine->GraphicsManager.Draw(engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_GAME), &Mesh, GL_FILL, entityID, CameraComponent::CameraType::Game_Camera);
 
+                    engine->MaterialManager.DoNotUpdateStencil();
+                    engine->GraphicsManager.Draw(engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_LEFT), &Mesh, GL_FILL, entityID, CameraComponent::CameraType::LeftView_Camera);
+
+                    engine->MaterialManager.DoNotUpdateStencil();
+                    engine->GraphicsManager.Draw(engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_RIGHT), &Mesh, GL_FILL, entityID, CameraComponent::CameraType::RightView_camera);
+
                     // Highlight
                     engine->MaterialManager.HighlightBasicPrimitives(entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE));
                 }
