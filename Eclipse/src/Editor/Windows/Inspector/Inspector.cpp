@@ -1263,7 +1263,6 @@ namespace Eclipse
         {
             std::string Comp = my_strcat(Components, " removed for ", name, ". Remove component succeeded.");
             EDITOR_LOG_INFO(Comp.c_str());
-            engine->world.DestroyComponent<TComponents>(ID);
 
             //Remove data from DynamicAABBTree if AABBComponent is deleted - Rachel
             if (!strcmp(Components, "AABBComponent"))
@@ -1271,6 +1270,8 @@ namespace Eclipse
                 engine->gDynamicAABBTree.RemoveData(ID);
                 engine->gCullingManager->Remove(ID);
             }
+
+            engine->world.DestroyComponent<TComponents>(ID);
         }
     }
 }
