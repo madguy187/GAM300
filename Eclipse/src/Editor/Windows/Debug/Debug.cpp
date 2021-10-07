@@ -14,7 +14,7 @@ namespace Eclipse
     {
         Type = EditorWindowType::EWT_DEBUG;
         WindowName = "Settings";
-        IsVisible = false;
+        IsVisible = true;
     }
 
     void DebugWindow::Unload()
