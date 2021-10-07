@@ -44,6 +44,13 @@ namespace Eclipse
 				if (!PrefabUse)
 				{
 					engine->editorManager->RegisterExistingEntity(ent);
+
+					if (engine->world.CheckComponent<AABBComponent>(ent))
+					{
+						auto& Transform_ = engine->world.GetComponent<TransformComponent>(ent);
+						auto& Entity_ = engine->world.GetComponent<EntityComponent>(ent);
+						engine->gPicker.GenerateAabb(ent, Transform_, Entity_.Tag);
+					}
 				}
 			}
 			dsz.CloseElement();

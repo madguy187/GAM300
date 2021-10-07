@@ -132,7 +132,7 @@ namespace Eclipse
 			ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(translation),
 				glm::value_ptr(rotation), glm::value_ptr(scale));
 
-			//glm::vec3 deltaRotation = rotation - transCom.rotation.ConvertToGlmVec3Type();
+			// glm::vec3 deltaRotation = rotation - transCom.rotation.ConvertToGlmVec3Type();
 
 			switch (GizmoType)
 			{
