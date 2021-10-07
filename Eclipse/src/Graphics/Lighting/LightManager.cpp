@@ -114,7 +114,7 @@ namespace Eclipse
         {
             _allspotlights.Destroy();
         }
-        else 
+        else if (engine->world.CheckComponent<DirectionalLightComponent>(ID) == true)
         {
             _DirectionalLights.Destroy();
         }
