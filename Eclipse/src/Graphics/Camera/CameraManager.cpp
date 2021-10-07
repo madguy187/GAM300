@@ -11,11 +11,11 @@ namespace Eclipse
         }
 
         Entity newCam = engine->editorManager->CreateDefaultEntity(EntityType::ENT_GAMECAMERA);
-    	
+
         //engine->world.AddComponent(newCam, EntityComponent{EntityType::ENT_CAMERA,
         // lexical_cast_toStr<EntityType>(EntityType::ENT_CAMERA)});
         engine->world.AddComponent(newCam, CameraComponent{});
-       // engine->world.AddComponent(newCam, TransformComponent{});
+        // engine->world.AddComponent(newCam, TransformComponent{});
 
         editorCamID = newCam;
 
@@ -153,24 +153,27 @@ namespace Eclipse
 
     void CameraManager::ComputePerspectiveMtx(CameraComponent& _camera)
     {
-        auto& editorCam = engine->world.GetComponent<CameraComponent>(GetEditorCameraID());
-        auto& transform = engine->world.GetComponent<TransformComponent>(GetCameraID(_camera.camType));
-
-        _camera.aspect = static_cast<float>((OpenGL_Context::GetWindowRatioX() * OpenGL_Context::GetWidth()) /
-            (OpenGL_Context::GetWindowRatioY() * OpenGL_Context::GetHeight()));
-
-        if (_camera.projType == CameraComponent::ProjectionType::Orthographic)
+        if (OpenGL_Context::GetWidth() != 0 || OpenGL_Context::GetHeight() != 0)
         {
-            _camera.projMtx = glm::ortho(static_cast<float>(-(OpenGL_Context::GetWidth()) * _camera.aspect) / transform.scale.x,
-                static_cast<float>((OpenGL_Context::GetWidth()) * _camera.aspect) / transform.scale.x,
-                static_cast<float>(-(OpenGL_Context::GetHeight()) * _camera.aspect) / transform.scale.x,
-                static_cast<float>((OpenGL_Context::GetHeight()) * _camera.aspect) / transform.scale.x,
-                editorCam.nearPlane, editorCam.farPlane);
-        }
-        else
-        {
-            _camera.projMtx = glm::perspective(glm::radians(_camera.fov),
-                _camera.aspect, _camera.nearPlane, _camera.farPlane);
+            auto& editorCam = engine->world.GetComponent<CameraComponent>(GetEditorCameraID());
+            auto& transform = engine->world.GetComponent<TransformComponent>(GetCameraID(_camera.camType));
+
+            _camera.aspect = static_cast<float>((OpenGL_Context::GetWindowRatioX() * OpenGL_Context::GetWidth()) /
+                (OpenGL_Context::GetWindowRatioY() * OpenGL_Context::GetHeight()));
+
+            if (_camera.projType == CameraComponent::ProjectionType::Orthographic)
+            {
+                _camera.projMtx = glm::ortho(static_cast<float>(-(OpenGL_Context::GetWidth()) * _camera.aspect) / transform.scale.x,
+                    static_cast<float>((OpenGL_Context::GetWidth()) * _camera.aspect) / transform.scale.x,
+                    static_cast<float>(-(OpenGL_Context::GetHeight()) * _camera.aspect) / transform.scale.x,
+                    static_cast<float>((OpenGL_Context::GetHeight()) * _camera.aspect) / transform.scale.x,
+                    editorCam.nearPlane, editorCam.farPlane);
+            }
+            else
+            {
+                _camera.projMtx = glm::perspective(glm::radians(_camera.fov),
+                    _camera.aspect, _camera.nearPlane, _camera.farPlane);
+            }
         }
 
     }
@@ -233,13 +236,13 @@ namespace Eclipse
             else
             {
                 camera.fov += cameraSpd;
-            }     
+            }
         }
 
         if (input.test(6))
         {
             if (_transform.rotation.y < -90.0f)
-            {            
+            {
                 _transform.rotation.y = 270.0f;
             }
             else
@@ -300,7 +303,7 @@ namespace Eclipse
         Recommended FOV value for a realistic view is usually about 45.*/
         int keyZ = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_Z);
         int keyX = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_X);
-        
+
         int keyQ = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_Q);
         int keyE = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_E);
         int keyR = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_R);
@@ -333,7 +336,7 @@ namespace Eclipse
         {
             input.set(0, 1);
         }
-        else 
+        else
         {
             input.set(0, 0);
         }
@@ -342,7 +345,7 @@ namespace Eclipse
         {
             input.set(2, 1);
         }
-        else 
+        else
         {
             input.set(2, 0);
         }
@@ -478,7 +481,7 @@ namespace Eclipse
         {
             viewInput.set(0, 0);
         }
-        
+
         if (GLFW_PRESS == keyS)
         {
             viewInput.set(3, 1);
@@ -487,7 +490,7 @@ namespace Eclipse
         {
             viewInput.set(3, 0);
         }
-        
+
         if (GLFW_PRESS == keyD)
         {
             viewInput.set(1, 1);
@@ -496,7 +499,7 @@ namespace Eclipse
         {
             viewInput.set(1, 0);
         }
-        
+
         if (GLFW_PRESS == keyW)
         {
             viewInput.set(2, 1);
@@ -673,14 +676,14 @@ namespace Eclipse
         if (_camType == CameraComponent::CameraType::Game_Camera)
         {
             engine->gDebugManager.DeleteDebugShape(GetGameCameraID());
-            
+
             if (engine->GetEditorState())
             {
-              engine->editorManager->DestroyEntity(gameCamID);
+                engine->editorManager->DestroyEntity(gameCamID);
             }
             else
             {
-              engine->world.DestroyEntity(gameCamID);
+                engine->world.DestroyEntity(gameCamID);
             }
 
             gameCamID = ID;
@@ -690,11 +693,11 @@ namespace Eclipse
         {
             if (engine->GetEditorState())
             {
-              engine->editorManager->DestroyEntity(editorCamID);
+                engine->editorManager->DestroyEntity(editorCamID);
             }
             else
             {
-              engine->world.DestroyEntity(editorCamID);
+                engine->world.DestroyEntity(editorCamID);
             }
             editorCamID = ID;
         }
