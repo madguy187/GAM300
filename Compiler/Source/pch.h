@@ -1,6 +1,13 @@
 #pragma once
 #define _CRT_SECURE_NO_WARNINGS
 
+#pragma warning( disable : 4456 )
+#pragma warning( disable : 4267 )
+#pragma warning( disable : 4244 )
+#pragma warning( disable : 4100 )
+#pragma warning( disable : 4189 )
+#pragma warning( disable : 4458 )
+
 #include <iostream>
 
 #include <stdint.h>

@@ -260,7 +260,7 @@ project "Compiler"
 
   targetdir ("bin/" .. outputdir .. "/%{prj.name}")
   objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
+  
   pchheader "pch.h"
   pchsource "%{prj.name}/Source/pch.cpp"
 
