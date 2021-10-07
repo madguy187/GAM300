@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "AssimpLoader.h"
 
-#include <filesystem>
-
 namespace EclipseCompiler
 {
     void AssimpLoader::LoadAssimpModel(std::string path, std::unordered_map<std::string, Mesh>& GeometryContainer)

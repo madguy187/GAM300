@@ -16,6 +16,11 @@ namespace Eclipse
 		AUDIO,
 		MONO,
 		FILEWATCH,
+		PARENT,
+		CHILD,
+		COLLISION,
+		PREFEB,
+		AI,
 		COUNTER
 	};
 

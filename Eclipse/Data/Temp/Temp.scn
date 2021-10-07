@@ -1,33 +1,6 @@
 <?xml version="1.0" ?>
 <Entities Size="2">
     <Entity_0 ID="0">
-        <DirectionalLightComponent>
-            <Counter value="0" />
-            <visible value="false" />
-            <AffectsWorld value="true" />
-            <EnableBlinnPhong value="true" />
-            <lightColor x="1" y="1" z="1" />
-            <Direction x="-1" y="-1" z="-1" />
-            <ambient x="0.2" y="0.2" z="0.2" />
-            <diffuse x="0.4" y="0.4" z="0.4" />
-            <specular x="0.5" y="0.5" z="0.5" />
-            <Color x="1" y="1" z="1" w="1" />
-        </DirectionalLightComponent>
-        <EntityComponent>
-            <Tag value="DirectionalLight" />
-            <Name value="DirectionalLight" />
-            <Child size="0" />
-            <Parent size="0" />
-            <IsAChild value="false" />
-        </EntityComponent>
-        <LightComponent />
-        <TransformComponent>
-            <position x="0" y="0" z="0" />
-            <rotation x="0" y="0" z="0" />
-            <scale x="5" y="5" z="5" />
-        </TransformComponent>
-    </Entity_0>
-    <Entity_1 ID="1">
         <CameraComponent>
             <eyeAlpha value="0" />
             <eyeBeta value="-90" />
@@ -66,6 +39,33 @@
         <TransformComponent>
             <position x="0" y="20" z="40" />
             <rotation x="-40" y="-90" z="0" />
+            <scale x="5" y="5" z="5" />
+        </TransformComponent>
+    </Entity_0>
+    <Entity_1 ID="6">
+        <DirectionalLightComponent>
+            <Counter value="0" />
+            <visible value="false" />
+            <AffectsWorld value="true" />
+            <EnableBlinnPhong value="true" />
+            <lightColor x="1" y="1" z="1" />
+            <Direction x="-1" y="-1" z="-1" />
+            <ambient x="0.2" y="0.2" z="0.2" />
+            <diffuse x="0.4" y="0.4" z="0.4" />
+            <specular x="0.5" y="0.5" z="0.5" />
+            <Color x="1" y="1" z="1" w="1" />
+        </DirectionalLightComponent>
+        <EntityComponent>
+            <Tag value="DirectionalLight" />
+            <Name value="DirectionalLight" />
+            <Child size="0" />
+            <Parent size="0" />
+            <IsAChild value="false" />
+        </EntityComponent>
+        <LightComponent />
+        <TransformComponent>
+            <position x="0" y="0" z="0" />
+            <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_1>

@@ -107,7 +107,9 @@ IF EXIST ..\Dep\Fmod\core\lib\x64\fmodL.dll\ (xcopy /Q /E /Y /I ..\Dep\Fmod\core
 IF EXIST ..\Dep\Fmod\core\lib\x64\fmodL64.dll\ (xcopy /Q /E /Y /I ..\Dep\Fmod\core\lib\x64\fmodL64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\Fmod\core\lib\x64\fmodL64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\Fmod\core\lib\x64\fmodstudioL64.dll\ (xcopy /Q /E /Y /I ..\Dep\Fmod\core\lib\x64\fmodstudioL64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\Fmod\core\lib\x64\fmodstudioL64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\Fmod\core\lib\x64\fmodstudioL.dll\ (xcopy /Q /E /Y /I ..\Dep\Fmod\core\lib\x64\fmodstudioL.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\Fmod\core\lib\x64\fmodstudioL.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
-IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyProfiler.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\Tracy\TracyProfiler.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)</Command>
+IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyProfiler.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\Tracy\TracyProfiler.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\assimp-vc142-mtd.dll ..\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\ASSIMP\assimp-vc142-mtd.dll ..\Eclipse &gt; nul)
+IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\assimp-vc142-mtd.lib ..\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\ASSIMP\assimp-vc142-mtd.lib ..\Eclipse &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -146,7 +148,9 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
 IF EXIST ..\Dep\Fmod\core\lib\x64\fmod.dll\ (xcopy /Q /E /Y /I ..\Dep\Fmod\core\lib\x64\fmod.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\Fmod\core\lib\x64\fmod.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\Fmod\core\lib\x64\fmod64.dll\ (xcopy /Q /E /Y /I ..\Dep\Fmod\core\lib\x64\fmod64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\Fmod\core\lib\x64\fmod64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\Fmod\core\lib\x64\fmodstudio64.dll\ (xcopy /Q /E /Y /I ..\Dep\Fmod\core\lib\x64\fmodstudio64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\Fmod\core\lib\x64\fmodstudio64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
-IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyProfiler.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\Tracy\TracyProfiler.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)</Command>
+IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyProfiler.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\Tracy\TracyProfiler.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\assimp-vc142-mtd.dll ..\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\ASSIMP\assimp-vc142-mtd.dll ..\Eclipse &gt; nul)
+IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\assimp-vc142-mtd.lib ..\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\ASSIMP\assimp-vc142-mtd.lib ..\Eclipse &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">

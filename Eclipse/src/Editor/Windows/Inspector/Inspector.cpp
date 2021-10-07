@@ -1237,6 +1237,14 @@ namespace Eclipse
         if (!exist)
         {
             engine->world.AddComponent(ID, TComponents{});
+
+            if (!strcmp(Components, "AABBComponent"))
+            {
+                auto& Transform_ = engine->world.GetComponent<TransformComponent>(ID);
+                auto& Entity_ = engine->world.GetComponent<EntityComponent>(ID);
+                engine->gPicker.GenerateAabb(ID, Transform_, Entity_.Tag);
+            }
+
             std::string Comp = my_strcat(Components, " added for ", name, ". Add component succeeded.");
             EDITOR_LOG_INFO(Comp.c_str());
         }
@@ -1263,7 +1271,6 @@ namespace Eclipse
         {
             std::string Comp = my_strcat(Components, " removed for ", name, ". Remove component succeeded.");
             EDITOR_LOG_INFO(Comp.c_str());
-            engine->world.DestroyComponent<TComponents>(ID);
 
             //Remove data from DynamicAABBTree if AABBComponent is deleted - Rachel
             if (!strcmp(Components, "AABBComponent"))
@@ -1271,6 +1278,8 @@ namespace Eclipse
                 engine->gDynamicAABBTree.RemoveData(ID);
                 engine->gCullingManager->Remove(ID);
             }
+
+            engine->world.DestroyComponent<TComponents>(ID);
         }
     }
 }

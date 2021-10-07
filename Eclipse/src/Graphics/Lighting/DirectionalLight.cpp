@@ -120,6 +120,11 @@ namespace Eclipse
 		EDITOR_LOG_INFO("Directional Light Created Successfully");
 		DirectionalLightcounter++;
 	}
+
+	void DirectionalLight::Destroy()
+	{
+		--DirectionalLightcounter;
+	}
 }
 namespace Eclipse
 {

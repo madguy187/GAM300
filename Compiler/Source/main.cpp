@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "GeometryCompiler.h"
-#include "Compiler/Texture/TextureCompiler.h"
-#include "Compiler/Prefabs/PrefabsCompiler.h"
+#include "TextureCompiler.h"
+#include "PrefabsCompiler.h"
 
 using namespace EclipseCompiler;
 

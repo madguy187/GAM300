@@ -28,6 +28,8 @@ namespace Eclipse
             engine->Timer.SetName({ SystemName::LIGHTING });
         engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
+        engine->LightManager.GlobalUniformsUpdate();
+
         if (engine->LightManager.CheckApplyLighting() == true)
         {
             for (auto const& LightEntityID : mEntities)

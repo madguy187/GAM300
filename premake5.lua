@@ -158,7 +158,9 @@ project "Eclipse"
 	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodL64.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodstudioL64.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodstudioL.dll %{cfg.targetdir}",
-	  "{COPY} ../Dep/Tracy/TracyProfiler.dll %{cfg.targetdir}"
+	  "{COPY} ../Dep/Tracy/TracyProfiler.dll %{cfg.targetdir}",
+	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.dll ../Eclipse",
+	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.lib ../Eclipse"
     }
 	
 	
@@ -230,7 +232,9 @@ project "Eclipse"
 	  "{COPY} ../Dep/Fmod/core/lib/x64/fmod.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/Fmod/core/lib/x64/fmod64.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodstudio64.dll %{cfg.targetdir}",
-	  "{COPY} ../Dep/Tracy/TracyProfiler.dll %{cfg.targetdir}"
+	  "{COPY} ../Dep/Tracy/TracyProfiler.dll %{cfg.targetdir}",
+	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.dll ../Eclipse",
+	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.lib ../Eclipse"
     }
 
 	filter "configurations:Dist"
@@ -253,27 +257,36 @@ project "Eclipse"
   
 project "Compiler"
   location "Compiler"
-  kind "ConsoleApp"
+  kind "WindowedApp"
   language "C++"
   cppdialect "C++17"
   warnings "Extra"
 
   targetdir ("bin/" .. outputdir .. "/%{prj.name}")
   objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
+  
   pchheader "pch.h"
-  pchsource "%{prj.name}/src/pch.cpp"
+  pchsource "%{prj.name}/Source/pch.cpp"
 
   files
   {
     "%{prj.name}/**.h",
     "%{prj.name}/**.cpp",
-    "%{prj.name}/**.hpp",
+	"%{prj.name}/**.hpp"
   }
 
   includedirs
   {
-
+	"%{prj.name}/Compiler/Geometry",
+	"%{prj.name}/Compiler/ICompiler",
+	"%{prj.name}/Compiler/Prefabs",
+	"%{prj.name}/Compiler/Texture",
+	"%{prj.name}/Compiler/Texture",
+	"%{prj.name}/Compiler",
+	"Dep/GLM/glm",
+	"Dep/",
+    "%{prj.name}/Assimp",
+	"%{prj.name}/Source"
   }
   
 
@@ -284,12 +297,12 @@ project "Compiler"
 
     libdirs
     {
-      "Compiler"
+	 "Dep/ASSIMP/"
     }
 
     links
     {
-      "assimp-vc142-mtd.dll"
+      "assimp-vc142-mtd"
     }
 
   filter "configurations:Debug"

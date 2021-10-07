@@ -75,6 +75,16 @@ namespace Eclipse
 		ECGui::PlotHistogram("Mono System", ProfilerWindow::time_container[SystemName::MONO], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
 		ECGui::InsertHorizontalLineSeperator();
 		ECGui::PlotHistogram("FileWatch System", ProfilerWindow::time_container[SystemName::FILEWATCH], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
+		ECGui::InsertHorizontalLineSeperator();
+		ECGui::PlotHistogram("Parent System", ProfilerWindow::time_container[SystemName::PARENT], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
+		ECGui::InsertHorizontalLineSeperator();
+		ECGui::PlotHistogram("Child System", ProfilerWindow::time_container[SystemName::CHILD], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
+		ECGui::InsertHorizontalLineSeperator();
+		ECGui::PlotHistogram("Collision System", ProfilerWindow::time_container[SystemName::COLLISION], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
+		ECGui::InsertHorizontalLineSeperator();
+		ECGui::PlotHistogram("Prefeb System", ProfilerWindow::time_container[SystemName::PREFEB], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
+		ECGui::InsertHorizontalLineSeperator();
+		ECGui::PlotHistogram("Ai System", ProfilerWindow::time_container[SystemName::AI], 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
 		//ImGui::NextColumn();
 		//ImGui::TextColored(ImVec4(0.9f, 0.6f, 0.1f, 1.0f), "%.2f %%", ((ProfilerWindow::time_container[SystemName::LIGHTING][0]) / (engine_time)));
 		ECGui::EndChildWindow();

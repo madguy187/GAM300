@@ -96,8 +96,11 @@ namespace Eclipse
 
     void CullingManager::Remove(unsigned int ID)
     {
-        FrustrumCollisionTree.RemoveObject(engine->gCullingManager->CullContainer[ID]);
-        engine->gCullingManager->CullContainer.erase(ID);
+        if (engine->world.CheckComponent<AABBComponent>(ID))
+        {
+            FrustrumCollisionTree.RemoveObject(engine->gCullingManager->CullContainer[ID]);
+            engine->gCullingManager->CullContainer.erase(ID);
+        }
     }
 
     void CullingManager::Clear()

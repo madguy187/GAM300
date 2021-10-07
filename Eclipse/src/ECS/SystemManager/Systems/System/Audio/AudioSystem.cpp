@@ -5,6 +5,7 @@ namespace Eclipse
 {
 	void AudioSystem::Update()
 	{
+		ZoneScopedN("Audio System")
 		engine->Timer.SetName({ SystemName::AUDIO });
 		engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
@@ -28,5 +29,6 @@ namespace Eclipse
 
 		engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());
 		engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
+		FrameMark
 	}
 }

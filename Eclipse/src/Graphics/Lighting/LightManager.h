@@ -118,6 +118,10 @@ namespace Eclipse
 		// LightProperties =============================
 		void CreateAttenuationLevels();
 
+		void GlobalUniformsUpdate();
+
+		void DestroyLight(Entity ID);
+
 		template <typename TypeOfLight, typename TYPE>
 		void SetColor(TypeOfLight& OBJ, TYPE val);
 

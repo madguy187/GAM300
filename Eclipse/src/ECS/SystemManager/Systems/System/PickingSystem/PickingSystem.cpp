@@ -12,6 +12,7 @@ void Eclipse::PickingSystem::Update()
 
 void Eclipse::PickingSystem::EditorUpdate()
 {
+	ZoneScopedN("Picking System")
 	engine->Timer.SetName({ SystemName::PICKING });
 	engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
@@ -27,14 +28,15 @@ void Eclipse::PickingSystem::EditorUpdate()
 		{
 			engine->MaterialManager.UnHighlight(engine->gPicker.GetCurrentCollisionID());
 		}
-	
+
 		engine->gPicker.SetCurrentCollisionID(collisionID);
 		engine->MaterialManager.HighlightClick(collisionID);
-	
+
 		//engine->gPicker.UpdateAabb(collisionID);
 		//engine->gDynamicAABBTree.UpdateData(collisionID);
 	}
 
 	engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());
 	engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
+	FrameMark
 }

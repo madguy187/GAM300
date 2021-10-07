@@ -10,7 +10,7 @@ namespace Eclipse
 
 	class DirectionalLight
 	{
-	private:
+	public:
 		// Global Counter for all DirectionalLight to loop in shader
 		inline static unsigned int DirectionalLightcounter = 0;
 
@@ -21,6 +21,7 @@ namespace Eclipse
 		void Draw(unsigned int EntityId,DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode);
 		// First Created Light
 		void FirstGlobalLight();
+		void Destroy();
 
 	private:
 		// Update Shader Variables
