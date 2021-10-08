@@ -56,14 +56,13 @@ namespace Eclipse
 
     void FrameBuffer::Clear() const
     {
-        glViewport(0, 0, 1270,593);
+        glViewport(0, 0, m_width, m_height);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     }
 
     void Eclipse::FrameBuffer::Resize(unsigned width, unsigned height)
     {
-        DeletCurrentFrameBuffer();
-        engine->gFrameBufferManager->CreateFBO(width, height, FrameBufferMode::FBM_GAME);
+        engine->gFrameBufferManager->CreateFBO(width, height, FrameBufferMode::FBM_SCENE);
         EDITOR_LOG_INFO("Resize Successful");
     }
 
@@ -92,13 +91,16 @@ namespace Eclipse
             m_data.TextureColourBuffer = 0;
             m_data.depthBufferID = 0;
 
-            //engine->GraphicsManager.mRenderContext._Framebuffers.erase(FrameBufferType);
+            engine->gFrameBufferManager->DeleteFrameBuffer(FrameBufferType);
         }
 
     }
 
     void FrameBuffer::CreateFrameBuffer(unsigned int p_width, unsigned int p_height)
     {
+        m_width = p_width;
+        m_height = p_height;
+
         if (m_data.frameBufferID)
         {
             DeleteBuffers();

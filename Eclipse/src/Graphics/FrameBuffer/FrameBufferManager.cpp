@@ -5,12 +5,12 @@ namespace Eclipse
 {
     void FrameBufferManager::CreateFrameBuffers()
     {
-        CreateFBO(OpenGL_Context::width, OpenGL_Context::height, FrameBufferMode::FBM_GAME);
-        CreateFBO(OpenGL_Context::width, OpenGL_Context::height, FrameBufferMode::FBM_SCENE);
-        CreateFBO(OpenGL_Context::width, OpenGL_Context::height, FrameBufferMode::FBM_TOP);
-        CreateFBO(OpenGL_Context::width, OpenGL_Context::height, FrameBufferMode::FBM_BOTTOM);
-        CreateFBO(OpenGL_Context::width, OpenGL_Context::height, FrameBufferMode::FBM_LEFT);
-        CreateFBO(OpenGL_Context::width, OpenGL_Context::height, FrameBufferMode::FBM_RIGHT);
+        CreateFBO(1270, 593, FrameBufferMode::FBM_GAME);
+        CreateFBO(1270, 593, FrameBufferMode::FBM_SCENE);
+        CreateFBO(1270, 593, FrameBufferMode::FBM_TOP);
+        CreateFBO(1270, 593, FrameBufferMode::FBM_BOTTOM);
+        CreateFBO(1270, 593, FrameBufferMode::FBM_LEFT);
+        CreateFBO(1270, 593, FrameBufferMode::FBM_RIGHT);
     }
 
     void FrameBufferManager::CreateFBO(unsigned int width_, unsigned int height_, FrameBufferMode in)
@@ -21,8 +21,6 @@ namespace Eclipse
             std::exit(EXIT_FAILURE);
         }
 
-        width_ = 1270;
-        height_ = 597;
         FrameBufferContainer.insert({in, std::make_shared<FrameBuffer>(width_, height_, in)});
         ENGINE_CORE_INFO("FrameBuffer Ready For Use");
     }
@@ -87,5 +85,25 @@ namespace Eclipse
             i.second->Bind();
             i.second->Clear();
         }
+    }
+
+    void FrameBufferManager::DeleteFrameBuffer(FrameBufferMode Mode)
+    {
+        FrameBufferContainer.erase(Mode);
+    }
+
+    float FrameBufferManager::GetAspectRatio(FrameBufferMode Mode)
+    {
+        return FrameBufferContainer[Mode]->AspectRatio;
+    }
+
+    void FrameBufferManager::UpdateAspectRatio(FrameBufferMode Mode , ECVec2 CurrentViewPortSize)
+    {
+        FrameBufferContainer[Mode]->AspectRatio = CurrentViewPortSize.getX() / CurrentViewPortSize.getY();
+    }
+
+    void FrameBufferManager::UpdateAspectRatio(FrameBufferMode Mode, glm::vec2 CurrentViewPortSize)
+    {
+        FrameBufferContainer[Mode]->AspectRatio = CurrentViewPortSize.x / CurrentViewPortSize.y;
     }
 }

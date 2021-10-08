@@ -19,5 +19,9 @@ namespace Eclipse
         RenderMode GetRenderMode(FrameBufferMode mode);
         bool CheckFrameBuffer(unsigned int ID, FrameBufferMode mode);
         void GlobalBind();
+        void DeleteFrameBuffer(FrameBufferMode Mode);
+        float GetAspectRatio(FrameBufferMode Mode);
+        void UpdateAspectRatio(FrameBufferMode Mode, ECVec2 CurrentViewPortSize);
+        void UpdateAspectRatio(FrameBufferMode Mode, glm::vec2 CurrentViewPortSize);
     };
 }

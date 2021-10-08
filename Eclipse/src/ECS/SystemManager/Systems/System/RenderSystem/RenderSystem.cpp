@@ -97,9 +97,9 @@ namespace Eclipse
                     /*************************************************************************
                       Render Without Stencer , Render Primitivies to GameView
                     *************************************************************************/
-                    //engine->MaterialManager.DoNotUpdateStencil();
-                    //engine->GraphicsManager.Draw(FrameBufferMode::FBM_GAME, &Mesh, GL_FILL, entityID, CameraComponent::CameraType::Game_Camera);
-                    //
+                    engine->MaterialManager.DoNotUpdateStencil();
+                    engine->GraphicsManager.Draw(FrameBufferMode::FBM_GAME, &Mesh, GL_FILL, entityID, CameraComponent::CameraType::Game_Camera);
+
                     //engine->MaterialManager.DoNotUpdateStencil();
                     //engine->GraphicsManager.Draw(FrameBufferMode::FBM_LEFT, &Mesh, GL_FILL, entityID, CameraComponent::CameraType::LeftView_Camera);
                     //

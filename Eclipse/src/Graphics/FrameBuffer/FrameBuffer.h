@@ -18,11 +18,12 @@ namespace Eclipse
     class FrameBuffer
     {
 
-    private:
+    public:
         glm::uvec2 m_size{ 0,0 };
         unsigned int m_width = 0;
         unsigned int m_height = 0;
         FrameBufferMode FrameBufferType = FrameBufferMode::FBM_NONE;
+        float AspectRatio = 0.0f;
 
         struct FramebufferData
         {

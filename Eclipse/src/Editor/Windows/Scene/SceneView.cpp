@@ -26,14 +26,15 @@ namespace Eclipse
 
 	void SceneWindow::RunMainWindow()
 	{
-		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+		ImVec2 viewportPanelSize = ECGui::GetWindowSize();
 		//std::cout << "Scene View: " << ImGui::GetWindowDockID() << std::endl;
 		if (mViewportSize.getX() != viewportPanelSize.x ||
 			mViewportSize.getY() != viewportPanelSize.y)
 		{
 			// Resize the framebuffer based on the size of the imgui window
-			//m_frameBuffer->Resize(static_cast<unsigned>(viewportPanelSize.x), static_cast<unsigned>(viewportPanelSize.y));
+			m_frameBuffer->Resize(static_cast<unsigned>(viewportPanelSize.x), static_cast<unsigned>(viewportPanelSize.y));
 			mViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+			engine->gFrameBufferManager->UpdateAspectRatio(FrameBufferMode::FBM_SCENE, mViewportSize);
 		}
 
 		ChildSettings settings;
