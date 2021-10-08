@@ -261,5 +261,5 @@ namespace Eclipse
     DEFINE_META_POD(ModelType);
     DEFINE_META_POD(PxShapeType);
     DEFINE_META_POD(EC_Shape);
-    DEFINE_META_POD(MonoScript);
+    //DEFINE_META_POD(MonoScript);
 }

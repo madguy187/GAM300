@@ -71,11 +71,14 @@ void Eclipse::DebugRenderingManager::SetDebugShape(unsigned int ID, std::any new
 
 void Eclipse::DebugRenderingManager::DrawDebugShapes(FrameBufferMode in)
 {
-    for (auto& it : debugShapes)
+    if (Visible)
     {
-        if (it.second.type() == typeid(Frustum))
+        for (auto& it : debugShapes)
         {
-            DrawFrustum(it.first, in);
+            if (it.second.type() == typeid(Frustum))
+            {
+                DrawFrustum(it.first, in);
+            }
         }
     }
 }

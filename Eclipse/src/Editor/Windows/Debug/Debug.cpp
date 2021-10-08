@@ -27,9 +27,15 @@ namespace Eclipse
         {
             ECGui::CheckBoxBool("Draw Grid", &engine->GridManager->Visible, false);
             ECGui::InsertSameLine();
-            ECGui::CheckBoxBool("Enable PostProcess", &engine->GraphicsManager.PostProcess->AllowPostProcess, false);
+            ECGui::CheckBoxBool("PostProcess", &engine->GraphicsManager.PostProcess->AllowPostProcess, false);
             ECGui::InsertSameLine();
-            ECGui::CheckBoxBool("Visualize Normals", &engine->GraphicsManager.VisualizeNormalVectors, false);
+            ECGui::CheckBoxBool("Draw Normals", &engine->GraphicsManager.VisualizeNormalVectors, false);
+            ECGui::InsertSameLine();
+            ECGui::CheckBoxBool("Draw DebugBoxes", &engine->GraphicsManager.AllAABBs.DrawAABBS, false);
+            ECGui::InsertSameLine();
+            ECGui::CheckBoxBool("Draw DrawFrustrum", &engine->gDebugManager.Visible, false);
+            ECGui::InsertSameLine();
+            ECGui::CheckBoxBool("Draw DrawSky", &engine->GraphicsManager.DrawSky, false);
 
             ECGui::DrawTextWidget<const char*>("Gamma:", EMPTY_STRING);
             ECGui::DrawSliderFloatWidget("Gamma", &engine->GraphicsManager.GammaCorrection, true, 0.5f, 2.5f);

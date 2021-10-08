@@ -32,7 +32,7 @@ namespace Eclipse
         unsigned int SkyCount = 0;
         bool CheckRender = true;
         bool EnableGammaCorrection = true;
-        bool DrawSky = true;
+        bool DrawSky = false;
         float GammaCorrection = 2.2f;
         ECVec3 BackGroundColour{ 0.1f,0.2f,0.3f };
         float Exposure = 1.0f;
