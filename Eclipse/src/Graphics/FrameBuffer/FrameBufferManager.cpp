@@ -21,7 +21,8 @@ namespace Eclipse
             std::exit(EXIT_FAILURE);
         }
 
-        //std::unique_ptr<FrameBuffer> m_frameBuffer = std::make_unique<FrameBuffer>(width_, height_, in);
+        width_ = 1270;
+        height_ = 597;
         FrameBufferContainer.insert({in, std::make_shared<FrameBuffer>(width_, height_, in)});
         ENGINE_CORE_INFO("FrameBuffer Ready For Use");
     }

@@ -62,10 +62,10 @@ namespace Eclipse
               Render Without Stencer
               Render Sky to Sceneview
             *************************************************************************/
-            // engine->MaterialManager.DoNotUpdateStencil();
-            // engine->GraphicsManager.RenderSky(FrameBufferMode::FBM_SCENE);
+            engine->MaterialManager.DoNotUpdateStencil();
+            engine->GraphicsManager.RenderSky(FrameBufferMode::FBM_SCENE);
 
-             // Basic Primitives Render Start =============================
+            // Basic Primitives Render Start =============================
             for (auto const& entityID : RenderablesVsFrustrum)
             {
                 // If No Mesh Component , Do not Continue

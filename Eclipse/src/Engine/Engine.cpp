@@ -232,7 +232,7 @@ namespace Eclipse
             glfwPollEvents();
             glViewport(0, 0, OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight());
             engine->GraphicsManager.SetBackGroundColour();
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
             Game_Clock.set_timeSteps(0);
             framecount++;

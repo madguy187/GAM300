@@ -160,6 +160,8 @@ namespace Eclipse
         auto& transform = engine->world.GetComponent<TransformComponent>(GetCameraID(_camera.camType));
 
         //_camera.aspect = hello;
+        //_camera.aspect = 1270 / 597;
+
         _camera.aspect = static_cast<float>((OpenGL_Context::GetWindowRatioX() * OpenGL_Context::GetWidth()) / (OpenGL_Context::GetWindowRatioY() * OpenGL_Context::GetHeight()));
 
         if (_camera.projType == CameraComponent::ProjectionType::Orthographic)
@@ -174,7 +176,7 @@ namespace Eclipse
         {
             if ((OpenGL_Context::GetWidth() != 0) && (OpenGL_Context::GetHeight() != 0))
             {
-                _camera.projMtx = glm::perspective(glm::radians(_camera.fov),
+                _camera.projMtx = glm::perspective(_camera.fov,
                     _camera.aspect, _camera.nearPlane, _camera.farPlane);
             }
         }

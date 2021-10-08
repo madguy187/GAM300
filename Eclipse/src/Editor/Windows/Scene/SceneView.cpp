@@ -26,7 +26,7 @@ namespace Eclipse
 
 	void SceneWindow::RunMainWindow()
 	{
-		ImVec2 viewportPanelSize = ECGui::GetWindowSize();
+		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		//std::cout << "Scene View: " << ImGui::GetWindowDockID() << std::endl;
 		if (mViewportSize.getX() != viewportPanelSize.x ||
 			mViewportSize.getY() != viewportPanelSize.y)

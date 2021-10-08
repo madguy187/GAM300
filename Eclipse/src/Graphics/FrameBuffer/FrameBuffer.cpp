@@ -56,7 +56,7 @@ namespace Eclipse
 
     void FrameBuffer::Clear() const
     {
-        glViewport(0, 0, OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight());
+        glViewport(0, 0, 1270,593);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     }
 
