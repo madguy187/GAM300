@@ -36,7 +36,7 @@ namespace Eclipse
 
 		void SetGizmoType(int type);
 		void SetSnapping(bool active);
-	private:
+	public:
 		ECVec2 mViewportSize;
 		ECVec2 mSceneBufferSize;
 		ECVec2 mSceneBufferPos;

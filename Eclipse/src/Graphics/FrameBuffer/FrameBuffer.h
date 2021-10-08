@@ -60,7 +60,7 @@ namespace Eclipse
         void Resize(unsigned width, unsigned height);
         static void ShowWindow(FrameBuffer g, const char* input);
         void CreateFrameBuffer(unsigned int p_width, unsigned int p_height);
-
+        void FrameBuffer::DeleteBuffers();
 
     public:
         // POST PROCESS HERE ==========================

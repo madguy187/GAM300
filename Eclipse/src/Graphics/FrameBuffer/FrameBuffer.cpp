@@ -41,12 +41,14 @@ namespace Eclipse
 
     FrameBuffer::~FrameBuffer()
     {
+
     }
 
     void FrameBuffer::Bind() const
     {
         glBindFramebuffer(GL_FRAMEBUFFER, m_data.frameBufferID);
         glViewport(0, 0, OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight());
+        Clear();
     }
 
     void FrameBuffer::Unbind() const
@@ -81,25 +83,53 @@ namespace Eclipse
         glBindTexture(GL_TEXTURE_2D, g.GetTextureColourBufferID());
     }
 
+    void FrameBuffer::DeleteBuffers()
+    {
+        if (m_data.frameBufferID)
+        {
+            glDeleteFramebuffers(GL_FRAMEBUFFER, &m_data.frameBufferID);
+            glDeleteTextures(1, &m_data.TextureColourBuffer);
+            glDeleteTextures(1, &m_data.depthBufferID);
+            m_data.TextureColourBuffer = 0;
+            m_data.depthBufferID = 0;
+
+            engine->GraphicsManager.mRenderContext._Framebuffers.erase(FrameBufferType);
+        }
+
+    }
+
     void FrameBuffer::CreateFrameBuffer(unsigned int p_width, unsigned int p_height)
     {
+        if (m_data.frameBufferID)
+        {
+            DeleteBuffers();
+        }
+
         glGenFramebuffers(1, &m_data.frameBufferID);
-
         glBindFramebuffer(GL_FRAMEBUFFER, m_data.frameBufferID);
-
-        glEnable(GL_DEPTH_TEST);
-
-        glGenTextures(1, &m_data.TextureColourBuffer);
+        glCreateTextures(GL_TEXTURE_2D, 1, &m_data.TextureColourBuffer);
         glBindTexture(GL_TEXTURE_2D, m_data.TextureColourBuffer);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16, p_width, p_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16, p_width, p_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_data.TextureColourBuffer, 0);
 
-        glGenRenderbuffers(1, &m_data.depthBufferID);
-        glBindRenderbuffer(GL_RENDERBUFFER, m_data.depthBufferID);
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, p_width, p_height);
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_data.depthBufferID);
+        glCreateTextures(GL_TEXTURE_2D, 1, &m_data.depthBufferID);
+        glBindTexture(GL_TEXTURE_2D, m_data.depthBufferID);
+        glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8, p_width, p_height);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, m_data.depthBufferID, 0);
+        GLenum buffers[4] = { GL_COLOR_ATTACHMENT0 };
+        glDrawBuffers(m_data.TextureColourBuffer, buffers);
 
         if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         {

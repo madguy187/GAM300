@@ -84,6 +84,7 @@ namespace Eclipse
 		void UpdateFrameBuffer();
 		void FrameBufferDraw();
 		static void CreateEmptyFolder(std::string folderName, std::string folderPath = "..//Compiler//CompilerKeyFiles\\");
+		void CurrentFrameBufferBind(unsigned int ID);
 	};
 }
 

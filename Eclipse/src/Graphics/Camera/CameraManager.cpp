@@ -153,11 +153,14 @@ namespace Eclipse
 
     void CameraManager::ComputePerspectiveMtx(CameraComponent& _camera)
     {
+        auto mSize = engine->editorManager->GetEditorWindow<SceneWindow>()->mViewportSize;
+        float hello = mSize.getX() / mSize.getY();
+
         auto& editorCam = engine->world.GetComponent<CameraComponent>(GetEditorCameraID());
         auto& transform = engine->world.GetComponent<TransformComponent>(GetCameraID(_camera.camType));
 
-        _camera.aspect = static_cast<float>((OpenGL_Context::GetWindowRatioX() * OpenGL_Context::GetWidth()) /
-            (OpenGL_Context::GetWindowRatioY() * OpenGL_Context::GetHeight()));
+        //_camera.aspect = hello;
+        _camera.aspect = static_cast<float>((OpenGL_Context::GetWindowRatioX() * OpenGL_Context::GetWidth()) / (OpenGL_Context::GetWindowRatioY() * OpenGL_Context::GetHeight()));
 
         if (_camera.projType == CameraComponent::ProjectionType::Orthographic)
         {

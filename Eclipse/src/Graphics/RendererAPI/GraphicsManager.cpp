@@ -238,7 +238,9 @@ namespace Eclipse
 	{
 		auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
 
-		glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
+		//glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
+
+		engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->Bind();
 
 		auto& shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
 		shdrpgm.Use();
@@ -256,6 +258,8 @@ namespace Eclipse
 		// Part 5: Clean up
 		glBindVertexArray(0);
 		shdrpgm.UnUse();
+
+		engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->Unbind();
 	}
 
 	void Eclipse::GraphicsManager::DrawIndexed(MeshComponent* in, GLenum mode)
@@ -507,11 +511,14 @@ namespace Eclipse
 
 	void Eclipse::GraphicsManager::UpdateFrameBuffer()
 	{
-		for (auto const& SelectedFrameBuffer : mRenderContext._Framebuffers)
-		{
-			SelectedFrameBuffer.second->Bind();
-			SelectedFrameBuffer.second->Clear();
-		}
+		//for (auto const& SelectedFrameBuffer : mRenderContext._Framebuffers)
+		//{
+		//	SelectedFrameBuffer.second->Bind();
+		//	SelectedFrameBuffer.second->Clear();
+		//}
+
+		mRenderContext._Framebuffers[FrameBufferMode::FBM_SCENE]->Bind();
+		mRenderContext._Framebuffers[FrameBufferMode::FBM_SCENE]->Clear();
 	}
 
 	void Eclipse::GraphicsManager::DebugPrintFrameBuffers()
@@ -539,6 +546,11 @@ namespace Eclipse
 	void Eclipse::GraphicsManager::SetGammaCorrection(float in)
 	{
 		GammaCorrection = in;
+	}
+
+	void GraphicsManager::CurrentFrameBufferBind(unsigned int ID)
+	{
+
 	}
 
 	void Eclipse::GraphicsManager::UploadGlobalUniforms()

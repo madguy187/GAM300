@@ -262,6 +262,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\EngineCompiler\EngineCompiler.h" />
     <ClInclude Include="src\Graphics\FileWatch\FileWatch.h" />
     <ClInclude Include="src\Graphics\FrameBuffer\FrameBuffer.h" />
+    <ClInclude Include="src\Graphics\FrameBuffer\FrameBufferManager.h" />
     <ClInclude Include="src\Graphics\FrameBuffer\WindowConstraint.h" />
     <ClInclude Include="src\Graphics\Grid\AABB.h" />
     <ClInclude Include="src\Graphics\Grid\AABBTree.h" />

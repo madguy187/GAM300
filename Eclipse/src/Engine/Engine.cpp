@@ -69,7 +69,7 @@ namespace Eclipse
         //std::cout << "ENDED" << std::endl;
 
         engine->GraphicsManager.Pre_Render();
-    	
+
         ImGuiSetup::Init(IsEditorActive);
 
         if (IsEditorActive)
@@ -80,9 +80,9 @@ namespace Eclipse
 
     void Engine::Run()
     {
-       ZoneScopedN("Engine")
-        // register component
-        world.RegisterComponent<EntityComponent>();
+        ZoneScopedN("Engine")
+            // register component
+            world.RegisterComponent<EntityComponent>();
         world.RegisterComponent<TransformComponent>();
         world.RegisterComponent<MeshComponent>();
         world.RegisterComponent<CameraComponent>();
@@ -228,12 +228,17 @@ namespace Eclipse
         // Darren - Please keep this before Game Loop
         engine->GraphicsManager.MassInit();
 
+        engine->GraphicsManager.GlobalFrameBufferBind();
+
         //Deserialization(temp)
         /*audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);*/
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
             glfwPollEvents();
+            glViewport(0, 0, OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight());
             engine->GraphicsManager.SetBackGroundColour();
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            //engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->Bind();
 
             Game_Clock.set_timeSteps(0);
             framecount++;
@@ -285,7 +290,7 @@ namespace Eclipse
 
             world.Update<CameraSystem>();
             world.Update<AISystem>();
-            
+
             if (IsScenePlaying())
             {
                 for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
@@ -301,19 +306,19 @@ namespace Eclipse
             world.Update<ChildSystem>();*/
 
             // FRAMEBUFFER BIND =============================
-            engine->GraphicsManager.GlobalFrameBufferBind();
+            //engine->GraphicsManager.GlobalFrameBufferBind();
 
             // Reset DebugBoxes =============================
-            engine->GraphicsManager.ResetInstancedDebugBoxes();
+            //engine->GraphicsManager.ResetInstancedDebugBoxes();
 
             // LIGHTINGSYSTEM =============================
-            world.Update<LightingSystem>();
-
-            // PICKINGSYSTEM =============================
-            world.Update<PickingSystem>();
-
-            // AUDIOSYSTEM =============================
-            world.Update<AudioSystem>();
+           // world.Update<LightingSystem>();
+           //
+           // // PICKINGSYSTEM =============================
+           // world.Update<PickingSystem>();
+           //
+           // // AUDIOSYSTEM =============================
+           // world.Update<AudioSystem>();
 
             // RENDERSYSTEM =============================
             world.Update<RenderSystem>();
