@@ -63,7 +63,7 @@ namespace Eclipse
     void Eclipse::FrameBuffer::Resize(unsigned width, unsigned height)
     {
         engine->gFrameBufferManager->CreateFBO(width, height, FrameBufferMode::FBM_SCENE);
-        EDITOR_LOG_INFO("Resize Successful");
+        //EDITOR_LOG_INFO("Resize Successful");
     }
 
     void FrameBuffer::ShowWindow(FrameBuffer g, const char* input)

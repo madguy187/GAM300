@@ -160,6 +160,7 @@ namespace Eclipse
 
         if (_camera.projType == CameraComponent::ProjectionType::Orthographic)
         {
+            // Darren was here . Actually wanna check only scene using ortho? if yes for now i hardcode ortho.
             _camera.aspect = engine->gFrameBufferManager->GetAspectRatio(FrameBufferMode::FBM_GAME);
 
             _camera.projMtx = glm::ortho(static_cast<float>(-(OpenGL_Context::GetWidth()) * _camera.aspect) / transform.scale.x,
@@ -170,11 +171,12 @@ namespace Eclipse
         }
         else
         {
+            // Darren was here . Actually wanna check only scene using perspective? if yes for now i hardcode scene.
             _camera.aspect = engine->gFrameBufferManager->GetAspectRatio(FrameBufferMode::FBM_SCENE);
 
             if ((OpenGL_Context::GetWidth() != 0) && (OpenGL_Context::GetHeight() != 0))
             {
-                _camera.projMtx = glm::perspective(_camera.fov,
+                _camera.projMtx = glm::perspective(glm::radians(_camera.fov),
                     _camera.aspect, _camera.nearPlane, _camera.farPlane);
             }
         }
