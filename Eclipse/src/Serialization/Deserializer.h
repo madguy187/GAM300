@@ -129,7 +129,7 @@ namespace Eclipse
 		template <>
 		inline void ReadAttributeFromElement(const std::string& att_name, MonoScript& att_data)
 		{
-			ReadAttributeFromElement("Shape", att_data.scriptName);
+			ReadAttributeFromElement(att_name, att_data.scriptName);
 		}
 		
 		template <typename T>

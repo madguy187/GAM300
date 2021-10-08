@@ -87,12 +87,12 @@ namespace Eclipse
 		SerializeComponent<PrefabComponent>(w, ent);
 		
 		SerializeComponent<RigidBodyComponent>(w, ent);
-		
+
+		SerializeComponent<ScriptComponent>(w, ent);
+
 		SerializeComponent<SpotLightComponent>(w, ent);
 
 		SerializeComponent<TransformComponent>(w, ent);
-
-		SerializeComponent<ScriptComponent>(w, ent);
 	}
 
 	bool SerializationManager::DeserializeAllComponents(World& w, const Entity& ent, bool PrefabUse)
@@ -113,6 +113,7 @@ namespace Eclipse
 			DeserializeComponent<PointLightComponent>(w, ent) &&
 			DeserializeComponent<PrefabComponent>(w, ent) &&
 			DeserializeComponent<RigidBodyComponent>(w, ent) &&
+			DeserializeComponent<ScriptComponent>(w, ent) &&
 			DeserializeComponent<SpotLightComponent>(w, ent) &&
 			DeserializeComponent<TransformComponent>(w, ent))
 		{
