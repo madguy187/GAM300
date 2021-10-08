@@ -402,7 +402,16 @@ namespace Eclipse
                         GLuint normal0 = shader.GetLocation("normal0");
                         glUniform1i(uniform_var_loc3, true);
                         glUniform1i(CheckNoTex, false);
-                        glUniform1i(CheckNormapMap, true);
+
+                        if (engine->GraphicsManager.EnableNormalMapping)
+                        {
+                            glUniform1i(CheckNormapMap, true);
+                        }
+                        else
+                        {
+                            glUniform1i(CheckNormapMap, false);
+                        }
+
                         glUniform1i(normal0, it);
                         tex.HoldingTextures[it].Bind();
                     }

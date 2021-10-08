@@ -38,6 +38,7 @@ namespace Eclipse
         float Exposure = 1.0f;
         bool VisualizeNormalVectors = false;
         float Magnitude = 0.2f;
+        bool EnableNormalMapping = false;
 
         // Seperate FBO for Post Process
         std::unique_ptr<FrameBuffer> PostProcess;

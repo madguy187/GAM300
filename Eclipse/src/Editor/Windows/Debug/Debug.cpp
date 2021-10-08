@@ -36,6 +36,8 @@ namespace Eclipse
             ECGui::CheckBoxBool("Draw DrawFrustrum", &engine->gDebugManager.Visible, false);
             ECGui::InsertSameLine();
             ECGui::CheckBoxBool("Draw DrawSky", &engine->GraphicsManager.DrawSky, false);
+            ECGui::InsertSameLine();
+            ECGui::CheckBoxBool("Normal Mapping", &engine->GraphicsManager.EnableNormalMapping, false);
 
             ECGui::DrawTextWidget<const char*>("Gamma:", EMPTY_STRING);
             ECGui::DrawSliderFloatWidget("Gamma", &engine->GraphicsManager.GammaCorrection, true, 0.5f, 2.5f);

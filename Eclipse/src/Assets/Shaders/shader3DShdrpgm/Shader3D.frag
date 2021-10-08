@@ -5,7 +5,6 @@ layout (location=0) out vec4 fFragClr;
 
 in vec3 normal_from_vtxShader;
 in vec3 crntPos;
-
 uniform sampler2D uTex2d;
 uniform vec4 uColor;
 uniform bool uTextureCheck;
@@ -19,6 +18,7 @@ uniform bool EnableGammaCorrection;
 uniform bool CheckApplyLighting;
 uniform int BasicPrimitives;
 uniform float Exposure;
+uniform int EnableNormalMapping;
 
 in TANGENT_VAR{
 	vec3 TangentViewPos;
@@ -151,27 +151,27 @@ void main ()
         texDiff = texture(diffuse0, TxtCoord);
 		texSpec = texture(specular0, TxtCoord);
 		
-		if(checkNormalMap == 1)
-        {		
-			normalMap = texture(normal0, TxtCoord).rgb;
-			normalMap = normalize(normalMap * 2.0 - 1.0);
-			
-			for(int i = 0; i < NumberOfPointLights; ++i)
-			{
-				tangentPointLights[i] = pointLights[i];
-				tangentPointLights[i].position = TangentPointLight[i];
-			}
-			
-			for(int i = 0; i < NumberOfSpotLights; ++i)
-			{
-				tangentSpotLights[i] = spotLights[i];
-				tangentSpotLights[i].position = TangentSpotLight[i];
-			}
-			
-			tangentDirectionalLight[0] = directionlight[0];
-			tangentDirectionalLight[0].direction = TangentDirectionalLight[0];
-			
-			viewDir = normalize(tangent_varFS.TangentViewPos - tangent_varFS.TangentCrntPos);
+		    if(checkNormalMap == 1)
+            {		
+		    	normalMap = texture(normal0, TxtCoord).rgb;
+		    	normalMap = normalize(normalMap * 2.0 - 1.0);
+		    	
+		    	for(int i = 0; i < NumberOfPointLights; ++i)
+		    	{
+		    		tangentPointLights[i] = pointLights[i];
+		    		tangentPointLights[i].position = TangentPointLight[i];
+		    	}
+		    	
+		    	for(int i = 0; i < NumberOfSpotLights; ++i)
+		    	{
+		    		tangentSpotLights[i] = spotLights[i];
+		    		tangentSpotLights[i].position = TangentSpotLight[i];
+		    	}
+		    	
+		    	tangentDirectionalLight[0] = directionlight[0];
+		    	tangentDirectionalLight[0].direction = TangentDirectionalLight[0];
+		    	
+		    	viewDir = normalize(tangent_varFS.TangentViewPos - tangent_varFS.TangentCrntPos);
         }
 	}
 
@@ -181,9 +181,12 @@ void main ()
         {
 			if(NumberOfDirectionalLights == 1)
 			{
-			  if(checkNormalMap == 1)
+			  if(EnableNormalMapping == 1)
 			  {
-			  	  result = CalcDirLight(tangentDirectionalLight[0], normalMap, viewDir, texDiff, texSpec);	
+				if(checkNormalMap == 1)
+				{
+			  	    result = CalcDirLight(tangentDirectionalLight[0], normalMap, viewDir, texDiff, texSpec);	
+				}
 			  }
 			  else
 			  {
