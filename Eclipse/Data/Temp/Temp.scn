@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<Entities Size="2">
+<Entities Size="3">
     <Entity_0 ID="0">
         <CameraComponent>
             <eyeAlpha value="0" />
@@ -7,20 +7,20 @@
             <fov value="45" />
             <nearPlane value="0.1" />
             <farPlane value="500" />
-            <aspect value="1.92708" />
-            <eyePos x="0" y="20" z="40" />
-            <eyeFront x="0.118887" y="-0.42578" z="-0.896982" />
-            <upVec x="0.0559441" y="0.904827" z="-0.422089" />
-            <rightVec x="0.99133" y="-0" z="0.131392" />
+            <aspect value="1.90722" />
+            <eyePos x="-12.4786" y="13.0117" z="19.6862" />
+            <eyeFront x="0.234044" y="-0.551937" z="-0.800368" />
+            <upVec x="0.15491" y="0.833886" z="-0.529752" />
+            <rightVec x="0.959805" y="-0" z="0.280667" />
             <worldUp x="0" y="1" z="0" />
             <viewMtx Col="4" Row="4">
-                <Col0 _00="0.991331" _01="0.055944" _02="-0.118887" _03="0" />
-                <Col1 _10="-8.9407e-08" _11="0.904827" _12="0.425779" _13="0" />
-                <Col2 _20="0.131392" _21="-0.422087" _22="0.896983" _23="0" />
-                <Col3 _30="-5.25568" _31="-1.21305" _32="-44.3949" _33="1" />
+                <Col0 _00="0.959805" _01="0.15491" _02="-0.234044" _03="0" />
+                <Col1 _10="9.68575e-08" _11="0.833886" _12="0.551937" _13="0" />
+                <Col2 _20="0.280667" _21="-0.529752" _22="0.800368" _23="0" />
+                <Col3 _30="6.45173" _31="1.51161" _32="-25.8584" _33="1" />
             </viewMtx>
             <projMtx Col="4" Row="4">
-                <Col0 _00="1.25278" _01="0" _02="0" _03="0" />
+                <Col0 _00="1.26583" _01="0" _02="0" _03="0" />
                 <Col1 _10="0" _11="2.41421" _12="0" _13="0" />
                 <Col2 _20="0" _21="0" _22="-1.0004" _23="-1" />
                 <Col3 _30="0" _31="0" _32="-0.20004" _33="0" />
@@ -37,7 +37,7 @@
             <IsAChild value="false" />
         </EntityComponent>
         <TransformComponent>
-            <position x="0" y="20" z="40" />
+            <position x="-12.4786" y="13.0117" z="19.6862" />
             <rotation x="-40" y="-90" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
@@ -64,9 +64,61 @@
         </EntityComponent>
         <LightComponent />
         <TransformComponent>
-            <position x="0" y="0" z="0" />
+            <position x="0" y="150" z="0" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_1>
+    <Entity_2 ID="7">
+        <AABBComponent>
+            <center x="0" y="0" z="0" />
+            <Min x="-2.5" y="-2.5" z="-2.5" />
+            <Max x="2.5" y="2.5" z="2.5" />
+        </AABBComponent>
+        <EntityComponent>
+            <Tag value="Cube" />
+            <Name value="Cube" />
+            <Child size="0" />
+            <Parent size="0" />
+            <IsAChild value="false" />
+        </EntityComponent>
+        <MaterialComponent>
+            <Modeltype value="BasicPrimitives" />
+            <ambient x="0" y="0" z="0" />
+            <diffuse x="1" y="1" z="1" />
+            <specular x="1" y="1" z="1" />
+            <NoTextures value="true" />
+            <shininess value="0.25" />
+            <MaximumShininess value="128" />
+            <ComboIndex value="1" />
+            <TextureComboIndex value="0" />
+            <Type value="TT_UNASSIGNED" />
+            <hasTexture value="true" />
+            <TextureRef value="FolderIcon" />
+            <TextureKey value="" />
+            <HoldingTextures size="0" />
+        </MaterialComponent>
+        <MeshComponent>
+            <MeshName value="" />
+            <color x="1" y="1" z="1" />
+            <textureIdx x="0" y="0" />
+            <isQuad value="false" />
+            <modelNDC_xform Col="4" Row="4">
+                <Col0 _00="0" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="0" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="0" _23="0" />
+                <Col3 _30="0" _31="0" _32="0" _33="0" />
+            </modelNDC_xform>
+            <modelRef value="Cube" />
+            <shaderRef value="shader3DShdrpgm" />
+            <transparency value="1" />
+            <ENV_MAP value="false" />
+            <ENV_TYPE value="MT_REFLECT" />
+        </MeshComponent>
+        <TransformComponent>
+            <position x="0" y="0" z="0" />
+            <rotation x="0" y="0" z="0" />
+            <scale x="5" y="5" z="5" />
+        </TransformComponent>
+    </Entity_2>
 </Entities>

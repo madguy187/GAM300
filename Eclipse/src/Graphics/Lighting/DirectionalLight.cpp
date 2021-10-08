@@ -25,7 +25,9 @@ namespace Eclipse
 
 	void DirectionalLight::Draw(unsigned int EntityId,DirectionalLightComponent* in, unsigned int framebufferID, unsigned int IndexID, GLenum mode)
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
+		//glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
+
+		engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SCENE);
 
 		auto& shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
 		shdrpgm.Use();
@@ -49,6 +51,8 @@ namespace Eclipse
 
 		glBindVertexArray(0);
 		shdrpgm.UnUse();
+
+		engine->gFrameBufferManager->UnBind(FrameBufferMode::FBM_SCENE);
 	}
 
 	void DirectionalLight::CheckUniformLoc(Shader* _shdrpgm, DirectionalLightComponent& in_light, int index, unsigned int containersize , unsigned int EntityId)

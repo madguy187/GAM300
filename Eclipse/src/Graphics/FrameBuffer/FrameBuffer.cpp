@@ -47,8 +47,6 @@ namespace Eclipse
     void FrameBuffer::Bind() const
     {
         glBindFramebuffer(GL_FRAMEBUFFER, m_data.frameBufferID);
-        glViewport(0, 0, OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight());
-        Clear();
     }
 
     void FrameBuffer::Unbind() const
@@ -58,13 +56,14 @@ namespace Eclipse
 
     void FrameBuffer::Clear() const
     {
+        glViewport(0, 0, OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight());
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     }
 
     void Eclipse::FrameBuffer::Resize(unsigned width, unsigned height)
     {
         DeletCurrentFrameBuffer();
-        Eclipse::OpenGL_Context::CreateFrameBuffers(width, height, FrameBufferMode::FBM_GAME);
+        engine->gFrameBufferManager->CreateFBO(width, height, FrameBufferMode::FBM_GAME);
         EDITOR_LOG_INFO("Resize Successful");
     }
 
@@ -80,7 +79,7 @@ namespace Eclipse
 
         //  bind back to default framebuffer and draw with the attached framebuffer
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glBindTexture(GL_TEXTURE_2D, g.GetTextureColourBufferID());
+        //glBindTexture(GL_TEXTURE_2D, g.GetTextureColourBufferID());
     }
 
     void FrameBuffer::DeleteBuffers()
@@ -93,7 +92,7 @@ namespace Eclipse
             m_data.TextureColourBuffer = 0;
             m_data.depthBufferID = 0;
 
-            engine->GraphicsManager.mRenderContext._Framebuffers.erase(FrameBufferType);
+            //engine->GraphicsManager.mRenderContext._Framebuffers.erase(FrameBufferType);
         }
 
     }
@@ -180,7 +179,7 @@ namespace Eclipse
             return;
 
         engine->MaterialManager.DoNotUpdateStencil();
-        glBindFramebuffer(GL_FRAMEBUFFER, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE));
+        glBindFramebuffer(GL_FRAMEBUFFER, engine->gFrameBufferManager->GetFrameBufferID(FrameBufferMode::FBM_SCENE));
 
         auto& shdrpgm = Graphics::shaderpgms["PostProcess"];
         shdrpgm.Use();
@@ -190,7 +189,7 @@ namespace Eclipse
 
         glBindVertexArray(rectVAO);
         glDisable(GL_DEPTH_TEST);
-        glBindTexture(GL_TEXTURE_2D, engine->GraphicsManager.GetTextureID(FrameBufferMode::FBM_SCENE));
+        glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SCENE));
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
         shdrpgm.UnUse();
@@ -267,7 +266,7 @@ namespace Eclipse
             glDeleteTextures(1, &m_data.TextureColourBuffer);
             glDeleteTextures(1, &m_data.depthBufferID);
 
-            engine->GraphicsManager.mRenderContext._Framebuffers.erase(FrameBufferType);
+            //engine->GraphicsManager.mRenderContext._Framebuffers.erase(FrameBufferType);
             EDITOR_LOG_INFO("FrameBuffer deleted successfully");
         }
     }

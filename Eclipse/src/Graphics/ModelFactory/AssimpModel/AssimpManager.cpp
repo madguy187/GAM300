@@ -87,7 +87,7 @@ namespace Eclipse
 
         if (ModelMesh.ENV_MAP == true)
         {
-            if (engine->GraphicsManager.CheckFrameBuffer(FrameBufferID, FrameBufferMode::FBM_SCENE))
+            if (engine->gFrameBufferManager->CheckFrameBuffer(FrameBufferID, FrameBufferMode::FBM_SCENE))
             {
                 //engine->MaterialManager.DoNotUpdateStencil();
                 shdrpgm = Graphics::shaderpgms["EnvironmentMap"];

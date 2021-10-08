@@ -20,6 +20,7 @@
 #include "PrefabManager/PrefabManager.h"
 #include "Graphics/EngineCompiler/EngineCompiler.h"
 #include "AI/AIManager.h"
+#include "Graphics/FrameBuffer/FrameBufferManager.h"
 
 namespace Eclipse
 {
@@ -50,6 +51,7 @@ namespace Eclipse
 		std::unique_ptr<CullingManager> gCullingManager;
 		std::unique_ptr<EclipseFileWatcher> gFileWatchManager;
 		std::unique_ptr<EngineCompiler> gEngineCompiler;
+		std::unique_ptr<FrameBufferManager> gFrameBufferManager;
 
 		void Init();
 		void Run();

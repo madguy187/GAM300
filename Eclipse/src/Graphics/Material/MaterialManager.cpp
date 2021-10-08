@@ -241,7 +241,7 @@ namespace Eclipse
         CameraComponent camera;
         TransformComponent camerapos;
 
-        if (framebufferID == engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID())
+        if (framebufferID == engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID())
         {
             camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
             camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetEditorCameraID());

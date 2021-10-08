@@ -227,7 +227,7 @@ namespace Eclipse
 	{
 		if (DrawSky == true)
 		{
-			glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
+			engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SCENE);
 			auto& shdrpgm = Graphics::shaderpgms["Sky"];
 
 			Sky->Render(shdrpgm);
@@ -237,10 +237,7 @@ namespace Eclipse
 	void Eclipse::GraphicsManager::Draw(unsigned int FrameBufferID, MeshComponent* _spritecomponent, GLenum mode, unsigned int ID, CameraComponent::CameraType _camType)
 	{
 		auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
-
-		//glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
-
-		engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->Bind();
+		engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SCENE);
 
 		auto& shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
 		shdrpgm.Use();
@@ -259,7 +256,7 @@ namespace Eclipse
 		glBindVertexArray(0);
 		shdrpgm.UnUse();
 
-		engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->Unbind();
+		engine->gFrameBufferManager->UnBind(FrameBufferMode::FBM_SCENE);
 	}
 
 	void Eclipse::GraphicsManager::DrawIndexed(MeshComponent* in, GLenum mode)
@@ -345,7 +342,7 @@ namespace Eclipse
 	void Eclipse::GraphicsManager::DrawDebugBoxes()
 	{
 		// render boxes
-		engine->GraphicsManager.AllAABBs.DrawAll(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
+		engine->GraphicsManager.AllAABBs.DrawAll(engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
 	}
 
 	std::string Eclipse::GraphicsManager::GetModelName(unsigned int modelname)
@@ -412,29 +409,6 @@ namespace Eclipse
 		return std::string();
 	}
 
-	unsigned int Eclipse::GraphicsManager::GetFrameBufferID(FrameBufferMode mode)
-	{
-		return mRenderContext.GetFramebuffer(mode)->GetFrameBufferID();
-	}
-
-	bool GraphicsManager::CheckFrameBuffer(unsigned int ID, FrameBufferMode mode)
-	{
-		if (mRenderContext.GetFramebuffer(mode)->GetFrameBufferID() == ID)
-			return true;
-
-		return false;
-	}
-
-	unsigned int Eclipse::GraphicsManager::GetTextureID(FrameBufferMode mode)
-	{
-		return mRenderContext.GetFramebuffer(mode)->GetTextureColourBufferID();
-
-	}
-	RenderMode Eclipse::GraphicsManager::GetRenderMode(FrameBufferMode mode)
-	{
-		return mRenderContext.GetFramebuffer(mode)->GetRenderMode();
-	}
-
 	void Eclipse::GraphicsManager::WindowCloseCallback(GLFWwindow* window)
 	{
 		(void)window;
@@ -457,14 +431,14 @@ namespace Eclipse
 
 	void Eclipse::GraphicsManager::FinalRender()
 	{
+		//engine->MaterialManager.DoNotUpdateStencil();
+		//DrawDebugBoxes();
+		//
 		engine->MaterialManager.DoNotUpdateStencil();
-		DrawDebugBoxes();
-
-		engine->MaterialManager.DoNotUpdateStencil();
-		engine->GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
-
-		engine->MaterialManager.DoNotUpdateStencil();
-		PostProcessUpdate();
+		engine->GridManager->DrawGrid(FrameBufferMode::FBM_SCENE);
+		//
+		//engine->MaterialManager.DoNotUpdateStencil();
+		//PostProcessUpdate();
 	}
 
 	void Eclipse::GraphicsManager::DrawEntireGrid()
@@ -472,7 +446,7 @@ namespace Eclipse
 		engine->MaterialManager.DoNotUpdateStencil();
 		engine->GraphicsManager.DrawDebugBoxes();
 
-		engine->GridManager->DrawGrid(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
+		engine->GridManager->DrawGrid(FrameBufferMode::FBM_SCENE);
 	}
 
 	void GraphicsManager::PostProcessUpdate()
@@ -509,35 +483,6 @@ namespace Eclipse
 
 #ifndef FrameBuffer_Things
 
-	void Eclipse::GraphicsManager::UpdateFrameBuffer()
-	{
-		//for (auto const& SelectedFrameBuffer : mRenderContext._Framebuffers)
-		//{
-		//	SelectedFrameBuffer.second->Bind();
-		//	SelectedFrameBuffer.second->Clear();
-		//}
-
-		mRenderContext._Framebuffers[FrameBufferMode::FBM_SCENE]->Bind();
-		mRenderContext._Framebuffers[FrameBufferMode::FBM_SCENE]->Clear();
-	}
-
-	void Eclipse::GraphicsManager::DebugPrintFrameBuffers()
-	{
-		std::cout << "FrameBuffer Size :" << mRenderContext._Framebuffers.size() << std::endl;
-		std::cout << "------------------------------------------" << std::endl;
-		for (auto const& SelectedFrameBuffer : mRenderContext._Framebuffers)
-		{
-			std::cout << " FrameBuffer Name :" << SelectedFrameBuffer.second->GetName() << std::endl;
-			std::cout << " FrameBuffer ID :" << SelectedFrameBuffer.second->GetFrameBufferID() << std::endl;
-			std::cout << " DepthBuffer ID :" << SelectedFrameBuffer.second->GetDepthBufferID() << std::endl;
-			std::cout << " ColorBuffer ID :" << SelectedFrameBuffer.second->GetTextureColourBufferID() << std::endl;
-			std::cout << " Type  : " << SelectedFrameBuffer.second->GetFrameBufferType() << std::endl;
-			std::cout << std::endl;
-		}
-
-		ENGINE_CORE_INFO("All FrameBufers Created");
-	}
-
 	float Eclipse::GraphicsManager::GetGammaCorrection()
 	{
 		return GammaCorrection;
@@ -546,11 +491,6 @@ namespace Eclipse
 	void Eclipse::GraphicsManager::SetGammaCorrection(float in)
 	{
 		GammaCorrection = in;
-	}
-
-	void GraphicsManager::CurrentFrameBufferBind(unsigned int ID)
-	{
-
 	}
 
 	void Eclipse::GraphicsManager::UploadGlobalUniforms()
@@ -571,39 +511,6 @@ namespace Eclipse
 		GLCall(glUniform3f(uniform_var_loc3, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ()));
 		GLCall(glUniform1f(uniform_var_loc4, engine->GraphicsManager.Exposure));
 		shdrpgm.UnUse();
-	}
-
-	void Eclipse::GraphicsManager::GlobalFrameBufferBind()
-	{
-		Eclipse::GraphicsManager::UpdateFrameBuffer();
-	}
-
-	FrameBuffer* Eclipse::OpenGL_Context::GetFramebuffer(FrameBufferMode mode)
-	{
-		if (mode == FrameBufferMode::MAXCOUNT || mode == FrameBufferMode::FBM_NONE)
-		{
-			ENGINE_LOG_ASSERT(false, " Wrong FrameBuffer Type");
-			std::exit(EXIT_FAILURE);
-		}
-
-		auto& selectfb = _Framebuffers[mode];
-		return selectfb;
-	}
-
-	void Eclipse::GraphicsManager::FrameBufferDraw()
-	{
-		FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(FrameBufferMode::FBM_GAME)), "GameView");
-		FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)), "SceneView");
-		FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(FrameBufferMode::FBM_TOP)), "SceneView_Top");
-		FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(FrameBufferMode::FBM_BOTTOM)), "SceneView_Bottom");
-		FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(FrameBufferMode::FBM_LEFT)), "SceneView_Left");
-		FrameBuffer::ShowWindow(*(mRenderContext.GetFramebuffer(FrameBufferMode::FBM_RIGHT)), "SceneView_Right");
-
-	}
-
-	void Eclipse::GraphicsManager::GlobalFrmeBufferDraw()
-	{
-		Eclipse::GraphicsManager::FrameBufferDraw();
 	}
 #endif
 }

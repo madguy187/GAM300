@@ -29,7 +29,7 @@ namespace Eclipse
 		ogViewportPos = glm::vec2{ 0.0f, 0.0f };
 		Type = EditorWindowType::EWT_GAMEVIEW;
 		WindowName = "Game View";
-		m_frameBuffer = engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_GAME);
+		m_frameBuffer = engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_GAME);
 	}
 
 	void eGameViewWindow::Unload()

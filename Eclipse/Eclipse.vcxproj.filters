@@ -1188,5 +1188,6 @@
       <Filter>Tracy</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\Graphics\FrameBuffer\FrameBufferManager.cpp" />
   </ItemGroup>
 </Project>

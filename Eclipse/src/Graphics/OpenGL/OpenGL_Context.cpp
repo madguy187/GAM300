@@ -265,8 +265,8 @@ void Eclipse::OpenGL_Context::print_specs()
 
 void Eclipse::OpenGL_Context::pre_render()
 {
-    Eclipse::OpenGL_Context::Init();
-    Eclipse::OpenGL_Context::CreateFrameBuffers();
+    //Eclipse::OpenGL_Context::Init();
+    engine->gFrameBufferManager->CreateFrameBuffers();
 }
 
 void Eclipse::OpenGL_Context::post_render()
@@ -366,38 +366,6 @@ double Eclipse::OpenGL_Context::update_time(double fps_calc_interval)
     // done calculating fps ...
     return delta_time;
 }
-
-/*************************************************************************
-  FrameBuffer Things
-*************************************************************************/
-
-#ifndef FrameBuffer_Things
-
-void Eclipse::OpenGL_Context::CreateFrameBuffers()
-{
-    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height,FrameBufferMode::FBM_GAME);
-    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height,FrameBufferMode::FBM_SCENE);
-    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height,FrameBufferMode::FBM_TOP);
-    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height,FrameBufferMode::FBM_BOTTOM);
-    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height,FrameBufferMode::FBM_LEFT);
-    Eclipse::OpenGL_Context::CreateFrameBuffers(OpenGL_Context::width, OpenGL_Context::height,FrameBufferMode::FBM_RIGHT);
-}
-
-void Eclipse::OpenGL_Context::CreateFrameBuffers(unsigned int width_, unsigned int height_, FrameBufferMode in)
-{
-    if (in == FrameBufferMode::FBM_NONE || in == FrameBufferMode::MAXCOUNT)
-    {
-        ENGINE_LOG_ASSERT(false, "Creating FrameBuffer with Invalid Type");
-        std::exit(EXIT_FAILURE);
-    }
-
-    FrameBuffer* m_frameBuffer = new FrameBuffer(width_, height_, in);
-    _Framebuffers.insert({ in , m_frameBuffer });
-    //delete m_frameBuffer;
-    ENGINE_CORE_INFO("FrameBuffer Ready For Use");
-}
-
-#endif
 
 GLFWwindow* Eclipse::OpenGL_Context::GetWindow()
 {

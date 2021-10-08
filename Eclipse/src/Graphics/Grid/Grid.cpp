@@ -333,10 +333,10 @@ namespace Eclipse
 		return ECVec3(snapX, snapY, snapZ);
 	}
 
-	void Grid::DrawGrid(unsigned int FrameBufferID)
+	void Grid::DrawGrid(FrameBufferMode In)
 	{
 		//UseFrameBuffer(FrameBufferID);
-		engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->Bind();
+		engine->gFrameBufferManager->UseFrameBuffer(In);
 
 		ShaderRef->Use();
 
@@ -358,7 +358,6 @@ namespace Eclipse
 		// Part 5: Clean up
 		glBindVertexArray(0);
 		ShaderRef->UnUse();
-		//engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->Unbind();
 	}
 
 	Grid::~Grid()

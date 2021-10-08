@@ -64,10 +64,7 @@ namespace Eclipse
         EventSystem<Test1>::registerListener(Tester2);
         EventSystem<Test1>::registerListener(std::bind(&World::TempFunc, &world, std::placeholders::_1));
 
-        // struct Test1 t {};
-        // EventSystem<Test1>::dispatchEvent(t);
-        //std::cout << "ENDED" << std::endl;
-
+        engine->gFrameBufferManager = std::make_unique<FrameBufferManager>();
         engine->GraphicsManager.Pre_Render();
 
         ImGuiSetup::Init(IsEditorActive);
@@ -228,8 +225,6 @@ namespace Eclipse
         // Darren - Please keep this before Game Loop
         engine->GraphicsManager.MassInit();
 
-        engine->GraphicsManager.GlobalFrameBufferBind();
-
         //Deserialization(temp)
         /*audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);*/
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
@@ -238,7 +233,8 @@ namespace Eclipse
             glViewport(0, 0, OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight());
             engine->GraphicsManager.SetBackGroundColour();
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            //engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->Bind();
+
+            engine->gFrameBufferManager->GlobalBind();
 
             Game_Clock.set_timeSteps(0);
             framecount++;
@@ -312,15 +308,15 @@ namespace Eclipse
             //engine->GraphicsManager.ResetInstancedDebugBoxes();
 
             // LIGHTINGSYSTEM =============================
-           // world.Update<LightingSystem>();
-           //
-           // // PICKINGSYSTEM =============================
-           // world.Update<PickingSystem>();
-           //
-           // // AUDIOSYSTEM =============================
-           // world.Update<AudioSystem>();
+            world.Update<LightingSystem>();
+            //
+            // // PICKINGSYSTEM =============================
+            // world.Update<PickingSystem>();
+            //
+            // // AUDIOSYSTEM =============================
+            // world.Update<AudioSystem>();
 
-            // RENDERSYSTEM =============================
+             // RENDERSYSTEM =============================
             world.Update<RenderSystem>();
 
             // Final DRAW ================================ 
@@ -332,7 +328,7 @@ namespace Eclipse
             }
 
             // FRAMEBUFFER DRAW ==========================
-            engine->GraphicsManager.GlobalFrmeBufferDraw();
+            engine->gFrameBufferManager->FrameBufferDraw();
 
             ImGuiSetup::End(IsEditorActive);
             OpenGL_Context::post_render();

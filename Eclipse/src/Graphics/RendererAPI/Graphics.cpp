@@ -40,11 +40,6 @@ void Graphics::unload()
     {
         it->second->DeleteModel();
     }
-
-    for (auto fb : OpenGL_Context::_Framebuffers)
-    {
-        delete fb.second;
-    }
 }
 
 void Graphics::LoadShaders(std::string shaderFile)
