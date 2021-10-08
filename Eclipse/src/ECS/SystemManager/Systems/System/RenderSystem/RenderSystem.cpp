@@ -100,81 +100,80 @@ namespace Eclipse
                     engine->MaterialManager.DoNotUpdateStencil();
                     engine->GraphicsManager.Draw(FrameBufferMode::FBM_GAME, &Mesh, GL_FILL, entityID, CameraComponent::CameraType::Game_Camera);
 
-                    //engine->MaterialManager.DoNotUpdateStencil();
-                    //engine->GraphicsManager.Draw(FrameBufferMode::FBM_LEFT, &Mesh, GL_FILL, entityID, CameraComponent::CameraType::LeftView_Camera);
-                    //
-                    //engine->MaterialManager.DoNotUpdateStencil();
-                    //engine->GraphicsManager.Draw(FrameBufferMode::FBM_RIGHT, &Mesh, GL_FILL, entityID, CameraComponent::CameraType::RightView_camera);
+                    engine->MaterialManager.DoNotUpdateStencil();
+                    engine->GraphicsManager.Draw(FrameBufferMode::FBM_LEFT, &Mesh, GL_FILL, entityID, CameraComponent::CameraType::LeftView_Camera);
 
-                     // Highlight
+                    engine->MaterialManager.DoNotUpdateStencil();
+                    engine->GraphicsManager.Draw(FrameBufferMode::FBM_RIGHT, &Mesh, GL_FILL, entityID, CameraComponent::CameraType::RightView_camera);
+
+                    // Highlight
                     engine->MaterialManager.HighlightBasicPrimitives(entityID, FrameBufferMode::FBM_SCENE);
                 }
+                else
+                {
+                    // After hot-realoding , we check if he still exists or not
+                    if (engine->AssimpManager.CheckGeometryExist(Mesh))
+                    {
+                        /*************************************************************************
+                          Render Models to SceneView
+                        *************************************************************************/
+                        engine->MaterialManager.UpdateStencilWithActualObject(entityID);
+                        engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_SCENE, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SCENE),
+                            &engine->GraphicsManager.AllAABBs, CameraComponent::CameraType::Editor_Camera);
 
-                //else
-                //{
-                //    // After hot-realoding , we check if he still exists or not
-                //    if (engine->AssimpManager.CheckGeometryExist(Mesh))
-                //    {
-                //        /*************************************************************************
-                //          Render Models to SceneView
-                //        *************************************************************************/
-                //        engine->MaterialManager.UpdateStencilWithActualObject(entityID);
-                //        engine->AssimpManager.MeshDraw(Mesh, entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE), engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_SCENE),
-                //            &engine->GraphicsManager.AllAABBs, CameraComponent::CameraType::Editor_Camera);
+                        // See Normal Vectors
+                        engine->MaterialManager.UpdateStencilWithActualObject(entityID);
+                        engine->AssimpManager.DebugNormals(Mesh, entityID, FrameBufferMode::FBM_SCENE, CameraComponent::CameraType::Editor_Camera);
 
-                //        // See Normal Vectors
-                //        engine->MaterialManager.UpdateStencilWithActualObject(entityID);
-                //        engine->AssimpManager.DebugNormals(Mesh, entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE), CameraComponent::CameraType::Editor_Camera);
+                        /*************************************************************************
+                          Render Without Stencer , Render Models to GameView
+                        *************************************************************************/
+                        engine->MaterialManager.DoNotUpdateStencil();
+                        engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_GAME, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME),
+                            &box, CameraComponent::CameraType::Game_Camera);
 
-                //        /*************************************************************************
-                //          Render Without Stencer , Render Models to GameView
-                //        *************************************************************************/
-                //        engine->MaterialManager.DoNotUpdateStencil();
-                //        engine->AssimpManager.MeshDraw(Mesh, entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_GAME), engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_GAME),
-                //            &box, CameraComponent::CameraType::Game_Camera);
+                        // Top View Port
+                        if (engine->editorManager->GetEditorWindow<TopSwitchViewWindow>()->IsVisible)
+                        {
+                            engine->MaterialManager.DoNotUpdateStencil();
+                            engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_TOP, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_TOP),
+                                &box, CameraComponent::CameraType::TopView_Camera);
+                        }
 
-                //        // Top View Port
-                //        if (engine->editorManager->GetEditorWindow<TopSwitchViewWindow>()->IsVisible)
-                //        {
-                //            engine->MaterialManager.DoNotUpdateStencil();
-                //            engine->AssimpManager.MeshDraw(Mesh, entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_TOP), engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_TOP),
-                //                &box, CameraComponent::CameraType::TopView_Camera);
-                //        }
+                        // Bottom View port
+                        if (engine->editorManager->GetEditorWindow<BottomSwitchViewWindow>()->IsVisible)
+                        {
+                            engine->MaterialManager.DoNotUpdateStencil();
+                            engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_BOTTOM, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_BOTTOM),
+                                &box, CameraComponent::CameraType::BottomView_Camera);
+                        }
 
-                //        // Bottom View port
-                //        if (engine->editorManager->GetEditorWindow<BottomSwitchViewWindow>()->IsVisible)
-                //        {
-                //            engine->MaterialManager.DoNotUpdateStencil();
-                //            engine->AssimpManager.MeshDraw(Mesh, entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_BOTTOM), engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_BOTTOM),
-                //                &box, CameraComponent::CameraType::BottomView_Camera);
-                //        }
+                        // Left View Port
+                        if (engine->editorManager->GetEditorWindow<LeftSwitchViewWindow>()->IsVisible)
+                        {
+                            engine->MaterialManager.DoNotUpdateStencil();
+                            engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_LEFT, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_LEFT),
+                                &box, CameraComponent::CameraType::LeftView_Camera);
+                        }
 
-                //        // Left View Port
-                //        if (engine->editorManager->GetEditorWindow<LeftSwitchViewWindow>()->IsVisible)
-                //        {
-                //            engine->MaterialManager.DoNotUpdateStencil();
-                //            engine->AssimpManager.MeshDraw(Mesh, entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_LEFT), engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_LEFT),
-                //                &box, CameraComponent::CameraType::LeftView_Camera);
-                //        }
+                        // Right ViewPort
+                        if (engine->editorManager->GetEditorWindow<RightSwitchViewWindow>()->IsVisible)
+                        {
+                            engine->MaterialManager.DoNotUpdateStencil();
+                            engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_RIGHT, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_RIGHT),
+                                &box, CameraComponent::CameraType::RightView_camera);
+                        }
 
-                //        // Right ViewPort
-                //        if (engine->editorManager->GetEditorWindow<RightSwitchViewWindow>()->IsVisible)
-                //        {
-                //            engine->MaterialManager.DoNotUpdateStencil();
-                //            engine->AssimpManager.MeshDraw(Mesh, entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_RIGHT), engine->GraphicsManager.GetRenderMode(FrameBufferMode::FBM_RIGHT),
-                //                &box, CameraComponent::CameraType::RightView_camera);
-                //        }
-
-                //        engine->MaterialManager.Highlight3DModels(entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE));
-                //    }
-                //}
+                        engine->MaterialManager.Highlight3DModels(entityID, FrameBufferMode::FBM_SCENE);
+                    }
+                }
             }
 
             /*************************************************************************
               Render Without Stencer , Frustrum to Scene View
             *************************************************************************/
-            //engine->MaterialManager.DoNotUpdateStencil();
-            //engine->gDebugManager.DrawDebugShapes(engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
+            engine->MaterialManager.DoNotUpdateStencil();
+            engine->gDebugManager.DrawDebugShapes(FrameBufferMode::FBM_SCENE);
 
             engine->MaterialManager.StencilBufferClear();
         }

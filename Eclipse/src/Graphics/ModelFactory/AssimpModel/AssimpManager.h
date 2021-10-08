@@ -47,10 +47,10 @@ namespace Eclipse
 		// Get Current Model Factory Count
 		size_t MeshFactoryCount();
 		// Render Function that uses the Container that stores MeshComponent 
-		void MeshDraw(MeshComponent& ModelMesh, unsigned int ID, unsigned int FrameBufferID, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
-		void DebugNormals(MeshComponent& ModelMesh, unsigned int ID, unsigned int FrameBufferID, CameraComponent::CameraType _camType);
+		void MeshDraw(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
+		void DebugNormals(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, CameraComponent::CameraType _camType);
 		// Upload to Shader
-		void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID, AABB_* box);
+		void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID, AABB_* box);
 		// Delete Model from MeshContainer Using ID
 		void DeleteItem(unsigned int index);
 		// Cleanup
@@ -58,7 +58,7 @@ namespace Eclipse
 		// Check Current path is correct
 		void TestPath(std::string& path);
 		// Draw function that takes in Mesh Component
-		void Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent&, unsigned int, CameraComponent::CameraType);
+		void Render(Shader& shader, GLenum MOde, MeshComponent&, unsigned int );
 		void InsertModelMap(std::string& NameofModel, std::string& Directory);
 		// Destructor
 		~AssimpModelManager();

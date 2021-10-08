@@ -339,7 +339,7 @@ namespace Eclipse
 	void Eclipse::GraphicsManager::DrawDebugBoxes()
 	{
 		// render boxes
-		engine->GraphicsManager.AllAABBs.DrawAll(engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
+		engine->GraphicsManager.AllAABBs.DrawAll(FrameBufferMode::FBM_SCENE);
 	}
 
 	std::string Eclipse::GraphicsManager::GetModelName(unsigned int modelname)

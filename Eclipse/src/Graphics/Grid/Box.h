@@ -36,6 +36,6 @@ namespace Eclipse
         void AddInstance(BoundingRegion& br);
         void Cleanup();
         void Reset();
-        void DrawAll(unsigned int FramebufferID);
+        void DrawAll(FrameBufferMode);
     };
 }

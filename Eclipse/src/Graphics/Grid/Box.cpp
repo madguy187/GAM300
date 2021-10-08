@@ -172,13 +172,13 @@ namespace Eclipse
         return DrawAABBS;
     }
 
-    void AABB_::DrawAll(unsigned int FramebufferID)
+    void AABB_::DrawAll(FrameBufferMode in )
     {
         if (DrawAABBS)
         {
             if (Offsets.size() > 0)
             {
-                engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SCENE);
+                engine->gFrameBufferManager->UseFrameBuffer(in);
                 CameraComponent camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
                 auto shdrpgm = Graphics::shaderpgms["AABB"];
                 shdrpgm.Use();
