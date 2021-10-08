@@ -102,6 +102,7 @@ namespace Eclipse
 		void InitActor(Entity ent);
 		void UpdateActor(Entity ent);
 		void CreateShape(Entity ent);
+		void UpdateVariables(Entity ent);
 		void UpdateShapes(Entity ent);
 		void GetActorPosition(Entity ent);
 		void ChangeDynamicStatic(Entity ent);
