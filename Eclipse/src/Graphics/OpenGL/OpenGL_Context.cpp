@@ -150,7 +150,7 @@ bool Eclipse::OpenGL_Context::init(std::string configFile)
     glfwWindowHint(GLFW_DEPTH_BITS, 24);
     glfwWindowHint(GLFW_RED_BITS, 8); glfwWindowHint(GLFW_GREEN_BITS, 8);
     glfwWindowHint(GLFW_BLUE_BITS, 8); glfwWindowHint(GLFW_ALPHA_BITS, 8);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE); // window dimensions are static
+    glfwWindowHint(GLFW_RESIZABLE, GL_TRUE); // window dimensions are static
 
     prevWidth = width;
     prevHeight = height;
