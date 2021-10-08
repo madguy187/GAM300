@@ -23,11 +23,9 @@ namespace Eclipse
 		DirectionalLightcounter++;
 	}
 
-	void DirectionalLight::Draw(unsigned int EntityId,DirectionalLightComponent* in, unsigned int framebufferID, unsigned int IndexID, GLenum mode)
+	void DirectionalLight::Draw(unsigned int EntityId,DirectionalLightComponent* in, FrameBufferMode Mode, unsigned int IndexID, GLenum mode)
 	{
-		//glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
-
-		engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SCENE);
+		engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
 		auto& shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
 		shdrpgm.Use();

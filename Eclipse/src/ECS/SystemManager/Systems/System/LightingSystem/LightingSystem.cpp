@@ -42,34 +42,19 @@ namespace Eclipse
                 {
                     auto& DirectionalLight = engine->world.GetComponent<DirectionalLightComponent>(LightEntityID);
 
-                    engine->LightManager.DrawDirectionalLight(
-                        LightEntityID,
-                        &DirectionalLight, // DirectionalLightComponent
-                        engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID(), // FrameBufferID
-                        DirectionalLight.Counter, // ID used to loop in shaders
-                        GL_FILL);
+                    engine->LightManager.DrawDirectionalLight(LightEntityID, &DirectionalLight, FrameBufferMode::FBM_SCENE, DirectionalLight.Counter, GL_FILL);
                 }
                 else if (engine->world.CheckComponent<SpotLightComponent>(LightEntityID))
                 {
                     auto& SpotLight = engine->world.GetComponent<SpotLightComponent>(LightEntityID);
 
-                    engine->LightManager.DrawSpotLight(
-                        LightEntityID,
-                        &SpotLight, // SpotLightComponent
-                        engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID(), // FrameBuffer ID
-                        SpotLight.Counter, // ID used to loop in shaders
-                        GL_FILL);
+                    engine->LightManager.DrawSpotLight(LightEntityID, &SpotLight, FrameBufferMode::FBM_SCENE, SpotLight.Counter, GL_FILL);
                 }
                 else if (engine->world.CheckComponent<PointLightComponent>(LightEntityID))
                 {
                     auto& PointLight = engine->world.GetComponent<PointLightComponent>(LightEntityID);
 
-                    engine->LightManager.DrawPointLights(
-                        LightEntityID,
-                        &PointLight, // PointLightComponent
-                        engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID(), // FrameBufferID
-                        PointLight.Counter, // ID used to loop in shaders
-                        GL_FILL);
+                    engine->LightManager.DrawPointLights(LightEntityID, &PointLight, FrameBufferMode::FBM_SCENE, PointLight.Counter, GL_FILL);
                 }
             }
         }

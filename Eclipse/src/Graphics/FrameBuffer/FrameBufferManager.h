@@ -23,5 +23,6 @@ namespace Eclipse
         float GetAspectRatio(FrameBufferMode Mode);
         void UpdateAspectRatio(FrameBufferMode Mode, ECVec2 CurrentViewPortSize);
         void UpdateAspectRatio(FrameBufferMode Mode, glm::vec2 CurrentViewPortSize);
+        void MainWindowSettings();
     };
 }

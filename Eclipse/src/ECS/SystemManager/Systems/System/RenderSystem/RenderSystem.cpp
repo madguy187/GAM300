@@ -100,11 +100,31 @@ namespace Eclipse
                     engine->MaterialManager.DoNotUpdateStencil();
                     engine->GraphicsManager.Draw(FrameBufferMode::FBM_GAME, &Mesh, GL_FILL, entityID, CameraComponent::CameraType::Game_Camera);
 
-                    engine->MaterialManager.DoNotUpdateStencil();
-                    engine->GraphicsManager.Draw(FrameBufferMode::FBM_LEFT, &Mesh, GL_FILL, entityID, CameraComponent::CameraType::LeftView_Camera);
+                    if (engine->editorManager->GetEditorWindow<LeftSwitchViewWindow>()->IsVisible)
+                    {
+                        engine->MaterialManager.DoNotUpdateStencil();
+                        engine->GraphicsManager.Draw(FrameBufferMode::FBM_LEFT, &Mesh, GL_FILL, entityID, CameraComponent::CameraType::LeftView_Camera);
+                    }
 
-                    engine->MaterialManager.DoNotUpdateStencil();
-                    engine->GraphicsManager.Draw(FrameBufferMode::FBM_RIGHT, &Mesh, GL_FILL, entityID, CameraComponent::CameraType::RightView_camera);
+                    if (engine->editorManager->GetEditorWindow<RightSwitchViewWindow>()->IsVisible)
+                    {
+                        engine->MaterialManager.DoNotUpdateStencil();
+                        engine->GraphicsManager.Draw(FrameBufferMode::FBM_RIGHT, &Mesh, GL_FILL, entityID, CameraComponent::CameraType::RightView_camera);
+                    }
+
+                    // Top View Port
+                    if (engine->editorManager->GetEditorWindow<TopSwitchViewWindow>()->IsVisible)
+                    {
+                        engine->MaterialManager.DoNotUpdateStencil();
+                        engine->GraphicsManager.Draw(FrameBufferMode::FBM_TOP, &Mesh, GL_FILL, entityID, CameraComponent::CameraType::TopView_Camera);
+                    }
+
+                    // Bottom View port
+                    if (engine->editorManager->GetEditorWindow<BottomSwitchViewWindow>()->IsVisible)
+                    {
+                        engine->MaterialManager.DoNotUpdateStencil();
+                        engine->GraphicsManager.Draw(FrameBufferMode::FBM_BOTTOM, &Mesh, GL_FILL, entityID, CameraComponent::CameraType::BottomView_Camera);
+                    }
 
                     // Highlight
                     engine->MaterialManager.HighlightBasicPrimitives(entityID, FrameBufferMode::FBM_SCENE);

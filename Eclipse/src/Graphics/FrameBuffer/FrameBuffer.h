@@ -62,6 +62,7 @@ namespace Eclipse
         static void ShowWindow(FrameBuffer g, const char* input);
         void CreateFrameBuffer(unsigned int p_width, unsigned int p_height);
         void FrameBuffer::DeleteBuffers();
+        void FrameBuffer::SetViewPort() const;
 
     public:
         // POST PROCESS HERE ==========================

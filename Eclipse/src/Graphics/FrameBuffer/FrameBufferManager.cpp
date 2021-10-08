@@ -22,7 +22,7 @@ namespace Eclipse
         }
 
         FrameBufferContainer.insert({in, std::make_shared<FrameBuffer>(width_, height_, in)});
-        ENGINE_CORE_INFO("FrameBuffer Ready For Use");
+        //ENGINE_CORE_INFO("FrameBuffer Ready For Use");
     }
 
     void FrameBufferManager::FrameBufferDraw()
@@ -105,5 +105,12 @@ namespace Eclipse
     void FrameBufferManager::UpdateAspectRatio(FrameBufferMode Mode, glm::vec2 CurrentViewPortSize)
     {
         FrameBufferContainer[Mode]->AspectRatio = CurrentViewPortSize.x / CurrentViewPortSize.y;
+    }
+
+    void FrameBufferManager::MainWindowSettings()
+    {
+        glViewport(0, 0, OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight());
+        engine->GraphicsManager.SetBackGroundColour();
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     }
 }

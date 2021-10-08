@@ -11,7 +11,7 @@ namespace Eclipse
     {
         m_data.hiddentype = in;
         CreateFrameBuffer(m_width, m_height);
-        ENGINE_CORE_INFO("FrameBuffer Created Successfully");
+        //ENGINE_CORE_INFO("FrameBuffer Created Successfully");
     }
 
     FrameBuffer::FrameBuffer(unsigned int p_width, unsigned int p_height, FrameBufferMode in) :
@@ -35,8 +35,8 @@ namespace Eclipse
         m_data.hiddentype = in;
         Name = getStringForEnum(static_cast<int>(in));
         CreateFrameBuffer(m_width, m_height);
-        std::string SuccessMsg = "FrameBuffer [" + Name + "]  Created Successfully";
-        ENGINE_CORE_INFO(SuccessMsg.c_str());
+        //std::string SuccessMsg = "FrameBuffer [" + Name + "]  Created Successfully";
+        //ENGINE_CORE_INFO(SuccessMsg.c_str());
     }
 
     FrameBuffer::~FrameBuffer()
@@ -52,6 +52,11 @@ namespace Eclipse
     void FrameBuffer::Unbind() const
     {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
+
+    void FrameBuffer::SetViewPort() const
+    {
+        glViewport(0, 0, m_width, m_height);
     }
 
     void FrameBuffer::Clear() const

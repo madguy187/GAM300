@@ -53,19 +53,19 @@ namespace Eclipse
         return ApplyLighting;
     }
 
-    void LightManager::DrawPointLights(unsigned int EntityId, PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
+    void LightManager::DrawPointLights(unsigned int EntityId, PointLightComponent* in, FrameBufferMode Mode, unsigned int indexID, GLenum mode)
     {
-        _allpointlights.Draw(EntityId, in, framebufferID, indexID, mode);
+        _allpointlights.Draw(EntityId, in, Mode, indexID, mode);
     }
 
-    void LightManager::DrawDirectionalLight(unsigned int EntityId, DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
+    void LightManager::DrawDirectionalLight(unsigned int EntityId, DirectionalLightComponent* in, FrameBufferMode Mode, unsigned int indexID, GLenum mode)
     {
-        _DirectionalLights.Draw(EntityId, in, framebufferID, indexID, mode);
+        _DirectionalLights.Draw(EntityId, in, Mode, indexID, mode);
     }
 
-    void LightManager::DrawSpotLight(unsigned int EntityId, SpotLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
+    void LightManager::DrawSpotLight(unsigned int EntityId, SpotLightComponent* in, FrameBufferMode Mode, unsigned int indexID, GLenum mode)
     {
-        _allspotlights.Draw(EntityId, in, framebufferID, indexID, mode);
+        _allspotlights.Draw(EntityId, in, Mode, indexID, mode);
     }
 
     void LightManager::CreateAttenuationLevels()
