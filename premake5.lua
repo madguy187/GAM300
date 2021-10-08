@@ -69,9 +69,9 @@ project "Eclipse"
 		"Dep/PhysX/include/solver",
 		"Dep/PhysX/include/task",
 		"Dep/PhysX/include/vehicle",
-        "Dep/mono/include/mono-2.0",
+    "Dep/mono/include/mono-2.0",
 		"Dep/ASSIMP/include/assimp",
-	    "Dep/ASSIMP",
+	  "Dep/ASSIMP",
 		"Dep/Fmod/core/inc",
 		"Dep/Tracy"
 	}
@@ -97,11 +97,11 @@ project "Eclipse"
   {
     "Dep/GLFW/lib-vc2019",
     "Dep/GLEW/lib/Release/x64",
-	"Dep/PhysX/Debug",
+	  "Dep/PhysX/Debug",
     "Dep/mono/lib/",
-	"Dep/ASSIMP/",
-	"Dep/Fmod/core/lib/x64",
-	"Dep/Tracy"
+	  "Dep/ASSIMP/",
+	  "Dep/Fmod/core/lib/x64",
+	  "Dep/Tracy"
   }
   
   disablewarnings 
@@ -143,27 +143,28 @@ project "Eclipse"
 	  "fmodstudioL_vc.lib",
 	  "TracyProfiler.lib"
   }
-    postbuildcommands
-    {
+
+  postbuildcommands
+  {
 	  "{COPY} ../Dep/PhysX/Debug/glut32.dll %{cfg.targetdir}",
-      "{COPY} ../Dep/PhysX/Debug/PhysX_64.dll %{cfg.targetdir}",
+    "{COPY} ../Dep/PhysX/Debug/PhysX_64.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/PhysX/Debug/PhysXCommon_64.dll %{cfg.targetdir}",
-      "{COPY} ../Dep/PhysX/Debug/PhysXCooking_64.dll %{cfg.targetdir}",
+    "{COPY} ../Dep/PhysX/Debug/PhysXCooking_64.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/PhysX/Debug/PhysXDevice64.dll %{cfg.targetdir}",
-      "{COPY} ../Dep/PhysX/Debug/PhysXFoundation_64.dll %{cfg.targetdir}",
+    "{COPY} ../Dep/PhysX/Debug/PhysXFoundation_64.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/PhysX/Debug/PhysXGpu_64.dll %{cfg.targetdir}",
-      "{COPY} ../Dep/mono/bin/mono-2.0-sgen.dll %{cfg.targetdir}",
+    "{COPY} ../Dep/mono/bin/mono-2.0-sgen.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodL.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodL64.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodstudioL64.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodstudioL.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/Tracy/TracyProfiler.dll %{cfg.targetdir}",
+    "{COPY} ../Dep/GLEW/bin/Release/x64/glew32.dll %{cfg.targetdir}",
+    "{COPY} ../Dep/GLFW/lib-mingw-w64/glfw3.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.dll ../Eclipse",
 	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.lib ../Eclipse"
-    }
-	
-	
+  }
 
 	filter "configurations:Release"
 		defines "ENGINE_RELEASE"
@@ -173,11 +174,11 @@ project "Eclipse"
   {
     "Dep/GLFW/lib-vc2019",
     "Dep/GLEW/lib/Release/x64",
-	"Dep/PhysX/Release",
+	  "Dep/PhysX/Release",
     "Dep/mono/lib/",
-	"Dep/ASSIMP/",
-	"Dep/Fmod/core/lib/x64",
-	"Dep/Tracy"
+	  "Dep/ASSIMP/",
+	  "Dep/Fmod/core/lib/x64",
+	  "Dep/Tracy"
   }
   
   disablewarnings 
@@ -214,45 +215,35 @@ project "Eclipse"
 	  "SnippetUtils_static_64.lib",
 	  "assimp-vc142-mtd",
 	  "fmod_vc.lib",
-      "fmodstudio64_vc.lib",
+    "fmodstudio64_vc.lib",
 	  "TracyProfiler.lib"
   }
 
-    postbuildcommands
-    {
-      "{COPY} ../Dep/PhysX/Release/glut32.dll %{cfg.targetdir}",
-      "{COPY} ../Dep/PhysX/Release/PhysX_64.dll %{cfg.targetdir}",
+  postbuildcommands
+  {
+    "{COPY} ../Dep/PhysX/Release/glut32.dll %{cfg.targetdir}",
+    "{COPY} ../Dep/PhysX/Release/PhysX_64.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/PhysX/Release/PhysXCommon_64.dll %{cfg.targetdir}",
-      "{COPY} ../Dep/PhysX/Release/PhysXCooking_64.dll %{cfg.targetdir}",
+    "{COPY} ../Dep/PhysX/Release/PhysXCooking_64.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/PhysX/Release/PhysXDevice64.dll %{cfg.targetdir}",
-      "{COPY} ../Dep/PhysX/Release/PhysXFoundation_64.dll %{cfg.targetdir}",
+    "{COPY} ../Dep/PhysX/Release/PhysXFoundation_64.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/PhysX/Release/PhysXGpu_64.dll %{cfg.targetdir}",
-      "{COPY} ../Dep/mono/bin/mono-2.0-sgen.dll %{cfg.targetdir}",
+    "{COPY} ../Dep/mono/bin/mono-2.0-sgen.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/Fmod/core/lib/x64/fmod.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/Fmod/core/lib/x64/fmod64.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/Fmod/core/lib/x64/fmodstudio64.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/Tracy/TracyProfiler.dll %{cfg.targetdir}",
+    "{COPY} ../Dep/GLEW/bin/Release/x64/glew32.dll %{cfg.targetdir}",
+    "{COPY} ../Dep/GLFW/lib-mingw-w64/glfw3.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.dll ../Eclipse",
 	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.lib ../Eclipse"
-    }
+  }
 
 	filter "configurations:Dist"
 		defines "ENGINE_DIST"
 		optimize "On"
 	
-
-    workspace "Eclipse"
-    architecture "x64"
-    startproject "Eclipse"
-  
-    configurations
-    {
-      "Debug",
-      "Release",
-      "Dist"
-    }
-  
   outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
   
 project "Compiler"
@@ -272,21 +263,21 @@ project "Compiler"
   {
     "%{prj.name}/**.h",
     "%{prj.name}/**.cpp",
-	"%{prj.name}/**.hpp"
+	  "%{prj.name}/**.hpp"
   }
 
   includedirs
   {
-	"%{prj.name}/Compiler/Geometry",
-	"%{prj.name}/Compiler/ICompiler",
-	"%{prj.name}/Compiler/Prefabs",
-	"%{prj.name}/Compiler/Texture",
-	"%{prj.name}/Compiler/Texture",
-	"%{prj.name}/Compiler",
-	"Dep/GLM/glm",
-	"Dep/",
+	  "%{prj.name}/Compiler/Geometry",
+	  "%{prj.name}/Compiler/ICompiler",
+	  "%{prj.name}/Compiler/Prefabs",
+	  "%{prj.name}/Compiler/Texture",
+	  "%{prj.name}/Compiler/Texture",
+	  "%{prj.name}/Compiler",
+	  "Dep/GLM/glm",
+	  "Dep/",
     "%{prj.name}/Assimp",
-	"%{prj.name}/Source"
+	  "%{prj.name}/Source"
   }
   
 
@@ -297,7 +288,7 @@ project "Compiler"
 
     libdirs
     {
-	 "Dep/ASSIMP/"
+	    "Dep/ASSIMP/"
     }
 
     links

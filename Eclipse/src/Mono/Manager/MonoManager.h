@@ -5,8 +5,8 @@ namespace Eclipse
 {
 	struct MonoScript
 	{
-		std::string scriptName;
-		MonoObject* obj;
+		std::string scriptName{};
+		MonoObject* obj = nullptr;
 	};
 
 	class MonoManager

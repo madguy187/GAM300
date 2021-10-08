@@ -91,6 +91,8 @@ namespace Eclipse
 		SerializeComponent<SpotLightComponent>(w, ent);
 
 		SerializeComponent<TransformComponent>(w, ent);
+
+		SerializeComponent<ScriptComponent>(w, ent);
 	}
 
 	bool SerializationManager::DeserializeAllComponents(World& w, const Entity& ent, bool PrefabUse)
