@@ -223,21 +223,21 @@ namespace Eclipse
 		engine->GraphicsManager.CreateSky("src/Assets/Sky");
 	}
 
-	void Eclipse::GraphicsManager::RenderSky(unsigned int FrameBufferID)
+	void Eclipse::GraphicsManager::RenderSky(FrameBufferMode mode)
 	{
 		if (DrawSky == true)
 		{
-			engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SCENE);
+			engine->gFrameBufferManager->UseFrameBuffer(mode);
 			auto& shdrpgm = Graphics::shaderpgms["Sky"];
 
 			Sky->Render(shdrpgm);
 		}
 	}
 
-	void Eclipse::GraphicsManager::Draw(unsigned int FrameBufferID, MeshComponent* _spritecomponent, GLenum mode, unsigned int ID, CameraComponent::CameraType _camType)
+	void Eclipse::GraphicsManager::Draw(FrameBufferMode Mode, MeshComponent* _spritecomponent, GLenum mode, unsigned int ID, CameraComponent::CameraType _camType)
 	{
 		auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
-		engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SCENE);
+		engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
 		auto& shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
 		shdrpgm.Use();
@@ -249,14 +249,13 @@ namespace Eclipse
 		glPolygonMode(GL_FRONT_AND_BACK, mode);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		CheckUniformLoc(&shdrpgm, *(_spritecomponent), ID, FrameBufferID, _camera);
+		CheckUniformLoc(&shdrpgm, *(_spritecomponent), ID, _camera);
 		DrawIndexed(_spritecomponent, GL_UNSIGNED_SHORT);
 
 		// Part 5: Clean up
 		glBindVertexArray(0);
 		shdrpgm.UnUse();
-
-		engine->gFrameBufferManager->UnBind(FrameBufferMode::FBM_SCENE);
+		//engine->gFrameBufferManager->UnBind(FrameBufferMode::FBM_SCENE);
 	}
 
 	void Eclipse::GraphicsManager::DrawIndexed(MeshComponent* in, GLenum mode)
@@ -287,10 +286,8 @@ namespace Eclipse
 		}
 	}
 
-	void Eclipse::GraphicsManager::CheckUniformLoc(Shader* _shdrpgm, MeshComponent& sprite, unsigned int id, unsigned int framebufferID, CameraComponent& camera)
+	void Eclipse::GraphicsManager::CheckUniformLoc(Shader* _shdrpgm, MeshComponent& sprite, unsigned int id, CameraComponent& camera)
 	{
-		(void)framebufferID;
-
 		TransformComponent camerapos;
 		TransformComponent& trans = engine->world.GetComponent<TransformComponent>(id);
 
@@ -431,14 +428,14 @@ namespace Eclipse
 
 	void Eclipse::GraphicsManager::FinalRender()
 	{
-		//engine->MaterialManager.DoNotUpdateStencil();
-		//DrawDebugBoxes();
-		//
+		engine->MaterialManager.DoNotUpdateStencil();
+		DrawDebugBoxes();
+		
 		engine->MaterialManager.DoNotUpdateStencil();
 		engine->GridManager->DrawGrid(FrameBufferMode::FBM_SCENE);
-		//
-		//engine->MaterialManager.DoNotUpdateStencil();
-		//PostProcessUpdate();
+		
+		engine->MaterialManager.DoNotUpdateStencil();
+		PostProcessUpdate();
 	}
 
 	void Eclipse::GraphicsManager::DrawEntireGrid()

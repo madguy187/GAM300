@@ -234,8 +234,6 @@ namespace Eclipse
             engine->GraphicsManager.SetBackGroundColour();
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            engine->gFrameBufferManager->GlobalBind();
-
             Game_Clock.set_timeSteps(0);
             framecount++;
             float newTime = static_cast<float>(clock());
@@ -301,8 +299,7 @@ namespace Eclipse
             /*world.Update<ParentSystem>();
             world.Update<ChildSystem>();*/
 
-            // FRAMEBUFFER BIND =============================
-            //engine->GraphicsManager.GlobalFrameBufferBind();
+            engine->gFrameBufferManager->GlobalBind();
 
             // Reset DebugBoxes =============================
             //engine->GraphicsManager.ResetInstancedDebugBoxes();
@@ -311,12 +308,12 @@ namespace Eclipse
             world.Update<LightingSystem>();
             //
             // // PICKINGSYSTEM =============================
-            // world.Update<PickingSystem>();
+            world.Update<PickingSystem>();
             //
             // // AUDIOSYSTEM =============================
-            // world.Update<AudioSystem>();
+            world.Update<AudioSystem>();
 
-             // RENDERSYSTEM =============================
+            // RENDERSYSTEM =============================
             world.Update<RenderSystem>();
 
             // Final DRAW ================================ 

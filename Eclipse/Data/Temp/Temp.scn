@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<Entities Size="3">
+<Entities Size="4">
     <Entity_0 ID="0">
         <CameraComponent>
             <eyeAlpha value="0" />
@@ -8,16 +8,16 @@
             <nearPlane value="0.1" />
             <farPlane value="500" />
             <aspect value="1.90722" />
-            <eyePos x="-12.4786" y="13.0117" z="19.6862" />
-            <eyeFront x="0.234044" y="-0.551937" z="-0.800368" />
-            <upVec x="0.15491" y="0.833886" z="-0.529752" />
-            <rightVec x="0.959805" y="-0" z="0.280667" />
+            <eyePos x="-11.1379" y="27.7465" z="47.3005" />
+            <eyeFront x="0.133104" y="-0.560639" z="-0.817293" />
+            <upVec x="0.0901185" y="0.82806" z="-0.553349" />
+            <rightVec x="0.986996" y="-0" z="0.160742" />
             <worldUp x="0" y="1" z="0" />
             <viewMtx Col="4" Row="4">
-                <Col0 _00="0.959805" _01="0.15491" _02="-0.234044" _03="0" />
-                <Col1 _10="9.68575e-08" _11="0.833886" _12="0.551937" _13="0" />
-                <Col2 _20="0.280667" _21="-0.529752" _22="0.800368" _23="0" />
-                <Col3 _30="6.45173" _31="1.51161" _32="-25.8584" _33="1" />
+                <Col0 _00="0.986996" _01="0.0901185" _02="-0.133105" _03="0" />
+                <Col1 _10="5.21541e-08" _11="0.82806" _12="0.560639" _13="0" />
+                <Col2 _20="0.160743" _21="-0.553349" _22="0.817292" _23="0" />
+                <Col3 _30="3.38988" _31="4.20162" _32="-55.6967" _33="1" />
             </viewMtx>
             <projMtx Col="4" Row="4">
                 <Col0 _00="1.26583" _01="0" _02="0" _03="0" />
@@ -37,7 +37,7 @@
             <IsAChild value="false" />
         </EntityComponent>
         <TransformComponent>
-            <position x="-12.4786" y="13.0117" z="19.6862" />
+            <position x="-11.1379" y="27.7465" z="47.3005" />
             <rotation x="-40" y="-90" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
@@ -70,6 +70,58 @@
         </TransformComponent>
     </Entity_1>
     <Entity_2 ID="7">
+        <AABBComponent>
+            <center x="-9.44785" y="0" z="0" />
+            <Min x="-11.9478" y="-2.5" z="-2.5" />
+            <Max x="-6.94785" y="2.5" z="2.5" />
+        </AABBComponent>
+        <EntityComponent>
+            <Tag value="Cylinder" />
+            <Name value="Cylinder" />
+            <Child size="0" />
+            <Parent size="0" />
+            <IsAChild value="false" />
+        </EntityComponent>
+        <MaterialComponent>
+            <Modeltype value="BasicPrimitives" />
+            <ambient x="0" y="0" z="0" />
+            <diffuse x="1" y="1" z="1" />
+            <specular x="1" y="1" z="1" />
+            <NoTextures value="true" />
+            <shininess value="0.25" />
+            <MaximumShininess value="128" />
+            <ComboIndex value="1" />
+            <TextureComboIndex value="0" />
+            <Type value="TT_UNASSIGNED" />
+            <hasTexture value="false" />
+            <TextureRef value="Default" />
+            <TextureKey value="" />
+            <HoldingTextures size="0" />
+        </MaterialComponent>
+        <MeshComponent>
+            <MeshName value="" />
+            <color x="1" y="1" z="1" />
+            <textureIdx x="0" y="0" />
+            <isQuad value="false" />
+            <modelNDC_xform Col="4" Row="4">
+                <Col0 _00="0" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="0" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="0" _23="0" />
+                <Col3 _30="0" _31="0" _32="0" _33="0" />
+            </modelNDC_xform>
+            <modelRef value="Cylinder" />
+            <shaderRef value="shader3DShdrpgm" />
+            <transparency value="1" />
+            <ENV_MAP value="false" />
+            <ENV_TYPE value="MT_REFLECT" />
+        </MeshComponent>
+        <TransformComponent>
+            <position x="-9.44785" y="0" z="0" />
+            <rotation x="0" y="0" z="0" />
+            <scale x="5" y="5" z="5" />
+        </TransformComponent>
+    </Entity_2>
+    <Entity_3 ID="8">
         <AABBComponent>
             <center x="0" y="0" z="0" />
             <Min x="-2.5" y="-2.5" z="-2.5" />
@@ -120,5 +172,5 @@
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
-    </Entity_2>
+    </Entity_3>
 </Entities>

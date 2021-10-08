@@ -79,7 +79,7 @@ namespace Eclipse
 
         //  bind back to default framebuffer and draw with the attached framebuffer
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        //glBindTexture(GL_TEXTURE_2D, g.GetTextureColourBufferID());
+        glBindTexture(GL_TEXTURE_2D, g.GetTextureColourBufferID());
     }
 
     void FrameBuffer::DeleteBuffers()

@@ -178,8 +178,7 @@ namespace Eclipse
         {
             if (Offsets.size() > 0)
             {
-                glBindFramebuffer(GL_FRAMEBUFFER, FramebufferID);
-
+                engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SCENE);
                 CameraComponent camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
                 auto shdrpgm = Graphics::shaderpgms["AABB"];
                 shdrpgm.Use();

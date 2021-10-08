@@ -79,14 +79,14 @@ namespace Eclipse
 
         void DoNotUpdateStencil();
         void StencilBufferClear();
-        void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID);
+        void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID);
         void MeshHighlight(unsigned int FrameBufferID, GLenum Mode);
         void UpdateMaterial(MaterialComponent& in);
-        void Highlight3DModels(unsigned int FrameBufferID, unsigned int ModelID, GLenum mode);
+        void Highlight3DModels(FrameBufferMode, unsigned int ModelID, GLenum mode);
         void UpdateStencilWith_Outline(unsigned int ID);
         void UpdateStencilWithActualObject(unsigned int ID);
-        void HighlightBasicPrimitives(unsigned int EntityId, unsigned int FrameBufferID);
-        void Highlight3DModels(unsigned int EntityId, unsigned int FrameBufferID);
+        void HighlightBasicPrimitives(unsigned int EntityId, FrameBufferMode Mode);
+        void Highlight3DModels(unsigned int EntityId, FrameBufferMode);
         bool HighlightClick(unsigned int ModelID);
         bool UnHighlight(unsigned int ModelID);
 
@@ -97,8 +97,8 @@ namespace Eclipse
 
     private:
         void CheckUnniformLocation(Shader& in, MaterialComponent& inside);
-        void CheckUniformLoc(MeshComponent& sprite, Shader& in, unsigned int id, unsigned int framebufferID);
-        void Highlight(unsigned int FrameBufferID, unsigned int ModelID, GLenum mode);
+        void CheckUniformLoc(MeshComponent& sprite, Shader& in, unsigned int id, FrameBufferMode);
+        void Highlight(FrameBufferMode FrameBufferID, unsigned int ModelID, GLenum mode);
     };
 }
 

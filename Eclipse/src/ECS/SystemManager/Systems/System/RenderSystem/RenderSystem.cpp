@@ -62,10 +62,10 @@ namespace Eclipse
               Render Without Stencer
               Render Sky to Sceneview
             *************************************************************************/
-            engine->MaterialManager.DoNotUpdateStencil();
-            engine->GraphicsManager.RenderSky(engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID());
+            // engine->MaterialManager.DoNotUpdateStencil();
+            // engine->GraphicsManager.RenderSky(FrameBufferMode::FBM_SCENE);
 
-            // Basic Primitives Render Start =============================
+             // Basic Primitives Render Start =============================
             for (auto const& entityID : RenderablesVsFrustrum)
             {
                 // If No Mesh Component , Do not Continue
@@ -92,22 +92,22 @@ namespace Eclipse
                       Render Primitives to SceneView
                     *************************************************************************/
                     engine->MaterialManager.UpdateStencilWithActualObject(entityID);
-                    engine->GraphicsManager.Draw(engine->gFrameBufferManager->GetFrameBufferID(FrameBufferMode::FBM_SCENE), &Mesh, GL_FILL, entityID, CameraComponent::CameraType::Editor_Camera);
+                    engine->GraphicsManager.Draw(FrameBufferMode::FBM_SCENE, &Mesh, GL_FILL, entityID, CameraComponent::CameraType::Editor_Camera);
 
                     /*************************************************************************
                       Render Without Stencer , Render Primitivies to GameView
                     *************************************************************************/
-                    // engine->MaterialManager.DoNotUpdateStencil();
-                    // engine->GraphicsManager.Draw(engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_GAME), &Mesh, GL_FILL, entityID, CameraComponent::CameraType::Game_Camera);
+                    //engine->MaterialManager.DoNotUpdateStencil();
+                    //engine->GraphicsManager.Draw(FrameBufferMode::FBM_GAME, &Mesh, GL_FILL, entityID, CameraComponent::CameraType::Game_Camera);
                     //
-                    // engine->MaterialManager.DoNotUpdateStencil();
-                    // engine->GraphicsManager.Draw(engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_LEFT), &Mesh, GL_FILL, entityID, CameraComponent::CameraType::LeftView_Camera);
+                    //engine->MaterialManager.DoNotUpdateStencil();
+                    //engine->GraphicsManager.Draw(FrameBufferMode::FBM_LEFT, &Mesh, GL_FILL, entityID, CameraComponent::CameraType::LeftView_Camera);
                     //
-                    // engine->MaterialManager.DoNotUpdateStencil();
-                    // engine->GraphicsManager.Draw(engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_RIGHT), &Mesh, GL_FILL, entityID, CameraComponent::CameraType::RightView_camera);
-                    //
-                    // // Highlight
-                    // engine->MaterialManager.HighlightBasicPrimitives(entityID, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE));
+                    //engine->MaterialManager.DoNotUpdateStencil();
+                    //engine->GraphicsManager.Draw(FrameBufferMode::FBM_RIGHT, &Mesh, GL_FILL, entityID, CameraComponent::CameraType::RightView_camera);
+
+                     // Highlight
+                    engine->MaterialManager.HighlightBasicPrimitives(entityID, FrameBufferMode::FBM_SCENE);
                 }
 
                 //else
