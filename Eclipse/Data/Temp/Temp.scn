@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <Entities Size="3">
-    <Entity_0 ID="6">
+    <Entity_0 ID="0">
         <CameraComponent>
             <eyeAlpha value="0" />
             <eyeBeta value="-90" />
@@ -42,7 +42,7 @@
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_0>
-    <Entity_1 ID="7">
+    <Entity_1 ID="6">
         <DirectionalLightComponent>
             <Counter value="0" />
             <visible value="false" />
@@ -69,21 +69,21 @@
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_1>
-    <Entity_2 ID="8">
+    <Entity_2 ID="7">
         <AABBComponent>
-            <center x="-2.98023e-08" y="-2.98023e-08" z="1.49012e-08" />
-            <Min x="-2.5" y="-2.5" z="-2.5" />
-            <Max x="2.5" y="2.5" z="2.5" />
+            <center x="-8.91281" y="0" z="4.2078" />
+            <Min x="-11.4128" y="-2.5" z="1.7078" />
+            <Max x="-6.41281" y="2.5" z="6.7078" />
         </AABBComponent>
         <EntityComponent>
-            <Tag value="Cube" />
-            <Name value="Cube" />
+            <Tag value="Model" />
+            <Name value="Model" />
             <Child size="0" />
             <Parent size="0" />
             <IsAChild value="false" />
         </EntityComponent>
         <MaterialComponent>
-            <Modeltype value="BasicPrimitives" />
+            <Modeltype value="Models3D" />
             <ambient x="0" y="0" z="0" />
             <diffuse x="1" y="1" z="1" />
             <specular x="1" y="1" z="1" />
@@ -93,13 +93,13 @@
             <ComboIndex value="1" />
             <TextureComboIndex value="0" />
             <Type value="TT_UNASSIGNED" />
-            <hasTexture value="true" />
-            <TextureRef value="FolderIcon" />
-            <TextureKey value="" />
+            <hasTexture value="false" />
+            <TextureRef value="Default" />
+            <TextureKey value="Hello" />
             <HoldingTextures size="0" />
         </MaterialComponent>
         <MeshComponent>
-            <MeshName value="" />
+            <MeshName value="Hello" />
             <color x="1" y="1" z="1" />
             <textureIdx x="0" y="0" />
             <isQuad value="false" />
@@ -115,13 +115,14 @@
             <ENV_MAP value="false" />
             <ENV_TYPE value="MT_REFLECT" />
         </MeshComponent>
-        <ScriptComponent>
-            <scriptList size="1">
-                <Member0 value="Test" />
-            </scriptList>
-        </ScriptComponent>
+        <ModelComponent>
+            <NameOfModel value="" />
+            <Directory value="" />
+            <type value="MT_UNASSIGNED" />
+            <ComboIndex value="0" />
+        </ModelComponent>
         <TransformComponent>
-            <position x="-2.98023e-08" y="-2.98023e-08" z="1.49012e-08" />
+            <position x="-8.91281" y="0" z="4.2078" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>

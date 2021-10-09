@@ -25,7 +25,7 @@ namespace Eclipse
 
 	class AssimpModelManager
 	{
-	private:
+	public:
 		bool HotReloadFlag = false;
 		std::unordered_map<std::string, std::unique_ptr<Mesh>> Geometry;
 		std::vector<std::string> AllPrimitiveModelsNames;

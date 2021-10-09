@@ -224,7 +224,7 @@ namespace Eclipse
 
         // Darren - Please keep this before Game Loop
         engine->GraphicsManager.MassInit();
-
+        BatchRenderer.CreateBuffers();
         //Deserialization(temp)
         /*audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);*/
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))

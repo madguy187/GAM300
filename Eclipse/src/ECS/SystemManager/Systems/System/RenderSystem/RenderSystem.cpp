@@ -42,6 +42,24 @@ namespace Eclipse
 
     void RenderSystem::Update()
     {
+        //if (engine->GraphicsManager.CheckRender == true)
+        //{
+        //    // Estiamtion which models are in our frustrum
+        //    auto RenderablesVsFrustrum = engine->gCullingManager->ReturnContacted();
+        //    for (auto const& entityID : RenderablesVsFrustrum)
+        //    {
+        //        MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
+        //        engine->MaterialManager.UpdateShininess(entityID);
+
+        //        engine->MaterialManager.UpdateStencilWithActualObject(entityID);
+        //        engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_SCENE, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SCENE),
+        //            &engine->GraphicsManager.AllAABBs, CameraComponent::CameraType::Editor_Camera);
+
+        //        engine->MaterialManager.StencilBufferClear();
+        //    }
+        //}
+
+
         ZoneScopedN("Render System")
             engine->Timer.SetName({ SystemName::RENDER });
         engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
@@ -135,7 +153,7 @@ namespace Eclipse
                             engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_SCENE, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SCENE),
                                 &engine->GraphicsManager.AllAABBs, CameraComponent::CameraType::Editor_Camera);
 
-                            // See Normal Vectors
+                            //See Normal Vectors
                             engine->MaterialManager.UpdateStencilWithActualObject(entityID);
                             engine->AssimpManager.DebugNormals(Mesh, entityID, FrameBufferMode::FBM_SCENE, CameraComponent::CameraType::Editor_Camera);
                         }

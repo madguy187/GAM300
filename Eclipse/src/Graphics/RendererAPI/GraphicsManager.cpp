@@ -242,7 +242,7 @@ namespace Eclipse
         auto& shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
         shdrpgm.Use();
 
-        glBindVertexArray(Graphics::models[_spritecomponent->modelRef]->GetVaoID());
+        //glBindVertexArray(Graphics::models[_spritecomponent->modelRef]->GetVaoID());
 
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_CULL_FACE);
@@ -255,7 +255,6 @@ namespace Eclipse
         // Part 5: Clean up
         glBindVertexArray(0);
         shdrpgm.UnUse();
-        //engine->gFrameBufferManager->UnBind(FrameBufferMode::FBM_SCENE);
     }
 
     void Eclipse::GraphicsManager::DrawIndexed(MeshComponent* in, GLenum mode)

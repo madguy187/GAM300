@@ -440,9 +440,13 @@ namespace Eclipse
             }
         }
 
+        // dynamic
+        glBindBuffer(GL_ARRAY_BUFFER, engine->BatchRenderer.m_QuadVB);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * (engine->AssimpManager.Geometry[in.MeshName.data()]->Vertices.size()), &engine->AssimpManager.Geometry[in.MeshName.data()]->Vertices[0]);
+
         // EBO stuff
-        glBindVertexArray(engine->AssimpManager.Geometry[in.MeshName.data()]->VAO);
-        glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(engine->AssimpManager.Geometry[in.MeshName.data()]->Indices.size()), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(engine->BatchRenderer.m_QuadVA);
+        glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(engine->AssimpManager.Geometry[in.MeshName.data()]->Indices.size()), GL_UNSIGNED_INT, nullptr);
         glBindVertexArray(0);
 
         // reset
