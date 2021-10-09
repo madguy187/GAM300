@@ -35,6 +35,9 @@ namespace Eclipse
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, engine->AssimpManager.Geometry["Hello"]->Indices.size() * sizeof(unsigned int), &engine->AssimpManager.Geometry["Hello"]->Indices[0], GL_STATIC_DRAW);
 
         glBindVertexArray(0);
+
+        // reserve
+        DynamicVertices.reserve(100000);
     }
 
     void DynamicBatch::ResetBuffer()

@@ -442,7 +442,14 @@ namespace Eclipse
 
         // dynamic
         glBindBuffer(GL_ARRAY_BUFFER, engine->BatchRenderer.m_QuadVB);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * (engine->AssimpManager.Geometry[in.MeshName.data()]->Vertices.size()), &engine->AssimpManager.Geometry[in.MeshName.data()]->Vertices[0]);
+
+        engine->BatchRenderer.DynamicVertices.insert(
+            engine->BatchRenderer.DynamicVertices.end(), // empty one
+            &engine->AssimpManager.Geometry[in.MeshName.data()]->Vertices[0], // assimp
+            &engine->AssimpManager.Geometry[in.MeshName.data()]->Vertices[engine->AssimpManager.Geometry[in.MeshName.data()]->Vertices.size()]
+        );
+
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * (engine->BatchRenderer.DynamicVertices.size()), &engine->BatchRenderer.DynamicVertices[0]);
 
         // EBO stuff
         glBindVertexArray(engine->BatchRenderer.m_QuadVA);
