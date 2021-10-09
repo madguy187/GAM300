@@ -149,6 +149,12 @@ namespace Eclipse
             AddAttributeToElement("Radius", att_data.radius);
             AddAttributeToElement("Hheight", att_data.hheight);
         }
+        
+        template <>
+        inline void AddAttributeToElement(const std::string& att_name, const MonoScript& att_data)
+        {
+            AddAttributeToElement(att_name, att_data.scriptName);
+        }
 
 		template <typename T>
 		inline void AddAttributeToElement(const std::string& att_name, const std::vector<T>& att_data)
