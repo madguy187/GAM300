@@ -199,7 +199,7 @@ namespace Eclipse
 
 	void SceneWindow::OnSelectEntityEvent()
 	{
-		if (ECGui::IsMouseClicked(0))
+		if (ECGui::IsMouseClicked(0) && !ImGuizmo::IsUsing())
 		{
 			engine->world.GetSystem<PickingSystem>()->EditorUpdate();
 
