@@ -100,6 +100,7 @@ namespace Eclipse
             GLint uniform_var_loc18 = _shdrpgm->GetLocation("NumberOfSpotLights");
             GLint uniform_var_loc19 = _shdrpgm->GetLocation(("spotLights[" + number + "].SurroundingAttenuationLevel").c_str());
             GLint useBlinn_ = _shdrpgm->GetLocation("useBlinn");
+            GLint uniform_var_loc20 = _shdrpgm->GetLocation(("spotLights[" + number + "].direction").c_str());
 
             // position
             GLCall(glUniform3f(uniform_var_loc1, SpotlightTransform.position.getX(), SpotlightTransform.position.getY(), SpotlightTransform.position.getZ()));
@@ -147,6 +148,9 @@ namespace Eclipse
             GLCall(glUniform1f(uniform_var_loc19, in_spot.SurroundingAttenuationLevel));
 
             GLCall(glUniform1i(useBlinn_, in_spot.EnableBlinnPhong));
+
+            // specular
+            GLCall(glUniform3f(uniform_var_loc20, in_spot.direction.getX(), in_spot.direction.getY(), in_spot.direction.getZ()));
         }
     }
 

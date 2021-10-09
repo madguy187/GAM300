@@ -208,6 +208,9 @@ namespace Eclipse
                 ECGui::ColorPicker3("SLightColor", (float*)&_SpotLight.lightColor,
                     ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
 
+                ECGui::DrawTextWidget<const char*>("Light Direction", EMPTY_STRING);
+                ECGui::DrawSliderFloat3Widget("PLightDirectionVec", &_SpotLight.direction, true, -5.0f, 5.0f);
+
                 ECGui::DrawTextWidget<const char*>("Attenuation Level", EMPTY_STRING);
                 ECGui::DrawSliderIntWidget("PLightColourVec", &_SpotLight.AttenuationLevel, true, 0, 10);
                 engine->LightManager.SetAttenuation(_SpotLight, _SpotLight.AttenuationLevel);
