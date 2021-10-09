@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<Entities Size="1">
+<Prefab PrefabID="881335463792" Size="1">
     <Entity_0 ID="0">
         <AABBComponent>
             <center x="-62.105" y="-2.87088" z="0" />
@@ -59,4 +59,4 @@
             <scale x="100" y="5" z="40.2251" />
         </TransformComponent>
     </Entity_0>
-</Entities>
+</Prefab>

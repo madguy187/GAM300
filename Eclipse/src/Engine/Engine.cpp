@@ -281,7 +281,10 @@ namespace Eclipse
             //world.Update<GridSystem>();
 
             world.Update<CameraSystem>();
-            world.Update<AISystem>();
+
+            if (IsScenePlaying())
+                world.Update<AISystem>();
+
             world.Update<CollisionSystem>();
             if (IsScenePlaying())
             {
