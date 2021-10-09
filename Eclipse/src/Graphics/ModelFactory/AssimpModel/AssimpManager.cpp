@@ -450,7 +450,8 @@ namespace Eclipse
         //    &engine->AssimpManager.Geometry[in.MeshName.data()]->Vertices[engine->AssimpManager.Geometry[in.MeshName.data()]->Vertices.size()]
         //);
 
-        engine->BatchRenderer.DynamicVertices.assign(
+        engine->BatchRenderer.DynamicVertices.insert(
+            engine->BatchRenderer.DynamicVertices.end(),
             engine->AssimpManager.Geometry[in.MeshName.data()]->Vertices.begin(),
             engine->AssimpManager.Geometry[in.MeshName.data()]->Vertices.end()
         );
