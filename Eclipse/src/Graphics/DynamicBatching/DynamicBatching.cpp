@@ -37,7 +37,7 @@ namespace Eclipse
         glBindVertexArray(0);
 
         // reserve
-        DynamicVertices.reserve(100000);
+        //DynamicVertices.reserve(100000);
     }
 
     void DynamicBatch::ResetBuffer()

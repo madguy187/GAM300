@@ -320,6 +320,7 @@ namespace Eclipse
 
     void AssimpModelManager::Render(Shader& shader, GLenum mode, unsigned int id, MeshComponent& in)
     {
+        engine->BatchRenderer.DynamicVertices.clear();
         glEnable(GL_BLEND);
         glEnable(GL_DEPTH_TEST);
         //glDisable(GL_CULL_FACE);
@@ -443,10 +444,15 @@ namespace Eclipse
         // dynamic
         glBindBuffer(GL_ARRAY_BUFFER, engine->BatchRenderer.m_QuadVB);
 
-        engine->BatchRenderer.DynamicVertices.insert(
-            engine->BatchRenderer.DynamicVertices.end(), // empty one
-            &engine->AssimpManager.Geometry[in.MeshName.data()]->Vertices[0], // assimp
-            &engine->AssimpManager.Geometry[in.MeshName.data()]->Vertices[engine->AssimpManager.Geometry[in.MeshName.data()]->Vertices.size()]
+        //engine->BatchRenderer.DynamicVertices.insert(
+        //    engine->BatchRenderer.DynamicVertices.end(), // empty one
+        //    &engine->AssimpManager.Geometry[in.MeshName.data()]->Vertices[0], // assimp
+        //    &engine->AssimpManager.Geometry[in.MeshName.data()]->Vertices[engine->AssimpManager.Geometry[in.MeshName.data()]->Vertices.size()]
+        //);
+
+        engine->BatchRenderer.DynamicVertices.assign(
+            engine->AssimpManager.Geometry[in.MeshName.data()]->Vertices.begin(),
+            engine->AssimpManager.Geometry[in.MeshName.data()]->Vertices.end()
         );
 
         glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * (engine->BatchRenderer.DynamicVertices.size()), &engine->BatchRenderer.DynamicVertices[0]);

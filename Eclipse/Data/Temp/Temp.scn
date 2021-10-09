@@ -71,9 +71,9 @@
     </Entity_1>
     <Entity_2 ID="7">
         <AABBComponent>
-            <center x="-8.91281" y="0" z="4.2078" />
-            <Min x="-11.4128" y="-2.5" z="1.7078" />
-            <Max x="-6.41281" y="2.5" z="6.7078" />
+            <center x="0" y="0" z="0" />
+            <Min x="-2.5" y="-2.5" z="-2.5" />
+            <Max x="2.5" y="2.5" z="2.5" />
         </AABBComponent>
         <EntityComponent>
             <Tag value="Model" />
@@ -122,7 +122,7 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <TransformComponent>
-            <position x="-8.91281" y="0" z="4.2078" />
+            <position x="0" y="0" z="0" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
