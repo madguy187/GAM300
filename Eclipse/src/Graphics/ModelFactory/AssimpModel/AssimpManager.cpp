@@ -85,7 +85,12 @@ namespace Eclipse
         auto shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
         shdrpgm.Use();
 
-        if (ModelMesh.ENV_MAP == true)
+        if (engine->GraphicsManager.EnableEnvironmentMapForAll && engine->GraphicsManager.DrawSky)
+            ModelMesh.ENV_MAP = true;
+        else
+            ModelMesh.ENV_MAP = false;
+
+        if (ModelMesh.ENV_MAP == true && engine->GraphicsManager.DrawSky == true)
         {
             if (engine->gFrameBufferManager->CheckFrameBuffer(engine->gFrameBufferManager->GetFrameBufferID(Mode), FrameBufferMode::FBM_SCENE))
             {

@@ -179,27 +179,30 @@ namespace Eclipse
 
     void FrameBuffer::UpdatePP()
     {
-        if (AllowPostProcess == false)
-            return;
+        if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
+        {
+            if (AllowPostProcess == false)
+                return;
 
-        if (PPType_ == PostProcessType::PPT_NONE)
-            return;
+            if (PPType_ == PostProcessType::PPT_NONE)
+                return;
 
-        engine->MaterialManager.DoNotUpdateStencil();
-        glBindFramebuffer(GL_FRAMEBUFFER, engine->gFrameBufferManager->GetFrameBufferID(FrameBufferMode::FBM_SCENE));
+            engine->MaterialManager.DoNotUpdateStencil();
+            glBindFramebuffer(GL_FRAMEBUFFER, engine->gFrameBufferManager->GetFrameBufferID(FrameBufferMode::FBM_SCENE));
 
-        auto& shdrpgm = Graphics::shaderpgms["PostProcess"];
-        shdrpgm.Use();
+            auto& shdrpgm = Graphics::shaderpgms["PostProcess"];
+            shdrpgm.Use();
 
-        GLint Inversion = shdrpgm.GetLocation("Type");
-        GLCall(glUniform1i(Inversion, static_cast<GLint>(PPType_)));
+            GLint Inversion = shdrpgm.GetLocation("Type");
+            GLCall(glUniform1i(Inversion, static_cast<GLint>(PPType_)));
 
-        glBindVertexArray(rectVAO);
-        glDisable(GL_DEPTH_TEST);
-        glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SCENE));
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+            glBindVertexArray(rectVAO);
+            glDisable(GL_DEPTH_TEST);
+            glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SCENE));
+            glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        shdrpgm.UnUse();
+            shdrpgm.UnUse();
+        }
     }
 
     std::string Eclipse::FrameBuffer::getStringForEnum(int enum_val)

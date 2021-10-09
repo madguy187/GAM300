@@ -39,6 +39,7 @@ namespace Eclipse
         bool VisualizeNormalVectors = false;
         float Magnitude = 0.2f;
         bool EnableNormalMapping = false;
+        bool EnableEnvironmentMapForAll = false;
 
         // Seperate FBO for Post Process
         std::unique_ptr<FrameBuffer> PostProcess;

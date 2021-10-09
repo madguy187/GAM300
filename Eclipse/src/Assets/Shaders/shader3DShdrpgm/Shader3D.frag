@@ -84,11 +84,11 @@ struct SpotLight
     vec3 specular;
 };
 
-#define NR_POINT_LIGHTS 4  
+#define NR_POINT_LIGHTS 15
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform int NumberOfPointLights;
 
-#define NR_SPOTLIGHTS 4  
+#define NR_SPOTLIGHTS 10  
 uniform SpotLight spotLights[NR_SPOTLIGHTS];
 uniform int NumberOfSpotLights;
 
@@ -151,6 +151,8 @@ void main ()
         texDiff = texture(diffuse0, TxtCoord);
 		texSpec = texture(specular0, TxtCoord);
 		
+		if(EnableNormalMapping == 1)
+		{
 		    if(checkNormalMap == 1)
             {		
 		    	normalMap = texture(normal0, TxtCoord).rgb;
@@ -172,6 +174,7 @@ void main ()
 		    	tangentDirectionalLight[0].direction = TangentDirectionalLight[0];
 		    	
 		    	viewDir = normalize(tangent_varFS.TangentViewPos - tangent_varFS.TangentCrntPos);
+			}
         }
 	}
 
@@ -181,12 +184,9 @@ void main ()
         {
 			if(NumberOfDirectionalLights == 1)
 			{
-			  if(EnableNormalMapping == 1)
+			  if(checkNormalMap == 1)
 			  {
-				if(checkNormalMap == 1)
-				{
-			  	    result = CalcDirLight(tangentDirectionalLight[0], normalMap, viewDir, texDiff, texSpec);	
-				}
+			  	  result = CalcDirLight(tangentDirectionalLight[0], normalMap, viewDir, texDiff, texSpec);	
 			  }
 			  else
 			  {

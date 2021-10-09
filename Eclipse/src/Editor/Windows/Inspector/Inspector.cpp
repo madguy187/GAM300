@@ -139,7 +139,7 @@ namespace Eclipse
                 auto& _PointLight = engine->world.GetComponent<PointLightComponent>(ID);
 
                 ECGui::DrawTextWidget<const char*>("IntensityStrength", EMPTY_STRING);
-                ECGui::DrawSliderFloatWidget("IntensityFloat", &_PointLight.IntensityStrength, true, 0.f, 150.f);
+                ECGui::DrawSliderFloatWidget("IntensityFloat", &_PointLight.IntensityStrength, true, 0.f, 5000.0f);
 
                 ECGui::DrawTextWidget<const char*>("Light Colour", EMPTY_STRING);
 
@@ -202,7 +202,7 @@ namespace Eclipse
                 auto& _SpotLight = engine->world.GetComponent<SpotLightComponent>(ID);
 
                 ECGui::DrawTextWidget<const char*>("IntensityStrength", EMPTY_STRING);
-                ECGui::DrawSliderFloatWidget("IntensityFloat", &_SpotLight.IntensityStrength, true, 0.f, 150.f);
+                ECGui::DrawSliderFloatWidget("IntensityFloat", &_SpotLight.IntensityStrength, true, 0.f, 5000.0f);
 
                 ECGui::DrawTextWidget<const char*>("Light Colour", EMPTY_STRING);
                 ECGui::ColorPicker3("SLightColor", (float*)&_SpotLight.lightColor,

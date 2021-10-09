@@ -1,18 +1,13 @@
 #include "pch.h"
 #include "RenderSystem.h"
-#include "Graphics/Debugging/DebugRenderingManager.h"
-
-//Components
-#include "ECS/ComponentManager/Components/TransformComponent.h"
-#include "ECS/ComponentManager/Components/MeshComponent.h"
-#include "AssimpModel/AssimpModel.h"
-#include "ECS/ComponentManager/Components/AABBComponent.h"
 
 // Views
 #include "Editor/Windows/SwitchViews/TopSwitchViewWindow.h"
 #include "Editor/Windows/SwitchViews/BottomSwitchViewWindow.h"
 #include "Editor/Windows/SwitchViews/LeftSwitchViewWindow.h"
 #include "Editor/Windows/SwitchViews/RightSwitchViewWindow.h"
+#include "Editor/Windows/GameView/GameView.h"
+#include "Editor/Windows/Scene/SceneView.h"
 
 namespace Eclipse
 {
@@ -88,17 +83,17 @@ namespace Eclipse
                 {
                     engine->GraphicsManager.CheckTexture(entityID);
 
-                    /*************************************************************************
-                      Render Primitives to SceneView
-                    *************************************************************************/
-                    engine->MaterialManager.UpdateStencilWithActualObject(entityID);
-                    engine->GraphicsManager.Draw(FrameBufferMode::FBM_SCENE, &Mesh, GL_FILL, entityID, CameraComponent::CameraType::Editor_Camera);
+                    if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
+                    {
+                        engine->MaterialManager.UpdateStencilWithActualObject(entityID);
+                        engine->GraphicsManager.Draw(FrameBufferMode::FBM_SCENE, &Mesh, GL_FILL, entityID, CameraComponent::CameraType::Editor_Camera);
+                    }
 
-                    /*************************************************************************
-                      Render Without Stencer , Render Primitivies to GameView
-                    *************************************************************************/
-                    engine->MaterialManager.DoNotUpdateStencil();
-                    engine->GraphicsManager.Draw(FrameBufferMode::FBM_GAME, &Mesh, GL_FILL, entityID, CameraComponent::CameraType::Game_Camera);
+                    if (engine->editorManager->GetEditorWindow<eGameViewWindow>()->IsVisible)
+                    {
+                        engine->MaterialManager.DoNotUpdateStencil();
+                        engine->GraphicsManager.Draw(FrameBufferMode::FBM_GAME, &Mesh, GL_FILL, entityID, CameraComponent::CameraType::Game_Camera);
+                    }
 
                     if (engine->editorManager->GetEditorWindow<LeftSwitchViewWindow>()->IsVisible)
                     {
@@ -134,23 +129,23 @@ namespace Eclipse
                     // After hot-realoding , we check if he still exists or not
                     if (engine->AssimpManager.CheckGeometryExist(Mesh))
                     {
-                        /*************************************************************************
-                          Render Models to SceneView
-                        *************************************************************************/
-                        engine->MaterialManager.UpdateStencilWithActualObject(entityID);
-                        engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_SCENE, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SCENE),
-                            &engine->GraphicsManager.AllAABBs, CameraComponent::CameraType::Editor_Camera);
+                        if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
+                        {
+                            engine->MaterialManager.UpdateStencilWithActualObject(entityID);
+                            engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_SCENE, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SCENE),
+                                &engine->GraphicsManager.AllAABBs, CameraComponent::CameraType::Editor_Camera);
 
-                        // See Normal Vectors
-                        engine->MaterialManager.UpdateStencilWithActualObject(entityID);
-                        engine->AssimpManager.DebugNormals(Mesh, entityID, FrameBufferMode::FBM_SCENE, CameraComponent::CameraType::Editor_Camera);
+                            // See Normal Vectors
+                            engine->MaterialManager.UpdateStencilWithActualObject(entityID);
+                            engine->AssimpManager.DebugNormals(Mesh, entityID, FrameBufferMode::FBM_SCENE, CameraComponent::CameraType::Editor_Camera);
+                        }
 
-                        /*************************************************************************
-                          Render Without Stencer , Render Models to GameView
-                        *************************************************************************/
-                        engine->MaterialManager.DoNotUpdateStencil();
-                        engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_GAME, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME),
-                            &box, CameraComponent::CameraType::Game_Camera);
+                        if (engine->editorManager->GetEditorWindow<eGameViewWindow>()->IsVisible)
+                        {
+                            engine->MaterialManager.DoNotUpdateStencil();
+                            engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_GAME, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME),
+                                &box, CameraComponent::CameraType::Game_Camera);
+                        }
 
                         // Top View Port
                         if (engine->editorManager->GetEditorWindow<TopSwitchViewWindow>()->IsVisible)
@@ -189,11 +184,11 @@ namespace Eclipse
                 }
             }
 
-            /*************************************************************************
-              Render Without Stencer , Frustrum to Scene View
-            *************************************************************************/
-            engine->MaterialManager.DoNotUpdateStencil();
-            engine->gDebugManager.DrawDebugShapes(FrameBufferMode::FBM_SCENE);
+            if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
+            {
+                engine->MaterialManager.DoNotUpdateStencil();
+                engine->gDebugManager.DrawDebugShapes(FrameBufferMode::FBM_SCENE);
+            }
 
             engine->MaterialManager.StencilBufferClear();
         }
