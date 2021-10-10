@@ -541,6 +541,9 @@
     <ClInclude Include="src\Graphics\FrameBuffer\FrameBuffer.h">
       <Filter>Graphics\FrameBuffer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\FrameBuffer\FrameBufferManager.h">
+      <Filter>Graphics\FrameBuffer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\FrameBuffer\WindowConstraint.h">
       <Filter>Graphics\FrameBuffer</Filter>
     </ClInclude>
@@ -968,6 +971,9 @@
       <Filter>Graphics\FileWatch</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\FrameBuffer\FrameBuffer.cpp">
+      <Filter>Graphics\FrameBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\FrameBuffer\FrameBufferManager.cpp">
       <Filter>Graphics\FrameBuffer</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\FrameBuffer\WindowConstraint.cpp">

@@ -162,7 +162,7 @@ namespace Eclipse
         // Returns a vector of Tile IDs being Occupied
         std::vector<TILE_ID> GetOccupiedTiles(std::vector<TILE_ID>& in);
         // Drawing of Grid , Must render last
-        void DrawGrid(unsigned int FrameBufferID);
+        void DrawGrid(FrameBufferMode in);
         // Destructor
         ~Grid();
         // Get Current Tile's distancetotheObject

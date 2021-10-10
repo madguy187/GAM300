@@ -126,6 +126,12 @@ namespace Eclipse
 			ReadAttributeFromElement("Hheight", att_data.hheight);
 		}
 		
+		template <>
+		inline void ReadAttributeFromElement(const std::string& att_name, MonoScript& att_data)
+		{
+			ReadAttributeFromElement(att_name, att_data.scriptName);
+		}
+		
 		template <typename T>
 		inline void ReadAttributeFromElement(const std::string& att_name, std::vector<T>& att_data)
 		{

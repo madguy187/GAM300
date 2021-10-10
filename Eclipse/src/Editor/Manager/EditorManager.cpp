@@ -109,7 +109,7 @@ namespace Eclipse
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-		glTexImage2D(GL_TEXTURE_2D, 0, bytes_per_pixels, width, height, 0, 
+		glTexImage2D(GL_TEXTURE_2D, 0, bytes_per_pixels, width, height, 0,
 			(bytes_per_pixels == 3) ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 
 		io.Fonts->SetTexID((void*)static_cast<size_t>(textureID));
@@ -133,12 +133,12 @@ namespace Eclipse
 		engine->world.AddComponent(ID, TransformComponent{});
 
 		// Check this please - Rachel
-		if(type != EntityType::ENT_GAMECAMERA)
+		if (type != EntityType::ENT_GAMECAMERA)
 		{
 			auto& _transform = engine->world.GetComponent<TransformComponent>(ID);
 			engine->gPicker.GenerateAabb(ID, _transform, type);
 		}
-		
+
 		EntityHierarchyList_.push_back(ID);
 		EntityToIndexMap_.insert(std::pair<Entity, int>(ID, static_cast<int>(EntityHierarchyList_.size() - 1)));
 		GEHIndex_ = EntityHierarchyList_.size() - 1;
@@ -164,10 +164,20 @@ namespace Eclipse
 
 		if (!EntityHierarchyList_.empty())
 		{
-			if (pos == EntityHierarchyList_.size())
+			if (pos >= EntityHierarchyList_.size())
+			{
 				SetSelectedEntity(EntityHierarchyList_[EntityHierarchyList_.size() - 1]);
+			}
 			else
-				SetSelectedEntity(EntityHierarchyList_[pos]);
+			{
+				SetSelectedEntity(EntityHierarchyList_[pos - 1]);
+
+				for (auto& pair : EntityToIndexMap_)
+				{
+					if (pair.second > pos - 1)
+						pair.second--;
+				}
+			}
 		}
 
 		engine->world.DestroyEntity(ID);

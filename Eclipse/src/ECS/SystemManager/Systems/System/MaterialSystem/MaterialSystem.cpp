@@ -12,7 +12,7 @@ namespace Eclipse
     {
         ZoneScopedN("Material System")
 
-        engine->Timer.SetName({ SystemName::MATERIAL });
+            engine->Timer.SetName({ SystemName::MATERIAL });
         engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
         if (engine->MaterialManager.EnableHighlight == true)
@@ -26,13 +26,13 @@ namespace Eclipse
                 if (engine->world.CheckComponent<ModelComponent>(entity) == true)
                 {
                     // HighLight Basic Models Start ===============================
-                    engine->MaterialManager.Highlight3DModels(entity, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE));
+                    engine->MaterialManager.Highlight3DModels(entity, FrameBufferMode::FBM_SCENE);
                     // HighLight Basic Models End ===============================
                 }
                 else
                 {
                     // HighLight Basic Models Start ===============================
-                    engine->MaterialManager.HighlightBasicPrimitives(entity, engine->GraphicsManager.GetFrameBufferID(FrameBufferMode::FBM_SCENE));
+                    engine->MaterialManager.HighlightBasicPrimitives(entity, FrameBufferMode::FBM_SCENE);
                     // HighLight Basic Models End ===============================
 
                 }
@@ -45,6 +45,4 @@ namespace Eclipse
         engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
         FrameMark
     }
-
-
 }

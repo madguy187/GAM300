@@ -53,19 +53,19 @@ namespace Eclipse
         return ApplyLighting;
     }
 
-    void LightManager::DrawPointLights(unsigned int EntityId, PointLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
+    void LightManager::DrawPointLights(unsigned int EntityId, PointLightComponent* in, FrameBufferMode Mode, unsigned int indexID, GLenum mode)
     {
-        _allpointlights.Draw(EntityId , in, framebufferID, indexID, mode);
+        _allpointlights.Draw(EntityId, in, Mode, indexID, mode);
     }
 
-    void LightManager::DrawDirectionalLight(unsigned int EntityId, DirectionalLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
+    void LightManager::DrawDirectionalLight(unsigned int EntityId, DirectionalLightComponent* in, FrameBufferMode Mode, unsigned int indexID, GLenum mode)
     {
-        _DirectionalLights.Draw(EntityId,in, framebufferID, indexID, mode);
+        _DirectionalLights.Draw(EntityId, in, Mode, indexID, mode);
     }
 
-    void LightManager::DrawSpotLight(unsigned int EntityId , SpotLightComponent* in, unsigned int framebufferID, unsigned int indexID, GLenum mode)
+    void LightManager::DrawSpotLight(unsigned int EntityId, SpotLightComponent* in, FrameBufferMode Mode, unsigned int indexID, GLenum mode)
     {
-        _allspotlights.Draw(EntityId,in, framebufferID, indexID, mode);
+        _allspotlights.Draw(EntityId, in, Mode, indexID, mode);
     }
 
     void LightManager::CreateAttenuationLevels()
@@ -86,5 +86,37 @@ namespace Eclipse
         // Largest Range
 
         ENGINE_CORE_INFO("Attentuation Levels Created!");
+    }
+
+    void LightManager::GlobalUniformsUpdate()
+    {
+        auto shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
+        shdrpgm.Use();
+
+        GLint NumberOfPointLights = shdrpgm.GetLocation("NumberOfPointLights");
+        GLint NumberOfSpotLights = shdrpgm.GetLocation("NumberOfSpotLights");
+        GLint NumberOfDirectionalLights = shdrpgm.GetLocation("NumberOfDirectionalLights");
+
+        GLCall(glUniform1i(NumberOfPointLights, _allpointlights.GetNumberOfPointLights()));
+        GLCall(glUniform1i(NumberOfSpotLights, _allspotlights.GetNumberOfSpotLights()));
+        GLCall(glUniform1i(NumberOfDirectionalLights, _DirectionalLights.DirectionalLightcounter));
+
+        shdrpgm.UnUse();
+    }
+
+    void LightManager::DestroyLight(Entity ID)
+    {
+        if (engine->world.CheckComponent<PointLightComponent>(ID))
+        {
+            _allpointlights.Destroy();
+        }
+        else if (engine->world.CheckComponent<SpotLightComponent>(ID) == true)
+        {
+            _allspotlights.Destroy();
+        }
+        else if (engine->world.CheckComponent<DirectionalLightComponent>(ID) == true)
+        {
+            _DirectionalLights.Destroy();
+        }
     }
 }

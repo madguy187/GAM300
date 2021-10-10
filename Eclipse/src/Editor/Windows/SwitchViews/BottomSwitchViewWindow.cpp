@@ -15,7 +15,7 @@ namespace Eclipse
         Type = EditorWindowType::EWT_SWITCHVIEW_BOTTOM;
         WindowName = "Bottom Switch View";
         IsVisible = false;
-        m_frameBuffer = engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_BOTTOM);
+        m_frameBuffer = engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_BOTTOM);
         mProjectionView_List.push_back("Orthographic");
     }
 

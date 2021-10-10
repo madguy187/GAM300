@@ -1,0 +1,11 @@
+Model Information:
+* title:	Top-Down Hospital Game Assets
+* source:	https://sketchfab.com/3d-models/top-down-hospital-game-assets-8b355f493371427fa4c5860a19a77dfd
+* author:	Lydia Granholm (https://sketchfab.com/yanza)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Top-Down Hospital Game Assets" (https://sketchfab.com/3d-models/top-down-hospital-game-assets-8b355f493371427fa4c5860a19a77dfd) by Lydia Granholm (https://sketchfab.com/yanza) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

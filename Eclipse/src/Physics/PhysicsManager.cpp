@@ -228,6 +228,15 @@ namespace Eclipse
 		}
 	}
 
+	void PhysicsManager::CleanupScene()
+	{
+
+		for (auto entity : engine->editorManager->GetEntityListByConstRef())
+		{
+			engine->gPhysics.RemoveActor(entity);
+		}
+	}
+
 	void PhysicsManager::AttachCapsuleToActor(Entity ent, float radius,float halfheight)
 	{
 		if (Px_Actors[ent].actor == nullptr)
@@ -310,6 +319,7 @@ namespace Eclipse
 			return;
 		RemoveActorFromScene(ent);
 		Px_Actors[ent].actor->release();
+		Px_Actors[ent].actor = nullptr;
 		Px_Actors[ent].type = ActorType::ACTOR_UNASSIGNED;
 	}
 
@@ -353,7 +363,7 @@ namespace Eclipse
 			temprot = AnglestoQuat(transform.rotation.getX(),transform.rotation.getY(),transform.rotation.getZ());
 	
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setGlobalPose(PxTransform{ temptrans,temprot});
-			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setForceAndTorque(tempforce, { 0,0,0 });
+			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->addForce(tempforce);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setMaxLinearVelocity(static_cast<PxReal>(rigid.MaxVelocity));
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setMass(rigid.mass);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setActorFlag(PxActorFlag::eDISABLE_GRAVITY,rigid.enableGravity ? false : true);
@@ -407,6 +417,20 @@ namespace Eclipse
 			break;
 		case PxShapeType::Px_SPHERE :
 			AttachSphereToActor(ent, collision.shape.radius);
+			break;
+		}
+	}
+
+	void Eclipse::PhysicsManager::UpdateVariables(Entity ent)
+	{
+		auto& collision = engine->world.GetComponent<CollisionComponent>(ent);
+		switch (collision.shape.shape)
+		{
+		case PxShapeType::Px_CUBE :
+			auto& transform = engine->world.GetComponent<TransformComponent>(ent);
+			collision.shape.hx = transform.scale.getX() / 2;
+			collision.shape.hy = transform.scale.getY() / 2;
+			collision.shape.hz = transform.scale.getZ() / 2;
 			break;
 		}
 	}

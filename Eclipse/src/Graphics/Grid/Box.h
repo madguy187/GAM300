@@ -15,8 +15,6 @@ namespace Eclipse
         unsigned int EBO;
         std::vector<float> Vertices;
         std::vector<unsigned int> Indices;
-
-        bool DrawAABBS = true;
         std::vector<glm::vec3> Offsets;
         std::vector<glm::vec3> Sizes;
         int Counter = 0;
@@ -30,12 +28,13 @@ namespace Eclipse
         void Render(Shader& shader);
 
     public:
+        bool DrawAABBS = false;
 
         AABB_();
         void Init();
         void AddInstance(BoundingRegion& br);
         void Cleanup();
         void Reset();
-        void DrawAll(unsigned int FramebufferID);
+        void DrawAll(FrameBufferMode);
     };
 }

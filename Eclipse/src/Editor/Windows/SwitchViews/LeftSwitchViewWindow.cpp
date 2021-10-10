@@ -15,7 +15,7 @@ namespace Eclipse
 		Type = EditorWindowType::EWT_SWITCHVIEW_LEFT;
 		WindowName = "Left Switch View";
 		IsVisible = false;
-		m_frameBuffer = engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_LEFT);
+		m_frameBuffer = engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_LEFT);
 		mProjectionView_List.push_back("Orthographic");
 	}
 

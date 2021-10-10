@@ -44,6 +44,13 @@ namespace Eclipse
 				if (!PrefabUse)
 				{
 					engine->editorManager->RegisterExistingEntity(ent);
+
+					if (engine->world.CheckComponent<AABBComponent>(ent))
+					{
+						auto& Transform_ = engine->world.GetComponent<TransformComponent>(ent);
+						auto& Entity_ = engine->world.GetComponent<EntityComponent>(ent);
+						engine->gPicker.GenerateAabb(ent, Transform_, Entity_.Tag);
+					}
 				}
 			}
 			dsz.CloseElement();
@@ -80,7 +87,9 @@ namespace Eclipse
 		SerializeComponent<PrefabComponent>(w, ent);
 		
 		SerializeComponent<RigidBodyComponent>(w, ent);
-		
+
+		SerializeComponent<ScriptComponent>(w, ent);
+
 		SerializeComponent<SpotLightComponent>(w, ent);
 
 		SerializeComponent<TransformComponent>(w, ent);
@@ -104,6 +113,7 @@ namespace Eclipse
 			DeserializeComponent<PointLightComponent>(w, ent) &&
 			DeserializeComponent<PrefabComponent>(w, ent) &&
 			DeserializeComponent<RigidBodyComponent>(w, ent) &&
+			DeserializeComponent<ScriptComponent>(w, ent) &&
 			DeserializeComponent<SpotLightComponent>(w, ent) &&
 			DeserializeComponent<TransformComponent>(w, ent))
 		{

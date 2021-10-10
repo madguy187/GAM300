@@ -139,7 +139,7 @@ namespace Eclipse
                 auto& _PointLight = engine->world.GetComponent<PointLightComponent>(ID);
 
                 ECGui::DrawTextWidget<const char*>("IntensityStrength", EMPTY_STRING);
-                ECGui::DrawSliderFloatWidget("IntensityFloat", &_PointLight.IntensityStrength, true, 0.f, 150.f);
+                ECGui::DrawSliderFloatWidget("IntensityFloat", &_PointLight.IntensityStrength, true, 0.f, 5000.0f);
 
                 ECGui::DrawTextWidget<const char*>("Light Colour", EMPTY_STRING);
 
@@ -202,11 +202,14 @@ namespace Eclipse
                 auto& _SpotLight = engine->world.GetComponent<SpotLightComponent>(ID);
 
                 ECGui::DrawTextWidget<const char*>("IntensityStrength", EMPTY_STRING);
-                ECGui::DrawSliderFloatWidget("IntensityFloat", &_SpotLight.IntensityStrength, true, 0.f, 150.f);
+                ECGui::DrawSliderFloatWidget("IntensityFloat", &_SpotLight.IntensityStrength, true, 0.f, 5000.0f);
 
                 ECGui::DrawTextWidget<const char*>("Light Colour", EMPTY_STRING);
                 ECGui::ColorPicker3("SLightColor", (float*)&_SpotLight.lightColor,
                     ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
+
+                ECGui::DrawTextWidget<const char*>("Light Direction", EMPTY_STRING);
+                ECGui::DrawSliderFloat3Widget("PLightDirectionVec", &_SpotLight.direction, true, -5.0f, 5.0f);
 
                 ECGui::DrawTextWidget<const char*>("Attenuation Level", EMPTY_STRING);
                 ECGui::DrawSliderIntWidget("PLightColourVec", &_SpotLight.AttenuationLevel, true, 0, 10);
@@ -1237,6 +1240,14 @@ namespace Eclipse
         if (!exist)
         {
             engine->world.AddComponent(ID, TComponents{});
+
+            if (!strcmp(Components, "AABBComponent"))
+            {
+                auto& Transform_ = engine->world.GetComponent<TransformComponent>(ID);
+                auto& Entity_ = engine->world.GetComponent<EntityComponent>(ID);
+                engine->gPicker.GenerateAabb(ID, Transform_, Entity_.Tag);
+            }
+
             std::string Comp = my_strcat(Components, " added for ", name, ". Add component succeeded.");
             EDITOR_LOG_INFO(Comp.c_str());
         }
@@ -1263,7 +1274,6 @@ namespace Eclipse
         {
             std::string Comp = my_strcat(Components, " removed for ", name, ". Remove component succeeded.");
             EDITOR_LOG_INFO(Comp.c_str());
-            engine->world.DestroyComponent<TComponents>(ID);
 
             //Remove data from DynamicAABBTree if AABBComponent is deleted - Rachel
             if (!strcmp(Components, "AABBComponent"))
@@ -1271,6 +1281,8 @@ namespace Eclipse
                 engine->gDynamicAABBTree.RemoveData(ID);
                 engine->gCullingManager->Remove(ID);
             }
+
+            engine->world.DestroyComponent<TComponents>(ID);
         }
     }
 }

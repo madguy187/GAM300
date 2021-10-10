@@ -29,7 +29,7 @@ namespace Eclipse
 		ogViewportPos = glm::vec2{ 0.0f, 0.0f };
 		Type = EditorWindowType::EWT_GAMEVIEW;
 		WindowName = "Game View";
-		m_frameBuffer = engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_GAME);
+		m_frameBuffer = engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_GAME);
 	}
 
 	void eGameViewWindow::Unload()
@@ -47,7 +47,9 @@ namespace Eclipse
 		{
 			// Resize the framebuffer based on the size of the imgui window
 			//m_frameBuffer->Resize(static_cast<unsigned>(viewportPanelSize.x), static_cast<unsigned>(viewportPanelSize.y));
+			m_frameBuffer->Resize(static_cast<unsigned>(viewportPanelSize.x), static_cast<unsigned>(viewportPanelSize.y));
 			mViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+			engine->gFrameBufferManager->UpdateAspectRatio(FrameBufferMode::FBM_GAME, mViewportSize);
 		}
 
 		ChildSettings settings;

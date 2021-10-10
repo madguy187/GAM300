@@ -18,11 +18,9 @@ namespace Eclipse
         MAXCOUNT
     };
 
-    typedef std::unordered_map<FrameBufferMode, FrameBuffer*> FrameBufferContainer;
-
     class OpenGL_Context
     {
-    private:
+    public:
         inline static GLint width, height;
         GLint prevWidth, prevHeight;
         inline static float windowRatioX, windowRatioY;
@@ -31,7 +29,6 @@ namespace Eclipse
         inline static GLdouble m_posX, m_posY;
         inline static GLdouble winPosX, winPosY;
     public:
-        inline static FrameBufferContainer _Framebuffers;
 
         void LoadConfigData(std::string configFile);
         bool init(std::string configFile);
@@ -68,6 +65,5 @@ namespace Eclipse
     private:
         void Init();
         void Clear();      
-        bool CheckFrameBuffer(unsigned int ID, FrameBufferMode mode);
     };
 }

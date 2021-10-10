@@ -24,7 +24,7 @@ namespace Eclipse
 			io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
 			// Color Style
-			ImGui::StyleColorsCrimson();
+			ImGui::StyleColorsRobotBlue();
 
 			// When viewports are enabled, we tweak WindowRounding/WindowBG so platform windows can look identical to regular ones.
 			ImGuiStyle& style = ImGui::GetStyle();

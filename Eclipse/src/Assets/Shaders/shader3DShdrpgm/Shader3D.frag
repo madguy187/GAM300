@@ -3,22 +3,22 @@
 layout (location=0) in vec2 TxtCoord;
 layout (location=0) out vec4 fFragClr;
 
+in vec3 normal_from_vtxShader;
+in vec3 crntPos;
 uniform sampler2D uTex2d;
 uniform vec4 uColor;
 uniform bool uTextureCheck;
-in vec3 crntPos;
 uniform vec3 lightPos;
-in vec3 normal_from_vtxShader;
 uniform vec3 camPos;
 uniform vec4 sdiffuse;
 uniform vec4 sspecular;
-uniform bool TEST;
 uniform bool useBlinn;
 uniform float gamma;
 uniform bool EnableGammaCorrection;
 uniform bool CheckApplyLighting;
 uniform int BasicPrimitives;
 uniform float Exposure;
+uniform int EnableNormalMapping;
 
 in TANGENT_VAR{
 	vec3 TangentViewPos;
@@ -84,16 +84,17 @@ struct SpotLight
     vec3 specular;
 };
 
-#define NR_POINT_LIGHTS 4  
+#define NR_POINT_LIGHTS 15
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform int NumberOfPointLights;
 
-#define NR_SPOTLIGHTS 4  
+#define NR_SPOTLIGHTS 10  
 uniform SpotLight spotLights[NR_SPOTLIGHTS];
 uniform int NumberOfSpotLights;
 
 #define NR_DIRECTIONAL_LIGHTS 1  
 uniform DirectionalLight directionlight[NR_DIRECTIONAL_LIGHTS];
+uniform int NumberOfDirectionalLights;
 
 uniform Material material;
 
@@ -150,42 +151,48 @@ void main ()
         texDiff = texture(diffuse0, TxtCoord);
 		texSpec = texture(specular0, TxtCoord);
 		
-		if(checkNormalMap == 1)
-        {		
-			normalMap = texture(normal0, TxtCoord).rgb;
-			normalMap = normalize(normalMap * 2.0 - 1.0);
-			
-			for(int i = 0; i < NumberOfPointLights; ++i)
-			{
-				tangentPointLights[i] = pointLights[i];
-				tangentPointLights[i].position = TangentPointLight[i];
+		if(EnableNormalMapping == 1)
+		{
+		    if(checkNormalMap == 1)
+            {		
+		    	normalMap = texture(normal0, TxtCoord).rgb;
+		    	normalMap = normalize(normalMap * 2.0 - 1.0);
+		    	
+		    	for(int i = 0; i < NumberOfPointLights; ++i)
+		    	{
+		    		tangentPointLights[i] = pointLights[i];
+		    		tangentPointLights[i].position = TangentPointLight[i];
+		    	}
+		    	
+		    	for(int i = 0; i < NumberOfSpotLights; ++i)
+		    	{
+		    		tangentSpotLights[i] = spotLights[i];
+		    		tangentSpotLights[i].position = TangentSpotLight[i];
+		    	}
+		    	
+		    	tangentDirectionalLight[0] = directionlight[0];
+		    	tangentDirectionalLight[0].direction = TangentDirectionalLight[0];
+		    	
+		    	viewDir = normalize(tangent_varFS.TangentViewPos - tangent_varFS.TangentCrntPos);
 			}
-			
-			for(int i = 0; i < NumberOfSpotLights; ++i)
-			{
-				tangentSpotLights[i] = spotLights[i];
-				tangentSpotLights[i].position = TangentSpotLight[i];
-			}
-			
-			tangentDirectionalLight[0] = directionlight[0];
-			tangentDirectionalLight[0].direction = TangentDirectionalLight[0];
-			
-			viewDir = normalize(tangent_varFS.TangentViewPos - tangent_varFS.TangentCrntPos);
         }
 	}
 
     if( CheckApplyLighting == true )
     {
-        if( directionlight[0].AffectsWorld == true )
+        if( directionlight[0].AffectsWorld == true)
         {
-			if(checkNormalMap == 1)
+			if(NumberOfDirectionalLights == 1)
 			{
-				result = CalcDirLight(tangentDirectionalLight[0], normalMap, viewDir, texDiff, texSpec);	
+			  if(checkNormalMap == 1)
+			  {
+			  	  result = CalcDirLight(tangentDirectionalLight[0], normalMap, viewDir, texDiff, texSpec);	
+			  }
+			  else
+			  {
+			  	  result = CalcDirLight(directionlight[0], norm, viewDir, texDiff, texSpec);
+			  }	
 			}
-			else
-			{
-				result = CalcDirLight(directionlight[0], norm, viewDir, texDiff, texSpec);
-			}		
         }
 
         for(int i = 0 ; i < NumberOfPointLights ; i++ )

@@ -24,9 +24,9 @@ void Eclipse::DebugRenderingManager::AddCameraFrustum(unsigned int ID)
     SetDebugShape(ID, newFrustum);
 }
 
-void Eclipse::DebugRenderingManager::DrawFrustum(unsigned int ID, unsigned int framebufferID)
+void Eclipse::DebugRenderingManager::DrawFrustum(unsigned int ID, FrameBufferMode in)
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
+    engine->gFrameBufferManager->UseFrameBuffer(in);
 
     auto frustum = std::any_cast<Frustum>(debugShapes[ID]);
     frustum.UpdateFrustum(engine->world.GetComponent<CameraComponent>(ID));
@@ -69,13 +69,16 @@ void Eclipse::DebugRenderingManager::SetDebugShape(unsigned int ID, std::any new
     debugShapes[ID] = newShape;
 }
 
-void Eclipse::DebugRenderingManager::DrawDebugShapes(unsigned int framebufferID)
+void Eclipse::DebugRenderingManager::DrawDebugShapes(FrameBufferMode in)
 {
-    for (auto& it : debugShapes)
+    if (Visible)
     {
-        if (it.second.type() == typeid(Frustum))
+        for (auto& it : debugShapes)
         {
-            DrawFrustum(it.first, framebufferID);
+            if (it.second.type() == typeid(Frustum))
+            {
+                DrawFrustum(it.first, in);
+            }
         }
     }
 }

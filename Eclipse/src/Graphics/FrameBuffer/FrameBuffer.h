@@ -18,7 +18,13 @@ namespace Eclipse
     class FrameBuffer
     {
 
-    private:
+    public:
+        glm::uvec2 m_size{ 0,0 };
+        unsigned int m_width = 0;
+        unsigned int m_height = 0;
+        FrameBufferMode FrameBufferType = FrameBufferMode::FBM_NONE;
+        float AspectRatio = 0.0f;
+
         struct FramebufferData
         {
             unsigned int frameBufferID = 0;
@@ -27,14 +33,10 @@ namespace Eclipse
             FrameBufferMode hiddentype = FrameBufferMode::FBM_NONE;
         };
 
-        FrameBufferMode FrameBufferType = FrameBufferMode::FBM_NONE;
         FramebufferData m_data;
         RenderMode m_renderMode = RenderMode::Fill_Mode;
         ECVec2 windowPos{ 0,0 };
         ECVec2 frameBufferPosition{ 0,0 };
-        glm::uvec2 m_size{ 0,0 };
-        unsigned int m_width = 0;
-        unsigned int m_height = 0;
         std::string Name;
 
         friend std::ostream& operator << (std::ostream& os, const FrameBufferMode& in);
@@ -42,9 +44,8 @@ namespace Eclipse
 
     public:
         FrameBuffer() {};
-
         FrameBuffer(const glm::uvec2& p_size, FrameBufferMode in);
-        FrameBuffer(unsigned int p_width, unsigned int p_height, FrameBufferMode in);
+        FrameBuffer(unsigned int p_width, unsigned int p_height, FrameBufferMode in) ;
         ~FrameBuffer();
         void SetRenderMode(RenderMode _renderMode);
         RenderMode GetRenderMode();
@@ -60,7 +61,8 @@ namespace Eclipse
         void Resize(unsigned width, unsigned height);
         static void ShowWindow(FrameBuffer g, const char* input);
         void CreateFrameBuffer(unsigned int p_width, unsigned int p_height);
-
+        void FrameBuffer::DeleteBuffers();
+        void FrameBuffer::SetViewPort() const;
 
     public:
         // POST PROCESS HERE ==========================

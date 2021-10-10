@@ -162,16 +162,6 @@ namespace Eclipse
 			}
 		}
 
-		if (!strcmp(key, "Oppa Denny Style"))
-		{
-			bool selected = false;
-
-			if (ECGui::CreateMenuItem(key, &selected))
-			{
-				ImGui::StyleColorsCorporate();
-			}
-		}
-
 		if (!strcmp(key, "Oppa Brina Style"))
 		{
 			bool selected = false;

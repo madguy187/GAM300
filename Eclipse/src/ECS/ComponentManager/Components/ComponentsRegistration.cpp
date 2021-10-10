@@ -69,9 +69,7 @@ namespace Eclipse
 
     DEFINE_META(CollisionComponent)
     {
-        ADD_MEMBER(Collided);
         ADD_MEMBER(shape);
-        ADD_MEMBER(created);
     }
 
     DEFINE_META(AIComponent)
@@ -246,6 +244,7 @@ namespace Eclipse
     DEFINE_META_POD(std::string);
     DEFINE_META_POD(std::vector<Texture>);
     DEFINE_META_POD(std::vector<Entity>);
+    DEFINE_META_POD(std::vector<MonoScript>);
     DEFINE_META_POD(MeshComponent::MeshNameType);
     DEFINE_META_POD(ECVec2);
     DEFINE_META_POD(ECVec3);
@@ -263,4 +262,5 @@ namespace Eclipse
     DEFINE_META_POD(ModelType);
     DEFINE_META_POD(PxShapeType);
     DEFINE_META_POD(EC_Shape);
+    //DEFINE_META_POD(MonoScript);
 }

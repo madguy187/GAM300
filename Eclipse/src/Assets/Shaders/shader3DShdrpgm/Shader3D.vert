@@ -50,11 +50,11 @@ struct SpotLight
     vec3 specular;       
 };
 
-#define NR_POINT_LIGHTS 4  
+#define NR_POINT_LIGHTS 15  
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform int NumberOfPointLights;
 
-#define NR_SPOTLIGHTS 4  
+#define NR_SPOTLIGHTS 10  
 uniform SpotLight spotLights[NR_SPOTLIGHTS];
 uniform int NumberOfSpotLights;
 

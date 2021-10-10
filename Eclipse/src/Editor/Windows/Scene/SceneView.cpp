@@ -13,11 +13,11 @@ namespace Eclipse
 
 	void SceneWindow::Init()
 	{
-		mViewportSize = glm::vec2{}; 
+		mViewportSize = glm::vec2{};
 		mSceneBufferSize = glm::vec2{};
 		Type = EditorWindowType::EWT_SCENE;
 		WindowName = "Scene View";
-		m_frameBuffer = engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE);
+		m_frameBuffer = engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_SCENE);
 	}
 
 	void SceneWindow::Unload()
@@ -28,12 +28,13 @@ namespace Eclipse
 	{
 		ImVec2 viewportPanelSize = ECGui::GetWindowSize();
 		//std::cout << "Scene View: " << ImGui::GetWindowDockID() << std::endl;
-		if (mViewportSize.getX() != viewportPanelSize.x || 
+		if (mViewportSize.getX() != viewportPanelSize.x ||
 			mViewportSize.getY() != viewportPanelSize.y)
 		{
 			// Resize the framebuffer based on the size of the imgui window
-			//m_frameBuffer->Resize(static_cast<unsigned>(viewportPanelSize.x), static_cast<unsigned>(viewportPanelSize.y));
+			m_frameBuffer->Resize(static_cast<unsigned>(viewportPanelSize.x), static_cast<unsigned>(viewportPanelSize.y));
 			mViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+			engine->gFrameBufferManager->UpdateAspectRatio(FrameBufferMode::FBM_SCENE, mViewportSize);
 		}
 
 		ChildSettings settings;
@@ -61,7 +62,7 @@ namespace Eclipse
 		{
 			OnGizmoUpdateEvent();
 		}
-		
+
 		if (ECGui::IsItemHovered())
 		{
 			// Do all the future stuff here when hovering on window
@@ -140,7 +141,7 @@ namespace Eclipse
 			ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(translation),
 				glm::value_ptr(rotation), glm::value_ptr(scale));
 
-			glm::vec3 deltaRotation = rotation - transCom.rotation.ConvertToGlmVec3Type();
+			// glm::vec3 deltaRotation = rotation - transCom.rotation.ConvertToGlmVec3Type();
 
 			switch (m_GizmoType)
 			{
@@ -149,7 +150,7 @@ namespace Eclipse
 				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.position, transCom.position, selectedEntity });
 				break;
 			case ImGuizmo::OPERATION::ROTATE:
-				transCom.rotation += deltaRotation;
+				transCom.rotation = rotation;
 				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.rotation, transCom.rotation, selectedEntity });
 				break;
 			case ImGuizmo::OPERATION::SCALE:
@@ -198,7 +199,7 @@ namespace Eclipse
 
 	void SceneWindow::OnSelectEntityEvent()
 	{
-		if (ECGui::IsMouseClicked(0))
+		if (ECGui::IsMouseClicked(0) && !ImGuizmo::IsUsing())
 		{
 			engine->world.GetSystem<PickingSystem>()->EditorUpdate();
 

@@ -75,19 +75,24 @@ namespace Eclipse
         }
     }
 
-    void AssimpModelManager::MeshDraw(MeshComponent& ModelMesh, unsigned int ID, unsigned int FrameBufferID, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
+    void AssimpModelManager::MeshDraw(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
     {
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
         TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(_camType));
 
-        glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
+        engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
         auto shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
         shdrpgm.Use();
 
-        if (ModelMesh.ENV_MAP == true)
+        if (engine->GraphicsManager.EnableEnvironmentMapForAll && engine->GraphicsManager.DrawSky)
+            ModelMesh.ENV_MAP = true;
+        else
+            ModelMesh.ENV_MAP = false;
+
+        if (ModelMesh.ENV_MAP == true && engine->GraphicsManager.DrawSky == true)
         {
-            if (engine->GraphicsManager.CheckFrameBuffer(FrameBufferID, FrameBufferMode::FBM_SCENE))
+            if (engine->gFrameBufferManager->CheckFrameBuffer(engine->gFrameBufferManager->GetFrameBufferID(Mode), FrameBufferMode::FBM_SCENE))
             {
                 //engine->MaterialManager.DoNotUpdateStencil();
                 shdrpgm = Graphics::shaderpgms["EnvironmentMap"];
@@ -104,25 +109,25 @@ namespace Eclipse
             }
         }
 
-        CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ID, box);
+        CheckUniformLoc(shdrpgm, _camera, ID, box);
 
         if (_renderMode == RenderMode::Fill_Mode)
         {
-            Render(shdrpgm, GL_FILL, FrameBufferID, ModelMesh, ID, _camType);
+            Render(shdrpgm, GL_FILL, ModelMesh, ID);
         }
         else
         {
-            Render(shdrpgm, GL_LINE, FrameBufferID, ModelMesh, ID, _camType);
+            Render(shdrpgm, GL_LINE, ModelMesh, ID);
         }
     }
 
-    void AssimpModelManager::DebugNormals(MeshComponent& ModelMesh, unsigned int ID, unsigned int FrameBufferID, CameraComponent::CameraType _camType)
+    void AssimpModelManager::DebugNormals(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode In, CameraComponent::CameraType _camType)
     {
         if (engine->GraphicsManager.VisualizeNormalVectors == true)
         {
             auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
 
-            glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
+            engine->gFrameBufferManager->UseFrameBuffer(In);
 
             auto shdrpgm = Graphics::shaderpgms["DebugNormals"];
             shdrpgm.Use();
@@ -144,6 +149,7 @@ namespace Eclipse
             glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
             glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
             GLCall(glUniform1f(uniform_var_loc5, engine->GraphicsManager.Magnitude));
+
 
             // EBO stuff
             glBindVertexArray(engine->AssimpManager.Geometry[ModelMesh.MeshName.data()]->VAO);
@@ -192,10 +198,8 @@ namespace Eclipse
         return AllPrimitiveModelsNames;
     }
 
-    void AssimpModelManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID, AABB_* box)
+    void AssimpModelManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID, AABB_* box)
     {
-        (void)FrameBufferID;
-
         if (engine->world.CheckComponent<MaterialComponent>(ModelID))
         {
             MaterialComponent& material = engine->world.GetComponent<MaterialComponent>(ModelID);
@@ -266,11 +270,8 @@ namespace Eclipse
         }
     }
 
-    void AssimpModelManager::Render(Shader& shader, GLenum MOde, unsigned int FrameBufferID, MeshComponent& in, unsigned int ModelID, CameraComponent::CameraType _camType)
+    void AssimpModelManager::Render(Shader& shader, GLenum MOde, MeshComponent& in, unsigned int ModelID)
     {
-        (void)_camType;
-        (void)FrameBufferID;
-
         // Each Mesh Render
         Render(shader, MOde, ModelID, in);
     }
@@ -407,7 +408,16 @@ namespace Eclipse
                         GLuint normal0 = shader.GetLocation("normal0");
                         glUniform1i(uniform_var_loc3, true);
                         glUniform1i(CheckNoTex, false);
-                        glUniform1i(CheckNormapMap, true);
+
+                        if (engine->GraphicsManager.EnableNormalMapping)
+                        {
+                            glUniform1i(CheckNormapMap, true);
+                        }
+                        else
+                        {
+                            glUniform1i(CheckNormapMap, false);
+                        }
+
                         glUniform1i(normal0, it);
                         tex.HoldingTextures[it].Bind();
                     }
@@ -485,7 +495,7 @@ namespace Eclipse
 
             // Check Main Uniforms For each Model
             // Translation done here for each model
-            CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ID, box);
+            CheckUniformLoc(shdrpgm, _camera, ID, box);
 
             if (_renderMode == RenderMode::Fill_Mode)
             {

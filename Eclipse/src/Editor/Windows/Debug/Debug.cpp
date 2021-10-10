@@ -27,9 +27,19 @@ namespace Eclipse
         {
             ECGui::CheckBoxBool("Draw Grid", &engine->GridManager->Visible, false);
             ECGui::InsertSameLine();
-            ECGui::CheckBoxBool("Enable PostProcess", &engine->GraphicsManager.PostProcess->AllowPostProcess, false);
+            ECGui::CheckBoxBool("PostProcess", &engine->GraphicsManager.PostProcess->AllowPostProcess, false);
             ECGui::InsertSameLine();
-            ECGui::CheckBoxBool("Visualize Normals", &engine->GraphicsManager.VisualizeNormalVectors, false);
+            ECGui::CheckBoxBool("Draw Normals", &engine->GraphicsManager.VisualizeNormalVectors, false);
+            ECGui::InsertSameLine();
+            ECGui::CheckBoxBool("Draw DebugBoxes", &engine->GraphicsManager.AllAABBs.DrawAABBS, false);
+            ECGui::InsertSameLine();
+            ECGui::CheckBoxBool("Draw Frustrum", &engine->gDebugManager.Visible, false);
+            ECGui::InsertSameLine();
+            ECGui::CheckBoxBool("Draw Sky", &engine->GraphicsManager.DrawSky, false);
+            ECGui::InsertSameLine();
+            ECGui::CheckBoxBool("Normal Mapx", &engine->GraphicsManager.EnableNormalMapping, false);
+            ECGui::InsertSameLine();
+            ECGui::CheckBoxBool("Environment Maps", &engine->GraphicsManager.EnableEnvironmentMapForAll, false);
 
             ECGui::DrawTextWidget<const char*>("Gamma:", EMPTY_STRING);
             ECGui::DrawSliderFloatWidget("Gamma", &engine->GraphicsManager.GammaCorrection, true, 0.5f, 2.5f);
@@ -42,7 +52,7 @@ namespace Eclipse
 
             if (engine->GraphicsManager.PostProcess->AllowPostProcess)
             {
-                std::vector<std::string> Methods = { "NONE" , "INVERSE" , "GREYSCALE" ,"KERNEL" , "BLUR"};
+                std::vector<std::string> Methods = { "NONE" , "INVERSE" , "GREYSCALE" ,"KERNEL" , "BLUR" };
                 ComboListSettings settingsss = { "PostProcess Methods" };
                 static size_t comboindex = 0;
                 ECGui::DrawTextWidget<const char*>("PostProcess Types:", EMPTY_STRING);

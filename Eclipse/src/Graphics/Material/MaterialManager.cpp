@@ -234,14 +234,14 @@ namespace Eclipse
             engine->MaterialManager.HighlightColour.getZ()));
     }
 
-    void MaterialManager::CheckUniformLoc(MeshComponent& sprite, Shader& in, unsigned int id, unsigned int framebufferID)
+    void MaterialManager::CheckUniformLoc(MeshComponent& sprite, Shader& in, unsigned int id, FrameBufferMode Mode)
     {
         (void)sprite;
 
         CameraComponent camera;
         TransformComponent camerapos;
 
-        if (framebufferID == engine->GraphicsManager.mRenderContext.GetFramebuffer(FrameBufferMode::FBM_SCENE)->GetFrameBufferID())
+        if (Mode == FrameBufferMode::FBM_SCENE)
         {
             camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
             camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetEditorCameraID());
@@ -278,7 +278,7 @@ namespace Eclipse
 
     }
 
-    void MaterialManager::HighlightBasicPrimitives(unsigned int EntityId, unsigned int FrameBufferID)
+    void MaterialManager::HighlightBasicPrimitives(unsigned int EntityId, FrameBufferMode Mode)
     {
         if (!engine->world.CheckComponent< MaterialComponent>(EntityId))
             return;
@@ -290,12 +290,12 @@ namespace Eclipse
             if (engine->world.CheckComponent<MeshComponent>(EntityId))
             {
                 engine->MaterialManager.UpdateStencilWith_Outline(EntityId);
-                engine->MaterialManager.Highlight(FrameBufferID, EntityId, GL_FILL);
+                engine->MaterialManager.Highlight(Mode, EntityId, GL_FILL);
             }
         }
     }
 
-    void MaterialManager::Highlight3DModels(unsigned int EntityId, unsigned int FrameBufferID)
+    void MaterialManager::Highlight3DModels(unsigned int EntityId, FrameBufferMode Mode)
     {
         if (!engine->world.CheckComponent< MaterialComponent>(EntityId))
             return;
@@ -305,7 +305,7 @@ namespace Eclipse
         if (Mesh.Highlight == true)
         {
             engine->MaterialManager.UpdateStencilWith_Outline(EntityId);
-            engine->MaterialManager.Highlight3DModels(FrameBufferID, EntityId, GL_FILL);
+            engine->MaterialManager.Highlight3DModels(Mode, EntityId, GL_FILL);
         }
     }
 
@@ -322,11 +322,11 @@ namespace Eclipse
         shdrpgm->second.UnUse();
     }
 
-    void MaterialManager::Highlight(unsigned int FrameBufferID, unsigned int ModelID, GLenum mode)
+    void MaterialManager::Highlight(FrameBufferMode Mode, unsigned int ModelID, GLenum mode)
     {
         if (EnableHighlight == true)
         {
-            glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
+            engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
             auto& shdrpgm = Graphics::shaderpgms["OutLineShader"];
 
@@ -348,7 +348,7 @@ namespace Eclipse
             // Materials Update
             engine->MaterialManager.CheckUnniformLocation(shdrpgm, highlight);
 
-            CheckUniformLoc(_spritecomponent, shdrpgm, ModelID, FrameBufferID);
+            CheckUniformLoc(_spritecomponent, shdrpgm, ModelID, Mode);
 
             engine->GraphicsManager.DrawIndexed(&_spritecomponent, GL_UNSIGNED_SHORT);
 
@@ -437,10 +437,8 @@ namespace Eclipse
         glEnable(GL_DEPTH_TEST);
     }
 
-    void MaterialManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int FrameBufferID, unsigned int ModelID)
+    void MaterialManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID)
     {
-        (void)FrameBufferID;
-
         MaterialComponent& material = engine->world.GetComponent<MaterialComponent>(ModelID);
         GLint uniform_var_loc1 = _shdrpgm.GetLocation("material.shininess");
         GLint uniform_var_loc2 = _shdrpgm.GetLocation("material.MaximumShininess");
@@ -495,7 +493,7 @@ namespace Eclipse
             {
                 // Check Main Uniforms For each Model
                 // Translation done here for each model
-                CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ID);
+                CheckUniformLoc(shdrpgm, _camera, ID);
 
                 // Materials Update
                 engine->MaterialManager.CheckUnniformLocation(shdrpgm, highlight);
@@ -527,13 +525,13 @@ namespace Eclipse
         shdrpgm.UnUse();
     }
 
-    void MaterialManager::Highlight3DModels(unsigned int FrameBufferID, unsigned int ModelID, GLenum mode)
+    void MaterialManager::Highlight3DModels(FrameBufferMode Mode, unsigned int ModelID, GLenum mode)
     {
         if (EnableHighlight == true)
         {
             auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+            engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
-            glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
             auto shdrpgm = Graphics::shaderpgms["OutLineShader"];
             shdrpgm.Use();
 
@@ -543,7 +541,7 @@ namespace Eclipse
 
                 // Check Main Uniforms For each Model
                 // Translation done here for each model
-                CheckUniformLoc(shdrpgm, _camera, FrameBufferID, ModelID);
+                CheckUniformLoc(shdrpgm, _camera, ModelID);
 
                 // Materials Update
                 engine->MaterialManager.CheckUnniformLocation(shdrpgm, highlight);
@@ -559,6 +557,7 @@ namespace Eclipse
             // Part 5: Clean up
             glBindVertexArray(0);
             shdrpgm.UnUse();
+            engine->gFrameBufferManager->UnBind(Mode);
         }
     }
 }

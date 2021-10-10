@@ -333,9 +333,10 @@ namespace Eclipse
 		return ECVec3(snapX, snapY, snapZ);
 	}
 
-	void Grid::DrawGrid(unsigned int FrameBufferID)
+	void Grid::DrawGrid(FrameBufferMode In)
 	{
-		UseFrameBuffer(FrameBufferID);
+		//UseFrameBuffer(FrameBufferID);
+		engine->gFrameBufferManager->UseFrameBuffer(In);
 
 		ShaderRef->Use();
 

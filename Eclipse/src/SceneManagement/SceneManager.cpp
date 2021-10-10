@@ -263,6 +263,7 @@ namespace Eclipse
 	{
 		if (engine->GetEditorState())
 		{
+			engine->gPhysics.CleanupScene();
 			engine->editorManager->Clear();
 			engine->gPicker.ResetScene();
 			CommandHistory::Clear();

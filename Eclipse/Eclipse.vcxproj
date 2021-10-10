@@ -107,7 +107,11 @@ IF EXIST ..\Dep\Fmod\core\lib\x64\fmodL.dll\ (xcopy /Q /E /Y /I ..\Dep\Fmod\core
 IF EXIST ..\Dep\Fmod\core\lib\x64\fmodL64.dll\ (xcopy /Q /E /Y /I ..\Dep\Fmod\core\lib\x64\fmodL64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\Fmod\core\lib\x64\fmodL64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\Fmod\core\lib\x64\fmodstudioL64.dll\ (xcopy /Q /E /Y /I ..\Dep\Fmod\core\lib\x64\fmodstudioL64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\Fmod\core\lib\x64\fmodstudioL64.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\Fmod\core\lib\x64\fmodstudioL.dll\ (xcopy /Q /E /Y /I ..\Dep\Fmod\core\lib\x64\fmodstudioL.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\Fmod\core\lib\x64\fmodstudioL.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
-IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyProfiler.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\Tracy\TracyProfiler.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)</Command>
+IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyProfiler.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\Tracy\TracyProfiler.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\GLEW\bin\Release\x64\glew32.dll\ (xcopy /Q /E /Y /I ..\Dep\GLEW\bin\Release\x64\glew32.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\GLEW\bin\Release\x64\glew32.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\GLFW\lib-mingw-w64\glfw3.dll\ (xcopy /Q /E /Y /I ..\Dep\GLFW\lib-mingw-w64\glfw3.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\GLFW\lib-mingw-w64\glfw3.dll ..\bin\Debug-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\assimp-vc142-mtd.dll ..\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\ASSIMP\assimp-vc142-mtd.dll ..\Eclipse &gt; nul)
+IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\assimp-vc142-mtd.lib ..\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\ASSIMP\assimp-vc142-mtd.lib ..\Eclipse &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -146,7 +150,11 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
 IF EXIST ..\Dep\Fmod\core\lib\x64\fmod.dll\ (xcopy /Q /E /Y /I ..\Dep\Fmod\core\lib\x64\fmod.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\Fmod\core\lib\x64\fmod.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\Fmod\core\lib\x64\fmod64.dll\ (xcopy /Q /E /Y /I ..\Dep\Fmod\core\lib\x64\fmod64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\Fmod\core\lib\x64\fmod64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
 IF EXIST ..\Dep\Fmod\core\lib\x64\fmodstudio64.dll\ (xcopy /Q /E /Y /I ..\Dep\Fmod\core\lib\x64\fmodstudio64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\Fmod\core\lib\x64\fmodstudio64.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
-IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyProfiler.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\Tracy\TracyProfiler.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)</Command>
+IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyProfiler.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\Tracy\TracyProfiler.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\GLEW\bin\Release\x64\glew32.dll\ (xcopy /Q /E /Y /I ..\Dep\GLEW\bin\Release\x64\glew32.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\GLEW\bin\Release\x64\glew32.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\GLFW\lib-mingw-w64\glfw3.dll\ (xcopy /Q /E /Y /I ..\Dep\GLFW\lib-mingw-w64\glfw3.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\GLFW\lib-mingw-w64\glfw3.dll ..\bin\Release-windows-x86_64\Eclipse &gt; nul)
+IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.dll\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\assimp-vc142-mtd.dll ..\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\ASSIMP\assimp-vc142-mtd.dll ..\Eclipse &gt; nul)
+IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\assimp-vc142-mtd.lib ..\Eclipse &gt; nul) ELSE (xcopy /Q /Y /I ..\Dep\ASSIMP\assimp-vc142-mtd.lib ..\Eclipse &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -258,6 +266,7 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClInclude Include="src\Graphics\EngineCompiler\EngineCompiler.h" />
     <ClInclude Include="src\Graphics\FileWatch\FileWatch.h" />
     <ClInclude Include="src\Graphics\FrameBuffer\FrameBuffer.h" />
+    <ClInclude Include="src\Graphics\FrameBuffer\FrameBufferManager.h" />
     <ClInclude Include="src\Graphics\FrameBuffer\WindowConstraint.h" />
     <ClInclude Include="src\Graphics\Grid\AABB.h" />
     <ClInclude Include="src\Graphics\Grid\AABBTree.h" />
@@ -403,6 +412,7 @@ IF EXIST ..\Dep\Tracy\TracyProfiler.dll\ (xcopy /Q /E /Y /I ..\Dep\Tracy\TracyPr
     <ClCompile Include="src\Graphics\EngineCompiler\EngineCompiler.cpp" />
     <ClCompile Include="src\Graphics\FileWatch\FileWatch.cpp" />
     <ClCompile Include="src\Graphics\FrameBuffer\FrameBuffer.cpp" />
+    <ClCompile Include="src\Graphics\FrameBuffer\FrameBufferManager.cpp" />
     <ClCompile Include="src\Graphics\FrameBuffer\WindowConstraint.cpp" />
     <ClCompile Include="src\Graphics\Grid\AABB.cpp" />
     <ClCompile Include="src\Graphics\Grid\AABBTree.cpp" />

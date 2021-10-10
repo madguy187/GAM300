@@ -6,18 +6,20 @@
 
 namespace Eclipse
 {
-	class DebugRenderingManager
-	{
-		std::map<unsigned int, std::any> debugShapes;
-		void CheckUniformLoc(Shader*_shdrpgm, CameraComponent& _camera);
-	public:
-		void AddCameraFrustum(unsigned int ID);
-		void DrawFrustum(unsigned int ID, unsigned int framebufferID);
-		void SetDebugShape(unsigned int ID, std::any newShape);
+    class DebugRenderingManager
+    {
+        std::map<unsigned int, std::any> debugShapes;
+        void CheckUniformLoc(Shader* _shdrpgm, CameraComponent& _camera);
+    public:
+        bool Visible = false;
 
-		void DrawDebugShapes(unsigned int framebufferID);
-		
-		void DeleteDebugShape(unsigned int ID);
-		void ClearDebugShapes();
-	};
+        void AddCameraFrustum(unsigned int ID);
+        void DrawFrustum(unsigned int ID, FrameBufferMode);
+        void SetDebugShape(unsigned int ID, std::any newShape);
+
+        void DrawDebugShapes(FrameBufferMode);
+
+        void DeleteDebugShape(unsigned int ID);
+        void ClearDebugShapes();
+    };
 }

@@ -16,13 +16,16 @@ namespace Eclipse
 		engine->world.AddComponent(CreatedID, LightComponent{});
 		engine->world.AddComponent(CreatedID, DirectionalLightComponent{ DirectionalLightcounter });
 
+		auto& Tr = engine->world.GetComponent<TransformComponent>(CreatedID);
+		Tr.position = ECVec3(0.0f, 150.0f, 0.0f);
+
 		EDITOR_LOG_INFO("Directional Light Created Successfully");
 		DirectionalLightcounter++;
 	}
 
-	void DirectionalLight::Draw(unsigned int EntityId,DirectionalLightComponent* in, unsigned int framebufferID, unsigned int IndexID, GLenum mode)
+	void DirectionalLight::Draw(unsigned int EntityId,DirectionalLightComponent* in, FrameBufferMode Mode, unsigned int IndexID, GLenum mode)
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
+		engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
 		auto& shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
 		shdrpgm.Use();
@@ -46,6 +49,8 @@ namespace Eclipse
 
 		glBindVertexArray(0);
 		shdrpgm.UnUse();
+
+		engine->gFrameBufferManager->UnBind(FrameBufferMode::FBM_SCENE);
 	}
 
 	void DirectionalLight::CheckUniformLoc(Shader* _shdrpgm, DirectionalLightComponent& in_light, int index, unsigned int containersize , unsigned int EntityId)
@@ -117,8 +122,16 @@ namespace Eclipse
 		engine->world.AddComponent(FirstGlobalLight, LightComponent{});
 		engine->world.AddComponent(FirstGlobalLight, DirectionalLightComponent{ DirectionalLightcounter });
 
+		auto& Tr = engine->world.GetComponent<TransformComponent>(FirstGlobalLight);
+		Tr.position = ECVec3(0.0f, 150.0f, 0.0f);
+
 		EDITOR_LOG_INFO("Directional Light Created Successfully");
 		DirectionalLightcounter++;
+	}
+
+	void DirectionalLight::Destroy()
+	{
+		--DirectionalLightcounter;
 	}
 }
 namespace Eclipse

@@ -1,0 +1,203 @@
+<?xml version="1.0" ?>
+<Entities Size="4">
+    <Entity_0 ID="6">
+        <CameraComponent>
+            <eyeAlpha value="0" />
+            <eyeBeta value="-90" />
+            <fov value="45" />
+            <nearPlane value="0.1" />
+            <farPlane value="500" />
+            <aspect value="1.92708" />
+            <eyePos x="-47.0694" y="36.1068" z="69.6278" />
+            <eyeFront x="0.439029" y="-0.254602" z="-0.861644" />
+            <upVec x="0.115587" y="0.967046" z="-0.226852" />
+            <rightVec x="0.891007" y="-0" z="0.45399" />
+            <worldUp x="0" y="1" z="0" />
+            <viewMtx Col="4" Row="4">
+                <Col0 _00="0.891006" _01="0.115587" _02="-0.439031" _03="0" />
+                <Col1 _10="4.61936e-07" _11="0.967046" _12="0.254601" _13="0" />
+                <Col2 _20="0.453992" _21="-0.226851" _22="0.861644" _23="0" />
+                <Col3 _30="10.3287" _31="-13.6812" _32="-89.8521" _33="1" />
+            </viewMtx>
+            <projMtx Col="4" Row="4">
+                <Col0 _00="1.25278" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="2.41421" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="-1.0004" _23="-1" />
+                <Col3 _30="0" _31="0" _32="-0.20004" _33="0" />
+            </projMtx>
+            <cameraSpeed value="50" />
+            <camType value="Editor_Camera" />
+            <projType value="Perspective" />
+        </CameraComponent>
+        <EntityComponent>
+            <Tag value="Camera" />
+            <Name value="Camera" />
+            <Child size="0" />
+            <Parent size="0" />
+            <IsAChild value="false" />
+        </EntityComponent>
+        <TransformComponent>
+            <position x="-47.0694" y="36.1068" z="69.6278" />
+            <rotation x="-40" y="-90" z="0" />
+            <scale x="5" y="5" z="5" />
+        </TransformComponent>
+    </Entity_0>
+    <Entity_1 ID="7">
+        <DirectionalLightComponent>
+            <Counter value="0" />
+            <visible value="false" />
+            <AffectsWorld value="true" />
+            <EnableBlinnPhong value="true" />
+            <lightColor x="1" y="1" z="1" />
+            <Direction x="-1" y="-1" z="-1" />
+            <ambient x="0.2" y="0.2" z="0.2" />
+            <diffuse x="0.4" y="0.4" z="0.4" />
+            <specular x="0.5" y="0.5" z="0.5" />
+            <Color x="1" y="1" z="1" w="1" />
+        </DirectionalLightComponent>
+        <EntityComponent>
+            <Tag value="DirectionalLight" />
+            <Name value="DirectionalLight" />
+            <Child size="0" />
+            <Parent size="0" />
+            <IsAChild value="false" />
+        </EntityComponent>
+        <LightComponent />
+        <TransformComponent>
+            <position x="-62.162" y="0" z="0" />
+            <rotation x="0" y="0" z="0" />
+            <scale x="5" y="5" z="5" />
+        </TransformComponent>
+    </Entity_1>
+    <Entity_2 ID="8">
+        <AABBComponent>
+            <center x="-1.79457" y="-8.8894" z="-15.5811" />
+            <Min x="-24.7743" y="-11.8144" z="-31.6782" />
+            <Max x="21.1851" y="-5.9644" z="0.515949" />
+        </AABBComponent>
+        <CollisionComponent>
+            <shape Shape="Px_CUBE" Hx="2.5" Hy="2.5" Hz="2.5" Radius="1" Hheight="1" />
+        </CollisionComponent>
+        <EntityComponent>
+            <Tag value="Cube" />
+            <Name value="Cube" />
+            <Child size="0" />
+            <Parent size="0" />
+            <IsAChild value="false" />
+        </EntityComponent>
+        <MaterialComponent>
+            <Modeltype value="BasicPrimitives" />
+            <ambient x="0" y="0" z="0" />
+            <diffuse x="1" y="1" z="1" />
+            <specular x="1" y="1" z="1" />
+            <NoTextures value="true" />
+            <shininess value="0.25" />
+            <MaximumShininess value="128" />
+            <ComboIndex value="1" />
+            <TextureComboIndex value="0" />
+            <Type value="TT_2D" />
+            <hasTexture value="true" />
+            <TextureRef value="brick" />
+            <TextureKey value="" />
+            <HoldingTextures size="0" />
+        </MaterialComponent>
+        <MeshComponent>
+            <MeshName value="" />
+            <color x="1" y="1" z="1" />
+            <textureIdx x="0" y="0" />
+            <isQuad value="false" />
+            <modelNDC_xform Col="4" Row="4">
+                <Col0 _00="0" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="0" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="0" _23="0" />
+                <Col3 _30="0" _31="0" _32="0" _33="0" />
+            </modelNDC_xform>
+            <modelRef value="Cube" />
+            <shaderRef value="shader3DShdrpgm" />
+            <transparency value="1" />
+            <ENV_MAP value="false" />
+            <ENV_TYPE value="MT_REFLECT" />
+        </MeshComponent>
+        <TransformComponent>
+            <position x="-1.79457" y="-8.8894" z="-15.5811" />
+            <rotation x="0" y="0" z="0" />
+            <scale x="45.9594" y="5.85" z="32.1941" />
+        </TransformComponent>
+    </Entity_2>
+    <Entity_3 ID="9">
+        <AABBComponent>
+            <center x="-2.75826" y="15.7593" z="-16.5126" />
+            <Min x="-5.22051" y="13.2971" z="-18.9748" />
+            <Max x="-0.29601" y="18.2215" z="-14.0504" />
+        </AABBComponent>
+        <CollisionComponent>
+            <shape Shape="Px_CUBE" Hx="2.5" Hy="2.5" Hz="2.5" Radius="1" Hheight="1" />
+        </CollisionComponent>
+        <EntityComponent>
+            <Tag value="Model" />
+            <Name value="Model" />
+            <Child size="0" />
+            <Parent size="0" />
+            <IsAChild value="false" />
+        </EntityComponent>
+        <MaterialComponent>
+            <Modeltype value="Models3D" />
+            <ambient x="0" y="0" z="0" />
+            <diffuse x="1" y="1" z="1" />
+            <specular x="1" y="1" z="1" />
+            <NoTextures value="true" />
+            <shininess value="0.25" />
+            <MaximumShininess value="128" />
+            <ComboIndex value="1" />
+            <TextureComboIndex value="0" />
+            <Type value="TT_UNASSIGNED" />
+            <hasTexture value="false" />
+            <TextureRef value="Default" />
+            <TextureKey value="Sketchfab_model2" />
+            <HoldingTextures size="2">
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/dog2" Handle="8" />
+                <Member1 Type="6" Directory="..//Eclipse//src/Assets/Models/dog2" Handle="9" />
+            </HoldingTextures>
+        </MaterialComponent>
+        <MeshComponent>
+            <MeshName value="Sketchfab_model2" />
+            <color x="1" y="1" z="1" />
+            <textureIdx x="0" y="0" />
+            <isQuad value="false" />
+            <modelNDC_xform Col="4" Row="4">
+                <Col0 _00="0" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="0" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="0" _23="0" />
+                <Col3 _30="0" _31="0" _32="0" _33="0" />
+            </modelNDC_xform>
+            <modelRef value="Cube" />
+            <shaderRef value="shader3DShdrpgm" />
+            <transparency value="1" />
+            <ENV_MAP value="false" />
+            <ENV_TYPE value="MT_REFLECT" />
+        </MeshComponent>
+        <ModelComponent>
+            <NameOfModel value="" />
+            <Directory value="" />
+            <type value="MT_UNASSIGNED" />
+            <ComboIndex value="0" />
+        </ModelComponent>
+        <RigidBodyComponent>
+            <velocity x="0" y="0" z="0" />
+            <Angvelocity x="0" y="0" z="0" />
+            <forces x="0" y="0" z="0" />
+            <MaxVelocity value="10" />
+            <mass value="1" />
+            <drag value="0" />
+            <angdrag value="0" />
+            <_Kinematic value="false" />
+            <enableGravity value="true" />
+            <enableRotation value="false" />
+        </RigidBodyComponent>
+        <TransformComponent>
+            <position x="-2.75826" y="15.7593" z="-16.5126" />
+            <rotation x="0" y="0" z="0" />
+            <scale x="4.9245" y="4.9245" z="4.9245" />
+        </TransformComponent>
+    </Entity_3>
+</Entities>

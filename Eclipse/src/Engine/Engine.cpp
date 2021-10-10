@@ -64,12 +64,9 @@ namespace Eclipse
         EventSystem<Test1>::registerListener(Tester2);
         EventSystem<Test1>::registerListener(std::bind(&World::TempFunc, &world, std::placeholders::_1));
 
-        // struct Test1 t {};
-        // EventSystem<Test1>::dispatchEvent(t);
-        //std::cout << "ENDED" << std::endl;
-
+        engine->gFrameBufferManager = std::make_unique<FrameBufferManager>();
         engine->GraphicsManager.Pre_Render();
-    	
+
         ImGuiSetup::Init(IsEditorActive);
 
         if (IsEditorActive)
@@ -80,9 +77,9 @@ namespace Eclipse
 
     void Engine::Run()
     {
-       ZoneScopedN("Engine")
-        // register component
-        world.RegisterComponent<EntityComponent>();
+        ZoneScopedN("Engine")
+            // register component
+            world.RegisterComponent<EntityComponent>();
         world.RegisterComponent<TransformComponent>();
         world.RegisterComponent<MeshComponent>();
         world.RegisterComponent<CameraComponent>();
@@ -205,8 +202,8 @@ namespace Eclipse
         world.RegisterSystemSignature<AISystem>(AIsig);
 
         //Check this! - Rachel
-        RenderSystem::Init();
         CameraSystem::Init();
+        RenderSystem::Init();
         gPhysics.Init();
         audioManager.Init();
 
@@ -233,7 +230,7 @@ namespace Eclipse
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
             glfwPollEvents();
-            engine->GraphicsManager.SetBackGroundColour();
+            engine->gFrameBufferManager->MainWindowSettings();
 
             Game_Clock.set_timeSteps(0);
             framecount++;
@@ -284,12 +281,16 @@ namespace Eclipse
             //world.Update<GridSystem>();
 
             world.Update<CameraSystem>();
-            world.Update<AISystem>();
+
+            if (IsScenePlaying())
+                world.Update<AISystem>();
+
             world.Update<CollisionSystem>();
             if (IsScenePlaying())
             {
                 for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
                 {
+                   
                     world.Update<PhysicsSystem>();
                 }
             }
@@ -299,19 +300,18 @@ namespace Eclipse
             /*world.Update<ParentSystem>();
             world.Update<ChildSystem>();*/
 
-            // FRAMEBUFFER BIND =============================
-            engine->GraphicsManager.GlobalFrameBufferBind();
+            engine->gFrameBufferManager->GlobalBind();
 
             // Reset DebugBoxes =============================
             engine->GraphicsManager.ResetInstancedDebugBoxes();
 
             // LIGHTINGSYSTEM =============================
             world.Update<LightingSystem>();
-
-            // PICKINGSYSTEM =============================
+            //
+            // // PICKINGSYSTEM =============================
             world.Update<PickingSystem>();
-
-            // AUDIOSYSTEM =============================
+            //
+            // // AUDIOSYSTEM =============================
             world.Update<AudioSystem>();
 
             // RENDERSYSTEM =============================
@@ -326,7 +326,7 @@ namespace Eclipse
             }
 
             // FRAMEBUFFER DRAW ==========================
-            engine->GraphicsManager.GlobalFrmeBufferDraw();
+            engine->gFrameBufferManager->FrameBufferDraw();
 
             ImGuiSetup::End(IsEditorActive);
             OpenGL_Context::post_render();

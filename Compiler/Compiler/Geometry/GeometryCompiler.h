@@ -9,7 +9,7 @@ namespace EclipseCompiler
     {
     public:
         // Geometry Container
-        static inline std::unordered_map<std::string,Mesh> Geometry;
+        static inline std::unordered_map<std::string, Mesh> Geometry;
         std::ofstream GeometryFileWrite;
         std::fstream GeometryFileRead;
 
