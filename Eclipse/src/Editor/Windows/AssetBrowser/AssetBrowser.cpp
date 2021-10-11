@@ -191,7 +191,7 @@ namespace Eclipse
 			{
 				for (auto& pair2 : pair.second)
 				{
-					std::string temp = LowerCase(pair2.filename().string().c_str()).c_str();
+					std::string temp =pair2.filename().string().c_str();
 					if (!BuffIsEmpty(searchFolderBuffer) && temp.find(searchFolderBuffer) != std::string::npos)
 					{
 						//ECGui::SetNextItemOpen(true, ECGuiCond_Once);
@@ -647,7 +647,7 @@ namespace Eclipse
 	{
 		for (auto const& pair2 : Key.second)
 		{
-			folderString = LowerCase(pair2.filename().string().c_str());
+			folderString = pair2.filename().string().c_str();
 
 			if (searchItemsLowerCase == folderString)
 			{
@@ -669,7 +669,7 @@ namespace Eclipse
 				}
 			}
 
-			std::string nameString = LowerCase(pair2.filename().string().c_str());
+			std::string nameString = pair2.filename().string();
 
 			const auto& path = pair2;
 
@@ -677,8 +677,7 @@ namespace Eclipse
 
 			std::string fileNameString = relativePath.filename().string();
 
-			if (!std::filesystem::is_directory(pair2))
-			{
+			
 				if (found && nameString.find(searchItemsLowerCase) != std::string::npos)
 				{
 					TextureComponent icon = std::filesystem::is_directory(pair2) ? FolderIcon : sprite;
@@ -706,7 +705,7 @@ namespace Eclipse
 
 					ECGui::NextColumn();
 				}
-			}
+			
 		}
 	}
 
@@ -757,23 +756,21 @@ namespace Eclipse
 
 	std::string AssetBrowserWindow::LowerCase(const char* buffer)
 	{
-		std::string lowerCaseString;
+		//std::string lowerCaseString;
 
 		std::string bufferString(buffer);
+		std::for_each(bufferString.begin(), bufferString.end(), [](char& c)
+			{
+				c = ::tolower(c);			
+			});
 
-		for (const auto& character : bufferString)
-		{
-			lowerCaseString += std::to_string(std::tolower(character));
-		}
-
-		size_t lastdot = lowerCaseString.find_last_of(".");
+		size_t lastdot = bufferString.find_last_of(".");
 
 		if (lastdot == std::string::npos)
 		{
-			return lowerCaseString;
+			return bufferString;
 		}
-
-		return lowerCaseString.substr(0, lastdot);
+		return bufferString.substr(0, lastdot);
 	}
 
 	std::string AssetBrowserWindow::GetFileName(const char* buffer)
