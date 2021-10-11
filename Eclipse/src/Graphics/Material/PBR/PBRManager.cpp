@@ -11,6 +11,12 @@ namespace Eclipse
         auto& shdrpgm = Graphics::shaderpgms["PBRShader"];
         shdrpgm.Use();
 
+        shdrpgm.setInt("albedoMap", 0);
+        shdrpgm.setInt("normalMap", 1);
+        shdrpgm.setInt("metallicMap", 2);
+        shdrpgm.setInt("roughnessMap", 3);
+        shdrpgm.setInt("aoMap", 4);
+
         GLint uniform_var_loc1 = shdrpgm.GetLocation("albedo");
         GLint uniform_var_loc2 = shdrpgm.GetLocation("ao");
         GLuint cameraPos = shdrpgm.GetLocation("camPos");
@@ -23,6 +29,13 @@ namespace Eclipse
         glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
         GLCall(glUniform3f(cameraPos, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ()));
         shdrpgm.UnUse();
+
+
+        albedo = loadTexture("src/Assets/PBR/albedo.png");
+        normal = loadTexture("src/Assets/PBR/normal.png");
+        metallic = loadTexture("src/Assets/PBR/metallic.png");
+        roughness = loadTexture("src/Assets/PBR/roughness.png");
+        ao = loadTexture("src/Assets/PBR/ao.png");
     }
 
     void PBRManager::RenderSphere()
@@ -195,6 +208,17 @@ namespace Eclipse
             GLuint view = shdrpgm.GetLocation("view");
             GLint projection = shdrpgm.GetLocation("projection");
 
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, albedo);
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, normal);
+            glActiveTexture(GL_TEXTURE2);
+            glBindTexture(GL_TEXTURE_2D, metallic);
+            glActiveTexture(GL_TEXTURE3);
+            glBindTexture(GL_TEXTURE_2D, roughness);
+            glActiveTexture(GL_TEXTURE4);
+            glBindTexture(GL_TEXTURE_2D, ao);
+
             glm::mat4 mModelNDC;
             model = glm::mat4(1.0f);
             model = glm::translate(model, newPos);
@@ -228,5 +252,42 @@ namespace Eclipse
         shdrpgm.UnUse();
 
         UpdateLoop();
+    }
+
+    unsigned int PBRManager::loadTexture(char const* path)
+    {
+        unsigned int textureID;
+        glGenTextures(1, &textureID);
+
+        int width, height, nrComponents;
+        unsigned char* data = stbi_load(path, &width, &height, &nrComponents, 0);
+        if (data)
+        {
+            GLenum format;
+            if (nrComponents == 1)
+                format = GL_RED;
+            else if (nrComponents == 3)
+                format = GL_RGB;
+            else if (nrComponents == 4)
+                format = GL_RGBA;
+
+            glBindTexture(GL_TEXTURE_2D, textureID);
+            glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+            glGenerateMipmap(GL_TEXTURE_2D);
+
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+            stbi_image_free(data);
+        }
+        else
+        {
+            std::cout << "Texture failed to load at path: " << path << std::endl;
+            stbi_image_free(data);
+        }
+
+        return textureID;
     }
 }
