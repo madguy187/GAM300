@@ -3,7 +3,7 @@
 
 namespace Eclipse
 {
-# define PI           3.14159265358979323846f  /* pi */
+# define PI           3.14159265359  /* pi */
 
 
     using Vec2 = glm::vec2;

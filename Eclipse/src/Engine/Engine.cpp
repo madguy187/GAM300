@@ -310,15 +310,18 @@ namespace Eclipse
             //
             // // PICKINGSYSTEM =============================
             world.Update<PickingSystem>();
-            //
+
             // // AUDIOSYSTEM =============================
             world.Update<AudioSystem>();
 
+            // MATERIALSYSTEM =============================
+            world.Update<MaterialSystem>();
+
             // RENDERSYSTEM =============================
-            world.Update<RenderSystem>();
+            //world.Update<RenderSystem>();
 
             // Final DRAW ================================ 
-            engine->GraphicsManager.FinalRender();
+            //engine->GraphicsManager.FinalRender();
 
             if (IsScenePlaying())
             {

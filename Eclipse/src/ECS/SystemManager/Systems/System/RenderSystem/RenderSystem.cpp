@@ -9,10 +9,14 @@
 #include "Editor/Windows/GameView/GameView.h"
 #include "Editor/Windows/Scene/SceneView.h"
 
+#include "ECS/SystemManager/Systems/System/MaterialSystem/MaterialSystem.h"
+
 namespace Eclipse
 {
     void RenderSystem::Init()
     {
+        MaterialSystem::Init();
+
         // Register Threads
         engine->GraphicsManager.RegisterThreads();
 
