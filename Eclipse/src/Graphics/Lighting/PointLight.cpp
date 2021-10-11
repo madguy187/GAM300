@@ -32,6 +32,8 @@ namespace Eclipse
 
         GLCall(glUniform3f(uniform_var_loc1, PointlightTransform.position.getX(), PointlightTransform.position.getY(), PointlightTransform.position.getZ()));
         GLCall(glUniform3f(uniform_var_loc2, 300.0f, 300.0f, 300.0f));
+
+        shdrpgm.UnUse();
     }
 
     void PointLight::CheckUniformLoc(Shader* _shdrpgm, PointLightComponent& in_pointlight, int index, unsigned int containersize, unsigned int EntityId)
@@ -137,9 +139,7 @@ namespace Eclipse
         glEnable(GL_LINE_SMOOTH);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        CheckUniformPBR(IndexID, EntityId);
         CheckUniformLoc(&shdrpgm, *in, IndexID, PointLightCounter, EntityId);
-
         auto& Light = engine->world.GetComponent<LightComponent>(EntityId);
 
         if (in->visible && Light.Render)
@@ -150,6 +150,8 @@ namespace Eclipse
 
         glBindVertexArray(0);
         shdrpgm.UnUse();
+
+        CheckUniformPBR(IndexID, EntityId);
     }
 
     void PointLight::Destroy()

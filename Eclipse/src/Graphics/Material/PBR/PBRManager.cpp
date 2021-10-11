@@ -5,28 +5,29 @@ namespace Eclipse
 {
     void PBRManager::SetShader()
     {
-        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
-        TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+        //auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+        //TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
 
-        auto& shdrpgm = Graphics::shaderpgms["PBRShader"];
-        shdrpgm.Use();
+        //auto& shdrpgm = Graphics::shaderpgms["PBRShader"];
+        //shdrpgm.Use();
 
-        GLint uniform_var_loc1 = shdrpgm.GetLocation("albedo");
-        GLint uniform_var_loc2 = shdrpgm.GetLocation("ao");
-        GLuint cameraPos = shdrpgm.GetLocation("camPos");
-        GLuint view = shdrpgm.GetLocation("view");
-        GLint projection = shdrpgm.GetLocation("projection");
+        //GLint uniform_var_loc1 = shdrpgm.GetLocation("albedo");
+        //GLint uniform_var_loc2 = shdrpgm.GetLocation("ao");
+        //GLuint cameraPos = shdrpgm.GetLocation("camPos");
+        //GLuint view = shdrpgm.GetLocation("view");
+        //GLint projection = shdrpgm.GetLocation("projection");
 
-        GLCall(glUniform3f(uniform_var_loc1, 0.5f, 0.0f, 0.0f));
-        GLCall(glUniform1f(uniform_var_loc2, 1.0f));
-        glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
-        glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
-        GLCall(glUniform3f(cameraPos, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ()));
-        shdrpgm.UnUse();
+        //GLCall(glUniform3f(uniform_var_loc1, 0.5f, 0.0f, 0.0f));
+        //GLCall(glUniform1f(uniform_var_loc2, 1.0f));
+        //glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
+        //glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
+        //GLCall(glUniform3f(cameraPos, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ()));
+        //shdrpgm.UnUse();
 
         Test brick;
 
-        Texture Tex1("src/Assets/PBR/albedo.png");
+        //Texture Tex1("src/Assets/PBR/albedo.png");
+        //Graphics::textures.emplace("src/Assets/PBR/albedo.png", Tex1);
 
         brick.albedo = loadTexture("src/Assets/PBR/albedo.png");
         brick.normal = loadTexture("src/Assets/PBR/normal.png");
@@ -138,36 +139,26 @@ namespace Eclipse
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
         TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
 
-
-        int nrRows = 7;
-        int nrColumns = 7;
-        float spacing = 2.5;
-
         auto& shdrpgm = Graphics::shaderpgms["PBRShader"];
         shdrpgm.Use();
 
-        glm::mat4 model = glm::mat4(1.0f);
         GLuint metallic = shdrpgm.GetLocation("metallic");
-        GLCall(glUniform1f(metallic, 1.0f));
-
-        // we clamp the roughness to 0.05 - 1.0 as perfectly smooth surfaces (roughness of 0.0) tend to look a bit off
-        // on direct lighting.
         GLuint roughness = shdrpgm.GetLocation("roughness");
         GLint uModelToNDC_ = shdrpgm.GetLocation("uModelToNDC");
         GLint model_ = shdrpgm.GetLocation("model");
         GLuint view = shdrpgm.GetLocation("view");
         GLint projection = shdrpgm.GetLocation("projection");
 
-        glm::mat4 mModelNDC;
+        glm::mat4 model = glm::mat4(1.0f);
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::scale(model, { 5,5,5 });
-        mModelNDC = _camera.projMtx * _camera.viewMtx * model;
+
+        GLCall(glUniform1f(metallic, 1.0f));
         GLCall(glUniform1f(roughness, 1.0f));
-        glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
         glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));

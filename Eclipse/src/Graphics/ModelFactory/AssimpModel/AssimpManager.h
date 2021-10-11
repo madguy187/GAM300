@@ -48,6 +48,7 @@ namespace Eclipse
 		size_t MeshFactoryCount();
 		// Render Function that uses the Container that stores MeshComponent 
 		void MeshDraw(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
+		void CheckUniformPBR(unsigned int ID);
 		void DebugNormals(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, CameraComponent::CameraType _camType);
 		// Upload to Shader
 		void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID, AABB_* box);

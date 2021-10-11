@@ -79,7 +79,7 @@ namespace Eclipse
     {
         ZoneScopedN("Engine")
             // register component
-        world.RegisterComponent<EntityComponent>();
+            world.RegisterComponent<EntityComponent>();
         world.RegisterComponent<TransformComponent>();
         world.RegisterComponent<MeshComponent>();
         world.RegisterComponent<CameraComponent>();
@@ -307,7 +307,7 @@ namespace Eclipse
 
             // LIGHTINGSYSTEM =============================
             world.Update<LightingSystem>();
-            
+
             // // PICKINGSYSTEM =============================
             world.Update<PickingSystem>();
 
