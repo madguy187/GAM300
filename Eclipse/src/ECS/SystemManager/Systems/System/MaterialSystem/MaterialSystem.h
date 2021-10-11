@@ -9,7 +9,6 @@ namespace Eclipse
     {
     public:
         static void Init();
-        static inline PBRManager Test;
     private:
         void Update() override;
     };

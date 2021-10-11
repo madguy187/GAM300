@@ -6,17 +6,17 @@ namespace Eclipse
     void MaterialSystem::Init()
     {
         EDITOR_LOG_INFO("MaterialSystem Init");
-        Test.SetShader();
+        engine->Test.SetShader();
     }
 
     void MaterialSystem::Update()
     {
         ZoneScopedN("Material System")
 
-            engine->Timer.SetName({ SystemName::MATERIAL });
+        engine->Timer.SetName({ SystemName::MATERIAL });
         engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
-        Test.PBRScene();
+        engine->Test.PBRScene();
 
         engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());
         engine->Timer.UpdateTimeContainer(engine->Timer.tracker);

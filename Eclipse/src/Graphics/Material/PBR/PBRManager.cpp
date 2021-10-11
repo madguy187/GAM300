@@ -24,14 +24,16 @@ namespace Eclipse
         GLCall(glUniform3f(cameraPos, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ()));
         shdrpgm.UnUse();
 
-        Texture tex("src/Assets/PBR/albedo.png");
-        Graphics::textures.emplace("src/Assets/PBR/albedo.png", tex);
+        Test brick;
 
-        //albedo = loadTexture("src/Assets/PBR/albedo.png");
-        normal = loadTexture("src/Assets/PBR/normal.png");
-        metallic = loadTexture("src/Assets/PBR/metallic.png");
-        roughness = loadTexture("src/Assets/PBR/roughness.png");
-        ao = loadTexture("src/Assets/PBR/ao.png");
+        Texture Tex1("src/Assets/PBR/albedo.png");
+
+        brick.albedo = loadTexture("src/Assets/PBR/albedo.png");
+        brick.normal = loadTexture("src/Assets/PBR/normal.png");
+        brick.metallic = loadTexture("src/Assets/PBR/metallic.png");
+        brick.roughness = loadTexture("src/Assets/PBR/roughness.png");
+        brick.ao = loadTexture("src/Assets/PBR/ao.png");
+        Instances.push_back(brick);
     }
 
     void PBRManager::RenderSphere()
@@ -145,102 +147,58 @@ namespace Eclipse
         shdrpgm.Use();
 
         glm::mat4 model = glm::mat4(1.0f);
-        for (int row = 0; row < nrRows; ++row)
-        {
-            GLuint metallic = shdrpgm.GetLocation("metallic");
-            GLCall(glUniform1f(metallic, (float)row / (float)nrRows));
+        GLuint metallic = shdrpgm.GetLocation("metallic");
+        GLCall(glUniform1f(metallic, 1.0f));
 
-            for (int col = 0; col < nrColumns; ++col)
-            {
-                // we clamp the roughness to 0.05 - 1.0 as perfectly smooth surfaces (roughness of 0.0) tend to look a bit off
-                // on direct lighting.
-                GLuint roughness = shdrpgm.GetLocation("roughness");
-                GLint uModelToNDC_ = shdrpgm.GetLocation("uModelToNDC");
-                GLint model_ = shdrpgm.GetLocation("model");
-                GLuint view = shdrpgm.GetLocation("view");
-                GLint projection = shdrpgm.GetLocation("projection");
+        // we clamp the roughness to 0.05 - 1.0 as perfectly smooth surfaces (roughness of 0.0) tend to look a bit off
+        // on direct lighting.
+        GLuint roughness = shdrpgm.GetLocation("roughness");
+        GLint uModelToNDC_ = shdrpgm.GetLocation("uModelToNDC");
+        GLint model_ = shdrpgm.GetLocation("model");
+        GLuint view = shdrpgm.GetLocation("view");
+        GLint projection = shdrpgm.GetLocation("projection");
 
-                glm::mat4 mModelNDC;
-                model = glm::mat4(1.0f);
-                model = glm::translate(model, glm::vec3((col - (nrColumns / 2)) * spacing, (row - (nrRows / 2)) * spacing, 0.0f));
-                model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-                model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-                model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-                model = glm::scale(model, { 1,1,1 });
-                mModelNDC = _camera.projMtx * _camera.viewMtx * model;
-                GLCall(glUniform1f(roughness, glm::clamp((float)col / (float)nrColumns, 0.05f, 1.0f)));
-                glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
-                glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
-                glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
-                glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
-                RenderSphere();
-            }
-        }
+        glm::mat4 mModelNDC;
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, { 5,5,5 });
+        mModelNDC = _camera.projMtx * _camera.viewMtx * model;
+        GLCall(glUniform1f(roughness, 1.0f));
+        glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
+        glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
+        glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
 
-        // lights
-// ------
-        glm::vec3 lightPositions[] = {
-              glm::vec3(-10.0f,  10.0f, 10.0f),
-              glm::vec3(10.0f,  10.0f, 10.0f),
-              glm::vec3(-10.0f, -10.0f, 10.0f),
-              glm::vec3(10.0f, -10.0f, 10.0f),
-        };
-        glm::vec3 lightColors[] = {
-             glm::vec3(300.0f, 300.0f, 300.0f),
-             glm::vec3(300.0f, 300.0f, 300.0f),
-             glm::vec3(300.0f, 300.0f, 300.0f),
-             glm::vec3(300.0f, 300.0f, 300.0f)
-        };
+        glActiveTexture(GL_TEXTURE10);
+        glBindTexture(GL_TEXTURE_2D, Instances[0].albedo);
 
-        for (unsigned int i = 0; i < sizeof(lightPositions) / sizeof(lightPositions[0]); ++i)
-        {
-            glm::vec3 newPos = lightPositions[i] + glm::vec3(sin(glfwGetTime() * 5.0) * 5.0, 0.0, 0.0);
-            newPos = lightPositions[i];
+        glActiveTexture(GL_TEXTURE11);
+        glBindTexture(GL_TEXTURE_2D, Instances[0].normal);
 
-            std::string number = std::to_string(i);
-            GLint uniform_var_loc1 = shdrpgm.GetLocation(("lightPositions[" + number + "]").c_str());
-            GLint uniform_var_loc2 = shdrpgm.GetLocation(("lightColors[" + number + "]").c_str());
-            GLint uModelToNDC_ = shdrpgm.GetLocation("uModelToNDC");
-            GLint model_ = shdrpgm.GetLocation("model");
-            GLuint view = shdrpgm.GetLocation("view");
-            GLint projection = shdrpgm.GetLocation("projection");
+        glActiveTexture(GL_TEXTURE12);
+        glBindTexture(GL_TEXTURE_2D, Instances[0].metallic);
 
-            glm::mat4 mModelNDC;
-            model = glm::mat4(1.0f);
-            model = glm::translate(model, newPos);
-            model = glm::scale(model, glm::vec3(0.5f));
-            mModelNDC = _camera.projMtx * _camera.viewMtx * model;
-            GLCall(glUniform3f(uniform_var_loc1, newPos.x, newPos.y, newPos.z));
-            GLCall(glUniform3f(uniform_var_loc2, lightColors[i].x, lightColors[i].y, lightColors[i].z));
-            glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));
-            glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
-            glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
-            glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
+        glActiveTexture(GL_TEXTURE13);
+        glBindTexture(GL_TEXTURE_2D, Instances[0].roughness);
 
-            glActiveTexture(GL_TEXTURE10);
-            Graphics::FindTextures("src/Assets/PBR/albedo.png").Bind();
+        glActiveTexture(GL_TEXTURE14);
+        glBindTexture(GL_TEXTURE_2D, Instances[0].ao);
 
-            glActiveTexture(GL_TEXTURE11);
-            glBindTexture(GL_TEXTURE_2D, normal);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-            glActiveTexture(GL_TEXTURE12);
-            glBindTexture(GL_TEXTURE_2D, metallic);
+        shdrpgm.setInt("albedoMap", 10);
+        shdrpgm.setInt("normalMap", 11);
+        shdrpgm.setInt("metallicMap", 12);
+        shdrpgm.setInt("roughnessMap", 13);
+        shdrpgm.setInt("aoMap", 14);
 
-            glActiveTexture(GL_TEXTURE13);
-            glBindTexture(GL_TEXTURE_2D, roughness);
-
-            glActiveTexture(GL_TEXTURE14);
-            glBindTexture(GL_TEXTURE_2D, ao);
-
-            shdrpgm.setInt("albedoMap", 10);
-            shdrpgm.setInt("normalMap", 11);
-            shdrpgm.setInt("metallicMap", 12);
-            shdrpgm.setInt("roughnessMap", 13);
-            shdrpgm.setInt("aoMap", 14);
-
-            RenderSphere();
-        }
-
+        RenderSphere();
         shdrpgm.UnUse();
     }
 
@@ -284,11 +242,6 @@ namespace Eclipse
             glBindTexture(GL_TEXTURE_2D, textureID);
             glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
             glGenerateMipmap(GL_TEXTURE_2D);
-
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
             stbi_image_free(data);
         }

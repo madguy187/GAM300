@@ -321,7 +321,7 @@ namespace Eclipse
             world.Update<MaterialSystem>();
 
             // Final DRAW ================================ 
-            //engine->GraphicsManager.FinalRender();
+            engine->GraphicsManager.FinalRender();
 
             if (IsScenePlaying())
             {

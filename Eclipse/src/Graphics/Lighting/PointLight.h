@@ -19,6 +19,7 @@ namespace Eclipse
         unsigned int GetNumberOfPointLights();
         // Create PointLight
         static void CreatePointLight(unsigned int CreatedID);
+        void CheckUniformPBR(int index, unsigned int EntityId);
         // PointLight
         void Draw(unsigned int EntityId, PointLightComponent* in, FrameBufferMode, unsigned int indexID, GLenum mode);
         void Destroy();

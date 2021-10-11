@@ -20,6 +20,20 @@ namespace Eclipse
         PointLightCounter++;
     }
 
+    void PointLight::CheckUniformPBR(int index, unsigned int EntityId)
+    {
+        auto shdrpgm = Graphics::shaderpgms["PBRShader"];
+        shdrpgm.Use();
+
+        TransformComponent& PointlightTransform = engine->world.GetComponent<TransformComponent>(EntityId);
+        std::string number = std::to_string(index);
+        GLint uniform_var_loc1 = shdrpgm.GetLocation(("pointLights[" + number + "].position").c_str());
+        GLint uniform_var_loc2 = shdrpgm.GetLocation(("pointLights[" + number + "].lightColor").c_str());
+
+        GLCall(glUniform3f(uniform_var_loc1, PointlightTransform.position.getX(), PointlightTransform.position.getY(), PointlightTransform.position.getZ()));
+        GLCall(glUniform3f(uniform_var_loc2, 300.0f, 300.0f, 300.0f));
+    }
+
     void PointLight::CheckUniformLoc(Shader* _shdrpgm, PointLightComponent& in_pointlight, int index, unsigned int containersize, unsigned int EntityId)
     {
         (void)containersize;
@@ -123,6 +137,7 @@ namespace Eclipse
         glEnable(GL_LINE_SMOOTH);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+        CheckUniformPBR(IndexID, EntityId);
         CheckUniformLoc(&shdrpgm, *in, IndexID, PointLightCounter, EntityId);
 
         auto& Light = engine->world.GetComponent<LightComponent>(EntityId);
