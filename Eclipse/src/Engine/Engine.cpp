@@ -79,7 +79,7 @@ namespace Eclipse
     {
         ZoneScopedN("Engine")
             // register component
-            world.RegisterComponent<EntityComponent>();
+        world.RegisterComponent<EntityComponent>();
         world.RegisterComponent<TransformComponent>();
         world.RegisterComponent<MeshComponent>();
         world.RegisterComponent<CameraComponent>();
@@ -303,10 +303,10 @@ namespace Eclipse
             engine->gFrameBufferManager->GlobalBind();
 
             // Reset DebugBoxes =============================
-            engine->GraphicsManager.ResetInstancedDebugBoxes();
+            //engine->GraphicsManager.ResetInstancedDebugBoxes();
 
             // LIGHTINGSYSTEM =============================
-            world.Update<LightingSystem>();
+            //world.Update<LightingSystem>();
             //
             // // PICKINGSYSTEM =============================
             world.Update<PickingSystem>();

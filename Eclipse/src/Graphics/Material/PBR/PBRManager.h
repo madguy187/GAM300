@@ -11,5 +11,7 @@ namespace Eclipse
         void SetShader();
         void RenderSphere();
         void UpdateLoop();
+
+        void PBRScene();
     };
 }

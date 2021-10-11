@@ -15,8 +15,6 @@ namespace Eclipse
 {
     void RenderSystem::Init()
     {
-        MaterialSystem::Init();
-
         // Register Threads
         engine->GraphicsManager.RegisterThreads();
 
@@ -42,6 +40,9 @@ namespace Eclipse
 
         // CUlling =============================
         engine->gCullingManager = std::make_unique<CullingManager>();
+
+        MaterialSystem::Init();
+
     }
 
     void RenderSystem::Update()
