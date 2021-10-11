@@ -11,12 +11,6 @@ namespace Eclipse
         auto& shdrpgm = Graphics::shaderpgms["PBRShader"];
         shdrpgm.Use();
 
-        shdrpgm.setInt("albedoMap", 0);
-        shdrpgm.setInt("normalMap", 1);
-        shdrpgm.setInt("metallicMap", 2);
-        shdrpgm.setInt("roughnessMap", 3);
-        shdrpgm.setInt("aoMap", 4);
-
         GLint uniform_var_loc1 = shdrpgm.GetLocation("albedo");
         GLint uniform_var_loc2 = shdrpgm.GetLocation("ao");
         GLuint cameraPos = shdrpgm.GetLocation("camPos");
@@ -30,8 +24,10 @@ namespace Eclipse
         GLCall(glUniform3f(cameraPos, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ()));
         shdrpgm.UnUse();
 
+        Texture tex("src/Assets/PBR/albedo.png");
+        Graphics::textures.emplace("src/Assets/PBR/albedo.png", tex);
 
-        albedo = loadTexture("src/Assets/PBR/albedo.png");
+        //albedo = loadTexture("src/Assets/PBR/albedo.png");
         normal = loadTexture("src/Assets/PBR/normal.png");
         metallic = loadTexture("src/Assets/PBR/metallic.png");
         roughness = loadTexture("src/Assets/PBR/roughness.png");
@@ -41,6 +37,7 @@ namespace Eclipse
     void PBRManager::RenderSphere()
     {
         glEnable(GL_BLEND);
+        glEnable(GL_DEPTH_TEST);
         glDisable(GL_CULL_FACE);
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -208,17 +205,6 @@ namespace Eclipse
             GLuint view = shdrpgm.GetLocation("view");
             GLint projection = shdrpgm.GetLocation("projection");
 
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, albedo);
-            glActiveTexture(GL_TEXTURE1);
-            glBindTexture(GL_TEXTURE_2D, normal);
-            glActiveTexture(GL_TEXTURE2);
-            glBindTexture(GL_TEXTURE_2D, metallic);
-            glActiveTexture(GL_TEXTURE3);
-            glBindTexture(GL_TEXTURE_2D, roughness);
-            glActiveTexture(GL_TEXTURE4);
-            glBindTexture(GL_TEXTURE_2D, ao);
-
             glm::mat4 mModelNDC;
             model = glm::mat4(1.0f);
             model = glm::translate(model, newPos);
@@ -231,8 +217,31 @@ namespace Eclipse
             glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
             glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
 
+            glActiveTexture(GL_TEXTURE10);
+            Graphics::FindTextures("src/Assets/PBR/albedo.png").Bind();
+
+            glActiveTexture(GL_TEXTURE11);
+            glBindTexture(GL_TEXTURE_2D, normal);
+
+            glActiveTexture(GL_TEXTURE12);
+            glBindTexture(GL_TEXTURE_2D, metallic);
+
+            glActiveTexture(GL_TEXTURE13);
+            glBindTexture(GL_TEXTURE_2D, roughness);
+
+            glActiveTexture(GL_TEXTURE14);
+            glBindTexture(GL_TEXTURE_2D, ao);
+
+            shdrpgm.setInt("albedoMap", 10);
+            shdrpgm.setInt("normalMap", 11);
+            shdrpgm.setInt("metallicMap", 12);
+            shdrpgm.setInt("roughnessMap", 13);
+            shdrpgm.setInt("aoMap", 14);
+
             RenderSphere();
         }
+
+        shdrpgm.UnUse();
     }
 
     void PBRManager::PBRScene()
@@ -271,6 +280,7 @@ namespace Eclipse
             else if (nrComponents == 4)
                 format = GL_RGBA;
 
+            glGenTextures(1, &textureID);
             glBindTexture(GL_TEXTURE_2D, textureID);
             glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
             glGenerateMipmap(GL_TEXTURE_2D);

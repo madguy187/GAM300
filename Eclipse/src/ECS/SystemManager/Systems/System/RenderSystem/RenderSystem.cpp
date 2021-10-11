@@ -66,7 +66,7 @@ namespace Eclipse
             engine->GraphicsManager.RenderSky(FrameBufferMode::FBM_SCENE);
 
             // Basic Primitives Render Start =============================
-            for (auto const& entityID : RenderablesVsFrustrum)
+            for (auto const& entityID : mEntities)
             {
                 // If No Mesh Component , Do not Continue
                 if (!engine->world.CheckComponent<MeshComponent>(entityID))

@@ -306,19 +306,19 @@ namespace Eclipse
             //engine->GraphicsManager.ResetInstancedDebugBoxes();
 
             // LIGHTINGSYSTEM =============================
-            //world.Update<LightingSystem>();
-            //
+            world.Update<LightingSystem>();
+            
             // // PICKINGSYSTEM =============================
             world.Update<PickingSystem>();
 
             // // AUDIOSYSTEM =============================
             world.Update<AudioSystem>();
 
+            // RENDERSYSTEM =============================
+            world.Update<RenderSystem>();
+
             // MATERIALSYSTEM =============================
             world.Update<MaterialSystem>();
-
-            // RENDERSYSTEM =============================
-            //world.Update<RenderSystem>();
 
             // Final DRAW ================================ 
             //engine->GraphicsManager.FinalRender();

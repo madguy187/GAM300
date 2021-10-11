@@ -253,8 +253,8 @@ namespace Eclipse
         DrawIndexed(_spritecomponent, GL_UNSIGNED_SHORT);
 
         // Part 5: Clean up
-        glBindVertexArray(0);
         shdrpgm.UnUse();
+        glBindVertexArray(0);
         //engine->gFrameBufferManager->UnBind(FrameBufferMode::FBM_SCENE);
     }
 

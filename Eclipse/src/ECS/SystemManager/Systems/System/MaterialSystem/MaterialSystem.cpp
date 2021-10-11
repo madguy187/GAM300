@@ -16,7 +16,7 @@ namespace Eclipse
             engine->Timer.SetName({ SystemName::MATERIAL });
         engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
-        engine->MaterialManager.StencilBufferClear();
+        Test.PBRScene();
 
         engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());
         engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
