@@ -501,7 +501,7 @@ namespace Eclipse
         CameraComponent camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
         TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetEditorCameraID());
 
-        auto& shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
+        auto& shdrpgm = Graphics::shaderpgms["PBRShader"];
         shdrpgm.Use();
 
         GLint uniform_var_loc1 = shdrpgm.GetLocation("gamma");

@@ -227,7 +227,6 @@ void main ()
 			vec3 toneMapped = vec3(1.0f) - exp(-fFragClr.rgb * Exposure);
             fFragClr.rgb = pow(toneMapped, vec3(1.0/gamma));
         }
-        
     }
 }
 

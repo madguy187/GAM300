@@ -110,7 +110,7 @@ namespace Eclipse
         }
 
         CheckUniformLoc(shdrpgm, _camera, ID, box);
-        //engine->Test.CheckUniform(ID);
+        engine->Test.CheckUniform(ID);
 
         if (_renderMode == RenderMode::Fill_Mode)
         {
@@ -402,39 +402,39 @@ namespace Eclipse
 
                     if (tex.HoldingTextures[it].GetType() != aiTextureType_NORMALS)
                     {
-                        GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
-                        GLuint diff0 = shader.GetLocation("albedoMap");
+                        //GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
+                        //GLuint diff0 = shader.GetLocation("albedoMap");
                         //GLuint spec = shader.GetLocation("albedoMap");
-                        GLuint noTex = shader.GetLocation("noTex");
-                        GLuint CheckNormapMap = shader.GetLocation("checkNormalMap");
-
-                        glUniform1i(noTex, false);
-                        glUniform1i(uniform_var_loc3, true);
-                        glUniform1i(CheckNormapMap, false);
-                        glUniform1i(diff0, it);
+                        //GLuint noTex = shader.GetLocation("noTex");
+                        //GLuint CheckNormapMap = shader.GetLocation("checkNormalMap");
+                        //
+                        //glUniform1i(noTex, false);
+                        //glUniform1i(uniform_var_loc3, true);
+                        //glUniform1i(CheckNormapMap, false);
+                        //glUniform1i(diff0, it);
                         //glUniform1i(spec, it);
-                        tex.HoldingTextures[it].Bind();
+                        //tex.HoldingTextures[it].Bind();
                     }
                     else
                     {
-                        GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
-                        GLuint CheckNoTex = shader.GetLocation("noTex");
-                        GLuint CheckNormapMap = shader.GetLocation("checkNormalMap");
-                        GLuint normal0 = shader.GetLocation("normalMap");
-                        glUniform1i(uniform_var_loc3, true);
-                        glUniform1i(CheckNoTex, false);
-
-                        if (engine->GraphicsManager.EnableNormalMapping)
-                        {
-                            glUniform1i(CheckNormapMap, true);
-                        }
-                        else
-                        {
-                            glUniform1i(CheckNormapMap, false);
-                        }
-
-                        glUniform1i(normal0, it);
-                        tex.HoldingTextures[it].Bind();
+                       //GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
+                       //GLuint CheckNoTex = shader.GetLocation("noTex");
+                       //GLuint CheckNormapMap = shader.GetLocation("checkNormalMap");
+                       //GLuint normal0 = shader.GetLocation("normalMap");
+                       //glUniform1i(uniform_var_loc3, true);
+                       //glUniform1i(CheckNoTex, false);
+                       //
+                       //if (engine->GraphicsManager.EnableNormalMapping)
+                       //{
+                       //    glUniform1i(CheckNormapMap, true);
+                       //}
+                       //else
+                       //{
+                       //    glUniform1i(CheckNormapMap, false);
+                       //}
+                       //
+                       //glUniform1i(normal0, it);
+                       //tex.HoldingTextures[it].Bind();
                     }
                 }
 
@@ -452,13 +452,13 @@ namespace Eclipse
             }
         }
 
+        // reset
+        glActiveTexture(GL_TEXTURE0);
+
         // EBO stuff
         glBindVertexArray(engine->AssimpManager.Geometry[in.MeshName.data()]->VAO);
         glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(engine->AssimpManager.Geometry[in.MeshName.data()]->Indices.size()), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
-
-        // reset
-        glActiveTexture(GL_TEXTURE0);
     }
 
     void AssimpModelManager::Render(GLenum mode, MeshComponent& in)

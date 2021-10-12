@@ -4,6 +4,10 @@ in vec2 TexCoords;
 in vec3 WorldPos;
 in vec3 Normal;
 
+uniform bool EnableGammaCorrection;
+uniform float Exposure;
+uniform float gamma;
+
 // material parameters
 uniform sampler2D albedoMap;
 uniform sampler2D normalMap;
@@ -23,7 +27,12 @@ struct PointLight
 {    
     vec3 lightColor;
     vec3 position;  
-};  
+    float constant;
+    float linear;
+    float quadratic;  
+    float IntensityStrength;
+    vec3 RGBColor;
+};    
 
 struct DirectionalLight 
 {
@@ -110,12 +119,12 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0)
 
 void main()
 {		
-    vec3 albedo     = pow(texture(albedoMap, TexCoords).rgb, vec3(2.2));
+    vec3 albedo     = pow(texture(albedoMap, TexCoords).rgb, vec3(2.5));
     float metallic  = texture(metallicMap, TexCoords).r;
     float roughness = texture(roughnessMap, TexCoords).r;
     float ao        = texture(aoMap, TexCoords).r;
 
-    vec3 N = getNormalFromMap();
+    vec3 N = getNormalFromMap(); // no normal map can use vec3(0.1)
     vec3 V = normalize(camPos - WorldPos);
 
     vec3 F0 = vec3(0.04); 
@@ -158,7 +167,13 @@ void main()
         vec3 L = normalize(pointLights[i].position - WorldPos);
         vec3 H = normalize(V + L);
         float distance = length(pointLights[i].position - WorldPos);
-        float attenuation = 10.0 / (distance * distance);
+
+	    float dist = length(pointLights[i].position - WorldPos);
+        float constant = pointLights[i].constant;
+	    float linear = pointLights[i].linear;
+        float quadratic = pointLights[i].quadratic;
+	    float attenuation = pointLights[i].IntensityStrength / (constant + linear * dist + quadratic * ( dist * dist ) );
+        //float attenuation = 10.0 / (distance * distance);
         vec3 radiance = pointLights[i].lightColor * attenuation;
 
         // Cook-Torrance BRDF
@@ -215,10 +230,13 @@ void main()
     }   
 
     vec3 ambient = vec3(0.03) * albedo * ao;
-    
     vec3 color = ambient + Lo;
 
-    color = color / (color + vec3(1.0));
-    color = pow(color, vec3(1.0/2.2)); 
-    FragColor = vec4(color, 1.0);
+        // HDR + GAMMA
+        //color = color / (color + vec3(1.0));
+
+        color = vec3(1.0) - exp(-color * Exposure);
+
+        color = pow(color, vec3(1.0/2.5)); 
+        FragColor = vec4(color, 1.0);
 }

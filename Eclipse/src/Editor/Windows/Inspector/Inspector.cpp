@@ -143,11 +143,11 @@ namespace Eclipse
 
                 ECGui::DrawTextWidget<const char*>("Light Colour", EMPTY_STRING);
 
-                ECGui::ColorPicker3("PLightColor", (float*)&_PointLight.Color,
+                ECGui::ColorPicker3("PLightColor", (float*)&_PointLight.RGBColor,
                     ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
                 //ECGui::DrawSliderFloat4Widget("ColourVec", &_PointLight.Color, true, 0.0f, 1.0f);
-                engine->LightManager.SetLightColor(_PointLight,
-                    { _PointLight.Color.getX() ,_PointLight.Color.getY() , _PointLight.Color.getZ() , 1.0f });
+                //engine->LightManager.SetRGBLightColor(_PointLight,
+                //    { _PointLight.Color.getX() ,_PointLight.Color.getY() , _PointLight.Color.getZ() , 1.0f });
 
                 ECGui::DrawTextWidget<const char*>("Attenuation Level", EMPTY_STRING);
                 ECGui::DrawSliderIntWidget("PLightColourVec", &_PointLight.AttenuationLevel, true, 0, 10);
