@@ -110,20 +110,32 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
+                ECGui::SetColumns(2);
+                ECGui::InsertHorizontalLineSeperator();
+                ECGui::SetColumnOffset(1, 150);
+
                 auto& transCom = engine->world.GetComponent<TransformComponent>(ID);
-
                 ECGui::DrawTextWidget<const char*>("Position", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloat3Widget("TransVec", &transCom.position, true, -100.f, 100.f, ID);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Rotation", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloat3Widget("TransRot", &transCom.rotation, true, -360.f, 360.f, ID);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Scale", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloat3Widget("TransScale", &transCom.scale, true, -100.f, 100.f, ID);
 
                 //Update for DynamicAABB Tree -Rachel
                 engine->gPicker.UpdateAabb(ID);
                 engine->gDynamicAABBTree.UpdateData(ID);
+
+                ECGui::SetColumns(1);
+                ECGui::InsertHorizontalLineSeperator();
             }
         }
 
@@ -136,57 +148,87 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
+                ECGui::SetColumns(2);
+                ECGui::InsertHorizontalLineSeperator();
+                ECGui::SetColumnOffset(1, 150);
+
                 auto& _PointLight = engine->world.GetComponent<PointLightComponent>(ID);
 
                 ECGui::DrawTextWidget<const char*>("IntensityStrength", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloatWidget("IntensityFloat", &_PointLight.IntensityStrength, true, 0.f, 5000.0f);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Light Colour", EMPTY_STRING);
-
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::ColorPicker3("PLightColor", (float*)&_PointLight.Color,
                     ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
-                //ECGui::DrawSliderFloat4Widget("ColourVec", &_PointLight.Color, true, 0.0f, 1.0f);
-                engine->LightManager.SetLightColor(_PointLight,
-                    { _PointLight.Color.getX() ,_PointLight.Color.getY() , _PointLight.Color.getZ() , 1.0f });
-
+                ECGui::DrawSliderFloat4Widget("ColourVec", &_PointLight.Color, true, 0.0f, 1.0f);
+                engine->LightManager.SetLightColor(_PointLight,{ _PointLight.Color.getX() ,_PointLight.Color.getY() , _PointLight.Color.getZ() , 1.0f });
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Attenuation Level", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderIntWidget("PLightColourVec", &_PointLight.AttenuationLevel, true, 0, 10);
                 engine->LightManager.SetAttenuation(_PointLight, _PointLight.AttenuationLevel);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Light Ambient", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloat3Widget("PLightAmbientVec", &_PointLight.ambient, true, 0.0f, 1.0f);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Light Diffuse", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloat3Widget("PLightDiffuseVec", &_PointLight.diffuse, true, 0.0f, 1.0f);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Light Specular", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloat3Widget("PLightSpecularVec", &_PointLight.specular, true, 0.0f, 1.0f);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Intensity Strength", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloatWidget("Intensity Strength", &_PointLight.IntensityStrength, true, 0.0f, 50.0f);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Constant", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloatWidget("Constant", &_PointLight.constant, true, 0.0f, 50.0f);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Linear", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloatWidget("Linear", &_PointLight.linear, true, 0.0f, 50.0f);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Quadratic", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloatWidget("Quadratic", &_PointLight.quadratic, true, 0.0f, 50.0f);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Radius", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloatWidget("Radius", &_PointLight.radius, true, 0.0f, 50.0f);
-
-                ECGui::SetColumns(2, NULL, true);
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Enable Blinn Phong", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                ECGui::CheckBoxBool("Enable Blinn Phong", &_PointLight.EnableBlinnPhong);
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Visible", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                ECGui::CheckBoxBool("Enable Blinn Phong Visible", &_PointLight.visible);
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Affects World", EMPTY_STRING);
                 ECGui::NextColumn();
-                ECGui::CheckBoxBool("Enable Blinn Phong", &_PointLight.EnableBlinnPhong);
-                ECGui::CheckBoxBool("Enable Blinn PhongVisible", &_PointLight.visible);
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::CheckBoxBool("Affects World", &_PointLight.AffectsWorld);
-                ECGui::SetColumns(1, NULL, true);
-
+                ECGui::SetColumns(1);
+                ECGui::InsertHorizontalLineSeperator();
             }
         }
 
@@ -199,61 +241,101 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
+                ECGui::SetColumns(2);
+                ECGui::InsertHorizontalLineSeperator();
+                ECGui::SetColumnOffset(1, 150);
+
                 auto& _SpotLight = engine->world.GetComponent<SpotLightComponent>(ID);
 
                 ECGui::DrawTextWidget<const char*>("IntensityStrength", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloatWidget("IntensityFloat", &_SpotLight.IntensityStrength, true, 0.f, 5000.0f);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Light Colour", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::ColorPicker3("SLightColor", (float*)&_SpotLight.lightColor,
                     ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Light Direction", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloat3Widget("PLightDirectionVec", &_SpotLight.direction, true, -5.0f, 5.0f);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Attenuation Level", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderIntWidget("PLightColourVec", &_SpotLight.AttenuationLevel, true, 0, 10);
                 engine->LightManager.SetAttenuation(_SpotLight, _SpotLight.AttenuationLevel);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Light Ambient", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloat3Widget("PLightAmbientVec", &_SpotLight.ambient, true, 0.0f, 1.0f);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Light Diffuse", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloat3Widget("PLightDiffuseVec", &_SpotLight.diffuse, true, 0.0f, 1.0f);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Light Specular", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloat3Widget("PLightSpecularVec", &_SpotLight.specular, true, 0.0f, 1.0f);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("OuterCutOff", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloatWidget("SLightOuterCutOffFloat", &_SpotLight.outerCutOff, true, 0.f, 50.0f);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("CutOff", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloatWidget("SLightCutOffFloat", &_SpotLight.cutOff, true, 0.f, (_SpotLight.outerCutOff - 5.0f));
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Direction", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloat3Widget("SLightDirectionVec", &_SpotLight.direction, true, 0.f, 150.f);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Constant", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloatWidget("Constant", &_SpotLight.constant, true, 0.0f, 50.0f);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Linear", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloatWidget("Linear", &_SpotLight.linear, true, 0.0f, 50.0f);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Quadratic", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloatWidget("Quadratic", &_SpotLight.quadratic, true, 0.0f, 50.0f);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Radius", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloatWidget("Radius", &_SpotLight.radius, true, 0.0f, 50.0f);
-
-                ECGui::SetColumns(2, NULL, true);
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Enable Blinn Phong", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                ECGui::CheckBoxBool("Enable Blinn Phong", &_SpotLight.EnableBlinnPhong);
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Visible", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                ECGui::CheckBoxBool("Enable Blinn PhongVisible", &_SpotLight.visible);
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Affects World", EMPTY_STRING);
                 ECGui::NextColumn();
-                ECGui::CheckBoxBool("Enable Blinn Phong", &_SpotLight.EnableBlinnPhong);
-                ECGui::CheckBoxBool("Enable Blinn PhongVisible", &_SpotLight.visible);
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::CheckBoxBool("Affects World", &_SpotLight.AffectsWorld);
+                ECGui::NextColumn();
                 ECGui::SetColumns(1, NULL, true);
+                ECGui::InsertHorizontalLineSeperator();
             }
         }
 

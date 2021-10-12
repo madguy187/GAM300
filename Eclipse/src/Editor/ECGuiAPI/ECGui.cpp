@@ -661,6 +661,20 @@ namespace Eclipse
 		return ImGuiAPI::ColorPicker3(label, col, flags);
 	}
 
+	void ECGui::LineAndDummy(ImVec2 sizeOfDummies)
+	{
+		ECGui::InsertHorizontalLineSeperator();
+
+		ECGui::Dummy(sizeOfDummies);
+	}
+
+	void ECGui::DummyAndLine(ImVec2 sizeOfDummies)
+	{
+		ECGui::Dummy(sizeOfDummies);
+
+		ECGui::InsertHorizontalLineSeperator();
+	}
+
 	void ECGui::Image(ImTextureID user_texture_id, const ImVec2& size, const ImVec2& uv0, 
 		const ImVec2& uv1, const ImVec4& tint_col, const ImVec4& border_col)
 	{
