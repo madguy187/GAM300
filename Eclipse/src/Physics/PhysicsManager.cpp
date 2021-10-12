@@ -363,7 +363,7 @@ namespace Eclipse
 			temprot = AnglestoQuat(transform.rotation.getX(),transform.rotation.getY(),transform.rotation.getZ());
 	
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setGlobalPose(PxTransform{ temptrans,temprot});
-			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->addForce(tempforce);
+			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->addForce(tempforce,PxForceMode::eIMPULSE);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setMaxLinearVelocity(static_cast<PxReal>(rigid.MaxVelocity));
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setMass(rigid.mass);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setActorFlag(PxActorFlag::eDISABLE_GRAVITY,rigid.enableGravity ? false : true);
@@ -403,6 +403,32 @@ namespace Eclipse
 			delete[] shapes;
 		}
 	}
+
+	void PhysicsManager::ChangeShape(Entity ent,PxShapeType shape,)
+	{
+		/*auto& collision = engine->world.GetComponent<CollisionComponent>(ent);
+		if (!collision.created)
+			return;
+		PxU32 numofshapes = static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->getNbShapes();
+		if (numofshapes > 0)
+		{
+			PxShape** shapes = new PxShape * [numofshapes];
+			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->getShapes(shapes, numofshapes);
+			for (PxU32 i = 0; i < numofshapes; ++i)
+			{
+				switch (collision.shape.shape)
+				{
+				case PxShapeType::Px_CUBE:
+					if (shapes[i]->getGeometryType() == PxGeometryType::eBOX)
+					{
+						shapes[i]->setGeometry(PxBoxGeometry{ collision.shape.hx,collision.shape.hy,collision.shape.hz });
+					}
+					break;
+				}
+			}
+		}*/
+	}
+
 
 	void PhysicsManager::CreateShape(Entity ent)
 	{
