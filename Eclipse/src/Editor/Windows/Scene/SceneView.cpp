@@ -164,11 +164,19 @@ namespace Eclipse
 			//Update for DynamicAABB Tree -Rachel
 			engine->gPicker.UpdateAabb(selectedEntity);
 			engine->gDynamicAABBTree.UpdateData(selectedEntity);
+
+			OnCopyEntityEvent();
 		}
 		else if (!ImGuizmo::IsUsing() && ImGui::IsMouseReleased(0)
 			&& ECGui::IsItemHovered())
 		{
 			CommandHistory::DisableMergeForMostRecentCommand();
+		}
+
+		if (!ImGuizmo::IsUsing() && ImGui::IsMouseReleased(0) && !ImGui::IsMouseDragging(0))
+		{
+			IsCopying = false;
+			std::cout << "imguizmo not used" << std::endl;
 		}
 	}
 
@@ -205,6 +213,19 @@ namespace Eclipse
 
 			if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
 				engine->editorManager->SetSelectedEntity(engine->gPicker.GetCurrentCollisionID());
+		}
+	}
+
+	void SceneWindow::OnCopyEntityEvent()
+	{
+		if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_LEFTALT)) /*&& ECGui::IsMouseClicked(0)*/)
+		{
+			if (!IsCopying)
+			{
+				Entity ID = engine->world.CopyEntity(engine->world, engine->editorManager->GetSelectedEntity(), all_component_list);
+				engine->editorManager->RegisterExistingEntity(ID);
+				IsCopying = true;
+			}
 		}
 	}
 

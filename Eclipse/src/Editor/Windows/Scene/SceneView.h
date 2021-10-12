@@ -24,6 +24,7 @@ namespace Eclipse
         void OnCameraMoveEvent();
         void OnCameraZoomEvent();
         void OnSelectEntityEvent();
+        void OnCopyEntityEvent();
 
         SnapValueSettings& GetRefToSnapSettings();
         SnapValueSettings GetSnapSettings();
@@ -46,5 +47,6 @@ namespace Eclipse
         int m_GizmoType{ 0 };
         bool IsWindowActive{ false };
         bool IsSnapping{ false };
+        bool IsCopying{ false };
     };
 }
