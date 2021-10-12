@@ -63,10 +63,11 @@ namespace Eclipse
             ShowCollisionProperty("Collision", currEnt, CompFilter);
             ShowAIProperty("AI Properties", currEnt, CompFilter);
 
-            ECGui::InsertHorizontalLineSeperator();
+            ECGui::SetColumns(2, nullptr, true);
             AddComponentsController(currEnt);
-            ECGui::InsertSameLine();
+            ECGui::NextColumn();
             RemoveComponentsController(currEnt);
+            ECGui::SetColumns(1, nullptr, true);
         }
         else
         {
@@ -110,7 +111,7 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
-                ECGui::SetColumns(2);
+                ECGui::SetColumns(2,nullptr,true);
                 ECGui::InsertHorizontalLineSeperator();
                 ECGui::SetColumnOffset(1, 150);
 
@@ -134,7 +135,7 @@ namespace Eclipse
                 engine->gPicker.UpdateAabb(ID);
                 engine->gDynamicAABBTree.UpdateData(ID);
 
-                ECGui::SetColumns(1);
+                ECGui::SetColumns(1, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
             }
         }
@@ -148,7 +149,7 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
-                ECGui::SetColumns(2);
+                ECGui::SetColumns(2,nullptr,true);
                 ECGui::InsertHorizontalLineSeperator();
                 ECGui::SetColumnOffset(1, 150);
 
@@ -226,7 +227,7 @@ namespace Eclipse
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::CheckBoxBool("Affects World", &_PointLight.AffectsWorld);
-                ECGui::SetColumns(1);
+                ECGui::SetColumns(1, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
             }
         }
@@ -240,7 +241,7 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
-                ECGui::SetColumns(2);
+                ECGui::SetColumns(2,nullptr,true);
                 ECGui::InsertHorizontalLineSeperator();
                 ECGui::SetColumnOffset(1, 150);
 
@@ -331,8 +332,7 @@ namespace Eclipse
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::CheckBoxBool("Affects World", &_SpotLight.AffectsWorld);
-                ECGui::NextColumn();
-                ECGui::SetColumns(1, NULL, true);
+                ECGui::SetColumns(1, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
             }
         }
@@ -346,7 +346,7 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
-                ECGui::SetColumns(2);
+                ECGui::SetColumns(2,nullptr,true);
                 ECGui::InsertHorizontalLineSeperator();
                 ECGui::SetColumnOffset(1, 150);
 
@@ -385,7 +385,7 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
-                ECGui::SetColumns(2);
+                ECGui::SetColumns(2,nullptr,true);
                 ECGui::InsertHorizontalLineSeperator();
                 ECGui::SetColumnOffset(1, 150);
 
@@ -405,8 +405,7 @@ namespace Eclipse
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloat3Widget("Rigid Body Velocity", &_RigidB.velocity, true, 0.0f, 1.0f);
-                ECGui::NextColumn();
-                ECGui::SetColumns(1, NULL, true);
+                ECGui::SetColumns(1, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
             }
         }
@@ -421,7 +420,7 @@ namespace Eclipse
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
                 auto& _Camera = engine->world.GetComponent<CameraComponent>(ID);
-                ECGui::SetColumns(2);
+                ECGui::SetColumns(2,nullptr,true);
                 ECGui::InsertHorizontalLineSeperator();
                 ECGui::SetColumnOffset(1, 150);
 
@@ -429,9 +428,7 @@ namespace Eclipse
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloatWidget("Camera Speed", &_Camera.cameraSpeed);
-
-                ECGui::NextColumn();
-                ECGui::SetColumns(1, NULL, true);
+                ECGui::SetColumns(1, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
             }
         }
@@ -445,7 +442,7 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
-                ECGui::SetColumns(2);
+                ECGui::SetColumns(2,nullptr,true);
                 ECGui::InsertHorizontalLineSeperator();
                 ECGui::SetColumnOffset(1, 150);
                 auto& _Texture = engine->world.GetComponent<MaterialComponent>(ID);
@@ -474,7 +471,7 @@ namespace Eclipse
 
                 }
 
-                ECGui::SetColumns(1, NULL, true);
+                ECGui::SetColumns(1, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
             }
         }
@@ -520,7 +517,7 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
-                ECGui::SetColumns(2);
+                ECGui::SetColumns(2,nullptr,true);
                 ECGui::InsertHorizontalLineSeperator();
                 ECGui::SetColumnOffset(1, 150);
 
@@ -569,7 +566,7 @@ namespace Eclipse
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::CheckBoxBool("Enable Blinn Phong", &_Material.Highlight);
-                ECGui::SetColumns(1, NULL, true);
+                ECGui::SetColumns(1, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
             }
         }
@@ -583,14 +580,20 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
+                ECGui::SetColumns(2, nullptr, true);
+                ECGui::InsertHorizontalLineSeperator();
+                ECGui::SetColumnOffset(1, 150);
+
                 auto& _Mesh = engine->world.GetComponent<MeshComponent>(ID);
 
                 ECGui::DrawTextWidget<const char*>("Model Name: ", EMPTY_STRING);
-                ECGui::InsertSameLine();
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawTextWidget<const char*>(_Mesh.MeshName.data(), EMPTY_STRING);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Environment Map", EMPTY_STRING);
-                ECGui::InsertSameLine();
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::CheckBoxBool("Environment Map", &_Mesh.ENV_MAP);
 
                 if (_Mesh.ENV_MAP)
@@ -598,8 +601,12 @@ namespace Eclipse
                     static size_t comboindex = 0;
                     std::vector<std::string> MapVector = { "REFLECT", "REFRACT" };
                     ComboListSettings settings = { "Map Type" };
+                    ECGui::NextColumn();
                     ECGui::DrawTextWidget<const char*>("Map Type", "");
+                    ECGui::NextColumn();
+                    ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                     ECGui::CreateComboList(settings, MapVector, comboindex);
+                    ECGui::NextColumn();
                     _Mesh.ENV_TYPE = static_cast<MeshComponent::MapType>(comboindex);
                 }
 
@@ -607,13 +614,20 @@ namespace Eclipse
 
                 std::string nameString = _Mesh.modelRef + " (Mesh Filter)";
                 ImGui::PushStyleColor(ImGuiCol_Header, IM_COL32(0, 1, 1, 1));
+                ECGui::NextColumn();
+                ECGui::SetColumns(1, nullptr, true);
                 if (filter.PassFilter(nameString.c_str()) && ECGui::CreateCollapsingHeader(nameString.c_str()))
                 {
+                    ECGui::SetColumns(2, nullptr, true);
+                    ECGui::SetColumnOffset(1, 150);
                     ECGui::DrawTextWidget<const char*>("Mesh ", EMPTY_STRING);
-                    ECGui::InsertSameLine();
+                    ECGui::NextColumn();
+                    ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                     ChangeMeshController(ID);
                 }
                 ImGui::PopStyleColor();
+                ECGui::SetColumns(1, nullptr, true);
+                ECGui::InsertHorizontalLineSeperator();
             }
         }
         return false;
@@ -917,8 +931,7 @@ namespace Eclipse
 
     void InspectorWindow::AddComponentsController(Entity ID)
     {
-        //ImVec2 buttonSize = { 180,20 };
-        if (ECGui::ButtonBool(("Add Component")))
+        if (ECGui::ButtonBool(("Add Component"), {ImGui::GetColumnWidth(),30}))
         {
             ECGui::OpenPopup("Add Component");
         }
@@ -934,9 +947,7 @@ namespace Eclipse
 
     void InspectorWindow::RemoveComponentsController(Entity ID)
     {
-        //ImVec2 buttonSize = { 180,20 };
-
-        if (ECGui::ButtonBool(("Remove Component")))
+        if (ECGui::ButtonBool(("Remove Component"), { ImGui::GetColumnWidth(),30 }))
         {
             ECGui::OpenPopup("Remove Component");
         }
@@ -1174,7 +1185,7 @@ namespace Eclipse
             columncount = 1;
         }
         ECGui::DrawSliderFloatWidget("Size: ", &thumbnaimsize, false, 10, 200);
-        ECGui::SetColumns(columncount, NULL, true);
+        ECGui::SetColumns(columncount, nullptr, true);
         for (auto it : Graphics::textures)
         {
             textureNames.push_back(it.first);
@@ -1265,7 +1276,7 @@ namespace Eclipse
         }
         ECGui::DrawSliderFloatWidget("Size: ", &thumbnaimsize, false, 10, 200);
 
-        ECGui::SetColumns(columncount, NULL, true);
+        ECGui::SetColumns(columncount, nullptr, true);
 
         //use model info component to identify if the dude is basic or not 
 
