@@ -376,6 +376,14 @@ void Eclipse::Texture::LoadUncompressedTextures(std::string pathname)
     {
         GLuint texobj_hdl;
 
+        GLenum format;
+        if (channels == 1)
+            format = GL_RED;
+        else if (channels == 3)
+            format = GL_RGB;
+        else if (channels == 4)
+            format = GL_RGBA;
+
         //// define and initialize a handle to texture object that will encapsulate two-dimensional textures
         glCreateTextures(GL_TEXTURE_2D, 1, &texobj_hdl);
 

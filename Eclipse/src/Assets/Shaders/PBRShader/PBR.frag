@@ -31,12 +31,25 @@ struct DirectionalLight
 	vec3 lightColor;
 };
 
+struct SpotLight 
+{
+    vec3 lightColor;
+    vec3 position;
+    vec3 direction;
+    float cutOff;
+    float outerCutOff;
+};
+
 #define NR_POINT_LIGHTS 15  
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform int NumberOfPointLights;
 
 #define NR_DIRECTIONAL_LIGHTS 1  
 uniform DirectionalLight directionlight[NR_DIRECTIONAL_LIGHTS];
+
+#define NR_SPOTLIGHTS 10  
+uniform SpotLight spotLights[NR_SPOTLIGHTS];
+uniform int NumberOfSpotLights;
 
 vec3 getNormalFromMap()
 {
@@ -111,14 +124,15 @@ void main()
     // reflectance equation
     vec3 Lo = vec3(0.0);
 
-    //Directional Light
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // DIRECTIONALIGHT 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     vec3 L = normalize(-directionlight[0].direction - WorldPos);
     vec3 H = normalize(V + L);
     float distance = length(-directionlight[0].direction - WorldPos);
     float attenuation = 10.0 / (distance * distance);
     vec3 radiance = directionlight[0].lightColor * attenuation;
-
+    
     // Cook-Torrance BRDF
     float NDF = DistributionGGX(N, H, roughness);   
     float G   = GeometrySmith(N, V, L, roughness);      
@@ -135,7 +149,9 @@ void main()
     Lo += (kD * albedo / PI + specular) * radiance * NdotL;  // note that we already multiplied the BRDF by the Fresnel (kS) so we won't multiply by kS again
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // pointLights
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // POINTLIGHT(S)
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     for(int i = 0; i < NumberOfPointLights; ++i)
     {
         // calculate per-light radiance
@@ -163,6 +179,41 @@ void main()
         Lo += (kD * albedo / PI + specular) * radiance * NdotL;  // note that we already multiplied the BRDF by the Fresnel (kS) so we won't multiply by kS again
     }   
     
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // SPOTLIGHTS(S)
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    for(int i = 0; i < NumberOfSpotLights; ++i)
+    {
+    	vec3 lightDir = normalize(spotLights[i].position - WorldPos);
+	    float theta = dot(lightDir, normalize(-spotLights[i].direction));
+
+        // calculate Intensity
+		float intensity = clamp((theta - spotLights[i].outerCutOff) / (spotLights[i].cutOff - spotLights[i].outerCutOff), 0.0, 1.0);
+
+        // calculate per-light radiance
+        vec3 L = normalize(spotLights[i].position - WorldPos);
+        vec3 H = normalize(V + L);
+        float distance = length(spotLights[i].position - WorldPos);
+        float attenuation = 10.0 / (distance * distance);
+        vec3 radiance = spotLights[i].lightColor * attenuation;
+
+        // Cook-Torrance BRDF
+        float NDF = DistributionGGX(N, H, roughness);   
+        float G   = GeometrySmith(N, V, L, roughness);      
+        vec3 F    = fresnelSchlick(max(dot(H, V), 0.0), F0);
+           
+        vec3 numerator    = NDF * G * F; 
+        float denominator = 4 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.0001; // + 0.0001 to prevent divide by zero
+        vec3 specular = numerator / denominator;
+
+        vec3 kS = F;
+        vec3 kD = vec3(1.0) - kS;
+        kD *= 1.0 - metallic;	  
+
+        float NdotL = max(dot(N, L), 0.0) * intensity;        
+        Lo += (kD * albedo / PI + specular) * radiance * NdotL;  // note that we already multiplied the BRDF by the Fresnel (kS) so we won't multiply by kS again
+    }   
+
     vec3 ambient = vec3(0.03) * albedo * ao;
     
     vec3 color = ambient + Lo;

@@ -103,7 +103,9 @@ namespace Eclipse
         auto shdrpgm2 = Graphics::shaderpgms["PBRShader"];
         shdrpgm2.Use();
         GLint NumberOfPointLightsforPBR = shdrpgm2.GetLocation("NumberOfPointLights");
+        GLint NumberOfSpotLightsforPBR = shdrpgm2.GetLocation("NumberOfSpotLights");
         GLCall(glUniform1i(NumberOfPointLightsforPBR, _allpointlights.GetNumberOfPointLights()));
+        GLCall(glUniform1i(NumberOfSpotLightsforPBR, _allspotlights.GetNumberOfSpotLights()));
         shdrpgm2.UnUse();
     }
 

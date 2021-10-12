@@ -35,11 +35,11 @@ namespace Eclipse
         MaterialInstances.push_back(BambooWood);
 
         MaterialInstance Granite;
-        Texture Tex11("src/Assets/Materials/GrayGranite/albedo.png");
-        Texture Tex12("src/Assets/Materials/GrayGranite/normal.png");
-        Texture Tex13("src/Assets/Materials/GrayGranite/metallic.png");
-        Texture Tex14("src/Assets/Materials/GrayGranite/roughness.png");
-        Texture Tex15("src/Assets/Materials/GrayGranite/ao.png");
+        Texture Tex11("src/Assets/Materials/Basket/albedo.png");
+        Texture Tex12("src/Assets/Materials/Basket/normal.png");
+        Texture Tex13("src/Assets/Materials/Basket/metallic.png");
+        Texture Tex14("src/Assets/Materials/Basket/roughness.png");
+        Texture Tex15("src/Assets/Materials/Basket/ao.png");
         Granite.Name = "Granite";
         Granite.albedo = Tex11.GetHandle();
         Granite.normal = Tex12.GetHandle();
@@ -79,19 +79,19 @@ namespace Eclipse
         glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
 
         glActiveTexture(GL_TEXTURE10);
-        glBindTexture(GL_TEXTURE_2D, MaterialInstances[0].albedo);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].albedo);
 
         glActiveTexture(GL_TEXTURE11);
-        glBindTexture(GL_TEXTURE_2D, MaterialInstances[0].normal);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].normal);
 
         glActiveTexture(GL_TEXTURE12);
-        glBindTexture(GL_TEXTURE_2D, MaterialInstances[0].metallic);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].metallic);
 
         glActiveTexture(GL_TEXTURE13);
-        glBindTexture(GL_TEXTURE_2D, MaterialInstances[0].roughness);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].roughness);
 
         glActiveTexture(GL_TEXTURE14);
-        glBindTexture(GL_TEXTURE_2D, MaterialInstances[0].ao);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].ao);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -224,29 +224,44 @@ namespace Eclipse
         model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::scale(model, { 5,5,5 });
+        model = glm::scale(model, { 10,10,10 });
 
-        GLCall(glUniform1f(metallic, 0.5f));
-        GLCall(glUniform1f(roughness, 0.0f));
+        GLCall(glUniform1f(metallic, 1.0f));
+        GLCall(glUniform1f(roughness, 1.0f));
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
         glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
 
         glActiveTexture(GL_TEXTURE10);
         glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].albedo);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         glActiveTexture(GL_TEXTURE11);
         glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].normal);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         glActiveTexture(GL_TEXTURE12);
         glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].metallic);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         glActiveTexture(GL_TEXTURE13);
         glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].roughness);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         glActiveTexture(GL_TEXTURE14);
         glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].ao);
-
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
