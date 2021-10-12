@@ -161,7 +161,6 @@ namespace Eclipse
                 ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Light Colour", EMPTY_STRING);
                 ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::ColorPicker3("PLightColor", (float*)&_PointLight.Color,
                     ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
                 ECGui::DrawSliderFloat4Widget("ColourVec", &_PointLight.Color, true, 0.0f, 1.0f);
@@ -254,7 +253,6 @@ namespace Eclipse
                 ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Light Colour", EMPTY_STRING);
                 ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::ColorPicker3("SLightColor", (float*)&_SpotLight.lightColor,
                     ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
                 ECGui::NextColumn();
@@ -348,21 +346,33 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
+                ECGui::SetColumns(2);
+                ECGui::InsertHorizontalLineSeperator();
+                ECGui::SetColumnOffset(1, 150);
+
                 auto& _DLight = engine->world.GetComponent<DirectionalLightComponent>(ID);
-                ECGui::PushItemWidth(WindowSize_.getX() - 100.f);
                 ECGui::DrawTextWidget<const char*>("Light Colour", EMPTY_STRING);
+                ECGui::NextColumn();
                 ECGui::ColorPicker3("DLightColor", (float*)&_DLight.lightColor,
                     ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
-
-                ECGui::PushItemWidth(WindowSize_.getX());
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("DLight Ambient", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloat3Widget("DLightAmbientVec", &_DLight.ambient, true, 0.0f, 1.0f);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("DLight Diffuse", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloat3Widget("DLightDiffuseVec", &_DLight.diffuse, true, 0.0f, 1.0f);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("DLight Specular", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloat3Widget("DLightSpecularVec", &_DLight.specular, true, 0.0f, 1.0f);
+                ECGui::NextColumn();
+                ECGui::SetColumns(1);
+                ECGui::InsertHorizontalLineSeperator();
             }
         }
 
@@ -375,17 +385,29 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
+                ECGui::SetColumns(2);
+                ECGui::InsertHorizontalLineSeperator();
+                ECGui::SetColumnOffset(1, 150);
+
                 auto& _RigidB = engine->world.GetComponent<RigidBodyComponent>(ID);
 
                 ECGui::DrawTextWidget<const char*>("Enable Gravity", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::CheckBoxBool("Rigid Body Enable Gravity", &_RigidB.enableGravity);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Forces", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloat3Widget("Rigid Body Forces", &_RigidB.forces, true, 0.0f, 1.0f);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Velocity", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloat3Widget("Rigid Body Velocity", &_RigidB.velocity, true, 0.0f, 1.0f);
-
+                ECGui::NextColumn();
+                ECGui::SetColumns(1, NULL, true);
+                ECGui::InsertHorizontalLineSeperator();
             }
         }
 
@@ -399,9 +421,18 @@ namespace Eclipse
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
                 auto& _Camera = engine->world.GetComponent<CameraComponent>(ID);
+                ECGui::SetColumns(2);
+                ECGui::InsertHorizontalLineSeperator();
+                ECGui::SetColumnOffset(1, 150);
 
                 ECGui::DrawTextWidget<const char*>("Camera Speed", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloatWidget("Camera Speed", &_Camera.cameraSpeed);
+
+                ECGui::NextColumn();
+                ECGui::SetColumns(1, NULL, true);
+                ECGui::InsertHorizontalLineSeperator();
             }
         }
 
