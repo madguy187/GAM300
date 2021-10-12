@@ -445,10 +445,14 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
+                ECGui::SetColumns(2);
+                ECGui::InsertHorizontalLineSeperator();
+                ECGui::SetColumnOffset(1, 150);
                 auto& _Texture = engine->world.GetComponent<MaterialComponent>(ID);
 
                 ECGui::DrawTextWidget<const char*>("hasTexture", EMPTY_STRING);
-                ECGui::InsertSameLine();
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::CheckBoxBool("hasTexture", &_Texture.hasTexture);
 
                 if (_Texture.hasTexture)
@@ -459,13 +463,19 @@ namespace Eclipse
                                                                 {"TT_3D",TextureType::TT_3D} };
 
                     ComboListSettings settings = { "Texture Type" };
-
+                    ECGui::NextColumn();
                     ECGui::DrawTextWidget<const char*>("Texture Type", EMPTY_STRING);
+                    ECGui::NextColumn();
+                    ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                     ECGui::CreateComboList(settings, _TextureVector, _Texture.ComboIndex);
                     _Texture.Type = _Map[_TextureVector[_Texture.ComboIndex]];
-
+                    ECGui::NextColumn();
                     ChangeTextureController(_Texture);
+
                 }
+
+                ECGui::SetColumns(1, NULL, true);
+                ECGui::InsertHorizontalLineSeperator();
             }
         }
 
@@ -479,6 +489,8 @@ namespace Eclipse
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
                 auto& _Render = engine->world.GetComponent<MeshComponent>(ID);
+
+
 
                 ECGui::DrawTextWidget<const char*>("Transparency", EMPTY_STRING);
                 ECGui::DrawSliderFloatWidget("Render Transparency", &_Render.transparency, true, 0.0f, 200.0f);
@@ -508,6 +520,9 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
+                ECGui::SetColumns(2);
+                ECGui::InsertHorizontalLineSeperator();
+                ECGui::SetColumnOffset(1, 150);
 
                 auto& _Material = engine->world.GetComponent<MaterialComponent>(ID);
 
@@ -519,32 +534,43 @@ namespace Eclipse
                 ComboListSettings settings = { "Model Type" };
 
                 ECGui::DrawTextWidget<const char*>("Model Type", "");
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::CreateComboList(settings, _ModelVector, _Material.ComboIndex);
                 _Material.Modeltype = _Map[_ModelVector[_Material.ComboIndex]];
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Ambient", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloat3Widget("Material Ambient", &_Material.ambient, true, 0.0f, 1.0f);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Diffuse", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloat3Widget("Material Diffuse", &_Material.diffuse, true, 0.0f, 1.0f);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Specular", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloat3Widget("Material Specular", &_Material.specular, true, 0.0f, 1.0f);
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("MaximumShininess", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloatWidget("Material MaximumShininess", &_Material.MaximumShininess, true, 0.0f, 200.0f);
-
+                ECGui::NextColumn();
                 //ECGui::DrawTextWidget<const char*>("Thickness", "");
                 //ECGui::DrawSliderFloatWidget("Material Thickness", &_Material.Thickness, true, 0.0f, 200.0f);
 
                 //ECGui::DrawTextWidget<const char*>("ScaleUp", "");
                 //ECGui::DrawSliderFloatWidget("Material ScaleUp", &_Material.ScaleUp, true, 0.0f, 200.0f);
 
-                ECGui::SetColumns(2, NULL, true);
                 ECGui::DrawTextWidget<const char*>("Highlight", EMPTY_STRING);
                 ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::CheckBoxBool("Enable Blinn Phong", &_Material.Highlight);
                 ECGui::SetColumns(1, NULL, true);
+                ECGui::InsertHorizontalLineSeperator();
             }
         }
 
@@ -1109,8 +1135,8 @@ namespace Eclipse
     {
         ImVec2 buttonSize = { 180,20 };
         ECGui::DrawTextWidget<const char*>("Texture  ", EMPTY_STRING);
-        ECGui::InsertSameLine();
-
+        ECGui::NextColumn();
+        ECGui::PushItemWidth(ECGui::GetWindowSize().x);
         if (ECGui::ButtonBool((Item.TextureRef.c_str()), buttonSize) || (ECGui::IsItemClicked(0) && ECGui::IsItemHovered()))
         {
             ECGui::OpenPopup("Texture Changer");
