@@ -82,7 +82,7 @@ namespace Eclipse
 
         engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
-        auto shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
+        auto shdrpgm = Graphics::shaderpgms["PBRShader"];
         shdrpgm.Use();
 
         if (engine->GraphicsManager.EnableEnvironmentMapForAll && engine->GraphicsManager.DrawSky)
@@ -201,6 +201,8 @@ namespace Eclipse
 
     void AssimpModelManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID, AABB_* box)
     {
+        TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+
         if (engine->world.CheckComponent<MaterialComponent>(ModelID))
         {
             MaterialComponent& material = engine->world.GetComponent<MaterialComponent>(ModelID);
@@ -210,6 +212,15 @@ namespace Eclipse
             GLCall(glUniform1f(uniform_var_loc1, material.shininess));
             GLCall(glUniform1f(uniform_var_loc2, material.MaximumShininess));
         }
+
+        GLuint view = _shdrpgm.GetLocation("view");
+        GLuint cameraPos = _shdrpgm.GetLocation("camPos");
+        GLint projection = _shdrpgm.GetLocation("projection");
+
+        glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
+        glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
+        GLCall(glUniform3f(cameraPos, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ()));
+
 
         GLint uModelToNDC_ = _shdrpgm.GetLocation("uModelToNDC");
         GLuint model_ = _shdrpgm.GetLocation("model");
@@ -392,8 +403,8 @@ namespace Eclipse
                     if (tex.HoldingTextures[it].GetType() != aiTextureType_NORMALS)
                     {
                         GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
-                        GLuint diff0 = shader.GetLocation("diffuse0");
-                        GLuint spec = shader.GetLocation("specular0");
+                        GLuint diff0 = shader.GetLocation("albedoMap");
+                        //GLuint spec = shader.GetLocation("albedoMap");
                         GLuint noTex = shader.GetLocation("noTex");
                         GLuint CheckNormapMap = shader.GetLocation("checkNormalMap");
 
@@ -401,7 +412,7 @@ namespace Eclipse
                         glUniform1i(uniform_var_loc3, true);
                         glUniform1i(CheckNormapMap, false);
                         glUniform1i(diff0, it);
-                        glUniform1i(spec, it);
+                        //glUniform1i(spec, it);
                         tex.HoldingTextures[it].Bind();
                     }
                     else
@@ -409,7 +420,7 @@ namespace Eclipse
                         GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
                         GLuint CheckNoTex = shader.GetLocation("noTex");
                         GLuint CheckNormapMap = shader.GetLocation("checkNormalMap");
-                        GLuint normal0 = shader.GetLocation("normal0");
+                        GLuint normal0 = shader.GetLocation("normalMap");
                         glUniform1i(uniform_var_loc3, true);
                         glUniform1i(CheckNoTex, false);
 
