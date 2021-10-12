@@ -266,62 +266,6 @@ namespace Eclipse
             Graphics::models[in->modelRef]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
     }
 
-    void GraphicsManager::CheckUniformPBR(unsigned int ID)
-    {
-        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
-        TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
-        TransformComponent ModelTransform = engine->world.GetComponent<TransformComponent>(ID);
-
-        auto& shdrpgm = Graphics::shaderpgms["PBRShader"];
-        shdrpgm.Use();
-
-        GLuint metallic = shdrpgm.GetLocation("metallic");
-        GLuint roughness = shdrpgm.GetLocation("roughness");
-        GLint model_ = shdrpgm.GetLocation("model");
-        GLuint view = shdrpgm.GetLocation("view");
-        GLint projection = shdrpgm.GetLocation("projection");
-
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, ModelTransform.position.ConvertToGlmVec3Type());
-        model = glm::rotate(model, glm::radians(ModelTransform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(ModelTransform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(ModelTransform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::scale(model, ModelTransform.scale.ConvertToGlmVec3Type());
-
-        GLCall(glUniform1f(metallic, 1.0f));
-        GLCall(glUniform1f(roughness, 1.0f));
-        glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
-        glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
-        glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
-
-        glActiveTexture(GL_TEXTURE10);
-        glBindTexture(GL_TEXTURE_2D, engine->Test.Instances[0].albedo);
-
-        glActiveTexture(GL_TEXTURE11);
-        glBindTexture(GL_TEXTURE_2D, engine->Test.Instances[0].normal);
-
-        glActiveTexture(GL_TEXTURE12);
-        glBindTexture(GL_TEXTURE_2D, engine->Test.Instances[0].metallic);
-
-        glActiveTexture(GL_TEXTURE13);
-        glBindTexture(GL_TEXTURE_2D, engine->Test.Instances[0].roughness);
-
-        glActiveTexture(GL_TEXTURE14);
-        glBindTexture(GL_TEXTURE_2D, engine->Test.Instances[0].ao);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        shdrpgm.setInt("albedoMap", 10);
-        shdrpgm.setInt("normalMap", 11);
-        shdrpgm.setInt("metallicMap", 12);
-        shdrpgm.setInt("roughnessMap", 13);
-        shdrpgm.setInt("aoMap", 14);
-    }
-
     void Eclipse::GraphicsManager::CheckTexture(unsigned int ID)
     {
         if (engine->world.CheckComponent<MaterialComponent>(ID))

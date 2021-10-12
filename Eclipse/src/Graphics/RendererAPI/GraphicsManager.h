@@ -72,7 +72,6 @@ namespace Eclipse
         void SetBackGroundColour();
         void FinalRender();
         void DrawEntireGrid();
-        void CheckUniformPBR(unsigned int ID);
         void PostProcessUpdate();
 
     private:

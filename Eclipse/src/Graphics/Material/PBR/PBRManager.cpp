@@ -5,36 +5,105 @@ namespace Eclipse
 {
     void PBRManager::SetShader()
     {
-        //auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
-        //TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+        MaterialInstance brick;
+        Texture Tex1("src/Assets/Materials/RustedIron/albedo.png");
+        Texture Tex2("src/Assets/Materials/RustedIron/normal.png");
+        Texture Tex3("src/Assets/Materials/RustedIron/metallic.png");
+        Texture Tex4("src/Assets/Materials/RustedIron/roughness.png");
+        Texture Tex5("src/Assets/Materials/RustedIron/ao.png");
 
-        //auto& shdrpgm = Graphics::shaderpgms["PBRShader"];
-        //shdrpgm.Use();
+        brick.Name = "Brick";
+        brick.albedo = Tex1.GetHandle();
+        brick.normal = Tex2.GetHandle();
+        brick.metallic = Tex3.GetHandle();
+        brick.roughness = Tex4.GetHandle();
+        brick.ao = Tex5.GetHandle();
+        MaterialInstances.push_back(brick);
 
-        //GLint uniform_var_loc1 = shdrpgm.GetLocation("albedo");
-        //GLint uniform_var_loc2 = shdrpgm.GetLocation("ao");
-        //GLuint cameraPos = shdrpgm.GetLocation("camPos");
-        //GLuint view = shdrpgm.GetLocation("view");
-        //GLint projection = shdrpgm.GetLocation("projection");
+        MaterialInstance BambooWood;
+        Texture Tex6("src/Assets/Materials/BambooWood/albedo.png");
+        Texture Tex7("src/Assets/Materials/BambooWood/normal.png");
+        Texture Tex8("src/Assets/Materials/BambooWood/metal.png");
+        Texture Tex9("src/Assets/Materials/BambooWood/roughness.png");
+        Texture Tex10("src/Assets/Materials/BambooWood/ao.png");
+        BambooWood.Name = "BambooWood";
+        BambooWood.albedo = Tex6.GetHandle();
+        BambooWood.normal = Tex7.GetHandle();
+        BambooWood.metallic = Tex8.GetHandle();
+        BambooWood.roughness = Tex9.GetHandle();
+        BambooWood.ao = Tex10.GetHandle();
+        MaterialInstances.push_back(BambooWood);
 
-        //GLCall(glUniform3f(uniform_var_loc1, 0.5f, 0.0f, 0.0f));
-        //GLCall(glUniform1f(uniform_var_loc2, 1.0f));
-        //glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
-        //glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
-        //GLCall(glUniform3f(cameraPos, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ()));
-        //shdrpgm.UnUse();
+        MaterialInstance Granite;
+        Texture Tex11("src/Assets/Materials/GrayGranite/albedo.png");
+        Texture Tex12("src/Assets/Materials/GrayGranite/normal.png");
+        Texture Tex13("src/Assets/Materials/GrayGranite/metallic.png");
+        Texture Tex14("src/Assets/Materials/GrayGranite/roughness.png");
+        Texture Tex15("src/Assets/Materials/GrayGranite/ao.png");
+        Granite.Name = "Granite";
+        Granite.albedo = Tex11.GetHandle();
+        Granite.normal = Tex12.GetHandle();
+        Granite.metallic = Tex13.GetHandle();
+        Granite.roughness = Tex14.GetHandle();
+        Granite.ao = Tex15.GetHandle();
+        MaterialInstances.push_back(Granite);
+    }
 
-        Test brick;
+    void PBRManager::CheckUniform(unsigned int ID)
+    {
+        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+        TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+        TransformComponent ModelTransform = engine->world.GetComponent<TransformComponent>(ID);
 
-        //Texture Tex1("src/Assets/PBR/albedo.png");
-        //Graphics::textures.emplace("src/Assets/PBR/albedo.png", Tex1);
+        auto& shdrpgm = Graphics::shaderpgms["PBRShader"];
+        shdrpgm.Use();
 
-        brick.albedo = loadTexture("src/Assets/PBR/albedo.png");
-        brick.normal = loadTexture("src/Assets/PBR/normal.png");
-        brick.metallic = loadTexture("src/Assets/PBR/metallic.png");
-        brick.roughness = loadTexture("src/Assets/PBR/roughness.png");
-        brick.ao = loadTexture("src/Assets/PBR/ao.png");
-        Instances.push_back(brick);
+        GLuint metallic = shdrpgm.GetLocation("metallic");
+        GLuint roughness = shdrpgm.GetLocation("roughness");
+        GLint model_ = shdrpgm.GetLocation("model");
+        GLuint view = shdrpgm.GetLocation("view");
+        GLint projection = shdrpgm.GetLocation("projection");
+
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, ModelTransform.position.ConvertToGlmVec3Type());
+        model = glm::rotate(model, glm::radians(ModelTransform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(ModelTransform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(ModelTransform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, ModelTransform.scale.ConvertToGlmVec3Type());
+
+        GLCall(glUniform1f(metallic, 1.0f));
+        GLCall(glUniform1f(roughness, 1.0f));
+        glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
+        glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
+
+        glActiveTexture(GL_TEXTURE10);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[0].albedo);
+
+        glActiveTexture(GL_TEXTURE11);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[0].normal);
+
+        glActiveTexture(GL_TEXTURE12);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[0].metallic);
+
+        glActiveTexture(GL_TEXTURE13);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[0].roughness);
+
+        glActiveTexture(GL_TEXTURE14);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[0].ao);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        shdrpgm.setInt("albedoMap", 10);
+        shdrpgm.setInt("normalMap", 11);
+        shdrpgm.setInt("metallicMap", 12);
+        shdrpgm.setInt("roughnessMap", 13);
+        shdrpgm.setInt("aoMap", 14);
+
     }
 
     void PBRManager::RenderSphere()
@@ -157,26 +226,26 @@ namespace Eclipse
         model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::scale(model, { 5,5,5 });
 
-        GLCall(glUniform1f(metallic, 1.0f));
-        GLCall(glUniform1f(roughness, 1.0f));
+        GLCall(glUniform1f(metallic, 0.5f));
+        GLCall(glUniform1f(roughness, 0.0f));
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
         glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
 
         glActiveTexture(GL_TEXTURE10);
-        glBindTexture(GL_TEXTURE_2D, Instances[0].albedo);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].albedo);
 
         glActiveTexture(GL_TEXTURE11);
-        glBindTexture(GL_TEXTURE_2D, Instances[0].normal);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].normal);
 
         glActiveTexture(GL_TEXTURE12);
-        glBindTexture(GL_TEXTURE_2D, Instances[0].metallic);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].metallic);
 
         glActiveTexture(GL_TEXTURE13);
-        glBindTexture(GL_TEXTURE_2D, Instances[0].roughness);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].roughness);
 
         glActiveTexture(GL_TEXTURE14);
-        glBindTexture(GL_TEXTURE_2D, Instances[0].ao);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].ao);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -210,38 +279,5 @@ namespace Eclipse
         shdrpgm.UnUse();
 
         UpdateLoop();
-    }
-
-    unsigned int PBRManager::loadTexture(char const* path)
-    {
-        unsigned int textureID;
-        glGenTextures(1, &textureID);
-
-        int width, height, nrComponents;
-        unsigned char* data = stbi_load(path, &width, &height, &nrComponents, 0);
-        if (data)
-        {
-            GLenum format;
-            if (nrComponents == 1)
-                format = GL_RED;
-            else if (nrComponents == 3)
-                format = GL_RGB;
-            else if (nrComponents == 4)
-                format = GL_RGBA;
-
-            glGenTextures(1, &textureID);
-            glBindTexture(GL_TEXTURE_2D, textureID);
-            glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-            glGenerateMipmap(GL_TEXTURE_2D);
-
-            stbi_image_free(data);
-        }
-        else
-        {
-            std::cout << "Texture failed to load at path: " << path << std::endl;
-            stbi_image_free(data);
-        }
-
-        return textureID;
     }
 }

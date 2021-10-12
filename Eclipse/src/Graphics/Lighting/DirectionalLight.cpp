@@ -50,7 +50,23 @@ namespace Eclipse
 		glBindVertexArray(0);
 		shdrpgm.UnUse();
 
-		engine->gFrameBufferManager->UnBind(FrameBufferMode::FBM_SCENE);
+		CheckUniformPBR(IndexID, EntityId);
+	}
+
+	void DirectionalLight::CheckUniformPBR(int index, unsigned int EntityId)
+	{
+		auto shdrpgm = Graphics::shaderpgms["PBRShader"];
+		shdrpgm.Use();
+
+		DirectionalLightComponent& DLight = engine->world.GetComponent<DirectionalLightComponent>(EntityId);
+		std::string number = std::to_string(index);
+		GLint uniform_var_loc1 = shdrpgm.GetLocation(("directionlight[" + number + "].direction").c_str());
+		GLint uniform_var_loc2 = shdrpgm.GetLocation(("directionlight[" + number + "].lightColor").c_str());
+
+		GLCall(glUniform3f(uniform_var_loc1, DLight.Direction.getX(), DLight.Direction.getY(), DLight.Direction.getZ()));
+		GLCall(glUniform3f(uniform_var_loc2, 150.0f, 150.0f, 150.0f));
+
+		shdrpgm.UnUse();
 	}
 
 	void DirectionalLight::CheckUniformLoc(Shader* _shdrpgm, DirectionalLightComponent& in_light, int index, unsigned int containersize , unsigned int EntityId)

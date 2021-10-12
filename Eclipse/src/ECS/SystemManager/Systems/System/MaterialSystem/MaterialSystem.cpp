@@ -12,9 +12,14 @@ namespace Eclipse
     void MaterialSystem::Update()
     {
         ZoneScopedN("Material System")
-
         engine->Timer.SetName({ SystemName::MATERIAL });
         engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
+
+
+        //for (auto const& entityID : mEntities)
+        //{
+        //    engine->Test.CheckUniform(entityID);
+        //}
 
         engine->Test.PBRScene();
 

@@ -314,11 +314,11 @@ namespace Eclipse
             // // AUDIOSYSTEM =============================
             world.Update<AudioSystem>();
 
-            // RENDERSYSTEM =============================
-            world.Update<RenderSystem>();
-
             // MATERIALSYSTEM =============================
             world.Update<MaterialSystem>();
+
+            // RENDERSYSTEM =============================
+            world.Update<RenderSystem>();
 
             // Final DRAW ================================ 
             engine->GraphicsManager.FinalRender();

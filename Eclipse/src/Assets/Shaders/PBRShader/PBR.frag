@@ -1,4 +1,4 @@
-#version 330 core
+#version 450 core
 out vec4 FragColor;
 in vec2 TexCoords;
 in vec3 WorldPos;
@@ -25,9 +25,18 @@ struct PointLight
     vec3 position;  
 };  
 
+struct DirectionalLight 
+{
+    vec3 direction;
+	vec3 lightColor;
+};
+
 #define NR_POINT_LIGHTS 15  
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform int NumberOfPointLights;
+
+#define NR_DIRECTIONAL_LIGHTS 1  
+uniform DirectionalLight directionlight[NR_DIRECTIONAL_LIGHTS];
 
 vec3 getNormalFromMap()
 {
@@ -45,6 +54,7 @@ vec3 getNormalFromMap()
 
     return normalize(TBN * tangentNormal);
 }
+
 float DistributionGGX(vec3 N, vec3 H, float roughness)
 {
     float a = roughness*roughness;
@@ -58,6 +68,7 @@ float DistributionGGX(vec3 N, vec3 H, float roughness)
 
     return nom / denom;
 }
+
 float GeometrySchlickGGX(float NdotV, float roughness)
 {
     float r = (roughness + 1.0);
@@ -68,6 +79,7 @@ float GeometrySchlickGGX(float NdotV, float roughness)
 
     return nom / denom;
 }
+
 float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness)
 {
     float NdotV = max(dot(N, V), 0.0);
@@ -77,6 +89,7 @@ float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness)
 
     return ggx1 * ggx2;
 }
+
 vec3 fresnelSchlick(float cosTheta, vec3 F0)
 {
     return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
@@ -98,6 +111,31 @@ void main()
     // reflectance equation
     vec3 Lo = vec3(0.0);
 
+    //Directional Light
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    vec3 L = normalize(-directionlight[0].direction - WorldPos);
+    vec3 H = normalize(V + L);
+    float distance = length(-directionlight[0].direction - WorldPos);
+    float attenuation = 10.0 / (distance * distance);
+    vec3 radiance = directionlight[0].lightColor * attenuation;
+
+    // Cook-Torrance BRDF
+    float NDF = DistributionGGX(N, H, roughness);   
+    float G   = GeometrySmith(N, V, L, roughness);      
+    vec3 F    = fresnelSchlick(max(dot(H, V), 0.0), F0);
+       
+    vec3 numerator    = NDF * G * F; 
+    float denominator = 4 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.0001;
+    vec3 specular = numerator / denominator;
+    
+    vec3 kS = F;
+    vec3 kD = vec3(1.0) - kS;
+    kD *= 1.0 - metallic;	  
+    float NdotL = max(dot(N, L), 0.0);        
+    Lo += (kD * albedo / PI + specular) * radiance * NdotL;  // note that we already multiplied the BRDF by the Fresnel (kS) so we won't multiply by kS again
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // pointLights
     for(int i = 0; i < NumberOfPointLights; ++i)
     {
         // calculate per-light radiance

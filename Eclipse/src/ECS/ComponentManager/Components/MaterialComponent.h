@@ -36,6 +36,10 @@ namespace Eclipse
         // Models
         std::string TextureKey;
         std::vector<Texture> HoldingTextures;
+
+        // Material Instance
+        bool IsMaterialIstance = false;
+        std::string MaterialInstanceName = "Default";
     };
 }
 #endif /* materialCOMPONENT_H */
