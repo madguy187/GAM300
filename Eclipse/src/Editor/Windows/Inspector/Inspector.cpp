@@ -63,7 +63,6 @@ namespace Eclipse
             ShowCollisionProperty("Collision", currEnt, CompFilter);
             ShowAIProperty("AI Properties", currEnt, CompFilter);
 
-            ECGui::SetColumns(2, nullptr, true);
             AddComponentsController(currEnt);
             ECGui::NextColumn();
             RemoveComponentsController(currEnt);
@@ -639,6 +638,10 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
+                ECGui::SetColumns(2, nullptr, true);
+                ECGui::InsertHorizontalLineSeperator();
+                ECGui::SetColumnOffset(1, 150);
+
                 std::vector<std::string> _ModelInfoVector = { "MT_UNASSIGNED","MT_HUMAN","MT_ANIMAL","MT_HOUSE","MT_ENVIRONMENT" };
 
                 std::map<std::string, ModelType> _Map = { {"MT_UNASSIGNED",ModelType::MT_UNASSIGNED}, {"MT_HUMAN",ModelType::MT_HUMAN},
@@ -650,15 +653,22 @@ namespace Eclipse
                 ComboListSettings settings{ "Texture Type" };
 
                 ECGui::DrawTextWidget<const char*>("Model Directory: ", EMPTY_STRING);
-                ECGui::InsertSameLine();
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawTextWidget<const char*>(_ModelInfo.Directory.c_str(), "");
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Model Name: ", EMPTY_STRING);
-                ECGui::InsertSameLine();
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawTextWidget<const char*>(_ModelInfo.NameOfModel.c_str(), "");
-
+                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Model Type", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::CreateComboList(settings, _ModelInfoVector, _ModelInfo.ComboIndex);
                 _ModelInfo.type = _Map[_ModelInfoVector[_ModelInfo.ComboIndex]];
+                ECGui::SetColumns(1, nullptr, true);
+                ECGui::InsertHorizontalLineSeperator();
             }
         }
         return false;
@@ -670,6 +680,7 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
+                ECGui::InsertHorizontalLineSeperator();
                 auto& scriptCom = engine->world.GetComponent<ScriptComponent>(ID);
 
                 ECGui::DrawTextWidget<const char*>(my_strcat("List of Scripts (",
@@ -697,9 +708,12 @@ namespace Eclipse
                     }
                 }
 
+                ECGui::SetColumns(2, nullptr, true);
+                ECGui::InsertHorizontalLineSeperator();
+
                 if (!IsRemovingScripts)
                 {
-                    if (ECGui::ButtonBool("Add Script"))
+                    if (ECGui::ButtonBool("Add Script",{ ImGui::GetColumnWidth(), 25 }))
                     {
                         std::string scriptName;
                         scriptName.reserve(256);
@@ -707,20 +721,26 @@ namespace Eclipse
                         scriptCom.scriptList.back().scriptName = scriptName;
                     }
 
-                    ECGui::InsertSameLine();
+                    ECGui::NextColumn();
 
-                    if (ECGui::ButtonBool("Remove Script"))
+                    if (ECGui::ButtonBool("Remove Script", { ImGui::GetColumnWidth(), 25 }))
                     {
                         IsRemovingScripts = true;
                     }
                 }
                 else
                 {
-                    if (ECGui::ButtonBool("Cancel Remove"))
+
+                    ECGui::SetColumns(1, nullptr, true);
+                    ECGui::NextColumn();
+                    if (ECGui::ButtonBool("Cancel Remove", { ImGui::GetColumnWidth(), 25 }))
                     {
                         IsRemovingScripts = false;
                     }
                 }
+
+                ECGui::SetColumns(1, nullptr, true);
+                ECGui::InsertHorizontalLineSeperator();
             }
         }
 
@@ -733,6 +753,7 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
+                ECGui::InsertHorizontalLineSeperator();
                 static bool IsAudioPlaying = false;
                 auto& audio = engine->world.GetComponent<AudioComponent>(ID);
 
@@ -743,7 +764,17 @@ namespace Eclipse
                         audio.AudioPath.reserve(256);
                     }
 
-                    if (ECGui::ButtonBool("Play"))
+                    ECGui::DrawInputTextHintWidget("AudioPath", "Drag Audio files here",
+                        const_cast<char*>(audio.AudioPath.c_str()), 256,
+                        true, ImGuiInputTextFlags_ReadOnly);
+
+                    engine->editorManager->DragAndDropInst_.StringPayloadTarget("wav", audio.AudioPath,
+                        "Wav File inserted.");
+
+                    ECGui::SetColumns(2, nullptr, true);
+                    ECGui::InsertHorizontalLineSeperator();
+
+                    if (ECGui::ButtonBool("Play", { ImGui::GetColumnWidth(),25 }))
                     {
                         if (!audio.AudioPath.empty())
                         {
@@ -757,51 +788,65 @@ namespace Eclipse
                         }
                     }
 
-                    ECGui::DrawInputTextHintWidget("AudioPath", "Drag Audio files here",
-                        const_cast<char*>(audio.AudioPath.c_str()), 256,
-                        true, ImGuiInputTextFlags_ReadOnly);
+                    ECGui::NextColumn();
 
-                    engine->editorManager->DragAndDropInst_.StringPayloadTarget("wav", audio.AudioPath,
-                        "Wav File inserted.");
-
-                    if (ECGui::ButtonBool("Clear Audio"))
+                    if (ECGui::ButtonBool("Clear Audio", { ImGui::GetColumnWidth(),25 }))
                     {
                         audio.AudioPath.clear();
                     }
+                    ECGui::InsertHorizontalLineSeperator();
 
+                    ECGui::NextColumn();
                     ECGui::DrawTextWidget<const char*>("Volume: ", "");
+                    ECGui::NextColumn();
+                    ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                     ECGui::DrawSliderFloatWidget("Volume", &audio.Volume, true, 0.f, 1.0f);
-
+                    ECGui::NextColumn();
                     // Pitch value, 0.5 = half pitch, 2.0 = double pitch, etc default = 1.0.
                     ECGui::DrawTextWidget<const char*>("Pitch: ", "");
+                    ECGui::NextColumn();
+                    ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                     ECGui::DrawSliderFloatWidget("Pitch", &audio.Pitch, true, 0.f, 2.0f);
 
                     // Relative speed of the song from 0.01 to 100.0. 0.5 = half speed, 
                     // 2.0 = double speed. Default = 1.0.
+                    ECGui::NextColumn();
                     ECGui::DrawTextWidget<const char*>("Speed: ", "");
+                    ECGui::NextColumn();
+                    ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                     ECGui::DrawSliderFloatWidget("Speed", &audio.Speed, true, 0.f, 100.0f);
-
+                    ECGui::NextColumn();
+                    ECGui::SetColumns(1, nullptr, true);
+                    ECGui::InsertHorizontalLineSeperator();
                     ECGui::CheckBoxBool("Loop", &audio.IsLooping, false);
                     ECGui::CheckBoxBool("Is3D", &audio.Is3D, false);
 
                     if (audio.Is3D)
                     {
+                        ECGui::InsertHorizontalLineSeperator();
+                        ECGui::SetColumns(2, nullptr, true);
                         // Inside cone angle, in degrees, from 0 to 360. 
                         // This is the angle within which the sound is at its normal volume. 
                         // Must not be greater than outsideconeangle. Default = 360.
                         ECGui::DrawTextWidget<const char*>("Inner Cone Angle: ", "");
+                        ECGui::NextColumn();
+                        ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                         ECGui::DrawSliderFloatWidget("InnerConeAngle", &audio.InnerConeAngle, true, 0.f, 360.0f);
-
+                        ECGui::NextColumn();
                         // Outside cone angle, in degrees, from 0 to 360. 
                         // This is the angle outside of which the sound is at its outside volume.
                         // Must not be less than insideconeangle. Default = 360.
                         ECGui::DrawTextWidget<const char*>("Outer Cone Angle: ", "");
+                        ECGui::NextColumn();
+                        ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                         ECGui::DrawSliderFloatWidget("OuterConeAngle", &audio.OuterConeAngle, true, 0.f, 360.f);
-
+                        ECGui::NextColumn();
                         // The volume of the sound outside the outside angle of the sound projection cone.
                         ECGui::DrawTextWidget<const char*>("Outer Volume: ", "");
+                        ECGui::NextColumn();
+                        ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                         ECGui::DrawSliderFloatWidget("OuterVolume", &audio.OuterVolume, true, 0.f, 1.f);
-
+                        ECGui::SetColumns(1, nullptr, true);
                         ECGui::InsertHorizontalLineSeperator();
 
                         // Increase the mindistance of a sound to make it 'louder' in a 3D world, 
@@ -811,10 +856,18 @@ namespace Eclipse
                         // Do not adjust this from the default if you dont need to.
                         // Summary:
                         // Min -> min dist where it will start growing louder when getting closer
-                        // Max -> max dist where it will stop fading
+                        // Max -> max dist where it will stop 
                         ECGui::DrawTextWidget<const char*>("Sound Attenuation: ", "");
+                        ECGui::SetColumns(2, nullptr, true);
+                        ECGui::InsertHorizontalLineSeperator();
+                        ECGui::PushItemWidth(ECGui::GetWindowSize().x/1.2);
                         ECGui::DrawSliderFloatWidget("Min", &audio.Min, false, 0.f, 10000.f);
+                        ECGui::NextColumn();
+                        ECGui::PushItemWidth(ECGui::GetWindowSize().x / 1.2);
                         ECGui::DrawSliderFloatWidget("Max", &audio.Max, false, 0.f, 10000.f);
+                        ECGui::NextColumn();
+                        ECGui::SetColumns(1, nullptr, true);
+                        ECGui::InsertHorizontalLineSeperator();
                     }
                 }
                 else
@@ -826,6 +879,9 @@ namespace Eclipse
                         EDITOR_LOG_INFO("Stopping sound...");
                     }
                 }
+
+                ECGui::SetColumns(1, nullptr, true);
+                ECGui::InsertHorizontalLineSeperator();
             }
         }
         return false;
@@ -841,6 +897,7 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
+                ECGui::InsertHorizontalLineSeperator();
                 auto& _Collision = engine->world.GetComponent<CollisionComponent>(ID);
 
                 switch (_Collision.shape.shape)
@@ -848,31 +905,46 @@ namespace Eclipse
                 case PxShapeType::Px_CUBE:
                     ECGui::DrawTextWidget<const char*>("CUBE ", EMPTY_STRING);
                     ECGui::InsertHorizontalLineSeperator();
+                    ECGui::SetColumns(2, nullptr, true);
+                    ECGui::InsertHorizontalLineSeperator();
 
                     ECGui::DrawTextWidget<const char*>("Hx: ", EMPTY_STRING);
-                    ECGui::InsertSameLine();
+                    ECGui::NextColumn();
+                    ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                     snprintf(hxValue, 256, "%f", _Collision.shape.hx);
                     ECGui::DrawInputTextWidget("Hx: ", hxValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
                     _Collision.shape.hx = static_cast<float>(atof(hxValue));
+                    ECGui::NextColumn();
                     ECGui::DrawTextWidget<const char*>("Hy: ", EMPTY_STRING);
-                    ECGui::InsertSameLine();
+                    ECGui::NextColumn();
+                    ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                     snprintf(hyValue, 256, "%f", _Collision.shape.hy);
                     ECGui::DrawInputTextWidget("Hy: ", hyValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
                     _Collision.shape.hy = static_cast<float>(atof(hyValue));
+                    ECGui::NextColumn();
                     ECGui::DrawTextWidget<const char*>("Hz: ", EMPTY_STRING);
-                    ECGui::InsertSameLine();
+                    ECGui::NextColumn();
+                    ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                     snprintf(hzValue, 256, "%f", _Collision.shape.hz);
                     ECGui::DrawInputTextWidget("Hz: ", hzValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
                     _Collision.shape.hz = static_cast<float>(atof(hzValue));
+                    ECGui::NextColumn();
+                    ECGui::SetColumns(1, nullptr, true);
+                    ECGui::InsertHorizontalLineSeperator();
                     break;
                 case PxShapeType::Px_SPHERE:
                     ECGui::DrawTextWidget<const char*>("SPHERE ", EMPTY_STRING);
                     ECGui::InsertHorizontalLineSeperator();
+                    ECGui::SetColumns(2, nullptr, true);
                     ECGui::DrawTextWidget<const char*>("Radius: ", EMPTY_STRING);
-                    ECGui::InsertSameLine();
+                    ECGui::NextColumn();
+                    ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                     snprintf(radiusValue, 256, "%f", _Collision.shape.radius);
                     ECGui::DrawInputTextWidget("Radius: ", radiusValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
+                    ECGui::NextColumn();
                     _Collision.shape.radius = static_cast<float>(atof(radiusValue));
+                    ECGui::SetColumns(1, nullptr, true);
+                    ECGui::InsertHorizontalLineSeperator();
                     break;
                 }
             }
@@ -885,8 +957,9 @@ namespace Eclipse
         if (engine->world.CheckComponent<PrefabComponent>(ID))
         {
             ECGui::InsertHorizontalLineSeperator();
+            ECGui::SetColumns(2, nullptr, true);
             ECGui::DrawTextWidget<const char*>("Prefeb: ", EMPTY_STRING);
-            ECGui::InsertSameLine();
+            ECGui::NextColumn();
 
             if (ECGui::ButtonBool("Apply changes to all"))
             {
@@ -900,6 +973,7 @@ namespace Eclipse
                 ECGui::PopTextWrapPos();
                 ECGui::EndTooltip();
             }
+            ECGui::SetColumns(1, nullptr, true);
             ECGui::InsertHorizontalLineSeperator();
         }
         return false;
@@ -911,6 +985,9 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
+               // ECGui::SetColumns(2, nullptr, true);
+                ECGui::InsertHorizontalLineSeperator();
+                //ECGui::SetColumnOffset(1, 150);
                 auto& ai = engine->world.GetComponent<AIComponent>(ID);
                 static std::string registeredEnt;
 
@@ -923,6 +1000,8 @@ namespace Eclipse
                     if (registeredEnt != EMPTY_STRING)
                         engine->gAI.AddWaypoint(ID, lexical_cast<Entity>(registeredEnt));
                 }
+
+                ECGui::InsertHorizontalLineSeperator();
             }
         }
 
@@ -931,7 +1010,7 @@ namespace Eclipse
 
     void InspectorWindow::AddComponentsController(Entity ID)
     {
-        if (ECGui::ButtonBool(("Add Component"), {ImGui::GetColumnWidth(),30}))
+        if (ECGui::ButtonBool(("Add Component"), {ImGui::GetColumnWidth(),25 }))
         {
             ECGui::OpenPopup("Add Component");
         }
@@ -947,7 +1026,7 @@ namespace Eclipse
 
     void InspectorWindow::RemoveComponentsController(Entity ID)
     {
-        if (ECGui::ButtonBool(("Remove Component"), { ImGui::GetColumnWidth(),30 }))
+        if (ECGui::ButtonBool(("Remove Component"), { ImGui::GetColumnWidth(),25 }))
         {
             ECGui::OpenPopup("Remove Component");
         }
