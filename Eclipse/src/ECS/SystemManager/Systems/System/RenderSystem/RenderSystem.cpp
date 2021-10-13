@@ -42,7 +42,6 @@ namespace Eclipse
         engine->gCullingManager = std::make_unique<CullingManager>();
 
         MaterialSystem::Init();
-
     }
 
     void RenderSystem::Update()

@@ -112,14 +112,19 @@ float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness)
     return ggx1 * ggx2;
 }
 
-vec3 fresnelSchlick(float cosTheta, vec3 F0)
+vec3 fresnelSchlick(float cosTheta, vec3 baseReflectivity)
 {
-    return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
+    return baseReflectivity + (1.0 - baseReflectivity) * pow((1.0 - cosTheta), 5.0);
+}
+
+vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness)
+{
+    return F0 + (max(vec3(1.0 - roughness), F0) - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
 }
 
 void main()
 {		
-    vec3 albedo     = pow(texture(albedoMap, TexCoords).rgb, vec3(2.5));
+    vec3 albedo     = pow(texture(albedoMap, TexCoords).rgb, vec3(2.2));
     float metallic  = texture(metallicMap, TexCoords).r;
     float roughness = texture(roughnessMap, TexCoords).r;
     float ao        = texture(aoMap, TexCoords).r;
@@ -139,7 +144,7 @@ void main()
     vec3 L = normalize(-directionlight[0].direction - WorldPos);
     vec3 H = normalize(V + L);
     float distance = length(-directionlight[0].direction - WorldPos);
-    float attenuation = 10.0 / (distance * distance);
+    float attenuation = 1.0 / (distance * distance);
     vec3 radiance = directionlight[0].lightColor * attenuation;
     
     // Cook-Torrance BRDF
@@ -173,7 +178,7 @@ void main()
 	    float linear = pointLights[i].linear;
         float quadratic = pointLights[i].quadratic;
 	    float attenuation = pointLights[i].IntensityStrength / (constant + linear * dist + quadratic * ( dist * dist ) );
-        //float attenuation = 10.0 / (distance * distance);
+        //float attenuation = 1.0 / (distance * distance);
         vec3 radiance = pointLights[i].lightColor * attenuation;
 
         // Cook-Torrance BRDF
@@ -209,7 +214,7 @@ void main()
         vec3 L = normalize(spotLights[i].position - WorldPos);
         vec3 H = normalize(V + L);
         float distance = length(spotLights[i].position - WorldPos);
-        float attenuation = 10.0 / (distance * distance);
+        float attenuation = 1.0 / (distance * distance);
         vec3 radiance = spotLights[i].lightColor * attenuation;
 
         // Cook-Torrance BRDF
@@ -229,8 +234,8 @@ void main()
         Lo += (kD * albedo / PI + specular) * radiance * NdotL;  // note that we already multiplied the BRDF by the Fresnel (kS) so we won't multiply by kS again
     }   
 
-    vec3 ambient = vec3(0.03) * albedo * ao;
-    vec3 color = ambient + Lo;
+        vec3 ambient = vec3(0.03) * albedo * ao;
+        vec3 color = ambient + Lo;
 
         // HDR + GAMMA
         //color = color / (color + vec3(1.0));

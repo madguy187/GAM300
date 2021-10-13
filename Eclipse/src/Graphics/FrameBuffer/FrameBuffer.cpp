@@ -116,7 +116,7 @@ namespace Eclipse
         glCreateTextures(GL_TEXTURE_2D, 1, &m_data.TextureColourBuffer);
         glBindTexture(GL_TEXTURE_2D, m_data.TextureColourBuffer);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16, p_width, p_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, p_width, p_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);

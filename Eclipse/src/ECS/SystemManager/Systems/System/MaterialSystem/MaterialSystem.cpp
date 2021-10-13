@@ -21,7 +21,7 @@ namespace Eclipse
         //    engine->Test.CheckUniform(entityID);
         //}
 
-        //engine->Test.PBRScene();
+        engine->Test.PBRScene();
 
         engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());
         engine->Timer.UpdateTimeContainer(engine->Timer.tracker);

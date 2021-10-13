@@ -26,12 +26,18 @@ namespace Eclipse
         Texture Tex8("src/Assets/Materials/BambooWood/metal.png");
         Texture Tex9("src/Assets/Materials/BambooWood/roughness.png");
         Texture Tex10("src/Assets/Materials/BambooWood/ao.png");
+        //BambooWood.Name = "BambooWood";
+        //BambooWood.albedo = Tex6.GetHandle();
+        //BambooWood.normal = Tex7.GetHandle();
+        //BambooWood.metallic = Tex8.GetHandle();
+        //BambooWood.roughness = Tex9.GetHandle();
+        //BambooWood.ao = Tex10.GetHandle();
         BambooWood.Name = "BambooWood";
-        BambooWood.albedo = Tex6.GetHandle();
-        BambooWood.normal = Tex7.GetHandle();
-        BambooWood.metallic = Tex8.GetHandle();
-        BambooWood.roughness = Tex9.GetHandle();
-        BambooWood.ao = Tex10.GetHandle();
+        BambooWood.albedo = loadTexture(("src/Assets/Materials/HardWood/albedo.png"));
+        BambooWood.normal = loadTexture(("src/Assets/Materials/HardWood/normal.png"));
+        BambooWood.metallic = loadTexture(("src/Assets/Materials/HardWood/metallic.png"));
+        BambooWood.roughness = loadTexture(("src/Assets/Materials/HardWood/roughness.png"));
+        BambooWood.ao = loadTexture(("src/Assets/Materials/HardWood/ao.png"));
         MaterialInstances.push_back(BambooWood);
 
         MaterialInstance Granite;
@@ -79,19 +85,19 @@ namespace Eclipse
         glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
 
         glActiveTexture(GL_TEXTURE10);
-        glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].albedo);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[0].albedo);
 
         glActiveTexture(GL_TEXTURE11);
-        glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].normal);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[0].normal);
 
         glActiveTexture(GL_TEXTURE12);
-        glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].metallic);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[0].metallic);
 
         glActiveTexture(GL_TEXTURE13);
-        glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].roughness);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[0].roughness);
 
         glActiveTexture(GL_TEXTURE14);
-        glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].ao);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[0].ao);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -233,39 +239,19 @@ namespace Eclipse
         glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
 
         glActiveTexture(GL_TEXTURE10);
-        glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].albedo);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[1].albedo);
 
         glActiveTexture(GL_TEXTURE11);
-        glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].normal);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[1].normal);
 
         glActiveTexture(GL_TEXTURE12);
-        glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].metallic);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[1].metallic);
 
         glActiveTexture(GL_TEXTURE13);
-        glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].roughness);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[1].roughness);
 
         glActiveTexture(GL_TEXTURE14);
-        glBindTexture(GL_TEXTURE_2D, MaterialInstances[2].ao);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glBindTexture(GL_TEXTURE_2D, MaterialInstances[1].ao);
 
         shdrpgm.setInt("albedoMap", 10);
         shdrpgm.setInt("normalMap", 11);
@@ -294,5 +280,42 @@ namespace Eclipse
         shdrpgm.UnUse();
 
         UpdateLoop();
+    }
+
+    unsigned int PBRManager::loadTexture(char const* path)
+    {
+        unsigned int textureID;
+        glGenTextures(1, &textureID);
+
+        int width, height, nrComponents;
+        unsigned char* data = stbi_load(path, &width, &height, &nrComponents, 0);
+        if (data)
+        {
+            GLenum format;
+            if (nrComponents == 1)
+                format = GL_RED;
+            else if (nrComponents == 3)
+                format = GL_RGB;
+            else if (nrComponents == 4)
+                format = GL_RGBA;
+
+            glBindTexture(GL_TEXTURE_2D, textureID);
+            glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+            glGenerateMipmap(GL_TEXTURE_2D);
+
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+            stbi_image_free(data);
+        }
+        else
+        {
+            std::cout << "Texture failed to load at path: " << path << std::endl;
+            stbi_image_free(data);
+        }
+
+        return textureID;
     }
 }

@@ -26,5 +26,6 @@ namespace Eclipse
         void RenderSphere();
         void UpdateLoop();
         void PBRScene();
+        unsigned int loadTexture(char const* path);
     };
 }
