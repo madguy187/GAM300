@@ -73,9 +73,15 @@ namespace Eclipse
 		}
 
 		if (ECGui::IsItemActive())
+		{
+			std::cout << "Window is active" << std::endl;
 			IsWindowActive = true;
+		}
 		else
+		{
+			std::cout << "Window is not active" << std::endl;
 			IsWindowActive = false;
+		}
 	}
 
 	void SceneWindow::OnGizmoUpdateEvent()
@@ -151,6 +157,7 @@ namespace Eclipse
 				break;
 			case ImGuizmo::OPERATION::ROTATE:
 				transCom.rotation = rotation;
+				std::cout << "From Scene View: " << transCom.rotation << std::endl;
 				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.rotation, transCom.rotation, selectedEntity });
 				break;
 			case ImGuizmo::OPERATION::SCALE:
