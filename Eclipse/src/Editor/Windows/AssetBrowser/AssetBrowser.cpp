@@ -761,7 +761,7 @@ namespace Eclipse
 		std::string bufferString(buffer);
 		std::for_each(bufferString.begin(), bufferString.end(), [](char& c)
 			{
-				c = ::tolower(c);			
+				c = static_cast<char>(::tolower(c));			
 			});
 
 		size_t lastdot = bufferString.find_last_of(".");
