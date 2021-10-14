@@ -121,8 +121,11 @@ namespace Eclipse
 		//static const ImWchar icons_ranges[] = { ICON_MIN_MDI, ICON_MAX_MDI, 0 };
 		static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
 		ImFontConfig icons_config; icons_config.MergeMode = true; icons_config.PixelSnapH = true;
-		//io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/materialdesignicons-webfont.ttf", 12.0f, &icons_config, icons_ranges);
 		io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/fontawesome-webfont.ttf", 14.0f, &icons_config, icons_ranges);
+		//"src/ImGui/Vendor/fontawesome-webfont.ttf"
+		static const ImWchar icons_ranges2[] = { ICON_MIN_MDI, ICON_MAX_MDI, 0 };
+		ImFontConfig icons_config2; icons_config2.MergeMode = true; icons_config2.PixelSnapH = true;  
+		io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/materialdesignicons-webfont.ttf", 16.0f, &icons_config2, icons_ranges2);
 	}
 
 	Entity EditorManager::CreateDefaultEntity(EntityType type)
