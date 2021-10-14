@@ -433,10 +433,9 @@ namespace Eclipse
 		}
 	}
 
-	void AudioManager::Set3DConeSettings(const std::string& sound_name, float* InnerConeAngle, 
-		float* OuterConeAngle, float* OuterVolume)
+	void AudioManager::Set3DConeSettings(int ChannelID, const ECVec3& vOrientation)
 	{
-		FmodAPI->m_Sounds[sound_name]->get3DConeSettings(InnerConeAngle, OuterConeAngle, OuterVolume);
+		FmodAPI->m_Channels[ChannelID]->get3DConeOrientation(&VectorToFmod(vOrientation));
 	}
 
 	void AudioManager::Set3DMinMaxSettings(const std::string& sound_name, float min, float max)

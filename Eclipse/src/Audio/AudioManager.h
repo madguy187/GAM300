@@ -55,11 +55,16 @@ namespace Eclipse
 		void SetBGMMute(bool b_mute);
 		void SetSFXMute(bool b_mute);
 		void SetLoop(const std::string& sound_name, bool looping);
+		void Set3DConeSettings(int ChannelID, const ECVec3& vOrientation);
+		void Set3DMinMaxSettings(const std::string& sound_name, float min, float max);
+		void SetPitch(const std::string& sound_name, float pitch);
+		void SetSpeed(const std::string& sound_name, float speed);
+		/*void SetLoop(const std::string& sound_name, bool looping);
 		void Set3DConeSettings(const std::string& sound_name, float* InnerConeAngle,
 			float* OuterConeAngle, float* OuterVolume);
 		void Set3DMinMaxSettings(const std::string& sound_name, float min, float max);
 		void SetPitch(const std::string& sound_name, float pitch);
-		void SetSpeed(const std::string& sound_name, float speed);
+		void SetSpeed(const std::string& sound_name, float speed);*/
 
 		// Don't use, for my own personal use
 		float OldBGMVolumeToTrack() const;

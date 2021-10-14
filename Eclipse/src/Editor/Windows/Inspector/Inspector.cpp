@@ -1191,19 +1191,19 @@ namespace Eclipse
             auto& trans = engine->world.GetComponent<TransformComponent>(ID);
             engine->audioManager.LoadSound(audioCom.AudioPath,
                 audioCom.Is3D, audioCom.IsLooping, false);
-            engine->audioManager.SetSpeed(audioCom.AudioPath, audioCom.Speed);
+            /*engine->audioManager.SetSpeed(audioCom.AudioPath, audioCom.Speed);
             engine->audioManager.Set3DConeSettings(audioCom.AudioPath,
                 &audioCom.InnerConeAngle, &audioCom.OuterConeAngle, &audioCom.OuterVolume);
             engine->audioManager.Set3DMinMaxSettings(audioCom.AudioPath,
                 audioCom.Min, audioCom.Max);
             audioCom.ChannelID = engine->audioManager.Play3DSounds(audioCom.AudioPath, trans.position,
-                audioCom.Volume, audioCom.IsLooping);
+                audioCom.Volume, audioCom.IsLooping);*/
         }
         else
         {
             engine->audioManager.LoadSound(audioCom.AudioPath, audioCom.Is3D,
                 audioCom.IsLooping, false);
-            engine->audioManager.SetSpeed(audioCom.AudioPath, audioCom.Speed);
+            //engine->audioManager.SetSpeed(audioCom.AudioPath, audioCom.Speed);
             audioCom.ChannelID = engine->audioManager.Play2DSounds(audioCom.AudioPath, audioCom.Volume,
                 audioCom.IsLooping);
         }
