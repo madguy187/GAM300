@@ -327,14 +327,15 @@ namespace Eclipse
 		return FmodAPI->m_SFXMute;
 	}
 
-	void AudioManager::SetChannel3DPosition(int nChannelId, const ECVec3& vPosition)
+	void AudioManager::SetChannel3DPosition(int nChannelId, const ECVec3& vPosition, const ECVec3& vVelocity)
 	{
 		auto tFoundIt = FmodAPI->m_Channels.find(nChannelId);
 		if (tFoundIt == FmodAPI->m_Channels.end())
 			return;
 
 		FMOD_VECTOR position = VectorToFmod(vPosition);
-		FmodAPI->ErrorCheck(tFoundIt->second->set3DAttributes(&position, NULL));
+		FMOD_VECTOR velocity = VectorToFmod(vVelocity);
+		FmodAPI->ErrorCheck(tFoundIt->second->set3DAttributes(&position, &velocity));
 	}
 
 	void AudioManager::SetEventParameter(const std::string& event_name, const std::string& event_parameter, float f_value)
@@ -433,14 +434,34 @@ namespace Eclipse
 		}
 	}
 
-	void AudioManager::Set3DConeSettings(int ChannelID, const ECVec3& vOrientation)
+	void AudioManager::Set3DConeSettings(int ChannelID, float* InnerConeAngle, float* OuterConeAngle, float* OuterVolume)
+	{
+		FmodAPI->m_Channels[ChannelID]->get3DConeSettings(InnerConeAngle, OuterConeAngle, OuterVolume);
+	}
+
+	void AudioManager::Set3DConeOrientation(int ChannelID, const ECVec3& vOrientation)
 	{
 		FmodAPI->m_Channels[ChannelID]->get3DConeOrientation(&VectorToFmod(vOrientation));
 	}
 
-	void AudioManager::Set3DMinMaxSettings(const std::string& sound_name, float min, float max)
+	void AudioManager::Set3DMinMaxSettings(int ChannelID, float min, float max)
 	{
-		FmodAPI->m_Sounds[sound_name]->set3DMinMaxDistance(min, max);
+		FmodAPI->m_Channels[ChannelID]->set3DMinMaxDistance(min, max);
+	}
+
+	void AudioManager::Set3DListenerAttributes(Entity camEntity, const ECVec3& vVelocity)
+	{
+		auto& camCom = engine->world.GetComponent<CameraComponent>(camEntity);
+		auto& transCom = engine->world.GetComponent<TransformComponent>(camEntity);
+
+		FMOD_VECTOR position = VectorToFmod(transCom.position);
+		FMOD_VECTOR velocity = VectorToFmod(vVelocity);
+		FMOD_VECTOR forward = VectorToFmod(ECVec3{ camCom.eyeFront.x, camCom.eyeFront.y, camCom.eyeFront.z});
+		FMOD_VECTOR up = VectorToFmod(ECVec3{ camCom.upVec.x, camCom.upVec.y, camCom.upVec.z});
+
+		// Set to 0 because there is only 1 audio listener in the scene
+		// Can use set3DNumListeners function to add more
+		FmodAPI->m_System->set3DListenerAttributes(0, &position, &velocity, &forward, &up);
 	}
 
 	void AudioManager::SetPitch(const std::string& sound_name, float pitch)

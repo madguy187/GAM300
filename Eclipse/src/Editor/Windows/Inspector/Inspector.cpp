@@ -1198,6 +1198,14 @@ namespace Eclipse
                 audioCom.Min, audioCom.Max);
             audioCom.ChannelID = engine->audioManager.Play3DSounds(audioCom.AudioPath, trans.position,
                 audioCom.Volume, audioCom.IsLooping);*/
+            audioCom.ChannelID = engine->audioManager.Play3DSounds(audioCom.AudioPath, trans.position,
+                audioCom.Volume, audioCom.IsLooping);
+            engine->audioManager.SetChannel3DPosition(audioCom.ChannelID, trans.position);
+            engine->audioManager.Set3DConeSettings(audioCom.ChannelID, &audioCom.InnerConeAngle, 
+                &audioCom.OuterConeAngle, &audioCom.OuterVolume);
+            engine->audioManager.Set3DConeOrientation(audioCom.ChannelID);
+            engine->audioManager.Set3DMinMaxSettings(audioCom.ChannelID, 
+                audioCom.Min, audioCom.Max);
         }
         else
         {

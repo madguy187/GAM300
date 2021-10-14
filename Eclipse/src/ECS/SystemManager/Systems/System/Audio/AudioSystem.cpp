@@ -23,6 +23,7 @@ namespace Eclipse
 		{
 			engine->audioManager.Terminate();
 		}*/
+		engine->audioManager.Set3DListenerAttributes(engine->gCamera.GetEditorCameraID());
 
 		engine->audioManager.UpdateSystems();
 
