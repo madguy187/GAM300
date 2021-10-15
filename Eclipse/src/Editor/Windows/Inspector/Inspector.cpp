@@ -20,7 +20,7 @@ namespace Eclipse
     void InspectorWindow::Init()
     {
         Type = EditorWindowType::EWT_INSPECTOR;
-        WindowName = "Inspector";
+        WindowName = "Inspector " ICON_MDI_MAGNIFY_SCAN;
     }
 
     void InspectorWindow::Unload()

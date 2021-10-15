@@ -21,7 +21,7 @@ namespace Eclipse
 	void HeaderWindow::Init()
 	{
 		Type = EditorWindowType::EWT_HEADER;
-		WindowName = "Header";
+		WindowName = "Header " ICON_MDI_PAGE_LAYOUT_HEADER;
 		IsVisible = true;
 	}
 

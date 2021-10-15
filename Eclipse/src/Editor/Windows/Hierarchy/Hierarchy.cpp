@@ -14,7 +14,7 @@ namespace Eclipse
     void HierarchyWindow::Init()
     {
         Type = EditorWindowType::EWT_HIERARCHY;
-        WindowName = "Hierarchy";
+        WindowName = "Hierarchy " ICON_MDI_FILE_TREE;
 
         // For Geometry
         TagList_.push_back(std::vector<std::string>());

@@ -12,7 +12,7 @@ namespace Eclipse
 	void AssetBrowserWindow::Init()
 	{
 		Type = EditorWindowType::EWT_ASSETBROWSER;
-		WindowName = "AssetBrowser";
+		WindowName = "AssetBrowser " ICON_MDI_FILE_IMAGE;
 		memset(searchItemBuffer, 0, 128);
 		memset(searchFolderBuffer, 0, 128);
 		buttonSize = { thumbnailSize,thumbnailSize };

@@ -31,19 +31,20 @@ namespace Eclipse
 
 	void EditorManager::InitGUIWindows()
 	{
-		AddWindow<eGameViewWindow>("Game Viewport");
-		AddWindow<SceneWindow>("Scene Viewport");
-		AddWindow<InspectorWindow>("Inspector");
-		AddWindow<HierarchyWindow>("Hierarchy");
-		AddWindow<ProfilerWindow>("Profiler");
-		AddWindow<AssetBrowserWindow>("Asset Browser");
-		AddWindow<LoggerWindow>("Log");
-		AddWindow<DebugWindow>("Settings");
-		AddWindow<TopSwitchViewWindow>("Top Viewport");
-		AddWindow<BottomSwitchViewWindow>("Bottom Viewport");
-		AddWindow<LeftSwitchViewWindow>("Left Viewport");
-		AddWindow<RightSwitchViewWindow>("Right Viewport");
-		AddWindow<HeaderWindow>("Header");
+		AddWindow<eGameViewWindow>("Game Viewport " ICON_MDI_MONITOR);
+		AddWindow<SceneWindow>("Scene Viewport " ICON_MDI_MONITOR);
+		AddWindow<TopSwitchViewWindow>("Top Viewport " ICON_MDI_MONITOR);
+		AddWindow<BottomSwitchViewWindow>("Bottom Viewport " ICON_MDI_MONITOR);
+		AddWindow<LeftSwitchViewWindow>("Left Viewport " ICON_MDI_MONITOR);
+		AddWindow<RightSwitchViewWindow>("Right Viewport " ICON_MDI_MONITOR);
+
+		AddWindow<InspectorWindow>("Inspector " ICON_MDI_MAGNIFY_SCAN);
+		AddWindow<HierarchyWindow>("Hierarchy " ICON_MDI_FILE_TREE);
+		AddWindow<ProfilerWindow>("Profiler " ICON_MDI_FILE_PERCENT);
+		AddWindow<AssetBrowserWindow>("Asset Browser " ICON_MDI_FILE_IMAGE);
+		AddWindow<LoggerWindow>("Log " ICON_MDI_POST);
+		AddWindow<DebugWindow>("Settings " ICON_MDI_ACCOUNT_COG);
+		AddWindow<HeaderWindow>("Header " ICON_MDI_PAGE_LAYOUT_HEADER);
 
 		for (const auto& window : Windows_)
 		{
@@ -54,16 +55,16 @@ namespace Eclipse
 	void EditorManager::InitMenu()
 	{
 		MenuComponent file{ "File", EditorMenuType::FILE };
-		file.AddItems("New");
-		file.AddItems("Open");
-		file.AddItems("Save");
-		file.AddItems("Save As...");
-		file.AddItems("Exit");
+		file.AddItems("New " ICON_MDI_FOLDER_PLUS);
+		file.AddItems("Open " ICON_MDI_FOLDER_OPEN);
+		file.AddItems("Save " ICON_MDI_CONTENT_SAVE);
+		file.AddItems("Save As... " ICON_MDI_CONTENT_SAVE_EDIT);
+		file.AddItems("Exit " ICON_MDI_EXIT_TO_APP);
 		MenuBar_.AddMenuComponents(file);
 
 		MenuComponent edit{ "Edit", EditorMenuType::EDIT };
-		edit.AddItems("Undo");
-		edit.AddItems("Redo");
+		edit.AddItems("Undo " ICON_MDI_UNDO_VARIANT);
+		edit.AddItems("Redo " ICON_MDI_REDO_VARIANT);
 		MenuBar_.AddMenuComponents(edit);
 
 		MenuComponent window{ "Windows", EditorMenuType::WINDOWS };

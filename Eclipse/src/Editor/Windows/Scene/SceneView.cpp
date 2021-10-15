@@ -16,7 +16,7 @@ namespace Eclipse
 		mViewportSize = glm::vec2{};
 		mSceneBufferSize = glm::vec2{};
 		Type = EditorWindowType::EWT_SCENE;
-		WindowName = "Scene View";
+		WindowName = "Scene View " ICON_MDI_MONITOR;
 		m_frameBuffer = engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_SCENE);
 	}
 
