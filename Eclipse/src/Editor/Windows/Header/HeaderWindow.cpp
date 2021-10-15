@@ -30,11 +30,13 @@ namespace Eclipse
 
 	void HeaderWindow::RunPlayPauseStep()
 	{
-		ECGui::InsertSameLine(ECGui::GetWindowSize().x / 2.3f);
+		ImGuiIO& io = ImGui::GetIO();
 
+		ECGui::InsertSameLine(ECGui::GetWindowSize().x / 2.22f);
+		ImGui::SetWindowFontScale(1.1);
 		if (!engine->GetPlayState())
 		{
-			if (ECGui::ButtonBool("Play " ICON_FA_PLAY))
+			if (ECGui::ButtonBool(" " ICON_FA_PLAY, ImVec2{30.f,22.f}))
 			{
 				engine->szManager.SaveBackupFile();
 				engine->mono.StartMono();
@@ -48,7 +50,7 @@ namespace Eclipse
 		}
 		else
 		{
-			if (ECGui::ButtonBool("Stop " ICON_FA_STOP))
+			if (ECGui::ButtonBool("" ICON_FA_STOP,ImVec2{ 30.f,22.f }))
 			{
 				//auto& mono = engine->world.GetSystem<MonoSystem>();
 				engine->world.GetSystem<MonoSystem>()->Terminate();
@@ -63,7 +65,7 @@ namespace Eclipse
 		}
 
 		ECGui::InsertSameLine();
-		if (ECGui::ButtonBool("Pause " ICON_FA_PAUSE))
+		if (ECGui::ButtonBool("" ICON_FA_PAUSE, ImVec2{ 30.f,22.f }))
 		{
 			if (engine->GetPlayState())
 			{
@@ -85,7 +87,7 @@ namespace Eclipse
 		}
 
 		ECGui::InsertSameLine();
-		if (ECGui::ButtonBool("Step " ICON_FA_STEP_FORWARD))
+		if (ECGui::ButtonBool("" ICON_FA_STEP_FORWARD, ImVec2{ 30.f,22.f }))
 		{
 			if (engine->GetPlayState())
 			{
@@ -101,6 +103,7 @@ namespace Eclipse
 
 	void HeaderWindow::UtilitiesButtons()
 	{
+		ImGui::SetWindowFontScale(1);
 		ECGui::NewLine();
 		ECGui::InsertSameLine(ECGui::GetWindowSize().x / 3.0f);
 
@@ -168,7 +171,7 @@ namespace Eclipse
 
 		ECGui::InsertSameLine();
 
-		if (ECGui::ButtonBool(ICON_FA_VIDEO_CAMERA, ImVec2{ 100,20}))
+		if (ECGui::ButtonBool(ICON_MDI_CAMERA, ImVec2{ 100,20}))
 		{
 			ECGui::OpenPopup("Camera Setting");
 		}

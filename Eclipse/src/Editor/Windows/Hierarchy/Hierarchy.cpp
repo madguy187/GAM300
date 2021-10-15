@@ -48,8 +48,8 @@ namespace Eclipse
 
     void HierarchyWindow::DrawImpl()
     {
-        PopUpButtonSettings EntSettings{ "Add Entity", "EntityCreationListBegin" };
-        PopUpButtonSettings ModSettings{ "Create Model",  "ModelCreationListBegin" };
+        PopUpButtonSettings EntSettings{ "Add Entity" ICON_MDI_PENCIL_PLUS, "EntityCreationListBegin" };
+        PopUpButtonSettings ModSettings{ "Create Model" ICON_MDI_DOMAIN_PLUS,  "ModelCreationListBegin" };
         ECGui::BeginPopUpButtonList<void()>(EntSettings, std::bind(&HierarchyWindow::ShowEntityCreationList, this));
         ECGui::InsertSameLine();
         ECGui::BeginPopUpButtonList<void()>(ModSettings, std::bind(&HierarchyWindow::ShowCreateModelList, this));

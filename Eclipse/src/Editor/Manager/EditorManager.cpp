@@ -54,7 +54,7 @@ namespace Eclipse
 
 	void EditorManager::InitMenu()
 	{
-		MenuComponent file{ "File", EditorMenuType::FILE };
+		MenuComponent file{ "File" ICON_MDI_FILE, EditorMenuType::FILE };
 		file.AddItems("New " ICON_MDI_FOLDER_PLUS);
 		file.AddItems("Open " ICON_MDI_FOLDER_OPEN);
 		file.AddItems("Save " ICON_MDI_CONTENT_SAVE);
@@ -62,15 +62,15 @@ namespace Eclipse
 		file.AddItems("Exit " ICON_MDI_EXIT_TO_APP);
 		MenuBar_.AddMenuComponents(file);
 
-		MenuComponent edit{ "Edit", EditorMenuType::EDIT };
+		MenuComponent edit{ "Edit" ICON_MDI_PENCIL, EditorMenuType::EDIT };
 		edit.AddItems("Undo " ICON_MDI_UNDO_VARIANT);
 		edit.AddItems("Redo " ICON_MDI_REDO_VARIANT);
 		MenuBar_.AddMenuComponents(edit);
 
-		MenuComponent window{ "Windows", EditorMenuType::WINDOWS };
+		MenuComponent window{ "Windows" ICON_MDI_MONITOR, EditorMenuType::WINDOWS };
 		MenuBar_.AddMenuComponents(window);
 
-		MenuComponent style{ "Style", EditorMenuType::STYLE };
+		MenuComponent style{ "Style" ICON_MDI_ACCOUNT, EditorMenuType::STYLE };
 		style.AddItems("Oppa GuanHin Style");
 		style.AddItems("Oppa Nico Style");
 		style.AddItems("Oppa Fikrul Style");
@@ -83,7 +83,7 @@ namespace Eclipse
 		style.AddItems("Oppa JianHerng Style");
 		MenuBar_.AddMenuComponents(style);
 
-		MenuComponent aboutus{ "About Eclipse", EditorMenuType::ABOUTUS };
+		MenuComponent aboutus{ "About Eclipse" ICON_MDI_CROSSHAIRS_QUESTION, EditorMenuType::ABOUTUS };
 		MenuBar_.AddMenuComponents(aboutus);
 	}
 

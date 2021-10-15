@@ -206,7 +206,7 @@ namespace Eclipse
 
 	void MenuComponent::DrawGuiWindows()
 	{
-		if (!strcmp(Name_, "Windows"))
+		if (!strcmp(Name_, "Windows" ICON_MDI_MONITOR))
 		{
 			int index = 0;
 
