@@ -185,6 +185,7 @@ namespace Eclipse
 
         Signature audioSignature;
         audioSignature.set(world.GetComponentType<AudioComponent>(), 1);
+        audioSignature.set(world.GetComponentType<TransformComponent>(), 1);
         world.RegisterSystemSignature<AudioSystem>(audioSignature);
 
         Signature prefabSig;

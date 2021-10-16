@@ -54,6 +54,9 @@ namespace Eclipse
 		mode |= looping ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF;
 		mode |= stream ? FMOD_CREATESTREAM : FMOD_CREATECOMPRESSEDSAMPLE; 
 
+		if (is3d)
+			mode |= FMOD_3D_LINEARSQUAREROLLOFF;
+
 		FMOD::Sound* sound_ptr = nullptr;
 
 		FmodAPI->ErrorCheck(FmodAPI->m_System->createSound(sound_name.c_str(), mode, 0, &sound_ptr));
@@ -143,13 +146,24 @@ namespace Eclipse
 		return channel_id;
 	}
 
+	void AudioManager::Play2DSounds(AudioComponent& audioCom)
+	{
+		audioCom.ChannelID = Play2DSounds(audioCom.AudioPath, audioCom.Volume,
+			audioCom.IsLooping);
+		SetSpeed(audioCom.ChannelID, audioCom.Speed);
+		SetPitch(audioCom.ChannelID, audioCom.Pitch);
+		SetChannelMute(audioCom.ChannelID, audioCom.IsMuted);
+		//SetEchoEffect(audioCom.ChannelID);
+		//SetRadioEffect(audioCom.ChannelID, 0.85f);
+	}
+
 	int AudioManager::Play3DSounds(const std::string& sound_name, const ECVec3& vPosition, 
 		float f_volume, bool looping)
 	{
 		int channel_id = FmodAPI->m_NextChannel_ID++;
 		auto sound_it = FmodAPI->m_Sounds.find(sound_name);
 
-		if (sound_it == FmodAPI->m_Sounds.end() /*|| looping*/)
+		if (sound_it == FmodAPI->m_Sounds.end())
 		{
 			LoadSound(sound_name, true, looping);
 			sound_it = FmodAPI->m_Sounds.find(sound_name);
@@ -184,6 +198,25 @@ namespace Eclipse
 		}
 
 		return channel_id;
+	}
+
+	void AudioManager::Play3DSounds(AudioComponent& audioCom, const TransformComponent& transCom)
+	{
+		LoadSound(audioCom.AudioPath,
+			audioCom.Is3D, audioCom.IsLooping, false);
+		audioCom.ChannelID = Play3DSounds(audioCom.AudioPath, transCom.position,
+			audioCom.Volume, audioCom.IsLooping);
+		SetChannel3DPosition(audioCom.ChannelID, transCom.position);
+		Set3DConeSettings(audioCom.ChannelID, &audioCom.InnerConeAngle,
+			&audioCom.OuterConeAngle, &audioCom.OuterVolume);
+		Set3DConeOrientation(audioCom.ChannelID);
+		Set3DMinMaxSettings(audioCom.ChannelID,
+			audioCom.Min, audioCom.Max);
+		SetSpeed(audioCom.ChannelID, audioCom.Speed);
+		SetPitch(audioCom.ChannelID, audioCom.Pitch);
+		SetChannelMute(audioCom.ChannelID, audioCom.IsMuted);
+
+		EnableSpecialSettings(audioCom);
 	}
 
 	void AudioManager::PlayEvent(const std::string& event_name)
@@ -441,7 +474,8 @@ namespace Eclipse
 
 	void AudioManager::Set3DConeOrientation(int ChannelID, const ECVec3& vOrientation)
 	{
-		FmodAPI->m_Channels[ChannelID]->get3DConeOrientation(&VectorToFmod(vOrientation));
+		FMOD_VECTOR orientation = VectorToFmod(vOrientation);
+		FmodAPI->m_Channels[ChannelID]->get3DConeOrientation(&orientation);
 	}
 
 	void AudioManager::Set3DMinMaxSettings(int ChannelID, float min, float max)
@@ -464,15 +498,65 @@ namespace Eclipse
 		FmodAPI->m_System->set3DListenerAttributes(0, &position, &velocity, &forward, &up);
 	}
 
-	void AudioManager::SetPitch(const std::string& sound_name, float pitch)
+	void AudioManager::SetPitch(int ChannelID, float pitch)
 	{
-		(void)sound_name;
-		(void)pitch;
+		FmodAPI->m_Channels[ChannelID]->setPitch(pitch);
 	}
 
-	void AudioManager::SetSpeed(const std::string& sound_name, float speed)
+	void AudioManager::SetSpeed(int ChannelID, float speed)
 	{
-		FmodAPI->m_Sounds[sound_name]->setMusicSpeed(speed);
+		// Change playback speed without affecting its pitch
+		float frequency = 0.f;
+
+		// Modify frequency which changes both speed and pitch
+		FmodAPI->m_Channels[ChannelID]->getFrequency(&frequency);
+		FmodAPI->m_Channels[ChannelID]->setFrequency(frequency * speed);
+
+		// Creating pitch shift DSP to get pitch back to normal
+		// by applying the inverse amount
+		FMOD::DSP* dsp = nullptr;
+		FmodAPI->m_System->createDSPByType(FMOD_DSP_TYPE_PITCHSHIFT, &dsp);
+		dsp->setParameterFloat(FMOD_DSP_PITCHSHIFT_PITCH, 1.0f / speed);
+		dsp->setParameterInt(FMOD_DSP_PITCHSHIFT_FFTSIZE, 4096);
+
+		// Now only speed will change
+		FmodAPI->m_Channels[ChannelID]->addDSP(0, dsp);
+	}
+
+	void AudioManager::SetChannelMute(int ChannelID, bool muted)
+	{
+		FmodAPI->m_Channels[ChannelID]->setMute(muted);
+	}
+
+	void AudioManager::EnableSpecialSettings(const AudioComponent& audioCom)
+	{
+		if (audioCom.HasEchoEffect)
+			SetEchoEffect(audioCom.ChannelID, audioCom.EchoDelayTime);
+
+		if (audioCom.HasRadioEffect)
+			SetRadioEffect(audioCom.ChannelID, audioCom.RadioDistortionLevel);
+	}
+
+	void AudioManager::SetRadioEffect(int ChannelID, float distortionLevel)
+	{
+		FMOD::DSP* distortion = nullptr;
+		FmodAPI->m_System->createDSPByType(FMOD_DSP_TYPE_DISTORTION, &distortion);
+		distortion->setParameterFloat(FMOD_DSP_DISTORTION_LEVEL, distortionLevel);
+
+		FMOD::DSP* highpass = nullptr;
+		FmodAPI->m_System->createDSPByType(FMOD_DSP_TYPE_HIGHPASS, &highpass);
+		distortion->setParameterFloat(FMOD_DSP_HIGHPASS_CUTOFF, 2000.0f);
+
+		FmodAPI->m_Channels[ChannelID]->addDSP(0, distortion);
+		FmodAPI->m_Channels[ChannelID]->addDSP(0, highpass);
+	}
+
+	void AudioManager::SetEchoEffect(int ChannelID, float DelayTime)
+	{
+		FMOD::DSP* dsp = nullptr;
+		FmodAPI->m_System->createDSPByType(FMOD_DSP_TYPE_ECHO, &dsp);
+		FmodAPI->m_Channels[ChannelID]->addDSP(0, dsp);
+		dsp->setParameterFloat(FMOD_DSP_ECHO_DELAY, DelayTime);
 	}
 
 	float AudioManager::OldBGMVolumeToTrack() const

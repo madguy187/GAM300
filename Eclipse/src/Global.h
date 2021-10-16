@@ -194,3 +194,11 @@ enum class RenderMode
     Fill_Mode,
     Wireframe_Mode
 };
+
+enum class AudioType
+{
+    AT_SFX,
+    AT_BGM,
+    AT_EVENT,
+    AT_UNASSIGNED
+};

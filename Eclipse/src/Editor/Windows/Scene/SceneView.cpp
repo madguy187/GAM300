@@ -74,12 +74,12 @@ namespace Eclipse
 
 		if (ECGui::IsItemActive())
 		{
-			std::cout << "Window is active" << std::endl;
+			//std::cout << "Window is active" << std::endl;
 			IsWindowActive = true;
 		}
 		else
 		{
-			std::cout << "Window is not active" << std::endl;
+			//std::cout << "Window is not active" << std::endl;
 			IsWindowActive = false;
 		}
 	}
