@@ -185,6 +185,7 @@ namespace Eclipse
 
         Signature audioSignature;
         audioSignature.set(world.GetComponentType<AudioComponent>(), 1);
+        audioSignature.set(world.GetComponentType<TransformComponent>(), 1);
         world.RegisterSystemSignature<AudioSystem>(audioSignature);
 
         Signature prefabSig;
@@ -231,7 +232,6 @@ namespace Eclipse
         {
             glfwPollEvents();
             engine->gFrameBufferManager->MainWindowSettings();
-
             Game_Clock.set_timeSteps(0);
             framecount++;
             float newTime = static_cast<float>(clock());
