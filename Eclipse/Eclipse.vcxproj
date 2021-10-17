@@ -336,6 +336,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\ImGui\Vendor\stb_image.h" />
     <ClInclude Include="src\Library\Math\Matrix.h" />
     <ClInclude Include="src\Library\Math\Vector.h" />
+    <ClInclude Include="src\Library\Random\Random.h" />
     <ClInclude Include="src\Library\Strings\Lexical.h" />
     <ClInclude Include="src\Library\Strings\StringsConcatenate.h" />
     <ClInclude Include="src\Logger\Logger.h" />
@@ -470,6 +471,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\ImGui\Vendor\imgui_impl_opengl3.cpp" />
     <ClCompile Include="src\ImGui\Vendor\imgui_widgets.cpp" />
     <ClCompile Include="src\Library\Math\Matrix.cpp" />
+    <ClCompile Include="src\Library\Random\Random.cpp" />
     <ClCompile Include="src\Logger\Logger.cpp" />
     <ClCompile Include="src\Mono\Manager\MonoManager.cpp" />
     <ClCompile Include="src\Physics\PhysicsManager.cpp" />

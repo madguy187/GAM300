@@ -232,7 +232,6 @@ namespace Eclipse
         {
             glfwPollEvents();
             engine->gFrameBufferManager->MainWindowSettings();
-
             Game_Clock.set_timeSteps(0);
             framecount++;
             float newTime = static_cast<float>(clock());
