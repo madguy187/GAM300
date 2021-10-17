@@ -225,7 +225,7 @@ namespace Eclipse
 
 	void SceneWindow::OnCopyEntityEvent()
 	{
-		if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_LEFTALT)))
+		if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_LEFTALT)) && m_GizmoType == ImGuizmo::OPERATION::TRANSLATE)
 		{
 			if (!IsCopying)
 			{
