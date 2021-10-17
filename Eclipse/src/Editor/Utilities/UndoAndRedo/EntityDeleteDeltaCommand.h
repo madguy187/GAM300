@@ -57,6 +57,7 @@ namespace Eclipse
 
 		virtual bool MergeCmds(ICommand* otherCmd) override
 		{
+			(void)otherCmd;
 			return false;
 		}
 
