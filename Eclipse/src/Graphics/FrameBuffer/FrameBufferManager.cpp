@@ -3,6 +3,11 @@
 
 namespace Eclipse
 {
+    struct Tom
+    {
+        int A = 0;
+    };
+
     void FrameBufferManager::CreateFrameBuffers()
     {
         CreateFBO(1270, 593, FrameBufferMode::FBM_GAME);

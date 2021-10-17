@@ -807,6 +807,7 @@
     </ClInclude>
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Graphics\Material\PBR\PBRManager.h" />
+    <ClInclude Include="src\Graphics\Material\MaterialInstance\MaterialInstance.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1195,9 +1196,12 @@
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\Graphics\Material\PBR\PBRManager.cpp" />
+    <ClCompile Include="src\Graphics\Material\MaterialInstance\MaterialInstance.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />
     <None Include="src\Assets\Shaders\PBRShader\PBR.vert" />
+    <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.frag" />
+    <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.vert" />
   </ItemGroup>
 </Project>

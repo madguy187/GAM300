@@ -6,7 +6,7 @@ namespace Eclipse
     void MaterialSystem::Init()
     {
         EDITOR_LOG_INFO("MaterialSystem Init");
-        engine->Test.SetShader();
+        engine->gPBRManager->Init();
     }
 
     void MaterialSystem::Update()
@@ -21,7 +21,9 @@ namespace Eclipse
         //    engine->Test.CheckUniform(entityID);
         //}
 
-        engine->Test.PBRScene();
+        engine->gPBRManager->PBRScene();
+
+        engine->MaterialManager.StencilBufferClear();
 
         engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());
         engine->Timer.UpdateTimeContainer(engine->Timer.tracker);

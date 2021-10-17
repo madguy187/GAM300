@@ -53,7 +53,7 @@ namespace Eclipse
 		std::unique_ptr<EclipseFileWatcher> gFileWatchManager;
 		std::unique_ptr<EngineCompiler> gEngineCompiler;
 		std::unique_ptr<FrameBufferManager> gFrameBufferManager;
-	    PBRManager Test;
+		std::unique_ptr<PBRManager> gPBRManager;
 
 		void Init();
 		void Run();

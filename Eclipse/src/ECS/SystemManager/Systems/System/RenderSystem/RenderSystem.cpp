@@ -15,6 +15,8 @@ namespace Eclipse
 {
     void RenderSystem::Init()
     {
+        engine->gPBRManager = std::make_unique<PBRManager>();
+
         // Register Threads
         engine->GraphicsManager.RegisterThreads();
 

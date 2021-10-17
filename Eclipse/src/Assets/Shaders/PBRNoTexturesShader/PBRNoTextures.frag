@@ -4,23 +4,13 @@ in vec2 TexCoords;
 in vec3 WorldPos;
 in vec3 Normal;
 
-uniform bool EnableGammaCorrection;
 uniform float Exposure;
-uniform float gamma;
-
-// material parameters
-uniform sampler2D albedoMap;
-uniform sampler2D normalMap;
-uniform sampler2D metallicMap;
-uniform sampler2D roughnessMap;
-uniform sampler2D aoMap;
 
 // material parameters
 uniform vec3  AlbedoConstant;
 uniform float MetallicConstant;
 uniform float RoughnessConstant;
 uniform float AoConstant;
-uniform int HasTexture;
 
 // lights
 uniform vec3 lightPositions[4];
@@ -66,23 +56,6 @@ uniform DirectionalLight directionlight[NR_DIRECTIONAL_LIGHTS];
 #define NR_SPOTLIGHTS 10  
 uniform SpotLight spotLights[NR_SPOTLIGHTS];
 uniform int NumberOfSpotLights;
-
-vec3 getNormalFromMap()
-{
-    vec3 tangentNormal = texture(normalMap, TexCoords).xyz * 2.0 - 1.0;
-
-    vec3 Q1  = dFdx(WorldPos);
-    vec3 Q2  = dFdy(WorldPos);
-    vec2 st1 = dFdx(TexCoords);
-    vec2 st2 = dFdy(TexCoords);
-
-    vec3 N   = normalize(Normal);
-    vec3 T  = normalize(Q1*st2.t - Q2*st1.t);
-    vec3 B  = -normalize(cross(N, T));
-    mat3 TBN = mat3(T, B, N);
-
-    return normalize(TBN * tangentNormal);
-}
 
 float DistributionGGX(vec3 N, vec3 H, float roughness)
 {
@@ -130,32 +103,12 @@ vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness)
 }
 
 void main()
-{	
-    vec3 N;
+{		
+    vec3 N = normalize(Normal);
     vec3 V = normalize(camPos - WorldPos);
-    //vec3 N = getNormalFromMap(); // no normal map can use vec3(0.1) or we normalize 
-     
-    // Variables declared first;
-    vec3 albedo;
-    float metallic,roughness,ao;
 
-    // base relfect
-    vec3 F0 = vec3(0.4); 
-
-    if(HasTexture == 1)
-    {
-        N = getNormalFromMap();
-        albedo     = pow(texture(albedoMap, TexCoords).rgb, vec3(2.2));
-        metallic  = texture(metallicMap, TexCoords).r;
-        roughness = texture(roughnessMap, TexCoords).r;
-        ao        = texture(aoMap, TexCoords).r;
-        F0 = mix(F0, albedo, metallic);
-    }
-    else
-    {
-        N = normalize(Normal); 
-        F0 = mix(F0, AlbedoConstant, MetallicConstant);
-    }
+    vec3 F0 = vec3(0.04); 
+    F0 = mix(F0, AlbedoConstant, MetallicConstant);
 
     // reflectance equation
     vec3 Lo = vec3(0.0);
@@ -170,18 +123,8 @@ void main()
     vec3 radiance = directionlight[0].lightColor * attenuation;
     
     // Cook-Torrance BRDF
-    float NDF , G;
-
-    if(HasTexture == 1)
-    {
-        NDF = DistributionGGX(N, H, roughness);   
-        G   = GeometrySmith(N, V, L, roughness);    
-    }  
-    else
-    {
-        NDF = DistributionGGX(N, H, RoughnessConstant);   
-        G   = GeometrySmith(N, V, L, RoughnessConstant);            
-    }
+    float NDF = DistributionGGX(N, H, RoughnessConstant);   
+    float G   = GeometrySmith(N, V, L, RoughnessConstant);      
     vec3 F    = fresnelSchlick(max(dot(H, V), 0.0), F0);
        
     vec3 numerator    = NDF * G * F; 
@@ -190,20 +133,9 @@ void main()
     
     vec3 kS = F;
     vec3 kD = vec3(1.0) - kS;
-
-    if(HasTexture == 1)
-    {
-        kD *= 1.0 - metallic;	 
-        float NdotL = max(dot(N, L), 0.0);        
-        Lo += (kD * albedo / PI + specular) * radiance * NdotL;
-    } 
-    else
-    {
-        kD *= 1.0 - MetallicConstant;	 
-        float NdotL = max(dot(N, L), 0.0);        
-        Lo += (kD * AlbedoConstant / PI + specular) * radiance * NdotL;        
-    }
-
+    kD *= 1.0 - MetallicConstant;	  
+    float NdotL = max(dot(N, L), 0.0);        
+    Lo += (kD * AlbedoConstant / PI + specular) * radiance * NdotL;  // note that we already multiplied the BRDF by the Fresnel (kS) so we won't multiply by kS again
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -225,18 +157,8 @@ void main()
         vec3 radiance = pointLights[i].lightColor * attenuation;
 
         // Cook-Torrance BRDF
-        float NDF , G;
-
-        if(HasTexture == 1)
-        {
-            NDF = DistributionGGX(N, H, roughness);   
-            G   = GeometrySmith(N, V, L, roughness);    
-        }  
-        else
-        {
-            NDF = DistributionGGX(N, H, RoughnessConstant);   
-            G   = GeometrySmith(N, V, L, RoughnessConstant);            
-        }
+        float NDF = DistributionGGX(N, H, RoughnessConstant);   
+        float G   = GeometrySmith(N, V, L, RoughnessConstant);      
         vec3 F    = fresnelSchlick(max(dot(H, V), 0.0), F0);
            
         vec3 numerator    = NDF * G * F; 
@@ -245,19 +167,11 @@ void main()
         
         vec3 kS = F;
         vec3 kD = vec3(1.0) - kS;
+        kD *= 1.0 - MetallicConstant;	  
 
-        if(HasTexture == 1)
-        {
-            kD *= 1.0 - metallic;	 
-            float NdotL = max(dot(N, L), 0.0);        
-            Lo += (kD * albedo / PI + specular) * radiance * NdotL;
-        } 
-        else
-        {
-            kD *= 1.0 - MetallicConstant;	 
-            float NdotL = max(dot(N, L), 0.0);        
-            Lo += (kD * AlbedoConstant / PI + specular) * radiance * NdotL;        
-        }
+        float NdotL = max(dot(N, L), 0.0);        
+
+        Lo += (kD * AlbedoConstant / PI + specular) * radiance * NdotL;  // note that we already multiplied the BRDF by the Fresnel (kS) so we won't multiply by kS again
     }   
     
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -279,18 +193,8 @@ void main()
         vec3 radiance = spotLights[i].lightColor * attenuation;
 
         // Cook-Torrance BRDF
-        float NDF , G;
-
-        if(HasTexture == 1)
-        {
-            NDF = DistributionGGX(N, H, roughness);   
-            G   = GeometrySmith(N, V, L, roughness);    
-        }  
-        else
-        {
-            NDF = DistributionGGX(N, H, RoughnessConstant);   
-            G   = GeometrySmith(N, V, L, RoughnessConstant);            
-        }
+        float NDF = DistributionGGX(N, H, RoughnessConstant);   
+        float G   = GeometrySmith(N, V, L, RoughnessConstant);      
         vec3 F    = fresnelSchlick(max(dot(H, V), 0.0), F0);
            
         vec3 numerator    = NDF * G * F; 
@@ -299,46 +203,20 @@ void main()
 
         vec3 kS = F;
         vec3 kD = vec3(1.0) - kS;
+        kD *= 1.0 - MetallicConstant;	  
 
-        if(HasTexture == 1)
-        {
-            kD *= 1.0 - metallic;	 
-            float NdotL = max(dot(N, L), 0.0) * intensity;        
-            Lo += (kD * albedo / PI + specular) * radiance * NdotL;
-        } 
-        else
-        {
-            kD *= 1.0 - MetallicConstant;	 
-            float NdotL = max(dot(N, L), 0.0) * intensity;        
-            Lo += (kD * AlbedoConstant / PI + specular) * radiance * NdotL;        
-        }
+        float NdotL = max(dot(N, L), 0.0) * intensity;        
+        Lo += (kD * AlbedoConstant / PI + specular) * radiance * NdotL;  // note that we already multiplied the BRDF by the Fresnel (kS) so we won't multiply by kS again
     }   
 
-       if( HasTexture == 1)
-       {
-          vec3 ambient = vec3(0.03) * albedo * ao;
-          vec3 color = ambient + Lo;
-          color = color / (color + vec3(1.0));
-          color = pow(color, vec3(1.0/2.2)); 
-          FragColor = vec4(color, 1.0);
-        }
-        else
-        {
-          vec3 ambient = vec3(0.03) * AlbedoConstant * AoConstant;
-          vec3 color = ambient + Lo;
-          color = color / (color + vec3(1.0));
-          color = pow(color, vec3(1.0/2.2)); 
-          FragColor = vec4(color, 1.0);      
-        }
-
-        //vec3 ambient = vec3(0.03) * albedo * ao;
-        //vec3 color = ambient + Lo;
-        //
-        //// HDR + GAMMA
-        ////color = color / (color + vec3(1.0));
-        //
-        //color = vec3(1.0) - exp(-color * Exposure);
-        //
-        //color = pow(color, vec3(1.0/2.5)); 
-        //FragColor = vec4(color, 1.0);
+      vec3 ambient = vec3(0.03) * AlbedoConstant * AoConstant;
+      
+      vec3 color = ambient + Lo;
+      
+      // HDR tonemapping
+      color = color / (color + vec3(1.0));
+      // gamma correct
+      color = pow(color, vec3(1.0/2.2)); 
+      
+      FragColor = vec4(color, 1.0);
 }

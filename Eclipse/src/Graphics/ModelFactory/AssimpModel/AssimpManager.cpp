@@ -110,7 +110,7 @@ namespace Eclipse
         }
 
         CheckUniformLoc(shdrpgm, _camera, ID, box);
-        engine->Test.CheckUniform(ID);
+        engine->gPBRManager->CheckUniform(ID);
 
         if (_renderMode == RenderMode::Fill_Mode)
         {
