@@ -17,13 +17,6 @@ namespace Eclipse
         void BindMaterial(std::string MaterialName , Shader& In);
 
     public:
-        unsigned int captureFBO;
-        unsigned int captureRBO;
-        unsigned int cubeVAO = 0;
-        unsigned int cubeVBO = 0;
-        unsigned int envCubemap;
-        void SetUpFBO();
-        void renderCube();
         unsigned int sphereVAO = 0;
         unsigned int indexCount;
         void RenderSphere();
