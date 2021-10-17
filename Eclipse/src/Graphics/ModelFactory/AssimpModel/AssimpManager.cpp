@@ -439,39 +439,39 @@ namespace Eclipse
 
                     if (tex.HoldingTextures[it].GetType() != aiTextureType_NORMALS)
                     {
-                        //GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
-                        //GLuint diff0 = shader.GetLocation("albedoMap");
-                        //GLuint spec = shader.GetLocation("albedoMap");
-                        //GLuint noTex = shader.GetLocation("noTex");
-                        //GLuint CheckNormapMap = shader.GetLocation("checkNormalMap");
-                        //
-                        //glUniform1i(noTex, false);
-                        //glUniform1i(uniform_var_loc3, true);
-                        //glUniform1i(CheckNormapMap, false);
-                        //glUniform1i(diff0, it);
-                        //glUniform1i(spec, it);
-                        //tex.HoldingTextures[it].Bind();
+                        GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
+                        GLuint diff0 = shader.GetLocation("albedoMap");
+                        GLuint spec = shader.GetLocation("albedoMap");
+                        GLuint noTex = shader.GetLocation("noTex");
+                        GLuint CheckNormapMap = shader.GetLocation("checkNormalMap");
+
+                        glUniform1i(noTex, false);
+                        glUniform1i(uniform_var_loc3, true);
+                        glUniform1i(CheckNormapMap, false);
+                        glUniform1i(diff0, it);
+                        glUniform1i(spec, it);
+                        tex.HoldingTextures[it].Bind();
                     }
                     else
                     {
-                       //GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
-                       //GLuint CheckNoTex = shader.GetLocation("noTex");
-                       //GLuint CheckNormapMap = shader.GetLocation("checkNormalMap");
-                       //GLuint normal0 = shader.GetLocation("normalMap");
-                       //glUniform1i(uniform_var_loc3, true);
-                       //glUniform1i(CheckNoTex, false);
-                       //
-                       //if (engine->GraphicsManager.EnableNormalMapping)
-                       //{
-                       //    glUniform1i(CheckNormapMap, true);
-                       //}
-                       //else
-                       //{
-                       //    glUniform1i(CheckNormapMap, false);
-                       //}
-                       //
-                       //glUniform1i(normal0, it);
-                       //tex.HoldingTextures[it].Bind();
+                        GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
+                        GLuint CheckNoTex = shader.GetLocation("noTex");
+                        GLuint CheckNormapMap = shader.GetLocation("checkNormalMap");
+                        GLuint normal0 = shader.GetLocation("normalMap");
+                        glUniform1i(uniform_var_loc3, true);
+                        glUniform1i(CheckNoTex, false);
+
+                        if (engine->GraphicsManager.EnableNormalMapping)
+                        {
+                            glUniform1i(CheckNormapMap, true);
+                        }
+                        else
+                        {
+                            glUniform1i(CheckNormapMap, false);
+                        }
+
+                        glUniform1i(normal0, it);
+                        tex.HoldingTextures[it].Bind();
                     }
                 }
 
