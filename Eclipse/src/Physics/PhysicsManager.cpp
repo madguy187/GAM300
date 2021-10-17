@@ -421,6 +421,15 @@ namespace Eclipse
 		}
 	}
 
+	void Eclipse::PhysicsManager::SetForce(Entity ent, ECVec3 force)
+	{
+		if (!engine->world.CheckComponent<RigidBodyComponent>(ent))
+			return;
+
+		auto& rigidbody = engine->world.GetComponent<RigidBodyComponent>(ent);
+		rigidbody.forces = force;
+	}
+
 	void Eclipse::PhysicsManager::UpdateVariables(Entity ent)
 	{
 		auto& collision = engine->world.GetComponent<CollisionComponent>(ent);
