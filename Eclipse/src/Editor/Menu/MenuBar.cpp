@@ -12,7 +12,7 @@ namespace Eclipse
 	{
 		for (auto& member : MenuComponents_)
 		{
-			if (!strcmp(member.GetName(), "About Eclipse"))
+			if (!strcmp(member.GetName(), "About Eclipse" ICON_MDI_CROSSHAIRS_QUESTION))
 				ECGui::DrawMenuComponent<void()>(member.GetName(),
 					std::bind(&MenuBar::ShowTeamInformation, this));
 			else

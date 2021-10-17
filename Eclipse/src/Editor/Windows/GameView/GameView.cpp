@@ -28,7 +28,7 @@ namespace Eclipse
 		ogViewportSize = glm::vec2{ 0.0f, 0.0f };
 		ogViewportPos = glm::vec2{ 0.0f, 0.0f };
 		Type = EditorWindowType::EWT_GAMEVIEW;
-		WindowName = "Game View";
+		WindowName = "Game View " ICON_MDI_MONITOR;
 		m_frameBuffer = engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_GAME);
 	}
 

@@ -12,7 +12,7 @@ namespace Eclipse
 	void AssetBrowserWindow::Init()
 	{
 		Type = EditorWindowType::EWT_ASSETBROWSER;
-		WindowName = "AssetBrowser";
+		WindowName = "AssetBrowser " ICON_MDI_FILE_IMAGE;
 		memset(searchItemBuffer, 0, 128);
 		memset(searchFolderBuffer, 0, 128);
 		buttonSize = { thumbnailSize,thumbnailSize };
@@ -555,7 +555,7 @@ namespace Eclipse
 
 	void AssetBrowserWindow::SearchItems()
 	{
-		if (ECGui::DrawInputTextHintWidget("", "Search...", searchItemBuffer, 128))
+		if (ECGui::DrawInputTextHintWidget("", "Search..." ICON_MDI_MAGNIFY, searchItemBuffer, 128))
 		{
 			if (BuffIsEmpty(searchItemBuffer))
 			{
@@ -572,12 +572,12 @@ namespace Eclipse
 			searchItemsLowerCase = LowerCase(searchItemBuffer);
 
 		}
-		if (ECGui::ButtonBool("Refresh", { 70,20 }))
+		if (ECGui::ButtonBool("Refresh" ICON_MDI_REFRESH, { 70,20 }))
 		{
 			refresh = true;
 		}
 		ECGui::InsertSameLine();
-		if (ECGui::ButtonBool("Clear", { 70,20 }))
+		if (ECGui::ButtonBool("Clear" ICON_MDI_NUKE, { 70,20 }))
 		{
 			if (BuffIsEmpty(searchItemBuffer))
 			{
@@ -608,7 +608,7 @@ namespace Eclipse
 
 	void AssetBrowserWindow::SearchFolders()
 	{
-		if (ECGui::DrawInputTextHintWidget("", "Search...", searchFolderBuffer, 128))
+		if (ECGui::DrawInputTextHintWidget("", "Search..." ICON_MDI_MAGNIFY, searchFolderBuffer, 128))
 		{
 			if (BuffIsEmpty(searchFolderBuffer))
 			{

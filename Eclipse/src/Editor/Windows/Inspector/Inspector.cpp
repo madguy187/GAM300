@@ -20,7 +20,7 @@ namespace Eclipse
     void InspectorWindow::Init()
     {
         Type = EditorWindowType::EWT_INSPECTOR;
-        WindowName = "Inspector";
+        WindowName = "Inspector " ICON_MDI_MAGNIFY_SCAN;
     }
 
     void InspectorWindow::Unload()
@@ -85,12 +85,18 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
+                ECGui::InsertHorizontalLineSeperator();
                 static char entNameInput[256];
                 auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
 
                 ECGui::DrawTextWidget<std::string>("Entity Tag", lexical_cast_toStr<EntityType>(entCom.Tag));
+                ECGui::SetColumns(2, nullptr, true);
+                ECGui::InsertHorizontalLineSeperator();
+                ECGui::SetColumnOffset(1, 140);
+
                 ECGui::DrawTextWidget<const char*>("Edit Name:", EMPTY_STRING);
-                ECGui::InsertSameLine();
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 if (ECGui::DrawInputTextHintWidget("InputEntityName", "Enter Entity Name", entNameInput,
                     256, true, ImGuiInputTextFlags_EnterReturnsTrue))
                 {
@@ -98,6 +104,8 @@ namespace Eclipse
                     entCom.Name = entNameInput;
                     CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<std::string>{ oldName, entCom.Name });
                 }
+                ECGui::SetColumns(1, nullptr, true);
+                ECGui::InsertHorizontalLineSeperator();
             }
         }
 
@@ -112,7 +120,7 @@ namespace Eclipse
             {
                 ECGui::SetColumns(2,nullptr,true);
                 ECGui::InsertHorizontalLineSeperator();
-                ECGui::SetColumnOffset(1, 150);
+                  ECGui::SetColumnOffset(1, 140);
 
                 auto& transCom = engine->world.GetComponent<TransformComponent>(ID);
                 ECGui::DrawTextWidget<const char*>("Position", EMPTY_STRING);
@@ -150,7 +158,7 @@ namespace Eclipse
             {
                 ECGui::SetColumns(2,nullptr,true);
                 ECGui::InsertHorizontalLineSeperator();
-                ECGui::SetColumnOffset(1, 150);
+                ECGui::SetColumnOffset(1, 140);
 
                 auto& _PointLight = engine->world.GetComponent<PointLightComponent>(ID);
 
@@ -242,7 +250,7 @@ namespace Eclipse
             {
                 ECGui::SetColumns(2,nullptr,true);
                 ECGui::InsertHorizontalLineSeperator();
-                ECGui::SetColumnOffset(1, 150);
+                  ECGui::SetColumnOffset(1, 140);
 
                 auto& _SpotLight = engine->world.GetComponent<SpotLightComponent>(ID);
 
@@ -347,7 +355,7 @@ namespace Eclipse
             {
                 ECGui::SetColumns(2,nullptr,true);
                 ECGui::InsertHorizontalLineSeperator();
-                ECGui::SetColumnOffset(1, 150);
+                  ECGui::SetColumnOffset(1, 140);
 
                 auto& _DLight = engine->world.GetComponent<DirectionalLightComponent>(ID);
                 ECGui::DrawTextWidget<const char*>("Light Colour", EMPTY_STRING);
@@ -386,7 +394,7 @@ namespace Eclipse
             {
                 ECGui::SetColumns(2,nullptr,true);
                 ECGui::InsertHorizontalLineSeperator();
-                ECGui::SetColumnOffset(1, 150);
+                  ECGui::SetColumnOffset(1, 140);
 
                 auto& _RigidB = engine->world.GetComponent<RigidBodyComponent>(ID);
 
@@ -421,7 +429,7 @@ namespace Eclipse
                 auto& _Camera = engine->world.GetComponent<CameraComponent>(ID);
                 ECGui::SetColumns(2,nullptr,true);
                 ECGui::InsertHorizontalLineSeperator();
-                ECGui::SetColumnOffset(1, 150);
+                  ECGui::SetColumnOffset(1, 140);
 
                 ECGui::DrawTextWidget<const char*>("Camera Speed", EMPTY_STRING);
                 ECGui::NextColumn();
@@ -443,7 +451,7 @@ namespace Eclipse
             {
                 ECGui::SetColumns(2,nullptr,true);
                 ECGui::InsertHorizontalLineSeperator();
-                ECGui::SetColumnOffset(1, 150);
+                  ECGui::SetColumnOffset(1, 140);
                 auto& _Texture = engine->world.GetComponent<MaterialComponent>(ID);
 
                 ECGui::DrawTextWidget<const char*>("hasTexture", EMPTY_STRING);
@@ -518,7 +526,7 @@ namespace Eclipse
             {
                 ECGui::SetColumns(2,nullptr,true);
                 ECGui::InsertHorizontalLineSeperator();
-                ECGui::SetColumnOffset(1, 150);
+                  ECGui::SetColumnOffset(1, 140);
 
                 auto& _Material = engine->world.GetComponent<MaterialComponent>(ID);
 
@@ -581,7 +589,7 @@ namespace Eclipse
             {
                 ECGui::SetColumns(2, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
-                ECGui::SetColumnOffset(1, 150);
+                  ECGui::SetColumnOffset(1, 140);
 
                 auto& _Mesh = engine->world.GetComponent<MeshComponent>(ID);
 
@@ -618,7 +626,7 @@ namespace Eclipse
                 if (filter.PassFilter(nameString.c_str()) && ECGui::CreateCollapsingHeader(nameString.c_str()))
                 {
                     ECGui::SetColumns(2, nullptr, true);
-                    ECGui::SetColumnOffset(1, 150);
+                      ECGui::SetColumnOffset(1, 140);
                     ECGui::DrawTextWidget<const char*>("Mesh ", EMPTY_STRING);
                     ECGui::NextColumn();
                     ECGui::PushItemWidth(ECGui::GetWindowSize().x);
@@ -640,7 +648,7 @@ namespace Eclipse
             {
                 ECGui::SetColumns(2, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
-                ECGui::SetColumnOffset(1, 150);
+                  ECGui::SetColumnOffset(1, 140);
 
                 std::vector<std::string> _ModelInfoVector = { "MT_UNASSIGNED","MT_HUMAN","MT_ANIMAL","MT_HOUSE","MT_ENVIRONMENT" };
 

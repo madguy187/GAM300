@@ -31,19 +31,20 @@ namespace Eclipse
 
 	void EditorManager::InitGUIWindows()
 	{
-		AddWindow<eGameViewWindow>("Game Viewport");
-		AddWindow<SceneWindow>("Scene Viewport");
-		AddWindow<InspectorWindow>("Inspector");
-		AddWindow<HierarchyWindow>("Hierarchy");
-		AddWindow<ProfilerWindow>("Profiler");
-		AddWindow<AssetBrowserWindow>("Asset Browser");
-		AddWindow<LoggerWindow>("Log");
-		AddWindow<DebugWindow>("Settings");
-		AddWindow<TopSwitchViewWindow>("Top Viewport");
-		AddWindow<BottomSwitchViewWindow>("Bottom Viewport");
-		AddWindow<LeftSwitchViewWindow>("Left Viewport");
-		AddWindow<RightSwitchViewWindow>("Right Viewport");
-		AddWindow<HeaderWindow>("Header");
+		AddWindow<eGameViewWindow>("Game Viewport " ICON_MDI_MONITOR);
+		AddWindow<SceneWindow>("Scene Viewport " ICON_MDI_MONITOR);
+		AddWindow<TopSwitchViewWindow>("Top Viewport " ICON_MDI_MONITOR);
+		AddWindow<BottomSwitchViewWindow>("Bottom Viewport " ICON_MDI_MONITOR);
+		AddWindow<LeftSwitchViewWindow>("Left Viewport " ICON_MDI_MONITOR);
+		AddWindow<RightSwitchViewWindow>("Right Viewport " ICON_MDI_MONITOR);
+
+		AddWindow<InspectorWindow>("Inspector " ICON_MDI_MAGNIFY_SCAN);
+		AddWindow<HierarchyWindow>("Hierarchy " ICON_MDI_FILE_TREE);
+		AddWindow<ProfilerWindow>("Profiler " ICON_MDI_FILE_PERCENT);
+		AddWindow<AssetBrowserWindow>("Asset Browser " ICON_MDI_FILE_IMAGE);
+		AddWindow<LoggerWindow>("Log " ICON_MDI_POST);
+		AddWindow<DebugWindow>("Settings " ICON_MDI_ACCOUNT_COG);
+		AddWindow<HeaderWindow>("Header " ICON_MDI_PAGE_LAYOUT_HEADER);
 
 		for (const auto& window : Windows_)
 		{
@@ -53,23 +54,23 @@ namespace Eclipse
 
 	void EditorManager::InitMenu()
 	{
-		MenuComponent file{ "File", EditorMenuType::FILE };
-		file.AddItems("New");
-		file.AddItems("Open");
-		file.AddItems("Save");
-		file.AddItems("Save As...");
-		file.AddItems("Exit");
+		MenuComponent file{ "File" ICON_MDI_FILE, EditorMenuType::FILE };
+		file.AddItems("New " ICON_MDI_FOLDER_PLUS);
+		file.AddItems("Open " ICON_MDI_FOLDER_OPEN);
+		file.AddItems("Save " ICON_MDI_CONTENT_SAVE);
+		file.AddItems("Save As... " ICON_MDI_CONTENT_SAVE_EDIT);
+		file.AddItems("Exit " ICON_MDI_EXIT_TO_APP);
 		MenuBar_.AddMenuComponents(file);
 
-		MenuComponent edit{ "Edit", EditorMenuType::EDIT };
-		edit.AddItems("Undo");
-		edit.AddItems("Redo");
+		MenuComponent edit{ "Edit" ICON_MDI_PENCIL, EditorMenuType::EDIT };
+		edit.AddItems("Undo " ICON_MDI_UNDO_VARIANT);
+		edit.AddItems("Redo " ICON_MDI_REDO_VARIANT);
 		MenuBar_.AddMenuComponents(edit);
 
-		MenuComponent window{ "Windows", EditorMenuType::WINDOWS };
+		MenuComponent window{ "Windows" ICON_MDI_MONITOR, EditorMenuType::WINDOWS };
 		MenuBar_.AddMenuComponents(window);
 
-		MenuComponent style{ "Style", EditorMenuType::STYLE };
+		MenuComponent style{ "Style" ICON_MDI_ACCOUNT, EditorMenuType::STYLE };
 		style.AddItems("Oppa GuanHin Style");
 		style.AddItems("Oppa Nico Style");
 		style.AddItems("Oppa Fikrul Style");
@@ -82,7 +83,7 @@ namespace Eclipse
 		style.AddItems("Oppa JianHerng Style");
 		MenuBar_.AddMenuComponents(style);
 
-		MenuComponent aboutus{ "About Eclipse", EditorMenuType::ABOUTUS };
+		MenuComponent aboutus{ "About Eclipse" ICON_MDI_CROSSHAIRS_QUESTION, EditorMenuType::ABOUTUS };
 		MenuBar_.AddMenuComponents(aboutus);
 	}
 
@@ -121,8 +122,11 @@ namespace Eclipse
 		//static const ImWchar icons_ranges[] = { ICON_MIN_MDI, ICON_MAX_MDI, 0 };
 		static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
 		ImFontConfig icons_config; icons_config.MergeMode = true; icons_config.PixelSnapH = true;
-		//io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/materialdesignicons-webfont.ttf", 12.0f, &icons_config, icons_ranges);
 		io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/fontawesome-webfont.ttf", 14.0f, &icons_config, icons_ranges);
+		//"src/ImGui/Vendor/fontawesome-webfont.ttf"
+		static const ImWchar icons_ranges2[] = { ICON_MIN_MDI, ICON_MAX_MDI, 0 };
+		ImFontConfig icons_config2; icons_config2.MergeMode = true; icons_config2.PixelSnapH = true;  
+		io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/materialdesignicons-webfont.ttf", 16.0f, &icons_config2, icons_ranges2);
 	}
 
 	Entity EditorManager::CreateDefaultEntity(EntityType type)
