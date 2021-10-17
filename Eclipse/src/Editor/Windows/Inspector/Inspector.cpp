@@ -778,7 +778,12 @@ namespace Eclipse
                         }
                     }
 
-                    ECGui::NextColumn();
+                    ECGui::DrawInputTextHintWidget("AudioPath", "Drag Audio files here",
+                        const_cast<char*>(audio.AudioPath.c_str()), 256,
+                        true, ImGuiInputTextFlags_ReadOnly);
+
+                    engine->editorManager->DragAndDropInst_.StringPayloadTarget("wav", audio.AudioPath,
+                        "Wav File inserted.");
 
                     if (ECGui::ButtonBool("Clear Audio", { ImGui::GetColumnWidth(),25 }))
                     {
