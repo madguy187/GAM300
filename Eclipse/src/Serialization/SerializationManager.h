@@ -657,5 +657,28 @@ namespace Eclipse
 
 			return true;
 		}
+
+		template <typename... T>
+		void SerializeListedComponent(World& w, const Entity& ent, TypeList<T...>)
+		{
+			((SerializeComponent<T>(w, ent)), ...);
+		}
+
+		bool DeserializeListedComponent(World&, const Entity&)
+		{
+			return true;
+		}
+
+		template <typename T, typename... Args>
+		bool DeserializeListedComponent(World& w, const Entity& ent, TypeList<T, Args...>)
+		{
+			bool result = false;
+			if (DeserializeComponent<T>(w, ent))
+			{
+				TypeList<Args...> remaining;
+				result = DeserializeListedComponent(w, ent, remaining);
+			}
+			return result;
+		}
 	};
 }

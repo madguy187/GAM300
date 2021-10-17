@@ -60,7 +60,7 @@ namespace Eclipse
 
 	void SerializationManager::SerializeAllComponents(World& w, const Entity& ent)
 	{
-		SerializeComponent<AABBComponent>(w, ent);
+		/*SerializeComponent<AABBComponent>(w, ent);
 
 		SerializeComponent<AIComponent>(w, ent);
 		
@@ -92,7 +92,8 @@ namespace Eclipse
 
 		SerializeComponent<SpotLightComponent>(w, ent);
 
-		SerializeComponent<TransformComponent>(w, ent);
+		SerializeComponent<TransformComponent>(w, ent);*/
+		SerializeListedComponent(w, ent, all_component_list);
 	}
 
 	bool SerializationManager::DeserializeAllComponents(World& w, const Entity& ent, bool PrefabUse)

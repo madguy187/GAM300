@@ -6,9 +6,6 @@
             <Min x="-112.105" y="-5.37088" z="-20.1126" />
             <Max x="-12.105" y="-0.370878" z="20.1126" />
         </AABBComponent>
-        <CollisionComponent>
-            <shape Shape="Px_CUBE" Hx="50" Hy="2.5" Hz="20.1126" Radius="1" Hheight="1" />
-        </CollisionComponent>
         <EntityComponent>
             <Tag value="Cube" />
             <Name value="Cube" />
@@ -49,14 +46,17 @@
             <ENV_MAP value="false" />
             <ENV_TYPE value="MT_REFLECT" />
         </MeshComponent>
-        <PrefabComponent>
-            <IsChild value="false" />
-            <PrefabID value="881335463792" />
-        </PrefabComponent>
+        <CollisionComponent>
+            <shape Shape="Px_CUBE" Hx="50" Hy="2.5" Hz="20.1126" Radius="1" Hheight="1" />
+        </CollisionComponent>
         <TransformComponent>
             <position x="0" y="-2.384" z="0" />
             <rotation x="314.526" y="0" z="0" />
             <scale x="100" y="5" z="40.2251" />
         </TransformComponent>
+        <PrefabComponent>
+            <IsChild value="false" />
+            <PrefabID value="881335463792" />
+        </PrefabComponent>
     </Entity_0>
 </Entities>
