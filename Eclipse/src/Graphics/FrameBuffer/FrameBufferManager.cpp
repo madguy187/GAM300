@@ -10,12 +10,17 @@ namespace Eclipse
 
     void FrameBufferManager::CreateFrameBuffers()
     {
+        // Basic FrameBuffers
         CreateFBO(1270, 593, FrameBufferMode::FBM_GAME);
         CreateFBO(1270, 593, FrameBufferMode::FBM_SCENE);
         CreateFBO(1270, 593, FrameBufferMode::FBM_TOP);
         CreateFBO(1270, 593, FrameBufferMode::FBM_BOTTOM);
         CreateFBO(1270, 593, FrameBufferMode::FBM_LEFT);
         CreateFBO(1270, 593, FrameBufferMode::FBM_RIGHT);
+
+        // Editor Stuffs
+        CreateFBO(1270, 593, FrameBufferMode::FBM_MATERIALEDITOR);
+        CreateFBO(1270, 593, FrameBufferMode::FBM_MESHEDITOR);
     }
 
     void FrameBufferManager::CreateFBO(unsigned int width_, unsigned int height_, FrameBufferMode in)
@@ -26,18 +31,22 @@ namespace Eclipse
             std::exit(EXIT_FAILURE);
         }
 
-        FrameBufferContainer.insert({in, std::make_shared<FrameBuffer>(width_, height_, in)});
+        FrameBufferContainer.insert({ in, std::make_shared<FrameBuffer>(width_, height_, in) });
         //ENGINE_CORE_INFO("FrameBuffer Ready For Use");
     }
 
     void FrameBufferManager::FrameBufferDraw()
     {
-        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_GAME)), "GameView");
-        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_SCENE)), "SceneView");
-        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_TOP)), "SceneView_Top");
-        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_BOTTOM)), "SceneView_Bottom");
-        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_LEFT)), "SceneView_Left");
-        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_RIGHT)), "SceneView_Right");
+        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_GAME)));
+        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_SCENE)));
+        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_TOP)));
+        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_BOTTOM)));
+        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_LEFT)));
+        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_RIGHT)));
+
+        //Editor Stuffs
+        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_MATERIALEDITOR)));
+        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_MESHEDITOR)));
     }
 
     FrameBuffer* FrameBufferManager::GetFramebuffer(FrameBufferMode mode)
@@ -102,7 +111,7 @@ namespace Eclipse
         return FrameBufferContainer[Mode]->AspectRatio;
     }
 
-    void FrameBufferManager::UpdateAspectRatio(FrameBufferMode Mode , ECVec2 CurrentViewPortSize)
+    void FrameBufferManager::UpdateAspectRatio(FrameBufferMode Mode, ECVec2 CurrentViewPortSize)
     {
         FrameBufferContainer[Mode]->AspectRatio = CurrentViewPortSize.getX() / CurrentViewPortSize.getY();
     }

@@ -11,6 +11,7 @@ namespace Eclipse
 
     void BaseSwitchViewWindow::Init()
     {
+        FBO_Mode = FrameBufferMode::FBM_SCENE;
         mCamType = CameraComponent::CameraType::TopView_Camera;
         mViewportSize = glm::vec2{ 0.f, 0.f };
         Type = EditorWindowType::EWT_SWITCHVIEW_RIGHT;
@@ -32,9 +33,9 @@ namespace Eclipse
         if (mViewportSize.getX() != viewportPanelSize.x ||
             mViewportSize.getY() != viewportPanelSize.y)
         {
-            m_frameBuffer->Resize(static_cast<unsigned>(viewportPanelSize.x), static_cast<unsigned>(viewportPanelSize.y));
+            m_frameBuffer->Resize(static_cast<unsigned>(viewportPanelSize.x), static_cast<unsigned>(viewportPanelSize.y), FBO_Mode);
             mViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
-            engine->gFrameBufferManager->UpdateAspectRatio(FrameBufferMode::FBM_GAME, mViewportSize);
+            engine->gFrameBufferManager->UpdateAspectRatio(FBO_Mode, mViewportSize);
         }
 
         ChildSettings settings;

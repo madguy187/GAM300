@@ -186,6 +186,8 @@ enum class FrameBufferMode
     FBM_BOTTOM = 4,
     FBM_LEFT = 5,
     FBM_RIGHT = 6,
+    FBM_MATERIALEDITOR = 7,
+    FBM_MESHEDITOR = 8,
     MAXCOUNT
 };
 

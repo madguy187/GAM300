@@ -65,16 +65,14 @@ namespace Eclipse
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     }
 
-    void Eclipse::FrameBuffer::Resize(unsigned width, unsigned height)
+    void Eclipse::FrameBuffer::Resize(unsigned width, unsigned height, FrameBufferMode Mode)
     {
-        engine->gFrameBufferManager->CreateFBO(width, height, FrameBufferMode::FBM_SCENE);
+        engine->gFrameBufferManager->CreateFBO(width, height, Mode);
         //EDITOR_LOG_INFO("Resize Successful");
     }
 
-    void FrameBuffer::ShowWindow(FrameBuffer g, const char* input)
+    void FrameBuffer::ShowWindow(FrameBuffer g)
     {
-        (void)(input);
-
         if (&g == nullptr)
         {
             ENGINE_LOG_ASSERT(false, "FrameBuffer is Nullptr");
@@ -262,6 +260,13 @@ namespace Eclipse
 
         case FrameBufferMode::FBM_TOP:
             os << "SWITCHINGVIEWS_TOP FrameBuffer";
+            break;
+        case FrameBufferMode::FBM_MATERIALEDITOR:
+            os << "Material_EDITOR FrameBuffer";
+            break;
+
+        case FrameBufferMode::FBM_MESHEDITOR:
+            os << "MESH_EDITOR FrameBuffer";
             break;
         }
 

@@ -12,6 +12,8 @@ namespace Eclipse
       "SWITCHINGVIEWS_BOTTOM",
       "SWITCHINGVIEWS_LEFT",
       "SWITCHINGVIEWS_RIGHT",
+      "MATERIALEDITORVIEW",
+      "MESHEDITORVIEW"
       "MAXCOUNT"
     };
 
@@ -45,7 +47,7 @@ namespace Eclipse
     public:
         FrameBuffer() {};
         FrameBuffer(const glm::uvec2& p_size, FrameBufferMode in);
-        FrameBuffer(unsigned int p_width, unsigned int p_height, FrameBufferMode in) ;
+        FrameBuffer(unsigned int p_width, unsigned int p_height, FrameBufferMode in);
         ~FrameBuffer();
         void SetRenderMode(RenderMode _renderMode);
         RenderMode GetRenderMode();
@@ -58,8 +60,8 @@ namespace Eclipse
         void Bind() const;
         void Unbind() const;
         void Clear() const;
-        void Resize(unsigned width, unsigned height);
-        static void ShowWindow(FrameBuffer g, const char* input);
+        void Resize(unsigned width, unsigned height, FrameBufferMode Mode);
+        static void ShowWindow(FrameBuffer g);
         void CreateFrameBuffer(unsigned int p_width, unsigned int p_height);
         void FrameBuffer::DeleteBuffers();
         void FrameBuffer::SetViewPort() const;

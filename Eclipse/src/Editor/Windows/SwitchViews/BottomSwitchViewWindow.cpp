@@ -10,6 +10,7 @@ namespace Eclipse
 
     void BottomSwitchViewWindow::Init()
     {
+        FBO_Mode = FrameBufferMode::FBM_BOTTOM;
         mCamType = CameraComponent::CameraType::BottomView_Camera;
         mViewportSize = glm::vec2{ 0.0f, 0.0f };
         Type = EditorWindowType::EWT_SWITCHVIEW_BOTTOM;

@@ -21,7 +21,7 @@ namespace Eclipse
         //    engine->Test.CheckUniform(entityID);
         //}
 
-        engine->gPBRManager->PBRScene();
+        //engine->gPBRManager->PBRScene();
 
         engine->MaterialManager.StencilBufferClear();
 

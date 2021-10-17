@@ -119,7 +119,7 @@ namespace Eclipse
 
         engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
-        auto shdrpgm = Graphics::shaderpgms["PBRShader"];
+        auto shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
         shdrpgm.Use();
 
         if (engine->GraphicsManager.EnableEnvironmentMapForAll && engine->GraphicsManager.DrawSky)
@@ -147,7 +147,7 @@ namespace Eclipse
         }
 
         CheckUniformLoc(shdrpgm, _camera, ID, box);
-        engine->gPBRManager->CheckUniform(ID);
+        //engine->gPBRManager->CheckUniform(ID);
 
         if (_renderMode == RenderMode::Fill_Mode)
         {
