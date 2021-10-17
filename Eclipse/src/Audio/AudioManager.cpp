@@ -25,8 +25,8 @@ namespace Eclipse
 		FmodAPI->SFX_Vol = 0.5f;
 		FmodAPI->m_Current_Vol = 0.5f;
 
-		/*LoadBank("Assets/Audio/Master Bank.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);
-		LoadBank("Assets/Audio/Master Bank.strings.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);*/
+		LoadBank("BankFiles/Master Bank.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);
+		LoadBank("BankFiles/Master Bank.strings.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);
 
 		ENGINE_LOG_ASSERT(FmodAPI.get(), "Failed to instantiate Audio Manager");
 	}
