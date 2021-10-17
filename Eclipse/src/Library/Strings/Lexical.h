@@ -17,18 +17,6 @@ namespace Eclipse
 		return destination;
 	}
 
-	/*template <>
-	inline const int* lexical_cast(const std::string& source)
-	{
-		std::stringstream stream;
-		stream << source;
-
-		int destination;
-		stream >> destination;
-
-		return &destination;
-	}*/
-
 	template <>
 	inline const std::string lexical_cast(const bool& source)
 	{
@@ -191,5 +179,13 @@ namespace Eclipse
 		"Px_SPHERE",
 		"Px_CUBE",
 		"Px_CYLINDER"
+	};
+
+	template<> char const* enumStrings<AudioType>::data[] =
+	{
+		"SFX",
+		"BGM",
+		"EVENTS",
+		"NULL",
 	};
 }

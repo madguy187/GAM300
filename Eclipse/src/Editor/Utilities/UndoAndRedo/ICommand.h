@@ -24,3 +24,4 @@ namespace Eclipse
 #include "ECVec2DeltaCommand.h"
 #include "ECVec4DeltaCommand.h"
 #include "PrimitiveDeltaCommand.h"
+#include "EntityDeleteDeltaCommand.h"

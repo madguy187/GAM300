@@ -15,17 +15,17 @@ namespace Eclipse
 			engine->audioManager.OldBGMVolumeToSet(engine->audioManager.GetBGMVolume());
 		}
 
-		/*if (engine->IsScenePlaying())
+		for (auto const& entity : mEntities)
 		{
+			auto& audioCom = engine->world.GetComponent<AudioComponent>(entity);
+			auto& transCom = engine->world.GetComponent<TransformComponent>(entity);
 
+			if (engine->audioManager.IsPlaying(audioCom.ChannelID) && audioCom.Is3D)
+				engine->audioManager.SetChannel3DPosition(audioCom.ChannelID, transCom.position);
 		}
-		else
-		{
-			engine->audioManager.Terminate();
-		}*/
 
+		engine->audioManager.Set3DListenerAttributes(engine->gCamera.GetEditorCameraID());
 		engine->audioManager.UpdateSystems();
-
 
 		engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());
 		engine->Timer.UpdateTimeContainer(engine->Timer.tracker);

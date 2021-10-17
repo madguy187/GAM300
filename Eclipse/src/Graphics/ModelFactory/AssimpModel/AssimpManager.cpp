@@ -35,7 +35,7 @@ namespace Eclipse
         Prefabs.clear();
     }
 
-    void AssimpModelManager::CreateModel(unsigned int ID, const std::string& ModelName)
+    Entity AssimpModelManager::CreateModel(unsigned int ID, const std::string& ModelName)
     {
         (void)ID;
 
@@ -46,10 +46,52 @@ namespace Eclipse
                 auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_MODEL);
                 // Cannot Find this as a parent
                 std::string Name = ModelName;
+
                 engine->world.AddComponent(MeshID, MeshComponent{});
                 engine->world.AddComponent(MeshID, ModelComponent{});
                 engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
                 SetSingleMesh(MeshID, Name);
+
+                return MeshID;
+            }
+            else
+            {
+                if (Prefabs[ModelName].size() == 0)
+                {
+                    ENGINE_LOG_ASSERT(false, "Cannot Find Model");
+                    return MAX_ENTITY;
+                }
+
+                // Is a prefab since its a parent
+                std::string NameOfFolder = ModelName;
+                Entity MeshID = 0;
+
+                for (int i = 0; i < Prefabs[NameOfFolder].size(); i++)
+                {
+                    auto& name = Prefabs[NameOfFolder][i];
+                    MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_MODEL);
+
+                    engine->world.AddComponent(MeshID, MeshComponent{});
+                    engine->world.AddComponent(MeshID, ModelComponent{});
+                    engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
+                    SetSingleMesh(MeshID, name);
+                }
+
+                return MeshID;
+            }
+        }
+
+        return MAX_ENTITY;
+    }
+
+    void AssimpModelManager::RegisterExistingModel(Entity ID, const std::string& ModelName)
+    {
+        if (engine->gEngineCompiler->AreAllCompiled())
+        {
+            if (Prefabs.find(ModelName) == Prefabs.end())
+            {
+                std::string Name = ModelName;
+                SetSingleMesh(ID, Name);
             }
             else
             {
@@ -64,12 +106,7 @@ namespace Eclipse
                 for (int i = 0; i < Prefabs[NameOfFolder].size(); i++)
                 {
                     auto& name = Prefabs[NameOfFolder][i];
-                    auto MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_MODEL);
-
-                    engine->world.AddComponent(MeshID, MeshComponent{});
-                    engine->world.AddComponent(MeshID, ModelComponent{});
-                    engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
-                    SetSingleMesh(MeshID, name);
+                    SetSingleMesh(ID, name);
                 }
             }
         }

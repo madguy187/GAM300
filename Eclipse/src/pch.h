@@ -97,3 +97,6 @@
 
 // GlCall Error
 #include "Graphics/RendererAPI/Renderer.h"
+
+// Random Number Generator
+#include "Library/Random/Random.h"

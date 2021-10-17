@@ -212,6 +212,9 @@ namespace Eclipse
     }
     void HierarchyWindow::UpdateEntityTracker(Entity ID)
     {
+        if (engine->world.CheckComponent<MaterialComponent>(ID))
+            engine->MaterialManager.HighlightClick(ID);
+
         if (ID != CurrEnt_.index)
         {
             auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
@@ -222,6 +225,9 @@ namespace Eclipse
                 prevEntCom.IsActive = false;
                 PrevEnt_.name = CurrEnt_.name;
                 PrevEnt_.index = CurrEnt_.index;
+
+                if (engine->world.CheckComponent<MaterialComponent>(CurrEnt_.index))
+                    engine->MaterialManager.UnHighlight(CurrEnt_.index);
             }
 
             CurrEnt_.name = my_strcat(entCom.Name, " ", ID);
@@ -370,7 +376,10 @@ namespace Eclipse
             bool selected = false;
 
             if (ECGui::CreateSelectableButton(engine->AssimpManager.GetMeshNames()[i].c_str(), &selected))
-                engine->AssimpManager.CreateModel(0, engine->AssimpManager.GetMeshNames()[i]);
+            {
+                Entity ID = engine->AssimpManager.CreateModel(0, engine->AssimpManager.GetMeshNames()[i]);
+                UpdateEntityTracker(ID);
+            }
         }
     }
 }

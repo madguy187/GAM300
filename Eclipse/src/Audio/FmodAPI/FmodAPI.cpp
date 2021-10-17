@@ -32,7 +32,7 @@ namespace Eclipse
 		ErrorCheck(FMOD::Studio::System::create(&m_StudioSystem, 0x00011003));
 		ErrorCheck(m_StudioSystem->initialize(64, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, nullptr));
 		ErrorCheck(FMOD::System_Create(&m_System));
-		ErrorCheck(m_System->init(512, FMOD_INIT_NORMAL, nullptr));
+		ErrorCheck(m_System->init(512, FMOD_INIT_NORMAL | FMOD_INIT_3D_RIGHTHANDED, nullptr));
 	}
 
 	FmodAPI_Impl::~FmodAPI_Impl()

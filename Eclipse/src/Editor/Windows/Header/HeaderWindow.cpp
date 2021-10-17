@@ -107,10 +107,10 @@ namespace Eclipse
 		ECGui::NewLine();
 		ECGui::InsertSameLine(ECGui::GetWindowSize().x / 3.0f);
 
-		if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_W)))
-		{
-			HeaderWindow::Translate();
-		}
+		//if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_W)))
+		//{
+		//	HeaderWindow::Translate();
+		//}
 		if (ECGui::ButtonBool(ICON_FA_ARROWS_ALT, ImVec2{ 100,20 }))
 		{
 
@@ -127,10 +127,10 @@ namespace Eclipse
 		}
 
 		ECGui::InsertSameLine();
-		if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_E)))
+		/*if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_E)))
 		{
 			HeaderWindow::Rotate();
-		}
+		}*/
 		if (ECGui::ButtonBool(ICON_FA_SPINNER ICON_FA_REPLY, ImVec2{ 100,20 }))
 		{
 
@@ -148,10 +148,10 @@ namespace Eclipse
 
 		ECGui::InsertSameLine();
 
-		if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_R)))
+		/*if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_R)))
 		{
 			HeaderWindow::Scale();
-		}
+		}*/
 
 		if (ECGui::ButtonBool(ICON_FA_EXPAND, ImVec2{ 100,20 }))
 		{

@@ -772,17 +772,7 @@ namespace Eclipse
                         audio.AudioPath.reserve(256);
                     }
 
-                    ECGui::DrawInputTextHintWidget("AudioPath", "Drag Audio files here",
-                        const_cast<char*>(audio.AudioPath.c_str()), 256,
-                        true, ImGuiInputTextFlags_ReadOnly);
-
-                    engine->editorManager->DragAndDropInst_.StringPayloadTarget("wav", audio.AudioPath,
-                        "Wav File inserted.");
-
-                    ECGui::SetColumns(2, nullptr, true);
-                    ECGui::InsertHorizontalLineSeperator();
-
-                    if (ECGui::ButtonBool("Play", { ImGui::GetColumnWidth(),25 }))
+                    if (ECGui::ButtonBool("Play Audio"))
                     {
                         if (!audio.AudioPath.empty())
                         {
@@ -804,25 +794,21 @@ namespace Eclipse
                     }
                     ECGui::InsertHorizontalLineSeperator();
 
-                    ECGui::NextColumn();
-                    ECGui::DrawTextWidget<const char*>("Volume: ", "");
+                    ECGui::CheckBoxBool("IsMuted", &audio.IsMuted, false);
+
+                    ECGui::DrawTextWidget<const char*>("Volume: ", EMPTY_STRING);
                     ECGui::NextColumn();
                     ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                     ECGui::DrawSliderFloatWidget("Volume", &audio.Volume, true, 0.f, 1.0f);
                     ECGui::NextColumn();
                     // Pitch value, 0.5 = half pitch, 2.0 = double pitch, etc default = 1.0.
-                    ECGui::DrawTextWidget<const char*>("Pitch: ", "");
-                    ECGui::NextColumn();
-                    ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                    ECGui::DrawTextWidget<const char*>("Pitch: ", EMPTY_STRING);
                     ECGui::DrawSliderFloatWidget("Pitch", &audio.Pitch, true, 0.f, 2.0f);
 
                     // Relative speed of the song from 0.01 to 100.0. 0.5 = half speed, 
                     // 2.0 = double speed. Default = 1.0.
-                    ECGui::NextColumn();
-                    ECGui::DrawTextWidget<const char*>("Speed: ", "");
-                    ECGui::NextColumn();
-                    ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                    ECGui::DrawSliderFloatWidget("Speed", &audio.Speed, true, 0.f, 100.0f);
+                    ECGui::DrawTextWidget<const char*>("Speed: ", EMPTY_STRING);
+                    ECGui::DrawSliderFloatWidget("Speed", &audio.Speed, true, 0.f, 5.0f);
                     ECGui::NextColumn();
                     ECGui::SetColumns(1, nullptr, true);
                     ECGui::InsertHorizontalLineSeperator();
@@ -836,43 +822,41 @@ namespace Eclipse
                         // Inside cone angle, in degrees, from 0 to 360. 
                         // This is the angle within which the sound is at its normal volume. 
                         // Must not be greater than outsideconeangle. Default = 360.
-                        ECGui::DrawTextWidget<const char*>("Inner Cone Angle: ", "");
-                        ECGui::NextColumn();
-                        ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                        ECGui::DrawTextWidget<const char*>("Inner Cone Angle: ", EMPTY_STRING);
                         ECGui::DrawSliderFloatWidget("InnerConeAngle", &audio.InnerConeAngle, true, 0.f, 360.0f);
                         ECGui::NextColumn();
                         // Outside cone angle, in degrees, from 0 to 360. 
                         // This is the angle outside of which the sound is at its outside volume.
                         // Must not be less than insideconeangle. Default = 360.
-                        ECGui::DrawTextWidget<const char*>("Outer Cone Angle: ", "");
-                        ECGui::NextColumn();
-                        ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                        ECGui::DrawTextWidget<const char*>("Outer Cone Angle: ", EMPTY_STRING);
                         ECGui::DrawSliderFloatWidget("OuterConeAngle", &audio.OuterConeAngle, true, 0.f, 360.f);
                         ECGui::NextColumn();
                         // The volume of the sound outside the outside angle of the sound projection cone.
-                        ECGui::DrawTextWidget<const char*>("Outer Volume: ", "");
-                        ECGui::NextColumn();
-                        ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                        ECGui::DrawTextWidget<const char*>("Outer Volume: ", EMPTY_STRING);
                         ECGui::DrawSliderFloatWidget("OuterVolume", &audio.OuterVolume, true, 0.f, 1.f);
                         ECGui::SetColumns(1, nullptr, true);
                         ECGui::InsertHorizontalLineSeperator();
 
                         // Increase the mindistance of a sound to make it 'louder' in a 3D world, 
                         // and decrease it to make it 'quieter' in a 3D world.
-                        // Maxdistance is effectively obsolete unless you need the sound to stop 
+                        // Max distance is effectively obsolete unless you need the sound to stop 
                         // fading out at a certain point. 
                         // Do not adjust this from the default if you dont need to.
                         // Summary:
                         // Min -> min dist where it will start growing louder when getting closer
-                        // Max -> max dist where it will stop 
-                        ECGui::DrawTextWidget<const char*>("Sound Attenuation: ", "");
-                        ECGui::SetColumns(2, nullptr, true);
+                        // Max -> max dist where it will stop fading
+                        ECGui::DrawTextWidget<const char*>("Sound Attenuation: ", EMPTY_STRING);
+                        ECGui::DrawSliderFloatWidget("Min Distance", &audio.Min, false, 0.f, 500.f);
+                        ECGui::DrawSliderFloatWidget("Max Distance", &audio.Max, false, 0.f, 1000.f);
+
                         ECGui::InsertHorizontalLineSeperator();
-                        ECGui::PushItemWidth(ECGui::GetWindowSize().x/1.2);
-                        ECGui::DrawSliderFloatWidget("Min", &audio.Min, false, 0.f, 10000.f);
-                        ECGui::NextColumn();
-                        ECGui::PushItemWidth(ECGui::GetWindowSize().x / 1.2);
-                        ECGui::DrawSliderFloatWidget("Max", &audio.Max, false, 0.f, 10000.f);
+
+                        ECGui::DrawTextWidget<const char*>("Special Settings: ", EMPTY_STRING);
+                        ECGui::CheckBoxBool("Radio Effect", &audio.HasRadioEffect, false);
+                        ECGui::CheckBoxBool("Echo Effect", &audio.HasEchoEffect, false);
+
+                        if (audio.HasEchoEffect)
+                            ECGui::DrawSliderFloatWidget("Delay Time", &audio.EchoDelayTime, false, 10.f, 1000.f);
                         ECGui::NextColumn();
                         ECGui::SetColumns(1, nullptr, true);
                         ECGui::InsertHorizontalLineSeperator();
@@ -880,11 +864,16 @@ namespace Eclipse
                 }
                 else
                 {
-                    if (ECGui::ButtonBool("Stop"))
+                    if (ECGui::ButtonBool("Stop Audio"))
                     {
                         engine->audioManager.UnloadSound(audio.AudioPath);
                         IsAudioPlaying = false;
                         EDITOR_LOG_INFO("Stopping sound...");
+                    }
+
+                    if (ECGui::CheckBoxBool("IsMuted", &audio.IsMuted, false))
+                    {
+                        engine->audioManager.SetChannelMute(audio.ChannelID, audio.IsMuted);
                     }
                 }
 
@@ -1426,23 +1415,13 @@ namespace Eclipse
         if (audioCom.Is3D)
         {
             auto& trans = engine->world.GetComponent<TransformComponent>(ID);
-            engine->audioManager.LoadSound(audioCom.AudioPath,
-                audioCom.Is3D, audioCom.IsLooping, false);
-            engine->audioManager.SetSpeed(audioCom.AudioPath, audioCom.Speed);
-            engine->audioManager.Set3DConeSettings(audioCom.AudioPath,
-                &audioCom.InnerConeAngle, &audioCom.OuterConeAngle, &audioCom.OuterVolume);
-            engine->audioManager.Set3DMinMaxSettings(audioCom.AudioPath,
-                audioCom.Min, audioCom.Max);
-            audioCom.ChannelID = engine->audioManager.Play3DSounds(audioCom.AudioPath, trans.position,
-                audioCom.Volume, audioCom.IsLooping);
+            engine->audioManager.Play3DSounds(audioCom, trans);
         }
         else
         {
-            engine->audioManager.LoadSound(audioCom.AudioPath, audioCom.Is3D,
-                audioCom.IsLooping, false);
-            engine->audioManager.SetSpeed(audioCom.AudioPath, audioCom.Speed);
-            audioCom.ChannelID = engine->audioManager.Play2DSounds(audioCom.AudioPath, audioCom.Volume,
-                audioCom.IsLooping);
+            /*audioCom.ChannelID = engine->audioManager.Play2DSounds(audioCom.AudioPath, audioCom.Volume,
+                audioCom.IsLooping);*/
+            engine->audioManager.Play2DSounds(audioCom);
         }
     }
 
