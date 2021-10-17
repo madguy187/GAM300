@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<Entities Size="3">
+<Entities Size="2">
     <Entity_0 ID="0">
         <CameraComponent>
             <eyeAlpha value="0" />
@@ -7,7 +7,7 @@
             <fov value="45" />
             <nearPlane value="0.1" />
             <farPlane value="500" />
-            <aspect value="2.37603" />
+            <aspect value="2.35857" />
             <eyePos x="0" y="20" z="40" />
             <eyeFront x="-3.34849e-08" y="-0.642788" z="-0.766045" />
             <upVec x="-2.80971e-08" y="0.766044" z="-0.642788" />
@@ -20,7 +20,7 @@
                 <Col3 _30="1.74846e-06" _31="10.3906" _32="-43.4975" _33="1" />
             </viewMtx>
             <projMtx Col="4" Row="4">
-                <Col0 _00="1.01607" _01="0" _02="0" _03="0" />
+                <Col0 _00="1.02359" _01="0" _02="0" _03="0" />
                 <Col1 _10="0" _11="2.41421" _12="0" _13="0" />
                 <Col2 _20="0" _21="0" _22="-1.0004" _23="-1" />
                 <Col3 _30="0" _31="0" _32="-0.20004" _33="0" />
@@ -43,6 +43,20 @@
         </TransformComponent>
     </Entity_0>
     <Entity_1 ID="6">
+        <AudioComponent>
+            <AudioPath value="" />
+            <ChannelID value="-1" />
+            <Volume value="0.5" />
+            <Pitch value="1" />
+            <Speed value="1" />
+            <IsLooping value="false" />
+            <Is3D value="false" />
+            <InnerConeAngle value="360" />
+            <OuterConeAngle value="360" />
+            <OuterVolume value="1" />
+            <Min value="1" />
+            <Max value="500" />
+        </AudioComponent>
         <DirectionalLightComponent>
             <Counter value="0" />
             <visible value="false" />
@@ -69,56 +83,4 @@
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_1>
-    <Entity_2 ID="7">
-        <AABBComponent>
-            <center x="0" y="0" z="0" />
-            <Min x="-2.5" y="-2.5" z="-2.5" />
-            <Max x="2.5" y="2.5" z="2.5" />
-        </AABBComponent>
-        <EntityComponent>
-            <Tag value="Sphere" />
-            <Name value="Sphere" />
-            <Child size="0" />
-            <Parent size="0" />
-            <IsAChild value="false" />
-        </EntityComponent>
-        <MaterialComponent>
-            <Modeltype value="BasicPrimitives" />
-            <ambient x="0" y="0" z="0" />
-            <diffuse x="1" y="1" z="1" />
-            <specular x="1" y="1" z="1" />
-            <NoTextures value="true" />
-            <shininess value="0.25" />
-            <MaximumShininess value="128" />
-            <ComboIndex value="1" />
-            <TextureComboIndex value="0" />
-            <Type value="TT_UNASSIGNED" />
-            <hasTexture value="true" />
-            <TextureRef value="brick" />
-            <TextureKey value="" />
-            <HoldingTextures size="0" />
-        </MaterialComponent>
-        <MeshComponent>
-            <MeshName value="" />
-            <color x="1" y="1" z="1" />
-            <textureIdx x="0" y="0" />
-            <isQuad value="false" />
-            <modelNDC_xform Col="4" Row="4">
-                <Col0 _00="0" _01="0" _02="0" _03="0" />
-                <Col1 _10="0" _11="0" _12="0" _13="0" />
-                <Col2 _20="0" _21="0" _22="0" _23="0" />
-                <Col3 _30="0" _31="0" _32="0" _33="0" />
-            </modelNDC_xform>
-            <modelRef value="Sphere" />
-            <shaderRef value="shader3DShdrpgm" />
-            <transparency value="1" />
-            <ENV_MAP value="false" />
-            <ENV_TYPE value="MT_REFLECT" />
-        </MeshComponent>
-        <TransformComponent>
-            <position x="0" y="0" z="0" />
-            <rotation x="0" y="0" z="0" />
-            <scale x="5" y="5" z="5" />
-        </TransformComponent>
-    </Entity_2>
 </Entities>

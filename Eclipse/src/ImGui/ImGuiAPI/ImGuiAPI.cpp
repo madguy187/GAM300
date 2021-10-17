@@ -88,7 +88,7 @@ namespace Eclipse
 
 	bool ImGuiAPI::IsItemActive()
 	{
-		return ImGui::IsItemActive();
+		return ImGui::IsWindowFocused();
 	}
 
 	void ImGuiAPI::SetColumns(int count, const char* id, bool border)

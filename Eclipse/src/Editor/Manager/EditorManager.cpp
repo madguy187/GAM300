@@ -153,6 +153,9 @@ namespace Eclipse
 		EntityToIndexMap_.insert(std::pair<Entity, int>(ID, static_cast<int>(EntityHierarchyList_.size() - 1)));
 		GEHIndex_ = EntityHierarchyList_.size() - 1;
 		SetSelectedEntity(ID);
+
+		if (engine->world.CheckComponent<MaterialComponent>(ID))
+			engine->MaterialManager.HighlightClick(ID);
 	}
 
 	void EditorManager::DestroyEntity(Entity ID)
@@ -179,6 +182,9 @@ namespace Eclipse
 				}
 			}
 		}
+
+		if (engine->world.CheckComponent<MaterialComponent>(GetSelectedEntity()))
+			engine->MaterialManager.HighlightClick(GetSelectedEntity());
 
 		engine->world.DestroyEntity(ID);
 	}

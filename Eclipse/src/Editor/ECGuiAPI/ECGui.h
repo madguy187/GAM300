@@ -329,7 +329,8 @@ namespace Eclipse
 		static void PopID();
 		static void Dummy(const ImVec2& size);
 		static bool ColorPicker3(const char* label, float col[3], ImGuiColorEditFlags flags = 0);
-
+		static void LineAndDummy(ImVec2 sizeOfDummies = {1.0f,1.0f});
+		static void DummyAndLine(ImVec2 sizeOfDummies = {1.0f,1.0f});
 
 		/*************************************************************************/
 		/*                         Visual Widgets                                */

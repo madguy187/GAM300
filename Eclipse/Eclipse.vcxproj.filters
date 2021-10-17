@@ -808,6 +808,8 @@
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Graphics\Material\PBR\PBRManager.h" />
     <ClInclude Include="src\Graphics\Material\MaterialInstance\MaterialInstance.h" />
+    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\EntityDeleteDeltaCommand.h" />
+    <ClInclude Include="src\Library\Random\Random.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1203,5 +1205,6 @@
     <None Include="src\Assets\Shaders\PBRShader\PBR.vert" />
     <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.frag" />
     <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.vert" />
+    <ClCompile Include="src\Library\Random\Random.cpp" />
   </ItemGroup>
 </Project>

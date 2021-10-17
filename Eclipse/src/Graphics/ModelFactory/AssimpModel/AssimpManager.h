@@ -35,7 +35,8 @@ namespace Eclipse
 
 	public:
 		float HotReloadCooldown = 0.0f;
-		void CreateModel(unsigned int ID, const std::string& ModelName);
+		Entity CreateModel(unsigned int ID, const std::string& ModelName);
+		void RegisterExistingModel(Entity ID, const std::string& ModelName);
 		std::unordered_map<std::string, std::vector<std::string>>& GetPrefabs();
 		void InsertPrimitiveName(const std::string& in);
 		std::vector<std::string>& GetMeshNames();

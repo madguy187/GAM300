@@ -73,9 +73,15 @@ namespace Eclipse
 		}
 
 		if (ECGui::IsItemActive())
+		{
+			//std::cout << "Window is active" << std::endl;
 			IsWindowActive = true;
+		}
 		else
+		{
+			//std::cout << "Window is not active" << std::endl;
 			IsWindowActive = false;
+		}
 	}
 
 	void SceneWindow::OnGizmoUpdateEvent()
@@ -151,6 +157,7 @@ namespace Eclipse
 				break;
 			case ImGuizmo::OPERATION::ROTATE:
 				transCom.rotation = rotation;
+				std::cout << "From Scene View: " << transCom.rotation << std::endl;
 				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.rotation, transCom.rotation, selectedEntity });
 				break;
 			case ImGuizmo::OPERATION::SCALE:
@@ -164,11 +171,19 @@ namespace Eclipse
 			//Update for DynamicAABB Tree -Rachel
 			engine->gPicker.UpdateAabb(selectedEntity);
 			engine->gDynamicAABBTree.UpdateData(selectedEntity);
+
+			OnCopyEntityEvent();
 		}
 		else if (!ImGuizmo::IsUsing() && ImGui::IsMouseReleased(0)
 			&& ECGui::IsItemHovered())
 		{
 			CommandHistory::DisableMergeForMostRecentCommand();
+		}
+
+		if (!ImGuizmo::IsUsing() && ImGui::IsMouseReleased(0) 
+			&& !ImGui::IsMouseDragging(0))
+		{
+			IsCopying = false;
 		}
 	}
 
@@ -205,6 +220,22 @@ namespace Eclipse
 
 			if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
 				engine->editorManager->SetSelectedEntity(engine->gPicker.GetCurrentCollisionID());
+		}
+	}
+
+	void SceneWindow::OnCopyEntityEvent()
+	{
+		if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_LEFTALT)) && m_GizmoType == ImGuizmo::OPERATION::TRANSLATE)
+		{
+			if (!IsCopying)
+			{
+				Entity ID = engine->world.CopyEntity(engine->world, engine->editorManager->GetSelectedEntity(), all_component_list);
+				auto& trans = engine->world.GetComponent<TransformComponent>(ID);
+				auto& ent = engine->world.GetComponent<EntityComponent>(ID);
+				engine->gPicker.GenerateAabb(ID, trans, ent.Tag);
+				engine->editorManager->RegisterExistingEntity(ID);
+				IsCopying = true;
+			}
 		}
 	}
 

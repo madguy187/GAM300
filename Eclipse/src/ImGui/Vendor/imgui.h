@@ -1133,6 +1133,7 @@ enum ImGuiKey_
     ImGuiKey_D,                                
     ImGuiKey_O,                                
     ImGuiKey_F11,                                
+    ImGuiKey_LEFTALT,                                
     ImGuiKey_COUNT
 };
 

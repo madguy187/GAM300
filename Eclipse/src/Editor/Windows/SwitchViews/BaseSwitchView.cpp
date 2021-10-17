@@ -142,6 +142,7 @@ namespace Eclipse
                 break;
             case ImGuizmo::OPERATION::ROTATE:
                 transCom.rotation = rotation;
+                std::cout << "From Switch View: " << transCom.rotation << std::endl;
                 CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.rotation, transCom.rotation });
                 break;
             case ImGuizmo::OPERATION::SCALE:
