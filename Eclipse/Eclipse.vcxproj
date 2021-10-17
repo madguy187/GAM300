@@ -240,6 +240,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec2DeltaCommand.h" />
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec3DeltaCommand.h" />
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec4DeltaCommand.h" />
+    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\EntityDeleteDeltaCommand.h" />
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ICommand.h" />
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\PrimitiveDeltaCommand.h" />
     <ClInclude Include="src\Editor\Windows\AssetBrowser\AssetBrowser.h" />
