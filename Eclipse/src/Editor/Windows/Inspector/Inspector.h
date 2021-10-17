@@ -44,6 +44,7 @@ namespace Eclipse
 
 		void SimulateAudio(Entity ID, AudioComponent& audioCom);
 		void AddWaypointController(std::string& currentSelection);
+		void ChangeShapeController(std::string& currentSelection);
 
 		template <typename TComponents>
 		void AddComponentsFeedback(const char* Components, const std::string& name, Entity ID, bool exist);

@@ -101,7 +101,7 @@ namespace Eclipse
 		ECVec3 QuattoAngles(PxQuat quat);
 		void InitActor(Entity ent);
 		void UpdateActor(Entity ent);
-		void ChangeShape(Entity ent);
+		void ChangeShape(Entity ent, PxShapeType shape);
 		void CreateShape(Entity ent);
 		void UpdateVariables(Entity ent);
 		void UpdateShapes(Entity ent);

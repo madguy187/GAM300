@@ -88,7 +88,6 @@ namespace Eclipse
 
 		Px_Actors[ent].actor->setName(std::to_string(ent).c_str());
 		AddActorToScene(ent);
-		//AttachBoxToActor(ent, 2.5f, 2.5f, 2.5f);
 	}
 
 	void PhysicsManager::ChangeDynamicStatic(Entity ent)
@@ -125,6 +124,9 @@ namespace Eclipse
 					break;
 				case PxShapeType::Px_SPHERE :
 					PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(temp), PxSphereGeometry{ collision.shape.radius }, *tempmat);
+					break;
+				case PxShapeType::Px_CAPSULE:
+					PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(temp), PxCapsuleGeometry{ collision.shape.radius,collision.shape.hheight }, *tempmat);
 					break;
 				}
 				
@@ -171,6 +173,9 @@ namespace Eclipse
 				case PxShapeType::Px_SPHERE:
 					PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(temp), PxSphereGeometry{ collision.shape.radius }, *tempmat);
 					break;
+				case PxShapeType::Px_CAPSULE:
+					PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(temp), PxCapsuleGeometry{ collision.shape.radius,collision.shape.hheight }, *tempmat);
+					break;
 				}
 			}
 		}
@@ -194,6 +199,9 @@ namespace Eclipse
 		}
 		PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(Px_Actors[ent].actor), PxBoxGeometry{ hx,hy,hz }, *tempmat);
 		collision.created = true;
+		collision.shape.hx = hx;
+		collision.shape.hy = hy;
+		collision.shape.hz = hz;
 	}
 
 	void PhysicsManager::AttachSphereToActor(Entity ent, float radius)
@@ -210,6 +218,7 @@ namespace Eclipse
 		}
 		PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(Px_Actors[ent].actor), PxSphereGeometry{ radius }, *tempmat);
 		collision.created = true;
+		collision.shape.radius = radius;
 	}
 
 	void PhysicsManager::ChangeType(Entity ent)
@@ -228,17 +237,9 @@ namespace Eclipse
 		}
 	}
 
-	void PhysicsManager::CleanupScene()
-	{
-
-		for (auto entity : engine->editorManager->GetEntityListByConstRef())
-		{
-			engine->gPhysics.RemoveActor(entity);
-		}
-	}
-
 	void PhysicsManager::AttachCapsuleToActor(Entity ent, float radius,float halfheight)
 	{
+		auto& collision = engine->world.GetComponent<CollisionComponent>(ent);
 		if (Px_Actors[ent].actor == nullptr)
 			return;
 
@@ -248,8 +249,19 @@ namespace Eclipse
 			std::cout << "creatematerial failed" << std::endl;
 			return;
 		}
-
 		PxRigidActorExt::createExclusiveShape(*dynamic_cast<PxRigidActor*>(Px_Actors[ent].actor), PxCapsuleGeometry{ radius,halfheight }, *tempmat);
+		collision.created = true;
+		collision.shape.radius = radius;
+		collision.shape.hheight = halfheight;
+	}
+
+	void PhysicsManager::CleanupScene()
+	{
+
+		for (auto entity : engine->editorManager->GetEntityListByConstRef())
+		{
+			engine->gPhysics.RemoveActor(entity);
+		}
 	}
 
 	PxQuat PhysicsManager::AnglestoQuat(float degreeX, float degreeY, float degreeZ)
@@ -296,9 +308,6 @@ namespace Eclipse
 		return temp;
 	}
 	
-
-
-
 	void PhysicsManager::AddActorToScene(Entity ent)
 	{
 		if (Px_Actors[ent].InScene)
@@ -404,29 +413,21 @@ namespace Eclipse
 		}
 	}
 
-	void PhysicsManager::ChangeShape(Entity ent,PxShapeType shape,)
+	void PhysicsManager::ChangeShape(Entity ent,PxShapeType shape)
 	{
-		/*auto& collision = engine->world.GetComponent<CollisionComponent>(ent);
-		if (!collision.created)
-			return;
-		PxU32 numofshapes = static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->getNbShapes();
-		if (numofshapes > 0)
+		auto& collision = engine->world.GetComponent<CollisionComponent>(ent);
+		switch (shape)
 		{
-			PxShape** shapes = new PxShape * [numofshapes];
-			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->getShapes(shapes, numofshapes);
-			for (PxU32 i = 0; i < numofshapes; ++i)
-			{
-				switch (collision.shape.shape)
-				{
-				case PxShapeType::Px_CUBE:
-					if (shapes[i]->getGeometryType() == PxGeometryType::eBOX)
-					{
-						shapes[i]->setGeometry(PxBoxGeometry{ collision.shape.hx,collision.shape.hy,collision.shape.hz });
-					}
-					break;
-				}
-			}
-		}*/
+		case PxShapeType::Px_CAPSULE:
+			collision.shape.shape = PxShapeType::Px_CAPSULE;
+			break;
+		case PxShapeType::Px_SPHERE:
+			collision.shape.shape = PxShapeType::Px_SPHERE;
+			break;
+		case PxShapeType::Px_CUBE:
+			collision.shape.shape = PxShapeType::Px_CUBE;
+			break;
+		}
 	}
 
 
@@ -443,6 +444,9 @@ namespace Eclipse
 			break;
 		case PxShapeType::Px_SPHERE :
 			AttachSphereToActor(ent, collision.shape.radius);
+			break;
+		case PxShapeType::Px_CAPSULE :
+			AttachCapsuleToActor(ent, collision.shape.radius, collision.shape.hheight);
 			break;
 		}
 	}

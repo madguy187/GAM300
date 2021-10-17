@@ -184,12 +184,8 @@ namespace Eclipse
 
 	template<> char const* enumStrings<PxShapeType>::data[] =
 	{
-		"Px_SQUARE",
-		"Px_CIRCLE",
-		"Px_TRIANGLE",
-		"Px_LINE",
 		"Px_SPHERE",
 		"Px_CUBE",
-		"Px_CYLINDER"
+		"Px_CAPSULE"
 	};
 }

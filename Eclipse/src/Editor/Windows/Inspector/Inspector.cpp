@@ -684,11 +684,25 @@ namespace Eclipse
         char hyValue[256];
         char hzValue[256];
         char radiusValue[256];
+        char HalfHeightValue[256];
         if (engine->world.CheckComponent<CollisionComponent>(ID))
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
                 auto& _Collision = engine->world.GetComponent<CollisionComponent>(ID);
+                ECGui::DrawTextWidget<const char*>("Choose a shape: ", EMPTY_STRING);
+                static std::string PxShapestring;
+                ChangeShapeController(PxShapestring);
+                
+                if (PxShapestring != EMPTY_STRING)
+                {
+                    if (ECGui::ButtonBool("Change Shape"))
+                    {
+                        engine->gPhysics.ChangeShape(ID, lexical_cast_toEnum<PxShapeType>(PxShapestring));
+                    }
+                }
+
+               
 
                 switch (_Collision.shape.shape)
                 {
@@ -721,6 +735,19 @@ namespace Eclipse
                     ECGui::DrawInputTextWidget("Radius: ", radiusValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
                     _Collision.shape.radius = static_cast<float>(atof(radiusValue));
                     break;
+                case PxShapeType::Px_CAPSULE:
+                    ECGui::DrawTextWidget<const char*>("CAPSULE ", EMPTY_STRING);
+                    ECGui::InsertHorizontalLineSeperator();
+                    ECGui::DrawTextWidget<const char*>("Radius: ", EMPTY_STRING);
+                    ECGui::InsertSameLine();
+                    snprintf(radiusValue, 256, "%f", _Collision.shape.radius);
+                    ECGui::DrawInputTextWidget("Radius: ", radiusValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
+                    _Collision.shape.radius = static_cast<float>(atof(radiusValue));
+                    ECGui::DrawTextWidget<const char*>("HalfHeight: ", EMPTY_STRING);
+                    ECGui::InsertSameLine();
+                    snprintf(HalfHeightValue, 256, "%f", _Collision.shape.hheight);
+                    ECGui::DrawInputTextWidget("HalfHeight: ", HalfHeightValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
+                    _Collision.shape.radius = static_cast<float>(atof(HalfHeightValue));
                 }
             }
         }
@@ -1227,6 +1254,29 @@ namespace Eclipse
                 }
 
                 if (is_selected)
+                    ImGui::SetItemDefaultFocus();
+            }
+
+            ImGuiAPI::EndComboList();
+        }
+    }
+
+    void InspectorWindow::ChangeShapeController(std::string& currentSelection)
+    {
+        size_t index = 0;
+        if (ImGuiAPI::BeginComboList("PxSHapeListBegin", currentSelection.c_str(), true))
+        {
+            for (size_t n = 0; n < 3; n++)
+            {
+                const bool is_selected = (index == n);
+                PxShapeType tempenum = static_cast<PxShapeType>(n);
+            
+                if (ImGui::Selectable(lexical_cast_toStr<PxShapeType>(tempenum).c_str(), is_selected))
+                {
+                    currentSelection = lexical_cast_toStr<PxShapeType>(tempenum);
+                }
+
+                if(is_selected)
                     ImGui::SetItemDefaultFocus();
             }
 
