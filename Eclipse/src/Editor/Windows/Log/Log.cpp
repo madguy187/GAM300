@@ -14,7 +14,7 @@ namespace Eclipse
 	void LoggerWindow::Init()
 	{
 		Type = EditorWindowType::EWT_LOGGER;
-		WindowName = "Log";
+		WindowName = "Log " ICON_MDI_POST;
 		EditorLog_ = std::make_shared<ConsoleData>();
 	}
 

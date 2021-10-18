@@ -13,7 +13,7 @@ namespace Eclipse
     void DebugWindow::Init()
     {
         Type = EditorWindowType::EWT_DEBUG;
-        WindowName = "Settings";
+        WindowName = "Settings " ICON_MDI_ACCOUNT_COG;
         IsVisible = false;
     }
 

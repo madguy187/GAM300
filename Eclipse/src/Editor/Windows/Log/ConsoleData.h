@@ -123,11 +123,11 @@ struct ConsoleData
         }
 
         // Main window
-        if (ImGui::Button("Options"))
+        if (ImGui::Button("Options" ICON_MDI_COG))
             ImGui::OpenPopup("Options");
 
         ImGui::SameLine();
-        bool clear = ImGui::Button("Clear");
+        bool clear = ImGui::Button("Clear" ICON_MDI_NUKE);
         ImGui::SameLine();
         _Filter.Draw("Filter", -100.0f);
 
