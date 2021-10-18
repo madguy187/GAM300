@@ -3,11 +3,6 @@
 
 namespace Eclipse
 {
-    struct Tom
-    {
-        int A = 0;
-    };
-
     void FrameBufferManager::CreateFrameBuffers()
     {
         // Basic FrameBuffers
