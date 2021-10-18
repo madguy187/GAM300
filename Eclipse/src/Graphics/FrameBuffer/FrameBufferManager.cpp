@@ -127,4 +127,47 @@ namespace Eclipse
         engine->GraphicsManager.SetBackGroundColour();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     }
+
+    float FrameBufferManager::GetAspectRatio(CameraComponent::CameraType in)
+    {
+        switch (in)
+        {
+        case CameraComponent::CameraType::Editor_Camera:
+        {
+            return FrameBufferContainer[FrameBufferMode::FBM_SCENE]->AspectRatio;
+        }
+        break;
+
+        case CameraComponent::CameraType::Game_Camera:
+        {
+            return FrameBufferContainer[FrameBufferMode::FBM_GAME]->AspectRatio;
+        }
+        break;
+
+        case CameraComponent::CameraType::TopView_Camera:
+        {
+            return FrameBufferContainer[FrameBufferMode::FBM_TOP]->AspectRatio;
+        }
+        break;
+
+        case CameraComponent::CameraType::BottomView_Camera:
+        {
+            return FrameBufferContainer[FrameBufferMode::FBM_BOTTOM]->AspectRatio;
+        }
+        break;
+
+        case CameraComponent::CameraType::RightView_camera:
+        {
+            return FrameBufferContainer[FrameBufferMode::FBM_RIGHT]->AspectRatio;
+        }
+        break;
+
+        case CameraComponent::CameraType::LeftView_Camera:
+        {
+            return FrameBufferContainer[FrameBufferMode::FBM_LEFT]->AspectRatio;
+        }
+        break;
+        }
+    }
+
 }

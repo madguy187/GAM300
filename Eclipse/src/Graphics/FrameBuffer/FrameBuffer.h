@@ -25,7 +25,7 @@ namespace Eclipse
         unsigned int m_width = 0;
         unsigned int m_height = 0;
         FrameBufferMode FrameBufferType = FrameBufferMode::FBM_NONE;
-        float AspectRatio = 0.0f;
+        float AspectRatio = 1.0f;
 
         struct FramebufferData
         {
