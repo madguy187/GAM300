@@ -1,4 +1,7 @@
+#include "pch.h"
 #include "NodeEditor.h"
+
+static NodeEditor::EditorContext* g_Context = nullptr;
 
 void Eclipse::NodeEditorWindow::Update()
 {
@@ -8,7 +11,7 @@ void Eclipse::NodeEditorWindow::Update()
 
 void Eclipse::NodeEditorWindow::Init()
 {
-	Type = EditorWindowType::EWT_ASSETBROWSER;
+	Type = EditorWindowType::EWT_NODEEDITOR;
 	WindowName = "NodeEditor " ICON_MDI_FILE_IMAGE;
 }
 
@@ -18,6 +21,35 @@ void Eclipse::NodeEditorWindow::Unload()
 
 void Eclipse::NodeEditorWindow::DrawImpl()
 {
+
+	ImGui::Separator();
+
+	NodeEditor::SetCurrentEditor(g_Context);
+	NodeEditor::Begin("My Editor", ImVec2(0.0, 0.0f));
+	int uniqueId = 1;
+	NodeEditor::BeginNode(uniqueId++);
+	ImGui::Text("Node A");
+	NodeEditor::BeginPin(uniqueId++, NodeEditor::PinKind::Input);
+	ImGui::Text("-> In");
+	NodeEditor::EndPin();
+	ImGui::SameLine();
+	NodeEditor::BeginPin(uniqueId++, NodeEditor::PinKind::Output);
+	ImGui::Text("Out ->");
+	NodeEditor::EndPin();
+	NodeEditor::EndNode();
+	NodeEditor::BeginNode(uniqueId++);
+	ImGui::Text("Node Test");
+	NodeEditor::BeginPin(uniqueId++, NodeEditor::PinKind::Input);
+	ImGui::Text("-> In");
+	NodeEditor::EndPin();
+	ImGui::SameLine();
+	NodeEditor::BeginPin(uniqueId++, NodeEditor::PinKind::Output);
+	ImGui::Text("Out ->");
+	NodeEditor::EndPin();
+	NodeEditor::EndNode();
+	NodeEditor::End();
+	NodeEditor::SetCurrentEditor(nullptr);
+
 }
 
 int Eclipse::NodeEditorWindow::GetNextId()

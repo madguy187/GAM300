@@ -1,10 +1,8 @@
 #pragma once
-
-#include "pch.h"
 #include "../Interface/ECGuiWindow.h"
 #include "NodeEditorUtilities/builders.h"
 #include "NodeEditorUtilities//widgets.h"
-#include "NodeEditorBackBone/imgui_node_editor.h"
+#include "../../NodeEditorSln/NodeEditor/NodeEditorBackBone/imgui_node_editor.h"
 #include <imgui_internal.h>
 
 #define IMGUI_DEFINE_MATH_OPERATORS
