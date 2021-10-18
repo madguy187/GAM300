@@ -2,7 +2,8 @@
 #include "DragAndDrop.h"
 #include"Editor/Windows/AssetBrowser/AssetBrowser.h"
 #include "ECS/ComponentManager/Components/ScriptComponent.h"
-
+#include "ECS/ComponentManager/Components/ParentComponent.h"
+#include "ECS/ComponentManager/Components/ChildComponent.h"
 namespace Eclipse
 {
 	void DragAndDrop::StringPayloadSource(const char* id, const std::string& source,
@@ -124,16 +125,20 @@ namespace Eclipse
 
 			ECGui::EndDragDropTarget();
 		}
-		else if (IsSelected && IsIndexJobSelected)
+		if (IsSelected && IsIndexJobSelected)
 		{
+			std::cout<<destination<<std::endl;
+
 			switch (type)
 			{
 			case PayloadTargetType::PTT_INDEXEDIT:
 			{
+
 				ImGui::OpenPopup("IndexJobList");
 
 				if (ImGui::BeginPopup("IndexJobList"))
 				{
+
 					for (int i = 0; i < IM_ARRAYSIZE(IndexJobNames); ++i)
 					{
 						bool selected = false;
@@ -160,8 +165,33 @@ namespace Eclipse
 								// Parent Child
 							case 2:
 								DestinationEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(DestinationIndex_));
+
 								SourceEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(SourceIndex_));
+
+								if (!engine->world.CheckComponent<ParentComponent>(engine->editorManager->GetEntityID(DestinationIndex_)))
+								{
+									engine->world.AddComponent(engine->editorManager->GetEntityID(DestinationIndex_), ParentComponent{});
+									engine->world.GetComponent<ParentComponent>(engine->editorManager->GetEntityID(DestinationIndex_)).child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
+								}
+								else
+								{
+									engine->world.GetComponent<ParentComponent>(engine->editorManager->GetEntityID(DestinationIndex_)).child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
+								}
+
+								if (!engine->world.CheckComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)))
+								{
+									engine->world.AddComponent(engine->editorManager->GetEntityID(SourceIndex_), ChildComponent{});
+									engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).parentIndex = engine->editorManager->GetEntityID(DestinationIndex_);
+								}
+								else
+								{
+									engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).parentIndex = engine->editorManager->GetEntityID(DestinationIndex_);
+								}
+
+
+
 								DestinationEntCom->Child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
+								DestinationEntCom->isTreeNode = true;
 								SourceEntCom->IsAChild = true;
 								SourceEntCom->Parent.push_back(engine->editorManager->GetEntityID(DestinationIndex_));
 								IsIndexJobSelected = false;
