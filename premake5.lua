@@ -73,7 +73,8 @@ project "Eclipse"
 		"Dep/ASSIMP/include/assimp",
 	  "Dep/ASSIMP",
 		"Dep/Fmod/core/inc",
-		"Dep/Tracy"
+		"Dep/Tracy",
+		"Dep/NodeEditor"
 	}
 
 	filter "system:windows"
@@ -101,7 +102,8 @@ project "Eclipse"
     "Dep/mono/lib/",
 	  "Dep/ASSIMP/",
 	  "Dep/Fmod/core/lib/x64",
-	  "Dep/Tracy"
+	  "Dep/Tracy",
+	  "Dep/NodeEditor"
   }
   
   disablewarnings 
