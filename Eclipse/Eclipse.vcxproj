@@ -252,6 +252,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Editor\Windows\Interface\ECGuiWindow.h" />
     <ClInclude Include="src\Editor\Windows\Log\ConsoleData.h" />
     <ClInclude Include="src\Editor\Windows\Log\Log.h" />
+    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditor.h" />
     <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\crude_json.h" />
     <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_bezier_math.h" />
     <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_canvas.h" />
@@ -411,6 +412,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Editor\Windows\Hierarchy\Hierarchy.cpp" />
     <ClCompile Include="src\Editor\Windows\Inspector\Inspector.cpp" />
     <ClCompile Include="src\Editor\Windows\Log\Log.cpp" />
+    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditor.cpp" />
     <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\crude_json.cpp" />
     <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_canvas.cpp" />
     <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor.cpp" />

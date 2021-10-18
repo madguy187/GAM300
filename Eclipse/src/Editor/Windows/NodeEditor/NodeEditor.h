@@ -1,8 +1,7 @@
 #pragma once
 #include "../Interface/ECGuiWindow.h"
-#include <application.h>
-#include"NodeEditorUtilities/builders.h"
-#include"NodeEditorUtilities/widgets.h"
+#include "Utilities/builders.h"
+#include "Utilities/widgets.h"
 
 # include "../src/Editor/Windows/NodeEditor/NodeEditorBackBone/imgui_node_editor.h"
 

@@ -1,4 +1,5 @@
-﻿# define IMGUI_DEFINE_MATH_OPERATORS
+﻿#include "pch.h"
+# define IMGUI_DEFINE_MATH_OPERATORS
 # include "imgui_canvas.h"
 # include <type_traits>
 

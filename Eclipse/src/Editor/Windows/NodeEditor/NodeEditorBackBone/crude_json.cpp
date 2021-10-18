@@ -7,6 +7,7 @@
 //
 // CREDITS
 //   Written by Michal Cichon
+#include "pch.h"
 # include "crude_json.h"
 # include <iomanip>
 # include <limits>

@@ -129,7 +129,7 @@ typedef int ImGuiNextWindowDataFlags;   // -> enum ImGuiNextWindowDataFlags_// F
 typedef int ImGuiSeparatorFlags;        // -> enum ImGuiSeparatorFlags_     // Flags: for SeparatorEx()
 typedef int ImGuiTextFlags;             // -> enum ImGuiTextFlags_          // Flags: for TextEx()
 typedef int ImGuiTooltipFlags;          // -> enum ImGuiTooltipFlags_       // Flags: for BeginTooltipEx()
-
+typedef int ImGuiLayoutItemType;
 //-----------------------------------------------------------------------------
 // [SECTION] Context pointer
 // See implementation of this variable in imgui.cpp for comments and details.
@@ -699,6 +699,12 @@ enum ImGuiLayoutType_
     ImGuiLayoutType_Vertical = 1
 };
 
+enum ImGuiLayoutItemType_
+{
+    ImGuiLayoutItemType_Item,
+    ImGuiLayoutItemType_Spring
+};
+
 enum ImGuiLogType
 {
     ImGuiLogType_None = 0,
@@ -983,6 +989,71 @@ struct ImGuiNextItemData
 
     ImGuiNextItemData()         { memset(this, 0, sizeof(*this)); }
     inline void ClearFlags()    { Flags = ImGuiNextItemDataFlags_None; } // Also cleared manually by ItemAdd()!
+};
+
+struct ImGuiLayoutItem
+{
+    ImGuiLayoutItemType     Type;               // Type of an item
+    ImRect                  MeasuredBounds;
+
+    float                   SpringWeight;       // Weight of a spring
+    float                   SpringSpacing;      // Spring spacing
+    float                   SpringSize;         // Calculated spring size
+
+    float                   CurrentAlign;
+    float                   CurrentAlignOffset;
+
+    unsigned int            VertexIndexBegin;
+    unsigned int            VertexIndexEnd;
+
+    ImGuiLayoutItem(ImGuiLayoutItemType type)
+    {
+        Type = type;
+        MeasuredBounds = ImRect(0, 0, 0, 0);    // FIXME: @thedmd are you sure the default ImRect value FLT_MAX,FLT_MAX,-FLT_MAX,-FLT_MAX aren't enough here?
+        SpringWeight = 1.0f;
+        SpringSpacing = -1.0f;
+        SpringSize = 0.0f;
+        CurrentAlign = 0.0f;
+        CurrentAlignOffset = 0.0f;
+        VertexIndexBegin = VertexIndexEnd = (ImDrawIdx)0;
+    }
+};
+
+struct ImGuiLayout
+{
+    ImGuiID                     Id;
+    ImGuiLayoutType             Type;
+    bool                        Live;
+    ImVec2                      Size;               // Size passed to BeginLayout
+    ImVec2                      CurrentSize;        // Bounds of layout known at the beginning the frame.
+    ImVec2                      MinimumSize;        // Minimum possible size when springs are collapsed.
+    ImVec2                      MeasuredSize;       // Measured size with springs expanded.
+
+    ImVector<ImGuiLayoutItem>   Items;
+    int                         CurrentItemIndex;
+    int                         ParentItemIndex;
+    ImGuiLayout* Parent;
+    ImGuiLayout* FirstChild;
+    ImGuiLayout* NextSibling;
+    float                       Align;              // Current item alignment.
+    float                       Indent;             // Indent used to align items in vertical layout.
+    ImVec2                      StartPos;           // Initial cursor position when BeginLayout is called.
+    ImVec2                      StartCursorMaxPos;  // Maximum cursor position when BeginLayout is called.
+
+    ImGuiLayout(ImGuiID id, ImGuiLayoutType type)
+    {
+        Id = id;
+        Type = type;
+        Live = false;
+        Size = CurrentSize = MinimumSize = MeasuredSize = ImVec2(0, 0);
+        CurrentItemIndex = 0;
+        ParentItemIndex = 0;
+        Parent = FirstChild = NextSibling = NULL;
+        Align = -1.0f;
+        Indent = 0.0f;
+        StartPos = ImVec2(0, 0);
+        StartCursorMaxPos = ImVec2(0, 0);
+    }
 };
 
 struct ImGuiShrinkWidthItem
@@ -1696,6 +1767,10 @@ struct IMGUI_API ImGuiWindowTempData
     ImGuiColumns*           CurrentColumns;         // Current columns set
     ImGuiLayoutType         LayoutType;
     ImGuiLayoutType         ParentLayoutType;       // Layout type of parent window at the time of Begin()
+    ImGuiLayout* CurrentLayout;
+    ImGuiLayoutItem* CurrentLayoutItem;
+    ImVector<ImGuiLayout*>  LayoutStack;
+    ImGuiStorage            Layouts;
     int                     FocusCounterRegular;    // (Legacy Focus/Tabbing system) Sequential counter, start at -1 and increase as assigned via FocusableItemRegister() (FIXME-NAV: Needs redesign)
     int                     FocusCounterTabStop;    // (Legacy Focus/Tabbing system) Same, but only count widgets which you can Tab through.
 
@@ -1737,6 +1812,10 @@ struct IMGUI_API ImGuiWindowTempData
         StateStorage = NULL;
         CurrentColumns = NULL;
         LayoutType = ParentLayoutType = ImGuiLayoutType_Vertical;
+        ImGuiLayout* CurrentLayout;
+        ImGuiLayoutItem* CurrentLayoutItem;
+        ImVector<ImGuiLayout*>  LayoutStack;
+        ImGuiStorage            Layouts;
         FocusCounterRegular = FocusCounterTabStop = -1;
 
         ItemFlags = ImGuiItemFlags_Default_;
@@ -2321,7 +2400,7 @@ IMGUI_API void              ImFontAtlasBuildMultiplyRectAlpha8(const unsigned ch
 #ifdef IMGUI_ENABLE_TEST_ENGINE
 extern void                 ImGuiTestEngineHook_Shutdown(ImGuiContext* ctx);
 extern void                 ImGuiTestEngineHook_PreNewFrame(ImGuiContext* ctx);
-extern void                 ImGuiTestEngineHook_PostNewFrame(ImGuiContext* ctx);
+extern void                 ImGuiTestEngineHookx_PostNewFrame(ImGuiContext* ctx);
 extern void                 ImGuiTestEngineHook_ItemAdd(ImGuiContext* ctx, const ImRect& bb, ImGuiID id);
 extern void                 ImGuiTestEngineHook_ItemInfo(ImGuiContext* ctx, ImGuiID id, const char* label, ImGuiItemStatusFlags flags);
 extern void                 ImGuiTestEngineHook_IdInfo(ImGuiContext* ctx, ImGuiDataType data_type, ImGuiID id, const void* data_id);

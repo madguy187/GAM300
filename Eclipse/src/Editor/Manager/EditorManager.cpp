@@ -17,6 +17,7 @@
 #include "Editor/Windows/SwitchViews/LeftSwitchViewWindow.h"
 #include "Editor/Windows/SwitchViews/RightSwitchViewWindow.h"
 #include "Editor/Windows/Header/HeaderWindow.h"
+#include "Editor/Windows/NodeEditor/NodeEditor.h"
 
 namespace Eclipse
 {
@@ -45,7 +46,7 @@ namespace Eclipse
 		AddWindow<LoggerWindow>("Log " ICON_MDI_POST);
 		AddWindow<DebugWindow>("Settings " ICON_MDI_ACCOUNT_COG);
 		AddWindow<HeaderWindow>("Header " ICON_MDI_PAGE_LAYOUT_HEADER);
-
+		AddWindow<NodeEditorWindow>("testtt " ICON_MDI_PAGE_LAYOUT_HEADER);
 		for (const auto& window : Windows_)
 		{
 			window->Init();
