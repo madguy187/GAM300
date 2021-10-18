@@ -9,10 +9,10 @@ namespace Eclipse
         LoadMaterial("HardWood");
     }
 
-    void PBRManager::CheckUniform(unsigned int ID)
+    void PBRManager::CheckUniform(unsigned int ID , CameraComponent& In)
     {
-        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
-        TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(In.camType));
+        TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(In.camType));
         TransformComponent ModelTransform = engine->world.GetComponent<TransformComponent>(ID);
 
         auto& shdrpgm = Graphics::shaderpgms["PBRShader"];

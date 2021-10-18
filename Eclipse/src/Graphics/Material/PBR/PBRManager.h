@@ -10,7 +10,7 @@ namespace Eclipse
         std::unordered_map<std::string, std::shared_ptr<MaterialInstance>> AllMaterialInstances;
 
         void Init();
-        void CheckUniform(unsigned int ID);
+        void CheckUniform(unsigned int ID, CameraComponent& In);
 
     public:
         void LoadMaterial(std::string NameOfMaterial);

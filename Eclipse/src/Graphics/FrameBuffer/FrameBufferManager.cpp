@@ -27,7 +27,7 @@ namespace Eclipse
         }
 
         FrameBufferContainer.insert({ in, std::make_shared<FrameBuffer>(width_, height_, in) });
-        //ENGINE_CORE_INFO("FrameBuffer Ready For Use");
+        UpdateAspectRatio(in, glm::vec2(width_, height_));
     }
 
     void FrameBufferManager::FrameBufferDraw()
