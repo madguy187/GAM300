@@ -249,7 +249,7 @@ namespace Eclipse
 			std::cout << "creatematerial failed" << std::endl;
 			return;
 		}
-		PxRigidActorExt::createExclusiveShape(*dynamic_cast<PxRigidActor*>(Px_Actors[ent].actor), PxCapsuleGeometry{ radius,halfheight }, *tempmat);
+		PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(Px_Actors[ent].actor), PxCapsuleGeometry{ radius,halfheight }, *tempmat);
 		collision.created = true;
 		collision.shape.radius = radius;
 		collision.shape.hheight = halfheight;
@@ -400,11 +400,33 @@ namespace Eclipse
 					{
 						shapes[i]->setGeometry(PxBoxGeometry{ collision.shape.hx,collision.shape.hy,collision.shape.hz });
 					}
+					else
+					{
+						//shape don't tally
+						static_cast<PxRigidActor*>(Px_Actors[ent].actor)->detachShape(*shapes[i]);
+						AttachBoxToActor(ent, collision.shape.hx, collision.shape.hy, collision.shape.hz);
+					}
 					break;
 				case PxShapeType::Px_SPHERE:
 					if (shapes[i]->getGeometryType() == PxGeometryType::eSPHERE)
 					{
 						shapes[i]->setGeometry(PxSphereGeometry{ collision.shape.radius });
+					}
+					else
+					{
+						static_cast<PxRigidActor*>(Px_Actors[ent].actor)->detachShape(*shapes[i]);
+						AttachSphereToActor(ent, collision.shape.radius);
+					}
+					break;
+				case PxShapeType::Px_CAPSULE:
+					if (shapes[i]->getGeometryType() == PxGeometryType::eCAPSULE)
+					{
+						shapes[i]->setGeometry(PxCapsuleGeometry{ collision.shape.radius, collision.shape.hheight });
+					}
+					else
+					{
+						static_cast<PxRigidActor*>(Px_Actors[ent].actor)->detachShape(*shapes[i]);
+						AttachCapsuleToActor(ent, collision.shape.radius, collision.shape.hheight);
 					}
 					break;
 				}
