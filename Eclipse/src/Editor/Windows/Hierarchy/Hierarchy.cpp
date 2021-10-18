@@ -89,56 +89,56 @@ namespace Eclipse
                 {
                     TreeNodeRecursion(entityName, entCom, prev, curr, index);
                 }
-
-                if (entCom.Child.empty() && !entCom.IsAChild
-                    && ECGui::CreateSelectableButton(entityName.c_str(), &entCom.IsActive))
+                else
                 {
-                    if (curr.index == list[index])
+                    if (entCom.Child.empty() && !entCom.IsAChild
+                        && ECGui::CreateSelectableButton(entityName.c_str(), &entCom.IsActive))
                     {
-                        entCom.IsActive = true;
+                        if (curr.index == list[index])
+                        {
+                            entCom.IsActive = true;
+                            engine->editorManager->SetGlobalIndex(index);
+                            continue;
+                        }
+
+                        if (!curr.name.empty())
+                        {
+                            prev.name = curr.name;
+                            prev.index = curr.index;
+                        }
+
+                        curr.name = entityName;
+                        curr.index = list[index];
+
+                        if (!prev.name.empty() && curr.name != prev.name)
+                        {
+                            bool deleted = true;
+
+                            if (std::find(list.begin(), list.end(), prev.index) != list.end())
+                            {
+                                deleted = false;
+                            }
+
+                            if (!deleted)
+                            {
+                                auto& prevEntCom = engine->world.GetComponent<EntityComponent>(prev.index);
+                                prevEntCom.IsActive = false;
+                            }
+                        }
                         engine->editorManager->SetGlobalIndex(index);
-                        continue;
+                        UpdateEntityTracker(engine->editorManager->GetEntityID(static_cast<int>(index)));
+
                     }
 
-                    if (!curr.name.empty())
-                    {
-                        prev.name = curr.name;
-                        prev.index = curr.index;
-                    }
-
-                    curr.name = entityName;
-                    curr.index = list[index];
-
-                    if (!prev.name.empty() && curr.name != prev.name)
-                    {
-                        bool deleted = true;
-
-                        if (std::find(list.begin(), list.end(), prev.index) != list.end())
-                        {
-                            deleted = false;
-                        }
-
-                        if (!deleted)
-                        {
-                            auto& prevEntCom = engine->world.GetComponent<EntityComponent>(prev.index);
-                            prevEntCom.IsActive = false;
-                        }
-                    }
-                    engine->editorManager->SetGlobalIndex(index);
-                    UpdateEntityTracker(engine->editorManager->GetEntityID(static_cast<int>(index)));
-
-                }
-                if (!entCom.IsAChild)
-                {
                     engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
                         static_cast<int>(index), PayloadSourceType::PST_ENTITY, curr.index);
                     engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
                         static_cast<int>(index), entCom.IsActive);
                 }
-
                 //engine->editorManager->SetGlobalIndex(index);
             }
         }
+        
     }
 
     void HierarchyWindow::ShowEntityCreationList()
@@ -365,6 +365,11 @@ namespace Eclipse
                 size_t currIndex = ConvertEntityStringtoNumber(GetEntityComponentEntityNumber(parent));
                 engine->editorManager->SetGlobalIndex(engine->editorManager->GetEntityIndex(static_cast<Entity>(currIndex)));
                 UpdateEntityTracker(engine->editorManager->GetEntityID(engine->editorManager->GetEntityIndex(static_cast<Entity>(currIndex))));
+
+                engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
+                    static_cast<int>(index), PayloadSourceType::PST_ENTITY, curr.index);
+                engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
+                    static_cast<int>(index), entCom.IsActive);
             }
         }
     }

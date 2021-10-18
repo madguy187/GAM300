@@ -28,7 +28,6 @@ namespace Eclipse
     }
 
     namespace ed = ax::NodeEditor;
-    namespace Utilitiess = ax::NodeEditor::Utilities;
 
     using namespace ax;
 
@@ -151,6 +150,12 @@ namespace Eclipse
 
         void BuildNode(Node* node);
 
+        void BuildNodes();
+
+        void NodeEditorWindow::DrawPinIcon(const Pin& pin, bool connected, int alpha);
+
+        ImColor GetIconColor(PinType type);
+
         Node* FindNode(ed::NodeId id);
 
         Link* FindLink(ed::LinkId id);
@@ -161,6 +166,11 @@ namespace Eclipse
 
         bool CanCreateLink(Pin* a, Pin* b);
 
+        void Application_Frame();
+
+        void ShowLeftPane(float paneWidth);
+
+        bool Splitter(bool split_vertically, float thickness, float* size1, float* size2, float min_size1, float min_size2, float splitter_long_axis_size = -1.0f);
 
     };
 }
