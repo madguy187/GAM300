@@ -2,7 +2,8 @@
 #include "Hierarchy.h"
 #include "ECS/ComponentManager/Components/EntityComponent.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"
-
+#include "ECS/ComponentManager/Components/ParentComponent.h"
+#include "ECS/ComponentManager/Components/ChildComponent.h"
 namespace Eclipse
 {
     void HierarchyWindow::Update()
@@ -66,7 +67,7 @@ namespace Eclipse
         {
             TrackEntitySelection(engine->editorManager->GetEntityListByConstRef(),
                 PrevEnt_, CurrEnt_, EntFilter);
-
+           // TreeNodeRecursion(engine->editorManager->GetEntityListByConstRef(), EntFilter);
             ECGui::EndTreeNode();
         }
     }
@@ -82,11 +83,12 @@ namespace Eclipse
 
             if (filter.PassFilter(entCom.Name.c_str()))
             {
+
                 entityName = my_strcat(entCom.Name, " ", list[index]);
 
-                if (entCom.Child.empty() && !entCom.IsAChild)
+                if (!engine->world.CheckComponent<ParentComponent>(list[index]) && !engine->world.CheckComponent<ChildComponent>(list[index]))
                 {
-                    if (ECGui::CreateSelectableButton(entityName.c_str(), &entCom.IsActive, ImGuiSelectableFlags_AllowDoubleClick))
+                    if (ECGui::CreateSelectableButton(entityName.c_str(), &entCom.IsActive))
                     {
                         if (curr.index == list[index])
                         {
@@ -120,26 +122,149 @@ namespace Eclipse
                                 prevEntCom.IsActive = false;
                             }
                         }
-                        //entCom.IsActive = true;
-                        //engine->editorManager->SetGlobalIndex(index);
-                        //UpdateEntityTracker(engine->editorManager->GetEntityID(static_cast<int>(index)));
-                    }
-                }
 
-                if (!entCom.Child.empty())
-                {
-                    TreeNodeRecursion(entityName, entCom, prev, curr, index);
-                }
-                if (!entCom.IsAChild)
-                {
+                        entCom.IsActive = true;
+                        engine->editorManager->SetGlobalIndex(index);
+                        UpdateEntityTracker(engine->editorManager->GetEntityID(static_cast<int>(index)));
+                    }
+
                     engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
                         static_cast<int>(index), PayloadSourceType::PST_ENTITY, curr.index);
-                    std::cout << "please kill me";
                     engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
                         static_cast<int>(index), entCom.IsActive);
                 }
+
+
+                if (engine->world.CheckComponent<ParentComponent>(list[index])&& entCom.Parent.empty())
+                {
+
+                    auto& parent = engine->world.GetComponent<ParentComponent>(list[index]);
+
+                    entityName = my_strcat(entCom.Name, " ", list[index]);
+
+                    engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
+                        static_cast<int>(index), PayloadSourceType::PST_ENTITY, curr.index);
+
+                    if (ImGui::TreeNodeEx(entityName.c_str(), entCom.TreeactiveFlag))
+                    {
+                        entCom.IsActive = true;
+                        engine->editorManager->SetGlobalIndex(index);
+                        UpdateEntityTracker(engine->editorManager->GetEntityID(static_cast<int>(index)));
+
+                        for (auto& it : parent.child)
+                        {
+                            auto& parent2Com = engine->world.GetComponent<EntityComponent>(it);
+                            //basically this recursion needs to loop and cr8 node if if got similar case where
+                            //if have a child that is a parent do the fucking same yo
+                            ParentRecursion(parent2Com, it, list);
+                        }
+
+                        ECGui::EndTreeNode();
+                    }
+
+                    engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
+                            static_cast<int>(index), PayloadSourceType::PST_ENTITY, curr.index);
+                    engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
+                        static_cast<int>(index), entCom.IsActive);
+                }
+
             }
 
+        }
+    }
+
+    void HierarchyWindow::ParentRecursion(EntityComponent& entCom,Entity Num, const std::vector<Entity>& list)
+    {
+        std::string entityName{};
+
+        if (engine->world.CheckComponent<ParentComponent>(Num))
+        {
+            entCom.TreeactiveFlag |= ImGuiTreeNodeFlags_OpenOnDoubleClick;
+
+            auto& parent2 = engine->world.GetComponent<ParentComponent>(Num);
+
+            entityName = my_strcat(entCom.Name, " ", Num);
+            engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
+               static_cast<int>(GetListPos(Num)), PayloadSourceType::PST_ENTITY, Num);
+
+            if (ImGui::TreeNodeEx(entityName.c_str(), entCom.TreeactiveFlag))
+            {
+
+                entCom.TreeactiveFlag |= ImGuiTreeNodeFlags_Selected;
+                entCom.IsActive = true;
+                engine->editorManager->SetGlobalIndex(GetListPos(Num));
+                UpdateEntityTracker(engine->editorManager->GetEntityID(GetListPos(Num)));
+
+
+                for (auto& it : parent2.child)
+                {
+
+                    auto& parent2Com = engine->world.GetComponent<EntityComponent>(it);
+
+                    ParentRecursion(parent2Com, it, list);
+                }
+
+                ECGui::EndTreeNode();
+
+            }
+            else
+            {
+                engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
+                    static_cast<int>(GetListPos(Num)), PayloadSourceType::PST_ENTITY, Num);
+
+                entCom.TreeactiveFlag = ImGuiTreeNodeFlags_OpenOnDoubleClick;
+            }
+
+            engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
+                 static_cast<int>(GetListPos(Num)), PayloadSourceType::PST_ENTITY, Num);
+
+            engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
+                static_cast<int>(GetListPos(Num)), entCom.IsActive);
+        } 
+        else
+        {
+            entityName = my_strcat(entCom.Name, " ", Num);
+
+            entCom.TreeactiveFlag |= ImGuiTreeNodeFlags_OpenOnDoubleClick;
+
+            engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
+                static_cast<int>(GetListPos(Num)), PayloadSourceType::PST_ENTITY, Num);
+
+
+            if (ImGui::TreeNodeEx(entityName.c_str(), entCom.TreeactiveFlag))
+            {
+
+                entCom.TreeactiveFlag |= ImGuiTreeNodeFlags_Selected;
+                entCom.IsActive = true;
+                engine->editorManager->SetGlobalIndex(GetListPos(Num));
+                UpdateEntityTracker(engine->editorManager->GetEntityID(GetListPos(Num)));
+
+
+                ECGui::EndTreeNode();
+            }
+            else
+            {
+                engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
+                    static_cast<int>(GetListPos(Num)), PayloadSourceType::PST_ENTITY, Num);
+
+            }
+
+            if (ECGui::IsItemHovered())
+            {
+                entCom.IsActive = true;
+            }
+            else
+            {
+                entCom.IsActive = false;
+            }
+
+                engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
+                    static_cast<int>(GetListPos(Num)), PayloadSourceType::PST_ENTITY, Num);
+
+
+
+            engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
+                    static_cast<int>(GetListPos(Num)), entCom.IsActive);
         }
     }
 
@@ -237,7 +362,6 @@ namespace Eclipse
             entCom.IsActive = true;
         }
     }
-
     size_t HierarchyWindow::GetEntityGlobalIndex(size_t data)
     {
         auto it = std::find(engine->editorManager->GetEntityListByConstRef().begin(), engine->editorManager->GetEntityListByConstRef().end(), data);
@@ -250,7 +374,6 @@ namespace Eclipse
         }
         return 0;
     }
-
     std::string HierarchyWindow::GetEntityComponentEntityNumber(std::string EntityName)
     {
         size_t bracked = EntityName.find_last_of(" ");
@@ -262,7 +385,6 @@ namespace Eclipse
 
         return EntityName.substr(bracked + 1);
     }
-
     size_t HierarchyWindow::ConvertEntityStringtoNumber(std::string EntityNumber)
     {
         size_t result;
@@ -270,7 +392,6 @@ namespace Eclipse
         sstream >> result;
         return result;
     }
-
     void HierarchyWindow::HightLightParentAndChild(EntityComponent& Parent)
     {
         if (Parent.IsActive)
@@ -282,261 +403,6 @@ namespace Eclipse
             Parent.TreeactiveFlag = ImGuiTreeNodeFlags_OpenOnDoubleClick;
         }
     }
-
-    void HierarchyWindow::TreeNodeRecursion(std::string parent, EntityComponent& entCom, EntitySelectionTracker& prev, EntitySelectionTracker& curr, size_t index)
-    {
-
-        bool nodeOpen = ImGui::TreeNodeEx(parent.c_str(), entCom.TreeactiveFlag);
-
-        if (nodeOpen)
-        {
-
-            size_t nodeindex = ConvertEntityStringtoNumber(GetEntityComponentEntityNumber(parent.c_str()));
-
-            if (ECGui::IsMouseDoubleClicked(0) && ECGui::IsItemHovered())
-            {
-                for (size_t i = 0; i < engine->editorManager->GetEntityListByConstRef().size(); ++i)
-                {
-                    auto& comps = engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityListByConstRef()[i]);
-                    std::string names = my_strcat(comps.Name, " ", engine->editorManager->GetEntityListByConstRef()[i]);
-                    if (names == parent)
-                    {
-                        comps.IsActive = true;
-                    }
-                    else
-                    {
-                        comps.IsActive = false;
-                    }
-                    HightLightParentAndChild(comps);
-                }
-
-                if (entCom.TreeactiveFlag & ImGuiTreeNodeFlags_Selected)
-                {
-                    engine->editorManager->SetGlobalIndex(static_cast<size_t>(GetListPos(nodeindex)));
-                    UpdateEntityTracker(engine->editorManager->GetEntityID(GetListPos(nodeindex)));
-                }
-            }
-            else
-            {
-                for (size_t i = 0; i < engine->editorManager->GetEntityListByConstRef().size(); ++i)
-                {
-                    auto& comps = engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityListByConstRef()[i]);
-                    std::string names = my_strcat(comps.Name, " ", engine->editorManager->GetEntityListByConstRef()[i]);
-                    if (names == parent)
-                    {
-                        comps.IsActive = false;
-                    }
-
-                    HightLightParentAndChild(comps);
-                }
-            }
-
-            for (size_t i = 0; i < entCom.Child.size(); ++i)
-            {
-                auto& entCom1 = engine->world.GetComponent<EntityComponent>(entCom.Child[i]);
-                std::string name = my_strcat(entCom1.Name, " ", entCom.Child[i]);
-                size_t currIndex = ConvertEntityStringtoNumber(GetEntityComponentEntityNumber(name));
-                if (!entCom1.Child.empty())
-                {
-                    TreeNodeRecursion(name, entCom1, prev, curr, GetListPos(currIndex));
-                }
-
-                if (entCom1.Child.empty())
-                {
-                    if (ECGui::CreateSelectableButton(name.c_str(), &entCom1.IsActive, ImGuiSelectableFlags_AllowDoubleClick))
-                    {
-                        if (curr.index == currIndex)
-                        {
-                            entCom1.IsActive = true;
-                            engine->editorManager->SetGlobalIndex(GetEntityGlobalIndex(engine->editorManager->GetEntityID(GetListPos(currIndex))));
-                            UpdateEntityTracker(engine->editorManager->GetEntityID(GetListPos(currIndex)));
-                            continue;
-                        }
-
-                        if (!curr.name.empty())
-                        {
-                            prev.name = curr.name;
-                            prev.index = curr.index;
-                        }
-
-                        curr.name = name;
-                        curr.index = engine->editorManager->GetEntityListByConstRef()[GetListPos(currIndex)];
-
-                        if (!prev.name.empty() && curr.name != prev.name)
-                        {
-                            bool deleted = true;
-
-                            if (std::find(entCom1.Child.begin(), entCom1.Child.end(), prev.index) != entCom1.Child.end())
-                                deleted = false;
-
-                            if (!deleted)
-                            {
-                                auto& prevEntCom = engine->world.GetComponent<EntityComponent>(prev.index);
-                                prevEntCom.IsActive = false;
-                            }
-                        }
-                        entCom1.IsActive = true;
-                        engine->editorManager->SetGlobalIndex(GetListPos(currIndex));
-                        UpdateEntityTracker(engine->editorManager->GetEntityID(GetListPos(currIndex)));
-                    }
-                }
-                if (entCom1.IsAChild)
-                {
-                    engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
-                        static_cast<int>(GetListPos(currIndex)), PayloadSourceType::PST_ENTITY, currIndex);
-                    std::cout << name;
-                    engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
-                        static_cast<int>(GetListPos(currIndex)), entCom1.IsActive);
-                }
-            }
-            ECGui::EndTreeNode();
-        }
-        else
-        {
-            for (size_t i = 0; i < engine->editorManager->GetEntityListByConstRef().size(); ++i)
-            {
-                auto& comps = engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityListByConstRef()[i]);
-                std::string names = my_strcat(comps.Name, " ", engine->editorManager->GetEntityListByConstRef()[i]);
-                if (names == parent)
-                {
-                    comps.IsActive = false;
-                }
-                HightLightParentAndChild(comps);
-            }
-
-        }
-        //auto& prevCom = engine->world.GetComponent<EntityComponent>(prev.index);
-        //bool nodeOpen = ImGui::TreeNodeEx(parent.c_str(), entCom.TreeactiveFlag);
-        //if (nodeOpen)
-        //{
-        //    size_t currIndex = ConvertEntityStringtoNumber(GetEntityComponentEntityNumber(parent.c_str()));
-
-        //    prevCom.IsActive = false;
-
-        //    if (ECGui::IsMouseClicked(0))
-        //    {
-        //        //curr.index = entity id
-        //        engine->editorManager->SetGlobalIndex(static_cast<size_t>(GetListPos(currIndex)));
-        //        UpdateEntityTracker(engine->editorManager->GetEntityID(GetListPos(currIndex)));
-        //
-        //    }
-
-        //    HightLightParentAndChild(prevCom);
-        //    HightLightParentAndChild(entCom);
-
-        //    for (size_t i = 0; i < entCom.Child.size(); ++i)
-        //    {
-        //        auto& entCom1 = engine->world.GetComponent<EntityComponent>(entCom.Child[i]);
-        //        std::string name = my_strcat(entCom1.Name, " ", entCom.Child[i]);
-        //
-        //        bool node = ImGui::TreeNodeEx(name.c_str(), entCom1.TreeactiveFlag);
-        //    
-        //        if (node)
-        //        {
-        //            size_t currIndex = ConvertEntityStringtoNumber(GetEntityComponentEntityNumber(name));
-        //            if (ECGui::IsMouseClicked(0))
-        //            {
-        //                //curr.index = entity id
-        //                entCom.IsActive = false;
-        //                entCom1.IsActive = true;
-        //                HightLightParentAndChild(entCom);
-        //                HightLightParentAndChild(entCom1);
-        //                engine->editorManager->SetGlobalIndex(static_cast<size_t>(GetListPos(currIndex)));
-        //                UpdateEntityTracker(engine->editorManager->GetEntityID(GetListPos(currIndex)));
-        //
-        //            }
-        //            //engine->editorManager->SetGlobalIndex(engine->editorManager->GetEntityID(GetListPos(currIndex)));
-        //            //UpdateEntityTracker(engine->editorManager->GetEntityID(static_cast<int>(engine->editorManager->GetEntityIndex(GetListPos(currIndex)))));
-        //
-        //            if (!entCom1.Child.empty())
-        //            {
-        //                for (size_t x = 0; x < entCom1.Child.size(); ++x)
-        //                {
-        //                    auto& tempchild = engine->world.GetComponent<EntityComponent>(entCom1.Child[x]);
-        //                    std::string names = my_strcat(tempchild.Name, " ", entCom1.Child[x]);
-
-        //                    TreeNodeRecursion(names, tempchild, prev, curr, GetListPos(currIndex));
-        //                }
-        //            }
-        //            ECGui::EndTreeNode();
-        //        }
-        //        else
-        //        {
-        //            for (size_t i = 0; i < entCom1.Child.size(); ++i)
-        //            {
-        //                auto& child = engine->world.GetComponent<EntityComponent>(entCom1.Child[i]);
-        //                child.IsActive = false;
-        //                HightLightParentAndChild(child);
-        //            }
-        //
-        //             entCom1.IsActive = false;
-        //             entCom.IsActive = true;
-        //             HightLightParentAndChild(entCom1);
-        //             HightLightParentAndChild(entCom);
-        //             engine->editorManager->SetGlobalIndex(static_cast<size_t>(GetListPos(currIndex)));
-        //             UpdateEntityTracker(engine->editorManager->GetEntityID(GetListPos(currIndex)));
-
-        //            //size_t currIndex = ConvertEntityStringtoNumber(GetEntityComponentEntityNumber(parent));
-        //
-        //            //engine->editorManager->SetGlobalIndex(index);
-        //            //UpdateEntityTracker(engine->editorManager->GetEntityID(engine->editorManager->GetEntityIndex(index)));
-        //
-        //            //engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
-        //            //    static_cast<int>(engine->editorManager->GetEntityID(GetListPos(currIndex))), PayloadSourceType::PST_ENTITY, curr.index);
-        //            //engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
-        //            //    static_cast<int>(engine->editorManager->GetEntityID(GetListPos(currIndex))), entCom.IsActive);
-        //
-        //              //if (ECGui::IsItemClicked(0))
-        //              //{
-        //              //    size_t currIndex = ConvertEntityStringtoNumber(GetEntityComponentEntityNumber(parent));
-        //              //    engine->editorManager->SetGlobalIndex(engine->editorManager->GetEntityIndex(static_cast<Entity>(currIndex)));
-        //              //    UpdateEntityTracker(engine->editorManager->GetEntityID(engine->editorManager->GetEntityIndex(static_cast<Entity>(currIndex))));
-        //              //
-        //              //    engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
-        //              //        static_cast<int>(index), PayloadSourceType::PST_ENTITY, curr.index);
-        //              //    engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
-        //              //        static_cast<int>(index), entcom1.IsActive);
-        //              //}
-        //        }
-        //
-        //
-        //    }
-
-        //    //engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
-        //    //    static_cast<int>(index), PayloadSourceType::PST_ENTITY, currIndex);
-        //    //engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
-        //    //    static_cast<int>(index), entCom.IsActive);
-        //
-        //    ECGui::EndTreeNode();
-        //}
-        //else
-        //{
-        //    //if parent node not open
-        //
-        //    for (size_t i = 0; i < entCom.Child.size(); ++i)
-        //    {
-        //        auto& child = engine->world.GetComponent<EntityComponent>(entCom.Child[i]);
-        //        child.IsActive = false;
-        //        HightLightParentAndChild(child);
-        //    }
-
-        //    // if (ECGui::IsItemClicked(0))
-        //    // {
-        //    /*HightLightParentAndChild(entCom);*/
-        //    //size_t currIndex = ConvertEntityStringtoNumber(GetEntityComponentEntityNumber(parent));
-        //    //engine->editorManager->SetGlobalIndex(static_cast<size_t>(GetListPos(currIndex)));
-        //    //UpdateEntityTracker(engine->editorManager->GetEntityID(GetListPos(currIndex)));
-        //    //engine->editorManager->SetGlobalIndex(engine->editorManager->GetEntityIndex(currIndex));
-        //    //UpdateEntityTracker(engine->editorManager->GetEntityID(engine->editorManager->GetEntityIndex(currIndex)));
-        //   //engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
-        //   //    static_cast<int>(index), PayloadSourceType::PST_ENTITY, currIndex);
-        //   //engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
-        //   //    static_cast<int>(index), entCom.IsActive);
-        //    // }
-        //}
-        //
-    }
-
     void HierarchyWindow::ShowCreateModelList()
     {
         for (size_t i = 0; i < engine->AssimpManager.GetMeshNames().size(); ++i)
