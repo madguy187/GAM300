@@ -23,6 +23,7 @@ namespace Eclipse
 
 		MonoDomain* LoadDomain();
 		void UnloadDomain();
+		void test();
 
 	public:
 		void Init();
