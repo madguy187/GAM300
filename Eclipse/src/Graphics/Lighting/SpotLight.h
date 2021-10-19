@@ -22,6 +22,8 @@ namespace Eclipse
     private:
         void CheckUniformLoc(Shader* _shdrpgm, SpotLightComponent& hi, int index, unsigned int containersize, unsigned int EntityId);
 
+        void CheckUniformPBR(int index, unsigned int EntityId);
+
     private:
         inline static SpotLightContainer _spotlights;
         SpotLightContainer GetContainer();

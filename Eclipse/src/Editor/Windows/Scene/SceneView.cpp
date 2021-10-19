@@ -16,7 +16,7 @@ namespace Eclipse
 		mViewportSize = glm::vec2{};
 		mSceneBufferSize = glm::vec2{};
 		Type = EditorWindowType::EWT_SCENE;
-		WindowName = "Scene View";
+		WindowName = "Scene View " ICON_MDI_MONITOR;
 		m_frameBuffer = engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_SCENE);
 	}
 
@@ -32,7 +32,7 @@ namespace Eclipse
 			mViewportSize.getY() != viewportPanelSize.y)
 		{
 			// Resize the framebuffer based on the size of the imgui window
-			m_frameBuffer->Resize(static_cast<unsigned>(viewportPanelSize.x), static_cast<unsigned>(viewportPanelSize.y));
+			m_frameBuffer->Resize(static_cast<unsigned>(viewportPanelSize.x), static_cast<unsigned>(viewportPanelSize.y), FrameBufferMode::FBM_SCENE);
 			mViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 			engine->gFrameBufferManager->UpdateAspectRatio(FrameBufferMode::FBM_SCENE, mViewportSize);
 		}

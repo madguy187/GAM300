@@ -119,7 +119,7 @@ namespace Eclipse
 
         engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
-        auto shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
+        auto shdrpgm = Graphics::shaderpgms["PBRShader"];
         shdrpgm.Use();
 
         if (engine->GraphicsManager.EnableEnvironmentMapForAll && engine->GraphicsManager.DrawSky)
@@ -147,6 +147,7 @@ namespace Eclipse
         }
 
         CheckUniformLoc(shdrpgm, _camera, ID, box);
+        engine->gPBRManager->CheckUniform(ID, _camera);
 
         if (_renderMode == RenderMode::Fill_Mode)
         {
@@ -237,6 +238,8 @@ namespace Eclipse
 
     void AssimpModelManager::CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID, AABB_* box)
     {
+        TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(_camera.camType));
+
         if (engine->world.CheckComponent<MaterialComponent>(ModelID))
         {
             MaterialComponent& material = engine->world.GetComponent<MaterialComponent>(ModelID);
@@ -246,6 +249,15 @@ namespace Eclipse
             GLCall(glUniform1f(uniform_var_loc1, material.shininess));
             GLCall(glUniform1f(uniform_var_loc2, material.MaximumShininess));
         }
+
+        GLuint view = _shdrpgm.GetLocation("view");
+        GLuint cameraPos = _shdrpgm.GetLocation("camPos");
+        GLint projection = _shdrpgm.GetLocation("projection");
+
+        glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
+        glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
+        GLCall(glUniform3f(cameraPos, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ()));
+
 
         GLint uModelToNDC_ = _shdrpgm.GetLocation("uModelToNDC");
         GLuint model_ = _shdrpgm.GetLocation("model");
@@ -359,7 +371,10 @@ namespace Eclipse
     {
         glEnable(GL_BLEND);
         glEnable(GL_DEPTH_TEST);
-        glDisable(GL_CULL_FACE);
+        //glDisable(GL_CULL_FACE);
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_FRONT);
+        glFrontFace(GL_CCW);
         glPolygonMode(GL_FRONT_AND_BACK, mode);
 
         // If dont have textures ( Flagged as True )
@@ -424,39 +439,39 @@ namespace Eclipse
 
                     if (tex.HoldingTextures[it].GetType() != aiTextureType_NORMALS)
                     {
-                        GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
-                        GLuint diff0 = shader.GetLocation("diffuse0");
-                        GLuint spec = shader.GetLocation("specular0");
-                        GLuint noTex = shader.GetLocation("noTex");
-                        GLuint CheckNormapMap = shader.GetLocation("checkNormalMap");
-
-                        glUniform1i(noTex, false);
-                        glUniform1i(uniform_var_loc3, true);
-                        glUniform1i(CheckNormapMap, false);
-                        glUniform1i(diff0, it);
-                        glUniform1i(spec, it);
-                        tex.HoldingTextures[it].Bind();
+                        //GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
+                        //GLuint diff0 = shader.GetLocation("albedoMap");
+                        //GLuint spec = shader.GetLocation("albedoMap");
+                        //GLuint noTex = shader.GetLocation("noTex");
+                        //GLuint CheckNormapMap = shader.GetLocation("checkNormalMap");
+                        //
+                        //glUniform1i(noTex, false);
+                        //glUniform1i(uniform_var_loc3, true);
+                        //glUniform1i(CheckNormapMap, false);
+                        //glUniform1i(diff0, it);
+                        //glUniform1i(spec, it);
+                        //tex.HoldingTextures[it].Bind();
                     }
                     else
                     {
-                        GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
-                        GLuint CheckNoTex = shader.GetLocation("noTex");
-                        GLuint CheckNormapMap = shader.GetLocation("checkNormalMap");
-                        GLuint normal0 = shader.GetLocation("normal0");
-                        glUniform1i(uniform_var_loc3, true);
-                        glUniform1i(CheckNoTex, false);
+                       // GLint uniform_var_loc3 = shader.GetLocation("uTextureCheck");
+                       // GLuint CheckNoTex = shader.GetLocation("noTex");
+                       // GLuint CheckNormapMap = shader.GetLocation("checkNormalMap");
+                       // GLuint normal0 = shader.GetLocation("normalMap");
+                       // glUniform1i(uniform_var_loc3, true);
+                       // glUniform1i(CheckNoTex, false);
+                       //
+                       // if (engine->GraphicsManager.EnableNormalMapping)
+                       // {
+                       //     glUniform1i(CheckNormapMap, true);
+                       // }
+                       // else
+                       // {
+                       //     glUniform1i(CheckNormapMap, false);
+                       // }
 
-                        if (engine->GraphicsManager.EnableNormalMapping)
-                        {
-                            glUniform1i(CheckNormapMap, true);
-                        }
-                        else
-                        {
-                            glUniform1i(CheckNormapMap, false);
-                        }
-
-                        glUniform1i(normal0, it);
-                        tex.HoldingTextures[it].Bind();
+                       //glUniform1i(normal0, it);
+                       //tex.HoldingTextures[it].Bind();
                     }
                 }
 
@@ -474,13 +489,13 @@ namespace Eclipse
             }
         }
 
+        // reset
+        glActiveTexture(GL_TEXTURE0);
+
         // EBO stuff
         glBindVertexArray(engine->AssimpManager.Geometry[in.MeshName.data()]->VAO);
         glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(engine->AssimpManager.Geometry[in.MeshName.data()]->Indices.size()), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
-
-        // reset
-        glActiveTexture(GL_TEXTURE0);
     }
 
     void AssimpModelManager::Render(GLenum mode, MeshComponent& in)

@@ -220,6 +220,8 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\ECS\SystemManager\Systems\System\GridSystem\GridSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem\MaterialSystem.h" />
+    <ClInclude Include="src\Graphics\Material\MaterialInstance\MaterialInstance.h" />
+    <ClInclude Include="src\Graphics\Material\PBR\PBRManager.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ChildSystem\ChildSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem\ParentSystem.h" />
@@ -379,6 +381,8 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\ECS\SystemManager\Systems\System\GridSystem\GridSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem\MaterialSystem.cpp" />
+    <ClCompile Include="src\Graphics\Material\MaterialInstance\MaterialInstance.cpp" />
+    <ClCompile Include="src\Graphics\Material\PBR\PBRManager.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ChildSystem\ChildSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem\ParentSystem.cpp" />
@@ -494,6 +498,12 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.frag" />
+    <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.vert" />
+    <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />
+    <None Include="src\Assets\Shaders\PBRShader\PBR.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

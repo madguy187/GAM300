@@ -291,7 +291,7 @@ namespace Eclipse
             {
                 for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
                 {
-                   
+
                     world.Update<PhysicsSystem>();
                 }
             }
@@ -304,16 +304,19 @@ namespace Eclipse
             engine->gFrameBufferManager->GlobalBind();
 
             // Reset DebugBoxes =============================
-            engine->GraphicsManager.ResetInstancedDebugBoxes();
+            //engine->GraphicsManager.ResetInstancedDebugBoxes();
 
             // LIGHTINGSYSTEM =============================
             world.Update<LightingSystem>();
-            //
+
             // // PICKINGSYSTEM =============================
             world.Update<PickingSystem>();
-            //
+
             // // AUDIOSYSTEM =============================
             world.Update<AudioSystem>();
+
+            // MATERIALSYSTEM =============================
+            world.Update<MaterialSystem>();
 
             // RENDERSYSTEM =============================
             world.Update<RenderSystem>();

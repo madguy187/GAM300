@@ -21,6 +21,7 @@ namespace Eclipse
 		CameraComponent::CameraType mCamType;
 		ECVec2 mViewportSize;
 		FrameBuffer* m_frameBuffer;
+		FrameBufferMode FBO_Mode;
 		std::vector<std::string> mProjectionView_List;
 		bool IsWireframeMode{ false };
 		bool IsWindowActive{ false };

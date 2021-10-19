@@ -85,3 +85,14 @@ inline void Eclipse::LightManager::SetBlinnPhong(TypeOfLight& OBJ, bool& in)
         OBJ.specular.EnableBlinnPhong = in;
     }
 }
+
+template <typename TypeOfLight>
+void LightManager::SetRGBLightColor(TypeOfLight& OBJ, ECVec4 in)
+{
+    if constexpr (has_LightColor<TypeOfLight>::value == true)
+    {
+        OBJ.RGBColor.setX(in.x);
+        OBJ.RGBColor.setY(in.y);
+        OBJ.RGBColor.setZ(in.z);
+    }
+}

@@ -65,16 +65,14 @@ namespace Eclipse
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     }
 
-    void Eclipse::FrameBuffer::Resize(unsigned width, unsigned height)
+    void Eclipse::FrameBuffer::Resize(unsigned width, unsigned height, FrameBufferMode Mode)
     {
-        engine->gFrameBufferManager->CreateFBO(width, height, FrameBufferMode::FBM_SCENE);
+        engine->gFrameBufferManager->CreateFBO(width, height, Mode);
         //EDITOR_LOG_INFO("Resize Successful");
     }
 
-    void FrameBuffer::ShowWindow(FrameBuffer g, const char* input)
+    void FrameBuffer::ShowWindow(FrameBuffer g)
     {
-        (void)(input);
-
         if (&g == nullptr)
         {
             ENGINE_LOG_ASSERT(false, "FrameBuffer is Nullptr");
@@ -116,7 +114,7 @@ namespace Eclipse
         glCreateTextures(GL_TEXTURE_2D, 1, &m_data.TextureColourBuffer);
         glBindTexture(GL_TEXTURE_2D, m_data.TextureColourBuffer);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16, p_width, p_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, p_width, p_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
@@ -262,6 +260,13 @@ namespace Eclipse
 
         case FrameBufferMode::FBM_TOP:
             os << "SWITCHINGVIEWS_TOP FrameBuffer";
+            break;
+        case FrameBufferMode::FBM_MATERIALEDITOR:
+            os << "Material_EDITOR FrameBuffer";
+            break;
+
+        case FrameBufferMode::FBM_MESHEDITOR:
+            os << "MESH_EDITOR FrameBuffer";
             break;
         }
 
