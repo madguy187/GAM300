@@ -38,7 +38,7 @@ namespace Eclipse
         std::vector<Texture> HoldingTextures;
 
         // Material Instance
-        bool IsMaterialIstance = false;
+        bool HasMaterialIstance = false;
         std::string MaterialInstanceName = "Default";
     };
 }

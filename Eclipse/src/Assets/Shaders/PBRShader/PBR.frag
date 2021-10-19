@@ -20,7 +20,7 @@ uniform vec3  AlbedoConstant;
 uniform float MetallicConstant;
 uniform float RoughnessConstant;
 uniform float AoConstant;
-uniform int HasTexture;
+uniform int HasInstance;
 
 // lights
 uniform vec3 lightPositions[4];
@@ -142,14 +142,14 @@ void main()
     // base relfect
     vec3 F0 = vec3(0.4); 
 
-    if(HasTexture == 1)
-    {
+    if(HasInstance == 1)
+    {   
         N = getNormalFromMap();
         albedo     = pow(texture(albedoMap, TexCoords).rgb, vec3(2.2));
         metallic  = texture(metallicMap, TexCoords).r;
         roughness = texture(roughnessMap, TexCoords).r;
         ao        = texture(aoMap, TexCoords).r;
-        F0 = mix(F0, albedo, metallic);
+        F0 = mix(F0, albedo, metallic);  
     }
     else
     {
@@ -172,16 +172,17 @@ void main()
     // Cook-Torrance BRDF
     float NDF , G;
 
-    if(HasTexture == 1)
+    if(HasInstance == 1)
     {
         NDF = DistributionGGX(N, H, roughness);   
-        G   = GeometrySmith(N, V, L, roughness);    
+        G   = GeometrySmith(N, V, L, roughness);           
     }  
     else
     {
         NDF = DistributionGGX(N, H, RoughnessConstant);   
         G   = GeometrySmith(N, V, L, RoughnessConstant);            
     }
+
     vec3 F    = fresnelSchlick(max(dot(H, V), 0.0), F0);
        
     vec3 numerator    = NDF * G * F; 
@@ -191,7 +192,7 @@ void main()
     vec3 kS = F;
     vec3 kD = vec3(1.0) - kS;
 
-    if(HasTexture == 1)
+    if(HasInstance == 1)
     {
         kD *= 1.0 - metallic;	 
         float NdotL = max(dot(N, L), 0.0);        
@@ -227,10 +228,10 @@ void main()
         // Cook-Torrance BRDF
         float NDF , G;
 
-        if(HasTexture == 1)
+        if(HasInstance == 1)
         {
             NDF = DistributionGGX(N, H, roughness);   
-            G   = GeometrySmith(N, V, L, roughness);    
+            G   = GeometrySmith(N, V, L, roughness);   
         }  
         else
         {
@@ -246,11 +247,11 @@ void main()
         vec3 kS = F;
         vec3 kD = vec3(1.0) - kS;
 
-        if(HasTexture == 1)
+        if(HasInstance == 1)
         {
             kD *= 1.0 - metallic;	 
             float NdotL = max(dot(N, L), 0.0);        
-            Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+            Lo += (kD * albedo / PI + specular) * radiance * NdotL;            
         } 
         else
         {
@@ -281,10 +282,10 @@ void main()
         // Cook-Torrance BRDF
         float NDF , G;
 
-        if(HasTexture == 1)
+        if(HasInstance == 1)
         {
             NDF = DistributionGGX(N, H, roughness);   
-            G   = GeometrySmith(N, V, L, roughness);    
+            G   = GeometrySmith(N, V, L, roughness);                
         }  
         else
         {
@@ -300,11 +301,11 @@ void main()
         vec3 kS = F;
         vec3 kD = vec3(1.0) - kS;
 
-        if(HasTexture == 1)
+        if(HasInstance == 1)
         {
             kD *= 1.0 - metallic;	 
             float NdotL = max(dot(N, L), 0.0) * intensity;        
-            Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+            Lo += (kD * albedo / PI + specular) * radiance * NdotL;            
         } 
         else
         {
@@ -314,13 +315,13 @@ void main()
         }
     }   
 
-       if( HasTexture == 1)
+       if( HasInstance == 1)
        {
           vec3 ambient = vec3(0.03) * albedo * ao;
           vec3 color = ambient + Lo;
           color = color / (color + vec3(1.0));
           color = pow(color, vec3(1.0/2.2)); 
-          FragColor = vec4(color, 1.0);
+          FragColor = vec4(color, 1.0);            
         }
         else
         {
@@ -330,15 +331,4 @@ void main()
           color = pow(color, vec3(1.0/2.2)); 
           FragColor = vec4(color, 1.0);      
         }
-
-        //vec3 ambient = vec3(0.03) * albedo * ao;
-        //vec3 color = ambient + Lo;
-        //
-        //// HDR + GAMMA
-        ////color = color / (color + vec3(1.0));
-        //
-        //color = vec3(1.0) - exp(-color * Exposure);
-        //
-        //color = pow(color, vec3(1.0/2.5)); 
-        //FragColor = vec4(color, 1.0);
 }

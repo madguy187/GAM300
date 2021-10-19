@@ -15,14 +15,7 @@ namespace Eclipse
         engine->Timer.SetName({ SystemName::MATERIAL });
         engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
-
-        //for (auto const& entityID : mEntities)
-        //{
-        //    engine->Test.CheckUniform(entityID);
-        //}
-
-        //engine->gPBRManager->PBRScene();
-
+        engine->gPBRManager->PBRScene();
         engine->MaterialManager.StencilBufferClear();
 
         engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());
