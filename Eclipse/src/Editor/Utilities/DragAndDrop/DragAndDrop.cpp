@@ -112,6 +112,7 @@ namespace Eclipse
 
 	void DragAndDrop::IndexPayloadTarget(const char* id, const int& destination, bool IsSelected, PayloadTargetType type)
 	{
+
 		if (ECGui::BeginDragDropTarget())
 		{
 			const ImGuiPayload* payload = ECGui::AcceptDragDropPayload(id);
@@ -125,10 +126,9 @@ namespace Eclipse
 
 			ECGui::EndDragDropTarget();
 		}
-		else
+
 		if (IsSelected && IsIndexJobSelected)
 		{
-			std::cout<<destination<<std::endl;
 
 			switch (type)
 			{
@@ -165,6 +165,7 @@ namespace Eclipse
 								break;
 								// Parent Child
 							case 2:
+
 								DestinationEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(DestinationIndex_));
 
 								SourceEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(SourceIndex_));
