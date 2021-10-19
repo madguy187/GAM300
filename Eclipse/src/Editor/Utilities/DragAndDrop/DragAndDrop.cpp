@@ -125,6 +125,7 @@ namespace Eclipse
 
 			ECGui::EndDragDropTarget();
 		}
+		else
 		if (IsSelected && IsIndexJobSelected)
 		{
 			std::cout<<destination<<std::endl;

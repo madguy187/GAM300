@@ -84,6 +84,11 @@ namespace Eclipse
             {
                 entityName = my_strcat(entCom.Name, " ", list[index]);
 
+                if (!entCom.Child.empty())
+                {
+                    TreeNodeRecursion(entityName, entCom, prev, curr, index);
+                }
+
                 if (entCom.Child.empty() && !entCom.IsAChild)
                 {
                     if (ECGui::CreateSelectableButton(entityName.c_str(), &entCom.IsActive))
@@ -134,16 +139,14 @@ namespace Eclipse
                         engine->editorManager->SetGlobalIndex(index);
                         UpdateEntityTracker(engine->editorManager->GetEntityID(static_cast<int>(index)));
                     }
-                }               
-                engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
-                    static_cast<int>(index), PayloadSourceType::PST_ENTITY, curr.index);
-                engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
-                    static_cast<int>(index), entCom.IsActive);
-                if(!entCom.Child.empty())
+                }
+                if (!entCom.Child.empty())
                 {
-                   TreeNodeRecursion(entityName, entCom, prev, curr, index);
-                }    
-
+                    engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
+                        static_cast<int>(index), PayloadSourceType::PST_ENTITY, curr.index);
+                    engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
+                        static_cast<int>(index), entCom.IsActive);
+                }
             }
 
         }
@@ -344,7 +347,6 @@ namespace Eclipse
                             TreeNodeRecursion(names, tempchild, prev, curr, GetListPos(currIndex));
                         }
                     }
-        
                     ECGui::EndTreeNode();
                 }
                 else
@@ -362,6 +364,7 @@ namespace Eclipse
                      HightLightParentAndChild(entCom);
                      engine->editorManager->SetGlobalIndex(static_cast<size_t>(GetListPos(currIndex)));
                      UpdateEntityTracker(engine->editorManager->GetEntityID(GetListPos(currIndex)));
+
                     //size_t currIndex = ConvertEntityStringtoNumber(GetEntityComponentEntityNumber(parent));
         
                     //engine->editorManager->SetGlobalIndex(index);
@@ -387,7 +390,7 @@ namespace Eclipse
         
         
             }
-        
+
             //engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
             //    static_cast<int>(index), PayloadSourceType::PST_ENTITY, currIndex);
             //engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
@@ -405,7 +408,7 @@ namespace Eclipse
                 child.IsActive = false;
                 HightLightParentAndChild(child);
             }
-        
+
             // if (ECGui::IsItemClicked(0))
             // {
             /*HightLightParentAndChild(entCom);*/
@@ -420,10 +423,6 @@ namespace Eclipse
            //    static_cast<int>(index), entCom.IsActive);
             // }
         }
-        engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
-            static_cast<int>(index), PayloadSourceType::PST_ENTITY, curr.index);
-        engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
-            static_cast<int>(index), entCom.IsActive);
         
     }
 
