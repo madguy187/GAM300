@@ -100,3 +100,6 @@
 
 // Random Number Generator
 #include "Library/Random/Random.h"
+
+//UUID
+#include "Library/UUID/UUIDGenerator.h"

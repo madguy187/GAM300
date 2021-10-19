@@ -17,11 +17,6 @@ namespace Eclipse
 		std::filesystem::create_directories(PrefabPath);
 	}
 
-	long long unsigned int PrefabManager::GetUniqueIdentifier(PrefabComponent& prefab)
-	{
-		return reinterpret_cast<long long unsigned int>(&prefab) + CountID++;
-	}
-
 	void PrefabManager::LoadAllPrefab()
 	{
 		const char* AssetsPath = "src\\Assets";
@@ -91,8 +86,8 @@ namespace Eclipse
 		std::queue<Entity> copyQueue;
 		std::vector<Entity> contents;
 		PrefabComponent comp;
-		long long unsigned int generatedID = GetUniqueIdentifier(comp);
-
+		EUUID generatedID = UUIDGenerator::GenerateUUID();
+		comp.PrefabID = generatedID;
 		if (!w.CheckComponent<PrefabComponent>(ent))
 		{
 			comp.PrefabID = generatedID;
@@ -101,8 +96,7 @@ namespace Eclipse
 		else
 		{
 			auto& existing = w.GetComponent<PrefabComponent>(ent);
-			existing.IsChild = false;
-			existing.PrefabID = GetUniqueIdentifier(existing);
+			existing = comp;
 		}
 
 		//Push the first entity
@@ -306,6 +300,11 @@ namespace Eclipse
 		for(auto ent : entities)
 		{
 			auto& prefabComp = engine->prefabWorld.GetComponent<PrefabComponent>(ent);
+			if (prefabComp.IsChild)
+			{
+				continue;
+			}
+
 			std::string path = GetPath(prefabComp.PrefabID);
 			if(std::filesystem::exists(path))
 			{

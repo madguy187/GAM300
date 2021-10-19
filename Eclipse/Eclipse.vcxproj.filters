@@ -808,6 +808,7 @@
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\EntityDeleteDeltaCommand.h" />
     <ClInclude Include="src\Library\Random\Random.h" />
+    <ClInclude Include="src\Library\UUID\UUIDGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1196,5 +1197,6 @@
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\Library\Random\Random.cpp" />
+    <ClCompile Include="src\Library\UUID\UUIDGenerator.cpp" />
   </ItemGroup>
 </Project>

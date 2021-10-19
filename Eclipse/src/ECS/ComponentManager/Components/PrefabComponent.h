@@ -1,4 +1,5 @@
 #pragma once
+#include "Global.h"
 #include "Reflection/Meta.h"
 #include "Reflection/RemTypeQual.h"
 
@@ -9,6 +10,6 @@ namespace Eclipse
 		META_DATA(PrefabComponent);
 		bool IsChild = false;
 		
-		long long unsigned int PrefabID = 0;
+		EUUID PrefabID = 0;
 	};
 }

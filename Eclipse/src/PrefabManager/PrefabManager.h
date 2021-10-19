@@ -30,8 +30,6 @@ namespace Eclipse
 
 		PrefabUseList list{};
 
-		long long unsigned int GetUniqueIdentifier(PrefabComponent& prefab);
-
 		void LoadPrefab(const char* path);
 
 		std::string GenerateFileName(EntityComponent& entComp, const char* path);
