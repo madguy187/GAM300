@@ -78,8 +78,8 @@ namespace Eclipse
     void Engine::Run()
     {
         ZoneScopedN("Engine")
-            // register component
-            world.RegisterComponent<EntityComponent>();
+        // register component
+        world.RegisterComponent<EntityComponent>();
         world.RegisterComponent<TransformComponent>();
         world.RegisterComponent<MeshComponent>();
         world.RegisterComponent<CameraComponent>();

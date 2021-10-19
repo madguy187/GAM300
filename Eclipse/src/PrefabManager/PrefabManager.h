@@ -5,10 +5,9 @@ namespace Eclipse
 {
 	class PrefabManager
 	{
-		std::set<long long unsigned int> PrefabIDSet;
-		std::unordered_map<long long unsigned int, Entity> mapPIDToEID;
-		std::unordered_map<std::string, long long unsigned int> mapPathToID;
-		static long long unsigned int CountID;
+		std::set<EUUID> PrefabIDSet;
+		std::unordered_map<EUUID, Entity> mapPIDToEID;
+		std::unordered_map<std::string, EUUID> mapPathToID;
 
 		using PrefabUseList = ComponentTypeList<
 			AABBComponent,
@@ -70,9 +69,13 @@ namespace Eclipse
 			}
 		}
 
-		std::string GetPath(long long unsigned int id);
+		std::string GetPath(const EUUID& id);
 
 		void OverwritePrefab(const Entity& ent, const char* path);
+
+		bool CheckPrefabExistence(const EUUID& prefabID);
+
+		void InsertPrefab(const Entity& ent, const char* path, const EUUID& prefabID);
 
 	public:
 		static const std::string PrefabPath;

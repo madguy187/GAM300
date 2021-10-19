@@ -10,7 +10,18 @@
 namespace Eclipse
 {
 	const std::string PrefabManager::PrefabPath = "src\\Assets\\Prefabs\\";
-	long long unsigned int PrefabManager::CountID = 0;
+
+	bool PrefabManager::CheckPrefabExistence(const EUUID& prefabID)
+	{
+		return !(PrefabIDSet.find(prefabID) == PrefabIDSet.end());
+	}
+
+	void PrefabManager::InsertPrefab(const Entity& ent, const char* path, const EUUID& prefabID)
+	{
+		mapPathToID[path] = prefabID;
+		PrefabIDSet.insert(prefabID);
+		mapPIDToEID[prefabID] = ent;
+	}
 
 	PrefabManager::PrefabManager()
 	{
@@ -33,15 +44,13 @@ namespace Eclipse
 	void PrefabManager::LoadPrefab(const char* path)
 	{
 		Entity ent = MAX_ENTITY;
-		long long unsigned int PrefabID = engine->szManager.LoadPrefabFile(ent, path);
+		EUUID PrefabID = engine->szManager.LoadPrefabFile(ent, path);
 
 		if (PrefabID != 0)
 		{
-			if (PrefabIDSet.find(PrefabID) == PrefabIDSet.end())
+			if (!CheckPrefabExistence(PrefabID))
 			{
-				mapPathToID[path] = PrefabID;
-				PrefabIDSet.insert(PrefabID);
-				mapPIDToEID[PrefabID] = ent;
+				InsertPrefab(ent, path, PrefabID);
 			}
 			else
 			{
@@ -132,9 +141,10 @@ namespace Eclipse
 		}
 
 		std::string destPath = GenerateFileName(entComp, path);
-		mapPathToID[destPath] =  generatedID;
+		InsertPrefab(contents[0], destPath.c_str(), generatedID);
+		/*mapPathToID[destPath] =  generatedID;
 		PrefabIDSet.insert(generatedID);
-		mapPIDToEID[generatedID] = contents[0];
+		mapPIDToEID[generatedID] = contents[0];*/
 
 		engine->szManager.SavePrefabFile(prefabComp.PrefabID, contents, destPath.c_str());
 	}
@@ -280,7 +290,7 @@ namespace Eclipse
 		engine->szManager.SavePrefabFile(prefabComp.PrefabID, contents, path);
 	}
 
-	std::string PrefabManager::GetPath(long long unsigned int id)
+	std::string PrefabManager::GetPath(const EUUID& id)
 	{
 		std::string path;
 		for (auto it = mapPathToID.begin(); it != mapPathToID.end(); ++it)

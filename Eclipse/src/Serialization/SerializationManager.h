@@ -473,6 +473,7 @@ namespace Eclipse
 		template <typename CompType>
 		inline bool DeserializeComponent(World& w, const Entity& ent)
 		{
+			std::cout << typeid(CompType).name() << std::endl;
 			auto index = static_cast<unsigned int>(w.GetComponentType<CompType>());
 			auto name = w.GetAllComponentNames()[index];
 			bool isSuccess = true;
@@ -510,9 +511,9 @@ namespace Eclipse
 
 		bool LoadFile(const char* fullpath);
 
-		void SavePrefab(long long unsigned int  prefabID, std::vector<Entity>& prefabContents);
+		void SavePrefab(const EUUID& prefabID, std::vector<Entity>& prefabContents);
 
-		long long unsigned int LoadPrefab(Entity& dszEnt);
+		EUUID LoadPrefab(Entity& dszEnt);
 
 		void SavePrefabWorld(const std::set<Entity>& entities);
 
@@ -528,9 +529,9 @@ namespace Eclipse
 
 		void LoadBackupFile();
 
-		void SavePrefabFile(unsigned long long int prefabID, std::vector<Entity>& prefabContents, const char* path);
+		void SavePrefabFile(const EUUID& prefabID, std::vector<Entity>& prefabContents, const char* path);
 
-		long long unsigned int LoadPrefabFile(Entity& dszEnt, const char* fullpath);
+		EUUID LoadPrefabFile(Entity& dszEnt, const char* fullpath);
 
 		void SaveSceneFile(const char* fullpath = "Data/Temp/Temp.scn");
 
@@ -664,9 +665,15 @@ namespace Eclipse
 			((SerializeComponent<T>(w, ent)), ...);
 		}
 
-		bool DeserializeListedComponent(World&, const Entity&)
+		template <typename T>
+		bool DeserializeListedComponent(World& w, const Entity& ent, TypeList<T>)
 		{
-			return true;
+			bool result = false;
+			if (DeserializeComponent<T>(w, ent))
+			{
+				result = true;
+			}
+			return result; 
 		}
 
 		template <typename T, typename... Args>

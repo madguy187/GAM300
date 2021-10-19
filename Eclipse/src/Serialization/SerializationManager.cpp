@@ -53,39 +53,6 @@ namespace Eclipse
 
 	void SerializationManager::SerializeAllComponents(World& w, const Entity& ent)
 	{
-		/*SerializeComponent<AABBComponent>(w, ent);
-
-		SerializeComponent<AIComponent>(w, ent);
-		
-		SerializeComponent<AudioComponent>(w, ent);
-
-		SerializeComponent<CameraComponent>(w, ent);
-
-		SerializeComponent<CollisionComponent>(w, ent);
-
-		SerializeComponent<DirectionalLightComponent>(w, ent);
-
-		SerializeComponent<EntityComponent>(w, ent);
-
-		SerializeComponent<LightComponent>(w, ent);
-
-		SerializeComponent<MaterialComponent>(w, ent);
-
-		SerializeComponent<MeshComponent>(w, ent);
-
-		SerializeComponent<ModelComponent>(w, ent);
-
-		SerializeComponent<PointLightComponent>(w, ent);
-
-		SerializeComponent<PrefabComponent>(w, ent);
-		
-		SerializeComponent<RigidBodyComponent>(w, ent);
-
-		SerializeComponent<ScriptComponent>(w, ent);
-
-		SerializeComponent<SpotLightComponent>(w, ent);
-
-		SerializeComponent<TransformComponent>(w, ent);*/
 		SerializeListedComponent(w, ent, all_component_list);
 	}
 
@@ -93,23 +60,7 @@ namespace Eclipse
 	{
 		bool isSuccess = false;
 
-		if (DeserializeComponent<AABBComponent>(w, ent) &&
-			DeserializeComponent<AIComponent>(w, ent) &&
-			DeserializeComponent<AudioComponent>(w, ent) &&
-			DeserializeComponent<CameraComponent>(w, ent) &&
-			DeserializeComponent<CollisionComponent>(w, ent) &&
-			DeserializeComponent<DirectionalLightComponent>(w, ent) &&
-			DeserializeComponent<EntityComponent>(w, ent) &&
-			DeserializeComponent<LightComponent>(w, ent) &&
-			DeserializeComponent<MaterialComponent>(w, ent) &&
-			DeserializeComponent<MeshComponent>(w, ent) &&
-			DeserializeComponent<ModelComponent>(w, ent) &&
-			DeserializeComponent<PointLightComponent>(w, ent) &&
-			DeserializeComponent<PrefabComponent>(w, ent) &&
-			DeserializeComponent<RigidBodyComponent>(w, ent) &&
-			DeserializeComponent<ScriptComponent>(w, ent) &&
-			DeserializeComponent<SpotLightComponent>(w, ent) &&
-			DeserializeComponent<TransformComponent>(w, ent))
+		if (DeserializeListedComponent(w, ent, all_component_list))
 		{
 			if (!PrefabUse)
 			{
@@ -222,7 +173,7 @@ namespace Eclipse
 		std::filesystem::remove_all(TEMP_PATH);
 	}
 
-	void SerializationManager::SavePrefab(long long unsigned int prefabID, std::vector<Entity>& prefabContents)
+	void SerializationManager::SavePrefab(const EUUID& prefabID, std::vector<Entity>& prefabContents)
 	{
 		World& prefabW = engine->prefabWorld;
 		size_t counter = 0;
@@ -237,10 +188,10 @@ namespace Eclipse
 		sz.CloseElement();
 	}
 
-	long long unsigned int SerializationManager::LoadPrefab(Entity& dszEnt)
+	EUUID SerializationManager::LoadPrefab(Entity& dszEnt)
 	{
 		World& prefabW = engine->prefabWorld;
-		long long unsigned int PrefabID = 0;
+		EUUID PrefabID = 0;
 
 		if(dsz.StartElement("Prefab"))
 		{
@@ -262,15 +213,15 @@ namespace Eclipse
 		return PrefabID;
 	}
 
-	void SerializationManager::SavePrefabFile(unsigned long long int prefabID, std::vector<Entity>& prefabContents, const char* path)
+	void SerializationManager::SavePrefabFile(const EUUID& prefabID, std::vector<Entity>& prefabContents, const char* path)
 	{
 		SavePrefab(prefabID, prefabContents);
 		SaveFile(path);
 	}
 
-	long long unsigned int SerializationManager::LoadPrefabFile(Entity& dszEnt, const char* fullpath)
+	EUUID SerializationManager::LoadPrefabFile(Entity& dszEnt, const char* fullpath)
 	{
-		long long unsigned int PrefabID = 0;
+		EUUID PrefabID = 0;
 		if (LoadFile(fullpath))
 		{
 			PrefabID =  LoadPrefab(dszEnt);
