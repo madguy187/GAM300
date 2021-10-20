@@ -4,8 +4,6 @@
 #include "Reflection/Meta.h"
 #include "Reflection/RemTypeQual.h"
 
-#include "imgui.h"
-
 namespace Eclipse
 {
 	struct EntityComponent
@@ -19,7 +17,5 @@ namespace Eclipse
 		std::vector<Entity> Child;
 		std::vector<Entity> Parent;
 		bool IsAChild = false;
-		bool isTreeNode = false;
-		ImGuiTreeNodeFlags TreeactiveFlag = ImGuiTreeNodeFlags_OpenOnDoubleClick;
 	};
 }

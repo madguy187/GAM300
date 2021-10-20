@@ -31,9 +31,6 @@ namespace Eclipse
 		bool ShowPrefebProperty(Entity ID);
 		bool ShowAIProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 
-		bool ShowParentProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
-		bool ShowChildProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
-
 		void AddComponentsController(Entity ID);
 		void RemoveComponentsController(Entity ID);
 		void ShowAddComponentList(Entity ID);
