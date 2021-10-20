@@ -473,7 +473,6 @@ namespace Eclipse
 		template <typename CompType>
 		inline bool DeserializeComponent(World& w, const Entity& ent)
 		{
-			std::cout << typeid(CompType).name() << std::endl;
 			auto index = static_cast<unsigned int>(w.GetComponentType<CompType>());
 			auto name = w.GetAllComponentNames()[index];
 			bool isSuccess = true;
