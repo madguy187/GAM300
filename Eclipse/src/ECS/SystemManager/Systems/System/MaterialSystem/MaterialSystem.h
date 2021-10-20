@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Graphics/Material/PBR/PBRManager.h"
 #include "../System.h"
 
 namespace Eclipse
@@ -8,7 +9,6 @@ namespace Eclipse
     {
     public:
         static void Init();
-
     private:
         void Update() override;
     };

@@ -9,10 +9,14 @@
 #include "Editor/Windows/GameView/GameView.h"
 #include "Editor/Windows/Scene/SceneView.h"
 
+#include "ECS/SystemManager/Systems/System/MaterialSystem/MaterialSystem.h"
+
 namespace Eclipse
 {
     void RenderSystem::Init()
     {
+        engine->gPBRManager = std::make_unique<PBRManager>();
+
         // Register Threads
         engine->GraphicsManager.RegisterThreads();
 
@@ -38,6 +42,8 @@ namespace Eclipse
 
         // CUlling =============================
         engine->gCullingManager = std::make_unique<CullingManager>();
+
+        MaterialSystem::Init();
     }
 
     void RenderSystem::Update()
@@ -61,7 +67,7 @@ namespace Eclipse
             engine->GraphicsManager.RenderSky(FrameBufferMode::FBM_SCENE);
 
             // Basic Primitives Render Start =============================
-            for (auto const& entityID : RenderablesVsFrustrum)
+            for (auto const& entityID : mEntities)
             {
                 // If No Mesh Component , Do not Continue
                 if (!engine->world.CheckComponent<MeshComponent>(entityID))

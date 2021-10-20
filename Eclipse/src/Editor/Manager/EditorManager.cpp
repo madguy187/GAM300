@@ -295,10 +295,10 @@ namespace Eclipse
 	bool EditorManager::IsAnyGizmoWindowActive()
 	{
 		auto* scene = dynamic_cast<SceneWindow*>(Windows_[1].get());
-		auto* sv1 = dynamic_cast<TopSwitchViewWindow*>(Windows_[8].get());
-		auto* sv2 = dynamic_cast<BottomSwitchViewWindow*>(Windows_[9].get());
-		auto* sv3 = dynamic_cast<LeftSwitchViewWindow*>(Windows_[10].get());
-		auto* sv4 = dynamic_cast<RightSwitchViewWindow*>(Windows_[11].get());
+		auto* sv1 = dynamic_cast<TopSwitchViewWindow*>(Windows_[2].get());
+		auto* sv2 = dynamic_cast<BottomSwitchViewWindow*>(Windows_[3].get());
+		auto* sv3 = dynamic_cast<LeftSwitchViewWindow*>(Windows_[4].get());
+		auto* sv4 = dynamic_cast<RightSwitchViewWindow*>(Windows_[5].get());
 
 		if (scene->GetIsWindowActive() || sv1->GetIsWindowActive() || sv2->GetIsWindowActive()
 			|| sv3->GetIsWindowActive() || sv4->GetIsWindowActive())

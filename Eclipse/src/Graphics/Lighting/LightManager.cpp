@@ -92,16 +92,21 @@ namespace Eclipse
     {
         auto shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
         shdrpgm.Use();
-
         GLint NumberOfPointLights = shdrpgm.GetLocation("NumberOfPointLights");
         GLint NumberOfSpotLights = shdrpgm.GetLocation("NumberOfSpotLights");
         GLint NumberOfDirectionalLights = shdrpgm.GetLocation("NumberOfDirectionalLights");
-
         GLCall(glUniform1i(NumberOfPointLights, _allpointlights.GetNumberOfPointLights()));
         GLCall(glUniform1i(NumberOfSpotLights, _allspotlights.GetNumberOfSpotLights()));
         GLCall(glUniform1i(NumberOfDirectionalLights, _DirectionalLights.DirectionalLightcounter));
-
         shdrpgm.UnUse();
+
+        auto shdrpgm2 = Graphics::shaderpgms["PBRShader"];
+        shdrpgm2.Use();
+        GLint NumberOfPointLightsforPBR = shdrpgm2.GetLocation("NumberOfPointLights");
+        GLint NumberOfSpotLightsforPBR = shdrpgm2.GetLocation("NumberOfSpotLights");
+        GLCall(glUniform1i(NumberOfPointLightsforPBR, _allpointlights.GetNumberOfPointLights()));
+        GLCall(glUniform1i(NumberOfSpotLightsforPBR, _allspotlights.GetNumberOfSpotLights()));
+        shdrpgm2.UnUse();
     }
 
     void LightManager::DestroyLight(Entity ID)
