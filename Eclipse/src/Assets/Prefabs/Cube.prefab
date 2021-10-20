@@ -1,10 +1,10 @@
 <?xml version="1.0" ?>
-<Prefab PrefabID="881335463792" Size="1">
+<Prefab PrefabID="7021152685380616553" Size="1">
     <Entity_0 ID="0">
         <AABBComponent>
-            <center x="-62.105" y="-2.87088" z="0" />
-            <Min x="-112.105" y="-5.37088" z="-20.1126" />
-            <Max x="-12.105" y="-0.370878" z="20.1126" />
+            <center x="9.43812" y="0" z="24.9364" />
+            <Min x="6.93812" y="-2.5" z="22.4364" />
+            <Max x="11.9381" y="2.5" z="27.4364" />
         </AABBComponent>
         <EntityComponent>
             <Tag value="Cube" />
@@ -20,14 +20,16 @@
             <specular x="1" y="1" z="1" />
             <NoTextures value="true" />
             <shininess value="0.25" />
-            <MaximumShininess value="128" />
+            <MaximumShininess value="0" />
             <ComboIndex value="1" />
             <TextureComboIndex value="0" />
             <Type value="TT_2D" />
             <hasTexture value="true" />
-            <TextureRef value="meshes_4" />
+            <TextureRef value="FolderIcon" />
             <TextureKey value="" />
             <HoldingTextures size="0" />
+            <HasMaterialIstance value="false" />
+            <MaterialInstanceName value="Default" />
         </MaterialComponent>
         <MeshComponent>
             <MeshName value="" />
@@ -46,17 +48,14 @@
             <ENV_MAP value="false" />
             <ENV_TYPE value="MT_REFLECT" />
         </MeshComponent>
-        <CollisionComponent>
-            <shape Shape="Px_CUBE" Hx="50" Hy="2.5" Hz="20.1126" Radius="1" Hheight="1" />
-        </CollisionComponent>
         <TransformComponent>
-            <position x="0" y="-2.384" z="0" />
-            <rotation x="314.526" y="0" z="0" />
-            <scale x="100" y="5" z="40.2251" />
+            <position x="-4.21833" y="0" z="20.1836" />
+            <rotation x="254.118" y="148.235" z="-80" />
+            <scale x="5" y="5" z="5" />
         </TransformComponent>
         <PrefabComponent>
             <IsChild value="false" />
-            <PrefabID value="881335463792" />
+            <PrefabID value="7021152685380616553" />
         </PrefabComponent>
     </Entity_0>
 </Prefab>
