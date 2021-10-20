@@ -563,16 +563,18 @@ namespace Eclipse
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloatWidget("Material MaximumShininess", &_Material.MaximumShininess, true, 0.0f, 200.0f);
                 ECGui::NextColumn();
-                //ECGui::DrawTextWidget<const char*>("Thickness", "");
-                //ECGui::DrawSliderFloatWidget("Material Thickness", &_Material.Thickness, true, 0.0f, 200.0f);
-
-                //ECGui::DrawTextWidget<const char*>("ScaleUp", "");
-                //ECGui::DrawSliderFloatWidget("Material ScaleUp", &_Material.ScaleUp, true, 0.0f, 200.0f);
 
                 ECGui::DrawTextWidget<const char*>("Highlight", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::CheckBoxBool("Enable Blinn Phong", &_Material.Highlight);
+                ECGui::SetColumns(1, nullptr, true);
+                ECGui::InsertHorizontalLineSeperator();
+
+                ECGui::DrawTextWidget<const char*>("HasMaterialIstance", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                ECGui::CheckBoxBool("HasMaterialIstance", &_Material.HasMaterialIstance);
                 ECGui::SetColumns(1, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
             }
@@ -786,7 +788,12 @@ namespace Eclipse
                         }
                     }
 
-                    ECGui::NextColumn();
+                    ECGui::DrawInputTextHintWidget("AudioPath", "Drag Audio files here",
+                        const_cast<char*>(audio.AudioPath.c_str()), 256,
+                        true, ImGuiInputTextFlags_ReadOnly);
+
+                    engine->editorManager->DragAndDropInst_.StringPayloadTarget("wav", audio.AudioPath,
+                        "Wav File inserted.");
 
                     if (ECGui::ButtonBool("Clear Audio", { ImGui::GetColumnWidth(),25 }))
                     {

@@ -228,6 +228,7 @@ namespace Eclipse
 
         //Deserialization(temp)
         /*audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);*/
+        //audioManager.PlayEvent("event:/WaterEffect");
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
             glfwPollEvents();
@@ -290,7 +291,7 @@ namespace Eclipse
             {
                 for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
                 {
-                   
+
                     world.Update<PhysicsSystem>();
                 }
             }
@@ -307,12 +308,15 @@ namespace Eclipse
 
             // LIGHTINGSYSTEM =============================
             world.Update<LightingSystem>();
-            //
+
             // // PICKINGSYSTEM =============================
             world.Update<PickingSystem>();
-            //
+
             // // AUDIOSYSTEM =============================
             world.Update<AudioSystem>();
+
+            // MATERIALSYSTEM =============================
+            world.Update<MaterialSystem>();
 
             // RENDERSYSTEM =============================
             world.Update<RenderSystem>();
