@@ -126,7 +126,7 @@ namespace Eclipse
 
 			ECGui::EndDragDropTarget();
 		}
-
+		else
 		if (IsSelected && IsIndexJobSelected)
 		{
 
@@ -169,6 +169,12 @@ namespace Eclipse
 								DestinationEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(DestinationIndex_));
 
 								SourceEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(SourceIndex_));
+
+								//if (DestinationEntCom->Tag == SourceEntCom->Tag)
+								//{
+								//	IsIndexJobSelected = false;
+								//	break;
+								//}
 
 								if (!engine->world.CheckComponent<ParentComponent>(engine->editorManager->GetEntityID(DestinationIndex_)))
 								{
