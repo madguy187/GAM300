@@ -810,6 +810,7 @@
     <ClInclude Include="src\Graphics\Material\MaterialInstance\MaterialInstance.h" />
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\EntityDeleteDeltaCommand.h" />
     <ClInclude Include="src\Library\Random\Random.h" />
+    <ClInclude Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1199,6 +1200,7 @@
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\Graphics\Material\PBR\PBRManager.cpp" />
     <ClCompile Include="src\Graphics\Material\MaterialInstance\MaterialInstance.cpp" />
+    <ClCompile Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />

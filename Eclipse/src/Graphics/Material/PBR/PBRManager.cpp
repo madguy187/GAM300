@@ -9,7 +9,7 @@ namespace Eclipse
         LoadMaterial("HardWood");
     }
 
-    void PBRManager::CheckUniform(unsigned int ID , CameraComponent& In)
+    void PBRManager::CheckUniform(unsigned int ID, CameraComponent& In)
     {
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(In.camType));
         TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(In.camType));
@@ -41,6 +41,19 @@ namespace Eclipse
         glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
 
         BindMaterial("HardWood", shdrpgm);
+    }
+
+    bool PBRManager::CheckMaterial(unsigned int ID, CameraComponent& In, MaterialComponent& Mat)
+    {
+        if (Mat.HasMaterialIstance)
+        {
+            CheckUniform(ID, In);
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
     void PBRManager::LoadMaterial(std::string NameOfMaterial)
@@ -78,6 +91,51 @@ namespace Eclipse
         In.setInt("aoMap", 14);
     }
 
+    void PBRManager::SetAlbedoConstant(Shader& In, glm::vec4& AlbedoValue)
+    {
+        GLuint AlbedoConstant = In.GetLocation("AlbedoConstant");
+        glUniform3f(AlbedoConstant, AlbedoValue.r, AlbedoValue.g, AlbedoValue.b);
+    }
+
+    void PBRManager::SetMetallicConstant(Shader& In, float metallicValue)
+    {
+        GLuint MetallicConstant = In.GetLocation("MetallicConstant");
+        GLCall(glUniform1f(MetallicConstant, metallicValue));
+    }
+
+    void PBRManager::SetRoughnessConstant(Shader& In, float RoughnessValue)
+    {
+        GLuint RoughnessConstant = In.GetLocation("RoughnessConstant");
+        GLCall(glUniform1f(RoughnessConstant, RoughnessValue));
+    }
+
+    void PBRManager::SetInstanceFlag(Shader& In, bool instanceflag)
+    {
+        GLuint HasTexture = In.GetLocation("HasInstance");
+        GLCall(glUniform1i(HasTexture, instanceflag));
+    }
+
+    void PBRManager::SetAOConstant(Shader& In, float AOValue)
+    {
+        GLuint AoConstant = In.GetLocation("AoConstant");
+        GLCall(glUniform1f(AoConstant, AOValue));
+    }
+
+    void PBRManager::UnBindMetallicTexture(Shader& In)
+    {
+        In.setInt("metallicMap", 0);
+    }
+
+    void PBRManager::UnBindRoughnessTexture(Shader& In)
+    {
+        In.setInt("roughnessMap", 0);
+    }
+
+    void PBRManager::UnBindAOTexture(Shader& In)
+    {
+        In.setInt("aoMap", 0);
+    }
+
     void PBRManager::UpdateLoop()
     {
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
@@ -86,13 +144,12 @@ namespace Eclipse
         auto& shdrpgm = Graphics::shaderpgms["PBRShader"];
         shdrpgm.Use();
 
-        GLuint metallic = shdrpgm.GetLocation("metallic");
-        GLuint roughness = shdrpgm.GetLocation("roughness");
         GLint uModelToNDC_ = shdrpgm.GetLocation("uModelToNDC");
         GLint model_ = shdrpgm.GetLocation("model");
         GLuint view = shdrpgm.GetLocation("view");
         GLint projection = shdrpgm.GetLocation("projection");
-        GLint HasTexture = shdrpgm.GetLocation("HasTexture");
+        GLint HasInstance = shdrpgm.GetLocation("HasInstance");
+        GLint Constants = shdrpgm.GetLocation("Constants");
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::mat4(1.0f);
@@ -102,9 +159,8 @@ namespace Eclipse
         model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::scale(model, { 10,10,10 });
 
-        GLCall(glUniform1i(HasTexture, true));
-        GLCall(glUniform1f(metallic, 1.0f));
-        GLCall(glUniform1f(roughness, 1.0f));
+        GLCall(glUniform1i(HasInstance, true));
+        GLCall(glUniform1i(Constants, false));
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
         glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
@@ -216,6 +272,7 @@ namespace Eclipse
                     data.push_back(uv[i].y);
                 }
             }
+
             glBindVertexArray(sphereVAO);
             glBindBuffer(GL_ARRAY_BUFFER, vbo);
             glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), &data[0], GL_STATIC_DRAW);

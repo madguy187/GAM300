@@ -228,6 +228,7 @@ namespace Eclipse
 
         //Deserialization(temp)
         /*audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);*/
+        //audioManager.PlayEvent("event:/WaterEffect");
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
             glfwPollEvents();
@@ -303,7 +304,7 @@ namespace Eclipse
             engine->gFrameBufferManager->GlobalBind();
 
             // Reset DebugBoxes =============================
-            //engine->GraphicsManager.ResetInstancedDebugBoxes();
+            engine->GraphicsManager.ResetInstancedDebugBoxes();
 
             // LIGHTINGSYSTEM =============================
             world.Update<LightingSystem>();

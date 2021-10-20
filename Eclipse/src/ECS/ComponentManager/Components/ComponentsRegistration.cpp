@@ -132,6 +132,8 @@ namespace Eclipse
         ADD_MEMBER(TextureRef);
         ADD_MEMBER(TextureKey);
         ADD_MEMBER(HoldingTextures);
+        ADD_MEMBER(HasMaterialIstance);
+        ADD_MEMBER(MaterialInstanceName);
     }
 
     DEFINE_META(MeshComponent)
