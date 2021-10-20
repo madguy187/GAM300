@@ -70,7 +70,7 @@ namespace Eclipse
             ECGui::EndTreeNode();
         }
 
-        if (ECGui::ButtonBool("Change Water Effect"))
+        /*if (ECGui::ButtonBool("Change Water Effect"))
         {
             float value = 0.0f;
             engine->audioManager.GetEventParameter("event:/WaterEffect", "Test", &value);
@@ -79,7 +79,7 @@ namespace Eclipse
                 engine->audioManager.SetEventParameter("event:/WaterEffect", "Test", 1.0f);
             else
                 engine->audioManager.SetEventParameter("event:/WaterEffect", "Test", 0.0f);
-        }
+        }*/
     }
 
     void HierarchyWindow::TrackEntitySelection(const std::vector<Entity>& list, EntitySelectionTracker& prev,
