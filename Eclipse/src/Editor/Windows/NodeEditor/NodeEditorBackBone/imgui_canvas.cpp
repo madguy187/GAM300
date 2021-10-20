@@ -511,4 +511,3 @@ void ImGuiEx::Canvas::LeaveLocalSpace()
     RestoreInputState();
     RestoreViewportState();
 }
-#include "pch.h"

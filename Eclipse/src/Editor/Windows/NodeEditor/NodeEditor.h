@@ -1,15 +1,11 @@
 #pragma once
 #include "../Interface/ECGuiWindow.h"
-#include <application.h>
-#include"NodeEditorUtilities/builders.h"
-#include"NodeEditorUtilities/widgets.h"
-
-# include "../src/Editor/Windows/NodeEditor/NodeEditorBackBone/imgui_node_editor.h"
-
-#define IMGUI_DEFINE_MATH_OPERATORS
-
+#include "NodeEditorUtilities/builders.h"
+#include "NodeEditorUtilities//widgets.h"
+#include "../../NodeEditorSln/NodeEditor/NodeEditorBackBone/imgui_node_editor.h"
 #include <imgui_internal.h>
 
+#define IMGUI_DEFINE_MATH_OPERATORS
 
 namespace Eclipse
 {
@@ -28,14 +24,14 @@ namespace Eclipse
         return result;
     }
 
-    namespace ed = ax::NodeEditor;
-    namespace Utilitiess = ax::NodeEditor::Utilities;
+    namespace NodeEditor = ax::NodeEditor;
+    namespace Utilities = ax::NodeEditor::Utilities;
 
     using namespace ax;
 
     using ax::Widgets::IconType;
 
-    static ed::EditorContext* m_Editor = nullptr;
+    static NodeEditor::EditorContext* m_Editor = nullptr;
 
     enum class PinType
     {
@@ -68,7 +64,7 @@ namespace Eclipse
 
     struct Pin
     {
-        ed::PinId   ID;
+        NodeEditor::PinId   ID;
         ::Node* Node;
         std::string Name;
         PinType     Type;
@@ -82,7 +78,7 @@ namespace Eclipse
 
     struct Node
     {
-        ed::NodeId ID;
+        NodeEditor::NodeId ID;
         std::string Name;
         std::vector<Pin> Inputs;
         std::vector<Pin> Outputs;
@@ -101,14 +97,14 @@ namespace Eclipse
 
     struct Link
     {
-        ed::LinkId ID;
+        NodeEditor::LinkId ID;
 
-        ed::PinId StartPinID;
-        ed::PinId EndPinID;
+        NodeEditor::PinId StartPinID;
+        NodeEditor::PinId EndPinID;
 
         ImColor Color;
 
-        Link(ed::LinkId id, ed::PinId startPinId, ed::PinId endPinId) :
+        Link(NodeEditor::LinkId id, NodeEditor::PinId startPinId, NodeEditor::PinId endPinId) :
             ID(id), StartPinID(startPinId), EndPinID(endPinId), Color(255, 255, 255)
         {
         }
@@ -116,7 +112,7 @@ namespace Eclipse
 
     struct NodeIdLess
     {
-        bool operator()(const ed::NodeId& lhs, const ed::NodeId& rhs) const
+        bool operator()(const NodeEditor::NodeId& lhs, const NodeEditor::NodeId& rhs) const
         {
             return lhs.AsPointer() < rhs.AsPointer();
         }
@@ -132,7 +128,7 @@ namespace Eclipse
         ImTextureID          s_SaveIcon = nullptr;
         ImTextureID          s_RestoreIcon = nullptr;
         const float          s_TouchTime = 1.0f;
-        std::map<ed::NodeId, float, NodeIdLess> s_NodeTouchTime;
+        std::map<NodeEditor::NodeId, float, NodeIdLess> s_NodeTouchTime;
         int s_NextId = 1;
 	public:
 		void Update() override;
@@ -142,23 +138,23 @@ namespace Eclipse
 
         int GetNextId();
 
-        float GetTouchProgress(ed::NodeId id);
+        float GetTouchProgress(NodeEditor::NodeId id);
 
-        ed::LinkId GetNextLinkId();
+        NodeEditor::LinkId GetNextLinkId();
 
-        void TouchNode(ed::NodeId id);
+        void TouchNode(NodeEditor::NodeId id);
 
         void UpdateTouch();
 
         void BuildNode(Node* node);
 
-        Node* FindNode(ed::NodeId id);
+        Node* FindNode(NodeEditor::NodeId id);
 
-        Link* FindLink(ed::LinkId id);
+        Link* FindLink(NodeEditor::LinkId id);
 
-        Pin* FindPin(ed::PinId id);
+        Pin* FindPin(NodeEditor::PinId id);
 
-        bool IsPinLinked(ed::PinId id);
+        bool IsPinLinked(NodeEditor::PinId id);
 
         bool CanCreateLink(Pin* a, Pin* b);
 

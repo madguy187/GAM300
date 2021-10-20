@@ -1056,7 +1056,7 @@ ed::EditorContext::~EditorContext()
     m_Splitter.ClearFreeMemory();
 }
 
-void ed::EditorContext::Begins(const char* id, const ImVec2& size)
+void ed::EditorContext::Begin(const char* id, const ImVec2& size)
 {
     if (!m_IsInitialized)
     {
@@ -5314,4 +5314,3 @@ void ed::Config::EndSave()
     if (EndSaveSession)
         EndSaveSession(UserPointer);
 }
-#include "pch.h"

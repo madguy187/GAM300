@@ -1,9 +1,6 @@
 #include "pch.h"
 #include "NodeEditor.h"
 
-namespace ed = ax::NodeEditor;
-
-
 static NodeEditor::EditorContext* g_Context = nullptr;
 
 void Eclipse::NodeEditorWindow::Update()
@@ -25,32 +22,33 @@ void Eclipse::NodeEditorWindow::Unload()
 void Eclipse::NodeEditorWindow::DrawImpl()
 {
 
-	//ed::SetCurrentEditor(g_Context);
-	ed::Begin("My Editor", ImVec2(0.0, 0.0f));
-	//int uniqueId = 1;
-	//// Start drawing nodes.
-	//ed::BeginNode(uniqueId++);
-	//ImGui::Text("Node A");
-	//ed::BeginPin(uniqueId++, ed::PinKind::Input);
-	//ImGui::Text("-> In");
-	//ed::EndPin();
-	//ImGui::SameLine();
-	//ed::BeginPin(uniqueId++, ed::PinKind::Output);
-	//ImGui::Text("Out ->");
-	//ed::EndPin();
-	//ed::EndNode();
-	//ed::BeginNode(uniqueId++);
-	//ImGui::Text("Node Test");
-	//ed::BeginPin(uniqueId++, ed::PinKind::Input);
-	//ImGui::Text("-> In");
-	//ed::EndPin();
-	//ImGui::SameLine();
-	//ed::BeginPin(uniqueId++, ed::PinKind::Output);
-	//ImGui::Text("Out ->");
-	//ed::EndPin();
-	//ed::EndNode();
-	ed::End();
-	//ed::SetCurrentEditor(nullptr);
+	ImGui::Separator();
+
+	NodeEditor::SetCurrentEditor(g_Context);
+	NodeEditor::Begin("My Editor", ImVec2(0.0, 0.0f));
+	int uniqueId = 1;
+	NodeEditor::BeginNode(uniqueId++);
+	ImGui::Text("Node A");
+	NodeEditor::BeginPin(uniqueId++, NodeEditor::PinKind::Input);
+	ImGui::Text("-> In");
+	NodeEditor::EndPin();
+	ImGui::SameLine();
+	NodeEditor::BeginPin(uniqueId++, NodeEditor::PinKind::Output);
+	ImGui::Text("Out ->");
+	NodeEditor::EndPin();
+	NodeEditor::EndNode();
+	NodeEditor::BeginNode(uniqueId++);
+	ImGui::Text("Node Test");
+	NodeEditor::BeginPin(uniqueId++, NodeEditor::PinKind::Input);
+	ImGui::Text("-> In");
+	NodeEditor::EndPin();
+	ImGui::SameLine();
+	NodeEditor::BeginPin(uniqueId++, NodeEditor::PinKind::Output);
+	ImGui::Text("Out ->");
+	NodeEditor::EndPin();
+	NodeEditor::EndNode();
+	NodeEditor::End();
+	NodeEditor::SetCurrentEditor(nullptr);
 
 }
 
@@ -59,17 +57,17 @@ int Eclipse::NodeEditorWindow::GetNextId()
 	return s_NextId++;
 }
 
-ed::LinkId Eclipse::NodeEditorWindow::GetNextLinkId()
+NodeEditor::LinkId Eclipse::NodeEditorWindow::GetNextLinkId()
 {
-	return ed::LinkId(GetNextId());
+	return NodeEditor::LinkId(GetNextId());
 }
 
-void Eclipse::NodeEditorWindow::TouchNode(ed::NodeId id)
+void Eclipse::NodeEditorWindow::TouchNode(NodeEditor::NodeId id)
 {
 	s_NodeTouchTime[id] = s_TouchTime;
 }
 
-float Eclipse::NodeEditorWindow::GetTouchProgress(ed::NodeId id)
+float Eclipse::NodeEditorWindow::GetTouchProgress(NodeEditor::NodeId id)
 {
 	auto it = s_NodeTouchTime.find(id);
 	if (it != s_NodeTouchTime.end() && it->second > 0.0f)
@@ -109,7 +107,7 @@ void Eclipse::NodeEditorWindow::BuildNode(Node* node)
 	}
 }
 
-Node* Eclipse::NodeEditorWindow::FindNode(ed::NodeId id)
+Node* Eclipse::NodeEditorWindow::FindNode(NodeEditor::NodeId id)
 {
 	for (auto& node : s_Nodes)
 	{
@@ -122,7 +120,7 @@ Node* Eclipse::NodeEditorWindow::FindNode(ed::NodeId id)
 	return nullptr;
 }
 
-Link* Eclipse::NodeEditorWindow::FindLink(ed::LinkId id)
+Link* Eclipse::NodeEditorWindow::FindLink(NodeEditor::LinkId id)
 {
 	for (auto& link : s_Links)
 	{
@@ -135,7 +133,7 @@ Link* Eclipse::NodeEditorWindow::FindLink(ed::LinkId id)
 	return nullptr;
 }
 
-Pin* Eclipse::NodeEditorWindow::FindPin(ed::PinId id)
+Pin* Eclipse::NodeEditorWindow::FindPin(NodeEditor::PinId id)
 {
 	if (!id)
 	{
@@ -164,7 +162,7 @@ Pin* Eclipse::NodeEditorWindow::FindPin(ed::PinId id)
 	return nullptr;
 }
 
-bool Eclipse::NodeEditorWindow::IsPinLinked(ed::PinId id)
+bool Eclipse::NodeEditorWindow::IsPinLinked(NodeEditor::PinId id)
 {
 	if (!id)
 	{
