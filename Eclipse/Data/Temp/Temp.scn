@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
-<Entities Size="9">
-    <Entity_0 ID="6">
+<Entities Size="7">
+    <Entity_0 ID="0">
         <CameraComponent>
             <eyeAlpha value="0" />
             <eyeBeta value="-90" />
@@ -42,123 +42,38 @@
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_0>
-    <Entity_1 ID="7">
-        <AABBComponent>
-            <center x="-4.21833" y="0" z="20.1836" />
-            <Min x="-6.71833" y="-2.5" z="17.6836" />
-            <Max x="-1.71833" y="2.5" z="22.6836" />
-        </AABBComponent>
+    <Entity_1 ID="6">
+        <DirectionalLightComponent>
+            <Counter value="0" />
+            <visible value="false" />
+            <AffectsWorld value="true" />
+            <EnableBlinnPhong value="true" />
+            <lightColor x="1" y="1" z="1" />
+            <Direction x="-10" y="-10" z="-10" />
+            <ambient x="0.2" y="0.2" z="0.2" />
+            <diffuse x="0.4" y="0.4" z="0.4" />
+            <specular x="0.5" y="0.5" z="0.5" />
+            <Color x="1" y="1" z="1" w="1" />
+        </DirectionalLightComponent>
         <EntityComponent>
-            <Tag value="Cube" />
-            <Name value="Cube" />
+            <Tag value="DirectionalLight" />
+            <Name value="DirectionalLight" />
             <Child size="0" />
             <Parent size="0" />
             <IsAChild value="false" />
         </EntityComponent>
-        <MaterialComponent>
-            <Modeltype value="BasicPrimitives" />
-            <ambient x="0" y="0" z="0" />
-            <diffuse x="1" y="1" z="1" />
-            <specular x="1" y="1" z="1" />
-            <NoTextures value="true" />
-            <shininess value="0.25" />
-            <MaximumShininess value="0" />
-            <ComboIndex value="1" />
-            <TextureComboIndex value="0" />
-            <Type value="TT_2D" />
-            <hasTexture value="true" />
-            <TextureRef value="FolderIcon" />
-            <TextureKey value="" />
-            <HoldingTextures size="0" />
-            <HasMaterialIstance value="false" />
-            <MaterialInstanceName value="Default" />
-        </MaterialComponent>
-        <MeshComponent>
-            <MeshName value="" />
-            <color x="1" y="1" z="1" />
-            <textureIdx x="0" y="0" />
-            <isQuad value="false" />
-            <modelNDC_xform Col="4" Row="4">
-                <Col0 _00="0" _01="0" _02="0" _03="0" />
-                <Col1 _10="0" _11="0" _12="0" _13="0" />
-                <Col2 _20="0" _21="0" _22="0" _23="0" />
-                <Col3 _30="0" _31="0" _32="0" _33="0" />
-            </modelNDC_xform>
-            <modelRef value="Cube" />
-            <shaderRef value="shader3DShdrpgm" />
-            <transparency value="1" />
-            <ENV_MAP value="false" />
-            <ENV_TYPE value="MT_REFLECT" />
-        </MeshComponent>
+        <LightComponent />
         <TransformComponent>
-            <position x="-4.21833" y="0" z="20.1836" />
-            <rotation x="254.118" y="148.235" z="-80" />
-            <scale x="5" y="5" z="5" />
-        </TransformComponent>
-        <PrefabComponent>
-            <IsChild value="true" />
-            <PrefabID value="7021152685380616553" />
-        </PrefabComponent>
-    </Entity_1>
-    <Entity_2 ID="8">
-        <AABBComponent>
-            <center x="23.3777" y="0" z="-0.138404" />
-            <Min x="20.8777" y="-2.5" z="-2.6384" />
-            <Max x="25.8777" y="2.5" z="2.3616" />
-        </AABBComponent>
-        <EntityComponent>
-            <Tag value="Cylinder" />
-            <Name value="Cylinder" />
-            <Child size="0" />
-            <Parent size="0" />
-            <IsAChild value="false" />
-        </EntityComponent>
-        <MaterialComponent>
-            <Modeltype value="BasicPrimitives" />
-            <ambient x="0" y="0" z="0" />
-            <diffuse x="1" y="1" z="1" />
-            <specular x="1" y="1" z="1" />
-            <NoTextures value="true" />
-            <shininess value="0.25" />
-            <MaximumShininess value="128" />
-            <ComboIndex value="1" />
-            <TextureComboIndex value="0" />
-            <Type value="TT_UNASSIGNED" />
-            <hasTexture value="false" />
-            <TextureRef value="Default" />
-            <TextureKey value="" />
-            <HoldingTextures size="0" />
-            <HasMaterialIstance value="false" />
-            <MaterialInstanceName value="Default" />
-        </MaterialComponent>
-        <MeshComponent>
-            <MeshName value="" />
-            <color x="1" y="1" z="1" />
-            <textureIdx x="0" y="0" />
-            <isQuad value="false" />
-            <modelNDC_xform Col="4" Row="4">
-                <Col0 _00="0" _01="0" _02="0" _03="0" />
-                <Col1 _10="0" _11="0" _12="0" _13="0" />
-                <Col2 _20="0" _21="0" _22="0" _23="0" />
-                <Col3 _30="0" _31="0" _32="0" _33="0" />
-            </modelNDC_xform>
-            <modelRef value="Cylinder" />
-            <shaderRef value="shader3DShdrpgm" />
-            <transparency value="1" />
-            <ENV_MAP value="false" />
-            <ENV_TYPE value="MT_REFLECT" />
-        </MeshComponent>
-        <TransformComponent>
-            <position x="23.3777" y="0" z="-0.138404" />
+            <position x="0" y="150" z="0" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
-    </Entity_2>
-    <Entity_3 ID="9">
+    </Entity_1>
+    <Entity_2 ID="8">
         <AABBComponent>
-            <center x="10.0664" y="0" z="18.4126" />
-            <Min x="1.2429" y="-2.5" z="15.9126" />
-            <Max x="18.8899" y="2.5" z="20.9126" />
+            <center x="-0.520556" y="0" z="18.0195" />
+            <Min x="-3.02056" y="-2.5" z="15.5195" />
+            <Max x="1.97944" y="2.5" z="20.5195" />
         </AABBComponent>
         <EntityComponent>
             <Tag value="Sphere" />
@@ -177,7 +92,7 @@
             <MaximumShininess value="128" />
             <ComboIndex value="1" />
             <TextureComboIndex value="0" />
-            <Type value="TT_2D" />
+            <Type value="TT_UNASSIGNED" />
             <hasTexture value="true" />
             <TextureRef value="brick" />
             <TextureKey value="" />
@@ -203,20 +118,25 @@
             <ENV_TYPE value="MT_REFLECT" />
         </MeshComponent>
         <TransformComponent>
-            <position x="10.0664" y="0" z="18.4126" />
+            <position x="-0.520556" y="0" z="18.0195" />
             <rotation x="0" y="0" z="0" />
-            <scale x="17.647" y="5" z="5" />
+            <scale x="5" y="5" z="5" />
         </TransformComponent>
-    </Entity_3>
-    <Entity_4 ID="10">
+        <PrefabComponent>
+            <IsChild value="true" />
+            <CompChanges value="00000000000000000000000000000000" />
+            <PrefabID value="7021195501920897635" />
+        </PrefabComponent>
+    </Entity_2>
+    <Entity_3 ID="9">
         <AABBComponent>
-            <center x="-15.4535" y="-1.90735e-06" z="11.7031" />
-            <Min x="-17.9535" y="-2.5" z="9.2031" />
-            <Max x="-12.9535" y="2.5" z="14.2031" />
+            <center x="-17.4408" y="-1.90735e-06" z="14.5817" />
+            <Min x="-19.9408" y="-2.5" z="12.0817" />
+            <Max x="-14.9408" y="2.5" z="17.0817" />
         </AABBComponent>
         <EntityComponent>
-            <Tag value="Cone" />
-            <Name value="Cone" />
+            <Tag value="Sphere" />
+            <Name value="Sphere" />
             <Child size="0" />
             <Parent size="0" />
             <IsAChild value="false" />
@@ -232,8 +152,8 @@
             <ComboIndex value="1" />
             <TextureComboIndex value="0" />
             <Type value="TT_UNASSIGNED" />
-            <hasTexture value="false" />
-            <TextureRef value="Default" />
+            <hasTexture value="true" />
+            <TextureRef value="brick" />
             <TextureKey value="" />
             <HoldingTextures size="0" />
             <HasMaterialIstance value="false" />
@@ -250,27 +170,91 @@
                 <Col2 _20="0" _21="0" _22="0" _23="0" />
                 <Col3 _30="0" _31="0" _32="0" _33="0" />
             </modelNDC_xform>
-            <modelRef value="Cone" />
+            <modelRef value="Sphere" />
             <shaderRef value="shader3DShdrpgm" />
             <transparency value="1" />
             <ENV_MAP value="false" />
             <ENV_TYPE value="MT_REFLECT" />
         </MeshComponent>
         <TransformComponent>
-            <position x="-15.4535" y="-1.90735e-06" z="11.7031" />
+            <position x="-17.4408" y="-1.90735e-06" z="14.5817" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
+        <PrefabComponent>
+            <IsChild value="true" />
+            <CompChanges value="00000000000000000000000000000000" />
+            <PrefabID value="7021195501920897635" />
+        </PrefabComponent>
+    </Entity_3>
+    <Entity_4 ID="10">
+        <AABBComponent>
+            <center x="-9.61564" y="0" z="7.7236" />
+            <Min x="-12.1156" y="-2.5" z="5.2236" />
+            <Max x="-7.11564" y="2.5" z="10.2236" />
+        </AABBComponent>
+        <EntityComponent>
+            <Tag value="Sphere" />
+            <Name value="Sphere" />
+            <Child size="0" />
+            <Parent size="0" />
+            <IsAChild value="false" />
+        </EntityComponent>
+        <MaterialComponent>
+            <Modeltype value="BasicPrimitives" />
+            <ambient x="0" y="0" z="0" />
+            <diffuse x="1" y="1" z="1" />
+            <specular x="1" y="1" z="1" />
+            <NoTextures value="true" />
+            <shininess value="0.25" />
+            <MaximumShininess value="128" />
+            <ComboIndex value="1" />
+            <TextureComboIndex value="0" />
+            <Type value="TT_UNASSIGNED" />
+            <hasTexture value="true" />
+            <TextureRef value="brick" />
+            <TextureKey value="" />
+            <HoldingTextures size="0" />
+            <HasMaterialIstance value="false" />
+            <MaterialInstanceName value="Default" />
+        </MaterialComponent>
+        <MeshComponent>
+            <MeshName value="" />
+            <color x="1" y="1" z="1" />
+            <textureIdx x="0" y="0" />
+            <isQuad value="false" />
+            <modelNDC_xform Col="4" Row="4">
+                <Col0 _00="0" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="0" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="0" _23="0" />
+                <Col3 _30="0" _31="0" _32="0" _33="0" />
+            </modelNDC_xform>
+            <modelRef value="Sphere" />
+            <shaderRef value="shader3DShdrpgm" />
+            <transparency value="1" />
+            <ENV_MAP value="false" />
+            <ENV_TYPE value="MT_REFLECT" />
+        </MeshComponent>
+        <TransformComponent>
+            <position x="-9.61564" y="0" z="7.7236" />
+            <rotation x="0" y="0" z="0" />
+            <scale x="5" y="5" z="5" />
+        </TransformComponent>
+        <PrefabComponent>
+            <IsChild value="true" />
+            <CompChanges value="00000000000000000000000000000000" />
+            <PrefabID value="7021195501920897635" />
+        </PrefabComponent>
     </Entity_4>
     <Entity_5 ID="11">
         <AABBComponent>
-            <center x="2.9078" y="0" z="7.51706" />
-            <Min x="0.4078" y="-2.5" z="5.01706" />
-            <Max x="5.4078" y="2.5" z="10.0171" />
+            <center x="13.6208" y="0" z="16.2828" />
+            <Min x="11.1208" y="-2.5" z="13.7828" />
+            <Max x="16.1208" y="2.5" z="18.7828" />
         </AABBComponent>
         <EntityComponent>
-            <Tag value="Cube" />
-            <Name value="Cube" />
+            <Tag value="Sphere" />
+            <Name value="Sphere" />
             <Child size="0" />
             <Parent size="0" />
             <IsAChild value="false" />
@@ -282,12 +266,12 @@
             <specular x="1" y="1" z="1" />
             <NoTextures value="true" />
             <shininess value="0.25" />
-            <MaximumShininess value="0" />
+            <MaximumShininess value="128" />
             <ComboIndex value="1" />
             <TextureComboIndex value="0" />
-            <Type value="TT_2D" />
+            <Type value="TT_UNASSIGNED" />
             <hasTexture value="true" />
-            <TextureRef value="FolderIcon" />
+            <TextureRef value="brick" />
             <TextureKey value="" />
             <HoldingTextures size="0" />
             <HasMaterialIstance value="false" />
@@ -304,78 +288,32 @@
                 <Col2 _20="0" _21="0" _22="0" _23="0" />
                 <Col3 _30="0" _31="0" _32="0" _33="0" />
             </modelNDC_xform>
-            <modelRef value="Cube" />
+            <modelRef value="Sphere" />
             <shaderRef value="shader3DShdrpgm" />
             <transparency value="1" />
             <ENV_MAP value="false" />
             <ENV_TYPE value="MT_REFLECT" />
         </MeshComponent>
         <TransformComponent>
-            <position x="2.9078" y="0" z="7.51706" />
-            <rotation x="254.118" y="148.235" z="-80" />
+            <position x="13.6208" y="0" z="16.2828" />
+            <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
         <PrefabComponent>
             <IsChild value="true" />
-            <PrefabID value="7021152685380616553" />
+            <CompChanges value="00000000000000000000000000000000" />
+            <PrefabID value="7021195501920897635" />
         </PrefabComponent>
     </Entity_5>
     <Entity_6 ID="12">
-        <EntityComponent>
-            <Tag value="DirectionalLight" />
-            <Name value="DirectionalLight" />
-            <Child size="0" />
-            <Parent size="0" />
-            <IsAChild value="false" />
-        </EntityComponent>
-        <TransformComponent>
-            <position x="0" y="0" z="0" />
-            <rotation x="0" y="0" z="0" />
-            <scale x="5" y="5" z="5" />
-        </TransformComponent>
-    </Entity_6>
-    <Entity_7 ID="13">
-        <EntityComponent>
-            <Tag value="PointLight" />
-            <Name value="PointLight" />
-            <Child size="0" />
-            <Parent size="0" />
-            <IsAChild value="false" />
-        </EntityComponent>
-        <LightComponent />
-        <PointLightComponent>
-            <Counter value="0" />
-            <ambient x="0.2" y="0.2" z="0.2" />
-            <diffuse x="0.5" y="0.5" z="0.5" />
-            <specular x="0.1" y="0.1" z="0.1" />
-            <lightColor x="1" y="1" z="1" />
-            <Color x="1" y="1" z="1" w="1" />
-            <IntensityStrength value="10" />
-            <constant value="1" />
-            <linear value="0.07" />
-            <quadratic value="0.017" />
-            <radius value="0" />
-            <AttenuationLevel value="5" />
-            <EnableBlinnPhong value="true" />
-            <hasTexture value="false" />
-            <visible value="true" />
-            <AffectsWorld value="true" />
-        </PointLightComponent>
-        <TransformComponent>
-            <position x="2.90619" y="0" z="18.8708" />
-            <rotation x="0" y="0" z="0" />
-            <scale x="0.1" y="0.1" z="0.1" />
-        </TransformComponent>
-    </Entity_7>
-    <Entity_8 ID="14">
         <AABBComponent>
-            <center x="9.43812" y="0" z="24.9364" />
-            <Min x="6.93812" y="-2.5" z="22.4364" />
-            <Max x="11.9381" y="2.5" z="27.4364" />
+            <center x="17.7856" y="0" z="5.8758" />
+            <Min x="15.2856" y="-2.5" z="3.3758" />
+            <Max x="20.2856" y="2.5" z="8.3758" />
         </AABBComponent>
         <EntityComponent>
-            <Tag value="Cube" />
-            <Name value="Cube" />
+            <Tag value="Sphere" />
+            <Name value="Sphere" />
             <Child size="0" />
             <Parent size="0" />
             <IsAChild value="false" />
@@ -387,12 +325,12 @@
             <specular x="1" y="1" z="1" />
             <NoTextures value="true" />
             <shininess value="0.25" />
-            <MaximumShininess value="0" />
+            <MaximumShininess value="128" />
             <ComboIndex value="1" />
             <TextureComboIndex value="0" />
-            <Type value="TT_2D" />
+            <Type value="TT_UNASSIGNED" />
             <hasTexture value="true" />
-            <TextureRef value="FolderIcon" />
+            <TextureRef value="brick" />
             <TextureKey value="" />
             <HoldingTextures size="0" />
             <HasMaterialIstance value="false" />
@@ -409,20 +347,21 @@
                 <Col2 _20="0" _21="0" _22="0" _23="0" />
                 <Col3 _30="0" _31="0" _32="0" _33="0" />
             </modelNDC_xform>
-            <modelRef value="Cube" />
+            <modelRef value="Sphere" />
             <shaderRef value="shader3DShdrpgm" />
             <transparency value="1" />
             <ENV_MAP value="false" />
             <ENV_TYPE value="MT_REFLECT" />
         </MeshComponent>
         <TransformComponent>
-            <position x="9.43812" y="0" z="24.9364" />
-            <rotation x="254.118" y="148.235" z="-80" />
+            <position x="17.7856" y="0" z="5.8758" />
+            <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
         <PrefabComponent>
             <IsChild value="true" />
-            <PrefabID value="7021152685380616553" />
+            <CompChanges value="00000000000000000000000000000000" />
+            <PrefabID value="7021195501920897635" />
         </PrefabComponent>
-    </Entity_8>
+    </Entity_6>
 </Entities>

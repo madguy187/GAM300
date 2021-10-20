@@ -9,7 +9,7 @@ namespace Eclipse
 	{
 		META_DATA(PrefabComponent);
 		bool IsChild = false;
-		
+		Signature CompChanges = 0;
 		EUUID PrefabID = 0;
 	};
 }

@@ -20,11 +20,13 @@ namespace Eclipse
 			PointLightComponent,
 			RigidBodyComponent,
 			ScriptComponent,
-			ParentComponent,
-			ChildComponent,
+			//ParentComponent,
+			//ChildComponent,
 			CollisionComponent,
+			AudioComponent,
 			AIComponent,
-			SpotLightComponent
+			SpotLightComponent,
+			PrefabComponent
 		>;
 
 		PrefabUseList list{};
@@ -46,6 +48,17 @@ namespace Eclipse
 		template <typename T>
 		void EqualizeEntityComponent(World& sourceWorld, World& targetWorld, Entity sourceEnt, Entity targetEnt)
 		{
+			auto& sourcePrefabComp = sourceWorld.GetComponent<PrefabComponent>(sourceEnt);
+			auto& targetPrefabComp = targetWorld.GetComponent<PrefabComponent>(targetEnt);
+
+			const auto& changesSource = sourcePrefabComp.CompChanges;
+			const auto& changesTarget = targetPrefabComp.CompChanges;
+
+			if (changesSource.test(sourceWorld.GetComponentType<T>()) || changesTarget.test(targetWorld.GetComponentType<T>()))
+			{
+				return;
+			}
+
 			if (sourceWorld.CheckComponent<T>(sourceEnt) && targetWorld.CheckComponent<T>(targetEnt))
 			{
 				T& sourceComp = sourceWorld.GetComponent<T>(sourceEnt);

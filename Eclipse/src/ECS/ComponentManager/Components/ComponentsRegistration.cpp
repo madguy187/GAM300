@@ -231,6 +231,7 @@ namespace Eclipse
     DEFINE_META(PrefabComponent)
     {
         ADD_MEMBER(IsChild);
+        ADD_MEMBER(CompChanges);
         ADD_MEMBER(PrefabID);
     }
 
@@ -267,5 +268,6 @@ namespace Eclipse
     DEFINE_META_POD(ModelType);
     DEFINE_META_POD(PxShapeType);
     DEFINE_META_POD(EC_Shape);
+    DEFINE_META_POD(Signature);
     //DEFINE_META_POD(MonoScript);
 }

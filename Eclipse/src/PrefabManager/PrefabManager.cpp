@@ -221,6 +221,8 @@ namespace Eclipse
 		std::vector<Entity> changingEntities;
 
 		auto& samplePrefabComp = w.GetComponent<PrefabComponent>(ent);
+		samplePrefabComp.CompChanges &= 0;
+
 		if (PrefabIDSet.find(samplePrefabComp.PrefabID) != PrefabIDSet.end())
 		{
 			Entity prefabOwner = mapPIDToEID[samplePrefabComp.PrefabID];

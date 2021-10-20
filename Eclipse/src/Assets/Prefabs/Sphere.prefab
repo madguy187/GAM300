@@ -1,14 +1,14 @@
 <?xml version="1.0" ?>
-<Prefab PrefabID="7021152685380616553" Size="1">
-    <Entity_0 ID="0">
+<Prefab PrefabID="7021195501920897635" Size="1">
+    <Entity_0 ID="1">
         <AABBComponent>
-            <center x="9.43812" y="0" z="24.9364" />
-            <Min x="6.93812" y="-2.5" z="22.4364" />
-            <Max x="11.9381" y="2.5" z="27.4364" />
+            <center x="-0.520556" y="0" z="18.0195" />
+            <Min x="-3.02056" y="-2.5" z="15.5195" />
+            <Max x="1.97944" y="2.5" z="20.5195" />
         </AABBComponent>
         <EntityComponent>
-            <Tag value="Cube" />
-            <Name value="Cube" />
+            <Tag value="Sphere" />
+            <Name value="Sphere" />
             <Child size="0" />
             <Parent size="0" />
             <IsAChild value="false" />
@@ -20,12 +20,12 @@
             <specular x="1" y="1" z="1" />
             <NoTextures value="true" />
             <shininess value="0.25" />
-            <MaximumShininess value="0" />
+            <MaximumShininess value="128" />
             <ComboIndex value="1" />
             <TextureComboIndex value="0" />
-            <Type value="TT_2D" />
+            <Type value="TT_UNASSIGNED" />
             <hasTexture value="true" />
-            <TextureRef value="FolderIcon" />
+            <TextureRef value="brick" />
             <TextureKey value="" />
             <HoldingTextures size="0" />
             <HasMaterialIstance value="false" />
@@ -42,20 +42,21 @@
                 <Col2 _20="0" _21="0" _22="0" _23="0" />
                 <Col3 _30="0" _31="0" _32="0" _33="0" />
             </modelNDC_xform>
-            <modelRef value="Cube" />
+            <modelRef value="Sphere" />
             <shaderRef value="shader3DShdrpgm" />
             <transparency value="1" />
             <ENV_MAP value="false" />
             <ENV_TYPE value="MT_REFLECT" />
         </MeshComponent>
         <TransformComponent>
-            <position x="-4.21833" y="0" z="20.1836" />
-            <rotation x="254.118" y="148.235" z="-80" />
+            <position x="-0.520556" y="0" z="18.0195" />
+            <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
         <PrefabComponent>
             <IsChild value="false" />
-            <PrefabID value="7021152685380616553" />
+            <CompChanges value="00000000000000000000000000000000" />
+            <PrefabID value="7021195501920897635" />
         </PrefabComponent>
     </Entity_0>
 </Prefab>
