@@ -62,7 +62,8 @@ namespace Eclipse
             ShowAudioProperty("Audio", currEnt, CompFilter);
             ShowCollisionProperty("Collision", currEnt, CompFilter);
             ShowAIProperty("AI Properties", currEnt, CompFilter);
-
+            ShowParentProperty("Parent", currEnt, CompFilter);
+            ShowChildProperty("Child", currEnt, CompFilter);
             AddComponentsController(currEnt);
             ECGui::NextColumn();
             RemoveComponentsController(currEnt);
@@ -788,7 +789,12 @@ namespace Eclipse
                         }
                     }
 
-                    ECGui::NextColumn();
+                    ECGui::DrawInputTextHintWidget("AudioPath", "Drag Audio files here",
+                        const_cast<char*>(audio.AudioPath.c_str()), 256,
+                        true, ImGuiInputTextFlags_ReadOnly);
+
+                    engine->editorManager->DragAndDropInst_.StringPayloadTarget("wav", audio.AudioPath,
+                        "Wav File inserted.");
 
                     if (ECGui::ButtonBool("Clear Audio", { ImGui::GetColumnWidth(),25 }))
                     {
@@ -1004,6 +1010,52 @@ namespace Eclipse
             }
         }
 
+        return false;
+    }
+
+    bool InspectorWindow::ShowParentProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+    {
+        if (engine->world.CheckComponent<ParentComponent>(ID))
+        {
+            if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+            {
+                ECGui::InsertHorizontalLineSeperator();
+
+                auto& parent = engine->world.GetComponent<ParentComponent>(ID);
+
+                for (auto& it : parent.child)
+                {
+                    auto& en = engine->world.GetComponent<EntityComponent>(it);
+                    std::string name = my_strcat(en.Name, " ", it);
+                    ECGui::DrawTextWidget<const char*>(name.c_str(), EMPTY_STRING);
+                }
+          
+                ECGui::InsertHorizontalLineSeperator();
+            }
+        }
+
+        return false;
+    }
+
+    bool InspectorWindow::ShowChildProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+    {
+        if (engine->world.CheckComponent<ChildComponent>(ID))
+        {
+            if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+            {
+                ECGui::InsertHorizontalLineSeperator();
+
+                auto& child = engine->world.GetComponent<ChildComponent>(ID);
+
+             
+                auto& en = engine->world.GetComponent<EntityComponent>(child.parentIndex);
+                std::string name = my_strcat(en.Name, " ", child.parentIndex);
+                ECGui::DrawTextWidget<const char*>(name.c_str(), EMPTY_STRING);
+
+
+                ECGui::InsertHorizontalLineSeperator();
+            }
+        }
         return false;
     }
 
