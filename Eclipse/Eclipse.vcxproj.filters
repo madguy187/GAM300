@@ -1208,5 +1208,6 @@
     <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.frag" />
     <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.vert" />
     <ClCompile Include="src\Library\Random\Random.cpp" />
+    <None Include="src\Mono\ScriptAPI\Physics.cs" />
   </ItemGroup>
 </Project>

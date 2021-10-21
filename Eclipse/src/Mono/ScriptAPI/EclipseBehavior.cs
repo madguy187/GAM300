@@ -7,6 +7,7 @@ namespace Eclipse
     public class EclipseBehavior : IScriptable
     {
         public GameObject gameObject;
+        public PhysicsObject Physics
         UInt32 gc_handle;
 
         protected void InitBehavior(UInt32 handle, UInt32 entity)

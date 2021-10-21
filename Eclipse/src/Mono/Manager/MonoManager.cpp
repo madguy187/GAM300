@@ -72,6 +72,11 @@ namespace Eclipse
 	//	return obj;
 	//}
 
+	static void SetForce(Entity ent, float x, float y, float z)
+	{
+		engine->gPhysics.SetForce(ent, { x, y, z });
+	}
+
 	void MonoManager::Init()
 	{
 		ENGINE_CORE_INFO("Mono: Initialising");
@@ -84,12 +89,12 @@ namespace Eclipse
 		mono_thread_set_main(mono_thread_current());
 
 		ENGINE_LOG_ASSERT(domain, "Domain could not be created");
+
+		mono_add_internal_call("Eclipse.PhysicsObject::AddForce", SetForce);
 	}
 
 	void MonoManager::Update(MonoScript* obj)
 	{
-		//DumpInfoFromImage(engine->mono.GetAPIImage());
-		//DumpInfoFromImage(engine->mono.GetScriptImage());
 		MonoClass* klass = mono_class_from_name(engine->mono.GetScriptImage(), "", obj->scriptName.c_str());
 
 		if (klass == nullptr) {
@@ -126,21 +131,6 @@ namespace Eclipse
 		LoadDomain();
 		LoadDLLImage("../EclipseScriptsAPI.dll", APIImage, APIAssembly);
 		LoadDLLImage("../EclipseScripts.dll", ScriptImage, ScriptAssembly);
-
-
-		//// Load API
-		//APIAssembly = mono_domain_assembly_open(childDomain, "../EclipseScriptsAPI.dll");
-		//assert(APIAssembly, "API Assembly could not be opened");
-
-		//APIImage = mono_assembly_get_image(APIAssembly);
-		//assert(APIImage, "API Image failed");
-
-		//// Load Scripts
-		//ScriptAssembly = mono_domain_assembly_open(childDomain, "../EclipseScripts.dll");
-		//assert(ScriptAssembly, "Script Assembly could not be opened");
-
-		//ScriptImage = mono_assembly_get_image(ScriptAssembly);
-		//assert(ScriptImage, "Script Image failed");
 	}
 
 	void MonoManager::Terminate()

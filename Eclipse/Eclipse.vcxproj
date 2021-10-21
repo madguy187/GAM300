@@ -506,6 +506,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.vert" />
     <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />
     <None Include="src\Assets\Shaders\PBRShader\PBR.vert" />
+    <None Include="src\Mono\ScriptAPI\Physics.cs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
