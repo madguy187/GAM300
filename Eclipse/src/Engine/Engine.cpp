@@ -175,9 +175,17 @@ namespace Eclipse
         hi4.set(world.GetComponentType<RigidBodyComponent>(), 1);
         world.RegisterSystemSignature<PhysicsSystem>(hi4);
 
-        Signature hi5;
-        hi5.set(world.GetComponentType<ScriptComponent>(), 1);
-        world.RegisterSystemSignature<MonoSystem>(hi5);
+        Signature scriptSignature;
+        scriptSignature.set(world.GetComponentType<ScriptComponent>(), 1);
+        world.RegisterSystemSignature<MonoSystem>(scriptSignature);
+
+        Signature parentSignature;
+        parentSignature.set(world.GetComponentType<ParentComponent>(), 1);
+        world.RegisterSystemSignature<ParentSystem>(parentSignature);
+
+        Signature childSignature;
+        childSignature.set(world.GetComponentType<ChildComponent>(), 1);
+        world.RegisterSystemSignature<ChildSystem>(childSignature);
 
         Signature hi6;
         hi6.set(world.GetComponentType<CollisionComponent>(), 1);
@@ -297,8 +305,8 @@ namespace Eclipse
 
             world.Update<FileWatchSystem>();
 
-            /*world.Update<ParentSystem>();
-            world.Update<ChildSystem>();*/
+            world.Update<ParentSystem>();
+            world.Update<ChildSystem>();
 
             engine->gFrameBufferManager->GlobalBind();
 
