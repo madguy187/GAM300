@@ -11,6 +11,8 @@ void Eclipse::CameraSystem::Init()
 	engine->gCamera.CreateViewCamera(CameraComponent::CameraType::LeftView_Camera);
 	engine->gCamera.CreateViewCamera(CameraComponent::CameraType::RightView_camera);
 
+	engine->gCamera.CreatePerspectiveCamera(CameraComponent::CameraType::MeshEditor_Camera);
+
 	//Temporary test code to create an initial game camera, remove later
 	engine->gCamera.CreateGameCamera();
 	auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetGameCameraID());
