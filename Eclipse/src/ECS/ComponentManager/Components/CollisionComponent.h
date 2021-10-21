@@ -11,6 +11,18 @@ namespace Eclipse
 		float hz{2.5f};
 		float radius{1};
 		float hheight{1};
+
+		bool operator==(const EC_Shape& rhs) const
+		{
+			if (shape == rhs.shape && hx == rhs.hx &&
+				hy == rhs.hy && hz == rhs.hz && radius == rhs.radius &&
+				hheight == rhs.hheight)
+			{
+				return true;
+			}
+			
+			return false;
+		}
 	};
 
 	struct CollisionComponent

@@ -57,6 +57,8 @@ namespace Eclipse
         void setSpriteWidth(GLint _spriteWidth);
         void setSpriteHeight(GLint _spriteHeight);
         void DeleteTexture();
+
+        bool operator==(const Texture& texture) const;
     private:
         GLint sheetWidth = 0;
         GLint sheetHeight = 0;

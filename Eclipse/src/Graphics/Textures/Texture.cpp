@@ -582,6 +582,17 @@ void Texture::DeleteTexture()
     glDeleteTextures(1, &handle);
 }
 
+bool Eclipse::Texture::operator==(const Texture& texture) const
+{
+    if (Type == texture.Type && Directory == texture.Directory &&
+        handle == texture.handle)
+    {
+        return true;
+    }
+
+    return false;
+}
+
 void Texture::setSpriteWidth(GLint _spriteWidth)
 {
     spriteWidth = static_cast<int>(_spriteWidth);
