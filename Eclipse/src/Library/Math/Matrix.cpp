@@ -49,10 +49,10 @@ namespace Eclipse
     {
         ECMtx33Identity(pResult);
 
-        pResult[0][0] = cosf(angle * (PI / 180));
-        pResult[0][1] = -(sinf(angle * (PI / 180)));
-        pResult[1][0] = sinf(angle * (PI / 180));
-        pResult[1][1] = cosf(angle * (PI / 180));
+        pResult[0][0] = cosf(angle * (PI / 180.0f));
+        pResult[0][1] = -(sinf(angle * (PI / 180.0f)));
+        pResult[1][0] = sinf(angle * (PI / 180.0f));
+        pResult[1][1] = cosf(angle * (PI / 180.0f));
     }
 
     void ECMtx33Transpose(Matrix<float, 3, 3>& pResult, const Matrix<float, 3, 3>& pMtx)
@@ -159,10 +159,10 @@ namespace Eclipse
     {
         ECMtx44Identity(pResult);
 
-        pResult[0][0] = cosf(angle * (PI / 180));
-        pResult[0][1] = -(sinf(angle * (PI / 180)));
-        pResult[1][0] = sinf(angle * (PI / 180));
-        pResult[1][1] = cosf(angle * (PI / 180));
+        pResult[0][0] = cosf(angle * (PI / 180.0f));
+        pResult[0][1] = -(sinf(angle * (PI / 180.0f)));
+        pResult[1][0] = sinf(angle * (PI / 180.0f));
+        pResult[1][1] = cosf(angle * (PI / 180.0f));
     }
 
     void ECMtx44Transpose(Matrix<float, 4, 4>& pResult, const Matrix<float, 4, 4>& pMtx)

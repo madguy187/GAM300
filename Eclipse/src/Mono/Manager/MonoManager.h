@@ -7,6 +7,14 @@ namespace Eclipse
 	{
 		std::string scriptName{};
 		MonoObject* obj = nullptr;
+
+		bool operator==(const MonoScript& rhs) const
+		{
+			if (scriptName == rhs.scriptName)
+				return true;
+
+			return false;
+		}
 	};
 
 	class MonoManager
