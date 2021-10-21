@@ -539,29 +539,15 @@ namespace Eclipse
 		void SavePrefabWorldFile(const std::set<Entity>& entities);
 
 		template <typename T>
-		inline static void TestSerialize(const char* name, RefVariant refv)
+		inline static void	SerializeDataMember(const char* name, RefVariant refv)
 		{
-			//if (typeid(T) == typeid(ECVec3))
-			//{
-			//	std::cout << name << std::endl;
-			//	std::cout << refv.ValueRegistry<ECVec3>().getX() << " " << refv.ValueRegistry<ECVec3>().getY() << " " << refv.ValueRegistry<ECVec3>().getZ() << std::endl;
-			//}
-			//else if constexpr (std::is_fundamental<T>::value /*|| std::is_enum<T>::value*/)
-			//{
-			//	std::cout << refv.ValueRegistry<RemTypeQual<T>::type>() << std::endl;
-			//}
-			//else if constexpr (std::is_enum<T>::value)
-			//{
-			//}
-			//std::cout << refv.ValueRegistry<RemTypeQual<T>::type>() << std::endl;
-
 			sz.StartElement(name);
 			sz.AddAttributeToElement("value", refv.ValueRegistry<RemTypeQual<T>::type>());
 			sz.CloseElement();
 		}
 
 		template <typename T>
-		inline static bool TestDeserialize(const char* name, RefVariant refv)
+		inline static bool DeserializeDataMember(const char* name, RefVariant refv)
 		{
 			bool isSuccess = false;
 
@@ -574,48 +560,16 @@ namespace Eclipse
 			}
 
 			return isSuccess;
-
-			//if (typeid(T) == typeid(ECVec3))
-			//{
-			//	refv.ValueRegistry<RemTypeQual<ECVec3>::type>().setX(1000.0f);
-			//	//std::cout << name << std::endl;
-			//	//std::cout << refv.ValueRegistry<ECVec3>().getX() << " " << refv.ValueRegistry<ECVec3>().getY() << " " << refv.ValueRegistry<ECVec3>().getZ() << std::endl;
-			//}
 		}
 
-		/*inline static void TestSerializeCompData(RefVariant refv)
+		template <typename T>
+		inline static bool CompareDataMembers(RefVariant lhs, RefVariant rhs)
 		{
-			const MetaData* meta = refv.Meta();
-			void* data = refv.Data();
+			if (lhs.ValueRegistry<RemTypeQual<T>::type>() == rhs.ValueRegistry<RemTypeQual<T>::type>())
+				return true;
 
-			assert(meta->HasMembers());
-
-			const Member* mem = meta->Members();
-
-			while (mem)
-			{
-				void* offsetData = PTR_ADD(refv.Data(), mem->Offset());
-				mem->Meta()->Serialize(mem->GetName().c_str(), RefVariant(mem->Meta(), offsetData));
-				mem = mem->Next();
-			}
+			return false;
 		}
-
-		inline static void TestDeserializeCompData(RefVariant refv)
-		{
-			const MetaData* meta = refv.Meta();
-			void* data = refv.Data();
-
-			assert(meta->HasMembers());
-
-			const Member* mem = meta->Members();
-
-			while (mem)
-			{
-				void* offsetData = PTR_ADD(refv.Data(), mem->Offset());
-				mem->Meta()->Deserialize(mem->GetName().c_str(), RefVariant(mem->Meta(), offsetData));
-				mem = mem->Next();
-			}
-		}*/
 
 		inline static void SerializeComponentData(RefVariant data)
 		{
@@ -652,6 +606,36 @@ namespace Eclipse
 						return false;
 
 					mem = mem->Next();
+				}
+			}
+
+			return true;
+		}
+
+		inline static bool CompareComponentData(RefVariant lhs, RefVariant rhs)
+		{
+			bool IsSuccess = false;
+			const MetaData* LHSmeta = lhs.Meta();
+			const MetaData* RHSmeta = rhs.Meta();
+
+			if (LHSmeta->HasMembers() && RHSmeta->HasMembers())
+			{
+				const Member* LHSmem = LHSmeta->Members();
+				const Member* RHSmem = RHSmeta->Members();
+
+				while (LHSmem && RHSmem)
+				{
+					void* LHSoffsetData = PTR_ADD(lhs.Data(), LHSmem->Offset());
+					void* RHSoffsetData = PTR_ADD(rhs.Data(), RHSmem->Offset());
+
+					IsSuccess = LHSmem->Meta()->Compare(RefVariant(LHSmem->Meta(), LHSoffsetData),
+						RefVariant(RHSmem->Meta(), RHSoffsetData));
+
+					if (!IsSuccess)
+						return false;
+
+					LHSmem = LHSmem->Next();
+					RHSmem = RHSmem->Next();
 				}
 			}
 

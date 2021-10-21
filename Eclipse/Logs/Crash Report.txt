@@ -1,2 +1,7 @@
 [09/08/21 06:19:14] [CORE] [error] Crash Report: Assertion Failed! C:\Users\Darren Sim\Documents\GitHub\GAM300\Eclipse\src\Graphics\ModelFactory\AssimpModel\AssimpManager.cpp Line 444: The file path src/Assets/ASSModels/m4a1/scene.gltf doesnt exist! 
 [09/30/21 21:16:10] [CORE] [error] Crash Report: Assertion Failed! C:\Users\ferna\Desktop\GAM300\Eclipse\src\Audio\AudioManager.cpp Line 31: Failed to instantiate Audio Manager
+[10/20/21 18:30:27] [CORE] [error] Crash Report: Assertion Failed! C:\Users\ferna\Desktop\GAM300\Eclipse\src\Graphics\FrameBuffer\FrameBuffer.cpp Line 25: Width or Height cant be 0
+[10/20/21 19:05:47] [CORE] [error] Crash Report: Assertion Failed! C:\Users\ferna\Desktop\GAM300\Eclipse\src\Graphics\FrameBuffer\FrameBuffer.cpp Line 141:  Framebuffer is not complete!
+[10/20/21 19:06:49] [CORE] [error] Crash Report: Assertion Failed! C:\Users\ferna\Desktop\GAM300\Eclipse\src\Graphics\FrameBuffer\FrameBuffer.cpp Line 141:  Framebuffer is not complete!
+[10/20/21 19:08:55] [CORE] [error] Crash Report: Assertion Failed! C:\Users\ferna\Desktop\GAM300\Eclipse\src\Graphics\FrameBuffer\FrameBuffer.cpp Line 141:  Framebuffer is not complete!
+[10/20/21 19:32:26] [CORE] [error] Crash Report: Assertion Failed! C:\Users\ferna\Desktop\GAM300\Eclipse\src\Graphics\FrameBuffer\FrameBuffer.cpp Line 141:  Framebuffer is not complete!

@@ -64,6 +64,24 @@ namespace Eclipse
         return gameCamID;
     }
 
+    void CameraManager::CreatePerspectiveCamera(CameraComponent::CameraType _camType)
+    {
+        Entity newCam = engine->world.CreateEntity();
+        engine->world.AddComponent(newCam, CameraComponent{});
+        engine->world.AddComponent(newCam, TransformComponent{});
+
+        auto& _camera = engine->world.GetComponent<CameraComponent>(newCam);
+        _camera.camType = _camType;
+        _camera.projType = CameraComponent::ProjectionType::Perspective;
+
+        auto& _transform = engine->world.GetComponent<TransformComponent>(newCam);
+        //Set default initial position to be same as initial game camera position
+        _transform.position = GAMECAM_INITPOS;
+        _transform.rotation = GAMECAM_INITROT;
+
+        cameraList.emplace(_camType, newCam);
+    }
+
     void CameraManager::CreateViewCamera(CameraComponent::CameraType _camType)
     {
         Entity newCam = engine->world.CreateEntity();

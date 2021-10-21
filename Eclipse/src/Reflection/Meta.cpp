@@ -31,9 +31,9 @@ namespace Eclipse
         return next;
     }
 
-    MetaData::MetaData(std::string string, unsigned val)
-        : name(string), size(val), serialize(NULL),
-        members(NULL), lastMember(NULL)
+    MetaData::MetaData(std::string string, unsigned val) :
+        serialize(NULL), deserialize(NULL), compare(NULL), 
+        members(NULL), lastMember(NULL), name(string), size(val)
     {
     }
 
@@ -123,25 +123,32 @@ namespace Eclipse
     {
         serialize = fn;
     }
-    
-    void MetaData::Serialize(const char* Name, RefVariant var) const
-    {
-        if (serialize)
-            serialize(Name, var);
-        /*else
-            TextSerialize(var);*/
-    }
 
     void MetaData::SetDeserialize(DeserializeFn fn)
     {
         deserialize = fn;
     }
 
+    void MetaData::SetCompare(CompareFn fn)
+    {
+        compare = fn;
+    }
+
+    void MetaData::Serialize(const char* Name, RefVariant var) const
+    {
+        ENGINE_LOG_ASSERT(serialize, "Unknown data type. Did you forget to register with DEFINE_META_POD?");
+        serialize(Name, var);
+    }
+
     bool MetaData::Deserialize(const char* Name, RefVariant var) const
     {
-        if (deserialize)
-            return deserialize(Name, var);
-        else
-            return false;
+        ENGINE_LOG_ASSERT(deserialize, "Unknown data type. Did you forget to register with DEFINE_META_POD?");
+        return deserialize(Name, var);
+    }
+
+    bool MetaData::Compare(RefVariant lhs, RefVariant rhs) const
+    {
+        ENGINE_LOG_ASSERT(compare, "Unknown data type. Did you forget to register with DEFINE_META_POD?");
+        return compare(lhs, rhs);
     }
 }
