@@ -17,7 +17,7 @@ namespace Eclipse
 		Type = EditorWindowType::EWT_MESHEDITOR;
 		WindowName = "Mesh Editor";
 		m_frameBuffer = engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_MESHEDITOR);
-		IsVisible = true;
+		//IsVisible = true;
 	}
 
 	void MeshEditorWindow::Unload()
