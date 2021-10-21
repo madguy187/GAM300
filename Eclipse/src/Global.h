@@ -63,6 +63,15 @@ enum class PxShapeType
     Px_CAPSULE
 };
 
+enum class NodeType
+{
+    NODE_UNASSIGNED,
+    NODE_SELECTOR,
+    NODE_SEQUENCE,
+    NODE_BOOL,
+    NODE_BEHAVIOUR
+};
+
 enum class EntityType
 {
     // START OF GEO
