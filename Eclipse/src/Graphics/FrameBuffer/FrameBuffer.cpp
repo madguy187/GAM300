@@ -196,6 +196,7 @@ namespace Eclipse
 
             glBindVertexArray(rectVAO);
             glDisable(GL_DEPTH_TEST);
+            glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SCENE));
             glDrawArrays(GL_TRIANGLES, 0, 6);
 

@@ -21,6 +21,7 @@ namespace Eclipse
         Mode EditingMode = Mode::NONE_INSTANCE;
         std::shared_ptr<MaterialInstance> CurrentMaterial;
         ECVec3 Rotation{ 0.0f, 0.0f, 0.0f };
+
         std::string AlbedoTexture;
         std::string NormalTexture;
         std::string MetallicTexture;

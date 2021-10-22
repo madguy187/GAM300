@@ -95,6 +95,9 @@ namespace Eclipse
             ECGui::CheckBoxBool("HasTexture", &engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial->HasTexture);
             ECGui::NextColumn();
 
+            ECGui::DrawInputTextHintWidget(my_strcat("Material Name", 1).c_str(), "Material Name", const_cast<char*>(engine->gPBRManager->gMaterialEditorSettings->MaterialName.c_str()), 256, true, ImGuiInputTextFlags_None);
+            ECGui::NextColumn();
+
             // If We going to assign texture to his material
             if (engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial->HasTexture )
             {
