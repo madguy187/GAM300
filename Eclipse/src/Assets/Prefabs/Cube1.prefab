@@ -25,7 +25,7 @@
             <TextureComboIndex value="0" />
             <Type value="TT_2D" />
             <hasTexture value="true" />
-            <TextureRef value="FolderIcon" />
+            <TextureRef value="Sketchfab_model2" />
             <TextureKey value="" />
             <HoldingTextures size="0" />
             <HasMaterialIstance value="false" />

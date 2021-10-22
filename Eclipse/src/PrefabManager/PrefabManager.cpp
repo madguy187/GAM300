@@ -41,24 +41,15 @@ namespace Eclipse
 		{
 			CopyToInstance(oldPrefabEnt, prefabW, updatedPrefabEnt, entity);
 
-			auto& entComp = w.GetComponent<EntityComponent>(entity);
-			entComp.IsActive = false;
-
-			if (w.CheckComponent<MaterialComponent>(entity))
-			{
-				auto& matComp = w.GetComponent<MaterialComponent>(entity);
-				matComp.Highlight = false;
-			}
-
-			engine->gPicker.UpdateAabb(entity);
-			engine->gDynamicAABBTree.UpdateData(entity);
+			CleanUpForInstancesAfterCopy(entity);
 		}
 
 		//Update prefab
-		std::string path = GetPath(prefabComp.PrefabID);
-		if (std::filesystem::exists(path))
+		std::string prefabPath = GetPath(prefabComp.PrefabID);
+
+		if (std::filesystem::exists(prefabPath))
 		{
-			OverwritePrefab(updatedPrefabEnt, path.c_str());
+			OverwritePrefab(updatedPrefabEnt, prefabPath.c_str());
 		}
 
 		//Destroy
