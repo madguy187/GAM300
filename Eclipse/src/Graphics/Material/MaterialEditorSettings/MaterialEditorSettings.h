@@ -14,12 +14,15 @@ namespace Eclipse
     class MaterialEditorSettings
     {
     public:
+        std::ofstream MaterialFileWrite;
+        std::fstream MaterialFileRead;
+
         unsigned int sphereVAO = 0;
         unsigned int indexCount = 0;
         ECVec3 LightPosition{ 0,0,0 };
         ECVec3 lightColor{ 0,0,0 };
         Mode EditingMode = Mode::NONE_INSTANCE;
-        std::shared_ptr<MaterialInstance> CurrentMaterial;
+        MaterialInstance CurrentMaterial;
         ECVec3 Rotation{ 0.0f, 0.0f, 0.0f };
 
         std::string AlbedoTexture;
@@ -35,5 +38,6 @@ namespace Eclipse
         void UpdateCurrentMaterial();
         void UpdateLights(Shader& MaterialEditorShader);
         void UpdateCamera(Shader& MaterialEditorShader, CameraComponent& MeshEditorCamera);
+        void CreateMaterialInstance();
     };
 }

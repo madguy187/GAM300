@@ -62,8 +62,7 @@ namespace Eclipse
     {
         if (ECGui::ButtonBool("Create Material", { ImGui::GetColumnWidth(), 25 }))
         {
-            std::string scriptName;
-            scriptName.reserve(256);
+            engine->gPBRManager->gMaterialEditorSettings->CreateMaterialInstance();
         }
 
         ECGui::NextColumn();
@@ -92,14 +91,14 @@ namespace Eclipse
         {
             ECGui::DrawTextWidget<const char*>("HasTexture", EMPTY_STRING);
             ECGui::InsertSameLine();
-            ECGui::CheckBoxBool("HasTexture", &engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial->HasTexture);
+            ECGui::CheckBoxBool("HasTexture", &engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.HasTexture);
             ECGui::NextColumn();
 
-            ECGui::DrawInputTextHintWidget(my_strcat("Material Name", 1).c_str(), "Material Name", const_cast<char*>(engine->gPBRManager->gMaterialEditorSettings->MaterialName.c_str()), 256, true, ImGuiInputTextFlags_None);
+            ECGui::DrawInputTextHintWidget(my_strcat("Material Name", 1).c_str(), "Material Name", const_cast<char*>(engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.MeshName.data()), 256, true, ImGuiInputTextFlags_None);
             ECGui::NextColumn();
 
             // If We going to assign texture to his material
-            if (engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial->HasTexture )
+            if (engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.HasTexture)
             {
                 ECGui::DrawInputTextHintWidget(my_strcat("Albdeo Name", 1).c_str(), "Drag Albdeo Texture here", const_cast<char*>(engine->gPBRManager->gMaterialEditorSettings->AlbedoTexture.c_str()), 256, true, ImGuiInputTextFlags_None);
                 engine->editorManager->DragAndDropInst_.StringPayloadTarget("png", engine->gPBRManager->gMaterialEditorSettings->AlbedoTexture, "Albdeo Texture Inserted.", PayloadTargetType::PTT_ASSETS);
@@ -129,30 +128,30 @@ namespace Eclipse
             }
             else
             {
+                ECGui::DrawSliderFloat3Widget("BaseRFeflectivity", &engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity, true, 0.0f, 1.0f);
+                ECGui::NextColumn();
+
                 ECGui::DrawTextWidget<const char*>("AlbedoConstant", EMPTY_STRING);
                 ECGui::NextColumn();
-                ECGui::ColorPicker3("AlbedoConstant", (float*)&engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial->AlbedoConstant,
-                    ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
-                ECGui::DrawSliderFloat3Widget("AlbedoConstant", &engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial->AlbedoConstant, true, 0.0f, 1.0f);
+                ECGui::ColorPicker3("AlbedoConstant", (float*)&ColorPicker, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
+                engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant = ECVec3{ ColorPicker.getX() ,ColorPicker.getY() , ColorPicker.getZ() };
+                //ECGui::DrawSliderFloat3Widget("AlbedoConstant", &engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant, true, 0.0f, 1.0f);
 
                 ECGui::DrawTextWidget<const char*>("MetallicConstant", EMPTY_STRING);
-                ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloatWidget("MetallicConstant", &engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial->MetallicConstant, true, 0.0f, 1.0f);
+                ECGui::DrawSliderFloatWidget("MetallicConstant", &engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.MetallicConstant, true, 0.0f, 1.0f);
 
                 ECGui::NextColumn();
 
                 ECGui::DrawTextWidget<const char*>("RoughnessConstant", EMPTY_STRING);
                 ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloatWidget("RoughnessConstant", &engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial->RoughnessConstant, true, 0.0f, 1.0f);
+                ECGui::DrawSliderFloatWidget("RoughnessConstant", &engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.RoughnessConstant, true, 0.0f, 1.0f);
 
                 ECGui::NextColumn();
 
                 ECGui::DrawTextWidget<const char*>("AoConstant", EMPTY_STRING);
-                ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloatWidget("AoConstant", &engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial->AoConstant, true, 0.0f, 1.0f);
+                ECGui::DrawSliderFloatWidget("AoConstant", &engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AoConstant, true, 0.0f, 1.0f);
             }
         }
 

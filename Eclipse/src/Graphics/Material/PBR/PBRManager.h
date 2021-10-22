@@ -27,12 +27,14 @@ namespace Eclipse
     class PBRManager
     {
     public:
-        std::unordered_map<std::string, std::shared_ptr<MaterialInstance>> AllMaterialInstances;
+        std::unordered_map<std::string, std::unique_ptr<MaterialInstance>> AllMaterialInstances;
         std::unordered_map<std::string, map1> AllMaterialTextures;
         std::unique_ptr<MaterialEditorSettings> gMaterialEditorSettings;
+        std::unordered_map<std::string, ECVec3> BaseReflectivity;
 
         PBRManager();
         void Init();
+        void InitialiseBaseReflectivity();
         void GenerateMaterialTexture(std::string FolderName, std::string TextureName);
         void LoadAllTextures();
         void CheckUniform(unsigned int ID, CameraComponent& In);

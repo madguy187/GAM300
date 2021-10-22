@@ -7,6 +7,8 @@ namespace Eclipse
 	class MeshEditorWindow final : public ECGuiWindow
 	{
 	public:
+		ECVec3 ColorPicker{ 1.0f };
+
 		void Update() override;
 		void Init() override;
 		void Unload() override;

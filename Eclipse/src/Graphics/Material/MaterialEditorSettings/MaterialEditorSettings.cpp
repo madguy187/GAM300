@@ -8,26 +8,57 @@ namespace Eclipse
         // Light Source in MeshEditor
         LightPosition = ECVec3(10.0f, 10.0f, 10.0f);
         lightColor = ECVec3(300.0f, 300.0f, 300.0f);
+    }
 
-        CurrentMaterial = std::make_shared<MaterialInstance>();
+    void MaterialEditorSettings::CreateMaterialInstance()
+    {
+        engine->gPBRManager->AllMaterialInstances.emplace(CurrentMaterial.MeshName.data(), std::make_unique<MaterialInstance>(CurrentMaterial));
+
+        std::string hi = CurrentMaterial.MeshName.data();
+
+        MaterialFileWrite.open("src/Assets/MaterialInstances/" + hi + ".material",
+            std::ios_base::out |
+            std::ios_base::trunc |
+            std::ios_base::binary);
+
+        if (MaterialFileWrite.fail())
+        {
+            return;
+        }
+
+        MaterialInstance A = CurrentMaterial;
+        A.Ao = 3;
+        MaterialFileWrite.write(reinterpret_cast<const char*>(&A), offsetof(MaterialInstance, Stopper));
+        MaterialFileWrite.close();
+
+        MaterialFileRead.open("src/Assets/MaterialInstances/" + hi + ".material", std::ios::in | std::ios::binary);
+
+        if (MaterialFileRead.fail())
+        {
+            return;
+        }
+
+        MaterialInstance B;
+        MaterialFileRead.read(reinterpret_cast<char*>(&B), offsetof(MaterialInstance, Stopper));
+        MaterialFileRead.close();
     }
 
     void MaterialEditorSettings::BindMaterial(std::string MaterialName, Shader& In)
     {
         glActiveTexture(GL_TEXTURE10);
-        glBindTexture(GL_TEXTURE_2D, CurrentMaterial->Albedo);
+        glBindTexture(GL_TEXTURE_2D, CurrentMaterial.Albedo);
 
         glActiveTexture(GL_TEXTURE11);
-        glBindTexture(GL_TEXTURE_2D, CurrentMaterial->Normal);
+        glBindTexture(GL_TEXTURE_2D, CurrentMaterial.Normal);
 
         glActiveTexture(GL_TEXTURE12);
-        glBindTexture(GL_TEXTURE_2D, CurrentMaterial->Metallic);
+        glBindTexture(GL_TEXTURE_2D, CurrentMaterial.Metallic);
 
         glActiveTexture(GL_TEXTURE13);
-        glBindTexture(GL_TEXTURE_2D, CurrentMaterial->Roughness);
+        glBindTexture(GL_TEXTURE_2D, CurrentMaterial.Roughness);
 
         glActiveTexture(GL_TEXTURE14);
-        glBindTexture(GL_TEXTURE_2D, CurrentMaterial->Ao);
+        glBindTexture(GL_TEXTURE_2D, CurrentMaterial.Ao);
 
         In.setInt("albedoMap", 10);
         In.setInt("normalMap", 11);
@@ -57,6 +88,7 @@ namespace Eclipse
         GLuint AlbedoConstant = shdrpgm.GetLocation("AlbedoConstant");
         GLuint AoConstant = shdrpgm.GetLocation("AoConstant");
         GLint HasInstance = shdrpgm.GetLocation("HasInstance");
+        GLint BaseReflectivity = shdrpgm.GetLocation("BaseReflectivity");
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::mat4(1.0f);
@@ -66,14 +98,15 @@ namespace Eclipse
         model = glm::rotate(model, glm::radians(Rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::scale(model, { 5,5,5 });
 
-        GLCall(glUniform1i(HasInstance, CurrentMaterial->HasTexture));
-        GLCall(glUniform3f(AlbedoConstant, CurrentMaterial->AlbedoConstant.getX(), CurrentMaterial->AlbedoConstant.getY(), CurrentMaterial->AlbedoConstant.getZ()));
-        GLCall(glUniform1f(AoConstant, CurrentMaterial->AoConstant));
-        GLCall(glUniform1f(MetallicConstant, CurrentMaterial->MetallicConstant));
-        GLCall(glUniform1f(RoughnessConstant, CurrentMaterial->RoughnessConstant));
+        GLCall(glUniform1i(HasInstance, CurrentMaterial.HasTexture));
+        GLCall(glUniform3f(AlbedoConstant, CurrentMaterial.AlbedoConstant.getX(), CurrentMaterial.AlbedoConstant.getY(), CurrentMaterial.AlbedoConstant.getZ()));
+        GLCall(glUniform1f(AoConstant, CurrentMaterial.AoConstant));
+        GLCall(glUniform1f(MetallicConstant, CurrentMaterial.MetallicConstant));
+        GLCall(glUniform1f(RoughnessConstant, CurrentMaterial.RoughnessConstant));
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv(projection1, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
         glUniformMatrix4fv(view1, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
+        GLCall(glUniform3f(BaseReflectivity, CurrentMaterial.BaseReflectivity.getX(), CurrentMaterial.BaseReflectivity.getY(), CurrentMaterial.BaseReflectivity.getZ()));
 
         BindMaterial("HardWood", shdrpgm);
 
@@ -83,9 +116,6 @@ namespace Eclipse
 
     void MaterialEditorSettings::UpdateLights(Shader& MaterialEditorShader)
     {
-        //auto shdrpgm = Graphics::shaderpgms["MaterialEditor"];
-        //shdrpgm.Use();
-
         std::string number = std::to_string(0);
         GLint uniform_var_loc1 = MaterialEditorShader.GetLocation(("pointLights[" + number + "].position").c_str());
         GLint uniform_var_loc2 = MaterialEditorShader.GetLocation(("pointLights[" + number + "].lightColor").c_str());

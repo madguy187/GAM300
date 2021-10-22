@@ -10,12 +10,27 @@ namespace Eclipse
 
     void PBRManager::Init()
     {
+        InitialiseBaseReflectivity();
         LoadAllTextures();
 
         gMaterialEditorSettings = std::make_unique<MaterialEditorSettings>();
 
         LoadMaterial("BambooWood");
         LoadMaterial("HardWood");
+    }
+
+    void PBRManager::InitialiseBaseReflectivity()
+    {
+        BaseReflectivity.emplace("Water", ECVec3{ 0.02,0.02,0.02 });
+        BaseReflectivity.emplace("Plastic(Low)", ECVec3{ 0.03,0.03,0.03 });
+        BaseReflectivity.emplace("Plastic(High)", ECVec3{ 0.05,0.05,0.05 });
+        BaseReflectivity.emplace("Glass(High)", ECVec3{ 0.08,0.08,0.08 });
+        BaseReflectivity.emplace("Diamond", ECVec3{ 0.17,0.17,0.17 });
+        BaseReflectivity.emplace("Iron", ECVec3{ 0.56,0.56,0.56 });
+        BaseReflectivity.emplace("Copper", ECVec3{ 0.95,0.64,0.54 });
+        BaseReflectivity.emplace("Gold", ECVec3{ 1.00,0.71,0.29 });
+        BaseReflectivity.emplace("Aluminium", ECVec3{ 0.91,0.92,0.92 });
+        BaseReflectivity.emplace("Silver", ECVec3{ 0.95,0.93,0.88 });
     }
 
     void PBRManager::GenerateMaterialTexture(std::string FolderName, std::string TextureName)
@@ -25,7 +40,7 @@ namespace Eclipse
             //Found Loaded Texture
             if (AllMaterialTextures.find(FolderName) != AllMaterialTextures.end())
             {
-                gMaterialEditorSettings->CurrentMaterial->Albedo = AllMaterialTextures[FolderName][MaterialType::MT_ALBEDO];
+                gMaterialEditorSettings->CurrentMaterial.Albedo = AllMaterialTextures[FolderName][MaterialType::MT_ALBEDO];
             }
         }
         else if (TextureName.find("normal") != std::string::npos)
@@ -33,7 +48,7 @@ namespace Eclipse
             //Found Loaded Texture
             if (AllMaterialTextures.find(FolderName) != AllMaterialTextures.end())
             {
-                gMaterialEditorSettings->CurrentMaterial->Normal = AllMaterialTextures[FolderName][MaterialType::MT_NORMAL];
+                gMaterialEditorSettings->CurrentMaterial.Normal = AllMaterialTextures[FolderName][MaterialType::MT_NORMAL];
             }
         }
         else if (TextureName.find("metallic") != std::string::npos)
@@ -41,7 +56,7 @@ namespace Eclipse
             //Found Loaded Texture
             if (AllMaterialTextures.find(FolderName) != AllMaterialTextures.end())
             {
-                gMaterialEditorSettings->CurrentMaterial->Metallic = AllMaterialTextures[FolderName][MaterialType::MT_METALLIC];
+                gMaterialEditorSettings->CurrentMaterial.Metallic = AllMaterialTextures[FolderName][MaterialType::MT_METALLIC];
             }
         }
         else if (TextureName.find("roughness") != std::string::npos)
@@ -49,7 +64,7 @@ namespace Eclipse
             //Found Loaded Texture
             if (AllMaterialTextures.find(FolderName) != AllMaterialTextures.end())
             {
-                gMaterialEditorSettings->CurrentMaterial->Roughness = AllMaterialTextures[FolderName][MaterialType::MT_ROUGHNESS];
+                gMaterialEditorSettings->CurrentMaterial.Roughness = AllMaterialTextures[FolderName][MaterialType::MT_ROUGHNESS];
             }
         }
         else if (TextureName.find("ao") != std::string::npos)
@@ -57,7 +72,7 @@ namespace Eclipse
             //Found Loaded Texture
             if (AllMaterialTextures.find(FolderName) != AllMaterialTextures.end())
             {
-                gMaterialEditorSettings->CurrentMaterial->Ao = AllMaterialTextures[FolderName][MaterialType::MT_AO];
+                gMaterialEditorSettings->CurrentMaterial.Ao = AllMaterialTextures[FolderName][MaterialType::MT_AO];
             }
         }
     }
@@ -162,7 +177,7 @@ namespace Eclipse
         NewMaterial.Metallic = loadTexture(("src/Assets/Materials/" + NameOfMaterial + "/metallic.png").c_str());
         NewMaterial.Roughness = loadTexture(("src/Assets/Materials/" + NameOfMaterial + "/roughness.png").c_str());
         NewMaterial.Ao = loadTexture(("src/Assets/Materials/" + NameOfMaterial + "/ao.png").c_str());
-        AllMaterialInstances.insert({ NewMaterial.Name, std::make_shared<MaterialInstance>(NewMaterial) });
+        AllMaterialInstances.insert({ NewMaterial.MeshName.data(), std::make_unique<MaterialInstance>(NewMaterial) });
     }
 
     void PBRManager::BindMaterial(std::string MaterialName, Shader& In)
@@ -373,36 +388,36 @@ namespace Eclipse
         {
         case MaterialType::MT_ALBEDO:
         {
-            if(TextureName.find("albedo") == std::string::npos)
-                gMaterialEditorSettings->CurrentMaterial->Albedo = 0;
+            if (TextureName.find("albedo") == std::string::npos)
+                gMaterialEditorSettings->CurrentMaterial.Albedo = 0;
         }
         break;
 
         case MaterialType::MT_NORMAL:
         {
             if (TextureName.find("normal") == std::string::npos)
-                gMaterialEditorSettings->CurrentMaterial->Normal = 0;
+                gMaterialEditorSettings->CurrentMaterial.Normal = 0;
         }
         break;
 
         case MaterialType::MT_METALLIC:
         {
             if (TextureName.find("metallic") == std::string::npos)
-                gMaterialEditorSettings->CurrentMaterial->Metallic = 0;
+                gMaterialEditorSettings->CurrentMaterial.Metallic = 0;
         }
         break;
 
         case MaterialType::MT_ROUGHNESS:
         {
             if (TextureName.find("roughness") == std::string::npos)
-                gMaterialEditorSettings->CurrentMaterial->Roughness = 0;
+                gMaterialEditorSettings->CurrentMaterial.Roughness = 0;
         }
         break;
 
         case MaterialType::MT_AO:
         {
             if (TextureName.find("ao") == std::string::npos)
-                gMaterialEditorSettings->CurrentMaterial->Ao = 0;
+                gMaterialEditorSettings->CurrentMaterial.Ao = 0;
         }
         break;
         }

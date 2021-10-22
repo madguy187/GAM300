@@ -17,6 +17,7 @@ uniform float MetallicConstant;
 uniform float RoughnessConstant;
 uniform float AoConstant;
 uniform int HasInstance;
+uniform vec3 BaseReflectivity;
 
 // lights
 uniform vec3 lightPositions[4];
@@ -108,7 +109,7 @@ void main()
     float metallic,roughness,ao;
 
     // base relfect
-    vec3 F0 = vec3(0.4); 
+    vec3 F0 = BaseReflectivity; 
 
     if(HasInstance == 1)
     {   
