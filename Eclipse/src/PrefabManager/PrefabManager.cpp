@@ -90,6 +90,23 @@ namespace Eclipse
 		}
 	}
 
+	void PrefabManager::PostUpdate()
+	{
+		auto& w = engine->world;
+		auto& prefabW = engine->prefabWorld;
+		std::vector<Entity> instances = GetInstanceList();
+
+		for (auto& ent : instances)
+		{
+			auto& prefab = w.GetComponent<PrefabComponent>(ent);
+			auto& prefabOwner = mapPIDToEID[prefab.PrefabID];
+
+			SignatureBaseCopy(prefabW, w, prefabOwner, ent);
+
+			CleanUpForInstancesAfterCopy(ent);
+		}
+	}
+
 	void PrefabManager::LoadPrefab(const char* path)
 	{
 		Entity ent = MAX_ENTITY;
@@ -223,7 +240,7 @@ namespace Eclipse
 		return newEnt;
 	}
 
-	void PrefabManager::RegisterForNewInstance(Entity ent)
+	void PrefabManager::RegisterForNewInstance(const Entity& ent)
 	{
 		World& w = engine->world;
 		TransformComponent defaultComp;
@@ -232,7 +249,6 @@ namespace Eclipse
 
 		auto& prefabComp = w.GetComponent<PrefabComponent>(ent);
 		prefabComp.IsChild = true;
-
 
 		engine->editorManager->RegisterExistingEntity(ent);
 
@@ -251,7 +267,23 @@ namespace Eclipse
 		}
 	}
 
-	void PrefabManager::SignatureBaseCopy(World& sourceWorld, World& targetWorld, Entity sourceEnt, Entity targetEnt)
+	void PrefabManager::CleanUpForInstancesAfterCopy(const Entity& ent)
+	{
+		auto& w = engine->world;
+		auto& entComp = w.GetComponent<EntityComponent>(ent);
+		entComp.IsActive = false;
+
+		if (w.CheckComponent<MaterialComponent>(ent))
+		{
+			auto& matComp = w.GetComponent<MaterialComponent>(ent);
+			matComp.Highlight = false;
+		}
+
+		engine->gPicker.UpdateAabb(ent);
+		engine->gDynamicAABBTree.UpdateData(ent);
+	}
+
+	void PrefabManager::SignatureBaseCopy(World& sourceWorld, World& targetWorld, const Entity& sourceEnt, const Entity& targetEnt)
 	{
 		auto& sourceTrans = sourceWorld.GetComponent<TransformComponent>(sourceEnt);
 		auto& targetTrans = targetWorld.GetComponent<TransformComponent>(targetEnt);
@@ -262,7 +294,7 @@ namespace Eclipse
 		SignatureBaseCopying(sourceWorld, targetWorld, sourceEnt, targetEnt, list);
 	}
 
-	void PrefabManager::CopyToInstance(Entity comparingPrefabEnt, World& copySourceWorld, Entity copyingSourceEnt, Entity instancesEnt)
+	void PrefabManager::CopyToInstance(const Entity& comparingPrefabEnt, World& copySourceWorld, const Entity& copyingSourceEnt, const Entity& instancesEnt)
 	{
 		CopyToPrefabInstances(comparingPrefabEnt, copySourceWorld, copyingSourceEnt, instancesEnt, list);
 	}
@@ -271,6 +303,13 @@ namespace Eclipse
 	{
 		std::vector<Entity> changingEntities;
 		auto& w = engine->world;
+		auto& set = w.GetSystem<PrefabSystem>()->mEntities;
+		if (prefabID == 0)
+		{
+			std::copy(set.begin(), set.end(), std::back_inserter(changingEntities));
+			return changingEntities;
+		}
+
 		for (auto entity : w.GetSystem<PrefabSystem>()->mEntities)
 		{
 			auto& prefabComp = w.GetComponent<PrefabComponent>(entity);
@@ -314,17 +353,7 @@ namespace Eclipse
 
 			CopyToInstance(prefabOwner, w, ent, entity);
 
-			auto& entComp = w.GetComponent<EntityComponent>(entity);
-			entComp.IsActive = false;
-
-			if (w.CheckComponent<MaterialComponent>(entity))
-			{
-				auto& matComp = w.GetComponent<MaterialComponent>(entity);
-				matComp.Highlight = false;
-			}
-
-			engine->gPicker.UpdateAabb(entity);
-			engine->gDynamicAABBTree.UpdateData(entity);
+			CleanUpForInstancesAfterCopy(entity);
 		}
 		SignatureBaseCopy(w, prefabW, ent, prefabOwner);
 	}

@@ -33,22 +33,24 @@ namespace Eclipse
 
 		std::string GenerateFileName(EntityComponent& entComp, const char* path);
 
-		void RegisterForNewInstance(Entity ent);
+		void RegisterForNewInstance(const Entity& ent);
 
-		void SignatureBaseCopy(World& sourceWorld, World& targetWorld, Entity sourceEnt, Entity targetEnt);
+		void CleanUpForInstancesAfterCopy(const Entity& ent);
 
-		void CopyToInstance(Entity comparingPrefabEnt, World& copySourceWorld, Entity copyingSourceEnt, Entity instancesEnt);
+		void SignatureBaseCopy(World& sourceWorld, World& targetWorld, const Entity& sourceEnt, const Entity& targetEnt);
 
-		std::vector<Entity> GetInstanceList(const EUUID& prefabID);
+		void CopyToInstance(const Entity& comparingPrefabEnt, World& copySourceWorld, const Entity& copyingSourceEnt, const Entity& instancesEnt);
+
+		std::vector<Entity> GetInstanceList(const EUUID& prefabID = 0);
 
 		template <typename ...T>
-		void SignatureBaseCopying(World& sourceWorld, World& targetWorld, Entity sourceEnt, Entity targetEnt, TypeList<T...>)
+		void SignatureBaseCopying(World& sourceWorld, World& targetWorld, const Entity& sourceEnt, const Entity& targetEnt, TypeList<T...>)
 		{
 			((SignatureBaseCopyingComponent<T>(sourceWorld, targetWorld, sourceEnt, targetEnt)), ...);
 		}
 
 		template <typename T>
-		void SignatureBaseCopyingComponent(World& sourceWorld, World& targetWorld, Entity sourceEnt, Entity targetEnt)
+		void SignatureBaseCopyingComponent(World& sourceWorld, World& targetWorld, const Entity& sourceEnt, const Entity& targetEnt)
 		{
 			auto& sourcePrefabComp = sourceWorld.GetComponent<PrefabComponent>(sourceEnt);
 			auto& targetPrefabComp = targetWorld.GetComponent<PrefabComponent>(targetEnt);
@@ -85,13 +87,13 @@ namespace Eclipse
 		}
 		
 		template <typename ...T>
-		void CopyToPrefabInstances(Entity comparingPrefabEnt, World& copySourceWorld, Entity copyingSourceEnt, Entity instancesEnt, TypeList<T...>)
+		void CopyToPrefabInstances(const Entity& comparingPrefabEnt, World& copySourceWorld, const Entity& copyingSourceEnt, const Entity& instancesEnt, TypeList<T...>)
 		{
 			((CopyToInstancesComponent<T>(comparingPrefabEnt, copySourceWorld, copyingSourceEnt, instancesEnt)), ...);
 		}
 
 		template <typename T>
-		void CopyToInstancesComponent(Entity comparingPrefabEnt, World& copySourceWorld, Entity copyingSourceEnt, Entity instancesEnt)
+		void CopyToInstancesComponent(const Entity& comparingPrefabEnt, World& copySourceWorld, const Entity& copyingSourceEnt, const Entity& instancesEnt)
 		{
 			World& prefabW = engine->prefabWorld;
 			World& entW = engine->world;
@@ -157,6 +159,8 @@ namespace Eclipse
 		PrefabManager();
 
 		void LoadAllPrefab();
+
+		void PostUpdate();
 
 		void ApplyChangesToAll(Entity ent);
 
