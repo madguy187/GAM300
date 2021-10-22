@@ -812,6 +812,7 @@
     <ClInclude Include="src\Library\Random\Random.h" />
     <ClInclude Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.h" />
     <ClInclude Include="src\Editor\Windows\MeshEditor\MeshEditor.h" />
+    <ClInclude Include="src\Graphics\Material\MaterialEditorSettings\MaterialEditorSettings.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1203,6 +1204,7 @@
     <ClCompile Include="src\Graphics\Material\MaterialInstance\MaterialInstance.cpp" />
     <ClCompile Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.cpp" />
     <ClCompile Include="src\Editor\Windows\MeshEditor\MeshEditor.cpp" />
+    <ClCompile Include="src\Graphics\Material\MaterialEditorSettings\MaterialEditorSettings.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />

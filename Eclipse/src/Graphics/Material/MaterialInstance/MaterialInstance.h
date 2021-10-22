@@ -16,10 +16,10 @@ namespace Eclipse
         unsigned int Ao = 0;
 
         // Non Textured Parameters
-        ECVec3 AlbedoConstant{ 0.0f };
-        float AoConstant = 0.0f;
-        float MetallicConstant = 0.0f;
-        float RoughnessConstant = 0.0f;
+        ECVec3 AlbedoConstant{ 1.0f };
+        float AoConstant = 1.0f;
+        float MetallicConstant = 1.0f;
+        float RoughnessConstant = 1.0f;
 
 
         MaterialInstance(bool HasTexture = false);

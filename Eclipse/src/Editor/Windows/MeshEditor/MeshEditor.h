@@ -13,6 +13,9 @@ namespace Eclipse
 		void RunMainWindow();
 		void RunFrameBuffer();
 		void RunMeshSettings();
+		void Buttons();
+		bool ShowTransformProperty(const char* name, ImGuiTextFilter& filter);
+		bool ShowMaterialProperty(const char* name, ImGuiTextFilter& filter);
 	private:
 		FrameBuffer* m_frameBuffer{ nullptr };
 		ECVec2 mViewportSize{ 0.f, 0.f };

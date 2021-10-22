@@ -127,6 +127,12 @@ namespace Eclipse
     {
         switch (in)
         {
+        case CameraComponent::CameraType::MeshEditor_Camera:
+        {
+            return FrameBufferContainer[FrameBufferMode::FBM_MESHEDITOR]->AspectRatio;
+        }
+        break;
+
         case CameraComponent::CameraType::Editor_Camera:
         {
             return FrameBufferContainer[FrameBufferMode::FBM_SCENE]->AspectRatio;
