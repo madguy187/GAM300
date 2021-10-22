@@ -16,7 +16,7 @@ namespace Eclipse
 
         std::string hi = CurrentMaterial.MeshName.data();
 
-        MaterialFileWrite.open("src/Assets/MaterialInstances/" + hi + ".material",
+        MaterialFileWrite.open("src/Assets/MaterialInstances/" + hi + ".mat",
             std::ios_base::out |
             std::ios_base::trunc |
             std::ios_base::binary);
@@ -31,7 +31,7 @@ namespace Eclipse
         MaterialFileWrite.write(reinterpret_cast<const char*>(&A), offsetof(MaterialInstance, Stopper));
         MaterialFileWrite.close();
 
-        MaterialFileRead.open("src/Assets/MaterialInstances/" + hi + ".material", std::ios::in | std::ios::binary);
+        MaterialFileRead.open("src/Assets/MaterialInstances/" + hi + ".mat", std::ios::in | std::ios::binary);
 
         if (MaterialFileRead.fail())
         {

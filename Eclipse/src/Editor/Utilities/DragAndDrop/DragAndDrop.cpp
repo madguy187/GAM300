@@ -106,6 +106,15 @@ namespace Eclipse
 
 						engine->gPBRManager->GenerateMaterialTexture(folder, destination);
 					}
+					else if (!strcmp(id, "mat"))
+					{
+						std::filesystem::path temp = ((const char*)payload->Data);
+						std::string folder = temp.parent_path().filename().string();
+						destination = AssetBrowserWindow::GetFileName(temp.filename().string().c_str());
+
+						auto& Material = engine->world.GetComponent<MaterialComponent>(ID);
+						Material.MaterialInstanceName = destination;
+					}
 					else
 					{
 						// FOR JIAN HERNG entID for entity number and destination for path
