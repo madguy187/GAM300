@@ -98,6 +98,24 @@ namespace Eclipse
 		}
 	}
 
+	void PrefabManager::EndUpdate()
+	{
+		auto& w = engine->world;
+		auto& prefabW = engine->prefabWorld;
+		std::vector<Entity> instances = GetInstanceList();
+
+		for (auto& ent : instances)
+		{
+			auto& prefab = w.GetComponent<PrefabComponent>(ent);
+			auto& prefabOwner = mapPIDToEID[prefab.PrefabID];
+
+			CopyToPrefabInstances(prefabOwner, prefabW, prefabOwner, ent, list, true);
+			//SignatureBaseCopy(prefabW, w, prefabOwner, ent);
+
+			CleanUpForInstancesAfterCopy(ent);
+		}
+	}
+
 	void PrefabManager::LoadPrefab(const char* path)
 	{
 		Entity ent = MAX_ENTITY;

@@ -147,6 +147,7 @@ namespace Eclipse
 
 	void SerializationManager::SaveSceneFile(const char* fullpath)
 	{
+		engine->pfManager.EndUpdate();
 		SerializeAllEntity();
 		SaveFile(fullpath);
 	}
@@ -161,6 +162,7 @@ namespace Eclipse
 
 	void SerializationManager::SaveBackupFile()
 	{
+		engine->pfManager.EndUpdate();
 		SerializeAllEntity();
 		backup.SaveBackup(sz);
 	}

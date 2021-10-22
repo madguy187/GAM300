@@ -87,13 +87,13 @@ namespace Eclipse
 		}
 		
 		template <typename ...T>
-		void CopyToPrefabInstances(const Entity& comparingPrefabEnt, World& copySourceWorld, const Entity& copyingSourceEnt, const Entity& instancesEnt, TypeList<T...>)
+		void CopyToPrefabInstances(const Entity& comparingPrefabEnt, World& copySourceWorld, const Entity& copyingSourceEnt, const Entity& instancesEnt, TypeList<T...>, const bool& UpdateSignatureOnly = false)
 		{
-			((CopyToInstancesComponent<T>(comparingPrefabEnt, copySourceWorld, copyingSourceEnt, instancesEnt)), ...);
+			((CopyToInstancesComponent<T>(comparingPrefabEnt, copySourceWorld, copyingSourceEnt, instancesEnt, UpdateSignatureOnly)), ...);
 		}
 
 		template <typename T>
-		void CopyToInstancesComponent(const Entity& comparingPrefabEnt, World& copySourceWorld, const Entity& copyingSourceEnt, const Entity& instancesEnt)
+		void CopyToInstancesComponent(const Entity& comparingPrefabEnt, World& copySourceWorld, const Entity& copyingSourceEnt, const Entity& instancesEnt, const bool& UpdateSignatureOnly)
 		{
 			World& prefabW = engine->prefabWorld;
 			World& entW = engine->world;
@@ -105,14 +105,17 @@ namespace Eclipse
 
 				if (SerializationManager::CompareComponentData(targetComp, comparingComp))
 				{
-					if (copySourceWorld.CheckComponent<T>(copyingSourceEnt))
+					if (!UpdateSignatureOnly)
 					{
-						T& copyingComp = copySourceWorld.GetComponent<T>(copyingSourceEnt);
-						targetComp = copyingComp;
-					}
-					else
-					{
-						entW.DestroyComponent<T>(instancesEnt);
+						if (copySourceWorld.CheckComponent<T>(copyingSourceEnt))
+						{
+							T& copyingComp = copySourceWorld.GetComponent<T>(copyingSourceEnt);
+							targetComp = copyingComp;
+						}
+						else
+						{
+							entW.DestroyComponent<T>(instancesEnt);
+						}
 					}
 
 					UpdatePrefabSignature(entW, instancesEnt, entW.GetComponentType<T>(), 0);
@@ -128,10 +131,13 @@ namespace Eclipse
 			}
 			else
 			{
-				if (copySourceWorld.CheckComponent<T>(copyingSourceEnt))
+				if (!UpdateSignatureOnly)
 				{
-					T& copyingComp = copySourceWorld.GetComponent<T>(copyingSourceEnt);
-					entW.AddComponent<T>(instancesEnt, copyingComp);
+					if (copySourceWorld.CheckComponent<T>(copyingSourceEnt))
+					{
+						T& copyingComp = copySourceWorld.GetComponent<T>(copyingSourceEnt);
+						entW.AddComponent<T>(instancesEnt, copyingComp);
+					}
 				}
 				UpdatePrefabSignature(entW, instancesEnt, entW.GetComponentType<T>(), 0);
 			}
@@ -161,6 +167,8 @@ namespace Eclipse
 		void LoadAllPrefab();
 
 		void PostUpdate();
+
+		void EndUpdate();
 
 		void ApplyChangesToAll(Entity ent);
 

@@ -16,7 +16,10 @@ namespace Eclipse
 
 	void SceneManager::Initialize()
 	{
-		engine->pfManager.PostUpdate();
+		if (engine->GetEditorState())
+		{
+			engine->pfManager.PostUpdate();
+		}
 	}
 
 	void SceneManager::ProcessScene()
