@@ -23,6 +23,28 @@ namespace Eclipse
 		mapPIDToEID[prefabID] = ent;
 	}
 
+	void PrefabManager::SavePrefabChanges(const Entity& ent)
+	{
+		auto& prefabW = engine->prefabWorld;
+		auto& prefabComp = prefabW.GetComponent<PrefabComponent>(ent);
+		const std::string& path = GetPath(prefabComp.PrefabID);
+
+		//Load old prefab
+		Entity oldPrefab;
+		engine->szManager.LoadPrefabFile(oldPrefab, path.c_str());
+
+
+
+		prefabW.DestroyEntity(oldPrefab);
+	}
+
+	void PrefabManager::UpdatePrefabSignature(World& sourceW, const Entity& ent, const size_t& setBit, bool setTo)
+	{
+		auto& prefabComp = sourceW.GetComponent<PrefabComponent>(ent);
+
+		prefabComp.CompChanges.set(setBit, setTo);
+	}
+
 	PrefabManager::PrefabManager()
 	{
 		std::filesystem::create_directories(PrefabPath);
@@ -202,7 +224,7 @@ namespace Eclipse
 		}
 	}
 
-	void PrefabManager::Equalize(World& sourceWorld, World& targetWorld, Entity sourceEnt, Entity targetEnt)
+	void PrefabManager::SignatureBaseCopy(World& sourceWorld, World& targetWorld, Entity sourceEnt, Entity targetEnt)
 	{
 		auto& sourceTrans = sourceWorld.GetComponent<TransformComponent>(sourceEnt);
 		auto& targetTrans = targetWorld.GetComponent<TransformComponent>(targetEnt);
@@ -210,14 +232,19 @@ namespace Eclipse
 		targetTrans.rotation = sourceTrans.rotation;
 		targetTrans.scale = sourceTrans.scale;
 
-		EqualizeEntity(sourceWorld, targetWorld, sourceEnt, targetEnt, list);
+		SignatureBaseCopying(sourceWorld, targetWorld, sourceEnt, targetEnt, list);
+	}
+
+	void PrefabManager::CopyToInstances(Entity comparingPrefabEnt, World& copySourceWorld, Entity copyingSourceEnt, Entity instancesEnt)
+	{
+		CopyToPrefabInstances(comparingPrefabEnt, copySourceWorld, copyingSourceEnt, instancesEnt, list);
 	}
 
 	void PrefabManager::ApplyChangesToAll(Entity ent)
 	{
 		World& prefabW = engine->prefabWorld;
 		World& w = engine->world;
-
+		Entity prefabOwner = MAX_ENTITY;
 		std::vector<Entity> changingEntities;
 
 		auto& samplePrefabComp = w.GetComponent<PrefabComponent>(ent);
@@ -225,9 +252,8 @@ namespace Eclipse
 
 		if (PrefabIDSet.find(samplePrefabComp.PrefabID) != PrefabIDSet.end())
 		{
-			Entity prefabOwner = mapPIDToEID[samplePrefabComp.PrefabID];
-
-			Equalize(w, prefabW, ent, prefabOwner);
+			prefabOwner = mapPIDToEID[samplePrefabComp.PrefabID];
+			
 
 			for (auto entity : w.GetSystem<PrefabSystem>()->mEntities)
 			{
@@ -238,6 +264,12 @@ namespace Eclipse
 				}
 			}
 		}
+		//break straigtaway if no prefab found.
+		//which is unlikely to happen in future
+		if (prefabOwner == MAX_ENTITY)
+		{
+			return;
+		}
 
 		for (auto entity : changingEntities)
 		{
@@ -246,7 +278,7 @@ namespace Eclipse
 				continue;
 			}
 
-			Equalize(w, w, ent, entity);
+			CopyToInstances(prefabOwner, w, ent, entity);
 
 			auto& entComp = w.GetComponent<EntityComponent>(entity);
 			entComp.IsActive = false;
@@ -260,6 +292,7 @@ namespace Eclipse
 			engine->gPicker.UpdateAabb(ent);
 			engine->gDynamicAABBTree.UpdateData(ent);
 		}
+		SignatureBaseCopy(w, prefabW, ent, prefabOwner);
 	}
 
 	void PrefabManager::OverwritePrefab(const Entity& ent, const char* path)

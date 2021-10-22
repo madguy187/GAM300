@@ -10,7 +10,6 @@ namespace Eclipse
 		std::unordered_map<std::string, EUUID> mapPathToID;
 
 		using PrefabUseList = ComponentTypeList<
-			AABBComponent,
 			CameraComponent,
 			DirectionalLightComponent,
 			LightComponent,
@@ -25,8 +24,7 @@ namespace Eclipse
 			CollisionComponent,
 			AudioComponent,
 			AIComponent,
-			SpotLightComponent,
-			PrefabComponent
+			SpotLightComponent
 		>;
 
 		PrefabUseList list{};
@@ -37,16 +35,18 @@ namespace Eclipse
 
 		void RegisterForNewInstance(Entity ent);
 
-		void Equalize(World& sourceWorld, World& targetWorld, Entity sourceEnt, Entity targetEnt);
+		void SignatureBaseCopy(World& sourceWorld, World& targetWorld, Entity sourceEnt, Entity targetEnt);
+
+		void CopyToInstances(Entity comparingPrefabEnt, World& copySourceWorld, Entity copyingSourceEnt, Entity instancesEnt);
 
 		template <typename ...T>
-		void EqualizeEntity(World& sourceWorld, World& targetWorld, Entity sourceEnt, Entity targetEnt, TypeList<T...>)
+		void SignatureBaseCopying(World& sourceWorld, World& targetWorld, Entity sourceEnt, Entity targetEnt, TypeList<T...>)
 		{
-			((EqualizeEntityComponent<T>(sourceWorld, targetWorld, sourceEnt, targetEnt)), ...);
+			((SignatureBaseCopyingComponent<T>(sourceWorld, targetWorld, sourceEnt, targetEnt)), ...);
 		}
 
 		template <typename T>
-		void EqualizeEntityComponent(World& sourceWorld, World& targetWorld, Entity sourceEnt, Entity targetEnt)
+		void SignatureBaseCopyingComponent(World& sourceWorld, World& targetWorld, Entity sourceEnt, Entity targetEnt)
 		{
 			auto& sourcePrefabComp = sourceWorld.GetComponent<PrefabComponent>(sourceEnt);
 			auto& targetPrefabComp = targetWorld.GetComponent<PrefabComponent>(targetEnt);
@@ -81,6 +81,57 @@ namespace Eclipse
 
 			}
 		}
+		
+		template <typename ...T>
+		void CopyToPrefabInstances(Entity comparingPrefabEnt, World& copySourceWorld, Entity copyingSourceEnt, Entity instancesEnt, TypeList<T...>)
+		{
+			((CopyToInstancesComponent<T>(comparingPrefabEnt, copySourceWorld, copyingSourceEnt, instancesEnt)), ...);
+		}
+
+		template <typename T>
+		void CopyToInstancesComponent(Entity comparingPrefabEnt, World& copySourceWorld, Entity copyingSourceEnt, Entity instancesEnt)
+		{
+			World& prefabW = engine->prefabWorld;
+			World& entW = engine->world;
+
+			if (prefabW.CheckComponent<T>(comparingPrefabEnt) && entW.CheckComponent<T>(instancesEnt))
+			{
+				T& comparingComp = prefabW.GetComponent<T>(comparingPrefabEnt);
+				T& targetComp = entW.GetComponent<T>(instancesEnt);
+
+				if (SerializationManager::CompareComponentData(targetComp, comparingComp))
+				{
+					if (copySourceWorld.CheckComponent<T>(copyingSourceEnt))
+					{
+						T& copyingComp = copySourceWorld.GetComponent<T>(copyingSourceEnt);
+						targetComp = copyingComp;
+					}
+					else
+					{
+						entW.DestroyComponent<T>(instancesEnt);
+					}
+
+					UpdatePrefabSignature(entW, instancesEnt, entW.GetComponentType<T>(), 0);
+				}
+				else
+				{
+					UpdatePrefabSignature(entW, instancesEnt, entW.GetComponentType<T>(), 1);
+				}
+			}
+			else if(prefabW.CheckComponent<T>(comparingPrefabEnt) || entW.CheckComponent<T>(instancesEnt))
+			{
+				UpdatePrefabSignature(entW, instancesEnt, entW.GetComponentType<T>(), 1);
+			}
+			else
+			{
+				if (copySourceWorld.CheckComponent<T>(copyingSourceEnt))
+				{
+					T& copyingComp = copySourceWorld.GetComponent<T>(copyingSourceEnt);
+					entW.AddComponent<T>(instancesEnt, copyingComp);
+				}
+				UpdatePrefabSignature(entW, instancesEnt, entW.GetComponentType<T>(), 0);
+			}
+		}
 
 		std::string GetPath(const EUUID& id);
 
@@ -89,6 +140,14 @@ namespace Eclipse
 		bool CheckPrefabExistence(const EUUID& prefabID);
 
 		void InsertPrefab(const Entity& ent, const char* path, const EUUID& prefabID);
+
+		//For mesh(prefab) editor save button
+		void SavePrefabChanges(const Entity& ent);
+
+		//Perform updates of prefab to instances right after loading of scene
+		//void PostUpdate_Prefab();
+
+		void UpdatePrefabSignature(World& sourceW, const Entity& ent, const size_t& setBit, bool setTo);
 
 	public:
 		static const std::string PrefabPath;

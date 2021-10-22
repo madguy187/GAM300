@@ -226,7 +226,6 @@ namespace Eclipse
         // Darren - Please keep this before Game Loop
         engine->GraphicsManager.MassInit();
 
-        //Deserialization(temp)
         /*audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);*/
         //audioManager.PlayEvent("event:/WaterEffect");
 
