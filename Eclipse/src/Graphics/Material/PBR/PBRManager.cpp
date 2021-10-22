@@ -121,7 +121,7 @@ namespace Eclipse
         GLint model_ = shdrpgm.GetLocation("model");
         GLuint view = shdrpgm.GetLocation("view");
         GLint projection = shdrpgm.GetLocation("projection");
-        GLint HasTexture = shdrpgm.GetLocation("HasTexture");
+        GLint HasTexture = shdrpgm.GetLocation("HasInstance");
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::mat4(1.0f);
