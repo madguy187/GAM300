@@ -399,21 +399,35 @@ namespace Eclipse
 				engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget(allExtensions[i].c_str(), paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
 			}
 			engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
-
+			static bool test = false;
 			if (ECGui::IsMouseDoubleClicked(0) && ECGui::IsItemClicked(0) && ECGui::IsItemHovered())
 			{
 				if (dirEntry.is_directory())
 				{
 					NextPath(CurrentDir, path);
+
 				}
 				else
 				{
 					std::string temp1;
 					temp1 = GetFileName(relativePath.filename().string().c_str());
 					EDITOR_LOG_INFO(temp1.c_str());
+					//TODO  for Darren material editor 
+					//test = true;
 					//do stuff
 				}
 			}
+
+			//TODO  for Darren material editor 
+			//if (test)
+			//{
+			//	//ECGui::DrawChildWindow<void(int)>(settings,
+			//	//	std::bind(&BaseSwitchViewWindow::RunFrameBuffer, this, std::placeholders::_1),
+			//	//	GizmoType);
+			//	//ECGui::DrawChildWindow<void(Entity)>(settings, std::bind(&InspectorWindow::ShowAddComponentList,
+			//	//	this, std::placeholders::_1), ID);
+			//	ECGui::DrawMainWindow<void(std::string)>("test", std::bind(&AssetBrowserWindow::temptest, this,std::placeholders::_1), relativePath.filename().string());
+			//}
 
 			if (ECGui::IsItemHovered())
 			{
@@ -437,6 +451,19 @@ namespace Eclipse
 			ECGui::PopID();
 		}
 	}
+
+	//TODO  for Darren material editor 
+	//void AssetBrowserWindow::temptest(std::string pathName)
+	//{
+	//	if (!test2)
+	//	{
+	//		tempcontainer = pathName;
+	//		test2 = true;
+	//	}
+	//
+	//	ECGui::DrawTextWidget<const char*>(tempcontainer.c_str(), EMPTY_STRING);
+	//}
+
 
 	void AssetBrowserWindow::BackToParentPath(std::filesystem::path& CurrentPath)
 	{
