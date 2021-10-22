@@ -37,7 +37,9 @@ namespace Eclipse
 
 		void SignatureBaseCopy(World& sourceWorld, World& targetWorld, Entity sourceEnt, Entity targetEnt);
 
-		void CopyToInstances(Entity comparingPrefabEnt, World& copySourceWorld, Entity copyingSourceEnt, Entity instancesEnt);
+		void CopyToInstance(Entity comparingPrefabEnt, World& copySourceWorld, Entity copyingSourceEnt, Entity instancesEnt);
+
+		std::vector<Entity> GetInstanceList(const EUUID& prefabID);
 
 		template <typename ...T>
 		void SignatureBaseCopying(World& sourceWorld, World& targetWorld, Entity sourceEnt, Entity targetEnt, TypeList<T...>)
