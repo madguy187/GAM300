@@ -508,9 +508,12 @@ namespace Eclipse
         {
             MaterialComponent& Material = engine->world.GetComponent<MaterialComponent>(EntityID);
 
-            if (Material.HasMaterialIstance == true)
+            if (Material.MaterialInstanceName.empty() == false)
             {
-                engine->gPBRManager->CheckUniform(EntityID, Cam);
+                if (engine->gPBRManager->AllMaterialInstances[Material.MaterialInstanceName]->HasTexture == false)
+                {
+                    engine->gPBRManager->CheckUniform(EntityID, Cam);
+                }
             }
             else
             {

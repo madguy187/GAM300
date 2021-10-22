@@ -38,7 +38,6 @@ namespace Eclipse
         void GenerateMaterialTexture(std::string FolderName, std::string TextureName);
         void LoadAllTextures();
         void CheckUniform(unsigned int ID, CameraComponent& In);
-        bool CheckMaterial(unsigned int ID, CameraComponent& In, MaterialComponent& Mat);
 
     public:
         void LoadMaterial(std::string NameOfMaterial);

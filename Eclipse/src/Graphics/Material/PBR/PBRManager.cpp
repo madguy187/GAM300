@@ -122,8 +122,10 @@ namespace Eclipse
         }
     }
 
-    void PBRManager::CheckUniform(unsigned int ID, CameraComponent& In)
+    void PBRManager::CheckUniform(unsigned int ID, CameraComponent& In )
     {
+        auto& MaterialCom = engine->world.GetComponent<MaterialComponent>(ID);
+
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(In.camType));
         TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(In.camType));
         TransformComponent ModelTransform = engine->world.GetComponent<TransformComponent>(ID);
@@ -131,12 +133,16 @@ namespace Eclipse
         auto& shdrpgm = Graphics::shaderpgms["PBRShader"];
         shdrpgm.Use();
 
-        GLuint metallic = shdrpgm.GetLocation("metallic");
-        GLuint roughness = shdrpgm.GetLocation("roughness");
+        GLuint MetallicConstant = shdrpgm.GetLocation("MetallicConstant");
+        GLuint RoughnessConstant = shdrpgm.GetLocation("RoughnessConstant");
+        GLint uModelToNDC_ = shdrpgm.GetLocation("uModelToNDC");
         GLint model_ = shdrpgm.GetLocation("model");
-        GLuint view = shdrpgm.GetLocation("view");
-        GLint projection = shdrpgm.GetLocation("projection");
-        GLint HasTexture = shdrpgm.GetLocation("HasInstance");
+        GLuint view1 = shdrpgm.GetLocation("view");
+        GLint projection1 = shdrpgm.GetLocation("projection");
+        GLuint AlbedoConstant = shdrpgm.GetLocation("AlbedoConstant");
+        GLuint AoConstant = shdrpgm.GetLocation("AoConstant");
+        GLint HasInstance = shdrpgm.GetLocation("HasInstance");
+        GLint BaseReflectivity = shdrpgm.GetLocation("BaseReflectivity");
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::mat4(1.0f);
@@ -146,27 +152,24 @@ namespace Eclipse
         model = glm::rotate(model, glm::radians(ModelTransform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::scale(model, ModelTransform.scale.ConvertToGlmVec3Type());
 
-        GLCall(glUniform1i(HasTexture, true));
-        GLCall(glUniform1f(metallic, 1.0f));
-        GLCall(glUniform1f(roughness, 1.0f));
+        GLCall(glUniform1i(HasInstance, AllMaterialInstances[MaterialCom.MaterialInstanceName]->HasTexture));
+        GLCall(glUniform3f(AlbedoConstant, 
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->AlbedoConstant.getX(), 
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->AlbedoConstant.getY(), 
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->AlbedoConstant.getZ()));
+        GLCall(glUniform1f(AoConstant, AllMaterialInstances[MaterialCom.MaterialInstanceName]->AoConstant));
+        GLCall(glUniform1f(MetallicConstant, AllMaterialInstances[MaterialCom.MaterialInstanceName]->MetallicConstant));
+        GLCall(glUniform1f(RoughnessConstant, AllMaterialInstances[MaterialCom.MaterialInstanceName]->RoughnessConstant));
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
-        glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
-        glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
+        glUniformMatrix4fv(projection1, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
+        glUniformMatrix4fv(view1, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
+        GLCall(glUniform3f(BaseReflectivity, 
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getX(), 
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getY(),
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getZ()));
+
 
         BindMaterial("HardWood", shdrpgm);
-    }
-
-    bool PBRManager::CheckMaterial(unsigned int ID, CameraComponent& In, MaterialComponent& Mat)
-    {
-        if (Mat.HasMaterialIstance)
-        {
-            CheckUniform(ID, In);
-            return false;
-        }
-        else
-        {
-            return true;
-        }
     }
 
     void PBRManager::LoadMaterial(std::string NameOfMaterial)
