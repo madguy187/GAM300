@@ -510,9 +510,16 @@ namespace Eclipse
 
             if (Material.MaterialInstanceName.empty() == false)
             {
+                // If Material Instance no Textures
                 if (engine->gPBRManager->AllMaterialInstances[Material.MaterialInstanceName]->HasTexture == false)
                 {
-                    engine->gPBRManager->CheckUniform(EntityID, Cam);
+                    engine->gPBRManager->NonTexturedUniform(EntityID, Cam);
+                }
+
+                // If Material Instance have textures
+                else
+                {
+                    engine->gPBRManager->TexturedUniform(EntityID, Cam);
                 }
             }
             else

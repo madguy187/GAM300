@@ -33,11 +33,12 @@ namespace Eclipse
         std::string MaterialName;
 
         MaterialEditorSettings();
-        void BindMaterial(std::string MaterialName, Shader& In);
+        void BindMaterial(Shader& In);
         void RenderSphere();
-        void UpdateCurrentMaterial();
+        void UpdateCurrentMaterial(Shader& ShaderIn, CameraComponent& Camin);
         void UpdateLights(Shader& MaterialEditorShader);
         void UpdateCamera(Shader& MaterialEditorShader, CameraComponent& MeshEditorCamera);
         void CreateMaterialInstance();
+        void RenderMaterialScene();
     };
 }

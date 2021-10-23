@@ -43,7 +43,7 @@ namespace Eclipse
         MaterialFileRead.close();
     }
 
-    void MaterialEditorSettings::BindMaterial(std::string MaterialName, Shader& In)
+    void MaterialEditorSettings::BindMaterial(Shader& In)
     {
         glActiveTexture(GL_TEXTURE10);
         glBindTexture(GL_TEXTURE_2D, CurrentMaterial.Albedo);
@@ -67,7 +67,7 @@ namespace Eclipse
         In.setInt("aoMap", 14);
     }
 
-    void MaterialEditorSettings::UpdateCurrentMaterial()
+    void MaterialEditorSettings::RenderMaterialScene()
     {
         engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_MESHEDITOR);
 
@@ -78,6 +78,15 @@ namespace Eclipse
 
         UpdateCamera(shdrpgm, _camera);
         UpdateLights(shdrpgm);
+
+        UpdateCurrentMaterial(shdrpgm, _camera);
+
+        RenderSphere();
+        shdrpgm.UnUse();
+    }
+
+    void MaterialEditorSettings::UpdateCurrentMaterial(Shader& shdrpgm, CameraComponent& _camera)
+    {
 
         GLuint MetallicConstant = shdrpgm.GetLocation("MetallicConstant");
         GLuint RoughnessConstant = shdrpgm.GetLocation("RoughnessConstant");
@@ -106,12 +115,9 @@ namespace Eclipse
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv(projection1, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
         glUniformMatrix4fv(view1, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
-        GLCall(glUniform3f(BaseReflectivity, CurrentMaterial.BaseReflectivity.getX(), CurrentMaterial.BaseReflectivity.getY(), CurrentMaterial.BaseReflectivity.getZ()));
+        GLCall(glUniform3f(BaseReflectivity, CurrentMaterial.BaseReflectivity.getX(), CurrentMaterial.BaseReflectivity.getY(), CurrentMaterial.BaseReflectivity.getZ())); \
 
-        BindMaterial("HardWood", shdrpgm);
-
-        RenderSphere();
-        shdrpgm.UnUse();
+            BindMaterial(shdrpgm);
     }
 
     void MaterialEditorSettings::UpdateLights(Shader& MaterialEditorShader)

@@ -122,7 +122,7 @@ namespace Eclipse
         }
     }
 
-    void PBRManager::CheckUniform(unsigned int ID, CameraComponent& In )
+    void PBRManager::NonTexturedUniform(unsigned int ID, CameraComponent& In)
     {
         auto& MaterialCom = engine->world.GetComponent<MaterialComponent>(ID);
 
@@ -153,9 +153,9 @@ namespace Eclipse
         model = glm::scale(model, ModelTransform.scale.ConvertToGlmVec3Type());
 
         GLCall(glUniform1i(HasInstance, AllMaterialInstances[MaterialCom.MaterialInstanceName]->HasTexture));
-        GLCall(glUniform3f(AlbedoConstant, 
-            AllMaterialInstances[MaterialCom.MaterialInstanceName]->AlbedoConstant.getX(), 
-            AllMaterialInstances[MaterialCom.MaterialInstanceName]->AlbedoConstant.getY(), 
+        GLCall(glUniform3f(AlbedoConstant,
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->AlbedoConstant.getX(),
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->AlbedoConstant.getY(),
             AllMaterialInstances[MaterialCom.MaterialInstanceName]->AlbedoConstant.getZ()));
         GLCall(glUniform1f(AoConstant, AllMaterialInstances[MaterialCom.MaterialInstanceName]->AoConstant));
         GLCall(glUniform1f(MetallicConstant, AllMaterialInstances[MaterialCom.MaterialInstanceName]->MetallicConstant));
@@ -163,13 +163,48 @@ namespace Eclipse
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv(projection1, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
         glUniformMatrix4fv(view1, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
-        GLCall(glUniform3f(BaseReflectivity, 
-            AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getX(), 
+        GLCall(glUniform3f(BaseReflectivity,
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getX(),
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getY(),
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getZ()));
+    }
+
+    void PBRManager::TexturedUniform(unsigned int ID, CameraComponent& In)
+    {
+        auto& MaterialCom = engine->world.GetComponent<MaterialComponent>(ID);
+
+        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(In.camType));
+        TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(In.camType));
+        TransformComponent ModelTransform = engine->world.GetComponent<TransformComponent>(ID);
+
+        auto& shdrpgm = Graphics::shaderpgms["PBRShader"];
+        shdrpgm.Use();
+
+        GLint uModelToNDC_ = shdrpgm.GetLocation("uModelToNDC");
+        GLint model_ = shdrpgm.GetLocation("model");
+        GLuint view1 = shdrpgm.GetLocation("view");
+        GLint projection1 = shdrpgm.GetLocation("projection");
+        GLint HasInstance = shdrpgm.GetLocation("HasInstance");
+        GLint BaseReflectivity = shdrpgm.GetLocation("BaseReflectivity");
+
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, ModelTransform.position.ConvertToGlmVec3Type());
+        model = glm::rotate(model, glm::radians(ModelTransform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(ModelTransform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(ModelTransform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, ModelTransform.scale.ConvertToGlmVec3Type());
+
+        GLCall(glUniform1i(HasInstance, AllMaterialInstances[MaterialCom.MaterialInstanceName]->HasTexture));
+        glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(projection1, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
+        glUniformMatrix4fv(view1, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
+        GLCall(glUniform3f(BaseReflectivity,
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getX(),
             AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getY(),
             AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getZ()));
 
-
-        BindMaterial("HardWood", shdrpgm);
+        BindMaterial(MaterialCom.MaterialInstanceName, shdrpgm);
     }
 
     void PBRManager::LoadMaterial(std::string NameOfMaterial)

@@ -37,7 +37,8 @@ namespace Eclipse
         void InitialiseBaseReflectivity();
         void GenerateMaterialTexture(std::string FolderName, std::string TextureName);
         void LoadAllTextures();
-        void CheckUniform(unsigned int ID, CameraComponent& In);
+        void NonTexturedUniform(unsigned int ID, CameraComponent& In);
+        void TexturedUniform(unsigned int ID, CameraComponent& In);
 
     public:
         void LoadMaterial(std::string NameOfMaterial);
