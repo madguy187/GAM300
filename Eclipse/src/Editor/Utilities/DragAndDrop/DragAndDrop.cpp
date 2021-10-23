@@ -199,7 +199,6 @@ namespace Eclipse
 
 
 								DestinationEntCom->Child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
-								DestinationEntCom->isTreeNode = true;
 								SourceEntCom->IsAChild = true;
 								SourceEntCom->Parent.push_back(engine->editorManager->GetEntityID(DestinationIndex_));
 								IsIndexJobSelected = false;
