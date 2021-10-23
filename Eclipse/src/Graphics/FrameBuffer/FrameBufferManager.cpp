@@ -71,7 +71,12 @@ namespace Eclipse
 
     unsigned int FrameBufferManager::GetTextureID(FrameBufferMode mode)
     {
-        return FrameBufferContainer[mode]->GetTextureColourBufferID();
+        return FrameBufferContainer[mode]->GetTextureColourBufferID ();
+    }
+
+    unsigned int FrameBufferManager::GetSecondTextureID(FrameBufferMode mode)
+    {
+        return FrameBufferContainer[mode]->m_data.ColorBuffers[1];
     }
 
     RenderMode FrameBufferManager::GetRenderMode(FrameBufferMode mode)
