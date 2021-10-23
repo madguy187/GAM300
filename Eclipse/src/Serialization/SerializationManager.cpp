@@ -24,6 +24,18 @@ namespace Eclipse
 		_backup.Clear();
 	}
 
+	void SerializationManager::ParentChildPostUpdate::RegisterForPostUpdate(World& w, const Entity& oldEnt, const Entity& newEnt)
+	{
+		if (w.CheckComponent<ParentComponent>(newEnt) || w.CheckComponent<ChildComponent>(newEnt))
+		{
+			oldToNewMap[oldEnt] = newEnt;
+		}
+	}
+
+	void SerializationManager::ParentChildPostUpdate::PostUpdate(World& w)
+	{
+
+	}
 
 	void SerializationManager::SerializeEntity(World& w, const Entity& ent, const size_t& counter)
 	{
@@ -38,11 +50,14 @@ namespace Eclipse
 		Entity ent = MAX_ENTITY;
 		if (dsz.StartElement("Entity_", true, counter))
 		{
+			Entity oldEnt;
+			dsz.ReadAttributeFromElement("ID", oldEnt);
 			ent = w.CreateEntity();
 			if (DeserializeAllComponents(w, ent, PrefabUse))
 			{
 				if (!PrefabUse)
 				{
+					PCPostUpdate.RegisterForPostUpdate(w, oldEnt, ent);
 					engine->editorManager->RegisterExistingEntity(ent);
 				}
 			}
@@ -256,5 +271,17 @@ namespace Eclipse
 		std::string path = PrefabManager::PrefabPath;
 		path += "List.xml";
 		SaveFile(path.c_str());
+	}
+
+	Entity SerializationManager::ParentChildPostUpdate::GetNew(const Entity& oldEnt)
+	{
+		if (oldToNewMap.find(oldEnt) != oldToNewMap.end())
+			return oldToNewMap[oldEnt];
+		else
+			return MAX_ENTITY;
+	}
+	void SerializationManager::ParentChildPostUpdate::Clear()
+	{
+		oldToNewMap.clear();
 	}
 }

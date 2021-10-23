@@ -18,6 +18,8 @@
 #include "AIComponent.h"
 #include "PrefabComponent.h"
 #include "ScriptComponent.h"
+#include "ChildComponent.h"
+#include "ParentComponent.h"
 
 namespace Eclipse
 {
@@ -105,6 +107,7 @@ namespace Eclipse
         ADD_MEMBER(Child);
         ADD_MEMBER(Parent);
         ADD_MEMBER(IsAChild);
+        ADD_MEMBER(TreeactiveFlag);
     }
 
     DEFINE_META(ScriptComponent)
@@ -233,6 +236,17 @@ namespace Eclipse
         ADD_MEMBER(IsChild);
         ADD_MEMBER(CompChanges);
         ADD_MEMBER(PrefabID);
+    }
+    
+    DEFINE_META(ChildComponent)
+    {
+        ADD_MEMBER(parentIndex);
+        ADD_MEMBER(offset);
+    }
+
+    DEFINE_META(ParentComponent)
+    {
+        ADD_MEMBER(child);
     }
 
     /*************************************************************************/
