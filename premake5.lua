@@ -69,11 +69,12 @@ project "Eclipse"
 		"Dep/PhysX/include/solver",
 		"Dep/PhysX/include/task",
 		"Dep/PhysX/include/vehicle",
-    "Dep/mono/include/mono-2.0",
+		"Dep/mono/include/mono-2.0",
 		"Dep/ASSIMP/include/assimp",
-	  "Dep/ASSIMP",
+		"Dep/ASSIMP",
 		"Dep/Fmod/core/inc",
-		"Dep/Tracy"
+		"Dep/Tracy",
+		"Dep/OpenVR/headers"
 	}
 
 	filter "system:windows"
@@ -95,13 +96,14 @@ project "Eclipse"
 
 	libdirs
   {
-    "Dep/GLFW/lib-vc2019",
-    "Dep/GLEW/lib/Release/x64",
+      "Dep/GLFW/lib-vc2019",
+      "Dep/GLEW/lib/Release/x64",
 	  "Dep/PhysX/Debug",
-    "Dep/mono/lib/",
+      "Dep/mono/lib/",
 	  "Dep/ASSIMP/",
 	  "Dep/Fmod/core/lib/x64",
-	  "Dep/Tracy"
+	  "Dep/Tracy",
+	  "Dep/OpenVR/lib/win64"
   }
   
   disablewarnings 
@@ -141,7 +143,8 @@ project "Eclipse"
 	  "fmodL.lib",
 	  "fmodstudioL64_vc.lib",
 	  "fmodstudioL_vc.lib",
-	  "TracyProfiler.lib"
+	  "TracyProfiler.lib",
+	  "openvr_api.lib"
   }
 
   postbuildcommands
@@ -172,13 +175,14 @@ project "Eclipse"
 		
 	libdirs
   {
-    "Dep/GLFW/lib-vc2019",
-    "Dep/GLEW/lib/Release/x64",
+      "Dep/GLFW/lib-vc2019",
+      "Dep/GLEW/lib/Release/x64",
 	  "Dep/PhysX/Release",
-    "Dep/mono/lib/",
+      "Dep/mono/lib/",
 	  "Dep/ASSIMP/",
 	  "Dep/Fmod/core/lib/x64",
-	  "Dep/Tracy"
+	  "Dep/Tracy",
+	  "Dep/OpenVR/lib/win64"
   }
   
   disablewarnings 
@@ -215,8 +219,9 @@ project "Eclipse"
 	  "SnippetUtils_static_64.lib",
 	  "assimp-vc142-mtd",
 	  "fmod_vc.lib",
-    "fmodstudio64_vc.lib",
-	  "TracyProfiler.lib"
+      "fmodstudio64_vc.lib",
+	  "TracyProfiler.lib",
+	  "openvr_api.lib"
   }
 
   postbuildcommands

@@ -42,7 +42,7 @@
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_0>
-    <Entity_1 ID="6">
+    <Entity_1 ID="7">
         <DirectionalLightComponent>
             <Counter value="0" />
             <visible value="false" />
