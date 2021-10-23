@@ -202,6 +202,10 @@ namespace Eclipse
         AIsig.set(world.GetComponentType<RigidBodyComponent>(), 1);
         world.RegisterSystemSignature<AISystem>(AIsig);
 
+        Signature parentSys;
+        parentSys.set(world.GetComponentType<ParentComponent>(), 1);
+        world.RegisterSystemSignature<ParentSystem>(parentSys);
+
         //Check this! - Rachel
         CameraSystem::Init();
         RenderSystem::Init();
@@ -310,8 +314,8 @@ namespace Eclipse
 
             world.Update<FileWatchSystem>();
 
-            /*world.Update<ParentSystem>();
-            world.Update<ChildSystem>();*/
+            world.Update<ParentSystem>();
+            world.Update<ChildSystem>();
 
             engine->gFrameBufferManager->GlobalBind();
 

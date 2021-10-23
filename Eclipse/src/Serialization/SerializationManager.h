@@ -30,7 +30,7 @@ namespace Eclipse
 
 			void RegisterForPostUpdate(World& w, const Entity& oldEnt, const Entity& newEnt);
 
-			void PostUpdate(World& w);
+			void PostUpdate();
 
 			void Clear();
 

@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "SerializationManager.h"
-
+#include "ECS/SystemManager/Systems/System/ParentChildSystem/ParentSystem/ParentSystem.h"
+#include "ECS/ComponentManager/Components/ParentComponent.h"
+#include "ECS/ComponentManager/Components/ChildComponent.h"
 namespace Eclipse
 {
 	Serializer SerializationManager::sz;
@@ -32,9 +34,36 @@ namespace Eclipse
 		}
 	}
 
-	void SerializationManager::ParentChildPostUpdate::PostUpdate(World& w)
+	void SerializationManager::ParentChildPostUpdate::PostUpdate()
 	{
+		auto& w = engine->world;
+		const auto& entSet = w.GetSystem<ParentSystem>()->mEntities;
 
+		for (auto& ent : entSet)
+		{
+			auto& parent = w.GetComponent<ParentComponent>(ent);
+			auto& parentEntComp = w.GetComponent<EntityComponent>(ent);
+
+			for (auto& parentEnt : parentEntComp.Child)
+			{
+				parentEnt = oldToNewMap[parentEnt];
+			}
+
+			for (auto& child : parent.child)
+			{
+				child = oldToNewMap[child];
+				
+				auto& childComp = w.GetComponent<ChildComponent>(child);
+				auto& childEntComp = w.GetComponent<EntityComponent>(child);
+				childComp.parentIndex = ent;
+
+				for (auto& childEnt : childEntComp.Parent)
+				{
+					childEnt = oldToNewMap[childEnt];
+				}
+			}
+		}
+		Clear();
 	}
 
 	void SerializationManager::SerializeEntity(World& w, const Entity& ent, const size_t& counter)
@@ -172,6 +201,7 @@ namespace Eclipse
 		if (LoadFile(fullpath))
 		{
 			DeserializeAllEntity();
+			PCPostUpdate.PostUpdate();
 		}
 	}
 
@@ -187,6 +217,7 @@ namespace Eclipse
 		SceneManager::Clear();
 		backup.LoadBackup(dsz);
 		DeserializeAllEntity();
+		PCPostUpdate.PostUpdate();
 		std::filesystem::remove_all(TEMP_PATH);
 	}
 
