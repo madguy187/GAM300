@@ -973,7 +973,7 @@ namespace Eclipse
             {
                 ECGui::BeginToolTip();
                 ECGui::PushTextWrapPos(ECGui::GetFontSize() * 35.0f);
-                ECGui::TextUnformatted("Apply changes to all prefeb instances.");
+                ECGui::TextUnformatted("Apply changes to all prefab instances.");
                 ECGui::PopTextWrapPos();
                 ECGui::EndTooltip();
             }

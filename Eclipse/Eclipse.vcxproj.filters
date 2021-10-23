@@ -821,6 +821,7 @@
     <ClInclude Include="src\Graphics\Material\PBR\PBRManager.h" />
     <ClInclude Include="src\Graphics\Material\MaterialInstance\MaterialInstance.h" />
     <ClInclude Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.h" />
+    <ClInclude Include="src\Editor\Windows\MeshEditor\MeshEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1220,6 +1221,7 @@
     <ClCompile Include="src\Graphics\Material\PBR\PBRManager.cpp" />
     <ClCompile Include="src\Graphics\Material\MaterialInstance\MaterialInstance.cpp" />
     <ClCompile Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.cpp" />
+    <ClCompile Include="src\Editor\Windows\MeshEditor\MeshEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_bezier_math.inl" />
