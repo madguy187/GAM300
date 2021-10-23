@@ -394,8 +394,6 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem\MaterialSystem.cpp" />
     <ClCompile Include="src\Editor\Windows\MeshEditor\MeshEditor.cpp" />
-    <ClCompile Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.cpp" />
-    <ClCompile Include="src\Graphics\Material\MaterialInstance\MaterialInstance.cpp" />
     <ClCompile Include="src\Graphics\Material\PBR\PBRManager.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ChildSystem\ChildSystem.cpp" />
@@ -458,7 +456,6 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.cpp" />
     <ClCompile Include="src\Graphics\Material\MaterialInstance\MaterialInstance.cpp" />
     <ClCompile Include="src\Graphics\Material\MaterialManager.cpp" />
-    <ClCompile Include="src\Graphics\Material\PBR\PBRManager.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.cpp" />
