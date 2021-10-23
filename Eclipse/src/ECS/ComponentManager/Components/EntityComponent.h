@@ -3,6 +3,7 @@
 #include "Global.h"
 #include "Reflection/Meta.h"
 #include "Reflection/RemTypeQual.h"
+#include "imgui.h"
 
 namespace Eclipse
 {
