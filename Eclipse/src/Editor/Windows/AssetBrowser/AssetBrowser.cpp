@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "AssetBrowser.h"
 #include "Editor/Windows/Inspector/Inspector.h"
+#include "Editor/Windows/MeshEditor/MeshEditor.h"
+
 namespace Eclipse
 {
 	void AssetBrowserWindow::Update()
@@ -386,7 +388,23 @@ namespace Eclipse
 				engine->editorManager->DragAndDropInst_.StringPayloadSource("wav", "src\\Assets\\" + relativePath.string());
 				break;
 			case InspectorWindow::str2int("prefab"):
-				engine->editorManager->DragAndDropInst_.StringPayloadSource("prefab", "src\\Assets\\" + relativePath.string());
+				temp = "src\\Assets\\" + relativePath.string();
+
+				if (ECGui::IsMouseDoubleClicked(0))
+				{
+					auto* meshEditor = engine->editorManager->GetEditorWindow<MeshEditorWindow>();
+
+					if (!meshEditor->IsVisible)
+					{
+						Entity ent = MAX_ENTITY;
+						engine->szManager.LoadPrefabFile(ent, temp.c_str(), true);
+						meshEditor->SetMeshID(ent);
+						engine->editorManager->SetMeshEditorActive(true);
+						meshEditor->IsVisible = true;
+					}
+				}
+
+				engine->editorManager->DragAndDropInst_.StringPayloadSource("prefab", temp);
 				break;
 			case InspectorWindow::str2int("mat"):
 				engine->editorManager->DragAndDropInst_.StringPayloadSource("mat", relativePath.string());

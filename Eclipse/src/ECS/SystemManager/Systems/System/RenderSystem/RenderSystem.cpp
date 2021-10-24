@@ -76,6 +76,15 @@ namespace Eclipse
                     continue;
                 }
 
+                // If it is a base prefab, dont render
+                if (engine->world.CheckComponent<PrefabComponent>(entityID))
+                {
+                    auto& prefab = engine->world.GetComponent<PrefabComponent>(entityID);
+
+                    if (!prefab.IsInstance)
+                        continue;
+                }
+
                 // If CUlled off , dont render
                 if (engine->gCullingManager->ToRenderOrNot(entityID) == false)
                 {
@@ -187,14 +196,36 @@ namespace Eclipse
                         }
 
                         // MESH EDITOR // FIKRUL HERE
-                        if (engine->editorManager->GetEditorWindow<MeshEditorWindow>()->IsVisible)
+                        /*if (engine->editorManager->GetEditorWindow<MeshEditorWindow>()->IsVisible)
                         {
                             engine->MaterialManager.DoNotUpdateStencil();
                             engine->AssimpManager.MeshEditorDraw(engine->world, Mesh, entityID, FrameBufferMode::FBM_MESHEDITOR, CameraComponent::CameraType::MeshEditor_Camera);
-                        }
+                        }*/
 
                         engine->MaterialManager.Highlight3DModels(entityID, FrameBufferMode::FBM_SCENE);
                     }
+                }
+            }
+
+            auto* meshEditor = engine->editorManager->GetEditorWindow<MeshEditorWindow>();
+
+            if (meshEditor->IsVisible)
+            {
+                Entity meshID = meshEditor->GetMeshID();
+                auto& mewMesh = engine->world.GetComponent<MeshComponent>(meshID);
+                engine->MaterialManager.UpdateShininess(meshID);
+
+                if (!engine->world.CheckComponent<ModelComponent>(meshID))
+                {
+                    engine->MaterialManager.DoNotUpdateStencil();
+                    engine->GraphicsManager.Draw(FrameBufferMode::FBM_MESHEDITOR, &mewMesh, GL_FILL, meshID,
+                        CameraComponent::CameraType::MeshEditor_Camera);
+                }
+                else
+                {
+                    engine->MaterialManager.DoNotUpdateStencil();
+                    engine->AssimpManager.MeshEditorDraw(engine->world, mewMesh, meshID,
+                        FrameBufferMode::FBM_MESHEDITOR, CameraComponent::CameraType::MeshEditor_Camera);
                 }
             }
 

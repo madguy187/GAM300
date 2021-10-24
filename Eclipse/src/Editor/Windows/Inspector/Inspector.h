@@ -14,7 +14,7 @@ namespace Eclipse
 		void DrawImpl();
 
 		bool ShowEntityProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
-		bool ShowTransformProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowTransformProperty(const char* name, Entity ID, ImGuiTextFilter& filter, bool IsNotInScene = false);
 		bool ShowPointLightProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowSpotLightProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowDirectionalLightProperty(const char* name, Entity ID, ImGuiTextFilter& filter);

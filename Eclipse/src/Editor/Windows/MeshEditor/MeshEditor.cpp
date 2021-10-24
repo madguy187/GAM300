@@ -21,7 +21,15 @@ namespace Eclipse
     }
 
     void MeshEditorWindow::Unload()
-    {}
+    {
+        if (MeshID != MAX_ENTITY)
+        {
+            IsVisible = false;
+            engine->world.DestroyEntity(MeshID);
+            MeshID = MAX_ENTITY;
+            engine->editorManager->SetMeshEditorActive(false);
+        }
+    }
 
     void MeshEditorWindow::RunMainWindow()
     {
@@ -46,10 +54,45 @@ namespace Eclipse
     {
         ECGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
             ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+
+        if (ECGui::IsItemHovered())
+        {
+            OnCameraMoveEvent();
+            OnCameraZoomEvent();
+        }
+
+        if (ImGui::IsWindowFocused())
+            IsActive = true;
+        else
+            IsActive = false;
     }
 
     void MeshEditorWindow::RunMeshSettings()
     {
+        if (ECGui::ButtonBool("Close Mesh Editor"))
+            Unload();
+    }
 
+    void MeshEditorWindow::OnCameraMoveEvent()
+    {
+    }
+
+    void MeshEditorWindow::OnCameraZoomEvent()
+    {
+    }
+
+    void MeshEditorWindow::SetMeshID(Entity ID)
+    {
+        MeshID = ID;
+    }
+
+    Entity MeshEditorWindow::GetMeshID()
+    {
+        return MeshID;
+    }
+
+    bool MeshEditorWindow::GetActiveState()
+    {
+        return IsActive;
     }
 }

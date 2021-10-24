@@ -315,6 +315,11 @@ namespace Eclipse
 		}
 	}
 
+	bool EditorManager::GetMeshEditorActive() const
+	{
+		return IsMeshEditorActive;
+	}
+
 	void EditorManager::SetSelectedEntity(Entity ID)
 	{
 		GEHIndex_ = static_cast<size_t>(EntityToIndexMap_[ID]);
@@ -325,6 +330,11 @@ namespace Eclipse
 	void EditorManager::SetGlobalIndex(size_t index)
 	{
 		GEHIndex_ = index;
+	}
+
+	void EditorManager::SetMeshEditorActive(bool active)
+	{
+		IsMeshEditorActive = active;
 	}
 
 	void EditorManager::Clear()
