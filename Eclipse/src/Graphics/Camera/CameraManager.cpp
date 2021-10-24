@@ -689,6 +689,7 @@ namespace Eclipse
         engine->gCamera.CreateViewCamera(CameraComponent::CameraType::RightView_camera);
 
         engine->gCamera.CreatePerspectiveCamera(CameraComponent::CameraType::MeshEditor_Camera);
+        engine->gCamera.CreatePerspectiveCamera(CameraComponent::CameraType::MaterialEditor_Camera);
 
         engine->gCamera.CreateGameCamera();
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetGameCameraID());
