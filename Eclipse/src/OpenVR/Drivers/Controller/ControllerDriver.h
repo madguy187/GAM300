@@ -19,24 +19,24 @@ namespace Eclipse
 		* Gives OpenVR information about my controller
 		* & set up handles to inform OpenVR when controller state changes
 		**/
-		EVRInitError Activate(uint32_t unObjID);
+		EVRInitError Activate(uint32_t unObjID) override;
 
 		/**
 		* Uninitialize controller
 		**/
-		void Deactivate();
+		void Deactivate() override;
 
 		/**
 		* Tell hardware to go into standby mode - low power mode
 		**/
-		void EnterStandby();
+		void EnterStandby() override;
 
 		/**
 		* Acts as an input device, so it will return the IVRDriverInput class
 		* It could return other component classes if it had more functionality
 		* E.g. overlays, UI functionality
 		**/
-		void* GetComponent(const char* pchComponentNameAndVersion);
+		void* GetComponent(const char* pchComponentNameAndVersion) override;
 
 		/**
 		* The set of valid requests is entirely up to the driver and the client to figure out, 
@@ -44,13 +44,13 @@ namespace Eclipse
 		* should be truncated and null terminated
 		**/
 		void DebugRequest(const char* pchRequest, char* pchResponseBuffer, 
-			uint32_t unResponseBufferSize);
+			uint32_t unResponseBufferSize) override;
 
 		/**
 		* Returns pose of device.
 		* It is an object that contains position, rotation, velocity and angular velocity of your device
 		**/
-		DriverPose_t GetPose();
+		DriverPose_t GetPose() override;
 
 		/**
 		* Retrieve state of device and update OpenVR if anything has changed. Called every frame.
