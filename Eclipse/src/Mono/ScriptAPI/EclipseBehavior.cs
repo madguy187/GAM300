@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace Eclipse
 {
@@ -11,9 +12,9 @@ namespace Eclipse
 
         protected void InitBehavior(UInt32 handle, UInt32 entity)
         {
+            Console.WriteLine("InitBehavior");
             gameObject = new GameObject(entity);
             gc_handle = handle;
-            //Entity = entity;
             GetRigidComponent();
         }
 
@@ -25,19 +26,31 @@ namespace Eclipse
 
         public void GetRigidComponent()
         {
-            Console.WriteLine("Crash1");
+            Console.WriteLine("GetRigidComponent");
+            Console.WriteLine(gc_handle);
+            if (!(gameObject is object))
+            {
+              Console.WriteLine("Empty");
+            }
+
             Console.WriteLine(Entity);
         }
 
         public T GetComponent<T>() where T : IScriptable
         {
             Console.WriteLine("Crash1");
-            if (gameObject == null)
-            {
-              Console.WriteLine("empty gameObject");
-            }
+            //gameObject.PrintSomething();
+            //Console.WriteLine("Crash2");
+
+            Console.WriteLine(Entity);
+            Console.WriteLine("Crash2");
+
+            
 
             return gameObject.GetComponent<T>();
         }
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        private extern static GameObject GetGameObject(UInt32 entity);
     }
 }

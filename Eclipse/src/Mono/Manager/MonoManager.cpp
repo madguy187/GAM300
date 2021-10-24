@@ -79,9 +79,34 @@ namespace Eclipse
 		engine->gPhysics.SetForce(ent, { x, y, z });
 	}
 
-	static MonoObject* GetComponentFromEngine(Entity ent, RigidBodyComponent rigid)
+	static MonoObject* CreateGameObject(Entity ent)
 	{
-		
+		MonoClass* gameobjKlass = mono_class_from_name(engine->mono.GetAPIImage(), "Eclipse", "GameObject");
+		if (!gameobjKlass)
+		{
+			std::cout << "Failed loading class" << std::endl;
+			return nullptr;
+		}
+
+		MonoObject* obj = mono_object_new(mono_domain_get(), gameobjKlass);
+		if (obj == nullptr) {
+			std::cout << "Failed loading class instance " << mono_class_get_name(gameobjKlass) << std::endl;
+			return nullptr;
+		}
+
+		MonoMethod* method = mono_class_get_method_from_name(gameobjKlass, ".ctor", -1);
+		if (method == nullptr) {
+			std::cout << "Failed loading class method" << std::endl;
+			return nullptr;
+		}
+
+		//mono_runtime_object_init(obj);
+
+		void* args[1];
+		args[0] = &ent;
+		mono_runtime_invoke(method, obj, args, NULL);
+
+		return obj;
 	}
 
 	void MonoManager::Init()
@@ -89,7 +114,6 @@ namespace Eclipse
 		ENGINE_CORE_INFO("Mono: Initialising");
 
 		mono_config_parse(NULL);
-
 		mono_set_dirs("../Dep/mono/lib", "../Dep/mono/etc");
 
 		domain = mono_jit_init_version("Manager", "v4.0.30319");
@@ -99,10 +123,12 @@ namespace Eclipse
 
 		mono_add_internal_call("Eclipse.PhysicsObject::Add_Force", SetForce);
 		mono_add_internal_call("Eclipse.GameObject::GetRigidComponent", GetRigidComponent);
+		mono_add_internal_call("Eclipse.EclipseBehavior::GetGameObject", CreateGameObject);
 	}
 
 	void MonoManager::Update(MonoScript* obj)
 	{
+		//DumpInfoFromImage(APIImage);
 		MonoClass* klass = mono_class_from_name(ScriptImage, "", obj->scriptName.c_str());
 
 		if (klass == nullptr) {
@@ -117,8 +143,7 @@ namespace Eclipse
 			return;
 		}
 
-		void* args[1];
-		mono_runtime_invoke(m_update, obj, args, NULL);
+		mono_runtime_invoke(m_update, obj, nullptr, NULL);
 	}
 
 	void MonoManager::StopMono()
@@ -174,13 +199,13 @@ namespace Eclipse
 			return nullptr;
 		}
 
-		MonoMethod* method = mono_class_get_method_from_name(base, "InitBehavior", -1);
+		MonoMethod* method = mono_class_get_method_from_name(base, "InitBehavior", 2);
 		if (method == nullptr) {
 			std::cout << "Failed loading class method" << std::endl;
 			return nullptr;
 		}
 
-		//mono_runtime_object_init(obj);
+		mono_runtime_object_init(obj);
 
 		void* args[2];
 		uint32_t handle = mono_gchandle_new(obj, true);
@@ -366,8 +391,6 @@ namespace Eclipse
 				std::cout << mono_method_full_name(method, 1) << std::endl;
 			}
 		}
-
-		
 	}
 
 	void MonoManager::DumpInfoFromClass(MonoClass* _class)

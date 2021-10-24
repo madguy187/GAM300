@@ -10,7 +10,12 @@ namespace Eclipse
 
         public GameObject(UInt32 entity)
         {
-          Entity = entity;
+            Entity = entity;
+        }
+
+        public void PrintSomething()
+        {
+            Console.WriteLine("print success");
         }
 
         public T GetComponent<T>() where T : IScriptable
