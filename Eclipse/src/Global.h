@@ -38,6 +38,7 @@ enum class EditorWindowType
     EWT_SWITCHVIEW_RIGHT,
     EWT_HEADER,
     EWT_MESHEDITOR,
+    EWT_MATERIALEDITOR,
     EWT_UNASSIGNED
 };
 

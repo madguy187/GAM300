@@ -572,12 +572,8 @@ namespace Eclipse
                 ECGui::SetColumns(1, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
 
-                ECGui::DrawTextWidget<const char*>("HasMaterialIstance", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::CheckBoxBool("HasMaterialIstance", &_Material.HasMaterialIstance);
-                ECGui::SetColumns(1, nullptr, true);
-                ECGui::InsertHorizontalLineSeperator();
+                ECGui::DrawInputTextHintWidget(my_strcat("MaterialInstance", 1).c_str(), "Drag Albdeo Texture here", const_cast<char*>(_Material.MaterialInstanceName.c_str()), 256, true, ImGuiInputTextFlags_None);
+                engine->editorManager->DragAndDropInst_.StringPayloadTarget("mat", _Material.MaterialInstanceName, "Albdeo Texture Inserted.", PayloadTargetType::PTT_ASSETS, ID);
             }
         }
 
@@ -1026,8 +1022,7 @@ namespace Eclipse
                 for (auto& it : parent.child)
                 {
                     auto& en = engine->world.GetComponent<EntityComponent>(it);
-                    std::string name = my_strcat(en.Name, " ", it);
-                    ECGui::DrawTextWidget<const char*>(name.c_str(), EMPTY_STRING);
+                    ECGui::DrawTextWidget<const char*>(my_strcat(en.Name, " ", it).c_str(), EMPTY_STRING);
                 }
           
                 ECGui::InsertHorizontalLineSeperator();
@@ -1046,12 +1041,8 @@ namespace Eclipse
                 ECGui::InsertHorizontalLineSeperator();
 
                 auto& child = engine->world.GetComponent<ChildComponent>(ID);
-
-             
                 auto& en = engine->world.GetComponent<EntityComponent>(child.parentIndex);
-                std::string name = my_strcat(en.Name, " ", child.parentIndex);
-                ECGui::DrawTextWidget<const char*>(name.c_str(), EMPTY_STRING);
-
+                ECGui::DrawTextWidget<const char*>(my_strcat(en.Name, " ", child.parentIndex).c_str(), EMPTY_STRING);
 
                 ECGui::InsertHorizontalLineSeperator();
             }

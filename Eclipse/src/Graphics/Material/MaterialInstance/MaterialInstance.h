@@ -5,8 +5,15 @@ namespace Eclipse
     class MaterialInstance
     {
     public:
-        std::string Name = "Default";
+        std::array<char, 128> Name;
         bool HasTexture = false;
+        ECVec3 BaseReflectivity = { 0.4f,0.4f,0.4f };
+
+        // Non Textured Parameters
+        ECVec3 AlbedoConstant{ 1.0f };
+        float AoConstant = 1.0f;
+        float MetallicConstant = 1.0f;
+        float RoughnessConstant = 1.0f;
 
         // Textured Parameters
         unsigned int Albedo = 0;
@@ -15,12 +22,8 @@ namespace Eclipse
         unsigned int Roughness = 0;
         unsigned int Ao = 0;
 
-        // Non Textured Parameters
-        ECVec3 AlbedoConstant{ 0.0f };
-        float AoConstant = 0.0f;
-        float MetallicConstant = 0.0f;
-        float RoughnessConstant = 0.0f;
-
+        // IGNORE PLEASE - For Compiler
+        bool Stopper = false;
 
         MaterialInstance(bool HasTexture = false);
         MaterialInstance(bool HasTextures, const std::string MaterialName);

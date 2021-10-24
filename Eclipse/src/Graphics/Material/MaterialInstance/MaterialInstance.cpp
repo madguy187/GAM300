@@ -6,15 +6,16 @@ namespace Eclipse
     // No Texture , so we will play with colours
     MaterialInstance::MaterialInstance(bool HasTexture)
     {
-
+        strcpy_s(Name.data(), Name.size(), "Default");
+        Name[Name.size() - 1] = '\0';
     }
 
     // Got Tetxures , so we will load textures
     MaterialInstance::MaterialInstance(bool HasTextures_, const std::string MaterialName):
-        HasTexture(HasTextures_),
-        Name(MaterialName)
+        HasTexture(HasTextures_)
     {
-
+        strcpy_s(Name.data(), Name.size(), MaterialName.data());
+        Name[Name.size() - 1] = '\0';
     }
 
     // No Texture , so we will play with colours
@@ -25,6 +26,7 @@ namespace Eclipse
         Roughness(roughness),
         Ao(ao)
     {
-
+        strcpy_s(Name.data(), Name.size(), "Default");
+        Name[Name.size() - 1] = '\0';
     }
 }

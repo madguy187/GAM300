@@ -18,6 +18,7 @@
 #include "Editor/Windows/SwitchViews/RightSwitchViewWindow.h"
 #include "Editor/Windows/Header/HeaderWindow.h"
 #include "Editor/Windows/MeshEditor/MeshEditor.h"
+#include "Editor/Windows/MaterialEditor/MaterialEditor.h"
 
 namespace Eclipse
 {
@@ -47,6 +48,7 @@ namespace Eclipse
 		AddWindow<DebugWindow>("Settings " ICON_MDI_ACCOUNT_COG);
 		AddWindow<HeaderWindow>("Header " ICON_MDI_PAGE_LAYOUT_HEADER);
 		AddWindow<MeshEditorWindow>("Mesh Editor");
+		AddWindow<MaterialEditorWindow>("Material Editor");
 
 		for (const auto& window : Windows_)
 		{

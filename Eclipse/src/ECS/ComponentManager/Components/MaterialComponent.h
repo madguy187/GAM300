@@ -39,7 +39,7 @@ namespace Eclipse
 
         // Material Instance
         bool HasMaterialIstance = false;
-        std::string MaterialInstanceName = "Default";
+        std::string MaterialInstanceName = "";
     };
 }
 #endif /* materialCOMPONENT_H */
