@@ -233,6 +233,7 @@ namespace Eclipse
 
     DEFINE_META(PrefabComponent)
     {
+        ADD_MEMBER(IsInstance);
         ADD_MEMBER(IsChild);
         ADD_MEMBER(CompChanges);
         ADD_MEMBER(PrefabID);

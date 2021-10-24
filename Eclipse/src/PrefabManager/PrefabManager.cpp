@@ -167,11 +167,14 @@ namespace Eclipse
 		//Declaration
 		World& prefabW = engine->prefabWorld;
 		World& w = engine->world;
+
+		//Copy Queue for child.
 		std::queue<Entity> copyQueue;
 		std::vector<Entity> contents;
 		PrefabComponent comp;
 		EUUID generatedID = UUIDGenerator::GenerateUUID();
 		comp.PrefabID = generatedID;
+
 		if (!w.CheckComponent<PrefabComponent>(ent))
 		{
 			comp.PrefabID = generatedID;
@@ -204,7 +207,7 @@ namespace Eclipse
 		}
 
 		auto& prefabComp = w.GetComponent<PrefabComponent>(ent);
-		prefabComp.IsChild = true;
+		prefabComp.IsInstance = true;
 
 		auto& entComp = prefabW.GetComponent<EntityComponent>(contents[0]);
 		entComp.IsActive = false;
@@ -217,9 +220,7 @@ namespace Eclipse
 
 		std::string destPath = GenerateFileName(entComp, path);
 		InsertPrefab(contents[0], destPath.c_str(), generatedID);
-		/*mapPathToID[destPath] =  generatedID;
-		PrefabIDSet.insert(generatedID);
-		mapPIDToEID[generatedID] = contents[0];*/
+		
 
 		engine->szManager.SavePrefabFile(prefabComp.PrefabID, contents, destPath.c_str());
 	}
@@ -257,7 +258,7 @@ namespace Eclipse
 		transformComp.position = defaultComp.position;
 
 		auto& prefabComp = w.GetComponent<PrefabComponent>(ent);
-		prefabComp.IsChild = true;
+		prefabComp.IsInstance = true;
 
 		engine->editorManager->RegisterExistingEntity(ent);
 
@@ -414,10 +415,11 @@ namespace Eclipse
 	void PrefabManager::UnloadSaving()
 	{
 		auto& entities = engine->prefabWorld.GetSystem<PrefabSystem>()->mEntities;
+
 		for(auto ent : entities)
 		{
 			auto& prefabComp = engine->prefabWorld.GetComponent<PrefabComponent>(ent);
-			if (prefabComp.IsChild)
+			if (prefabComp.IsInstance)
 			{
 				continue;
 			}

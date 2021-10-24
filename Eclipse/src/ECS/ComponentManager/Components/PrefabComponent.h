@@ -8,6 +8,7 @@ namespace Eclipse
 	struct PrefabComponent
 	{
 		META_DATA(PrefabComponent);
+		bool IsInstance = false;
 		bool IsChild = false;
 		Signature CompChanges = 0;
 		EUUID PrefabID = 0;

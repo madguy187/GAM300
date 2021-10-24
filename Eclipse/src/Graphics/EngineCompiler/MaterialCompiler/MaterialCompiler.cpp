@@ -21,6 +21,11 @@ namespace Eclipse
 
         engine->gPBRManager->AllMaterialInstName.push_back(engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.Name.data());
 
+        if (!std::filesystem::exists("src//Assets//MaterialInstances"))
+        {
+            std::filesystem::create_directories("src//Assets//MaterialInstances");
+        }
+
         for (auto& dirEntry : std::filesystem::directory_iterator("src//Assets//MaterialInstances"))
         {
             const auto& path = dirEntry.path();

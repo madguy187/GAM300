@@ -290,6 +290,13 @@ namespace Eclipse
 		{
 			if(prefabW.CheckComponent<PrefabComponent>(ent))
 			{
+				auto& prefabComp = prefabW.GetComponent<PrefabComponent>(ent);
+
+				if (prefabComp.IsInstance)
+				{
+					continue;
+				}
+
 				SerializeEntity(prefabW, ent, counter++);
 			}
 		}
