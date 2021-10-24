@@ -73,7 +73,7 @@ namespace Eclipse
             auto& shdrpgm = Graphics::shaderpgms["MaterialEditor"];
             shdrpgm.Use();
 
-            auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::MeshEditor_Camera));
+            auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::MaterialEditor_Camera));
 
             UpdateCamera(shdrpgm, _camera);
             UpdateLights(shdrpgm);

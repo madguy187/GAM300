@@ -134,15 +134,15 @@ namespace Eclipse
         {
         case CameraComponent::CameraType::MeshEditor_Camera:
         {
-            return FrameBufferContainer[FrameBufferMode::FBM_MATERIALEDITOR]->AspectRatio;
+            return FrameBufferContainer[FrameBufferMode::FBM_MESHEDITOR]->AspectRatio;
         }
         break;
 
-        //case CameraComponent::CameraType::MeshEditor_Camera:
-        //{
-        //    return FrameBufferContainer[FrameBufferMode::FBM_MESHEDITOR]->AspectRatio;
-        //}
-        //break;
+        case CameraComponent::CameraType::MaterialEditor_Camera:
+        {
+            return FrameBufferContainer[FrameBufferMode::FBM_MATERIALEDITOR]->AspectRatio;
+        }
+        break;
 
         case CameraComponent::CameraType::Editor_Camera:
         {

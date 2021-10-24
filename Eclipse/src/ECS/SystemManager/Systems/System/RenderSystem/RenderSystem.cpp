@@ -190,7 +190,7 @@ namespace Eclipse
                         if (engine->editorManager->GetEditorWindow<MeshEditorWindow>()->IsVisible)
                         {
                             engine->MaterialManager.DoNotUpdateStencil();
-                            engine->AssimpManager.MeshEditorDraw(engine->world, Mesh, entityID, FrameBufferMode::FBM_MESHEDITOR, CameraComponent::CameraType::Editor_Camera);
+                            engine->AssimpManager.MeshEditorDraw(engine->world, Mesh, entityID, FrameBufferMode::FBM_MESHEDITOR, CameraComponent::CameraType::MeshEditor_Camera);
                         }
 
                         engine->MaterialManager.Highlight3DModels(entityID, FrameBufferMode::FBM_SCENE);
