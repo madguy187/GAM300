@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<Entities Size="2">
+<Entities Size="4">
     <Entity_0 ID="0">
         <CameraComponent>
             <eyeAlpha value="0" />
@@ -7,20 +7,20 @@
             <fov value="45" />
             <nearPlane value="0.1" />
             <farPlane value="500" />
-            <aspect value="2.12547" />
-            <eyePos x="0" y="20" z="40" />
-            <eyeFront x="-3.34849e-08" y="-0.642788" z="-0.766045" />
-            <upVec x="-2.80971e-08" y="0.766044" z="-0.642788" />
-            <rightVec x="1" y="0" z="-4.37114e-08" />
+            <aspect value="1.45966" />
+            <eyePos x="14.0545" y="26.9193" z="44.9214" />
+            <eyeFront x="-0.406786" y="-0.431299" z="-0.805299" />
+            <upVec x="-0.194463" y="0.902209" z="-0.384971" />
+            <rightVec x="0.892586" y="0" z="-0.450877" />
             <worldUp x="0" y="1" z="0" />
             <viewMtx Col="4" Row="4">
-                <Col0 _00="1" _01="-2.80971e-08" _02="3.34849e-08" _03="0" />
-                <Col1 _10="0" _11="0.766044" _12="0.642788" _13="0" />
-                <Col2 _20="-4.37114e-08" _21="-0.642788" _22="0.766044" _23="0" />
-                <Col3 _30="1.74846e-06" _31="10.3906" _32="-43.4975" _33="1" />
+                <Col0 _00="0.892586" _01="-0.194463" _02="0.406786" _03="0" />
+                <Col1 _10="-3.27826e-07" _11="0.902209" _12="0.4313" _13="0" />
+                <Col2 _20="-0.450878" _21="-0.384972" _22="0.805299" _23="0" />
+                <Col3 _30="7.70923" _31="-4.26028" _32="-53.5026" _33="1" />
             </viewMtx>
             <projMtx Col="4" Row="4">
-                <Col0 _00="1.13585" _01="0" _02="0" _03="0" />
+                <Col0 _00="1.65395" _01="0" _02="0" _03="0" />
                 <Col1 _10="0" _11="2.41421" _12="0" _13="0" />
                 <Col2 _20="0" _21="0" _22="-1.0004" _23="-1" />
                 <Col3 _30="0" _31="0" _32="-0.20004" _33="0" />
@@ -35,9 +35,10 @@
             <Child size="0" />
             <Parent size="0" />
             <IsAChild value="false" />
+            <TreeactiveFlag value="64" />
         </EntityComponent>
         <TransformComponent>
-            <position x="0" y="20" z="40" />
+            <position x="14.0545" y="26.9193" z="44.9214" />
             <rotation x="-40" y="-90" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
@@ -50,8 +51,8 @@
             <EnableBlinnPhong value="true" />
             <lightColor x="1" y="1" z="1" />
             <Direction x="-10" y="-10" z="-10" />
-            <ambient x="0.2" y="0.2" z="0.2" />
-            <diffuse x="0.4" y="0.4" z="0.4" />
+            <ambient x="1" y="1" z="1" />
+            <diffuse x="0" y="0.4" z="0.4" />
             <specular x="0.5" y="0.5" z="0.5" />
             <Color x="1" y="1" z="1" w="1" />
         </DirectionalLightComponent>
@@ -61,6 +62,7 @@
             <Child size="0" />
             <Parent size="0" />
             <IsAChild value="false" />
+            <TreeactiveFlag value="64" />
         </EntityComponent>
         <LightComponent />
         <TransformComponent>
@@ -69,4 +71,93 @@
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_1>
+    <Entity_2 ID="8">
+        <AABBComponent>
+            <center x="2.48494" y="0" z="17.7302" />
+            <Min x="-0.0150604" y="-2.5" z="15.2302" />
+            <Max x="4.98494" y="2.5" z="20.2302" />
+        </AABBComponent>
+        <EntityComponent>
+            <Tag value="Cube" />
+            <Name value="Cube" />
+            <Child size="0" />
+            <Parent size="0" />
+            <IsAChild value="false" />
+            <TreeactiveFlag value="64" />
+        </EntityComponent>
+        <MaterialComponent>
+            <Modeltype value="BasicPrimitives" />
+            <ambient x="0" y="0" z="0" />
+            <diffuse x="1" y="1" z="1" />
+            <specular x="1" y="1" z="1" />
+            <NoTextures value="true" />
+            <shininess value="0.25" />
+            <MaximumShininess value="128" />
+            <ComboIndex value="1" />
+            <TextureComboIndex value="0" />
+            <Type value="TT_2D" />
+            <hasTexture value="true" />
+            <TextureRef value="DDS_DX5" />
+            <TextureKey value="" />
+            <HoldingTextures size="0" />
+            <HasMaterialIstance value="false" />
+            <MaterialInstanceName value="" />
+        </MaterialComponent>
+        <MeshComponent>
+            <MeshName value="" />
+            <color x="1" y="1" z="1" />
+            <textureIdx x="0" y="0" />
+            <isQuad value="false" />
+            <modelNDC_xform Col="4" Row="4">
+                <Col0 _00="0" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="0" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="0" _23="0" />
+                <Col3 _30="0" _31="0" _32="0" _33="0" />
+            </modelNDC_xform>
+            <modelRef value="Cube" />
+            <shaderRef value="shader3DShdrpgm" />
+            <transparency value="1" />
+            <ENV_MAP value="false" />
+            <ENV_TYPE value="MT_REFLECT" />
+        </MeshComponent>
+        <TransformComponent>
+            <position x="2.48494" y="0" z="17.7302" />
+            <rotation x="0" y="0" z="0" />
+            <scale x="5" y="5" z="5" />
+        </TransformComponent>
+    </Entity_2>
+    <Entity_3 ID="9">
+        <EntityComponent>
+            <Tag value="PointLight" />
+            <Name value="PointLight" />
+            <Child size="0" />
+            <Parent size="0" />
+            <IsAChild value="false" />
+            <TreeactiveFlag value="64" />
+        </EntityComponent>
+        <LightComponent />
+        <PointLightComponent>
+            <Counter value="0" />
+            <ambient x="0.2" y="0.2" z="0.2" />
+            <diffuse x="0.5" y="0.5" z="0.5" />
+            <specular x="0.1" y="0.1" z="0.1" />
+            <lightColor x="1" y="1" z="1" />
+            <Color x="1" y="1" z="1" w="1" />
+            <IntensityStrength value="10" />
+            <constant value="1" />
+            <linear value="0.07" />
+            <quadratic value="0.017" />
+            <radius value="0" />
+            <AttenuationLevel value="5" />
+            <EnableBlinnPhong value="true" />
+            <hasTexture value="false" />
+            <visible value="true" />
+            <AffectsWorld value="true" />
+        </PointLightComponent>
+        <TransformComponent>
+            <position x="0.422332" y="0" z="13.7604" />
+            <rotation x="0" y="0" z="0" />
+            <scale x="0.1" y="0.1" z="0.1" />
+        </TransformComponent>
+    </Entity_3>
 </Entities>

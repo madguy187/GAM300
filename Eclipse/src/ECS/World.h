@@ -68,6 +68,9 @@ namespace Eclipse
 		template <typename T>
 		bool CheckComponent(Entity entity)
 		{
+			if (entity == MAX_ENTITY)
+				return false;
+
 			auto signature = entityManager->GetSignature(entity);
 
 			int index = componentManager->GetComponentType<T>();

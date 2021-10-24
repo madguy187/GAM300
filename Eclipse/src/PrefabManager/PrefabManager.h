@@ -5,13 +5,11 @@ namespace Eclipse
 {
 	class PrefabManager
 	{
-		std::set<long long unsigned int> PrefabIDSet;
-		std::unordered_map<long long unsigned int, Entity> mapPIDToEID;
-		std::unordered_map<std::string, long long unsigned int> mapPathToID;
-		static long long unsigned int CountID;
+		std::set<EUUID> PrefabIDSet;
+		std::unordered_map<EUUID, Entity> mapPIDToEID;
+		std::unordered_map<std::string, EUUID> mapPathToID;
 
 		using PrefabUseList = ComponentTypeList<
-			AABBComponent,
 			CameraComponent,
 			DirectionalLightComponent,
 			LightComponent,
@@ -21,34 +19,48 @@ namespace Eclipse
 			PointLightComponent,
 			RigidBodyComponent,
 			ScriptComponent,
-			ParentComponent,
-			ChildComponent,
 			CollisionComponent,
+			AudioComponent,
 			AIComponent,
 			SpotLightComponent
 		>;
-
+		//Cannot cmoppare entiyt, aabb, parent, child, transform
 		PrefabUseList list{};
-
-		long long unsigned int GetUniqueIdentifier(PrefabComponent& prefab);
 
 		void LoadPrefab(const char* path);
 
 		std::string GenerateFileName(EntityComponent& entComp, const char* path);
 
-		void RegisterForNewInstance(Entity ent);
+		void RegisterForNewInstance(const Entity& ent);
 
-		void Equalize(World& sourceWorld, World& targetWorld, Entity sourceEnt, Entity targetEnt);
+		void CleanUpForInstancesAfterCopy(const Entity& ent);
+
+		void SignatureBaseCopy(World& sourceWorld, World& targetWorld, const Entity& sourceEnt, const Entity& targetEnt);
+
+		void CopyToInstance(const Entity& comparingPrefabEnt, World& copySourceWorld, const Entity& copyingSourceEnt, const Entity& instancesEnt);
+
+		std::vector<Entity> GetInstanceList(const EUUID& prefabID = 0);
 
 		template <typename ...T>
-		void EqualizeEntity(World& sourceWorld, World& targetWorld, Entity sourceEnt, Entity targetEnt, TypeList<T...>)
+		void SignatureBaseCopying(World& sourceWorld, World& targetWorld, const Entity& sourceEnt, const Entity& targetEnt, TypeList<T...>)
 		{
-			((EqualizeEntityComponent<T>(sourceWorld, targetWorld, sourceEnt, targetEnt)), ...);
+			((SignatureBaseCopyingComponent<T>(sourceWorld, targetWorld, sourceEnt, targetEnt)), ...);
 		}
 
 		template <typename T>
-		void EqualizeEntityComponent(World& sourceWorld, World& targetWorld, Entity sourceEnt, Entity targetEnt)
+		void SignatureBaseCopyingComponent(World& sourceWorld, World& targetWorld, const Entity& sourceEnt, const Entity& targetEnt)
 		{
+			auto& sourcePrefabComp = sourceWorld.GetComponent<PrefabComponent>(sourceEnt);
+			auto& targetPrefabComp = targetWorld.GetComponent<PrefabComponent>(targetEnt);
+
+			const auto& changesSource = sourcePrefabComp.CompChanges;
+			const auto& changesTarget = targetPrefabComp.CompChanges;
+
+			if (changesSource.test(sourceWorld.GetComponentType<T>()) || changesTarget.test(targetWorld.GetComponentType<T>()))
+			{
+				return;
+			}
+
 			if (sourceWorld.CheckComponent<T>(sourceEnt) && targetWorld.CheckComponent<T>(targetEnt))
 			{
 				T& sourceComp = sourceWorld.GetComponent<T>(sourceEnt);
@@ -71,10 +83,79 @@ namespace Eclipse
 
 			}
 		}
+		
+		template <typename ...T>
+		void CopyToPrefabInstances(const Entity& comparingPrefabEnt, World& copySourceWorld, const Entity& copyingSourceEnt, const Entity& instancesEnt, TypeList<T...>, const bool& UpdateSignatureOnly = false)
+		{
+			((CopyToInstancesComponent<T>(comparingPrefabEnt, copySourceWorld, copyingSourceEnt, instancesEnt, UpdateSignatureOnly)), ...);
+		}
 
-		std::string GetPath(long long unsigned int id);
+		template <typename T>
+		void CopyToInstancesComponent(const Entity& comparingPrefabEnt, World& copySourceWorld, const Entity& copyingSourceEnt, const Entity& instancesEnt, const bool& UpdateSignatureOnly)
+		{
+			World& prefabW = engine->prefabWorld;
+			World& entW = engine->world;
+
+			if (prefabW.CheckComponent<T>(comparingPrefabEnt) && entW.CheckComponent<T>(instancesEnt))
+			{
+				T& comparingComp = prefabW.GetComponent<T>(comparingPrefabEnt);
+				T& targetComp = entW.GetComponent<T>(instancesEnt);
+
+				if (SerializationManager::CompareComponentData(targetComp, comparingComp))
+				{
+					if (!UpdateSignatureOnly)
+					{
+						if (copySourceWorld.CheckComponent<T>(copyingSourceEnt))
+						{
+							T& copyingComp = copySourceWorld.GetComponent<T>(copyingSourceEnt);
+							targetComp = copyingComp;
+						}
+						else
+						{
+							entW.DestroyComponent<T>(instancesEnt);
+						}
+					}
+
+					UpdatePrefabSignature(entW, instancesEnt, entW.GetComponentType<T>(), 0);
+				}
+				else
+				{
+					UpdatePrefabSignature(entW, instancesEnt, entW.GetComponentType<T>(), 1);
+				}
+			}
+			else if(prefabW.CheckComponent<T>(comparingPrefabEnt) || entW.CheckComponent<T>(instancesEnt))
+			{
+				UpdatePrefabSignature(entW, instancesEnt, entW.GetComponentType<T>(), 1);
+			}
+			else
+			{
+				if (!UpdateSignatureOnly)
+				{
+					if (copySourceWorld.CheckComponent<T>(copyingSourceEnt))
+					{
+						T& copyingComp = copySourceWorld.GetComponent<T>(copyingSourceEnt);
+						entW.AddComponent<T>(instancesEnt, copyingComp);
+					}
+				}
+				UpdatePrefabSignature(entW, instancesEnt, entW.GetComponentType<T>(), 0);
+			}
+		}
+
+		std::string GetPath(const EUUID& id);
 
 		void OverwritePrefab(const Entity& ent, const char* path);
+
+		bool CheckPrefabExistence(const EUUID& prefabID);
+
+		void InsertPrefab(const Entity& ent, const char* path, const EUUID& prefabID);
+
+		//For mesh(prefab) editor save button
+		void SavePrefabChanges(const Entity& ent);
+
+		//Perform updates of prefab to instances right after loading of scene
+		//void PostUpdate_Prefab();
+
+		void UpdatePrefabSignature(World& sourceW, const Entity& ent, const size_t& setBit, bool setTo);
 
 	public:
 		static const std::string PrefabPath;
@@ -82,6 +163,10 @@ namespace Eclipse
 		PrefabManager();
 
 		void LoadAllPrefab();
+
+		void PostUpdate();
+
+		void EndUpdate();
 
 		void ApplyChangesToAll(Entity ent);
 

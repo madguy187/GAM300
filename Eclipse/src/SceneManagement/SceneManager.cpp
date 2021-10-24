@@ -16,7 +16,10 @@ namespace Eclipse
 
 	void SceneManager::Initialize()
 	{
-
+		if (engine->GetEditorState())
+		{
+			engine->pfManager.PostUpdate();
+		}
 	}
 
 	void SceneManager::ProcessScene()
@@ -42,6 +45,7 @@ namespace Eclipse
 				prevScene = curScene;
 				curScene = nextScene;
 				engine->szManager.LoadSceneFile(mapNameToPath[sceneList[curScene]].c_str());
+				Initialize();
 			}
 			else if (nextScene == QUIT)
 			{

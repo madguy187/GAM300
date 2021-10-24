@@ -382,7 +382,6 @@ namespace Eclipse
 
     void InputWrapper::init()
     {
-
         // Clear Container just in case
         KeyContainer.clear();
         HoldKeyContainer.clear();
@@ -480,8 +479,6 @@ namespace Eclipse
 
     bool InputWrapper::GetKeyTriggered(InputKeycode keycode)
     {
-#ifndef CURRENT_CODE
-
         int Press = GetKey(keycode);
 
         if (IsKeyPressed(Press))
@@ -511,33 +508,10 @@ namespace Eclipse
         }
 
         return false;
-
-#else
-        int isKeyPressed = glfwGetKey(GLHelper::ptr_window, static_cast<int>(keycode));
-
-        if (isKeyPressed == GLFW_PRESS && !single)
-        {
-            if (single)
-                return false;
-
-            single = true;
-            //std::cout << " Create Apple " << std::endl;
-            return true;
-        }
-        else if (isKeyPressed == GLFW_RELEASE)
-        {
-            single = false;
-            return false;
-        }
-        return false;
-#endif
-
     }
 
     bool InputWrapper::GetKeyCurrent(InputKeycode keycode)
     {
-#ifndef CURRENT_CODE
-
         Update();
 
         int Hold = GetKey(keycode);
@@ -554,9 +528,6 @@ namespace Eclipse
         }
 
         return false;
-#else
-        return false;
-#endif
     }
 
     bool InputWrapper::GetKeyReleased(InputKeycode keycode)

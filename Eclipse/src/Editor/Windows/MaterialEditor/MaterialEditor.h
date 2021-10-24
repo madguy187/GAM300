@@ -13,8 +13,14 @@ namespace Eclipse
 		void RunMainWindow();
 		void RunFrameBuffer();
 		void RunMaterialSettings();
+		void CheckCurrentMaterial(size_t comboIndex);
 	private:
 		FrameBuffer* m_frameBuffer{ nullptr };
 		ECVec2 mViewportSize{ 0.f, 0.f };
+		ECVec3 ColorPicker{ 1.0f };
+
+		void Buttons();
+		bool ShowTransformProperty(const char* name, ImGuiTextFilter& filter);
+		bool ShowMaterialProperty(const char* name, ImGuiTextFilter& filter);
 	};
 }

@@ -168,6 +168,9 @@ namespace Eclipse
 
 	void EditorManager::DestroyEntity(Entity ID)
 	{
+		if (ID == MAX_ENTITY)
+			return;
+
 		size_t pos = static_cast<size_t>(EntityToIndexMap_[ID]);
 
 		EntityHierarchyList_.erase(EntityHierarchyList_.begin() + pos);
@@ -181,11 +184,20 @@ namespace Eclipse
 			}
 			else
 			{
-				SetSelectedEntity(EntityHierarchyList_[pos - 1]);
+				if (pos == 0)
+				{
+					pos = 0;
+				}
+				else
+				{
+					pos = pos - 1;
+				}
+
+				SetSelectedEntity(EntityHierarchyList_[pos]);
 
 				for (auto& pair : EntityToIndexMap_)
 				{
-					if (pair.second > pos - 1)
+					if (pair.second > pos)
 						pair.second--;
 				}
 			}

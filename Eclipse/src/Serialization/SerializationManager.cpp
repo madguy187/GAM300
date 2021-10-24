@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "SerializationManager.h"
-
+#include "ECS/SystemManager/Systems/System/ParentChildSystem/ParentSystem/ParentSystem.h"
+#include "ECS/ComponentManager/Components/ParentComponent.h"
+#include "ECS/ComponentManager/Components/ChildComponent.h"
 namespace Eclipse
 {
 	Serializer SerializationManager::sz;
@@ -24,6 +26,45 @@ namespace Eclipse
 		_backup.Clear();
 	}
 
+	void SerializationManager::ParentChildPostUpdate::RegisterForPostUpdate(World& w, const Entity& oldEnt, const Entity& newEnt)
+	{
+		if (w.CheckComponent<ParentComponent>(newEnt) || w.CheckComponent<ChildComponent>(newEnt))
+		{
+			oldToNewMap[oldEnt] = newEnt;
+		}
+	}
+
+	void SerializationManager::ParentChildPostUpdate::PostUpdate()
+	{
+		auto& w = engine->world;
+		const auto& entSet = w.GetSystem<ParentSystem>()->mEntities;
+
+		for (auto& ent : entSet)
+		{
+			auto& parent = w.GetComponent<ParentComponent>(ent);
+			auto& parentEntComp = w.GetComponent<EntityComponent>(ent);
+
+			for (auto& parentEnt : parentEntComp.Child)
+			{
+				parentEnt = oldToNewMap[parentEnt];
+			}
+
+			for (auto& child : parent.child)
+			{
+				child = oldToNewMap[child];
+				
+				auto& childComp = w.GetComponent<ChildComponent>(child);
+				auto& childEntComp = w.GetComponent<EntityComponent>(child);
+				childComp.parentIndex = ent;
+
+				for (auto& childEnt : childEntComp.Parent)
+				{
+					childEnt = oldToNewMap[childEnt];
+				}
+			}
+		}
+		Clear();
+	}
 
 	void SerializationManager::SerializeEntity(World& w, const Entity& ent, const size_t& counter)
 	{
@@ -38,19 +79,15 @@ namespace Eclipse
 		Entity ent = MAX_ENTITY;
 		if (dsz.StartElement("Entity_", true, counter))
 		{
+			Entity oldEnt;
+			dsz.ReadAttributeFromElement("ID", oldEnt);
 			ent = w.CreateEntity();
 			if (DeserializeAllComponents(w, ent, PrefabUse))
 			{
 				if (!PrefabUse)
 				{
+					PCPostUpdate.RegisterForPostUpdate(w, oldEnt, ent);
 					engine->editorManager->RegisterExistingEntity(ent);
-
-					if (engine->world.CheckComponent<AABBComponent>(ent))
-					{
-						auto& Transform_ = engine->world.GetComponent<TransformComponent>(ent);
-						auto& Entity_ = engine->world.GetComponent<EntityComponent>(ent);
-						engine->gPicker.GenerateAabb(ent, Transform_, Entity_.Tag);
-					}
 				}
 			}
 			dsz.CloseElement();
@@ -60,62 +97,14 @@ namespace Eclipse
 
 	void SerializationManager::SerializeAllComponents(World& w, const Entity& ent)
 	{
-		SerializeComponent<AABBComponent>(w, ent);
-
-		SerializeComponent<AIComponent>(w, ent);
-		
-		SerializeComponent<AudioComponent>(w, ent);
-
-		SerializeComponent<CameraComponent>(w, ent);
-
-		SerializeComponent<CollisionComponent>(w, ent);
-
-		SerializeComponent<DirectionalLightComponent>(w, ent);
-
-		SerializeComponent<EntityComponent>(w, ent);
-
-		SerializeComponent<LightComponent>(w, ent);
-
-		SerializeComponent<MaterialComponent>(w, ent);
-
-		SerializeComponent<MeshComponent>(w, ent);
-
-		SerializeComponent<ModelComponent>(w, ent);
-
-		SerializeComponent<PointLightComponent>(w, ent);
-
-		SerializeComponent<PrefabComponent>(w, ent);
-		
-		SerializeComponent<RigidBodyComponent>(w, ent);
-
-		SerializeComponent<ScriptComponent>(w, ent);
-
-		SerializeComponent<SpotLightComponent>(w, ent);
-
-		SerializeComponent<TransformComponent>(w, ent);
+		SerializeListedComponent(w, ent, all_component_list);
 	}
 
 	bool SerializationManager::DeserializeAllComponents(World& w, const Entity& ent, bool PrefabUse)
 	{
 		bool isSuccess = false;
 
-		if (DeserializeComponent<AABBComponent>(w, ent) &&
-			DeserializeComponent<AIComponent>(w, ent) &&
-			DeserializeComponent<AudioComponent>(w, ent) &&
-			DeserializeComponent<CameraComponent>(w, ent) &&
-			DeserializeComponent<CollisionComponent>(w, ent) &&
-			DeserializeComponent<DirectionalLightComponent>(w, ent) &&
-			DeserializeComponent<EntityComponent>(w, ent) &&
-			DeserializeComponent<LightComponent>(w, ent) &&
-			DeserializeComponent<MaterialComponent>(w, ent) &&
-			DeserializeComponent<MeshComponent>(w, ent) &&
-			DeserializeComponent<ModelComponent>(w, ent) &&
-			DeserializeComponent<PointLightComponent>(w, ent) &&
-			DeserializeComponent<PrefabComponent>(w, ent) &&
-			DeserializeComponent<RigidBodyComponent>(w, ent) &&
-			DeserializeComponent<ScriptComponent>(w, ent) &&
-			DeserializeComponent<SpotLightComponent>(w, ent) &&
-			DeserializeComponent<TransformComponent>(w, ent))
+		if (DeserializeListedComponent(w, ent, all_component_list))
 		{
 			if (!PrefabUse)
 			{
@@ -130,6 +119,7 @@ namespace Eclipse
 					auto& aabb = w.GetComponent<AABBComponent>(ent);
 					engine->gCullingManager->Insert(aabb, ent);
 					engine->gDynamicAABBTree.InsertData(ent);
+					engine->gPicker.UpdateAabb(ent);
 				}
 			}
 			isSuccess = true;
@@ -201,6 +191,7 @@ namespace Eclipse
 
 	void SerializationManager::SaveSceneFile(const char* fullpath)
 	{
+		engine->pfManager.EndUpdate();
 		SerializeAllEntity();
 		SaveFile(fullpath);
 	}
@@ -210,11 +201,13 @@ namespace Eclipse
 		if (LoadFile(fullpath))
 		{
 			DeserializeAllEntity();
+			PCPostUpdate.PostUpdate();
 		}
 	}
 
 	void SerializationManager::SaveBackupFile()
 	{
+		engine->pfManager.EndUpdate();
 		SerializeAllEntity();
 		backup.SaveBackup(sz);
 	}
@@ -224,10 +217,11 @@ namespace Eclipse
 		SceneManager::Clear();
 		backup.LoadBackup(dsz);
 		DeserializeAllEntity();
+		PCPostUpdate.PostUpdate();
 		std::filesystem::remove_all(TEMP_PATH);
 	}
 
-	void SerializationManager::SavePrefab(long long unsigned int prefabID, std::vector<Entity>& prefabContents)
+	void SerializationManager::SavePrefab(const EUUID& prefabID, std::vector<Entity>& prefabContents)
 	{
 		World& prefabW = engine->prefabWorld;
 		size_t counter = 0;
@@ -242,10 +236,10 @@ namespace Eclipse
 		sz.CloseElement();
 	}
 
-	long long unsigned int SerializationManager::LoadPrefab(Entity& dszEnt)
+	EUUID SerializationManager::LoadPrefab(Entity& dszEnt)
 	{
 		World& prefabW = engine->prefabWorld;
-		long long unsigned int PrefabID = 0;
+		EUUID PrefabID = 0;
 
 		if(dsz.StartElement("Prefab"))
 		{
@@ -267,15 +261,15 @@ namespace Eclipse
 		return PrefabID;
 	}
 
-	void SerializationManager::SavePrefabFile(unsigned long long int prefabID, std::vector<Entity>& prefabContents, const char* path)
+	void SerializationManager::SavePrefabFile(const EUUID& prefabID, std::vector<Entity>& prefabContents, const char* path)
 	{
 		SavePrefab(prefabID, prefabContents);
 		SaveFile(path);
 	}
 
-	long long unsigned int SerializationManager::LoadPrefabFile(Entity& dszEnt, const char* fullpath)
+	EUUID SerializationManager::LoadPrefabFile(Entity& dszEnt, const char* fullpath)
 	{
-		long long unsigned int PrefabID = 0;
+		EUUID PrefabID = 0;
 		if (LoadFile(fullpath))
 		{
 			PrefabID =  LoadPrefab(dszEnt);
@@ -296,6 +290,13 @@ namespace Eclipse
 		{
 			if(prefabW.CheckComponent<PrefabComponent>(ent))
 			{
+				auto& prefabComp = prefabW.GetComponent<PrefabComponent>(ent);
+
+				if (prefabComp.IsInstance)
+				{
+					continue;
+				}
+
 				SerializeEntity(prefabW, ent, counter++);
 			}
 		}
@@ -308,5 +309,17 @@ namespace Eclipse
 		std::string path = PrefabManager::PrefabPath;
 		path += "List.xml";
 		SaveFile(path.c_str());
+	}
+
+	Entity SerializationManager::ParentChildPostUpdate::GetNew(const Entity& oldEnt)
+	{
+		if (oldToNewMap.find(oldEnt) != oldToNewMap.end())
+			return oldToNewMap[oldEnt];
+		else
+			return MAX_ENTITY;
+	}
+	void SerializationManager::ParentChildPostUpdate::Clear()
+	{
+		oldToNewMap.clear();
 	}
 }

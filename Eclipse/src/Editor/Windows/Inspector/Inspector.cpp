@@ -572,12 +572,8 @@ namespace Eclipse
                 ECGui::SetColumns(1, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
 
-                ECGui::DrawTextWidget<const char*>("HasMaterialIstance", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::CheckBoxBool("HasMaterialIstance", &_Material.HasMaterialIstance);
-                ECGui::SetColumns(1, nullptr, true);
-                ECGui::InsertHorizontalLineSeperator();
+                ECGui::DrawInputTextHintWidget(my_strcat("MaterialInstance", 1).c_str(), "Drag Albdeo Texture here", const_cast<char*>(_Material.MaterialInstanceName.c_str()), 256, true, ImGuiInputTextFlags_None);
+                engine->editorManager->DragAndDropInst_.StringPayloadTarget("mat", _Material.MaterialInstanceName, "Albdeo Texture Inserted.", PayloadTargetType::PTT_ASSETS, ID);
             }
         }
 

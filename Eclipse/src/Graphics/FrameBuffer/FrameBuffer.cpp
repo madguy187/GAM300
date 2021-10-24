@@ -89,9 +89,11 @@ namespace Eclipse
         if (m_data.frameBufferID)
         {
             glDeleteFramebuffers(GL_FRAMEBUFFER, &m_data.frameBufferID);
-            glDeleteTextures(1, &m_data.TextureColourBuffer);
+            glDeleteTextures(1, &m_data.ColorBuffers[0]);
+            glDeleteTextures(1, &m_data.ColorBuffers[1]);
             glDeleteTextures(1, &m_data.depthBufferID);
-            m_data.TextureColourBuffer = 0;
+            m_data.ColorBuffers[0] = 0;
+            m_data.ColorBuffers[1] = 0;
             m_data.depthBufferID = 0;
 
             engine->gFrameBufferManager->DeleteFrameBuffer(FrameBufferType);
@@ -111,16 +113,19 @@ namespace Eclipse
 
         glGenFramebuffers(1, &m_data.frameBufferID);
         glBindFramebuffer(GL_FRAMEBUFFER, m_data.frameBufferID);
-        glCreateTextures(GL_TEXTURE_2D, 1, &m_data.TextureColourBuffer);
-        glBindTexture(GL_TEXTURE_2D, m_data.TextureColourBuffer);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, p_width, p_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_data.TextureColourBuffer, 0);
+        glGenTextures(2, m_data.ColorBuffers);
+        for (unsigned int i = 0; i < 2; i++)
+        {
+            glBindTexture(GL_TEXTURE_2D, m_data.ColorBuffers[i]);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, p_width, p_height, 0, GL_RGBA, GL_FLOAT, NULL);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, m_data.ColorBuffers[i], 0);
+        }
 
         glCreateTextures(GL_TEXTURE_2D, 1, &m_data.depthBufferID);
         glBindTexture(GL_TEXTURE_2D, m_data.depthBufferID);
@@ -130,10 +135,10 @@ namespace Eclipse
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, m_data.depthBufferID, 0);
-        GLenum buffers[4] = { GL_COLOR_ATTACHMENT0 };
-        glDrawBuffers(m_data.TextureColourBuffer, buffers);
+        
+        GLenum buffers[2] = { GL_COLOR_ATTACHMENT0 , GL_COLOR_ATTACHMENT1 };
+        glDrawBuffers(2, buffers);
 
         if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         {
@@ -196,6 +201,7 @@ namespace Eclipse
 
             glBindVertexArray(rectVAO);
             glDisable(GL_DEPTH_TEST);
+            glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SCENE));
             glDrawArrays(GL_TRIANGLES, 0, 6);
 
@@ -216,7 +222,7 @@ namespace Eclipse
 
     unsigned int FrameBuffer::GetTextureColourBufferID()
     {
-        return m_data.TextureColourBuffer;
+        return m_data.ColorBuffers[0];
     }
 
     unsigned int FrameBuffer::GetDepthBufferID()
@@ -278,7 +284,8 @@ namespace Eclipse
         if (m_data.frameBufferID)
         {
             glDeleteFramebuffers(1, &m_data.frameBufferID);
-            glDeleteTextures(1, &m_data.TextureColourBuffer);
+            glDeleteTextures(1, &m_data.ColorBuffers[0]);
+            glDeleteTextures(1, &m_data.ColorBuffers[1]);
             glDeleteTextures(1, &m_data.depthBufferID);
 
             //engine->GraphicsManager.mRenderContext._Framebuffers.erase(FrameBufferType);

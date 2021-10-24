@@ -8,6 +8,7 @@
 #include "Editor/Windows/SwitchViews/RightSwitchViewWindow.h"
 #include "Editor/Windows/GameView/GameView.h"
 #include "Editor/Windows/Scene/SceneView.h"
+#include "Editor/Windows/MeshEditor/MeshEditor.h"
 
 #include "ECS/SystemManager/Systems/System/MaterialSystem/MaterialSystem.h"
 
@@ -15,10 +16,10 @@ namespace Eclipse
 {
     void RenderSystem::Init()
     {
-        engine->gPBRManager = std::make_unique<PBRManager>();
-
         // Register Threads
         engine->GraphicsManager.RegisterThreads();
+
+        engine->gPBRManager = std::make_unique<PBRManager>();
 
         // Compilers ===========================
         engine->gEngineCompiler = std::make_unique<EngineCompiler>();
@@ -183,6 +184,13 @@ namespace Eclipse
                             engine->MaterialManager.DoNotUpdateStencil();
                             engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_RIGHT, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_RIGHT),
                                 &box, CameraComponent::CameraType::RightView_camera);
+                        }
+
+                        // MESH EDITOR // FIKRUL HERE
+                        if (engine->editorManager->GetEditorWindow<MeshEditorWindow>()->IsVisible)
+                        {
+                            engine->MaterialManager.DoNotUpdateStencil();
+                            engine->AssimpManager.MeshEditorDraw(engine->world, Mesh, entityID, FrameBufferMode::FBM_MESHEDITOR, CameraComponent::CameraType::MeshEditor_Camera);
                         }
 
                         engine->MaterialManager.Highlight3DModels(entityID, FrameBufferMode::FBM_SCENE);

@@ -10,16 +10,62 @@
 namespace Eclipse
 {
 	const std::string PrefabManager::PrefabPath = "src\\Assets\\Prefabs\\";
-	long long unsigned int PrefabManager::CountID = 0;
+
+	bool PrefabManager::CheckPrefabExistence(const EUUID& prefabID)
+	{
+		return !(PrefabIDSet.find(prefabID) == PrefabIDSet.end());
+	}
+
+	void PrefabManager::InsertPrefab(const Entity& ent, const char* path, const EUUID& prefabID)
+	{
+		mapPathToID[path] = prefabID;
+		PrefabIDSet.insert(prefabID);
+		mapPIDToEID[prefabID] = ent;
+	}
+
+	void PrefabManager::SavePrefabChanges(const Entity& updatedPrefabEnt)
+	{
+		auto& prefabW = engine->prefabWorld;
+		auto& w = engine->world;
+		auto& prefabComp = prefabW.GetComponent<PrefabComponent>(updatedPrefabEnt);
+		const std::string& path = GetPath(prefabComp.PrefabID);
+
+		//Load old prefab
+		Entity oldPrefabEnt;
+		engine->szManager.LoadPrefabFile(oldPrefabEnt, path.c_str());
+
+		std::vector<Entity> changingEntities;
+
+		//Update instances
+		for (auto entity : changingEntities)
+		{
+			CopyToInstance(oldPrefabEnt, prefabW, updatedPrefabEnt, entity);
+
+			CleanUpForInstancesAfterCopy(entity);
+		}
+
+		//Update prefab
+		std::string prefabPath = GetPath(prefabComp.PrefabID);
+
+		if (std::filesystem::exists(prefabPath))
+		{
+			OverwritePrefab(updatedPrefabEnt, prefabPath.c_str());
+		}
+
+		//Destroy
+		prefabW.DestroyEntity(oldPrefabEnt);
+	}
+
+	void PrefabManager::UpdatePrefabSignature(World& sourceW, const Entity& ent, const size_t& setBit, bool setTo)
+	{
+		auto& prefabComp = sourceW.GetComponent<PrefabComponent>(ent);
+
+		prefabComp.CompChanges.set(setBit, setTo);
+	}
 
 	PrefabManager::PrefabManager()
 	{
 		std::filesystem::create_directories(PrefabPath);
-	}
-
-	long long unsigned int PrefabManager::GetUniqueIdentifier(PrefabComponent& prefab)
-	{
-		return reinterpret_cast<long long unsigned int>(&prefab) + CountID++;
 	}
 
 	void PrefabManager::LoadAllPrefab()
@@ -35,18 +81,51 @@ namespace Eclipse
 		}
 	}
 
+	void PrefabManager::PostUpdate()
+	{
+		auto& w = engine->world;
+		auto& prefabW = engine->prefabWorld;
+		std::vector<Entity> instances = GetInstanceList();
+
+		for (auto& ent : instances)
+		{
+			auto& prefab = w.GetComponent<PrefabComponent>(ent);
+			auto& prefabOwner = mapPIDToEID[prefab.PrefabID];
+
+			SignatureBaseCopy(prefabW, w, prefabOwner, ent);
+
+			CleanUpForInstancesAfterCopy(ent);
+		}
+	}
+
+	void PrefabManager::EndUpdate()
+	{
+		auto& w = engine->world;
+		auto& prefabW = engine->prefabWorld;
+		std::vector<Entity> instances = GetInstanceList();
+
+		for (auto& ent : instances)
+		{
+			auto& prefab = w.GetComponent<PrefabComponent>(ent);
+			auto& prefabOwner = mapPIDToEID[prefab.PrefabID];
+
+			CopyToPrefabInstances(prefabOwner, prefabW, prefabOwner, ent, list, true);
+			//SignatureBaseCopy(prefabW, w, prefabOwner, ent);
+
+			CleanUpForInstancesAfterCopy(ent);
+		}
+	}
+
 	void PrefabManager::LoadPrefab(const char* path)
 	{
 		Entity ent = MAX_ENTITY;
-		long long unsigned int PrefabID = engine->szManager.LoadPrefabFile(ent, path);
+		EUUID PrefabID = engine->szManager.LoadPrefabFile(ent, path);
 
 		if (PrefabID != 0)
 		{
-			if (PrefabIDSet.find(PrefabID) == PrefabIDSet.end())
+			if (!CheckPrefabExistence(PrefabID))
 			{
-				mapPathToID[path] = PrefabID;
-				PrefabIDSet.insert(PrefabID);
-				mapPIDToEID[PrefabID] = ent;
+				InsertPrefab(ent, path, PrefabID);
 			}
 			else
 			{
@@ -88,10 +167,13 @@ namespace Eclipse
 		//Declaration
 		World& prefabW = engine->prefabWorld;
 		World& w = engine->world;
+
+		//Copy Queue for child.
 		std::queue<Entity> copyQueue;
 		std::vector<Entity> contents;
 		PrefabComponent comp;
-		long long unsigned int generatedID = GetUniqueIdentifier(comp);
+		EUUID generatedID = UUIDGenerator::GenerateUUID();
+		comp.PrefabID = generatedID;
 
 		if (!w.CheckComponent<PrefabComponent>(ent))
 		{
@@ -101,8 +183,7 @@ namespace Eclipse
 		else
 		{
 			auto& existing = w.GetComponent<PrefabComponent>(ent);
-			existing.IsChild = false;
-			existing.PrefabID = GetUniqueIdentifier(existing);
+			existing = comp;
 		}
 
 		//Push the first entity
@@ -126,7 +207,7 @@ namespace Eclipse
 		}
 
 		auto& prefabComp = w.GetComponent<PrefabComponent>(ent);
-		prefabComp.IsChild = true;
+		prefabComp.IsInstance = true;
 
 		auto& entComp = prefabW.GetComponent<EntityComponent>(contents[0]);
 		entComp.IsActive = false;
@@ -138,9 +219,8 @@ namespace Eclipse
 		}
 
 		std::string destPath = GenerateFileName(entComp, path);
-		mapPathToID[destPath] =  generatedID;
-		PrefabIDSet.insert(generatedID);
-		mapPIDToEID[generatedID] = contents[0];
+		InsertPrefab(contents[0], destPath.c_str(), generatedID);
+		
 
 		engine->szManager.SavePrefabFile(prefabComp.PrefabID, contents, destPath.c_str());
 	}
@@ -170,7 +250,7 @@ namespace Eclipse
 		return newEnt;
 	}
 
-	void PrefabManager::RegisterForNewInstance(Entity ent)
+	void PrefabManager::RegisterForNewInstance(const Entity& ent)
 	{
 		World& w = engine->world;
 		TransformComponent defaultComp;
@@ -178,8 +258,7 @@ namespace Eclipse
 		transformComp.position = defaultComp.position;
 
 		auto& prefabComp = w.GetComponent<PrefabComponent>(ent);
-		prefabComp.IsChild = true;
-
+		prefabComp.IsInstance = true;
 
 		engine->editorManager->RegisterExistingEntity(ent);
 
@@ -198,7 +277,23 @@ namespace Eclipse
 		}
 	}
 
-	void PrefabManager::Equalize(World& sourceWorld, World& targetWorld, Entity sourceEnt, Entity targetEnt)
+	void PrefabManager::CleanUpForInstancesAfterCopy(const Entity& ent)
+	{
+		auto& w = engine->world;
+		auto& entComp = w.GetComponent<EntityComponent>(ent);
+		entComp.IsActive = false;
+
+		if (w.CheckComponent<MaterialComponent>(ent))
+		{
+			auto& matComp = w.GetComponent<MaterialComponent>(ent);
+			matComp.Highlight = false;
+		}
+
+		engine->gPicker.UpdateAabb(ent);
+		engine->gDynamicAABBTree.UpdateData(ent);
+	}
+
+	void PrefabManager::SignatureBaseCopy(World& sourceWorld, World& targetWorld, const Entity& sourceEnt, const Entity& targetEnt)
 	{
 		auto& sourceTrans = sourceWorld.GetComponent<TransformComponent>(sourceEnt);
 		auto& targetTrans = targetWorld.GetComponent<TransformComponent>(targetEnt);
@@ -206,31 +301,63 @@ namespace Eclipse
 		targetTrans.rotation = sourceTrans.rotation;
 		targetTrans.scale = sourceTrans.scale;
 
-		EqualizeEntity(sourceWorld, targetWorld, sourceEnt, targetEnt, list);
+		SignatureBaseCopying(sourceWorld, targetWorld, sourceEnt, targetEnt, list);
+	}
+
+	void PrefabManager::CopyToInstance(const Entity& comparingPrefabEnt, World& copySourceWorld, const Entity& copyingSourceEnt, const Entity& instancesEnt)
+	{
+		CopyToPrefabInstances(comparingPrefabEnt, copySourceWorld, copyingSourceEnt, instancesEnt, list);
+	}
+
+	std::vector<Entity> PrefabManager::GetInstanceList(const EUUID& prefabID)
+	{
+		std::vector<Entity> changingEntities;
+		auto& w = engine->world;
+		auto& set = w.GetSystem<PrefabSystem>()->mEntities;
+
+		if (prefabID == 0)
+		{
+			std::copy(set.begin(), set.end(), std::back_inserter(changingEntities));
+
+			/*std::copy_if(set.begin(), set.end(), std::back_inserter(changingEntities), [&w](const Entity& ent) {
+				auto& comp = w.GetComponent<PrefabComponent>(ent);
+				return !comp.IsChild;
+				});*/
+			return changingEntities;
+		}
+
+		for (auto entity : w.GetSystem<PrefabSystem>()->mEntities)
+		{
+			auto& prefabComp = w.GetComponent<PrefabComponent>(entity);
+			if (prefabID == prefabComp.PrefabID)
+			{
+				changingEntities.push_back(entity);
+			}
+		}
+		return changingEntities;
 	}
 
 	void PrefabManager::ApplyChangesToAll(Entity ent)
 	{
 		World& prefabW = engine->prefabWorld;
 		World& w = engine->world;
-
+		Entity prefabOwner = MAX_ENTITY;
 		std::vector<Entity> changingEntities;
 
 		auto& samplePrefabComp = w.GetComponent<PrefabComponent>(ent);
+		samplePrefabComp.CompChanges &= 0;
+
 		if (PrefabIDSet.find(samplePrefabComp.PrefabID) != PrefabIDSet.end())
 		{
-			Entity prefabOwner = mapPIDToEID[samplePrefabComp.PrefabID];
-
-			Equalize(w, prefabW, ent, prefabOwner);
-
-			for (auto entity : w.GetSystem<PrefabSystem>()->mEntities)
-			{
-				auto& prefabComp = w.GetComponent<PrefabComponent>(entity);
-				if (samplePrefabComp.PrefabID == prefabComp.PrefabID)
-				{
-					changingEntities.push_back(entity);
-				}
-			}
+			prefabOwner = mapPIDToEID[samplePrefabComp.PrefabID];
+			
+			changingEntities = GetInstanceList(samplePrefabComp.PrefabID);
+		}
+		//break straigtaway if no prefab found.
+		//which is unlikely to happen in future
+		if (prefabOwner == MAX_ENTITY)
+		{
+			return;
 		}
 
 		for (auto entity : changingEntities)
@@ -240,20 +367,11 @@ namespace Eclipse
 				continue;
 			}
 
-			Equalize(w, w, ent, entity);
+			CopyToInstance(prefabOwner, w, ent, entity);
 
-			auto& entComp = w.GetComponent<EntityComponent>(entity);
-			entComp.IsActive = false;
-
-			if (w.CheckComponent<MaterialComponent>(entity))
-			{
-				auto& matComp = w.GetComponent<MaterialComponent>(entity);
-				matComp.Highlight = false;
-			}
-
-			engine->gPicker.UpdateAabb(ent);
-			engine->gDynamicAABBTree.UpdateData(ent);
+			CleanUpForInstancesAfterCopy(entity);
 		}
+		SignatureBaseCopy(w, prefabW, ent, prefabOwner);
 	}
 
 	void PrefabManager::OverwritePrefab(const Entity& ent, const char* path)
@@ -286,7 +404,7 @@ namespace Eclipse
 		engine->szManager.SavePrefabFile(prefabComp.PrefabID, contents, path);
 	}
 
-	std::string PrefabManager::GetPath(long long unsigned int id)
+	std::string PrefabManager::GetPath(const EUUID& id)
 	{
 		std::string path;
 		for (auto it = mapPathToID.begin(); it != mapPathToID.end(); ++it)
@@ -303,9 +421,15 @@ namespace Eclipse
 	void PrefabManager::UnloadSaving()
 	{
 		auto& entities = engine->prefabWorld.GetSystem<PrefabSystem>()->mEntities;
+
 		for(auto ent : entities)
 		{
 			auto& prefabComp = engine->prefabWorld.GetComponent<PrefabComponent>(ent);
+			if (prefabComp.IsInstance || prefabComp.IsChild)
+			{
+				continue;
+			}
+
 			std::string path = GetPath(prefabComp.PrefabID);
 			if(std::filesystem::exists(path))
 			{

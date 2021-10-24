@@ -16,6 +16,7 @@ namespace Eclipse
         void UnBind(FrameBufferMode mode);
         unsigned int GetFrameBufferID(FrameBufferMode mode);
         unsigned int GetTextureID(FrameBufferMode mode);
+        unsigned int GetSecondTextureID(FrameBufferMode mode);
         RenderMode GetRenderMode(FrameBufferMode mode);
         bool CheckFrameBuffer(unsigned int ID, FrameBufferMode mode);
         void GlobalBind();

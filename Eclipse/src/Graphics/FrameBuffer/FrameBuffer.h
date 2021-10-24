@@ -31,7 +31,8 @@ namespace Eclipse
         {
             unsigned int frameBufferID = 0;
             unsigned int depthBufferID = 0;
-            unsigned int TextureColourBuffer = 0;
+            //unsigned int TextureColourBuffer = 0;
+            unsigned int ColorBuffers[2];
             FrameBufferMode hiddentype = FrameBufferMode::FBM_NONE;
         };
 
