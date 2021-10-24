@@ -10,6 +10,8 @@
 
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 
+#include "../Components/s_RigidBodyComponent.h"
+
 
 namespace Eclipse
 {
@@ -77,6 +79,11 @@ namespace Eclipse
 		engine->gPhysics.SetForce(ent, { x, y, z });
 	}
 
+	static MonoObject* GetComponentFromEngine(Entity ent, RigidBodyComponent rigid)
+	{
+		
+	}
+
 	void MonoManager::Init()
 	{
 		ENGINE_CORE_INFO("Mono: Initialising");
@@ -90,12 +97,13 @@ namespace Eclipse
 
 		ENGINE_LOG_ASSERT(domain, "Domain could not be created");
 
-		mono_add_internal_call("Eclipse.PhysicsObject::AddForce", SetForce);
+		mono_add_internal_call("Eclipse.PhysicsObject::Add_Force", SetForce);
+		mono_add_internal_call("Eclipse.GameObject::GetRigidComponent", GetRigidComponent);
 	}
 
 	void MonoManager::Update(MonoScript* obj)
 	{
-		MonoClass* klass = mono_class_from_name(engine->mono.GetScriptImage(), "", obj->scriptName.c_str());
+		MonoClass* klass = mono_class_from_name(ScriptImage, "", obj->scriptName.c_str());
 
 		if (klass == nullptr) {
 			std::cout << "Failed loading class, MonoVec3" << std::endl;
@@ -146,7 +154,20 @@ namespace Eclipse
 
 	MonoObject* MonoManager::CreateMonoObject(std::string scriptName, Entity entity)
 	{
-		MonoClass* base = mono_class_from_name(APIImage, "Eclipse", scriptName.c_str());
+		MonoClass* script = mono_class_from_name(ScriptImage, "", scriptName.c_str());
+		if (!script)
+		{
+			std::cout << "Failed loading class" << std::endl;
+			return nullptr;
+		}
+
+		MonoObject* obj = mono_object_new(mono_domain_get(), script);
+		if (obj == nullptr) {
+			std::cout << "Failed loading class instance " << mono_class_get_name(script) << std::endl;
+			return nullptr;
+		}
+
+		MonoClass* base = mono_class_from_name(APIImage, "Eclipse", "EclipseBehavior");
 		if (!base)
 		{
 			std::cout << "Failed loading class" << std::endl;
@@ -159,13 +180,7 @@ namespace Eclipse
 			return nullptr;
 		}
 
-		MonoObject* obj = mono_object_new(mono_domain_get(), base);
-		if (obj == nullptr) {
-			std::cout << "Failed loading class instance " << mono_class_get_name(base) << std::endl;
-			return nullptr;
-		}
-
-		mono_runtime_object_init(obj);
+		//mono_runtime_object_init(obj);
 
 		void* args[2];
 		uint32_t handle = mono_gchandle_new(obj, true);
@@ -175,6 +190,52 @@ namespace Eclipse
 		mono_runtime_invoke(method, obj, args, NULL);
 
 		return obj;
+	}
+
+	MonoClass* MonoManager::GetMonoClass(std::string className)
+	{
+		MonoClass* klass = mono_class_from_name(APIImage, "", className.c_str());
+		if (!klass)
+		{
+			std::cout << "Failed loading class: " << className << std::endl;
+			return nullptr;
+		}
+
+		return klass;
+	}
+
+	MonoObject* MonoManager::CreateObjectFromClass(MonoClass* klass)
+	{
+		if (!klass) return nullptr;
+
+		MonoObject* obj = mono_object_new(mono_domain_get(), klass);
+		if (obj == nullptr) {
+			std::cout << "Failed loading class instance " << mono_class_get_name(klass) << std::endl;
+			return nullptr;
+		}
+
+		mono_runtime_object_init(obj);
+
+		return obj;
+	}
+
+	MonoMethod* MonoManager::GetMethodFromClass(MonoClass* klass, std::string funcName)
+	{
+		MonoMethod* method = mono_class_get_method_from_name(klass, "funcName", -1);
+		if (method == nullptr) {
+			std::cout << "Failed loading class method" << std::endl;
+			return nullptr;
+		}
+
+		return method;
+	}
+
+	bool MonoManager::ExecuteMethod(MonoObject* obj, MonoMethod* method, std::vector<void*> args)
+	{
+		if (!obj && !method) return false;
+		mono_runtime_invoke(method, obj, args.data(), NULL);
+
+		return true;
 	}
 
 	MonoDomain* MonoManager::LoadDomain()
@@ -240,15 +301,12 @@ namespace Eclipse
 
 		MonoImageOpenStatus status;
 		image = nullptr;
-		//image = mono_image_open_from_data_with_name(&str.front(), str.length(), true /* copy data */, &status, false /* ref only */, filename);
 		image = mono_image_open_from_data_with_name(arr, len, true /* copy data */, &status, false /* ref only */, filename);
 		bool result = true;
 		if (image)
 			assembly = mono_assembly_load_from_full(image, filename, &status, false);
 		else
-		{
 			result = false;
-		}
 
 		delete[] arr;
 		return result;
@@ -269,7 +327,7 @@ namespace Eclipse
 		std::cout << "#####################################" << std::endl;
 		std::cout << mono_image_get_name(_image) << std::endl;
 		std::cout << "#####################################" << std::endl;
-		std::list<MonoClass*> objs = GetAssemblyClassList(_image);
+		/*std::list<MonoClass*> objs = GetAssemblyClassList(_image);
 
 		int index = 0;
 		for (auto it = objs.begin(); it != objs.end(); it++)
@@ -279,12 +337,37 @@ namespace Eclipse
 			MonoMethod* method = nullptr;
 			while (method == mono_class_get_methods(*it, &iter))
 			{
+				if (!method) continue;
 				std::cout << mono_method_get_name(method) << std::endl;
 				std::cout << mono_method_full_name(method, 1) << std::endl;
 			}
 			index++;
 			std::cout << std::endl;
+		}*/
+
+		const MonoTableInfo* table_info = mono_image_get_table_info(_image, MONO_TABLE_TYPEDEF);
+
+		int rows = mono_table_info_get_rows(table_info);
+
+		/* For each row, get some of its values */
+		for (int i = 0; i < rows; i++)
+		{
+			MonoClass* _class = nullptr;
+			uint32_t cols[MONO_TYPEDEF_SIZE];
+			mono_metadata_decode_row(table_info, i, cols, MONO_TYPEDEF_SIZE);
+			const char* name = mono_metadata_string_heap(_image, cols[MONO_TYPEDEF_NAME]);
+			const char* name_space = mono_metadata_string_heap(_image, cols[MONO_TYPEDEF_NAMESPACE]);
+			_class = mono_class_from_name(_image, name_space, name);
+
+			void* iter = NULL;
+			MonoMethod* method;
+			while (method = mono_class_get_methods(_class, &iter))
+			{
+				std::cout << mono_method_full_name(method, 1) << std::endl;
+			}
 		}
+
+		
 	}
 
 	void MonoManager::DumpInfoFromClass(MonoClass* _class)
@@ -294,12 +377,19 @@ namespace Eclipse
 		std::cout << "#####################################" << std::endl;
 
 		void* iter = NULL;
-		MonoMethod* method = nullptr;
-		while (method == mono_class_get_methods(_class, &iter))
+		MonoMethod* method;
+		while (method = mono_class_get_methods(_class, &iter))
 		{
-			std::cout << mono_method_get_name(method) << std::endl;
 			std::cout << mono_method_full_name(method, 1) << std::endl;
 		}
+
+		//void* iter = NULL;
+		//MonoMethod* method = nullptr;
+		//while (method == mono_class_get_methods(_class, &iter))
+		//{
+		//	std::cout << mono_method_get_name(method) << std::endl;
+		//	std::cout << mono_method_full_name(method, 1) << std::endl;
+		//}
 
 		std::cout << std::endl;
 	}

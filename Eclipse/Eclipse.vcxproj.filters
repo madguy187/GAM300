@@ -811,6 +811,7 @@
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\EntityDeleteDeltaCommand.h" />
     <ClInclude Include="src\Library\Random\Random.h" />
     <ClInclude Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.h" />
+    <ClInclude Include="src\Mono\Components\s_RigidBodyComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1208,6 +1209,6 @@
     <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.frag" />
     <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.vert" />
     <ClCompile Include="src\Library\Random\Random.cpp" />
-    <None Include="src\Mono\ScriptAPI\Physics.cs" />
+    <None Include="src\Mono\ScriptAPI\EclipseBehavior.cs" />
   </ItemGroup>
 </Project>

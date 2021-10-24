@@ -5,6 +5,8 @@ using Eclipse;
 
 public class Test : EclipseBehavior
 {
+    private RigidBodyComponent rigid;
+
     static public void Type()
     {
         Console.WriteLine("a Dog!");
@@ -22,5 +24,7 @@ public class Test : EclipseBehavior
     public void Update()
     {
         Console.WriteLine("C# Update");
+        //rigid = GetComponent<RigidBodyComponent>();
+        GetRigidComponent();
     }
 }
