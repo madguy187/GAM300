@@ -12,7 +12,7 @@ namespace Eclipse
 
     void MaterialEditorSettings::CreateMaterialInstance()
     {
-        engine->gPBRManager->AllMaterialInstances.emplace(CurrentMaterial.MeshName.data(), std::make_unique<MaterialInstance>(CurrentMaterial));
+        engine->gPBRManager->AllMaterialInstances.emplace(CurrentMaterial.Name.data(), std::make_unique<MaterialInstance>(CurrentMaterial));
         gMaterialCompiler.SerializeMaterials(CurrentMaterial);
     }
 
@@ -60,7 +60,6 @@ namespace Eclipse
 
     void MaterialEditorSettings::UpdateCurrentMaterial(Shader& shdrpgm, CameraComponent& _camera)
     {
-
         GLuint MetallicConstant = shdrpgm.GetLocation("MetallicConstant");
         GLuint RoughnessConstant = shdrpgm.GetLocation("RoughnessConstant");
         GLint uModelToNDC_ = shdrpgm.GetLocation("uModelToNDC");
@@ -80,17 +79,37 @@ namespace Eclipse
         model = glm::rotate(model, glm::radians(Rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::scale(model, { 5,5,5 });
 
-        GLCall(glUniform1i(HasInstance, CurrentMaterial.HasTexture));
-        GLCall(glUniform3f(AlbedoConstant, CurrentMaterial.AlbedoConstant.getX(), CurrentMaterial.AlbedoConstant.getY(), CurrentMaterial.AlbedoConstant.getZ()));
-        GLCall(glUniform1f(AoConstant, CurrentMaterial.AoConstant));
-        GLCall(glUniform1f(MetallicConstant, CurrentMaterial.MetallicConstant));
-        GLCall(glUniform1f(RoughnessConstant, CurrentMaterial.RoughnessConstant));
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv(projection1, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
         glUniformMatrix4fv(view1, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
-        GLCall(glUniform3f(BaseReflectivity, CurrentMaterial.BaseReflectivity.getX(), CurrentMaterial.BaseReflectivity.getY(), CurrentMaterial.BaseReflectivity.getZ())); \
 
+        if (SelectedIndex == 0)
+        {
+            GLCall(glUniform1i(HasInstance, CurrentMaterial.HasTexture));
+            GLCall(glUniform3f(AlbedoConstant, CurrentMaterial.AlbedoConstant.getX(), CurrentMaterial.AlbedoConstant.getY(), CurrentMaterial.AlbedoConstant.getZ()));
+            GLCall(glUniform1f(AoConstant, CurrentMaterial.AoConstant));
+            GLCall(glUniform1f(MetallicConstant, CurrentMaterial.MetallicConstant));
+            GLCall(glUniform1f(RoughnessConstant, CurrentMaterial.RoughnessConstant));
+            GLCall(glUniform3f(BaseReflectivity, CurrentMaterial.BaseReflectivity.getX(), CurrentMaterial.BaseReflectivity.getY(), CurrentMaterial.BaseReflectivity.getZ()));
             BindMaterial(shdrpgm);
+        }
+        else
+        {
+            CurrentSelectedMaterial = engine->gPBRManager->AllMaterialInstances[engine->gPBRManager->AllMaterialInstName[SelectedIndex]]->Name.data();
+
+            GLCall(glUniform1i(HasInstance, engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->HasTexture));
+            GLCall(glUniform3f(AlbedoConstant, 
+                engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->AlbedoConstant.getX(), 
+                engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->AlbedoConstant.getY(), 
+                engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->AlbedoConstant.getZ()));
+            GLCall(glUniform1f(AoConstant, engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->AoConstant));
+            GLCall(glUniform1f(MetallicConstant, engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->MetallicConstant));
+            GLCall(glUniform1f(RoughnessConstant, engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->RoughnessConstant));
+            GLCall(glUniform3f(BaseReflectivity, 
+                engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->BaseReflectivity.getX(), 
+                engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->BaseReflectivity.getY(), 
+                engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->BaseReflectivity.getZ()));
+        }
     }
 
     void MaterialEditorSettings::UpdateLights(Shader& MaterialEditorShader)

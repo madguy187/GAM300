@@ -225,7 +225,7 @@ namespace Eclipse
         NewMaterial.Metallic = loadTexture(("src/Assets/Materials/" + NameOfMaterial + "/metallic.png").c_str());
         NewMaterial.Roughness = loadTexture(("src/Assets/Materials/" + NameOfMaterial + "/roughness.png").c_str());
         NewMaterial.Ao = loadTexture(("src/Assets/Materials/" + NameOfMaterial + "/ao.png").c_str());
-        AllMaterialInstances.insert({ NewMaterial.MeshName.data(), std::make_unique<MaterialInstance>(NewMaterial) });
+        AllMaterialInstances.insert({ NewMaterial.Name.data(), std::make_unique<MaterialInstance>(NewMaterial) });
     }
 
     void PBRManager::BindMaterial(std::string MaterialName, Shader& In)

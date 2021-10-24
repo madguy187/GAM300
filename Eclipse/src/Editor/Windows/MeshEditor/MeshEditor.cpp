@@ -88,11 +88,12 @@ namespace Eclipse
         static size_t comboindex = 0;
         ECGui::DrawTextWidget<const char*>("Current Materials:", EMPTY_STRING);
         ECGui::CreateComboList(settingsss, MaterialNames, comboindex);
+        engine->gPBRManager->gMaterialEditorSettings->SelectedIndex = comboindex;
         ECGui::NextColumn();
         ImGui::Dummy(ImVec2(1, 5));
 
         ECGui::DrawTextWidget<const char*>("Material Name:", EMPTY_STRING);
-        ECGui::DrawInputTextHintWidget(my_strcat("Material Name", 1).c_str(), "Material Name", const_cast<char*>(engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.MeshName.data()), 256, true, ImGuiInputTextFlags_None);
+        ECGui::DrawInputTextHintWidget(my_strcat("Material Name", 1).c_str(), "Material Name", const_cast<char*>(engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.Name.data()), 256, true, ImGuiInputTextFlags_None);
         ECGui::NextColumn();
         ImGui::Dummy(ImVec2(1, 5));
 

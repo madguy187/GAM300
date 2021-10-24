@@ -5,12 +5,12 @@ namespace Eclipse
 {
     void MaterialCompiler::SerializeMaterials(MaterialInstance& materialref)
     {
-        std::string NameOfMaterial = materialref.MeshName.data();
+        std::string NameOfMaterial = materialref.Name.data();
         OpenFile(MaterialFileWrite, "src/Assets/MaterialInstances/" + NameOfMaterial + ".mat");
 
         MaterialInstance A = materialref;
         MaterialFileWrite.write(reinterpret_cast<const char*>(&A), offsetof(MaterialInstance, Stopper));
-        
+
         CloseFile(MaterialFileWrite, NameOfMaterial);
     }
 
@@ -18,6 +18,8 @@ namespace Eclipse
     {
         engine->gPBRManager->ClearAllMaterialInstances();
         engine->gPBRManager->ClearAllMaterialInstNames();
+
+        engine->gPBRManager->AllMaterialInstName.push_back(engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.Name.data());
 
         for (auto& dirEntry : std::filesystem::directory_iterator("src//Assets//MaterialInstances"))
         {
@@ -38,8 +40,8 @@ namespace Eclipse
         OpenFile(MaterialFileRead, "src/Assets/MaterialInstances/" + NameOfMaterial);
         MaterialInstance B;
         MaterialFileRead.read(reinterpret_cast<char*>(&B), offsetof(MaterialInstance, Stopper));
-        engine->gPBRManager->AllMaterialInstances.emplace(B.MeshName.data(), std::make_unique<MaterialInstance>(B));
-        engine->gPBRManager->AllMaterialInstName.push_back(B.MeshName.data());
+        engine->gPBRManager->AllMaterialInstances.emplace(B.Name.data(), std::make_unique<MaterialInstance>(B));
+        engine->gPBRManager->AllMaterialInstName.push_back(B.Name.data());
         CloseFile(MaterialFileRead, NameOfMaterial);
     }
 

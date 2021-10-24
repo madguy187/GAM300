@@ -5,7 +5,7 @@ namespace Eclipse
     class MaterialInstance
     {
     public:
-        std::array<char, 128> MeshName;
+        std::array<char, 128> Name;
         bool HasTexture = false;
         ECVec3 BaseReflectivity = { 0.4f,0.4f,0.4f };
 

@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "AssimpManager.h"
 
+#include "ECS/ComponentManager/Components/ParentComponent.h"
+#include "ECS/ComponentManager/Components/ChildComponent.h"
+
 namespace Eclipse
 {
     typedef std::multimap<std::string, Texture>::iterator MMAPIterator;
@@ -64,13 +67,26 @@ namespace Eclipse
 
                 // Is a prefab since its a parent
                 std::string NameOfFolder = ModelName;
+                Entity ParentID = 0;
                 Entity MeshID = 0;
+                ParentID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
+                engine->world.AddComponent(ParentID, ParentComponent{});
 
                 for (int i = 0; i < Prefabs[NameOfFolder].size(); i++)
                 {
                     auto& name = Prefabs[NameOfFolder][i];
                     MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_MODEL);
+                    EntityComponent* test = &engine->world.GetComponent<EntityComponent>(ParentID);
+                    EntityComponent* Child = &engine->world.GetComponent<EntityComponent>(MeshID);
 
+                    engine->world.AddComponent(MeshID, ChildComponent{});
+
+                    test->Child.push_back(MeshID);
+                    Child->IsAChild = true;
+                    Child->Parent.push_back(ParentID);
+
+                    engine->world.GetComponent<ParentComponent>(ParentID).child.push_back(MeshID);
+                    engine->world.GetComponent<ChildComponent>(MeshID).parentIndex = ParentID;
                     engine->world.AddComponent(MeshID, MeshComponent{});
                     engine->world.AddComponent(MeshID, ModelComponent{});
                     engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
@@ -83,6 +99,7 @@ namespace Eclipse
 
         return MAX_ENTITY;
     }
+
 
     void AssimpModelManager::RegisterExistingModel(Entity ID, const std::string& ModelName)
     {

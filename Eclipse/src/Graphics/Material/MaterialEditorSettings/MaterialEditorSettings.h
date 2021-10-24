@@ -35,6 +35,9 @@ namespace Eclipse
         std::string AoTexture;
         std::string MaterialName;
 
+        unsigned int SelectedIndex = 0;
+        std::string CurrentSelectedMaterial;
+
         MaterialEditorSettings();
         void BindMaterial(Shader& In);
         void RenderSphere();
