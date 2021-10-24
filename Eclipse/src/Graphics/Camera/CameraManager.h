@@ -46,6 +46,8 @@ namespace Eclipse
           11: Move Down								: button G
         *************************************************************************/
         std::bitset<12> input;
+        //Mesh editor camera has same controls as editor camera
+        std::bitset<12> meshInput;
 
         /*************************************************************************
           View Cameras bitset layout
@@ -69,6 +71,13 @@ namespace Eclipse
           7: "Zoom Out" (FOV)						: button F
         *************************************************************************/
         std::bitset<8> viewInput;
+
+        /*************************************************************************
+          Material Camera bitset layout
+          0: "Zoom In" (FOV)						: button Z
+          1: "Zoom Out" (FOV)						: button X
+        *************************************************************************/
+        std::bitset<2> materialInput;
 
         std::map<CameraComponent::CameraType, unsigned int> cameraList;
 
@@ -96,10 +105,14 @@ namespace Eclipse
         void ComputeViewMtx(CameraComponent& _camera, TransformComponent& _transform);
         void ComputePerspectiveMtx(CameraComponent& _camera);
         void UpdateEditorCamera(TransformComponent& _transform);
+        void UpdateMeshCamera(TransformComponent& _transform);
 
         void CheckCameraInput();
+        void CheckMeshCameraInput();
         void CheckViewCameraInput();
+        void CheckMaterialCameraInput();
         void UpdateViewCamera(CameraComponent& _camera, TransformComponent& _transform);
+        void UpdateMaterialCamera(TransformComponent& _transform);
 
         void SetCameraSpeed(float newSpeed);
         void SetNearPlane(CameraComponent& _camera, float _nearPlane);
@@ -107,6 +120,8 @@ namespace Eclipse
 
         std::bitset<12>& GetInput();
         std::bitset<8>& GetViewInput();
+        std::bitset<12>& GetMeshInput();
+        std::bitset<2>& GetMaterialInput();
 
         void ResetScene();
         void ReInitCameraList(CameraComponent::CameraType _camType, unsigned int ID);
