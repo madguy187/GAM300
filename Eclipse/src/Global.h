@@ -17,6 +17,7 @@ static constexpr unsigned MAX_PAGE_SIZE = 10;
 
 static const char* SCENE_EXTENSION = ".scn";
 static const char* TEMP_PATH = "Data\\Temp\\";
+using EUUID = std::uint64_t;
 
 enum class EditorWindowType
 {
