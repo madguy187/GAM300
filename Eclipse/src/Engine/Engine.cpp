@@ -337,6 +337,8 @@ namespace Eclipse
             // Final DRAW ================================ 
             engine->GraphicsManager.FinalRender();
 
+            engine->gPBRManager->last();
+
             if (IsScenePlaying())
             {
                 world.Update<MonoSystem>();

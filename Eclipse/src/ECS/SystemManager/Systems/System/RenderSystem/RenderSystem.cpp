@@ -66,6 +66,8 @@ namespace Eclipse
             engine->MaterialManager.DoNotUpdateStencil();
             engine->GraphicsManager.RenderSky(FrameBufferMode::FBM_SCENE);
 
+            engine->gPBRManager->BloomScene();
+
             // Basic Primitives Render Start =============================
             for (auto const& entityID : mEntities)
             {
@@ -185,7 +187,7 @@ namespace Eclipse
                                 &box, CameraComponent::CameraType::RightView_camera);
                         }
 
-                        engine->MaterialManager.Highlight3DModels(entityID, FrameBufferMode::FBM_SCENE);
+                        //engine->MaterialManager.Highlight3DModels(entityID, FrameBufferMode::FBM_SCENE);
                     }
                 }
             }

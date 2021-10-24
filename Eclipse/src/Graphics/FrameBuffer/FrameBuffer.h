@@ -85,6 +85,10 @@ namespace Eclipse
         unsigned int rectVBO = 0;
         void CreatePostProcessFramebuffer();
         void UpdatePP();
+
+        unsigned int pingpongFBO[2];
+        unsigned int pingpongColorbuffers[2];
+        void CreatePingPong();
     };
 }
 #endif//FRAMEBUFFER_H

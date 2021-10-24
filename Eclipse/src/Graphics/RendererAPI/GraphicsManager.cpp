@@ -36,6 +36,9 @@ namespace Eclipse
 
         PostProcess = std::make_unique<FrameBuffer>();
         PostProcess->CreatePostProcessFramebuffer();
+
+        Pong = std::make_unique<FrameBuffer>();
+        Pong->CreatePingPong();
     }
 
     void Eclipse::GraphicsManager::Post_Render()

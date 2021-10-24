@@ -121,7 +121,7 @@ namespace Eclipse
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, p_width, p_height, 0, GL_RGBA, GL_FLOAT, NULL);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+            //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, m_data.ColorBuffers[i], 0);
@@ -206,6 +206,26 @@ namespace Eclipse
             glDrawArrays(GL_TRIANGLES, 0, 6);
 
             shdrpgm.UnUse();
+        }
+    }
+
+    void FrameBuffer::CreatePingPong()
+    {
+        glGenFramebuffers(2, pingpongFBO);
+        glGenTextures(2, pingpongColorbuffers);
+        for (unsigned int i = 0; i < 2; i++)
+        {
+            glBindFramebuffer(GL_FRAMEBUFFER, pingpongFBO[i]);
+            glBindTexture(GL_TEXTURE_2D, pingpongColorbuffers[i]);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, 1270, 593, 0, GL_RGBA, GL_FLOAT, NULL);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // we clamp to the edge as the blur filter would otherwise sample repeated texture values!
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, pingpongColorbuffers[i], 0);
+            // also check if framebuffers are complete (no need for depth buffer)
+            if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+                std::cout << "Framebuffer not complete!" << std::endl;
         }
     }
 

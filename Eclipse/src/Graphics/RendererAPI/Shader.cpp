@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Shader.h"
 
-Shader::Shader():
-	handle{0}, isLinked{GL_FALSE}
+Shader::Shader() :
+	handle{ 0 }, isLinked{ GL_FALSE }
 {
 }
 
@@ -74,11 +74,11 @@ void Shader::SetUniform(const GLchar* name, GLboolean value)
 {
 	GLint location = glGetUniformLocation(handle, name);
 
-	if (location >= 0) 
+	if (location >= 0)
 	{
 		glUniform1i(location, value);
 	}
-	else 
+	else
 	{
 		std::cout << "Uniform variable " << name << " doesn't exist" << std::endl;
 	}
@@ -271,20 +271,20 @@ GLboolean Shader::CompileShader(GLenum shaderType, const std::string fileName)
 
 	switch (shaderType)
 	{
-	case VERTEX_SHADER: 
+	case VERTEX_SHADER:
 		shaderHandle = glCreateShader(GL_VERTEX_SHADER);
 		break;
-	case FRAGMENT_SHADER: 
-		shaderHandle = glCreateShader(GL_FRAGMENT_SHADER); 
+	case FRAGMENT_SHADER:
+		shaderHandle = glCreateShader(GL_FRAGMENT_SHADER);
 		break;
-	case GEOMETRY_SHADER: 
-		shaderHandle = glCreateShader(GL_GEOMETRY_SHADER); 
+	case GEOMETRY_SHADER:
+		shaderHandle = glCreateShader(GL_GEOMETRY_SHADER);
 		break;
-	case TESS_CONTROL_SHADER: 
-		shaderHandle = glCreateShader(GL_TESS_CONTROL_SHADER); 
+	case TESS_CONTROL_SHADER:
+		shaderHandle = glCreateShader(GL_TESS_CONTROL_SHADER);
 		break;
 	case TESS_EVALUATION_SHADER:
-		shaderHandle = glCreateShader(GL_TESS_EVALUATION_SHADER); 
+		shaderHandle = glCreateShader(GL_TESS_EVALUATION_SHADER);
 		break;
 	default:
 		message = "Invalid shader type.";
@@ -419,4 +419,13 @@ void Shader::set4Float(const std::string& name, glm::vec4 v) {
 
 void Shader::setMat4(const std::string& name, glm::mat4 val) {
 	glUniformMatrix4fv(glGetUniformLocation(handle, name.c_str()), 1, GL_FALSE, glm::value_ptr(val));
+}
+
+void Shader::setVec3(const std::string& name, const glm::vec3& value) const
+{
+	glUniform3fv(glGetUniformLocation(handle, name.c_str()), 1, &value[0]);
+}
+void Shader::setVec3(const std::string& name, float x, float y, float z) const
+{
+	glUniform3f(glGetUniformLocation(handle, name.c_str()), x, y, z);
 }

@@ -1212,5 +1212,7 @@
     <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.frag" />
     <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.vert" />
     <ClCompile Include="src\Library\Random\Random.cpp" />
+    <None Include="src\Assets\Shaders\BloomFinal\final.frag" />
+    <None Include="src\Assets\Shaders\BloomFinal\final.vert" />
   </ItemGroup>
 </Project>

@@ -43,6 +43,8 @@ namespace Eclipse
 
         // Seperate FBO for Post Process
         std::unique_ptr<FrameBuffer> PostProcess;
+        // Seperate FBO for Post Process
+        std::unique_ptr<FrameBuffer> Pong;
 
     public:
         std::map<std::string, std::vector<std::string>> ShaderMap;
