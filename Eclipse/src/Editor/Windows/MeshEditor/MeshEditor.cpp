@@ -17,7 +17,7 @@ namespace Eclipse
         Type = EditorWindowType::EWT_MESHEDITOR;
         WindowName = "Mesh Editor";
         m_frameBuffer = engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_MESHEDITOR);
-        IsVisible = true;
+        IsVisible = false;
     }
 
     void MeshEditorWindow::Unload()
@@ -60,15 +60,11 @@ namespace Eclipse
 
     void MeshEditorWindow::Buttons()
     {
+        ImGui::Dummy(ImVec2(1, 5));
+
         if (ECGui::ButtonBool("Create Material", { ImGui::GetColumnWidth(), 25 }))
         {
             engine->gPBRManager->gMaterialEditorSettings->CreateMaterialInstance();
-        }
-
-        ECGui::NextColumn();
-
-        if (ECGui::ButtonBool("Remove Material", { ImGui::GetColumnWidth(), 25 }))
-        {
         }
     }
 
@@ -87,14 +83,24 @@ namespace Eclipse
 
     bool MeshEditorWindow::ShowMaterialProperty(const char* name, ImGuiTextFilter& filter)
     {
+        const auto& MaterialNames = engine->gPBRManager->AllMaterialInstName;
+        ComboListSettings settingsss = { "Current Material" };
+        static size_t comboindex = 0;
+        ECGui::DrawTextWidget<const char*>("Current Materials:", EMPTY_STRING);
+        ECGui::CreateComboList(settingsss, MaterialNames, comboindex);
+        ECGui::NextColumn();
+        ImGui::Dummy(ImVec2(1, 5));
+
+        ECGui::DrawTextWidget<const char*>("Material Name:", EMPTY_STRING);
+        ECGui::DrawInputTextHintWidget(my_strcat("Material Name", 1).c_str(), "Material Name", const_cast<char*>(engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.MeshName.data()), 256, true, ImGuiInputTextFlags_None);
+        ECGui::NextColumn();
+        ImGui::Dummy(ImVec2(1, 5));
+
         if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
         {
             ECGui::DrawTextWidget<const char*>("HasTexture", EMPTY_STRING);
             ECGui::InsertSameLine();
             ECGui::CheckBoxBool("HasTexture", &engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.HasTexture);
-            ECGui::NextColumn();
-
-            ECGui::DrawInputTextHintWidget(my_strcat("Material Name", 1).c_str(), "Material Name", const_cast<char*>(engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.MeshName.data()), 256, true, ImGuiInputTextFlags_None);
             ECGui::NextColumn();
 
             // If We going to assign texture to his material

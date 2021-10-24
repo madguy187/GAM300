@@ -1,5 +1,6 @@
 #pragma once
 #include "Graphics/Material/MaterialInstance/MaterialInstance.h"
+#include "Graphics/EngineCompiler/MaterialCompiler/MaterialCompiler.h"
 
 namespace Eclipse
 {
@@ -14,6 +15,8 @@ namespace Eclipse
     class MaterialEditorSettings
     {
     public:
+        MaterialCompiler gMaterialCompiler;
+
         std::ofstream MaterialFileWrite;
         std::fstream MaterialFileRead;
 

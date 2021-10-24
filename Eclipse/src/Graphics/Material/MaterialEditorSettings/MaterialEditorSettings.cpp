@@ -13,34 +13,7 @@ namespace Eclipse
     void MaterialEditorSettings::CreateMaterialInstance()
     {
         engine->gPBRManager->AllMaterialInstances.emplace(CurrentMaterial.MeshName.data(), std::make_unique<MaterialInstance>(CurrentMaterial));
-
-        std::string hi = CurrentMaterial.MeshName.data();
-
-        MaterialFileWrite.open("src/Assets/MaterialInstances/" + hi + ".mat",
-            std::ios_base::out |
-            std::ios_base::trunc |
-            std::ios_base::binary);
-
-        if (MaterialFileWrite.fail())
-        {
-            return;
-        }
-
-        MaterialInstance A = CurrentMaterial;
-        A.Ao = 3;
-        MaterialFileWrite.write(reinterpret_cast<const char*>(&A), offsetof(MaterialInstance, Stopper));
-        MaterialFileWrite.close();
-
-        MaterialFileRead.open("src/Assets/MaterialInstances/" + hi + ".mat", std::ios::in | std::ios::binary);
-
-        if (MaterialFileRead.fail())
-        {
-            return;
-        }
-
-        MaterialInstance B;
-        MaterialFileRead.read(reinterpret_cast<char*>(&B), offsetof(MaterialInstance, Stopper));
-        MaterialFileRead.close();
+        gMaterialCompiler.SerializeMaterials(CurrentMaterial);
     }
 
     void MaterialEditorSettings::BindMaterial(Shader& In)

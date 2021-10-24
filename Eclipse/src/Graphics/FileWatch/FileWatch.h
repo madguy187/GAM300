@@ -22,6 +22,7 @@ namespace Eclipse
         RT_SHADERS = 4,
         RT_SKY = 5,
         RT_BASICTEXTURES = 6,
+        RT_MATERIALINSTANCE = 7,
         RT_MAXCOUNT
     };
 
@@ -33,6 +34,7 @@ namespace Eclipse
         unsigned int BasicTextureCounter = 0;
         unsigned int Create = 0;
         unsigned int Delete = 0;
+        unsigned int MaterialInstanceCounter = 0;
 
         bool Modified = false;
         float Delays = 0.0f;

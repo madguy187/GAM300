@@ -31,6 +31,7 @@ namespace Eclipse
         std::unordered_map<std::string, map1> AllMaterialTextures;
         std::unique_ptr<MaterialEditorSettings> gMaterialEditorSettings;
         std::unordered_map<std::string, ECVec3> BaseReflectivity;
+        std::vector<std::string> AllMaterialInstName;
 
         PBRManager();
         void Init();
@@ -39,6 +40,10 @@ namespace Eclipse
         void LoadAllTextures();
         void NonTexturedUniform(unsigned int ID, CameraComponent& In);
         void TexturedUniform(unsigned int ID, CameraComponent& In);
+
+    public:
+        void ClearAllMaterialInstances();
+        void ClearAllMaterialInstNames();
 
     public:
         void LoadMaterial(std::string NameOfMaterial);

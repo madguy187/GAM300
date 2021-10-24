@@ -10,7 +10,7 @@ namespace Eclipse
 
     void PBRManager::Init()
     {
-        InitialiseBaseReflectivity();
+        //InitialiseBaseReflectivity();
         LoadAllTextures();
 
         gMaterialEditorSettings = std::make_unique<MaterialEditorSettings>();
@@ -205,6 +205,16 @@ namespace Eclipse
             AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getZ()));
 
         BindMaterial(MaterialCom.MaterialInstanceName, shdrpgm);
+    }
+
+    void PBRManager::ClearAllMaterialInstances()
+    {
+        AllMaterialInstances.clear();
+    }
+
+    void PBRManager::ClearAllMaterialInstNames()
+    {
+        AllMaterialInstName.clear();
     }
 
     void PBRManager::LoadMaterial(std::string NameOfMaterial)

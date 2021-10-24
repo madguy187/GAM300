@@ -5,7 +5,42 @@ namespace Eclipse
 {
     void MaterialCompiler::SerializeMaterials(MaterialInstance& materialref)
     {
+        std::string NameOfMaterial = materialref.MeshName.data();
+        OpenFile(MaterialFileWrite, "src/Assets/MaterialInstances/" + NameOfMaterial + ".mat");
 
+        MaterialInstance A = materialref;
+        MaterialFileWrite.write(reinterpret_cast<const char*>(&A), offsetof(MaterialInstance, Stopper));
+        
+        CloseFile(MaterialFileWrite, NameOfMaterial);
+    }
+
+    void MaterialCompiler::LoadMaterials()
+    {
+        engine->gPBRManager->ClearAllMaterialInstances();
+        engine->gPBRManager->ClearAllMaterialInstNames();
+
+        for (auto& dirEntry : std::filesystem::directory_iterator("src//Assets//MaterialInstances"))
+        {
+            const auto& path = dirEntry.path();
+            auto relativePath = relative(path, "src//");
+            std::string FolderName = relativePath.filename().string();
+            std::string GoIntoMaterialFolder = ("src/Assets/MaterialInstances/" + FolderName);
+
+            //int Position = FolderName.find(".");
+            //std::string GetMaterialName = FolderName.substr(0, Position);
+
+            DeSerializeMaterials(FolderName);
+        }
+    }
+
+    void MaterialCompiler::DeSerializeMaterials(std::string NameOfMaterial)
+    {
+        OpenFile(MaterialFileRead, "src/Assets/MaterialInstances/" + NameOfMaterial);
+        MaterialInstance B;
+        MaterialFileRead.read(reinterpret_cast<char*>(&B), offsetof(MaterialInstance, Stopper));
+        engine->gPBRManager->AllMaterialInstances.emplace(B.MeshName.data(), std::make_unique<MaterialInstance>(B));
+        engine->gPBRManager->AllMaterialInstName.push_back(B.MeshName.data());
+        CloseFile(MaterialFileRead, NameOfMaterial);
     }
 
     bool MaterialCompiler::OpenFile(std::fstream& FileIn, std::string& Path)
@@ -28,7 +63,7 @@ namespace Eclipse
 
     bool MaterialCompiler::OpenFile(std::ofstream& FileIn, std::string& Path)
     {
-        FileIn.open(Path, std::ios::in | std::ios::binary);
+        FileIn.open(Path, std::ios::out | std::ios::binary | std::ios_base::trunc);
 
         if (FileIn.fail())
         {

@@ -105,6 +105,12 @@ namespace Eclipse
             AssetCounter++;
         }
         break;
+
+        case ReloadTypes::RT_MATERIALINSTANCE:
+        {
+            MaterialInstanceCounter++;
+        }
+        break;
         }
     }
 
@@ -142,7 +148,7 @@ namespace Eclipse
 
     void EclipseFileWatcher::CheckReloadStatus()
     {
-        if (AssetCounter != 0 || BasicTextureCounter != 0)
+        if (AssetCounter != 0 || BasicTextureCounter != 0 || MaterialInstanceCounter != 0)
             return;
     }
 
@@ -170,10 +176,18 @@ namespace Eclipse
 
         if (BasicTextureCounter)
         {
-            EDITOR_LOG_INFO("TEXTURES : HOT-RELOAD DONE");
+            EDITOR_LOG_INFO("TEXTURES : HOT-RELOAD BEGIN");
             engine->gEngineCompiler->HotReloadTetxures();
             BasicTextureCounter = 0;
             EDITOR_LOG_INFO("TEXTURES : HOT-RELOAD DONE");
+        }
+
+        if (MaterialInstanceCounter)
+        {
+            EDITOR_LOG_INFO("MATERIALS : HOT-RELOAD BEGIN");
+            engine->gPBRManager->gMaterialEditorSettings->gMaterialCompiler.LoadMaterials();
+            MaterialInstanceCounter = 0;
+            EDITOR_LOG_INFO("MATERIALS : HOT-RELOAD DONE");
         }
     }
 
@@ -187,6 +201,11 @@ namespace Eclipse
         if (inString.find("src/Assets\\Models\\") != std::string::npos)
         {
             return ReloadTypes::RT_MODELS;
+        }
+
+        if (inString.find("src/Assets\\MaterialInstances\\") != std::string::npos)
+        {
+            return ReloadTypes::RT_MATERIALINSTANCE;
         }
 
         return ReloadTypes::RT_NONE;
