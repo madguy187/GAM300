@@ -217,12 +217,8 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\ECS\SystemManager\Systems\System\GridSystem\GridSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem\MaterialSystem.h" />
-    <ClInclude Include="src\Editor\Windows\MeshEditor\MeshEditor.h" />
     <ClInclude Include="src\Graphics\EngineCompiler\MaterialCompiler\MaterialCompiler.h" />
-    <ClInclude Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.h" />
-    <ClInclude Include="src\Graphics\Material\MaterialInstance\MaterialInstance.h" />
     <ClInclude Include="src\Graphics\Material\MaterialEditorSettings\MaterialEditorSettings.h" />
-    <ClInclude Include="src\Graphics\Material\PBR\PBRManager.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ChildSystem\ChildSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem\ParentSystem.h" />
@@ -387,12 +383,8 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\ECS\SystemManager\Systems\System\GridSystem\GridSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem\MaterialSystem.cpp" />
-    <ClCompile Include="src\Editor\Windows\MeshEditor\MeshEditor.cpp" />
     <ClCompile Include="src\Graphics\EngineCompiler\MaterialCompiler\MaterialCompiler.cpp" />
-    <ClCompile Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.cpp" />
-    <ClCompile Include="src\Graphics\Material\MaterialInstance\MaterialInstance.cpp" />
     <ClCompile Include="src\Graphics\Material\MaterialEditorSettings\MaterialEditorSettings.cpp" />
-    <ClCompile Include="src\Graphics\Material\PBR\PBRManager.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ChildSystem\ChildSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem\ParentSystem.cpp" />
