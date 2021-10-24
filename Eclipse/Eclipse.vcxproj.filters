@@ -136,6 +136,9 @@
     <Filter Include="Editor\Windows\Log">
       <UniqueIdentifier>{979B17BC-837F-D811-ECDF-D264D8E2C293}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editor\Windows\MaterialEditor">
+      <UniqueIdentifier>{EB1E4D11-5737-343B-20E4-C3D48CBBC8D4}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Editor\Windows\MeshEditor">
       <UniqueIdentifier>{89B11D0B-F573-5195-3E24-E021AA252A73}</UniqueIdentifier>
     </Filter>
@@ -507,6 +510,9 @@
     <ClInclude Include="src\Editor\Windows\Log\Log.h">
       <Filter>Editor\Windows\Log</Filter>
     </ClInclude>
+    <ClInclude Include="src\Editor\Windows\MaterialEditor\MaterialEditor.h">
+      <Filter>Editor\Windows\MaterialEditor</Filter>
+    </ClInclude>
     <ClInclude Include="src\Editor\Windows\MeshEditor\MeshEditor.h">
       <Filter>Editor\Windows\MeshEditor</Filter>
     </ClInclude>
@@ -839,8 +845,6 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\OpenVR\Drivers\Controller\ControllerDriver.h" />
-    <ClInclude Include="src\Editor\Windows\MaterialEditor\MaterialEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -962,6 +966,9 @@
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\Log\Log.cpp">
       <Filter>Editor\Windows\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\MaterialEditor\MaterialEditor.cpp">
+      <Filter>Editor\Windows\MaterialEditor</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\MeshEditor\MeshEditor.cpp">
       <Filter>Editor\Windows\MeshEditor</Filter>
@@ -1243,6 +1250,5 @@
       <Filter>Tracy</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\Editor\Windows\MaterialEditor\MaterialEditor.cpp" />
   </ItemGroup>
 </Project>
