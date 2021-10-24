@@ -4,8 +4,8 @@
 
 namespace Eclipse
 {
-  typedef std::map< std::pair<InputKeycode, int>, std::pair<bool, InputState> > InputKeyContainer;
-  using KeyIT = std::map< std::pair<InputKeycode, int>, std::pair<bool, InputState> >::iterator;
+  typedef std::unordered_map< std::pair<InputKeycode, int>, std::pair<bool, InputState> > InputKeyContainer;
+  using KeyIT = std::unordered_map< std::pair<InputKeycode, int>, std::pair<bool, InputState> >::iterator;
 
   class InputWrapper
   {
