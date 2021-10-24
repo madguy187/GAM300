@@ -19,7 +19,6 @@ namespace Eclipse
 		std::vector<Entity> Child;
 		std::vector<Entity> Parent;
 		bool IsAChild = false;
-		bool isTreeNode = false;
 		ImGuiTreeNodeFlags TreeactiveFlag = ImGuiTreeNodeFlags_OpenOnDoubleClick;
 	};
 }
