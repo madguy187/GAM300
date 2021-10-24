@@ -83,6 +83,8 @@ namespace Eclipse
         void CreateGameCamera();
         unsigned int GetGameCameraID();
 
+        void CreatePerspectiveCamera(CameraComponent::CameraType _camType);
+
         void CreateViewCamera(CameraComponent::CameraType _camType);
         void SetViewCameraValues(CameraComponent::CameraType _camType, TransformComponent& _transform);
         void SetViewCameraProjectionType(CameraComponent& _camera, CameraComponent::ProjectionType _projType);

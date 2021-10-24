@@ -30,10 +30,10 @@ namespace Eclipse
 
 	void HeaderWindow::RunPlayPauseStep()
 	{
-		ImGuiIO& io = ImGui::GetIO();
+		//ImGuiIO& io = ImGui::GetIO();
 
 		ECGui::InsertSameLine(ECGui::GetWindowSize().x / 2.22f);
-		ImGui::SetWindowFontScale(1.1);
+		ImGui::SetWindowFontScale(1.1f);
 		if (!engine->GetPlayState())
 		{
 			if (ECGui::ButtonBool(" " ICON_FA_PLAY, ImVec2{30.f,22.f}))

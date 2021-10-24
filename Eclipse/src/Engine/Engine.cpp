@@ -238,6 +238,19 @@ namespace Eclipse
         //Deserialization(temp)
         /*audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);*/
         //audioManager.PlayEvent("event:/WaterEffect");
+
+        /*TransformComponent trans1;
+        TransformComponent trans2;
+        trans2.position.setX(5.0f);
+        trans1.position.setX(5.0f);
+        RefVariant ob1 = trans1;
+        RefVariant ob2 = trans2;
+
+        if (SerializationManager::CompareComponentData(ob1, ob2))
+            std::cout << "its the same!" << std::endl;
+        else
+            std::cout << "its the not same!" << std::endl;*/
+
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
             glfwPollEvents();

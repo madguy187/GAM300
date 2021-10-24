@@ -24,9 +24,7 @@ namespace Eclipse
 
 	void eGameViewWindow::Init()
 	{
-		mViewportSize = glm::vec2{ 0.0f, 0.0f };
-		ogViewportSize = glm::vec2{ 0.0f, 0.0f };
-		ogViewportPos = glm::vec2{ 0.0f, 0.0f };
+		mViewportSize = ECVec2{ 0.0f, 0.0f };
 		Type = EditorWindowType::EWT_GAMEVIEW;
 		WindowName = "Game View " ICON_MDI_MONITOR;
 		m_frameBuffer = engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_GAME);
@@ -43,7 +41,8 @@ namespace Eclipse
         if (!AlreadySetDockIDTracker)
             DockIDTracker = ImGui::GetWindowDockID();
 
-        if (mViewportSize != *((glm::vec2*)&viewportPanelSize))
+        if (mViewportSize.getX() != viewportPanelSize.x ||
+            mViewportSize.getY() != viewportPanelSize.y)
         {
             // Resize the framebuffer based on the size of the imgui window
             //m_frameBuffer->Resize(static_cast<unsigned>(viewportPanelSize.x), static_cast<unsigned>(viewportPanelSize.y));

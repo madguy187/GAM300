@@ -5,6 +5,7 @@ namespace Eclipse
     class RefVariant;
     typedef void (*SerializeFn)(const char*, RefVariant);
     typedef bool (*DeserializeFn)(const char*, RefVariant);
+    typedef bool (*CompareFn)(RefVariant, RefVariant);
 
     // Setting up the definition of the RegisterMetaData function, so that the 
     // ADD_MEMBER macro calls are actually lines of code placed within the definition
@@ -28,8 +29,9 @@ namespace Eclipse
   MetaCreator<RemTypeQual<T>::type> NAME_GENERATOR()( #T, sizeof( T )); \
   void MetaCreator<RemTypeQual<T>::type>::RegisterMetaData() \
   { \
-    MetaCreator<RemTypeQual<T>::type>::SetSerializeFn(SerializationManager::TestSerialize<RemTypeQual<T>::type>);\
-    MetaCreator<RemTypeQual<T>::type>::SetDeserializeFn(SerializationManager::TestDeserialize<RemTypeQual<T>::type>);\
+    MetaCreator<RemTypeQual<T>::type>::SetSerializeFn(SerializationManager::SerializeDataMember<RemTypeQual<T>::type>);\
+    MetaCreator<RemTypeQual<T>::type>::SetDeserializeFn(SerializationManager::DeserializeDataMember<RemTypeQual<T>::type>);\
+    MetaCreator<RemTypeQual<T>::type>::SetCompareFn(SerializationManager::CompareDataMembers<RemTypeQual<T>::type>);\
   }
 
 #define ADD_MEMBER(MEMBER) \
@@ -108,10 +110,12 @@ namespace Eclipse
         void Serialize(const char*, RefVariant) const;
         void SetDeserialize(DeserializeFn fn = NULL);
         bool Deserialize(const char*, RefVariant) const;
-
+        void SetCompare(CompareFn fn = NULL);
+        bool Compare(RefVariant lhs, RefVariant rhs) const;
     private:
         SerializeFn serialize;
         DeserializeFn deserialize;
+        CompareFn compare;
         Member* members;
         Member* lastMember;
         std::string name;
@@ -147,6 +151,11 @@ namespace Eclipse
         static void SetDeserializeFn(DeserializeFn fn)
         {
             Get()->SetDeserialize(fn);
+        }
+
+        static void SetCompareFn(CompareFn fn)
+        {
+            Get()->SetCompare(fn);
         }
 
         // Return a pointer to NULL(memory address zero) of some type

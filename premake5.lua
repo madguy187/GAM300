@@ -69,9 +69,9 @@ project "Eclipse"
 		"Dep/PhysX/include/solver",
 		"Dep/PhysX/include/task",
 		"Dep/PhysX/include/vehicle",
-    "Dep/mono/include/mono-2.0",
+		"Dep/mono/include/mono-2.0",
 		"Dep/ASSIMP/include/assimp",
-	  "Dep/ASSIMP",
+		"Dep/ASSIMP",
 		"Dep/Fmod/core/inc",
 		"Dep/Tracy"
 	}
