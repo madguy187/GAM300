@@ -52,7 +52,7 @@ namespace Eclipse
         ///////////////////////////////////////////////////////////////////////////////////////////
         // For New PBR Shader
         ///////////////////////////////////////////////////////////////////////////////////////////
-        void CheckUniforms(Shader& , Entity , MeshComponent&, CameraComponent&);
+        void CheckUniforms(Shader&, Entity, MeshComponent&, CameraComponent&);
         void RenderMesh(MeshComponent& In, GLenum Mode);
         void ChecModelkUniforms(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID, AABB_* box);
 
@@ -67,6 +67,10 @@ namespace Eclipse
         void InsertGeometry(const std::string& name, Mesh& NewMesh);
         void InsertPrefabs(const std::string& Index, const std::string& MeshName);
 
+        // FOR FIKRUL
+        void MeshEditorDraw(World& world_, MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, CameraComponent::CameraType _camType);
+        void MeshEditorUniforms(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID);
+        
     public:
         // TEXTURES PUT HERE FIRST
         unsigned int Index = 0; // mesh index.

@@ -19,7 +19,7 @@ namespace Eclipse
         engine->gPBRManager->ClearAllMaterialInstances();
         engine->gPBRManager->ClearAllMaterialInstNames();
 
-        engine->gPBRManager->AllMaterialInstName.push_back(engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.Name.data());
+        engine->gPBRManager->AllMaterialInstName.push_back("Default");
 
         for (auto& dirEntry : std::filesystem::directory_iterator("src//Assets//MaterialInstances"))
         {

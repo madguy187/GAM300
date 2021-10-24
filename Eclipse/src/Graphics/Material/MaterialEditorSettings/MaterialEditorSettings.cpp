@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Graphics/Material/MaterialEditorSettings/MaterialEditorSettings.h"
+#include "Editor/Windows/MaterialEditor/MaterialEditor.h"
 
 namespace Eclipse
 {
@@ -16,22 +17,45 @@ namespace Eclipse
         gMaterialCompiler.SerializeMaterials(CurrentMaterial);
     }
 
-    void MaterialEditorSettings::BindMaterial(Shader& In)
+    void MaterialEditorSettings::BindMaterial(Shader& In, std::string MaterialName)
     {
-        glActiveTexture(GL_TEXTURE10);
-        glBindTexture(GL_TEXTURE_2D, CurrentMaterial.Albedo);
+        if (SelectedIndex == 0)
+        {
+            glActiveTexture(GL_TEXTURE10);
+            glBindTexture(GL_TEXTURE_2D, CurrentMaterial.Albedo);
 
-        glActiveTexture(GL_TEXTURE11);
-        glBindTexture(GL_TEXTURE_2D, CurrentMaterial.Normal);
+            glActiveTexture(GL_TEXTURE11);
+            glBindTexture(GL_TEXTURE_2D, CurrentMaterial.Normal);
 
-        glActiveTexture(GL_TEXTURE12);
-        glBindTexture(GL_TEXTURE_2D, CurrentMaterial.Metallic);
+            glActiveTexture(GL_TEXTURE12);
+            glBindTexture(GL_TEXTURE_2D, CurrentMaterial.Metallic);
 
-        glActiveTexture(GL_TEXTURE13);
-        glBindTexture(GL_TEXTURE_2D, CurrentMaterial.Roughness);
+            glActiveTexture(GL_TEXTURE13);
+            glBindTexture(GL_TEXTURE_2D, CurrentMaterial.Roughness);
 
-        glActiveTexture(GL_TEXTURE14);
-        glBindTexture(GL_TEXTURE_2D, CurrentMaterial.Ao);
+            glActiveTexture(GL_TEXTURE14);
+            glBindTexture(GL_TEXTURE_2D, CurrentMaterial.Ao);
+        }
+        else
+        {
+            if (engine->gPBRManager->AllMaterialInstances.find(MaterialName) != engine->gPBRManager->AllMaterialInstances.end())
+            {
+                glActiveTexture(GL_TEXTURE10);
+                glBindTexture(GL_TEXTURE_2D, engine->gPBRManager->AllMaterialInstances[MaterialName]->Albedo);
+
+                glActiveTexture(GL_TEXTURE11);
+                glBindTexture(GL_TEXTURE_2D, engine->gPBRManager->AllMaterialInstances[MaterialName]->Normal);
+
+                glActiveTexture(GL_TEXTURE12);
+                glBindTexture(GL_TEXTURE_2D, engine->gPBRManager->AllMaterialInstances[MaterialName]->Metallic);
+
+                glActiveTexture(GL_TEXTURE13);
+                glBindTexture(GL_TEXTURE_2D, engine->gPBRManager->AllMaterialInstances[MaterialName]->Roughness);
+
+                glActiveTexture(GL_TEXTURE14);
+                glBindTexture(GL_TEXTURE_2D, engine->gPBRManager->AllMaterialInstances[MaterialName]->Ao);
+            }
+        }
 
         In.setInt("albedoMap", 10);
         In.setInt("normalMap", 11);
@@ -42,20 +66,23 @@ namespace Eclipse
 
     void MaterialEditorSettings::RenderMaterialScene()
     {
-        engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_MESHEDITOR);
+        if (engine->editorManager->GetEditorWindow<MaterialEditorWindow>()->IsVisible)
+        {
+            engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_MATERIALEDITOR);
 
-        auto& shdrpgm = Graphics::shaderpgms["MaterialEditor"];
-        shdrpgm.Use();
+            auto& shdrpgm = Graphics::shaderpgms["MaterialEditor"];
+            shdrpgm.Use();
 
-        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::MeshEditor_Camera));
+            auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::MeshEditor_Camera));
 
-        UpdateCamera(shdrpgm, _camera);
-        UpdateLights(shdrpgm);
+            UpdateCamera(shdrpgm, _camera);
+            UpdateLights(shdrpgm);
 
-        UpdateCurrentMaterial(shdrpgm, _camera);
+            UpdateCurrentMaterial(shdrpgm, _camera);
 
-        RenderSphere();
-        shdrpgm.UnUse();
+            RenderSphere();
+            shdrpgm.UnUse();
+        }
     }
 
     void MaterialEditorSettings::UpdateCurrentMaterial(Shader& shdrpgm, CameraComponent& _camera)
@@ -91,25 +118,46 @@ namespace Eclipse
             GLCall(glUniform1f(MetallicConstant, CurrentMaterial.MetallicConstant));
             GLCall(glUniform1f(RoughnessConstant, CurrentMaterial.RoughnessConstant));
             GLCall(glUniform3f(BaseReflectivity, CurrentMaterial.BaseReflectivity.getX(), CurrentMaterial.BaseReflectivity.getY(), CurrentMaterial.BaseReflectivity.getZ()));
-            BindMaterial(shdrpgm);
+
+            BindMaterial(shdrpgm, "None");
         }
         else
         {
-            CurrentSelectedMaterial = engine->gPBRManager->AllMaterialInstances[engine->gPBRManager->AllMaterialInstName[SelectedIndex]]->Name.data();
+            //auto test = *engine->gPBRManager->AllMaterialInstances[engine->gPBRManager->AllMaterialInstName[SelectedIndex]];
+            //CurrentMaterial = *engine->gPBRManager->AllMaterialInstances[engine->gPBRManager->AllMaterialInstName[SelectedIndex]];
+            //
+            GLCall(glUniform1i(HasInstance, CurrentMaterial.HasTexture));
+            GLCall(glUniform3f(AlbedoConstant, CurrentMaterial.AlbedoConstant.getX(), CurrentMaterial.AlbedoConstant.getY(), CurrentMaterial.AlbedoConstant.getZ()));
+            GLCall(glUniform1f(AoConstant, CurrentMaterial.AoConstant));
+            GLCall(glUniform1f(MetallicConstant, CurrentMaterial.MetallicConstant));
+            GLCall(glUniform1f(RoughnessConstant, CurrentMaterial.RoughnessConstant));
+            GLCall(glUniform3f(BaseReflectivity, CurrentMaterial.BaseReflectivity.getX(), CurrentMaterial.BaseReflectivity.getY(), CurrentMaterial.BaseReflectivity.getZ()));
 
-            GLCall(glUniform1i(HasInstance, engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->HasTexture));
-            GLCall(glUniform3f(AlbedoConstant, 
-                engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->AlbedoConstant.getX(), 
-                engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->AlbedoConstant.getY(), 
-                engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->AlbedoConstant.getZ()));
-            GLCall(glUniform1f(AoConstant, engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->AoConstant));
-            GLCall(glUniform1f(MetallicConstant, engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->MetallicConstant));
-            GLCall(glUniform1f(RoughnessConstant, engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->RoughnessConstant));
-            GLCall(glUniform3f(BaseReflectivity, 
-                engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->BaseReflectivity.getX(), 
-                engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->BaseReflectivity.getY(), 
-                engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->BaseReflectivity.getZ()));
+            BindMaterial(shdrpgm, CurrentMaterial.Name.data());
+
+            //CurrentSelectedMaterial = engine->gPBRManager->AllMaterialInstances[engine->gPBRManager->AllMaterialInstName[SelectedIndex]]->Name.data();
+            //
+            //GLCall(glUniform1i(HasInstance, engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->HasTexture));
+            //GLCall(glUniform3f(AlbedoConstant,
+            //    engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->AlbedoConstant.getX(),
+            //    engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->AlbedoConstant.getY(),
+            //    engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->AlbedoConstant.getZ()));
+            //GLCall(glUniform1f(AoConstant, engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->AoConstant));
+            //GLCall(glUniform1f(MetallicConstant, engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->MetallicConstant));
+            //GLCall(glUniform1f(RoughnessConstant, engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->RoughnessConstant));
+            //GLCall(glUniform3f(BaseReflectivity,
+            //    engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->BaseReflectivity.getX(),
+            //    engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->BaseReflectivity.getY(),
+            //    engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->BaseReflectivity.getZ()));
+            //
+            //BindMaterial(shdrpgm, CurrentSelectedMaterial);
         }
+    }
+
+    void MaterialEditorSettings::ClearCurrentMaterial()
+    {
+        MaterialInstance NewMaterial;
+        CurrentMaterial = NewMaterial;
     }
 
     void MaterialEditorSettings::UpdateLights(Shader& MaterialEditorShader)

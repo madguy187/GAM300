@@ -37,14 +37,16 @@ namespace Eclipse
 
         unsigned int SelectedIndex = 0;
         std::string CurrentSelectedMaterial;
+        bool Once = false;
 
         MaterialEditorSettings();
-        void BindMaterial(Shader& In);
+        void BindMaterial(Shader& In , std::string MaterialName);
         void RenderSphere();
         void UpdateCurrentMaterial(Shader& ShaderIn, CameraComponent& Camin);
         void UpdateLights(Shader& MaterialEditorShader);
         void UpdateCamera(Shader& MaterialEditorShader, CameraComponent& MeshEditorCamera);
         void CreateMaterialInstance();
         void RenderMaterialScene();
+        void ClearCurrentMaterial();
     };
 }

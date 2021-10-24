@@ -367,7 +367,7 @@ namespace Eclipse
             else if (nrComponents == 3)
                 format = GL_RGB;
             else if (nrComponents == 4)
-                format = GL_SRGB;
+                format = GL_RGBA;
 
             //std::cout << "Number of Components " << nrComponents << std::endl;
 

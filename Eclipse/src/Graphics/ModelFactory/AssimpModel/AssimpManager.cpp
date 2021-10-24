@@ -8,6 +8,46 @@ namespace Eclipse
 {
     typedef std::multimap<std::string, Texture>::iterator MMAPIterator;
 
+    void AssimpModelManager::MeshEditorUniforms(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID)
+    {
+        TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(_camera.camType));
+
+        GLuint view = _shdrpgm.GetLocation("view");
+        GLuint cameraPos = _shdrpgm.GetLocation("camPos");
+        GLint projection = _shdrpgm.GetLocation("projection");
+        GLuint model_ = _shdrpgm.GetLocation("model");
+
+        auto& Transform = engine->world.GetComponent<TransformComponent>(ModelID);
+
+        glm::mat4 mModelNDC;
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
+        model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
+        mModelNDC = _camera.projMtx * _camera.viewMtx * model;
+        glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
+        glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
+        GLCall(glUniform3f(cameraPos, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ()));
+
+    }
+
+    void AssimpModelManager::MeshEditorDraw(World& world_, MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, CameraComponent::CameraType _camType)
+    {
+        auto& _camera = world_.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
+        engine->gFrameBufferManager->UseFrameBuffer(in);
+
+        auto shdrpgm = Graphics::shaderpgms["PBRShader"];
+        shdrpgm.Use();
+
+        MeshEditorUniforms(shdrpgm, _camera, ID);
+        CheckUniforms(shdrpgm, ID, ModelMesh, _camera);
+
+        RenderMesh(ModelMesh, GL_FILL);
+    }
+
     bool AssimpModelManager::GeometryContainerCheck(const std::string& in)
     {
         if (Geometry.find(in) != engine->AssimpManager.Geometry.end())
