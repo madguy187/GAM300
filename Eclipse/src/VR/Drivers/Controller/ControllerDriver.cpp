@@ -16,7 +16,7 @@ namespace Eclipse
 		// Telling OpenVR what kind of device this is
 		// Will be changing it constantly for testing purposes
 		// End game, for our gam, it should be TrackedControllerRole_OptOut, I think LOL
-		VRProperties()->SetInt32Property(props, Prop_ControllerRoleHint_Int32, ETrackedControllerRole::TrackedControllerRole_OptOut);
+		VRProperties()->SetInt32Property(props, Prop_ControllerRoleHint_Int32, ETrackedControllerRole::TrackedControllerRole_Treadmill);
 		// Sets up handler, using to send joystick commands to OpenVR with, in the Y direction (forward/backward)
 		VRDriverInput()->CreateScalarComponent(props, "/input/joystick/y", &JoystickYHandle, EVRScalarType::VRScalarType_Absolute,
 			EVRScalarUnits::VRScalarUnits_NormalizedTwoSided);
