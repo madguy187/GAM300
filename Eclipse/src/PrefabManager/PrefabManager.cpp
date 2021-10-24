@@ -314,9 +314,15 @@ namespace Eclipse
 		std::vector<Entity> changingEntities;
 		auto& w = engine->world;
 		auto& set = w.GetSystem<PrefabSystem>()->mEntities;
+
 		if (prefabID == 0)
 		{
 			std::copy(set.begin(), set.end(), std::back_inserter(changingEntities));
+
+			/*std::copy_if(set.begin(), set.end(), std::back_inserter(changingEntities), [&w](const Entity& ent) {
+				auto& comp = w.GetComponent<PrefabComponent>(ent);
+				return !comp.IsChild;
+				});*/
 			return changingEntities;
 		}
 
@@ -419,7 +425,7 @@ namespace Eclipse
 		for(auto ent : entities)
 		{
 			auto& prefabComp = engine->prefabWorld.GetComponent<PrefabComponent>(ent);
-			if (prefabComp.IsInstance)
+			if (prefabComp.IsInstance || prefabComp.IsChild)
 			{
 				continue;
 			}
