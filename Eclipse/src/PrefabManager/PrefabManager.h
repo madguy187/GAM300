@@ -19,14 +19,12 @@ namespace Eclipse
 			PointLightComponent,
 			RigidBodyComponent,
 			ScriptComponent,
-			//ParentComponent,
-			//ChildComponent,
 			CollisionComponent,
 			AudioComponent,
 			AIComponent,
 			SpotLightComponent
 		>;
-
+		//Cannot cmoppare entiyt, aabb, parent, child, transform
 		PrefabUseList list{};
 
 		void LoadPrefab(const char* path);
