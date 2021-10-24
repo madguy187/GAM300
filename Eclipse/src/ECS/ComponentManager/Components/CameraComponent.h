@@ -38,7 +38,8 @@ namespace Eclipse
 			BottomView_Camera,
 			LeftView_Camera,
 			RightView_camera,
-			MeshEditor_Camera
+			MeshEditor_Camera,
+			MaterialEditor_Camera
 		};
 
 		CameraType camType;
