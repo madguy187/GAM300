@@ -1026,8 +1026,7 @@ namespace Eclipse
                 for (auto& it : parent.child)
                 {
                     auto& en = engine->world.GetComponent<EntityComponent>(it);
-                    std::string name = my_strcat(en.Name, " ", it);
-                    ECGui::DrawTextWidget<const char*>(name.c_str(), EMPTY_STRING);
+                    ECGui::DrawTextWidget<const char*>(my_strcat(en.Name, " ", it).c_str(), EMPTY_STRING);
                 }
           
                 ECGui::InsertHorizontalLineSeperator();
@@ -1046,12 +1045,8 @@ namespace Eclipse
                 ECGui::InsertHorizontalLineSeperator();
 
                 auto& child = engine->world.GetComponent<ChildComponent>(ID);
-
-             
                 auto& en = engine->world.GetComponent<EntityComponent>(child.parentIndex);
-                std::string name = my_strcat(en.Name, " ", child.parentIndex);
-                ECGui::DrawTextWidget<const char*>(name.c_str(), EMPTY_STRING);
-
+                ECGui::DrawTextWidget<const char*>(my_strcat(en.Name, " ", child.parentIndex).c_str(), EMPTY_STRING);
 
                 ECGui::InsertHorizontalLineSeperator();
             }
