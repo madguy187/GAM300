@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <Entities Size="3">
-    <Entity_0 ID="6">
+    <Entity_0 ID="0">
         <CameraComponent>
             <eyeAlpha value="0" />
             <eyeBeta value="-90" />
@@ -35,6 +35,7 @@
             <Child size="0" />
             <Parent size="0" />
             <IsAChild value="false" />
+            <TreeactiveFlag value="64" />
         </EntityComponent>
         <TransformComponent>
             <position x="0" y="20" z="40" />
@@ -44,16 +45,17 @@
     </Entity_0>
     <Entity_1 ID="7">
         <AABBComponent>
-            <center x="-11.221" y="0" z="18.3116" />
-            <Min x="-13.721" y="-2.5" z="15.8116" />
-            <Max x="-8.721" y="2.5" z="20.8116" />
+            <center x="-12.321" y="0" z="23.0378" />
+            <Min x="-14.821" y="-2.5" z="20.5378" />
+            <Max x="-9.82099" y="2.5" z="25.5378" />
         </AABBComponent>
         <EntityComponent>
             <Tag value="Sphere" />
-            <Name value="Sphere1" />
+            <Name value="Sphere" />
             <Child size="0" />
             <Parent size="0" />
             <IsAChild value="false" />
+            <TreeactiveFlag value="64" />
         </EntityComponent>
         <MaterialComponent>
             <Modeltype value="BasicPrimitives" />
@@ -67,11 +69,11 @@
             <TextureComboIndex value="0" />
             <Type value="TT_2D" />
             <hasTexture value="true" />
-            <TextureRef value="DDS_DX5" />
+            <TextureRef value="FolderIcon" />
             <TextureKey value="" />
             <HoldingTextures size="0" />
             <HasMaterialIstance value="false" />
-            <MaterialInstanceName value="Default" />
+            <MaterialInstanceName value="" />
         </MaterialComponent>
         <MeshComponent>
             <MeshName value="" />
@@ -91,28 +93,30 @@
             <ENV_TYPE value="MT_REFLECT" />
         </MeshComponent>
         <TransformComponent>
-            <position x="-11.221" y="0" z="18.3116" />
+            <position x="-12.321" y="0" z="23.0378" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
         <PrefabComponent>
-            <IsChild value="true" />
+            <IsInstance value="true" />
+            <IsChild value="false" />
             <CompChanges value="00000000000000000000000000000000" />
-            <PrefabID value="7022016427723503381" />
+            <PrefabID value="7022634128765384448" />
         </PrefabComponent>
     </Entity_1>
     <Entity_2 ID="8">
         <AABBComponent>
-            <center x="10.9568" y="0" z="22.0031" />
-            <Min x="8.4568" y="-2.5" z="19.5031" />
-            <Max x="13.4568" y="2.5" z="24.5031" />
+            <center x="5.67166" y="0" z="20.8159" />
+            <Min x="3.17166" y="-2.5" z="18.3159" />
+            <Max x="8.17166" y="2.5" z="23.3159" />
         </AABBComponent>
         <EntityComponent>
             <Tag value="Sphere" />
-            <Name value="Sphere1" />
+            <Name value="Sphere" />
             <Child size="0" />
             <Parent size="0" />
             <IsAChild value="false" />
+            <TreeactiveFlag value="64" />
         </EntityComponent>
         <MaterialComponent>
             <Modeltype value="BasicPrimitives" />
@@ -126,11 +130,11 @@
             <TextureComboIndex value="0" />
             <Type value="TT_2D" />
             <hasTexture value="true" />
-            <TextureRef value="DDS_DX5" />
+            <TextureRef value="FolderIcon" />
             <TextureKey value="" />
             <HoldingTextures size="0" />
             <HasMaterialIstance value="false" />
-            <MaterialInstanceName value="Default" />
+            <MaterialInstanceName value="" />
         </MaterialComponent>
         <MeshComponent>
             <MeshName value="" />
@@ -150,14 +154,15 @@
             <ENV_TYPE value="MT_REFLECT" />
         </MeshComponent>
         <TransformComponent>
-            <position x="10.9568" y="0" z="22.0031" />
+            <position x="5.67166" y="0" z="20.8159" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
         <PrefabComponent>
-            <IsChild value="true" />
+            <IsInstance value="true" />
+            <IsChild value="false" />
             <CompChanges value="00000000000000000000000000000000" />
-            <PrefabID value="7022016427723503381" />
+            <PrefabID value="7022634128765384448" />
         </PrefabComponent>
     </Entity_2>
 </Entities>
