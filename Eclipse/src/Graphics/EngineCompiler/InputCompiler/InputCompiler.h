@@ -1,0 +1,43 @@
+#pragma once
+
+namespace Eclipse
+{
+    struct Key
+    {
+        std::array<char, 128> MapName;
+        InputKeycode Key;
+        bool Stopper = false;
+    };
+
+    struct MouseKey
+    {
+        std::array<char, 128> MapName;
+        InputMouseKeycode MouseKey;
+        bool Stopper = false;
+    };
+
+    class InputCompiler
+    {
+    private:
+        std::ofstream InputFileWrite;
+        std::fstream InputFileRead;
+        bool OpenFile(std::fstream& FileIn, std::string Path);
+        void CloseFile(std::fstream& FileIn, std::string FileName = "");
+        bool OpenFile(std::ofstream& FileIn, std::string Path);
+        void CloseFile(std::ofstream& FileIn, std::string FileName = "");
+
+    public:
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // For LOGICAL INPUT ( KEYBOARD )
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        void SerializeLogicalInputs();
+        void DeSerializeLogicalInputs();
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // For LOGICAL INPUT ( MOUSE )
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        void SerializeMouseLogicalInputs();
+        void DeSerializeMouseLogicalInputs();
+    };
+}

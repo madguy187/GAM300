@@ -19,8 +19,6 @@ namespace Eclipse
         // Check if Space is pressed
         else if (IsKeyPressed(Press))
         {
-            bool single = false;
-
             RegisterTriggerInput(keycode, InputState::Key_TRIGGERED); // container size 1
 
             if (KeyContainer.count(keycode) != 0 && KeyContainer[keycode] == InputState::Key_TRIGGERED)
@@ -48,7 +46,6 @@ namespace Eclipse
         }
         else if (IsKeyPressed(Hold))
         {
-            bool single = false;
             RegisterHoldInput(keycode, InputState::Key_HOLD);
 
             if (KeyContainer.count(keycode) != 0 &&
@@ -78,8 +75,6 @@ namespace Eclipse
         // Check if Space is pressed
         else if (IsKeyPressed(Press))
         {
-            bool single = false;
-
             RegisterTriggerInput(CheckMappingExist(Mappedkeycode), InputState::Key_TRIGGERED); // container size 1
 
             if (KeyContainer.count(CheckMappingExist(Mappedkeycode)) != 0 && KeyContainer[CheckMappingExist(Mappedkeycode)] == InputState::Key_TRIGGERED)
@@ -107,7 +102,6 @@ namespace Eclipse
         }
         else if (IsKeyPressed(Hold))
         {
-            bool single = false;
             RegisterHoldInput(CheckMappingExist(Mappedkeycode), InputState::Key_HOLD);
 
             if (KeyContainer.count(CheckMappingExist(Mappedkeycode)) != 0 &&
@@ -888,8 +882,9 @@ namespace Eclipse
 
         default:
             break;
-
         }
+
+        return "";
     }
 
     std::string LogicalInput::GetInputString(const InputKeycode keycode)

@@ -2,6 +2,7 @@
 #include "AllInputKeyCodes.h"
 #include <map>
 #include "Graphics/InputHandler/LogicalEnum.hpp"
+#include "Graphics/EngineCompiler/InputCompiler/InputCompiler.h"
 
 namespace Eclipse
 {
@@ -46,6 +47,11 @@ namespace Eclipse
         bool GetMouseCurrent(std::string Mappedkeycode);
         std::vector<std::string> GetAllMouseKeys();
         std::unordered_map<std::string, InputMouseKeycode> MouseMappings;
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // COMPILER For LOGICAL INPUT 
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        InputCompiler Test;
 
     private:
         void init();
