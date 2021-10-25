@@ -38,7 +38,8 @@ namespace Eclipse
 
 		void ChangeTextureController(MaterialComponent& Item);
 		void TextureList(MaterialComponent& Item);
-		
+		bool ShowParentProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowChildProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		void ChangeMeshController(Entity ID);
 		void MeshList(Entity ID);
 
