@@ -75,8 +75,6 @@ namespace Eclipse
         unsigned int editorCamID = MAX_ENTITY;
         unsigned int gameCamID = MAX_ENTITY;
     public:
-        InputWrapper InputHandler;
-
         void CreateEditorCamera();
         unsigned int GetEditorCameraID();
 
