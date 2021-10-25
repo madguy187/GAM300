@@ -75,10 +75,111 @@ namespace Eclipse
 
     void MeshEditorWindow::OnCameraMoveEvent()
     {
+        ImGuiIO& io = ImGui::GetIO();
+        ImVec2 value_with_lock_threshold = ECGui::GetMouseDragDelta(1);
+        const float benchmarkValue = 0.0f;
+
+        // ImGui Right Click Detection
+        if (ECGui::IsMouseDragging(1))
+        {
+            // Camera Yaw Right
+            if (value_with_lock_threshold.x > benchmarkValue && io.MouseDelta.x > 0.0f)
+                engine->gCamera.GetMeshInput().set(7, 1);
+            else
+                engine->gCamera.GetMeshInput().set(7, 0);
+
+            // Camera Yaw Left
+            if (value_with_lock_threshold.x < benchmarkValue && io.MouseDelta.x < 0.0f)
+                engine->gCamera.GetMeshInput().set(6, 1);
+            else
+                engine->gCamera.GetMeshInput().set(6, 0);
+
+            // Camera Pitch Down
+            if (value_with_lock_threshold.y > benchmarkValue && io.MouseDelta.y > 0.0f)
+                engine->gCamera.GetMeshInput().set(5, 1);
+            else
+                engine->gCamera.GetMeshInput().set(5, 0);
+
+            // Camera Pitch Up
+            if (value_with_lock_threshold.y < benchmarkValue && io.MouseDelta.y < 0.0f)
+                engine->gCamera.GetMeshInput().set(4, 1);
+            else
+                engine->gCamera.GetMeshInput().set(4, 0);
+
+            // Camera Move Front
+            if (ECGui::IsKeyDown(ECGui::GetKeyIndex(ImGuiKey_W)))
+                engine->gCamera.GetMeshInput().set(2, 1);
+            else
+                engine->gCamera.GetMeshInput().set(2, 0);
+
+            // Camera Move Left
+            if (ECGui::IsKeyDown(ECGui::GetKeyIndex(ImGuiKey_A)))
+                engine->gCamera.GetMeshInput().set(1, 1);
+            else
+                engine->gCamera.GetMeshInput().set(1, 0);
+
+            // Camera Move Back
+            if (ECGui::IsKeyDown(ECGui::GetKeyIndex(ImGuiKey_S)))
+                engine->gCamera.GetMeshInput().set(3, 1);
+            else
+                engine->gCamera.GetMeshInput().set(3, 0);
+
+            // Camera Move Right
+            if (ECGui::IsKeyDown(ECGui::GetKeyIndex(ImGuiKey_D)))
+                engine->gCamera.GetMeshInput().set(0, 1);
+            else
+                engine->gCamera.GetMeshInput().set(0, 0);
+
+            // Camera Move Up
+            if (ECGui::IsKeyDown(ECGui::GetKeyIndex(ImGuiKey_Q)))
+                engine->gCamera.GetMeshInput().set(10, 1);
+            else
+                engine->gCamera.GetMeshInput().set(10, 0);
+
+            // Camera Move Down
+            if (ECGui::IsKeyDown(ECGui::GetKeyIndex(ImGuiKey_E)))
+                engine->gCamera.GetMeshInput().set(11, 1);
+            else
+                engine->gCamera.GetMeshInput().set(11, 0);
+        }
+        else
+        {
+            engine->gCamera.GetMeshInput().set(0, 0);
+            engine->gCamera.GetMeshInput().set(1, 0);
+            engine->gCamera.GetMeshInput().set(2, 0);
+            engine->gCamera.GetMeshInput().set(3, 0);
+            engine->gCamera.GetMeshInput().set(4, 0);
+            engine->gCamera.GetMeshInput().set(5, 0);
+            engine->gCamera.GetMeshInput().set(6, 0);
+            engine->gCamera.GetMeshInput().set(7, 0);
+            engine->gCamera.GetMeshInput().set(10, 0);
+            engine->gCamera.GetMeshInput().set(11, 0);
+        }
     }
 
     void MeshEditorWindow::OnCameraZoomEvent()
     {
+        ImGuiIO& io = ImGui::GetIO();
+
+        if (io.MouseWheel != 0.0f)
+        {
+            // ImGui Scroll Up Detection
+            if (io.MouseWheel > 0.0f)
+                engine->gCamera.GetMeshInput().set(8, 1);
+            else
+                engine->gCamera.GetMeshInput().set(8, 0);
+
+            // ImGui Scroll Down Detection
+            if (io.MouseWheel < 0.0f)
+                engine->gCamera.GetMeshInput().set(9, 1);
+            else
+                engine->gCamera.GetMeshInput().set(9, 0);
+        }
+        else
+        {
+            engine->gCamera.GetMeshInput().set(8, 0);
+            engine->gCamera.GetMeshInput().set(9, 0);
+        }
     }
 
     void MeshEditorWindow::SetMeshID(Entity ID)
