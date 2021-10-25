@@ -55,11 +55,11 @@ namespace Eclipse
 
     enum class NodeType
     {
+        Test,
         Blueprint,
         Simple,
         Tree,
         Comment,
-        Houdini
     };
 
     struct Node;
@@ -69,11 +69,12 @@ namespace Eclipse
         ed::PinId   ID;
         ::Node* Node;
         std::string Name;
+        std::string Data;
         PinType     Type;
         PinKind     Kind;
 
-        Pin(int id, const char* name, PinType type) :
-            ID(id), Node(nullptr), Name(name), Type(type), Kind(PinKind::Input)
+        Pin(int id, const char* name, PinType type, std::string inputData) :
+            ID(id), Node(nullptr), Name(name), Type(type), Kind(PinKind::Input) , Data(inputData)
         {
         }
     };
@@ -126,12 +127,23 @@ namespace Eclipse
         const int            s_PinIconSize = 24;
         std::vector<Node>    s_Nodes;
         std::vector<Link>    s_Links;
-        ImTextureID          s_HeaderBackground = nullptr;
-        ImTextureID          s_SaveIcon = nullptr;
-        ImTextureID          s_RestoreIcon = nullptr;
+       TextureComponent          s_HeaderBackground;
+       TextureComponent          s_SaveIcon;
+       TextureComponent          s_RestoreIcon;
         const float          s_TouchTime = 1.0f;
         std::map<ed::NodeId, float, NodeIdLess> s_NodeTouchTime;
         int s_NextId = 1;
+
+
+
+        /////////////////////////////
+        ed::NodeId contextNodeId = 0;
+        ed::LinkId contextLinkId = 0;
+        ed::PinId  contextPinId = 0;
+        bool createNewNode = false;
+        Pin* newNodeLinkPin = nullptr;
+        Pin* newLinkPin = nullptr;
+
 	public:
 		void Update() override;
 		void Init() override;
@@ -165,8 +177,6 @@ namespace Eclipse
         bool IsPinLinked(ed::PinId id);
 
         bool CanCreateLink(Pin* a, Pin* b);
-
-        void Application_Frame();
 
         void ShowLeftPane(float paneWidth);
 

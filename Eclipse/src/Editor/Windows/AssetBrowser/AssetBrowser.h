@@ -14,13 +14,6 @@ namespace Eclipse
 		std::filesystem::path CurrentDir;
 		std::filesystem::path NextDir;
 		////////////////////////////////
-		
-
-		//Buton Icon rendering
-		////////////////////////////////
-		TextureComponent sprite;
-		TextureComponent FolderIcon;
-		////////////////////////////////
 
 		
 		//button settings

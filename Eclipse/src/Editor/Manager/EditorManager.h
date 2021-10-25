@@ -50,6 +50,10 @@ namespace Eclipse
 		// Cleaning Up
 		void Clear();
 
+		int spriteIcon_;
+		int FolderIcon_;
+		void TextureIconInit();
+
 		DragAndDrop DragAndDropInst_;
 	private:
 		std::vector<std::unique_ptr<ECGuiWindow>> Windows_;
