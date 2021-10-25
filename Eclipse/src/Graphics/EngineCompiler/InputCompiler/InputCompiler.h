@@ -45,5 +45,11 @@ namespace Eclipse
     public:
         void Load();
         void Write();
+
+        // Take Note that editor kep is the keycode.
+        // Darren to check if need multimap
+
+        void ProvideContainer(std::map<std::string, std::string>& In);
+        void ReceieveMapping(std::map<std::string, std::string>& In);
     };
 }

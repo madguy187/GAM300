@@ -133,5 +133,24 @@ namespace Eclipse
         SerializeMouseLogicalInputs();
     }
 
+    void InputCompiler::ProvideContainer(std::map<std::string, std::string>& In)
+    {
+        for (auto& i : engine->InputManager->KeyMappings)
+        {
+            std::string KeyCodeName = engine->InputManager->GetInputString(i.second);
+            In.emplace(KeyCodeName, i.first);
+        }
+    }
+
+    void InputCompiler::ReceieveMapping(std::map<std::string, std::string>& In)
+    {
+        engine->InputManager->KeyMappings.clear();
+
+        for (auto& i : In)
+        {
+            InputKeycode B = static_cast<InputKeycode>(engine->InputManager->Dictionary[i.first]);
+            engine->InputManager->KeyMappings.emplace(i.second, B);
+        }
+    }
 }
 

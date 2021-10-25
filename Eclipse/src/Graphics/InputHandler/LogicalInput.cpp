@@ -277,13 +277,14 @@ namespace Eclipse
 
     void LogicalInput::InsertAllKeys()
     {
-        for (unsigned char i = 0; i <= static_cast<unsigned char>(Eclipse::InputKeycode::Key_MISCELLANEOUS); i++)
+        for (unsigned int i = 0; i <= static_cast<unsigned int>(Eclipse::InputKeycode::Key_APPS); i++)
         {
             std::string Key = GetInputString(static_cast<Eclipse::InputKeycode>(i)).data();
 
             if (Key.empty() == false)
             {
                 AllInputs.push_back(Key);
+                Dictionary.emplace(Key, i);
             }
         }
 

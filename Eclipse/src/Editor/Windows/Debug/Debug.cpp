@@ -20,6 +20,8 @@ namespace Eclipse
         SelectionList.push_back({ "Input Manager", false });
 
         // Deserialize the map here into KeyMappings
+        engine->InputManager->InputCompiler_.Load();
+        engine->InputManager->InputCompiler_.ProvideContainer(KeyMappings);
     }
 
     void DebugWindow::Unload()
@@ -148,6 +150,8 @@ namespace Eclipse
             {
                 // For Darren to save
                 // take the map KeyMappings
+                engine->InputManager->InputCompiler_.ReceieveMapping(KeyMappings);
+                engine->InputManager->InputCompiler_.Write();
             }
 
             if (!ToBeRemoved.empty())

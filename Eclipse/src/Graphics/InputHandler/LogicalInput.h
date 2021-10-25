@@ -52,6 +52,9 @@ namespace Eclipse
         // COMPILER For LOGICAL INPUT 
         ///////////////////////////////////////////////////////////////////////////////////////////
         InputCompiler InputCompiler_;
+        std::string GetInputString(const InputKeycode keycode);
+        std::string GetInputString(const InputMouseKeycode keycode);
+        std::unordered_map<std::string, unsigned int> Dictionary;
 
     private:
         void init();
@@ -60,8 +63,6 @@ namespace Eclipse
         InputKeycode CheckMappingExist(std::string);
         InputMouseKeycode CheckMouseMappingExist(std::string NewMap);
         friend std::ostream& operator << (std::ostream& os, const InputKeycode& in);
-        std::string GetInputString(const InputKeycode keycode);
-        std::string GetInputString(const InputMouseKeycode keycode);
         void RegisterTriggerInput(InputKeycode keycode, InputState input);
         void RegisterMouseInput(InputMouseKeycode keycode, InputState input);
         void RegisterHoldInput(InputKeycode keycode,InputState input);
