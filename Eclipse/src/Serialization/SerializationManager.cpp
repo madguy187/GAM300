@@ -236,9 +236,9 @@ namespace Eclipse
 		sz.CloseElement();
 	}
 
-	EUUID SerializationManager::LoadPrefab(Entity& dszEnt)
+	EUUID SerializationManager::LoadPrefab(Entity& dszEnt, bool IsFromMainWorld)
 	{
-		World& prefabW = engine->prefabWorld;
+		World& prefabW = IsFromMainWorld ? engine->world : engine->prefabWorld;
 		EUUID PrefabID = 0;
 
 		if(dsz.StartElement("Prefab"))
@@ -267,12 +267,12 @@ namespace Eclipse
 		SaveFile(path);
 	}
 
-	EUUID SerializationManager::LoadPrefabFile(Entity& dszEnt, const char* fullpath)
+	EUUID SerializationManager::LoadPrefabFile(Entity& dszEnt, const char* fullpath, bool IsFromMainWorld)
 	{
 		EUUID PrefabID = 0;
 		if (LoadFile(fullpath))
 		{
-			PrefabID =  LoadPrefab(dszEnt);
+			PrefabID =  LoadPrefab(dszEnt, IsFromMainWorld);
 		}
 		
 		return PrefabID;

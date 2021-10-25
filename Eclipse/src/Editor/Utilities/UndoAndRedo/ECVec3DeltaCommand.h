@@ -18,7 +18,7 @@ namespace Eclipse
 			m_Vector.setY(m_NewVector.getY());
 			m_Vector.setZ(m_NewVector.getZ());
 
-			if (ID != MAX_ENTITY)
+			if (ID != MAX_ENTITY && !engine->editorManager->GetMeshEditorActive())
 			{
 				engine->gPicker.UpdateAabb(ID);
 				engine->gDynamicAABBTree.UpdateData(ID);
@@ -31,7 +31,7 @@ namespace Eclipse
 			m_Vector.setY(m_OldVector.y);
 			m_Vector.setZ(m_OldVector.z);
 
-			if (ID != MAX_ENTITY)
+			if (ID != MAX_ENTITY && !engine->editorManager->GetMeshEditorActive())
 			{
 				engine->gPicker.UpdateAabb(ID);
 				engine->gDynamicAABBTree.UpdateData(ID);
