@@ -22,7 +22,6 @@ namespace Eclipse
     public:
         OpenGL_Context mRenderContext;
         std::vector<AssimpModel*> ModelContainer;
-        InputWrapper InputHandler;
         GLenum GlobalMode = GL_FILL;
         std::unique_ptr<CubeMap> Sky;
         AABB_ AllAABBs;

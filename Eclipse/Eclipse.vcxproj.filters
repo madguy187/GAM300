@@ -863,6 +863,12 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Graphics\InputHandler\LogicalEnum.hpp" />
+    <ClInclude Include="src\Graphics\InputHandler\Input.cpp" />
+    <ClInclude Include="src\Graphics\InputHandler\Input.h" />
+    <ClInclude Include="src\Graphics\InputHandler\Key.h" />
+    <ClInclude Include="src\Graphics\InputHandler\Log.h" />
+    <ClInclude Include="src\Graphics\InputHandler\test.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1277,5 +1283,7 @@
       <Filter>Tracy</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\Graphics\InputHandler\Logcpp.cpp" />
+    <ClCompile Include="src\Graphics\InputHandler\test.cpp" />
   </ItemGroup>
 </Project>
