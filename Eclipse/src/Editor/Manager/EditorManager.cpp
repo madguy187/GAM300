@@ -203,6 +203,8 @@ namespace Eclipse
 			}
 		}
 
+		if (GetSelectedEntity() == MAX_ENTITY) return;
+
 		if (engine->world.CheckComponent<MaterialComponent>(GetSelectedEntity()))
 			engine->MaterialManager.HighlightClick(GetSelectedEntity());
 

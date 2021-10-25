@@ -35,10 +35,15 @@ namespace Eclipse
 	public:
 		void Init();
 		void Update(MonoScript* obj);
-		void StopMono();
 		void StartMono();
+		void StopMono();
 		void Terminate();
+
 		MonoObject* CreateMonoObject(std::string scriptName, Entity entity);
+		MonoClass* GetMonoClass(std::string className);
+		MonoObject* CreateObjectFromClass(MonoClass* klass);
+		MonoMethod* GetMethodFromClass(MonoClass* klass, std::string funcName);
+		bool ExecuteMethod(MonoObject* obj, MonoMethod* method, std::vector<void*> args);
 
 		// Gets image containing all API Scripts
 		MonoImage* GetAPIImage();

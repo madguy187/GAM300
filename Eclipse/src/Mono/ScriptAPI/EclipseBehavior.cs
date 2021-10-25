@@ -1,19 +1,21 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace Eclipse
 {
     public class EclipseBehavior : IScriptable
     {
         public GameObject gameObject;
-        UInt32 gc_handle;
+        private UInt32 gc_handle;
 
         protected void InitBehavior(UInt32 handle, UInt32 entity)
         {
-            gameObject = new GameObject();
+            Console.WriteLine("InitBehavior");
+            gameObject = new GameObject(entity);
             gc_handle = handle;
-            Entity = entity;
+            GetRigidComponent();
         }
 
         public UInt32 Entity
@@ -21,5 +23,34 @@ namespace Eclipse
             get => gameObject.Entity;
             set => gameObject.Entity = value;
         }
+
+        public void GetRigidComponent()
+        {
+            Console.WriteLine("GetRigidComponent");
+            Console.WriteLine(gc_handle);
+            if (!(gameObject is object))
+            {
+              Console.WriteLine("Empty");
+            }
+
+            Console.WriteLine(Entity);
+        }
+
+        public T GetComponent<T>() where T : IScriptable
+        {
+            Console.WriteLine("Crash1");
+            //gameObject.PrintSomething();
+            //Console.WriteLine("Crash2");
+
+            Console.WriteLine(Entity);
+            Console.WriteLine("Crash2");
+
+            
+
+            return gameObject.GetComponent<T>();
+        }
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        private extern static GameObject GetGameObject(UInt32 entity);
     }
 }
