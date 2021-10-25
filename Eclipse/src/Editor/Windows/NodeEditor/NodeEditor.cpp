@@ -19,6 +19,7 @@ void Eclipse::NodeEditorWindow::Init()
 	WindowName = "NodeEditor " ICON_MDI_FILE_IMAGE;
 	ed::Config config;
 	config.SettingsFile = "Simple.json";
+    IsVisible = false;
 	g_Context = ed::CreateEditor(&config);
 
 }
