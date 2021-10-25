@@ -87,10 +87,10 @@ namespace Eclipse
             std::filesystem::create_directories("src//Assets//LogicalInput//Mouse");
         }
 
-        OpenFile(InputFileWrite, "src/Assets/LogicalInput/Mouse/LogicalMouseInputMappings.input");
+        OpenFile(MouseFileWrite, "src/Assets/LogicalInput/Mouse/LogicalMouseInputMappings.input");
 
         int MouseKeys = engine->InputManager->MouseMappings.size();
-        InputFileWrite.write(reinterpret_cast<const char*>(&MouseKeys), sizeof(MouseKeys));
+        MouseFileWrite.write(reinterpret_cast<const char*>(&MouseKeys), sizeof(MouseKeys));
 
         for (auto i : engine->InputManager->MouseMappings)
         {
@@ -99,26 +99,39 @@ namespace Eclipse
             StringName[StringName.size() - 1] = '\0';
 
             MouseKey A{ StringName ,i.second };
-            InputFileWrite.write(reinterpret_cast<const char*>(&A), offsetof(MouseKey, Stopper));
+            MouseFileWrite.write(reinterpret_cast<const char*>(&A), offsetof(MouseKey, Stopper));
         }
-        CloseFile(InputFileWrite);
+        CloseFile(MouseFileWrite);
     }
 
     void InputCompiler::DeSerializeMouseLogicalInputs()
     {
         engine->InputManager->MouseMappings.clear();
-        OpenFile(InputFileRead, "src/Assets/LogicalInput/Mouse/LogicalMouseInputMappings.input");
+        OpenFile(MouseFileRead, "src/Assets/LogicalInput/Mouse/LogicalMouseInputMappings.input");
 
         int TotalNumberOfMouseKeys = 0;
-        InputFileRead.read(reinterpret_cast<char*>(&TotalNumberOfMouseKeys), sizeof(int));
+        MouseFileRead.read(reinterpret_cast<char*>(&TotalNumberOfMouseKeys), sizeof(int));
 
         for (int i = 0; i < TotalNumberOfMouseKeys; i++)
         {
             MouseKey B;
-            InputFileRead.read(reinterpret_cast<char*>(&B), offsetof(MouseKey, Stopper));
+            MouseFileRead.read(reinterpret_cast<char*>(&B), offsetof(MouseKey, Stopper));
             engine->InputManager->MouseMappings.emplace(B.MapName.data(), B.MouseKey);
         }
-        CloseFile(InputFileRead);
+        CloseFile(MouseFileRead);
     }
+
+    void InputCompiler::Load()
+    {
+        DeSerializeLogicalInputs();
+        DeSerializeMouseLogicalInputs();
+    }
+
+    void InputCompiler::Write()
+    {
+        SerializeLogicalInputs();
+        SerializeMouseLogicalInputs();
+    }
+
 }
 

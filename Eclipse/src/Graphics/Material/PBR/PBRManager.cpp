@@ -15,7 +15,6 @@ namespace Eclipse
 
         gMaterialEditorSettings = std::make_unique<MaterialEditorSettings>();
 
-        LoadMaterial("BambooWood");
         LoadMaterial("HardWood");
     }
 

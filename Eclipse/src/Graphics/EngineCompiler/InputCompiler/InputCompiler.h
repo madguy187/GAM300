@@ -21,12 +21,14 @@ namespace Eclipse
     private:
         std::ofstream InputFileWrite;
         std::fstream InputFileRead;
+        std::ofstream MouseFileWrite;
+        std::fstream MouseFileRead;
         bool OpenFile(std::fstream& FileIn, std::string Path);
         void CloseFile(std::fstream& FileIn, std::string FileName = "");
         bool OpenFile(std::ofstream& FileIn, std::string Path);
         void CloseFile(std::ofstream& FileIn, std::string FileName = "");
 
-    public:
+        std::vector<std::unique_ptr<std::thread>> InputCompilerThreads;
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // For LOGICAL INPUT ( KEYBOARD )
@@ -39,5 +41,9 @@ namespace Eclipse
         ///////////////////////////////////////////////////////////////////////////////////////////
         void SerializeMouseLogicalInputs();
         void DeSerializeMouseLogicalInputs();
+
+    public:
+        void Load();
+        void Write();
     };
 }
