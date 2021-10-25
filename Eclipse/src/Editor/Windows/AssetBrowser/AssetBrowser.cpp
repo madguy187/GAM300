@@ -18,7 +18,7 @@ namespace Eclipse
 		memset(searchItemBuffer, 0, 128);
 		memset(searchFolderBuffer, 0, 128);
 		buttonSize = { thumbnailSize,thumbnailSize };
-		allExtensions = { {"cs"},{"png"},{"txt"},{"mat"} };
+		allExtensions = { {"cs"},{"png"},{"txt"},{"mat"},{"ITEM"},{"prefab"},{"wav"}};
 		ScanAll();
 	}
 
@@ -122,7 +122,7 @@ namespace Eclipse
 						NextDir = AllDir;
 					}
 
-					engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
+					//engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
 
 					for (auto& secondEntry : std::filesystem::recursive_directory_iterator(NextDir))
 					{
@@ -150,13 +150,13 @@ namespace Eclipse
 
 								ECGui::EndTreeNode();
 							}
-							engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), secondEntry, refresh, pathMap, CopyFilesAndFolder);
+							//engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), secondEntry, refresh, pathMap, CopyFilesAndFolder);
 						}
 					}
 					ECGui::EndTreeNode();
 				}
 
-				engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
+				//engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
 
 				if (!jumpDir && /*ECGui::IsMouseDoubleClicked(0) &&*/ ECGui::IsItemClicked(0))
 				{
@@ -412,10 +412,13 @@ namespace Eclipse
 			
 			//// GetFileName(relativePath.filename().string().c_str())
 
-			//for (size_t i = 0; i < allExtensions.size(); ++i)
-			//{
-			//	engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget(allExtensions[i].c_str(), paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
-			//}
+			if (ECGui::IsMouseClicked(0))
+			{
+				for (size_t i = 0; i < allExtensions.size(); ++i)
+				{
+					engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget(allExtensions[i].c_str(), paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
+				}
+			}
 
 			//engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
 

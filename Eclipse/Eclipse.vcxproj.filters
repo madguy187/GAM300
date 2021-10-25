@@ -871,6 +871,16 @@
     <ClInclude Include="src\Library\Random\Random.h" />
     <ClInclude Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.h" />
     <ClInclude Include="src\Mono\Components\s_RigidBodyComponent.h" />
+    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditor.h" />
+    <ClInclude Include="src\Editor\Windows\NodeEditor\Utilities\builders.h" />
+    <ClInclude Include="src\Editor\Windows\NodeEditor\Utilities\drawing.h" />
+    <ClInclude Include="src\Editor\Windows\NodeEditor\Utilities\widgets.h" />
+    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\crude_json.h" />
+    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_bezier_math.h" />
+    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_canvas.h" />
+    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_extra_math.h" />
+    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor.h" />
+    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_internal.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1289,6 +1299,14 @@
     <ClCompile Include="src\Graphics\Material\PBR\PBRManager.cpp" />
     <ClCompile Include="src\Graphics\Material\MaterialInstance\MaterialInstance.cpp" />
     <ClCompile Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.cpp" />
+    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditor.cpp" />
+    <ClCompile Include="src\Editor\Windows\NodeEditor\Utilities\builders.cpp" />
+    <ClCompile Include="src\Editor\Windows\NodeEditor\Utilities\drawing.cpp" />
+    <ClCompile Include="src\Editor\Windows\NodeEditor\Utilities\widgets.cpp" />
+    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\crude_json.cpp" />
+    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_canvas.cpp" />
+    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor.cpp" />
+    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_api.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />
@@ -1297,5 +1315,8 @@
     <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.vert" />
     <ClCompile Include="src\Library\Random\Random.cpp" />
     <None Include="src\Mono\ScriptAPI\EclipseBehavior.cs" />
+    <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_bezier_math.inl" />
+    <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_extra_math.inl" />
+    <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_internal.inl" />
   </ItemGroup>
 </Project>

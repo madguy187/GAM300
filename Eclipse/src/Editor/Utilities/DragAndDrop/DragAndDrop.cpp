@@ -208,16 +208,17 @@ namespace Eclipse
 		std::string AssetPath, std::filesystem::directory_entry dirEntry, bool& refreshBrowser,
 		std::map<std::filesystem::path, std::vector<std::filesystem::path>> pathMap, bool& CopyMode)
 	{
-		static std::string folderName;
-
-		static std::string parentPath;
-
-		std::filesystem::path itemPaths = AssetPath.c_str();
 
 		if (ECGui::BeginDragDropTarget())
 		{
 			if (const ImGuiPayload* payload = ECGui::AcceptDragDropPayload(type))
 			{
+				static std::string folderName;
+
+				static std::string parentPath;
+
+				std::filesystem::path itemPaths = AssetPath.c_str();
+
 				try
 				{
 					paths = (const char*)payload->Data;
@@ -383,11 +384,18 @@ namespace Eclipse
 					}
 					else
 					{
-						std::filesystem::copy(std::filesystem::path(itemPaths / paths), dirEntry.path());
-
-						if (!CopyMode)
+						if (std::filesystem::is_directory(dirEntry.path()))
 						{
-							std::filesystem::remove(std::filesystem::path(itemPaths / paths));
+							std::filesystem::copy(std::filesystem::path(itemPaths / paths), dirEntry.path());
+
+							if (!CopyMode)
+							{
+								std::filesystem::remove(std::filesystem::path(itemPaths / paths));
+							}
+						}
+						else
+						{
+							EDITOR_LOG_WARN("You are copying / moving a file to another file!");
 						}
 					}
 					refreshBrowser = true;
