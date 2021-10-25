@@ -5,6 +5,7 @@
 #include "ECS/ComponentManager/Components/RigidBodyComponent.h"
 #include "ECS/ComponentManager/Components/ScriptComponent.h"
 #include "Editor/Windows/SwitchViews/TopSwitchViewWindow.h"
+#include "Editor/Windows/MeshEditor/MeshEditor.h"
 #include "ECS/ComponentManager/Components/ParentComponent.h"
 #include "ECS/ComponentManager/Components/ChildComponent.h"
 #include "ECS/SystemManager/Systems/System/Collision/CollisionSystem.h"
@@ -34,7 +35,8 @@ namespace Eclipse
 
         if (!engine->editorManager->IsEntityListEmpty())
         {
-            Entity currEnt = engine->editorManager->GetSelectedEntity();
+            auto* mesheditor = engine->editorManager->GetEditorWindow<MeshEditorWindow>();
+            Entity currEnt = mesheditor->IsVisible ? mesheditor->GetMeshID() : engine->editorManager->GetSelectedEntity();
             auto& entcom = engine->world.GetComponent<EntityComponent>(currEnt);
             std::string entityName = entcom.Name + " " + std::to_string(currEnt);
 
@@ -49,7 +51,7 @@ namespace Eclipse
             ECGui::PushItemWidth(WindowSize_.getX());
             ShowPrefebProperty(currEnt);
             ShowEntityProperty("Tag", currEnt, CompFilter);
-            ShowTransformProperty("Transform", currEnt, CompFilter);
+            ShowTransformProperty("Transform", currEnt, CompFilter, mesheditor->IsVisible);
             ShowPointLightProperty("PointLight", currEnt, CompFilter);
             ShowSpotLightProperty("SpotLight", currEnt, CompFilter);
             ShowDirectionalLightProperty("DirectionalLight", currEnt, CompFilter);
@@ -112,7 +114,7 @@ namespace Eclipse
         return false;
     }
 
-    bool InspectorWindow::ShowTransformProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+    bool InspectorWindow::ShowTransformProperty(const char* name, Entity ID, ImGuiTextFilter& filter, bool IsNotInScene)
     {
         if (engine->world.CheckComponent<TransformComponent>(ID))
         {
@@ -139,8 +141,11 @@ namespace Eclipse
                 ECGui::DrawSliderFloat3Widget("TransScale", &transCom.scale, true, -100.f, 100.f, ID);
 
                 //Update for DynamicAABB Tree -Rachel
-                engine->gPicker.UpdateAabb(ID);
-                engine->gDynamicAABBTree.UpdateData(ID);
+                if (!IsNotInScene)
+                {
+                    engine->gPicker.UpdateAabb(ID);
+                    engine->gDynamicAABBTree.UpdateData(ID);
+                }
 
                 ECGui::SetColumns(1, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();

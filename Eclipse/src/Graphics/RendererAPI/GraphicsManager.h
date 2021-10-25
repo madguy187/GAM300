@@ -3,7 +3,6 @@
 
 #include "ECS/ComponentManager/Components/MeshComponent.h"
 #include "AssimpModel/AssimpModel.h"
-#include "Graphics/InputHandler/InputWrapper.h"
 #include "Graphics/ModelFactory/Sky/CubeMap.h"
 #include "Graphics/Grid/Grid.h"
 #include "Graphics/Grid/Box.h"
@@ -22,7 +21,6 @@ namespace Eclipse
     public:
         OpenGL_Context mRenderContext;
         std::vector<AssimpModel*> ModelContainer;
-        InputWrapper InputHandler;
         GLenum GlobalMode = GL_FILL;
         std::unique_ptr<CubeMap> Sky;
         AABB_ AllAABBs;

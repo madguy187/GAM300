@@ -40,10 +40,12 @@ namespace Eclipse
 		Entity GetEntityID(int index);
 		bool IsEntityListEmpty() const;
 		bool IsAnyGizmoWindowActive();
+		bool GetMeshEditorActive() const;
 
 		// Setters
 		void SetSelectedEntity(Entity ID);
 		void SetGlobalIndex(size_t index);
+		void SetMeshEditorActive(bool active);
 
 		template <typename TWindow>
 		TWindow* GetEditorWindow();
@@ -63,6 +65,8 @@ namespace Eclipse
 		std::vector<Entity> EntityHierarchyList_;
 		std::unordered_map<Entity, int> EntityToIndexMap_;
 		size_t GEHIndex_{ 0 };
+
+		bool IsMeshEditorActive{ false };
 
 		template <typename TWindow>
 		inline void AddWindow(const char* title);

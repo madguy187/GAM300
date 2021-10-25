@@ -92,7 +92,7 @@ namespace Eclipse
 
 		void SavePrefab(const EUUID& prefabID, std::vector<Entity>& prefabContents);
 
-		EUUID LoadPrefab(Entity& dszEnt);
+		EUUID LoadPrefab(Entity& dszEnt, bool IsFromMainWorld = false);
 
 		void SavePrefabWorld(const std::set<Entity>& entities);
 
@@ -110,7 +110,7 @@ namespace Eclipse
 
 		void SavePrefabFile(const EUUID& prefabID, std::vector<Entity>& prefabContents, const char* path);
 
-		EUUID LoadPrefabFile(Entity& dszEnt, const char* fullpath);
+		EUUID LoadPrefabFile(Entity& dszEnt, const char* fullpath, bool IsFromMainWorld = false);
 
 		void SaveSceneFile(const char* fullpath = "Data/Temp/Temp.scn");
 
