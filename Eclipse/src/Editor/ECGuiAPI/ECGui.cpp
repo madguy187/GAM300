@@ -182,7 +182,7 @@ namespace Eclipse
 		ImGuiAPI::EndStyleVariant();
 	}
 
-	void ECGui::CreateComboList(ComboListSettings settings, const std::vector<std::string>& vecStr, size_t& index)
+	bool ECGui::CreateComboList(ComboListSettings settings, const std::vector<std::string>& vecStr, size_t& index)
 	{
 		// Commented out for Now - Darren
 		//ENGINE_LOG_ASSERT(index >= vecStr.size(), "Accessing out of the vector's index");
@@ -196,6 +196,7 @@ namespace Eclipse
 				if (ImGui::Selectable(vecStr[n].c_str(), is_selected))
 				{
 					index = n;
+					return true;
 				}
 
 				if (is_selected)
@@ -204,6 +205,8 @@ namespace Eclipse
 
 			ImGuiAPI::EndComboList();
 		}
+
+		return false;
 	}
 
 	bool ECGui::CreateMenuItem(const char* name, bool* open, const char* shortcut)
@@ -493,7 +496,15 @@ namespace Eclipse
 
 	bool ECGui::CheckBoxBool(const char* name, bool* var, bool hideName)
 	{
-		return ImGuiAPI::CheckBoxBool(name, var, hideName);
+		bool oldBool = *var;
+
+		if (ImGuiAPI::CheckBoxBool(name, var, hideName))
+		{
+			CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<bool>{ oldBool, *var });
+			return true;
+		}
+
+		return false;
 	}
 
 	bool ECGui::ButtonBool(const char* name, const ImVec2& size)

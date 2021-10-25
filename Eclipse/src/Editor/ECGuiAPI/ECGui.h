@@ -128,7 +128,7 @@ namespace Eclipse
 		static bool CreateCollapsingHeader(const char* name, bool forInspector = false);
 		static bool CreateSelectableButton(const char* label, bool* active, 
 			                               ImGuiSelectableFlags flags = 0);
-		static void CreateComboList(ComboListSettings settings,
+		static bool CreateComboList(ComboListSettings settings,
 			                        const std::vector<std::string>& vecStr,
 			                        size_t& index);
 		static bool CreateMenuItem(const char* name, bool* open, const char* shortcut = "");
