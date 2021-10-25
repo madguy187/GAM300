@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Log.h"
+#include "..\..\..\Graphics\InputHandler\Log.h"
 
 namespace Eclipse
 {

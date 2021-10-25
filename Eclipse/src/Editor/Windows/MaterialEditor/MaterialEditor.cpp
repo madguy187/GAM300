@@ -63,6 +63,7 @@ namespace Eclipse
         ShowMaterialProperty("Material", CompFilter);
         ShowTransformProperty("Transform", CompFilter);
         Buttons();
+
     }
 
     void MaterialEditorWindow::CheckCurrentMaterial(size_t comboIndex)

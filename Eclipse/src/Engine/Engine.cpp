@@ -73,6 +73,8 @@ namespace Eclipse
             editorManager = std::make_unique<EditorManager>();
 
         glfwSetWindowCloseCallback(OpenGL_Context::GetWindow(), GraphicsManager.WindowCloseCallback);
+
+        helloInput = std::make_unique<GameInputManager>();
     }
 
     void Engine::Run()
