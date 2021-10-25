@@ -56,6 +56,12 @@ namespace Eclipse
         std::string GetInputString(const InputMouseKeycode keycode);
         std::unordered_map<std::string, unsigned int> Dictionary;
 
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // For Nico ( Boolean Checks )
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        bool CheckKeyboardMapping(std::string NewMap);
+        bool CheckMouseMapping(std::string NewMap);
+
     private:
         void init();
         void Update();

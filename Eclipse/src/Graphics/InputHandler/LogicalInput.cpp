@@ -121,7 +121,6 @@ namespace Eclipse
 
     InputKeycode LogicalInput::CheckMappingExist(std::string NewMap)
     {
-        // Searching for element 12
         if (KeyMappings.find(NewMap) == KeyMappings.end())
         {
             // Cannot find
@@ -307,6 +306,34 @@ namespace Eclipse
     std::vector<std::string> LogicalInput::GetAllMouseKeys()
     {
         return AllMouseInputs;
+    }
+
+    bool LogicalInput::CheckKeyboardMapping(std::string NewMap)
+    {
+        if (KeyMappings.find(NewMap) == KeyMappings.end())
+        {
+            // Cannot find
+            return false;
+        }
+        else
+        {
+            // Can Find
+            return true;
+        }
+    }
+
+    bool LogicalInput::CheckMouseMapping(std::string NewMap)
+    {
+        if (MouseMappings.find(NewMap) == MouseMappings.end())
+        {
+            // Cannot find
+            return false;
+        }
+        else
+        {
+            // Can Find
+            return true;
+        }
     }
 
     void LogicalInput::init()
