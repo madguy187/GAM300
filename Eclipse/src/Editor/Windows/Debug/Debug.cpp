@@ -25,7 +25,6 @@ namespace Eclipse
     {
         ECGui::DrawTextWidget<const char*>("Render Settings:", EMPTY_STRING);
         {
-
             ECGui::CheckBoxBool("Draw Grid", &engine->GridManager->Visible, false);
             ECGui::InsertSameLine();
             ECGui::CheckBoxBool("PostProcess", &engine->GraphicsManager.PostProcess->AllowPostProcess, false);
@@ -68,26 +67,26 @@ namespace Eclipse
             }
 
             // INPUT MANAGER
-            //std::vector<std::string> Methods = engine->InputManager->GetAllKeys();
+            std::vector<std::string> Methods = engine->InputManager->GetAllKeys();
 
-            //ECGui::DrawTextWidget<const char*>(my_strcat("List of Inputs (", engine->InputManager->KeyMappings1.size(), "):").c_str(), "");
+            ECGui::DrawTextWidget<const char*>(my_strcat("List of Inputs (", engine->InputManager->KeyMappings1.size(), "):").c_str(), "");
 
-            //ComboListSettings settingsss = { "Input Keys" };
-            //static size_t comboindex = 0;
-            //ECGui::DrawTextWidget<const char*>("Input Keys:", EMPTY_STRING);
-            //ECGui::CreateComboList(settingsss, Methods, comboindex);
+            ComboListSettings settingsss = { "Input Keys" };
+            static size_t comboindex = 0;
+            ECGui::DrawTextWidget<const char*>("Input Keys:", EMPTY_STRING);
+            ECGui::CreateComboList(settingsss, Methods, comboindex);
 
-            //for (size_t i = 0; i < engine->InputManager->KeyMappings1.size(); ++i)
-            //{
-            //    ECGui::DrawInputTextHintWidget(my_strcat("Input Name", i + 1).c_str(), "Input",const_cast<char*>(engine->InputManager->KeyMappings1[i].c_str()), 256, true, ImGuiInputTextFlags_None);
-            //}
+            for (size_t i = 0; i < engine->InputManager->KeyMappings1.size(); ++i)
+            {
+                ECGui::DrawInputTextHintWidget(my_strcat("Input Name", i + 1).c_str(), "Input",const_cast<char*>(engine->InputManager->KeyMappings1[i].c_str()), 256, true, ImGuiInputTextFlags_None);
+            }
 
-            //if (ECGui::ButtonBool("Add Input", { ImGui::GetColumnWidth(), 25 }))
-            //{
-            //    std::string InputName;
-            //    InputName.reserve(256);
-            //    engine->InputManager->KeyMappings1.push_back(InputName);
-            //}
+            if (ECGui::ButtonBool("Add Input", { ImGui::GetColumnWidth(), 25 }))
+            {
+                std::string InputName;
+                InputName.reserve(256);
+                engine->InputManager->KeyMappings1.push_back(InputName);
+            }
         }
     }
 }

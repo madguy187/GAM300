@@ -22,10 +22,7 @@
 #include "AI/AIManager.h"
 #include "Graphics/FrameBuffer/FrameBufferManager.h"
 #include "Graphics/Material/PBR/PBRManager.h"
-#include "Graphics/InputHandler/InputWrapper.h"
-
-#include "Graphics/InputHandler/Input.h"
-#include "Graphics/InputHandler/test.h"
+#include "Graphics/InputHandler/LogicalInput.h"
 
 namespace Eclipse
 {
@@ -58,8 +55,7 @@ namespace Eclipse
 		std::unique_ptr<EngineCompiler> gEngineCompiler;
 		std::unique_ptr<FrameBufferManager> gFrameBufferManager;
 		std::unique_ptr<PBRManager> gPBRManager;
-		//std::unique_ptr<InputWrapper> InputManager;
-		std::unique_ptr<GameInputManager> helloInput;
+		std::unique_ptr<LogicalInput> InputManager;
 
 		void Init();
 		void Run();

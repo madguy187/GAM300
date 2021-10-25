@@ -40,6 +40,7 @@
 #include <ECS/SystemManager/Systems/System/ParentChildSystem/ChildSystem/ChildSystem.h>
 #include "ECS/SystemManager/Systems/System/PrefabSystem/PrefabSystem.h"
 #include "ECS/SystemManager/Systems/System/AI/AISystem.h"
+#include "ECS/SystemManager/Systems/System/InputSystem/InputSystem.h"
 
 bool Tester1(const Test1&)
 {
@@ -64,6 +65,7 @@ namespace Eclipse
         EventSystem<Test1>::registerListener(Tester2);
         EventSystem<Test1>::registerListener(std::bind(&World::TempFunc, &world, std::placeholders::_1));
 
+        InputManager = std::make_unique<LogicalInput>();
         engine->gFrameBufferManager = std::make_unique<FrameBufferManager>();
         engine->GraphicsManager.Pre_Render();
 
@@ -73,8 +75,6 @@ namespace Eclipse
             editorManager = std::make_unique<EditorManager>();
 
         glfwSetWindowCloseCallback(OpenGL_Context::GetWindow(), GraphicsManager.WindowCloseCallback);
-
-        helloInput = std::make_unique<GameInputManager>();
     }
 
     void Engine::Run()
@@ -139,6 +139,7 @@ namespace Eclipse
         world.RegisterSystem<CollisionSystem>();
         world.RegisterSystem<PrefabSystem>();
         world.RegisterSystem<AISystem>();
+        world.RegisterSystem<InputSystem>();
 
         prefabWorld.RegisterSystem<PrefabSystem>();
 
@@ -361,6 +362,8 @@ namespace Eclipse
                 IsInStepState = false;
                 IsInPauseState = true;
             }
+
+            world.Update<InputSystem>();
         }
 
         //Serialization(Temp)

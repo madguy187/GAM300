@@ -215,6 +215,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\FileWatchSystem\FileWatchSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\GridSystem\GridSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\Inputsystem\InputSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem\MaterialSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.h" />
@@ -279,13 +280,8 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\Grid\Grid.h" />
     <ClInclude Include="src\Graphics\Grid\IAABB.h" />
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h" />
-    <ClInclude Include="src\Graphics\InputHandler\Input.cpp" />
-    <ClInclude Include="src\Graphics\InputHandler\Input.h" />
-    <ClInclude Include="src\Graphics\InputHandler\InputWrapper.h" />
-    <ClInclude Include="src\Graphics\InputHandler\Key.h" />
-    <ClInclude Include="src\Graphics\InputHandler\Log.h" />
+    <ClInclude Include="src\Graphics\InputHandler\LogicalInput.h" />
     <ClInclude Include="src\Graphics\InputHandler\LogicalEnum.hpp" />
-    <ClInclude Include="src\Graphics\InputHandler\test.h" />
     <ClInclude Include="src\Graphics\Lighting\DirectionalLight.h" />
     <ClInclude Include="src\Graphics\Lighting\LightManager.h" />
     <ClInclude Include="src\Graphics\Lighting\LightProperties.hpp" />
@@ -388,6 +384,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\FileWatchSystem\FileWatchSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\GridSystem\GridSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\Inputsystem\InputSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem\MaterialSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.cpp" />
@@ -438,9 +435,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\Grid\BoundingBox.cpp" />
     <ClCompile Include="src\Graphics\Grid\Box.cpp" />
     <ClCompile Include="src\Graphics\Grid\Grid.cpp" />
-    <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp" />
-    <ClCompile Include="src\Graphics\InputHandler\Logcpp.cpp" />
-    <ClCompile Include="src\Graphics\InputHandler\test.cpp" />
+    <ClCompile Include="src\Graphics\InputHandler\LogicalInput.cpp" />
     <ClCompile Include="src\Graphics\Lighting\DirectionalLight.cpp" />
     <ClCompile Include="src\Graphics\Lighting\LightManager.cpp" />
     <ClCompile Include="src\Graphics\Lighting\PointLight.cpp" />

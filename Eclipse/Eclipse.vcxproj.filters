@@ -607,7 +607,7 @@
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h">
       <Filter>Graphics\InputHandler</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\InputHandler\InputWrapper.h">
+    <ClInclude Include="src\Graphics\InputHandler\LogicalInput.h">
       <Filter>Graphics\InputHandler</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\Lighting\DirectionalLight.h">
@@ -864,11 +864,7 @@
     </ClInclude>
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Graphics\InputHandler\LogicalEnum.hpp" />
-    <ClInclude Include="src\Graphics\InputHandler\Input.cpp" />
-    <ClInclude Include="src\Graphics\InputHandler\Input.h" />
-    <ClInclude Include="src\Graphics\InputHandler\Key.h" />
-    <ClInclude Include="src\Graphics\InputHandler\Log.h" />
-    <ClInclude Include="src\Graphics\InputHandler\test.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\Inputsystem\InputSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1066,7 +1062,7 @@
     <ClCompile Include="src\Graphics\Grid\Grid.cpp">
       <Filter>Graphics\Grid</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp">
+    <ClCompile Include="src\Graphics\InputHandler\LogicalInput.cpp">
       <Filter>Graphics\InputHandler</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\Lighting\DirectionalLight.cpp">
@@ -1283,7 +1279,6 @@
       <Filter>Tracy</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\Graphics\InputHandler\Logcpp.cpp" />
-    <ClCompile Include="src\Graphics\InputHandler\test.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\Inputsystem\InputSystem.cpp" />
   </ItemGroup>
 </Project>

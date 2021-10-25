@@ -3,7 +3,6 @@
 
 #include "ECS/ComponentManager/Components/MeshComponent.h"
 #include "AssimpModel/AssimpModel.h"
-#include "Graphics/InputHandler/InputWrapper.h"
 #include "Graphics/ModelFactory/Sky/CubeMap.h"
 #include "Graphics/Grid/Grid.h"
 #include "Graphics/Grid/Box.h"
