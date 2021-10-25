@@ -66,7 +66,6 @@ namespace Eclipse
         ImGui::Dummy(ImVec2(1, 5));
 
         static ImGuiTextFilter CompFilter;
-        CompFilter.Draw();
 
         ShowMaterialProperty("Material", CompFilter);
         ShowTransformProperty("Transform", CompFilter);
@@ -172,10 +171,17 @@ namespace Eclipse
             ECGui::InsertSameLine();
             ECGui::CheckBoxBool("HasTexture", &engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.HasTexture);
             ECGui::NextColumn();
+            ImGui::Dummy(ImVec2(1, 2));
 
             // If We going to assign texture to his material
             if (engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.HasTexture)
             {
+                ECGui::DrawTextWidget<const char*>("Normal Map", EMPTY_STRING);
+                ECGui::InsertSameLine();
+                ECGui::CheckBoxBool("Normal Map", &engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.IsNormalMap);
+                ECGui::NextColumn();
+                ImGui::Dummy(ImVec2(1, 3));
+
                 ECGui::DrawInputTextHintWidget(my_strcat("Albdeo Name", 1).c_str(), "Drag Albdeo Texture here", const_cast<char*>(engine->gPBRManager->gMaterialEditorSettings->AlbedoTexture.c_str()), 256, true, ImGuiInputTextFlags_None);
                 engine->editorManager->DragAndDropInst_.StringPayloadTarget("png", engine->gPBRManager->gMaterialEditorSettings->AlbedoTexture, "Albdeo Texture Inserted.", PayloadTargetType::PTT_ASSETS);
                 engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->AlbedoTexture, MaterialType::MT_ALBEDO);

@@ -7,6 +7,7 @@ namespace Eclipse
     public:
         std::array<char, 128> Name;
         bool HasTexture = false;
+        bool IsNormalMap = false;
         ECVec3 BaseReflectivity = { 0.4f,0.4f,0.4f };
 
         // Non Textured Parameters

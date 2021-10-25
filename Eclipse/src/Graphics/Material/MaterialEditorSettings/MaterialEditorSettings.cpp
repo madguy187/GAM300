@@ -96,6 +96,7 @@ namespace Eclipse
         GLuint AoConstant = shdrpgm.GetLocation("AoConstant");
         GLint HasInstance = shdrpgm.GetLocation("HasInstance");
         GLint BaseReflectivity = shdrpgm.GetLocation("BaseReflectivity");
+        GLint NormalMap_ = shdrpgm.GetLocation("NormalMap");
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::mat4(1.0f);
@@ -111,6 +112,7 @@ namespace Eclipse
 
         if (SelectedIndex == 0)
         {
+            GLCall(glUniform1i(NormalMap_, CurrentMaterial.IsNormalMap));
             GLCall(glUniform1i(HasInstance, CurrentMaterial.HasTexture));
             GLCall(glUniform3f(AlbedoConstant, CurrentMaterial.AlbedoConstant.getX(), CurrentMaterial.AlbedoConstant.getY(), CurrentMaterial.AlbedoConstant.getZ()));
             GLCall(glUniform1f(AoConstant, CurrentMaterial.AoConstant));

@@ -18,6 +18,7 @@ uniform float RoughnessConstant;
 uniform float AoConstant;
 uniform int HasInstance;
 uniform vec3 BaseReflectivity;
+uniform int NormalMap;
 
 // lights
 uniform vec3 lightPositions[4];
@@ -113,7 +114,15 @@ void main()
 
     if(HasInstance == 1)
     {   
-        N = getNormalFromMap();
+        if(NormalMap == 1)
+        {
+            N = getNormalFromMap();
+        }
+        else
+        {
+            N = normalize(Normal);         
+        }
+
         albedo     = pow(texture(albedoMap, TexCoords).rgb, vec3(2.2));
         metallic  = texture(metallicMap, TexCoords).r;
         roughness = texture(roughnessMap, TexCoords).r;

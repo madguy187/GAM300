@@ -274,6 +274,7 @@ namespace Eclipse
 
             if (tex.hasTexture && tex.TextureRef != "Default")
             {
+                glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, Graphics::FindTextures(tex.TextureRef).GetHandle());
 
                 glEnable(GL_BLEND);
