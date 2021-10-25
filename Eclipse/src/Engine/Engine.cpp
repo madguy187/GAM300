@@ -221,6 +221,7 @@ namespace Eclipse
         //Check this! - Rachel
         CameraSystem::Init();
         RenderSystem::Init();
+        engine->editorManager->TextureIconInit();
         gPhysics.Init();
         audioManager.Init();
 

@@ -14,13 +14,6 @@ namespace Eclipse
 		std::filesystem::path CurrentDir;
 		std::filesystem::path NextDir;
 		////////////////////////////////
-		
-
-		//Buton Icon rendering
-		////////////////////////////////
-		TextureComponent sprite;
-		TextureComponent FolderIcon;
-		////////////////////////////////
 
 		
 		//button settings
@@ -98,6 +91,10 @@ namespace Eclipse
 		void MainSearchLogic(std::map<std::filesystem::path, std::vector<std::filesystem::path>>::value_type Key);
 		void MainSearchLogic(std::vector<std::string> subDirItemsPaths);
 		bool BuffIsEmpty(const char* buffer);
+		//TODO  for Darren material editor 
+		//bool test2 = false;
+		//std::string tempcontainer;
+		//void temptest(std::string pathName);
 		std::map<std::filesystem::path, std::vector<std::filesystem::path>> getFolderMap();
 		std::map<std::filesystem::path, std::vector<std::filesystem::path>> getPathMap();
 		////////////////////////////////
