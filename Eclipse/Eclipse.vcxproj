@@ -86,7 +86,6 @@
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <MultiProcessorCompilation>false</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,7 +129,6 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <MultiProcessorCompilation>false</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -173,7 +171,6 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <MultiProcessorCompilation>false</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -220,10 +217,6 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\ECS\SystemManager\Systems\System\GridSystem\GridSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem\MaterialSystem.h" />
-    <ClInclude Include="src\Editor\Windows\MeshEditor\MeshEditor.h" />
-    <ClInclude Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.h" />
-    <ClInclude Include="src\Graphics\Material\MaterialInstance\MaterialInstance.h" />
-    <ClInclude Include="src\Graphics\Material\PBR\PBRManager.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ChildSystem\ChildSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem\ParentSystem.h" />
@@ -266,6 +259,8 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Editor\Windows\NodeEditor\Utilities\builders.h" />
     <ClInclude Include="src\Editor\Windows\NodeEditor\Utilities\drawing.h" />
     <ClInclude Include="src\Editor\Windows\NodeEditor\Utilities\widgets.h" />
+    <ClInclude Include="src\Editor\Windows\MaterialEditor\MaterialEditor.h" />
+    <ClInclude Include="src\Editor\Windows\MeshEditor\MeshEditor.h" />
     <ClInclude Include="src\Editor\Windows\Profiler\Profiler.h" />
     <ClInclude Include="src\Editor\Windows\Scene\SceneView.h" />
     <ClInclude Include="src\Editor\Windows\SwitchViews\BaseSwitchView.h" />
@@ -282,6 +277,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\Culling\CullingManager.h" />
     <ClInclude Include="src\Graphics\Debugging\DebugRenderingManager.h" />
     <ClInclude Include="src\Graphics\EngineCompiler\EngineCompiler.h" />
+    <ClInclude Include="src\Graphics\EngineCompiler\MaterialCompiler\MaterialCompiler.h" />
     <ClInclude Include="src\Graphics\FileWatch\FileWatch.h" />
     <ClInclude Include="src\Graphics\FrameBuffer\FrameBuffer.h" />
     <ClInclude Include="src\Graphics\FrameBuffer\FrameBufferManager.h" />
@@ -299,7 +295,11 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\Lighting\LightProperties.hpp" />
     <ClInclude Include="src\Graphics\Lighting\PointLight.h" />
     <ClInclude Include="src\Graphics\Lighting\SpotLight.h" />
+    <ClInclude Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.h" />
+    <ClInclude Include="src\Graphics\Material\MaterialEditorSettings\MaterialEditorSettings.h" />
+    <ClInclude Include="src\Graphics\Material\MaterialInstance\MaterialInstance.h" />
     <ClInclude Include="src\Graphics\Material\MaterialManager.h" />
+    <ClInclude Include="src\Graphics\Material\PBR\PBRManager.h" />
     <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.h" />
     <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\AllBasicPrimitives.h" />
@@ -354,6 +354,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Library\Random\Random.h" />
     <ClInclude Include="src\Library\Strings\Lexical.h" />
     <ClInclude Include="src\Library\Strings\StringsConcatenate.h" />
+    <ClInclude Include="src\Library\UUID\UUIDGenerator.h" />
     <ClInclude Include="src\Logger\Logger.h" />
     <ClInclude Include="src\Mono\Manager\MonoManager.h" />
     <ClInclude Include="src\Physics\PhysicsManager.h" />
@@ -394,6 +395,8 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem\MaterialSystem.cpp" />
     <ClCompile Include="src\Editor\Windows\MeshEditor\MeshEditor.cpp" />
+    <ClCompile Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.cpp" />
+    <ClCompile Include="src\Graphics\Material\MaterialInstance\MaterialInstance.cpp" />
     <ClCompile Include="src\Graphics\Material\PBR\PBRManager.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ChildSystem\ChildSystem.cpp" />
@@ -426,6 +429,8 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Editor\Windows\NodeEditor\Utilities\builders.cpp" />
     <ClCompile Include="src\Editor\Windows\NodeEditor\Utilities\drawing.cpp" />
     <ClCompile Include="src\Editor\Windows\NodeEditor\Utilities\widgets.cpp" />
+    <ClCompile Include="src\Editor\Windows\MaterialEditor\MaterialEditor.cpp" />
+    <ClCompile Include="src\Editor\Windows\MeshEditor\MeshEditor.cpp" />
     <ClCompile Include="src\Editor\Windows\Profiler\Profiler.cpp" />
     <ClCompile Include="src\Editor\Windows\Scene\SceneView.cpp" />
     <ClCompile Include="src\Editor\Windows\SwitchViews\BaseSwitchView.cpp" />
@@ -439,6 +444,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\Culling\CullingManager.cpp" />
     <ClCompile Include="src\Graphics\Debugging\DebugRenderingManager.cpp" />
     <ClCompile Include="src\Graphics\EngineCompiler\EngineCompiler.cpp" />
+    <ClCompile Include="src\Graphics\EngineCompiler\MaterialCompiler\MaterialCompiler.cpp" />
     <ClCompile Include="src\Graphics\FileWatch\FileWatch.cpp" />
     <ClCompile Include="src\Graphics\FrameBuffer\FrameBuffer.cpp" />
     <ClCompile Include="src\Graphics\FrameBuffer\FrameBufferManager.cpp" />
@@ -454,8 +460,10 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\Lighting\PointLight.cpp" />
     <ClCompile Include="src\Graphics\Lighting\SpotLight.cpp" />
     <ClCompile Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.cpp" />
+    <ClCompile Include="src\Graphics\Material\MaterialEditorSettings\MaterialEditorSettings.cpp" />
     <ClCompile Include="src\Graphics\Material\MaterialInstance\MaterialInstance.cpp" />
     <ClCompile Include="src\Graphics\Material\MaterialManager.cpp" />
+    <ClCompile Include="src\Graphics\Material\PBR\PBRManager.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.cpp" />
@@ -499,6 +507,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\ImGui\Vendor\imgui_widgets.cpp" />
     <ClCompile Include="src\Library\Math\Matrix.cpp" />
     <ClCompile Include="src\Library\Random\Random.cpp" />
+    <ClCompile Include="src\Library\UUID\UUIDGenerator.cpp" />
     <ClCompile Include="src\Logger\Logger.cpp" />
     <ClCompile Include="src\Mono\Manager\MonoManager.cpp" />
     <ClCompile Include="src\Physics\PhysicsManager.cpp" />

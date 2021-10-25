@@ -74,6 +74,11 @@ namespace Eclipse
         return FrameBufferContainer[mode]->GetTextureColourBufferID();
     }
 
+    unsigned int FrameBufferManager::GetSecondTextureID(FrameBufferMode mode)
+    {
+        return FrameBufferContainer[mode]->m_data.ColorBuffers[1];
+    }
+
     RenderMode FrameBufferManager::GetRenderMode(FrameBufferMode mode)
     {
         return FrameBufferContainer[mode]->GetRenderMode();
@@ -127,6 +132,18 @@ namespace Eclipse
     {
         switch (in)
         {
+        case CameraComponent::CameraType::MeshEditor_Camera:
+        {
+            return FrameBufferContainer[FrameBufferMode::FBM_MESHEDITOR]->AspectRatio;
+        }
+        break;
+
+        case CameraComponent::CameraType::MaterialEditor_Camera:
+        {
+            return FrameBufferContainer[FrameBufferMode::FBM_MATERIALEDITOR]->AspectRatio;
+        }
+        break;
+
         case CameraComponent::CameraType::Editor_Camera:
         {
             return FrameBufferContainer[FrameBufferMode::FBM_SCENE]->AspectRatio;

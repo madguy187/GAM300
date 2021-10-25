@@ -78,8 +78,8 @@ namespace Eclipse
     void Engine::Run()
     {
         ZoneScopedN("Engine")
-            // register component
-            world.RegisterComponent<EntityComponent>();
+        // register component
+        world.RegisterComponent<EntityComponent>();
         world.RegisterComponent<TransformComponent>();
         world.RegisterComponent<MeshComponent>();
         world.RegisterComponent<CameraComponent>();
@@ -202,6 +202,10 @@ namespace Eclipse
         AIsig.set(world.GetComponentType<RigidBodyComponent>(), 1);
         world.RegisterSystemSignature<AISystem>(AIsig);
 
+        Signature parentSys;
+        parentSys.set(world.GetComponentType<ParentComponent>(), 1);
+        world.RegisterSystemSignature<ParentSystem>(parentSys);
+
         //Check this! - Rachel
         CameraSystem::Init();
         RenderSystem::Init();
@@ -226,7 +230,6 @@ namespace Eclipse
         // Darren - Please keep this before Game Loop
         engine->GraphicsManager.MassInit();
 
-        //Deserialization(temp)
         /*audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);*/
         //audioManager.PlayEvent("event:/WaterEffect");
 
@@ -311,8 +314,8 @@ namespace Eclipse
 
             world.Update<FileWatchSystem>();
 
-            /*world.Update<ParentSystem>();
-            world.Update<ChildSystem>();*/
+            world.Update<ParentSystem>();
+            world.Update<ChildSystem>();
 
             engine->gFrameBufferManager->GlobalBind();
 

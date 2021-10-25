@@ -136,6 +136,12 @@
     <Filter Include="Editor\Windows\Log">
       <UniqueIdentifier>{979B17BC-837F-D811-ECDF-D264D8E2C293}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editor\Windows\MaterialEditor">
+      <UniqueIdentifier>{EB1E4D11-5737-343B-20E4-C3D48CBBC8D4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Windows\MeshEditor">
+      <UniqueIdentifier>{89B11D0B-F573-5195-3E24-E021AA252A73}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Editor\Windows\Profiler">
       <UniqueIdentifier>{D8F05B84-4428-A41B-4D32-083FB9E8CA14}</UniqueIdentifier>
     </Filter>
@@ -169,6 +175,9 @@
     <Filter Include="Graphics\EngineCompiler">
       <UniqueIdentifier>{1654E1F5-828B-298D-8B95-8DB0F74B5086}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics\EngineCompiler\MaterialCompiler">
+      <UniqueIdentifier>{AF2FCB5E-9BAC-BEA1-C429-BFB5B0055B35}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Graphics\FileWatch">
       <UniqueIdentifier>{5CAA893C-488E-4A92-B1EE-44E59DF13414}</UniqueIdentifier>
     </Filter>
@@ -186,6 +195,18 @@
     </Filter>
     <Filter Include="Graphics\Material">
       <UniqueIdentifier>{745AF5D4-E070-F36A-29E8-7E8C953DC4F2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Material\EnvironmentMap">
+      <UniqueIdentifier>{F6E050A9-E231-3CEB-0B96-2AADF745CF54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Material\MaterialEditorSettings">
+      <UniqueIdentifier>{CA45421A-B6C2-355D-DF3F-3671CB1BD2F0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Material\MaterialInstance">
+      <UniqueIdentifier>{47392004-3375-236E-9C87-3B6588E2CB88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Material\PBR">
+      <UniqueIdentifier>{679760AC-D303-1CA7-9CF7-B30408233E0F}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\ModelFactory">
       <UniqueIdentifier>{0EA78BA6-7A13-47A1-4307-DFFEAF326909}</UniqueIdentifier>
@@ -235,8 +256,14 @@
     <Filter Include="Library\Math">
       <UniqueIdentifier>{33067EE9-1F69-0D8E-C8EE-4544B430D910}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Library\Random">
+      <UniqueIdentifier>{8ADDBE4C-76AB-B252-5F3F-23794BAC8EB7}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Library\Strings">
       <UniqueIdentifier>{D3EA315E-3F76-9F22-4887-2217B491FB22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\UUID">
+      <UniqueIdentifier>{803082E9-6C93-118E-1519-4A44015BDD10}</UniqueIdentifier>
     </Filter>
     <Filter Include="Logger">
       <UniqueIdentifier>{25F339C1-1195-6497-FA4F-78EBE690EBE7}</UniqueIdentifier>
@@ -456,6 +483,9 @@
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ECVec4DeltaCommand.h">
       <Filter>Editor\Utilities\UndoAndRedo</Filter>
     </ClInclude>
+    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\EntityDeleteDeltaCommand.h">
+      <Filter>Editor\Utilities\UndoAndRedo</Filter>
+    </ClInclude>
     <ClInclude Include="src\Editor\Utilities\UndoAndRedo\ICommand.h">
       <Filter>Editor\Utilities\UndoAndRedo</Filter>
     </ClInclude>
@@ -488,6 +518,12 @@
     </ClInclude>
     <ClInclude Include="src\Editor\Windows\Log\Log.h">
       <Filter>Editor\Windows\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\MaterialEditor\MaterialEditor.h">
+      <Filter>Editor\Windows\MaterialEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\MeshEditor\MeshEditor.h">
+      <Filter>Editor\Windows\MeshEditor</Filter>
     </ClInclude>
     <ClInclude Include="src\Editor\Windows\Profiler\Profiler.h">
       <Filter>Editor\Windows\Profiler</Filter>
@@ -534,6 +570,9 @@
     </ClInclude>
     <ClInclude Include="src\Graphics\EngineCompiler\EngineCompiler.h">
       <Filter>Graphics\EngineCompiler</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\EngineCompiler\MaterialCompiler\MaterialCompiler.h">
+      <Filter>Graphics\EngineCompiler\MaterialCompiler</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\FileWatch\FileWatch.h">
       <Filter>Graphics\FileWatch</Filter>
@@ -586,8 +625,20 @@
     <ClInclude Include="src\Graphics\Lighting\SpotLight.h">
       <Filter>Graphics\Lighting</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.h">
+      <Filter>Graphics\Material\EnvironmentMap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Material\MaterialEditorSettings\MaterialEditorSettings.h">
+      <Filter>Graphics\Material\MaterialEditorSettings</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Material\MaterialInstance\MaterialInstance.h">
+      <Filter>Graphics\Material\MaterialInstance</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\Material\MaterialManager.h">
       <Filter>Graphics\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Material\PBR\PBRManager.h">
+      <Filter>Graphics\Material\PBR</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.h">
       <Filter>Graphics\ModelFactory\AssimpModel</Filter>
@@ -742,11 +793,17 @@
     <ClInclude Include="src\Library\Math\Vector.h">
       <Filter>Library\Math</Filter>
     </ClInclude>
+    <ClInclude Include="src\Library\Random\Random.h">
+      <Filter>Library\Random</Filter>
+    </ClInclude>
     <ClInclude Include="src\Library\Strings\Lexical.h">
       <Filter>Library\Strings</Filter>
     </ClInclude>
     <ClInclude Include="src\Library\Strings\StringsConcatenate.h">
       <Filter>Library\Strings</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Library\UUID\UUIDGenerator.h">
+      <Filter>Library\UUID</Filter>
     </ClInclude>
     <ClInclude Include="src\Logger\Logger.h">
       <Filter>Logger</Filter>
@@ -944,6 +1001,12 @@
     <ClCompile Include="src\Editor\Windows\Log\Log.cpp">
       <Filter>Editor\Windows\Log</Filter>
     </ClCompile>
+    <ClCompile Include="src\Editor\Windows\MaterialEditor\MaterialEditor.cpp">
+      <Filter>Editor\Windows\MaterialEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\MeshEditor\MeshEditor.cpp">
+      <Filter>Editor\Windows\MeshEditor</Filter>
+    </ClCompile>
     <ClCompile Include="src\Editor\Windows\Profiler\Profiler.cpp">
       <Filter>Editor\Windows\Profiler</Filter>
     </ClCompile>
@@ -982,6 +1045,9 @@
     </ClCompile>
     <ClCompile Include="src\Graphics\EngineCompiler\EngineCompiler.cpp">
       <Filter>Graphics\EngineCompiler</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\EngineCompiler\MaterialCompiler\MaterialCompiler.cpp">
+      <Filter>Graphics\EngineCompiler\MaterialCompiler</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\FileWatch\FileWatch.cpp">
       <Filter>Graphics\FileWatch</Filter>
@@ -1025,8 +1091,20 @@
     <ClCompile Include="src\Graphics\Lighting\SpotLight.cpp">
       <Filter>Graphics\Lighting</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.cpp">
+      <Filter>Graphics\Material\EnvironmentMap</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Material\MaterialEditorSettings\MaterialEditorSettings.cpp">
+      <Filter>Graphics\Material\MaterialEditorSettings</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Material\MaterialInstance\MaterialInstance.cpp">
+      <Filter>Graphics\Material\MaterialInstance</Filter>
+    </ClCompile>
     <ClCompile Include="src\Graphics\Material\MaterialManager.cpp">
       <Filter>Graphics\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Material\PBR\PBRManager.cpp">
+      <Filter>Graphics\Material\PBR</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.cpp">
       <Filter>Graphics\ModelFactory\AssimpModel</Filter>
@@ -1153,6 +1231,12 @@
     </ClCompile>
     <ClCompile Include="src\Library\Math\Matrix.cpp">
       <Filter>Library\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Library\Random\Random.cpp">
+      <Filter>Library\Random</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Library\UUID\UUIDGenerator.cpp">
+      <Filter>Library\UUID</Filter>
     </ClCompile>
     <ClCompile Include="src\Logger\Logger.cpp">
       <Filter>Logger</Filter>

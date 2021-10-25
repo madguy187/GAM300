@@ -1,6 +1,8 @@
 #pragma once
 #include "ECS/ComponentManager/Components/ScriptComponent.h"
 #include "ECS/ComponentManager/Components/AabbComponent.h"
+#include "ECS/ComponentManager/Components/ParentComponent.h"
+#include "ECS/ComponentManager/Components/ChildComponent.h"
 
 namespace Eclipse
 {
@@ -46,8 +48,8 @@ namespace Eclipse
 		PointLightComponent,
 		RigidBodyComponent,
 		ScriptComponent,
-		//ParentComponent,
-		//ChildComponent,
+		ParentComponent,
+		ChildComponent,
 		CollisionComponent,
 		AudioComponent,
 		AIComponent, 

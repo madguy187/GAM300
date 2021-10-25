@@ -16,7 +16,7 @@ namespace Eclipse
 		memset(searchItemBuffer, 0, 128);
 		memset(searchFolderBuffer, 0, 128);
 		buttonSize = { thumbnailSize,thumbnailSize };
-		allExtensions = { {"cs"},{"png"},{"txt"} };
+		allExtensions = { {"cs"},{"png"},{"txt"},{"mat"} };
 		ScanAll();
 	}
 
@@ -387,6 +387,9 @@ namespace Eclipse
 				break;
 			case InspectorWindow::str2int("prefab"):
 				engine->editorManager->DragAndDropInst_.StringPayloadSource("prefab", "src\\Assets\\" + relativePath.string());
+				break;
+			case InspectorWindow::str2int("mat"):
+				engine->editorManager->DragAndDropInst_.StringPayloadSource("mat", relativePath.string());
 				break;
 			default:
 				engine->editorManager->DragAndDropInst_.StringPayloadSource("ITEM", relativePath.string());

@@ -3,14 +3,129 @@
 
 namespace Eclipse
 {
+    PBRManager::PBRManager()
+    {
+        Init();
+    }
+
     void PBRManager::Init()
     {
+        //InitialiseBaseReflectivity();
+        LoadAllTextures();
+
+        gMaterialEditorSettings = std::make_unique<MaterialEditorSettings>();
+
         LoadMaterial("BambooWood");
         LoadMaterial("HardWood");
     }
 
-    void PBRManager::CheckUniform(unsigned int ID, CameraComponent& In)
+    void PBRManager::InitialiseBaseReflectivity()
     {
+        BaseReflectivity.emplace("Water", ECVec3{ 0.02,0.02,0.02 });
+        BaseReflectivity.emplace("Plastic(Low)", ECVec3{ 0.03,0.03,0.03 });
+        BaseReflectivity.emplace("Plastic(High)", ECVec3{ 0.05,0.05,0.05 });
+        BaseReflectivity.emplace("Glass(High)", ECVec3{ 0.08,0.08,0.08 });
+        BaseReflectivity.emplace("Diamond", ECVec3{ 0.17,0.17,0.17 });
+        BaseReflectivity.emplace("Iron", ECVec3{ 0.56,0.56,0.56 });
+        BaseReflectivity.emplace("Copper", ECVec3{ 0.95,0.64,0.54 });
+        BaseReflectivity.emplace("Gold", ECVec3{ 1.00,0.71,0.29 });
+        BaseReflectivity.emplace("Aluminium", ECVec3{ 0.91,0.92,0.92 });
+        BaseReflectivity.emplace("Silver", ECVec3{ 0.95,0.93,0.88 });
+    }
+
+    void PBRManager::GenerateMaterialTexture(std::string FolderName, std::string TextureName)
+    {
+        if (TextureName.find("albedo") != std::string::npos)
+        {
+            //Found Loaded Texture
+            if (AllMaterialTextures.find(FolderName) != AllMaterialTextures.end())
+            {
+                gMaterialEditorSettings->CurrentMaterial.Albedo = AllMaterialTextures[FolderName][MaterialType::MT_ALBEDO];
+            }
+        }
+        else if (TextureName.find("normal") != std::string::npos)
+        {
+            //Found Loaded Texture
+            if (AllMaterialTextures.find(FolderName) != AllMaterialTextures.end())
+            {
+                gMaterialEditorSettings->CurrentMaterial.Normal = AllMaterialTextures[FolderName][MaterialType::MT_NORMAL];
+            }
+        }
+        else if (TextureName.find("metallic") != std::string::npos)
+        {
+            //Found Loaded Texture
+            if (AllMaterialTextures.find(FolderName) != AllMaterialTextures.end())
+            {
+                gMaterialEditorSettings->CurrentMaterial.Metallic = AllMaterialTextures[FolderName][MaterialType::MT_METALLIC];
+            }
+        }
+        else if (TextureName.find("roughness") != std::string::npos)
+        {
+            //Found Loaded Texture
+            if (AllMaterialTextures.find(FolderName) != AllMaterialTextures.end())
+            {
+                gMaterialEditorSettings->CurrentMaterial.Roughness = AllMaterialTextures[FolderName][MaterialType::MT_ROUGHNESS];
+            }
+        }
+        else if (TextureName.find("ao") != std::string::npos)
+        {
+            //Found Loaded Texture
+            if (AllMaterialTextures.find(FolderName) != AllMaterialTextures.end())
+            {
+                gMaterialEditorSettings->CurrentMaterial.Ao = AllMaterialTextures[FolderName][MaterialType::MT_AO];
+            }
+        }
+    }
+
+    void PBRManager::LoadAllTextures()
+    {
+        for (auto& dirEntry : std::filesystem::directory_iterator("src//Assets//Materials"))
+        {
+            const auto& path = dirEntry.path();
+            auto relativePath = relative(path, "src//");
+            std::string FolderName = relativePath.filename().string();
+
+            std::string GoIntoMaterialFolder = ("src/Assets/Materials/" + FolderName);
+
+            for (auto& dirEntry : std::filesystem::directory_iterator(GoIntoMaterialFolder))
+            {
+                const auto& MaterialTextureFiles = dirEntry.path();
+                auto relativePath = relative(MaterialTextureFiles, "src//");
+                std::string MaterialTextureFileName = relativePath.filename().string();
+
+                if (MaterialTextureFileName.find("albedo.png") != std::string::npos)
+                {
+                    unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/albedo.png").c_str());
+                    AllMaterialTextures[FolderName][MaterialType::MT_ALBEDO] = TextureID;
+                }
+                else if (MaterialTextureFileName.find("normal.png") != std::string::npos)
+                {
+                    unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/normal.png").c_str());
+                    AllMaterialTextures[FolderName][MaterialType::MT_NORMAL] = TextureID;
+                }
+                else if (MaterialTextureFileName.find("metallic.png") != std::string::npos)
+                {
+                    unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/metallic.png").c_str());
+                    AllMaterialTextures[FolderName][MaterialType::MT_METALLIC] = TextureID;
+                }
+                else if (MaterialTextureFileName.find("roughness.png") != std::string::npos)
+                {
+                    unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/roughness.png").c_str());
+                    AllMaterialTextures[FolderName][MaterialType::MT_ROUGHNESS] = TextureID;
+                }
+                else if (MaterialTextureFileName.find("ao.png") != std::string::npos)
+                {
+                    unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/ao.png").c_str());
+                    AllMaterialTextures[FolderName][MaterialType::MT_AO] = TextureID;
+                }
+            }
+        }
+    }
+
+    void PBRManager::NonTexturedUniform(unsigned int ID, CameraComponent& In)
+    {
+        auto& MaterialCom = engine->world.GetComponent<MaterialComponent>(ID);
+
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(In.camType));
         TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(In.camType));
         TransformComponent ModelTransform = engine->world.GetComponent<TransformComponent>(ID);
@@ -18,12 +133,16 @@ namespace Eclipse
         auto& shdrpgm = Graphics::shaderpgms["PBRShader"];
         shdrpgm.Use();
 
-        GLuint metallic = shdrpgm.GetLocation("metallic");
-        GLuint roughness = shdrpgm.GetLocation("roughness");
+        GLuint MetallicConstant = shdrpgm.GetLocation("MetallicConstant");
+        GLuint RoughnessConstant = shdrpgm.GetLocation("RoughnessConstant");
+        GLint uModelToNDC_ = shdrpgm.GetLocation("uModelToNDC");
         GLint model_ = shdrpgm.GetLocation("model");
-        GLuint view = shdrpgm.GetLocation("view");
-        GLint projection = shdrpgm.GetLocation("projection");
-        GLint HasTexture = shdrpgm.GetLocation("HasTexture");
+        GLuint view1 = shdrpgm.GetLocation("view");
+        GLint projection1 = shdrpgm.GetLocation("projection");
+        GLuint AlbedoConstant = shdrpgm.GetLocation("AlbedoConstant");
+        GLuint AoConstant = shdrpgm.GetLocation("AoConstant");
+        GLint HasInstance = shdrpgm.GetLocation("HasInstance");
+        GLint BaseReflectivity = shdrpgm.GetLocation("BaseReflectivity");
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::mat4(1.0f);
@@ -33,27 +152,69 @@ namespace Eclipse
         model = glm::rotate(model, glm::radians(ModelTransform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::scale(model, ModelTransform.scale.ConvertToGlmVec3Type());
 
-        GLCall(glUniform1i(HasTexture, true));
-        GLCall(glUniform1f(metallic, 1.0f));
-        GLCall(glUniform1f(roughness, 1.0f));
+        GLCall(glUniform1i(HasInstance, AllMaterialInstances[MaterialCom.MaterialInstanceName]->HasTexture));
+        GLCall(glUniform3f(AlbedoConstant,
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->AlbedoConstant.getX(),
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->AlbedoConstant.getY(),
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->AlbedoConstant.getZ()));
+        GLCall(glUniform1f(AoConstant, AllMaterialInstances[MaterialCom.MaterialInstanceName]->AoConstant));
+        GLCall(glUniform1f(MetallicConstant, AllMaterialInstances[MaterialCom.MaterialInstanceName]->MetallicConstant));
+        GLCall(glUniform1f(RoughnessConstant, AllMaterialInstances[MaterialCom.MaterialInstanceName]->RoughnessConstant));
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
-        glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
-        glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
-
-        BindMaterial("HardWood", shdrpgm);
+        glUniformMatrix4fv(projection1, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
+        glUniformMatrix4fv(view1, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
+        GLCall(glUniform3f(BaseReflectivity,
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getX(),
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getY(),
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getZ()));
     }
 
-    bool PBRManager::CheckMaterial(unsigned int ID, CameraComponent& In, MaterialComponent& Mat)
+    void PBRManager::TexturedUniform(unsigned int ID, CameraComponent& In)
     {
-        if (Mat.HasMaterialIstance)
-        {
-            CheckUniform(ID, In);
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+        auto& MaterialCom = engine->world.GetComponent<MaterialComponent>(ID);
+
+        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(In.camType));
+        TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(In.camType));
+        TransformComponent ModelTransform = engine->world.GetComponent<TransformComponent>(ID);
+
+        auto& shdrpgm = Graphics::shaderpgms["PBRShader"];
+        shdrpgm.Use();
+
+        GLint uModelToNDC_ = shdrpgm.GetLocation("uModelToNDC");
+        GLint model_ = shdrpgm.GetLocation("model");
+        GLuint view1 = shdrpgm.GetLocation("view");
+        GLint projection1 = shdrpgm.GetLocation("projection");
+        GLint HasInstance = shdrpgm.GetLocation("HasInstance");
+        GLint BaseReflectivity = shdrpgm.GetLocation("BaseReflectivity");
+
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, ModelTransform.position.ConvertToGlmVec3Type());
+        model = glm::rotate(model, glm::radians(ModelTransform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(ModelTransform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(ModelTransform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, ModelTransform.scale.ConvertToGlmVec3Type());
+
+        GLCall(glUniform1i(HasInstance, AllMaterialInstances[MaterialCom.MaterialInstanceName]->HasTexture));
+        glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(projection1, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
+        glUniformMatrix4fv(view1, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
+        GLCall(glUniform3f(BaseReflectivity,
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getX(),
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getY(),
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getZ()));
+
+        BindMaterial(MaterialCom.MaterialInstanceName, shdrpgm);
+    }
+
+    void PBRManager::ClearAllMaterialInstances()
+    {
+        AllMaterialInstances.clear();
+    }
+
+    void PBRManager::ClearAllMaterialInstNames()
+    {
+        AllMaterialInstName.clear();
     }
 
     void PBRManager::LoadMaterial(std::string NameOfMaterial)
@@ -64,7 +225,7 @@ namespace Eclipse
         NewMaterial.Metallic = loadTexture(("src/Assets/Materials/" + NameOfMaterial + "/metallic.png").c_str());
         NewMaterial.Roughness = loadTexture(("src/Assets/Materials/" + NameOfMaterial + "/roughness.png").c_str());
         NewMaterial.Ao = loadTexture(("src/Assets/Materials/" + NameOfMaterial + "/ao.png").c_str());
-        AllMaterialInstances.insert({ NewMaterial.Name, std::make_shared<MaterialInstance>(NewMaterial) });
+        AllMaterialInstances.insert({ NewMaterial.Name.data(), std::make_unique<MaterialInstance>(NewMaterial) });
     }
 
     void PBRManager::BindMaterial(std::string MaterialName, Shader& In)
@@ -165,9 +326,9 @@ namespace Eclipse
         glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
         glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
 
-        BindMaterial("HardWood", shdrpgm);
+        BindMaterial(gMaterialEditorSettings->MaterialName, shdrpgm);
 
-        RenderSphere();
+        gMaterialEditorSettings->RenderSphere();
         shdrpgm.UnUse();
     }
 
@@ -191,109 +352,6 @@ namespace Eclipse
         //NonTexturedUpdateLoop();
     }
 
-    void PBRManager::RenderSphere()
-    {
-        glEnable(GL_BLEND);
-        glEnable(GL_DEPTH_TEST);
-        glDisable(GL_CULL_FACE);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-        if (sphereVAO == 0)
-        {
-            glGenVertexArrays(1, &sphereVAO);
-
-            unsigned int vbo, ebo;
-            glGenBuffers(1, &vbo);
-            glGenBuffers(1, &ebo);
-
-            std::vector<glm::vec3> positions;
-            std::vector<glm::vec3> normals;
-            std::vector<glm::vec2> uv;
-            std::vector<unsigned int> indices;
-
-            const unsigned int X_SEGMENTS = 64;
-            const unsigned int Y_SEGMENTS = 64;
-            for (unsigned int x = 0; x <= X_SEGMENTS; ++x)
-            {
-                for (unsigned int y = 0; y <= Y_SEGMENTS; ++y)
-                {
-                    float xSegment = (float)x / (float)X_SEGMENTS;
-                    float ySegment = (float)y / (float)Y_SEGMENTS;
-                    float xPos = std::cos(xSegment * 2.0f * PI) * std::sin(ySegment * PI);
-                    float yPos = std::cos(ySegment * PI);
-                    float zPos = std::sin(xSegment * 2.0f * PI) * std::sin(ySegment * PI);
-
-                    positions.push_back(glm::vec3(xPos, yPos, zPos));
-                    normals.push_back(glm::vec3(xPos, yPos, zPos));
-                    uv.push_back(glm::vec2(xSegment, ySegment));
-                }
-            }
-
-            bool oddRow = false;
-            for (unsigned int y = 0; y < Y_SEGMENTS; ++y)
-            {
-                if (!oddRow) // even rows: y == 0, y == 2; and so on
-                {
-                    for (unsigned int x = 0; x <= X_SEGMENTS; ++x)
-                    {
-                        indices.push_back(y * (X_SEGMENTS + 1) + x);
-                        indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
-                    }
-                }
-                else
-                {
-                    for (int x = X_SEGMENTS; x >= 0; --x)
-                    {
-                        indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
-                        indices.push_back(y * (X_SEGMENTS + 1) + x);
-                    }
-                }
-                oddRow = !oddRow;
-            }
-            indexCount = indices.size();
-
-            std::vector<float> data;
-            for (unsigned int i = 0; i < positions.size(); ++i)
-            {
-                data.push_back(positions[i].x);
-                data.push_back(positions[i].y);
-                data.push_back(positions[i].z);
-
-                if (normals.size() > 0)
-                {
-                    data.push_back(normals[i].x);
-                    data.push_back(normals[i].y);
-                    data.push_back(normals[i].z);
-                }
-
-                if (uv.size() > 0)
-                {
-                    data.push_back(uv[i].x);
-                    data.push_back(uv[i].y);
-                }
-            }
-
-            glBindVertexArray(sphereVAO);
-            glBindBuffer(GL_ARRAY_BUFFER, vbo);
-            glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), &data[0], GL_STATIC_DRAW);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
-            unsigned int stride = (3 + 2 + 3) * sizeof(float);
-
-            glEnableVertexAttribArray(0);
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
-
-            glEnableVertexAttribArray(1);
-            glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
-
-            glEnableVertexAttribArray(2);
-            glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (void*)(6 * sizeof(float)));
-        }
-
-        glBindVertexArray(sphereVAO);
-        glDrawElements(GL_TRIANGLE_STRIP, indexCount, GL_UNSIGNED_INT, 0);
-    }
-
     unsigned int PBRManager::loadTexture(char const* path)
     {
         unsigned int textureID;
@@ -310,6 +368,8 @@ namespace Eclipse
                 format = GL_RGB;
             else if (nrComponents == 4)
                 format = GL_RGBA;
+
+            //std::cout << "Number of Components " << nrComponents << std::endl;
 
             glBindTexture(GL_TEXTURE_2D, textureID);
             glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
@@ -366,7 +426,48 @@ namespace Eclipse
         GLCall(glUniform3f(AlbedoConstant, 0.0, 1, 0));
         GLCall(glUniform1f(AoConstant, 1.0f));
 
-        RenderSphere();
+        gMaterialEditorSettings->RenderSphere();
         shdrpgm.UnUse();
+    }
+
+    void PBRManager::Clear(std::string& TextureName, MaterialType In)
+    {
+        switch (In)
+        {
+        case MaterialType::MT_ALBEDO:
+        {
+            if (TextureName.find("albedo") == std::string::npos)
+                gMaterialEditorSettings->CurrentMaterial.Albedo = 0;
+        }
+        break;
+
+        case MaterialType::MT_NORMAL:
+        {
+            if (TextureName.find("normal") == std::string::npos)
+                gMaterialEditorSettings->CurrentMaterial.Normal = 0;
+        }
+        break;
+
+        case MaterialType::MT_METALLIC:
+        {
+            if (TextureName.find("metallic") == std::string::npos)
+                gMaterialEditorSettings->CurrentMaterial.Metallic = 0;
+        }
+        break;
+
+        case MaterialType::MT_ROUGHNESS:
+        {
+            if (TextureName.find("roughness") == std::string::npos)
+                gMaterialEditorSettings->CurrentMaterial.Roughness = 0;
+        }
+        break;
+
+        case MaterialType::MT_AO:
+        {
+            if (TextureName.find("ao") == std::string::npos)
+                gMaterialEditorSettings->CurrentMaterial.Ao = 0;
+        }
+        break;
+        }
     }
 }

@@ -571,12 +571,8 @@ namespace Eclipse
                 ECGui::SetColumns(1, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
 
-                ECGui::DrawTextWidget<const char*>("HasMaterialIstance", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::CheckBoxBool("HasMaterialIstance", &_Material.HasMaterialIstance);
-                ECGui::SetColumns(1, nullptr, true);
-                ECGui::InsertHorizontalLineSeperator();
+                ECGui::DrawInputTextHintWidget(my_strcat("MaterialInstance", 1).c_str(), "Drag Albdeo Texture here", const_cast<char*>(_Material.MaterialInstanceName.c_str()), 256, true, ImGuiInputTextFlags_None);
+                engine->editorManager->DragAndDropInst_.StringPayloadTarget("mat", _Material.MaterialInstanceName, "Albdeo Texture Inserted.", PayloadTargetType::PTT_ASSETS, ID);
             }
         }
 
@@ -1009,6 +1005,47 @@ namespace Eclipse
             }
         }
 
+        return false;
+    }
+
+    bool InspectorWindow::ShowParentProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+    {
+        if (engine->world.CheckComponent<ParentComponent>(ID))
+        {
+            if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+            {
+                ECGui::InsertHorizontalLineSeperator();
+
+                auto& parent = engine->world.GetComponent<ParentComponent>(ID);
+
+                for (auto& it : parent.child)
+                {
+                    auto& en = engine->world.GetComponent<EntityComponent>(it);
+                    ECGui::DrawTextWidget<const char*>(my_strcat(en.Name, " ", it).c_str(), EMPTY_STRING);
+                }
+          
+                ECGui::InsertHorizontalLineSeperator();
+            }
+        }
+
+        return false;
+    }
+
+    bool InspectorWindow::ShowChildProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+    {
+        if (engine->world.CheckComponent<ChildComponent>(ID))
+        {
+            if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+            {
+                ECGui::InsertHorizontalLineSeperator();
+
+                auto& child = engine->world.GetComponent<ChildComponent>(ID);
+                auto& en = engine->world.GetComponent<EntityComponent>(child.parentIndex);
+                ECGui::DrawTextWidget<const char*>(my_strcat(en.Name, " ", child.parentIndex).c_str(), EMPTY_STRING);
+
+                ECGui::InsertHorizontalLineSeperator();
+            }
+        }
         return false;
     }
 

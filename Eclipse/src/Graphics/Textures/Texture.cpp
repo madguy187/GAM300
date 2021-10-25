@@ -140,6 +140,9 @@ void Eclipse::Texture::LoadUncompressedTextures(bool flip)
     case 1:
         colorMode = GL_RED;
         break;
+    case 3:
+        colorMode = GL_RGB;
+        break;
     case 4:
         colorMode = GL_RGBA;
         break;

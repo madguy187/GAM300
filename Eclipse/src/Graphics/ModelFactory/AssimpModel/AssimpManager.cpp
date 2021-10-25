@@ -1,9 +1,52 @@
 #include "pch.h"
 #include "AssimpManager.h"
 
+#include "ECS/ComponentManager/Components/ParentComponent.h"
+#include "ECS/ComponentManager/Components/ChildComponent.h"
+
 namespace Eclipse
 {
     typedef std::multimap<std::string, Texture>::iterator MMAPIterator;
+
+    void AssimpModelManager::MeshEditorUniforms(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID)
+    {
+        TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(_camera.camType));
+
+        GLuint view = _shdrpgm.GetLocation("view");
+        GLuint cameraPos = _shdrpgm.GetLocation("camPos");
+        GLint projection = _shdrpgm.GetLocation("projection");
+        GLuint model_ = _shdrpgm.GetLocation("model");
+
+        auto& Transform = engine->world.GetComponent<TransformComponent>(ModelID);
+
+        glm::mat4 mModelNDC;
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
+        model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
+        mModelNDC = _camera.projMtx * _camera.viewMtx * model;
+        glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
+        glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
+        GLCall(glUniform3f(cameraPos, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ()));
+
+    }
+
+    void AssimpModelManager::MeshEditorDraw(World& world_, MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, CameraComponent::CameraType _camType)
+    {
+        auto& _camera = world_.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
+        engine->gFrameBufferManager->UseFrameBuffer(in);
+
+        auto shdrpgm = Graphics::shaderpgms["PBRShader"];
+        shdrpgm.Use();
+
+        MeshEditorUniforms(shdrpgm, _camera, ID);
+        CheckUniforms(shdrpgm, ID, ModelMesh, _camera);
+
+        RenderMesh(ModelMesh, GL_FILL);
+    }
 
     bool AssimpModelManager::GeometryContainerCheck(const std::string& in)
     {
@@ -64,13 +107,26 @@ namespace Eclipse
 
                 // Is a prefab since its a parent
                 std::string NameOfFolder = ModelName;
+                Entity ParentID = 0;
                 Entity MeshID = 0;
+                ParentID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
+                engine->world.AddComponent(ParentID, ParentComponent{});
 
                 for (int i = 0; i < Prefabs[NameOfFolder].size(); i++)
                 {
                     auto& name = Prefabs[NameOfFolder][i];
                     MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_MODEL);
+                    EntityComponent* test = &engine->world.GetComponent<EntityComponent>(ParentID);
+                    EntityComponent* Child = &engine->world.GetComponent<EntityComponent>(MeshID);
 
+                    engine->world.AddComponent(MeshID, ChildComponent{});
+
+                    test->Child.push_back(MeshID);
+                    Child->IsAChild = true;
+                    Child->Parent.push_back(ParentID);
+
+                    engine->world.GetComponent<ParentComponent>(ParentID).child.push_back(MeshID);
+                    engine->world.GetComponent<ChildComponent>(MeshID).parentIndex = ParentID;
                     engine->world.AddComponent(MeshID, MeshComponent{});
                     engine->world.AddComponent(MeshID, ModelComponent{});
                     engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
@@ -83,6 +139,7 @@ namespace Eclipse
 
         return MAX_ENTITY;
     }
+
 
     void AssimpModelManager::RegisterExistingModel(Entity ID, const std::string& ModelName)
     {
@@ -508,9 +565,19 @@ namespace Eclipse
         {
             MaterialComponent& Material = engine->world.GetComponent<MaterialComponent>(EntityID);
 
-            if (Material.HasMaterialIstance == true)
+            if (Material.MaterialInstanceName.empty() == false)
             {
-                engine->gPBRManager->CheckUniform(EntityID, Cam);
+                // If Material Instance no Textures
+                if (engine->gPBRManager->AllMaterialInstances[Material.MaterialInstanceName]->HasTexture == false)
+                {
+                    engine->gPBRManager->NonTexturedUniform(EntityID, Cam);
+                }
+
+                // If Material Instance have textures
+                else
+                {
+                    engine->gPBRManager->TexturedUniform(EntityID, Cam);
+                }
             }
             else
             {

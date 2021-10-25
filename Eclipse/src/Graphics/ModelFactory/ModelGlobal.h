@@ -3,7 +3,7 @@
 
 namespace Eclipse
 {
-# define PI           3.14159265359  /* pi */
+# define PI           3.14159265359f  /* pi */
 
 
     using Vec2 = glm::vec2;
@@ -11,11 +11,11 @@ namespace Eclipse
     using Vec4 = glm::vec4;
     using Mat4 = glm::mat4;
 
-    const float  TWO_PI = 2.0 * PI;
-    const float  HALF_PI = 0.5 * PI;
-    const float  QUARTER_PI = 0.25 * PI;
-    const float  EIGHTH_PI = 0.125 * PI;
-    const float  SIXTEENTH_PI = 0.0625 * PI;
+    const float  TWO_PI = 2.0f * PI;
+    const float  HALF_PI = 0.5f * PI;
+    const float  QUARTER_PI = 0.25f * PI;
+    const float  EIGHTH_PI = 0.125f * PI;
+    const float  SIXTEENTH_PI = 0.0625f * PI;
 
     const float  DEG_TO_RAD = PI / 180.0f;
     const float  RAD_TO_DEG = 180.0f / PI;

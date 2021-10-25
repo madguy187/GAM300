@@ -45,6 +45,9 @@ namespace Eclipse
 		{
 			ECGui::OpenPopup("Exit?");
 
+			ImGui::GetMainViewport()->Flags |= ImGuiViewportFlags_NoFocusOnClick;
+			ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+
 			ImVec2 center = ECGui::GetMainViewport()->GetCenter();
 			ECGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
