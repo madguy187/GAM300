@@ -195,13 +195,6 @@ namespace Eclipse
                                 &box, CameraComponent::CameraType::RightView_camera);
                         }
 
-                        // MESH EDITOR // FIKRUL HERE
-                        /*if (engine->editorManager->GetEditorWindow<MeshEditorWindow>()->IsVisible)
-                        {
-                            engine->MaterialManager.DoNotUpdateStencil();
-                            engine->AssimpManager.MeshEditorDraw(engine->world, Mesh, entityID, FrameBufferMode::FBM_MESHEDITOR, CameraComponent::CameraType::MeshEditor_Camera);
-                        }*/
-
                         engine->MaterialManager.Highlight3DModels(entityID, FrameBufferMode::FBM_SCENE);
                     }
                 }
