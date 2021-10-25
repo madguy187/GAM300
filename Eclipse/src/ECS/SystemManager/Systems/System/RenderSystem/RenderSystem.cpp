@@ -49,18 +49,6 @@ namespace Eclipse
 
     void RenderSystem::Update()
     {
-        engine->InputManager->SetIsPrint(true);
-
-        if (engine->InputManager->GetKeyTriggered("Horizontal"))
-        {
-            std::cout << " Fikrul Fly Once " << std::endl;
-        }
-
-        if (engine->InputManager->GetKeyTriggered(InputKeycode::Key_LEFT))
-        {
-            std::cout << " Fikrul Fly Twice " << std::endl;
-        }
-
         ZoneScopedN("Render System")
             engine->Timer.SetName({ SystemName::RENDER });
         engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());

@@ -23,7 +23,7 @@ namespace Eclipse
         Type = EditorWindowType::EWT_MATERIALEDITOR;
         WindowName = "Material Editor";
         m_frameBuffer = engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_MATERIALEDITOR);
-        IsVisible = false;
+        IsVisible = true;
     }
 
     void MaterialEditorWindow::Unload()
