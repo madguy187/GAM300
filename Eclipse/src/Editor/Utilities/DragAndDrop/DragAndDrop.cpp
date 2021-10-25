@@ -2,8 +2,7 @@
 #include "DragAndDrop.h"
 #include"Editor/Windows/AssetBrowser/AssetBrowser.h"
 #include "ECS/ComponentManager/Components/ScriptComponent.h"
-#include "ECS/ComponentManager/Components/ParentComponent.h"
-#include "ECS/ComponentManager/Components/ChildComponent.h"
+
 namespace Eclipse
 {
 	void DragAndDrop::StringPayloadSource(const char* id, const std::string& source,
@@ -133,7 +132,6 @@ namespace Eclipse
 
 	void DragAndDrop::IndexPayloadTarget(const char* id, const int& destination, bool IsSelected, PayloadTargetType type)
 	{
-
 		if (ECGui::BeginDragDropTarget())
 		{
 			const ImGuiPayload* payload = ECGui::AcceptDragDropPayload(id);
@@ -147,20 +145,16 @@ namespace Eclipse
 
 			ECGui::EndDragDropTarget();
 		}
-		else
-		if (IsSelected && IsIndexJobSelected)
+		else if (IsSelected && IsIndexJobSelected)
 		{
-
 			switch (type)
 			{
 			case PayloadTargetType::PTT_INDEXEDIT:
 			{
-
 				ImGui::OpenPopup("IndexJobList");
 
 				if (ImGui::BeginPopup("IndexJobList"))
 				{
-
 					for (int i = 0; i < IM_ARRAYSIZE(IndexJobNames); ++i)
 					{
 						bool selected = false;
@@ -186,39 +180,8 @@ namespace Eclipse
 								break;
 								// Parent Child
 							case 2:
-
 								DestinationEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(DestinationIndex_));
-
 								SourceEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(SourceIndex_));
-
-								//if (DestinationEntCom->Tag == SourceEntCom->Tag)
-								//{
-								//	IsIndexJobSelected = false;
-								//	break;
-								//}
-
-								if (!engine->world.CheckComponent<ParentComponent>(engine->editorManager->GetEntityID(DestinationIndex_)))
-								{
-									engine->world.AddComponent(engine->editorManager->GetEntityID(DestinationIndex_), ParentComponent{});
-									engine->world.GetComponent<ParentComponent>(engine->editorManager->GetEntityID(DestinationIndex_)).child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
-								}
-								else
-								{
-									engine->world.GetComponent<ParentComponent>(engine->editorManager->GetEntityID(DestinationIndex_)).child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
-								}
-
-								if (!engine->world.CheckComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)))
-								{
-									engine->world.AddComponent(engine->editorManager->GetEntityID(SourceIndex_), ChildComponent{});
-									engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).parentIndex = engine->editorManager->GetEntityID(DestinationIndex_);
-								}
-								else
-								{
-									engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).parentIndex = engine->editorManager->GetEntityID(DestinationIndex_);
-								}
-
-
-
 								DestinationEntCom->Child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
 								SourceEntCom->IsAChild = true;
 								SourceEntCom->Parent.push_back(engine->editorManager->GetEntityID(DestinationIndex_));
@@ -245,16 +208,17 @@ namespace Eclipse
 		std::string AssetPath, std::filesystem::directory_entry dirEntry, bool& refreshBrowser,
 		std::map<std::filesystem::path, std::vector<std::filesystem::path>> pathMap, bool& CopyMode)
 	{
-		static std::string folderName;
-
-		static std::string parentPath;
-
-		std::filesystem::path itemPaths = AssetPath.c_str();
 
 		if (ECGui::BeginDragDropTarget())
 		{
 			if (const ImGuiPayload* payload = ECGui::AcceptDragDropPayload(type))
 			{
+				static std::string folderName;
+
+				static std::string parentPath;
+
+				std::filesystem::path itemPaths = AssetPath.c_str();
+
 				try
 				{
 					paths = (const char*)payload->Data;
@@ -420,11 +384,18 @@ namespace Eclipse
 					}
 					else
 					{
-						std::filesystem::copy(std::filesystem::path(itemPaths / paths), dirEntry.path());
-
-						if (!CopyMode)
+						if (std::filesystem::is_directory(dirEntry.path()))
 						{
-							std::filesystem::remove(std::filesystem::path(itemPaths / paths));
+							std::filesystem::copy(std::filesystem::path(itemPaths / paths), dirEntry.path());
+
+							if (!CopyMode)
+							{
+								std::filesystem::remove(std::filesystem::path(itemPaths / paths));
+							}
+						}
+						else
+						{
+							EDITOR_LOG_WARN("You are copying / moving a file to another file!");
 						}
 					}
 					refreshBrowser = true;
