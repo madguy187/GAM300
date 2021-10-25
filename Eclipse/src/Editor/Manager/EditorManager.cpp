@@ -45,7 +45,7 @@ namespace Eclipse
 		AddWindow<ProfilerWindow>("Profiler " ICON_MDI_FILE_PERCENT);
 		AddWindow<AssetBrowserWindow>("Asset Browser " ICON_MDI_FILE_IMAGE);
 		AddWindow<LoggerWindow>("Log " ICON_MDI_POST);
-		AddWindow<DebugWindow>("Settings " ICON_MDI_ACCOUNT_COG);
+		AddWindow<DebugWindow>("Project Settings " ICON_MDI_ACCOUNT_COG);
 		AddWindow<HeaderWindow>("Header " ICON_MDI_PAGE_LAYOUT_HEADER);
 		AddWindow<MeshEditorWindow>("Mesh Editor");
 		AddWindow<MaterialEditorWindow>("Material Editor");
