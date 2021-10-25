@@ -1,7 +1,6 @@
 #pragma once
 #include "Graphics/Material/MaterialInstance/MaterialInstance.h"
 #include "Graphics/EngineCompiler/MaterialCompiler/MaterialCompiler.h"
-
 namespace Eclipse
 {
     enum class Mode

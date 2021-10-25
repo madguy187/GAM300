@@ -215,6 +215,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\FileWatchSystem\FileWatchSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\GridSystem\GridSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\Inputsystem\InputSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem\MaterialSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.h" />
@@ -279,7 +280,8 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\Grid\Grid.h" />
     <ClInclude Include="src\Graphics\Grid\IAABB.h" />
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h" />
-    <ClInclude Include="src\Graphics\InputHandler\InputWrapper.h" />
+    <ClInclude Include="src\Graphics\InputHandler\LogicalInput.h" />
+    <ClInclude Include="src\Graphics\InputHandler\LogicalEnum.hpp" />
     <ClInclude Include="src\Graphics\Lighting\DirectionalLight.h" />
     <ClInclude Include="src\Graphics\Lighting\LightManager.h" />
     <ClInclude Include="src\Graphics\Lighting\LightProperties.hpp" />
@@ -346,6 +348,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Library\Strings\StringsConcatenate.h" />
     <ClInclude Include="src\Library\UUID\UUIDGenerator.h" />
     <ClInclude Include="src\Logger\Logger.h" />
+    <ClInclude Include="src\Mono\Components\s_RigidBodyComponent.h" />
     <ClInclude Include="src\Mono\Manager\MonoManager.h" />
     <ClInclude Include="src\Physics\PhysicsManager.h" />
     <ClInclude Include="src\PrefabManager\PrefabManager.h" />
@@ -382,6 +385,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\FileWatchSystem\FileWatchSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\GridSystem\GridSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\Inputsystem\InputSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem\MaterialSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.cpp" />
@@ -432,7 +436,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\Grid\BoundingBox.cpp" />
     <ClCompile Include="src\Graphics\Grid\Box.cpp" />
     <ClCompile Include="src\Graphics\Grid\Grid.cpp" />
-    <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp" />
+    <ClCompile Include="src\Graphics\InputHandler\LogicalInput.cpp" />
     <ClCompile Include="src\Graphics\Lighting\DirectionalLight.cpp" />
     <ClCompile Include="src\Graphics\Lighting\LightManager.cpp" />
     <ClCompile Include="src\Graphics\Lighting\PointLight.cpp" />
@@ -507,6 +511,13 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.frag" />
+    <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.vert" />
+    <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />
+    <None Include="src\Assets\Shaders\PBRShader\PBR.vert" />
+    <None Include="src\Mono\ScriptAPI\EclipseBehavior.cs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

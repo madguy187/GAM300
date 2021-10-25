@@ -423,8 +423,6 @@ namespace Eclipse
 
     void CameraManager::CheckCameraInput()
     {
-        InputHandler.SetIsPrint(false);
-
         //Camera movement keys
         //int keyA = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_A);
         //int keyW = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_W);
@@ -447,7 +445,7 @@ namespace Eclipse
 
         //int keyP = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_P);
 
-        if (InputHandler.GetKeyCurrent(InputKeycode::Key_A))
+        if (engine->InputManager->GetKeyCurrent(InputKeycode::Key_A))
         {
             input.set(1, 1);
         }
@@ -456,7 +454,7 @@ namespace Eclipse
             input.set(1, 0);
         }
 
-        if (InputHandler.GetKeyCurrent(InputKeycode::Key_S))
+        if (engine->InputManager->GetKeyCurrent(InputKeycode::Key_S))
         {
             input.set(3, 1);
         }
@@ -465,7 +463,7 @@ namespace Eclipse
             input.set(3, 0);
         }
 
-        if (InputHandler.GetKeyCurrent(InputKeycode::Key_D))
+        if (engine->InputManager->GetKeyCurrent(InputKeycode::Key_D))
         {
             input.set(0, 1);
         }
@@ -474,7 +472,7 @@ namespace Eclipse
             input.set(0, 0);
         }
 
-        if (InputHandler.GetKeyCurrent(InputKeycode::Key_W))
+        if (engine->InputManager->GetKeyCurrent(InputKeycode::Key_W))
         {
             input.set(2, 1);
         }

@@ -607,7 +607,7 @@
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h">
       <Filter>Graphics\InputHandler</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\InputHandler\InputWrapper.h">
+    <ClInclude Include="src\Graphics\InputHandler\LogicalInput.h">
       <Filter>Graphics\InputHandler</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\Lighting\DirectionalLight.h">
@@ -863,6 +863,14 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Graphics\InputHandler\LogicalEnum.hpp" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\Inputsystem\InputSystem.h" />
+    <ClInclude Include="src\Graphics\Material\PBR\PBRManager.h" />
+    <ClInclude Include="src\Graphics\Material\MaterialInstance\MaterialInstance.h" />
+    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\EntityDeleteDeltaCommand.h" />
+    <ClInclude Include="src\Library\Random\Random.h" />
+    <ClInclude Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.h" />
+    <ClInclude Include="src\Mono\Components\s_RigidBodyComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1060,7 +1068,7 @@
     <ClCompile Include="src\Graphics\Grid\Grid.cpp">
       <Filter>Graphics\Grid</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\InputHandler\InputWrapper.cpp">
+    <ClCompile Include="src\Graphics\InputHandler\LogicalInput.cpp">
       <Filter>Graphics\InputHandler</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\Lighting\DirectionalLight.cpp">
@@ -1277,5 +1285,17 @@
       <Filter>Tracy</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\Inputsystem\InputSystem.cpp" />
+    <ClCompile Include="src\Graphics\Material\PBR\PBRManager.cpp" />
+    <ClCompile Include="src\Graphics\Material\MaterialInstance\MaterialInstance.cpp" />
+    <ClCompile Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />
+    <None Include="src\Assets\Shaders\PBRShader\PBR.vert" />
+    <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.frag" />
+    <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.vert" />
+    <ClCompile Include="src\Library\Random\Random.cpp" />
+    <None Include="src\Mono\ScriptAPI\EclipseBehavior.cs" />
   </ItemGroup>
 </Project>

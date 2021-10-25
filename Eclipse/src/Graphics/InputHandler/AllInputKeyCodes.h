@@ -9,10 +9,21 @@ namespace Eclipse
         Key_NULLSTATE,
         Key_RELEASED,
         Key_PRESSED,
+        Key_TRIGGERED,
         Key_HOLD
     };
 
-    enum class InputKeycode
+    enum class InputMouseKeycode : unsigned char
+    {
+        KeyCode_MOUSENULL = 0,
+        KeyCode_MOUSELEFT = 1,
+        KeyCode_MOUSERIGHT = 2,
+        KeyCode_MOUSEMIDDLE = 4,
+        KeyCode_MOUSEX1 = 5,
+        KeyCode_MOUSEX2 = 6,
+    };
+
+    enum class InputKeycode : unsigned int
     {
         Key_Null = 0,
 
@@ -155,5 +166,4 @@ namespace Eclipse
         Key_QUOTE = 196,
         Key_MISCELLANEOUS = 197,
     };
-
 }
