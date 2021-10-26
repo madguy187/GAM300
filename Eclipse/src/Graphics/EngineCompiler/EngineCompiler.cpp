@@ -252,6 +252,7 @@ namespace Eclipse
         LoadModelTextures();
         LoadBasicTextures();
         engine->gPBRManager->gMaterialEditorSettings->gMaterialCompiler.LoadMaterials();
+        engine->InputManager->InputCompiler_.Load();
         CompilerThreads["LoadPrefabs"]->join();
         CompilerThreads.clear();
 

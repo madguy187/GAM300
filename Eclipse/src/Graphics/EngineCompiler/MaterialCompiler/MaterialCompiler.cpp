@@ -33,9 +33,6 @@ namespace Eclipse
             std::string FolderName = relativePath.filename().string();
             std::string GoIntoMaterialFolder = ("src/Assets/MaterialInstances/" + FolderName);
 
-            //int Position = FolderName.find(".");
-            //std::string GetMaterialName = FolderName.substr(0, Position);
-
             DeSerializeMaterials(FolderName);
         }
     }
@@ -50,7 +47,7 @@ namespace Eclipse
         CloseFile(MaterialFileRead, NameOfMaterial);
     }
 
-    bool MaterialCompiler::OpenFile(std::fstream& FileIn, std::string& Path)
+    bool MaterialCompiler::OpenFile(std::fstream& FileIn, std::string Path)
     {
         FileIn.open(Path, std::ios::in | std::ios::binary);
 
@@ -63,12 +60,12 @@ namespace Eclipse
         return true;
     }
 
-    void MaterialCompiler::CloseFile(std::fstream& FileIn, std::string& FileName)
+    void MaterialCompiler::CloseFile(std::fstream& FileIn, std::string FileName)
     {
         FileIn.close();
     }
 
-    bool MaterialCompiler::OpenFile(std::ofstream& FileIn, std::string& Path)
+    bool MaterialCompiler::OpenFile(std::ofstream& FileIn, std::string Path)
     {
         FileIn.open(Path, std::ios::out | std::ios::binary | std::ios_base::trunc);
 
@@ -81,9 +78,8 @@ namespace Eclipse
         return true;
     }
 
-    void MaterialCompiler::CloseFile(std::ofstream& FileIn, std::string& FileName)
+    void MaterialCompiler::CloseFile(std::ofstream& FileIn, std::string FileName)
     {
         FileIn.close();
     }
-
 }

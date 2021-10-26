@@ -180,6 +180,8 @@ namespace Eclipse
         }
         break;
         }
+
+        return 0.0f;
     }
 
 }

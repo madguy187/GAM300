@@ -64,8 +64,7 @@ namespace Eclipse
             ShowAudioProperty("Audio", currEnt, CompFilter);
             ShowCollisionProperty("Collision", currEnt, CompFilter);
             ShowAIProperty("AI Properties", currEnt, CompFilter);
-            ShowParentProperty("Parent", currEnt, CompFilter);
-            ShowChildProperty("Child", currEnt, CompFilter);
+
             AddComponentsController(currEnt);
             ECGui::NextColumn();
             RemoveComponentsController(currEnt);
@@ -477,11 +476,16 @@ namespace Eclipse
                     ECGui::DrawTextWidget<const char*>("Texture Type", EMPTY_STRING);
                     ECGui::NextColumn();
                     ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                    ECGui::CreateComboList(settings, _TextureVector, _Texture.ComboIndex);
-                    _Texture.Type = _Map[_TextureVector[_Texture.ComboIndex]];
+                    
+                    if (ECGui::CreateComboList(settings, _TextureVector, _Texture.ComboIndex))
+                    {
+                        TextureType oldtemp = _Texture.Type;
+                        _Texture.Type = _Map[_TextureVector[_Texture.ComboIndex]];
+                        CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<TextureType>{ oldtemp,  _Texture.Type });
+                    }
+
                     ECGui::NextColumn();
                     ChangeTextureController(_Texture);
-
                 }
 
                 ECGui::SetColumns(1, nullptr, true);
@@ -500,11 +504,8 @@ namespace Eclipse
             {
                 auto& _Render = engine->world.GetComponent<MeshComponent>(ID);
 
-
-
                 ECGui::DrawTextWidget<const char*>("Transparency", EMPTY_STRING);
                 ECGui::DrawSliderFloatWidget("Render Transparency", &_Render.transparency, true, 0.0f, 200.0f);
-
 
                 //sceneloaded models
                 //THIS IS WORK IN PROGRESS TESTING OUT FUNCITONALITIES AND ARE NOT MEANT TO BE IN THE FINAL
@@ -1419,7 +1420,9 @@ namespace Eclipse
 
                     if (ECGui::IsItemClicked(0) && ECGui::IsItemHovered())
                     {
+                        std::string oldtemp = Item.modelRef;
                         Item.modelRef = Graphics::models.find((engine->AssimpManager.GetPrimitiveNames()[i].c_str()))->first;
+                        CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<std::string>{ oldtemp, Item.modelRef });
                         AddComponentFilter.Clear();
                     }
 

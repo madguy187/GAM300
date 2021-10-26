@@ -213,7 +213,10 @@ namespace Eclipse
 			for (auto& window : engine->editorManager->GetAllWindowsByRef())
 			{
 				if (!strcmp(ListToName_[index], "Mesh Editor"))
+				{
+					index++;
 					continue;
+				}
 
 				if (ECGui::CreateMenuItem(ListToName_[index], &window->IsVisible))
 				{
