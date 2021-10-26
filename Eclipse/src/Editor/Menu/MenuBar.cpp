@@ -95,6 +95,65 @@ namespace Eclipse
 		ECGui::DrawTextWidget<const char*>("All content copyrighted 2021 DigiPen (SINGAPORE) Corporation, all rights reserved.", EMPTY_STRING);
 	}
 
+	void MenuBar::ShowRecoveryDialogBox(bool active)
+	{
+		if (active)
+		{
+			ECGui::OpenPopup("Recover?");
+
+			ImGui::GetMainViewport()->Flags |= ImGuiViewportFlags_NoFocusOnClick;
+			ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+
+			ImVec2 center = ECGui::GetMainViewport()->GetCenter();
+			ECGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+			if (ECGui::BeginPopupModal("Recover?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+			{
+				ECGui::DrawTextWidget<const char*>("The engine crashed unexpectedly previously.\n     Do you wanna recover unsaved scene?", EMPTY_STRING);
+				ECGui::InsertHorizontalLineSeperator();
+
+				if (ECGui::ButtonBool("OK", ImVec2(120, 0)))
+				{
+					// Load and delete recovery file
+					std::string path = std::filesystem::current_path().string() + "\\" + engine->szManager.GetBackUpPath();
+					SceneManager::RegisterScene(path);
+					SceneManager::LoadScene(RetrieveFilename(engine->szManager.GetBackUpPath()));
+					std::filesystem::remove(std::filesystem::path(path));
+					engine->editorManager->SetRecoveryFileExistence(false);
+					ECGui::CloseCurrentPopup();
+				}
+
+				ECGui::InsertSameLine();
+
+				if (ECGui::ButtonBool("Cancel", ImVec2(120, 0)))
+				{
+					// Delete recovery file
+					std::string path = std::filesystem::current_path().string() + "\\" + engine->szManager.GetBackUpPath();
+					std::filesystem::remove(std::filesystem::path(path));
+					engine->editorManager->SetRecoveryFileExistence(false);
+					ECGui::CloseCurrentPopup();
+				}
+
+				ECGui::EndPopup();
+			}
+		}
+	}
+
+	std::string MenuBar::RetrieveFilename(std::string path)
+	{
+		size_t pos = path.find('.');
+
+		if (pos == std::string::npos)
+			return std::string();
+
+		pos = path.find_last_of('\\');
+		std::string temp = path.substr(pos + 1);
+
+		temp.erase(temp.find('.'));
+
+		return temp;
+	}
+
 	bool MenuBar::GetExitStatus()
 	{
 		return IsExiting;

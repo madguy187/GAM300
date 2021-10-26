@@ -324,6 +324,11 @@ namespace Eclipse
 		return IsMeshEditorActive;
 	}
 
+	bool EditorManager::GetRecoveryFileExistence() const
+	{
+		return DoesRecoveryFileExist;
+	}
+
 	void EditorManager::SetSelectedEntity(Entity ID)
 	{
 		GEHIndex_ = static_cast<size_t>(EntityToIndexMap_[ID]);
@@ -341,6 +346,11 @@ namespace Eclipse
 		IsMeshEditorActive = active;
 	}
 
+	void EditorManager::SetRecoveryFileExistence(bool exist)
+	{
+		DoesRecoveryFileExist = exist;
+	}
+
 	void EditorManager::Clear()
 	{
 		EntityHierarchyList_.clear();
@@ -352,11 +362,10 @@ namespace Eclipse
 			window->Unload();
 		}
 	}
+
 	void EditorManager::TextureIconInit()
 	{
 		FolderIcon_ = Graphics::FindTextures("FolderIcon").GetHandle();
-
-
 		spriteIcon_ = Graphics::FindTextures("PlayPauseStop").GetHandle();
 	}
 }
