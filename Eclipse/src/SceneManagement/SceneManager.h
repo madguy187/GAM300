@@ -17,6 +17,7 @@ namespace Eclipse
 		static bool isQuit;
 
 	public:
+		const static const char*  EMPTY_SCENE_NAME;
 		const static SceneIndex EMPTY = INT_MIN;
 		const static SceneIndex QUIT = INT_MAX;
 		const static SceneIndex RELOAD = INT_MAX - 1;

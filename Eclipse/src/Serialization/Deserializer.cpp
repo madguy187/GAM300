@@ -105,7 +105,7 @@ namespace Eclipse
 		return hasFile;
 	}
 
-	bool Deserializer::LoadBackup(TiXmlDocument& backup, std::string& path)
+	bool Deserializer::LoadBackup(TiXmlDocument& backup, const std::string& path)
 	{
 		if (std::filesystem::exists(path))
 		{

@@ -291,8 +291,8 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\Grid\Grid.h" />
     <ClInclude Include="src\Graphics\Grid\IAABB.h" />
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h" />
-    <ClInclude Include="src\Graphics\InputHandler\LogicalInput.h" />
     <ClInclude Include="src\Graphics\InputHandler\LogicalEnum.hpp" />
+    <ClInclude Include="src\Graphics\InputHandler\LogicalInput.h" />
     <ClInclude Include="src\Graphics\Lighting\DirectionalLight.h" />
     <ClInclude Include="src\Graphics\Lighting\LightManager.h" />
     <ClInclude Include="src\Graphics\Lighting\LightProperties.hpp" />
