@@ -53,10 +53,10 @@ namespace Eclipse
 
 			if (ECGui::BeginPopupModal("Exit?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 			{
-				ECGui::DrawTextWidget<const char*>("Are you sure you want to exit the engine?\nAll unsaved work cannot be recovered.\n\n", EMPTY_STRING);
+				ECGui::DrawTextWidget<const char*>(" Are you sure you want to exit the engine?\n   All unsaved work cannot be recovered.", EMPTY_STRING);
 				ECGui::InsertHorizontalLineSeperator();
 
-				if (ECGui::ButtonBool("OK", ImVec2(120, 0)))
+				if (ECGui::ButtonBool("OK", ImVec2(140, 0)))
 				{
 					EDITOR_LOG_INFO("Exiting application...");
 					glfwSetWindowShouldClose(OpenGL_Context::GetWindow(), 1);
@@ -64,7 +64,7 @@ namespace Eclipse
 
 				ECGui::InsertSameLine();
 
-				if (ECGui::ButtonBool("Cancel", ImVec2(120, 0)))
+				if (ECGui::ButtonBool("Cancel", ImVec2(140, 0)))
 				{
 					IsExiting = false;
 					ECGui::CloseCurrentPopup();
@@ -112,7 +112,7 @@ namespace Eclipse
 				ECGui::DrawTextWidget<const char*>("The engine crashed unexpectedly previously.\n     Do you wanna recover unsaved scene?", EMPTY_STRING);
 				ECGui::InsertHorizontalLineSeperator();
 
-				if (ECGui::ButtonBool("OK", ImVec2(120, 0)))
+				if (ECGui::ButtonBool("OK", ImVec2(140, 0)))
 				{
 					// Load and delete recovery file
 					std::string path = std::filesystem::current_path().string() + "\\" + engine->szManager.GetBackUpPath();
@@ -125,7 +125,7 @@ namespace Eclipse
 
 				ECGui::InsertSameLine();
 
-				if (ECGui::ButtonBool("Cancel", ImVec2(120, 0)))
+				if (ECGui::ButtonBool("Cancel", ImVec2(145, 0)))
 				{
 					// Delete recovery file
 					std::string path = std::filesystem::current_path().string() + "\\" + engine->szManager.GetBackUpPath();
