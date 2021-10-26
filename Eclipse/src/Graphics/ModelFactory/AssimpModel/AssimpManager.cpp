@@ -78,6 +78,15 @@ namespace Eclipse
         Prefabs.clear();
     }
 
+    void AssimpModelManager::CreateBasicPrimitives(Entity ID, const std::string& ModelName)
+    {
+        auto& name = Prefabs[ModelName][0];
+        engine->world.AddComponent(ID, MeshComponent{});
+        engine->world.AddComponent(ID, ModelComponent{});
+        engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
+        SetSingleMesh(ID, name);
+    }
+
     Entity AssimpModelManager::CreateModel(unsigned int ID, const std::string& ModelName)
     {
         (void)ID;

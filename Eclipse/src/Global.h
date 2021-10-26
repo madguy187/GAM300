@@ -84,7 +84,7 @@ enum class EntityType
     ENT_GEO_CONE,
     ENT_GEO_TORUS,
     ENT_GEO_PYRAMID,
-    ENT_GEO_LINES3D,
+    ENT_GEO_ICOSPHERE,
     ENT_GEO_PLANES, // LAST
     // END OF GEO
     // START OF LIGHTS
