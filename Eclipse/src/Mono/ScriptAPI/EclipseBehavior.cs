@@ -28,11 +28,6 @@ namespace Eclipse
         {
             Console.WriteLine("GetRigidComponent");
             Console.WriteLine(gc_handle);
-            if (!(gameObject is object))
-            {
-              Console.WriteLine("Empty");
-            }
-
             Console.WriteLine(Entity);
         }
 

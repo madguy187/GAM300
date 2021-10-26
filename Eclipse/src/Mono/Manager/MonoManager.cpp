@@ -105,6 +105,7 @@ namespace Eclipse
 		void* args[1];
 		args[0] = &ent;
 		mono_runtime_invoke(method, obj, args, NULL);
+		uint32_t handle = mono_gchandle_new(obj, true);
 
 		return obj;
 	}
@@ -143,7 +144,7 @@ namespace Eclipse
 			return;
 		}
 
-		mono_runtime_invoke(m_update, obj, nullptr, NULL);
+		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
 	}
 
 	void MonoManager::StopMono()
