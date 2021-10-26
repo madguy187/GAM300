@@ -8,12 +8,21 @@ namespace Eclipse
 	void Eclipse::ChildSystem::Update()
 	{
 		ZoneScopedN("Child System")
-		//if (!engine->GetPlayState()) return;
+		if (!engine->GetPlayState()) return;
 
-		//for (auto& entity : mEntities)
-		//{
-		//	// calculate offset
-		//}
+		int gizmoType = engine->editorManager->GetEditorWindow<SceneWindow>()->GetGizmoType();
+		if (gizmoType != ImGuizmo::OPERATION::TRANSLATE) return;
+
+		for (auto& entity : mEntities)
+		{
+			ChildComponent& childComp = engine->world.GetComponent<ChildComponent>(entity);
+			TransformComponent& childTrans = engine->world.GetComponent<TransformComponent>(entity);
+			TransformComponent& parentTrans = engine->world.GetComponent<TransformComponent>(childComp.parentIndex);
+
+			childComp.PosOffset = parentTrans.position - childTrans.position;
+			childComp.RotOffset = parentTrans.rotation - childTrans.rotation;
+		}
+
 		engine->Timer.SetName({ SystemName::CHILD });
 		engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 		engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());

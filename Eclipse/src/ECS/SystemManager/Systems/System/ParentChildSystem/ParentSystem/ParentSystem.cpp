@@ -22,6 +22,7 @@ namespace Eclipse
 				UpdateChildPosition(entity, childEntity);
 			}
 		}
+
 		engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());
 		engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
 		FrameMark
@@ -33,6 +34,19 @@ namespace Eclipse
 		TransformComponent& childTransComp = engine->world.GetComponent<TransformComponent>(childEnt);
 		TransformComponent& parentTransComp = engine->world.GetComponent<TransformComponent>(parentEnt);
 
-		childTransComp.position = parentTransComp.position + childComp.offset;
+		ECVec3 Zero{ 0, 0, 0 };
+		if (childComp.PosOffset == Zero)
+			childComp.PosOffset = parentTransComp.position - childTransComp.position;
+		if (childComp.RotOffset == Zero)
+			childComp.RotOffset = parentTransComp.rotation - childTransComp.position;
+
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, childComp.PosOffset.ConvertToGlmVec3Type() + parentTransComp.position.ConvertToGlmVec3Type());
+		model = model / glm::determinant(model); // normalize
+		model = glm::rotate(model, glm::radians(childComp.RotOffset.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(childComp.RotOffset.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(childComp.RotOffset.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+		
+		parentTransComp.position = model * parentTransComp.position.ConvertToGlmVec4Type();
 	}
 }
