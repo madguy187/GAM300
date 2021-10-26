@@ -26,7 +26,7 @@ void Eclipse::NodeEditorWindow::Init()
 
 void Eclipse::NodeEditorWindow::Unload()
 {
-	ed::DestroyEditor(g_Context);
+	
 }
 
 void Eclipse::NodeEditorWindow::DrawImpl()
@@ -114,6 +114,11 @@ void Eclipse::NodeEditorWindow::DrawImpl()
    //
    //Application_Frame();
 
+}
+
+Eclipse::NodeEditorWindow::~NodeEditorWindow()
+{
+    ed::DestroyEditor(g_Context);
 }
 
 int Eclipse::NodeEditorWindow::GetNextId()
