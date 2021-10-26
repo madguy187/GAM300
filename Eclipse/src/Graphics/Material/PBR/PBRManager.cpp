@@ -15,22 +15,21 @@ namespace Eclipse
 
         gMaterialEditorSettings = std::make_unique<MaterialEditorSettings>();
 
-        LoadMaterial("BambooWood");
         LoadMaterial("HardWood");
     }
 
     void PBRManager::InitialiseBaseReflectivity()
     {
-        BaseReflectivity.emplace("Water", ECVec3{ 0.02,0.02,0.02 });
-        BaseReflectivity.emplace("Plastic(Low)", ECVec3{ 0.03,0.03,0.03 });
-        BaseReflectivity.emplace("Plastic(High)", ECVec3{ 0.05,0.05,0.05 });
-        BaseReflectivity.emplace("Glass(High)", ECVec3{ 0.08,0.08,0.08 });
-        BaseReflectivity.emplace("Diamond", ECVec3{ 0.17,0.17,0.17 });
-        BaseReflectivity.emplace("Iron", ECVec3{ 0.56,0.56,0.56 });
-        BaseReflectivity.emplace("Copper", ECVec3{ 0.95,0.64,0.54 });
-        BaseReflectivity.emplace("Gold", ECVec3{ 1.00,0.71,0.29 });
-        BaseReflectivity.emplace("Aluminium", ECVec3{ 0.91,0.92,0.92 });
-        BaseReflectivity.emplace("Silver", ECVec3{ 0.95,0.93,0.88 });
+        BaseReflectivity.emplace("Water", ECVec3{ 0.02f,0.02f,0.02f });
+        BaseReflectivity.emplace("Plastic(Low)", ECVec3{ 0.03f,0.03f,0.03f });
+        BaseReflectivity.emplace("Plastic(High)", ECVec3{ 0.05f,0.05f,0.05f });
+        BaseReflectivity.emplace("Glass(High)", ECVec3{ 0.08f,0.08f,0.08f });
+        BaseReflectivity.emplace("Diamond", ECVec3{ 0.17f,0.17f,0.17f });
+        BaseReflectivity.emplace("Iron", ECVec3{ 0.56f,0.56f,0.56f });
+        BaseReflectivity.emplace("Copper", ECVec3{ 0.95f,0.64f,0.54f });
+        BaseReflectivity.emplace("Gold", ECVec3{ 1.00f,0.71f,0.29f });
+        BaseReflectivity.emplace("Aluminium", ECVec3{ 0.91f,0.92f,0.92f });
+        BaseReflectivity.emplace("Silver", ECVec3{ 0.95f,0.93f,0.88f });
     }
 
     void PBRManager::GenerateMaterialTexture(std::string FolderName, std::string TextureName)
@@ -87,11 +86,11 @@ namespace Eclipse
 
             std::string GoIntoMaterialFolder = ("src/Assets/Materials/" + FolderName);
 
-            for (auto& dirEntry : std::filesystem::directory_iterator(GoIntoMaterialFolder))
+            for (auto& dirEntry2 : std::filesystem::directory_iterator(GoIntoMaterialFolder))
             {
-                const auto& MaterialTextureFiles = dirEntry.path();
-                auto relativePath = relative(MaterialTextureFiles, "src//");
-                std::string MaterialTextureFileName = relativePath.filename().string();
+                const auto& MaterialTextureFiles = dirEntry2.path();
+                auto relativePath2 = relative(MaterialTextureFiles, "src//");
+                std::string MaterialTextureFileName = relativePath2.filename().string();
 
                 if (MaterialTextureFileName.find("albedo.png") != std::string::npos)
                 {
@@ -135,14 +134,13 @@ namespace Eclipse
 
         GLuint MetallicConstant = shdrpgm.GetLocation("MetallicConstant");
         GLuint RoughnessConstant = shdrpgm.GetLocation("RoughnessConstant");
-        GLint uModelToNDC_ = shdrpgm.GetLocation("uModelToNDC");
         GLint model_ = shdrpgm.GetLocation("model");
         GLuint view1 = shdrpgm.GetLocation("view");
         GLint projection1 = shdrpgm.GetLocation("projection");
         GLuint AlbedoConstant = shdrpgm.GetLocation("AlbedoConstant");
         GLuint AoConstant = shdrpgm.GetLocation("AoConstant");
         GLint HasInstance = shdrpgm.GetLocation("HasInstance");
-        GLint BaseReflectivity = shdrpgm.GetLocation("BaseReflectivity");
+        GLint BaseReflectivity_ = shdrpgm.GetLocation("BaseReflectivity");
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::mat4(1.0f);
@@ -163,7 +161,7 @@ namespace Eclipse
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv(projection1, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
         glUniformMatrix4fv(view1, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
-        GLCall(glUniform3f(BaseReflectivity,
+        GLCall(glUniform3f(BaseReflectivity_,
             AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getX(),
             AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getY(),
             AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getZ()));
@@ -180,12 +178,11 @@ namespace Eclipse
         auto& shdrpgm = Graphics::shaderpgms["PBRShader"];
         shdrpgm.Use();
 
-        GLint uModelToNDC_ = shdrpgm.GetLocation("uModelToNDC");
         GLint model_ = shdrpgm.GetLocation("model");
         GLuint view1 = shdrpgm.GetLocation("view");
         GLint projection1 = shdrpgm.GetLocation("projection");
         GLint HasInstance = shdrpgm.GetLocation("HasInstance");
-        GLint BaseReflectivity = shdrpgm.GetLocation("BaseReflectivity");
+        GLint BaseReflectivity_ = shdrpgm.GetLocation("BaseReflectivity");
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::mat4(1.0f);
@@ -199,7 +196,7 @@ namespace Eclipse
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv(projection1, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
         glUniformMatrix4fv(view1, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
-        GLCall(glUniform3f(BaseReflectivity,
+        GLCall(glUniform3f(BaseReflectivity_,
             AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getX(),
             AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getY(),
             AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getZ()));
@@ -305,7 +302,6 @@ namespace Eclipse
         auto& shdrpgm = Graphics::shaderpgms["PBRShader"];
         shdrpgm.Use();
 
-        GLint uModelToNDC_ = shdrpgm.GetLocation("uModelToNDC");
         GLint model_ = shdrpgm.GetLocation("model");
         GLuint view = shdrpgm.GetLocation("view");
         GLint projection = shdrpgm.GetLocation("projection");
@@ -401,7 +397,6 @@ namespace Eclipse
 
         GLuint MetallicConstant = shdrpgm.GetLocation("MetallicConstant");
         GLuint RoughnessConstant = shdrpgm.GetLocation("RoughnessConstant");
-        GLint uModelToNDC_ = shdrpgm.GetLocation("uModelToNDC");
         GLint model_ = shdrpgm.GetLocation("model");
         GLuint view = shdrpgm.GetLocation("view");
         GLint projection = shdrpgm.GetLocation("projection");

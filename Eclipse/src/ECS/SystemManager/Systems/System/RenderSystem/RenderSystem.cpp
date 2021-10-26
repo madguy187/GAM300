@@ -49,18 +49,6 @@ namespace Eclipse
 
     void RenderSystem::Update()
     {
-        engine->InputManager->SetIsPrint(true);
-
-        if (engine->InputManager->GetKeyTriggered("Horizontal"))
-        {
-            std::cout << " Fikrul Fly Once " << std::endl;
-        }
-
-        if (engine->InputManager->GetKeyTriggered(InputKeycode::Key_LEFT))
-        {
-            std::cout << " Fikrul Fly Twice " << std::endl;
-        }
-
         ZoneScopedN("Render System")
             engine->Timer.SetName({ SystemName::RENDER });
         engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
@@ -206,13 +194,6 @@ namespace Eclipse
                             engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_RIGHT, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_RIGHT),
                                 &box, CameraComponent::CameraType::RightView_camera);
                         }
-
-                        // MESH EDITOR // FIKRUL HERE
-                        /*if (engine->editorManager->GetEditorWindow<MeshEditorWindow>()->IsVisible)
-                        {
-                            engine->MaterialManager.DoNotUpdateStencil();
-                            engine->AssimpManager.MeshEditorDraw(engine->world, Mesh, entityID, FrameBufferMode::FBM_MESHEDITOR, CameraComponent::CameraType::MeshEditor_Camera);
-                        }*/
 
                         engine->MaterialManager.Highlight3DModels(entityID, FrameBufferMode::FBM_SCENE);
                     }

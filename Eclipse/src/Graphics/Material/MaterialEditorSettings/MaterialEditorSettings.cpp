@@ -17,7 +17,7 @@ namespace Eclipse
         gMaterialCompiler.SerializeMaterials(CurrentMaterial);
     }
 
-    void MaterialEditorSettings::BindMaterial(Shader& In, std::string MaterialName)
+    void MaterialEditorSettings::BindMaterial(Shader& In, std::string MaterialName_)
     {
         if (SelectedIndex == 0)
         {
@@ -38,22 +38,22 @@ namespace Eclipse
         }
         else
         {
-            if (engine->gPBRManager->AllMaterialInstances.find(MaterialName) != engine->gPBRManager->AllMaterialInstances.end())
+            if (engine->gPBRManager->AllMaterialInstances.find(MaterialName_) != engine->gPBRManager->AllMaterialInstances.end())
             {
                 glActiveTexture(GL_TEXTURE10);
-                glBindTexture(GL_TEXTURE_2D, engine->gPBRManager->AllMaterialInstances[MaterialName]->Albedo);
+                glBindTexture(GL_TEXTURE_2D, engine->gPBRManager->AllMaterialInstances[MaterialName_]->Albedo);
 
                 glActiveTexture(GL_TEXTURE11);
-                glBindTexture(GL_TEXTURE_2D, engine->gPBRManager->AllMaterialInstances[MaterialName]->Normal);
+                glBindTexture(GL_TEXTURE_2D, engine->gPBRManager->AllMaterialInstances[MaterialName_]->Normal);
 
                 glActiveTexture(GL_TEXTURE12);
-                glBindTexture(GL_TEXTURE_2D, engine->gPBRManager->AllMaterialInstances[MaterialName]->Metallic);
+                glBindTexture(GL_TEXTURE_2D, engine->gPBRManager->AllMaterialInstances[MaterialName_]->Metallic);
 
                 glActiveTexture(GL_TEXTURE13);
-                glBindTexture(GL_TEXTURE_2D, engine->gPBRManager->AllMaterialInstances[MaterialName]->Roughness);
+                glBindTexture(GL_TEXTURE_2D, engine->gPBRManager->AllMaterialInstances[MaterialName_]->Roughness);
 
                 glActiveTexture(GL_TEXTURE14);
-                glBindTexture(GL_TEXTURE_2D, engine->gPBRManager->AllMaterialInstances[MaterialName]->Ao);
+                glBindTexture(GL_TEXTURE_2D, engine->gPBRManager->AllMaterialInstances[MaterialName_]->Ao);
             }
         }
 
@@ -89,7 +89,6 @@ namespace Eclipse
     {
         GLuint MetallicConstant = shdrpgm.GetLocation("MetallicConstant");
         GLuint RoughnessConstant = shdrpgm.GetLocation("RoughnessConstant");
-        GLint uModelToNDC_ = shdrpgm.GetLocation("uModelToNDC");
         GLint model_ = shdrpgm.GetLocation("model");
         GLuint view1 = shdrpgm.GetLocation("view");
         GLint projection1 = shdrpgm.GetLocation("projection");
@@ -242,7 +241,7 @@ namespace Eclipse
                 }
                 oddRow = !oddRow;
             }
-            indexCount = indices.size();
+            indexCount = static_cast<unsigned int>(indices.size());
 
             std::vector<float> data;
             for (unsigned int i = 0; i < positions.size(); ++i)

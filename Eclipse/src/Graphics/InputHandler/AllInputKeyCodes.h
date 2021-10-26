@@ -13,14 +13,11 @@ namespace Eclipse
         Key_HOLD
     };
 
-    enum class InputMouseKeycode : unsigned char
+    enum class InputMouseKeycode : unsigned int
     {
-        KeyCode_MOUSENULL = 0,
-        KeyCode_MOUSELEFT = 1,
-        KeyCode_MOUSERIGHT = 2,
-        KeyCode_MOUSEMIDDLE = 4,
-        KeyCode_MOUSEX1 = 5,
-        KeyCode_MOUSEX2 = 6,
+        KeyCode_NONE = 2,
+        KeyCode_MOUSELEFT = 0,
+        KeyCode_MOUSERIGHT = 1
     };
 
     enum class InputKeycode : unsigned int

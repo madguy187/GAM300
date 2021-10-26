@@ -2,16 +2,262 @@
 #include "LogicalInput.h"
 #include "Graphics/OpenGL/OpenGL_Context.h"
 
-static void on_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+///////////////////////////////////////////////////////////////////////////////////////////
+// For LOGICAL INPUT ( KEYBOARD )
+///////////////////////////////////////////////////////////////////////////////////////////
+namespace Eclipse
 {
-    if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
+    bool LogicalInput::GetKeyTriggered(InputKeycode keycode)
     {
-        std::cout << "Move 1" << std::endl;
+        int Press = GetKey(keycode);
+
+        if (IsKeyReleased(Press))
+        {
+            GetKeyReleased(keycode);
+            return false;
+        }
+        // Check if Space is pressed
+        else if (IsKeyPressed(Press))
+        {
+            RegisterTriggerInput(keycode, InputState::Key_TRIGGERED); // container size 1
+
+            if (KeyContainer.count(keycode) != 0 && KeyContainer[keycode] == InputState::Key_TRIGGERED)
+            {
+                PrintKey(keycode, Press);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return false;
     }
 
-    if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
+    bool LogicalInput::GetKeyCurrent(InputKeycode keycode)
     {
-        std::cout << "Move 2" << std::endl;
+        int Hold = GetKey(keycode);
+
+        if (IsKeyReleased(Hold))
+        {
+            GetHoldKeyReleased(keycode);
+            return false;
+        }
+        else if (IsKeyPressed(Hold))
+        {
+            RegisterHoldInput(keycode, InputState::Key_HOLD);
+
+            if (KeyContainer.count(keycode) != 0 &&
+                (KeyContainer[keycode] == InputState::Key_TRIGGERED || KeyContainer[keycode] == InputState::Key_HOLD))
+            {
+                //PrintKey(keycode, Hold);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    bool LogicalInput::GetKeyTriggered(std::string Mappedkeycode)
+    {
+        int Press = GetKey(CheckMappingExist(Mappedkeycode));
+
+        if (IsKeyReleased(Press))
+        {
+            GetKeyReleased(CheckMappingExist(Mappedkeycode));
+            return false;
+        }
+        // Check if Space is pressed
+        else if (IsKeyPressed(Press))
+        {
+            RegisterTriggerInput(CheckMappingExist(Mappedkeycode), InputState::Key_TRIGGERED); // container size 1
+
+            if (KeyContainer.count(CheckMappingExist(Mappedkeycode)) != 0 && KeyContainer[CheckMappingExist(Mappedkeycode)] == InputState::Key_TRIGGERED)
+            {
+                PrintKey(CheckMappingExist(Mappedkeycode), Press);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    bool LogicalInput::GetKeyCurrent(std::string Mappedkeycode)
+    {
+        int Hold = GetKey(CheckMappingExist(Mappedkeycode));
+
+        if (IsKeyReleased(Hold))
+        {
+            GetHoldKeyReleased(CheckMappingExist(Mappedkeycode));
+            return false;
+        }
+        else if (IsKeyPressed(Hold))
+        {
+            RegisterHoldInput(CheckMappingExist(Mappedkeycode), InputState::Key_HOLD);
+
+            if (KeyContainer.count(CheckMappingExist(Mappedkeycode)) != 0 &&
+                (KeyContainer[CheckMappingExist(Mappedkeycode)] == InputState::Key_TRIGGERED || KeyContainer[CheckMappingExist(Mappedkeycode)] == InputState::Key_HOLD))
+            {
+                //PrintKey(keycode, Hold);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    InputKeycode LogicalInput::CheckMappingExist(std::string NewMap)
+    {
+        if (KeyMappings.find(NewMap) == KeyMappings.end())
+        {
+            // Cannot find
+            return InputKeycode::Key_Null;
+        }
+        else
+        {
+            // Can Find
+            return KeyMappings[NewMap];
+        }
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+// For LOGICAL INPUT ( MOUSE )
+///////////////////////////////////////////////////////////////////////////////////////////
+namespace Eclipse
+{
+    bool LogicalInput::GetMouseTriggered(InputMouseKeycode Mappedkeycode)
+    {
+        int Press = GetKey(Mappedkeycode);
+
+        if (IsKeyReleased(Press))
+        {
+            GetKeyReleased(Mappedkeycode);
+            return false;
+        }
+        else if (IsKeyPressed(Press))
+        {
+            RegisterMouseInput(Mappedkeycode, InputState::Key_TRIGGERED);
+
+            if (MouseContainer_.count(Mappedkeycode) != 0 && MouseContainer_[Mappedkeycode] == InputState::Key_TRIGGERED)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    bool LogicalInput::GetMouseCurrent(InputMouseKeycode Mappedkeycode)
+    {
+        int Hold = GetKey(Mappedkeycode);
+
+        if (IsKeyReleased(Hold))
+        {
+            GetHoldKeyReleased(Mappedkeycode);
+            return false;
+        }
+        else if (IsKeyPressed(Hold))
+        {
+            RegisterMouseInput(Mappedkeycode, InputState::Key_HOLD);
+
+            if (MouseContainer_.count(Mappedkeycode) != 0 &&
+                (MouseContainer_[Mappedkeycode] == InputState::Key_TRIGGERED || MouseContainer_[Mappedkeycode] == InputState::Key_HOLD))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    bool LogicalInput::GetMouseTriggered(std::string Mappedkeycode)
+    {
+        int Press = GetKey(CheckMouseMappingExist(Mappedkeycode));
+
+        if (IsKeyReleased(Press))
+        {
+            GetKeyReleased(CheckMouseMappingExist(Mappedkeycode));
+            return false;
+        }
+        else if (IsKeyPressed(Press))
+        {
+            RegisterMouseInput(CheckMouseMappingExist(Mappedkeycode), InputState::Key_TRIGGERED);
+
+            if (MouseContainer_.count(CheckMouseMappingExist(Mappedkeycode)) != 0 && MouseContainer_[CheckMouseMappingExist(Mappedkeycode)] == InputState::Key_TRIGGERED)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    bool LogicalInput::GetMouseCurrent(std::string Mappedkeycode)
+    {
+        int Hold = GetKey(CheckMouseMappingExist(Mappedkeycode));
+
+        if (IsKeyReleased(Hold))
+        {
+            GetHoldKeyReleased(CheckMouseMappingExist(Mappedkeycode));
+            return false;
+        }
+        else if (IsKeyPressed(Hold))
+        {
+            RegisterMouseInput(CheckMouseMappingExist(Mappedkeycode), InputState::Key_HOLD);
+
+            if (MouseContainer_.count(CheckMouseMappingExist(Mappedkeycode)) != 0 &&
+                (MouseContainer_[CheckMouseMappingExist(Mappedkeycode)] == InputState::Key_TRIGGERED || MouseContainer_[CheckMouseMappingExist(Mappedkeycode)] == InputState::Key_HOLD))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    InputMouseKeycode LogicalInput::CheckMouseMappingExist(std::string NewMap)
+    {
+        // Searching for element 12
+        if (MouseMappings.find(NewMap) == MouseMappings.end())
+        {
+            // Cannot find
+            return InputMouseKeycode::KeyCode_NONE;
+        }
+        else
+        {
+            // Can Find
+            return MouseMappings[NewMap];
+        }
     }
 }
 
@@ -25,17 +271,29 @@ namespace Eclipse
         InsertAllKeys();
 
         KeyMappings.emplace("Horizontal", InputKeycode::Key_LEFT);
+        MouseMappings.emplace("Hello", InputMouseKeycode::KeyCode_MOUSELEFT);
     }
 
     void LogicalInput::InsertAllKeys()
     {
-        for (unsigned char i = 0; i <= static_cast<unsigned char>(Eclipse::InputKeycode::Key_MISCELLANEOUS); i++)
+        for (unsigned int i = 0; i <= static_cast<unsigned int>(Eclipse::InputKeycode::Key_APPS); i++)
         {
             std::string Key = GetInputString(static_cast<Eclipse::InputKeycode>(i)).data();
 
             if (Key.empty() == false)
             {
                 AllInputs.push_back(Key);
+                Dictionary.emplace(Key, i);
+            }
+        }
+
+        for (unsigned char i = 0; i <= static_cast<unsigned char>(Eclipse::InputMouseKeycode::KeyCode_MOUSERIGHT); i++)
+        {
+            std::string Key = GetInputString(static_cast<Eclipse::InputKeycode>(i)).data();
+
+            if (Key.empty() == false)
+            {
+                AllMouseInputs.push_back(Key);
             }
         }
     }
@@ -45,6 +303,231 @@ namespace Eclipse
         return AllInputs;
     }
 
+    std::vector<std::string> LogicalInput::GetAllMouseKeys()
+    {
+        return AllMouseInputs;
+    }
+
+    bool LogicalInput::CheckKeyboardMapping(std::string NewMap)
+    {
+        if (KeyMappings.find(NewMap) == KeyMappings.end())
+        {
+            // Cannot find
+            return false;
+        }
+        else
+        {
+            // Can Find
+            return true;
+        }
+    }
+
+    bool LogicalInput::CheckMouseMapping(std::string NewMap)
+    {
+        if (MouseMappings.find(NewMap) == MouseMappings.end())
+        {
+            // Cannot find
+            return false;
+        }
+        else
+        {
+            // Can Find
+            return true;
+        }
+    }
+
+    void LogicalInput::init()
+    {
+        // Clear Container just in case
+        KeyContainer.clear();
+    }
+
+    bool LogicalInput::GetIsPrint()
+    {
+        return EnablePrint;
+    }
+
+    void LogicalInput::SetIsPrint(bool input)
+    {
+        EnablePrint = input;
+    }
+
+    void LogicalInput::RegisterTriggerInput(InputKeycode keycode, InputState input)
+    {
+        KeyContainer.emplace(keycode, input);
+    }
+
+    void LogicalInput::RegisterMouseInput(InputMouseKeycode keycode, InputState input)
+    {
+        MouseContainer_.emplace(keycode, input);
+    }
+
+    void LogicalInput::RegisterHoldInput(InputKeycode keycode, InputState input)
+    {
+        KeyContainer.emplace(keycode, input);
+    }
+
+    bool LogicalInput::IsKeyPressed(int input)
+    {
+        return (input == GLFW_PRESS);
+    }
+
+    bool LogicalInput::IsKeyReleased(int input)
+    {
+        return (input == GLFW_RELEASE);
+    }
+
+    int LogicalInput::GetKey(InputKeycode input)
+    {
+        return (glfwGetKey(OpenGL_Context::GetWindow(), static_cast<int>(input)));
+    }
+
+    int LogicalInput::GetKey(InputMouseKeycode input)
+    {
+        return (glfwGetMouseButton(OpenGL_Context::GetWindow(), static_cast<int>(input)));
+    }
+
+    void LogicalInput::PrintKey(InputKeycode input, int presstype)
+    {
+        if (EnablePrint)
+        {
+
+            switch (presstype)
+            {
+
+            case GLFW_PRESS:
+            {
+                std::cout << "Pressed " << (input) << " --> " << "KeyCode " << static_cast<int>(input) << std::endl;
+            }
+            break;
+
+            case GLFW_RELEASE:
+            {
+                std::cout << "Released " << (input) << " --> " << "KeyCode " << static_cast<int>(input) << std::endl;
+            }
+            break;
+
+            default:
+                break;
+            }
+        }
+    }
+
+    void LogicalInput::PrintKey(InputKeycode input)
+    {
+        if (EnablePrint)
+        {
+            std::cout << "Holding " << (input) << " --> " << "KeyCode " << static_cast<int>(input) << std::endl;
+            //std::cout << "Container Size : " << HoldKeyContainer.size() << std::endl;
+        }
+    }
+
+    void LogicalInput::RemoveKey(KeyIT& input)
+    {
+        KeyContainer.erase(input);
+    }
+
+    void LogicalInput::UpdateKeys()
+    {
+        for (auto& pair2 : KeyContainer)
+        {
+            if (pair2.second == InputState::Key_TRIGGERED)
+            {
+                pair2.second = InputState::Key_HOLD;
+            }
+        }
+
+        for (auto& pair2 : MouseContainer_)
+        {
+            if (pair2.second == InputState::Key_TRIGGERED)
+            {
+                pair2.second = InputState::Key_HOLD;
+            }
+        }
+    }
+
+    bool LogicalInput::GetKeyReleased(InputKeycode keycode)
+    {
+        int Release = GetKey(keycode);
+
+        if (IsKeyReleased(Release))
+        {
+            if (KeyContainer.count(keycode) != 0)
+            {
+                PrintKey(keycode, Release);
+                KeyContainer.erase(keycode);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    bool LogicalInput::GetKeyReleased(InputMouseKeycode keycode)
+    {
+        int Release = GetKey(keycode);
+
+        if (IsKeyReleased(Release))
+        {
+            if (MouseContainer_.count(keycode) != 0)
+            {
+                MouseContainer_.erase(keycode);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    bool LogicalInput::GetHoldKeyReleased(InputMouseKeycode keycode)
+    {
+        int HoldKeyRelease = GetKey(keycode);
+
+        if (IsKeyReleased(HoldKeyRelease))
+        {
+            if (MouseContainer_.count(keycode) != 0)
+            {
+                //PrintKey(keycode, HoldKeyRelease);
+                MouseContainer_.erase(keycode);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return false;
+
+    }
+    bool LogicalInput::GetHoldKeyReleased(InputKeycode keycode)
+    {
+        int HoldKeyRelease = GetKey(keycode);
+
+        if (IsKeyReleased(HoldKeyRelease))
+        {
+            if (KeyContainer.count(keycode) != 0)
+            {
+                //PrintKey(keycode, HoldKeyRelease);
+                KeyContainer.erase(keycode);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return false;
+    }
+}
+
+namespace Eclipse
+{
     std::ostream& operator<<(std::ostream& stream, const InputKeycode& keycode)
     {
         switch (keycode)
@@ -412,6 +895,24 @@ namespace Eclipse
             break;
         }
         return stream;
+    }
+
+    std::string LogicalInput::GetInputString(const InputMouseKeycode keycode)
+    {
+        switch (keycode)
+        {
+        case InputMouseKeycode::KeyCode_MOUSELEFT:
+            return "KeyCode_MOUSELEFT";
+            break;
+        case InputMouseKeycode::KeyCode_MOUSERIGHT:
+            return "KeyCode_MOUSERIGHT";
+            break;
+
+        default:
+            break;
+        }
+
+        return "";
     }
 
     std::string LogicalInput::GetInputString(const InputKeycode keycode)
@@ -782,302 +1283,21 @@ namespace Eclipse
 
         }
     }
-
-    void LogicalInput::init()
-    {
-        // Clear Container just in case
-        KeyContainer.clear();
-        HoldKeyContainer.clear();
-    }
-
-    bool LogicalInput::GetIsPrint()
-    {
-        return EnablePrint;
-    }
-
-    void LogicalInput::SetIsPrint(bool input)
-    {
-        EnablePrint = input;
-    }
-
-    void LogicalInput::RegisterTriggerInput(InputKeycode keycode, int keypressFlag, bool flag, InputState input)
-    {
-        KeyContainer.insert({ keycode,std::pair<bool,InputState>(flag,input) });
-    }
-
-    void LogicalInput::RegisterHoldInput(InputKeycode keycode, int keypressFlag, bool flag, InputState input)
-    {
-
-        for (KeyIT it = HoldKeyContainer.begin(); it != HoldKeyContainer.end(); it++)
-        {
-            if (!(it->first == keycode))
-            {
-                HoldKeyContainer.insert({ keycode,std::pair<bool,InputState>(flag,input) });
-            }
-        }
-    }
-
-    bool LogicalInput::IsKeyPressed(int input)
-    {
-        return (input == GLFW_PRESS);
-    }
-
-    bool LogicalInput::IsKeyReleased(int input)
-    {
-        return (input == GLFW_RELEASE);
-    }
-
-    int LogicalInput::GetKey(InputKeycode input)
-    {
-        return (glfwGetKey(OpenGL_Context::GetWindow(), static_cast<int>(input)));
-    }
-
-    void LogicalInput::PrintKey(InputKeycode input, int presstype)
-    {
-        if (EnablePrint)
-        {
-
-            switch (presstype)
-            {
-
-            case GLFW_PRESS:
-            {
-                std::cout << "Pressed " << (input) << " --> " << "KeyCode " << static_cast<int>(input) << std::endl;
-            }
-            break;
-
-            case GLFW_RELEASE:
-            {
-                std::cout << "Released " << (input) << " --> " << "KeyCode " << static_cast<int>(input) << std::endl;
-            }
-            break;
-
-            default:
-                break;
-            }
-        }
-    }
-
-    void LogicalInput::PrintKey(InputKeycode input)
-    {
-        if (EnablePrint)
-        {
-            std::cout << "Holding " << (input) << " --> " << "KeyCode " << static_cast<int>(input) << std::endl;
-            std::cout << "Container Size : " << HoldKeyContainer.size() << std::endl;
-        }
-    }
-
-    void LogicalInput::RemoveKey(KeyIT& input)
-    {
-        KeyContainer.erase(input);
-    }
-
-    void LogicalInput::RemoveHoldKey(KeyIT& input)
-    {
-        HoldKeyContainer.erase(input);
-    }
-
-    void LogicalInput::UpdateKeys()
-    {
-        for (auto& pair2 : KeyContainer)
-        {
-            if (pair2.second.second == InputState::Key_TRIGGERED)
-            {
-                pair2.second.second = InputState::Key_HOLD;
-            }
-        }
-    }
-
-    bool LogicalInput::GetKeyTriggered(InputKeycode keycode)
-    {
-        int Press = GetKey(keycode);
-
-        if (IsKeyReleased(Press))
-        {
-            GetKeyReleased(keycode);
-            return false;
-        }
-        // Check if Space is pressed
-        else if (IsKeyPressed(Press))
-        {
-            bool single = false;
-
-            RegisterTriggerInput(keycode, Press, single, InputState::Key_TRIGGERED); // container size 1
-
-            if (KeyContainer.count(keycode) != 0 && KeyContainer[keycode].second == InputState::Key_TRIGGERED)
-            {
-                PrintKey(keycode, Press);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        return false;
-    }
-
-    bool LogicalInput::GetKeyCurrent(InputKeycode keycode)
-    {
-        int Hold = GetKey(keycode);
-
-        if (IsKeyReleased(Hold))
-        {
-            GetHoldKeyReleased(keycode);
-            return false;
-        }
-        else if (IsKeyPressed(Hold))
-        {
-            bool single = false;
-            RegisterHoldInput(keycode, Hold, single, InputState::Key_HOLD);
-
-            if (KeyContainer.count(keycode) != 0 &&
-                (KeyContainer[keycode].second == InputState::Key_TRIGGERED || KeyContainer[keycode].second == InputState::Key_HOLD))
-            {
-                //PrintKey(keycode, Hold);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        return false;
-    }
-
-    bool LogicalInput::GetKeyReleased(InputKeycode keycode)
-    {
-        int Release = GetKey(keycode);
-
-        if (IsKeyReleased(Release))
-        {
-            if (KeyContainer.count(keycode) != 0)
-            {
-                PrintKey(keycode, Release);
-                KeyContainer.erase(keycode);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        return false;
-    }
-
-    bool LogicalInput::GetHoldKeyReleased(InputKeycode keycode)
-    {
-        int HoldKeyRelease = GetKey(keycode);
-
-        if (IsKeyReleased(HoldKeyRelease))
-        {
-            if (KeyContainer.count(keycode) != 0)
-            {
-                //PrintKey(keycode, HoldKeyRelease);
-                KeyContainer.erase(keycode);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        return false;
-    }
-
-    void LogicalInput::Update()
-    {
-        for (auto& pair2 : HoldKeyContainer)
-        {
-            if (HoldKeyContainer.size() == 1)
-                return;
-
-            auto& Message = (pair2.first);
-            auto& HoldFlag = (pair2.second.second);
-
-            if (HoldFlag == InputState::Key_HOLD)
-            {
-                PrintKey(Message);
-            }
-        }
-    }
 }
 
-namespace Eclipse
+static void on_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    InputKeycode LogicalInput::CheckMappingExist(std::string NewMap)
+    (void)window;
+    (void)scancode;
+    (void)mods;
+
+    if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
     {
-        // Searching for element 12
-        if (KeyMappings.find(NewMap) == KeyMappings.end())
-        {
-            // Cannot find
-            return InputKeycode::Key_Null;
-        }
-        else
-        {
-            // Can Find
-            return KeyMappings[NewMap];
-        }
+        std::cout << "Move 1" << std::endl;
     }
 
-    bool LogicalInput::GetKeyTriggered(std::string Mappedkeycode)
+    if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
     {
-        int Press = GetKey(CheckMappingExist(Mappedkeycode));
-
-        if (IsKeyReleased(Press))
-        {
-            GetKeyReleased(CheckMappingExist(Mappedkeycode));
-            return false;
-        }
-        // Check if Space is pressed
-        else if (IsKeyPressed(Press))
-        {
-            bool single = false;
-
-            RegisterTriggerInput(CheckMappingExist(Mappedkeycode), Press, single, InputState::Key_TRIGGERED); // container size 1
-
-            if (KeyContainer.count(CheckMappingExist(Mappedkeycode)) != 0 && KeyContainer[CheckMappingExist(Mappedkeycode)].second == InputState::Key_TRIGGERED)
-            {
-                PrintKey(CheckMappingExist(Mappedkeycode), Press);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        return false;
-    }
-
-    bool LogicalInput::GetKeyCurrent(std::string Mappedkeycode)
-    {
-        int Hold = GetKey(CheckMappingExist(Mappedkeycode));
-
-        if (IsKeyReleased(Hold))
-        {
-            GetHoldKeyReleased(CheckMappingExist(Mappedkeycode));
-            return false;
-        }
-        else if (IsKeyPressed(Hold))
-        {
-            bool single = false;
-            RegisterHoldInput(CheckMappingExist(Mappedkeycode), Hold, single, InputState::Key_HOLD);
-
-            if (KeyContainer.count(CheckMappingExist(Mappedkeycode)) != 0 &&
-                (KeyContainer[CheckMappingExist(Mappedkeycode)].second == InputState::Key_TRIGGERED || KeyContainer[CheckMappingExist(Mappedkeycode)].second == InputState::Key_HOLD))
-            {
-                //PrintKey(keycode, Hold);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        return false;
+        std::cout << "Move 2" << std::endl;
     }
 }

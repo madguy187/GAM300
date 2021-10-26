@@ -2,106 +2,87 @@
 #include "AllInputKeyCodes.h"
 #include <map>
 #include "Graphics/InputHandler/LogicalEnum.hpp"
+#include "Graphics/EngineCompiler/InputCompiler/InputCompiler.h"
 
 namespace Eclipse
 {
-    typedef std::map< InputKeycode, std::pair<bool, InputState> > InputKeyContainer;
-    using KeyIT = std::map<InputKeycode, std::pair<bool, InputState> >::iterator;
-    typedef std::pair<InputKeycode, std::pair<bool, InputState>> PerKey;
-    using LogicalKeyIT = std::vector<PerKey>::iterator;
+    typedef std::unordered_map< InputKeycode,InputState> InputKeyContainer;
+    using KeyIT = std::unordered_map<InputKeycode,InputState>::iterator;
+
+    typedef std::unordered_map< InputMouseKeycode, InputState> MouseContainer;
+    using MouseIT = std::unordered_map<InputMouseKeycode, InputState>::iterator;
 
     class LogicalInput
     {
     private:
-        // Trigger and Release Key Container
         InputKeyContainer KeyContainer;
-
-        // Hold and Release Key Container
-        InputKeyContainer HoldKeyContainer;
-
-        // Logical Input Stuffs
-
+        MouseContainer MouseContainer_;
         bool EnablePrint = false;
-        //-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
-
-        unsigned int counter = 0;
-        ///////////////////////////////////////////////////////////////////////////////////////////
-        // For LOGICAL INPUT
-        ///////////////////////////////////////////////////////////////////////////////////////////
-        // Logical Input Stuffs
         std::vector<std::string> AllInputs;
+        std::vector<std::string> AllMouseInputs;
 
     public:
-        // Probably missing this:
-        friend std::ostream& operator << (std::ostream& os, const InputKeycode& in);
-        std::string GetInputString(const InputKeycode keycode);
-
         LogicalInput();
-
-        // Check if Current Key is triggered
-        bool GetKeyTriggered(InputKeycode keycode);
-
-        // Check if Current Key is pressed
-        bool GetKeyCurrent(InputKeycode keycode);
-
-        // Get current print flag
         bool GetIsPrint();
-
-        // Set if you want key printings for the keys you pressed
         void SetIsPrint(bool input);
+        void UpdateKeys();
 
         ///////////////////////////////////////////////////////////////////////////////////////////
-        // For LOGICAL INPUT
+        // For LOGICAL INPUT ( KEYBOARD )
         ///////////////////////////////////////////////////////////////////////////////////////////
-        // Logical Input Stuffs
+        bool GetKeyTriggered(InputKeycode keycode);
+        bool GetKeyCurrent(InputKeycode keycode);
         bool GetKeyTriggered(std::string Mappedkeycode);
         bool GetKeyCurrent(std::string Mappedkeycode);
-        std::unordered_map<std::string, InputKeycode> KeyMappings;
-        InputKeycode CheckMappingExist(std::string);
         std::vector<std::string> GetAllKeys();
-        void InsertAllKeys();
-        void UpdateKeys();
+        std::unordered_map<std::string, InputKeycode> KeyMappings;
         std::vector<std::string> KeyMappings1;
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // For LOGICAL INPUT ( MOUSE )
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        bool GetMouseTriggered(InputMouseKeycode Mappedkeycode);
+        bool GetMouseCurrent(InputMouseKeycode Mappedkeycode);
         bool GetMouseTriggered(std::string Mappedkeycode);
         bool GetMouseCurrent(std::string Mappedkeycode);
+        std::vector<std::string> GetAllMouseKeys();
+        std::unordered_map<std::string, InputMouseKeycode> MouseMappings;
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // COMPILER For LOGICAL INPUT 
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        InputCompiler InputCompiler_;
+        std::string GetInputString(const InputKeycode keycode);
+        std::string GetInputString(const InputMouseKeycode keycode);
+        std::unordered_map<std::string, unsigned int> Dictionary;
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // For Nico ( Boolean Checks )
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        bool CheckKeyboardMapping(std::string NewMap);
+        bool CheckMouseMapping(std::string NewMap);
 
     private:
         void init();
-
-        // Update of Hold Keys
         void Update();
-
-        // Register Trigger Keys into Container
-        void RegisterTriggerInput(InputKeycode keycode, int keypressFlag, bool flag, InputState input);
-
-        // Register Hold Keys into Container
-        void RegisterHoldInput(InputKeycode keycode, int keypressFlag, bool flag, InputState input);
-
-        // Update Trigger Keys when Released
+        void InsertAllKeys();
+        InputKeycode CheckMappingExist(std::string);
+        InputMouseKeycode CheckMouseMappingExist(std::string NewMap);
+        friend std::ostream& operator << (std::ostream& os, const InputKeycode& in);
+        void RegisterTriggerInput(InputKeycode keycode, InputState input);
+        void RegisterMouseInput(InputMouseKeycode keycode, InputState input);
+        void RegisterHoldInput(InputKeycode keycode,InputState input);
         bool GetKeyReleased(InputKeycode keycode);
-
-        // Update Hold Keys when Released
+        bool GetKeyReleased(InputMouseKeycode keycode);
+        bool GetHoldKeyReleased(InputMouseKeycode keycode);
         bool GetHoldKeyReleased(InputKeycode keycode);
-
-        // Check if Key is pressed
         bool IsKeyPressed(int input);
-
-        // Check if key released
         bool IsKeyReleased(int input);
-
-        // Get the key's input state
         int GetKey(InputKeycode input);
-
-        // Printing key Code and Message for Trigger and Releasing Key
+        int GetKey(InputMouseKeycode input);
         void PrintKey(InputKeycode input, int presstype);
-
-        // Printing Key Code and Message for Hold and Releasing Key
         void PrintKey(InputKeycode input);
-
-        // Rremove Triggered Key from Container After Being Released
         void RemoveKey(KeyIT& input);
-
-        // Remove Hold Key from Container After Being Released
         void RemoveHoldKey(KeyIT& input);
     };
 }

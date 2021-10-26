@@ -28,6 +28,8 @@ namespace Eclipse
 
     void MaterialEditorWindow::Unload()
     {
+        IsVisible = false;
+        engine->gPBRManager->gMaterialEditorSettings->ClearCurrentMaterial();
     }
 
     void MaterialEditorWindow::RunMainWindow()
@@ -57,6 +59,12 @@ namespace Eclipse
 
     void MaterialEditorWindow::RunMaterialSettings()
     {
+        if (IsVisible && ECGui::ButtonBool("Close Material Editor"))
+        {
+            Unload();
+        }
+        ImGui::Dummy(ImVec2(1, 5));
+
         static ImGuiTextFilter CompFilter;
         CompFilter.Draw();
 

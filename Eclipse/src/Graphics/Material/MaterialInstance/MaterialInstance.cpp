@@ -4,8 +4,10 @@
 namespace Eclipse
 {
     // No Texture , so we will play with colours
-    MaterialInstance::MaterialInstance(bool HasTexture)
+    MaterialInstance::MaterialInstance(bool HasTexture_)
     {
+        HasTexture = HasTexture_;
+
         strcpy_s(Name.data(), Name.size(), "Default");
         Name[Name.size() - 1] = '\0';
     }
@@ -19,13 +21,14 @@ namespace Eclipse
     }
 
     // No Texture , so we will play with colours
-    MaterialInstance::MaterialInstance(unsigned albedo_, unsigned normal_, unsigned mettalic_, unsigned roughness, unsigned ao, bool HasTexture) :
+    MaterialInstance::MaterialInstance(unsigned albedo_, unsigned normal_, unsigned mettalic_, unsigned roughness, unsigned ao, bool HasTexture_) :
         Albedo(albedo_),
         Normal(normal_),
         Metallic(mettalic_),
         Roughness(roughness),
         Ao(ao)
     {
+        HasTexture = HasTexture_;
         strcpy_s(Name.data(), Name.size(), "Default");
         Name[Name.size() - 1] = '\0';
     }

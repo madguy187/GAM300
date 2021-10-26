@@ -370,6 +370,7 @@ namespace Eclipse
 
     void AssimpModelManager::Render(Shader& shader, GLenum mode, unsigned int id, MeshComponent& in)
     {
+        (void)mode;
         //glEnable(GL_BLEND);
         //glEnable(GL_DEPTH_TEST);
         ////glDisable(GL_CULL_FACE);
@@ -593,9 +594,9 @@ namespace Eclipse
                 // If we have textures
                 else
                 {
-                    unsigned int diffuseIdx = 0;
-                    unsigned int specularIdx = 0;
-                    unsigned int normalIdx = 0;
+                    //unsigned int diffuseIdx = 0;
+                    //unsigned int specularIdx = 0;
+                    //unsigned int normalIdx = 0;
 
                     for (unsigned int it = 0; it < Material.HoldingTextures.size(); it++)
                     {
