@@ -13,6 +13,7 @@ namespace Eclipse
 	bool SceneManager::isReload = false;
 	std::vector<std::string> SceneManager::sceneList;
 	std::unordered_map<std::string, std::string> SceneManager::mapNameToPath;
+	const char* SceneManager::EMPTY_SCENE_NAME = "EmptyScene";
 
 	void SceneManager::Initialize()
 	{
@@ -131,7 +132,7 @@ namespace Eclipse
 	{
 		if (curScene == EMPTY)
 		{
-			return {};
+			return { EMPTY_SCENE_NAME };
 		}
 
 		return sceneList[curScene];
@@ -141,7 +142,7 @@ namespace Eclipse
 	{
 		if (prevScene == EMPTY)
 		{
-			return {};
+			return { EMPTY_SCENE_NAME };
 		}
 
 		return sceneList[prevScene];

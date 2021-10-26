@@ -363,6 +363,12 @@ namespace Eclipse
 
             ImGuiSetup::End(IsEditorActive);
             OpenGL_Context::post_render();
+
+            std::cout << "Current Scene Name:" << SceneManager::GetCurrentSceneName()
+                << ", BackUpPath: " << szManager.GetBackUpPath()
+                << ", Does backupPath exist? " << szManager.CheckBackUpPathExistence()
+                << std::endl;
+
             SceneManager::ProcessScene();
 
             ProfilerWindow::engine_time = 0;
