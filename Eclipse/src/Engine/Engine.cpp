@@ -363,6 +363,7 @@ namespace Eclipse
 
             ImGuiSetup::End(IsEditorActive);
             OpenGL_Context::post_render();
+
             SceneManager::ProcessScene();
 
             ProfilerWindow::engine_time = 0;

@@ -55,6 +55,9 @@
     <Filter Include="ECS\SystemManager\Systems\System\GridSystem">
       <UniqueIdentifier>{C4A2C3BF-3008-5746-B9E0-F81E25454CB5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\Inputsystem">
+      <UniqueIdentifier>{2E823C71-1A95-3CCA-C37E-19B7AF70D917}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\LightingSystem">
       <UniqueIdentifier>{D405CA0A-4041-2ACE-4936-A75DB5F0AEFE}</UniqueIdentifier>
     </Filter>
@@ -142,6 +145,15 @@
     <Filter Include="Editor\Windows\MeshEditor">
       <UniqueIdentifier>{89B11D0B-F573-5195-3E24-E021AA252A73}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editor\Windows\NodeEditor">
+      <UniqueIdentifier>{427D3ADD-AE3F-6E67-F7EF-FCF363F14645}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Windows\NodeEditor\NodeEditorBackBone">
+      <UniqueIdentifier>{5375ABFF-3F88-AB58-E871-8845D46348A6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Windows\NodeEditor\Utilities">
+      <UniqueIdentifier>{2D9C75E3-9955-E08D-22B5-FA678E6D96FD}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Editor\Windows\Profiler">
       <UniqueIdentifier>{D8F05B84-4428-A41B-4D32-083FB9E8CA14}</UniqueIdentifier>
     </Filter>
@@ -174,6 +186,9 @@
     </Filter>
     <Filter Include="Graphics\EngineCompiler">
       <UniqueIdentifier>{1654E1F5-828B-298D-8B95-8DB0F74B5086}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\EngineCompiler\InputCompiler">
+      <UniqueIdentifier>{D0812865-3C46-2755-05AC-571F712FC38A}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\EngineCompiler\MaterialCompiler">
       <UniqueIdentifier>{AF2FCB5E-9BAC-BEA1-C429-BFB5B0055B35}</UniqueIdentifier>
@@ -270,6 +285,9 @@
     </Filter>
     <Filter Include="Mono">
       <UniqueIdentifier>{7E2F897C-6A66-8A0D-1353-7010FF68060F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mono\Components">
+      <UniqueIdentifier>{D3A90218-3F35-70DC-4846-F3D0B450CCDC}</UniqueIdentifier>
     </Filter>
     <Filter Include="Mono\Manager">
       <UniqueIdentifier>{A8092495-946C-B339-3DF2-EBEF29347FBC}</UniqueIdentifier>
@@ -417,6 +435,9 @@
     <ClInclude Include="src\ECS\SystemManager\Systems\System\GridSystem\GridSystem.h">
       <Filter>ECS\SystemManager\Systems\System\GridSystem</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\Inputsystem\InputSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\Inputsystem</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.h">
       <Filter>ECS\SystemManager\Systems\System\LightingSystem</Filter>
     </ClInclude>
@@ -525,6 +546,36 @@
     <ClInclude Include="src\Editor\Windows\MeshEditor\MeshEditor.h">
       <Filter>Editor\Windows\MeshEditor</Filter>
     </ClInclude>
+    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditor.h">
+      <Filter>Editor\Windows\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\crude_json.h">
+      <Filter>Editor\Windows\NodeEditor\NodeEditorBackBone</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_bezier_math.h">
+      <Filter>Editor\Windows\NodeEditor\NodeEditorBackBone</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_canvas.h">
+      <Filter>Editor\Windows\NodeEditor\NodeEditorBackBone</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_extra_math.h">
+      <Filter>Editor\Windows\NodeEditor\NodeEditorBackBone</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor.h">
+      <Filter>Editor\Windows\NodeEditor\NodeEditorBackBone</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_internal.h">
+      <Filter>Editor\Windows\NodeEditor\NodeEditorBackBone</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\NodeEditor\Utilities\builders.h">
+      <Filter>Editor\Windows\NodeEditor\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\NodeEditor\Utilities\drawing.h">
+      <Filter>Editor\Windows\NodeEditor\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Windows\NodeEditor\Utilities\widgets.h">
+      <Filter>Editor\Windows\NodeEditor\Utilities</Filter>
+    </ClInclude>
     <ClInclude Include="src\Editor\Windows\Profiler\Profiler.h">
       <Filter>Editor\Windows\Profiler</Filter>
     </ClInclude>
@@ -571,6 +622,9 @@
     <ClInclude Include="src\Graphics\EngineCompiler\EngineCompiler.h">
       <Filter>Graphics\EngineCompiler</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\EngineCompiler\InputCompiler\InputCompiler.h">
+      <Filter>Graphics\EngineCompiler\InputCompiler</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\EngineCompiler\MaterialCompiler\MaterialCompiler.h">
       <Filter>Graphics\EngineCompiler\MaterialCompiler</Filter>
     </ClInclude>
@@ -605,6 +659,9 @@
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h">
+      <Filter>Graphics\InputHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\InputHandler\LogicalEnum.hpp">
       <Filter>Graphics\InputHandler</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\InputHandler\LogicalInput.h">
@@ -808,6 +865,9 @@
     <ClInclude Include="src\Logger\Logger.h">
       <Filter>Logger</Filter>
     </ClInclude>
+    <ClInclude Include="src\Mono\Components\s_RigidBodyComponent.h">
+      <Filter>Mono\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\Mono\Manager\MonoManager.h">
       <Filter>Mono\Manager</Filter>
     </ClInclude>
@@ -863,24 +923,6 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\Graphics\InputHandler\LogicalEnum.hpp" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\Inputsystem\InputSystem.h" />
-    <ClInclude Include="src\Graphics\Material\PBR\PBRManager.h" />
-    <ClInclude Include="src\Graphics\Material\MaterialInstance\MaterialInstance.h" />
-    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\EntityDeleteDeltaCommand.h" />
-    <ClInclude Include="src\Library\Random\Random.h" />
-    <ClInclude Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.h" />
-    <ClInclude Include="src\Mono\Components\s_RigidBodyComponent.h" />
-    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditor.h" />
-    <ClInclude Include="src\Editor\Windows\NodeEditor\Utilities\builders.h" />
-    <ClInclude Include="src\Editor\Windows\NodeEditor\Utilities\drawing.h" />
-    <ClInclude Include="src\Editor\Windows\NodeEditor\Utilities\widgets.h" />
-    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\crude_json.h" />
-    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_bezier_math.h" />
-    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_canvas.h" />
-    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_extra_math.h" />
-    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor.h" />
-    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_internal.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -927,6 +969,9 @@
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\GridSystem\GridSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\GridSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\Inputsystem\InputSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\Inputsystem</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\LightingSystem</Filter>
@@ -1009,6 +1054,30 @@
     <ClCompile Include="src\Editor\Windows\MeshEditor\MeshEditor.cpp">
       <Filter>Editor\Windows\MeshEditor</Filter>
     </ClCompile>
+    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditor.cpp">
+      <Filter>Editor\Windows\NodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\crude_json.cpp">
+      <Filter>Editor\Windows\NodeEditor\NodeEditorBackBone</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_canvas.cpp">
+      <Filter>Editor\Windows\NodeEditor\NodeEditorBackBone</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor.cpp">
+      <Filter>Editor\Windows\NodeEditor\NodeEditorBackBone</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_api.cpp">
+      <Filter>Editor\Windows\NodeEditor\NodeEditorBackBone</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\NodeEditor\Utilities\builders.cpp">
+      <Filter>Editor\Windows\NodeEditor\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\NodeEditor\Utilities\drawing.cpp">
+      <Filter>Editor\Windows\NodeEditor\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Windows\NodeEditor\Utilities\widgets.cpp">
+      <Filter>Editor\Windows\NodeEditor\Utilities</Filter>
+    </ClCompile>
     <ClCompile Include="src\Editor\Windows\Profiler\Profiler.cpp">
       <Filter>Editor\Windows\Profiler</Filter>
     </ClCompile>
@@ -1047,6 +1116,9 @@
     </ClCompile>
     <ClCompile Include="src\Graphics\EngineCompiler\EngineCompiler.cpp">
       <Filter>Graphics\EngineCompiler</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\EngineCompiler\InputCompiler\InputCompiler.cpp">
+      <Filter>Graphics\EngineCompiler\InputCompiler</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\EngineCompiler\MaterialCompiler\MaterialCompiler.cpp">
       <Filter>Graphics\EngineCompiler\MaterialCompiler</Filter>
@@ -1295,28 +1367,5 @@
       <Filter>Tracy</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\Inputsystem\InputSystem.cpp" />
-    <ClCompile Include="src\Graphics\Material\PBR\PBRManager.cpp" />
-    <ClCompile Include="src\Graphics\Material\MaterialInstance\MaterialInstance.cpp" />
-    <ClCompile Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.cpp" />
-    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditor.cpp" />
-    <ClCompile Include="src\Editor\Windows\NodeEditor\Utilities\builders.cpp" />
-    <ClCompile Include="src\Editor\Windows\NodeEditor\Utilities\drawing.cpp" />
-    <ClCompile Include="src\Editor\Windows\NodeEditor\Utilities\widgets.cpp" />
-    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\crude_json.cpp" />
-    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_canvas.cpp" />
-    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor.cpp" />
-    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_api.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />
-    <None Include="src\Assets\Shaders\PBRShader\PBR.vert" />
-    <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.frag" />
-    <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.vert" />
-    <ClCompile Include="src\Library\Random\Random.cpp" />
-    <None Include="src\Mono\ScriptAPI\EclipseBehavior.cs" />
-    <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_bezier_math.inl" />
-    <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_extra_math.inl" />
-    <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_internal.inl" />
   </ItemGroup>
 </Project>

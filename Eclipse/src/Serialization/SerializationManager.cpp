@@ -12,18 +12,18 @@ namespace Eclipse
 
 	void SerializationManager::Backup::SaveBackup(Serializer& targetSz)
 	{
-		backUpPath = TEMP_PATH;
-		backUpPath += SceneManager::GetCurrentSceneName();
-		backUpPath += "RunningTemp";
-		backUpPath += SCENE_EXTENSION;
 		targetSz.SaveBackup(_backup, backUpPath);
 	}
 
 	void SerializationManager::Backup::LoadBackup(Deserializer& targetDsz)
 	{
 		targetDsz.LoadBackup(_backup, backUpPath);
-		backUpPath.clear();
 		_backup.Clear();
+	}
+
+	const char* SerializationManager::Backup::GetBackUpPath()
+	{
+		return backUpPath;
 	}
 
 	void SerializationManager::ParentChildPostUpdate::RegisterForPostUpdate(World& w, const Entity& oldEnt, const Entity& newEnt)
@@ -221,6 +221,11 @@ namespace Eclipse
 		std::filesystem::remove_all(TEMP_PATH);
 	}
 
+	const char* SerializationManager::GetBackUpPath()
+	{
+		return backup.GetBackUpPath();
+	}
+
 	void SerializationManager::SavePrefab(const EUUID& prefabID, std::vector<Entity>& prefabContents)
 	{
 		World& prefabW = engine->prefabWorld;
@@ -259,6 +264,18 @@ namespace Eclipse
 		}
 
 		return PrefabID;
+	}
+
+	bool SerializationManager::CheckBackUpPathExistence()
+	{
+		if (std::filesystem::exists(backup.GetBackUpPath()))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	void SerializationManager::SavePrefabFile(const EUUID& prefabID, std::vector<Entity>& prefabContents, const char* path)
