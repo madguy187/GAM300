@@ -104,36 +104,48 @@ namespace Eclipse
                     ENGINE_LOG_ASSERT(false, "Cannot Find Model");
                     return MAX_ENTITY;
                 }
-
-                // Is a prefab since its a parent
-                std::string NameOfFolder = ModelName;
-                Entity ParentID = 0;
-                Entity MeshID = 0;
-                ParentID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
-                engine->world.AddComponent(ParentID, ParentComponent{});
-
-                for (int i = 0; i < Prefabs[NameOfFolder].size(); i++)
+                else if (Prefabs[ModelName].size() == 1)
                 {
-                    auto& name = Prefabs[NameOfFolder][i];
-                    MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_MODEL);
-                    EntityComponent* test = &engine->world.GetComponent<EntityComponent>(ParentID);
-                    EntityComponent* Child = &engine->world.GetComponent<EntityComponent>(MeshID);
-
-                    engine->world.AddComponent(MeshID, ChildComponent{});
-
-                    test->Child.push_back(MeshID);
-                    Child->IsAChild = true;
-                    Child->Parent.push_back(ParentID);
-
-                    engine->world.GetComponent<ParentComponent>(ParentID).child.push_back(MeshID);
-                    engine->world.GetComponent<ChildComponent>(MeshID).parentIndex = ParentID;
+                    auto& name = Prefabs[ModelName][0];
+                    Entity MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_MODEL);
                     engine->world.AddComponent(MeshID, MeshComponent{});
                     engine->world.AddComponent(MeshID, ModelComponent{});
                     engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
                     SetSingleMesh(MeshID, name);
+                    return MeshID;
                 }
+                else
+                {
+                    // Is a prefab since its a parent
+                    std::string NameOfFolder = ModelName;
+                    Entity ParentID = 0;
+                    Entity MeshID = 0;
+                    ParentID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
+                    engine->world.AddComponent(ParentID, ParentComponent{});
 
-                return MeshID;
+                    for (int i = 0; i < Prefabs[NameOfFolder].size(); i++)
+                    {
+                        auto& name = Prefabs[NameOfFolder][i];
+                        MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_MODEL);
+                        EntityComponent* test = &engine->world.GetComponent<EntityComponent>(ParentID);
+                        EntityComponent* Child = &engine->world.GetComponent<EntityComponent>(MeshID);
+
+                        engine->world.AddComponent(MeshID, ChildComponent{});
+
+                        test->Child.push_back(MeshID);
+                        Child->IsAChild = true;
+                        Child->Parent.push_back(ParentID);
+
+                        engine->world.GetComponent<ParentComponent>(ParentID).child.push_back(MeshID);
+                        engine->world.GetComponent<ChildComponent>(MeshID).parentIndex = ParentID;
+                        engine->world.AddComponent(MeshID, MeshComponent{});
+                        engine->world.AddComponent(MeshID, ModelComponent{});
+                        engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
+                        SetSingleMesh(MeshID, name);
+                    }
+
+                    return MeshID;
+                }
             }
         }
 
