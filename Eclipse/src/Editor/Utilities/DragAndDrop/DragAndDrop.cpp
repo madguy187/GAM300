@@ -163,6 +163,11 @@ namespace Eclipse
 							EntityComponent* DestinationEntCom = nullptr;
 							EntityComponent* SourceEntCom = nullptr;
 
+							TransformComponent* childTransComp = nullptr;																	 
+							TransformComponent* parentTransComp = nullptr;
+
+							ChildComponent* childComp = nullptr;
+
 							switch (i)
 							{
 								// Move index
@@ -184,12 +189,6 @@ namespace Eclipse
 
 								SourceEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(SourceIndex_));
 
-								//if (DestinationEntCom->Tag == SourceEntCom->Tag)
-								//{
-								//	IsIndexJobSelected = false;
-								//	break;
-								//}
-
 								if (!engine->world.CheckComponent<ParentComponent>(engine->editorManager->GetEntityID(DestinationIndex_)))
 								{
 									engine->world.AddComponent(engine->editorManager->GetEntityID(DestinationIndex_), ParentComponent{});
@@ -210,11 +209,15 @@ namespace Eclipse
 									engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).parentIndex = engine->editorManager->GetEntityID(DestinationIndex_);
 								}
 
-
-
 								DestinationEntCom->Child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
 								SourceEntCom->IsAChild = true;
 								SourceEntCom->Parent.push_back(engine->editorManager->GetEntityID(DestinationIndex_));
+
+								childComp = &engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_));
+								childTransComp = &engine->world.GetComponent<TransformComponent>(engine->editorManager->GetEntityID(SourceIndex_));
+								parentTransComp = &engine->world.GetComponent<TransformComponent>(engine->editorManager->GetEntityID(DestinationIndex_));
+								engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).PosOffset = parentTransComp->position - childTransComp->position;
+
 								IsIndexJobSelected = false;
 								break;
 								// Cancel

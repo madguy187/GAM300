@@ -168,6 +168,14 @@ namespace Eclipse
 
                         ECGui::EndTreeNode();
                     }
+
+                    if (ECGui::IsItemClicked(0))
+                    {
+                        entCom.IsActive = true;
+                        engine->editorManager->SetGlobalIndex(index);
+                        UpdateEntityTracker(engine->editorManager->GetEntityID(static_cast<int>(index)));
+
+                    }
                     engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
                         static_cast<int>(index), PayloadSourceType::PST_ENTITY, curr.index);
                 }
