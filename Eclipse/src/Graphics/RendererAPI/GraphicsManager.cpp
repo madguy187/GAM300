@@ -415,7 +415,9 @@ namespace Eclipse
 
         if (engine->GetEditorState())
         {
-            engine->editorManager->GetMenuBar().SetExitStatus(true);
+            if (!engine->editorManager->GetRecoveryFileExistence())
+                engine->editorManager->GetMenuBar().SetExitStatus(true);
+
             glfwSetWindowShouldClose(OpenGL_Context::GetWindow(), GLFW_FALSE);
         }
         else
