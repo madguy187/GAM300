@@ -181,7 +181,37 @@ namespace Eclipse
 								// Parent Child
 							case 2:
 								DestinationEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(DestinationIndex_));
+
 								SourceEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(SourceIndex_));
+
+								//if (DestinationEntCom->Tag == SourceEntCom->Tag)
+								//{
+								//	IsIndexJobSelected = false;
+								//	break;
+								//}
+
+								if (!engine->world.CheckComponent<ParentComponent>(engine->editorManager->GetEntityID(DestinationIndex_)))
+								{
+									engine->world.AddComponent(engine->editorManager->GetEntityID(DestinationIndex_), ParentComponent{});
+									engine->world.GetComponent<ParentComponent>(engine->editorManager->GetEntityID(DestinationIndex_)).child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
+								}
+								else
+								{
+									engine->world.GetComponent<ParentComponent>(engine->editorManager->GetEntityID(DestinationIndex_)).child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
+								}
+
+								if (!engine->world.CheckComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)))
+								{
+									engine->world.AddComponent(engine->editorManager->GetEntityID(SourceIndex_), ChildComponent{});
+									engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).parentIndex = engine->editorManager->GetEntityID(DestinationIndex_);
+								}
+								else
+								{
+									engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).parentIndex = engine->editorManager->GetEntityID(DestinationIndex_);
+								}
+
+
+
 								DestinationEntCom->Child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
 								SourceEntCom->IsAChild = true;
 								SourceEntCom->Parent.push_back(engine->editorManager->GetEntityID(DestinationIndex_));
