@@ -11,7 +11,7 @@ namespace Eclipse
 		if (!engine->GetPlayState()) return;
 
 		int gizmoType = engine->editorManager->GetEditorWindow<SceneWindow>()->GetGizmoType();
-		if (gizmoType != ImGuizmo::OPERATION::TRANSLATE) return;
+		//if (gizmoType != ImGuizmo::OPERATION::TRANSLATE) return;
 
 		for (auto& entity : mEntities)
 		{
@@ -20,7 +20,6 @@ namespace Eclipse
 			TransformComponent& parentTrans = engine->world.GetComponent<TransformComponent>(childComp.parentIndex);
 
 			childComp.PosOffset = parentTrans.position - childTrans.position;
-			childComp.RotOffset = parentTrans.rotation - childTrans.rotation;
 		}
 
 		engine->Timer.SetName({ SystemName::CHILD });
