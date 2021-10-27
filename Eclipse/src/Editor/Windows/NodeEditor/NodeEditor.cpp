@@ -454,6 +454,11 @@ void Eclipse::NodeEditorWindow::DrawImpl()
     //ImGui::ShowMetricsWindow();
 }
 
+Eclipse::NodeEditorWindow::~NodeEditorWindow()
+{
+    ed::DestroyEditor(g_Context);
+}
+
 
 int Eclipse::NodeEditorWindow::GetNextId()
 {
