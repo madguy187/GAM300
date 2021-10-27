@@ -13,18 +13,9 @@ namespace Eclipse
             Entity = entity;
         }
 
-        public void PrintSomething()
-        {
-            Console.WriteLine("print success");
-        }
-
         public T GetComponent<T>() where T : IScriptable
         {
-            Console.WriteLine("Crash3");
-            return GetRigidComponent(Entity) as T;
+            return (T)Activator.CreateInstance(typeof(T), new object[] { Entity });
         }
-
-        [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        private extern static RigidBodyComponent GetRigidComponent(UInt32 entity);
     }
 }

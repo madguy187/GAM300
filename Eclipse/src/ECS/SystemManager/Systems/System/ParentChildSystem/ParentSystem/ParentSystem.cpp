@@ -62,7 +62,7 @@ namespace Eclipse
 		translate2 = rotate * translate2;
 		translate2 = glm::translate(translate2, childComp.PosOffset.ConvertToGlmVec3Type());
 
-		glm::vec4 temp = glm::vec4{ 1, 1, 1, 1 };
+		glm::vec4 temp = glm::vec4{ 0, 0, 0, 1 };
 		glm::vec3 newPos = translate2 * temp;
 		childTransComp.position = newPos;
 	}

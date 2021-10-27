@@ -216,7 +216,7 @@ namespace Eclipse
 								childComp = &engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_));
 								childTransComp = &engine->world.GetComponent<TransformComponent>(engine->editorManager->GetEntityID(SourceIndex_));
 								parentTransComp = &engine->world.GetComponent<TransformComponent>(engine->editorManager->GetEntityID(DestinationIndex_));
-								engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).PosOffset = parentTransComp->position - childTransComp->position;
+								engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).PosOffset = childTransComp->position - parentTransComp->position;
 
 								IsIndexJobSelected = false;
 								break;

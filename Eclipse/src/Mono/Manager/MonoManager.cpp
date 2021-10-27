@@ -37,48 +37,6 @@ namespace Eclipse
 		return class_list;
 	}
 
-	//static MonoObject* GetTranslate(Entity ent)
-	//{
-	//	//TransformComponent& trans2 = engine->world.GetComponent<TransformComponent>(ent);
-	//	auto& trans = engine->world.GetComponent<TransformComponent>(ent);
-	//	void* args[3];
-	//	args[0] = &trans.position.x;
-	//	args[1] = &trans.position.y;
-	//	args[2] = &trans.position.z;
-
-	//	MonoClass* klass = mono_class_from_name(engine->mono.GetAPIImage(), "Eclipse", "MonoVec3");
-
-	//	if (klass == nullptr) {
-	//		std::cout << "Failed loading class, MonoVec3" << std::endl;
-	//		return nullptr;
-	//	}
-
-	//	MonoObject* obj = mono_object_new(mono_domain_get(), klass);
-	//	if (obj == nullptr) {
-	//		std::cout << "Failed loading class instance, MonoVec3" << std::endl;
-	//		return nullptr;
-	//	}
-
-	//	engine->mono.DumpInfoFromClass(klass);
-
-	//	MonoMethod* ctor_method = mono_class_get_method_from_name(klass, ".ctor", -1);
-	//	if (!ctor_method)
-	//	{
-	//		std::cout << "Failed to get method" << std::endl;
-	//		return nullptr;
-	//	}
-
-	//	//mono_runtime_object_init(obj);
-	//	mono_runtime_invoke(ctor_method, obj, args, NULL);
-
-	//	return obj;
-	//}
-
-	static void SetForce(Entity ent, float x, float y, float z)
-	{
-		engine->gPhysics.SetForce(ent, { x, y, z });
-	}
-
 	static MonoObject* CreateGameObject(Entity ent)
 	{
 		MonoClass* gameobjKlass = mono_class_from_name(engine->mono.GetAPIImage(), "Eclipse", "GameObject");
@@ -100,8 +58,6 @@ namespace Eclipse
 			return nullptr;
 		}
 
-		//mono_runtime_object_init(obj);
-
 		void* args[1];
 		args[0] = &ent;
 		mono_runtime_invoke(method, obj, args, NULL);
@@ -122,14 +78,30 @@ namespace Eclipse
 
 		ENGINE_LOG_ASSERT(domain, "Domain could not be created");
 
-		mono_add_internal_call("Eclipse.PhysicsObject::Add_Force", SetForce);
-		mono_add_internal_call("Eclipse.GameObject::GetRigidComponent", GetRigidComponent);
-		mono_add_internal_call("Eclipse.EclipseBehavior::GetGameObject", CreateGameObject);
+		mono_add_internal_call("Eclipse.RigidBodyComponent::Add_Force", SetForce);
+	}
+
+	void MonoManager::Start(MonoScript* obj)
+	{
+		MonoClass* klass = mono_class_from_name(ScriptImage, "", obj->scriptName.c_str());
+
+		if (klass == nullptr) {
+			std::cout << "Failed loading class, MonoVec3" << std::endl;
+			return;
+		}
+
+		MonoMethod* m_update = mono_class_get_method_from_name(klass, "Start", -1);
+		if (!m_update)
+		{
+			std::cout << "Failed to get method" << std::endl;
+			return;
+		}
+
+		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
 	}
 
 	void MonoManager::Update(MonoScript* obj)
 	{
-		//DumpInfoFromImage(APIImage);
 		MonoClass* klass = mono_class_from_name(ScriptImage, "", obj->scriptName.c_str());
 
 		if (klass == nullptr) {
@@ -220,7 +192,7 @@ namespace Eclipse
 
 	MonoClass* MonoManager::GetMonoClass(std::string className)
 	{
-		MonoClass* klass = mono_class_from_name(APIImage, "", className.c_str());
+		MonoClass* klass = mono_class_from_name(APIImage, "Eclipse", className.c_str());
 		if (!klass)
 		{
 			std::cout << "Failed loading class: " << className << std::endl;

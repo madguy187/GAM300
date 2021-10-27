@@ -19,7 +19,9 @@ namespace Eclipse
 			TransformComponent& childTrans = engine->world.GetComponent<TransformComponent>(entity);
 			TransformComponent& parentTrans = engine->world.GetComponent<TransformComponent>(childComp.parentIndex);
 
-			childComp.PosOffset = parentTrans.position - childTrans.position;
+			childComp.PosOffset.x = abs(parentTrans.position.x - childTrans.position.x);
+			childComp.PosOffset.y = abs(parentTrans.position.y - childTrans.position.y);
+			childComp.PosOffset.z = abs(parentTrans.position.z - childTrans.position.z);
 		}
 
 		engine->Timer.SetName({ SystemName::CHILD });
