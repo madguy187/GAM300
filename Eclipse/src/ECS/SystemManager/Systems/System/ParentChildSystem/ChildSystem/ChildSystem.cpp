@@ -8,9 +8,9 @@ namespace Eclipse
 	void Eclipse::ChildSystem::Update()
 	{
 		ZoneScopedN("Child System")
-		if (!engine->GetPlayState()) return;
+		if (engine->GetPlayState()) return;
 
-		int gizmoType = engine->editorManager->GetEditorWindow<SceneWindow>()->GetGizmoType();
+		//int gizmoType = engine->editorManager->GetEditorWindow<SceneWindow>()->GetGizmoType();
 		//if (gizmoType != ImGuizmo::OPERATION::TRANSLATE) return;
 
 		for (auto& entity : mEntities)
