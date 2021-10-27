@@ -151,6 +151,7 @@ namespace Eclipse
 		void Init() override;
 		void Unload() override;
 		void DrawImpl();
+        ~NodeEditorWindow() override;
 
         int GetNextId();
 

@@ -41,11 +41,13 @@ namespace Eclipse
 		bool IsEntityListEmpty() const;
 		bool IsAnyGizmoWindowActive();
 		bool GetMeshEditorActive() const;
+		bool GetRecoveryFileExistence() const;
 
 		// Setters
 		void SetSelectedEntity(Entity ID);
 		void SetGlobalIndex(size_t index);
 		void SetMeshEditorActive(bool active);
+		void SetRecoveryFileExistence(bool exist);
 
 		template <typename TWindow>
 		TWindow* GetEditorWindow();
@@ -68,6 +70,7 @@ namespace Eclipse
 		size_t GEHIndex_{ 0 };
 
 		bool IsMeshEditorActive{ false };
+		bool DoesRecoveryFileExist{ false };
 
 		template <typename TWindow>
 		inline void AddWindow(const char* title);

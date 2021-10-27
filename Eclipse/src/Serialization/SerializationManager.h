@@ -13,11 +13,13 @@ namespace Eclipse
 	{
 		class Backup
 		{
+			const char* backUpPath = "Data\\Temp\\RunningTemp.scn";
 			TiXmlDocument _backup;
-			std::string backUpPath;
+
 		public:
 			void SaveBackup(Serializer&);
 			void LoadBackup(Deserializer&);
+			const char* GetBackUpPath();
 		};
 
 		Backup backup;
@@ -108,13 +110,17 @@ namespace Eclipse
 
 		void LoadBackupFile();
 
+		const char* GetBackUpPath();
+
+		bool CheckBackUpPathExistence();
+
 		void SavePrefabFile(const EUUID& prefabID, std::vector<Entity>& prefabContents, const char* path);
 
 		EUUID LoadPrefabFile(Entity& dszEnt, const char* fullpath, bool IsFromMainWorld = false);
 
-		void SaveSceneFile(const char* fullpath = "Data/Temp/Temp.scn");
+		void SaveSceneFile(const char* fullpath = "Data/Temp/UnsavedTemp.scn");
 
-		void LoadSceneFile(const char* fullpath = "Data/Temp/Temp.scn");
+		void LoadSceneFile(const char* fullpath = "Data/Temp/UnsavedTemp.scn");
 
 		void SavePrefabWorldFile(const std::set<Entity>& entities);
 

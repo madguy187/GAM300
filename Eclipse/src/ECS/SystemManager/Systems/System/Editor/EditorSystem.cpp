@@ -12,6 +12,8 @@ namespace Eclipse
 
 		if (engine->GetEditorState())
 		{
+			MenuBar::ShowRecoveryDialogBox(engine->editorManager->GetRecoveryFileExistence());
+
 			for (const auto& window : engine->editorManager->GetAllWindowsByRef())
 			{
 				window->Update();

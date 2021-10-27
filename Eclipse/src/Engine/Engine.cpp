@@ -243,6 +243,10 @@ namespace Eclipse
         // Darren - Please keep this before Game Loop
         engine->GraphicsManager.MassInit();
 
+        // Check for Recovery File
+        if (IsEditorActive)
+            engine->editorManager->SetRecoveryFileExistence(szManager.CheckBackUpPathExistence());
+
         /*audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);*/
         //audioManager.PlayEvent("event:/WaterEffect");
 
@@ -291,7 +295,6 @@ namespace Eclipse
             ECGuiInputHandler::Update();
 
             ImGuiSetup::Begin(IsEditorActive);
-
             EditorSystem::Update();
 
             if (IsInStepState)
@@ -363,6 +366,7 @@ namespace Eclipse
 
             ImGuiSetup::End(IsEditorActive);
             OpenGL_Context::post_render();
+
             SceneManager::ProcessScene();
 
             ProfilerWindow::engine_time = 0;

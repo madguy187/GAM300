@@ -13,6 +13,8 @@ namespace Eclipse
 		MenuComponent* GetMenuComponent(EditorMenuType type);
 		void ShowExitDialogBox(bool active);
 		void ShowTeamInformation();
+		static void ShowRecoveryDialogBox(bool active);
+		static std::string RetrieveFilename(std::string path);
 
 		bool GetExitStatus();
 		void SetExitStatus(bool check);

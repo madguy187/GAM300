@@ -32,7 +32,7 @@ void Eclipse::NodeEditorWindow::Init()
 
 void Eclipse::NodeEditorWindow::Unload()
 {
-	ed::DestroyEditor(g_Context);
+	
 }
 void Eclipse::NodeEditorWindow::DrawImpl()
 {
