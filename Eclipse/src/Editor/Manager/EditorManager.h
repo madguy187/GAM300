@@ -54,6 +54,7 @@ namespace Eclipse
 
 		int spriteIcon_;
 		int FolderIcon_;
+		int nodeHeader_;
 		void TextureIconInit();
 
 		DragAndDrop DragAndDropInst_;

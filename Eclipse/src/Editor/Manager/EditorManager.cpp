@@ -356,7 +356,8 @@ namespace Eclipse
 	{
 		FolderIcon_ = Graphics::FindTextures("FolderIcon").GetHandle();
 
-
 		spriteIcon_ = Graphics::FindTextures("PlayPauseStop").GetHandle();
+
+		nodeHeader_ = Graphics::FindTextures("BlueprintBackground").GetHandle();
 	}
 }
