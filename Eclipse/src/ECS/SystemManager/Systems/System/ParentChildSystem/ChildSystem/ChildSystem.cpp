@@ -13,16 +13,21 @@ namespace Eclipse
 		//int gizmoType = engine->editorManager->GetEditorWindow<SceneWindow>()->GetGizmoType();
 		//if (gizmoType != ImGuizmo::OPERATION::TRANSLATE) return;
 
-		for (auto& entity : mEntities)
-		{
-			ChildComponent& childComp = engine->world.GetComponent<ChildComponent>(entity);
-			TransformComponent& childTrans = engine->world.GetComponent<TransformComponent>(entity);
-			TransformComponent& parentTrans = engine->world.GetComponent<TransformComponent>(childComp.parentIndex);
+		Entity entSelected = engine->editorManager->GetSelectedEntity();
+		if (entSelected == MAX_ENTITY) return;
 
-			childComp.PosOffset.x = abs(parentTrans.position.x - childTrans.position.x);
-			childComp.PosOffset.y = abs(parentTrans.position.y - childTrans.position.y);
-			childComp.PosOffset.z = abs(parentTrans.position.z - childTrans.position.z);
-		}
+		if (!engine->world.CheckComponent<ChildComponent>(entSelected)) return;
+		ChildComponent& childComp = engine->world.GetComponent<ChildComponent>(entSelected);
+		TransformComponent& childTrans = engine->world.GetComponent<TransformComponent>(entSelected);
+		TransformComponent& parentTrans = engine->world.GetComponent<TransformComponent>(childComp.parentIndex);
+
+		childComp.PosOffset = childTrans.position - parentTrans.position;
+		childComp.RotOffset = childTrans.rotation - parentTrans.rotation;
+
+		/*for (auto& entity : mEntities)
+		{
+			
+		}*/
 
 		engine->Timer.SetName({ SystemName::CHILD });
 		engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());

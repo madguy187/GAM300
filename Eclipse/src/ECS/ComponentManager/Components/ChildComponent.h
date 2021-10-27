@@ -8,5 +8,6 @@ namespace Eclipse
 		META_DATA(ChildComponent);
 		Entity parentIndex;
 		ECVec3 PosOffset;
+		ECVec3 RotOffset;
 	};
 }
