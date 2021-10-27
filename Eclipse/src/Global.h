@@ -66,10 +66,11 @@ enum class PxShapeType
 enum class NodeType
 {
     NODE_UNASSIGNED,
+    NODE_ROOT,
     NODE_SELECTOR,
     NODE_SEQUENCE,
     NODE_BOOL,
-    NODE_BEHAVIOUR
+    NODE_TASK
 };
 
 enum class EntityType

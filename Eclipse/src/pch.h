@@ -14,6 +14,7 @@
 #include <iomanip>
 #include <memory>
 #include <vector>
+#include <list>
 #include <map>
 #include <string>
 #include <fstream>
@@ -24,12 +25,11 @@
 #include <cmath>
 #include <fstream>
 #include <array>
-#include <algorithm>
 #include <memory>
 #include <filesystem>
 #include<thread>
 #include <chrono>
-#include <functional>
+#include <random>
 
 // functional
 #include <algorithm>
