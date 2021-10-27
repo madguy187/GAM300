@@ -7,8 +7,8 @@ namespace Eclipse
     MaterialEditorSettings::MaterialEditorSettings()
     {
         // Light Source in MeshEditor
-        LightPosition = ECVec3(10.0f, 10.0f, 10.0f);
-        lightColor = ECVec3(300.0f, 300.0f, 300.0f);
+        LightPosition = ECVec3(10.0f, 5.0f, 10.0f);
+        lightColor = ECVec3(200.0f, 200.0f, 200.0f);
     }
 
     void MaterialEditorSettings::CreateMaterialInstance()
@@ -35,6 +35,9 @@ namespace Eclipse
 
             glActiveTexture(GL_TEXTURE14);
             glBindTexture(GL_TEXTURE_2D, CurrentMaterial.Ao);
+
+            glActiveTexture(GL_TEXTURE15);
+            glBindTexture(GL_TEXTURE_2D, CurrentMaterial.Height);
         }
         else
         {
@@ -54,6 +57,9 @@ namespace Eclipse
 
                 glActiveTexture(GL_TEXTURE14);
                 glBindTexture(GL_TEXTURE_2D, engine->gPBRManager->AllMaterialInstances[MaterialName_]->Ao);
+
+                glActiveTexture(GL_TEXTURE15);
+                glBindTexture(GL_TEXTURE_2D, engine->gPBRManager->AllMaterialInstances[MaterialName_]->Height);
             }
         }
 
@@ -62,6 +68,7 @@ namespace Eclipse
         In.setInt("metallicMap", 12);
         In.setInt("roughnessMap", 13);
         In.setInt("aoMap", 14);
+        In.setInt("displacement0", 15);
     }
 
     void MaterialEditorSettings::RenderMaterialScene()
@@ -97,6 +104,7 @@ namespace Eclipse
         GLint HasInstance = shdrpgm.GetLocation("HasInstance");
         GLint BaseReflectivity = shdrpgm.GetLocation("BaseReflectivity");
         GLint NormalMap_ = shdrpgm.GetLocation("NormalMap");
+        GLint HeightScale_ = shdrpgm.GetLocation("HeightScale");
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::mat4(1.0f);
@@ -112,6 +120,7 @@ namespace Eclipse
 
         if (SelectedIndex == 0)
         {
+            GLCall(glUniform1f(HeightScale_, CurrentMaterial.HeightScale));
             GLCall(glUniform1i(NormalMap_, CurrentMaterial.IsNormalMap));
             GLCall(glUniform1i(HasInstance, CurrentMaterial.HasTexture));
             GLCall(glUniform3f(AlbedoConstant, CurrentMaterial.AlbedoConstant.getX(), CurrentMaterial.AlbedoConstant.getY(), CurrentMaterial.AlbedoConstant.getZ()));
@@ -127,6 +136,8 @@ namespace Eclipse
             //auto test = *engine->gPBRManager->AllMaterialInstances[engine->gPBRManager->AllMaterialInstName[SelectedIndex]];
             //CurrentMaterial = *engine->gPBRManager->AllMaterialInstances[engine->gPBRManager->AllMaterialInstName[SelectedIndex]];
             //
+            GLCall(glUniform1i(NormalMap_, CurrentMaterial.IsNormalMap));
+            GLCall(glUniform1f(HeightScale_, CurrentMaterial.HeightScale));
             GLCall(glUniform1i(HasInstance, CurrentMaterial.HasTexture));
             GLCall(glUniform3f(AlbedoConstant, CurrentMaterial.AlbedoConstant.getX(), CurrentMaterial.AlbedoConstant.getY(), CurrentMaterial.AlbedoConstant.getZ()));
             GLCall(glUniform1f(AoConstant, CurrentMaterial.AoConstant));
@@ -159,6 +170,17 @@ namespace Eclipse
     {
         MaterialInstance NewMaterial;
         CurrentMaterial = NewMaterial;
+    }
+
+    void MaterialEditorSettings::ClearTextureFields()
+    {
+        AlbedoTexture.clear();
+        NormalTexture.clear();
+        MetallicTexture.clear();
+        RoughnessTexture.clear();
+        AoTexture.clear();
+        HeightTexture.clear();
+        MaterialName.clear();
     }
 
     void MaterialEditorSettings::UpdateLights(Shader& MaterialEditorShader)

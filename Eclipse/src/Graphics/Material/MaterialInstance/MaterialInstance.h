@@ -8,6 +8,7 @@ namespace Eclipse
         std::array<char, 128> Name;
         bool HasTexture = false;
         bool IsNormalMap = false;
+        float HeightScale = 0.05f;
         ECVec3 BaseReflectivity = { 0.4f,0.4f,0.4f };
 
         // Non Textured Parameters
@@ -22,6 +23,7 @@ namespace Eclipse
         unsigned int Metallic = 0;
         unsigned int Roughness = 0;
         unsigned int Ao = 0;
+        unsigned int Height = 0;
 
         // IGNORE PLEASE - For Compiler
         bool Stopper = false;

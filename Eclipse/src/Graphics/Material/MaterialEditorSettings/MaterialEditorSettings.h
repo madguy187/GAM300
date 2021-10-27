@@ -32,6 +32,7 @@ namespace Eclipse
         std::string MetallicTexture;
         std::string RoughnessTexture;
         std::string AoTexture;
+        std::string HeightTexture;
         std::string MaterialName;
 
         unsigned int SelectedIndex = 0;
@@ -39,7 +40,7 @@ namespace Eclipse
         bool Once = false;
 
         MaterialEditorSettings();
-        void BindMaterial(Shader& In , std::string MaterialName);
+        void BindMaterial(Shader& In, std::string MaterialName);
         void RenderSphere();
         void UpdateCurrentMaterial(Shader& ShaderIn, CameraComponent& Camin);
         void UpdateLights(Shader& MaterialEditorShader);
@@ -47,5 +48,6 @@ namespace Eclipse
         void CreateMaterialInstance();
         void RenderMaterialScene();
         void ClearCurrentMaterial();
+        void ClearTextureFields();
     };
 }

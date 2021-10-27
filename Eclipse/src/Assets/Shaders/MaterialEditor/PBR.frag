@@ -10,6 +10,8 @@ uniform sampler2D normalMap;
 uniform sampler2D metallicMap;
 uniform sampler2D roughnessMap;
 uniform sampler2D aoMap;
+uniform sampler2D displacement0;
+uniform float HeightScale;
 
 // material parameters
 uniform vec3  AlbedoConstant;
@@ -37,14 +39,14 @@ struct MaterialEditorPointLight
 #define NR_POINT_LIGHTS 15  
 uniform MaterialEditorPointLight pointLights[NR_POINT_LIGHTS];
 
-vec3 getNormalFromMap()
+vec3 getNormalFromMap(vec2 UVs)
 {
-    vec3 tangentNormal = texture(normalMap, TexCoords).xyz * 2.0 - 1.0;
+    vec3 tangentNormal = texture(normalMap, UVs).xyz * 2.0 - 1.0;
 
     vec3 Q1  = dFdx(WorldPos);
     vec3 Q2  = dFdy(WorldPos);
-    vec2 st1 = dFdx(TexCoords);
-    vec2 st2 = dFdy(TexCoords);
+    vec2 st1 = dFdx(UVs);
+    vec2 st2 = dFdy(UVs);
 
     vec3 N   = normalize(Normal);
     vec3 T  = normalize(Q1*st2.t - Q2*st1.t);
@@ -105,6 +107,41 @@ void main()
     vec3 V = normalize(camPos - WorldPos);
     //vec3 N = getNormalFromMap(); // no normal map can use vec3(0.1) or we normalize 
      
+    // Variables that control parallax occlusion mapping quality
+	float heightScale = HeightScale;
+	const float minLayers = 8.0f;
+    const float maxLayers = 64.0f;
+    float numLayers = mix(maxLayers, minLayers, abs(dot(vec3(0.0f, 0.0f, 1.0f), V)));
+	float layerDepth = 1.0f / numLayers;
+	float currentLayerDepth = 0.0f;
+
+    // Remove the z division if you want less aberated results
+	vec2 S = V.xy / V.z * heightScale; 
+    vec2 deltaUVs = S / numLayers;
+	
+	vec2 UVs = TexCoords;
+	float currentDepthMapValue = 1.0f - texture(displacement0, UVs).r;
+	
+	// Loop till the point on the heightmap is "hit"
+	while(currentLayerDepth < currentDepthMapValue)
+    {
+        UVs -= deltaUVs;
+        currentDepthMapValue = 1.0f - texture(displacement0, UVs).r;
+        currentLayerDepth += layerDepth;
+    }
+
+    vec2 prevTexCoords = UVs + deltaUVs;
+	float afterDepth  = currentDepthMapValue - currentLayerDepth;
+	float beforeDepth = 1.0f - texture(displacement0, prevTexCoords).r - currentLayerDepth + layerDepth;
+	float weight = afterDepth / (afterDepth - beforeDepth);
+	UVs = prevTexCoords * weight + UVs * (1.0f - weight);
+
+	// Get rid of anything outside the normal range
+	if(UVs.x > 1.0 || UVs.y > 1.0 || UVs.x < 0.0 || UVs.y < 0.0)
+		discard;
+
+    /////////////////////////////////////////////////////////////////////
+
     // Variables declared first;
     vec3 albedo;
     float metallic,roughness,ao;
@@ -116,17 +153,17 @@ void main()
     {   
         if(NormalMap == 1)
         {
-            N = getNormalFromMap();
+            N = getNormalFromMap(UVs);
         }
         else
         {
             N = normalize(Normal);         
         }
 
-        albedo     = pow(texture(albedoMap, TexCoords).rgb, vec3(2.2));
-        metallic  = texture(metallicMap, TexCoords).r;
-        roughness = texture(roughnessMap, TexCoords).r;
-        ao        = texture(aoMap, TexCoords).r;
+        albedo     = pow(texture(albedoMap, UVs).rgb, vec3(2.2));
+        metallic  = texture(metallicMap, UVs).r;
+        roughness = texture(roughnessMap, UVs).r;
+        ao        = texture(aoMap, UVs).r;
         F0 = mix(F0, albedo, metallic);  
     }
     else
