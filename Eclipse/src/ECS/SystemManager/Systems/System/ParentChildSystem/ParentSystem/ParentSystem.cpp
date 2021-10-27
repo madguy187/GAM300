@@ -8,6 +8,10 @@ namespace Eclipse
 {
 	void ParentSystem::Update()
 	{
+		ZoneScopedN("Parent System")
+		engine->Timer.SetName({ SystemName::PARENT });
+		engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
+
 		if (!engine->GetPlayState())
 		{
 			Entity entSelected = engine->editorManager->GetSelectedEntity();
@@ -20,10 +24,9 @@ namespace Eclipse
 			{
 				UpdateChildPosition(entSelected, childEntity);
 			}
+			
+			return;
 		}
-		ZoneScopedN("Parent System")
-		engine->Timer.SetName({ SystemName::PARENT });
-		engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
 		for (auto& entity : mEntities)
 		{
