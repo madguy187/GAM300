@@ -65,13 +65,16 @@ namespace Eclipse
 
     bool LogicalInput::GetKeyTriggered(std::string Mappedkeycode)
     {
+        // Lets see what Key is this
+        InputKeycode PassedIn = CheckMappingExist(Mappedkeycode);
+
         // Check whether the string passed in is mapped with key
-        int Press = GetKey(CheckMappingExist(Mappedkeycode));
+        int Press = GetKey(PassedIn);
 
         //Check if key is released
         if (IsKeyReleased(Press))
         {
-            GetKeyReleased(CheckMappingExist(Mappedkeycode));
+            GetKeyReleased(PassedIn);
             return false;
         }
         // Check if Key is pressed
@@ -80,11 +83,11 @@ namespace Eclipse
             if (Press != 1)
                 return false;
 
-            RegisterTriggerInput(CheckMappingExist(Mappedkeycode), InputState::Key_TRIGGERED);
+            RegisterTriggerInput(PassedIn, InputState::Key_TRIGGERED);
 
-            if (KeyContainer.count(CheckMappingExist(Mappedkeycode)) && KeyContainer[CheckMappingExist(Mappedkeycode)] == InputState::Key_TRIGGERED)
+            if (KeyContainer.count(PassedIn) && KeyContainer[PassedIn] == InputState::Key_TRIGGERED)
             {
-                PrintKey(CheckMappingExist(Mappedkeycode), Press);
+                PrintKey(PassedIn, Press);
                 return true;
             }
         }
@@ -133,7 +136,7 @@ namespace Eclipse
             }
         }
 
-        return InputKeycode::Key_MISCELLANEOUS;
+        return InputKeycode::Key_Null;
     }
 }
 
@@ -273,7 +276,7 @@ namespace Eclipse
         init();
         InsertAllKeys();
 
-        KeyMappings.emplace("Horizontal", InputKeycode::Key_LEFT);
+        //KeyMappings.emplace("Horizontal", InputKeycode::Key_LEFT);
         MouseMappings.emplace("Hello", InputMouseKeycode::KeyCode_MOUSELEFT);
     }
 
@@ -339,6 +342,29 @@ namespace Eclipse
         }
     }
 
+    void LogicalInput::TestingLogicalInput()
+    {
+        if (engine->InputManager->GetKeyTriggered("Left"))
+        {
+            std::cout << "Left" << std::endl;
+        }
+
+        if (engine->InputManager->GetKeyTriggered("Right"))
+        {
+            std::cout << "Right" << std::endl;
+        }
+
+        if (engine->InputManager->GetKeyTriggered("Up"))
+        {
+            std::cout << "Up" << std::endl;
+        }
+
+        if (engine->InputManager->GetKeyTriggered("Down"))
+        {
+            std::cout << "Down" << std::endl;
+        }
+    }
+
     void LogicalInput::init()
     {
         // Clear Container just in case
@@ -357,20 +383,17 @@ namespace Eclipse
 
     void LogicalInput::RegisterTriggerInput(InputKeycode keycode, InputState input)
     {
-        if (keycode != InputKeycode::Key_Null)
-        {
-            KeyContainer.emplace(keycode, input);
-        }
+        KeyContainer.insert({ keycode, input });
     }
 
     void LogicalInput::RegisterMouseInput(InputMouseKeycode keycode, InputState input)
     {
-        MouseContainer_.emplace(keycode, input);
+        MouseContainer_.insert({ keycode, input });
     }
 
     void LogicalInput::RegisterHoldInput(InputKeycode keycode, InputState input)
     {
-        KeyContainer.emplace(keycode, input);
+        KeyContainer.insert({ keycode, input });
     }
 
     bool LogicalInput::IsKeyPressed(int input)

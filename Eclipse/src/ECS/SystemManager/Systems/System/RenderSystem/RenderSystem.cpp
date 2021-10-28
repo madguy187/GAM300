@@ -39,12 +39,8 @@ namespace Eclipse
 
     void RenderSystem::Update()
     {
-       
-        if (engine->InputManager->GetKeyTriggered("Fikrul1"))
-        {
-            std::cout << "hello" << std::endl;
-        }
-
+        engine->InputManager->TestingLogicalInput();
+     
         ZoneScopedN("Render System")
             engine->Timer.SetName({ SystemName::RENDER });
         engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
