@@ -133,9 +133,6 @@ namespace Eclipse
         }
         else
         {
-            //auto test = *engine->gPBRManager->AllMaterialInstances[engine->gPBRManager->AllMaterialInstName[SelectedIndex]];
-            //CurrentMaterial = *engine->gPBRManager->AllMaterialInstances[engine->gPBRManager->AllMaterialInstName[SelectedIndex]];
-            //
             GLCall(glUniform1i(NormalMap_, CurrentMaterial.IsNormalMap));
             GLCall(glUniform1f(HeightScale_, CurrentMaterial.HeightScale));
             GLCall(glUniform1i(HasInstance, CurrentMaterial.HasTexture));
@@ -146,23 +143,6 @@ namespace Eclipse
             GLCall(glUniform3f(BaseReflectivity, CurrentMaterial.BaseReflectivity.getX(), CurrentMaterial.BaseReflectivity.getY(), CurrentMaterial.BaseReflectivity.getZ()));
 
             BindMaterial(shdrpgm, CurrentMaterial.Name.data());
-
-            //CurrentSelectedMaterial = engine->gPBRManager->AllMaterialInstances[engine->gPBRManager->AllMaterialInstName[SelectedIndex]]->Name.data();
-            //
-            //GLCall(glUniform1i(HasInstance, engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->HasTexture));
-            //GLCall(glUniform3f(AlbedoConstant,
-            //    engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->AlbedoConstant.getX(),
-            //    engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->AlbedoConstant.getY(),
-            //    engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->AlbedoConstant.getZ()));
-            //GLCall(glUniform1f(AoConstant, engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->AoConstant));
-            //GLCall(glUniform1f(MetallicConstant, engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->MetallicConstant));
-            //GLCall(glUniform1f(RoughnessConstant, engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->RoughnessConstant));
-            //GLCall(glUniform3f(BaseReflectivity,
-            //    engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->BaseReflectivity.getX(),
-            //    engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->BaseReflectivity.getY(),
-            //    engine->gPBRManager->AllMaterialInstances[CurrentSelectedMaterial]->BaseReflectivity.getZ()));
-            //
-            //BindMaterial(shdrpgm, CurrentSelectedMaterial);
         }
     }
 
