@@ -84,5 +84,6 @@ namespace Eclipse
         void PrintKey(InputKeycode input);
         void RemoveKey(KeyIT& input);
         void RemoveHoldKey(KeyIT& input);
+        bool CheckPress(int keycode);
     };
 }
