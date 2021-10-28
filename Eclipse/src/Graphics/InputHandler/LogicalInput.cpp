@@ -19,7 +19,7 @@ namespace Eclipse
         // Check if Space is pressed
         else if (IsKeyPressed(Press))
         {
-            RegisterTriggerInput(keycode, InputState::Key_TRIGGERED); 
+            RegisterTriggerInput(keycode, InputState::Key_TRIGGERED);
 
             if (KeyContainer.count(keycode) != 0 && KeyContainer[keycode] == InputState::Key_TRIGGERED)
             {
@@ -154,7 +154,7 @@ namespace Eclipse
         {
             RegisterMouseInput(Mappedkeycode, InputState::Key_TRIGGERED);
 
-            if (MouseContainer_.count(Mappedkeycode) != 0 && 
+            if (MouseContainer_.count(Mappedkeycode) != 0 &&
                 MouseContainer_[Mappedkeycode] == InputState::Key_TRIGGERED)
             {
                 return true;
@@ -206,7 +206,7 @@ namespace Eclipse
 
             RegisterMouseInput(PassedIn, InputState::Key_TRIGGERED);
 
-            if (MouseContainer_.count(PassedIn) != 0 && 
+            if (MouseContainer_.count(PassedIn) != 0 &&
                 MouseContainer_[PassedIn] == InputState::Key_TRIGGERED)
             {
                 return true;
