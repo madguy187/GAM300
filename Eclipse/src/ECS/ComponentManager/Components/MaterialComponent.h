@@ -18,6 +18,7 @@ namespace Eclipse
         bool NoTextures = true;
         float shininess = 0.25f;
         float MaximumShininess = 128.0f;
+        bool IsNormalMap = false;
 
         //ComboIndex if for imgui combolist to select the correct model type - Tian Yu
         size_t ComboIndex = 1;

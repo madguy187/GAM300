@@ -129,7 +129,7 @@ namespace Eclipse
                     std::string NameOfFolder = ModelName;
                     Entity ParentID = 0;
                     Entity MeshID = 0;
-                    ParentID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
+                    ParentID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_MODEL);
                     engine->world.AddComponent(ParentID, ParentComponent{});
 
                     for (int i = 0; i < Prefabs[NameOfFolder].size(); i++)
@@ -634,6 +634,9 @@ namespace Eclipse
                             glActiveTexture(GL_TEXTURE0 + it);
                             break;
                         }
+
+                        GLuint IsNormalMap_ = shader.GetLocation("IsNormalMap");
+                        glUniform1i(IsNormalMap_, Material.IsNormalMap);
 
                         engine->gPBRManager->UnBindMetallicTexture(shader);
                         engine->gPBRManager->UnBindRoughnessTexture(shader);

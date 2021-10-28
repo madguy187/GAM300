@@ -19,18 +19,13 @@ namespace Eclipse
         // Register Threads
         engine->GraphicsManager.RegisterThreads();
 
-        engine->gPBRManager = std::make_unique<PBRManager>();
-
-        // Compilers ===========================
         engine->gEngineCompiler = std::make_unique<EngineCompiler>();
+        engine->gPBRManager = std::make_unique<PBRManager>();
+        engine->gCullingManager = std::make_unique<CullingManager>();
 
         // Outlining Preparation ============================= 
         glEnable(GL_STENCIL_TEST);
         glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-
-        // Graphics Init =============================
-        EDITOR_LOG_INFO("RenderSystem Init");
-        //engine->GraphicsManager.DebugPrintFrameBuffers();
 
         // Load All Compilers =============================
         engine->gEngineCompiler->Init();
@@ -40,11 +35,6 @@ namespace Eclipse
 
         // Create AABB Boxes =============================
         engine->GraphicsManager.AllAABBs.Init();
-
-        // CUlling =============================
-        engine->gCullingManager = std::make_unique<CullingManager>();
-
-        MaterialSystem::Init();
     }
 
     void RenderSystem::Update()

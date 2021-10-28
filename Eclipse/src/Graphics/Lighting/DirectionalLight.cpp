@@ -141,7 +141,6 @@ namespace Eclipse
         auto& Tr = engine->world.GetComponent<TransformComponent>(FirstGlobalLight);
         Tr.position = ECVec3(0.0f, 150.0f, 0.0f);
 
-        EDITOR_LOG_INFO("Directional Light Created Successfully");
         DirectionalLightcounter++;
     }
 

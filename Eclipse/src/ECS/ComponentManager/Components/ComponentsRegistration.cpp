@@ -128,6 +128,7 @@ namespace Eclipse
         ADD_MEMBER(NoTextures);
         ADD_MEMBER(shininess);
         ADD_MEMBER(MaximumShininess);
+        ADD_MEMBER(IsNormalMap);
         ADD_MEMBER(ComboIndex);
         ADD_MEMBER(TextureComboIndex);
         ADD_MEMBER(Type);
