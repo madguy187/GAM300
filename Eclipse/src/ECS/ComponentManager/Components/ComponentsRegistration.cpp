@@ -243,7 +243,7 @@ namespace Eclipse
     DEFINE_META(ChildComponent)
     {
         ADD_MEMBER(parentIndex);
-        ADD_MEMBER(offset);
+        ADD_MEMBER(PosOffset);
     }
 
     DEFINE_META(ParentComponent)

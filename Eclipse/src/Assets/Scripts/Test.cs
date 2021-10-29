@@ -5,10 +5,16 @@ using Eclipse;
 
 public class Test : EclipseBehavior
 {
-    public void Update()
+    public RigidBody rigid;
+
+    public void Start()
     {
         Console.WriteLine("C# Update");
-        GetRigidComponent();
-        //rigid = GetComponent<RigidBodyComponent>();
+        rigid = GetComponent<RigidBody>();
+    }
+
+    public void Update()
+    {
+        rigid.AddForce(500, 0, 0);
     }
 }

@@ -64,7 +64,8 @@ namespace Eclipse
             ShowAudioProperty("Audio", currEnt, CompFilter);
             ShowCollisionProperty("Collision", currEnt, CompFilter);
             ShowAIProperty("AI Properties", currEnt, CompFilter);
-
+            ShowParentProperty("Parent", currEnt, CompFilter);
+            ShowChildProperty("Child", currEnt, CompFilter);
             AddComponentsController(currEnt);
             ECGui::NextColumn();
             RemoveComponentsController(currEnt);
