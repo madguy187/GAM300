@@ -218,6 +218,9 @@ namespace Eclipse
 								parentTransComp = &engine->world.GetComponent<TransformComponent>(engine->editorManager->GetEntityID(DestinationIndex_));
 								engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).PosOffset = childTransComp->position - parentTransComp->position;
 								engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).distance = abs(VectorDistance<float, 3>(childTransComp->position, parentTransComp->position));
+								engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).ScaleOffset.setX(childTransComp->scale.getX() / parentTransComp->scale.getX());
+								engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).ScaleOffset.setY(childTransComp->scale.getY() / parentTransComp->scale.getY());
+								engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).ScaleOffset.setZ(childTransComp->scale.getZ() / parentTransComp->scale.getZ());
 								
 
 								IsIndexJobSelected = false;
