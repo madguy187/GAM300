@@ -164,7 +164,6 @@ namespace Eclipse
 				{
 					auto& parent = engine->world.GetComponent<ParentComponent>(selectedEntity);
 					parent.UpdateChildren = true;
-					std::cout << "translate gizmo being used!" << std::endl;
 				}
 				break;
 			case ImGuizmo::OPERATION::ROTATE:
@@ -194,7 +193,6 @@ namespace Eclipse
 			{
 				auto& parent = engine->world.GetComponent<ParentComponent>(selectedEntity);
 				parent.UpdateChildren = false;
-				std::cout << "translate gizmo not being used!" << std::endl;
 			}
 		}
 
