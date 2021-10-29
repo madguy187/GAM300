@@ -28,14 +28,17 @@ namespace Eclipse
 			/*float distance = abs(VectorDistance<float, 3>(childTrans.position, parentTrans.position));
 			if (abs(distance - childComp.distance) < 0.1) return;*/
 
-			glm::mat4 model = glm::mat4(1.0f);
-			glm::mat4 identityMatrix = glm::mat4(1.0f);
-			model = glm::rotate(model, glm::radians(-parentTrans.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-			model = glm::rotate(model, glm::radians(-parentTrans.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-			model = glm::rotate(model, glm::radians(-parentTrans.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-			model = model * identityMatrix;
-			glm::vec3 temp = -parentTrans.position.ConvertToGlmVec3Type();
-			model = glm::translate(model, temp);
+			//glm::mat4 model = glm::mat4(1.0f);
+			//glm::mat4 identityMatrix = glm::mat4(1.0f);
+			//model = glm::rotate(model, glm::radians(-parentTrans.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+			//model = glm::rotate(model, glm::radians(-parentTrans.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+			//model = glm::rotate(model, glm::radians(-parentTrans.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+			//model = glm::translate(model, -parentTrans.position.ConvertToGlmVec3Type());
+			///*model = model * identityMatrix;
+			//glm::vec3 temp =;*/
+
+			ParentComponent& parentComp = engine->world.GetComponent<ParentComponent>(childComp.parentIndex);
+			glm::mat4 model = glm::inverse(parentComp.model);
 
 			glm::vec4 oldParentPos = glm::vec4{ parentTrans.position.ConvertToGlmVec3Type(), 1 };
 			glm::vec4 oldChildPos = glm::vec4{ childTrans.position.ConvertToGlmVec3Type(), 1 };
