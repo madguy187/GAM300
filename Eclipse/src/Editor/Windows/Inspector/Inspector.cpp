@@ -132,18 +132,18 @@ namespace Eclipse
 
                 if (ECGui::DrawSliderFloat3Widget("TransVec", &transCom.position, true, -100.f, 100.f, ID))
                 {
-                    if (engine->world.CheckComponent<ParentComponent>(ID))
+                    if (engine->world.CheckComponent<ChildComponent>(ID))
                     {
-                        auto& parent = engine->world.GetComponent<ParentComponent>(ID);
-                        parent.UpdateChildren = true;
+                        auto& child = engine->world.GetComponent<ChildComponent>(ID);
+                        child.UpdateChildren = true;
                     }
                 }
                 else
                 {
-                    if (ImGui::IsItemDeactivatedAfterChange() && engine->world.CheckComponent<ParentComponent>(ID))
+                    if (ImGui::IsItemDeactivatedAfterChange() && engine->world.CheckComponent<ChildComponent>(ID))
                     {
-                        auto& parent = engine->world.GetComponent<ParentComponent>(ID);
-                        parent.UpdateChildren = false;
+                        auto& child = engine->world.GetComponent<ChildComponent>(ID);
+                        child.UpdateChildren = false;
                     }
                 }
 

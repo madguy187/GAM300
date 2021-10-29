@@ -11,5 +11,6 @@ namespace Eclipse
 		ECVec3 RotOffset;
 		ECVec3 ScaleOffset;
 		float distance;
+		bool UpdateChildren{ false };
 	};
 }
