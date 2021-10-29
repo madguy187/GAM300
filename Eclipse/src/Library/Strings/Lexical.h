@@ -111,7 +111,7 @@ namespace Eclipse
 		"Cone",
 		"Torus",
 		"Pyramid",
-		"Lines3D",
+		"ICOSphere",
 		"Planes",
 		"PointLight",
 		"DirectionalLight",
@@ -119,6 +119,7 @@ namespace Eclipse
 		"Camera",
 		"Model",
 		"TargetPoint",
+		"Mesh",
 		"NULL"
 	};
 

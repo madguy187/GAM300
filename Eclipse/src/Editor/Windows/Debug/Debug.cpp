@@ -37,14 +37,14 @@ namespace Eclipse
         ECGui::PushItemWidth(WindowSize.getX());
         SettingsFilter.Draw(EMPTY_STRING);
 
-        ChildSettings settings{ "Settings Selection", 
+        ChildSettings settings{ "Settings Selection",
             ImVec2{ WindowSize.getX() / 4.0f, WindowSize.getY() * 0.89f}, true };
-        ECGui::DrawChildWindow<void(ImGuiTextFilter&)>(settings, std::bind(&DebugWindow::RunSettingsSelection, 
+        ECGui::DrawChildWindow<void(ImGuiTextFilter&)>(settings, std::bind(&DebugWindow::RunSettingsSelection,
             this, std::placeholders::_1), SettingsFilter);
 
         ECGui::InsertSameLine();
 
-        ChildSettings settings2{ "Settings Details", 
+        ChildSettings settings2{ "Settings Details",
             ImVec2{ WindowSize.getX() * (2.98f / 4.0f), WindowSize.getY() * 0.89f}, true };
         ECGui::DrawChildWindow<void()>(settings2,
             std::bind(&DebugWindow::RunSettingsDetails, this));
@@ -148,9 +148,7 @@ namespace Eclipse
 
             if (ECGui::ButtonBool("Save"))
             {
-                // For Darren to save
-                // take the map KeyMappings
-                engine->InputManager->InputCompiler_.ReceieveMapping(KeyMappings);
+                engine->InputManager->InputCompiler_.ReceiveMapping(KeyMappings);
                 engine->InputManager->InputCompiler_.Write();
             }
 
@@ -182,7 +180,7 @@ namespace Eclipse
             ECGui::SetScrollY(5);
 
             ChildSettings settings{ "Add Input", ImVec2{ 250.0f, 200.0f } };
-            ECGui::DrawChildWindow<void()>(settings, 
+            ECGui::DrawChildWindow<void()>(settings,
                 std::bind(&DebugWindow::ShowInputList, this));
 
             ECGui::EndPopup();

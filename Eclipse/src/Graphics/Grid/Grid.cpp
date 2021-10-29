@@ -165,7 +165,8 @@ namespace Eclipse
 
 		if (WholeGrid != nullptr && CalculateGridSettings())
 		{
-			EDITOR_LOG_INFO("Grid Created");
+			// success
+			//EDITOR_LOG_INFO("Grid Created");
 		}
 	}
 
