@@ -62,16 +62,18 @@ namespace Eclipse
 
             if (!engine->editorManager->IsEntityListEmpty() && GizmoType != -1)
                 OnGizmoUpdateEvent(GizmoType);
-        }
 
-        if (ECGui::IsItemActive())
-        {
-            IsWindowActive = true;
+            IsWindowHovering = true;
         }
         else
         {
-            IsWindowActive = false;
+            IsWindowHovering = false;
         }
+
+        if (ECGui::IsItemActive())
+            IsWindowActive = true;
+        else
+            IsWindowActive = false;
     }
 
     void BaseSwitchViewWindow::OnGizmoUpdateEvent(int GizmoType)
@@ -243,8 +245,12 @@ namespace Eclipse
         }
     }
 
-    bool BaseSwitchViewWindow::GetIsWindowActive()
+    bool BaseSwitchViewWindow::GetIsWindowActive() const
     {
         return IsWindowActive;
+    }
+    bool BaseSwitchViewWindow::GetIsWindowHovered() const
+    {
+        return IsWindowHovering;
     }
 }

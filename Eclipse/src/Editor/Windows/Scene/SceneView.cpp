@@ -57,11 +57,10 @@ namespace Eclipse
 		ECGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
 			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
-		//// ImGuizmo Logic
-		/*if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
-		{
-			OnGizmoUpdateEvent();
-		}*/
+		// ImGuizmo Logic
+		if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
+			if (!engine->editorManager->IsAnySwitchWindowHovered())
+				OnGizmoUpdateEvent();
 
 		if (ECGui::IsItemHovered())
 		{
@@ -70,11 +69,6 @@ namespace Eclipse
 			OnCameraMoveEvent();
 			OnCameraZoomEvent();
 			OnSelectEntityEvent();
-
-			if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
-			{
-				OnGizmoUpdateEvent();
-			}
 		}
 
 		if (ECGui::IsItemActive())
