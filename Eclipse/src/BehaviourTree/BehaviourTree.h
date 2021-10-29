@@ -24,7 +24,7 @@ namespace Eclipse
 		class Selector :public CompositeNode
 		{
 		public:
-			bool run() override;
+			virtual bool run() override;
 		};
 		class RandomSelector :public CompositeNode
 		{
@@ -35,7 +35,17 @@ namespace Eclipse
 		class Sequence :public CompositeNode
 		{
 		public:
-			bool run() override;
+			virtual bool run() override;
+		};
+
+		class CheckBool : public BehaviourTree::CompositeNode
+		{
+		private:
+			bool* _bool;
+		public:
+			CheckBool(bool* t);
+
+			virtual bool run() override;
 		};
 
 		class DecoratorNode : public Node
@@ -82,12 +92,7 @@ namespace Eclipse
 			}
 		};
 
-		template<typename T>
-		class CheckBool : public BehaviourTree::Node
-		{
-		private:
 
-		};
 
 	private:
 		Root* root;

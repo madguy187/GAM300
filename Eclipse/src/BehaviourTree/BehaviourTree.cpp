@@ -107,4 +107,20 @@ namespace Eclipse
 	{
 		return root->run();
 	}
+	BehaviourTree::CheckBool::CheckBool(bool* t)
+	{
+		_bool = t;
+	}
+	bool BehaviourTree::CheckBool::run()
+	{
+		if (_bool == false)
+			return false;
+
+		for (Node* Child : getChildren())
+		{
+			if (!Child->run())
+				return false;
+		}
+		return true;
+	}
 }
