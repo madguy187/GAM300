@@ -6,8 +6,6 @@
 
 namespace Eclipse
 {
-    typedef std::multimap<std::string, Texture>::iterator MMAPIterator;
-
     void AssimpModelManager::MeshEditorUniforms(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID)
     {
         TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(_camera.camType));
@@ -78,6 +76,15 @@ namespace Eclipse
         Prefabs.clear();
     }
 
+    void AssimpModelManager::CreateBasicPrimitives(Entity ID, const std::string& ModelName)
+    {
+        auto& name = Prefabs[ModelName][0];
+        engine->world.AddComponent(ID, MeshComponent{});
+        engine->world.AddComponent(ID, ModelComponent{});
+        engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
+        SetSingleMesh(ID, name);
+    }
+
     Entity AssimpModelManager::CreateModel(unsigned int ID, const std::string& ModelName)
     {
         (void)ID;
@@ -104,36 +111,56 @@ namespace Eclipse
                     ENGINE_LOG_ASSERT(false, "Cannot Find Model");
                     return MAX_ENTITY;
                 }
-
-                // Is a prefab since its a parent
-                std::string NameOfFolder = ModelName;
-                Entity ParentID = 0;
-                Entity MeshID = 0;
-                ParentID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
-                engine->world.AddComponent(ParentID, ParentComponent{});
-
-                for (int i = 0; i < Prefabs[NameOfFolder].size(); i++)
+                else if (Prefabs[ModelName].size() == 1)
                 {
-                    auto& name = Prefabs[NameOfFolder][i];
-                    MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_MODEL);
-                    EntityComponent* test = &engine->world.GetComponent<EntityComponent>(ParentID);
-                    EntityComponent* Child = &engine->world.GetComponent<EntityComponent>(MeshID);
-
-                    engine->world.AddComponent(MeshID, ChildComponent{});
-
-                    test->Child.push_back(MeshID);
-                    Child->IsAChild = true;
-                    Child->Parent.push_back(ParentID);
-
-                    engine->world.GetComponent<ParentComponent>(ParentID).child.push_back(MeshID);
-                    engine->world.GetComponent<ChildComponent>(MeshID).parentIndex = ParentID;
+                    auto& name = Prefabs[ModelName][0];
+                    Entity MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_MODEL);
                     engine->world.AddComponent(MeshID, MeshComponent{});
                     engine->world.AddComponent(MeshID, ModelComponent{});
                     engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
                     SetSingleMesh(MeshID, name);
+                    return MeshID;
                 }
+                else
+                {
+                    // Is a prefab since its a parent
+                    std::string NameOfFolder = ModelName;
+                    Entity ParentID = 0;
+                    Entity MeshID = 0;
+                    ParentID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_MODEL);
+                    engine->world.AddComponent(ParentID, ParentComponent{});
+                    TransformComponent& parentTrans = engine->world.GetComponent<TransformComponent>(MeshID);
 
-                return MeshID;
+                    for (int i = 0; i < Prefabs[NameOfFolder].size(); i++)
+                    {
+                        auto& name = Prefabs[NameOfFolder][i];
+                        MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_MESH);
+                        EntityComponent* test = &engine->world.GetComponent<EntityComponent>(ParentID);
+                        EntityComponent* Child = &engine->world.GetComponent<EntityComponent>(MeshID);
+
+                        engine->world.AddComponent(MeshID, ChildComponent{});
+
+                        test->Child.push_back(MeshID);
+                        Child->IsAChild = true;
+                        Child->Parent.push_back(ParentID);
+
+                        engine->world.GetComponent<ParentComponent>(ParentID).child.push_back(MeshID);
+
+                        ChildComponent& childComp = engine->world.GetComponent<ChildComponent>(MeshID);
+                        TransformComponent& childTrans = engine->world.GetComponent<TransformComponent>(MeshID);
+
+                        childComp.parentIndex = ParentID;
+                        childComp.ScaleOffset.setX(childTrans.scale.getX() / parentTrans.scale.getX());
+                        childComp.ScaleOffset.setY(childTrans.scale.getY() / parentTrans.scale.getY());
+                        childComp.ScaleOffset.setZ(childTrans.scale.getZ() / parentTrans.scale.getZ());
+                        engine->world.AddComponent(MeshID, MeshComponent{});
+                        engine->world.AddComponent(MeshID, ModelComponent{});
+                        engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
+                        SetSingleMesh(MeshID, name);
+                    }
+
+                    return MeshID;
+                }
             }
         }
 
@@ -542,7 +569,6 @@ namespace Eclipse
             std::string MeshNameh = Mesh.MeshName.data();
             engine->AssimpManager.SetTexturesForModel(tex, MeshNameh);
         }
-
     }
 
     void AssimpModelManager::RenderMesh(MeshComponent& In, GLenum Mode)
@@ -583,7 +609,9 @@ namespace Eclipse
             else
             {
                 // If Do not have textures
-                if (engine->AssimpManager.Geometry[mesh.MeshName.data()]->NoTex && (!engine->world.CheckComponent<TextureComponent>(EntityID)))
+                //if (engine->AssimpManager.Geometry[mesh.MeshName.data()]->NoTex && (!engine->world.CheckComponent<TextureComponent>(EntityID)))
+                
+                if (Material.NoTextures && (!engine->world.CheckComponent<TextureComponent>(EntityID)))
                 {
                     engine->gPBRManager->SetAOConstant(shader, 1.0f);
                     engine->gPBRManager->SetMetallicConstant(shader, 0.5f);
@@ -613,6 +641,9 @@ namespace Eclipse
                             glActiveTexture(GL_TEXTURE0 + it);
                             break;
                         }
+
+                        GLuint IsNormalMap_ = shader.GetLocation("IsNormalMap");
+                        glUniform1i(IsNormalMap_, Material.IsNormalMap);
 
                         engine->gPBRManager->UnBindMetallicTexture(shader);
                         engine->gPBRManager->UnBindRoughnessTexture(shader);

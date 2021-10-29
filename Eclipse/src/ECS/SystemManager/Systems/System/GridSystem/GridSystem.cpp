@@ -5,8 +5,6 @@ namespace Eclipse
 {
     void GridSystem::Init()
     {
-        EDITOR_LOG_INFO("GridSystem Init");
-
         // Initialise Grid
         engine->GridManager = std::make_unique<Grid>();
 

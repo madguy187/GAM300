@@ -121,9 +121,9 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
-                ECGui::SetColumns(2,nullptr,true);
+                ECGui::SetColumns(2, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
-                  ECGui::SetColumnOffset(1, 140);
+                ECGui::SetColumnOffset(1, 140);
 
                 auto& transCom = engine->world.GetComponent<TransformComponent>(ID);
                 ECGui::DrawTextWidget<const char*>("Position", EMPTY_STRING);
@@ -132,18 +132,18 @@ namespace Eclipse
 
                 if (ECGui::DrawSliderFloat3Widget("TransVec", &transCom.position, true, -100.f, 100.f, ID))
                 {
-                    if (engine->world.CheckComponent<ParentComponent>(ID))
+                    if (engine->world.CheckComponent<ChildComponent>(ID))
                     {
-                        auto& parent = engine->world.GetComponent<ParentComponent>(ID);
-                        parent.UpdateChildren = true;
+                        auto& child = engine->world.GetComponent<ChildComponent>(ID);
+                        child.UpdateChildren = true;
                     }
                 }
                 else
                 {
-                    if (ImGui::IsItemDeactivatedAfterChange() && engine->world.CheckComponent<ParentComponent>(ID))
+                    if (ImGui::IsItemDeactivatedAfterChange() && engine->world.CheckComponent<ChildComponent>(ID))
                     {
-                        auto& parent = engine->world.GetComponent<ParentComponent>(ID);
-                        parent.UpdateChildren = false;
+                        auto& child = engine->world.GetComponent<ChildComponent>(ID);
+                        child.UpdateChildren = false;
                     }
                 }
 
@@ -182,7 +182,7 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
-                ECGui::SetColumns(2,nullptr,true);
+                ECGui::SetColumns(2, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
                 ECGui::SetColumnOffset(1, 140);
 
@@ -198,7 +198,7 @@ namespace Eclipse
                 ECGui::ColorPicker3("PLightColor", (float*)&_PointLight.Color,
                     ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
                 ECGui::DrawSliderFloat4Widget("ColourVec", &_PointLight.Color, true, 0.0f, 1.0f);
-                engine->LightManager.SetLightColor(_PointLight,{ _PointLight.Color.getX() ,_PointLight.Color.getY() , _PointLight.Color.getZ() , 1.0f });
+                engine->LightManager.SetLightColor(_PointLight, { _PointLight.Color.getX() ,_PointLight.Color.getY() , _PointLight.Color.getZ() , 1.0f });
                 ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Attenuation Level", EMPTY_STRING);
                 ECGui::NextColumn();
@@ -274,9 +274,9 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
-                ECGui::SetColumns(2,nullptr,true);
+                ECGui::SetColumns(2, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
-                  ECGui::SetColumnOffset(1, 140);
+                ECGui::SetColumnOffset(1, 140);
 
                 auto& _SpotLight = engine->world.GetComponent<SpotLightComponent>(ID);
 
@@ -379,9 +379,9 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
-                ECGui::SetColumns(2,nullptr,true);
+                ECGui::SetColumns(2, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
-                  ECGui::SetColumnOffset(1, 140);
+                ECGui::SetColumnOffset(1, 140);
 
                 auto& _DLight = engine->world.GetComponent<DirectionalLightComponent>(ID);
                 ECGui::DrawTextWidget<const char*>("Light Colour", EMPTY_STRING);
@@ -418,9 +418,9 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
-                ECGui::SetColumns(2,nullptr,true);
+                ECGui::SetColumns(2, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
-                  ECGui::SetColumnOffset(1, 140);
+                ECGui::SetColumnOffset(1, 140);
 
                 auto& _RigidB = engine->world.GetComponent<RigidBodyComponent>(ID);
 
@@ -453,9 +453,9 @@ namespace Eclipse
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
                 auto& _Camera = engine->world.GetComponent<CameraComponent>(ID);
-                ECGui::SetColumns(2,nullptr,true);
+                ECGui::SetColumns(2, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
-                  ECGui::SetColumnOffset(1, 140);
+                ECGui::SetColumnOffset(1, 140);
 
                 ECGui::DrawTextWidget<const char*>("Camera Speed", EMPTY_STRING);
                 ECGui::NextColumn();
@@ -475,29 +475,29 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
-                ECGui::SetColumns(2,nullptr,true);
+                ECGui::SetColumns(2, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
-                  ECGui::SetColumnOffset(1, 140);
+                ECGui::SetColumnOffset(1, 140);
                 auto& _Texture = engine->world.GetComponent<MaterialComponent>(ID);
 
-                ECGui::DrawTextWidget<const char*>("hasTexture", EMPTY_STRING);
+                ECGui::DrawTextWidget<const char*>("Texture", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::CheckBoxBool("hasTexture", &_Texture.hasTexture);
+                ECGui::CheckBoxBool("NoTextures", &_Texture.NoTextures);
 
-                if (_Texture.hasTexture)
+                ComboListSettings settings = { "Texture Type" };
+                ECGui::NextColumn();
+                ECGui::DrawTextWidget<const char*>("Texture Type", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+
+                std::vector<std::string> _TextureVector = { "TT_UNASSIGNED","TT_2D","BasicPrimitives","TT_3D" };
+
+                std::map<std::string, TextureType> _Map = { {"TT_UNASSIGNED",TextureType::TT_UNASSIGNED}, {"TT_2D",TextureType::TT_2D},
+                                                            {"TT_3D",TextureType::TT_3D} };
+
+                if (engine->world.CheckComponent<ModelComponent>(ID))
                 {
-                    std::vector<std::string> _TextureVector = { "TT_UNASSIGNED","TT_2D","BasicPrimitives","TT_3D" };
-
-                    std::map<std::string, TextureType> _Map = { {"TT_UNASSIGNED",TextureType::TT_UNASSIGNED}, {"TT_2D",TextureType::TT_2D},
-                                                                {"TT_3D",TextureType::TT_3D} };
-
-                    ComboListSettings settings = { "Texture Type" };
-                    ECGui::NextColumn();
-                    ECGui::DrawTextWidget<const char*>("Texture Type", EMPTY_STRING);
-                    ECGui::NextColumn();
-                    ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                    
                     if (ECGui::CreateComboList(settings, _TextureVector, _Texture.ComboIndex))
                     {
                         TextureType oldtemp = _Texture.Type;
@@ -506,7 +506,22 @@ namespace Eclipse
                     }
 
                     ECGui::NextColumn();
-                    ChangeTextureController(_Texture);
+                    ChangeTextureController(_Texture, ID);
+                }
+                else
+                {
+                    if (_Texture.hasTexture)
+                    {
+                        if (ECGui::CreateComboList(settings, _TextureVector, _Texture.ComboIndex))
+                        {
+                            TextureType oldtemp = _Texture.Type;
+                            _Texture.Type = _Map[_TextureVector[_Texture.ComboIndex]];
+                            CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<TextureType>{ oldtemp,  _Texture.Type });
+                        }
+
+                        ECGui::NextColumn();
+                        ChangeTextureController(_Texture,ID);
+                    }
                 }
 
                 ECGui::SetColumns(1, nullptr, true);
@@ -552,9 +567,9 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
-                ECGui::SetColumns(2,nullptr,true);
+                ECGui::SetColumns(2, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
-                  ECGui::SetColumnOffset(1, 140);
+                ECGui::SetColumnOffset(1, 140);
 
                 auto& _Material = engine->world.GetComponent<MaterialComponent>(ID);
 
@@ -570,27 +585,38 @@ namespace Eclipse
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::CreateComboList(settings, _ModelVector, _Material.ComboIndex);
                 _Material.Modeltype = _Map[_ModelVector[_Material.ComboIndex]];
+
                 ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("Ambient", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloat3Widget("Material Ambient", &_Material.ambient, true, 0.0f, 1.0f);
-                ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("Diffuse", EMPTY_STRING);
+                ECGui::DrawTextWidget<const char*>("Normal Map", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloat3Widget("Material Diffuse", &_Material.diffuse, true, 0.0f, 1.0f);
+                ECGui::CheckBoxBool("Normal Map", &_Material.IsNormalMap);
                 ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("Specular", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloat3Widget("Material Specular", &_Material.specular, true, 0.0f, 1.0f);
-                ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("MaximumShininess", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloatWidget("Material MaximumShininess", &_Material.MaximumShininess, true, 0.0f, 200.0f);
-                ECGui::NextColumn();
+
+                //ECGui::NextColumn();
+                //ECGui::DrawTextWidget<const char*>("Ambient", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                //ECGui::DrawSliderFloat3Widget("Material Ambient", &_Material.ambient, true, 0.0f, 1.0f);
+                //ECGui::NextColumn();
+                //
+                //ECGui::DrawTextWidget<const char*>("Diffuse", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                //ECGui::DrawSliderFloat3Widget("Material Diffuse", &_Material.diffuse, true, 0.0f, 1.0f);
+                //ECGui::NextColumn();
+                //
+                //ECGui::DrawTextWidget<const char*>("Specular", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                //ECGui::DrawSliderFloat3Widget("Material Specular", &_Material.specular, true, 0.0f, 1.0f);
+                //ECGui::NextColumn();
+                //
+                //ECGui::DrawTextWidget<const char*>("MaximumShininess", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                //ECGui::DrawSliderFloatWidget("Material MaximumShininess", &_Material.MaximumShininess, true, 0.0f, 200.0f);
+                //ECGui::NextColumn();
 
                 ECGui::DrawTextWidget<const char*>("Highlight", EMPTY_STRING);
                 ECGui::NextColumn();
@@ -599,8 +625,18 @@ namespace Eclipse
                 ECGui::SetColumns(1, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
 
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawInputTextHintWidget(my_strcat("MaterialInstance", 1).c_str(), "Drag Albdeo Texture here", const_cast<char*>(_Material.MaterialInstanceName.c_str()), 256, true, ImGuiInputTextFlags_None);
                 engine->editorManager->DragAndDropInst_.StringPayloadTarget("mat", _Material.MaterialInstanceName, "Albdeo Texture Inserted.", PayloadTargetType::PTT_ASSETS, ID);
+
+                if (ECGui::ButtonBool("Clear Material", { ImGui::GetColumnWidth(), 25 }))
+                {
+                    _Material.MaterialInstanceName.clear();
+                }
+
+                ECGui::SetColumns(1, nullptr, true);
+                ECGui::InsertHorizontalLineSeperator();
             }
         }
 
@@ -615,7 +651,7 @@ namespace Eclipse
             {
                 ECGui::SetColumns(2, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
-                  ECGui::SetColumnOffset(1, 140);
+                ECGui::SetColumnOffset(1, 140);
 
                 auto& _Mesh = engine->world.GetComponent<MeshComponent>(ID);
 
@@ -652,7 +688,7 @@ namespace Eclipse
                 if (filter.PassFilter(nameString.c_str()) && ECGui::CreateCollapsingHeader(nameString.c_str()))
                 {
                     ECGui::SetColumns(2, nullptr, true);
-                      ECGui::SetColumnOffset(1, 140);
+                    ECGui::SetColumnOffset(1, 140);
                     ECGui::DrawTextWidget<const char*>("Mesh ", EMPTY_STRING);
                     ECGui::NextColumn();
                     ECGui::PushItemWidth(ECGui::GetWindowSize().x);
@@ -674,7 +710,7 @@ namespace Eclipse
             {
                 ECGui::SetColumns(2, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
-                  ECGui::SetColumnOffset(1, 140);
+                ECGui::SetColumnOffset(1, 140);
 
                 std::vector<std::string> _ModelInfoVector = { "MT_UNASSIGNED","MT_HUMAN","MT_ANIMAL","MT_HOUSE","MT_ENVIRONMENT" };
 
@@ -747,7 +783,7 @@ namespace Eclipse
 
                 if (!IsRemovingScripts)
                 {
-                    if (ECGui::ButtonBool("Add Script",{ ImGui::GetColumnWidth(), 25 }))
+                    if (ECGui::ButtonBool("Add Script", { ImGui::GetColumnWidth(), 25 }))
                     {
                         std::string scriptName;
                         scriptName.reserve(256);
@@ -1013,7 +1049,7 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
-               // ECGui::SetColumns(2, nullptr, true);
+                // ECGui::SetColumns(2, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
                 //ECGui::SetColumnOffset(1, 150);
                 auto& ai = engine->world.GetComponent<AIComponent>(ID);
@@ -1051,7 +1087,7 @@ namespace Eclipse
                     auto& en = engine->world.GetComponent<EntityComponent>(it);
                     ECGui::DrawTextWidget<const char*>(my_strcat(en.Name, " ", it).c_str(), EMPTY_STRING);
                 }
-          
+
                 ECGui::InsertHorizontalLineSeperator();
             }
         }
@@ -1079,7 +1115,7 @@ namespace Eclipse
 
     void InspectorWindow::AddComponentsController(Entity ID)
     {
-        if (ECGui::ButtonBool(("Add Component"), {ImGui::GetColumnWidth(),25 }))
+        if (ECGui::ButtonBool(("Add Component"), { ImGui::GetColumnWidth(),25 }))
         {
             ECGui::OpenPopup("Add Component");
         }
@@ -1290,22 +1326,33 @@ namespace Eclipse
         }
     }
 
-    void InspectorWindow::ChangeTextureController(MaterialComponent& Item)
+    void InspectorWindow::ChangeTextureController(MaterialComponent& Item, Entity ID)
     {
         ImVec2 buttonSize = { 180,20 };
         ECGui::DrawTextWidget<const char*>("Texture  ", EMPTY_STRING);
         ECGui::NextColumn();
         ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+
         if (ECGui::ButtonBool((Item.TextureRef.c_str()), buttonSize) || (ECGui::IsItemClicked(0) && ECGui::IsItemHovered()))
         {
             ECGui::OpenPopup("Texture Changer");
         }
+
         if (ECGui::BeginPopup("Texture Changer"))
         {
             ECGui::SetScrollY(5);
             ChildSettings settings{ "Texture Changer", ImVec2{ 250,250 } };
-            ECGui::DrawChildWindow<void(MaterialComponent&)>(settings, std::bind(&InspectorWindow::TextureList,
-                this, std::placeholders::_1), Item);
+
+            if (engine->world.CheckComponent<ModelComponent>(ID))
+            {
+                ECGui::DrawChildWindow<void(MaterialComponent&)>(settings, std::bind(&InspectorWindow::ModelTextureList,
+                    this, std::placeholders::_1), Item);
+            }
+            else
+            {
+                ECGui::DrawChildWindow<void(MaterialComponent&)>(settings, std::bind(&InspectorWindow::TextureList,
+                    this, std::placeholders::_1), Item);
+            }
 
             ECGui::EndPopup();
         }
@@ -1354,9 +1401,79 @@ namespace Eclipse
 
                 if (ECGui::IsItemClicked(0) && ECGui::IsItemHovered())
                 {
+                    ///////////////
+                    std::pair<MMAPIterator, MMAPIterator> result = Graphics::textures.equal_range(textureNames[i].c_str());
+                    Item.HoldingTextures.clear();
+                    for (MMAPIterator it = result.first; it != result.second; it++)
+                    {
+                        Item.HoldingTextures.push_back(it->second);
+                    }
+                    //////////////////
+
                     Item.TextureRef = Graphics::textures.find((textureNames[i].c_str()))->first;
                     AddComponentFilter.Clear();
                     ECGui::CloseCurrentPopup();
+                }
+
+                ECGui::DrawTextWrappedWidget(textureNames[i].c_str(), "");
+                ECGui::NextColumn();
+            }
+
+        }
+
+    }
+
+    void InspectorWindow::ModelTextureList(MaterialComponent& Item)
+    {
+        static ImGuiTextFilter AddComponentFilter;
+        MaterialComponent FolderIcon;
+        std::vector<std::string> textureNames;
+        textureNames.reserve(Graphics::textures.size());
+        MaterialComponent icon;
+        static float padding = 16.0f;
+        static float thumbnaimsize = 50;
+        float cellsize = thumbnaimsize + padding;
+        float panelwidth = ECGui::GetContentRegionAvail().x;
+        int columncount = (int)(panelwidth / cellsize);
+        AddComponentFilter.Draw("Filter", 160);
+        if (thumbnaimsize <= 30)
+        {
+            columncount = 1;
+        }
+        if (columncount < 1)
+        {
+            columncount = 1;
+        }
+        ECGui::DrawSliderFloatWidget("Size: ", &thumbnaimsize, false, 10, 200);
+        ECGui::SetColumns(columncount, nullptr, true);
+        for (auto it : Graphics::textures)
+        {
+            textureNames.push_back(it.first);
+        }
+
+        for (int i = 0; i < textureNames.size(); ++i)
+        {
+
+            FolderIcon.TextureRef = Graphics::textures.find(textureNames[i].c_str())->first;
+            icon = FolderIcon;
+
+            if (AddComponentFilter.PassFilter(textureNames[i].c_str()))
+            {
+                ECGui::ImageButton((void*)(intptr_t)Graphics::FindTextures((icon).TextureRef).GetHandle(),
+                    { thumbnaimsize,thumbnaimsize },
+                    { 1,0 },
+                    { 2,1 });
+
+                if (ECGui::IsItemClicked(0) && ECGui::IsItemHovered())
+                {
+                    ///////////////
+                    std::pair<MMAPIterator, MMAPIterator> result = Graphics::textures.equal_range(textureNames[i].c_str());
+                    Item.HoldingTextures.clear();
+                    for (MMAPIterator it = result.first; it != result.second; it++)
+                    {
+                        Item.HoldingTextures.push_back(it->second);
+                    }
+                    //////////////////
                 }
 
                 ECGui::DrawTextWrappedWidget(textureNames[i].c_str(), "");

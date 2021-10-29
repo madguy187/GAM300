@@ -66,12 +66,10 @@ namespace Eclipse
         ImGui::Dummy(ImVec2(1, 5));
 
         static ImGuiTextFilter CompFilter;
-        CompFilter.Draw();
 
         ShowMaterialProperty("Material", CompFilter);
         ShowTransformProperty("Transform", CompFilter);
         Buttons();
-
     }
 
     void MaterialEditorWindow::CheckCurrentMaterial(size_t comboIndex)
@@ -122,6 +120,7 @@ namespace Eclipse
         {
             ColorPicker = ECVec3{ 1.0f };
             engine->gPBRManager->gMaterialEditorSettings->ClearCurrentMaterial();
+            engine->gPBRManager->gMaterialEditorSettings->ClearTextureFields();
         }
     }
 
@@ -172,10 +171,24 @@ namespace Eclipse
             ECGui::InsertSameLine();
             ECGui::CheckBoxBool("HasTexture", &engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.HasTexture);
             ECGui::NextColumn();
+            ImGui::Dummy(ImVec2(1, 2));
 
             // If We going to assign texture to his material
             if (engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.HasTexture)
             {
+                ECGui::DrawTextWidget<const char*>("Normal Map", EMPTY_STRING);
+                ECGui::InsertSameLine();
+                ECGui::CheckBoxBool("Normal Map", &engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.IsNormalMap);
+                ECGui::NextColumn();
+                ImGui::Dummy(ImVec2(1, 2));
+
+                ECGui::DrawTextWidget<const char*>("Height Scale: ", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                ECGui::DrawSliderFloatWidget("Height Scale", &engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.HeightScale, true, 0.f, 0.1f);
+                ECGui::NextColumn();
+                ImGui::Dummy(ImVec2(1, 2));
+
                 ECGui::DrawInputTextHintWidget(my_strcat("Albdeo Name", 1).c_str(), "Drag Albdeo Texture here", const_cast<char*>(engine->gPBRManager->gMaterialEditorSettings->AlbedoTexture.c_str()), 256, true, ImGuiInputTextFlags_None);
                 engine->editorManager->DragAndDropInst_.StringPayloadTarget("png", engine->gPBRManager->gMaterialEditorSettings->AlbedoTexture, "Albdeo Texture Inserted.", PayloadTargetType::PTT_ASSETS);
                 engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->AlbedoTexture, MaterialType::MT_ALBEDO);
@@ -201,6 +214,13 @@ namespace Eclipse
                 engine->editorManager->DragAndDropInst_.StringPayloadTarget("png", engine->gPBRManager->gMaterialEditorSettings->AoTexture, "AO Texture Inserted.", PayloadTargetType::PTT_ASSETS);
                 engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->AoTexture, MaterialType::MT_AO);
                 ECGui::NextColumn();
+
+                ECGui::NextColumn();
+                ECGui::DrawInputTextHintWidget(my_strcat("Height Name", 1).c_str(), "Drag Height Texture here", const_cast<char*>(engine->gPBRManager->gMaterialEditorSettings->HeightTexture.c_str()), 256, true, ImGuiInputTextFlags_None);
+                engine->editorManager->DragAndDropInst_.StringPayloadTarget("png", engine->gPBRManager->gMaterialEditorSettings->HeightTexture, "Height Texture Inserted.", PayloadTargetType::PTT_ASSETS);
+                engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->HeightTexture, MaterialType::MT_HEIGHT);
+                ECGui::NextColumn();
+
                 ImGui::Dummy(ImVec2(1, 5));
             }
             else

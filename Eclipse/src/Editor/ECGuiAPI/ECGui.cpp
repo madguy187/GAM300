@@ -196,6 +196,7 @@ namespace Eclipse
 				if (ImGui::Selectable(vecStr[n].c_str(), is_selected))
 				{
 					index = n;
+					ImGuiAPI::EndComboList();
 					return true;
 				}
 

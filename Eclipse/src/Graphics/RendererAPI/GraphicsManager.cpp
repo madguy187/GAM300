@@ -59,12 +59,14 @@ namespace Eclipse
         {
         case 0:
         {
-            engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
-            engine->world.AddComponent(ID, MeshComponent{});
-            MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-            sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-            sprite.modelRef = Graphics::models.find("Square")->first;
-            sprite.isQuad = true;
+            engine->AssimpManager.CreateBasicPrimitives(ID, "Plane");
+
+            //engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
+            //engine->world.AddComponent(ID, MeshComponent{});
+            //MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
+            //sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
+            //sprite.modelRef = Graphics::models.find("Square")->first;
+            //sprite.isQuad = true;
 
         }
         break;
@@ -97,55 +99,65 @@ namespace Eclipse
         break;
         case 4:
         {
-            engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
-            engine->world.AddComponent(ID, MeshComponent{});
-            MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-            sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-            sprite.modelRef = Graphics::models.find("Sphere")->first;
-            MaterialComponent& Mat = engine->world.GetComponent<MaterialComponent>(ID);
-            Mat.hasTexture = true;
-            Mat.TextureRef = Graphics::textures.find("brick")->first;
+            engine->AssimpManager.CreateBasicPrimitives(ID, "Sphere");
+
+            //engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
+            //engine->world.AddComponent(ID, MeshComponent{});
+            //MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
+            //sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
+            //sprite.modelRef = Graphics::models.find("Sphere")->first;
+            //MaterialComponent& Mat = engine->world.GetComponent<MaterialComponent>(ID);
+            //Mat.hasTexture = true;
+            //Mat.TextureRef = Graphics::textures.find("brick")->first;
         }
         break;
         case 5:
         {
-            engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
-            engine->world.AddComponent(ID, MeshComponent{});
-            MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-            sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-            sprite.modelRef = Graphics::models.find("Cube")->first;
-            MaterialComponent& Mat = engine->world.GetComponent<MaterialComponent>(ID);
-            Mat.hasTexture = true;
-            Mat.TextureRef = Graphics::textures.find("FolderIcon")->first;
+            engine->AssimpManager.CreateBasicPrimitives(ID, "Cube");
+
+            //engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
+            //engine->world.AddComponent(ID, MeshComponent{});
+            //MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
+            //sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
+            //sprite.modelRef = Graphics::models.find("Cube")->first;
+            //MaterialComponent& Mat = engine->world.GetComponent<MaterialComponent>(ID);
+            //Mat.hasTexture = true;
+            //Mat.TextureRef = Graphics::textures.find("FolderIcon")->first;
         }
         break;
         case 6:
         {
-            engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
-            engine->world.AddComponent(ID, MeshComponent{});
-            MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-            sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-            sprite.modelRef = Graphics::models.find("Cylinder")->first;
+            engine->AssimpManager.CreateBasicPrimitives(ID, "Cylinder");
+
+            //engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
+            //engine->world.AddComponent(ID, MeshComponent{});
+            //MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
+            //sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
+            //sprite.modelRef = Graphics::models.find("Cylinder")->first;
         }
         break;
         case 7:
         {
-            engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
-            engine->world.AddComponent(ID, MeshComponent{});
-            MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-            sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-            sprite.modelRef = Graphics::models.find("Cone")->first;
+            engine->AssimpManager.CreateBasicPrimitives(ID, "Cone");
+
+            //engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
+            //engine->world.AddComponent(ID, MeshComponent{});
+            //MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
+            //sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
+            //sprite.modelRef = Graphics::models.find("Cone")->first;
         }
         break;
         case 8:
         {
-            engine->world.AddComponent(ID, MaterialComponent{});
-            MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
-            mat.Modeltype = MaterialModelType::MT_BASIC;
-            engine->world.AddComponent(ID, MeshComponent{});
-            MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-            sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-            sprite.modelRef = Graphics::models.find("Torus")->first;
+            engine->AssimpManager.CreateBasicPrimitives(ID, "Torus");
+
+            //engine->world.AddComponent(ID, MaterialComponent{});
+            //MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+            //mat.Modeltype = MaterialModelType::MT_BASIC;
+            //engine->world.AddComponent(ID, MeshComponent{});
+            //MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
+            //sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
+            //sprite.modelRef = Graphics::models.find("Torus")->first;
         }
         break;
         case 9:
@@ -162,25 +174,29 @@ namespace Eclipse
         break;
         case 10:
         {
-            engine->world.AddComponent(ID, MaterialComponent{});
-            MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
-            mat.Modeltype = MaterialModelType::MT_BASIC;
-            engine->world.AddComponent(ID, MeshComponent{});
-            MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-            sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-            sprite.modelRef = Graphics::models.find("Lines3D")->first;
+            engine->AssimpManager.CreateBasicPrimitives(ID, "ICOSphere");
+
+            //engine->world.AddComponent(ID, MaterialComponent{});
+            //MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+            //mat.Modeltype = MaterialModelType::MT_BASIC;
+            //engine->world.AddComponent(ID, MeshComponent{});
+            //MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
+            //sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
+            //sprite.modelRef = Graphics::models.find("Lines3D")->first;
 
         }
         break;
         case 11:
         {
-            engine->world.AddComponent(ID, MaterialComponent{});
-            MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
-            mat.Modeltype = MaterialModelType::MT_BASIC;
-            engine->world.AddComponent(ID, MeshComponent{});
-            MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-            sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-            sprite.modelRef = Graphics::models.find("Plane")->first;
+            engine->AssimpManager.CreateBasicPrimitives(ID, "Plane");
+
+            //engine->world.AddComponent(ID, MaterialComponent{});
+            //MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+            //mat.Modeltype = MaterialModelType::MT_BASIC;
+            //engine->world.AddComponent(ID, MeshComponent{});
+            //MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
+            //sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
+            //sprite.modelRef = Graphics::models.find("Plane")->first;
         }
         break;
         // pointlight
@@ -274,6 +290,7 @@ namespace Eclipse
 
             if (tex.hasTexture && tex.TextureRef != "Default")
             {
+                glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, Graphics::FindTextures(tex.TextureRef).GetHandle());
 
                 glEnable(GL_BLEND);
@@ -398,7 +415,7 @@ namespace Eclipse
             break;
 
         case 12:
-            return "Lines3D";
+            return "ICOSphere";
             break;
 
         case 13:

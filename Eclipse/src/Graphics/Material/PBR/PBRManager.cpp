@@ -16,6 +16,8 @@ namespace Eclipse
         gMaterialEditorSettings = std::make_unique<MaterialEditorSettings>();
 
         LoadMaterial("HardWood");
+        LoadMaterial("Rock");
+        LoadMaterial("Testing");
     }
 
     void PBRManager::InitialiseBaseReflectivity()
@@ -74,6 +76,14 @@ namespace Eclipse
                 gMaterialEditorSettings->CurrentMaterial.Ao = AllMaterialTextures[FolderName][MaterialType::MT_AO];
             }
         }
+        else if (TextureName.find("height") != std::string::npos)
+        {
+            //Found Loaded Texture
+            if (AllMaterialTextures.find(FolderName) != AllMaterialTextures.end())
+            {
+                gMaterialEditorSettings->CurrentMaterial.Height = AllMaterialTextures[FolderName][MaterialType::MT_HEIGHT];
+            }
+        }
     }
 
     void PBRManager::LoadAllTextures()
@@ -116,6 +126,11 @@ namespace Eclipse
                 {
                     unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/ao.png").c_str());
                     AllMaterialTextures[FolderName][MaterialType::MT_AO] = TextureID;
+                }
+                else if (MaterialTextureFileName.find("height.png") != std::string::npos)
+                {
+                    unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/height.png").c_str());
+                    AllMaterialTextures[FolderName][MaterialType::MT_HEIGHT] = TextureID;
                 }
             }
         }
@@ -183,6 +198,7 @@ namespace Eclipse
         GLint projection1 = shdrpgm.GetLocation("projection");
         GLint HasInstance = shdrpgm.GetLocation("HasInstance");
         GLint BaseReflectivity_ = shdrpgm.GetLocation("BaseReflectivity");
+        GLint HeightScale_ = shdrpgm.GetLocation("HeightScale");
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::mat4(1.0f);
@@ -200,6 +216,7 @@ namespace Eclipse
             AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getX(),
             AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getY(),
             AllMaterialInstances[MaterialCom.MaterialInstanceName]->BaseReflectivity.getZ()));
+        GLCall(glUniform1f(HeightScale_, AllMaterialInstances[MaterialCom.MaterialInstanceName]->HeightScale));
 
         BindMaterial(MaterialCom.MaterialInstanceName, shdrpgm);
     }
@@ -222,6 +239,7 @@ namespace Eclipse
         NewMaterial.Metallic = loadTexture(("src/Assets/Materials/" + NameOfMaterial + "/metallic.png").c_str());
         NewMaterial.Roughness = loadTexture(("src/Assets/Materials/" + NameOfMaterial + "/roughness.png").c_str());
         NewMaterial.Ao = loadTexture(("src/Assets/Materials/" + NameOfMaterial + "/ao.png").c_str());
+        NewMaterial.Height = loadTexture(("src/Assets/Materials/" + NameOfMaterial + "/height.png").c_str());
         AllMaterialInstances.insert({ NewMaterial.Name.data(), std::make_unique<MaterialInstance>(NewMaterial) });
     }
 
@@ -242,11 +260,15 @@ namespace Eclipse
         glActiveTexture(GL_TEXTURE14);
         glBindTexture(GL_TEXTURE_2D, AllMaterialInstances[MaterialName]->Ao);
 
+        //glActiveTexture(GL_TEXTURE15);
+        //glBindTexture(GL_TEXTURE_2D, AllMaterialInstances[MaterialName]->Height);
+
         In.setInt("albedoMap", 10);
         In.setInt("normalMap", 11);
         In.setInt("metallicMap", 12);
         In.setInt("roughnessMap", 13);
         In.setInt("aoMap", 14);
+        //In.setInt("displacement0", 15);
     }
 
     void PBRManager::SetAlbedoConstant(Shader& In, glm::vec4& AlbedoValue)
@@ -461,6 +483,13 @@ namespace Eclipse
         {
             if (TextureName.find("ao") == std::string::npos)
                 gMaterialEditorSettings->CurrentMaterial.Ao = 0;
+        }
+        break;
+
+        case MaterialType::MT_HEIGHT:
+        {
+            if (TextureName.find("height") == std::string::npos)
+                gMaterialEditorSettings->CurrentMaterial.Height = 0;
         }
         break;
         }

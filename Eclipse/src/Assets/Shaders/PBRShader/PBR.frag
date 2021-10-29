@@ -14,6 +14,7 @@ uniform sampler2D normalMap;
 uniform sampler2D metallicMap;
 uniform sampler2D roughnessMap;
 uniform sampler2D aoMap;
+uniform int IsNormalMap;
 
 // material parameters
 uniform vec3  AlbedoConstant;
@@ -145,7 +146,15 @@ void main()
 
     if(HasInstance == 1)
     {   
-        N = getNormalFromMap();
+        if( IsNormalMap == 1)
+        {
+            N = getNormalFromMap();
+        }
+        else
+        {
+            N = normalize(Normal);
+        }
+
         albedo     = pow(texture(albedoMap, TexCoords).rgb, vec3(2.2));
         metallic  = texture(metallicMap, TexCoords).r;
         roughness = texture(roughnessMap, TexCoords).r;

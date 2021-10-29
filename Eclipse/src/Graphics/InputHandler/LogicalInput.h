@@ -61,6 +61,7 @@ namespace Eclipse
         ///////////////////////////////////////////////////////////////////////////////////////////
         bool CheckKeyboardMapping(std::string NewMap);
         bool CheckMouseMapping(std::string NewMap);
+        void TestingLogicalInput(); // For Testing
 
     private:
         void init();
@@ -84,5 +85,6 @@ namespace Eclipse
         void PrintKey(InputKeycode input);
         void RemoveKey(KeyIT& input);
         void RemoveHoldKey(KeyIT& input);
+        bool CheckPress(int keycode);
     };
 }
