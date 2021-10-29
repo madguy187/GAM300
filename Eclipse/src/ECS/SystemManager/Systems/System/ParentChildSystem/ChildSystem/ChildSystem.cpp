@@ -15,8 +15,8 @@ namespace Eclipse
 
 		Entity entSelected = engine->editorManager->GetSelectedEntity();
 		if (entSelected == MAX_ENTITY) return;
-
 		if (!engine->world.CheckComponent<ChildComponent>(entSelected)) return;
+
 		ChildComponent& childComp = engine->world.GetComponent<ChildComponent>(entSelected);
 		TransformComponent& childTrans = engine->world.GetComponent<TransformComponent>(entSelected);
 		TransformComponent& parentTrans = engine->world.GetComponent<TransformComponent>(childComp.parentIndex);
