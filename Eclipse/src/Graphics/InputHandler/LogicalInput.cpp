@@ -341,14 +341,24 @@ namespace Eclipse
 
     void LogicalInput::TestingLogicalInput()
     {
-        if (engine->InputManager->GetKeyCurrent("Left"))
+        if (engine->InputManager->GetKeyTriggered("Left"))
         {
             std::cout << "Left" << std::endl;
         }
 
-        if (engine->InputManager->GetKeyCurrent("Right"))
+        if (engine->InputManager->GetKeyTriggered("Right"))
         {
             std::cout << "Right" << std::endl;
+        }
+
+        if (engine->InputManager->GetKeyTriggered("Up"))
+        {
+            std::cout << "Up" << std::endl;
+        }
+
+        if (engine->InputManager->GetKeyTriggered("Down"))
+        {
+            std::cout << "Down" << std::endl;
         }
     }
 
@@ -1305,7 +1315,6 @@ namespace Eclipse
         default:
             return "";
             break;
-
         }
     }
 }

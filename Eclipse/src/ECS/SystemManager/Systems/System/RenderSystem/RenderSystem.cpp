@@ -39,8 +39,6 @@ namespace Eclipse
 
     void RenderSystem::Update()
     {
-        engine->InputManager->TestingLogicalInput();
-     
         ZoneScopedN("Render System")
             engine->Timer.SetName({ SystemName::RENDER });
         engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());

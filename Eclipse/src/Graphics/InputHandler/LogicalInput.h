@@ -61,7 +61,7 @@ namespace Eclipse
         ///////////////////////////////////////////////////////////////////////////////////////////
         bool CheckKeyboardMapping(std::string NewMap);
         bool CheckMouseMapping(std::string NewMap);
-        void TestingLogicalInput();
+        void TestingLogicalInput(); // For Testing
 
     private:
         void init();
