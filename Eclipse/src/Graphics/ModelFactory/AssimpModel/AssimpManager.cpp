@@ -172,6 +172,8 @@ namespace Eclipse
     {
         if (engine->gEngineCompiler->AreAllCompiled())
         {
+            if (ModelName.empty()) return;
+
             if (Prefabs.find(ModelName) == Prefabs.end())
             {
                 std::string Name = ModelName;

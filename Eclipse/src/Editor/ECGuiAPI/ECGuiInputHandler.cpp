@@ -19,6 +19,7 @@ namespace Eclipse
 			// Delete Entity
 			else if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_Delete)))
 			{
+				std::cout << "DELETING" << std::endl;
 				if (!engine->editorManager->IsEntityListEmpty())
 				{
 					Entity currEnt = engine->editorManager->GetSelectedEntity();

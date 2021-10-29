@@ -15,17 +15,34 @@ namespace Eclipse
 		{
 			Entity oldID = m_ID;
 			m_ID = engine->world.CopyEntity(engine->prefabWorld,
-				m_ID, all_component_list);
+				oldID, all_component_list);
+
+			if (engine->prefabWorld.CheckComponent<MeshComponent>(m_ID))
+			{
+				std::cout << "HAVE MESH";
+			}
 
 			if (oldID != engine->gCamera.GetEditorCameraID() &&
 				oldID != engine->gCamera.GetGameCameraID())
 			{
-				engine->gDynamicAABBTree.RemoveData(oldID);
-				engine->gCullingManager->Remove(oldID);
-				engine->LightManager.DestroyLight(oldID);
-				engine->gPhysics.RemoveActor(oldID);
-				engine->editorManager->DestroyEntity(oldID);
-				engine->gPicker.SetCurrentCollisionID(engine->editorManager->GetSelectedEntity());
+				if (engine->world.CheckComponent<ParentComponent>(oldID))
+				{
+					auto& parent = engine->world.GetComponent<ParentComponent>(oldID);
+					std::vector<Entity> List;
+
+					for (const auto& child : parent.child)
+					{
+						Entity newChildID = engine->world.CopyEntity(engine->prefabWorld,
+							child, all_component_list);
+						List.push_back(newChildID);
+
+						CleanUp(child);
+					}
+
+					Children = List;
+				}
+
+				CleanUp(oldID);
 			}
 		}
 
@@ -33,26 +50,26 @@ namespace Eclipse
 		{
 			Entity oldID = m_ID;
 			m_ID = engine->prefabWorld.CopyEntity(engine->world,
-				m_ID, all_component_list);
+				oldID, all_component_list);
 
-			auto& trans = engine->world.GetComponent<TransformComponent>(m_ID);
-			auto& ent = engine->world.GetComponent<EntityComponent>(m_ID);
-			
-			if (ent.Tag == EntityType::ENT_MODEL)
+			LoadIn(m_ID, oldID);
+
+			if (engine->world.CheckComponent<ParentComponent>(m_ID))
 			{
-				auto& mesh = engine->world.GetComponent<MeshComponent>(m_ID);
-				engine->AssimpManager.RegisterExistingModel(m_ID, mesh.MeshName.data());
-			}
-			else if (ent.Tag == EntityType::ENT_TARGETPOINT)
-			{
-				engine->gAI.AddTargetPointEntity(m_ID);
-			}
+				auto& parent = engine->world.GetComponent<ParentComponent>(m_ID);
+				parent.child.clear();
 
-			if (engine->world.CheckComponent<AABBComponent>(m_ID))
-				engine->gPicker.GenerateAabb(m_ID, trans, ent.Tag);
+				for (const auto& child : Children)
+				{
+					Entity newChild = engine->prefabWorld.CopyEntity(engine->world,
+						child, all_component_list);
+					auto& childCom = engine->world.GetComponent<ChildComponent>(newChild);
 
-			engine->editorManager->RegisterExistingEntity(m_ID);
-			engine->prefabWorld.DestroyEntity(oldID);
+					childCom.parentIndex = m_ID;
+					parent.child.push_back(newChild);
+					LoadIn(newChild, child);
+				}
+			}
 		}
 
 		virtual bool MergeCmds(ICommand* otherCmd) override
@@ -61,7 +78,43 @@ namespace Eclipse
 			return false;
 		}
 
+		void LoadIn(Entity newID, Entity oldID)
+		{
+			auto& trans = engine->world.GetComponent<TransformComponent>(newID);
+			auto& ent = engine->world.GetComponent<EntityComponent>(newID);
+
+			if (ent.Tag == EntityType::ENT_MODEL)
+			{
+				engine->AssimpManager.RegisterExistingModel(newID);
+			}
+			else if (ent.Tag == EntityType::ENT_MESH)
+			{
+				auto& mesh = engine->world.GetComponent<MeshComponent>(newID);
+				engine->AssimpManager.RegisterExistingModel(newID, mesh.MeshName.data());
+			}
+			else if (ent.Tag == EntityType::ENT_TARGETPOINT)
+			{
+				engine->gAI.AddTargetPointEntity(newID);
+			}
+
+			if (engine->world.CheckComponent<AABBComponent>(newID))
+				engine->gPicker.GenerateAabb(newID, trans, ent.Tag);
+
+			engine->editorManager->RegisterExistingEntity(newID);
+			engine->prefabWorld.DestroyEntity(oldID);
+		}
+
+		void CleanUp(Entity ID)
+		{
+			engine->gDynamicAABBTree.RemoveData(ID);
+			engine->gCullingManager->Remove(ID);
+			engine->LightManager.DestroyLight(ID);
+			engine->gPhysics.RemoveActor(ID);
+			engine->editorManager->DestroyEntity(ID);
+			engine->gPicker.SetCurrentCollisionID(engine->editorManager->GetSelectedEntity());
+		}
 	private:
 		Entity m_ID;
+		std::vector<Entity> Children;
 	};
 }

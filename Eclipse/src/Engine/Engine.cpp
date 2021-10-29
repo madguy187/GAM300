@@ -295,6 +295,7 @@ namespace Eclipse
             ECGuiInputHandler::Update();
 
             ImGuiSetup::Begin(IsEditorActive);
+            //ECGuiInputHandler::Update();
             EditorSystem::Update();
 
             if (IsInStepState)

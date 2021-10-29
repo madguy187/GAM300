@@ -146,10 +146,10 @@ namespace Eclipse
                 transCom.position = translation;
                 CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.position, transCom.position });
 
-                if (engine->world.CheckComponent<ParentComponent>(selectedEntity))
+                if (engine->world.CheckComponent<ChildComponent>(selectedEntity))
                 {
-                    auto& parent = engine->world.GetComponent<ParentComponent>(selectedEntity);
-                    parent.UpdateChildren = true;
+                    auto& child = engine->world.GetComponent<ChildComponent>(selectedEntity);
+                    child.UpdateChildren = true;
                 }
                 break;
             case ImGuizmo::OPERATION::ROTATE:
@@ -169,10 +169,10 @@ namespace Eclipse
         {
             CommandHistory::DisableMergeForMostRecentCommand();
 
-            if (engine->world.CheckComponent<ParentComponent>(selectedEntity))
+            if (engine->world.CheckComponent<ChildComponent>(selectedEntity))
             {
-                auto& parent = engine->world.GetComponent<ParentComponent>(selectedEntity);
-                parent.UpdateChildren = false;
+                auto& child = engine->world.GetComponent<ChildComponent>(selectedEntity);
+                child.UpdateChildren = false;
             }
         }
 
