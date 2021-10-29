@@ -159,10 +159,16 @@ namespace Eclipse
 			case ImGuizmo::OPERATION::TRANSLATE:
 				transCom.position = translation;
 				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.position, transCom.position, selectedEntity });
+
+				if (engine->world.CheckComponent<ParentComponent>(selectedEntity))
+				{
+					auto& parent = engine->world.GetComponent<ParentComponent>(selectedEntity);
+					parent.UpdateChildren = true;
+					std::cout << "translate gizmo being used!" << std::endl;
+				}
 				break;
 			case ImGuizmo::OPERATION::ROTATE:
 				transCom.rotation = rotation;
-				std::cout << "From Scene View: " << transCom.rotation << std::endl;
 				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.rotation, transCom.rotation, selectedEntity });
 				break;
 			case ImGuizmo::OPERATION::SCALE:
@@ -183,6 +189,13 @@ namespace Eclipse
 			&& ECGui::IsItemHovered())
 		{
 			CommandHistory::DisableMergeForMostRecentCommand();
+
+			if (engine->world.CheckComponent<ParentComponent>(selectedEntity))
+			{
+				auto& parent = engine->world.GetComponent<ParentComponent>(selectedEntity);
+				parent.UpdateChildren = false;
+				std::cout << "translate gizmo not being used!" << std::endl;
+			}
 		}
 
 		if (!ImGuizmo::IsUsing() && ImGui::IsMouseReleased(0) 
