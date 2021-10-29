@@ -86,5 +86,8 @@ namespace Eclipse
 		VRActionHandle_t m_actionAnalogInput{ k_ulInvalidActionHandle };
 
 		VRActionHandle_t m_actionsetDemo{ k_ulInvalidActionHandle };
+
+		std::string GetTrackedDeviceString(TrackedDeviceIndex_t unDevice,
+			TrackedDeviceProperty prop, TrackedPropertyError* peError = NULL);
 	};
 }
