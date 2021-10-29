@@ -18,6 +18,7 @@ namespace Eclipse
 
 	class HierarchyWindow final : public ECGuiWindow
 	{
+		unsigned int activeCounter = 0;
 	public:
 		void Update() override;
 		void Init() override;
@@ -25,16 +26,19 @@ namespace Eclipse
 		void DrawImpl();
 		void TrackEntitySelection(const std::vector<Entity>& list, EntitySelectionTracker& prev,
 			EntitySelectionTracker& curr, ImGuiTextFilter& filter);
+
+		void ParentRecursion(EntityComponent& entCom, Entity Num, const std::vector<Entity>& list, EntitySelectionTracker& prev,
+			EntitySelectionTracker& curr);
+
 		void ShowEntityCreationList();
 		void UpdateEntityTracker(Entity ID);
 		size_t GetEntityGlobalIndex(size_t data);
 		std::string GetEntityComponentEntityNumber(std::string EntityName);
 		size_t ConvertEntityStringtoNumber(std::string EntityNumber);
 		void HightLightParentAndChild(EntityComponent& Parent);
-		void TreeNodeRecursion(std::string parent, EntityComponent& entCom,EntitySelectionTracker& prev,EntitySelectionTracker& curr, size_t index);
 		void ShowCreateModelList();
+		int GetListPos(size_t currIndex);
 	private:
-		ImGuiTreeNodeFlags temp = 0;
 		EntitySelectionTracker CurrEnt_;
 		EntitySelectionTracker PrevEnt_;
 		std::vector<std::vector<std::string>> TagList_;

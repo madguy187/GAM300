@@ -12,6 +12,7 @@ namespace Eclipse
         MT_METALLIC = 3,
         MT_ROUGHNESS = 4,
         MT_AO = 5,
+        MT_HEIGHT = 6,
         MT_MAXCOUNT
     };
 

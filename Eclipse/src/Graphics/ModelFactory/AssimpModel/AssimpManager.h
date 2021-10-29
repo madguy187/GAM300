@@ -19,6 +19,8 @@
 
 namespace Eclipse
 {
+    typedef std::multimap<std::string, Texture>::iterator MMAPIterator;
+
     class AssimpModelManager
     {
     private:
@@ -70,7 +72,8 @@ namespace Eclipse
         // FOR FIKRUL
         void MeshEditorDraw(World& world_, MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, CameraComponent::CameraType _camType);
         void MeshEditorUniforms(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID);
-        
+        void CreateBasicPrimitives(Entity ID, const std::string& ModelName);
+
     public:
         // TEXTURES PUT HERE FIRST
         unsigned int Index = 0; // mesh index.

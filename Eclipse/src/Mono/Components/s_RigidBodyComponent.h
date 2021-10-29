@@ -5,17 +5,8 @@
 
 namespace Eclipse
 {
-	static MonoObject* GetRigidComponent(Entity ent)
+	static void SetForce(Entity ent, float x, float y, float z)
 	{
-		MonoClass* klass = engine->mono.GetMonoClass("RigidBodyComponent");
-		MonoObject* obj = engine->mono.CreateObjectFromClass(klass);
-		MonoMethod* method = engine->mono.GetMethodFromClass(klass, "Initcomponent");
-		std::vector<void*> args;
-		args.push_back(&ent);
-
-		std::cout << "C++: " << ent << std::endl;
-		engine->mono.ExecuteMethod(obj, method, args);
-
-		return obj;
+		engine->gPhysics.SetForce(ent, { x, y, z });
 	}
 }

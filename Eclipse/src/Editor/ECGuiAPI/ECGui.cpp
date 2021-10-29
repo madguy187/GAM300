@@ -94,7 +94,7 @@ namespace Eclipse
 
 	bool ECGui::IsItemActive()
 	{
-		return ImGuiAPI::IsItemActive();;
+		return ImGuiAPI::IsItemActive();
 	}
 
 	void ECGui::SetColumns(int count, const char* id, bool border)
@@ -196,6 +196,7 @@ namespace Eclipse
 				if (ImGui::Selectable(vecStr[n].c_str(), is_selected))
 				{
 					index = n;
+					ImGuiAPI::EndComboList();
 					return true;
 				}
 

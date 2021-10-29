@@ -15,9 +15,10 @@ namespace Eclipse
         ECVec3 diffuse{ 1.0f,1.0f,1.0f };
         ECVec3 specular{ 1.0f,1.0f,1.0f };
         bool Highlight = false;
-        bool NoTextures = true;
+        bool NoTextures = false;
         float shininess = 0.25f;
         float MaximumShininess = 128.0f;
+        bool IsNormalMap = false;
 
         //ComboIndex if for imgui combolist to select the correct model type - Tian Yu
         size_t ComboIndex = 1;

@@ -34,6 +34,7 @@ namespace Eclipse
 
 	public:
 		void Init();
+		void Start(MonoScript* obj);
 		void Update(MonoScript* obj);
 		void StartMono();
 		void StopMono();

@@ -58,10 +58,10 @@ namespace Eclipse
 			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 		//// ImGuizmo Logic
-		if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
+		/*if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
 		{
 			OnGizmoUpdateEvent();
-		}
+		}*/
 
 		if (ECGui::IsItemHovered())
 		{
@@ -70,6 +70,11 @@ namespace Eclipse
 			OnCameraMoveEvent();
 			OnCameraZoomEvent();
 			OnSelectEntityEvent();
+
+			if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
+			{
+				OnGizmoUpdateEvent();
+			}
 		}
 
 		if (ECGui::IsItemActive())
@@ -154,10 +159,16 @@ namespace Eclipse
 			case ImGuizmo::OPERATION::TRANSLATE:
 				transCom.position = translation;
 				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.position, transCom.position, selectedEntity });
+
+				if (engine->world.CheckComponent<ChildComponent>(selectedEntity))
+				{
+					auto& child = engine->world.GetComponent<ChildComponent>(selectedEntity);
+					child.UpdateChildren = true;
+					std::cout << "translate gizmo being used!" << std::endl;
+				}
 				break;
 			case ImGuizmo::OPERATION::ROTATE:
 				transCom.rotation = rotation;
-				std::cout << "From Scene View: " << transCom.rotation << std::endl;
 				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.rotation, transCom.rotation, selectedEntity });
 				break;
 			case ImGuizmo::OPERATION::SCALE:
@@ -178,6 +189,13 @@ namespace Eclipse
 			&& ECGui::IsItemHovered())
 		{
 			CommandHistory::DisableMergeForMostRecentCommand();
+
+			if (engine->world.CheckComponent<ChildComponent>(selectedEntity))
+			{
+				auto& child = engine->world.GetComponent<ChildComponent>(selectedEntity);
+				child.UpdateChildren = false;
+				std::cout << "translate gizmo not being used!" << std::endl;
+			}
 		}
 
 		if (!ImGuizmo::IsUsing() && ImGui::IsMouseReleased(0) 
