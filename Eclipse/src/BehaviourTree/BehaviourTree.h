@@ -82,6 +82,13 @@ namespace Eclipse
 			}
 		};
 
+		template<typename T>
+		class CheckBool : public BehaviourTree::Node
+		{
+		private:
+
+		};
+
 	private:
 		Root* root;
 	public:
