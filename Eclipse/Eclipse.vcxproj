@@ -363,6 +363,9 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Tracy\Tracy.hpp" />
     <ClInclude Include="src\TypeID\TypeID.h" />
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\VR\Drivers\Controller\ControllerDriver.h" />
+    <ClInclude Include="src\VR\Drivers\Devices\DeviceProvider.h" />
+    <ClInclude Include="src\VR\Manager\VRManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp" />
@@ -504,6 +507,10 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\VR\Drivers\Controller\ControllerDriver.cpp" />
+    <ClCompile Include="src\VR\Drivers\Devices\DeviceFactory.cpp" />
+    <ClCompile Include="src\VR\Drivers\Devices\DeviceProvider.cpp" />
+    <ClCompile Include="src\VR\Manager\VRManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
