@@ -3,6 +3,9 @@
 
 namespace Eclipse
 {
-
+	bool VRManager::Init()
+	{
+		return false;
+	}
 }
 
