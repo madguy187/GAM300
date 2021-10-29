@@ -531,6 +531,7 @@ namespace Eclipse
         return false;
 
     }
+
     bool LogicalInput::GetHoldKeyReleased(InputKeycode keycode)
     {
         int HoldKeyRelease = GetKey(keycode);

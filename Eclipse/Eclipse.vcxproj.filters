@@ -942,6 +942,7 @@
     <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor.h" />
     <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_internal.h" />
     <ClInclude Include="src\Graphics\EngineCompiler\InputCompiler\InputCompiler.h" />
+    <ClInclude Include="src\Graphics\MeshEditor\MeshEditorSource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
