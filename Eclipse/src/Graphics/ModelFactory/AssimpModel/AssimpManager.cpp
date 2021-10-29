@@ -6,8 +6,6 @@
 
 namespace Eclipse
 {
-    typedef std::multimap<std::string, Texture>::iterator MMAPIterator;
-
     void AssimpModelManager::MeshEditorUniforms(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID)
     {
         TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(_camera.camType));
@@ -604,7 +602,9 @@ namespace Eclipse
             else
             {
                 // If Do not have textures
-                if (engine->AssimpManager.Geometry[mesh.MeshName.data()]->NoTex && (!engine->world.CheckComponent<TextureComponent>(EntityID)))
+                //if (engine->AssimpManager.Geometry[mesh.MeshName.data()]->NoTex && (!engine->world.CheckComponent<TextureComponent>(EntityID)))
+                
+                if (Material.NoTextures && (!engine->world.CheckComponent<TextureComponent>(EntityID)))
                 {
                     engine->gPBRManager->SetAOConstant(shader, 1.0f);
                     engine->gPBRManager->SetMetallicConstant(shader, 0.5f);

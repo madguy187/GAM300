@@ -19,6 +19,8 @@
 
 namespace Eclipse
 {
+    typedef std::multimap<std::string, Texture>::iterator MMAPIterator;
+
     class AssimpModelManager
     {
     private:

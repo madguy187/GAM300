@@ -5,6 +5,6 @@ namespace Eclipse
     class MeshEditorSource
     {
     public:
-
+        
     };
 }
