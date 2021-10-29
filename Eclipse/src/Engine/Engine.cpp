@@ -331,7 +331,7 @@ namespace Eclipse
             world.Update<FileWatchSystem>();
 
             world.Update<ParentSystem>();
-            world.Update<ChildSystem>();
+            //world.Update<ChildSystem>();
 
             engine->gFrameBufferManager->GlobalBind();
 

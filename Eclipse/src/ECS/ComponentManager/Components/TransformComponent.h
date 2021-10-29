@@ -5,7 +5,7 @@
 
 namespace Eclipse
 {
-	struct TransformComponent 
+	struct TransformComponent
 	{
 		META_DATA(TransformComponent);
 		ECVec3 position{ 0.0f, 0.0f, 0.0f };
