@@ -95,6 +95,7 @@ enum class EntityType
     ENT_GAMECAMERA,
     ENT_MODEL,
     ENT_TARGETPOINT,
+    ENT_MESH,
     ENT_UNASSIGNED
 };
 

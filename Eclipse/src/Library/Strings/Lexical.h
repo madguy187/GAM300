@@ -119,6 +119,7 @@ namespace Eclipse
 		"Camera",
 		"Model",
 		"TargetPoint",
+		"Mesh",
 		"NULL"
 	};
 

@@ -133,7 +133,7 @@ namespace Eclipse
                     for (int i = 0; i < Prefabs[NameOfFolder].size(); i++)
                     {
                         auto& name = Prefabs[NameOfFolder][i];
-                        MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_MODEL);
+                        MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_MESH);
                         EntityComponent* test = &engine->world.GetComponent<EntityComponent>(ParentID);
                         EntityComponent* Child = &engine->world.GetComponent<EntityComponent>(MeshID);
 
@@ -561,7 +561,6 @@ namespace Eclipse
             std::string MeshNameh = Mesh.MeshName.data();
             engine->AssimpManager.SetTexturesForModel(tex, MeshNameh);
         }
-
     }
 
     void AssimpModelManager::RenderMesh(MeshComponent& In, GLenum Mode)
