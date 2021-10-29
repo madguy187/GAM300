@@ -4,6 +4,7 @@
 #include <string>
 #include "../Dep/STB/stb-master/stb_image.h"
 #include <iostream>
+#include "../Dep/ASSIMP/include/assimp/material.h"
 
 namespace Eclipse
 {

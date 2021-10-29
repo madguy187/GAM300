@@ -30,8 +30,6 @@ namespace Eclipse
 
 		for (auto& entity : mEntities)
 		{
-			/*EntityComponent& entityComp = engine->world.GetComponent<EntityComponent>(entity);
-			if (entityComp.Tag != EntityType::ENT_MODEL || !engine->GetPlayState()) continue;*/
 			ParentComponent& parentComp = engine->world.GetComponent<ParentComponent>(entity);
 
 			for (auto& childEntity : parentComp.child)
@@ -55,11 +53,9 @@ namespace Eclipse
 		glm::mat4 R = glm::mat4(1.0f);
 		glm::mat4 identityMatrix = glm::mat4(1.0f);
 		T = glm::translate(T, parentTransComp.position.ConvertToGlmVec3Type());
-		//T = T * identityMatrix;
 		R = glm::rotate(R, glm::radians(parentTransComp.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
 		R = glm::rotate(R, glm::radians(parentTransComp.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
 		R = glm::rotate(R, glm::radians(parentTransComp.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-		//model = model * identityMatrix;
 
 		glm::mat4 model = T * R;
 		ParentComponent& parentComp = engine->world.GetComponent<ParentComponent>(parentEnt);
@@ -76,8 +72,5 @@ namespace Eclipse
 		childTransComp.scale.setX(parentTransComp.scale.getX() * childComp.ScaleOffset.getX());
 		childTransComp.scale.setY(parentTransComp.scale.getY() * childComp.ScaleOffset.getY());
 		childTransComp.scale.setZ(parentTransComp.scale.getZ() * childComp.ScaleOffset.getZ());
-
-		/*float distance = abs(VectorDistance<float, 3>(childTransComp.position, parentTransComp.position));
-		childComp.distance = distance;*/
 	}
 }

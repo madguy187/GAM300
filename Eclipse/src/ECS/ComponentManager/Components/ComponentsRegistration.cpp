@@ -244,11 +244,14 @@ namespace Eclipse
     {
         ADD_MEMBER(parentIndex);
         ADD_MEMBER(PosOffset);
+        ADD_MEMBER(RotOffset);
+        ADD_MEMBER(ScaleOffset);
     }
 
     DEFINE_META(ParentComponent)
     {
         ADD_MEMBER(child);
+        ADD_MEMBER(model);
     }
 
     /*************************************************************************/
