@@ -129,16 +129,36 @@ namespace Eclipse
                 ECGui::DrawTextWidget<const char*>("Position", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloat3Widget("TransVec", &transCom.position, true, -100.f, 100.f, ID);
+
+                if (ECGui::DrawSliderFloat3Widget("TransVec", &transCom.position, true, -100.f, 100.f, ID))
+                {
+                    if (engine->world.CheckComponent<ParentComponent>(ID))
+                    {
+                        auto& parent = engine->world.GetComponent<ParentComponent>(ID);
+                        parent.UpdateChildren = true;
+                    }
+                }
+                else
+                {
+                    if (ImGui::IsItemDeactivatedAfterChange() && engine->world.CheckComponent<ParentComponent>(ID))
+                    {
+                        auto& parent = engine->world.GetComponent<ParentComponent>(ID);
+                        parent.UpdateChildren = false;
+                    }
+                }
+
                 ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Rotation", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                
                 ECGui::DrawSliderFloat3Widget("TransRot", &transCom.rotation, true, -360.f, 360.f, ID);
+
                 ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Scale", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                
                 ECGui::DrawSliderFloat3Widget("TransScale", &transCom.scale, true, -100.f, 100.f, ID);
 
                 //Update for DynamicAABB Tree -Rachel
