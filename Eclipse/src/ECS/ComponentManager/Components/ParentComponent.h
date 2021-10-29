@@ -7,6 +7,5 @@ namespace Eclipse
 	{
 		META_DATA(ParentComponent);
 		std::vector<Entity> child;
-		bool UpdateChildren{ false };
 	};
 }

@@ -160,10 +160,10 @@ namespace Eclipse
 				transCom.position = translation;
 				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.position, transCom.position, selectedEntity });
 
-				if (engine->world.CheckComponent<ParentComponent>(selectedEntity))
+				if (engine->world.CheckComponent<ChildComponent>(selectedEntity))
 				{
-					auto& parent = engine->world.GetComponent<ParentComponent>(selectedEntity);
-					parent.UpdateChildren = true;
+					auto& child = engine->world.GetComponent<ChildComponent>(selectedEntity);
+					child.UpdateChildren = true;
 					std::cout << "translate gizmo being used!" << std::endl;
 				}
 				break;
@@ -190,10 +190,10 @@ namespace Eclipse
 		{
 			CommandHistory::DisableMergeForMostRecentCommand();
 
-			if (engine->world.CheckComponent<ParentComponent>(selectedEntity))
+			if (engine->world.CheckComponent<ChildComponent>(selectedEntity))
 			{
-				auto& parent = engine->world.GetComponent<ParentComponent>(selectedEntity);
-				parent.UpdateChildren = false;
+				auto& child = engine->world.GetComponent<ChildComponent>(selectedEntity);
+				child.UpdateChildren = false;
 				std::cout << "translate gizmo not being used!" << std::endl;
 			}
 		}
