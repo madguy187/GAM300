@@ -11,13 +11,13 @@ namespace Eclipse
     void PBRManager::Init()
     {
         //InitialiseBaseReflectivity();
-        LoadAllTextures();
+        //LoadAllTextures();
 
         gMaterialEditorSettings = std::make_unique<MaterialEditorSettings>();
 
-        LoadMaterial("HardWood");
-        LoadMaterial("Rock");
-        LoadMaterial("Testing");
+        //LoadMaterial("HardWood");
+        //LoadMaterial("Rock");
+        //LoadMaterial("Testing");
     }
 
     void PBRManager::InitialiseBaseReflectivity()

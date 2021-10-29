@@ -15,7 +15,7 @@ namespace Eclipse
         ECVec3 diffuse{ 1.0f,1.0f,1.0f };
         ECVec3 specular{ 1.0f,1.0f,1.0f };
         bool Highlight = false;
-        bool NoTextures = false;
+        bool NoTextures = true;
         float shininess = 0.25f;
         float MaximumShininess = 128.0f;
         bool IsNormalMap = false;

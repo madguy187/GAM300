@@ -391,9 +391,11 @@ namespace Eclipse
         if (engine->world.CheckComponent<MeshComponent>(ID))
         {
             auto& Mesh = engine->world.GetComponent<MeshComponent>(ID);
+            auto& Mat = engine->world.GetComponent<MaterialComponent>(ID);
 
             char* Name = in.data();
             strcpy_s(Mesh.MeshName.data(), Mesh.MeshName.size(), Name);
+            Mat.NoTextures = engine->AssimpManager.Geometry[Mesh.MeshName.data()]->NoTex;
         }
     }
 
@@ -569,6 +571,11 @@ namespace Eclipse
         {
             auto& tex = engine->world.GetComponent<MaterialComponent>(ID);
             std::string MeshNameh = Mesh.MeshName.data();
+
+            // If no textures , we dont do anything
+            if (tex.NoTextures == true)
+                return;
+
             engine->AssimpManager.SetTexturesForModel(tex, MeshNameh);
         }
     }
@@ -615,6 +622,9 @@ namespace Eclipse
                 
                 if (Material.NoTextures && (!engine->world.CheckComponent<TextureComponent>(EntityID)))
                 {
+                    // reset
+                    glActiveTexture(GL_TEXTURE0);
+
                     engine->gPBRManager->SetAOConstant(shader, 1.0f);
                     engine->gPBRManager->SetMetallicConstant(shader, 0.5f);
                     engine->gPBRManager->SetRoughnessConstant(shader, 0.5f);
