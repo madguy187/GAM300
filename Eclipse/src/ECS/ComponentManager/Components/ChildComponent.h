@@ -9,6 +9,7 @@ namespace Eclipse
 		Entity parentIndex;
 		ECVec3 PosOffset;
 		ECVec3 RotOffset;
+		ECVec3 ScaleOffset;
 		float distance;
 	};
 }

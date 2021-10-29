@@ -111,6 +111,7 @@ namespace Eclipse
                 Entity MeshID = 0;
                 ParentID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_UNASSIGNED);
                 engine->world.AddComponent(ParentID, ParentComponent{});
+                TransformComponent& parentTransComp = engine->world.GetComponent<TransformComponent>(MeshID);
 
                 for (int i = 0; i < Prefabs[NameOfFolder].size(); i++)
                 {
@@ -131,6 +132,11 @@ namespace Eclipse
                     engine->world.AddComponent(MeshID, ModelComponent{});
                     engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
                     SetSingleMesh(MeshID, name);
+
+                    TransformComponent& childTransComp = engine->world.GetComponent<TransformComponent>(MeshID);
+                    engine->world.GetComponent<ChildComponent>(MeshID).ScaleOffset.setX(childTransComp.scale.getX() / parentTransComp.scale.getX());
+                    engine->world.GetComponent<ChildComponent>(MeshID).ScaleOffset.setY(childTransComp.scale.getY() / parentTransComp.scale.getY());
+                    engine->world.GetComponent<ChildComponent>(MeshID).ScaleOffset.setZ(childTransComp.scale.getZ() / parentTransComp.scale.getZ());
                 }
 
                 return MeshID;

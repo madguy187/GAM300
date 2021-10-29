@@ -67,6 +67,9 @@ namespace Eclipse
 		//childComp.PosOffset = childTransComp.position - parentTransComp.position;
 
 		childTransComp.rotation = parentTransComp.rotation + childComp.RotOffset;
+		childTransComp.scale.setX(parentTransComp.scale.getX() * childComp.ScaleOffset.getX());
+		childTransComp.scale.setY(parentTransComp.scale.getY() * childComp.ScaleOffset.getY());
+		childTransComp.scale.setZ(parentTransComp.scale.getZ() * childComp.ScaleOffset.getZ());
 
 		/*float distance = abs(VectorDistance<float, 3>(childTransComp.position, parentTransComp.position));
 		childComp.distance = distance;*/
