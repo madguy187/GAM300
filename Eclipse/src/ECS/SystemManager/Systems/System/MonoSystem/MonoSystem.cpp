@@ -13,7 +13,10 @@ namespace Eclipse
 			for (auto& script : scriptCom.scriptList)
 			{
 				if (!script.obj)
+				{
 					script.obj = engine->mono.CreateMonoObject(script.scriptName, entity);
+					engine->mono.Start(&script);
+				}
 			}
 		}
 	}
