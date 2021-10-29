@@ -51,11 +51,8 @@ namespace Eclipse
 
     enum class NodeType
     {
-        Blueprint,
-        Simple,
-        Tree,
-        Comment,
-        Houdini
+        test,
+        testmultiply
     };
 
     enum class PinKind
@@ -70,6 +67,7 @@ namespace Eclipse
     {
         ed::PinId   ID;
         ::Node* Node;
+        char Data[128] = "";
         std::string Name;
         PinType     Type;
         PinKind     Kind;
@@ -77,24 +75,24 @@ namespace Eclipse
         Pin(int id, const char* name, PinType type) :
             ID(id), Node(nullptr), Name(name), Type(type), Kind(PinKind::Input)
         {
+            memset(Data, 0, 128);
         }
     };
 
     struct Node
     {
         ed::NodeId ID;
-        std::string Name;
         std::vector<Pin> Inputs;
         std::vector<Pin> Outputs;
         ImColor Color;
         NodeType Type;
         ImVec2 Size;
-
+        std::string Name;
         std::string State;
         std::string SavedState;
 
         Node(int id, const char* name, ImColor color = ImColor(255, 255, 255)) :
-            ID(id), Name(name), Color(color), Type(NodeType::Blueprint), Size(0, 0)
+            ID(id), Name(name), Color(color), Type(NodeType::test), Size(0, 0)
         {
         }
     };
@@ -187,6 +185,9 @@ namespace Eclipse
 
         Node* SpawnOutputActionNode();
 
+        Node* SpawnMultiplyNode();
+
+        Node* NodeEditorWindow::testPrintOnConsole();
 
         bool Splitter(bool split_vertically, float thickness, float* size1, float* size2, float min_size1, float min_size2, float splitter_long_axis_size = -1.0f);
 

@@ -3,10 +3,68 @@
 
 Node* Eclipse::NodeEditorWindow::test()
 {
+    s_Nodes.emplace_back(GetNextId(), "MeString", ImColor(0, 195, 0));
+    s_Nodes.back().Type = NodeType::test;
+    s_Nodes.back().Outputs.emplace_back(GetNextId(), "", PinType::String);
+
+    BuildNode(&s_Nodes.back());
+
+    return &s_Nodes.back();
+}
+
+Node* Eclipse::NodeEditorWindow::testPrintOnConsole()
+{
+    s_Nodes.emplace_back(GetNextId(), "PrintStringOnConsole", ImColor(255, 128, 128));
+    s_Nodes.back().Type = NodeType::test;
+    s_Nodes.back().Inputs.emplace_back(GetNextId(), "InputString", PinType::String);
+    BuildNode(&s_Nodes.back());
+    return &s_Nodes.back();
+}
+
+Node* Eclipse::NodeEditorWindow::SpawnInputActionNode()
+{
     s_Nodes.emplace_back(GetNextId(), "InputAction Fire", ImColor(255, 128, 128));
     s_Nodes.back().Outputs.emplace_back(GetNextId(), "", PinType::Delegate);
     s_Nodes.back().Outputs.emplace_back(GetNextId(), "Pressed", PinType::Flow);
     s_Nodes.back().Outputs.emplace_back(GetNextId(), "Released", PinType::Flow);
+
+    BuildNode(&s_Nodes.back());
+
+    return &s_Nodes.back();
+}
+
+Node* Eclipse::NodeEditorWindow::SpawnBranchNode()
+{
+    s_Nodes.emplace_back(GetNextId(), "Branch");
+    s_Nodes.back().Inputs.emplace_back(GetNextId(), "", PinType::Flow);
+    s_Nodes.back().Inputs.emplace_back(GetNextId(), "Condition", PinType::Bool);
+    s_Nodes.back().Outputs.emplace_back(GetNextId(), "True", PinType::Flow);
+    s_Nodes.back().Outputs.emplace_back(GetNextId(), "False", PinType::Flow);
+
+    BuildNode(&s_Nodes.back());
+
+    return &s_Nodes.back();
+}
+
+Node* Eclipse::NodeEditorWindow::SpawnOutputActionNode()
+{
+    s_Nodes.emplace_back(GetNextId(), "OutputAction");
+    s_Nodes.back().Inputs.emplace_back(GetNextId(), "Sample", PinType::Float);
+    s_Nodes.back().Outputs.emplace_back(GetNextId(), "Condition", PinType::Bool);
+    s_Nodes.back().Inputs.emplace_back(GetNextId(), "Event", PinType::Delegate);
+
+    BuildNode(&s_Nodes.back());
+
+    return &s_Nodes.back();
+}
+
+Node* Eclipse::NodeEditorWindow::SpawnMultiplyNode()
+{
+    s_Nodes.emplace_back(GetNextId(), "Multiply", ImColor(128, 195, 248));
+    s_Nodes.back().Type = NodeType::testmultiply;
+    s_Nodes.back().Inputs.emplace_back(GetNextId(), "", PinType::Float);
+    s_Nodes.back().Inputs.emplace_back(GetNextId(), "", PinType::Float);
+    s_Nodes.back().Outputs.emplace_back(GetNextId(), "", PinType::Float);
 
     BuildNode(&s_Nodes.back());
 
@@ -50,14 +108,8 @@ void Eclipse::NodeEditorWindow::DrawImpl()
     {
         auto cursorTopLeft = ImGui::GetCursorScreenPos();
 
-        //util::BlueprintNodeBuilder builder((ImTextureID)engine->editorManager->nodeHeader_, 64,64);
-
         for (auto& node : s_Nodes)
         {
-            if (node.Type != NodeType::Blueprint && node.Type != NodeType::Simple)
-                continue;
-
-            const auto isSimple = node.Type == NodeType::Simple;
 
             bool hasOutputDelegates = false;
             for (auto& output : node.Outputs)
@@ -66,107 +118,137 @@ void Eclipse::NodeEditorWindow::DrawImpl()
 
             ed::BeginNode(node.ID);
 
-            if (!isSimple)
+            if (node.Type == NodeType::test)
             {
-                ImGui::TextUnformatted(node.Name.c_str());
-                ECGui::InsertSameLine();
-                if (hasOutputDelegates)
+                for (auto& input : node.Inputs)
                 {
-                    for (auto& output : node.Outputs)
+                    if (!input.Name.empty())
                     {
-                        if (output.Type != PinType::Delegate)
-                            continue;
+                        ImGui::TextUnformatted(input.Name.c_str());
+                    }
 
-                        auto alpha = ImGui::GetStyle().Alpha;
-                        if (newLinkPin && !CanCreateLink(newLinkPin, &output) && &output != newLinkPin)
-                            alpha = alpha * (48.0f / 255.0f);
+                    auto alpha = ImGui::GetStyle().Alpha;
+                    if (newLinkPin && !CanCreateLink(newLinkPin, &input) && &input != newLinkPin)
+                        alpha = alpha * (48.0f / 255.0f);
 
-                        ed::BeginPin(output.ID, ed::PinKind::Output);
-                        ed::PinPivotAlignment(ImVec2(1.0f, 0.5f));
-                        ed::PinPivotSize(ImVec2(0, 0));
-                        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
-                        if (!output.Name.empty())
+                    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
+                    ed::BeginPin(input.ID, ed::PinKind::Output);
+                    DrawPinIcon(input, IsPinLinked(input.ID), (int)(alpha * 255));
+                    ed::EndPin();
+                    ImGui::PopStyleVar();
+                }
+
+                for (auto& output : node.Outputs)
+                {
+                    auto alpha = ImGui::GetStyle().Alpha;
+                    if (newLinkPin && !CanCreateLink(newLinkPin, &output) && &output != newLinkPin)
+                        alpha = alpha * (48.0f / 255.0f);
+
+                    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
+                    if (output.Type == PinType::String)
+                    {
+                        ImGui::PushItemWidth(100.0f);
+                        ImGui::InputText("##edit", output.Data, 128);
+                        ImGui::PopItemWidth();
+
+                        bool hasOutputDelegates = false;
+                        for (auto& output : node.Outputs)
+                            if (output.Type == PinType::Delegate)
+                                hasOutputDelegates = true;
+                        
+                        if (node.Type == NodeType::test)
                         {
-                            ImGui::TextUnformatted(output.Name.c_str());
+                            for (auto& link : s_Links)
+                            {
+                                if (output.ID == link.StartPinID)
+                                {
+                                    std::cout << output.Data;
+                                }
+                            }
+                        
                         }
-                        DrawPinIcon(output, IsPinLinked(output.ID), (int)(alpha * 255));
-                        ImGui::PopStyleVar();
-                        ed::EndPin();
-
-                        //DrawItemRect(ImColor(255, 0, 0));
+   
                     }
-                }
-            }
-
-            for (auto& input : node.Inputs)
-            {
-                auto alpha = ImGui::GetStyle().Alpha;
-                if (newLinkPin && !CanCreateLink(newLinkPin, &input) && &input != newLinkPin)
-                    alpha = alpha * (48.0f / 255.0f);
-
-                ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
-                ed::BeginPin(input.ID, ed::PinKind::Output);
-                DrawPinIcon(input, IsPinLinked(input.ID), (int)(alpha * 255));
-                ed::EndPin();
-                if (!input.Name.empty())
-                {
-                    ImGui::TextUnformatted(input.Name.c_str());
-                }
-                if (input.Type == PinType::Bool)
-                {
-                    ImGui::Button("Hello");;
-                }
-                ImGui::PopStyleVar();
-            }
-
-            if (isSimple)
-            {
-                ImGui::TextUnformatted(node.Name.c_str());
-            }
-
-            for (auto& output : node.Outputs)
-            {
-                if (!isSimple && output.Type == PinType::Delegate)
-                    continue;
-
-                auto alpha = ImGui::GetStyle().Alpha;
-                if (newLinkPin && !CanCreateLink(newLinkPin, &output) && &output != newLinkPin)
-                    alpha = alpha * (48.0f / 255.0f);
-
-                ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
-                if (output.Type == PinType::String)
-                {
-                    static char buffer[128] = "Edit Me\nMultiline!";
-                    static bool wasActive = false;
-
-                    ImGui::PushItemWidth(100.0f);
-                    ImGui::InputText("##edit", buffer, 127);
-                    ImGui::PopItemWidth();
-                    if (ImGui::IsItemActive() && !wasActive)
+                    if (!output.Name.empty())
                     {
-                        ed::EnableShortcuts(false);
-                        wasActive = true;
+                        ImGui::TextUnformatted(output.Name.c_str());
                     }
-                    else if (!ImGui::IsItemActive() && wasActive)
-                    {
-                        ed::EnableShortcuts(true);
-                        wasActive = false;
-                    }
+
+                    ECGui::InsertSameLine();
+                    ed::BeginPin(output.ID, ed::PinKind::Output);
+                    DrawPinIcon(output, IsPinLinked(output.ID), (int)(alpha * 255));
+                    ed::EndPin();
+                    ImGui::PopStyleVar();
                 }
-                if (!output.Name.empty())
-                {
-                    ImGui::TextUnformatted(output.Name.c_str());
-                }
-                ed::BeginPin(output.ID, ed::PinKind::Output);
-                DrawPinIcon(output, IsPinLinked(output.ID), (int)(alpha * 255));
-                ed::EndPin();
-                ImGui::PopStyleVar();
             }
+
+            /*if (node.Type == NodeType::testmultiply)
+            {
+                for (auto& input : node.Inputs)
+                {
+                    if (input.Type == PinType::Float)
+                    {
+                        static char in1[127];
+                        static char in2[127];
+                        ImGui::PushItemWidth(100.0f);
+                        ImGui::InputText("##edit", in1, 128);
+                        ImGui::PopItemWidth();
+                        ImGui::PushItemWidth(100.0f);
+                        ImGui::InputText("##edit", in2, 128);
+                        ImGui::PopItemWidth();
+                    }
+
+                    if (!input.Name.empty())
+                    {
+                        ImGui::TextUnformatted(input.Name.c_str());
+                    }
+
+                    auto alpha = ImGui::GetStyle().Alpha;
+                    if (newLinkPin && !CanCreateLink(newLinkPin, &input) && &input != newLinkPin)
+                        alpha = alpha * (48.0f / 255.0f);
+
+                    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
+                    ed::BeginPin(input.ID, ed::PinKind::Output);
+                    DrawPinIcon(input, IsPinLinked(input.ID), (int)(alpha * 255));
+                    ed::EndPin();
+                    ImGui::PopStyleVar();
+                }
+
+                for (auto& output : node.Outputs)
+                {
+                    auto alpha = ImGui::GetStyle().Alpha;
+                    if (newLinkPin && !CanCreateLink(newLinkPin, &output) && &output != newLinkPin)
+                        alpha = alpha * (48.0f / 255.0f);
+
+                    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
+
+                    if (output.Type == PinType::Float)
+                    {
+                        char out[127];
+                        ImGui::PushItemWidth(100.0f);
+                        ImGui::Text("##edit", out, 128);
+                        ImGui::PopItemWidth();
+                    }
+
+                    if (!output.Name.empty())
+                    {
+                        ImGui::TextUnformatted(output.Name.c_str());
+                    }
+                    ECGui::InsertSameLine();
+                    ed::BeginPin(output.ID, ed::PinKind::Output);
+                    DrawPinIcon(output, IsPinLinked(output.ID), (int)(alpha * 255));
+                    ed::EndPin();
+                    ImGui::PopStyleVar();
+                }
+            }*/
             ed::EndNode();
         }
 
+
         for (auto& link : s_Links)
+        {
             ed::Link(link.ID, link.StartPinID, link.EndPinID, link.Color, 2.0f);
+        }
 
         if (!createNewNode)
         {
@@ -317,7 +399,7 @@ void Eclipse::NodeEditorWindow::DrawImpl()
         if (node)
         {
             ImGui::Text("ID: %p", node->ID.AsPointer());
-            ImGui::Text("Type: %s", node->Type == NodeType::Blueprint ? "Blueprint" : (node->Type == NodeType::Tree ? "Tree" : "Comment"));
+            //ImGui::Text("Type: %s", node->Type == NodeType::Blueprint ? "Blueprint" : (node->Type == NodeType::Tree ? "Tree" : "Comment"));
             ImGui::Text("Inputs: %d", (int)node->Inputs.size());
             ImGui::Text("Outputs: %d", (int)node->Outputs.size());
         }
@@ -384,7 +466,12 @@ void Eclipse::NodeEditorWindow::DrawImpl()
             node = SpawnOutputActionNode();
         if (ImGui::MenuItem("Input m"))
             node = SpawnBranchNode();
-
+        if (ImGui::MenuItem("String"))
+            node = test();
+        if (ImGui::MenuItem("PrintOnConsole"))
+            node = testPrintOnConsole();
+        if (ImGui::MenuItem("testMultiply"))
+            node = SpawnMultiplyNode();
         if (node)
         {
             BuildNodes();
@@ -605,43 +692,6 @@ bool Eclipse::NodeEditorWindow::CanCreateLink(Pin* a, Pin* b)
 	}
 
 	return true;
-}
-
-Node* Eclipse::NodeEditorWindow::SpawnInputActionNode()
-{
-    s_Nodes.emplace_back(GetNextId(), "InputAction Fire", ImColor(255, 128, 128));
-    s_Nodes.back().Outputs.emplace_back(GetNextId(), "", PinType::Delegate);
-    s_Nodes.back().Outputs.emplace_back(GetNextId(), "Pressed", PinType::Flow);
-    s_Nodes.back().Outputs.emplace_back(GetNextId(), "Released", PinType::Flow);
-
-    BuildNode(&s_Nodes.back());
-
-    return &s_Nodes.back();
-}
-
-Node* Eclipse::NodeEditorWindow::SpawnBranchNode()
-{
-    s_Nodes.emplace_back(GetNextId(), "Branch");
-    s_Nodes.back().Inputs.emplace_back(GetNextId(), "", PinType::Flow);
-    s_Nodes.back().Inputs.emplace_back(GetNextId(), "Condition", PinType::Bool);
-    s_Nodes.back().Outputs.emplace_back(GetNextId(), "True", PinType::Flow);
-    s_Nodes.back().Outputs.emplace_back(GetNextId(), "False", PinType::Flow);
-
-    BuildNode(&s_Nodes.back());
-
-    return &s_Nodes.back();
-}
-
-Node* Eclipse::NodeEditorWindow::SpawnOutputActionNode()
-{
-    s_Nodes.emplace_back(GetNextId(), "OutputAction");
-    s_Nodes.back().Inputs.emplace_back(GetNextId(), "Sample", PinType::Float);
-    s_Nodes.back().Outputs.emplace_back(GetNextId(), "Condition", PinType::Bool);
-    s_Nodes.back().Inputs.emplace_back(GetNextId(), "Event", PinType::Delegate);
-
-    BuildNode(&s_Nodes.back());
-
-    return &s_Nodes.back();
 }
 
 void Eclipse::NodeEditorWindow::DrawPinIcon(const Pin& pin, bool connected, int alpha)

@@ -65,6 +65,7 @@ namespace Eclipse
             ShowCollisionProperty("Collision", currEnt, CompFilter);
             ShowAIProperty("AI Properties", currEnt, CompFilter);
 
+
             AddComponentsController(currEnt);
             ECGui::NextColumn();
             RemoveComponentsController(currEnt);
