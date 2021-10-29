@@ -137,7 +137,7 @@ void Eclipse::NodeEditorWindow::DrawImpl()
                     ed::EndPin();
                     ImGui::PopStyleVar();
                 }
-
+           
                 for (auto& output : node.Outputs)
                 {
                     auto alpha = ImGui::GetStyle().Alpha;
@@ -147,27 +147,21 @@ void Eclipse::NodeEditorWindow::DrawImpl()
                     ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
                     if (output.Type == PinType::String)
                     {
+                        char entNameInput[256] = "";
                         ImGui::PushItemWidth(100.0f);
-                        ImGui::InputText("##edit", output.Data, 128);
+
+                        if (ImGui::InputText("##edit", entNameInput, 128, ImGuiInputTextFlags_EnterReturnsTrue))
+                        {
+                                output.Data = entNameInput;
+                        }
+
                         ImGui::PopItemWidth();
 
                         bool hasOutputDelegates = false;
                         for (auto& output : node.Outputs)
                             if (output.Type == PinType::Delegate)
                                 hasOutputDelegates = true;
-                        
-                        if (node.Type == NodeType::test)
-                        {
-                            for (auto& link : s_Links)
-                            {
-                                if (output.ID == link.StartPinID)
-                                {
-                                    std::cout << output.Data;
-                                }
-                            }
-                        
-                        }
-   
+
                     }
                     if (!output.Name.empty())
                     {
@@ -180,67 +174,9 @@ void Eclipse::NodeEditorWindow::DrawImpl()
                     ed::EndPin();
                     ImGui::PopStyleVar();
                 }
+               
+               
             }
-
-            /*if (node.Type == NodeType::testmultiply)
-            {
-                for (auto& input : node.Inputs)
-                {
-                    if (input.Type == PinType::Float)
-                    {
-                        static char in1[127];
-                        static char in2[127];
-                        ImGui::PushItemWidth(100.0f);
-                        ImGui::InputText("##edit", in1, 128);
-                        ImGui::PopItemWidth();
-                        ImGui::PushItemWidth(100.0f);
-                        ImGui::InputText("##edit", in2, 128);
-                        ImGui::PopItemWidth();
-                    }
-
-                    if (!input.Name.empty())
-                    {
-                        ImGui::TextUnformatted(input.Name.c_str());
-                    }
-
-                    auto alpha = ImGui::GetStyle().Alpha;
-                    if (newLinkPin && !CanCreateLink(newLinkPin, &input) && &input != newLinkPin)
-                        alpha = alpha * (48.0f / 255.0f);
-
-                    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
-                    ed::BeginPin(input.ID, ed::PinKind::Output);
-                    DrawPinIcon(input, IsPinLinked(input.ID), (int)(alpha * 255));
-                    ed::EndPin();
-                    ImGui::PopStyleVar();
-                }
-
-                for (auto& output : node.Outputs)
-                {
-                    auto alpha = ImGui::GetStyle().Alpha;
-                    if (newLinkPin && !CanCreateLink(newLinkPin, &output) && &output != newLinkPin)
-                        alpha = alpha * (48.0f / 255.0f);
-
-                    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
-
-                    if (output.Type == PinType::Float)
-                    {
-                        char out[127];
-                        ImGui::PushItemWidth(100.0f);
-                        ImGui::Text("##edit", out, 128);
-                        ImGui::PopItemWidth();
-                    }
-
-                    if (!output.Name.empty())
-                    {
-                        ImGui::TextUnformatted(output.Name.c_str());
-                    }
-                    ECGui::InsertSameLine();
-                    ed::BeginPin(output.ID, ed::PinKind::Output);
-                    DrawPinIcon(output, IsPinLinked(output.ID), (int)(alpha * 255));
-                    ed::EndPin();
-                    ImGui::PopStyleVar();
-                }
-            }*/
             ed::EndNode();
         }
 
@@ -454,10 +390,6 @@ void Eclipse::NodeEditorWindow::DrawImpl()
     if (ImGui::BeginPopup("Create New Node"))
     {
         auto newNodePostion = openPopupPosition;
-        //ImGui::SetCursorScreenPos(ImGui::GetMousePosOnOpeningCurrentPopup());
-
-        //auto drawList = ImGui::GetWindowDrawList();
-        //drawList->AddCircleFilled(ImGui::GetMousePosOnOpeningCurrentPopup(), 10.0f, 0xFFFF00FF);
 
         Node* node = nullptr;
         if (ImGui::MenuItem("Input Action"))
@@ -509,33 +441,39 @@ void Eclipse::NodeEditorWindow::DrawImpl()
     ed::Resume();
 # endif
 
-    /*
-        cubic_bezier_t c;
-        c.p0 = pointf(100, 600);
-        c.p1 = pointf(300, 1200);
-        c.p2 = pointf(500, 100);
-        c.p3 = pointf(900, 600);
-
-        auto drawList = ImGui::GetWindowDrawList();
-        auto offset_radius = 15.0f;
-        auto acceptPoint = [drawList, offset_radius](const bezier_subdivide_result_t& r)
-        {
-            drawList->AddCircle(to_imvec(r.point), 4.0f, IM_COL32(255, 0, 255, 255));
-
-            auto nt = r.tangent.normalized();
-            nt = pointf(-nt.y, nt.x);
-
-            drawList->AddLine(to_imvec(r.point), to_imvec(r.point + nt * offset_radius), IM_COL32(255, 0, 0, 255), 1.0f);
-        };
-
-        drawList->AddBezierCurve(to_imvec(c.p0), to_imvec(c.p1), to_imvec(c.p2), to_imvec(c.p3), IM_COL32(255, 255, 255, 255), 1.0f);
-        cubic_bezier_subdivide(acceptPoint, c);
-    */
-
     ed::End();
 
 
-    ed::SetCurrentEditor(nullptr);
+
+    for (auto& node : s_Nodes)
+    {
+        if (node.Type == NodeType::test)
+        {           
+            for (auto& link : s_Links)
+            {
+                for (auto& output : node.Outputs)
+                {
+                    if (output.Type == PinType::String)
+                    {
+                        if (output.ID == link.StartPinID)
+                        {
+                            std::cout << output.Data;
+                        }
+                    }
+                }
+            }
+
+        }
+
+    }
+
+
+
+
+
+
+
+
 
     //ImGui::ShowTestWindow();
     //ImGui::ShowMetricsWindow();

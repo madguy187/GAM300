@@ -67,15 +67,14 @@ namespace Eclipse
     {
         ed::PinId   ID;
         ::Node* Node;
-        char Data[128] = "";
+        std::string Data;
         std::string Name;
         PinType     Type;
         PinKind     Kind;
 
         Pin(int id, const char* name, PinType type) :
-            ID(id), Node(nullptr), Name(name), Type(type), Kind(PinKind::Input)
+            ID(id), Node(nullptr), Name(name), Type(type), Kind(PinKind::Input), Data({""})
         {
-            memset(Data, 0, 128);
         }
     };
 
