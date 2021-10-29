@@ -94,7 +94,7 @@ namespace Eclipse
 
 	bool ECGui::IsItemActive()
 	{
-		return ImGuiAPI::IsItemActive();;
+		return ImGuiAPI::IsItemActive();
 	}
 
 	void ECGui::SetColumns(int count, const char* id, bool border)
