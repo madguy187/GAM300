@@ -51,14 +51,19 @@ namespace Eclipse
 		TransformComponent& childTransComp = engine->world.GetComponent<TransformComponent>(childEnt);
 		TransformComponent& parentTransComp = engine->world.GetComponent<TransformComponent>(parentEnt);
 
-		glm::mat4 model = glm::mat4(1.0f);
+		glm::mat4 T = glm::mat4(1.0f);
+		glm::mat4 R = glm::mat4(1.0f);
 		glm::mat4 identityMatrix = glm::mat4(1.0f);
-		model = glm::translate(model, parentTransComp.position.ConvertToGlmVec3Type());
-		model = model * identityMatrix;
-		model = glm::rotate(model, glm::radians(parentTransComp.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::rotate(model, glm::radians(parentTransComp.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::rotate(model, glm::radians(parentTransComp.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-		model = model * identityMatrix;
+		T = glm::translate(T, parentTransComp.position.ConvertToGlmVec3Type());
+		//T = T * identityMatrix;
+		R = glm::rotate(R, glm::radians(parentTransComp.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+		R = glm::rotate(R, glm::radians(parentTransComp.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+		R = glm::rotate(R, glm::radians(parentTransComp.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+		//model = model * identityMatrix;
+
+		glm::mat4 model = T * R;
+		ParentComponent& parentComp = engine->world.GetComponent<ParentComponent>(parentEnt);
+		parentComp.model = model;
 
 		model = glm::translate(model, childComp.PosOffset.ConvertToGlmVec3Type());
 		glm::vec4 temp = glm::vec4{ 0, 0, 0, 1 };
