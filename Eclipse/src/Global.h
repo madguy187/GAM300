@@ -1,6 +1,7 @@
 #pragma once
 //#include "ECS/ComponentManager/ComponentList.h"
 
+#define M_PI       3.14159265358979323846   // pi
 #define EPSILON 0.000001f
 #define PTR_ADD( PTR, OFFSET ) \
   ((void *)(((char *)(PTR)) + (OFFSET)))

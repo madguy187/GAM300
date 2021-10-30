@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "PhysicsManager.h"
+#include "Global.h"
 
 namespace Eclipse
 {

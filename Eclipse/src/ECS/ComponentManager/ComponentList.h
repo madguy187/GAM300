@@ -17,12 +17,11 @@
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/PrefabComponent.h"
 #include "ECS/ComponentManager/Components/AudioComponent.h"
+#include "ECS/ComponentManager/Components/RigidBodyComponent.h"
+#include "ECS/ComponentManager/Components/CollisionComponent.h"
 
 namespace Eclipse
 {
-	struct RigidBodyComponent;
-	struct CollisionComponent;
-
 	template<typename ...T>
 	struct TypeList
 	{
