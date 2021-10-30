@@ -638,6 +638,17 @@ namespace Eclipse
                     //unsigned int specularIdx = 0;
                     //unsigned int normalIdx = 0;
 
+                    glActiveTexture(GL_TEXTURE0);
+
+                    if (Material.HoldingTextures.size() == 0)
+                    {
+                        engine->gPBRManager->SetAOConstant(shader, 1.0f);
+                        engine->gPBRManager->SetMetallicConstant(shader, 0.5f);
+                        engine->gPBRManager->SetRoughnessConstant(shader, 0.5f);
+                        engine->gPBRManager->SetInstanceFlag(shader, false);
+                        engine->gPBRManager->SetAlbedoConstant(shader, glm::vec4(0.8,0.8,0.8,1.0));
+                    }
+
                     for (unsigned int it = 0; it < Material.HoldingTextures.size(); it++)
                     {
                         std::string name;
@@ -677,6 +688,8 @@ namespace Eclipse
                             Material.HoldingTextures[it].Bind();
                         }
                     }
+
+                    glActiveTexture(GL_TEXTURE0);
                 }
 
                 // reset

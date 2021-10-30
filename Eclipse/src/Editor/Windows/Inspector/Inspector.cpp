@@ -480,7 +480,7 @@ namespace Eclipse
                 ECGui::SetColumnOffset(1, 140);
                 auto& _Texture = engine->world.GetComponent<MaterialComponent>(ID);
 
-                ECGui::DrawTextWidget<const char*>("Texture", EMPTY_STRING);
+                ECGui::DrawTextWidget<const char*>("NoTextures", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::CheckBoxBool("NoTextures", &_Texture.NoTextures);
