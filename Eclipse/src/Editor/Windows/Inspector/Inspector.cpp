@@ -590,7 +590,10 @@ namespace Eclipse
                 ECGui::DrawTextWidget<const char*>("Normal Map", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::CheckBoxBool("Normal Map", &_Material.IsNormalMap);
+                if (_Material.MaterialInstanceName.empty() == true)
+                {
+                    ECGui::CheckBoxBool("Normal Map", &_Material.IsNormalMap);
+                }
                 ECGui::NextColumn();
 
                 //ECGui::NextColumn();
