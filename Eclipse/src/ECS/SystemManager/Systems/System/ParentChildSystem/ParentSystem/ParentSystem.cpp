@@ -66,8 +66,6 @@ namespace Eclipse
 		glm::vec3 newPos = model * temp;
 		childTransComp.position = newPos;
 
-		//std::cout << childComp.PosOffset.x << " " << childComp.PosOffset.y << " " << childComp.PosOffset.z << std::endl;
-
 		childTransComp.rotation = parentTransComp.rotation + childComp.RotOffset;
 		childTransComp.scale.setX(parentTransComp.scale.getX() * childComp.ScaleOffset.getX());
 		childTransComp.scale.setY(parentTransComp.scale.getY() * childComp.ScaleOffset.getY());

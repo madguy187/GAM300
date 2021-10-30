@@ -27,12 +27,7 @@ namespace Eclipse
 			glm::vec3 childPos = model * oldChildPos;
 
 			childComp.PosOffset = childPos - parentPos;
-
-			/*float difference = abs(distance - childComp.distance);*/
-			//childComp.PosOffset = childTrans.position - parentTrans.position;
 			childComp.RotOffset = childTrans.rotation - parentTrans.rotation;
-
-			//std::cout << childComp.PosOffset.x << " " << childComp.PosOffset.y << " " << childComp.PosOffset.z << std::endl;
 		}
 
 		engine->Timer.SetName({ SystemName::CHILD });
