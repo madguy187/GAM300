@@ -86,132 +86,14 @@ namespace Eclipse
 
                 entityName = my_strcat(entCom.Name, " ", list[index]);
 
-                if (engine->world.CheckComponent<ParentComponent>(list[index]) && entCom.Parent.empty())
-                {
-
-                    auto& parent = engine->world.GetComponent<ParentComponent>(list[index]);
-
-                    entityName = my_strcat(entCom.Name, " ", list[index]);
-
-                    if (ECGui::CreateSelectableButton(entityName.c_str(), &entCom.IsActive))
-                    {
-
-                        if (curr.index == list[index])
-                        {
-                            entCom.IsActive = true;
-                            engine->editorManager->SetGlobalIndex(index);                  
-                            UpdateEntityTracker(engine->editorManager->GetEntityID(static_cast<int>(index)));
-                            for (auto& it : parent.child)
-                            {
-                                auto& parent2Com = engine->world.GetComponent<EntityComponent>(it);
-
-                                auto& tempent = engine->world.GetComponent<EntityComponent>(list[engine->editorManager->GetEntityIndex(it)]);
-                                auto& entCom2 = engine->world.GetComponent<EntityComponent>(it);
-                                std::string name = my_strcat(entCom2.Name, " ", list[engine->editorManager->GetEntityIndex(it)]);
-                                EntitySelectionTracker ent = { it , name };
-                                if (!exist(EntTracker_.CurrParent_, ent))
-                                {
-                                    EntTracker_.CurrParent_.emplace_back(ent);
-                                }
-
-                                ParentRecursion(parent2Com, it, list, prev, curr);
-
-                                entCom2.IsActive = true;
-                                UpdateEntityTracker(it);
-                            }
-
-
-                            continue;
-                        }
-
-                        if (!curr.name.empty())
-                        {
-                            prev.name = curr.name;
-                            prev.index = curr.index;
-                        }
-
-                        if (!EntTracker_.CurrParent_.empty())
-                        {
-                            EntTracker_.PrevParent_ = EntTracker_.CurrParent_;
-                            EntTracker_.CurrParent_.clear();
-                        }
-
-                        curr.name = entityName;
-                        curr.index = list[index];
-
-                        if (!isChild(entCom.Child, prev.index))
-                        {
-                            if (!prev.name.empty() && curr.name != prev.name)
-                            {
-                                bool deleted = true;
-
-                                if (std::find(list.begin(), list.end(), prev.index) != list.end())
-                                {
-                                    deleted = false;
-                                }
-
-                                if (!deleted)
-                                {
-                                    auto& prevEntCom = engine->world.GetComponent<EntityComponent>(prev.index);
-                                    prevEntCom.IsActive = false;
-
-                                    for (auto& it : EntTracker_.PrevParent_)
-                                    {
-                                        auto& prevEntCom2 = engine->world.GetComponent<EntityComponent>(it.index);
-
-                                        prevEntCom.IsActive = false;
-                                    }
-                                }
-                            }
-                        }
-                        entCom.IsActive = true;
-                        engine->editorManager->SetGlobalIndex(index);
-                        UpdateEntityTracker(engine->editorManager->GetEntityID(static_cast<int>(index)));
-
-                        for (auto& it : parent.child)
-                        {       
-                            auto& entCom2 = engine->world.GetComponent<EntityComponent>(it);
-                            std::string name = my_strcat(entCom2.Name, " ", list[engine->editorManager->GetEntityIndex(it)]);
-                            EntitySelectionTracker ent = { it , name };
-                            if (!exist(EntTracker_.CurrParent_, ent))
-                            {
-                                EntTracker_.CurrParent_.emplace_back(ent);
-                            }
-
-                            entCom2.IsActive = true;
-                            UpdateEntityTracker(it);
-                        }
-
-                        engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
-                            static_cast<int>(index), PayloadSourceType::PST_ENTITY, curr.index);
-                        engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
-                            static_cast<int>(index), entCom.IsActive);           
-                    }
-
-                    for (auto& it : parent.child)
-                    {
-                        auto& parent2Com = engine->world.GetComponent<EntityComponent>(it);
-                        ParentRecursion(parent2Com, it, list, prev, curr);
-                    }
-
-
-                    engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
-                        static_cast<int>(index), PayloadSourceType::PST_ENTITY, curr.index);
-                }
-
-
                 if (!engine->world.CheckComponent<ParentComponent>(list[index]) && !engine->world.CheckComponent<ChildComponent>(list[index]))
                 {
                     if (ECGui::CreateSelectableButton(entityName.c_str(), &entCom.IsActive))
                     {
-                        if (curr.index == list[index])
-                        {
-                            entCom.IsActive = true;
-                            engine->editorManager->SetGlobalIndex(index);
-                            UpdateEntityTracker(engine->editorManager->GetEntityID(static_cast<int>(index)));
+                        entCom.IsActive = true;
+                        engine->editorManager->SetGlobalIndex(index);
+                        UpdateEntityTracker(engine->editorManager->GetEntityID(static_cast<int>(index)));
 
-                            continue;
-                        }
 
                         if (!curr.name.empty())
                         {
@@ -257,6 +139,77 @@ namespace Eclipse
                         static_cast<int>(index), entCom.IsActive);
                 }
 
+                if (engine->world.CheckComponent<ParentComponent>(list[index]) && entCom.Parent.empty())
+                {
+
+                    auto& parent = engine->world.GetComponent<ParentComponent>(list[index]);
+
+                    entityName = my_strcat(entCom.Name, " ", list[index]);
+
+                    if (ECGui::CreateSelectableButton(entityName.c_str(), &entCom.IsActive))
+                    {
+
+                         entCom.IsActive = true;
+                         engine->editorManager->SetGlobalIndex(index);
+                         UpdateEntityTracker(engine->editorManager->GetEntityID(static_cast<int>(index)));
+
+
+                        if (!curr.name.empty())
+                        {
+                            prev.name = curr.name;
+                            prev.index = curr.index;
+                        }
+
+                        if (!EntTracker_.CurrParent_.empty())
+                        {
+                            EntTracker_.PrevParent_ = EntTracker_.CurrParent_;
+                            EntTracker_.CurrParent_.clear();
+                        }
+
+                        curr.name = entityName;
+                        curr.index = list[index];
+
+                        if (!isChild(entCom.Child, prev.index))
+                        {
+                            if (!prev.name.empty() && curr.name != prev.name)
+                            {
+                                bool deleted = true;
+
+                                if (std::find(list.begin(), list.end(), prev.index) != list.end())
+                                {
+                                    deleted = false;
+                                }
+
+                                if (!deleted)
+                                {
+                                    auto& prevEntCom = engine->world.GetComponent<EntityComponent>(prev.index);
+                                    prevEntCom.IsActive = false;
+
+                                    for (auto& it : EntTracker_.PrevParent_)
+                                    {
+                                        auto& prevEntCom2 = engine->world.GetComponent<EntityComponent>(it.index);
+
+                                        prevEntCom.IsActive = false;
+                                    }
+                                }
+                            }
+                        }              
+     
+                    }
+
+                    engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
+                        static_cast<int>(index), PayloadSourceType::PST_ENTITY, curr.index);
+                    engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
+                        static_cast<int>(index), entCom.IsActive);
+
+                    for (auto& it : parent.child)
+                    {
+                        auto& parent2Com = engine->world.GetComponent<EntityComponent>(it);
+                        ParentRecursion(parent2Com, it, list, prev, curr);
+                    }
+
+                }
+
             }
 
         }
@@ -265,95 +218,132 @@ namespace Eclipse
     void HierarchyWindow::ParentRecursion(EntityComponent& entCom, Entity Num, const std::vector<Entity>& list, EntitySelectionTracker& prev, EntitySelectionTracker& curr)
     {
         std::string entityName{};
+        ImGui::Indent(5.0f);
         if (engine->world.CheckComponent<ParentComponent>(Num))
         {
             auto& parent2 = engine->world.GetComponent<ParentComponent>(Num);
 
             entityName = my_strcat(entCom.Name, " ", Num);
 
-            if (ECGui::CreateSelectableButton(entityName.c_str(), &entCom.IsActive))
+            std::string ButtonName = ICON_MDI_SUBDIRECTORY_ARROW_RIGHT + entityName;
+
+            if (ECGui::CreateSelectableButton(ButtonName.c_str(), &entCom.IsActive))
             {
+                entCom.IsActive = true;
+                engine->editorManager->SetGlobalIndex(engine->editorManager->GetEntityIndex(Num));
+                UpdateEntityTracker(Num);
 
-               // if (!curr.name.empty())
-               // {
-               //     prev.name = curr.name;
-               //     prev.index = curr.index;
-               // }
-               //
-               // curr.name = entityName;
-               // curr.index = Num;
-               //
-               // if (!prev.name.empty() && curr.name != prev.name)
-               // {
-               //     bool deleted = true;
-               //
-               //     if (std::find(list.begin(), list.end(), prev.index) != list.end())
-               //     {
-               //         deleted = false;
-               //     }
-               //
-               //     if (!deleted)
-               //     {
-               //         auto& prevEntCom = engine->world.GetComponent<EntityComponent>(prev.index);
-               //         prevEntCom.IsActive = false;
-               //     }
-               // }
-               //
-               // entCom.IsActive = true;
-               // engine->editorManager->SetGlobalIndex(engine->editorManager->GetEntityIndex(Num));
-               // UpdateEntityTracker(Num);
-               //
-               // for (auto& it : parent2.child)
-               // {
-               //
-               //     auto& parent2Com = engine->world.GetComponent<EntityComponent>(it);
-               //
-               //     ParentRecursion(parent2Com, it, list, prev, curr);
-               //
-               // }
 
+                if (!curr.name.empty())
+                {
+                    prev.name = curr.name;
+                    prev.index = curr.index;
+                }
+
+                if (!EntTracker_.CurrParent_.empty())
+                {
+                    EntTracker_.PrevParent_ = EntTracker_.CurrParent_;
+                    EntTracker_.CurrParent_.clear();
+                }
+
+                curr.name = entityName;
+                curr.index = Num;
+
+                if (!isChild(entCom.Child, prev.index))
+                {
+                    if (!prev.name.empty() && curr.name != prev.name)
+                    {
+                        bool deleted = true;
+
+                        if (std::find(list.begin(), list.end(), prev.index) != list.end())
+                        {
+                            deleted = false;
+                        }
+
+                        if (!deleted)
+                        {
+                            auto& prevEntCom = engine->world.GetComponent<EntityComponent>(prev.index);
+                            prevEntCom.IsActive = false;
+
+                            for (auto& it : EntTracker_.PrevParent_)
+                            {
+                                auto& prevEntCom2 = engine->world.GetComponent<EntityComponent>(it.index);
+
+                                prevEntCom.IsActive = false;
+                            }
+                        }
+                    }
+                }
+            
+
+            }
+
+            engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
+                engine->editorManager->GetEntityIndex(Num), PayloadSourceType::PST_ENTITY, curr.index);
+            engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
+                engine->editorManager->GetEntityIndex(Num), entCom.IsActive);
+
+
+            for (auto& it : parent2.child)
+            {
+                auto& parent2Com = engine->world.GetComponent<EntityComponent>(it);
+                ParentRecursion(parent2Com, it, list, prev, curr);
             }
         }
         else
         {
             entityName = my_strcat(entCom.Name, " ", Num);
 
-            if (ECGui::CreateSelectableButton(entityName.c_str(), &entCom.IsActive))
+            std::string ButtonName = ICON_MDI_SUBDIRECTORY_ARROW_RIGHT + entityName;
+
+            if (ECGui::CreateSelectableButton(ButtonName.c_str(), &entCom.IsActive))
             {
 
-                //if (!curr.name.empty())
-                //{
-                //    prev.name = curr.name;
-                //    prev.index = curr.index;
-                //}
-                //
-                //curr.name = entityName;
-                //curr.index = Num;
-                //
-                //if (!prev.name.empty() && curr.name != prev.name)
-                //{
-                //    bool deleted = true;
-                //
-                //    if (std::find(list.begin(), list.end(), prev.index) != list.end())
-                //    {
-                //        deleted = false;
-                //    }
-                //
-                //    if (!deleted)
-                //    {
-                //        auto& prevEntCom = engine->world.GetComponent<EntityComponent>(prev.index);
-                //        prevEntCom.IsActive = false;
-                //    }
-                //}
-                //
                 entCom.IsActive = true;
                 engine->editorManager->SetGlobalIndex(engine->editorManager->GetEntityIndex(Num));
                 UpdateEntityTracker(Num);
-                engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
-                    engine->editorManager->GetEntityIndex(Num), PayloadSourceType::PST_ENTITY, curr.index);
-                engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
-                    engine->editorManager->GetEntityIndex(Num), entCom.IsActive);
+
+
+                if (!curr.name.empty())
+                {
+                    prev.name = curr.name;
+                    prev.index = curr.index;
+                }
+                
+                curr.name = entityName;
+                curr.index = Num;
+                
+                if (!prev.name.empty() && curr.name != prev.name)
+                {
+                    bool deleted = true;
+                
+                    if (std::find(list.begin(), list.end(), prev.index) != list.end())
+                    {
+                        deleted = false;
+                    }
+                
+                    if (!deleted)
+                    {
+                        auto& prevEntCom = engine->world.GetComponent<EntityComponent>(prev.index);
+                        prevEntCom.IsActive = false;
+                    }
+                }
+                
+                for (size_t index = 0; index < list.size(); ++index)
+                {
+                    auto& parentCom = engine->world.GetComponent<EntityComponent>(list[index]);
+
+                    if (list[index] != Num)
+                    {
+                        parentCom.IsAChild = false;
+                    }
+
+                }
             }
+            engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
+                engine->editorManager->GetEntityIndex(Num), PayloadSourceType::PST_ENTITY, curr.index);
+            engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
+                engine->editorManager->GetEntityIndex(Num), entCom.IsActive);
 
         }
 
@@ -433,25 +423,78 @@ namespace Eclipse
         if (engine->world.CheckComponent<MaterialComponent>(ID))
             engine->MaterialManager.HighlightClick(ID);
 
+        auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
+
         if (ID != EntTracker_.CurrEnt_.index)
         {
-            auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
 
             if (engine->world.CheckComponent<EntityComponent>(EntTracker_.CurrEnt_.index))
             {
+
                 auto& prevEntCom = engine->world.GetComponent<EntityComponent>(EntTracker_.CurrEnt_.index);
                 prevEntCom.IsActive = false;
                 EntTracker_.PrevEnt_.name = EntTracker_.CurrEnt_.name;
                 EntTracker_.PrevEnt_.index = EntTracker_.CurrEnt_.index;
 
+                if (engine->world.CheckComponent<ParentComponent>(EntTracker_.PrevEnt_.index))
+                {
+                    auto& parent = engine->world.GetComponent<ParentComponent>(EntTracker_.PrevEnt_.index);
+
+                    for (auto& it : parent.child)
+                    {
+                        //check if child have a child
+                        highlightChild(it, false);
+
+                        auto& child = engine->world.GetComponent<EntityComponent>(it);
+
+                        child.IsActive = false;
+                    }
+                }
+
+                /// high light child /// 
+                if (engine->world.CheckComponent<ParentComponent>(ID))
+                {
+                    auto& parent = engine->world.GetComponent<ParentComponent>(ID);
+
+                    for (auto& it : parent.child)
+                    {
+                        //check if child have a child
+                        highlightChild(it, true);
+                       
+                        auto& child = engine->world.GetComponent<EntityComponent>(it);
+
+                        child.IsActive = true;
+                    }
+                }
+
                 if (engine->world.CheckComponent<MaterialComponent>(EntTracker_.CurrEnt_.index))
                     engine->MaterialManager.UnHighlight(EntTracker_.CurrEnt_.index);
+
             }
 
             EntTracker_.CurrEnt_.name = my_strcat(entCom.Name, " ", ID);
             EntTracker_.CurrEnt_.index = ID;
             entCom.IsActive = true;
         }
+       //else
+       //    if (engine->world.CheckComponent<ChildComponent>(ID))
+       //    {
+       //        auto& child = engine->world.GetComponent<ChildComponent>(ID);
+       //        auto& parentofchild = engine->world.GetComponent<EntityComponent>(child.parentIndex);
+       //        parentofchild.IsActive = false;
+       //
+       //        auto& prevEntCom = engine->world.GetComponent<EntityComponent>(EntTracker_.CurrEnt_.index);
+       //        prevEntCom.IsActive = false;
+       //        EntTracker_.PrevEnt_.name = EntTracker_.CurrEnt_.name;
+       //        EntTracker_.PrevEnt_.index = EntTracker_.CurrEnt_.index;
+       //
+       //        if (engine->world.CheckComponent<MaterialComponent>(EntTracker_.CurrEnt_.index))
+       //            engine->MaterialManager.UnHighlight(EntTracker_.CurrEnt_.index);
+       //
+       //        EntTracker_.CurrEnt_.name = my_strcat(entCom.Name, " ", ID);
+       //        EntTracker_.CurrEnt_.index = ID;
+       //        entCom.IsActive = true;
+       //    }
     }
     size_t HierarchyWindow::GetEntityGlobalIndex(size_t data)
     {
@@ -534,6 +577,23 @@ namespace Eclipse
             }
         }
         return result;
+    }
+
+    void HierarchyWindow::highlightChild(Entity Parent, bool hightlight)
+    {
+        if (engine->world.CheckComponent<ParentComponent>(Parent))
+        {
+            auto& parentCmp = engine->world.GetComponent<ParentComponent>(Parent);
+
+            for (auto& it2 : parentCmp.child)
+            {
+                highlightChild(it2 , hightlight);
+
+                auto& child2 = engine->world.GetComponent<EntityComponent>(it2);
+
+                child2.IsActive = hightlight;
+            }
+        }
     }
 
 

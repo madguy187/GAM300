@@ -48,6 +48,7 @@ namespace Eclipse
 		void ShowCreateModelList();
 		bool isChild(std::vector<Entity> vec, const Entity& elem);
 		bool exist(std::vector<EntitySelectionTracker> vec, const EntitySelectionTracker& elem);
+		void highlightChild(Entity Parent,bool hightlight);
 	private:
 		EntitySelectionWrapper EntTracker_;
 		std::vector<std::vector<std::string>> TagList_;
