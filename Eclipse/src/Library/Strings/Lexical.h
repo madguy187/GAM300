@@ -102,15 +102,15 @@ namespace Eclipse
 	template<> char const* enumStrings<EntityType>::data[] =
 	{
 		"Square",
-		"Circle",
-		"Triangle",
+		//"Circle",
+		//"Triangle",
 		"Stairs",
 		"Sphere",
 		"Cube",
 		"Cylinder",
 		"Cone",
 		"Torus",
-		"Pyramid",
+		//"Pyramid",
 		"ICOSphere",
 		"Planes",
 		"Curve_Stairs",
