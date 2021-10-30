@@ -21,10 +21,9 @@ namespace Eclipse
 			ScriptComponent,
 			CollisionComponent,
 			AudioComponent,
-			AIComponent,
 			SpotLightComponent
 		>;
-		//Cannot cmoppare entiyt, aabb, parent, child, transform
+		//Cannot compare entity, aabb, parent, child, transform, ai, prefab
 		PrefabUseList list{};
 
 		void LoadPrefab(const char* path);
@@ -149,6 +148,8 @@ namespace Eclipse
 
 		void InsertPrefab(const Entity& ent, const char* path, const EUUID& prefabID);
 
+		void RecurseInsertPrefab(const Entity& ent, const char* path, const EUUID& prefabID);
+
 		//For mesh(prefab) editor save button
 		void SavePrefabChanges(const Entity& ent);
 
@@ -156,6 +157,10 @@ namespace Eclipse
 		//void PostUpdate_Prefab();
 
 		void UpdatePrefabSignature(World& sourceW, const Entity& ent, const size_t& setBit, bool setTo);
+
+		Entity RecursiveGeneratePrefab(const Entity& sourceEnt, const char* path, EUUID generatedID, const Entity& parentEnt);
+
+		void UpdateNewGeneratedPrefab(const Entity& prefabEnt, const Entity& parentEnt);
 
 	public:
 		static const std::string PrefabPath;

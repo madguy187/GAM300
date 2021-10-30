@@ -18,9 +18,28 @@ namespace Eclipse
 
 	void PrefabManager::InsertPrefab(const Entity& ent, const char* path, const EUUID& prefabID)
 	{
-		mapPathToID[path] = prefabID;
+		if (path != "")
+		{
+			mapPathToID[path] = prefabID;
+		}
+
 		PrefabIDSet.insert(prefabID);
 		mapPIDToEID[prefabID] = ent;
+	}
+
+	void PrefabManager::RecurseInsertPrefab(const Entity& ent, const char* path, const EUUID& prefabID)
+	{
+		auto& prefabW = engine->prefabWorld;
+		InsertPrefab(ent, path, prefabID);
+
+		auto& entComp = prefabW.GetComponent<EntityComponent>(ent);
+
+		for (auto& child : entComp.Child)
+		{
+			auto& prefabComp = prefabW.GetComponent<PrefabComponent>(child);
+			RecurseInsertPrefab(child, "", prefabComp.PrefabID);
+		}
+
 	}
 
 	void PrefabManager::SavePrefabChanges(const Entity& updatedPrefabEnt)
@@ -125,7 +144,7 @@ namespace Eclipse
 		{
 			if (!CheckPrefabExistence(PrefabID))
 			{
-				InsertPrefab(ent, path, PrefabID);
+				RecurseInsertPrefab(ent, path, PrefabID);
 			}
 			else
 			{
@@ -161,6 +180,107 @@ namespace Eclipse
 
 		return checkPath;
 	}
+	void PrefabManager::UpdateNewGeneratedPrefab(const Entity& prefabEnt, const Entity& parentEnt)
+	{
+		World& prefabW = engine->prefabWorld;
+
+		//Entity component updates
+		auto& entComp = prefabW.GetComponent<EntityComponent>(prefabEnt);
+		entComp.IsActive = false;
+		entComp.Child.clear();
+		entComp.Parent.clear();
+		entComp.IsAChild = parentEnt != MAX_ENTITY;
+
+		//Prefab component updates
+		auto& prefabComp = prefabW.GetComponent<PrefabComponent>(prefabEnt);
+		prefabComp.IsInstance = false;
+		
+		//ClearHighlight
+		if (prefabW.CheckComponent<MaterialComponent>(prefabEnt))
+		{
+			auto& matComp = prefabW.GetComponent<MaterialComponent>(prefabEnt);
+			matComp.Highlight = false;
+		}
+
+		if (prefabW.CheckComponent<ParentComponent>(prefabEnt))
+		{
+			auto& parentComp = prefabW.GetComponent<ParentComponent>(prefabEnt);
+			parentComp.child.clear();
+		}
+
+		if (prefabW.CheckComponent<ChildComponent>(prefabEnt))
+		{
+			if (parentEnt == MAX_ENTITY)
+			{
+				prefabW.DestroyComponent<ChildComponent>(prefabEnt);
+			}
+			else
+			{
+				auto& childComp = prefabW.GetComponent<ChildComponent>(prefabEnt);
+				childComp.parentIndex = parentEnt;
+
+				auto& parent = prefabW.GetComponent<ParentComponent>(parentEnt);
+				parent.child.push_back(prefabEnt);
+
+				auto& parentEntComp = prefabW.GetComponent<EntityComponent>(parentEnt);
+				parentEntComp.Child.push_back(prefabEnt);
+
+				entComp.Parent.push_back(parentEnt);
+			}
+		}
+
+		if (prefabW.CheckComponent<AIComponent>(prefabEnt))
+		{
+			auto& parentComp = prefabW.GetComponent<AIComponent>(prefabEnt);
+			parentComp.waypoints.clear();
+		}
+	}
+
+	Entity PrefabManager::RecursiveGeneratePrefab(const Entity& sourceEnt, const char* path, EUUID generatedID, const Entity& parentEnt)
+	{
+		//Declaration
+		World& prefabW = engine->prefabWorld;
+		World& w = engine->world;
+
+		//Init Prefab Component
+		PrefabComponent comp;
+		comp.PrefabID = generatedID;
+		comp.IsInstance = true;
+
+		if (parentEnt != MAX_ENTITY)
+		{
+			comp.IsChild = true;
+		}
+
+		if (!w.CheckComponent<PrefabComponent>(sourceEnt))
+		{
+			comp.PrefabID = generatedID;
+			w.AddComponent(sourceEnt, comp);
+		}
+		else
+		{
+			auto& existing = w.GetComponent<PrefabComponent>(sourceEnt);
+			existing = comp;
+		}
+
+		//Copy from main world to prefab world
+		Entity newEnt = w.CopyEntity(prefabW, sourceEnt, all_component_list);
+
+		//Update prefab to ideal condition.
+		UpdateNewGeneratedPrefab(newEnt, parentEnt);
+
+		InsertPrefab(newEnt, path, generatedID);
+
+		auto& entComp = w.GetComponent<EntityComponent>(sourceEnt);
+
+		//Generate child prefab
+		for (auto& child : entComp.Child)
+		{
+			RecursiveGeneratePrefab(child, "", ++generatedID, newEnt);
+		}
+
+		return newEnt;
+	}
 
 	void PrefabManager::GeneratePrefab(const Entity& ent, const char* path)
 	{
@@ -168,61 +288,17 @@ namespace Eclipse
 		World& prefabW = engine->prefabWorld;
 		World& w = engine->world;
 
-		//Copy Queue for child.
-		std::queue<Entity> copyQueue;
-		std::vector<Entity> contents;
-		PrefabComponent comp;
 		EUUID generatedID = UUIDGenerator::GenerateUUID();
-		comp.PrefabID = generatedID;
 
-		if (!w.CheckComponent<PrefabComponent>(ent))
-		{
-			comp.PrefabID = generatedID;
-			w.AddComponent(ent, comp);
-		}
-		else
-		{
-			auto& existing = w.GetComponent<PrefabComponent>(ent);
-			existing = comp;
-		}
+		auto& entComp = w.GetComponent<EntityComponent>(ent);
+		//Update map
+		std::string destPath;
 
-		//Push the first entity
-		copyQueue.push(ent);
+		destPath = GenerateFileName(entComp, path);
 
-		//Putting child into queue eventually for prefab saving.
-		while (!copyQueue.empty())
-		{
-			Entity entity = copyQueue.front();
-			copyQueue.pop();
-			/*
-			//Uncomment when parent child is up and implement
-			
-			for (auto& child : children)
-			{
-				copyQueue.push(child);
-			}
-			*/
-			Entity newEnt = w.CopyEntity(prefabW, entity, all_component_list);
-			contents.push_back(newEnt);
-		}
+		Entity newEnt = RecursiveGeneratePrefab(ent, destPath.c_str(), generatedID, MAX_ENTITY);
 
-		auto& prefabComp = w.GetComponent<PrefabComponent>(ent);
-		prefabComp.IsInstance = true;
-
-		auto& entComp = prefabW.GetComponent<EntityComponent>(contents[0]);
-		entComp.IsActive = false;
-
-		if (prefabW.CheckComponent<MaterialComponent>(contents[0]))
-		{
-			auto& matComp = prefabW.GetComponent<MaterialComponent>(contents[0]);
-			matComp.Highlight = false;
-		}
-
-		std::string destPath = GenerateFileName(entComp, path);
-		InsertPrefab(contents[0], destPath.c_str(), generatedID);
-		
-
-		engine->szManager.SavePrefabFile(prefabComp.PrefabID, contents, destPath.c_str());
+		engine->szManager.SavePrefabFile(generatedID, newEnt, destPath.c_str());
 	}
 
 	//Create object using prefab, by passing in the prefab data.
@@ -377,31 +453,10 @@ namespace Eclipse
 	void PrefabManager::OverwritePrefab(const Entity& ent, const char* path)
 	{
 		World& prefabW = engine->prefabWorld;
-		std::queue<Entity> copyQueue;
-		std::vector<Entity> contents;
-
-		//Push the first entity
-		copyQueue.push(ent);
-
-		//Putting child into queue eventually for prefab saving.
-		while (!copyQueue.empty())
-		{
-			Entity entity = copyQueue.front();
-			copyQueue.pop();
-			/*
-			//Uncomment when parent child is up and implement
-
-			for (auto& child : children)
-			{
-				copyQueue.push(child);
-			}
-			*/
-			contents.push_back(entity);
-		}
 
 		auto& prefabComp = prefabW.GetComponent<PrefabComponent>(ent);
 
-		engine->szManager.SavePrefabFile(prefabComp.PrefabID, contents, path);
+		engine->szManager.SavePrefabFile(prefabComp.PrefabID, ent, path);
 	}
 
 	std::string PrefabManager::GetPath(const EUUID& id)

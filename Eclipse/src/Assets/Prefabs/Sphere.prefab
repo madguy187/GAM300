@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
-<Prefab PrefabID="7024886457244983819" Size="1">
-    <Entity_0 ID="1">
+<Prefab PrefabID="7024886457244983819">
+    <Entity_0 ID="3">
         <AABBComponent>
             <center x="0" y="0" z="0" />
             <Min x="-2.5" y="-2.5" z="-2.5" />
@@ -68,4 +68,5 @@
             <PrefabID value="7024886457244983819" />
         </PrefabComponent>
     </Entity_0>
+    <Children Size="0" />
 </Prefab>

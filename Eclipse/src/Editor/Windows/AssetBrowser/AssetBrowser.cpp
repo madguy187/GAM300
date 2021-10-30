@@ -385,7 +385,7 @@ namespace Eclipse
 				if (ECGui::IsMouseDoubleClicked(0) && ECGui::IsItemClicked(0) && ECGui::IsItemHovered())
 				{
 					auto* meshEditor = engine->editorManager->GetEditorWindow<MeshEditorWindow>();
-					std::cout << temp << std::endl;
+
 					if (!meshEditor->IsVisible)
 					{
 						Entity ent = MAX_ENTITY;

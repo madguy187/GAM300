@@ -89,11 +89,15 @@ namespace Eclipse
 
 		bool LoadFile(const char* fullpath);
 
-		void SavePrefab(const EUUID& prefabID, std::vector<Entity>& prefabContents);
+		void SavePrefab(const EUUID& prefabID, const Entity& ent);
 
 		EUUID LoadPrefab(Entity& dszEnt, bool IsFromMainWorld = false);
 
 		void SavePrefabWorld(const std::set<Entity>& entities);
+
+		void LoadPrefabCleanUp(World& world, const Entity& ent);
+
+		void UpdateParentChild(World& world, const Entity& parentEnt, const Entity& childEnt);
 
 	public:
 		static Serializer sz;
@@ -111,7 +115,7 @@ namespace Eclipse
 
 		bool CheckBackUpPathExistence();
 
-		void SavePrefabFile(const EUUID& prefabID, std::vector<Entity>& prefabContents, const char* path);
+		void SavePrefabFile(const EUUID& prefabID, const Entity& ent, const char* path);
 
 		EUUID LoadPrefabFile(Entity& dszEnt, const char* fullpath, bool IsFromMainWorld = false);
 
@@ -223,6 +227,38 @@ namespace Eclipse
 			}
 
 			return true;
+		}
+
+		inline bool CompareComponentData(const EntityComponent& lhs, const EntityComponent& rhs)
+		{
+			bool result = true;
+			result = (lhs.Tag == rhs.Tag);
+			result = (lhs.IsAChild == rhs.IsAChild);
+			return result;
+		}
+		
+		inline bool CompareComponentData(const TransformComponent& lhs, const TransformComponent& rhs)
+		{
+			bool result = true;
+			result = (lhs.rotation == rhs.rotation);
+			result = (lhs.scale == rhs.scale);
+			return result;
+		}
+		
+		inline bool CompareComponentData(const ParentComponent& lhs, const ParentComponent& rhs)
+		{
+			bool result = true;
+			result = (lhs.model == rhs.model);
+			return result;
+		}
+
+		inline bool CompareComponentData(const ChildComponent& lhs, const ChildComponent& rhs)
+		{
+			bool result = true;
+			result = (lhs.PosOffset == rhs.PosOffset);
+			result = (lhs.RotOffset == rhs.RotOffset);
+			result = (lhs.ScaleOffset == rhs.ScaleOffset);
+			return result;
 		}
 
 		template <typename... T>
