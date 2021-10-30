@@ -30,8 +30,6 @@ namespace Eclipse
 
 		for (auto& entity : mEntities)
 		{
-			/*EntityComponent& entityComp = engine->world.GetComponent<EntityComponent>(entity);
-			if (entityComp.Tag != EntityType::ENT_MODEL || !engine->GetPlayState()) continue;*/
 			ParentComponent& parentComp = engine->world.GetComponent<ParentComponent>(entity);
 
 			for (auto& childEntity : parentComp.child)
@@ -51,28 +49,26 @@ namespace Eclipse
 		TransformComponent& childTransComp = engine->world.GetComponent<TransformComponent>(childEnt);
 		TransformComponent& parentTransComp = engine->world.GetComponent<TransformComponent>(parentEnt);
 
-		glm::mat4 model = glm::mat4(1.0f);
+		glm::mat4 T = glm::mat4(1.0f);
+		glm::mat4 R = glm::mat4(1.0f);
 		glm::mat4 identityMatrix = glm::mat4(1.0f);
-		model = glm::translate(model, parentTransComp.position.ConvertToGlmVec3Type());
-		model = model * identityMatrix;
-		model = glm::rotate(model, glm::radians(parentTransComp.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::rotate(model, glm::radians(parentTransComp.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::rotate(model, glm::radians(parentTransComp.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-		model = model * identityMatrix;
+		T = glm::translate(T, parentTransComp.position.ConvertToGlmVec3Type());
+		R = glm::rotate(R, glm::radians(parentTransComp.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+		R = glm::rotate(R, glm::radians(parentTransComp.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+		R = glm::rotate(R, glm::radians(parentTransComp.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+
+		glm::mat4 model = T * R;
+		ParentComponent& parentComp = engine->world.GetComponent<ParentComponent>(parentEnt);
+		parentComp.model = model;
 
 		model = glm::translate(model, childComp.PosOffset.ConvertToGlmVec3Type());
 		glm::vec4 temp = glm::vec4{ 0, 0, 0, 1 };
 		glm::vec3 newPos = model * temp;
 		childTransComp.position = newPos;
 
-		std::cout << childComp.PosOffset.x << " " << childComp.PosOffset.y << " " << childComp.PosOffset.z << std::endl;
-
 		childTransComp.rotation = parentTransComp.rotation + childComp.RotOffset;
 		childTransComp.scale.setX(parentTransComp.scale.getX() * childComp.ScaleOffset.getX());
 		childTransComp.scale.setY(parentTransComp.scale.getY() * childComp.ScaleOffset.getY());
 		childTransComp.scale.setZ(parentTransComp.scale.getZ() * childComp.ScaleOffset.getZ());
-
-		/*float distance = abs(VectorDistance<float, 3>(childTransComp.position, parentTransComp.position));
-		childComp.distance = distance;*/
 	}
 }

@@ -319,6 +319,22 @@ namespace Eclipse
 		}
 	}
 
+	bool EditorManager::IsAnySwitchWindowHovered()
+	{
+		auto* sv1 = dynamic_cast<TopSwitchViewWindow*>(Windows_[2].get());
+		auto* sv2 = dynamic_cast<BottomSwitchViewWindow*>(Windows_[3].get());
+		auto* sv3 = dynamic_cast<LeftSwitchViewWindow*>(Windows_[4].get());
+		auto* sv4 = dynamic_cast<RightSwitchViewWindow*>(Windows_[5].get());
+
+		if (sv1->GetIsWindowHovered() || sv2->GetIsWindowHovered()
+			|| sv3->GetIsWindowHovered() || sv4->GetIsWindowHovered())
+		{
+			return true;
+		}
+
+		return false;
+	}
+
 	bool EditorManager::GetMeshEditorActive() const
 	{
 		return IsMeshEditorActive;
