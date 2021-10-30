@@ -5,7 +5,6 @@ namespace Eclipse
 {
     void LightingSystem::Init()
     {
-        EDITOR_LOG_INFO("LightingSystem Init");
         engine->LightManager.Init();
     }
 

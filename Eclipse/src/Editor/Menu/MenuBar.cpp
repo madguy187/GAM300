@@ -12,7 +12,7 @@ namespace Eclipse
 	{
 		for (auto& member : MenuComponents_)
 		{
-			if (!strcmp(member.GetName(), "About Eclipse"))
+			if (!strcmp(member.GetName(), "About Eclipse" ICON_MDI_CROSSHAIRS_QUESTION))
 				ECGui::DrawMenuComponent<void()>(member.GetName(),
 					std::bind(&MenuBar::ShowTeamInformation, this));
 			else
@@ -45,15 +45,18 @@ namespace Eclipse
 		{
 			ECGui::OpenPopup("Exit?");
 
+			ImGui::GetMainViewport()->Flags |= ImGuiViewportFlags_NoFocusOnClick;
+			ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+
 			ImVec2 center = ECGui::GetMainViewport()->GetCenter();
 			ECGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
 			if (ECGui::BeginPopupModal("Exit?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 			{
-				ECGui::DrawTextWidget<const char*>("Are you sure you want to exit the engine?\nAll unsaved work cannot be recovered.\n\n", EMPTY_STRING);
+				ECGui::DrawTextWidget<const char*>(" Are you sure you want to exit the engine?\n   All unsaved work cannot be recovered.", EMPTY_STRING);
 				ECGui::InsertHorizontalLineSeperator();
 
-				if (ECGui::ButtonBool("OK", ImVec2(120, 0)))
+				if (ECGui::ButtonBool("OK", ImVec2(140, 0)))
 				{
 					EDITOR_LOG_INFO("Exiting application...");
 					glfwSetWindowShouldClose(OpenGL_Context::GetWindow(), 1);
@@ -61,7 +64,7 @@ namespace Eclipse
 
 				ECGui::InsertSameLine();
 
-				if (ECGui::ButtonBool("Cancel", ImVec2(120, 0)))
+				if (ECGui::ButtonBool("Cancel", ImVec2(140, 0)))
 				{
 					IsExiting = false;
 					ECGui::CloseCurrentPopup();
@@ -90,6 +93,65 @@ namespace Eclipse
 		ECGui::DrawTextWidget<const char*>("Graphics Programmer: Rachel Lin", EMPTY_STRING);
 		ECGui::InsertHorizontalLineSeperator();
 		ECGui::DrawTextWidget<const char*>("All content copyrighted 2021 DigiPen (SINGAPORE) Corporation, all rights reserved.", EMPTY_STRING);
+	}
+
+	void MenuBar::ShowRecoveryDialogBox(bool active)
+	{
+		if (active)
+		{
+			ECGui::OpenPopup("Recover?");
+
+			ImGui::GetMainViewport()->Flags |= ImGuiViewportFlags_NoFocusOnClick;
+			ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+
+			ImVec2 center = ECGui::GetMainViewport()->GetCenter();
+			ECGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+			if (ECGui::BeginPopupModal("Recover?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+			{
+				ECGui::DrawTextWidget<const char*>("The engine crashed unexpectedly previously.\n     Do you wanna recover unsaved scene?", EMPTY_STRING);
+				ECGui::InsertHorizontalLineSeperator();
+
+				if (ECGui::ButtonBool("OK", ImVec2(140, 0)))
+				{
+					// Load and delete recovery file
+					std::string path = std::filesystem::current_path().string() + "\\" + engine->szManager.GetBackUpPath();
+					SceneManager::RegisterScene(path);
+					SceneManager::LoadScene(RetrieveFilename(engine->szManager.GetBackUpPath()));
+					std::filesystem::remove(std::filesystem::path(path));
+					engine->editorManager->SetRecoveryFileExistence(false);
+					ECGui::CloseCurrentPopup();
+				}
+
+				ECGui::InsertSameLine();
+
+				if (ECGui::ButtonBool("Cancel", ImVec2(145, 0)))
+				{
+					// Delete recovery file
+					std::string path = std::filesystem::current_path().string() + "\\" + engine->szManager.GetBackUpPath();
+					std::filesystem::remove(std::filesystem::path(path));
+					engine->editorManager->SetRecoveryFileExistence(false);
+					ECGui::CloseCurrentPopup();
+				}
+
+				ECGui::EndPopup();
+			}
+		}
+	}
+
+	std::string MenuBar::RetrieveFilename(std::string path)
+	{
+		size_t pos = path.find('.');
+
+		if (pos == std::string::npos)
+			return std::string();
+
+		pos = path.find_last_of('\\');
+		std::string temp = path.substr(pos + 1);
+
+		temp.erase(temp.find('.'));
+
+		return temp;
 	}
 
 	bool MenuBar::GetExitStatus()

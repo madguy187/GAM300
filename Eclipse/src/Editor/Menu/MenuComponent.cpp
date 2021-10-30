@@ -30,7 +30,7 @@ namespace Eclipse
 	void MenuComponent::DrawImpl(const char* key)
 	{
 		// For specific items
-		if (!strcmp(key, "New"))
+		if (!strcmp(key, "New " ICON_MDI_FOLDER_PLUS))
 		{
 			bool selected = false;
 
@@ -40,7 +40,7 @@ namespace Eclipse
 			}
 		}
 		
-		if (!strcmp(key, "Open"))
+		if (!strcmp(key, "Open " ICON_MDI_FOLDER_OPEN))
 		{
 			bool selected = false;
 
@@ -52,7 +52,7 @@ namespace Eclipse
 		
 		}
 
-		if (!strcmp(key, "Save"))
+		if (!strcmp(key, "Save " ICON_MDI_CONTENT_SAVE))
 		{
 			bool selected = false;
 
@@ -62,7 +62,7 @@ namespace Eclipse
 			}
 		}
 
-		if (!strcmp(key, "Save As..."))
+		if (!strcmp(key, "Save As... " ICON_MDI_CONTENT_SAVE_EDIT))
 		{
 			bool selected = false;
 
@@ -72,7 +72,7 @@ namespace Eclipse
 			}
 		}
 
-		if (!strcmp(key, "Exit"))
+		if (!strcmp(key, "Exit " ICON_MDI_EXIT_TO_APP))
 		{
 			bool selected = false;
 
@@ -82,7 +82,7 @@ namespace Eclipse
 			}
 		}
 		
-		if (!strcmp(key, "Undo"))
+		if (!strcmp(key, "Undo " ICON_MDI_UNDO_VARIANT))
 		{
 			bool selected = false;
 
@@ -92,7 +92,7 @@ namespace Eclipse
 			}
 		}
 
-		if (!strcmp(key, "Redo"))
+		if (!strcmp(key, "Redo " ICON_MDI_REDO_VARIANT))
 		{
 			bool selected = false;
 
@@ -206,12 +206,18 @@ namespace Eclipse
 
 	void MenuComponent::DrawGuiWindows()
 	{
-		if (!strcmp(Name_, "Windows"))
+		if (!strcmp(Name_, "Windows" ICON_MDI_MONITOR))
 		{
 			int index = 0;
 
 			for (auto& window : engine->editorManager->GetAllWindowsByRef())
 			{
+				if (!strcmp(ListToName_[index], "Mesh Editor"))
+				{
+					index++;
+					continue;
+				}
+
 				if (ECGui::CreateMenuItem(ListToName_[index], &window->IsVisible))
 				{
 					if (window->IsVisible)

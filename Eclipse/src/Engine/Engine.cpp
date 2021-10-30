@@ -40,6 +40,7 @@
 #include <ECS/SystemManager/Systems/System/ParentChildSystem/ChildSystem/ChildSystem.h>
 #include "ECS/SystemManager/Systems/System/PrefabSystem/PrefabSystem.h"
 #include "ECS/SystemManager/Systems/System/AI/AISystem.h"
+#include "ECS/SystemManager/Systems/System/InputSystem/InputSystem.h"
 
 bool Tester1(const Test1&)
 {
@@ -64,6 +65,7 @@ namespace Eclipse
         EventSystem<Test1>::registerListener(Tester2);
         EventSystem<Test1>::registerListener(std::bind(&World::TempFunc, &world, std::placeholders::_1));
 
+        InputManager = std::make_unique<LogicalInput>();
         engine->gFrameBufferManager = std::make_unique<FrameBufferManager>();
         engine->GraphicsManager.Pre_Render();
 
@@ -78,8 +80,9 @@ namespace Eclipse
     void Engine::Run()
     {
         ZoneScopedN("Engine")
-            // register component
-            world.RegisterComponent<EntityComponent>();
+
+        // register component
+        world.RegisterComponent<EntityComponent>();
         world.RegisterComponent<TransformComponent>();
         world.RegisterComponent<MeshComponent>();
         world.RegisterComponent<CameraComponent>();
@@ -137,6 +140,7 @@ namespace Eclipse
         world.RegisterSystem<CollisionSystem>();
         world.RegisterSystem<PrefabSystem>();
         world.RegisterSystem<AISystem>();
+        world.RegisterSystem<InputSystem>();
 
         prefabWorld.RegisterSystem<PrefabSystem>();
 
@@ -175,9 +179,17 @@ namespace Eclipse
         hi4.set(world.GetComponentType<RigidBodyComponent>(), 1);
         world.RegisterSystemSignature<PhysicsSystem>(hi4);
 
-        Signature hi5;
-        hi5.set(world.GetComponentType<ScriptComponent>(), 1);
-        world.RegisterSystemSignature<MonoSystem>(hi5);
+        Signature scriptSignature;
+        scriptSignature.set(world.GetComponentType<ScriptComponent>(), 1);
+        world.RegisterSystemSignature<MonoSystem>(scriptSignature);
+
+        Signature parentSignature;
+        parentSignature.set(world.GetComponentType<ParentComponent>(), 1);
+        world.RegisterSystemSignature<ParentSystem>(parentSignature);
+
+        Signature childSignature;
+        childSignature.set(world.GetComponentType<ChildComponent>(), 1);
+        world.RegisterSystemSignature<ChildSystem>(childSignature);
 
         Signature hi6;
         hi6.set(world.GetComponentType<CollisionComponent>(), 1);
@@ -185,6 +197,7 @@ namespace Eclipse
 
         Signature audioSignature;
         audioSignature.set(world.GetComponentType<AudioComponent>(), 1);
+        audioSignature.set(world.GetComponentType<TransformComponent>(), 1);
         world.RegisterSystemSignature<AudioSystem>(audioSignature);
 
         Signature prefabSig;
@@ -201,9 +214,14 @@ namespace Eclipse
         AIsig.set(world.GetComponentType<RigidBodyComponent>(), 1);
         world.RegisterSystemSignature<AISystem>(AIsig);
 
+        Signature parentSys;
+        parentSys.set(world.GetComponentType<ParentComponent>(), 1);
+        world.RegisterSystemSignature<ParentSystem>(parentSys);
+
         //Check this! - Rachel
         CameraSystem::Init();
         RenderSystem::Init();
+        engine->editorManager->TextureIconInit();
         gPhysics.Init();
         audioManager.Init();
 
@@ -225,13 +243,29 @@ namespace Eclipse
         // Darren - Please keep this before Game Loop
         engine->GraphicsManager.MassInit();
 
-        //Deserialization(temp)
+        // Check for Recovery File
+        if (IsEditorActive)
+            engine->editorManager->SetRecoveryFileExistence(szManager.CheckBackUpPathExistence());
+
         /*audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);*/
+        //audioManager.PlayEvent("event:/WaterEffect");
+
+        /*TransformComponent trans1;
+        TransformComponent trans2;
+        trans2.position.setX(5.0f);
+        trans1.position.setX(5.0f);
+        RefVariant ob1 = trans1;
+        RefVariant ob2 = trans2;
+
+        if (SerializationManager::CompareComponentData(ob1, ob2))
+            std::cout << "its the same!" << std::endl;
+        else
+            std::cout << "its the not same!" << std::endl;*/
+
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
             glfwPollEvents();
             engine->gFrameBufferManager->MainWindowSettings();
-
             Game_Clock.set_timeSteps(0);
             framecount++;
             float newTime = static_cast<float>(clock());
@@ -261,7 +295,7 @@ namespace Eclipse
             ECGuiInputHandler::Update();
 
             ImGuiSetup::Begin(IsEditorActive);
-
+            //ECGuiInputHandler::Update();
             EditorSystem::Update();
 
             if (IsInStepState)
@@ -290,15 +324,15 @@ namespace Eclipse
             {
                 for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
                 {
-                   
+
                     world.Update<PhysicsSystem>();
                 }
             }
 
             world.Update<FileWatchSystem>();
 
-            /*world.Update<ParentSystem>();
-            world.Update<ChildSystem>();*/
+            world.Update<ParentSystem>();
+            world.Update<ChildSystem>();
 
             engine->gFrameBufferManager->GlobalBind();
 
@@ -307,12 +341,15 @@ namespace Eclipse
 
             // LIGHTINGSYSTEM =============================
             world.Update<LightingSystem>();
-            //
+
             // // PICKINGSYSTEM =============================
             world.Update<PickingSystem>();
-            //
+
             // // AUDIOSYSTEM =============================
             world.Update<AudioSystem>();
+
+            // MATERIALSYSTEM =============================
+            world.Update<MaterialSystem>();
 
             // RENDERSYSTEM =============================
             world.Update<RenderSystem>();
@@ -330,6 +367,7 @@ namespace Eclipse
 
             ImGuiSetup::End(IsEditorActive);
             OpenGL_Context::post_render();
+
             SceneManager::ProcessScene();
 
             ProfilerWindow::engine_time = 0;
@@ -339,6 +377,8 @@ namespace Eclipse
                 IsInStepState = false;
                 IsInPauseState = true;
             }
+
+            world.Update<InputSystem>();
         }
 
         //Serialization(Temp)

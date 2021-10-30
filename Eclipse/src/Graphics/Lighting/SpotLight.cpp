@@ -52,6 +52,8 @@ namespace Eclipse
 
         glBindVertexArray(0);
         shdrpgm.UnUse();
+
+        CheckUniformPBR(IndexId, EntityId);
     }
 
     void SpotLight::CheckUniformLoc(Shader* _shdrpgm, SpotLightComponent& in_spot, int index, unsigned int containersize, unsigned int EntityId)
@@ -152,6 +154,29 @@ namespace Eclipse
             // specular
             GLCall(glUniform3f(uniform_var_loc20, in_spot.direction.getX(), in_spot.direction.getY(), in_spot.direction.getZ()));
         }
+    }
+
+    void SpotLight::CheckUniformPBR(int index, unsigned int EntityId)
+    {
+        auto shdrpgm = Graphics::shaderpgms["PBRShader"];
+        shdrpgm.Use();
+
+        TransformComponent& SpotlightTransform = engine->world.GetComponent<TransformComponent>(EntityId);
+        SpotLightComponent& Spotlight = engine->world.GetComponent<SpotLightComponent>(EntityId);
+        std::string number = std::to_string(index);
+        GLint uniform_var_loc1 = shdrpgm.GetLocation(("spotLights[" + number + "].position").c_str());
+        GLint uniform_var_loc2 = shdrpgm.GetLocation(("spotLights[" + number + "].lightColor").c_str());
+        GLint uniform_var_loc3 = shdrpgm.GetLocation(("spotLights[" + number + "].cutOff").c_str());
+        GLint uniform_var_loc4 = shdrpgm.GetLocation(("spotLights[" + number + "].outerCutOff").c_str());
+        GLint uniform_var_loc5 = shdrpgm.GetLocation(("spotLights[" + number + "].direction").c_str());
+
+        GLCall(glUniform3f(uniform_var_loc1, SpotlightTransform.position.getX(), SpotlightTransform.position.getY(), SpotlightTransform.position.getZ()));
+        GLCall(glUniform3f(uniform_var_loc2, 300.0f, 300.0f, 300.0f));
+        GLCall(glUniform1f(uniform_var_loc3, glm::cos(glm::radians(Spotlight.cutOff))));
+        GLCall(glUniform1f(uniform_var_loc4, glm::cos(glm::radians(Spotlight.outerCutOff))));
+        GLCall(glUniform3f(uniform_var_loc5, Spotlight.direction.getX(), Spotlight.direction.getY(), Spotlight.direction.getZ()));
+
+        shdrpgm.UnUse();
     }
 
     void SpotLight::Destroy()

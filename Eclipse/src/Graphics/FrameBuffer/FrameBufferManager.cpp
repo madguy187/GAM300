@@ -5,12 +5,17 @@ namespace Eclipse
 {
     void FrameBufferManager::CreateFrameBuffers()
     {
+        // Basic FrameBuffers
         CreateFBO(1270, 593, FrameBufferMode::FBM_GAME);
         CreateFBO(1270, 593, FrameBufferMode::FBM_SCENE);
         CreateFBO(1270, 593, FrameBufferMode::FBM_TOP);
         CreateFBO(1270, 593, FrameBufferMode::FBM_BOTTOM);
         CreateFBO(1270, 593, FrameBufferMode::FBM_LEFT);
         CreateFBO(1270, 593, FrameBufferMode::FBM_RIGHT);
+
+        // Editor Stuffs
+        CreateFBO(1270, 593, FrameBufferMode::FBM_MATERIALEDITOR);
+        CreateFBO(1270, 593, FrameBufferMode::FBM_MESHEDITOR);
     }
 
     void FrameBufferManager::CreateFBO(unsigned int width_, unsigned int height_, FrameBufferMode in)
@@ -21,18 +26,22 @@ namespace Eclipse
             std::exit(EXIT_FAILURE);
         }
 
-        FrameBufferContainer.insert({in, std::make_shared<FrameBuffer>(width_, height_, in)});
-        //ENGINE_CORE_INFO("FrameBuffer Ready For Use");
+        FrameBufferContainer.insert({ in, std::make_shared<FrameBuffer>(width_, height_, in) });
+        UpdateAspectRatio(in, glm::vec2(width_, height_));
     }
 
     void FrameBufferManager::FrameBufferDraw()
     {
-        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_GAME)), "GameView");
-        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_SCENE)), "SceneView");
-        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_TOP)), "SceneView_Top");
-        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_BOTTOM)), "SceneView_Bottom");
-        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_LEFT)), "SceneView_Left");
-        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_RIGHT)), "SceneView_Right");
+        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_GAME)));
+        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_SCENE)));
+        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_TOP)));
+        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_BOTTOM)));
+        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_LEFT)));
+        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_RIGHT)));
+
+        //Editor Stuffs
+        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_MATERIALEDITOR)));
+        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_MESHEDITOR)));
     }
 
     FrameBuffer* FrameBufferManager::GetFramebuffer(FrameBufferMode mode)
@@ -63,6 +72,11 @@ namespace Eclipse
     unsigned int FrameBufferManager::GetTextureID(FrameBufferMode mode)
     {
         return FrameBufferContainer[mode]->GetTextureColourBufferID();
+    }
+
+    unsigned int FrameBufferManager::GetSecondTextureID(FrameBufferMode mode)
+    {
+        return FrameBufferContainer[mode]->m_data.ColorBuffers[1];
     }
 
     RenderMode FrameBufferManager::GetRenderMode(FrameBufferMode mode)
@@ -97,7 +111,7 @@ namespace Eclipse
         return FrameBufferContainer[Mode]->AspectRatio;
     }
 
-    void FrameBufferManager::UpdateAspectRatio(FrameBufferMode Mode , ECVec2 CurrentViewPortSize)
+    void FrameBufferManager::UpdateAspectRatio(FrameBufferMode Mode, ECVec2 CurrentViewPortSize)
     {
         FrameBufferContainer[Mode]->AspectRatio = CurrentViewPortSize.getX() / CurrentViewPortSize.getY();
     }
@@ -113,4 +127,61 @@ namespace Eclipse
         engine->GraphicsManager.SetBackGroundColour();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     }
+
+    float FrameBufferManager::GetAspectRatio(CameraComponent::CameraType in)
+    {
+        switch (in)
+        {
+        case CameraComponent::CameraType::MeshEditor_Camera:
+        {
+            return FrameBufferContainer[FrameBufferMode::FBM_MESHEDITOR]->AspectRatio;
+        }
+        break;
+
+        case CameraComponent::CameraType::MaterialEditor_Camera:
+        {
+            return FrameBufferContainer[FrameBufferMode::FBM_MATERIALEDITOR]->AspectRatio;
+        }
+        break;
+
+        case CameraComponent::CameraType::Editor_Camera:
+        {
+            return FrameBufferContainer[FrameBufferMode::FBM_SCENE]->AspectRatio;
+        }
+        break;
+
+        case CameraComponent::CameraType::Game_Camera:
+        {
+            return FrameBufferContainer[FrameBufferMode::FBM_GAME]->AspectRatio;
+        }
+        break;
+
+        case CameraComponent::CameraType::TopView_Camera:
+        {
+            return FrameBufferContainer[FrameBufferMode::FBM_TOP]->AspectRatio;
+        }
+        break;
+
+        case CameraComponent::CameraType::BottomView_Camera:
+        {
+            return FrameBufferContainer[FrameBufferMode::FBM_BOTTOM]->AspectRatio;
+        }
+        break;
+
+        case CameraComponent::CameraType::RightView_camera:
+        {
+            return FrameBufferContainer[FrameBufferMode::FBM_RIGHT]->AspectRatio;
+        }
+        break;
+
+        case CameraComponent::CameraType::LeftView_Camera:
+        {
+            return FrameBufferContainer[FrameBufferMode::FBM_LEFT]->AspectRatio;
+        }
+        break;
+        }
+
+        return 0.0f;
+    }
+
 }

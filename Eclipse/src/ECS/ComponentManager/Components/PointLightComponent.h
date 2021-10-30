@@ -28,6 +28,8 @@ namespace Eclipse
         bool hasTexture = false;
         bool visible = true;
         bool AffectsWorld = true;
+
+        ECVec4 RGBColor{ 1.0f,1.0f,1.0f,1.0f };
     };
 }
 #endif /* POINTLIGHTCOMPONENT_H */

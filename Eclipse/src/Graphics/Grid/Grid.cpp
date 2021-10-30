@@ -165,7 +165,8 @@ namespace Eclipse
 
 		if (WholeGrid != nullptr && CalculateGridSettings())
 		{
-			EDITOR_LOG_INFO("Grid Created");
+			// success
+			//EDITOR_LOG_INFO("Grid Created");
 		}
 	}
 
@@ -346,6 +347,7 @@ namespace Eclipse
 			glBindVertexArray(WholeGrid->GetVaoID());
 
 			glEnable(GL_DEPTH_TEST);
+			glDisable(GL_CULL_FACE);
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 			// Check here

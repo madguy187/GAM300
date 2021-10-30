@@ -5,22 +5,16 @@ using Eclipse;
 
 public class Test : EclipseBehavior
 {
-    static public void Type()
+    public RigidBody rigid;
+
+    public void Start()
     {
-        Console.WriteLine("a Dog!");
-    }
-    public void Bark()
-    {
-        Console.WriteLine("bark!");
-    }
-    public void Bark(int times)
-    {
-        for (var i = 0; i < times; ++i )
-            Console.WriteLine("bark!");
+        Console.WriteLine("C# Update");
+        rigid = GetComponent<RigidBody>();
     }
 
     public void Update()
     {
-        Console.WriteLine("C# Update");
+        rigid.AddForce(500, 0, 0);
     }
 }

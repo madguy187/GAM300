@@ -1,6 +1,7 @@
 #pragma once
 //#include "ECS/ComponentManager/ComponentList.h"
 
+#define M_PI       3.14159265358979323846   // pi
 #define EPSILON 0.000001f
 #define PTR_ADD( PTR, OFFSET ) \
   ((void *)(((char *)(PTR)) + (OFFSET)))
@@ -17,6 +18,7 @@ static constexpr unsigned MAX_PAGE_SIZE = 10;
 
 static const char* SCENE_EXTENSION = ".scn";
 static const char* TEMP_PATH = "Data\\Temp\\";
+using EUUID = std::uint64_t;
 
 enum class EditorWindowType
 {
@@ -36,6 +38,9 @@ enum class EditorWindowType
     EWT_SWITCHVIEW_LEFT,
     EWT_SWITCHVIEW_RIGHT,
     EWT_HEADER,
+    EWT_NODEEDITOR,
+    EWT_MESHEDITOR,
+    EWT_MATERIALEDITOR,
     EWT_UNASSIGNED
 };
 
@@ -86,7 +91,7 @@ enum class EntityType
     ENT_GEO_CONE,
     ENT_GEO_TORUS,
     ENT_GEO_PYRAMID,
-    ENT_GEO_LINES3D,
+    ENT_GEO_ICOSPHERE,
     ENT_GEO_PLANES, // LAST
     // END OF GEO
     // START OF LIGHTS
@@ -97,6 +102,7 @@ enum class EntityType
     ENT_GAMECAMERA,
     ENT_MODEL,
     ENT_TARGETPOINT,
+    ENT_MESH,
     ENT_UNASSIGNED
 };
 
@@ -192,6 +198,8 @@ enum class FrameBufferMode
     FBM_BOTTOM = 4,
     FBM_LEFT = 5,
     FBM_RIGHT = 6,
+    FBM_MATERIALEDITOR = 7,
+    FBM_MESHEDITOR = 8,
     MAXCOUNT
 };
 
@@ -199,4 +207,12 @@ enum class RenderMode
 {
     Fill_Mode,
     Wireframe_Mode
+};
+
+enum class AudioType
+{
+    AT_SFX,
+    AT_BGM,
+    AT_EVENT,
+    AT_UNASSIGNED
 };

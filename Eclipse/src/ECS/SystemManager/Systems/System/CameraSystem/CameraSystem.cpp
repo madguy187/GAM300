@@ -11,6 +11,9 @@ void Eclipse::CameraSystem::Init()
 	engine->gCamera.CreateViewCamera(CameraComponent::CameraType::LeftView_Camera);
 	engine->gCamera.CreateViewCamera(CameraComponent::CameraType::RightView_camera);
 
+	engine->gCamera.CreatePerspectiveCamera(CameraComponent::CameraType::MeshEditor_Camera);
+	engine->gCamera.CreatePerspectiveCamera(CameraComponent::CameraType::MaterialEditor_Camera);
+
 	//Temporary test code to create an initial game camera, remove later
 	engine->gCamera.CreateGameCamera();
 	auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetGameCameraID());
@@ -33,8 +36,20 @@ void Eclipse::CameraSystem::Update()
 			//engine->gCamera.CheckCameraInput();
 			engine->gCamera.UpdateEditorCamera(_transform);
 		}
-		else if ((_camera.camType != CameraComponent::CameraType::Editor_Camera) &&
-				(_camera.camType != CameraComponent::CameraType::Game_Camera))
+		else if (_camera.camType == CameraComponent::CameraType::MeshEditor_Camera)
+		{
+			//engine->gCamera.CheckMeshCameraInput();
+			engine->gCamera.UpdateMeshCamera(_transform);
+		}
+		else if (_camera.camType == CameraComponent::CameraType::MaterialEditor_Camera)
+		{
+			//engine->gCamera.CheckMaterialCameraInput();
+			engine->gCamera.UpdateMaterialCamera(_transform);
+		}
+		else if ((_camera.camType == CameraComponent::CameraType::LeftView_Camera) ||
+				(_camera.camType == CameraComponent::CameraType::RightView_camera) ||
+				(_camera.camType == CameraComponent::CameraType::TopView_Camera) ||
+				(_camera.camType == CameraComponent::CameraType::BottomView_Camera))
 		{
 			//engine->gCamera.CheckViewCameraInput();
 			engine->gCamera.UpdateViewCamera(_camera, _transform);

@@ -140,6 +140,9 @@ void Eclipse::Texture::LoadUncompressedTextures(bool flip)
     case 1:
         colorMode = GL_RED;
         break;
+    case 3:
+        colorMode = GL_RGB;
+        break;
     case 4:
         colorMode = GL_RGBA;
         break;
@@ -376,6 +379,14 @@ void Eclipse::Texture::LoadUncompressedTextures(std::string pathname)
     {
         GLuint texobj_hdl;
 
+        GLenum format;
+        if (channels == 1)
+            format = GL_RED;
+        else if (channels == 3)
+            format = GL_RGB;
+        else if (channels == 4)
+            format = GL_RGBA;
+
         //// define and initialize a handle to texture object that will encapsulate two-dimensional textures
         glCreateTextures(GL_TEXTURE_2D, 1, &texobj_hdl);
 
@@ -572,6 +583,17 @@ GLint Texture::GetSpriteHeight()
 void Texture::DeleteTexture()
 {
     glDeleteTextures(1, &handle);
+}
+
+bool Eclipse::Texture::operator==(const Texture& texture) const
+{
+    if (Type == texture.Type && Directory == texture.Directory &&
+        handle == texture.handle)
+    {
+        return true;
+    }
+
+    return false;
 }
 
 void Texture::setSpriteWidth(GLint _spriteWidth)

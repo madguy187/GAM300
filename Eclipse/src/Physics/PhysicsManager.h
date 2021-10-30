@@ -1,5 +1,5 @@
 #pragma once
-#include "Global.h"
+
 #include "PxPhysicsAPI.h"
 #include "ECS/ComponentManager/Components/RigidBodyComponent.h"
 #include "ECS/ComponentManager/Components/CollisionComponent.h"
@@ -103,6 +103,7 @@ namespace Eclipse
 		void UpdateActor(Entity ent);
 		void ChangeShape(Entity ent, PxShapeType shape);
 		void CreateShape(Entity ent);
+		void SetForce(Entity ent, ECVec3 force);
 		void UpdateVariables(Entity ent);
 		void UpdateShapes(Entity ent);
 		void GetActorPosition(Entity ent);

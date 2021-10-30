@@ -96,9 +96,30 @@ namespace Eclipse
 					// FOR JIAN HERNG for creating prefab on scene buffer, take the path
 					break;
 				case PayloadTargetType::PTT_ASSETS:
-					// FOR JIAN HERNG entID for entity number and destination for path
-					// to generate prefab file in asset browser
-					engine->pfManager.GeneratePrefab(PrefabID, destination.c_str());
+
+					if (!strcmp(id, "png"))
+					{
+						std::filesystem::path temp = ((const char*)payload->Data);
+						std::string folder = temp.parent_path().filename().string();
+						destination = AssetBrowserWindow::GetFileName(temp.filename().string().c_str());
+
+						engine->gPBRManager->GenerateMaterialTexture(folder, destination);
+					}
+					else if (!strcmp(id, "mat"))
+					{
+						std::filesystem::path temp = ((const char*)payload->Data);
+						std::string folder = temp.parent_path().filename().string();
+						destination = AssetBrowserWindow::GetFileName(temp.filename().string().c_str());
+
+						auto& Material = engine->world.GetComponent<MaterialComponent>(ID);
+						Material.MaterialInstanceName = destination;
+					}
+					else
+					{
+						// FOR JIAN HERNG entID for entity number and destination for path
+						// to generate prefab file in asset browser
+						engine->pfManager.GeneratePrefab(PrefabID, destination.c_str());
+					}
 					break;
 				}
 
@@ -142,6 +163,11 @@ namespace Eclipse
 							EntityComponent* DestinationEntCom = nullptr;
 							EntityComponent* SourceEntCom = nullptr;
 
+							TransformComponent* childTransComp = nullptr;																	 
+							TransformComponent* parentTransComp = nullptr;
+
+							ChildComponent* childComp = nullptr;
+
 							switch (i)
 							{
 								// Move index
@@ -160,10 +186,42 @@ namespace Eclipse
 								// Parent Child
 							case 2:
 								DestinationEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(DestinationIndex_));
+
 								SourceEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(SourceIndex_));
+
+								if (!engine->world.CheckComponent<ParentComponent>(engine->editorManager->GetEntityID(DestinationIndex_)))
+								{
+									engine->world.AddComponent(engine->editorManager->GetEntityID(DestinationIndex_), ParentComponent{});
+									engine->world.GetComponent<ParentComponent>(engine->editorManager->GetEntityID(DestinationIndex_)).child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
+								}
+								else
+								{
+									engine->world.GetComponent<ParentComponent>(engine->editorManager->GetEntityID(DestinationIndex_)).child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
+								}
+
+								if (!engine->world.CheckComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)))
+								{
+									engine->world.AddComponent(engine->editorManager->GetEntityID(SourceIndex_), ChildComponent{});
+									engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).parentIndex = engine->editorManager->GetEntityID(DestinationIndex_);
+								}
+								else
+								{
+									engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).parentIndex = engine->editorManager->GetEntityID(DestinationIndex_);
+								}
+
 								DestinationEntCom->Child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
 								SourceEntCom->IsAChild = true;
 								SourceEntCom->Parent.push_back(engine->editorManager->GetEntityID(DestinationIndex_));
+
+								childComp = &engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_));
+								childTransComp = &engine->world.GetComponent<TransformComponent>(engine->editorManager->GetEntityID(SourceIndex_));
+								parentTransComp = &engine->world.GetComponent<TransformComponent>(engine->editorManager->GetEntityID(DestinationIndex_));
+								engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).PosOffset = childTransComp->position - parentTransComp->position;
+								engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).ScaleOffset.setX(childTransComp->scale.getX() / parentTransComp->scale.getX());
+								engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).ScaleOffset.setY(childTransComp->scale.getY() / parentTransComp->scale.getY());
+								engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).ScaleOffset.setZ(childTransComp->scale.getZ() / parentTransComp->scale.getZ());
+								
+
 								IsIndexJobSelected = false;
 								break;
 								// Cancel
@@ -187,16 +245,17 @@ namespace Eclipse
 		std::string AssetPath, std::filesystem::directory_entry dirEntry, bool& refreshBrowser,
 		std::map<std::filesystem::path, std::vector<std::filesystem::path>> pathMap, bool& CopyMode)
 	{
-		static std::string folderName;
-
-		static std::string parentPath;
-
-		std::filesystem::path itemPaths = AssetPath.c_str();
 
 		if (ECGui::BeginDragDropTarget())
 		{
 			if (const ImGuiPayload* payload = ECGui::AcceptDragDropPayload(type))
 			{
+				static std::string folderName;
+
+				static std::string parentPath;
+
+				std::filesystem::path itemPaths = AssetPath.c_str();
+
 				try
 				{
 					paths = (const char*)payload->Data;
@@ -362,11 +421,18 @@ namespace Eclipse
 					}
 					else
 					{
-						std::filesystem::copy(std::filesystem::path(itemPaths / paths), dirEntry.path());
-
-						if (!CopyMode)
+						if (std::filesystem::is_directory(dirEntry.path()))
 						{
-							std::filesystem::remove(std::filesystem::path(itemPaths / paths));
+							std::filesystem::copy(std::filesystem::path(itemPaths / paths), dirEntry.path());
+
+							if (!CopyMode)
+							{
+								std::filesystem::remove(std::filesystem::path(itemPaths / paths));
+							}
+						}
+						else
+						{
+							EDITOR_LOG_WARN("You are copying / moving a file to another file!");
 						}
 					}
 					refreshBrowser = true;

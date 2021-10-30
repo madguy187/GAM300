@@ -16,14 +16,17 @@ namespace Eclipse
 		void OnGizmoUpdateEvent(int GizmoType);
 		void OnCameraZoomEvent();
 		void OnCameraMoveEvent();
-		bool GetIsWindowActive();
+		bool GetIsWindowActive() const;
+		bool GetIsWindowHovered() const;
 	protected:
 		CameraComponent::CameraType mCamType;
 		ECVec2 mViewportSize;
 		FrameBuffer* m_frameBuffer;
+		FrameBufferMode FBO_Mode;
 		std::vector<std::string> mProjectionView_List;
 		bool IsWireframeMode{ false };
 		bool IsWindowActive{ false };
+		bool IsWindowHovering{ false };
 	};
 }
 #pragma once

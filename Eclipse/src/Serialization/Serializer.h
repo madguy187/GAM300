@@ -33,7 +33,7 @@ namespace Eclipse
 
         void SaveXML(const std::string& savePath);
 
-        void SaveBackup(TiXmlDocument& backup, std::string& path);
+        void SaveBackup(TiXmlDocument& backup, const std::string& path);
 
         ~Serializer();
 

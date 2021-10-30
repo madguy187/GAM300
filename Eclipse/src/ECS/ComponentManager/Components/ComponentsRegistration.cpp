@@ -18,6 +18,8 @@
 #include "AIComponent.h"
 #include "PrefabComponent.h"
 #include "ScriptComponent.h"
+#include "ChildComponent.h"
+#include "ParentComponent.h"
 
 namespace Eclipse
 {
@@ -34,17 +36,20 @@ namespace Eclipse
     DEFINE_META(AudioComponent)
     {
         ADD_MEMBER(AudioPath);
-        ADD_MEMBER(ChannelID);
         ADD_MEMBER(Volume);
         ADD_MEMBER(Pitch);
         ADD_MEMBER(Speed);
         ADD_MEMBER(IsLooping);
         ADD_MEMBER(Is3D);
+        ADD_MEMBER(IsMuted);
         ADD_MEMBER(InnerConeAngle);
         ADD_MEMBER(OuterConeAngle);
         ADD_MEMBER(OuterVolume);
         ADD_MEMBER(Min);
         ADD_MEMBER(Max);
+        ADD_MEMBER(HasRadioEffect);
+        ADD_MEMBER(HasEchoEffect);
+        ADD_MEMBER(EchoDelayTime);
     }
 
     DEFINE_META(CameraComponent)
@@ -102,6 +107,7 @@ namespace Eclipse
         ADD_MEMBER(Child);
         ADD_MEMBER(Parent);
         ADD_MEMBER(IsAChild);
+        ADD_MEMBER(TreeactiveFlag);
     }
 
     DEFINE_META(ScriptComponent)
@@ -122,6 +128,7 @@ namespace Eclipse
         ADD_MEMBER(NoTextures);
         ADD_MEMBER(shininess);
         ADD_MEMBER(MaximumShininess);
+        ADD_MEMBER(IsNormalMap);
         ADD_MEMBER(ComboIndex);
         ADD_MEMBER(TextureComboIndex);
         ADD_MEMBER(Type);
@@ -129,6 +136,8 @@ namespace Eclipse
         ADD_MEMBER(TextureRef);
         ADD_MEMBER(TextureKey);
         ADD_MEMBER(HoldingTextures);
+        ADD_MEMBER(HasMaterialIstance);
+        ADD_MEMBER(MaterialInstanceName);
     }
 
     DEFINE_META(MeshComponent)
@@ -225,8 +234,24 @@ namespace Eclipse
 
     DEFINE_META(PrefabComponent)
     {
+        ADD_MEMBER(IsInstance);
         ADD_MEMBER(IsChild);
+        ADD_MEMBER(CompChanges);
         ADD_MEMBER(PrefabID);
+    }
+    
+    DEFINE_META(ChildComponent)
+    {
+        ADD_MEMBER(parentIndex);
+        ADD_MEMBER(PosOffset);
+        ADD_MEMBER(RotOffset);
+        ADD_MEMBER(ScaleOffset);
+    }
+
+    DEFINE_META(ParentComponent)
+    {
+        ADD_MEMBER(child);
+        ADD_MEMBER(model);
     }
 
     /*************************************************************************/
@@ -262,5 +287,6 @@ namespace Eclipse
     DEFINE_META_POD(ModelType);
     DEFINE_META_POD(PxShapeType);
     DEFINE_META_POD(EC_Shape);
+    DEFINE_META_POD(Signature);
     //DEFINE_META_POD(MonoScript);
 }

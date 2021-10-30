@@ -75,7 +75,7 @@ namespace Eclipse
 		CleanUp();
 	}
 
-	void Serializer::SaveBackup(TiXmlDocument& backup, std::string& path)
+	void Serializer::SaveBackup(TiXmlDocument& backup, const std::string& path)
 	{
 		BaseSave(path);
 		backup = _doc;

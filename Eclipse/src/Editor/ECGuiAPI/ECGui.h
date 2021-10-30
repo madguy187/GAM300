@@ -128,7 +128,7 @@ namespace Eclipse
 		static bool CreateCollapsingHeader(const char* name, bool forInspector = false);
 		static bool CreateSelectableButton(const char* label, bool* active, 
 			                               ImGuiSelectableFlags flags = 0);
-		static void CreateComboList(ComboListSettings settings,
+		static bool CreateComboList(ComboListSettings settings,
 			                        const std::vector<std::string>& vecStr,
 			                        size_t& index);
 		static bool CreateMenuItem(const char* name, bool* open, const char* shortcut = "");
@@ -329,7 +329,8 @@ namespace Eclipse
 		static void PopID();
 		static void Dummy(const ImVec2& size);
 		static bool ColorPicker3(const char* label, float col[3], ImGuiColorEditFlags flags = 0);
-
+		static void LineAndDummy(ImVec2 sizeOfDummies = {1.0f,1.0f});
+		static void DummyAndLine(ImVec2 sizeOfDummies = {1.0f,1.0f});
 
 		/*************************************************************************/
 		/*                         Visual Widgets                                */

@@ -8,6 +8,9 @@
 #include "Editor/Windows/SwitchViews/RightSwitchViewWindow.h"
 #include "Editor/Windows/GameView/GameView.h"
 #include "Editor/Windows/Scene/SceneView.h"
+#include "Editor/Windows/MeshEditor/MeshEditor.h"
+
+#include "ECS/SystemManager/Systems/System/MaterialSystem/MaterialSystem.h"
 
 namespace Eclipse
 {
@@ -16,16 +19,13 @@ namespace Eclipse
         // Register Threads
         engine->GraphicsManager.RegisterThreads();
 
-        // Compilers ===========================
         engine->gEngineCompiler = std::make_unique<EngineCompiler>();
+        engine->gPBRManager = std::make_unique<PBRManager>();
+        engine->gCullingManager = std::make_unique<CullingManager>();
 
         // Outlining Preparation ============================= 
         glEnable(GL_STENCIL_TEST);
         glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-
-        // Graphics Init =============================
-        EDITOR_LOG_INFO("RenderSystem Init");
-        //engine->GraphicsManager.DebugPrintFrameBuffers();
 
         // Load All Compilers =============================
         engine->gEngineCompiler->Init();
@@ -35,9 +35,6 @@ namespace Eclipse
 
         // Create AABB Boxes =============================
         engine->GraphicsManager.AllAABBs.Init();
-
-        // CUlling =============================
-        engine->gCullingManager = std::make_unique<CullingManager>();
     }
 
     void RenderSystem::Update()
@@ -51,7 +48,7 @@ namespace Eclipse
         if (engine->GraphicsManager.CheckRender == true)
         {
             // Estiamtion which models are in our frustrum
-            auto RenderablesVsFrustrum = engine->gCullingManager->ReturnContacted();
+            const auto& RenderablesVsFrustrum = engine->gCullingManager->ReturnContacted();
 
             /*************************************************************************
               Render Without Stencer
@@ -61,12 +58,21 @@ namespace Eclipse
             engine->GraphicsManager.RenderSky(FrameBufferMode::FBM_SCENE);
 
             // Basic Primitives Render Start =============================
-            for (auto const& entityID : RenderablesVsFrustrum)
+            for (auto const& entityID : mEntities)
             {
                 // If No Mesh Component , Do not Continue
                 if (!engine->world.CheckComponent<MeshComponent>(entityID))
                 {
                     continue;
+                }
+
+                // If it is a base prefab, dont render
+                if (engine->world.CheckComponent<PrefabComponent>(entityID))
+                {
+                    auto& prefab = engine->world.GetComponent<PrefabComponent>(entityID);
+
+                    if (!prefab.IsInstance)
+                        continue;
                 }
 
                 // If CUlled off , dont render
@@ -181,6 +187,28 @@ namespace Eclipse
 
                         engine->MaterialManager.Highlight3DModels(entityID, FrameBufferMode::FBM_SCENE);
                     }
+                }
+            }
+
+            auto* meshEditor = engine->editorManager->GetEditorWindow<MeshEditorWindow>();
+
+            if (meshEditor->IsVisible)
+            {
+                Entity meshID = meshEditor->GetMeshID();
+                auto& mewMesh = engine->world.GetComponent<MeshComponent>(meshID);
+                engine->MaterialManager.UpdateShininess(meshID);
+
+                if (!engine->world.CheckComponent<ModelComponent>(meshID))
+                {
+                    engine->MaterialManager.DoNotUpdateStencil();
+                    engine->GraphicsManager.Draw(FrameBufferMode::FBM_MESHEDITOR, &mewMesh, GL_FILL, meshID,
+                        CameraComponent::CameraType::MeshEditor_Camera);
+                }
+                else
+                {
+                    engine->MaterialManager.DoNotUpdateStencil();
+                    engine->AssimpManager.MeshEditorDraw(engine->world, mewMesh, meshID,
+                        FrameBufferMode::FBM_MESHEDITOR, CameraComponent::CameraType::MeshEditor_Camera);
                 }
             }
 

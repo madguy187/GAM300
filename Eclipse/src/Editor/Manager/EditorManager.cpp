@@ -17,6 +17,9 @@
 #include "Editor/Windows/SwitchViews/LeftSwitchViewWindow.h"
 #include "Editor/Windows/SwitchViews/RightSwitchViewWindow.h"
 #include "Editor/Windows/Header/HeaderWindow.h"
+#include "Editor/Windows/NodeEditor/NodeEditor.h"
+#include "Editor/Windows/MeshEditor/MeshEditor.h"
+#include "Editor/Windows/MaterialEditor/MaterialEditor.h"
 
 namespace Eclipse
 {
@@ -31,19 +34,23 @@ namespace Eclipse
 
 	void EditorManager::InitGUIWindows()
 	{
-		AddWindow<eGameViewWindow>("Game Viewport");
-		AddWindow<SceneWindow>("Scene Viewport");
-		AddWindow<InspectorWindow>("Inspector");
-		AddWindow<HierarchyWindow>("Hierarchy");
-		AddWindow<ProfilerWindow>("Profiler");
-		AddWindow<AssetBrowserWindow>("Asset Browser");
-		AddWindow<LoggerWindow>("Log");
-		AddWindow<DebugWindow>("Settings");
-		AddWindow<TopSwitchViewWindow>("Top Viewport");
-		AddWindow<BottomSwitchViewWindow>("Bottom Viewport");
-		AddWindow<LeftSwitchViewWindow>("Left Viewport");
-		AddWindow<RightSwitchViewWindow>("Right Viewport");
-		AddWindow<HeaderWindow>("Header");
+		AddWindow<eGameViewWindow>("Game Viewport " ICON_MDI_MONITOR);
+		AddWindow<SceneWindow>("Scene Viewport " ICON_MDI_MONITOR);
+		AddWindow<TopSwitchViewWindow>("Top Viewport " ICON_MDI_MONITOR);
+		AddWindow<BottomSwitchViewWindow>("Bottom Viewport " ICON_MDI_MONITOR);
+		AddWindow<LeftSwitchViewWindow>("Left Viewport " ICON_MDI_MONITOR);
+		AddWindow<RightSwitchViewWindow>("Right Viewport " ICON_MDI_MONITOR);
+
+		AddWindow<InspectorWindow>("Inspector " ICON_MDI_MAGNIFY_SCAN);
+		AddWindow<HierarchyWindow>("Hierarchy " ICON_MDI_FILE_TREE);
+		AddWindow<ProfilerWindow>("Profiler " ICON_MDI_FILE_PERCENT);
+		AddWindow<AssetBrowserWindow>("Asset Browser " ICON_MDI_FILE_IMAGE);
+		AddWindow<LoggerWindow>("Log " ICON_MDI_POST);
+		AddWindow<DebugWindow>("Project Settings " ICON_MDI_ACCOUNT_COG);
+		AddWindow<HeaderWindow>("Header " ICON_MDI_PAGE_LAYOUT_HEADER);
+		AddWindow<NodeEditorWindow>("testtt " ICON_MDI_PAGE_LAYOUT_HEADER);
+		AddWindow<MeshEditorWindow>("Mesh Editor");
+		AddWindow<MaterialEditorWindow>("Material Editor");
 
 		for (const auto& window : Windows_)
 		{
@@ -53,23 +60,23 @@ namespace Eclipse
 
 	void EditorManager::InitMenu()
 	{
-		MenuComponent file{ "File", EditorMenuType::FILE };
-		file.AddItems("New");
-		file.AddItems("Open");
-		file.AddItems("Save");
-		file.AddItems("Save As...");
-		file.AddItems("Exit");
+		MenuComponent file{ "File" ICON_MDI_FILE, EditorMenuType::FILE };
+		file.AddItems("New " ICON_MDI_FOLDER_PLUS);
+		file.AddItems("Open " ICON_MDI_FOLDER_OPEN);
+		file.AddItems("Save " ICON_MDI_CONTENT_SAVE);
+		file.AddItems("Save As... " ICON_MDI_CONTENT_SAVE_EDIT);
+		file.AddItems("Exit " ICON_MDI_EXIT_TO_APP);
 		MenuBar_.AddMenuComponents(file);
 
-		MenuComponent edit{ "Edit", EditorMenuType::EDIT };
-		edit.AddItems("Undo");
-		edit.AddItems("Redo");
+		MenuComponent edit{ "Edit" ICON_MDI_PENCIL, EditorMenuType::EDIT };
+		edit.AddItems("Undo " ICON_MDI_UNDO_VARIANT);
+		edit.AddItems("Redo " ICON_MDI_REDO_VARIANT);
 		MenuBar_.AddMenuComponents(edit);
 
-		MenuComponent window{ "Windows", EditorMenuType::WINDOWS };
+		MenuComponent window{ "Windows" ICON_MDI_MONITOR, EditorMenuType::WINDOWS };
 		MenuBar_.AddMenuComponents(window);
 
-		MenuComponent style{ "Style", EditorMenuType::STYLE };
+		MenuComponent style{ "Style" ICON_MDI_ACCOUNT, EditorMenuType::STYLE };
 		style.AddItems("Oppa GuanHin Style");
 		style.AddItems("Oppa Nico Style");
 		style.AddItems("Oppa Fikrul Style");
@@ -82,7 +89,7 @@ namespace Eclipse
 		style.AddItems("Oppa JianHerng Style");
 		MenuBar_.AddMenuComponents(style);
 
-		MenuComponent aboutus{ "About Eclipse", EditorMenuType::ABOUTUS };
+		MenuComponent aboutus{ "About Eclipse" ICON_MDI_CROSSHAIRS_QUESTION, EditorMenuType::ABOUTUS };
 		MenuBar_.AddMenuComponents(aboutus);
 	}
 
@@ -121,8 +128,11 @@ namespace Eclipse
 		//static const ImWchar icons_ranges[] = { ICON_MIN_MDI, ICON_MAX_MDI, 0 };
 		static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
 		ImFontConfig icons_config; icons_config.MergeMode = true; icons_config.PixelSnapH = true;
-		//io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/materialdesignicons-webfont.ttf", 12.0f, &icons_config, icons_ranges);
 		io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/fontawesome-webfont.ttf", 14.0f, &icons_config, icons_ranges);
+		//"src/ImGui/Vendor/fontawesome-webfont.ttf"
+		static const ImWchar icons_ranges2[] = { ICON_MIN_MDI, ICON_MAX_MDI, 0 };
+		ImFontConfig icons_config2; icons_config2.MergeMode = true; icons_config2.PixelSnapH = true;  
+		io.Fonts->AddFontFromFileTTF("src/ImGui/Vendor/materialdesignicons-webfont.ttf", 16.0f, &icons_config2, icons_ranges2);
 	}
 
 	Entity EditorManager::CreateDefaultEntity(EntityType type)
@@ -153,10 +163,16 @@ namespace Eclipse
 		EntityToIndexMap_.insert(std::pair<Entity, int>(ID, static_cast<int>(EntityHierarchyList_.size() - 1)));
 		GEHIndex_ = EntityHierarchyList_.size() - 1;
 		SetSelectedEntity(ID);
+
+		if (engine->world.CheckComponent<MaterialComponent>(ID))
+			engine->MaterialManager.HighlightClick(ID);
 	}
 
 	void EditorManager::DestroyEntity(Entity ID)
 	{
+		if (ID == MAX_ENTITY)
+			return;
+
 		size_t pos = static_cast<size_t>(EntityToIndexMap_[ID]);
 
 		EntityHierarchyList_.erase(EntityHierarchyList_.begin() + pos);
@@ -170,15 +186,29 @@ namespace Eclipse
 			}
 			else
 			{
-				SetSelectedEntity(EntityHierarchyList_[pos - 1]);
+				if (pos == 0)
+				{
+					pos = 0;
+				}
+				else
+				{
+					pos = pos - 1;
+				}
+
+				SetSelectedEntity(EntityHierarchyList_[pos]);
 
 				for (auto& pair : EntityToIndexMap_)
 				{
-					if (pair.second > pos - 1)
+					if (pair.second > pos)
 						pair.second--;
 				}
 			}
 		}
+
+		if (GetSelectedEntity() == MAX_ENTITY) return;
+
+		if (engine->world.CheckComponent<MaterialComponent>(GetSelectedEntity()))
+			engine->MaterialManager.HighlightClick(GetSelectedEntity());
 
 		engine->world.DestroyEntity(ID);
 	}
@@ -273,10 +303,10 @@ namespace Eclipse
 	bool EditorManager::IsAnyGizmoWindowActive()
 	{
 		auto* scene = dynamic_cast<SceneWindow*>(Windows_[1].get());
-		auto* sv1 = dynamic_cast<TopSwitchViewWindow*>(Windows_[8].get());
-		auto* sv2 = dynamic_cast<BottomSwitchViewWindow*>(Windows_[9].get());
-		auto* sv3 = dynamic_cast<LeftSwitchViewWindow*>(Windows_[10].get());
-		auto* sv4 = dynamic_cast<RightSwitchViewWindow*>(Windows_[11].get());
+		auto* sv1 = dynamic_cast<TopSwitchViewWindow*>(Windows_[2].get());
+		auto* sv2 = dynamic_cast<BottomSwitchViewWindow*>(Windows_[3].get());
+		auto* sv3 = dynamic_cast<LeftSwitchViewWindow*>(Windows_[4].get());
+		auto* sv4 = dynamic_cast<RightSwitchViewWindow*>(Windows_[5].get());
 
 		if (scene->GetIsWindowActive() || sv1->GetIsWindowActive() || sv2->GetIsWindowActive()
 			|| sv3->GetIsWindowActive() || sv4->GetIsWindowActive())
@@ -287,6 +317,32 @@ namespace Eclipse
 		{
 			return false;
 		}
+	}
+
+	bool EditorManager::IsAnySwitchWindowHovered()
+	{
+		auto* sv1 = dynamic_cast<TopSwitchViewWindow*>(Windows_[2].get());
+		auto* sv2 = dynamic_cast<BottomSwitchViewWindow*>(Windows_[3].get());
+		auto* sv3 = dynamic_cast<LeftSwitchViewWindow*>(Windows_[4].get());
+		auto* sv4 = dynamic_cast<RightSwitchViewWindow*>(Windows_[5].get());
+
+		if (sv1->GetIsWindowHovered() || sv2->GetIsWindowHovered()
+			|| sv3->GetIsWindowHovered() || sv4->GetIsWindowHovered())
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	bool EditorManager::GetMeshEditorActive() const
+	{
+		return IsMeshEditorActive;
+	}
+
+	bool EditorManager::GetRecoveryFileExistence() const
+	{
+		return DoesRecoveryFileExist;
 	}
 
 	void EditorManager::SetSelectedEntity(Entity ID)
@@ -301,6 +357,16 @@ namespace Eclipse
 		GEHIndex_ = index;
 	}
 
+	void EditorManager::SetMeshEditorActive(bool active)
+	{
+		IsMeshEditorActive = active;
+	}
+
+	void EditorManager::SetRecoveryFileExistence(bool exist)
+	{
+		DoesRecoveryFileExist = exist;
+	}
+
 	void EditorManager::Clear()
 	{
 		EntityHierarchyList_.clear();
@@ -311,5 +377,11 @@ namespace Eclipse
 		{
 			window->Unload();
 		}
+	}
+
+	void EditorManager::TextureIconInit()
+	{
+		FolderIcon_ = Graphics::FindTextures("FolderIcon").GetHandle();
+		spriteIcon_ = Graphics::FindTextures("PlayPauseStop").GetHandle();
 	}
 }

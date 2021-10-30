@@ -2,19 +2,17 @@
 <Entities Size="1">
     <Entity_0 ID="0">
         <AABBComponent>
-            <center x="-62.105" y="-2.87088" z="0" />
-            <Min x="-112.105" y="-5.37088" z="-20.1126" />
-            <Max x="-12.105" y="-0.370878" z="20.1126" />
+            <center x="-0.185685" y="0" z="7.97416" />
+            <Min x="-2.68568" y="-2.5" z="5.47416" />
+            <Max x="2.31432" y="2.5" z="10.4742" />
         </AABBComponent>
-        <CollisionComponent>
-            <shape Shape="Px_CUBE" Hx="50" Hy="2.5" Hz="20.1126" Radius="1" Hheight="1" />
-        </CollisionComponent>
         <EntityComponent>
-            <Tag value="Cube" />
-            <Name value="Cube" />
+            <Tag value="Sphere" />
+            <Name value="Sphere" />
             <Child size="0" />
             <Parent size="0" />
             <IsAChild value="false" />
+            <TreeactiveFlag value="64" />
         </EntityComponent>
         <MaterialComponent>
             <Modeltype value="BasicPrimitives" />
@@ -26,11 +24,13 @@
             <MaximumShininess value="128" />
             <ComboIndex value="1" />
             <TextureComboIndex value="0" />
-            <Type value="TT_2D" />
+            <Type value="TT_UNASSIGNED" />
             <hasTexture value="true" />
-            <TextureRef value="meshes_4" />
+            <TextureRef value="brick" />
             <TextureKey value="" />
             <HoldingTextures size="0" />
+            <HasMaterialIstance value="false" />
+            <MaterialInstanceName value="" />
         </MaterialComponent>
         <MeshComponent>
             <MeshName value="" />
@@ -43,20 +43,22 @@
                 <Col2 _20="0" _21="0" _22="0" _23="0" />
                 <Col3 _30="0" _31="0" _32="0" _33="0" />
             </modelNDC_xform>
-            <modelRef value="Cube" />
+            <modelRef value="Sphere" />
             <shaderRef value="shader3DShdrpgm" />
             <transparency value="1" />
             <ENV_MAP value="false" />
             <ENV_TYPE value="MT_REFLECT" />
         </MeshComponent>
-        <PrefabComponent>
-            <IsChild value="false" />
-            <PrefabID value="881335463792" />
-        </PrefabComponent>
         <TransformComponent>
-            <position x="0" y="-2.384" z="0" />
-            <rotation x="314.526" y="0" z="0" />
-            <scale x="100" y="5" z="40.2251" />
+            <position x="-0.185685" y="0" z="7.97416" />
+            <rotation x="0" y="0" z="0" />
+            <scale x="5" y="5" z="5" />
         </TransformComponent>
+        <PrefabComponent>
+            <IsInstance value="false" />
+            <IsChild value="false" />
+            <CompChanges value="00000000000000000000000000000000" />
+            <PrefabID value="7022634128765384448" />
+        </PrefabComponent>
     </Entity_0>
 </Entities>

@@ -40,15 +40,24 @@ namespace Eclipse
 		Entity GetEntityID(int index);
 		bool IsEntityListEmpty() const;
 		bool IsAnyGizmoWindowActive();
+		bool IsAnySwitchWindowHovered();
+		bool GetMeshEditorActive() const;
+		bool GetRecoveryFileExistence() const;
 
 		// Setters
 		void SetSelectedEntity(Entity ID);
 		void SetGlobalIndex(size_t index);
+		void SetMeshEditorActive(bool active);
+		void SetRecoveryFileExistence(bool exist);
 
 		template <typename TWindow>
 		TWindow* GetEditorWindow();
 		// Cleaning Up
 		void Clear();
+
+		int spriteIcon_;
+		int FolderIcon_;
+		void TextureIconInit();
 
 		DragAndDrop DragAndDropInst_;
 	private:
@@ -59,6 +68,9 @@ namespace Eclipse
 		std::vector<Entity> EntityHierarchyList_;
 		std::unordered_map<Entity, int> EntityToIndexMap_;
 		size_t GEHIndex_{ 0 };
+
+		bool IsMeshEditorActive{ false };
+		bool DoesRecoveryFileExist{ false };
 
 		template <typename TWindow>
 		inline void AddWindow(const char* title);

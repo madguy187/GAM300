@@ -15,103 +15,75 @@
 #include "ECS/ComponentManager/Components/ModelComponent.h"
 #include "ECS/ComponentManager/Components/MaterialComponent.h"
 
+#include "Graphics/Material/EnvironmentMap/EnvironmentMapManager.h"
+
 namespace Eclipse
 {
-	typedef std::unordered_map<unsigned int, AssimpModel*> AssimpModelContainer;
-	typedef std::unordered_map<unsigned int, MeshComponent*> MeshModelContainer;
-	using AssimpIT = std::unordered_map<unsigned int, AssimpModel&>::iterator;
-	using AssimpMeshIT = std::unordered_map<unsigned int, MeshComponent*>::iterator;
-	using TextureIT = std::unordered_map<std::string, std::vector< std::unique_ptr<Texture>>>::iterator;
+    typedef std::multimap<std::string, Texture>::iterator MMAPIterator;
 
-	class AssimpModelManager
-	{
-	private:
-		bool HotReloadFlag = false;
-		std::unordered_map<std::string, std::unique_ptr<Mesh>> Geometry;
-		std::vector<std::string> AllPrimitiveModelsNames;
-		std::unordered_map<std::string, std::vector<std::string>> Prefabs;
-		std::vector<std::string> AllMeshNames;
-		std::vector<std::string> AllGeometryNames;
+    class AssimpModelManager
+    {
+    private:
+        std::unordered_map<std::string, std::unique_ptr<Mesh>> Geometry;
+        std::vector<std::string> AllPrimitiveModelsNames;
+        std::unordered_map<std::string, std::vector<std::string>> Prefabs;
+        std::vector<std::string> AllMeshNames;
+        std::vector<std::string> AllGeometryNames;
+        EnvironmentMapManager gEnvironmentMap;
 
-	public:
-		float HotReloadCooldown = 0.0f;
-		void CreateModel(unsigned int ID, const std::string& ModelName);
-		std::unordered_map<std::string, std::vector<std::string>>& GetPrefabs();
-		void InsertPrimitiveName(const std::string& in);
-		std::vector<std::string>& GetMeshNames();
-		std::vector<std::string>& GetPrimitiveNames();
-		// Get Current MeshComponent Container
-		MeshModelContainer GetMeshContainer();
-		// Ger how many Models in Container
-		size_t MeshModelCount();
-		// Get Current Model Factory Count
-		size_t MeshFactoryCount();
-		// Render Function that uses the Container that stores MeshComponent 
-		void MeshDraw(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
-		void DebugNormals(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, CameraComponent::CameraType _camType);
-		// Upload to Shader
-		void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID, AABB_* box);
-		// Delete Model from MeshContainer Using ID
-		void DeleteItem(unsigned int index);
-		// Cleanup
-		void Cleanup(MeshComponent& in);
-		// Check Current path is correct
-		void TestPath(std::string& path);
-		// Draw function that takes in Mesh Component
-		void Render(Shader& shader, GLenum MOde, MeshComponent&, unsigned int );
-		void InsertModelMap(std::string& NameofModel, std::string& Directory);
-		// Destructor
-		~AssimpModelManager();
-		void SetMeshComponent(unsigned int ID, std::string);
-		void Render(Shader& shader, GLenum mode, unsigned int id, MeshComponent& in);
-		void Render(GLenum mode, MeshComponent& in);
-		void SetSingleMesh(unsigned int ID, std::string& MeshName);
-		AssimpModelManager() {};
+    public:
+        Entity CreateModel(unsigned int ID, const std::string& ModelName);
+        void RegisterExistingModel(Entity ID, const std::string& ModelName = std::string{});
+        std::unordered_map<std::string, std::vector<std::string>>& GetPrefabs();
+        void InsertPrimitiveName(const std::string& in);
+        std::vector<std::string>& GetMeshNames();
+        std::vector<std::string>& GetPrimitiveNames();
+        void MeshDraw(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
+        void DebugNormals(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, CameraComponent::CameraType _camType);
+        void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID, AABB_* box);
+        void Cleanup(MeshComponent& in);
+        void TestPath(std::string& path);
+        void Render(Shader& shader, GLenum MOde, MeshComponent&, unsigned int);
+        ~AssimpModelManager();
+        void SetMeshComponent(unsigned int ID, std::string);
+        void Render(Shader& shader, GLenum mode, unsigned int id, MeshComponent& in);
+        void Render(GLenum mode, MeshComponent& in);
+        void SetSingleMesh(unsigned int ID, std::string& MeshName);
+        AssimpModelManager() {};
 
-		///////////////////////////////////////////////////////////////////////////////////////////
-		// FDebug PrintOuts
-		///////////////////////////////////////////////////////////////////////////////////////////
-		void PrintOutModelsLoadedOnce(); // Print Out the names of all the models loaded once
-		void PrintOutModelTextureMap();  // Print out the names of the textures mapped to the MeshIndex of the model
-		void PrintOutModelMap(); // Print out Model Name and Directory of the loaded Models
-		void PrintOutAllTextures();
-		void PrintOutAllMeshes();
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // For New PBR Shader
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        void CheckUniforms(Shader&, Entity, MeshComponent&, CameraComponent&);
+        void RenderMesh(MeshComponent& In, GLenum Mode);
+        void ChecModelkUniforms(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID, AABB_* box);
 
-		///////////////////////////////////////////////////////////////////////////////////////////
-		// Compilers
-		///////////////////////////////////////////////////////////////////////////////////////////
-		void ClearGeometry();
-		void ClearAllMeshNames();
-		void ClearAllPrefabs();
-		void InsertGeometryName(const std::string& MeshName_);
-		void InsertMeshName(const std::string& in);
-		void InsertGeometry(const std::string& name, Mesh& NewMesh);
-		void InsertPrefabs(const std::string& Index, const std::string& MeshName);
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // For Compilers
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        void ClearGeometry();
+        void ClearAllMeshNames();
+        void ClearAllPrefabs();
+        void InsertGeometryName(const std::string& MeshName_);
+        void InsertMeshName(const std::string& in);
+        void InsertGeometry(const std::string& name, Mesh& NewMesh);
+        void InsertPrefabs(const std::string& Index, const std::string& MeshName);
 
-	public:
-		// TEXTURES PUT HERE FIRST
-		unsigned int Index = 0; // mesh index.
-		void InsertTextures(std::string& NameofModel, std::unique_ptr<Texture> in, unsigned int MeshId);
-		void SetTexturesForModel(MaterialComponent& in, std::string& passkey);
-		bool GeometryContainerCheck(const std::string& in);
-		bool CheckGeometryExist(MeshComponent& in);
+        // FOR FIKRUL
+        void MeshEditorDraw(World& world_, MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, CameraComponent::CameraType _camType);
+        void MeshEditorUniforms(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID);
+        void CreateBasicPrimitives(Entity ID, const std::string& ModelName);
 
-	private:
-		AssimpModelContainer AssimpModelContainer_;
-		MeshModelContainer AssimpModelContainerV2;
-		std::unordered_map<std::string, std::unique_ptr<AssimpModel>> AssimpLoadedModels;
-		std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>> >LoadedTexturesV2;
-		std::unordered_map<std::string, std::string> ModelMap;
-		bool ClearContainer();
-		void CleanUpAllModels();
-		size_t AssimpModelCount();
-		bool InsertModel(AssimpModel& in);
-		AssimpModelContainer GetContainer();
-		void CreateModel(unsigned int ID, std::string name, std::string path, std::string filename);
-		void Draw(unsigned int FrameBufferID, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
-		void HighlihtDraw(unsigned int FrameBufferID, GLenum Mode);
-		void DeleteItem(unsigned int index, AssimpModel* model_ptr);
-		std::string GetKey(const std::string& in);
-	};
+    public:
+        // TEXTURES PUT HERE FIRST
+        unsigned int Index = 0; // mesh index.
+        void InsertTextures(std::string& NameofModel, std::unique_ptr<Texture> in, unsigned int MeshId);
+        void SetTexturesForModel(MaterialComponent& in, std::string& passkey);
+        bool GeometryContainerCheck(const std::string& in);
+        bool CheckGeometryExist(MeshComponent& in);
+
+    private:
+        std::unordered_map<std::string, std::unordered_map<unsigned int, std::vector<std::unique_ptr<Texture>>> >LoadedTexturesV2;
+    };
 }
 #endif // ASSIMP_MANAGER_H

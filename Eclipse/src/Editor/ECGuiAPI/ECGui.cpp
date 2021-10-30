@@ -94,7 +94,7 @@ namespace Eclipse
 
 	bool ECGui::IsItemActive()
 	{
-		return ImGuiAPI::IsItemActive();;
+		return ImGuiAPI::IsItemActive();
 	}
 
 	void ECGui::SetColumns(int count, const char* id, bool border)
@@ -182,7 +182,7 @@ namespace Eclipse
 		ImGuiAPI::EndStyleVariant();
 	}
 
-	void ECGui::CreateComboList(ComboListSettings settings, const std::vector<std::string>& vecStr, size_t& index)
+	bool ECGui::CreateComboList(ComboListSettings settings, const std::vector<std::string>& vecStr, size_t& index)
 	{
 		// Commented out for Now - Darren
 		//ENGINE_LOG_ASSERT(index >= vecStr.size(), "Accessing out of the vector's index");
@@ -196,6 +196,8 @@ namespace Eclipse
 				if (ImGui::Selectable(vecStr[n].c_str(), is_selected))
 				{
 					index = n;
+					ImGuiAPI::EndComboList();
+					return true;
 				}
 
 				if (is_selected)
@@ -204,6 +206,8 @@ namespace Eclipse
 
 			ImGuiAPI::EndComboList();
 		}
+
+		return false;
 	}
 
 	bool ECGui::CreateMenuItem(const char* name, bool* open, const char* shortcut)
@@ -493,7 +497,15 @@ namespace Eclipse
 
 	bool ECGui::CheckBoxBool(const char* name, bool* var, bool hideName)
 	{
-		return ImGuiAPI::CheckBoxBool(name, var, hideName);
+		bool oldBool = *var;
+
+		if (ImGuiAPI::CheckBoxBool(name, var, hideName))
+		{
+			CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<bool>{ oldBool, *var });
+			return true;
+		}
+
+		return false;
 	}
 
 	bool ECGui::ButtonBool(const char* name, const ImVec2& size)
@@ -659,6 +671,20 @@ namespace Eclipse
 	bool ECGui::ColorPicker3(const char* label, float col[3], ImGuiColorEditFlags flags)
 	{
 		return ImGuiAPI::ColorPicker3(label, col, flags);
+	}
+
+	void ECGui::LineAndDummy(ImVec2 sizeOfDummies)
+	{
+		ECGui::InsertHorizontalLineSeperator();
+
+		ECGui::Dummy(sizeOfDummies);
+	}
+
+	void ECGui::DummyAndLine(ImVec2 sizeOfDummies)
+	{
+		ECGui::Dummy(sizeOfDummies);
+
+		ECGui::InsertHorizontalLineSeperator();
 	}
 
 	void ECGui::Image(ImTextureID user_texture_id, const ImVec2& size, const ImVec2& uv0, 

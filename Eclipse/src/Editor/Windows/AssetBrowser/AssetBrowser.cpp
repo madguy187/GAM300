@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "AssetBrowser.h"
 #include "Editor/Windows/Inspector/Inspector.h"
+#include "Editor/Windows/MeshEditor/MeshEditor.h"
+
 namespace Eclipse
 {
 	void AssetBrowserWindow::Update()
@@ -12,11 +14,11 @@ namespace Eclipse
 	void AssetBrowserWindow::Init()
 	{
 		Type = EditorWindowType::EWT_ASSETBROWSER;
-		WindowName = "AssetBrowser";
+		WindowName = "AssetBrowser " ICON_MDI_FILE_IMAGE;
 		memset(searchItemBuffer, 0, 128);
 		memset(searchFolderBuffer, 0, 128);
 		buttonSize = { thumbnailSize,thumbnailSize };
-		allExtensions = { {"cs"},{"png"},{"txt"} };
+		allExtensions = { {"cs"},{"png"},{"txt"},{"mat"},{"ITEM"},{"prefab"},{"wav"}};
 		ScanAll();
 	}
 
@@ -25,7 +27,7 @@ namespace Eclipse
 	}
 
 	AssetBrowserWindow::AssetBrowserWindow()
-		:CurrentDir(AllDir), AllDir(AssetPath), padding(16.0f), thumbnailSize(120.0f), sprite(), FolderIcon()
+		:CurrentDir(AllDir), AllDir(AssetPath), padding(16.0f), thumbnailSize(120.0f)
 	{
 	}
 
@@ -41,10 +43,6 @@ namespace Eclipse
 		ECGui::DrawChildWindow<void()>({ "##folders_common" }, std::bind(&AssetBrowserWindow::LeftFolderHierarchy, this));
 
 		ECGui::NextColumn();
-
-		sprite.textureRef = Graphics::textures.find("PlayPauseStop")->first;
-
-		FolderIcon.textureRef = Graphics::textures.find("FolderIcon")->first;
 		
 		//right side
 	
@@ -124,7 +122,7 @@ namespace Eclipse
 						NextDir = AllDir;
 					}
 
-					engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
+					//engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
 
 					for (auto& secondEntry : std::filesystem::recursive_directory_iterator(NextDir))
 					{
@@ -152,21 +150,14 @@ namespace Eclipse
 
 								ECGui::EndTreeNode();
 							}
-							engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), secondEntry, refresh, pathMap, CopyFilesAndFolder);
-							for (size_t i = 0; i < allExtensions.size(); ++i)
-							{
-								engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget(allExtensions[i].c_str(), paths, AssetPath.string(), secondEntry, refresh, pathMap, CopyFilesAndFolder);
-							}
+							//engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), secondEntry, refresh, pathMap, CopyFilesAndFolder);
 						}
 					}
 					ECGui::EndTreeNode();
 				}
 
-				engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
-				for (size_t i = 0; i < allExtensions.size(); ++i)
-				{
-					engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget(allExtensions[i].c_str(), paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
-				}
+				//engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
+
 				if (!jumpDir && /*ECGui::IsMouseDoubleClicked(0) &&*/ ECGui::IsItemClicked(0))
 				{
 					NextPath(CurrentDir, path);
@@ -191,7 +182,7 @@ namespace Eclipse
 			{
 				for (auto& pair2 : pair.second)
 				{
-					std::string temp = LowerCase(pair2.filename().string().c_str()).c_str();
+					std::string temp =pair2.filename().string().c_str();
 					if (!BuffIsEmpty(searchFolderBuffer) && temp.find(searchFolderBuffer) != std::string::npos)
 					{
 						//ECGui::SetNextItemOpen(true, ECGuiCond_Once);
@@ -357,12 +348,11 @@ namespace Eclipse
 
 			ECGui::PushID(fileNameString.c_str());
 
-			TextureComponent icon = dirEntry.is_directory() ? FolderIcon : sprite;
+			int icon = dirEntry.is_directory() ? engine->editorManager->FolderIcon_ : engine->editorManager->spriteIcon_;
 
-			ECGui::ImageButton((void*)(intptr_t)Graphics::FindTextures(icon.textureRef).GetHandle(),
-				buttonSize,
-				{ 1,0 },
-				{ 2,1 });
+			ECGui::ImageButton((void*)icon,buttonSize,{ 1,0 },{ 2,1 });
+			 
+			//ECGui::ButtonBool(fileNameString.c_str());
 			//drag drop
 			//engine->editorManager->DragAndDropInst_.StringPayloadSource("ITEM", relativePath.string());
 			//
@@ -375,43 +365,76 @@ namespace Eclipse
 			{
 			case InspectorWindow::str2int("png"):
 				engine->editorManager->DragAndDropInst_.StringPayloadSource("png", relativePath.string());
+				engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("png", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
 				break;
 			case InspectorWindow::str2int("cs"):
 				engine->editorManager->DragAndDropInst_.StringPayloadSource("cs", relativePath.string());
+				engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("cs", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
 				break;
 			case InspectorWindow::str2int("txt"):
 				engine->editorManager->DragAndDropInst_.StringPayloadSource("txt", relativePath.string());
+				engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("txt", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
 				break;
 			case InspectorWindow::str2int("wav"):
 				engine->editorManager->DragAndDropInst_.StringPayloadSource("wav", "src\\Assets\\" + relativePath.string());
+				engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("wav", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
 				break;
 			case InspectorWindow::str2int("prefab"):
-				engine->editorManager->DragAndDropInst_.StringPayloadSource("prefab", "src\\Assets\\" + relativePath.string());
+				temp = "src\\Assets\\" + relativePath.string();
+
+				if (ECGui::IsMouseDoubleClicked(0))
+				{
+					auto* meshEditor = engine->editorManager->GetEditorWindow<MeshEditorWindow>();
+
+					if (!meshEditor->IsVisible)
+					{
+						Entity ent = MAX_ENTITY;
+						engine->szManager.LoadPrefabFile(ent, temp.c_str(), true);
+						meshEditor->SetMeshID(ent);
+						engine->editorManager->SetMeshEditorActive(true);
+						meshEditor->IsVisible = true;
+					}
+				}
+
+				engine->editorManager->DragAndDropInst_.StringPayloadSource("prefab", temp);
+				//engine->editorManager->DragAndDropInst_.StringPayloadSource("prefab", "src\\Assets\\" + relativePath.string());
+				engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("prefab", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
+				break;
+			case InspectorWindow::str2int("mat"):
+				engine->editorManager->DragAndDropInst_.StringPayloadSource("mat", relativePath.string());
+				engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("mat", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
 				break;
 			default:
 				engine->editorManager->DragAndDropInst_.StringPayloadSource("ITEM", relativePath.string());
+				engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
 				break;
 			}
+			
+			//// GetFileName(relativePath.filename().string().c_str())
 
-			// GetFileName(relativePath.filename().string().c_str())
-			for (size_t i = 0; i < allExtensions.size(); ++i)
+			if (ECGui::IsMouseClicked(0))
 			{
-				engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget(allExtensions[i].c_str(), paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
+				for (size_t i = 0; i < allExtensions.size(); ++i)
+				{
+					engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget(allExtensions[i].c_str(), paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
+				}
 			}
-			engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
 
+			//engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
+
+			static bool test = false;
 			if (ECGui::IsMouseDoubleClicked(0) && ECGui::IsItemClicked(0) && ECGui::IsItemHovered())
 			{
 				if (dirEntry.is_directory())
 				{
 					NextPath(CurrentDir, path);
+
 				}
 				else
 				{
 					std::string temp1;
 					temp1 = GetFileName(relativePath.filename().string().c_str());
 					EDITOR_LOG_INFO(temp1.c_str());
-					//do stuff
 				}
 			}
 
@@ -555,7 +578,7 @@ namespace Eclipse
 
 	void AssetBrowserWindow::SearchItems()
 	{
-		if (ECGui::DrawInputTextHintWidget("", "Search...", searchItemBuffer, 128))
+		if (ECGui::DrawInputTextHintWidget("", "Search..." ICON_MDI_MAGNIFY, searchItemBuffer, 128))
 		{
 			if (BuffIsEmpty(searchItemBuffer))
 			{
@@ -572,12 +595,12 @@ namespace Eclipse
 			searchItemsLowerCase = LowerCase(searchItemBuffer);
 
 		}
-		if (ECGui::ButtonBool("Refresh", { 70,20 }))
+		if (ECGui::ButtonBool("Refresh" ICON_MDI_REFRESH, { 70,20 }))
 		{
 			refresh = true;
 		}
 		ECGui::InsertSameLine();
-		if (ECGui::ButtonBool("Clear", { 70,20 }))
+		if (ECGui::ButtonBool("Clear" ICON_MDI_NUKE, { 70,20 }))
 		{
 			if (BuffIsEmpty(searchItemBuffer))
 			{
@@ -608,7 +631,7 @@ namespace Eclipse
 
 	void AssetBrowserWindow::SearchFolders()
 	{
-		if (ECGui::DrawInputTextHintWidget("", "Search...", searchFolderBuffer, 128))
+		if (ECGui::DrawInputTextHintWidget("", "Search..." ICON_MDI_MAGNIFY, searchFolderBuffer, 128))
 		{
 			if (BuffIsEmpty(searchFolderBuffer))
 			{
@@ -647,7 +670,7 @@ namespace Eclipse
 	{
 		for (auto const& pair2 : Key.second)
 		{
-			folderString = LowerCase(pair2.filename().string().c_str());
+			folderString = pair2.filename().string().c_str();
 
 			if (searchItemsLowerCase == folderString)
 			{
@@ -669,7 +692,7 @@ namespace Eclipse
 				}
 			}
 
-			std::string nameString = LowerCase(pair2.filename().string().c_str());
+			std::string nameString = pair2.filename().string();
 
 			const auto& path = pair2;
 
@@ -677,13 +700,11 @@ namespace Eclipse
 
 			std::string fileNameString = relativePath.filename().string();
 
-			if (!std::filesystem::is_directory(pair2))
-			{
+			
 				if (found && nameString.find(searchItemsLowerCase) != std::string::npos)
 				{
-					TextureComponent icon = std::filesystem::is_directory(pair2) ? FolderIcon : sprite;
-
-					ECGui::ImageButton((void*)(intptr_t)Graphics::FindTextures(icon.textureRef).GetHandle(),
+					int icon = std::filesystem::is_directory(pair2) ? engine->editorManager->FolderIcon_ : engine->editorManager->spriteIcon_;
+					ECGui::ImageButton((void*)(intptr_t)icon,
 						buttonSize,
 						{ 1,0 },
 						{ 2,1 });
@@ -706,7 +727,7 @@ namespace Eclipse
 
 					ECGui::NextColumn();
 				}
-			}
+			
 		}
 	}
 
@@ -725,9 +746,8 @@ namespace Eclipse
 
 				if (!BuffIsEmpty(searchItemBuffer) && tempPath.string().find(searchItemsLowerCase) != std::string::npos)
 				{
-					TextureComponent icon = std::filesystem::is_directory(tempPath) ? FolderIcon : sprite;
-
-					ECGui::ImageButton((void*)(intptr_t)Graphics::FindTextures(icon.textureRef).GetHandle(),
+					int icon = std::filesystem::is_directory(tempPath) ? engine->editorManager->FolderIcon_ : engine->editorManager->spriteIcon_;
+					ECGui::ImageButton((void*)(intptr_t)icon,
 						buttonSize,
 						{ 1,0 },
 						{ 2,1 });
@@ -757,23 +777,21 @@ namespace Eclipse
 
 	std::string AssetBrowserWindow::LowerCase(const char* buffer)
 	{
-		std::string lowerCaseString;
+		//std::string lowerCaseString;
 
 		std::string bufferString(buffer);
+		std::for_each(bufferString.begin(), bufferString.end(), [](char& c)
+			{
+				c = static_cast<char>(::tolower(c));			
+			});
 
-		for (const auto& character : bufferString)
-		{
-			lowerCaseString += std::to_string(std::tolower(character));
-		}
-
-		size_t lastdot = lowerCaseString.find_last_of(".");
+		size_t lastdot = bufferString.find_last_of(".");
 
 		if (lastdot == std::string::npos)
 		{
-			return lowerCaseString;
+			return bufferString;
 		}
-
-		return lowerCaseString.substr(0, lastdot);
+		return bufferString.substr(0, lastdot);
 	}
 
 	std::string AssetBrowserWindow::GetFileName(const char* buffer)

@@ -16,7 +16,7 @@ namespace Eclipse
 		mViewportSize = glm::vec2{};
 		mSceneBufferSize = glm::vec2{};
 		Type = EditorWindowType::EWT_SCENE;
-		WindowName = "Scene View";
+		WindowName = "Scene View " ICON_MDI_MONITOR;
 		m_frameBuffer = engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_SCENE);
 	}
 
@@ -32,7 +32,7 @@ namespace Eclipse
 			mViewportSize.getY() != viewportPanelSize.y)
 		{
 			// Resize the framebuffer based on the size of the imgui window
-			m_frameBuffer->Resize(static_cast<unsigned>(viewportPanelSize.x), static_cast<unsigned>(viewportPanelSize.y));
+			m_frameBuffer->Resize(static_cast<unsigned>(viewportPanelSize.x), static_cast<unsigned>(viewportPanelSize.y), FrameBufferMode::FBM_SCENE);
 			mViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 			engine->gFrameBufferManager->UpdateAspectRatio(FrameBufferMode::FBM_SCENE, mViewportSize);
 		}
@@ -57,11 +57,10 @@ namespace Eclipse
 		ECGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
 			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
-		//// ImGuizmo Logic
+		// ImGuizmo Logic
 		if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
-		{
-			OnGizmoUpdateEvent();
-		}
+			if (!engine->editorManager->IsAnySwitchWindowHovered())
+				OnGizmoUpdateEvent();
 
 		if (ECGui::IsItemHovered())
 		{
@@ -73,9 +72,15 @@ namespace Eclipse
 		}
 
 		if (ECGui::IsItemActive())
+		{
+			//std::cout << "Window is active" << std::endl;
 			IsWindowActive = true;
+		}
 		else
+		{
+			//std::cout << "Window is not active" << std::endl;
 			IsWindowActive = false;
+		}
 	}
 
 	void SceneWindow::OnGizmoUpdateEvent()
@@ -137,6 +142,7 @@ namespace Eclipse
 
 		if (ImGuizmo::IsUsing() && ECGui::IsItemHovered())
 		{
+			std::cout << "gizmo being used" << std::endl;
 			glm::vec3 translation, rotation, scale;
 			ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(translation),
 				glm::value_ptr(rotation), glm::value_ptr(scale));
@@ -148,6 +154,13 @@ namespace Eclipse
 			case ImGuizmo::OPERATION::TRANSLATE:
 				transCom.position = translation;
 				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.position, transCom.position, selectedEntity });
+
+				if (engine->world.CheckComponent<ChildComponent>(selectedEntity))
+				{
+					auto& child = engine->world.GetComponent<ChildComponent>(selectedEntity);
+					child.UpdateChildren = true;
+					//std::cout << "translate gizmo being used!" << std::endl;
+				}
 				break;
 			case ImGuizmo::OPERATION::ROTATE:
 				transCom.rotation = rotation;
@@ -164,11 +177,26 @@ namespace Eclipse
 			//Update for DynamicAABB Tree -Rachel
 			engine->gPicker.UpdateAabb(selectedEntity);
 			engine->gDynamicAABBTree.UpdateData(selectedEntity);
+
+			OnCopyEntityEvent();
 		}
 		else if (!ImGuizmo::IsUsing() && ImGui::IsMouseReleased(0)
 			&& ECGui::IsItemHovered())
 		{
 			CommandHistory::DisableMergeForMostRecentCommand();
+
+			if (engine->world.CheckComponent<ChildComponent>(selectedEntity))
+			{
+				auto& child = engine->world.GetComponent<ChildComponent>(selectedEntity);
+				child.UpdateChildren = false;
+				// std::cout << "translate gizmo not being used!" << std::endl;
+			}
+		}
+
+		if (!ImGuizmo::IsUsing() && ImGui::IsMouseReleased(0) 
+			&& !ImGui::IsMouseDragging(0))
+		{
+			IsCopying = false;
 		}
 	}
 
@@ -201,10 +229,27 @@ namespace Eclipse
 	{
 		if (ECGui::IsMouseClicked(0) && !ImGuizmo::IsUsing())
 		{
+			std::cout << "picking being used" << std::endl;
 			engine->world.GetSystem<PickingSystem>()->EditorUpdate();
 
 			if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
 				engine->editorManager->SetSelectedEntity(engine->gPicker.GetCurrentCollisionID());
+		}
+	}
+
+	void SceneWindow::OnCopyEntityEvent()
+	{
+		if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_LEFTALT)) && m_GizmoType == ImGuizmo::OPERATION::TRANSLATE)
+		{
+			if (!IsCopying)
+			{
+				Entity ID = engine->world.CopyEntity(engine->world, engine->editorManager->GetSelectedEntity(), all_component_list);
+				auto& trans = engine->world.GetComponent<TransformComponent>(ID);
+				auto& ent = engine->world.GetComponent<EntityComponent>(ID);
+				engine->gPicker.GenerateAabb(ID, trans, ent.Tag);
+				engine->editorManager->RegisterExistingEntity(ID);
+				IsCopying = true;
+			}
 		}
 	}
 

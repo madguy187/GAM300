@@ -11,7 +11,7 @@ namespace Eclipse
 	void ProfilerWindow::Init()
 	{
 		Type = EditorWindowType::EWT_PROFILER;
-		WindowName = "Profiler";
+		WindowName = "Profiler " ICON_MDI_FILE_PERCENT;
 		IsVisible = false;
 	}
 

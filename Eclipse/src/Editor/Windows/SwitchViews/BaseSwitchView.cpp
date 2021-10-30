@@ -11,6 +11,7 @@ namespace Eclipse
 
     void BaseSwitchViewWindow::Init()
     {
+        FBO_Mode = FrameBufferMode::FBM_SCENE;
         mCamType = CameraComponent::CameraType::TopView_Camera;
         mViewportSize = glm::vec2{ 0.f, 0.f };
         Type = EditorWindowType::EWT_SWITCHVIEW_RIGHT;
@@ -32,9 +33,9 @@ namespace Eclipse
         if (mViewportSize.getX() != viewportPanelSize.x ||
             mViewportSize.getY() != viewportPanelSize.y)
         {
-            m_frameBuffer->Resize(static_cast<unsigned>(viewportPanelSize.x), static_cast<unsigned>(viewportPanelSize.y));
+            m_frameBuffer->Resize(static_cast<unsigned>(viewportPanelSize.x), static_cast<unsigned>(viewportPanelSize.y), FBO_Mode);
             mViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
-            engine->gFrameBufferManager->UpdateAspectRatio(FrameBufferMode::FBM_GAME, mViewportSize);
+            engine->gFrameBufferManager->UpdateAspectRatio(FBO_Mode, mViewportSize);
         }
 
         ChildSettings settings;
@@ -50,24 +51,29 @@ namespace Eclipse
         ECGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
             ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
-        if (!engine->editorManager->IsEntityListEmpty() && GizmoType != -1)
-            OnGizmoUpdateEvent(GizmoType);
+        /*if (!engine->editorManager->IsEntityListEmpty() && GizmoType != -1)
+            OnGizmoUpdateEvent(GizmoType);*/
 
         if (ECGui::IsItemHovered())
         {
             // Do all the future stuff here
             OnCameraZoomEvent();
             OnCameraMoveEvent();
-        }
 
-        if (ECGui::IsItemActive())
-        {
-            IsWindowActive = true;
+            if (!engine->editorManager->IsEntityListEmpty() && GizmoType != -1)
+                OnGizmoUpdateEvent(GizmoType);
+
+            IsWindowHovering = true;
         }
         else
         {
-            IsWindowActive = false;
+            IsWindowHovering = false;
         }
+
+        if (ECGui::IsItemActive())
+            IsWindowActive = true;
+        else
+            IsWindowActive = false;
     }
 
     void BaseSwitchViewWindow::OnGizmoUpdateEvent(int GizmoType)
@@ -139,6 +145,12 @@ namespace Eclipse
             case ImGuizmo::OPERATION::TRANSLATE:
                 transCom.position = translation;
                 CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.position, transCom.position });
+
+                if (engine->world.CheckComponent<ChildComponent>(selectedEntity))
+                {
+                    auto& child = engine->world.GetComponent<ChildComponent>(selectedEntity);
+                    child.UpdateChildren = true;
+                }
                 break;
             case ImGuizmo::OPERATION::ROTATE:
                 transCom.rotation = rotation;
@@ -156,6 +168,12 @@ namespace Eclipse
             && ECGui::IsItemHovered())
         {
             CommandHistory::DisableMergeForMostRecentCommand();
+
+            if (engine->world.CheckComponent<ChildComponent>(selectedEntity))
+            {
+                auto& child = engine->world.GetComponent<ChildComponent>(selectedEntity);
+                child.UpdateChildren = false;
+            }
         }
 
     }
@@ -227,8 +245,12 @@ namespace Eclipse
         }
     }
 
-    bool BaseSwitchViewWindow::GetIsWindowActive()
+    bool BaseSwitchViewWindow::GetIsWindowActive() const
     {
         return IsWindowActive;
+    }
+    bool BaseSwitchViewWindow::GetIsWindowHovered() const
+    {
+        return IsWindowHovering;
     }
 }

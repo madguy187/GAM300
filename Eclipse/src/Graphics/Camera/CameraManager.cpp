@@ -64,6 +64,24 @@ namespace Eclipse
         return gameCamID;
     }
 
+    void CameraManager::CreatePerspectiveCamera(CameraComponent::CameraType _camType)
+    {
+        Entity newCam = engine->world.CreateEntity();
+        engine->world.AddComponent(newCam, CameraComponent{});
+        engine->world.AddComponent(newCam, TransformComponent{});
+
+        auto& _camera = engine->world.GetComponent<CameraComponent>(newCam);
+        _camera.camType = _camType;
+        _camera.projType = CameraComponent::ProjectionType::Perspective;
+
+        auto& _transform = engine->world.GetComponent<TransformComponent>(newCam);
+        //Set default initial position to be same as initial game camera position
+        _transform.position = GAMECAM_INITPOS;
+        _transform.rotation = GAMECAM_INITROT;
+
+        cameraList.emplace(_camType, newCam);
+    }
+
     void CameraManager::CreateViewCamera(CameraComponent::CameraType _camType)
     {
         Entity newCam = engine->world.CreateEntity();
@@ -161,7 +179,7 @@ namespace Eclipse
         if (_camera.projType == CameraComponent::ProjectionType::Orthographic)
         {
             // Darren was here . Actually wanna check only scene using ortho? if yes for now i hardcode ortho.
-            _camera.aspect = engine->gFrameBufferManager->GetAspectRatio(FrameBufferMode::FBM_GAME);
+            _camera.aspect = engine->gFrameBufferManager->GetAspectRatio(_camera.camType);
 
             _camera.projMtx = glm::ortho(static_cast<float>(-(OpenGL_Context::GetWidth()) * _camera.aspect) / transform.scale.x,
                 static_cast<float>((OpenGL_Context::GetWidth()) * _camera.aspect) / transform.scale.x,
@@ -172,7 +190,7 @@ namespace Eclipse
         else
         {
             // Darren was here . Actually wanna check only scene using perspective? if yes for now i hardcode scene.
-            _camera.aspect = engine->gFrameBufferManager->GetAspectRatio(FrameBufferMode::FBM_SCENE);
+            _camera.aspect = engine->gFrameBufferManager->GetAspectRatio(_camera.camType);
 
             if ((OpenGL_Context::GetWidth() != 0) && (OpenGL_Context::GetHeight() != 0))
             {
@@ -293,10 +311,118 @@ namespace Eclipse
         }
     }
 
+    void CameraManager::UpdateMeshCamera(TransformComponent& _transform)
+    {
+        unsigned int cameraID = GetCameraID(CameraComponent::CameraType::MeshEditor_Camera);
+        auto& camera = engine->world.GetComponent<CameraComponent>(cameraID);
+
+        float cameraSpd = engine->Game_Clock.get_DeltaTime() * camera.cameraSpeed;
+
+        if (meshInput.test(0))
+        {
+            _transform.position += glm::normalize(glm::cross(camera.eyeFront, camera.upVec)) * cameraSpd;
+        }
+
+        if (meshInput.test(1))
+        {
+            _transform.position -= glm::normalize(glm::cross(camera.eyeFront, camera.upVec)) * cameraSpd;
+        }
+
+        if (meshInput.test(2))
+        {
+            _transform.position += camera.eyeFront * cameraSpd;
+        }
+
+        if (meshInput.test(3))
+        {
+            _transform.position -= camera.eyeFront * cameraSpd;
+        }
+
+        if (meshInput.test(10))
+        {
+            _transform.position += camera.upVec * cameraSpd;
+        }
+
+        if (meshInput.test(11))
+        {
+            _transform.position -= camera.upVec * cameraSpd;
+        }
+
+        if (meshInput.test(8))
+        {
+            if (camera.fov < 2.0f)
+            {
+                camera.fov = 1.0f;
+            }
+            else
+            {
+                camera.fov -= cameraSpd;
+            }
+        }
+
+        if (meshInput.test(9))
+        {
+            if (camera.fov > 179.0f)
+            {
+                camera.fov = 180.0f;
+            }
+            else
+            {
+                camera.fov += cameraSpd;
+            }
+        }
+
+        if (meshInput.test(6))
+        {
+            if (_transform.rotation.y < -90.0f)
+            {
+                _transform.rotation.y = 270.0f;
+            }
+            else
+            {
+                _transform.rotation.y -= cameraSpd;
+            }
+        }
+
+        if (meshInput.test(7))
+        {
+            if (_transform.rotation.y > 270.0f)
+            {
+                _transform.rotation.y = -90.0f;
+            }
+            else
+            {
+                _transform.rotation.y += cameraSpd;
+            }
+        }
+
+        if (meshInput.test(4))
+        {
+            if (_transform.rotation.x > 89.0f)
+            {
+                _transform.rotation.x = 89.0f;
+            }
+            else
+            {
+                _transform.rotation.x += cameraSpd;
+            }
+        }
+
+        if (meshInput.test(5))
+        {
+            if (_transform.rotation.x < -89.0f)
+            {
+                _transform.rotation.x = -89.0f;
+            }
+            else
+            {
+                _transform.rotation.x -= cameraSpd;
+            }
+        }
+    }
+
     void CameraManager::CheckCameraInput()
     {
-        InputHandler.SetIsPrint(false);
-
         //Camera movement keys
         //int keyA = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_A);
         //int keyW = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_W);
@@ -319,7 +445,7 @@ namespace Eclipse
 
         //int keyP = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_P);
 
-        if (InputHandler.GetKeyCurrent(InputKeycode::Key_A))
+        if (engine->InputManager->GetKeyCurrent(InputKeycode::Key_A))
         {
             input.set(1, 1);
         }
@@ -328,7 +454,7 @@ namespace Eclipse
             input.set(1, 0);
         }
 
-        if (InputHandler.GetKeyCurrent(InputKeycode::Key_S))
+        if (engine->InputManager->GetKeyCurrent(InputKeycode::Key_S))
         {
             input.set(3, 1);
         }
@@ -337,7 +463,7 @@ namespace Eclipse
             input.set(3, 0);
         }
 
-        if (InputHandler.GetKeyCurrent(InputKeycode::Key_D))
+        if (engine->InputManager->GetKeyCurrent(InputKeycode::Key_D))
         {
             input.set(0, 1);
         }
@@ -346,7 +472,7 @@ namespace Eclipse
             input.set(0, 0);
         }
 
-        if (InputHandler.GetKeyCurrent(InputKeycode::Key_W))
+        if (engine->InputManager->GetKeyCurrent(InputKeycode::Key_W))
         {
             input.set(2, 1);
         }
@@ -465,6 +591,138 @@ namespace Eclipse
 
     }
 
+    void CameraManager::CheckMeshCameraInput()
+    {
+        int keyA = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_A);
+        int keyW = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_W);
+        int keyS = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_S);
+        int keyD = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_D);
+
+        /*Camera "zoom" keys
+        NOTE: Changing the FOV causes some level of distortion, similar to the fisheye effect.
+        Recommended FOV value for a realistic view is usually about 45.*/
+        int keyZ = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_Z);
+        int keyX = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_X);
+
+        int keyQ = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_Q);
+        int keyE = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_E);
+        int keyR = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_R);
+        int keyF = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_F);
+
+        int keyT = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_T);
+        int keyG = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_G);
+
+        //int keyP = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_P);
+
+        if (GLFW_PRESS == keyA)
+        {
+            meshInput.set(1, 1);
+        }
+        else if (GLFW_RELEASE == keyA)
+        {
+            meshInput.set(1, 0);
+        }
+
+        if (GLFW_PRESS == keyS)
+        {
+            meshInput.set(3, 1);
+        }
+        else if (GLFW_RELEASE == keyS)
+        {
+            meshInput.set(3, 0);
+        }
+
+        if (GLFW_PRESS == keyD)
+        {
+            meshInput.set(0, 1);
+        }
+        else if (GLFW_RELEASE == keyD)
+        {
+            meshInput.set(0, 0);
+        }
+
+        if (GLFW_PRESS == keyW)
+        {
+            meshInput.set(2, 1);
+        }
+        else if (GLFW_RELEASE == keyW)
+        {
+            meshInput.set(2, 0);
+        }
+
+        if (GLFW_PRESS == keyZ)
+        {
+            meshInput.set(8, 1);
+        }
+        else if (GLFW_RELEASE == keyZ)
+        {
+            meshInput.set(8, 0);
+        }
+
+        if (GLFW_PRESS == keyX)
+        {
+            meshInput.set(9, 1);
+        }
+        else if (GLFW_RELEASE == keyX)
+        {
+            meshInput.set(9, 0);
+        }
+
+        if (GLFW_PRESS == keyQ)
+        {
+            meshInput.set(6, 1);
+        }
+        else if (GLFW_RELEASE == keyQ)
+        {
+            meshInput.set(6, 0);
+        }
+
+        if (GLFW_PRESS == keyE)
+        {
+            meshInput.set(7, 1);
+        }
+        else if (GLFW_RELEASE == keyE)
+        {
+            meshInput.set(7, 0);
+        }
+
+        if (GLFW_PRESS == keyR)
+        {
+            meshInput.set(4, 1);
+        }
+        else if (GLFW_RELEASE == keyR)
+        {
+            meshInput.set(4, 0);
+        }
+
+        if (GLFW_PRESS == keyF)
+        {
+            meshInput.set(5, 1);
+        }
+        else if (GLFW_RELEASE == keyF)
+        {
+            meshInput.set(5, 0);
+        }
+
+        if (GLFW_PRESS == keyT)
+        {
+            meshInput.set(10, 1);
+        }
+        else if (GLFW_RELEASE == keyT)
+        {
+            meshInput.set(10, 0);
+        }
+
+        if (GLFW_PRESS == keyG)
+        {
+            meshInput.set(11, 1);
+        }
+        else if (GLFW_RELEASE == keyG)
+        {
+            meshInput.set(11, 0);
+        }
+    }
+
     void CameraManager::CheckViewCameraInput()
     {
         int keyA = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_A);
@@ -551,6 +809,33 @@ namespace Eclipse
         }
     }
 
+    void CameraManager::CheckMaterialCameraInput()
+    {
+        /*Camera "zoom" keys
+        NOTE: Changing the FOV causes some level of distortion, similar to the fisheye effect.
+        Recommended FOV value for a realistic view is usually about 45.*/
+        int keyZ = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_Z);
+        int keyX = glfwGetKey(OpenGL_Context::GetWindow(), GLFW_KEY_X);
+
+        if (GLFW_PRESS == keyZ)
+        {
+            materialInput.set(0, 1);
+        }
+        else if (GLFW_RELEASE == keyZ)
+        {
+            materialInput.set(0, 0);
+        }
+
+        if (GLFW_PRESS == keyX)
+        {
+            materialInput.set(1, 1);
+        }
+        else if (GLFW_RELEASE == keyX)
+        {
+            materialInput.set(1, 0);
+        }
+    }
+
     void CameraManager::UpdateViewCamera(CameraComponent& _camera, TransformComponent& _transform)
     {
         float cameraSpd = engine->Game_Clock.get_DeltaTime() * _camera.cameraSpeed;
@@ -625,6 +910,38 @@ namespace Eclipse
         }
     }
 
+    void CameraManager::UpdateMaterialCamera(TransformComponent& _transform)
+    {
+        unsigned int cameraID = GetCameraID(CameraComponent::CameraType::MaterialEditor_Camera);
+        auto& camera = engine->world.GetComponent<CameraComponent>(cameraID);
+
+        float cameraSpd = engine->Game_Clock.get_DeltaTime() * camera.cameraSpeed;
+
+        if (materialInput.test(0))
+        {
+            if (camera.fov < 2.0f)
+            {
+                camera.fov = 1.0f;
+            }
+            else
+            {
+                camera.fov -= cameraSpd;
+            }
+        }
+
+        if (materialInput.test(1))
+        {
+            if (camera.fov > 179.0f)
+            {
+                camera.fov = 180.0f;
+            }
+            else
+            {
+                camera.fov += cameraSpd;
+            }
+        }
+    }
+
     void CameraManager::SetCameraSpeed(float newSpeed)
     {
         unsigned int editorID = GetEditorCameraID();
@@ -653,6 +970,16 @@ namespace Eclipse
         return viewInput;
     }
 
+    std::bitset<12>& CameraManager::GetMeshInput()
+    {
+        return meshInput;
+    }
+
+    std::bitset<2>& CameraManager::GetMaterialInput()
+    {
+        return materialInput;
+    }
+
     void CameraManager::ResetScene()
     {
         editorCamID = MAX_ENTITY;
@@ -669,6 +996,9 @@ namespace Eclipse
         engine->gCamera.CreateViewCamera(CameraComponent::CameraType::BottomView_Camera);
         engine->gCamera.CreateViewCamera(CameraComponent::CameraType::LeftView_Camera);
         engine->gCamera.CreateViewCamera(CameraComponent::CameraType::RightView_camera);
+
+        engine->gCamera.CreatePerspectiveCamera(CameraComponent::CameraType::MeshEditor_Camera);
+        engine->gCamera.CreatePerspectiveCamera(CameraComponent::CameraType::MaterialEditor_Camera);
 
         engine->gCamera.CreateGameCamera();
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetGameCameraID());

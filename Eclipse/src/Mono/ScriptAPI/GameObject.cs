@@ -8,9 +8,14 @@ namespace Eclipse
     {
         public UInt32 Entity;
 
-        //public T GetComponent<T>()
-        //{
+        public GameObject(UInt32 entity)
+        {
+            Entity = entity;
+        }
 
-        //}
+        public T GetComponent<T>() where T : IScriptable
+        {
+            return (T)Activator.CreateInstance(typeof(T), new object[] { Entity });
+        }
     }
 }

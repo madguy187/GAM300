@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "PhysicsManager.h"
+#include "Global.h"
+
 namespace Eclipse
 {
 	void PhysicsManager::Init()
@@ -471,6 +473,15 @@ namespace Eclipse
 			AttachCapsuleToActor(ent, collision.shape.radius, collision.shape.hheight);
 			break;
 		}
+	}
+
+	void Eclipse::PhysicsManager::SetForce(Entity ent, ECVec3 force)
+	{
+		if (!engine->world.CheckComponent<RigidBodyComponent>(ent))
+			return;
+
+		auto& rigidbody = engine->world.GetComponent<RigidBodyComponent>(ent);
+		rigidbody.forces = force;
 	}
 
 	void Eclipse::PhysicsManager::UpdateVariables(Entity ent)

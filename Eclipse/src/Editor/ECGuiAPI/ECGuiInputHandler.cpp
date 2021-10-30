@@ -19,26 +19,28 @@ namespace Eclipse
 			// Delete Entity
 			else if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_Delete)))
 			{
+				std::cout << "DELETING" << std::endl;
 				if (!engine->editorManager->IsEntityListEmpty())
 				{
 					Entity currEnt = engine->editorManager->GetSelectedEntity();
+					// Put the logic commented below in Execute Function here
+					CommandHistory::RegisterCommand(new EntityDeleteDeltaCommand{ currEnt });
 
-					if (currEnt != engine->gCamera.GetEditorCameraID() &&
-						currEnt != engine->gCamera.GetGameCameraID())
-					{
-						//Remove function for DynamicAABBTree. -Rachel
-						engine->gDynamicAABBTree.RemoveData(currEnt);
-						engine->gCullingManager->Remove(currEnt);
-						// Destroy Lights will update Counter ~ Shaders are not using entity ID to loop
-						engine->LightManager.DestroyLight(currEnt);
-						
-						engine->editorManager->DestroyEntity(currEnt);
+					//if (currEnt != engine->gCamera.GetEditorCameraID() &&
+					//	currEnt != engine->gCamera.GetGameCameraID())
+					//{
+					//	//Remove function for DynamicAABBTree. -Rachel
+					//	engine->gDynamicAABBTree.RemoveData(currEnt);
+					//	engine->gCullingManager->Remove(currEnt);
+					//	// Destroy Lights will update Counter ~ Shaders are not using entity ID to loop
+					//	engine->LightManager.DestroyLight(currEnt);
+					//
+					//	engine->gPhysics.RemoveActor(currEnt);
 
-						engine->gPhysics.RemoveActor(currEnt);
-
-						//Please check this! Resets the selected object's ID to the editor's selected entity. - Rachel
-						engine->gPicker.SetCurrentCollisionID(engine->editorManager->GetSelectedEntity());
-					}
+					//	//Please check this! Resets the selected object's ID to the editor's selected entity. - Rachel
+					//	engine->gPicker.SetCurrentCollisionID(currEnt);
+					//	engine->editorManager->DestroyEntity(currEnt);
+					//}
 				}
 			}
 			else if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_O)) && io.KeyCtrl)

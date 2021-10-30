@@ -247,11 +247,14 @@ namespace Eclipse
         std::thread CompilerWait{ &EngineCompiler::RunCompiler };
         CompilerWait.join();
 
-        CompilerThreads.emplace("LoadPrefabs", std::make_unique<std::thread>(std::thread{ &EngineCompiler::LoadPrefabs }));
+        //CompilerThreads.emplace("LoadPrefabs", std::make_unique<std::thread>(std::thread{ &EngineCompiler::LoadPrefabs }));
         LoadGeometry();
+        LoadPrefabs();
         LoadModelTextures();
         LoadBasicTextures();
-        CompilerThreads["LoadPrefabs"]->join();
+        engine->gPBRManager->gMaterialEditorSettings->gMaterialCompiler.LoadMaterials();
+        engine->InputManager->InputCompiler_.Load();
+        //CompilerThreads["LoadPrefabs"]->join();
         CompilerThreads.clear();
 
         if (AreAllCompiled() == true)

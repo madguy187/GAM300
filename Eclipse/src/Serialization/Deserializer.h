@@ -223,7 +223,7 @@ namespace Eclipse
 
 		bool LoadXML(const std::string& savePath);
 
-		bool LoadBackup(TiXmlDocument& target, std::string& path);
+		bool LoadBackup(TiXmlDocument& target, const std::string& path);
 
 		~Deserializer();
 	};

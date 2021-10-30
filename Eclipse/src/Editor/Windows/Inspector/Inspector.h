@@ -14,7 +14,7 @@ namespace Eclipse
 		void DrawImpl();
 
 		bool ShowEntityProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
-		bool ShowTransformProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowTransformProperty(const char* name, Entity ID, ImGuiTextFilter& filter, bool IsNotInScene = false);
 		bool ShowPointLightProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowSpotLightProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowDirectionalLightProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
@@ -36,9 +36,11 @@ namespace Eclipse
 		void ShowAddComponentList(Entity ID);
 		void ShowRemoveComponentList(Entity ID);
 
-		void ChangeTextureController(MaterialComponent& Item);
+		void ChangeTextureController(MaterialComponent& Item, Entity ID);
 		void TextureList(MaterialComponent& Item);
-		
+		void ModelTextureList(MaterialComponent& Item);
+		bool ShowParentProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowChildProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		void ChangeMeshController(Entity ID);
 		void MeshList(Entity ID);
 

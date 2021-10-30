@@ -16,6 +16,7 @@ namespace Eclipse
         void UnBind(FrameBufferMode mode);
         unsigned int GetFrameBufferID(FrameBufferMode mode);
         unsigned int GetTextureID(FrameBufferMode mode);
+        unsigned int GetSecondTextureID(FrameBufferMode mode);
         RenderMode GetRenderMode(FrameBufferMode mode);
         bool CheckFrameBuffer(unsigned int ID, FrameBufferMode mode);
         void GlobalBind();
@@ -24,5 +25,6 @@ namespace Eclipse
         void UpdateAspectRatio(FrameBufferMode Mode, ECVec2 CurrentViewPortSize);
         void UpdateAspectRatio(FrameBufferMode Mode, glm::vec2 CurrentViewPortSize);
         void MainWindowSettings();
+        float GetAspectRatio(CameraComponent::CameraType);
     };
 }
