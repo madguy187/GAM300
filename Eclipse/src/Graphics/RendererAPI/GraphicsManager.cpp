@@ -90,11 +90,13 @@ namespace Eclipse
         break;
         case 3:
         {
-            engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
-            engine->world.AddComponent(ID, MeshComponent{});
-            MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-            sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-            sprite.modelRef = Graphics::models.find("Lines")->first;
+            engine->AssimpManager.CreateBasicPrimitives(ID, "Straight_Stairs");
+
+            //engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
+            //engine->world.AddComponent(ID, MeshComponent{});
+            //MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
+            //sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
+            //sprite.modelRef = Graphics::models.find("Lines")->first;
         }
         break;
         case 4:
@@ -199,20 +201,32 @@ namespace Eclipse
             //sprite.modelRef = Graphics::models.find("Plane")->first;
         }
         break;
-        // pointlight
         case 12:
+        {
+            engine->AssimpManager.CreateBasicPrimitives(ID, "Curved_Stairs");
+        }
+        break;
+        case 13:
+        {
+            engine->AssimpManager.CreateBasicPrimitives(ID, "Spiral_Stairs");
+        }
+        break;
+
+
+        // pointlight
+        case 14:
         {
             engine->LightManager.CreateLights(Eclipse::TypesOfLights::POINTLIGHT, ID);
         }
         break;
         // Directional
-        case 13:
+        case 15:
         {
             engine->LightManager.CreateLights(Eclipse::TypesOfLights::DIRECTIONAL, ID);
         }
         break;
         // SpotLight
-        case 14:
+        case 16:
         {
             engine->LightManager.CreateLights(Eclipse::TypesOfLights::SPOTLIGHT, ID);
         }
@@ -379,7 +393,7 @@ namespace Eclipse
             break;
 
         case 3:
-            return "Lines";
+            return "Stairs";
             break;
 
         case 4:
@@ -420,6 +434,14 @@ namespace Eclipse
 
         case 13:
             return "Frustum";
+            break;
+
+        case 14:
+            return "Curved Stairs";
+            break;
+
+        case 15:
+            return "Spiral Stairs";
             break;
         }
 
