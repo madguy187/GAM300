@@ -1081,7 +1081,7 @@ namespace Eclipse
                 ECGui::InsertHorizontalLineSeperator();
 
                 auto& parent = engine->world.GetComponent<ParentComponent>(ID);
-
+                ECGui::DrawTextWidget<const char*>("Child:", EMPTY_STRING);
                 for (auto& it : parent.child)
                 {
                     auto& en = engine->world.GetComponent<EntityComponent>(it);
@@ -1103,11 +1103,45 @@ namespace Eclipse
             {
                 ECGui::InsertHorizontalLineSeperator();
 
+                ECGui::DrawTextWidget<const char*>("Parent:", EMPTY_STRING);
                 auto& child = engine->world.GetComponent<ChildComponent>(ID);
+                auto& childEntComp = engine->world.GetComponent<EntityComponent>(ID);
                 auto& en = engine->world.GetComponent<EntityComponent>(child.parentIndex);
                 ECGui::DrawTextWidget<const char*>(my_strcat(en.Name, " ", child.parentIndex).c_str(), EMPTY_STRING);
 
                 ECGui::InsertHorizontalLineSeperator();
+
+                if (ECGui::ButtonBool("Break From Parent"))
+                {
+                    auto& parentComp = engine->world.GetComponent<EntityComponent>(child.parentIndex);
+                    auto& parent = engine->world.GetComponent<ParentComponent>(child.parentIndex);
+                    for (auto& allchld : parentComp.Child)
+                    {
+                        if (allchld == ID)
+                        {
+                            parentComp.Child.erase(std::remove(parentComp.Child.begin(), parentComp.Child.end(), allchld), parentComp.Child.end());
+                        }
+                    }
+                    for (auto& allchld : parent.child)
+                    {
+                        if (allchld == ID)
+                        {
+                            parent.child.erase(std::remove(parent.child.begin(), parent.child.end(), allchld), parent.child.end());
+                        }
+                    }
+
+                    if (parentComp.Child.empty())
+                    {
+                        ComponentRegistry<ParentComponent>("ParentComponent", child.parentIndex, childEntComp.Name,EditComponent::EC_REMOVECOMPONENT);
+                    }
+
+                    childEntComp.Parent.clear();
+
+                    //ComponentRegistry<ParentComponent>("ParentComponent", ID, childEntComp.Name, EditComponent::EC_ADDCOMPONENT);
+                    ComponentRegistry<ChildComponent>("ChildComponent", ID, childEntComp.Name, EditComponent::EC_REMOVECOMPONENT);
+
+                }
+
             }
         }
         return false;
