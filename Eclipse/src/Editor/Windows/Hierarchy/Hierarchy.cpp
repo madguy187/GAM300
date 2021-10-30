@@ -146,7 +146,9 @@ namespace Eclipse
 
                     entityName = my_strcat(entCom.Name, " ", list[index]);
 
-                    if (ECGui::CreateSelectableButton(entityName.c_str(), &entCom.IsActive))
+                    std::string ButtonName = ICON_MDI_DOTS_VERTICAL + entityName;
+
+                    if (ECGui::CreateSelectableButton(ButtonName.c_str(), &entCom.IsActive))
                     {
 
                          entCom.IsActive = true;
@@ -218,7 +220,8 @@ namespace Eclipse
     void HierarchyWindow::ParentRecursion(EntityComponent& entCom, Entity Num, const std::vector<Entity>& list, EntitySelectionTracker& prev, EntitySelectionTracker& curr)
     {
         std::string entityName{};
-        ImGui::Indent(5.0f);
+        float indentValue = entCom.ImguiIndentValue;
+        ImGui::Indent(indentValue);
         if (engine->world.CheckComponent<ParentComponent>(Num))
         {
             auto& parent2 = engine->world.GetComponent<ParentComponent>(Num);
@@ -346,7 +349,7 @@ namespace Eclipse
                 engine->editorManager->GetEntityIndex(Num), entCom.IsActive);
 
         }
-
+        ImGui::Unindent(indentValue);
     }
 
     void HierarchyWindow::ShowEntityCreationList()
@@ -525,17 +528,6 @@ namespace Eclipse
         std::stringstream sstream(EntityNumber);
         sstream >> result;
         return result;
-    }
-    void HierarchyWindow::HightLightParentAndChild(EntityComponent& Parent)
-    {
-        if (Parent.IsActive)
-        {
-            Parent.TreeactiveFlag |= ImGuiTreeNodeFlags_Selected;
-        }
-        else
-        {
-            Parent.TreeactiveFlag = ImGuiTreeNodeFlags_OpenOnDoubleClick;
-        }
     }
     void HierarchyWindow::ShowCreateModelList()
     {
