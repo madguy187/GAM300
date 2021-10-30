@@ -62,16 +62,18 @@ namespace Eclipse
 
             if (!engine->editorManager->IsEntityListEmpty() && GizmoType != -1)
                 OnGizmoUpdateEvent(GizmoType);
-        }
 
-        if (ECGui::IsItemActive())
-        {
-            IsWindowActive = true;
+            IsWindowHovering = true;
         }
         else
         {
-            IsWindowActive = false;
+            IsWindowHovering = false;
         }
+
+        if (ECGui::IsItemActive())
+            IsWindowActive = true;
+        else
+            IsWindowActive = false;
     }
 
     void BaseSwitchViewWindow::OnGizmoUpdateEvent(int GizmoType)
@@ -143,10 +145,15 @@ namespace Eclipse
             case ImGuizmo::OPERATION::TRANSLATE:
                 transCom.position = translation;
                 CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.position, transCom.position });
+
+                if (engine->world.CheckComponent<ChildComponent>(selectedEntity))
+                {
+                    auto& child = engine->world.GetComponent<ChildComponent>(selectedEntity);
+                    child.UpdateChildren = true;
+                }
                 break;
             case ImGuizmo::OPERATION::ROTATE:
                 transCom.rotation = rotation;
-                std::cout << "From Switch View: " << transCom.rotation << std::endl;
                 CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.rotation, transCom.rotation });
                 break;
             case ImGuizmo::OPERATION::SCALE:
@@ -161,6 +168,12 @@ namespace Eclipse
             && ECGui::IsItemHovered())
         {
             CommandHistory::DisableMergeForMostRecentCommand();
+
+            if (engine->world.CheckComponent<ChildComponent>(selectedEntity))
+            {
+                auto& child = engine->world.GetComponent<ChildComponent>(selectedEntity);
+                child.UpdateChildren = false;
+            }
         }
 
     }
@@ -232,8 +245,12 @@ namespace Eclipse
         }
     }
 
-    bool BaseSwitchViewWindow::GetIsWindowActive()
+    bool BaseSwitchViewWindow::GetIsWindowActive() const
     {
         return IsWindowActive;
+    }
+    bool BaseSwitchViewWindow::GetIsWindowHovered() const
+    {
+        return IsWindowHovering;
     }
 }

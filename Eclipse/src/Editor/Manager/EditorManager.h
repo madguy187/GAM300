@@ -40,6 +40,7 @@ namespace Eclipse
 		Entity GetEntityID(int index);
 		bool IsEntityListEmpty() const;
 		bool IsAnyGizmoWindowActive();
+		bool IsAnySwitchWindowHovered();
 		bool GetMeshEditorActive() const;
 		bool GetRecoveryFileExistence() const;
 

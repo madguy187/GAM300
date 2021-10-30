@@ -57,11 +57,10 @@ namespace Eclipse
 		ECGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
 			ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
-		//// ImGuizmo Logic
-		/*if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
-		{
-			OnGizmoUpdateEvent();
-		}*/
+		// ImGuizmo Logic
+		if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
+			if (!engine->editorManager->IsAnySwitchWindowHovered())
+				OnGizmoUpdateEvent();
 
 		if (ECGui::IsItemHovered())
 		{
@@ -70,11 +69,6 @@ namespace Eclipse
 			OnCameraMoveEvent();
 			OnCameraZoomEvent();
 			OnSelectEntityEvent();
-
-			if (!engine->editorManager->IsEntityListEmpty() && m_GizmoType != -1)
-			{
-				OnGizmoUpdateEvent();
-			}
 		}
 
 		if (ECGui::IsItemActive())
@@ -148,6 +142,7 @@ namespace Eclipse
 
 		if (ImGuizmo::IsUsing() && ECGui::IsItemHovered())
 		{
+			std::cout << "gizmo being used" << std::endl;
 			glm::vec3 translation, rotation, scale;
 			ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(translation),
 				glm::value_ptr(rotation), glm::value_ptr(scale));
@@ -164,7 +159,7 @@ namespace Eclipse
 				{
 					auto& child = engine->world.GetComponent<ChildComponent>(selectedEntity);
 					child.UpdateChildren = true;
-					std::cout << "translate gizmo being used!" << std::endl;
+					//std::cout << "translate gizmo being used!" << std::endl;
 				}
 				break;
 			case ImGuizmo::OPERATION::ROTATE:
@@ -194,7 +189,7 @@ namespace Eclipse
 			{
 				auto& child = engine->world.GetComponent<ChildComponent>(selectedEntity);
 				child.UpdateChildren = false;
-				std::cout << "translate gizmo not being used!" << std::endl;
+				// std::cout << "translate gizmo not being used!" << std::endl;
 			}
 		}
 
@@ -234,6 +229,7 @@ namespace Eclipse
 	{
 		if (ECGui::IsMouseClicked(0) && !ImGuizmo::IsUsing())
 		{
+			std::cout << "picking being used" << std::endl;
 			engine->world.GetSystem<PickingSystem>()->EditorUpdate();
 
 			if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)

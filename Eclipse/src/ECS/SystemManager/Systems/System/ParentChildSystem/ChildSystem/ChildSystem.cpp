@@ -32,7 +32,7 @@ namespace Eclipse
 			//childComp.PosOffset = childTrans.position - parentTrans.position;
 			childComp.RotOffset = childTrans.rotation - parentTrans.rotation;
 
-			std::cout << childComp.PosOffset.x << " " << childComp.PosOffset.y << " " << childComp.PosOffset.z << std::endl;
+			//std::cout << childComp.PosOffset.x << " " << childComp.PosOffset.y << " " << childComp.PosOffset.z << std::endl;
 		}
 
 		engine->Timer.SetName({ SystemName::CHILD });
