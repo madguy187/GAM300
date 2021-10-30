@@ -218,7 +218,7 @@ namespace Eclipse
 		backup.LoadBackup(dsz);
 		DeserializeAllEntity();
 		PCPostUpdate.PostUpdate();
-		std::filesystem::remove_all(TEMP_PATH);
+		std::filesystem::remove(std::filesystem::path(backup.GetBackUpPath()));
 	}
 
 	const char* SerializationManager::GetBackUpPath()
