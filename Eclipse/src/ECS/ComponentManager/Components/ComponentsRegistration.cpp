@@ -107,7 +107,7 @@ namespace Eclipse
         ADD_MEMBER(Child);
         ADD_MEMBER(Parent);
         ADD_MEMBER(IsAChild);
-        ADD_MEMBER(TreeactiveFlag);
+        ADD_MEMBER(ImguiIndentValue);
     }
 
     DEFINE_META(ScriptComponent)

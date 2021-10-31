@@ -16,6 +16,15 @@ namespace Eclipse
 		}
 	};
 
+	struct EntitySelectionWrapper
+	{
+		EntitySelectionTracker CurrEnt_;
+		EntitySelectionTracker PrevEnt_;
+		
+		std::vector<EntitySelectionTracker> CurrParent_;
+		std::vector<EntitySelectionTracker> PrevParent_;
+	};
+
 	class HierarchyWindow final : public ECGuiWindow
 	{
 		unsigned int activeCounter = 0;
@@ -37,10 +46,11 @@ namespace Eclipse
 		size_t ConvertEntityStringtoNumber(std::string EntityNumber);
 		void HightLightParentAndChild(EntityComponent& Parent);
 		void ShowCreateModelList();
-		int GetListPos(size_t currIndex);
+		bool isChild(std::vector<Entity> vec, const Entity& elem);
+		bool exist(std::vector<EntitySelectionTracker> vec, const EntitySelectionTracker& elem);
+		void highlightChild(Entity Parent,bool hightlight);
 	private:
-		EntitySelectionTracker CurrEnt_;
-		EntitySelectionTracker PrevEnt_;
+		EntitySelectionWrapper EntTracker_;
 		std::vector<std::vector<std::string>> TagList_;
 	};
 }

@@ -31,9 +31,11 @@ namespace Eclipse
 
     using namespace ax;
 
+    namespace util = ax::NodeEditor::Utilities;
+
     using ax::Widgets::IconType;
 
-    static ed::EditorContext* m_Editor = nullptr;
+    static NodeEditor::EditorContext* g_Context = nullptr;
 
     enum class PinType
     {
@@ -47,19 +49,16 @@ namespace Eclipse
         Delegate,
     };
 
+    enum class NodeType
+    {
+        test,
+        testmultiply
+    };
+
     enum class PinKind
     {
         Output,
         Input
-    };
-
-    enum class NodeType
-    {
-        Test,
-        Blueprint,
-        Simple,
-        Tree,
-        Comment,
     };
 
     struct Node;
@@ -68,13 +67,13 @@ namespace Eclipse
     {
         ed::PinId   ID;
         ::Node* Node;
-        std::string Name;
         std::string Data;
+        std::string Name;
         PinType     Type;
         PinKind     Kind;
 
-        Pin(int id, const char* name, PinType type, std::string inputData) :
-            ID(id), Node(nullptr), Name(name), Type(type), Kind(PinKind::Input) , Data(inputData)
+        Pin(int id, const char* name, PinType type) :
+            ID(id), Node(nullptr), Name(name), Type(type), Kind(PinKind::Input), Data({""})
         {
         }
     };
@@ -82,18 +81,17 @@ namespace Eclipse
     struct Node
     {
         ed::NodeId ID;
-        std::string Name;
         std::vector<Pin> Inputs;
         std::vector<Pin> Outputs;
         ImColor Color;
         NodeType Type;
         ImVec2 Size;
-
+        std::string Name;
         std::string State;
         std::string SavedState;
 
         Node(int id, const char* name, ImColor color = ImColor(255, 255, 255)) :
-            ID(id), Name(name), Color(color), Type(NodeType::Blueprint), Size(0, 0)
+            ID(id), Name(name), Color(color), Type(NodeType::test), Size(0, 0)
         {
         }
     };
@@ -125,11 +123,10 @@ namespace Eclipse
 	class NodeEditorWindow : public ECGuiWindow
 	{
         const int            s_PinIconSize = 24;
+
         std::vector<Node>    s_Nodes;
         std::vector<Link>    s_Links;
-       TextureComponent          s_HeaderBackground;
-       TextureComponent          s_SaveIcon;
-       TextureComponent          s_RestoreIcon;
+
         const float          s_TouchTime = 1.0f;
         std::map<ed::NodeId, float, NodeIdLess> s_NodeTouchTime;
         int s_NextId = 1;
@@ -145,6 +142,8 @@ namespace Eclipse
         Pin* newLinkPin = nullptr;
 
 	public:
+
+        Node* test();
 		void Update() override;
 		void Init() override;
 		void Unload() override;
@@ -179,7 +178,15 @@ namespace Eclipse
 
         bool CanCreateLink(Pin* a, Pin* b);
 
-        void ShowLeftPane(float paneWidth);
+        Node* SpawnInputActionNode();
+
+        Node* SpawnBranchNode();
+
+        Node* SpawnOutputActionNode();
+
+        Node* SpawnMultiplyNode();
+
+        Node* NodeEditorWindow::testPrintOnConsole();
 
         bool Splitter(bool split_vertically, float thickness, float* size1, float* size2, float min_size1, float min_size2, float splitter_long_axis_size = -1.0f);
 
