@@ -17,11 +17,6 @@ namespace Eclipse
 			m_ID = engine->world.CopyEntity(engine->prefabWorld,
 				oldID, all_component_list);
 
-			if (engine->prefabWorld.CheckComponent<MeshComponent>(m_ID))
-			{
-				std::cout << "HAVE MESH";
-			}
-
 			if (oldID != engine->gCamera.GetEditorCameraID() &&
 				oldID != engine->gCamera.GetGameCameraID())
 			{
@@ -40,6 +35,13 @@ namespace Eclipse
 					}
 
 					Children = List;
+				}
+				else if (engine->world.CheckComponent<ChildComponent>(oldID))
+				{
+					auto& child = engine->world.GetComponent<ChildComponent>(oldID);
+					auto& parent = engine->world.GetComponent<ParentComponent>(child.parentIndex);
+
+					parent.child.erase(std::find(parent.child.begin(), parent.child.end(), oldID));
 				}
 
 				CleanUp(oldID);
@@ -69,6 +71,13 @@ namespace Eclipse
 					parent.child.push_back(newChild);
 					LoadIn(newChild, child);
 				}
+			}
+			else if (engine->world.CheckComponent<ChildComponent>(m_ID))
+			{
+				auto& child = engine->world.GetComponent<ChildComponent>(m_ID);
+				auto& parent = engine->world.GetComponent<ParentComponent>(child.parentIndex);
+
+				parent.child.push_back(m_ID);
 			}
 		}
 

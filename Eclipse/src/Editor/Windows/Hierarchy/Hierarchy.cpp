@@ -386,7 +386,7 @@ namespace Eclipse
                         highlightChild(ID, it, false);
                     }
                 }
-                else
+               // else
                 {
                     if (engine->world.CheckComponent<MaterialComponent>(EntTracker_.PrevEnt_.index))
                         engine->MaterialManager.UnHighlight(EntTracker_.PrevEnt_.index);
