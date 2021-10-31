@@ -102,5 +102,24 @@ namespace Eclipse
 
 		return sResult;
 	}
+
+	glm::mat4 VRManager::GetHMDMatrixProjectionEye(Hmd_Eye nEye)
+	{
+		return glm::mat4();
+	}
+
+	glm::mat4 VRManager::GetHMDMatrixPoseEye(Hmd_Eye nEye)
+	{
+		return glm::mat4();
+	}
+
+	glm::mat4 VRManager::GetCurrentViewProjectionMatrix(Hmd_Eye nEye)
+	{
+		return glm::mat4();
+	}
+
+	void VRManager::UpdateHMDMatrixPose()
+	{
+	}
 }
 

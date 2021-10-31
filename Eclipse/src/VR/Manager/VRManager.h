@@ -72,6 +72,9 @@ namespace Eclipse
 		// For each device, a character representing its class
 		char m_rDevClassChar[k_unMaxTrackedDeviceCount];
 
+		float m_fNearClip;
+		float m_fFarClip;
+
 		GLuint m_glControllerVertBuffer;
 		GLuint m_unControllerVAO;
 		unsigned int m_uiControllerVercount;
