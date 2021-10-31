@@ -134,7 +134,8 @@ namespace Eclipse
                         }
                     }
                     engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
-                        static_cast<int>(index), PayloadSourceType::PST_ENTITY, curr.index);
+                         static_cast<int>(index), PayloadSourceType::PST_ENTITY, curr.index);
+                    
 
                     engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
                         static_cast<int>(index), entCom.IsActive);
@@ -145,6 +146,11 @@ namespace Eclipse
 
                     auto& parentCom = engine->world.GetComponent<EntityComponent>(list[index]);
                     ParentRecursion(parentCom, list[index], list, prev, curr);
+
+                    for (size_t index = 0; index < list.size(); ++index)
+                    {
+                        auto& ent = engine->world.GetComponent<EntityComponent>(list[index]);
+                    }
                 }
 
             }
@@ -156,7 +162,8 @@ namespace Eclipse
     {
         std::string entityName{};
         float indentValue = entCom.ImguiIndentValue;
-
+        ImDrawList* draw_list = ImGui::GetWindowDrawList();
+        bool highlight = false;
         if (engine->world.CheckComponent<ParentComponent>(Num))
         {
             auto& parent2 = engine->world.GetComponent<ParentComponent>(Num);
@@ -171,13 +178,17 @@ namespace Eclipse
             {
                 ButtonName = ICON_MDI_SUBDIRECTORY_ARROW_RIGHT + entityName;
             }
-
             if (ECGui::CreateSelectableButton(ButtonName.c_str(), &entCom.IsActive))
             {
+                if (!entCom.Parent.empty())
+                {
+                    unhighlightParent(entCom.Parent[0]);
+                }
+
                 entCom.IsActive = true;
+                entCom.hightLightChild = true;
                 engine->editorManager->SetGlobalIndex(engine->editorManager->GetEntityIndex(Num));
                 UpdateEntityTracker(Num);
-
 
                 if (!curr.name.empty())
                 {
@@ -218,12 +229,19 @@ namespace Eclipse
                         }
                     }
                 }
-            
 
             }
 
+            engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
+                 engine->editorManager->GetEntityIndex(Num), PayloadSourceType::PST_ENTITY, curr.index);
+
             engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
                 engine->editorManager->GetEntityIndex(Num), entCom.IsActive);
+
+            if (entCom.hightLightChild)
+            {
+                draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(255, 255, 0, 255));
+            }
 
             for (auto& it : parent2.child)
             {
@@ -284,6 +302,10 @@ namespace Eclipse
                 }
             }
 
+            if (entCom.hightLightChild)
+            {
+                draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(255, 255, 0, 255));
+            }
 
             engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
                 engine->editorManager->GetEntityIndex(Num), entCom.IsActive);
@@ -361,6 +383,7 @@ namespace Eclipse
             }
         }
     }
+
     void HierarchyWindow::UpdateEntityTracker(Entity ID)
     {
         if (engine->world.CheckComponent<MaterialComponent>(ID))
@@ -377,30 +400,48 @@ namespace Eclipse
                 EntTracker_.PrevEnt_.name = EntTracker_.CurrEnt_.name;
                 EntTracker_.PrevEnt_.index = EntTracker_.CurrEnt_.index;
 
-                if (engine->world.CheckComponent<ParentComponent>(EntTracker_.PrevEnt_.index))
-                {
-                    auto& parent = engine->world.GetComponent<ParentComponent>(EntTracker_.PrevEnt_.index);
+               if (engine->world.CheckComponent<ParentComponent>(EntTracker_.PrevEnt_.index))
+               {
+                   auto& parent = engine->world.GetComponent<ParentComponent>(EntTracker_.PrevEnt_.index);
 
-                    for (auto& it : parent.child)
-                    {
-                        highlightChild(ID, it, false);
-                    }
-                }
-               // else
-                {
-                    if (engine->world.CheckComponent<MaterialComponent>(EntTracker_.PrevEnt_.index))
-                        engine->MaterialManager.UnHighlight(EntTracker_.PrevEnt_.index);
-                }
+                   prevEntCom.hightLightChild = false;
 
-                if (engine->world.CheckComponent<ParentComponent>(ID))
-                {
-                    auto& parent = engine->world.GetComponent<ParentComponent>(ID);
+                   for (auto& it : parent.child)
+                   {
+                       highlightChild(it, false);
+                   }
+               }
+               else   //check if its the base child unhighlight 
+                   if (engine->world.CheckComponent<ChildComponent>(EntTracker_.PrevEnt_.index) && !engine->world.CheckComponent<ParentComponent>(EntTracker_.PrevEnt_.index))
+                   {
+                       prevEntCom.hightLightChild = false;
+                   }
 
-                    for (auto& it : parent.child)
-                    {
-                        highlightChild(ID, it, true);
-                    }
-                }
+               //check if base child highlight
+               if (engine->world.CheckComponent<ChildComponent>(ID) && !engine->world.CheckComponent<ParentComponent>(ID))
+               {
+                   entCom.hightLightChild = true;
+               }
+
+               if (engine->world.CheckComponent<MaterialComponent>(EntTracker_.PrevEnt_.index))
+               {
+                   engine->MaterialManager.UnHighlight(EntTracker_.PrevEnt_.index);
+               }
+
+               if (engine->world.CheckComponent<ParentComponent>(ID))
+               {
+                   auto& parent = engine->world.GetComponent<ParentComponent>(ID);
+
+                   auto& parCom = engine->world.GetComponent<EntityComponent>(ID);
+
+                   parCom.hightLightChild = true;
+
+                   for (auto& it : parent.child)
+                   {
+                       highlightChild(it, true);
+                   }
+               }
+
             }
 
             EntTracker_.CurrEnt_.name = my_strcat(entCom.Name, " ", ID);
@@ -408,18 +449,6 @@ namespace Eclipse
             entCom.IsActive = true;
             engine->gPicker.SetCurrentCollisionID(ID);
         }
-    }
-    size_t HierarchyWindow::GetEntityGlobalIndex(size_t data)
-    {
-        auto it = std::find(engine->editorManager->GetEntityListByConstRef().begin(), engine->editorManager->GetEntityListByConstRef().end(), data);
-
-        if (it != engine->editorManager->GetEntityListByConstRef().end())
-        {
-            size_t index = it - engine->editorManager->GetEntityListByConstRef().begin();
-
-            return index;
-        }
-        return 0;
     }
 
     void HierarchyWindow::ShowCreateModelList()
@@ -450,36 +479,48 @@ namespace Eclipse
         return result;
     }
 
-    bool HierarchyWindow::exist(std::vector<EntitySelectionTracker> vec, const EntitySelectionTracker& elem)
+    void HierarchyWindow::unhighlightParent(Entity Parent)
     {
-        bool result = false;
-        for (auto& x : vec)
+        auto& parentCom = engine->world.GetComponent<EntityComponent>(Parent);
+
+        parentCom.hightLightChild = false;
+
+        if (!parentCom.Parent.empty())
         {
-            if (x.index == elem.index)
-            {
-                result = true;
-                break;
-            }
+            unhighlightParent(parentCom.Parent[0]);
         }
-        return result;
     }
 
-    void HierarchyWindow::highlightChild(Entity CurrID, Entity Child, bool hightlight)
+    void HierarchyWindow::highlightChild(Entity CurrID, bool hightlight)
     {
-        if (engine->world.CheckComponent<ChildComponent>(Child))
+        if (engine->world.CheckComponent<ChildComponent>(CurrID))
         {
-            auto& entCom = engine->world.GetComponent<EntityComponent>(Child);
-            entCom.IsActive = hightlight;
+            ImDrawList* draw_list = ImGui::GetWindowDrawList();
+
+            auto& entCom = engine->world.GetComponent<EntityComponent>(CurrID);
 
             if (hightlight)
             {
-                if (engine->world.CheckComponent<MaterialComponent>(Child))
-                    engine->MaterialManager.HighlightClick(Child);
+                if (engine->world.CheckComponent<MaterialComponent>(CurrID))
+                    engine->MaterialManager.HighlightClick(CurrID);
+                entCom.hightLightChild = true;
             }
-            else if (CurrID != Child)
+            else
             {
-                if (engine->world.CheckComponent<MaterialComponent>(Child))
-                    engine->MaterialManager.UnHighlight(Child);
+                if (engine->world.CheckComponent<MaterialComponent>(CurrID))
+                    engine->MaterialManager.UnHighlight(CurrID);
+                entCom.hightLightChild = false;
+            }
+
+            if (engine->world.CheckComponent<ParentComponent>(CurrID))
+            {
+                auto& parent = engine->world.GetComponent<ParentComponent>(CurrID);
+
+                for (auto& it : parent.child)
+                {
+                    highlightChild(it, hightlight);
+                }
+
             }
         }
     }

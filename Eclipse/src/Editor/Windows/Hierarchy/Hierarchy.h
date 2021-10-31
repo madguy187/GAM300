@@ -39,11 +39,10 @@ namespace Eclipse
 			EntitySelectionTracker& prev, EntitySelectionTracker& curr);
 		void ShowEntityCreationList();
 		void UpdateEntityTracker(Entity ID);
-		size_t GetEntityGlobalIndex(size_t data);
 		void ShowCreateModelList();
 		bool isChild(std::vector<Entity> vec, const Entity& elem);
-		bool exist(std::vector<EntitySelectionTracker> vec, const EntitySelectionTracker& elem);
-		void highlightChild(Entity CurrID, Entity Child, bool hightlight);
+		void unhighlightParent(Entity Parent);
+		void highlightChild(Entity CurrID, bool hightlight);
 	private:
 		EntitySelectionWrapper EntTracker_;
 		std::vector<std::vector<std::string>> TagList_;
