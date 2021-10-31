@@ -63,7 +63,7 @@ namespace Eclipse
         EntFilter.Draw();
         ECGui::InsertHorizontalLineSeperator();
 
-        if (ECGui::BeginTreeNode("Default Scene"))
+        if (ECGui::BeginTreeNode(SceneManager::GetCurrentSceneName().c_str()))
         {
             TrackEntitySelection(engine->editorManager->GetEntityListByConstRef(),
                 EntTracker_.PrevEnt_, EntTracker_.CurrEnt_, EntFilter);
@@ -213,8 +213,7 @@ namespace Eclipse
                             for (auto& it : EntTracker_.PrevParent_)
                             {
                                 auto& prevEntCom2 = engine->world.GetComponent<EntityComponent>(it.index);
-
-                                prevEntCom.IsActive = false;
+                                prevEntCom2.IsActive = false;
                             }
                         }
                     }
@@ -371,10 +370,8 @@ namespace Eclipse
 
         if (ID != EntTracker_.CurrEnt_.index)
         {
-
             if (engine->world.CheckComponent<EntityComponent>(EntTracker_.CurrEnt_.index))
             {
-
                 auto& prevEntCom = engine->world.GetComponent<EntityComponent>(EntTracker_.CurrEnt_.index);
                 prevEntCom.IsActive = false;
                 EntTracker_.PrevEnt_.name = EntTracker_.CurrEnt_.name;
@@ -386,59 +383,31 @@ namespace Eclipse
 
                     for (auto& it : parent.child)
                     {
-                        //check if child have a child
-                        highlightChild(it, false);
-
-                        auto& child = engine->world.GetComponent<EntityComponent>(it);
-
-                        child.IsActive = false;
+                        highlightChild(ID, it, false);
                     }
                 }
+               // else
+                {
+                    if (engine->world.CheckComponent<MaterialComponent>(EntTracker_.PrevEnt_.index))
+                        engine->MaterialManager.UnHighlight(EntTracker_.PrevEnt_.index);
+                }
 
-                /// high light child /// 
                 if (engine->world.CheckComponent<ParentComponent>(ID))
                 {
                     auto& parent = engine->world.GetComponent<ParentComponent>(ID);
 
                     for (auto& it : parent.child)
                     {
-                        //check if child have a child
-                        highlightChild(it, true);
-                       
-                        auto& child = engine->world.GetComponent<EntityComponent>(it);
-
-                        child.IsActive = true;
+                        highlightChild(ID, it, true);
                     }
                 }
-
-                if (engine->world.CheckComponent<MaterialComponent>(EntTracker_.CurrEnt_.index))
-                    engine->MaterialManager.UnHighlight(EntTracker_.CurrEnt_.index);
-
             }
 
             EntTracker_.CurrEnt_.name = my_strcat(entCom.Name, " ", ID);
             EntTracker_.CurrEnt_.index = ID;
             entCom.IsActive = true;
+            engine->gPicker.SetCurrentCollisionID(ID);
         }
-       //else
-       //    if (engine->world.CheckComponent<ChildComponent>(ID))
-       //    {
-       //        auto& child = engine->world.GetComponent<ChildComponent>(ID);
-       //        auto& parentofchild = engine->world.GetComponent<EntityComponent>(child.parentIndex);
-       //        parentofchild.IsActive = false;
-       //
-       //        auto& prevEntCom = engine->world.GetComponent<EntityComponent>(EntTracker_.CurrEnt_.index);
-       //        prevEntCom.IsActive = false;
-       //        EntTracker_.PrevEnt_.name = EntTracker_.CurrEnt_.name;
-       //        EntTracker_.PrevEnt_.index = EntTracker_.CurrEnt_.index;
-       //
-       //        if (engine->world.CheckComponent<MaterialComponent>(EntTracker_.CurrEnt_.index))
-       //            engine->MaterialManager.UnHighlight(EntTracker_.CurrEnt_.index);
-       //
-       //        EntTracker_.CurrEnt_.name = my_strcat(entCom.Name, " ", ID);
-       //        EntTracker_.CurrEnt_.index = ID;
-       //        entCom.IsActive = true;
-       //    }
     }
     size_t HierarchyWindow::GetEntityGlobalIndex(size_t data)
     {
@@ -452,24 +421,7 @@ namespace Eclipse
         }
         return 0;
     }
-    std::string HierarchyWindow::GetEntityComponentEntityNumber(std::string EntityName)
-    {
-        size_t bracked = EntityName.find_last_of(" ");
 
-        if (bracked == std::string::npos)
-        {
-            return EntityName;
-        }
-
-        return EntityName.substr(bracked + 1);
-    }
-    size_t HierarchyWindow::ConvertEntityStringtoNumber(std::string EntityNumber)
-    {
-        size_t result;
-        std::stringstream sstream(EntityNumber);
-        sstream >> result;
-        return result;
-    }
     void HierarchyWindow::ShowCreateModelList()
     {
         for (size_t i = 0; i < engine->AssimpManager.GetMeshNames().size(); ++i)
@@ -512,19 +464,22 @@ namespace Eclipse
         return result;
     }
 
-    void HierarchyWindow::highlightChild(Entity Parent, bool hightlight)
+    void HierarchyWindow::highlightChild(Entity CurrID, Entity Child, bool hightlight)
     {
-        if (engine->world.CheckComponent<ParentComponent>(Parent))
+        if (engine->world.CheckComponent<ChildComponent>(Child))
         {
-            auto& parentCmp = engine->world.GetComponent<ParentComponent>(Parent);
+            auto& entCom = engine->world.GetComponent<EntityComponent>(Child);
+            entCom.IsActive = hightlight;
 
-            for (auto& it2 : parentCmp.child)
+            if (hightlight)
             {
-                highlightChild(it2 , hightlight);
-
-                auto& child2 = engine->world.GetComponent<EntityComponent>(it2);
-
-                child2.IsActive = hightlight;
+                if (engine->world.CheckComponent<MaterialComponent>(Child))
+                    engine->MaterialManager.HighlightClick(Child);
+            }
+            else if (CurrID != Child)
+            {
+                if (engine->world.CheckComponent<MaterialComponent>(Child))
+                    engine->MaterialManager.UnHighlight(Child);
             }
         }
     }

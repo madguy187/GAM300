@@ -64,7 +64,7 @@ namespace Eclipse
         GLint uniform_var_loc2 = shdrpgm.GetLocation(("directionlight[" + number + "].lightColor").c_str());
 
         GLCall(glUniform3f(uniform_var_loc1, DLight.Direction.getX(), DLight.Direction.getY(), DLight.Direction.getZ()));
-        GLCall(glUniform3f(uniform_var_loc2, 150.0f, 150.0f, 150.0f));
+        GLCall(glUniform3f(uniform_var_loc2, 550.0f, 550.0f, 550.0f));
 
         shdrpgm.UnUse();
     }
