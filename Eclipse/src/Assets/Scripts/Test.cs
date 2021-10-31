@@ -16,7 +16,7 @@ public class Test : EclipseBehavior
     public void Update()
     {
         Console.WriteLine("C# Update");
-        if (Input.GetButtonDown("Right")
+        if (Input.GetButtonDown("Right"))
         {
             rigid.AddForce(500, 0, 0);
         }
