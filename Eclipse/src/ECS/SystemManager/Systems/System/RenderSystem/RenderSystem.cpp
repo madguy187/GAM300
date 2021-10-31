@@ -34,6 +34,36 @@ namespace Eclipse
 
         // Create AABB Boxes =============================
         engine->GraphicsManager.AllAABBs.Init();
+
+
+        //////////
+        std::vector <glm::mat4> instanceMatrix;
+        for (unsigned int i = 0; i < 1; i++)
+        {
+            glm::vec3 tempTranslation;
+            glm::quat tempRotation;
+            glm::vec3 tempScale;
+
+            tempTranslation = glm::vec3{ 0.0f };
+            tempRotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
+            tempScale = glm::vec3(5.0f, 5.0f, 5.0f);
+
+            glm::mat4 trans = glm::mat4(1.0f);
+            glm::mat4 rot = glm::mat4(1.0f);
+            glm::mat4 sca = glm::mat4(1.0f);
+
+            trans = glm::translate(trans, tempTranslation);
+            rot = glm::mat4_cast(tempRotation);
+            sca = glm::scale(sca, tempScale);
+
+            instanceMatrix.push_back(trans * rot * sca);
+        }
+
+        std::vector <Vertex> hi = engine->AssimpManager.Geometry["BoundingSphere"]->Vertices;
+        std::vector <unsigned int> in = engine->AssimpManager.Geometry["BoundingSphere"]->Indices;
+
+        Test.Init(hi, in, 2, instanceMatrix);
+
     }
 
     void RenderSystem::Update()
@@ -146,12 +176,18 @@ namespace Eclipse
                 engine->MaterialManager.DoNotUpdateStencil();
                 engine->gDebugManager.DrawDebugShapes(FrameBufferMode::FBM_SCENE);
             }
-
             engine->MaterialManager.StencilBufferClear();
         }
 
         engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());
         engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
+
+        //auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+        //engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SCENE);
+        //auto& shdrpgm = Graphics::shaderpgms["Test"];
+        //shdrpgm.Use();
+        //engine->MaterialManager.DoNotUpdateStencil();
+        //Test.Draw(shdrpgm, _camera);
 
         FrameMark
     }

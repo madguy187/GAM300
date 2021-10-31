@@ -293,6 +293,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h" />
     <ClInclude Include="src\Graphics\InputHandler\LogicalEnum.hpp" />
     <ClInclude Include="src\Graphics\InputHandler\LogicalInput.h" />
+    <ClInclude Include="src\Graphics\Instancing\InstSpheres.h" />
     <ClInclude Include="src\Graphics\Lighting\DirectionalLight.h" />
     <ClInclude Include="src\Graphics\Lighting\LightManager.h" />
     <ClInclude Include="src\Graphics\Lighting\LightProperties.hpp" />
@@ -459,6 +460,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\Instancing\Box.cpp" />
     <ClCompile Include="src\Graphics\Grid\Grid.cpp" />
     <ClCompile Include="src\Graphics\InputHandler\LogicalInput.cpp" />
+    <ClCompile Include="src\Graphics\Instancing\InstSpheres.cpp" />
     <ClCompile Include="src\Graphics\Lighting\DirectionalLight.cpp" />
     <ClCompile Include="src\Graphics\Lighting\LightManager.cpp" />
     <ClCompile Include="src\Graphics\Lighting\PointLight.cpp" />
@@ -544,6 +546,8 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.vert" />
     <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />
     <None Include="src\Assets\Shaders\PBRShader\PBR.vert" />
+    <None Include="src\Assets\Shaders\Test\DebugSPhere.frag" />
+    <None Include="src\Assets\Shaders\Test\DebugSPhere.vert" />
     <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_bezier_math.inl" />
     <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_extra_math.inl" />
     <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_internal.inl" />

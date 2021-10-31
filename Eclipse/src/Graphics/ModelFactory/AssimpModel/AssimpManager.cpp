@@ -198,7 +198,7 @@ namespace Eclipse
 
         if (_renderMode == RenderMode::Fill_Mode)
         {
-            RenderMesh(ModelMesh, GL_FILL);
+            RenderMesh(ModelMesh, GL_LINE);
         }
         else
         {

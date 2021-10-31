@@ -944,6 +944,7 @@
     <ClInclude Include="src\Graphics\EngineCompiler\InputCompiler\InputCompiler.h" />
     <ClInclude Include="src\Graphics\MeshEditor\MeshEditorSource.h" />
     <ClInclude Include="src\Mono\Components\s_LogicalInput.h" />
+    <ClInclude Include="src\Graphics\Instancing\InstSpheres.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1402,6 +1403,7 @@
     <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_api.cpp" />
     <ClCompile Include="src\Graphics\EngineCompiler\InputCompiler\InputCompiler.cpp" />
     <ClCompile Include="src\Graphics\MeshEditor\MeshEditorSource.cpp" />
+    <ClCompile Include="src\Graphics\Instancing\InstSpheres.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />
@@ -1417,5 +1419,7 @@
     <None Include="src\Assets\Shaders\MaterialEditor\PBR.vert" />
     <None Include="src\Assets\Shaders\MeshEditor\MeshEditor.frag" />
     <None Include="src\Assets\Shaders\MeshEditor\MeshEditor.vert" />
+    <None Include="src\Assets\Shaders\Test\DebugSPhere.frag" />
+    <None Include="src\Assets\Shaders\Test\DebugSPhere.vert" />
   </ItemGroup>
 </Project>

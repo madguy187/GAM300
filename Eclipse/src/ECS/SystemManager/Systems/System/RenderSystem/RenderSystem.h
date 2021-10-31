@@ -9,6 +9,7 @@
 #include "Graphics/RendererAPI/GraphicsManager.h"
 #include "Graphics/Grid/Grid.h"
 #include "Graphics/Instancing/Box.h"
+#include "Graphics/Instancing/InstSpheres.h"
 
 namespace Eclipse
 {
@@ -18,6 +19,8 @@ namespace Eclipse
         // Empty Instanced Debug Box Container
         static inline AABB_ box;
         static void Init();
+
+        static inline DEBUG_SPHERE Test;
 
     private:
         void Update() override;
