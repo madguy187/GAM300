@@ -301,6 +301,24 @@ namespace Eclipse
 		engine->szManager.SavePrefabFile(generatedID, newEnt, destPath.c_str());
 	}
 
+	void PrefabManager::RecursiveCreatePrefabInstances(const Entity& childPrefabEnt, const Entity& parentInstanceEnt)
+	{
+		World& prefabW = engine->prefabWorld;
+		World& w = engine->world;
+
+		//Remember do for parent and child function in future.
+		Entity newEnt = prefabW.CopyEntity(w, childPrefabEnt, all_component_list);
+
+		RegisterForNewInstance(newEnt, parentInstanceEnt);
+
+		auto& entComp = prefabW.GetComponent<EntityComponent>(childPrefabEnt);
+
+		for (auto& child : entComp.Child)
+		{
+			RecursiveCreatePrefabInstances(child, newEnt);
+		}
+	}
+
 	//Create object using prefab, by passing in the prefab data.
 	//Currently 
 	Entity PrefabManager::CreatePrefabInstance(const char* path)
@@ -321,35 +339,80 @@ namespace Eclipse
 		//Remember do for parent and child function in future.
 		Entity newEnt = prefabW.CopyEntity(w, ent, all_component_list);
 
-		RegisterForNewInstance(newEnt);
+		RegisterForNewInstance(newEnt, MAX_ENTITY);
+
+		auto& entComp = prefabW.GetComponent<EntityComponent>(ent);
+
+		for (auto& child : entComp.Child)
+		{
+			RecursiveCreatePrefabInstances(child, newEnt);
+		}
 
 		return newEnt;
 	}
 
-	void PrefabManager::RegisterForNewInstance(const Entity& ent)
+	void PrefabManager::RegisterForNewInstance(const Entity& ent, const Entity& parentEnt)
 	{
 		World& w = engine->world;
+		//EntityComponent
+		auto& entComp = w.GetComponent<EntityComponent>(ent);
+		entComp.Child.clear();
+		entComp.Parent.clear();
+
+		//Transform Component Update
 		TransformComponent defaultComp;
 		auto& transformComp = w.GetComponent<TransformComponent>(ent);
 		transformComp.position = defaultComp.position;
 
+		//PrefabComponent update
 		auto& prefabComp = w.GetComponent<PrefabComponent>(ent);
 		prefabComp.IsInstance = true;
 
 		engine->editorManager->RegisterExistingEntity(ent);
 
+		//CameraComponent update
 		if (w.CheckComponent<CameraComponent>(ent))
 		{
 			auto& camera = w.GetComponent<CameraComponent>(ent);
 			engine->gCamera.ReInitCameraList(camera.camType, ent);
 		}
 
+		//AABBComponent update
 		if (w.CheckComponent<AABBComponent>(ent))
 		{
 			auto& aabb = w.GetComponent<AABBComponent>(ent);
 			engine->gCullingManager->Insert(aabb, ent);
 			engine->gPicker.UpdateAabb(ent);
 			engine->gDynamicAABBTree.InsertData(ent);
+		}
+
+
+
+		if (w.CheckComponent<ParentComponent>(ent))
+		{
+			auto& parentComp = w.GetComponent<ParentComponent>(ent);
+			parentComp.child.clear();
+		}
+
+		if (w.CheckComponent<ChildComponent>(ent))
+		{
+			if (parentEnt == MAX_ENTITY)
+			{
+				w.DestroyComponent<ChildComponent>(ent);
+			}
+			else
+			{
+				auto& childComp = w.GetComponent<ChildComponent>(ent);
+				childComp.parentIndex = ent;
+
+				auto& parent = w.GetComponent<ParentComponent>(ent);
+				parent.child.push_back(ent);
+
+				auto& parentEntComp = w.GetComponent<EntityComponent>(ent);
+				parentEntComp.Child.push_back(ent);
+
+				entComp.Parent.push_back(ent);
+			}
 		}
 	}
 

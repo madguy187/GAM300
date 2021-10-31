@@ -73,9 +73,9 @@
     </Entity_1>
     <Entity_2 ID="10">
         <AABBComponent>
-            <center x="-9.57937" y="0" z="17.9667" />
-            <Min x="-12.0794" y="-2.5" z="15.4667" />
-            <Max x="-7.07937" y="2.5" z="20.4667" />
+            <center x="1.8921" y="0" z="-0.851203" />
+            <Min x="-0.607904" y="-2.5" z="-3.3512" />
+            <Max x="4.3921" y="2.5" z="1.6488" />
         </AABBComponent>
         <EntityComponent>
             <Tag value="Cube" />
@@ -137,11 +137,11 @@
                 <Col0 _00="1" _01="0" _02="0" _03="0" />
                 <Col1 _10="0" _11="1" _12="0" _13="0" />
                 <Col2 _20="0" _21="0" _22="1" _23="0" />
-                <Col3 _30="-9.57937" _31="0" _32="17.9667" _33="1" />
+                <Col3 _30="1.8921" _31="0" _32="-0.851203" _33="1" />
             </model>
         </ParentComponent>
         <TransformComponent>
-            <position x="-9.57937" y="0" z="17.9667" />
+            <position x="1.8921" y="0" z="-0.851203" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
@@ -211,7 +211,7 @@
             <ScaleOffset x="1" y="1" z="1" />
         </ChildComponent>
         <TransformComponent>
-            <position x="-9.57937" y="5.517" z="17.9667" />
+            <position x="1.8921" y="5.517" z="-0.851203" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>

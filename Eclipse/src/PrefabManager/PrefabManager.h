@@ -30,7 +30,7 @@ namespace Eclipse
 
 		std::string GenerateFileName(EntityComponent& entComp, const char* path);
 
-		void RegisterForNewInstance(const Entity& ent);
+		void RegisterForNewInstance(const Entity& ent, const Entity& parentEnt);
 
 		void CleanUpForInstancesAfterCopy(const Entity& ent);
 
@@ -161,6 +161,8 @@ namespace Eclipse
 		Entity RecursiveGeneratePrefab(const Entity& sourceEnt, const char* path, EUUID generatedID, const Entity& parentEnt);
 
 		void UpdateNewGeneratedPrefab(const Entity& prefabEnt, const Entity& parentEnt);
+
+		void RecursiveCreatePrefabInstances(const Entity& childEnt, const Entity& parentEnt);
 
 	public:
 		static const std::string PrefabPath;
