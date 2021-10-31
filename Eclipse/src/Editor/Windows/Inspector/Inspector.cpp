@@ -130,12 +130,20 @@ namespace Eclipse
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
 
+                auto& ent = engine->world.GetComponent<EntityComponent>(ID);
+
                 if (ECGui::DrawSliderFloat3Widget("TransVec", &transCom.position, true, -100.f, 100.f, ID))
                 {
                     if (engine->world.CheckComponent<ChildComponent>(ID))
                     {
                         auto& child = engine->world.GetComponent<ChildComponent>(ID);
                         child.UpdateChildren = true;
+                      
+                        if (ent.Tag != EntityType::ENT_MESH)
+                        {
+                            engine->gPicker.UpdateAabb(ID);
+                            engine->gDynamicAABBTree.UpdateData(ID);
+                        }
                     }
                 }
                 else
@@ -166,6 +174,17 @@ namespace Eclipse
                 {
                     engine->gPicker.UpdateAabb(ID);
                     engine->gDynamicAABBTree.UpdateData(ID);
+
+                    if ((engine->world.CheckComponent<ParentComponent>(ID)) && (ent.Tag != EntityType::ENT_MODEL))
+                    {
+                        auto& parent = engine->world.GetComponent<ParentComponent>(ID);
+
+                        for (auto& it : parent.child)
+                        {
+                            engine->gPicker.UpdateAabb(it);
+                            engine->gDynamicAABBTree.UpdateData(it);
+                        }
+                    }
                 }
 
                 ECGui::SetColumns(1, nullptr, true);
