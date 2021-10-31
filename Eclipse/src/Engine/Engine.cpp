@@ -339,7 +339,7 @@ namespace Eclipse
             engine->gFrameBufferManager->GlobalBind();
 
             // Reset DebugBoxes =============================
-            engine->gDebugDrawManager->ResetInstancedDebugBoxes();
+            engine->gDebugDrawManager->Reset();
 
             // LIGHTINGSYSTEM =============================
             world.Update<LightingSystem>();

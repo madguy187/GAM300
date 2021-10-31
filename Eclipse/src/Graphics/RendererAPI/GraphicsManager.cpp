@@ -438,9 +438,6 @@ namespace Eclipse
 
     void Eclipse::GraphicsManager::FinalRender()
     {
-        //engine->MaterialManager.DoNotUpdateStencil();
-        //DrawDebugBoxes();
-
         if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
         {
             engine->MaterialManager.DoNotUpdateStencil();
@@ -449,14 +446,6 @@ namespace Eclipse
 
         engine->MaterialManager.DoNotUpdateStencil();
         PostProcessUpdate();
-    }
-
-    void Eclipse::GraphicsManager::DrawEntireGrid()
-    {
-        engine->MaterialManager.DoNotUpdateStencil();
-        //engine->GraphicsManager.DrawDebugBoxes();
-
-        engine->GridManager->DrawGrid(FrameBufferMode::FBM_SCENE);
     }
 
     void GraphicsManager::PostProcessUpdate()

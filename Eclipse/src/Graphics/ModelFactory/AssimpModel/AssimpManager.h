@@ -40,7 +40,7 @@ namespace Eclipse
         void InsertPrimitiveName(const std::string& in);
         std::vector<std::string>& GetMeshNames();
         std::vector<std::string>& GetPrimitiveNames();
-        void MeshDraw(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
+        void MeshDraw(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, RenderMode _renderMode, CameraComponent::CameraType _camType);
         void DebugNormals(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, CameraComponent::CameraType _camType);
         void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID, AABB_* box);
         void Cleanup(MeshComponent& in);
@@ -58,7 +58,7 @@ namespace Eclipse
         ///////////////////////////////////////////////////////////////////////////////////////////
         void CheckUniforms(Shader&, Entity, MeshComponent&, CameraComponent&);
         void RenderMesh(MeshComponent& In, GLenum Mode);
-        void ChecModelkUniforms(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID, AABB_* box);
+        void ChecModelkUniforms(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID);
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // For Compilers

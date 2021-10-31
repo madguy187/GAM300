@@ -16,12 +16,7 @@ namespace Eclipse
     class RenderSystem : public System
     {
     public:
-        // Empty Instanced Debug Box Container
-        static inline AABB_ box;
         static void Init();
-
-        static inline DEBUG_SPHERE Test;
-
     private:
         void Update() override;
     };

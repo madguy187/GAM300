@@ -184,7 +184,7 @@ namespace Eclipse
         }
     }
 
-    void AssimpModelManager::MeshDraw(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
+    void AssimpModelManager::MeshDraw(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType)
     {
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
         engine->gFrameBufferManager->UseFrameBuffer(Mode);
@@ -193,7 +193,7 @@ namespace Eclipse
         shdrpgm.Use();
 
         gEnvironmentMap.CheckUniform(ModelMesh, _camera);
-        ChecModelkUniforms(shdrpgm, _camera, ID, box);
+        ChecModelkUniforms(shdrpgm, _camera, ID);
         CheckUniforms(shdrpgm, ID, ModelMesh, _camera);
 
         if (_renderMode == RenderMode::Fill_Mode)
@@ -707,7 +707,7 @@ namespace Eclipse
         return true;
     }
 
-    void AssimpModelManager::ChecModelkUniforms(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID, AABB_* box)
+    void AssimpModelManager::ChecModelkUniforms(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID)
     {
         TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(_camera.camType));
 
@@ -731,10 +731,15 @@ namespace Eclipse
         glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
         GLCall(glUniform3f(cameraPos, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ()));
 
-        if (box->DrawAABBS == true)
+        if (_camera.camType == CameraComponent::CameraType::Editor_Camera)
         {
-            BoundingRegion br(Transform.position.ConvertToGlmVec3Type(), Transform.scale.ConvertToGlmVec3Type());
-            box->AddInstance(br);
+            //engine->gDebugDrawManager->Addinstance(model);
+
+            if (engine->gDebugDrawManager->DebugBoxes.DrawAABBS == true)
+            {
+                BoundingRegion br(Transform.position.ConvertToGlmVec3Type(), Transform.scale.ConvertToGlmVec3Type());
+                engine->gDebugDrawManager->DebugBoxes.AddInstance(br);
+            }
         }
     }
 }

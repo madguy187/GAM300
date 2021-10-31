@@ -67,7 +67,6 @@ namespace Eclipse
         static void WindowCloseCallback(GLFWwindow* window);
         void SetBackGroundColour();
         void FinalRender();
-        void DrawEntireGrid();
         void PostProcessUpdate();
 
     private:
