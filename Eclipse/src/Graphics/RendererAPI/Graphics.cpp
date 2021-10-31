@@ -75,6 +75,9 @@ void Graphics::LoadShaders(std::string shaderFile)
 
 void Graphics::LoadModels()
 {
+    auto ModelName = engine->GraphicsManager.GetModelName(13);
+    models.emplace(ModelName, ModelFactory::create(13));
+
     for (unsigned int i = 0; i < static_cast<unsigned int>(LoadingModels::MAXCOUNT); i++)
     {
         auto ModelName = engine->GraphicsManager.GetModelName(i);

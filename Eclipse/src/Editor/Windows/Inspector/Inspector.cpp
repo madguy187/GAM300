@@ -1509,6 +1509,7 @@ namespace Eclipse
                     for (MMAPIterator it = result.first; it != result.second; it++)
                     {
                         Item.HoldingTextures.push_back(it->second);
+                        return;
                     }
                     //////////////////
                 }

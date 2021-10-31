@@ -159,7 +159,7 @@ namespace Eclipse
                         SetSingleMesh(MeshID, name);
                     }
 
-                    return MeshID;
+                    return ParentID;
                 }
             }
         }
@@ -269,7 +269,13 @@ namespace Eclipse
 
     void AssimpModelManager::InsertMeshName(const std::string& in)
     {
-        AllMeshNames.push_back(in);
+        if (std::find(AllPrimitiveModelsNames.begin(), AllPrimitiveModelsNames.end(), in) == AllPrimitiveModelsNames.end())
+        {
+            if (std::find(AllMeshNames.begin(), AllMeshNames.end(), in) == AllMeshNames.end())
+            {
+                AllMeshNames.push_back(in);
+            }
+        }
     }
 
     void AssimpModelManager::InsertGeometry(const std::string& name, Mesh& NewMesh)
@@ -628,7 +634,7 @@ namespace Eclipse
             {
                 // If Do not have textures
                 //if (engine->AssimpManager.Geometry[mesh.MeshName.data()]->NoTex && (!engine->world.CheckComponent<TextureComponent>(EntityID)))
-                
+
                 if (Material.NoTextures && (!engine->world.CheckComponent<TextureComponent>(EntityID)))
                 {
                     // reset
@@ -655,7 +661,7 @@ namespace Eclipse
                         engine->gPBRManager->SetMetallicConstant(shader, 0.5f);
                         engine->gPBRManager->SetRoughnessConstant(shader, 0.5f);
                         engine->gPBRManager->SetInstanceFlag(shader, false);
-                        engine->gPBRManager->SetAlbedoConstant(shader, glm::vec4(0.8,0.8,0.8,1.0));
+                        engine->gPBRManager->SetAlbedoConstant(shader, glm::vec4(0.8, 0.8, 0.8, 1.0));
                     }
 
                     for (unsigned int it = 0; it < Material.HoldingTextures.size(); it++)

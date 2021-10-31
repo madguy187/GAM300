@@ -384,64 +384,44 @@ namespace Eclipse
             return "Square";
             break;
 
-        //case 1:
-        //    return "Triangle";
-        //    break;
-
-        //case 2:
-        //    return "Circle";
-        //    break;
-
-        case 3:
-            return "Stairs";
+        case 1:
+            return "Straight_Stairs";
             break;
 
-        case 4:
-            return "Lightsquare";
-            break;
-
-        case 5:
+        case 2:
             return "Sphere";
             break;
 
-        case 6:
+        case 3:
             return "Plane";
             break;
 
-        case 7:
+        case 4:
             return "Cube";
             break;
 
-        case 8:
+        case 5:
             return "Cylinder";
             break;
 
-        case 9:
+        case 6:
             return "Cone";
             break;
 
-        case 10:
+        case 7:
             return "Torus";
             break;
 
-        //case 11:
-        //    return "Pyramid";
-        //    break;
-
-        case 12:
+        case 8:
             return "ICOSphere";
             break;
 
-        case 13:
-            return "Frustum";
+        case 9:
+            return "Curved_Stairs";
             break;
 
-        case 14:
-            return "Curved Stairs";
-            break;
-
-        case 15:
-            return "Spiral Stairs";
+        case 10:
+            return "Spiral_Stairs";
             break;
         }
 
