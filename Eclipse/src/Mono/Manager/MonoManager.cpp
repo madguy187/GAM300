@@ -80,8 +80,6 @@ namespace Eclipse
 		ENGINE_LOG_ASSERT(domain, "Domain could not be created");
 
 		mono_add_internal_call("Eclipse.RigidBody::Add_Force", SetForce);
-		//mono_add_internal_call("Eclipse.InputHandler::GetKeyByKeyCode", GetKeyCurrentByKeyCode);
-		//mono_add_internal_call("Eclipse.InputHandler::GetKeyByName", GetKeyCurrentByName);
 		mono_add_internal_call("Eclipse.Input::GetButtonDown", GetKeyCurrentByName);
 		mono_add_internal_call("Eclipse.Input::GetKey", GetKeyCurrentByKeyCode);
 	}
