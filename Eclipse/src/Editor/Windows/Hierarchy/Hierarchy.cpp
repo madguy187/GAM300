@@ -240,7 +240,7 @@ namespace Eclipse
 
             if (entCom.hightLightChild)
             {
-                draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(255, 255, 0, 255));
+                draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(0, 0, 255, 255));
             }
 
             for (auto& it : parent2.child)
@@ -304,7 +304,7 @@ namespace Eclipse
 
             if (entCom.hightLightChild)
             {
-                draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(255, 255, 0, 255));
+                draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(0, 0, 255, 255));
             }
 
             engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
