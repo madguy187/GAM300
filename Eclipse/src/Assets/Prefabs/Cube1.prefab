@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <Prefab PrefabID="7024967531095986931">
-    <Entity_0 ID="1">
+    <Entity_0 ID="2">
         <AABBComponent>
             <center x="0" y="-0.0733185" z="0" />
             <Min x="-2.5" y="-2.57332" z="-2.5" />
@@ -10,7 +10,7 @@
             <Tag value="Cube" />
             <Name value="Cube1" />
             <Child size="1">
-                <Member0 value="2" />
+                <Member0 value="3" />
             </Child>
             <Parent size="0" />
             <IsAChild value="false" />
@@ -60,7 +60,7 @@
         </ModelComponent>
         <ParentComponent>
             <child size="1">
-                <Member0 value="2" />
+                <Member0 value="3" />
             </child>
             <model Col="4" Row="4">
                 <Col0 _00="0" _01="0" _02="0" _03="0" />
@@ -83,7 +83,7 @@
     </Entity_0>
     <Children Size="1">
         <Child0 PrefabID="7024967531095986932">
-            <Entity_0 ID="2">
+            <Entity_0 ID="3">
                 <AABBComponent>
                     <center x="0" y="5.32124" z="0" />
                     <Min x="-2.5" y="2.82124" z="-2.5" />
@@ -94,7 +94,7 @@
                     <Name value="Cone" />
                     <Child size="0" />
                     <Parent size="1">
-                        <Member0 value="1" />
+                        <Member0 value="2" />
                     </Parent>
                     <IsAChild value="true" />
                     <ImguiIndentValue value="20" />
@@ -142,7 +142,7 @@
                     <ComboIndex value="0" />
                 </ModelComponent>
                 <ChildComponent>
-                    <parentIndex value="1" />
+                    <parentIndex value="2" />
                     <PosOffset x="0" y="5.39456" z="0" />
                     <RotOffset x="0" y="0" z="0" />
                     <ScaleOffset x="1" y="1" z="1" />

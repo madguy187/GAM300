@@ -1,14 +1,14 @@
 <?xml version="1.0" ?>
-<Prefab PrefabID="7025244646706143504">
-    <Entity_0 ID="4">
+<Prefab PrefabID="7025247046293073742">
+    <Entity_0 ID="0">
         <AABBComponent>
             <center x="0" y="0" z="0" />
             <Min x="-2.5" y="-2.5" z="-2.5" />
             <Max x="2.5" y="2.5" z="2.5" />
         </AABBComponent>
         <EntityComponent>
-            <Tag value="Sphere" />
-            <Name value="Sphere" />
+            <Tag value="Cone" />
+            <Name value="Cone" />
             <Child size="0" />
             <Parent size="0" />
             <IsAChild value="false" />
@@ -34,7 +34,7 @@
             <MaterialInstanceName value="" />
         </MaterialComponent>
         <MeshComponent>
-            <MeshName value="Sphere" />
+            <MeshName value="Cone" />
             <color x="1" y="1" z="1" />
             <textureIdx x="0" y="0" />
             <isQuad value="false" />
@@ -65,7 +65,7 @@
             <IsInstance value="false" />
             <IsChild value="false" />
             <CompChanges value="00000000000000000000000000000000" />
-            <PrefabID value="7025244646706143504" />
+            <PrefabID value="7025247046293073742" />
         </PrefabComponent>
     </Entity_0>
     <Children Size="0" />

@@ -1,13 +1,13 @@
 <?xml version="1.0" ?>
 <Entities Size="4">
-    <Entity_0 ID="8">
+    <Entity_0 ID="0">
         <CameraComponent>
             <eyeAlpha value="0" />
             <eyeBeta value="-90" />
             <fov value="45" />
             <nearPlane value="0.1" />
             <farPlane value="500" />
-            <aspect value="2.22631" />
+            <aspect value="2.18864" />
             <eyePos x="0" y="20" z="40" />
             <eyeFront x="-3.34849e-08" y="-0.642788" z="-0.766045" />
             <upVec x="-2.80971e-08" y="0.766044" z="-0.642788" />
@@ -20,7 +20,7 @@
                 <Col3 _30="1.74846e-06" _31="10.3906" _32="-43.4975" _33="1" />
             </viewMtx>
             <projMtx Col="4" Row="4">
-                <Col0 _00="1.0844" _01="0" _02="0" _03="0" />
+                <Col0 _00="1.10306" _01="0" _02="0" _03="0" />
                 <Col1 _10="0" _11="2.41421" _12="0" _13="0" />
                 <Col2 _20="0" _21="0" _22="-1.0004" _23="-1" />
                 <Col3 _30="0" _31="0" _32="-0.20004" _33="0" />
@@ -43,7 +43,7 @@
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_0>
-    <Entity_1 ID="9">
+    <Entity_1 ID="8">
         <DirectionalLightComponent>
             <Counter value="0" />
             <visible value="false" />
@@ -71,17 +71,17 @@
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_1>
-    <Entity_2 ID="10">
+    <Entity_2 ID="9">
         <AABBComponent>
-            <center x="1.8921" y="0" z="-0.851203" />
-            <Min x="-0.607904" y="-2.5" z="-3.3512" />
-            <Max x="4.3921" y="2.5" z="1.6488" />
+            <center x="6.75172" y="-1.90735e-06" z="15.5235" />
+            <Min x="4.25172" y="-2.5" z="13.0235" />
+            <Max x="9.25172" y="2.5" z="18.0235" />
         </AABBComponent>
         <EntityComponent>
             <Tag value="Cube" />
-            <Name value="Cube" />
+            <Name value="Cube1" />
             <Child size="1">
-                <Member0 value="11" />
+                <Member0 value="10" />
             </Child>
             <Parent size="0" />
             <IsAChild value="false" />
@@ -131,33 +131,39 @@
         </ModelComponent>
         <ParentComponent>
             <child size="1">
-                <Member0 value="11" />
+                <Member0 value="10" />
             </child>
             <model Col="4" Row="4">
                 <Col0 _00="1" _01="0" _02="0" _03="0" />
                 <Col1 _10="0" _11="1" _12="0" _13="0" />
                 <Col2 _20="0" _21="0" _22="1" _23="0" />
-                <Col3 _30="1.8921" _31="0" _32="-0.851203" _33="1" />
+                <Col3 _30="6.75172" _31="-1.90735e-06" _32="15.5235" _33="1" />
             </model>
         </ParentComponent>
         <TransformComponent>
-            <position x="1.8921" y="0" z="-0.851203" />
+            <position x="6.75172" y="-1.90735e-06" z="15.5235" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
+        <PrefabComponent>
+            <IsInstance value="true" />
+            <IsChild value="false" />
+            <CompChanges value="00000000000000000000000000000000" />
+            <PrefabID value="7024967531095986931" />
+        </PrefabComponent>
     </Entity_2>
-    <Entity_3 ID="11">
+    <Entity_3 ID="10">
         <AABBComponent>
-            <center x="0" y="5.517" z="0" />
-            <Min x="-2.5" y="3.017" z="-2.5" />
-            <Max x="2.5" y="8.017" z="2.5" />
+            <center x="6.75172" y="5.39456" z="15.5235" />
+            <Min x="4.25172" y="2.89456" z="13.0235" />
+            <Max x="9.25172" y="7.89456" z="18.0235" />
         </AABBComponent>
         <EntityComponent>
             <Tag value="Cone" />
             <Name value="Cone" />
             <Child size="0" />
             <Parent size="1">
-                <Member0 value="10" />
+                <Member0 value="9" />
             </Parent>
             <IsAChild value="true" />
             <ImguiIndentValue value="20" />
@@ -205,15 +211,21 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <ChildComponent>
-            <parentIndex value="10" />
-            <PosOffset x="0" y="5.517" z="0" />
+            <parentIndex value="9" />
+            <PosOffset x="0" y="5.39456" z="0" />
             <RotOffset x="0" y="0" z="0" />
             <ScaleOffset x="1" y="1" z="1" />
         </ChildComponent>
         <TransformComponent>
-            <position x="1.8921" y="5.517" z="-0.851203" />
+            <position x="6.75172" y="5.39456" z="15.5235" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
+        <PrefabComponent>
+            <IsInstance value="true" />
+            <IsChild value="true" />
+            <CompChanges value="00000000000000000000000000000000" />
+            <PrefabID value="7024967531095986932" />
+        </PrefabComponent>
     </Entity_3>
 </Entities>

@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "SerializationManager.h"
 #include "ECS/SystemManager/Systems/System/ParentChildSystem/ParentSystem/ParentSystem.h"
-#include "ECS/ComponentManager/Components/ParentComponent.h"
-#include "ECS/ComponentManager/Components/ChildComponent.h"
 namespace Eclipse
 {
 	Serializer SerializationManager::sz;

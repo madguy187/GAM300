@@ -1,5 +1,4 @@
 #pragma once
-#include "Global.h"
 #include "Serializer.h"
 #include "Deserializer.h"
 #include "Reflection/Variant/RefVariant.h"

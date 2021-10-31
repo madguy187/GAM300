@@ -1,10 +1,6 @@
 #include "pch.h"
 #include "PrefabManager.h"
-#include "../ECS/ComponentManager/Components/PrefabComponent.h"
-#include "../ECS/ComponentManager/Components/ParentComponent.h"
-#include "../ECS/ComponentManager/Components/ChildComponent.h"
-#include "../ECS/ComponentManager/Components/ScriptComponent.h"
-#include "../ECS/ComponentManager/Components/AIComponent.h"
+#include "ECS/ComponentManager/ComponentList.h"
 #include "ECS/SystemManager/Systems/System/PrefabSystem/PrefabSystem.h"
 
 namespace Eclipse
@@ -18,7 +14,7 @@ namespace Eclipse
 
 	void PrefabManager::InsertPrefab(const Entity& ent, const char* path, const EUUID& prefabID)
 	{
-		if (path != "")
+		if (strcmp(path, ""))
 		{
 			mapPathToID[path] = prefabID;
 		}
@@ -45,7 +41,6 @@ namespace Eclipse
 	void PrefabManager::SavePrefabChanges(const Entity& updatedPrefabEnt)
 	{
 		auto& prefabW = engine->prefabWorld;
-		auto& w = engine->world;
 		auto& prefabComp = prefabW.GetComponent<PrefabComponent>(updatedPrefabEnt);
 		const std::string& path = GetPath(prefabComp.PrefabID);
 
@@ -285,7 +280,6 @@ namespace Eclipse
 	void PrefabManager::GeneratePrefab(const Entity& ent, const char* path)
 	{
 		//Declaration
-		World& prefabW = engine->prefabWorld;
 		World& w = engine->world;
 
 		EUUID generatedID = UUIDGenerator::GenerateUUID();
@@ -351,6 +345,17 @@ namespace Eclipse
 		return newEnt;
 	}
 
+	void PrefabManager::UpdateParentChildTransform(const Entity& chidlEnt, const Entity& parentEnt)
+	{
+		ChildComponent& childComp = engine->world.GetComponent<ChildComponent>(chidlEnt);
+
+		TransformComponent& childTrans = engine->world.GetComponent<TransformComponent>(chidlEnt);
+		TransformComponent& parentTrans = engine->world.GetComponent<TransformComponent>(parentEnt);
+
+		childTrans.position = parentTrans.position + childComp.PosOffset;
+		childTrans.rotation = parentTrans.rotation + childComp.RotOffset;
+	}
+
 	void PrefabManager::RegisterForNewInstance(const Entity& ent, const Entity& parentEnt)
 	{
 		World& w = engine->world;
@@ -359,16 +364,23 @@ namespace Eclipse
 		entComp.Child.clear();
 		entComp.Parent.clear();
 
-		//Transform Component Update
 		TransformComponent defaultComp;
 		auto& transformComp = w.GetComponent<TransformComponent>(ent);
-		transformComp.position = defaultComp.position;
+		//Transform Component Update
+		if (parentEnt == MAX_ENTITY)
+		{
+			transformComp.position = defaultComp.position;
+		}
+		else
+		{
+			UpdateParentChildTransform(ent, parentEnt);
+		}
 
 		//PrefabComponent update
 		auto& prefabComp = w.GetComponent<PrefabComponent>(ent);
 		prefabComp.IsInstance = true;
 
-		engine->editorManager->RegisterExistingEntity(ent);
+		engine->editorManager->RegisterNewlySerializedEntity(ent);
 
 		//CameraComponent update
 		if (w.CheckComponent<CameraComponent>(ent))
@@ -381,12 +393,8 @@ namespace Eclipse
 		if (w.CheckComponent<AABBComponent>(ent))
 		{
 			auto& aabb = w.GetComponent<AABBComponent>(ent);
-			engine->gCullingManager->Insert(aabb, ent);
-			engine->gPicker.UpdateAabb(ent);
-			engine->gDynamicAABBTree.InsertData(ent);
+			engine->gPicker.GenerateAabb(ent, transformComp, entComp.Tag);
 		}
-
-
 
 		if (w.CheckComponent<ParentComponent>(ent))
 		{
@@ -403,15 +411,15 @@ namespace Eclipse
 			else
 			{
 				auto& childComp = w.GetComponent<ChildComponent>(ent);
-				childComp.parentIndex = ent;
+				childComp.parentIndex = parentEnt;
 
-				auto& parent = w.GetComponent<ParentComponent>(ent);
+				auto& parent = w.GetComponent<ParentComponent>(parentEnt);
 				parent.child.push_back(ent);
 
-				auto& parentEntComp = w.GetComponent<EntityComponent>(ent);
+				auto& parentEntComp = w.GetComponent<EntityComponent>(parentEnt);
 				parentEntComp.Child.push_back(ent);
 
-				entComp.Parent.push_back(ent);
+				entComp.Parent.push_back(parentEnt);
 			}
 		}
 	}

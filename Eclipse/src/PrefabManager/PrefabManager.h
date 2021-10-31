@@ -30,6 +30,8 @@ namespace Eclipse
 
 		std::string GenerateFileName(EntityComponent& entComp, const char* path);
 
+		void UpdateParentChildTransform(const Entity& ent, const Entity& parentEnt);
+
 		void RegisterForNewInstance(const Entity& ent, const Entity& parentEnt);
 
 		void CleanUpForInstancesAfterCopy(const Entity& ent);
