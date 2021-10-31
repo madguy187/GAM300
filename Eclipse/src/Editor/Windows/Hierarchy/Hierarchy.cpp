@@ -143,14 +143,8 @@ namespace Eclipse
 
                 if (engine->world.CheckComponent<ParentComponent>(list[index]) && entCom.Parent.empty())
                 {
-
                     auto& parentCom = engine->world.GetComponent<EntityComponent>(list[index]);
                     ParentRecursion(parentCom, list[index], list, prev, curr);
-
-                    for (size_t index = 0; index < list.size(); ++index)
-                    {
-                        auto& ent = engine->world.GetComponent<EntityComponent>(list[index]);
-                    }
                 }
 
             }
