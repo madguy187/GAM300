@@ -1417,5 +1417,7 @@
     <None Include="src\Assets\Shaders\MaterialEditor\PBR.vert" />
     <None Include="src\Assets\Shaders\MeshEditor\MeshEditor.frag" />
     <None Include="src\Assets\Shaders\MeshEditor\MeshEditor.vert" />
+    <None Include="src\Mono\ScriptAPI\InputHandler.cs" />
+    <None Include="src\Mono\ScriptAPI\KeyCode.cs" />
   </ItemGroup>
 </Project>

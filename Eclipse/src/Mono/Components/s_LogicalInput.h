@@ -10,19 +10,19 @@ namespace Eclipse
 		engine->InputManager->GetKeyTriggered(KeyIn);
 	}
 
-	static void GetKeyTriggered(std::string Mappedkeycode)
+	static void GetKeyTriggered(MonoString* Mappedkeycode)
 	{
-		engine->InputManager->GetKeyTriggered(Mappedkeycode);
+		engine->InputManager->GetKeyTriggered(mono_string_to_utf8(Mappedkeycode));
 	}
 
-	static void GetKeyCurrent(InputKeycode keycode)
+	static bool GetKeyCurrentByKeyCode(uint32_t keycode)
 	{
-		engine->InputManager->GetKeyCurrent(keycode);
+		return engine->InputManager->GetKeyCurrent(static_cast<InputKeycode>(keycode));
 	}
 
-	static void GetKeyCurrent(std::string Mappedkeycode)
+	static bool GetKeyCurrentByName(MonoString* Mappedkeycode)
 	{
-		engine->InputManager->GetKeyCurrent(Mappedkeycode);
+		return engine->InputManager->GetKeyCurrent(mono_string_to_utf8(Mappedkeycode));
 	}
 
 	// I haven do UI FOR MOUSE YET

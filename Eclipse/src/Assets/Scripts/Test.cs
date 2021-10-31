@@ -9,12 +9,20 @@ public class Test : EclipseBehavior
 
     public void Start()
     {
-        Console.WriteLine("C# Update");
+        Console.WriteLine("C# Start");
         rigid = GetComponent<RigidBody>();
     }
 
     public void Update()
     {
-        rigid.AddForce(500, 0, 0);
+        Console.WriteLine("C# Update");
+        if (Input.GetButtonDown("Right"))
+        {
+            rigid.AddForce(500, 0, 0);
+        }
+        else
+        {
+            rigid.AddForce(-500, 0, 0);
+        }
     }
 }
