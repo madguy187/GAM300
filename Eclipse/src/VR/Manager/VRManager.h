@@ -50,6 +50,13 @@ namespace Eclipse
 			bool m_bShowController;
 		};
 
+		enum EHand
+		{
+			Left = 0,
+			Right = 1,
+		};
+		ControllerInfo_t m_rHand[2];
+
 		/**
 		* OpenGL BookKeeping 
 		**/
