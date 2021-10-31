@@ -649,7 +649,7 @@
     <ClInclude Include="src\Graphics\Grid\BoundingBox.h">
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\Grid\Box.h">
+    <ClInclude Include="src\Graphics\Instancing\Box.h">
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\Grid\Grid.h">
@@ -1165,7 +1165,7 @@
     <ClCompile Include="src\Graphics\Grid\BoundingBox.cpp">
       <Filter>Graphics\Grid</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\Grid\Box.cpp">
+    <ClCompile Include="src\Graphics\Instancing\Box.cpp">
       <Filter>Graphics\Grid</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\Grid\Grid.cpp">

@@ -5,7 +5,7 @@
 #include "AssimpModel/AssimpModel.h"
 #include "Graphics/ModelFactory/Sky/CubeMap.h"
 #include "Graphics/Grid/Grid.h"
-#include "Graphics/Grid/Box.h"
+#include "Graphics/Instancing/Box.h"
 #include "BasicPrimitives/Frustum.h"
 
 // systems

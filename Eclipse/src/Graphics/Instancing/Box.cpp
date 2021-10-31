@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Graphics/Grid/Box.h"
+#include "Graphics/Instancing/Box.h"
 
 namespace Eclipse
 {

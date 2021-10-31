@@ -287,7 +287,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\Grid\AABB.h" />
     <ClInclude Include="src\Graphics\Grid\AABBTree.h" />
     <ClInclude Include="src\Graphics\Grid\BoundingBox.h" />
-    <ClInclude Include="src\Graphics\Grid\Box.h" />
+    <ClInclude Include="src\Graphics\Instancing\Box.h" />
     <ClInclude Include="src\Graphics\Grid\Grid.h" />
     <ClInclude Include="src\Graphics\Grid\IAABB.h" />
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h" />
@@ -456,7 +456,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\Grid\AABB.cpp" />
     <ClCompile Include="src\Graphics\Grid\AABBTree.cpp" />
     <ClCompile Include="src\Graphics\Grid\BoundingBox.cpp" />
-    <ClCompile Include="src\Graphics\Grid\Box.cpp" />
+    <ClCompile Include="src\Graphics\Instancing\Box.cpp" />
     <ClCompile Include="src\Graphics\Grid\Grid.cpp" />
     <ClCompile Include="src\Graphics\InputHandler\LogicalInput.cpp" />
     <ClCompile Include="src\Graphics\Lighting\DirectionalLight.cpp" />
