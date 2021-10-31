@@ -72,15 +72,9 @@ namespace Eclipse
 		}
 
 		if (ECGui::IsItemActive())
-		{
-			//std::cout << "Window is active" << std::endl;
 			IsWindowActive = true;
-		}
 		else
-		{
-			//std::cout << "Window is not active" << std::endl;
 			IsWindowActive = false;
-		}
 	}
 
 	void SceneWindow::OnGizmoUpdateEvent()
@@ -142,7 +136,6 @@ namespace Eclipse
 
 		if (ImGuizmo::IsUsing() && ECGui::IsItemHovered())
 		{
-			std::cout << "gizmo being used" << std::endl;
 			glm::vec3 translation, rotation, scale;
 			ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(translation),
 				glm::value_ptr(rotation), glm::value_ptr(scale));
@@ -229,7 +222,7 @@ namespace Eclipse
 	{
 		if (ECGui::IsMouseClicked(0) && !ImGuizmo::IsUsing())
 		{
-			std::cout << "picking being used" << std::endl;
+			//std::cout << "picking being used" << std::endl;
 			engine->world.GetSystem<PickingSystem>()->EditorUpdate();
 
 			if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
@@ -239,7 +232,7 @@ namespace Eclipse
 
 	void SceneWindow::OnCopyEntityEvent()
 	{
-		if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_LEFTALT)) && m_GizmoType == ImGuizmo::OPERATION::TRANSLATE)
+		if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_LEFTALT)))
 		{
 			if (!IsCopying)
 			{
