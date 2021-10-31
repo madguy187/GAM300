@@ -1421,5 +1421,7 @@
     <None Include="src\Assets\Shaders\MeshEditor\MeshEditor.vert" />
     <None Include="src\Assets\Shaders\Test\DebugSPhere.frag" />
     <None Include="src\Assets\Shaders\Test\DebugSPhere.vert" />
+    <None Include="src\Mono\ScriptAPI\InputHandler.cs" />
+    <None Include="src\Mono\ScriptAPI\KeyCode.cs" />
   </ItemGroup>
 </Project>

@@ -63,7 +63,7 @@ namespace Eclipse
         EntFilter.Draw();
         ECGui::InsertHorizontalLineSeperator();
 
-        if (ECGui::BeginTreeNode("Default Scene"))
+        if (ECGui::BeginTreeNode(SceneManager::GetCurrentSceneName().c_str()))
         {
             TrackEntitySelection(engine->editorManager->GetEntityListByConstRef(),
                 EntTracker_.PrevEnt_, EntTracker_.CurrEnt_, EntFilter);
