@@ -943,6 +943,7 @@
     <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_internal.h" />
     <ClInclude Include="src\Graphics\EngineCompiler\InputCompiler\InputCompiler.h" />
     <ClInclude Include="src\Graphics\MeshEditor\MeshEditorSource.h" />
+    <ClInclude Include="src\Mono\Components\s_LogicalInput.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1400,6 +1401,7 @@
     <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor.cpp" />
     <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_api.cpp" />
     <ClCompile Include="src\Graphics\EngineCompiler\InputCompiler\InputCompiler.cpp" />
+    <ClCompile Include="src\Graphics\MeshEditor\MeshEditorSource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />
@@ -1413,5 +1415,7 @@
     <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_internal.inl" />
     <None Include="src\Assets\Shaders\MaterialEditor\PBR.frag" />
     <None Include="src\Assets\Shaders\MaterialEditor\PBR.vert" />
+    <None Include="src\Assets\Shaders\MeshEditor\MeshEditor.frag" />
+    <None Include="src\Assets\Shaders\MeshEditor\MeshEditor.vert" />
   </ItemGroup>
 </Project>
