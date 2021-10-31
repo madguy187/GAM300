@@ -23,7 +23,7 @@ namespace Eclipse
         std::vector<AssimpModel*> ModelContainer;
         GLenum GlobalMode = GL_FILL;
         std::unique_ptr<CubeMap> Sky;
-        AABB_ AllAABBs;
+        //AABB_ AllAABBs;
         std::unique_ptr<Quad> GridQuad;
 
         unsigned int createdID;
@@ -63,8 +63,6 @@ namespace Eclipse
         void SetGammaCorrection(float in);
         void UploadGlobalUniforms();
         void CheckUniformLoc(Shader* _shdrpgm, MeshComponent& sprite, unsigned int id, CameraComponent& camera);
-        void ResetInstancedDebugBoxes();
-        void DrawDebugBoxes();
         std::string GetModelName(unsigned int modelname);
         static void WindowCloseCallback(GLFWwindow* window);
         void SetBackGroundColour();

@@ -191,7 +191,7 @@ namespace Eclipse
 
 			glEnable(GL_BLEND);
 			glEnable(GL_DEPTH_TEST);
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			glDisable(GL_CULL_FACE);
 			glEnable(GL_LINE_SMOOTH);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -202,7 +202,7 @@ namespace Eclipse
 			glEnable(GL_BLEND);
 			glEnable(GL_DEPTH_TEST);
 			glDisable(GL_CULL_FACE);
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			glDrawElementsInstanced(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0, 2);
 		}
 	}

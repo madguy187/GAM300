@@ -945,6 +945,7 @@
     <ClInclude Include="src\Graphics\MeshEditor\MeshEditorSource.h" />
     <ClInclude Include="src\Mono\Components\s_LogicalInput.h" />
     <ClInclude Include="src\Graphics\Instancing\InstSpheres.h" />
+    <ClInclude Include="src\Graphics\Instancing\DebugManager\DebugManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1404,6 +1405,7 @@
     <ClCompile Include="src\Graphics\EngineCompiler\InputCompiler\InputCompiler.cpp" />
     <ClCompile Include="src\Graphics\MeshEditor\MeshEditorSource.cpp" />
     <ClCompile Include="src\Graphics\Instancing\InstSpheres.cpp" />
+    <ClCompile Include="src\Graphics\Instancing\DebugManager\DebugManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />

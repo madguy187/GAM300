@@ -67,6 +67,8 @@ namespace Eclipse
 
         InputManager = std::make_unique<LogicalInput>();
         engine->gFrameBufferManager = std::make_unique<FrameBufferManager>();
+        engine->gDebugDrawManager = std::make_unique<DebugManager>();
+
         engine->GraphicsManager.Pre_Render();
 
         ImGuiSetup::Init(IsEditorActive);
@@ -337,7 +339,7 @@ namespace Eclipse
             engine->gFrameBufferManager->GlobalBind();
 
             // Reset DebugBoxes =============================
-            engine->GraphicsManager.ResetInstancedDebugBoxes();
+            engine->gDebugDrawManager->ResetInstancedDebugBoxes();
 
             // LIGHTINGSYSTEM =============================
             world.Update<LightingSystem>();
@@ -355,6 +357,7 @@ namespace Eclipse
             world.Update<RenderSystem>();
 
             // Final DRAW ================================ 
+            engine->gDebugDrawManager->Render();
             engine->GraphicsManager.FinalRender();
 
             if (IsScenePlaying())

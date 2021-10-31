@@ -189,7 +189,7 @@ namespace Eclipse
                 glUniformMatrix4fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(camera.viewMtx));
                 glUniformMatrix4fv(uniform_var_loc2, 1, GL_FALSE, glm::value_ptr(camera.projMtx));
 
-                engine->GraphicsManager.AllAABBs.Render(shdrpgm);
+                engine->gDebugDrawManager->DebugBoxes.Render(shdrpgm);
                 shdrpgm.UnUse();
             }
         }
