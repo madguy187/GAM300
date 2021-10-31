@@ -32,20 +32,6 @@ namespace Eclipse
 
     }
 
-    void AssimpModelManager::MeshEditorDraw(World& world_, MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, CameraComponent::CameraType _camType)
-    {
-        auto& _camera = world_.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
-        engine->gFrameBufferManager->UseFrameBuffer(in);
-
-        auto shdrpgm = Graphics::shaderpgms["PBRShader"];
-        shdrpgm.Use();
-
-        MeshEditorUniforms(shdrpgm, _camera, ID);
-        CheckUniforms(shdrpgm, ID, ModelMesh, _camera);
-
-        RenderMesh(ModelMesh, GL_FILL);
-    }
-
     bool AssimpModelManager::GeometryContainerCheck(const std::string& in)
     {
         if (Geometry.find(in) != engine->AssimpManager.Geometry.end())

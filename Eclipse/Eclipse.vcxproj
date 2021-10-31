@@ -468,6 +468,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\Material\MaterialInstance\MaterialInstance.cpp" />
     <ClCompile Include="src\Graphics\Material\MaterialManager.cpp" />
     <ClCompile Include="src\Graphics\Material\PBR\PBRManager.cpp" />
+    <ClCompile Include="src\Graphics\MeshEditor\MeshEditorSource.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.cpp" />
@@ -537,6 +538,8 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
   <ItemGroup>
     <None Include="src\Assets\Shaders\MaterialEditor\PBR.frag" />
     <None Include="src\Assets\Shaders\MaterialEditor\PBR.vert" />
+    <None Include="src\Assets\Shaders\MeshEditor\MeshEditor.frag" />
+    <None Include="src\Assets\Shaders\MeshEditor\MeshEditor.vert" />
     <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.frag" />
     <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.vert" />
     <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />
