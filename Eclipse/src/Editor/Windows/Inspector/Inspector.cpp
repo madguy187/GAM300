@@ -1028,7 +1028,7 @@ namespace Eclipse
 
     bool InspectorWindow::ShowPrefebProperty(Entity ID)
     {
-        if (engine->world.CheckComponent<PrefabComponent>(ID))
+        if (engine->world.CheckComponent<PrefabComponent>(ID) && !engine->world.GetComponent<PrefabComponent>(ID).IsInstance)
         {
             ECGui::InsertHorizontalLineSeperator();
             ECGui::SetColumns(2, nullptr, true);
