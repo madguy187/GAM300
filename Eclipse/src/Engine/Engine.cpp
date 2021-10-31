@@ -383,7 +383,6 @@ namespace Eclipse
 
         //Serialization(Temp)
         szManager.SaveSceneFile();
-        //pfManager.GeneratePrefab(9, "src\\Assets\\Prefabs\\");
         pfManager.UnloadSaving();
         // unLoad
         mono.Terminate();
