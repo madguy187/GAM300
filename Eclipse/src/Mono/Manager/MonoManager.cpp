@@ -11,6 +11,7 @@
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 
 #include "../Components/s_RigidBodyComponent.h"
+#include "../Components/s_LogicalInput.h"
 
 
 namespace Eclipse
@@ -78,7 +79,11 @@ namespace Eclipse
 
 		ENGINE_LOG_ASSERT(domain, "Domain could not be created");
 
-		mono_add_internal_call("Eclipse.RigidBodyComponent::Add_Force", SetForce);
+		mono_add_internal_call("Eclipse.RigidBody::Add_Force", SetForce);
+		//mono_add_internal_call("Eclipse.InputHandler::GetKeyByKeyCode", GetKeyCurrentByKeyCode);
+		//mono_add_internal_call("Eclipse.InputHandler::GetKeyByName", GetKeyCurrentByName);
+		mono_add_internal_call("Eclipse.Input::GetButtonDown", GetKeyCurrentByName);
+		mono_add_internal_call("Eclipse.Input::GetKey", GetKeyCurrentByKeyCode);
 	}
 
 	void MonoManager::Start(MonoScript* obj)
@@ -115,6 +120,10 @@ namespace Eclipse
 			std::cout << "Failed to get method" << std::endl;
 			return;
 		}
+
+		/*uint32_t test = 68;
+		if (GetKeyCurrentByKeyCode(static_cast<InputKeycode>(test)))
+			std::cout << "C++ TRUE" << std::endl;*/
 
 		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
 	}
