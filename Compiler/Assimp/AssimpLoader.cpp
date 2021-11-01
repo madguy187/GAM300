@@ -5,21 +5,6 @@ namespace EclipseCompiler
 {
     void AssimpLoader::LoadAssimpModel(std::string path, std::unordered_map<std::string, Mesh>& GeometryContainer)
     {
-        //unsigned int importOptions =
-        //    aiProcess_Triangulate |
-        //    aiProcess_GenSmoothNormals |
-        //    aiProcess_FlipUVs |
-        //    aiProcess_JoinIdenticalVertices |
-        //    aiProcess_FlipWindingOrder |
-        //    aiProcess_RemoveRedundantMaterials |
-        //    aiProcess_FindDegenerates |
-        //    aiProcess_FindInvalidData |
-        //    aiProcess_GenUVCoords |
-        //    aiProcess_TransformUVCoords |
-        //    aiProcess_FindInstances |
-        //    aiProcess_PreTransformVertices |
-        //    aiProcess_CalcTangentSpace;
-
         unsigned int importOptions = aiProcess_Triangulate | aiProcess_GenSmoothNormals 
             | aiProcess_CalcTangentSpace | aiProcess_FlipWindingOrder
             | aiProcess_TransformUVCoords;
@@ -33,51 +18,33 @@ namespace EclipseCompiler
             return;
         }
 
+        if (!scene->HasAnimations())
+        {
+            importOptions =
+                aiProcess_Triangulate |
+                aiProcess_GenSmoothNormals |
+                aiProcess_FlipUVs |
+                aiProcess_JoinIdenticalVertices |
+                aiProcess_FlipWindingOrder |
+                aiProcess_RemoveRedundantMaterials |
+                aiProcess_FindDegenerates |
+                aiProcess_FindInvalidData |
+                aiProcess_GenUVCoords |
+                aiProcess_TransformUVCoords |
+                aiProcess_FindInstances |
+                aiProcess_PreTransformVertices |
+                aiProcess_CalcTangentSpace;
+
+            scene = import.ReadFile(path, importOptions);
+        }
+
         Directory = path.substr(0, path.find_last_of("/"));
         ProcessGeometry(scene->mRootNode, scene);
         LoadNewModel(GeometryContainer);
-
-        //for (auto& it : meshData)
-        //{
-        //    //std::cout << "MeshName: " << it.MeshName << std::endl;
-        //
-        //    if (strcmp(it.MeshName, "MutantMesh") == 0)
-        //    {
-        //        int counter = 0;
-        //        for (auto& it2 : it.vertices)
-        //        {
-        //            std::cout << "Vertex Num: " << counter << std::endl;
-        //        
-        //            for (unsigned int i = 0; i < 4; ++i)
-        //            {
-        //                std::cout << "Bone ID: " << it2.m_BoneIDs[i] << std::endl;
-        //                std::cout << "Bone Weight: " << it2.m_Weights[i] << std::endl;
-        //                std::cout << std::endl;
-        //            }
-        //        
-        //            ++counter;
-        //        }
-        //    }
-        //}
     }
 
     void AssimpLoader::LoadAssimpModelForTextures(std::string path, std::vector < std::pair<std::string, Texture>>& textureContainer)
     {
-        //unsigned int importOptions =
-        //    aiProcess_Triangulate |
-        //    aiProcess_GenSmoothNormals |
-        //    aiProcess_FlipUVs |
-        //    aiProcess_JoinIdenticalVertices |
-        //    aiProcess_FlipWindingOrder |
-        //    aiProcess_RemoveRedundantMaterials |
-        //    aiProcess_FindDegenerates |
-        //    aiProcess_FindInvalidData |
-        //    aiProcess_GenUVCoords |
-        //    aiProcess_TransformUVCoords |
-        //    aiProcess_FindInstances |
-        //    aiProcess_PreTransformVertices | 
-        //    aiProcess_CalcTangentSpace;
-
         unsigned int importOptions = aiProcess_Triangulate | aiProcess_GenSmoothNormals
             | aiProcess_CalcTangentSpace | aiProcess_FlipWindingOrder
             | aiProcess_TransformUVCoords;
@@ -89,6 +56,26 @@ namespace EclipseCompiler
         {
             std::string Error = ("Compiler Could not load " + path + import.GetErrorString()).c_str();
             return;
+        }
+
+        if (!scene->HasAnimations())
+        {
+            importOptions =
+                aiProcess_Triangulate |
+                aiProcess_GenSmoothNormals |
+                aiProcess_FlipUVs |
+                aiProcess_JoinIdenticalVertices |
+                aiProcess_FlipWindingOrder |
+                aiProcess_RemoveRedundantMaterials |
+                aiProcess_FindDegenerates |
+                aiProcess_FindInvalidData |
+                aiProcess_GenUVCoords |
+                aiProcess_TransformUVCoords |
+                aiProcess_FindInstances |
+                aiProcess_PreTransformVertices |
+                aiProcess_CalcTangentSpace;
+
+            scene = import.ReadFile(path, importOptions);
         }
 
         Directory = path.substr(0, path.find_last_of("/"));

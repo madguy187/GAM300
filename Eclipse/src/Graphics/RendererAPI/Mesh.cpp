@@ -31,13 +31,27 @@ namespace Eclipse
 
         //std::cout << "Name: " << namein << std::endl;
         //std::cout << "Vertices Size: " << vertices.size() << std::endl;
+        //
+        //int counter = 0;
+        //
+        //if (namein.compare("MutantMesh") == 0)
+        //{
+        //    for (auto& it : vertices)
+        //    {
+        //        std::cout << "Vertex Num: " << counter << std::endl;
+        //
+        //        for (int i = 0; i < 4; ++i)
+        //        {
+        //            std::cout << "BoneID: " << it.m_BoneIDs[i] << std::endl;
+        //            std::cout << "Bone Weights: " << it.m_Weights[i] << std::endl;
+        //            std::cout << std::endl;
+        //        }
+        //       
+        //        ++counter;
+        //    }
+        //}
 
-        if (Vertices.size() != 0)
-        {
-            Setup();
-        }
-
-        //Setup();
+        Setup();
     }
 
     Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, glm::vec4 diffuse, glm::vec4 specular, glm::vec4 ambient, bool in, std::string namein)
@@ -211,12 +225,12 @@ namespace Eclipse
         glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, Tangents)));
 
         //// Bone IDs
-        //glEnableVertexAttribArray(4);
-        //glVertexAttribIPointer(4, 4, GL_INT, sizeof(Vertex), (void*)offsetof(Vertex, m_BoneIDs));
-        //
-        //// Bone Weights
-        //glEnableVertexAttribArray(5);
-        //glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, m_Weights));
+        glEnableVertexAttribArray(4);
+        glVertexAttribIPointer(4, 4, GL_INT, sizeof(Vertex), (void*)offsetof(Vertex, m_BoneIDs));
+        
+        // Bone Weights
+        glEnableVertexAttribArray(5);
+        glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, m_Weights));
 
         glBindVertexArray(0);
     }

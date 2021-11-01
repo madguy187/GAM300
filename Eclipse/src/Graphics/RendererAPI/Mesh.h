@@ -18,9 +18,9 @@ namespace Eclipse
         glm::vec3 Normal{ 0,0,0 };
         glm::vec2 TextureCoodinates{ 0,0 };
         glm::vec3 Tangents{ 0,0,0 };
-        //int m_BoneIDs[MAX_BONE_INFLUENCE];
-        //float m_Weights[MAX_BONE_INFLUENCE];
         glm::vec4 m_Color{ 0,0,0,0 };
+        int m_BoneIDs[MAX_BONE_INFLUENCE];
+        float m_Weights[MAX_BONE_INFLUENCE];
         static std::vector<Vertex> GenList(float* vertices, int noVertices);
     };
 
