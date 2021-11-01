@@ -118,6 +118,8 @@ namespace Eclipse
 					std::string path = std::filesystem::current_path().string() + "\\" + engine->szManager.GetBackUpPath();
 					SceneManager::RegisterScene(path);
 					SceneManager::LoadScene(RetrieveFilename(engine->szManager.GetBackUpPath()));
+					//Hard Fix
+					SceneManager::ProcessScene();
 					std::filesystem::remove(std::filesystem::path(path));
 					engine->editorManager->SetRecoveryFileExistence(false);
 					ECGui::CloseCurrentPopup();

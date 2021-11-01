@@ -156,7 +156,7 @@ namespace Eclipse
 		{
 			std::string msg = "Failed to obtain attribute value of \"";
 			msg += name + " during deserialization!";
-			EDITOR_LOG_WARN(false, msg.c_str());
+			EDITOR_LOG_WARN(msg.c_str());
 		}
 
 		return att_str;

@@ -24,5 +24,8 @@ namespace Eclipse
 		ECVec2 mViewportSize{ 0.f, 0.f };
 		Entity MeshID{ MAX_ENTITY };
 		bool IsActive{ false };
+
+		//Temporary, can move to any where else.
+		void RecursiveDestroy(const Entity& ent);
 	};
 }

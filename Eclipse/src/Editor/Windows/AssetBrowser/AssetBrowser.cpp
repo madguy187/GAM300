@@ -376,7 +376,7 @@ namespace Eclipse
 			case InspectorWindow::str2int("prefab"):
 				temp = "src\\Assets\\" + relativePath.string();
 
-				if (ECGui::IsMouseDoubleClicked(0))
+				if (ECGui::IsMouseDoubleClicked(0) && ECGui::IsItemClicked(0) && ECGui::IsItemHovered())
 				{
 					auto* meshEditor = engine->editorManager->GetEditorWindow<MeshEditorWindow>();
 
