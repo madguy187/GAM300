@@ -5,8 +5,8 @@
 
 using namespace EclipseCompiler;
 
-//int main()
-int WinMain()
+int main()
+//int WinMain()
 {
     CompilerManager Manager;
 

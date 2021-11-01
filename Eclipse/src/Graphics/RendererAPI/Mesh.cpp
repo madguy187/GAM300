@@ -29,7 +29,15 @@ namespace Eclipse
         strcpy_s(MeshName.data(), MeshName.size(), namein.data());
         MeshName[MeshName.size() - 1] = '\0';
 
-        Setup();
+        //std::cout << "Name: " << namein << std::endl;
+        //std::cout << "Vertices Size: " << vertices.size() << std::endl;
+
+        if (Vertices.size() != 0)
+        {
+            Setup();
+        }
+
+        //Setup();
     }
 
     Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, glm::vec4 diffuse, glm::vec4 specular, glm::vec4 ambient, bool in, std::string namein)
@@ -177,7 +185,10 @@ namespace Eclipse
         glBindVertexArray(VAO);
 
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+        //std::cout << "Setup Vertices Size: " << Vertices.size() << std::endl;
         glBufferData(GL_ARRAY_BUFFER, Vertices.size() * sizeof(Vertex), &Vertices[0], GL_STATIC_DRAW);
+
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, Indices.size() * sizeof(unsigned int), &Indices[0], GL_STATIC_DRAW);
@@ -198,6 +209,14 @@ namespace Eclipse
         // Tangents
         glEnableVertexAttribArray(3);
         glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, Tangents)));
+
+        //// Bone IDs
+        //glEnableVertexAttribArray(4);
+        //glVertexAttribIPointer(4, 4, GL_INT, sizeof(Vertex), (void*)offsetof(Vertex, m_BoneIDs));
+        //
+        //// Bone Weights
+        //glEnableVertexAttribArray(5);
+        //glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, m_Weights));
 
         glBindVertexArray(0);
     }

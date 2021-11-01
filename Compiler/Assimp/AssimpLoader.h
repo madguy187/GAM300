@@ -3,6 +3,10 @@
 #include "ASSIMP/include/assimp/scene.h"
 #include "ASSIMP/include/assimp/postprocess.h"
 #include "ASSIMP/include/assimp/mesh.h"
+#include "ASSIMP/include/assimp/quaternion.h"
+#include "ASSIMP/include/assimp/matrix4x4.h"
+
+#define MAX_BONE_INFLUENCE 4
 
 namespace EclipseCompiler
 {
@@ -31,6 +35,17 @@ namespace EclipseCompiler
     };
 
     struct Vertex
+    {
+        glm::vec3 Position{ 0,0,0 };
+        glm::vec3 Normal{ 0,0,0 };
+        glm::vec2 TextureCoodinates{ 0,0 };
+        glm::vec3 Tangents{ 0,0,0 };
+        int m_BoneIDs[MAX_BONE_INFLUENCE];
+        float m_Weights[MAX_BONE_INFLUENCE];
+        glm::vec4 m_Color{ 0,0,0,0 };
+    };
+
+    struct Vertex2
     {
         glm::vec3 Position{ 0,0,0 };
         glm::vec3 Normal{ 0,0,0 };
@@ -99,8 +114,21 @@ namespace EclipseCompiler
         std::vector<Texture> textures;
     };
 
+    struct BoneInfo
+    {
+        int id;
+        glm::mat4 offset;
+    };
+
+    struct AssimpGLMHelpers
+    {
+        static inline glm::mat4 ConvertMatrixToGLMFormat(const aiMatrix4x4& from);
+    };
+
     class AssimpLoader
     {
+        std::map<std::string, BoneInfo> m_OffsetMatMap;
+        int m_BoneCount = 0;
     public:
         unsigned int MeshIndex = 0;
         std::string NameOfModel;
@@ -109,7 +137,6 @@ namespace EclipseCompiler
         std::vector<glm::vec3> AllVertices;
         std::vector<MeshData> meshData;
         std::vector<Texture> Textures_loaded;
-
     public:
 
         void LoadAssimpModel(std::string path, std::unordered_map<std::string, Mesh>& GeometryContainer);
@@ -119,7 +146,9 @@ namespace EclipseCompiler
         void ComputeAxisMinMax(std::vector<glm::vec3>& vertices, std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         glm::vec3 ComputeCentroid(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         void LoadNewModel(std::unordered_map<std::string, Mesh>& GeometryContainer);
-
+        void SetVertexBoneDataToDefault(Vertex& vertex);
+        void SetVertexBoneData(Vertex& vertex, int boneID, float weight);
+        void ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene);
     public:
         void LoadAssimpModelForTextures(std::string path, std::vector < std::pair<std::string, Texture>>&);
         void ProcessTextures(aiNode* node, const aiScene* scene, std::vector < std::pair<std::string, Texture>>& TextureContainer);

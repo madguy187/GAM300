@@ -5,20 +5,24 @@ namespace EclipseCompiler
 {
     void AssimpLoader::LoadAssimpModel(std::string path, std::unordered_map<std::string, Mesh>& GeometryContainer)
     {
-        unsigned int importOptions =
-            aiProcess_Triangulate |
-            aiProcess_GenSmoothNormals |
-            aiProcess_FlipUVs |
-            aiProcess_JoinIdenticalVertices |
-            aiProcess_FlipWindingOrder |
-            aiProcess_RemoveRedundantMaterials |
-            aiProcess_FindDegenerates |
-            aiProcess_FindInvalidData |
-            aiProcess_GenUVCoords |
-            aiProcess_TransformUVCoords |
-            aiProcess_FindInstances |
-            aiProcess_PreTransformVertices |
-            aiProcess_CalcTangentSpace;
+        //unsigned int importOptions =
+        //    aiProcess_Triangulate |
+        //    aiProcess_GenSmoothNormals |
+        //    aiProcess_FlipUVs |
+        //    aiProcess_JoinIdenticalVertices |
+        //    aiProcess_FlipWindingOrder |
+        //    aiProcess_RemoveRedundantMaterials |
+        //    aiProcess_FindDegenerates |
+        //    aiProcess_FindInvalidData |
+        //    aiProcess_GenUVCoords |
+        //    aiProcess_TransformUVCoords |
+        //    aiProcess_FindInstances |
+        //    aiProcess_PreTransformVertices |
+        //    aiProcess_CalcTangentSpace;
+
+        unsigned int importOptions = aiProcess_Triangulate | aiProcess_GenSmoothNormals 
+            | aiProcess_CalcTangentSpace | aiProcess_FlipWindingOrder
+            | aiProcess_TransformUVCoords;
 
         Assimp::Importer import;
         const aiScene* scene = import.ReadFile(path, importOptions);
@@ -32,24 +36,51 @@ namespace EclipseCompiler
         Directory = path.substr(0, path.find_last_of("/"));
         ProcessGeometry(scene->mRootNode, scene);
         LoadNewModel(GeometryContainer);
+
+        //for (auto& it : meshData)
+        //{
+        //    //std::cout << "MeshName: " << it.MeshName << std::endl;
+        //
+        //    if (strcmp(it.MeshName, "MutantMesh") == 0)
+        //    {
+        //        int counter = 0;
+        //        for (auto& it2 : it.vertices)
+        //        {
+        //            std::cout << "Vertex Num: " << counter << std::endl;
+        //        
+        //            for (unsigned int i = 0; i < 4; ++i)
+        //            {
+        //                std::cout << "Bone ID: " << it2.m_BoneIDs[i] << std::endl;
+        //                std::cout << "Bone Weight: " << it2.m_Weights[i] << std::endl;
+        //                std::cout << std::endl;
+        //            }
+        //        
+        //            ++counter;
+        //        }
+        //    }
+        //}
     }
 
     void AssimpLoader::LoadAssimpModelForTextures(std::string path, std::vector < std::pair<std::string, Texture>>& textureContainer)
     {
-        unsigned int importOptions =
-            aiProcess_Triangulate |
-            aiProcess_GenSmoothNormals |
-            aiProcess_FlipUVs |
-            aiProcess_JoinIdenticalVertices |
-            aiProcess_FlipWindingOrder |
-            aiProcess_RemoveRedundantMaterials |
-            aiProcess_FindDegenerates |
-            aiProcess_FindInvalidData |
-            aiProcess_GenUVCoords |
-            aiProcess_TransformUVCoords |
-            aiProcess_FindInstances |
-            aiProcess_PreTransformVertices | 
-            aiProcess_CalcTangentSpace;
+        //unsigned int importOptions =
+        //    aiProcess_Triangulate |
+        //    aiProcess_GenSmoothNormals |
+        //    aiProcess_FlipUVs |
+        //    aiProcess_JoinIdenticalVertices |
+        //    aiProcess_FlipWindingOrder |
+        //    aiProcess_RemoveRedundantMaterials |
+        //    aiProcess_FindDegenerates |
+        //    aiProcess_FindInvalidData |
+        //    aiProcess_GenUVCoords |
+        //    aiProcess_TransformUVCoords |
+        //    aiProcess_FindInstances |
+        //    aiProcess_PreTransformVertices | 
+        //    aiProcess_CalcTangentSpace;
+
+        unsigned int importOptions = aiProcess_Triangulate | aiProcess_GenSmoothNormals
+            | aiProcess_CalcTangentSpace | aiProcess_FlipWindingOrder
+            | aiProcess_TransformUVCoords;
 
         Assimp::Importer import;
         const aiScene* scene = import.ReadFile(path, importOptions);
@@ -132,10 +163,17 @@ namespace EclipseCompiler
         // Set Mesh Name
         newMesh.MeshName = MeshName;
 
+        //std::cout << "MeshName: " << MeshName << std::endl;
+        //std::cout << "Vtx Num: " << mesh->mNumVertices << std::endl;
+        //std::cout << "Num Bones: " << mesh->mNumBones << std::endl;
+        //std::cout << std::endl;
+
         // vertices
         for (unsigned int i = 0; i < mesh->mNumVertices; i++)
         {
             Vertex vertex;
+
+            SetVertexBoneDataToDefault(vertex);
 
             // position
             vertex.Position = glm::vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
@@ -242,6 +280,8 @@ namespace EclipseCompiler
                 return;
             }
         }
+
+        ExtractBoneWeightForVertices(newMesh.vertices, mesh, scene);
 
         meshData.push_back(newMesh);
         MeshIndex++;
@@ -389,6 +429,7 @@ namespace EclipseCompiler
 
         glm::vec3 centroid = ComputeCentroid(minmaxX, minmaxY, minmaxZ);
         float largestAxis = GetLargestAxisValue(minmaxX, minmaxY, minmaxZ);
+        int counter = 0;
 
         for (auto& it : meshData)
         {
@@ -399,7 +440,23 @@ namespace EclipseCompiler
                 vertex.Position.x /= largestAxis;
                 vertex.Position.y /= largestAxis;
                 vertex.Position.z /= largestAxis;
-            }
+
+                //std::cout << "Name: " << it.MeshName << std::endl;
+
+                //if (strcmp(it.MeshName, "RootNode") == 0)
+                //{           
+                //    std::cout << "Vertex Num: " << counter << std::endl;
+                //
+                //    for (unsigned int i = 0; i < 4; ++i)
+                //    {                     
+                //        std::cout << "Bone ID: " << vertex.m_BoneIDs[i] << std::endl;
+                //        std::cout << "Bone Weight: " << vertex.m_Weights[i] << std::endl;
+                //        std::cout << std::endl;
+                //    }
+                //
+                //    ++counter;
+                //}
+            }       
 
             if (it.NoTextures == false)
             {
@@ -423,5 +480,80 @@ namespace EclipseCompiler
             it.y /= largestAxis;
             it.z /= largestAxis;
         }
+    }
+
+    void AssimpLoader::SetVertexBoneDataToDefault(Vertex& vertex)
+    {
+        for (int i = 0; i < MAX_BONE_INFLUENCE; i++)
+        {
+            vertex.m_BoneIDs[i] = -1;
+            vertex.m_Weights[i] = 0.0f;
+        }
+    }
+
+    void AssimpLoader::SetVertexBoneData(Vertex& vertex, int boneID, float weight)
+    {
+        for (int i = 0; i < MAX_BONE_INFLUENCE; ++i)
+        {
+            if (vertex.m_BoneIDs[i] < 0)
+            {
+                vertex.m_Weights[i] = weight;
+                vertex.m_BoneIDs[i] = boneID;
+                break;
+            }
+        }
+    }
+
+    void AssimpLoader::ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene)
+    {
+        auto& boneInfoMap = m_OffsetMatMap;
+        int& boneCount = m_BoneCount;
+
+        //std::cout << "MeshName: " << mesh->mName.C_Str() << std::endl;
+        //std::cout << "Num Bones: " << mesh->mNumBones << std::endl;
+        //std::cout << std::endl;
+
+        for (int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex)
+        {
+            int boneID = -1;
+            std::string boneName = mesh->mBones[boneIndex]->mName.C_Str();
+            if (boneInfoMap.find(boneName) == boneInfoMap.end())
+            {
+                BoneInfo newBoneInfo;
+                newBoneInfo.id = boneCount;
+                newBoneInfo.offset = AssimpGLMHelpers::ConvertMatrixToGLMFormat(mesh->mBones[boneIndex]->mOffsetMatrix);
+                boneInfoMap[boneName] = newBoneInfo;
+                boneID = boneCount;
+                boneCount++;
+            }
+            else
+            {
+                boneID = boneInfoMap[boneName].id;
+            }
+
+            assert(boneID != -1);
+            auto weights = mesh->mBones[boneIndex]->mWeights;
+            int numWeights = mesh->mBones[boneIndex]->mNumWeights;
+
+            for (int weightIndex = 0; weightIndex < numWeights; ++weightIndex)
+            {
+                int vertexId = weights[weightIndex].mVertexId;
+                float weight = weights[weightIndex].mWeight;
+                assert(vertexId <= vertices.size());
+                SetVertexBoneData(vertices[vertexId], boneID, weight);
+            }
+        }
+    }
+
+    glm::mat4 AssimpGLMHelpers::ConvertMatrixToGLMFormat(const aiMatrix4x4& from)
+    {
+        glm::mat4 to;
+
+        to[0][0] = from.a1; to[1][0] = from.a2; to[2][0] = from.a3; to[3][0] = from.a4;
+        to[0][1] = from.b1; to[1][1] = from.b2; to[2][1] = from.b3; to[3][1] = from.b4;
+        to[0][2] = from.c1; to[1][2] = from.c2; to[2][2] = from.c3; to[3][2] = from.c4;
+        to[0][3] = from.d1; to[1][3] = from.d2; to[2][3] = from.d3; to[3][3] = from.d4;
+
+        return to;
     }
 }

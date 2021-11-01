@@ -68,6 +68,15 @@ namespace EclipseCompiler
 
         for (auto i : In)
         {
+            std::cout << "Name: " << i.first << std::endl;
+            std::cout << "Vertex Size: " << i.second.Vertices.size() << std::endl;
+            std::cout << std::endl;
+
+            //if (i.first.compare("MutantMesh") == 0)
+            //{
+            //    std::cout << "Vetices size: " << i.second.Vertices.size() << std::endl;
+            //}
+
             Mesh SaveModel = i.second;
 
             GeometryFileWrite.write(reinterpret_cast<const char*>(&SaveModel), offsetof(Mesh, Vertices));
