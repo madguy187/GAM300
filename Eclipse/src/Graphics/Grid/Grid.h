@@ -3,7 +3,7 @@
 #include "Graphics/ModelFactory/BasicPrimitives/Quad.h"
 #include "Graphics/Grid/IAABB.h"
 #include "Graphics/Grid/AABB.h"
-#include "Graphics/Grid/Box.h"
+#include "Graphics/Instancing/DebugBoxes/Box.h"
 #include "ECS/ComponentManager/Components/AABBComponent.h"
 #include "Graphics/Grid/AABBTree.h"
 #include "ECS/ComponentManager/Components/TransformComponent.h"

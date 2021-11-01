@@ -28,7 +28,7 @@ namespace Eclipse
         void Render(Shader& shader);
 
     public:
-        bool DrawAABBS = false;
+        bool DrawAABBS = true;
 
         AABB_();
         void Init();

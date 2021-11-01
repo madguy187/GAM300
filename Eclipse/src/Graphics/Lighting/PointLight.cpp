@@ -27,6 +27,11 @@ namespace Eclipse
 
         PointLightComponent& Pointlight = engine->world.GetComponent<PointLightComponent>(EntityId);
         TransformComponent& PointlightTransform = engine->world.GetComponent<TransformComponent>(EntityId);
+
+        PointlightTransform.scale.setX(1.0f);
+        PointlightTransform.scale.setY(1.0f);
+        PointlightTransform.scale.setZ(1.0f);
+
         std::string number = std::to_string(index);
         GLint uniform_var_loc1 = shdrpgm.GetLocation(("pointLights[" + number + "].position").c_str());
         GLint uniform_var_loc2 = shdrpgm.GetLocation(("pointLights[" + number + "].lightColor").c_str());
@@ -73,6 +78,8 @@ namespace Eclipse
             mModelNDC = camera.projMtx * camera.viewMtx * model;
             glUniformMatrix4fv(uniform_var_loc8, 1, GL_FALSE, glm::value_ptr(mModelNDC));
             glUniformMatrix4fv(uniform_var_loc10, 1, GL_FALSE, glm::value_ptr(model));
+
+            engine->gDebugDrawManager->LightIcons.Addinstance(model);
         }
 
         if (in_pointlight.AffectsWorld)
@@ -152,11 +159,11 @@ namespace Eclipse
         CheckUniformLoc(&shdrpgm, *in, IndexID, PointLightCounter, EntityId);
         auto& Light = engine->world.GetComponent<LightComponent>(EntityId);
 
-        if (in->visible && Light.Render)
-        {
-            GLCall(glDrawElements(Graphics::models["Sphere"]->GetPrimitiveType(),
-                Graphics::models["Sphere"]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
-        }
+        //if (in->visible && Light.Render)
+        //{
+        //    GLCall(glDrawElements(Graphics::models["Sphere"]->GetPrimitiveType(),
+        //        Graphics::models["Sphere"]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
+        //}
 
         glBindVertexArray(0);
         shdrpgm.UnUse();
