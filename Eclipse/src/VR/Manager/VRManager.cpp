@@ -85,6 +85,31 @@ namespace Eclipse
 		}
 	}
 
+	void VRManager::RenderFrame()
+	{
+	}
+
+	void VRManager::RenderControllerAxes()
+	{
+	}
+
+	bool VRManager::SetupStereoRenderTargets()
+	{
+		return false;
+	}
+
+	void VRManager::SetupCameras()
+	{
+	}
+
+	void VRManager::RenderStereoTargets()
+	{
+	}
+
+	void VRManager::RenderScene(Hmd_Eye neye)
+	{
+	}
+
 	std::string VRManager::GetTrackedDeviceString(TrackedDeviceIndex_t unDevice, 
 		TrackedDeviceProperty prop, TrackedPropertyError* peError)
 	{
@@ -120,6 +145,10 @@ namespace Eclipse
 
 	void VRManager::UpdateHMDMatrixPose()
 	{
+	}
+	glm::mat4 VRManager::ConvertSteamVRMatrixToMatrix4(const HmdMatrix34_t& matPose)
+	{
+		return glm::mat4();
 	}
 }
 

@@ -839,8 +839,11 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\OpenVR\Drivers\Controller\ControllerDriver.h" />
-    <ClInclude Include="src\OpenVR\Drivers\Devices\DeviceProvider.h" />
+    <ClInclude Include="src\VR\Drivers\Controller\ControllerDriver.h" />
+    <ClInclude Include="src\VR\Drivers\Devices\DeviceProvider.h" />
+    <ClInclude Include="src\VR\Manager\VRManager.h" />
+    <ClInclude Include="src\VR\Tools\pathtools.h" />
+    <ClInclude Include="src\VR\Tools\strtools.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1243,8 +1246,11 @@
       <Filter>Tracy</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\OpenVR\Drivers\Controller\ControllerDriver.cpp" />
-    <ClCompile Include="src\OpenVR\Drivers\Devices\DeviceProvider.cpp" />
-    <ClCompile Include="src\OpenVR\Drivers\Devices\DeviceFactory.cpp" />
+    <ClCompile Include="src\VR\Drivers\Controller\ControllerDriver.cpp" />
+    <ClCompile Include="src\VR\Drivers\Devices\DeviceProvider.cpp" />
+    <ClCompile Include="src\VR\Drivers\Devices\DeviceFactory.cpp" />
+    <ClCompile Include="src\VR\Manager\VRManager.cpp" />
+    <ClCompile Include="src\VR\Tools\pathtools.cpp" />
+    <ClCompile Include="src\VR\Tools\strtools.cpp" />
   </ItemGroup>
 </Project>
