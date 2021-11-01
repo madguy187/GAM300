@@ -48,7 +48,7 @@ namespace Eclipse
 		AddWindow<LoggerWindow>("Log " ICON_MDI_POST);
 		AddWindow<DebugWindow>("Project Settings " ICON_MDI_ACCOUNT_COG);
 		AddWindow<HeaderWindow>("Header " ICON_MDI_PAGE_LAYOUT_HEADER);
-		AddWindow<NodeEditorWindow>("testtt " ICON_MDI_PAGE_LAYOUT_HEADER);
+		//AddWindow<NodeEditorWindow>("testtt " ICON_MDI_PAGE_LAYOUT_HEADER);
 		AddWindow<MeshEditorWindow>("Mesh Editor");
 		AddWindow<MaterialEditorWindow>("Material Editor");
 
