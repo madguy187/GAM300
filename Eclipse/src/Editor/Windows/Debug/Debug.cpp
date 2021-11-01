@@ -82,7 +82,7 @@ namespace Eclipse
             ECGui::InsertSameLine();
             ECGui::CheckBoxBool("Draw Normals", &engine->GraphicsManager.VisualizeNormalVectors, false);
             ECGui::InsertSameLine();
-            ECGui::CheckBoxBool("Draw DebugBoxes", &engine->GraphicsManager.AllAABBs.DrawAABBS, false);
+            ECGui::CheckBoxBool("Draw DebugShapes", &engine->gDebugDrawManager->Visible, false);
 
             ECGui::CheckBoxBool("Draw Frustrum", &engine->gDebugManager.Visible, false);
             ECGui::InsertSameLine();

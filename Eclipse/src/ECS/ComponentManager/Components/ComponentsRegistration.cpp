@@ -107,7 +107,8 @@ namespace Eclipse
         ADD_MEMBER(Child);
         ADD_MEMBER(Parent);
         ADD_MEMBER(IsAChild);
-        ADD_MEMBER(TreeactiveFlag);
+        ADD_MEMBER(ImguiIndentValue);
+        ADD_MEMBER(hightLightChild);
     }
 
     DEFINE_META(ScriptComponent)
@@ -244,11 +245,14 @@ namespace Eclipse
     {
         ADD_MEMBER(parentIndex);
         ADD_MEMBER(PosOffset);
+        ADD_MEMBER(RotOffset);
+        ADD_MEMBER(ScaleOffset);
     }
 
     DEFINE_META(ParentComponent)
     {
         ADD_MEMBER(child);
+        ADD_MEMBER(model);
     }
 
     /*************************************************************************/

@@ -10,8 +10,7 @@ namespace Eclipse
 
     void PBRManager::Init()
     {
-        //InitialiseBaseReflectivity();
-        //LoadAllTextures();
+        LoadAllTextures();
 
         gMaterialEditorSettings = std::make_unique<MaterialEditorSettings>();
 
@@ -88,6 +87,8 @@ namespace Eclipse
 
     void PBRManager::LoadAllTextures()
     {
+        DragAndDrop::CreateEmptyFolder("Materials");
+
         for (auto& dirEntry : std::filesystem::directory_iterator("src//Assets//Materials"))
         {
             const auto& path = dirEntry.path();
@@ -199,6 +200,7 @@ namespace Eclipse
         GLint HasInstance = shdrpgm.GetLocation("HasInstance");
         GLint BaseReflectivity_ = shdrpgm.GetLocation("BaseReflectivity");
         GLint HeightScale_ = shdrpgm.GetLocation("HeightScale");
+        GLint IsNormalMap_ = shdrpgm.GetLocation("IsNormalMap");
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::mat4(1.0f);
@@ -208,6 +210,7 @@ namespace Eclipse
         model = glm::rotate(model, glm::radians(ModelTransform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::scale(model, ModelTransform.scale.ConvertToGlmVec3Type());
 
+        GLCall(glUniform1i(IsNormalMap_, AllMaterialInstances[MaterialCom.MaterialInstanceName]->IsNormalMap));
         GLCall(glUniform1i(HasInstance, AllMaterialInstances[MaterialCom.MaterialInstanceName]->HasTexture));
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv(projection1, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));

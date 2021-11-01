@@ -25,7 +25,8 @@ namespace Eclipse
         if (MeshID != MAX_ENTITY)
         {
             IsVisible = false;
-            engine->world.DestroyEntity(MeshID);
+            //engine->world.DestroyEntity(MeshID);
+            RecursiveDestroy(MeshID);
             MeshID = MAX_ENTITY;
             engine->editorManager->SetMeshEditorActive(false);
         }
@@ -195,5 +196,15 @@ namespace Eclipse
     bool MeshEditorWindow::GetActiveState()
     {
         return IsActive;
+    }
+    void MeshEditorWindow::RecursiveDestroy(const Entity& ent)
+    {
+        auto& entComp = engine->world.GetComponent<EntityComponent>(ent);
+        for (auto& child : entComp.Child)
+        {
+            RecursiveDestroy(child);
+        }
+
+        engine->world.DestroyEntity(ent);
     }
 }

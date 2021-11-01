@@ -1,6 +1,7 @@
 #pragma once
 //#include "ECS/ComponentManager/ComponentList.h"
 
+#define M_PI       3.14159265358979323846   // pi
 #define EPSILON 0.000001f
 #define PTR_ADD( PTR, OFFSET ) \
   ((void *)(((char *)(PTR)) + (OFFSET)))
@@ -17,6 +18,7 @@ static constexpr unsigned MAX_PAGE_SIZE = 10;
 
 static const char* SCENE_EXTENSION = ".scn";
 static const char* TEMP_PATH = "Data\\Temp\\";
+static const char* ASSETS_PATH = "src\\Assets\\";
 using EUUID = std::uint64_t;
 
 enum class EditorWindowType
@@ -75,17 +77,19 @@ enum class EntityType
 {
     // START OF GEO
     ENT_GEO_SQUARE, // FIRST
-    ENT_GEO_CIRCLE,
-    ENT_GEO_TRIANGLE,
-    ENT_GEO_LINES,
+    //ENT_GEO_CIRCLE,
+    //ENT_GEO_TRIANGLE,
+    ENT_GEO_STAIRS,
     ENT_GEO_SPHERE,
     ENT_GEO_CUBE,
     ENT_GEO_CYLINDER,
     ENT_GEO_CONE,
     ENT_GEO_TORUS,
-    ENT_GEO_PYRAMID,
+    //ENT_GEO_PYRAMID,
     ENT_GEO_ICOSPHERE,
-    ENT_GEO_PLANES, // LAST
+    ENT_GEO_PLANES, 
+    ENT_GEO_CURVE_STAIRS,
+    ENT_GEO_SPIRAL_STAIRS,// LAST
     // END OF GEO
     // START OF LIGHTS
     ENT_LIGHT_POINT, // FIRST

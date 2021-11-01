@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "SerializationManager.h"
 #include "ECS/SystemManager/Systems/System/ParentChildSystem/ParentSystem/ParentSystem.h"
-#include "ECS/ComponentManager/Components/ParentComponent.h"
-#include "ECS/ComponentManager/Components/ChildComponent.h"
 namespace Eclipse
 {
 	Serializer SerializationManager::sz;
@@ -87,7 +85,7 @@ namespace Eclipse
 				if (!PrefabUse)
 				{
 					PCPostUpdate.RegisterForPostUpdate(w, oldEnt, ent);
-					engine->editorManager->RegisterExistingEntity(ent);
+					engine->editorManager->RegisterNewlySerializedEntity(ent);
 				}
 			}
 			dsz.CloseElement();
@@ -218,7 +216,7 @@ namespace Eclipse
 		backup.LoadBackup(dsz);
 		DeserializeAllEntity();
 		PCPostUpdate.PostUpdate();
-		std::filesystem::remove_all(TEMP_PATH);
+		std::filesystem::remove(std::filesystem::path(backup.GetBackUpPath()));
 	}
 
 	const char* SerializationManager::GetBackUpPath()
@@ -226,19 +224,57 @@ namespace Eclipse
 		return backup.GetBackUpPath();
 	}
 
-	void SerializationManager::SavePrefab(const EUUID& prefabID, std::vector<Entity>& prefabContents)
+	void SerializationManager::SavePrefab(const EUUID& prefabID, const Entity& ent)
 	{
 		World& prefabW = engine->prefabWorld;
 		size_t counter = 0;
 
-		sz.StartElement("Prefab");
 		sz.AddAttributeToElement("PrefabID", prefabID);
-		sz.AddAttributeToElement("Size", prefabContents.size());
-		for (auto ent : prefabContents)
+
+		SerializeEntity(prefabW, ent, counter);
+
+		auto& entComp = prefabW.GetComponent<EntityComponent>(ent);
+
+		sz.StartElement("Children");
+		sz.AddAttributeToElement("Size", entComp.Child.size());
+
+		for (auto child : entComp.Child)
 		{
-			SerializeEntity(prefabW, ent, counter++);
+			sz.StartElement("Child", true, counter++);
+			auto& prefabComp = prefabW.GetComponent<PrefabComponent>(child);
+			SavePrefab(prefabComp.PrefabID, child);
+			sz.CloseElement();
 		}
 		sz.CloseElement();
+	}
+
+	void SerializationManager::LoadPrefabCleanUp(World& world, const Entity& ent)
+	{
+		if (world.CheckComponent<ParentComponent>(ent))
+		{
+			auto& comp = world.GetComponent<ParentComponent>(ent);
+			comp.child.clear();
+		}
+		
+		auto& entComp = world.GetComponent<EntityComponent>(ent);
+		entComp.Child.clear();
+	}
+
+	void SerializationManager::UpdateParentChild(World& world, const Entity& parentEnt, const Entity& childEnt)
+	{
+		auto& parentComp = world.GetComponent<ParentComponent>(parentEnt);
+		parentComp.child.push_back(childEnt);
+
+		auto& parentEntComp = world.GetComponent<EntityComponent>(parentEnt);
+		parentEntComp.Child.push_back(childEnt);
+
+		auto& childComp = world.GetComponent<ChildComponent>(childEnt);
+		childComp.parentIndex = parentEnt;
+
+		auto& childEntComp = world.GetComponent<EntityComponent>(childEnt);
+		childEntComp.IsAChild = true;
+		childEntComp.Parent.clear();
+		childEntComp.Parent.push_back(parentEnt);
 	}
 
 	EUUID SerializationManager::LoadPrefab(Entity& dszEnt, bool IsFromMainWorld)
@@ -246,20 +282,25 @@ namespace Eclipse
 		World& prefabW = IsFromMainWorld ? engine->world : engine->prefabWorld;
 		EUUID PrefabID = 0;
 
-		if(dsz.StartElement("Prefab"))
+		dsz.ReadAttributeFromElement("PrefabID", PrefabID);
+
+		dszEnt = DeserializeEntity(prefabW, 0, true);
+
+		LoadPrefabCleanUp(prefabW, dszEnt);
+
+		if (dsz.StartElement("Children"))
 		{
 			size_t size = 0;
 			dsz.ReadAttributeFromElement("Size", size);
-			dsz.ReadAttributeFromElement("PrefabID", PrefabID);
 			for (size_t i = 0; i < size; ++i)
 			{
-				Entity ent = DeserializeEntity(prefabW, i, true);
-
-				if (i == 0)
-				{
-					dszEnt = ent;
-				}
+				Entity child = MAX_ENTITY;
+				dsz.StartElement("Child", true, i);
+				LoadPrefab(child, IsFromMainWorld);
+				UpdateParentChild(prefabW, dszEnt, child);
+				dsz.CloseElement();
 			}
+
 			dsz.CloseElement();
 		}
 
@@ -278,9 +319,11 @@ namespace Eclipse
 		}
 	}
 
-	void SerializationManager::SavePrefabFile(const EUUID& prefabID, std::vector<Entity>& prefabContents, const char* path)
+	void SerializationManager::SavePrefabFile(const EUUID& prefabID, const Entity& ent, const char* path)
 	{
-		SavePrefab(prefabID, prefabContents);
+		sz.StartElement("Prefab");
+		SavePrefab(prefabID, ent);
+		sz.CloseElement();
 		SaveFile(path);
 	}
 
@@ -289,7 +332,11 @@ namespace Eclipse
 		EUUID PrefabID = 0;
 		if (LoadFile(fullpath))
 		{
-			PrefabID =  LoadPrefab(dszEnt, IsFromMainWorld);
+			if (dsz.StartElement("Prefab"))
+			{
+				PrefabID = LoadPrefab(dszEnt, IsFromMainWorld);
+				dsz.CloseElement();
+			}
 		}
 		
 		return PrefabID;

@@ -82,20 +82,21 @@ namespace Eclipse
             B.Indices.resize(IndicesSize);
             GeometryFileRead.read(reinterpret_cast<char*>(B.Indices.data()), sizeof(unsigned int) * IndicesSize);
 
+            std::string name = B.MeshName.data();
 
             if (B.NoTex == false)
             {
                 Mesh NewMesh(B.Vertices, B.Indices, B.MeshName.data(), B.Textures);
-                std::string name = B.MeshName.data();
                 engine->AssimpManager.InsertGeometry(name, NewMesh);
-                engine->AssimpManager.InsertMeshName(name);
-                engine->AssimpManager.InsertGeometryName(name);
             }
             else
             {
                 Mesh NewMesh(B.Vertices, B.Indices, B.Diffuse, B.Specular, B.Ambient, B.NoTex, B.MeshName.data());
-                std::string name = B.MeshName.data();
                 engine->AssimpManager.InsertGeometry(name, NewMesh);
+            }
+
+            if (strcmp(name.data(), "LightBulb") != 0)
+            {
                 engine->AssimpManager.InsertMeshName(name);
                 engine->AssimpManager.InsertGeometryName(name);
             }
@@ -136,7 +137,10 @@ namespace Eclipse
                 engine->AssimpManager.InsertPrefabs(ParentName.data(), MeshName.data());
             }
 
-            engine->AssimpManager.InsertMeshName(ParentName.data());
+            if (strcmp(ParentName.data(), "LightBulb") != 0)
+            {
+                engine->AssimpManager.InsertMeshName(ParentName.data());
+            }
         }
 
         CloseFile(PrefabsFileRead, AllNames[1], TotalNumberOfPrefabs);
@@ -247,13 +251,14 @@ namespace Eclipse
         std::thread CompilerWait{ &EngineCompiler::RunCompiler };
         CompilerWait.join();
 
-        CompilerThreads.emplace("LoadPrefabs", std::make_unique<std::thread>(std::thread{ &EngineCompiler::LoadPrefabs }));
+        //CompilerThreads.emplace("LoadPrefabs", std::make_unique<std::thread>(std::thread{ &EngineCompiler::LoadPrefabs }));
         LoadGeometry();
+        LoadPrefabs();
         LoadModelTextures();
         LoadBasicTextures();
         engine->gPBRManager->gMaterialEditorSettings->gMaterialCompiler.LoadMaterials();
         engine->InputManager->InputCompiler_.Load();
-        CompilerThreads["LoadPrefabs"]->join();
+        //CompilerThreads["LoadPrefabs"]->join();
         CompilerThreads.clear();
 
         if (AreAllCompiled() == true)

@@ -88,7 +88,7 @@ Index of this file:
 struct ImBitVector;                 // Store 1-bit per value
 struct ImRect;                      // An axis-aligned rectangle (2 points)
 struct ImDrawDataBuilder;           // Helper to build a ImDrawData instance
-struct ImDrawListSharedData;        // Data shared between all ImDrawList instances
+struct ImDrawListSharedData;        // Data shared between all ImDrawList instancesstruct ImGuiWindowTempData
 struct ImGuiColorMod;               // Stacked color modifier, backup of modified data so we can restore it
 struct ImGuiColumnData;             // Storage data for a single column
 struct ImGuiColumns;                // Storage data for a columns set
@@ -110,8 +110,8 @@ struct ImGuiSettingsHandler;        // Storage for one type registered in the .i
 struct ImGuiStyleMod;               // Stacked style modifier, backup of modified data so we can restore it
 struct ImGuiTabBar;                 // Storage for a tab bar
 struct ImGuiTabItem;                // Storage for a tab item (within a tab bar)
-struct ImGuiWindow;                 // Storage for one window
 struct ImGuiWindowTempData;         // Temporary storage for one window (that's the data which in theory we could ditch at the end of the frame)
+struct ImGuiWindow;                 // Storage for one window
 struct ImGuiWindowSettings;         // Storage for a window .ini settings (we keep one of those even if the actual window wasn't instanced during this session)
 
 // Use your programming IDE "Go to definition" facility on the names of the center columns to find the actual flags/enum lists.
@@ -1812,10 +1812,8 @@ struct IMGUI_API ImGuiWindowTempData
         StateStorage = NULL;
         CurrentColumns = NULL;
         LayoutType = ParentLayoutType = ImGuiLayoutType_Vertical;
-        ImGuiLayout* CurrentLayout;
-        ImGuiLayoutItem* CurrentLayoutItem;
-        ImVector<ImGuiLayout*>  LayoutStack;
-        ImGuiStorage            Layouts;
+        CurrentLayout = NULL;
+        CurrentLayoutItem = NULL;
         FocusCounterRegular = FocusCounterTabStop = -1;
 
         ItemFlags = ImGuiItemFlags_Default_;

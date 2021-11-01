@@ -3,6 +3,7 @@
 
 #include "Reflection/Meta.h"
 #include "Reflection/RemTypeQual.h"
+#include "Graphics/Textures/Texture.h"
 
 namespace Eclipse
 {

@@ -10,7 +10,6 @@ namespace Eclipse
 		ECVec3 PosOffset;
 		ECVec3 RotOffset;
 		ECVec3 ScaleOffset;
-		float distance;
 		bool UpdateChildren{ false };
 	};
 }

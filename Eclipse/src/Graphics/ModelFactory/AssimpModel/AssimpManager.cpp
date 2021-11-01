@@ -32,20 +32,6 @@ namespace Eclipse
 
     }
 
-    void AssimpModelManager::MeshEditorDraw(World& world_, MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, CameraComponent::CameraType _camType)
-    {
-        auto& _camera = world_.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
-        engine->gFrameBufferManager->UseFrameBuffer(in);
-
-        auto shdrpgm = Graphics::shaderpgms["PBRShader"];
-        shdrpgm.Use();
-
-        MeshEditorUniforms(shdrpgm, _camera, ID);
-        CheckUniforms(shdrpgm, ID, ModelMesh, _camera);
-
-        RenderMesh(ModelMesh, GL_FILL);
-    }
-
     bool AssimpModelManager::GeometryContainerCheck(const std::string& in)
     {
         if (Geometry.find(in) != engine->AssimpManager.Geometry.end())
@@ -159,7 +145,7 @@ namespace Eclipse
                         SetSingleMesh(MeshID, name);
                     }
 
-                    return MeshID;
+                    return ParentID;
                 }
             }
         }
@@ -198,7 +184,7 @@ namespace Eclipse
         }
     }
 
-    void AssimpModelManager::MeshDraw(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType)
+    void AssimpModelManager::MeshDraw(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType)
     {
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
         engine->gFrameBufferManager->UseFrameBuffer(Mode);
@@ -207,7 +193,7 @@ namespace Eclipse
         shdrpgm.Use();
 
         gEnvironmentMap.CheckUniform(ModelMesh, _camera);
-        ChecModelkUniforms(shdrpgm, _camera, ID, box);
+        ChecModelkUniforms(shdrpgm, _camera, ID);
         CheckUniforms(shdrpgm, ID, ModelMesh, _camera);
 
         if (_renderMode == RenderMode::Fill_Mode)
@@ -269,7 +255,13 @@ namespace Eclipse
 
     void AssimpModelManager::InsertMeshName(const std::string& in)
     {
-        AllMeshNames.push_back(in);
+        if (std::find(AllPrimitiveModelsNames.begin(), AllPrimitiveModelsNames.end(), in) == AllPrimitiveModelsNames.end())
+        {
+            if (std::find(AllMeshNames.begin(), AllMeshNames.end(), in) == AllMeshNames.end())
+            {
+                AllMeshNames.push_back(in);
+            }
+        }
     }
 
     void AssimpModelManager::InsertGeometry(const std::string& name, Mesh& NewMesh)
@@ -585,9 +577,18 @@ namespace Eclipse
         glEnable(GL_BLEND);
         glEnable(GL_DEPTH_TEST);
         //glDisable(GL_CULL_FACE);
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_FRONT);
-        glFrontFace(GL_CCW);
+
+        if (strcmp(In.MeshName.data(), "Plane") == 0)
+        {
+            glDisable(GL_CULL_FACE);
+        }
+        else
+        {
+            glEnable(GL_CULL_FACE);
+            glCullFace(GL_FRONT);
+            glFrontFace(GL_CCW);
+        }
+
         glPolygonMode(GL_FRONT_AND_BACK, Mode);
 
         glBindVertexArray(Geometry[In.MeshName.data()]->VAO);
@@ -619,7 +620,7 @@ namespace Eclipse
             {
                 // If Do not have textures
                 //if (engine->AssimpManager.Geometry[mesh.MeshName.data()]->NoTex && (!engine->world.CheckComponent<TextureComponent>(EntityID)))
-                
+
                 if (Material.NoTextures && (!engine->world.CheckComponent<TextureComponent>(EntityID)))
                 {
                     // reset
@@ -630,6 +631,7 @@ namespace Eclipse
                     engine->gPBRManager->SetRoughnessConstant(shader, 0.5f);
                     engine->gPBRManager->SetInstanceFlag(shader, false);
                     engine->gPBRManager->SetAlbedoConstant(shader, engine->AssimpManager.Geometry[mesh.MeshName.data()]->Diffuse);
+
                 }
                 // If we have textures
                 else
@@ -637,6 +639,17 @@ namespace Eclipse
                     //unsigned int diffuseIdx = 0;
                     //unsigned int specularIdx = 0;
                     //unsigned int normalIdx = 0;
+
+                    glActiveTexture(GL_TEXTURE0);
+
+                    if (Material.HoldingTextures.size() == 0)
+                    {
+                        engine->gPBRManager->SetAOConstant(shader, 1.0f);
+                        engine->gPBRManager->SetMetallicConstant(shader, 0.5f);
+                        engine->gPBRManager->SetRoughnessConstant(shader, 0.5f);
+                        engine->gPBRManager->SetInstanceFlag(shader, false);
+                        engine->gPBRManager->SetAlbedoConstant(shader, glm::vec4(0.8, 0.8, 0.8, 1.0));
+                    }
 
                     for (unsigned int it = 0; it < Material.HoldingTextures.size(); it++)
                     {
@@ -677,6 +690,8 @@ namespace Eclipse
                             Material.HoldingTextures[it].Bind();
                         }
                     }
+
+                    glActiveTexture(GL_TEXTURE0);
                 }
 
                 // reset
@@ -693,7 +708,7 @@ namespace Eclipse
         return true;
     }
 
-    void AssimpModelManager::ChecModelkUniforms(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID, AABB_* box)
+    void AssimpModelManager::ChecModelkUniforms(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID)
     {
         TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(_camera.camType));
 
@@ -717,10 +732,6 @@ namespace Eclipse
         glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
         GLCall(glUniform3f(cameraPos, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ()));
 
-        if (box->DrawAABBS == true)
-        {
-            BoundingRegion br(Transform.position.ConvertToGlmVec3Type(), Transform.scale.ConvertToGlmVec3Type());
-            box->AddInstance(br);
-        }
+        engine->gDebugDrawManager->AddBoundingRegion(model, _camera, ModelID);
     }
 }

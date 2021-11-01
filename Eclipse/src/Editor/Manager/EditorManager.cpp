@@ -168,6 +168,13 @@ namespace Eclipse
 			engine->MaterialManager.HighlightClick(ID);
 	}
 
+	void EditorManager::RegisterNewlySerializedEntity(Entity ID)
+	{
+		EntityHierarchyList_.push_back(ID);
+		EntityToIndexMap_.insert(std::pair<Entity, int>(ID, static_cast<int>(EntityHierarchyList_.size() - 1)));
+		GEHIndex_ = EntityHierarchyList_.size() - 1;
+	}
+
 	void EditorManager::DestroyEntity(Entity ID)
 	{
 		if (ID == MAX_ENTITY)
@@ -382,6 +389,9 @@ namespace Eclipse
 	void EditorManager::TextureIconInit()
 	{
 		FolderIcon_ = Graphics::FindTextures("FolderIcon").GetHandle();
+
 		spriteIcon_ = Graphics::FindTextures("PlayPauseStop").GetHandle();
+
+		nodeHeader_ = Graphics::FindTextures("BlueprintBackground").GetHandle();
 	}
 }

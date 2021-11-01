@@ -130,12 +130,20 @@ namespace Eclipse
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
 
+                auto& ent = engine->world.GetComponent<EntityComponent>(ID);
+
                 if (ECGui::DrawSliderFloat3Widget("TransVec", &transCom.position, true, -100.f, 100.f, ID))
                 {
                     if (engine->world.CheckComponent<ChildComponent>(ID))
                     {
                         auto& child = engine->world.GetComponent<ChildComponent>(ID);
                         child.UpdateChildren = true;
+                      
+                        if (ent.Tag != EntityType::ENT_MESH)
+                        {
+                            engine->gPicker.UpdateAabb(ID);
+                            engine->gDynamicAABBTree.UpdateData(ID);
+                        }
                     }
                 }
                 else
@@ -166,6 +174,17 @@ namespace Eclipse
                 {
                     engine->gPicker.UpdateAabb(ID);
                     engine->gDynamicAABBTree.UpdateData(ID);
+
+                    if ((engine->world.CheckComponent<ParentComponent>(ID)) && (ent.Tag != EntityType::ENT_MODEL))
+                    {
+                        auto& parent = engine->world.GetComponent<ParentComponent>(ID);
+
+                        for (auto& it : parent.child)
+                        {
+                            engine->gPicker.UpdateAabb(it);
+                            engine->gDynamicAABBTree.UpdateData(it);
+                        }
+                    }
                 }
 
                 ECGui::SetColumns(1, nullptr, true);
@@ -191,7 +210,7 @@ namespace Eclipse
                 ECGui::DrawTextWidget<const char*>("IntensityStrength", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloatWidget("IntensityFloat", &_PointLight.IntensityStrength, true, 0.f, 5000.0f);
+                ECGui::DrawSliderFloatWidget("IntensityFloat", &_PointLight.IntensityStrength, true, 0.f, 100.0f);
                 ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Light Colour", EMPTY_STRING);
                 ECGui::NextColumn();
@@ -206,60 +225,60 @@ namespace Eclipse
                 ECGui::DrawSliderIntWidget("PLightColourVec", &_PointLight.AttenuationLevel, true, 0, 10);
                 engine->LightManager.SetAttenuation(_PointLight, _PointLight.AttenuationLevel);
                 ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("Light Ambient", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloat3Widget("PLightAmbientVec", &_PointLight.ambient, true, 0.0f, 1.0f);
-                ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("Light Diffuse", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloat3Widget("PLightDiffuseVec", &_PointLight.diffuse, true, 0.0f, 1.0f);
-                ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("Light Specular", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloat3Widget("PLightSpecularVec", &_PointLight.specular, true, 0.0f, 1.0f);
-                ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("Intensity Strength", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloatWidget("Intensity Strength", &_PointLight.IntensityStrength, true, 0.0f, 50.0f);
-                ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("Constant", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloatWidget("Constant", &_PointLight.constant, true, 0.0f, 50.0f);
-                ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("Linear", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloatWidget("Linear", &_PointLight.linear, true, 0.0f, 50.0f);
-                ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("Quadratic", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloatWidget("Quadratic", &_PointLight.quadratic, true, 0.0f, 50.0f);
-                ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("Radius", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloatWidget("Radius", &_PointLight.radius, true, 0.0f, 50.0f);
-                ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("Enable Blinn Phong", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::CheckBoxBool("Enable Blinn Phong", &_PointLight.EnableBlinnPhong);
-                ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("Visible", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::CheckBoxBool("Enable Blinn Phong Visible", &_PointLight.visible);
-                ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("Affects World", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::CheckBoxBool("Affects World", &_PointLight.AffectsWorld);
+                //ECGui::DrawTextWidget<const char*>("Light Ambient", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                //ECGui::DrawSliderFloat3Widget("PLightAmbientVec", &_PointLight.ambient, true, 0.0f, 1.0f);
+                //ECGui::NextColumn();
+                //ECGui::DrawTextWidget<const char*>("Light Diffuse", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                //ECGui::DrawSliderFloat3Widget("PLightDiffuseVec", &_PointLight.diffuse, true, 0.0f, 1.0f);
+                //ECGui::NextColumn();
+                //ECGui::DrawTextWidget<const char*>("Light Specular", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                //ECGui::DrawSliderFloat3Widget("PLightSpecularVec", &_PointLight.specular, true, 0.0f, 1.0f);
+                //ECGui::NextColumn();
+                //ECGui::DrawTextWidget<const char*>("Intensity Strength", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                //ECGui::DrawSliderFloatWidget("Intensity Strength", &_PointLight.IntensityStrength, true, 0.0f, 50.0f);
+                //ECGui::NextColumn();
+                //ECGui::DrawTextWidget<const char*>("Constant", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                //ECGui::DrawSliderFloatWidget("Constant", &_PointLight.constant, true, 0.0f, 50.0f);
+                //ECGui::NextColumn();
+                //ECGui::DrawTextWidget<const char*>("Linear", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                //ECGui::DrawSliderFloatWidget("Linear", &_PointLight.linear, true, 0.0f, 50.0f);
+                //ECGui::NextColumn();
+                //ECGui::DrawTextWidget<const char*>("Quadratic", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                //ECGui::DrawSliderFloatWidget("Quadratic", &_PointLight.quadratic, true, 0.0f, 50.0f);
+                //ECGui::NextColumn();
+                //ECGui::DrawTextWidget<const char*>("Radius", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                //ECGui::DrawSliderFloatWidget("Radius", &_PointLight.radius, true, 0.0f, 50.0f);
+                //ECGui::NextColumn();
+                //ECGui::DrawTextWidget<const char*>("Enable Blinn Phong", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                //ECGui::CheckBoxBool("Enable Blinn Phong", &_PointLight.EnableBlinnPhong);
+                //ECGui::NextColumn();
+                //ECGui::DrawTextWidget<const char*>("Visible", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                //ECGui::CheckBoxBool("Enable Blinn Phong Visible", &_PointLight.visible);
+                //ECGui::NextColumn();
+                //ECGui::DrawTextWidget<const char*>("Affects World", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                //ECGui::CheckBoxBool("Affects World", &_PointLight.AffectsWorld);
                 ECGui::SetColumns(1, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
             }
@@ -283,7 +302,7 @@ namespace Eclipse
                 ECGui::DrawTextWidget<const char*>("IntensityStrength", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloatWidget("IntensityFloat", &_SpotLight.IntensityStrength, true, 0.f, 5000.0f);
+                ECGui::DrawSliderFloatWidget("IntensityFloat", &_SpotLight.IntensityStrength, true, 0.f, 100.0f);
                 ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Light Colour", EMPTY_STRING);
                 ECGui::NextColumn();
@@ -301,21 +320,21 @@ namespace Eclipse
                 ECGui::DrawSliderIntWidget("PLightColourVec", &_SpotLight.AttenuationLevel, true, 0, 10);
                 engine->LightManager.SetAttenuation(_SpotLight, _SpotLight.AttenuationLevel);
                 ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("Light Ambient", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloat3Widget("PLightAmbientVec", &_SpotLight.ambient, true, 0.0f, 1.0f);
-                ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("Light Diffuse", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloat3Widget("PLightDiffuseVec", &_SpotLight.diffuse, true, 0.0f, 1.0f);
-                ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("Light Specular", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloat3Widget("PLightSpecularVec", &_SpotLight.specular, true, 0.0f, 1.0f);
-                ECGui::NextColumn();
+                //ECGui::DrawTextWidget<const char*>("Light Ambient", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                //ECGui::DrawSliderFloat3Widget("PLightAmbientVec", &_SpotLight.ambient, true, 0.0f, 1.0f);
+                //ECGui::NextColumn();
+                //ECGui::DrawTextWidget<const char*>("Light Diffuse", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                //ECGui::DrawSliderFloat3Widget("PLightDiffuseVec", &_SpotLight.diffuse, true, 0.0f, 1.0f);
+                //ECGui::NextColumn();
+                //ECGui::DrawTextWidget<const char*>("Light Specular", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                //ECGui::DrawSliderFloat3Widget("PLightSpecularVec", &_SpotLight.specular, true, 0.0f, 1.0f);
+                //ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("OuterCutOff", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
@@ -351,20 +370,20 @@ namespace Eclipse
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloatWidget("Radius", &_SpotLight.radius, true, 0.0f, 50.0f);
                 ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("Enable Blinn Phong", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::CheckBoxBool("Enable Blinn Phong", &_SpotLight.EnableBlinnPhong);
-                ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("Visible", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::CheckBoxBool("Enable Blinn PhongVisible", &_SpotLight.visible);
-                ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("Affects World", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::CheckBoxBool("Affects World", &_SpotLight.AffectsWorld);
+                //ECGui::DrawTextWidget<const char*>("Enable Blinn Phong", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                //ECGui::CheckBoxBool("Enable Blinn Phong", &_SpotLight.EnableBlinnPhong);
+                //ECGui::NextColumn();
+                //ECGui::DrawTextWidget<const char*>("Visible", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                //ECGui::CheckBoxBool("Enable Blinn PhongVisible", &_SpotLight.visible);
+                //ECGui::NextColumn();
+                //ECGui::DrawTextWidget<const char*>("Affects World", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                //ECGui::CheckBoxBool("Affects World", &_SpotLight.AffectsWorld);
                 ECGui::SetColumns(1, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
             }
@@ -389,21 +408,28 @@ namespace Eclipse
                 ECGui::ColorPicker3("DLightColor", (float*)&_DLight.lightColor,
                     ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
                 ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("DLight Ambient", EMPTY_STRING);
+
+                ECGui::DrawTextWidget<const char*>("DLight Direction", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloat3Widget("DLightAmbientVec", &_DLight.ambient, true, 0.0f, 1.0f);
+                ECGui::DrawSliderFloat3Widget("DLight Direction", &_DLight.Direction, true, -10.0f, 10.0f);
                 ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("DLight Diffuse", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloat3Widget("DLightDiffuseVec", &_DLight.diffuse, true, 0.0f, 1.0f);
-                ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("DLight Specular", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloat3Widget("DLightSpecularVec", &_DLight.specular, true, 0.0f, 1.0f);
-                ECGui::NextColumn();
+
+                //ECGui::DrawTextWidget<const char*>("DLight Ambient", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                //ECGui::DrawSliderFloat3Widget("DLightAmbientVec", &_DLight.ambient, true, 0.0f, 1.0f);
+                //ECGui::NextColumn();
+                //ECGui::DrawTextWidget<const char*>("DLight Diffuse", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                //ECGui::DrawSliderFloat3Widget("DLightDiffuseVec", &_DLight.diffuse, true, 0.0f, 1.0f);
+                //ECGui::NextColumn();
+                //ECGui::DrawTextWidget<const char*>("DLight Specular", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                //ECGui::DrawSliderFloat3Widget("DLightSpecularVec", &_DLight.specular, true, 0.0f, 1.0f);
+                //ECGui::NextColumn();
                 ECGui::SetColumns(1);
                 ECGui::InsertHorizontalLineSeperator();
             }
@@ -480,7 +506,7 @@ namespace Eclipse
                 ECGui::SetColumnOffset(1, 140);
                 auto& _Texture = engine->world.GetComponent<MaterialComponent>(ID);
 
-                ECGui::DrawTextWidget<const char*>("Texture", EMPTY_STRING);
+                ECGui::DrawTextWidget<const char*>("NoTextures", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::CheckBoxBool("NoTextures", &_Texture.NoTextures);
@@ -590,7 +616,10 @@ namespace Eclipse
                 ECGui::DrawTextWidget<const char*>("Normal Map", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::CheckBoxBool("Normal Map", &_Material.IsNormalMap);
+                if (_Material.MaterialInstanceName.empty() == true)
+                {
+                    ECGui::CheckBoxBool("Normal Map", &_Material.IsNormalMap);
+                }
                 ECGui::NextColumn();
 
                 //ECGui::NextColumn();
@@ -1018,7 +1047,7 @@ namespace Eclipse
 
     bool InspectorWindow::ShowPrefebProperty(Entity ID)
     {
-        if (engine->world.CheckComponent<PrefabComponent>(ID))
+        if (engine->world.CheckComponent<PrefabComponent>(ID) && !engine->world.GetComponent<PrefabComponent>(ID).IsInstance)
         {
             ECGui::InsertHorizontalLineSeperator();
             ECGui::SetColumns(2, nullptr, true);
@@ -1081,7 +1110,7 @@ namespace Eclipse
                 ECGui::InsertHorizontalLineSeperator();
 
                 auto& parent = engine->world.GetComponent<ParentComponent>(ID);
-
+                ECGui::DrawTextWidget<const char*>("Child:", EMPTY_STRING);
                 for (auto& it : parent.child)
                 {
                     auto& en = engine->world.GetComponent<EntityComponent>(it);
@@ -1103,11 +1132,45 @@ namespace Eclipse
             {
                 ECGui::InsertHorizontalLineSeperator();
 
+                ECGui::DrawTextWidget<const char*>("Parent:", EMPTY_STRING);
                 auto& child = engine->world.GetComponent<ChildComponent>(ID);
+                auto& childEntComp = engine->world.GetComponent<EntityComponent>(ID);
                 auto& en = engine->world.GetComponent<EntityComponent>(child.parentIndex);
                 ECGui::DrawTextWidget<const char*>(my_strcat(en.Name, " ", child.parentIndex).c_str(), EMPTY_STRING);
 
                 ECGui::InsertHorizontalLineSeperator();
+
+                if (ECGui::ButtonBool("Break From Parent"))
+                {
+                    auto& parentComp = engine->world.GetComponent<EntityComponent>(child.parentIndex);
+                    auto& parent = engine->world.GetComponent<ParentComponent>(child.parentIndex);
+                    for (auto& allchld : parentComp.Child)
+                    {
+                        if (allchld == ID)
+                        {
+                            parentComp.Child.erase(std::remove(parentComp.Child.begin(), parentComp.Child.end(), allchld), parentComp.Child.end());
+                        }
+                    }
+                    for (auto& allchld : parent.child)
+                    {
+                        if (allchld == ID)
+                        {
+                            parent.child.erase(std::remove(parent.child.begin(), parent.child.end(), allchld), parent.child.end());
+                        }
+                    }
+
+                    if (parentComp.Child.empty())
+                    {
+                        ComponentRegistry<ParentComponent>("ParentComponent", child.parentIndex, childEntComp.Name,EditComponent::EC_REMOVECOMPONENT);
+                    }
+
+                    childEntComp.Parent.clear();
+
+                    //ComponentRegistry<ParentComponent>("ParentComponent", ID, childEntComp.Name, EditComponent::EC_ADDCOMPONENT);
+                    ComponentRegistry<ChildComponent>("ChildComponent", ID, childEntComp.Name, EditComponent::EC_REMOVECOMPONENT);
+
+                }
+
             }
         }
         return false;
@@ -1230,6 +1293,8 @@ namespace Eclipse
                             EditComponent::EC_ADDCOMPONENT);
                         break;
                     }
+
+                    AddComponentFilter.Clear();
                 }
             }
         }
@@ -1321,6 +1386,8 @@ namespace Eclipse
                             EditComponent::EC_REMOVECOMPONENT);
                         break;
                     }
+
+                    RemoveComponentFilter.Clear();
                 }
             }
         }
@@ -1472,6 +1539,7 @@ namespace Eclipse
                     for (MMAPIterator it = result.first; it != result.second; it++)
                     {
                         Item.HoldingTextures.push_back(it->second);
+                        return;
                     }
                     //////////////////
                 }

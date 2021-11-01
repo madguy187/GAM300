@@ -130,7 +130,7 @@ namespace Eclipse
 		}
 	}
 
-	void DragAndDrop::IndexPayloadTarget(const char* id, const int& destination, bool IsSelected, PayloadTargetType type)
+	void DragAndDrop::IndexPayloadTarget(const char* id, const int& destination, bool& IsSelected, PayloadTargetType type)
 	{
 		if (ECGui::BeginDragDropTarget())
 		{
@@ -150,89 +150,106 @@ namespace Eclipse
 			switch (type)
 			{
 			case PayloadTargetType::PTT_INDEXEDIT:
-			{
+			{	
+
 				ImGui::OpenPopup("IndexJobList");
 
 				if (ImGui::BeginPopup("IndexJobList"))
 				{
+
 					for (int i = 0; i < IM_ARRAYSIZE(IndexJobNames); ++i)
 					{
+
 						bool selected = false;
-						if (ECGui::CreateSelectableButton(IndexJobNames[i], &selected))
-						{
-							EntityComponent* DestinationEntCom = nullptr;
-							EntityComponent* SourceEntCom = nullptr;
 
-							TransformComponent* childTransComp = nullptr;																	 
-							TransformComponent* parentTransComp = nullptr;
-
-							ChildComponent* childComp = nullptr;
-
-							switch (i)
+							if (ECGui::CreateSelectableButton(IndexJobNames[i], &selected))
 							{
-								// Move index
-							case 0:
-								engine->editorManager->InsertExistingEntity(static_cast<size_t>(DestinationIndex_),
-									engine->editorManager->GetEntityID(SourceIndex_));
-								IsIndexJobSelected = false;
-								EDITOR_LOG_INFO("Entity moved.");
-								break;
-								// Swap index
-							case 1:
-								engine->editorManager->SwapEntities(static_cast<size_t>(SourceIndex_), static_cast<size_t>(DestinationIndex_));
-								IsIndexJobSelected = false;
-								EDITOR_LOG_INFO("Entity positions swapped.");
-								break;
-								// Parent Child
-							case 2:
-								DestinationEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(DestinationIndex_));
+								EntityComponent* DestinationEntCom = nullptr;
+								EntityComponent* SourceEntCom = nullptr;
 
-								SourceEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(SourceIndex_));
+								TransformComponent* childTransComp = nullptr;
+								TransformComponent* parentTransComp = nullptr;
 
-								if (!engine->world.CheckComponent<ParentComponent>(engine->editorManager->GetEntityID(DestinationIndex_)))
+								ChildComponent* childComp = nullptr;
+
+								switch (i)
 								{
-									engine->world.AddComponent(engine->editorManager->GetEntityID(DestinationIndex_), ParentComponent{});
-									engine->world.GetComponent<ParentComponent>(engine->editorManager->GetEntityID(DestinationIndex_)).child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
-								}
-								else
-								{
-									engine->world.GetComponent<ParentComponent>(engine->editorManager->GetEntityID(DestinationIndex_)).child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
-								}
+									// Move index
+								case 0:
+									engine->editorManager->InsertExistingEntity(static_cast<size_t>(DestinationIndex_),
+										engine->editorManager->GetEntityID(SourceIndex_));
+									IsIndexJobSelected = false;
+									IsSelected = false;
+									EDITOR_LOG_INFO("Entity moved.");
+									break;
+									// Swap index
+								case 1:
+									engine->editorManager->SwapEntities(static_cast<size_t>(SourceIndex_), static_cast<size_t>(DestinationIndex_));
+									IsIndexJobSelected = false;
+									IsSelected = false;
+									EDITOR_LOG_INFO("Entity positions swapped.");
+									break;
+									// Parent Child
+								case 2:
+									DestinationEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(DestinationIndex_));
 
-								if (!engine->world.CheckComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)))
-								{
-									engine->world.AddComponent(engine->editorManager->GetEntityID(SourceIndex_), ChildComponent{});
-									engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).parentIndex = engine->editorManager->GetEntityID(DestinationIndex_);
+									SourceEntCom = &engine->world.GetComponent<EntityComponent>(engine->editorManager->GetEntityID(SourceIndex_));
+
+									if (!engine->world.CheckComponent<ParentComponent>(engine->editorManager->GetEntityID(DestinationIndex_)))
+									{
+										engine->world.AddComponent(engine->editorManager->GetEntityID(DestinationIndex_), ParentComponent{});
+										engine->world.GetComponent<ParentComponent>(engine->editorManager->GetEntityID(DestinationIndex_)).child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
+									}
+									else
+									{
+										engine->world.GetComponent<ParentComponent>(engine->editorManager->GetEntityID(DestinationIndex_)).child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
+									}
+
+									if (!engine->world.CheckComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)))
+									{
+										engine->world.AddComponent(engine->editorManager->GetEntityID(SourceIndex_), ChildComponent{});
+										engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).parentIndex = engine->editorManager->GetEntityID(DestinationIndex_);
+									}
+									else
+									{
+										engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).parentIndex = engine->editorManager->GetEntityID(DestinationIndex_);
+									}
+
+									DestinationEntCom->Child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
+									SourceEntCom->IsAChild = true;
+									SourceEntCom->Parent.push_back(engine->editorManager->GetEntityID(DestinationIndex_));
+
+									childComp = &engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_));
+									childTransComp = &engine->world.GetComponent<TransformComponent>(engine->editorManager->GetEntityID(SourceIndex_));
+									parentTransComp = &engine->world.GetComponent<TransformComponent>(engine->editorManager->GetEntityID(DestinationIndex_));
+									engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).PosOffset = childTransComp->position - parentTransComp->position;
+									engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).ScaleOffset.setX(childTransComp->scale.getX() / parentTransComp->scale.getX());
+									engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).ScaleOffset.setY(childTransComp->scale.getY() / parentTransComp->scale.getY());
+									engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).ScaleOffset.setZ(childTransComp->scale.getZ() / parentTransComp->scale.getZ());
+
+									IsSelected = false;
+									IsIndexJobSelected = false;
+									break;
+									// Cancel
+								default:
+									IsSelected = false;
+									IsIndexJobSelected = false;
+									break;
 								}
-								else
-								{
-									engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).parentIndex = engine->editorManager->GetEntityID(DestinationIndex_);
-								}
-
-								DestinationEntCom->Child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
-								SourceEntCom->IsAChild = true;
-								SourceEntCom->Parent.push_back(engine->editorManager->GetEntityID(DestinationIndex_));
-
-								childComp = &engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_));
-								childTransComp = &engine->world.GetComponent<TransformComponent>(engine->editorManager->GetEntityID(SourceIndex_));
-								parentTransComp = &engine->world.GetComponent<TransformComponent>(engine->editorManager->GetEntityID(DestinationIndex_));
-								engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).PosOffset = childTransComp->position - parentTransComp->position;
-								engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).distance = abs(VectorDistance<float, 3>(childTransComp->position, parentTransComp->position));
-								engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).ScaleOffset.setX(childTransComp->scale.getX() / parentTransComp->scale.getX());
-								engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).ScaleOffset.setY(childTransComp->scale.getY() / parentTransComp->scale.getY());
-								engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).ScaleOffset.setZ(childTransComp->scale.getZ() / parentTransComp->scale.getZ());
-								
-
-								IsIndexJobSelected = false;
-								break;
-								// Cancel
-							default:
-								IsIndexJobSelected = false;
-								break;
 							}
-						}
+
+						
 					}
+
 					ImGui::EndPopup();
+				}
+				
+
+				ImGuiHoveredFlags flag = ImGuiHoveredFlags_AllowWhenBlockedByPopup | ImGuiHoveredFlags_AnyWindow;
+
+				if (ImGui::IsWindowHovered(flag) && ImGui::IsMouseClicked(0))
+				{
+					IsIndexJobSelected = false;
 				}
 				break;
 			}

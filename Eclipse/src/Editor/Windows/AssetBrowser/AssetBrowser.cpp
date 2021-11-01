@@ -351,12 +351,6 @@ namespace Eclipse
 			int icon = dirEntry.is_directory() ? engine->editorManager->FolderIcon_ : engine->editorManager->spriteIcon_;
 
 			ECGui::ImageButton((void*)icon,buttonSize,{ 1,0 },{ 2,1 });
-			 
-			//ECGui::ButtonBool(fileNameString.c_str());
-			//drag drop
-			//engine->editorManager->DragAndDropInst_.StringPayloadSource("ITEM", relativePath.string());
-			//
- 			//
 
 			std::string temp;
 			temp = relativePath.filename().string().c_str();
@@ -382,7 +376,7 @@ namespace Eclipse
 			case InspectorWindow::str2int("prefab"):
 				temp = "src\\Assets\\" + relativePath.string();
 
-				if (ECGui::IsMouseDoubleClicked(0))
+				if (ECGui::IsMouseDoubleClicked(0) && ECGui::IsItemClicked(0) && ECGui::IsItemHovered())
 				{
 					auto* meshEditor = engine->editorManager->GetEditorWindow<MeshEditorWindow>();
 
@@ -592,14 +586,13 @@ namespace Eclipse
 			//when theres nothing in the buffer
 
 			// this is the string i am searching in the directories
-			searchItemsLowerCase = LowerCase(searchItemBuffer);
+			//searchItemsLowerCase = LowerCase(searchItemBuffer);
+			searchItemsLowerCase = searchItemBuffer;
 
 		}
-		if (ECGui::ButtonBool("Refresh" ICON_MDI_REFRESH, { 70,20 }))
-		{
-			refresh = true;
-		}
+
 		ECGui::InsertSameLine();
+
 		if (ECGui::ButtonBool("Clear" ICON_MDI_NUKE, { 70,20 }))
 		{
 			if (BuffIsEmpty(searchItemBuffer))
@@ -614,6 +607,11 @@ namespace Eclipse
 				EDITOR_LOG_INFO("Item Search Buffer Cleared");
 			}
 		}
+
+		if (ECGui::ButtonBool("Refresh" ICON_MDI_REFRESH, { 70,20 }))
+		{
+			refresh = true;
+		}
 		ECGui::InsertSameLine();
 
 		ECGui::CheckBoxBool("Copy Mode", &CopyFilesAndFolder);
@@ -622,7 +620,7 @@ namespace Eclipse
 
 		if (ECGui::IsItemHovered())
 		{
-			ECGui::SetToolTip("When ticked copy of files and folder else moving of files and folder to destination.");
+			ECGui::SetToolTip("When ticked copy mode ellse moving mode.");
 		}
 
 		//left side search for all files & folders in that current dir
