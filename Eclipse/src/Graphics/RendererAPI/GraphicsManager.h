@@ -5,7 +5,7 @@
 #include "AssimpModel/AssimpModel.h"
 #include "Graphics/ModelFactory/Sky/CubeMap.h"
 #include "Graphics/Grid/Grid.h"
-#include "Graphics/Instancing/Box.h"
+#include "Graphics/Instancing/DebugBoxes/Box.h"
 #include "BasicPrimitives/Frustum.h"
 
 // systems
@@ -23,7 +23,6 @@ namespace Eclipse
         std::vector<AssimpModel*> ModelContainer;
         GLenum GlobalMode = GL_FILL;
         std::unique_ptr<CubeMap> Sky;
-        //AABB_ AllAABBs;
         std::unique_ptr<Quad> GridQuad;
 
         unsigned int createdID;

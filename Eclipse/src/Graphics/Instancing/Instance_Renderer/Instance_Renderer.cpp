@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Graphics/Instancing/Instance_Renderer.h"
+#include "Graphics/Instancing/Instance_Renderer/Instance_Renderer.h"
 
 namespace Eclipse
 {

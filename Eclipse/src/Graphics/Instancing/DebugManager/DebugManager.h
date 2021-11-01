@@ -1,6 +1,7 @@
 #pragma once
-#include "Graphics/Instancing/Box.h"
-#include "Graphics/Instancing/Instance_Renderer.h"
+#include "Graphics/Instancing/DebugBoxes/Box.h"
+#include "Graphics/Instancing/DebugSpheres/DebugSphere.h"
+#include "Graphics/Instancing/DebugLights/DebugLights.h"
 
 namespace Eclipse
 {
@@ -28,13 +29,7 @@ namespace Eclipse
         void AddBoundingRegion(glm::mat4 model, CameraComponent& _camera, Entity EntityID);
 
     public:
-        Instance_Renderer DebugSpheres;
-        std::vector <glm::mat4> instanceMatrix;
-        std::vector <Vertex> SphereVertices;
-        std::vector <unsigned int> SphereIndices;
-        void Addinstance(glm::mat4 TransXRotXScale);
-        void ResetInstancedDebugSpheres();
-        void PrepareData();
-        void RenderBoundingSpheres();
+        DebugSphere DebugSpheres;
+        DebugLights LightIcons;
     };
 }

@@ -649,7 +649,7 @@
     <ClInclude Include="src\Graphics\Grid\BoundingBox.h">
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\Instancing\Box.h">
+    <ClInclude Include="src\Graphics\Instancing\DebugBoxes\Box.h">
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\Grid\Grid.h">
@@ -944,8 +944,10 @@
     <ClInclude Include="src\Graphics\EngineCompiler\InputCompiler\InputCompiler.h" />
     <ClInclude Include="src\Graphics\MeshEditor\MeshEditorSource.h" />
     <ClInclude Include="src\Mono\Components\s_LogicalInput.h" />
-    <ClInclude Include="src\Graphics\Instancing\Instance_Renderer.h" />
+    <ClInclude Include="src\Graphics\Instancing\Instance_Renderer\Instance_Renderer.h" />
     <ClInclude Include="src\Graphics\Instancing\DebugManager\DebugManager.h" />
+    <ClInclude Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.h" />
+    <ClInclude Include="src\Graphics\Instancing\DebugLights\DebugLights.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1167,7 +1169,7 @@
     <ClCompile Include="src\Graphics\Grid\BoundingBox.cpp">
       <Filter>Graphics\Grid</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\Instancing\Box.cpp">
+    <ClCompile Include="src\Graphics\Instancing\DebugBoxes\Box.cpp">
       <Filter>Graphics\Grid</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\Grid\Grid.cpp">
@@ -1404,8 +1406,10 @@
     <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_api.cpp" />
     <ClCompile Include="src\Graphics\EngineCompiler\InputCompiler\InputCompiler.cpp" />
     <ClCompile Include="src\Graphics\MeshEditor\MeshEditorSource.cpp" />
-    <ClCompile Include="src\Graphics\Instancing\Instance_Renderer.cpp" />
+    <ClCompile Include="src\Graphics\Instancing\Instance_Renderer\Instance_Renderer.cpp" />
     <ClCompile Include="src\Graphics\Instancing\DebugManager\DebugManager.cpp" />
+    <ClCompile Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.cpp" />
+    <ClCompile Include="src\Graphics\Instancing\DebugLights\DebugLights.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />
@@ -1425,5 +1429,7 @@
     <None Include="src\Assets\Shaders\Test\DebugSPhere.vert" />
     <None Include="src\Mono\ScriptAPI\InputHandler.cs" />
     <None Include="src\Mono\ScriptAPI\KeyCode.cs" />
+    <None Include="src\Assets\Shaders\Instancing\DebugSPhere.frag" />
+    <None Include="src\Assets\Shaders\Instancing\DebugSPhere.vert" />
   </ItemGroup>
 </Project>

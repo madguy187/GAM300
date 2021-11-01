@@ -287,14 +287,16 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\Grid\AABB.h" />
     <ClInclude Include="src\Graphics\Grid\AABBTree.h" />
     <ClInclude Include="src\Graphics\Grid\BoundingBox.h" />
-    <ClInclude Include="src\Graphics\Instancing\Box.h" />
+    <ClInclude Include="src\Graphics\Instancing\DebugBoxes\Box.h" />
     <ClInclude Include="src\Graphics\Grid\Grid.h" />
     <ClInclude Include="src\Graphics\Grid\IAABB.h" />
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h" />
     <ClInclude Include="src\Graphics\InputHandler\LogicalEnum.hpp" />
     <ClInclude Include="src\Graphics\InputHandler\LogicalInput.h" />
+    <ClInclude Include="src\Graphics\Instancing\DebugLights\DebugLights.h" />
     <ClInclude Include="src\Graphics\Instancing\DebugManager\DebugManager.h" />
-    <ClInclude Include="src\Graphics\Instancing\Instance_Renderer.h" />
+    <ClInclude Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.h" />
+    <ClInclude Include="src\Graphics\Instancing\Instance_Renderer\Instance_Renderer.h" />
     <ClInclude Include="src\Graphics\Lighting\DirectionalLight.h" />
     <ClInclude Include="src\Graphics\Lighting\LightManager.h" />
     <ClInclude Include="src\Graphics\Lighting\LightProperties.hpp" />
@@ -458,11 +460,13 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\Grid\AABB.cpp" />
     <ClCompile Include="src\Graphics\Grid\AABBTree.cpp" />
     <ClCompile Include="src\Graphics\Grid\BoundingBox.cpp" />
-    <ClCompile Include="src\Graphics\Instancing\Box.cpp" />
+    <ClCompile Include="src\Graphics\Instancing\DebugBoxes\Box.cpp" />
     <ClCompile Include="src\Graphics\Grid\Grid.cpp" />
     <ClCompile Include="src\Graphics\InputHandler\LogicalInput.cpp" />
+    <ClCompile Include="src\Graphics\Instancing\DebugLights\DebugLights.cpp" />
     <ClCompile Include="src\Graphics\Instancing\DebugManager\DebugManager.cpp" />
-    <ClCompile Include="src\Graphics\Instancing\Instance_Renderer.cpp" />
+    <ClCompile Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.cpp" />
+    <ClCompile Include="src\Graphics\Instancing\Instance_Renderer\Instance_Renderer.cpp" />
     <ClCompile Include="src\Graphics\Lighting\DirectionalLight.cpp" />
     <ClCompile Include="src\Graphics\Lighting\LightManager.cpp" />
     <ClCompile Include="src\Graphics\Lighting\PointLight.cpp" />
@@ -540,6 +544,8 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\Assets\Shaders\Instancing\DebugSPhere.frag" />
+    <None Include="src\Assets\Shaders\Instancing\DebugSPhere.vert" />
     <None Include="src\Assets\Shaders\MaterialEditor\PBR.frag" />
     <None Include="src\Assets\Shaders\MaterialEditor\PBR.vert" />
     <None Include="src\Assets\Shaders\MeshEditor\MeshEditor.frag" />
