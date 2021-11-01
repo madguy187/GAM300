@@ -103,6 +103,40 @@ namespace Eclipse
 		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
 	}
 
+	void
+		output_fields(MonoClass* klass) {
+		MonoClassField* field;
+		void* iter = NULL;
+
+		while ((field = mono_class_get_fields(klass, &iter))) {
+			printf("Field: %s, flags 0x%x\n", mono_field_get_name(field),
+				mono_field_get_flags(field));
+		}
+	}
+
+	void
+		GetHeader(std::string klassName, std::string propName) {
+		MonoClassField* field;
+		void* iter = NULL;
+
+		MonoClass* klass = mono_class_from_name(engine->mono.GetScriptImage(), "", klassName.c_str());
+
+		if (klass == nullptr) {
+			std::cout << "Failed loading class, MonoVec3" << std::endl;
+			return;
+		}
+
+		MonoClass* headerReader = mono_class_from_name(engine->mono.GetAPIImage(), "Eclipse", "HeaderReader");
+		MonoMethod* readMethod = engine->mono.GetMethodFromClass(headerReader, "GetHeaderFromProp");
+
+		while ((field = mono_class_get_fields(klass, &iter))) {
+			printf("Field: %s, flags 0x%x\n", mono_field_get_name(field),
+				mono_field_get_flags(field));
+
+			//engine->mono.ExecuteMethod(headerReader, mono_field_get_name(field))
+		}
+	}
+
 	void MonoManager::Update(MonoScript* obj)
 	{
 		MonoClass* klass = mono_class_from_name(ScriptImage, "", obj->scriptName.c_str());
@@ -112,16 +146,14 @@ namespace Eclipse
 			return;
 		}
 
-		MonoMethod* m_update = mono_class_get_method_from_name(klass, "Update", -1);
+		MonoMethod* m_update = mono_class_get_method_from_name(klass, "Main", -1);
 		if (!m_update)
 		{
 			std::cout << "Failed to get method" << std::endl;
 			return;
 		}
 
-		/*uint32_t test = 68;
-		if (GetKeyCurrentByKeyCode(static_cast<InputKeycode>(test)))
-			std::cout << "C++ TRUE" << std::endl;*/
+		//output_fields(klass);
 
 		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
 	}

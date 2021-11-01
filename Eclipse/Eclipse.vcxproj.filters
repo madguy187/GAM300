@@ -1419,5 +1419,7 @@
     <None Include="src\Assets\Shaders\MeshEditor\MeshEditor.vert" />
     <None Include="src\Mono\ScriptAPI\InputHandler.cs" />
     <None Include="src\Mono\ScriptAPI\KeyCode.cs" />
+    <None Include="src\Mono\ScriptAPI\Header.cs" />
+    <None Include="src\Mono\ScriptAPI\HeaderReader.cs" />
   </ItemGroup>
 </Project>
