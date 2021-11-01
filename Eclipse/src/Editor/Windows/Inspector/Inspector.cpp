@@ -1293,6 +1293,8 @@ namespace Eclipse
                             EditComponent::EC_ADDCOMPONENT);
                         break;
                     }
+
+                    AddComponentFilter.Clear();
                 }
             }
         }
@@ -1384,6 +1386,8 @@ namespace Eclipse
                             EditComponent::EC_REMOVECOMPONENT);
                         break;
                     }
+
+                    RemoveComponentFilter.Clear();
                 }
             }
         }
