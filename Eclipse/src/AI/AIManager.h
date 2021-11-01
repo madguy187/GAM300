@@ -1,13 +1,46 @@
 #pragma once
 #include "ECS/ComponentManager/Components/AIComponent.h"
-class AIManager
+using ASNodeID = uint16_t;
+namespace Eclipse
 {
-public:
-	void patrol(Entity ent);
-	void AddWaypoint(Entity AItoaddto, Entity waypointent);
-	void AddTargetPointEntity(Entity ent);
-	void RemoveDeletedWaypoints(Entity ent,Entity deleteent);
-	const std::vector<Entity>& GetTargetPoints();
-private:
-	std::vector<Entity> TargetPoints;
-};
+	struct grid
+	{
+		float _squareDist{ 0 };
+	};
+	struct NeighbourInfo
+	{
+		AstarNode* neighbour;
+		int distfromNeighbour;
+	};
+
+	struct AstarNode
+	{
+		ASNodeID _ID;
+		ECVec3 Position;
+		int hcost;
+		int gcost;
+		int fcost;
+		std::vector<NeighbourInfo> neighbours;
+		AstarNode* prev;
+	};
+
+
+	struct AstarPathComponent
+	{
+
+
+	};
+
+
+	class AIManager
+	{
+	private:
+		AstarNode current;
+		std::list<AstarNode*> openlist;
+		std::list<AstarNode*> closedlist;
+		std::vector<AstarNode> _Nodes;
+	public:
+		AstarNode* GetNextCurrent();
+		void CalculatePath(AstarNode& start, AstarNode& end);
+	};
+}
