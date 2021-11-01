@@ -1,31 +1,59 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
+VisualStudioVersion = 16.0.31613.86
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Eclipse", "Eclipse\Eclipse.vcxproj", "{8A89FEB1-F668-7D4D-FF80-08246BDFE3AE}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Compiler", "Compiler\Compiler.vcxproj", "{40CAD6B7-2C97-31C3-55B0-1F6B41DC6651}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenVRDriver", "OpenVRDriver\OpenVRDriver.vcxproj", "{3011FA86-C678-4EEF-BEE1-F39C13AA72BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		Dist|x64 = Dist|x64
+		Dist|x86 = Dist|x86
 		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8A89FEB1-F668-7D4D-FF80-08246BDFE3AE}.Debug|x64.ActiveCfg = Debug|x64
 		{8A89FEB1-F668-7D4D-FF80-08246BDFE3AE}.Debug|x64.Build.0 = Debug|x64
+		{8A89FEB1-F668-7D4D-FF80-08246BDFE3AE}.Debug|x86.ActiveCfg = Debug|x64
 		{8A89FEB1-F668-7D4D-FF80-08246BDFE3AE}.Dist|x64.ActiveCfg = Dist|x64
 		{8A89FEB1-F668-7D4D-FF80-08246BDFE3AE}.Dist|x64.Build.0 = Dist|x64
+		{8A89FEB1-F668-7D4D-FF80-08246BDFE3AE}.Dist|x86.ActiveCfg = Dist|x64
 		{8A89FEB1-F668-7D4D-FF80-08246BDFE3AE}.Release|x64.ActiveCfg = Release|x64
 		{8A89FEB1-F668-7D4D-FF80-08246BDFE3AE}.Release|x64.Build.0 = Release|x64
+		{8A89FEB1-F668-7D4D-FF80-08246BDFE3AE}.Release|x86.ActiveCfg = Release|x64
 		{40CAD6B7-2C97-31C3-55B0-1F6B41DC6651}.Debug|x64.ActiveCfg = Debug|x64
 		{40CAD6B7-2C97-31C3-55B0-1F6B41DC6651}.Debug|x64.Build.0 = Debug|x64
+		{40CAD6B7-2C97-31C3-55B0-1F6B41DC6651}.Debug|x86.ActiveCfg = Debug|x64
 		{40CAD6B7-2C97-31C3-55B0-1F6B41DC6651}.Dist|x64.ActiveCfg = Dist|x64
 		{40CAD6B7-2C97-31C3-55B0-1F6B41DC6651}.Dist|x64.Build.0 = Dist|x64
+		{40CAD6B7-2C97-31C3-55B0-1F6B41DC6651}.Dist|x86.ActiveCfg = Dist|x64
 		{40CAD6B7-2C97-31C3-55B0-1F6B41DC6651}.Release|x64.ActiveCfg = Release|x64
 		{40CAD6B7-2C97-31C3-55B0-1F6B41DC6651}.Release|x64.Build.0 = Release|x64
+		{40CAD6B7-2C97-31C3-55B0-1F6B41DC6651}.Release|x86.ActiveCfg = Release|x64
+		{3011FA86-C678-4EEF-BEE1-F39C13AA72BF}.Debug|x64.ActiveCfg = Debug|x64
+		{3011FA86-C678-4EEF-BEE1-F39C13AA72BF}.Debug|x64.Build.0 = Debug|x64
+		{3011FA86-C678-4EEF-BEE1-F39C13AA72BF}.Debug|x86.ActiveCfg = Debug|Win32
+		{3011FA86-C678-4EEF-BEE1-F39C13AA72BF}.Debug|x86.Build.0 = Debug|Win32
+		{3011FA86-C678-4EEF-BEE1-F39C13AA72BF}.Dist|x64.ActiveCfg = Debug|x64
+		{3011FA86-C678-4EEF-BEE1-F39C13AA72BF}.Dist|x64.Build.0 = Debug|x64
+		{3011FA86-C678-4EEF-BEE1-F39C13AA72BF}.Dist|x86.ActiveCfg = Debug|Win32
+		{3011FA86-C678-4EEF-BEE1-F39C13AA72BF}.Dist|x86.Build.0 = Debug|Win32
+		{3011FA86-C678-4EEF-BEE1-F39C13AA72BF}.Release|x64.ActiveCfg = Release|x64
+		{3011FA86-C678-4EEF-BEE1-F39C13AA72BF}.Release|x64.Build.0 = Release|x64
+		{3011FA86-C678-4EEF-BEE1-F39C13AA72BF}.Release|x86.ActiveCfg = Release|Win32
+		{3011FA86-C678-4EEF-BEE1-F39C13AA72BF}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C8A32D85-9A36-499A-8D49-1E31AA79C523}
 	EndGlobalSection
 EndGlobal
