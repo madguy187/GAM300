@@ -59,7 +59,7 @@ namespace Eclipse
             // Basic Primitives Render Start =============================
             for (auto const& entityID : RenderablesVsFrustrum)
             {
-                // If No Mesh Component , Do not Continue
+                //If No Mesh Component, Do not Continue
                 if (!engine->world.CheckComponent<MeshComponent>(entityID))
                 {
                     continue;

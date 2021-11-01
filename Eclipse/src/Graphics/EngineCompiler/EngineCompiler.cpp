@@ -95,7 +95,7 @@ namespace Eclipse
                 engine->AssimpManager.InsertGeometry(name, NewMesh);
             }
 
-            if (strcmp(name.data(), "LightBulb") != 0)
+            if (strcmp(name.c_str(), "LightBulb") != 0 && strcmp(name.c_str(), "SpotLight") != 0)
             {
                 engine->AssimpManager.InsertMeshName(name);
                 engine->AssimpManager.InsertGeometryName(name);
@@ -137,7 +137,7 @@ namespace Eclipse
                 engine->AssimpManager.InsertPrefabs(ParentName.data(), MeshName.data());
             }
 
-            if (strcmp(ParentName.data(), "LightBulb") != 0)
+            if (strcmp(ParentName.data(), "LightBulb") != 0 && strcmp(ParentName.data(), "SpotLight") != 0)
             {
                 engine->AssimpManager.InsertMeshName(ParentName.data());
             }

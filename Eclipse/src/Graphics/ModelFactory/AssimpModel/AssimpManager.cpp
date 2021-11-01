@@ -92,6 +92,16 @@ namespace Eclipse
             }
             else
             {
+                if (strcmp(ModelName.data(), "SpotLight") == 0)
+                {
+                    auto& name = Prefabs[ModelName][0];
+                    Entity MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_MODEL);
+                    engine->world.AddComponent(MeshID, MeshComponent{});
+                    engine->world.AddComponent(MeshID, ModelComponent{});
+                    SetSingleMesh(MeshID, name);
+                    return MeshID;
+                }
+
                 if (Prefabs[ModelName].size() == 0)
                 {
                     ENGINE_LOG_ASSERT(false, "Cannot Find Model");
@@ -383,11 +393,14 @@ namespace Eclipse
         if (engine->world.CheckComponent<MeshComponent>(ID))
         {
             auto& Mesh = engine->world.GetComponent<MeshComponent>(ID);
-            auto& Mat = engine->world.GetComponent<MaterialComponent>(ID);
-
             char* Name = in.data();
             strcpy_s(Mesh.MeshName.data(), Mesh.MeshName.size(), Name);
-            Mat.NoTextures = engine->AssimpManager.Geometry[Mesh.MeshName.data()]->NoTex;
+
+            if (engine->world.CheckComponent<MaterialComponent>(ID) == true)
+            {
+                auto& Mat = engine->world.GetComponent<MaterialComponent>(ID);
+                Mat.NoTextures = engine->AssimpManager.Geometry[Mesh.MeshName.data()]->NoTex;
+            }
         }
     }
 
@@ -579,6 +592,10 @@ namespace Eclipse
         //glDisable(GL_CULL_FACE);
 
         if (strcmp(In.MeshName.data(), "Plane") == 0)
+        {
+            glDisable(GL_CULL_FACE);
+        }
+        else if (strcmp(In.MeshName.data(), "SpotLight") == 0)
         {
             glDisable(GL_CULL_FACE);
         }
