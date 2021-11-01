@@ -1,5 +1,6 @@
 #pragma once
 #include "Graphics/Instancing/Box.h"
+#include "Graphics/Instancing/Instance_Renderer.h"
 
 namespace Eclipse
 {
@@ -14,18 +15,20 @@ namespace Eclipse
     class DebugManager
     {
     public:
+        bool Visible = false;
+
         DebugManager();
         void Init();
-
         void Reset();
+        void Render();
 
     public:
         AABB_ DebugBoxes;
         void ResetInstancedDebugBoxes();
-        void Render();
+        void AddBoundingRegion(glm::mat4 model, CameraComponent& _camera, Entity EntityID);
 
     public:
-        DEBUG_SPHERE DebugSpheres;
+        Instance_Renderer DebugSpheres;
         std::vector <glm::mat4> instanceMatrix;
         std::vector <Vertex> SphereVertices;
         std::vector <unsigned int> SphereIndices;

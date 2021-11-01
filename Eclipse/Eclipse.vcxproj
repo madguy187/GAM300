@@ -294,7 +294,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\InputHandler\LogicalEnum.hpp" />
     <ClInclude Include="src\Graphics\InputHandler\LogicalInput.h" />
     <ClInclude Include="src\Graphics\Instancing\DebugManager\DebugManager.h" />
-    <ClInclude Include="src\Graphics\Instancing\InstSpheres.h" />
+    <ClInclude Include="src\Graphics\Instancing\Instance_Renderer.h" />
     <ClInclude Include="src\Graphics\Lighting\DirectionalLight.h" />
     <ClInclude Include="src\Graphics\Lighting\LightManager.h" />
     <ClInclude Include="src\Graphics\Lighting\LightProperties.hpp" />
@@ -462,7 +462,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\Grid\Grid.cpp" />
     <ClCompile Include="src\Graphics\InputHandler\LogicalInput.cpp" />
     <ClCompile Include="src\Graphics\Instancing\DebugManager\DebugManager.cpp" />
-    <ClCompile Include="src\Graphics\Instancing\InstSpheres.cpp" />
+    <ClCompile Include="src\Graphics\Instancing\Instance_Renderer.cpp" />
     <ClCompile Include="src\Graphics\Lighting\DirectionalLight.cpp" />
     <ClCompile Include="src\Graphics\Lighting\LightManager.cpp" />
     <ClCompile Include="src\Graphics\Lighting\PointLight.cpp" />

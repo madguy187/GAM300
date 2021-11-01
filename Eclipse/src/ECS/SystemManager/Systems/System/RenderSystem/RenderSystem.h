@@ -8,8 +8,6 @@
 #include "Graphics/Camera/CameraManager.h"
 #include "Graphics/RendererAPI/GraphicsManager.h"
 #include "Graphics/Grid/Grid.h"
-#include "Graphics/Instancing/Box.h"
-#include "Graphics/Instancing/InstSpheres.h"
 
 namespace Eclipse
 {
