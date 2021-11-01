@@ -631,6 +631,11 @@ namespace Eclipse
                     engine->gPBRManager->SetRoughnessConstant(shader, 0.5f);
                     engine->gPBRManager->SetInstanceFlag(shader, false);
                     engine->gPBRManager->SetAlbedoConstant(shader, engine->AssimpManager.Geometry[mesh.MeshName.data()]->Diffuse);
+
+                    std::cout << engine->AssimpManager.Geometry[mesh.MeshName.data()]->Diffuse.x << std::endl;
+                    std::cout << engine->AssimpManager.Geometry[mesh.MeshName.data()]->Diffuse.y << std::endl;
+                    std::cout << engine->AssimpManager.Geometry[mesh.MeshName.data()]->Diffuse.z << std::endl;
+
                 }
                 // If we have textures
                 else
