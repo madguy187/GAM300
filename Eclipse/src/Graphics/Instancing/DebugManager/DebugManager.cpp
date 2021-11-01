@@ -19,7 +19,7 @@ namespace Eclipse
     void DebugManager::Reset()
     {
         ResetInstancedDebugBoxes();
-        //ResetInstancedDebugSpheres();
+        ResetInstancedDebugSpheres();
     }
 }
 
@@ -37,6 +37,8 @@ namespace Eclipse
         {
             DebugBoxes.DrawAll(FrameBufferMode::FBM_SCENE);
         }
+
+        RenderBoundingSpheres();
     }
 }
 
@@ -55,5 +57,23 @@ namespace Eclipse
     void DebugManager::PrepareData()
     {
         DebugSpheres.Init(SphereVertices, SphereIndices, 1, instanceMatrix);
+    }
+
+    void DebugManager::RenderBoundingSpheres()
+    {
+        if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
+        {
+            if (instanceMatrix.size() >= 1)
+            {
+                DebugSpheres.Init(SphereVertices, SphereIndices, instanceMatrix.size(), instanceMatrix);
+
+                auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+                engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SCENE);
+                auto& shdrpgm = Graphics::shaderpgms["Test"];
+                shdrpgm.Use();
+                engine->MaterialManager.DoNotUpdateStencil();
+                DebugSpheres.Draw(shdrpgm, _camera);
+            }
+        }
     }
 }

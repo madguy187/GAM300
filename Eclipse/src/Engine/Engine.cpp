@@ -357,7 +357,7 @@ namespace Eclipse
             world.Update<RenderSystem>();
 
             // Final DRAW ================================ 
-            engine->gDebugDrawManager->Render();
+            //engine->gDebugDrawManager->Render();
             engine->GraphicsManager.FinalRender();
 
             if (IsScenePlaying())

@@ -32,5 +32,6 @@ namespace Eclipse
         void Addinstance(glm::mat4 TransXRotXScale);
         void ResetInstancedDebugSpheres();
         void PrepareData();
+        void RenderBoundingSpheres();
     };
 }

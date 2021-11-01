@@ -733,6 +733,18 @@ namespace Eclipse
 
         if (_camera.camType == CameraComponent::CameraType::Editor_Camera)
         {
+            glm::mat4 trans = glm::mat4(1.0f);
+            glm::mat4 rot = glm::mat4(1.0f);
+            glm::mat4 sca = glm::mat4(1.0f);
+
+            trans = glm::translate(trans, Transform.position.ConvertToGlmVec3Type());
+            rot = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+            rot = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+            rot = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+            sca = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
+
+            engine->gDebugDrawManager->Addinstance(model);
+
             //engine->gDebugDrawManager->Addinstance(model);
 
             if (engine->gDebugDrawManager->DebugBoxes.DrawAABBS == true)

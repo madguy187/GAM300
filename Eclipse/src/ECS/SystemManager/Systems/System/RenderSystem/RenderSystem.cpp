@@ -32,31 +32,8 @@ namespace Eclipse
         // Create SKY =============================
         engine->GraphicsManager.CreateSky("src/Assets/Sky");
 
-        // Create AABB Boxes =============================
+        // DebugManagerRender
         engine->gDebugDrawManager->Init();
-
-        for (unsigned int i = 0; i < 1; i++)
-        {
-            glm::vec3 tempTranslation;
-            glm::quat tempRotation;
-            glm::vec3 tempScale;
-
-            tempTranslation = glm::vec3{ 2.5f };
-            tempRotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
-            tempScale = glm::vec3(5.0f, 5.0f, 5.0f);
-
-            glm::mat4 trans = glm::mat4(1.0f);
-            glm::mat4 rot = glm::mat4(1.0f);
-            glm::mat4 sca = glm::mat4(1.0f);
-
-            trans = glm::translate(trans, tempTranslation);
-            rot = glm::mat4_cast(tempRotation);
-            sca = glm::scale(sca, tempScale);
-
-            engine->gDebugDrawManager->Addinstance(trans * rot * sca);
-        }
-
-        engine->gDebugDrawManager->DebugSpheres.Init(engine->gDebugDrawManager->SphereVertices, engine->gDebugDrawManager->SphereIndices, 1, engine->gDebugDrawManager->instanceMatrix);
     }
 
     void RenderSystem::Update()
@@ -80,7 +57,7 @@ namespace Eclipse
             engine->GraphicsManager.RenderSky(FrameBufferMode::FBM_SCENE);
 
             // Basic Primitives Render Start =============================
-            for (auto const& entityID : mEntities)
+            for (auto const& entityID : RenderablesVsFrustrum)
             {
                 // If No Mesh Component , Do not Continue
                 if (!engine->world.CheckComponent<MeshComponent>(entityID))
@@ -175,12 +152,7 @@ namespace Eclipse
         engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());
         engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
 
-        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
-        engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SCENE);
-        auto& shdrpgm = Graphics::shaderpgms["Test"];
-        shdrpgm.Use();
-        engine->MaterialManager.DoNotUpdateStencil();
-        engine->gDebugDrawManager->DebugSpheres.Draw(shdrpgm, _camera);
+        engine->gDebugDrawManager->Render();
 
         FrameMark
     }
