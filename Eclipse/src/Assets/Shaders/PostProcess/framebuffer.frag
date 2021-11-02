@@ -70,61 +70,21 @@ void main()
         FragColor = vec4(color, 1.0f);
     }
     else if( Type == 4)
-    {
-	
-		float coverage = 1.0;
-		
-		vec2 uv = texCoords.xy;
-		vec4 tc = vec4(1.0);
-	
-		if (uv.x < (  coverage  ) )
-		{
-        vec3 sampleTex[9];
-        for(int i = 0; i < 9; i++)
-        {
-            sampleTex[i] = vec3(texture(screenTexture, uv + offsets[i]));
-        }
-        
-        vec3 color = vec3(0.0);
-        for(int i = 0; i < 9; i++) {
-            color += sampleTex[i] * kernel[i];
-        }
-        
-			tc = vec4(color, 1.0f);
-		}
-		else if ( uv.x  >=  (  coverage  +   0.003f) )
-		{
-        tc = texture(screenTexture, uv);
-		}
-		else 
-		{
-        
-        if ( coverage > ( 1.0f + 0.003f) ) {
-            tc = texture(screenTexture, uv);
-        }
-		}
-	
-		FragColor = tc;
-		
+    {		
 		// Version one of sorbel
-		//vec4 n[9];
-		//make_kernel( n, screenTexture, texCoords.st );
-		//
-		//vec4 sobel_edge_h = n[2] + (2.0*n[5]) + n[8] - (n[0] + (2.0*n[3]) + n[6]);
-		//vec4 sobel_edge_v = n[0] + (2.0*n[1]) + n[2] - (n[6] + (2.0*n[7]) + n[8]);
+		vec4 n[9];
+		make_kernel( n, screenTexture, texCoords.st );
+		
+		vec4 sobel_edge_h = n[2] + (2.0*n[5]) + n[8] - (n[0] + (2.0*n[3]) + n[6]);
+		vec4 sobel_edge_v = n[0] + (2.0*n[1]) + n[2] - (n[6] + (2.0*n[7]) + n[8]);
 		//vec4 sobel = sqrt((sobel_edge_h * sobel_edge_h) + (sobel_edge_v * sobel_edge_v));
-		//
+		
+        vec4 sobel = sqrt((sobel_edge_h * sobel_edge_h) + (sobel_edge_v * sobel_edge_v));
+        float average = 0.2126 * sobel.r + 0.7152 * sobel.g + 0.0722 * sobel.b;
+        FragColor = vec4(vec3(average), 1.0 );
+
 		//FragColor = vec4(sobel.rgb, 1.0 );
-	
-		// Blur
-        //vec3 color = vec3(0.0f);
-		//
-        //for(int i = 0; i < 9; i++)
-        //{
-        //  color += vec3(texture(screenTexture, texCoords.st + offsets[i])) * blurkernel[i];
-        //}
-		//
-        //FragColor = vec4(color, 1.0f);
+
     }
 
 }
