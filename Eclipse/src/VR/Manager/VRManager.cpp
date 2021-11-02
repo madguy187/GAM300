@@ -787,55 +787,255 @@ namespace Eclipse
 		glUseProgram(0);
 	}
 	
-	glm::mat4 VRManager::GetCurrentViewProjectionMatrix(vr::Hmd_Eye nEye)
+	glm::mat4 VRManager::GetCurrentViewProjectionMatrix(Hmd_Eye nEye)
 	{
-		return glm::mat4();
+		glm::mat4 matMVP;
+
+		if (nEye == Eye_Left)
+		{				// p									// V
+			matMVP = m_mat4ProjectionLeft * m_mat4eyePosLeft * m_mat4HMDPose;
+		}
+		else if (nEye == Eye_Right)
+		{
+			matMVP = m_mat4ProjectionRight * m_mat4eyePosRight * m_mat4HMDPose;
+		}
+
+		return matMVP;
 	}
 	
-	glm::mat4 VRManager::GetCurrentViewMatrix(vr::Hmd_Eye nEye)
+	glm::mat4 VRManager::GetCurrentViewMatrix(Hmd_Eye nEye)
 	{
-		return glm::mat4();
+		glm::mat4 matV;
+
+		if (nEye == Eye_Left)
+		{
+			matV = m_mat4eyePosLeft * m_mat4HMDPose;
+		}
+		else if (nEye == Eye_Right)
+		{
+			matV = m_mat4eyePosRight * m_mat4HMDPose;
+		}
+
+		return matV;
 	}
 	
-	glm::mat4 VRManager::GetCurrentProjectionMatrix(vr::Hmd_Eye nEye)
+	glm::mat4 VRManager::GetCurrentProjectionMatrix(Hmd_Eye nEye)
 	{
-		return glm::mat4();
+		glm::mat4 matP;
+
+		if (nEye == Eye_Left)
+		{
+			matP = m_mat4ProjectionLeft;
+		}
+		else if (nEye == Eye_Right)
+		{
+			matP = m_mat4ProjectionRight;
+		}
+
+		return matP;
 	}
 	
 	void VRManager::UpdateHMDMatrixPose()
 	{
+		if (!pHmd)
+			return;
+
+		VRCompositor()->WaitGetPoses(m_rTrackedDevicePose, 
+			k_unMaxTrackedDeviceCount, NULL, 0);
+
+		m_iValidPoseCount = 0;
+		m_strPoseClasses = "";
+
+		for (int nDevice = 0; nDevice < k_unMaxTrackedDeviceCount; ++nDevice)
+		{
+			if (m_rTrackedDevicePose[nDevice].bPoseIsValid)
+			{
+				m_iValidPoseCount++;
+				m_rmat4DevicePose[nDevice] = Mat4FromSteamVRMatrix(m_rTrackedDevicePose[nDevice].mDeviceToAbsoluteTracking);
+				if (m_rDevClassChar[nDevice] == 0)
+				{
+					switch (pHmd->GetTrackedDeviceClass(nDevice))
+					{
+					case TrackedDeviceClass_Controller:        m_rDevClassChar[nDevice] = 'C'; break;
+					case TrackedDeviceClass_HMD:               m_rDevClassChar[nDevice] = 'H'; break;
+					case TrackedDeviceClass_Invalid:           m_rDevClassChar[nDevice] = 'I'; break;
+					case TrackedDeviceClass_GenericTracker:    m_rDevClassChar[nDevice] = 'G'; break;
+					case TrackedDeviceClass_TrackingReference: m_rDevClassChar[nDevice] = 'T'; break;
+					default:                                   m_rDevClassChar[nDevice] = '?'; break;
+					}
+				}
+
+				m_strPoseClasses += m_rDevClassChar[nDevice];
+			}
+		}
+
+		if (m_rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].bPoseIsValid)
+		{
+			m_mat4HMDPose = m_rmat4DevicePose[vr::k_unTrackedDeviceIndex_Hmd];
+			m_mat4HMDPose = glm::inverse(m_mat4HMDPose);
+			// m_mat4HMDPose.invert();
+		}
 	}
 	
 	glm::mat4 VRManager::Mat4FromSteamVRMatrix(const HmdMatrix34_t& matPose)
 	{
-		return glm::mat4();
+		glm::mat4 pose(
+			matPose.m[0][0], matPose.m[1][0], matPose.m[2][0], 0.0,
+			matPose.m[0][1], matPose.m[1][1], matPose.m[2][1], 0.0,
+			matPose.m[0][2], matPose.m[1][2], matPose.m[2][2], 0.0,
+			matPose.m[0][3], matPose.m[1][3], matPose.m[2][3], 1.0f
+		);
+
+		return pose;
 	}
 	
 	glm::vec3 VRManager::GetControllerPosition(TrackedDeviceIndex_t trackedDeviceIndex)
 	{
-		return glm::vec3();
+		const glm::mat4& mat = m_rmat4DevicePose[trackedDeviceIndex];
+		return glm::vec3(mat[12], mat[13], mat[14]);
 	}
 	
 	glm::vec3 VRManager::GetControllerRaycastDirection(TrackedDeviceIndex_t trackedDeviceIndex)
 	{
-		return glm::vec3();
+		const glm::mat4& mat = m_rmat4DevicePose[trackedDeviceIndex];
+		return glm::vec3(-mat[8], -mat[9], -mat[10]);
 	}
 	
 	glm::mat4 VRManager::GetHMDMatrixProjectionEye(Hmd_Eye nEye)
 	{
-		return glm::mat4();
+		if (!pHmd)
+			return glm::mat4();
+
+		float m_fNearClip = 0.05f;
+		float m_fFarClip = 100.f;
+		
+		HmdMatrix44_t mat = pHmd->GetProjectionMatrix(nEye, m_fNearClip, m_fFarClip);
+
+		return glm::mat4(
+			mat.m[0][0], mat.m[1][0], mat.m[2][0], mat.m[3][0],
+			mat.m[0][1], mat.m[1][1], mat.m[2][1], mat.m[3][1],
+			mat.m[0][2], mat.m[1][2], mat.m[2][2], mat.m[3][2],
+			mat.m[0][3], mat.m[1][3], mat.m[2][3], mat.m[3][3]
+		);
 	}
 	
 	glm::mat4 VRManager::GetHMDMatrixPoseEye(Hmd_Eye nEye)
 	{
-		return glm::mat4();
+		if (!pHmd)
+			return glm::mat4();
+
+		HmdMatrix34_t matEyeRight = pHmd->GetEyeToHeadTransform(nEye);
+
+		glm::mat4 matrixObj(
+			matEyeRight.m[0][0], matEyeRight.m[1][0], matEyeRight.m[2][0], 0.0,
+			matEyeRight.m[0][1], matEyeRight.m[1][1], matEyeRight.m[2][1], 0.0,
+			matEyeRight.m[0][2], matEyeRight.m[1][2], matEyeRight.m[2][2], 0.0,
+			matEyeRight.m[0][3], matEyeRight.m[1][3], matEyeRight.m[2][3], 1.0f
+		);
+
+		return glm::inverse(matrixObj);
 	}
 	
+	/* Rendering - Call in Loop */
 	void VRManager::PollVREvent()
 	{
+		VREvent_t event;
+
+		if (pHmd->PollNextEvent(&event, sizeof(event)))
+		{
+			switch (event.eventType)
+			{
+			case VREvent_TrackedDeviceActivated:
+				// Add rendering for device model
+				SetupRenderModelForTrackedDevice(event.trackedDeviceIndex);
+				std::cout 
+					<< "OpenVR: Device " 
+					<< event.trackedDeviceIndex 
+					<< " attached." 
+					<< std::endl;
+				break;
+			case VREvent_TrackedDeviceDeactivated:
+				std::cout 
+					<< "OpenVR: Device " 
+					<< event.trackedDeviceIndex 
+					<< " detached." 
+					<< std::endl;
+				break;
+			case VREvent_TrackedDeviceUpdated:
+				std::cout 
+					<< "OpenVR: Device " 
+					<< event.trackedDeviceIndex 
+					<< " updated." 
+					<< std::endl;
+				break;
+			default:
+				break;
+			}
+		}
+
+		for (TrackedDeviceIndex_t unDevice = 0; 
+			unDevice < k_unMaxTrackedDeviceCount; unDevice++)
+		{
+			VRControllerState_t state;
+
+			if (pHmd->GetControllerState(unDevice, &state, sizeof(state)))
+				m_rbShowTrackedDevice[unDevice] = state.ulButtonPressed == 0;
+		}
+
+		ProcessButtonEvent(event);
 	}
 	
 	void VRManager::ProcessButtonEvent(VREvent_t event)
 	{
+		VRControllerState_t state;
+
+		switch (event.data.controller.button)
+		{
+
+		case k_EButton_SteamVR_Trigger:
+			switch (event.eventType)
+			{
+			case VREvent_ButtonPress:
+				// bHit = Picker->pickBody(GetControllerPosition(event.trackedDeviceIndex), GetControllerRaycastDirection(event.trackedDeviceIndex));
+				pickCtrlIndex = event.trackedDeviceIndex;
+
+				if (pHmd->GetControllerState(event.trackedDeviceIndex, &state, sizeof(state)))
+				{
+					bTriggerDown = !(state.ulButtonPressed == 0);
+				}
+
+				break;
+			case VREvent_ButtonUnpress:
+				bTriggerDown = false;
+				bHit = false;
+				// Picker->removePickingConstraint();
+				break;
+			case VREvent_ButtonTouch:
+				break;
+			}
+			break;
+
+		case k_EButton_SteamVR_Touchpad:
+			switch (event.eventType)
+			{
+			case VREvent_ButtonPress:
+				break;
+			case VREvent_ButtonUnpress:
+				break;
+			case VREvent_ButtonTouch:
+				break;
+			case VREvent_ButtonUntouch:
+				break;
+			}
+			break;
+
+		default:
+			// MOVE PICKED BODY
+			if (bTriggerDown && bHit)
+			{
+				// Picker->movePickedBody(GetControllerPosition(pickCtrlIndex), GetControllerRaycastDirection(pickCtrlIndex));
+			}
+			break;
+		}
 	}
 }

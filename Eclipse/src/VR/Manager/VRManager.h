@@ -146,11 +146,11 @@ namespace Eclipse
 		void RenderStereoTargets();
 		void RenderCompanionWindow();
 
-		void RenderScene(vr::Hmd_Eye nEye);
+		void RenderScene(Hmd_Eye nEye);
 
-		glm::mat4 GetCurrentViewProjectionMatrix(vr::Hmd_Eye nEye);
-		glm::mat4 GetCurrentViewMatrix(vr::Hmd_Eye nEye);
-		glm::mat4 GetCurrentProjectionMatrix(vr::Hmd_Eye nEye);
+		glm::mat4 GetCurrentViewProjectionMatrix(Hmd_Eye nEye);
+		glm::mat4 GetCurrentViewMatrix(Hmd_Eye nEye);
+		glm::mat4 GetCurrentProjectionMatrix(Hmd_Eye nEye);
 
 		void UpdateHMDMatrixPose();
 
