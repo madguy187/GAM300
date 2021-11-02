@@ -99,35 +99,41 @@ namespace Eclipse
                 auto relativePath2 = relative(MaterialTextureFiles, "src//");
                 std::string MaterialTextureFileName = relativePath2.filename().string();
 
-                if (MaterialTextureFileName.find("albedo.png") != std::string::npos)
+                if (MaterialTextureFileName.find("albedo.dds") != std::string::npos)
                 {
-                    unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/albedo.png").c_str());
-                    AllMaterialTextures[FolderName][MaterialType::MT_ALBEDO] = TextureID;
+                    Texture tex((GoIntoMaterialFolder + "/albedo.dds").c_str());
+                    //unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/albedo.png").c_str());
+                    AllMaterialTextures[FolderName][MaterialType::MT_ALBEDO] = tex.GetHandle();
                 }
-                else if (MaterialTextureFileName.find("normal.png") != std::string::npos)
+                else if (MaterialTextureFileName.find("normal.dds") != std::string::npos)
                 {
-                    unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/normal.png").c_str());
-                    AllMaterialTextures[FolderName][MaterialType::MT_NORMAL] = TextureID;
+                    Texture tex((GoIntoMaterialFolder + "/normal.dds").c_str());
+                    //unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/normal.dds").c_str());
+                    AllMaterialTextures[FolderName][MaterialType::MT_NORMAL] = tex.GetHandle();
                 }
-                else if (MaterialTextureFileName.find("metallic.png") != std::string::npos)
+                else if (MaterialTextureFileName.find("metallic.dds") != std::string::npos)
                 {
-                    unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/metallic.png").c_str());
-                    AllMaterialTextures[FolderName][MaterialType::MT_METALLIC] = TextureID;
+                    Texture tex((GoIntoMaterialFolder + "/metallic.dds").c_str());
+                    //unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/metallic.png").c_str());
+                    AllMaterialTextures[FolderName][MaterialType::MT_METALLIC] = tex.GetHandle();
                 }
-                else if (MaterialTextureFileName.find("roughness.png") != std::string::npos)
+                else if (MaterialTextureFileName.find("roughness.dds") != std::string::npos)
                 {
-                    unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/roughness.png").c_str());
-                    AllMaterialTextures[FolderName][MaterialType::MT_ROUGHNESS] = TextureID;
+                    Texture tex((GoIntoMaterialFolder + "/roughness.dds").c_str());
+                    //unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/roughness.png").c_str());
+                    AllMaterialTextures[FolderName][MaterialType::MT_ROUGHNESS] = tex.GetHandle();
                 }
-                else if (MaterialTextureFileName.find("ao.png") != std::string::npos)
+                else if (MaterialTextureFileName.find("ao.dds") != std::string::npos)
                 {
-                    unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/ao.png").c_str());
-                    AllMaterialTextures[FolderName][MaterialType::MT_AO] = TextureID;
+                    Texture tex((GoIntoMaterialFolder + "/ao.dds").c_str());
+                    //unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/ao.png").c_str());
+                    AllMaterialTextures[FolderName][MaterialType::MT_AO] = tex.GetHandle();
                 }
-                else if (MaterialTextureFileName.find("height.png") != std::string::npos)
+                else if (MaterialTextureFileName.find("height.dds") != std::string::npos)
                 {
-                    unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/height.png").c_str());
-                    AllMaterialTextures[FolderName][MaterialType::MT_HEIGHT] = TextureID;
+                    Texture tex((GoIntoMaterialFolder + "/height.dds").c_str());
+                    //unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/height.png").c_str());
+                    AllMaterialTextures[FolderName][MaterialType::MT_HEIGHT] = tex.GetHandle();
                 }
             }
         }

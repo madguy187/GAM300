@@ -97,7 +97,7 @@ namespace Eclipse
 					break;
 				case PayloadTargetType::PTT_ASSETS:
 
-					if (!strcmp(id, "png"))
+					if (!strcmp(id, "dds"))
 					{
 						std::filesystem::path temp = ((const char*)payload->Data);
 						std::string folder = temp.parent_path().filename().string();
