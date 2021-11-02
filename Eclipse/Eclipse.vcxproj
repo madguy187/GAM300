@@ -287,8 +287,8 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\Grid\AABB.h" />
     <ClInclude Include="src\Graphics\Grid\AABBTree.h" />
     <ClInclude Include="src\Graphics\Grid\BoundingBox.h" />
-    <ClInclude Include="src\Graphics\Instancing\DebugBoxes\Box.h" />
     <ClInclude Include="src\Graphics\Grid\Grid.h" />
+    <ClInclude Include="src\Graphics\Instancing\DebugBoxes\Box.h" />
     <ClInclude Include="src\Graphics\Grid\IAABB.h" />
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h" />
     <ClInclude Include="src\Graphics\InputHandler\LogicalEnum.hpp" />

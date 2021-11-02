@@ -652,9 +652,6 @@
     <ClInclude Include="src\Graphics\Instancing\DebugBoxes\Box.h">
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\Grid\Grid.h">
-      <Filter>Graphics\Grid</Filter>
-    </ClInclude>
     <ClInclude Include="src\Graphics\Grid\IAABB.h">
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
@@ -948,6 +945,7 @@
     <ClInclude Include="src\Graphics\Instancing\DebugManager\DebugManager.h" />
     <ClInclude Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.h" />
     <ClInclude Include="src\Graphics\Instancing\DebugLights\DebugLights.h" />
+    <ClInclude Include="src\Graphics\Grid\Grid.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
