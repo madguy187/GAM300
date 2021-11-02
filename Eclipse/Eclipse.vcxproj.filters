@@ -1427,7 +1427,7 @@
     <None Include="src\Assets\Shaders\Test\DebugSPhere.vert" />
     <None Include="src\Mono\ScriptAPI\InputHandler.cs" />
     <None Include="src\Mono\ScriptAPI\KeyCode.cs" />
-    <None Include="src\Assets\Shaders\Instancing\DebugSPhere.frag" />
-    <None Include="src\Assets\Shaders\Instancing\DebugSPhere.vert" />
+    <None Include="src\Assets\Shaders\Instancing\Instancing.frag" />
+    <None Include="src\Assets\Shaders\Instancing\Instancing.vert" />
   </ItemGroup>
 </Project>

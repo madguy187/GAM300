@@ -28,9 +28,9 @@ namespace Eclipse
         PointLightComponent& Pointlight = engine->world.GetComponent<PointLightComponent>(EntityId);
         TransformComponent& PointlightTransform = engine->world.GetComponent<TransformComponent>(EntityId);
 
-        PointlightTransform.scale.setX(1.0f);
-        PointlightTransform.scale.setY(1.0f);
-        PointlightTransform.scale.setZ(1.0f);
+        PointlightTransform.scale.setX(2.0f);
+        PointlightTransform.scale.setY(2.0f);
+        PointlightTransform.scale.setZ(2.0f);
 
         std::string number = std::to_string(index);
         GLint uniform_var_loc1 = shdrpgm.GetLocation(("pointLights[" + number + "].position").c_str());

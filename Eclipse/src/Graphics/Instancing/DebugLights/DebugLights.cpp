@@ -33,11 +33,24 @@ namespace Eclipse
                 DebugLights_.Init(LightVertices, LightIndices, instanceMatrix.size(), instanceMatrix);
 
                 auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+                auto& _camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+
                 engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SCENE);
                 auto& shdrpgm = Graphics::shaderpgms["Instancing"];
                 shdrpgm.Use();
 
-                glUniform3f(glGetUniformLocation(shdrpgm.GetHandle(), "Colour"), 0.8, 0.8, 0.8);
+                GLuint DiffuseColour = shdrpgm.GetLocation("texDiff");
+                GLuint CamPos = shdrpgm.GetLocation("camPos");
+
+                glUniform3f(CamPos,
+                    _camerapos.position.getX(),
+                    _camerapos.position.getY(),
+                    _camerapos.position.getZ());
+
+                glUniform3f(DiffuseColour,
+                    engine->AssimpManager.Geometry["LightBulb"]->Diffuse.r,
+                    engine->AssimpManager.Geometry["LightBulb"]->Diffuse.g,
+                    engine->AssimpManager.Geometry["LightBulb"]->Diffuse.b);
 
                 engine->MaterialManager.DoNotUpdateStencil();
                 DebugLights_.Draw(shdrpgm, _camera);

@@ -71,24 +71,24 @@ void main()
     }
     else if( Type == 4)
     {		
-
+        vec3 color = vec3(0.0f);
+		
+        for(int i = 0; i < 9; i++)
+        {
+          color += vec3(texture(screenTexture, texCoords.st + offsets[i])) * blurkernel[i];
+        }
+		
+        FragColor = vec4(color, 1.0f);
     }
      else if( Type == 5)
     {		
-		// Version one of sorbel
 		vec4 n[9];
-		make_kernel( n, screenTexture, texCoords.st );
-		
+		make_kernel( n, screenTexture, texCoords.st );	
 		vec4 sobel_edge_h = n[2] + (2.0*n[5]) + n[8] - (n[0] + (2.0*n[3]) + n[6]);
 		vec4 sobel_edge_v = n[0] + (2.0*n[1]) + n[2] - (n[6] + (2.0*n[7]) + n[8]);
-		//vec4 sobel = sqrt((sobel_edge_h * sobel_edge_h) + (sobel_edge_v * sobel_edge_v));
-		
         vec4 sobel = sqrt((sobel_edge_h * sobel_edge_h) + (sobel_edge_v * sobel_edge_v));
         float average = 0.2126 * sobel.r + 0.7152 * sobel.g + 0.0722 * sobel.b;
         FragColor = vec4(vec3(average), 1.0 );
-
-		//FragColor = vec4(sobel.rgb, 1.0 );
-
     }
 
 }

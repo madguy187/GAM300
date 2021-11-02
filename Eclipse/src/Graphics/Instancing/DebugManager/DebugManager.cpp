@@ -44,6 +44,8 @@ namespace Eclipse
         }
 
         LightIcons.RenderLights();
+
+        glEnable(GL_BLEND);
     }
 
     void DebugManager::AddBoundingRegion(glm::mat4 model, CameraComponent& _camera, Entity EntityID)
