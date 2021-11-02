@@ -62,8 +62,9 @@ namespace Eclipse
         if (IsVisible && ECGui::ButtonBool("Close Material Editor"))
         {
             Unload();
+            engine->gPBRManager->gMaterialEditorSettings->SelectedIndex = 0;
         }
-        ImGui::Dummy(ImVec2(1, 5));
+        ImGui::Dummy(ImVec2(1, 10));
 
         static ImGuiTextFilter CompFilter;
 
@@ -94,23 +95,18 @@ namespace Eclipse
     {
         std::string MaterialName_ = engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.Name.data();
 
-        ImGui::Dummy(ImVec2(1, 5));
-
-        if (ECGui::ButtonBool("Update Material", { ImGui::GetColumnWidth(), 25 }))
-        {
-            if (engine->gPBRManager->AllMaterialInstances.find(MaterialName_) != engine->gPBRManager->AllMaterialInstances.end())
-            {
-                engine->gPBRManager->AllMaterialInstances[MaterialName_] = std::make_unique<MaterialInstance>(engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial);
-            }
-        }
+        ImGui::Dummy(ImVec2(1, 2));
 
         if (engine->gPBRManager->AllMaterialInstances.find(MaterialName_) == engine->gPBRManager->AllMaterialInstances.end())
         {
             ImGui::Dummy(ImVec2(1, 5));
 
-            if (ECGui::ButtonBool("Create Material", { ImGui::GetColumnWidth(), 25 }))
+            if (strcmp(MaterialName_.c_str(), "Default") != 0)
             {
-                engine->gPBRManager->gMaterialEditorSettings->CreateMaterialInstance();
+                if (ECGui::ButtonBool("Create Material", { ImGui::GetColumnWidth(), 25 }))
+                {
+                    engine->gPBRManager->gMaterialEditorSettings->CreateMaterialInstance();
+                }
             }
         }
 
@@ -121,6 +117,57 @@ namespace Eclipse
             ColorPicker = ECVec3{ 1.0f };
             engine->gPBRManager->gMaterialEditorSettings->ClearCurrentMaterial();
             engine->gPBRManager->gMaterialEditorSettings->ClearTextureFields();
+        }
+
+        ImGui::Dummy(ImVec2(1, 2));
+
+        if (engine->gPBRManager->AllMaterialInstances.find(MaterialName_) != engine->gPBRManager->AllMaterialInstances.end())
+        {
+            ImGui::Dummy(ImVec2(1, 5));
+
+            if (ECGui::ButtonBool("Delete Material", { ImGui::GetColumnWidth(), 25 }))
+            {
+                std::string path = "src/Assets/MaterialInstances/" + MaterialName_ + ".mat";
+
+                if (std::filesystem::remove(path))
+                {
+                    std::cout << "file " << path << " deleted.\n";
+                }
+                else
+                {
+                    std::cout << "file " << path << " not found.\n";
+                }
+
+                //std::filesystem::remove(path);
+                engine->gPBRManager->AllMaterialInstances.erase(MaterialName_);
+                comboindex = 0;
+                engine->gPBRManager->gMaterialEditorSettings->SelectedIndex = 0;
+
+                std::vector<std::string>::iterator it;
+                for (it = engine->gPBRManager->AllMaterialInstName.begin(); it != engine->gPBRManager->AllMaterialInstName.end();)
+                {
+                    std::vector<std::string>::iterator curr = it++;
+
+                    if (strcmp(curr->c_str(), MaterialName_.data()) == 0)
+                    {
+                        engine->gPBRManager->AllMaterialInstName.erase(curr);
+                        ColorPicker = ECVec3{ 1.0f };
+                        engine->gPBRManager->gMaterialEditorSettings->ClearCurrentMaterial();
+                        engine->gPBRManager->gMaterialEditorSettings->ClearTextureFields();
+                        return;
+                    }
+                }
+            }
+        }
+
+        ImGui::Dummy(ImVec2(1, 5));
+
+        if (ECGui::ButtonBool("Update Material", { ImGui::GetColumnWidth(), 25 }))
+        {
+            if (engine->gPBRManager->AllMaterialInstances.find(MaterialName_) != engine->gPBRManager->AllMaterialInstances.end())
+            {
+                engine->gPBRManager->AllMaterialInstances[MaterialName_] = std::make_unique<MaterialInstance>(engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial);
+            }
         }
     }
 
@@ -141,7 +188,6 @@ namespace Eclipse
     {
         const auto& MaterialNames = engine->gPBRManager->AllMaterialInstName;
         ComboListSettings settingsss = { "Current Material" };
-        static size_t comboindex = 0;
         ECGui::DrawTextWidget<const char*>("Current Materials:", EMPTY_STRING);
         ECGui::CreateComboList(settingsss, MaterialNames, comboindex);
         CheckCurrentMaterial(comboindex);
@@ -222,17 +268,18 @@ namespace Eclipse
                 ECGui::NextColumn();
 
                 ImGui::Dummy(ImVec2(1, 5));
+
+                ECGui::DrawTextWidget<const char*>("Surface Colour", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::ColorPicker3("Surface Colour", (float*)&engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour, ImGuiColorEditFlags_DisplayRGB);
+
+                ImGui::Dummy(ImVec2(1, 5));
             }
             else
             {
                 ECGui::DrawTextWidget<const char*>("AlbedoConstant", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::ColorPicker3("AlbedoConstant", (float*)&engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
-
-                //engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant.setX(ColorPicker.getX());
-                //engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant.setY(ColorPicker.getY());
-                //engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant.setZ(ColorPicker.getZ());
-                //ECGui::DrawSliderFloat3Widget("AlbedoConstant", &engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant, true, 0.0f, 1.0f);
 
                 ECGui::DrawTextWidget<const char*>("MetallicConstant", EMPTY_STRING);
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);

@@ -676,6 +676,7 @@ namespace Eclipse
                         engine->gPBRManager->UnBindRoughnessTexture(shader);
                         engine->gPBRManager->UnBindAOTexture(shader);
                         engine->gPBRManager->SetInstanceFlag(shader, true);
+                        engine->gPBRManager->SetSurfaceColour(shader, glm::vec3(1.0, 1.0, 1.0));
 
                         // No Normal Maps
                         if (Material.HoldingTextures[it].GetType() != aiTextureType_NORMALS)

@@ -13,10 +13,6 @@ namespace Eclipse
         LoadAllTextures();
 
         gMaterialEditorSettings = std::make_unique<MaterialEditorSettings>();
-
-        //LoadMaterial("HardWood");
-        //LoadMaterial("Rock");
-        //LoadMaterial("Testing");
     }
 
     void PBRManager::InitialiseBaseReflectivity()
@@ -201,6 +197,7 @@ namespace Eclipse
         GLint BaseReflectivity_ = shdrpgm.GetLocation("BaseReflectivity");
         GLint HeightScale_ = shdrpgm.GetLocation("HeightScale");
         GLint IsNormalMap_ = shdrpgm.GetLocation("IsNormalMap");
+        GLint SurfaceColour_ = shdrpgm.GetLocation("SurfaceColour");
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::mat4(1.0f);
@@ -209,6 +206,11 @@ namespace Eclipse
         model = glm::rotate(model, glm::radians(ModelTransform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::rotate(model, glm::radians(ModelTransform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::scale(model, ModelTransform.scale.ConvertToGlmVec3Type());
+
+        GLCall(glUniform3f(SurfaceColour_,
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->SurfaceColour.getX(),
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->SurfaceColour.getY(),
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->SurfaceColour.getZ()));
 
         GLCall(glUniform1i(IsNormalMap_, AllMaterialInstances[MaterialCom.MaterialInstanceName]->IsNormalMap));
         GLCall(glUniform1i(HasInstance, AllMaterialInstances[MaterialCom.MaterialInstanceName]->HasTexture));
@@ -317,6 +319,18 @@ namespace Eclipse
     void PBRManager::UnBindAOTexture(Shader& In)
     {
         In.setInt("aoMap", 0);
+    }
+
+    void PBRManager::SetSurfaceColour(Shader& In, glm::vec3& SurfaceColour_)
+    {
+        GLuint AlbedoConstant = In.GetLocation("SurfaceColour");
+        glUniform3f(AlbedoConstant, SurfaceColour_.r, SurfaceColour_.g, SurfaceColour_.b);
+    }
+
+    void PBRManager::SetSurfaceColour(Shader& In, ECVec3& SurfaceColour_)
+    {
+        GLuint AlbedoConstant = In.GetLocation("SurfaceColour");
+        glUniform3f(AlbedoConstant, SurfaceColour_.getX(), SurfaceColour_.getY(), SurfaceColour_.getZ());
     }
 
     void PBRManager::UpdateLoop()

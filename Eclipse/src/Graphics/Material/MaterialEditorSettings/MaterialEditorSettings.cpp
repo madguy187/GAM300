@@ -105,6 +105,7 @@ namespace Eclipse
         GLint BaseReflectivity = shdrpgm.GetLocation("BaseReflectivity");
         GLint NormalMap_ = shdrpgm.GetLocation("NormalMap");
         GLint HeightScale_ = shdrpgm.GetLocation("HeightScale");
+        GLint SurfaceColour_ = shdrpgm.GetLocation("SurfaceColour");
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::mat4(1.0f);
@@ -120,6 +121,7 @@ namespace Eclipse
 
         if (SelectedIndex == 0)
         {
+            GLCall(glUniform3f(SurfaceColour_, CurrentMaterial.SurfaceColour.getX(), CurrentMaterial.SurfaceColour.getY(), CurrentMaterial.SurfaceColour.getZ()));
             GLCall(glUniform1f(HeightScale_, CurrentMaterial.HeightScale));
             GLCall(glUniform1i(NormalMap_, CurrentMaterial.IsNormalMap));
             GLCall(glUniform1i(HasInstance, CurrentMaterial.HasTexture));
@@ -133,6 +135,7 @@ namespace Eclipse
         }
         else
         {
+            GLCall(glUniform3f(SurfaceColour_, CurrentMaterial.SurfaceColour.getX(), CurrentMaterial.SurfaceColour.getY(), CurrentMaterial.SurfaceColour.getZ()));
             GLCall(glUniform1i(NormalMap_, CurrentMaterial.IsNormalMap));
             GLCall(glUniform1f(HeightScale_, CurrentMaterial.HeightScale));
             GLCall(glUniform1i(HasInstance, CurrentMaterial.HasTexture));

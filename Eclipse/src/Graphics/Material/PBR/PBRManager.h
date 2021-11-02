@@ -57,6 +57,8 @@ namespace Eclipse
         void UnBindMetallicTexture(Shader& In);
         void UnBindRoughnessTexture(Shader& In);
         void UnBindAOTexture(Shader& In);
+        void SetSurfaceColour(Shader& In, glm::vec3& SurfaceColour_);
+        void SetSurfaceColour(Shader& In, ECVec3& SurfaceColour_);
 
     public:
         unsigned int sphereVAO = 0;
