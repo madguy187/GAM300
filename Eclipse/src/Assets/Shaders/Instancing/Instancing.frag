@@ -64,7 +64,7 @@ void main ()
     vec3 H = normalize(V + L);
     float distance = length(camPos - crntPos);
     float attenuation = 1.0 / (distance * distance);
-    vec3 radiance = vec3(50) * attenuation;
+    vec3 radiance = vec3(5);
 
     float NDF = DistributionGGX(N, H, 0.5);   
     float G   = GeometrySmith(N, V, L, 0.5);      
