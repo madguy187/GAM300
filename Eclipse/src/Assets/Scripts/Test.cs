@@ -7,6 +7,7 @@ public class Test : EclipseBehavior
 {
     [Header("HeaderName")]
     public UInt32 VarName;
+    public UInt32 wee;
 
     public void Start()
     {

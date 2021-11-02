@@ -4,7 +4,7 @@ using System.Numerics;
 
 namespace Eclipse
 {
-    public struct TransformComponent
+    public struct Transform
     {
         //Vector3 transform;
         ////Vector3 scale;

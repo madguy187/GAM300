@@ -111,7 +111,31 @@ namespace Eclipse
 		while ((field = mono_class_get_fields(klass, &iter))) {
 			printf("Field: %s, flags 0x%x\n", mono_field_get_name(field),
 				mono_field_get_flags(field));
+
+			// check for attributes
+			MonoClass* parentClass = mono_field_get_parent(field);
+			MonoCustomAttrInfo* attrInfo = mono_custom_attrs_from_field(parentClass, field);
+			if (attrInfo == nullptr)
+				return;
+
+			MonoClass* attrKlass = mono_class_from_name(engine->mono.GetAPIImage(), "", "Header");
+
+			if (attrKlass == nullptr) {
+				std::cout << "Failed loading attribute class" << std::endl;
+				return;
+			}
+
+			bool hasAttr = mono_custom_attrs_has_attr(attrInfo, attrKlass);
+
+			// check for type
+			int type = mono_type_get_type(mono_field_get_type(field));
+			std::cout << type << std::endl;
+
+			
+			mono_custom_attrs_free(attrInfo);
 		}
+
+		
 	}
 
 	void
@@ -146,14 +170,14 @@ namespace Eclipse
 			return;
 		}
 
-		MonoMethod* m_update = mono_class_get_method_from_name(klass, "Main", -1);
+		MonoMethod* m_update = mono_class_get_method_from_name(klass, "Update", -1);
 		if (!m_update)
 		{
 			std::cout << "Failed to get method" << std::endl;
 			return;
 		}
 
-		//output_fields(klass);
+		output_fields(klass);
 
 		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
 	}
