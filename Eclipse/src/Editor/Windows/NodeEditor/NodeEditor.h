@@ -51,8 +51,13 @@ namespace Eclipse
 
 	class NodeEditorWindow : public ECGuiWindow
 	{
+		bool initialized= false;
         Editor_ editor1;
+
+		int findNodePos(Editor_ editor, int id);
 	public :
+
+		NodeEditorWindow();
 
 		void CreateInputFloatNode();
 
