@@ -1,6 +1,7 @@
 #pragma once
 
 #include "openvr.h"
+#include "../Models/bVRRenderModel.h"
 
 namespace Eclipse
 {
@@ -110,7 +111,7 @@ namespace Eclipse
 		bool Destroy();
 
 		/* To retrieve the model of the tracked device from SteamVR */
-		// bVRRenderModel* FindOrLoadRenderModel(const char* renderModelString);
+		bVRRenderModel* FindOrLoadRenderModel(const char* renderModelString);
 
 		std::string GetTrackedDeviceString(IVRSystem* pHmd, TrackedDeviceIndex_t unDevice,
 			TrackedDeviceProperty prop, TrackedPropertyError* peError = NULL);
@@ -168,14 +169,14 @@ namespace Eclipse
 		void ProcessButtonEvent(VREvent_t event);
 
 	private:
-		FrameBufferDesc leftEyeDesc;
-		FrameBufferDesc rightEyeDesc;
+		FrameBufferDesc leftEyeDesc{};
+		FrameBufferDesc rightEyeDesc{};
 
 		/* VR System */
 		IVRSystem* pHmd = NULL; // pointer to Head Mounted Display
 		EVRInitError eError = VRInitError_None;
 		IVRRenderModels* m_pRenderModels = NULL;
-		bool m_rbShowTrackedDevice[vr::k_unMaxTrackedDeviceCount];
+		bool m_rbShowTrackedDevice[vr::k_unMaxTrackedDeviceCount] = {};
 
 		/* VR Picking */
 		// ObjectPickingVR* Picker = nullptr;
@@ -194,5 +195,64 @@ namespace Eclipse
 		/* VR FBOS for Eyes */
 		// PostProcessing* leftEyeFBO = nullptr;
 		// PostProcessing* rightEyeFBO = nullptr;
+
+		/* VR Tracked Devices */
+		TrackedDevicePose_t m_rTrackedDevicePose[k_unMaxTrackedDeviceCount] = {};
+		glm::mat4 m_rmat4DevicePose[k_unMaxTrackedDeviceCount] = {};
+		int m_iValidPoseCount{ 0 };
+		int m_iValidPoseCount_Last{ 0 };
+
+		std::string m_strPoseClasses{}; // What Classes we saw poses for this frame
+		char m_rDevClassChar[k_unMaxTrackedDeviceCount] = {};
+
+		/* VR Render Models */
+		 std::vector<bVRRenderModel*> m_vecRenderModels;
+		 bVRRenderModel* m_rTrackedDeviceToRenderModel[vr::k_unMaxTrackedDeviceCount];
+
+		/* VR Controllers */
+		int m_iTrackedControllerCount{ 0 };
+		int m_iTrackedControllerCount_Last{ 0 };
+
+		GLuint m_glControllerVertBuffer{ 0 };
+		GLuint m_unControllerVAO{ 0 };
+		unsigned int m_uiControllerVertCount{ 0 };
+
+		/* Recommended Resolution */
+		uint32_t m_nRenderWidth{ 0 };
+		uint32_t m_nRenderHeight{ 0 };
+
+		/* HMD Pose Matrix */
+		glm::mat4 m_mat4HMDPose{};
+
+		glm::mat4 m_mat4ProjectionLeft{};
+		glm::mat4 m_mat4ProjectionRight{};
+		glm::mat4 m_mat4eyePosLeft{};
+		glm::mat4 m_mat4eyePosRight{};
+
+		/* Matrix Locations */
+		unsigned int m_vr_controllerlocation{ 0 };
+		unsigned int m_vr_rendermodellocation{ 0 };
+
+		/* For Companion Window */
+		struct VertexDataWindow
+		{
+			glm::vec2 position{};
+			glm::vec2 texCoord{};
+
+			VertexDataWindow(const glm::vec2& pos, const glm::vec2 tex) :
+				position{ pos }, texCoord{ tex } {}
+		};
+
+		GLuint m_unCompanionWindowVAO{ 0 };
+		GLuint m_glCompanionWindowIDVertBuffer{ 0 };
+		GLuint m_glCompanionWindowIDIndexBuffer{ 0 };
+		unsigned int m_uiCompanionWindowIndexSize{ 0 };
+
+		glm::mat4 view{};
+
+		/* Object Picking */
+		TrackedDeviceIndex_t pickCtrlIndex{ 0 };
+		bool bTriggerDown{ false };
+		bool bHit{ false };
 	};
 }
