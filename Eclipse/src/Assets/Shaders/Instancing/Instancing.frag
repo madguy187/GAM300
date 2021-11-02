@@ -57,14 +57,14 @@ void main ()
     vec3 V = normalize(camPos - crntPos);    
     vec3 F0 = vec3(0.04); 
 
-    F0 = mix(F0, vec3(0.8,0.8,0.8), 0.5);
+    F0 = mix(F0, texDiff, 0.5);
     vec3 Lo = vec3(0.0);
 
     vec3 L = normalize(camPos - crntPos);
     vec3 H = normalize(V + L);
     float distance = length(camPos - crntPos);
     float attenuation = 1.0 / (distance * distance);
-    vec3 radiance = vec3(300) * attenuation;
+    vec3 radiance = vec3(50) * attenuation;
 
     float NDF = DistributionGGX(N, H, 0.5);   
     float G   = GeometrySmith(N, V, L, 0.5);      
@@ -78,9 +78,9 @@ void main ()
     vec3 kD = vec3(1.0) - kS;
     kD *= 1.0 - 0.5;	  
     float NdotL = max(dot(N, L), 0.0);        
-    Lo += (kD * vec3(0.8) / PI + specular) * radiance * NdotL;  
+    Lo += (kD * texDiff / PI + specular) * radiance * NdotL;  
     
-    vec3 ambient = vec3(0.03) * vec3(0.8) * vec3(1.0);
+    vec3 ambient = vec3(0.03) * texDiff * vec3(1.0);
     vec3 color = ambient + Lo;
     color = color / (color + vec3(1.0));
     color = pow(color, vec3(1.0/2.2)); 
