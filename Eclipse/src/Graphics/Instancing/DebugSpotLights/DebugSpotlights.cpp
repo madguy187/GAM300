@@ -1,41 +1,34 @@
 #include "pch.h"
-#include "Graphics/Instancing/DebugSpheres/DebugSphere.h"
+#include "Graphics/Instancing/DebugSpotLights/DebugSpotLights.h"
 
 namespace Eclipse
 {
-    DebugSphere::DebugSphere()
+    DebugSpotLights::DebugSpotLights()
     {
-
     }
 
-    void DebugSphere::Init()
+    void DebugSpotLights::Init()
     {
-        SphereVertices = engine->AssimpManager.Geometry["BoundingSphere"]->Vertices;
-        SphereIndices = engine->AssimpManager.Geometry["BoundingSphere"]->Indices;
+        SpotLightVertices = engine->AssimpManager.Geometry["SpotLight"]->Vertices;
+        SpotLightIndices = engine->AssimpManager.Geometry["SpotLight"]->Indices;
     }
 
-    void DebugSphere::Addinstance(glm::mat4 TransXRotXScale)
+    void DebugSpotLights::Addinstance(glm::mat4 TransXRotXScale)
     {
         instanceMatrix.push_back(TransXRotXScale);
     }
 
-    void DebugSphere::ResetInstancedDebugSpheres()
+    void DebugSpotLights::ResetInstancedDebugSpotLights()
     {
         instanceMatrix.clear();
     }
-
-    void DebugSphere::PrepareData()
-    {
-        DebugSpheres.Init(SphereVertices, SphereIndices, 1, instanceMatrix);
-    }
-
-    void DebugSphere::RenderBoundingSpheres()
+    void DebugSpotLights::RenderSpotLights()
     {
         if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
         {
             if (instanceMatrix.size() >= 1)
             {
-                DebugSpheres.Init(SphereVertices, SphereIndices, instanceMatrix.size(), instanceMatrix);
+                DebugSpotLights_.Init(SpotLightVertices, SpotLightIndices, instanceMatrix.size(), instanceMatrix);
 
                 auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
                 auto& _camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
@@ -52,10 +45,13 @@ namespace Eclipse
                     _camerapos.position.getY(),
                     _camerapos.position.getZ());
 
-                glUniform3f(DiffuseColour, 0.8, 0.8, 0.8);
+                glUniform3f(DiffuseColour,
+                    engine->AssimpManager.Geometry["SpotLight"]->Diffuse.r,
+                    engine->AssimpManager.Geometry["SpotLight"]->Diffuse.g,
+                    engine->AssimpManager.Geometry["SpotLight"]->Diffuse.b);
 
                 engine->MaterialManager.DoNotUpdateStencil();
-                DebugSpheres.Draw(shdrpgm, _camera);
+                DebugSpotLights_.Draw(shdrpgm, _camera);
             }
         }
     }

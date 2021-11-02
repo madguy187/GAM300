@@ -946,6 +946,7 @@
     <ClInclude Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.h" />
     <ClInclude Include="src\Graphics\Instancing\DebugLights\DebugLights.h" />
     <ClInclude Include="src\Graphics\Grid\Grid.h" />
+    <ClInclude Include="src\Graphics\Instancing\DebugSpotLights\DebugSpotLights.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1408,6 +1409,7 @@
     <ClCompile Include="src\Graphics\Instancing\DebugManager\DebugManager.cpp" />
     <ClCompile Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.cpp" />
     <ClCompile Include="src\Graphics\Instancing\DebugLights\DebugLights.cpp" />
+    <ClCompile Include="src\Graphics\Instancing\DebugSpotLights\DebugSpotlights.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />

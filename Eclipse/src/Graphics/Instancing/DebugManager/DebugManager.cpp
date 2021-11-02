@@ -13,6 +13,7 @@ namespace Eclipse
         DebugBoxes.Init();
         DebugSpheres.Init();
         LightIcons.Init();
+        SpotLightIcons.Init();
     }
 
     void DebugManager::Reset()
@@ -20,6 +21,7 @@ namespace Eclipse
         ResetInstancedDebugBoxes();
         DebugSpheres.ResetInstancedDebugSpheres();
         LightIcons.ResetInstancedDebugLights();
+        SpotLightIcons.ResetInstancedDebugSpotLights();
     }
 }
 
@@ -44,8 +46,7 @@ namespace Eclipse
         }
 
         LightIcons.RenderLights();
-
-        glEnable(GL_BLEND);
+        SpotLightIcons.RenderSpotLights();
     }
 
     void DebugManager::AddBoundingRegion(glm::mat4 model, CameraComponent& _camera, Entity EntityID)

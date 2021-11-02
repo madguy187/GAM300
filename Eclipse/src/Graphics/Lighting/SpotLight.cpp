@@ -69,6 +69,13 @@ namespace Eclipse
 
         if (uniform_var_loc8 >= 0)
         {
+            SpotlightTransform.scale.setX(1.0f);
+            SpotlightTransform.scale.setY(1.0f);
+            SpotlightTransform.scale.setZ(1.0f);
+            SpotlightTransform.rotation.setX(0.0f);
+            SpotlightTransform.rotation.setY(0.0f);
+            SpotlightTransform.rotation.setZ(0.0f);
+
             glm::mat4 mModelNDC;
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, SpotlightTransform.position.ConvertToGlmVec3Type());
@@ -79,6 +86,8 @@ namespace Eclipse
             mModelNDC = camera.projMtx * camera.viewMtx * model;
             glUniformMatrix4fv(uniform_var_loc8, 1, GL_FALSE, glm::value_ptr(mModelNDC));
             glUniformMatrix4fv(uniform_var_loc10, 1, GL_FALSE, glm::value_ptr(model));
+
+            engine->gDebugDrawManager->SpotLightIcons.Addinstance(model);
         }
 
         if (in_spot.AffectsWorld)
