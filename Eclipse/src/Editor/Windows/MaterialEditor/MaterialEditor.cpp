@@ -127,22 +127,6 @@ namespace Eclipse
 
             if (ECGui::ButtonBool("Delete Material", { ImGui::GetColumnWidth(), 25 }))
             {
-                std::string path = "src/Assets/MaterialInstances/" + MaterialName_ + ".mat";
-
-                if (std::filesystem::remove(path))
-                {
-                    std::cout << "file " << path << " deleted.\n";
-                }
-                else
-                {
-                    std::cout << "file " << path << " not found.\n";
-                }
-
-                //std::filesystem::remove(path);
-                engine->gPBRManager->AllMaterialInstances.erase(MaterialName_);
-                comboindex = 0;
-                engine->gPBRManager->gMaterialEditorSettings->SelectedIndex = 0;
-
                 std::vector<std::string>::iterator it;
                 for (it = engine->gPBRManager->AllMaterialInstName.begin(); it != engine->gPBRManager->AllMaterialInstName.end();)
                 {
@@ -150,6 +134,11 @@ namespace Eclipse
 
                     if (strcmp(curr->c_str(), MaterialName_.data()) == 0)
                     {
+                        std::string path = "src/Assets/MaterialInstances/" + MaterialName_ + ".mat";
+                        std::filesystem::remove(path);
+                        engine->gPBRManager->AllMaterialInstances.erase(MaterialName_);
+                        comboindex = 0;
+                        engine->gPBRManager->gMaterialEditorSettings->SelectedIndex = 0;
                         engine->gPBRManager->AllMaterialInstName.erase(curr);
                         ColorPicker = ECVec3{ 1.0f };
                         engine->gPBRManager->gMaterialEditorSettings->ClearCurrentMaterial();
@@ -162,11 +151,14 @@ namespace Eclipse
 
         ImGui::Dummy(ImVec2(1, 5));
 
-        if (ECGui::ButtonBool("Update Material", { ImGui::GetColumnWidth(), 25 }))
+        if ((strcmp(MaterialName_.c_str(), "Default") != 0) && (comboindex != 0) )
         {
-            if (engine->gPBRManager->AllMaterialInstances.find(MaterialName_) != engine->gPBRManager->AllMaterialInstances.end())
+            if (ECGui::ButtonBool("Update Material", { ImGui::GetColumnWidth(), 25 }))
             {
-                engine->gPBRManager->AllMaterialInstances[MaterialName_] = std::make_unique<MaterialInstance>(engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial);
+                if (engine->gPBRManager->AllMaterialInstances.find(MaterialName_) != engine->gPBRManager->AllMaterialInstances.end())
+                {
+                    engine->gPBRManager->AllMaterialInstances[MaterialName_] = std::make_unique<MaterialInstance>(engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial);
+                }
             }
         }
     }

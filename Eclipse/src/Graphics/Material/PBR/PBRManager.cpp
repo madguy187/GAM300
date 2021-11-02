@@ -276,7 +276,7 @@ namespace Eclipse
         //In.setInt("displacement0", 15);
     }
 
-    void PBRManager::SetAlbedoConstant(Shader& In, glm::vec4& AlbedoValue)
+    void PBRManager::SetAlbedoConstant(Shader& In, glm::vec4 AlbedoValue)
     {
         GLuint AlbedoConstant = In.GetLocation("AlbedoConstant");
         glUniform3f(AlbedoConstant, AlbedoValue.r, AlbedoValue.g, AlbedoValue.b);
@@ -321,13 +321,13 @@ namespace Eclipse
         In.setInt("aoMap", 0);
     }
 
-    void PBRManager::SetSurfaceColour(Shader& In, glm::vec3& SurfaceColour_)
+    void PBRManager::SetSurfaceColour(Shader& In, glm::vec3 SurfaceColour_)
     {
         GLuint AlbedoConstant = In.GetLocation("SurfaceColour");
         glUniform3f(AlbedoConstant, SurfaceColour_.r, SurfaceColour_.g, SurfaceColour_.b);
     }
 
-    void PBRManager::SetSurfaceColour(Shader& In, ECVec3& SurfaceColour_)
+    void PBRManager::SetSurfaceColour(Shader& In, ECVec3 SurfaceColour_)
     {
         GLuint AlbedoConstant = In.GetLocation("SurfaceColour");
         glUniform3f(AlbedoConstant, SurfaceColour_.getX(), SurfaceColour_.getY(), SurfaceColour_.getZ());
@@ -462,6 +462,14 @@ namespace Eclipse
 
         gMaterialEditorSettings->RenderSphere();
         shdrpgm.UnUse();
+    }
+
+    bool PBRManager::CheckMaterialExist(MaterialComponent& in)
+    {
+        if (AllMaterialInstances.find(in.MaterialInstanceName.data()) == AllMaterialInstances.end())
+            return false;
+
+        return true;
     }
 
     void PBRManager::Clear(std::string& TextureName, MaterialType In)
