@@ -14,9 +14,7 @@
 #include "ECS/ComponentManager/Components/TextureComponent.h"
 #include "ECS/ComponentManager/Components/ModelComponent.h"
 #include "ECS/ComponentManager/Components/MaterialComponent.h"
-
 #include "Graphics/Material/EnvironmentMap/EnvironmentMapManager.h"
-
 #include "Graphics/MeshEditor/MeshEditorSource.h"
 
 namespace Eclipse
@@ -43,10 +41,8 @@ namespace Eclipse
         void MeshDraw(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, RenderMode _renderMode, CameraComponent::CameraType _camType);
         void DebugNormals(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, CameraComponent::CameraType _camType);
         void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID, AABB_* box);
-        void Cleanup(MeshComponent& in);
         void TestPath(std::string& path);
         void Render(Shader& shader, GLenum MOde, MeshComponent&, unsigned int);
-        ~AssimpModelManager();
         void SetMeshComponent(unsigned int ID, std::string);
         void Render(Shader& shader, GLenum mode, unsigned int id, MeshComponent& in);
         void Render(GLenum mode, MeshComponent& in);

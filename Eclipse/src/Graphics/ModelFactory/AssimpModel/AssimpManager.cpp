@@ -163,7 +163,6 @@ namespace Eclipse
         return MAX_ENTITY;
     }
 
-
     void AssimpModelManager::RegisterExistingModel(Entity ID, const std::string& ModelName)
     {
         if (engine->gEngineCompiler->AreAllCompiled())
@@ -354,20 +353,6 @@ namespace Eclipse
         {
             in.HoldingTextures.push_back(it->second);
         }
-    }
-
-    void AssimpModelManager::Cleanup(MeshComponent& in)
-    {
-        (void)in;
-
-        //for (unsigned int i = 0; i < in.Meshes.size(); i++)
-        //{
-        //    in.Meshes[i].Cleanup();
-        //}
-    }
-
-    AssimpModelManager::~AssimpModelManager()
-    {
     }
 
     void AssimpModelManager::TestPath(std::string& path)
