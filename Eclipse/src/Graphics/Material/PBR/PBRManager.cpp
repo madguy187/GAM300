@@ -83,6 +83,8 @@ namespace Eclipse
 
     void PBRManager::LoadAllTextures()
     {
+        AllMaterialTextures.clear();
+
         DragAndDrop::CreateEmptyFolder("Materials");
 
         for (auto& dirEntry : std::filesystem::directory_iterator("src//Assets//Materials"))
