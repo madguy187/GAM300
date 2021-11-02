@@ -11,7 +11,7 @@ namespace Eclipse
 		DEFAULT,
 		FLOAT,
 		PRINT,
-		VEC2,
+		ENTITY,
 		VEC3,
 		VEC4
 	};
@@ -20,10 +20,10 @@ namespace Eclipse
 	{
         std::string name;
 		int nodeId;
-		float value;
+		float value = 0.0f;
 		NodeType nodeType;
-		Node(const std::string nodeName ,const int id, const float data, NodeType inputType = NodeType::DEFAULT)
-			: name(nodeName),nodeId(id), value(data), nodeType(inputType){}
+		Node(const std::string nodeName ,const int id, NodeType inputType = NodeType::DEFAULT)
+			: name(nodeName),nodeId(id), nodeType(inputType){}
 
 	};
 
@@ -58,18 +58,21 @@ namespace Eclipse
 	public :
 
 		NodeEditorWindow();
-
-		void CreateInputFloatNode();
-
-		void CreatePrintNode();
-
-        void DrawNodeEditor(const char* graphName, Editor_& editor);
-
 		void Update() override;
 		void Init() override;
 		void Unload() override;
 		void DrawImpl();
 		~NodeEditorWindow();
+
+
+
+		void CreateInputFloatNode(Editor_& editor);
+
+		void CreatePrintNode(Editor_& editor);
+
+		void DrawNodeEditor(const char* graphName, Editor_& editor);
+
+		void CreateEnitityNode(Editor_& editor, std::string name);
 	};
 
 

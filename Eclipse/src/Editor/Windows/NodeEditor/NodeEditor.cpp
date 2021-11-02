@@ -20,21 +20,20 @@ Eclipse::NodeEditorWindow::NodeEditorWindow()
 {
 }
 
-void Eclipse::NodeEditorWindow::CreateInputFloatNode()
+void Eclipse::NodeEditorWindow::CreateInputFloatNode(Editor_& editor)
 {
-    editor1.nodes.emplace_back(Node("FloatNode",++editor1.current_id,0.0f,NodeType::FLOAT));
+    editor.nodes.emplace_back(Node("FloatNode",++editor.current_id,NodeType::FLOAT));
 
 
 }
 
-void Eclipse::NodeEditorWindow::CreatePrintNode()
+void Eclipse::NodeEditorWindow::CreatePrintNode(Editor_& editor)
 {
-    editor1.nodes.emplace_back(Node("PrintNode", ++editor1.current_id, 0.0f, NodeType::PRINT));
+    editor.nodes.emplace_back(Node("PrintNode", ++editor.current_id,NodeType::PRINT));
 }
 
 void Eclipse::NodeEditorWindow::DrawNodeEditor(const char* graphName, Editor_& editor)
 {
-
     if (!initialized)
     {
         initialized = true;
@@ -93,6 +92,17 @@ void Eclipse::NodeEditorWindow::DrawNodeEditor(const char* graphName, Editor_& e
 
             ImNodes::EndNode();
         }
+
+        if (node.nodeType == NodeType::ENTITY)
+        {
+            ImNodes::BeginNode(node.nodeId);
+            ImNodes::BeginNodeTitleBar();
+            ImGui::TextUnformatted(node.name.c_str());
+            ImNodes::EndNodeTitleBar();
+            ImNodes::BeginOutputAttribute(node.nodeId);
+            ImNodes::EndOutputAttribute();
+            ImNodes::EndNode();
+        }
     }
 
     for (const Link& link : editor.links)
@@ -101,6 +111,9 @@ void Eclipse::NodeEditorWindow::DrawNodeEditor(const char* graphName, Editor_& e
 
     }
 
+    ImNodes::EndNodeEditor();
+
+    static bool createEntityNode;
     if (ImGui::GetIO().MouseClicked[1])
     {
         ImGui::OpenPopup("Test creation menu");
@@ -109,33 +122,67 @@ void Eclipse::NodeEditorWindow::DrawNodeEditor(const char* graphName, Editor_& e
     {
         if (ImGui::MenuItem("Input Action"))
         {
-            CreateInputFloatNode();
+            CreateInputFloatNode(editor);
         }
 
         if (ImGui::MenuItem("Print"))
         {
-            CreatePrintNode();
+            CreatePrintNode(editor);
+        }
+
+        if (ImGui::MenuItem("Entity"))
+        {
+            createEntityNode = true;
+        }
+
+        if (ImGui::MenuItem("TransformNode"))
+        {
+            // CreateTransFormNode(editor);
         }
 
         ImGui::EndPopup();
     }
 
-    ImNodes::EndNodeEditor();
+    if (createEntityNode)
+    {
+        ImGui::OpenPopup("Select Entity");
+    }
+
+    if (ImGui::BeginPopup("Select Entity"))
+    {
+        for (int i = 0; i < engine->editorManager->GetEntityListSize(); ++i)
+        {
+            Entity ent = engine->editorManager->GetEntityID(i);
+
+            auto entComp = engine->world.GetComponent<EntityComponent>(ent);
+            if (ImGui::MenuItem(entComp.Name.c_str()))
+            {
+                CreateEnitityNode(editor, entComp.Name);
+                createEntityNode = false;
+            }
+            else
+            {
+                createEntityNode = false;
+            }
+        }
+
+        ImGui::EndPopup();
+    }
 
     {
         Link link;
         if (ImNodes::IsLinkCreated(&link.startPoint, &link.endPoint))
         {
-           int pos = findNodePos(editor, link.startPoint);
-           
-           int pos2 = findNodePos(editor, link.endPoint);
-           
-           const bool linked = editor.nodes[pos].nodeType != editor.nodes[pos2].nodeType;
-           
-           if (linked)
-           {
-              editor.nodes[pos2].value = editor.nodes[pos].value;
-           }
+            int pos = findNodePos(editor, link.startPoint);
+
+            int pos2 = findNodePos(editor, link.endPoint);
+
+            const bool linked = editor.nodes[pos].nodeType != editor.nodes[pos2].nodeType;
+
+            if (linked)
+            {
+                editor.nodes[pos2].value = editor.nodes[pos].value;
+            }
             link.linkId = ++editor.current_id;
             editor.links.push_back(link);
         }
@@ -153,28 +200,13 @@ void Eclipse::NodeEditorWindow::DrawNodeEditor(const char* graphName, Editor_& e
             editor.links.erase(iter);
         }
     }
-
-    //{
-    //    const int num_selected = ImNodes::NumSelectedLinks();
-    //    if (num_selected > 0 && ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_Delete)))
-    //    {
-    //        static std::vector<int> selected_links;
-    //        selected_links.resize(static_cast<size_t>(num_selected));
-    //        ImNodes::GetSelectedLinks(selected_links.data());
-    //        for (const int edge_id : selected_links)
-    //        {
-    //            auto iter = std::find_if(
-    //                editor.links.begin(), editor.links.end(), [edge_id](const Link& link) -> bool {
-    //                    return link.linkId == edge_id;
-    //                });
-    //            assert(iter != editor.links.end());
-    //            editor.links.erase(iter);
-    //        }
-    //    }
-    //}
-
-
 }
+
+void Eclipse::NodeEditorWindow::CreateEnitityNode(Editor_& editor, std::string name)
+{
+    editor.nodes.emplace_back(Node(name.c_str(), ++editor.current_id, NodeType::ENTITY));
+}
+
 
 void Eclipse::NodeEditorWindow::Update()
 {
