@@ -71,6 +71,10 @@ void main()
     }
     else if( Type == 4)
     {		
+
+    }
+     else if( Type == 5)
+    {		
 		// Version one of sorbel
 		vec4 n[9];
 		make_kernel( n, screenTexture, texCoords.st );

@@ -190,8 +190,9 @@ namespace Eclipse
             if (PPType_ == PostProcessType::PPT_NONE)
                 return;
 
-            engine->MaterialManager.DoNotUpdateStencil();
-            glBindFramebuffer(GL_FRAMEBUFFER, engine->gFrameBufferManager->GetFrameBufferID(FrameBufferMode::FBM_SCENE));
+            //glBindFramebuffer(GL_FRAMEBUFFER, engine->gFrameBufferManager->GetFrameBufferID(FrameBufferMode::FBM_SCENE));
+
+            engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_GAME);
 
             auto& shdrpgm = Graphics::shaderpgms["PostProcess"];
             shdrpgm.Use();
@@ -200,12 +201,9 @@ namespace Eclipse
             GLCall(glUniform1i(Inversion, static_cast<GLint>(PPType_)));
 
             glBindVertexArray(rectVAO);
-            glDisable(GL_DEPTH_TEST);
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SCENE));
             glDrawArrays(GL_TRIANGLES, 0, 6);
-
-            shdrpgm.UnUse();
         }
     }
 
