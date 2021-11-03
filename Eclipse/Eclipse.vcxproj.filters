@@ -943,6 +943,9 @@
     <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_internal.h" />
     <ClInclude Include="src\Graphics\EngineCompiler\InputCompiler\InputCompiler.h" />
     <ClInclude Include="src\Graphics\MeshEditor\MeshEditorSource.h" />
+    <ClInclude Include="src\BehaviourTree\BehaviourTree.h" />
+    <ClInclude Include="src\NavMesh\NavMeshCreator.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\NavMeshComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1400,6 +1403,8 @@
     <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor.cpp" />
     <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_api.cpp" />
     <ClCompile Include="src\Graphics\EngineCompiler\InputCompiler\InputCompiler.cpp" />
+    <ClCompile Include="src\BehaviourTree\BehaviourTree.cpp" />
+    <ClCompile Include="src\NavMesh\NavMeshCreator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />
