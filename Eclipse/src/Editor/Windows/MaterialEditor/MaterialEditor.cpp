@@ -178,6 +178,10 @@ namespace Eclipse
         {
             Unload();
             engine->gPBRManager->gMaterialEditorSettings->SelectedIndex = 0;
+
+            auto& cam = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::MaterialEditor_Camera));
+            cam.position = ECVec3{ 0.0f, 0.0f, 30.0f };;
+            cam.rotation = ECVec3{ 0.0f, -90.0f, 0.0f };
         }
         ImGui::Dummy(ImVec2(1, 10));
 
@@ -266,7 +270,7 @@ namespace Eclipse
 
         ImGui::Dummy(ImVec2(1, 5));
 
-        if ((strcmp(MaterialName_.c_str(), "Default") != 0) && (comboindex != 0) )
+        if ((strcmp(MaterialName_.c_str(), "Default") != 0) && (comboindex != 0))
         {
             if (ECGui::ButtonBool("Update Material", { ImGui::GetColumnWidth(), 25 }))
             {
