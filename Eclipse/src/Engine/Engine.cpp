@@ -103,7 +103,7 @@ namespace Eclipse
         world.RegisterComponent<CollisionComponent>();
         world.RegisterComponent<PrefabComponent>();
         world.RegisterComponent<AIComponent>();
-        world.RegisterComponent<Editor_>();
+        world.RegisterComponent<NodeEditor>();
 
         prefabWorld.RegisterComponent<EntityComponent>();
         prefabWorld.RegisterComponent<TransformComponent>();
@@ -125,7 +125,7 @@ namespace Eclipse
         prefabWorld.RegisterComponent<CollisionComponent>();
         prefabWorld.RegisterComponent<PrefabComponent>();
         prefabWorld.RegisterComponent<AIComponent>();
-        prefabWorld.RegisterComponent<Editor_>();
+        prefabWorld.RegisterComponent<NodeEditor>();
         // registering system
         world.RegisterSystem<RenderSystem>();
         world.RegisterSystem<CameraSystem>();

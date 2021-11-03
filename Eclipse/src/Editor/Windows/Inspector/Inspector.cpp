@@ -1320,8 +1320,8 @@ namespace Eclipse
                         ComponentRegistry<AIComponent>("AIComponent", ID, entCom.Name,
                             EditComponent::EC_ADDCOMPONENT);
                         break;
-                    case str2int("Editor_"):
-                        ComponentRegistry<Editor_>("Editor_", ID, entCom.Name,
+                    case str2int("NodeEditor"):
+                        ComponentRegistry<NodeEditor>("NodeEditor", ID, entCom.Name,
                             EditComponent::EC_ADDCOMPONENT);
                         break;
                     }
@@ -1417,8 +1417,8 @@ namespace Eclipse
                         ComponentRegistry<AIComponent>("AIComponent", ID, entCom.Name,
                             EditComponent::EC_REMOVECOMPONENT);
                         break;
-                    case str2int("BluePrint"):
-                        ComponentRegistry<Editor_>("BluePrint", ID, entCom.Name,
+                    case str2int("NodeEditor"):
+                        ComponentRegistry<NodeEditor>("NodeEditor", ID, entCom.Name,
                             EditComponent::EC_REMOVECOMPONENT);
                         break;
                     }
