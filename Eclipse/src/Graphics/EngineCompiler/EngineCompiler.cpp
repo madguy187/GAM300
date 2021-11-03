@@ -257,14 +257,6 @@ namespace Eclipse
             std::array<char, 128> name;
         };
 
-        struct AssimpNodeData
-        {
-            glm::mat4 transformation;
-            std::array<char, 128> name;
-            int childrenCount;
-            std::vector<AssimpNodeData> children;
-        };
-
         struct AnimationData
         {
             float m_Duration;
@@ -346,49 +338,80 @@ namespace Eclipse
             AnimationFileRead.read(reinterpret_cast<char*>(&B.m_RootNode.name), sizeof(B.m_RootNode.name));
             AnimationFileRead.read(reinterpret_cast<char*>(&B.m_RootNode.childrenCount), sizeof(int));
 
-            //AnimationFileRead.read(reinterpret_cast<char*>(&nodeChildrenSize), sizeof(nodeChildrenSize));
-            //B.m_RootNode.children.resize(nodeChildrenSize);
-            //AnimationFileRead.read(reinterpret_cast<char*>(B.m_RootNode.children.data()), sizeof(AssimpNodeData) * nodeChildrenSize);
+            B.m_RootNode.children.resize(B.m_RootNode.childrenCount);
+            RecurseChildren(B.m_RootNode);
 
             data.push_back(B);
         }
 
         CloseFile(AnimationFileRead, AllNames[4], totalAnimation);
+    }
 
-        for (auto& it : data)
-        {
-            std::cout << "Model Name: " << std::string{ it.modelName.data() } << std::endl;
+    void EngineCompiler::RecurseChildren(AssimpNodeData& nodeData)
+    {
+        glm::mat4 transform;
+        std::array<char, 128> name;
+        int count;
 
-            for (auto& it2 : it.m_Bones)
+        for (unsigned int i = 0; i < nodeData.childrenCount; ++i)
+        {          
+            AnimationFileRead.read(reinterpret_cast<char*>(&transform), sizeof(glm::mat4));
+            AnimationFileRead.read(reinterpret_cast<char*>(&name), sizeof(name));
+            AnimationFileRead.read(reinterpret_cast<char*>(&count), sizeof(int));
+
+            //Garbage values
+            if (count > MAX_CHILDREN_NODE || count < 0)
             {
-                std::cout << "Bone ID: " << it2.m_ID << std::endl;
-                std::cout << "Bone Name: " << std::string(it2.BoneName.data()) << std::endl;
-                std::cout << std::endl;
+                //nodeData.children[i].childrenCount = 0;
+                AnimationFileRead.seekg(-(sizeof(glm::mat4) + sizeof(name) + sizeof(int)), AnimationFileRead.cur);
+                return;
             }
 
-            std::cout << std::endl;
-            //for (auto& it2 : it.m_BoneInfo)
-            //{
-            //    std::cout << "Bone Name: " << std::string(it2.name.data()) << std::endl;
-            //    std::cout << "Bone ID: " << it2.id << std::endl;
-            //    std::cout << "Bone Offset[0][0]: " << it2.offset[0][0] << std::endl;
-            //    std::cout << "Bone Offset[0][1]: " << it2.offset[0][1] << std::endl;
-            //    std::cout << "Bone Offset[0][2]: " << it2.offset[0][2] << std::endl;
-            //    std::cout << "Bone Offset[0][3]: " << it2.offset[0][3] << std::endl;
-            //    std::cout << "Bone Offset[1][0]: " << it2.offset[1][0] << std::endl;
-            //    std::cout << "Bone Offset[1][1]: " << it2.offset[1][1] << std::endl;
-            //    std::cout << "Bone Offset[1][2]: " << it2.offset[1][2] << std::endl;
-            //    std::cout << "Bone Offset[1][3]: " << it2.offset[1][3] << std::endl;
-            //    std::cout << "Bone Offset[2][0]: " << it2.offset[2][0] << std::endl;
-            //    std::cout << "Bone Offset[2][1]: " << it2.offset[2][1] << std::endl;
-            //    std::cout << "Bone Offset[2][2]: " << it2.offset[2][2] << std::endl;
-            //    std::cout << "Bone Offset[2][3]: " << it2.offset[2][3] << std::endl;
-            //    std::cout << "Bone Offset[3][0]: " << it2.offset[3][0] << std::endl;
-            //    std::cout << "Bone Offset[3][1]: " << it2.offset[3][1] << std::endl;
-            //    std::cout << "Bone Offset[3][2]: " << it2.offset[3][2] << std::endl;
-            //    std::cout << "Bone Offset[3][3]: " << it2.offset[3][3] << std::endl;
-            //    std::cout << std::endl;
-            //}
+            if (count != 0)
+            {
+                nodeData.children[i].children.resize(count);
+                nodeData.children[i].transformation = transform;
+                nodeData.children[i].name = name;
+                nodeData.children[i].childrenCount = count;
+
+                AnimationFileRead.read(reinterpret_cast<char*>(nodeData.children[i].children.data()), sizeof(nodeData.children[i].children));
+
+                RecurseChildren(nodeData.children[i]);
+            }
+        }
+    }
+
+    void EngineCompiler::CheckRecursionData(AssimpNodeData& nodeData)
+    {
+        for (unsigned int i = 0; i < nodeData.childrenCount; ++i)
+        {
+            std::cout << "i: " << i << std::endl;
+            std::cout << "ChildrenCount: " << nodeData.children[i].childrenCount << std::endl;
+
+            if (nodeData.children[i].childrenCount != 0)
+            {
+                std::cout << "Children Name: " << nodeData.children[i].name.data() << std::endl;
+                std::cout << "Transformation[0][0]: " << nodeData.children[i].transformation[0][0] << std::endl;
+                std::cout << "Transformation[0][1]: " << nodeData.children[i].transformation[0][1] << std::endl;
+                std::cout << "Transformation[0][2]: " << nodeData.children[i].transformation[0][2] << std::endl;
+                std::cout << "Transformation[0][3]: " << nodeData.children[i].transformation[0][3] << std::endl;
+                std::cout << "Transformation[1][0]: " << nodeData.children[i].transformation[1][0] << std::endl;
+                std::cout << "Transformation[1][1]: " << nodeData.children[i].transformation[1][1] << std::endl;
+                std::cout << "Transformation[1][2]: " << nodeData.children[i].transformation[1][2] << std::endl;
+                std::cout << "Transformation[1][3]: " << nodeData.children[i].transformation[1][3] << std::endl;
+                std::cout << "Transformation[2][0]: " << nodeData.children[i].transformation[2][0] << std::endl;
+                std::cout << "Transformation[2][1]: " << nodeData.children[i].transformation[2][1] << std::endl;
+                std::cout << "Transformation[2][2]: " << nodeData.children[i].transformation[2][2] << std::endl;
+                std::cout << "Transformation[2][3]: " << nodeData.children[i].transformation[2][3] << std::endl;
+                std::cout << "Transformation[3][0]: " << nodeData.children[i].transformation[3][0] << std::endl;
+                std::cout << "Transformation[3][1]: " << nodeData.children[i].transformation[3][1] << std::endl;
+                std::cout << "Transformation[3][2]: " << nodeData.children[i].transformation[3][2] << std::endl;
+                std::cout << "Transformation[3][3]: " << nodeData.children[i].transformation[3][3] << std::endl;
+                std::cout << std::endl;
+
+                CheckRecursionData(nodeData.children[i]);
+            }
+
         }
     }
 

@@ -97,19 +97,13 @@ void EclipseCompiler::AnimationCompiler::WriteToFile(std::vector<AnimationData>&
         AnimationFileWrite.write(reinterpret_cast<const char*>(&it.m_RootNode.name), sizeof(it.m_RootNode.name));
         AnimationFileWrite.write(reinterpret_cast<const char*>(&it.m_RootNode.childrenCount), sizeof(int));
 
-        for (unsigned int i = 0; i < it.m_RootNode.childrenCount; ++i)
-        {
-            std::cout << "ChildrenCount: " << it.m_RootNode.children[i].childrenCount << std::endl;
-        }
-
-        //int nodeChildrenSize = it.m_RootNode.children.size();
-        //AnimationFileWrite.write(reinterpret_cast<const char*>(&nodeChildrenSize), sizeof(nodeChildrenSize));
-        //AnimationFileWrite.write(reinterpret_cast<const char*>(it.m_RootNode.children.data()), sizeof(AssimpNodeData) * nodeChildrenSize);       
-    
+        RecurseChildren(it.m_RootNode);   
     }
 
     AnimationFileWrite.close();
+
     // std::cout << "Done Writing to Animation File " << std::endl;
+
 }
 
 void EclipseCompiler::AnimationCompiler::ReleaseFile()
@@ -124,4 +118,21 @@ void EclipseCompiler::AnimationCompiler::ReadFile(std::string& in)
 
 void EclipseCompiler::AnimationCompiler::ReadFile()
 {
+}
+
+void EclipseCompiler::AnimationCompiler::RecurseChildren(AssimpNodeData& nodeData)
+{
+    for (unsigned int i = 0; i < nodeData.childrenCount; ++i)
+    {
+        if (nodeData.children[i].childrenCount != 0)
+        {    
+            AnimationFileWrite.write(reinterpret_cast<const char*>(&nodeData.children[i].transformation), sizeof(glm::mat4));
+            AnimationFileWrite.write(reinterpret_cast<const char*>(&nodeData.children[i].name), sizeof(nodeData.children[i].name));
+            AnimationFileWrite.write(reinterpret_cast<const char*>(&nodeData.children[i].childrenCount), sizeof(int));
+            AnimationFileWrite.write(reinterpret_cast<const char*>(nodeData.children[i].children.data()), sizeof(nodeData.children[i]).children);
+
+            RecurseChildren(nodeData.children[i]);
+        }
+
+    }
 }

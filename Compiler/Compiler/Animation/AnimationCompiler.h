@@ -19,6 +19,7 @@ namespace EclipseCompiler
         void WriteToFile(std::vector<AnimationData>&);
         void ReadFile();
 
+        void RecurseChildren(AssimpNodeData& nodeData);
     public:
         void LoadFile(const std::string& animationFile) override;
         void Init() override;
