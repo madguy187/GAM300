@@ -17,7 +17,7 @@ namespace Eclipse
         engine->world.AddComponent(CreatedID, DirectionalLightComponent{ DirectionalLightcounter });
 
         auto& Tr = engine->world.GetComponent<TransformComponent>(CreatedID);
-        Tr.position = ECVec3(0.0f, 150.0f, 0.0f);
+        Tr.position = ECVec3(0.0f, 150.0f, 150.0f);
 
         EDITOR_LOG_INFO("Directional Light Created Successfully");
         DirectionalLightcounter++;
@@ -59,12 +59,16 @@ namespace Eclipse
         shdrpgm.Use();
 
         DirectionalLightComponent& DLight = engine->world.GetComponent<DirectionalLightComponent>(EntityId);
+        TransformComponent& DLightTrans = engine->world.GetComponent<TransformComponent>(EntityId);
+
         std::string number = std::to_string(index);
         GLint uniform_var_loc1 = shdrpgm.GetLocation(("directionlight[" + number + "].direction").c_str());
         GLint uniform_var_loc2 = shdrpgm.GetLocation(("directionlight[" + number + "].lightColor").c_str());
+        GLint uniform_var_loc3 = shdrpgm.GetLocation(("directionlight[" + number + "].position").c_str());
 
         GLCall(glUniform3f(uniform_var_loc1, DLight.Direction.getX(), DLight.Direction.getY(), DLight.Direction.getZ()));
-        GLCall(glUniform3f(uniform_var_loc2, 550.0f, 550.0f, 550.0f));
+        GLCall(glUniform3f(uniform_var_loc3, DLightTrans.position.getX(), DLightTrans.position.getY(), DLightTrans.position.getZ()));
+        GLCall(glUniform3f(uniform_var_loc2, 8.0f, 8.0f, 8.0f));
 
         shdrpgm.UnUse();
     }
@@ -139,7 +143,7 @@ namespace Eclipse
         engine->world.AddComponent(FirstGlobalLight, DirectionalLightComponent{ DirectionalLightcounter });
 
         auto& Tr = engine->world.GetComponent<TransformComponent>(FirstGlobalLight);
-        Tr.position = ECVec3(0.0f, 150.0f, 0.0f);
+        Tr.position = ECVec3(0, 150, 150);
 
         DirectionalLightcounter++;
     }

@@ -48,6 +48,7 @@ struct DirectionalLight
 {
     vec3 direction;
 	vec3 lightColor;
+    vec3 position;
 };
 
 struct SpotLight 
@@ -69,6 +70,8 @@ uniform DirectionalLight directionlight[NR_DIRECTIONAL_LIGHTS];
 #define NR_SPOTLIGHTS 10  
 uniform SpotLight spotLights[NR_SPOTLIGHTS];
 uniform int NumberOfSpotLights;
+
+uniform int Directional;
 
 vec3 getNormalFromMap()
 {
@@ -134,6 +137,8 @@ vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness)
 
 void main()
 {	
+    vec3 AmbientSettings = vec3(0.0); // if i want abit of ambient ill give it 0.03 , lets see as our game need this
+
     vec3 N;
     vec3 V = normalize(camPos - WorldPos);
     //vec3 N = getNormalFromMap(); // no normal map can use vec3(0.1) or we normalize 
@@ -174,48 +179,49 @@ void main()
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // DIRECTIONALIGHT 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    vec3 L = normalize(-directionlight[0].direction - WorldPos);
-    vec3 H = normalize(V + L);
-    float distance = length(-directionlight[0].direction - WorldPos);
-    float attenuation = 1.0 / (distance * distance);
-    vec3 radiance = directionlight[0].lightColor * attenuation;
-    
-    // Cook-Torrance BRDF
-    float NDF , G;
-    
-    if(HasInstance == 1)
+    if(Directional == 1)
     {
-        NDF = DistributionGGX(N, H, roughness);   
-        G   = GeometrySmith(N, V, L, roughness);           
-    }  
-    else
-    {
-        NDF = DistributionGGX(N, H, RoughnessConstant);   
-        G   = GeometrySmith(N, V, L, RoughnessConstant);            
+        vec3 L = normalize(directionlight[0].position - WorldPos);
+        vec3 H = normalize(V + L);
+        float distance = length(directionlight[0].position - WorldPos);
+        vec3 radiance = directionlight[0].lightColor;
+        
+        // Cook-Torrance BRDF
+        float NDF , G;
+        
+        if(HasInstance == 1)
+        {
+            NDF = DistributionGGX(N, H, roughness);   
+            G   = GeometrySmith(N, V, L, roughness);           
+        }  
+        else
+        {
+            NDF = DistributionGGX(N, H, RoughnessConstant);   
+            G   = GeometrySmith(N, V, L, RoughnessConstant);            
+        }
+        
+        vec3 F    = fresnelSchlick(max(dot(H, V), 0.0), F0);
+           
+        vec3 numerator    = NDF * G * F; 
+        float denominator = 4 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.0001;
+        vec3 specular = numerator / denominator;
+        
+        vec3 kS = F;
+        vec3 kD = vec3(1.0) - kS;
+        
+        if(HasInstance == 1)
+        {
+            kD *= 1.0 - metallic;	 
+            float NdotL = max(dot(N, L), 0.0);        
+            Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+        } 
+        else
+        {
+            kD *= 1.0 - MetallicConstant;	 
+            float NdotL = max(dot(N, L), 0.0);        
+            Lo += (kD * AlbedoConstant / PI + specular) * radiance * NdotL;        
+        }
     }
-    
-    vec3 F    = fresnelSchlick(max(dot(H, V), 0.0), F0);
-       
-    vec3 numerator    = NDF * G * F; 
-    float denominator = 4 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.0001;
-    vec3 specular = numerator / denominator;
-    
-    vec3 kS = F;
-    vec3 kD = vec3(1.0) - kS;
-    
-    if(HasInstance == 1)
-    {
-        kD *= 1.0 - metallic;	 
-        float NdotL = max(dot(N, L), 0.0);        
-        Lo += (kD * albedo / PI + specular) * radiance * NdotL;
-    } 
-    else
-    {
-        kD *= 1.0 - MetallicConstant;	 
-        float NdotL = max(dot(N, L), 0.0);        
-        Lo += (kD * AlbedoConstant / PI + specular) * radiance * NdotL;        
-    }
-
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -326,17 +332,26 @@ void main()
         }
     }   
 
-       if( HasInstance == 1)
+       //if(Directional == 0 && (NumberOfPointLights == 0) && (NumberOfSpotLights == 0) )
+       //{
+       //   AmbientSettings = vec3(0.0);
+       //}
+       //else
+       //{
+       //   AmbientSettings = vec3(0.0);
+       //}
+
+       if( HasInstance == 1 )
        {
-          vec3 ambient = vec3(0.03) * albedo * ao;
+          vec3 ambient =  AmbientSettings * albedo * ao;
           vec3 color = ambient + Lo;
           color = color / (color + vec3(1.0));
-          color = pow(color, vec3(1.0/2.2)) * SurfaceColour; 
+          color = pow(color, vec3(1.0/2.2)); 
           FragColor = vec4(color, 1.0);            
         }
         else
         {
-          vec3 ambient = vec3(0.03) * AlbedoConstant * AoConstant;
+          vec3 ambient = AmbientSettings * AlbedoConstant * AoConstant;
           vec3 color = ambient + Lo;
           color = color / (color + vec3(1.0));
           color = pow(color, vec3(1.0/2.2)); 

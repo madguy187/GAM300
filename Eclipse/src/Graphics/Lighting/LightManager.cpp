@@ -103,8 +103,11 @@ namespace Eclipse
         shdrpgm2.Use();
         GLint NumberOfPointLightsforPBR = shdrpgm2.GetLocation("NumberOfPointLights");
         GLint NumberOfSpotLightsforPBR = shdrpgm2.GetLocation("NumberOfSpotLights");
+        GLint Directional = shdrpgm2.GetLocation("Directional");
+
         GLCall(glUniform1i(NumberOfPointLightsforPBR, _allpointlights.GetNumberOfPointLights()));
         GLCall(glUniform1i(NumberOfSpotLightsforPBR, _allspotlights.GetNumberOfSpotLights()));
+        GLCall(glUniform1i(Directional, _DirectionalLights.DirectionalLightcounter));
         shdrpgm2.UnUse();
     }
 
