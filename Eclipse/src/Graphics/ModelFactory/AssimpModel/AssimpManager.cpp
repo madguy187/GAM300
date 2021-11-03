@@ -688,7 +688,7 @@ namespace Eclipse
                             break;
                         }
 
-                        GLuint IsNormalMap_ = shader.GetLocation("IsNormalMap");
+                        GLuint IsNormalMap_ = shader.GetLocation("IsNormalMap"); //test
                         glUniform1i(IsNormalMap_, Material.IsNormalMap);
 
                         engine->gPBRManager->UnBindMetallicTexture(shader);
