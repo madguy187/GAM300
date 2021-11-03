@@ -31,7 +31,7 @@ namespace Eclipse
 
         //std::cout << "Name: " << namein << std::endl;
         //std::cout << "Vertices Size: " << vertices.size() << std::endl;
-        //
+        
         //int counter = 0;
         //
         //if (namein.compare("MutantMesh") == 0)

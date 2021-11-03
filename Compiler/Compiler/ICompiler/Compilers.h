@@ -42,8 +42,10 @@ namespace EclipseCompiler
         static void InitGeometry();
         static void InitTextures();
         static void InitPrefabs();
+        static void InitAnimation();
         static void ReleaseGeometry();
         static void ReleaseTextures();
         static void ReleasePrefabs();
+        static void ReleaseAnimation();
     };
 }

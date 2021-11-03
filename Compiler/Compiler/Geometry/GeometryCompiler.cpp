@@ -45,6 +45,7 @@ namespace EclipseCompiler
                 }
             }
         }
+
     }
 
     void GeometryCompiler::WriteToFile(std::unordered_map<std::string, Mesh>& In)
@@ -68,6 +69,8 @@ namespace EclipseCompiler
 
         for (auto i : In)
         {
+            //std::cout << "Geometry Name: " << i.first << std::endl;
+
             Mesh SaveModel = i.second;
 
             GeometryFileWrite.write(reinterpret_cast<const char*>(&SaveModel), offsetof(Mesh, Vertices));
