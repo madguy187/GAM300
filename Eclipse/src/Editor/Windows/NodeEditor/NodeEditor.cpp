@@ -129,7 +129,7 @@ void Eclipse::NodeEditor::DrawNodeEditor(const char* graphName, NodeEditor& edit
 
             if (linked)
             {
-                if (type1 == NodeEditor::Node::NodeType::ENTITY)
+               /* if (type1 == NodeEditor::Node::NodeType::ENTITY)
                 {
                     if (type2 == NodeEditor::Node::NodeType::TRANSFORM)
                     {
@@ -138,7 +138,9 @@ void Eclipse::NodeEditor::DrawNodeEditor(const char* graphName, NodeEditor& edit
                             = std::dynamic_pointer_cast<EnitityNode>(editor.nodes[pos])->ID;
 
                     }
-                }
+                }*/
+
+                LinkOutToInNode<NodeEditor::Node>(editor.nodes[pos], editor.nodes[pos2], true);
             }
             
 
@@ -173,14 +175,7 @@ void Eclipse::NodeEditor::DrawNodeEditor(const char* graphName, NodeEditor& edit
             const bool notlinked = type1 != type2;
             if (notlinked)
             {
-                if (type1 == NodeEditor::Node::NodeType::ENTITY)
-                {
-                    if (type2 == NodeEditor::Node::NodeType::TRANSFORM)
-                    {
-                        std::dynamic_pointer_cast<TransformNode>(editor.nodes[pos2])->factoryReset();
-
-                    }
-                }
+                LinkNodes<NodeEditor::Node>(editor.nodes[pos], editor.nodes[pos2], false);
             }
             editor.links.erase(iter);
         }
