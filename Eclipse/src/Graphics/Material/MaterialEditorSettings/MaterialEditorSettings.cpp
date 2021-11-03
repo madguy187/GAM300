@@ -7,19 +7,19 @@ namespace Eclipse
     MaterialEditorSettings::MaterialEditorSettings()
     {
         // Light Source in MeshEditor
-        LightPosition = ECVec3(15.0f, 15.0f, 15.0f);
-        lightColor = ECVec3(150.0f, 150.0f, 105.0f);
+        LightPosition = ECVec3(10.0f, 5.0f, 10.0f);
+        lightColor = ECVec3(200.0f, 200.0f, 200.0f);
 
         CreateSphere();
     }
 
     void MaterialEditorSettings::CreateModel()
     {
-        //auto& Innername = engine->AssimpManager.Prefabs["Inner"][0];
-        //InnerEntity = engine->world.CreateEntity();
-        //engine->world.AddComponent(InnerEntity, TransformComponent{});
-        //engine->world.AddComponent(InnerEntity, MeshComponent{});
-        //engine->AssimpManager.SetSingleMesh(InnerEntity, Innername);
+        auto& Innername = engine->AssimpManager.Prefabs["Cube"][0];
+        InnerEntity = engine->world.CreateEntity();
+        engine->world.AddComponent(InnerEntity, TransformComponent{});
+        engine->world.AddComponent(InnerEntity, MeshComponent{});
+        engine->AssimpManager.SetSingleMesh(InnerEntity, Innername);
         //
         //auto& Outername = engine->AssimpManager.Prefabs["Outer"][0];
         //OuterEntity = engine->world.CreateEntity();
@@ -110,7 +110,10 @@ namespace Eclipse
 
             UpdateCurrentMaterial(shdrpgm, _camera);
 
-            RenderSphere();
+            auto& i = engine->world.GetComponent<MeshComponent>(InnerEntity);
+            engine->AssimpManager.RenderMesh(i, GL_FILL);
+
+            //RenderSphere();
             shdrpgm.UnUse();
         }
     }
