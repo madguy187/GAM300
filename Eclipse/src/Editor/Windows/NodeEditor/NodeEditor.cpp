@@ -167,7 +167,7 @@ void Eclipse::NodeEditor::DrawNodeEditor(const char* graphName, NodeEditor& edit
             int pos = findNodePos(editor, from);
 
             int pos2 = findNodePos(editor, to);
-
+ 
             NodeEditor::Node::NodeType type1 = editor.nodes[pos]->getType();
             NodeEditor::Node::NodeType type2 = editor.nodes[pos2]->getType();
             const bool notlinked = type1 != type2;
