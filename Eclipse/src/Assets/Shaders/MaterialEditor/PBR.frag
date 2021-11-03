@@ -165,7 +165,7 @@ void main()
         metallic  = texture(metallicMap, TexCoords).r;
         roughness = texture(roughnessMap, TexCoords).r;
         ao        = texture(aoMap, TexCoords).r;
-        F0 = mix(F0, albedo, metallic);  
+        F0 = albedo; //mix(F0, albedo, metallic);  
     }
     else
     {

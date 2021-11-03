@@ -15,11 +15,11 @@ namespace Eclipse
 
     void MaterialEditorSettings::CreateModel()
     {
-        auto& Innername = engine->AssimpManager.Prefabs["Cube"][0];
-        InnerEntity = engine->world.CreateEntity();
-        engine->world.AddComponent(InnerEntity, TransformComponent{});
-        engine->world.AddComponent(InnerEntity, MeshComponent{});
-        engine->AssimpManager.SetSingleMesh(InnerEntity, Innername);
+        //auto& Innername = engine->AssimpManager.Prefabs["Cube"][0];
+        //InnerEntity = engine->world.CreateEntity();
+        //engine->world.AddComponent(InnerEntity, TransformComponent{});
+        //engine->world.AddComponent(InnerEntity, MeshComponent{});
+        //engine->AssimpManager.SetSingleMesh(InnerEntity, Innername);
         //
         //auto& Outername = engine->AssimpManager.Prefabs["Outer"][0];
         //OuterEntity = engine->world.CreateEntity();
@@ -110,10 +110,7 @@ namespace Eclipse
 
             UpdateCurrentMaterial(shdrpgm, _camera);
 
-            auto& i = engine->world.GetComponent<MeshComponent>(InnerEntity);
-            engine->AssimpManager.RenderMesh(i, GL_FILL);
-
-            //RenderSphere();
+            RenderSphere();
             shdrpgm.UnUse();
         }
     }
