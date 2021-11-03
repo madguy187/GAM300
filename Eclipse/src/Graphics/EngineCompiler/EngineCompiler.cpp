@@ -351,28 +351,34 @@ namespace Eclipse
     {
         glm::mat4 transform;
         std::array<char, 128> name;
-        int count;
+        std::array<char, 128> parentName;
+        int childCount;
+        int parentCount;
 
         for (unsigned int i = 0; i < nodeData.childrenCount; ++i)
-        {          
+        {       
+            AnimationFileRead.read(reinterpret_cast<char*>(&parentName), sizeof(parentName));
+            AnimationFileRead.read(reinterpret_cast<char*>(&parentCount), sizeof(int));
             AnimationFileRead.read(reinterpret_cast<char*>(&transform), sizeof(glm::mat4));
             AnimationFileRead.read(reinterpret_cast<char*>(&name), sizeof(name));
-            AnimationFileRead.read(reinterpret_cast<char*>(&count), sizeof(int));
+            AnimationFileRead.read(reinterpret_cast<char*>(&childCount), sizeof(int));
 
             //Garbage values
-            if (count > MAX_CHILDREN_NODE || count < 0)
+            if (childCount > MAX_CHILDREN_NODE || childCount < 0)
             {
                 //nodeData.children[i].childrenCount = 0;
                 AnimationFileRead.seekg(-(sizeof(glm::mat4) + sizeof(name) + sizeof(int)), AnimationFileRead.cur);
                 return;
             }
 
-            if (count != 0)
+            if (childCount != 0)
             {
-                nodeData.children[i].children.resize(count);
+                nodeData.name = parentName;
+                nodeData.childrenCount = parentCount;
+                nodeData.children[i].children.resize(childCount);
                 nodeData.children[i].transformation = transform;
                 nodeData.children[i].name = name;
-                nodeData.children[i].childrenCount = count;
+                nodeData.children[i].childrenCount = childCount;        
 
                 AnimationFileRead.read(reinterpret_cast<char*>(nodeData.children[i].children.data()), sizeof(nodeData.children[i].children));
 
@@ -386,6 +392,7 @@ namespace Eclipse
         for (unsigned int i = 0; i < nodeData.childrenCount; ++i)
         {
             std::cout << "i: " << i << std::endl;
+            std::cout << "Parent Name: " << nodeData.name.data() << std::endl;
             std::cout << "ChildrenCount: " << nodeData.children[i].childrenCount << std::endl;
 
             if (nodeData.children[i].childrenCount != 0)
