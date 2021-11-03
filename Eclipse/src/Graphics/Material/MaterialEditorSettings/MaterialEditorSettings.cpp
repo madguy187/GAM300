@@ -7,19 +7,25 @@ namespace Eclipse
     MaterialEditorSettings::MaterialEditorSettings()
     {
         // Light Source in MeshEditor
-        LightPosition = ECVec3(10.0f, 5.0f, 10.0f);
-        lightColor = ECVec3(200.0f, 200.0f, 200.0f);
+        LightPosition = ECVec3(0.0f, 15.0f, 15.0f);
+        lightColor = ECVec3(1.0f, 1.0f, 1.0f);
 
         CreateSphere();
     }
 
     void MaterialEditorSettings::CreateModel()
     {
-        //auto& Innername = engine->AssimpManager.Prefabs["Cube"][0];
-        //InnerEntity = engine->world.CreateEntity();
-        //engine->world.AddComponent(InnerEntity, TransformComponent{});
-        //engine->world.AddComponent(InnerEntity, MeshComponent{});
-        //engine->AssimpManager.SetSingleMesh(InnerEntity, Innername);
+        auto& Innername = engine->AssimpManager.Prefabs["Cube"][0];
+        InnerEntity = engine->world.CreateEntity();
+        engine->world.AddComponent(InnerEntity, TransformComponent{});
+        engine->world.AddComponent(InnerEntity, MeshComponent{});
+        engine->AssimpManager.SetSingleMesh(InnerEntity, Innername);
+
+        auto& trans = engine->world.GetComponent<TransformComponent>(InnerEntity);
+        trans.scale.setX(100.0f);
+        trans.scale.setX(5.0f);
+        trans.scale.setX(100.0f);
+
         //
         //auto& Outername = engine->AssimpManager.Prefabs["Outer"][0];
         //OuterEntity = engine->world.CreateEntity();
@@ -107,10 +113,13 @@ namespace Eclipse
 
             UpdateCamera(shdrpgm, _camera);
             UpdateLights(shdrpgm);
-
             UpdateCurrentMaterial(shdrpgm, _camera);
-
             RenderSphere();
+
+            //auto& i = engine->world.GetComponent<MeshComponent>(InnerEntity);       
+            //UpdateCamera(shdrpgm, _camera);
+            //UpdateInner(shdrpgm, _camera, InnerEntity);
+            //engine->AssimpManager.RenderMesh(i, GL_FILL);
             shdrpgm.UnUse();
         }
     }
@@ -130,9 +139,11 @@ namespace Eclipse
         GLint HeightScale_ = shdrpgm.GetLocation("HeightScale");
         GLint SurfaceColour_ = shdrpgm.GetLocation("SurfaceColour");
 
-        Trans.scale.setX(10);
-        Trans.scale.setY(10);
-        Trans.scale.setZ(10);
+        Trans.scale.setX(50);
+        Trans.scale.setY(1);
+        Trans.scale.setZ(50);
+
+        Trans.position.setY(-15);
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::mat4(1.0f);
@@ -233,7 +244,7 @@ namespace Eclipse
         GLint uniform_var_loc2 = MaterialEditorShader.GetLocation(("pointLights[" + number + "].lightColor").c_str());
 
         GLCall(glUniform3f(uniform_var_loc1, LightPosition.getX(), LightPosition.getY(), LightPosition.getZ()));
-        GLCall(glUniform3f(uniform_var_loc2, 300.0f, 300.0f, 300.0f));
+        GLCall(glUniform3f(uniform_var_loc2, 5.0f, 5.0f, 5.0f));
     }
 
     void MaterialEditorSettings::UpdateCamera(Shader& MaterialEditorShader, CameraComponent& MeshEditorCamera)

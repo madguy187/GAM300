@@ -179,8 +179,7 @@ void main()
     vec3 L = normalize(pointLights[0].position - WorldPos);
     vec3 H = normalize(V + L);
     float distance = length(pointLights[0].position - WorldPos);
-    float attenuation = 1.0 / (distance * distance);
-    vec3 radiance = pointLights[0].lightColor * attenuation;
+    vec3 radiance = pointLights[0].lightColor ;
     
     // Cook-Torrance BRDF
     float NDF , G;
