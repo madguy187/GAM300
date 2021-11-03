@@ -11,6 +11,21 @@ namespace Eclipse
         lightColor = ECVec3(200.0f, 200.0f, 200.0f);
     }
 
+    void MaterialEditorSettings::CreateModel()
+    {
+        auto& Innername = engine->AssimpManager.Prefabs["Inner"][0];
+        InnerEntity = engine->world.CreateEntity();
+        engine->world.AddComponent(InnerEntity, TransformComponent{});
+        engine->world.AddComponent(InnerEntity, MeshComponent{});
+        engine->AssimpManager.SetSingleMesh(InnerEntity, Innername);
+
+        auto& Outername = engine->AssimpManager.Prefabs["Outer"][0];
+        OuterEntity = engine->world.CreateEntity();
+        engine->world.AddComponent(OuterEntity, TransformComponent{});
+        engine->world.AddComponent(OuterEntity, MeshComponent{});
+        engine->AssimpManager.SetSingleMesh(OuterEntity, Outername);
+    }
+
     void MaterialEditorSettings::CreateMaterialInstance()
     {
         engine->gPBRManager->AllMaterialInstances.emplace(CurrentMaterial.Name.data(), std::make_unique<MaterialInstance>(CurrentMaterial));
@@ -85,20 +100,25 @@ namespace Eclipse
             UpdateCamera(shdrpgm, _camera);
             UpdateLights(shdrpgm);
 
-            UpdateCurrentMaterial(shdrpgm, _camera);
+            UpdateCurrentMaterial(shdrpgm, _camera, OuterEntity);
+            auto& Outer = engine->world.GetComponent<MeshComponent>(OuterEntity);
+            engine->AssimpManager.RenderMesh(Outer, GL_FILL);
 
-            RenderSphere();
+            UpdateInner(shdrpgm, _camera, InnerEntity);
+            auto& Inner = engine->world.GetComponent<MeshComponent>(InnerEntity);
+            engine->AssimpManager.RenderMesh(Inner, GL_FILL);
+
             shdrpgm.UnUse();
         }
     }
 
-    void MaterialEditorSettings::UpdateCurrentMaterial(Shader& shdrpgm, CameraComponent& _camera)
+    void MaterialEditorSettings::UpdateInner(Shader& shdrpgm, CameraComponent& _camera, Entity ID)
     {
+        auto& Trans = engine->world.GetComponent<TransformComponent>(ID);
+
         GLuint MetallicConstant = shdrpgm.GetLocation("MetallicConstant");
         GLuint RoughnessConstant = shdrpgm.GetLocation("RoughnessConstant");
         GLint model_ = shdrpgm.GetLocation("model");
-        GLuint view1 = shdrpgm.GetLocation("view");
-        GLint projection1 = shdrpgm.GetLocation("projection");
         GLuint AlbedoConstant = shdrpgm.GetLocation("AlbedoConstant");
         GLuint AoConstant = shdrpgm.GetLocation("AoConstant");
         GLint HasInstance = shdrpgm.GetLocation("HasInstance");
@@ -107,17 +127,63 @@ namespace Eclipse
         GLint HeightScale_ = shdrpgm.GetLocation("HeightScale");
         GLint SurfaceColour_ = shdrpgm.GetLocation("SurfaceColour");
 
+        Trans.scale.setX(10);
+        Trans.scale.setY(10);
+        Trans.scale.setZ(10);
+
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+        model = glm::translate(model, Trans.position.ConvertToGlmVec3Type());
         model = glm::rotate(model, glm::radians(Rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(Rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::rotate(model, glm::radians(Rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::scale(model, { 5,5,5 });
+        model = glm::scale(model, Trans.scale.ConvertToGlmVec3Type());
 
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
-        glUniformMatrix4fv(projection1, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
-        glUniformMatrix4fv(view1, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
+        GLCall(glUniform3f(SurfaceColour_, 1.0, 1.0, 1.0));
+        GLCall(glUniform1f(HeightScale_, 0.0f));
+        GLCall(glUniform1i(NormalMap_, true));
+        GLCall(glUniform1i(HasInstance, false));
+        GLCall(glUniform3f(AlbedoConstant, 0.8, 0.8, 0.8));
+        GLCall(glUniform1f(AoConstant, 1.0));
+        GLCall(glUniform1f(MetallicConstant, 0.0));
+        GLCall(glUniform1f(RoughnessConstant, 0.5));
+        GLCall(glUniform3f(BaseReflectivity, 0.4, 0.4, 0.4));
+        BindMaterial(shdrpgm, "None");
+
+    }
+
+    void MaterialEditorSettings::UpdateCurrentMaterial(Shader& shdrpgm, CameraComponent& _camera, Entity ID)
+    {
+        auto& Trans = engine->world.GetComponent<TransformComponent>(ID);
+
+        GLuint MetallicConstant = shdrpgm.GetLocation("MetallicConstant");
+        GLuint RoughnessConstant = shdrpgm.GetLocation("RoughnessConstant");
+        GLint model_ = shdrpgm.GetLocation("model");
+        GLuint AlbedoConstant = shdrpgm.GetLocation("AlbedoConstant");
+        GLuint AoConstant = shdrpgm.GetLocation("AoConstant");
+        GLint HasInstance = shdrpgm.GetLocation("HasInstance");
+        GLint BaseReflectivity = shdrpgm.GetLocation("BaseReflectivity");
+        GLint NormalMap_ = shdrpgm.GetLocation("NormalMap");
+        GLint HeightScale_ = shdrpgm.GetLocation("HeightScale");
+        GLint SurfaceColour_ = shdrpgm.GetLocation("SurfaceColour");
+
+        Trans.scale.setX(10);
+        Trans.scale.setY(10);
+        Trans.scale.setZ(10);
+
+        Trans.position.setY(2.0f);
+        Trans.position.setZ(1.5f);
+
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, Trans.position.ConvertToGlmVec3Type());
+        model = glm::rotate(model, glm::radians(Rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(Rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(Rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, Trans.scale.ConvertToGlmVec3Type());
+
+        glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
 
         if (SelectedIndex == 0)
         {
@@ -178,7 +244,7 @@ namespace Eclipse
 
     void MaterialEditorSettings::UpdateCamera(Shader& MaterialEditorShader, CameraComponent& MeshEditorCamera)
     {
-        TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::MeshEditor_Camera));
+        TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(MeshEditorCamera.camType));
 
         GLuint cameraPos = MaterialEditorShader.GetLocation("camPos");
         GLuint view = MaterialEditorShader.GetLocation("view");

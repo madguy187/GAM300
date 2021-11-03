@@ -12,6 +12,8 @@ namespace Eclipse
 		void Unload() override;
 		void RunMainWindow();
 		void RunFrameBuffer();
+		void OnCameraZoomEvent();
+		void OnCameraMoveEvent();
 		void RunMaterialSettings();
 		void CheckCurrentMaterial(size_t comboIndex);
 	private:

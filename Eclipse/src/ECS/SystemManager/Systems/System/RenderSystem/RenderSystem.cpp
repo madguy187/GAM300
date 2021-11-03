@@ -34,6 +34,8 @@ namespace Eclipse
 
         // DebugManagerRender
         engine->gDebugDrawManager->Init();
+
+        engine->gPBRManager->gMaterialEditorSettings->CreateModel();
     }
 
     void RenderSystem::Update()
