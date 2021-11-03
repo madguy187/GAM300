@@ -7,23 +7,29 @@ namespace Eclipse
 	{
 		float _squareDist{ 0 };
 	};
-	struct NeighbourInfo
-	{
-		AstarNode* neighbour;
-		int distfromNeighbour;
-	};
 
-	struct AstarNode
+	struct BaseNode
 	{
 		ASNodeID _ID;
 		ECVec3 Position;
 		int hcost;
 		int gcost;
 		int fcost;
-		std::vector<NeighbourInfo> neighbours;
-		AstarNode* prev;
+		BaseNode* prev;
 	};
 
+	struct NeighbourInfo
+	{
+		BaseNode* neighbour;
+		int distfromNeighbour;
+	};
+
+	struct AstarNode
+	{
+		BaseNode* _Node;
+		std::vector<NeighbourInfo> neighbours;
+		
+	};
 
 	struct AstarPathComponent
 	{
@@ -40,7 +46,7 @@ namespace Eclipse
 		std::list<AstarNode*> closedlist;
 		std::vector<AstarNode> _Nodes;
 	public:
-		AstarNode* GetNextCurrent();
-		void CalculatePath(AstarNode& start, AstarNode& end);
+		/*AstarNode* GetNextCurrent();
+		void CalculatePath(AstarNode& start, AstarNode& end);*/
 	};
 }

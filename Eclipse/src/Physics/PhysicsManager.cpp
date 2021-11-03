@@ -239,6 +239,25 @@ namespace Eclipse
 		}
 	}
 
+	bool PhysicsManager::Raycast(ECVec3 origin, ECVec3 dir, float dist, PxRaycastBuffer& hit)
+	{
+		PxVec3 _origin;
+		PxVec3 _dir;
+
+		_origin.x = origin.getX();
+		_origin.y = origin.getY();
+		_origin.z = origin.getZ();
+
+		_dir.x = dir.getX();
+		_dir.y = dir.getY();
+		_dir.z = dir.getZ();
+
+		return Px_Scene->raycast(_origin,_dir, dist, hit);
+	}
+
+
+
+
 	void PhysicsManager::AttachCapsuleToActor(Entity ent, float radius,float halfheight)
 	{
 		auto& collision = engine->world.GetComponent<CollisionComponent>(ent);

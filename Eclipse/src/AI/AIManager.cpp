@@ -3,7 +3,7 @@
 namespace Eclipse
 {
 
-	AstarNode* AIManager::GetNextCurrent()
+	/*AstarNode* AIManager::GetNextCurrent()
 	{
 		AstarNode* temp = openlist.front();
 		for (auto node : openlist)
@@ -13,9 +13,9 @@ namespace Eclipse
 		}
 
 		return temp;
-	}
+	}*/
 
-	void AIManager::CalculatePath(AstarNode& start, AstarNode& end)
+	/*void AIManager::CalculatePath(AstarNode& start, AstarNode& end)
 	{
 		AstarNode* current = &start;
 		openlist.push_back(current);
@@ -46,5 +46,5 @@ namespace Eclipse
 			}
 			
 		}
-	}
+	}*/
 }

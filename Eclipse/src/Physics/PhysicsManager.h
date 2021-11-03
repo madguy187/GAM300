@@ -5,13 +5,14 @@
 namespace Eclipse
 {
 	using namespace physx;
-	
+	using RaycastBuffer PxRaycastBuffer;
 	struct EC_Actor
 	{
 		PxActor* actor;
 		ActorType type;
 		bool InScene;
 	};
+
 
 	class PhysicsManager
 	{
@@ -112,6 +113,7 @@ namespace Eclipse
 		void RemoveActorFromScene(Entity ent);
 		void RemoveActor(Entity ent);
 		void ChangeType(Entity ent);
+		bool Raycast(ECVec3 origin, ECVec3 dir, float dist, PxRaycastBuffer& hit);
 		void CleanupScene();
 	};
 }

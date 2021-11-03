@@ -6,8 +6,8 @@ namespace Eclipse
 
 	class NavMeshCreator
 	{
-		void InitPolygon(Entity ent);
+	/*	void InitPolygon(Entity ent);
 		void UpdatePolygon(Entity ent);
-		void Bake(Entity ent);
+		void Bake(Entity ent);*/
 	};
 }

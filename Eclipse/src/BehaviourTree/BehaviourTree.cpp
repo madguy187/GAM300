@@ -1,5 +1,5 @@
+#include "pch.h"
 #include "BehaviourTree.h"
-
 namespace Eclipse
 {
 	const std::vector<BehaviourTree::Node*>& BehaviourTree::CompositeNode::getChildren() const
