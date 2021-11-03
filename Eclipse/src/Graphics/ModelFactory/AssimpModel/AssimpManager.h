@@ -64,6 +64,7 @@ namespace Eclipse
         void ClearAllPrefabs();
         void InsertGeometryName(const std::string& MeshName_);
         void InsertMeshName(const std::string& in);
+        void RemoveSubMesh(std::string in);
         void InsertGeometry(const std::string& name, Mesh& NewMesh);
         void InsertPrefabs(const std::string& Index, const std::string& MeshName);
 

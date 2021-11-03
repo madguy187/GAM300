@@ -273,6 +273,11 @@ namespace Eclipse
         }
     }
 
+    void AssimpModelManager::RemoveSubMesh(std::string in)
+    {
+        AllMeshNames.erase(std::remove(AllMeshNames.begin(), AllMeshNames.end(), in), AllMeshNames.end());
+    }
+
     void AssimpModelManager::InsertGeometry(const std::string& name, Mesh& NewMesh)
     {
         Geometry.emplace(name, std::make_unique<Mesh>(NewMesh));

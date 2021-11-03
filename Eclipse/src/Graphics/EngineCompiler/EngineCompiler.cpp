@@ -139,6 +139,11 @@ namespace Eclipse
 
             if (strcmp(ParentName.data(), "LightBulb") != 0 && strcmp(ParentName.data(), "SpotLight") != 0 && strcmp(ParentName.data(), "Inner") != 0 && strcmp(ParentName.data(), "Outer") != 0)
             {
+                if (NumberOfSubMeshes == 1)
+                {
+                    engine->AssimpManager.RemoveSubMesh(engine->AssimpManager.Prefabs[ParentName.data()][0]);
+                }
+
                 engine->AssimpManager.InsertMeshName(ParentName.data());
             }
         }
