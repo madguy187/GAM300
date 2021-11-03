@@ -12,6 +12,7 @@ uniform sampler2D roughnessMap;
 uniform sampler2D aoMap;
 uniform sampler2D displacement0;
 uniform float HeightScale;
+uniform vec3 SurfaceColour;
 
 // material parameters
 uniform vec3  AlbedoConstant;
@@ -224,7 +225,7 @@ void main()
           vec3 ambient = vec3(0.03) * albedo * ao;
           vec3 color = ambient + Lo;
           color = color / (color + vec3(1.0));
-          color = pow(color, vec3(1.0/2.2)); 
+          color = pow(color, vec3(1.0/2.2)) * SurfaceColour; 
           FragColor = vec4(color, 1.0);            
         }
         else

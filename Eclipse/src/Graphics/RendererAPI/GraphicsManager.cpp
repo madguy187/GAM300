@@ -70,34 +70,36 @@ namespace Eclipse
 
         }
         break;
+        //case 1:
+        //{
+        //    engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
+        //    engine->world.AddComponent(ID, MeshComponent{});
+        //    MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
+        //    sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
+        //    sprite.modelRef = Graphics::models.find("Circle")->first;
+        //}
+        //break;
+        //case 2:
+        //{
+        //    engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
+        //    engine->world.AddComponent(ID, MeshComponent{});
+        //    MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
+        //    sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
+        //    sprite.modelRef = Graphics::models.find("Triangle")->first;
+        //}
+        break;
         case 1:
         {
-            engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
-            engine->world.AddComponent(ID, MeshComponent{});
-            MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-            sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-            sprite.modelRef = Graphics::models.find("Circle")->first;
+            engine->AssimpManager.CreateBasicPrimitives(ID, "Straight_Stairs");
+
+            //engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
+            //engine->world.AddComponent(ID, MeshComponent{});
+            //MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
+            //sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
+            //sprite.modelRef = Graphics::models.find("Lines")->first;
         }
         break;
         case 2:
-        {
-            engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
-            engine->world.AddComponent(ID, MeshComponent{});
-            MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-            sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-            sprite.modelRef = Graphics::models.find("Triangle")->first;
-        }
-        break;
-        case 3:
-        {
-            engine->world.AddComponent(ID, MaterialComponent{ MaterialModelType::MT_BASIC });
-            engine->world.AddComponent(ID, MeshComponent{});
-            MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-            sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-            sprite.modelRef = Graphics::models.find("Lines")->first;
-        }
-        break;
-        case 4:
         {
             engine->AssimpManager.CreateBasicPrimitives(ID, "Sphere");
 
@@ -111,7 +113,7 @@ namespace Eclipse
             //Mat.TextureRef = Graphics::textures.find("brick")->first;
         }
         break;
-        case 5:
+        case 3:
         {
             engine->AssimpManager.CreateBasicPrimitives(ID, "Cube");
 
@@ -125,7 +127,7 @@ namespace Eclipse
             //Mat.TextureRef = Graphics::textures.find("FolderIcon")->first;
         }
         break;
-        case 6:
+        case 4:
         {
             engine->AssimpManager.CreateBasicPrimitives(ID, "Cylinder");
 
@@ -136,7 +138,7 @@ namespace Eclipse
             //sprite.modelRef = Graphics::models.find("Cylinder")->first;
         }
         break;
-        case 7:
+        case 5:
         {
             engine->AssimpManager.CreateBasicPrimitives(ID, "Cone");
 
@@ -147,7 +149,7 @@ namespace Eclipse
             //sprite.modelRef = Graphics::models.find("Cone")->first;
         }
         break;
-        case 8:
+        case 6:
         {
             engine->AssimpManager.CreateBasicPrimitives(ID, "Torus");
 
@@ -160,19 +162,19 @@ namespace Eclipse
             //sprite.modelRef = Graphics::models.find("Torus")->first;
         }
         break;
-        case 9:
-        {
-            engine->world.AddComponent(ID, MaterialComponent{});
-            MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
-            mat.Modeltype = MaterialModelType::MT_BASIC;
-            engine->world.AddComponent(ID, MeshComponent{});
-            MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
-            sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
-            sprite.modelRef = Graphics::models.find("Pyramid")->first;
+        //case 9:
+        //{
+        //    engine->world.AddComponent(ID, MaterialComponent{});
+        //    MaterialComponent& mat = engine->world.GetComponent<MaterialComponent>(ID);
+        //    mat.Modeltype = MaterialModelType::MT_BASIC;
+        //    engine->world.AddComponent(ID, MeshComponent{});
+        //    MeshComponent& sprite = engine->world.GetComponent<MeshComponent>(ID);
+        //    sprite.shaderRef = (Graphics::shaderpgms.find("shader3DShdrpgm")->first);
+        //    sprite.modelRef = Graphics::models.find("Pyramid")->first;
 
-        }
-        break;
-        case 10:
+        //}
+        //break;
+        case 7:
         {
             engine->AssimpManager.CreateBasicPrimitives(ID, "ICOSphere");
 
@@ -186,7 +188,7 @@ namespace Eclipse
 
         }
         break;
-        case 11:
+        case 8:
         {
             engine->AssimpManager.CreateBasicPrimitives(ID, "Plane");
 
@@ -199,20 +201,32 @@ namespace Eclipse
             //sprite.modelRef = Graphics::models.find("Plane")->first;
         }
         break;
+        case 9:
+        {
+            engine->AssimpManager.CreateBasicPrimitives(ID, "Curved_Stairs");
+        }
+        break;
+        case 10:
+        {
+            engine->AssimpManager.CreateBasicPrimitives(ID, "Spiral_Stairs");
+        }
+        break;
+
+
         // pointlight
-        case 12:
+        case 11:
         {
             engine->LightManager.CreateLights(Eclipse::TypesOfLights::POINTLIGHT, ID);
         }
         break;
         // Directional
-        case 13:
+        case 12:
         {
             engine->LightManager.CreateLights(Eclipse::TypesOfLights::DIRECTIONAL, ID);
         }
         break;
         // SpotLight
-        case 14:
+        case 13:
         {
             engine->LightManager.CreateLights(Eclipse::TypesOfLights::SPOTLIGHT, ID);
         }
@@ -348,20 +362,6 @@ namespace Eclipse
         glUniform1i(tex_loc, false);
     }
 
-    void Eclipse::GraphicsManager::ResetInstancedDebugBoxes()
-    {
-        AllAABBs.Reset();
-    }
-
-    void Eclipse::GraphicsManager::DrawDebugBoxes()
-    {
-        if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
-        {
-            // render boxes
-            engine->GraphicsManager.AllAABBs.DrawAll(FrameBufferMode::FBM_SCENE);
-        }
-    }
-
     std::string Eclipse::GraphicsManager::GetModelName(unsigned int modelname)
     {
         switch (modelname)
@@ -371,55 +371,43 @@ namespace Eclipse
             break;
 
         case 1:
-            return "Triangle";
+            return "Straight_Stairs";
             break;
 
         case 2:
-            return "Circle";
-            break;
-
-        case 3:
-            return "Lines";
-            break;
-
-        case 4:
-            return "Lightsquare";
-            break;
-
-        case 5:
             return "Sphere";
             break;
 
-        case 6:
+        case 3:
             return "Plane";
             break;
 
-        case 7:
+        case 4:
             return "Cube";
             break;
 
-        case 8:
+        case 5:
             return "Cylinder";
             break;
 
-        case 9:
+        case 6:
             return "Cone";
             break;
 
-        case 10:
+        case 7:
             return "Torus";
             break;
 
-        case 11:
-            return "Pyramid";
-            break;
-
-        case 12:
+        case 8:
             return "ICOSphere";
             break;
 
-        case 13:
-            return "Frustum";
+        case 9:
+            return "Curved_Stairs";
+            break;
+
+        case 10:
+            return "Spiral_Stairs";
             break;
         }
 
@@ -450,9 +438,6 @@ namespace Eclipse
 
     void Eclipse::GraphicsManager::FinalRender()
     {
-        engine->MaterialManager.DoNotUpdateStencil();
-        DrawDebugBoxes();
-
         if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
         {
             engine->MaterialManager.DoNotUpdateStencil();
@@ -461,14 +446,6 @@ namespace Eclipse
 
         engine->MaterialManager.DoNotUpdateStencil();
         PostProcessUpdate();
-    }
-
-    void Eclipse::GraphicsManager::DrawEntireGrid()
-    {
-        engine->MaterialManager.DoNotUpdateStencil();
-        engine->GraphicsManager.DrawDebugBoxes();
-
-        engine->GridManager->DrawGrid(FrameBufferMode::FBM_SCENE);
     }
 
     void GraphicsManager::PostProcessUpdate()

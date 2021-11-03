@@ -72,15 +72,9 @@ namespace Eclipse
 		}
 
 		if (ECGui::IsItemActive())
-		{
-			//std::cout << "Window is active" << std::endl;
 			IsWindowActive = true;
-		}
 		else
-		{
-			//std::cout << "Window is not active" << std::endl;
 			IsWindowActive = false;
-		}
 	}
 
 	void SceneWindow::OnGizmoUpdateEvent()
@@ -142,24 +136,31 @@ namespace Eclipse
 
 		if (ImGuizmo::IsUsing() && ECGui::IsItemHovered())
 		{
-			std::cout << "gizmo being used" << std::endl;
 			glm::vec3 translation, rotation, scale;
 			ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(translation),
 				glm::value_ptr(rotation), glm::value_ptr(scale));
 
 			// glm::vec3 deltaRotation = rotation - transCom.rotation.ConvertToGlmVec3Type();
 
+			auto& ent = engine->world.GetComponent<EntityComponent>(selectedEntity);
+
 			switch (m_GizmoType)
 			{
 			case ImGuizmo::OPERATION::TRANSLATE:
 				transCom.position = translation;
-				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.position, transCom.position, selectedEntity });
+				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.position, transCom.position, selectedEntity });			
 
 				if (engine->world.CheckComponent<ChildComponent>(selectedEntity))
 				{
 					auto& child = engine->world.GetComponent<ChildComponent>(selectedEntity);
 					child.UpdateChildren = true;
 					//std::cout << "translate gizmo being used!" << std::endl;
+
+					if (ent.Tag != EntityType::ENT_MESH)
+					{
+						engine->gPicker.UpdateAabb(selectedEntity);
+						engine->gDynamicAABBTree.UpdateData(selectedEntity);
+					}
 				}
 				break;
 			case ImGuizmo::OPERATION::ROTATE:
@@ -177,6 +178,18 @@ namespace Eclipse
 			//Update for DynamicAABB Tree -Rachel
 			engine->gPicker.UpdateAabb(selectedEntity);
 			engine->gDynamicAABBTree.UpdateData(selectedEntity);
+			if ((engine->world.CheckComponent<ParentComponent>(selectedEntity)) && (ent.Tag != EntityType::ENT_MODEL))
+			{
+				auto& parent = engine->world.GetComponent<ParentComponent>(selectedEntity);
+
+				for (auto& it : parent.child)
+				{
+					auto& transform = engine->world.GetComponent<TransformComponent>(it);
+				
+					engine->gPicker.UpdateAabb(it);
+					engine->gDynamicAABBTree.UpdateData(it);
+				}
+			}
 
 			OnCopyEntityEvent();
 		}
@@ -229,7 +242,7 @@ namespace Eclipse
 	{
 		if (ECGui::IsMouseClicked(0) && !ImGuizmo::IsUsing())
 		{
-			std::cout << "picking being used" << std::endl;
+			//std::cout << "picking being used" << std::endl;
 			engine->world.GetSystem<PickingSystem>()->EditorUpdate();
 
 			if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
@@ -239,7 +252,7 @@ namespace Eclipse
 
 	void SceneWindow::OnCopyEntityEvent()
 	{
-		if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_LEFTALT)) && m_GizmoType == ImGuizmo::OPERATION::TRANSLATE)
+		if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_LEFTALT)))
 		{
 			if (!IsCopying)
 			{

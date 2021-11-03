@@ -10,14 +10,9 @@ namespace Eclipse
 
     void PBRManager::Init()
     {
-        //InitialiseBaseReflectivity();
-        //LoadAllTextures();
+        LoadAllTextures();
 
         gMaterialEditorSettings = std::make_unique<MaterialEditorSettings>();
-
-        //LoadMaterial("HardWood");
-        //LoadMaterial("Rock");
-        //LoadMaterial("Testing");
     }
 
     void PBRManager::InitialiseBaseReflectivity()
@@ -88,6 +83,10 @@ namespace Eclipse
 
     void PBRManager::LoadAllTextures()
     {
+        AllMaterialTextures.clear();
+
+        DragAndDrop::CreateEmptyFolder("Materials");
+
         for (auto& dirEntry : std::filesystem::directory_iterator("src//Assets//Materials"))
         {
             const auto& path = dirEntry.path();
@@ -102,35 +101,41 @@ namespace Eclipse
                 auto relativePath2 = relative(MaterialTextureFiles, "src//");
                 std::string MaterialTextureFileName = relativePath2.filename().string();
 
-                if (MaterialTextureFileName.find("albedo.png") != std::string::npos)
+                if (MaterialTextureFileName.find("albedo.dds") != std::string::npos)
                 {
-                    unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/albedo.png").c_str());
-                    AllMaterialTextures[FolderName][MaterialType::MT_ALBEDO] = TextureID;
+                    Texture tex((GoIntoMaterialFolder + "/albedo.dds").c_str());
+                    //unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/albedo.png").c_str());
+                    AllMaterialTextures[FolderName][MaterialType::MT_ALBEDO] = tex.GetHandle();
                 }
-                else if (MaterialTextureFileName.find("normal.png") != std::string::npos)
+                else if (MaterialTextureFileName.find("normal.dds") != std::string::npos)
                 {
-                    unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/normal.png").c_str());
-                    AllMaterialTextures[FolderName][MaterialType::MT_NORMAL] = TextureID;
+                    Texture tex((GoIntoMaterialFolder + "/normal.dds").c_str());
+                    //unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/normal.dds").c_str());
+                    AllMaterialTextures[FolderName][MaterialType::MT_NORMAL] = tex.GetHandle();
                 }
-                else if (MaterialTextureFileName.find("metallic.png") != std::string::npos)
+                else if (MaterialTextureFileName.find("metallic.dds") != std::string::npos)
                 {
-                    unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/metallic.png").c_str());
-                    AllMaterialTextures[FolderName][MaterialType::MT_METALLIC] = TextureID;
+                    Texture tex((GoIntoMaterialFolder + "/metallic.dds").c_str());
+                    //unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/metallic.png").c_str());
+                    AllMaterialTextures[FolderName][MaterialType::MT_METALLIC] = tex.GetHandle();
                 }
-                else if (MaterialTextureFileName.find("roughness.png") != std::string::npos)
+                else if (MaterialTextureFileName.find("roughness.dds") != std::string::npos)
                 {
-                    unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/roughness.png").c_str());
-                    AllMaterialTextures[FolderName][MaterialType::MT_ROUGHNESS] = TextureID;
+                    Texture tex((GoIntoMaterialFolder + "/roughness.dds").c_str());
+                    //unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/roughness.png").c_str());
+                    AllMaterialTextures[FolderName][MaterialType::MT_ROUGHNESS] = tex.GetHandle();
                 }
-                else if (MaterialTextureFileName.find("ao.png") != std::string::npos)
+                else if (MaterialTextureFileName.find("ao.dds") != std::string::npos)
                 {
-                    unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/ao.png").c_str());
-                    AllMaterialTextures[FolderName][MaterialType::MT_AO] = TextureID;
+                    Texture tex((GoIntoMaterialFolder + "/ao.dds").c_str());
+                    //unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/ao.png").c_str());
+                    AllMaterialTextures[FolderName][MaterialType::MT_AO] = tex.GetHandle();
                 }
-                else if (MaterialTextureFileName.find("height.png") != std::string::npos)
+                else if (MaterialTextureFileName.find("height.dds") != std::string::npos)
                 {
-                    unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/height.png").c_str());
-                    AllMaterialTextures[FolderName][MaterialType::MT_HEIGHT] = TextureID;
+                    Texture tex((GoIntoMaterialFolder + "/height.dds").c_str());
+                    //unsigned int TextureID = loadTexture((GoIntoMaterialFolder + "/height.png").c_str());
+                    AllMaterialTextures[FolderName][MaterialType::MT_HEIGHT] = tex.GetHandle();
                 }
             }
         }
@@ -199,6 +204,8 @@ namespace Eclipse
         GLint HasInstance = shdrpgm.GetLocation("HasInstance");
         GLint BaseReflectivity_ = shdrpgm.GetLocation("BaseReflectivity");
         GLint HeightScale_ = shdrpgm.GetLocation("HeightScale");
+        GLint IsNormalMap_ = shdrpgm.GetLocation("IsNormalMap");
+        GLint SurfaceColour_ = shdrpgm.GetLocation("SurfaceColour");
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::mat4(1.0f);
@@ -208,6 +215,12 @@ namespace Eclipse
         model = glm::rotate(model, glm::radians(ModelTransform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::scale(model, ModelTransform.scale.ConvertToGlmVec3Type());
 
+        GLCall(glUniform3f(SurfaceColour_,
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->SurfaceColour.getX(),
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->SurfaceColour.getY(),
+            AllMaterialInstances[MaterialCom.MaterialInstanceName]->SurfaceColour.getZ()));
+
+        GLCall(glUniform1i(IsNormalMap_, AllMaterialInstances[MaterialCom.MaterialInstanceName]->IsNormalMap));
         GLCall(glUniform1i(HasInstance, AllMaterialInstances[MaterialCom.MaterialInstanceName]->HasTexture));
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv(projection1, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
@@ -271,7 +284,7 @@ namespace Eclipse
         //In.setInt("displacement0", 15);
     }
 
-    void PBRManager::SetAlbedoConstant(Shader& In, glm::vec4& AlbedoValue)
+    void PBRManager::SetAlbedoConstant(Shader& In, glm::vec4 AlbedoValue)
     {
         GLuint AlbedoConstant = In.GetLocation("AlbedoConstant");
         glUniform3f(AlbedoConstant, AlbedoValue.r, AlbedoValue.g, AlbedoValue.b);
@@ -314,6 +327,18 @@ namespace Eclipse
     void PBRManager::UnBindAOTexture(Shader& In)
     {
         In.setInt("aoMap", 0);
+    }
+
+    void PBRManager::SetSurfaceColour(Shader& In, glm::vec3 SurfaceColour_)
+    {
+        GLuint AlbedoConstant = In.GetLocation("SurfaceColour");
+        glUniform3f(AlbedoConstant, SurfaceColour_.r, SurfaceColour_.g, SurfaceColour_.b);
+    }
+
+    void PBRManager::SetSurfaceColour(Shader& In, ECVec3 SurfaceColour_)
+    {
+        GLuint AlbedoConstant = In.GetLocation("SurfaceColour");
+        glUniform3f(AlbedoConstant, SurfaceColour_.getX(), SurfaceColour_.getY(), SurfaceColour_.getZ());
     }
 
     void PBRManager::UpdateLoop()
@@ -445,6 +470,14 @@ namespace Eclipse
 
         gMaterialEditorSettings->RenderSphere();
         shdrpgm.UnUse();
+    }
+
+    bool PBRManager::CheckMaterialExist(MaterialComponent& in)
+    {
+        if (AllMaterialInstances.find(in.MaterialInstanceName.data()) == AllMaterialInstances.end())
+            return false;
+
+        return true;
     }
 
     void PBRManager::Clear(std::string& TextureName, MaterialType In)

@@ -10,6 +10,7 @@ namespace Eclipse
         bool IsNormalMap = false;
         float HeightScale = 0.05f;
         ECVec3 BaseReflectivity = { 0.4f,0.4f,0.4f };
+        ECVec3 SurfaceColour = { 1.0f,1.0f,1.0f };
 
         // Non Textured Parameters
         ECVec3 AlbedoConstant{ 1.0f };

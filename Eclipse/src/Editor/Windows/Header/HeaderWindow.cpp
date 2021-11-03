@@ -44,7 +44,7 @@ namespace Eclipse
 				engine->world.GetSystem<MonoSystem>()->Init();
 
 				engine->SetPlayState(true);
-				ECGui::SetWindowFocus("Game View");
+				ECGui::SetWindowFocus("Game View " ICON_MDI_MONITOR);
 				EDITOR_LOG_INFO("Scene is playing...");
 			}
 		}
@@ -58,7 +58,7 @@ namespace Eclipse
 
 				engine->SetPlayState(false);
 				engine->SetPauseState(false);
-				ECGui::SetWindowFocus("Scene View");
+				ECGui::SetWindowFocus("Scene View " ICON_MDI_MONITOR);
 				engine->szManager.LoadBackupFile();
 				EDITOR_LOG_INFO("Scene has stopped playing. Reverting to original state...");
 			}
