@@ -34,8 +34,6 @@ namespace Eclipse
 
         // DebugManagerRender
         engine->gDebugDrawManager->Init();
-
-        engine->gPBRManager->gMaterialEditorSettings->CreateModel();
     }
 
     void RenderSystem::Update()
@@ -49,7 +47,7 @@ namespace Eclipse
         if (engine->GraphicsManager.CheckRender == true)
         {
             // Estiamtion which models are in our frustrum
-            const auto& RenderablesVsFrustrum = engine->gCullingManager->ReturnContacted();
+            //const auto& RenderablesVsFrustrum = engine->gCullingManager->ReturnContacted();
 
             /*************************************************************************
               Render Without Stencer
@@ -62,8 +60,8 @@ namespace Eclipse
             for (auto const& entityID : mEntities)
             {
                 // Used somewhere else.
-                if (entityID == engine->gPBRManager->gMaterialEditorSettings->InnerEntity || entityID == engine->gPBRManager->gMaterialEditorSettings->OuterEntity)
-                    continue;
+                //if (entityID == engine->gPBRManager->gMaterialEditorSettings->InnerEntity || entityID == engine->gPBRManager->gMaterialEditorSettings->OuterEntity)
+                //    continue;
 
                 //If No Mesh Component, Do not Continue
                 if (!engine->world.CheckComponent<MeshComponent>(entityID))

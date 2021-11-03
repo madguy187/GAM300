@@ -50,7 +50,7 @@ namespace Eclipse
         MaterialEditorSettings();
         void BindMaterial(Shader& In, std::string MaterialName);
         void RenderSphere();
-        void UpdateCurrentMaterial(Shader& ShaderIn, CameraComponent& Camin, Entity ID);
+        void UpdateCurrentMaterial(Shader& ShaderIn, CameraComponent& Camin);
         void UpdateLights(Shader& MaterialEditorShader);
         void UpdateCamera(Shader& MaterialEditorShader, CameraComponent& MeshEditorCamera);
         void CreateMaterialInstance();

@@ -75,18 +75,9 @@ namespace Eclipse
         _camera.projType = CameraComponent::ProjectionType::Perspective;
 
         auto& _transform = engine->world.GetComponent<TransformComponent>(newCam);
-
-
-        if (_camType == CameraComponent::CameraType::MaterialEditor_Camera)
-        {
-            _transform.position = ECVec3{ 15.0f, 8.0f, 15.0f };
-            _transform.rotation = ECVec3{ -25.0f, 225.0f, 0.0f };
-        }
-        else
-        {
-            _transform.position = EDITORCAM_INITPOS;
-            _transform.rotation = EDITORCAM_INITROT;
-        }
+        //Set default initial position to be same as initial game camera position
+        _transform.position = GAMECAM_INITPOS;
+        _transform.rotation = GAMECAM_INITROT;
 
         cameraList.emplace(_camType, newCam);
     }

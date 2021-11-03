@@ -7,23 +7,29 @@ namespace Eclipse
     MaterialEditorSettings::MaterialEditorSettings()
     {
         // Light Source in MeshEditor
-        LightPosition = ECVec3(10.0f, 5.0f, 10.0f);
-        lightColor = ECVec3(200.0f, 200.0f, 200.0f);
+        LightPosition = ECVec3(15.0f, 15.0f, 15.0f);
+        lightColor = ECVec3(150.0f, 150.0f, 105.0f);
     }
 
     void MaterialEditorSettings::CreateModel()
     {
-        auto& Innername = engine->AssimpManager.Prefabs["Inner"][0];
-        InnerEntity = engine->world.CreateEntity();
-        engine->world.AddComponent(InnerEntity, TransformComponent{});
-        engine->world.AddComponent(InnerEntity, MeshComponent{});
-        engine->AssimpManager.SetSingleMesh(InnerEntity, Innername);
+        //auto& Innername = engine->AssimpManager.Prefabs["Inner"][0];
+        //InnerEntity = engine->world.CreateEntity();
+        //engine->world.AddComponent(InnerEntity, TransformComponent{});
+        //engine->world.AddComponent(InnerEntity, MeshComponent{});
+        //engine->AssimpManager.SetSingleMesh(InnerEntity, Innername);
+        //
+        //auto& Outername = engine->AssimpManager.Prefabs["Outer"][0];
+        //OuterEntity = engine->world.CreateEntity();
+        //engine->world.AddComponent(OuterEntity, TransformComponent{});
+        //engine->world.AddComponent(OuterEntity, MeshComponent{});
+        //engine->AssimpManager.SetSingleMesh(OuterEntity, Outername);\
 
-        auto& Outername = engine->AssimpManager.Prefabs["Outer"][0];
-        OuterEntity = engine->world.CreateEntity();
-        engine->world.AddComponent(OuterEntity, TransformComponent{});
-        engine->world.AddComponent(OuterEntity, MeshComponent{});
-        engine->AssimpManager.SetSingleMesh(OuterEntity, Outername);
+        //auto& Outer = engine->world.GetComponent<MeshComponent>(OuterEntity);
+        //engine->AssimpManager.RenderMesh(Outer, GL_FILL);
+        //UpdateInner(shdrpgm, _camera, InnerEntity);
+        //auto& Inner = engine->world.GetComponent<MeshComponent>(InnerEntity);
+            //engine->AssimpManager.RenderMesh(Inner, GL_FILL);
     }
 
     void MaterialEditorSettings::CreateMaterialInstance()
@@ -100,14 +106,9 @@ namespace Eclipse
             UpdateCamera(shdrpgm, _camera);
             UpdateLights(shdrpgm);
 
-            UpdateCurrentMaterial(shdrpgm, _camera, OuterEntity);
-            auto& Outer = engine->world.GetComponent<MeshComponent>(OuterEntity);
-            engine->AssimpManager.RenderMesh(Outer, GL_FILL);
+            UpdateCurrentMaterial(shdrpgm, _camera);
 
-            UpdateInner(shdrpgm, _camera, InnerEntity);
-            auto& Inner = engine->world.GetComponent<MeshComponent>(InnerEntity);
-            engine->AssimpManager.RenderMesh(Inner, GL_FILL);
-
+            RenderSphere();
             shdrpgm.UnUse();
         }
     }
@@ -153,10 +154,8 @@ namespace Eclipse
 
     }
 
-    void MaterialEditorSettings::UpdateCurrentMaterial(Shader& shdrpgm, CameraComponent& _camera, Entity ID)
+    void MaterialEditorSettings::UpdateCurrentMaterial(Shader& shdrpgm, CameraComponent& _camera)
     {
-        auto& Trans = engine->world.GetComponent<TransformComponent>(ID);
-
         GLuint MetallicConstant = shdrpgm.GetLocation("MetallicConstant");
         GLuint RoughnessConstant = shdrpgm.GetLocation("RoughnessConstant");
         GLint model_ = shdrpgm.GetLocation("model");
@@ -168,20 +167,13 @@ namespace Eclipse
         GLint HeightScale_ = shdrpgm.GetLocation("HeightScale");
         GLint SurfaceColour_ = shdrpgm.GetLocation("SurfaceColour");
 
-        Trans.scale.setX(10);
-        Trans.scale.setY(10);
-        Trans.scale.setZ(10);
-
-        Trans.position.setY(2.0f);
-        Trans.position.setZ(1.5f);
-
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::mat4(1.0f);
-        model = glm::translate(model, Trans.position.ConvertToGlmVec3Type());
+        model = glm::translate(model, glm::vec3{ 0.0f });
         model = glm::rotate(model, glm::radians(Rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(Rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::rotate(model, glm::radians(Rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::scale(model, Trans.scale.ConvertToGlmVec3Type());
+        model = glm::scale(model, glm::vec3{ 5.0f });
 
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
 
