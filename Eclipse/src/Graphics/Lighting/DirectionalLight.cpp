@@ -62,13 +62,20 @@ namespace Eclipse
         TransformComponent& DLightTrans = engine->world.GetComponent<TransformComponent>(EntityId);
 
         std::string number = std::to_string(index);
-        GLint uniform_var_loc1 = shdrpgm.GetLocation(("directionlight[" + number + "].direction").c_str());
-        GLint uniform_var_loc2 = shdrpgm.GetLocation(("directionlight[" + number + "].lightColor").c_str());
-        GLint uniform_var_loc3 = shdrpgm.GetLocation(("directionlight[" + number + "].position").c_str());
 
-        GLCall(glUniform3f(uniform_var_loc1, DLight.Direction.getX(), DLight.Direction.getY(), DLight.Direction.getZ()));
-        GLCall(glUniform3f(uniform_var_loc3, DLightTrans.position.getX(), DLightTrans.position.getY(), DLightTrans.position.getZ()));
-        GLCall(glUniform3f(uniform_var_loc2, 8.0f, 8.0f, 8.0f));
+        GLint uniform_var_loc4 = shdrpgm.GetLocation(("directionlight[" + number + "].AffectsWorld").c_str());
+        GLCall(glUniform1i(uniform_var_loc4, DLight.AffectsWorld));
+
+        if (DLight.AffectsWorld)
+        {
+            GLint uniform_var_loc1 = shdrpgm.GetLocation(("directionlight[" + number + "].direction").c_str());
+            GLint uniform_var_loc2 = shdrpgm.GetLocation(("directionlight[" + number + "].lightColor").c_str());
+            GLint uniform_var_loc3 = shdrpgm.GetLocation(("directionlight[" + number + "].position").c_str());
+
+            GLCall(glUniform3f(uniform_var_loc1, DLight.Direction.getX(), DLight.Direction.getY(), DLight.Direction.getZ()));
+            GLCall(glUniform3f(uniform_var_loc3, DLightTrans.position.getX(), DLightTrans.position.getY(), DLightTrans.position.getZ()));
+            GLCall(glUniform3f(uniform_var_loc2, 8.0f, 8.0f, 8.0f));
+        }
 
         shdrpgm.UnUse();
     }

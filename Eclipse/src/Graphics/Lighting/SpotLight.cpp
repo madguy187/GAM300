@@ -70,36 +70,6 @@ namespace Eclipse
         model = glm::scale(model, SpotlightTransform.scale.ConvertToGlmVec3Type());
         engine->gDebugDrawManager->SpotLightIcons.Addinstance(model);
 
-      //  float GetMagnitudeOfDirection = in->direction.ConvertToGlmVec3Type().length(); // we get magnitude of direction first
-      //  glm::vec3 dir = glm::normalize(in->direction.ConvertToGlmVec3Type());
-      //  // tan RotateX = Magnitude of upwards / magnitude of direction
-      //  //tanf(SpotlightTransform.rotation.getX()) = float test / magnitude of direction
-
-      //  float UPWARD = 0.0f;
-      //  glm::vec2 NewDir = { 0,0 };
-      //  if (SpotlightTransform.rotation.getX() > 90 && SpotlightTransform.rotation.getX() <= 180)
-      //  {
-      ////      UPWARD = tanf(glm::radians(abs(SpotlightTransform.rotation.getX() - 90)));
-      // //     NewDir = glm::vec2(dir.z, dir.y);//+ glm::vec2(0, UPWARD);
-      //  }
-      //  if (SpotlightTransform.rotation.getX() >0 && SpotlightTransform.rotation.getX() < 90)
-      //  {
-
-      //      UPWARD = tanf(glm::radians(abs(SpotlightTransform.rotation.getX())));
-      //      NewDir = glm::vec2(dir.z, dir.y) + glm::vec2(0, UPWARD);
-      //      glm::vec2 ScaleupDir = NewDir * GetMagnitudeOfDirection;
-
-      //      in->direction.setZ(ScaleupDir.x);
-      //      in->direction.setY(ScaleupDir.y);
-      //  }
-        //else
-        //{
-        //    //UPWARD = tanf(glm::radians(static_cast<int>(abs(SpotlightTransform.rotation.getX())) % 90)) / 1;
-        //}
-
-       
-
-
         CheckUniformPBR(IndexId, EntityId);
     }
 
@@ -220,23 +190,37 @@ namespace Eclipse
         TransformComponent& SpotlightTransform = engine->world.GetComponent<TransformComponent>(EntityId);
         SpotLightComponent& Spotlight = engine->world.GetComponent<SpotLightComponent>(EntityId);
         std::string number = std::to_string(index);
-        GLint uniform_var_loc1 = shdrpgm.GetLocation(("spotLights[" + number + "].position").c_str());
-        GLint uniform_var_loc2 = shdrpgm.GetLocation(("spotLights[" + number + "].lightColor").c_str());
-        GLint uniform_var_loc3 = shdrpgm.GetLocation(("spotLights[" + number + "].cutOff").c_str());
-        GLint uniform_var_loc4 = shdrpgm.GetLocation(("spotLights[" + number + "].outerCutOff").c_str());
-        GLint uniform_var_loc5 = shdrpgm.GetLocation(("spotLights[" + number + "].direction").c_str());
 
-        GLCall(glUniform3f(uniform_var_loc1, SpotlightTransform.position.getX(), SpotlightTransform.position.getY(), SpotlightTransform.position.getZ()));
-        GLCall(glUniform3f(uniform_var_loc2, 300.0f, 300.0f, 300.0f));
-        GLCall(glUniform1f(uniform_var_loc3, glm::cos(glm::radians(Spotlight.cutOff))));
-        GLCall(glUniform1f(uniform_var_loc4, glm::cos(glm::radians(Spotlight.outerCutOff))));
+        GLint uniform_var_loc10 = shdrpgm.GetLocation(("spotLights[" + number + "].AffectsWorld").c_str());
+        GLCall(glUniform1i(uniform_var_loc10, Spotlight.AffectsWorld));
 
+        if (Spotlight.cutOff >= Spotlight.outerCutOff)
+        {
+            Spotlight.cutOff = 0.0f;
+        }
 
+        if (Spotlight.AffectsWorld)
+        {
+            GLint uniform_var_loc1 = shdrpgm.GetLocation(("spotLights[" + number + "].position").c_str());
+            GLint uniform_var_loc2 = shdrpgm.GetLocation(("spotLights[" + number + "].lightColor").c_str());
+            GLint uniform_var_loc3 = shdrpgm.GetLocation(("spotLights[" + number + "].cutOff").c_str());
+            GLint uniform_var_loc4 = shdrpgm.GetLocation(("spotLights[" + number + "].outerCutOff").c_str());
+            GLint uniform_var_loc5 = shdrpgm.GetLocation(("spotLights[" + number + "].direction").c_str());
+            GLint uniform_var_loc6 = shdrpgm.GetLocation(("spotLights[" + number + "].constant").c_str());
+            GLint uniform_var_loc7 = shdrpgm.GetLocation(("spotLights[" + number + "].linear").c_str());
+            GLint uniform_var_loc8 = shdrpgm.GetLocation(("spotLights[" + number + "].quadratic").c_str());
+            GLint uniform_var_loc9 = shdrpgm.GetLocation(("spotLights[" + number + "].IntensityStrength").c_str());
 
-
-
-        GLCall(glUniform3f(uniform_var_loc5, Spotlight.direction.getX(), Spotlight.direction.getY(), Spotlight.direction.getZ()));
-
+            GLCall(glUniform3f(uniform_var_loc1, SpotlightTransform.position.getX(), SpotlightTransform.position.getY(), SpotlightTransform.position.getZ()));
+            GLCall(glUniform3f(uniform_var_loc2, 100.0f, 100.0f, 100.0f));
+            GLCall(glUniform1f(uniform_var_loc3, glm::cos(glm::radians(Spotlight.cutOff))));
+            GLCall(glUniform1f(uniform_var_loc4, glm::cos(glm::radians(Spotlight.outerCutOff))));
+            GLCall(glUniform1f(uniform_var_loc6, Spotlight.constant));
+            GLCall(glUniform1f(uniform_var_loc7, Spotlight.linear));
+            GLCall(glUniform1f(uniform_var_loc8, Spotlight.quadratic));
+            GLCall(glUniform1f(uniform_var_loc9, Spotlight.IntensityStrength));
+            GLCall(glUniform3f(uniform_var_loc5, Spotlight.direction.getX(), Spotlight.direction.getY(), Spotlight.direction.getZ()));
+        }
         shdrpgm.UnUse();
     }
 

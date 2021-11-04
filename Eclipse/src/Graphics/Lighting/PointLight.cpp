@@ -13,7 +13,7 @@ namespace Eclipse
         AdjustSize.scale = ECVec3{ 0.1f,0.1f,0.1f };
         // PointLightComponent
         PointLightComponent& Light = engine->world.GetComponent<PointLightComponent>(CreatedID);
-        engine->LightManager.SetAttenuation(Light, 5);
+        engine->LightManager.SetAttenuation(Light, 4);
 
         // Insert into Container
         EDITOR_LOG_INFO("Pointlight Created Successfully");
@@ -28,26 +28,32 @@ namespace Eclipse
         PointLightComponent& Pointlight = engine->world.GetComponent<PointLightComponent>(EntityId);
         TransformComponent& PointlightTransform = engine->world.GetComponent<TransformComponent>(EntityId);
 
-        PointlightTransform.scale.setX(2.0f);
-        PointlightTransform.scale.setY(2.0f);
-        PointlightTransform.scale.setZ(2.0f);
+        PointlightTransform.scale.setX(1.5f);
+        PointlightTransform.scale.setY(1.5f);
+        PointlightTransform.scale.setZ(1.5f);
 
         std::string number = std::to_string(index);
-        GLint uniform_var_loc1 = shdrpgm.GetLocation(("pointLights[" + number + "].position").c_str());
-        GLint uniform_var_loc2 = shdrpgm.GetLocation(("pointLights[" + number + "].lightColor").c_str());
-        GLint uniform_var_loc3 = shdrpgm.GetLocation(("pointLights[" + number + "].constant").c_str());
-        GLint uniform_var_loc4 = shdrpgm.GetLocation(("pointLights[" + number + "].linear").c_str());
-        GLint uniform_var_loc5 = shdrpgm.GetLocation(("pointLights[" + number + "].quadratic").c_str());
-        GLint uniform_var_loc7 = shdrpgm.GetLocation(("pointLights[" + number + "].IntensityStrength").c_str());
-        GLint uniform_var_loc8 = shdrpgm.GetLocation(("pointLights[" + number + "].RGBColor").c_str());
+        GLint uniform_var_loc9 = shdrpgm.GetLocation(("pointLights[" + number + "].AffectsWorld").c_str());
+        GLCall(glUniform1i(uniform_var_loc9, Pointlight.AffectsWorld));
 
-        GLCall(glUniform3f(uniform_var_loc1, PointlightTransform.position.getX(), PointlightTransform.position.getY(), PointlightTransform.position.getZ()));
-        GLCall(glUniform3f(uniform_var_loc2, 100.0f, 100.0f, 100.0f));
-        GLCall(glUniform1f(uniform_var_loc3, Pointlight.constant));
-        GLCall(glUniform1f(uniform_var_loc4, Pointlight.linear));
-        GLCall(glUniform1f(uniform_var_loc5, Pointlight.quadratic));
-        GLCall(glUniform1f(uniform_var_loc7, Pointlight.IntensityStrength));
-        GLCall(glUniform3f(uniform_var_loc8, Pointlight.RGBColor.getX(), Pointlight.RGBColor.getY(), Pointlight.RGBColor.getZ()));
+        if (Pointlight.AffectsWorld)
+        {
+            GLint uniform_var_loc1 = shdrpgm.GetLocation(("pointLights[" + number + "].position").c_str());
+            GLint uniform_var_loc2 = shdrpgm.GetLocation(("pointLights[" + number + "].lightColor").c_str());
+            GLint uniform_var_loc3 = shdrpgm.GetLocation(("pointLights[" + number + "].constant").c_str());
+            GLint uniform_var_loc4 = shdrpgm.GetLocation(("pointLights[" + number + "].linear").c_str());
+            GLint uniform_var_loc5 = shdrpgm.GetLocation(("pointLights[" + number + "].quadratic").c_str());
+            GLint uniform_var_loc7 = shdrpgm.GetLocation(("pointLights[" + number + "].IntensityStrength").c_str());
+            GLint uniform_var_loc8 = shdrpgm.GetLocation(("pointLights[" + number + "].RGBColor").c_str());
+
+            GLCall(glUniform3f(uniform_var_loc1, PointlightTransform.position.getX(), PointlightTransform.position.getY(), PointlightTransform.position.getZ()));
+            GLCall(glUniform3f(uniform_var_loc2, 100.0f, 100.0f, 100.0f));
+            GLCall(glUniform1f(uniform_var_loc3, Pointlight.constant));
+            GLCall(glUniform1f(uniform_var_loc4, Pointlight.linear));
+            GLCall(glUniform1f(uniform_var_loc5, Pointlight.quadratic));
+            GLCall(glUniform1f(uniform_var_loc7, Pointlight.IntensityStrength));
+            GLCall(glUniform3f(uniform_var_loc8, Pointlight.RGBColor.getX(), Pointlight.RGBColor.getY(), Pointlight.RGBColor.getZ()));
+        }
         shdrpgm.UnUse();
     }
 
