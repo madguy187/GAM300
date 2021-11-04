@@ -32,8 +32,8 @@ namespace Eclipse
         // Create SKY =============================
         engine->GraphicsManager.CreateSky("src/Assets/Sky");
 
-        // Create AABB Boxes =============================
-        engine->GraphicsManager.AllAABBs.Init();
+        // DebugManagerRender
+        engine->gDebugDrawManager->Init();
     }
 
     void RenderSystem::Update()
@@ -47,7 +47,7 @@ namespace Eclipse
         if (engine->GraphicsManager.CheckRender == true)
         {
             // Estiamtion which models are in our frustrum
-            const auto& RenderablesVsFrustrum = engine->gCullingManager->ReturnContacted();
+            //const auto& RenderablesVsFrustrum = engine->gCullingManager->ReturnContacted();
 
             /*************************************************************************
               Render Without Stencer
@@ -59,7 +59,11 @@ namespace Eclipse
             // Basic Primitives Render Start =============================
             for (auto const& entityID : mEntities)
             {
-                // If No Mesh Component , Do not Continue
+                // Used somewhere else.
+                //if (entityID == engine->gPBRManager->gMaterialEditorSettings->InnerEntity || entityID == engine->gPBRManager->gMaterialEditorSettings->OuterEntity)
+                //    continue;
+
+                //If No Mesh Component, Do not Continue
                 if (!engine->world.CheckComponent<MeshComponent>(entityID))
                 {
                     continue;
@@ -89,7 +93,7 @@ namespace Eclipse
                     {
                         engine->MaterialManager.UpdateStencilWithActualObject(entityID);
                         engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_SCENE, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SCENE),
-                            &engine->GraphicsManager.AllAABBs, CameraComponent::CameraType::Editor_Camera);
+                            CameraComponent::CameraType::Editor_Camera);
 
                         // See Normal Vectors
                         engine->MaterialManager.UpdateStencilWithActualObject(entityID);
@@ -100,7 +104,7 @@ namespace Eclipse
                     {
                         engine->MaterialManager.DoNotUpdateStencil();
                         engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_GAME, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME),
-                            &box, CameraComponent::CameraType::Game_Camera);
+                            CameraComponent::CameraType::Game_Camera);
                     }
 
                     // Top View Port
@@ -108,7 +112,7 @@ namespace Eclipse
                     {
                         engine->MaterialManager.DoNotUpdateStencil();
                         engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_TOP, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_TOP),
-                            &box, CameraComponent::CameraType::TopView_Camera);
+                            CameraComponent::CameraType::TopView_Camera);
                     }
 
                     // Bottom View port
@@ -116,7 +120,7 @@ namespace Eclipse
                     {
                         engine->MaterialManager.DoNotUpdateStencil();
                         engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_BOTTOM, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_BOTTOM),
-                            &box, CameraComponent::CameraType::BottomView_Camera);
+                            CameraComponent::CameraType::BottomView_Camera);
                     }
 
                     // Left View Port
@@ -124,7 +128,7 @@ namespace Eclipse
                     {
                         engine->MaterialManager.DoNotUpdateStencil();
                         engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_LEFT, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_LEFT),
-                            &box, CameraComponent::CameraType::LeftView_Camera);
+                            CameraComponent::CameraType::LeftView_Camera);
                     }
 
                     // Right ViewPort
@@ -132,7 +136,7 @@ namespace Eclipse
                     {
                         engine->MaterialManager.DoNotUpdateStencil();
                         engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_RIGHT, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_RIGHT),
-                            &box, CameraComponent::CameraType::RightView_camera);
+                            CameraComponent::CameraType::RightView_camera);
                     }
 
                     engine->MaterialManager.Highlight3DModels(entityID, FrameBufferMode::FBM_SCENE);
@@ -146,12 +150,13 @@ namespace Eclipse
                 engine->MaterialManager.DoNotUpdateStencil();
                 engine->gDebugManager.DrawDebugShapes(FrameBufferMode::FBM_SCENE);
             }
-
             engine->MaterialManager.StencilBufferClear();
         }
 
         engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());
         engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
+
+        engine->gDebugDrawManager->Render();
 
         FrameMark
     }

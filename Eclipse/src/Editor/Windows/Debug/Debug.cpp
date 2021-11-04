@@ -82,7 +82,7 @@ namespace Eclipse
             ECGui::InsertSameLine();
             ECGui::CheckBoxBool("Draw Normals", &engine->GraphicsManager.VisualizeNormalVectors, false);
             ECGui::InsertSameLine();
-            ECGui::CheckBoxBool("Draw DebugBoxes", &engine->GraphicsManager.AllAABBs.DrawAABBS, false);
+            ECGui::CheckBoxBool("Draw DebugShapes", &engine->gDebugDrawManager->Visible, false);
 
             ECGui::CheckBoxBool("Draw Frustrum", &engine->gDebugManager.Visible, false);
             ECGui::InsertSameLine();
@@ -103,7 +103,7 @@ namespace Eclipse
 
             if (engine->GraphicsManager.PostProcess->AllowPostProcess)
             {
-                std::vector<std::string> Methods = { "NONE" , "INVERSE" , "GREYSCALE" ,"KERNEL" , "BLUR" };
+                std::vector<std::string> Methods = { "NONE" , "INVERSE" , "GREYSCALE" ,"KERNEL" , "BLUR" , "SOBEL"};
                 ComboListSettings settingsss = { "PostProcess Methods" };
                 static size_t comboindex = 0;
                 ECGui::DrawTextWidget<const char*>("PostProcess Types:", EMPTY_STRING);

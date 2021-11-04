@@ -210,7 +210,7 @@ namespace Eclipse
                 ECGui::DrawTextWidget<const char*>("IntensityStrength", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloatWidget("IntensityFloat", &_PointLight.IntensityStrength, true, 0.f, 5000.0f);
+                ECGui::DrawSliderFloatWidget("IntensityFloat", &_PointLight.IntensityStrength, true, 0.f, 100.0f);
                 ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Light Colour", EMPTY_STRING);
                 ECGui::NextColumn();
@@ -302,7 +302,7 @@ namespace Eclipse
                 ECGui::DrawTextWidget<const char*>("IntensityStrength", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloatWidget("IntensityFloat", &_SpotLight.IntensityStrength, true, 0.f, 5000.0f);
+                ECGui::DrawSliderFloatWidget("IntensityFloat", &_SpotLight.IntensityStrength, true, 0.f, 100.0f);
                 ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Light Colour", EMPTY_STRING);
                 ECGui::NextColumn();
@@ -412,7 +412,7 @@ namespace Eclipse
                 ECGui::DrawTextWidget<const char*>("DLight Direction", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloat3Widget("DLight Direction", &_DLight.Direction, true, 0.0f, 1.0f);
+                ECGui::DrawSliderFloat3Widget("DLight Direction", &_DLight.Direction, true, -10.0f, 10.0f);
                 ECGui::NextColumn();
 
                 //ECGui::DrawTextWidget<const char*>("DLight Ambient", EMPTY_STRING);
@@ -1293,6 +1293,8 @@ namespace Eclipse
                             EditComponent::EC_ADDCOMPONENT);
                         break;
                     }
+
+                    AddComponentFilter.Clear();
                 }
             }
         }
@@ -1384,6 +1386,8 @@ namespace Eclipse
                             EditComponent::EC_REMOVECOMPONENT);
                         break;
                     }
+
+                    RemoveComponentFilter.Clear();
                 }
             }
         }

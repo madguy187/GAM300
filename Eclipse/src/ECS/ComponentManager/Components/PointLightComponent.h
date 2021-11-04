@@ -17,7 +17,7 @@ namespace Eclipse
         ECVec3 lightColor{ 1.0f,1.0f,1.0f };
         ECVec4 Color{ 1.0f,1.0f,1.0f,1.0f };
 
-        float IntensityStrength = 1.0f;
+        float IntensityStrength = 0.5f;
         float constant = 1.0f;
         float linear = 0.09f;
         float quadratic = 0.032f;

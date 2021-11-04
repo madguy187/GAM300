@@ -6,7 +6,7 @@
 #include <iostream>
 #include <string>
 #include <type_traits>
-#include "ECS/ComponentManager/Components/CollisionComponent.h"
+#include "ECS/ComponentManager/ComponentList.h"
 
 namespace Eclipse
 {

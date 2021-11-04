@@ -49,7 +49,7 @@ namespace Eclipse
     public:
         void LoadMaterial(std::string NameOfMaterial);
         void BindMaterial(std::string MaterialName, Shader& In);
-        void SetAlbedoConstant(Shader& In, glm::vec4& AlbedoValue);
+        void SetAlbedoConstant(Shader& In, glm::vec4 AlbedoValue);
         void SetMetallicConstant(Shader& In, float metallicValue);
         void SetRoughnessConstant(Shader& In, float RoughnessValue);
         void SetInstanceFlag(Shader& In, bool instanceflag);
@@ -57,6 +57,9 @@ namespace Eclipse
         void UnBindMetallicTexture(Shader& In);
         void UnBindRoughnessTexture(Shader& In);
         void UnBindAOTexture(Shader& In);
+        void SetSurfaceColour(Shader& In, glm::vec3 SurfaceColour_);
+        void SetSurfaceColour(Shader& In, ECVec3 SurfaceColour_);
+        bool CheckMaterialExist(MaterialComponent& in);
 
     public:
         unsigned int sphereVAO = 0;

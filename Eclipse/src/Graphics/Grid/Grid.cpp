@@ -208,7 +208,7 @@ namespace Eclipse
 					if (AddDebugBoxes)
 					{
 						BoundingRegion br(GridArray[Index]->CenterPoint.ConvertToGlmVec3Type(), { GridScale ,GridScale ,GridScale });
-						engine->GraphicsManager.AllAABBs.AddInstance(br);
+						engine->gDebugDrawManager->DebugBoxes.AddInstance(br);
 					}
 
 					// Set AABB For Dynamic Tree
@@ -297,7 +297,7 @@ namespace Eclipse
 	void Grid::InsertAsDebugBox()
 	{
 		BoundingRegion br({ 0,0,0 }, { GridScale * GridSize , 0  ,GridScale * GridSize });
-		engine->GraphicsManager.AllAABBs.AddInstance(br);
+		engine->gDebugDrawManager->DebugBoxes.AddInstance(br);
 	}
 
 	bool Grid::CheckTileOccupied(TILE_ID& tileID)
