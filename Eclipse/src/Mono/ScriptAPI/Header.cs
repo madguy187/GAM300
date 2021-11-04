@@ -1,6 +1,5 @@
 using System;
 
-//[AttributeUsage(AttributeTargets.Class)]
 public class Header : Attribute
 {
     public string name;

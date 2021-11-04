@@ -12,6 +12,7 @@
 
 #include "../Components/s_RigidBodyComponent.h"
 #include "../Components/s_LogicalInput.h"
+#include "../Components/s_Time.h"
 
 
 namespace Eclipse
@@ -82,6 +83,27 @@ namespace Eclipse
 		mono_add_internal_call("Eclipse.RigidBody::Add_Force", SetForce);
 		mono_add_internal_call("Eclipse.Input::GetButtonDown", GetKeyCurrentByName);
 		mono_add_internal_call("Eclipse.Input::GetKey", GetKeyCurrentByKeyCode);
+		mono_add_internal_call("Eclipse.Time::getDeltaTime", GetDeltaTime);
+		mono_add_internal_call("Eclipse.Time::getFixedDeltaTime", GetFixedDeltaTime);
+	}
+
+	void MonoManager::Awake(MonoScript* obj)
+	{
+		MonoClass* klass = mono_class_from_name(ScriptImage, "", obj->scriptName.c_str());
+
+		if (klass == nullptr) {
+			std::cout << "Failed loading class, MonoVec3" << std::endl;
+			return;
+		}
+
+		MonoMethod* m_update = mono_class_get_method_from_name(klass, "Awake", -1);
+		if (!m_update)
+		{
+			std::cout << "Failed to get method" << std::endl;
+			return;
+		}
+
+		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
 	}
 
 	void MonoManager::Start(MonoScript* obj)
@@ -103,62 +125,36 @@ namespace Eclipse
 		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
 	}
 
-	void
-		output_fields(MonoClass* klass) {
+	std::unordered_map<std::string, std::string> MonoManager::GetAllFields(MonoClass* klass)
+	{
 		MonoClassField* field;
 		void* iter = NULL;
-
-		while ((field = mono_class_get_fields(klass, &iter))) {
-			printf("Field: %s, flags 0x%x\n", mono_field_get_name(field),
-				mono_field_get_flags(field));
-
+		std::unordered_map<std::string, std::string> fields;
+		while ((field = mono_class_get_fields(klass, &iter)))
+		{
 			// check for attributes
-			MonoClass* parentClass = mono_field_get_parent(field);
-			MonoCustomAttrInfo* attrInfo = mono_custom_attrs_from_field(parentClass, field);
-			if (attrInfo == nullptr)
-				return;
+			MonoCustomAttrInfo* attrInfo = mono_custom_attrs_from_field(klass, field);
 
-			MonoClass* attrKlass = mono_class_from_name(engine->mono.GetAPIImage(), "", "Header");
+			if (attrInfo != nullptr)
+			{
+				MonoClass* attrKlass = mono_class_from_name(engine->mono.GetAPIImage(), "", "Header");
 
-			if (attrKlass == nullptr) {
-				std::cout << "Failed loading attribute class" << std::endl;
-				return;
+				if (attrKlass != nullptr)
+				{
+					if (mono_custom_attrs_has_attr(attrInfo, attrKlass))
+					{
+						MonoObject* attrObj = mono_custom_attrs_get_attr(attrInfo, attrKlass);
+						fields.insert(std::make_pair(GetStringFromField(attrObj, attrKlass, "name"), "Header"));
+					}
+				}
 			}
 
-			bool hasAttr = mono_custom_attrs_has_attr(attrInfo, attrKlass);
-
-			// check for type
-			int type = mono_type_get_type(mono_field_get_type(field));
-			std::cout << type << std::endl;
-
-			
 			mono_custom_attrs_free(attrInfo);
+
+			fields.insert(std::make_pair(mono_field_get_name(field), "Variable"));
 		}
 
-		
-	}
-
-	void
-		GetHeader(std::string klassName, std::string propName) {
-		MonoClassField* field;
-		void* iter = NULL;
-
-		MonoClass* klass = mono_class_from_name(engine->mono.GetScriptImage(), "", klassName.c_str());
-
-		if (klass == nullptr) {
-			std::cout << "Failed loading class, MonoVec3" << std::endl;
-			return;
-		}
-
-		MonoClass* headerReader = mono_class_from_name(engine->mono.GetAPIImage(), "Eclipse", "HeaderReader");
-		MonoMethod* readMethod = engine->mono.GetMethodFromClass(headerReader, "GetHeaderFromProp");
-
-		while ((field = mono_class_get_fields(klass, &iter))) {
-			printf("Field: %s, flags 0x%x\n", mono_field_get_name(field),
-				mono_field_get_flags(field));
-
-			//engine->mono.ExecuteMethod(headerReader, mono_field_get_name(field))
-		}
+		return fields;
 	}
 
 	void MonoManager::Update(MonoScript* obj)
@@ -177,7 +173,24 @@ namespace Eclipse
 			return;
 		}
 
-		output_fields(klass);
+		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
+	}
+
+	void MonoManager::FixedUpdate(MonoScript* obj)
+	{
+		MonoClass* klass = mono_class_from_name(ScriptImage, "", obj->scriptName.c_str());
+
+		if (klass == nullptr) {
+			std::cout << "Failed loading class, MonoVec3" << std::endl;
+			return;
+		}
+
+		MonoMethod* m_update = mono_class_get_method_from_name(klass, "FixedUpdate", -1);
+		if (!m_update)
+		{
+			std::cout << "Failed to get method" << std::endl;
+			return;
+		}
 
 		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
 	}
@@ -280,6 +293,26 @@ namespace Eclipse
 		return obj;
 	}
 
+	std::string MonoManager::GetStringFromField(MonoObject* obj, MonoClass* klass, const char* fieldName)
+	{
+		MonoString* stringField;
+
+		MonoClassField* field = mono_class_get_field_from_name(klass, fieldName);
+		if (!field) {
+			fprintf(stderr, "Can't find field val in MyType\n");
+			exit(1);
+		}
+
+		if (mono_type_get_type(mono_field_get_type(field)) != MONO_TYPE_STRING) {
+			fprintf(stderr, "Field val is not a string\n");
+			exit(1);
+		}
+
+		mono_field_get_value(obj, field, &stringField);
+
+		return mono_string_to_utf8(stringField);
+	}
+
 	MonoMethod* MonoManager::GetMethodFromClass(MonoClass* klass, std::string funcName)
 	{
 		MonoMethod* method = mono_class_get_method_from_name(klass, "funcName", -1);
@@ -291,12 +324,10 @@ namespace Eclipse
 		return method;
 	}
 
-	bool MonoManager::ExecuteMethod(MonoObject* obj, MonoMethod* method, std::vector<void*> args)
+	MonoObject* MonoManager::ExecuteMethod(MonoObject* obj, MonoMethod* method, std::vector<void*> args)
 	{
-		if (!obj && !method) return false;
-		mono_runtime_invoke(method, obj, args.data(), NULL);
-
-		return true;
+		if (!obj && !method) return nullptr;
+		return mono_runtime_invoke(method, obj, args.data(), NULL);
 	}
 
 	MonoDomain* MonoManager::LoadDomain()

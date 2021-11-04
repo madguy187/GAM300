@@ -17,5 +17,6 @@ public class Test : EclipseBehavior
     public void Update()
     {
         Console.WriteLine("C# Update");
+        Console.WriteLine(Time.deltaTime);
     }
 }

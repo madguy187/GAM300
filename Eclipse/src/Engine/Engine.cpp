@@ -324,8 +324,11 @@ namespace Eclipse
             {
                 for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
                 {
-
                     world.Update<PhysicsSystem>();
+
+                    mono.fixUpdate = true;
+                    world.Update<MonoSystem>();
+                    mono.fixUpdate = false;
                 }
             }
 

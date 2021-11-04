@@ -944,6 +944,7 @@
     <ClInclude Include="src\Graphics\EngineCompiler\InputCompiler\InputCompiler.h" />
     <ClInclude Include="src\Graphics\MeshEditor\MeshEditorSource.h" />
     <ClInclude Include="src\Mono\Components\s_LogicalInput.h" />
+    <ClInclude Include="src\Mono\Components\s_Time.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1421,5 +1422,6 @@
     <None Include="src\Mono\ScriptAPI\KeyCode.cs" />
     <None Include="src\Mono\ScriptAPI\Header.cs" />
     <None Include="src\Mono\ScriptAPI\HeaderReader.cs" />
+    <None Include="src\Mono\ScriptAPI\Time.cs" />
   </ItemGroup>
 </Project>
