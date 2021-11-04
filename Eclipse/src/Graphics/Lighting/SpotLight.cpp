@@ -57,9 +57,9 @@ namespace Eclipse
         SpotlightTransform.scale.setX(1.0f);
         SpotlightTransform.scale.setY(1.0f);
         SpotlightTransform.scale.setZ(1.0f);
-        SpotlightTransform.rotation.setX(0.0f);
-        SpotlightTransform.rotation.setY(0.0f);
-        SpotlightTransform.rotation.setZ(0.0f);
+        //SpotlightTransform.rotation.setX(0.0f);
+        //SpotlightTransform.rotation.setY(0.0f);
+        //SpotlightTransform.rotation.setZ(0.0f);
 
         glm::mat4 mModelNDC;
         glm::mat4 model = glm::mat4(1.0f);
@@ -69,6 +69,36 @@ namespace Eclipse
         model = glm::rotate(model, glm::radians(SpotlightTransform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::scale(model, SpotlightTransform.scale.ConvertToGlmVec3Type());
         engine->gDebugDrawManager->SpotLightIcons.Addinstance(model);
+
+      //  float GetMagnitudeOfDirection = in->direction.ConvertToGlmVec3Type().length(); // we get magnitude of direction first
+      //  glm::vec3 dir = glm::normalize(in->direction.ConvertToGlmVec3Type());
+      //  // tan RotateX = Magnitude of upwards / magnitude of direction
+      //  //tanf(SpotlightTransform.rotation.getX()) = float test / magnitude of direction
+
+      //  float UPWARD = 0.0f;
+      //  glm::vec2 NewDir = { 0,0 };
+      //  if (SpotlightTransform.rotation.getX() > 90 && SpotlightTransform.rotation.getX() <= 180)
+      //  {
+      ////      UPWARD = tanf(glm::radians(abs(SpotlightTransform.rotation.getX() - 90)));
+      // //     NewDir = glm::vec2(dir.z, dir.y);//+ glm::vec2(0, UPWARD);
+      //  }
+      //  if (SpotlightTransform.rotation.getX() >0 && SpotlightTransform.rotation.getX() < 90)
+      //  {
+
+      //      UPWARD = tanf(glm::radians(abs(SpotlightTransform.rotation.getX())));
+      //      NewDir = glm::vec2(dir.z, dir.y) + glm::vec2(0, UPWARD);
+      //      glm::vec2 ScaleupDir = NewDir * GetMagnitudeOfDirection;
+
+      //      in->direction.setZ(ScaleupDir.x);
+      //      in->direction.setY(ScaleupDir.y);
+      //  }
+        //else
+        //{
+        //    //UPWARD = tanf(glm::radians(static_cast<int>(abs(SpotlightTransform.rotation.getX())) % 90)) / 1;
+        //}
+
+       
+
 
         CheckUniformPBR(IndexId, EntityId);
     }
@@ -200,6 +230,11 @@ namespace Eclipse
         GLCall(glUniform3f(uniform_var_loc2, 300.0f, 300.0f, 300.0f));
         GLCall(glUniform1f(uniform_var_loc3, glm::cos(glm::radians(Spotlight.cutOff))));
         GLCall(glUniform1f(uniform_var_loc4, glm::cos(glm::radians(Spotlight.outerCutOff))));
+
+
+
+
+
         GLCall(glUniform3f(uniform_var_loc5, Spotlight.direction.getX(), Spotlight.direction.getY(), Spotlight.direction.getZ()));
 
         shdrpgm.UnUse();

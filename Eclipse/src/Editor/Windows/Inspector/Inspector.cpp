@@ -160,7 +160,46 @@ namespace Eclipse
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 
-                ECGui::DrawSliderFloat3Widget("TransRot", &transCom.rotation, true, -360.f, 360.f, ID);
+                if (ECGui::DrawSliderFloat3Widget("TransRot", &transCom.rotation, true, -360.f, 360.f, ID))
+                {               
+                        if (engine->world.CheckComponent<SpotLightComponent>(ID))
+                        {
+                            auto& SpotLight_ = engine->world.GetComponent<SpotLightComponent>(ID);
+                            float GetMagnitudeOfDirection = SpotLight_.direction.ConvertToGlmVec3Type().length(); // we get magnitude of direction first
+                            glm::vec3 dir = glm::normalize(SpotLight_.direction.ConvertToGlmVec3Type());
+                            float UPWARD = 0.0f;
+                            glm::vec2 NewDir = { 0,0 };
+                            
+                            //Quad 2
+                            if (transCom.rotation.getX() > 90 && transCom.rotation.getX() < 180)
+                            {
+                                UPWARD = tanf(glm::radians(abs(transCom.rotation.getX()))) * -1;
+                                 NewDir = glm::vec2(1, 0) + +glm::vec2(0, UPWARD);
+                            }
+                            //quad 3
+                            if (transCom.rotation.getX() > 181 && transCom.rotation.getX() < 270)
+                            {
+                                UPWARD = tanf(glm::radians(abs(transCom.rotation.getX()))) * -1;
+                                NewDir = glm::vec2(1, 0) +glm::vec2(0, UPWARD);
+                            }
+                            //quad4
+                            if (transCom.rotation.getX() > 270 && transCom.rotation.getX() < 360)
+                            {
+                                UPWARD = tanf(glm::radians(abs(transCom.rotation.getX())));
+                                NewDir = glm::vec2(-1, 0) +glm::vec2(0, UPWARD);
+                            }
+                            //quad1
+                            if (transCom.rotation.getX() > 0 && transCom.rotation.getX() < 90)
+                            {
+                                UPWARD = tanf(glm::radians(abs(transCom.rotation.getX())));
+                                NewDir = glm::vec2(-1, 0) + glm::vec2(0, UPWARD);
+                            }
+
+                            glm::vec2 ScaleupDir = NewDir * GetMagnitudeOfDirection;
+                            SpotLight_.direction.setY(ScaleupDir.y);
+                            SpotLight_.direction.setZ(ScaleupDir.x);
+                        }
+                }
 
                 ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Scale", EMPTY_STRING);
