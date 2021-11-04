@@ -4,9 +4,7 @@ in vec2 TexCoords;
 in vec3 WorldPos;
 in vec3 Normal;
 
-uniform bool EnableGammaCorrection;
-uniform float Exposure;
-uniform float gamma;
+uniform float Transparency;
 
 // material parameters
 uniform sampler2D albedoMap;
@@ -30,7 +28,6 @@ uniform vec3 lightPositions[4];
 uniform vec3 lightColors[4];
 
 uniform vec3 camPos;
-
 const float PI = 3.14159265359;
 
 struct PointLight 
@@ -347,7 +344,7 @@ void main()
           vec3 color = ambient + Lo;
           color = color / (color + vec3(1.0));
           color = pow(color, vec3(1.0/2.2)); 
-          FragColor = vec4(color, 1.0);            
+          FragColor = vec4(color, Transparency);            
         }
         else
         {
@@ -355,6 +352,6 @@ void main()
           vec3 color = ambient + Lo;
           color = color / (color + vec3(1.0));
           color = pow(color, vec3(1.0/2.2)); 
-          FragColor = vec4(color, 1.0);      
+          FragColor = vec4(color, Transparency);      
         }
 }

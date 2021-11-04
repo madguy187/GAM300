@@ -86,6 +86,11 @@ namespace Eclipse
 
                 MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
 
+                if (Mesh.transparency == 0.0f)
+                {
+                    continue;
+                }
+
                 // After hot-realoding , we check if he still exists or not
                 if (engine->AssimpManager.CheckGeometryExist(Mesh))
                 {
