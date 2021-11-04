@@ -437,13 +437,10 @@ namespace Eclipse
     {
         if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
         {
-            engine->MaterialManager.DoNotUpdateStencil();
             engine->GridManager->DrawGrid(FrameBufferMode::FBM_SCENE);
         }
 
-        engine->MaterialManager.DoNotUpdateStencil();
         engine->gFrameBufferManager->PostProcess->UpdatePP();
-        engine->MaterialManager.StencilBufferClear();
     }
 
     void Eclipse::GraphicsManager::CreateCompilerFolders()

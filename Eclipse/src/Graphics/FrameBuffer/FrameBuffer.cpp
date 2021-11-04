@@ -68,6 +68,10 @@ namespace Eclipse
     void Eclipse::FrameBuffer::Resize(unsigned width, unsigned height, FrameBufferMode Mode)
     {
         engine->gFrameBufferManager->CreateFBO(width, height, Mode);
+
+        engine->gFrameBufferManager->FrameBufferContainer[Mode]->m_height = height;
+        engine->gFrameBufferManager->FrameBufferContainer[Mode]->m_width = width;
+
         //EDITOR_LOG_INFO("Resize Successful");
     }
 
@@ -191,14 +195,17 @@ namespace Eclipse
                 return;
 
             //glBindFramebuffer(GL_FRAMEBUFFER, engine->gFrameBufferManager->GetFrameBufferID(FrameBufferMode::FBM_SCENE));
-
             engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_GAME);
 
             auto& shdrpgm = Graphics::shaderpgms["PostProcess"];
             shdrpgm.Use();
 
             GLint Inversion = shdrpgm.GetLocation("Type");
+            GLint Height_ = shdrpgm.GetLocation("Height");
+            GLint Width_ = shdrpgm.GetLocation("Width");
             GLCall(glUniform1i(Inversion, static_cast<GLint>(PPType_)));
+            GLCall(glUniform1i(Height_, engine->gFrameBufferManager->FrameBufferContainer[FrameBufferMode::FBM_GAME]->m_height));
+            GLCall(glUniform1i(Width_, engine->gFrameBufferManager->FrameBufferContainer[FrameBufferMode::FBM_GAME]->m_width));
 
             glBindVertexArray(rectVAO);
             glActiveTexture(GL_TEXTURE0);

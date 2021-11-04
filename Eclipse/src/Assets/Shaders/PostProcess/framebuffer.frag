@@ -9,6 +9,9 @@ uniform int Type;
 const float offset_x = 1.0f / 800.0f;  
 const float offset_y = 1.0f / 800.0f;  
 
+uniform int Height;
+uniform int Width;
+
 vec2 offsets[9] = vec2[]
 (
     vec2(-offset_x,  offset_y), vec2( 0.0f,    offset_y), vec2( offset_x,  offset_y),
@@ -18,8 +21,8 @@ vec2 offsets[9] = vec2[]
 
 void make_kernel(inout vec4 n[9], sampler2D tex, vec2 coord)
 {
-	float w = 1.0 / 300;
-	float h = 1.0 / 300;
+	float w = 1.0 / Width;
+	float h = 1.0 / Height;
 
 	n[0] = texture(tex, coord + vec2( -w, -h));
 	n[1] = texture(tex, coord + vec2(0.0, -h));
