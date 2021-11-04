@@ -111,6 +111,87 @@ namespace Eclipse
         shdrpgm2.UnUse();
     }
 
+    void LightManager::SpotLightUpdate(Entity ID)
+    {
+        float UPWARD = 0.0f;
+        glm::vec2 NewDir = { 0,0 };
+        int Negative = 0;
+
+        auto& SpotLight_ = engine->world.GetComponent<SpotLightComponent>(ID);
+        auto& transCom = engine->world.GetComponent<TransformComponent>(ID);
+
+        float GetMagnitudeOfDirection = SpotLight_.direction.ConvertToGlmVec3Type().length(); 
+        glm::vec3 dir = glm::normalize(SpotLight_.direction.ConvertToGlmVec3Type());
+
+        if (transCom.rotation.getX() > 0)
+        {
+            Negative = 1;
+        }
+        else
+        {
+            Negative = -1;
+        }
+
+        //Quad 2
+        if (transCom.rotation.getX() > 90 && transCom.rotation.getX() < 180 || transCom.rotation.getX() < -90 && transCom.rotation.getX() > -180)
+        {
+            UPWARD = tanf(glm::radians(abs(transCom.rotation.getX()))) * -1 * Negative;
+            NewDir = glm::vec2(1, 0) + +glm::vec2(0, UPWARD);
+        }
+        //quad 3
+        if (transCom.rotation.getX() > 181 && transCom.rotation.getX() < 270 || transCom.rotation.getX() < -180 && transCom.rotation.getX() > -270)
+        {
+            UPWARD = tanf(glm::radians(abs(transCom.rotation.getX()))) * -1 * Negative;
+            NewDir = glm::vec2(1, 0) + glm::vec2(0, UPWARD);
+        }
+        //quad4
+        if (transCom.rotation.getX() > 270 && transCom.rotation.getX() < 360 || transCom.rotation.getX() < -270 && transCom.rotation.getX() > -360)
+        {
+            UPWARD = tanf(glm::radians(abs(transCom.rotation.getX()))) * Negative;
+            NewDir = glm::vec2(-1, 0) + glm::vec2(0, UPWARD);
+        }
+        //quad1
+        if (transCom.rotation.getX() > 0 && transCom.rotation.getX() < 90 || transCom.rotation.getX() < 0 && transCom.rotation.getX() > -90)
+        {
+            UPWARD = tanf(glm::radians(abs(transCom.rotation.getX()))) * Negative;
+            NewDir = glm::vec2(-1, 0) + glm::vec2(0, UPWARD);
+        }
+
+        glm::vec2 ScaleupDir = NewDir * GetMagnitudeOfDirection;
+        SpotLight_.direction.setY(ScaleupDir.y);
+        SpotLight_.direction.setZ(ScaleupDir.x);
+
+        if (transCom.rotation.getX() == 270.0f || transCom.rotation.getX() == -270.0f)
+        {
+            SpotLight_.direction.setY(-5.0f * Negative);
+            SpotLight_.direction.setZ(0.0f);
+        }
+
+        if (transCom.rotation.getX() == 0.0f)
+        {
+            SpotLight_.direction.setY(0.0f);
+            SpotLight_.direction.setZ(-5.0f);
+        }
+
+        if (transCom.rotation.getX() == 90.0f || transCom.rotation.getX() == -90.0f)
+        {
+            SpotLight_.direction.setY(5.0f * Negative);
+            SpotLight_.direction.setZ(0.0f);
+        }
+
+        if (transCom.rotation.getX() == 180.0f || transCom.rotation.getX() == -180.0f)
+        {
+            SpotLight_.direction.setY(0.0f);
+            SpotLight_.direction.setZ(5.0f);
+        }
+
+        if (transCom.rotation.getX() == 360.0f || transCom.rotation.getX() == -360.0f)
+        {
+            SpotLight_.direction.setY(0.0f);
+            SpotLight_.direction.setZ(-5.0f);
+        }
+    }
+
     void LightManager::DestroyLight(Entity ID)
     {
         if (engine->world.CheckComponent<PointLightComponent>(ID))

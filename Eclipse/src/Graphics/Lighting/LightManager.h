@@ -126,6 +126,8 @@ namespace Eclipse
 
         void GlobalUniformsUpdate();
 
+        void SpotLightUpdate(Entity ID);
+
         void DestroyLight(Entity ID);
 
         template <typename TypeOfLight, typename TYPE>

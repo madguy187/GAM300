@@ -33,21 +33,28 @@ namespace Eclipse
         PointlightTransform.scale.setZ(2.0f);
 
         std::string number = std::to_string(index);
-        GLint uniform_var_loc1 = shdrpgm.GetLocation(("pointLights[" + number + "].position").c_str());
-        GLint uniform_var_loc2 = shdrpgm.GetLocation(("pointLights[" + number + "].lightColor").c_str());
-        GLint uniform_var_loc3 = shdrpgm.GetLocation(("pointLights[" + number + "].constant").c_str());
-        GLint uniform_var_loc4 = shdrpgm.GetLocation(("pointLights[" + number + "].linear").c_str());
-        GLint uniform_var_loc5 = shdrpgm.GetLocation(("pointLights[" + number + "].quadratic").c_str());
-        GLint uniform_var_loc7 = shdrpgm.GetLocation(("pointLights[" + number + "].IntensityStrength").c_str());
-        GLint uniform_var_loc8 = shdrpgm.GetLocation(("pointLights[" + number + "].RGBColor").c_str());
 
-        GLCall(glUniform3f(uniform_var_loc1, PointlightTransform.position.getX(), PointlightTransform.position.getY(), PointlightTransform.position.getZ()));
-        GLCall(glUniform3f(uniform_var_loc2, 100.0f, 100.0f, 100.0f));
-        GLCall(glUniform1f(uniform_var_loc3, Pointlight.constant));
-        GLCall(glUniform1f(uniform_var_loc4, Pointlight.linear));
-        GLCall(glUniform1f(uniform_var_loc5, Pointlight.quadratic));
-        GLCall(glUniform1f(uniform_var_loc7, Pointlight.IntensityStrength));
-        GLCall(glUniform3f(uniform_var_loc8, Pointlight.RGBColor.getX(), Pointlight.RGBColor.getY(), Pointlight.RGBColor.getZ()));
+        GLint uniform_var_loc1 = shdrpgm.GetLocation(("pointLights[" + number + "].AffectsWorld").c_str());
+        GLCall(glUniform1i(uniform_var_loc1, Pointlight.AffectsWorld));
+
+        if (Pointlight.AffectsWorld)
+        {
+            GLint uniform_var_loc1 = shdrpgm.GetLocation(("pointLights[" + number + "].position").c_str());
+            GLint uniform_var_loc2 = shdrpgm.GetLocation(("pointLights[" + number + "].lightColor").c_str());
+            GLint uniform_var_loc3 = shdrpgm.GetLocation(("pointLights[" + number + "].constant").c_str());
+            GLint uniform_var_loc4 = shdrpgm.GetLocation(("pointLights[" + number + "].linear").c_str());
+            GLint uniform_var_loc5 = shdrpgm.GetLocation(("pointLights[" + number + "].quadratic").c_str());
+            GLint uniform_var_loc7 = shdrpgm.GetLocation(("pointLights[" + number + "].IntensityStrength").c_str());
+            GLint uniform_var_loc8 = shdrpgm.GetLocation(("pointLights[" + number + "].RGBColor").c_str());
+
+            GLCall(glUniform3f(uniform_var_loc1, PointlightTransform.position.getX(), PointlightTransform.position.getY(), PointlightTransform.position.getZ()));
+            GLCall(glUniform3f(uniform_var_loc2, 100.0f, 100.0f, 100.0f));
+            GLCall(glUniform1f(uniform_var_loc3, Pointlight.constant));
+            GLCall(glUniform1f(uniform_var_loc4, Pointlight.linear));
+            GLCall(glUniform1f(uniform_var_loc5, Pointlight.quadratic));
+            GLCall(glUniform1f(uniform_var_loc7, Pointlight.IntensityStrength));
+            GLCall(glUniform3f(uniform_var_loc8, Pointlight.RGBColor.getX(), Pointlight.RGBColor.getY(), Pointlight.RGBColor.getZ()));
+        }
         shdrpgm.UnUse();
     }
 
@@ -56,7 +63,6 @@ namespace Eclipse
         (void)containersize;
 
         GLint uniform_var_loc8 = _shdrpgm->GetLocation("uModelToNDC");
-        //GLint uniform_var_loc9 = _shdrpgm->GetLocation("NumberOfPointLights");
         GLuint uniform_var_loc10 = _shdrpgm->GetLocation("model");
 
         // SpotLight Position
@@ -82,10 +88,13 @@ namespace Eclipse
             engine->gDebugDrawManager->LightIcons.Addinstance(model);
         }
 
+        std::string number = std::to_string(index);
+        GLint uniform_var_loc1 = _shdrpgm->GetLocation(("pointLights[" + number + "].AffectsWorld").c_str());
+        GLCall(glUniform1i(uniform_var_loc1, in_pointlight.AffectsWorld));
+
         if (in_pointlight.AffectsWorld)
         {
             // Custom Variables into Shaders
-            std::string number = std::to_string(index);
             GLint uniform_var_loc1 = _shdrpgm->GetLocation(("pointLights[" + number + "].position").c_str());
             GLint uniform_var_loc2 = _shdrpgm->GetLocation(("pointLights[" + number + "].ambient").c_str());
             GLint uniform_var_loc3 = _shdrpgm->GetLocation(("pointLights[" + number + "].diffuse").c_str());
@@ -123,9 +132,6 @@ namespace Eclipse
 
             // Check Texture
             GLCall(glUniform1i(uniform_var_loc11, in_pointlight.hasTexture));
-
-            // Number Of PointLights
-            //GLCall(glUniform1i(uniform_var_loc9, containersize));
 
             // Light Color
             GLCall(glUniform3f(uniform_var_loc12, in_pointlight.lightColor.getX(), in_pointlight.lightColor.getY(), in_pointlight.lightColor.getZ()));

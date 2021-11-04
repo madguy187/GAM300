@@ -138,7 +138,7 @@ namespace Eclipse
                     {
                         auto& child = engine->world.GetComponent<ChildComponent>(ID);
                         child.UpdateChildren = true;
-                      
+
                         if (ent.Tag != EntityType::ENT_MESH)
                         {
                             engine->gPicker.UpdateAabb(ID);
@@ -159,53 +159,20 @@ namespace Eclipse
                 ECGui::DrawTextWidget<const char*>("Rotation", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                
-                if (ECGui::DrawSliderFloat3Widget("TransRot", &transCom.rotation, true, -360.f, 360.f, ID))
-                {               
-                        if (engine->world.CheckComponent<SpotLightComponent>(ID))
-                        {
-                            auto& SpotLight_ = engine->world.GetComponent<SpotLightComponent>(ID);
-                            float GetMagnitudeOfDirection = SpotLight_.direction.ConvertToGlmVec3Type().length(); // we get magnitude of direction first
-                            glm::vec3 dir = glm::normalize(SpotLight_.direction.ConvertToGlmVec3Type());
-                            float UPWARD = 0.0f;
-                            glm::vec2 NewDir = { 0,0 };
-                            
-                            //Quad 2
-                            if (transCom.rotation.getX() > 90 && transCom.rotation.getX() < 180)
-                            {
-                                UPWARD = tanf(glm::radians(abs(transCom.rotation.getX()))) * -1;
-                                 NewDir = glm::vec2(1, 0) + +glm::vec2(0, UPWARD);
-                            }
-                            //quad 3
-                            if (transCom.rotation.getX() > 181 && transCom.rotation.getX() < 270)
-                            {
-                                UPWARD = tanf(glm::radians(abs(transCom.rotation.getX()))) * -1;
-                                NewDir = glm::vec2(1, 0) +glm::vec2(0, UPWARD);
-                            }
-                            //quad4
-                            if (transCom.rotation.getX() > 270 && transCom.rotation.getX() < 360)
-                            {
-                                UPWARD = tanf(glm::radians(abs(transCom.rotation.getX())));
-                                NewDir = glm::vec2(-1, 0) +glm::vec2(0, UPWARD);
-                            }
-                            //quad1
-                            if (transCom.rotation.getX() > 0 && transCom.rotation.getX() < 90)
-                            {
-                                UPWARD = tanf(glm::radians(abs(transCom.rotation.getX())));
-                                NewDir = glm::vec2(-1, 0) + glm::vec2(0, UPWARD);
-                            }
 
-                            glm::vec2 ScaleupDir = NewDir * GetMagnitudeOfDirection;
-                            SpotLight_.direction.setY(ScaleupDir.y);
-                            SpotLight_.direction.setZ(ScaleupDir.x);
-                        }
+                if (ECGui::DrawSliderFloat3Widget("TransRot", &transCom.rotation, true, -360.f, 360.f, ID))
+                {
+                    if (engine->world.CheckComponent<SpotLightComponent>(ID))
+                    {
+                        engine->LightManager.SpotLightUpdate(ID);
+                    }
                 }
 
                 ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Scale", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                
+
                 ECGui::DrawSliderFloat3Widget("TransScale", &transCom.scale, true, -100.f, 100.f, ID);
 
                 //Update for DynamicAABB Tree -Rachel
@@ -251,19 +218,22 @@ namespace Eclipse
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderFloatWidget("IntensityFloat", &_PointLight.IntensityStrength, true, 0.f, 100.0f);
                 ECGui::NextColumn();
-                ECGui::DrawTextWidget<const char*>("Light Colour", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::ColorPicker3("PLightColor", (float*)&_PointLight.Color,
-                    ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
-                ECGui::DrawSliderFloat4Widget("ColourVec", &_PointLight.Color, true, 0.0f, 1.0f);
-                engine->LightManager.SetLightColor(_PointLight, { _PointLight.Color.getX() ,_PointLight.Color.getY() , _PointLight.Color.getZ() , 1.0f });
-                ECGui::NextColumn();
+
+                //ECGui::DrawTextWidget<const char*>("Light Colour", EMPTY_STRING);
+                //ECGui::NextColumn();
+                //ECGui::ColorPicker3("PLightColor", (float*)&_PointLight.Color,
+                //    ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
+                //ECGui::DrawSliderFloat4Widget("ColourVec", &_PointLight.Color, true, 0.0f, 1.0f);
+                //engine->LightManager.SetLightColor(_PointLight, { _PointLight.Color.getX() ,_PointLight.Color.getY() , _PointLight.Color.getZ() , 1.0f });        
+                //ECGui::NextColumn();
+
                 ECGui::DrawTextWidget<const char*>("Attenuation Level", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 ECGui::DrawSliderIntWidget("PLightColourVec", &_PointLight.AttenuationLevel, true, 0, 10);
                 engine->LightManager.SetAttenuation(_PointLight, _PointLight.AttenuationLevel);
                 ECGui::NextColumn();
+
                 //ECGui::DrawTextWidget<const char*>("Light Ambient", EMPTY_STRING);
                 //ECGui::NextColumn();
                 //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
@@ -314,10 +284,11 @@ namespace Eclipse
                 //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
                 //ECGui::CheckBoxBool("Enable Blinn Phong Visible", &_PointLight.visible);
                 //ECGui::NextColumn();
-                //ECGui::DrawTextWidget<const char*>("Affects World", EMPTY_STRING);
-                //ECGui::NextColumn();
-                //ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                //ECGui::CheckBoxBool("Affects World", &_PointLight.AffectsWorld);
+                ECGui::DrawTextWidget<const char*>("Affects World", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                ECGui::CheckBoxBool("Affects World", &_PointLight.AffectsWorld);
+
                 ECGui::SetColumns(1, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
             }
@@ -585,7 +556,7 @@ namespace Eclipse
                         }
 
                         ECGui::NextColumn();
-                        ChangeTextureController(_Texture,ID);
+                        ChangeTextureController(_Texture, ID);
                     }
                 }
 
@@ -1200,7 +1171,7 @@ namespace Eclipse
 
                     if (parentComp.Child.empty())
                     {
-                        ComponentRegistry<ParentComponent>("ParentComponent", child.parentIndex, childEntComp.Name,EditComponent::EC_REMOVECOMPONENT);
+                        ComponentRegistry<ParentComponent>("ParentComponent", child.parentIndex, childEntComp.Name, EditComponent::EC_REMOVECOMPONENT);
                     }
 
                     childEntComp.Parent.clear();

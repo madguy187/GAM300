@@ -42,6 +42,7 @@ struct PointLight
     float quadratic;  
     float IntensityStrength;
     vec3 RGBColor;
+    int AffectsWorld;
 };    
 
 struct DirectionalLight 
@@ -60,14 +61,14 @@ struct SpotLight
     float outerCutOff;
 };
 
-#define NR_POINT_LIGHTS 15  
+#define NR_POINT_LIGHTS 40  
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform int NumberOfPointLights;
 
 #define NR_DIRECTIONAL_LIGHTS 1  
 uniform DirectionalLight directionlight[NR_DIRECTIONAL_LIGHTS];
 
-#define NR_SPOTLIGHTS 10  
+#define NR_SPOTLIGHTS 40  
 uniform SpotLight spotLights[NR_SPOTLIGHTS];
 uniform int NumberOfSpotLights;
 
@@ -137,7 +138,7 @@ vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness)
 
 void main()
 {	
-    vec3 AmbientSettings = vec3(0.0); // if i want abit of ambient ill give it 0.03 , lets see as our game need this
+    vec3 AmbientSettings = vec3(0.03); // if i want abit of ambient ill give it 0.03 , lets see as our game need this
 
     vec3 N;
     vec3 V = normalize(camPos - WorldPos);
@@ -229,52 +230,55 @@ void main()
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     for(int i = 0; i < NumberOfPointLights; ++i)
     {
-        // calculate per-light radiance
-        vec3 L = normalize(pointLights[i].position - WorldPos);
-        vec3 H = normalize(V + L);
-        float distance = length(pointLights[i].position - WorldPos);
-
-	    float dist = length(pointLights[i].position - WorldPos);
-        float constant = pointLights[i].constant;
-	    float linear = pointLights[i].linear;
-        float quadratic = pointLights[i].quadratic;
-	    float attenuation = pointLights[i].IntensityStrength / (constant + linear * dist + quadratic * ( dist * dist ) );
-        //float attenuation = 1.0 / (distance * distance);
-        vec3 radiance = pointLights[i].lightColor * attenuation;
-
-        // Cook-Torrance BRDF
-        float NDF , G;
-
-        if(HasInstance == 1)
+        if(pointLights[i].AffectsWorld == 1)
         {
-            NDF = DistributionGGX(N, H, roughness);   
-            G   = GeometrySmith(N, V, L, roughness);   
-        }  
-        else
-        {
-            NDF = DistributionGGX(N, H, RoughnessConstant);   
-            G   = GeometrySmith(N, V, L, RoughnessConstant);            
-        }
-        vec3 F    = fresnelSchlick(max(dot(H, V), 0.0), F0);
-           
-        vec3 numerator    = NDF * G * F; 
-        float denominator = 4 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.0001; // + 0.0001 to prevent divide by zero
-        vec3 specular = numerator / denominator;
-        
-        vec3 kS = F;
-        vec3 kD = vec3(1.0) - kS;
+            // calculate per-light radiance
+            vec3 L = normalize(pointLights[i].position - WorldPos);
+            vec3 H = normalize(V + L);
+            float distance = length(pointLights[i].position - WorldPos);
 
-        if(HasInstance == 1)
-        {
-            kD *= 1.0 - metallic;	 
-            float NdotL = max(dot(N, L), 0.0);        
-            Lo += (kD * albedo / PI + specular) * radiance * NdotL;            
-        } 
-        else
-        {
-            kD *= 1.0 - MetallicConstant;	 
-            float NdotL = max(dot(N, L), 0.0);        
-            Lo += (kD * AlbedoConstant / PI + specular) * radiance * NdotL;        
+	        float dist = length(pointLights[i].position - WorldPos);
+            float constant = pointLights[i].constant;
+	        float linear = pointLights[i].linear;
+            float quadratic = pointLights[i].quadratic;
+	        float attenuation = pointLights[i].IntensityStrength / (constant + linear * dist + quadratic * ( dist * dist ) );
+            //float attenuation = 1.0 / (distance * distance);
+            vec3 radiance = pointLights[i].lightColor * attenuation;
+
+            // Cook-Torrance BRDF
+            float NDF , G;
+
+            if(HasInstance == 1)
+            {
+                NDF = DistributionGGX(N, H, roughness);   
+                G   = GeometrySmith(N, V, L, roughness);   
+            }  
+            else
+            {
+                NDF = DistributionGGX(N, H, RoughnessConstant);   
+                G   = GeometrySmith(N, V, L, RoughnessConstant);            
+            }
+            vec3 F    = fresnelSchlick(max(dot(H, V), 0.0), F0);
+               
+            vec3 numerator    = NDF * G * F; 
+            float denominator = 4 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.0001; // + 0.0001 to prevent divide by zero
+            vec3 specular = numerator / denominator;
+            
+            vec3 kS = F;
+            vec3 kD = vec3(1.0) - kS;
+
+            if(HasInstance == 1)
+            {
+                kD *= 1.0 - metallic;	 
+                float NdotL = max(dot(N, L), 0.0);        
+                Lo += (kD * albedo / PI + specular) * radiance * NdotL;            
+            } 
+            else
+            {
+                kD *= 1.0 - MetallicConstant;	 
+                float NdotL = max(dot(N, L), 0.0);        
+                Lo += (kD * AlbedoConstant / PI + specular) * radiance * NdotL;        
+            }
         }
     }   
     
@@ -331,15 +335,6 @@ void main()
             Lo += (kD * AlbedoConstant / PI + specular) * radiance * NdotL;        
         }
     }   
-
-       //if(Directional == 0 && (NumberOfPointLights == 0) && (NumberOfSpotLights == 0) )
-       //{
-       //   AmbientSettings = vec3(0.0);
-       //}
-       //else
-       //{
-       //   AmbientSettings = vec3(0.0);
-       //}
 
        if( HasInstance == 1 )
        {
