@@ -33,9 +33,6 @@ namespace Eclipse
 
         // For grid
         GridQuad = std::make_unique<Quad>();
-
-        PostProcess = std::make_unique<FrameBuffer>();
-        PostProcess->CreatePostProcessFramebuffer();
     }
 
     void Eclipse::GraphicsManager::Post_Render()
@@ -445,12 +442,7 @@ namespace Eclipse
         }
 
         engine->MaterialManager.DoNotUpdateStencil();
-        PostProcessUpdate();
-    }
-
-    void GraphicsManager::PostProcessUpdate()
-    {
-        PostProcess->UpdatePP();
+        engine->gFrameBufferManager->PostProcess->UpdatePP();
         engine->MaterialManager.StencilBufferClear();
     }
 
