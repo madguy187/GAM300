@@ -13,7 +13,7 @@ namespace Eclipse
         AdjustSize.scale = ECVec3{ 0.1f,0.1f,0.1f };
         // PointLightComponent
         PointLightComponent& Light = engine->world.GetComponent<PointLightComponent>(CreatedID);
-        engine->LightManager.SetAttenuation(Light, 4);
+        engine->LightManager.SetAttenuation(Light, 2);
 
         // Insert into Container
         EDITOR_LOG_INFO("Pointlight Created Successfully");
@@ -151,28 +151,11 @@ namespace Eclipse
     {
         engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
-        //auto shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
-        //shdrpgm.Use();
-
-        //glBindVertexArray(Graphics::models["Sphere"]->GetVaoID());
-
         glEnable(GL_BLEND);
         glPolygonMode(GL_FRONT_AND_BACK, mode);
         glDisable(GL_CULL_FACE);
         glEnable(GL_LINE_SMOOTH);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-        //CheckUniformLoc(&shdrpgm, *in, IndexID, PointLightCounter, EntityId);
-        //auto& Light = engine->world.GetComponent<LightComponent>(EntityId);
-
-        //if (in->visible && Light.Render)
-        //{
-        //    GLCall(glDrawElements(Graphics::models["Sphere"]->GetPrimitiveType(),
-        //        Graphics::models["Sphere"]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
-        //}
-
-        //glBindVertexArray(0);
-        //shdrpgm.UnUse();
 
         // SpotLight Position
         TransformComponent& PointlightTransform = engine->world.GetComponent<TransformComponent>(EntityId);

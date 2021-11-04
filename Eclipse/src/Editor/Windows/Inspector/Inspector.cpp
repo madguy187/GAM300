@@ -227,10 +227,10 @@ namespace Eclipse
 
                 ECGui::DrawTextWidget<const char*>("Light Colour", EMPTY_STRING);
                 ECGui::NextColumn();
-                ECGui::ColorPicker3("PLightColor", (float*)&_PointLight.Color,
+                ECGui::ColorPicker3("PLightColor", (float*)&_PointLight.RGBColor,
                     ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
-                ECGui::DrawSliderFloat4Widget("ColourVec", &_PointLight.Color, true, 0.0f, 1.0f);
-                engine->LightManager.SetLightColor(_PointLight, { _PointLight.Color.getX() ,_PointLight.Color.getY() , _PointLight.Color.getZ() , 1.0f });
+                ECGui::DrawSliderFloat4Widget("ColourVec", &_PointLight.RGBColor, true, 0.0f, 1.0f);
+                engine->LightManager.SetLightColor(_PointLight, { _PointLight.RGBColor.getX() ,_PointLight.RGBColor.getY() , _PointLight.RGBColor.getZ() , 1.0f });
                 ECGui::NextColumn();
 
                 ECGui::DrawTextWidget<const char*>("Attenuation Level", EMPTY_STRING);
@@ -327,11 +327,11 @@ namespace Eclipse
                 ECGui::CheckBoxBool("Affects World", &_SpotLight.AffectsWorld);
                 ECGui::NextColumn();
 
-                //ECGui::DrawTextWidget<const char*>("Light Colour", EMPTY_STRING);
-                //ECGui::NextColumn();
-                //ECGui::ColorPicker3("SLightColor", (float*)&_SpotLight.lightColor,
-                //    ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
-                //ECGui::NextColumn();
+                ECGui::DrawTextWidget<const char*>("Light Colour", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::ColorPicker3("SLightColor", (float*)&_SpotLight.RGBColor,
+                    ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
+                ECGui::NextColumn();
 
                 ECGui::DrawTextWidget<const char*>("Light Direction", EMPTY_STRING);
                 ECGui::NextColumn();

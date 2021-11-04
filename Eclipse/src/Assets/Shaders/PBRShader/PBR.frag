@@ -62,6 +62,7 @@ struct SpotLight
     float quadratic;  
     float IntensityStrength;
     int AffectsWorld;
+    vec3 RGBColor;
 };
 
 #define NR_POINT_LIGHTS 15  
@@ -249,7 +250,7 @@ void main()
             float quadratic = pointLights[i].quadratic;
 	        float attenuation = pointLights[i].IntensityStrength / (constant + linear * dist + quadratic * ( dist * dist ) );
             //float attenuation = 1.0 / (distance * distance);
-            vec3 radiance = pointLights[i].lightColor * attenuation;
+            vec3 radiance = pointLights[i].lightColor * attenuation * pointLights[i].RGBColor;
 
             // Cook-Torrance BRDF
             float NDF , G;
@@ -310,7 +311,7 @@ void main()
 	        float linear = spotLights[i].linear;
             float quadratic = spotLights[i].quadratic;
 	        float attenuation = spotLights[i].IntensityStrength / (constant + linear * dist + quadratic * ( dist * dist ) );
-            vec3 radiance = spotLights[i].lightColor * attenuation;
+            vec3 radiance = spotLights[i].lightColor * attenuation * spotLights[i].RGBColor;
 
             // Cook-Torrance BRDF
             float NDF , G;
