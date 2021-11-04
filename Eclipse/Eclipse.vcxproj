@@ -81,7 +81,7 @@
       <WarningLevel>Level4</WarningLevel>
       <DisableSpecificWarnings>4302;4311;4505;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;_CRT_SECURE_NO_WARNINGS;TRACY_ENABLE;ENGINE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Dep;src;..\Dep\RAPIDJSON\rapidjson-master\include\rapidjson;..\Dep\GLEW\include\GL;..\Dep\STB\stb-master;..\Dep\GLM\glm;..\Dep\GLFW\include\GLFW;..\Dep\GLM\glm\gtc;..\Dep\GLM\glm\gtx;..\Dep\GLEW\lib\Release\x64;..\Dep\spdlog\include;src\Graphics\Still_Cleaning;src\Graphics\RendererAPI;src\Graphics\Parser;src\Graphics\ModelFactory\BasicPrimitives;src\Graphics\ModelFactory;src\Graphics\FrameBuffer;src\Graphics\OpenGL;src\ImGui\Vendor;src\ImGui\Vendor\ImGuizmo;..\Dep\PhysX\include;..\Dep\PhysX\include\characterkinematic;..\Dep\PhysX\include\collision;..\Dep\PhysX\include\common;..\Dep\PhysX\include\cooking;..\Dep\PhysX\include\cudamanager;..\Dep\PhysX\include\extensions;..\Dep\PhysX\include\filebuf;..\Dep\PhysX\include\foundation;..\Dep\PhysX\include\geometry;..\Dep\PhysX\include\geomutils;..\Dep\PhysX\include\gpu;..\Dep\PhysX\include\pvd;..\Dep\PhysX\include\solver;..\Dep\PhysX\include\task;..\Dep\PhysX\include\vehicle;..\Dep\mono\include\mono-2.0;..\Dep\ASSIMP\include\assimp;..\Dep\ASSIMP;..\Dep\Fmod\core\inc;..\Dep\Tracy;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Dep;src;..\Dep\RAPIDJSON\rapidjson-master\include\rapidjson;..\Dep\GLEW\include\GL;..\Dep\STB\stb-master;..\Dep\GLM\glm;..\Dep\GLFW\include\GLFW;..\Dep\GLM\glm\gtc;..\Dep\GLM\glm\gtx;..\Dep\GLEW\lib\Release\x64;..\Dep\spdlog\include;src\Graphics\Still_Cleaning;src\Graphics\RendererAPI;src\Graphics\Parser;src\Graphics\ModelFactory\BasicPrimitives;src\Graphics\ModelFactory;src\Graphics\FrameBuffer;src\Graphics\OpenGL;src\ImGui\Vendor;src\ImGui\Vendor\ImGuizmo;..\Dep\PhysX\include;..\Dep\PhysX\include\characterkinematic;..\Dep\PhysX\include\collision;..\Dep\PhysX\include\common;..\Dep\PhysX\include\cooking;..\Dep\PhysX\include\cudamanager;..\Dep\PhysX\include\extensions;..\Dep\PhysX\include\filebuf;..\Dep\PhysX\include\foundation;..\Dep\PhysX\include\geometry;..\Dep\PhysX\include\geomutils;..\Dep\PhysX\include\gpu;..\Dep\PhysX\include\pvd;..\Dep\PhysX\include\solver;..\Dep\PhysX\include\task;..\Dep\PhysX\include\vehicle;..\Dep\mono\include\mono-2.0;..\Dep\ASSIMP\include\assimp;..\Dep\ASSIMP;..\Dep\Fmod\core\inc;..\Dep\Tracy;..\Dep\Recast&amp;Detour\DebugUtils\Include;..\Dep\Recast&amp;Detour\Detour\Include;..\Dep\Recast&amp;Detour\DetourCrowd\Include;..\Dep\Recast&amp;Detour\DetourTileCache\Include;..\Dep\Recast&amp;Detour\Recast\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -121,7 +121,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
       <WarningLevel>Level4</WarningLevel>
       <DisableSpecificWarnings>4302;4311;4505;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;_CRT_SECURE_NO_WARNINGS;TRACY_ENABLE;ENGINE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Dep;src;..\Dep\RAPIDJSON\rapidjson-master\include\rapidjson;..\Dep\GLEW\include\GL;..\Dep\STB\stb-master;..\Dep\GLM\glm;..\Dep\GLFW\include\GLFW;..\Dep\GLM\glm\gtc;..\Dep\GLM\glm\gtx;..\Dep\GLEW\lib\Release\x64;..\Dep\spdlog\include;src\Graphics\Still_Cleaning;src\Graphics\RendererAPI;src\Graphics\Parser;src\Graphics\ModelFactory\BasicPrimitives;src\Graphics\ModelFactory;src\Graphics\FrameBuffer;src\Graphics\OpenGL;src\ImGui\Vendor;src\ImGui\Vendor\ImGuizmo;..\Dep\PhysX\include;..\Dep\PhysX\include\characterkinematic;..\Dep\PhysX\include\collision;..\Dep\PhysX\include\common;..\Dep\PhysX\include\cooking;..\Dep\PhysX\include\cudamanager;..\Dep\PhysX\include\extensions;..\Dep\PhysX\include\filebuf;..\Dep\PhysX\include\foundation;..\Dep\PhysX\include\geometry;..\Dep\PhysX\include\geomutils;..\Dep\PhysX\include\gpu;..\Dep\PhysX\include\pvd;..\Dep\PhysX\include\solver;..\Dep\PhysX\include\task;..\Dep\PhysX\include\vehicle;..\Dep\mono\include\mono-2.0;..\Dep\ASSIMP\include\assimp;..\Dep\ASSIMP;..\Dep\Fmod\core\inc;..\Dep\Tracy;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Dep;src;..\Dep\RAPIDJSON\rapidjson-master\include\rapidjson;..\Dep\GLEW\include\GL;..\Dep\STB\stb-master;..\Dep\GLM\glm;..\Dep\GLFW\include\GLFW;..\Dep\GLM\glm\gtc;..\Dep\GLM\glm\gtx;..\Dep\GLEW\lib\Release\x64;..\Dep\spdlog\include;src\Graphics\Still_Cleaning;src\Graphics\RendererAPI;src\Graphics\Parser;src\Graphics\ModelFactory\BasicPrimitives;src\Graphics\ModelFactory;src\Graphics\FrameBuffer;src\Graphics\OpenGL;src\ImGui\Vendor;src\ImGui\Vendor\ImGuizmo;..\Dep\PhysX\include;..\Dep\PhysX\include\characterkinematic;..\Dep\PhysX\include\collision;..\Dep\PhysX\include\common;..\Dep\PhysX\include\cooking;..\Dep\PhysX\include\cudamanager;..\Dep\PhysX\include\extensions;..\Dep\PhysX\include\filebuf;..\Dep\PhysX\include\foundation;..\Dep\PhysX\include\geometry;..\Dep\PhysX\include\geomutils;..\Dep\PhysX\include\gpu;..\Dep\PhysX\include\pvd;..\Dep\PhysX\include\solver;..\Dep\PhysX\include\task;..\Dep\PhysX\include\vehicle;..\Dep\mono\include\mono-2.0;..\Dep\ASSIMP\include\assimp;..\Dep\ASSIMP;..\Dep\Fmod\core\inc;..\Dep\Tracy;..\Dep\Recast&amp;Detour\DebugUtils\Include;..\Dep\Recast&amp;Detour\Detour\Include;..\Dep\Recast&amp;Detour\DetourCrowd\Include;..\Dep\Recast&amp;Detour\DetourTileCache\Include;..\Dep\Recast&amp;Detour\Recast\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -163,7 +163,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;_CRT_SECURE_NO_WARNINGS;TRACY_ENABLE;ENGINE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Dep;src;..\Dep\RAPIDJSON\rapidjson-master\include\rapidjson;..\Dep\GLEW\include\GL;..\Dep\STB\stb-master;..\Dep\GLM\glm;..\Dep\GLFW\include\GLFW;..\Dep\GLM\glm\gtc;..\Dep\GLM\glm\gtx;..\Dep\GLEW\lib\Release\x64;..\Dep\spdlog\include;src\Graphics\Still_Cleaning;src\Graphics\RendererAPI;src\Graphics\Parser;src\Graphics\ModelFactory\BasicPrimitives;src\Graphics\ModelFactory;src\Graphics\FrameBuffer;src\Graphics\OpenGL;src\ImGui\Vendor;src\ImGui\Vendor\ImGuizmo;..\Dep\PhysX\include;..\Dep\PhysX\include\characterkinematic;..\Dep\PhysX\include\collision;..\Dep\PhysX\include\common;..\Dep\PhysX\include\cooking;..\Dep\PhysX\include\cudamanager;..\Dep\PhysX\include\extensions;..\Dep\PhysX\include\filebuf;..\Dep\PhysX\include\foundation;..\Dep\PhysX\include\geometry;..\Dep\PhysX\include\geomutils;..\Dep\PhysX\include\gpu;..\Dep\PhysX\include\pvd;..\Dep\PhysX\include\solver;..\Dep\PhysX\include\task;..\Dep\PhysX\include\vehicle;..\Dep\mono\include\mono-2.0;..\Dep\ASSIMP\include\assimp;..\Dep\ASSIMP;..\Dep\Fmod\core\inc;..\Dep\Tracy;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Dep;src;..\Dep\RAPIDJSON\rapidjson-master\include\rapidjson;..\Dep\GLEW\include\GL;..\Dep\STB\stb-master;..\Dep\GLM\glm;..\Dep\GLFW\include\GLFW;..\Dep\GLM\glm\gtc;..\Dep\GLM\glm\gtx;..\Dep\GLEW\lib\Release\x64;..\Dep\spdlog\include;src\Graphics\Still_Cleaning;src\Graphics\RendererAPI;src\Graphics\Parser;src\Graphics\ModelFactory\BasicPrimitives;src\Graphics\ModelFactory;src\Graphics\FrameBuffer;src\Graphics\OpenGL;src\ImGui\Vendor;src\ImGui\Vendor\ImGuizmo;..\Dep\PhysX\include;..\Dep\PhysX\include\characterkinematic;..\Dep\PhysX\include\collision;..\Dep\PhysX\include\common;..\Dep\PhysX\include\cooking;..\Dep\PhysX\include\cudamanager;..\Dep\PhysX\include\extensions;..\Dep\PhysX\include\filebuf;..\Dep\PhysX\include\foundation;..\Dep\PhysX\include\geometry;..\Dep\PhysX\include\geomutils;..\Dep\PhysX\include\gpu;..\Dep\PhysX\include\pvd;..\Dep\PhysX\include\solver;..\Dep\PhysX\include\task;..\Dep\PhysX\include\vehicle;..\Dep\mono\include\mono-2.0;..\Dep\ASSIMP\include\assimp;..\Dep\ASSIMP;..\Dep\Fmod\core\inc;..\Dep\Tracy;..\Dep\Recast&amp;Detour\DebugUtils\Include;..\Dep\Recast&amp;Detour\Detour\Include;..\Dep\Recast&amp;Detour\DetourCrowd\Include;..\Dep\Recast&amp;Detour\DetourTileCache\Include;..\Dep\Recast&amp;Detour\Recast\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -290,11 +290,11 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\Grid\AABBTree.h" />
     <ClInclude Include="src\Graphics\Grid\BoundingBox.h" />
     <ClInclude Include="src\Graphics\Grid\Grid.h" />
-    <ClInclude Include="src\Graphics\Instancing\DebugBoxes\Box.h" />
     <ClInclude Include="src\Graphics\Grid\IAABB.h" />
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h" />
     <ClInclude Include="src\Graphics\InputHandler\LogicalEnum.hpp" />
     <ClInclude Include="src\Graphics\InputHandler\LogicalInput.h" />
+    <ClInclude Include="src\Graphics\Instancing\DebugBoxes\Box.h" />
     <ClInclude Include="src\Graphics\Instancing\DebugLights\DebugLights.h" />
     <ClInclude Include="src\Graphics\Instancing\DebugManager\DebugManager.h" />
     <ClInclude Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.h" />
@@ -465,9 +465,9 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\Grid\AABB.cpp" />
     <ClCompile Include="src\Graphics\Grid\AABBTree.cpp" />
     <ClCompile Include="src\Graphics\Grid\BoundingBox.cpp" />
-    <ClCompile Include="src\Graphics\Instancing\DebugBoxes\Box.cpp" />
     <ClCompile Include="src\Graphics\Grid\Grid.cpp" />
     <ClCompile Include="src\Graphics\InputHandler\LogicalInput.cpp" />
+    <ClCompile Include="src\Graphics\Instancing\DebugBoxes\Box.cpp" />
     <ClCompile Include="src\Graphics\Instancing\DebugLights\DebugLights.cpp" />
     <ClCompile Include="src\Graphics\Instancing\DebugManager\DebugManager.cpp" />
     <ClCompile Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.cpp" />
@@ -549,26 +549,6 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\Assets\Shaders\Instancing\Instancing.frag" />
-    <None Include="src\Assets\Shaders\Instancing\Instancing.vert" />
-    <None Include="src\Assets\Shaders\MaterialEditor\PBR.frag" />
-    <None Include="src\Assets\Shaders\MaterialEditor\PBR.vert" />
-    <None Include="src\Assets\Shaders\MeshEditor\MeshEditor.frag" />
-    <None Include="src\Assets\Shaders\MeshEditor\MeshEditor.vert" />
-    <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.frag" />
-    <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.vert" />
-    <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />
-    <None Include="src\Assets\Shaders\PBRShader\PBR.vert" />
-    <None Include="src\Assets\Shaders\Test\DebugSPhere.frag" />
-    <None Include="src\Assets\Shaders\Test\DebugSPhere.vert" />
-    <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_bezier_math.inl" />
-    <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_extra_math.inl" />
-    <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_internal.inl" />
-    <None Include="src\Mono\ScriptAPI\EclipseBehavior.cs" />
-    <None Include="src\Mono\ScriptAPI\InputHandler.cs" />
-    <None Include="src\Mono\ScriptAPI\KeyCode.cs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

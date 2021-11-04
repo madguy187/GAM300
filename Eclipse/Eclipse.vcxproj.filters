@@ -10,6 +10,9 @@
     <Filter Include="Audio\FmodAPI">
       <UniqueIdentifier>{2653ADA8-9213-29DF-5B4E-725CC7CD6DBB}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BehaviourTree">
+      <UniqueIdentifier>{3A7B31FB-A63B-AD31-6F76-F6AEDBF5F10D}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ECS">
       <UniqueIdentifier>{60E1870B-CCEA-877C-5566-9E7CC16E937C}</UniqueIdentifier>
     </Filter>
@@ -205,6 +208,27 @@
     <Filter Include="Graphics\InputHandler">
       <UniqueIdentifier>{73B368D2-DF1F-24CD-A813-BC2A143F4635}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics\Instancing">
+      <UniqueIdentifier>{D3DCF830-3F3E-D63E-C8AB-1CF1340C0DFE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Instancing\DebugBoxes">
+      <UniqueIdentifier>{6A92773B-56B8-41A2-3FFE-C66D2BC3666E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Instancing\DebugLights">
+      <UniqueIdentifier>{D49D47C1-4081-5601-4984-843DB5E61C52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Instancing\DebugManager">
+      <UniqueIdentifier>{44EC0625-303D-F266-59A1-E028455185D0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Instancing\DebugSpheres">
+      <UniqueIdentifier>{83877715-6FD8-6257-983C-511984ECF5C0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Instancing\DebugSpotLights">
+      <UniqueIdentifier>{7AED7B20-E6A6-E6CA-6F06-01A5DBBE9C3A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Instancing\Instance_Renderer">
+      <UniqueIdentifier>{CD128D4E-39D7-8B3E-023D-BC086EC02774}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Graphics\Lighting">
       <UniqueIdentifier>{5BBF6932-C7D5-67C8-104D-F3E97CA23850}</UniqueIdentifier>
     </Filter>
@@ -222,6 +246,9 @@
     </Filter>
     <Filter Include="Graphics\Material\PBR">
       <UniqueIdentifier>{679760AC-D303-1CA7-9CF7-B30408233E0F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\MeshEditor">
+      <UniqueIdentifier>{D961064B-45C3-E358-CE30-2A0B3A911A18}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\ModelFactory">
       <UniqueIdentifier>{0EA78BA6-7A13-47A1-4307-DFFEAF326909}</UniqueIdentifier>
@@ -292,6 +319,9 @@
     <Filter Include="Mono\Manager">
       <UniqueIdentifier>{A8092495-946C-B339-3DF2-EBEF29347FBC}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NavMesh">
+      <UniqueIdentifier>{B7C6C562-23A6-44FE-2CBE-CFD4981CAB5F}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Physics">
       <UniqueIdentifier>{888B590D-F46A-D8A8-FD82-637F69E13E0A}</UniqueIdentifier>
     </Filter>
@@ -335,6 +365,9 @@
     </ClInclude>
     <ClInclude Include="src\Audio\FmodAPI\FmodAPI.h">
       <Filter>Audio\FmodAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BehaviourTree\BehaviourTree.h">
+      <Filter>BehaviourTree</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\ComponentList.h">
       <Filter>ECS\ComponentManager</Filter>
@@ -382,6 +415,9 @@
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\ModelComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\NavMeshComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\ParentComponent.h">
@@ -649,7 +685,7 @@
     <ClInclude Include="src\Graphics\Grid\BoundingBox.h">
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\Instancing\DebugBoxes\Box.h">
+    <ClInclude Include="src\Graphics\Grid\Grid.h">
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\Grid\IAABB.h">
@@ -663,6 +699,24 @@
     </ClInclude>
     <ClInclude Include="src\Graphics\InputHandler\LogicalInput.h">
       <Filter>Graphics\InputHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Instancing\DebugBoxes\Box.h">
+      <Filter>Graphics\Instancing\DebugBoxes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Instancing\DebugLights\DebugLights.h">
+      <Filter>Graphics\Instancing\DebugLights</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Instancing\DebugManager\DebugManager.h">
+      <Filter>Graphics\Instancing\DebugManager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.h">
+      <Filter>Graphics\Instancing\DebugSpheres</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Instancing\DebugSpotLights\DebugSpotLights.h">
+      <Filter>Graphics\Instancing\DebugSpotLights</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Instancing\Instance_Renderer\Instance_Renderer.h">
+      <Filter>Graphics\Instancing\Instance_Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\Lighting\DirectionalLight.h">
       <Filter>Graphics\Lighting</Filter>
@@ -693,6 +747,9 @@
     </ClInclude>
     <ClInclude Include="src\Graphics\Material\PBR\PBRManager.h">
       <Filter>Graphics\Material\PBR</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\MeshEditor\MeshEditorSource.h">
+      <Filter>Graphics\MeshEditor</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.h">
       <Filter>Graphics\ModelFactory\AssimpModel</Filter>
@@ -862,11 +919,17 @@
     <ClInclude Include="src\Logger\Logger.h">
       <Filter>Logger</Filter>
     </ClInclude>
+    <ClInclude Include="src\Mono\Components\s_LogicalInput.h">
+      <Filter>Mono\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\Mono\Components\s_RigidBodyComponent.h">
       <Filter>Mono\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\Mono\Manager\MonoManager.h">
       <Filter>Mono\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NavMesh\NavMeshCreator.h">
+      <Filter>NavMesh</Filter>
     </ClInclude>
     <ClInclude Include="src\Physics\PhysicsManager.h">
       <Filter>Physics</Filter>
@@ -920,36 +983,6 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\Graphics\InputHandler\LogicalEnum.hpp" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\Inputsystem\InputSystem.h" />
-    <ClInclude Include="src\Graphics\Material\PBR\PBRManager.h" />
-    <ClInclude Include="src\Graphics\Material\MaterialInstance\MaterialInstance.h" />
-    <ClInclude Include="src\Editor\Utilities\UndoAndRedo\EntityDeleteDeltaCommand.h" />
-    <ClInclude Include="src\Library\Random\Random.h" />
-    <ClInclude Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.h" />
-    <ClInclude Include="src\Mono\Components\s_RigidBodyComponent.h" />
-    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditor.h" />
-    <ClInclude Include="src\Editor\Windows\NodeEditor\Utilities\builders.h" />
-    <ClInclude Include="src\Editor\Windows\NodeEditor\Utilities\drawing.h" />
-    <ClInclude Include="src\Editor\Windows\NodeEditor\Utilities\widgets.h" />
-    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\crude_json.h" />
-    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_bezier_math.h" />
-    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_canvas.h" />
-    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_extra_math.h" />
-    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor.h" />
-    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_internal.h" />
-    <ClInclude Include="src\Graphics\EngineCompiler\InputCompiler\InputCompiler.h" />
-    <ClInclude Include="src\Graphics\MeshEditor\MeshEditorSource.h" />
-    <ClInclude Include="src\Mono\Components\s_LogicalInput.h" />
-    <ClInclude Include="src\Graphics\Instancing\Instance_Renderer\Instance_Renderer.h" />
-    <ClInclude Include="src\Graphics\Instancing\DebugManager\DebugManager.h" />
-    <ClInclude Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.h" />
-    <ClInclude Include="src\Graphics\Instancing\DebugLights\DebugLights.h" />
-    <ClInclude Include="src\Graphics\Grid\Grid.h" />
-    <ClInclude Include="src\Graphics\Instancing\DebugSpotLights\DebugSpotLights.h" />
-    <ClInclude Include="src\BehaviourTree\BehaviourTree.h" />
-    <ClInclude Include="src\NavMesh\NavMeshCreator.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\NavMeshComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -960,6 +993,9 @@
     </ClCompile>
     <ClCompile Include="src\Audio\FmodAPI\FmodAPI.cpp">
       <Filter>Audio\FmodAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BehaviourTree\BehaviourTree.cpp">
+      <Filter>BehaviourTree</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
       <Filter>ECS\ComponentManager</Filter>
@@ -1171,14 +1207,29 @@
     <ClCompile Include="src\Graphics\Grid\BoundingBox.cpp">
       <Filter>Graphics\Grid</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\Instancing\DebugBoxes\Box.cpp">
-      <Filter>Graphics\Grid</Filter>
-    </ClCompile>
     <ClCompile Include="src\Graphics\Grid\Grid.cpp">
       <Filter>Graphics\Grid</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\InputHandler\LogicalInput.cpp">
       <Filter>Graphics\InputHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Instancing\DebugBoxes\Box.cpp">
+      <Filter>Graphics\Instancing\DebugBoxes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Instancing\DebugLights\DebugLights.cpp">
+      <Filter>Graphics\Instancing\DebugLights</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Instancing\DebugManager\DebugManager.cpp">
+      <Filter>Graphics\Instancing\DebugManager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.cpp">
+      <Filter>Graphics\Instancing\DebugSpheres</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Instancing\DebugSpotLights\DebugSpotlights.cpp">
+      <Filter>Graphics\Instancing\DebugSpotLights</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Instancing\Instance_Renderer\Instance_Renderer.cpp">
+      <Filter>Graphics\Instancing\Instance_Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\Lighting\DirectionalLight.cpp">
       <Filter>Graphics\Lighting</Filter>
@@ -1206,6 +1257,9 @@
     </ClCompile>
     <ClCompile Include="src\Graphics\Material\PBR\PBRManager.cpp">
       <Filter>Graphics\Material\PBR</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\MeshEditor\MeshEditorSource.cpp">
+      <Filter>Graphics\MeshEditor</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.cpp">
       <Filter>Graphics\ModelFactory\AssimpModel</Filter>
@@ -1345,6 +1399,9 @@
     <ClCompile Include="src\Mono\Manager\MonoManager.cpp">
       <Filter>Mono\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="src\NavMesh\NavMeshCreator.cpp">
+      <Filter>NavMesh</Filter>
+    </ClCompile>
     <ClCompile Include="src\Physics\PhysicsManager.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
@@ -1394,47 +1451,5 @@
       <Filter>Tracy</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\Inputsystem\InputSystem.cpp" />
-    <ClCompile Include="src\Graphics\Material\PBR\PBRManager.cpp" />
-    <ClCompile Include="src\Graphics\Material\MaterialInstance\MaterialInstance.cpp" />
-    <ClCompile Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.cpp" />
-    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditor.cpp" />
-    <ClCompile Include="src\Editor\Windows\NodeEditor\Utilities\builders.cpp" />
-    <ClCompile Include="src\Editor\Windows\NodeEditor\Utilities\drawing.cpp" />
-    <ClCompile Include="src\Editor\Windows\NodeEditor\Utilities\widgets.cpp" />
-    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\crude_json.cpp" />
-    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_canvas.cpp" />
-    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor.cpp" />
-    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_api.cpp" />
-    <ClCompile Include="src\Graphics\EngineCompiler\InputCompiler\InputCompiler.cpp" />
-    <ClCompile Include="src\Graphics\MeshEditor\MeshEditorSource.cpp" />
-    <ClCompile Include="src\Graphics\Instancing\Instance_Renderer\Instance_Renderer.cpp" />
-    <ClCompile Include="src\Graphics\Instancing\DebugManager\DebugManager.cpp" />
-    <ClCompile Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.cpp" />
-    <ClCompile Include="src\Graphics\Instancing\DebugLights\DebugLights.cpp" />
-    <ClCompile Include="src\Graphics\Instancing\DebugSpotLights\DebugSpotlights.cpp" />
-    <ClCompile Include="src\BehaviourTree\BehaviourTree.cpp" />
-    <ClCompile Include="src\NavMesh\NavMeshCreator.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />
-    <None Include="src\Assets\Shaders\PBRShader\PBR.vert" />
-    <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.frag" />
-    <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.vert" />
-    <ClCompile Include="src\Library\Random\Random.cpp" />
-    <None Include="src\Mono\ScriptAPI\EclipseBehavior.cs" />
-    <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_bezier_math.inl" />
-    <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_extra_math.inl" />
-    <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_internal.inl" />
-    <None Include="src\Assets\Shaders\MaterialEditor\PBR.frag" />
-    <None Include="src\Assets\Shaders\MaterialEditor\PBR.vert" />
-    <None Include="src\Assets\Shaders\MeshEditor\MeshEditor.frag" />
-    <None Include="src\Assets\Shaders\MeshEditor\MeshEditor.vert" />
-    <None Include="src\Assets\Shaders\Test\DebugSPhere.frag" />
-    <None Include="src\Assets\Shaders\Test\DebugSPhere.vert" />
-    <None Include="src\Mono\ScriptAPI\InputHandler.cs" />
-    <None Include="src\Mono\ScriptAPI\KeyCode.cs" />
-    <None Include="src\Assets\Shaders\Instancing\Instancing.frag" />
-    <None Include="src\Assets\Shaders\Instancing\Instancing.vert" />
   </ItemGroup>
 </Project>

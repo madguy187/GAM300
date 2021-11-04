@@ -73,7 +73,12 @@ project "Eclipse"
 		"Dep/ASSIMP/include/assimp",
 		"Dep/ASSIMP",
 		"Dep/Fmod/core/inc",
-		"Dep/Tracy"
+		"Dep/Tracy",
+		"Dep/Recast&Detour/DebugUtils/Include",
+		"Dep/Recast&Detour/Detour/Include",
+		"Dep/Recast&Detour/DetourCrowd/Include",
+		"Dep/Recast&Detour/DetourTileCache/Include",
+		"Dep/Recast&Detour/Recast/Include"
 	}
 
 	filter "system:windows"

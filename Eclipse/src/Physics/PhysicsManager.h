@@ -5,7 +5,6 @@
 namespace Eclipse
 {
 	using namespace physx;
-	using RaycastBuffer PxRaycastBuffer;
 	struct EC_Actor
 	{
 		PxActor* actor;
