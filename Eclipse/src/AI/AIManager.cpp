@@ -1,50 +1,61 @@
 #include "pch.h"
 #include "AIManager.h"
-namespace Eclipse
+void AIManager::patrol(Entity ent)
 {
+	auto& AI = engine->world.GetComponent<AIComponent>(ent);
+	if (!AI.patrolling || AI.waypoints.empty())
+		return;
+	auto& transform = engine->world.GetComponent<TransformComponent>(ent);
+	if (!engine->world.CheckComponent<TransformComponent>(AI.waypoints[AI.target]))
+		RemoveDeletedWaypoints(ent, AI.waypoints[AI.target]);
 
-	/*AstarNode* AIManager::GetNextCurrent()
+	auto& targettransform = engine->world.GetComponent<TransformComponent>(AI.waypoints[AI.target]);
+	auto& rigidbody = engine->world.GetComponent<RigidBodyComponent>(ent);
+
+	ECVec3 direction = targettransform.position - transform.position;
+	VectorNormalize<float, 3>(rigidbody.forces, direction);
+	rigidbody.forces *= AI.PatrolSpeed;
+
+
+	float distance = fabs(sqrtf(
+		((targettransform.position.getX() - transform.position.getX()) * (targettransform.position.getX() - transform.position.getX())) +
+		((targettransform.position.getY() - transform.position.getY()) * (targettransform.position.getY() - transform.position.getY())) +
+		((targettransform.position.getZ() - transform.position.getZ()) * (targettransform.position.getZ() - transform.position.getZ()))));
+
+
+	if (distance <= AI.MinDisttoChange)
 	{
-		AstarNode* temp = openlist.front();
-		for (auto node : openlist)
-		{
-			if (node->fcost < temp->fcost)
-				temp = node;
-		}
+		if (AI.target >= AI.waypoints.size() - 1)
+			AI.target = 0;
+		else
+			AI.target++;
+	}
 
-		return temp;
-	}*/
+}
 
-	/*void AIManager::CalculatePath(AstarNode& start, AstarNode& end)
-	{
-		AstarNode* current = &start;
-		openlist.push_back(current);
-		current->gcost = 0;
-		current->fcost = current->gcost;
-		for (auto _neighbour : current->neighbours)
-		{
-			openlist.push_back(_neighbour.neighbour);
-			_neighbour.neighbour->gcost = _neighbour.distfromNeighbour;
-			_neighbour.neighbour->fcost = _neighbour.neighbour->gcost + _neighbour.neighbour->hcost;
-			_neighbour.neighbour->prev = current;
-		}
-		openlist.pop_front();
-		closedlist.push_back(current);
+void AIManager::AddWaypoint(Entity AItoaddto, Entity waypointent)
+{
+	auto& AI = engine->world.GetComponent<AIComponent>(AItoaddto);
+	if (std::find(AI.waypoints.begin(), AI.waypoints.end(), waypointent) == AI.waypoints.end())
+		AI.waypoints.push_back(waypointent);
+}
 
-		while (std::find(openlist.begin(), openlist.end(), end) == openlist.end())
-		{
-			current = GetNextCurrent();
-			for (auto _neighbour : current->neighbours)
-			{
-				openlist.push_back(_neighbour.neighbour);
-				if (current->gcost + _neighbour.distfromNeighbour < _neighbour.neighbour->gcost)
-				{
-					_neighbour.neighbour->gcost = current->gcost + _neighbour.distfromNeighbour;
-					_neighbour.neighbour->fcost = _neighbour.neighbour->gcost + _neighbour.neighbour->hcost;
-					_neighbour.neighbour->prev = current;
-				}
-			}
-			
-		}
-	}*/
+void AIManager::AddTargetPointEntity(Entity ent)
+{
+	TargetPoints.push_back(ent);
+}
+
+void AIManager::RemoveDeletedWaypoints(Entity ent, Entity deleteent)
+{
+	auto& AI = engine->world.GetComponent<AIComponent>(ent);
+	AI.waypoints.erase(std::remove(AI.waypoints.begin(), AI.waypoints.end(), deleteent), AI.waypoints.end());
+	if (AI.target >= AI.waypoints.size() - 1)
+		AI.target = 0;
+	else
+		AI.target++;
+}
+
+const std::vector<Entity>& AIManager::GetTargetPoints()
+{
+	return TargetPoints;
 }
