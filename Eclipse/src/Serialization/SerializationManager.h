@@ -135,7 +135,7 @@ namespace Eclipse
 		template <typename T>
 		inline static bool DeserializeDataMember(const char* name, RefVariant refv)
 		{
-			bool isSuccess = false;
+			/*bool isSuccess = false;
 
 			if (dsz.StartElement(name))
 			{
@@ -143,6 +143,14 @@ namespace Eclipse
 					dsz.ReadAttributeFromElement("value", refv.ValueRegistry<RemTypeQual<T>::type>());
 				dsz.CloseElement();
 				isSuccess = true;
+			}*/
+			bool isSuccess = true;
+
+			if (dsz.StartElement(name))
+			{
+				if constexpr (!std::is_pointer<T>::value)
+					dsz.ReadAttributeFromElement("value", refv.ValueRegistry<RemTypeQual<T>::type>());
+				dsz.CloseElement();
 			}
 
 			return isSuccess;

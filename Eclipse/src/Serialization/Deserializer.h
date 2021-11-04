@@ -1,5 +1,4 @@
 #pragma once
-#include "Global.h"
 #include "TinyXML/tinyxml.h"
 #include "Library/Strings/Lexical.h"
 #include <filesystem>
@@ -16,10 +15,11 @@ namespace Eclipse
 		TiXmlElement* _currElement;
 		std::filesystem::path _path;
 		bool hasFile;
+		const char* EmptyStringReplacement = "__EMPTY__";
 
 		bool CheckAttributeValue(const std::string& name);
 
-		const char* GetAttributeValue(const std::string& name);
+		bool GetAttributeValue(const std::string& name, std::string& result);
 
 		
 
@@ -33,76 +33,121 @@ namespace Eclipse
 		template <typename T>
 		inline void ReadAttributeFromElement(const std::string& att_name, T& att_data)
 		{
-			att_data = lexical_cast<T>(GetAttributeValue(att_name));
+			std::string str;
+			if (GetAttributeValue(att_name, str))
+			{
+				att_data = lexical_cast<T>(str);
+			}
 		}
 
 		template <>
 		inline void ReadAttributeFromElement(const std::string& att_name, std::string& att_data)
 		{
-			att_data = GetAttributeValue(att_name);
+			std::string str;
+
+			if (GetAttributeValue(att_name, str))
+			{
+				att_data = str;
+			}
 		}
 
 		template <>
 		inline void ReadAttributeFromElement(const std::string& att_name, EntityType& att_data)
 		{
-			std::string str = GetAttributeValue(att_name);
-			att_data = lexical_cast_toEnum<EntityType>(str);
+			std::string str;
+
+			if (GetAttributeValue(att_name, str))
+			{
+				att_data = lexical_cast_toEnum<EntityType>(str);
+			}
 		}
 		
 		template <>
 		inline void ReadAttributeFromElement(const std::string& att_name, bool& att_data)
 		{
-			std::string str = GetAttributeValue(att_name);
-			att_data = lexical_cast<bool>(str);
+			std::string str;
+
+			if (GetAttributeValue(att_name, str))
+			{
+				att_data = lexical_cast<bool>(str);
+			}
 		}
 		
 		template <>
 		inline void ReadAttributeFromElement(const std::string& att_name, CameraComponent::CameraType& att_data)
 		{
-			std::string str = GetAttributeValue(att_name);
-			att_data = lexical_cast_toEnum<CameraComponent::CameraType>(str);
+			std::string str;
+
+			if (GetAttributeValue(att_name, str))
+			{
+				att_data = lexical_cast_toEnum<CameraComponent::CameraType>(str);
+			}
 		}
 		
 		template <>
 		inline void ReadAttributeFromElement(const std::string& att_name, CameraComponent::ProjectionType& att_data)
 		{
-			std::string str = GetAttributeValue(att_name);
-			att_data = lexical_cast_toEnum<CameraComponent::ProjectionType>(str);
+			std::string str;
+
+			if (GetAttributeValue(att_name, str))
+			{
+				att_data = lexical_cast_toEnum<CameraComponent::ProjectionType>(str);
+			}
 		}
 		
 		template <>
 		inline void ReadAttributeFromElement(const std::string& att_name, MaterialModelType& att_data)
 		{
-			std::string str = GetAttributeValue(att_name);
-			att_data = lexical_cast_toEnum<MaterialModelType>(str);
+			std::string str;
+
+			if (GetAttributeValue(att_name, str))
+			{
+				att_data = lexical_cast_toEnum<MaterialModelType>(str);
+			}
 		}
 
 		template <>
 		inline void ReadAttributeFromElement(const std::string& att_name, TextureType& att_data)
 		{
-			std::string str = GetAttributeValue(att_name);
-			att_data = lexical_cast_toEnum<TextureType>(str);
+			std::string str;
+
+			if (GetAttributeValue(att_name, str))
+			{
+				att_data = lexical_cast_toEnum<TextureType>(str);
+			}
 		}
 
 		template <>
 		inline void ReadAttributeFromElement(const std::string& att_name, MeshComponent::MapType& att_data)
 		{
-			std::string str = GetAttributeValue(att_name);
-			att_data = lexical_cast_toEnum<MeshComponent::MapType>(str);
+			std::string str;
+
+			if (GetAttributeValue(att_name, str))
+			{
+				att_data = lexical_cast_toEnum<MeshComponent::MapType>(str);
+			}
 		}
 		
 		template <>
 		inline void ReadAttributeFromElement(const std::string& att_name, ModelType& att_data)
 		{
-			std::string str = GetAttributeValue(att_name);
-			att_data = lexical_cast_toEnum<ModelType>(str);
+			std::string str;
+
+			if (GetAttributeValue(att_name, str))
+			{
+				att_data = lexical_cast_toEnum<ModelType>(str);
+			}
 		}
 		
 		template <>
 		inline void ReadAttributeFromElement(const std::string& att_name, PxShapeType& att_data)
 		{
-			std::string str = GetAttributeValue(att_name);
-			att_data = lexical_cast_toEnum<PxShapeType>(str);
+			std::string str;
+
+			if (GetAttributeValue(att_name, str))
+			{
+				att_data = lexical_cast_toEnum<PxShapeType>(str);
+			}
 		}
 		
 		template <>
@@ -135,15 +180,16 @@ namespace Eclipse
 		template <typename T>
 		inline void ReadAttributeFromElement(const std::string& att_name, std::vector<T>& att_data)
 		{
-			(void)att_name;
-			std::string str = GetAttributeValue("size");
+			std::string str;
+			GetAttributeValue("size", str);
+
 			size_t size = lexical_cast<size_t>(str);
 			std::string name{ "Member" };
 			for (size_t i = 0; i < size; ++i)
 			{
 				StartElement(name, true, i);
 				T data;
-				ReadAttributeFromElement("value", data);
+				ReadAttributeFromElement(att_name.c_str(), data);
 				att_data.push_back(data);
 				CloseElement();
 			}
@@ -157,7 +203,8 @@ namespace Eclipse
 			void (Vector<T, N>::*v[4])(T) = { &Vector<T, N>::setX, &Vector<T, N>::setY, &Vector<T, N>::setZ, &Vector<T, N>::setW };
 			for (size_t i = 0; i < N; ++i)
 			{
-				std::string str = GetAttributeValue(vecNames[i]);
+				std::string str;
+				GetAttributeValue(vecNames[i], str);
 				(att_data.*v[i])(lexical_cast<T>(str));
 			}
 		}
@@ -173,7 +220,8 @@ namespace Eclipse
 				StartElement(name, true, i);
 				for (auto j = 0; j < N2; ++j)
 				{
-					std::string str = GetAttributeValue(dataName + std::to_string(j));
+					std::string str;
+					GetAttributeValue(dataName + std::to_string(j), str);
 					att_data[i][j] = lexical_cast<T>(str);
 				}
 				CloseElement();
@@ -187,7 +235,8 @@ namespace Eclipse
 			std::string vecNames[4] = { {"x"}, {"y"}, {"z"}, {"w"} };
 			for (auto i = 0; i < N; ++i)
 			{
-				std::string str = GetAttributeValue(vecNames[i]);
+				std::string str;
+				GetAttributeValue(vecNames[i], str);
 				att_data[i] = lexical_cast<T>(str);
 			}
 		}
@@ -195,7 +244,8 @@ namespace Eclipse
 		template <typename T, size_t N>
 		inline void ReadAttributeFromElement(const std::string& att_name, std::array<T, N>& att_data)
 		{
-			std::string str = GetAttributeValue("size");
+			std::string str;
+			GetAttributeValue("size", str);
 			att_data.fill(0);
 			size_t size = lexical_cast<size_t>(str);
 			std::string name{ "Member" };
@@ -203,7 +253,7 @@ namespace Eclipse
 			{
 				StartElement(name, true, i);
 				T data = 0;
-				ReadAttributeFromElement("value", data);
+				ReadAttributeFromElement(att_name.c_str(), data);
 				att_data[i] = data;
 				CloseElement();
 			}
@@ -212,10 +262,9 @@ namespace Eclipse
 		template <size_t N>
 		inline void ReadAttributeFromElement(const std::string& att_name, std::array<char, N>& att_data)
 		{
-			(void)att_name;
 			att_data.fill(0);
 			std::string data;
-			ReadAttributeFromElement("value", data);
+			ReadAttributeFromElement(att_name.c_str(), data);
 			strcpy(att_data.data(), data.c_str());
 		}
 
