@@ -7,6 +7,7 @@
 #include <mono/metadata/mono-gc.h>
 #include <mono/metadata/environment.h>
 #include <mono/metadata/debug-helpers.h>
+#include <mono/metadata/attrdefs.h>
 
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 
@@ -135,10 +136,12 @@ namespace Eclipse
 			// check for attributes
 			MonoCustomAttrInfo* attrInfo = mono_custom_attrs_from_field(klass, field);
 
+			if ((mono_field_get_flags(field) & MONO_FIELD_ATTR_FIELD_ACCESS_MASK) == MONO_FIELD_ATTR_PRIVATE) continue;
+
 			if (attrInfo != nullptr)
 			{
 				MonoClass* attrKlass = mono_class_from_name(engine->mono.GetAPIImage(), "", "Header");
-
+				
 				if (attrKlass != nullptr)
 				{
 					if (mono_custom_attrs_has_attr(attrInfo, attrKlass))
@@ -148,9 +151,8 @@ namespace Eclipse
 					}
 				}
 			}
-
+			
 			mono_custom_attrs_free(attrInfo);
-
 			fields.insert(std::make_pair(mono_field_get_name(field), "Variable"));
 		}
 
@@ -300,12 +302,12 @@ namespace Eclipse
 		MonoClassField* field = mono_class_get_field_from_name(klass, fieldName);
 		if (!field) {
 			fprintf(stderr, "Can't find field val in MyType\n");
-			exit(1);
+			return std::string{};
 		}
 
 		if (mono_type_get_type(mono_field_get_type(field)) != MONO_TYPE_STRING) {
 			fprintf(stderr, "Field val is not a string\n");
-			exit(1);
+			return std::string{};
 		}
 
 		mono_field_get_value(obj, field, &stringField);
