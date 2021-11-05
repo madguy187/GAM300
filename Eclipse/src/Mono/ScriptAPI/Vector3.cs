@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Eclipse
 {
-    public class MonoVec3
+    public class Vector3
     {
-        public MonoVec3(float _x, float _y, float _z)
+        public Vector3(float _x, float _y, float _z)
         {
             x = _x;
             y = _y;

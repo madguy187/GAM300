@@ -367,6 +367,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Logger\Logger.h" />
     <ClInclude Include="src\Mono\Components\s_LogicalInput.h" />
     <ClInclude Include="src\Mono\Components\s_RigidBodyComponent.h" />
+    <ClInclude Include="src\Mono\Components\s_Time.h" />
     <ClInclude Include="src\Mono\Manager\MonoManager.h" />
     <ClInclude Include="src\Physics\PhysicsManager.h" />
     <ClInclude Include="src\PrefabManager\PrefabManager.h" />
@@ -562,8 +563,11 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_extra_math.inl" />
     <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_internal.inl" />
     <None Include="src\Mono\ScriptAPI\EclipseBehavior.cs" />
+    <None Include="src\Mono\ScriptAPI\Header.cs" />
+    <None Include="src\Mono\ScriptAPI\HeaderReader.cs" />
     <None Include="src\Mono\ScriptAPI\InputHandler.cs" />
     <None Include="src\Mono\ScriptAPI\KeyCode.cs" />
+    <None Include="src\Mono\ScriptAPI\Time.cs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

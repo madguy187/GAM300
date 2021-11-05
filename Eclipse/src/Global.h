@@ -213,3 +213,18 @@ enum class AudioType
     AT_EVENT,
     AT_UNASSIGNED
 };
+
+enum class m_Type
+{
+    MONO_UNDEFINED,
+    MONO_VAR,
+    MONO_HEADER,
+    MONO_LAYERMASK
+};
+
+struct MonoVariable
+{
+    m_Type type = m_Type::MONO_UNDEFINED;
+    std::string varName = "";
+
+};

@@ -7,11 +7,13 @@
 #include <mono/metadata/mono-gc.h>
 #include <mono/metadata/environment.h>
 #include <mono/metadata/debug-helpers.h>
+#include <mono/metadata/attrdefs.h>
 
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 
 #include "../Components/s_RigidBodyComponent.h"
 #include "../Components/s_LogicalInput.h"
+#include "../Components/s_Time.h"
 
 
 namespace Eclipse
@@ -82,6 +84,28 @@ namespace Eclipse
 		mono_add_internal_call("Eclipse.RigidBody::Add_Force", SetForce);
 		mono_add_internal_call("Eclipse.Input::GetButtonDown", GetKeyCurrentByName);
 		mono_add_internal_call("Eclipse.Input::GetKey", GetKeyCurrentByKeyCode);
+		mono_add_internal_call("Eclipse.Input::GetAxis", GetMouseAxis);
+		mono_add_internal_call("Eclipse.Time::getDeltaTime", GetDeltaTime);
+		mono_add_internal_call("Eclipse.Time::getFixedDeltaTime", GetFixedDeltaTime);
+	}
+
+	void MonoManager::Awake(MonoScript* obj)
+	{
+		MonoClass* klass = mono_class_from_name(ScriptImage, "", obj->scriptName.c_str());
+
+		if (klass == nullptr) {
+			std::cout << "Failed loading class, MonoVec3" << std::endl;
+			return;
+		}
+
+		MonoMethod* m_update = mono_class_get_method_from_name(klass, "Awake", -1);
+		if (!m_update)
+		{
+			std::cout << "Failed to get method" << std::endl;
+			return;
+		}
+
+		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
 	}
 
 	void MonoManager::Start(MonoScript* obj)
@@ -103,6 +127,39 @@ namespace Eclipse
 		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
 	}
 
+	std::unordered_map<std::string, std::string> MonoManager::GetAllFields(MonoClass* klass)
+	{
+		MonoClassField* field;
+		void* iter = NULL;
+		std::unordered_map<std::string, std::string> fields;
+		while ((field = mono_class_get_fields(klass, &iter)))
+		{
+			// check for attributes
+			MonoCustomAttrInfo* attrInfo = mono_custom_attrs_from_field(klass, field);
+
+			if ((mono_field_get_flags(field) & MONO_FIELD_ATTR_FIELD_ACCESS_MASK) == MONO_FIELD_ATTR_PRIVATE) continue;
+
+			if (attrInfo != nullptr)
+			{
+				MonoClass* attrKlass = mono_class_from_name(engine->mono.GetAPIImage(), "", "Header");
+				
+				if (attrKlass != nullptr)
+				{
+					if (mono_custom_attrs_has_attr(attrInfo, attrKlass))
+					{
+						MonoObject* attrObj = mono_custom_attrs_get_attr(attrInfo, attrKlass);
+						fields.insert(std::make_pair(GetStringFromField(attrObj, attrKlass, "name"), "Header"));
+					}
+				}
+			}
+			
+			mono_custom_attrs_free(attrInfo);
+			fields.insert(std::make_pair(mono_field_get_name(field), "Variable"));
+		}
+
+		return fields;
+	}
+
 	void MonoManager::Update(MonoScript* obj)
 	{
 		MonoClass* klass = mono_class_from_name(ScriptImage, "", obj->scriptName.c_str());
@@ -119,9 +176,24 @@ namespace Eclipse
 			return;
 		}
 
-		/*uint32_t test = 68;
-		if (GetKeyCurrentByKeyCode(static_cast<InputKeycode>(test)))
-			std::cout << "C++ TRUE" << std::endl;*/
+		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
+	}
+
+	void MonoManager::FixedUpdate(MonoScript* obj)
+	{
+		MonoClass* klass = mono_class_from_name(ScriptImage, "", obj->scriptName.c_str());
+
+		if (klass == nullptr) {
+			std::cout << "Failed loading class, MonoVec3" << std::endl;
+			return;
+		}
+
+		MonoMethod* m_update = mono_class_get_method_from_name(klass, "FixedUpdate", -1);
+		if (!m_update)
+		{
+			std::cout << "Failed to get method" << std::endl;
+			return;
+		}
 
 		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
 	}
@@ -224,6 +296,26 @@ namespace Eclipse
 		return obj;
 	}
 
+	std::string MonoManager::GetStringFromField(MonoObject* obj, MonoClass* klass, const char* fieldName)
+	{
+		MonoString* stringField;
+
+		MonoClassField* field = mono_class_get_field_from_name(klass, fieldName);
+		if (!field) {
+			fprintf(stderr, "Can't find field val in MyType\n");
+			return std::string{};
+		}
+
+		if (mono_type_get_type(mono_field_get_type(field)) != MONO_TYPE_STRING) {
+			fprintf(stderr, "Field val is not a string\n");
+			return std::string{};
+		}
+
+		mono_field_get_value(obj, field, &stringField);
+
+		return mono_string_to_utf8(stringField);
+	}
+
 	MonoMethod* MonoManager::GetMethodFromClass(MonoClass* klass, std::string funcName)
 	{
 		MonoMethod* method = mono_class_get_method_from_name(klass, "funcName", -1);
@@ -235,12 +327,10 @@ namespace Eclipse
 		return method;
 	}
 
-	bool MonoManager::ExecuteMethod(MonoObject* obj, MonoMethod* method, std::vector<void*> args)
+	MonoObject* MonoManager::ExecuteMethod(MonoObject* obj, MonoMethod* method, std::vector<void*> args)
 	{
-		if (!obj && !method) return false;
-		mono_runtime_invoke(method, obj, args.data(), NULL);
-
-		return true;
+		if (!obj && !method) return nullptr;
+		return mono_runtime_invoke(method, obj, args.data(), NULL);
 	}
 
 	MonoDomain* MonoManager::LoadDomain()

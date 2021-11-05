@@ -947,6 +947,7 @@
     <ClInclude Include="src\Graphics\Instancing\DebugLights\DebugLights.h" />
     <ClInclude Include="src\Graphics\Grid\Grid.h" />
     <ClInclude Include="src\Graphics\Instancing\DebugSpotLights\DebugSpotLights.h" />
+    <ClInclude Include="src\Mono\Components\s_Time.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1429,6 +1430,9 @@
     <None Include="src\Assets\Shaders\Test\DebugSPhere.vert" />
     <None Include="src\Mono\ScriptAPI\InputHandler.cs" />
     <None Include="src\Mono\ScriptAPI\KeyCode.cs" />
+    <None Include="src\Mono\ScriptAPI\Header.cs" />
+    <None Include="src\Mono\ScriptAPI\HeaderReader.cs" />
+    <None Include="src\Mono\ScriptAPI\Time.cs" />
     <None Include="src\Assets\Shaders\Instancing\Instancing.frag" />
     <None Include="src\Assets\Shaders\Instancing\Instancing.vert" />
   </ItemGroup>
