@@ -29,7 +29,7 @@ namespace Eclipse
             {
                 case 0: name = "Default"; break;
                 case 1: name = "Nothing"; break;
-                case 2: name = "Everything"; break;
+                case 2: name = "Everything"; LayerListSize++; break;
                 default: break;
             }
 
@@ -243,6 +243,7 @@ namespace Eclipse
     {
         if (ECGui::BeginTreeNode(TagsAndLayersHeaders[0]))
         {
+            LayerListSize = 0;
             ECGui::SetColumns(2, nullptr, false);
             ECGui::SetColumnOffset(1, 140);
 
@@ -257,6 +258,11 @@ namespace Eclipse
                         EMPTY_STRING, 0, ImGuiInputTextFlags_ReadOnly, true);
 
                     ECGui::NextColumn();
+
+                    // Only for Everything
+                    if (pair.first == 2)
+                        LayerListSize++;
+
                     continue;
                 }
 
@@ -266,6 +272,9 @@ namespace Eclipse
                 ECGui::DrawInputTextHintWidget(lexical_cast<std::string>(pair.first).c_str(), "Enter Layer Name",
                     const_cast<char*>(pair.second.c_str()),
                     256, true, ImGuiInputTextFlags_EnterReturnsTrue);
+
+                if (strcmp(pair.second.c_str(), EMPTY_STRING))
+                    LayerListSize++;
 
                 ECGui::NextColumn();
             }
@@ -277,5 +286,15 @@ namespace Eclipse
     const std::unordered_map<int, std::string>& DebugWindow::GetLayerList()
     {
         return LayerList;
+    }
+
+    size_t DebugWindow::GetLayerListSize() const
+    {
+        return LayerListSize;
+    }
+
+    const std::string& DebugWindow::GetStringLayer(int index)
+    {
+        return LayerList[index];
     }
 }

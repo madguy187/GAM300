@@ -34,6 +34,8 @@ namespace Eclipse
 		void OnTagsAndLayersUpdate();
 
 		const std::unordered_map<int, std::string>& GetLayerList();
+		size_t GetLayerListSize() const;
+		const std::string& GetStringLayer(int index);
 	private:
 		ECVec2 WindowSize{ 0.0f, 0.0f };
 		std::string CurrentSelection{ "Graphics" };
@@ -42,5 +44,6 @@ namespace Eclipse
 		std::vector<sSelection> SelectionList;
 		std::map<std::string, std::string> KeyMappings;
 		std::unordered_map<int, std::string> LayerList;
+		size_t LayerListSize{ 0 };
 	};
 }

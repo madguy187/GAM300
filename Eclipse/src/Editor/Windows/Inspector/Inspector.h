@@ -6,6 +6,24 @@
 
 namespace Eclipse
 {
+	struct CollisionMatrixTracker
+	{
+		std::unordered_map<int, bool> IndexActiveList;
+		bool IsEverything{ false };
+
+		void Clear()
+		{
+			IndexActiveList.clear();
+			IsEverything = false;
+		}
+	};
+
+	struct CollisionMatrixGroup
+	{
+		CollisionMatrixTracker Current;
+		CollisionMatrixTracker Previous;
+	};
+
 	class InspectorWindow final : public ECGuiWindow
 	{
 	public:
@@ -58,6 +76,9 @@ namespace Eclipse
 		void ComponentRegistry(const char* CompName, Entity ID,
 			const std::string EntityName, EditComponent method);
 
+		void OnCollisionMatrixUpdate(Entity ID);
+		void UpdateCollisionLayerTracker(DebugWindow* dw, int ClickedIndex);
+		void SetScriptBitset(ScriptComponent& scriptCom);
 		void OnLayerListUpdate(EntityComponent& entcom);
 		void SetCurrentEntityName(const char* name);
 		void ClearEntityName();
@@ -67,6 +88,7 @@ namespace Eclipse
 		ECVec2 WindowSize_{};
 		bool IsRemovingScripts{ false };
 		char EntNameInput[256] = { 0 };
+		CollisionMatrixGroup CollisionLayerChecker;
 	};
 
 	template <typename TComponents>

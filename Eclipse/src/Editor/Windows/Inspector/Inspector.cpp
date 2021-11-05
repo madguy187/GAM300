@@ -1064,6 +1064,13 @@ namespace Eclipse
                     ECGui::InsertHorizontalLineSeperator();
                     break;
                 }
+
+                if (engine->world.CheckComponent<ScriptComponent>(ID))
+                {
+                    auto& script = engine->world.GetComponent<ScriptComponent>(ID);
+                    
+
+                }
             }
         }
         return false;
@@ -1783,6 +1790,63 @@ namespace Eclipse
 
             engine->world.DestroyComponent<TComponents>(ID);
         }
+    }
+
+    void InspectorWindow::OnCollisionMatrixUpdate(Entity ID)
+    {
+        auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
+        auto& scriptCom = engine->world.GetComponent<ScriptComponent>(ID);
+        auto* settings = engine->editorManager->GetEditorWindow<DebugWindow>();
+
+        const char* currentLabel = nullptr;
+
+        if (CollisionLayerChecker.Current.IndexActiveList.size() == 1)
+        {
+            currentLabel = "Nothing";
+        }
+        else if (CollisionLayerChecker.Current.IsEverything)
+        {
+            currentLabel = "Everything";
+        }
+        else if (CollisionLayerChecker.Current.IndexActiveList.size() > 1)
+        {
+            currentLabel = "Mixed...";
+        }
+        else
+        {
+            auto curr = settings->GetLayerList().find(CollisionLayerChecker.Current.IndexActiveList[0]);
+            currentLabel = curr->second.c_str();
+        }
+
+        ECGui::DrawTextWidget<const char*>("Collision Mask ", EMPTY_STRING);
+        ECGui::InsertSameLine();
+        if (ImGuiAPI::BeginComboList("CollisionLayerComboList", currentLabel, true))
+        {
+            for (const auto& pair : settings->GetLayerList())
+            {
+                if (!strcmp(pair.second.c_str(), EMPTY_STRING)) continue;
+
+                if (ImGui::Selectable(pair.second.c_str(), CollisionLayerChecker.Current.IndexActiveList[pair.first]))
+                {
+                    UpdateCollisionLayerTracker(settings, pair.first);
+                    SetScriptBitset(scriptCom);
+                }
+            }
+
+            ImGuiAPI::EndComboList();
+        }
+    }
+
+    void InspectorWindow::UpdateCollisionLayerTracker(DebugWindow* dw, int ClickedIndex)
+    {
+        if (!strcmp(dw->GetStringLayer(ClickedIndex).c_str(), "Nothing"))
+        {
+            CollisionLayerChecker.Previous = CollisionLayerChecker.Current;
+        }
+    }
+
+    void InspectorWindow::SetScriptBitset(ScriptComponent& scriptCom)
+    {
     }
 
     void InspectorWindow::OnLayerListUpdate(EntityComponent& entcom)
