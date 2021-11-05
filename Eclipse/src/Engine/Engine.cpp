@@ -68,6 +68,8 @@ namespace Eclipse
 
         InputManager = std::make_unique<LogicalInput>();
         engine->gFrameBufferManager = std::make_unique<FrameBufferManager>();
+        engine->gDebugDrawManager = std::make_unique<DebugManager>();
+
         engine->GraphicsManager.Pre_Render();
 
         ImGuiSetup::Init(IsEditorActive);
@@ -326,8 +328,11 @@ namespace Eclipse
             {
                 for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
                 {
-
                     world.Update<PhysicsSystem>();
+
+                    mono.fixUpdate = true;
+                    world.Update<MonoSystem>();
+                    mono.fixUpdate = false;
                 }
             }
 
@@ -339,7 +344,7 @@ namespace Eclipse
             engine->gFrameBufferManager->GlobalBind();
 
             // Reset DebugBoxes =============================
-            engine->GraphicsManager.ResetInstancedDebugBoxes();
+            engine->gDebugDrawManager->Reset();
 
             // LIGHTINGSYSTEM =============================
             world.Update<LightingSystem>();
@@ -357,6 +362,7 @@ namespace Eclipse
             world.Update<RenderSystem>();
 
             // Final DRAW ================================ 
+            //engine->gDebugDrawManager->Render();
             engine->GraphicsManager.FinalRender();
 
             if (IsScenePlaying())

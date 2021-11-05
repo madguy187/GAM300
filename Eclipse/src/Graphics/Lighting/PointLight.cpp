@@ -27,6 +27,11 @@ namespace Eclipse
 
         PointLightComponent& Pointlight = engine->world.GetComponent<PointLightComponent>(EntityId);
         TransformComponent& PointlightTransform = engine->world.GetComponent<TransformComponent>(EntityId);
+
+        PointlightTransform.scale.setX(2.0f);
+        PointlightTransform.scale.setY(2.0f);
+        PointlightTransform.scale.setZ(2.0f);
+
         std::string number = std::to_string(index);
         GLint uniform_var_loc1 = shdrpgm.GetLocation(("pointLights[" + number + "].position").c_str());
         GLint uniform_var_loc2 = shdrpgm.GetLocation(("pointLights[" + number + "].lightColor").c_str());
@@ -73,6 +78,8 @@ namespace Eclipse
             mModelNDC = camera.projMtx * camera.viewMtx * model;
             glUniformMatrix4fv(uniform_var_loc8, 1, GL_FALSE, glm::value_ptr(mModelNDC));
             glUniformMatrix4fv(uniform_var_loc10, 1, GL_FALSE, glm::value_ptr(model));
+
+            engine->gDebugDrawManager->LightIcons.Addinstance(model);
         }
 
         if (in_pointlight.AffectsWorld)
@@ -138,10 +145,10 @@ namespace Eclipse
     {
         engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
-        auto shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
-        shdrpgm.Use();
+        //auto shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
+        //shdrpgm.Use();
 
-        glBindVertexArray(Graphics::models["Sphere"]->GetVaoID());
+        //glBindVertexArray(Graphics::models["Sphere"]->GetVaoID());
 
         glEnable(GL_BLEND);
         glPolygonMode(GL_FRONT_AND_BACK, mode);
@@ -149,18 +156,28 @@ namespace Eclipse
         glEnable(GL_LINE_SMOOTH);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        CheckUniformLoc(&shdrpgm, *in, IndexID, PointLightCounter, EntityId);
-        auto& Light = engine->world.GetComponent<LightComponent>(EntityId);
+        //CheckUniformLoc(&shdrpgm, *in, IndexID, PointLightCounter, EntityId);
+        //auto& Light = engine->world.GetComponent<LightComponent>(EntityId);
 
-        if (in->visible && Light.Render)
-        {
-            GLCall(glDrawElements(Graphics::models["Sphere"]->GetPrimitiveType(),
-                Graphics::models["Sphere"]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
-        }
+        //if (in->visible && Light.Render)
+        //{
+        //    GLCall(glDrawElements(Graphics::models["Sphere"]->GetPrimitiveType(),
+        //        Graphics::models["Sphere"]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
+        //}
 
-        glBindVertexArray(0);
-        shdrpgm.UnUse();
+        //glBindVertexArray(0);
+        //shdrpgm.UnUse();
 
+        // SpotLight Position
+        TransformComponent& PointlightTransform = engine->world.GetComponent<TransformComponent>(EntityId);
+        glm::mat4 mModelNDC;
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, PointlightTransform.position.ConvertToGlmVec3Type());
+        model = glm::rotate(model, glm::radians(PointlightTransform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(PointlightTransform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(PointlightTransform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, PointlightTransform.scale.ConvertToGlmVec3Type());
+        engine->gDebugDrawManager->LightIcons.Addinstance(model);
         CheckUniformPBR(IndexID, EntityId);
     }
 

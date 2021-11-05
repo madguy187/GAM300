@@ -362,20 +362,6 @@ namespace Eclipse
         glUniform1i(tex_loc, false);
     }
 
-    void Eclipse::GraphicsManager::ResetInstancedDebugBoxes()
-    {
-        AllAABBs.Reset();
-    }
-
-    void Eclipse::GraphicsManager::DrawDebugBoxes()
-    {
-        if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
-        {
-            // render boxes
-            engine->GraphicsManager.AllAABBs.DrawAll(FrameBufferMode::FBM_SCENE);
-        }
-    }
-
     std::string Eclipse::GraphicsManager::GetModelName(unsigned int modelname)
     {
         switch (modelname)
@@ -452,9 +438,6 @@ namespace Eclipse
 
     void Eclipse::GraphicsManager::FinalRender()
     {
-        engine->MaterialManager.DoNotUpdateStencil();
-        DrawDebugBoxes();
-
         if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
         {
             engine->MaterialManager.DoNotUpdateStencil();
@@ -463,14 +446,6 @@ namespace Eclipse
 
         engine->MaterialManager.DoNotUpdateStencil();
         PostProcessUpdate();
-    }
-
-    void Eclipse::GraphicsManager::DrawEntireGrid()
-    {
-        engine->MaterialManager.DoNotUpdateStencil();
-        engine->GraphicsManager.DrawDebugBoxes();
-
-        engine->GridManager->DrawGrid(FrameBufferMode::FBM_SCENE);
     }
 
     void GraphicsManager::PostProcessUpdate()

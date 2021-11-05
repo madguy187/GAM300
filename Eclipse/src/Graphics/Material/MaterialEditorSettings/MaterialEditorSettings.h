@@ -39,6 +39,14 @@ namespace Eclipse
         std::string CurrentSelectedMaterial;
         bool Once = false;
 
+        /*************************************************************************
+          Material Editor Model
+          - Inner
+          - Outer
+        *************************************************************************/
+        unsigned int InnerEntity = 0;
+        unsigned int OuterEntity = 0;
+
         MaterialEditorSettings();
         void BindMaterial(Shader& In, std::string MaterialName);
         void RenderSphere();
@@ -49,5 +57,7 @@ namespace Eclipse
         void RenderMaterialScene();
         void ClearCurrentMaterial();
         void ClearTextureFields();
+        void CreateModel();
+        void UpdateInner(Shader& shdrpgm, CameraComponent& _camera, Entity ID);
     };
 }

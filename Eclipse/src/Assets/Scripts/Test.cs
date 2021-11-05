@@ -5,24 +5,17 @@ using Eclipse;
 
 public class Test : EclipseBehavior
 {
-    public RigidBody rigid;
+    [Header("HeaderName")]
+    public UInt32 VarName;
+    private UInt32 wee;
 
     public void Start()
     {
         Console.WriteLine("C# Start");
-        rigid = GetComponent<RigidBody>();
     }
 
     public void Update()
     {
         Console.WriteLine("C# Update");
-        if (Input.GetButtonDown("Right"))
-        {
-            rigid.AddForce(500, 0, 0);
-        }
-        else
-        {
-            rigid.AddForce(-500, 0, 0);
-        }
     }
 }

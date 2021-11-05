@@ -8,14 +8,15 @@ namespace Eclipse
         std::array<char, 128> Name;
         bool HasTexture = false;
         bool IsNormalMap = false;
-        float HeightScale = 0.05f;
+        float HeightScale = 0.0f;
         ECVec3 BaseReflectivity = { 0.4f,0.4f,0.4f };
+        ECVec3 SurfaceColour = { 1.0f,1.0f,1.0f };
 
         // Non Textured Parameters
         ECVec3 AlbedoConstant{ 1.0f };
         float AoConstant = 1.0f;
-        float MetallicConstant = 1.0f;
-        float RoughnessConstant = 1.0f;
+        float MetallicConstant = 0.0f;
+        float RoughnessConstant = 0.5f;
 
         // Textured Parameters
         unsigned int Albedo = 0;

@@ -30,28 +30,45 @@ namespace Eclipse
     {
         engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
-        auto shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
-        shdrpgm.Use();
-
-        glBindVertexArray(Graphics::models["Sphere"]->GetVaoID());
+        //auto shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
+        //shdrpgm.Use();
+        //
+        //glBindVertexArray(Graphics::models["Sphere"]->GetVaoID());
 
         glEnable(GL_BLEND);
         glPolygonMode(GL_FRONT_AND_BACK, mode);
         glDisable(GL_CULL_FACE);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        CheckUniformLoc(&shdrpgm, *in, IndexId, SpotLightCounter, EntityId);
+        //CheckUniformLoc(&shdrpgm, *in, IndexId, SpotLightCounter, EntityId);
 
-        auto& Light = engine->world.GetComponent<LightComponent>(EntityId);
+        //auto& Light = engine->world.GetComponent<LightComponent>(EntityId);
 
-        if (in->visible && Light.Render)
-        {
-            GLCall(glDrawElements(Graphics::models["Sphere"]->GetPrimitiveType(),
-                Graphics::models["Sphere"]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
-        }
+        //if (in->visible && Light.Render)
+        //{
+        //    GLCall(glDrawElements(Graphics::models["Sphere"]->GetPrimitiveType(),
+        //        Graphics::models["Sphere"]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
+        //}
 
-        glBindVertexArray(0);
-        shdrpgm.UnUse();
+        //glBindVertexArray(0);
+        //shdrpgm.UnUse();
+
+        TransformComponent& SpotlightTransform = engine->world.GetComponent<TransformComponent>(EntityId);
+        SpotlightTransform.scale.setX(1.0f);
+        SpotlightTransform.scale.setY(1.0f);
+        SpotlightTransform.scale.setZ(1.0f);
+        SpotlightTransform.rotation.setX(0.0f);
+        SpotlightTransform.rotation.setY(0.0f);
+        SpotlightTransform.rotation.setZ(0.0f);
+
+        glm::mat4 mModelNDC;
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, SpotlightTransform.position.ConvertToGlmVec3Type());
+        model = glm::rotate(model, glm::radians(SpotlightTransform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(SpotlightTransform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(SpotlightTransform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, SpotlightTransform.scale.ConvertToGlmVec3Type());
+        engine->gDebugDrawManager->SpotLightIcons.Addinstance(model);
 
         CheckUniformPBR(IndexId, EntityId);
     }
@@ -69,6 +86,13 @@ namespace Eclipse
 
         if (uniform_var_loc8 >= 0)
         {
+            SpotlightTransform.scale.setX(1.0f);
+            SpotlightTransform.scale.setY(1.0f);
+            SpotlightTransform.scale.setZ(1.0f);
+            SpotlightTransform.rotation.setX(0.0f);
+            SpotlightTransform.rotation.setY(0.0f);
+            SpotlightTransform.rotation.setZ(0.0f);
+
             glm::mat4 mModelNDC;
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, SpotlightTransform.position.ConvertToGlmVec3Type());
@@ -79,6 +103,8 @@ namespace Eclipse
             mModelNDC = camera.projMtx * camera.viewMtx * model;
             glUniformMatrix4fv(uniform_var_loc8, 1, GL_FALSE, glm::value_ptr(mModelNDC));
             glUniformMatrix4fv(uniform_var_loc10, 1, GL_FALSE, glm::value_ptr(model));
+
+            engine->gDebugDrawManager->SpotLightIcons.Addinstance(model);
         }
 
         if (in_spot.AffectsWorld)

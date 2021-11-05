@@ -15,6 +15,7 @@ uniform sampler2D metallicMap;
 uniform sampler2D roughnessMap;
 uniform sampler2D aoMap;
 uniform int IsNormalMap;
+uniform vec3 SurfaceColour;
 
 // material parameters
 uniform vec3  AlbedoConstant;
@@ -181,7 +182,7 @@ void main()
     
     // Cook-Torrance BRDF
     float NDF , G;
-
+    
     if(HasInstance == 1)
     {
         NDF = DistributionGGX(N, H, roughness);   
@@ -192,7 +193,7 @@ void main()
         NDF = DistributionGGX(N, H, RoughnessConstant);   
         G   = GeometrySmith(N, V, L, RoughnessConstant);            
     }
-
+    
     vec3 F    = fresnelSchlick(max(dot(H, V), 0.0), F0);
        
     vec3 numerator    = NDF * G * F; 
@@ -201,7 +202,7 @@ void main()
     
     vec3 kS = F;
     vec3 kD = vec3(1.0) - kS;
-
+    
     if(HasInstance == 1)
     {
         kD *= 1.0 - metallic;	 
@@ -330,7 +331,7 @@ void main()
           vec3 ambient = vec3(0.03) * albedo * ao;
           vec3 color = ambient + Lo;
           color = color / (color + vec3(1.0));
-          color = pow(color, vec3(1.0/2.2)); 
+          color = pow(color, vec3(1.0/2.2)) * SurfaceColour; 
           FragColor = vec4(color, 1.0);            
         }
         else

@@ -14,9 +14,7 @@
 #include "ECS/ComponentManager/Components/TextureComponent.h"
 #include "ECS/ComponentManager/Components/ModelComponent.h"
 #include "ECS/ComponentManager/Components/MaterialComponent.h"
-
 #include "Graphics/Material/EnvironmentMap/EnvironmentMapManager.h"
-
 #include "Graphics/MeshEditor/MeshEditorSource.h"
 
 namespace Eclipse
@@ -25,7 +23,7 @@ namespace Eclipse
 
     class AssimpModelManager
     {
-    private:
+    public:
         std::unordered_map<std::string, std::unique_ptr<Mesh>> Geometry;
         std::vector<std::string> AllPrimitiveModelsNames;
         std::unordered_map<std::string, std::vector<std::string>> Prefabs;
@@ -40,13 +38,11 @@ namespace Eclipse
         void InsertPrimitiveName(const std::string& in);
         std::vector<std::string>& GetMeshNames();
         std::vector<std::string>& GetPrimitiveNames();
-        void MeshDraw(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, RenderMode _renderMode, AABB_* box, CameraComponent::CameraType _camType);
+        void MeshDraw(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, RenderMode _renderMode, CameraComponent::CameraType _camType);
         void DebugNormals(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, CameraComponent::CameraType _camType);
         void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID, AABB_* box);
-        void Cleanup(MeshComponent& in);
         void TestPath(std::string& path);
         void Render(Shader& shader, GLenum MOde, MeshComponent&, unsigned int);
-        ~AssimpModelManager();
         void SetMeshComponent(unsigned int ID, std::string);
         void Render(Shader& shader, GLenum mode, unsigned int id, MeshComponent& in);
         void Render(GLenum mode, MeshComponent& in);
@@ -58,7 +54,7 @@ namespace Eclipse
         ///////////////////////////////////////////////////////////////////////////////////////////
         void CheckUniforms(Shader&, Entity, MeshComponent&, CameraComponent&);
         void RenderMesh(MeshComponent& In, GLenum Mode);
-        void ChecModelkUniforms(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID, AABB_* box);
+        void ChecModelkUniforms(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID);
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // For Compilers
@@ -68,6 +64,7 @@ namespace Eclipse
         void ClearAllPrefabs();
         void InsertGeometryName(const std::string& MeshName_);
         void InsertMeshName(const std::string& in);
+        void RemoveSubMesh(std::string in);
         void InsertGeometry(const std::string& name, Mesh& NewMesh);
         void InsertPrefabs(const std::string& Index, const std::string& MeshName);
 
