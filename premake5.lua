@@ -73,7 +73,8 @@ project "Eclipse"
 		"Dep/ASSIMP/include/assimp",
 		"Dep/ASSIMP",
 		"Dep/Fmod/core/inc",
-		"Dep/Tracy"
+		"Dep/Tracy",
+		"Eclipse/src/Editor/Windows/NodeEditor/ImNodes"
 	}
 
 	filter "system:windows"

@@ -51,6 +51,8 @@ namespace Eclipse
             ECGui::PushItemWidth(WindowSize_.getX());
             ShowPrefebProperty(currEnt);
             ShowEntityProperty("Tag", currEnt, CompFilter);
+            ShowBPProperty("BluePrint", currEnt, CompFilter);
+
             ShowTransformProperty("Transform", currEnt, CompFilter, mesheditor->IsVisible);
             ShowPointLightProperty("PointLight", currEnt, CompFilter);
             ShowSpotLightProperty("SpotLight", currEnt, CompFilter);
@@ -66,6 +68,10 @@ namespace Eclipse
             ShowAIProperty("AI Properties", currEnt, CompFilter);
             ShowParentProperty("Parent", currEnt, CompFilter);
             ShowChildProperty("Child", currEnt, CompFilter);
+
+
+
+
             AddComponentsController(currEnt);
             ECGui::NextColumn();
             RemoveComponentsController(currEnt);
@@ -1147,6 +1153,28 @@ namespace Eclipse
         return false;
     }
 
+    bool InspectorWindow::ShowBPProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+    {
+
+        //if (engine->world.CheckComponent<Editor_>(ID))
+        //{
+        //    if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+        //    {
+        //        ECGui::InsertHorizontalLineSeperator();
+        //
+        //       auto& nodeEditor = engine->world.GetComponent<Editor_>(ID);
+        //
+        //        ImGui::Begin("test");
+        //        temps.DrawNodeEditor(name, nodeEditor);
+        //     
+        //        ImGui::End();
+        //        ECGui::InsertHorizontalLineSeperator();
+        //    }
+        //}
+
+        return false;
+    }
+
     bool InspectorWindow::ShowParentProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
     {
         if (engine->world.CheckComponent<ParentComponent>(ID))
@@ -1338,6 +1366,10 @@ namespace Eclipse
                         ComponentRegistry<AIComponent>("AIComponent", ID, entCom.Name,
                             EditComponent::EC_ADDCOMPONENT);
                         break;
+                    case str2int("NodeEditor"):
+                        ComponentRegistry<NodeEditor>("NodeEditor", ID, entCom.Name,
+                            EditComponent::EC_ADDCOMPONENT);
+                        break;
                     }
 
                     AddComponentFilter.Clear();
@@ -1429,6 +1461,10 @@ namespace Eclipse
                         break;
                     case str2int("AIComponent"):
                         ComponentRegistry<AIComponent>("AIComponent", ID, entCom.Name,
+                            EditComponent::EC_REMOVECOMPONENT);
+                        break;
+                    case str2int("NodeEditor"):
+                        ComponentRegistry<NodeEditor>("NodeEditor", ID, entCom.Name,
                             EditComponent::EC_REMOVECOMPONENT);
                         break;
                     }

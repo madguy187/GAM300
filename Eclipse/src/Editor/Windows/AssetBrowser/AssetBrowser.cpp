@@ -360,19 +360,15 @@ namespace Eclipse
             {
             case InspectorWindow::str2int("png"):
                 engine->editorManager->DragAndDropInst_.StringPayloadSource("png", relativePath.string());
-                engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("png", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
                 break;
             case InspectorWindow::str2int("cs"):
                 engine->editorManager->DragAndDropInst_.StringPayloadSource("cs", relativePath.string());
-                engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("cs", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
                 break;
             case InspectorWindow::str2int("txt"):
                 engine->editorManager->DragAndDropInst_.StringPayloadSource("txt", relativePath.string());
-                engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("txt", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
                 break;
             case InspectorWindow::str2int("wav"):
                 engine->editorManager->DragAndDropInst_.StringPayloadSource("wav", "src\\Assets\\" + relativePath.string());
-                engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("wav", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
                 break;
             case InspectorWindow::str2int("prefab"):
                 temp = "src\\Assets\\" + relativePath.string();
@@ -393,7 +389,6 @@ namespace Eclipse
 
                 engine->editorManager->DragAndDropInst_.StringPayloadSource("prefab", temp);
                 //engine->editorManager->DragAndDropInst_.StringPayloadSource("prefab", "src\\Assets\\" + relativePath.string());
-                engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("prefab", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
                 break;
             case InspectorWindow::str2int("mat"):
 
@@ -418,21 +413,20 @@ namespace Eclipse
                 }
 
                 engine->editorManager->DragAndDropInst_.StringPayloadSource("mat", relativePath.string());
-                engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("mat", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
                 break;
             case InspectorWindow::str2int("dds"):
                 engine->editorManager->DragAndDropInst_.StringPayloadSource("dds", relativePath.string());
-                engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("dds", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
                 break;
             default:
                 engine->editorManager->DragAndDropInst_.StringPayloadSource("ITEM", relativePath.string());
-                engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("ITEM", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
                 break;
             }
 
             //// GetFileName(relativePath.filename().string().c_str())
+            std::string parentPath = std::filesystem::path(dirEntry.path()).string();
+            parentPath = parentPath.substr(0, parentPath.find_last_of("/\\"));
 
-            if (ECGui::IsMouseClicked(0))
+            if (parentPath != AssetPath.string())
             {
                 for (size_t i = 0; i < allExtensions.size(); ++i)
                 {
@@ -805,9 +799,9 @@ namespace Eclipse
 
         std::string bufferString(buffer);
         std::for_each(bufferString.begin(), bufferString.end(), [](char& c)
-        {
-            c = static_cast<char>(::tolower(c));
-        });
+            {
+                c = static_cast<char>(::tolower(c));
+            });
 
         size_t lastdot = bufferString.find_last_of(".");
 
