@@ -56,34 +56,5 @@ namespace Eclipse
 	//		}
 	//	}
 	//}
-
-	template <typename T>
-	inline void NodeEditor::LinkNodes(const std::shared_ptr<T>& lhsNode,
-		const std::shared_ptr<T>& rhsNode, bool IsLinked)
-	{
-		switch (lhsNode->getType())
-		{
-		case NodeEditor::Node::NodeType::ENTITY:
-		{
-			auto outPtr = std::dynamic_pointer_cast<EnitityNode>(lhsNode);
-
-			switch (rhsNode->getType())
-			{
-			case NodeEditor::Node::NodeType::TRANSFORM:
-				if (IsLinked)
-					std::dynamic_pointer_cast<TransformNode>(rhsNode)->ID = outPtr->ID;
-				else
-					std::dynamic_pointer_cast<TransformNode>(rhsNode)->factoryReset();
-				break;
-			default:
-				break;
-			}
-
-			break;
-		}
-		default:
-			break;
-		}
-	}
 }
 
