@@ -255,7 +255,7 @@ namespace Eclipse
         GLint uniform_var_loc2 = MaterialEditorShader.GetLocation(("pointLights[" + number + "].lightColor").c_str());
 
         GLCall(glUniform3f(uniform_var_loc1, LightPosition.getX(), LightPosition.getY(), LightPosition.getZ()));
-        GLCall(glUniform3f(uniform_var_loc2, 5.0f, 5.0f, 5.0f));
+        GLCall(glUniform3f(uniform_var_loc2, 4.0f, 4.0f, 4.0f));
     }
 
     void MaterialEditorSettings::UpdateCamera(Shader& MaterialEditorShader, CameraComponent& MeshEditorCamera)
