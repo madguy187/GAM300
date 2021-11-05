@@ -1852,9 +1852,11 @@ namespace Eclipse
         }
         else if (!strcmp(dw->GetStringLayer(ClickedIndex).c_str(), "Everything"))
         {
+            int count = 0;
+
             for (auto& [key, val] : CollisionLayerChecker.Current.IndexActiveList)
             {
-
+                if (count == dw->GetLayerListSize() + 2) break;
                 if (!strcmp(dw->GetStringLayer(key).c_str(), EMPTY_STRING)) continue;
 
                 if (dw->GetIndexLayer("Nothing") == key)
@@ -1866,6 +1868,8 @@ namespace Eclipse
                     CollisionLayerChecker.Current.UnLayerTracker.insert(key);
                     val = true;
                 }
+
+                count++;
             }
 
             CollisionLayerChecker.Current.IsEverything = true;
@@ -1939,6 +1943,18 @@ namespace Eclipse
 
     void InspectorWindow::SetScriptBitset(ScriptComponent& scriptCom)
     {
+        scriptCom.LayerMask.reset();
+        scriptCom.LayerMask.set(0);
+
+        for (const auto& [key, val] : CollisionLayerChecker.Current.IndexActiveList)
+        {
+            if (val)
+                scriptCom.LayerMask.set(key);
+            else
+                scriptCom.LayerMask.set(key, val);
+        }
+
+        std::cout << scriptCom.LayerMask << std::endl;
     }
 
     void InspectorWindow::OnLayerListUpdate(EntityComponent& entcom)
