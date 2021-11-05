@@ -93,5 +93,9 @@ void main()
         float average = 0.2126 * sobel.r + 0.7152 * sobel.g + 0.0722 * sobel.b;
         FragColor = vec4(vec3(average), 1.0 );
     }
+    else if( Type == 6)
+    {	
+        FragColor = vec4(vec3(1), 1.0 );
+    }
 
 }

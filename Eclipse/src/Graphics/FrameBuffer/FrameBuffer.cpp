@@ -140,7 +140,7 @@ namespace Eclipse
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, m_data.depthBufferID, 0);
-        
+
         GLenum buffers[2] = { GL_COLOR_ATTACHMENT0 , GL_COLOR_ATTACHMENT1 };
         glDrawBuffers(2, buffers);
 
@@ -202,6 +202,7 @@ namespace Eclipse
 
             GLint Inversion = shdrpgm.GetLocation("Type");
             GLint Height_ = shdrpgm.GetLocation("Height");
+            GLint Width_ = shdrpgm.GetLocation("Width");
             GLint Width_ = shdrpgm.GetLocation("Width");
             GLCall(glUniform1i(Inversion, static_cast<GLint>(PPType_)));
             GLCall(glUniform1i(Height_, engine->gFrameBufferManager->FrameBufferContainer[FrameBufferMode::FBM_GAME]->m_height));
