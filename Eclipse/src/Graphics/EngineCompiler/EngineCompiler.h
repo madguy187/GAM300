@@ -1,17 +1,7 @@
 #pragma once
 
-#define MAX_CHILDREN_NODE 100
-
 namespace Eclipse
 {
-    struct AssimpNodeData
-    {
-        glm::mat4 transformation;
-        std::array<char, 128> name;
-        int childrenCount = 0;
-        std::vector<AssimpNodeData> children;
-    };
-
     class EngineCompiler
     {
     private:
@@ -46,8 +36,6 @@ namespace Eclipse
         static void LoadModelTextures();
         // Load Animation Data
         static void LoadAnimation();
-        static void RecurseChildren(AssimpNodeData& nodeData);
-        static void CheckRecursionData(AssimpNodeData& nodeData);
 
         // Execute Compiler
         static void RunCompiler();

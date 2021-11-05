@@ -217,57 +217,6 @@ namespace Eclipse
 
     void EngineCompiler::LoadAnimation()
     {
-        struct KeyRotation
-        {
-            glm::quat orientation;
-            float timeStamp;
-        };
-
-        struct KeyScale
-        {
-            glm::vec3 scale;
-            float timeStamp;
-        };
-
-        struct KeyPosition
-        {
-            glm::vec3 position;
-            float timeStamp;
-        };
-
-        struct Bone
-        {
-            std::vector<KeyPosition> m_Positions;
-            std::vector<KeyRotation> m_Rotations;
-            std::vector<KeyScale> m_Scales;
-
-            int m_NumPositions;
-            int m_NumRotations;
-            int m_NumScalings;
-
-            int m_ID;
-            glm::mat4 m_LocalTransform;
-            std::array<char, 128> BoneName;
-        };
-
-        struct BoneInfo
-        {
-            int id;
-            glm::mat4 offset;
-            std::array<char, 128> name;
-        };
-
-        struct AnimationData
-        {
-            float m_Duration;
-            int m_TicksPerSecond;
-            std::array<char, 128> modelName;
-            std::vector<BoneInfo> m_BoneInfo;
-            std::vector<Bone> m_Bones;
-            AssimpNodeData m_RootNode;
-            //std::map<std::string, BoneInfo> m_BoneInfoMap;
-        };
-
         if (OpenFile(AnimationFileRead, AnimationPath) == false)
         {
             return;
@@ -339,87 +288,12 @@ namespace Eclipse
             AnimationFileRead.read(reinterpret_cast<char*>(&B.m_RootNode.childrenCount), sizeof(int));
 
             B.m_RootNode.children.resize(B.m_RootNode.childrenCount);
-            RecurseChildren(B.m_RootNode);
+            engine->gAnimationManager.RecurseChildren(B.m_RootNode, AnimationFileRead);
 
             data.push_back(B);
         }
 
         CloseFile(AnimationFileRead, AllNames[4], totalAnimation);
-    }
-
-    void EngineCompiler::RecurseChildren(AssimpNodeData& nodeData)
-    {
-        glm::mat4 transform;
-        std::array<char, 128> name;
-        std::array<char, 128> parentName;
-        int childCount;
-        int parentCount;
-
-        for (unsigned int i = 0; i < nodeData.childrenCount; ++i)
-        {       
-            AnimationFileRead.read(reinterpret_cast<char*>(&parentName), sizeof(parentName));
-            AnimationFileRead.read(reinterpret_cast<char*>(&parentCount), sizeof(int));
-            AnimationFileRead.read(reinterpret_cast<char*>(&transform), sizeof(glm::mat4));
-            AnimationFileRead.read(reinterpret_cast<char*>(&name), sizeof(name));
-            AnimationFileRead.read(reinterpret_cast<char*>(&childCount), sizeof(int));
-
-            //Garbage values
-            if (childCount > MAX_CHILDREN_NODE || childCount < 0)
-            {
-                //nodeData.children[i].childrenCount = 0;
-                AnimationFileRead.seekg(-(sizeof(glm::mat4) + sizeof(name) + sizeof(int)), AnimationFileRead.cur);
-                return;
-            }
-
-            if (childCount != 0)
-            {
-                nodeData.name = parentName;
-                nodeData.childrenCount = parentCount;
-                nodeData.children[i].children.resize(childCount);
-                nodeData.children[i].transformation = transform;
-                nodeData.children[i].name = name;
-                nodeData.children[i].childrenCount = childCount;        
-
-                AnimationFileRead.read(reinterpret_cast<char*>(nodeData.children[i].children.data()), sizeof(nodeData.children[i].children));
-
-                RecurseChildren(nodeData.children[i]);
-            }
-        }
-    }
-
-    void EngineCompiler::CheckRecursionData(AssimpNodeData& nodeData)
-    {
-        for (unsigned int i = 0; i < nodeData.childrenCount; ++i)
-        {
-            std::cout << "i: " << i << std::endl;
-            std::cout << "Parent Name: " << nodeData.name.data() << std::endl;
-            std::cout << "ChildrenCount: " << nodeData.children[i].childrenCount << std::endl;
-
-            if (nodeData.children[i].childrenCount != 0)
-            {
-                std::cout << "Children Name: " << nodeData.children[i].name.data() << std::endl;
-                std::cout << "Transformation[0][0]: " << nodeData.children[i].transformation[0][0] << std::endl;
-                std::cout << "Transformation[0][1]: " << nodeData.children[i].transformation[0][1] << std::endl;
-                std::cout << "Transformation[0][2]: " << nodeData.children[i].transformation[0][2] << std::endl;
-                std::cout << "Transformation[0][3]: " << nodeData.children[i].transformation[0][3] << std::endl;
-                std::cout << "Transformation[1][0]: " << nodeData.children[i].transformation[1][0] << std::endl;
-                std::cout << "Transformation[1][1]: " << nodeData.children[i].transformation[1][1] << std::endl;
-                std::cout << "Transformation[1][2]: " << nodeData.children[i].transformation[1][2] << std::endl;
-                std::cout << "Transformation[1][3]: " << nodeData.children[i].transformation[1][3] << std::endl;
-                std::cout << "Transformation[2][0]: " << nodeData.children[i].transformation[2][0] << std::endl;
-                std::cout << "Transformation[2][1]: " << nodeData.children[i].transformation[2][1] << std::endl;
-                std::cout << "Transformation[2][2]: " << nodeData.children[i].transformation[2][2] << std::endl;
-                std::cout << "Transformation[2][3]: " << nodeData.children[i].transformation[2][3] << std::endl;
-                std::cout << "Transformation[3][0]: " << nodeData.children[i].transformation[3][0] << std::endl;
-                std::cout << "Transformation[3][1]: " << nodeData.children[i].transformation[3][1] << std::endl;
-                std::cout << "Transformation[3][2]: " << nodeData.children[i].transformation[3][2] << std::endl;
-                std::cout << "Transformation[3][3]: " << nodeData.children[i].transformation[3][3] << std::endl;
-                std::cout << std::endl;
-
-                CheckRecursionData(nodeData.children[i]);
-            }
-
-        }
     }
 
     void EngineCompiler::RunCompiler()

@@ -23,6 +23,7 @@
 #include "Graphics/FrameBuffer/FrameBufferManager.h"
 #include "Graphics/Material/PBR/PBRManager.h"
 #include "Graphics/InputHandler/LogicalInput.h"
+#include "Graphics/Animation/AnimationManager.h"
 
 namespace Eclipse
 {
@@ -50,6 +51,7 @@ namespace Eclipse
 		PrefabManager pfManager;
 		PhysicsManager gPhysics;
 		AIManager gAI;
+		AnimationManager gAnimationManager;
 		std::unique_ptr<CullingManager> gCullingManager;
 		std::unique_ptr<EclipseFileWatcher> gFileWatchManager;
 		std::unique_ptr<EngineCompiler> gEngineCompiler;
