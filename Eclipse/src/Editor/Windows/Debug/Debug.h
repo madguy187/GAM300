@@ -36,6 +36,7 @@ namespace Eclipse
 		const std::unordered_map<int, std::string>& GetLayerList();
 		size_t GetLayerListSize() const;
 		const std::string& GetStringLayer(int index);
+		int GetIndexLayer(const std::string& str);
 	private:
 		ECVec2 WindowSize{ 0.0f, 0.0f };
 		std::string CurrentSelection{ "Graphics" };

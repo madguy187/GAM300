@@ -30,7 +30,7 @@ namespace Eclipse
             {
                 case 0: name = "Default"; break;
                 case 1: name = "Nothing"; break;
-                case 2: name = "Everything"; LayerListSize++; break;
+                case 2: name = "Everything"; break;
                 default: break;
             }
 
@@ -260,10 +260,6 @@ namespace Eclipse
 
                     ECGui::NextColumn();
 
-                    // Only for Everything
-                    if (pair.first == 2)
-                        LayerListSize++;
-
                     continue;
                 }
 
@@ -303,5 +299,16 @@ namespace Eclipse
     const std::string& DebugWindow::GetStringLayer(int index)
     {
         return LayerList[index];
+    }
+
+    int DebugWindow::GetIndexLayer(const std::string& str)
+    {
+        for (const auto& [key, val] : LayerList)
+        {
+            if (!strcmp(str.c_str(), val.c_str()))
+                return key;
+        }
+
+        return -1;
     }
 }

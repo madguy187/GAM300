@@ -1067,9 +1067,7 @@ namespace Eclipse
 
                 if (engine->world.CheckComponent<ScriptComponent>(ID))
                 {
-                    auto& script = engine->world.GetComponent<ScriptComponent>(ID);
-                    
-
+                    OnCollisionMatrixUpdate(ID);
                 }
             }
         }
@@ -1800,7 +1798,7 @@ namespace Eclipse
 
         const char* currentLabel = nullptr;
 
-        if (CollisionLayerChecker.Current.IndexActiveList.size() == 1)
+        if (CollisionLayerChecker.Current.IsNothing)
         {
             currentLabel = "Nothing";
         }
@@ -1808,14 +1806,13 @@ namespace Eclipse
         {
             currentLabel = "Everything";
         }
-        else if (CollisionLayerChecker.Current.IndexActiveList.size() > 1)
+        else if (CollisionLayerChecker.Current.UnLayerTracker.size() > 1)
         {
             currentLabel = "Mixed...";
         }
         else
         {
-            auto curr = settings->GetLayerList().find(CollisionLayerChecker.Current.IndexActiveList[0]);
-            currentLabel = curr->second.c_str();
+            currentLabel = settings->GetStringLayer(*CollisionLayerChecker.Current.UnLayerTracker.begin()).c_str();
         }
 
         ECGui::DrawTextWidget<const char*>("Collision Mask ", EMPTY_STRING);
@@ -1824,7 +1821,7 @@ namespace Eclipse
         {
             for (const auto& pair : settings->GetLayerList())
             {
-                if (!strcmp(pair.second.c_str(), EMPTY_STRING)) continue;
+                if (!strcmp(pair.second.c_str(), EMPTY_STRING) || pair.first  == 0) continue;
 
                 if (ImGui::Selectable(pair.second.c_str(), CollisionLayerChecker.Current.IndexActiveList[pair.first]))
                 {
@@ -1841,7 +1838,77 @@ namespace Eclipse
     {
         if (!strcmp(dw->GetStringLayer(ClickedIndex).c_str(), "Nothing"))
         {
-            CollisionLayerChecker.Previous = CollisionLayerChecker.Current;
+            for (auto& [key, val] : CollisionLayerChecker.Current.IndexActiveList)
+            {
+                if (key == ClickedIndex)
+                    val = true;
+                else
+                    val = false;
+            }
+
+            CollisionLayerChecker.Current.IsEverything = false;
+            CollisionLayerChecker.Current.IsNothing = true;
+            CollisionLayerChecker.Current.UnLayerTracker.clear();
+        }
+        else if (!strcmp(dw->GetStringLayer(ClickedIndex).c_str(), "Everything"))
+        {
+            for (auto& [key, val] : CollisionLayerChecker.Current.IndexActiveList)
+            {
+
+                if (!strcmp(dw->GetStringLayer(key).c_str(), EMPTY_STRING)) continue;
+
+                if (dw->GetIndexLayer("Nothing") == key)
+                {
+                    val = false;
+                }
+                else
+                {
+                    CollisionLayerChecker.Current.UnLayerTracker.insert(key);
+                    val = true;
+                }
+            }
+
+            CollisionLayerChecker.Current.IsEverything = true;
+            CollisionLayerChecker.Current.IsNothing = false;
+        }
+        else
+        {
+            auto search = CollisionLayerChecker.Current.IndexActiveList.find(ClickedIndex);
+
+            if (search != CollisionLayerChecker.Current.IndexActiveList.end())
+            {
+                if (CollisionLayerChecker.Current.IndexActiveList[ClickedIndex])
+                {
+                    CollisionLayerChecker.Current.IndexActiveList[ClickedIndex] = false;
+                    CollisionLayerChecker.Current.UnLayerTracker.erase(ClickedIndex);
+                    CollisionLayerChecker.Current.IsEverything = false;
+
+                    // Everything
+                    CollisionLayerChecker.Current.IndexActiveList[2] = false;
+
+                    if (CollisionLayerChecker.Current.UnLayerTracker.size() == 0)
+                    {
+                        CollisionLayerChecker.Current.IsNothing = true;
+                        CollisionLayerChecker.Current.IndexActiveList[1] = true;
+                    }
+                }
+                else
+                {
+                    CollisionLayerChecker.Current.IndexActiveList[ClickedIndex] = true;
+                    CollisionLayerChecker.Current.UnLayerTracker.insert(ClickedIndex);
+                    CollisionLayerChecker.Current.IsNothing = false;
+
+                    // Nothing
+                    CollisionLayerChecker.Current.IndexActiveList[1] = false;
+
+                    if (CollisionLayerChecker.Current.UnLayerTracker.size() == dw->GetLayerListSize())
+                    {
+                        CollisionLayerChecker.Current.IsEverything = true;
+                        CollisionLayerChecker.Current.IndexActiveList[2] = true;
+                    }
+                    
+                }
+            }
         }
     }
 
@@ -1853,10 +1920,19 @@ namespace Eclipse
 
             if (CollisionLayerChecker.Current.IndexActiveList.find(key) == CollisionLayerChecker.Current.IndexActiveList.end())
             {
-                if (CollisionLayerChecker.Current.IsEverything)
+                // Taking care of built in layers
+                if (CollisionLayerChecker.Current.IsEverything && (key != 0 && key != 1))
+                {
                     CollisionLayerChecker.Current.IndexActiveList[key] = true;
+
+                    if (key != 2)
+                        CollisionLayerChecker.Current.UnLayerTracker.insert(key);
+                }
                 else
-                    CollisionLayerChecker.Current.IndexActiveList[key] = false;
+                {
+                    if (key != 0)
+                        CollisionLayerChecker.Current.IndexActiveList[key] = false;
+                }
             }
         }
     }

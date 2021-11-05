@@ -9,12 +9,15 @@ namespace Eclipse
 	struct CollisionMatrixTracker
 	{
 		std::unordered_map<int, bool> IndexActiveList;
-		bool IsEverything{ false };
+		std::set<int> UnLayerTracker;
+		bool IsEverything{ true };
+		bool IsNothing{ false };
 
 		void Clear()
 		{
 			IndexActiveList.clear();
 			IsEverything = false;
+			IsNothing = false;
 		}
 	};
 
