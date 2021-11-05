@@ -303,16 +303,7 @@ namespace Eclipse
 
 	inline void Eclipse::NodeEditor::DrawNodeEditor(const char* graphName, NodeEditor& editor)
 	{
-		if (!editor.initialized)
-		{
-			editor.initialized = true;
-			editor.context = ImNodes::EditorContextCreate();
-			ImNodes::PushAttributeFlag(ImNodesAttributeFlags_EnableLinkDetachWithDragClick);
-			ImNodesIO& io = ImNodes::GetIO();
-			io.LinkDetachWithModifierClick.Modifier = &ImGui::GetIO().KeyCtrl;
-		}
 
-		
 		ImNodes::EditorContextSet(editor.context);
 
 		ImNodes::BeginNodeEditor();
@@ -722,6 +713,7 @@ namespace Eclipse
 
 		void DrawMaterialNodeEditor(const char* graphName, MaterialNode& editor);
 
+		void Reset();
 	};
 
 	inline int MaterialNode::findMaterialNodePos(MaterialNode editor, int id)
@@ -742,14 +734,6 @@ namespace Eclipse
 
 	inline void MaterialNode::DrawMaterialNodeEditor(const char* graphName, MaterialNode& editor)
 	{
-		if (!editor.initialized)
-		{
-			editor.initialized = true;
-			editor.context = ImNodes::EditorContextCreate();
-			ImNodes::PushAttributeFlag(ImNodesAttributeFlags_EnableLinkDetachWithDragClick);
-			ImNodesIO& io = ImNodes::GetIO();
-			io.LinkDetachWithModifierClick.Modifier = &ImGui::GetIO().KeyCtrl;
-		}
 
 		ImNodes::EditorContextSet(editor.context);
 
@@ -877,6 +861,16 @@ namespace Eclipse
 		//         editor.links.erase(iter);
 		//     }
 		// }
+	}
+
+	inline void MaterialNode::Reset()
+	{
+		this->context = nullptr;
+		this->current_id = 0;
+		this->links.clear();
+		this->m_context_link = 0;
+		this->m_context_node = 0;
+		this->nodes.clear();
 	}
 
 };
