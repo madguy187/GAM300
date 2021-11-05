@@ -417,9 +417,6 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\ModelComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\ComponentManager\Components\NavMeshComponent.h">
-      <Filter>ECS\ComponentManager\Components</Filter>
-    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\ParentComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
@@ -928,9 +925,6 @@
     <ClInclude Include="src\Mono\Manager\MonoManager.h">
       <Filter>Mono\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="src\NavMesh\NavMeshCreator.h">
-      <Filter>NavMesh</Filter>
-    </ClInclude>
     <ClInclude Include="src\Physics\PhysicsManager.h">
       <Filter>Physics</Filter>
     </ClInclude>
@@ -983,6 +977,11 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\NavMesh\NavMeshManager.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\NavMeshSystem\NavMeshSystem.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\NavMeshVolumeComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1399,9 +1398,6 @@
     <ClCompile Include="src\Mono\Manager\MonoManager.cpp">
       <Filter>Mono\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="src\NavMesh\NavMeshCreator.cpp">
-      <Filter>NavMesh</Filter>
-    </ClCompile>
     <ClCompile Include="src\Physics\PhysicsManager.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
@@ -1451,5 +1447,7 @@
       <Filter>Tracy</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\NavMesh\NavMeshManager.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\NavMeshSystem\NavMeshSystem.cpp" />
   </ItemGroup>
 </Project>

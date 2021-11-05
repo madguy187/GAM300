@@ -21,14 +21,6 @@ static const char* TEMP_PATH = "Data\\Temp\\";
 static const char* ASSETS_PATH = "src\\Assets\\";
 using EUUID = std::uint64_t;
 
-enum class EntityLayer
-{
-    LAYER_NONE,
-    LAYER_FLOOR,
-    LAYER_WALLS,
-
-};
-
 enum class EditorWindowType
 {
     EWT_HIERARCHY,

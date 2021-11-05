@@ -199,7 +199,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\ECS\ComponentManager\Components\MaterialComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\MeshComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ModelComponent.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\NavMeshComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\NavMeshVolumeComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ParentComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\PointLightComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\PrefabComponent.h" />
@@ -221,6 +221,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MaterialSystem\MaterialSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\NavMeshSystem\NavMeshSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ChildSystem\ChildSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem\ParentSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\PhysicsSystem\PhysicsSystem.h" />
@@ -370,7 +371,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Mono\Components\s_LogicalInput.h" />
     <ClInclude Include="src\Mono\Components\s_RigidBodyComponent.h" />
     <ClInclude Include="src\Mono\Manager\MonoManager.h" />
-    <ClInclude Include="src\NavMesh\NavMeshCreator.h" />
+    <ClInclude Include="src\NavMesh\NavMeshManager.h" />
     <ClInclude Include="src\Physics\PhysicsManager.h" />
     <ClInclude Include="src\PrefabManager\PrefabManager.h" />
     <ClInclude Include="src\Reflection\Meta.h" />
@@ -411,6 +412,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\ECS\SystemManager\Systems\System\LightingSystem\LightingSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MaterialSystem\MaterialSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\NavMeshSystem\NavMeshSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ChildSystem\ChildSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ParentSystem\ParentSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\PhysicsSystem\PhysicsSystem.cpp" />
@@ -529,7 +531,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Library\UUID\UUIDGenerator.cpp" />
     <ClCompile Include="src\Logger\Logger.cpp" />
     <ClCompile Include="src\Mono\Manager\MonoManager.cpp" />
-    <ClCompile Include="src\NavMesh\NavMeshCreator.cpp" />
+    <ClCompile Include="src\NavMesh\NavMeshManager.cpp" />
     <ClCompile Include="src\Physics\PhysicsManager.cpp" />
     <ClCompile Include="src\PrefabManager\PrefabManager.cpp" />
     <ClCompile Include="src\Reflection\Meta.cpp" />

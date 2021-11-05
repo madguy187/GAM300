@@ -255,9 +255,6 @@ namespace Eclipse
 		return Px_Scene->raycast(_origin,_dir, dist, hit);
 	}
 
-
-
-
 	void PhysicsManager::AttachCapsuleToActor(Entity ent, float radius,float halfheight)
 	{
 		auto& collision = engine->world.GetComponent<CollisionComponent>(ent);
