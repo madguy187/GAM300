@@ -11,8 +11,6 @@ namespace Eclipse
         std::unique_ptr<FrameBuffer> PostProcess;
 
         FrameBufferManager() {};
-        void CreateFrameBuffers();
-        void CreateFBO(unsigned int Height, unsigned int Width, FrameBufferMode in);
         void FrameBufferDraw();
         FrameBuffer* GetFramebuffer(FrameBufferMode mode);
         void UseFrameBuffer(FrameBufferMode mode);
@@ -29,5 +27,14 @@ namespace Eclipse
         void UpdateAspectRatio(FrameBufferMode Mode, glm::vec2 CurrentViewPortSize);
         void MainWindowSettings();
         float GetAspectRatio(CameraComponent::CameraType);
+        void CreateFrameBuffers();
+        void CreateFBO(unsigned int Height, unsigned int Width, FrameBufferMode in);
+
+        void PostProcessUpdate();
+    private:
+        // Effects
+        void FadeIn(FrameBuffer::PostProcessType Type, float& timer , float multiplier);
+        void PostProcessUpdate(FrameBufferMode);
+        void SobelEffectUpdate();
     };
 }

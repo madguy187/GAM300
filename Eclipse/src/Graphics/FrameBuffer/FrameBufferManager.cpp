@@ -191,4 +191,100 @@ namespace Eclipse
         return 0.0f;
     }
 
+    void FrameBufferManager::FadeIn(FrameBuffer::PostProcessType Type, float& timer , float multiplier)
+    {
+        if (engine->IsScenePlaying() == true)
+        {
+            if (PostProcess->PPType_ == Type && timer <= 1.0f)
+            {
+                timer += ( engine->Game_Clock.get_fixedDeltaTime() / multiplier );
+            }
+        }
+        else
+        {
+            timer = 0.0f;
+        }
+    }
+
+    void FrameBufferManager::PostProcessUpdate(FrameBufferMode Scene)
+    {
+        if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
+        {
+            if (PostProcess->AllowPostProcess == false)
+                return;
+
+            if (PostProcess->PPType_ == FrameBuffer::PostProcessType::PPT_NONE)
+                return;
+
+            if (PostProcess->PPType_ == FrameBuffer::PostProcessType::PPT_SOBEL)
+                return;
+
+            engine->gFrameBufferManager->UseFrameBuffer(Scene);
+
+            auto& shdrpgm = Graphics::shaderpgms["PostProcess"];
+            shdrpgm.Use();
+
+            GLint Inversion = shdrpgm.GetLocation("Type");
+            GLint Height_ = shdrpgm.GetLocation("Height");
+            GLint Width_ = shdrpgm.GetLocation("Width");
+            GLint FadeInTimer_ = shdrpgm.GetLocation("FadeInTimer");
+
+            GLCall(glUniform1i(Inversion, static_cast<GLint>(PostProcess->PPType_)));
+
+            glBindVertexArray(PostProcess->rectVAO);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(Scene));
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+        }
+    }
+
+    void FrameBufferManager::SobelEffectUpdate()
+    {
+        if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
+        {
+            if (PostProcess->AllowPostProcess == true)
+            {
+                if (PostProcess->PPType_ == FrameBuffer::PostProcessType::PPT_SOBEL)
+                {
+                    FadeIn(FrameBuffer::PostProcessType::PPT_SOBEL, PostProcess->FadeInTimer, PostProcess->Multiplier);
+
+                    // We will output to Game FrameBuffer
+                    engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_GAME);
+
+                    auto& shdrpgm = Graphics::shaderpgms["PostProcess"];
+                    shdrpgm.Use();
+
+                    GLint Inversion = shdrpgm.GetLocation("Type");
+                    GLint Height_ = shdrpgm.GetLocation("Height");
+                    GLint Width_ = shdrpgm.GetLocation("Width");
+                    GLint FadeInTimer_ = shdrpgm.GetLocation("FadeInTimer");
+
+                    GLCall(glUniform1i(Inversion, static_cast<GLint>(PostProcess->PPType_)));
+                    GLCall(glUniform1i(Height_, engine->gFrameBufferManager->FrameBufferContainer[FrameBufferMode::FBM_GAME]->m_height));
+                    GLCall(glUniform1i(Width_, engine->gFrameBufferManager->FrameBufferContainer[FrameBufferMode::FBM_GAME]->m_width));
+                    GLCall(glUniform1f(FadeInTimer_, PostProcess->FadeInTimer));
+
+                    glBindVertexArray(PostProcess->rectVAO);
+                    glActiveTexture(GL_TEXTURE0);
+                    glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_GAME_SOBEL));
+                    glDrawArrays(GL_TRIANGLES, 0, 6);
+                }
+            }
+        }
+    }
+
+    void FrameBufferManager::PostProcessUpdate()
+    {
+        if (PostProcess->AllowPostProcess == true)
+        {
+            if (PostProcess->PPType_ == FrameBuffer::PostProcessType::PPT_SOBEL)
+            {
+                SobelEffectUpdate();
+            }
+            else
+            {
+                PostProcessUpdate(FrameBufferMode::FBM_SCENE);
+            }
+        }
+    }
 }

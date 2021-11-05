@@ -80,13 +80,15 @@ namespace Eclipse
             PPT_SOBEL = 5,
             PPT_MAXCOUNT
         };
-
         PostProcessType PPType_ = PostProcessType::PPT_NONE;
         bool AllowPostProcess = false;
         unsigned int rectVAO = 0;
         unsigned int rectVBO = 0;
         void CreatePostProcessFramebuffer();
-        void UpdatePP();
+
+        // Sobel
+        float FadeInTimer = 0.0f;
+        float Multiplier = 2.0f;
     };
 }
 #endif//FRAMEBUFFER_H

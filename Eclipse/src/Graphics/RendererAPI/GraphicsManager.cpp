@@ -443,7 +443,7 @@ namespace Eclipse
             }
         }
 
-        engine->gFrameBufferManager->PostProcess->UpdatePP();
+        engine->gFrameBufferManager->PostProcessUpdate();
     }
 
     void Eclipse::GraphicsManager::CreateCompilerFolders()
