@@ -219,17 +219,21 @@ namespace Eclipse
             if (PostProcess->PPType_ == FrameBuffer::PostProcessType::PPT_SOBEL)
                 return;
 
+            if (PostProcess->PPType_ == FrameBuffer::PostProcessType::PPT_BLLEDING)
+            {
+                PostProcess->BleedingTimer += engine->Game_Clock.get_fixedDeltaTime() * 5;
+            }
+
             engine->gFrameBufferManager->UseFrameBuffer(Scene);
 
             auto& shdrpgm = Graphics::shaderpgms["PostProcess"];
             shdrpgm.Use();
 
             GLint Inversion = shdrpgm.GetLocation("Type");
-            GLint Height_ = shdrpgm.GetLocation("Height");
-            GLint Width_ = shdrpgm.GetLocation("Width");
-            GLint FadeInTimer_ = shdrpgm.GetLocation("FadeInTimer");
+            GLint iTime_ = shdrpgm.GetLocation("iTime");
 
             GLCall(glUniform1i(Inversion, static_cast<GLint>(PostProcess->PPType_)));
+            GLCall(glUniform1f(iTime_, PostProcess->BleedingTimer));
 
             glBindVertexArray(PostProcess->rectVAO);
             glActiveTexture(GL_TEXTURE0);

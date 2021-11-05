@@ -78,6 +78,8 @@ namespace Eclipse
             PPT_KERNEL = 3,
             PPT_BLUR = 4,
             PPT_SOBEL = 5,
+            PPT_BLLEDING = 6,
+            PPT_SCREENSHAKE = 7,
             PPT_MAXCOUNT
         };
         PostProcessType PPType_ = PostProcessType::PPT_NONE;
@@ -89,6 +91,9 @@ namespace Eclipse
         // Sobel
         float FadeInTimer = 0.0f;
         float Multiplier = 2.0f;
+
+        // Bleeding
+        float BleedingTimer = 0.0f;
     };
 }
 #endif//FRAMEBUFFER_H

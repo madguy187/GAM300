@@ -12,6 +12,7 @@ const float offset_y = 1.0f / 800.0f;
 uniform int Height;
 uniform int Width;
 uniform float FadeInTimer;
+uniform float iTime;
 
 vec2 offsets[9] = vec2[]
 (
@@ -49,6 +50,18 @@ float blurkernel[9] = float[](
     2.0 / 16, 4.0 / 16, 2.0 / 16,
     1.0 / 16, 2.0 / 16, 1.0 / 16  
 );
+
+const float amountMin = 0.0;
+const float amountMax = 100.0;
+
+const vec3 luminanceWeighting = vec3(0.5, 0.0, 0.0);
+
+vec3 tintAdjust(vec3 color, vec3 mapBlackTo, vec3 mapWhiteTo, float amount) 
+{
+    float luminance = dot(color, luminanceWeighting);
+    return mix(color, mix(mapBlackTo, mapWhiteTo, luminance), amount);
+}
+
 
 void main()
 {
@@ -96,7 +109,20 @@ void main()
     }
     else if( Type == 6)
     {	
-        FragColor = vec4(vec3(1), 1.0 );
+        vec2 uv = texCoords/vec2(1270,593);
+        vec4 c = texture(screenTexture, texCoords);
+
+        float value = abs(sin(iTime * 0.5));
+        float amount = mix(amountMin, amountMax, value);
+        float amountNormal = amount/(amountMax - amountMin);
+        float targetAmount = mix(0.0, 1.0, amountNormal);
+        
+        vec4 mapBlackTo = vec4(1, 0, 0, 1);
+        vec4 mapWhiteTo = vec4(0, 0, 1, 1);
+        
+        c.rgb = tintAdjust(c.rgb, mapBlackTo.rgb, mapWhiteTo.rgb, targetAmount);
+        
+        FragColor = c;
     }
 
 }
