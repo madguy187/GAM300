@@ -297,11 +297,11 @@ namespace Eclipse
 
     bool MaterialEditorWindow::ShowMaterialProperty(const char* name, ImGuiTextFilter& filter)
     {
-        const auto& MaterialNames = engine->gPBRManager->AllMaterialInstName;
-        ComboListSettings settingsss = { "Current Material" };
-        ECGui::DrawTextWidget<const char*>("Current Materials:", EMPTY_STRING);
-        ECGui::CreateComboList(settingsss, MaterialNames, comboindex);
-        CheckCurrentMaterial(comboindex);
+        //const auto& MaterialNames = engine->gPBRManager->AllMaterialInstName;
+        //ComboListSettings settingsss = { "Current Material" };
+        //ECGui::DrawTextWidget<const char*>("Current Materials:", EMPTY_STRING);
+        //ECGui::CreateComboList(settingsss, MaterialNames, comboindex);
+        //CheckCurrentMaterial(comboindex);
 
         ECGui::NextColumn();
         ImGui::Dummy(ImVec2(1, 5));

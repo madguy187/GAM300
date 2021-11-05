@@ -2,6 +2,7 @@
 #include "AssetBrowser.h"
 #include "Editor/Windows/Inspector/Inspector.h"
 #include "Editor/Windows/MeshEditor/MeshEditor.h"
+#include "Editor/Windows/MaterialEditor/MaterialEditor.h"
 
 namespace Eclipse
 {
@@ -395,6 +396,24 @@ namespace Eclipse
                 engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("prefab", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
                 break;
             case InspectorWindow::str2int("mat"):
+
+                temp = "src\\Assets\\" + relativePath.string();
+
+                if (ECGui::IsMouseDoubleClicked(0) && ECGui::IsItemClicked(0) && ECGui::IsItemHovered())
+                {
+                    const auto& path = dirEntry.path();
+                    auto relativePath = relative(path, "src//");
+                    std::string FolderName = relativePath.filename().string();
+
+                    auto* MaterialEditor = engine->editorManager->GetEditorWindow<MaterialEditorWindow>();
+
+                    if (!MaterialEditor->IsVisible)
+                    {
+
+                        MaterialEditor->IsVisible = true;
+                    }
+                }
+
                 engine->editorManager->DragAndDropInst_.StringPayloadSource("mat", relativePath.string());
                 engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget("mat", paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
                 break;
