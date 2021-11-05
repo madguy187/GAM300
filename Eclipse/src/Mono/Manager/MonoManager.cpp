@@ -84,6 +84,7 @@ namespace Eclipse
 		mono_add_internal_call("Eclipse.RigidBody::Add_Force", SetForce);
 		mono_add_internal_call("Eclipse.Input::GetButtonDown", GetKeyCurrentByName);
 		mono_add_internal_call("Eclipse.Input::GetKey", GetKeyCurrentByKeyCode);
+		mono_add_internal_call("Eclipse.Input::GetAxis", GetMouseAxis);
 		mono_add_internal_call("Eclipse.Time::getDeltaTime", GetDeltaTime);
 		mono_add_internal_call("Eclipse.Time::getFixedDeltaTime", GetFixedDeltaTime);
 	}

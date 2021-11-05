@@ -38,9 +38,6 @@ namespace Eclipse
         bool EnableNormalMapping = false;
         bool EnableEnvironmentMapForAll = false;
 
-        // Seperate FBO for Post Process
-        std::unique_ptr<FrameBuffer> PostProcess;
-
     public:
         std::map<std::string, std::vector<std::string>> ShaderMap;
         std::unordered_map<std::string, std::unique_ptr<std::thread>> GraphicThreads;
@@ -66,7 +63,6 @@ namespace Eclipse
         static void WindowCloseCallback(GLFWwindow* window);
         void SetBackGroundColour();
         void FinalRender();
-        void PostProcessUpdate();
 
     private:
         static void CreateCompilerFolders();

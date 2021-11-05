@@ -2,6 +2,7 @@
 #include "AssetBrowser.h"
 #include "Editor/Windows/Inspector/Inspector.h"
 #include "Editor/Windows/MeshEditor/MeshEditor.h"
+#include "Editor/Windows/MaterialEditor/MaterialEditor.h"
 
 namespace Eclipse
 {
@@ -390,13 +391,27 @@ namespace Eclipse
                 //engine->editorManager->DragAndDropInst_.StringPayloadSource("prefab", "src\\Assets\\" + relativePath.string());
                 break;
             case InspectorWindow::str2int("mat"):
+
+                temp = "src\\Assets\\" + relativePath.string();
+
                 if (ECGui::IsMouseDoubleClicked(0) && ECGui::IsItemClicked(0) && ECGui::IsItemHovered())
                 {
                     size_t lastindex = fileNameString.find_last_of(".");
                     std::string tempName = fileNameString.substr(0, lastindex);
-                    std::copy(tempName.begin(), tempName.end(), engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.Name.data());
-                    // engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.Name= tempName;
+
+                    auto* MaterialEditor = engine->editorManager->GetEditorWindow<MaterialEditorWindow>();
+
+                    if (!MaterialEditor->IsVisible)
+                    {
+                        engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial =*engine->gPBRManager->AllMaterialInstances[tempName];
+                        MaterialEditor->IsVisible = true;
+                    }
+                    else
+                    {
+                        engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial = *engine->gPBRManager->AllMaterialInstances[tempName];
+                    }
                 }
+
                 engine->editorManager->DragAndDropInst_.StringPayloadSource("mat", relativePath.string());
                 break;
             case InspectorWindow::str2int("dds"):

@@ -24,13 +24,15 @@ namespace Eclipse
         float constant = 1.0f;
         float linear = 0.09f;
         float quadratic = 0.032f;
-        int AttenuationLevel = 5;
+        int AttenuationLevel = 2;
         float SurroundingAttenuationLevel = 0.3f;
 
         bool EnableBlinnPhong = true;
         bool hasTexture = false;
         bool visible = false;
         bool AffectsWorld = true;
+
+        ECVec4 RGBColor{ 1.0f,1.0f,1.0f,1.0f };
     };
 }
 #endif /* SPOTLIGHTCOMPONENT_H */
