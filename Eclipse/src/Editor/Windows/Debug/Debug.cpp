@@ -24,6 +24,15 @@ namespace Eclipse
         {
             std::string name;
             name.reserve(256);
+
+            switch (i)
+            {
+                case 0: name = "Default"; break;
+                case 1: name = "Nothing"; break;
+                case 2: name = "Everything"; break;
+                default: break;
+            }
+
             LayerList[i] = name;
         }
 
@@ -239,6 +248,18 @@ namespace Eclipse
 
             for (auto& pair : LayerList)
             {
+                if (pair.first == 0 || pair.first == 1 || pair.first == 2)
+                {
+                    ECGui::DrawTextWidget<const char*>(my_strcat("Built-In Layer ", pair.first).c_str(), EMPTY_STRING);
+                    ECGui::NextColumn();
+
+                    ECGui::DrawInputTextHintWidget(lexical_cast<std::string>(pair.first).c_str(), const_cast<char*>(pair.second.c_str()),
+                        EMPTY_STRING, 0, ImGuiInputTextFlags_ReadOnly, true);
+
+                    ECGui::NextColumn();
+                    continue;
+                }
+
                 ECGui::DrawTextWidget<const char*>(my_strcat("User Layer ", pair.first).c_str(), EMPTY_STRING);
                 ECGui::NextColumn();
 
@@ -251,5 +272,10 @@ namespace Eclipse
 
             ECGui::EndTreeNode();
         }
+    }
+
+    const std::unordered_map<int, std::string>& DebugWindow::GetLayerList()
+    {
+        return LayerList;
     }
 }

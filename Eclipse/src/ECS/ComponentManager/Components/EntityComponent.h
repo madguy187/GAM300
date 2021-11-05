@@ -12,7 +12,7 @@ namespace Eclipse
 		META_DATA(EntityComponent);
 		EntityType Tag{ EntityType::ENT_UNASSIGNED };
 		std::string Name{"Untagged Entity"};
-		int LayerIndex{ -1 };
+		int LayerIndex{ 0 };
 
 		// DONT USE, FOR EDITOR STUFF
 		bool IsActive{ false };

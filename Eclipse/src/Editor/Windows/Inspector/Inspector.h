@@ -1,6 +1,7 @@
-//#pragma once
+#pragma once
 
 #include "../Interface/ECGuiWindow.h"
+#include "../Debug/Debug.h"
 #include "ECS/ComponentManager/Components/AudioComponent.h"
 
 namespace Eclipse
@@ -57,6 +58,7 @@ namespace Eclipse
 		void ComponentRegistry(const char* CompName, Entity ID,
 			const std::string EntityName, EditComponent method);
 
+		void OnLayerListUpdate(EntityComponent& entcom);
 		void SetCurrentEntityName(const char* name);
 		void ClearEntityName();
 

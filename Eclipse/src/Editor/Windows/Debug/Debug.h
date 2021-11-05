@@ -33,7 +33,7 @@ namespace Eclipse
 		void OnInputUpdate();
 		void OnTagsAndLayersUpdate();
 
-
+		const std::unordered_map<int, std::string>& GetLayerList();
 	private:
 		ECVec2 WindowSize{ 0.0f, 0.0f };
 		std::string CurrentSelection{ "Graphics" };

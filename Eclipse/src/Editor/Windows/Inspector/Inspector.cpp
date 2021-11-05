@@ -46,7 +46,6 @@ namespace Eclipse
             ECGui::InsertHorizontalLineSeperator();*/
 
             ECGui::PushItemWidth(WindowSize_.getX());
-
             if (ECGui::DrawInputTextHintWidget("InputEntityName", "Enter Entity Name", EntNameInput,
                 256, true, ImGuiInputTextFlags_EnterReturnsTrue))
             {
@@ -55,6 +54,7 @@ namespace Eclipse
                 CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<std::string>{ oldName, entcom.Name });
             }
 
+            ECGui::PushItemWidth(WindowSize_.getX() * 0.4f);
             ECGui::DrawTextWidget<const char*>("Tag ", EMPTY_STRING);
             ECGui::InsertSameLine();
             ECGui::DrawInputTextWidget("Tag", const_cast<char*>(lexical_cast_toStr(entcom.Tag).c_str()),
@@ -62,12 +62,17 @@ namespace Eclipse
 
             ECGui::InsertSameLine();
 
+            ECGui::DrawTextWidget<const char*>("Layer ", EMPTY_STRING);
+            ECGui::InsertSameLine();
+            OnLayerListUpdate(entcom);
+           
+            // ECGui::InsertHorizontalLineSeperator();
+            ECGui::PushItemWidth(WindowSize_.getX());
             ECGui::InsertHorizontalLineSeperator();
 
             static ImGuiTextFilter CompFilter;
-            CompFilter.Draw("Filter", 0.0f, "Component Filter");
+            CompFilter.Draw(EMPTY_STRING, 0.0f, "Component Filter");
 
-            // ECGui::PushItemWidth(WindowSize_.getX());
             ShowPrefebProperty(currEnt);
             // ShowEntityProperty("Tag", currEnt, CompFilter);
             ShowTransformProperty("Transform", currEnt, CompFilter, mesheditor->IsVisible);
@@ -1777,6 +1782,34 @@ namespace Eclipse
             }
 
             engine->world.DestroyComponent<TComponents>(ID);
+        }
+    }
+
+    void InspectorWindow::OnLayerListUpdate(EntityComponent& entcom)
+    {
+        auto* settings = engine->editorManager->GetEditorWindow<DebugWindow>();
+        //int index = entcom.LayerIndex;
+
+        const char* currentLabel = settings->GetLayerList().find(entcom.LayerIndex)->second.c_str();
+
+        if (ImGuiAPI::BeginComboList("LayerComboList", currentLabel, true))
+        {
+            for (const auto& pair : settings->GetLayerList())
+            {
+                if (!strcmp(pair.second.c_str(), EMPTY_STRING)) continue;
+
+                const bool is_selected = (entcom.LayerIndex == pair.first);
+
+                if (ImGui::Selectable(pair.second.c_str(), is_selected))
+                {
+                    entcom.LayerIndex = pair.first;
+                }
+
+                if (is_selected)
+                    ImGui::SetItemDefaultFocus();
+            }
+
+            ImGuiAPI::EndComboList();
         }
     }
 }
