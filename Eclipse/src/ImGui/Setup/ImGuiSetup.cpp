@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "imgui.h"
+#include "../ImNodes/imnodes.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_glfw.h"
 #include "ImGuizmo.h"
@@ -14,6 +15,7 @@ namespace Eclipse
 			// Setup IMGUI Context
 			IMGUI_CHECKVERSION();
 			ImGui::CreateContext();
+			ImNodes::CreateContext();
 			ImGuiIO& io = ImGui::GetIO();
 			
 			// Enable Keyboard Controls
@@ -80,6 +82,7 @@ namespace Eclipse
 		{
 			ImGui_ImplOpenGL3_Shutdown();
 			ImGui_ImplGlfw_Shutdown();
+			ImNodes::DestroyContext();
 			ImGui::DestroyContext();
 		}
 	}

@@ -33,23 +33,36 @@ namespace Eclipse
 		void UnloadDomain();
 
 	public:
+		bool fixUpdate = false;
+
+		// Manager Functions
 		void Init();
-		void Start(MonoScript* obj);
-		void Update(MonoScript* obj);
 		void StartMono();
 		void StopMono();
 		void Terminate();
 
+		// API Functions
+		void Awake(MonoScript* obj);
+		void Start(MonoScript* obj);
+		void Update(MonoScript* obj);
+		void FixedUpdate(MonoScript* obj);
+
 		MonoObject* CreateMonoObject(std::string scriptName, Entity entity);
-		MonoClass* GetMonoClass(std::string className);
 		MonoObject* CreateObjectFromClass(MonoClass* klass);
+
+		std::string GetStringFromField(MonoObject* obj, MonoClass* klass, const char* fieldName);
+
+		MonoClass* GetMonoClass(std::string className);
 		MonoMethod* GetMethodFromClass(MonoClass* klass, std::string funcName);
-		bool ExecuteMethod(MonoObject* obj, MonoMethod* method, std::vector<void*> args);
+		std::unordered_map<std::string, std::string> GetAllFields(MonoClass* klass);
+
+		MonoObject* ExecuteMethod(MonoObject* obj, MonoMethod* method, std::vector<void*> args);
 
 		// Gets image containing all API Scripts
 		MonoImage* GetAPIImage();
 		// Gets image containing all User scripts
 		MonoImage* GetScriptImage();
+
 		void DumpInfoFromImage(MonoImage* _image);
 		void DumpInfoFromClass(MonoClass* _class);
 	};

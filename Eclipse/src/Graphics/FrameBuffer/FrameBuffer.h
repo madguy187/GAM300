@@ -13,7 +13,8 @@ namespace Eclipse
       "SWITCHINGVIEWS_LEFT",
       "SWITCHINGVIEWS_RIGHT",
       "MATERIALEDITORVIEW",
-      "MESHEDITORVIEW"
+      "MESHEDITORVIEW",
+      "GAMEVIEW_SOBEL",
       "MAXCOUNT"
     };
 
