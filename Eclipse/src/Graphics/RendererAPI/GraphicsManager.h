@@ -5,7 +5,7 @@
 #include "AssimpModel/AssimpModel.h"
 #include "Graphics/ModelFactory/Sky/CubeMap.h"
 #include "Graphics/Grid/Grid.h"
-#include "Graphics/Grid/Box.h"
+#include "Graphics/Instancing/DebugBoxes/Box.h"
 #include "BasicPrimitives/Frustum.h"
 
 // systems
@@ -23,7 +23,6 @@ namespace Eclipse
         std::vector<AssimpModel*> ModelContainer;
         GLenum GlobalMode = GL_FILL;
         std::unique_ptr<CubeMap> Sky;
-        AABB_ AllAABBs;
         std::unique_ptr<Quad> GridQuad;
 
         unsigned int createdID;
@@ -38,9 +37,6 @@ namespace Eclipse
         float Magnitude = 0.2f;
         bool EnableNormalMapping = false;
         bool EnableEnvironmentMapForAll = false;
-
-        // Seperate FBO for Post Process
-        std::unique_ptr<FrameBuffer> PostProcess;
 
     public:
         std::map<std::string, std::vector<std::string>> ShaderMap;
@@ -63,14 +59,10 @@ namespace Eclipse
         void SetGammaCorrection(float in);
         void UploadGlobalUniforms();
         void CheckUniformLoc(Shader* _shdrpgm, MeshComponent& sprite, unsigned int id, CameraComponent& camera);
-        void ResetInstancedDebugBoxes();
-        void DrawDebugBoxes();
         std::string GetModelName(unsigned int modelname);
         static void WindowCloseCallback(GLFWwindow* window);
         void SetBackGroundColour();
         void FinalRender();
-        void DrawEntireGrid();
-        void PostProcessUpdate();
 
     private:
         static void CreateCompilerFolders();

@@ -33,9 +33,6 @@ namespace Eclipse
 
         // For grid
         GridQuad = std::make_unique<Quad>();
-
-        PostProcess = std::make_unique<FrameBuffer>();
-        PostProcess->CreatePostProcessFramebuffer();
     }
 
     void Eclipse::GraphicsManager::Post_Render()
@@ -362,20 +359,6 @@ namespace Eclipse
         glUniform1i(tex_loc, false);
     }
 
-    void Eclipse::GraphicsManager::ResetInstancedDebugBoxes()
-    {
-        AllAABBs.Reset();
-    }
-
-    void Eclipse::GraphicsManager::DrawDebugBoxes()
-    {
-        if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
-        {
-            // render boxes
-            engine->GraphicsManager.AllAABBs.DrawAll(FrameBufferMode::FBM_SCENE);
-        }
-    }
-
     std::string Eclipse::GraphicsManager::GetModelName(unsigned int modelname)
     {
         switch (modelname)
@@ -452,31 +435,15 @@ namespace Eclipse
 
     void Eclipse::GraphicsManager::FinalRender()
     {
-        engine->MaterialManager.DoNotUpdateStencil();
-        DrawDebugBoxes();
-
-        if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
+        if (engine->IsScenePlaying() == false)
         {
-            engine->MaterialManager.DoNotUpdateStencil();
-            engine->GridManager->DrawGrid(FrameBufferMode::FBM_SCENE);
+            if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
+            {
+                engine->GridManager->DrawGrid(FrameBufferMode::FBM_SCENE);
+            }
         }
 
-        engine->MaterialManager.DoNotUpdateStencil();
-        PostProcessUpdate();
-    }
-
-    void Eclipse::GraphicsManager::DrawEntireGrid()
-    {
-        engine->MaterialManager.DoNotUpdateStencil();
-        engine->GraphicsManager.DrawDebugBoxes();
-
-        engine->GridManager->DrawGrid(FrameBufferMode::FBM_SCENE);
-    }
-
-    void GraphicsManager::PostProcessUpdate()
-    {
-        PostProcess->UpdatePP();
-        engine->MaterialManager.StencilBufferClear();
+        engine->gFrameBufferManager->PostProcess->UpdatePP();
     }
 
     void Eclipse::GraphicsManager::CreateCompilerFolders()

@@ -108,6 +108,7 @@ namespace Eclipse
         ADD_MEMBER(Parent);
         ADD_MEMBER(IsAChild);
         ADD_MEMBER(ImguiIndentValue);
+        ADD_MEMBER(hightLightChild);
     }
 
     DEFINE_META(ScriptComponent)
@@ -180,6 +181,7 @@ namespace Eclipse
         ADD_MEMBER(hasTexture);
         ADD_MEMBER(visible);
         ADD_MEMBER(AffectsWorld);
+        ADD_MEMBER(RGBColor);
     }
 
     DEFINE_META(RigidBodyComponent)
@@ -218,6 +220,7 @@ namespace Eclipse
         ADD_MEMBER(hasTexture);
         ADD_MEMBER(visible);
         ADD_MEMBER(AffectsWorld);
+        ADD_MEMBER(RGBColor);
     }
 
     DEFINE_META(TextureComponent)

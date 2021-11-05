@@ -72,12 +72,8 @@ namespace Eclipse
         *************************************************************************/
         std::bitset<8> viewInput;
 
-        /*************************************************************************
-          Material Camera bitset layout
-          0: "Zoom In" (FOV)						: button Z
-          1: "Zoom Out" (FOV)						: button X
-        *************************************************************************/
-        std::bitset<2> materialInput;
+        //Material editor camera has same controls as editor camera
+        std::bitset<12> materialInput;
 
         std::map<CameraComponent::CameraType, unsigned int> cameraList;
 
@@ -119,7 +115,7 @@ namespace Eclipse
         std::bitset<12>& GetInput();
         std::bitset<8>& GetViewInput();
         std::bitset<12>& GetMeshInput();
-        std::bitset<2>& GetMaterialInput();
+        std::bitset<12>& GetMaterialInput();
 
         void ResetScene();
         void ReInitCameraList(CameraComponent::CameraType _camType, unsigned int ID);

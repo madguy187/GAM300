@@ -18,6 +18,7 @@ namespace Eclipse
 		std::vector<Entity> Child;
 		std::vector<Entity> Parent;
 		bool IsAChild = false;
+		bool hightLightChild = false;
 		float ImguiIndentValue = 20.f;
 	};
 }

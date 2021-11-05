@@ -7,6 +7,9 @@ namespace Eclipse
     public:
         std::unordered_map <FrameBufferMode, std::shared_ptr<FrameBuffer>> FrameBufferContainer;
 
+        // Seperate FBO for Post Process
+        std::unique_ptr<FrameBuffer> PostProcess;
+
         FrameBufferManager() {};
         void CreateFrameBuffers();
         void CreateFBO(unsigned int Height, unsigned int Width, FrameBufferMode in);

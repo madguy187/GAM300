@@ -68,6 +68,10 @@ namespace Eclipse
     void Eclipse::FrameBuffer::Resize(unsigned width, unsigned height, FrameBufferMode Mode)
     {
         engine->gFrameBufferManager->CreateFBO(width, height, Mode);
+
+        engine->gFrameBufferManager->FrameBufferContainer[Mode]->m_height = height;
+        engine->gFrameBufferManager->FrameBufferContainer[Mode]->m_width = width;
+
         //EDITOR_LOG_INFO("Resize Successful");
     }
 
@@ -136,7 +140,7 @@ namespace Eclipse
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, m_data.depthBufferID, 0);
-        
+
         GLenum buffers[2] = { GL_COLOR_ATTACHMENT0 , GL_COLOR_ATTACHMENT1 };
         glDrawBuffers(2, buffers);
 
@@ -190,22 +194,23 @@ namespace Eclipse
             if (PPType_ == PostProcessType::PPT_NONE)
                 return;
 
-            engine->MaterialManager.DoNotUpdateStencil();
-            glBindFramebuffer(GL_FRAMEBUFFER, engine->gFrameBufferManager->GetFrameBufferID(FrameBufferMode::FBM_SCENE));
+            //glBindFramebuffer(GL_FRAMEBUFFER, engine->gFrameBufferManager->GetFrameBufferID(FrameBufferMode::FBM_SCENE));
+            engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_GAME);
 
             auto& shdrpgm = Graphics::shaderpgms["PostProcess"];
             shdrpgm.Use();
 
             GLint Inversion = shdrpgm.GetLocation("Type");
+            GLint Height_ = shdrpgm.GetLocation("Height");
+            GLint Width_ = shdrpgm.GetLocation("Width");
             GLCall(glUniform1i(Inversion, static_cast<GLint>(PPType_)));
+            GLCall(glUniform1i(Height_, engine->gFrameBufferManager->FrameBufferContainer[FrameBufferMode::FBM_GAME]->m_height));
+            GLCall(glUniform1i(Width_, engine->gFrameBufferManager->FrameBufferContainer[FrameBufferMode::FBM_GAME]->m_width));
 
             glBindVertexArray(rectVAO);
-            glDisable(GL_DEPTH_TEST);
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SCENE));
+            glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_GAME_SOBEL));
             glDrawArrays(GL_TRIANGLES, 0, 6);
-
-            shdrpgm.UnUse();
         }
     }
 
@@ -273,6 +278,10 @@ namespace Eclipse
 
         case FrameBufferMode::FBM_MESHEDITOR:
             os << "MESH_EDITOR FrameBuffer";
+            break;
+
+        case FrameBufferMode::FBM_GAME_SOBEL:
+            os << "Game View For Sobel";
             break;
         }
 

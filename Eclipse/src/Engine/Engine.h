@@ -23,6 +23,7 @@
 #include "Graphics/FrameBuffer/FrameBufferManager.h"
 #include "Graphics/Material/PBR/PBRManager.h"
 #include "Graphics/InputHandler/LogicalInput.h"
+#include "Graphics/Instancing/DebugManager/DebugManager.h"
 #include "Graphics/Animation/AnimationManager.h"
 
 namespace Eclipse
@@ -58,6 +59,7 @@ namespace Eclipse
 		std::unique_ptr<FrameBufferManager> gFrameBufferManager;
 		std::unique_ptr<PBRManager> gPBRManager;
 		std::unique_ptr<LogicalInput> InputManager;
+		std::unique_ptr<DebugManager> gDebugDrawManager;
 
 		void Init();
 		void Run();

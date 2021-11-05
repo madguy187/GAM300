@@ -86,20 +86,21 @@ namespace Eclipse
             B.Indices.resize(IndicesSize);
             GeometryFileRead.read(reinterpret_cast<char*>(B.Indices.data()), sizeof(unsigned int) * IndicesSize);
 
+            std::string name = B.MeshName.data();
 
             if (B.NoTex == false)
             {
                 Mesh NewMesh(B.Vertices, B.Indices, B.MeshName.data(), B.Textures);
-                std::string name = B.MeshName.data();
                 engine->AssimpManager.InsertGeometry(name, NewMesh);
-                engine->AssimpManager.InsertMeshName(name);
-                engine->AssimpManager.InsertGeometryName(name);
             }
             else
             {
                 Mesh NewMesh(B.Vertices, B.Indices, B.Diffuse, B.Specular, B.Ambient, B.NoTex, B.MeshName.data());
-                std::string name = B.MeshName.data();
                 engine->AssimpManager.InsertGeometry(name, NewMesh);
+            }
+
+            if (strcmp(name.c_str(), "LightBulb") != 0 && strcmp(name.c_str(), "SpotLight") != 0 && strcmp(name.c_str(), "Inner") != 0 && strcmp(name.c_str(), "Outer") != 0)
+            {
                 engine->AssimpManager.InsertMeshName(name);
                 engine->AssimpManager.InsertGeometryName(name);
             }
@@ -140,7 +141,15 @@ namespace Eclipse
                 engine->AssimpManager.InsertPrefabs(ParentName.data(), MeshName.data());
             }
 
-            engine->AssimpManager.InsertMeshName(ParentName.data());
+            if (strcmp(ParentName.data(), "LightBulb") != 0 && strcmp(ParentName.data(), "SpotLight") != 0 && strcmp(ParentName.data(), "Inner") != 0 && strcmp(ParentName.data(), "Outer") != 0)
+            {
+                if (NumberOfSubMeshes == 1)
+                {
+                    engine->AssimpManager.RemoveSubMesh(engine->AssimpManager.Prefabs[ParentName.data()][0]);
+                }
+
+                engine->AssimpManager.InsertMeshName(ParentName.data());
+            }
         }
 
         CloseFile(PrefabsFileRead, AllNames[1], TotalNumberOfPrefabs);
