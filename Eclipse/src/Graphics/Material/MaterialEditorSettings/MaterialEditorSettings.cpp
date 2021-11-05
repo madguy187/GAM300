@@ -7,7 +7,7 @@ namespace Eclipse
     MaterialEditorSettings::MaterialEditorSettings()
     {
         // Light Source in MeshEditor
-        LightPosition = ECVec3(0.0f, 15.0f, 15.0f);
+        LightPosition = ECVec3(15.0f, 15.0f, 15.0f);
         lightColor = ECVec3(1.0f, 1.0f, 1.0f);
 
         CreateSphere();
@@ -190,34 +190,45 @@ namespace Eclipse
 
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
 
-        if (SelectedIndex == 0)
-        {
-            GLCall(glUniform3f(SurfaceColour_, CurrentMaterial.SurfaceColour.getX(), CurrentMaterial.SurfaceColour.getY(), CurrentMaterial.SurfaceColour.getZ()));
-            GLCall(glUniform1f(HeightScale_, CurrentMaterial.HeightScale));
-            GLCall(glUniform1i(NormalMap_, CurrentMaterial.IsNormalMap));
-            GLCall(glUniform1i(HasInstance, CurrentMaterial.HasTexture));
-            GLCall(glUniform3f(AlbedoConstant, CurrentMaterial.AlbedoConstant.getX(), CurrentMaterial.AlbedoConstant.getY(), CurrentMaterial.AlbedoConstant.getZ()));
-            GLCall(glUniform1f(AoConstant, CurrentMaterial.AoConstant));
-            GLCall(glUniform1f(MetallicConstant, CurrentMaterial.MetallicConstant));
-            GLCall(glUniform1f(RoughnessConstant, CurrentMaterial.RoughnessConstant));
-            GLCall(glUniform3f(BaseReflectivity, CurrentMaterial.BaseReflectivity.getX(), CurrentMaterial.BaseReflectivity.getY(), CurrentMaterial.BaseReflectivity.getZ()));
+        // When Material is selected
+        GLCall(glUniform3f(SurfaceColour_, CurrentMaterial.SurfaceColour.getX(), CurrentMaterial.SurfaceColour.getY(), CurrentMaterial.SurfaceColour.getZ()));
+        GLCall(glUniform1i(NormalMap_, CurrentMaterial.IsNormalMap));
+        GLCall(glUniform1f(HeightScale_, CurrentMaterial.HeightScale));
+        GLCall(glUniform1i(HasInstance, CurrentMaterial.HasTexture));
+        GLCall(glUniform3f(AlbedoConstant, CurrentMaterial.AlbedoConstant.getX(), CurrentMaterial.AlbedoConstant.getY(), CurrentMaterial.AlbedoConstant.getZ()));
+        GLCall(glUniform1f(AoConstant, CurrentMaterial.AoConstant));
+        GLCall(glUniform1f(MetallicConstant, CurrentMaterial.MetallicConstant));
+        GLCall(glUniform1f(RoughnessConstant, CurrentMaterial.RoughnessConstant));
+        GLCall(glUniform3f(BaseReflectivity, CurrentMaterial.BaseReflectivity.getX(), CurrentMaterial.BaseReflectivity.getY(), CurrentMaterial.BaseReflectivity.getZ()));
+        BindMaterial(shdrpgm, CurrentMaterial.Name.data());
 
-            BindMaterial(shdrpgm, "None");
-        }
-        else
-        {
-            GLCall(glUniform3f(SurfaceColour_, CurrentMaterial.SurfaceColour.getX(), CurrentMaterial.SurfaceColour.getY(), CurrentMaterial.SurfaceColour.getZ()));
-            GLCall(glUniform1i(NormalMap_, CurrentMaterial.IsNormalMap));
-            GLCall(glUniform1f(HeightScale_, CurrentMaterial.HeightScale));
-            GLCall(glUniform1i(HasInstance, CurrentMaterial.HasTexture));
-            GLCall(glUniform3f(AlbedoConstant, CurrentMaterial.AlbedoConstant.getX(), CurrentMaterial.AlbedoConstant.getY(), CurrentMaterial.AlbedoConstant.getZ()));
-            GLCall(glUniform1f(AoConstant, CurrentMaterial.AoConstant));
-            GLCall(glUniform1f(MetallicConstant, CurrentMaterial.MetallicConstant));
-            GLCall(glUniform1f(RoughnessConstant, CurrentMaterial.RoughnessConstant));
-            GLCall(glUniform3f(BaseReflectivity, CurrentMaterial.BaseReflectivity.getX(), CurrentMaterial.BaseReflectivity.getY(), CurrentMaterial.BaseReflectivity.getZ()));
+        //if (SelectedIndex == 0)
+        //{
+        //    GLCall(glUniform3f(SurfaceColour_, CurrentMaterial.SurfaceColour.getX(), CurrentMaterial.SurfaceColour.getY(), CurrentMaterial.SurfaceColour.getZ()));
+        //    GLCall(glUniform1f(HeightScale_, CurrentMaterial.HeightScale));
+        //    GLCall(glUniform1i(NormalMap_, CurrentMaterial.IsNormalMap));
+        //    GLCall(glUniform1i(HasInstance, CurrentMaterial.HasTexture));
+        //    GLCall(glUniform3f(AlbedoConstant, CurrentMaterial.AlbedoConstant.getX(), CurrentMaterial.AlbedoConstant.getY(), CurrentMaterial.AlbedoConstant.getZ()));
+        //    GLCall(glUniform1f(AoConstant, CurrentMaterial.AoConstant));
+        //    GLCall(glUniform1f(MetallicConstant, CurrentMaterial.MetallicConstant));
+        //    GLCall(glUniform1f(RoughnessConstant, CurrentMaterial.RoughnessConstant));
+        //    GLCall(glUniform3f(BaseReflectivity, CurrentMaterial.BaseReflectivity.getX(), CurrentMaterial.BaseReflectivity.getY(), CurrentMaterial.BaseReflectivity.getZ()));
 
-            BindMaterial(shdrpgm, CurrentMaterial.Name.data());
-        }
+        //    BindMaterial(shdrpgm, "None");
+        //}
+        //else
+        //{
+        //GLCall(glUniform3f(SurfaceColour_, CurrentMaterial.SurfaceColour.getX(), CurrentMaterial.SurfaceColour.getY(), CurrentMaterial.SurfaceColour.getZ()));
+        //GLCall(glUniform1i(NormalMap_, CurrentMaterial.IsNormalMap));
+        //GLCall(glUniform1f(HeightScale_, CurrentMaterial.HeightScale));
+        //GLCall(glUniform1i(HasInstance, CurrentMaterial.HasTexture));
+        //GLCall(glUniform3f(AlbedoConstant, CurrentMaterial.AlbedoConstant.getX(), CurrentMaterial.AlbedoConstant.getY(), CurrentMaterial.AlbedoConstant.getZ()));
+        //GLCall(glUniform1f(AoConstant, CurrentMaterial.AoConstant));
+        //GLCall(glUniform1f(MetallicConstant, CurrentMaterial.MetallicConstant));
+        //GLCall(glUniform1f(RoughnessConstant, CurrentMaterial.RoughnessConstant));
+        //GLCall(glUniform3f(BaseReflectivity, CurrentMaterial.BaseReflectivity.getX(), CurrentMaterial.BaseReflectivity.getY(), CurrentMaterial.BaseReflectivity.getZ()));
+        //BindMaterial(shdrpgm, CurrentMaterial.Name.data());
+        //}
     }
 
     void MaterialEditorSettings::ClearCurrentMaterial()

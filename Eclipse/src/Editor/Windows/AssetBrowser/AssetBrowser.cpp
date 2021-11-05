@@ -401,15 +401,14 @@ namespace Eclipse
 
                 if (ECGui::IsMouseDoubleClicked(0) && ECGui::IsItemClicked(0) && ECGui::IsItemHovered())
                 {
-                    const auto& path = dirEntry.path();
-                    auto relativePath = relative(path, "src//");
-                    std::string FolderName = relativePath.filename().string();
+                    size_t lastindex = fileNameString.find_last_of(".");
+                    std::string tempName = fileNameString.substr(0, lastindex);
 
                     auto* MaterialEditor = engine->editorManager->GetEditorWindow<MaterialEditorWindow>();
 
                     if (!MaterialEditor->IsVisible)
                     {
-
+                        engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial =*engine->gPBRManager->AllMaterialInstances[tempName];
                         MaterialEditor->IsVisible = true;
                     }
                 }

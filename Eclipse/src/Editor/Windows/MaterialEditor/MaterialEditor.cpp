@@ -214,11 +214,20 @@ namespace Eclipse
     {
         std::string MaterialName_ = engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.Name.data();
 
-        ImGui::Dummy(ImVec2(1, 2));
+        ImGui::Dummy(ImVec2(1, 5));
+        if (strcmp(MaterialName_.c_str(), "Default") != 0)
+        {
+            if (ECGui::ButtonBool("SetUp Blank Material", { ImGui::GetColumnWidth(), 25 }))
+            {
+                ColorPicker = ECVec3{ 1.0f };
+                engine->gPBRManager->gMaterialEditorSettings->ClearCurrentMaterial();
+                engine->gPBRManager->gMaterialEditorSettings->ClearTextureFields();
+            }
+        }
 
         if (engine->gPBRManager->AllMaterialInstances.find(MaterialName_) == engine->gPBRManager->AllMaterialInstances.end())
         {
-            ImGui::Dummy(ImVec2(1, 5));
+            ImGui::Dummy(ImVec2(1, 2));
 
             if (strcmp(MaterialName_.c_str(), "Default") != 0)
             {
@@ -237,7 +246,6 @@ namespace Eclipse
             engine->gPBRManager->gMaterialEditorSettings->ClearCurrentMaterial();
             engine->gPBRManager->gMaterialEditorSettings->ClearTextureFields();
         }
-
         ImGui::Dummy(ImVec2(1, 2));
 
         if (engine->gPBRManager->AllMaterialInstances.find(MaterialName_) != engine->gPBRManager->AllMaterialInstances.end())
@@ -268,9 +276,7 @@ namespace Eclipse
             }
         }
 
-        ImGui::Dummy(ImVec2(1, 5));
-
-        if ((strcmp(MaterialName_.c_str(), "Default") != 0) && (comboindex != 0))
+        if (strcmp(MaterialName_.c_str(), "Default") != 0)
         {
             if (ECGui::ButtonBool("Update Material", { ImGui::GetColumnWidth(), 25 }))
             {
