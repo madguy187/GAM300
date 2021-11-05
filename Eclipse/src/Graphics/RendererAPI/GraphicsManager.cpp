@@ -435,9 +435,12 @@ namespace Eclipse
 
     void Eclipse::GraphicsManager::FinalRender()
     {
-        if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
+        if (engine->IsScenePlaying() == false)
         {
-            engine->GridManager->DrawGrid(FrameBufferMode::FBM_SCENE);
+            if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
+            {
+                engine->GridManager->DrawGrid(FrameBufferMode::FBM_SCENE);
+            }
         }
 
         engine->gFrameBufferManager->PostProcess->UpdatePP();

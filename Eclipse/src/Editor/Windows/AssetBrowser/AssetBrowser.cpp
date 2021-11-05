@@ -411,6 +411,10 @@ namespace Eclipse
                         engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial =*engine->gPBRManager->AllMaterialInstances[tempName];
                         MaterialEditor->IsVisible = true;
                     }
+                    else
+                    {
+                        engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial = *engine->gPBRManager->AllMaterialInstances[tempName];
+                    }
                 }
 
                 engine->editorManager->DragAndDropInst_.StringPayloadSource("mat", relativePath.string());

@@ -45,8 +45,11 @@ namespace Eclipse
             DebugSpheres.RenderBoundingSpheres();
         }
 
-        LightIcons.RenderLights();
-        SpotLightIcons.RenderSpotLights();
+        if (engine->IsScenePlaying() == false)
+        {
+            LightIcons.RenderLights();
+            SpotLightIcons.RenderSpotLights();
+        }
     }
 
     void DebugManager::AddBoundingRegion(glm::mat4 model, CameraComponent& _camera, Entity EntityID)
