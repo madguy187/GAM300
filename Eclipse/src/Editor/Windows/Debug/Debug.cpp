@@ -18,6 +18,14 @@ namespace Eclipse
 
         SelectionList.push_back({ "Graphics", true });
         SelectionList.push_back({ "Input Manager", false });
+        SelectionList.push_back({ "Tags & Layers", false });
+
+        for (int i = 0; i < MAX_LAYER_SIZE; ++i)
+        {
+            std::string name;
+            name.reserve(256);
+            LayerList[i] = name;
+        }
 
         // Deserialize the map here into KeyMappings
         engine->InputManager->InputCompiler_.Load();
@@ -76,87 +84,15 @@ namespace Eclipse
 
         if (CurrentSelection == "Graphics")
         {
-            ECGui::CheckBoxBool("Draw Grid", &engine->GridManager->Visible, false);
-            ECGui::InsertSameLine();
-            ECGui::CheckBoxBool("PostProcess", &engine->GraphicsManager.PostProcess->AllowPostProcess, false);
-            ECGui::InsertSameLine();
-            ECGui::CheckBoxBool("Draw Normals", &engine->GraphicsManager.VisualizeNormalVectors, false);
-            ECGui::InsertSameLine();
-            ECGui::CheckBoxBool("Draw DebugShapes", &engine->gDebugDrawManager->Visible, false);
-
-            ECGui::CheckBoxBool("Draw Frustrum", &engine->gDebugManager.Visible, false);
-            ECGui::InsertSameLine();
-            ECGui::CheckBoxBool("Draw Sky", &engine->GraphicsManager.DrawSky, false);
-            ECGui::InsertSameLine();
-            ECGui::CheckBoxBool("Normal Mapx", &engine->GraphicsManager.EnableNormalMapping, false);
-            ECGui::InsertSameLine();
-            ECGui::CheckBoxBool("Environment Maps", &engine->GraphicsManager.EnableEnvironmentMapForAll, false);
-
-            ECGui::DrawTextWidget<const char*>("Gamma:", EMPTY_STRING);
-            ECGui::DrawSliderFloatWidget("Gamma", &engine->GraphicsManager.GammaCorrection, true, 0.5f, 2.5f);
-
-            ECGui::DrawTextWidget<const char*>("BackGroundColour:", EMPTY_STRING);
-            ECGui::DrawSliderFloat3Widget("BackGroundColour", &engine->GraphicsManager.BackGroundColour, true, 0.f, 1.0f);
-
-            ECGui::DrawTextWidget<const char*>("HDR Exposure:", EMPTY_STRING);
-            ECGui::DrawSliderFloatWidget("HDR Exposure", &engine->GraphicsManager.Exposure, true, 0.1f, 10.5f);
-
-            if (engine->GraphicsManager.PostProcess->AllowPostProcess)
-            {
-                std::vector<std::string> Methods = { "NONE" , "INVERSE" , "GREYSCALE" ,"KERNEL" , "BLUR" , "SOBEL"};
-                ComboListSettings settingsss = { "PostProcess Methods" };
-                static size_t comboindex = 0;
-                ECGui::DrawTextWidget<const char*>("PostProcess Types:", EMPTY_STRING);
-                ECGui::CreateComboList(settingsss, Methods, comboindex);
-                engine->GraphicsManager.PostProcess->PPType_ = static_cast<FrameBuffer::PostProcessType>(comboindex);
-            }
-
-            if (engine->GraphicsManager.VisualizeNormalVectors)
-            {
-                ECGui::DrawTextWidget<const char*>("Normals Length:", EMPTY_STRING);
-                ECGui::DrawSliderFloatWidget("Normals Length", &engine->GraphicsManager.Magnitude, true, 0.2f, 1.0f);
-            }
+            OnGraphicsUpdate();
         }
         else if (CurrentSelection == "Input Manager")
         {
-            ECGui::SetColumns(2, nullptr, false);
-            ECGui::SetColumnOffset(1, 140);
-
-            for (auto& pair : KeyMappings)
-            {
-                ECGui::DrawTextWidget<const char*>(pair.first.c_str(), EMPTY_STRING);
-                ECGui::NextColumn();
-
-                ECGui::DrawInputTextHintWidget(pair.first.c_str(), "Enter KeyCode",
-                    const_cast<char*>(pair.second.c_str()),
-                    256, true, ImGuiInputTextFlags_EnterReturnsTrue);
-
-                ECGui::InsertSameLine();
-
-                if (ECGui::ButtonBool(my_strcat("Remove", " ", pair.first).c_str()))
-                {
-                    ToBeRemoved = pair.first;
-                }
-
-                ECGui::NextColumn();
-            }
-
-            ECGui::InsertHorizontalLineSeperator();
-            AddInputController();
-
-            ECGui::InsertSameLine();
-
-            if (ECGui::ButtonBool("Save"))
-            {
-                engine->InputManager->InputCompiler_.ReceiveMapping(KeyMappings);
-                engine->InputManager->InputCompiler_.Write();
-            }
-
-            if (!ToBeRemoved.empty())
-            {
-                KeyMappings.erase(ToBeRemoved);
-                ToBeRemoved.clear();
-            }
+            OnInputUpdate();
+        }
+        else if (CurrentSelection == "Tags & Layers")
+        {
+            OnTagsAndLayersUpdate();
         }
     }
 
@@ -205,6 +141,115 @@ namespace Eclipse
                     ECGui::CloseCurrentPopup();
                 }
             }
+        }
+    }
+
+    void DebugWindow::OnGraphicsUpdate()
+    {
+        ECGui::CheckBoxBool("Draw Grid", &engine->GridManager->Visible, false);
+        ECGui::InsertSameLine();
+        ECGui::CheckBoxBool("PostProcess", &engine->GraphicsManager.PostProcess->AllowPostProcess, false);
+        ECGui::InsertSameLine();
+        ECGui::CheckBoxBool("Draw Normals", &engine->GraphicsManager.VisualizeNormalVectors, false);
+        ECGui::InsertSameLine();
+        ECGui::CheckBoxBool("Draw DebugShapes", &engine->gDebugDrawManager->Visible, false);
+
+        ECGui::CheckBoxBool("Draw Frustrum", &engine->gDebugManager.Visible, false);
+        ECGui::InsertSameLine();
+        ECGui::CheckBoxBool("Draw Sky", &engine->GraphicsManager.DrawSky, false);
+        ECGui::InsertSameLine();
+        ECGui::CheckBoxBool("Normal Mapx", &engine->GraphicsManager.EnableNormalMapping, false);
+        ECGui::InsertSameLine();
+        ECGui::CheckBoxBool("Environment Maps", &engine->GraphicsManager.EnableEnvironmentMapForAll, false);
+
+        ECGui::DrawTextWidget<const char*>("Gamma:", EMPTY_STRING);
+        ECGui::DrawSliderFloatWidget("Gamma", &engine->GraphicsManager.GammaCorrection, true, 0.5f, 2.5f);
+
+        ECGui::DrawTextWidget<const char*>("BackGroundColour:", EMPTY_STRING);
+        ECGui::DrawSliderFloat3Widget("BackGroundColour", &engine->GraphicsManager.BackGroundColour, true, 0.f, 1.0f);
+
+        ECGui::DrawTextWidget<const char*>("HDR Exposure:", EMPTY_STRING);
+        ECGui::DrawSliderFloatWidget("HDR Exposure", &engine->GraphicsManager.Exposure, true, 0.1f, 10.5f);
+
+        if (engine->GraphicsManager.PostProcess->AllowPostProcess)
+        {
+            std::vector<std::string> Methods = { "NONE" , "INVERSE" , "GREYSCALE" ,"KERNEL" , "BLUR" , "SOBEL" };
+            ComboListSettings settingsss = { "PostProcess Methods" };
+            static size_t comboindex = 0;
+            ECGui::DrawTextWidget<const char*>("PostProcess Types:", EMPTY_STRING);
+            ECGui::CreateComboList(settingsss, Methods, comboindex);
+            engine->GraphicsManager.PostProcess->PPType_ = static_cast<FrameBuffer::PostProcessType>(comboindex);
+        }
+
+        if (engine->GraphicsManager.VisualizeNormalVectors)
+        {
+            ECGui::DrawTextWidget<const char*>("Normals Length:", EMPTY_STRING);
+            ECGui::DrawSliderFloatWidget("Normals Length", &engine->GraphicsManager.Magnitude, true, 0.2f, 1.0f);
+        }
+    }
+
+    void DebugWindow::OnInputUpdate()
+    {
+        ECGui::SetColumns(2, nullptr, false);
+        ECGui::SetColumnOffset(1, 140);
+
+        for (auto& pair : KeyMappings)
+        {
+            ECGui::DrawTextWidget<const char*>(pair.first.c_str(), EMPTY_STRING);
+            ECGui::NextColumn();
+
+            ECGui::DrawInputTextHintWidget(pair.first.c_str(), "Enter KeyCode",
+                const_cast<char*>(pair.second.c_str()),
+                256, true, ImGuiInputTextFlags_EnterReturnsTrue);
+
+            ECGui::InsertSameLine();
+
+            if (ECGui::ButtonBool(my_strcat("Remove", " ", pair.first).c_str()))
+            {
+                ToBeRemoved = pair.first;
+            }
+
+            ECGui::NextColumn();
+        }
+
+        ECGui::InsertHorizontalLineSeperator();
+        AddInputController();
+
+        ECGui::InsertSameLine();
+
+        if (ECGui::ButtonBool("Save"))
+        {
+            engine->InputManager->InputCompiler_.ReceiveMapping(KeyMappings);
+            engine->InputManager->InputCompiler_.Write();
+        }
+
+        if (!ToBeRemoved.empty())
+        {
+            KeyMappings.erase(ToBeRemoved);
+            ToBeRemoved.clear();
+        }
+    }
+
+    void DebugWindow::OnTagsAndLayersUpdate()
+    {
+        if (ECGui::BeginTreeNode(TagsAndLayersHeaders[0]))
+        {
+            ECGui::SetColumns(2, nullptr, false);
+            ECGui::SetColumnOffset(1, 140);
+
+            for (auto& pair : LayerList)
+            {
+                ECGui::DrawTextWidget<const char*>(my_strcat("User Layer ", pair.first).c_str(), EMPTY_STRING);
+                ECGui::NextColumn();
+
+                ECGui::DrawInputTextHintWidget(lexical_cast<std::string>(pair.first).c_str(), "Enter Layer Name",
+                    const_cast<char*>(pair.second.c_str()),
+                    256, true, ImGuiInputTextFlags_EnterReturnsTrue);
+
+                ECGui::NextColumn();
+            }
+
+            ECGui::EndTreeNode();
         }
     }
 }

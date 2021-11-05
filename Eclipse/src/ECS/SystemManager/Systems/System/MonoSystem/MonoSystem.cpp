@@ -33,7 +33,10 @@ namespace Eclipse
 
 			for (auto& script : scriptCom.scriptList)
 			{
-				engine->mono.Update(&script);
+				if (engine->mono.fixUpdate)
+					engine->mono.FixedUpdate(&script);
+				else
+					engine->mono.Update(&script);
 			}
 		}
 

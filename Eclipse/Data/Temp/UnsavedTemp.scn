@@ -32,6 +32,7 @@
         <EntityComponent>
             <Tag value="Camera" />
             <Name value="Camera" />
+            <LayerIndex value="1" />
             <Child size="0" />
             <Parent size="0" />
             <IsAChild value="false" />
@@ -60,6 +61,7 @@
         <EntityComponent>
             <Tag value="DirectionalLight" />
             <Name value="DirectionalLight" />
+            <LayerIndex value="1" />
             <Child size="0" />
             <Parent size="0" />
             <IsAChild value="false" />

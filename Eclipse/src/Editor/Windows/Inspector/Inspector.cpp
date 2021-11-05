@@ -38,19 +38,38 @@ namespace Eclipse
             auto* mesheditor = engine->editorManager->GetEditorWindow<MeshEditorWindow>();
             Entity currEnt = mesheditor->IsVisible ? mesheditor->GetMeshID() : engine->editorManager->GetSelectedEntity();
             auto& entcom = engine->world.GetComponent<EntityComponent>(currEnt);
-            std::string entityName = entcom.Name + " " + std::to_string(currEnt);
+            // std::string entityName = entcom.Name + " " + std::to_string(currEnt);
 
-            ECGui::DrawInputTextWidget("EntityName", const_cast<char*>(entityName.c_str()),
+            /*ECGui::DrawInputTextWidget("EntityName", const_cast<char*>(entityName.c_str()),
                 entityName.size(), ImGuiInputTextFlags_ReadOnly);
+
+            ECGui::InsertHorizontalLineSeperator();*/
+
+            ECGui::PushItemWidth(WindowSize_.getX());
+
+            if (ECGui::DrawInputTextHintWidget("InputEntityName", "Enter Entity Name", EntNameInput,
+                256, true, ImGuiInputTextFlags_EnterReturnsTrue))
+            {
+                std::string oldName = entcom.Name;
+                entcom.Name = EntNameInput;
+                CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<std::string>{ oldName, entcom.Name });
+            }
+
+            ECGui::DrawTextWidget<const char*>("Tag ", EMPTY_STRING);
+            ECGui::InsertSameLine();
+            ECGui::DrawInputTextWidget("Tag", const_cast<char*>(lexical_cast_toStr(entcom.Tag).c_str()),
+                lexical_cast_toStr(entcom.Tag).size(), ImGuiInputTextFlags_ReadOnly, true);
+
+            ECGui::InsertSameLine();
 
             ECGui::InsertHorizontalLineSeperator();
 
             static ImGuiTextFilter CompFilter;
-            CompFilter.Draw();
+            CompFilter.Draw("Filter", 0.0f, "Component Filter");
 
-            ECGui::PushItemWidth(WindowSize_.getX());
+            // ECGui::PushItemWidth(WindowSize_.getX());
             ShowPrefebProperty(currEnt);
-            ShowEntityProperty("Tag", currEnt, CompFilter);
+            // ShowEntityProperty("Tag", currEnt, CompFilter);
             ShowTransformProperty("Transform", currEnt, CompFilter, mesheditor->IsVisible);
             ShowPointLightProperty("PointLight", currEnt, CompFilter);
             ShowSpotLightProperty("SpotLight", currEnt, CompFilter);
