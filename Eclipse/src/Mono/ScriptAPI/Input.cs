@@ -13,6 +13,6 @@ namespace Eclipse
         public extern static bool GetKey(KeyCode Key);
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        public extern static bool GetAxis(string Axis);
+        public extern static float GetAxis(string Axis);
     }
 }
