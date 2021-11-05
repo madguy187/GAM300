@@ -50,6 +50,8 @@ namespace Eclipse
             LightIcons.RenderLights();
             SpotLightIcons.RenderSpotLights();
         }
+
+        engine->MaterialManager.StencilBufferClear();
     }
 
     void DebugManager::AddBoundingRegion(glm::mat4 model, CameraComponent& _camera, Entity EntityID)
