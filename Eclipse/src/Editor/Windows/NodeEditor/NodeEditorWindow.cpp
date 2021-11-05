@@ -1,21 +1,6 @@
 #include "pch.h"
 #include "NodeEditorWindow.h"
 
-int Eclipse::NodeEditor::findNodePos(NodeEditor editor, int id)
-{
-    int pos = 0;
-    for (auto& it : editor.nodes)
-    {
-        if (it->nodeId == id)
-        {
-            return pos;
-        }
-        pos++;
-    }
-
-    return -1;
-}
-
 Eclipse::NodeEditorWindow::NodeEditorWindow()
 {
 }
@@ -35,8 +20,6 @@ void Eclipse::NodeEditorWindow::Init()
 
 void Eclipse::NodeEditorWindow::Unload()
 {
-    ImNodes::PopAttributeFlag();
-    ImNodes::EditorContextFree(sceneEditor.context);
 }
 
 void Eclipse::NodeEditorWindow::DrawImpl()
@@ -48,5 +31,6 @@ void Eclipse::NodeEditorWindow::DrawImpl()
 
 Eclipse::NodeEditorWindow::~NodeEditorWindow()
 {
-
+	ImNodes::PopAttributeFlag();
+	ImNodes::EditorContextFree(sceneEditor.context);
 }

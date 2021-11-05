@@ -15,6 +15,10 @@ namespace Eclipse
         {
             ECGui::DrawMainWindow<void()>(WindowName, std::bind(&MaterialEditorWindow::RunMainWindow, this));
             ECGui::DrawMainWindow<void()>("Material Settings", std::bind(&MaterialEditorWindow::RunMaterialSettings, this));
+
+            ImGui::Begin("Material BluePrint", &IsVisible);
+            MaterialEditor.DrawMaterialNodeEditor("Material BluePrint", MaterialEditor);
+            ImGui::End();
         }
     }
 
@@ -49,6 +53,7 @@ namespace Eclipse
         settings.Name = "MaterialEditorFrameBuffer";
         settings.Size = ImVec2{ mViewportSize.x, mViewportSize.y };
         ECGui::DrawChildWindow<void()>(settings, std::bind(&MaterialEditorWindow::RunFrameBuffer, this));
+
     }
 
     void MaterialEditorWindow::RunFrameBuffer()
@@ -190,6 +195,8 @@ namespace Eclipse
         ShowMaterialProperty("Material", CompFilter);
         ShowTransformProperty("Transform", CompFilter);
         Buttons();
+
+
     }
 
     void MaterialEditorWindow::CheckCurrentMaterial(size_t comboIndex)
