@@ -47,7 +47,7 @@ namespace Eclipse
         if (engine->GraphicsManager.CheckRender == true)
         {
             // Estiamtion which models are in our frustrum
-            const auto& RenderablesVsFrustrum = engine->gCullingManager->ReturnContacted();
+            //const auto& RenderablesVsFrustrum = engine->gCullingManager->ReturnContacted();
 
             /*************************************************************************
               Render Without Stencer
@@ -57,8 +57,12 @@ namespace Eclipse
             engine->GraphicsManager.RenderSky(FrameBufferMode::FBM_SCENE);
 
             // Basic Primitives Render Start =============================
-            for (auto const& entityID : RenderablesVsFrustrum)
+            for (auto const& entityID : mEntities)
             {
+                // Used somewhere else.
+                //if (entityID == engine->gPBRManager->gMaterialEditorSettings->InnerEntity || entityID == engine->gPBRManager->gMaterialEditorSettings->OuterEntity)
+                //    continue;
+
                 //If No Mesh Component, Do not Continue
                 if (!engine->world.CheckComponent<MeshComponent>(entityID))
                 {

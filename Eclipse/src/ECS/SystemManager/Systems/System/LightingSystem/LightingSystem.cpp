@@ -33,9 +33,9 @@ namespace Eclipse
         {
             for (auto const& LightEntityID : mEntities)
             {
-                auto& Light = engine->world.GetComponent<LightComponent>(LightEntityID);
-
-                Light.Render = true; // engine->gCullingManager->ToRenderOrNot(LightEntityID);
+                //auto& Light = engine->world.GetComponent<LightComponent>(LightEntityID);
+                //
+                //Light.Render = true; // engine->gCullingManager->ToRenderOrNot(LightEntityID);
 
                 if (engine->world.CheckComponent<DirectionalLightComponent>(LightEntityID))
                 {

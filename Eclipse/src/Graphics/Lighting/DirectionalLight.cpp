@@ -27,28 +27,28 @@ namespace Eclipse
     {
         engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
-        auto& shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
-        shdrpgm.Use();
-
-        glBindVertexArray(Graphics::models["Sphere"]->GetVaoID());
-
+        //auto& shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
+        //shdrpgm.Use();
+        //
+        //glBindVertexArray(Graphics::models["Sphere"]->GetVaoID());
+        //
         glEnable(GL_BLEND);
         glPolygonMode(GL_FRONT_AND_BACK, mode);
         glDisable(GL_CULL_FACE);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        //
+        //CheckUniformLoc(&shdrpgm, *in, IndexID, DirectionalLightcounter, EntityId);
+        //
+        //auto& Light = engine->world.GetComponent<LightComponent>(EntityId);
 
-        CheckUniformLoc(&shdrpgm, *in, IndexID, DirectionalLightcounter, EntityId);
+        //if (in->visible && Light.Render)
+        //{
+        //    GLCall(glDrawElements(Graphics::models["Sphere"]->GetPrimitiveType(),
+        //        Graphics::models["Sphere"]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
+        //}
 
-        auto& Light = engine->world.GetComponent<LightComponent>(EntityId);
-
-        if (in->visible && Light.Render)
-        {
-            GLCall(glDrawElements(Graphics::models["Sphere"]->GetPrimitiveType(),
-                Graphics::models["Sphere"]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
-        }
-
-        glBindVertexArray(0);
-        shdrpgm.UnUse();
+        //glBindVertexArray(0);
+        //shdrpgm.UnUse();
 
         CheckUniformPBR(IndexID, EntityId);
     }

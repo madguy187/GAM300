@@ -182,7 +182,7 @@ void main()
     
     // Cook-Torrance BRDF
     float NDF , G;
-
+    
     if(HasInstance == 1)
     {
         NDF = DistributionGGX(N, H, roughness);   
@@ -193,7 +193,7 @@ void main()
         NDF = DistributionGGX(N, H, RoughnessConstant);   
         G   = GeometrySmith(N, V, L, RoughnessConstant);            
     }
-
+    
     vec3 F    = fresnelSchlick(max(dot(H, V), 0.0), F0);
        
     vec3 numerator    = NDF * G * F; 
@@ -202,7 +202,7 @@ void main()
     
     vec3 kS = F;
     vec3 kD = vec3(1.0) - kS;
-
+    
     if(HasInstance == 1)
     {
         kD *= 1.0 - metallic;	 

@@ -919,6 +919,36 @@ namespace Eclipse
 
         if (materialInput.test(0))
         {
+            _transform.position += glm::normalize(glm::cross(camera.eyeFront, camera.upVec)) * cameraSpd;
+        }
+
+        if (materialInput.test(1))
+        {
+            _transform.position -= glm::normalize(glm::cross(camera.eyeFront, camera.upVec)) * cameraSpd;
+        }
+
+        if (materialInput.test(2))
+        {
+            _transform.position += camera.eyeFront * cameraSpd;
+        }
+
+        if (materialInput.test(3))
+        {
+            _transform.position -= camera.eyeFront * cameraSpd;
+        }
+
+        if (materialInput.test(10))
+        {
+            _transform.position += camera.upVec * cameraSpd;
+        }
+
+        if (materialInput.test(11))
+        {
+            _transform.position -= camera.upVec * cameraSpd;
+        }
+
+        if (materialInput.test(8))
+        {
             if (camera.fov < 2.0f)
             {
                 camera.fov = 1.0f;
@@ -929,7 +959,7 @@ namespace Eclipse
             }
         }
 
-        if (materialInput.test(1))
+        if (materialInput.test(9))
         {
             if (camera.fov > 179.0f)
             {
@@ -938,6 +968,54 @@ namespace Eclipse
             else
             {
                 camera.fov += cameraSpd;
+            }
+        }
+
+        if (materialInput.test(6))
+        {
+            if (_transform.rotation.y < -90.0f)
+            {
+                _transform.rotation.y = 270.0f;
+            }
+            else
+            {
+                _transform.rotation.y -= cameraSpd;
+            }
+        }
+
+        if (materialInput.test(7))
+        {
+            if (_transform.rotation.y > 270.0f)
+            {
+                _transform.rotation.y = -90.0f;
+            }
+            else
+            {
+                _transform.rotation.y += cameraSpd;
+            }
+        }
+
+        if (materialInput.test(4))
+        {
+            if (_transform.rotation.x > 89.0f)
+            {
+                _transform.rotation.x = 89.0f;
+            }
+            else
+            {
+                _transform.rotation.x += cameraSpd;
+            }
+        }
+
+        if (materialInput.test(5))
+        {
+            if (_transform.rotation.x < -89.0f)
+            {
+                _transform.rotation.x = -89.0f;
+            }
+            else
+            {
+                _transform.rotation.x -= cameraSpd;
             }
         }
     }
@@ -975,7 +1053,7 @@ namespace Eclipse
         return meshInput;
     }
 
-    std::bitset<2>& CameraManager::GetMaterialInput()
+    std::bitset<12>& CameraManager::GetMaterialInput()
     {
         return materialInput;
     }

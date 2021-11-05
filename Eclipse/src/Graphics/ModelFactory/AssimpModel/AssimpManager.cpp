@@ -201,7 +201,7 @@ namespace Eclipse
         auto shdrpgm = Graphics::shaderpgms["PBRShader"];
         shdrpgm.Use();
 
-        gEnvironmentMap.CheckUniform(ModelMesh, _camera);
+        //gEnvironmentMap.CheckUniform(ModelMesh, _camera);
         ChecModelkUniforms(shdrpgm, _camera, ID);
         CheckUniforms(shdrpgm, ID, ModelMesh, _camera);
 
@@ -271,6 +271,11 @@ namespace Eclipse
                 AllMeshNames.push_back(in);
             }
         }
+    }
+
+    void AssimpModelManager::RemoveSubMesh(std::string in)
+    {
+        AllMeshNames.erase(std::remove(AllMeshNames.begin(), AllMeshNames.end(), in), AllMeshNames.end());
     }
 
     void AssimpModelManager::InsertGeometry(const std::string& name, Mesh& NewMesh)
@@ -683,7 +688,7 @@ namespace Eclipse
                             break;
                         }
 
-                        GLuint IsNormalMap_ = shader.GetLocation("IsNormalMap");
+                        GLuint IsNormalMap_ = shader.GetLocation("IsNormalMap"); //test
                         glUniform1i(IsNormalMap_, Material.IsNormalMap);
 
                         engine->gPBRManager->UnBindMetallicTexture(shader);
