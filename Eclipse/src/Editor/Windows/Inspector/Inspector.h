@@ -78,6 +78,7 @@ namespace Eclipse
 
 		void OnCollisionMatrixUpdate(Entity ID);
 		void UpdateCollisionLayerTracker(DebugWindow* dw, int ClickedIndex);
+		void SetCollisionLayerTracker(const std::unordered_map<int, std::string>& layerlist);
 		void SetScriptBitset(ScriptComponent& scriptCom);
 		void OnLayerListUpdate(EntityComponent& entcom);
 		void SetCurrentEntityName(const char* name);

@@ -1845,6 +1845,22 @@ namespace Eclipse
         }
     }
 
+    void InspectorWindow::SetCollisionLayerTracker(const std::unordered_map<int, std::string>& layerlist)
+    {
+        for (const auto& [key, val] : layerlist)
+        {
+            if (!strcmp(val.c_str(), EMPTY_STRING)) continue;
+
+            if (CollisionLayerChecker.Current.IndexActiveList.find(key) == CollisionLayerChecker.Current.IndexActiveList.end())
+            {
+                if (CollisionLayerChecker.Current.IsEverything)
+                    CollisionLayerChecker.Current.IndexActiveList[key] = true;
+                else
+                    CollisionLayerChecker.Current.IndexActiveList[key] = false;
+            }
+        }
+    }
+
     void InspectorWindow::SetScriptBitset(ScriptComponent& scriptCom)
     {
     }

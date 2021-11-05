@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Debug.h"
 #include "../Scene/SceneView.h"
+#include "../Inspector/Inspector.h"
 
 namespace Eclipse
 {
@@ -277,6 +278,12 @@ namespace Eclipse
                     LayerListSize++;
 
                 ECGui::NextColumn();
+            }
+
+            if (ECGui::ButtonBool("Save"))
+            {
+                auto* insp = engine->editorManager->GetEditorWindow<InspectorWindow>();
+                insp->SetCollisionLayerTracker(LayerList);
             }
 
             ECGui::EndTreeNode();
