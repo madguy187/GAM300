@@ -68,7 +68,7 @@
         </EntityComponent>
         <LightComponent />
         <TransformComponent>
-            <position x="0" y="150" z="0" />
+            <position x="0" y="150" z="150" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>

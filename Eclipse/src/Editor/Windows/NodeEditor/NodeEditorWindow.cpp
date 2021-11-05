@@ -35,8 +35,7 @@ void Eclipse::NodeEditorWindow::Init()
 
 void Eclipse::NodeEditorWindow::Unload()
 {
-    ImNodes::PopAttributeFlag();
-    ImNodes::EditorContextFree(sceneEditor.context);
+
 }
 
 void Eclipse::NodeEditorWindow::DrawImpl()
@@ -48,5 +47,6 @@ void Eclipse::NodeEditorWindow::DrawImpl()
 
 Eclipse::NodeEditorWindow::~NodeEditorWindow()
 {
-
+    ImNodes::PopAttributeFlag();
+    ImNodes::EditorContextFree(sceneEditor.context);
 }

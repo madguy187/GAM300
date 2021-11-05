@@ -313,6 +313,73 @@ namespace Eclipse
 		}
 	}
 
+	void PrefabManager::CompareHierarchy(World& compareSampleWorld, const Entity& compareSample, World& compareTargetWorld,
+		const Entity& compareTarget, CompareMap_Hierarchy& hierMap, CompareMap_NewChild& newChildMap)
+	{
+		//First, put the base into the map
+		hierMap[compareTarget] = compareSample;
+		
+		auto& sampleEntComp = compareSampleWorld.GetComponent<EntityComponent>(compareSample);
+		auto& targetEntComp = compareTargetWorld.GetComponent<EntityComponent>(compareTarget);
+
+		std::vector<Entity> newChildren;
+
+		for (auto& sampleChild : sampleEntComp.Child)
+		{
+			bool isFound = false;
+			auto& sampleChildPrefabID = compareSampleWorld.GetComponent<PrefabComponent>(sampleChild).PrefabID;
+			
+			for (auto& targetChild : targetEntComp.Child)
+			{
+				auto& targetChildPrefabID = compareTargetWorld.GetComponent<PrefabComponent>(targetChild).PrefabID;
+
+				if (sampleChildPrefabID == targetChildPrefabID)
+				{
+					CompareHierarchy(compareSampleWorld, sampleChild, compareTargetWorld, targetChild, hierMap, newChildMap);
+					isFound = true;
+					break;
+				}
+			}
+
+			if (!isFound)
+			{
+				newChildren.push_back(sampleChild);
+			}
+		}
+
+		if (newChildren.size())
+		{
+			newChildMap[compareTarget] = newChildren;
+		}
+	}
+
+	void PrefabManager::print(CompareMap_Hierarchy& hierMap, CompareMap_NewChild& newChildMap)
+	{
+		std::cout << "Hierarchy Map" << std::endl;
+		std::cout << "OldPrefab\tNewPrefab" << std::endl;
+		for (auto& pair : hierMap)
+		{
+			std::cout << pair.first << "\t" << pair.second << std::endl;
+		}
+		std::cout << "End" << std::endl;
+		std::cout << std::endl;
+		std::cout << "New Children Map" << std::endl;
+
+		std::cout << "Hierarchy Map" << std::endl;
+		std::cout << "OldPrefab_Children" << std::endl;
+		for (auto& pair : newChildMap)
+		{
+			std::cout << pair.first << ": ";
+			for (auto& ent : pair.second)
+			{
+				std::cout << ent << ", ";
+			}
+			std::cout << std::endl;
+		}
+		std::cout << "End" << std::endl;
+		std::cout << std::endl;
+	}
+
 	//Create object using prefab, by passing in the prefab data.
 	//Currently 
 	Entity PrefabManager::CreatePrefabInstance(const char* path)
@@ -506,6 +573,12 @@ namespace Eclipse
 		{
 			return;
 		}
+
+		CompareMap_Hierarchy hierMap;
+		CompareMap_NewChild newChildMap;
+
+		CompareHierarchy(w, ent, prefabW, prefabOwner, hierMap, newChildMap);
+		print(hierMap, newChildMap);
 
 		for (auto entity : changingEntities)
 		{

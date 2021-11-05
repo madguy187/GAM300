@@ -8,6 +8,8 @@ namespace Eclipse
 		std::set<EUUID> PrefabIDSet;
 		std::unordered_map<EUUID, Entity> mapPIDToEID;
 		std::unordered_map<std::string, EUUID> mapPathToID;
+		using CompareMap_NewChild = std::unordered_map<Entity, std::vector<Entity>>;
+		using CompareMap_Hierarchy = std::unordered_map<Entity, Entity>;
 
 		using PrefabUseList = ComponentTypeList<
 			CameraComponent,
@@ -166,6 +168,10 @@ namespace Eclipse
 
 		void RecursiveCreatePrefabInstances(const Entity& childEnt, const Entity& parentEnt);
 
+		void CompareHierarchy(World& compareSampleWorld, const Entity& compSample, World& compareTargetWorld, 
+			const Entity& compTarget, CompareMap_Hierarchy& hierMap, CompareMap_NewChild& newChildMap);
+
+		void print(CompareMap_Hierarchy& hierMap, CompareMap_NewChild& newChildMap);
 	public:
 		static const std::string PrefabPath;
 
