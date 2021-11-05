@@ -255,6 +255,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Editor\Windows\NodeEditor\ImNodes\imnodes.h" />
     <ClInclude Include="src\Editor\Windows\NodeEditor\ImNodes\imnodes_internal.h" />
     <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditor.h" />
+    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorWindow.h" />
     <ClInclude Include="src\Editor\Windows\Profiler\Profiler.h" />
     <ClInclude Include="src\Editor\Windows\Scene\SceneView.h" />
     <ClInclude Include="src\Editor\Windows\SwitchViews\BaseSwitchView.h" />
@@ -420,7 +421,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Editor\Windows\MaterialEditor\MaterialEditor.cpp" />
     <ClCompile Include="src\Editor\Windows\MeshEditor\MeshEditor.cpp" />
     <ClCompile Include="src\Editor\Windows\NodeEditor\ImNodes\imnodes.cpp" />
-    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditor.cpp" />
+    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorWindow.cpp" />
     <ClCompile Include="src\Editor\Windows\Profiler\Profiler.cpp" />
     <ClCompile Include="src\Editor\Windows\Scene\SceneView.cpp" />
     <ClCompile Include="src\Editor\Windows\SwitchViews\BaseSwitchView.cpp" />

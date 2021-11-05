@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "NodeEditor.h"
+#include "NodeEditorWindow.h"
 
 int Eclipse::NodeEditor::findNodePos(NodeEditor editor, int id)
 {
@@ -140,7 +140,7 @@ void Eclipse::NodeEditor::DrawNodeEditor(const char* graphName, NodeEditor& edit
                     }
                 }*/
 
-                LinkOutToInNode<NodeEditor::Node>(editor.nodes[pos], editor.nodes[pos2], true);
+                LinkNodes<NodeEditor::Node>(editor.nodes[pos], editor.nodes[pos2], true);
             }
             
 
@@ -224,6 +224,7 @@ void Eclipse::NodeEditorWindow::Update()
 
 void Eclipse::NodeEditorWindow::Init()
 {
+    IsVisible = false;
 	WindowName = "NodeEditor " ICON_MDI_FILE_IMAGE;
 }
 

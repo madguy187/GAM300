@@ -17,7 +17,7 @@
 #include "Editor/Windows/SwitchViews/LeftSwitchViewWindow.h"
 #include "Editor/Windows/SwitchViews/RightSwitchViewWindow.h"
 #include "Editor/Windows/Header/HeaderWindow.h"
-#include "Editor/Windows/NodeEditor/NodeEditor.h"
+#include "Editor/Windows/NodeEditor/NodeEditorWindow.h"
 #include "Editor/Windows/MeshEditor/MeshEditor.h"
 #include "Editor/Windows/MaterialEditor/MaterialEditor.h"
 
@@ -48,7 +48,7 @@ namespace Eclipse
 		AddWindow<LoggerWindow>("Log " ICON_MDI_POST);
 		AddWindow<DebugWindow>("Project Settings " ICON_MDI_ACCOUNT_COG);
 		AddWindow<HeaderWindow>("Header " ICON_MDI_PAGE_LAYOUT_HEADER);
-		AddWindow<NodeEditorWindow>("testtt " ICON_MDI_PAGE_LAYOUT_HEADER);
+		AddWindow<NodeEditorWindow>("Scene BluePrint " ICON_MDI_PAGE_LAYOUT_HEADER);
 		AddWindow<MeshEditorWindow>("Mesh Editor");
 		AddWindow<MaterialEditorWindow>("Material Editor");
 

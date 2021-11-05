@@ -28,37 +28,20 @@ namespace Eclipse
 
 
 			Node(NodeEditor& data)
-			: res(data), nodeId(data.generatedId()){}
+				: res(data), nodeId(data.generatedId()) {}
 
 			virtual ~Node() {}
 			virtual NodeType getType() const = 0;
-
-			//NodeInput getInput(unsigned char input_idx)
-			//{
-			//	for (const Link& link : res.links)
-			//	{
-			//		if (link.toNode() != nodeId) continue;
-			//		//if (link.toPin() != input_idx) continue;
-
-			//		NodeInput ressource;
-			//		ressource.outputId = link.fromPin();
-			//		ressource.node = res.getNodeByID(link.fromNode());
-			//		return ressource;
-			//	}
-
-			//	return {};
-			//}
 
 			void beginInput(ImNodesPinShape pinShape = 1)
 			{
 				int bitshift = (5 << 16);
 				int temp = nodeId ^ (5 << 16);
 				ImNodes::BeginInputAttribute(temp, pinShape);
-				//++inputCounter;
 			}
 
-			static void endInput() 
-			{ 
+			static void endInput()
+			{
 				ImNodes::EndInputAttribute();
 			}
 
@@ -67,11 +50,10 @@ namespace Eclipse
 				int bitshift = (5 << 13);
 				int temp = nodeId ^ (5 << 13);
 				ImNodes::BeginOutputAttribute(temp, pinShape);
-				//++outputCounter;
 			}
 
-			static void endOutput() 
-			{ 
+			static void endOutput()
+			{
 				ImNodes::EndOutputAttribute();
 			}
 
@@ -98,8 +80,8 @@ namespace Eclipse
 		};
 		struct EnitityNode : public Node
 		{
-			EnitityNode(NodeEditor& res,Entity id)
-			: Node(res),ID(id){}
+			EnitityNode(NodeEditor& res, Entity id)
+				: Node(res), ID(id) {}
 
 			~EnitityNode() {};
 
@@ -132,7 +114,7 @@ namespace Eclipse
 		};
 		struct TransformNode : public Node
 		{
-			TransformNode(NodeEditor& res) : Node(res){}
+			TransformNode(NodeEditor& res) : Node(res) {}
 
 			NodeType getType() const override { return NodeType::TRANSFORM; }
 
@@ -196,12 +178,6 @@ namespace Eclipse
 		{
 			int linkId;
 			int startPoint, endPoint;
-
-			unsigned short toNode() const { return endPoint & 0xffFF; }
-			unsigned short fromNode() const { return startPoint & 0xffFF; }
-			
-			unsigned char toPin() const { return (endPoint >> 16) & 0xff; }
-			unsigned char fromPin() const { return (startPoint >> 16) & 0xff; }
 		};
 
 		Node* addNode(Node::NodeType type)
@@ -211,8 +187,8 @@ namespace Eclipse
 			switch (type)
 			{
 			case Node::NodeType::TRANSFORM:
-					node = std::make_shared < TransformNode>(*this);
-					break;
+				node = std::make_shared < TransformNode>(*this);
+				break;
 			}
 
 			nodes.push_back(node);
@@ -223,7 +199,7 @@ namespace Eclipse
 		Node* addEntityNode(Entity id)
 		{
 			std::shared_ptr<Node> node;
-			node = std::make_shared <EnitityNode>(*this,id);
+			node = std::make_shared <EnitityNode>(*this, id);
 			nodes.push_back(node);
 			return nodes.back().get();
 		}
@@ -250,87 +226,4 @@ namespace Eclipse
 		void LinkNodes(const std::shared_ptr<T>& lhsNode,
 			const std::shared_ptr<T>& rhsNode, bool IsLinked);
 	};
-
-	class NodeEditorWindow : public ECGuiWindow
-	{
-		bool initialized= false;
-		NodeEditor sceneEditor;
-	public :
-
-		NodeEditorWindow();
-		void Update() override;
-		void Init() override;
-		void Unload() override;
-		void DrawImpl();
-		~NodeEditorWindow();
-
-
-	};
-
-
-	//template<typename T>
-	//void NodeEditor::CompareCast(std::shared_ptr<T>& lhsNode, std::shared_ptr<T>& rhsNode)
-	//{
-	//	NodeEditor::Node::NodeType type1 = lhsNode->getType();
-	//	NodeEditor::Node::NodeType type2 = rhsNode->getType();
-	//	const bool linked = type1 != type2;
-
-	//	if (linked)
-	//	{
-	//		// Output Nodes
-	//		for (int index = static_cast<int>(NodeEditor::Node::NodeType::ENTITY); 
-	//			index != static_cast<int>(NodeEditor::Node::NodeType::TRANSFORM); ++index)
-	//		{
-	//			NodeEditor::Node::NodeType Out_NT = static_cast<NodeEditor::Node::NodeType>(index);
-	//			
-	//			if (type1 == Out_NT)
-	//			{
-	//				// Input nodes
-	//				for (int index = static_cast<int>(NodeEditor::Node::NodeType::TRANSFORM);
-	//					index != static_cast<int>(NodeEditor::Node::NodeType::COUNT); ++index)
-	//				{
-	//					NodeEditor::Node::NodeType In_NT = static_cast<NodeEditor::Node::NodeType>(index);
-
-	//					if (type2 == In_NT)
-	//					{
-	//						// DynamicCastNodes<T>(In_NT, rhsNode)->ID = DynamicCastNodes<T>(Out_NT, lhsNode)->ID;
-	//						break;
-	//					}
-	//				}
-
-	//				break;
-	//			}
-	//		}
-	//	}
-	//}
-
-	template <typename T>
-	inline void NodeEditor::LinkNodes(const std::shared_ptr<T>& lhsNode,
-		const std::shared_ptr<T>& rhsNode, bool IsLinked)
-	{
-		switch (lhsNode->getType())
-		{
-		case NodeEditor::Node::NodeType::ENTITY:
-		{
-			auto outPtr = std::dynamic_pointer_cast<EnitityNode>(lhsNode);
-
-			switch (rhsNode->getType())
-			{
-			case NodeEditor::Node::NodeType::TRANSFORM:
-				if (IsLinked)
-					std::dynamic_pointer_cast<TransformNode>(rhsNode)->ID = outPtr->ID;
-				else
-					std::dynamic_pointer_cast<TransformNode>(rhsNode)->factoryReset();
-				break;
-			default:
-				break;
-			}
-
-			break;
-		}
-		default:
-			break;
-		}
-	}
-}
-
+};

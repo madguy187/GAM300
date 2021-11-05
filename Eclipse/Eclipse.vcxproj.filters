@@ -552,7 +552,7 @@
     <ClInclude Include="src\Editor\Windows\NodeEditor\ImNodes\imnodes_internal.h">
       <Filter>Editor\Windows\NodeEditor\ImNodes</Filter>
     </ClInclude>
-    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditor.h">
+    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorWindow.h">
       <Filter>Editor\Windows\NodeEditor</Filter>
     </ClInclude>
     <ClInclude Include="src\Editor\Windows\Profiler\Profiler.h">
@@ -908,6 +908,7 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1042,7 +1043,7 @@
     <ClCompile Include="src\Editor\Windows\NodeEditor\ImNodes\imnodes.cpp">
       <Filter>Editor\Windows\NodeEditor\ImNodes</Filter>
     </ClCompile>
-    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditor.cpp">
+    <ClCompile Include="src\Editor\Windows\NodeEditor\NodeEditorWindow.cpp">
       <Filter>Editor\Windows\NodeEditor</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Windows\Profiler\Profiler.cpp">
