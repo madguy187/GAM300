@@ -4,6 +4,11 @@
 
 namespace Eclipse
 {
+	static const char* TagsAndLayersHeaders[] =
+	{
+		"Layers"
+	};
+
 	struct sSelection
 	{
 		std::string name{};
@@ -23,6 +28,12 @@ namespace Eclipse
 		void UpdateSelectionTrackerID(sSelection& s, int index);
 		void AddInputController();
 		void ShowInputList();
+
+		void OnGraphicsUpdate();
+		void OnInputUpdate();
+		void OnTagsAndLayersUpdate();
+
+
 	private:
 		ECVec2 WindowSize{ 0.0f, 0.0f };
 		std::string CurrentSelection{ "Graphics" };
@@ -30,5 +41,6 @@ namespace Eclipse
 		int PreviousIndex{ 0 };
 		std::vector<sSelection> SelectionList;
 		std::map<std::string, std::string> KeyMappings;
+		std::unordered_map<int, std::string> LayerList;
 	};
 }

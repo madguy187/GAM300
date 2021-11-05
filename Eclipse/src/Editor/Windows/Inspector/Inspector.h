@@ -57,10 +57,14 @@ namespace Eclipse
 		void ComponentRegistry(const char* CompName, Entity ID,
 			const std::string EntityName, EditComponent method);
 
+		void SetCurrentEntityName(const char* name);
+		void ClearEntityName();
+
 		static constexpr unsigned int str2int(const char* str, int h = 0);
 	private:
 		ECVec2 WindowSize_{};
 		bool IsRemovingScripts{ false };
+		char EntNameInput[256] = { 0 };
 	};
 
 	template <typename TComponents>
@@ -79,6 +83,16 @@ namespace Eclipse
 		}
 
 		ImGui::CloseCurrentPopup();
+	}
+
+	inline void InspectorWindow::SetCurrentEntityName(const char* name)
+	{
+		strcpy(EntNameInput, name);
+	}
+
+	inline void InspectorWindow::ClearEntityName()
+	{
+		memset(EntNameInput, 0, 255);
 	}
 
 	constexpr unsigned int InspectorWindow::str2int(const char* str, int h)

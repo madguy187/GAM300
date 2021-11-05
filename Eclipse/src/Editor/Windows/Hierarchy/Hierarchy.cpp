@@ -4,6 +4,8 @@
 #include "ECS/ComponentManager/Components/TransformComponent.h"
 #include "ECS/ComponentManager/Components/ParentComponent.h"
 #include "ECS/ComponentManager/Components/ChildComponent.h"
+#include "../Inspector/Inspector.h"
+
 namespace Eclipse
 {
     void HierarchyWindow::Update()
@@ -383,10 +385,12 @@ namespace Eclipse
         if (engine->world.CheckComponent<MaterialComponent>(ID))
             engine->MaterialManager.HighlightClick(ID);
 
-        auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
-
         if (ID != EntTracker_.CurrEnt_.index)
         {
+            auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
+            auto* insp = engine->editorManager->GetEditorWindow<InspectorWindow>();
+            insp->ClearEntityName();
+
             if (engine->world.CheckComponent<EntityComponent>(EntTracker_.CurrEnt_.index))
             {
                 auto& prevEntCom = engine->world.GetComponent<EntityComponent>(EntTracker_.CurrEnt_.index);
@@ -442,6 +446,7 @@ namespace Eclipse
             EntTracker_.CurrEnt_.index = ID;
             entCom.IsActive = true;
             engine->gPicker.SetCurrentCollisionID(ID);
+            insp->SetCurrentEntityName(entCom.Name.c_str());
         }
     }
 

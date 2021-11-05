@@ -104,6 +104,7 @@ namespace Eclipse
     {
         ADD_MEMBER(Tag);
         ADD_MEMBER(Name);
+        ADD_MEMBER(LayerIndex);
         ADD_MEMBER(Child);
         ADD_MEMBER(Parent);
         ADD_MEMBER(IsAChild);
