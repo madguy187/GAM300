@@ -49,6 +49,10 @@ namespace Eclipse
             m_frameBuffer->Resize(static_cast<unsigned>(viewportPanelSize.x), static_cast<unsigned>(viewportPanelSize.y), FrameBufferMode::FBM_GAME);
             mViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
             engine->gFrameBufferManager->UpdateAspectRatio(FrameBufferMode::FBM_GAME, mViewportSize);
+
+            // Darren Was here , i need to treat this new FBO same as GAMEVIEW 
+            //engine->gFrameBufferManager->FrameBufferContainer[FrameBufferMode::FBM_GAME_SOBEL]->Resize(static_cast<unsigned>(viewportPanelSize.x), static_cast<unsigned>(viewportPanelSize.y), FrameBufferMode::FBM_GAME_SOBEL);
+            //engine->gFrameBufferManager->UpdateAspectRatio(FrameBufferMode::FBM_GAME_SOBEL, mViewportSize);
         }
 
         ChildSettings settings;

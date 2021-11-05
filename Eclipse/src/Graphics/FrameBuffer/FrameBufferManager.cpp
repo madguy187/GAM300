@@ -20,6 +20,9 @@ namespace Eclipse
         // PostProcess
         PostProcess = std::make_unique<FrameBuffer>();
         PostProcess->CreatePostProcessFramebuffer();
+
+        // Create additional Buffer For Game View
+        CreateFBO(1270, 593, FrameBufferMode::FBM_GAME_SOBEL);
     }
 
     void FrameBufferManager::CreateFBO(unsigned int width_, unsigned int height_, FrameBufferMode in)

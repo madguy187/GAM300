@@ -209,7 +209,7 @@ namespace Eclipse
 
             glBindVertexArray(rectVAO);
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SCENE));
+            glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_GAME_SOBEL));
             glDrawArrays(GL_TRIANGLES, 0, 6);
         }
     }
@@ -278,6 +278,10 @@ namespace Eclipse
 
         case FrameBufferMode::FBM_MESHEDITOR:
             os << "MESH_EDITOR FrameBuffer";
+            break;
+
+        case FrameBufferMode::FBM_GAME_SOBEL:
+            os << "Game View For Sobel";
             break;
         }
 

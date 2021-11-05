@@ -197,6 +197,7 @@ enum class FrameBufferMode
     FBM_RIGHT = 6,
     FBM_MATERIALEDITOR = 7,
     FBM_MESHEDITOR = 8,
+    FBM_GAME_SOBEL = 9,
     MAXCOUNT
 };
 
