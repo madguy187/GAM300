@@ -1,11 +1,13 @@
 #pragma once
 
 #include "../Interface/ECGuiWindow.h"
-
+#include "../NodeEditor/NodeEditor.h"
 namespace Eclipse
 {
 	class MaterialEditorWindow final : public ECGuiWindow
 	{
+		MaterialNode MaterialEditor;
+
 	public:
 		void Update() override;
 		void Init() override;
