@@ -255,7 +255,12 @@ namespace Eclipse
 		inline bool CompareComponentData(const ParentComponent& lhs, const ParentComponent& rhs)
 		{
 			bool result = true;
-			result = (lhs.model == rhs.model);
+			return result;
+		}
+		
+		inline bool CompareComponentData(const PrefabComponent& lhs, const PrefabComponent& rhs)
+		{
+			bool result = true;
 			return result;
 		}
 
