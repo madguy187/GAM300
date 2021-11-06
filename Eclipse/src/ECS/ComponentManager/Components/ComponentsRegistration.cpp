@@ -20,6 +20,7 @@
 #include "ScriptComponent.h"
 #include "ChildComponent.h"
 #include "ParentComponent.h"
+#include "NavMeshVolumeComponent.h"
 
 namespace Eclipse
 {
@@ -223,7 +224,7 @@ namespace Eclipse
 
     DEFINE_META(TextureComponent)
     {
-    	  ADD_MEMBER(textureRef);
+        ADD_MEMBER(textureRef);
     }
 
     DEFINE_META(TransformComponent)
@@ -240,7 +241,7 @@ namespace Eclipse
         ADD_MEMBER(CompChanges);
         ADD_MEMBER(PrefabID);
     }
-    
+
     DEFINE_META(ChildComponent)
     {
         ADD_MEMBER(parentIndex);
@@ -253,6 +254,16 @@ namespace Eclipse
     {
         ADD_MEMBER(child);
         ADD_MEMBER(model);
+    }
+
+    DEFINE_META(NavMeshVolumeComponent)
+    {
+       ADD_MEMBER(NavMeshMin);
+       ADD_MEMBER(NavMeshMax);
+       ADD_MEMBER(AgentRadius);
+       ADD_MEMBER(AgentHeight);
+       ADD_MEMBER(MaxSlope);
+       ADD_MEMBER(JumpDistance);
     }
 
     /*************************************************************************/

@@ -30,6 +30,7 @@ namespace Eclipse
 		bool ShowCollisionProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowPrefebProperty(Entity ID);
 		bool ShowAIProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowNavMeshProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 
 		void AddComponentsController(Entity ID);
 		void RemoveComponentsController(Entity ID);

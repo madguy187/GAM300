@@ -95,7 +95,6 @@ namespace Eclipse
 		}
 	}
 
-
 	bool NavMeshManager::BuildNavMesh(Entity ent)
 	{
 		auto& navmeshcomp = engine->world.GetComponent<NavMeshVolumeComponent>(ent);
@@ -114,6 +113,8 @@ namespace Eclipse
 		ECVec3 VertC;
 		ECVec3 TriNorm;
 		int nVert = 0;
+
+		CalculateMinMax(ent);
 
 		rc_bmin[0] = navmeshcomp.NavMeshMin.getX();
 		rc_bmin[1] = navmeshcomp.NavMeshMin.getY();
@@ -517,9 +518,39 @@ namespace Eclipse
 		delete[] rc_tris;
 		delete[] rc_trinorms;
 
-		CreateRecastPolyMesh(*m_pmesh);
+		//CreateRecastPolyMesh(*m_pmesh);
 
 		EDITOR_LOG_INFO("NavMeshBuild End");
 		return true;
+	}
+	void NavMeshManager::RecastCleanup()
+	{
+		if (m_triareas)
+			delete[] m_triareas;
+
+		m_triareas = 0;
+
+		rcFreeHeightField(m_solid);
+		m_solid = 0;
+		rcFreeCompactHeightfield(m_chf);
+		m_chf = 0;
+		rcFreeContourSet(m_cset);
+		m_cset = 0;
+		rcFreePolyMesh(m_pmesh);
+		m_pmesh = 0;
+		rcFreePolyMeshDetail(m_dmesh);
+		m_dmesh = 0;
+		dtFreeNavMesh(m_navMesh);
+		m_navMesh = 0;
+
+		dtFreeNavMeshQuery(m_navQuery);
+		m_navQuery = 0;
+
+		if (m_ctx) delete m_ctx;
+	}
+
+	void NavMeshManager::RenderMesh()
+	{
+
 	}
 }

@@ -20,6 +20,7 @@
 #include "ECS/ComponentManager/Components/AudioComponent.h"
 #include "ECS/ComponentManager/Components/ParentComponent.h"
 #include "ECS/ComponentManager/Components/ChildComponent.h"
+#include "ECS/ComponentManager/Components/NavMeshVolumeComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem/CameraSystem.h"
@@ -41,7 +42,7 @@
 #include "ECS/SystemManager/Systems/System/PrefabSystem/PrefabSystem.h"
 #include "ECS/SystemManager/Systems/System/AI/AISystem.h"
 #include "ECS/SystemManager/Systems/System/InputSystem/InputSystem.h"
-
+#include "ECS/SystemManager/Systems/System/NavMeshSystem/NavMeshSystem.h"
 bool Tester1(const Test1&)
 {
     std::cout << "Engine.cpp Tester1" << std::endl;
@@ -104,6 +105,7 @@ namespace Eclipse
         world.RegisterComponent<CollisionComponent>();
         world.RegisterComponent<PrefabComponent>();
         world.RegisterComponent<AIComponent>();
+        world.RegisterComponent<NavMeshVolumeComponent>();
 
         prefabWorld.RegisterComponent<EntityComponent>();
         prefabWorld.RegisterComponent<TransformComponent>();
@@ -125,6 +127,7 @@ namespace Eclipse
         prefabWorld.RegisterComponent<CollisionComponent>();
         prefabWorld.RegisterComponent<PrefabComponent>();
         prefabWorld.RegisterComponent<AIComponent>();
+        prefabWorld.RegisterComponent <NavMeshVolumeComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
@@ -143,7 +146,6 @@ namespace Eclipse
         world.RegisterSystem<PrefabSystem>();
         world.RegisterSystem<AISystem>();
         world.RegisterSystem<InputSystem>();
-
         prefabWorld.RegisterSystem<PrefabSystem>();
 
         // Render System

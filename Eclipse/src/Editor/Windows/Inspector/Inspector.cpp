@@ -66,6 +66,7 @@ namespace Eclipse
             ShowAIProperty("AI Properties", currEnt, CompFilter);
             ShowParentProperty("Parent", currEnt, CompFilter);
             ShowChildProperty("Child", currEnt, CompFilter);
+            ShowNavMeshProperty("NavMesh Volume", currEnt, CompFilter);
             AddComponentsController(currEnt);
             ECGui::NextColumn();
             RemoveComponentsController(currEnt);
@@ -1071,6 +1072,72 @@ namespace Eclipse
         }
         return false;
     }
+
+    bool InspectorWindow::ShowNavMeshProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+    {
+        char radiusValue[256];
+        char HeightValue[256];
+        char MaxSlopeValue[256];
+        char JumpDistanceValue[256];
+        if (engine->world.CheckComponent<NavMeshVolumeComponent>(ID))
+        {
+            if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+            {
+                ECGui::InsertHorizontalLineSeperator();
+                auto& nm = engine->world.GetComponent<NavMeshVolumeComponent>(ID);
+                ECGui::DrawTextWidget<const char*>("Choose a shape: ", EMPTY_STRING);
+                static std::string PxShapestring;
+                ChangeShapeController(PxShapestring);
+
+                ECGui::DrawTextWidget<const char*>("NavMesh ", EMPTY_STRING);
+                ECGui::InsertHorizontalLineSeperator();
+                ECGui::SetColumns(2, nullptr, true);
+                ECGui::InsertHorizontalLineSeperator();
+
+                ECGui::DrawTextWidget<const char*>("Agent Radius: ", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                snprintf(radiusValue, 256, "%f", nm.AgentRadius);
+                ECGui::DrawInputTextWidget("Agent Radius: ", radiusValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
+                nm.AgentRadius = static_cast<float>(atof(radiusValue));
+                ECGui::NextColumn();
+                ECGui::DrawTextWidget<const char*>("Agent Height: ", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                snprintf(HeightValue, 256, "%f", nm.AgentHeight);
+                ECGui::DrawInputTextWidget("Agent Height: ", HeightValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
+                nm.AgentHeight = static_cast<float>(atof(HeightValue));
+                ECGui::NextColumn();
+                ECGui::DrawTextWidget<const char*>("Max Slope: ", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                snprintf(MaxSlopeValue, 256, "%f", nm.MaxSlope);
+                ECGui::DrawInputTextWidget("Max Slope: ", MaxSlopeValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
+                nm.MaxSlope = static_cast<float>(atof(MaxSlopeValue));
+                ECGui::NextColumn();
+
+                ECGui::DrawTextWidget<const char*>("Jump Distance: ", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                snprintf(JumpDistanceValue, 256, "%f", nm.JumpDistance);
+                ECGui::DrawInputTextWidget("Jump Distance: ", JumpDistanceValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
+                nm.JumpDistance = static_cast<float>(atof(JumpDistanceValue));
+                ECGui::NextColumn();
+
+                ECGui::SetColumns(1, nullptr, true);
+                ECGui::InsertHorizontalLineSeperator();
+
+                if (ECGui::ButtonBool("Bake"))
+                {
+                    engine->gNavMesh.BuildNavMesh(ID);
+                }
+            }
+        }
+        return false;
+    }
+
+
+
 
     bool InspectorWindow::ShowPrefebProperty(Entity ID)
     {

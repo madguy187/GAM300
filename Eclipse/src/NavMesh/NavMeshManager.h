@@ -93,5 +93,6 @@ namespace Eclipse
 		void CalculateMinMax(Entity ent);
 		void GetVertsandTrisOnScene(std::vector<ECVec3>& verts, std::vector<std::array<int,3>>& tris);
 		bool BuildNavMesh(Entity ent);
+		void RecastCleanup();
 	};
 }
