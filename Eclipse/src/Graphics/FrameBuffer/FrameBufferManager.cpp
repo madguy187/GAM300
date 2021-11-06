@@ -135,6 +135,16 @@ namespace Eclipse
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     }
 
+    unsigned int FrameBufferManager::GetFrameBufferWidth(FrameBufferMode in)
+    {
+        return FrameBufferContainer[FrameBufferMode::FBM_MESHEDITOR]->m_width;
+    }
+
+    unsigned int FrameBufferManager::GetFrameBufferHeight(FrameBufferMode in)
+    {
+        return FrameBufferContainer[FrameBufferMode::FBM_MESHEDITOR]->m_height;
+    }
+
     float FrameBufferManager::GetAspectRatio(CameraComponent::CameraType in)
     {
         switch (in)
@@ -189,6 +199,60 @@ namespace Eclipse
         }
 
         return 0.0f;
+    }
+
+    FrameBufferMode FrameBufferManager::GetFrameBufferMode(CameraComponent::CameraType in)
+    {
+        switch (in)
+        {
+        case CameraComponent::CameraType::MeshEditor_Camera:
+        {
+            return FrameBufferMode::FBM_MESHEDITOR;
+        }
+        break;
+
+        case CameraComponent::CameraType::MaterialEditor_Camera:
+        {
+            return FrameBufferMode::FBM_MATERIALEDITOR;
+        }
+        break;
+
+        case CameraComponent::CameraType::Editor_Camera:
+        {
+            return FrameBufferMode::FBM_SCENE;
+        }
+        break;
+
+        case CameraComponent::CameraType::Game_Camera:
+        {
+            return FrameBufferMode::FBM_GAME;
+        }
+        break;
+
+        case CameraComponent::CameraType::TopView_Camera:
+        {
+            return FrameBufferMode::FBM_TOP;
+        }
+        break;
+
+        case CameraComponent::CameraType::BottomView_Camera:
+        {
+            return FrameBufferMode::FBM_BOTTOM;
+        }
+        break;
+
+        case CameraComponent::CameraType::RightView_camera:
+        {
+            return FrameBufferMode::FBM_RIGHT;
+        }
+        break;
+
+        case CameraComponent::CameraType::LeftView_Camera:
+        {
+            return FrameBufferMode::FBM_LEFT;
+        }
+        break;
+        }
     }
 
     void FrameBufferManager::FadeIn(FrameBuffer::PostProcessType Type, float& timer , float multiplier)

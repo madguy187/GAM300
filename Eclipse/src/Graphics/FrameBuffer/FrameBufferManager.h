@@ -26,7 +26,10 @@ namespace Eclipse
         void UpdateAspectRatio(FrameBufferMode Mode, ECVec2 CurrentViewPortSize);
         void UpdateAspectRatio(FrameBufferMode Mode, glm::vec2 CurrentViewPortSize);
         void MainWindowSettings();
+        unsigned int GetFrameBufferWidth(FrameBufferMode in);
+        unsigned int GetFrameBufferHeight(FrameBufferMode in);
         float GetAspectRatio(CameraComponent::CameraType);
+        FrameBufferMode GetFrameBufferMode(CameraComponent::CameraType in);
         void CreateFrameBuffers();
         void CreateFBO(unsigned int Height, unsigned int Width, FrameBufferMode in);
 
