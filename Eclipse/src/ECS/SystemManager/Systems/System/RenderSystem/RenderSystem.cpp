@@ -94,15 +94,59 @@ namespace Eclipse
                 // After hot-realoding , we check if he still exists or not
                 if (engine->AssimpManager.CheckGeometryExist(Mesh))
                 {
+                    // If Scene View is visible
                     if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
                     {
-                        engine->MaterialManager.UpdateStencilWithActualObject(entityID);
-                        engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_SCENE, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SCENE),
+                        // If PostProcess::Sobel is activated
+                        if (engine->gFrameBufferManager->IsSobelEffect())
+                        {
+                            // If activated , we render to FBM_SCENE_SOBEL then in the FrameBufferManager , we render the texture back to FBM_SCENE
+                            engine->MaterialManager.UpdateStencilWithActualObject(entityID);
+
+                            engine->AssimpManager.MeshDraw(Mesh, entityID,
+                            FrameBufferMode::FBM_SCENE_SOBEL,
+                            engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SCENE_SOBEL),
                             CameraComponent::CameraType::Editor_Camera);
+                        }
+                        else
+                        {
+                            // If no post process , just render normally
+                            engine->MaterialManager.UpdateStencilWithActualObject(entityID);
+
+                            engine->AssimpManager.MeshDraw(Mesh, entityID,
+                            FrameBufferMode::FBM_SCENE,
+                            engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SCENE),
+                            CameraComponent::CameraType::Editor_Camera);
+                        }
 
                         // See Normal Vectors
                         engine->MaterialManager.UpdateStencilWithActualObject(entityID);
                         engine->AssimpManager.DebugNormals(Mesh, entityID, FrameBufferMode::FBM_SCENE, CameraComponent::CameraType::Editor_Camera);
+                    }
+
+                    // If Game View is visible
+                    if (engine->editorManager->GetEditorWindow<eGameViewWindow>()->IsVisible)
+                    {
+                        // If activated , we render to FBM_GAME_SOBEL then in the FrameBufferManager , we render the texture back to FBM_GAME
+                        if (engine->gFrameBufferManager->IsSobelEffect())
+                        {
+                            engine->MaterialManager.DoNotUpdateStencil();
+
+                            engine->AssimpManager.MeshDraw(Mesh, entityID,
+                            FrameBufferMode::FBM_GAME_SOBEL,
+                            engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME_SOBEL),
+                            CameraComponent::CameraType::Game_Camera);
+                        }
+                        else
+                        {
+                            // If no post process , just render normally
+                            engine->MaterialManager.DoNotUpdateStencil();
+
+                            engine->AssimpManager.MeshDraw(Mesh, entityID,
+                            FrameBufferMode::FBM_GAME,
+                            engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME),
+                            CameraComponent::CameraType::Game_Camera);
+                        }
                     }
 
                     // Top View Port
@@ -137,34 +181,23 @@ namespace Eclipse
                             CameraComponent::CameraType::RightView_camera);
                     }
 
-                    // Game View is abit Special.
-                    if (engine->editorManager->GetEditorWindow<eGameViewWindow>()->IsVisible)
+                    // If scene not playing , we enable highlight
+                    if (engine->IsScenePlaying() != true)
                     {
-                        if (engine->gFrameBufferManager->PostProcess->AllowPostProcess && engine->gFrameBufferManager->PostProcess->PPType_ == FrameBuffer::PostProcessType::PPT_SOBEL)
-                        {
-                            engine->MaterialManager.DoNotUpdateStencil();
-                            engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_GAME_SOBEL, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME_SOBEL),
-                                CameraComponent::CameraType::Game_Camera);
-                        }
-                        else
-                        {
-                            engine->MaterialManager.DoNotUpdateStencil();
-                            engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_GAME, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME),
-                                CameraComponent::CameraType::Game_Camera);
-                        }
+                        engine->MaterialManager.Highlight3DModels(entityID, FrameBufferMode::FBM_SCENE);
                     }
-
-                    engine->MaterialManager.Highlight3DModels(entityID, FrameBufferMode::FBM_SCENE);
                 }
             }
 
             engine->AssimpManager.MeshEditor_.Render();
 
+            // Frustrum
             if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
             {
                 engine->MaterialManager.DoNotUpdateStencil();
                 engine->gDebugManager.DrawDebugShapes(FrameBufferMode::FBM_SCENE);
             }
+
             engine->MaterialManager.StencilBufferClear();
         }
 

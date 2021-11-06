@@ -34,10 +34,12 @@ namespace Eclipse
         void CreateFBO(unsigned int Height, unsigned int Width, FrameBufferMode in);
 
         void PostProcessUpdate();
+        bool IsSobelEffect();
+
     private:
         // Effects
-        void FadeIn(FrameBuffer::PostProcessType Type, float& timer , float multiplier);
+        void FadeIn(FrameBuffer::PostProcessType Type, float& timer, float multiplier, FrameBufferMode WhichFBO);
         void PostProcessUpdate(FrameBufferMode);
-        void SobelEffectUpdate();
+        void SobelEffectUpdate(FrameBufferMode TargetFBO, FrameBufferMode RenderFBO);
     };
 }

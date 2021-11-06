@@ -189,6 +189,8 @@ enum class MaterialModelType
 enum class FrameBufferMode
 {
     FBM_NONE = 0,
+
+    // BASIC FRAMEBUFFERS
     FBM_GAME = 1,
     FBM_SCENE = 2,
     FBM_TOP = 3,
@@ -197,7 +199,11 @@ enum class FrameBufferMode
     FBM_RIGHT = 6,
     FBM_MATERIALEDITOR = 7,
     FBM_MESHEDITOR = 8,
+
+    // SOBEL FBO
     FBM_GAME_SOBEL = 9,
+    FBM_SCENE_SOBEL = 10,
+
     MAXCOUNT
 };
 

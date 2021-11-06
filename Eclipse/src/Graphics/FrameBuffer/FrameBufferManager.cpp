@@ -17,12 +17,15 @@ namespace Eclipse
         CreateFBO(1270, 593, FrameBufferMode::FBM_MATERIALEDITOR);
         CreateFBO(1270, 593, FrameBufferMode::FBM_MESHEDITOR);
 
-        // PostProcess
+        // Sobel Framebuffers
+        // We Render to this FBO then we will render the effect into scene view.
+        CreateFBO(1270, 593, FrameBufferMode::FBM_GAME_SOBEL);
+        CreateFBO(1270, 593, FrameBufferMode::FBM_SCENE_SOBEL);
+
+        // Additionals - PostProcess
         PostProcess = std::make_unique<FrameBuffer>();
         PostProcess->CreatePostProcessFramebuffer();
 
-        // Create additional Buffer For Game View
-        CreateFBO(1270, 593, FrameBufferMode::FBM_GAME_SOBEL);
     }
 
     void FrameBufferManager::CreateFBO(unsigned int width_, unsigned int height_, FrameBufferMode in)
@@ -255,18 +258,22 @@ namespace Eclipse
         }
     }
 
-    void FrameBufferManager::FadeIn(FrameBuffer::PostProcessType Type, float& timer , float multiplier)
+    void FrameBufferManager::FadeIn(FrameBuffer::PostProcessType Type, float& timer, float multiplier, FrameBufferMode WhichFBO)
     {
-        if (engine->IsScenePlaying() == true)
+        if (WhichFBO == FrameBufferMode::FBM_SCENE)
         {
-            if (PostProcess->PPType_ == Type && timer <= 1.0f)
-            {
-                timer += ( engine->Game_Clock.get_fixedDeltaTime() / multiplier );
-            }
+            timer = 1.0f;
         }
         else
         {
-            timer = 0.0f;
+            if (PostProcess->PPType_ == Type && timer <= 1.0f)
+            {
+                timer += (engine->Game_Clock.get_fixedDeltaTime() / multiplier);
+            }
+            else
+            {
+                timer = 0.0f;
+            }
         }
     }
 
@@ -306,39 +313,43 @@ namespace Eclipse
         }
     }
 
-    void FrameBufferManager::SobelEffectUpdate()
+    void FrameBufferManager::SobelEffectUpdate(FrameBufferMode TargetFBO, FrameBufferMode RenderFBO)
     {
-        if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
+        if (PostProcess->AllowPostProcess == true)
         {
-            if (PostProcess->AllowPostProcess == true)
+            if (PostProcess->PPType_ == FrameBuffer::PostProcessType::PPT_SOBEL)
             {
-                if (PostProcess->PPType_ == FrameBuffer::PostProcessType::PPT_SOBEL)
-                {
-                    FadeIn(FrameBuffer::PostProcessType::PPT_SOBEL, PostProcess->FadeInTimer, PostProcess->Multiplier);
+                FadeIn(FrameBuffer::PostProcessType::PPT_SOBEL, PostProcess->FadeInTimer, PostProcess->Multiplier, RenderFBO);
 
-                    // We will output to Game FrameBuffer
-                    engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_GAME);
+                // We will output to Game FrameBuffer
+                engine->gFrameBufferManager->UseFrameBuffer(RenderFBO);
 
-                    auto& shdrpgm = Graphics::shaderpgms["PostProcess"];
-                    shdrpgm.Use();
+                auto& shdrpgm = Graphics::shaderpgms["PostProcess"];
+                shdrpgm.Use();
 
-                    GLint Inversion = shdrpgm.GetLocation("Type");
-                    GLint Height_ = shdrpgm.GetLocation("Height");
-                    GLint Width_ = shdrpgm.GetLocation("Width");
-                    GLint FadeInTimer_ = shdrpgm.GetLocation("FadeInTimer");
+                GLint Inversion = shdrpgm.GetLocation("Type");
+                GLint Height_ = shdrpgm.GetLocation("Height");
+                GLint Width_ = shdrpgm.GetLocation("Width");
+                GLint FadeInTimer_ = shdrpgm.GetLocation("FadeInTimer");
 
-                    GLCall(glUniform1i(Inversion, static_cast<GLint>(PostProcess->PPType_)));
-                    GLCall(glUniform1i(Height_, engine->gFrameBufferManager->FrameBufferContainer[FrameBufferMode::FBM_GAME]->m_height));
-                    GLCall(glUniform1i(Width_, engine->gFrameBufferManager->FrameBufferContainer[FrameBufferMode::FBM_GAME]->m_width));
-                    GLCall(glUniform1f(FadeInTimer_, PostProcess->FadeInTimer));
+                GLCall(glUniform1i(Inversion, static_cast<GLint>(PostProcess->PPType_)));
+                GLCall(glUniform1i(Height_, engine->gFrameBufferManager->FrameBufferContainer[RenderFBO]->m_height));
+                GLCall(glUniform1i(Width_, engine->gFrameBufferManager->FrameBufferContainer[RenderFBO]->m_width));
+                GLCall(glUniform1f(FadeInTimer_, PostProcess->FadeInTimer));
 
-                    glBindVertexArray(PostProcess->rectVAO);
-                    glActiveTexture(GL_TEXTURE0);
-                    glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_GAME_SOBEL));
-                    glDrawArrays(GL_TRIANGLES, 0, 6);
-                }
+                glBindVertexArray(PostProcess->rectVAO);
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(TargetFBO));
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+
+                shdrpgm.UnUse();
             }
         }
+    }
+
+    bool FrameBufferManager::IsSobelEffect()
+    {
+        return (PostProcess->AllowPostProcess && PostProcess->PPType_ == FrameBuffer::PostProcessType::PPT_SOBEL);
     }
 
     void FrameBufferManager::PostProcessUpdate()
@@ -347,7 +358,8 @@ namespace Eclipse
         {
             if (PostProcess->PPType_ == FrameBuffer::PostProcessType::PPT_SOBEL)
             {
-                SobelEffectUpdate();
+                SobelEffectUpdate(FrameBufferMode::FBM_GAME_SOBEL, FrameBufferMode::FBM_GAME);
+                SobelEffectUpdate(FrameBufferMode::FBM_SCENE_SOBEL, FrameBufferMode::FBM_SCENE);
             }
             else
             {

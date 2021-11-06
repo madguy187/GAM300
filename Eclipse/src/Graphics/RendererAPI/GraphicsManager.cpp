@@ -439,7 +439,15 @@ namespace Eclipse
         {
             if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
             {
-                engine->GridManager->DrawGrid(FrameBufferMode::FBM_SCENE);
+                if (engine->gFrameBufferManager->IsSobelEffect())
+                {
+                    engine->GridManager->DrawGrid(FrameBufferMode::FBM_SCENE_SOBEL);
+                }
+                else
+                {
+                    engine->GridManager->DrawGrid(FrameBufferMode::FBM_SCENE);
+                }
+
             }
         }
 
