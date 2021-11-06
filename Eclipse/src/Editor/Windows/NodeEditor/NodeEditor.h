@@ -14,6 +14,14 @@ namespace Eclipse
 
 		struct Node;
 
+		enum class InstructionType : unsigned char {
+			ADD,
+			SUB,
+			MUL,
+			MULTIPLY_ADD,
+			DIV
+		};
+
 		struct	Node
 		{
 			enum class NodeType
@@ -26,6 +34,10 @@ namespace Eclipse
 				COUNT
 			};
 
+			struct NodeInput {
+				Node* node;
+				unsigned char output_idx;
+			};
 
 			Node(NodeEditor& data)
 				: res(data), nodeId(data.generatedId()) {}
@@ -33,11 +45,25 @@ namespace Eclipse
 			virtual ~Node() {}
 			virtual NodeType getType() const = 0;
 
+			NodeInput getInput(unsigned char input_idx)
+			{
+				for (const Link& link : res.links) {
+					if (link.toNode() != nodeId) continue;
+					if (link.toPin() != input_idx) continue;
+
+					NodeInput res_;
+					res_.output_idx = link.fromPin();
+					res_.node = res.getNodeByID(link.fromNode());
+					return res_;
+				}
+
+				return {};
+			}
+
 			void beginInput(ImNodesPinShape pinShape = 1)
 			{
-				int bitshift = (5 << 16);
-				int temp = nodeId ^ (5 << 16);
-				ImNodes::BeginInputAttribute(temp, pinShape);
+				ImNodes::BeginInputAttribute(nodeId | (unsigned int(inputCounter) << 16), pinShape);
+				++inputCounter;
 			}
 
 			static void endInput()
@@ -47,9 +73,8 @@ namespace Eclipse
 
 			void beginOutput(ImNodesPinShape pinShape = 1)
 			{
-				int bitshift = (5 << 13);
-				int temp = nodeId ^ (5 << 13);
-				ImNodes::BeginOutputAttribute(temp, pinShape);
+				ImNodes::BeginOutputAttribute(nodeId | (unsigned int(outputCounter) << 16) | OUTPUT_FLAG, pinShape);
+				++outputCounter;
 			}
 
 			static void endOutput()
@@ -57,14 +82,13 @@ namespace Eclipse
 				ImNodes::EndOutputAttribute();
 			}
 
+
 			bool nodeOnGui()
 			{
 				inputCounter = 0;
 				outputCounter = 0;
 				ImNodes::SetNodeEditorSpacePos(nodeId, editorSpacePos);
-				ImNodes::BeginNode(nodeId);
-				bool res = onGUI();
-				ImNodes::EndNode();
+				bool res = onGUI(nodeId);
 				return res;
 			}
 
@@ -72,12 +96,23 @@ namespace Eclipse
 			ImVec2 editorSpacePos = ImVec2(100, 100);
 		protected:
 
-			virtual bool onGUI() = 0;
+			virtual bool onGUI(int nodeId) = 0;
 
 			NodeEditor& res;
 			unsigned char inputCounter;
 			unsigned char outputCounter;
 		};
+
+		Node* getNodeByID(unsigned short id) const {
+			for (auto& node : nodes) {
+				if (node->nodeId == id)
+				{
+					return node.get();
+				}
+			}
+			return nullptr;
+		}
+
 		struct EnitityNode : public Node
 		{
 			EnitityNode(NodeEditor& res, Entity id)
@@ -87,13 +122,16 @@ namespace Eclipse
 
 			NodeType getType() const override { return NodeType::ENTITY; }
 
-			bool onGUI() override {
+			bool onGUI(int nodeId) override 
+			{
+				ImNodes::BeginNode(nodeId);
 				getName();
 				beginOutput();
 				ImGui::SetNextItemWidth(60);
 				ECGui::DrawTextWidget<std::string>("Edit Name", name);
 				ECGui::DrawTextWidget<std::string>("Entity ID", std::to_string(ID));
 				endOutput();
+				ImNodes::EndNode();
 				return false;
 			}
 
@@ -118,13 +156,30 @@ namespace Eclipse
 
 			NodeType getType() const override { return NodeType::TRANSFORM; }
 
-			bool onGUI() override {
+			bool onGUI(int nodeId) override 
+			{
+				ImNodes::PushColorStyle(
+					ImNodesCol_TitleBar, IM_COL32(11, 0, 0, 255));
+				ImNodes::PushColorStyle(
+					ImNodesCol_TitleBarSelected, IM_COL32(81, 0, 0, 255));
+
+				ImNodes::BeginNode(nodeId);
 				ImNodes::BeginNodeTitleBar();
 				ImGui::TextUnformatted("TransFormNode");
 				ImNodes::EndNodeTitleBar();
 
 				beginInput(ImNodesPinShape_Quad);
 				ImGui::SetNextItemWidth(160);
+				if (getInput(0).node)
+				{
+					//might case problem down the line 
+					auto downcastedPtr = dynamic_cast<EnitityNode*>(getInput(0).node);
+					ID = downcastedPtr->ID;
+				}
+				else
+				{
+					ID = DEFAULTVAL;
+				}
 				if (ID == DEFAULTVAL)
 				{
 					ECGui::DrawTextWidget<std::string>("No Entity", EMPTY_STRING);
@@ -147,27 +202,13 @@ namespace Eclipse
 					}
 				}
 				endInput();
-
+				ImNodes::EndNode(); 
+				ImNodes::PopColorStyle();
+				ImNodes::PopColorStyle();
 				return false;
 			}
-
-			void factoryReset()
-			{
-				ID = DEFAULTVAL;
-			}
-
 			Entity ID = DEFAULTVAL;
 		};
-
-		Node* getNodeByID(unsigned short id) const {
-			for (auto& node : nodes) {
-				if (node->nodeId == id)
-				{
-					return node.get();
-				}
-			}
-			return nullptr;
-		}
 
 		unsigned short generatedId()
 		{
@@ -178,6 +219,28 @@ namespace Eclipse
 		{
 			int linkId;
 			int startPoint, endPoint;
+
+			unsigned short toNode() const
+			{
+				unsigned short temp = endPoint & 0xffFF;
+				return temp;
+			}
+			unsigned short fromNode() const
+			{
+				unsigned short temp = startPoint & 0xffFF;
+				return temp;
+			}
+
+			unsigned char toPin() const
+			{
+				unsigned short temp = (endPoint >> 16) & 0xff;
+				return temp;
+			}
+			unsigned char fromPin() const
+			{
+				unsigned short temp = (startPoint >> 16) & 0xff;
+				return temp;
+			}
 		};
 
 		Node* addNode(Node::NodeType type)
@@ -211,33 +274,35 @@ namespace Eclipse
 
 		bool initialized = false;
 
-		int m_context_link;
-		int m_context_node;
+		int m_context_link = 0;
+		int m_context_node = 0;
+
 
 
 		int findNodePos(NodeEditor editor, int id);
 
 		void DrawNodeEditor(const char* graphName, NodeEditor& editor);
 
-		/*template <typename T>
-		void CompareCast(std::shared_ptr<T>& lhsNode, std::shared_ptr<T>& rhsNode);*/
-
-		template <typename T>
-		void LinkNodes(const std::shared_ptr<T>& lhsNode,
-			const std::shared_ptr<T>& rhsNode, bool IsLinked);
 	};
 
 
+	inline int NodeEditor::findNodePos(NodeEditor editor, int id)
+	{
+		int pos = 0;
+		for (auto& it : editor.nodes)
+		{
+			if (it->nodeId == id)
+			{
+				return pos;
+			}
+			pos++;
+		}
+
+		return -1;
+	}
+
 	inline void Eclipse::NodeEditor::DrawNodeEditor(const char* graphName, NodeEditor& editor)
 	{
-		if (!editor.initialized)
-		{
-			initialized = true;
-			editor.context = ImNodes::EditorContextCreate();
-			ImNodes::PushAttributeFlag(ImNodesAttributeFlags_EnableLinkDetachWithDragClick);
-			ImNodesIO& io = ImNodes::GetIO();
-			io.LinkDetachWithModifierClick.Modifier = &ImGui::GetIO().KeyCtrl;
-		}
 
 		ImNodes::EditorContextSet(editor.context);
 
@@ -304,6 +369,7 @@ namespace Eclipse
 
 		ImNodes::EndNodeEditor();
 
+
 		for (std::shared_ptr<NodeEditor::Node>& n : editor.nodes)
 		{
 			ImVec2 p = ImNodes::GetNodeEditorSpacePos(n->nodeId);
@@ -315,43 +381,430 @@ namespace Eclipse
 		}
 
 		if (context_open) {
-			m_context_link = -1;
-			ImNodes::IsLinkHovered(&m_context_link);
-			m_context_node = -1;
-			ImNodes::IsNodeHovered(&m_context_node);
+			editor.m_context_link = -1;
+			ImNodes::IsLinkHovered(&editor.m_context_link);
+			editor.m_context_node = -1;
+			ImNodes::IsNodeHovered(&editor.m_context_node);
 		}
 
 		{
 			Link links;
 			if (ImNodes::IsLinkCreated(&links.startPoint, &links.endPoint))
 			{
-				int from = links.startPoint ^ (5 << 13);
-				int to = links.endPoint ^ (5 << 16);
-				int pos = findNodePos(editor, from);
+				editor.links.push_back(links);
+				editor.links.back().linkId = editor.generatedId();
+				editor.links.back().startPoint = links.startPoint;
+				editor.links.back().endPoint = links.endPoint;
 
-				int pos2 = findNodePos(editor, to);
+			}
+		}
 
-				NodeEditor::Node::NodeType type1 = editor.nodes[pos]->getType();
-				NodeEditor::Node::NodeType type2 = editor.nodes[pos2]->getType();
-				const bool linked = type1 != type2;
+		{
+			int link_id;
+			if (ImNodes::IsLinkDestroyed(&link_id))
+			{
+				auto iter = std::find_if(
+					editor.links.begin(), editor.links.end(), [link_id](const Link& link) -> bool
+					{
+						return link.linkId == link_id;
+					});
 
-				if (linked)
+				assert(iter != editor.links.end());
+				editor.links.erase(iter);
+			}
+		}
+
+	}
+
+	struct MaterialNode
+	{
+
+		struct Node;
+
+		struct	Node
+		{
+			enum class NodeType
+			{
+				DEFAULT,
+				ADD,
+				SUB,
+				MUL,
+				MULTIPLY_ADD,
+				DIV,
+				FLOAT,
+				COUNT
+			};
+
+			struct NodeInput {
+				Node* node;
+				unsigned char output_idx;
+			};
+
+			Node(MaterialNode& data)
+				: res(data), nodeId(data.generatedId()) {}
+
+			virtual ~Node() {}
+			virtual NodeType getType() const = 0;
+
+			NodeInput getInput(unsigned char input_idx)
+			{
+				for (const Link& link : res.links) 
 				{
-					/* if (type1 == NodeEditor::Node::NodeType::ENTITY)
-					 {
-						 if (type2 == NodeEditor::Node::NodeType::TRANSFORM)
-						 {
+					if (link.toNode() != nodeId) continue;
+					if (link.toPin() != input_idx) continue;
 
-							 std::dynamic_pointer_cast<TransformNode>(editor.nodes[pos2])->ID
-								 = std::dynamic_pointer_cast<EnitityNode>(editor.nodes[pos])->ID;
-
-						 }
-					 }*/
-
-					LinkNodes<NodeEditor::Node>(editor.nodes[pos], editor.nodes[pos2], true);
+					NodeInput res_;
+					res_.output_idx = link.fromPin();
+					res_.node = res.getNodeByID(link.fromNode());
+					return res_;
 				}
 
+				return {};
+			}
 
+
+			void beginInput(ImNodesPinShape pinShape = 1)
+			{
+				ImNodes::BeginInputAttribute(nodeId | (unsigned int(inputCounter) << 16), pinShape);
+				++inputCounter;
+			}
+
+			static void endInput()
+			{
+				ImNodes::EndInputAttribute();
+			}
+
+			void beginOutput(ImNodesPinShape pinShape = 1)
+			{
+				ImNodes::BeginOutputAttribute(nodeId | (unsigned int(outputCounter) << 16) | OUTPUT_FLAG, pinShape);
+				++outputCounter;
+			}
+
+			static void endOutput()
+			{
+				ImNodes::EndOutputAttribute();
+			}
+
+			bool nodeOnGui()
+			{
+				inputCounter = 0;
+				outputCounter = 0;
+				ImNodes::SetNodeEditorSpacePos(nodeId, editorSpacePos);
+				bool res = onGUI(nodeId);
+				return res;
+			}
+
+			int nodeId;
+			ImVec2 editorSpacePos = ImVec2(100, 100);
+		protected:
+
+			virtual bool onGUI(int nodeId) = 0;
+
+			MaterialNode& res;
+			unsigned char inputCounter;
+			unsigned char outputCounter;
+		};
+
+		Node* getNodeByID(unsigned short id) const 
+		{
+			for (auto& node : nodes) {
+				if (node->nodeId == id)
+				{
+					return node.get();
+				}
+			}
+			return nullptr;
+		}
+
+		template <NodeEditor::InstructionType operationType>
+		struct BinOpNode : public Node
+		{
+			BinOpNode(MaterialNode& res) : Node(res) {}
+
+			NodeType getType() const override
+			{
+				switch (operationType) 
+				{
+					case NodeEditor::InstructionType::DIV: return NodeType::DIV;
+					case NodeEditor::InstructionType::MUL: return NodeType::MUL;
+					case NodeEditor::InstructionType::ADD: return NodeType::ADD;
+					case NodeEditor::InstructionType::SUB: return NodeType::SUB;
+					default: EDITOR_LOG_INFO("Case default"); return NodeType::MUL;
+				}
+			}
+
+			bool onGUI(int nodeId) override
+			{
+				ImNodes::BeginNode(nodeId);
+				ImNodes::BeginNodeTitleBar();
+				ImGui::SetNextItemWidth(60);
+				switch (operationType)
+				{
+				case NodeEditor::InstructionType::DIV:
+					ECGui::DrawTextWidget<std::string>("Divide" ICON_MDI_SLASH_FORWARD, EMPTY_STRING);
+					output = A / B;
+					break;
+				case NodeEditor::InstructionType::MUL:
+					ECGui::DrawTextWidget<std::string>("Multiply" ICON_MDI_CLOSE, EMPTY_STRING);
+					output = A * B;
+					break;
+				case NodeEditor::InstructionType::ADD:
+					ECGui::DrawTextWidget<std::string>("Add" ICON_MDI_PLUS, EMPTY_STRING);
+					output = A + B;
+					break;
+				case NodeEditor::InstructionType::SUB:
+					ECGui::DrawTextWidget<std::string>("Sub" ICON_MDI_MINUS, EMPTY_STRING);
+					output = A - B;
+
+					break;
+				default: EDITOR_LOG_INFO("Should not come in here one"); break;
+				}
+				ImNodes::EndNodeTitleBar();
+
+				beginOutput();
+				endOutput();
+
+				beginInput();
+				// check for first pin if its linked
+				if (getInput(0).node)
+				{
+					//might case problem down the line 
+					auto downcastedPtr = dynamic_cast<FloatNode*>(getInput(0).node);
+					A = downcastedPtr->inputFloat;
+
+					ImGui::SetNextItemWidth(60);
+					ECGui::DrawTextWidget<std::string>("A", EMPTY_STRING);
+				}
+				else 
+				{
+					ImGui::SetNextItemWidth(60);
+					ECGui::DrawTextWidget<std::string>("A", EMPTY_STRING);
+				}
+				endInput();
+				
+				beginInput();
+				// check for first pin if its linked
+				if (getInput(1).node)
+				{
+					auto downcastedPtr = dynamic_cast<FloatNode*>(getInput(1).node);
+					B = downcastedPtr->inputFloat;
+					ImGui::SetNextItemWidth(60);
+					ECGui::DrawTextWidget<std::string>("B", EMPTY_STRING);
+				}
+				else
+				{
+					ImGui::SetNextItemWidth(60);
+					ECGui::DrawTextWidget<std::string>("B", EMPTY_STRING);
+				}
+				endInput();
+				ImNodes::EndNode();
+				return false;
+			}
+
+			float A = 0.f;
+			float B = 0.f;
+			float output = 0.f;
+		};
+
+		struct FloatNode : public Node
+		{
+			FloatNode(MaterialNode& res) : Node(res) {}
+
+			NodeType getType() const override
+			{
+				return NodeType::FLOAT;
+			}
+
+			bool onGUI(int nodeId) override 
+			{
+				ImNodes::PushColorStyle(
+					ImNodesCol_TitleBar, IM_COL32(0, 25, 0, 255));
+				ImNodes::PushColorStyle(
+					ImNodesCol_TitleBarSelected, IM_COL32(0, 45, 0, 255));
+				ImNodes::BeginNode(nodeId);
+				ImNodes::BeginNodeTitleBar();
+				ECGui::DrawTextWidget<std::string>("Float", EMPTY_STRING);
+				ImNodes::EndNodeTitleBar();
+				beginOutput();
+				ImGui::SetNextItemWidth(60);
+				ImGui::DragFloat("", &inputFloat);
+				endOutput();
+				ImNodes::PopColorStyle();
+				ImNodes::PopColorStyle();
+				ImNodes::EndNode();
+				return false;
+			}
+			float inputFloat = 0.f;
+		};
+
+		unsigned short generatedId()
+		{
+			return ++current_id;
+		}
+
+		struct Link
+		{
+			int linkId;
+			int startPoint, endPoint;
+
+			unsigned short toNode() const 
+			{ 
+				unsigned short temp = endPoint & 0xffFF;
+				return temp;
+			}
+			unsigned short fromNode() const 
+			{ 
+				unsigned short temp = startPoint & 0xffFF;
+				return temp;
+			}
+
+			unsigned char toPin() const 
+			{
+				unsigned short temp = (endPoint >> 16) & 0xff;
+				return temp;
+			}
+			unsigned char fromPin() const
+			{
+				unsigned short temp = (startPoint >> 16) & 0xff;
+				return temp;
+			}
+		};
+
+		Node* addNode(Node::NodeType type)
+		{
+			std::shared_ptr<Node> node;
+
+			switch (type)
+			{
+					//MULTIPLY_ADD,
+				case Node::NodeType::DIV:
+					node = std::make_shared<BinOpNode<NodeEditor::InstructionType::DIV>>(*this); 
+					break;
+				case Node::NodeType::MUL:
+					node = std::make_shared<BinOpNode<NodeEditor::InstructionType::MUL>>(*this);
+					break;
+				case Node::NodeType::ADD:
+					node = std::make_shared<BinOpNode<NodeEditor::InstructionType::ADD>>(*this);
+					break;
+				case Node::NodeType::SUB:
+					node = std::make_shared<BinOpNode<NodeEditor::InstructionType::SUB>>(*this);
+					break;
+				case Node::NodeType::FLOAT:
+					node = std::make_shared <FloatNode>(*this);
+					break;
+			}
+
+			nodes.push_back(node);
+			return nodes.back().get();
+		}
+
+		ImNodesEditorContext* context = nullptr;
+		std::vector<std::shared_ptr<Node>>     nodes;
+		std::vector<Link>     links;
+		int                   current_id = 0;
+
+		bool initialized = false;
+
+		int m_context_link = 0;
+		int m_context_node = 0;
+
+
+		int findMaterialNodePos(MaterialNode editor, int id);
+
+		void DrawMaterialNodeEditor(const char* graphName, MaterialNode& editor);
+
+		void Reset();
+	};
+
+	inline int MaterialNode::findMaterialNodePos(MaterialNode editor, int id)
+	{
+
+		int pos = 0;
+		for (auto& it : editor.nodes)
+		{
+			if (it->nodeId == id)
+			{
+				return pos;
+			}
+			pos++;
+		}
+
+		return -1;
+	}
+
+	inline void MaterialNode::DrawMaterialNodeEditor(const char* graphName, MaterialNode& editor)
+	{
+
+		ImNodes::EditorContextSet(editor.context);
+
+		ImNodes::BeginNodeEditor();
+
+		bool context_open = false;
+		
+		if (ImNodes::IsEditorHovered() && ImGui::IsMouseClicked(1)) {
+			ImGui::OpenPopup("context_menu");
+			context_open = true;
+		}
+
+		if (ImGui::BeginPopup("context_menu"))
+		{
+			if (ImGui::MenuItem("Divide"))
+			{
+				MaterialNode::addNode(MaterialNode::Node::NodeType::DIV);
+			}
+			if (ImGui::MenuItem("Multiply"))
+			{
+				MaterialNode::addNode(MaterialNode::Node::NodeType::MUL);
+			}
+			if (ImGui::MenuItem("Plus"))
+			{
+				MaterialNode::addNode(MaterialNode::Node::NodeType::ADD);
+			}
+			if (ImGui::MenuItem("Minus"))
+			{
+				MaterialNode::addNode(MaterialNode::Node::NodeType::SUB);
+			}
+			if (ImGui::MenuItem("Float"))
+			{
+				MaterialNode::addNode(MaterialNode::Node::NodeType::FLOAT);
+			}
+
+			ImGui::EndPopup();
+		}		
+
+		for (std::shared_ptr<MaterialNode::Node>& n : editor.nodes)
+		{
+			n->nodeOnGui();
+		}
+
+		for (const const MaterialNode::Link& link : editor.links)
+		{
+			ImNodes::Link(link.linkId, link.startPoint, link.endPoint);
+		}
+
+		ImNodes::EndNodeEditor();
+
+		for (std::shared_ptr<MaterialNode::Node>& n : editor.nodes)
+		{
+			ImVec2 p = ImNodes::GetNodeEditorSpacePos(n->nodeId);
+
+			if (p.x != n->editorSpacePos.x || p.y != n->editorSpacePos.y)
+			{
+				n->editorSpacePos = p;
+			}
+		}
+
+		if (context_open) {
+			editor.m_context_link = -1;
+			ImNodes::IsLinkHovered(&editor.m_context_link);
+			editor.m_context_node = -1;
+			ImNodes::IsNodeHovered(&editor.m_context_node);
+		}
+
+		{
+			Link links;
+			if (ImNodes::IsLinkCreated(&links.startPoint, &links.endPoint))
+			{
 				editor.links.push_back(links);
 				editor.links.back().linkId = editor.generatedId();
 				editor.links.back().startPoint = links.startPoint;
@@ -372,19 +825,6 @@ namespace Eclipse
 
 				assert(iter != editor.links.end());
 
-				int from = iter->startPoint ^ (5 << 13);
-				int to = iter->endPoint ^ (5 << 16);
-				int pos = findNodePos(editor, from);
-
-				int pos2 = findNodePos(editor, to);
-
-				NodeEditor::Node::NodeType type1 = editor.nodes[pos]->getType();
-				NodeEditor::Node::NodeType type2 = editor.nodes[pos2]->getType();
-				const bool notlinked = type1 != type2;
-				if (notlinked)
-				{
-					LinkNodes<NodeEditor::Node>(editor.nodes[pos], editor.nodes[pos2], false);
-				}
 				editor.links.erase(iter);
 			}
 		}
@@ -423,32 +863,14 @@ namespace Eclipse
 		// }
 	}
 
-	template <typename T>
-	inline void NodeEditor::LinkNodes(const std::shared_ptr<T>& lhsNode,
-		const std::shared_ptr<T>& rhsNode, bool IsLinked)
+	inline void MaterialNode::Reset()
 	{
-		switch (lhsNode->getType())
-		{
-		case NodeEditor::Node::NodeType::ENTITY:
-		{
-			auto outPtr = std::dynamic_pointer_cast<EnitityNode>(lhsNode);
-
-			switch (rhsNode->getType())
-			{
-			case NodeEditor::Node::NodeType::TRANSFORM:
-				if (IsLinked)
-					std::dynamic_pointer_cast<TransformNode>(rhsNode)->ID = outPtr->ID;
-				else
-					std::dynamic_pointer_cast<TransformNode>(rhsNode)->factoryReset();
-				break;
-			default:
-				break;
-			}
-
-			break;
-		}
-		default:
-			break;
-		}
+		this->context = nullptr;
+		this->current_id = 0;
+		this->links.clear();
+		this->m_context_link = 0;
+		this->m_context_node = 0;
+		this->nodes.clear();
 	}
+
 };

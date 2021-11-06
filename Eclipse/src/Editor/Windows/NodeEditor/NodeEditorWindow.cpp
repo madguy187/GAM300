@@ -1,21 +1,6 @@
 #include "pch.h"
 #include "NodeEditorWindow.h"
 
-int Eclipse::NodeEditor::findNodePos(NodeEditor editor, int id)
-{
-    int pos = 0;
-    for (auto& it : editor.nodes)
-    {
-        if (it->nodeId == id)
-        {
-            return pos;
-        }
-        pos++;
-    }
-
-    return -1;
-}
-
 Eclipse::NodeEditorWindow::NodeEditorWindow()
 {
 }
@@ -31,12 +16,28 @@ void Eclipse::NodeEditorWindow::Init()
 {
     IsVisible = false;
 	WindowName = "NodeEditor " ICON_MDI_FILE_IMAGE;
+	sceneEditor.context = ImNodes::EditorContextCreate();
+	ImNodes::PushAttributeFlag(ImNodesAttributeFlags_EnableLinkDetachWithDragClick);
+	ImNodesIO& io = ImNodes::GetIO();
+	io.LinkDetachWithModifierClick.Modifier = &ImGui::GetIO().KeyCtrl;
+	initialized = true;
 }
 
 void Eclipse::NodeEditorWindow::Unload()
 {
-    ImNodes::PopAttributeFlag();
-    ImNodes::EditorContextFree(sceneEditor.context);
+	initialized = true;
+	ImNodes::PopAttributeFlag();
+	ImNodes::EditorContextFree(sceneEditor.context);
+
+	if (initialized)
+	{
+		sceneEditor.context = ImNodes::EditorContextCreate();
+		ImNodes::PushAttributeFlag(ImNodesAttributeFlags_EnableLinkDetachWithDragClick);
+		ImNodesIO& io = ImNodes::GetIO();
+		io.LinkDetachWithModifierClick.Modifier = &ImGui::GetIO().KeyCtrl;
+		
+		initialized = false;
+	}
 }
 
 void Eclipse::NodeEditorWindow::DrawImpl()
@@ -48,5 +49,4 @@ void Eclipse::NodeEditorWindow::DrawImpl()
 
 Eclipse::NodeEditorWindow::~NodeEditorWindow()
 {
-
 }
