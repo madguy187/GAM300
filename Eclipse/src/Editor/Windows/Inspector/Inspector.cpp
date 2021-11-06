@@ -1386,6 +1386,10 @@ namespace Eclipse
                         ComponentRegistry<AIComponent>("AIComponent", ID, entCom.Name,
                             EditComponent::EC_ADDCOMPONENT);
                         break;
+                    case str2int("NavMeshVolumeComponent"):
+                        ComponentRegistry<NavMeshVolumeComponent>("NavMeshVolumeComponent", ID, entCom.Name,
+                            EditComponent::EC_ADDCOMPONENT);
+                        break;
                     }
 
                     AddComponentFilter.Clear();
@@ -1477,6 +1481,10 @@ namespace Eclipse
                         break;
                     case str2int("AIComponent"):
                         ComponentRegistry<AIComponent>("AIComponent", ID, entCom.Name,
+                            EditComponent::EC_REMOVECOMPONENT);
+                        break;
+                    case str2int("NavMeshVolumeComponent"):
+                        ComponentRegistry<NavMeshVolumeComponent>("NavMeshVolumeComponent", ID, entCom.Name,
                             EditComponent::EC_REMOVECOMPONENT);
                         break;
                     }

@@ -549,8 +549,8 @@ namespace Eclipse
 		if (m_ctx) delete m_ctx;
 	}
 
-	void NavMeshManager::RenderMesh()
-	{
-
-	}
+	//void NavMeshManager::RenderMesh()
+	//{
+	//
+	//}
 }
