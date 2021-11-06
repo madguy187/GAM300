@@ -1,11 +1,14 @@
 #pragma once
 
 #include "../Interface/ECGuiWindow.h"
-
+#include "../NodeEditor/NodeEditor.h"
 namespace Eclipse
 {
 	class MaterialEditorWindow final : public ECGuiWindow
 	{
+		MaterialNode MaterialEditor;
+		std::string tempName;
+		bool nameChanged = false;
 	public:
 		void Update() override;
 		void Init() override;
@@ -24,7 +27,9 @@ namespace Eclipse
 		size_t comboindex = 0;
 
 		void Buttons();
+		void InitMaterialNodes();
 		bool ShowTransformProperty(const char* name, ImGuiTextFilter& filter);
 		bool ShowMaterialProperty(const char* name, ImGuiTextFilter& filter);
+		bool nameChange();
 	};
 }
