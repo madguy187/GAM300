@@ -11,5 +11,8 @@ namespace Eclipse
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         public extern static bool GetKey(KeyCode Key);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        public extern static float GetAxis(string Axis);
     }
 }

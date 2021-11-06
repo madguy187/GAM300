@@ -5,9 +5,8 @@ using Eclipse;
 
 public class Test : EclipseBehavior
 {
-    [Header("HeaderName")]
-    public UInt32 VarName;
-    private UInt32 wee;
+    [Header("Weeeeeee")]
+    public UInt32 test;
 
     public void Start()
     {
@@ -17,5 +16,6 @@ public class Test : EclipseBehavior
     public void Update()
     {
         Console.WriteLine("C# Update");
+        Console.WriteLine(Vector3.zero.x);
     }
 }

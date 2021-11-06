@@ -198,6 +198,7 @@ enum class FrameBufferMode
     FBM_RIGHT = 6,
     FBM_MATERIALEDITOR = 7,
     FBM_MESHEDITOR = 8,
+    FBM_GAME_SOBEL = 9,
     MAXCOUNT
 };
 
@@ -213,4 +214,19 @@ enum class AudioType
     AT_BGM,
     AT_EVENT,
     AT_UNASSIGNED
+};
+
+enum class m_Type
+{
+    MONO_UNDEFINED,
+    MONO_VAR,
+    MONO_HEADER,
+    MONO_LAYERMASK
+};
+
+struct MonoVariable
+{
+    m_Type type = m_Type::MONO_UNDEFINED;
+    std::string varName = "";
+    std::string varValue = "";
 };

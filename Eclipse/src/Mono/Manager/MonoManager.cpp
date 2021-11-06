@@ -84,6 +84,7 @@ namespace Eclipse
 		mono_add_internal_call("Eclipse.RigidBody::Add_Force", SetForce);
 		mono_add_internal_call("Eclipse.Input::GetButtonDown", GetKeyCurrentByName);
 		mono_add_internal_call("Eclipse.Input::GetKey", GetKeyCurrentByKeyCode);
+		mono_add_internal_call("Eclipse.Input::GetAxis", GetMouseAxis);
 		mono_add_internal_call("Eclipse.Time::getDeltaTime", GetDeltaTime);
 		mono_add_internal_call("Eclipse.Time::getFixedDeltaTime", GetFixedDeltaTime);
 	}
@@ -126,37 +127,43 @@ namespace Eclipse
 		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
 	}
 
-	std::unordered_map<std::string, std::string> MonoManager::GetAllFields(MonoClass* klass)
+	void MonoManager::LoadAllFields(MonoScript* script)
 	{
+		script->vars.clear();
+		MonoClass* klass = GetScriptMonoClass(script->scriptName);
+		MonoClass* attrKlass = mono_class_from_name(engine->mono.GetAPIImage(), "", "Header");
 		MonoClassField* field;
 		void* iter = NULL;
-		std::unordered_map<std::string, std::string> fields;
+
 		while ((field = mono_class_get_fields(klass, &iter)))
 		{
 			// check for attributes
 			MonoCustomAttrInfo* attrInfo = mono_custom_attrs_from_field(klass, field);
 
-			if ((mono_field_get_flags(field) & MONO_FIELD_ATTR_FIELD_ACCESS_MASK) == MONO_FIELD_ATTR_PRIVATE) continue;
-
 			if (attrInfo != nullptr)
 			{
-				MonoClass* attrKlass = mono_class_from_name(engine->mono.GetAPIImage(), "", "Header");
-				
 				if (attrKlass != nullptr)
 				{
 					if (mono_custom_attrs_has_attr(attrInfo, attrKlass))
 					{
 						MonoObject* attrObj = mono_custom_attrs_get_attr(attrInfo, attrKlass);
-						fields.insert(std::make_pair(GetStringFromField(attrObj, attrKlass, "name"), "Header"));
+						MonoVariable var;
+						var.type = m_Type::MONO_HEADER;
+						var.varName = GetStringFromField(attrObj, attrKlass, "name");
+						script->vars.push_back(var);
 					}
 				}
 			}
+
+			if ((mono_field_get_flags(field) & MONO_FIELD_ATTR_FIELD_ACCESS_MASK) == MONO_FIELD_ATTR_PRIVATE) continue;
 			
 			mono_custom_attrs_free(attrInfo);
-			fields.insert(std::make_pair(mono_field_get_name(field), "Variable"));
-		}
 
-		return fields;
+			MonoVariable var;
+			var.type = m_Type::MONO_VAR;
+			var.varName = mono_field_get_name(field);
+			script->vars.push_back(var);
+		}
 	}
 
 	void MonoManager::Update(MonoScript* obj)
@@ -268,7 +275,7 @@ namespace Eclipse
 		return obj;
 	}
 
-	MonoClass* MonoManager::GetMonoClass(std::string className)
+	MonoClass* MonoManager::GetAPIMonoClass(std::string className)
 	{
 		MonoClass* klass = mono_class_from_name(APIImage, "Eclipse", className.c_str());
 		if (!klass)
@@ -279,8 +286,20 @@ namespace Eclipse
 
 		return klass;
 	}
+	
+	MonoClass* MonoManager::GetScriptMonoClass(std::string className)
+	{
+		MonoClass* klass = mono_class_from_name(ScriptImage, "", className.c_str());
+		if (!klass)
+		{
+			std::cout << "Failed loading class: " << className << std::endl;
+			return nullptr;
+		}
 
-	MonoObject* MonoManager::CreateObjectFromClass(MonoClass* klass)
+		return klass;
+	}
+
+	MonoObject* MonoManager::CreateObjectFromClass(MonoClass* klass, bool defaultConstructor)
 	{
 		if (!klass) return nullptr;
 
@@ -290,7 +309,29 @@ namespace Eclipse
 			return nullptr;
 		}
 
-		mono_runtime_object_init(obj);
+		if (defaultConstructor)
+			mono_runtime_object_init(obj);
+
+		return obj;
+	}
+
+	MonoObject* MonoManager::CreateVector3Class(float x, float y, float z)
+	{
+		MonoClass* klass = GetAPIMonoClass("Vector3");
+		MonoObject* obj = CreateObjectFromClass(klass, false);
+		if (!obj) return nullptr;
+
+		DumpInfoFromClass(klass);
+
+		MonoMethod* method = GetMethodFromClass(klass, ".ctor", 3);
+		if (!method) return nullptr;
+
+		std::vector<void*> args;
+		args.push_back(&x);
+		args.push_back(&y);
+		args.push_back(&z);
+
+		ExecuteMethod(obj, method, args);
 
 		return obj;
 	}
@@ -301,12 +342,12 @@ namespace Eclipse
 
 		MonoClassField* field = mono_class_get_field_from_name(klass, fieldName);
 		if (!field) {
-			fprintf(stderr, "Can't find field val in MyType\n");
+			ENGINE_CORE_WARN("Can't find field in klass");
 			return std::string{};
 		}
 
 		if (mono_type_get_type(mono_field_get_type(field)) != MONO_TYPE_STRING) {
-			fprintf(stderr, "Field val is not a string\n");
+			ENGINE_CORE_WARN("Trying to set a field that is not a string field");
 			return std::string{};
 		}
 
@@ -315,9 +356,20 @@ namespace Eclipse
 		return mono_string_to_utf8(stringField);
 	}
 
-	MonoMethod* MonoManager::GetMethodFromClass(MonoClass* klass, std::string funcName)
+	void MonoManager::SetFloatFromField(MonoObject* obj, MonoClass* klass, const char* fieldName, float fieldValue)
 	{
-		MonoMethod* method = mono_class_get_method_from_name(klass, "funcName", -1);
+		MonoClassField* field = mono_class_get_field_from_name(klass, fieldName);
+		if (!field) {
+			ENGINE_CORE_WARN("Can't find field in klass");
+			return;
+		}
+
+		mono_field_set_value(obj, field, &fieldValue);
+	}
+
+	MonoMethod* MonoManager::GetMethodFromClass(MonoClass* klass, std::string funcName, int param_count)
+	{
+		MonoMethod* method = mono_class_get_method_from_name(klass, funcName.c_str(), param_count);
 		if (method == nullptr) {
 			std::cout << "Failed loading class method" << std::endl;
 			return nullptr;

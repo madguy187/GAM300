@@ -609,6 +609,9 @@ namespace Eclipse
         {
             MaterialComponent& Material = engine->world.GetComponent<MaterialComponent>(EntityID);
 
+            GLuint Transparency_ = shader.GetLocation("Transparency");
+            glUniform1f(Transparency_, mesh.transparency);
+
             if (Material.MaterialInstanceName.empty() == false)
             {
                 if (engine->gPBRManager->CheckMaterialExist(Material))

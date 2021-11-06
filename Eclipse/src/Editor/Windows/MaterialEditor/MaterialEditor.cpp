@@ -15,6 +15,14 @@ namespace Eclipse
         {
             ECGui::DrawMainWindow<void()>(WindowName, std::bind(&MaterialEditorWindow::RunMainWindow, this));
             ECGui::DrawMainWindow<void()>("Material Settings", std::bind(&MaterialEditorWindow::RunMaterialSettings, this));
+
+            ImGui::Begin("Material BluePrint", &IsVisible);
+            if (nameChange())
+            {
+                InitMaterialNodes();
+            }
+            MaterialEditor.DrawMaterialNodeEditor("Material BluePrint", MaterialEditor);
+            ImGui::End();
         }
     }
 
@@ -24,12 +32,30 @@ namespace Eclipse
         WindowName = "Material Editor";
         m_frameBuffer = engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_MATERIALEDITOR);
         IsVisible = false;
+        MaterialEditor.context = ImNodes::EditorContextCreate();
+        ImNodes::PushAttributeFlag(ImNodesAttributeFlags_EnableLinkDetachWithDragClick);
+        ImNodesIO& io = ImNodes::GetIO();
+        io.LinkDetachWithModifierClick.Modifier = &ImGui::GetIO().KeyCtrl;
+        MaterialEditor.initialized = true;
     }
 
     void MaterialEditorWindow::Unload()
     {
         IsVisible = false;
         engine->gPBRManager->gMaterialEditorSettings->ClearCurrentMaterial();
+
+       // MaterialEditor.initialized = true;
+        ImNodes::PopAttributeFlag();
+        ImNodes::PushAttributeFlag(ImNodesAttributeFlags_EnableLinkDetachWithDragClick);
+       //if (MaterialEditor.initialized)
+       //{
+       //    MaterialEditor.context = ImNodes::EditorContextCreate();
+       //    ImNodes::PushAttributeFlag(ImNodesAttributeFlags_EnableLinkDetachWithDragClick);
+       //    ImNodesIO& io = ImNodes::GetIO();
+       //    io.LinkDetachWithModifierClick.Modifier = &ImGui::GetIO().KeyCtrl;
+       //
+       //    MaterialEditor.initialized = false;
+       //}
     }
 
     void MaterialEditorWindow::RunMainWindow()
@@ -49,6 +75,7 @@ namespace Eclipse
         settings.Name = "MaterialEditorFrameBuffer";
         settings.Size = ImVec2{ mViewportSize.x, mViewportSize.y };
         ECGui::DrawChildWindow<void()>(settings, std::bind(&MaterialEditorWindow::RunFrameBuffer, this));
+
     }
 
     void MaterialEditorWindow::RunFrameBuffer()
@@ -178,6 +205,10 @@ namespace Eclipse
         {
             Unload();
             engine->gPBRManager->gMaterialEditorSettings->SelectedIndex = 0;
+
+            auto& cam = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::MaterialEditor_Camera));
+            cam.position = ECVec3{ 0.0f, 0.0f, 30.0f };;
+            cam.rotation = ECVec3{ 0.0f, -90.0f, 0.0f };
         }
         ImGui::Dummy(ImVec2(1, 10));
 
@@ -186,6 +217,8 @@ namespace Eclipse
         ShowMaterialProperty("Material", CompFilter);
         ShowTransformProperty("Transform", CompFilter);
         Buttons();
+
+
     }
 
     void MaterialEditorWindow::CheckCurrentMaterial(size_t comboIndex)
@@ -206,15 +239,29 @@ namespace Eclipse
         }
     }
 
+    MaterialEditorWindow::~MaterialEditorWindow()
+    {
+        ImNodes::EditorContextFree(MaterialEditor.context);
+    }
+
     void MaterialEditorWindow::Buttons()
     {
         std::string MaterialName_ = engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.Name.data();
 
-        ImGui::Dummy(ImVec2(1, 2));
+        ImGui::Dummy(ImVec2(1, 5));
+        if (strcmp(MaterialName_.c_str(), "Default") != 0)
+        {
+            if (ECGui::ButtonBool("SetUp Blank Material", { ImGui::GetColumnWidth(), 25 }))
+            {
+                ColorPicker = ECVec3{ 1.0f };
+                engine->gPBRManager->gMaterialEditorSettings->ClearCurrentMaterial();
+                engine->gPBRManager->gMaterialEditorSettings->ClearTextureFields();
+            }
+        }
 
         if (engine->gPBRManager->AllMaterialInstances.find(MaterialName_) == engine->gPBRManager->AllMaterialInstances.end())
         {
-            ImGui::Dummy(ImVec2(1, 5));
+            ImGui::Dummy(ImVec2(1, 2));
 
             if (strcmp(MaterialName_.c_str(), "Default") != 0)
             {
@@ -233,7 +280,6 @@ namespace Eclipse
             engine->gPBRManager->gMaterialEditorSettings->ClearCurrentMaterial();
             engine->gPBRManager->gMaterialEditorSettings->ClearTextureFields();
         }
-
         ImGui::Dummy(ImVec2(1, 2));
 
         if (engine->gPBRManager->AllMaterialInstances.find(MaterialName_) != engine->gPBRManager->AllMaterialInstances.end())
@@ -264,9 +310,7 @@ namespace Eclipse
             }
         }
 
-        ImGui::Dummy(ImVec2(1, 5));
-
-        if ((strcmp(MaterialName_.c_str(), "Default") != 0) && (comboindex != 0) )
+        if (strcmp(MaterialName_.c_str(), "Default") != 0)
         {
             if (ECGui::ButtonBool("Update Material", { ImGui::GetColumnWidth(), 25 }))
             {
@@ -276,6 +320,25 @@ namespace Eclipse
                 }
             }
         }
+    }
+
+    void MaterialEditorWindow::InitMaterialNodes()
+    {
+        //MaterialEditor.initialized = true;
+        //ImNodes::PopAttributeFlag();
+        //ImNodes::EditorContextFree(MaterialEditor.context);
+
+        MaterialEditor.Reset();
+
+        //if (MaterialEditor.initialized)
+        //{
+        //    MaterialEditor.context = ImNodes::EditorContextCreate();
+        //    ImNodes::PushAttributeFlag(ImNodesAttributeFlags_EnableLinkDetachWithDragClick);
+        //    ImNodesIO& io = ImNodes::GetIO();
+        //    io.LinkDetachWithModifierClick.Modifier = &ImGui::GetIO().KeyCtrl;
+        //
+        //    MaterialEditor.initialized = false;
+        //}
     }
 
     bool MaterialEditorWindow::ShowTransformProperty(const char* name, ImGuiTextFilter& filter)
@@ -293,11 +356,11 @@ namespace Eclipse
 
     bool MaterialEditorWindow::ShowMaterialProperty(const char* name, ImGuiTextFilter& filter)
     {
-        const auto& MaterialNames = engine->gPBRManager->AllMaterialInstName;
-        ComboListSettings settingsss = { "Current Material" };
-        ECGui::DrawTextWidget<const char*>("Current Materials:", EMPTY_STRING);
-        ECGui::CreateComboList(settingsss, MaterialNames, comboindex);
-        CheckCurrentMaterial(comboindex);
+        //const auto& MaterialNames = engine->gPBRManager->AllMaterialInstName;
+        //ComboListSettings settingsss = { "Current Material" };
+        //ECGui::DrawTextWidget<const char*>("Current Materials:", EMPTY_STRING);
+        //ECGui::CreateComboList(settingsss, MaterialNames, comboindex);
+        //CheckCurrentMaterial(comboindex);
 
         ECGui::NextColumn();
         ImGui::Dummy(ImVec2(1, 5));
@@ -408,5 +471,29 @@ namespace Eclipse
         }
 
         return false;
+    }
+    bool MaterialEditorWindow::nameChange()
+    {
+        if (nameChanged)
+        {
+            if (strcmp(tempName.c_str(), engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.Name.data()) == 0)
+            {
+                nameChanged = true;
+                return false;
+            }
+            else
+            {
+                nameChanged = false;
+                return true;
+            }
+        }
+        else
+            if (!nameChanged)
+            {
+                tempName = engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.Name.data();
+                nameChanged = true;
+                return true;
+            }
+
     }
 }

@@ -8,16 +8,24 @@ namespace Eclipse
     {
         // Light Source in MeshEditor
         LightPosition = ECVec3(15.0f, 15.0f, 15.0f);
-        lightColor = ECVec3(150.0f, 150.0f, 105.0f);
+        lightColor = ECVec3(1.0f, 1.0f, 1.0f);
+
+        CreateSphere();
     }
 
     void MaterialEditorSettings::CreateModel()
     {
-        //auto& Innername = engine->AssimpManager.Prefabs["Inner"][0];
-        //InnerEntity = engine->world.CreateEntity();
-        //engine->world.AddComponent(InnerEntity, TransformComponent{});
-        //engine->world.AddComponent(InnerEntity, MeshComponent{});
-        //engine->AssimpManager.SetSingleMesh(InnerEntity, Innername);
+        auto& Innername = engine->AssimpManager.Prefabs["Cube"][0];
+        InnerEntity = engine->world.CreateEntity();
+        engine->world.AddComponent(InnerEntity, TransformComponent{});
+        engine->world.AddComponent(InnerEntity, MeshComponent{});
+        engine->AssimpManager.SetSingleMesh(InnerEntity, Innername);
+
+        auto& trans = engine->world.GetComponent<TransformComponent>(InnerEntity);
+        trans.scale.setX(100.0f);
+        trans.scale.setX(5.0f);
+        trans.scale.setX(100.0f);
+
         //
         //auto& Outername = engine->AssimpManager.Prefabs["Outer"][0];
         //OuterEntity = engine->world.CreateEntity();
@@ -29,7 +37,7 @@ namespace Eclipse
         //engine->AssimpManager.RenderMesh(Outer, GL_FILL);
         //UpdateInner(shdrpgm, _camera, InnerEntity);
         //auto& Inner = engine->world.GetComponent<MeshComponent>(InnerEntity);
-            //engine->AssimpManager.RenderMesh(Inner, GL_FILL);
+        //engine->AssimpManager.RenderMesh(Inner, GL_FILL);
     }
 
     void MaterialEditorSettings::CreateMaterialInstance()
@@ -105,10 +113,13 @@ namespace Eclipse
 
             UpdateCamera(shdrpgm, _camera);
             UpdateLights(shdrpgm);
-
             UpdateCurrentMaterial(shdrpgm, _camera);
-
             RenderSphere();
+
+            //auto& i = engine->world.GetComponent<MeshComponent>(InnerEntity);       
+            //UpdateCamera(shdrpgm, _camera);
+            //UpdateInner(shdrpgm, _camera, InnerEntity);
+            //engine->AssimpManager.RenderMesh(i, GL_FILL);
             shdrpgm.UnUse();
         }
     }
@@ -128,9 +139,11 @@ namespace Eclipse
         GLint HeightScale_ = shdrpgm.GetLocation("HeightScale");
         GLint SurfaceColour_ = shdrpgm.GetLocation("SurfaceColour");
 
-        Trans.scale.setX(10);
-        Trans.scale.setY(10);
-        Trans.scale.setZ(10);
+        Trans.scale.setX(50);
+        Trans.scale.setY(1);
+        Trans.scale.setZ(50);
+
+        Trans.position.setY(-15);
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::mat4(1.0f);
@@ -177,34 +190,45 @@ namespace Eclipse
 
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
 
-        if (SelectedIndex == 0)
-        {
-            GLCall(glUniform3f(SurfaceColour_, CurrentMaterial.SurfaceColour.getX(), CurrentMaterial.SurfaceColour.getY(), CurrentMaterial.SurfaceColour.getZ()));
-            GLCall(glUniform1f(HeightScale_, CurrentMaterial.HeightScale));
-            GLCall(glUniform1i(NormalMap_, CurrentMaterial.IsNormalMap));
-            GLCall(glUniform1i(HasInstance, CurrentMaterial.HasTexture));
-            GLCall(glUniform3f(AlbedoConstant, CurrentMaterial.AlbedoConstant.getX(), CurrentMaterial.AlbedoConstant.getY(), CurrentMaterial.AlbedoConstant.getZ()));
-            GLCall(glUniform1f(AoConstant, CurrentMaterial.AoConstant));
-            GLCall(glUniform1f(MetallicConstant, CurrentMaterial.MetallicConstant));
-            GLCall(glUniform1f(RoughnessConstant, CurrentMaterial.RoughnessConstant));
-            GLCall(glUniform3f(BaseReflectivity, CurrentMaterial.BaseReflectivity.getX(), CurrentMaterial.BaseReflectivity.getY(), CurrentMaterial.BaseReflectivity.getZ()));
+        // When Material is selected
+        GLCall(glUniform3f(SurfaceColour_, CurrentMaterial.SurfaceColour.getX(), CurrentMaterial.SurfaceColour.getY(), CurrentMaterial.SurfaceColour.getZ()));
+        GLCall(glUniform1i(NormalMap_, CurrentMaterial.IsNormalMap));
+        GLCall(glUniform1f(HeightScale_, CurrentMaterial.HeightScale));
+        GLCall(glUniform1i(HasInstance, CurrentMaterial.HasTexture));
+        GLCall(glUniform3f(AlbedoConstant, CurrentMaterial.AlbedoConstant.getX(), CurrentMaterial.AlbedoConstant.getY(), CurrentMaterial.AlbedoConstant.getZ()));
+        GLCall(glUniform1f(AoConstant, CurrentMaterial.AoConstant));
+        GLCall(glUniform1f(MetallicConstant, CurrentMaterial.MetallicConstant));
+        GLCall(glUniform1f(RoughnessConstant, CurrentMaterial.RoughnessConstant));
+        GLCall(glUniform3f(BaseReflectivity, CurrentMaterial.BaseReflectivity.getX(), CurrentMaterial.BaseReflectivity.getY(), CurrentMaterial.BaseReflectivity.getZ()));
+        BindMaterial(shdrpgm, CurrentMaterial.Name.data());
 
-            BindMaterial(shdrpgm, "None");
-        }
-        else
-        {
-            GLCall(glUniform3f(SurfaceColour_, CurrentMaterial.SurfaceColour.getX(), CurrentMaterial.SurfaceColour.getY(), CurrentMaterial.SurfaceColour.getZ()));
-            GLCall(glUniform1i(NormalMap_, CurrentMaterial.IsNormalMap));
-            GLCall(glUniform1f(HeightScale_, CurrentMaterial.HeightScale));
-            GLCall(glUniform1i(HasInstance, CurrentMaterial.HasTexture));
-            GLCall(glUniform3f(AlbedoConstant, CurrentMaterial.AlbedoConstant.getX(), CurrentMaterial.AlbedoConstant.getY(), CurrentMaterial.AlbedoConstant.getZ()));
-            GLCall(glUniform1f(AoConstant, CurrentMaterial.AoConstant));
-            GLCall(glUniform1f(MetallicConstant, CurrentMaterial.MetallicConstant));
-            GLCall(glUniform1f(RoughnessConstant, CurrentMaterial.RoughnessConstant));
-            GLCall(glUniform3f(BaseReflectivity, CurrentMaterial.BaseReflectivity.getX(), CurrentMaterial.BaseReflectivity.getY(), CurrentMaterial.BaseReflectivity.getZ()));
+        //if (SelectedIndex == 0)
+        //{
+        //    GLCall(glUniform3f(SurfaceColour_, CurrentMaterial.SurfaceColour.getX(), CurrentMaterial.SurfaceColour.getY(), CurrentMaterial.SurfaceColour.getZ()));
+        //    GLCall(glUniform1f(HeightScale_, CurrentMaterial.HeightScale));
+        //    GLCall(glUniform1i(NormalMap_, CurrentMaterial.IsNormalMap));
+        //    GLCall(glUniform1i(HasInstance, CurrentMaterial.HasTexture));
+        //    GLCall(glUniform3f(AlbedoConstant, CurrentMaterial.AlbedoConstant.getX(), CurrentMaterial.AlbedoConstant.getY(), CurrentMaterial.AlbedoConstant.getZ()));
+        //    GLCall(glUniform1f(AoConstant, CurrentMaterial.AoConstant));
+        //    GLCall(glUniform1f(MetallicConstant, CurrentMaterial.MetallicConstant));
+        //    GLCall(glUniform1f(RoughnessConstant, CurrentMaterial.RoughnessConstant));
+        //    GLCall(glUniform3f(BaseReflectivity, CurrentMaterial.BaseReflectivity.getX(), CurrentMaterial.BaseReflectivity.getY(), CurrentMaterial.BaseReflectivity.getZ()));
 
-            BindMaterial(shdrpgm, CurrentMaterial.Name.data());
-        }
+        //    BindMaterial(shdrpgm, "None");
+        //}
+        //else
+        //{
+        //GLCall(glUniform3f(SurfaceColour_, CurrentMaterial.SurfaceColour.getX(), CurrentMaterial.SurfaceColour.getY(), CurrentMaterial.SurfaceColour.getZ()));
+        //GLCall(glUniform1i(NormalMap_, CurrentMaterial.IsNormalMap));
+        //GLCall(glUniform1f(HeightScale_, CurrentMaterial.HeightScale));
+        //GLCall(glUniform1i(HasInstance, CurrentMaterial.HasTexture));
+        //GLCall(glUniform3f(AlbedoConstant, CurrentMaterial.AlbedoConstant.getX(), CurrentMaterial.AlbedoConstant.getY(), CurrentMaterial.AlbedoConstant.getZ()));
+        //GLCall(glUniform1f(AoConstant, CurrentMaterial.AoConstant));
+        //GLCall(glUniform1f(MetallicConstant, CurrentMaterial.MetallicConstant));
+        //GLCall(glUniform1f(RoughnessConstant, CurrentMaterial.RoughnessConstant));
+        //GLCall(glUniform3f(BaseReflectivity, CurrentMaterial.BaseReflectivity.getX(), CurrentMaterial.BaseReflectivity.getY(), CurrentMaterial.BaseReflectivity.getZ()));
+        //BindMaterial(shdrpgm, CurrentMaterial.Name.data());
+        //}
     }
 
     void MaterialEditorSettings::ClearCurrentMaterial()
@@ -231,7 +255,7 @@ namespace Eclipse
         GLint uniform_var_loc2 = MaterialEditorShader.GetLocation(("pointLights[" + number + "].lightColor").c_str());
 
         GLCall(glUniform3f(uniform_var_loc1, LightPosition.getX(), LightPosition.getY(), LightPosition.getZ()));
-        GLCall(glUniform3f(uniform_var_loc2, 300.0f, 300.0f, 300.0f));
+        GLCall(glUniform3f(uniform_var_loc2, 4.0f, 4.0f, 4.0f));
     }
 
     void MaterialEditorSettings::UpdateCamera(Shader& MaterialEditorShader, CameraComponent& MeshEditorCamera)
@@ -247,13 +271,8 @@ namespace Eclipse
         GLCall(glUniform3f(cameraPos, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ()));
     }
 
-    void MaterialEditorSettings::RenderSphere()
+    void MaterialEditorSettings::CreateSphere()
     {
-        glEnable(GL_BLEND);
-        glEnable(GL_DEPTH_TEST);
-        glDisable(GL_CULL_FACE);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
         if (sphereVAO == 0)
         {
             glGenVertexArrays(1, &sphereVAO);
@@ -345,6 +364,106 @@ namespace Eclipse
             glEnableVertexAttribArray(2);
             glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (void*)(6 * sizeof(float)));
         }
+    }
+
+    void MaterialEditorSettings::RenderSphere()
+    {
+        glEnable(GL_BLEND);
+        glEnable(GL_DEPTH_TEST);
+        glDisable(GL_CULL_FACE);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+        //if (sphereVAO == 0)
+        //{
+        //    glGenVertexArrays(1, &sphereVAO);
+
+        //    unsigned int vbo, ebo;
+        //    glGenBuffers(1, &vbo);
+        //    glGenBuffers(1, &ebo);
+
+        //    std::vector<glm::vec3> positions;
+        //    std::vector<glm::vec3> normals;
+        //    std::vector<glm::vec2> uv;
+        //    std::vector<unsigned int> indices;
+
+        //    const unsigned int X_SEGMENTS = 64;
+        //    const unsigned int Y_SEGMENTS = 64;
+        //    for (unsigned int x = 0; x <= X_SEGMENTS; ++x)
+        //    {
+        //        for (unsigned int y = 0; y <= Y_SEGMENTS; ++y)
+        //        {
+        //            float xSegment = (float)x / (float)X_SEGMENTS;
+        //            float ySegment = (float)y / (float)Y_SEGMENTS;
+        //            float xPos = std::cos(xSegment * 2.0f * PI) * std::sin(ySegment * PI);
+        //            float yPos = std::cos(ySegment * PI);
+        //            float zPos = std::sin(xSegment * 2.0f * PI) * std::sin(ySegment * PI);
+
+        //            positions.push_back(glm::vec3(xPos, yPos, zPos));
+        //            normals.push_back(glm::vec3(xPos, yPos, zPos));
+        //            uv.push_back(glm::vec2(xSegment, ySegment));
+        //        }
+        //    }
+
+        //    bool oddRow = false;
+        //    for (unsigned int y = 0; y < Y_SEGMENTS; ++y)
+        //    {
+        //        if (!oddRow) // even rows: y == 0, y == 2; and so on
+        //        {
+        //            for (unsigned int x = 0; x <= X_SEGMENTS; ++x)
+        //            {
+        //                indices.push_back(y * (X_SEGMENTS + 1) + x);
+        //                indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            for (int x = X_SEGMENTS; x >= 0; --x)
+        //            {
+        //                indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
+        //                indices.push_back(y * (X_SEGMENTS + 1) + x);
+        //            }
+        //        }
+        //        oddRow = !oddRow;
+        //    }
+        //    indexCount = static_cast<unsigned int>(indices.size());
+
+        //    std::vector<float> data;
+        //    for (unsigned int i = 0; i < positions.size(); ++i)
+        //    {
+        //        data.push_back(positions[i].x);
+        //        data.push_back(positions[i].y);
+        //        data.push_back(positions[i].z);
+
+        //        if (normals.size() > 0)
+        //        {
+        //            data.push_back(normals[i].x);
+        //            data.push_back(normals[i].y);
+        //            data.push_back(normals[i].z);
+        //        }
+
+        //        if (uv.size() > 0)
+        //        {
+        //            data.push_back(uv[i].x);
+        //            data.push_back(uv[i].y);
+        //        }
+        //    }
+
+        //    glBindVertexArray(sphereVAO);
+        //    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        //    glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), &data[0], GL_STATIC_DRAW);
+        //    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+        //    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+        //    unsigned int stride = (3 + 2 + 3) * sizeof(float);
+
+        //    glEnableVertexAttribArray(0);
+        //    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
+
+        //    glEnableVertexAttribArray(1);
+        //    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
+
+        //    glEnableVertexAttribArray(2);
+        //    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (void*)(6 * sizeof(float)));
+        //}
 
         glBindVertexArray(sphereVAO);
         glDrawElements(GL_TRIANGLE_STRIP, indexCount, GL_UNSIGNED_INT, 0);

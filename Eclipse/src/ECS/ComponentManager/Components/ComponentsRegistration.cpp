@@ -184,6 +184,7 @@ namespace Eclipse
         ADD_MEMBER(hasTexture);
         ADD_MEMBER(visible);
         ADD_MEMBER(AffectsWorld);
+        ADD_MEMBER(RGBColor);
     }
 
     DEFINE_META(RigidBodyComponent)
@@ -222,6 +223,7 @@ namespace Eclipse
         ADD_MEMBER(hasTexture);
         ADD_MEMBER(visible);
         ADD_MEMBER(AffectsWorld);
+        ADD_MEMBER(RGBColor);
     }
 
     DEFINE_META(TextureComponent)

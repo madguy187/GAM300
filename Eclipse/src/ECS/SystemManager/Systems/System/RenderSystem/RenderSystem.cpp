@@ -86,6 +86,11 @@ namespace Eclipse
 
                 MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
 
+                if (Mesh.transparency == 0.0f)
+                {
+                    continue;
+                }
+
                 // After hot-realoding , we check if he still exists or not
                 if (engine->AssimpManager.CheckGeometryExist(Mesh))
                 {
@@ -98,13 +103,6 @@ namespace Eclipse
                         // See Normal Vectors
                         engine->MaterialManager.UpdateStencilWithActualObject(entityID);
                         engine->AssimpManager.DebugNormals(Mesh, entityID, FrameBufferMode::FBM_SCENE, CameraComponent::CameraType::Editor_Camera);
-                    }
-
-                    if (engine->editorManager->GetEditorWindow<eGameViewWindow>()->IsVisible)
-                    {
-                        engine->MaterialManager.DoNotUpdateStencil();
-                        engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_GAME, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME),
-                            CameraComponent::CameraType::Game_Camera);
                     }
 
                     // Top View Port
@@ -137,6 +135,23 @@ namespace Eclipse
                         engine->MaterialManager.DoNotUpdateStencil();
                         engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_RIGHT, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_RIGHT),
                             CameraComponent::CameraType::RightView_camera);
+                    }
+
+                    // Game View is abit Special.
+                    if (engine->editorManager->GetEditorWindow<eGameViewWindow>()->IsVisible)
+                    {
+                        if (engine->gFrameBufferManager->PostProcess->AllowPostProcess && engine->gFrameBufferManager->PostProcess->PPType_ == FrameBuffer::PostProcessType::PPT_SOBEL)
+                        {
+                            engine->MaterialManager.DoNotUpdateStencil();
+                            engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_GAME_SOBEL, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME_SOBEL),
+                                CameraComponent::CameraType::Game_Camera);
+                        }
+                        else
+                        {
+                            engine->MaterialManager.DoNotUpdateStencil();
+                            engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_GAME, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME),
+                                CameraComponent::CameraType::Game_Camera);
+                        }
                     }
 
                     engine->MaterialManager.Highlight3DModels(entityID, FrameBufferMode::FBM_SCENE);
