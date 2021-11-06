@@ -26,6 +26,7 @@ void Eclipse::NodeEditorWindow::Init()
 void Eclipse::NodeEditorWindow::Unload()
 {
 	ImNodes::PopAttributeFlag();
+	ImNodes::PushAttributeFlag(ImNodesAttributeFlags_EnableLinkDetachWithDragClick);
 }
 
 void Eclipse::NodeEditorWindow::DrawImpl()

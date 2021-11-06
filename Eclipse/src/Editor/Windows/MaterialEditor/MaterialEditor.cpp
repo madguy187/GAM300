@@ -46,7 +46,7 @@ namespace Eclipse
 
        // MaterialEditor.initialized = true;
         ImNodes::PopAttributeFlag();
-
+        ImNodes::PushAttributeFlag(ImNodesAttributeFlags_EnableLinkDetachWithDragClick);
        //if (MaterialEditor.initialized)
        //{
        //    MaterialEditor.context = ImNodes::EditorContextCreate();
