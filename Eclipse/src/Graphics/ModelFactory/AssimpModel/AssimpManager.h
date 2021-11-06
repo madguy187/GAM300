@@ -39,6 +39,8 @@ namespace Eclipse
         std::vector<std::string>& GetMeshNames();
         std::vector<std::string>& GetPrimitiveNames();
         void MeshDraw(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, RenderMode _renderMode, CameraComponent::CameraType _camType);
+        void LightPerSpectiveDraw(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType);
+        void ShadowDraw(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType);
         void DebugNormals(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode in, CameraComponent::CameraType _camType);
         void CheckUniformLoc(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID, AABB_* box);
         void TestPath(std::string& path);

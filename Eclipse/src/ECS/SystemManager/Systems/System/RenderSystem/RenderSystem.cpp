@@ -13,6 +13,9 @@
 
 namespace Eclipse
 {
+    unsigned int quadVAO = 0;
+    unsigned int quadVBO;
+
     void RenderSystem::Init()
     {
         // Register Threads
@@ -38,6 +41,8 @@ namespace Eclipse
 
     void RenderSystem::Update()
     {
+        float near_plane = 1.0f, far_plane = 500.5f;
+
         ZoneScopedN("Render System")
             engine->Timer.SetName({ SystemName::RENDER });
         engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
@@ -93,7 +98,7 @@ namespace Eclipse
 
                 // After hot-realoding , we check if he still exists or not
                 if (engine->AssimpManager.CheckGeometryExist(Mesh))
-                {
+                {                     
                     // If Scene View is visible
                     if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
                     {
@@ -110,13 +115,13 @@ namespace Eclipse
                         }
                         else
                         {
-                            // If no post process , just render normally
-                            engine->MaterialManager.UpdateStencilWithActualObject(entityID);
-
-                            engine->AssimpManager.MeshDraw(Mesh, entityID,
-                            FrameBufferMode::FBM_SCENE,
-                            engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SCENE),
-                            CameraComponent::CameraType::Editor_Camera);
+                            //If no post process , just render normally
+                            //engine->MaterialManager.UpdateStencilWithActualObject(entityID);
+                            //
+                            //engine->AssimpManager.MeshDraw(Mesh, entityID,
+                            //FrameBufferMode::FBM_SCENE,
+                            //engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SCENE),
+                            //CameraComponent::CameraType::Editor_Camera);
                         }
 
                         // See Normal Vectors
@@ -184,8 +189,48 @@ namespace Eclipse
                     // If scene not playing , we enable highlight
                     if (engine->IsScenePlaying() != true)
                     {
-                        engine->MaterialManager.Highlight3DModels(entityID, FrameBufferMode::FBM_SCENE);
+                        //engine->MaterialManager.Highlight3DModels(entityID, FrameBufferMode::FBM_SCENE);
                     }
+
+                    // 1. render depth of scene to texture (from light's perspective)
+                    // -------------------------------------------------------------
+                    glm::vec3 lightPos(-2.0f, 4.0f, -1.0f);
+                    glm::mat4 lightProjection, lightView;
+                    glm::mat4 lightSpaceMatrix;
+                    lightProjection = glm::ortho(-20.0f, 20.0f, -20.0f, 20.0f, near_plane, far_plane);
+                    lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+                    lightSpaceMatrix = lightProjection * lightView;
+
+                    // render scene from light's point of view
+                    auto& simpleDepthShader = Graphics::shaderpgms["SimpleDepthShader"];
+                    simpleDepthShader.Use();
+                    simpleDepthShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
+                    engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SHADOW);
+                    engine->MaterialManager.DoNotUpdateStencil();
+                    engine->AssimpManager.LightPerSpectiveDraw(Mesh, entityID, FrameBufferMode::FBM_SHADOW, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SHADOW),
+                        CameraComponent::CameraType::Editor_Camera);
+
+                    // 2. render scene as normal using the generated depth/shadow map  
+                    // --------------------------------------------------------------
+                    auto& Camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+                    auto& CameraPos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+                    auto& ShadowMappingShader = Graphics::shaderpgms["ShadowMapping"];
+                    ShadowMappingShader.Use();
+                    ShadowMappingShader.setMat4("projection", Camera.projMtx);
+                    ShadowMappingShader.setMat4("view", Camera.viewMtx);
+                    ShadowMappingShader.setInt("shadowMap", 2);
+
+                    // set light uniforms
+                    ShadowMappingShader.setVec3("viewPos", CameraPos.position.ConvertToGlmVec3Type());
+                    ShadowMappingShader.setVec3("lightPos", lightPos);
+                    ShadowMappingShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
+
+                    glActiveTexture(GL_TEXTURE1);
+                    glActiveTexture(GL_TEXTURE2);
+                    glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SHADOW));
+                    engine->MaterialManager.DoNotUpdateStencil();
+                    engine->AssimpManager.ShadowDraw(Mesh, entityID, FrameBufferMode::FBM_SCENE, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SCENE),
+                        CameraComponent::CameraType::Editor_Camera);
                 }
             }
 

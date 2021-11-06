@@ -204,6 +204,9 @@ enum class FrameBufferMode
     FBM_GAME_SOBEL = 9,
     FBM_SCENE_SOBEL = 10,
 
+    // Shadow
+    FBM_SHADOW = 11,
+
     MAXCOUNT
 };
 

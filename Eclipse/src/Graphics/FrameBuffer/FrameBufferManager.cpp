@@ -26,6 +26,8 @@ namespace Eclipse
         PostProcess = std::make_unique<FrameBuffer>();
         PostProcess->CreatePostProcessFramebuffer();
 
+        // Shadows
+        CreateFBO(1270, 593, FrameBufferMode::FBM_SHADOW);
     }
 
     void FrameBufferManager::CreateFBO(unsigned int width_, unsigned int height_, FrameBufferMode in)
@@ -366,5 +368,16 @@ namespace Eclipse
                 PostProcessUpdate(FrameBufferMode::FBM_SCENE);
             }
         }
+
+        engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SCENE);
+        auto& debugDepthQuad = Graphics::shaderpgms["DepthQuad"];
+        debugDepthQuad.Use();
+        debugDepthQuad.setFloat("near_plane", 1);
+        debugDepthQuad.setFloat("far_plane", 500.5);
+
+        glBindVertexArray(engine->gFrameBufferManager->PostProcess->rectVAO);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SHADOW));
+        //glDrawArrays(GL_TRIANGLES, 0, 6);
     }
 }

@@ -15,6 +15,8 @@ namespace Eclipse
       "MATERIALEDITORVIEW",
       "MESHEDITORVIEW",
       "GAMEVIEW_SOBEL",
+      "SCENEVIEW_SOBEL",
+      "SHADOWFBO",
       "MAXCOUNT"
     };
 
@@ -94,6 +96,11 @@ namespace Eclipse
 
         // Bleeding
         float BleedingTimer = 0.0f;
+
+        // Shadow
+        void CreateShadowFBO(unsigned int p_width, unsigned int p_height);
+        unsigned int SHADOW_WIDTH = 0, SHADOW_HEIGHT = 0;
+
     };
 }
 #endif//FRAMEBUFFER_H

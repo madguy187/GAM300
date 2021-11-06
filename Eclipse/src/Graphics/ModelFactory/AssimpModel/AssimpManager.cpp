@@ -215,6 +215,50 @@ namespace Eclipse
         }
     }
 
+    void AssimpModelManager::LightPerSpectiveDraw(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType)
+    {
+        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
+        engine->gFrameBufferManager->UseFrameBuffer(Mode);
+
+        auto shdrpgm = Graphics::shaderpgms["SimpleDepthShader"];
+        shdrpgm.Use();
+
+        //gEnvironmentMap.CheckUniform(ModelMesh, _camera);
+        ChecModelkUniforms(shdrpgm, _camera, ID);
+        CheckUniforms(shdrpgm, ID, ModelMesh, _camera);
+
+        if (_renderMode == RenderMode::Fill_Mode)
+        {
+            RenderMesh(ModelMesh, GL_FILL);
+        }
+        else
+        {
+            RenderMesh(ModelMesh, GL_LINE);
+        }
+    }
+
+    void AssimpModelManager::ShadowDraw(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType)
+    {
+        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
+        engine->gFrameBufferManager->UseFrameBuffer(Mode);
+
+        auto shdrpgm = Graphics::shaderpgms["ShadowMapping"];
+        shdrpgm.Use();
+
+        //gEnvironmentMap.CheckUniform(ModelMesh, _camera);
+        ChecModelkUniforms(shdrpgm, _camera, ID);
+        CheckUniforms(shdrpgm, ID, ModelMesh, _camera);
+
+        if (_renderMode == RenderMode::Fill_Mode)
+        {
+            RenderMesh(ModelMesh, GL_FILL);
+        }
+        else
+        {
+            RenderMesh(ModelMesh, GL_LINE);
+        }
+    }
+
     void AssimpModelManager::DebugNormals(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode In, CameraComponent::CameraType _camType)
     {
         if (engine->GraphicsManager.VisualizeNormalVectors == true)
@@ -705,6 +749,9 @@ namespace Eclipse
                         {
                             GLuint albedoMap = shader.GetLocation("albedoMap");
                             glUniform1i(albedoMap, it);
+
+                            shader.setInt("diffuseTexture", it);
+
                             Material.HoldingTextures[it].Bind();
                         }
                         // If we have normal Maps

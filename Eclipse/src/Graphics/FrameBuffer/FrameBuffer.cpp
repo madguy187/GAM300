@@ -34,7 +34,16 @@ namespace Eclipse
 
         m_data.hiddentype = in;
         Name = getStringForEnum(static_cast<int>(in));
-        CreateFrameBuffer(m_width, m_height);
+
+        if (in == FrameBufferMode::FBM_SHADOW)
+        {
+            CreateShadowFBO(m_width, m_height);
+        }
+        else
+        {
+            CreateFrameBuffer(m_width, m_height);
+        }
+
         //std::string SuccessMsg = "FrameBuffer [" + Name + "]  Created Successfully";
         //ENGINE_CORE_INFO(SuccessMsg.c_str());
     }
@@ -103,6 +112,32 @@ namespace Eclipse
             engine->gFrameBufferManager->DeleteFrameBuffer(FrameBufferType);
         }
 
+    }
+
+    void FrameBuffer::CreateShadowFBO(unsigned int p_width, unsigned int p_height)
+    {
+        SHADOW_WIDTH = p_width;
+        SHADOW_HEIGHT = p_height;
+
+        glGenFramebuffers(1, &m_data.frameBufferID);
+        glBindFramebuffer(GL_FRAMEBUFFER, m_data.frameBufferID);
+
+        glGenTextures(1, &m_data.ColorBuffers[0]);
+        glBindTexture(GL_TEXTURE_2D, m_data.ColorBuffers[0]);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+        // attach depth texture as FBO's depth buffer
+        glBindFramebuffer(GL_FRAMEBUFFER, m_data.frameBufferID);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_data.ColorBuffers[0], 0);
+
+        glDrawBuffer(GL_NONE);
+        glReadBuffer(GL_NONE);
+
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
     void FrameBuffer::CreateFrameBuffer(unsigned int p_width, unsigned int p_height)
