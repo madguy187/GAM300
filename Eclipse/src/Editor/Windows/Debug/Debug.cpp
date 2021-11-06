@@ -158,7 +158,7 @@ namespace Eclipse
     {
         ECGui::CheckBoxBool("Draw Grid", &engine->GridManager->Visible, false);
         ECGui::InsertSameLine();
-        ECGui::CheckBoxBool("PostProcess", &engine->gFrameBufferManager.PostProcess->AllowPostProcess, false);
+        ECGui::CheckBoxBool("PostProcess", &engine->gFrameBufferManager->PostProcess->AllowPostProcess, false);
         ECGui::InsertSameLine();
         ECGui::CheckBoxBool("Draw Normals", &engine->GraphicsManager.VisualizeNormalVectors, false);
         ECGui::InsertSameLine();
@@ -181,14 +181,14 @@ namespace Eclipse
         ECGui::DrawTextWidget<const char*>("HDR Exposure:", EMPTY_STRING);
         ECGui::DrawSliderFloatWidget("HDR Exposure", &engine->GraphicsManager.Exposure, true, 0.1f, 10.5f);
 
-            if (engine->gFrameBufferManager.PostProcess->AllowPostProcess)
+            if (engine->gFrameBufferManager->PostProcess->AllowPostProcess)
             {
                 std::vector<std::string> Methods = { "NONE" , "INVERSE" , "GREYSCALE" ,"KERNEL" , "BLUR" , "SOBEL"};
                 ComboListSettings settingsss = { "PostProcess Methods" };
                 static size_t comboindex = 0;
                 ECGui::DrawTextWidget<const char*>("PostProcess Types:", EMPTY_STRING);
                 ECGui::CreateComboList(settingsss, Methods, comboindex);
-                engine->GraphicsManager.PostProcess->PPType_ = static_cast<FrameBuffer::PostProcessType>(comboindex);
+                engine->gFrameBufferManager->PostProcess->PPType_ = static_cast<FrameBuffer::PostProcessType>(comboindex);
             }
 
         if (engine->GraphicsManager.VisualizeNormalVectors)
@@ -256,7 +256,7 @@ namespace Eclipse
                     ECGui::NextColumn();
 
                     ECGui::DrawInputTextHintWidget(lexical_cast<std::string>(pair.first).c_str(), const_cast<char*>(pair.second.c_str()),
-                        EMPTY_STRING, 0, ImGuiInputTextFlags_ReadOnly, true);
+                        EMPTY_STRING, 0, true, ImGuiInputTextFlags_ReadOnly);
 
                     ECGui::NextColumn();
 

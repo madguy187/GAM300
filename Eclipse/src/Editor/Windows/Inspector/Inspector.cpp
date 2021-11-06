@@ -1143,7 +1143,9 @@ namespace Eclipse
 
     bool InspectorWindow::ShowBPProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
     {
-
+        (void)name;
+        (void)ID;
+        (void)filter;
         //if (engine->world.CheckComponent<Editor_>(ID))
         //{
         //    if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
@@ -1975,7 +1977,7 @@ namespace Eclipse
 
     void InspectorWindow::SetCollisionLayerTracker(const std::unordered_map<int, std::string>& layerlist)
     {
-        auto& scriptsys = engine->world.GetSystem<MonoSystem>();
+        auto scriptsys = engine->world.GetSystem<MonoSystem>();
         auto* dw = engine->editorManager->GetEditorWindow<DebugWindow>();
 
         CollisionLayerChecker.Current.Clear();
@@ -2120,17 +2122,17 @@ namespace Eclipse
         {
             if (scriptCom.LayerMask[i])
             {
-                CollisionLayerChecker.Current.IndexActiveList[i] = true;
+                CollisionLayerChecker.Current.IndexActiveList[(int)i] = true;
 
                 if (i > 2)
                 {
-                    CollisionLayerChecker.Current.UnLayerTracker.insert(i);
+                    CollisionLayerChecker.Current.UnLayerTracker.insert((int)i);
                     counter++;
                 }
             }
             else
             {
-                CollisionLayerChecker.Current.IndexActiveList[i] = false;
+                CollisionLayerChecker.Current.IndexActiveList[(int)i] = false;
             }
         }
 
