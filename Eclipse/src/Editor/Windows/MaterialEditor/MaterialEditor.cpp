@@ -44,19 +44,18 @@ namespace Eclipse
         IsVisible = false;
         engine->gPBRManager->gMaterialEditorSettings->ClearCurrentMaterial();
 
-        MaterialEditor.initialized = true;
+       // MaterialEditor.initialized = true;
         ImNodes::PopAttributeFlag();
-        ImNodes::EditorContextFree(MaterialEditor.context);
 
-        if (MaterialEditor.initialized)
-        {
-            MaterialEditor.context = ImNodes::EditorContextCreate();
-            ImNodes::PushAttributeFlag(ImNodesAttributeFlags_EnableLinkDetachWithDragClick);
-            ImNodesIO& io = ImNodes::GetIO();
-            io.LinkDetachWithModifierClick.Modifier = &ImGui::GetIO().KeyCtrl;
-
-            MaterialEditor.initialized = false;
-        }
+       //if (MaterialEditor.initialized)
+       //{
+       //    MaterialEditor.context = ImNodes::EditorContextCreate();
+       //    ImNodes::PushAttributeFlag(ImNodesAttributeFlags_EnableLinkDetachWithDragClick);
+       //    ImNodesIO& io = ImNodes::GetIO();
+       //    io.LinkDetachWithModifierClick.Modifier = &ImGui::GetIO().KeyCtrl;
+       //
+       //    MaterialEditor.initialized = false;
+       //}
     }
 
     void MaterialEditorWindow::RunMainWindow()
@@ -240,6 +239,11 @@ namespace Eclipse
         }
     }
 
+    MaterialEditorWindow::~MaterialEditorWindow()
+    {
+        ImNodes::EditorContextFree(MaterialEditor.context);
+    }
+
     void MaterialEditorWindow::Buttons()
     {
         std::string MaterialName_ = engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.Name.data();
@@ -320,21 +324,21 @@ namespace Eclipse
 
     void MaterialEditorWindow::InitMaterialNodes()
     {
-        MaterialEditor.initialized = true;
-        ImNodes::PopAttributeFlag();
-        ImNodes::EditorContextFree(MaterialEditor.context);
+        //MaterialEditor.initialized = true;
+        //ImNodes::PopAttributeFlag();
+        //ImNodes::EditorContextFree(MaterialEditor.context);
 
         MaterialEditor.Reset();
 
-        if (MaterialEditor.initialized)
-        {
-            MaterialEditor.context = ImNodes::EditorContextCreate();
-            ImNodes::PushAttributeFlag(ImNodesAttributeFlags_EnableLinkDetachWithDragClick);
-            ImNodesIO& io = ImNodes::GetIO();
-            io.LinkDetachWithModifierClick.Modifier = &ImGui::GetIO().KeyCtrl;
-
-            MaterialEditor.initialized = false;
-        }
+        //if (MaterialEditor.initialized)
+        //{
+        //    MaterialEditor.context = ImNodes::EditorContextCreate();
+        //    ImNodes::PushAttributeFlag(ImNodesAttributeFlags_EnableLinkDetachWithDragClick);
+        //    ImNodesIO& io = ImNodes::GetIO();
+        //    io.LinkDetachWithModifierClick.Modifier = &ImGui::GetIO().KeyCtrl;
+        //
+        //    MaterialEditor.initialized = false;
+        //}
     }
 
     bool MaterialEditorWindow::ShowTransformProperty(const char* name, ImGuiTextFilter& filter)
