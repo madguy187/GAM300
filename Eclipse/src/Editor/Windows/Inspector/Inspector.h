@@ -10,21 +10,21 @@ namespace Eclipse
 	{
 		std::unordered_map<int, bool> IndexActiveList;
 		std::set<int> UnLayerTracker;
-		bool IsEverything{ true };
-		bool IsNothing{ false };
+		bool IsEverything{ false };
+		bool IsNothing{ true };
 
 		void Clear()
 		{
 			IndexActiveList.clear();
+			UnLayerTracker.clear();
 			IsEverything = false;
-			IsNothing = false;
+			IsNothing = true;
 		}
 	};
 
 	struct CollisionMatrixGroup
 	{
 		CollisionMatrixTracker Current;
-		CollisionMatrixTracker Previous;
 	};
 
 	class InspectorWindow final : public ECGuiWindow
@@ -35,7 +35,6 @@ namespace Eclipse
 		void Unload() override;
 		void DrawImpl();
 
-		bool ShowEntityProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowTransformProperty(const char* name, Entity ID, ImGuiTextFilter& filter, bool IsNotInScene = false);
 		bool ShowPointLightProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowSpotLightProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
@@ -82,8 +81,10 @@ namespace Eclipse
 		void OnCollisionMatrixUpdate(Entity ID);
 		void UpdateCollisionLayerTracker(DebugWindow* dw, int ClickedIndex);
 		void SetCollisionLayerTracker(const std::unordered_map<int, std::string>& layerlist);
-		void SetScriptBitset(ScriptComponent& scriptCom);
+		void SetScriptBitset(ScriptComponent& scriptCom, EntityComponent& entcom);
 		void OnLayerListUpdate(EntityComponent& entcom);
+		void LoadScriptBitset(ScriptComponent& scriptCom);
+
 		void SetCurrentEntityName(const char* name);
 		void ClearEntityName();
 

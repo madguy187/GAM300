@@ -9,6 +9,7 @@
 #include "ECS/ComponentManager/Components/ParentComponent.h"
 #include "ECS/ComponentManager/Components/ChildComponent.h"
 #include "ECS/SystemManager/Systems/System/Collision/CollisionSystem.h"
+#include "ECS/SystemManager/Systems/System/MonoSystem/MonoSystem.h"
 
 namespace Eclipse
 {
@@ -38,12 +39,6 @@ namespace Eclipse
             auto* mesheditor = engine->editorManager->GetEditorWindow<MeshEditorWindow>();
             Entity currEnt = mesheditor->IsVisible ? mesheditor->GetMeshID() : engine->editorManager->GetSelectedEntity();
             auto& entcom = engine->world.GetComponent<EntityComponent>(currEnt);
-            // std::string entityName = entcom.Name + " " + std::to_string(currEnt);
-
-            /*ECGui::DrawInputTextWidget("EntityName", const_cast<char*>(entityName.c_str()),
-                entityName.size(), ImGuiInputTextFlags_ReadOnly);
-
-            ECGui::InsertHorizontalLineSeperator();*/
 
             ECGui::PushItemWidth(WindowSize_.getX());
             if (ECGui::DrawInputTextHintWidget("InputEntityName", "Enter Entity Name", EntNameInput,
@@ -66,7 +61,6 @@ namespace Eclipse
             ECGui::InsertSameLine();
             OnLayerListUpdate(entcom);
            
-            // ECGui::InsertHorizontalLineSeperator();
             ECGui::PushItemWidth(WindowSize_.getX());
             ECGui::InsertHorizontalLineSeperator();
 
@@ -74,7 +68,6 @@ namespace Eclipse
             CompFilter.Draw(EMPTY_STRING, 0.0f, "Component Filter");
 
             ShowPrefebProperty(currEnt);
-            // ShowEntityProperty("Tag", currEnt, CompFilter);
             ShowTransformProperty("Transform", currEnt, CompFilter, mesheditor->IsVisible);
             ShowPointLightProperty("PointLight", currEnt, CompFilter);
             ShowSpotLightProperty("SpotLight", currEnt, CompFilter);
@@ -104,39 +97,6 @@ namespace Eclipse
         }
 
         ECGui::InsertHorizontalLineSeperator();
-    }
-
-    bool InspectorWindow::ShowEntityProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
-    {
-        if (engine->world.CheckComponent<EntityComponent>(ID))
-        {
-            if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
-            {
-                ECGui::InsertHorizontalLineSeperator();
-                static char entNameInput[256];
-                auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
-
-                ECGui::DrawTextWidget<std::string>("Entity Tag", lexical_cast_toStr<EntityType>(entCom.Tag));
-                ECGui::SetColumns(2, nullptr, true);
-                ECGui::InsertHorizontalLineSeperator();
-                ECGui::SetColumnOffset(1, 140);
-
-                ECGui::DrawTextWidget<const char*>("Edit Name:", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                if (ECGui::DrawInputTextHintWidget("InputEntityName", "Enter Entity Name", entNameInput,
-                    256, true, ImGuiInputTextFlags_EnterReturnsTrue))
-                {
-                    std::string oldName = entCom.Name;
-                    entCom.Name = entNameInput;
-                    CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<std::string>{ oldName, entCom.Name });
-                }
-                ECGui::SetColumns(1, nullptr, true);
-                ECGui::InsertHorizontalLineSeperator();
-            }
-        }
-
-        return false;
     }
 
     bool InspectorWindow::ShowTransformProperty(const char* name, Entity ID, ImGuiTextFilter& filter, bool IsNotInScene)
@@ -1752,6 +1712,17 @@ namespace Eclipse
                 engine->gPicker.GenerateAabb(ID, Transform_, Entity_.Tag);
             }
 
+            if (!strcmp(Components, "ScriptComponent"))
+            {
+                auto& Script_ = engine->world.GetComponent<ScriptComponent>(ID);
+                auto& Entity_ = engine->world.GetComponent<EntityComponent>(ID);
+
+                if (Entity_.LayerIndex != 0)
+                    Script_.LayerMask.set(0, false);
+
+                LoadScriptBitset(Script_);
+            }
+
             std::string Comp = my_strcat(Components, " added for ", name, ". Add component succeeded.");
             EDITOR_LOG_INFO(Comp.c_str());
         }
@@ -1826,7 +1797,7 @@ namespace Eclipse
                 if (ImGui::Selectable(pair.second.c_str(), CollisionLayerChecker.Current.IndexActiveList[pair.first]))
                 {
                     UpdateCollisionLayerTracker(settings, pair.first);
-                    SetScriptBitset(scriptCom);
+                    SetScriptBitset(scriptCom, entCom);
                 }
             }
 
@@ -1856,8 +1827,8 @@ namespace Eclipse
 
             for (auto& [key, val] : CollisionLayerChecker.Current.IndexActiveList)
             {
-                if (count == dw->GetLayerListSize() + 2) break;
-                if (!strcmp(dw->GetStringLayer(key).c_str(), EMPTY_STRING)) continue;
+                if (count == dw->GetLayerListSize() + 3) break;
+                if (!strcmp(dw->GetStringLayer(key).c_str(), EMPTY_STRING) || key == 0) continue;
 
                 if (dw->GetIndexLayer("Nothing") == key)
                 {
@@ -1865,8 +1836,13 @@ namespace Eclipse
                 }
                 else
                 {
-                    CollisionLayerChecker.Current.UnLayerTracker.insert(key);
-                    val = true;
+                    if (CollisionLayerChecker.Current.UnLayerTracker.find(key) == CollisionLayerChecker.Current.UnLayerTracker.end())
+                    {
+                        if (key != 2)
+                            CollisionLayerChecker.Current.UnLayerTracker.insert(key);
+
+                        val = true;
+                    }
                 }
 
                 count++;
@@ -1918,33 +1894,95 @@ namespace Eclipse
 
     void InspectorWindow::SetCollisionLayerTracker(const std::unordered_map<int, std::string>& layerlist)
     {
+        auto& scriptsys = engine->world.GetSystem<MonoSystem>();
+        auto* dw = engine->editorManager->GetEditorWindow<DebugWindow>();
+
+        CollisionLayerChecker.Current.Clear();
+
         for (const auto& [key, val] : layerlist)
         {
-            if (!strcmp(val.c_str(), EMPTY_STRING)) continue;
+            if (key == 0 || key == 1)
+                CollisionLayerChecker.Current.IndexActiveList[key] = true;
+            else
+                CollisionLayerChecker.Current.IndexActiveList[key] = false;
+        }
 
-            if (CollisionLayerChecker.Current.IndexActiveList.find(key) == CollisionLayerChecker.Current.IndexActiveList.end())
+        for (const auto& ent : scriptsys->mEntities)
+        {
+            auto& scriptcom = engine->world.GetComponent<ScriptComponent>(ent);
+            auto& entcom = engine->world.GetComponent<EntityComponent>(ent);
+            int counter = 0;
+
+            for (const auto& [key, val] : layerlist)
             {
-                // Taking care of built in layers
-                if (CollisionLayerChecker.Current.IsEverything && (key != 0 && key != 1))
+                if (!strcmp(val.c_str(), EMPTY_STRING))
                 {
-                    CollisionLayerChecker.Current.IndexActiveList[key] = true;
+                    scriptcom.LayerMask.set((size_t)key, false);
 
-                    if (key != 2)
-                        CollisionLayerChecker.Current.UnLayerTracker.insert(key);
+                    if (entcom.LayerIndex == key)
+                        entcom.LayerIndex = 0;
+
+                    if (key != MAX_LAYER_SIZE - 1)
+                        continue;
                 }
-                else
+
+                if (ent == engine->editorManager->GetSelectedEntity() && key > 2)
                 {
-                    if (key != 0)
-                        CollisionLayerChecker.Current.IndexActiveList[key] = false;
+                    if (scriptcom.LayerMask.test((size_t)key))
+                    {
+                        CollisionLayerChecker.Current.UnLayerTracker.insert(key);
+                        CollisionLayerChecker.Current.IndexActiveList[key] = true;
+                        counter++;
+                    }
+
+                    if (key == MAX_LAYER_SIZE - 1)
+                    {
+                        if (entcom.LayerIndex != 0)
+                            scriptcom.LayerMask.set(0, false);
+                        else
+                            scriptcom.LayerMask.set(1, true);
+
+                        if (counter == dw->GetLayerListSize())
+                        {
+                            CollisionLayerChecker.Current.IsEverything = true;
+                            scriptcom.LayerMask.set(2, true);
+                            CollisionLayerChecker.Current.IndexActiveList[2] = true;
+
+                            CollisionLayerChecker.Current.IsNothing = false;
+                            scriptcom.LayerMask.set(1, false);
+                            CollisionLayerChecker.Current.IndexActiveList[1] = false;
+                        }
+                        else if (counter == 0)
+                        {
+                            CollisionLayerChecker.Current.IsNothing = true;
+                            scriptcom.LayerMask.set(1, true);
+                            CollisionLayerChecker.Current.IndexActiveList[1] = true;
+
+                            CollisionLayerChecker.Current.IsEverything = false;
+                            scriptcom.LayerMask.set(2, false);
+                            CollisionLayerChecker.Current.IndexActiveList[2] = false;
+                        }
+                        else
+                        {
+                            CollisionLayerChecker.Current.IsEverything = false;
+                            CollisionLayerChecker.Current.IsNothing = false;
+                            scriptcom.LayerMask.set(2, false);
+                            scriptcom.LayerMask.set(1, false);
+                            CollisionLayerChecker.Current.IndexActiveList[2] = false;
+                            CollisionLayerChecker.Current.IndexActiveList[1] = false;
+                        }
+                    }
                 }
             }
         }
     }
 
-    void InspectorWindow::SetScriptBitset(ScriptComponent& scriptCom)
+    void InspectorWindow::SetScriptBitset(ScriptComponent& scriptCom, EntityComponent& entcom)
     {
         scriptCom.LayerMask.reset();
-        scriptCom.LayerMask.set(0);
+
+        if (entcom.LayerIndex != 0)
+            scriptCom.LayerMask.set(0, false);
 
         for (const auto& [key, val] : CollisionLayerChecker.Current.IndexActiveList)
         {
@@ -1960,7 +1998,6 @@ namespace Eclipse
     void InspectorWindow::OnLayerListUpdate(EntityComponent& entcom)
     {
         auto* settings = engine->editorManager->GetEditorWindow<DebugWindow>();
-        //int index = entcom.LayerIndex;
 
         const char* currentLabel = settings->GetLayerList().find(entcom.LayerIndex)->second.c_str();
 
@@ -1968,13 +2005,21 @@ namespace Eclipse
         {
             for (const auto& pair : settings->GetLayerList())
             {
-                if (!strcmp(pair.second.c_str(), EMPTY_STRING)) continue;
+                if (!strcmp(pair.second.c_str(), EMPTY_STRING) || pair.first == 1 || pair.first == 2) continue;
 
                 const bool is_selected = (entcom.LayerIndex == pair.first);
 
                 if (ImGui::Selectable(pair.second.c_str(), is_selected))
                 {
                     entcom.LayerIndex = pair.first;
+
+                    if (engine->world.CheckComponent<ScriptComponent>(engine->editorManager->GetSelectedEntity()))
+                    {
+                        auto& scriptcom = engine->world.GetComponent<ScriptComponent>(engine->editorManager->GetSelectedEntity());
+                        
+                        if (entcom.LayerIndex != 0)
+                            scriptcom.LayerMask.set(0, false);
+                    }
                 }
 
                 if (is_selected)
@@ -1982,6 +2027,48 @@ namespace Eclipse
             }
 
             ImGuiAPI::EndComboList();
+        }
+    }
+
+    void InspectorWindow::LoadScriptBitset(ScriptComponent& scriptCom)
+    {
+        CollisionLayerChecker.Current.Clear();
+        size_t counter = 0;
+        
+        for (size_t i = 0; i < scriptCom.LayerMask.size(); ++i)
+        {
+            if (scriptCom.LayerMask[i])
+            {
+                CollisionLayerChecker.Current.IndexActiveList[i] = true;
+
+                if (i > 2)
+                {
+                    CollisionLayerChecker.Current.UnLayerTracker.insert(i);
+                    counter++;
+                }
+            }
+            else
+            {
+                CollisionLayerChecker.Current.IndexActiveList[i] = false;
+            }
+        }
+
+        auto* dw = engine->editorManager->GetEditorWindow<DebugWindow>();
+
+        if (counter == dw->GetLayerListSize())
+        {
+            CollisionLayerChecker.Current.IsEverything = true;
+            CollisionLayerChecker.Current.IsNothing = false;
+        }
+        else if (counter == 0)
+        {
+            CollisionLayerChecker.Current.IsNothing = true;
+            CollisionLayerChecker.Current.IsEverything = false;
+        }
+        else
+        {
+            CollisionLayerChecker.Current.IsNothing = false;
+            CollisionLayerChecker.Current.IsEverything = false;
         }
     }
 }

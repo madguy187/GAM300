@@ -447,6 +447,12 @@ namespace Eclipse
             entCom.IsActive = true;
             engine->gPicker.SetCurrentCollisionID(ID);
             insp->SetCurrentEntityName(entCom.Name.c_str());
+
+            if (engine->world.CheckComponent<ScriptComponent>(ID))
+            {
+                auto& scriptCom = engine->world.GetComponent<ScriptComponent>(ID);
+                insp->LoadScriptBitset(scriptCom);
+            }
         }
     }
 
