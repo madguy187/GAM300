@@ -79,5 +79,7 @@ namespace Eclipse
         void RecurseChildren(AssimpNodeData& nodeData, std::fstream& AnimationFileRead);
         void CheckRecursionData(AssimpNodeData& nodeData);
         void InsertAnimation(Animation& newAnimation);
+
+        std::map<std::string, Animation>& GetAnimationMap();
     };
 }

@@ -80,6 +80,11 @@ void Eclipse::AnimationManager::InsertAnimation(Animation& newAnimation)
     animationMap.emplace(newAnimation.modelName, newAnimation);
 }
 
+std::map<std::string, Animation>& Eclipse::AnimationManager::GetAnimationMap()
+{
+    return animationMap;
+}
+
 Eclipse::Bone::Bone(std::vector<KeyPosition> positions, std::vector<KeyRotation> rotations, std::vector<KeyScale> scales, 
                     int numPos, int numRot, int numScale, int id, glm::mat4 localTrans, std::array<char, 128> name):
     m_Positions(positions), m_Rotations(rotations), m_Scales(scales), 
