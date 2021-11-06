@@ -226,5 +226,5 @@ struct MonoVariable
 {
     m_Type type = m_Type::MONO_UNDEFINED;
     std::string varName = "";
-
+    std::string varValue = "";
 };
