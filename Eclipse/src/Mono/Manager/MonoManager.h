@@ -7,6 +7,7 @@ namespace Eclipse
 	{
 		std::string scriptName{};
 		MonoObject* obj = nullptr;
+		std::vector<MonoVariable> vars;
 
 		bool operator==(const MonoScript& rhs) const
 		{
@@ -48,13 +49,17 @@ namespace Eclipse
 		void FixedUpdate(MonoScript* obj);
 
 		MonoObject* CreateMonoObject(std::string scriptName, Entity entity);
-		MonoObject* CreateObjectFromClass(MonoClass* klass);
+		MonoObject* CreateObjectFromClass(MonoClass* klass, bool defaultConstructor = true);
+		MonoObject* CreateVector3Class(float x, float y, float z);
 
 		std::string GetStringFromField(MonoObject* obj, MonoClass* klass, const char* fieldName);
 
-		MonoClass* GetMonoClass(std::string className);
-		MonoMethod* GetMethodFromClass(MonoClass* klass, std::string funcName);
-		std::unordered_map<std::string, std::string> GetAllFields(MonoClass* klass);
+		void SetFloatFromField(MonoObject* obj, MonoClass* klass, const char* fieldName, float fieldValue);
+
+		MonoClass* GetAPIMonoClass(std::string className);
+		MonoClass* GetScriptMonoClass(std::string className);
+		MonoMethod* GetMethodFromClass(MonoClass* klass, std::string funcName, int param_count = -1);
+		void LoadAllFields(MonoScript* script);
 
 		MonoObject* ExecuteMethod(MonoObject* obj, MonoMethod* method, std::vector<void*> args);
 
