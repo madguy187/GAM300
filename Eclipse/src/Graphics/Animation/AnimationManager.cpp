@@ -75,6 +75,22 @@ void Eclipse::AnimationManager::CheckRecursionData(AssimpNodeData& nodeData)
     }
 }
 
+void Eclipse::AnimationManager::SetAnimationData(Animation& newAnimation, float duration, float ticks, std::array<char, 128> name, std::vector<BoneInfo> boneInfo, std::vector<Bone> bones, AssimpNodeData rootNode)
+{
+    newAnimation.m_Duration = duration;
+    newAnimation.m_TicksPerSecond = ticks;
+
+    newAnimation.modelName = std::string(name.data());
+
+    for (auto& it : boneInfo)
+    {
+        newAnimation.m_BoneInfoMap.emplace(it.name, it);
+    }
+
+    newAnimation.m_Bones = bones;
+    newAnimation.m_RootNode = rootNode;
+}
+
 void Eclipse::AnimationManager::InsertAnimation(Animation& newAnimation)
 {
     animationMap.emplace(newAnimation.modelName, newAnimation);
@@ -83,6 +99,37 @@ void Eclipse::AnimationManager::InsertAnimation(Animation& newAnimation)
 std::map<std::string, Animation>& Eclipse::AnimationManager::GetAnimationMap()
 {
     return animationMap;
+}
+
+void Eclipse::AnimationManager::CheckForAnimation(unsigned int ID)
+{
+    if (engine->world.CheckComponent<MeshComponent>(ID))
+    {
+        auto& mesh = engine->world.GetComponent<MeshComponent>(ID);
+        std::string meshName = std::string(mesh.MeshName.data());
+
+        for (auto& it : animationMap)
+        {
+            if (it.first.compare(meshName) == 0)
+            {
+                if (!engine->world.CheckComponent<AnimationComponent>(ID))
+                {
+                    engine->world.AddComponent(ID, AnimationComponent{});
+                }
+
+                auto& animation = engine->world.GetComponent<AnimationComponent>(ID);
+
+                animation.m_CurrentAnimation = it.second;
+                animation.m_CurrentTime = 0.0f;
+                animation.m_Transforms.reserve(100);
+
+                for (unsigned int i = 0; i < 100; ++i)
+                {
+                    animation.m_Transforms.push_back(glm::mat4(1.0f));
+                }
+            }
+        }
+    }
 }
 
 Eclipse::Bone::Bone(std::vector<KeyPosition> positions, std::vector<KeyRotation> rotations, std::vector<KeyScale> scales, 
@@ -100,6 +147,10 @@ Eclipse::BoneInfo::BoneInfo(int _id, glm::mat4 _offset, std::array<char, 128> _n
 {
     offset = _offset;
     name = std::string(_name.data());
+}
+
+Eclipse::Animation::Animation()
+{
 }
 
 Eclipse::Animation::Animation(float duration, float ticks, std::array<char, 128> name, std::vector<BoneInfo> boneInfo, std::vector<Bone> bones, AssimpNodeData rootNode):

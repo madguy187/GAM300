@@ -62,12 +62,14 @@ namespace Eclipse
 
     struct Animation
     {
-        float m_Duration;
-        int m_TicksPerSecond;
+        float m_Duration = 0.0f;
+        int m_TicksPerSecond = 0;
         std::string modelName;
         std::map<std::string, BoneInfo> m_BoneInfoMap;
         std::vector<Bone> m_Bones;
         AssimpNodeData m_RootNode;
+
+        Animation();
 
         Animation(float duration, float ticks, std::array<char, 128> name, std::vector<BoneInfo> boneInfo, std::vector<Bone> bones, AssimpNodeData rootNode);
     };
@@ -78,8 +80,10 @@ namespace Eclipse
     public:
         void RecurseChildren(AssimpNodeData& nodeData, std::fstream& AnimationFileRead);
         void CheckRecursionData(AssimpNodeData& nodeData);
+        void SetAnimationData(Animation& newAnimation, float duration, float ticks, std::array<char, 128> name, std::vector<BoneInfo> boneInfo, std::vector<Bone> bones, AssimpNodeData rootNode);
         void InsertAnimation(Animation& newAnimation);
 
         std::map<std::string, Animation>& GetAnimationMap();
+        void CheckForAnimation(unsigned int ID);
     };
 }
