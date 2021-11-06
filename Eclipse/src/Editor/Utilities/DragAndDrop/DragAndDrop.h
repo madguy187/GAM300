@@ -14,6 +14,10 @@ namespace Eclipse
 
 		void StringPayloadTarget(const char* id, std::string& destination,
 			const char* cMsg, PayloadTargetType type = PayloadTargetType::PTT_WIDGET, Entity ID = MAX_ENTITY + 1, size_t arrayIndex = -1);
+
+		bool NodeEditorTextureTarget(const char* id, std::string& destination,
+			const char* cMsg, PayloadTargetType type = PayloadTargetType::PTT_WIDGET, Entity ID = MAX_ENTITY + 1, size_t arrayIndex = -1);
+
 		void IndexPayloadTarget(const char* id, const int& destination, bool& IsSelected,
 			PayloadTargetType type = PayloadTargetType::PTT_INDEXEDIT);
 		void AssetBrowerFilesAndFoldersTarget(const char* type, const char* paths, std::string AssetPath,

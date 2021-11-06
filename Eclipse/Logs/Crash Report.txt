@@ -6,3 +6,7 @@
 [10/20/21 19:08:55] [CORE] [error] Crash Report: Assertion Failed! C:\Users\ferna\Desktop\GAM300\Eclipse\src\Graphics\FrameBuffer\FrameBuffer.cpp Line 141:  Framebuffer is not complete!
 [10/20/21 19:32:26] [CORE] [error] Crash Report: Assertion Failed! C:\Users\ferna\Desktop\GAM300\Eclipse\src\Graphics\FrameBuffer\FrameBuffer.cpp Line 141:  Framebuffer is not complete!
 [11/05/21 15:40:23] [CORE] [error] Crash Report: Assertion Failed! E:\Git\GAM300\Eclipse\src\Graphics\RendererAPI\Graphics.cpp Line 189: texture cannot be found.
+[11/05/21 16:45:05] [CORE] [error] Crash Report: Assertion Failed! E:\Git\GAM300\Eclipse\src\Graphics\RendererAPI\Graphics.cpp Line 189: texture cannot be found.
+[11/05/21 16:58:12] [CORE] [error] Crash Report: Assertion Failed! E:\Git\GAM300\Eclipse\src\Graphics\FrameBuffer\FrameBuffer.cpp Line 150:  Framebuffer is not complete!
+[11/05/21 17:01:15] [CORE] [error] Crash Report: Assertion Failed! E:\Git\GAM300\Eclipse\src\Graphics\FrameBuffer\FrameBuffer.cpp Line 150:  Framebuffer is not complete!
+[11/05/21 18:13:34] [CORE] [error] Crash Report: Assertion Failed! E:\Git\GAM300\Eclipse\src\Graphics\FrameBuffer\FrameBuffer.cpp Line 150:  Framebuffer is not complete!
