@@ -217,6 +217,9 @@ namespace Eclipse
 
 	void MonoManager::StartMono()
 	{
+		if (ScriptImage || APIImage)
+			StopMono();
+
 		GenerateDLL();
 
 		LoadDomain();
@@ -227,10 +230,16 @@ namespace Eclipse
 	void MonoManager::Terminate()
 	{
 		if (ScriptImage)
+		{
 			mono_image_close(ScriptImage);
+			ScriptImage = nullptr;
+		}
 
 		if (APIImage)
+		{
 			mono_image_close(APIImage);
+			APIImage = nullptr;
+		}
 			
 		mono_jit_cleanup(domain);
 	}
