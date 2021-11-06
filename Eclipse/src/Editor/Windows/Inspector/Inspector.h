@@ -2,7 +2,7 @@
 
 #include "../Interface/ECGuiWindow.h"
 #include "ECS/ComponentManager/Components/AudioComponent.h"
-
+#include "Editor/Windows/NodeEditor/NodeEditor.h"
 namespace Eclipse
 {
 	class InspectorWindow final : public ECGuiWindow
@@ -30,6 +30,9 @@ namespace Eclipse
 		bool ShowCollisionProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowPrefebProperty(Entity ID);
 		bool ShowAIProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowBPProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+
+
 
 		void AddComponentsController(Entity ID);
 		void RemoveComponentsController(Entity ID);

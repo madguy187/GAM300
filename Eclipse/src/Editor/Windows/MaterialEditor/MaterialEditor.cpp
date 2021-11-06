@@ -178,6 +178,10 @@ namespace Eclipse
         {
             Unload();
             engine->gPBRManager->gMaterialEditorSettings->SelectedIndex = 0;
+
+            auto& cam = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::MaterialEditor_Camera));
+            cam.position = ECVec3{ 0.0f, 0.0f, 30.0f };;
+            cam.rotation = ECVec3{ 0.0f, -90.0f, 0.0f };
         }
         ImGui::Dummy(ImVec2(1, 10));
 
@@ -210,11 +214,20 @@ namespace Eclipse
     {
         std::string MaterialName_ = engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.Name.data();
 
-        ImGui::Dummy(ImVec2(1, 2));
+        ImGui::Dummy(ImVec2(1, 5));
+        if (strcmp(MaterialName_.c_str(), "Default") != 0)
+        {
+            if (ECGui::ButtonBool("SetUp Blank Material", { ImGui::GetColumnWidth(), 25 }))
+            {
+                ColorPicker = ECVec3{ 1.0f };
+                engine->gPBRManager->gMaterialEditorSettings->ClearCurrentMaterial();
+                engine->gPBRManager->gMaterialEditorSettings->ClearTextureFields();
+            }
+        }
 
         if (engine->gPBRManager->AllMaterialInstances.find(MaterialName_) == engine->gPBRManager->AllMaterialInstances.end())
         {
-            ImGui::Dummy(ImVec2(1, 5));
+            ImGui::Dummy(ImVec2(1, 2));
 
             if (strcmp(MaterialName_.c_str(), "Default") != 0)
             {
@@ -233,7 +246,6 @@ namespace Eclipse
             engine->gPBRManager->gMaterialEditorSettings->ClearCurrentMaterial();
             engine->gPBRManager->gMaterialEditorSettings->ClearTextureFields();
         }
-
         ImGui::Dummy(ImVec2(1, 2));
 
         if (engine->gPBRManager->AllMaterialInstances.find(MaterialName_) != engine->gPBRManager->AllMaterialInstances.end())
@@ -264,9 +276,7 @@ namespace Eclipse
             }
         }
 
-        ImGui::Dummy(ImVec2(1, 5));
-
-        if ((strcmp(MaterialName_.c_str(), "Default") != 0) && (comboindex != 0) )
+        if (strcmp(MaterialName_.c_str(), "Default") != 0)
         {
             if (ECGui::ButtonBool("Update Material", { ImGui::GetColumnWidth(), 25 }))
             {
@@ -293,11 +303,11 @@ namespace Eclipse
 
     bool MaterialEditorWindow::ShowMaterialProperty(const char* name, ImGuiTextFilter& filter)
     {
-        const auto& MaterialNames = engine->gPBRManager->AllMaterialInstName;
-        ComboListSettings settingsss = { "Current Material" };
-        ECGui::DrawTextWidget<const char*>("Current Materials:", EMPTY_STRING);
-        ECGui::CreateComboList(settingsss, MaterialNames, comboindex);
-        CheckCurrentMaterial(comboindex);
+        //const auto& MaterialNames = engine->gPBRManager->AllMaterialInstName;
+        //ComboListSettings settingsss = { "Current Material" };
+        //ECGui::DrawTextWidget<const char*>("Current Materials:", EMPTY_STRING);
+        //ECGui::CreateComboList(settingsss, MaterialNames, comboindex);
+        //CheckCurrentMaterial(comboindex);
 
         ECGui::NextColumn();
         ImGui::Dummy(ImVec2(1, 5));
