@@ -865,7 +865,6 @@ namespace Eclipse
 
 	inline void MaterialNode::Reset()
 	{
-		this->context = nullptr;
 		this->current_id = 0;
 		this->links.clear();
 		this->m_context_link = 0;
