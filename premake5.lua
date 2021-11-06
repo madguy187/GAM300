@@ -106,7 +106,8 @@ project "Eclipse"
     "Dep/mono/lib/",
 	  "Dep/ASSIMP/",
 	  "Dep/Fmod/core/lib/x64",
-	  "Dep/Tracy"
+	  "Dep/Tracy",
+	  "Dep/Recast&Detour/lib/Debug"
   }
   
   disablewarnings 
@@ -146,7 +147,12 @@ project "Eclipse"
 	  "fmodL.lib",
 	  "fmodstudioL64_vc.lib",
 	  "fmodstudioL_vc.lib",
-	  "TracyProfiler.lib"
+	  "TracyProfiler.lib",
+	  "DebugUtils.lib",
+	  "Detour.lib",
+	  "DetourCrowd.lib",
+	  "DetourTileCache.lib",
+	  "Recast.lib"
   }
 
   postbuildcommands
@@ -183,7 +189,8 @@ project "Eclipse"
     "Dep/mono/lib/",
 	  "Dep/ASSIMP/",
 	  "Dep/Fmod/core/lib/x64",
-	  "Dep/Tracy"
+	  "Dep/Tracy",
+	  "Dep/Recast&Detour/lib/Debug"
   }
   
   disablewarnings 
@@ -221,7 +228,11 @@ project "Eclipse"
 	  "assimp-vc142-mtd",
 	  "fmod_vc.lib",
     "fmodstudio64_vc.lib",
-	  "TracyProfiler.lib"
+	  "TracyProfiler.lib",
+	  "Detour.lib",
+	  "DetourCrowd.lib",
+	  "DetourTileCache.lib",
+	  "Recast.lib"
   }
 
   postbuildcommands
