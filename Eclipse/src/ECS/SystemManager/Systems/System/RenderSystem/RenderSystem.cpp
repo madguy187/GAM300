@@ -194,10 +194,10 @@ namespace Eclipse
 
                     // 1. render depth of scene to texture (from light's perspective)
                     // -------------------------------------------------------------
-                    glm::vec3 lightPos(-2.0f, 4.0f, -1.0f);
+                    glm::vec3 lightPos(-200.0f, 400.0f, -100.0f);
                     glm::mat4 lightProjection, lightView;
                     glm::mat4 lightSpaceMatrix;
-                    lightProjection = glm::ortho(-20.0f, 20.0f, -20.0f, 20.0f, near_plane, far_plane);
+                    lightProjection = glm::ortho(-50.0f, 20.0f, -20.0f, 20.0f, near_plane, far_plane);
                     lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
                     lightSpaceMatrix = lightProjection * lightView;
 
@@ -225,7 +225,8 @@ namespace Eclipse
                     ShadowMappingShader.setVec3("lightPos", lightPos);
                     ShadowMappingShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
 
-                    glActiveTexture(GL_TEXTURE1);
+                    glActiveTexture(GL_TEXTURE0);
+                    //glActiveTexture(GL_TEXTURE1);
                     glActiveTexture(GL_TEXTURE2);
                     glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SHADOW));
                     engine->MaterialManager.DoNotUpdateStencil();
