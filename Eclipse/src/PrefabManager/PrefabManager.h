@@ -40,7 +40,7 @@ namespace Eclipse
 
 		void SignatureBaseCopy(World& sourceWorld, World& targetWorld, const Entity& sourceEnt, const Entity& targetEnt);
 
-		void CopyToInstance(const Entity& comparingPrefabEnt, World& copySourceWorld, const Entity& copyingSourceEnt, const Entity& instancesEnt);
+		void CopyToInstance(const Entity& comparingPrefabEnt, World& copySourceWorld, const Entity& copyingSourceEnt, const Entity& instancesEnt, const bool& UpdateInstancesOnly = false);
 
 		std::vector<Entity> GetInstanceList(const EUUID& prefabID = 0);
 
@@ -155,7 +155,7 @@ namespace Eclipse
 		void RecurseInsertPrefab(const Entity& ent, const char* path, const EUUID& prefabID);
 
 		//For mesh(prefab) editor save button
-		void SavePrefabChanges(const Entity& ent);
+		//void SavePrefabChanges(const Entity& ent);
 
 		//Perform updates of prefab to instances right after loading of scene
 		//void PostUpdate_Prefab();
