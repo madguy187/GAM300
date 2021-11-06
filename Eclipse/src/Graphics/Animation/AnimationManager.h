@@ -36,14 +36,20 @@ namespace Eclipse
 
         int m_ID;
         glm::mat4 m_LocalTransform;
-        std::array<char, 128> BoneName;
+        std::string BoneName;
+
+        Bone(std::vector<KeyPosition> positions, std::vector<KeyRotation> rotations, std::vector<KeyScale> scales,
+            int numPos, int numRot, int numScale, int id, glm::mat4 localTrans, std::array<char, 128> name);
+        
     };
 
     struct BoneInfo
     {
         int id;
         glm::mat4 offset;
-        std::array<char, 128> name;
+        std::string name;
+
+        BoneInfo(int _id, glm::mat4 _offset, std::array<char, 128> _name);
     };
 
     struct AssimpNodeData
@@ -54,22 +60,24 @@ namespace Eclipse
         std::vector<AssimpNodeData> children;
     };
 
-    struct AnimationData
+    struct Animation
     {
         float m_Duration;
         int m_TicksPerSecond;
-        std::array<char, 128> modelName;
-        std::vector<BoneInfo> m_BoneInfo;
+        std::string modelName;
+        std::map<std::string, BoneInfo> m_BoneInfoMap;
         std::vector<Bone> m_Bones;
         AssimpNodeData m_RootNode;
-        //std::map<std::string, BoneInfo> m_BoneInfoMap;
+
+        Animation(float duration, float ticks, std::array<char, 128> name, std::vector<BoneInfo> boneInfo, std::vector<Bone> bones, AssimpNodeData rootNode);
     };
 
     class AnimationManager
     {
-        std::map<std::string, AnimationData> animationMap;
+        std::map<std::string, Animation> animationMap;
     public:
         void RecurseChildren(AssimpNodeData& nodeData, std::fstream& AnimationFileRead);
         void CheckRecursionData(AssimpNodeData& nodeData);
+        void InsertAnimation(Animation& newAnimation);
     };
 }

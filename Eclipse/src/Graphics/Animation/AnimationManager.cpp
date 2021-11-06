@@ -74,3 +74,39 @@ void Eclipse::AnimationManager::CheckRecursionData(AssimpNodeData& nodeData)
         }
     }
 }
+
+void Eclipse::AnimationManager::InsertAnimation(Animation& newAnimation)
+{
+    animationMap.emplace(newAnimation.modelName, newAnimation);
+}
+
+Eclipse::Bone::Bone(std::vector<KeyPosition> positions, std::vector<KeyRotation> rotations, std::vector<KeyScale> scales, 
+                    int numPos, int numRot, int numScale, int id, glm::mat4 localTrans, std::array<char, 128> name):
+    m_Positions(positions), m_Rotations(rotations), m_Scales(scales), 
+    m_NumPositions(numPos), m_NumRotations(numRot), m_NumScalings(numScale),
+    m_ID(id)
+{
+    m_LocalTransform = localTrans;
+    BoneName = std::string(name.data());
+}
+
+Eclipse::BoneInfo::BoneInfo(int _id, glm::mat4 _offset, std::array<char, 128> _name) :
+    id(_id)
+{
+    offset = _offset;
+    name = std::string(_name.data());
+}
+
+Eclipse::Animation::Animation(float duration, float ticks, std::array<char, 128> name, std::vector<BoneInfo> boneInfo, std::vector<Bone> bones, AssimpNodeData rootNode):
+    m_Duration(duration), m_TicksPerSecond(ticks)
+{
+    modelName = std::string(name.data());
+
+    for (auto& it : boneInfo)
+    {
+        m_BoneInfoMap.emplace(it.name, it);
+    }
+
+    m_Bones = bones;
+    m_RootNode = rootNode;
+}
