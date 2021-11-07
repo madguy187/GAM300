@@ -296,5 +296,6 @@ namespace Eclipse
     DEFINE_META_POD(PxShapeType);
     DEFINE_META_POD(EC_Shape);
     DEFINE_META_POD(Signature);
+    DEFINE_META_POD(std::bitset<20>);
     //DEFINE_META_POD(MonoScript);
 }
