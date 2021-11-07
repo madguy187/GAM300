@@ -37,6 +37,12 @@ namespace Eclipse
 
         // DebugManagerRender
         engine->gDebugDrawManager->Init();
+
+        auto& ShadowMappingShader = Graphics::shaderpgms["ShadowMapping"];
+        ShadowMappingShader.Use();
+        ShadowMappingShader.Use();
+        ShadowMappingShader.setInt("diffuseTexture", 0);
+        ShadowMappingShader.setInt("shadowMap", 1);
     }
 
     void RenderSystem::Update()
@@ -98,7 +104,7 @@ namespace Eclipse
 
                 // After hot-realoding , we check if he still exists or not
                 if (engine->AssimpManager.CheckGeometryExist(Mesh))
-                {                     
+                {
                     // If Scene View is visible
                     if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
                     {
@@ -109,9 +115,9 @@ namespace Eclipse
                             engine->MaterialManager.UpdateStencilWithActualObject(entityID);
 
                             engine->AssimpManager.MeshDraw(Mesh, entityID,
-                            FrameBufferMode::FBM_SCENE_SOBEL,
-                            engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SCENE_SOBEL),
-                            CameraComponent::CameraType::Editor_Camera);
+                                FrameBufferMode::FBM_SCENE_SOBEL,
+                                engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SCENE_SOBEL),
+                                CameraComponent::CameraType::Editor_Camera);
                         }
                         else
                         {
@@ -138,9 +144,9 @@ namespace Eclipse
                             engine->MaterialManager.DoNotUpdateStencil();
 
                             engine->AssimpManager.MeshDraw(Mesh, entityID,
-                            FrameBufferMode::FBM_GAME_SOBEL,
-                            engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME_SOBEL),
-                            CameraComponent::CameraType::Game_Camera);
+                                FrameBufferMode::FBM_GAME_SOBEL,
+                                engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME_SOBEL),
+                                CameraComponent::CameraType::Game_Camera);
                         }
                         else
                         {
@@ -148,9 +154,9 @@ namespace Eclipse
                             engine->MaterialManager.DoNotUpdateStencil();
 
                             engine->AssimpManager.MeshDraw(Mesh, entityID,
-                            FrameBufferMode::FBM_GAME,
-                            engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME),
-                            CameraComponent::CameraType::Game_Camera);
+                                FrameBufferMode::FBM_GAME,
+                                engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME),
+                                CameraComponent::CameraType::Game_Camera);
                         }
                     }
 
@@ -194,10 +200,10 @@ namespace Eclipse
 
                     // 1. render depth of scene to texture (from light's perspective)
                     // -------------------------------------------------------------
-                    glm::vec3 lightPos(-200.0f, 400.0f, -100.0f);
+                    glm::vec3 lightPos(-20.0f, 40.0f, -10.0f);
                     glm::mat4 lightProjection, lightView;
                     glm::mat4 lightSpaceMatrix;
-                    lightProjection = glm::ortho(-50.0f, 20.0f, -20.0f, 20.0f, near_plane, far_plane);
+                    lightProjection = glm::ortho(-50.0f, 50.0f, -50.0f, 50.0f, near_plane, far_plane);
                     lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
                     lightSpaceMatrix = lightProjection * lightView;
 
@@ -206,9 +212,10 @@ namespace Eclipse
                     simpleDepthShader.Use();
                     simpleDepthShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
                     engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SHADOW);
-                    engine->MaterialManager.DoNotUpdateStencil();
+                    glActiveTexture(GL_TEXTURE0);
+                    glBindTexture(GL_TEXTURE_2D, 0);
                     engine->AssimpManager.LightPerSpectiveDraw(Mesh, entityID, FrameBufferMode::FBM_SHADOW, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SHADOW),
-                        CameraComponent::CameraType::Editor_Camera);
+                        CameraComponent::CameraType::Game_Camera);
 
                     // 2. render scene as normal using the generated depth/shadow map  
                     // --------------------------------------------------------------
@@ -218,7 +225,6 @@ namespace Eclipse
                     ShadowMappingShader.Use();
                     ShadowMappingShader.setMat4("projection", Camera.projMtx);
                     ShadowMappingShader.setMat4("view", Camera.viewMtx);
-                    ShadowMappingShader.setInt("shadowMap", 2);
 
                     // set light uniforms
                     ShadowMappingShader.setVec3("viewPos", CameraPos.position.ConvertToGlmVec3Type());
@@ -226,10 +232,9 @@ namespace Eclipse
                     ShadowMappingShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
 
                     glActiveTexture(GL_TEXTURE0);
-                    //glActiveTexture(GL_TEXTURE1);
-                    glActiveTexture(GL_TEXTURE2);
+                    glBindTexture(GL_TEXTURE_2D, 0);
+                    glActiveTexture(GL_TEXTURE1);
                     glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SHADOW));
-                    engine->MaterialManager.DoNotUpdateStencil();
                     engine->AssimpManager.ShadowDraw(Mesh, entityID, FrameBufferMode::FBM_SCENE, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SCENE),
                         CameraComponent::CameraType::Editor_Camera);
                 }

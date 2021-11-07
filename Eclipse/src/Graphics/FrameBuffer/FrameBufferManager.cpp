@@ -369,15 +369,15 @@ namespace Eclipse
             }
         }
 
-        engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SCENE);
+        engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_GAME);
         auto& debugDepthQuad = Graphics::shaderpgms["DepthQuad"];
         debugDepthQuad.Use();
         debugDepthQuad.setFloat("near_plane", 1);
-        debugDepthQuad.setFloat("far_plane", 500.5);
-
+        debugDepthQuad.setFloat("far_plane", 500.5f);
+        
         glBindVertexArray(engine->gFrameBufferManager->PostProcess->rectVAO);
-        glActiveTexture(GL_TEXTURE0);
+        glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SHADOW));
-        //glDrawArrays(GL_TRIANGLES, 0, 6);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
     }
 }

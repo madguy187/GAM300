@@ -677,7 +677,9 @@ namespace Eclipse
                 {
                     // reset
                     glActiveTexture(GL_TEXTURE0);
+                    glActiveTexture(GL_TEXTURE1);
 
+                    shader.setInt("diffuseTexture", 0);
                     engine->gPBRManager->SetAOConstant(shader, 1.0f);
                     engine->gPBRManager->SetMetallicConstant(shader, 0.5f);
                     engine->gPBRManager->SetRoughnessConstant(shader, 0.5f);
@@ -693,7 +695,9 @@ namespace Eclipse
                 {
                     // reset
                     glActiveTexture(GL_TEXTURE0);
+                    glActiveTexture(GL_TEXTURE1);
 
+                    shader.setInt("diffuseTexture", 0);
                     engine->gPBRManager->SetAOConstant(shader, 1.0f);
                     engine->gPBRManager->SetMetallicConstant(shader, 0.5f);
                     engine->gPBRManager->SetRoughnessConstant(shader, 0.5f);
@@ -764,10 +768,12 @@ namespace Eclipse
                     }
 
                     glActiveTexture(GL_TEXTURE0);
+                    glActiveTexture(GL_TEXTURE1);
                 }
 
                 // reset
                 glActiveTexture(GL_TEXTURE0);
+                glActiveTexture(GL_TEXTURE1);
             }
         }
     }

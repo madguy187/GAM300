@@ -116,19 +116,19 @@ namespace Eclipse
 
     void FrameBuffer::CreateShadowFBO(unsigned int p_width, unsigned int p_height)
     {
-        SHADOW_WIDTH = p_width;
-        SHADOW_HEIGHT = p_height;
+        m_width = p_width;
+        m_height = p_height;
 
         glGenFramebuffers(1, &m_data.frameBufferID);
         glBindFramebuffer(GL_FRAMEBUFFER, m_data.frameBufferID);
 
         glGenTextures(1, &m_data.ColorBuffers[0]);
         glBindTexture(GL_TEXTURE_2D, m_data.ColorBuffers[0]);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, m_width, m_height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
         float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
         glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 
