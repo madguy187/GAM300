@@ -6,8 +6,8 @@
 
 namespace Eclipse
 {
-    typedef std::unordered_map< InputKeycode,InputState> InputKeyContainer;
-    using KeyIT = std::unordered_map<InputKeycode,InputState>::iterator;
+    typedef std::unordered_map< InputKeycode, InputState> InputKeyContainer;
+    using KeyIT = std::unordered_map<InputKeycode, InputState>::iterator;
 
     typedef std::unordered_map< InputMouseKeycode, InputState> MouseContainer;
     using MouseIT = std::unordered_map<InputMouseKeycode, InputState>::iterator;
@@ -66,9 +66,9 @@ namespace Eclipse
         ///////////////////////////////////////////////////////////////////////////////////////////
         // GetAxis
         ///////////////////////////////////////////////////////////////////////////////////////////
-        int XMiddle , YMiddle;
+        int XMiddle, YMiddle;
         int Mouse_X, Mouse_Y;
-        void SetAxis(GLint width , GLint height);
+        void SetAxis(GLint width, GLint height);
         void AxisUpdate();
         float GetAxis(const std::string& Type);
         bool LockCursor(FrameBufferMode);
@@ -84,7 +84,7 @@ namespace Eclipse
         friend std::ostream& operator << (std::ostream& os, const InputKeycode& in);
         void RegisterTriggerInput(InputKeycode keycode, InputState input);
         void RegisterMouseInput(InputMouseKeycode keycode, InputState input);
-        void RegisterHoldInput(InputKeycode keycode,InputState input);
+        void RegisterHoldInput(InputKeycode keycode, InputState input);
         bool GetKeyReleased(InputKeycode keycode);
         bool GetKeyReleased(InputMouseKeycode keycode);
         bool GetHoldKeyReleased(InputMouseKeycode keycode);
