@@ -48,6 +48,7 @@ namespace Eclipse
 		float& GetBGMVolumeByRef();
 		float GetSFXVolume() const;
 		float& GetSFXVolumeByRef();
+		float GetNoiseVolumeOnEvent(const AudioComponent& audiocom, const RigidBodyComponent& rbcom);
 		float IsBGMMuted() const;
 		float IsSFXMuted() const;
 
