@@ -1777,8 +1777,6 @@ namespace Eclipse
         }
         else
         {
-            /*audioCom.ChannelID = engine->audioManager.Play2DSounds(audioCom.AudioPath, audioCom.Volume,
-                audioCom.IsLooping);*/
             engine->audioManager.Play2DSounds(audioCom);
         }
     }

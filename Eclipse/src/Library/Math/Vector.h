@@ -715,6 +715,11 @@ namespace Eclipse
 		return sqrtf(result1 * result1 + result2 * result2 + result3 * result3);
 	}
 
+	float Vector3DMag(const ECVec3& pVec)
+	{
+		return std::fabsf(sqrtf(pVec[0] + pVec[1] + pVec[2]));
+	}
+
 	template <typename T, size_t N>
 	std::ostream& operator<<(std::ostream& stream, const Vector<T, N>& rhs)
 	{

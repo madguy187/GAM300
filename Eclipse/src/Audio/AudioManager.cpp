@@ -350,6 +350,11 @@ namespace Eclipse
 		return FmodAPI->SFX_Vol;
 	}
 
+	float AudioManager::GetNoiseVolumeOnEvent(const AudioComponent& audiocom, const RigidBodyComponent& rbcom)
+	{
+		return VoltoDB(audiocom.Volume) * Vector3DMag(rbcom.velocity);
+	}
+
 	float AudioManager::IsBGMMuted() const
 	{
 		return FmodAPI->m_BGMMute;
