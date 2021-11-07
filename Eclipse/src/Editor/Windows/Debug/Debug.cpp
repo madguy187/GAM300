@@ -21,21 +21,8 @@ namespace Eclipse
         SelectionList.push_back({ "Input Manager", false });
         SelectionList.push_back({ "Tags & Layers", false });
 
-        for (int i = 0; i < MAX_LAYER_SIZE; ++i)
-        {
-            std::string name;
-            name.reserve(256);
-
-            switch (i)
-            {
-                case 0: name = "Default"; break;
-                case 1: name = "Nothing"; break;
-                case 2: name = "Everything"; break;
-                default: break;
-            }
-
-            LayerList[i] = name;
-        }
+        if (!engine->szManager.LoadLayersConfigFile(LayerList, LayerListSize))
+            DefaultLayerInit();
 
         // Deserialize the map here into KeyMappings
         engine->InputManager->InputCompiler_.Load();
@@ -151,6 +138,25 @@ namespace Eclipse
                     ECGui::CloseCurrentPopup();
                 }
             }
+        }
+    }
+
+    void DebugWindow::DefaultLayerInit()
+    {
+        for (int i = 0; i < MAX_LAYER_SIZE; ++i)
+        {
+            std::string name;
+            name.reserve(256);
+
+            switch (i)
+            {
+            case 0: name = "Default"; break;
+            case 1: name = "Nothing"; break;
+            case 2: name = "Everything"; break;
+            default: break;
+            }
+
+            LayerList[i] = name;
         }
     }
 
@@ -280,6 +286,9 @@ namespace Eclipse
             {
                 auto* insp = engine->editorManager->GetEditorWindow<InspectorWindow>();
                 insp->SetCollisionLayerTracker(LayerList);
+                engine->szManager.SaveLayersConfigFile(LayerList, LayerListSize);
+
+                EDITOR_LOG_INFO("Layer configuration successfully saved.");
             }
 
             ECGui::EndTreeNode();
@@ -310,5 +319,10 @@ namespace Eclipse
         }
 
         return -1;
+    }
+
+    void DebugWindow::SetLayerListSize(size_t size)
+    {
+        LayerListSize = size;
     }
 }

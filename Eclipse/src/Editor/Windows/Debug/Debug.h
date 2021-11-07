@@ -28,6 +28,7 @@ namespace Eclipse
 		void UpdateSelectionTrackerID(sSelection& s, int index);
 		void AddInputController();
 		void ShowInputList();
+		void DefaultLayerInit();
 
 		void OnGraphicsUpdate();
 		void OnInputUpdate();
@@ -37,6 +38,8 @@ namespace Eclipse
 		size_t GetLayerListSize() const;
 		const std::string& GetStringLayer(int index);
 		int GetIndexLayer(const std::string& str);
+
+		void SetLayerListSize(size_t size);
 	private:
 		ECVec2 WindowSize{ 0.0f, 0.0f };
 		std::string CurrentSelection{ "Graphics" };

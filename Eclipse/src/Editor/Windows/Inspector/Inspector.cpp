@@ -2075,7 +2075,7 @@ namespace Eclipse
                 scriptCom.LayerMask.set(key, val);
         }
 
-        std::cout << scriptCom.LayerMask << std::endl;
+        // std::cout << scriptCom.LayerMask << std::endl;
     }
 
     void InspectorWindow::OnLayerListUpdate(EntityComponent& entcom)
