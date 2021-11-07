@@ -19,6 +19,13 @@ namespace Eclipse
 		}
 	};
 
+	struct InvokeFunc
+	{
+		MonoScript* script = nullptr;
+		float timer = 0.0f;
+		MonoMethod* method = nullptr;
+	};
+
 	class MonoManager
 	{
 		MonoDomain* domain;
@@ -26,6 +33,8 @@ namespace Eclipse
 		MonoAssembly* APIAssembly;
 		MonoImage* ScriptImage;
 		MonoImage* APIImage;
+
+		std::vector<InvokeFunc> InvokeContainer;
 
 		// Generates all the scripts into a dll
 		void GenerateDLL();
@@ -42,6 +51,8 @@ namespace Eclipse
 		void StartMono();
 		void StopMono();
 		void Terminate();
+		void UpdateInvokers();
+		void AddInvoke(MonoScript* _script, float _timer, MonoMethod* _method);
 
 		// API Functions
 		void Awake(MonoScript* obj);

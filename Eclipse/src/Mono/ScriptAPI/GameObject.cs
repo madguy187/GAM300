@@ -8,7 +8,7 @@ namespace Eclipse
     {
         public UInt32 Entity;
         public Transform transform;
-        private string ScriptName;
+        public string ScriptName;
 
         public GameObject(UInt32 entity, string name)
         {

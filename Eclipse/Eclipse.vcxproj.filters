@@ -1387,5 +1387,7 @@
     <None Include="src\Mono\ScriptAPI\ForceMode.cs" />
     <None Include="src\Mono\ScriptAPI\Vector2.cs" />
     <None Include="src\Mono\ScriptAPI\Quaternion.cs" />
+    <None Include="src\Mono\ScriptAPI\CursorLockMode.cs" />
+    <None Include="src\Mono\Components\s_EclipseBehavior.h" />
   </ItemGroup>
 </Project>
