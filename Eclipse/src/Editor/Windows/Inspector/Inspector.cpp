@@ -49,7 +49,7 @@ namespace Eclipse
                 CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<std::string>{ oldName, entcom.Name });
             }
 
-            ECGui::PushItemWidth(WindowSize_.getX() * 0.4f);
+            ECGui::PushItemWidth(WindowSize_.getX() * 0.35f);
             ECGui::DrawTextWidget<const char*>("Tag ", EMPTY_STRING);
             ECGui::InsertSameLine();
             ECGui::DrawInputTextWidget("Tag", const_cast<char*>(lexical_cast_toStr(entcom.Tag).c_str()),
@@ -57,6 +57,7 @@ namespace Eclipse
 
             ECGui::InsertSameLine();
 
+            ECGui::PushItemWidth(WindowSize_.getX() * 0.35f);
             ECGui::DrawTextWidget<const char*>("Layer ", EMPTY_STRING);
             ECGui::InsertSameLine();
             OnLayerListUpdate(entcom);
@@ -2087,6 +2088,8 @@ namespace Eclipse
 
         for (const auto& [key, val] : CollisionLayerChecker.Current.IndexActiveList)
         {
+            if (key == 0) continue;
+
             if (val)
                 scriptCom.LayerMask.set(key);
             else
