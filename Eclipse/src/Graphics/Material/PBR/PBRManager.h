@@ -45,6 +45,12 @@ namespace Eclipse
         // For Tianyu
         unsigned int GetMaterialTextureID(std::string FolderName, std::string TextureName);
         MaterialType GetMaterialType(std::string TextureName);
+        void ResetReflectivity();
+        void ResetSurfaceColour();
+        void ResetAlbedoConstant();
+        void ResetAoConstant();
+        void ResetMetallicConstant();
+        void ResetRoughnessConstant();
 
     public:
         void ClearAllMaterialInstances();
