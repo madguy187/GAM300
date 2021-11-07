@@ -1392,5 +1392,7 @@
     <None Include="src\Mono\ScriptAPI\Header.cs" />
     <None Include="src\Mono\ScriptAPI\HeaderReader.cs" />
     <None Include="src\Mono\ScriptAPI\Time.cs" />
+    <None Include="src\Assets\Shaders\AnimationShader\animation.vert" />
+    <None Include="src\Assets\Shaders\AnimationShader\animation.frag" />
   </ItemGroup>
 </Project>

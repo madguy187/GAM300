@@ -7,5 +7,10 @@ void Eclipse::AnimationSystem::Init()
 
 void Eclipse::AnimationSystem::Update()
 {
-	//Sstd::cout << "Entity Count: " << mEntities.size() << std::endl;
+	//std::cout << "Entity Count: " << mEntities.size() << std::endl;
+
+	for (auto& it : mEntities)
+	{
+		engine->gAnimationManager.UpdateAnimation(it, engine->Game_Clock.get_DeltaTime());
+	}
 }

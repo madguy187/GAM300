@@ -540,6 +540,8 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\Assets\Shaders\AnimationShader\animation.frag" />
+    <None Include="src\Assets\Shaders\AnimationShader\animation.vert" />
     <None Include="src\Assets\Shaders\Instancing\Instancing.frag" />
     <None Include="src\Assets\Shaders\Instancing\Instancing.vert" />
     <None Include="src\Assets\Shaders\MaterialEditor\PBR.frag" />

@@ -40,7 +40,17 @@ namespace Eclipse
 
         Bone(std::vector<KeyPosition> positions, std::vector<KeyRotation> rotations, std::vector<KeyScale> scales,
             int numPos, int numRot, int numScale, int id, glm::mat4 localTrans, std::array<char, 128> name);
-        
+
+        int GetPositionIndex(float animationTime);
+        int GetScaleIndex(float animationTime);
+        int GetRotationIndex(float animationTime);
+
+        void Update(float animationTime);
+
+        glm::mat4 InterpolatePosition(float animationTime);
+        glm::mat4 InterpolateRotation(float animationTime);
+        glm::mat4 InterpolateScaling(float animationTime);
+        float GetScaleFactor(float lastTimeStamp, float nextTimeStamp, float animationTime);
     };
 
     struct BoneInfo
@@ -48,6 +58,8 @@ namespace Eclipse
         int id;
         glm::mat4 offset;
         std::string name;
+
+        BoneInfo();
 
         BoneInfo(int _id, glm::mat4 _offset, std::array<char, 128> _name);
     };
@@ -68,10 +80,13 @@ namespace Eclipse
         std::map<std::string, BoneInfo> m_BoneInfoMap;
         std::vector<Bone> m_Bones;
         AssimpNodeData m_RootNode;
+        bool dataInit = false;
 
         Animation();
 
         Animation(float duration, float ticks, std::array<char, 128> name, std::vector<BoneInfo> boneInfo, std::vector<Bone> bones, AssimpNodeData rootNode);
+
+        Bone* FindBone(std::string& name);
     };
 
     class AnimationManager
@@ -85,5 +100,8 @@ namespace Eclipse
 
         std::map<std::string, Animation>& GetAnimationMap();
         void CheckForAnimation(unsigned int ID);
+
+        void CalculateBoneTransform(unsigned int ID, const AssimpNodeData* node, glm::mat4 parentTransform);
+        void UpdateAnimation(unsigned int ID, float dt);
     };
 }

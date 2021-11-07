@@ -132,6 +132,51 @@ void Eclipse::AnimationManager::CheckForAnimation(unsigned int ID)
     }
 }
 
+void Eclipse::AnimationManager::CalculateBoneTransform(unsigned int ID, const AssimpNodeData* node, glm::mat4 parentTransform)
+{
+    std::string nodeName = std::string(node->name.data());
+    glm::mat4 nodeTransform = node->transformation;
+
+    auto& animation = engine->world.GetComponent<AnimationComponent>(ID);
+
+    Bone* Bone = animation.m_CurrentAnimation.FindBone(nodeName);
+
+    if (Bone)
+    {
+        Bone->Update(animation.m_CurrentTime);
+        nodeTransform = Bone->m_LocalTransform;
+    }
+
+    glm::mat4 globalTransformation = parentTransform * nodeTransform;
+
+    auto boneInfoMap = animation.m_CurrentAnimation.m_BoneInfoMap;
+    if (boneInfoMap.find(nodeName) != boneInfoMap.end())
+    {
+        int index = boneInfoMap[nodeName].id;
+        glm::mat4 offset = boneInfoMap[nodeName].offset;
+        animation.m_Transforms[index] = globalTransformation * offset;
+    }
+
+    for (int i = 0; i < node->childrenCount; i++)
+    {
+        CalculateBoneTransform(ID, &node->children[i], globalTransformation);
+    }      
+}
+
+void Eclipse::AnimationManager::UpdateAnimation(unsigned int ID, float dt)
+{
+    auto& animation = engine->world.GetComponent<AnimationComponent>(ID);
+
+    animation.m_DeltaTime = dt;
+
+    if (animation.m_CurrentAnimation.dataInit)
+    {
+        animation.m_CurrentTime += animation.m_CurrentAnimation.m_TicksPerSecond * dt;
+        animation.m_CurrentTime = fmod(animation.m_CurrentTime, animation.m_CurrentAnimation.m_Duration);
+        CalculateBoneTransform(ID, &animation.m_CurrentAnimation.m_RootNode, glm::mat4(1.0f));
+    }
+}
+
 Eclipse::Bone::Bone(std::vector<KeyPosition> positions, std::vector<KeyRotation> rotations, std::vector<KeyScale> scales, 
                     int numPos, int numRot, int numScale, int id, glm::mat4 localTrans, std::array<char, 128> name):
     m_Positions(positions), m_Rotations(rotations), m_Scales(scales), 
@@ -140,6 +185,114 @@ Eclipse::Bone::Bone(std::vector<KeyPosition> positions, std::vector<KeyRotation>
 {
     m_LocalTransform = localTrans;
     BoneName = std::string(name.data());
+}
+
+int Eclipse::Bone::GetPositionIndex(float animationTime)
+{
+    for (int index = 0; index < m_NumPositions - 1; ++index)
+    {
+        if (animationTime < m_Positions[index + 1].timeStamp)
+        {
+            return index;
+        }
+    }
+
+    assert(0);
+}
+
+int Eclipse::Bone::GetScaleIndex(float animationTime)
+{
+    for (int index = 0; index < m_NumScalings - 1; ++index)
+    {
+        if (animationTime < m_Scales[index + 1].timeStamp)
+        {
+            return index;
+        }
+    }
+    assert(0);
+}
+
+int Eclipse::Bone::GetRotationIndex(float animationTime)
+{
+    for (int index = 0; index < m_NumRotations - 1; ++index)
+    {
+        if (animationTime < m_Rotations[index + 1].timeStamp)
+        {
+            return index;
+        }
+    }
+
+    assert(0);
+}
+
+void Eclipse::Bone::Update(float animationTime)
+{
+    glm::mat4 translation = InterpolatePosition(animationTime);
+    glm::mat4 rotation = InterpolateRotation(animationTime);
+    glm::mat4 scale = InterpolateScaling(animationTime);
+
+    m_LocalTransform = translation * rotation * scale;
+}
+
+glm::mat4 Eclipse::Bone::InterpolatePosition(float animationTime)
+{
+    if (m_NumPositions == 1)
+    {
+        return glm::translate(glm::mat4(1.0f), m_Positions[0].position);
+    }
+        
+    int p0Index = GetPositionIndex(animationTime);
+    int p1Index = p0Index + 1;
+    float scaleFactor = GetScaleFactor(m_Positions[p0Index].timeStamp, m_Positions[p1Index].timeStamp, animationTime);
+    glm::vec3 finalPosition = glm::mix(m_Positions[p0Index].position, m_Positions[p1Index].position, scaleFactor);
+
+    return glm::translate(glm::mat4(1.0f), finalPosition);
+}
+
+glm::mat4 Eclipse::Bone::InterpolateRotation(float animationTime)
+{
+    if (m_NumRotations == 1)
+    {
+        auto rotation = glm::normalize(m_Rotations[0].orientation);
+        return glm::toMat4(rotation);
+    }
+
+    int p0Index = GetRotationIndex(animationTime);
+    int p1Index = p0Index + 1;
+    float scaleFactor = GetScaleFactor(m_Rotations[p0Index].timeStamp, m_Rotations[p1Index].timeStamp, animationTime);
+    glm::quat finalRotation = glm::slerp(m_Rotations[p0Index].orientation, m_Rotations[p1Index].orientation, scaleFactor);
+    finalRotation = glm::normalize(finalRotation);
+
+    return glm::toMat4(finalRotation);
+}
+
+glm::mat4 Eclipse::Bone::InterpolateScaling(float animationTime)
+{
+    if (m_NumScalings == 1)
+    {
+        return glm::scale(glm::mat4(1.0f), m_Scales[0].scale);
+    }
+      
+    int p0Index = GetScaleIndex(animationTime);
+    int p1Index = p0Index + 1;
+    float scaleFactor = GetScaleFactor(m_Scales[p0Index].timeStamp, m_Scales[p1Index].timeStamp, animationTime);
+    glm::vec3 finalScale = glm::mix(m_Scales[p0Index].scale, m_Scales[p1Index].scale, scaleFactor);
+
+    return glm::scale(glm::mat4(1.0f), finalScale);
+}
+
+float Eclipse::Bone::GetScaleFactor(float lastTimeStamp, float nextTimeStamp, float animationTime)
+{
+    float scaleFactor = 0.0f;
+    float midWayLength = animationTime - lastTimeStamp;
+    float framesDiff = nextTimeStamp - lastTimeStamp;
+    scaleFactor = midWayLength / framesDiff;
+
+    return scaleFactor;
+}
+
+Eclipse::BoneInfo::BoneInfo()
+{
 }
 
 Eclipse::BoneInfo::BoneInfo(int _id, glm::mat4 _offset, std::array<char, 128> _name) :
@@ -165,4 +318,25 @@ Eclipse::Animation::Animation(float duration, float ticks, std::array<char, 128>
 
     m_Bones = bones;
     m_RootNode = rootNode;
+
+    dataInit = true;
+}
+
+Bone* Eclipse::Animation::FindBone(std::string& name)
+{
+    auto iter = std::find_if(m_Bones.begin(), m_Bones.end(),
+        [&](const Bone& Bone)
+        {
+            return Bone.BoneName == name;
+        }
+    );
+
+    if (iter == m_Bones.end())
+    {
+        return nullptr;
+    }   
+    else
+    {
+        return &(*iter);
+    }
 }
