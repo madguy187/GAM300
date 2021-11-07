@@ -87,6 +87,7 @@ namespace Eclipse
 		mono_add_internal_call("Eclipse.Input::GetAxis", GetMouseAxis);
 		mono_add_internal_call("Eclipse.Time::getDeltaTime", GetDeltaTime);
 		mono_add_internal_call("Eclipse.Time::getFixedDeltaTime", GetFixedDeltaTime);
+		mono_add_internal_call("Eclipse.GameObject::setEnabled", GetFixedDeltaTime);
 	}
 
 	void MonoManager::Awake(MonoScript* obj)

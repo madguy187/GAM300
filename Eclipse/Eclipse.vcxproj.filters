@@ -1380,5 +1380,6 @@
     <None Include="src\Mono\ScriptAPI\Time.cs" />
     <None Include="src\Assets\Shaders\Instancing\Instancing.frag" />
     <None Include="src\Assets\Shaders\Instancing\Instancing.vert" />
+    <None Include="src\Mono\ScriptAPI\ForceMode.cs" />
   </ItemGroup>
 </Project>

@@ -6,8 +6,7 @@ namespace Eclipse
 {
     public struct Transform
     {
-        //Vector3 transform;
-        ////Vector3 scale;
+        Vector3 position;
 
         //[MethodImplAttribute(MethodImplOptions.InternalCall)]
         //public extern static MonoVec3 GetTranslate(Entity ent);

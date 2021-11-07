@@ -8,6 +8,7 @@ namespace Eclipse
 		std::string scriptName{};
 		MonoObject* obj = nullptr;
 		std::vector<MonoVariable> vars;
+		bool enabled = true;
 
 		bool operator==(const MonoScript& rhs) const
 		{

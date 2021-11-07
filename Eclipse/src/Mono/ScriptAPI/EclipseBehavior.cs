@@ -9,6 +9,7 @@ namespace Eclipse
     {
         private UInt32 gc_handle;
         public GameObject gameObject;
+        public Transform transform;
 
         protected void InitBehavior(UInt32 handle, UInt32 entity)
         {

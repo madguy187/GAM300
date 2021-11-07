@@ -17,5 +17,13 @@ namespace Eclipse
         {
             return (T)Activator.CreateInstance(typeof(T), new object[] { Entity });
         }
+
+        public bool enabled
+        {
+            set => setEnabled(Entity, value ? 1 : 0);
+        }
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        private extern static void setEnabled(UInt32 entity, int value);
     }
 }
