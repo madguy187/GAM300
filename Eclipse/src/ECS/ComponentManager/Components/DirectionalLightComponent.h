@@ -21,6 +21,9 @@ namespace Eclipse
         ECVec3 diffuse{ 0.4f,0.4f,0.4f };
         ECVec3 specular{ 0.5f,0.5f,0.5f };
         ECVec4 Color{ 1.0f,1.0f,1.0f,1 };
+
+        // Overall 
+        ECVec3 AmbientSettings{ 0.005f };
     };
 }
 #endif /* DIRECTIONALIGHTCOMPONENT_H */

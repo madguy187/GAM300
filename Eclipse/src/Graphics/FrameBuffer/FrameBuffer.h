@@ -78,15 +78,23 @@ namespace Eclipse
             PPT_KERNEL = 3,
             PPT_BLUR = 4,
             PPT_SOBEL = 5,
+            PPT_BLLEDING = 6,
+            PPT_SCREENSHAKE = 7,
             PPT_MAXCOUNT
         };
-
         PostProcessType PPType_ = PostProcessType::PPT_NONE;
         bool AllowPostProcess = false;
         unsigned int rectVAO = 0;
         unsigned int rectVBO = 0;
         void CreatePostProcessFramebuffer();
-        void UpdatePP();
+
+        // Sobel
+        float FadeInTimer = 0.0f;
+        float Multiplier = 30.0f;
+        float Visible = 1.0f;
+
+        // Bleeding
+        float BleedingTimer = 0.0f;
     };
 }
 #endif//FRAMEBUFFER_H
