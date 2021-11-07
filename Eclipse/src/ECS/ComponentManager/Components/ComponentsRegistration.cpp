@@ -99,6 +99,7 @@ namespace Eclipse
         ADD_MEMBER(diffuse);
         ADD_MEMBER(specular);
         ADD_MEMBER(Color);
+        ADD_MEMBER(AmbientSettings);
     }
 
     DEFINE_META(EntityComponent)

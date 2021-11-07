@@ -436,6 +436,14 @@ namespace Eclipse
                 ECGui::DrawSliderFloat3Widget("DLight Direction", &_DLight.Direction, true, -10.0f, 10.0f);
                 ECGui::NextColumn();
 
+                ECGui::DrawTextWidget<const char*>("AmbientSettings", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                static float ambient = _DLight.AmbientSettings.getX();
+                ECGui::DrawSliderFloatWidget("AmbientSettings", &ambient, true, 0.0f, 0.1f);
+                _DLight.AmbientSettings = ECVec3{ ambient };
+                ECGui::NextColumn();
+
                 ECGui::DrawTextWidget<const char*>("Affects World", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
