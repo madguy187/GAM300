@@ -444,6 +444,7 @@ namespace Eclipse
 				ECVEC3COLOUR,
 				BASENODE,
 				BOOL,
+				TEXTURE,
 				COUNT
 			};
 
@@ -783,187 +784,35 @@ namespace Eclipse
 				ImNodes::BeginNodeTitleBar();
 				ImNodes::EndNodeTitleBar();
 				
-				// Albedo Constant
-				ImNodes::PushColorStyle(
-					ImNodesCol_Pin, IM_COL32(100, 42, 42, 255));
-				beginInput();
-				// check for first pin if its linked
-				if (getInput(0).node)
-				{
-					//might case problem down the line 
-					if (getInput(0).node->getType() == Node::NodeType::ECVEC3)
-					{
-						auto downcastedPtr = dynamic_cast<Vec3Nodes< NodeEditor::VEC3TYPE::ECVEC3>*>(getInput(0).node);
-						//A = downcastedPtr->inputFloat;
-						engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant = downcastedPtr->inputVec3;
-					}
-					else
-						if (getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR)
-						{
-							auto downcastedPtr = dynamic_cast<Vec3Nodes< NodeEditor::VEC3TYPE::ECVEC3COLOUR>*>(getInput(0).node);
-							//A = downcastedPtr->inputFloat;
-							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant = downcastedPtr->inputVec3;
-						}
-						else
-						{
-							ECGui::OpenPopup("Link Error");
-						}
-
-					if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-					{
-						ECGui::DrawTextWidget<const char*>("Worng Node linkedm link action canceled.", EMPTY_STRING);
-						ECGui::InsertHorizontalLineSeperator();
-						if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
-						{
-							res.links.pop_back();
-							ECGui::CloseCurrentPopup();
-						}
-						ECGui::EndPopup();
-					}
-
-					ImGui::SetNextItemWidth(50);
-					ECGui::DrawTextWidget<std::string>("Albedo Constant", EMPTY_STRING);
-				}
-				else
-				{
-					ImGui::SetNextItemWidth(50);
-					ECGui::DrawTextWidget<std::string>("Albedo Constant", EMPTY_STRING);
-				}
-				endInput();
-				ImNodes::PopColorStyle();
-
-				// metallic constant
-				ImNodes::PushColorStyle(
-					ImNodesCol_Pin, IM_COL32(0, 60, 0, 255));
-				beginInput();
-				if (getInput(1).node)
-				{
-					//might case problem down the line 
-					if (getInput(1).node->getType() == Node::NodeType::FLOAT)
-					{
-						auto downcastedPtr = dynamic_cast<FloatNode*>(getInput(1).node);
-						//A = downcastedPtr->inputFloat;
-						engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.MetallicConstant = downcastedPtr->inputFloat;
-					}
-					else
-					{
-						ECGui::OpenPopup("Link Error");
-					}
-
-					if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-					{
-						ECGui::DrawTextWidget<const char*>("Worng Node linkedm link action canceled.", EMPTY_STRING);
-						ECGui::InsertHorizontalLineSeperator();
-						if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
-						{
-							res.links.pop_back();
-							ECGui::CloseCurrentPopup();
-						}
-						ECGui::EndPopup();
-					}
-
-					ImGui::SetNextItemWidth(50);
-					ECGui::DrawTextWidget<std::string>("Metallic Constant", EMPTY_STRING);
-				}
-				else
-				{
-					ImGui::SetNextItemWidth(50);
-					ECGui::DrawTextWidget<std::string>("Metallic Constant", EMPTY_STRING);
-				}
-				endInput();
-				ImNodes::PopColorStyle();
-
-				// Roughness constant
-				ImNodes::PushColorStyle(
-					ImNodesCol_Pin, IM_COL32(0, 60, 0, 255));
-				beginInput();
-				if (getInput(2).node)
-				{
-					//might case problem down the line 
-					if (getInput(2).node->getType() == Node::NodeType::FLOAT)
-					{
-						auto downcastedPtr = dynamic_cast<FloatNode*>(getInput(2).node);
-						//A = downcastedPtr->inputFloat;
-						engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.RoughnessConstant = downcastedPtr->inputFloat;
-					}
-					else
-					{
-						ECGui::OpenPopup("Link Error");
-					}
-
-					if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-					{
-						ECGui::DrawTextWidget<const char*>("Worng Node linkedm link action canceled.", EMPTY_STRING);
-						ECGui::InsertHorizontalLineSeperator();
-						if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
-						{
-							res.links.pop_back();
-							ECGui::CloseCurrentPopup();
-						}
-						ECGui::EndPopup();
-					}
-
-					ImGui::SetNextItemWidth(50);
-					ECGui::DrawTextWidget<std::string>("Roughness Constant", EMPTY_STRING);
-				}
-				else
-				{
-					ImGui::SetNextItemWidth(50);
-					ECGui::DrawTextWidget<std::string>("Roughness Constant", EMPTY_STRING);
-				}
-				endInput();
-				ImNodes::PopColorStyle();
-				// AO constant
-				ImNodes::PushColorStyle(
-					ImNodesCol_Pin, IM_COL32(0, 60, 0, 255));
-				beginInput();
-				if (getInput(3).node)
-				{
-					//might case problem down the line 
-					if (getInput(3).node->getType() == Node::NodeType::FLOAT)
-					{
-						auto downcastedPtr = dynamic_cast<FloatNode*>(getInput(3).node);
-						//A = downcastedPtr->inputFloat;
-						engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AoConstant = downcastedPtr->inputFloat;
-					}
-					else
-					{
-						ECGui::OpenPopup("Link Error");
-					}
-
-					if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-					{
-						ECGui::DrawTextWidget<const char*>("Worng Node linkedm link action canceled.", EMPTY_STRING);
-						ECGui::InsertHorizontalLineSeperator();
-						if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
-						{
-							res.links.pop_back();
-							ECGui::CloseCurrentPopup();
-						}
-						ECGui::EndPopup();
-					}
-
-					ImGui::SetNextItemWidth(50);
-					ECGui::DrawTextWidget<std::string>("Ao Constant", EMPTY_STRING);
-				}
-				else
-				{
-					ImGui::SetNextItemWidth(50);
-					ECGui::DrawTextWidget<std::string>("Ao Constant", EMPTY_STRING);
-				}
-				endInput();
-				ImNodes::PopColorStyle();
 				//Has Texture
 				ImNodes::PushColorStyle(
 					ImNodesCol_Pin, IM_COL32(60, 0, 0, 255));
 				beginInput();
-				if (getInput(4).node)
+				if (getInput(0).node)
 				{
-					auto downcastedPtr = dynamic_cast<BoolNode*>(getInput(4).node);
-					//A = downcastedPtr->inputFloat;
-					hasTexture = downcastedPtr->inputBool;
-					ImGui::SetNextItemWidth(50);
-					ECGui::CheckBoxBool("",&hasTexture,false);
+					if (getInput(0).node->getType() == Node::NodeType::BOOL)
+					{
+						auto downcastedPtr = dynamic_cast<BoolNode*>(getInput(0).node);
+						//A = downcastedPtr->inputFloat;
+						hasTexture = downcastedPtr->inputBool;
+						ImGui::SetNextItemWidth(50);
+					}
+					else
+					{
+						ECGui::OpenPopup("Link Error");
+					}
+					if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+					{
+						ECGui::DrawTextWidget<const char*>("Worng Node linked, link action canceled.", EMPTY_STRING);
+						ECGui::InsertHorizontalLineSeperator();
+						if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
+						{
+							res.links.pop_back();
+							ECGui::CloseCurrentPopup();
+						}
+						ECGui::EndPopup();
+					}
+					ECGui::CheckBoxBool("", &hasTexture, false);
 				}
 				else
 				{
@@ -972,8 +821,312 @@ namespace Eclipse
 				}
 				endInput();
 				ImNodes::PopColorStyle();
-				//if(hasTexture)
 
+				//base reflective
+				ImNodes::PushColorStyle(
+					ImNodesCol_Pin, IM_COL32(100, 42, 42, 255));
+				beginInput();
+				if (getInput(1).node)
+				{
+					if (getInput(1).node->getType() == Node::NodeType::ECVEC3)
+					{
+						auto downcastedPtr = dynamic_cast<Vec3Nodes< NodeEditor::VEC3TYPE::ECVEC3>*>(getInput(1).node);
+						engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity = downcastedPtr->inputVec3;
+					}
+					else
+					{
+						ECGui::OpenPopup("Link Error");
+					}
+
+					if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+					{
+						ECGui::DrawTextWidget<const char*>("Worng Node linked, link action canceled.", EMPTY_STRING);
+						ECGui::InsertHorizontalLineSeperator();
+						if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
+						{
+							res.links.pop_back();
+							ECGui::CloseCurrentPopup();
+						}
+						ECGui::EndPopup();
+					}
+
+					ImGui::SetNextItemWidth(50);
+					ECGui::DrawTextWidget<std::string>("Base Reflective", EMPTY_STRING);
+				}
+				else
+				{
+					ImGui::SetNextItemWidth(50);
+					ECGui::DrawTextWidget<std::string>("Base Reflective", EMPTY_STRING);
+				}
+				endInput();
+				ImNodes::PopColorStyle();
+
+
+				if (!hasTexture)
+				{
+					// Albedo Constant
+					ImNodes::PushColorStyle(
+						ImNodesCol_Pin, IM_COL32(100, 42, 42, 255));
+					beginInput();
+					// check for first pin if its linked
+					if (getInput(2).node)
+					{
+						//might case problem down the line 
+						if (getInput(2).node->getType() == Node::NodeType::ECVEC3)
+						{
+							auto downcastedPtr = dynamic_cast<Vec3Nodes< NodeEditor::VEC3TYPE::ECVEC3>*>(getInput(2).node);
+							//A = downcastedPtr->inputFloat;
+							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant = downcastedPtr->inputVec3;
+						}
+						else
+							if (getInput(2).node->getType() == Node::NodeType::ECVEC3COLOUR)
+							{
+								auto downcastedPtr = dynamic_cast<Vec3Nodes< NodeEditor::VEC3TYPE::ECVEC3COLOUR>*>(getInput(2).node);
+								//A = downcastedPtr->inputFloat;
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant = downcastedPtr->inputVec3;
+							}
+							else
+							{
+								ECGui::OpenPopup("Link Error");
+							}
+
+						if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+						{
+							ECGui::DrawTextWidget<const char*>("Worng Node linked, link action canceled.", EMPTY_STRING);
+							ECGui::InsertHorizontalLineSeperator();
+							if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
+							{
+								res.links.pop_back();
+								ECGui::CloseCurrentPopup();
+							}
+							ECGui::EndPopup();
+						}
+
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("Albedo Constant", EMPTY_STRING);
+					}
+					else
+					{
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("Albedo Constant", EMPTY_STRING);
+					}
+					endInput();
+					ImNodes::PopColorStyle();
+
+					// metallic constant
+					ImNodes::PushColorStyle(
+						ImNodesCol_Pin, IM_COL32(0, 60, 0, 255));
+					beginInput();
+					if (getInput(3).node)
+					{
+						//might case problem down the line 
+						if (getInput(3).node->getType() == Node::NodeType::FLOAT)
+						{
+							auto downcastedPtr = dynamic_cast<FloatNode*>(getInput(3).node);
+							//A = downcastedPtr->inputFloat;
+							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.MetallicConstant = downcastedPtr->inputFloat;
+						}
+						else
+						{
+							ECGui::OpenPopup("Link Error");
+						}
+
+						if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+						{
+							ECGui::DrawTextWidget<const char*>("Worng Node linked, link action canceled.", EMPTY_STRING);
+							ECGui::InsertHorizontalLineSeperator();
+							if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
+							{
+								res.links.pop_back();
+								ECGui::CloseCurrentPopup();
+							}
+							ECGui::EndPopup();
+						}
+
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("Metallic Constant", EMPTY_STRING);
+					}
+					else
+					{
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("Metallic Constant", EMPTY_STRING);
+					}
+					endInput();
+					ImNodes::PopColorStyle();
+
+					// Roughness constant
+					ImNodes::PushColorStyle(
+						ImNodesCol_Pin, IM_COL32(0, 60, 0, 255));
+					beginInput();
+					if (getInput(4).node)
+					{
+						//might case problem down the line 
+						if (getInput(4).node->getType() == Node::NodeType::FLOAT)
+						{
+							auto downcastedPtr = dynamic_cast<FloatNode*>(getInput(4).node);
+							//A = downcastedPtr->inputFloat;
+							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.RoughnessConstant = downcastedPtr->inputFloat;
+						}
+						else
+						{
+							ECGui::OpenPopup("Link Error");
+						}
+
+						if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+						{
+							ECGui::DrawTextWidget<const char*>("Worng Node linked, link action canceled.", EMPTY_STRING);
+							ECGui::InsertHorizontalLineSeperator();
+							if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
+							{
+								res.links.pop_back();
+								ECGui::CloseCurrentPopup();
+							}
+							ECGui::EndPopup();
+						}
+
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("Roughness Constant", EMPTY_STRING);
+					}
+					else
+					{
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("Roughness Constant", EMPTY_STRING);
+					}
+					endInput();
+					ImNodes::PopColorStyle();
+					// AO constant
+					ImNodes::PushColorStyle(
+						ImNodesCol_Pin, IM_COL32(0, 60, 0, 255));
+					beginInput();
+					if (getInput(5).node)
+					{
+						//might case problem down the line 
+						if (getInput(5).node->getType() == Node::NodeType::FLOAT)
+						{
+							auto downcastedPtr = dynamic_cast<FloatNode*>(getInput(5).node);
+							//A = downcastedPtr->inputFloat;
+							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AoConstant = downcastedPtr->inputFloat;
+						}
+						else
+						{
+							ECGui::OpenPopup("Link Error");
+						}
+
+						if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+						{
+							ECGui::DrawTextWidget<const char*>("Worng Node linked, link action canceled.", EMPTY_STRING);
+							ECGui::InsertHorizontalLineSeperator();
+							if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
+							{
+								res.links.pop_back();
+								ECGui::CloseCurrentPopup();
+							}
+							ECGui::EndPopup();
+						}
+
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("Ao Constant", EMPTY_STRING);
+					}
+					else
+					{
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("Ao Constant", EMPTY_STRING);
+					}
+					endInput();
+					ImNodes::PopColorStyle();
+				}
+				else
+				{
+				//normal map
+				ImNodes::PushColorStyle(
+					ImNodesCol_Pin, IM_COL32(60, 0, 0, 255));
+				beginInput();
+				if (getInput(5).node)
+				{
+					if (getInput(5).node->getType() == Node::NodeType::BOOL)
+					{
+						auto downcastedPtr = dynamic_cast<BoolNode*>(getInput(5).node);
+						//A = downcastedPtr->inputFloat;
+						NormalMap = downcastedPtr->inputBool;
+						ImGui::SetNextItemWidth(50);
+					}
+					else
+					{
+						ECGui::OpenPopup("Link Error");
+					}
+					if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+					{
+						ECGui::DrawTextWidget<const char*>("Worng Node linked, link action canceled.", EMPTY_STRING);
+						ECGui::InsertHorizontalLineSeperator();
+						if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
+						{
+							res.links.pop_back();
+							ECGui::CloseCurrentPopup();
+						}
+						ECGui::EndPopup();
+					}
+					ECGui::CheckBoxBool("", &NormalMap, false);
+				}
+				else
+				{
+					ImGui::SetNextItemWidth(50);
+					ECGui::CheckBoxBool("Bool", &NormalMap, false);
+				}
+				endInput();
+				ImNodes::PopColorStyle();
+
+				// colours
+				ImNodes::PushColorStyle(
+					ImNodesCol_Pin, IM_COL32(100, 42, 42, 255));
+				beginInput();
+				// check for first pin if its linked
+				if (getInput(6).node)
+				{
+					//might case problem down the line 
+					if (getInput(6).node->getType() == Node::NodeType::ECVEC3)
+					{
+						auto downcastedPtr = dynamic_cast<Vec3Nodes< NodeEditor::VEC3TYPE::ECVEC3>*>(getInput(6).node);
+						//A = downcastedPtr->inputFloat;
+						engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour = downcastedPtr->inputVec3;
+					}
+					else
+						if (getInput(6).node->getType() == Node::NodeType::ECVEC3COLOUR)
+						{
+							auto downcastedPtr = dynamic_cast<Vec3Nodes< NodeEditor::VEC3TYPE::ECVEC3COLOUR>*>(getInput(6).node);
+							//A = downcastedPtr->inputFloat;
+							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour = downcastedPtr->inputVec3;
+						}
+						else
+						{
+							ECGui::OpenPopup("Link Error");
+						}
+
+					if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+					{
+						ECGui::DrawTextWidget<const char*>("Worng Node linked, link action canceled.", EMPTY_STRING);
+						ECGui::InsertHorizontalLineSeperator();
+						if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
+						{
+							res.links.pop_back();
+							ECGui::CloseCurrentPopup();
+						}
+						ECGui::EndPopup();
+					}
+
+					ImGui::SetNextItemWidth(50);
+					ECGui::DrawTextWidget<std::string>("Material Colour", EMPTY_STRING);
+				}
+				else
+				{
+					ImGui::SetNextItemWidth(50);
+					ECGui::DrawTextWidget<std::string>("Material Colour", EMPTY_STRING);
+				}
+				endInput();
+				ImNodes::PopColorStyle();
+
+
+				// for texture nodes
+				}
 				ImNodes::EndNode();
 				ImNodes::PopColorStyle();
 				ImNodes::PopColorStyle();
@@ -981,6 +1134,8 @@ namespace Eclipse
 				return false;
 			}
 
+			ECVec3 Colours = {0.0f,0.0f,0.0f};
+			bool NormalMap = false;
 			bool hasTexture = false;
 		};
 
@@ -1015,6 +1170,48 @@ namespace Eclipse
 				return false;
 			}
 			bool inputBool = false;
+		};
+
+		struct TextureNode :public Node
+		{
+			TextureNode(MaterialNode& res) : Node(res) {}
+
+			NodeType getType() const override
+			{
+				return NodeType::TEXTURE;
+			}
+
+			bool onGUI(int nodeId) override
+			{
+				ImNodes::PushColorStyle(
+					ImNodesCol_TitleBar, IM_COL32(0, 0, 0, 255));
+				ImNodes::PushColorStyle(
+					ImNodesCol_TitleBarSelected, IM_COL32(0, 0, 0, 255));
+				ImNodes::PushColorStyle(
+					ImNodesCol_TitleBarHovered, IM_COL32(0, 0, 0, 255));
+				ImNodes::BeginNode(nodeId);
+				ImNodes::BeginNodeTitleBar();
+				ECGui::DrawTextWidget<std::string>("Texture", EMPTY_STRING);
+				ImNodes::EndNodeTitleBar();
+
+				ImGui::SetNextItemWidth(100);
+				ECGui::Image((ImTextureID)textureID, {69,69}, { 1,0 }, { 2,1 });
+				beginOutput();
+
+				endOutput();
+				ImNodes::EndNode();
+				ImNodes::PopColorStyle();
+				ImNodes::PopColorStyle();
+				ImNodes::PopColorStyle();
+				return false;
+			}
+
+			void setTextureId(const std::string idString)
+			{
+				textureID = Graphics::FindTextures(idString.c_str()).GetHandle();
+			}
+
+			int textureID = 0;
 		};
 
 		unsigned short generatedId()
@@ -1104,6 +1301,8 @@ namespace Eclipse
 		void Reset();
 
 		void CreateBaseMaterialNode();
+
+		void CreateTextureNode(std::string textureId);
 	};
 
 	inline int MaterialNode::findMaterialNodePos(MaterialNode editor, int id)
@@ -1128,7 +1327,17 @@ namespace Eclipse
 		ImNodes::EditorContextSet(editor.context);
 
 		ImNodes::BeginNodeEditor();
+
+		static std::string TextureString = {""};
+		std::cout << TextureString << std::endl;
 		bool context_open = false;
+		if (TextureString.size() != 0)
+		{
+			size_t lastindex = TextureString.find_last_of(".");
+			std::string tempName = TextureString.substr(0, lastindex);
+			CreateTextureNode(tempName);
+			TextureString.clear();
+		}
 
 		if (!BaseNodeExist)
 		{
@@ -1188,8 +1397,7 @@ namespace Eclipse
 			ImNodes::Link(link.linkId, link.startPoint, link.endPoint);
 		}
 
-		ImNodes::EndNodeEditor();
-
+		ImNodes::EndNodeEditorReturnString(TextureString);
 		for (std::shared_ptr<MaterialNode::Node>& n : editor.nodes)
 		{
 			ImVec2 p = ImNodes::GetNodeEditorSpacePos(n->nodeId);
@@ -1250,6 +1458,14 @@ namespace Eclipse
 	inline void MaterialNode::CreateBaseMaterialNode()
 	{
 		std::shared_ptr<Node> node = std::make_shared <BasedMaterialNode>(*this);
+		nodes.push_back(node);
+	}
+
+	inline void MaterialNode::CreateTextureNode(std::string textureId)
+	{
+		TextureNode temp = TextureNode(*this);
+		temp.setTextureId(textureId);
+		std::shared_ptr<Node> node = std::make_shared <TextureNode>(*this);
 		nodes.push_back(node);
 	}
 

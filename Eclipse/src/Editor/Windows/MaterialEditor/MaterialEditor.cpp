@@ -17,6 +17,7 @@ namespace Eclipse
             ECGui::DrawMainWindow<void()>("Material Settings", std::bind(&MaterialEditorWindow::RunMaterialSettings, this));
 
             ImGui::Begin("Material BluePrint", &IsVisible);
+
             if (nameChange())
             {
                 InitMaterialNodes();
