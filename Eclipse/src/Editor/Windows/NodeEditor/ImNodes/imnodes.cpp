@@ -2160,9 +2160,8 @@ void BeginNodeEditor()
     GImNodes->AltMouseScrollDelta = ImGui::GetIO().MouseWheel;
 
     GImNodes->ActiveAttribute = false;
-
     ImGui::BeginGroup();
-    {
+    {            
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(1.f, 1.f));
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
         ImGui::PushStyleColor(ImGuiCol_ChildBg, GImNodes->Style.Colors[ImNodesCol_GridBackground]);
@@ -2335,10 +2334,163 @@ void EndNodeEditor()
     GImNodes->CanvasDrawList->ChannelsMerge();
 
     // pop style
+    std::string destination;
     ImGui::EndChild();      // end scrolling region
     ImGui::PopStyleColor(); // pop child window background color
     ImGui::PopStyleVar();   // pop window padding
     ImGui::PopStyleVar();   // pop frame padding
+    engine->editorManager->DragAndDropInst_.NodeEditorTextureTarget("dds", destination, "test");
+    ImGui::EndGroup();
+}
+
+void EndNodeEditorReturnString(std::string& DragDropDestination)
+{
+    assert(GImNodes->CurrentScope == ImNodesScope_Editor);
+    GImNodes->CurrentScope = ImNodesScope_None;
+
+    ImNodesEditorContext& editor = EditorContextGet();
+
+    bool no_grid_content = editor.GridContentBounds.IsInverted();
+    if (no_grid_content)
+    {
+        editor.GridContentBounds = ScreenSpaceToGridSpace(editor, GImNodes->CanvasRectScreenSpace);
+    }
+
+    // Detect ImGui interaction first, because it blocks interaction with the rest of the UI
+
+    if (GImNodes->LeftMouseClicked && ImGui::IsAnyItemActive())
+    {
+        editor.ClickInteraction.Type = ImNodesClickInteractionType_ImGuiItem;
+    }
+
+    // Detect which UI element is being hovered over. Detection is done in a hierarchical fashion,
+    // because a UI element being hovered excludes any other as being hovered over.
+
+    // Don't do hovering detection for nodes/links/pins when interacting with the mini-map, since
+    // its an *overlay* with its own interaction behavior and must have precedence during mouse
+    // interaction.
+
+    if ((editor.ClickInteraction.Type == ImNodesClickInteractionType_None ||
+        editor.ClickInteraction.Type == ImNodesClickInteractionType_LinkCreation) &&
+        MouseInCanvas() && !IsMiniMapHovered())
+    {
+        // Pins needs some special care. We need to check the depth stack to see which pins are
+        // being occluded by other nodes.
+        ResolveOccludedPins(editor, GImNodes->OccludedPinIndices);
+
+        GImNodes->HoveredPinIdx = ResolveHoveredPin(editor.Pins, GImNodes->OccludedPinIndices);
+
+        if (!GImNodes->HoveredPinIdx.HasValue())
+        {
+            // Resolve which node is actually on top and being hovered using the depth stack.
+            GImNodes->HoveredNodeIdx = ResolveHoveredNode(editor.NodeDepthOrder);
+        }
+
+        // We don't check for hovered pins here, because if we want to detach a link by clicking and
+        // dragging, we need to have both a link and pin hovered.
+        if (!GImNodes->HoveredNodeIdx.HasValue())
+        {
+            GImNodes->HoveredLinkIdx = ResolveHoveredLink(editor.Links, editor.Pins);
+        }
+    }
+
+    for (int node_idx = 0; node_idx < editor.Nodes.Pool.size(); ++node_idx)
+    {
+        if (editor.Nodes.InUse[node_idx])
+        {
+            DrawListActivateNodeBackground(node_idx);
+            DrawNode(editor, node_idx);
+        }
+    }
+
+    // In order to render the links underneath the nodes, we want to first select the bottom draw
+    // channel.
+    GImNodes->CanvasDrawList->ChannelsSetCurrent(0);
+
+    for (int link_idx = 0; link_idx < editor.Links.Pool.size(); ++link_idx)
+    {
+        if (editor.Links.InUse[link_idx])
+        {
+            DrawLink(editor, link_idx);
+        }
+    }
+
+    // Render the click interaction UI elements (partial links, box selector) on top of everything
+    // else.
+
+    DrawListAppendClickInteractionChannel();
+    DrawListActivateClickInteractionChannel();
+
+    if (IsMiniMapActive())
+    {
+        CalcMiniMapLayout();
+        MiniMapUpdate();
+    }
+
+    // Handle node graph interaction
+
+    if (!IsMiniMapHovered())
+    {
+        if (GImNodes->LeftMouseClicked && GImNodes->HoveredLinkIdx.HasValue())
+        {
+            BeginLinkInteraction(editor, GImNodes->HoveredLinkIdx.Value(), GImNodes->HoveredPinIdx);
+        }
+
+        else if (GImNodes->LeftMouseClicked && GImNodes->HoveredPinIdx.HasValue())
+        {
+            BeginLinkCreation(editor, GImNodes->HoveredPinIdx.Value());
+        }
+
+        else if (GImNodes->LeftMouseClicked && GImNodes->HoveredNodeIdx.HasValue())
+        {
+            BeginNodeSelection(editor, GImNodes->HoveredNodeIdx.Value());
+        }
+
+        else if (
+            GImNodes->LeftMouseClicked || GImNodes->LeftMouseReleased ||
+            GImNodes->AltMouseClicked || GImNodes->AltMouseScrollDelta != 0.f)
+        {
+            BeginCanvasInteraction(editor);
+        }
+
+        bool should_auto_pan =
+            editor.ClickInteraction.Type == ImNodesClickInteractionType_BoxSelection ||
+            editor.ClickInteraction.Type == ImNodesClickInteractionType_LinkCreation ||
+            editor.ClickInteraction.Type == ImNodesClickInteractionType_Node;
+        if (should_auto_pan && !MouseInCanvas())
+        {
+            ImVec2 mouse = ImGui::GetMousePos();
+            ImVec2 center = GImNodes->CanvasRectScreenSpace.GetCenter();
+            ImVec2 direction = (center - mouse);
+            direction = direction * ImInvLength(direction, 0.0);
+
+            editor.AutoPanningDelta =
+                direction * ImGui::GetIO().DeltaTime * GImNodes->Io.AutoPanningSpeed;
+            editor.Panning += editor.AutoPanningDelta;
+        }
+    }
+    ClickInteractionUpdate(editor);
+
+    // At this point, draw commands have been issued for all nodes (and pins). Update the node pool
+    // to detect unused node slots and remove those indices from the depth stack before sorting the
+    // node draw commands by depth.
+    ObjectPoolUpdate(editor.Nodes);
+    ObjectPoolUpdate(editor.Pins);
+
+    DrawListSortChannelsByDepth(editor.NodeDepthOrder);
+
+    // After the links have been rendered, the link pool can be updated as well.
+    ObjectPoolUpdate(editor.Links);
+
+    // Finally, merge the draw channels
+    GImNodes->CanvasDrawList->ChannelsMerge();
+
+    // pop style
+    ImGui::EndChild();      // end scrolling region
+    ImGui::PopStyleColor(); // pop child window background color
+    ImGui::PopStyleVar();   // pop window padding
+    ImGui::PopStyleVar();   // pop frame padding
+    engine->editorManager->DragAndDropInst_.NodeEditorTextureTarget("dds", DragDropDestination, "test");
     ImGui::EndGroup();
 }
 
