@@ -1335,6 +1335,22 @@ namespace Eclipse
 		{
 			size_t lastindex = TextureString.find_last_of(".");
 			std::string tempName = TextureString.substr(0, lastindex);
+
+			std::string fileName = tempName;
+			size_t last_slash_idx = fileName.find_last_of("\\/");
+			if (std::string::npos != last_slash_idx)
+			{
+				fileName.erase(0, last_slash_idx + 1);
+			}
+
+
+			std::string directory;
+			last_slash_idx = TextureString.rfind('\\');
+			if (std::string::npos != last_slash_idx)
+			{
+				directory = TextureString.substr(0, last_slash_idx);
+			}
+
 			CreateTextureNode(tempName);
 			TextureString.clear();
 		}
