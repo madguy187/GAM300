@@ -51,15 +51,12 @@ void EclipseCompiler::AnimationCompiler::WriteToFile(std::vector<AnimationData>&
         return;
     }
 
-    //std::cout << "Writing to Animation File " << std::endl;
-
     int animationNum = In.size();
-    //std::cout << "Detected Animation Size " << animationNum << std::endl << std::endl;
+
     AnimationFileWrite.write(reinterpret_cast<const char*>(&animationNum), sizeof(animationNum));
 
     for (auto it : In)
     {
-        //AnimationFileWrite.write(reinterpret_cast<const char*>(&it), offsetof(AnimationData, m_Bones));
         AnimationFileWrite.write(reinterpret_cast<const char*>(&it), offsetof(AnimationData, m_BoneInfo));
 
         int boneInfoSize = it.m_BoneInfo.size();
@@ -101,9 +98,6 @@ void EclipseCompiler::AnimationCompiler::WriteToFile(std::vector<AnimationData>&
     }
 
     AnimationFileWrite.close();
-
-    // std::cout << "Done Writing to Animation File " << std::endl;
-
 }
 
 void EclipseCompiler::AnimationCompiler::ReleaseFile()

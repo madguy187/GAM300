@@ -49,6 +49,7 @@ void Eclipse::AnimationManager::RecurseChildren(AssimpNodeData& nodeData, std::f
         {
             nodeData.children[i].name = name;
             nodeData.children[i].transformation = transform;
+            nodeData.children[i].childrenCount = childCount;
         }
     }
 }

@@ -5,7 +5,7 @@ namespace EclipseCompiler
 {
     void AssimpLoader::LoadAssimpModel(std::string path, std::unordered_map<std::string, Mesh>& GeometryContainer)
     {
-        unsigned int importOptions = aiProcess_Triangulate | aiProcess_GenSmoothNormals 
+        unsigned int importOptions = aiProcess_Triangulate | aiProcess_GenSmoothNormals
             | aiProcess_CalcTangentSpace | aiProcess_FlipWindingOrder
             | aiProcess_TransformUVCoords | aiProcess_FlipUVs;
 
@@ -41,7 +41,7 @@ namespace EclipseCompiler
         Directory = path.substr(0, path.find_last_of("/"));
 
         ProcessGeometry(scene->mRootNode, scene);
-        LoadNewModel(GeometryContainer);
+        LoadNewModel(GeometryContainer, scene->HasAnimations());
     }
 
     void AssimpLoader::LoadAssimpModelForTextures(std::string path, std::vector < std::pair<std::string, Texture>>& textureContainer)
@@ -150,10 +150,6 @@ namespace EclipseCompiler
 
         // Set Mesh Name
         newMesh.MeshName = MeshName;
-        //std::cout << "MeshName: " << MeshName << std::endl;
-        //std::cout << "Vtx Num: " << mesh->mNumVertices << std::endl;
-        //std::cout << "Num Bones: " << mesh->mNumBones << std::endl;
-        //std::cout << std::endl;
 
         // vertices
         for (unsigned int i = 0; i < mesh->mNumVertices; i++)
@@ -367,14 +363,7 @@ namespace EclipseCompiler
         Directory = path.substr(0, path.find_last_of("/"));
 
         ProcessGeometry(scene->mRootNode, scene);
-        LoadNewAnimationModel();
-
-        //std::cout << "End Geometry (Animation)! " << std::endl;
-        //for (auto& it : AllBoneCount)
-        //{
-        //    std::cout << "Model Name: " << it.first << std::endl;
-        //    std::cout << "Bone Count: " << it.second << std::endl;
-        //}
+        //LoadNewAnimationModel();
     }
 
     void AssimpLoader::LoadNewAnimationModel()
@@ -401,14 +390,14 @@ namespace EclipseCompiler
 
         for (auto& it : meshData)
         {
-            //for (auto& vertex : it.vertices)
-            //{
-            //    vertex.Position -= centroid;
-            //
-            //    vertex.Position.x /= largestAxis;
-            //    vertex.Position.y /= largestAxis;
-            //    vertex.Position.z /= largestAxis;
-            //}
+            for (auto& vertex : it.vertices)
+            {
+                vertex.Position -= centroid;
+            
+                vertex.Position.x /= largestAxis;
+                vertex.Position.y /= largestAxis;
+                vertex.Position.z /= largestAxis;
+            }
 
             if (it.NoTextures == false)
             {
@@ -422,14 +411,14 @@ namespace EclipseCompiler
             }
         }
 
-        //for (auto& it : AllVertices)
-        //{
-        //    it -= centroid;
-        //
-        //    it.x /= largestAxis;
-        //    it.y /= largestAxis;
-        //    it.z /= largestAxis;
-        //}
+        for (auto& it : AllVertices)
+        {
+            it -= centroid;
+        
+            it.x /= largestAxis;
+            it.y /= largestAxis;
+            it.z /= largestAxis;
+        }
     }
 
     void AssimpLoader::LoadAnimationData(std::string path, std::vector<AnimationData>& AnimationContainer)
@@ -578,7 +567,7 @@ namespace EclipseCompiler
         return centroid;
     }
 
-    void AssimpLoader::LoadNewModel(std::unordered_map<std::string, Mesh>& GeometryContainer)
+    void AssimpLoader::LoadNewModel(std::unordered_map<std::string, Mesh>& GeometryContainer, bool HasAnimation)
     {
         std::vector<glm::vec3> combinedVertices;
 
@@ -602,30 +591,18 @@ namespace EclipseCompiler
 
         for (auto& it : meshData)
         {
-            //for (auto& vertex : it.vertices)
-            //{
-            //    vertex.Position -= centroid;
-            //
-            //    vertex.Position.x /= largestAxis;
-            //    vertex.Position.y /= largestAxis;
-            //    vertex.Position.z /= largestAxis;
-            //
-            //    //std::cout << "Name: " << it.MeshName << std::endl;
-            //
-            //    //if (strcmp(it.MeshName, "RootNode") == 0)
-            //    //{           
-            //    //    std::cout << "Vertex Num: " << counter << std::endl;
-            //    //
-            //    //    for (unsigned int i = 0; i < 4; ++i)
-            //    //    {                     
-            //    //        std::cout << "Bone ID: " << vertex.m_BoneIDs[i] << std::endl;
-            //    //        std::cout << "Bone Weight: " << vertex.m_Weights[i] << std::endl;
-            //    //        std::cout << std::endl;
-            //    //    }
-            //    //
-            //    //    ++counter;
-            //    //}
-            //}       
+            if (!HasAnimation)
+            {
+                for (auto& vertex : it.vertices)
+                {
+                    vertex.Position -= centroid;
+
+                    vertex.Position.x /= largestAxis;
+                    vertex.Position.y /= largestAxis;
+                    vertex.Position.z /= largestAxis;
+                }
+            }
+ 
 
             if (it.NoTextures == false)
             {
@@ -641,14 +618,17 @@ namespace EclipseCompiler
             }
         }
 
-        //for (auto& it : AllVertices)
-        //{
-        //    it -= centroid;
-        //
-        //    it.x /= largestAxis;
-        //    it.y /= largestAxis;
-        //    it.z /= largestAxis;
-        //}
+        if (!HasAnimation)
+        {
+            for (auto& it : AllVertices)
+            {
+                it -= centroid;
+
+                it.x /= largestAxis;
+                it.y /= largestAxis;
+                it.z /= largestAxis;
+            }
+        }
     }
 
     void AssimpLoader::SetVertexBoneDataToDefault(Vertex& vertex)

@@ -252,7 +252,7 @@ namespace EclipseCompiler
         float GetLargestAxisValue(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         void ComputeAxisMinMax(std::vector<glm::vec3>& vertices, std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
         glm::vec3 ComputeCentroid(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ);
-        void LoadNewModel(std::unordered_map<std::string, Mesh>& GeometryContainer);
+        void LoadNewModel(std::unordered_map<std::string, Mesh>& GeometryContainer, bool HasAnimation);
         void SetVertexBoneDataToDefault(Vertex& vertex);
         void SetVertexBoneData(Vertex& vertex, int boneID, float weight);
         void ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene, const char* MeshName);
