@@ -36,6 +36,7 @@ namespace Eclipse
     DEFINE_META(AudioComponent)
     {
         ADD_MEMBER(AudioPath);
+        ADD_MEMBER(ChannelID);
         ADD_MEMBER(Volume);
         ADD_MEMBER(Pitch);
         ADD_MEMBER(Speed);
@@ -104,6 +105,7 @@ namespace Eclipse
     {
         ADD_MEMBER(Tag);
         ADD_MEMBER(Name);
+        ADD_MEMBER(LayerIndex);
         ADD_MEMBER(Child);
         ADD_MEMBER(Parent);
         ADD_MEMBER(IsAChild);
@@ -114,6 +116,7 @@ namespace Eclipse
     DEFINE_META(ScriptComponent)
     {
         ADD_MEMBER(scriptList);
+        ADD_MEMBER(LayerMask);
     }
 
     DEFINE_META(LightComponent)

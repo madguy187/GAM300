@@ -140,7 +140,7 @@ namespace Eclipse
 	{
 		Entity ID = engine->world.CreateEntity();
 
-		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast_toStr<EntityType>(type), true });
+		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast_toStr<EntityType>(type), 0, true });
 		engine->world.AddComponent(ID, TransformComponent{});
 
 		// Check this please - Rachel
@@ -391,6 +391,6 @@ namespace Eclipse
 	{
 		FolderIcon_ = Graphics::FindTextures("FolderIcon").GetHandle();
 
-		spriteIcon_ = Graphics::FindTextures("PlayPauseStop").GetHandle();
+		spriteIcon_ = Graphics::FindTextures("Playstop").GetHandle();
 	}
 }

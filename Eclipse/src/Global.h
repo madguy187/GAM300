@@ -5,6 +5,7 @@
 #define EPSILON 0.000001f
 #define PTR_ADD( PTR, OFFSET ) \
   ((void *)(((char *)(PTR)) + (OFFSET)))
+#define MAX_LAYER_SIZE 20
 
 // Entities
 using Entity = uint32_t;
@@ -233,5 +234,5 @@ struct MonoVariable
 {
     m_Type type = m_Type::MONO_UNDEFINED;
     std::string varName = "";
-
+    std::string varValue = "";
 };
