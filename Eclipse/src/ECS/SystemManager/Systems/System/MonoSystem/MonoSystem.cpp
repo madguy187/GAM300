@@ -34,6 +34,8 @@ namespace Eclipse
 
 			for (auto& script : scriptCom.scriptList)
 			{
+				if (!script.enabled) continue;
+
 				if (engine->mono.fixUpdate)
 					engine->mono.FixedUpdate(&script);
 				else

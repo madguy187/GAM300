@@ -9,11 +9,14 @@ namespace Eclipse
     {
         private UInt32 gc_handle;
         public GameObject gameObject;
+        public Transform transform;
 
-        protected void InitBehavior(UInt32 handle, UInt32 entity)
+        protected void InitBehavior(UInt32 handle, UInt32 entity, string name)
         {
-            gameObject = new GameObject(entity);
+            Console.WriteLine(name);
+            gameObject = new GameObject(entity, name);
             gc_handle = handle;
+            transform = gameObject.transform;
         }
 
         public UInt32 Entity
