@@ -1406,5 +1406,45 @@
       <Filter>Tracy</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\Inputsystem\InputSystem.cpp" />
+    <ClCompile Include="src\Graphics\Material\PBR\PBRManager.cpp" />
+    <ClCompile Include="src\Graphics\Material\MaterialInstance\MaterialInstance.cpp" />
+    <ClCompile Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.cpp" />
+    <ClCompile Include="src\Graphics\EngineCompiler\InputCompiler\InputCompiler.cpp" />
+    <ClCompile Include="src\Graphics\MeshEditor\MeshEditorSource.cpp" />
+    <ClCompile Include="src\Graphics\Instancing\Instance_Renderer\Instance_Renderer.cpp" />
+    <ClCompile Include="src\Graphics\Instancing\DebugManager\DebugManager.cpp" />
+    <ClCompile Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.cpp" />
+    <ClCompile Include="src\Graphics\Instancing\DebugLights\DebugLights.cpp" />
+    <ClCompile Include="src\Graphics\Instancing\DebugSpotLights\DebugSpotlights.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />
+    <None Include="src\Assets\Shaders\PBRShader\PBR.vert" />
+    <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.frag" />
+    <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.vert" />
+    <ClCompile Include="src\Library\Random\Random.cpp" />
+    <None Include="src\Mono\ScriptAPI\EclipseBehavior.cs" />
+    <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_bezier_math.inl" />
+    <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_extra_math.inl" />
+    <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_internal.inl" />
+    <None Include="src\Assets\Shaders\MaterialEditor\PBR.frag" />
+    <None Include="src\Assets\Shaders\MaterialEditor\PBR.vert" />
+    <None Include="src\Assets\Shaders\MeshEditor\MeshEditor.frag" />
+    <None Include="src\Assets\Shaders\MeshEditor\MeshEditor.vert" />
+    <None Include="src\Assets\Shaders\Test\DebugSPhere.frag" />
+    <None Include="src\Assets\Shaders\Test\DebugSPhere.vert" />
+    <None Include="src\Mono\ScriptAPI\InputHandler.cs" />
+    <None Include="src\Mono\ScriptAPI\KeyCode.cs" />
+    <None Include="src\Mono\ScriptAPI\Header.cs" />
+    <None Include="src\Mono\ScriptAPI\HeaderReader.cs" />
+    <None Include="src\Mono\ScriptAPI\Time.cs" />
+    <None Include="src\Assets\Shaders\Instancing\Instancing.frag" />
+    <None Include="src\Assets\Shaders\Instancing\Instancing.vert" />
+    <None Include="src\Mono\ScriptAPI\ForceMode.cs" />
+    <None Include="src\Mono\ScriptAPI\Vector2.cs" />
+    <None Include="src\Mono\ScriptAPI\Quaternion.cs" />
+    <None Include="src\Mono\ScriptAPI\CursorLockMode.cs" />
+    <None Include="src\Mono\Components\s_EclipseBehavior.h" />
   </ItemGroup>
 </Project>

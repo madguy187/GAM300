@@ -8,6 +8,7 @@ namespace Eclipse
     {
         UInt32 Entity;
         //Vector3 position;
+        //Quaternion rotation;
 
         public Transform(UInt32 entity)
         {
