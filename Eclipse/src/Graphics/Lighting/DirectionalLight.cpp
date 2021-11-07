@@ -64,7 +64,10 @@ namespace Eclipse
         std::string number = std::to_string(index);
 
         GLint uniform_var_loc4 = shdrpgm.GetLocation(("directionlight[" + number + "].AffectsWorld").c_str());
+        GLint uniform_var_loc5 = shdrpgm.GetLocation(("directionlight[" + number + "].AmbientSettings").c_str());
+
         GLCall(glUniform1i(uniform_var_loc4, DLight.AffectsWorld));
+        GLCall(glUniform3f(uniform_var_loc5, DLight.AmbientSettings.getX(), DLight.AmbientSettings.getY(), DLight.AmbientSettings.getZ()));
 
         if (DLight.AffectsWorld)
         {
