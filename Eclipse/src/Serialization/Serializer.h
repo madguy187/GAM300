@@ -139,6 +139,12 @@ namespace Eclipse
         }
         
         template <>
+        inline void AddAttributeToElement(const std::string& att_name, const m_Type& att_data)
+        {
+            _currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<m_Type>(const_cast<m_Type&>(att_data)).c_str());
+        }
+        
+        template <>
         inline void AddAttributeToElement(const std::string& att_name, const Texture& att_data)
         {
             (void)att_name;
@@ -162,7 +168,20 @@ namespace Eclipse
         template <>
         inline void AddAttributeToElement(const std::string& att_name, const MonoScript& att_data)
         {
-            AddAttributeToElement(att_name, att_data.scriptName);
+            (void)att_name;
+            AddAttributeToElement("ScriptName", att_data.scriptName);
+            StartElement("MonoVariables");
+            AddAttributeToElement("Variables", att_data.vars);
+            CloseElement();
+        }
+        
+        template <>
+        inline void AddAttributeToElement(const std::string& att_name, const MonoVariable& att_data)
+        {
+            (void)att_name;
+            AddAttributeToElement("Type", att_data.type);
+            AddAttributeToElement("Name", att_data.varName);
+            AddAttributeToElement("Value", att_data.varValue);
         }
 
 		template <typename T>

@@ -104,6 +104,10 @@ namespace Eclipse
 		for (auto& ent : instances)
 		{
 			auto& prefab = w.GetComponent<PrefabComponent>(ent);
+			if (prefab.IsChild)
+			{
+				continue;
+			}
 			auto& prefabOwner = mapPIDToEID[prefab.PrefabID];
 
 			CompareMap_Hierarchy hierMap;
@@ -143,6 +147,10 @@ namespace Eclipse
 		for (auto& ent : instances)
 		{
 			auto& prefab = w.GetComponent<PrefabComponent>(ent);
+			if (prefab.IsChild)
+			{
+				continue;
+			}
 			auto& prefabOwner = mapPIDToEID[prefab.PrefabID];
 
 			CompareMap_Hierarchy hierMap;
@@ -159,9 +167,9 @@ namespace Eclipse
 				auto& target = pair.first;
 				auto& copySource = pair.second;
 
-				CopyToInstance(prefabOwner, prefabW, prefabOwner, ent, true);
+				CopyToInstance(copySource, prefabW, copySource, target, true);
 				//SignatureBaseCopy(prefabW, w, prefabOwner, ent);
-				CleanUpForInstancesAfterCopy(ent);
+				CleanUpForInstancesAfterCopy(target);
 			}
 
 			for (auto& pair : newChildMap)
@@ -226,6 +234,7 @@ namespace Eclipse
 		//Entity component updates
 		auto& entComp = prefabW.GetComponent<EntityComponent>(prefabEnt);
 		entComp.IsActive = false;
+		entComp.hightLightChild = false;
 		entComp.Child.clear();
 		entComp.Parent.clear();
 		entComp.IsAChild = parentEnt != MAX_ENTITY;
@@ -462,6 +471,43 @@ namespace Eclipse
 		return newEnt;
 	}
 
+	Entity PrefabManager::CreatePrefabInstanceSetTransform(const EUUID& prefabID, const ECVec3& position, const ECVec3& rotation)
+	{
+		std::string path =  GetPath(prefabID);
+		
+		if (!path.empty())
+		{
+			return MAX_ENTITY;
+		}
+
+		Entity newEnt = CreatePrefabInstance(path.c_str());
+
+		if(newEnt != MAX_ENTITY)
+		{
+			auto& transform = engine->world.GetComponent<TransformComponent>(newEnt);
+
+			transform.position = position;
+			transform.rotation = rotation;
+		}
+
+		return newEnt;
+	}
+
+	Entity PrefabManager::CreatePrefabInstanceSetTransform(const char* path, const ECVec3& position, const ECVec3& rotation)
+	{
+		Entity newEnt = CreatePrefabInstance(path);
+
+		if (newEnt != MAX_ENTITY)
+		{
+			auto& transform = engine->world.GetComponent<TransformComponent>(newEnt);
+
+			transform.position = position;
+			transform.rotation = rotation;
+		}
+
+		return newEnt;
+	}
+
 	void PrefabManager::UpdateParentChildTransform(const Entity& chidlEnt, const Entity& parentEnt)
 	{
 		ChildComponent& childComp = engine->world.GetComponent<ChildComponent>(chidlEnt);
@@ -490,14 +536,20 @@ namespace Eclipse
 		}
 		else
 		{
+			if (!w.CheckComponent<ParentComponent>(parentEnt))
+			{
+				w.AddComponent<ParentComponent>(parentEnt, {});
+			}
+
 			UpdateParentChildTransform(ent, parentEnt);
 		}
+
 
 		//PrefabComponent update
 		auto& prefabComp = w.GetComponent<PrefabComponent>(ent);
 		prefabComp.IsInstance = true;
 
-		engine->editorManager->RegisterNewlySerializedEntity(ent);
+		engine->editorManager->RegisterExistingEntity(ent);
 
 		//CameraComponent update
 		if (w.CheckComponent<CameraComponent>(ent))
@@ -558,18 +610,12 @@ namespace Eclipse
 
 	void PrefabManager::SignatureBaseCopy(World& sourceWorld, World& targetWorld, const Entity& sourceEnt, const Entity& targetEnt)
 	{
-		auto& sourceTrans = sourceWorld.GetComponent<TransformComponent>(sourceEnt);
-		auto& targetTrans = targetWorld.GetComponent<TransformComponent>(targetEnt);
-
-		targetTrans.rotation = sourceTrans.rotation;
-		targetTrans.scale = sourceTrans.scale;
-
-		SignatureBaseCopying(sourceWorld, targetWorld, sourceEnt, targetEnt, list);
+		SignatureBaseCopying(sourceWorld, targetWorld, sourceEnt, targetEnt, all_component_list);
 	}
 
 	void PrefabManager::CopyToInstance(const Entity& comparingPrefabEnt, World& copySourceWorld, const Entity& copyingSourceEnt, const Entity& instancesEnt, const bool& UpdateInstancesOnly)
 	{
-		CopyToPrefabInstances(comparingPrefabEnt, copySourceWorld, copyingSourceEnt, instancesEnt, list, UpdateInstancesOnly);
+		CopyToPrefabInstances(comparingPrefabEnt, copySourceWorld, copyingSourceEnt, instancesEnt, all_component_list, UpdateInstancesOnly);
 	}
 
 	std::vector<Entity> PrefabManager::GetInstanceList(const EUUID& prefabID)
@@ -686,11 +732,14 @@ namespace Eclipse
 			SignatureBaseCopy(w, prefabW, copySource, target);
 		}
 
+		EUUID generatedID = UUIDGenerator::GenerateUUID();
+
 		for (auto& pair : newChildMap)
 		{
 			for (auto& newChild : pair.second)
 			{
-				RecursiveGeneratePrefab(newChild, "", UUIDGenerator::GenerateUUID(), pair.first);
+				RecursiveGeneratePrefab(newChild, "", generatedID, pair.first);
+				generatedID += pair.second.size();
 			}
 		}
 	}

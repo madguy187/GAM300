@@ -151,6 +151,17 @@ namespace Eclipse
 		}
 		
 		template <>
+		inline void ReadAttributeFromElement(const std::string& att_name, m_Type& att_data)
+		{
+			std::string str;
+
+			if (GetAttributeValue(att_name, str))
+			{
+				att_data = lexical_cast_toEnum<m_Type>(str);
+			}
+		}
+		
+		template <>
 		inline void ReadAttributeFromElement(const std::string& att_name, Texture& att_data)
 		{
 			(void)att_name;
@@ -170,11 +181,24 @@ namespace Eclipse
 			ReadAttributeFromElement("Radius", att_data.radius);
 			ReadAttributeFromElement("Hheight", att_data.hheight);
 		}
-		
+
 		template <>
 		inline void ReadAttributeFromElement(const std::string& att_name, MonoScript& att_data)
 		{
+			(void)att_name;
 			ReadAttributeFromElement(att_name, att_data.scriptName);
+			StartElement("MonoVariables");
+			ReadAttributeFromElement("Variables", att_data.vars);
+			CloseElement();
+		}
+
+		template <>
+		inline void ReadAttributeFromElement(const std::string& att_name, MonoVariable& att_data)
+		{
+			(void)att_name;
+			ReadAttributeFromElement("Type", att_data.type);
+			ReadAttributeFromElement("Name", att_data.varName);
+			ReadAttributeFromElement("Value", att_data.varValue);
 		}
 		
 		template <typename T>

@@ -242,15 +242,16 @@ namespace Eclipse
 			return true;
 		}
 
-		inline bool CompareComponentData(const EntityComponent& lhs, const EntityComponent& rhs)
+		inline static  bool CompareComponentData(const EntityComponent& lhs, const EntityComponent& rhs)
 		{
 			bool result = true;
 			result = (lhs.Tag == rhs.Tag);
 			result = (lhs.IsAChild == rhs.IsAChild);
+			result = (lhs.LayerIndex == rhs.LayerIndex);
 			return result;
 		}
 		
-		inline bool CompareComponentData(const TransformComponent& lhs, const TransformComponent& rhs)
+		inline static  bool CompareComponentData(const TransformComponent& lhs, const TransformComponent& rhs)
 		{
 			bool result = true;
 			result = (lhs.rotation == rhs.rotation);
@@ -258,24 +259,33 @@ namespace Eclipse
 			return result;
 		}
 		
-		inline bool CompareComponentData(const ParentComponent& lhs, const ParentComponent& rhs)
+		inline static  bool CompareComponentData(const ParentComponent& lhs, const ParentComponent& rhs)
 		{
 			bool result = true;
 			return result;
 		}
 		
-		inline bool CompareComponentData(const PrefabComponent& lhs, const PrefabComponent& rhs)
+		inline static  bool CompareComponentData(const PrefabComponent& lhs, const PrefabComponent& rhs)
 		{
 			bool result = true;
 			return result;
 		}
 
-		inline bool CompareComponentData(const ChildComponent& lhs, const ChildComponent& rhs)
+		inline static  bool CompareComponentData(const ChildComponent& lhs, const ChildComponent& rhs)
 		{
 			bool result = true;
 			result = (lhs.PosOffset == rhs.PosOffset);
 			result = (lhs.RotOffset == rhs.RotOffset);
 			result = (lhs.ScaleOffset == rhs.ScaleOffset);
+			return result;
+		}
+
+		inline static  bool CompareComponentData(const AIComponent& lhs, const AIComponent& rhs)
+		{
+			bool result = true;
+			result = (lhs.MinDisttoChange == rhs.MinDisttoChange);
+			result = (lhs.patrolling == rhs.patrolling);
+			result = (lhs.PatrolSpeed == rhs.PatrolSpeed);
 			return result;
 		}
 
