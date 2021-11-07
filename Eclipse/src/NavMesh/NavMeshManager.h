@@ -3,6 +3,8 @@
 #include "DetourNavMesh.h"
 #include "DetourNavMeshBuilder.h"
 #include "DetourNavMeshQuery.h"
+#include "DetourDebugDraw.h"
+#include "RecastDebugDraw.h"
 #include "ECS/ComponentManager/Components/NavMeshVolumeComponent.h"
 
 #define MAX_PATHSLOT		128 // how many paths we can store
@@ -93,6 +95,7 @@ namespace Eclipse
 		void CalculateMinMax(Entity ent);
 		void GetVertsandTrisOnScene(std::vector<ECVec3>& verts, std::vector<std::array<int,3>>& tris);
 		bool BuildNavMesh(Entity ent);
+		void RenderMesh();
 		void RecastCleanup();
 	};
 }

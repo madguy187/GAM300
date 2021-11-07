@@ -1085,10 +1085,7 @@ namespace Eclipse
             {
                 ECGui::InsertHorizontalLineSeperator();
                 auto& nm = engine->world.GetComponent<NavMeshVolumeComponent>(ID);
-                ECGui::DrawTextWidget<const char*>("Choose a shape: ", EMPTY_STRING);
-                static std::string PxShapestring;
-                ChangeShapeController(PxShapestring);
-
+   
                 ECGui::DrawTextWidget<const char*>("NavMesh ", EMPTY_STRING);
                 ECGui::InsertHorizontalLineSeperator();
                 ECGui::SetColumns(2, nullptr, true);

@@ -11,8 +11,8 @@ namespace Eclipse
 		ECVec3 NavMeshMax;
 
 		float AgentRadius{2.5f};
-		float AgentHeight{64.0f};
+		float AgentHeight{10.0f};
 		float MaxSlope{45.0f};
-		float JumpDistance{16.0f};
+		float JumpDistance{4.0f};
 	};
 }
