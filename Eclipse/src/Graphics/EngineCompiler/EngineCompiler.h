@@ -6,6 +6,7 @@ namespace Eclipse
     {
     private:
         static inline std::vector<std::string> AllNames = { "GEOMETRY" , "PREFABS" , "BASICTEXTURES" , "TEXTURES" , "ANIMATION"};
+        //static inline std::vector<std::string> AllNames = { "GEOMETRY" , "PREFABS" , "BASICTEXTURES" , "TEXTURES"};
         // Touch Only When Needed
         static inline std::string GeometryPath = "../Compiler/CompilerKeyFiles/GeometryFile/Geometry.eclipse";
         static inline std::string PrefabsPath = "../Compiler/CompilerKeyFiles/PrefabsFile/Prefabs.eclipse";
@@ -23,6 +24,7 @@ namespace Eclipse
         // Loading Animation.eclipse File
         static inline std::fstream AnimationFileRead;
         static inline std::bitset<5> CompilerFlags;
+        //static inline std::bitset<4> CompilerFlags;
 
         std::unordered_map<std::string, std::unique_ptr<std::thread>> CompilerThreads;
 

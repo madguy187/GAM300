@@ -25,6 +25,7 @@
 #include "Graphics/InputHandler/LogicalInput.h"
 #include "Graphics/Instancing/DebugManager/DebugManager.h"
 #include "Graphics/Animation/AnimationManager.h"
+#include "Graphics/ModelFactory/AssimpModel/AssimpAnimator.h"
 
 namespace Eclipse
 {
@@ -53,6 +54,8 @@ namespace Eclipse
 		PhysicsManager gPhysics;
 		AIManager gAI;
 		AnimationManager gAnimationManager;
+		//REMEMBER TO REMOVE
+		AssimpAnimator gAssimpAnimator;
 		std::unique_ptr<CullingManager> gCullingManager;
 		std::unique_ptr<EclipseFileWatcher> gFileWatchManager;
 		std::unique_ptr<EngineCompiler> gEngineCompiler;

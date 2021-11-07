@@ -199,16 +199,16 @@ namespace Eclipse
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
         engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
-        Shader shdrpgm;
+        Shader shdrpgm = Graphics::shaderpgms["PBRShader"];
 
-        if (engine->world.CheckComponent<AnimationComponent>(ID))
-        {
-            shdrpgm = Graphics::shaderpgms["AnimationShader"];
-        }
-        else
-        {
-            shdrpgm = Graphics::shaderpgms["PBRShader"];
-        }
+        //if (engine->world.CheckComponent<AnimationComponent>(ID))
+        //{
+        //    shdrpgm = Graphics::shaderpgms["AnimationShader"];
+        //}
+        //else
+        //{
+        //    shdrpgm = Graphics::shaderpgms["PBRShader"];
+        //}
        
         shdrpgm.Use();
 
@@ -779,9 +779,11 @@ namespace Eclipse
         glm::mat4 mModelNDC;
         glm::mat4 model = glm::mat4(1.0f);
 
+        model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
+
         if (!engine->world.CheckComponent<AnimationComponent>(ModelID))
         {
-            model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
+           
             model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
             model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
             model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));

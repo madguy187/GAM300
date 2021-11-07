@@ -126,6 +126,7 @@ void EclipseCompiler::AnimationCompiler::RecurseChildren(AssimpNodeData& nodeDat
     {
         AnimationFileWrite.write(reinterpret_cast<const char*>(&nodeData.name), sizeof(nodeData.name));
         AnimationFileWrite.write(reinterpret_cast<const char*>(&nodeData.childrenCount), sizeof(int));
+        AnimationFileWrite.write(reinterpret_cast<const char*>(&nodeData.transformation), sizeof(glm::mat4));
 
         if (nodeData.children[i].childrenCount != 0)
         {    
