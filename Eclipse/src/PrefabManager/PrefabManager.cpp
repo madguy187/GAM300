@@ -673,7 +673,7 @@ namespace Eclipse
 		CompareMap_NewChild newChildMap;
 
 		CompareHierarchy(w, ent, prefabW, prefabOwner, hierMap, newChildMap);
-		print(hierMap, newChildMap);
+		//print(hierMap, newChildMap);
 
 		for (auto entity : changingEntities)
 		{
@@ -685,7 +685,7 @@ namespace Eclipse
 			CompareMap_Hierarchy childHierMap;
 			CompareMap_NewChild childNewChildMap;
 			CompareHierarchy(prefabW, prefabOwner, w, entity, childHierMap, childNewChildMap);
-			print(childHierMap, childNewChildMap);
+			//print(childHierMap, childNewChildMap);
 
 			for (auto& pair : childHierMap)
 			{
