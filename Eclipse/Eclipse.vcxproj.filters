@@ -202,6 +202,27 @@
     <Filter Include="Graphics\InputHandler">
       <UniqueIdentifier>{73B368D2-DF1F-24CD-A813-BC2A143F4635}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics\Instancing">
+      <UniqueIdentifier>{D3DCF830-3F3E-D63E-C8AB-1CF1340C0DFE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Instancing\DebugBoxes">
+      <UniqueIdentifier>{6A92773B-56B8-41A2-3FFE-C66D2BC3666E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Instancing\DebugLights">
+      <UniqueIdentifier>{D49D47C1-4081-5601-4984-843DB5E61C52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Instancing\DebugManager">
+      <UniqueIdentifier>{44EC0625-303D-F266-59A1-E028455185D0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Instancing\DebugSpheres">
+      <UniqueIdentifier>{83877715-6FD8-6257-983C-511984ECF5C0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Instancing\DebugSpotLights">
+      <UniqueIdentifier>{7AED7B20-E6A6-E6CA-6F06-01A5DBBE9C3A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Instancing\Instance_Renderer">
+      <UniqueIdentifier>{CD128D4E-39D7-8B3E-023D-BC086EC02774}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Graphics\Lighting">
       <UniqueIdentifier>{5BBF6932-C7D5-67C8-104D-F3E97CA23850}</UniqueIdentifier>
     </Filter>
@@ -552,6 +573,9 @@
     <ClInclude Include="src\Editor\Windows\NodeEditor\ImNodes\imnodes_internal.h">
       <Filter>Editor\Windows\NodeEditor\ImNodes</Filter>
     </ClInclude>
+    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditor.h">
+      <Filter>Editor\Windows\NodeEditor</Filter>
+    </ClInclude>
     <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorWindow.h">
       <Filter>Editor\Windows\NodeEditor</Filter>
     </ClInclude>
@@ -628,7 +652,7 @@
     <ClInclude Include="src\Graphics\Grid\BoundingBox.h">
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\Instancing\DebugBoxes\Box.h">
+    <ClInclude Include="src\Graphics\Grid\Grid.h">
       <Filter>Graphics\Grid</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\Grid\IAABB.h">
@@ -642,6 +666,24 @@
     </ClInclude>
     <ClInclude Include="src\Graphics\InputHandler\LogicalInput.h">
       <Filter>Graphics\InputHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Instancing\DebugBoxes\Box.h">
+      <Filter>Graphics\Instancing\DebugBoxes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Instancing\DebugLights\DebugLights.h">
+      <Filter>Graphics\Instancing\DebugLights</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Instancing\DebugManager\DebugManager.h">
+      <Filter>Graphics\Instancing\DebugManager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.h">
+      <Filter>Graphics\Instancing\DebugSpheres</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Instancing\DebugSpotLights\DebugSpotLights.h">
+      <Filter>Graphics\Instancing\DebugSpotLights</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Instancing\Instance_Renderer\Instance_Renderer.h">
+      <Filter>Graphics\Instancing\Instance_Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\Lighting\DirectionalLight.h">
       <Filter>Graphics\Lighting</Filter>
@@ -844,10 +886,25 @@
     <ClInclude Include="src\Logger\Logger.h">
       <Filter>Logger</Filter>
     </ClInclude>
+    <ClInclude Include="src\Mono\Components\s_AudioSource.h">
+      <Filter>Mono\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mono\Components\s_GameObject.h">
+      <Filter>Mono\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\Mono\Components\s_LogicalInput.h">
       <Filter>Mono\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\Mono\Components\s_Quaternion.h">
+      <Filter>Mono\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\Mono\Components\s_RigidBodyComponent.h">
+      <Filter>Mono\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mono\Components\s_Time.h">
+      <Filter>Mono\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mono\Components\s_Transform.h">
       <Filter>Mono\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\Mono\Manager\MonoManager.h">
@@ -905,21 +962,6 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditor.h" />
-    <ClInclude Include="src\Graphics\EngineCompiler\InputCompiler\InputCompiler.h" />
-    <ClInclude Include="src\Graphics\MeshEditor\MeshEditorSource.h" />
-    <ClInclude Include="src\Mono\Components\s_LogicalInput.h" />
-    <ClInclude Include="src\Graphics\Instancing\Instance_Renderer\Instance_Renderer.h" />
-    <ClInclude Include="src\Graphics\Instancing\DebugManager\DebugManager.h" />
-    <ClInclude Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.h" />
-    <ClInclude Include="src\Graphics\Instancing\DebugLights\DebugLights.h" />
-    <ClInclude Include="src\Graphics\Grid\Grid.h" />
-    <ClInclude Include="src\Graphics\Instancing\DebugSpotLights\DebugSpotLights.h" />
-    <ClInclude Include="src\Mono\Components\s_Time.h" />
-    <ClInclude Include="src\Mono\Components\s_Transform.h" />
-    <ClInclude Include="src\Mono\Components\s_GameObject.h" />
-    <ClInclude Include="src\Mono\Components\s_AudioSource.h" />
-    <ClInclude Include="src\Mono\Components\s_Quaternion.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1123,14 +1165,29 @@
     <ClCompile Include="src\Graphics\Grid\BoundingBox.cpp">
       <Filter>Graphics\Grid</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\Instancing\DebugBoxes\Box.cpp">
-      <Filter>Graphics\Grid</Filter>
-    </ClCompile>
     <ClCompile Include="src\Graphics\Grid\Grid.cpp">
       <Filter>Graphics\Grid</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\InputHandler\LogicalInput.cpp">
       <Filter>Graphics\InputHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Instancing\DebugBoxes\Box.cpp">
+      <Filter>Graphics\Instancing\DebugBoxes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Instancing\DebugLights\DebugLights.cpp">
+      <Filter>Graphics\Instancing\DebugLights</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Instancing\DebugManager\DebugManager.cpp">
+      <Filter>Graphics\Instancing\DebugManager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.cpp">
+      <Filter>Graphics\Instancing\DebugSpheres</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Instancing\DebugSpotLights\DebugSpotlights.cpp">
+      <Filter>Graphics\Instancing\DebugSpotLights</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Instancing\Instance_Renderer\Instance_Renderer.cpp">
+      <Filter>Graphics\Instancing\Instance_Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\Lighting\DirectionalLight.cpp">
       <Filter>Graphics\Lighting</Filter>
@@ -1349,43 +1406,5 @@
       <Filter>Tracy</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\Inputsystem\InputSystem.cpp" />
-    <ClCompile Include="src\Graphics\Material\PBR\PBRManager.cpp" />
-    <ClCompile Include="src\Graphics\Material\MaterialInstance\MaterialInstance.cpp" />
-    <ClCompile Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.cpp" />
-    <ClCompile Include="src\Graphics\EngineCompiler\InputCompiler\InputCompiler.cpp" />
-    <ClCompile Include="src\Graphics\MeshEditor\MeshEditorSource.cpp" />
-    <ClCompile Include="src\Graphics\Instancing\Instance_Renderer\Instance_Renderer.cpp" />
-    <ClCompile Include="src\Graphics\Instancing\DebugManager\DebugManager.cpp" />
-    <ClCompile Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.cpp" />
-    <ClCompile Include="src\Graphics\Instancing\DebugLights\DebugLights.cpp" />
-    <ClCompile Include="src\Graphics\Instancing\DebugSpotLights\DebugSpotlights.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />
-    <None Include="src\Assets\Shaders\PBRShader\PBR.vert" />
-    <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.frag" />
-    <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.vert" />
-    <ClCompile Include="src\Library\Random\Random.cpp" />
-    <None Include="src\Mono\ScriptAPI\EclipseBehavior.cs" />
-    <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_bezier_math.inl" />
-    <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_extra_math.inl" />
-    <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_internal.inl" />
-    <None Include="src\Assets\Shaders\MaterialEditor\PBR.frag" />
-    <None Include="src\Assets\Shaders\MaterialEditor\PBR.vert" />
-    <None Include="src\Assets\Shaders\MeshEditor\MeshEditor.frag" />
-    <None Include="src\Assets\Shaders\MeshEditor\MeshEditor.vert" />
-    <None Include="src\Assets\Shaders\Test\DebugSPhere.frag" />
-    <None Include="src\Assets\Shaders\Test\DebugSPhere.vert" />
-    <None Include="src\Mono\ScriptAPI\InputHandler.cs" />
-    <None Include="src\Mono\ScriptAPI\KeyCode.cs" />
-    <None Include="src\Mono\ScriptAPI\Header.cs" />
-    <None Include="src\Mono\ScriptAPI\HeaderReader.cs" />
-    <None Include="src\Mono\ScriptAPI\Time.cs" />
-    <None Include="src\Assets\Shaders\Instancing\Instancing.frag" />
-    <None Include="src\Assets\Shaders\Instancing\Instancing.vert" />
-    <None Include="src\Mono\ScriptAPI\ForceMode.cs" />
-    <None Include="src\Mono\ScriptAPI\Vector2.cs" />
-    <None Include="src\Mono\ScriptAPI\Quaternion.cs" />
   </ItemGroup>
 </Project>

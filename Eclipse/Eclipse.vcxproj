@@ -282,11 +282,11 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\Grid\AABBTree.h" />
     <ClInclude Include="src\Graphics\Grid\BoundingBox.h" />
     <ClInclude Include="src\Graphics\Grid\Grid.h" />
-    <ClInclude Include="src\Graphics\Instancing\DebugBoxes\Box.h" />
     <ClInclude Include="src\Graphics\Grid\IAABB.h" />
     <ClInclude Include="src\Graphics\InputHandler\AllInputKeyCodes.h" />
     <ClInclude Include="src\Graphics\InputHandler\LogicalEnum.hpp" />
     <ClInclude Include="src\Graphics\InputHandler\LogicalInput.h" />
+    <ClInclude Include="src\Graphics\Instancing\DebugBoxes\Box.h" />
     <ClInclude Include="src\Graphics\Instancing\DebugLights\DebugLights.h" />
     <ClInclude Include="src\Graphics\Instancing\DebugManager\DebugManager.h" />
     <ClInclude Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.h" />
@@ -359,10 +359,10 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Library\Strings\StringsConcatenate.h" />
     <ClInclude Include="src\Library\UUID\UUIDGenerator.h" />
     <ClInclude Include="src\Logger\Logger.h" />
-    <ClInclude Include="src\Mono\Components\s_Quaternion.h" />
     <ClInclude Include="src\Mono\Components\s_AudioSource.h" />
     <ClInclude Include="src\Mono\Components\s_GameObject.h" />
     <ClInclude Include="src\Mono\Components\s_LogicalInput.h" />
+    <ClInclude Include="src\Mono\Components\s_Quaternion.h" />
     <ClInclude Include="src\Mono\Components\s_RigidBodyComponent.h" />
     <ClInclude Include="src\Mono\Components\s_Time.h" />
     <ClInclude Include="src\Mono\Components\s_Transform.h" />
@@ -454,9 +454,9 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\Grid\AABB.cpp" />
     <ClCompile Include="src\Graphics\Grid\AABBTree.cpp" />
     <ClCompile Include="src\Graphics\Grid\BoundingBox.cpp" />
-    <ClCompile Include="src\Graphics\Instancing\DebugBoxes\Box.cpp" />
     <ClCompile Include="src\Graphics\Grid\Grid.cpp" />
     <ClCompile Include="src\Graphics\InputHandler\LogicalInput.cpp" />
+    <ClCompile Include="src\Graphics\Instancing\DebugBoxes\Box.cpp" />
     <ClCompile Include="src\Graphics\Instancing\DebugLights\DebugLights.cpp" />
     <ClCompile Include="src\Graphics\Instancing\DebugManager\DebugManager.cpp" />
     <ClCompile Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.cpp" />
@@ -537,32 +537,6 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\Assets\Shaders\Instancing\Instancing.frag" />
-    <None Include="src\Assets\Shaders\Instancing\Instancing.vert" />
-    <None Include="src\Assets\Shaders\MaterialEditor\PBR.frag" />
-    <None Include="src\Assets\Shaders\MaterialEditor\PBR.vert" />
-    <None Include="src\Assets\Shaders\MeshEditor\MeshEditor.frag" />
-    <None Include="src\Assets\Shaders\MeshEditor\MeshEditor.vert" />
-    <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.frag" />
-    <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.vert" />
-    <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />
-    <None Include="src\Assets\Shaders\PBRShader\PBR.vert" />
-    <None Include="src\Assets\Shaders\Test\DebugSPhere.frag" />
-    <None Include="src\Assets\Shaders\Test\DebugSPhere.vert" />
-    <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_bezier_math.inl" />
-    <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_extra_math.inl" />
-    <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_internal.inl" />
-    <None Include="src\Mono\ScriptAPI\EclipseBehavior.cs" />
-    <None Include="src\Mono\ScriptAPI\ForceMode.cs" />
-    <None Include="src\Mono\ScriptAPI\Header.cs" />
-    <None Include="src\Mono\ScriptAPI\HeaderReader.cs" />
-    <None Include="src\Mono\ScriptAPI\InputHandler.cs" />
-    <None Include="src\Mono\ScriptAPI\KeyCode.cs" />
-    <None Include="src\Mono\ScriptAPI\Quaternion.cs" />
-    <None Include="src\Mono\ScriptAPI\Time.cs" />
-    <None Include="src\Mono\ScriptAPI\Vector2.cs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
