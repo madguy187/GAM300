@@ -189,7 +189,7 @@ namespace Eclipse
 
             if (engine->gFrameBufferManager->PostProcess->AllowPostProcess)
             {
-                std::vector<std::string> Methods = { "NONE" , "INVERSE" , "GREYSCALE" ,"KERNEL" , "BLUR" , "SOBEL"};
+                std::vector<std::string> Methods = { "NONE" , "INVERSE" , "GREYSCALE" ,"KERNEL" , "BLUR" , "SOBEL" , "BLEEDING"};
                 ComboListSettings settingsss = { "PostProcess Methods" };
                 static size_t comboindex = 0;
                 ECGui::DrawTextWidget<const char*>("PostProcess Types:", EMPTY_STRING);
