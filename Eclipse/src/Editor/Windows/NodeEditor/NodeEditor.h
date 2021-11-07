@@ -22,6 +22,12 @@ namespace Eclipse
 			DIV
 		};
 
+		enum class VEC3TYPE : unsigned char {
+			ECVEC3,
+			ECVEC3COLOUR,
+		};
+
+
 		struct	Node
 		{
 			enum class NodeType
@@ -162,7 +168,8 @@ namespace Eclipse
 					ImNodesCol_TitleBar, IM_COL32(11, 0, 0, 255));
 				ImNodes::PushColorStyle(
 					ImNodesCol_TitleBarSelected, IM_COL32(81, 0, 0, 255));
-
+				ImNodes::PushColorStyle(
+					ImNodesCol_TitleBarHovered, IM_COL32(81, 0, 0, 255));
 				ImNodes::BeginNode(nodeId);
 				ImNodes::BeginNodeTitleBar();
 				ImGui::TextUnformatted("TransFormNode");
@@ -203,6 +210,7 @@ namespace Eclipse
 				}
 				endInput();
 				ImNodes::EndNode(); 
+				ImNodes::PopColorStyle();
 				ImNodes::PopColorStyle();
 				ImNodes::PopColorStyle();
 				return false;
@@ -432,6 +440,10 @@ namespace Eclipse
 				MULTIPLY_ADD,
 				DIV,
 				FLOAT,
+				ECVEC3,
+				ECVEC3COLOUR,
+				BASENODE,
+				BOOL,
 				COUNT
 			};
 
@@ -462,7 +474,6 @@ namespace Eclipse
 				return {};
 			}
 
-
 			void beginInput(ImNodesPinShape pinShape = 1)
 			{
 				ImNodes::BeginInputAttribute(nodeId | (unsigned int(inputCounter) << 16), pinShape);
@@ -492,6 +503,11 @@ namespace Eclipse
 				ImNodes::SetNodeEditorSpacePos(nodeId, editorSpacePos);
 				bool res = onGUI(nodeId);
 				return res;
+			}
+
+			int getId()
+			{
+				return nodeId;
 			}
 
 			int nodeId;
@@ -543,6 +559,7 @@ namespace Eclipse
 				case NodeEditor::InstructionType::DIV:
 					ECGui::DrawTextWidget<std::string>("Divide" ICON_MDI_SLASH_FORWARD, EMPTY_STRING);
 					output = A / B;
+
 					break;
 				case NodeEditor::InstructionType::MUL:
 					ECGui::DrawTextWidget<std::string>("Multiply" ICON_MDI_CLOSE, EMPTY_STRING);
@@ -555,7 +572,6 @@ namespace Eclipse
 				case NodeEditor::InstructionType::SUB:
 					ECGui::DrawTextWidget<std::string>("Sub" ICON_MDI_MINUS, EMPTY_STRING);
 					output = A - B;
-
 					break;
 				default: EDITOR_LOG_INFO("Should not come in here one"); break;
 				}
@@ -564,14 +580,34 @@ namespace Eclipse
 				beginOutput();
 				endOutput();
 
+				ImNodes::PushColorStyle(
+					ImNodesCol_Pin, IM_COL32(0, 25, 0, 255));
 				beginInput();
 				// check for first pin if its linked
 				if (getInput(0).node)
 				{
 					//might case problem down the line 
-					auto downcastedPtr = dynamic_cast<FloatNode*>(getInput(0).node);
-					A = downcastedPtr->inputFloat;
-
+					if (getInput(0).node->getType() == Node::NodeType::FLOAT)
+					{
+						auto downcastedPtr = dynamic_cast<FloatNode*>(getInput(0).node);
+						A = downcastedPtr->inputFloat;
+					}
+					else
+					{
+						ECGui::OpenPopup("Link Error");
+					}
+					if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+					{
+						ECGui::DrawTextWidget<const char*>("Operator Nodes only accept Floats", EMPTY_STRING);
+						ECGui::InsertHorizontalLineSeperator();
+						ECGui::NextColumn();
+						if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
+						{
+							res.links.pop_back();
+							ECGui::CloseCurrentPopup();
+						}
+						ECGui::EndPopup();
+					}
 					ImGui::SetNextItemWidth(60);
 					ECGui::DrawTextWidget<std::string>("A", EMPTY_STRING);
 				}
@@ -581,13 +617,35 @@ namespace Eclipse
 					ECGui::DrawTextWidget<std::string>("A", EMPTY_STRING);
 				}
 				endInput();
-				
+				ImNodes::PopColorStyle();
+
+				ImNodes::PushColorStyle(
+					ImNodesCol_Pin, IM_COL32(0, 25, 0, 255));
 				beginInput();
 				// check for first pin if its linked
 				if (getInput(1).node)
 				{
-					auto downcastedPtr = dynamic_cast<FloatNode*>(getInput(1).node);
-					B = downcastedPtr->inputFloat;
+					if (getInput(1).node->getType() == Node::NodeType::FLOAT)
+					{
+						auto downcastedPtr = dynamic_cast<FloatNode*>(getInput(1).node);
+						B = downcastedPtr->inputFloat;
+					}
+					else
+					{
+
+						ECGui::OpenPopup("Link Error");
+					}
+					if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+					{
+						ECGui::DrawTextWidget<const char*>("Operator Nodes only accept Floats", EMPTY_STRING);
+						ECGui::NextColumn();
+						if (ECGui::ButtonBool("OK", ImVec2(140, 0)))
+						{
+							res.links.pop_back();
+							ECGui::CloseCurrentPopup();
+						}
+						ECGui::EndPopup();
+					}
 					ImGui::SetNextItemWidth(60);
 					ECGui::DrawTextWidget<std::string>("B", EMPTY_STRING);
 				}
@@ -597,6 +655,8 @@ namespace Eclipse
 					ECGui::DrawTextWidget<std::string>("B", EMPTY_STRING);
 				}
 				endInput();
+				ImNodes::PopColorStyle();
+
 				ImNodes::EndNode();
 				return false;
 			}
@@ -604,6 +664,10 @@ namespace Eclipse
 			float A = 0.f;
 			float B = 0.f;
 			float output = 0.f;
+			//testing for future implimentation
+			ECVec3 vec3A = { 0.0f,0.0f,0.0f };
+			ECVec3 vec3B = { 0.0f,0.0f,0.0f };
+			ECVec3 vec3Output = { 0.0f,0.0f,0.0f };
 		};
 
 		struct FloatNode : public Node
@@ -621,6 +685,8 @@ namespace Eclipse
 					ImNodesCol_TitleBar, IM_COL32(0, 25, 0, 255));
 				ImNodes::PushColorStyle(
 					ImNodesCol_TitleBarSelected, IM_COL32(0, 45, 0, 255));
+				ImNodes::PushColorStyle(
+					ImNodesCol_TitleBarHovered, IM_COL32(0, 45, 0, 255));
 				ImNodes::BeginNode(nodeId);
 				ImNodes::BeginNodeTitleBar();
 				ECGui::DrawTextWidget<std::string>("Float", EMPTY_STRING);
@@ -629,12 +695,326 @@ namespace Eclipse
 				ImGui::SetNextItemWidth(60);
 				ImGui::DragFloat("", &inputFloat);
 				endOutput();
+				ImNodes::EndNode();
+				ImNodes::PopColorStyle();
+				ImNodes::PopColorStyle();
+				ImNodes::PopColorStyle();
+				return false;
+			}
+			float inputFloat = 0.f;
+		};
+
+		template <NodeEditor::VEC3TYPE operationType>
+		struct Vec3Nodes : public Node
+		{
+			Vec3Nodes(MaterialNode& res): Node(res){}
+
+			NodeType getType() const override
+			{
+				switch (operationType)
+				{
+				case NodeEditor::VEC3TYPE::ECVEC3: return NodeType::ECVEC3;
+				case NodeEditor::VEC3TYPE::ECVEC3COLOUR: return NodeType::ECVEC3COLOUR;
+				default: EDITOR_LOG_INFO("Case default"); return NodeType::ECVEC3;
+				}
+			}
+
+			bool onGUI(int nodeId) override
+			{
+				ImNodes::PushColorStyle(
+					ImNodesCol_TitleBar, IM_COL32(100, 42, 42, 255));
+				ImNodes::PushColorStyle(
+					ImNodesCol_TitleBarSelected, IM_COL32(120, 42, 42, 255));
+				ImNodes::PushColorStyle(
+					ImNodesCol_TitleBarHovered, IM_COL32(120, 42, 42, 255));
+				ImNodes::BeginNode(nodeId);
+				ImNodes::BeginNodeTitleBar();
+				switch (operationType)
+				{
+				case NodeEditor::VEC3TYPE::ECVEC3:
+					ECGui::DrawTextWidget<std::string>("Vec3", EMPTY_STRING);
+					break;
+				case NodeEditor::VEC3TYPE::ECVEC3COLOUR:
+					ECGui::DrawTextWidget<std::string>("Vec3_Colour" , EMPTY_STRING);
+					break;
+				default: EDITOR_LOG_INFO("Should not come in here one"); break;
+				}
+				ImNodes::EndNodeTitleBar();
+				beginOutput();
+				switch (operationType)
+				{
+				case NodeEditor::VEC3TYPE::ECVEC3:
+					ImGui::SetNextItemWidth(150);
+					ECGui::DrawSliderFloat3Widget("Vec3", &inputVec3, true, -100.f, 100.f);
+					break;
+				case NodeEditor::VEC3TYPE::ECVEC3COLOUR:
+					ImGui::SetNextItemWidth(150);
+					ECGui::ColorPicker3("Vec3", (float*)&inputVec3, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
+					break;
+				default: EDITOR_LOG_INFO("Should not come in here one"); break;
+				}
+				endOutput();
+				ImNodes::PopColorStyle();
 				ImNodes::PopColorStyle();
 				ImNodes::PopColorStyle();
 				ImNodes::EndNode();
 				return false;
 			}
-			float inputFloat = 0.f;
+			ECVec3 inputVec3 = 0.f;
+		};
+
+		struct BasedMaterialNode : public Node
+		{
+			BasedMaterialNode(MaterialNode& res) : Node(res) {}
+			NodeType getType() const override
+			{
+				return NodeType::BASENODE;
+			}
+
+			bool onGUI(int nodeId) override
+			{
+				ImNodes::PushColorStyle(
+					ImNodesCol_NodeBackground, IM_COL32(0, 0, 0, 255));
+				ImNodes::PushColorStyle(
+					ImNodesCol_NodeBackgroundHovered, IM_COL32(0, 0, 0, 255));
+				ImNodes::PushColorStyle(
+					ImNodesCol_NodeBackgroundSelected, IM_COL32(0, 0, 0, 255));
+				ImNodes::BeginNode(nodeId);
+				ImNodes::BeginNodeTitleBar();
+				ImNodes::EndNodeTitleBar();
+				
+				// Albedo Constant
+				ImNodes::PushColorStyle(
+					ImNodesCol_Pin, IM_COL32(100, 42, 42, 255));
+				beginInput();
+				// check for first pin if its linked
+				if (getInput(0).node)
+				{
+					//might case problem down the line 
+					if (getInput(0).node->getType() == Node::NodeType::ECVEC3)
+					{
+						auto downcastedPtr = dynamic_cast<Vec3Nodes< NodeEditor::VEC3TYPE::ECVEC3>*>(getInput(0).node);
+						//A = downcastedPtr->inputFloat;
+						engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant = downcastedPtr->inputVec3;
+					}
+					else
+						if (getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR)
+						{
+							auto downcastedPtr = dynamic_cast<Vec3Nodes< NodeEditor::VEC3TYPE::ECVEC3COLOUR>*>(getInput(0).node);
+							//A = downcastedPtr->inputFloat;
+							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant = downcastedPtr->inputVec3;
+						}
+						else
+						{
+							ECGui::OpenPopup("Link Error");
+						}
+
+					if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+					{
+						ECGui::DrawTextWidget<const char*>("Worng Node linkedm link action canceled.", EMPTY_STRING);
+						ECGui::InsertHorizontalLineSeperator();
+						if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
+						{
+							res.links.pop_back();
+							ECGui::CloseCurrentPopup();
+						}
+						ECGui::EndPopup();
+					}
+
+					ImGui::SetNextItemWidth(50);
+					ECGui::DrawTextWidget<std::string>("Albedo Constant", EMPTY_STRING);
+				}
+				else
+				{
+					ImGui::SetNextItemWidth(50);
+					ECGui::DrawTextWidget<std::string>("Albedo Constant", EMPTY_STRING);
+				}
+				endInput();
+				ImNodes::PopColorStyle();
+
+				// metallic constant
+				ImNodes::PushColorStyle(
+					ImNodesCol_Pin, IM_COL32(0, 60, 0, 255));
+				beginInput();
+				if (getInput(1).node)
+				{
+					//might case problem down the line 
+					if (getInput(1).node->getType() == Node::NodeType::FLOAT)
+					{
+						auto downcastedPtr = dynamic_cast<FloatNode*>(getInput(1).node);
+						//A = downcastedPtr->inputFloat;
+						engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.MetallicConstant = downcastedPtr->inputFloat;
+					}
+					else
+					{
+						ECGui::OpenPopup("Link Error");
+					}
+
+					if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+					{
+						ECGui::DrawTextWidget<const char*>("Worng Node linkedm link action canceled.", EMPTY_STRING);
+						ECGui::InsertHorizontalLineSeperator();
+						if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
+						{
+							res.links.pop_back();
+							ECGui::CloseCurrentPopup();
+						}
+						ECGui::EndPopup();
+					}
+
+					ImGui::SetNextItemWidth(50);
+					ECGui::DrawTextWidget<std::string>("Metallic Constant", EMPTY_STRING);
+				}
+				else
+				{
+					ImGui::SetNextItemWidth(50);
+					ECGui::DrawTextWidget<std::string>("Metallic Constant", EMPTY_STRING);
+				}
+				endInput();
+				ImNodes::PopColorStyle();
+
+				// Roughness constant
+				ImNodes::PushColorStyle(
+					ImNodesCol_Pin, IM_COL32(0, 60, 0, 255));
+				beginInput();
+				if (getInput(2).node)
+				{
+					//might case problem down the line 
+					if (getInput(2).node->getType() == Node::NodeType::FLOAT)
+					{
+						auto downcastedPtr = dynamic_cast<FloatNode*>(getInput(2).node);
+						//A = downcastedPtr->inputFloat;
+						engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.RoughnessConstant = downcastedPtr->inputFloat;
+					}
+					else
+					{
+						ECGui::OpenPopup("Link Error");
+					}
+
+					if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+					{
+						ECGui::DrawTextWidget<const char*>("Worng Node linkedm link action canceled.", EMPTY_STRING);
+						ECGui::InsertHorizontalLineSeperator();
+						if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
+						{
+							res.links.pop_back();
+							ECGui::CloseCurrentPopup();
+						}
+						ECGui::EndPopup();
+					}
+
+					ImGui::SetNextItemWidth(50);
+					ECGui::DrawTextWidget<std::string>("Roughness Constant", EMPTY_STRING);
+				}
+				else
+				{
+					ImGui::SetNextItemWidth(50);
+					ECGui::DrawTextWidget<std::string>("Roughness Constant", EMPTY_STRING);
+				}
+				endInput();
+				ImNodes::PopColorStyle();
+				// AO constant
+				ImNodes::PushColorStyle(
+					ImNodesCol_Pin, IM_COL32(0, 60, 0, 255));
+				beginInput();
+				if (getInput(3).node)
+				{
+					//might case problem down the line 
+					if (getInput(3).node->getType() == Node::NodeType::FLOAT)
+					{
+						auto downcastedPtr = dynamic_cast<FloatNode*>(getInput(3).node);
+						//A = downcastedPtr->inputFloat;
+						engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AoConstant = downcastedPtr->inputFloat;
+					}
+					else
+					{
+						ECGui::OpenPopup("Link Error");
+					}
+
+					if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+					{
+						ECGui::DrawTextWidget<const char*>("Worng Node linkedm link action canceled.", EMPTY_STRING);
+						ECGui::InsertHorizontalLineSeperator();
+						if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
+						{
+							res.links.pop_back();
+							ECGui::CloseCurrentPopup();
+						}
+						ECGui::EndPopup();
+					}
+
+					ImGui::SetNextItemWidth(50);
+					ECGui::DrawTextWidget<std::string>("Ao Constant", EMPTY_STRING);
+				}
+				else
+				{
+					ImGui::SetNextItemWidth(50);
+					ECGui::DrawTextWidget<std::string>("Ao Constant", EMPTY_STRING);
+				}
+				endInput();
+				ImNodes::PopColorStyle();
+				//Has Texture
+				ImNodes::PushColorStyle(
+					ImNodesCol_Pin, IM_COL32(60, 0, 0, 255));
+				beginInput();
+				if (getInput(4).node)
+				{
+					auto downcastedPtr = dynamic_cast<BoolNode*>(getInput(4).node);
+					//A = downcastedPtr->inputFloat;
+					hasTexture = downcastedPtr->inputBool;
+					ImGui::SetNextItemWidth(50);
+					ECGui::CheckBoxBool("",&hasTexture,false);
+				}
+				else
+				{
+					ImGui::SetNextItemWidth(50);
+					ECGui::CheckBoxBool("Bool", &hasTexture, false);
+				}
+				endInput();
+				ImNodes::PopColorStyle();
+				//if(hasTexture)
+
+				ImNodes::EndNode();
+				ImNodes::PopColorStyle();
+				ImNodes::PopColorStyle();
+				ImNodes::PopColorStyle();
+				return false;
+			}
+
+			bool hasTexture = false;
+		};
+
+		struct BoolNode : public Node
+		{
+			BoolNode(MaterialNode& res) : Node(res) {}
+			NodeType getType() const override
+			{
+				return NodeType::BOOL;
+			}
+
+			bool onGUI(int nodeId) override
+			{
+				ImNodes::PushColorStyle(
+					ImNodesCol_TitleBar, IM_COL32(60, 0, 0, 255));
+				ImNodes::PushColorStyle(
+					ImNodesCol_TitleBarSelected, IM_COL32(70, 0, 0, 255));
+				ImNodes::PushColorStyle(
+					ImNodesCol_TitleBarHovered, IM_COL32(70, 0, 0, 255));
+				ImNodes::BeginNode(nodeId);
+				ImNodes::BeginNodeTitleBar();
+				ECGui::DrawTextWidget<std::string>("Bool", EMPTY_STRING);
+				ImNodes::EndNodeTitleBar();
+				beginOutput();
+				ImGui::SetNextItemWidth(60);
+				ECGui::CheckBoxBool("Input Bool",&inputBool,true);
+				endOutput();
+				ImNodes::EndNode();
+				ImNodes::PopColorStyle();
+				ImNodes::PopColorStyle();
+				ImNodes::PopColorStyle();
+				return false;
+			}
+			bool inputBool = false;
 		};
 
 		unsigned short generatedId()
@@ -692,8 +1072,16 @@ namespace Eclipse
 				case Node::NodeType::FLOAT:
 					node = std::make_shared <FloatNode>(*this);
 					break;
+				case Node::NodeType::ECVEC3:
+					node = std::make_shared <Vec3Nodes<NodeEditor::VEC3TYPE::ECVEC3>>(*this);
+					break;
+				case Node::NodeType::ECVEC3COLOUR:
+					node = std::make_shared <Vec3Nodes<NodeEditor::VEC3TYPE::ECVEC3COLOUR>>(*this);
+					break;
+				case Node::NodeType::BOOL:
+					node = std::make_shared <BoolNode>(*this);
+					break;
 			}
-
 			nodes.push_back(node);
 			return nodes.back().get();
 		}
@@ -704,7 +1092,7 @@ namespace Eclipse
 		int                   current_id = 0;
 
 		bool initialized = false;
-
+		bool BaseNodeExist = false;
 		int m_context_link = 0;
 		int m_context_node = 0;
 
@@ -714,6 +1102,8 @@ namespace Eclipse
 		void DrawMaterialNodeEditor(const char* graphName, MaterialNode& editor);
 
 		void Reset();
+
+		void CreateBaseMaterialNode();
 	};
 
 	inline int MaterialNode::findMaterialNodePos(MaterialNode editor, int id)
@@ -738,8 +1128,13 @@ namespace Eclipse
 		ImNodes::EditorContextSet(editor.context);
 
 		ImNodes::BeginNodeEditor();
-
 		bool context_open = false;
+
+		if (!BaseNodeExist)
+		{
+			CreateBaseMaterialNode();
+			BaseNodeExist = true;
+		}
 		
 		if (ImNodes::IsEditorHovered() && ImGui::IsMouseClicked(1)) {
 			ImGui::OpenPopup("context_menu");
@@ -768,7 +1163,18 @@ namespace Eclipse
 			{
 				MaterialNode::addNode(MaterialNode::Node::NodeType::FLOAT);
 			}
-
+			if (ImGui::MenuItem("Vec3"))
+			{
+				MaterialNode::addNode(MaterialNode::Node::NodeType::ECVEC3);
+			}
+			if (ImGui::MenuItem("Vec3Colour"))
+			{
+				MaterialNode::addNode(MaterialNode::Node::NodeType::ECVEC3COLOUR);
+			}
+			if (ImGui::MenuItem("Bool"))
+			{
+				MaterialNode::addNode(MaterialNode::Node::NodeType::BOOL);
+			}
 			ImGui::EndPopup();
 		}		
 
@@ -829,38 +1235,6 @@ namespace Eclipse
 			}
 		}
 
-
-		// {
-		//     Link link;
-		//     if (ImNodes::IsLinkCreated(&link.startPoint, &link.endPoint))
-		//     {
-		//         int pos = findNodePos(editor, link.startPoint);
-		// 
-		//         int pos2 = findNodePos(editor, link.endPoint);
-		// 
-		//         const bool linked = editor.nodes[pos].nodeType != editor.nodes[pos2].nodeType;
-		// 
-		//         if (linked)
-		//         {
-		//             editor.nodes[pos2].value = editor.nodes[pos].value;
-		//         }
-		//         link.linkId = ++editor.current_id;
-		//         editor.links.push_back(link);
-		//     }
-		// }
-		//
-		// {
-		//     int link_id;
-		//     if (ImNodes::IsLinkDestroyed(&link_id))
-		//     {
-		//         auto iter = std::find_if(
-		//             editor.links.begin(), editor.links.end(), [link_id](const Link& link) -> bool {
-		//                 return link.linkId == link_id;
-		//             });
-		//         assert(iter != editor.links.end());
-		//         editor.links.erase(iter);
-		//     }
-		// }
 	}
 
 	inline void MaterialNode::Reset()
@@ -870,6 +1244,13 @@ namespace Eclipse
 		this->m_context_link = 0;
 		this->m_context_node = 0;
 		this->nodes.clear();
+		BaseNodeExist = false;
+	}
+
+	inline void MaterialNode::CreateBaseMaterialNode()
+	{
+		std::shared_ptr<Node> node = std::make_shared <BasedMaterialNode>(*this);
+		nodes.push_back(node);
 	}
 
 };
