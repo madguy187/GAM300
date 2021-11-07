@@ -25,19 +25,8 @@ void Eclipse::NodeEditorWindow::Init()
 
 void Eclipse::NodeEditorWindow::Unload()
 {
-	initialized = true;
 	ImNodes::PopAttributeFlag();
-	ImNodes::EditorContextFree(sceneEditor.context);
-
-	if (initialized)
-	{
-		sceneEditor.context = ImNodes::EditorContextCreate();
-		ImNodes::PushAttributeFlag(ImNodesAttributeFlags_EnableLinkDetachWithDragClick);
-		ImNodesIO& io = ImNodes::GetIO();
-		io.LinkDetachWithModifierClick.Modifier = &ImGui::GetIO().KeyCtrl;
-		
-		initialized = false;
-	}
+	ImNodes::PushAttributeFlag(ImNodesAttributeFlags_EnableLinkDetachWithDragClick);
 }
 
 void Eclipse::NodeEditorWindow::DrawImpl()
@@ -49,4 +38,5 @@ void Eclipse::NodeEditorWindow::DrawImpl()
 
 Eclipse::NodeEditorWindow::~NodeEditorWindow()
 {
+	ImNodes::EditorContextFree(sceneEditor.context);
 }

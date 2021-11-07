@@ -139,6 +139,7 @@ namespace Eclipse
                 glm::value_ptr(rotation), glm::value_ptr(scale));
 
             // glm::vec3 deltaRotation = rotation - transCom.rotation.ConvertToGlmVec3Type();
+            auto& ent = engine->world.GetComponent<EntityComponent>(selectedEntity);
 
             switch (GizmoType)
             {
@@ -150,6 +151,12 @@ namespace Eclipse
                 {
                     auto& child = engine->world.GetComponent<ChildComponent>(selectedEntity);
                     child.UpdateChildren = true;
+
+                    if (ent.Tag != EntityType::ENT_MESH)
+                    {
+                        engine->gPicker.UpdateAabb(selectedEntity);
+                        engine->gDynamicAABBTree.UpdateData(selectedEntity);
+                    }
                 }
                 break;
             case ImGuizmo::OPERATION::ROTATE:
@@ -162,6 +169,22 @@ namespace Eclipse
                 break;
             default:
                 break;
+            }
+
+            //Update for DynamicAABB Tree -Rachel
+            engine->gPicker.UpdateAabb(selectedEntity);
+            engine->gDynamicAABBTree.UpdateData(selectedEntity);
+            if ((engine->world.CheckComponent<ParentComponent>(selectedEntity)) && (ent.Tag != EntityType::ENT_MODEL))
+            {
+                auto& parent = engine->world.GetComponent<ParentComponent>(selectedEntity);
+
+                for (auto& it : parent.child)
+                {
+                    auto& transform = engine->world.GetComponent<TransformComponent>(it);
+
+                    engine->gPicker.UpdateAabb(it);
+                    engine->gDynamicAABBTree.UpdateData(it);
+                }
             }
         }
         else if (!ImGuizmo::IsUsing() && ImGui::IsMouseReleased(0)
