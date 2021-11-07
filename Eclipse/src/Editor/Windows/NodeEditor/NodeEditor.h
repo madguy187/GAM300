@@ -1206,9 +1206,9 @@ namespace Eclipse
 				return false;
 			}
 
-			void setTextureId(const std::string idString)
+			void setTextureId(const std::string folderName , std::string fileName)
 			{
-				textureID = Graphics::FindTextures(idString.c_str()).GetHandle();
+				//textureID = engine->gPBRManager->("HardWood", "albedo")
 			}
 
 			int textureID = 0;
@@ -1302,7 +1302,7 @@ namespace Eclipse
 
 		void CreateBaseMaterialNode();
 
-		void CreateTextureNode(std::string textureId);
+		void CreateTextureNode(std::string folderName, std::string fileName);
 	};
 
 	inline int MaterialNode::findMaterialNodePos(MaterialNode editor, int id)
@@ -1477,7 +1477,7 @@ namespace Eclipse
 		nodes.push_back(node);
 	}
 
-	inline void MaterialNode::CreateTextureNode(std::string textureId)
+	inline void MaterialNode::CreateTextureNode(std::string folderName , std::string fileName)
 	{
 		TextureNode temp = TextureNode(*this);
 		temp.setTextureId(textureId);
