@@ -87,7 +87,7 @@ namespace Eclipse
 				if (!PrefabUse)
 				{
 					PCPostUpdate.RegisterForPostUpdate(w, oldEnt, ent);
-					engine->editorManager->RegisterNewlySerializedEntity(ent);
+					engine->editorManager->RegisterExistingEntity(ent);
 				}
 			}
 			dsz.CloseElement();
