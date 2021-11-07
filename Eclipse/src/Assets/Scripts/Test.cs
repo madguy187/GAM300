@@ -5,7 +5,7 @@ using Eclipse;
 
 public class Test : EclipseBehavior
 {
-    public UInt32 intTest;
+    public float mouseSensitivity = 10f;
 
     public void Start()
     {
@@ -18,13 +18,15 @@ public class Test : EclipseBehavior
         if (Input.GetKey(KeyCode.D))
         {
             Console.WriteLine("spinnn");
-            transform.Rotate(new Vector3(0, 10, 0));
+            float mouseX = Input.GetAxis("Horizontal") * mouseSensitivity;
+            transform.Rotate(new Vector3(0, mouseX, 0));
         }
 
         if (Input.GetKey(KeyCode.A))
         {
             Console.WriteLine("stop spinnn");
-            gameObject.enabled = 0;
+            float mouseX = Input.GetAxis("Horizontal") * mouseSensitivity;
+            transform.Rotate(new Vector3(0, -mouseX, 0));
         }
     }
 }

@@ -239,6 +239,13 @@ enum class ForceMode
     Impulse = 1
 };
 
+enum class CursorLockMode
+{
+    None = 0,
+    Locked = 1,
+    Confined = 2
+};
+
 struct MonoVariable
 {
     m_Type type = m_Type::MONO_UNDEFINED;

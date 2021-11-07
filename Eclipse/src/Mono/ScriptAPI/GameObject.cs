@@ -24,7 +24,6 @@ namespace Eclipse
 
         public bool enabled
         {
-            Console.WriteLine(value);
             set => setEnabled(Entity, ScriptName,  0);
         }
 
