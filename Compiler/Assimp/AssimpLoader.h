@@ -223,6 +223,7 @@ namespace EclipseCompiler
 
     struct AnimationData
     {
+        float modelLargestAxis;
         float m_Duration;
         int m_TicksPerSecond;
         std::array<char, 128> modelName;
@@ -236,6 +237,7 @@ namespace EclipseCompiler
     {
     public:
         unsigned int MeshIndex = 0;
+        float largestAxis;
         std::string NameOfModel;
         std::string Directory;
         std::vector<Mesh> Meshes;

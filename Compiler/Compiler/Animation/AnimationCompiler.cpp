@@ -57,7 +57,7 @@ void EclipseCompiler::AnimationCompiler::WriteToFile(std::vector<AnimationData>&
 
     for (auto it : In)
     {
-        AnimationFileWrite.write(reinterpret_cast<const char*>(&it), offsetof(AnimationData, m_BoneInfo));
+        AnimationFileWrite.write(reinterpret_cast<const char*>(&it), (2 * sizeof(float)) + sizeof(int) + sizeof(it.modelName));      
 
         int boneInfoSize = it.m_BoneInfo.size();
         AnimationFileWrite.write(reinterpret_cast<const char*>(&boneInfoSize), sizeof(boneInfoSize));

@@ -235,6 +235,7 @@ namespace Eclipse
         
         struct AnimationData
         {
+            float modelLargestAxis;
             float m_Duration;
             int m_TicksPerSecond;
             std::array<char, 128> modelName;
@@ -291,7 +292,7 @@ namespace Eclipse
             std::vector<BoneInfo> newBoneInfos;
             AssimpNodeData rootNode;
         
-            AnimationFileRead.read(reinterpret_cast<char*>(&animationdata), sizeof(AnimationData));
+            AnimationFileRead.read(reinterpret_cast<char*>(&animationdata), (2 * sizeof(float)) + sizeof(int) + sizeof(animationdata.modelName));
         
             AnimationFileRead.read(reinterpret_cast<char*>(&boneInfoSize), sizeof(boneInfoSize));
             boneinfoData.resize(boneInfoSize);
@@ -345,7 +346,7 @@ namespace Eclipse
             rootNode.children.resize(rootNode.childrenCount);
             engine->gAnimationManager.RecurseChildren(rootNode, AnimationFileRead);
 
-            Animation newAnimation(animationdata.m_Duration, animationdata.m_TicksPerSecond, animationdata.modelName, newBoneInfos, newBones, rootNode);
+            Animation newAnimation(animationdata.modelLargestAxis, animationdata.m_Duration, animationdata.m_TicksPerSecond, animationdata.modelName, newBoneInfos, newBones, rootNode);
             engine->gAnimationManager.InsertAnimation(newAnimation);
         }
         

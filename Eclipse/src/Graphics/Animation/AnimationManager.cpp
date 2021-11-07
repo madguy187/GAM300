@@ -117,6 +117,7 @@ void Eclipse::AnimationManager::CheckForAnimation(unsigned int ID)
                 auto& animation = engine->world.GetComponent<AnimationComponent>(ID);
 
                 animation.m_CurrentAnimation = it.second;
+                animation.modelLargestAxis = it.second.modelLargestAxis;
                 animation.m_CurrentTime = 0.0f;
                 animation.m_Transforms.reserve(100);
 
@@ -354,8 +355,8 @@ Eclipse::Animation::Animation()
 {
 }
 
-Eclipse::Animation::Animation(float duration, float ticks, std::array<char, 128> name, std::vector<BoneInfo> boneInfo, std::vector<Bone> bones, AssimpNodeData rootNode):
-    m_Duration(duration), m_TicksPerSecond(ticks)
+Eclipse::Animation::Animation(float axis, float duration, float ticks, std::array<char, 128> name, std::vector<BoneInfo> boneInfo, std::vector<Bone> bones, AssimpNodeData rootNode):
+    modelLargestAxis(axis), m_Duration(duration), m_TicksPerSecond(ticks)
 {
     modelName = std::string(name.data());
 

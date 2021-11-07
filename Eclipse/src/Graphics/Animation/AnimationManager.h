@@ -80,6 +80,7 @@ namespace Eclipse
 
     struct Animation
     {
+        float modelLargestAxis = 1.0f;
         float m_Duration = 0.0f;
         int m_TicksPerSecond = 0;
         std::string modelName;
@@ -90,7 +91,7 @@ namespace Eclipse
 
         Animation();
 
-        Animation(float duration, float ticks, std::array<char, 128> name, std::vector<BoneInfo> boneInfo, std::vector<Bone> bones, AssimpNodeData rootNode);
+        Animation(float axis, float duration, float ticks, std::array<char, 128> name, std::vector<BoneInfo> boneInfo, std::vector<Bone> bones, AssimpNodeData rootNode);
 
         Bone* FindBone(std::string& name);
     };

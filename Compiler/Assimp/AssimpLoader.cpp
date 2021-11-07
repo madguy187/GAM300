@@ -363,7 +363,7 @@ namespace EclipseCompiler
         Directory = path.substr(0, path.find_last_of("/"));
 
         ProcessGeometry(scene->mRootNode, scene);
-        //LoadNewAnimationModel();
+        LoadNewAnimationModel();
     }
 
     void AssimpLoader::LoadNewAnimationModel()
@@ -385,7 +385,7 @@ namespace EclipseCompiler
         ComputeAxisMinMax(combinedVertices, minmaxX, minmaxY, minmaxZ);
 
         glm::vec3 centroid = ComputeCentroid(minmaxX, minmaxY, minmaxZ);
-        float largestAxis = GetLargestAxisValue(minmaxX, minmaxY, minmaxZ);
+        largestAxis = GetLargestAxisValue(minmaxX, minmaxY, minmaxZ);
         int counter = 0;
 
         for (auto& it : meshData)
@@ -432,13 +432,6 @@ namespace EclipseCompiler
             return;
         }
 
-        //std::cout << "Start Load Animation Data! " << std::endl;
-        //for (auto& it : AllBoneCount)
-        //{
-        //    std::cout << "Model Name: " << it.first << std::endl;
-        //    std::cout << "BoneCount: " << it.second << std::endl;
-        //}
-
         Directory = path.substr(0, path.find_last_of("/"));
 
         AnimationData newAnimation;
@@ -459,6 +452,7 @@ namespace EclipseCompiler
         newAnimation.modelName[newAnimation.modelName.size() - 1] = '\0';
         newAnimation.m_Duration = animation->mDuration;
         newAnimation.m_TicksPerSecond = animation->mTicksPerSecond;
+        newAnimation.modelLargestAxis = largestAxis;
 
         aiMatrix4x4 globalTransformation = scene->mRootNode->mTransformation;
         globalTransformation = globalTransformation.Inverse();
@@ -586,7 +580,7 @@ namespace EclipseCompiler
         ComputeAxisMinMax(combinedVertices, minmaxX, minmaxY, minmaxZ);
 
         glm::vec3 centroid = ComputeCentroid(minmaxX, minmaxY, minmaxZ);
-        float largestAxis = GetLargestAxisValue(minmaxX, minmaxY, minmaxZ);
+        largestAxis = GetLargestAxisValue(minmaxX, minmaxY, minmaxZ);
         int counter = 0;
 
         for (auto& it : meshData)
