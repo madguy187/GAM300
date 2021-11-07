@@ -1,10 +1,32 @@
-//#pragma once
+#pragma once
 
 #include "../Interface/ECGuiWindow.h"
+#include "../Debug/Debug.h"
 #include "ECS/ComponentManager/Components/AudioComponent.h"
-
+#include "Editor/Windows/NodeEditor/NodeEditor.h"
 namespace Eclipse
 {
+	struct CollisionMatrixTracker
+	{
+		std::unordered_map<int, bool> IndexActiveList;
+		std::set<int> UnLayerTracker;
+		bool IsEverything{ false };
+		bool IsNothing{ true };
+
+		void Clear()
+		{
+			IndexActiveList.clear();
+			UnLayerTracker.clear();
+			IsEverything = false;
+			IsNothing = true;
+		}
+	};
+
+	struct CollisionMatrixGroup
+	{
+		CollisionMatrixTracker Current;
+	};
+
 	class InspectorWindow final : public ECGuiWindow
 	{
 	public:
@@ -13,7 +35,6 @@ namespace Eclipse
 		void Unload() override;
 		void DrawImpl();
 
-		bool ShowEntityProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowTransformProperty(const char* name, Entity ID, ImGuiTextFilter& filter, bool IsNotInScene = false);
 		bool ShowPointLightProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowSpotLightProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
@@ -30,6 +51,9 @@ namespace Eclipse
 		bool ShowCollisionProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowPrefebProperty(Entity ID);
 		bool ShowAIProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+		bool ShowBPProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
+
+
 
 		void AddComponentsController(Entity ID);
 		void RemoveComponentsController(Entity ID);
@@ -57,10 +81,22 @@ namespace Eclipse
 		void ComponentRegistry(const char* CompName, Entity ID,
 			const std::string EntityName, EditComponent method);
 
+		void OnCollisionMatrixUpdate(Entity ID);
+		void UpdateCollisionLayerTracker(DebugWindow* dw, int ClickedIndex);
+		void SetCollisionLayerTracker(const std::unordered_map<int, std::string>& layerlist);
+		void SetScriptBitset(ScriptComponent& scriptCom, EntityComponent& entcom);
+		void OnLayerListUpdate(EntityComponent& entcom);
+		void LoadScriptBitset(ScriptComponent& scriptCom);
+
+		void SetCurrentEntityName(const char* name);
+		void ClearEntityName();
+
 		static constexpr unsigned int str2int(const char* str, int h = 0);
 	private:
 		ECVec2 WindowSize_{};
 		bool IsRemovingScripts{ false };
+		char EntNameInput[256] = { 0 };
+		CollisionMatrixGroup CollisionLayerChecker;
 	};
 
 	template <typename TComponents>
@@ -79,6 +115,16 @@ namespace Eclipse
 		}
 
 		ImGui::CloseCurrentPopup();
+	}
+
+	inline void InspectorWindow::SetCurrentEntityName(const char* name)
+	{
+		strcpy(EntNameInput, name);
+	}
+
+	inline void InspectorWindow::ClearEntityName()
+	{
+		memset(EntNameInput, 0, 255);
 	}
 
 	constexpr unsigned int InspectorWindow::str2int(const char* str, int h)

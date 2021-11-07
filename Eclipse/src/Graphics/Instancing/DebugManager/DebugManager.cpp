@@ -13,6 +13,7 @@ namespace Eclipse
         DebugBoxes.Init();
         DebugSpheres.Init();
         LightIcons.Init();
+        SpotLightIcons.Init();
     }
 
     void DebugManager::Reset()
@@ -20,6 +21,7 @@ namespace Eclipse
         ResetInstancedDebugBoxes();
         DebugSpheres.ResetInstancedDebugSpheres();
         LightIcons.ResetInstancedDebugLights();
+        SpotLightIcons.ResetInstancedDebugSpotLights();
     }
 }
 
@@ -43,7 +45,13 @@ namespace Eclipse
             DebugSpheres.RenderBoundingSpheres();
         }
 
-        LightIcons.RenderLights();
+        if (engine->IsScenePlaying() == false)
+        {
+            LightIcons.RenderLights();
+            SpotLightIcons.RenderSpotLights();
+        }
+
+        engine->MaterialManager.StencilBufferClear();
     }
 
     void DebugManager::AddBoundingRegion(glm::mat4 model, CameraComponent& _camera, Entity EntityID)

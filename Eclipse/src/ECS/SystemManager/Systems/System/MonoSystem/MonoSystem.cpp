@@ -15,6 +15,7 @@ namespace Eclipse
 				if (!script.obj)
 				{
 					script.obj = engine->mono.CreateMonoObject(script.scriptName, entity);
+					engine->mono.LoadAllFields(&script);
 					engine->mono.Start(&script);
 				}
 			}
@@ -33,7 +34,10 @@ namespace Eclipse
 
 			for (auto& script : scriptCom.scriptList)
 			{
-				engine->mono.Update(&script);
+				if (engine->mono.fixUpdate)
+					engine->mono.FixedUpdate(&script);
+				else
+					engine->mono.Update(&script);
 			}
 		}
 

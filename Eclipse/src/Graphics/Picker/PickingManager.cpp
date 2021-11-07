@@ -4,8 +4,7 @@
 
 void Eclipse::PickingManager::GenerateAabb(unsigned int ID, TransformComponent& _transform, EntityType _type)
 {
-    if ((_type == EntityType::ENT_MESH) || (_type == EntityType::ENT_LIGHT_DIRECTIONAL) ||
-        (_type == EntityType::ENT_LIGHT_SPOT))    
+    if ((_type == EntityType::ENT_MESH) || (_type == EntityType::ENT_LIGHT_DIRECTIONAL))
     {
         return;
     }

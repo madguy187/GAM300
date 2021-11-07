@@ -94,7 +94,7 @@ namespace Eclipse
         ECVec3 StartingPosition{ 0.0f,0.0f,0.0f };
         // Vector of all the Tiles
         std::vector<std::shared_ptr<Tile>> GridArray;
-        std::unordered_map<unsigned int,std::shared_ptr<Tile>> gridArray; //key = the grid count;
+        std::unordered_map<unsigned int, std::shared_ptr<Tile>> gridArray; //key = the grid count;
         bool GridSystemIsRunning = true;
 
     public:
@@ -168,13 +168,13 @@ namespace Eclipse
         // Get Current Tile's distancetotheObject
         float GetDistanceToObject(unsigned int indexIn);
         // Set distance for Both the Tree and GridArray
-        void SetDistance(AABBNode& Nodein , AABBComponent& aabbin , unsigned int id );
+        void SetDistance(AABBNode& Nodein, AABBComponent& aabbin, unsigned int id);
         // Set Distance For Current Node for Grid
         void SetDistance(AABBNode& Nodein, AABBComponent& aabbin);
         // Set Distance For Current Node for Grid
         void SetDistance(AABBNode& Nodein, DYN_AABB& aabbin);
         // Only check for 1 Intersection.
-        void SetPosition(TransformComponent& in , unsigned int ID);
+        void SetPosition(TransformComponent& in, unsigned int ID);
 
         bool GetGridSystemIsRunning();
         void SetGridSystemIsRunning(bool in);

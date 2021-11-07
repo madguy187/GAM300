@@ -7,6 +7,7 @@ namespace Eclipse
 	{
 		std::string scriptName{};
 		MonoObject* obj = nullptr;
+		std::vector<MonoVariable> vars;
 
 		bool operator==(const MonoScript& rhs) const
 		{
@@ -33,23 +34,40 @@ namespace Eclipse
 		void UnloadDomain();
 
 	public:
+		bool fixUpdate = false;
+
+		// Manager Functions
 		void Init();
-		void Start(MonoScript* obj);
-		void Update(MonoScript* obj);
 		void StartMono();
 		void StopMono();
 		void Terminate();
 
+		// API Functions
+		void Awake(MonoScript* obj);
+		void Start(MonoScript* obj);
+		void Update(MonoScript* obj);
+		void FixedUpdate(MonoScript* obj);
+
 		MonoObject* CreateMonoObject(std::string scriptName, Entity entity);
-		MonoClass* GetMonoClass(std::string className);
-		MonoObject* CreateObjectFromClass(MonoClass* klass);
-		MonoMethod* GetMethodFromClass(MonoClass* klass, std::string funcName);
-		bool ExecuteMethod(MonoObject* obj, MonoMethod* method, std::vector<void*> args);
+		MonoObject* CreateObjectFromClass(MonoClass* klass, bool defaultConstructor = true);
+		MonoObject* CreateVector3Class(float x, float y, float z);
+
+		std::string GetStringFromField(MonoObject* obj, MonoClass* klass, const char* fieldName);
+
+		void SetFloatFromField(MonoObject* obj, MonoClass* klass, const char* fieldName, float fieldValue);
+
+		MonoClass* GetAPIMonoClass(std::string className);
+		MonoClass* GetScriptMonoClass(std::string className);
+		MonoMethod* GetMethodFromClass(MonoClass* klass, std::string funcName, int param_count = -1);
+		void LoadAllFields(MonoScript* script);
+
+		MonoObject* ExecuteMethod(MonoObject* obj, MonoMethod* method, std::vector<void*> args);
 
 		// Gets image containing all API Scripts
 		MonoImage* GetAPIImage();
 		// Gets image containing all User scripts
 		MonoImage* GetScriptImage();
+
 		void DumpInfoFromImage(MonoImage* _image);
 		void DumpInfoFromClass(MonoClass* _class);
 	};

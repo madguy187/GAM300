@@ -9,6 +9,9 @@ uniform int Type;
 const float offset_x = 1.0f / 800.0f;  
 const float offset_y = 1.0f / 800.0f;  
 
+uniform int Height;
+uniform int Width;
+
 vec2 offsets[9] = vec2[]
 (
     vec2(-offset_x,  offset_y), vec2( 0.0f,    offset_y), vec2( offset_x,  offset_y),
@@ -18,18 +21,18 @@ vec2 offsets[9] = vec2[]
 
 void make_kernel(inout vec4 n[9], sampler2D tex, vec2 coord)
 {
-	float w = 1.0 / 1200;
-	float h = 1.0 / 680;
+	float w = 1.0 / Width;
+	float h = 1.0 / Height;
 
-	n[0] = texture2D(tex, coord + vec2( -w, -h));
-	n[1] = texture2D(tex, coord + vec2(0.0, -h));
-	n[2] = texture2D(tex, coord + vec2(  w, -h));
-	n[3] = texture2D(tex, coord + vec2( -w, 0.0));
-	n[4] = texture2D(tex, coord);
-	n[5] = texture2D(tex, coord + vec2(  w, 0.0));
-	n[6] = texture2D(tex, coord + vec2( -w, h));
-	n[7] = texture2D(tex, coord + vec2(0.0, h));
-	n[8] = texture2D(tex, coord + vec2(  w, h));
+	n[0] = texture(tex, coord + vec2( -w, -h));
+	n[1] = texture(tex, coord + vec2(0.0, -h));
+	n[2] = texture(tex, coord + vec2(  w, -h));
+	n[3] = texture(tex, coord + vec2( -w, 0.0));
+	n[4] = texture(tex, coord);
+	n[5] = texture(tex, coord + vec2(  w, 0.0));
+	n[6] = texture(tex, coord + vec2( -w, h));
+	n[7] = texture(tex, coord + vec2(0.0, h));
+	n[8] = texture(tex, coord + vec2(  w, h));
 }
 
 
@@ -70,16 +73,7 @@ void main()
         FragColor = vec4(color, 1.0f);
     }
     else if( Type == 4)
-    {
-		//vec4 n[9];
-		//make_kernel( n, screenTexture, texCoords.st );
-		//
-		//vec4 sobel_edge_h = n[2] + (2.0*n[5]) + n[8] - (n[0] + (2.0*n[3]) + n[6]);
-		//vec4 sobel_edge_v = n[0] + (2.0*n[1]) + n[2] - (n[6] + (2.0*n[7]) + n[8]);
-		//vec4 sobel = sqrt((sobel_edge_h * sobel_edge_h) + (sobel_edge_v * sobel_edge_v));
-		//
-		//FragColor = vec4( 1.0 - sobel.rgb, 1.0 );
-	
+    {		
         vec3 color = vec3(0.0f);
 		
         for(int i = 0; i < 9; i++)
@@ -88,6 +82,20 @@ void main()
         }
 		
         FragColor = vec4(color, 1.0f);
+    }
+     else if( Type == 5)
+    {		
+		vec4 n[9];
+		make_kernel( n, screenTexture, texCoords.st );	
+		vec4 sobel_edge_h = n[2] + (2.0*n[5]) + n[8] - (n[0] + (2.0*n[3]) + n[6]);
+		vec4 sobel_edge_v = n[0] + (2.0*n[1]) + n[2] - (n[6] + (2.0*n[7]) + n[8]);
+        vec4 sobel = sqrt((sobel_edge_h * sobel_edge_h) + (sobel_edge_v * sobel_edge_v));
+        float average = 0.2126 * sobel.r + 0.7152 * sobel.g + 0.0722 * sobel.b;
+        FragColor = vec4(vec3(average), 1.0 );
+    }
+    else if( Type == 6)
+    {	
+        FragColor = vec4(vec3(1), 1.0 );
     }
 
 }

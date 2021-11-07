@@ -97,7 +97,7 @@ namespace Eclipse
 					break;
 				case PayloadTargetType::PTT_ASSETS:
 
-					if (!strcmp(id, "png"))
+					if (!strcmp(id, "dds"))
 					{
 						std::filesystem::path temp = ((const char*)payload->Data);
 						std::string folder = temp.parent_path().filename().string();
@@ -128,6 +128,30 @@ namespace Eclipse
 
 			ECGui::EndDragDropTarget();
 		}
+	}
+
+	bool DragAndDrop::NodeEditorTextureTarget(const char* id, std::string& destination, const char* cMsg, PayloadTargetType type, Entity ID, size_t arrayIndex)
+	{
+		if (ECGui::BeginDragDropTarget())
+		{
+			const ImGuiPayload* payload = ECGui::AcceptDragDropPayload(id);
+			std::string path;
+			if (payload)
+			{
+				switch (type)
+				{
+				case PayloadTargetType::PTT_WIDGET:
+					destination = (const char*)payload->Data;
+					return true;
+					break;
+				}
+
+				EDITOR_LOG_INFO(cMsg);
+			}
+
+			ECGui::EndDragDropTarget();
+		}
+		return false;
 	}
 
 	void DragAndDrop::IndexPayloadTarget(const char* id, const int& destination, bool& IsSelected, PayloadTargetType type)

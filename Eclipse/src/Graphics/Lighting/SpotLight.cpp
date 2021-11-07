@@ -16,7 +16,7 @@ namespace Eclipse
 
         // SpotLightComponent
         SpotLightComponent& SpotLight = engine->world.GetComponent<SpotLightComponent>(CreatedID);
-        engine->LightManager.SetAttenuation(SpotLight, 5);
+        engine->LightManager.SetAttenuation(SpotLight, 2);
 
         // TransformComponent
         TransformComponent& transform = engine->world.GetComponent<TransformComponent>(CreatedID);
@@ -30,32 +30,80 @@ namespace Eclipse
     {
         engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
-        auto shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
-        shdrpgm.Use();
-
-        glBindVertexArray(Graphics::models["Sphere"]->GetVaoID());
-
         glEnable(GL_BLEND);
         glPolygonMode(GL_FRONT_AND_BACK, mode);
         glDisable(GL_CULL_FACE);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        CheckUniformLoc(&shdrpgm, *in, IndexId, SpotLightCounter, EntityId);
+        TransformComponent& SpotlightTransform = engine->world.GetComponent<TransformComponent>(EntityId);
+        SpotlightTransform.scale.setX(1.0f);
+        SpotlightTransform.scale.setY(1.0f);
+        SpotlightTransform.scale.setZ(1.0f);
 
-        auto& Light = engine->world.GetComponent<LightComponent>(EntityId);
-
-        if (in->visible && Light.Render)
-        {
-            GLCall(glDrawElements(Graphics::models["Sphere"]->GetPrimitiveType(),
-                Graphics::models["Sphere"]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
-        }
-
-        glBindVertexArray(0);
-        shdrpgm.UnUse();
+        glm::mat4 mModelNDC;
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, SpotlightTransform.position.ConvertToGlmVec3Type());
+        model = glm::rotate(model, glm::radians(SpotlightTransform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(SpotlightTransform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(SpotlightTransform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, SpotlightTransform.scale.ConvertToGlmVec3Type());
+        engine->gDebugDrawManager->SpotLightIcons.Addinstance(model);
 
         CheckUniformPBR(IndexId, EntityId);
     }
 
+    void SpotLight::CheckUniformPBR(int index, unsigned int EntityId)
+    {
+        auto shdrpgm = Graphics::shaderpgms["PBRShader"];
+        shdrpgm.Use();
+
+        TransformComponent& SpotlightTransform = engine->world.GetComponent<TransformComponent>(EntityId);
+        SpotLightComponent& Spotlight = engine->world.GetComponent<SpotLightComponent>(EntityId);
+        std::string number = std::to_string(index);
+
+        GLint uniform_var_loc10 = shdrpgm.GetLocation(("spotLights[" + number + "].AffectsWorld").c_str());
+        GLCall(glUniform1i(uniform_var_loc10, Spotlight.AffectsWorld));
+
+        if (Spotlight.cutOff >= Spotlight.outerCutOff)
+        {
+            Spotlight.cutOff = 0.0f;
+        }
+
+        if (Spotlight.AffectsWorld)
+        {
+            GLint uniform_var_loc1 = shdrpgm.GetLocation(("spotLights[" + number + "].position").c_str());
+            GLint uniform_var_loc2 = shdrpgm.GetLocation(("spotLights[" + number + "].lightColor").c_str());
+            GLint uniform_var_loc3 = shdrpgm.GetLocation(("spotLights[" + number + "].cutOff").c_str());
+            GLint uniform_var_loc4 = shdrpgm.GetLocation(("spotLights[" + number + "].outerCutOff").c_str());
+            GLint uniform_var_loc5 = shdrpgm.GetLocation(("spotLights[" + number + "].direction").c_str());
+            GLint uniform_var_loc6 = shdrpgm.GetLocation(("spotLights[" + number + "].constant").c_str());
+            GLint uniform_var_loc7 = shdrpgm.GetLocation(("spotLights[" + number + "].linear").c_str());
+            GLint uniform_var_loc8 = shdrpgm.GetLocation(("spotLights[" + number + "].quadratic").c_str());
+            GLint uniform_var_loc9 = shdrpgm.GetLocation(("spotLights[" + number + "].IntensityStrength").c_str());
+            GLint uniform_var_loc10 = shdrpgm.GetLocation(("spotLights[" + number + "].RGBColor").c_str());
+
+            GLCall(glUniform3f(uniform_var_loc1, SpotlightTransform.position.getX(), SpotlightTransform.position.getY(), SpotlightTransform.position.getZ()));
+            GLCall(glUniform3f(uniform_var_loc2, 100.0f, 100.0f, 100.0f));
+            GLCall(glUniform1f(uniform_var_loc3, glm::cos(glm::radians(Spotlight.cutOff))));
+            GLCall(glUniform1f(uniform_var_loc4, glm::cos(glm::radians(Spotlight.outerCutOff))));
+            GLCall(glUniform1f(uniform_var_loc6, Spotlight.constant));
+            GLCall(glUniform1f(uniform_var_loc7, Spotlight.linear));
+            GLCall(glUniform1f(uniform_var_loc8, Spotlight.quadratic));
+            GLCall(glUniform1f(uniform_var_loc9, Spotlight.IntensityStrength));
+            GLCall(glUniform3f(uniform_var_loc5, Spotlight.direction.getX(), Spotlight.direction.getY(), Spotlight.direction.getZ()));
+            GLCall(glUniform3f(uniform_var_loc10, Spotlight.RGBColor.getX(), Spotlight.RGBColor.getY(), Spotlight.RGBColor.getZ()));
+        }
+        shdrpgm.UnUse();
+    }
+
+    void SpotLight::Destroy()
+    {
+        --SpotLightCounter;
+    }
+}
+
+namespace Eclipse
+{
     void SpotLight::CheckUniformLoc(Shader* _shdrpgm, SpotLightComponent& in_spot, int index, unsigned int containersize, unsigned int EntityId)
     {
         GLint uniform_var_loc8 = _shdrpgm->GetLocation("uModelToNDC");
@@ -69,6 +117,13 @@ namespace Eclipse
 
         if (uniform_var_loc8 >= 0)
         {
+            SpotlightTransform.scale.setX(1.0f);
+            SpotlightTransform.scale.setY(1.0f);
+            SpotlightTransform.scale.setZ(1.0f);
+            SpotlightTransform.rotation.setX(0.0f);
+            SpotlightTransform.rotation.setY(0.0f);
+            SpotlightTransform.rotation.setZ(0.0f);
+
             glm::mat4 mModelNDC;
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, SpotlightTransform.position.ConvertToGlmVec3Type());
@@ -79,6 +134,8 @@ namespace Eclipse
             mModelNDC = camera.projMtx * camera.viewMtx * model;
             glUniformMatrix4fv(uniform_var_loc8, 1, GL_FALSE, glm::value_ptr(mModelNDC));
             glUniformMatrix4fv(uniform_var_loc10, 1, GL_FALSE, glm::value_ptr(model));
+
+            engine->gDebugDrawManager->SpotLightIcons.Addinstance(model);
         }
 
         if (in_spot.AffectsWorld)
@@ -153,75 +210,6 @@ namespace Eclipse
 
             // specular
             GLCall(glUniform3f(uniform_var_loc20, in_spot.direction.getX(), in_spot.direction.getY(), in_spot.direction.getZ()));
-        }
-    }
-
-    void SpotLight::CheckUniformPBR(int index, unsigned int EntityId)
-    {
-        auto shdrpgm = Graphics::shaderpgms["PBRShader"];
-        shdrpgm.Use();
-
-        TransformComponent& SpotlightTransform = engine->world.GetComponent<TransformComponent>(EntityId);
-        SpotLightComponent& Spotlight = engine->world.GetComponent<SpotLightComponent>(EntityId);
-        std::string number = std::to_string(index);
-        GLint uniform_var_loc1 = shdrpgm.GetLocation(("spotLights[" + number + "].position").c_str());
-        GLint uniform_var_loc2 = shdrpgm.GetLocation(("spotLights[" + number + "].lightColor").c_str());
-        GLint uniform_var_loc3 = shdrpgm.GetLocation(("spotLights[" + number + "].cutOff").c_str());
-        GLint uniform_var_loc4 = shdrpgm.GetLocation(("spotLights[" + number + "].outerCutOff").c_str());
-        GLint uniform_var_loc5 = shdrpgm.GetLocation(("spotLights[" + number + "].direction").c_str());
-
-        GLCall(glUniform3f(uniform_var_loc1, SpotlightTransform.position.getX(), SpotlightTransform.position.getY(), SpotlightTransform.position.getZ()));
-        GLCall(glUniform3f(uniform_var_loc2, 300.0f, 300.0f, 300.0f));
-        GLCall(glUniform1f(uniform_var_loc3, glm::cos(glm::radians(Spotlight.cutOff))));
-        GLCall(glUniform1f(uniform_var_loc4, glm::cos(glm::radians(Spotlight.outerCutOff))));
-        GLCall(glUniform3f(uniform_var_loc5, Spotlight.direction.getX(), Spotlight.direction.getY(), Spotlight.direction.getZ()));
-
-        shdrpgm.UnUse();
-    }
-
-    void SpotLight::Destroy()
-    {
-        --SpotLightCounter;
-    }
-}
-
-namespace Eclipse
-{
-    SpotLightContainer SpotLight::GetContainer()
-    {
-        return _spotlights;
-    }
-
-    void SpotLight::ClearContainer()
-    {
-        _spotlights.clear();
-    }
-
-    bool SpotLight::DeleteSpotLight(unsigned int EntityID)
-    {
-        SLIT it = _spotlights.find(EntityID);
-
-        if (it == _spotlights.end())
-        {
-            return false;
-        }
-        else
-        {
-            _spotlights.erase(EntityID);
-            --SpotLightCounter;
-
-            EDITOR_LOG_INFO("SpotLight Removed Successfully");
-            return true;
-        }
-    }
-
-    void SpotLight::DrawSpotLights(unsigned int framebufferID)
-    {
-        (void)framebufferID;
-
-        for (auto& it : _spotlights)
-        {
-            Draw(it.first, it.second, FrameBufferMode::FBM_SCENE, it.first, GL_FILL);
         }
     }
 

@@ -13,7 +13,8 @@ namespace Eclipse
       "SWITCHINGVIEWS_LEFT",
       "SWITCHINGVIEWS_RIGHT",
       "MATERIALEDITORVIEW",
-      "MESHEDITORVIEW"
+      "MESHEDITORVIEW",
+      "GAMEVIEW_SOBEL",
       "MAXCOUNT"
     };
 
@@ -76,6 +77,7 @@ namespace Eclipse
             PPT_GREY = 2,
             PPT_KERNEL = 3,
             PPT_BLUR = 4,
+            PPT_SOBEL = 5,
             PPT_MAXCOUNT
         };
 

@@ -2,6 +2,7 @@
 #include "Graphics/Instancing/DebugBoxes/Box.h"
 #include "Graphics/Instancing/DebugSpheres/DebugSphere.h"
 #include "Graphics/Instancing/DebugLights/DebugLights.h"
+#include "Graphics/Instancing/DebugSpotLights/DebugSpotLights.h"
 
 namespace Eclipse
 {
@@ -31,5 +32,6 @@ namespace Eclipse
     public:
         DebugSphere DebugSpheres;
         DebugLights LightIcons;
+        DebugSpotLights SpotLightIcons;
     };
 }
