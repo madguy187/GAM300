@@ -128,7 +128,7 @@ namespace Eclipse
                     if (engine->editorManager->GetEditorWindow<eGameViewWindow>()->IsVisible)
                     {
                         // If activated , we render to FBM_GAME_SOBEL then in the FrameBufferManager , we render the texture back to FBM_GAME
-                        if (engine->gFrameBufferManager->IsSobelEffect())
+                        if (engine->gFrameBufferManager->IsSobelEffect() && (engine->IsScenePlaying() == true) )
                         {
                             engine->MaterialManager.DoNotUpdateStencil();
 

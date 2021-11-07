@@ -35,6 +35,8 @@ namespace Eclipse
 
         void PostProcessUpdate();
         bool IsSobelEffect();
+        void Reset();
+        void SetSobelEffect();
 
     private:
         // Effects

@@ -90,7 +90,8 @@ namespace Eclipse
 
         // Sobel
         float FadeInTimer = 0.0f;
-        float Multiplier = 2.0f;
+        float Multiplier = 30.0f;
+        float Visible = 1.0f;
 
         // Bleeding
         float BleedingTimer = 0.0f;

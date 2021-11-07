@@ -260,20 +260,9 @@ namespace Eclipse
 
     void FrameBufferManager::FadeIn(FrameBuffer::PostProcessType Type, float& timer, float multiplier, FrameBufferMode WhichFBO)
     {
-        if (WhichFBO == FrameBufferMode::FBM_SCENE)
+        if (PostProcess->PPType_ == Type && timer <= 1.0f)
         {
-            timer = 1.0f;
-        }
-        else
-        {
-            if (PostProcess->PPType_ == Type && timer <= 1.0f)
-            {
-                timer += (engine->Game_Clock.get_fixedDeltaTime() / multiplier);
-            }
-            else
-            {
-                timer = 0.0f;
-            }
+            timer += (engine->Game_Clock.get_fixedDeltaTime() / multiplier);
         }
     }
 
@@ -313,6 +302,20 @@ namespace Eclipse
         }
     }
 
+    void FrameBufferManager::Reset()
+    {
+        PostProcess->AllowPostProcess = false;
+        PostProcess->FadeInTimer = 0.0f;
+        PostProcess->PPType_ = FrameBuffer::PostProcessType::PPT_NONE;
+    }
+
+    void FrameBufferManager::SetSobelEffect()
+    {
+        PostProcess->AllowPostProcess = true;
+        PostProcess->FadeInTimer = 0.0f;
+        PostProcess->PPType_ = FrameBuffer::PostProcessType::PPT_SOBEL;
+    }
+
     void FrameBufferManager::SobelEffectUpdate(FrameBufferMode TargetFBO, FrameBufferMode RenderFBO)
     {
         if (PostProcess->AllowPostProcess == true)
@@ -322,7 +325,7 @@ namespace Eclipse
                 FadeIn(FrameBuffer::PostProcessType::PPT_SOBEL, PostProcess->FadeInTimer, PostProcess->Multiplier, RenderFBO);
 
                 // We will output to Game FrameBuffer
-                engine->gFrameBufferManager->UseFrameBuffer(RenderFBO);
+                UseFrameBuffer(RenderFBO);
 
                 auto& shdrpgm = Graphics::shaderpgms["PostProcess"];
                 shdrpgm.Use();
@@ -335,7 +338,15 @@ namespace Eclipse
                 GLCall(glUniform1i(Inversion, static_cast<GLint>(PostProcess->PPType_)));
                 GLCall(glUniform1i(Height_, engine->gFrameBufferManager->FrameBufferContainer[RenderFBO]->m_height));
                 GLCall(glUniform1i(Width_, engine->gFrameBufferManager->FrameBufferContainer[RenderFBO]->m_width));
-                GLCall(glUniform1f(FadeInTimer_, PostProcess->FadeInTimer));
+
+                if (RenderFBO == FrameBufferMode::FBM_SCENE)
+                {
+                    GLCall(glUniform1f(FadeInTimer_, PostProcess->Visible));
+                }
+                else
+                {
+                    GLCall(glUniform1f(FadeInTimer_, PostProcess->FadeInTimer));
+                }
 
                 glBindVertexArray(PostProcess->rectVAO);
                 glActiveTexture(GL_TEXTURE0);
@@ -358,7 +369,11 @@ namespace Eclipse
         {
             if (PostProcess->PPType_ == FrameBuffer::PostProcessType::PPT_SOBEL)
             {
-                SobelEffectUpdate(FrameBufferMode::FBM_GAME_SOBEL, FrameBufferMode::FBM_GAME);
+                if (engine->IsScenePlaying() == true)
+                {
+                    SobelEffectUpdate(FrameBufferMode::FBM_GAME_SOBEL, FrameBufferMode::FBM_GAME);
+                }
+
                 SobelEffectUpdate(FrameBufferMode::FBM_SCENE_SOBEL, FrameBufferMode::FBM_SCENE);
             }
             else
