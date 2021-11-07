@@ -86,13 +86,11 @@ namespace Eclipse
         std::map<std::string, BoneInfo> m_BoneInfoMap;
         std::vector<Bone> m_Bones;
         AssimpNodeData m_RootNode;
-        //mAssimpNodeData m_RootNode;
         bool dataInit = false;
 
         Animation();
 
         Animation(float duration, float ticks, std::array<char, 128> name, std::vector<BoneInfo> boneInfo, std::vector<Bone> bones, AssimpNodeData rootNode);
-        //Animation(float duration, float ticks, std::array<char, 128> name, std::vector<BoneInfo> boneInfo, std::vector<Bone> bones, mAssimpNodeData rootNode);
 
         Bone* FindBone(std::string& name);
     };
@@ -103,19 +101,12 @@ namespace Eclipse
     public:
         void RecurseChildren(AssimpNodeData& nodeData, std::fstream& AnimationFileRead);
         void CheckRecursionData(AssimpNodeData& nodeData);
-        //void RecurseChildren(mAssimpNodeData& nodeData, std::fstream& AnimationFileRead);
-        //void CheckRecursionData(mAssimpNodeData& nodeData);
-        void SetAnimationData(Animation& newAnimation, float duration, float ticks, std::array<char, 128> name, std::vector<BoneInfo> boneInfo, std::vector<Bone> bones, AssimpNodeData rootNode);
-        //void SetAnimationData(Animation& newAnimation, float duration, float ticks, std::array<char, 128> name, std::vector<BoneInfo> boneInfo, std::vector<Bone> bones, mAssimpNodeData rootNode);
         void InsertAnimation(Animation& newAnimation);
 
         std::map<std::string, Animation>& GetAnimationMap();
         void CheckForAnimation(unsigned int ID);
 
         void CalculateBoneTransform(unsigned int ID, const AssimpNodeData* node, glm::mat4 parentTransform);
-        //void CalculateBoneTransform(unsigned int ID, const mAssimpNodeData* node, glm::mat4 parentTransform);
         void UpdateAnimation(unsigned int ID, float dt);
-
-        void PopulateAnimationMapFromVector(std::vector<mAnimationData> animationData);
     };
 }

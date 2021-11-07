@@ -782,8 +782,7 @@ namespace Eclipse
         model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
 
         if (!engine->world.CheckComponent<AnimationComponent>(ModelID))
-        {
-           
+        {         
             model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
             model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
             model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
