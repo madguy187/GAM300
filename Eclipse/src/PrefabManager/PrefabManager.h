@@ -189,6 +189,8 @@ namespace Eclipse
 
 		Entity CreatePrefabInstance(const char* path);
 
+		Entity CreatePrefabInstanceWithName(const std::string& prefabName, const ECVec3& position = {}, const ECVec3& rotation = {});
+
 		void UnloadSaving();
 	};
 }
