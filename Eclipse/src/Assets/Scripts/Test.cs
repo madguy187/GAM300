@@ -7,19 +7,17 @@ public class Test : EclipseBehavior
 {
     public float mouseSensitivity = 10f;
 
+    Test2 wee;
+
     public void Start()
     {
-        Console.WriteLine("C# Start");
-        Invoke("Tests", 2.0f);
+        Console.WriteLine("TEST C# Start");
+        wee = GetComponent<Test2>();
+        Console.WriteLine(wee.Entity);
     }
 
     public void Update()
     {
       
-    }
-
-    public void Tests()
-    {
-        Console.WriteLine("YAYY");
     }
 }

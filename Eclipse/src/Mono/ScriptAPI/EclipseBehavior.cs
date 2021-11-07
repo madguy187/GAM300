@@ -27,7 +27,10 @@ namespace Eclipse
 
         public T GetComponent<T>() where T : IScriptable
         {
-            return gameObject.GetComponent<T>();
+            if (typeof(T).IsSubclassOf(typeof(EclipseBehavior)))
+              return gameObject.GetBehavior<T>();
+            else
+              return gameObject.GetComponent<T>();
         }
 
         public void Invoke(string funcName, float time)

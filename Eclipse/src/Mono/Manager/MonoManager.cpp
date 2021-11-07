@@ -96,6 +96,7 @@ namespace Eclipse
 		mono_add_internal_call("Eclipse.Time::getDeltaTime", GetDeltaTime);
 		mono_add_internal_call("Eclipse.Time::getFixedDeltaTime", GetFixedDeltaTime);
 		mono_add_internal_call("Eclipse.GameObject::setEnabled", setEnabled);
+		mono_add_internal_call("Eclipse.GameObject::getBehavior", getBehavior);
 		mono_add_internal_call("Eclipse.Transform::RotateEuler", RotateEuler);
 		mono_add_internal_call("Eclipse.Quaternion::GetEuler", Euler);
 		mono_add_internal_call("Eclipse.EclipseBehavior::InvokeFunc", Invoke);
