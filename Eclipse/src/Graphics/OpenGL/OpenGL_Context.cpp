@@ -45,6 +45,7 @@ void Eclipse::OpenGL_Context::on_resize(int width_, int height_)
     height = height_;
 
     glViewport(0, 0, width, height);
+    engine->InputManager->SetAxis(width_, height_);
 }
 
 static void on_window_close_callback(GLFWwindow* window)

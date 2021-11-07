@@ -63,6 +63,18 @@ namespace Eclipse
         bool CheckMouseMapping(std::string NewMap);
         void TestingLogicalInput(); // For Testing
 
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // GetAxis
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        int XMiddle , YMiddle;
+        int Mouse_X, Mouse_Y;
+        void SetAxis(GLint width , GLint height);
+        void AxisUpdate();
+        float GetAxis(const std::string& Type);
+        bool LockCursor(FrameBufferMode);
+        float XDelta = 0.0f;
+        float YDelta = 0.0f;
+
     private:
         void init();
         void Update();
