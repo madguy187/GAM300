@@ -250,6 +250,7 @@ void StyleColorsLight();
 // will result the node editor grid workspace being rendered.
 void BeginNodeEditor();
 void EndNodeEditor();
+void EndNodeEditorReturnString(std::string& DragDropDestination);
 
 // Add a navigable minimap to the editor; call before EndNodeEditor after all
 // nodes and links have been specified
