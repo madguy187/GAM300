@@ -1242,10 +1242,19 @@ namespace Eclipse
 
     void InspectorWindow::AddComponentsController(Entity ID)
     {
+        ECGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(3.0f / 7.0f, 0.6f, 0.6f));
+        ECGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(3.0f / 7.0f, 0.7f, 0.7f));
+        ECGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(3.0f / 7.0f, 0.8f, 0.8f));
+
         if (ECGui::ButtonBool(("Add Component"), { ImGui::GetColumnWidth(),25 }))
         {
             ECGui::OpenPopup("Add Component");
         }
+
+        ECGui::PopStyleColor();
+        ECGui::PopStyleColor();
+        ECGui::PopStyleColor();
+
         if (ECGui::BeginPopup("Add Component"))
         {
             ECGui::SetScrollY(5);
@@ -1258,10 +1267,19 @@ namespace Eclipse
 
     void InspectorWindow::RemoveComponentsController(Entity ID)
     {
+        ECGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.6f, 0.6f));
+        ECGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.7f, 0.7f));
+        ECGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.8f));
+
         if (ECGui::ButtonBool(("Remove Component"), { ImGui::GetColumnWidth(),25 }))
         {
             ECGui::OpenPopup("Remove Component");
         }
+
+        ECGui::PopStyleColor();
+        ECGui::PopStyleColor();
+        ECGui::PopStyleColor();
+
         if (ECGui::BeginPopup("Remove Component"))
         {
             ECGui::SetScrollY(5);
