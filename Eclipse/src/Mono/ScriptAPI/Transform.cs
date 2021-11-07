@@ -7,7 +7,8 @@ namespace Eclipse
     public struct Transform
     {
         UInt32 Entity;
-        //Vector3 position;
+        Vector3 position;
+        Quaternion rotation;
 
         public Transform(UInt32 entity)
         {
