@@ -267,6 +267,36 @@ namespace Eclipse
         BindMaterial(MaterialCom.MaterialInstanceName, shdrpgm);
     }
 
+    void PBRManager::ResetSurfaceColour()
+    {
+        gMaterialEditorSettings->CurrentMaterial.SurfaceColour = ECVec3{ 1.0f };
+    }
+
+    void PBRManager::ResetReflectivity()
+    {
+        gMaterialEditorSettings->CurrentMaterial.BaseReflectivity = ECVec3{ 0.4f };
+    }
+
+    void PBRManager::ResetAlbedoConstant()
+    {
+        gMaterialEditorSettings->CurrentMaterial.AlbedoConstant = ECVec3{ 1.0f };
+    }
+
+    void PBRManager::ResetAoConstant()
+    {
+        gMaterialEditorSettings->CurrentMaterial.AoConstant = 1.0f;
+    }
+
+    void PBRManager::ResetMetallicConstant()
+    {
+        gMaterialEditorSettings->CurrentMaterial.MetallicConstant = 0.0f;
+    }
+
+    void PBRManager::ResetRoughnessConstant()
+    {
+        gMaterialEditorSettings->CurrentMaterial.RoughnessConstant = 0.5f;
+    }
+
     void PBRManager::ClearAllMaterialInstances()
     {
         AllMaterialInstances.clear();
