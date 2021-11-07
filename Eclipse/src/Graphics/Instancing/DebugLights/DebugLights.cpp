@@ -35,7 +35,15 @@ namespace Eclipse
                 auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
                 auto& _camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
 
-                engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SCENE);
+                if (engine->gFrameBufferManager->IsSobelEffect())
+                {
+                    engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SCENE_SOBEL);
+                }
+                else
+                {
+                    engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SCENE);
+                }
+
                 auto& shdrpgm = Graphics::shaderpgms["Instancing"];
                 shdrpgm.Use();
 

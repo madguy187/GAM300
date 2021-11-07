@@ -197,6 +197,7 @@ namespace Eclipse
     {
         return IsActive;
     }
+
     void MeshEditorWindow::RecursiveDestroy(const Entity& ent)
     {
         auto& entComp = engine->world.GetComponent<EntityComponent>(ent);

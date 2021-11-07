@@ -435,15 +435,19 @@ namespace Eclipse
 
     void Eclipse::GraphicsManager::FinalRender()
     {
-        if (engine->IsScenePlaying() == false)
+        if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
         {
-            if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
+            if (engine->gFrameBufferManager->IsSobelEffect())
+            {
+                engine->GridManager->DrawGrid(FrameBufferMode::FBM_SCENE_SOBEL);
+            }
+            else
             {
                 engine->GridManager->DrawGrid(FrameBufferMode::FBM_SCENE);
             }
         }
 
-        engine->gFrameBufferManager->PostProcess->UpdatePP();
+        engine->gFrameBufferManager->PostProcessUpdate();
     }
 
     void Eclipse::GraphicsManager::CreateCompilerFolders()

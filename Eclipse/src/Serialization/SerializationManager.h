@@ -122,6 +122,12 @@ namespace Eclipse
 
 		void LoadSceneFile(const char* fullpath = "Data/Temp/UnsavedTemp.scn");
 
+		void SaveLayersConfigFile(const std::unordered_map<int, std::string>& LayerList,
+			const size_t& UserLayerSize, const char* fullpath = "Config/Layers.cfg");
+
+		bool LoadLayersConfigFile(std::unordered_map<int, std::string>& LayerList, 
+			size_t& UserLayerSize, const char* fullpath = "Config/Layers.cfg");
+
 		void SavePrefabWorldFile(const std::set<Entity>& entities);
 
 		template <typename T>

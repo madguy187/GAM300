@@ -10,5 +10,6 @@ namespace Eclipse
 		META_DATA(ScriptComponent);
 		// For Script Testing
 		std::vector<MonoScript> scriptList;
+		std::bitset<20> LayerMask{ std::string{ "11" } };
 	};
 }

@@ -154,7 +154,6 @@ namespace Eclipse
 				{
 					auto& child = engine->world.GetComponent<ChildComponent>(selectedEntity);
 					child.UpdateChildren = true;
-					//std::cout << "translate gizmo being used!" << std::endl;
 
 					if (ent.Tag != EntityType::ENT_MESH)
 					{
@@ -202,7 +201,6 @@ namespace Eclipse
 			{
 				auto& child = engine->world.GetComponent<ChildComponent>(selectedEntity);
 				child.UpdateChildren = false;
-				// std::cout << "translate gizmo not being used!" << std::endl;
 			}
 		}
 

@@ -48,6 +48,7 @@ struct DirectionalLight
 	vec3 lightColor;
     vec3 position;
     int AffectsWorld;
+    vec3 AmbientSettings;
 };
 
 struct SpotLight 
@@ -142,7 +143,7 @@ vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness)
 
 void main()
 {	
-    vec3 AmbientSettings = vec3(0.0); // if i want abit of ambient ill give it 0.03 , lets see as our game need this
+    vec3 AmbientSettings = directionlight[0].AmbientSettings; // if i want abit of ambient ill give it 0.03 , lets see as our game need this
 
     vec3 N;
     vec3 V = normalize(camPos - WorldPos);
