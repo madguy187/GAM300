@@ -227,7 +227,23 @@ enum class m_Type
     MONO_UNDEFINED,
     MONO_VAR,
     MONO_HEADER,
-    MONO_LAYERMASK
+    MONO_LAYERMASK,
+    MONO_GAMEOBJECT,
+    MONO_GAMEOBJECT_ENTITY,
+    MONO_GAMEOBJECT_PREFAB
+};
+
+enum class ForceMode
+{
+    Default = 0,
+    Impulse = 1
+};
+
+enum class CursorLockMode
+{
+    None = 0,
+    Locked = 1,
+    Confined = 2
 };
 
 struct MonoVariable

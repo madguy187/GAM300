@@ -5,17 +5,28 @@ using Eclipse;
 
 public class Test : EclipseBehavior
 {
-    [Header("Weeeeeee")]
-    public UInt32 test;
+    public float mouseSensitivity = 10f;
 
     public void Start()
     {
-        Console.WriteLine("C# Start");
+        Vector2 test = new Vector2(5, 6);
+        Console.WriteLine(test.magnitude);
     }
 
     public void Update()
     {
-        Console.WriteLine("C# Update");
-        Console.WriteLine(Vector3.zero.x);
+        if (Input.GetKey(KeyCode.D))
+        {
+            Console.WriteLine("spinnn");
+            float mouseX = Input.GetAxis("Horizontal") * mouseSensitivity;
+            transform.Rotate(new Vector3(0, mouseX, 0));
+        }
+
+        if (Input.GetKey(KeyCode.A))
+        {
+            Console.WriteLine("stop spinnn");
+            float mouseX = Input.GetAxis("Horizontal") * mouseSensitivity;
+            transform.Rotate(new Vector3(0, -mouseX, 0));
+        }
     }
 }

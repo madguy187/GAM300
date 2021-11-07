@@ -47,6 +47,8 @@
 #include <unordered_map>
 #include <set>
 
+#include "GLM/glm/gtx/quaternion.hpp"
+
 // Events
 #include "Events/Events.h"
 #include "Events/EventManager.h"
