@@ -52,6 +52,7 @@ namespace Eclipse
 		MonoObject* CreateMonoObject(std::string scriptName, Entity entity);
 		MonoObject* CreateObjectFromClass(MonoClass* klass, bool defaultConstructor = true);
 		MonoObject* CreateVector3Class(float x, float y, float z);
+		MonoObject* CreateQuaternionClass(float x, float y, float z);
 
 		std::string GetStringFromField(MonoObject* obj, MonoClass* klass, const char* fieldName);
 
@@ -60,7 +61,9 @@ namespace Eclipse
 		MonoClass* GetAPIMonoClass(std::string className);
 		MonoClass* GetScriptMonoClass(std::string className);
 		MonoMethod* GetMethodFromClass(MonoClass* klass, std::string funcName, int param_count = -1);
+
 		void LoadAllFields(MonoScript* script);
+		bool CheckIfFieldExist(MonoScript* script, std::string& fieldName, size_t index);
 
 		MonoObject* ExecuteMethod(MonoObject* obj, MonoMethod* method, std::vector<void*> args);
 

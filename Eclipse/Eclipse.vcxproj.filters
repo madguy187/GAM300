@@ -916,6 +916,10 @@
     <ClInclude Include="src\Graphics\Grid\Grid.h" />
     <ClInclude Include="src\Graphics\Instancing\DebugSpotLights\DebugSpotLights.h" />
     <ClInclude Include="src\Mono\Components\s_Time.h" />
+    <ClInclude Include="src\Mono\Components\s_Transform.h" />
+    <ClInclude Include="src\Mono\Components\s_GameObject.h" />
+    <ClInclude Include="src\Mono\Components\s_AudioSource.h" />
+    <ClInclude Include="src\Mono\Components\s_Quaternion.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1381,5 +1385,7 @@
     <None Include="src\Assets\Shaders\Instancing\Instancing.frag" />
     <None Include="src\Assets\Shaders\Instancing\Instancing.vert" />
     <None Include="src\Mono\ScriptAPI\ForceMode.cs" />
+    <None Include="src\Mono\ScriptAPI\Vector2.cs" />
+    <None Include="src\Mono\ScriptAPI\Quaternion.cs" />
   </ItemGroup>
 </Project>

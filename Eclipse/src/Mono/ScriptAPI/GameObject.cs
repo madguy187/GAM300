@@ -7,10 +7,14 @@ namespace Eclipse
     public class GameObject
     {
         public UInt32 Entity;
+        public Transform transform;
+        private string ScriptName;
 
-        public GameObject(UInt32 entity)
+        public GameObject(UInt32 entity, string name)
         {
             Entity = entity;
+            ScriptName = name;
+            transform = new Transform(Entity);
         }
 
         public T GetComponent<T>() where T : IScriptable
@@ -20,10 +24,11 @@ namespace Eclipse
 
         public bool enabled
         {
-            set => setEnabled(Entity, value ? 1 : 0);
+            Console.WriteLine(value);
+            set => setEnabled(Entity, ScriptName,  0);
         }
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        private extern static void setEnabled(UInt32 entity, int value);
+        private extern static void setEnabled(UInt32 entity, string name, int value);
     }
 }

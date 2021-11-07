@@ -5,16 +5,26 @@ using Eclipse;
 
 public class Test : EclipseBehavior
 {
+    public UInt32 intTest;
+
     public void Start()
     {
-        Console.WriteLine("C# Update");
-        Vector3 test = new Vector3(5, 5, 5);
-        Vector3 test2 = new Vector3(0, 1, 0);
-        Console.WriteLine(test * test2);
+        Vector2 test = new Vector2(5, 6);
+        Console.WriteLine(test.magnitude);
     }
 
     public void Update()
     {
-        Console.WriteLine("C# Update");
+        if (Input.GetKey(KeyCode.D))
+        {
+            Console.WriteLine("spinnn");
+            transform.Rotate(new Vector3(0, 10, 0));
+        }
+
+        if (Input.GetKey(KeyCode.A))
+        {
+            Console.WriteLine("stop spinnn");
+            gameObject.enabled = 0;
+        }
     }
 }
