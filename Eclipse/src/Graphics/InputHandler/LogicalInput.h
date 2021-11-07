@@ -64,16 +64,25 @@ namespace Eclipse
         void TestingLogicalInput(); // For Testing
 
         ///////////////////////////////////////////////////////////////////////////////////////////
-        // GetAxis
+        // GetAxis - mouse
         ///////////////////////////////////////////////////////////////////////////////////////////
         int XMiddle, YMiddle;
         int Mouse_X, Mouse_Y;
-        void SetAxis(GLint width, GLint height);
-        void AxisUpdate();
-        float GetAxis(const std::string& Type);
-        bool LockCursor(FrameBufferMode);
+
+        // GetAxis
         float XDelta = 0.0f;
         float YDelta = 0.0f;
+        void SetAxis(GLint width, GLint height);
+        void CursorUpdate();
+        void AxisUpdate();
+        float GetAxis(const std::string& Type);
+        bool LockCursor(CursorLockMode);
+        CursorLockMode State;
+
+        // GetRawAxis
+        float XDeltaRaw = 0.0f;
+        float YDeltaRaw = 0.0f;
+        float GetRawAxis(const std::string& Type);
 
     private:
         void init();

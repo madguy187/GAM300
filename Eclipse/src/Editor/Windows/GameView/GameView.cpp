@@ -63,6 +63,11 @@ namespace Eclipse
 
     void eGameViewWindow::RunFrameBuffer()
     {
+        // Update Frame Buffer Settings
+        mGameBufferSize = glm::vec2{ ECGui::GetWindowWidth(), ECGui::GetWindowHeight() };
+        mGameBufferPos = ECGui::GetWindowPos();
+        mCursorScreenPos = ECGui::GetCursorScreenPos();
+
         //RenderGameHeader();
         // Set Image size
         ECGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
