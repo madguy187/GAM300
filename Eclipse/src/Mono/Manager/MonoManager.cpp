@@ -14,6 +14,9 @@
 #include "../Components/s_RigidBodyComponent.h"
 #include "../Components/s_LogicalInput.h"
 #include "../Components/s_Time.h"
+#include "../Components/s_Transform.h"
+#include "../Components/s_Quaternion.h"
+#include "../Components/s_GameObject.h"
 
 
 namespace Eclipse
@@ -82,11 +85,18 @@ namespace Eclipse
 		ENGINE_LOG_ASSERT(domain, "Domain could not be created");
 
 		mono_add_internal_call("Eclipse.RigidBody::Add_Force", SetForce);
+		mono_add_internal_call("Eclipse.RigidBody::getMass", getMass);
+		mono_add_internal_call("Eclipse.RigidBody::getX", getX);
+		mono_add_internal_call("Eclipse.RigidBody::getY", getY);
+		mono_add_internal_call("Eclipse.RigidBody::getZ", getZ);
 		mono_add_internal_call("Eclipse.Input::GetButtonDown", GetKeyCurrentByName);
 		mono_add_internal_call("Eclipse.Input::GetKey", GetKeyCurrentByKeyCode);
 		mono_add_internal_call("Eclipse.Input::GetAxis", GetMouseAxis);
 		mono_add_internal_call("Eclipse.Time::getDeltaTime", GetDeltaTime);
 		mono_add_internal_call("Eclipse.Time::getFixedDeltaTime", GetFixedDeltaTime);
+		mono_add_internal_call("Eclipse.GameObject::setEnabled", setEnabled);
+		mono_add_internal_call("Eclipse.Transform::RotateEuler", RotateEuler);
+		mono_add_internal_call("Eclipse.Quaternion::GetEuler", Euler);
 	}
 
 	void MonoManager::Awake(MonoScript* obj)
@@ -129,7 +139,7 @@ namespace Eclipse
 
 	void MonoManager::LoadAllFields(MonoScript* script)
 	{
-		script->vars.clear();
+		size_t i = 0;
 		MonoClass* klass = GetScriptMonoClass(script->scriptName);
 		MonoClass* attrKlass = mono_class_from_name(engine->mono.GetAPIImage(), "", "Header");
 		MonoClassField* field;
@@ -150,7 +160,11 @@ namespace Eclipse
 						MonoVariable var;
 						var.type = m_Type::MONO_HEADER;
 						var.varName = GetStringFromField(attrObj, attrKlass, "name");
-						script->vars.push_back(var);
+
+						if (CheckIfFieldExist(script, var.varName, i))
+							i++;
+						else
+							script->vars.insert(script->vars.begin() + i++, var);
 					}
 				}
 			}
@@ -162,8 +176,19 @@ namespace Eclipse
 			MonoVariable var;
 			var.type = m_Type::MONO_VAR;
 			var.varName = mono_field_get_name(field);
-			script->vars.push_back(var);
+			if (CheckIfFieldExist(script, var.varName, i))
+				i++;
+			else
+				script->vars.insert(script->vars.begin() + i++, var);
 		}
+	}
+
+	bool MonoManager::CheckIfFieldExist(MonoScript* script, std::string& fieldName, size_t index)
+	{
+		if (index >= script->vars.size()) return false;
+
+		if (script->vars[index].varName == fieldName) return true;
+		return false;
 	}
 
 	void MonoManager::Update(MonoScript* obj)
@@ -195,11 +220,7 @@ namespace Eclipse
 		}
 
 		MonoMethod* m_update = mono_class_get_method_from_name(klass, "FixedUpdate", -1);
-		if (!m_update)
-		{
-			std::cout << "Failed to get method" << std::endl;
-			return;
-		}
+		if (!m_update) return;
 
 		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
 	}
@@ -217,6 +238,9 @@ namespace Eclipse
 
 	void MonoManager::StartMono()
 	{
+		if (ScriptImage || APIImage)
+			StopMono();
+
 		GenerateDLL();
 
 		LoadDomain();
@@ -227,10 +251,16 @@ namespace Eclipse
 	void MonoManager::Terminate()
 	{
 		if (ScriptImage)
+		{
 			mono_image_close(ScriptImage);
+			ScriptImage = nullptr;
+		}
 
 		if (APIImage)
+		{
 			mono_image_close(APIImage);
+			APIImage = nullptr;
+		}
 			
 		mono_jit_cleanup(domain);
 	}
@@ -257,7 +287,7 @@ namespace Eclipse
 			return nullptr;
 		}
 
-		MonoMethod* method = mono_class_get_method_from_name(base, "InitBehavior", 2);
+		MonoMethod* method = mono_class_get_method_from_name(base, "InitBehavior", 3);
 		if (method == nullptr) {
 			std::cout << "Failed loading class method" << std::endl;
 			return nullptr;
@@ -265,11 +295,12 @@ namespace Eclipse
 
 		mono_runtime_object_init(obj);
 
-		void* args[2];
+		void* args[3];
 		uint32_t handle = mono_gchandle_new(obj, true);
 		args[0] = &handle;
 		Entity ent = entity;
 		args[1] = &ent;
+		args[2] = mono_string_new(mono_domain_get(), scriptName.c_str());
 		mono_runtime_invoke(method, obj, args, NULL);
 
 		return obj;
@@ -321,8 +352,6 @@ namespace Eclipse
 		MonoObject* obj = CreateObjectFromClass(klass, false);
 		if (!obj) return nullptr;
 
-		DumpInfoFromClass(klass);
-
 		MonoMethod* method = GetMethodFromClass(klass, ".ctor", 3);
 		if (!method) return nullptr;
 
@@ -330,6 +359,29 @@ namespace Eclipse
 		args.push_back(&x);
 		args.push_back(&y);
 		args.push_back(&z);
+
+		ExecuteMethod(obj, method, args);
+
+		return obj;
+	}
+
+	MonoObject* MonoManager::CreateQuaternionClass(float x, float y, float z)
+	{
+		MonoClass* klass = GetAPIMonoClass("Quaternion");
+		MonoObject* obj = CreateObjectFromClass(klass, false);
+		if (!obj) return nullptr;
+
+		MonoMethod* method = GetMethodFromClass(klass, ".ctor", 4);
+		if (!method) return nullptr;
+
+		glm::vec3 vec{ x, y, z };
+		glm::fquat quad{ vec };
+
+		std::vector<void*> args;
+		args.push_back(&quad.w);
+		args.push_back(&quad.x);
+		args.push_back(&quad.y);
+		args.push_back(&quad.z);
 
 		ExecuteMethod(obj, method, args);
 

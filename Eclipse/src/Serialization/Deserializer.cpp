@@ -148,17 +148,22 @@ namespace Eclipse
 		}
 	}
 
-	const char* Deserializer::GetAttributeValue(const std::string& name)
+	bool Deserializer::GetAttributeValue(const std::string& name, std::string& result)
 	{
-		const char* att_str = _currElement->Attribute(name.c_str());
+		int temp = 0;
 
-		if (!att_str)
+		int queryResult = _currElement->QueryIntAttribute(name.c_str(), &temp);
+
+		if (queryResult == TIXML_NO_ATTRIBUTE)
 		{
 			std::string msg = "Failed to obtain attribute value of \"";
 			msg += name + " during deserialization!";
 			EDITOR_LOG_WARN(msg.c_str());
+			return false;
 		}
 
-		return att_str;
+		result = _currElement->Attribute(name.c_str());
+
+		return true;
 	}
 }

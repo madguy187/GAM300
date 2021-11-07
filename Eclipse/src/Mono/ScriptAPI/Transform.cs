@@ -6,11 +6,21 @@ namespace Eclipse
 {
     public struct Transform
     {
-        //Vector3 transform;
-        ////Vector3 scale;
+        UInt32 Entity;
+        //Vector3 position;
 
-        //[MethodImplAttribute(MethodImplOptions.InternalCall)]
-        //public extern static MonoVec3 GetTranslate(Entity ent);
+        public Transform(UInt32 entity)
+        {
+            Entity = entity;
+        }
+
+        public void Rotate(Vector3 angle)
+        {
+            RotateEuler(Entity, angle.x, angle.y, angle.z);
+        }
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        public extern static void RotateEuler(UInt32 ent, float x, float y, float z);
 
         //[MethodImplAttribute(MethodImplOptions.InternalCall)]
         //public extern static Vector3 GetScale(Entity ent);

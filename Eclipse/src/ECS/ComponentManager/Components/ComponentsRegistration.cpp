@@ -49,6 +49,7 @@ namespace Eclipse
         ADD_MEMBER(Min);
         ADD_MEMBER(Max);
         ADD_MEMBER(HasRadioEffect);
+        ADD_MEMBER(RadioDistortionLevel);
         ADD_MEMBER(HasEchoEffect);
         ADD_MEMBER(EchoDelayTime);
     }

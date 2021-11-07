@@ -270,7 +270,18 @@ namespace Eclipse
         InsertAllKeys();
 
         //KeyMappings.emplace("Horizontal", InputKeycode::Key_LEFT);
-        MouseMappings.emplace("Hello", InputMouseKeycode::KeyCode_MOUSELEFT);
+        //MouseMappings.emplace("Hello", InputMouseKeycode::KeyCode_MOUSELEFT);
+
+        // Set Cursor to middle
+        float ratioX = 1850.0f / 1270.0f;
+        float ratioY = 970.0f / 593.0f;
+        float MiddleX = (1850.0f / 2) / ratioX;
+        float MiddleY = (970.0f / 2) / ratioY;
+        glfwSetCursorPos(OpenGL_Context::ptr_window, MiddleX, MiddleY);
+
+        // Prepare Axis
+        XMiddle = MiddleX; // (OpenGL_Context::GetWidth() / 2) / ratioX;
+        YMiddle = MiddleY; // (OpenGL_Context::GetHeight() / 2) / ratioY;
     }
 
     void LogicalInput::InsertAllKeys()
@@ -1334,5 +1345,106 @@ static void on_key_callback(GLFWwindow* window, int key, int scancode, int actio
     if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
     {
         std::cout << "Move 2" << std::endl;
+    }
+}
+
+namespace Eclipse
+{
+    void LogicalInput::SetAxis(GLint width, GLint height)
+    {
+        XMiddle = (width / 2);
+        YMiddle = (height / 2);
+    }
+
+    void LogicalInput::AxisUpdate()
+    {
+        int MouseX = OpenGL_Context::m_posX;
+        int MouseY = OpenGL_Context::m_posY;
+
+        // HORIZONTAL
+        
+        // If Mouse position Different from Old One
+        if (MouseX != Mouse_X)
+        {
+            // We checkf if current mouse is bigger
+            if (MouseX > Mouse_X)
+            {
+                // if bigger we +
+                if (XDelta <= 1.0f)
+                {
+                    XDelta += engine->Game_Clock.get_DeltaTime();
+                }
+            }
+            else
+            {
+                // if not we minus
+                if (XDelta >= -1.0f)
+                {
+                    XDelta -= engine->Game_Clock.get_DeltaTime();
+                }
+            }
+
+            Mouse_X = MouseX;
+            Mouse_Y = MouseY;
+        }
+        else
+        {
+            // If not moving , we reset.
+            XDelta = 0; 
+        }
+
+        // VERTICAL
+        // We check if mouse y is same as old position or not
+        if (MouseY != Mouse_Y)
+        {
+            // If Mouse Y is bigger than previous
+            if (MouseY < Mouse_Y)
+            {
+                if (YDelta >= -1.0f)
+                {
+                    YDelta -= engine->Game_Clock.get_DeltaTime();
+                }
+            }
+            else
+            {
+                if (YDelta <= 1.0f)
+                {
+                    YDelta += engine->Game_Clock.get_DeltaTime();
+                }
+            }
+
+            Mouse_X = MouseX;
+            Mouse_Y = MouseY;
+        }
+        else
+        {
+            YDelta = 0; 
+        }
+    }
+
+    float LogicalInput::GetAxis(const std::string& Type)
+    {
+        if (Type == "Horizontal")
+        {
+            return XDelta;
+        }
+        else if (Type == "Vertical")
+        {
+            return YDelta;
+        }
+    }
+
+    bool LogicalInput::LockCursor(FrameBufferMode Mode)
+    {
+        // window : 925, 485
+        int ratioX = OpenGL_Context::GetWidth() / engine->gFrameBufferManager->FrameBufferContainer[Mode]->m_width;
+        int ratioY = OpenGL_Context::GetHeight() / engine->gFrameBufferManager->FrameBufferContainer[Mode]->m_height;
+
+        int MiddleX = (OpenGL_Context::GetWidth() / 2) / ratioX;
+        int MiddleY = (OpenGL_Context::GetHeight() / 2) / ratioY;
+
+        glfwSetCursorPos(OpenGL_Context::ptr_window, MiddleX, MiddleY);
+
+        return true;
     }
 }
