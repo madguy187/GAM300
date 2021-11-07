@@ -595,19 +595,7 @@ namespace Eclipse
 					}
 					else
 					{
-						ECGui::OpenPopup("Link Error");
-					}
-					if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-					{
-						ECGui::DrawTextWidget<const char*>("Operator Nodes only accept Floats", EMPTY_STRING);
-						ECGui::InsertHorizontalLineSeperator();
-						ECGui::NextColumn();
-						if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
-						{
-							res.links.pop_back();
-							ECGui::CloseCurrentPopup();
-						}
-						ECGui::EndPopup();
+						LinkError = true;
 					}
 					ImGui::SetNextItemWidth(60);
 					ECGui::DrawTextWidget<std::string>("A", EMPTY_STRING);
@@ -634,18 +622,7 @@ namespace Eclipse
 					else
 					{
 
-						ECGui::OpenPopup("Link Error");
-					}
-					if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-					{
-						ECGui::DrawTextWidget<const char*>("Operator Nodes only accept Floats", EMPTY_STRING);
-						ECGui::NextColumn();
-						if (ECGui::ButtonBool("OK", ImVec2(140, 0)))
-						{
-							res.links.pop_back();
-							ECGui::CloseCurrentPopup();
-						}
-						ECGui::EndPopup();
+						LinkError = true;
 					}
 					ImGui::SetNextItemWidth(60);
 					ECGui::DrawTextWidget<std::string>("B", EMPTY_STRING);
@@ -658,6 +635,23 @@ namespace Eclipse
 				endInput();
 				ImNodes::PopColorStyle();
 
+				if (LinkError)
+				{
+					ECGui::OpenPopup("Link Error");
+				}
+
+				if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+				{
+					ECGui::DrawTextWidget<const char*>("Operator Nodes only accept Floats", EMPTY_STRING);
+					ECGui::NextColumn();
+					if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
+					{
+						res.links.pop_back();
+						LinkError = false;
+						ECGui::CloseCurrentPopup();
+					}
+					ECGui::EndPopup();
+				}
 				ImNodes::EndNode();
 				return false;
 			}
@@ -665,6 +659,7 @@ namespace Eclipse
 			float A = 0.f;
 			float B = 0.f;
 			float output = 0.f;
+			bool LinkError = false;
 			//testing for future implimentation
 			ECVec3 vec3A = { 0.0f,0.0f,0.0f };
 			ECVec3 vec3B = { 0.0f,0.0f,0.0f };
@@ -750,9 +745,11 @@ namespace Eclipse
 					break;
 				case NodeEditor::VEC3TYPE::ECVEC3COLOUR:
 					ImGui::SetNextItemWidth(150);
-					ECGui::ColorPicker3("Vec3", (float*)&inputVec3, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
+					ECGui::ColorPicker3("Vec3_Colour", (float*)&ColourVec3, ImGuiColorEditFlags_DisplayRGB);
+					inputVec3 = ColourVec3;
 					break;
 				default: EDITOR_LOG_INFO("Should not come in here one"); break;
+
 				}
 				endOutput();
 				ImNodes::PopColorStyle();
@@ -761,7 +758,8 @@ namespace Eclipse
 				ImNodes::EndNode();
 				return false;
 			}
-			ECVec3 inputVec3 = 0.f;
+			ECVec3 inputVec3 = {0.0f,0.0f,0.0f};
+			ECVec3 ColourVec3 = { 0.0f,0.0f,0.0f };
 		};
 
 		struct BasedMaterialNode : public Node
@@ -800,18 +798,7 @@ namespace Eclipse
 					}
 					else
 					{
-						ECGui::OpenPopup("Link Error");
-					}
-					if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-					{
-						ECGui::DrawTextWidget<const char*>("Worng Node linked, link action canceled.", EMPTY_STRING);
-						ECGui::InsertHorizontalLineSeperator();
-						if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
-						{
-							res.links.pop_back();
-							ECGui::CloseCurrentPopup();
-						}
-						ECGui::EndPopup();
+						LinkError = true;
 					}
 					ECGui::CheckBoxBool("Has Textures", &hasTexture, false);
 					engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.HasTexture = hasTexture;
@@ -838,19 +825,7 @@ namespace Eclipse
 					}
 					else
 					{
-						ECGui::OpenPopup("Link Error");
-					}
-
-					if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-					{
-						ECGui::DrawTextWidget<const char*>("Worng Node linked, link action canceled.", EMPTY_STRING);
-						ECGui::InsertHorizontalLineSeperator();
-						if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
-						{
-							res.links.pop_back();
-							ECGui::CloseCurrentPopup();
-						}
-						ECGui::EndPopup();
+						LinkError = true;
 					}
 
 					ImGui::SetNextItemWidth(50);
@@ -858,6 +833,7 @@ namespace Eclipse
 				}
 				else
 				{
+					engine->gPBRManager->ResetReflectivity();
 					ImGui::SetNextItemWidth(50);
 					ECGui::DrawTextWidget<std::string>("Base Reflective", EMPTY_STRING);
 				}
@@ -886,30 +862,19 @@ namespace Eclipse
 							{
 								auto downcastedPtr = dynamic_cast<Vec3Nodes< NodeEditor::VEC3TYPE::ECVEC3COLOUR>*>(getInput(2).node);
 								//A = downcastedPtr->inputFloat;
-								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant = downcastedPtr->inputVec3;
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant = downcastedPtr->ColourVec3;
 							}
 							else
 							{
-								ECGui::OpenPopup("Link Error");
+								LinkError = true;
 							}
-
-						if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-						{
-							ECGui::DrawTextWidget<const char*>("Worng Node linked, link action canceled.", EMPTY_STRING);
-							ECGui::InsertHorizontalLineSeperator();
-							if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
-							{
-								res.links.pop_back();
-								ECGui::CloseCurrentPopup();
-							}
-							ECGui::EndPopup();
-						}
 
 						ImGui::SetNextItemWidth(50);
 						ECGui::DrawTextWidget<std::string>("Albedo Constant", EMPTY_STRING);
 					}
 					else
 					{
+						engine->gPBRManager->ResetAlbedoConstant();
 						ImGui::SetNextItemWidth(50);
 						ECGui::DrawTextWidget<std::string>("Albedo Constant", EMPTY_STRING);
 					}
@@ -931,26 +896,14 @@ namespace Eclipse
 						}
 						else
 						{
-							ECGui::OpenPopup("Link Error");
+							LinkError = true;
 						}
-
-						if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-						{
-							ECGui::DrawTextWidget<const char*>("Worng Node linked, link action canceled.", EMPTY_STRING);
-							ECGui::InsertHorizontalLineSeperator();
-							if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
-							{
-								res.links.pop_back();
-								ECGui::CloseCurrentPopup();
-							}
-							ECGui::EndPopup();
-						}
-
 						ImGui::SetNextItemWidth(50);
 						ECGui::DrawTextWidget<std::string>("Metallic Constant", EMPTY_STRING);
 					}
 					else
 					{
+						engine->gPBRManager->ResetMetallicConstant();
 						ImGui::SetNextItemWidth(50);
 						ECGui::DrawTextWidget<std::string>("Metallic Constant", EMPTY_STRING);
 					}
@@ -972,19 +925,7 @@ namespace Eclipse
 						}
 						else
 						{
-							ECGui::OpenPopup("Link Error");
-						}
-
-						if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-						{
-							ECGui::DrawTextWidget<const char*>("Worng Node linked, link action canceled.", EMPTY_STRING);
-							ECGui::InsertHorizontalLineSeperator();
-							if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
-							{
-								res.links.pop_back();
-								ECGui::CloseCurrentPopup();
-							}
-							ECGui::EndPopup();
+							LinkError = true;
 						}
 
 						ImGui::SetNextItemWidth(50);
@@ -992,6 +933,7 @@ namespace Eclipse
 					}
 					else
 					{
+						engine->gPBRManager->ResetRoughnessConstant();
 						ImGui::SetNextItemWidth(50);
 						ECGui::DrawTextWidget<std::string>("Roughness Constant", EMPTY_STRING);
 					}
@@ -1012,19 +954,7 @@ namespace Eclipse
 						}
 						else
 						{
-							ECGui::OpenPopup("Link Error");
-						}
-
-						if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-						{
-							ECGui::DrawTextWidget<const char*>("Worng Node linked, link action canceled.", EMPTY_STRING);
-							ECGui::InsertHorizontalLineSeperator();
-							if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
-							{
-								res.links.pop_back();
-								ECGui::CloseCurrentPopup();
-							}
-							ECGui::EndPopup();
+							LinkError = true;
 						}
 
 						ImGui::SetNextItemWidth(50);
@@ -1032,6 +962,7 @@ namespace Eclipse
 					}
 					else
 					{
+						engine->gPBRManager->ResetAoConstant();
 						ImGui::SetNextItemWidth(50);
 						ECGui::DrawTextWidget<std::string>("Ao Constant", EMPTY_STRING);
 					}
@@ -1056,19 +987,8 @@ namespace Eclipse
 						}
 						else
 						{
-							ECGui::OpenPopup("Link Error");
+							LinkError = true;
 						}
-						if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-					{
-						ECGui::DrawTextWidget<const char*>("Worng Node linked, link action canceled.", EMPTY_STRING);
-						ECGui::InsertHorizontalLineSeperator();
-						if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
-						{
-							res.links.pop_back();
-							ECGui::CloseCurrentPopup();
-						}
-						ECGui::EndPopup();
-					}
 						ECGui::CheckBoxBool("", &NormalMap, false);
 					}
 					else
@@ -1077,6 +997,7 @@ namespace Eclipse
 						ECGui::CheckBoxBool("Normal Map", &NormalMap, false);
 						engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.IsNormalMap = NormalMap;
 					}
+
 					endInput();
 					ImNodes::PopColorStyle();
 
@@ -1091,38 +1012,26 @@ namespace Eclipse
 						if (getInput(3).node->getType() == Node::NodeType::ECVEC3)
 						{
 							auto downcastedPtr = dynamic_cast<Vec3Nodes< NodeEditor::VEC3TYPE::ECVEC3>*>(getInput(3).node);
-							//A = downcastedPtr->inputFloat;
 							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour = downcastedPtr->inputVec3;
 						}
 						else
 							if (getInput(3).node->getType() == Node::NodeType::ECVEC3COLOUR)
-							{
+							{				
+
 								auto downcastedPtr = dynamic_cast<Vec3Nodes< NodeEditor::VEC3TYPE::ECVEC3COLOUR>*>(getInput(3).node);
-								//A = downcastedPtr->inputFloat;
-								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour = downcastedPtr->inputVec3;
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour = downcastedPtr->ColourVec3;
 							}
 							else
 							{
-								ECGui::OpenPopup("Link Error");
+								LinkError = true;
 							}
-
-						if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-						{
-							ECGui::DrawTextWidget<const char*>("Worng Node linked, link action canceled.", EMPTY_STRING);
-							ECGui::InsertHorizontalLineSeperator();
-							if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
-							{
-								res.links.pop_back();
-								ECGui::CloseCurrentPopup();
-							}
-							ECGui::EndPopup();
-						}
 
 						ImGui::SetNextItemWidth(50);
 						ECGui::DrawTextWidget<std::string>("Material Colour", EMPTY_STRING);
 					}
 					else
 					{
+						engine->gPBRManager->ResetSurfaceColour();
 						ECGui::DrawTextWidget<std::string>("Material Colour", EMPTY_STRING);
 					}
 					endInput();
@@ -1140,6 +1049,10 @@ namespace Eclipse
 							auto downcastedPtr = dynamic_cast<TextureNode*>(getInput(4).node);
 							engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
 							auto i = engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.Albedo;
+						}
+						else
+						{
+							LinkError = true;
 						}
 						ImGui::SetNextItemWidth(50);
 						ECGui::DrawTextWidget<std::string>("Albdeo Texture", EMPTY_STRING);
@@ -1166,6 +1079,10 @@ namespace Eclipse
 							//A = downcastedPtr->inputFloat;
 							engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
 						}
+						else
+						{
+							LinkError = true;
+						}
 						ImGui::SetNextItemWidth(50);
 						ECGui::DrawTextWidget<std::string>("Normal Texture", EMPTY_STRING);
 					}
@@ -1191,6 +1108,10 @@ namespace Eclipse
 							//A = downcastedPtr->inputFloat;
 							engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
 						}
+						else
+						{
+							LinkError = true;
+						}
 						ImGui::SetNextItemWidth(50);
 						ECGui::DrawTextWidget<std::string>("Metallic Texture", EMPTY_STRING);
 					}
@@ -1214,6 +1135,10 @@ namespace Eclipse
 							auto downcastedPtr = dynamic_cast<TextureNode*>(getInput(7).node);
 							//A = downcastedPtr->inputFloat;
 							engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
+						}
+						else
+						{
+							LinkError = true;
 						}
 						ImGui::SetNextItemWidth(50);
 						ECGui::DrawTextWidget<std::string>("Roughness Texture", EMPTY_STRING);
@@ -1239,6 +1164,10 @@ namespace Eclipse
 							//A = downcastedPtr->inputFloat;
 							engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
 						}
+						else
+						{
+							LinkError = true;
+						}
 						ImGui::SetNextItemWidth(50);
 						ECGui::DrawTextWidget<std::string>("Ao Texture", EMPTY_STRING);
 					}
@@ -1263,6 +1192,10 @@ namespace Eclipse
 							//A = downcastedPtr->inputFloat;
 							engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
 						}
+						else
+						{
+							LinkError = true;
+						}
 						ImGui::SetNextItemWidth(50);
 						ECGui::DrawTextWidget<std::string>("Height Texture", EMPTY_STRING);
 					}
@@ -1275,6 +1208,24 @@ namespace Eclipse
 					endInput();
 					ImNodes::PopColorStyle();
 				}
+
+				if (LinkError)
+				{
+					ECGui::OpenPopup("Link Error");
+				}
+
+				if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+				{
+					ECGui::DrawTextWidget<const char*>("Wrong Node linked, link action canceled.", EMPTY_STRING);
+					ECGui::InsertHorizontalLineSeperator();
+					if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
+					{
+						res.links.pop_back();
+						LinkError = false;
+						ECGui::CloseCurrentPopup();
+					}
+					ECGui::EndPopup();
+				}
 				ImNodes::EndNode();
 				ImNodes::PopColorStyle();
 				ImNodes::PopColorStyle();
@@ -1282,7 +1233,7 @@ namespace Eclipse
 				return false;
 			}
 
-			ECVec3 Colours = {0.0f,0.0f,0.0f};
+			bool LinkError = false;
 			bool NormalMap = false;
 			bool hasTexture = false;
 		};
