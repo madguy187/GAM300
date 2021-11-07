@@ -352,7 +352,7 @@ namespace Eclipse
 
 	float AudioManager::GetNoiseVolumeOnEvent(const AudioComponent& audiocom, const RigidBodyComponent& rbcom)
 	{
-		return VoltoDB(audiocom.Volume) * Vector3DMag(rbcom.velocity);
+		return VoltoDB(audiocom.Volume) * Vector3DMag<float>(rbcom.velocity);
 	}
 
 	float AudioManager::IsBGMMuted() const

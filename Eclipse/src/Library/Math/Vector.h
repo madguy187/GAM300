@@ -715,7 +715,8 @@ namespace Eclipse
 		return sqrtf(result1 * result1 + result2 * result2 + result3 * result3);
 	}
 
-	float Vector3DMag(const ECVec3& pVec)
+	template <typename T>
+	T	Vector3DMag(const Vector<T, 3>& pVec)
 	{
 		return std::fabsf(sqrtf(pVec[0] + pVec[1] + pVec[2]));
 	}

@@ -43,6 +43,7 @@
 #include <bitset>
 #include <array>
 #include <queue>
+#include <stack>
 #include <unordered_map>
 #include <set>
 
