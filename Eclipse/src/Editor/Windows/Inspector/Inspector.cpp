@@ -66,7 +66,7 @@ namespace Eclipse
             ECGui::InsertHorizontalLineSeperator();
 
             static ImGuiTextFilter CompFilter;
-            CompFilter.Draw(EMPTY_STRING, 0.0f, "Component Filter");
+            CompFilter.Draw(/*EMPTY_STRING, 0.0f, "Component Filter"*/);
 
             ShowPrefebProperty(currEnt);
             ShowBPProperty("BluePrint", currEnt, CompFilter);
@@ -85,9 +85,6 @@ namespace Eclipse
             ShowAIProperty("AI Properties", currEnt, CompFilter);
             ShowParentProperty("Parent", currEnt, CompFilter);
             ShowChildProperty("Child", currEnt, CompFilter);
-
-
-
 
             AddComponentsController(currEnt);
             ECGui::NextColumn();
@@ -838,6 +835,29 @@ namespace Eclipse
                             true, ImGuiInputTextFlags_ReadOnly);
                         engine->editorManager->DragAndDropInst_.StringPayloadTarget("cs", scriptCom.scriptList[i].scriptName,
                             "Script File inserted.", PayloadTargetType::PTT_WIDGET, ID, i);
+
+                        for (size_t j = 0; j < scriptCom.scriptList[i].vars.size(); ++j)
+                        {
+                            ECGui::SetColumns(2, nullptr, true);
+
+                            ECGui::DrawTextWidget<const char*>(scriptCom.scriptList[i].vars[j].varName.c_str(), EMPTY_STRING);
+                            ECGui::InsertSameLine();
+
+                            ECGui::NextColumn();
+
+                            if (scriptCom.scriptList[i].vars[j].type == m_Type::MONO_HEADER)
+                                ECGui::DrawInputTextHintWidget(scriptCom.scriptList[i].vars[j].varName.c_str(),
+                                    "Non-modifiable", const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()),
+                                    256, ImGuiInputTextFlags_ReadOnly, true);
+                            else
+                                ECGui::DrawInputTextWidget(scriptCom.scriptList[i].vars[j].varName.c_str(),
+                                    const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()),
+                                    256, 0, true);
+
+                            ECGui::NextColumn();
+                        }
+
+                        ECGui::SetColumns(1, nullptr, true);
                     }
                     else
                     {
@@ -851,7 +871,6 @@ namespace Eclipse
                     }
                 }
 
-                ECGui::SetColumns(2, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
 
                 if (!IsRemovingScripts)
@@ -864,8 +883,6 @@ namespace Eclipse
                         scriptCom.scriptList.back().scriptName = scriptName;
                     }
 
-                    ECGui::NextColumn();
-
                     if (ECGui::ButtonBool("Remove Script", { ImGui::GetColumnWidth(), 25 }))
                     {
                         IsRemovingScripts = true;
@@ -873,16 +890,12 @@ namespace Eclipse
                 }
                 else
                 {
-
-                    ECGui::SetColumns(1, nullptr, true);
-                    ECGui::NextColumn();
                     if (ECGui::ButtonBool("Cancel Remove", { ImGui::GetColumnWidth(), 25 }))
                     {
                         IsRemovingScripts = false;
                     }
                 }
 
-                ECGui::SetColumns(1, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
             }
         }
@@ -1777,8 +1790,6 @@ namespace Eclipse
         }
         else
         {
-            /*audioCom.ChannelID = engine->audioManager.Play2DSounds(audioCom.AudioPath, audioCom.Volume,
-                audioCom.IsLooping);*/
             engine->audioManager.Play2DSounds(audioCom);
         }
     }
