@@ -1418,7 +1418,7 @@ namespace Eclipse
         }
         else
         {
-            YDelta = 0; // engine->Game_Clock.get_DeltaTime();
+            YDelta = 0; 
         }
     }
 
