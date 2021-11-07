@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "SerializationManager.h"
 #include "ECS/SystemManager/Systems/System/ParentChildSystem/ParentSystem/ParentSystem.h"
+#include "Editor/Windows/Debug/Debug.h"
+
 namespace Eclipse
 {
 	Serializer SerializationManager::sz;
@@ -201,6 +203,78 @@ namespace Eclipse
 			DeserializeAllEntity();
 			PCPostUpdate.PostUpdate();
 		}
+	}
+
+	void SerializationManager::SaveLayersConfigFile(const std::unordered_map<int, std::string>& LayerList,
+		const size_t& UserLayerSize, const char* fullpath)
+	{
+		sz.StartElement("LayersConfig");
+		{
+			sz.StartElement("LayerSize");
+			{
+				sz.AddAttributeToElement("Overall", LayerList.size());
+				sz.AddAttributeToElement("UserDefined", UserLayerSize);
+
+				sz.StartElement("LayerNames");
+				{
+					for (const auto& [ID, str] : LayerList)
+					{
+						sz.StartElement("Layer_", true, ID);
+						{
+							sz.AddAttributeToElement("Index", ID);
+							sz.AddAttributeToElement("Name", str.c_str());
+						}
+						sz.CloseElement();
+					}
+				}
+				sz.CloseElement();
+			}
+			sz.CloseElement();
+		}
+		sz.CloseElement();
+		
+		SaveFile(fullpath);
+	}
+
+	bool SerializationManager::LoadLayersConfigFile(std::unordered_map<int, std::string>& LayerList,
+		size_t& UserLayerSize, const char* fullpath)
+	{
+		if (LoadFile(fullpath))
+		{
+			if (dsz.StartElement("LayersConfig"))
+			{
+				if (dsz.StartElement("LayerSize"))
+				{
+					size_t size = 0;
+					dsz.ReadAttributeFromElement("Overall", size);
+					dsz.ReadAttributeFromElement("UserDefined", UserLayerSize);
+
+					if (dsz.StartElement("LayerNames"))
+					{
+						for (size_t i = 0; i < size; ++i)
+						{
+							if (dsz.StartElement("Layer_", true, i))
+							{
+								int index;
+								std::string name;
+								name.reserve(256);
+								dsz.ReadAttributeFromElement("Index", index);
+								dsz.ReadAttributeFromElement("Name", name);
+								LayerList[index] = name;
+							}
+							dsz.CloseElement();
+						}
+					}
+					dsz.CloseElement();
+				}
+				dsz.CloseElement();
+			}
+			dsz.CloseElement();
+
+			return true;
+		}
+
+		return false;
 	}
 
 	void SerializationManager::SaveBackupFile()
