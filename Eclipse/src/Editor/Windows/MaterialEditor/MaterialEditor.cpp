@@ -406,37 +406,37 @@ namespace Eclipse
                 ECGui::NextColumn();
                 ImGui::Dummy(ImVec2(1, 2));
 
-                ECGui::DrawInputTextHintWidget(my_strcat("Albdeo Name", 1).c_str(), "Drag Albdeo Texture here", const_cast<char*>(engine->gPBRManager->gMaterialEditorSettings->AlbedoTexture.c_str()), 256, true, ImGuiInputTextFlags_None);
-                engine->editorManager->DragAndDropInst_.StringPayloadTarget("dds", engine->gPBRManager->gMaterialEditorSettings->AlbedoTexture, "Albdeo Texture Inserted.", PayloadTargetType::PTT_ASSETS);
-                engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->AlbedoTexture, MaterialType::MT_ALBEDO);
-
-                ECGui::NextColumn();
-                ECGui::DrawInputTextHintWidget(my_strcat("Normal Name", 1).c_str(), "Drag Normal Texture here", const_cast<char*>(engine->gPBRManager->gMaterialEditorSettings->NormalTexture.c_str()), 256, true, ImGuiInputTextFlags_None);
-                engine->editorManager->DragAndDropInst_.StringPayloadTarget("dds", engine->gPBRManager->gMaterialEditorSettings->NormalTexture, "Normal Texture Inserted.", PayloadTargetType::PTT_ASSETS);
-                engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->NormalTexture, MaterialType::MT_NORMAL);
-
-                ECGui::NextColumn();
-                ECGui::DrawInputTextHintWidget(my_strcat("Metallic Name", 1).c_str(), "Drag Metallic Texture here", const_cast<char*>(engine->gPBRManager->gMaterialEditorSettings->MetallicTexture.c_str()), 256, true, ImGuiInputTextFlags_None);
-                engine->editorManager->DragAndDropInst_.StringPayloadTarget("dds", engine->gPBRManager->gMaterialEditorSettings->MetallicTexture, "Metallic Texture Inserted.", PayloadTargetType::PTT_ASSETS);
-                engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->MetallicTexture, MaterialType::MT_METALLIC);
-
-
-                ECGui::NextColumn();
-                ECGui::DrawInputTextHintWidget(my_strcat("Roughness Name", 1).c_str(), "Drag Roughness Texture here", const_cast<char*>(engine->gPBRManager->gMaterialEditorSettings->RoughnessTexture.c_str()), 256, true, ImGuiInputTextFlags_None);
-                engine->editorManager->DragAndDropInst_.StringPayloadTarget("dds", engine->gPBRManager->gMaterialEditorSettings->RoughnessTexture, "Roughness Texture Inserted.", PayloadTargetType::PTT_ASSETS);
-                engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->RoughnessTexture, MaterialType::MT_ROUGHNESS);
-
-                ECGui::NextColumn();
-                ECGui::DrawInputTextHintWidget(my_strcat("AO Name", 1).c_str(), "Drag AO Texture here", const_cast<char*>(engine->gPBRManager->gMaterialEditorSettings->AoTexture.c_str()), 256, true, ImGuiInputTextFlags_None);
-                engine->editorManager->DragAndDropInst_.StringPayloadTarget("dds", engine->gPBRManager->gMaterialEditorSettings->AoTexture, "AO Texture Inserted.", PayloadTargetType::PTT_ASSETS);
-                engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->AoTexture, MaterialType::MT_AO);
-                ECGui::NextColumn();
-
-                ECGui::NextColumn();
-                ECGui::DrawInputTextHintWidget(my_strcat("Height Name", 1).c_str(), "Drag Height Texture here", const_cast<char*>(engine->gPBRManager->gMaterialEditorSettings->HeightTexture.c_str()), 256, true, ImGuiInputTextFlags_None);
-                engine->editorManager->DragAndDropInst_.StringPayloadTarget("dds", engine->gPBRManager->gMaterialEditorSettings->HeightTexture, "Height Texture Inserted.", PayloadTargetType::PTT_ASSETS);
-                engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->HeightTexture, MaterialType::MT_HEIGHT);
-                ECGui::NextColumn();
+               // ECGui::DrawInputTextHintWidget(my_strcat("Albdeo Name", 1).c_str(), "Drag Albdeo Texture here", const_cast<char*>(engine->gPBRManager->gMaterialEditorSettings->AlbedoTexture.c_str()), 256, true, ImGuiInputTextFlags_None);
+               // engine->editorManager->DragAndDropInst_.StringPayloadTarget("dds", engine->gPBRManager->gMaterialEditorSettings->AlbedoTexture, "Albdeo Texture Inserted.", PayloadTargetType::PTT_ASSETS);
+               // engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->AlbedoTexture, MaterialType::MT_ALBEDO);
+               //
+               // ECGui::NextColumn();
+               // ECGui::DrawInputTextHintWidget(my_strcat("Normal Name", 1).c_str(), "Drag Normal Texture here", const_cast<char*>(engine->gPBRManager->gMaterialEditorSettings->NormalTexture.c_str()), 256, true, ImGuiInputTextFlags_None);
+               // engine->editorManager->DragAndDropInst_.StringPayloadTarget("dds", engine->gPBRManager->gMaterialEditorSettings->NormalTexture, "Normal Texture Inserted.", PayloadTargetType::PTT_ASSETS);
+               // engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->NormalTexture, MaterialType::MT_NORMAL);
+               //
+               // ECGui::NextColumn();
+               // ECGui::DrawInputTextHintWidget(my_strcat("Metallic Name", 1).c_str(), "Drag Metallic Texture here", const_cast<char*>(engine->gPBRManager->gMaterialEditorSettings->MetallicTexture.c_str()), 256, true, ImGuiInputTextFlags_None);
+               // engine->editorManager->DragAndDropInst_.StringPayloadTarget("dds", engine->gPBRManager->gMaterialEditorSettings->MetallicTexture, "Metallic Texture Inserted.", PayloadTargetType::PTT_ASSETS);
+               // engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->MetallicTexture, MaterialType::MT_METALLIC);
+               //
+               //
+               // ECGui::NextColumn();
+               // ECGui::DrawInputTextHintWidget(my_strcat("Roughness Name", 1).c_str(), "Drag Roughness Texture here", const_cast<char*>(engine->gPBRManager->gMaterialEditorSettings->RoughnessTexture.c_str()), 256, true, ImGuiInputTextFlags_None);
+               // engine->editorManager->DragAndDropInst_.StringPayloadTarget("dds", engine->gPBRManager->gMaterialEditorSettings->RoughnessTexture, "Roughness Texture Inserted.", PayloadTargetType::PTT_ASSETS);
+               // engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->RoughnessTexture, MaterialType::MT_ROUGHNESS);
+               //
+               // ECGui::NextColumn();
+               // ECGui::DrawInputTextHintWidget(my_strcat("AO Name", 1).c_str(), "Drag AO Texture here", const_cast<char*>(engine->gPBRManager->gMaterialEditorSettings->AoTexture.c_str()), 256, true, ImGuiInputTextFlags_None);
+               // engine->editorManager->DragAndDropInst_.StringPayloadTarget("dds", engine->gPBRManager->gMaterialEditorSettings->AoTexture, "AO Texture Inserted.", PayloadTargetType::PTT_ASSETS);
+               // engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->AoTexture, MaterialType::MT_AO);
+               // ECGui::NextColumn();
+               //
+               // ECGui::NextColumn();
+               // ECGui::DrawInputTextHintWidget(my_strcat("Height Name", 1).c_str(), "Drag Height Texture here", const_cast<char*>(engine->gPBRManager->gMaterialEditorSettings->HeightTexture.c_str()), 256, true, ImGuiInputTextFlags_None);
+               // engine->editorManager->DragAndDropInst_.StringPayloadTarget("dds", engine->gPBRManager->gMaterialEditorSettings->HeightTexture, "Height Texture Inserted.", PayloadTargetType::PTT_ASSETS);
+               // engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->HeightTexture, MaterialType::MT_HEIGHT);
+               // ECGui::NextColumn();
 
                 ImGui::Dummy(ImVec2(1, 5));
 

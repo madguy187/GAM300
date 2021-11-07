@@ -795,6 +795,7 @@ namespace Eclipse
 						auto downcastedPtr = dynamic_cast<BoolNode*>(getInput(0).node);
 						//A = downcastedPtr->inputFloat;
 						hasTexture = downcastedPtr->inputBool;
+						engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.HasTexture = hasTexture;
 						ImGui::SetNextItemWidth(50);
 					}
 					else
@@ -812,12 +813,14 @@ namespace Eclipse
 						}
 						ECGui::EndPopup();
 					}
-					ECGui::CheckBoxBool("", &hasTexture, false);
+					ECGui::CheckBoxBool("Has Textures", &hasTexture, false);
+					engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.HasTexture = hasTexture;
 				}
 				else
 				{
 					ImGui::SetNextItemWidth(50);
-					ECGui::CheckBoxBool("Bool", &hasTexture, false);
+					ECGui::CheckBoxBool("Has Texture", &hasTexture, false);
+					engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.HasTexture = hasTexture;
 				}
 				endInput();
 				ImNodes::PopColorStyle();
@@ -1037,71 +1040,25 @@ namespace Eclipse
 				}
 				else
 				{
-				//normal map
-				ImNodes::PushColorStyle(
-					ImNodesCol_Pin, IM_COL32(60, 0, 0, 255));
-				beginInput();
-				if (getInput(5).node)
-				{
-					if (getInput(5).node->getType() == Node::NodeType::BOOL)
+					//normal map
+					ImNodes::PushColorStyle(
+						ImNodesCol_Pin, IM_COL32(60, 0, 0, 255));
+					beginInput();
+					if (getInput(2).node)
 					{
-						auto downcastedPtr = dynamic_cast<BoolNode*>(getInput(5).node);
-						//A = downcastedPtr->inputFloat;
-						NormalMap = downcastedPtr->inputBool;
-						ImGui::SetNextItemWidth(50);
-					}
-					else
-					{
-						ECGui::OpenPopup("Link Error");
-					}
-					if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-					{
-						ECGui::DrawTextWidget<const char*>("Worng Node linked, link action canceled.", EMPTY_STRING);
-						ECGui::InsertHorizontalLineSeperator();
-						if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
+						if (getInput(2).node->getType() == Node::NodeType::BOOL)
 						{
-							res.links.pop_back();
-							ECGui::CloseCurrentPopup();
-						}
-						ECGui::EndPopup();
-					}
-					ECGui::CheckBoxBool("", &NormalMap, false);
-				}
-				else
-				{
-					ImGui::SetNextItemWidth(50);
-					ECGui::CheckBoxBool("Bool", &NormalMap, false);
-				}
-				endInput();
-				ImNodes::PopColorStyle();
+							auto downcastedPtr = dynamic_cast<BoolNode*>(getInput(2).node);
+							NormalMap = downcastedPtr->inputBool;
+							ImGui::SetNextItemWidth(50);
 
-				// colours
-				ImNodes::PushColorStyle(
-					ImNodesCol_Pin, IM_COL32(100, 42, 42, 255));
-				beginInput();
-				// check for first pin if its linked
-				if (getInput(6).node)
-				{
-					//might case problem down the line 
-					if (getInput(6).node->getType() == Node::NodeType::ECVEC3)
-					{
-						auto downcastedPtr = dynamic_cast<Vec3Nodes< NodeEditor::VEC3TYPE::ECVEC3>*>(getInput(6).node);
-						//A = downcastedPtr->inputFloat;
-						engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour = downcastedPtr->inputVec3;
-					}
-					else
-						if (getInput(6).node->getType() == Node::NodeType::ECVEC3COLOUR)
-						{
-							auto downcastedPtr = dynamic_cast<Vec3Nodes< NodeEditor::VEC3TYPE::ECVEC3COLOUR>*>(getInput(6).node);
-							//A = downcastedPtr->inputFloat;
-							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour = downcastedPtr->inputVec3;
+							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.IsNormalMap = NormalMap;
 						}
 						else
 						{
 							ECGui::OpenPopup("Link Error");
 						}
-
-					if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+						if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 					{
 						ECGui::DrawTextWidget<const char*>("Worng Node linked, link action canceled.", EMPTY_STRING);
 						ECGui::InsertHorizontalLineSeperator();
@@ -1112,20 +1069,211 @@ namespace Eclipse
 						}
 						ECGui::EndPopup();
 					}
+						ECGui::CheckBoxBool("", &NormalMap, false);
+					}
+					else
+					{
+						ImGui::SetNextItemWidth(50);
+						ECGui::CheckBoxBool("Normal Map", &NormalMap, false);
+						engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.IsNormalMap = NormalMap;
+					}
+					endInput();
+					ImNodes::PopColorStyle();
 
-					ImGui::SetNextItemWidth(50);
-					ECGui::DrawTextWidget<std::string>("Material Colour", EMPTY_STRING);
-				}
-				else
-				{
-					ImGui::SetNextItemWidth(50);
-					ECGui::DrawTextWidget<std::string>("Material Colour", EMPTY_STRING);
-				}
-				endInput();
-				ImNodes::PopColorStyle();
+					// colours
+					ImNodes::PushColorStyle(
+						ImNodesCol_Pin, IM_COL32(100, 42, 42, 255));
+					beginInput();
+					// check for first pin if its linked
+					if (getInput(3).node)
+					{
+						//might case problem down the line 
+						if (getInput(3).node->getType() == Node::NodeType::ECVEC3)
+						{
+							auto downcastedPtr = dynamic_cast<Vec3Nodes< NodeEditor::VEC3TYPE::ECVEC3>*>(getInput(3).node);
+							//A = downcastedPtr->inputFloat;
+							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour = downcastedPtr->inputVec3;
+						}
+						else
+							if (getInput(3).node->getType() == Node::NodeType::ECVEC3COLOUR)
+							{
+								auto downcastedPtr = dynamic_cast<Vec3Nodes< NodeEditor::VEC3TYPE::ECVEC3COLOUR>*>(getInput(3).node);
+								//A = downcastedPtr->inputFloat;
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour = downcastedPtr->inputVec3;
+							}
+							else
+							{
+								ECGui::OpenPopup("Link Error");
+							}
+
+						if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+						{
+							ECGui::DrawTextWidget<const char*>("Worng Node linked, link action canceled.", EMPTY_STRING);
+							ECGui::InsertHorizontalLineSeperator();
+							if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
+							{
+								res.links.pop_back();
+								ECGui::CloseCurrentPopup();
+							}
+							ECGui::EndPopup();
+						}
+
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("Material Colour", EMPTY_STRING);
+					}
+					else
+					{
+						ECGui::DrawTextWidget<std::string>("Material Colour", EMPTY_STRING);
+					}
+					endInput();
+					ImNodes::PopColorStyle();
 
 
-				// for texture nodes
+					// for Albdeo texture nodes
+					ImNodes::PushColorStyle(
+						ImNodesCol_Pin, IM_COL32(255, 255, 255, 255));
+					beginInput();
+					if (getInput(4).node)
+					{
+						if (getInput(4).node->getType() == Node::NodeType::TEXTURE)
+						{
+							auto downcastedPtr = dynamic_cast<TextureNode*>(getInput(4).node);
+							engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
+							auto i = engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.Albedo;
+						}
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("Albdeo Texture", EMPTY_STRING);
+					}
+					else
+					{
+						engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->AlbedoTexture, MaterialType::MT_ALBEDO);
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("Albdeo Texture", EMPTY_STRING);
+					}
+					endInput();
+					ImNodes::PopColorStyle();
+
+
+					// for Normal texture nodes
+					ImNodes::PushColorStyle(
+						ImNodesCol_Pin, IM_COL32(255, 255, 255, 255));
+					beginInput();
+					if (getInput(5).node)
+					{
+						if (getInput(5).node->getType() == Node::NodeType::TEXTURE)
+						{
+							auto downcastedPtr = dynamic_cast<TextureNode*>(getInput(5).node);
+							//A = downcastedPtr->inputFloat;
+							engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
+						}
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("Normal Texture", EMPTY_STRING);
+					}
+					else
+					{
+						engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->NormalTexture, MaterialType::MT_NORMAL);
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("Normal Texture", EMPTY_STRING);
+					}
+					endInput();
+					ImNodes::PopColorStyle();
+
+
+					// for metallic texture nodes
+					ImNodes::PushColorStyle(
+						ImNodesCol_Pin, IM_COL32(255, 255, 255, 255));
+					beginInput();
+					if (getInput(6).node)
+					{
+						if (getInput(6).node->getType() == Node::NodeType::TEXTURE)
+						{
+							auto downcastedPtr = dynamic_cast<TextureNode*>(getInput(6).node);
+							//A = downcastedPtr->inputFloat;
+							engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
+						}
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("Metallic Texture", EMPTY_STRING);
+					}
+					else
+					{
+						engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->MetallicTexture, MaterialType::MT_METALLIC);
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("Metallic Texture", EMPTY_STRING);
+					}
+					endInput();
+					ImNodes::PopColorStyle();
+
+					// for Roughness texture nodes
+					ImNodes::PushColorStyle(
+						ImNodesCol_Pin, IM_COL32(255, 255, 255, 255));
+					beginInput();
+					if (getInput(7).node)
+					{
+						if (getInput(7).node->getType() == Node::NodeType::TEXTURE)
+						{
+							auto downcastedPtr = dynamic_cast<TextureNode*>(getInput(7).node);
+							//A = downcastedPtr->inputFloat;
+							engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
+						}
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("Roughness Texture", EMPTY_STRING);
+					}
+					else
+					{
+						engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->RoughnessTexture, MaterialType::MT_ROUGHNESS);
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("Roughness Texture", EMPTY_STRING);
+					}
+					endInput();
+					ImNodes::PopColorStyle();
+
+					// for Ao texture nodes
+					ImNodes::PushColorStyle(
+						ImNodesCol_Pin, IM_COL32(255, 255, 255, 255));
+					beginInput();
+					if (getInput(8).node)
+					{
+						if (getInput(8).node->getType() == Node::NodeType::TEXTURE)
+						{
+							auto downcastedPtr = dynamic_cast<TextureNode*>(getInput(8).node);
+							//A = downcastedPtr->inputFloat;
+							engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
+						}
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("Ao Texture", EMPTY_STRING);
+					}
+					else
+					{
+						engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->AoTexture, MaterialType::MT_AO);
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("Ao Texture", EMPTY_STRING);
+					}
+					endInput();
+					ImNodes::PopColorStyle();
+
+					// for Height texture nodes
+					ImNodes::PushColorStyle(
+						ImNodesCol_Pin, IM_COL32(255, 255, 255, 255));
+					beginInput();
+					if (getInput(9).node)
+					{
+						if (getInput(9).node->getType() == Node::NodeType::TEXTURE)
+						{
+							auto downcastedPtr = dynamic_cast<TextureNode*>(getInput(9).node);
+							//A = downcastedPtr->inputFloat;
+							engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
+						}
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("Height Texture", EMPTY_STRING);
+					}
+					else
+					{
+						engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->HeightTexture, MaterialType::MT_HEIGHT);
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("Height Texture", EMPTY_STRING);
+					}
+					endInput();
+					ImNodes::PopColorStyle();
 				}
 				ImNodes::EndNode();
 				ImNodes::PopColorStyle();
@@ -1191,7 +1339,7 @@ namespace Eclipse
 					ImNodesCol_TitleBarHovered, IM_COL32(0, 0, 0, 255));
 				ImNodes::BeginNode(nodeId);
 				ImNodes::BeginNodeTitleBar();
-				ECGui::DrawTextWidget<std::string>("Texture", EMPTY_STRING);
+				ECGui::DrawTextWidget<std::string>(fileName_.c_str(), EMPTY_STRING);
 				ImNodes::EndNodeTitleBar();
 
 				ImGui::SetNextItemWidth(100);
@@ -1208,9 +1356,13 @@ namespace Eclipse
 
 			void setTextureId(const std::string folderName , std::string fileName)
 			{
-				//textureID = engine->gPBRManager->("HardWood", "albedo")
+				fileName_ = fileName;
+				folderName_ = folderName;
+				textureID = engine->gPBRManager->GetMaterialTextureID(folderName_.c_str(), fileName_.c_str());
 			}
 
+			std::string folderName_;
+			std::string fileName_;
 			int textureID = 0;
 		};
 
@@ -1329,7 +1481,6 @@ namespace Eclipse
 		ImNodes::BeginNodeEditor();
 
 		static std::string TextureString = {""};
-		std::cout << TextureString << std::endl;
 		bool context_open = false;
 		if (TextureString.size() != 0)
 		{
@@ -1351,7 +1502,13 @@ namespace Eclipse
 				directory = TextureString.substr(0, last_slash_idx);
 			}
 
-			CreateTextureNode(tempName);
+			last_slash_idx = directory.find_last_of("\\/");
+			if (std::string::npos != last_slash_idx)
+			{
+				directory.erase(0, last_slash_idx + 1);
+			}
+
+			CreateTextureNode(directory, fileName);
 			TextureString.clear();
 		}
 
@@ -1480,8 +1637,8 @@ namespace Eclipse
 	inline void MaterialNode::CreateTextureNode(std::string folderName , std::string fileName)
 	{
 		TextureNode temp = TextureNode(*this);
-		temp.setTextureId(textureId);
-		std::shared_ptr<Node> node = std::make_shared <TextureNode>(*this);
+		temp.setTextureId(folderName, fileName);
+		std::shared_ptr<Node> node = std::make_shared <TextureNode>(temp);
 		nodes.push_back(node);
 	}
 
