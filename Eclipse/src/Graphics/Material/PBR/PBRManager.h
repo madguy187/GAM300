@@ -42,6 +42,10 @@ namespace Eclipse
         void NonTexturedUniform(unsigned int ID, CameraComponent& In);
         void TexturedUniform(unsigned int ID, CameraComponent& In);
 
+        // For Tianyu
+        unsigned int GetMaterialTextureID(std::string FolderName, std::string TextureName);
+        MaterialType GetMaterialType(std::string TextureName);
+
     public:
         void ClearAllMaterialInstances();
         void ClearAllMaterialInstNames();

@@ -81,6 +81,39 @@ namespace Eclipse
         }
     }
 
+    unsigned int PBRManager::GetMaterialTextureID(std::string FolderName, std::string TextureName)
+    {
+        return AllMaterialTextures[FolderName][GetMaterialType(TextureName)];
+    }
+
+    MaterialType PBRManager::GetMaterialType(std::string TextureName)
+    {
+        if (TextureName.find("albedo") != std::string::npos)
+        {
+            return MaterialType::MT_ALBEDO;
+        }
+        else if (TextureName.find("normal") != std::string::npos)
+        {
+            return MaterialType::MT_NORMAL;
+        }
+        else if (TextureName.find("metallic") != std::string::npos)
+        {
+            return MaterialType::MT_METALLIC;
+        }
+        else if (TextureName.find("roughness") != std::string::npos)
+        {
+            return MaterialType::MT_ROUGHNESS;
+        }
+        else if (TextureName.find("ao") != std::string::npos)
+        {
+            return MaterialType::MT_AO;
+        }
+        else if (TextureName.find("height") != std::string::npos)
+        {
+            return MaterialType::MT_HEIGHT;
+        }
+    }
+
     void PBRManager::LoadAllTextures()
     {
         AllMaterialTextures.clear();
