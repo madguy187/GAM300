@@ -5,6 +5,7 @@
 #define EPSILON 0.000001f
 #define PTR_ADD( PTR, OFFSET ) \
   ((void *)(((char *)(PTR)) + (OFFSET)))
+#define MAX_LAYER_SIZE 20
 
 // Entities
 using Entity = uint32_t;
@@ -203,6 +204,7 @@ enum class FrameBufferMode
     FBM_RIGHT = 6,
     FBM_MATERIALEDITOR = 7,
     FBM_MESHEDITOR = 8,
+    FBM_GAME_SOBEL = 9,
     MAXCOUNT
 };
 
@@ -232,5 +234,5 @@ struct MonoVariable
 {
     m_Type type = m_Type::MONO_UNDEFINED;
     std::string varName = "";
-
+    std::string varValue = "";
 };

@@ -53,6 +53,7 @@ namespace Eclipse
         void UpdateCurrentMaterial(Shader& ShaderIn, CameraComponent& Camin);
         void UpdateLights(Shader& MaterialEditorShader);
         void UpdateCamera(Shader& MaterialEditorShader, CameraComponent& MeshEditorCamera);
+        void CreateSphere();
         void CreateMaterialInstance();
         void RenderMaterialScene();
         void ClearCurrentMaterial();

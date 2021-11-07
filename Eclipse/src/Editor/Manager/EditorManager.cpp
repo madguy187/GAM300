@@ -17,7 +17,7 @@
 #include "Editor/Windows/SwitchViews/LeftSwitchViewWindow.h"
 #include "Editor/Windows/SwitchViews/RightSwitchViewWindow.h"
 #include "Editor/Windows/Header/HeaderWindow.h"
-#include "Editor/Windows/NodeEditor/NodeEditor.h"
+#include "Editor/Windows/NodeEditor/NodeEditorWindow.h"
 #include "Editor/Windows/MeshEditor/MeshEditor.h"
 #include "Editor/Windows/MaterialEditor/MaterialEditor.h"
 
@@ -34,6 +34,10 @@ namespace Eclipse
 
 	void EditorManager::InitGUIWindows()
 	{
+		AddWindow<NodeEditorWindow>("Scene BluePrint " ICON_MDI_PAGE_LAYOUT_HEADER);
+		AddWindow<MeshEditorWindow>("Mesh Editor");
+		AddWindow<MaterialEditorWindow>("Material Editor");
+
 		AddWindow<eGameViewWindow>("Game Viewport " ICON_MDI_MONITOR);
 		AddWindow<SceneWindow>("Scene Viewport " ICON_MDI_MONITOR);
 		AddWindow<TopSwitchViewWindow>("Top Viewport " ICON_MDI_MONITOR);
@@ -48,9 +52,6 @@ namespace Eclipse
 		AddWindow<LoggerWindow>("Log " ICON_MDI_POST);
 		AddWindow<DebugWindow>("Project Settings " ICON_MDI_ACCOUNT_COG);
 		AddWindow<HeaderWindow>("Header " ICON_MDI_PAGE_LAYOUT_HEADER);
-		AddWindow<NodeEditorWindow>("testtt " ICON_MDI_PAGE_LAYOUT_HEADER);
-		AddWindow<MeshEditorWindow>("Mesh Editor");
-		AddWindow<MaterialEditorWindow>("Material Editor");
 
 		for (const auto& window : Windows_)
 		{
@@ -139,7 +140,7 @@ namespace Eclipse
 	{
 		Entity ID = engine->world.CreateEntity();
 
-		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast_toStr<EntityType>(type), true });
+		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast_toStr<EntityType>(type), 0, true });
 		engine->world.AddComponent(ID, TransformComponent{});
 
 		// Check this please - Rachel
@@ -309,11 +310,11 @@ namespace Eclipse
 
 	bool EditorManager::IsAnyGizmoWindowActive()
 	{
-		auto* scene = dynamic_cast<SceneWindow*>(Windows_[1].get());
-		auto* sv1 = dynamic_cast<TopSwitchViewWindow*>(Windows_[2].get());
-		auto* sv2 = dynamic_cast<BottomSwitchViewWindow*>(Windows_[3].get());
-		auto* sv3 = dynamic_cast<LeftSwitchViewWindow*>(Windows_[4].get());
-		auto* sv4 = dynamic_cast<RightSwitchViewWindow*>(Windows_[5].get());
+		auto* scene = dynamic_cast<SceneWindow*>(Windows_[4].get());
+		auto* sv1 = dynamic_cast<TopSwitchViewWindow*>(Windows_[5].get());
+		auto* sv2 = dynamic_cast<BottomSwitchViewWindow*>(Windows_[6].get());
+		auto* sv3 = dynamic_cast<LeftSwitchViewWindow*>(Windows_[7].get());
+		auto* sv4 = dynamic_cast<RightSwitchViewWindow*>(Windows_[8].get());
 
 		if (scene->GetIsWindowActive() || sv1->GetIsWindowActive() || sv2->GetIsWindowActive()
 			|| sv3->GetIsWindowActive() || sv4->GetIsWindowActive())
@@ -328,10 +329,10 @@ namespace Eclipse
 
 	bool EditorManager::IsAnySwitchWindowHovered()
 	{
-		auto* sv1 = dynamic_cast<TopSwitchViewWindow*>(Windows_[2].get());
-		auto* sv2 = dynamic_cast<BottomSwitchViewWindow*>(Windows_[3].get());
-		auto* sv3 = dynamic_cast<LeftSwitchViewWindow*>(Windows_[4].get());
-		auto* sv4 = dynamic_cast<RightSwitchViewWindow*>(Windows_[5].get());
+		auto* sv1 = dynamic_cast<TopSwitchViewWindow*>(Windows_[5].get());
+		auto* sv2 = dynamic_cast<BottomSwitchViewWindow*>(Windows_[6].get());
+		auto* sv3 = dynamic_cast<LeftSwitchViewWindow*>(Windows_[7].get());
+		auto* sv4 = dynamic_cast<RightSwitchViewWindow*>(Windows_[8].get());
 
 		if (sv1->GetIsWindowHovered() || sv2->GetIsWindowHovered()
 			|| sv3->GetIsWindowHovered() || sv4->GetIsWindowHovered())
@@ -390,8 +391,6 @@ namespace Eclipse
 	{
 		FolderIcon_ = Graphics::FindTextures("FolderIcon").GetHandle();
 
-		spriteIcon_ = Graphics::FindTextures("PlayPauseStop").GetHandle();
-
-		nodeHeader_ = Graphics::FindTextures("BlueprintBackground").GetHandle();
+		spriteIcon_ = Graphics::FindTextures("Playstop").GetHandle();
 	}
 }

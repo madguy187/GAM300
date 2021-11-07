@@ -42,6 +42,8 @@
 #include "ECS/SystemManager/Systems/System/PrefabSystem/PrefabSystem.h"
 #include "ECS/SystemManager/Systems/System/AI/AISystem.h"
 #include "ECS/SystemManager/Systems/System/InputSystem/InputSystem.h"
+#include "Editor/Windows/NodeEditor/NodeEditor.h"
+
 #include "ECS/SystemManager/Systems/System/NavMeshSystem/NavMeshSystem.h"
 bool Tester1(const Test1&)
 {
@@ -105,6 +107,7 @@ namespace Eclipse
         world.RegisterComponent<CollisionComponent>();
         world.RegisterComponent<PrefabComponent>();
         world.RegisterComponent<AIComponent>();
+        world.RegisterComponent<NodeEditor>();
         world.RegisterComponent<NavMeshVolumeComponent>();
 
         prefabWorld.RegisterComponent<EntityComponent>();
@@ -129,6 +132,7 @@ namespace Eclipse
         prefabWorld.RegisterComponent<AIComponent>();
         prefabWorld.RegisterComponent <NavMeshVolumeComponent>();
 
+        prefabWorld.RegisterComponent<NodeEditor>();
         // registering system
         world.RegisterSystem<RenderSystem>();
         world.RegisterSystem<CameraSystem>();

@@ -78,7 +78,8 @@ project "Eclipse"
 		"Dep/Recast&Detour/Detour/Include",
 		"Dep/Recast&Detour/DetourCrowd/Include",
 		"Dep/Recast&Detour/DetourTileCache/Include",
-		"Dep/Recast&Detour/Recast/Include"
+		"Dep/Recast&Detour/Recast/Include",
+		"Eclipse/src/Editor/Windows/NodeEditor/ImNodes"
 	}
 
 	filter "system:windows"

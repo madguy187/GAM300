@@ -37,6 +37,7 @@ namespace Eclipse
     DEFINE_META(AudioComponent)
     {
         ADD_MEMBER(AudioPath);
+        ADD_MEMBER(ChannelID);
         ADD_MEMBER(Volume);
         ADD_MEMBER(Pitch);
         ADD_MEMBER(Speed);
@@ -105,6 +106,7 @@ namespace Eclipse
     {
         ADD_MEMBER(Tag);
         ADD_MEMBER(Name);
+        ADD_MEMBER(LayerIndex);
         ADD_MEMBER(Child);
         ADD_MEMBER(Parent);
         ADD_MEMBER(IsAChild);
@@ -115,6 +117,7 @@ namespace Eclipse
     DEFINE_META(ScriptComponent)
     {
         ADD_MEMBER(scriptList);
+        ADD_MEMBER(LayerMask);
     }
 
     DEFINE_META(LightComponent)
@@ -182,6 +185,7 @@ namespace Eclipse
         ADD_MEMBER(hasTexture);
         ADD_MEMBER(visible);
         ADD_MEMBER(AffectsWorld);
+        ADD_MEMBER(RGBColor);
     }
 
     DEFINE_META(RigidBodyComponent)
@@ -220,6 +224,7 @@ namespace Eclipse
         ADD_MEMBER(hasTexture);
         ADD_MEMBER(visible);
         ADD_MEMBER(AffectsWorld);
+        ADD_MEMBER(RGBColor);
     }
 
     DEFINE_META(TextureComponent)
