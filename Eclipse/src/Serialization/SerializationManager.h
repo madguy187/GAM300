@@ -141,7 +141,7 @@ namespace Eclipse
 		template <typename T>
 		inline static bool DeserializeDataMember(const char* name, RefVariant refv)
 		{
-			bool isSuccess = false;
+			/*bool isSuccess = false;
 
 			if (dsz.StartElement(name))
 			{
@@ -149,6 +149,14 @@ namespace Eclipse
 					dsz.ReadAttributeFromElement("value", refv.ValueRegistry<RemTypeQual<T>::type>());
 				dsz.CloseElement();
 				isSuccess = true;
+			}*/
+			bool isSuccess = true;
+
+			if (dsz.StartElement(name))
+			{
+				if constexpr (!std::is_pointer<T>::value)
+					dsz.ReadAttributeFromElement("value", refv.ValueRegistry<RemTypeQual<T>::type>());
+				dsz.CloseElement();
 			}
 
 			return isSuccess;
@@ -234,15 +242,15 @@ namespace Eclipse
 			return true;
 		}
 
-		inline bool CompareComponentData(const EntityComponent& lhs, const EntityComponent& rhs)
+		inline static  bool CompareComponentData(const EntityComponent& lhs, const EntityComponent& rhs)
 		{
 			bool result = true;
 			result = (lhs.Tag == rhs.Tag);
-			result = (lhs.IsAChild == rhs.IsAChild);
+			result = (lhs.LayerIndex == rhs.LayerIndex);
 			return result;
 		}
 		
-		inline bool CompareComponentData(const TransformComponent& lhs, const TransformComponent& rhs)
+		inline static  bool CompareComponentData(const TransformComponent& lhs, const TransformComponent& rhs)
 		{
 			bool result = true;
 			result = (lhs.rotation == rhs.rotation);
@@ -250,19 +258,31 @@ namespace Eclipse
 			return result;
 		}
 		
-		inline bool CompareComponentData(const ParentComponent& lhs, const ParentComponent& rhs)
+		inline static  bool CompareComponentData(const ParentComponent&, const ParentComponent&)
 		{
-			bool result = true;
-			result = (lhs.model == rhs.model);
-			return result;
+			return  true;
+		}
+		
+		inline static  bool CompareComponentData(const PrefabComponent&, const PrefabComponent&)
+		{
+			return true;
 		}
 
-		inline bool CompareComponentData(const ChildComponent& lhs, const ChildComponent& rhs)
+		inline static  bool CompareComponentData(const ChildComponent& lhs, const ChildComponent& rhs)
 		{
 			bool result = true;
 			result = (lhs.PosOffset == rhs.PosOffset);
 			result = (lhs.RotOffset == rhs.RotOffset);
 			result = (lhs.ScaleOffset == rhs.ScaleOffset);
+			return result;
+		}
+
+		inline static  bool CompareComponentData(const AIComponent& lhs, const AIComponent& rhs)
+		{
+			bool result = true;
+			result = (lhs.MinDisttoChange == rhs.MinDisttoChange);
+			result = (lhs.patrolling == rhs.patrolling);
+			result = (lhs.PatrolSpeed == rhs.PatrolSpeed);
 			return result;
 		}
 

@@ -376,7 +376,7 @@ namespace Eclipse
                 if (ECGui::IsMouseDoubleClicked(0) && ECGui::IsItemClicked(0) && ECGui::IsItemHovered())
                 {
                     auto* meshEditor = engine->editorManager->GetEditorWindow<MeshEditorWindow>();
-
+                    
                     if (!meshEditor->IsVisible)
                     {
                         Entity ent = MAX_ENTITY;
@@ -426,7 +426,9 @@ namespace Eclipse
             std::string parentPath = std::filesystem::path(dirEntry.path()).string();
             parentPath = parentPath.substr(0, parentPath.find_last_of("/\\"));
 
-            if (parentPath != AssetPath.string())
+            std::string materialFolder = AssetPath.string() + "\\Materials";
+
+            if (parentPath != AssetPath.string() && ( parentPath != materialFolder))
             {
                 for (size_t i = 0; i < allExtensions.size(); ++i)
                 {

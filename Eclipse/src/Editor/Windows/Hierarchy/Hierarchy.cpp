@@ -143,10 +143,12 @@ namespace Eclipse
                         static_cast<int>(index), entCom.IsActive);
                 }
 
-                if (engine->world.CheckComponent<ParentComponent>(list[index]) && entCom.Parent.empty())
+                if (engine->world.CheckComponent<ParentComponent>(list[index]))
                 {
-                    auto& parentCom = engine->world.GetComponent<EntityComponent>(list[index]);
-                    ParentRecursion(parentCom, list[index], list, prev, curr);
+                    if (!engine->world.CheckComponent<ChildComponent>(list[index]))
+                    {
+                        ParentRecursion(list[index], list, prev, curr);    
+                    }
                 }
 
             }
@@ -154,12 +156,13 @@ namespace Eclipse
         }
     }
 
-    void HierarchyWindow::ParentRecursion(EntityComponent& entCom, Entity Num, const std::vector<Entity>& list, EntitySelectionTracker& prev, EntitySelectionTracker& curr)
+    void HierarchyWindow::ParentRecursion(Entity Num, const std::vector<Entity>& list, EntitySelectionTracker& prev, EntitySelectionTracker& curr)
     {
         std::string entityName{};
+        auto& entCom = engine->world.GetComponent<EntityComponent>(Num);
         float indentValue = entCom.ImguiIndentValue;
         ImDrawList* draw_list = ImGui::GetWindowDrawList();
-        bool highlight = false;
+       // bool highlight = false;
         if (engine->world.CheckComponent<ParentComponent>(Num))
         {
             auto& parent2 = engine->world.GetComponent<ParentComponent>(Num);
@@ -176,13 +179,17 @@ namespace Eclipse
             }
             if (ECGui::CreateSelectableButton(ButtonName.c_str(), &entCom.IsActive))
             {
-                if (!entCom.Parent.empty())
+                if (engine->world.CheckComponent<ChildComponent>(Num))
                 {
-                    unhighlightParent(entCom.Parent[0]);
+                    auto& entCom_Child = engine->world.GetComponent<ChildComponent>(Num);
+                    if (!entCom_Child.hasParent)
+                    {
+                        unhighlightParent(entCom_Child.parentIndex);
+                    }
+                    engine->world.GetComponent<EntityComponent>(Num).hightLightChild = true;
                 }
 
                 entCom.IsActive = true;
-                entCom.hightLightChild = true;
                 engine->editorManager->SetGlobalIndex(engine->editorManager->GetEntityIndex(Num));
                 UpdateEntityTracker(Num);
 
@@ -201,7 +208,7 @@ namespace Eclipse
                 curr.name = entityName;
                 curr.index = Num;
 
-                if (!isChild(entCom.Child, prev.index))
+                if (!isChild(parent2.child, prev.index))
                 {
                     if (!prev.name.empty() && curr.name != prev.name)
                     {
@@ -234,16 +241,20 @@ namespace Eclipse
             engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
                 engine->editorManager->GetEntityIndex(Num), entCom.IsActive);
 
-            if (entCom.hightLightChild)
-            {
-                draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(0, 0, 255, 255));
-            }
+
+
+                auto& entCom_Child = engine->world.GetComponent<EntityComponent>(Num);
+
+                if (entCom_Child.hightLightChild)
+                {
+                    draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(0, 0, 255, 255));
+                }
 
             for (auto& it : parent2.child)
             {
-                auto& parent2Com = engine->world.GetComponent<EntityComponent>(it);
+               // auto& parent2Com = engine->world.GetComponent<EntityComponent>(it);
                 ImGui::Indent(indentValue);
-                ParentRecursion(parent2Com, it, list, prev, curr);
+                ParentRecursion(it, list, prev, curr);
                 ImGui::Unindent(indentValue);
             }
         }
@@ -288,20 +299,26 @@ namespace Eclipse
                 
                 for (size_t index = 0; index < list.size(); ++index)
                 {
-                    auto& parentCom = engine->world.GetComponent<EntityComponent>(list[index]);
-
-                    if (list[index] != Num)
+                    if (engine->world.CheckComponent<ChildComponent>(list[index]))
                     {
-                        parentCom.IsAChild = false;
-                    }
+                        auto& parentCom = engine->world.GetComponent<ChildComponent>(list[index]);
 
+                        if (list[index] != Num)
+                        {
+                            parentCom.IsAChild = false;
+                        }
+                    }
                 }
             }
 
-            if (entCom.hightLightChild)
-            {
-                draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(0, 0, 255, 255));
-            }
+
+                auto& parentCom = engine->world.GetComponent<EntityComponent>(Num);
+
+                if (parentCom.hightLightChild)
+                {
+                    draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(0, 0, 255, 255));
+                }
+            
 
             engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
                 engine->editorManager->GetEntityIndex(Num), entCom.IsActive);
@@ -486,13 +503,19 @@ namespace Eclipse
 
     void HierarchyWindow::unhighlightParent(Entity Parent)
     {
-        auto& parentCom = engine->world.GetComponent<EntityComponent>(Parent);
+        auto& parentEntCom = engine->world.GetComponent<EntityComponent>(Parent);
 
-        parentCom.hightLightChild = false;
+        parentEntCom.hightLightChild = false;
 
-        if (!parentCom.Parent.empty())
+        if (engine->world.CheckComponent<ChildComponent>(Parent))
         {
-            unhighlightParent(parentCom.Parent[0]);
+
+            auto& ChildCom = engine->world.GetComponent<ChildComponent>(Parent);
+
+            if (ChildCom.hasParent)
+            {
+                unhighlightParent(ChildCom.parentIndex);
+            }
         }
     }
 
@@ -500,7 +523,7 @@ namespace Eclipse
     {
         if (engine->world.CheckComponent<ChildComponent>(CurrID))
         {
-            ImDrawList* draw_list = ImGui::GetWindowDrawList();
+           // ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
             auto& entCom = engine->world.GetComponent<EntityComponent>(CurrID);
 

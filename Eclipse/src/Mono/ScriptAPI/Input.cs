@@ -14,5 +14,8 @@ namespace Eclipse
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         public extern static float GetAxis(string Axis);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        public extern static float GetRawAxis(string Axis);
     }
 }

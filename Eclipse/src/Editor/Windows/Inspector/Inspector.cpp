@@ -40,7 +40,7 @@ namespace Eclipse
             Entity currEnt = mesheditor->IsVisible ? mesheditor->GetMeshID() : engine->editorManager->GetSelectedEntity();
             auto& entcom = engine->world.GetComponent<EntityComponent>(currEnt);
 
-            ECGui::PushItemWidth(WindowSize_.getX());
+            ECGui::PushItemWidth(WindowSize_.getX()); 
             if (ECGui::DrawInputTextHintWidget("InputEntityName", "Enter Entity Name", EntNameInput,
                 256, true, ImGuiInputTextFlags_EnterReturnsTrue))
             {
@@ -48,6 +48,8 @@ namespace Eclipse
                 entcom.Name = EntNameInput;
                 CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<std::string>{ oldName, entcom.Name });
             }
+
+            ECGui::DrawTextWidget<int>("ID ", currEnt);
 
             ECGui::PushItemWidth(WindowSize_.getX() * 0.35f);
             ECGui::DrawTextWidget<const char*>("Tag ", EMPTY_STRING);
@@ -66,7 +68,7 @@ namespace Eclipse
             ECGui::InsertHorizontalLineSeperator();
 
             static ImGuiTextFilter CompFilter;
-            CompFilter.Draw(EMPTY_STRING, 0.0f, "Component Filter");
+            CompFilter.Draw(/*EMPTY_STRING, 0.0f, "Component Filter"*/);
 
             ShowPrefebProperty(currEnt);
             ShowBPProperty("BluePrint", currEnt, CompFilter);
@@ -85,10 +87,7 @@ namespace Eclipse
             ShowAIProperty("AI Properties", currEnt, CompFilter);
             ShowParentProperty("Parent", currEnt, CompFilter);
             ShowChildProperty("Child", currEnt, CompFilter);
-
-
-
-
+            ShowNavMeshProperty("NavMesh Volume", currEnt, CompFilter);
             AddComponentsController(currEnt);
             ECGui::NextColumn();
             RemoveComponentsController(currEnt);
@@ -437,6 +436,14 @@ namespace Eclipse
                 ECGui::DrawSliderFloat3Widget("DLight Direction", &_DLight.Direction, true, -10.0f, 10.0f);
                 ECGui::NextColumn();
 
+                ECGui::DrawTextWidget<const char*>("AmbientSettings", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                static float ambient = _DLight.AmbientSettings.getX();
+                ECGui::DrawSliderFloatWidget("AmbientSettings", &ambient, true, 0.0f, 0.1f);
+                _DLight.AmbientSettings = ECVec3{ ambient };
+                ECGui::NextColumn();
+
                 ECGui::DrawTextWidget<const char*>("Affects World", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
@@ -485,9 +492,6 @@ namespace Eclipse
                 ECGui::CheckBoxBool("Rigid Body Enable Gravity", &_RigidB.enableGravity);
                 ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Forces", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloat3Widget("Rigid Body Forces", &_RigidB.forces, true, 0.0f, 1.0f);
                 ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Velocity", EMPTY_STRING);
                 ECGui::NextColumn();
@@ -830,6 +834,29 @@ namespace Eclipse
                             true, ImGuiInputTextFlags_ReadOnly);
                         engine->editorManager->DragAndDropInst_.StringPayloadTarget("cs", scriptCom.scriptList[i].scriptName,
                             "Script File inserted.", PayloadTargetType::PTT_WIDGET, ID, i);
+
+                        for (size_t j = 0; j < scriptCom.scriptList[i].vars.size(); ++j)
+                        {
+                            ECGui::SetColumns(2, nullptr, true);
+
+                            ECGui::DrawTextWidget<const char*>(scriptCom.scriptList[i].vars[j].varName.c_str(), EMPTY_STRING);
+                            ECGui::InsertSameLine();
+
+                            ECGui::NextColumn();
+
+                            if (scriptCom.scriptList[i].vars[j].type == m_Type::MONO_HEADER)
+                                ECGui::DrawInputTextHintWidget(scriptCom.scriptList[i].vars[j].varName.c_str(),
+                                    "Non-modifiable", const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()),
+                                    256, true, ImGuiInputTextFlags_ReadOnly);
+                            else
+                                ECGui::DrawInputTextWidget(scriptCom.scriptList[i].vars[j].varName.c_str(),
+                                    const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()),
+                                    256, 0, true);
+
+                            ECGui::NextColumn();
+                        }
+
+                        ECGui::SetColumns(1, nullptr, true);
                     }
                     else
                     {
@@ -843,7 +870,6 @@ namespace Eclipse
                     }
                 }
 
-                ECGui::SetColumns(2, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
 
                 if (!IsRemovingScripts)
@@ -856,8 +882,6 @@ namespace Eclipse
                         scriptCom.scriptList.back().scriptName = scriptName;
                     }
 
-                    ECGui::NextColumn();
-
                     if (ECGui::ButtonBool("Remove Script", { ImGui::GetColumnWidth(), 25 }))
                     {
                         IsRemovingScripts = true;
@@ -865,16 +889,12 @@ namespace Eclipse
                 }
                 else
                 {
-
-                    ECGui::SetColumns(1, nullptr, true);
-                    ECGui::NextColumn();
                     if (ECGui::ButtonBool("Cancel Remove", { ImGui::GetColumnWidth(), 25 }))
                     {
                         IsRemovingScripts = false;
                     }
                 }
 
-                ECGui::SetColumns(1, nullptr, true);
                 ECGui::InsertHorizontalLineSeperator();
             }
         }
@@ -1022,12 +1042,26 @@ namespace Eclipse
         char hyValue[256];
         char hzValue[256];
         char radiusValue[256];
+        char HalfHeightValue[256];
         if (engine->world.CheckComponent<CollisionComponent>(ID))
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
                 ECGui::InsertHorizontalLineSeperator();
                 auto& _Collision = engine->world.GetComponent<CollisionComponent>(ID);
+                ECGui::DrawTextWidget<const char*>("Choose a shape: ", EMPTY_STRING);
+                static std::string PxShapestring;
+                ChangeShapeController(PxShapestring);
+                
+                if (PxShapestring != EMPTY_STRING)
+                {
+                    if (ECGui::ButtonBool("Change Shape"))
+                    {
+                        engine->gPhysics.ChangeShape(ID, lexical_cast_toEnum<PxShapeType>(PxShapestring));
+                    }
+                }
+
+               
 
                 switch (_Collision.shape.shape)
                 {
@@ -1075,6 +1109,79 @@ namespace Eclipse
                     ECGui::SetColumns(1, nullptr, true);
                     ECGui::InsertHorizontalLineSeperator();
                     break;
+                case PxShapeType::Px_CAPSULE:
+                    ECGui::DrawTextWidget<const char*>("CAPSULE ", EMPTY_STRING);
+                    ECGui::InsertHorizontalLineSeperator();
+                    ECGui::DrawTextWidget<const char*>("Radius: ", EMPTY_STRING);
+                    ECGui::InsertSameLine();
+                    snprintf(radiusValue, 256, "%f", _Collision.shape.radius);
+                    ECGui::DrawInputTextWidget("Radius: ", radiusValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
+                    _Collision.shape.radius = static_cast<float>(atof(radiusValue));
+                    ECGui::DrawTextWidget<const char*>("HalfHeight: ", EMPTY_STRING);
+                    ECGui::InsertSameLine();
+                    snprintf(HalfHeightValue, 256, "%f", _Collision.shape.hheight);
+                    ECGui::DrawInputTextWidget("HalfHeight: ", HalfHeightValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
+                    _Collision.shape.radius = static_cast<float>(atof(HalfHeightValue));
+                }
+            }
+        }
+        return false;
+    }
+
+    bool InspectorWindow::ShowNavMeshProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+    {
+        char radiusValue[256];
+        char HeightValue[256];
+        char MaxSlopeValue[256];
+        char JumpDistanceValue[256];
+        if (engine->world.CheckComponent<NavMeshVolumeComponent>(ID))
+        {
+            if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+            {
+                ECGui::InsertHorizontalLineSeperator();
+                auto& nm = engine->world.GetComponent<NavMeshVolumeComponent>(ID);
+   
+                ECGui::DrawTextWidget<const char*>("NavMesh ", EMPTY_STRING);
+                ECGui::InsertHorizontalLineSeperator();
+                ECGui::SetColumns(2, nullptr, true);
+                ECGui::InsertHorizontalLineSeperator();
+
+                ECGui::DrawTextWidget<const char*>("Agent Radius: ", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                snprintf(radiusValue, 256, "%f", nm.AgentRadius);
+                ECGui::DrawInputTextWidget("Agent Radius: ", radiusValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
+                nm.AgentRadius = static_cast<float>(atof(radiusValue));
+                ECGui::NextColumn();
+                ECGui::DrawTextWidget<const char*>("Agent Height: ", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                snprintf(HeightValue, 256, "%f", nm.AgentHeight);
+                ECGui::DrawInputTextWidget("Agent Height: ", HeightValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
+                nm.AgentHeight = static_cast<float>(atof(HeightValue));
+                ECGui::NextColumn();
+                ECGui::DrawTextWidget<const char*>("Max Slope: ", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                snprintf(MaxSlopeValue, 256, "%f", nm.MaxSlope);
+                ECGui::DrawInputTextWidget("Max Slope: ", MaxSlopeValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
+                nm.MaxSlope = static_cast<float>(atof(MaxSlopeValue));
+                ECGui::NextColumn();
+
+                ECGui::DrawTextWidget<const char*>("Jump Distance: ", EMPTY_STRING);
+                ECGui::NextColumn();
+                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
+                snprintf(JumpDistanceValue, 256, "%f", nm.JumpDistance);
+                ECGui::DrawInputTextWidget("Jump Distance: ", JumpDistanceValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
+                nm.JumpDistance = static_cast<float>(atof(JumpDistanceValue));
+                ECGui::NextColumn();
+
+                ECGui::SetColumns(1, nullptr, true);
+                ECGui::InsertHorizontalLineSeperator();
+
+                if (ECGui::ButtonBool("Bake"))
+                {
+                    engine->gNavMesh.BuildNavMesh(ID);
                 }
 
                 if (engine->world.CheckComponent<ScriptComponent>(ID))
@@ -1085,6 +1192,9 @@ namespace Eclipse
         }
         return false;
     }
+
+
+
 
     bool InspectorWindow::ShowPrefebProperty(Entity ID)
     {
@@ -1199,42 +1309,42 @@ namespace Eclipse
 
                 ECGui::DrawTextWidget<const char*>("Parent:", EMPTY_STRING);
                 auto& child = engine->world.GetComponent<ChildComponent>(ID);
-                auto& childEntComp = engine->world.GetComponent<EntityComponent>(ID);
+                //auto& childEntComp = engine->world.GetComponent<EntityComponent>(ID);
                 auto& en = engine->world.GetComponent<EntityComponent>(child.parentIndex);
                 ECGui::DrawTextWidget<const char*>(my_strcat(en.Name, " ", child.parentIndex).c_str(), EMPTY_STRING);
 
                 ECGui::InsertHorizontalLineSeperator();
 
-                if (ECGui::ButtonBool("Break From Parent"))
-                {
-                    auto& parentComp = engine->world.GetComponent<EntityComponent>(child.parentIndex);
-                    auto& parent = engine->world.GetComponent<ParentComponent>(child.parentIndex);
-                    for (auto& allchld : parentComp.Child)
-                    {
-                        if (allchld == ID)
-                        {
-                            parentComp.Child.erase(std::remove(parentComp.Child.begin(), parentComp.Child.end(), allchld), parentComp.Child.end());
-                        }
-                    }
-                    for (auto& allchld : parent.child)
-                    {
-                        if (allchld == ID)
-                        {
-                            parent.child.erase(std::remove(parent.child.begin(), parent.child.end(), allchld), parent.child.end());
-                        }
-                    }
-
-                    if (parentComp.Child.empty())
-                    {
-                        ComponentRegistry<ParentComponent>("ParentComponent", child.parentIndex, childEntComp.Name, EditComponent::EC_REMOVECOMPONENT);
-                    }
-
-                    childEntComp.Parent.clear();
-
-                    //ComponentRegistry<ParentComponent>("ParentComponent", ID, childEntComp.Name, EditComponent::EC_ADDCOMPONENT);
-                    ComponentRegistry<ChildComponent>("ChildComponent", ID, childEntComp.Name, EditComponent::EC_REMOVECOMPONENT);
-
-                }
+                //if (ECGui::ButtonBool("Break From Parent"))
+                //{
+                //    auto& parentComp = engine->world.GetComponent<EntityComponent>(child.parentIndex);
+                //    auto& parent = engine->world.GetComponent<ParentComponent>(child.parentIndex);
+                //    for (auto& allchld : parent.Child)
+                //    {
+                //        if (allchld == ID)
+                //        {
+                //            parentComp.Child.erase(std::remove(parentComp.Child.begin(), parentComp.Child.end(), allchld), parentComp.Child.end());
+                //        }
+                //    }
+                //    for (auto& allchld : parent.child)
+                //    {
+                //        if (allchld == ID)
+                //        {
+                //            parent.child.erase(std::remove(parent.child.begin(), parent.child.end(), allchld), parent.child.end());
+                //        }
+                //    }
+                //
+                //    if (parentComp.Child.empty())
+                //    {
+                //        ComponentRegistry<ParentComponent>("ParentComponent", child.parentIndex, childEntComp.Name, EditComponent::EC_REMOVECOMPONENT);
+                //    }
+                //
+                //    childEntComp.Parent.clear();
+                //
+                //    //ComponentRegistry<ParentComponent>("ParentComponent", ID, childEntComp.Name, EditComponent::EC_ADDCOMPONENT);
+                //    ComponentRegistry<ChildComponent>("ChildComponent", ID, childEntComp.Name, EditComponent::EC_REMOVECOMPONENT);
+                //
+                //}
 
             }
         }
@@ -1379,6 +1489,10 @@ namespace Eclipse
                         ComponentRegistry<NodeEditor>("NodeEditor", ID, entCom.Name,
                             EditComponent::EC_ADDCOMPONENT);
                         break;
+                    case str2int("NavMeshVolumeComponent"):
+                        ComponentRegistry<NavMeshVolumeComponent>("NavMeshVolumeComponent", ID, entCom.Name,
+                            EditComponent::EC_ADDCOMPONENT);
+                        break;
                     }
 
                     AddComponentFilter.Clear();
@@ -1474,6 +1588,10 @@ namespace Eclipse
                         break;
                     case str2int("NodeEditor"):
                         ComponentRegistry<NodeEditor>("NodeEditor", ID, entCom.Name,
+                            EditComponent::EC_REMOVECOMPONENT);
+                        break;
+                    case str2int("NavMeshVolumeComponent"):
+                        ComponentRegistry<NavMeshVolumeComponent>("NavMeshVolumeComponent", ID, entCom.Name,
                             EditComponent::EC_REMOVECOMPONENT);
                         break;
                     }
@@ -1769,8 +1887,6 @@ namespace Eclipse
         }
         else
         {
-            /*audioCom.ChannelID = engine->audioManager.Play2DSounds(audioCom.AudioPath, audioCom.Volume,
-                audioCom.IsLooping);*/
             engine->audioManager.Play2DSounds(audioCom);
         }
     }
@@ -1793,6 +1909,29 @@ namespace Eclipse
                 }
 
                 if (is_selected)
+                    ImGui::SetItemDefaultFocus();
+            }
+
+            ImGuiAPI::EndComboList();
+        }
+    }
+
+    void InspectorWindow::ChangeShapeController(std::string& currentSelection)
+    {
+        size_t index = 0;
+        if (ImGuiAPI::BeginComboList("PxSHapeListBegin", currentSelection.c_str(), true))
+        {
+            for (size_t n = 0; n < 3; n++)
+            {
+                const bool is_selected = (index == n);
+                PxShapeType tempenum = static_cast<PxShapeType>(n);
+            
+                if (ImGui::Selectable(lexical_cast_toStr<PxShapeType>(tempenum).c_str(), is_selected))
+                {
+                    currentSelection = lexical_cast_toStr<PxShapeType>(tempenum);
+                }
+
+                if(is_selected)
                     ImGui::SetItemDefaultFocus();
             }
 

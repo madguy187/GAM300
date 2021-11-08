@@ -45,6 +45,7 @@ void Eclipse::OpenGL_Context::on_resize(int width_, int height_)
     height = height_;
 
     glViewport(0, 0, width, height);
+    engine->InputManager->SetAxis(width_, height_);
 }
 
 static void on_window_close_callback(GLFWwindow* window)
@@ -184,7 +185,7 @@ bool Eclipse::OpenGL_Context::init(std::string configFile)
     glfwSetWindowPosCallback(ptr_window, window_pos_callback);
 
     // this is the default setting ...
-    glfwSetInputMode(ptr_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    //glfwSetInputMode(ptr_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
     // Part 2: Initialize entry points to OpenGL functions and extensions
     GLenum err = glewInit();

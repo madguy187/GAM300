@@ -17,6 +17,11 @@ namespace Eclipse
 		bool GetIsViewFullscreen();
 		void SetViewToFullscreen(bool active);
 		void SetViewToOriginalState(bool active);
+
+		ECVec2 GetViewPortSize();
+
+		ImVec2 vMin;
+		ImVec2 vMax;
 	private:
 		ECVec2 mViewportSize{ 0.f,0.f};
 		FrameBuffer* m_frameBuffer = nullptr;

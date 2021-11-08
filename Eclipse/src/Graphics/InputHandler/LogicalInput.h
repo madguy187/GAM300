@@ -6,11 +6,25 @@
 
 namespace Eclipse
 {
-    typedef std::unordered_map< InputKeycode,InputState> InputKeyContainer;
-    using KeyIT = std::unordered_map<InputKeycode,InputState>::iterator;
+    struct InputData
+    {
+        InputState inputState = InputState::Key_NULLSTATE;
+        float AxisValue = 0.0f;
 
-    typedef std::unordered_map< InputMouseKeycode, InputState> MouseContainer;
-    using MouseIT = std::unordered_map<InputMouseKeycode, InputState>::iterator;
+        InputData() {};
+
+        InputData(InputState in) :
+            inputState(in)
+        {
+
+        };
+    };
+
+    typedef std::unordered_map< InputKeycode, InputData> InputKeyContainer;
+    using KeyIT = std::unordered_map<InputKeycode, InputData>::iterator;
+
+    typedef std::unordered_map< InputMouseKeycode, InputData> MouseContainer;
+    using MouseIT = std::unordered_map<InputMouseKeycode, InputData>::iterator;
 
     class LogicalInput
     {
@@ -21,6 +35,9 @@ namespace Eclipse
         std::vector<std::string> AllInputs;
         std::vector<std::string> AllMouseInputs;
 
+        InputKeyContainer ReleaseContainer;
+        std::vector<InputKeycode> DeleteContainer;
+ 
     public:
         LogicalInput();
         bool GetIsPrint();
@@ -63,6 +80,39 @@ namespace Eclipse
         bool CheckMouseMapping(std::string NewMap);
         void TestingLogicalInput(); // For Testing
 
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // GetAxis - mouse
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        float XMiddle, YMiddle;
+        float Mouse_X, Mouse_Y;
+
+        // GetAxis
+        float XDelta = 0.0f;
+        float YDelta = 0.0f;
+        void SetAxis(GLint width, GLint height);
+        void CursorUpdate();
+        void AxisUpdate();
+        float GetAxis(const std::string& Type);
+
+        // GetRawAxis
+        float XDeltaRaw = 0.0f;
+        float YDeltaRaw = 0.0f;
+        float GetRawAxis(const std::string& Type);
+
+        // Cursor
+        bool LockCursor(CursorLockMode);
+        CursorLockMode State;
+        bool HideCursor = false;
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // GetAxis - Keyboard
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        float XDeltaKey = 0.0f;
+        float YDeltaKey = 0.0f;
+        float XDeltaKeyRaw = 0.0f;
+        float YDeltaKeyRaw = 0.0f;
+
+
     private:
         void init();
         void Update();
@@ -72,7 +122,7 @@ namespace Eclipse
         friend std::ostream& operator << (std::ostream& os, const InputKeycode& in);
         void RegisterTriggerInput(InputKeycode keycode, InputState input);
         void RegisterMouseInput(InputMouseKeycode keycode, InputState input);
-        void RegisterHoldInput(InputKeycode keycode,InputState input);
+        void RegisterHoldInput(InputKeycode keycode, InputState input);
         bool GetKeyReleased(InputKeycode keycode);
         bool GetKeyReleased(InputMouseKeycode keycode);
         bool GetHoldKeyReleased(InputMouseKeycode keycode);

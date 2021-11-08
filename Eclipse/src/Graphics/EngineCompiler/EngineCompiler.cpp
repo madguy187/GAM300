@@ -97,7 +97,7 @@ namespace Eclipse
 
             if (strcmp(name.c_str(), "LightBulb") != 0 && strcmp(name.c_str(), "SpotLight") != 0 && strcmp(name.c_str(), "Inner") != 0 && strcmp(name.c_str(), "Outer") != 0)
             {
-                engine->AssimpManager.InsertMeshName(name);
+                //engine->AssimpManager.InsertMeshName(name);
                 engine->AssimpManager.InsertGeometryName(name);
             }
         }

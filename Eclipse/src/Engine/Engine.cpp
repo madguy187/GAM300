@@ -20,6 +20,7 @@
 #include "ECS/ComponentManager/Components/AudioComponent.h"
 #include "ECS/ComponentManager/Components/ParentComponent.h"
 #include "ECS/ComponentManager/Components/ChildComponent.h"
+#include "ECS/ComponentManager/Components/NavMeshVolumeComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem/CameraSystem.h"
@@ -43,6 +44,7 @@
 #include "ECS/SystemManager/Systems/System/InputSystem/InputSystem.h"
 #include "Editor/Windows/NodeEditor/NodeEditor.h"
 
+#include "ECS/SystemManager/Systems/System/NavMeshSystem/NavMeshSystem.h"
 bool Tester1(const Test1&)
 {
     std::cout << "Engine.cpp Tester1" << std::endl;
@@ -66,7 +68,6 @@ namespace Eclipse
         EventSystem<Test1>::registerListener(Tester2);
         EventSystem<Test1>::registerListener(std::bind(&World::TempFunc, &world, std::placeholders::_1));
 
-        InputManager = std::make_unique<LogicalInput>();
         engine->gFrameBufferManager = std::make_unique<FrameBufferManager>();
         engine->gDebugDrawManager = std::make_unique<DebugManager>();
 
@@ -77,6 +78,7 @@ namespace Eclipse
         if (IsEditorActive)
             editorManager = std::make_unique<EditorManager>();
 
+        InputManager = std::make_unique<LogicalInput>();
         glfwSetWindowCloseCallback(OpenGL_Context::GetWindow(), GraphicsManager.WindowCloseCallback);
     }
 
@@ -106,6 +108,7 @@ namespace Eclipse
         world.RegisterComponent<PrefabComponent>();
         world.RegisterComponent<AIComponent>();
         world.RegisterComponent<NodeEditor>();
+        world.RegisterComponent<NavMeshVolumeComponent>();
 
         prefabWorld.RegisterComponent<EntityComponent>();
         prefabWorld.RegisterComponent<TransformComponent>();
@@ -128,6 +131,8 @@ namespace Eclipse
         prefabWorld.RegisterComponent<PrefabComponent>();
         prefabWorld.RegisterComponent<AIComponent>();
         prefabWorld.RegisterComponent<NodeEditor>();
+        prefabWorld.RegisterComponent <NavMeshVolumeComponent>();
+
         // registering system
         world.RegisterSystem<RenderSystem>();
         world.RegisterSystem<CameraSystem>();
@@ -145,7 +150,6 @@ namespace Eclipse
         world.RegisterSystem<PrefabSystem>();
         world.RegisterSystem<AISystem>();
         world.RegisterSystem<InputSystem>();
-
         prefabWorld.RegisterSystem<PrefabSystem>();
 
         // Render System
@@ -368,6 +372,7 @@ namespace Eclipse
             if (IsScenePlaying())
             {
                 world.Update<MonoSystem>();
+                mono.UpdateInvokers();
             }
 
             // FRAMEBUFFER DRAW ==========================
@@ -390,7 +395,7 @@ namespace Eclipse
         }
 
         //Serialization(Temp)
-        szManager.SaveSceneFile();
+        //szManager.SaveSceneFile();
         pfManager.UnloadSaving();
         // unLoad
         mono.Terminate();
@@ -425,6 +430,43 @@ namespace Eclipse
     bool Engine::IsScenePlaying()
     {
         return IsInPlayState && !IsInPauseState;
+    }
+
+    void Engine::DestroyGameObject(const Entity& ent)
+    {
+        if (engine->world.CheckComponent<ParentComponent>(ent))
+        {
+            auto& parentComp = engine->world.GetComponent<ParentComponent>(ent);
+
+            for (auto& child : parentComp.child)
+            {
+                DestroyGameObject(child);
+            }
+
+            CleanUp(ent);
+        }
+        else
+        {
+            CleanUp(ent);
+        }
+    }
+
+    void Engine::CleanUp(const Entity& ent)
+    {
+        engine->gDynamicAABBTree.RemoveData(ent);
+        engine->gCullingManager->Remove(ent);
+        engine->LightManager.DestroyLight(ent);
+        engine->gPhysics.RemoveActor(ent);
+
+        if (IsEditorActive)
+        {
+            engine->editorManager->DestroyEntity(ent);
+            engine->gPicker.SetCurrentCollisionID(engine->editorManager->GetSelectedEntity());
+        }
+        else
+        {
+            world.DestroyEntity(ent);
+        }
     }
 
     void Engine::SetEditorState(bool check)

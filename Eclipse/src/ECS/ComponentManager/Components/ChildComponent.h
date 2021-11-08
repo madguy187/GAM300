@@ -11,5 +11,9 @@ namespace Eclipse
 		ECVec3 RotOffset;
 		ECVec3 ScaleOffset;
 		bool UpdateChildren{ false };
+
+		//for imgui side
+		bool hasParent = false;
+		bool IsAChild = false;
 	};
 }

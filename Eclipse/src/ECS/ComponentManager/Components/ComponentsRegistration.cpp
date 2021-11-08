@@ -20,6 +20,7 @@
 #include "ScriptComponent.h"
 #include "ChildComponent.h"
 #include "ParentComponent.h"
+#include "NavMeshVolumeComponent.h"
 
 namespace Eclipse
 {
@@ -49,6 +50,7 @@ namespace Eclipse
         ADD_MEMBER(Min);
         ADD_MEMBER(Max);
         ADD_MEMBER(HasRadioEffect);
+        ADD_MEMBER(RadioDistortionLevel);
         ADD_MEMBER(HasEchoEffect);
         ADD_MEMBER(EchoDelayTime);
     }
@@ -99,6 +101,7 @@ namespace Eclipse
         ADD_MEMBER(diffuse);
         ADD_MEMBER(specular);
         ADD_MEMBER(Color);
+        ADD_MEMBER(AmbientSettings);
     }
 
     DEFINE_META(EntityComponent)
@@ -106,11 +109,8 @@ namespace Eclipse
         ADD_MEMBER(Tag);
         ADD_MEMBER(Name);
         ADD_MEMBER(LayerIndex);
-        ADD_MEMBER(Child);
-        ADD_MEMBER(Parent);
-        ADD_MEMBER(IsAChild);
-        ADD_MEMBER(ImguiIndentValue);
         ADD_MEMBER(hightLightChild);
+        ADD_MEMBER(ImguiIndentValue);
     }
 
     DEFINE_META(ScriptComponent)
@@ -228,7 +228,7 @@ namespace Eclipse
 
     DEFINE_META(TextureComponent)
     {
-    	  ADD_MEMBER(textureRef);
+        ADD_MEMBER(textureRef);
     }
 
     DEFINE_META(TransformComponent)
@@ -245,19 +245,31 @@ namespace Eclipse
         ADD_MEMBER(CompChanges);
         ADD_MEMBER(PrefabID);
     }
-    
+
     DEFINE_META(ChildComponent)
     {
         ADD_MEMBER(parentIndex);
         ADD_MEMBER(PosOffset);
         ADD_MEMBER(RotOffset);
         ADD_MEMBER(ScaleOffset);
+        ADD_MEMBER(hasParent);
+        ADD_MEMBER(IsAChild);
     }
 
     DEFINE_META(ParentComponent)
     {
         ADD_MEMBER(child);
         ADD_MEMBER(model);
+    }
+
+    DEFINE_META(NavMeshVolumeComponent)
+    {
+       ADD_MEMBER(NavMeshMin);
+       ADD_MEMBER(NavMeshMax);
+       ADD_MEMBER(AgentRadius);
+       ADD_MEMBER(AgentHeight);
+       ADD_MEMBER(MaxSlope);
+       ADD_MEMBER(JumpDistance);
     }
 
     /*************************************************************************/
@@ -294,5 +306,6 @@ namespace Eclipse
     DEFINE_META_POD(PxShapeType);
     DEFINE_META_POD(EC_Shape);
     DEFINE_META_POD(Signature);
+    DEFINE_META_POD(std::bitset<20>);
     //DEFINE_META_POD(MonoScript);
 }

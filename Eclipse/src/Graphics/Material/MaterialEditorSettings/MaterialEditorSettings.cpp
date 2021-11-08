@@ -201,34 +201,6 @@ namespace Eclipse
         GLCall(glUniform1f(RoughnessConstant, CurrentMaterial.RoughnessConstant));
         GLCall(glUniform3f(BaseReflectivity, CurrentMaterial.BaseReflectivity.getX(), CurrentMaterial.BaseReflectivity.getY(), CurrentMaterial.BaseReflectivity.getZ()));
         BindMaterial(shdrpgm, CurrentMaterial.Name.data());
-
-        //if (SelectedIndex == 0)
-        //{
-        //    GLCall(glUniform3f(SurfaceColour_, CurrentMaterial.SurfaceColour.getX(), CurrentMaterial.SurfaceColour.getY(), CurrentMaterial.SurfaceColour.getZ()));
-        //    GLCall(glUniform1f(HeightScale_, CurrentMaterial.HeightScale));
-        //    GLCall(glUniform1i(NormalMap_, CurrentMaterial.IsNormalMap));
-        //    GLCall(glUniform1i(HasInstance, CurrentMaterial.HasTexture));
-        //    GLCall(glUniform3f(AlbedoConstant, CurrentMaterial.AlbedoConstant.getX(), CurrentMaterial.AlbedoConstant.getY(), CurrentMaterial.AlbedoConstant.getZ()));
-        //    GLCall(glUniform1f(AoConstant, CurrentMaterial.AoConstant));
-        //    GLCall(glUniform1f(MetallicConstant, CurrentMaterial.MetallicConstant));
-        //    GLCall(glUniform1f(RoughnessConstant, CurrentMaterial.RoughnessConstant));
-        //    GLCall(glUniform3f(BaseReflectivity, CurrentMaterial.BaseReflectivity.getX(), CurrentMaterial.BaseReflectivity.getY(), CurrentMaterial.BaseReflectivity.getZ()));
-
-        //    BindMaterial(shdrpgm, "None");
-        //}
-        //else
-        //{
-        //GLCall(glUniform3f(SurfaceColour_, CurrentMaterial.SurfaceColour.getX(), CurrentMaterial.SurfaceColour.getY(), CurrentMaterial.SurfaceColour.getZ()));
-        //GLCall(glUniform1i(NormalMap_, CurrentMaterial.IsNormalMap));
-        //GLCall(glUniform1f(HeightScale_, CurrentMaterial.HeightScale));
-        //GLCall(glUniform1i(HasInstance, CurrentMaterial.HasTexture));
-        //GLCall(glUniform3f(AlbedoConstant, CurrentMaterial.AlbedoConstant.getX(), CurrentMaterial.AlbedoConstant.getY(), CurrentMaterial.AlbedoConstant.getZ()));
-        //GLCall(glUniform1f(AoConstant, CurrentMaterial.AoConstant));
-        //GLCall(glUniform1f(MetallicConstant, CurrentMaterial.MetallicConstant));
-        //GLCall(glUniform1f(RoughnessConstant, CurrentMaterial.RoughnessConstant));
-        //GLCall(glUniform3f(BaseReflectivity, CurrentMaterial.BaseReflectivity.getX(), CurrentMaterial.BaseReflectivity.getY(), CurrentMaterial.BaseReflectivity.getZ()));
-        //BindMaterial(shdrpgm, CurrentMaterial.Name.data());
-        //}
     }
 
     void MaterialEditorSettings::ClearCurrentMaterial()
@@ -255,7 +227,7 @@ namespace Eclipse
         GLint uniform_var_loc2 = MaterialEditorShader.GetLocation(("pointLights[" + number + "].lightColor").c_str());
 
         GLCall(glUniform3f(uniform_var_loc1, LightPosition.getX(), LightPosition.getY(), LightPosition.getZ()));
-        GLCall(glUniform3f(uniform_var_loc2, 4.0f, 4.0f, 4.0f));
+        GLCall(glUniform3f(uniform_var_loc2, 2.0f, 2.0f, 2.0f));
     }
 
     void MaterialEditorSettings::UpdateCamera(Shader& MaterialEditorShader, CameraComponent& MeshEditorCamera)

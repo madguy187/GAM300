@@ -5,17 +5,31 @@ using Eclipse;
 
 public class Test : EclipseBehavior
 {
-    [Header("Weeeeeee")]
-    public UInt32 test;
-
     public void Start()
     {
-        Console.WriteLine("C# Start");
     }
 
     public void Update()
     {
-        Console.WriteLine("C# Update");
-        Console.WriteLine(Vector3.zero.x);
+        if (Input.GetKey(KeyCode.D))
+        {
+            Quaternion rot = transform.rotation;
+            rot.x += (0.01f * Time.deltaTime);
+            transform.rotation = rot;
+        }
+
+        if (Input.GetKey(KeyCode.A))
+        {
+            Quaternion rot = transform.rotation;
+            rot.x -= (0.01f * Time.deltaTime);
+            transform.rotation = rot;
+        }
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            transform.rotation = Quaternion.identity;
+        }
+
+        Console.WriteLine(transform.rotation);
     }
 }

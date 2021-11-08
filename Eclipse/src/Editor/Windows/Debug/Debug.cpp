@@ -25,8 +25,8 @@ namespace Eclipse
             DefaultLayerInit();
 
         // Deserialize the map here into KeyMappings
-        engine->InputManager->InputCompiler_.Load();
-        engine->InputManager->InputCompiler_.ProvideContainer(KeyMappings);
+        //engine->InputManager->InputCompiler_.Load();
+        //engine->InputManager->InputCompiler_.ProvideContainer(KeyMappings);
     }
 
     void DebugWindow::Unload()
@@ -177,19 +177,21 @@ namespace Eclipse
         ECGui::CheckBoxBool("Normal Mapx", &engine->GraphicsManager.EnableNormalMapping, false);
         ECGui::InsertSameLine();
         ECGui::CheckBoxBool("Environment Maps", &engine->GraphicsManager.EnableEnvironmentMapForAll, false);
+        ECGui::InsertSameLine();
+        ECGui::CheckBoxBool("Cursor Hide", &engine->InputManager->HideCursor, false);
 
-        ECGui::DrawTextWidget<const char*>("Gamma:", EMPTY_STRING);
-        ECGui::DrawSliderFloatWidget("Gamma", &engine->GraphicsManager.GammaCorrection, true, 0.5f, 2.5f);
+        //ECGui::DrawTextWidget<const char*>("Gamma:", EMPTY_STRING);
+        //ECGui::DrawSliderFloatWidget("Gamma", &engine->GraphicsManager.GammaCorrection, true, 0.5f, 2.5f);
 
         ECGui::DrawTextWidget<const char*>("BackGroundColour:", EMPTY_STRING);
         ECGui::DrawSliderFloat3Widget("BackGroundColour", &engine->GraphicsManager.BackGroundColour, true, 0.f, 1.0f);
 
-        ECGui::DrawTextWidget<const char*>("HDR Exposure:", EMPTY_STRING);
-        ECGui::DrawSliderFloatWidget("HDR Exposure", &engine->GraphicsManager.Exposure, true, 0.1f, 10.5f);
+        //ECGui::DrawTextWidget<const char*>("HDR Exposure:", EMPTY_STRING);
+        //ECGui::DrawSliderFloatWidget("HDR Exposure", &engine->GraphicsManager.Exposure, true, 0.1f, 10.5f);
 
             if (engine->gFrameBufferManager->PostProcess->AllowPostProcess)
             {
-                std::vector<std::string> Methods = { "NONE" , "INVERSE" , "GREYSCALE" ,"KERNEL" , "BLUR" , "SOBEL"};
+                std::vector<std::string> Methods = { "NONE" , "INVERSE" , "GREYSCALE" ,"KERNEL" , "BLUR" , "SOBEL" , "BLEEDING"};
                 ComboListSettings settingsss = { "PostProcess Methods" };
                 static size_t comboindex = 0;
                 ECGui::DrawTextWidget<const char*>("PostProcess Types:", EMPTY_STRING);

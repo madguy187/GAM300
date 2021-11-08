@@ -149,6 +149,8 @@ namespace Eclipse
 
     void PointLight::Draw(unsigned int EntityId, PointLightComponent* in, FrameBufferMode Mode, unsigned int IndexID, GLenum mode)
     {
+        (void)in;
+
         engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
         glEnable(GL_BLEND);
@@ -159,7 +161,7 @@ namespace Eclipse
 
         // SpotLight Position
         TransformComponent& PointlightTransform = engine->world.GetComponent<TransformComponent>(EntityId);
-        glm::mat4 mModelNDC;
+        //glm::mat4 mModelNDC;
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, PointlightTransform.position.ConvertToGlmVec3Type());
         model = glm::rotate(model, glm::radians(PointlightTransform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));

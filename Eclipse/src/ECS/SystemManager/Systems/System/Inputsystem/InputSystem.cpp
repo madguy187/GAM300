@@ -5,6 +5,8 @@ namespace Eclipse
 {
     void InputSystem::Update()
     {
+        engine->InputManager->CursorUpdate();
+        engine->InputManager->AxisUpdate();
         engine->InputManager->UpdateKeys();
     }
 }

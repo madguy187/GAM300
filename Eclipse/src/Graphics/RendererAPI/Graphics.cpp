@@ -83,10 +83,10 @@ void Graphics::LoadModels()
 
     for (unsigned int i = 0; i < static_cast<unsigned int>(LoadingModels::MAXCOUNT); i++)
     {
-        auto ModelName = engine->GraphicsManager.GetModelName(i);
-        models.emplace(ModelName, ModelFactory::create(i));
+        auto ModelName_ = engine->GraphicsManager.GetModelName(i);
+        models.emplace(ModelName_, ModelFactory::create(i));
 
-        engine->AssimpManager.InsertPrimitiveName(ModelName);
+        engine->AssimpManager.InsertPrimitiveName(ModelName_);
     }
 }
 

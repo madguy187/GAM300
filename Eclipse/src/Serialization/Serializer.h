@@ -1,5 +1,4 @@
 #pragma once
-#include "Global.h"
 #include "TinyXML/tinyxml.h"
 #include "Library/Strings/Lexical.h"
 #include <filesystem>
@@ -15,6 +14,7 @@ namespace Eclipse
     {
         TiXmlDocument _doc;
         TiXmlElement* _currElement;
+        const char* EmptyStringReplacement = "__EMPTY__";
 
         void Init();
 
@@ -24,7 +24,6 @@ namespace Eclipse
 
         void CleanUp();
     public:
-
         Serializer();
 
         void StartElement(const std::string& ele_name, bool isMultiple = false, size_t counter = 0);
@@ -62,15 +61,21 @@ namespace Eclipse
             _currElement->SetDoubleAttribute(att_name.c_str(), att_data);
         }
 
-        /*template <>
+        template <>
         inline void AddAttributeToElement<std::string>(const std::string& att_name, const std::string& att_data)
-        {
+        {/*
+            if(!att_data.empty())
+                _currElement->SetAttribute(att_name.c_str(), EmptyStringReplacement);
+            else*/
             _currElement->SetAttribute(att_name.c_str(), att_data.c_str());
-        }*/
+        }
 
         template <>
         inline void AddAttributeToElement<const char*>(const std::string& att_name, const char* const& att_data)
-        {
+        {/*
+            if(!att_data)
+                _currElement->SetAttribute(att_name.c_str(), EmptyStringReplacement);
+            else*/
             _currElement->SetAttribute(att_name.c_str(), att_data);
         }
 
@@ -78,6 +83,10 @@ namespace Eclipse
         inline void AddAttributeToElement<char>(const std::string& att_name, const char& att_data)
         {
             std::string c{ att_data };
+
+            //if(!c.empty())
+            //    _currElement->SetAttribute(att_name.c_str(), EmptyStringReplacement);
+            //else
             _currElement->SetAttribute(att_name.c_str(), c.c_str());
         }
 
@@ -130,6 +139,12 @@ namespace Eclipse
         }
         
         template <>
+        inline void AddAttributeToElement(const std::string& att_name, const m_Type& att_data)
+        {
+            _currElement->SetAttribute(att_name.c_str(), lexical_cast_toStr<m_Type>(const_cast<m_Type&>(att_data)).c_str());
+        }
+        
+        template <>
         inline void AddAttributeToElement(const std::string& att_name, const Texture& att_data)
         {
             (void)att_name;
@@ -153,7 +168,20 @@ namespace Eclipse
         template <>
         inline void AddAttributeToElement(const std::string& att_name, const MonoScript& att_data)
         {
-            AddAttributeToElement(att_name, att_data.scriptName);
+            (void)att_name;
+            AddAttributeToElement("ScriptName", att_data.scriptName);
+            StartElement("MonoVariables");
+            AddAttributeToElement("Variables", att_data.vars);
+            CloseElement();
+        }
+        
+        template <>
+        inline void AddAttributeToElement(const std::string& att_name, const MonoVariable& att_data)
+        {
+            (void)att_name;
+            AddAttributeToElement("Type", att_data.type);
+            AddAttributeToElement("Name", att_data.varName);
+            AddAttributeToElement("Value", att_data.varValue);
         }
 
 		template <typename T>

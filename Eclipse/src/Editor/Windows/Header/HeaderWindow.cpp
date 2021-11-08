@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "HeaderWindow.h"
 #include "ECS/SystemManager/Systems/System/MonoSystem/MonoSystem.h"
+#include "../MeshEditor/MeshEditor.h"
 
 namespace Eclipse
 {
@@ -38,6 +39,7 @@ namespace Eclipse
 		{
 			if (ECGui::ButtonBool(" " ICON_FA_PLAY, ImVec2{30.f,22.f}))
 			{
+				engine->editorManager->GetEditorWindow<MeshEditorWindow>()->Unload();
 				engine->szManager.SaveBackupFile();
 				engine->mono.StartMono();
 				//auto& mono = engine->world.GetSystem<MonoSystem>();
@@ -46,6 +48,9 @@ namespace Eclipse
 				engine->SetPlayState(true);
 				ECGui::SetWindowFocus("Game View " ICON_MDI_MONITOR);
 				EDITOR_LOG_INFO("Scene is playing...");
+
+				// Darren Was Here , Reset Values
+				engine->gFrameBufferManager->SetSobelEffect();
 			}
 		}
 		else
@@ -61,6 +66,9 @@ namespace Eclipse
 				ECGui::SetWindowFocus("Scene View " ICON_MDI_MONITOR);
 				engine->szManager.LoadBackupFile();
 				EDITOR_LOG_INFO("Scene has stopped playing. Reverting to original state...");
+
+				// Darren Was Here , Reset Values
+				engine->gFrameBufferManager->Reset();
 			}
 		}
 

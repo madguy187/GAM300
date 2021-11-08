@@ -87,10 +87,9 @@ namespace Eclipse
 			Px_Actors[ent].actor = Px_Physics->createRigidStatic(PxTransform(temptrans));
 			Px_Actors[ent].type = ActorType::ACTOR_STATIC;
 		}
-
-		Px_Actors[ent].actor->setName(std::to_string(ent).c_str());
+		Px_Actors[ent].ID = ent;
+		Px_Actors[ent].actor->userData = &Px_Actors[ent].ID;
 		AddActorToScene(ent);
-		//AttachBoxToActor(ent, 2.5f, 2.5f, 2.5f);
 	}
 
 	void PhysicsManager::ChangeDynamicStatic(Entity ent)
@@ -127,6 +126,9 @@ namespace Eclipse
 					break;
 				case PxShapeType::Px_SPHERE :
 					PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(temp), PxSphereGeometry{ collision.shape.radius }, *tempmat);
+					break;
+				case PxShapeType::Px_CAPSULE:
+					PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(temp), PxCapsuleGeometry{ collision.shape.radius,collision.shape.hheight }, *tempmat);
 					break;
 				}
 				
@@ -173,6 +175,9 @@ namespace Eclipse
 				case PxShapeType::Px_SPHERE:
 					PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(temp), PxSphereGeometry{ collision.shape.radius }, *tempmat);
 					break;
+				case PxShapeType::Px_CAPSULE:
+					PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(temp), PxCapsuleGeometry{ collision.shape.radius,collision.shape.hheight }, *tempmat);
+					break;
 				}
 			}
 		}
@@ -196,6 +201,9 @@ namespace Eclipse
 		}
 		PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(Px_Actors[ent].actor), PxBoxGeometry{ hx,hy,hz }, *tempmat);
 		collision.created = true;
+		collision.shape.hx = hx;
+		collision.shape.hy = hy;
+		collision.shape.hz = hz;
 	}
 
 	void PhysicsManager::AttachSphereToActor(Entity ent, float radius)
@@ -212,6 +220,7 @@ namespace Eclipse
 		}
 		PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(Px_Actors[ent].actor), PxSphereGeometry{ radius }, *tempmat);
 		collision.created = true;
+		collision.shape.radius = radius;
 	}
 
 	void PhysicsManager::ChangeType(Entity ent)
@@ -230,17 +239,76 @@ namespace Eclipse
 		}
 	}
 
-	void PhysicsManager::CleanupScene()
+	PxQueryHitType::Enum	QueryReportCallback::preFilter(const PxFilterData& filterData, const PxShape* shape, const PxRigidActor* actor, PxHitFlags& queryFlags)
 	{
+		// PT: ignore triggers
+		auto& entcomp = engine->world.GetComponent<EntityComponent>(*(Entity*)actor->userData);
+		if(_mask.test(entcomp.LayerIndex))
+			return PxQueryHitType::eBLOCK;
 
-		for (auto entity : engine->editorManager->GetEntityListByConstRef())
-		{
-			engine->gPhysics.RemoveActor(entity);
-		}
+		return PxQueryHitType::eNONE;
+	}
+
+	PxQueryHitType::Enum	QueryReportCallback::postFilter(const PxFilterData& filterData, const PxQueryHit& hit)
+	{
+		return PxQueryHitType::eBLOCK;
+	}
+
+	bool PhysicsManager::Raycast(ECVec3 origin, ECVec3 dir, float dist, PxRaycastBuffer& hit,std::string layerMask)
+	{
+		PxVec3 _origin;
+		PxVec3 _dir;
+
+		_origin.x = origin.getX();
+		_origin.y = origin.getY();
+		_origin.z = origin.getZ();
+
+		_dir.x = dir.getX();
+		_dir.y = dir.getY();
+		_dir.z = dir.getZ();
+		PxQueryFlags qf(PxQueryFlag::eSTATIC | PxQueryFlag::eDYNAMIC | PxQueryFlag::ePREFILTER);
+		PxQueryFilterData filter(PxFilterData(), qf);
+		std::bitset<20> mask = std::bitset<20>(layerMask);
+		QueryReportCallback _callback{ mask };
+
+		//auto& transformComponent = engine->world.GetComponent<TransformComponent>(*(Entity*)hit.block.actor->userData);
+		return Px_Scene->raycast(_origin, _dir, dist, hit, PxHitFlag::eDEFAULT, filter,&_callback);
+
+	}
+
+	bool PhysicsManager::CheckSphere(ECVec3 position, float radius, std::string layerMask)
+	{
+		PxTransform temp;
+		temp.p.x = position.getX();
+		temp.p.y = position.getY();
+		temp.p.z = position.getZ();
+		PxSphereGeometry sphere{ radius };
+		PxQueryFlags qf(PxQueryFlag::eSTATIC | PxQueryFlag::eDYNAMIC | PxQueryFlag::ePREFILTER);
+		PxQueryFilterData filter(PxFilterData(), qf);
+		std::bitset<20> mask = std::bitset<20>(layerMask);
+		QueryReportCallback _callback{ mask };
+		PxOverlapBuffer hit;
+		return Px_Scene->overlap(sphere,temp,hit, filter, &_callback);
+	}
+
+	bool PhysicsManager::CheckBox(ECVec3 position, ECVec3 halfextents, std::string layerMask)
+	{
+		PxTransform temp;
+		temp.p.x = position.getX();
+		temp.p.y = position.getY();
+		temp.p.z = position.getZ();
+		PxBoxGeometry box{halfextents.getX(),halfextents.getY(),halfextents.getZ()};
+		PxQueryFlags qf(PxQueryFlag::eSTATIC | PxQueryFlag::eDYNAMIC | PxQueryFlag::ePREFILTER);
+		PxQueryFilterData filter(PxFilterData(), qf);
+		std::bitset<20> mask = std::bitset<20>(layerMask);
+		QueryReportCallback _callback{ mask };
+		PxOverlapBuffer hit;
+		return Px_Scene->overlap(box, temp, hit, filter, &_callback);
 	}
 
 	void PhysicsManager::AttachCapsuleToActor(Entity ent, float radius,float halfheight)
 	{
+		auto& collision = engine->world.GetComponent<CollisionComponent>(ent);
 		if (Px_Actors[ent].actor == nullptr)
 			return;
 
@@ -250,8 +318,19 @@ namespace Eclipse
 			std::cout << "creatematerial failed" << std::endl;
 			return;
 		}
+		PxRigidActorExt::createExclusiveShape(*static_cast<PxRigidActor*>(Px_Actors[ent].actor), PxCapsuleGeometry{ radius,halfheight }, *tempmat);
+		collision.created = true;
+		collision.shape.radius = radius;
+		collision.shape.hheight = halfheight;
+	}
 
-		PxRigidActorExt::createExclusiveShape(*dynamic_cast<PxRigidActor*>(Px_Actors[ent].actor), PxCapsuleGeometry{ radius,halfheight }, *tempmat);
+	void PhysicsManager::CleanupScene()
+	{
+
+		for (auto entity : engine->editorManager->GetEntityListByConstRef())
+		{
+			engine->gPhysics.RemoveActor(entity);
+		}
 	}
 
 	PxQuat PhysicsManager::AnglestoQuat(float degreeX, float degreeY, float degreeZ)
@@ -298,9 +377,6 @@ namespace Eclipse
 		return temp;
 	}
 	
-
-
-
 	void PhysicsManager::AddActorToScene(Entity ent)
 	{
 		if (Px_Actors[ent].InScene)
@@ -323,6 +399,7 @@ namespace Eclipse
 		Px_Actors[ent].actor->release();
 		Px_Actors[ent].actor = nullptr;
 		Px_Actors[ent].type = ActorType::ACTOR_UNASSIGNED;
+		Px_Actors[ent].ID = MAX_ENTITY;
 	}
 
 	void PhysicsManager::UpdateActor(Entity ent)
@@ -349,10 +426,6 @@ namespace Eclipse
 			PxVec3 temptrans{0,0,0};
 			PxQuat temprot;
 
-			tempforce.x = rigid.forces.getX();
-			tempforce.y = rigid.forces.getY();
-			tempforce.z = rigid.forces.getZ();
-
 			tempangVelo.x = rigid.Angvelocity.getX();
 			tempangVelo.y = rigid.Angvelocity.getY();
 			tempangVelo.z = rigid.Angvelocity.getZ();
@@ -365,7 +438,16 @@ namespace Eclipse
 			temprot = AnglestoQuat(transform.rotation.getX(),transform.rotation.getY(),transform.rotation.getZ());
 	
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setGlobalPose(PxTransform{ temptrans,temprot});
-			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->addForce(tempforce);
+			for (const auto& force : rigid.forces)
+			{
+				tempforce.x = force.force.getX();
+				tempforce.y = force.force.getY();
+				tempforce.z = force.force.getZ();
+				if(force.mode == ForceMode::Default)
+					static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->addForce(tempforce, PxForceMode::eFORCE);
+				else
+					static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->addForce(tempforce, PxForceMode::eIMPULSE);
+			}
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setMaxLinearVelocity(static_cast<PxReal>(rigid.MaxVelocity));
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setMass(rigid.mass);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setActorFlag(PxActorFlag::eDISABLE_GRAVITY,rigid.enableGravity ? false : true);
@@ -393,11 +475,33 @@ namespace Eclipse
 					{
 						shapes[i]->setGeometry(PxBoxGeometry{ collision.shape.hx,collision.shape.hy,collision.shape.hz });
 					}
+					else
+					{
+						//shape don't tally
+						static_cast<PxRigidActor*>(Px_Actors[ent].actor)->detachShape(*shapes[i]);
+						AttachBoxToActor(ent, collision.shape.hx, collision.shape.hy, collision.shape.hz);
+					}
 					break;
 				case PxShapeType::Px_SPHERE:
 					if (shapes[i]->getGeometryType() == PxGeometryType::eSPHERE)
 					{
 						shapes[i]->setGeometry(PxSphereGeometry{ collision.shape.radius });
+					}
+					else
+					{
+						static_cast<PxRigidActor*>(Px_Actors[ent].actor)->detachShape(*shapes[i]);
+						AttachSphereToActor(ent, collision.shape.radius);
+					}
+					break;
+				case PxShapeType::Px_CAPSULE:
+					if (shapes[i]->getGeometryType() == PxGeometryType::eCAPSULE)
+					{
+						shapes[i]->setGeometry(PxCapsuleGeometry{ collision.shape.radius, collision.shape.hheight });
+					}
+					else
+					{
+						static_cast<PxRigidActor*>(Px_Actors[ent].actor)->detachShape(*shapes[i]);
+						AttachCapsuleToActor(ent, collision.shape.radius, collision.shape.hheight);
 					}
 					break;
 				}
@@ -405,6 +509,24 @@ namespace Eclipse
 			delete[] shapes;
 		}
 	}
+
+	void PhysicsManager::ChangeShape(Entity ent,PxShapeType shape)
+	{
+		auto& collision = engine->world.GetComponent<CollisionComponent>(ent);
+		switch (shape)
+		{
+		case PxShapeType::Px_CAPSULE:
+			collision.shape.shape = PxShapeType::Px_CAPSULE;
+			break;
+		case PxShapeType::Px_SPHERE:
+			collision.shape.shape = PxShapeType::Px_SPHERE;
+			break;
+		case PxShapeType::Px_CUBE:
+			collision.shape.shape = PxShapeType::Px_CUBE;
+			break;
+		}
+	}
+
 
 	void PhysicsManager::CreateShape(Entity ent)
 	{
@@ -420,16 +542,22 @@ namespace Eclipse
 		case PxShapeType::Px_SPHERE :
 			AttachSphereToActor(ent, collision.shape.radius);
 			break;
+		case PxShapeType::Px_CAPSULE :
+			AttachCapsuleToActor(ent, collision.shape.radius, collision.shape.hheight);
+			break;
 		}
 	}
 
-	void Eclipse::PhysicsManager::SetForce(Entity ent, ECVec3 force)
+	void Eclipse::PhysicsManager::AddForce(Entity ent, ECVec3 force,ForceMode mode)
 	{
 		if (!engine->world.CheckComponent<RigidBodyComponent>(ent))
 			return;
 
 		auto& rigidbody = engine->world.GetComponent<RigidBodyComponent>(ent);
-		rigidbody.forces = force;
+		EC_Force temp;
+		temp.force = force;
+		temp.mode = mode;
+		rigidbody.forces.push_back(temp);
 	}
 
 	void Eclipse::PhysicsManager::UpdateVariables(Entity ent)

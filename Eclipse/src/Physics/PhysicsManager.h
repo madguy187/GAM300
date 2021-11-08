@@ -1,17 +1,28 @@
 #pragma once
-
 #include "PxPhysicsAPI.h"
 #include "ECS/ComponentManager/Components/RigidBodyComponent.h"
 #include "ECS/ComponentManager/Components/CollisionComponent.h"
+#include "Global.h"
 namespace Eclipse
 {
 	using namespace physx;
-	
 	struct EC_Actor
 	{
 		PxActor* actor;
 		ActorType type;
+		Entity ID;
 		bool InScene;
+	};
+
+
+	class QueryReportCallback : public PxQueryFilterCallback
+	{
+		
+	public:
+		QueryReportCallback(std::bitset<20> mask) : _mask{ mask } {}
+		virtual PxQueryHitType::Enum	QueryReportCallback::preFilter(const PxFilterData& filterData, const PxShape* shape, const PxRigidActor* actor, PxHitFlags& queryFlags);
+		virtual PxQueryHitType::Enum	QueryReportCallback::postFilter(const PxFilterData& filterData, const PxQueryHit& hit);
+		std::bitset<20> _mask;
 	};
 
 	class PhysicsManager
@@ -101,8 +112,9 @@ namespace Eclipse
 		ECVec3 QuattoAngles(PxQuat quat);
 		void InitActor(Entity ent);
 		void UpdateActor(Entity ent);
+		void ChangeShape(Entity ent, PxShapeType shape);
 		void CreateShape(Entity ent);
-		void SetForce(Entity ent, ECVec3 force);
+		void AddForce(Entity ent, ECVec3 force,ForceMode mode);
 		void UpdateVariables(Entity ent);
 		void UpdateShapes(Entity ent);
 		void GetActorPosition(Entity ent);
@@ -112,6 +124,9 @@ namespace Eclipse
 		void RemoveActorFromScene(Entity ent);
 		void RemoveActor(Entity ent);
 		void ChangeType(Entity ent);
+		bool Raycast(ECVec3 origin, ECVec3 dir, float dist, PxRaycastBuffer& hit,std::string layerMask);
+		bool CheckSphere(ECVec3 position, float radius, std::string layerMask);
+		bool CheckBox(ECVec3 position, ECVec3 halfextents, std::string layerMask);
 		void CleanupScene();
 	};
 }

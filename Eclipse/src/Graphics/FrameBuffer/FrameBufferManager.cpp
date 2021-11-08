@@ -17,12 +17,15 @@ namespace Eclipse
         CreateFBO(1270, 593, FrameBufferMode::FBM_MATERIALEDITOR);
         CreateFBO(1270, 593, FrameBufferMode::FBM_MESHEDITOR);
 
-        // PostProcess
+        // Sobel Framebuffers
+        // We Render to this FBO then we will render the effect into scene view.
+        CreateFBO(1270, 593, FrameBufferMode::FBM_GAME_SOBEL);
+        CreateFBO(1270, 593, FrameBufferMode::FBM_SCENE_SOBEL);
+
+        // Additionals - PostProcess
         PostProcess = std::make_unique<FrameBuffer>();
         PostProcess->CreatePostProcessFramebuffer();
 
-        // Create additional Buffer For Game View
-        CreateFBO(1270, 593, FrameBufferMode::FBM_GAME_SOBEL);
     }
 
     void FrameBufferManager::CreateFBO(unsigned int width_, unsigned int height_, FrameBufferMode in)
@@ -135,6 +138,16 @@ namespace Eclipse
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     }
 
+    unsigned int FrameBufferManager::GetFrameBufferWidth(FrameBufferMode in)
+    {
+        return FrameBufferContainer[in]->m_width;
+    }
+
+    unsigned int FrameBufferManager::GetFrameBufferHeight(FrameBufferMode in)
+    {
+        return FrameBufferContainer[in]->m_height;
+    }
+
     float FrameBufferManager::GetAspectRatio(CameraComponent::CameraType in)
     {
         switch (in)
@@ -191,4 +204,188 @@ namespace Eclipse
         return 0.0f;
     }
 
+    FrameBufferMode FrameBufferManager::GetFrameBufferMode(CameraComponent::CameraType in)
+    {
+        switch (in)
+        {
+        case CameraComponent::CameraType::MeshEditor_Camera:
+        {
+            return FrameBufferMode::FBM_MESHEDITOR;
+        }
+        break;
+
+        case CameraComponent::CameraType::MaterialEditor_Camera:
+        {
+            return FrameBufferMode::FBM_MATERIALEDITOR;
+        }
+        break;
+
+        case CameraComponent::CameraType::Editor_Camera:
+        {
+            return FrameBufferMode::FBM_SCENE;
+        }
+        break;
+
+        case CameraComponent::CameraType::Game_Camera:
+        {
+            return FrameBufferMode::FBM_GAME;
+        }
+        break;
+
+        case CameraComponent::CameraType::TopView_Camera:
+        {
+            return FrameBufferMode::FBM_TOP;
+        }
+        break;
+
+        case CameraComponent::CameraType::BottomView_Camera:
+        {
+            return FrameBufferMode::FBM_BOTTOM;
+        }
+        break;
+
+        case CameraComponent::CameraType::RightView_camera:
+        {
+            return FrameBufferMode::FBM_RIGHT;
+        }
+        break;
+
+        case CameraComponent::CameraType::LeftView_Camera:
+        {
+            return FrameBufferMode::FBM_LEFT;
+        }
+        break;
+        }
+
+        return FrameBufferMode::MAXCOUNT;
+    }
+
+    void FrameBufferManager::FadeIn(FrameBuffer::PostProcessType Type, float& timer, float multiplier, FrameBufferMode WhichFBO)
+    {
+        (void)WhichFBO;
+
+        timer = 1.0f;
+
+        //if (PostProcess->PPType_ == Type && timer <= 1.0f)
+        //{
+        //    timer += (engine->Game_Clock.get_fixedDeltaTime() / multiplier);
+        //}
+    }
+
+    void FrameBufferManager::PostProcessUpdate(FrameBufferMode Scene)
+    {
+        if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
+        {
+            if (PostProcess->AllowPostProcess == false)
+                return;
+
+            if (PostProcess->PPType_ == FrameBuffer::PostProcessType::PPT_NONE)
+                return;
+
+            if (PostProcess->PPType_ == FrameBuffer::PostProcessType::PPT_SOBEL)
+                return;
+
+            if (PostProcess->PPType_ == FrameBuffer::PostProcessType::PPT_BLLEDING)
+            {
+                PostProcess->BleedingTimer += engine->Game_Clock.get_fixedDeltaTime() * 5;
+            }
+
+            engine->gFrameBufferManager->UseFrameBuffer(Scene);
+
+            auto& shdrpgm = Graphics::shaderpgms["PostProcess"];
+            shdrpgm.Use();
+
+            GLint Inversion = shdrpgm.GetLocation("Type");
+            GLint iTime_ = shdrpgm.GetLocation("iTime");
+
+            GLCall(glUniform1i(Inversion, static_cast<GLint>(PostProcess->PPType_)));
+            GLCall(glUniform1f(iTime_, PostProcess->BleedingTimer));
+
+            glBindVertexArray(PostProcess->rectVAO);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(Scene));
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+        }
+    }
+
+    void FrameBufferManager::Reset()
+    {
+        PostProcess->AllowPostProcess = false;
+        PostProcess->FadeInTimer = 0.0f;
+        PostProcess->PPType_ = FrameBuffer::PostProcessType::PPT_NONE;
+    }
+
+    void FrameBufferManager::SetSobelEffect()
+    {
+        PostProcess->AllowPostProcess = true;
+        PostProcess->FadeInTimer = 0.0f;
+        PostProcess->PPType_ = FrameBuffer::PostProcessType::PPT_SOBEL;
+    }
+
+    void FrameBufferManager::SobelEffectUpdate(FrameBufferMode TargetFBO, FrameBufferMode RenderFBO)
+    {
+        if (PostProcess->AllowPostProcess == true)
+        {
+            if (PostProcess->PPType_ == FrameBuffer::PostProcessType::PPT_SOBEL)
+            {
+                FadeIn(FrameBuffer::PostProcessType::PPT_SOBEL, PostProcess->FadeInTimer, PostProcess->Multiplier, RenderFBO);
+
+                // We will output to Game FrameBuffer
+                UseFrameBuffer(RenderFBO);
+
+                auto& shdrpgm = Graphics::shaderpgms["PostProcess"];
+                shdrpgm.Use();
+
+                GLint Inversion = shdrpgm.GetLocation("Type");
+                GLint Height_ = shdrpgm.GetLocation("Height");
+                GLint Width_ = shdrpgm.GetLocation("Width");
+                GLint FadeInTimer_ = shdrpgm.GetLocation("FadeInTimer");
+
+                GLCall(glUniform1i(Inversion, static_cast<GLint>(PostProcess->PPType_)));
+                GLCall(glUniform1i(Height_, engine->gFrameBufferManager->FrameBufferContainer[RenderFBO]->m_height));
+                GLCall(glUniform1i(Width_, engine->gFrameBufferManager->FrameBufferContainer[RenderFBO]->m_width));
+
+                if (RenderFBO == FrameBufferMode::FBM_SCENE)
+                {
+                    GLCall(glUniform1f(FadeInTimer_, PostProcess->Visible));
+                }
+                else
+                {
+                    GLCall(glUniform1f(FadeInTimer_, PostProcess->FadeInTimer));
+                }
+
+                glBindVertexArray(PostProcess->rectVAO);
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(TargetFBO));
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+
+                shdrpgm.UnUse();
+            }
+        }
+    }
+
+    bool FrameBufferManager::IsSobelEffect()
+    {
+        return (PostProcess->AllowPostProcess && PostProcess->PPType_ == FrameBuffer::PostProcessType::PPT_SOBEL);
+    }
+
+    void FrameBufferManager::PostProcessUpdate()
+    {
+        if (PostProcess->AllowPostProcess == true)
+        {
+            if (PostProcess->PPType_ == FrameBuffer::PostProcessType::PPT_SOBEL)
+            {
+                if (engine->IsScenePlaying() == true)
+                {
+                    SobelEffectUpdate(FrameBufferMode::FBM_GAME_SOBEL, FrameBufferMode::FBM_GAME);
+                }
+
+                SobelEffectUpdate(FrameBufferMode::FBM_SCENE_SOBEL, FrameBufferMode::FBM_SCENE);
+            }
+            else
+            {
+                PostProcessUpdate(FrameBufferMode::FBM_SCENE);
+            }
+        }
+    }
 }

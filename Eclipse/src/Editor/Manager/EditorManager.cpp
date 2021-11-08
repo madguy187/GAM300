@@ -169,13 +169,6 @@ namespace Eclipse
 			engine->MaterialManager.HighlightClick(ID);
 	}
 
-	void EditorManager::RegisterNewlySerializedEntity(Entity ID)
-	{
-		EntityHierarchyList_.push_back(ID);
-		EntityToIndexMap_.insert(std::pair<Entity, int>(ID, static_cast<int>(EntityHierarchyList_.size() - 1)));
-		GEHIndex_ = EntityHierarchyList_.size() - 1;
-	}
-
 	void EditorManager::DestroyEntity(Entity ID)
 	{
 		if (ID == MAX_ENTITY)
@@ -377,14 +370,14 @@ namespace Eclipse
 
 	void EditorManager::Clear()
 	{
-		EntityHierarchyList_.clear();
-		EntityToIndexMap_.clear();
-		GEHIndex_ = 0;
-
 		for (const auto& window : Windows_)
 		{
 			window->Unload();
 		}
+
+		EntityHierarchyList_.clear();
+		EntityToIndexMap_.clear();
+		GEHIndex_ = 0;
 	}
 
 	void EditorManager::TextureIconInit()

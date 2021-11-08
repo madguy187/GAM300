@@ -65,13 +65,19 @@ enum class ActorType
 
 enum class PxShapeType
 {
-    Px_SQUARE,
-    Px_CIRCLE,
-    Px_TRIANGLE,
-    Px_LINE,
     Px_SPHERE,
     Px_CUBE,
-    Px_CYLINDER,
+    Px_CAPSULE
+};
+
+enum class NodeType
+{
+    NODE_UNASSIGNED,
+    NODE_ROOT,
+    NODE_SELECTOR,
+    NODE_SEQUENCE,
+    NODE_BOOL,
+    NODE_TASK
 };
 
 enum class EntityType
@@ -190,6 +196,8 @@ enum class MaterialModelType
 enum class FrameBufferMode
 {
     FBM_NONE = 0,
+
+    // BASIC FRAMEBUFFERS
     FBM_GAME = 1,
     FBM_SCENE = 2,
     FBM_TOP = 3,
@@ -198,7 +206,11 @@ enum class FrameBufferMode
     FBM_RIGHT = 6,
     FBM_MATERIALEDITOR = 7,
     FBM_MESHEDITOR = 8,
+
+    // SOBEL FBO
     FBM_GAME_SOBEL = 9,
+    FBM_SCENE_SOBEL = 10,
+
     MAXCOUNT
 };
 
@@ -221,7 +233,21 @@ enum class m_Type
     MONO_UNDEFINED,
     MONO_VAR,
     MONO_HEADER,
-    MONO_LAYERMASK
+    MONO_LAYERMASK,
+    MONO_GAMEOBJECT
+};
+
+enum class ForceMode
+{
+    Default = 0,
+    Impulse = 1
+};
+
+enum class CursorLockMode
+{
+    None = 0,
+    Locked = 1,
+    Confined = 2
 };
 
 struct MonoVariable
