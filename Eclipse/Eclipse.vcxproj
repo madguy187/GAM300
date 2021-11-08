@@ -187,7 +187,6 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AIComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
-    <ClInclude Include="src\ECS\ComponentManager\Components\AnimationComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AudioComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ChildComponent.h" />
@@ -212,7 +211,6 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\ECS\EntityManager\EntityManager.h" />
     <ClInclude Include="src\ECS\SystemManager\SystemManager.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\AI\AISystem.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\AnimationSystem\AnimationSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem\CameraSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Collision\CollisionSystem.h" />
@@ -272,9 +270,9 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\EntryPoint\EntryPoint.h" />
     <ClInclude Include="src\Events\EventManager.h" />
     <ClInclude Include="src\Events\Events.h" />
-    <ClInclude Include="src\FSM\Manager\FSM_Manager.h" />
+    <ClInclude Include="src\FSM\FSM\FiniteStateMachine.h" />
+    <ClInclude Include="src\FSM\States\TestingFSM\TestingFSM.h" />
     <ClInclude Include="src\Global.h" />
-    <ClInclude Include="src\Graphics\Animation\AnimationManager.h" />
     <ClInclude Include="src\Graphics\Camera\CameraManager.h" />
     <ClInclude Include="src\Graphics\Culling\CullingManager.h" />
     <ClInclude Include="src\Graphics\Debugging\DebugRenderingManager.h" />
@@ -310,7 +308,6 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\Material\MaterialManager.h" />
     <ClInclude Include="src\Graphics\Material\PBR\PBRManager.h" />
     <ClInclude Include="src\Graphics\MeshEditor\MeshEditorSource.h" />
-    <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpAnimator.h" />
     <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.h" />
     <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\AllBasicPrimitives.h" />
@@ -368,12 +365,9 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Library\UUID\UUIDGenerator.h" />
     <ClInclude Include="src\Logger\Logger.h" />
     <ClInclude Include="src\Mono\Components\s_AudioSource.h" />
-    <ClInclude Include="src\Mono\Components\s_Cursor.h" />
     <ClInclude Include="src\Mono\Components\s_EclipseBehavior.h" />
     <ClInclude Include="src\Mono\Components\s_GameObject.h" />
-    <ClInclude Include="src\Mono\Components\s_Light.h" />
     <ClInclude Include="src\Mono\Components\s_LogicalInput.h" />
-    <ClInclude Include="src\Mono\Components\s_Physics.h" />
     <ClInclude Include="src\Mono\Components\s_Quaternion.h" />
     <ClInclude Include="src\Mono\Components\s_RigidBodyComponent.h" />
     <ClInclude Include="src\Mono\Components\s_Time.h" />
@@ -410,7 +404,6 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\ECS\EntityManager\EntityManager.cpp" />
     <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\AI\AISystem.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\AnimationSystem\AnimationSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem\CameraSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Collision\CollisionSystem.cpp" />
@@ -457,7 +450,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Editor\Windows\SwitchViews\TopSwitchViewWindow.cpp" />
     <ClCompile Include="src\Engine\Engine.cpp" />
     <ClCompile Include="src\EntryPoint\EntryPoint.cpp" />
-    <ClCompile Include="src\Graphics\Animation\AnimationManager.cpp" />
+    <ClCompile Include="src\FSM\States\TestingFSM\TestingFSM.cpp" />
     <ClCompile Include="src\Graphics\Camera\CameraManager.cpp" />
     <ClCompile Include="src\Graphics\Culling\CullingManager.cpp" />
     <ClCompile Include="src\Graphics\Debugging\DebugRenderingManager.cpp" />
@@ -489,7 +482,6 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\Material\MaterialManager.cpp" />
     <ClCompile Include="src\Graphics\Material\PBR\PBRManager.cpp" />
     <ClCompile Include="src\Graphics\MeshEditor\MeshEditorSource.cpp" />
-    <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpAnimator.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.cpp" />
