@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "HeaderWindow.h"
 #include "ECS/SystemManager/Systems/System/MonoSystem/MonoSystem.h"
+#include "../MeshEditor/MeshEditor.h"
 
 namespace Eclipse
 {
@@ -38,6 +39,7 @@ namespace Eclipse
 		{
 			if (ECGui::ButtonBool(" " ICON_FA_PLAY, ImVec2{30.f,22.f}))
 			{
+				engine->editorManager->GetEditorWindow<MeshEditorWindow>()->Unload();
 				engine->szManager.SaveBackupFile();
 				engine->mono.StartMono();
 				//auto& mono = engine->world.GetSystem<MonoSystem>();

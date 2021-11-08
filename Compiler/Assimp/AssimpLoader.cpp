@@ -5,20 +5,9 @@ namespace EclipseCompiler
 {
     void AssimpLoader::LoadAssimpModel(std::string path, std::unordered_map<std::string, Mesh>& GeometryContainer)
     {
-        unsigned int importOptions =
-            aiProcess_Triangulate |
-            aiProcess_GenSmoothNormals |
-            aiProcess_FlipUVs |
-            aiProcess_JoinIdenticalVertices |
-            aiProcess_FlipWindingOrder |
-            aiProcess_RemoveRedundantMaterials |
-            aiProcess_FindDegenerates |
-            aiProcess_FindInvalidData |
-            aiProcess_GenUVCoords |
-            aiProcess_TransformUVCoords |
-            aiProcess_FindInstances |
-            aiProcess_PreTransformVertices |
-            aiProcess_CalcTangentSpace;
+        unsigned int importOptions = aiProcess_Triangulate | aiProcess_GenSmoothNormals
+            | aiProcess_CalcTangentSpace | aiProcess_FlipWindingOrder
+            | aiProcess_TransformUVCoords | aiProcess_FlipUVs;
 
         Assimp::Importer import;
         const aiScene* scene = import.ReadFile(path, importOptions);
@@ -29,27 +18,37 @@ namespace EclipseCompiler
             return;
         }
 
+        if (!scene->HasAnimations())
+        {
+            importOptions =
+                aiProcess_Triangulate |
+                aiProcess_GenSmoothNormals |
+                aiProcess_FlipUVs |
+                aiProcess_JoinIdenticalVertices |
+                aiProcess_FlipWindingOrder |
+                aiProcess_RemoveRedundantMaterials |
+                aiProcess_FindDegenerates |
+                aiProcess_FindInvalidData |
+                aiProcess_GenUVCoords |
+                aiProcess_TransformUVCoords |
+                aiProcess_FindInstances |
+                aiProcess_PreTransformVertices |
+                aiProcess_CalcTangentSpace;
+
+            scene = import.ReadFile(path, importOptions);
+        }
+
         Directory = path.substr(0, path.find_last_of("/"));
+
         ProcessGeometry(scene->mRootNode, scene);
-        LoadNewModel(GeometryContainer);
+        LoadNewModel(GeometryContainer, scene->HasAnimations());
     }
 
     void AssimpLoader::LoadAssimpModelForTextures(std::string path, std::vector < std::pair<std::string, Texture>>& textureContainer)
     {
-        unsigned int importOptions =
-            aiProcess_Triangulate |
-            aiProcess_GenSmoothNormals |
-            aiProcess_FlipUVs |
-            aiProcess_JoinIdenticalVertices |
-            aiProcess_FlipWindingOrder |
-            aiProcess_RemoveRedundantMaterials |
-            aiProcess_FindDegenerates |
-            aiProcess_FindInvalidData |
-            aiProcess_GenUVCoords |
-            aiProcess_TransformUVCoords |
-            aiProcess_FindInstances |
-            aiProcess_PreTransformVertices | 
-            aiProcess_CalcTangentSpace;
+        unsigned int importOptions = aiProcess_Triangulate | aiProcess_GenSmoothNormals
+            | aiProcess_CalcTangentSpace | aiProcess_FlipWindingOrder
+            | aiProcess_TransformUVCoords | aiProcess_FlipUVs;
 
         Assimp::Importer import;
         const aiScene* scene = import.ReadFile(path, importOptions);
@@ -58,6 +57,26 @@ namespace EclipseCompiler
         {
             std::string Error = ("Compiler Could not load " + path + import.GetErrorString()).c_str();
             return;
+        }
+
+        if (!scene->HasAnimations())
+        {
+            importOptions =
+                aiProcess_Triangulate |
+                aiProcess_GenSmoothNormals |
+                aiProcess_FlipUVs |
+                aiProcess_JoinIdenticalVertices |
+                aiProcess_FlipWindingOrder |
+                aiProcess_RemoveRedundantMaterials |
+                aiProcess_FindDegenerates |
+                aiProcess_FindInvalidData |
+                aiProcess_GenUVCoords |
+                aiProcess_TransformUVCoords |
+                aiProcess_FindInstances |
+                aiProcess_PreTransformVertices |
+                aiProcess_CalcTangentSpace;
+
+            scene = import.ReadFile(path, importOptions);
         }
 
         Directory = path.substr(0, path.find_last_of("/"));
@@ -136,6 +155,8 @@ namespace EclipseCompiler
         for (unsigned int i = 0; i < mesh->mNumVertices; i++)
         {
             Vertex vertex;
+
+            SetVertexBoneDataToDefault(vertex);
 
             // position
             vertex.Position = glm::vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
@@ -243,6 +264,8 @@ namespace EclipseCompiler
             }
         }
 
+        ExtractBoneWeightForVertices(newMesh.vertices, mesh, scene, MeshName);
+
         meshData.push_back(newMesh);
         MeshIndex++;
         return;
@@ -322,6 +345,179 @@ namespace EclipseCompiler
         return textures;
     }
 
+    void AssimpLoader::LoadAssimpAnimationModel(std::string path)
+    {
+        unsigned int importOptions = aiProcess_Triangulate | aiProcess_GenSmoothNormals
+            | aiProcess_CalcTangentSpace | aiProcess_FlipWindingOrder
+            | aiProcess_TransformUVCoords | aiProcess_FlipUVs;
+
+        Assimp::Importer import;
+       
+        const aiScene* scene = import.ReadFile(path, importOptions);
+
+        if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode || !scene->HasAnimations())
+        {
+            std::string Error = ("Compiler Could not load " + path + import.GetErrorString()).c_str();
+            return;
+        }
+
+       
+        Directory = path.substr(0, path.find_last_of("/"));
+     
+        ProcessGeometry(scene->mRootNode, scene);
+        LoadNewAnimationModel();
+    }
+
+    void AssimpLoader::LoadNewAnimationModel()
+    {
+        std::vector<glm::vec3> combinedVertices;
+
+        for (auto& it : meshData)
+        {
+            for (auto& vertex : it.vertices)
+            {
+                combinedVertices.push_back(vertex.Position);
+            }
+        }
+
+        std::pair<float, float> minmaxX;
+        std::pair<float, float> minmaxY;
+        std::pair<float, float> minmaxZ;
+
+        ComputeAxisMinMax(combinedVertices, minmaxX, minmaxY, minmaxZ);
+
+        glm::vec3 centroid = ComputeCentroid(minmaxX, minmaxY, minmaxZ);
+        largestAxis = GetLargestAxisValue(minmaxX, minmaxY, minmaxZ);
+        int counter = 0;
+
+        for (auto& it : meshData)
+        {
+            for (auto& vertex : it.vertices)
+            {
+                vertex.Position -= centroid;
+            
+                vertex.Position.x /= largestAxis;
+                vertex.Position.y /= largestAxis;
+                vertex.Position.z /= largestAxis;
+            }
+
+            if (it.NoTextures == false)
+            {
+                Mesh NewMesh(it.vertices, it.indices, it.MeshName, it.textures);
+                Meshes.push_back(NewMesh);
+            }
+            else
+            {
+                Mesh NewMesh(it.vertices, it.indices, it.Diffuse, it.Specular, it.Ambient, it.NoTextures, it.MeshName);
+                Meshes.push_back(NewMesh);
+            }
+        }
+
+        for (auto& it : AllVertices)
+        {
+            it -= centroid;
+        
+            it.x /= largestAxis;
+            it.y /= largestAxis;
+            it.z /= largestAxis;
+        }
+    }
+
+    void AssimpLoader::LoadAnimationData(std::string path, std::string fileName, std::vector<AnimationData>& AnimationContainer)
+    {
+        Assimp::Importer importer;
+        const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate);
+
+        if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode || !scene->HasAnimations())
+        {
+            std::string Error = ("Compiler could not load animation data at " + path + importer.GetErrorString()).c_str();
+            return;
+        }
+
+        Directory = path.substr(0, path.find_last_of("/"));
+
+        AnimationData newAnimation;
+
+        auto animation = scene->mAnimations[0];
+
+        const char* NodeName;
+
+        for (unsigned int i = 0; i < scene->mRootNode->mNumChildren; i++)
+        {
+            if (scene->mRootNode->mChildren[i]->mNumMeshes > 0)
+            {
+                NodeName = scene->mRootNode->mChildren[i]->mName.C_Str();
+            }
+        }
+
+        strcpy_s(newAnimation.modelName.data(), newAnimation.modelName.size(), NodeName);
+        newAnimation.modelName[newAnimation.modelName.size() - 1] = '\0';
+        strcpy_s(newAnimation.fileName.data(), newAnimation.fileName.size(), fileName.c_str());
+        newAnimation.fileName[newAnimation.fileName.size() - 1] = '\0';
+        newAnimation.m_Duration = animation->mDuration;
+        newAnimation.m_TicksPerSecond = animation->mTicksPerSecond;
+        newAnimation.modelLargestAxis = largestAxis;
+
+        aiMatrix4x4 globalTransformation = scene->mRootNode->mTransformation;
+        globalTransformation = globalTransformation.Inverse();
+        ReadHeirarchyData(newAnimation.m_RootNode, scene->mRootNode);
+        SetupBones(newAnimation, animation, scene->mRootNode);
+
+        AnimationContainer.push_back(newAnimation);
+    }
+
+    void AssimpLoader::ReadHeirarchyData(AssimpNodeData& dest, const aiNode* src)
+    {
+        assert(src);
+
+        strcpy_s(dest.name.data(), dest.name.size(), src->mName.C_Str());
+        dest.name[dest.name.size() - 1] = '\0';
+
+        dest.transformation = AssimpGLMHelpers::ConvertMatrixToGLMFormat(src->mTransformation);
+        dest.childrenCount = src->mNumChildren;
+
+        for (int i = 0; i < src->mNumChildren; i++)
+        {
+            AssimpNodeData newData;
+            ReadHeirarchyData(newData, src->mChildren[i]);
+            dest.children.push_back(newData);
+        }
+    }
+
+    void AssimpLoader::SetupBones(AnimationData& animationData, const aiAnimation* animation, const aiNode* node)
+    {
+        int size = animation->mNumChannels;
+
+        std::string meshName = std::string(animationData.modelName.data());
+
+        auto& boneInfoMap = AllBoneInfoMaps[meshName];
+        int& boneCount = AllBoneCount[meshName];
+      
+        for (int i = 0; i < size; i++)
+        {
+            auto channel = animation->mChannels[i];
+            std::string boneName = channel->mNodeName.data;
+
+            if (boneInfoMap.find(boneName) == boneInfoMap.end())
+            {
+                strcpy_s(boneInfoMap[boneName].name.data(), boneInfoMap[boneName].name.size(), boneName.c_str());
+                boneInfoMap[boneName].name[boneInfoMap[boneName].name.size() - 1] = '\0';
+
+                boneInfoMap[boneName].id = boneCount;
+                boneCount++;
+            }
+
+            animationData.m_Bones.push_back(Bone(channel->mNodeName.data,
+                boneInfoMap[channel->mNodeName.data].id, channel));
+        }
+
+        //m_BoneInfoMap = boneInfoMap;
+        for (auto& it : boneInfoMap)
+        {
+            animationData.m_BoneInfo.push_back(it.second);
+        }   
+    }
+
     float AssimpLoader::GetLargestAxisValue(std::pair<float, float>& _minmaxX, std::pair<float, float>& _minmaxY, std::pair<float, float>& _minmaxZ)
     {
         float minValue = (std::min)({ _minmaxX.first, _minmaxY.first, _minmaxZ.first });
@@ -369,7 +565,7 @@ namespace EclipseCompiler
         return centroid;
     }
 
-    void AssimpLoader::LoadNewModel(std::unordered_map<std::string, Mesh>& GeometryContainer)
+    void AssimpLoader::LoadNewModel(std::unordered_map<std::string, Mesh>& GeometryContainer, bool HasAnimation)
     {
         std::vector<glm::vec3> combinedVertices;
 
@@ -388,18 +584,23 @@ namespace EclipseCompiler
         ComputeAxisMinMax(combinedVertices, minmaxX, minmaxY, minmaxZ);
 
         glm::vec3 centroid = ComputeCentroid(minmaxX, minmaxY, minmaxZ);
-        float largestAxis = GetLargestAxisValue(minmaxX, minmaxY, minmaxZ);
+        largestAxis = GetLargestAxisValue(minmaxX, minmaxY, minmaxZ);
+        int counter = 0;
 
         for (auto& it : meshData)
         {
-            for (auto& vertex : it.vertices)
+            if (!HasAnimation)
             {
-                vertex.Position -= centroid;
+                for (auto& vertex : it.vertices)
+                {
+                    vertex.Position -= centroid;
 
-                vertex.Position.x /= largestAxis;
-                vertex.Position.y /= largestAxis;
-                vertex.Position.z /= largestAxis;
+                    vertex.Position.x /= largestAxis;
+                    vertex.Position.y /= largestAxis;
+                    vertex.Position.z /= largestAxis;
+                }
             }
+ 
 
             if (it.NoTextures == false)
             {
@@ -415,13 +616,82 @@ namespace EclipseCompiler
             }
         }
 
-        for (auto& it : AllVertices)
+        if (!HasAnimation)
         {
-            it -= centroid;
+            for (auto& it : AllVertices)
+            {
+                it -= centroid;
 
-            it.x /= largestAxis;
-            it.y /= largestAxis;
-            it.z /= largestAxis;
+                it.x /= largestAxis;
+                it.y /= largestAxis;
+                it.z /= largestAxis;
+            }
+        }
+    }
+
+    void AssimpLoader::SetVertexBoneDataToDefault(Vertex& vertex)
+    {
+        for (int i = 0; i < MAX_BONE_INFLUENCE; i++)
+        {
+            vertex.m_BoneIDs[i] = -1;
+            vertex.m_Weights[i] = 0.0f;
+        }
+    }
+
+    void AssimpLoader::SetVertexBoneData(Vertex& vertex, int boneID, float weight)
+    {
+        for (int i = 0; i < MAX_BONE_INFLUENCE; ++i)
+        {
+            if (vertex.m_BoneIDs[i] < 0)
+            {
+                vertex.m_Weights[i] = weight;
+                vertex.m_BoneIDs[i] = boneID;
+                break;
+            }
+        }
+    }
+
+    void AssimpLoader::ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene, const char* MeshName)
+    {
+        std::string meshName = std::string(MeshName);
+
+        auto& boneInfoMap = AllBoneInfoMaps[meshName];
+        int& boneCount = AllBoneCount[meshName];
+
+        for (int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex)
+        {
+            int boneID = -1;
+            std::string boneName = mesh->mBones[boneIndex]->mName.C_Str();
+            if (boneInfoMap.find(boneName) == boneInfoMap.end())
+            {
+                BoneInfo newBoneInfo;
+
+                // Set values of new boneinfo
+                newBoneInfo.id = boneCount;
+                newBoneInfo.offset = AssimpGLMHelpers::ConvertMatrixToGLMFormat(mesh->mBones[boneIndex]->mOffsetMatrix);
+                strcpy_s(newBoneInfo.name.data(), newBoneInfo.name.size(), boneName.data());
+                newBoneInfo.name[newBoneInfo.name.size() - 1] = '\0';
+
+                boneInfoMap[boneName] = newBoneInfo;
+                boneID = boneCount;
+                boneCount++;
+            }
+            else
+            {
+                boneID = boneInfoMap[boneName].id;
+            }
+
+            assert(boneID != -1);
+            auto weights = mesh->mBones[boneIndex]->mWeights;
+            int numWeights = mesh->mBones[boneIndex]->mNumWeights;
+
+            for (int weightIndex = 0; weightIndex < numWeights; ++weightIndex)
+            {
+                int vertexId = weights[weightIndex].mVertexId;
+                float weight = weights[weightIndex].mWeight;
+                assert(vertexId <= vertices.size());
+                SetVertexBoneData(vertices[vertexId], boneID, weight);
+            }
         }
     }
 }

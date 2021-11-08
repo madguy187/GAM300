@@ -38,6 +38,7 @@
 
 // GLM
 #include "glm.hpp"
+#include <GLM/glm/gtc/quaternion.hpp>
 #include <filesystem>
 #include <algorithm>
 #include <iterator>

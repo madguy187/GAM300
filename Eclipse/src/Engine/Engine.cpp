@@ -43,6 +43,7 @@
 #include "ECS/SystemManager/Systems/System/AI/AISystem.h"
 #include "ECS/SystemManager/Systems/System/InputSystem/InputSystem.h"
 #include "Editor/Windows/NodeEditor/NodeEditor.h"
+#include "ECS/SystemManager/Systems/System/AnimationSystem/AnimationSystem.h"
 
 #include "ECS/SystemManager/Systems/System/NavMeshSystem/NavMeshSystem.h"
 bool Tester1(const Test1&)
@@ -108,6 +109,7 @@ namespace Eclipse
         world.RegisterComponent<PrefabComponent>();
         world.RegisterComponent<AIComponent>();
         world.RegisterComponent<NodeEditor>();
+        world.RegisterComponent<AnimationComponent>();
         world.RegisterComponent<NavMeshVolumeComponent>();
 
         prefabWorld.RegisterComponent<EntityComponent>();
@@ -130,9 +132,12 @@ namespace Eclipse
         prefabWorld.RegisterComponent<CollisionComponent>();
         prefabWorld.RegisterComponent<PrefabComponent>();
         prefabWorld.RegisterComponent<AIComponent>();
+        prefabWorld.RegisterComponent<NodeEditor>();
         prefabWorld.RegisterComponent <NavMeshVolumeComponent>();
 
         prefabWorld.RegisterComponent<NodeEditor>();
+        prefabWorld.RegisterComponent<AnimationComponent>();
+
         // registering system
         world.RegisterSystem<RenderSystem>();
         world.RegisterSystem<CameraSystem>();
@@ -150,6 +155,8 @@ namespace Eclipse
         world.RegisterSystem<PrefabSystem>();
         world.RegisterSystem<AISystem>();
         world.RegisterSystem<InputSystem>();
+        world.RegisterSystem<AnimationSystem>();
+
         prefabWorld.RegisterSystem<PrefabSystem>();
 
         // Render System
@@ -225,6 +232,10 @@ namespace Eclipse
         Signature parentSys;
         parentSys.set(world.GetComponentType<ParentComponent>(), 1);
         world.RegisterSystemSignature<ParentSystem>(parentSys);
+
+        Signature animationSys;
+        animationSys.set(world.GetComponentType<AnimationComponent>(), 1);
+        world.RegisterSystemSignature<AnimationSystem>(animationSys);
 
         //Check this! - Rachel
         CameraSystem::Init();
@@ -362,6 +373,9 @@ namespace Eclipse
             // MATERIALSYSTEM =============================
             world.Update<MaterialSystem>();
 
+            // ANIMATIONSYSTEM =============================
+            world.Update<AnimationSystem>();
+
             // RENDERSYSTEM =============================
             world.Update<RenderSystem>();
 
@@ -395,7 +409,7 @@ namespace Eclipse
         }
 
         //Serialization(Temp)
-        szManager.SaveSceneFile();
+        //szManager.SaveSceneFile();
         pfManager.UnloadSaving();
         // unLoad
         mono.Terminate();

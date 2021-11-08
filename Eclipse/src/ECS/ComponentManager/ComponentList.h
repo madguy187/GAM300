@@ -19,6 +19,7 @@
 #include "ECS/ComponentManager/Components/AudioComponent.h"
 #include "ECS/ComponentManager/Components/RigidBodyComponent.h"
 #include "ECS/ComponentManager/Components/CollisionComponent.h"
+#include "ECS/ComponentManager/Components/AnimationComponent.h"
 
 namespace Eclipse
 {
@@ -53,7 +54,8 @@ namespace Eclipse
 		AIComponent, 
 		SpotLightComponent,
 		TransformComponent,
-		PrefabComponent
+		PrefabComponent,
+		AnimationComponent
 	>;
 
 	template <typename ...Types>

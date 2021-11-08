@@ -370,14 +370,14 @@ namespace Eclipse
 
 	void EditorManager::Clear()
 	{
-		EntityHierarchyList_.clear();
-		EntityToIndexMap_.clear();
-		GEHIndex_ = 0;
-
 		for (const auto& window : Windows_)
 		{
 			window->Unload();
 		}
+
+		EntityHierarchyList_.clear();
+		EntityToIndexMap_.clear();
+		GEHIndex_ = 0;
 	}
 
 	void EditorManager::TextureIconInit()
