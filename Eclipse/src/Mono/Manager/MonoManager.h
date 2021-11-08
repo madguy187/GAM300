@@ -68,6 +68,7 @@ namespace Eclipse
 		MonoObject* CreateQuaternionClass(float x, float y, float z);
 		MonoObject* CreateRayCastHit(float x, float y, float z);
 		ECVec3 ConvertVectorToECVec(MonoObject* vec);
+		ECVec3 ConvertQuaternionToECVec3(MonoObject* vec);
 
 		std::string GetStringFromField(MonoObject* obj, MonoClass* klass, const char* fieldName);
 

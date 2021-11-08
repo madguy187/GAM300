@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Eclipse
 {
-    public class Light
+    public struct Light
     {
-        public UInt32 Entity;
+        UInt32 Entity;
 
         public Light(UInt32 entity)
         {

@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Eclipse
 {
-    public class AudioSource
+    public struct AudioSource
     {
-        public UInt32 Entity;
+        UInt32 Entity;
 
         public AudioSource(UInt32 entity)
         {

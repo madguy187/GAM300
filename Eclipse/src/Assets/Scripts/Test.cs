@@ -11,6 +11,25 @@ public class Test : EclipseBehavior
 
     public void Update()
     {
-      
+        if (Input.GetKey(KeyCode.D))
+        {
+            Quaternion rot = transform.rotation;
+            rot.x += (0.01f * Time.deltaTime);
+            transform.rotation = rot;
+        }
+
+        if (Input.GetKey(KeyCode.A))
+        {
+            Quaternion rot = transform.rotation;
+            rot.x -= (0.01f * Time.deltaTime);
+            transform.rotation = rot;
+        }
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            transform.rotation = Quaternion.identity;
+        }
+
+        Console.WriteLine(transform.rotation);
     }
 }
