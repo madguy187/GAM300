@@ -16,7 +16,7 @@ namespace Eclipse
 
         if (meshEditor->IsVisible)
         {
-            Entity meshID = meshEditor->GetMeshID();
+            Entity meshID = meshEditor->GetOldestParentID();
             auto& newMesh = engine->world.GetComponent<MeshComponent>(meshID);
 
             engine->MaterialManager.DoNotUpdateStencil();

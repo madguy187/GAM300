@@ -30,6 +30,7 @@ namespace Eclipse
             RecursiveDestroy(MeshID);
             MeshFamily.clear();
             MeshID = MAX_ENTITY;
+            OldestParentID = MAX_ENTITY;
             MeshIndex = 0;
             engine->editorManager->SetMeshEditorActive(false);
 
@@ -221,6 +222,7 @@ namespace Eclipse
     void MeshEditorWindow::SetMeshID(Entity ID)
     {
         MeshID = ID;
+        OldestParentID = ID;
 
         MeshFamily.push_back(ID);
 
@@ -235,9 +237,14 @@ namespace Eclipse
         }
     }
 
-    Entity MeshEditorWindow::GetMeshID()
+    Entity MeshEditorWindow::GetMeshID() const
     {
         return MeshID;
+    }
+
+    Entity MeshEditorWindow::GetOldestParentID() const
+    {
+        return OldestParentID;
     }
 
     bool MeshEditorWindow::GetActiveState()
@@ -247,12 +254,20 @@ namespace Eclipse
 
     void MeshEditorWindow::RecursiveDestroy(const Entity& ent)
     {
-        auto& entComp = engine->world.GetComponent<EntityComponent>(ent);
-        for (auto& child : entComp.Child)
+        if (engine->world.CheckComponent<ParentComponent>(ent))
         {
-            RecursiveDestroy(child);
-        }
+            auto& parentComp = engine->world.GetComponent<ParentComponent>(ent);
 
-        engine->world.DestroyEntity(ent);
+            for (auto& child : parentComp.child)
+            {
+                RecursiveDestroy(child);
+            }
+
+            engine->world.DestroyEntity(ent);
+        }
+        else 
+        {
+            engine->world.DestroyEntity(ent);
+        }
     }
 }

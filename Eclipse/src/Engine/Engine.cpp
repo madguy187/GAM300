@@ -432,6 +432,43 @@ namespace Eclipse
         return IsInPlayState && !IsInPauseState;
     }
 
+    void Engine::DestroyGameObject(const Entity& ent)
+    {
+        if (engine->world.CheckComponent<ParentComponent>(ent))
+        {
+            auto& parentComp = engine->world.GetComponent<ParentComponent>(ent);
+
+            for (auto& child : parentComp.child)
+            {
+                DestroyGameObject(child);
+            }
+
+            CleanUp(ent);
+        }
+        else
+        {
+            CleanUp(ent);
+        }
+    }
+
+    void Engine::CleanUp(const Entity& ent)
+    {
+        engine->gDynamicAABBTree.RemoveData(ent);
+        engine->gCullingManager->Remove(ent);
+        engine->LightManager.DestroyLight(ent);
+        engine->gPhysics.RemoveActor(ent);
+
+        if (IsEditorActive)
+        {
+            engine->editorManager->DestroyEntity(ent);
+            engine->gPicker.SetCurrentCollisionID(engine->editorManager->GetSelectedEntity());
+        }
+        else
+        {
+            world.DestroyEntity(ent);
+        }
+    }
+
     void Engine::SetEditorState(bool check)
     {
         IsEditorActive = check;
