@@ -392,6 +392,8 @@ namespace Eclipse
         {
             return YDeltaKeyRaw;
         }
+
+        return 0.0f;
     }
 
     void LogicalInput::init()
@@ -1502,6 +1504,11 @@ namespace Eclipse
         {
         case CursorLockMode::Locked:
         {
+            if (HideCursor)
+            {
+                ImGui::SetMouseCursor(ImGuiMouseCursor_None);
+            }
+
             auto* scene = engine->editorManager->GetEditorWindow<eGameViewWindow>();
 
             float GameWindowMinX = scene->vMin.x - OpenGL_Context::GetContextPosition().x;
@@ -1519,7 +1526,7 @@ namespace Eclipse
         case CursorLockMode::None:
         {
             // Unhides cursor 
-            glfwSetInputMode(OpenGL_Context::ptr_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            //glfwSetInputMode(OpenGL_Context::ptr_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         }
         break;
 
@@ -1528,8 +1535,8 @@ namespace Eclipse
 
     void LogicalInput::AxisUpdate()
     {
-        int MouseX = OpenGL_Context::m_posX;
-        int MouseY = OpenGL_Context::m_posY;
+        float MouseX = static_cast<float>(OpenGL_Context::m_posX);
+        float MouseY = static_cast<float>(OpenGL_Context::m_posY);
 
         // HORIZONTAL
 
@@ -1614,6 +1621,8 @@ namespace Eclipse
         {
             return YDeltaKey;
         }
+
+        return 0.0f;
     }
 
     bool LogicalInput::LockCursor(CursorLockMode Mode)

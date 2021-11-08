@@ -140,12 +140,12 @@ namespace Eclipse
 
     unsigned int FrameBufferManager::GetFrameBufferWidth(FrameBufferMode in)
     {
-        return FrameBufferContainer[FrameBufferMode::FBM_MESHEDITOR]->m_width;
+        return FrameBufferContainer[in]->m_width;
     }
 
     unsigned int FrameBufferManager::GetFrameBufferHeight(FrameBufferMode in)
     {
-        return FrameBufferContainer[FrameBufferMode::FBM_MESHEDITOR]->m_height;
+        return FrameBufferContainer[in]->m_height;
     }
 
     float FrameBufferManager::GetAspectRatio(CameraComponent::CameraType in)
@@ -256,10 +256,14 @@ namespace Eclipse
         }
         break;
         }
+
+        return FrameBufferMode::MAXCOUNT;
     }
 
     void FrameBufferManager::FadeIn(FrameBuffer::PostProcessType Type, float& timer, float multiplier, FrameBufferMode WhichFBO)
     {
+        (void)WhichFBO;
+
         if (PostProcess->PPType_ == Type && timer <= 1.0f)
         {
             timer += (engine->Game_Clock.get_fixedDeltaTime() / multiplier);

@@ -56,6 +56,8 @@ namespace Eclipse
 
     void DebugManager::AddBoundingRegion(glm::mat4 model, CameraComponent& _camera, Entity EntityID)
     {
+        (void)model;
+
         if (Visible == false)
             return;
 

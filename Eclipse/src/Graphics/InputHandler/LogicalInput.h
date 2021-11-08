@@ -83,8 +83,8 @@ namespace Eclipse
         ///////////////////////////////////////////////////////////////////////////////////////////
         // GetAxis - mouse
         ///////////////////////////////////////////////////////////////////////////////////////////
-        int XMiddle, YMiddle;
-        int Mouse_X, Mouse_Y;
+        float XMiddle, YMiddle;
+        float Mouse_X, Mouse_Y;
 
         // GetAxis
         float XDelta = 0.0f;
@@ -102,8 +102,7 @@ namespace Eclipse
         // Cursor
         bool LockCursor(CursorLockMode);
         CursorLockMode State;
-        bool Once = false;
-        float ToMoveX;
+        bool HideCursor = false;
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // GetAxis - Keyboard
@@ -112,6 +111,7 @@ namespace Eclipse
         float YDeltaKey = 0.0f;
         float XDeltaKeyRaw = 0.0f;
         float YDeltaKeyRaw = 0.0f;
+
 
     private:
         void init();
