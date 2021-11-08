@@ -5,19 +5,20 @@ using Eclipse;
 
 public class Test : EclipseBehavior
 {
-    public float mouseSensitivity = 10f;
-
-    Test2 wee;
-
     public void Start()
     {
         Console.WriteLine("TEST C# Start");
-        wee = GetComponent<Test2>();
-        Console.WriteLine(wee.Entity);
     }
 
     public void Update()
     {
-      
+        RayCastHit hit;
+        if(Physics.Raycast(new Vector3(0, 0, 0), new Vector3(-1, 0, 0), out hit))
+        {
+            Console.WriteLine("HIT");
+            Console.WriteLine(hit.point.x);
+            Console.WriteLine(hit.point.y);
+            Console.WriteLine(hit.point.z);
+        }
     }
 }

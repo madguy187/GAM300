@@ -1,5 +1,7 @@
 #pragma once
+#include "Global.h"
 #include "mono/jit/jit.h"
+#include "Library/Math/Vector.h"
 
 namespace Eclipse
 {
@@ -64,19 +66,21 @@ namespace Eclipse
 		MonoObject* CreateObjectFromClass(MonoClass* klass, bool defaultConstructor = true);
 		MonoObject* CreateVector3Class(float x, float y, float z);
 		MonoObject* CreateQuaternionClass(float x, float y, float z);
+		MonoObject* CreateRayCastHit(float x, float y, float z);
+		ECVec3 ConvertVectorToECVec(MonoObject* vec);
 
 		std::string GetStringFromField(MonoObject* obj, MonoClass* klass, const char* fieldName);
 
 		void SetFloatFromField(MonoObject* obj, MonoClass* klass, const char* fieldName, float fieldValue);
+		bool GetFloatFromField(MonoObject* obj, MonoClass* klass, const char* fieldName, float& value);
 
 		MonoClass* GetAPIMonoClass(std::string className);
 		MonoClass* GetScriptMonoClass(std::string className);
 		MonoMethod* GetMethodFromClass(MonoClass* klass, std::string funcName, int param_count = -1);
+		MonoObject* ExecuteMethod(MonoObject* obj, MonoMethod* method, std::vector<void*> args);
 
 		void LoadAllFields(MonoScript* script);
 		bool CheckIfFieldExist(MonoScript* script, std::string& fieldName, size_t index);
-
-		MonoObject* ExecuteMethod(MonoObject* obj, MonoMethod* method, std::vector<void*> args);
 
 		// Gets image containing all API Scripts
 		MonoImage* GetAPIImage();
