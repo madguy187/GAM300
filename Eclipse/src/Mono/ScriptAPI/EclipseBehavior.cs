@@ -11,6 +11,12 @@ namespace Eclipse
         public GameObject gameObject;
         public Transform transform;
 
+        public UInt32 Entity
+        {
+            get => gameObject.Entity;
+            set => gameObject.Entity = value;
+        }
+
         protected void InitBehavior(UInt32 handle, UInt32 entity, string name)
         {
             Console.WriteLine(name);
@@ -19,15 +25,20 @@ namespace Eclipse
             transform = gameObject.transform;
         }
 
-        public UInt32 Entity
-        {
-            get => gameObject.Entity;
-            set => gameObject.Entity = value;
-        }
-
         public T GetComponent<T>() where T : IScriptable
         {
-            return gameObject.GetComponent<T>();
+            if (typeof(T).IsSubclassOf(typeof(EclipseBehavior)))
+              return gameObject.GetBehavior<T>();
+            else
+              return gameObject.GetComponent<T>();
         }
+
+        public void Invoke(string funcName, float time)
+        {
+            InvokeFunc(Entity, gameObject.ScriptName, funcName, time);
+        }
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        private extern static void InvokeFunc(UInt32 entity, string scriptName, string funcName, float time);
     }
 }

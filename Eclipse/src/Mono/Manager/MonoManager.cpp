@@ -17,6 +17,7 @@
 #include "../Components/s_Transform.h"
 #include "../Components/s_Quaternion.h"
 #include "../Components/s_GameObject.h"
+#include "../Components/s_EclipseBehavior.h"
 
 
 namespace Eclipse
@@ -95,8 +96,10 @@ namespace Eclipse
 		mono_add_internal_call("Eclipse.Time::getDeltaTime", GetDeltaTime);
 		mono_add_internal_call("Eclipse.Time::getFixedDeltaTime", GetFixedDeltaTime);
 		mono_add_internal_call("Eclipse.GameObject::setEnabled", setEnabled);
+		mono_add_internal_call("Eclipse.GameObject::getBehavior", getBehavior);
 		mono_add_internal_call("Eclipse.Transform::RotateEuler", RotateEuler);
 		mono_add_internal_call("Eclipse.Quaternion::GetEuler", Euler);
+		mono_add_internal_call("Eclipse.EclipseBehavior::InvokeFunc", Invoke);
 	}
 
 	void MonoManager::Awake(MonoScript* obj)
@@ -263,6 +266,29 @@ namespace Eclipse
 		}
 			
 		mono_jit_cleanup(domain);
+	}
+
+	void MonoManager::UpdateInvokers()
+	{
+		InvokeContainer.erase(std::remove_if(InvokeContainer.begin(),
+			InvokeContainer.end(),
+			[&](auto& invokee) -> bool
+			{ 
+				invokee.timer -= engine->Game_Clock.get_DeltaTime();
+				if (invokee.timer < 0.0f)
+				{
+					ExecuteMethod(invokee.script->obj, invokee.method, std::vector<void*>{});
+					return true;
+				}
+
+				return false;
+			}),
+			InvokeContainer.end());
+	}
+
+	void MonoManager::AddInvoke(MonoScript* _script, float _timer, MonoMethod* _method)
+	{
+		InvokeContainer.push_back({ _script, _timer, _method });
 	}
 
 	MonoObject* MonoManager::CreateMonoObject(std::string scriptName, Entity entity)

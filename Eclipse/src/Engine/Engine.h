@@ -25,6 +25,7 @@
 #include "Graphics/InputHandler/LogicalInput.h"
 #include "Graphics/Instancing/DebugManager/DebugManager.h"
 #include "Graphics/Animation/AnimationManager.h"
+#include "NavMesh/NavMeshManager.h"
 
 namespace Eclipse
 {
@@ -51,6 +52,7 @@ namespace Eclipse
 		DynamicAABBTree gDynamicAABBTree;
 		PrefabManager pfManager;
 		PhysicsManager gPhysics;
+		NavMeshManager gNavMesh;
 		AIManager gAI;
 		AnimationManager gAnimationManager;
 		std::unique_ptr<CullingManager> gCullingManager;

@@ -20,6 +20,7 @@
 #include "ECS/ComponentManager/Components/AudioComponent.h"
 #include "ECS/ComponentManager/Components/ParentComponent.h"
 #include "ECS/ComponentManager/Components/ChildComponent.h"
+#include "ECS/ComponentManager/Components/NavMeshVolumeComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem/CameraSystem.h"
@@ -44,6 +45,7 @@
 #include "Editor/Windows/NodeEditor/NodeEditor.h"
 #include "ECS/SystemManager/Systems/System/AnimationSystem/AnimationSystem.h"
 
+#include "ECS/SystemManager/Systems/System/NavMeshSystem/NavMeshSystem.h"
 bool Tester1(const Test1&)
 {
     std::cout << "Engine.cpp Tester1" << std::endl;
@@ -108,6 +110,7 @@ namespace Eclipse
         world.RegisterComponent<AIComponent>();
         world.RegisterComponent<NodeEditor>();
         world.RegisterComponent<AnimationComponent>();
+        world.RegisterComponent<NavMeshVolumeComponent>();
 
         prefabWorld.RegisterComponent<EntityComponent>();
         prefabWorld.RegisterComponent<TransformComponent>();
@@ -129,6 +132,8 @@ namespace Eclipse
         prefabWorld.RegisterComponent<CollisionComponent>();
         prefabWorld.RegisterComponent<PrefabComponent>();
         prefabWorld.RegisterComponent<AIComponent>();
+        prefabWorld.RegisterComponent <NavMeshVolumeComponent>();
+
         prefabWorld.RegisterComponent<NodeEditor>();
         prefabWorld.RegisterComponent<AnimationComponent>();
 
@@ -380,6 +385,7 @@ namespace Eclipse
             if (IsScenePlaying())
             {
                 world.Update<MonoSystem>();
+                mono.UpdateInvokers();
             }
 
             // FRAMEBUFFER DRAW ==========================
