@@ -402,21 +402,28 @@ namespace Eclipse
 				if (compareTargetWorld.CheckComponent<ParentComponent>(compareTarget))
 				{
 					bool isFound = false;
-					auto& sampleChildPrefabID = compareSampleWorld.GetComponent<PrefabComponent>(sampleChild).PrefabID;
 
-					auto& targetParentComp = compareTargetWorld.GetComponent<ParentComponent>(compareTarget);
-					targetChildren = targetParentComp.child;
-
-					for (auto& targetChild : targetChildren)
+					if (compareSampleWorld.CheckComponent<PrefabComponent>(sampleChild))
 					{
-						auto& targetChildPrefabID = compareTargetWorld.GetComponent<PrefabComponent>(targetChild).PrefabID;
+						auto& sampleChildPrefabID = compareSampleWorld.GetComponent<PrefabComponent>(sampleChild).PrefabID;
 
-						if (sampleChildPrefabID == targetChildPrefabID)
+						auto& targetParentComp = compareTargetWorld.GetComponent<ParentComponent>(compareTarget);
+						targetChildren = targetParentComp.child;
+
+						for (auto& targetChild : targetChildren)
 						{
-							CompareHierarchy(compareSampleWorld, sampleChild, compareTargetWorld, targetChild, hierMap, newChildMap);
-							isFound = true;
-							targetChildren.erase(std::remove(targetChildren.begin(), targetChildren.end(), targetChild));
-							break;
+							if (compareTargetWorld.CheckComponent<PrefabComponent>(targetChild))
+							{
+								auto& targetChildPrefabID = compareTargetWorld.GetComponent<PrefabComponent>(targetChild).PrefabID;
+
+								if (sampleChildPrefabID == targetChildPrefabID)
+								{
+									CompareHierarchy(compareSampleWorld, sampleChild, compareTargetWorld, targetChild, hierMap, newChildMap);
+									isFound = true;
+									targetChildren.erase(std::remove(targetChildren.begin(), targetChildren.end(), targetChild));
+									break;
+								}
+							}
 						}
 					}
 

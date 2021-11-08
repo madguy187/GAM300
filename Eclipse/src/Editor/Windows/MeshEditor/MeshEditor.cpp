@@ -188,7 +188,7 @@ namespace Eclipse
         MeshID = ID;
     }
 
-    Entity MeshEditorWindow::GetMeshID()
+    Entity MeshEditorWindow::GetMeshID() const
     {
         return MeshID;
     }
