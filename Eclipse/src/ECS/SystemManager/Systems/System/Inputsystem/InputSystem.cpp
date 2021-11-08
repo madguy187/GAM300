@@ -10,15 +10,15 @@ namespace Eclipse
         //std::cout << " Width " << OpenGL_Context::width << std::endl;
         //std::cout << "GetAxis " << engine->InputManager->GetAxis("Vertical") << std::endl;
 
-        //if (engine->InputManager->GetKeyTriggered(InputKeycode::Key_RIGHT))
-        //{
-        //    engine->InputManager->LockCursor(CursorLockMode::Locked);
-        //}
-        //
-        //if (engine->InputManager->GetKeyTriggered(InputKeycode::Key_LEFT))
-        //{
-        //    engine->InputManager->LockCursor(CursorLockMode::None);
-        //}
+        if (engine->InputManager->GetKeyTriggered(InputKeycode::Key_RIGHT))
+        {
+            engine->InputManager->LockCursor(CursorLockMode::Locked);
+        }
+
+        if (engine->InputManager->GetKeyTriggered(InputKeycode::Key_LEFT))
+        {
+            engine->InputManager->LockCursor(CursorLockMode::None);
+        }
 
         engine->InputManager->CursorUpdate();
         engine->InputManager->AxisUpdate();

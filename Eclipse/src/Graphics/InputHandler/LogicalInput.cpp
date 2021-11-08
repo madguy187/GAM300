@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "LogicalInput.h"
 #include "Graphics/OpenGL/OpenGL_Context.h"
+#include "Editor/Windows/GameView/GameView.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // For LOGICAL INPUT ( KEYBOARD )
@@ -21,7 +22,7 @@ namespace Eclipse
         {
             RegisterTriggerInput(keycode, InputState::Key_TRIGGERED);
 
-            if (KeyContainer.count(keycode) != 0 && KeyContainer[keycode] == InputState::Key_TRIGGERED)
+            if (KeyContainer.count(keycode) != 0 && KeyContainer[keycode].inputState == InputState::Key_TRIGGERED)
             {
                 PrintKey(keycode, Press);
                 return true;
@@ -45,7 +46,7 @@ namespace Eclipse
             RegisterHoldInput(keycode, InputState::Key_HOLD);
 
             if (KeyContainer.count(keycode) != 0 &&
-                (KeyContainer[keycode] == InputState::Key_TRIGGERED || KeyContainer[keycode] == InputState::Key_HOLD))
+                (KeyContainer[keycode].inputState == InputState::Key_TRIGGERED || KeyContainer[keycode].inputState == InputState::Key_HOLD))
             {
                 //PrintKey(keycode, Hold);
                 return true;
@@ -77,7 +78,7 @@ namespace Eclipse
 
             RegisterTriggerInput(PassedIn, InputState::Key_TRIGGERED);
 
-            if (KeyContainer.count(PassedIn) && KeyContainer[PassedIn] == InputState::Key_TRIGGERED)
+            if (KeyContainer.count(PassedIn) && KeyContainer[PassedIn].inputState == InputState::Key_TRIGGERED)
             {
                 PrintKey(PassedIn, Press);
                 return true;
@@ -109,7 +110,7 @@ namespace Eclipse
             RegisterHoldInput(PassedIn, InputState::Key_HOLD);
 
             if (KeyContainer.count(PassedIn) != 0 &&
-                (KeyContainer[PassedIn] == InputState::Key_TRIGGERED || KeyContainer[PassedIn] == InputState::Key_HOLD))
+                (KeyContainer[PassedIn].inputState == InputState::Key_TRIGGERED || KeyContainer[PassedIn].inputState == InputState::Key_HOLD))
             {
                 //PrintKey(keycode, Hold);
                 return true;
@@ -155,7 +156,7 @@ namespace Eclipse
             RegisterMouseInput(Mappedkeycode, InputState::Key_TRIGGERED);
 
             if (MouseContainer_.count(Mappedkeycode) != 0 &&
-                MouseContainer_[Mappedkeycode] == InputState::Key_TRIGGERED)
+                MouseContainer_[Mappedkeycode].inputState == InputState::Key_TRIGGERED)
             {
                 return true;
             }
@@ -178,7 +179,7 @@ namespace Eclipse
             RegisterMouseInput(Mappedkeycode, InputState::Key_HOLD);
 
             if (MouseContainer_.count(Mappedkeycode) != 0 &&
-                (MouseContainer_[Mappedkeycode] == InputState::Key_TRIGGERED || MouseContainer_[Mappedkeycode] == InputState::Key_HOLD))
+                (MouseContainer_[Mappedkeycode].inputState == InputState::Key_TRIGGERED || MouseContainer_[Mappedkeycode].inputState == InputState::Key_HOLD))
             {
                 return true;
             }
@@ -207,7 +208,7 @@ namespace Eclipse
             RegisterMouseInput(PassedIn, InputState::Key_TRIGGERED);
 
             if (MouseContainer_.count(PassedIn) != 0 &&
-                MouseContainer_[PassedIn] == InputState::Key_TRIGGERED)
+                MouseContainer_[PassedIn].inputState == InputState::Key_TRIGGERED)
             {
                 return true;
             }
@@ -235,7 +236,7 @@ namespace Eclipse
             RegisterMouseInput(PassedIn, InputState::Key_HOLD);
 
             if (MouseContainer_.count(PassedIn) != 0 &&
-                (MouseContainer_[PassedIn] == InputState::Key_TRIGGERED || MouseContainer_[PassedIn] == InputState::Key_HOLD))
+                (MouseContainer_[PassedIn].inputState == InputState::Key_TRIGGERED || MouseContainer_[PassedIn].inputState == InputState::Key_HOLD))
             {
                 return true;
             }
@@ -403,12 +404,15 @@ namespace Eclipse
 
     void LogicalInput::RegisterTriggerInput(InputKeycode keycode, InputState input)
     {
-        KeyContainer.insert({ keycode, input });
+        InputData NewInputData(input);
+
+        KeyContainer.insert({ keycode, NewInputData });
     }
 
     void LogicalInput::RegisterMouseInput(InputMouseKeycode keycode, InputState input)
     {
-        MouseContainer_.insert({ keycode, input });
+        InputData NewInputData(input);
+        MouseContainer_.insert({ keycode, NewInputData });
     }
 
     void LogicalInput::RegisterHoldInput(InputKeycode keycode, InputState input)
@@ -480,7 +484,15 @@ namespace Eclipse
     {
         for (auto& pair2 : KeyContainer)
         {
-            if (pair2.second == InputState::Key_TRIGGERED)
+            if (pair2.first == InputKeycode::Key_LEFT || pair2.first == InputKeycode::Key_A)
+            {
+                if (pair2.second.inputState == InputState::Key_HOLD && pair2.second.AxisValue)
+                {
+                    //pair2.second.AxisValue +=
+                }
+            }
+
+            if (pair2.second.inputState == InputState::Key_TRIGGERED)
             {
                 pair2.second = InputState::Key_HOLD;
             }
@@ -488,7 +500,7 @@ namespace Eclipse
 
         for (auto& pair2 : MouseContainer_)
         {
-            if (pair2.second == InputState::Key_TRIGGERED)
+            if (pair2.second.inputState == InputState::Key_TRIGGERED)
             {
                 pair2.second = InputState::Key_HOLD;
             }
@@ -1378,22 +1390,22 @@ namespace Eclipse
         {
         case CursorLockMode::Locked:
         {
-            // Hides mouse cursor
-            //glfwSetInputMode(OpenGL_Context::ptr_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-            ImGui::SetMouseCursor(ImGuiMouseCursor_None);
+            auto* scene = engine->editorManager->GetEditorWindow<eGameViewWindow>();
 
-            float Width = OpenGL_Context::GetWidth();
-            float Height = OpenGL_Context::GetHeight();
+            float MOUSEX = ImGui::GetMousePos().x;
+            float MOUSEY = ImGui::GetMousePos().y;
 
-            float GameVWidth = engine->gFrameBufferManager->FrameBufferContainer[FrameBufferMode::FBM_GAME]->m_width;
-            float GameVHeight = engine->gFrameBufferManager->FrameBufferContainer[FrameBufferMode::FBM_GAME]->m_height;
+            float GameWindowMinX = scene->vMin.x - OpenGL_Context::GetContextPosition().x;
+            float GameWindowMaxX = scene->vMin.x + scene->mGameBufferSize.getX() - OpenGL_Context::GetContextPosition().x;
+            float LengthX = GameWindowMinX + GameWindowMaxX;
+            float GameWindowCenterX = (GameWindowMaxX + GameWindowMinX) / 2;
 
-            float ratioX = Width / GameVWidth;
-            float ratioY = Height / GameVHeight;
-            float MiddleX = (Width / 2) / ratioX;
-            float MiddleY = (Height / 2) / ratioY;
+            float GameWindowMinY = scene->vMin.y - OpenGL_Context::GetContextPosition().y;
+            float GameWindowMaxY = scene->vMin.y + scene->mGameBufferSize.getY() - OpenGL_Context::GetContextPosition().y;
+            float LengthY = GameWindowMinY + GameWindowMaxY;
+            float GameWindowCenterY = (GameWindowMinY + GameWindowMaxY) / 2;
 
-            glfwSetCursorPos(OpenGL_Context::ptr_window, MiddleX, MiddleY);
+            glfwSetCursorPos(OpenGL_Context::ptr_window, GameWindowCenterX, GameWindowCenterY);
         }
         break;
 

@@ -6,11 +6,25 @@
 
 namespace Eclipse
 {
-    typedef std::unordered_map< InputKeycode, InputState> InputKeyContainer;
-    using KeyIT = std::unordered_map<InputKeycode, InputState>::iterator;
+    struct InputData
+    {
+        InputState inputState = InputState::Key_NULLSTATE;
+        float AxisValue = 0.0f;
 
-    typedef std::unordered_map< InputMouseKeycode, InputState> MouseContainer;
-    using MouseIT = std::unordered_map<InputMouseKeycode, InputState>::iterator;
+        InputData() {};
+
+        InputData(InputState in) :
+            inputState(in)
+        {
+
+        };
+    };
+
+    typedef std::unordered_map< InputKeycode, InputData> InputKeyContainer;
+    using KeyIT = std::unordered_map<InputKeycode, InputData>::iterator;
+
+    typedef std::unordered_map< InputMouseKeycode, InputData> MouseContainer;
+    using MouseIT = std::unordered_map<InputMouseKeycode, InputData>::iterator;
 
     class LogicalInput
     {
@@ -76,13 +90,17 @@ namespace Eclipse
         void CursorUpdate();
         void AxisUpdate();
         float GetAxis(const std::string& Type);
-        bool LockCursor(CursorLockMode);
-        CursorLockMode State;
 
         // GetRawAxis
         float XDeltaRaw = 0.0f;
         float YDeltaRaw = 0.0f;
         float GetRawAxis(const std::string& Type);
+
+        // Cursor
+        bool LockCursor(CursorLockMode);
+        CursorLockMode State;
+        bool Once = false;
+        float ToMoveX;
 
     private:
         void init();

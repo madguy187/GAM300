@@ -22,13 +22,13 @@ namespace Eclipse
         }
     }
 
-	void eGameViewWindow::Init()
-	{
-		mViewportSize = ECVec2{ 0.0f, 0.0f };
-		Type = EditorWindowType::EWT_GAMEVIEW;
-		WindowName = "Game View " ICON_MDI_MONITOR;
-		m_frameBuffer = engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_GAME);
-	}
+    void eGameViewWindow::Init()
+    {
+        mViewportSize = ECVec2{ 0.0f, 0.0f };
+        Type = EditorWindowType::EWT_GAMEVIEW;
+        WindowName = "Game View " ICON_MDI_MONITOR;
+        m_frameBuffer = engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_GAME);
+    }
 
     void eGameViewWindow::Unload()
     {
@@ -63,11 +63,20 @@ namespace Eclipse
 
     void eGameViewWindow::RunFrameBuffer()
     {
-        // Update Frame Buffer Settings
+        // Darren Was Here.
+        vMin = ImGui::GetWindowContentRegionMin();
+        vMax = ImGui::GetWindowContentRegionMax();
+
+        vMin.x += ImGui::GetWindowPos().x;
+        vMin.y += ImGui::GetWindowPos().y;
+        vMax.x += ImGui::GetWindowPos().x;
+        vMax.y += ImGui::GetWindowPos().y;
+
         mGameBufferSize = glm::vec2{ ECGui::GetWindowWidth(), ECGui::GetWindowHeight() };
         mGameBufferPos = ECGui::GetWindowPos();
         mCursorScreenPos = ECGui::GetCursorScreenPos();
-
+        //
+         
         //RenderGameHeader();
         // Set Image size
         ECGui::Image((void*)(static_cast<size_t>(m_frameBuffer->GetTextureColourBufferID())),
