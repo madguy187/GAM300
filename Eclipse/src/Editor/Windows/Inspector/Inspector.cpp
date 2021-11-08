@@ -491,9 +491,6 @@ namespace Eclipse
                 ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Forces", EMPTY_STRING);
                 ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloat3Widget("Rigid Body Forces", &_RigidB.forces, true, 0.0f, 1.0f);
-                ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Velocity", EMPTY_STRING);
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
