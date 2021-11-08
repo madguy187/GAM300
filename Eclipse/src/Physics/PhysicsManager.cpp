@@ -87,8 +87,8 @@ namespace Eclipse
 			Px_Actors[ent].actor = Px_Physics->createRigidStatic(PxTransform(temptrans));
 			Px_Actors[ent].type = ActorType::ACTOR_STATIC;
 		}
-
-		Px_Actors[ent].actor->setName(std::to_string(ent).c_str());
+		Px_Actors[ent].ID = ent;
+		Px_Actors[ent].actor->userData = &Px_Actors[ent].ID;
 		AddActorToScene(ent);
 	}
 
@@ -239,7 +239,22 @@ namespace Eclipse
 		}
 	}
 
-	bool PhysicsManager::Raycast(ECVec3 origin, ECVec3 dir, float dist, PxRaycastBuffer& hit)
+	PxQueryHitType::Enum	QueryReportCallback::preFilter(const PxFilterData& filterData, const PxShape* shape, const PxRigidActor* actor, PxHitFlags& queryFlags)
+	{
+		// PT: ignore triggers
+		auto& entcomp = engine->world.GetComponent<EntityComponent>(*(Entity*)actor->userData);
+		if(_mask.test(entcomp.LayerIndex))
+			return PxQueryHitType::eBLOCK;
+
+		return PxQueryHitType::eNONE;
+	}
+
+	PxQueryHitType::Enum	QueryReportCallback::postFilter(const PxFilterData& filterData, const PxQueryHit& hit)
+	{
+		return PxQueryHitType::eBLOCK;
+	}
+
+	bool PhysicsManager::Raycast(ECVec3 origin, ECVec3 dir, float dist, PxRaycastBuffer& hit,std::string layerMask)
 	{
 		PxVec3 _origin;
 		PxVec3 _dir;
@@ -251,8 +266,14 @@ namespace Eclipse
 		_dir.x = dir.getX();
 		_dir.y = dir.getY();
 		_dir.z = dir.getZ();
+		PxQueryFlags qf(PxQueryFlag::eSTATIC | PxQueryFlag::eDYNAMIC | PxQueryFlag::ePREFILTER);
+		PxQueryFilterData filter(PxFilterData(), qf);
+		std::bitset<20> mask = std::bitset<20>(layerMask);
+		QueryReportCallback _callback{ mask };
 
-		return Px_Scene->raycast(_origin,_dir, dist, hit);
+
+		return Px_Scene->raycast(_origin, _dir, dist, hit, PxHitFlag::eDEFAULT, filter,&_callback);
+
 	}
 
 	void PhysicsManager::AttachCapsuleToActor(Entity ent, float radius,float halfheight)
@@ -348,6 +369,7 @@ namespace Eclipse
 		Px_Actors[ent].actor->release();
 		Px_Actors[ent].actor = nullptr;
 		Px_Actors[ent].type = ActorType::ACTOR_UNASSIGNED;
+		Px_Actors[ent].ID = MAX_ENTITY;
 	}
 
 	void PhysicsManager::UpdateActor(Entity ent)
