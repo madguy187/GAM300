@@ -264,10 +264,12 @@ namespace Eclipse
     {
         (void)WhichFBO;
 
-        if (PostProcess->PPType_ == Type && timer <= 1.0f)
-        {
-            timer += (engine->Game_Clock.get_fixedDeltaTime() / multiplier);
-        }
+        timer = 1.0f;
+
+        //if (PostProcess->PPType_ == Type && timer <= 1.0f)
+        //{
+        //    timer += (engine->Game_Clock.get_fixedDeltaTime() / multiplier);
+        //}
     }
 
     void FrameBufferManager::PostProcessUpdate(FrameBufferMode Scene)
