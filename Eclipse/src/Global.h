@@ -65,13 +65,19 @@ enum class ActorType
 
 enum class PxShapeType
 {
-    Px_SQUARE,
-    Px_CIRCLE,
-    Px_TRIANGLE,
-    Px_LINE,
     Px_SPHERE,
     Px_CUBE,
-    Px_CYLINDER,
+    Px_CAPSULE
+};
+
+enum class NodeType
+{
+    NODE_UNASSIGNED,
+    NODE_ROOT,
+    NODE_SELECTOR,
+    NODE_SEQUENCE,
+    NODE_BOOL,
+    NODE_TASK
 };
 
 enum class EntityType
