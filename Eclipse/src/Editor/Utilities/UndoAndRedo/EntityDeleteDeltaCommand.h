@@ -22,32 +22,13 @@ namespace Eclipse
 			{
 				if (engine->world.CheckComponent<ParentComponent>(oldID))
 				{
-					auto& parent = engine->world.GetComponent<ParentComponent>(oldID);
-					std::vector<Entity> List;
-
-					for (const auto& child : parent.child)
-					{
-						Entity newChildID = engine->world.CopyEntity(engine->prefabWorld,
-							child, all_component_list);
-						List.push_back(newChildID);
-
-						CleanUp(child);
-					}
-
-					Children = List;
+					m_pcEntities.push_back(m_ID);
+					IterativeDeletion(oldID, m_ID);
 				}
-				else if (engine->world.CheckComponent<ChildComponent>(oldID))
+				else
 				{
-					auto& child = engine->world.GetComponent<ChildComponent>(oldID);
-					auto& parent = engine->world.GetComponent<ParentComponent>(child.parentIndex);
-
-					parent.child.erase(std::find(parent.child.begin(), parent.child.end(), oldID));
-
-					auto& parentEntComp = engine->world.GetComponent<ParentComponent>(child.parentIndex);
-					parentEntComp.child.erase(std::find(parentEntComp.child.begin(), parentEntComp.child.end(), oldID));
+					CleanUp(oldID);
 				}
-
-				CleanUp(oldID);
 			}
 		}
 
@@ -57,34 +38,13 @@ namespace Eclipse
 			m_ID = engine->prefabWorld.CopyEntity(engine->world,
 				oldID, all_component_list);
 
-			LoadIn(m_ID, oldID);
-
-			if (engine->world.CheckComponent<ParentComponent>(m_ID))
+			if (engine->prefabWorld.CheckComponent<ParentComponent>(oldID))
 			{
-				auto& parent = engine->world.GetComponent<ParentComponent>(m_ID);
-				parent.child.clear();
-
-				for (const auto& child : Children)
-				{
-					Entity newChild = engine->prefabWorld.CopyEntity(engine->world,
-						child, all_component_list);
-					auto& childCom = engine->world.GetComponent<ChildComponent>(newChild);
-					auto& childEntComp = engine->world.GetComponent<EntityComponent>(newChild);
-
-					childCom.parentIndex = m_ID;
-					//childEntComp.Parent.clear();
-					//childEntComp.Parent.push_back(m_ID);
-					parent.child.push_back(newChild);
-					LoadIn(newChild, child);
-				}
+				DeletionResolve(oldID, m_ID);
 			}
-			else if (engine->world.CheckComponent<ChildComponent>(m_ID))
+			else
 			{
-				auto& child = engine->world.GetComponent<ChildComponent>(m_ID);
-				auto& parent = engine->world.GetComponent<ParentComponent>(child.parentIndex);
-
-				parent.child.push_back(m_ID);
-
+				LoadIn(m_ID, oldID);
 			}
 		}
 
@@ -92,6 +52,98 @@ namespace Eclipse
 		{
 			(void)otherCmd;
 			return false;
+		}
+
+		void DeletionResolve(Entity oldID, Entity newID)
+		{
+			std::unordered_map<Entity, Entity> OldToNewEntity;
+			OldToNewEntity[oldID] = newID;
+			LoadIn(newID, oldID);
+			// m_pcEntities.erase(std::find(m_pcEntities.begin(), m_pcEntities.end(), newID));
+
+			for (const auto& oldEnt : m_pcEntities)
+			{
+				if (oldID == oldEnt) continue;
+
+				Entity newEnt = engine->prefabWorld.CopyEntity(engine->world,
+					oldEnt, all_component_list);
+
+				LoadIn(newEnt, oldEnt);
+
+				OldToNewEntity[oldEnt] = newEnt;
+			}
+
+			for (const auto& [parent, childList] : ParentToFamily)
+			{
+				auto& parentcom = engine->world.GetComponent<ParentComponent>(OldToNewEntity[parent]);
+				parentcom.child.clear();
+
+				for (const auto& child2 : childList)
+				{
+					parentcom.child.push_back(OldToNewEntity[child2]);
+
+					auto& childcom = engine->world.GetComponent<ChildComponent>(OldToNewEntity[child2]);
+					childcom.parentIndex = OldToNewEntity[parent];
+				}
+			}
+
+			m_pcEntities.clear();
+			ParentToFamily.clear();
+		}
+
+		void IterativeDeletion(Entity oldID, Entity newID)
+		{
+			std::queue<Entity> parents;
+			std::set<Entity> parentsToBeDeleted;
+			std::unordered_map<Entity, Entity> OldToNewEntity;
+			OldToNewEntity[oldID] = newID;
+			parents.push(oldID);
+
+			while (!parents.empty())
+			{
+				Entity CurrID = parents.front();
+				parentsToBeDeleted.insert(CurrID);
+				parents.pop();
+
+				if (engine->world.CheckComponent<ParentComponent>(CurrID))
+				{
+					auto& parent = engine->world.GetComponent<ParentComponent>(CurrID);
+					std::vector<Entity> List;
+
+					for (const auto& child : parent.child)
+					{
+						Entity newChildID = engine->world.CopyEntity(engine->prefabWorld,
+							child, all_component_list);
+
+						m_pcEntities.push_back(newChildID);
+
+						if (engine->world.CheckComponent<ParentComponent>(child))
+						{
+							parents.push(child);
+							OldToNewEntity[child] = newChildID;
+						}
+
+						List.push_back(newChildID);
+
+						if (engine->world.CheckComponent<ChildComponent>(child))
+						{
+							auto& child2 = engine->world.GetComponent<ChildComponent>(child);
+							auto& parent2 = engine->world.GetComponent<ParentComponent>(child2.parentIndex);
+
+							if (!engine->world.CheckComponent<ParentComponent>(child)
+								&& engine->world.CheckComponent<ChildComponent>(child))
+								CleanUp(child);
+
+							parent2.child.erase(std::find(parent2.child.begin(), parent2.child.end(), child));
+						}
+					}
+
+					ParentToFamily[OldToNewEntity[CurrID]] = List;
+				}
+			}
+
+			for (const auto& ent : parentsToBeDeleted)
+				CleanUp(ent);
 		}
 
 		void LoadIn(Entity newID, Entity oldID)
@@ -132,5 +184,7 @@ namespace Eclipse
 	private:
 		Entity m_ID;
 		std::vector<Entity> Children;
+		std::vector<Entity> m_pcEntities;
+		std::unordered_map<Entity, std::vector<Entity>> ParentToFamily;
 	};
 }
