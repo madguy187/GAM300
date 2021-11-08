@@ -130,9 +130,9 @@ namespace Eclipse
         prefabWorld.RegisterComponent<CollisionComponent>();
         prefabWorld.RegisterComponent<PrefabComponent>();
         prefabWorld.RegisterComponent<AIComponent>();
+        prefabWorld.RegisterComponent<NodeEditor>();
         prefabWorld.RegisterComponent <NavMeshVolumeComponent>();
 
-        prefabWorld.RegisterComponent<NodeEditor>();
         // registering system
         world.RegisterSystem<RenderSystem>();
         world.RegisterSystem<CameraSystem>();
@@ -395,7 +395,7 @@ namespace Eclipse
         }
 
         //Serialization(Temp)
-        szManager.SaveSceneFile();
+        //szManager.SaveSceneFile();
         pfManager.UnloadSaving();
         // unLoad
         mono.Terminate();

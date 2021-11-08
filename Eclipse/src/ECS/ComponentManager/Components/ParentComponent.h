@@ -8,5 +8,6 @@ namespace Eclipse
 		META_DATA(ParentComponent);
 		std::vector<Entity> child;
 		glm::mat4 model;
+
 	};
 }

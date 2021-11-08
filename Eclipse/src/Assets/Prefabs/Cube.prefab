@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<Prefab PrefabID="7028148828035927672">
+<Prefab PrefabID="7028230163964971071">
     <Entity_0 ID="0">
         <AABBComponent>
             <center x="0" y="0" z="0" />
@@ -10,13 +10,8 @@
             <Tag value="Cube" />
             <Name value="Cube" />
             <LayerIndex value="0" />
-            <Child size="1">
-                <Member0 value="1" />
-            </Child>
-            <Parent size="0" />
-            <IsAChild value="false" />
-            <ImguiIndentValue value="20" />
             <hightLightChild value="false" />
+            <ImguiIndentValue value="20" />
         </EntityComponent>
         <MaterialComponent>
             <Modeltype value="Models3D" />
@@ -80,28 +75,23 @@
             <IsInstance value="false" />
             <IsChild value="false" />
             <CompChanges value="00000000000000000000000000000000" />
-            <PrefabID value="7028148828035927672" />
+            <PrefabID value="7028230163964971071" />
         </PrefabComponent>
     </Entity_0>
     <Children Size="1">
-        <Child0 PrefabID="7028148828035927673">
+        <Child0 PrefabID="7028230163964971072">
             <Entity_0 ID="1">
                 <AABBComponent>
-                    <center x="0" y="0" z="0" />
-                    <Min x="-2.5" y="-2.5" z="-2.5" />
-                    <Max x="2.5" y="2.5" z="2.5" />
+                    <center x="0" y="7.54129" z="0" />
+                    <Min x="-2.5" y="5.04129" z="-2.5" />
+                    <Max x="2.5" y="10.0413" z="2.5" />
                 </AABBComponent>
                 <EntityComponent>
                     <Tag value="Cube" />
                     <Name value="Cube" />
                     <LayerIndex value="0" />
-                    <Child size="0" />
-                    <Parent size="1">
-                        <Member0 value="0" />
-                    </Parent>
-                    <IsAChild value="true" />
-                    <ImguiIndentValue value="20" />
                     <hightLightChild value="false" />
+                    <ImguiIndentValue value="20" />
                 </EntityComponent>
                 <MaterialComponent>
                     <Modeltype value="Models3D" />
@@ -147,12 +137,14 @@
                 </ModelComponent>
                 <ChildComponent>
                     <parentIndex value="0" />
-                    <PosOffset x="0" y="0" z="0" />
+                    <PosOffset x="0" y="7.54129" z="0" />
                     <RotOffset x="0" y="0" z="0" />
                     <ScaleOffset x="1" y="1" z="1" />
+                    <hasParent value="true" />
+                    <IsAChild value="true" />
                 </ChildComponent>
                 <TransformComponent>
-                    <position x="0" y="0" z="0" />
+                    <position x="0" y="7.54129" z="0" />
                     <rotation x="0" y="0" z="0" />
                     <scale x="5" y="5" z="5" />
                 </TransformComponent>
@@ -160,7 +152,7 @@
                     <IsInstance value="false" />
                     <IsChild value="true" />
                     <CompChanges value="00000000000000000000000000000000" />
-                    <PrefabID value="7028148828035927673" />
+                    <PrefabID value="7028230163964971072" />
                 </PrefabComponent>
             </Entity_0>
             <Children Size="0" />

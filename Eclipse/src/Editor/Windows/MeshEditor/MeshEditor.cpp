@@ -229,7 +229,7 @@ namespace Eclipse
         if (engine->world.CheckComponent<ParentComponent>(ID))
         {
             auto& parentCom = engine->world.GetComponent<ParentComponent>(ID);
-            
+
             for (const auto& kid : parentCom.child)
             {
                 MeshFamily.push_back(kid);
@@ -265,7 +265,7 @@ namespace Eclipse
 
             engine->world.DestroyEntity(ent);
         }
-        else 
+        else
         {
             engine->world.DestroyEntity(ent);
         }
