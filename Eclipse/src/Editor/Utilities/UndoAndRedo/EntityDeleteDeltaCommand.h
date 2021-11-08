@@ -27,7 +27,7 @@ namespace Eclipse
 				}
 				else
 				{
-					CleanUp(oldID);
+					MyCleanUp(oldID);
 				}
 			}
 		}
@@ -45,6 +45,13 @@ namespace Eclipse
 			else
 			{
 				LoadIn(m_ID, oldID);
+
+				if (engine->world.CheckComponent<ChildComponent>(m_ID))
+				{
+					auto& child = engine->world.GetComponent<ChildComponent>(m_ID);
+					auto& parent = engine->world.GetComponent<ParentComponent>(child.parentIndex);
+					parent.child.push_back(m_ID);
+				}
 			}
 		}
 
@@ -59,7 +66,6 @@ namespace Eclipse
 			std::unordered_map<Entity, Entity> OldToNewEntity;
 			OldToNewEntity[oldID] = newID;
 			LoadIn(newID, oldID);
-			// m_pcEntities.erase(std::find(m_pcEntities.begin(), m_pcEntities.end(), newID));
 
 			for (const auto& oldEnt : m_pcEntities)
 			{
@@ -95,6 +101,7 @@ namespace Eclipse
 		{
 			std::queue<Entity> parents;
 			std::set<Entity> parentsToBeDeleted;
+			std::set<Entity> childrenToBeDeleted;
 			std::unordered_map<Entity, Entity> OldToNewEntity;
 			OldToNewEntity[oldID] = newID;
 			parents.push(oldID);
@@ -125,25 +132,28 @@ namespace Eclipse
 
 						List.push_back(newChildID);
 
-						if (engine->world.CheckComponent<ChildComponent>(child))
+						if (engine->world.CheckComponent<ChildComponent>(child) 
+							&& !engine->world.CheckComponent<ParentComponent>(child))
 						{
-							auto& child2 = engine->world.GetComponent<ChildComponent>(child);
-							auto& parent2 = engine->world.GetComponent<ParentComponent>(child2.parentIndex);
-
-							if (!engine->world.CheckComponent<ParentComponent>(child)
-								&& engine->world.CheckComponent<ChildComponent>(child))
-								CleanUp(child);
-
-							parent2.child.erase(std::find(parent2.child.begin(), parent2.child.end(), child));
+							childrenToBeDeleted.insert(child);
 						}
 					}
 
+					for (const auto& byeChild : childrenToBeDeleted)
+					{
+						auto& childByeCom = engine->world.GetComponent<ChildComponent>(byeChild);
+						auto& parentLoser = engine->world.GetComponent<ParentComponent>(childByeCom.parentIndex);
+						parentLoser.child.erase(std::find(parentLoser.child.begin(), parentLoser.child.end(), byeChild));
+						engine->CleanUp(byeChild);
+					}
+
+					childrenToBeDeleted.clear();
 					ParentToFamily[OldToNewEntity[CurrID]] = List;
 				}
 			}
 
-			for (const auto& ent : parentsToBeDeleted)
-				CleanUp(ent);
+			for (const auto& parent : parentsToBeDeleted)
+				engine->CleanUp(parent);
 		}
 
 		void LoadIn(Entity newID, Entity oldID)
@@ -172,14 +182,16 @@ namespace Eclipse
 			engine->prefabWorld.DestroyEntity(oldID);
 		}
 
-		void CleanUp(Entity ID)
+		void MyCleanUp(Entity ID)
 		{
-			engine->gDynamicAABBTree.RemoveData(ID);
-			engine->gCullingManager->Remove(ID);
-			engine->LightManager.DestroyLight(ID);
-			engine->gPhysics.RemoveActor(ID);
-			engine->editorManager->DestroyEntity(ID);
-			engine->gPicker.SetCurrentCollisionID(engine->editorManager->GetSelectedEntity());
+			if (engine->world.CheckComponent<ChildComponent>(ID))
+			{
+				auto& child = engine->world.GetComponent<ChildComponent>(ID);
+				auto& parent = engine->world.GetComponent<ParentComponent>(child.parentIndex);
+				parent.child.erase(std::find(parent.child.begin(), parent.child.end(), ID));
+			}
+
+			engine->CleanUp(ID);
 		}
 	private:
 		Entity m_ID;
