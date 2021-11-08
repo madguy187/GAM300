@@ -112,6 +112,8 @@ namespace Eclipse
         {
             return MaterialType::MT_HEIGHT;
         }
+
+        return MaterialType::MT_NONE;
     }
 
     void PBRManager::LoadAllTextures()

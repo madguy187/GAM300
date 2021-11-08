@@ -191,7 +191,7 @@ project "Eclipse"
 	  "Dep/ASSIMP/",
 	  "Dep/Fmod/core/lib/x64",
 	  "Dep/Tracy",
-	  "Dep/Recast&Detour/lib/Debug"
+	  "Dep/Recast&Detour/lib/Release"
   }
   
   disablewarnings 

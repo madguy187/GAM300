@@ -3,7 +3,7 @@
 
 namespace Eclipse
 {
-    void Instance_Renderer::Init(std::vector<Vertex>& vertices_, std::vector<unsigned int>& indices_, unsigned int instancing_, std::vector<glm::mat4> instanceMatrix)
+    void Instance_Renderer::Init(std::vector<Vertex>& vertices_, std::vector<unsigned int>& indices_, size_t instancing_, std::vector<glm::mat4> instanceMatrix)
     {
         Vertices = vertices_;
         Indices = indices_;
@@ -92,6 +92,6 @@ namespace Eclipse
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_CULL_FACE);
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-        glDrawElementsInstanced(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0, Instancing);
+        glDrawElementsInstanced(GL_TRIANGLES, static_cast<GLsizei>(Indices.size()), GL_UNSIGNED_INT, 0, Instancing);
     }
 }

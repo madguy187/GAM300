@@ -86,7 +86,7 @@ namespace Eclipse
 
 		ENGINE_LOG_ASSERT(domain, "Domain could not be created");
 
-		mono_add_internal_call("Eclipse.RigidBody::Add_Force", SetForce);
+		mono_add_internal_call("Eclipse.RigidBody::Add_Force", AddForce);
 		mono_add_internal_call("Eclipse.RigidBody::getMass", getMass);
 		mono_add_internal_call("Eclipse.RigidBody::getX", getX);
 		mono_add_internal_call("Eclipse.RigidBody::getY", getY);
