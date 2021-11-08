@@ -18,6 +18,7 @@
 #include "../Components/s_Quaternion.h"
 #include "../Components/s_GameObject.h"
 #include "../Components/s_EclipseBehavior.h"
+#include "../Components/s_Physics.h"
 
 
 namespace Eclipse
