@@ -49,6 +49,8 @@ namespace Eclipse
                 CommandHistory::RegisterCommand(new PrimitiveDeltaCommand<std::string>{ oldName, entcom.Name });
             }
 
+            ECGui::DrawTextWidget<int>("ID ", currEnt);
+
             ECGui::PushItemWidth(WindowSize_.getX() * 0.35f);
             ECGui::DrawTextWidget<const char*>("Tag ", EMPTY_STRING);
             ECGui::InsertSameLine();
