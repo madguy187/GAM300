@@ -5,19 +5,31 @@ using Eclipse;
 
 public class Test : EclipseBehavior
 {
-    public float mouseSensitivity = 10f;
-
-    Test2 wee;
-
     public void Start()
     {
-        Console.WriteLine("TEST C# Start");
-        wee = GetComponent<Test2>();
-        Console.WriteLine(wee.Entity);
     }
 
     public void Update()
     {
-      
+        if (Input.GetKey(KeyCode.D))
+        {
+            Quaternion rot = transform.rotation;
+            rot.x += (0.01f * Time.deltaTime);
+            transform.rotation = rot;
+        }
+
+        if (Input.GetKey(KeyCode.A))
+        {
+            Quaternion rot = transform.rotation;
+            rot.x -= (0.01f * Time.deltaTime);
+            transform.rotation = rot;
+        }
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            transform.rotation = Quaternion.identity;
+        }
+
+        Console.WriteLine(transform.rotation);
     }
 }

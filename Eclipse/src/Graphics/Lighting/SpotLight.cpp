@@ -28,6 +28,8 @@ namespace Eclipse
 
     void SpotLight::Draw(unsigned int EntityId, SpotLightComponent* in, FrameBufferMode Mode, unsigned int IndexId, GLenum mode)
     {
+        (void)in;
+
         engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
         glEnable(GL_BLEND);
@@ -40,7 +42,7 @@ namespace Eclipse
         SpotlightTransform.scale.setY(1.0f);
         SpotlightTransform.scale.setZ(1.0f);
 
-        glm::mat4 mModelNDC;
+        //glm::mat4 mModelNDC;
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, SpotlightTransform.position.ConvertToGlmVec3Type());
         model = glm::rotate(model, glm::radians(SpotlightTransform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -80,7 +82,7 @@ namespace Eclipse
             GLint uniform_var_loc7 = shdrpgm.GetLocation(("spotLights[" + number + "].linear").c_str());
             GLint uniform_var_loc8 = shdrpgm.GetLocation(("spotLights[" + number + "].quadratic").c_str());
             GLint uniform_var_loc9 = shdrpgm.GetLocation(("spotLights[" + number + "].IntensityStrength").c_str());
-            GLint uniform_var_loc10 = shdrpgm.GetLocation(("spotLights[" + number + "].RGBColor").c_str());
+            GLint uniform_var_loc11 = shdrpgm.GetLocation(("spotLights[" + number + "].RGBColor").c_str());
 
             GLCall(glUniform3f(uniform_var_loc1, SpotlightTransform.position.getX(), SpotlightTransform.position.getY(), SpotlightTransform.position.getZ()));
             GLCall(glUniform3f(uniform_var_loc2, 100.0f, 100.0f, 100.0f));
@@ -91,7 +93,7 @@ namespace Eclipse
             GLCall(glUniform1f(uniform_var_loc8, Spotlight.quadratic));
             GLCall(glUniform1f(uniform_var_loc9, Spotlight.IntensityStrength));
             GLCall(glUniform3f(uniform_var_loc5, Spotlight.direction.getX(), Spotlight.direction.getY(), Spotlight.direction.getZ()));
-            GLCall(glUniform3f(uniform_var_loc10, Spotlight.RGBColor.getX(), Spotlight.RGBColor.getY(), Spotlight.RGBColor.getZ()));
+            GLCall(glUniform3f(uniform_var_loc11, Spotlight.RGBColor.getX(), Spotlight.RGBColor.getY(), Spotlight.RGBColor.getZ()));
         }
         shdrpgm.UnUse();
     }

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Graphics/EngineCompiler/InputCompiler/InputCompiler.h"
+#include "Editor/Windows/Debug/Debug.h"
 
 namespace Eclipse
 {
@@ -125,6 +126,9 @@ namespace Eclipse
     {
         DeSerializeLogicalInputs();
         DeSerializeMouseLogicalInputs();
+
+        auto& DebugWindow_ = *engine->editorManager->GetEditorWindow<DebugWindow>();
+        engine->InputManager->InputCompiler_.ProvideContainer(DebugWindow_.KeyMappings);
     }
 
     void InputCompiler::Write()
@@ -133,7 +137,7 @@ namespace Eclipse
         SerializeMouseLogicalInputs();
     }
 
-    void InputCompiler::ProvideContainer(std::map<std::string, std::string> In)
+    void InputCompiler::ProvideContainer(std::map<std::string, std::string>& In)
     {
         for (auto& i : engine->InputManager->KeyMappings)
         {
@@ -142,7 +146,7 @@ namespace Eclipse
         }
     }
 
-    void InputCompiler::ReceiveMapping(std::map<std::string, std::string> In)
+    void InputCompiler::ReceiveMapping(std::map<std::string, std::string>& In)
     {
         engine->InputManager->KeyMappings.clear();
 

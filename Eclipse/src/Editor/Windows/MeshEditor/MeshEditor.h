@@ -17,12 +17,16 @@ namespace Eclipse
 		void OnCameraZoomEvent();
 
 		void SetMeshID(Entity ID);
-		Entity GetMeshID();
+		Entity GetMeshID() const;
+		Entity GetOldestParentID() const;
 		bool GetActiveState();
 	private:
 		FrameBuffer* m_frameBuffer{ nullptr };
 		ECVec2 mViewportSize{ 0.f, 0.f };
 		Entity MeshID{ MAX_ENTITY };
+		Entity OldestParentID{ MAX_ENTITY };
+		std::vector<Entity> MeshFamily;
+		int MeshIndex{ 0 };
 		bool IsActive{ false };
 
 		//Temporary, can move to any where else.

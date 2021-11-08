@@ -51,4 +51,10 @@ namespace Eclipse
 		std::string axis = mono_string_to_utf8(Axis);
 		return engine->InputManager->GetAxis(axis);
 	}
+
+	static float GetRawMouseAxis(MonoString* Axis)
+	{
+		std::string axis = mono_string_to_utf8(Axis);
+		return engine->InputManager->GetRawAxis(axis);
+	}
 }

@@ -52,7 +52,7 @@ namespace Eclipse
                     _camerapos.position.getY(),
                     _camerapos.position.getZ());
 
-                glUniform3f(DiffuseColour, 0.8, 0.8, 0.8);
+                glUniform3f(DiffuseColour, 0.8f, 0.8f, 0.8f);
 
                 engine->MaterialManager.DoNotUpdateStencil();
                 DebugSpheres.Draw(shdrpgm, _camera);

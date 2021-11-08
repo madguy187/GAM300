@@ -18,6 +18,10 @@
 #include "../Components/s_Quaternion.h"
 #include "../Components/s_GameObject.h"
 #include "../Components/s_EclipseBehavior.h"
+#include "../Components/s_Physics.h"
+#include "../Components/s_Cursor.h"
+#include "../Components/s_Light.h"
+#include "../Components/s_AudioSource.h"
 
 
 namespace Eclipse
@@ -85,21 +89,51 @@ namespace Eclipse
 
 		ENGINE_LOG_ASSERT(domain, "Domain could not be created");
 
-		mono_add_internal_call("Eclipse.RigidBody::Add_Force", SetForce);
+		// RigidBody Internal Calls
+		mono_add_internal_call("Eclipse.RigidBody::Add_Force", AddForce);
 		mono_add_internal_call("Eclipse.RigidBody::getMass", getMass);
 		mono_add_internal_call("Eclipse.RigidBody::getX", getX);
 		mono_add_internal_call("Eclipse.RigidBody::getY", getY);
 		mono_add_internal_call("Eclipse.RigidBody::getZ", getZ);
+
+		// Input Internal Calls
 		mono_add_internal_call("Eclipse.Input::GetButtonDown", GetKeyCurrentByName);
 		mono_add_internal_call("Eclipse.Input::GetKey", GetKeyCurrentByKeyCode);
 		mono_add_internal_call("Eclipse.Input::GetAxis", GetMouseAxis);
+		mono_add_internal_call("Eclipse.Input::GetRawAxis", GetRawMouseAxis);
+
+		// Time Internal Calls
 		mono_add_internal_call("Eclipse.Time::getDeltaTime", GetDeltaTime);
 		mono_add_internal_call("Eclipse.Time::getFixedDeltaTime", GetFixedDeltaTime);
+
+		// GameObject Internal Calls
 		mono_add_internal_call("Eclipse.GameObject::setEnabled", setEnabled);
 		mono_add_internal_call("Eclipse.GameObject::getBehavior", getBehavior);
+
+		// Transform Internal Calls
 		mono_add_internal_call("Eclipse.Transform::RotateEuler", RotateEuler);
+		mono_add_internal_call("Eclipse.Transform::GetTransform", GetTransform);
+		mono_add_internal_call("Eclipse.Transform::SetTransform", SetTransform);
+		mono_add_internal_call("Eclipse.Transform::GetRotation", GetRotation);
+		mono_add_internal_call("Eclipse.Transform::SetRotation", SetRotation);
+
+		// Quaternion Internal Calls
 		mono_add_internal_call("Eclipse.Quaternion::GetEuler", Euler);
+
+		// InvokeFunc Internal Calls
 		mono_add_internal_call("Eclipse.EclipseBehavior::InvokeFunc", Invoke);
+
+		// Physics Internal Calls
+		mono_add_internal_call("Eclipse.Physics::RaycastCheck", RaycastFunc);
+
+		// Cursor Internal Calls
+		mono_add_internal_call("Eclipse.Cursor::setState", setState);
+
+		// Light Internal Calls
+		mono_add_internal_call("Eclipse.Light::SetLightEnabled", SetLightEnabled);
+
+		// AudioSource Internal Calls
+		mono_add_internal_call("Eclipse.AudioSource::PlayAudio", Play);
 	}
 
 	void MonoManager::Awake(MonoScript* obj)
@@ -142,6 +176,7 @@ namespace Eclipse
 
 	void MonoManager::LoadAllFields(MonoScript* script)
 	{
+		if (script->scriptName.empty()) return;
 		size_t i = 0;
 		MonoClass* klass = GetScriptMonoClass(script->scriptName);
 		MonoClass* attrKlass = mono_class_from_name(engine->mono.GetAPIImage(), "", "Header");
@@ -293,6 +328,7 @@ namespace Eclipse
 
 	MonoObject* MonoManager::CreateMonoObject(std::string scriptName, Entity entity)
 	{
+		if (scriptName == "") return nullptr;
 		MonoClass* script = mono_class_from_name(ScriptImage, "", scriptName.c_str());
 		if (!script)
 		{
@@ -391,6 +427,35 @@ namespace Eclipse
 		return obj;
 	}
 
+	ECVec3 MonoManager::ConvertVectorToECVec(MonoObject* vec)
+	{
+		MonoClass* klass = GetAPIMonoClass("Vector3");
+		float x;
+		float y;
+		float z;
+		GetFloatFromField(vec, klass, "x", x);
+		GetFloatFromField(vec, klass, "y", y);
+		GetFloatFromField(vec, klass, "z", z);
+		return ECVec3{ x, y, z };
+	}
+
+	ECVec3 MonoManager::ConvertQuaternionToECVec3(MonoObject* vec)
+	{
+		float w;
+		GetFloatFromField(vec, GetAPIMonoClass("Quaternion"), "w", w);
+		float x;
+		GetFloatFromField(vec, GetAPIMonoClass("Quaternion"), "x", x);
+		float y;
+		GetFloatFromField(vec, GetAPIMonoClass("Quaternion"), "y", y);
+		float z;
+		GetFloatFromField(vec, GetAPIMonoClass("Quaternion"), "z", z);
+
+		glm::quat quad{ w, x, y, z };
+		auto rot = glm::degrees(glm::eulerAngles(quad));
+		ECVec3 VecRot{ rot.x, rot.y, rot.z };
+		return VecRot;
+	}
+
 	MonoObject* MonoManager::CreateQuaternionClass(float x, float y, float z)
 	{
 		MonoClass* klass = GetAPIMonoClass("Quaternion");
@@ -401,7 +466,7 @@ namespace Eclipse
 		if (!method) return nullptr;
 
 		glm::vec3 vec{ x, y, z };
-		glm::fquat quad{ vec };
+		glm::quat quad{ vec };
 
 		std::vector<void*> args;
 		args.push_back(&quad.w);
@@ -411,6 +476,19 @@ namespace Eclipse
 
 		ExecuteMethod(obj, method, args);
 
+		return obj;
+	}
+
+	MonoObject* MonoManager::CreateRayCastHit(float x, float y, float z)
+	{
+		MonoClass* klass = GetAPIMonoClass("RayCastHit");
+		MonoObject* obj = CreateObjectFromClass(klass, false);
+		std::vector<void*> args;
+		args.push_back(&x);
+		args.push_back(&y);
+		args.push_back(&z);
+		ExecuteMethod(obj, GetMethodFromClass(klass, ".ctor", 3), args);
+		
 		return obj;
 	}
 
@@ -443,6 +521,19 @@ namespace Eclipse
 		}
 
 		mono_field_set_value(obj, field, &fieldValue);
+	}
+
+	bool MonoManager::GetFloatFromField(MonoObject* obj, MonoClass* klass, const char* fieldName, float& value)
+	{
+		MonoClassField* field = mono_class_get_field_from_name(klass, fieldName);
+		if (!field) {
+			ENGINE_CORE_WARN("Can't find field in klass");
+			return false;
+		}
+
+		mono_field_get_value(obj, field, (void*)&value);
+
+		return true;
 	}
 
 	MonoMethod* MonoManager::GetMethodFromClass(MonoClass* klass, std::string funcName, int param_count)

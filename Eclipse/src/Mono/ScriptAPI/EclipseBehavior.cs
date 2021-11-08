@@ -38,6 +38,11 @@ namespace Eclipse
             InvokeFunc(Entity, gameObject.ScriptName, funcName, time);
         }
 
+        public void Instantiate(GameObject obj, Vector3 pos, Quaternion rot)
+        {
+            
+        }
+
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         private extern static void InvokeFunc(UInt32 entity, string scriptName, string funcName, float time);
     }

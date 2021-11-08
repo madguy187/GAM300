@@ -11,11 +11,6 @@
 #include "Editor/Windows/MeshEditor/MeshEditor.h"
 #include "ECS/SystemManager/Systems/System/MaterialSystem/MaterialSystem.h"
 
-static void cursorPositionCallback(GLFWwindow* window, double xpos, double ypos)
-{
-    std::cout << xpos << " : " << ypos << std::endl;
-}
-
 namespace Eclipse
 {
     void RenderSystem::Init()

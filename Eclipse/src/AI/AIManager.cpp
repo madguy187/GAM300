@@ -13,8 +13,9 @@ void AIManager::patrol(Entity ent)
 	auto& rigidbody = engine->world.GetComponent<RigidBodyComponent>(ent);
 
 	ECVec3 direction = targettransform.position - transform.position;
-	VectorNormalize<float, 3>(rigidbody.forces, direction);
-	rigidbody.forces *= AI.PatrolSpeed;
+	ECVec3 force;
+	VectorNormalize<float, 3>(force, direction);
+	rigidbody.forces.push_back({ force * AI.PatrolSpeed,ForceMode::Impulse});
 
 
 	float distance = fabs(sqrtf(

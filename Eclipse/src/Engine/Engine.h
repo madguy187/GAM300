@@ -70,6 +70,8 @@ namespace Eclipse
 		bool GetPauseState();
 		bool GetStepState();
 		bool IsScenePlaying();
+		void DestroyGameObject(const Entity& ent);
+		void CleanUp(const Entity& ent);
 
 		void SetEditorState(bool check);
 		void SetPlayState(bool check);

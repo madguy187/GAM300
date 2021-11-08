@@ -13,6 +13,8 @@ namespace Eclipse
 		Entity ID;
 		bool InScene;
 	};
+
+
 	class QueryReportCallback : public PxQueryFilterCallback
 	{
 		
@@ -112,7 +114,7 @@ namespace Eclipse
 		void UpdateActor(Entity ent);
 		void ChangeShape(Entity ent, PxShapeType shape);
 		void CreateShape(Entity ent);
-		void SetForce(Entity ent, ECVec3 force);
+		void AddForce(Entity ent, ECVec3 force,ForceMode mode);
 		void UpdateVariables(Entity ent);
 		void UpdateShapes(Entity ent);
 		void GetActorPosition(Entity ent);
@@ -123,7 +125,8 @@ namespace Eclipse
 		void RemoveActor(Entity ent);
 		void ChangeType(Entity ent);
 		bool Raycast(ECVec3 origin, ECVec3 dir, float dist, PxRaycastBuffer& hit,std::string layerMask);
-
+		bool CheckSphere(ECVec3 position, float radius, std::string layerMask);
+		bool CheckBox(ECVec3 position, ECVec3 halfextents, std::string layerMask);
 		void CleanupScene();
 	};
 }
