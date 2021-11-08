@@ -71,10 +71,6 @@ namespace Eclipse
         vMin.y += ImGui::GetWindowPos().y;
         vMax.x += ImGui::GetWindowPos().x;
         vMax.y += ImGui::GetWindowPos().y;
-
-        mGameBufferSize = glm::vec2{ ECGui::GetWindowWidth(), ECGui::GetWindowHeight() };
-        mGameBufferPos = ECGui::GetWindowPos();
-        mCursorScreenPos = ECGui::GetCursorScreenPos();
         //
          
         //RenderGameHeader();
@@ -115,5 +111,10 @@ namespace Eclipse
     void eGameViewWindow::SetViewToOriginalState(bool active)
     {
         IsViewBackToOriginalState = active;
+    }
+
+    ECVec2 eGameViewWindow::GetViewPortSize()
+    {
+        return mViewportSize;
     }
 }

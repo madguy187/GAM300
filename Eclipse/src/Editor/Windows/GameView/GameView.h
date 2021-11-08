@@ -18,9 +18,8 @@ namespace Eclipse
 		void SetViewToFullscreen(bool active);
 		void SetViewToOriginalState(bool active);
 
-		ECVec2 mGameBufferPos;
-		ECVec2 mGameBufferSize;
-		ECVec2 mCursorScreenPos;
+		ECVec2 GetViewPortSize();
+
 		ImVec2 vMin;
 		ImVec2 vMax;
 	private:

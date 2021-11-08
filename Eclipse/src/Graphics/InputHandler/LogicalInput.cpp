@@ -1504,15 +1504,12 @@ namespace Eclipse
         {
             auto* scene = engine->editorManager->GetEditorWindow<eGameViewWindow>();
 
-            float MOUSEX = ImGui::GetMousePos().x;
-            float MOUSEY = ImGui::GetMousePos().y;
-
             float GameWindowMinX = scene->vMin.x - OpenGL_Context::GetContextPosition().x;
-            float GameWindowMaxX = scene->vMin.x + scene->mGameBufferSize.getX() - OpenGL_Context::GetContextPosition().x;
+            float GameWindowMaxX = scene->vMin.x + scene->GetViewPortSize().getX() - OpenGL_Context::GetContextPosition().x;
             float GameWindowCenterX = (GameWindowMaxX + GameWindowMinX) / 2;
 
             float GameWindowMinY = scene->vMin.y - OpenGL_Context::GetContextPosition().y;
-            float GameWindowMaxY = scene->vMin.y + scene->mGameBufferSize.getY() - OpenGL_Context::GetContextPosition().y;
+            float GameWindowMaxY = scene->vMin.y + scene->GetViewPortSize().getY() - OpenGL_Context::GetContextPosition().y;
             float GameWindowCenterY = (GameWindowMinY + GameWindowMaxY) / 2;
 
             glfwSetCursorPos(OpenGL_Context::ptr_window, GameWindowCenterX, GameWindowCenterY);
