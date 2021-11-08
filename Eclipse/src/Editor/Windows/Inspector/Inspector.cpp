@@ -40,7 +40,7 @@ namespace Eclipse
             Entity currEnt = mesheditor->IsVisible ? mesheditor->GetMeshID() : engine->editorManager->GetSelectedEntity();
             auto& entcom = engine->world.GetComponent<EntityComponent>(currEnt);
 
-            ECGui::PushItemWidth(WindowSize_.getX());
+            ECGui::PushItemWidth(WindowSize_.getX()); 
             if (ECGui::DrawInputTextHintWidget("InputEntityName", "Enter Entity Name", EntNameInput,
                 256, true, ImGuiInputTextFlags_EnterReturnsTrue))
             {
@@ -492,9 +492,6 @@ namespace Eclipse
                 ECGui::CheckBoxBool("Rigid Body Enable Gravity", &_RigidB.enableGravity);
                 ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Forces", EMPTY_STRING);
-                ECGui::NextColumn();
-                ECGui::PushItemWidth(ECGui::GetWindowSize().x);
-                ECGui::DrawSliderFloat3Widget("Rigid Body Forces", &_RigidB.forces, true, 0.0f, 1.0f);
                 ECGui::NextColumn();
                 ECGui::DrawTextWidget<const char*>("Velocity", EMPTY_STRING);
                 ECGui::NextColumn();
