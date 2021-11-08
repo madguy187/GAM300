@@ -185,7 +185,7 @@ bool Eclipse::OpenGL_Context::init(std::string configFile)
     glfwSetWindowPosCallback(ptr_window, window_pos_callback);
 
     // this is the default setting ...
-    glfwSetInputMode(ptr_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    //glfwSetInputMode(ptr_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
     // Part 2: Initialize entry points to OpenGL functions and extensions
     GLenum err = glewInit();

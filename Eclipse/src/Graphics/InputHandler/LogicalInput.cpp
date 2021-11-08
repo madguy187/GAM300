@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "LogicalInput.h"
 #include "Graphics/OpenGL/OpenGL_Context.h"
+#include "Editor/Windows/GameView/GameView.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // For LOGICAL INPUT ( KEYBOARD )
@@ -21,7 +22,7 @@ namespace Eclipse
         {
             RegisterTriggerInput(keycode, InputState::Key_TRIGGERED);
 
-            if (KeyContainer.count(keycode) != 0 && KeyContainer[keycode] == InputState::Key_TRIGGERED)
+            if (KeyContainer.count(keycode) != 0 && KeyContainer[keycode].inputState == InputState::Key_TRIGGERED)
             {
                 PrintKey(keycode, Press);
                 return true;
@@ -45,7 +46,7 @@ namespace Eclipse
             RegisterHoldInput(keycode, InputState::Key_HOLD);
 
             if (KeyContainer.count(keycode) != 0 &&
-                (KeyContainer[keycode] == InputState::Key_TRIGGERED || KeyContainer[keycode] == InputState::Key_HOLD))
+                (KeyContainer[keycode].inputState == InputState::Key_TRIGGERED || KeyContainer[keycode].inputState == InputState::Key_HOLD))
             {
                 //PrintKey(keycode, Hold);
                 return true;
@@ -77,7 +78,7 @@ namespace Eclipse
 
             RegisterTriggerInput(PassedIn, InputState::Key_TRIGGERED);
 
-            if (KeyContainer.count(PassedIn) && KeyContainer[PassedIn] == InputState::Key_TRIGGERED)
+            if (KeyContainer.count(PassedIn) && KeyContainer[PassedIn].inputState == InputState::Key_TRIGGERED)
             {
                 PrintKey(PassedIn, Press);
                 return true;
@@ -109,7 +110,7 @@ namespace Eclipse
             RegisterHoldInput(PassedIn, InputState::Key_HOLD);
 
             if (KeyContainer.count(PassedIn) != 0 &&
-                (KeyContainer[PassedIn] == InputState::Key_TRIGGERED || KeyContainer[PassedIn] == InputState::Key_HOLD))
+                (KeyContainer[PassedIn].inputState == InputState::Key_TRIGGERED || KeyContainer[PassedIn].inputState == InputState::Key_HOLD))
             {
                 //PrintKey(keycode, Hold);
                 return true;
@@ -155,7 +156,7 @@ namespace Eclipse
             RegisterMouseInput(Mappedkeycode, InputState::Key_TRIGGERED);
 
             if (MouseContainer_.count(Mappedkeycode) != 0 &&
-                MouseContainer_[Mappedkeycode] == InputState::Key_TRIGGERED)
+                MouseContainer_[Mappedkeycode].inputState == InputState::Key_TRIGGERED)
             {
                 return true;
             }
@@ -178,7 +179,7 @@ namespace Eclipse
             RegisterMouseInput(Mappedkeycode, InputState::Key_HOLD);
 
             if (MouseContainer_.count(Mappedkeycode) != 0 &&
-                (MouseContainer_[Mappedkeycode] == InputState::Key_TRIGGERED || MouseContainer_[Mappedkeycode] == InputState::Key_HOLD))
+                (MouseContainer_[Mappedkeycode].inputState == InputState::Key_TRIGGERED || MouseContainer_[Mappedkeycode].inputState == InputState::Key_HOLD))
             {
                 return true;
             }
@@ -207,7 +208,7 @@ namespace Eclipse
             RegisterMouseInput(PassedIn, InputState::Key_TRIGGERED);
 
             if (MouseContainer_.count(PassedIn) != 0 &&
-                MouseContainer_[PassedIn] == InputState::Key_TRIGGERED)
+                MouseContainer_[PassedIn].inputState == InputState::Key_TRIGGERED)
             {
                 return true;
             }
@@ -235,7 +236,7 @@ namespace Eclipse
             RegisterMouseInput(PassedIn, InputState::Key_HOLD);
 
             if (MouseContainer_.count(PassedIn) != 0 &&
-                (MouseContainer_[PassedIn] == InputState::Key_TRIGGERED || MouseContainer_[PassedIn] == InputState::Key_HOLD))
+                (MouseContainer_[PassedIn].inputState == InputState::Key_TRIGGERED || MouseContainer_[PassedIn].inputState == InputState::Key_HOLD))
             {
                 return true;
             }
@@ -373,6 +374,28 @@ namespace Eclipse
         }
     }
 
+    float LogicalInput::GetRawAxis(const std::string& Type)
+    {
+        if (Type == "Mouse X")
+        {
+            return XDeltaRaw;
+        }
+        else if (Type == "Mouse Y")
+        {
+            return YDeltaRaw;
+        }
+        else if (Type == "Horizontal")
+        {
+            return XDeltaKeyRaw;
+        }
+        else if (Type == "Vertical")
+        {
+            return YDeltaKeyRaw;
+        }
+
+        return 0.0f;
+    }
+
     void LogicalInput::init()
     {
         // Clear Container just in case
@@ -391,12 +414,14 @@ namespace Eclipse
 
     void LogicalInput::RegisterTriggerInput(InputKeycode keycode, InputState input)
     {
-        KeyContainer.insert({ keycode, input });
+        InputData NewInputData(input);
+        KeyContainer.insert({ keycode, NewInputData });
     }
 
     void LogicalInput::RegisterMouseInput(InputMouseKeycode keycode, InputState input)
     {
-        MouseContainer_.insert({ keycode, input });
+        InputData NewInputData(input);
+        MouseContainer_.insert({ keycode, NewInputData });
     }
 
     void LogicalInput::RegisterHoldInput(InputKeycode keycode, InputState input)
@@ -468,18 +493,128 @@ namespace Eclipse
     {
         for (auto& pair2 : KeyContainer)
         {
-            if (pair2.second == InputState::Key_TRIGGERED)
+            // Horizontal
+            if (pair2.first == InputKeycode::Key_LEFT || pair2.first == InputKeycode::Key_A)
+            {
+                if (pair2.second.inputState == InputState::Key_HOLD && XDeltaKey >= -1.0f)
+                {
+                    XDeltaKey -= engine->Game_Clock.get_DeltaTime();
+                    XDeltaKeyRaw = -1;
+                }
+            }
+
+            if (pair2.first == InputKeycode::Key_RIGHT || pair2.first == InputKeycode::Key_D)
+            {
+                if (pair2.second.inputState == InputState::Key_HOLD && XDeltaKey <= 1.0f)
+                {
+                    XDeltaKey += engine->Game_Clock.get_DeltaTime();
+                    XDeltaKeyRaw = 1.0;
+                }
+            }
+
+            // Vertical
+            // Right and down is positive
+            // left and up is negative
+            if (pair2.first == InputKeycode::Key_UP || pair2.first == InputKeycode::Key_W)
+            {
+                if (pair2.second.inputState == InputState::Key_HOLD && XDeltaKey >= -1.0f)
+                {
+                    YDeltaKey -= engine->Game_Clock.get_DeltaTime();
+                    YDeltaKeyRaw = -1;
+                }
+            }
+
+            if (pair2.first == InputKeycode::Key_DOWN || pair2.first == InputKeycode::Key_S)
+            {
+                if (pair2.second.inputState == InputState::Key_HOLD && XDeltaKey <= 1.0f)
+                {
+                    YDeltaKey += engine->Game_Clock.get_DeltaTime(); // positive
+                    YDeltaKeyRaw = 1;
+                }
+            }
+
+            if (pair2.second.inputState == InputState::Key_TRIGGERED)
+            {
+                pair2.second = InputState::Key_HOLD;
+                XDeltaKeyRaw = 0;
+                XDeltaKey = 0;
+                YDeltaKeyRaw = 0;
+                YDeltaKey = 0;
+            }
+        }
+
+        // Mouse
+        for (auto& pair2 : MouseContainer_)
+        {
+            if (pair2.second.inputState == InputState::Key_TRIGGERED)
             {
                 pair2.second = InputState::Key_HOLD;
             }
         }
 
-        for (auto& pair2 : MouseContainer_)
+        for (auto& pair3 : ReleaseContainer)
         {
-            if (pair2.second == InputState::Key_TRIGGERED)
+            if (pair3.first == InputKeycode::Key_LEFT || pair3.first == InputKeycode::Key_A)
             {
-                pair2.second = InputState::Key_HOLD;
+                if (XDeltaKey <= 0.0)
+                {
+                    XDeltaKey += engine->Game_Clock.get_DeltaTime();
+                }
+                else
+                {
+                    XDeltaKey = 0.0;
+                    DeleteContainer.push_back(pair3.first);
+                }
             }
+
+            if (pair3.first == InputKeycode::Key_RIGHT || pair3.first == InputKeycode::Key_D)
+            {
+                if (XDeltaKey >= 0.0)
+                {
+                    XDeltaKey -= engine->Game_Clock.get_DeltaTime();
+                }
+                else
+                {
+                    XDeltaKey = 0.0;
+                    DeleteContainer.push_back(pair3.first);
+                }
+            }
+
+            if (pair3.first == InputKeycode::Key_UP || pair3.first == InputKeycode::Key_W)
+            {
+                if (YDeltaKey <= 0.0)
+                {
+                    YDeltaKey += engine->Game_Clock.get_DeltaTime();
+                }
+                else
+                {
+                    YDeltaKey = 0.0;
+                    DeleteContainer.push_back(pair3.first);
+                }
+            }
+
+            if (pair3.first == InputKeycode::Key_DOWN || pair3.first == InputKeycode::Key_S)
+            {
+                if (XDeltaKey >= 0.0)
+                {
+                    YDeltaKey -= engine->Game_Clock.get_DeltaTime();
+                }
+                else
+                {
+                    YDeltaKey = 0.0;
+                    DeleteContainer.push_back(pair3.first);
+                }
+            }
+        }
+
+        if (DeleteContainer.size() != 0)
+        {
+            for (auto& i : DeleteContainer)
+            {
+                ReleaseContainer.erase(i);
+            }
+
+            DeleteContainer.clear();
         }
     }
 
@@ -491,6 +626,8 @@ namespace Eclipse
         {
             if (KeyContainer.count(keycode) != 0)
             {
+                ReleaseContainer.emplace(keycode, KeyContainer[keycode]);
+
                 PrintKey(keycode, Release);
                 KeyContainer.erase(keycode);
                 return true;
@@ -551,6 +688,7 @@ namespace Eclipse
         {
             if (KeyContainer.count(keycode) != 0)
             {
+                ReleaseContainer.emplace(keycode, KeyContainer[keycode]);
                 //PrintKey(keycode, HoldKeyRelease);
                 KeyContainer.erase(keycode);
                 return true;
@@ -1356,13 +1494,52 @@ namespace Eclipse
         YMiddle = (height / 2);
     }
 
+    void LogicalInput::CursorUpdate()
+    {
+        //When Locked, the cursor is placed in the center of the viewand cannot be moved.The cursor is invisible in this state, regardless of the value of Cursor.visible.
+        //When Confined, the cursor behaves normally with the exception of being confined to the view.For example, if the application is running in a window, the mouse cursor cannot leave the window in Confined mode.This is only supported on Windowsand Linux standalone builds.
+        //To provide a good user experience the recommended behavior is only to lock or confine the cursor as a result of user action, for example by pressing a button.
+
+        switch (State)
+        {
+        case CursorLockMode::Locked:
+        {
+            if (HideCursor)
+            {
+                ImGui::SetMouseCursor(ImGuiMouseCursor_None);
+            }
+
+            auto* scene = engine->editorManager->GetEditorWindow<eGameViewWindow>();
+
+            float GameWindowMinX = scene->vMin.x - OpenGL_Context::GetContextPosition().x;
+            float GameWindowMaxX = scene->vMin.x + scene->GetViewPortSize().getX() - OpenGL_Context::GetContextPosition().x;
+            float GameWindowCenterX = (GameWindowMaxX + GameWindowMinX) / 2;
+
+            float GameWindowMinY = scene->vMin.y - OpenGL_Context::GetContextPosition().y;
+            float GameWindowMaxY = scene->vMin.y + scene->GetViewPortSize().getY() - OpenGL_Context::GetContextPosition().y;
+            float GameWindowCenterY = (GameWindowMinY + GameWindowMaxY) / 2;
+
+            glfwSetCursorPos(OpenGL_Context::ptr_window, GameWindowCenterX, GameWindowCenterY);
+        }
+        break;
+
+        case CursorLockMode::None:
+        {
+            // Unhides cursor 
+            //glfwSetInputMode(OpenGL_Context::ptr_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        }
+        break;
+
+        }
+    }
+
     void LogicalInput::AxisUpdate()
     {
-        int MouseX = OpenGL_Context::m_posX;
-        int MouseY = OpenGL_Context::m_posY;
+        float MouseX = static_cast<float>(OpenGL_Context::m_posX);
+        float MouseY = static_cast<float>(OpenGL_Context::m_posY);
 
         // HORIZONTAL
-        
+
         // If Mouse position Different from Old One
         if (MouseX != Mouse_X)
         {
@@ -1373,6 +1550,7 @@ namespace Eclipse
                 if (XDelta <= 1.0f)
                 {
                     XDelta += engine->Game_Clock.get_DeltaTime();
+                    XDeltaRaw = 1.0f;
                 }
             }
             else
@@ -1381,6 +1559,7 @@ namespace Eclipse
                 if (XDelta >= -1.0f)
                 {
                     XDelta -= engine->Game_Clock.get_DeltaTime();
+                    XDeltaRaw = -1.0f;
                 }
             }
 
@@ -1390,7 +1569,7 @@ namespace Eclipse
         else
         {
             // If not moving , we reset.
-            XDelta = 0; 
+            XDelta = 0;
         }
 
         // VERTICAL
@@ -1403,6 +1582,7 @@ namespace Eclipse
                 if (YDelta >= -1.0f)
                 {
                     YDelta -= engine->Game_Clock.get_DeltaTime();
+                    YDeltaRaw = -1.0f;
                 }
             }
             else
@@ -1410,6 +1590,7 @@ namespace Eclipse
                 if (YDelta <= 1.0f)
                 {
                     YDelta += engine->Game_Clock.get_DeltaTime();
+                    YDeltaRaw = 1.0f;
                 }
             }
 
@@ -1418,32 +1599,39 @@ namespace Eclipse
         }
         else
         {
-            YDelta = 0; 
+            YDelta = 0;
         }
     }
 
     float LogicalInput::GetAxis(const std::string& Type)
     {
-        if (Type == "Horizontal")
+        if (Type == "Mouse X")
         {
             return XDelta;
         }
-        else if (Type == "Vertical")
+        else if (Type == "Mouse Y")
         {
             return YDelta;
         }
+        else if (Type == "Horizontal")
+        {
+            return XDeltaKey;
+        }
+        else if (Type == "Vertical")
+        {
+            return YDeltaKey;
+        }
+
+        return 0.0f;
     }
 
-    bool LogicalInput::LockCursor(FrameBufferMode Mode)
+    bool LogicalInput::LockCursor(CursorLockMode Mode)
     {
-        // window : 925, 485
-        int ratioX = OpenGL_Context::GetWidth() / engine->gFrameBufferManager->FrameBufferContainer[Mode]->m_width;
-        int ratioY = OpenGL_Context::GetHeight() / engine->gFrameBufferManager->FrameBufferContainer[Mode]->m_height;
+        //When Locked, the cursor is placed in the center of the viewand cannot be moved.The cursor is invisible in this state, regardless of the value of Cursor.visible.
+        //When Confined, the cursor behaves normally with the exception of being confined to the view.For example, if the application is running in a window, the mouse cursor cannot leave the window in Confined mode.This is only supported on Windowsand Linux standalone builds.
+        //To provide a good user experience the recommended behavior is only to lock or confine the cursor as a result of user action, for example by pressing a button.
 
-        int MiddleX = (OpenGL_Context::GetWidth() / 2) / ratioX;
-        int MiddleY = (OpenGL_Context::GetHeight() / 2) / ratioY;
-
-        glfwSetCursorPos(OpenGL_Context::ptr_window, MiddleX, MiddleY);
+        State = Mode;
 
         return true;
     }

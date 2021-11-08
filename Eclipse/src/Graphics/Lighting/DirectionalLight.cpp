@@ -25,6 +25,8 @@ namespace Eclipse
 
     void DirectionalLight::Draw(unsigned int EntityId, DirectionalLightComponent* in, FrameBufferMode Mode, unsigned int IndexID, GLenum mode)
     {
+        (void)in;
+
         engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
         //auto& shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
