@@ -109,11 +109,8 @@ namespace Eclipse
         ADD_MEMBER(Tag);
         ADD_MEMBER(Name);
         ADD_MEMBER(LayerIndex);
-        ADD_MEMBER(Child);
-        ADD_MEMBER(Parent);
-        ADD_MEMBER(IsAChild);
-        ADD_MEMBER(ImguiIndentValue);
         ADD_MEMBER(hightLightChild);
+        ADD_MEMBER(ImguiIndentValue);
     }
 
     DEFINE_META(ScriptComponent)
@@ -255,6 +252,8 @@ namespace Eclipse
         ADD_MEMBER(PosOffset);
         ADD_MEMBER(RotOffset);
         ADD_MEMBER(ScaleOffset);
+        ADD_MEMBER(hasParent);
+        ADD_MEMBER(IsAChild);
     }
 
     DEFINE_META(ParentComponent)
