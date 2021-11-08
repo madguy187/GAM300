@@ -44,24 +44,25 @@ namespace Eclipse
 			auto& parent = w.GetComponent<ParentComponent>(ent);
 			auto& parentEntComp = w.GetComponent<EntityComponent>(ent);
 
-			for (auto& parentEnt : parentEntComp.Child)
-			{
-				parentEnt = oldToNewMap[parentEnt];
-			}
-
-			for (auto& child : parent.child)
-			{
-				child = oldToNewMap[child];
-				
-				auto& childComp = w.GetComponent<ChildComponent>(child);
-				auto& childEntComp = w.GetComponent<EntityComponent>(child);
-				childComp.parentIndex = ent;
-
-				for (auto& childEnt : childEntComp.Parent)
-				{
-					childEnt = oldToNewMap[childEnt];
-				}
-			}
+			//TODO
+			//for (auto& parentEnt : parentEntComp.Child)
+			//{
+			//	parentEnt = oldToNewMap[parentEnt];
+			//}
+			//
+			//for (auto& child : parent.child)
+			//{
+			//	child = oldToNewMap[child];
+			//	
+			//	auto& childComp = w.GetComponent<ChildComponent>(child);
+			//	auto& childEntComp = w.GetComponent<EntityComponent>(child);
+			//	childComp.parentIndex = ent;
+			//
+			//	for (auto& childEnt : childEntComp.Parent)
+			//	{
+			//		childEnt = oldToNewMap[childEnt];
+			//	}
+			//}
 		}
 		Clear();
 	}
@@ -309,16 +310,17 @@ namespace Eclipse
 
 		auto& entComp = prefabW.GetComponent<EntityComponent>(ent);
 
-		sz.StartElement("Children");
-		sz.AddAttributeToElement("Size", entComp.Child.size());
-
-		for (auto child : entComp.Child)
-		{
-			sz.StartElement("Child", true, counter++);
-			auto& prefabComp = prefabW.GetComponent<PrefabComponent>(child);
-			SavePrefab(prefabComp.PrefabID, child);
-			sz.CloseElement();
-		}
+		//TODO
+		//sz.StartElement("Children");
+		//sz.AddAttributeToElement("Size", entComp.Child.size());
+		//
+		//for (auto child : entComp.Child)
+		//{
+		//	sz.StartElement("Child", true, counter++);
+		//	auto& prefabComp = prefabW.GetComponent<PrefabComponent>(child);
+		//	SavePrefab(prefabComp.PrefabID, child);
+		//	sz.CloseElement();
+		//}
 		sz.CloseElement();
 	}
 
@@ -330,25 +332,26 @@ namespace Eclipse
 			comp.child.clear();
 		}
 		
-		auto& entComp = world.GetComponent<EntityComponent>(ent);
-		entComp.Child.clear();
+		//TODO
+		//auto& entComp = world.GetComponent<EntityComponent>(ent);
+		//entComp.Child.clear();
 	}
 
 	void SerializationManager::UpdateParentChild(World& world, const Entity& parentEnt, const Entity& childEnt)
 	{
 		auto& parentComp = world.GetComponent<ParentComponent>(parentEnt);
 		parentComp.child.push_back(childEnt);
-
-		auto& parentEntComp = world.GetComponent<EntityComponent>(parentEnt);
-		parentEntComp.Child.push_back(childEnt);
-
-		auto& childComp = world.GetComponent<ChildComponent>(childEnt);
-		childComp.parentIndex = parentEnt;
-
-		auto& childEntComp = world.GetComponent<EntityComponent>(childEnt);
-		childEntComp.IsAChild = true;
-		childEntComp.Parent.clear();
-		childEntComp.Parent.push_back(parentEnt);
+		//TODO
+		//auto& parentEntComp = world.GetComponent<EntityComponent>(parentEnt);
+		//parentEntComp.Child.push_back(childEnt);
+		//
+		//auto& childComp = world.GetComponent<ChildComponent>(childEnt);
+		//childComp.parentIndex = parentEnt;
+		//
+		//auto& childEntComp = world.GetComponent<EntityComponent>(childEnt);
+		//childEntComp.IsAChild = true;
+		//childEntComp.Parent.clear();
+		//childEntComp.Parent.push_back(parentEnt);
 	}
 
 	EUUID SerializationManager::LoadPrefab(Entity& dszEnt, bool IsFromMainWorld)

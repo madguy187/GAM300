@@ -38,9 +38,10 @@ namespace Eclipse
 		template<>
 		inline void Equalize(EntityComponent& lhs, EntityComponent& rhs)
 		{
-			lhs.Tag = rhs.Tag;
-			lhs.IsAChild = rhs.IsAChild;
-			lhs.LayerIndex = rhs.LayerIndex;
+			//TODO
+			//lhs.Tag = rhs.Tag;
+			//lhs.IsAChild = rhs.IsAChild;
+			//lhs.LayerIndex = rhs.LayerIndex;
 		}
 
 		template<>

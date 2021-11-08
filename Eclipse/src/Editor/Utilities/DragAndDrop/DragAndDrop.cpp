@@ -233,15 +233,15 @@ namespace Eclipse
 									{
 										engine->world.AddComponent(engine->editorManager->GetEntityID(SourceIndex_), ChildComponent{});
 										engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).parentIndex = engine->editorManager->GetEntityID(DestinationIndex_);
+										engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).hasParent = true;
+										engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).IsAChild = true;
 									}
 									else
 									{
 										engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).parentIndex = engine->editorManager->GetEntityID(DestinationIndex_);
+										engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).hasParent = true;
+										engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).IsAChild = true;
 									}
-
-									DestinationEntCom->Child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
-									SourceEntCom->IsAChild = true;
-									SourceEntCom->Parent.push_back(engine->editorManager->GetEntityID(DestinationIndex_));
 
 									childComp = &engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_));
 									childTransComp = &engine->world.GetComponent<TransformComponent>(engine->editorManager->GetEntityID(SourceIndex_));

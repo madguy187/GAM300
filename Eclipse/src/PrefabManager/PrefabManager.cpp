@@ -28,9 +28,9 @@ namespace Eclipse
 		auto& prefabW = engine->prefabWorld;
 		InsertPrefab(ent, path, prefabID);
 
-		auto& entComp = prefabW.GetComponent<EntityComponent>(ent);
+		auto& entComp = prefabW.GetComponent<ParentComponent>(ent);
 
-		for (auto& child : entComp.Child)
+		for (auto& child : entComp.child)
 		{
 			auto& prefabComp = prefabW.GetComponent<PrefabComponent>(child);
 			RecurseInsertPrefab(child, "", prefabComp.PrefabID);
@@ -235,9 +235,10 @@ namespace Eclipse
 		auto& entComp = prefabW.GetComponent<EntityComponent>(prefabEnt);
 		entComp.IsActive = false;
 		entComp.hightLightChild = false;
-		entComp.Child.clear();
-		entComp.Parent.clear();
-		entComp.IsAChild = parentEnt != MAX_ENTITY;
+		//TODO FOR JIAN HERNG
+		//entComp.Child.clear();
+		//entComp.Parent.clear();
+		//entComp.IsAChild = parentEnt != MAX_ENTITY;
 
 		//Prefab component updates
 		auto& prefabComp = prefabW.GetComponent<PrefabComponent>(prefabEnt);
@@ -270,10 +271,11 @@ namespace Eclipse
 				auto& parent = prefabW.GetComponent<ParentComponent>(parentEnt);
 				parent.child.push_back(prefabEnt);
 
-				auto& parentEntComp = prefabW.GetComponent<EntityComponent>(parentEnt);
-				parentEntComp.Child.push_back(prefabEnt);
-
-				entComp.Parent.push_back(parentEnt);
+				//TODO
+				//auto& parentEntComp = prefabW.GetComponent<EntityComponent>(parentEnt);
+				//parentEntComp.Child.push_back(prefabEnt);
+				//
+				//entComp.Parent.push_back(parentEnt);
 			}
 		}
 
@@ -321,11 +323,12 @@ namespace Eclipse
 
 		auto& entComp = w.GetComponent<EntityComponent>(sourceEnt);
 
-		//Generate child prefab
-		for (auto& child : entComp.Child)
-		{
-			RecursiveGeneratePrefab(child, "", ++generatedID, newEnt);
-		}
+		//TODO
+		////Generate child prefab
+		//for (auto& child : entComp.Child)
+		//{
+		//	RecursiveGeneratePrefab(child, "", ++generatedID, newEnt);
+		//}
 
 		return newEnt;
 	}
@@ -360,10 +363,11 @@ namespace Eclipse
 
 		auto& entComp = prefabW.GetComponent<EntityComponent>(childPrefabEnt);
 
-		for (auto& child : entComp.Child)
-		{
-			RecursiveCreatePrefabInstances(child, newEnt);
-		}
+		//TODO
+		//for (auto& child : entComp.Child)
+		//{
+		//	RecursiveCreatePrefabInstances(child, newEnt);
+		//}
 	}
 
 	void PrefabManager::CompareHierarchy(World& compareSampleWorld, const Entity& compareSample, World& compareTargetWorld,
@@ -375,42 +379,43 @@ namespace Eclipse
 		auto& sampleEntComp = compareSampleWorld.GetComponent<EntityComponent>(compareSample);
 		auto& targetEntComp = compareTargetWorld.GetComponent<EntityComponent>(compareTarget);
 
-		auto targetEntCompChildren = targetEntComp.Child;
-		std::vector<Entity> newChildren;
+		//TODO
+		//auto targetEntCompChildren = targetEntComp.Child;
+		//std::vector<Entity> newChildren;
+		//
+		//for (auto& sampleChild : sampleEntComp.Child)
+		//{
+		//	bool isFound = false;
+		//	auto& sampleChildPrefabID = compareSampleWorld.GetComponent<PrefabComponent>(sampleChild).PrefabID;
+		//	
+		//	for (auto& targetChild : targetEntCompChildren)
+		//	{
+		//		auto& targetChildPrefabID = compareTargetWorld.GetComponent<PrefabComponent>(targetChild).PrefabID;
+		//
+		//		if (sampleChildPrefabID == targetChildPrefabID)
+		//		{
+		//			CompareHierarchy(compareSampleWorld, sampleChild, compareTargetWorld, targetChild, hierMap, newChildMap);
+		//			isFound = true;
+		//			targetEntCompChildren.erase(std::remove(targetEntCompChildren.begin(), targetEntCompChildren.end(), targetChild));
+		//			break;
+		//		}
+		//	}
+		//
+		//	if (!isFound)
+		//	{
+		//		newChildren.push_back(sampleChild);
+		//	}
+		//}
 
-		for (auto& sampleChild : sampleEntComp.Child)
-		{
-			bool isFound = false;
-			auto& sampleChildPrefabID = compareSampleWorld.GetComponent<PrefabComponent>(sampleChild).PrefabID;
-			
-			for (auto& targetChild : targetEntCompChildren)
-			{
-				auto& targetChildPrefabID = compareTargetWorld.GetComponent<PrefabComponent>(targetChild).PrefabID;
-
-				if (sampleChildPrefabID == targetChildPrefabID)
-				{
-					CompareHierarchy(compareSampleWorld, sampleChild, compareTargetWorld, targetChild, hierMap, newChildMap);
-					isFound = true;
-					targetEntCompChildren.erase(std::remove(targetEntCompChildren.begin(), targetEntCompChildren.end(), targetChild));
-					break;
-				}
-			}
-
-			if (!isFound)
-			{
-				newChildren.push_back(sampleChild);
-			}
-		}
-
-		if (newChildren.size())
-		{
-			newChildMap[compareTarget] = newChildren;
-		}
-
-		for (auto& child : targetEntCompChildren)
-		{
-			hierMap[child] = MAX_ENTITY;
-		}
+		//if (newChildren.size())
+		//{
+		//	newChildMap[compareTarget] = newChildren;
+		//}
+		//
+		//for (auto& child : targetEntCompChildren)
+		//{
+		//	hierMap[child] = MAX_ENTITY;
+		//}
 	}
 
 	void PrefabManager::print(CompareMap_Hierarchy& hierMap, CompareMap_NewChild& newChildMap)
@@ -463,10 +468,11 @@ namespace Eclipse
 
 		auto& entComp = prefabW.GetComponent<EntityComponent>(ent);
 
-		for (auto& child : entComp.Child)
-		{
-			RecursiveCreatePrefabInstances(child, newEnt);
-		}
+		//TODO
+		//for (auto& child : entComp.Child)
+		//{
+		//	RecursiveCreatePrefabInstances(child, newEnt);
+		//}
 
 		return newEnt;
 	}
@@ -524,8 +530,9 @@ namespace Eclipse
 		World& w = engine->world;
 		//EntityComponent
 		auto& entComp = w.GetComponent<EntityComponent>(ent);
-		entComp.Child.clear();
-		entComp.Parent.clear();
+		//TODO
+		//entComp.Child.clear();
+		//entComp.Parent.clear();
 
 		TransformComponent defaultComp;
 		auto& transformComp = w.GetComponent<TransformComponent>(ent);
@@ -584,10 +591,11 @@ namespace Eclipse
 				auto& parent = w.GetComponent<ParentComponent>(parentEnt);
 				parent.child.push_back(ent);
 
-				auto& parentEntComp = w.GetComponent<EntityComponent>(parentEnt);
-				parentEntComp.Child.push_back(ent);
-
-				entComp.Parent.push_back(parentEnt);
+				//TODO
+				//auto& parentEntComp = w.GetComponent<EntityComponent>(parentEnt);
+				//parentEntComp.Child.push_back(ent);
+				//
+				//entComp.Parent.push_back(parentEnt);
 			}
 		}
 	}

@@ -244,10 +244,11 @@ namespace Eclipse
 
 		inline static  bool CompareComponentData(const EntityComponent& lhs, const EntityComponent& rhs)
 		{
+			//TODO
 			bool result = true;
-			result = (lhs.Tag == rhs.Tag);
-			result = (lhs.IsAChild == rhs.IsAChild);
-			result = (lhs.LayerIndex == rhs.LayerIndex);
+			//result = (lhs.Tag == rhs.Tag);
+			//result = (lhs.IsAChild == rhs.IsAChild);
+			//result = (lhs.LayerIndex == rhs.LayerIndex);
 			return result;
 		}
 		

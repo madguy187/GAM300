@@ -131,14 +131,15 @@ namespace Eclipse
                     {
                         auto& name = Prefabs[NameOfFolder][i];
                         MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_MESH);
-                        EntityComponent* test = &engine->world.GetComponent<EntityComponent>(ParentID);
-                        EntityComponent* Child = &engine->world.GetComponent<EntityComponent>(MeshID);
-
-                        engine->world.AddComponent(MeshID, ChildComponent{});
-
-                        test->Child.push_back(MeshID);
-                        Child->IsAChild = true;
-                        Child->Parent.push_back(ParentID);
+                        //TODO
+                        //EntityComponent* test = &engine->world.GetComponent<EntityComponent>(ParentID);
+                        //EntityComponent* Child = &engine->world.GetComponent<EntityComponent>(MeshID);
+                        //
+                        //engine->world.AddComponent(MeshID, ChildComponent{});
+                        //
+                        //test->Child.push_back(MeshID);
+                        //Child->IsAChild = true;
+                        //Child->Parent.push_back(ParentID);
 
                         engine->world.GetComponent<ParentComponent>(ParentID).child.push_back(MeshID);
 

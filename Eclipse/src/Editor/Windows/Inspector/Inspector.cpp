@@ -1226,36 +1226,36 @@ namespace Eclipse
 
                 ECGui::InsertHorizontalLineSeperator();
 
-                if (ECGui::ButtonBool("Break From Parent"))
-                {
-                    auto& parentComp = engine->world.GetComponent<EntityComponent>(child.parentIndex);
-                    auto& parent = engine->world.GetComponent<ParentComponent>(child.parentIndex);
-                    for (auto& allchld : parentComp.Child)
-                    {
-                        if (allchld == ID)
-                        {
-                            parentComp.Child.erase(std::remove(parentComp.Child.begin(), parentComp.Child.end(), allchld), parentComp.Child.end());
-                        }
-                    }
-                    for (auto& allchld : parent.child)
-                    {
-                        if (allchld == ID)
-                        {
-                            parent.child.erase(std::remove(parent.child.begin(), parent.child.end(), allchld), parent.child.end());
-                        }
-                    }
-
-                    if (parentComp.Child.empty())
-                    {
-                        ComponentRegistry<ParentComponent>("ParentComponent", child.parentIndex, childEntComp.Name, EditComponent::EC_REMOVECOMPONENT);
-                    }
-
-                    childEntComp.Parent.clear();
-
-                    //ComponentRegistry<ParentComponent>("ParentComponent", ID, childEntComp.Name, EditComponent::EC_ADDCOMPONENT);
-                    ComponentRegistry<ChildComponent>("ChildComponent", ID, childEntComp.Name, EditComponent::EC_REMOVECOMPONENT);
-
-                }
+                //if (ECGui::ButtonBool("Break From Parent"))
+                //{
+                //    auto& parentComp = engine->world.GetComponent<EntityComponent>(child.parentIndex);
+                //    auto& parent = engine->world.GetComponent<ParentComponent>(child.parentIndex);
+                //    for (auto& allchld : parent.Child)
+                //    {
+                //        if (allchld == ID)
+                //        {
+                //            parentComp.Child.erase(std::remove(parentComp.Child.begin(), parentComp.Child.end(), allchld), parentComp.Child.end());
+                //        }
+                //    }
+                //    for (auto& allchld : parent.child)
+                //    {
+                //        if (allchld == ID)
+                //        {
+                //            parent.child.erase(std::remove(parent.child.begin(), parent.child.end(), allchld), parent.child.end());
+                //        }
+                //    }
+                //
+                //    if (parentComp.Child.empty())
+                //    {
+                //        ComponentRegistry<ParentComponent>("ParentComponent", child.parentIndex, childEntComp.Name, EditComponent::EC_REMOVECOMPONENT);
+                //    }
+                //
+                //    childEntComp.Parent.clear();
+                //
+                //    //ComponentRegistry<ParentComponent>("ParentComponent", ID, childEntComp.Name, EditComponent::EC_ADDCOMPONENT);
+                //    ComponentRegistry<ChildComponent>("ChildComponent", ID, childEntComp.Name, EditComponent::EC_REMOVECOMPONENT);
+                //
+                //}
 
             }
         }

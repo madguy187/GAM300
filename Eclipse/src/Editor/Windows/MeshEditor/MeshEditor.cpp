@@ -200,12 +200,13 @@ namespace Eclipse
 
     void MeshEditorWindow::RecursiveDestroy(const Entity& ent)
     {
-        auto& entComp = engine->world.GetComponent<EntityComponent>(ent);
-        for (auto& child : entComp.Child)
-        {
-            RecursiveDestroy(child);
-        }
-
+        //TODO
+        //auto& entComp = engine->world.GetComponent<EntityComponent>(ent);
+        //for (auto& child : entComp.Child)
+        //{
+        //    RecursiveDestroy(child);
+        //}
+        //
         engine->world.DestroyEntity(ent);
     }
 }

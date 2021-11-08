@@ -43,8 +43,8 @@ namespace Eclipse
 
 					parent.child.erase(std::find(parent.child.begin(), parent.child.end(), oldID));
 
-					auto& parentEntComp = engine->world.GetComponent<EntityComponent>(child.parentIndex);
-					parentEntComp.Child.erase(std::find(parentEntComp.Child.begin(), parentEntComp.Child.end(), oldID));
+					auto& parentEntComp = engine->world.GetComponent<ParentComponent>(child.parentIndex);
+					parentEntComp.child.erase(std::find(parentEntComp.child.begin(), parentEntComp.child.end(), oldID));
 				}
 
 				CleanUp(oldID);
@@ -64,9 +64,6 @@ namespace Eclipse
 				auto& parent = engine->world.GetComponent<ParentComponent>(m_ID);
 				parent.child.clear();
 
-				auto& parentEntComp = engine->world.GetComponent<EntityComponent>(m_ID);
-				parentEntComp.Child.clear();
-
 				for (const auto& child : Children)
 				{
 					Entity newChild = engine->prefabWorld.CopyEntity(engine->world,
@@ -75,10 +72,9 @@ namespace Eclipse
 					auto& childEntComp = engine->world.GetComponent<EntityComponent>(newChild);
 
 					childCom.parentIndex = m_ID;
-					childEntComp.Parent.clear();
-					childEntComp.Parent.push_back(m_ID);
+					//childEntComp.Parent.clear();
+					//childEntComp.Parent.push_back(m_ID);
 					parent.child.push_back(newChild);
-					parentEntComp.Child.push_back(newChild);
 					LoadIn(newChild, child);
 				}
 			}
@@ -89,8 +85,6 @@ namespace Eclipse
 
 				parent.child.push_back(m_ID);
 
-				auto& parentEntComp = engine->world.GetComponent<EntityComponent>(child.parentIndex);
-				parentEntComp.Child.push_back(m_ID);
 			}
 		}
 
