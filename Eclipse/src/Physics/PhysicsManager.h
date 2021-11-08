@@ -112,7 +112,7 @@ namespace Eclipse
 		void UpdateActor(Entity ent);
 		void ChangeShape(Entity ent, PxShapeType shape);
 		void CreateShape(Entity ent);
-		void AddForce(Entity ent, ECVec3 force);
+		void SetForce(Entity ent, ECVec3 force);
 		void UpdateVariables(Entity ent);
 		void UpdateShapes(Entity ent);
 		void GetActorPosition(Entity ent);

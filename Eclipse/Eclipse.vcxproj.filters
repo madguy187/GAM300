@@ -10,6 +10,9 @@
     <Filter Include="Audio\FmodAPI">
       <UniqueIdentifier>{2653ADA8-9213-29DF-5B4E-725CC7CD6DBB}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BehaviourTree">
+      <UniqueIdentifier>{3A7B31FB-A63B-AD31-6F76-F6AEDBF5F10D}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ECS">
       <UniqueIdentifier>{60E1870B-CCEA-877C-5566-9E7CC16E937C}</UniqueIdentifier>
     </Filter>
@@ -66,6 +69,9 @@
     </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\MonoSystem">
       <UniqueIdentifier>{377B9766-A3E0-2AED-2CB9-CCC5981D205C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\NavMeshSystem">
+      <UniqueIdentifier>{B0603F07-9CDE-8FA0-85D6-4D3871F3D1C8}</UniqueIdentifier>
     </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\ParentChildSystem">
       <UniqueIdentifier>{ECBBA3DE-D84F-9986-4114-F33A2DC7D378}</UniqueIdentifier>
@@ -313,6 +319,9 @@
     <Filter Include="Mono\Manager">
       <UniqueIdentifier>{A8092495-946C-B339-3DF2-EBEF29347FBC}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NavMesh">
+      <UniqueIdentifier>{B7C6C562-23A6-44FE-2CBE-CFD4981CAB5F}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Physics">
       <UniqueIdentifier>{888B590D-F46A-D8A8-FD82-637F69E13E0A}</UniqueIdentifier>
     </Filter>
@@ -356,6 +365,9 @@
     </ClInclude>
     <ClInclude Include="src\Audio\FmodAPI\FmodAPI.h">
       <Filter>Audio\FmodAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BehaviourTree\BehaviourTree.h">
+      <Filter>BehaviourTree</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\ComponentList.h">
       <Filter>ECS\ComponentManager</Filter>
@@ -403,6 +415,9 @@
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\ModelComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\NavMeshVolumeComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\ParentComponent.h">
@@ -467,6 +482,9 @@
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.h">
       <Filter>ECS\SystemManager\Systems\System\MonoSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\NavMeshSystem\NavMeshSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\NavMeshSystem</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ChildSystem\ChildSystem.h">
       <Filter>ECS\SystemManager\Systems\System\ParentChildSystem\ChildSystem</Filter>
@@ -889,6 +907,9 @@
     <ClInclude Include="src\Mono\Components\s_AudioSource.h">
       <Filter>Mono\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\Mono\Components\s_EclipseBehavior.h">
+      <Filter>Mono\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\Mono\Components\s_GameObject.h">
       <Filter>Mono\Components</Filter>
     </ClInclude>
@@ -909,6 +930,9 @@
     </ClInclude>
     <ClInclude Include="src\Mono\Manager\MonoManager.h">
       <Filter>Mono\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NavMesh\NavMeshManager.h">
+      <Filter>NavMesh</Filter>
     </ClInclude>
     <ClInclude Include="src\Physics\PhysicsManager.h">
       <Filter>Physics</Filter>
@@ -973,6 +997,9 @@
     <ClCompile Include="src\Audio\FmodAPI\FmodAPI.cpp">
       <Filter>Audio\FmodAPI</Filter>
     </ClCompile>
+    <ClCompile Include="src\BehaviourTree\BehaviourTree.cpp">
+      <Filter>BehaviourTree</Filter>
+    </ClCompile>
     <ClCompile Include="src\ECS\ComponentManager\ComponentManager.cpp">
       <Filter>ECS\ComponentManager</Filter>
     </ClCompile>
@@ -1020,6 +1047,9 @@
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\MonoSystem\MonoSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\MonoSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\NavMeshSystem\NavMeshSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\NavMeshSystem</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\ParentChildSystem\ChildSystem\ChildSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\ParentChildSystem\ChildSystem</Filter>
@@ -1357,6 +1387,9 @@
     <ClCompile Include="src\Mono\Manager\MonoManager.cpp">
       <Filter>Mono\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="src\NavMesh\NavMeshManager.cpp">
+      <Filter>NavMesh</Filter>
+    </ClCompile>
     <ClCompile Include="src\Physics\PhysicsManager.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
@@ -1406,45 +1439,5 @@
       <Filter>Tracy</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\Inputsystem\InputSystem.cpp" />
-    <ClCompile Include="src\Graphics\Material\PBR\PBRManager.cpp" />
-    <ClCompile Include="src\Graphics\Material\MaterialInstance\MaterialInstance.cpp" />
-    <ClCompile Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.cpp" />
-    <ClCompile Include="src\Graphics\EngineCompiler\InputCompiler\InputCompiler.cpp" />
-    <ClCompile Include="src\Graphics\MeshEditor\MeshEditorSource.cpp" />
-    <ClCompile Include="src\Graphics\Instancing\Instance_Renderer\Instance_Renderer.cpp" />
-    <ClCompile Include="src\Graphics\Instancing\DebugManager\DebugManager.cpp" />
-    <ClCompile Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.cpp" />
-    <ClCompile Include="src\Graphics\Instancing\DebugLights\DebugLights.cpp" />
-    <ClCompile Include="src\Graphics\Instancing\DebugSpotLights\DebugSpotlights.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />
-    <None Include="src\Assets\Shaders\PBRShader\PBR.vert" />
-    <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.frag" />
-    <None Include="src\Assets\Shaders\PBRNoTexturesShader\PBRNoTextures.vert" />
-    <ClCompile Include="src\Library\Random\Random.cpp" />
-    <None Include="src\Mono\ScriptAPI\EclipseBehavior.cs" />
-    <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_bezier_math.inl" />
-    <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_extra_math.inl" />
-    <None Include="src\Editor\Windows\NodeEditor\NodeEditorBackBone\imgui_node_editor_internal.inl" />
-    <None Include="src\Assets\Shaders\MaterialEditor\PBR.frag" />
-    <None Include="src\Assets\Shaders\MaterialEditor\PBR.vert" />
-    <None Include="src\Assets\Shaders\MeshEditor\MeshEditor.frag" />
-    <None Include="src\Assets\Shaders\MeshEditor\MeshEditor.vert" />
-    <None Include="src\Assets\Shaders\Test\DebugSPhere.frag" />
-    <None Include="src\Assets\Shaders\Test\DebugSPhere.vert" />
-    <None Include="src\Mono\ScriptAPI\InputHandler.cs" />
-    <None Include="src\Mono\ScriptAPI\KeyCode.cs" />
-    <None Include="src\Mono\ScriptAPI\Header.cs" />
-    <None Include="src\Mono\ScriptAPI\HeaderReader.cs" />
-    <None Include="src\Mono\ScriptAPI\Time.cs" />
-    <None Include="src\Assets\Shaders\Instancing\Instancing.frag" />
-    <None Include="src\Assets\Shaders\Instancing\Instancing.vert" />
-    <None Include="src\Mono\ScriptAPI\ForceMode.cs" />
-    <None Include="src\Mono\ScriptAPI\Vector2.cs" />
-    <None Include="src\Mono\ScriptAPI\Quaternion.cs" />
-    <None Include="src\Mono\ScriptAPI\CursorLockMode.cs" />
-    <None Include="src\Mono\Components\s_EclipseBehavior.h" />
   </ItemGroup>
 </Project>
