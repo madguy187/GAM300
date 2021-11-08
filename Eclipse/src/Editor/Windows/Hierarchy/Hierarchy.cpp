@@ -162,7 +162,7 @@ namespace Eclipse
         auto& entCom = engine->world.GetComponent<EntityComponent>(Num);
         float indentValue = entCom.ImguiIndentValue;
         ImDrawList* draw_list = ImGui::GetWindowDrawList();
-        bool highlight = false;
+       // bool highlight = false;
         if (engine->world.CheckComponent<ParentComponent>(Num))
         {
             auto& parent2 = engine->world.GetComponent<ParentComponent>(Num);
@@ -252,7 +252,7 @@ namespace Eclipse
 
             for (auto& it : parent2.child)
             {
-                auto& parent2Com = engine->world.GetComponent<EntityComponent>(it);
+               // auto& parent2Com = engine->world.GetComponent<EntityComponent>(it);
                 ImGui::Indent(indentValue);
                 ParentRecursion(it, list, prev, curr);
                 ImGui::Unindent(indentValue);

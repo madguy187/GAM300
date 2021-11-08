@@ -850,7 +850,7 @@ namespace Eclipse
                             if (scriptCom.scriptList[i].vars[j].type == m_Type::MONO_HEADER)
                                 ECGui::DrawInputTextHintWidget(scriptCom.scriptList[i].vars[j].varName.c_str(),
                                     "Non-modifiable", const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()),
-                                    256, ImGuiInputTextFlags_ReadOnly, true);
+                                    256, true, ImGuiInputTextFlags_ReadOnly);
                             else
                                 ECGui::DrawInputTextWidget(scriptCom.scriptList[i].vars[j].varName.c_str(),
                                     const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()),
@@ -1312,7 +1312,7 @@ namespace Eclipse
 
                 ECGui::DrawTextWidget<const char*>("Parent:", EMPTY_STRING);
                 auto& child = engine->world.GetComponent<ChildComponent>(ID);
-                auto& childEntComp = engine->world.GetComponent<EntityComponent>(ID);
+                //auto& childEntComp = engine->world.GetComponent<EntityComponent>(ID);
                 auto& en = engine->world.GetComponent<EntityComponent>(child.parentIndex);
                 ECGui::DrawTextWidget<const char*>(my_strcat(en.Name, " ", child.parentIndex).c_str(), EMPTY_STRING);
 
