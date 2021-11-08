@@ -352,6 +352,7 @@ namespace EclipseCompiler
             | aiProcess_TransformUVCoords | aiProcess_FlipUVs;
 
         Assimp::Importer import;
+       
         const aiScene* scene = import.ReadFile(path, importOptions);
 
         if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode || !scene->HasAnimations())
@@ -360,8 +361,9 @@ namespace EclipseCompiler
             return;
         }
 
+       
         Directory = path.substr(0, path.find_last_of("/"));
-
+     
         ProcessGeometry(scene->mRootNode, scene);
         LoadNewAnimationModel();
     }
@@ -421,7 +423,7 @@ namespace EclipseCompiler
         }
     }
 
-    void AssimpLoader::LoadAnimationData(std::string path, std::vector<AnimationData>& AnimationContainer)
+    void AssimpLoader::LoadAnimationData(std::string path, std::string fileName, std::vector<AnimationData>& AnimationContainer)
     {
         Assimp::Importer importer;
         const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate);
@@ -450,6 +452,8 @@ namespace EclipseCompiler
 
         strcpy_s(newAnimation.modelName.data(), newAnimation.modelName.size(), NodeName);
         newAnimation.modelName[newAnimation.modelName.size() - 1] = '\0';
+        strcpy_s(newAnimation.fileName.data(), newAnimation.fileName.size(), fileName.c_str());
+        newAnimation.fileName[newAnimation.fileName.size() - 1] = '\0';
         newAnimation.m_Duration = animation->mDuration;
         newAnimation.m_TicksPerSecond = animation->mTicksPerSecond;
         newAnimation.modelLargestAxis = largestAxis;

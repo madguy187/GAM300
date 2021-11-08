@@ -8,6 +8,15 @@
 
 namespace Eclipse
 {
+    enum class AnimationState
+    {
+        IDLE,
+        MOTION,
+        RUN,
+        DANCE,
+        INVALID
+    };
+
     struct KeyRotation
     {
         glm::quat orientation;
@@ -82,32 +91,38 @@ namespace Eclipse
     {
         float modelLargestAxis = 1.0f;
         float m_Duration = 0.0f;
+        int animationIndex = 0;
         int m_TicksPerSecond = 0;
+        AnimationState m_AnimationState;
         std::string modelName;
         std::map<std::string, BoneInfo> m_BoneInfoMap;
         std::vector<Bone> m_Bones;
         AssimpNodeData m_RootNode;
-        bool dataInit = false;
 
         Animation();
 
-        Animation(float axis, float duration, float ticks, std::array<char, 128> name, std::vector<BoneInfo> boneInfo, std::vector<Bone> bones, AssimpNodeData rootNode);
+        Animation(float axis, float duration, int ticks, AnimationState state, std::array<char, 128> name, std::vector<BoneInfo> boneInfo, std::vector<Bone> bones, AssimpNodeData rootNode);
 
         Bone* FindBone(std::string& name);
     };
 
     class AnimationManager
     {
-        std::map<std::string, Animation> animationMap;
+        std::map<std::string, std::map<AnimationState, Animation>> animationMap;
     public:
         void RecurseChildren(AssimpNodeData& nodeData, std::fstream& AnimationFileRead);
         void CheckRecursionData(AssimpNodeData& nodeData);
         void InsertAnimation(Animation& newAnimation);
 
-        std::map<std::string, Animation>& GetAnimationMap();
+        std::map<std::string, std::map<AnimationState, Animation>>& GetAnimationMap();
         void CheckForAnimation(unsigned int ID);
 
         void CalculateBoneTransform(unsigned int ID, const AssimpNodeData* node, glm::mat4 parentTransform);
         void UpdateAnimation(unsigned int ID, float dt);
+
+        void ChangeAnimationState(unsigned int ID, AnimationState state);
+        AnimationState InitAnimationState(std::string modelName, std::string fileName);
+
+        void SetAnimationSpeed(unsigned int ID, int speed);
     };
 }

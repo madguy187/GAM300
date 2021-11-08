@@ -189,7 +189,10 @@ namespace Eclipse
                     // If scene not playing , we enable highlight
                     if (engine->IsScenePlaying() != true)
                     {
-                        //engine->MaterialManager.Highlight3DModels(entityID, FrameBufferMode::FBM_SCENE);
+                        if (!engine->world.CheckComponent<AnimationComponent>(entityID))
+                        {
+                            engine->MaterialManager.Highlight3DModels(entityID, FrameBufferMode::FBM_SCENE);
+                        }                    
                     }
                 }
             }

@@ -90,10 +90,10 @@ void Eclipse::AnimationManager::CheckRecursionData(AssimpNodeData& nodeData)
 
 void Eclipse::AnimationManager::InsertAnimation(Animation& newAnimation)
 {
-    animationMap.emplace(newAnimation.modelName, newAnimation);
+    animationMap[newAnimation.modelName][newAnimation.m_AnimationState] = newAnimation;
 }
 
-std::map<std::string, Animation>& Eclipse::AnimationManager::GetAnimationMap()
+std::map<std::string, std::map<AnimationState, Animation>>& Eclipse::AnimationManager::GetAnimationMap()
 {
     return animationMap;
 }
@@ -113,14 +113,14 @@ void Eclipse::AnimationManager::CheckForAnimation(unsigned int ID)
                 {
                     engine->world.AddComponent(ID, AnimationComponent{});
                 }
-
+        
                 auto& animation = engine->world.GetComponent<AnimationComponent>(ID);
-
-                animation.m_CurrentAnimation = it.second;
-                animation.modelLargestAxis = it.second.modelLargestAxis;
+                
+                animation.m_CurrentAnimation = it.second.begin()->second;
+                animation.modelLargestAxis = it.second.begin()->second.modelLargestAxis;
                 animation.m_CurrentTime = 0.0f;
                 animation.m_Transforms.reserve(100);
-
+        
                 for (unsigned int i = 0; i < 100; ++i)
                 {
                     animation.m_Transforms.push_back(glm::mat4(1.0f));
@@ -167,11 +167,56 @@ void Eclipse::AnimationManager::UpdateAnimation(unsigned int ID, float dt)
 
     animation.m_DeltaTime = dt;
 
-    if (animation.m_CurrentAnimation.dataInit)
+    animation.m_CurrentTime += animation.m_CurrentAnimation.m_TicksPerSecond * dt;
+    animation.m_CurrentTime = fmod(animation.m_CurrentTime, animation.m_CurrentAnimation.m_Duration);
+    CalculateBoneTransform(ID, &animation.m_CurrentAnimation.m_RootNode, glm::mat4(1.0f));
+}
+
+void Eclipse::AnimationManager::ChangeAnimationState(unsigned int ID, AnimationState state)
+{
+    if (engine->world.CheckComponent<AnimationComponent>(ID))
     {
-        animation.m_CurrentTime += animation.m_CurrentAnimation.m_TicksPerSecond * dt;
-        animation.m_CurrentTime = fmod(animation.m_CurrentTime, animation.m_CurrentAnimation.m_Duration);
-        CalculateBoneTransform(ID, &animation.m_CurrentAnimation.m_RootNode, glm::mat4(1.0f));
+        auto& animation = engine->world.GetComponent<AnimationComponent>(ID);
+        std::string model = animation.m_CurrentAnimation.modelName;
+
+        animation.m_CurrentAnimation = engine->gAnimationManager.GetAnimationMap()[model][state];
+    }
+}
+
+AnimationState Eclipse::AnimationManager::InitAnimationState(std::string modelName, std::string fileName)
+{
+    if (modelName.compare("Frog") == 0)
+    {
+        if (fileName.compare("idle") == 0)
+        {
+            return AnimationState::IDLE;
+        }
+        else if (fileName.compare("run") == 0)
+        {
+            return AnimationState::RUN;
+        }
+        else if (fileName.compare("motion") == 0)
+        {
+            return AnimationState::MOTION;
+        }
+    }
+    else if (modelName.compare("MutantMesh") == 0)
+    {
+        return AnimationState::DANCE;
+    }
+    else
+    {
+        EDITOR_LOG_WARN("WARNING! Some models have invalid animation state.");
+        return AnimationState::INVALID;
+    }
+}
+
+void Eclipse::AnimationManager::SetAnimationSpeed(unsigned int ID, int speed)
+{
+    if (engine->world.CheckComponent<AnimationComponent>(ID))
+    {
+        auto& animation = engine->world.GetComponent<AnimationComponent>(ID);
+        animation.m_CurrentAnimation.m_TicksPerSecond = speed;
     }
 }
 
@@ -303,6 +348,7 @@ glm::mat4 Eclipse::Bone::InterpolateRotation(float animationTime)
     int p1Index = p0Index + 1;
     float scaleFactor = GetScaleFactor(m_Rotations[p0Index].timeStamp, m_Rotations[p1Index].timeStamp, animationTime);
     glm::quat finalRotation = glm::slerp(m_Rotations[p0Index].orientation, m_Rotations[p1Index].orientation, scaleFactor);
+
     finalRotation = glm::normalize(finalRotation);
 
     return glm::toMat4(finalRotation);
@@ -355,8 +401,8 @@ Eclipse::Animation::Animation()
 {
 }
 
-Eclipse::Animation::Animation(float axis, float duration, float ticks, std::array<char, 128> name, std::vector<BoneInfo> boneInfo, std::vector<Bone> bones, AssimpNodeData rootNode):
-    modelLargestAxis(axis), m_Duration(duration), m_TicksPerSecond(ticks)
+Eclipse::Animation::Animation(float axis, float duration, int ticks, AnimationState state, std::array<char, 128> name, std::vector<BoneInfo> boneInfo, std::vector<Bone> bones, AssimpNodeData rootNode):
+    modelLargestAxis(axis), m_Duration(duration),  m_TicksPerSecond(ticks), m_AnimationState(state)
 {
     modelName = std::string(name.data());
 
@@ -367,8 +413,6 @@ Eclipse::Animation::Animation(float axis, float duration, float ticks, std::arra
 
     m_Bones = bones;
     m_RootNode = rootNode;
-
-    dataInit = true;
 }
 
 Bone* Eclipse::Animation::FindBone(std::string& name)

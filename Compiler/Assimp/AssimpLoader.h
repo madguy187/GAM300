@@ -226,6 +226,7 @@ namespace EclipseCompiler
         float modelLargestAxis;
         float m_Duration;
         int m_TicksPerSecond;
+        std::array<char, 128> fileName;
         std::array<char, 128> modelName;
         std::vector<BoneInfo> m_BoneInfo;
         std::vector<Bone> m_Bones;
@@ -269,7 +270,7 @@ namespace EclipseCompiler
         //Animation
         void LoadAssimpAnimationModel(std::string path);
         void LoadNewAnimationModel();
-        void LoadAnimationData(std::string path, std::vector<AnimationData>& AnimationContainer);
+        void LoadAnimationData(std::string path, std::string fileName, std::vector<AnimationData>& AnimationContainer);
         void ReadHeirarchyData(AssimpNodeData& dest, const aiNode* src);
         void SetupBones(AnimationData& animationData, const aiAnimation* animation, const aiNode* node);
     };

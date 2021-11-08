@@ -750,7 +750,7 @@ namespace Eclipse
             auto& animation = engine->world.GetComponent<AnimationComponent>(ModelID);
 
             glUniform1i(hasAnimation, true);
-
+         
             for (unsigned int i = 0; i < animation.m_Transforms.size(); ++i)
             {
                 std::string matrixName = "finalBonesMatrices[" + std::to_string(i) + "]";

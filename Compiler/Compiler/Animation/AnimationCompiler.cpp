@@ -26,13 +26,15 @@ void EclipseCompiler::AnimationCompiler::LoadFile(const std::string& animationFi
             const auto& FbxOrGltf = dirEntry.path();
             auto relativePath = relative(FbxOrGltf, "..//Eclipse//src//");
             std::string FbxOrGltfName = relativePath.filename().string();
+            
+            std::string fileName = FbxOrGltfName.substr(0, FbxOrGltfName.find("."));
 
             if (FbxOrGltfName.find("gltf") != std::string::npos || FbxOrGltfName.find("fbx") != std::string::npos)
             {
                 std::string PathName = ("..//Eclipse//src/Assets/Models/" + FolderName + "/" + FbxOrGltfName).c_str();
                 std::unique_ptr<AssimpLoader> ptr = std::make_unique<AssimpLoader>();
                 ptr->LoadAssimpAnimationModel(PathName);
-                ptr->LoadAnimationData(PathName, Animation);
+                ptr->LoadAnimationData(PathName, fileName, Animation);
             }
         }
     }
@@ -57,7 +59,7 @@ void EclipseCompiler::AnimationCompiler::WriteToFile(std::vector<AnimationData>&
 
     for (auto it : In)
     {
-        AnimationFileWrite.write(reinterpret_cast<const char*>(&it), (2 * sizeof(float)) + sizeof(int) + sizeof(it.modelName));      
+        AnimationFileWrite.write(reinterpret_cast<const char*>(&it), (2 * sizeof(float)) + sizeof(int) + sizeof(it.fileName) + sizeof(it.modelName));      
 
         int boneInfoSize = it.m_BoneInfo.size();
         AnimationFileWrite.write(reinterpret_cast<const char*>(&boneInfoSize), sizeof(boneInfoSize));

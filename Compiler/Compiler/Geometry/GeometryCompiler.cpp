@@ -26,7 +26,7 @@ namespace EclipseCompiler
             }
 
             for (auto& dirEntry : std::filesystem::directory_iterator(GoIntoModelFolder))
-            {
+            {      
                 const auto& FbxOrGltf = dirEntry.path();
                 auto relativePath = relative(FbxOrGltf, "..//Eclipse//src//");
                 std::string FbxOrGltfName = relativePath.filename().string();
@@ -42,6 +42,9 @@ namespace EclipseCompiler
                     {
                         Prefabs[FolderName].push_back(i.MeshName.data());
                     }
+
+                    //Load only one model file in each sub-folder, MIGHT CAUSE POTENTIAL ISSUES - Rachel
+                    break;
                 }
             }
         }
