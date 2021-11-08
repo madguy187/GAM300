@@ -363,6 +363,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Library\UUID\UUIDGenerator.h" />
     <ClInclude Include="src\Logger\Logger.h" />
     <ClInclude Include="src\Mono\Components\s_AudioSource.h" />
+    <ClInclude Include="src\Mono\Components\s_Cursor.h" />
     <ClInclude Include="src\Mono\Components\s_EclipseBehavior.h" />
     <ClInclude Include="src\Mono\Components\s_GameObject.h" />
     <ClInclude Include="src\Mono\Components\s_LogicalInput.h" />

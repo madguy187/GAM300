@@ -234,9 +234,7 @@ enum class m_Type
     MONO_VAR,
     MONO_HEADER,
     MONO_LAYERMASK,
-    MONO_GAMEOBJECT,
-    MONO_GAMEOBJECT_ENTITY,
-    MONO_GAMEOBJECT_PREFAB
+    MONO_GAMEOBJECT
 };
 
 enum class ForceMode

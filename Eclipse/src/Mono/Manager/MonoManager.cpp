@@ -19,6 +19,8 @@
 #include "../Components/s_GameObject.h"
 #include "../Components/s_EclipseBehavior.h"
 #include "../Components/s_Physics.h"
+#include "../Components/s_Cursor.h"
+#include "../Components/s_Light.h"
 
 
 namespace Eclipse
@@ -94,6 +96,7 @@ namespace Eclipse
 		mono_add_internal_call("Eclipse.Input::GetButtonDown", GetKeyCurrentByName);
 		mono_add_internal_call("Eclipse.Input::GetKey", GetKeyCurrentByKeyCode);
 		mono_add_internal_call("Eclipse.Input::GetAxis", GetMouseAxis);
+		mono_add_internal_call("Eclipse.Input::GetRawAxis", GetRawMouseAxis);
 		mono_add_internal_call("Eclipse.Time::getDeltaTime", GetDeltaTime);
 		mono_add_internal_call("Eclipse.Time::getFixedDeltaTime", GetFixedDeltaTime);
 		mono_add_internal_call("Eclipse.GameObject::setEnabled", setEnabled);
@@ -102,6 +105,8 @@ namespace Eclipse
 		mono_add_internal_call("Eclipse.Quaternion::GetEuler", Euler);
 		mono_add_internal_call("Eclipse.EclipseBehavior::InvokeFunc", Invoke);
 		mono_add_internal_call("Eclipse.Physics::RaycastCheck", RaycastFunc);
+		mono_add_internal_call("Eclipse.Cursor::setState", setState);
+		mono_add_internal_call("Eclipse.Light::SetLightEnabled", SetLightEnabled);
 	}
 
 	void MonoManager::Awake(MonoScript* obj)
