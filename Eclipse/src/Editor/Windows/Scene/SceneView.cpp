@@ -256,14 +256,38 @@ namespace Eclipse
 		{
 			if (!IsCopying)
 			{
-				Entity ID = engine->world.CopyEntity(engine->world, engine->editorManager->GetSelectedEntity(), all_component_list);
-				auto& trans = engine->world.GetComponent<TransformComponent>(ID);
-				auto& ent = engine->world.GetComponent<EntityComponent>(ID);
-				engine->gPicker.GenerateAabb(ID, trans, ent.Tag);
-				engine->editorManager->RegisterExistingEntity(ID);
+				RecursiveCopy(engine->editorManager->GetSelectedEntity());
 				IsCopying = true;
 			}
 		}
+	}
+
+	void SceneWindow::RecursiveCopy(const Entity& ID)
+	{
+		if (engine->world.CheckComponent<ParentComponent>(ID))
+		{
+			auto& parentCom = engine->world.GetComponent<ParentComponent>(ID);
+
+			for (const auto& childEnt : parentCom.child)
+			{
+				RecursiveCopy(childEnt);
+			}
+
+			LoadEntity(ID);
+		}
+		else
+		{
+			LoadEntity(ID);
+		}
+	}
+
+	void SceneWindow::LoadEntity(const Entity& ID)
+	{
+		Entity newID = engine->world.CopyEntity(engine->world, ID, all_component_list);
+		auto& trans = engine->world.GetComponent<TransformComponent>(newID);
+		auto& ent = engine->world.GetComponent<EntityComponent>(newID);
+		engine->gPicker.GenerateAabb(newID, trans, ent.Tag);
+		engine->editorManager->RegisterExistingEntity(newID);
 	}
 
 	void SceneWindow::OnCameraMoveEvent()
