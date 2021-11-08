@@ -68,7 +68,6 @@ namespace Eclipse
         EventSystem<Test1>::registerListener(Tester2);
         EventSystem<Test1>::registerListener(std::bind(&World::TempFunc, &world, std::placeholders::_1));
 
-        InputManager = std::make_unique<LogicalInput>();
         engine->gFrameBufferManager = std::make_unique<FrameBufferManager>();
         engine->gDebugDrawManager = std::make_unique<DebugManager>();
 
@@ -79,6 +78,7 @@ namespace Eclipse
         if (IsEditorActive)
             editorManager = std::make_unique<EditorManager>();
 
+        InputManager = std::make_unique<LogicalInput>();
         glfwSetWindowCloseCallback(OpenGL_Context::GetWindow(), GraphicsManager.WindowCloseCallback);
     }
 

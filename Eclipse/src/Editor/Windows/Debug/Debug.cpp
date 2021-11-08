@@ -25,8 +25,8 @@ namespace Eclipse
             DefaultLayerInit();
 
         // Deserialize the map here into KeyMappings
-        engine->InputManager->InputCompiler_.Load();
-        engine->InputManager->InputCompiler_.ProvideContainer(KeyMappings);
+        //engine->InputManager->InputCompiler_.Load();
+        //engine->InputManager->InputCompiler_.ProvideContainer(KeyMappings);
     }
 
     void DebugWindow::Unload()
