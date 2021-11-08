@@ -28,10 +28,7 @@ namespace Eclipse
 
 	void SerializationManager::ParentChildPostUpdate::RegisterForPostUpdate(World& w, const Entity& oldEnt, const Entity& newEnt)
 	{
-		if (w.CheckComponent<ParentComponent>(newEnt) || w.CheckComponent<ChildComponent>(newEnt))
-		{
-			oldToNewMap[oldEnt] = newEnt;
-		}
+		oldToNewMap[oldEnt] = newEnt;
 	}
 
 	void SerializationManager::ParentChildPostUpdate::PostUpdate()
@@ -42,27 +39,14 @@ namespace Eclipse
 		for (auto& ent : entSet)
 		{
 			auto& parent = w.GetComponent<ParentComponent>(ent);
-			auto& parentEntComp = w.GetComponent<EntityComponent>(ent);
 
-			//TODO
-			//for (auto& parentEnt : parentEntComp.Child)
-			//{
-			//	parentEnt = oldToNewMap[parentEnt];
-			//}
-			//
-			//for (auto& child : parent.child)
-			//{
-			//	child = oldToNewMap[child];
-			//	
-			//	auto& childComp = w.GetComponent<ChildComponent>(child);
-			//	auto& childEntComp = w.GetComponent<EntityComponent>(child);
-			//	childComp.parentIndex = ent;
-			//
-			//	for (auto& childEnt : childEntComp.Parent)
-			//	{
-			//		childEnt = oldToNewMap[childEnt];
-			//	}
-			//}
+			for (auto& child : parent.child)
+			{
+				child = oldToNewMap[child];
+				
+				auto& childComp = w.GetComponent<ChildComponent>(child);
+				childComp.parentIndex = ent;
+			}
 		}
 		Clear();
 	}
@@ -303,24 +287,27 @@ namespace Eclipse
 	{
 		World& prefabW = engine->prefabWorld;
 		size_t counter = 0;
-
+		size_t tempSize = 0;
 		sz.AddAttributeToElement("PrefabID", prefabID);
 
 		SerializeEntity(prefabW, ent, counter);
 
-		auto& entComp = prefabW.GetComponent<EntityComponent>(ent);
+		sz.StartElement("Children");
+		if (prefabW.CheckComponent<ParentComponent>(ent))
+		{
+			auto& parentComp = prefabW.GetComponent<ParentComponent>(ent);
 
-		//TODO
-		//sz.StartElement("Children");
-		//sz.AddAttributeToElement("Size", entComp.Child.size());
-		//
-		//for (auto child : entComp.Child)
-		//{
-		//	sz.StartElement("Child", true, counter++);
-		//	auto& prefabComp = prefabW.GetComponent<PrefabComponent>(child);
-		//	SavePrefab(prefabComp.PrefabID, child);
-		//	sz.CloseElement();
-		//}
+			for (auto child : parentComp.child)
+			{
+				sz.StartElement("Child", true, counter++);
+				auto& prefabComp = prefabW.GetComponent<PrefabComponent>(child);
+				SavePrefab(prefabComp.PrefabID, child);
+				sz.CloseElement();
+			}
+			tempSize = parentComp.child.size();
+		}
+		
+		sz.AddAttributeToElement("Size", tempSize);
 		sz.CloseElement();
 	}
 
@@ -331,27 +318,33 @@ namespace Eclipse
 			auto& comp = world.GetComponent<ParentComponent>(ent);
 			comp.child.clear();
 		}
-		
-		//TODO
-		//auto& entComp = world.GetComponent<EntityComponent>(ent);
-		//entComp.Child.clear();
 	}
 
 	void SerializationManager::UpdateParentChild(World& world, const Entity& parentEnt, const Entity& childEnt)
 	{
-		auto& parentComp = world.GetComponent<ParentComponent>(parentEnt);
-		parentComp.child.push_back(childEnt);
-		//TODO
-		//auto& parentEntComp = world.GetComponent<EntityComponent>(parentEnt);
-		//parentEntComp.Child.push_back(childEnt);
-		//
-		//auto& childComp = world.GetComponent<ChildComponent>(childEnt);
-		//childComp.parentIndex = parentEnt;
-		//
-		//auto& childEntComp = world.GetComponent<EntityComponent>(childEnt);
-		//childEntComp.IsAChild = true;
-		//childEntComp.Parent.clear();
-		//childEntComp.Parent.push_back(parentEnt);
+		if (world.CheckComponent<ParentComponent>(parentEnt))
+		{
+			auto& parentComp = world.GetComponent<ParentComponent>(parentEnt);
+			parentComp.child.push_back(childEnt);
+		}
+		else
+		{
+			ParentComponent parentComp;
+			parentComp.child.push_back(childEnt);
+			world.AddComponent<ParentComponent>(parentEnt, parentComp);
+		}
+
+		if (world.CheckComponent<ChildComponent>(childEnt))
+		{
+			auto& childComp = world.GetComponent<ChildComponent>(childEnt);
+			childComp.parentIndex = parentEnt;
+		}
+		else
+		{
+			ChildComponent childComp;
+			childComp.parentIndex = parentEnt;
+			world.AddComponent<ChildComponent>(childEnt, childComp);
+		}
 	}
 
 	EUUID SerializationManager::LoadPrefab(Entity& dszEnt, bool IsFromMainWorld)

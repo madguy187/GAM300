@@ -244,11 +244,9 @@ namespace Eclipse
 
 		inline static  bool CompareComponentData(const EntityComponent& lhs, const EntityComponent& rhs)
 		{
-			//TODO
 			bool result = true;
-			//result = (lhs.Tag == rhs.Tag);
-			//result = (lhs.IsAChild == rhs.IsAChild);
-			//result = (lhs.LayerIndex == rhs.LayerIndex);
+			result = (lhs.Tag == rhs.Tag);
+			result = (lhs.LayerIndex == rhs.LayerIndex);
 			return result;
 		}
 		
@@ -260,16 +258,14 @@ namespace Eclipse
 			return result;
 		}
 		
-		inline static  bool CompareComponentData(const ParentComponent& lhs, const ParentComponent& rhs)
+		inline static  bool CompareComponentData(const ParentComponent&, const ParentComponent&)
 		{
-			bool result = true;
-			return result;
+			return  true;
 		}
 		
-		inline static  bool CompareComponentData(const PrefabComponent& lhs, const PrefabComponent& rhs)
+		inline static  bool CompareComponentData(const PrefabComponent&, const PrefabComponent&)
 		{
-			bool result = true;
-			return result;
+			return true;
 		}
 
 		inline static  bool CompareComponentData(const ChildComponent& lhs, const ChildComponent& rhs)

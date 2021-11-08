@@ -13,6 +13,8 @@ namespace Eclipse
 
 		//Cannot compare entity, aabb, parent, child, transform, ai, prefab
 		
+		void CleanUpBeforeDestroyChild(World& w, const Entity& ent);
+
 		void LoadPrefab(const char* path);
 
 		std::string GenerateFileName(EntityComponent& entComp, const char* path);
@@ -38,10 +40,8 @@ namespace Eclipse
 		template<>
 		inline void Equalize(EntityComponent& lhs, EntityComponent& rhs)
 		{
-			//TODO
-			//lhs.Tag = rhs.Tag;
-			//lhs.IsAChild = rhs.IsAChild;
-			//lhs.LayerIndex = rhs.LayerIndex;
+			lhs.Tag = rhs.Tag;
+			lhs.LayerIndex = rhs.LayerIndex;
 		}
 
 		template<>
@@ -57,7 +57,7 @@ namespace Eclipse
 		}
 
 		template<>
-		inline void Equalize(PrefabComponent& lhs, PrefabComponent& rhs)
+		inline void Equalize(PrefabComponent&, PrefabComponent&)
 		{
 		}
 
@@ -190,9 +190,6 @@ namespace Eclipse
 		//For mesh(prefab) editor save button
 		//void SavePrefabChanges(const Entity& ent);
 
-		//Perform updates of prefab to instances right after loading of scene
-		//void PostUpdate_Prefab();
-
 		void UpdatePrefabSignature(World& sourceW, const Entity& ent, const size_t& setBit, bool setTo);
 
 		Entity RecursiveGeneratePrefab(const Entity& sourceEnt, const char* path, EUUID generatedID, const Entity& parentEnt);
@@ -212,6 +209,7 @@ namespace Eclipse
 
 		void LoadAllPrefab();
 
+		//Perform updates of prefab to instances right after loading of scene
 		void PostUpdate();
 
 		void EndUpdate();
