@@ -154,6 +154,7 @@ namespace Eclipse
 				{
 					auto& child = engine->world.GetComponent<ChildComponent>(selectedEntity);
 					child.UpdateChildren = true;
+					/*std::cout << selectedEntity << ": " << lexical_cast<std::string>(child.UpdateChildren) << std::endl;*/
 
 					if (ent.Tag != EntityType::ENT_MESH)
 					{
@@ -201,6 +202,7 @@ namespace Eclipse
 			{
 				auto& child = engine->world.GetComponent<ChildComponent>(selectedEntity);
 				child.UpdateChildren = false;
+				/*std::cout << selectedEntity << ": " << lexical_cast<std::string>(child.UpdateChildren) << std::endl;*/
 			}
 		}
 
