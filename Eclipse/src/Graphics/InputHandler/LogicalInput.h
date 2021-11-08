@@ -35,6 +35,9 @@ namespace Eclipse
         std::vector<std::string> AllInputs;
         std::vector<std::string> AllMouseInputs;
 
+        InputKeyContainer ReleaseContainer;
+        std::vector<InputKeycode> DeleteContainer;
+ 
     public:
         LogicalInput();
         bool GetIsPrint();
@@ -101,6 +104,14 @@ namespace Eclipse
         CursorLockMode State;
         bool Once = false;
         float ToMoveX;
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // GetAxis - Keyboard
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        float XDeltaKey = 0.0f;
+        float YDeltaKey = 0.0f;
+        float XDeltaKeyRaw = 0.0f;
+        float YDeltaKeyRaw = 0.0f;
 
     private:
         void init();

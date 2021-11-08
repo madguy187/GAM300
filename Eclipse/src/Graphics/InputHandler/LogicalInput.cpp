@@ -376,13 +376,21 @@ namespace Eclipse
 
     float LogicalInput::GetRawAxis(const std::string& Type)
     {
-        if (Type == "Horizontal")
+        if (Type == "Mouse X")
         {
             return XDeltaRaw;
         }
-        else if (Type == "Vertical")
+        else if (Type == "Mouse Y")
         {
             return YDeltaRaw;
+        }
+        else if (Type == "Horizontal")
+        {
+            return XDeltaKeyRaw;
+        }
+        else if (Type == "Vertical")
+        {
+            return YDeltaKeyRaw;
         }
     }
 
@@ -405,7 +413,6 @@ namespace Eclipse
     void LogicalInput::RegisterTriggerInput(InputKeycode keycode, InputState input)
     {
         InputData NewInputData(input);
-
         KeyContainer.insert({ keycode, NewInputData });
     }
 
@@ -484,26 +491,128 @@ namespace Eclipse
     {
         for (auto& pair2 : KeyContainer)
         {
+            // Horizontal
             if (pair2.first == InputKeycode::Key_LEFT || pair2.first == InputKeycode::Key_A)
             {
-                if (pair2.second.inputState == InputState::Key_HOLD && pair2.second.AxisValue)
+                if (pair2.second.inputState == InputState::Key_HOLD && XDeltaKey >= -1.0f)
                 {
-                    //pair2.second.AxisValue +=
+                    XDeltaKey -= engine->Game_Clock.get_DeltaTime();
+                    XDeltaKeyRaw = -1;
+                }
+            }
+
+            if (pair2.first == InputKeycode::Key_RIGHT || pair2.first == InputKeycode::Key_D)
+            {
+                if (pair2.second.inputState == InputState::Key_HOLD && XDeltaKey <= 1.0f)
+                {
+                    XDeltaKey += engine->Game_Clock.get_DeltaTime();
+                    XDeltaKeyRaw = 1.0;
+                }
+            }
+
+            // Vertical
+            // Right and down is positive
+            // left and up is negative
+            if (pair2.first == InputKeycode::Key_UP || pair2.first == InputKeycode::Key_W)
+            {
+                if (pair2.second.inputState == InputState::Key_HOLD && XDeltaKey >= -1.0f)
+                {
+                    YDeltaKey -= engine->Game_Clock.get_DeltaTime();
+                    YDeltaKeyRaw = -1;
+                }
+            }
+
+            if (pair2.first == InputKeycode::Key_DOWN || pair2.first == InputKeycode::Key_S)
+            {
+                if (pair2.second.inputState == InputState::Key_HOLD && XDeltaKey <= 1.0f)
+                {
+                    YDeltaKey += engine->Game_Clock.get_DeltaTime(); // positive
+                    YDeltaKeyRaw = 1;
                 }
             }
 
             if (pair2.second.inputState == InputState::Key_TRIGGERED)
             {
                 pair2.second = InputState::Key_HOLD;
+                XDeltaKeyRaw = 0;
+                XDeltaKey = 0;
+                YDeltaKeyRaw = 0;
+                YDeltaKey = 0;
             }
         }
 
+        // Mouse
         for (auto& pair2 : MouseContainer_)
         {
             if (pair2.second.inputState == InputState::Key_TRIGGERED)
             {
                 pair2.second = InputState::Key_HOLD;
             }
+        }
+
+        for (auto& pair3 : ReleaseContainer)
+        {
+            if (pair3.first == InputKeycode::Key_LEFT || pair3.first == InputKeycode::Key_A)
+            {
+                if (XDeltaKey <= 0.0)
+                {
+                    XDeltaKey += engine->Game_Clock.get_DeltaTime();
+                }
+                else
+                {
+                    XDeltaKey = 0.0;
+                    DeleteContainer.push_back(pair3.first);
+                }
+            }
+
+            if (pair3.first == InputKeycode::Key_RIGHT || pair3.first == InputKeycode::Key_D)
+            {
+                if (XDeltaKey >= 0.0)
+                {
+                    XDeltaKey -= engine->Game_Clock.get_DeltaTime();
+                }
+                else
+                {
+                    XDeltaKey = 0.0;
+                    DeleteContainer.push_back(pair3.first);
+                }
+            }
+
+            if (pair3.first == InputKeycode::Key_UP || pair3.first == InputKeycode::Key_W)
+            {
+                if (YDeltaKey <= 0.0)
+                {
+                    YDeltaKey += engine->Game_Clock.get_DeltaTime();
+                }
+                else
+                {
+                    YDeltaKey = 0.0;
+                    DeleteContainer.push_back(pair3.first);
+                }
+            }
+
+            if (pair3.first == InputKeycode::Key_DOWN || pair3.first == InputKeycode::Key_S)
+            {
+                if (XDeltaKey >= 0.0)
+                {
+                    YDeltaKey -= engine->Game_Clock.get_DeltaTime();
+                }
+                else
+                {
+                    YDeltaKey = 0.0;
+                    DeleteContainer.push_back(pair3.first);
+                }
+            }
+        }
+
+        if (DeleteContainer.size() != 0)
+        {
+            for (auto& i : DeleteContainer)
+            {
+                ReleaseContainer.erase(i);
+            }
+
+            DeleteContainer.clear();
         }
     }
 
@@ -515,6 +624,8 @@ namespace Eclipse
         {
             if (KeyContainer.count(keycode) != 0)
             {
+                ReleaseContainer.emplace(keycode, KeyContainer[keycode]);
+
                 PrintKey(keycode, Release);
                 KeyContainer.erase(keycode);
                 return true;
@@ -575,6 +686,7 @@ namespace Eclipse
         {
             if (KeyContainer.count(keycode) != 0)
             {
+                ReleaseContainer.emplace(keycode, KeyContainer[keycode]);
                 //PrintKey(keycode, HoldKeyRelease);
                 KeyContainer.erase(keycode);
                 return true;
@@ -1397,12 +1509,10 @@ namespace Eclipse
 
             float GameWindowMinX = scene->vMin.x - OpenGL_Context::GetContextPosition().x;
             float GameWindowMaxX = scene->vMin.x + scene->mGameBufferSize.getX() - OpenGL_Context::GetContextPosition().x;
-            float LengthX = GameWindowMinX + GameWindowMaxX;
             float GameWindowCenterX = (GameWindowMaxX + GameWindowMinX) / 2;
 
             float GameWindowMinY = scene->vMin.y - OpenGL_Context::GetContextPosition().y;
             float GameWindowMaxY = scene->vMin.y + scene->mGameBufferSize.getY() - OpenGL_Context::GetContextPosition().y;
-            float LengthY = GameWindowMinY + GameWindowMaxY;
             float GameWindowCenterY = (GameWindowMinY + GameWindowMaxY) / 2;
 
             glfwSetCursorPos(OpenGL_Context::ptr_window, GameWindowCenterX, GameWindowCenterY);
@@ -1491,13 +1601,21 @@ namespace Eclipse
 
     float LogicalInput::GetAxis(const std::string& Type)
     {
-        if (Type == "Horizontal")
+        if (Type == "Mouse X")
         {
             return XDelta;
         }
-        else if (Type == "Vertical")
+        else if (Type == "Mouse Y")
         {
             return YDelta;
+        }
+        else if (Type == "Horizontal")
+        {
+            return XDeltaKey;
+        }
+        else if (Type == "Vertical")
+        {
+            return YDeltaKey;
         }
     }
 
