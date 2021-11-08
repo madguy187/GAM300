@@ -24,6 +24,7 @@
 #include "Graphics/Material/PBR/PBRManager.h"
 #include "Graphics/InputHandler/LogicalInput.h"
 #include "Graphics/Instancing/DebugManager/DebugManager.h"
+#include "NavMesh/NavMeshManager.h"
 
 namespace Eclipse
 {
@@ -50,6 +51,7 @@ namespace Eclipse
 		DynamicAABBTree gDynamicAABBTree;
 		PrefabManager pfManager;
 		PhysicsManager gPhysics;
+		NavMeshManager gNavMesh;
 		AIManager gAI;
 		std::unique_ptr<CullingManager> gCullingManager;
 		std::unique_ptr<EclipseFileWatcher> gFileWatchManager;
@@ -66,6 +68,8 @@ namespace Eclipse
 		bool GetPauseState();
 		bool GetStepState();
 		bool IsScenePlaying();
+		void DestroyGameObject(const Entity& ent);
+		void CleanUp(const Entity& ent);
 
 		void SetEditorState(bool check);
 		void SetPlayState(bool check);

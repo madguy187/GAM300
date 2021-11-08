@@ -54,6 +54,7 @@ namespace Eclipse
 		bool ShowBPProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 
 
+		bool ShowNavMeshProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 
 		void AddComponentsController(Entity ID);
 		void RemoveComponentsController(Entity ID);
@@ -70,6 +71,7 @@ namespace Eclipse
 
 		void SimulateAudio(Entity ID, AudioComponent& audioCom);
 		void AddWaypointController(std::string& currentSelection);
+		void ChangeShapeController(std::string& currentSelection);
 
 		template <typename TComponents>
 		void AddComponentsFeedback(const char* Components, const std::string& name, Entity ID, bool exist);

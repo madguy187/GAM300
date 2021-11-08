@@ -22,7 +22,6 @@ namespace Eclipse
 					engine->gPhysics.UpdateActor(entity);
 				}
 			}
-			
 		}
 		engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());
 		engine->Timer.UpdateTimeContainer(engine->Timer.tracker);

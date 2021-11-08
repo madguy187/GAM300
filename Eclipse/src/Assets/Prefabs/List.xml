@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<Entities Size="3">
+<Entities Size="4">
     <Entity_0 ID="0">
         <AABBComponent>
             <center x="0" y="0" z="0" />
@@ -10,80 +10,8 @@
             <Tag value="Cube" />
             <Name value="Cube" />
             <LayerIndex value="0" />
-            <Child size="0" />
-            <Parent size="0" />
-            <IsAChild value="false" />
-            <ImguiIndentValue value="20" />
-            <hightLightChild value="false" />
-        </EntityComponent>
-        <MaterialComponent>
-            <Modeltype value="BasicPrimitives" />
-            <ambient x="0" y="0" z="0" />
-            <diffuse x="1" y="1" z="1" />
-            <specular x="1" y="1" z="1" />
-            <NoTextures value="false" />
-            <shininess value="0.25" />
-            <MaximumShininess value="128" />
-            <IsNormalMap value="false" />
-            <ComboIndex value="1" />
-            <TextureComboIndex value="0" />
-            <Type value="TT_UNASSIGNED" />
-            <hasTexture value="false" />
-            <TextureRef value="Default" />
-            <TextureKey value="" />
-            <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Shelf" Handle="103" />
-            </HoldingTextures>
-            <HasMaterialIstance value="false" />
-            <MaterialInstanceName value="" />
-        </MaterialComponent>
-        <MeshComponent>
-            <MeshName value="Cube" />
-            <color x="1" y="1" z="1" />
-            <textureIdx x="0" y="0" />
-            <isQuad value="false" />
-            <modelNDC_xform Col="4" Row="4">
-                <Col0 _00="0" _01="0" _02="0" _03="0" />
-                <Col1 _10="0" _11="0" _12="0" _13="0" />
-                <Col2 _20="0" _21="0" _22="0" _23="0" />
-                <Col3 _30="0" _31="0" _32="0" _33="0" />
-            </modelNDC_xform>
-            <modelRef value="Cube" />
-            <shaderRef value="shader3DShdrpgm" />
-            <transparency value="1" />
-            <ENV_MAP value="false" />
-            <ENV_TYPE value="MT_REFLECT" />
-        </MeshComponent>
-        <ModelComponent>
-            <NameOfModel value="" />
-            <Directory value="" />
-            <type value="MT_UNASSIGNED" />
-            <ComboIndex value="0" />
-        </ModelComponent>
-        <TransformComponent>
-            <position x="0" y="0" z="0" />
-            <rotation x="0" y="0" z="0" />
-            <scale x="51.351" y="8.108" z="5.263" />
-        </TransformComponent>
-        <PrefabComponent>
-            <IsInstance value="false" />
-            <IsChild value="false" />
-            <CompChanges value="00000000000000000000000000000000" />
-            <PrefabID value="7027930003974228896" />
-        </PrefabComponent>
-    </Entity_0>
-    <Entity_1 ID="1">
-        <AABBComponent>
-            <center x="-28.5911" y="0" z="3.5717" />
-            <Min x="-31.0911" y="-2.5" z="1.0717" />
-            <Max x="-26.0911" y="2.5" z="6.0717" />
-        </AABBComponent>
-        <EntityComponent>
-            <Tag value="Cube" />
-            <Name value="Cube1" />
-            <LayerIndex value="0" />
             <Child size="1">
-                <Member0 value="2" />
+                <Member0 value="1" />
             </Child>
             <Parent size="0" />
             <IsAChild value="false" />
@@ -95,7 +23,7 @@
             <ambient x="0" y="0" z="0" />
             <diffuse x="1" y="1" z="1" />
             <specular x="1" y="1" z="1" />
-            <NoTextures value="false" />
+            <NoTextures value="true" />
             <shininess value="0.25" />
             <MaximumShininess value="128" />
             <IsNormalMap value="false" />
@@ -105,9 +33,7 @@
             <hasTexture value="false" />
             <TextureRef value="Default" />
             <TextureKey value="" />
-            <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="104" />
-            </HoldingTextures>
+            <HoldingTextures size="0" />
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
         </MaterialComponent>
@@ -136,32 +62,32 @@
         </ModelComponent>
         <ParentComponent>
             <child size="1">
-                <Member0 value="2" />
+                <Member0 value="1" />
             </child>
             <model Col="4" Row="4">
                 <Col0 _00="1" _01="0" _02="0" _03="0" />
                 <Col1 _10="0" _11="1" _12="0" _13="0" />
                 <Col2 _20="0" _21="0" _22="1" _23="0" />
-                <Col3 _30="-28.5911" _31="0" _32="3.5717" _33="1" />
+                <Col3 _30="0" _31="0" _32="0" _33="1" />
             </model>
         </ParentComponent>
         <TransformComponent>
-            <position x="-28.5911" y="0" z="3.5717" />
+            <position x="0" y="0" z="0" />
             <rotation x="0" y="0" z="0" />
-            <scale x="8.108" y="18.919" z="5" />
+            <scale x="5" y="5" z="5" />
         </TransformComponent>
         <PrefabComponent>
             <IsInstance value="false" />
             <IsChild value="false" />
             <CompChanges value="00000000000000000000000000000000" />
-            <PrefabID value="7027930966536327929" />
+            <PrefabID value="7028148828035927672" />
         </PrefabComponent>
-    </Entity_1>
-    <Entity_2 ID="2">
+    </Entity_0>
+    <Entity_1 ID="1">
         <AABBComponent>
-            <center x="-22.554" y="0" z="3.14912" />
-            <Min x="-25.054" y="-2.5" z="0.649117" />
-            <Max x="-20.054" y="2.5" z="5.64912" />
+            <center x="0" y="0" z="0" />
+            <Min x="-2.5" y="-2.5" z="-2.5" />
+            <Max x="2.5" y="2.5" z="2.5" />
         </AABBComponent>
         <EntityComponent>
             <Tag value="Cube" />
@@ -169,7 +95,7 @@
             <LayerIndex value="0" />
             <Child size="0" />
             <Parent size="1">
-                <Member0 value="1" />
+                <Member0 value="0" />
             </Parent>
             <IsAChild value="true" />
             <ImguiIndentValue value="20" />
@@ -218,13 +144,13 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <ChildComponent>
-            <parentIndex value="1" />
-            <PosOffset x="6.03718" y="0" z="-0.422579" />
+            <parentIndex value="0" />
+            <PosOffset x="0" y="0" z="0" />
             <RotOffset x="0" y="0" z="0" />
             <ScaleOffset x="1" y="1" z="1" />
         </ChildComponent>
         <TransformComponent>
-            <position x="-22.554" y="0" z="3.14912" />
+            <position x="0" y="0" z="0" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
@@ -232,7 +158,168 @@
             <IsInstance value="false" />
             <IsChild value="true" />
             <CompChanges value="00000000000000000000000000000000" />
-            <PrefabID value="7027930966536327930" />
+            <PrefabID value="7028148828035927673" />
+        </PrefabComponent>
+    </Entity_1>
+    <Entity_2 ID="2">
+        <AABBComponent>
+            <center x="0" y="0" z="0" />
+            <Min x="-2.5" y="-2.5" z="-2.5" />
+            <Max x="2.5" y="2.5" z="2.5" />
+        </AABBComponent>
+        <EntityComponent>
+            <Tag value="Cube" />
+            <Name value="Cube1" />
+            <LayerIndex value="0" />
+            <Child size="1">
+                <Member0 value="3" />
+            </Child>
+            <Parent size="0" />
+            <IsAChild value="false" />
+            <ImguiIndentValue value="20" />
+            <hightLightChild value="false" />
+        </EntityComponent>
+        <MaterialComponent>
+            <Modeltype value="Models3D" />
+            <ambient x="0" y="0" z="0" />
+            <diffuse x="1" y="1" z="1" />
+            <specular x="1" y="1" z="1" />
+            <NoTextures value="true" />
+            <shininess value="0.25" />
+            <MaximumShininess value="128" />
+            <IsNormalMap value="false" />
+            <ComboIndex value="1" />
+            <TextureComboIndex value="0" />
+            <Type value="TT_UNASSIGNED" />
+            <hasTexture value="false" />
+            <TextureRef value="Default" />
+            <TextureKey value="" />
+            <HoldingTextures size="0" />
+            <HasMaterialIstance value="false" />
+            <MaterialInstanceName value="" />
+        </MaterialComponent>
+        <MeshComponent>
+            <MeshName value="Cube" />
+            <color x="1" y="1" z="1" />
+            <textureIdx x="0" y="0" />
+            <isQuad value="false" />
+            <modelNDC_xform Col="4" Row="4">
+                <Col0 _00="0" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="0" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="0" _23="0" />
+                <Col3 _30="0" _31="0" _32="0" _33="0" />
+            </modelNDC_xform>
+            <modelRef value="Cube" />
+            <shaderRef value="shader3DShdrpgm" />
+            <transparency value="1" />
+            <ENV_MAP value="false" />
+            <ENV_TYPE value="MT_REFLECT" />
+        </MeshComponent>
+        <ModelComponent>
+            <NameOfModel value="" />
+            <Directory value="" />
+            <type value="MT_UNASSIGNED" />
+            <ComboIndex value="0" />
+        </ModelComponent>
+        <ParentComponent>
+            <child size="1">
+                <Member0 value="3" />
+            </child>
+            <model Col="4" Row="4">
+                <Col0 _00="1" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="1" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="1" _23="0" />
+                <Col3 _30="0" _31="0" _32="0" _33="1" />
+            </model>
+        </ParentComponent>
+        <TransformComponent>
+            <position x="0" y="0" z="0" />
+            <rotation x="0" y="0" z="0" />
+            <scale x="5" y="5" z="5" />
+        </TransformComponent>
+        <PrefabComponent>
+            <IsInstance value="false" />
+            <IsChild value="false" />
+            <CompChanges value="00000000000000000000000000000000" />
+            <PrefabID value="7028168995686296897" />
         </PrefabComponent>
     </Entity_2>
+    <Entity_3 ID="3">
+        <AABBComponent>
+            <center x="6.87912" y="0" z="0" />
+            <Min x="4.37912" y="-2.5" z="-2.5" />
+            <Max x="9.37912" y="2.5" z="2.5" />
+        </AABBComponent>
+        <EntityComponent>
+            <Tag value="Cube" />
+            <Name value="Cube" />
+            <LayerIndex value="0" />
+            <Child size="0" />
+            <Parent size="1">
+                <Member0 value="2" />
+            </Parent>
+            <IsAChild value="true" />
+            <ImguiIndentValue value="20" />
+            <hightLightChild value="false" />
+        </EntityComponent>
+        <MaterialComponent>
+            <Modeltype value="Models3D" />
+            <ambient x="0" y="0" z="0" />
+            <diffuse x="1" y="1" z="1" />
+            <specular x="1" y="1" z="1" />
+            <NoTextures value="true" />
+            <shininess value="0.25" />
+            <MaximumShininess value="128" />
+            <IsNormalMap value="false" />
+            <ComboIndex value="1" />
+            <TextureComboIndex value="0" />
+            <Type value="TT_UNASSIGNED" />
+            <hasTexture value="false" />
+            <TextureRef value="Default" />
+            <TextureKey value="" />
+            <HoldingTextures size="0" />
+            <HasMaterialIstance value="false" />
+            <MaterialInstanceName value="" />
+        </MaterialComponent>
+        <MeshComponent>
+            <MeshName value="Cube" />
+            <color x="1" y="1" z="1" />
+            <textureIdx x="0" y="0" />
+            <isQuad value="false" />
+            <modelNDC_xform Col="4" Row="4">
+                <Col0 _00="0" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="0" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="0" _23="0" />
+                <Col3 _30="0" _31="0" _32="0" _33="0" />
+            </modelNDC_xform>
+            <modelRef value="Cube" />
+            <shaderRef value="shader3DShdrpgm" />
+            <transparency value="1" />
+            <ENV_MAP value="false" />
+            <ENV_TYPE value="MT_REFLECT" />
+        </MeshComponent>
+        <ModelComponent>
+            <NameOfModel value="" />
+            <Directory value="" />
+            <type value="MT_UNASSIGNED" />
+            <ComboIndex value="0" />
+        </ModelComponent>
+        <ChildComponent>
+            <parentIndex value="2" />
+            <PosOffset x="6.87912" y="0" z="0" />
+            <RotOffset x="0" y="0" z="0" />
+            <ScaleOffset x="1" y="1" z="1" />
+        </ChildComponent>
+        <TransformComponent>
+            <position x="6.87912" y="0" z="0" />
+            <rotation x="0" y="0" z="0" />
+            <scale x="5" y="5" z="5" />
+        </TransformComponent>
+        <PrefabComponent>
+            <IsInstance value="false" />
+            <IsChild value="true" />
+            <CompChanges value="00000000000000000000000000000000" />
+            <PrefabID value="7028168995686296898" />
+        </PrefabComponent>
+    </Entity_3>
 </Entities>
