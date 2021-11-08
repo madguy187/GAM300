@@ -23,6 +23,8 @@ namespace Eclipse
 		FrameBuffer* m_frameBuffer{ nullptr };
 		ECVec2 mViewportSize{ 0.f, 0.f };
 		Entity MeshID{ MAX_ENTITY };
+		std::vector<Entity> MeshFamily;
+		int MeshIndex{ 0 };
 		bool IsActive{ false };
 
 		//Temporary, can move to any where else.

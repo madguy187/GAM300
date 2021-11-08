@@ -40,7 +40,7 @@ namespace Eclipse
             Entity currEnt = mesheditor->IsVisible ? mesheditor->GetMeshID() : engine->editorManager->GetSelectedEntity();
             auto& entcom = engine->world.GetComponent<EntityComponent>(currEnt);
 
-            ECGui::PushItemWidth(WindowSize_.getX());
+            ECGui::PushItemWidth(WindowSize_.getX()); 
             if (ECGui::DrawInputTextHintWidget("InputEntityName", "Enter Entity Name", EntNameInput,
                 256, true, ImGuiInputTextFlags_EnterReturnsTrue))
             {
