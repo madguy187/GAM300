@@ -20,6 +20,7 @@
 #include "ScriptComponent.h"
 #include "ChildComponent.h"
 #include "ParentComponent.h"
+#include "AnimationComponent.h"
 #include "NavMeshVolumeComponent.h"
 
 namespace Eclipse
@@ -273,6 +274,15 @@ namespace Eclipse
        ADD_MEMBER(JumpDistance);
     }
 
+    //DEFINE_META(AnimationComponent)
+    //{
+    //    ADD_MEMBER(m_Transforms);
+    //    ADD_MEMBER(m_CurrentAnimation);
+    //    ADD_MEMBER(m_CurrentTime);
+    //    ADD_MEMBER(m_DeltaTime);
+    //    ADD_MEMBER(modelLargestAxis);
+    //}
+
     /*************************************************************************/
     /*               REGISTERING DATA TYPE - NO NEED TOUCH                   */
     /*************************************************************************/
@@ -309,4 +319,6 @@ namespace Eclipse
     DEFINE_META_POD(Signature);
     DEFINE_META_POD(std::bitset<20>);
     //DEFINE_META_POD(MonoScript);
+    //DEFINE_META_POD(std::vector<glm::mat4>);
+    //DEFINE_META_POD(Animation);
 }
