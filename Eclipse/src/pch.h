@@ -45,6 +45,7 @@
 #include <stack>
 #include <unordered_map>
 #include <set>
+#include <limits>
 
 #include "GLM/glm/gtx/quaternion.hpp"
 

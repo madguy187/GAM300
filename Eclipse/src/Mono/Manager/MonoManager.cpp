@@ -18,6 +18,7 @@
 #include "../Components/s_Quaternion.h"
 #include "../Components/s_GameObject.h"
 #include "../Components/s_EclipseBehavior.h"
+#include "../Components/s_Physics.h"
 
 
 namespace Eclipse
@@ -100,6 +101,7 @@ namespace Eclipse
 		mono_add_internal_call("Eclipse.Transform::RotateEuler", RotateEuler);
 		mono_add_internal_call("Eclipse.Quaternion::GetEuler", Euler);
 		mono_add_internal_call("Eclipse.EclipseBehavior::InvokeFunc", Invoke);
+		mono_add_internal_call("Eclipse.Physics::RaycastCheck", RaycastFunc);
 	}
 
 	void MonoManager::Awake(MonoScript* obj)
@@ -142,6 +144,7 @@ namespace Eclipse
 
 	void MonoManager::LoadAllFields(MonoScript* script)
 	{
+		if (script->scriptName.empty()) return;
 		size_t i = 0;
 		MonoClass* klass = GetScriptMonoClass(script->scriptName);
 		MonoClass* attrKlass = mono_class_from_name(engine->mono.GetAPIImage(), "", "Header");
@@ -293,6 +296,7 @@ namespace Eclipse
 
 	MonoObject* MonoManager::CreateMonoObject(std::string scriptName, Entity entity)
 	{
+		if (scriptName == "") return nullptr;
 		MonoClass* script = mono_class_from_name(ScriptImage, "", scriptName.c_str());
 		if (!script)
 		{
@@ -391,6 +395,18 @@ namespace Eclipse
 		return obj;
 	}
 
+	ECVec3 MonoManager::ConvertVectorToECVec(MonoObject* vec)
+	{
+		MonoClass* klass = GetAPIMonoClass("Vector3");
+		float x;
+		float y;
+		float z;
+		GetFloatFromField(vec, klass, "x", x);
+		GetFloatFromField(vec, klass, "y", y);
+		GetFloatFromField(vec, klass, "z", z);
+		return ECVec3{ x, y, z };
+	}
+
 	MonoObject* MonoManager::CreateQuaternionClass(float x, float y, float z)
 	{
 		MonoClass* klass = GetAPIMonoClass("Quaternion");
@@ -411,6 +427,19 @@ namespace Eclipse
 
 		ExecuteMethod(obj, method, args);
 
+		return obj;
+	}
+
+	MonoObject* MonoManager::CreateRayCastHit(float x, float y, float z)
+	{
+		MonoClass* klass = GetAPIMonoClass("RayCastHit");
+		MonoObject* obj = CreateObjectFromClass(klass, false);
+		std::vector<void*> args;
+		args.push_back(&x);
+		args.push_back(&y);
+		args.push_back(&z);
+		ExecuteMethod(obj, GetMethodFromClass(klass, ".ctor", 3), args);
+		
 		return obj;
 	}
 
@@ -443,6 +472,19 @@ namespace Eclipse
 		}
 
 		mono_field_set_value(obj, field, &fieldValue);
+	}
+
+	bool MonoManager::GetFloatFromField(MonoObject* obj, MonoClass* klass, const char* fieldName, float& value)
+	{
+		MonoClassField* field = mono_class_get_field_from_name(klass, fieldName);
+		if (!field) {
+			ENGINE_CORE_WARN("Can't find field in klass");
+			return false;
+		}
+
+		mono_field_get_value(obj, field, (void*)&value);
+
+		return true;
 	}
 
 	MonoMethod* MonoManager::GetMethodFromClass(MonoClass* klass, std::string funcName, int param_count)
