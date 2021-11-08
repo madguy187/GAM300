@@ -4,21 +4,21 @@ using System.Collections.Generic;
 
 namespace Eclipse
 {
-    public class Light
+    public class AudioSource
     {
         public UInt32 Entity;
 
-        public Light(UInt32 entity)
+        public AudioSource(UInt32 entity)
         {
             Entity = entity;
         }
 
-        public bool enabled
+        public void Play()
         {
-            set => SetLightEnabled(Entity, value ? 1 : 0);
+            PlayAudio(Entity);
         }
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        private extern static void SetLightEnabled(UInt32 ent, int state);
+        private extern static void PlayAudio(UInt32 ent);
     }
 }

@@ -21,6 +21,7 @@
 #include "../Components/s_Physics.h"
 #include "../Components/s_Cursor.h"
 #include "../Components/s_Light.h"
+#include "../Components/s_AudioSource.h"
 
 
 namespace Eclipse
@@ -107,6 +108,7 @@ namespace Eclipse
 		mono_add_internal_call("Eclipse.Physics::RaycastCheck", RaycastFunc);
 		mono_add_internal_call("Eclipse.Cursor::setState", setState);
 		mono_add_internal_call("Eclipse.Light::SetLightEnabled", SetLightEnabled);
+		mono_add_internal_call("Eclipse.AudioSource::PlayAudio", Play);
 	}
 
 	void MonoManager::Awake(MonoScript* obj)

@@ -366,6 +366,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Mono\Components\s_Cursor.h" />
     <ClInclude Include="src\Mono\Components\s_EclipseBehavior.h" />
     <ClInclude Include="src\Mono\Components\s_GameObject.h" />
+    <ClInclude Include="src\Mono\Components\s_Light.h" />
     <ClInclude Include="src\Mono\Components\s_LogicalInput.h" />
     <ClInclude Include="src\Mono\Components\s_Quaternion.h" />
     <ClInclude Include="src\Mono\Components\s_RigidBodyComponent.h" />

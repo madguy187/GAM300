@@ -7,11 +7,10 @@ public class Test : EclipseBehavior
 {
     public void Start()
     {
-        Console.WriteLine("TEST C# Start");
     }
 
     public void Update()
     {
-        
+      
     }
 }
