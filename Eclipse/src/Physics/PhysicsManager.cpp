@@ -271,7 +271,7 @@ namespace Eclipse
 		std::bitset<20> mask = std::bitset<20>(layerMask);
 		QueryReportCallback _callback{ mask };
 
-		auto& transformComponent = engine->world.GetComponent<TransformComponent>(*(Entity*)hit.block.actor->userData);
+		//auto& transformComponent = engine->world.GetComponent<TransformComponent>(*(Entity*)hit.block.actor->userData);
 		return Px_Scene->raycast(_origin, _dir, dist, hit, PxHitFlag::eDEFAULT, filter,&_callback);
 
 	}

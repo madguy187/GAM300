@@ -7,12 +7,15 @@ namespace Eclipse
 {
     public static class Physics
     {
-        public static bool Raycast(Vector3 origin, Vector3 dir)
+        public static bool Raycast(Vector3 origin, Vector3 dir, out RayCastHit hit)
         {
-            return RaycastCheck(origin, dir);
+            hit = RaycastCheck(origin, dir);
+            if (hit == null) return false;
+
+            return true;
         }
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        private extern static bool RaycastCheck(Vector3 origin, Vector3 dir);
+        private extern static RayCastHit RaycastCheck(Vector3 origin, Vector3 dir);
     }
 }
