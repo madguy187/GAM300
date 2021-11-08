@@ -184,36 +184,6 @@ namespace Eclipse
         glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
     }
 
-    void FrameBuffer::UpdatePP()
-    {
-        if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
-        {
-            if (AllowPostProcess == false)
-                return;
-
-            if (PPType_ == PostProcessType::PPT_NONE)
-                return;
-
-            //glBindFramebuffer(GL_FRAMEBUFFER, engine->gFrameBufferManager->GetFrameBufferID(FrameBufferMode::FBM_SCENE));
-            engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_GAME);
-
-            auto& shdrpgm = Graphics::shaderpgms["PostProcess"];
-            shdrpgm.Use();
-
-            GLint Inversion = shdrpgm.GetLocation("Type");
-            GLint Height_ = shdrpgm.GetLocation("Height");
-            GLint Width_ = shdrpgm.GetLocation("Width");
-            GLCall(glUniform1i(Inversion, static_cast<GLint>(PPType_)));
-            GLCall(glUniform1i(Height_, engine->gFrameBufferManager->FrameBufferContainer[FrameBufferMode::FBM_GAME]->m_height));
-            GLCall(glUniform1i(Width_, engine->gFrameBufferManager->FrameBufferContainer[FrameBufferMode::FBM_GAME]->m_width));
-
-            glBindVertexArray(rectVAO);
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_GAME_SOBEL));
-            glDrawArrays(GL_TRIANGLES, 0, 6);
-        }
-    }
-
     std::string Eclipse::FrameBuffer::getStringForEnum(int enum_val)
     {
         std::string tmp(enum_FrameBufferMode_str[enum_val]);

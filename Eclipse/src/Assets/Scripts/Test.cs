@@ -5,17 +5,19 @@ using Eclipse;
 
 public class Test : EclipseBehavior
 {
-    [Header("Weeeeeee")]
-    public UInt32 test;
+    public float mouseSensitivity = 10f;
+
+    Test2 wee;
 
     public void Start()
     {
-        Console.WriteLine("C# Start");
+        Console.WriteLine("TEST C# Start");
+        wee = GetComponent<Test2>();
+        Console.WriteLine(wee.Entity);
     }
 
     public void Update()
     {
-        Console.WriteLine("C# Update");
-        Console.WriteLine(Vector3.zero.x);
+      
     }
 }

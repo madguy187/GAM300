@@ -38,37 +38,37 @@ namespace Eclipse
 
 	}
 
-	void PrefabManager::SavePrefabChanges(const Entity& updatedPrefabEnt)
-	{
-		auto& prefabW = engine->prefabWorld;
-		auto& prefabComp = prefabW.GetComponent<PrefabComponent>(updatedPrefabEnt);
-		const std::string& path = GetPath(prefabComp.PrefabID);
+	//void PrefabManager::SavePrefabChanges(const Entity& updatedPrefabEnt)
+	//{
+	//	auto& prefabW = engine->prefabWorld;
+	//	auto& prefabComp = prefabW.GetComponent<PrefabComponent>(updatedPrefabEnt);
+	//	const std::string& path = GetPath(prefabComp.PrefabID);
 
-		//Load old prefab
-		Entity oldPrefabEnt;
-		engine->szManager.LoadPrefabFile(oldPrefabEnt, path.c_str());
+	//	//Load old prefab
+	//	Entity oldPrefabEnt;
+	//	engine->szManager.LoadPrefabFile(oldPrefabEnt, path.c_str());
 
-		std::vector<Entity> changingEntities;
+	//	std::vector<Entity> changingEntities;
 
-		//Update instances
-		for (auto entity : changingEntities)
-		{
-			CopyToInstance(oldPrefabEnt, prefabW, updatedPrefabEnt, entity);
+	//	//Update instances
+	//	for (auto entity : changingEntities)
+	//	{
+	//		CopyToInstance(oldPrefabEnt, prefabW, updatedPrefabEnt, entity);
 
-			CleanUpForInstancesAfterCopy(entity);
-		}
+	//		CleanUpForInstancesAfterCopy(entity);
+	//	}
 
-		//Update prefab
-		std::string prefabPath = GetPath(prefabComp.PrefabID);
+	//	//Update prefab
+	//	std::string prefabPath = GetPath(prefabComp.PrefabID);
 
-		if (std::filesystem::exists(prefabPath))
-		{
-			OverwritePrefab(updatedPrefabEnt, prefabPath.c_str());
-		}
+	//	if (std::filesystem::exists(prefabPath))
+	//	{
+	//		OverwritePrefab(updatedPrefabEnt, prefabPath.c_str());
+	//	}
 
-		//Destroy
-		prefabW.DestroyEntity(oldPrefabEnt);
-	}
+	//	//Destroy
+	//	prefabW.DestroyEntity(oldPrefabEnt);
+	//}
 
 	void PrefabManager::UpdatePrefabSignature(World& sourceW, const Entity& ent, const size_t& setBit, bool setTo)
 	{
@@ -104,11 +104,37 @@ namespace Eclipse
 		for (auto& ent : instances)
 		{
 			auto& prefab = w.GetComponent<PrefabComponent>(ent);
+			if (prefab.IsChild)
+			{
+				continue;
+			}
 			auto& prefabOwner = mapPIDToEID[prefab.PrefabID];
 
-			SignatureBaseCopy(prefabW, w, prefabOwner, ent);
+			CompareMap_Hierarchy hierMap;
+			CompareMap_NewChild newChildMap;
+			CompareHierarchy(prefabW, prefabOwner, w, ent, hierMap, newChildMap);
 
-			CleanUpForInstancesAfterCopy(ent);
+			for (auto& pair : hierMap)
+			{
+				if (pair.second == MAX_ENTITY)
+				{
+					continue;
+				}
+
+				auto& target = pair.first;
+				auto& copySource = pair.second;
+
+				SignatureBaseCopy(prefabW, w, copySource, target);
+				CleanUpForInstancesAfterCopy(target);
+			}
+
+			for (auto& pair : newChildMap)
+			{
+				for (auto& newChild : pair.second)
+				{
+					RecursiveCreatePrefabInstances(newChild, pair.first);
+				}
+			}
 		}
 	}
 
@@ -121,12 +147,38 @@ namespace Eclipse
 		for (auto& ent : instances)
 		{
 			auto& prefab = w.GetComponent<PrefabComponent>(ent);
+			if (prefab.IsChild)
+			{
+				continue;
+			}
 			auto& prefabOwner = mapPIDToEID[prefab.PrefabID];
 
-			CopyToPrefabInstances(prefabOwner, prefabW, prefabOwner, ent, list, true);
-			//SignatureBaseCopy(prefabW, w, prefabOwner, ent);
+			CompareMap_Hierarchy hierMap;
+			CompareMap_NewChild newChildMap;
+			CompareHierarchy(prefabW, prefabOwner, w, ent, hierMap, newChildMap);
 
-			CleanUpForInstancesAfterCopy(ent);
+			for (auto& pair : hierMap)
+			{
+				if (pair.second == MAX_ENTITY)
+				{
+					continue;
+				}
+
+				auto& target = pair.first;
+				auto& copySource = pair.second;
+
+				CopyToInstance(copySource, prefabW, copySource, target, true);
+				//SignatureBaseCopy(prefabW, w, prefabOwner, ent);
+				CleanUpForInstancesAfterCopy(target);
+			}
+
+			for (auto& pair : newChildMap)
+			{
+				for (auto& newChild : pair.second)
+				{
+					RecursiveCreatePrefabInstances(newChild, pair.first);
+				}
+			}
 		}
 	}
 
@@ -182,6 +234,7 @@ namespace Eclipse
 		//Entity component updates
 		auto& entComp = prefabW.GetComponent<EntityComponent>(prefabEnt);
 		entComp.IsActive = false;
+		entComp.hightLightChild = false;
 		entComp.Child.clear();
 		entComp.Parent.clear();
 		entComp.IsAChild = parentEnt != MAX_ENTITY;
@@ -313,6 +366,79 @@ namespace Eclipse
 		}
 	}
 
+	void PrefabManager::CompareHierarchy(World& compareSampleWorld, const Entity& compareSample, World& compareTargetWorld,
+		const Entity& compareTarget, CompareMap_Hierarchy& hierMap, CompareMap_NewChild& newChildMap)
+	{
+		//First, put the base into the map
+		hierMap[compareTarget] = compareSample;
+		
+		auto& sampleEntComp = compareSampleWorld.GetComponent<EntityComponent>(compareSample);
+		auto& targetEntComp = compareTargetWorld.GetComponent<EntityComponent>(compareTarget);
+
+		auto targetEntCompChildren = targetEntComp.Child;
+		std::vector<Entity> newChildren;
+
+		for (auto& sampleChild : sampleEntComp.Child)
+		{
+			bool isFound = false;
+			auto& sampleChildPrefabID = compareSampleWorld.GetComponent<PrefabComponent>(sampleChild).PrefabID;
+			
+			for (auto& targetChild : targetEntCompChildren)
+			{
+				auto& targetChildPrefabID = compareTargetWorld.GetComponent<PrefabComponent>(targetChild).PrefabID;
+
+				if (sampleChildPrefabID == targetChildPrefabID)
+				{
+					CompareHierarchy(compareSampleWorld, sampleChild, compareTargetWorld, targetChild, hierMap, newChildMap);
+					isFound = true;
+					targetEntCompChildren.erase(std::remove(targetEntCompChildren.begin(), targetEntCompChildren.end(), targetChild));
+					break;
+				}
+			}
+
+			if (!isFound)
+			{
+				newChildren.push_back(sampleChild);
+			}
+		}
+
+		if (newChildren.size())
+		{
+			newChildMap[compareTarget] = newChildren;
+		}
+
+		for (auto& child : targetEntCompChildren)
+		{
+			hierMap[child] = MAX_ENTITY;
+		}
+	}
+
+	void PrefabManager::print(CompareMap_Hierarchy& hierMap, CompareMap_NewChild& newChildMap)
+	{
+		std::cout << "Hierarchy Map" << std::endl;
+		std::cout << "OldPrefab\tNewPrefab" << std::endl;
+		for (auto& pair : hierMap)
+		{
+			std::cout << pair.first << "\t" << pair.second << std::endl;
+		}
+		std::cout << "End" << std::endl;
+		std::cout << std::endl;
+
+		std::cout << "New Children Map" << std::endl;
+		std::cout << "OldPrefab_Children" << std::endl;
+		for (auto& pair : newChildMap)
+		{
+			std::cout << pair.first << ": ";
+			for (auto& ent : pair.second)
+			{
+				std::cout << ent << ", ";
+			}
+			std::cout << std::endl;
+		}
+		std::cout << "End" << std::endl;
+		std::cout << std::endl;
+	}
+
 	//Create object using prefab, by passing in the prefab data.
 	//Currently 
 	Entity PrefabManager::CreatePrefabInstance(const char* path)
@@ -340,6 +466,43 @@ namespace Eclipse
 		for (auto& child : entComp.Child)
 		{
 			RecursiveCreatePrefabInstances(child, newEnt);
+		}
+
+		return newEnt;
+	}
+
+	Entity PrefabManager::CreatePrefabInstanceSetTransform(const EUUID& prefabID, const ECVec3& position, const ECVec3& rotation)
+	{
+		std::string path =  GetPath(prefabID);
+		
+		if (!path.empty())
+		{
+			return MAX_ENTITY;
+		}
+
+		Entity newEnt = CreatePrefabInstance(path.c_str());
+
+		if(newEnt != MAX_ENTITY)
+		{
+			auto& transform = engine->world.GetComponent<TransformComponent>(newEnt);
+
+			transform.position = position;
+			transform.rotation = rotation;
+		}
+
+		return newEnt;
+	}
+
+	Entity PrefabManager::CreatePrefabInstanceSetTransform(const char* path, const ECVec3& position, const ECVec3& rotation)
+	{
+		Entity newEnt = CreatePrefabInstance(path);
+
+		if (newEnt != MAX_ENTITY)
+		{
+			auto& transform = engine->world.GetComponent<TransformComponent>(newEnt);
+
+			transform.position = position;
+			transform.rotation = rotation;
 		}
 
 		return newEnt;
@@ -373,14 +536,20 @@ namespace Eclipse
 		}
 		else
 		{
+			if (!w.CheckComponent<ParentComponent>(parentEnt))
+			{
+				w.AddComponent<ParentComponent>(parentEnt, {});
+			}
+
 			UpdateParentChildTransform(ent, parentEnt);
 		}
+
 
 		//PrefabComponent update
 		auto& prefabComp = w.GetComponent<PrefabComponent>(ent);
 		prefabComp.IsInstance = true;
 
-		engine->editorManager->RegisterNewlySerializedEntity(ent);
+		engine->editorManager->RegisterExistingEntity(ent);
 
 		//CameraComponent update
 		if (w.CheckComponent<CameraComponent>(ent))
@@ -392,7 +561,6 @@ namespace Eclipse
 		//AABBComponent update
 		if (w.CheckComponent<AABBComponent>(ent))
 		{
-			auto& aabb = w.GetComponent<AABBComponent>(ent);
 			engine->gPicker.GenerateAabb(ent, transformComp, entComp.Tag);
 		}
 
@@ -442,18 +610,12 @@ namespace Eclipse
 
 	void PrefabManager::SignatureBaseCopy(World& sourceWorld, World& targetWorld, const Entity& sourceEnt, const Entity& targetEnt)
 	{
-		auto& sourceTrans = sourceWorld.GetComponent<TransformComponent>(sourceEnt);
-		auto& targetTrans = targetWorld.GetComponent<TransformComponent>(targetEnt);
-
-		targetTrans.rotation = sourceTrans.rotation;
-		targetTrans.scale = sourceTrans.scale;
-
-		SignatureBaseCopying(sourceWorld, targetWorld, sourceEnt, targetEnt, list);
+		SignatureBaseCopying(sourceWorld, targetWorld, sourceEnt, targetEnt, all_component_list);
 	}
 
-	void PrefabManager::CopyToInstance(const Entity& comparingPrefabEnt, World& copySourceWorld, const Entity& copyingSourceEnt, const Entity& instancesEnt)
+	void PrefabManager::CopyToInstance(const Entity& comparingPrefabEnt, World& copySourceWorld, const Entity& copyingSourceEnt, const Entity& instancesEnt, const bool& UpdateInstancesOnly)
 	{
-		CopyToPrefabInstances(comparingPrefabEnt, copySourceWorld, copyingSourceEnt, instancesEnt, list);
+		CopyToPrefabInstances(comparingPrefabEnt, copySourceWorld, copyingSourceEnt, instancesEnt, all_component_list, UpdateInstancesOnly);
 	}
 
 	std::vector<Entity> PrefabManager::GetInstanceList(const EUUID& prefabID)
@@ -507,6 +669,12 @@ namespace Eclipse
 			return;
 		}
 
+		CompareMap_Hierarchy hierMap;
+		CompareMap_NewChild newChildMap;
+
+		CompareHierarchy(w, ent, prefabW, prefabOwner, hierMap, newChildMap);
+		//print(hierMap, newChildMap);
+
 		for (auto entity : changingEntities)
 		{
 			if (ent == entity)
@@ -514,11 +682,66 @@ namespace Eclipse
 				continue;
 			}
 
-			CopyToInstance(prefabOwner, w, ent, entity);
+			CompareMap_Hierarchy childHierMap;
+			CompareMap_NewChild childNewChildMap;
+			CompareHierarchy(prefabW, prefabOwner, w, entity, childHierMap, childNewChildMap);
+			//print(childHierMap, childNewChildMap);
 
-			CleanUpForInstancesAfterCopy(entity);
+			for (auto& pair : childHierMap)
+			{
+				if (pair.second == MAX_ENTITY)
+				{
+					continue;
+				}
+
+				auto& target = pair.first;
+				auto& sample = pair.second;
+				auto& copySource = hierMap[pair.second];
+
+				if (copySource == MAX_ENTITY)
+				{
+					w.DestroyEntity(target);
+				}
+				else
+				{
+					CopyToInstance(sample, w, copySource, target);
+					CleanUpForInstancesAfterCopy(target);
+				}
+
+			}
+
+			for (auto& pair : childNewChildMap)
+			{
+				for (auto& newChild : pair.second)
+				{
+					RecursiveCreatePrefabInstances(newChild, pair.first);
+				}
+			}
 		}
-		SignatureBaseCopy(w, prefabW, ent, prefabOwner);
+
+		for (auto& pair : hierMap)
+		{
+			if (pair.second == MAX_ENTITY)
+			{
+				prefabW.DestroyEntity(pair.first);
+				continue;
+			}
+			auto& target = pair.first;
+			auto& copySource = pair.second;
+
+			SignatureBaseCopy(w, prefabW, copySource, target);
+		}
+
+		EUUID generatedID = UUIDGenerator::GenerateUUID();
+
+		for (auto& pair : newChildMap)
+		{
+			for (auto& newChild : pair.second)
+			{
+				RecursiveGeneratePrefab(newChild, "", generatedID, pair.first);
+				generatedID += pair.second.size();
+			}
+		}
 	}
 
 	void PrefabManager::OverwritePrefab(const Entity& ent, const char* path)

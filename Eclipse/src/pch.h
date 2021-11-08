@@ -42,8 +42,11 @@
 #include <bitset>
 #include <array>
 #include <queue>
+#include <stack>
 #include <unordered_map>
 #include <set>
+
+#include "GLM/glm/gtx/quaternion.hpp"
 
 // Events
 #include "Events/Events.h"

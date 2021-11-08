@@ -50,6 +50,7 @@ namespace Eclipse
         ADD_MEMBER(Min);
         ADD_MEMBER(Max);
         ADD_MEMBER(HasRadioEffect);
+        ADD_MEMBER(RadioDistortionLevel);
         ADD_MEMBER(HasEchoEffect);
         ADD_MEMBER(EchoDelayTime);
     }
@@ -100,6 +101,7 @@ namespace Eclipse
         ADD_MEMBER(diffuse);
         ADD_MEMBER(specular);
         ADD_MEMBER(Color);
+        ADD_MEMBER(AmbientSettings);
     }
 
     DEFINE_META(EntityComponent)
@@ -305,5 +307,6 @@ namespace Eclipse
     DEFINE_META_POD(PxShapeType);
     DEFINE_META_POD(EC_Shape);
     DEFINE_META_POD(Signature);
+    DEFINE_META_POD(std::bitset<20>);
     //DEFINE_META_POD(MonoScript);
 }

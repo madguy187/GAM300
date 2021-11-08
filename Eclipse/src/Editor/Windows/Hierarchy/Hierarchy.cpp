@@ -500,7 +500,7 @@ namespace Eclipse
     {
         if (engine->world.CheckComponent<ChildComponent>(CurrID))
         {
-            ImDrawList* draw_list = ImGui::GetWindowDrawList();
+           // ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
             auto& entCom = engine->world.GetComponent<EntityComponent>(CurrID);
 

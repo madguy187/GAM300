@@ -372,6 +372,7 @@ namespace Eclipse
             if (IsScenePlaying())
             {
                 world.Update<MonoSystem>();
+                mono.UpdateInvokers();
             }
 
             // FRAMEBUFFER DRAW ==========================

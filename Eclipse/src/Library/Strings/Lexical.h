@@ -187,4 +187,12 @@ namespace Eclipse
 		"EVENTS",
 		"NULL",
 	};
+
+	template<> char const* enumStrings<m_Type>::data[] =
+	{
+		"MONO_UNDEFINED",
+		"MONO_VAR",
+		"MONO_HEADER",
+		"MONO_LAYERMASK"
+	};
 }

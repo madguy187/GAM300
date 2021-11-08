@@ -81,6 +81,39 @@ namespace Eclipse
         }
     }
 
+    unsigned int PBRManager::GetMaterialTextureID(std::string FolderName, std::string TextureName)
+    {
+        return AllMaterialTextures[FolderName][GetMaterialType(TextureName)];
+    }
+
+    MaterialType PBRManager::GetMaterialType(std::string TextureName)
+    {
+        if (TextureName.find("albedo") != std::string::npos)
+        {
+            return MaterialType::MT_ALBEDO;
+        }
+        else if (TextureName.find("normal") != std::string::npos)
+        {
+            return MaterialType::MT_NORMAL;
+        }
+        else if (TextureName.find("metallic") != std::string::npos)
+        {
+            return MaterialType::MT_METALLIC;
+        }
+        else if (TextureName.find("roughness") != std::string::npos)
+        {
+            return MaterialType::MT_ROUGHNESS;
+        }
+        else if (TextureName.find("ao") != std::string::npos)
+        {
+            return MaterialType::MT_AO;
+        }
+        else if (TextureName.find("height") != std::string::npos)
+        {
+            return MaterialType::MT_HEIGHT;
+        }
+    }
+
     void PBRManager::LoadAllTextures()
     {
         AllMaterialTextures.clear();
@@ -232,6 +265,36 @@ namespace Eclipse
         GLCall(glUniform1f(HeightScale_, AllMaterialInstances[MaterialCom.MaterialInstanceName]->HeightScale));
 
         BindMaterial(MaterialCom.MaterialInstanceName, shdrpgm);
+    }
+
+    void PBRManager::ResetSurfaceColour()
+    {
+        gMaterialEditorSettings->CurrentMaterial.SurfaceColour = ECVec3{ 1.0f };
+    }
+
+    void PBRManager::ResetReflectivity()
+    {
+        gMaterialEditorSettings->CurrentMaterial.BaseReflectivity = ECVec3{ 0.4f };
+    }
+
+    void PBRManager::ResetAlbedoConstant()
+    {
+        gMaterialEditorSettings->CurrentMaterial.AlbedoConstant = ECVec3{ 1.0f };
+    }
+
+    void PBRManager::ResetAoConstant()
+    {
+        gMaterialEditorSettings->CurrentMaterial.AoConstant = 1.0f;
+    }
+
+    void PBRManager::ResetMetallicConstant()
+    {
+        gMaterialEditorSettings->CurrentMaterial.MetallicConstant = 0.0f;
+    }
+
+    void PBRManager::ResetRoughnessConstant()
+    {
+        gMaterialEditorSettings->CurrentMaterial.RoughnessConstant = 0.5f;
     }
 
     void PBRManager::ClearAllMaterialInstances()

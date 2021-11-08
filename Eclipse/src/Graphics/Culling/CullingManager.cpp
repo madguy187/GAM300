@@ -81,7 +81,15 @@ namespace Eclipse
     bool CullingManager::ToRenderOrNot(unsigned int ID)
     {
         auto& Transform = engine->world.GetComponent<TransformComponent>(ID);
-        return CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera);
+
+        if (engine->IsScenePlaying() == false)
+        {
+            return CheckOnFrustum(Transform, CameraComponent::CameraType::Editor_Camera);
+        }
+        else
+        {
+            return CheckOnFrustum(Transform, CameraComponent::CameraType::Game_Camera);
+        }
     }
 
     void CullingManager::Insert(AABBComponent& In, unsigned int ID)

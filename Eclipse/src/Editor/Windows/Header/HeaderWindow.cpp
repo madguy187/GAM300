@@ -46,6 +46,9 @@ namespace Eclipse
 				engine->SetPlayState(true);
 				ECGui::SetWindowFocus("Game View " ICON_MDI_MONITOR);
 				EDITOR_LOG_INFO("Scene is playing...");
+
+				// Darren Was Here , Reset Values
+				engine->gFrameBufferManager->SetSobelEffect();
 			}
 		}
 		else
@@ -61,6 +64,9 @@ namespace Eclipse
 				ECGui::SetWindowFocus("Scene View " ICON_MDI_MONITOR);
 				engine->szManager.LoadBackupFile();
 				EDITOR_LOG_INFO("Scene has stopped playing. Reverting to original state...");
+
+				// Darren Was Here , Reset Values
+				engine->gFrameBufferManager->Reset();
 			}
 		}
 

@@ -22,7 +22,6 @@ namespace Eclipse
 		// Registry
 		Entity CreateDefaultEntity(EntityType type);
 		void RegisterExistingEntity(Entity ID);
-		void RegisterNewlySerializedEntity(Entity ID);
 		void InsertExistingEntity(size_t pos, Entity ID);
 		void DestroyEntity(Entity ID);
 
