@@ -376,7 +376,7 @@ namespace Eclipse
         debugDepthQuad.setFloat("far_plane", 500.5f);
         
         glBindVertexArray(engine->gFrameBufferManager->PostProcess->rectVAO);
-        glActiveTexture(GL_TEXTURE1);
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SHADOW));
         glDrawArrays(GL_TRIANGLES, 0, 6);
     }

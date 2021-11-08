@@ -219,6 +219,7 @@ namespace Eclipse
 
                     // 2. render scene as normal using the generated depth/shadow map  
                     // --------------------------------------------------------------
+                    engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SCENE);
                     auto& Camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
                     auto& CameraPos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
                     auto& ShadowMappingShader = Graphics::shaderpgms["ShadowMapping"];
@@ -232,7 +233,6 @@ namespace Eclipse
                     ShadowMappingShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
 
                     glActiveTexture(GL_TEXTURE0);
-                    glBindTexture(GL_TEXTURE_2D, 0);
                     glActiveTexture(GL_TEXTURE1);
                     glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SHADOW));
                     engine->AssimpManager.ShadowDraw(Mesh, entityID, FrameBufferMode::FBM_SCENE, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SCENE),
