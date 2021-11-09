@@ -121,6 +121,10 @@ namespace Eclipse
 						engine->pfManager.GeneratePrefab(PrefabID, destination.c_str());
 					}
 					break;
+
+				case PayloadTargetType::PTT_SCRIPT:
+					destination = (const char*)payload->Data;
+					break;
 				}
 
 				EDITOR_LOG_INFO(cMsg);
