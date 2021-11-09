@@ -854,6 +854,13 @@ namespace Eclipse
                                     256, 0, true);
 
                             ECGui::NextColumn();
+
+                          //if (scriptCom.scriptList[i].vars[j].type == m_Type::MONO_LIGHT)
+                          //{
+                          //
+                          //    engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity",
+                          //        scriptCom.scriptList[i].vars[j].varValue,"Script File inserted.", PayloadTargetType::PTT_WIDGET, ID, j);
+                          //}
                         }
 
                         ECGui::SetColumns(1, nullptr, true);
