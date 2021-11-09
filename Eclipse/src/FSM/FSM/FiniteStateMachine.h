@@ -50,7 +50,7 @@ namespace Eclipse
 	{
 		EndState((T)m_CurrentState);
 		m_PreviousState = m_CurrentState;
-		m_NextState = m_CurrentState = state;
+		m_NextState = m_CurrentState = (int)state;
 		m_CurrentStateTimer = 0.0f;
 		BeginState((T)m_CurrentState);
 	}
@@ -64,10 +64,12 @@ namespace Eclipse
 			{
 				m_CurrentStateTimer += dt;
 				UpdateState((T)m_CurrentState);
+				T printState = (T)m_CurrentState;
+				std::cout << lexical_cast_toStr<T>(printState) << std::endl;
 			}
 			else
 			{
-				SetState(m_NextState);
+				SetState((T)m_NextState);
 			}
 		}
 	}

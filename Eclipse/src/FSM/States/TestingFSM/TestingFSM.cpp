@@ -10,6 +10,20 @@ namespace Eclipse
 
 	void TestingFSMClass::UpdateState(TestState state)
 	{
+		if (GetTimeInCurrentState() > 5.0f)
+		{
+			int temp = (int)state;
+
+			if (temp < 2)
+			{
+				temp++;
+				SetNextState((TestState)temp);
+			}
+			else
+			{
+				SetNextState((TestState)0);
+			}
+		}
 	}
 
 	void TestingFSMClass::BeginState(TestState state)

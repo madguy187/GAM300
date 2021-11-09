@@ -259,8 +259,8 @@ struct MonoVariable
 
 enum class TestState
 {
-    TS_STOP = -1,
+    //TS_STOP = -1,
     TS_WALK,
     TS_RUN,
-    TS_JUMP,
+    TS_JUMP
 };

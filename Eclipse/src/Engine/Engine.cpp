@@ -44,8 +44,9 @@
 #include "ECS/SystemManager/Systems/System/InputSystem/InputSystem.h"
 #include "Editor/Windows/NodeEditor/NodeEditor.h"
 #include "ECS/SystemManager/Systems/System/AnimationSystem/AnimationSystem.h"
-
 #include "ECS/SystemManager/Systems/System/NavMeshSystem/NavMeshSystem.h"
+#include "FSM/States/TestingFSM/TestingFSM.h"
+
 bool Tester1(const Test1&)
 {
     std::cout << "Engine.cpp Tester1" << std::endl;
@@ -281,6 +282,9 @@ namespace Eclipse
         else
             std::cout << "its the not same!" << std::endl;*/
 
+        TestingFSMClass eg{ Entity{MAX_ENTITY} };
+        eg.SetState(TestState::TS_WALK);
+
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
             glfwPollEvents();
@@ -332,7 +336,7 @@ namespace Eclipse
 
             // GRID SYSTEM =============================
             //world.Update<GridSystem>();
-
+            eg.UpdateFSM(Game_Clock.get_fixedDeltaTime());
             world.Update<CameraSystem>();
 
             if (IsScenePlaying())

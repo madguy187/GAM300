@@ -198,7 +198,6 @@ namespace Eclipse
 
 	template<> char const* enumStrings<TestState>::data[] =
 	{
-		"TS_STOP",
 		"TS_WALK",
 		"TS_RUN",
 		"TS_JUMP"
