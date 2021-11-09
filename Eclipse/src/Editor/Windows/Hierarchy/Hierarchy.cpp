@@ -482,6 +482,8 @@ namespace Eclipse
             if (ECGui::CreateSelectableButton(engine->AssimpManager.GetMeshNames()[i].c_str(), &selected))
             {
                 Entity ID = engine->AssimpManager.CreateModel(0, engine->AssimpManager.GetMeshNames()[i]);
+                engine->gAnimationManager.CheckForAnimation(ID);            
+
                 UpdateEntityTracker(ID);
             }
         }

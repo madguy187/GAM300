@@ -43,8 +43,10 @@
 #include "ECS/SystemManager/Systems/System/AI/AISystem.h"
 #include "ECS/SystemManager/Systems/System/InputSystem/InputSystem.h"
 #include "Editor/Windows/NodeEditor/NodeEditor.h"
-
+#include "ECS/SystemManager/Systems/System/AnimationSystem/AnimationSystem.h"
 #include "ECS/SystemManager/Systems/System/NavMeshSystem/NavMeshSystem.h"
+// #include "FSM/States/TestingFSM/TestingFSM.h"
+
 bool Tester1(const Test1&)
 {
     std::cout << "Engine.cpp Tester1" << std::endl;
@@ -108,6 +110,7 @@ namespace Eclipse
         world.RegisterComponent<PrefabComponent>();
         world.RegisterComponent<AIComponent>();
         world.RegisterComponent<NodeEditor>();
+        world.RegisterComponent<AnimationComponent>();
         world.RegisterComponent<NavMeshVolumeComponent>();
 
         prefabWorld.RegisterComponent<EntityComponent>();
@@ -133,6 +136,9 @@ namespace Eclipse
         prefabWorld.RegisterComponent<NodeEditor>();
         prefabWorld.RegisterComponent <NavMeshVolumeComponent>();
 
+        prefabWorld.RegisterComponent<NodeEditor>();
+        prefabWorld.RegisterComponent<AnimationComponent>();
+
         // registering system
         world.RegisterSystem<RenderSystem>();
         world.RegisterSystem<CameraSystem>();
@@ -150,6 +156,8 @@ namespace Eclipse
         world.RegisterSystem<PrefabSystem>();
         world.RegisterSystem<AISystem>();
         world.RegisterSystem<InputSystem>();
+        world.RegisterSystem<AnimationSystem>();
+
         prefabWorld.RegisterSystem<PrefabSystem>();
 
         // Render System
@@ -226,6 +234,10 @@ namespace Eclipse
         parentSys.set(world.GetComponentType<ParentComponent>(), 1);
         world.RegisterSystemSignature<ParentSystem>(parentSys);
 
+        Signature animationSys;
+        animationSys.set(world.GetComponentType<AnimationComponent>(), 1);
+        world.RegisterSystemSignature<AnimationSystem>(animationSys);
+
         //Check this! - Rachel
         CameraSystem::Init();
         RenderSystem::Init();
@@ -269,6 +281,9 @@ namespace Eclipse
             std::cout << "its the same!" << std::endl;
         else
             std::cout << "its the not same!" << std::endl;*/
+
+        // TestingFSMClass eg{ Entity{MAX_ENTITY} };
+        // eg.SetState(TestState::TS_WALK);
 
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
@@ -321,7 +336,7 @@ namespace Eclipse
 
             // GRID SYSTEM =============================
             //world.Update<GridSystem>();
-
+            // eg.UpdateFSM(Game_Clock.get_fixedDeltaTime());
             world.Update<CameraSystem>();
 
             if (IsScenePlaying())
@@ -361,6 +376,9 @@ namespace Eclipse
 
             // MATERIALSYSTEM =============================
             world.Update<MaterialSystem>();
+
+            // ANIMATIONSYSTEM =============================
+            world.Update<AnimationSystem>();
 
             // RENDERSYSTEM =============================
             world.Update<RenderSystem>();

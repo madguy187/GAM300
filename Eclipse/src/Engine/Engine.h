@@ -24,6 +24,7 @@
 #include "Graphics/Material/PBR/PBRManager.h"
 #include "Graphics/InputHandler/LogicalInput.h"
 #include "Graphics/Instancing/DebugManager/DebugManager.h"
+#include "Graphics/Animation/AnimationManager.h"
 #include "NavMesh/NavMeshManager.h"
 
 namespace Eclipse
@@ -53,6 +54,7 @@ namespace Eclipse
 		PhysicsManager gPhysics;
 		NavMeshManager gNavMesh;
 		AIManager gAI;
+		AnimationManager gAnimationManager;
 		std::unique_ptr<CullingManager> gCullingManager;
 		std::unique_ptr<EclipseFileWatcher> gFileWatchManager;
 		std::unique_ptr<EngineCompiler> gEngineCompiler;
