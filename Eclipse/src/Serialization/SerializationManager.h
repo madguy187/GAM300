@@ -214,6 +214,7 @@ namespace Eclipse
 
 		inline static bool CompareComponentData(RefVariant lhs, RefVariant rhs, bool isChild = false)
 		{
+			(void)isChild;
 			bool IsSuccess = false;
 			const MetaData* LHSmeta = lhs.Meta();
 			const MetaData* RHSmeta = rhs.Meta();
@@ -244,6 +245,7 @@ namespace Eclipse
 
 		inline static  bool CompareComponentData(const EntityComponent& lhs, const EntityComponent& rhs, bool isChild = false)
 		{
+			(void)isChild;
 			bool result = true;
 			result = (lhs.Tag == rhs.Tag);
 			result = (lhs.LayerIndex == rhs.LayerIndex);
@@ -264,16 +266,19 @@ namespace Eclipse
 		
 		inline static  bool CompareComponentData(const ParentComponent&, const ParentComponent&, bool isChild = false)
 		{
+			(void)isChild;
 			return  true;
 		}
 		
 		inline static  bool CompareComponentData(const PrefabComponent&, const PrefabComponent&, bool isChild = false)
 		{
+			(void)isChild;
 			return true;
 		}
 
 		inline static  bool CompareComponentData(const ChildComponent& lhs, const ChildComponent& rhs, bool isChild = false)
 		{
+			(void)isChild;
 			bool result = true;
 			result = (lhs.PosOffset == rhs.PosOffset);
 			result = (lhs.RotOffset == rhs.RotOffset);
@@ -283,6 +288,7 @@ namespace Eclipse
 
 		inline static  bool CompareComponentData(const AIComponent& lhs, const AIComponent& rhs, bool isChild = false)
 		{
+			(void)isChild;
 			bool result = true;
 			result = (lhs.MinDisttoChange == rhs.MinDisttoChange);
 			result = (lhs.patrolling == rhs.patrolling);

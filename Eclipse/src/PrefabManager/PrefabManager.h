@@ -36,11 +36,12 @@ namespace Eclipse
 		template <typename T>
 		inline void Equalize(T& lhs, T& rhs, bool isChild = false)
 		{
+			(void)isChild;
 			lhs = rhs;
 		}
 
 		template<>
-		inline void Equalize(EntityComponent& lhs, EntityComponent& rhs, bool isChild)
+		inline void Equalize(EntityComponent& lhs, EntityComponent& rhs, bool)
 		{
 			lhs.Tag = rhs.Tag;
 			lhs.LayerIndex = rhs.LayerIndex;
@@ -58,17 +59,17 @@ namespace Eclipse
 		}
 
 		template<>
-		inline void Equalize(ParentComponent&, ParentComponent&, bool isChild)
+		inline void Equalize(ParentComponent&, ParentComponent&, bool)
 		{
 		}
 
 		template<>
-		inline void Equalize(PrefabComponent&, PrefabComponent&, bool isChild)
+		inline void Equalize(PrefabComponent&, PrefabComponent&, bool)
 		{
 		}
 
 		template<>
-		inline void Equalize(ChildComponent& lhs, ChildComponent& rhs, bool isChild)
+		inline void Equalize(ChildComponent& lhs, ChildComponent& rhs, bool)
 		{
 			lhs.PosOffset = rhs.PosOffset;
 			lhs.RotOffset = rhs.RotOffset;
@@ -76,7 +77,7 @@ namespace Eclipse
 		}
 		
 		template<>
-		inline void Equalize(AIComponent& lhs, AIComponent& rhs, bool isChild)
+		inline void Equalize(AIComponent& lhs, AIComponent& rhs, bool)
 		{
 			lhs.MinDisttoChange = rhs.MinDisttoChange;
 			lhs.patrolling = rhs.patrolling;
