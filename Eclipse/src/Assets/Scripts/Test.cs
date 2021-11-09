@@ -5,6 +5,8 @@ using Eclipse;
 
 public class Test : EclipseBehavior
 {
+	Public Light light; 
+	
     public void Start()
     {
     }

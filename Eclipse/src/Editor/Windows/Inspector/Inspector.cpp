@@ -851,16 +851,18 @@ namespace Eclipse
                             else
                                 ECGui::DrawInputTextWidget(scriptCom.scriptList[i].vars[j].varName.c_str(),
                                     const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()),
-                                    256, 0, true);
+                                    256, 0, true); ``yt4 
 
                             ECGui::NextColumn();
 
-                          //if (scriptCom.scriptList[i].vars[j].type == m_Type::MONO_LIGHT)
-                          //{
-                          //
-                          //    engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity",
-                          //        scriptCom.scriptList[i].vars[j].varValue,"Script File inserted.", PayloadTargetType::PTT_WIDGET, ID, j);
-                          //}
+                          if (scriptCom.scriptList[i].vars[j].type == m_Type::MONO_LIGHT)
+                          {         
+                              ECGui::DrawInputTextHintWidget("Light Entity ID", "Drag Light Entity Here",
+                                  const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()), 256,
+                                  true, ImGuiInputTextFlags_ReadOnly);
+                              engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity",
+                                  scriptCom.scriptList[i].vars[j].varValue,"Light Entity ID registered", PayloadTargetType::PTT_SCRIPT, ID, j);
+                          }
                         }
 
                         ECGui::SetColumns(1, nullptr, true);
