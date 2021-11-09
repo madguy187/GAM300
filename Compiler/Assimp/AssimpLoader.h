@@ -132,27 +132,27 @@ namespace EclipseCompiler
 
     struct BoneInfo
     {
-        int id;
-        glm::mat4 offset;
+        int id = 0;
+        glm::mat4 offset{ 0.0f };
         std::array<char, 128> name;
     };
 
     struct KeyPosition
     {
-        glm::vec3 position;
-        float timeStamp;
+        glm::vec3 position{ 0.0f };
+        float timeStamp = 0.0f;
     };
 
     struct KeyRotation
     {
-        glm::quat orientation;
-        float timeStamp;
+        glm::quat orientation{ 0.0f, 0.0f, 0.0f, 0.0f };
+        float timeStamp = 0.0f;
     };
 
     struct KeyScale
     {
-        glm::vec3 scale;
-        float timeStamp;
+        glm::vec3 scale{ 0.0f };
+        float timeStamp = 0.0f;
     };
 
     struct Bone
@@ -161,12 +161,12 @@ namespace EclipseCompiler
         std::vector<KeyRotation> m_Rotations;
         std::vector<KeyScale> m_Scales;
 
-        int m_NumPositions;
-        int m_NumRotations;
-        int m_NumScalings;
+        int m_NumPositions = 0;
+        int m_NumRotations = 0;
+        int m_NumScalings = 0;
 
-        int m_ID;
-        glm::mat4 m_LocalTransform;
+        int m_ID = 0;
+        glm::mat4 m_LocalTransform{ 0.0f };
         std::array<char, 128> BoneName;
 
         Bone(const std::string& name, int ID, const aiNodeAnim* channel)
@@ -215,17 +215,17 @@ namespace EclipseCompiler
 
     struct AssimpNodeData
     {
-        glm::mat4 transformation;
+        glm::mat4 transformation{ 0.0f };
         std::array<char, 128> name;
-        int childrenCount;
+        int childrenCount = 0;
         std::vector<AssimpNodeData> children;
     };
 
     struct AnimationData
     {
-        float modelLargestAxis;
-        float m_Duration;
-        int m_TicksPerSecond;
+        float modelLargestAxis = 0.0f;
+        float m_Duration = 0.0f;
+        int m_TicksPerSecond = 0;
         std::array<char, 128> fileName;
         std::array<char, 128> modelName;
         std::vector<BoneInfo> m_BoneInfo;

@@ -131,6 +131,8 @@ enum class PayloadTargetType
 	PTT_WINDOW,
 	PTT_INDEXEDIT,
     PTT_ASSETS,
+    PTT_SCRIPT_LIGHT,
+    PTT_SCRIPT_AUDIO,
 	PTT_UNASSIGNED
 };
 
@@ -236,7 +238,8 @@ enum class m_Type
     MONO_LAYERMASK,
     MONO_GAMEOBJECT,
     MONO_AUDIO,
-    MONO_LIGHT
+    MONO_LIGHT,
+    MONO_FLOAT
 };
 
 enum class ForceMode
