@@ -7,6 +7,9 @@
     <Filter Include="Compiler">
       <UniqueIdentifier>{40CAD6B7-2C97-31C3-55B0-1F6B41DC6651}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Compiler\Animation">
+      <UniqueIdentifier>{2F535DE7-1B37-1E3D-8497-1890709A08BF}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Compiler\Geometry">
       <UniqueIdentifier>{9B7F6D94-0796-6B2A-500D-F74BBC623CB2}</UniqueIdentifier>
     </Filter>
@@ -22,13 +25,13 @@
     <Filter Include="Source">
       <UniqueIdentifier>{56EB95D1-428D-C0A7-2B48-D4FB178947F8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Compiler\Animation">
-      <UniqueIdentifier>{218a11b3-0132-4c3c-a0a1-6e52f7a913e6}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assimp\AssimpLoader.h">
       <Filter>Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Compiler\Animation\AnimationCompiler.h">
+      <Filter>Compiler\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Compiler\Geometry\GeometryCompiler.h">
       <Filter>Compiler\Geometry</Filter>
@@ -48,13 +51,13 @@
     <ClInclude Include="Source\pch.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="Compiler\Animation\AnimationCompiler.h">
-      <Filter>Compiler\Animation</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Assimp\AssimpLoader.cpp">
       <Filter>Assimp</Filter>
+    </ClCompile>
+    <ClCompile Include="Compiler\Animation\AnimationCompiler.cpp">
+      <Filter>Compiler\Animation</Filter>
     </ClCompile>
     <ClCompile Include="Compiler\Geometry\GeometryCompiler.cpp">
       <Filter>Compiler\Geometry</Filter>
@@ -73,9 +76,6 @@
     </ClCompile>
     <ClCompile Include="Source\pch.cpp">
       <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Compiler\Animation\AnimationCompiler.cpp">
-      <Filter>Compiler\Animation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
