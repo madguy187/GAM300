@@ -853,12 +853,28 @@ namespace Eclipse
                             else
                                 if (scriptCom.scriptList[i].vars[j].type == m_Type::MONO_LIGHT)
                                 {
-                                    engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity",
-                                        scriptCom.scriptList[i].vars[j].varValue, "Light Entity ID registered", PayloadTargetType::PTT_SCRIPT, ID, j);
                                     ECGui::DrawInputTextHintWidget("Light Entity ID", "Drag Light Entity Here",
                                         const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()), 256,
                                         true, ImGuiInputTextFlags_ReadOnly);
+                                    engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity",
+                                        scriptCom.scriptList[i].vars[j].varValue, "Light Entity ID registered", PayloadTargetType::PTT_SCRIPT, ID, j);
                                 }
+                                else
+                                    if (scriptCom.scriptList[i].vars[j].type == m_Type::MONO_AUDIO)
+                                    {
+                                        ECGui::DrawInputTextHintWidget("Audio Entity ID", "Drag Light Entity Here",
+                                            const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()), 256,
+                                            true, ImGuiInputTextFlags_ReadOnly);
+                                        if (engine->world.CheckComponent<AudioComponent>(ID))
+                                        {
+                                            engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity",
+                                                scriptCom.scriptList[i].vars[j].varValue, "Light Entity ID registered", PayloadTargetType::PTT_SCRIPT, ID, j);
+                                        }
+                                        else
+                                        {
+                                            
+                                        }
+                                    }
                                 else
                                 {
                                     ECGui::DrawInputTextWidget(scriptCom.scriptList[i].vars[j].varName.c_str(),
