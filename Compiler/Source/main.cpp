@@ -6,9 +6,10 @@
 
 using namespace EclipseCompiler;
 
-int main()
-//int WinMain()
+//int main()
+int WinMain()
 {
+    // Nico dumb
     CompilerManager Manager;
 
     std::unique_ptr<TextureCompiler> cTextureCompiler = std::make_unique<TextureCompiler>();
