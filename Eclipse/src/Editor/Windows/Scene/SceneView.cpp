@@ -154,6 +154,7 @@ namespace Eclipse
 				{
 					auto& child = engine->world.GetComponent<ChildComponent>(selectedEntity);
 					child.UpdateChildren = true;
+					/*std::cout << selectedEntity << ": " << lexical_cast<std::string>(child.UpdateChildren) << std::endl;*/
 
 					if (ent.Tag != EntityType::ENT_MESH)
 					{
@@ -201,6 +202,7 @@ namespace Eclipse
 			{
 				auto& child = engine->world.GetComponent<ChildComponent>(selectedEntity);
 				child.UpdateChildren = false;
+				/*std::cout << selectedEntity << ": " << lexical_cast<std::string>(child.UpdateChildren) << std::endl;*/
 			}
 		}
 
@@ -254,14 +256,89 @@ namespace Eclipse
 		{
 			if (!IsCopying)
 			{
-				Entity ID = engine->world.CopyEntity(engine->world, engine->editorManager->GetSelectedEntity(), all_component_list);
-				auto& trans = engine->world.GetComponent<TransformComponent>(ID);
-				auto& ent = engine->world.GetComponent<EntityComponent>(ID);
-				engine->gPicker.GenerateAabb(ID, trans, ent.Tag);
-				engine->editorManager->RegisterExistingEntity(ID);
+				if (engine->world.CheckComponent<ParentComponent>(engine->editorManager->GetSelectedEntity()))
+				{
+					IterativeCopy(engine->editorManager->GetSelectedEntity());
+				}
+				else
+				{
+					Entity newID = LoadEntity(engine->editorManager->GetSelectedEntity());
+
+					if (engine->world.CheckComponent<ChildComponent>(newID))
+					{
+						auto& child = engine->world.GetComponent<ChildComponent>(newID);
+						auto& parent = engine->world.GetComponent<ParentComponent>(child.parentIndex);
+						parent.child.push_back(newID);
+					}
+				}
+				
 				IsCopying = true;
 			}
 		}
+	}
+
+	void SceneWindow::IterativeCopy(const Entity& ID)
+	{
+		std::queue<Entity> parentsQ;
+		std::unordered_map<Entity, std::vector<Entity>> ParentToFamily;
+		std::unordered_map<Entity, Entity> OldToNewEntity;
+		parentsQ.push(ID);
+		Entity MainParentID = LoadEntity(ID);
+		OldToNewEntity[ID] = MainParentID;
+
+		while (!parentsQ.empty())
+		{
+			Entity CurrID = parentsQ.front();
+			parentsQ.pop();
+
+			if (engine->world.CheckComponent<ParentComponent>(CurrID))
+			{
+				auto& parentCom = engine->world.GetComponent<ParentComponent>(ID);
+				std::vector<Entity> List;
+
+				for (const auto& childEnt : parentCom.child)
+				{
+					Entity newChildID = LoadEntity(childEnt);
+
+					if (engine->world.CheckComponent<ParentComponent>(childEnt))
+					{
+						parentsQ.push(childEnt);
+						OldToNewEntity[childEnt] = newChildID;
+					}
+
+					List.push_back(newChildID);
+				}
+
+				ParentToFamily[OldToNewEntity[CurrID]] = List;
+			}
+		}
+
+		for (const auto& [parent, childList] : ParentToFamily)
+		{
+			auto& parentcom = engine->world.GetComponent<ParentComponent>(parent);
+			parentcom.child.clear();
+
+			for (const auto& child2 : childList)
+			{
+				parentcom.child.push_back(child2);
+
+				auto& childcom = engine->world.GetComponent<ChildComponent>(child2);
+				childcom.parentIndex = parent;
+			}
+		}
+		
+		engine->editorManager->SetSelectedEntity(MainParentID);
+	}
+
+	Entity SceneWindow::LoadEntity(const Entity& ID)
+	{
+		Entity newID = engine->world.CopyEntity(engine->world, ID, all_component_list);
+		auto& trans = engine->world.GetComponent<TransformComponent>(newID);
+		auto& ent = engine->world.GetComponent<EntityComponent>(newID);
+		engine->gPicker.GenerateAabb(newID, trans, ent.Tag);
+		engine->editorManager->RegisterExistingEntity(newID);
+
+		return newID;
 	}
 
 	void SceneWindow::OnCameraMoveEvent()

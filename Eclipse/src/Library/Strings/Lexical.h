@@ -195,4 +195,11 @@ namespace Eclipse
 		"MONO_HEADER",
 		"MONO_LAYERMASK"
 	};
+
+	template<> char const* enumStrings<TestState>::data[] =
+	{
+		"TS_WALK",
+		"TS_RUN",
+		"TS_JUMP"
+	};
 }

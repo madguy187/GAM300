@@ -131,6 +131,7 @@ enum class PayloadTargetType
 	PTT_WINDOW,
 	PTT_INDEXEDIT,
     PTT_ASSETS,
+    PTT_SCRIPT,
 	PTT_UNASSIGNED
 };
 
@@ -234,7 +235,10 @@ enum class m_Type
     MONO_VAR,
     MONO_HEADER,
     MONO_LAYERMASK,
-    MONO_GAMEOBJECT
+    MONO_GAMEOBJECT,
+    MONO_AUDIO,
+    MONO_LIGHT,
+    MONO_FLOAT
 };
 
 enum class ForceMode
@@ -255,4 +259,12 @@ struct MonoVariable
     m_Type type = m_Type::MONO_UNDEFINED;
     std::string varName = "";
     std::string varValue = "";
+};
+
+enum class TestState
+{
+    //TS_STOP = -1,
+    TS_WALK,
+    TS_RUN,
+    TS_JUMP
 };
