@@ -6,7 +6,7 @@ namespace Eclipse
 	EntityManager::EntityManager() :
 		_size{0}
 	{
-		for (Entity i = 0; i < MAX_ENTITY; i++)
+		for (Entity i = MAX_ENTITY - 1; i-- > 0; )
 		{
 			entityQueue.push(i);
 		}
@@ -14,7 +14,7 @@ namespace Eclipse
 
 	Entity EntityManager::CreateEntity()
 	{
-		Entity entity = entityQueue.front();
+		Entity entity = entityQueue.top();
 		entityQueue.pop();
 		_size++;
 		return entity;
@@ -29,9 +29,9 @@ namespace Eclipse
 
 	void EntityManager::Clear()
 	{
-		std::queue<Entity> queue;
+		std::stack<Entity> queue;
 
-		for (Entity i = 0; i < MAX_ENTITY; i++)
+		for (Entity i = MAX_ENTITY - 1; i-- > 0; )
 		{
 			queue.push(i);
 			entitySignature[i].reset();
