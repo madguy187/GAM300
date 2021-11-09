@@ -236,7 +236,8 @@ enum class m_Type
     MONO_LAYERMASK,
     MONO_GAMEOBJECT,
     MONO_AUDIO,
-    MONO_LIGHT
+    MONO_LIGHT,
+    MONO_FLOAT
 };
 
 enum class ForceMode
