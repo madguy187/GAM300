@@ -857,7 +857,7 @@ namespace Eclipse
                                         const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()), 256,
                                         true, ImGuiInputTextFlags_ReadOnly);
                                     engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity",
-                                        scriptCom.scriptList[i].vars[j].varValue, "Light Entity ID registered", PayloadTargetType::PTT_SCRIPT, ID, j);
+                                        scriptCom.scriptList[i].vars[j].varValue, "Light Entity ID registered", PayloadTargetType::PTT_SCRIPT_LIGHT, ID, j);
                                 }
                                 else
                                     if (scriptCom.scriptList[i].vars[j].type == m_Type::MONO_AUDIO)
@@ -865,15 +865,8 @@ namespace Eclipse
                                         ECGui::DrawInputTextHintWidget("Audio Entity ID", "Drag Light Entity Here",
                                             const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()), 256,
                                             true, ImGuiInputTextFlags_ReadOnly);
-                                        if (engine->world.CheckComponent<AudioComponent>(ID))
-                                        {
                                             engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity",
-                                                scriptCom.scriptList[i].vars[j].varValue, "Light Entity ID registered", PayloadTargetType::PTT_SCRIPT, ID, j);
-                                        }
-                                        else
-                                        {
-                                            
-                                        }
+                                                scriptCom.scriptList[i].vars[j].varValue, "Audio Entity ID registered", PayloadTargetType::PTT_SCRIPT_AUDIO, ID, j);
                                     }
                                 else
                                 {
