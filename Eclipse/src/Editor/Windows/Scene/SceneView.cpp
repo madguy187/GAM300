@@ -256,38 +256,89 @@ namespace Eclipse
 		{
 			if (!IsCopying)
 			{
-				RecursiveCopy(engine->editorManager->GetSelectedEntity());
+				if (engine->world.CheckComponent<ParentComponent>(engine->editorManager->GetSelectedEntity()))
+				{
+					IterativeCopy(engine->editorManager->GetSelectedEntity());
+				}
+				else
+				{
+					Entity newID = LoadEntity(engine->editorManager->GetSelectedEntity());
+
+					if (engine->world.CheckComponent<ChildComponent>(newID))
+					{
+						auto& child = engine->world.GetComponent<ChildComponent>(newID);
+						auto& parent = engine->world.GetComponent<ParentComponent>(child.parentIndex);
+						parent.child.push_back(newID);
+					}
+				}
+				
 				IsCopying = true;
 			}
 		}
 	}
 
-	void SceneWindow::RecursiveCopy(const Entity& ID)
+	void SceneWindow::IterativeCopy(const Entity& ID)
 	{
-		if (engine->world.CheckComponent<ParentComponent>(ID))
-		{
-			auto& parentCom = engine->world.GetComponent<ParentComponent>(ID);
+		std::queue<Entity> parentsQ;
+		std::unordered_map<Entity, std::vector<Entity>> ParentToFamily;
+		std::unordered_map<Entity, Entity> OldToNewEntity;
+		parentsQ.push(ID);
+		Entity MainParentID = LoadEntity(ID);
+		OldToNewEntity[ID] = MainParentID;
 
-			for (const auto& childEnt : parentCom.child)
+		while (!parentsQ.empty())
+		{
+			Entity CurrID = parentsQ.front();
+			parentsQ.pop();
+
+			if (engine->world.CheckComponent<ParentComponent>(CurrID))
 			{
-				RecursiveCopy(childEnt);
-			}
+				auto& parentCom = engine->world.GetComponent<ParentComponent>(ID);
+				std::vector<Entity> List;
 
-			LoadEntity(ID);
+				for (const auto& childEnt : parentCom.child)
+				{
+					Entity newChildID = LoadEntity(childEnt);
+
+					if (engine->world.CheckComponent<ParentComponent>(childEnt))
+					{
+						parentsQ.push(childEnt);
+						OldToNewEntity[childEnt] = newChildID;
+					}
+
+					List.push_back(newChildID);
+				}
+
+				ParentToFamily[OldToNewEntity[CurrID]] = List;
+			}
 		}
-		else
+
+		for (const auto& [parent, childList] : ParentToFamily)
 		{
-			LoadEntity(ID);
+			auto& parentcom = engine->world.GetComponent<ParentComponent>(parent);
+			parentcom.child.clear();
+
+			for (const auto& child2 : childList)
+			{
+				parentcom.child.push_back(child2);
+
+				auto& childcom = engine->world.GetComponent<ChildComponent>(child2);
+				childcom.parentIndex = parent;
+			}
 		}
+		
+		engine->editorManager->SetSelectedEntity(MainParentID);
 	}
 
-	void SceneWindow::LoadEntity(const Entity& ID)
+	Entity SceneWindow::LoadEntity(const Entity& ID)
 	{
 		Entity newID = engine->world.CopyEntity(engine->world, ID, all_component_list);
 		auto& trans = engine->world.GetComponent<TransformComponent>(newID);
 		auto& ent = engine->world.GetComponent<EntityComponent>(newID);
 		engine->gPicker.GenerateAabb(newID, trans, ent.Tag);
 		engine->editorManager->RegisterExistingEntity(newID);
+
+		return newID;
 	}
 
 	void SceneWindow::OnCameraMoveEvent()

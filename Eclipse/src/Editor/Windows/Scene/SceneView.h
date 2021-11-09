@@ -25,8 +25,8 @@ namespace Eclipse
         void OnCameraZoomEvent();
         void OnSelectEntityEvent();
         void OnCopyEntityEvent();
-        void RecursiveCopy(const Entity& ID);
-        void LoadEntity(const Entity& ID);
+        void IterativeCopy(const Entity& ID);
+        Entity LoadEntity(const Entity& ID);
 
         SnapValueSettings& GetRefToSnapSettings();
         SnapValueSettings GetSnapSettings();
