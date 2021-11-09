@@ -13,7 +13,7 @@ namespace Eclipse
 		for (auto entity : mEntities)
 		{
 			ChildComponent& childComp = engine->world.GetComponent<ChildComponent>(entity);
-			if (!childComp.UpdateChildren) return;
+			if (!childComp.UpdateChildren) continue;
 
 			TransformComponent& childTrans = engine->world.GetComponent<TransformComponent>(entity);
 			TransformComponent& parentTrans = engine->world.GetComponent<TransformComponent>(childComp.parentIndex);
