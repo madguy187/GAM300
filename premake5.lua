@@ -79,6 +79,8 @@ project "Eclipse"
 		"Dep/Recast&Detour/DetourCrowd/Include",
 		"Dep/Recast&Detour/DetourTileCache/Include",
 		"Dep/Recast&Detour/Recast/Include",
+		"Dep/Recast&Detour/Include",
+		"Dep/Recast&Detour/Source",
 		"Eclipse/src/Editor/Windows/NodeEditor/ImNodes"
 	}
 

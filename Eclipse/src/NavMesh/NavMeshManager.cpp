@@ -615,118 +615,118 @@ namespace Eclipse
 
 	void NavMeshManager::RenderMesh()
 	{
-		//	if (!m_geom || !m_geom->getMesh())
-		//		return;
+			if (!m_geom || !m_geom->getMesh())
+				return;
 
-		//	glEnable(GL_FOG);
-		//	glDepthMask(GL_TRUE);
+			glEnable(GL_FOG);
+			glDepthMask(GL_TRUE);
 
-		//	const float texScale = 1.0f / (m_cellSize * 10.0f);
+			const float texScale = 1.0f / (m_cellSize * 10.0f);
 
-		//	if (m_drawMode != DRAWMODE_NAVMESH_TRANS)
-		//	{
-		//		// Draw mesh
-		//		duDebugDrawTriMeshSlope(&m_dd, m_geom->getMesh()->getVerts(), m_geom->getMesh()->getVertCount(),
-		//			m_geom->getMesh()->getTris(), m_geom->getMesh()->getNormals(), m_geom->getMesh()->getTriCount(),
-		//			m_agentMaxSlope, texScale);
-		//		m_geom->drawOffMeshConnections(&m_dd);
-		//	}
+			if (m_drawMode != DRAWMODE_NAVMESH_TRANS)
+			{
+				// Draw mesh
+				duDebugDrawTriMeshSlope(&m_dd, m_geom->getMesh()->getVerts(), m_geom->getMesh()->getVertCount(),
+					m_geom->getMesh()->getTris(), m_geom->getMesh()->getNormals(), m_geom->getMesh()->getTriCount(),
+					m_agentMaxSlope, texScale);
+				m_geom->drawOffMeshConnections(&m_dd);
+			}
 
-		//	glDisable(GL_FOG);
-		//	glDepthMask(GL_FALSE);
+			glDisable(GL_FOG);
+			glDepthMask(GL_FALSE);
 
-		//	// Draw bounds
-		//	const float* bmin = m_geom->getNavMeshBoundsMin();
-		//	const float* bmax = m_geom->getNavMeshBoundsMax();
-		//	duDebugDrawBoxWire(&m_dd, bmin[0], bmin[1], bmin[2], bmax[0], bmax[1], bmax[2], duRGBA(255, 255, 255, 128), 1.0f);
-		//	m_dd.begin(DU_DRAW_POINTS, 5.0f);
-		//	m_dd.vertex(bmin[0], bmin[1], bmin[2], duRGBA(255, 255, 255, 128));
-		//	m_dd.end();
+			// Draw bounds
+			const float* bmin = m_geom->getNavMeshBoundsMin();
+			const float* bmax = m_geom->getNavMeshBoundsMax();
+			duDebugDrawBoxWire(&m_dd, bmin[0], bmin[1], bmin[2], bmax[0], bmax[1], bmax[2], duRGBA(255, 255, 255, 128), 1.0f);
+			m_dd.begin(DU_DRAW_POINTS, 5.0f);
+			m_dd.vertex(bmin[0], bmin[1], bmin[2], duRGBA(255, 255, 255, 128));
+			m_dd.end();
 
-		//	if (m_navMesh && m_navQuery &&
-		//		(m_drawMode == DRAWMODE_NAVMESH ||
-		//			m_drawMode == DRAWMODE_NAVMESH_TRANS ||
-		//			m_drawMode == DRAWMODE_NAVMESH_BVTREE ||
-		//			m_drawMode == DRAWMODE_NAVMESH_NODES ||
-		//			m_drawMode == DRAWMODE_NAVMESH_INVIS))
-		//	{
-		//		if (m_drawMode != DRAWMODE_NAVMESH_INVIS)
-		//			duDebugDrawNavMeshWithClosedList(&m_dd, *m_navMesh, *m_navQuery, m_navMeshDrawFlags);
-		//		if (m_drawMode == DRAWMODE_NAVMESH_BVTREE)
-		//			duDebugDrawNavMeshBVTree(&m_dd, *m_navMesh);
-		//		if (m_drawMode == DRAWMODE_NAVMESH_NODES)
-		//			duDebugDrawNavMeshNodes(&m_dd, *m_navQuery);
-		//		duDebugDrawNavMeshPolysWithFlags(&m_dd, *m_navMesh, SAMPLE_POLYFLAGS_DISABLED, duRGBA(0, 0, 0, 128));
-		//	}
+			if (m_navMesh && m_navQuery &&
+				(m_drawMode == DRAWMODE_NAVMESH ||
+					m_drawMode == DRAWMODE_NAVMESH_TRANS ||
+					m_drawMode == DRAWMODE_NAVMESH_BVTREE ||
+					m_drawMode == DRAWMODE_NAVMESH_NODES ||
+					m_drawMode == DRAWMODE_NAVMESH_INVIS))
+			{
+				if (m_drawMode != DRAWMODE_NAVMESH_INVIS)
+					duDebugDrawNavMeshWithClosedList(&m_dd, *m_navMesh, *m_navQuery, m_navMeshDrawFlags);
+				if (m_drawMode == DRAWMODE_NAVMESH_BVTREE)
+					duDebugDrawNavMeshBVTree(&m_dd, *m_navMesh);
+				if (m_drawMode == DRAWMODE_NAVMESH_NODES)
+					duDebugDrawNavMeshNodes(&m_dd, *m_navQuery);
+				duDebugDrawNavMeshPolysWithFlags(&m_dd, *m_navMesh, SAMPLE_POLYFLAGS_DISABLED, duRGBA(0, 0, 0, 128));
+			}
 
-		//	glDepthMask(GL_TRUE);
+			glDepthMask(GL_TRUE);
 
-		//	if (m_chf && m_drawMode == DRAWMODE_COMPACT)
-		//		duDebugDrawCompactHeightfieldSolid(&m_dd, *m_chf);
+			if (m_chf && m_drawMode == DRAWMODE_COMPACT)
+				duDebugDrawCompactHeightfieldSolid(&m_dd, *m_chf);
 
-		//	if (m_chf && m_drawMode == DRAWMODE_COMPACT_DISTANCE)
-		//		duDebugDrawCompactHeightfieldDistance(&m_dd, *m_chf);
-		//	if (m_chf && m_drawMode == DRAWMODE_COMPACT_REGIONS)
-		//		duDebugDrawCompactHeightfieldRegions(&m_dd, *m_chf);
-		//	if (m_solid && m_drawMode == DRAWMODE_VOXELS)
-		//	{
-		//		glEnable(GL_FOG);
-		//		duDebugDrawHeightfieldSolid(&m_dd, *m_solid);
-		//		glDisable(GL_FOG);
-		//	}
-		//	if (m_solid && m_drawMode == DRAWMODE_VOXELS_WALKABLE)
-		//	{
-		//		glEnable(GL_FOG);
-		//		duDebugDrawHeightfieldWalkable(&m_dd, *m_solid);
-		//		glDisable(GL_FOG);
-		//	}
-		//	if (m_cset && m_drawMode == DRAWMODE_RAW_CONTOURS)
-		//	{
-		//		glDepthMask(GL_FALSE);
-		//		duDebugDrawRawContours(&m_dd, *m_cset);
-		//		glDepthMask(GL_TRUE);
-		//	}
-		//	if (m_cset && m_drawMode == DRAWMODE_BOTH_CONTOURS)
-		//	{
-		//		glDepthMask(GL_FALSE);
-		//		duDebugDrawRawContours(&m_dd, *m_cset, 0.5f);
-		//		duDebugDrawContours(&m_dd, *m_cset);
-		//		glDepthMask(GL_TRUE);
-		//	}
-		//	if (m_cset && m_drawMode == DRAWMODE_CONTOURS)
-		//	{
-		//		glDepthMask(GL_FALSE);
-		//		duDebugDrawContours(&m_dd, *m_cset);
-		//		glDepthMask(GL_TRUE);
-		//	}
-		//	if (m_chf && m_cset && m_drawMode == DRAWMODE_REGION_CONNECTIONS)
-		//	{
-		//		duDebugDrawCompactHeightfieldRegions(&m_dd, *m_chf);
+			if (m_chf && m_drawMode == DRAWMODE_COMPACT_DISTANCE)
+				duDebugDrawCompactHeightfieldDistance(&m_dd, *m_chf);
+			if (m_chf && m_drawMode == DRAWMODE_COMPACT_REGIONS)
+				duDebugDrawCompactHeightfieldRegions(&m_dd, *m_chf);
+			if (m_solid && m_drawMode == DRAWMODE_VOXELS)
+			{
+				glEnable(GL_FOG);
+				duDebugDrawHeightfieldSolid(&m_dd, *m_solid);
+				glDisable(GL_FOG);
+			}
+			if (m_solid && m_drawMode == DRAWMODE_VOXELS_WALKABLE)
+			{
+				glEnable(GL_FOG);
+				duDebugDrawHeightfieldWalkable(&m_dd, *m_solid);
+				glDisable(GL_FOG);
+			}
+			if (m_cset && m_drawMode == DRAWMODE_RAW_CONTOURS)
+			{
+				glDepthMask(GL_FALSE);
+				duDebugDrawRawContours(&m_dd, *m_cset);
+				glDepthMask(GL_TRUE);
+			}
+			if (m_cset && m_drawMode == DRAWMODE_BOTH_CONTOURS)
+			{
+				glDepthMask(GL_FALSE);
+				duDebugDrawRawContours(&m_dd, *m_cset, 0.5f);
+				duDebugDrawContours(&m_dd, *m_cset);
+				glDepthMask(GL_TRUE);
+			}
+			if (m_cset && m_drawMode == DRAWMODE_CONTOURS)
+			{
+				glDepthMask(GL_FALSE);
+				duDebugDrawContours(&m_dd, *m_cset);
+				glDepthMask(GL_TRUE);
+			}
+			if (m_chf && m_cset && m_drawMode == DRAWMODE_REGION_CONNECTIONS)
+			{
+				duDebugDrawCompactHeightfieldRegions(&m_dd, *m_chf);
 
-		//		glDepthMask(GL_FALSE);
-		//		duDebugDrawRegionConnections(&m_dd, *m_cset);
-		//		glDepthMask(GL_TRUE);
-		//	}
-		//	if (m_pmesh && m_drawMode == DRAWMODE_POLYMESH)
-		//	{
-		//		glDepthMask(GL_FALSE);
-		//		duDebugDrawPolyMesh(&m_dd, *m_pmesh);
-		//		glDepthMask(GL_TRUE);
-		//	}
-		//	if (m_dmesh && m_drawMode == DRAWMODE_POLYMESH_DETAIL)
-		//	{
-		//		glDepthMask(GL_FALSE);
-		//		duDebugDrawPolyMeshDetail(&m_dd, *m_dmesh);
-		//		glDepthMask(GL_TRUE);
-		//	}
+				glDepthMask(GL_FALSE);
+				duDebugDrawRegionConnections(&m_dd, *m_cset);
+				glDepthMask(GL_TRUE);
+			}
+			if (m_pmesh && m_drawMode == DRAWMODE_POLYMESH)
+			{
+				glDepthMask(GL_FALSE);
+				duDebugDrawPolyMesh(&m_dd, *m_pmesh);
+				glDepthMask(GL_TRUE);
+			}
+			if (m_dmesh && m_drawMode == DRAWMODE_POLYMESH_DETAIL)
+			{
+				glDepthMask(GL_FALSE);
+				duDebugDrawPolyMeshDetail(&m_dd, *m_dmesh);
+				glDepthMask(GL_TRUE);
+			}
 
-		//	m_geom->drawConvexVolumes(&m_dd);
+			m_geom->drawConvexVolumes(&m_dd);
 
-		//	if (m_tool)
-		//		m_tool->handleRender();
-		//	renderToolStates();
+			if (m_tool)
+				m_tool->handleRender();
+			renderToolStates();
 
-		//	glDepthMask(GL_TRUE);
-		//}
+			glDepthMask(GL_TRUE);
+		}
 	}
 }
