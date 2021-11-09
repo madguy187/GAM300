@@ -212,12 +212,31 @@ namespace Eclipse
 			mono_custom_attrs_free(attrInfo);
 
 			MonoVariable var;
-			var.type = m_Type::MONO_VAR;
-			var.varName = mono_field_get_name(field);
-			if (CheckIfFieldExist(script, var.varName, i))
-				i++;
-			else
-				script->vars.insert(script->vars.begin() + i++, var);
+
+			switch (mono_type_get_type(mono_field_get_type(field)))
+			{
+			case MONO_TYPE_VAR:
+				var.type = m_Type::MONO_VAR;
+				var.varName = mono_field_get_name(field);
+				if (!CheckIfFieldExist(script, var.varName, i))
+					script->vars.insert(script->vars.begin() + i, var);
+				break;
+			case MONO_TYPE_CLASS:
+				MonoClass* klass = mono_type_get_class(mono_field_get_type(field));
+				if (klass == GetAPIMonoClass("Light"))
+					var.type = m_Type::MONO_LIGHT;
+				else
+					var.type = m_Type::MONO_AUDIO;
+
+				var.varName = mono_field_get_name(field);
+				if (!CheckIfFieldExist(script, var.varName, i))
+					script->vars.insert(script->vars.begin() + i, var);
+				break;
+			}
+
+			i++;
+			
+			
 		}
 	}
 
