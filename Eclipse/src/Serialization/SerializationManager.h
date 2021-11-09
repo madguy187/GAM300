@@ -88,7 +88,7 @@ namespace Eclipse
 
 		bool LoadFile(const char* fullpath);
 
-		void SavePrefab(const EUUID& prefabID, const Entity& ent);
+		void SavePrefab(const EUUID& prefabID, const Entity& ent, bool IsFromMainWorld = false);
 
 		EUUID LoadPrefab(Entity& dszEnt, bool IsFromMainWorld = false);
 
@@ -96,7 +96,7 @@ namespace Eclipse
 
 		void LoadPrefabCleanUp(World& world, const Entity& ent);
 
-		void UpdateParentChild(World& world, const Entity& parentEnt, const Entity& childEnt);
+		void UpdateParentChild(World& world, const Entity& parentEnt, const Entity& childEnt, bool IsFromMainWorld = false);
 
 	public:
 		static Serializer sz;
@@ -114,7 +114,7 @@ namespace Eclipse
 
 		bool CheckBackUpPathExistence();
 
-		void SavePrefabFile(const EUUID& prefabID, const Entity& ent, const char* path);
+		void SavePrefabFile(const EUUID& prefabID, const Entity& ent, const char* path, bool IsFromMainWorld = false);
 
 		EUUID LoadPrefabFile(Entity& dszEnt, const char* fullpath, bool IsFromMainWorld = false);
 
@@ -212,7 +212,7 @@ namespace Eclipse
 			return true;
 		}
 
-		inline static bool CompareComponentData(RefVariant lhs, RefVariant rhs)
+		inline static bool CompareComponentData(RefVariant lhs, RefVariant rhs, bool isChild = false)
 		{
 			bool IsSuccess = false;
 			const MetaData* LHSmeta = lhs.Meta();
@@ -242,7 +242,7 @@ namespace Eclipse
 			return true;
 		}
 
-		inline static  bool CompareComponentData(const EntityComponent& lhs, const EntityComponent& rhs)
+		inline static  bool CompareComponentData(const EntityComponent& lhs, const EntityComponent& rhs, bool isChild = false)
 		{
 			bool result = true;
 			result = (lhs.Tag == rhs.Tag);
@@ -250,25 +250,29 @@ namespace Eclipse
 			return result;
 		}
 		
-		inline static  bool CompareComponentData(const TransformComponent& lhs, const TransformComponent& rhs)
+		inline static  bool CompareComponentData(const TransformComponent& lhs, const TransformComponent& rhs, bool isChild = false)
 		{
 			bool result = true;
+			if (isChild)
+			{
+				result = (lhs.position == rhs.position);
+			}
 			result = (lhs.rotation == rhs.rotation);
 			result = (lhs.scale == rhs.scale);
 			return result;
 		}
 		
-		inline static  bool CompareComponentData(const ParentComponent&, const ParentComponent&)
+		inline static  bool CompareComponentData(const ParentComponent&, const ParentComponent&, bool isChild = false)
 		{
 			return  true;
 		}
 		
-		inline static  bool CompareComponentData(const PrefabComponent&, const PrefabComponent&)
+		inline static  bool CompareComponentData(const PrefabComponent&, const PrefabComponent&, bool isChild = false)
 		{
 			return true;
 		}
 
-		inline static  bool CompareComponentData(const ChildComponent& lhs, const ChildComponent& rhs)
+		inline static  bool CompareComponentData(const ChildComponent& lhs, const ChildComponent& rhs, bool isChild = false)
 		{
 			bool result = true;
 			result = (lhs.PosOffset == rhs.PosOffset);
@@ -277,7 +281,7 @@ namespace Eclipse
 			return result;
 		}
 
-		inline static  bool CompareComponentData(const AIComponent& lhs, const AIComponent& rhs)
+		inline static  bool CompareComponentData(const AIComponent& lhs, const AIComponent& rhs, bool isChild = false)
 		{
 			bool result = true;
 			result = (lhs.MinDisttoChange == rhs.MinDisttoChange);

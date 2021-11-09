@@ -128,10 +128,14 @@ namespace Eclipse
                         auto& child = engine->world.GetComponent<ChildComponent>(ID);
                         child.UpdateChildren = true;
 
-                        if (ent.Tag != EntityType::ENT_MESH)
+                        if ((engine->world.CheckComponent<PrefabComponent>(ID) && engine->world.GetComponent<PrefabComponent>(ID).IsInstance) ||
+                            !engine->world.CheckComponent<PrefabComponent>(ID))
                         {
-                            engine->gPicker.UpdateAabb(ID);
-                            engine->gDynamicAABBTree.UpdateData(ID);
+                            if (ent.Tag != EntityType::ENT_MESH)
+                            {
+                                engine->gPicker.UpdateAabb(ID);
+                                engine->gDynamicAABBTree.UpdateData(ID);
+                            }
                         }
                     }
                 }
@@ -151,9 +155,22 @@ namespace Eclipse
 
                 if (ECGui::DrawSliderFloat3Widget("TransRot", &transCom.rotation, true, -360.f, 360.f, ID))
                 {
+                    if (engine->world.CheckComponent<ChildComponent>(ID))
+                    {
+                        auto& child = engine->world.GetComponent<ChildComponent>(ID);
+                        child.UpdateChildren = true;
+                    }
                     if (engine->world.CheckComponent<SpotLightComponent>(ID))
                     {
 
+                    }
+                }
+                else
+                {
+                    if (ImGui::IsItemDeactivatedAfterChange() && engine->world.CheckComponent<ChildComponent>(ID))
+                    {
+                        auto& child = engine->world.GetComponent<ChildComponent>(ID);
+                        child.UpdateChildren = false;
                     }
                 }
 
@@ -1198,7 +1215,7 @@ namespace Eclipse
 
     bool InspectorWindow::ShowPrefebProperty(Entity ID)
     {
-        if (engine->world.CheckComponent<PrefabComponent>(ID) && !engine->world.GetComponent<PrefabComponent>(ID).IsInstance)
+        if (engine->world.CheckComponent<PrefabComponent>(ID) && !engine->world.GetComponent<PrefabComponent>(ID).IsInstance && !engine->world.CheckComponent<ChildComponent>(ID))
         {
             ECGui::InsertHorizontalLineSeperator();
             ECGui::SetColumns(2, nullptr, true);

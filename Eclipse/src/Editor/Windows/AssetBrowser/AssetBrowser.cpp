@@ -382,6 +382,7 @@ namespace Eclipse
                         Entity ent = MAX_ENTITY;
                         engine->szManager.LoadPrefabFile(ent, temp.c_str(), true);
                         meshEditor->SetMeshID(ent);
+                        meshEditor->SetPath(temp);
                         engine->editorManager->SetMeshEditorActive(true);
                         meshEditor->IsVisible = true;
                     }
