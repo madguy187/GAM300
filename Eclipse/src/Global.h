@@ -131,7 +131,8 @@ enum class PayloadTargetType
 	PTT_WINDOW,
 	PTT_INDEXEDIT,
     PTT_ASSETS,
-    PTT_SCRIPT,
+    PTT_SCRIPT_LIGHT,
+    PTT_SCRIPT_AUDIO,
 	PTT_UNASSIGNED
 };
 
