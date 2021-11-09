@@ -8,15 +8,6 @@
 
 namespace Eclipse
 {
-    enum class AnimationState
-    {
-        IDLE,
-        MOTION,
-        RUN,
-        DANCE,
-        INVALID
-    };
-
     struct KeyRotation
     {
         glm::quat orientation;

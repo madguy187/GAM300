@@ -202,4 +202,13 @@ namespace Eclipse
 		"TS_RUN",
 		"TS_JUMP"
 	};
+
+	template<> char const* enumStrings<AnimationState>::data[] =
+	{
+		"AS_IDLE",
+		"AS_MOTION",
+		"AS_RUN",
+		"AS_DANCE",
+		"AS_INVALID"
+	};
 }
