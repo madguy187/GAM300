@@ -247,7 +247,7 @@ namespace Eclipse
 
                     // set light uniforms
 
-                    if (engine->gFrameBufferManager->PostProcess->AllowPostProcess)
+                    if (1)
                     {
                         GLint viewPos_ = ShadowMappingShader.GetLocation("viewPos");
                         GLint lightPos_ = ShadowMappingShader.GetLocation("lightPos");
