@@ -91,7 +91,7 @@ namespace Eclipse
 
 
 	public:
-		void CreateRecastPolyMesh(const rcPolyMesh& mesh);
+		//void CreateRecastPolyMesh(const rcPolyMesh& mesh);
 		void CalculateMinMax(Entity ent);
 		void GetVertsandTrisOnScene(std::vector<ECVec3>& verts, std::vector<std::array<int,3>>& tris);
 		bool BuildNavMesh(Entity ent);

@@ -9,7 +9,7 @@ namespace Eclipse
 		engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 		for (auto const& entity : mEntities)
 		{
-			//engine->gAI.patrol(entity);
+			engine->gAI.patrol(entity);
 		}
 		engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());
 		engine->Timer.UpdateTimeContainer(engine->Timer.tracker);
