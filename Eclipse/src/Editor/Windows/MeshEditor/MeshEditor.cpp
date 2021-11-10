@@ -25,13 +25,15 @@ namespace Eclipse
     {
         if (MeshID != MAX_ENTITY)
         {
+            engine->pfManager.OverwritePrefab(OldestParentID, _path.c_str(), true);
             IsVisible = false;
             //engine->world.DestroyEntity(MeshID);
-            RecursiveDestroy(MeshID);
+            RecursiveDestroy(OldestParentID);
             MeshFamily.clear();
             MeshID = MAX_ENTITY;
             OldestParentID = MAX_ENTITY;
             MeshIndex = 0;
+            _path.clear();
             engine->editorManager->SetMeshEditorActive(false);
 
             auto* insp = engine->editorManager->GetEditorWindow<InspectorWindow>();
@@ -235,6 +237,11 @@ namespace Eclipse
                 MeshFamily.push_back(kid);
             }
         }
+    }
+
+    void MeshEditorWindow::SetPath(const std::string& path)
+    {
+        _path = path;
     }
 
     Entity MeshEditorWindow::GetMeshID() const

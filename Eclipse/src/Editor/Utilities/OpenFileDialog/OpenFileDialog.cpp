@@ -83,7 +83,8 @@ std::string FileDialog::SaveAsFile()
 
         engine->szManager.SaveSceneFile(_path.string().c_str());
 
-        SceneManager::RegisterScene(_path.string());
+        SceneManager::RegisterRecentSaveScene(_path.string());
+        
 
         if (!std::filesystem::exists(_path))
         {

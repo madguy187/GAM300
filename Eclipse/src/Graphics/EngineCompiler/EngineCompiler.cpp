@@ -363,8 +363,17 @@ namespace Eclipse
     void EngineCompiler::RunCompiler()
     {
         // Please Check this in the future - Darren Sim
-        system("Compiler.exe");
-        EDITOR_LOG_INFO("Compiler Execution finished.");
+#ifdef DEBUG
+        {
+            system("Compiler-Debug.exe");
+            EDITOR_LOG_INFO("Compiler Execution finished.");
+        }
+#else
+        {
+            system("Compiler-Release.exe");
+            EDITOR_LOG_INFO("Compiler Execution finished.");
+        }
+#endif 
     }
 
     bool EngineCompiler::IsGeometryCompiled()
