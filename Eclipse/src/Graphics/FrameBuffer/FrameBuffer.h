@@ -15,6 +15,7 @@ namespace Eclipse
       "MATERIALEDITORVIEW",
       "MESHEDITORVIEW",
       "GAMEVIEW_SOBEL",
+      "SHADOWVIEW",
       "MAXCOUNT"
     };
 
