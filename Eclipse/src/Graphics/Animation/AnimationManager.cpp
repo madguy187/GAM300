@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AnimationManager.h"
+#include "Global.h"
 
 void Eclipse::AnimationManager::RecurseChildren(AssimpNodeData& nodeData, std::fstream& AnimationFileRead)
 {
