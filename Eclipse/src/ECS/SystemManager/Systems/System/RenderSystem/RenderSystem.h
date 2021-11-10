@@ -9,10 +9,13 @@
 #include "Graphics/RendererAPI/GraphicsManager.h"
 #include "Graphics/Grid/Grid.h"
 
+#include "Graphics/RendererAPI/RenderManager/RenderManger.h"
+
 namespace Eclipse
 {
     class RenderSystem : public System
     {
+        RenderManager Renderer;
     public:
         static void Init();
     private:
