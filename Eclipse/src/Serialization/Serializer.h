@@ -165,13 +165,14 @@ namespace Eclipse
             AddAttributeToElement("Hheight", att_data.hheight);
         }
         
+        using MonoScriptPointer = MonoScript*;
         template <>
-        inline void AddAttributeToElement(const std::string& att_name, const MonoScript& att_data)
+        inline void AddAttributeToElement(const std::string& att_name, const MonoScriptPointer& att_data)
         {
             (void)att_name;
-            AddAttributeToElement("ScriptName", att_data.scriptName);
+            AddAttributeToElement("ScriptName", att_data->scriptName);
             StartElement("MonoVariables");
-            AddAttributeToElement("Variables", att_data.vars);
+            AddAttributeToElement("Variables", att_data->vars);
             CloseElement();
         }
         

@@ -255,13 +255,6 @@ enum class CursorLockMode
     Confined = 2
 };
 
-struct MonoVariable
-{
-    m_Type type = m_Type::MONO_UNDEFINED;
-    std::string varName = "";
-    std::string varValue = "";
-};
-
 enum class AnimationState
 {
     IDLE,

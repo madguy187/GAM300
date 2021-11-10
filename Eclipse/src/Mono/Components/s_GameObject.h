@@ -9,9 +9,9 @@ namespace Eclipse
 		ScriptComponent& scriptComp = engine->world.GetComponent<ScriptComponent>(entity);
 		for (auto& var : scriptComp.scriptList)
 		{
-			if (var.scriptName == mono_string_to_utf8(scriptName))
+			if (var->scriptName == mono_string_to_utf8(scriptName))
 			{
-				var.enabled = value;
+				var->enabled = value;
 				return;
 			}
 		}
@@ -23,9 +23,9 @@ namespace Eclipse
 
 		for (auto& var : scriptComp.scriptList)
 		{
-			if (var.scriptName == mono_string_to_utf8(behaviorName))
+			if (var->scriptName == mono_string_to_utf8(behaviorName))
 			{
-				return var.obj;
+				return var->obj;
 			}
 		}
 	}

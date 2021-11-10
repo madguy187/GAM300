@@ -8,6 +8,7 @@ namespace Eclipse
 		public:
 			NodeType _type;
 			virtual bool run() = 0;
+			virtual ~Node() = default;
 		};
 
 		class CompositeNode : public Node

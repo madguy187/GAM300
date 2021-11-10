@@ -116,7 +116,7 @@ namespace Eclipse
 
     DEFINE_META(ScriptComponent)
     {
-        ADD_MEMBER(scriptList);
+        //ADD_MEMBER(scriptList);
         ADD_MEMBER(LayerMask);
     }
 
@@ -297,7 +297,7 @@ namespace Eclipse
     DEFINE_META_POD(std::string);
     DEFINE_META_POD(std::vector<Texture>);
     DEFINE_META_POD(std::vector<Entity>);
-    DEFINE_META_POD(std::vector<MonoScript>);
+    DEFINE_META_POD(std::vector<MonoScript*>);
     DEFINE_META_POD(MeshComponent::MeshNameType);
     DEFINE_META_POD(ECVec2);
     DEFINE_META_POD(ECVec3);

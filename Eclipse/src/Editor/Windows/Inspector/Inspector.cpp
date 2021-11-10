@@ -123,7 +123,7 @@ namespace Eclipse
 
                 auto& ent = engine->world.GetComponent<EntityComponent>(ID);
 
-                if (ECGui::DrawSliderFloat3Widget("TransVec", &transCom.position, true, -100.f, 100.f, ID))
+                if (ECGui::DrawInputFloat3Widget("TransVec", &transCom.position, true, ID))
                 {
                     if (engine->world.CheckComponent<ChildComponent>(ID))
                     {
@@ -155,7 +155,7 @@ namespace Eclipse
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
 
-                if (ECGui::DrawSliderFloat3Widget("TransRot", &transCom.rotation, true, -360.f, 360.f, ID))
+                if (ECGui::DrawInputFloat3Widget("TransRot", &transCom.rotation, true, ID))
                 {
                     if (engine->world.CheckComponent<ChildComponent>(ID))
                     {
@@ -181,7 +181,7 @@ namespace Eclipse
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
 
-                ECGui::DrawSliderFloat3Widget("TransScale", &transCom.scale, true, -100.f, 100.f, ID);
+                ECGui::DrawInputFloat3Widget("TransScale", &transCom.scale, true, ID);
 
                 //Update for DynamicAABB Tree -Rachel
                 if (!IsNotInScene)
@@ -848,49 +848,62 @@ namespace Eclipse
                 {
                     if (!IsRemovingScripts)
                     {
-                        ECGui::DrawInputTextHintWidget(my_strcat("ScriptName", i + 1).c_str(), "Drag Script files here",
-                            const_cast<char*>(scriptCom.scriptList[i].scriptName.c_str()), 256,
-                            true, ImGuiInputTextFlags_ReadOnly);
-                        engine->editorManager->DragAndDropInst_.StringPayloadTarget("cs", scriptCom.scriptList[i].scriptName,
+                        static char dummy[256];
+
+                        if (scriptCom.scriptList[i])
+                        {
+                            ECGui::DrawInputTextHintWidget(my_strcat("ScriptName", i + 1).c_str(), "Drag Script files here",
+                                const_cast<char*>(scriptCom.scriptList[i]->scriptName.c_str()), 256,
+                                true, ImGuiInputTextFlags_ReadOnly);
+                        }
+                        else
+                        {
+                            ECGui::DrawInputTextHintWidget(my_strcat("ScriptName", i + 1).c_str(), "Drag Script files here",
+                                dummy, 256, true, ImGuiInputTextFlags_ReadOnly);
+                        }
+
+                        std::string dummyString{ dummy };
+                        engine->editorManager->DragAndDropInst_.StringPayloadTarget("cs", dummyString,
                             "Script File inserted.", PayloadTargetType::PTT_WIDGET, ID, i);
 
-                        for (size_t j = 0; j < scriptCom.scriptList[i].vars.size(); ++j)
+                        if (!scriptCom.scriptList[i]) continue;
+                        for (size_t j = 0; j < scriptCom.scriptList[i]->vars.size(); ++j)
                         {
                             ECGui::SetColumns(2, nullptr, true);
 
-                            ECGui::DrawTextWidget<const char*>(scriptCom.scriptList[i].vars[j].varName.c_str(), EMPTY_STRING);
+                            ECGui::DrawTextWidget<const char*>(scriptCom.scriptList[i]->vars[j].varName.c_str(), EMPTY_STRING);
                             ECGui::InsertSameLine();
 
                             ECGui::NextColumn();
 
-                            if (scriptCom.scriptList[i].vars[j].type == m_Type::MONO_HEADER)
+                            if (scriptCom.scriptList[i]->vars[j].type == m_Type::MONO_HEADER)
                             {
-                                ECGui::DrawInputTextHintWidget(scriptCom.scriptList[i].vars[j].varName.c_str(),
-                                    "Non-modifiable", const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()),
+                                ECGui::DrawInputTextHintWidget(scriptCom.scriptList[i]->vars[j].varName.c_str(),
+                                    "Non-modifiable", const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()),
                                     256, true, ImGuiInputTextFlags_ReadOnly);
                             }
                             else
-                                if (scriptCom.scriptList[i].vars[j].type == m_Type::MONO_LIGHT)
+                                if (scriptCom.scriptList[i]->vars[j].type == m_Type::MONO_LIGHT)
                                 {
                                     ECGui::DrawInputTextHintWidget("Light Entity ID", "Drag Light Entity Here",
-                                        const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()), 256,
+                                        const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()), 256,
                                         true, ImGuiInputTextFlags_ReadOnly);
                                     engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity",
-                                        scriptCom.scriptList[i].vars[j].varValue, "Light Entity ID registered", PayloadTargetType::PTT_SCRIPT_LIGHT, ID, j);
+                                        scriptCom.scriptList[i]->vars[j].varValue, "Light Entity ID registered", PayloadTargetType::PTT_SCRIPT_LIGHT, ID, j);
                                 }
                                 else
-                                    if (scriptCom.scriptList[i].vars[j].type == m_Type::MONO_AUDIO)
+                                    if (scriptCom.scriptList[i]->vars[j].type == m_Type::MONO_AUDIO)
                                     {
                                         ECGui::DrawInputTextHintWidget("Audio Entity ID", "Drag Light Entity Here",
-                                            const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()), 256,
+                                            const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()), 256,
                                             true, ImGuiInputTextFlags_ReadOnly);
                                             engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity",
-                                                scriptCom.scriptList[i].vars[j].varValue, "Audio Entity ID registered", PayloadTargetType::PTT_SCRIPT_AUDIO, ID, j);
+                                                scriptCom.scriptList[i]->vars[j].varValue, "Audio Entity ID registered", PayloadTargetType::PTT_SCRIPT_AUDIO, ID, j);
                                     }
                                 else
                                 {
-                                    ECGui::DrawInputTextWidget(scriptCom.scriptList[i].vars[j].varName.c_str(),
-                                        const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()),
+                                    ECGui::DrawInputTextWidget(scriptCom.scriptList[i]->vars[j].varName.c_str(),
+                                        const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()),
                                         256, 0, true);
                                 }
 
@@ -904,7 +917,7 @@ namespace Eclipse
                     {
                         bool selected = false;
 
-                        if (ECGui::CreateSelectableButton(my_strcat(scriptCom.scriptList[i].scriptName.c_str(), " ", i + 1).c_str(), &selected))
+                        if (ECGui::CreateSelectableButton(my_strcat(scriptCom.scriptList[i]->scriptName.c_str(), " ", i + 1).c_str(), &selected))
                         {
                             auto posItr = scriptCom.scriptList.begin() + i;
                             scriptCom.scriptList.erase(posItr);
@@ -918,10 +931,10 @@ namespace Eclipse
                 {
                     if (ECGui::ButtonBool("Add Script", { ImGui::GetColumnWidth(), 25 }))
                     {
-                        std::string scriptName;
-                        scriptName.reserve(256);
+                        //std::string scriptName;
+                        //scriptName.reserve(256);
                         scriptCom.scriptList.push_back({});
-                        scriptCom.scriptList.back().scriptName = scriptName;
+                        //scriptCom.scriptList.back()->scriptName = scriptName;
                     }
 
                     if (ECGui::ButtonBool("Remove Script", { ImGui::GetColumnWidth(), 25 }))

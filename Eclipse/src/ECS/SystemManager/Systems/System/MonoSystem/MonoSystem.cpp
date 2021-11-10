@@ -12,16 +12,16 @@ namespace Eclipse
 
 			for (auto& script : scriptCom.scriptList)
 			{
-				if (!script.obj)
+				if (!script->obj)
 				{
-					script.obj = engine->mono.CreateMonoObject(script.scriptName, entity);
-					engine->mono.LoadAllFields(&script);
+					script->obj = engine->mono.CreateMonoObject(script->scriptName, entity);
+					//engine->mono.LoadAllFields(&script);
 				}
 			}
 
 			for (auto& script : scriptCom.scriptList)
 			{
-				engine->mono.Start(&script);
+				engine->mono.Start(script);
 			}
 		}
 	}
@@ -38,12 +38,12 @@ namespace Eclipse
 
 			for (auto& script : scriptCom.scriptList)
 			{
-				if (!script.enabled) continue;
+				if (!script->enabled) continue;
 
 				if (engine->mono.fixUpdate)
-					engine->mono.FixedUpdate(&script);
+					engine->mono.FixedUpdate(script);
 				else
-					engine->mono.Update(&script);
+					engine->mono.Update(script);
 			}
 		}
 
@@ -59,7 +59,7 @@ namespace Eclipse
 			ScriptComponent& scriptCom = engine->world.GetComponent<ScriptComponent>(entity);
 
 			for (auto& script : scriptCom.scriptList)
-				script.obj = nullptr;
+				script->obj = nullptr;
 		}
 	}
 }
