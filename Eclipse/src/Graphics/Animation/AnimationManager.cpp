@@ -204,6 +204,10 @@ AnimationState Eclipse::AnimationManager::InitAnimationState(std::string modelNa
     {
         return AnimationState::DANCE;
     }
+    else if (modelName.compare("Body") == 0)
+    {
+        return AnimationState::WALK;
+    }
     else
     {
         EDITOR_LOG_WARN("WARNING! Some models have invalid animation state.");

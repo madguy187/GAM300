@@ -86,6 +86,14 @@ namespace Eclipse
 		return numOfScene++;
 	}
 
+	void SceneManager::RegisterRecentSaveScene(const std::string& path)
+	{
+		SceneIndex newScene = RegisterScene(path);
+		prevScene = curScene;
+		curScene = newScene;
+		nextScene = newScene;
+	}
+
 	SceneManager::SceneIndex SceneManager::RegisterTempScene(const std::string& path)
 	{
 		if (tempScene == EMPTY)

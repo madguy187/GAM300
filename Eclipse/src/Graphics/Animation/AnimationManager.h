@@ -14,6 +14,7 @@ namespace Eclipse
         MOTION,
         RUN,
         DANCE,
+        WALK,
         INVALID
     };
 
