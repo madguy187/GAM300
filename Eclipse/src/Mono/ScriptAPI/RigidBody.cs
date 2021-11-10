@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Eclipse
 {
-    public class RigidBody : IScriptable
+    public class Rigidbody : IScriptable
     {
-        public RigidBody(UInt32 entity)
+        public Rigidbody(UInt32 entity)
         {
             Entity = entity;
         }

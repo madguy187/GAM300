@@ -97,6 +97,24 @@ namespace Eclipse
 		}
 	}
 
+	std::string PrefabManager::GetPath(const std::string& prefabName)
+	{
+		std::filesystem::path path;
+		for (auto& pair : mapPathToID)
+		{
+			path = pair.first;
+			std::string fileName = path.filename().replace_extension("").string();
+
+			if (fileName == prefabName)
+			{
+				return path.string();
+			}
+		}
+
+		path.clear();
+		return path.string();
+	}
+
 	void PrefabManager::PostUpdate()
 	{
 		auto& w = engine->world;

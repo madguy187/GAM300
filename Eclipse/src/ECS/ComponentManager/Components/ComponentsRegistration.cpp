@@ -116,7 +116,7 @@ namespace Eclipse
 
     DEFINE_META(ScriptComponent)
     {
-        //ADD_MEMBER(scriptList);
+        ADD_MEMBER(scriptList);
         ADD_MEMBER(LayerMask);
     }
 
