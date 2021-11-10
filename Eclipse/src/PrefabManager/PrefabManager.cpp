@@ -130,6 +130,8 @@ namespace Eclipse
 				CleanUpForInstancesAfterCopy(target);
 			}
 
+			RecursiveUpdateParentChildTransform(ent);
+
 			for (auto& pair : newChildMap)
 			{
 				for (auto& newChild : pair.second)
@@ -173,7 +175,7 @@ namespace Eclipse
 				//SignatureBaseCopy(prefabW, w, prefabOwner, ent);
 				CleanUpForInstancesAfterCopy(target);
 			}
-
+			RecursiveUpdateParentChildTransform(ent);
 			for (auto& pair : newChildMap)
 			{
 				for (auto& newChild : pair.second)
@@ -562,15 +564,47 @@ namespace Eclipse
 		return newEnt;
 	}
 
-	void PrefabManager::UpdateParentChildTransform(const Entity& chidlEnt, const Entity& parentEnt)
+	void PrefabManager::UpdateParentChildTransform(const Entity& childEnt, const Entity& parentEnt)
 	{
-		ChildComponent& childComp = engine->world.GetComponent<ChildComponent>(chidlEnt);
+		ChildComponent& childComp = engine->world.GetComponent<ChildComponent>(childEnt);
+		TransformComponent& childTransComp = engine->world.GetComponent<TransformComponent>(childEnt);
+		TransformComponent& parentTransComp = engine->world.GetComponent<TransformComponent>(parentEnt);
 
-		TransformComponent& childTrans = engine->world.GetComponent<TransformComponent>(chidlEnt);
-		TransformComponent& parentTrans = engine->world.GetComponent<TransformComponent>(parentEnt);
+		glm::mat4 T = glm::mat4(1.0f);
+		glm::mat4 R = glm::mat4(1.0f);
+		glm::mat4 identityMatrix = glm::mat4(1.0f);
+		T = glm::translate(T, parentTransComp.position.ConvertToGlmVec3Type());
+		R = glm::rotate(R, glm::radians(parentTransComp.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+		R = glm::rotate(R, glm::radians(parentTransComp.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+		R = glm::rotate(R, glm::radians(parentTransComp.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
 
-		childTrans.position = parentTrans.position + childComp.PosOffset;
-		childTrans.rotation = parentTrans.rotation + childComp.RotOffset;
+		glm::mat4 model = T * R;
+		ParentComponent& parentComp = engine->world.GetComponent<ParentComponent>(parentEnt);
+		parentComp.model = model;
+
+		model = glm::translate(model, childComp.PosOffset.ConvertToGlmVec3Type());
+		glm::vec4 temp = glm::vec4{ 0, 0, 0, 1 };
+		glm::vec3 newPos = model * temp;
+		childTransComp.position = newPos;
+
+		childTransComp.rotation = parentTransComp.rotation + childComp.RotOffset;
+		childTransComp.scale.setX(parentTransComp.scale.getX() * childComp.ScaleOffset.getX());
+		childTransComp.scale.setY(parentTransComp.scale.getY() * childComp.ScaleOffset.getY());
+		childTransComp.scale.setZ(parentTransComp.scale.getZ() * childComp.ScaleOffset.getZ());
+	}
+
+	void PrefabManager::RecursiveUpdateParentChildTransform(const Entity& ent)
+	{
+		if (engine->world.CheckComponent<ParentComponent>(ent))
+		{
+			auto& parent = engine->world.GetComponent<ParentComponent>(ent);
+
+			for (auto& child : parent.child)
+			{
+				UpdateParentChildTransform(child, ent);
+				RecursiveUpdateParentChildTransform(child);
+			}
+		}
 	}
 
 	void PrefabManager::RegisterForNewInstance(const Entity& ent, const Entity& parentEnt)
@@ -695,6 +729,7 @@ namespace Eclipse
 
 	void PrefabManager::ApplyChangesToAll(Entity ent)
 	{
+		RecursiveUpdateParentChildTransform(ent);
 		World& prefabW = engine->prefabWorld;
 		World& w = engine->world;
 		Entity prefabOwner = MAX_ENTITY;
@@ -757,6 +792,7 @@ namespace Eclipse
 				}
 
 			}
+			RecursiveUpdateParentChildTransform(entity);
 
 			for (auto& pair : childNewChildMap)
 			{
@@ -793,13 +829,13 @@ namespace Eclipse
 		}
 	}
 
-	void PrefabManager::OverwritePrefab(const Entity& ent, const char* path)
+	void PrefabManager::OverwritePrefab(const Entity& ent, const char* path, bool IsFromMainWorld)
 	{
-		World& prefabW = engine->prefabWorld;
+		World& prefabW = IsFromMainWorld ? engine->world : engine->prefabWorld;
 
 		auto& prefabComp = prefabW.GetComponent<PrefabComponent>(ent);
 
-		engine->szManager.SavePrefabFile(prefabComp.PrefabID, ent, path);
+		engine->szManager.SavePrefabFile(prefabComp.PrefabID, ent, path, IsFromMainWorld);
 	}
 
 	std::string PrefabManager::GetPath(const EUUID& id)
