@@ -11,7 +11,7 @@
 #include "Editor/Windows/MeshEditor/MeshEditor.h"
 #include "ECS/SystemManager/Systems/System/MaterialSystem/MaterialSystem.h"
 
-glm::vec3 lightPos(-20.0f, 40.0f, -10.0f);
+glm::vec3 lightPos(-200.0f, 400.0f, -100.0f);
 glm::mat4 lightProjection, lightView;
 glm::mat4 lightSpaceMatrix;
 
@@ -46,7 +46,7 @@ namespace Eclipse
         ShadowMappingShader.Use();
         ShadowMappingShader.Use();
         ShadowMappingShader.setInt("diffuseTexture", 0);
-        ShadowMappingShader.setInt("shadowMap", 16);
+        ShadowMappingShader.setInt("shadowMap", 2);
     }
 
     void RenderSystem::Update()
@@ -138,8 +138,6 @@ namespace Eclipse
                     lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
                     lightSpaceMatrix = lightProjection * lightView;
 
-                    engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SHADOW);
-
                     // render scene from light's point of view
                     auto& simpleDepthShader = Graphics::shaderpgms["SimpleDepthShader"];
                     simpleDepthShader.Use();
@@ -147,16 +145,11 @@ namespace Eclipse
                     GLint lightSpaceMatrix_ = simpleDepthShader.GetLocation("lightSpaceMatrix");
                     glUniformMatrix4fv(lightSpaceMatrix_, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 
-                    glActiveTexture(GL_TEXTURE0);
-                    glBindTexture(GL_TEXTURE_2D, 0);
                     engine->MaterialManager.DoNotUpdateStencil();
                     engine->AssimpManager.LightPerSpectiveDraw(Mesh, entityID, FrameBufferMode::FBM_SHADOW, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SHADOW),
                         CameraComponent::CameraType::Editor_Camera);
 
-                    glActiveTexture(GL_TEXTURE16);
-                    glBindTexture(GL_TEXTURE_2D, 0);
-
-                    simpleDepthShader.UnUse();
+                    simpleDepthShader.UnUse()
                 }
             }
 
@@ -164,8 +157,6 @@ namespace Eclipse
             {
                 MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
 
-
-                engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SCENE);
                 auto& Camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
                 auto& CameraPos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
                 auto& ShadowMappingShader = Graphics::shaderpgms["ShadowMapping"];
@@ -185,14 +176,12 @@ namespace Eclipse
                 glUniform3f(lightPos_, lightPos.x, lightPos.y, lightPos.z);
                 glUniformMatrix4fv(lightSpaceMatrix_1, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 
-                glActiveTexture(GL_TEXTURE0);
-                glActiveTexture(GL_TEXTURE16);
-                engine->MaterialManager.DoNotUpdateStencil();
+                //glActiveTexture(GL_TEXTURE0); // stupid issue , this causes shadow not resetting
+                glActiveTexture(GL_TEXTURE0 + 2);
+                ShadowMappingShader.setInt("shadowMap", 2);
                 glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SHADOW));
                 engine->AssimpManager.ShadowDraw(Mesh, entityID, FrameBufferMode::FBM_SCENE, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME),
                     CameraComponent::CameraType::Editor_Camera);
-
-                ShadowMappingShader.UnUse();
             }
 
             engine->AssimpManager.MeshEditor_.Render();

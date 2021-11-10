@@ -356,14 +356,14 @@ namespace Eclipse
             world.Update<AudioSystem>();
 
             // MATERIALSYSTEM =============================
-            world.Update<MaterialSystem>();
+            //dworld.Update<MaterialSystem>();
 
             // RENDERSYSTEM =============================
             world.Update<RenderSystem>();
 
             // Final DRAW ================================ 
             //engine->gDebugDrawManager->Render();
-            engine->GraphicsManager.FinalRender();
+            //engine->GraphicsManager.FinalRender();
 
             if (IsScenePlaying())
             {
