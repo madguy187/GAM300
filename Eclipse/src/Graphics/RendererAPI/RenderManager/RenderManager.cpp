@@ -3,6 +3,11 @@
 
 namespace Eclipse
 {
+    glm::vec3 lightPos(-20.0f, 40.0f, -10.0f);
+    glm::mat4 lightProjection, lightView;
+    glm::mat4 lightSpaceMatrix;
+    float near_plane = 1.0f, far_plane = 500.5f;
+
     void RenderManager::RenderScene(MeshComponent& Mesh, Entity entityID)
     {
         // If Scene View is visible
@@ -106,5 +111,32 @@ namespace Eclipse
                 engine->MaterialManager.Highlight3DModels(entityID, FrameBufferMode::FBM_SCENE);
             }
         }
+    }
+
+    void RenderManager::RenderSceneFromLightPOV(MeshComponent&, Entity)
+    {
+        lightProjection = glm::ortho(-50.0f, 50.0f, -50.0f, 50.0f, near_plane, far_plane);
+        lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+        lightSpaceMatrix = lightProjection * lightView;
+
+        engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SHADOW);
+
+        // render scene from light's point of view
+        auto& simpleDepthShader = Graphics::shaderpgms["SimpleDepthShader"];
+        simpleDepthShader.Use();
+
+        GLint lightSpaceMatrix_ = simpleDepthShader.GetLocation("lightSpaceMatrix");
+        glUniformMatrix4fv(lightSpaceMatrix_, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        engine->MaterialManager.DoNotUpdateStencil();
+        //engine->AssimpManager.LightPerSpectiveDraw(Mesh, entityID, FrameBufferMode::FBM_SHADOW, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SHADOW),
+        //    CameraComponent::CameraType::Editor_Camera);
+
+        glActiveTexture(GL_TEXTURE16);
+        glBindTexture(GL_TEXTURE_2D, 0);
+
+        simpleDepthShader.UnUse();
     }
 }

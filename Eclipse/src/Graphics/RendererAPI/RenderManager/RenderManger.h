@@ -16,5 +16,8 @@ namespace Eclipse
         void RenderScene(MeshComponent& Mesh, Entity ID);
         void RenderGame(MeshComponent& Mesh, Entity ID);
         void RenderOtherViews(MeshComponent& Mesh, Entity ID);
+
+        // Shadow
+        void RenderSceneFromLightPOV(MeshComponent& , Entity );
     };
 }
