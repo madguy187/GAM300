@@ -1499,4 +1499,8 @@
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\RenderManager\RenderManager.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Assets\Shaders\SimpleDepthShader\SimpleDepthShader.frag" />
+    <None Include="src\Assets\Shaders\SimpleDepthShader\SimpleDepthShader.vert" />
+  </ItemGroup>
 </Project>
