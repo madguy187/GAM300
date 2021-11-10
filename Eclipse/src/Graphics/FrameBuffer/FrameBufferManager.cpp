@@ -26,6 +26,9 @@ namespace Eclipse
         PostProcess = std::make_unique<FrameBuffer>();
         PostProcess->CreatePostProcessFramebuffer();
 
+        // Shadow FBO
+        CreateFBO(1270, 593, FrameBufferMode::FBM_SHADOW);
+
     }
 
     void FrameBufferManager::CreateFBO(unsigned int width_, unsigned int height_, FrameBufferMode in)
