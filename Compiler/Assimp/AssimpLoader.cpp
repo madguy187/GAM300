@@ -258,6 +258,8 @@ namespace EclipseCompiler
                 newMesh.Ambient.z = ambientColor.b;
                 newMesh.Ambient.w = ambientColor.a;
 
+                ExtractBoneWeightForVertices(newMesh.vertices, mesh, scene, MeshName);
+
                 meshData.push_back(newMesh);
                 MeshIndex++;
                 return;
