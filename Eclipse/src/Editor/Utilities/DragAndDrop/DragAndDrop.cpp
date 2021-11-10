@@ -44,6 +44,7 @@ namespace Eclipse
 			case PayloadSourceType::PST_ENTITY:
 				if (engine->world.CheckComponent<EntityComponent>(ID))
 				{
+					std::cout << source;
 					auto& entCom = engine->world.GetComponent<EntityComponent>(static_cast<Entity>(ID));
 
 					if (entCom.Name != "Untagged Entity")
@@ -119,6 +120,29 @@ namespace Eclipse
 						// FOR JIAN HERNG entID for entity number and destination for path
 						// to generate prefab file in asset browser
 						engine->pfManager.GeneratePrefab(PrefabID, destination.c_str());
+					}
+					break;
+				case PayloadTargetType::PTT_SCRIPT_LIGHT:
+					std::cout << engine->editorManager->GetEntityID(*((int*)payload->Data));
+					if (engine->world.CheckComponent<LightComponent>(engine->editorManager->GetEntityID(*((int*)payload->Data))))
+					{
+						destination = std::to_string(engine->editorManager->GetEntityID(*((int*)payload->Data)));
+					}
+					else
+					{
+						cMsg = "Wrong type of entity dragged , entity needs to have LIGHT COMPONENT";
+					}
+					break;
+				case PayloadTargetType::PTT_SCRIPT_AUDIO:
+					std::cout << engine->editorManager->GetEntityID(*((int*)payload->Data));
+					if (engine->world.CheckComponent<AudioComponent>(engine->editorManager->GetEntityID(*((int*)payload->Data))))
+						
+					{
+						destination = std::to_string(engine->editorManager->GetEntityID(*((int*)payload->Data)));
+					}
+					else
+					{
+						cMsg = "Wrong type of entity dragged , entity needs to have AUDIO COMPONENT";
 					}
 					break;
 				}

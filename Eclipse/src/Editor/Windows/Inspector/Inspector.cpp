@@ -128,10 +128,14 @@ namespace Eclipse
                         auto& child = engine->world.GetComponent<ChildComponent>(ID);
                         child.UpdateChildren = true;
 
-                        if (ent.Tag != EntityType::ENT_MESH)
+                        if ((engine->world.CheckComponent<PrefabComponent>(ID) && engine->world.GetComponent<PrefabComponent>(ID).IsInstance) ||
+                            !engine->world.CheckComponent<PrefabComponent>(ID))
                         {
-                            engine->gPicker.UpdateAabb(ID);
-                            engine->gDynamicAABBTree.UpdateData(ID);
+                            if (ent.Tag != EntityType::ENT_MESH)
+                            {
+                                engine->gPicker.UpdateAabb(ID);
+                                engine->gDynamicAABBTree.UpdateData(ID);
+                            }
                         }
                     }
                 }
@@ -151,9 +155,22 @@ namespace Eclipse
 
                 if (ECGui::DrawSliderFloat3Widget("TransRot", &transCom.rotation, true, -360.f, 360.f, ID))
                 {
+                    if (engine->world.CheckComponent<ChildComponent>(ID))
+                    {
+                        auto& child = engine->world.GetComponent<ChildComponent>(ID);
+                        child.UpdateChildren = true;
+                    }
                     if (engine->world.CheckComponent<SpotLightComponent>(ID))
                     {
 
+                    }
+                }
+                else
+                {
+                    if (ImGui::IsItemDeactivatedAfterChange() && engine->world.CheckComponent<ChildComponent>(ID))
+                    {
+                        auto& child = engine->world.GetComponent<ChildComponent>(ID);
+                        child.UpdateChildren = false;
                     }
                 }
 
@@ -845,15 +862,38 @@ namespace Eclipse
                             ECGui::NextColumn();
 
                             if (scriptCom.scriptList[i].vars[j].type == m_Type::MONO_HEADER)
+                            {
                                 ECGui::DrawInputTextHintWidget(scriptCom.scriptList[i].vars[j].varName.c_str(),
                                     "Non-modifiable", const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()),
                                     256, true, ImGuiInputTextFlags_ReadOnly);
+                            }
                             else
-                                ECGui::DrawInputTextWidget(scriptCom.scriptList[i].vars[j].varName.c_str(),
-                                    const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()),
-                                    256, 0, true);
+                                if (scriptCom.scriptList[i].vars[j].type == m_Type::MONO_LIGHT)
+                                {
+                                    ECGui::DrawInputTextHintWidget("Light Entity ID", "Drag Light Entity Here",
+                                        const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()), 256,
+                                        true, ImGuiInputTextFlags_ReadOnly);
+                                    engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity",
+                                        scriptCom.scriptList[i].vars[j].varValue, "Light Entity ID registered", PayloadTargetType::PTT_SCRIPT_LIGHT, ID, j);
+                                }
+                                else
+                                    if (scriptCom.scriptList[i].vars[j].type == m_Type::MONO_AUDIO)
+                                    {
+                                        ECGui::DrawInputTextHintWidget("Audio Entity ID", "Drag Light Entity Here",
+                                            const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()), 256,
+                                            true, ImGuiInputTextFlags_ReadOnly);
+                                            engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity",
+                                                scriptCom.scriptList[i].vars[j].varValue, "Audio Entity ID registered", PayloadTargetType::PTT_SCRIPT_AUDIO, ID, j);
+                                    }
+                                else
+                                {
+                                    ECGui::DrawInputTextWidget(scriptCom.scriptList[i].vars[j].varName.c_str(),
+                                        const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()),
+                                        256, 0, true);
+                                }
 
                             ECGui::NextColumn();
+
                         }
 
                         ECGui::SetColumns(1, nullptr, true);
@@ -1198,7 +1238,7 @@ namespace Eclipse
 
     bool InspectorWindow::ShowPrefebProperty(Entity ID)
     {
-        if (engine->world.CheckComponent<PrefabComponent>(ID) && !engine->world.GetComponent<PrefabComponent>(ID).IsInstance)
+        if (engine->world.CheckComponent<PrefabComponent>(ID) && !engine->world.GetComponent<PrefabComponent>(ID).IsInstance && !engine->world.CheckComponent<ChildComponent>(ID))
         {
             ECGui::InsertHorizontalLineSeperator();
             ECGui::SetColumns(2, nullptr, true);
@@ -1315,36 +1355,26 @@ namespace Eclipse
 
                 ECGui::InsertHorizontalLineSeperator();
 
-                //if (ECGui::ButtonBool("Break From Parent"))
-                //{
-                //    auto& parentComp = engine->world.GetComponent<EntityComponent>(child.parentIndex);
-                //    auto& parent = engine->world.GetComponent<ParentComponent>(child.parentIndex);
-                //    for (auto& allchld : parent.Child)
-                //    {
-                //        if (allchld == ID)
-                //        {
-                //            parentComp.Child.erase(std::remove(parentComp.Child.begin(), parentComp.Child.end(), allchld), parentComp.Child.end());
-                //        }
-                //    }
-                //    for (auto& allchld : parent.child)
-                //    {
-                //        if (allchld == ID)
-                //        {
-                //            parent.child.erase(std::remove(parent.child.begin(), parent.child.end(), allchld), parent.child.end());
-                //        }
-                //    }
-                //
-                //    if (parentComp.Child.empty())
-                //    {
-                //        ComponentRegistry<ParentComponent>("ParentComponent", child.parentIndex, childEntComp.Name, EditComponent::EC_REMOVECOMPONENT);
-                //    }
-                //
-                //    childEntComp.Parent.clear();
-                //
-                //    //ComponentRegistry<ParentComponent>("ParentComponent", ID, childEntComp.Name, EditComponent::EC_ADDCOMPONENT);
-                //    ComponentRegistry<ChildComponent>("ChildComponent", ID, childEntComp.Name, EditComponent::EC_REMOVECOMPONENT);
-                //
-                //}
+                if (ECGui::ButtonBool("Break From Parent"))
+                {
+                    auto& parent = engine->world.GetComponent<ParentComponent>(child.parentIndex);
+                    for (auto& allchld : parent.child)
+                    {
+                        if (allchld == ID)
+                        {
+                            parent.child.erase(std::remove(parent.child.begin(), parent.child.end(), allchld), parent.child.end());
+                        }
+                    }
+                
+                    if (parent.child.empty())
+                    {
+                        ComponentRegistry<ParentComponent>("ParentComponent", child.parentIndex, "Child", EditComponent::EC_REMOVECOMPONENT);
+                    }
+                    child.hasParent = false;
+                    //ComponentRegistry<ParentComponent>("ParentComponent", ID, childEntComp.Name, EditComponent::EC_ADDCOMPONENT);
+                    ComponentRegistry<ChildComponent>("ChildComponent", ID, "child", EditComponent::EC_REMOVECOMPONENT);
+                
+                }
 
             }
         }

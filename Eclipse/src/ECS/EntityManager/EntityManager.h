@@ -5,7 +5,7 @@ namespace Eclipse
 {
 	class EntityManager
 	{
-		std::queue<Entity> entityQueue;
+		std::stack<Entity> entityQueue;
 		std::array<Signature, MAX_ENTITY> entitySignature;
 		unsigned _size;
 	public:

@@ -17,6 +17,7 @@ namespace Eclipse
 		void OnCameraZoomEvent();
 
 		void SetMeshID(Entity ID);
+		void SetPath(const std::string& path);
 		Entity GetMeshID() const;
 		Entity GetOldestParentID() const;
 		bool GetActiveState();
@@ -28,6 +29,7 @@ namespace Eclipse
 		std::vector<Entity> MeshFamily;
 		int MeshIndex{ 0 };
 		bool IsActive{ false };
+		std::string _path;
 
 		//Temporary, can move to any where else.
 		void RecursiveDestroy(const Entity& ent);
