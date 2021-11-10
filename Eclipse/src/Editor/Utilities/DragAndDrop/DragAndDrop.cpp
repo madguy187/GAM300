@@ -81,7 +81,8 @@ namespace Eclipse
 						std::filesystem::path temp = ((const char*)payload->Data);
 						destination = AssetBrowserWindow::GetFileName(temp.filename().string().c_str());
 						auto& scriptCom = engine->world.GetComponent<ScriptComponent>(ID);
-						scriptCom.scriptList[arrayIndex].scriptName = destination;
+						scriptCom.scriptList[arrayIndex] = engine->mono.GetScriptPointerByName(destination);
+						//scriptCom.scriptList[arrayIndex]->scriptName = destination;
 					}
 					else
 					{

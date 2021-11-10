@@ -36,6 +36,7 @@ namespace Eclipse
 		MonoImage* ScriptImage;
 		MonoImage* APIImage;
 
+		std::vector<MonoScript> UserImplementedScriptList;
 		std::vector<InvokeFunc> InvokeContainer;
 
 		// Generates all the scripts into a dll
@@ -55,6 +56,7 @@ namespace Eclipse
 		void Terminate();
 		void UpdateInvokers();
 		void AddInvoke(MonoScript* _script, float _timer, MonoMethod* _method);
+		MonoScript* GetScriptPointerByName(const std::string& name);
 
 		// API Functions
 		void Awake(MonoScript* obj);
@@ -80,6 +82,7 @@ namespace Eclipse
 		MonoMethod* GetMethodFromClass(MonoClass* klass, std::string funcName, int param_count = -1);
 		MonoObject* ExecuteMethod(MonoObject* obj, MonoMethod* method, std::vector<void*> args);
 
+		void LoadAllScripts();
 		void LoadAllFields(MonoScript* script);
 		bool CheckIfFieldExist(MonoScript* script, std::string& fieldName, size_t index);
 

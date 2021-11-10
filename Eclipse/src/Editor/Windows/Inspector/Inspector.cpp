@@ -829,28 +829,41 @@ namespace Eclipse
                 {
                     if (!IsRemovingScripts)
                     {
-                        ECGui::DrawInputTextHintWidget(my_strcat("ScriptName", i + 1).c_str(), "Drag Script files here",
-                            const_cast<char*>(scriptCom.scriptList[i].scriptName.c_str()), 256,
-                            true, ImGuiInputTextFlags_ReadOnly);
-                        engine->editorManager->DragAndDropInst_.StringPayloadTarget("cs", scriptCom.scriptList[i].scriptName,
+                        static char dummy[256];
+
+                        if (scriptCom.scriptList[i])
+                        {
+                            ECGui::DrawInputTextHintWidget(my_strcat("ScriptName", i + 1).c_str(), "Drag Script files here",
+                                const_cast<char*>(scriptCom.scriptList[i]->scriptName.c_str()), 256,
+                                true, ImGuiInputTextFlags_ReadOnly);
+                        }
+                        else
+                        {
+                            ECGui::DrawInputTextHintWidget(my_strcat("ScriptName", i + 1).c_str(), "Drag Script files here",
+                                dummy, 256, true, ImGuiInputTextFlags_ReadOnly);
+                        }
+
+                        std::string dummyString{ dummy };
+                        engine->editorManager->DragAndDropInst_.StringPayloadTarget("cs", dummyString,
                             "Script File inserted.", PayloadTargetType::PTT_WIDGET, ID, i);
 
-                        for (size_t j = 0; j < scriptCom.scriptList[i].vars.size(); ++j)
+                        if (!scriptCom.scriptList[i]) continue;
+                        for (size_t j = 0; j < scriptCom.scriptList[i]->vars.size(); ++j)
                         {
                             ECGui::SetColumns(2, nullptr, true);
 
-                            ECGui::DrawTextWidget<const char*>(scriptCom.scriptList[i].vars[j].varName.c_str(), EMPTY_STRING);
+                            ECGui::DrawTextWidget<const char*>(scriptCom.scriptList[i]->vars[j].varName.c_str(), EMPTY_STRING);
                             ECGui::InsertSameLine();
 
                             ECGui::NextColumn();
 
-                            if (scriptCom.scriptList[i].vars[j].type == m_Type::MONO_HEADER)
-                                ECGui::DrawInputTextHintWidget(scriptCom.scriptList[i].vars[j].varName.c_str(),
-                                    "Non-modifiable", const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()),
+                            if (scriptCom.scriptList[i]->vars[j].type == m_Type::MONO_HEADER)
+                                ECGui::DrawInputTextHintWidget(scriptCom.scriptList[i]->vars[j].varName.c_str(),
+                                    "Non-modifiable", const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()),
                                     256, true, ImGuiInputTextFlags_ReadOnly);
                             else
-                                ECGui::DrawInputTextWidget(scriptCom.scriptList[i].vars[j].varName.c_str(),
-                                    const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()),
+                                ECGui::DrawInputTextWidget(scriptCom.scriptList[i]->vars[j].varName.c_str(),
+                                    const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()),
                                     256, 0, true);
 
                             ECGui::NextColumn();
@@ -862,7 +875,7 @@ namespace Eclipse
                     {
                         bool selected = false;
 
-                        if (ECGui::CreateSelectableButton(my_strcat(scriptCom.scriptList[i].scriptName.c_str(), " ", i + 1).c_str(), &selected))
+                        if (ECGui::CreateSelectableButton(my_strcat(scriptCom.scriptList[i]->scriptName.c_str(), " ", i + 1).c_str(), &selected))
                         {
                             auto posItr = scriptCom.scriptList.begin() + i;
                             scriptCom.scriptList.erase(posItr);
@@ -876,10 +889,10 @@ namespace Eclipse
                 {
                     if (ECGui::ButtonBool("Add Script", { ImGui::GetColumnWidth(), 25 }))
                     {
-                        std::string scriptName;
-                        scriptName.reserve(256);
+                        //std::string scriptName;
+                        //scriptName.reserve(256);
                         scriptCom.scriptList.push_back({});
-                        scriptCom.scriptList.back().scriptName = scriptName;
+                        //scriptCom.scriptList.back()->scriptName = scriptName;
                     }
 
                     if (ECGui::ButtonBool("Remove Script", { ImGui::GetColumnWidth(), 25 }))
