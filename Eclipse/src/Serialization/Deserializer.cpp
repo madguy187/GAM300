@@ -3,6 +3,11 @@
 
 namespace Eclipse
 {
+	void Deserializer::SetMonoScriptPointer(const std::string& scriptName, MonoScript*& att_data)
+	{
+		att_data = engine->mono.GetScriptPointerByName(scriptName);
+	}
+
 	Deserializer::Deserializer() :
 		_currElement{ 0 },
 		hasFile{ false }
