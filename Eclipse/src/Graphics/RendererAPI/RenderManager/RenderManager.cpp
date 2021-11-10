@@ -113,7 +113,7 @@ namespace Eclipse
         }
     }
 
-    void RenderManager::RenderSceneFromLightPOV(MeshComponent&, Entity)
+    void RenderManager::RenderSceneFromLightPOV(MeshComponent& Mesh, Entity entityID)
     {
         lightProjection = glm::ortho(-50.0f, 50.0f, -50.0f, 50.0f, near_plane, far_plane);
         lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
@@ -131,12 +131,6 @@ namespace Eclipse
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, 0);
         engine->MaterialManager.DoNotUpdateStencil();
-        //engine->AssimpManager.LightPerSpectiveDraw(Mesh, entityID, FrameBufferMode::FBM_SHADOW, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SHADOW),
-        //    CameraComponent::CameraType::Editor_Camera);
-
-        glActiveTexture(GL_TEXTURE16);
-        glBindTexture(GL_TEXTURE_2D, 0);
-
-        simpleDepthShader.UnUse();
+        engine->AssimpManager.RenderToDepth(Mesh, entityID, FrameBufferMode::FBM_SHADOW, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SHADOW),CameraComponent::CameraType::Editor_Camera);
     }
 }

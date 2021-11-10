@@ -73,6 +73,9 @@ namespace Eclipse
         void MeshEditorUniforms(Shader& _shdrpgm, CameraComponent& _camera, unsigned int ModelID);
         void CreateBasicPrimitives(Entity ID, const std::string& ModelName);
 
+        // For Shadows
+        void RenderToDepth(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType);
+
     public:
         // TEXTURES PUT HERE FIRST
         unsigned int Index = 0; // mesh index.

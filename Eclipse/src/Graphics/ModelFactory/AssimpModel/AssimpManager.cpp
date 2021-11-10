@@ -196,7 +196,7 @@ namespace Eclipse
         engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
         Shader shdrpgm = Graphics::shaderpgms["PBRShader"];
-       
+
         shdrpgm.Use();
 
         //gEnvironmentMap.CheckUniform(ModelMesh, _camera);
@@ -211,6 +211,30 @@ namespace Eclipse
         {
             RenderMesh(ModelMesh, GL_LINE);
         }
+    }
+
+    void AssimpModelManager::RenderToDepth(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType)
+    {
+        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
+        engine->gFrameBufferManager->UseFrameBuffer(Mode);
+
+        Shader shdrpgm = Graphics::shaderpgms["SimpleDepthShader"];
+        shdrpgm.Use();
+
+        TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(_camera.camType));
+        TransformComponent Transform = engine->world.GetComponent<TransformComponent>(ID);
+
+        GLuint model_ = shdrpgm.GetLocation("model");
+
+        glm::mat4 mModelNDC;
+        glm::mat4 model = glm::mat4(1.0f);
+
+        model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
+        model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+
+        RenderMesh(ModelMesh, GL_FILL);
     }
 
     void AssimpModelManager::DebugNormals(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode In, CameraComponent::CameraType _camType)
@@ -746,7 +770,7 @@ namespace Eclipse
             auto& animation = engine->world.GetComponent<AnimationComponent>(ModelID);
 
             glUniform1i(hasAnimation, true);
-         
+
             for (unsigned int i = 0; i < animation.m_Transforms.size(); ++i)
             {
                 std::string matrixName = "finalBonesMatrices[" + std::to_string(i) + "]";
