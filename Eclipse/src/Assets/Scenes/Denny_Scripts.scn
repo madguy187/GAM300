@@ -6,24 +6,24 @@
             <eyeBeta value="-90" />
             <fov value="55.3" />
             <nearPlane value="0.1" />
-            <farPlane value="500" />
-            <aspect value="2.18391" />
-            <eyePos x="-nan(ind)" y="-nan(ind)" z="-nan(ind)" />
-            <eyeFront x="1" y="0" z="0" />
-            <upVec x="0" y="1" z="0" />
-            <rightVec x="0" y="0" z="1" />
+            <farPlane value="300" />
+            <aspect value="2.13193" />
+            <eyePos x="6.65515" y="5.18138" z="13.9578" />
+            <eyeFront x="-0.539045" y="-0.202787" z="-0.817501" />
+            <upVec x="-0.111631" y="0.979223" z="-0.169296" />
+            <rightVec x="0.834847" y="0" z="-0.550482" />
             <worldUp x="0" y="1" z="0" />
             <viewMtx Col="4" Row="4">
-                <Col0 _00="-nan(ind)" _01="-nan(ind)" _02="nan" _03="0" />
-                <Col1 _10="-nan(ind)" _11="-nan(ind)" _12="nan" _13="0" />
-                <Col2 _20="-nan(ind)" _21="-nan(ind)" _22="nan" _23="0" />
-                <Col3 _30="nan" _31="nan" _32="-nan(ind)" _33="1" />
+                <Col0 _00="0.834847" _01="-0.111631" _02="0.539045" _03="0" />
+                <Col1 _10="2.23517e-08" _11="0.979223" _12="0.202787" _13="0" />
+                <Col2 _20="-0.550482" _21="-0.169296" _22="0.817501" _23="0" />
+                <Col3 _30="2.12747" _31="-1.96781" _32="-16.0486" _33="1" />
             </viewMtx>
             <projMtx Col="4" Row="4">
-                <Col0 _00="0.874014" _01="0" _02="0" _03="0" />
-                <Col1 _10="0" _11="1.90877" _12="0" _13="0" />
-                <Col2 _20="0" _21="0" _22="-1.0004" _23="-1" />
-                <Col3 _30="0" _31="0" _32="-0.20004" _33="0" />
+                <Col0 _00="0.895322" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="1.90876" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="-1.00067" _23="-1" />
+                <Col3 _30="0" _31="0" _32="-0.200067" _33="0" />
             </projMtx>
             <cameraSpeed value="50" />
             <camType value="Editor_Camera" />
@@ -36,27 +36,8 @@
             <hightLightChild value="true" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
-        <ScriptComponent>
-            <scriptList size="2">
-                <Member0 ScriptName="MouseLook">
-                    <MonoVariables size="0" />
-                </Member0>
-                <Member1 ScriptName="PlayerTouch">
-                    <MonoVariables size="0" />
-                </Member1>
-            </scriptList>
-            <LayerMask value="00000000000000000011" />
-        </ScriptComponent>
-        <ChildComponent>
-            <parentIndex value="10" />
-            <PosOffset x="-nan(ind)" y="-nan(ind)" z="-nan(ind)" />
-            <RotOffset x="0" y="0" z="0" />
-            <ScaleOffset x="1" y="1" z="1" />
-            <hasParent value="true" />
-            <IsAChild value="true" />
-        </ChildComponent>
         <TransformComponent>
-            <position x="-nan(ind)" y="-nan(ind)" z="-nan(ind)" />
+            <position x="6.65515" y="5.18138" z="13.9578" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
@@ -144,25 +125,6 @@
             <type value="MT_UNASSIGNED" />
             <ComboIndex value="0" />
         </ModelComponent>
-        <ScriptComponent>
-            <scriptList size="1">
-                <Member0 ScriptName="PlayerMovement">
-                    <MonoVariables size="0" />
-                </Member0>
-            </scriptList>
-            <LayerMask value="00000000000000000011" />
-        </ScriptComponent>
-        <ParentComponent>
-            <child size="1">
-                <Member0 value="8" />
-            </child>
-            <model Col="4" Row="4">
-                <Col0 _00="1" _01="0" _02="0" _03="0" />
-                <Col1 _10="0" _11="1" _12="0" _13="0" />
-                <Col2 _20="0" _21="0" _22="1" _23="0" />
-                <Col3 _30="0" _31="3.87267" _32="0" _33="1" />
-            </model>
-        </ParentComponent>
         <TransformComponent>
             <position x="0" y="3.87267" z="0" />
             <rotation x="0" y="0" z="0" />

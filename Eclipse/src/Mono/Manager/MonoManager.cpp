@@ -617,12 +617,12 @@ namespace Eclipse
 		std::wstring test{ buffer };
 		std::string test2{ test.begin(), test.end() };
 		std::string cmdCall = "cmd /C ";
-		size_t index = test2.find("Eclipse");
+		size_t index = test2.find("bin");
 		if (index == test2.npos) return;
 
 		test2 = test2.substr(0, index);
-		std::string apiPath = test2 + "Dep//mono//bin//mcs_api.bat";
-		std::string scriptPath = test2 + "Dep//mono//bin//mcs_scripts.bat";
+		std::string apiPath = '"' + test2 + "Dep//mono//bin//mcs_api.bat" + '"';
+		std::string scriptPath = '"' + test2 + "Dep//mono//bin//mcs_scripts.bat" + '"';
 
 		system((cmdCall + apiPath).c_str());
 		system((cmdCall + scriptPath).c_str());
