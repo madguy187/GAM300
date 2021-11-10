@@ -242,7 +242,6 @@ namespace Eclipse
 	{
 		if (ECGui::IsMouseClicked(0) && !ImGuizmo::IsUsing())
 		{
-			//std::cout << "picking being used" << std::endl;
 			engine->world.GetSystem<PickingSystem>()->EditorUpdate();
 
 			if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)

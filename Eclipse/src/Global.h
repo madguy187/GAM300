@@ -131,6 +131,8 @@ enum class PayloadTargetType
 	PTT_WINDOW,
 	PTT_INDEXEDIT,
     PTT_ASSETS,
+    PTT_SCRIPT_LIGHT,
+    PTT_SCRIPT_AUDIO,
 	PTT_UNASSIGNED
 };
 
@@ -259,6 +261,17 @@ struct MonoVariable
     std::string varName = "";
     std::string varValue = "";
 };
+
+enum class AnimationState
+{
+    IDLE,
+    MOTION,
+    RUN,
+    DANCE,
+    WALK,
+    INVALID
+};
+
 
 enum class TestState
 {

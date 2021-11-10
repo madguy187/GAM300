@@ -424,6 +424,7 @@ namespace Eclipse
 
 	}
 
+	//TODO FOR JIANHERNG
 	struct MaterialNode
 	{
 
@@ -1386,17 +1387,18 @@ namespace Eclipse
 			return nodes.back().get();
 		}
 
+		//TODO JIANHERNG PLSSSS PAPA
 		ImNodesEditorContext* context = nullptr;
 		std::vector<std::shared_ptr<Node>>     nodes;
 		std::vector<Link>     links;
 		int                   current_id = 0;
-
+		
 		bool initialized = false;
 		bool BaseNodeExist = false;
 		int m_context_link = 0;
 		int m_context_node = 0;
 
-
+		//
 		int findMaterialNodePos(MaterialNode editor, int id);
 
 		void DrawMaterialNodeEditor(const char* graphName, MaterialNode& editor);

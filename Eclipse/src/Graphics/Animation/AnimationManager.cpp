@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AnimationManager.h"
+#include "Global.h"
 
 void Eclipse::AnimationManager::RecurseChildren(AssimpNodeData& nodeData, std::fstream& AnimationFileRead)
 {
@@ -203,6 +204,10 @@ AnimationState Eclipse::AnimationManager::InitAnimationState(std::string modelNa
     else if (modelName.compare("MutantMesh") == 0)
     {
         return AnimationState::DANCE;
+    }
+    else if (modelName.compare("Body") == 0)
+    {
+        return AnimationState::WALK;
     }
     else
     {
