@@ -4,24 +4,24 @@
         <CameraComponent>
             <eyeAlpha value="0" />
             <eyeBeta value="-90" />
-            <fov value="55.3" />
+            <fov value="53.6" />
             <nearPlane value="0.1" />
             <farPlane value="300" />
             <aspect value="2.13193" />
-            <eyePos x="6.65515" y="5.18138" z="13.9578" />
-            <eyeFront x="-0.539045" y="-0.202787" z="-0.817501" />
-            <upVec x="-0.111631" y="0.979223" z="-0.169296" />
-            <rightVec x="0.834847" y="0" z="-0.550482" />
+            <eyePos x="-17.1143" y="4.10181" z="6.14117" />
+            <eyeFront x="0.911665" y="-0.159881" z="-0.378556" />
+            <upVec x="0.147658" y="0.987136" z="-0.0613128" />
+            <rightVec x="0.38349" y="-0" z="0.923545" />
             <worldUp x="0" y="1" z="0" />
             <viewMtx Col="4" Row="4">
-                <Col0 _00="0.834847" _01="-0.111631" _02="0.539045" _03="0" />
-                <Col1 _10="2.23517e-08" _11="0.979223" _12="0.202787" _13="0" />
-                <Col2 _20="-0.550482" _21="-0.169296" _22="0.817501" _23="0" />
-                <Col3 _30="2.12747" _31="-1.96781" _32="-16.0486" _33="1" />
+                <Col0 _00="0.383489" _01="0.147657" _02="-0.911665" _03="0" />
+                <Col1 _10="3.35276e-08" _11="0.987136" _12="0.159881" _13="0" />
+                <Col2 _20="0.923545" _21="-0.0613127" _22="0.378556" _23="0" />
+                <Col3 _30="0.891503" _31="-1.14546" _32="-18.5831" _33="1" />
             </viewMtx>
             <projMtx Col="4" Row="4">
-                <Col0 _00="0.895322" _01="0" _02="0" _03="0" />
-                <Col1 _10="0" _11="1.90876" _12="0" _13="0" />
+                <Col0 _00="0.928578" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="1.97966" _12="0" _13="0" />
                 <Col2 _20="0" _21="0" _22="-1.00067" _23="-1" />
                 <Col3 _30="0" _31="0" _32="-0.200067" _33="0" />
             </projMtx>
@@ -37,7 +37,7 @@
             <ImguiIndentValue value="20" />
         </EntityComponent>
         <TransformComponent>
-            <position x="6.65515" y="5.18138" z="13.9578" />
+            <position x="-17.1143" y="4.10181" z="6.14117" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
@@ -72,9 +72,9 @@
     </Entity_1>
     <Entity_2 ID="10">
         <AABBComponent>
-            <center x="0" y="3.87267" z="0" />
-            <Min x="-2.5" y="1.37267" z="-2.5" />
-            <Max x="2.5" y="6.37267" z="2.5" />
+            <center x="0" y="2.56959" z="0.851583" />
+            <Min x="-1" y="0.56959" z="-0.148417" />
+            <Max x="1" y="4.56959" z="1.85158" />
         </AABBComponent>
         <EntityComponent>
             <Tag value="Cylinder" />
@@ -125,21 +125,35 @@
             <type value="MT_UNASSIGNED" />
             <ComboIndex value="0" />
         </ModelComponent>
+        <RigidBodyComponent>
+            <velocity x="0" y="0" z="0" />
+            <Angvelocity x="0" y="0" z="0" />
+            <MaxVelocity value="10" />
+            <mass value="1" />
+            <drag value="0" />
+            <angdrag value="0" />
+            <_Kinematic value="false" />
+            <enableGravity value="true" />
+            <enableRotation value="false" />
+        </RigidBodyComponent>
+        <CollisionComponent>
+            <shape Shape="Px_CUBE" Hx="1" Hy="2" Hz="1" Radius="1" Hheight="1" />
+        </CollisionComponent>
         <TransformComponent>
-            <position x="0" y="3.87267" z="0" />
+            <position x="0" y="2.56959" z="0.851583" />
             <rotation x="0" y="0" z="0" />
-            <scale x="5" y="5" z="5" />
+            <scale x="2" y="4" z="2" />
         </TransformComponent>
     </Entity_2>
     <Entity_3 ID="11">
         <AABBComponent>
             <center x="0" y="0" z="0" />
-            <Min x="-2.5" y="-2.5" z="-2.5" />
-            <Max x="2.5" y="2.5" z="2.5" />
+            <Min x="-10" y="-0.5" z="-10" />
+            <Max x="10" y="0.5" z="10" />
         </AABBComponent>
         <EntityComponent>
-            <Tag value="Planes" />
-            <Name value="Planes" />
+            <Tag value="Cube" />
+            <Name value="Floor" />
             <LayerIndex value="0" />
             <hightLightChild value="false" />
             <ImguiIndentValue value="20" />
@@ -164,7 +178,7 @@
             <MaterialInstanceName value="" />
         </MaterialComponent>
         <MeshComponent>
-            <MeshName value="Plane" />
+            <MeshName value="Cube" />
             <color x="1" y="1" z="1" />
             <textureIdx x="0" y="0" />
             <isQuad value="false" />
@@ -186,10 +200,13 @@
             <type value="MT_UNASSIGNED" />
             <ComboIndex value="0" />
         </ModelComponent>
+        <CollisionComponent>
+            <shape Shape="Px_CUBE" Hx="10" Hy="0.5" Hz="10" Radius="1" Hheight="1" />
+        </CollisionComponent>
         <TransformComponent>
             <position x="0" y="0" z="0" />
             <rotation x="0" y="0" z="0" />
-            <scale x="5" y="5" z="5" />
+            <scale x="20" y="1" z="20" />
         </TransformComponent>
     </Entity_3>
 </Entities>
