@@ -228,9 +228,9 @@ namespace Eclipse
 		m_agentHeight = navmeshcomp.AgentHeight;
 		m_agentMaxClimb = navmeshcomp.JumpDistance;
 		m_agentRadius = navmeshcomp.AgentRadius;
-		m_edgeMaxLen = 512;
+		m_edgeMaxLen = 12;
 		m_edgeMaxError = 1.3;
-		m_regionMinSize = 50;
+		m_regionMinSize = 8;
 		m_regionMergeSize = 20;
 		m_vertsPerPoly = 6;
 		m_detailSampleDist = 6;
@@ -615,7 +615,7 @@ namespace Eclipse
 
 	void NavMeshManager::RenderMesh()
 	{
-			if (!m_geom || !m_geom->getMesh())
+			if (!m_navMesh)
 				return;
 
 			glEnable(GL_FOG);
@@ -623,45 +623,37 @@ namespace Eclipse
 
 			const float texScale = 1.0f / (m_cellSize * 10.0f);
 
-			if (m_drawMode != DRAWMODE_NAVMESH_TRANS)
+
+			//// Draw mesh
+			//duDebugDrawTriMeshSlope(&m_dd, m_geom->getMesh()->getVerts(), m_geom->getMesh()->getVertCount(),
+			//	m_geom->getMesh()->getTris(), m_geom->getMesh()->getNormals(), m_geom->getMesh()->getTriCount(),
+			//	m_agentMaxSlope, texScale);
+			//m_geom->drawOffMeshConnections(&m_dd);
+
+			//glDisable(GL_FOG);
+			//glDepthMask(GL_FALSE);
+
+			//// Draw bounds
+			//const float* bmin = m_geom->getNavMeshBoundsMin();
+			//const float* bmax = m_geom->getNavMeshBoundsMax();
+			//duDebugDrawBoxWire(&m_dd, bmin[0], bmin[1], bmin[2], bmax[0], bmax[1], bmax[2], duRGBA(255, 255, 255, 128), 1.0f);
+			//m_dd.begin(DU_DRAW_POINTS, 5.0f);
+			//m_dd.vertex(bmin[0], bmin[1], bmin[2], duRGBA(255, 255, 255, 128));
+			//m_dd.end();
+
+			if (m_navMesh && m_navQuery)
 			{
-				// Draw mesh
-				duDebugDrawTriMeshSlope(&m_dd, m_geom->getMesh()->getVerts(), m_geom->getMesh()->getVertCount(),
-					m_geom->getMesh()->getTris(), m_geom->getMesh()->getNormals(), m_geom->getMesh()->getTriCount(),
-					m_agentMaxSlope, texScale);
-				m_geom->drawOffMeshConnections(&m_dd);
-			}
-
-			glDisable(GL_FOG);
-			glDepthMask(GL_FALSE);
-
-			// Draw bounds
-			const float* bmin = m_geom->getNavMeshBoundsMin();
-			const float* bmax = m_geom->getNavMeshBoundsMax();
-			duDebugDrawBoxWire(&m_dd, bmin[0], bmin[1], bmin[2], bmax[0], bmax[1], bmax[2], duRGBA(255, 255, 255, 128), 1.0f);
-			m_dd.begin(DU_DRAW_POINTS, 5.0f);
-			m_dd.vertex(bmin[0], bmin[1], bmin[2], duRGBA(255, 255, 255, 128));
-			m_dd.end();
-
-			if (m_navMesh && m_navQuery &&
-				(m_drawMode == DRAWMODE_NAVMESH ||
-					m_drawMode == DRAWMODE_NAVMESH_TRANS ||
-					m_drawMode == DRAWMODE_NAVMESH_BVTREE ||
-					m_drawMode == DRAWMODE_NAVMESH_NODES ||
-					m_drawMode == DRAWMODE_NAVMESH_INVIS))
-			{
-				if (m_drawMode != DRAWMODE_NAVMESH_INVIS)
 					duDebugDrawNavMeshWithClosedList(&m_dd, *m_navMesh, *m_navQuery, m_navMeshDrawFlags);
-				if (m_drawMode == DRAWMODE_NAVMESH_BVTREE)
+				/*if (m_drawMode == DRAWMODE_NAVMESH_BVTREE)
 					duDebugDrawNavMeshBVTree(&m_dd, *m_navMesh);
 				if (m_drawMode == DRAWMODE_NAVMESH_NODES)
-					duDebugDrawNavMeshNodes(&m_dd, *m_navQuery);
-				duDebugDrawNavMeshPolysWithFlags(&m_dd, *m_navMesh, SAMPLE_POLYFLAGS_DISABLED, duRGBA(0, 0, 0, 128));
+					duDebugDrawNavMeshNodes(&m_dd, *m_navQuery);*/
+				duDebugDrawNavMeshPolysWithFlags(&m_dd, *m_navMesh, SAMPLE_POLYFLAGS_WALK, duRGBA(0, 0, 0, 128));
 			}
 
 			glDepthMask(GL_TRUE);
 
-			if (m_chf && m_drawMode == DRAWMODE_COMPACT)
+			/*if (m_chf && m_drawMode == DRAWMODE_COMPACT)
 				duDebugDrawCompactHeightfieldSolid(&m_dd, *m_chf);
 
 			if (m_chf && m_drawMode == DRAWMODE_COMPACT_DISTANCE)
@@ -718,15 +710,18 @@ namespace Eclipse
 				glDepthMask(GL_FALSE);
 				duDebugDrawPolyMeshDetail(&m_dd, *m_dmesh);
 				glDepthMask(GL_TRUE);
-			}
+			}*/
 
-			m_geom->drawConvexVolumes(&m_dd);
+			glDepthMask(GL_FALSE);
+			duDebugDrawPolyMeshDetail(&m_dd, *m_dmesh);
+			glDepthMask(GL_TRUE);
 
-			if (m_tool)
+			//m_geom->drawConvexVolumes(&m_dd);
+
+		/*	if (m_tool)
 				m_tool->handleRender();
-			renderToolStates();
+			renderToolStates();*/
 
 			glDepthMask(GL_TRUE);
-		}
 	}
 }

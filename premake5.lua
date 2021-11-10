@@ -79,8 +79,7 @@ project "Eclipse"
 		"Dep/Recast&Detour/DetourCrowd/Include",
 		"Dep/Recast&Detour/DetourTileCache/Include",
 		"Dep/Recast&Detour/Recast/Include",
-		"Dep/Recast&Detour/Include",
-		"Dep/Recast&Detour/Source",
+		"Dep/Recast&Detour/SDL/include",
 		"Eclipse/src/Editor/Windows/NodeEditor/ImNodes"
 	}
 
@@ -110,7 +109,8 @@ project "Eclipse"
 	  "Dep/ASSIMP/",
 	  "Dep/Fmod/core/lib/x64",
 	  "Dep/Tracy",
-	  "Dep/Recast&Detour/lib/Debug"
+	  "Dep/Recast&Detour/lib/Debug",
+	  "Dep/Recast&Detour/SDL/lib/x64"
   }
   
   disablewarnings 
@@ -155,7 +155,10 @@ project "Eclipse"
 	  "Detour.lib",
 	  "DetourCrowd.lib",
 	  "DetourTileCache.lib",
-	  "Recast.lib"
+	  "Recast.lib",
+	  "SDL2.lib",
+	  "SDL2main.lib",
+	  "SDL2test.lib"
   }
 
   postbuildcommands
@@ -177,7 +180,7 @@ project "Eclipse"
     "{COPY} ../Dep/GLEW/bin/Release/x64/glew32.dll %{cfg.targetdir}",
     "{COPY} ../Dep/GLFW/lib-mingw-w64/glfw3.dll %{cfg.targetdir}",
 	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.dll ../Eclipse",
-	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.lib ../Eclipse"
+	  "{COPY} ../Dep/ASSIMP/assimp-vc142-mtd.lib ../Eclipse",
   }
 
 	filter "configurations:Release"
@@ -193,7 +196,8 @@ project "Eclipse"
 	  "Dep/ASSIMP/",
 	  "Dep/Fmod/core/lib/x64",
 	  "Dep/Tracy",
-	  "Dep/Recast&Detour/lib/Release"
+	  "Dep/Recast&Detour/lib/Release",
+	  "Dep/Recast&Detour/SDL/lib/x64"
   }
   
   disablewarnings 
@@ -232,10 +236,14 @@ project "Eclipse"
 	  "fmod_vc.lib",
     "fmodstudio64_vc.lib",
 	  "TracyProfiler.lib",
+	  "DebugUtils.lib" ,
 	  "Detour.lib",
 	  "DetourCrowd.lib",
 	  "DetourTileCache.lib",
-	  "Recast.lib"
+	  "Recast.lib",
+	  "SDL2.lib",
+	  "SDL2main.lib",
+	  "SDL2test.lib"
   }
 
   postbuildcommands

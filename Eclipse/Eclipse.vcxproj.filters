@@ -322,6 +322,9 @@
     <Filter Include="NavMesh">
       <UniqueIdentifier>{B7C6C562-23A6-44FE-2CBE-CFD4981CAB5F}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NavMesh\Source">
+      <UniqueIdentifier>{D74082AC-C30E-76B2-ACA2-E6D8980F5217}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Physics">
       <UniqueIdentifier>{888B590D-F46A-D8A8-FD82-637F69E13E0A}</UniqueIdentifier>
     </Filter>
@@ -934,6 +937,42 @@
     <ClInclude Include="src\NavMesh\NavMeshManager.h">
       <Filter>NavMesh</Filter>
     </ClInclude>
+    <ClInclude Include="src\NavMesh\Source\ChunkyTriMesh.h">
+      <Filter>NavMesh\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NavMesh\Source\ConvexVolumeTool.h">
+      <Filter>NavMesh\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NavMesh\Source\Filelist.h">
+      <Filter>NavMesh\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NavMesh\Source\InputGeom.h">
+      <Filter>NavMesh\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NavMesh\Source\MeshLoaderObj.h">
+      <Filter>NavMesh\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NavMesh\Source\PerfTimer.h">
+      <Filter>NavMesh\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NavMesh\Source\Sample.h">
+      <Filter>NavMesh\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NavMesh\Source\SampleInterfaces.h">
+      <Filter>NavMesh\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NavMesh\Source\Sample_Debug.h">
+      <Filter>NavMesh\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NavMesh\Source\ValueHistory.h">
+      <Filter>NavMesh\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NavMesh\Source\imgui.h">
+      <Filter>NavMesh\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NavMesh\Source\imguiRenderGL.h">
+      <Filter>NavMesh\Source</Filter>
+    </ClInclude>
     <ClInclude Include="src\Physics\PhysicsManager.h">
       <Filter>Physics</Filter>
     </ClInclude>
@@ -1389,6 +1428,42 @@
     </ClCompile>
     <ClCompile Include="src\NavMesh\NavMeshManager.cpp">
       <Filter>NavMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NavMesh\Source\ChunkyTriMesh.cpp">
+      <Filter>NavMesh\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NavMesh\Source\ConvexVolumeTool.cpp">
+      <Filter>NavMesh\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NavMesh\Source\Filelist.cpp">
+      <Filter>NavMesh\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NavMesh\Source\InputGeom.cpp">
+      <Filter>NavMesh\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NavMesh\Source\MeshLoaderObj.cpp">
+      <Filter>NavMesh\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NavMesh\Source\PerfTimer.cpp">
+      <Filter>NavMesh\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NavMesh\Source\Sample.cpp">
+      <Filter>NavMesh\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NavMesh\Source\SampleInterfaces.cpp">
+      <Filter>NavMesh\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NavMesh\Source\Sample_Debug.cpp">
+      <Filter>NavMesh\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NavMesh\Source\ValueHistory.cpp">
+      <Filter>NavMesh\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NavMesh\Source\imgui.cpp">
+      <Filter>NavMesh\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NavMesh\Source\imguiRenderGL.cpp">
+      <Filter>NavMesh\Source</Filter>
     </ClCompile>
     <ClCompile Include="src\Physics\PhysicsManager.cpp">
       <Filter>Physics</Filter>

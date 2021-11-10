@@ -195,7 +195,7 @@ namespace Eclipse
             }
 
             engine->AssimpManager.MeshEditor_.Render();
-
+            engine->gNavMesh.RenderMesh();
             // Frustrum
             if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
             {

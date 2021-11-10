@@ -6,8 +6,9 @@
 #include "DetourDebugDraw.h"
 #include "RecastDebugDraw.h"
 #include "ECS/ComponentManager/Components/NavMeshVolumeComponent.h"
-#include "InputGeom.h"
-
+#include "Source/Sample.h"
+#include "Source/InputGeom.h"
+#include "Source/SampleInterfaces.h"
 #define MAX_PATHSLOT		128 // how many paths we can store
 #define MAX_PATHPOLY		256 // max number of polygons in a path
 #define MAX_PATHVERT		512 // most verts in a path 
@@ -27,23 +28,6 @@ PATHDATA;
 // The use should specify these base on his needs.
 
 // bzn most aren't used yet, just SAMPLE_POLYAREA_GROUND and SAMPLE_POLYFLAGS_WALK
-enum SamplePolyAreas
-{
-	SAMPLE_POLYAREA_GROUND,
-	SAMPLE_POLYAREA_WATER,
-	SAMPLE_POLYAREA_ROAD,
-	SAMPLE_POLYAREA_DOOR,
-	SAMPLE_POLYAREA_GRASS,
-	SAMPLE_POLYAREA_JUMP,
-};
-enum SamplePolyFlags
-{
-	SAMPLE_POLYFLAGS_WALK = 0x01,		// Ability to walk (ground, grass, road)
-	SAMPLE_POLYFLAGS_SWIM = 0x02,		// Ability to swim (water).
-	SAMPLE_POLYFLAGS_DOOR = 0x04,		// Ability to move through doors.
-	SAMPLE_POLYFLAGS_JUMP = 0x08,		// Ability to jump.
-	SAMPLE_POLYFLAGS_ALL = 0xffff		// All abilities.
-};
 
 namespace Eclipse
 {
@@ -58,13 +42,12 @@ namespace Eclipse
 		rcConfig m_cfg;
 		rcPolyMeshDetail* m_dmesh;
 
-		class InputGeom* m_geom;
 		class dtNavMesh* m_navMesh;
 		class dtNavMeshQuery* m_navQuery;
-		unsigned char m_navMeshDrawFlags;
+		unsigned char m_navMeshDrawFlags{ DU_DRAWNAVMESH_CLOSEDLIST };
 
 		rcContext* m_ctx;
-
+		SampleDebugDraw m_dd;
 		float m_cellSize;
 		float m_cellHeight;
 		float m_agentHeight;
