@@ -3,10 +3,10 @@
 
 namespace Eclipse
 {
-    glm::vec3 lightPos(-200.0f, 400.0f, -100.0f);
+    glm::vec3 lightPos(-20.0f, 40.0f, -10.0f);
     glm::mat4 lightProjection, lightView;
     glm::mat4 lightSpaceMatrix;
-    float near_plane = 1.0f, far_plane = 500.5f;
+    float near_plane = 1.0f, far_plane = 100.0f;
 
     void RenderManager::RenderScene(MeshComponent& Mesh, Entity entityID)
     {
@@ -28,6 +28,29 @@ namespace Eclipse
             {
                 // If no post process , just render normally
                 engine->MaterialManager.UpdateStencilWithActualObject(entityID);
+                
+
+                auto& Camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+                auto& CameraPos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+                auto& ShadowMappingShader = Graphics::shaderpgms["PBRShader"];
+                ShadowMappingShader.Use();
+
+                GLint projection_ = ShadowMappingShader.GetLocation("projection");
+                GLint view_ = ShadowMappingShader.GetLocation("view");
+
+                glUniformMatrix4fv(projection_, 1, GL_FALSE, glm::value_ptr(Camera.projMtx));
+                glUniformMatrix4fv(view_, 1, GL_FALSE, glm::value_ptr(Camera.viewMtx));
+
+                GLint viewPos_ = ShadowMappingShader.GetLocation("viewPos");
+                GLint lightPos_ = ShadowMappingShader.GetLocation("lightPos");
+                GLint lightSpaceMatrix_1 = ShadowMappingShader.GetLocation("lightSpaceMatrix");
+
+                glUniform3f(viewPos_, CameraPos.position.getX(), CameraPos.position.getY(), CameraPos.position.getZ());
+                glUniform3f(lightPos_, lightPos.x, lightPos.y, lightPos.z);
+                glUniformMatrix4fv(lightSpaceMatrix_1, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+
+                glActiveTexture(GL_TEXTURE0 + 2);
+                ShadowMappingShader.setInt("shadowMap", 2); 
 
                 engine->AssimpManager.MeshDraw(Mesh, entityID,
                     FrameBufferMode::FBM_SCENE,
@@ -115,6 +138,9 @@ namespace Eclipse
 
     void RenderManager::UpdateLightMatrix()
     {
+        auto& Camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+        auto& CameraPos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+
         lightProjection = glm::ortho(-50.0f, 50.0f, -50.0f, 50.0f, near_plane, far_plane);
         lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
         lightSpaceMatrix = lightProjection * lightView;
@@ -132,16 +158,16 @@ namespace Eclipse
         //glActiveTexture(GL_TEXTURE0);
         //glBindTexture(GL_TEXTURE_2D, 0);
 
-        lightProjection = glm::ortho(-50.0f, 50.0f, -50.0f, 50.0f, near_plane, far_plane);
-        lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
-        lightSpaceMatrix = lightProjection * lightView;
-
-        // render scene from light's point of view
-        auto& simpleDepthShader = Graphics::shaderpgms["SimpleDepthShader"];
-        simpleDepthShader.Use();
-
-        GLint lightSpaceMatrix_ = simpleDepthShader.GetLocation("lightSpaceMatrix");
-        glUniformMatrix4fv(lightSpaceMatrix_, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+       //lightProjection = glm::ortho(-50.0f, 50.0f, -50.0f, 50.0f, near_plane, far_plane);
+       //lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+       //lightSpaceMatrix = lightProjection * lightView;
+       //
+       //// render scene from light's point of view
+       //auto& simpleDepthShader = Graphics::shaderpgms["SimpleDepthShader"];
+       //simpleDepthShader.Use();
+       //
+       //GLint lightSpaceMatrix_ = simpleDepthShader.GetLocation("lightSpaceMatrix");
+       //glUniformMatrix4fv(lightSpaceMatrix_, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 
         engine->MaterialManager.DoNotUpdateStencil();
         engine->AssimpManager.RenderToDepth(Mesh, entityID, FrameBufferMode::FBM_SHADOW, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SHADOW), CameraComponent::CameraType::Editor_Camera);

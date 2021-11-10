@@ -43,7 +43,7 @@ namespace Eclipse
         engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
         engine->GraphicsManager.UploadGlobalUniforms();
-        //Renderer.UpdateLightMatrix();
+        Renderer.UpdateLightMatrix();
 
         if (engine->GraphicsManager.CheckRender == true)
         {
@@ -52,6 +52,13 @@ namespace Eclipse
 
             engine->MaterialManager.DoNotUpdateStencil();
             engine->GraphicsManager.RenderSky(FrameBufferMode::FBM_SCENE);
+
+
+            for (auto const& entityID : mEntities)
+            {
+                MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
+                Renderer.RenderSceneFromLightPOV(Mesh, entityID);
+            }
 
             for (auto const& entityID : mEntities)
             {
@@ -74,19 +81,12 @@ namespace Eclipse
                 // After hot-realoding , we check if he still exists or not
                 if (engine->AssimpManager.CheckGeometryExist(Mesh))
                 {
-                    //Renderer.RenderScene(Mesh, entityID);
+                    Renderer.RenderScene(Mesh, entityID);
+
+                    //Renderer.RenderSceneNormally(Mesh, entityID);
                     Renderer.RenderGame(Mesh, entityID);
                     Renderer.RenderOtherViews(Mesh, entityID);
-
-                    //
-                    Renderer.RenderSceneFromLightPOV(Mesh, entityID);
                 }
-            }
-
-            for (auto const& entityID : mEntities)
-            {
-                MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
-                Renderer.RenderSceneNormally(Mesh, entityID);
             }
 
             engine->AssimpManager.MeshEditor_.Render();

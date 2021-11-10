@@ -195,9 +195,11 @@ namespace Eclipse
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
         engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
-        Shader shdrpgm = Graphics::shaderpgms["PBRShader"];
-
+        Shader shdrpgm = Graphics::shaderpgms["PBRShader"];        
         shdrpgm.Use();
+
+        auto& Camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+        auto& CameraPos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
 
         //gEnvironmentMap.CheckUniform(ModelMesh, _camera);
         ChecModelkUniforms(shdrpgm, _camera, ID);
@@ -231,6 +233,7 @@ namespace Eclipse
         model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
 
         GLuint model_ = shdrpgm.GetLocation("model");
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
