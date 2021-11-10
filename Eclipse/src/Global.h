@@ -262,6 +262,17 @@ struct MonoVariable
     std::string varValue = "";
 };
 
+enum class AnimationState
+{
+    IDLE,
+    MOTION,
+    RUN,
+    DANCE,
+    WALK,
+    INVALID
+};
+
+
 enum class TestState
 {
     //TS_STOP = -1,

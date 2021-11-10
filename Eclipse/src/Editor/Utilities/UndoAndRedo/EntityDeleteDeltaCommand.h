@@ -93,6 +93,7 @@ namespace Eclipse
 				}
 			}
 
+			engine->editorManager->SetSelectedEntity(newID);
 			m_pcEntities.clear();
 			ParentToFamily.clear();
 		}

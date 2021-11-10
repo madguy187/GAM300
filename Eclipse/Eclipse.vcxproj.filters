@@ -654,7 +654,7 @@
     <ClInclude Include="src\Events\Events.h">
       <Filter>Events</Filter>
     </ClInclude>
-    <ClInclude Include="src\FSM\FSM\FiniteStateMachine.h">
+    <ClInclude Include="src\FSM\FiniteStateMachine.h">
       <Filter>FSM\FSM</Filter>
     </ClInclude>
     <ClInclude Include="src\FSM\States\TestingFSM\TestingFSM.h">
@@ -1031,6 +1031,8 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\FSM\Manager\FSMManager.h" />
+    <ClInclude Include="src\FSM\States\FrogFSM\FrogFSM.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1496,5 +1498,7 @@
       <Filter>Tracy</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\FSM\Manager\FSMManager.cpp" />
+    <ClCompile Include="src\FSM\States\FrogFSM\FrogFSM.cpp" />
   </ItemGroup>
 </Project>
