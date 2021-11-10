@@ -20,7 +20,7 @@ namespace Eclipse
 
 		Backup backup;
 
-		class ParentChildPostUpdate
+		class PostUpdate
 		{
 			std::map<Entity, Entity> oldToNewMap;
 		public:
@@ -28,11 +28,11 @@ namespace Eclipse
 
 			void RegisterForPostUpdate(World& w, const Entity& oldEnt, const Entity& newEnt);
 
-			void PostUpdate();
+			void RunPostUpdate();
 
 			void Clear();
 
-		} PCPostUpdate;
+		} pUpdate;
 
 		template <typename CompType>
 		inline void SerializeComponent(World& w, const Entity& ent)

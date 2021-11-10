@@ -15,7 +15,7 @@ namespace Eclipse
 				if (!script->obj)
 				{
 					script->obj = engine->mono.CreateMonoObject(script->scriptName, entity);
-					//engine->mono.LoadAllFields(&script);
+					engine->mono.LoadVariable(script);
 				}
 			}
 

@@ -90,17 +90,17 @@ namespace Eclipse
 		ENGINE_LOG_ASSERT(domain, "Domain could not be created");
 
 		// RigidBody Internal Calls
-		mono_add_internal_call("Eclipse.RigidBody::Add_Force", AddForce);
-		mono_add_internal_call("Eclipse.RigidBody::getMass", getMass);
-		mono_add_internal_call("Eclipse.RigidBody::getX", getX);
-		mono_add_internal_call("Eclipse.RigidBody::getY", getY);
-		mono_add_internal_call("Eclipse.RigidBody::getZ", getZ);
+		mono_add_internal_call("Eclipse.Rigidbody::Add_Force", AddForce);
+		mono_add_internal_call("Eclipse.Rigidbody::getMass", getMass);
+		mono_add_internal_call("Eclipse.Rigidbody::getX", getX);
+		mono_add_internal_call("Eclipse.Rigidbody::getY", getY);
+		mono_add_internal_call("Eclipse.Rigidbody::getZ", getZ);
 
 		// Input Internal Calls
 		mono_add_internal_call("Eclipse.Input::GetButtonDown", GetKeyCurrentByName);
 		mono_add_internal_call("Eclipse.Input::GetKey", GetKeyCurrentByKeyCode);
 		mono_add_internal_call("Eclipse.Input::GetAxis", GetMouseAxis);
-		mono_add_internal_call("Eclipse.Input::GetRawAxis", GetRawMouseAxis);
+		mono_add_internal_call("Eclipse.Input::GetAxisRaw", GetRawMouseAxis);
 
 		// Time Internal Calls
 		mono_add_internal_call("Eclipse.Time::getDeltaTime", GetDeltaTime);
@@ -138,19 +138,27 @@ namespace Eclipse
 		StartMono();
 	}
 
-	void MonoManager::LoadVariable(MonoScript* script)
+	void MonoManager::LoadVariable(MonoScript*& script)
 	{
+		float test = 5.0f;
+		M_LIGHT light;
 		for (auto& var : script->vars)
 		{
+			light.ent = std::strtoul(var.varValue.c_str(), 0, 10);
 			switch (var.type)
 			{
 			case m_Type::MONO_AUDIO:
 				
 				break;
 			case m_Type::MONO_LIGHT:
-				mono_field_set_value(script->obj, var.field, CreateLightClass(std::strtoul(var.varValue.c_str(), 0, 10)));
+				//mono_field_set_value(script->obj, var.field, CreateLightClass(std::strtoul(var.varValue.c_str(), 0, 10)));
+				//mono_field_set_value(script->obj, var.field, &light);
+
 				break;
 			case m_Type::MONO_FLOAT:
+				//mono_field_get_value(script->obj, var.field, &test);
+				//std::cout << test << std::endl;
+				//mono_field_set_value(script->obj, var.field, &test);
 				break;
 			default:
 				break;
@@ -269,8 +277,6 @@ namespace Eclipse
 			case MONO_TYPE_R4:
 				var.type = m_Type::MONO_FLOAT;
 				var.varName = mono_field_get_name(field);
-				if (!CheckIfFieldExist(script, var.varName, i))
-					script->vars.insert(script->vars.begin() + i, var);
 				break;
 			case MONO_TYPE_VALUETYPE:
 				MonoClass* klass = mono_type_get_class(mono_field_get_type(field));
@@ -282,10 +288,14 @@ namespace Eclipse
 					var.type = m_Type::MONO_UNDEFINED;
 
 				var.varName = mono_field_get_name(field);
-				if (!CheckIfFieldExist(script, var.varName, i))
-					script->vars.insert(script->vars.begin() + i, var);
+				
 				break;
 			}
+
+			var.field = field;
+
+			if (!CheckIfFieldExist(script, var.varName, i))
+				script->vars.insert(script->vars.begin() + i, var);
 
 			i++;
 			
