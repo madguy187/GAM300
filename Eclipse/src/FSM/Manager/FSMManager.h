@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FSM/FSM/FiniteStateMachine.h"
+#include "FSM/FiniteStateMachine.h"
 
 namespace Eclipse
 {
