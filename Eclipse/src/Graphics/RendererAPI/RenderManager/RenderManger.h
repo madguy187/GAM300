@@ -18,6 +18,8 @@ namespace Eclipse
         void RenderOtherViews(MeshComponent& Mesh, Entity ID);
 
         // Shadow
+        void UpdateLightMatrix();
         void RenderSceneFromLightPOV(MeshComponent& , Entity );
+        void RenderSceneNormally(MeshComponent&, Entity);
     };
 }

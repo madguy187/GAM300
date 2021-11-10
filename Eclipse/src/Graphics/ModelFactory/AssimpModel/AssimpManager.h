@@ -75,6 +75,7 @@ namespace Eclipse
 
         // For Shadows
         void RenderToDepth(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType);
+        void RenderFromDepth(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType);
 
     public:
         // TEXTURES PUT HERE FIRST

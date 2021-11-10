@@ -224,8 +224,6 @@ namespace Eclipse
         TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(_camera.camType));
         TransformComponent Transform = engine->world.GetComponent<TransformComponent>(ID);
 
-        GLuint model_ = shdrpgm.GetLocation("model");
-
         glm::mat4 mModelNDC;
         glm::mat4 model = glm::mat4(1.0f);
 
@@ -234,6 +232,22 @@ namespace Eclipse
         model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
 
+        GLuint model_ = shdrpgm.GetLocation("model");
+        glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
+
+        RenderMesh(ModelMesh, GL_FILL);
+    }
+
+    void AssimpModelManager::RenderFromDepth(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType)
+    {
+        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
+        engine->gFrameBufferManager->UseFrameBuffer(Mode);
+
+        auto shdrpgm = Graphics::shaderpgms["ShadowMapping"];
+        shdrpgm.Use();
+
+        ChecModelkUniforms(shdrpgm, _camera, ID);
+        CheckUniforms(shdrpgm, ID, ModelMesh, _camera);
         RenderMesh(ModelMesh, GL_FILL);
     }
 
@@ -599,8 +613,8 @@ namespace Eclipse
 
     void AssimpModelManager::RenderMesh(MeshComponent& In, GLenum Mode)
     {
-        glEnable(GL_BLEND);
-        glEnable(GL_DEPTH_TEST);
+       //glEnable(GL_BLEND);
+       //glEnable(GL_DEPTH_TEST);
         //glDisable(GL_CULL_FACE);
 
         if (strcmp(In.MeshName.data(), "Plane") == 0)
