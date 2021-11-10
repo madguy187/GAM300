@@ -15,6 +15,5 @@ public class Test : EclipseBehavior
         Vector3 b = new Vector3(2, 2, 2);
 
         Console.WriteLine(Vector3.Distance(a, b));
-        Console.WriteLine(a * 3.0f);
     }
 }
