@@ -610,8 +610,22 @@ namespace Eclipse
 	void MonoManager::GenerateDLL()
 	{
 		ENGINE_CORE_INFO("Mono: Generating DLLs");
-		system("sh -c ../Dep/mono/bin/mcs_api.bat");
-		system("sh -c ../Dep/mono/bin/mcs_scripts.bat");
+		//system("sh -c ../Dep/mono/bin/mcs_api.bat");
+
+		TCHAR buffer[MAX_PATH] = { 0 };
+		GetModuleFileName(NULL, buffer, MAX_PATH);
+		std::wstring test{ buffer };
+		std::string test2{ test.begin(), test.end() };
+		std::string cmdCall = "cmd /C ";
+		size_t index = test2.find("Eclipse");
+		if (index == test2.npos) return;
+
+		test2 = test2.substr(0, index);
+		std::string apiPath = test2 + "Dep//mono//bin//mcs_api.bat";
+		std::string scriptPath = test2 + "Dep//mono//bin//mcs_scripts.bat";
+
+		system((cmdCall + apiPath).c_str());
+		system((cmdCall + scriptPath).c_str());
 		ENGINE_CORE_INFO("Mono: Successfully Generate DLLs");
 	}
 
