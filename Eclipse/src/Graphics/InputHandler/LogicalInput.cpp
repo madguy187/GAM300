@@ -278,7 +278,7 @@ namespace Eclipse
         float ratioY = 970.0f / 593.0f;
         float MiddleX = (1850.0f / 2) / ratioX;
         float MiddleY = (970.0f / 2) / ratioY;
-        glfwSetCursorPos(OpenGL_Context::ptr_window, MiddleX, MiddleY);
+        //glfwSetCursorPos(OpenGL_Context::ptr_window, MiddleX, MiddleY);
 
         // Prepare Axis
         XMiddle = MiddleX; // (OpenGL_Context::GetWidth() / 2) / ratioX;
