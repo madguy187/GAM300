@@ -121,7 +121,7 @@ namespace Eclipse
 
                 auto& ent = engine->world.GetComponent<EntityComponent>(ID);
 
-                if (ECGui::DrawSliderFloat3Widget("TransVec", &transCom.position, true, -100.f, 100.f, ID))
+                if (ECGui::DrawInputFloat3Widget("TransVec", &transCom.position, true, ID))
                 {
                     if (engine->world.CheckComponent<ChildComponent>(ID))
                     {
@@ -153,7 +153,7 @@ namespace Eclipse
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
 
-                if (ECGui::DrawSliderFloat3Widget("TransRot", &transCom.rotation, true, -360.f, 360.f, ID))
+                if (ECGui::DrawInputFloat3Widget("TransRot", &transCom.rotation, true, ID))
                 {
                     if (engine->world.CheckComponent<ChildComponent>(ID))
                     {
@@ -179,7 +179,7 @@ namespace Eclipse
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
 
-                ECGui::DrawSliderFloat3Widget("TransScale", &transCom.scale, true, -100.f, 100.f, ID);
+                ECGui::DrawInputFloat3Widget("TransScale", &transCom.scale, true, ID);
 
                 //Update for DynamicAABB Tree -Rachel
                 if (!IsNotInScene)
