@@ -1,17 +1,17 @@
 #pragma once
 
-#include "../../FiniteStateMachine.h"
+#include "../Base/FiniteStateMachine.h"
 #include "Global.h"
 
 namespace Eclipse
 {
-	class FrogFSM : public FSM<AnimationState>
+	class AnimationFSM : public FSM<AnimationState>
 	{
 	public:
-		FrogFSM(Entity ID);
 		void UpdateState(AnimationState state) override;
 		void BeginState(AnimationState state) override;
 		void EndState(AnimationState state) override;
+		void SetEntity(Entity ID);
 	private:
 		Entity m_ID{ MAX_ENTITY };
 	};
