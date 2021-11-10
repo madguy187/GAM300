@@ -562,6 +562,10 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />
+    <None Include="src\Assets\Shaders\PBRShader\PBR.vert" />
+    <None Include="src\Assets\Shaders\ShadowMapping\ShadowMap.frag" />
+    <None Include="src\Assets\Shaders\ShadowMapping\ShadowMap.vert" />
     <None Include="src\Assets\Shaders\SimpleDepthShader\SimpleDepthShader.frag" />
     <None Include="src\Assets\Shaders\SimpleDepthShader\SimpleDepthShader.vert" />
   </ItemGroup>

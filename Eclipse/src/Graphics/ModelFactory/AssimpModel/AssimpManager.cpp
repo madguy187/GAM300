@@ -195,7 +195,7 @@ namespace Eclipse
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
         engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
-        Shader shdrpgm = Graphics::shaderpgms["PBRShader"];        
+        Shader shdrpgm = Graphics::shaderpgms["PBRShader"];
         shdrpgm.Use();
 
         auto& Camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
@@ -616,9 +616,9 @@ namespace Eclipse
 
     void AssimpModelManager::RenderMesh(MeshComponent& In, GLenum Mode)
     {
-       //glEnable(GL_BLEND);
-       //glEnable(GL_DEPTH_TEST);
-        //glDisable(GL_CULL_FACE);
+        glEnable(GL_BLEND);
+        glEnable(GL_DEPTH_TEST);
+        glDisable(GL_CULL_FACE);
 
         if (strcmp(In.MeshName.data(), "Plane") == 0)
         {

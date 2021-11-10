@@ -1502,5 +1502,9 @@
   <ItemGroup>
     <None Include="src\Assets\Shaders\SimpleDepthShader\SimpleDepthShader.frag" />
     <None Include="src\Assets\Shaders\SimpleDepthShader\SimpleDepthShader.vert" />
+    <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />
+    <None Include="src\Assets\Shaders\PBRShader\PBR.vert" />
+    <None Include="src\Assets\Shaders\ShadowMapping\ShadowMap.vert" />
+    <None Include="src\Assets\Shaders\ShadowMapping\ShadowMap.frag" />
   </ItemGroup>
 </Project>

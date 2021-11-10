@@ -30,27 +30,28 @@ namespace Eclipse
                 engine->MaterialManager.UpdateStencilWithActualObject(entityID);
                 
 
-                auto& Camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
-                auto& CameraPos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
-                auto& ShadowMappingShader = Graphics::shaderpgms["PBRShader"];
-                ShadowMappingShader.Use();
-
-                GLint projection_ = ShadowMappingShader.GetLocation("projection");
-                GLint view_ = ShadowMappingShader.GetLocation("view");
-
-                glUniformMatrix4fv(projection_, 1, GL_FALSE, glm::value_ptr(Camera.projMtx));
-                glUniformMatrix4fv(view_, 1, GL_FALSE, glm::value_ptr(Camera.viewMtx));
-
-                GLint viewPos_ = ShadowMappingShader.GetLocation("viewPos");
-                GLint lightPos_ = ShadowMappingShader.GetLocation("lightPos");
-                GLint lightSpaceMatrix_1 = ShadowMappingShader.GetLocation("lightSpaceMatrix");
-
-                glUniform3f(viewPos_, CameraPos.position.getX(), CameraPos.position.getY(), CameraPos.position.getZ());
-                glUniform3f(lightPos_, lightPos.x, lightPos.y, lightPos.z);
-                glUniformMatrix4fv(lightSpaceMatrix_1, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
-
-                glActiveTexture(GL_TEXTURE0 + 2);
-                ShadowMappingShader.setInt("shadowMap", 2); 
+                //auto& Camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+                //auto& CameraPos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+                //auto& ShadowMappingShader = Graphics::shaderpgms["PBRShader"];
+                //ShadowMappingShader.Use();
+                //
+                //GLint projection_ = ShadowMappingShader.GetLocation("projection");
+                //GLint view_ = ShadowMappingShader.GetLocation("view");
+                //
+                //glUniformMatrix4fv(projection_, 1, GL_FALSE, glm::value_ptr(Camera.projMtx));
+                //glUniformMatrix4fv(view_, 1, GL_FALSE, glm::value_ptr(Camera.viewMtx));
+                //
+                //GLint viewPos_ = ShadowMappingShader.GetLocation("viewPos");
+                //GLint lightPos_ = ShadowMappingShader.GetLocation("lightPos");
+                //GLint lightSpaceMatrix_1 = ShadowMappingShader.GetLocation("lightSpaceMatrix");
+                //
+                //glUniform3f(viewPos_, CameraPos.position.getX(), CameraPos.position.getY(), CameraPos.position.getZ());
+                //glUniform3f(lightPos_, lightPos.x, lightPos.y, lightPos.z);
+                //glUniformMatrix4fv(lightSpaceMatrix_1, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+                //
+                //glActiveTexture(GL_TEXTURE0 + 2);
+                //ShadowMappingShader.setInt("shadowMap", 2); 
+                //glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SHADOW));
 
                 engine->AssimpManager.MeshDraw(Mesh, entityID,
                     FrameBufferMode::FBM_SCENE,

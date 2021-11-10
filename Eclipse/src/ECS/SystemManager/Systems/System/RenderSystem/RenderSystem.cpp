@@ -83,7 +83,7 @@ namespace Eclipse
                 {
                     Renderer.RenderScene(Mesh, entityID);
 
-                    //Renderer.RenderSceneNormally(Mesh, entityID);
+                    Renderer.RenderSceneNormally(Mesh, entityID);
                     Renderer.RenderGame(Mesh, entityID);
                     Renderer.RenderOtherViews(Mesh, entityID);
                 }
