@@ -40,8 +40,8 @@ namespace Eclipse
 			if (ECGui::ButtonBool(" " ICON_FA_PLAY, ImVec2{30.f,22.f}))
 			{
 				engine->editorManager->GetEditorWindow<MeshEditorWindow>()->Unload();
-				engine->szManager.SaveBackupFile();
 				engine->mono.StartMono();
+				engine->szManager.SaveBackupFile();
 				//auto& mono = engine->world.GetSystem<MonoSystem>();
 				engine->world.GetSystem<MonoSystem>()->Init();
 

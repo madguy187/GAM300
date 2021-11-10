@@ -5,6 +5,14 @@
 
 namespace Eclipse
 {
+	struct MonoVariable
+	{
+		m_Type type = m_Type::MONO_UNDEFINED;
+		MonoClassField* field;
+		std::string varName = "";
+		std::string varValue = "";
+	};
+
 	struct MonoScript
 	{
 		std::string scriptName{};
@@ -51,6 +59,7 @@ namespace Eclipse
 
 		// Manager Functions
 		void Init();
+		void LoadVariable(MonoScript* script);
 		void StartMono();
 		void StopMono();
 		void Terminate();
@@ -69,6 +78,7 @@ namespace Eclipse
 		MonoObject* CreateVector3Class(float x, float y, float z);
 		MonoObject* CreateQuaternionClass(float x, float y, float z);
 		MonoObject* CreateRayCastHit(float x, float y, float z);
+		MonoObject* CreateLightClass(Entity ent);
 		ECVec3 ConvertVectorToECVec(MonoObject* vec);
 		ECVec3 ConvertQuaternionToECVec3(MonoObject* vec);
 
@@ -83,6 +93,7 @@ namespace Eclipse
 		MonoObject* ExecuteMethod(MonoObject* obj, MonoMethod* method, std::vector<void*> args);
 
 		void LoadAllScripts();
+		bool CheckIfScriptExist(std::string scriptName);
 		void LoadAllFields(MonoScript* script);
 		bool CheckIfFieldExist(MonoScript* script, std::string& fieldName, size_t index);
 

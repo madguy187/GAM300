@@ -138,6 +138,26 @@ namespace Eclipse
 		StartMono();
 	}
 
+	void MonoManager::LoadVariable(MonoScript* script)
+	{
+		for (auto& var : script->vars)
+		{
+			switch (var.type)
+			{
+			case m_Type::MONO_AUDIO:
+				
+				break;
+			case m_Type::MONO_LIGHT:
+				mono_field_set_value(script->obj, var.field, CreateLightClass(std::strtoul(var.varValue.c_str(), 0, 10)));
+				break;
+			case m_Type::MONO_FLOAT:
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
 	void MonoManager::Awake(MonoScript* obj)
 	{
 		MonoClass* klass = mono_class_from_name(ScriptImage, "", obj->scriptName.c_str());
@@ -189,10 +209,19 @@ namespace Eclipse
 			uint32_t cols[MONO_TYPEDEF_SIZE];
 			mono_metadata_decode_row(table_info, i, cols, MONO_TYPEDEF_SIZE);
 			const char* name = mono_metadata_string_heap(ScriptImage, cols[MONO_TYPEDEF_NAME]);
+			if (CheckIfScriptExist(name)) continue;
 			UserImplementedScriptList.push_back(MonoScript{});
 			UserImplementedScriptList.back().scriptName = name;
 			LoadAllFields(&UserImplementedScriptList.back());
 		}
+	}
+
+	bool MonoManager::CheckIfScriptExist(std::string scriptName)
+	{
+		for (auto& script : UserImplementedScriptList)
+			if (script.scriptName == scriptName) return true;
+		
+		return false;
 	}
 
 	void MonoManager::LoadAllFields(MonoScript* script)
@@ -544,6 +573,17 @@ namespace Eclipse
 		args.push_back(&z);
 		ExecuteMethod(obj, GetMethodFromClass(klass, ".ctor", 3), args);
 		
+		return obj;
+	}
+
+	MonoObject* MonoManager::CreateLightClass(Entity ent)
+	{
+		MonoClass* klass = GetAPIMonoClass("Light");
+		MonoObject* obj = CreateObjectFromClass(klass, false);
+		std::vector<void*> args;
+		args.push_back(&ent);
+		ExecuteMethod(obj, GetMethodFromClass(klass, ".ctor", 1), args);
+
 		return obj;
 	}
 

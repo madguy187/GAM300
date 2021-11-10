@@ -874,34 +874,34 @@ namespace Eclipse
 
                             ECGui::NextColumn();
 
-                            if (scriptCom.scriptList[i].vars[j].type == m_Type::MONO_HEADER)
+                            if (scriptCom.scriptList[i]->vars[j].type == m_Type::MONO_HEADER)
                             {
-                                ECGui::DrawInputTextHintWidget(scriptCom.scriptList[i].vars[j].varName.c_str(),
-                                    "Non-modifiable", const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()),
+                                ECGui::DrawInputTextHintWidget(scriptCom.scriptList[i]->vars[j].varName.c_str(),
+                                    "Non-modifiable", const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()),
                                     256, true, ImGuiInputTextFlags_ReadOnly);
                             }
                             else
-                                if (scriptCom.scriptList[i].vars[j].type == m_Type::MONO_LIGHT)
+                                if (scriptCom.scriptList[i]->vars[j].type == m_Type::MONO_LIGHT)
                                 {
                                     ECGui::DrawInputTextHintWidget("Light Entity ID", "Drag Light Entity Here",
-                                        const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()), 256,
+                                        const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()), 256,
                                         true, ImGuiInputTextFlags_ReadOnly);
                                     engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity",
-                                        scriptCom.scriptList[i].vars[j].varValue, "Light Entity ID registered", PayloadTargetType::PTT_SCRIPT_LIGHT, ID, j);
+                                        scriptCom.scriptList[i]->vars[j].varValue, "Light Entity ID registered", PayloadTargetType::PTT_SCRIPT_LIGHT, ID, j);
                                 }
                                 else
-                                    if (scriptCom.scriptList[i].vars[j].type == m_Type::MONO_AUDIO)
+                                    if (scriptCom.scriptList[i]->vars[j].type == m_Type::MONO_AUDIO)
                                     {
                                         ECGui::DrawInputTextHintWidget("Audio Entity ID", "Drag Light Entity Here",
-                                            const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()), 256,
+                                            const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()), 256,
                                             true, ImGuiInputTextFlags_ReadOnly);
                                             engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity",
-                                                scriptCom.scriptList[i].vars[j].varValue, "Audio Entity ID registered", PayloadTargetType::PTT_SCRIPT_AUDIO, ID, j);
+                                                scriptCom.scriptList[i]->vars[j].varValue, "Audio Entity ID registered", PayloadTargetType::PTT_SCRIPT_AUDIO, ID, j);
                                     }
                                 else
                                 {
-                                    ECGui::DrawInputTextWidget(scriptCom.scriptList[i].vars[j].varName.c_str(),
-                                        const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()),
+                                    ECGui::DrawInputTextWidget(scriptCom.scriptList[i]->vars[j].varName.c_str(),
+                                        const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()),
                                         256, 0, true);
                                 }
 
