@@ -193,7 +193,11 @@ namespace Eclipse
 		"MONO_UNDEFINED",
 		"MONO_VAR",
 		"MONO_HEADER",
-		"MONO_LAYERMASK"
+		"MONO_LAYERMASK",
+		"MONO_GAMEOBJECT",
+		"MONO_AUDIO",
+		"MONO_LIGHT",
+		"MONO_FLOAT"
 	};
 
 	template<> char const* enumStrings<TestState>::data[] =

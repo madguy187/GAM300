@@ -183,12 +183,12 @@ namespace Eclipse
 		}
 
 		template <>
-		inline void ReadAttributeFromElement(const std::string& att_name, MonoScript& att_data)
+		inline void ReadAttributeFromElement(const std::string& att_name, MonoScript*& att_data)
 		{
 			(void)att_name;
-			ReadAttributeFromElement("ScriptName", att_data.scriptName);
+			ReadAttributeFromElement("ScriptName", att_data->scriptName);
 			StartElement("MonoVariables");
-			ReadAttributeFromElement("Variables", att_data.vars);
+			ReadAttributeFromElement("Variables", att_data->vars);
 			CloseElement();
 		}
 

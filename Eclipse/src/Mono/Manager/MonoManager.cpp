@@ -134,6 +134,28 @@ namespace Eclipse
 
 		// AudioSource Internal Calls
 		mono_add_internal_call("Eclipse.AudioSource::PlayAudio", Play);
+
+		StartMono();
+	}
+
+	void MonoManager::LoadVariable(MonoScript* script)
+	{
+		for (auto& var : script->vars)
+		{
+			switch (var.type)
+			{
+			case m_Type::MONO_AUDIO:
+				
+				break;
+			case m_Type::MONO_LIGHT:
+				mono_field_set_value(script->obj, var.field, CreateLightClass(std::strtoul(var.varValue.c_str(), 0, 10)));
+				break;
+			case m_Type::MONO_FLOAT:
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
 	void MonoManager::Awake(MonoScript* obj)
@@ -172,6 +194,34 @@ namespace Eclipse
 		}
 
 		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
+	}
+
+	void MonoManager::LoadAllScripts()
+	{
+		const MonoTableInfo* table_info = mono_image_get_table_info(ScriptImage, MONO_TABLE_TYPEDEF);
+
+		int rows = mono_table_info_get_rows(table_info);
+
+		/* For each row, get some of its values */
+		for (int i = 1; i < rows; i++)
+		{
+			MonoClass* _class = nullptr;
+			uint32_t cols[MONO_TYPEDEF_SIZE];
+			mono_metadata_decode_row(table_info, i, cols, MONO_TYPEDEF_SIZE);
+			const char* name = mono_metadata_string_heap(ScriptImage, cols[MONO_TYPEDEF_NAME]);
+			if (CheckIfScriptExist(name)) continue;
+			UserImplementedScriptList.push_back(MonoScript{});
+			UserImplementedScriptList.back().scriptName = name;
+			LoadAllFields(&UserImplementedScriptList.back());
+		}
+	}
+
+	bool MonoManager::CheckIfScriptExist(std::string scriptName)
+	{
+		for (auto& script : UserImplementedScriptList)
+			if (script.scriptName == scriptName) return true;
+		
+		return false;
 	}
 
 	void MonoManager::LoadAllFields(MonoScript* script)
@@ -306,6 +356,8 @@ namespace Eclipse
 		LoadDomain();
 		LoadDLLImage("../EclipseScriptsAPI.dll", APIImage, APIAssembly);
 		LoadDLLImage("../EclipseScripts.dll", ScriptImage, ScriptAssembly);
+
+		LoadAllScripts();
 	}
 
 	void MonoManager::Terminate()
@@ -346,6 +398,16 @@ namespace Eclipse
 	void MonoManager::AddInvoke(MonoScript* _script, float _timer, MonoMethod* _method)
 	{
 		InvokeContainer.push_back({ _script, _timer, _method });
+	}
+
+	MonoScript* MonoManager::GetScriptPointerByName(const std::string& name)
+	{
+		for (auto& script : UserImplementedScriptList)
+		{
+			if (script.scriptName == name) return &script;
+		}
+
+		return nullptr;
 	}
 
 	MonoObject* MonoManager::CreateMonoObject(std::string scriptName, Entity entity)
@@ -511,6 +573,17 @@ namespace Eclipse
 		args.push_back(&z);
 		ExecuteMethod(obj, GetMethodFromClass(klass, ".ctor", 3), args);
 		
+		return obj;
+	}
+
+	MonoObject* MonoManager::CreateLightClass(Entity ent)
+	{
+		MonoClass* klass = GetAPIMonoClass("Light");
+		MonoObject* obj = CreateObjectFromClass(klass, false);
+		std::vector<void*> args;
+		args.push_back(&ent);
+		ExecuteMethod(obj, GetMethodFromClass(klass, ".ctor", 1), args);
+
 		return obj;
 	}
 
@@ -682,23 +755,6 @@ namespace Eclipse
 		std::cout << "#####################################" << std::endl;
 		std::cout << mono_image_get_name(_image) << std::endl;
 		std::cout << "#####################################" << std::endl;
-		/*std::list<MonoClass*> objs = GetAssemblyClassList(_image);
-
-		int index = 0;
-		for (auto it = objs.begin(); it != objs.end(); it++)
-		{
-			std::cout << index << std::endl;
-			void* iter = NULL;
-			MonoMethod* method = nullptr;
-			while (method == mono_class_get_methods(*it, &iter))
-			{
-				if (!method) continue;
-				std::cout << mono_method_get_name(method) << std::endl;
-				std::cout << mono_method_full_name(method, 1) << std::endl;
-			}
-			index++;
-			std::cout << std::endl;
-		}*/
 
 		const MonoTableInfo* table_info = mono_image_get_table_info(_image, MONO_TABLE_TYPEDEF);
 

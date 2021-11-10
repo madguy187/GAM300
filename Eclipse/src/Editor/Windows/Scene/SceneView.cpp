@@ -111,18 +111,27 @@ namespace Eclipse
 			{ mSnapSettings.mPosSnapValue,
 			  mSnapSettings.mPosSnapValue,
 			  mSnapSettings.mPosSnapValue };
+			/*{ mSnapSettings.mPosSnapValue,
+			  mSnapSettings.mPosSnapValue,
+			  mSnapSettings.mPosSnapValue };*/
 			break;
 		case ImGuizmo::OPERATION::ROTATE:
 			snapValues =
 			{ mSnapSettings.mRotSnapValue,
 			  mSnapSettings.mRotSnapValue,
 			  mSnapSettings.mRotSnapValue };
+			/*{ mSnapSettings.mRotSnapValue,
+			  mSnapSettings.mRotSnapValue,
+			  mSnapSettings.mRotSnapValue };*/
 			break;
 		case ImGuizmo::OPERATION::SCALE:
 			snapValues =
 			{ mSnapSettings.mScaleSnapValue,
 			  mSnapSettings.mScaleSnapValue,
 			  mSnapSettings.mScaleSnapValue };
+			/*{ mSnapSettings.mScaleSnapValue,
+			  mSnapSettings.mScaleSnapValue,
+			  mSnapSettings.mScaleSnapValue };*/
 			break;
 		default:
 			break;
