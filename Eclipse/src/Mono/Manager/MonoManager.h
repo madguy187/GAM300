@@ -36,6 +36,11 @@ namespace Eclipse
 		MonoMethod* method = nullptr;
 	};
 
+	struct M_LIGHT
+	{
+		uint32_t ent;
+	};
+
 	class MonoManager
 	{
 		MonoDomain* domain;
@@ -59,7 +64,7 @@ namespace Eclipse
 
 		// Manager Functions
 		void Init();
-		void LoadVariable(MonoScript* script);
+		void LoadVariable(MonoScript*& script);
 		void StartMono();
 		void StopMono();
 		void Terminate();

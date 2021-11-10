@@ -6,7 +6,7 @@ namespace Eclipse
 {
     public struct Light
     {
-        UInt32 Entity;
+        public UInt32 Entity;
 
         public Light(UInt32 entity)
         {
