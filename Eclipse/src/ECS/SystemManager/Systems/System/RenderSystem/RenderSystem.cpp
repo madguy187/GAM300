@@ -20,7 +20,7 @@ namespace Eclipse
         glEnable(GL_STENCIL_TEST);
         glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
-        // Load All Compilers =============================
+        // Load All Compilers ====================== =======
         engine->gEngineCompiler->Init();
 
         // Create SKY =============================
@@ -28,6 +28,12 @@ namespace Eclipse
 
         // DebugManagerRender
         engine->gDebugDrawManager->Init();
+
+        auto& ShadowMappingShader = Graphics::shaderpgms["ShadowMapping"];
+        ShadowMappingShader.Use();
+        ShadowMappingShader.Use();
+        ShadowMappingShader.setInt("diffuseTexture", 0);
+        ShadowMappingShader.setInt("shadowMap", 2);
     }
 
     void RenderSystem::Update()
@@ -37,20 +43,23 @@ namespace Eclipse
         engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
         engine->GraphicsManager.UploadGlobalUniforms();
+        Renderer.UpdateLightMatrix();
 
         if (engine->GraphicsManager.CheckRender == true)
         {
             // Estiamtion which models are in our frustrum
             //const auto& RenderablesVsFrustrum = engine->gCullingManager->ReturnContacted();
 
-            /*************************************************************************
-              Render Without Stencer
-              Render Sky to Sceneview
-            *************************************************************************/
             engine->MaterialManager.DoNotUpdateStencil();
             engine->GraphicsManager.RenderSky(FrameBufferMode::FBM_SCENE);
 
-            // Basic Primitives Render Start =============================
+
+            for (auto const& entityID : mEntities)
+            {
+                MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
+                Renderer.RenderSceneFromLightPOV(Mesh, entityID);
+            }
+
             for (auto const& entityID : mEntities)
             {
                 // If it is a base prefab, dont render
@@ -73,6 +82,8 @@ namespace Eclipse
                 if (engine->AssimpManager.CheckGeometryExist(Mesh))
                 {
                     Renderer.RenderScene(Mesh, entityID);
+
+                    Renderer.RenderSceneNormally(Mesh, entityID);
                     Renderer.RenderGame(Mesh, entityID);
                     Renderer.RenderOtherViews(Mesh, entityID);
                 }
