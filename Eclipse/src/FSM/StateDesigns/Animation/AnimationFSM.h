@@ -8,6 +8,8 @@ namespace Eclipse
 	class AnimationFSM : public FSM<AnimationState>
 	{
 	public:
+		AnimationFSM();
+		AnimationFSM(Entity ID);
 		void UpdateState(AnimationState state) override;
 		void BeginState(AnimationState state) override;
 		void EndState(AnimationState state) override;

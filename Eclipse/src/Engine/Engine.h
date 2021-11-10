@@ -26,6 +26,7 @@
 #include "Graphics/Instancing/DebugManager/DebugManager.h"
 #include "Graphics/Animation/AnimationManager.h"
 #include "NavMesh/NavMeshManager.h"
+#include "FSM/Manager/FSMManager.h"
 
 namespace Eclipse
 {
@@ -53,6 +54,7 @@ namespace Eclipse
 		PrefabManager pfManager;
 		PhysicsManager gPhysics;
 		NavMeshManager gNavMesh;
+		FSMManager gFSM;
 		AIManager gAI;
 		AnimationManager gAnimationManager;
 		std::unique_ptr<CullingManager> gCullingManager;
