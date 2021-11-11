@@ -7,48 +7,106 @@ public class PlayerMovement : EclipseBehavior
 {
     [Header("Stats")]
     public float moveSpeed = 10f;
-    public float moveSpeedClamp = 3f;
-    public float jumpForce = 16f;
+    //public float moveSpeedClamp = 3f;
+    //public float jumpForce = 16f;
 
-    [Header("Footprints")]
-    public GameObject leftFootprint;
-    public GameObject rightFootprint;
-    public Transform leftFootLocation;
-    public Transform rightFootLocation;
+    //[Header("Footprints")]
+    //public GameObject leftFootprint;
+    //public GameObject rightFootprint;
+    //public Transform leftFootLocation;
+    //public Transform rightFootLocation;
 
-    public float footprintOffset = 0.05f;
+    //public float footprintOffset = 0.05f;
 
-    public AudioSource leftFootAudioSource;
-    public AudioSource rightFootAudioSource;
+    //public AudioSource leftFootAudioSource;
+    //public AudioSource rightFootAudioSource;
 
-    public float footprintSpawnRate;
-    private float footprintTimer;
+    //public float footprintSpawnRate;
+    //private float footprintTimer;
 
-    private bool switchFootprint;
+    //private bool switchFootprint;
 
-    [Header("Ground Check")]
-    public Transform groundCheck;
-    public float groundDistance = 0.4f;
-    public LayerMask groundMask;
+    //[Header("Ground Check")]
+    //public Transform groundCheck;
+    //public float groundDistance = 0.4f;
+    //public LayerMask groundMask;
 
-    Vector3 moveForce = Vector3.zero;
+    //Vector3 moveForce = Vector3.zero;
 
-    private float horizontalInput;
-    private float verticalInput;
+    private float horizontalInput = 0;
+    private float verticalInput = 0;
 
-    Rigidbody rb;
-    bool isGrounded;
+    //Rigidbody rb;
+    //bool isGrounded;
 
-    public void Start()
+    // Start is called before the first frame update
+    void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        //rb = GetComponent<Rigidbody>();
     }
 
-    public void Update()
+    // Update is called once per frame
+    void Update()
     {
-        // Keyboard Controls
+        //isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+
+        //// Jumping
+        //Jump();
+
+        // Controls
+        if (Input.GetKey(KeyCode.A)) //|| Input.GetKey(KeyCode.LeftArrow))
+        {
+            //transform.position -= new vector3(movespeed * time.deltatime, 0, 0);
+        }
+
+        if (Input.GetKey(KeyCode.D))// || Input.GetKey(KeyCode.RightArrow))
+        {
+            //transform.position += new vector3(movespeed * time.deltatime, 0, 0);
+        }
+
+        if (Input.GetKey(KeyCode.W))// || Input.GetKey(KeyCode.UpArrow))
+        {
+            //transform.position -= new vector3(movespeed * time.deltatime, 0, 0);
+        }
+
+        if (Input.GetKey(KeyCode.S))// || Input.GetKey(KeyCode.DownArrow))
+        {
+            //transform.position += new vector3(movespeed * time.deltatime, 0, 0);
+        }
+
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
+
+        transform.position = transform.position + new Vector3(horizontalInput * moveSpeed * Time.deltaTime, verticalInput * moveSpeed * Time.deltaTime, 0);
+        Console.WriteLine("Horizontal" + horizontalInput);
+        Console.WriteLine("verticalInput" + verticalInput);
+
+        //// Movement        
+        //moveForce = (transform.right * horizontal + transform.forward * vertical) * moveSpeed;
+
+        //// Footprints
+        //footprintTimer -= Time.deltaTime;
+
+        //if (horizontal + vertical != 0)
+        //{
+        //    if (footprintTimer <= 0)
+        //    {
+        //        if (!switchFootprint)
+        //        {
+        //            switchFootprint = true;
+
+        //            LeftFootStep();
+        //        }
+        //        else if (switchFootprint)
+        //        {
+        //            switchFootprint = false;
+
+        //            RightFootStep();
+        //        }
+
+        //        footprintTimer = footprintSpawnRate;
+        //    }
+        //}                              
     }
 
     private void FixedUpdate()
@@ -71,9 +129,6 @@ public class PlayerMovement : EclipseBehavior
 
         //// Move the character
         //rb.AddForce(moveForce);
-        //moveForce = Vector3.zero;
-
-        // Movement
-        transform.position = transform.position + new Vector3(horizontalInput * moveSpeed * Time.deltaTime, verticalInput * moveSpeed * Time.deltaTime, 0);
+        //moveForce = Vector3.zero;        
     }
 }

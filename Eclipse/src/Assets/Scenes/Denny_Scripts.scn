@@ -9,15 +9,15 @@
             <farPlane value="300" />
             <aspect value="2.13193" />
             <eyePos x="-17.1143" y="4.10181" z="6.14117" />
-            <eyeFront x="0.911665" y="-0.159881" z="-0.378556" />
-            <upVec x="0.147658" y="0.987136" z="-0.0613128" />
-            <rightVec x="0.38349" y="-0" z="0.923545" />
+            <eyeFront x="1" y="0" z="0" />
+            <upVec x="0" y="1" z="0" />
+            <rightVec x="0" y="0" z="1" />
             <worldUp x="0" y="1" z="0" />
             <viewMtx Col="4" Row="4">
-                <Col0 _00="0.383489" _01="0.147657" _02="-0.911665" _03="0" />
-                <Col1 _10="3.35276e-08" _11="0.987136" _12="0.159881" _13="0" />
-                <Col2 _20="0.923545" _21="-0.0613127" _22="0.378556" _23="0" />
-                <Col3 _30="0.891503" _31="-1.14546" _32="-18.5831" _33="1" />
+                <Col0 _00="0" _01="0" _02="-1" _03="0" />
+                <Col1 _10="0" _11="1" _12="-0" _13="0" />
+                <Col2 _20="1" _21="0" _22="-0" _23="0" />
+                <Col3 _30="-6.14117" _31="-4.10181" _32="-17.1143" _33="1" />
             </viewMtx>
             <projMtx Col="4" Row="4">
                 <Col0 _00="0.928578" _01="0" _02="0" _03="0" />
@@ -36,6 +36,18 @@
             <hightLightChild value="true" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
+        <ScriptComponent>
+            <scriptList size="1">
+                <Member0 ScriptName="MouseLook">
+                    <MonoVariables size="3">
+                        <Member0 Type="MONO_FLOAT" Name="mouseSensitivity" Value="900" />
+                        <Member1 Type="MONO_FLOAT" Name="minimumXRotation" Value="" />
+                        <Member2 Type="MONO_FLOAT" Name="maximumXRotation" Value="" />
+                    </MonoVariables>
+                </Member0>
+            </scriptList>
+            <LayerMask value="00000000000000000011" />
+        </ScriptComponent>
         <TransformComponent>
             <position x="-17.1143" y="4.10181" z="6.14117" />
             <rotation x="0" y="0" z="0" />
@@ -72,9 +84,9 @@
     </Entity_1>
     <Entity_2 ID="10">
         <AABBComponent>
-            <center x="0" y="2.56959" z="0.851583" />
-            <Min x="-1" y="0.56959" z="-0.148417" />
-            <Max x="1" y="4.56959" z="1.85158" />
+            <center x="0" y="3.46169" z="0.851583" />
+            <Min x="-1" y="1.46169" z="-0.148417" />
+            <Max x="1" y="5.46169" z="1.85158" />
         </AABBComponent>
         <EntityComponent>
             <Tag value="Cylinder" />
@@ -136,11 +148,22 @@
             <enableGravity value="true" />
             <enableRotation value="false" />
         </RigidBodyComponent>
+        <ScriptComponent>
+            <scriptList size="1">
+                <Member0 ScriptName="PlayerMovement">
+                    <MonoVariables size="2">
+                        <Member0 Type="MONO_HEADER" Name="Stats" Value="" />
+                        <Member1 Type="MONO_FLOAT" Name="moveSpeed" Value="5" />
+                    </MonoVariables>
+                </Member0>
+            </scriptList>
+            <LayerMask value="00000000000000000011" />
+        </ScriptComponent>
         <CollisionComponent>
             <shape Shape="Px_CUBE" Hx="1" Hy="2" Hz="1" Radius="1" Hheight="1" />
         </CollisionComponent>
         <TransformComponent>
-            <position x="0" y="2.56959" z="0.851583" />
+            <position x="0" y="3.46169" z="0.851583" />
             <rotation x="0" y="0" z="0" />
             <scale x="2" y="4" z="2" />
         </TransformComponent>

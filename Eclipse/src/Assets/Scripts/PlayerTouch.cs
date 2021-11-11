@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using System.Runtime.CompilerServices;
 using System.Collections.Generic;
 using Eclipse;
@@ -17,12 +17,12 @@ public class PlayerTouch : EclipseBehavior
     public GameObject pickedObject;
 
     [Header("Lighting")]
-    public Light aoeLight;
-    public Light touchLight;
+    //public Light aoeLight;
+    //public Light touchLight;
     public float aoeLightMaxIntensity;
 
-    [Header("Audio")]
-    public AudioClip touchSFX;
+    //[Header("Audio")]
+    //public AudioClip touchSFX;
 
     [Header("Detection Masks")]
     public LayerMask touchMask;
@@ -36,13 +36,14 @@ public class PlayerTouch : EclipseBehavior
 
     Rigidbody pickedObject_rb = null;
 
-    AudioSource audioSource;
+    //AudioSource audioSource;
 
-    public void Start()
+    private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        //audioSource = GetComponent<AudioSource>();
     }
 
+    // Update is called once per frame
     void Update()
     {
         if (pickedObject != null)
@@ -51,33 +52,33 @@ public class PlayerTouch : EclipseBehavior
 
             if (Input.GetKeyDown(KeyCode.Mouse0)) //touch item
             {
-                touchLight.enabled = true;
-                pickedObject_rb.freezeRotation = false;
+               // touchLight.enabled = true;
+                //pickedObject_rb.freezeRotation = false;
 
                 gameObject.GetComponent<MouseLook>().enabled = false;
-                pickedObject.GetComponentInParent<ItemTouch>().PickUpItem = true;
+                pickedObject.GetComponent<ItemTouch>().PickUpItem = true;
 
-                audioSource.PlayOneShot(touchSFX); // Plays touch SFX
+                //audioSource.PlayOneShot(touchSFX); // Plays touch SFX
             }
             else if (Input.GetKeyUp(KeyCode.Mouse0)) //if not touching
             {
-                touchLight.enabled = false;
-                pickedObject_rb.freezeRotation = true;
+               // touchLight.enabled = false;
+                //pickedObject_rb.freezeRotation = true;                
 
                 gameObject.GetComponent<MouseLook>().enabled = true;
-                pickedObject.GetComponentInParent<ItemTouch>().PickUpItem = false;
+                pickedObject.GetComponent<ItemTouch>().PickUpItem = false;
             }
 
             if (Input.GetKeyDown(KeyCode.E)) //let go of item
             {
-                touchLight.enabled = false;
+               // touchLight.enabled = false;
 
-                pickedObject_rb.freezeRotation = false;
+                //pickedObject_rb.freezeRotation = false;
                 pickedObject_rb.velocity = Vector3.zero;
                 pickedObject_rb.AddForce(transform.TransformDirection(Vector3.forward) * throwForce * Time.deltaTime);
 
                 gameObject.GetComponent<MouseLook>().enabled = true;
-                pickedObject.GetComponentInParent<ItemTouch>().PickUpItem = false;
+                pickedObject.GetComponent<ItemTouch>().PickUpItem = false;
 
                 pickedObject_rb = null;
                 pickedObject = null;
@@ -86,14 +87,14 @@ public class PlayerTouch : EclipseBehavior
 
         else if (pickedObject == null)
         {
-            Highlight_Object();
+            //Highlight_Object();
 
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                if (handCursor.activeInHierarchy)
-                {
-                    handCursor.SetActive(false);
-                }
+                //if (handCursor.activeInHierarchy)
+                //{
+                //    handCursor.SetActive(false);
+                //}
 
                 if (Touch())
                 {
@@ -106,10 +107,10 @@ public class PlayerTouch : EclipseBehavior
             }
             else
             {
-                if (!handCursor.activeInHierarchy)
-                {
-                    handCursor.SetActive(true);
-                }
+                //if (!handCursor.activeInHierarchy)
+                //{
+                //    handCursor.SetActive(true);
+                //}
             }
 
             if (Input.GetKeyDown(KeyCode.E))
@@ -129,47 +130,47 @@ public class PlayerTouch : EclipseBehavior
         {
             if (hit.point != null)
             {
-                Debug.Log(hit.transform.gameObject.name);
+                //Debug.Log(hit.transform.gameObject.name);
                 pickedObject = hit.transform.gameObject;
                 pickedObject_rb = hit.transform.gameObject.GetComponent<Rigidbody>();
-                pickedObject_rb.freezeRotation = true;
+                //pickedObject_rb.freezeRotation = true;
 
-                Stop_Highlight_Object(); // Turn off last touched object
+                //Stop_Highlight_Object(); // Turn off last touched object
             }
         }
     }
 
     public void Interact() // Only for Interactables that require an action input from the player (buttons, doors, etc)
     {
-        RaycastHit hit;
+        RayCastHit hit;
 
         if (Physics.Raycast(transform.position, transform.forward, out hit, pickUpRange, interactMask))
         {
             if (hit.point != null)
             {
-                Debug.Log(hit.transform.gameObject.name);
+                //Debug.Log(hit.transform.gameObject.name);
 
-                hit.transform.gameObject.GetComponent<Interactable>().Activate();
+                //hit.transform.gameObject.GetComponent<Interactable>().Activate();
             }
         }
     }
 
     public bool Touch()
     {
-        RaycastHit hit;
+        RayCastHit hit;
 
         if (Physics.Raycast(transform.position, transform.forward, out hit, touchRange, touchMask))
         {
             if (hit.point != null)
             {
-                Debug.Log(hit.transform.gameObject.name);
+                //Debug.Log(hit.transform.gameObject.name);
 
-                GameObject handPrint = Instantiate(handPrintDecal, hit.point, Quaternion.identity);
+                //GameObject handPrint = Instantiate(handPrintDecal, hit.point, Quaternion.identity);
 
-                handPrint.transform.forward = hit.normal;
-                handPrint.transform.position += handPrint.transform.forward.normalized * touchOffset;
+                //handPrint.transform.forward = hit.normal;
+                //handPrint.transform.position += handPrint.transform.forward.normalized * touchOffset;
 
-                audioSource.PlayOneShot(touchSFX); // Plays touch SFX
+                //audioSource.PlayOneShot(touchSFX); // Plays touch SFX
 
                 //Quaternion followRotation = Quaternion.LookRotation(transform.forward);
                 //Quaternion followRotation = Quaternion.LookRotation(handPrint.transform.position - transform.position);
@@ -188,45 +189,4 @@ public class PlayerTouch : EclipseBehavior
 
         return false;
     }
-
-    void Highlight_Object()
-    {
-        RaycastHit hit;
-
-        if (Physics.Raycast(transform.position, transform.forward, out hit, pickUpRange, highlightMask))
-        {
-            if (hit.point != null)
-            {
-                if (hit.transform.gameObject.GetComponent<InteractTutorial>() != null) // Checks if the item is for tutorial
-                {
-                    hit.transform.gameObject.GetComponent<InteractTutorial>().TurnOnPickupUI();
-                }
-
-                if (hit.transform.gameObject != touchedObject) // Turn off last touched object
-                {
-                    Stop_Highlight_Object();
-                }
-
-                touchedObject = hit.transform.gameObject;
-                touchedObject.GetComponent<Outline>().enabled = true;
-            }
-        }
-        else
-        {
-            Stop_Highlight_Object();
-        }
-    }
-
-    void Stop_Highlight_Object() // Turn off last touched object
-    {
-        if (touchedObject != null)
-        {
-            touchedObject.GetComponent<Outline>().enabled = false;
-
-            if (touchedObject.GetComponent<InteractTutorial>() != null) // Checks if the item is for tutorial
-            {
-                touchedObject.GetComponent<InteractTutorial>().TurnOffPickupUI();
-            }
-        }
-    }
-}
+}*/

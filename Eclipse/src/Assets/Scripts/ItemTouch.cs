@@ -1,232 +1,70 @@
-using System;
+/*using System;
 using System.Runtime.CompilerServices;
 using System.Collections.Generic;
 using Eclipse;
 
-public class PlayerTouch : EclipseBehavior
+public class ItemTouch : EclipseBehavior
 {
-    [Header("Values")]
-    public float throwForce = 50f;
-    public float pickUpRange = 5f;
-    public float touchRange = 1.5f;
-    public float touchDuration = 1.5f;
-    public float touchOffset = 0.05f;
+    public float mouseSensitivity = 500f;
 
-    [Header("Object Interactions")]
-    public GameObject touchedObject;
-    public GameObject pickedObject;
+    private float noiseVolume = 0;
 
-    [Header("Lighting")]
-    public Light aoeLight;
-    public Light touchLight;
-    public float aoeLightMaxIntensity;
+    private bool isPickedUp = false;
 
-    [Header("Audio")]
-    public AudioClip touchSFX;
+    Rigidbody rb;
+    //AudioSource audioSource;
 
-    [Header("Detection Masks")]
-    public LayerMask touchMask;
-    public LayerMask itemMask;
-    public LayerMask interactMask;
-    public LayerMask highlightMask;
-
-    [Header("Sprites")]
-    public GameObject handCursor;
-    public GameObject handPrintDecal;
-
-    Rigidbody pickedObject_rb = null;
-
-    AudioSource audioSource;
-
-    public void Start()
+    private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        //audioSource = GetComponent<AudioSource>();
     }
 
+    // Update is called once per frame
     void Update()
     {
-        if (pickedObject != null)
+        if (isPickedUp == true)
         {
-            pickedObject.transform.position = transform.position - new Vector3(0, 0.1f, 0) + transform.TransformDirection(Vector3.forward);
+            float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+            float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
-            if (Input.GetKeyDown(KeyCode.Mouse0)) //touch item
-            {
-                touchLight.enabled = true;
-                pickedObject_rb.freezeRotation = false;
-
-                gameObject.GetComponent<MouseLook>().enabled = false;
-                pickedObject.GetComponentInParent<ItemTouch>().PickUpItem = true;
-
-                audioSource.PlayOneShot(touchSFX); // Plays touch SFX
-            }
-            else if (Input.GetKeyUp(KeyCode.Mouse0)) //if not touching
-            {
-                touchLight.enabled = false;
-                pickedObject_rb.freezeRotation = true;
-
-                gameObject.GetComponent<MouseLook>().enabled = true;
-                pickedObject.GetComponentInParent<ItemTouch>().PickUpItem = false;
-            }
-
-            if (Input.GetKeyDown(KeyCode.E)) //let go of item
-            {
-                touchLight.enabled = false;
-
-                pickedObject_rb.freezeRotation = false;
-                pickedObject_rb.velocity = Vector3.zero;
-                pickedObject_rb.AddForce(transform.TransformDirection(Vector3.forward) * throwForce * Time.deltaTime);
-
-                gameObject.GetComponent<MouseLook>().enabled = true;
-                pickedObject.GetComponentInParent<ItemTouch>().PickUpItem = false;
-
-                pickedObject_rb = null;
-                pickedObject = null;
-            }
-        }
-
-        else if (pickedObject == null)
-        {
-            Highlight_Object();
-
-            if (Input.GetKeyDown(KeyCode.Mouse0))
-            {
-                if (handCursor.activeInHierarchy)
-                {
-                    handCursor.SetActive(false);
-                }
-
-                if (Touch())
-                {
-                    //Highlight_Object(); // Highlights interactable objects
-                }
-                else
-                {
-                    //Stop_Highlight_Object(); // Turn off last touched object                 
-                }
-            }
-            else
-            {
-                if (!handCursor.activeInHierarchy)
-                {
-                    handCursor.SetActive(true);
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                PickUp();
-
-                Interact(); // For activating certain interactables (e.g. Buttons, Doors, etc)
-            }
+            transform.Rotate(new Vector3(0f, -mouseX, 0f));
+            transform.Rotate(new Vector3(mouseY, 0f, 0f));
         }
     }
 
-    public void PickUp()
+    public bool PickUpItem
     {
-        RaycastHit hit;
-
-        if (Physics.Raycast(transform.position, transform.forward, out hit, pickUpRange, itemMask))
-        {
-            if (hit.point != null)
-            {
-                Debug.Log(hit.transform.gameObject.name);
-                pickedObject = hit.transform.gameObject;
-                pickedObject_rb = hit.transform.gameObject.GetComponent<Rigidbody>();
-                pickedObject_rb.freezeRotation = true;
-
-                Stop_Highlight_Object(); // Turn off last touched object
-            }
-        }
+        get { return isPickedUp; }
+        set { isPickedUp = value; }
     }
 
-    public void Interact() // Only for Interactables that require an action input from the player (buttons, doors, etc)
-    {
-        RaycastHit hit;
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Floor") || collision.gameObject.CompareTag("Wall")) // Collide only with surfaces
+    //    {
+    //        //CreateNoise(); // Create noise when this object collides with a surface
+    //    }
+    //}
 
-        if (Physics.Raycast(transform.position, transform.forward, out hit, pickUpRange, interactMask))
-        {
-            if (hit.point != null)
-            {
-                Debug.Log(hit.transform.gameObject.name);
+    //void CreateNoise()
+    //{
+    //    if (rb.velocity.magnitude >= 0.1f) // Velocity of object has to be high enough to generate noise
+    //    {
+    //        audioSource.volume = rb.velocity.magnitude; // Create Noise
+    //        audioSource.Play();
 
-                hit.transform.gameObject.GetComponent<Interactable>().Activate();
-            }
-        }
-    }
+    //        noiseVolume = audioSource.volume * 30;
+    //        //print(noiseVolume);
+    //        GameObject enemy = GameObject.Find("Monster");
 
-    public bool Touch()
-    {
-        RaycastHit hit;
+    //        float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+    //        //print(distanceToEnemy);
 
-        if (Physics.Raycast(transform.position, transform.forward, out hit, touchRange, touchMask))
-        {
-            if (hit.point != null)
-            {
-                Debug.Log(hit.transform.gameObject.name);
-
-                GameObject handPrint = Instantiate(handPrintDecal, hit.point, Quaternion.identity);
-
-                handPrint.transform.forward = hit.normal;
-                handPrint.transform.position += handPrint.transform.forward.normalized * touchOffset;
-
-                audioSource.PlayOneShot(touchSFX); // Plays touch SFX
-
-                //Quaternion followRotation = Quaternion.LookRotation(transform.forward);
-                //Quaternion followRotation = Quaternion.LookRotation(handPrint.transform.position - transform.position);
-                //Quaternion handRotation   = handPrint.transform.rotation;
-                ////handRotation.x = handPrint.transform.rotation.x;
-                ////handRotation.y = handPrint.transform.rotation.y;
-                ////handRotation.z = handPrint.transform.rotation.z;
-                ////handRotation.z = followRotation.z;
-                //handPrint.transform.rotation = followRotation;                
-
-                return true;
-            }
-
-            return false;
-        }
-
-        return false;
-    }
-
-    void Highlight_Object()
-    {
-        RaycastHit hit;
-
-        if (Physics.Raycast(transform.position, transform.forward, out hit, pickUpRange, highlightMask))
-        {
-            if (hit.point != null)
-            {
-                if (hit.transform.gameObject.GetComponent<InteractTutorial>() != null) // Checks if the item is for tutorial
-                {
-                    hit.transform.gameObject.GetComponent<InteractTutorial>().TurnOnPickupUI();
-                }
-
-                if (hit.transform.gameObject != touchedObject) // Turn off last touched object
-                {
-                    Stop_Highlight_Object();
-                }
-
-                touchedObject = hit.transform.gameObject;
-                touchedObject.GetComponent<Outline>().enabled = true;
-            }
-        }
-        else
-        {
-            Stop_Highlight_Object();
-        }
-    }
-
-    void Stop_Highlight_Object() // Turn off last touched object
-    {
-        if (touchedObject != null)
-        {
-            touchedObject.GetComponent<Outline>().enabled = false;
-
-            if (touchedObject.GetComponent<InteractTutorial>() != null) // Checks if the item is for tutorial
-            {
-                touchedObject.GetComponent<InteractTutorial>().TurnOffPickupUI();
-            }
-        }
-    }
-}
+    //        if (distanceToEnemy <= noiseVolume)
+    //        {
+    //            enemy.GetComponent<Monster>().AlertMonster(transform.position);
+    //        }
+    //    }
+    //}
+}*/
