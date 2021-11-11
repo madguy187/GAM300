@@ -360,27 +360,30 @@ namespace Eclipse
 			          cr * cp * cy + sr * sp * sy);//W
 	}
 
-	ECVec3 PhysicsManager::QuattoAngles(PxQuat quat)
+	ECVec3 PhysicsManager::QuattoAngles(PxQuat q1)
 	{
-		ECVec3 temp{0,0,0};
-		//x rotation
-		float sinr_cosp = 2 * (quat.w * quat.x + quat.y * quat.z);
-		float cosr_cosp = 1 - 2 * (quat.x * quat.x + quat.y * quat.y);
-		
-		temp.setX(static_cast<float>(std::atan2f(sinr_cosp, cosr_cosp) * (180.0f/M_PI)));
-
-		//y rotation
-		float sinp = 2 * (quat.w * quat.y - quat.z * quat.x);
-		if (std::abs(sinp) >= 1)
-			temp.setY(static_cast<float>(std::copysign(M_PI / 2, sinp) * (180.0/M_PI)));
-		else
-			temp.setY(static_cast<float>(std::asinf(sinp) * (180.0f/M_PI)));
-
-		float siny_cosp = 2 * (quat.w * quat.z + quat.x * quat.y);
-		float cosy_cosp = 1 - 2 * (quat.y * quat.y + quat.z * quat.z);
-
-		temp.setZ(static_cast<float>(std::atan2f(siny_cosp, cosy_cosp) * (180.0f/M_PI)));
-
+		ECVec3 temp{ 0,0,0 };
+		float sqw = q1.w * q1.w;
+		float sqx = q1.x * q1.x;
+		float sqy = q1.y * q1.y;
+		float sqz = q1.z * q1.z;
+		float unit = sqx + sqy + sqz + sqw; // if normalised is one, otherwise is correction factor
+		float test = q1.x * q1.y + q1.z * q1.w;
+		if (test > 0.499 * unit) { // singularity at north pole
+			temp.setY(static_cast<float>(2 * atan2(q1.x, q1.w)) * 180 / M_PI);
+			temp.setZ(M_PI / 2 * 180 / M_PI);
+			temp.setX(0);
+			return temp;
+		}
+		if (test < -0.499 * unit) { // singularity at south pole
+			temp.setY(static_cast<float>(-2 * atan2(q1.x, q1.w)) * 180 / M_PI);
+			temp.setZ(-M_PI / 2 * 180 / M_PI);
+			temp.setX(0);
+			return temp;
+		}
+		temp.setY(static_cast<float>(atan2(2 * q1.y * q1.w - 2 * q1.x * q1.z, sqx - sqy - sqz + sqw)) * 180 / M_PI);
+		temp.setZ(static_cast<float>(asin(2 * test / unit)) * 180 / M_PI);
+		temp.setX(static_cast<float>(atan2(2 * q1.x * q1.w - 2 * q1.y * q1.z, -sqx + sqy - sqz + sqw)) * 180 / M_PI);
 		return temp;
 	}
 	
