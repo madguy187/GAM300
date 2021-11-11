@@ -9,6 +9,7 @@ namespace Eclipse
 
         Hand = engine->world.CreateEntity();
         engine->world.AddComponent(Hand, TransformComponent{});
+        engine->world.AddComponent(Hand, EntityComponent{ EntityType::ENT_LIGHT_SPOT });
         engine->LightManager.CreateLights(TypesOfLights::SPOTLIGHT, Hand);
     }
 

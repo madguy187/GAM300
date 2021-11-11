@@ -281,7 +281,7 @@ namespace Eclipse
 
 	}
 
-	bool PhysicsManager::CheckSphere(ECVec3 position, float radius, std::string layerMask)
+	bool PhysicsManager::CheckSphere(ECVec3 position, float radius, PxOverlapBuffer& hit, std::string layerMask)
 	{
 		PxTransform temp;
 		temp.p.x = position.getX();
@@ -292,7 +292,6 @@ namespace Eclipse
 		PxQueryFilterData filter(PxFilterData(), qf);
 		std::bitset<20> mask = std::bitset<20>(layerMask);
 		QueryReportCallback _callback{ mask };
-		PxOverlapBuffer hit;
 		return Px_Scene->overlap(sphere,temp,hit, filter, &_callback);
 	}
 
