@@ -5,6 +5,8 @@ using Eclipse;
 
 public class Test : EclipseBehavior
 {
+    public GameObject obj;
+
     public void Start()
     {
     }

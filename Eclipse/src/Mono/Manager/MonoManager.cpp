@@ -290,25 +290,27 @@ namespace Eclipse
 			MonoVariable var;
 
 			int typeInt = mono_type_get_type(mono_field_get_type(field));
+			var.varName = mono_field_get_name(field);
+
+			MonoClass* fieldklass = mono_type_get_class(mono_field_get_type(field));
+
 			switch (typeInt)
 			{
 			case MONO_TYPE_R4:
 				var.type = m_Type::MONO_FLOAT;
-				var.varName = mono_field_get_name(field);
 				break;
 			case MONO_TYPE_VALUETYPE:
-				MonoClass* klass = mono_type_get_class(mono_field_get_type(field));
-				if (klass == GetAPIMonoClass("Light"))
-					var.type = m_Type::MONO_LIGHT;
-				else if (klass == GetAPIMonoClass("AudioSource"))
-					var.type = m_Type::MONO_AUDIO;
-				else if (klass == GetAPIMonoClass("GameObject"))
-					var.type = m_Type::MONO_GAMEOBJECT;
-				else
-					var.type = m_Type::MONO_UNDEFINED;
-
-				var.varName = mono_field_get_name(field);
 				
+				if (fieldklass == GetAPIMonoClass("Light"))
+					var.type = m_Type::MONO_LIGHT;
+				else if (fieldklass == GetAPIMonoClass("AudioSource"))
+					var.type = m_Type::MONO_AUDIO;
+				else
+					var.type = m_Type::MONO_UNDEFINED;				
+				break;
+			case MONO_TYPE_CLASS:
+				if (fieldklass == GetAPIMonoClass("GameObject"))
+					var.type = m_Type::MONO_GAMEOBJECT;
 				break;
 			}
 
