@@ -11,7 +11,7 @@ namespace Eclipse
 		{
 			engine->gPhysics.UpdateVariables(entity);
 
-			if(engine->IsScenePlaying())
+			//if(engine->IsScenePlaying())
 			{ 
 				engine->gPhysics.InitActor(entity);
 				engine->gPhysics.CreateShape(entity);

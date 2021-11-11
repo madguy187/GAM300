@@ -71,6 +71,7 @@ namespace Eclipse
         Entity newCam = engine->world.CreateEntity();
         engine->world.AddComponent(newCam, CameraComponent{});
         engine->world.AddComponent(newCam, TransformComponent{});
+        engine->world.AddComponent(newCam, EntityComponent{ EntityType::ENT_UNASSIGNED });
 
         auto& _camera = engine->world.GetComponent<CameraComponent>(newCam);
         _camera.camType = _camType;
@@ -89,6 +90,7 @@ namespace Eclipse
         Entity newCam = engine->world.CreateEntity();
         engine->world.AddComponent(newCam, CameraComponent{});
         engine->world.AddComponent(newCam, TransformComponent{});
+        engine->world.AddComponent(newCam, EntityComponent{EntityType::ENT_UNASSIGNED });
 
         auto& viewCam = engine->world.GetComponent<CameraComponent>(newCam);
         viewCam.camType = _camType;
