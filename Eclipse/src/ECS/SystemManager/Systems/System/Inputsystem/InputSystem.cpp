@@ -11,14 +11,14 @@ namespace Eclipse
 {
     void InputSystem::Update()
     {
-        if (engine->InputManager->GetKeyTriggered(InputKeycode::Key_E))
+        if (engine->InputManager->GetKeyTriggered(InputKeycode::Key_L))
         {
             auto entsystem = engine->world.GetSystem<EntityCompSystem>();
-            Entity ID;
+            Entity ID = entsystem->FindEntity("Ray Direction");
 
-            if (ID = (entsystem->FindEntity("Ray Direction") != MAX_ENTITY))
+            if (ID != MAX_ENTITY)
             {
-                if (engine->world.CheckComponent<CollisionComponent>(ID))
+                // if (engine->world.CheckComponent<CollisionComponent>(ID))
                 {
                     auto& transCom = engine->world.GetComponent<TransformComponent>(ID);
                     PxOverlapBuffer hit;
