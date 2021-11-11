@@ -6,6 +6,7 @@ using Eclipse;
 public class Test : EclipseBehavior
 {
     public Light light;
+    public float temp;
 
     public void Start()
     {
@@ -14,5 +15,6 @@ public class Test : EclipseBehavior
     public void Update()
     {
         Console.WriteLine(light.Entity);
+        Console.WriteLine(temp);
     }
 }

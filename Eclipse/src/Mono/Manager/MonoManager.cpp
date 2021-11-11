@@ -141,34 +141,39 @@ namespace Eclipse
 	void MonoManager::LoadVariable(MonoScript* script)
 	{
 		MonoClass* klass = GetScriptMonoClass(script->scriptName);
-		//MonoObject* lightInst = CreateLightClass(std::strtoul(script->vars[0].varValue.c_str(), 0, 10));
-		//mono_field_set_value(script->obj, field, lightInst);
-
-		/*float test = 5.0f;
-		M_LIGHT light;
-		auto& var = script->vars[0];
-		mono_field_get_value(script->obj, var.field, &test);
-		std::cout << test << std::endl;*/
 
 		for (auto& var : script->vars)
 		{
-			switch (var.type)
-			{
-			case m_Type::MONO_AUDIO:
-				
-				break;
-			case m_Type::MONO_LIGHT:
-				mono_field_set_value(script->obj, mono_class_get_field_from_name(klass, var.varName.c_str()), CreateLightClass(std::strtoul(var.varValue.c_str(), 0, 10)));
-				//mono_field_set_value(script->obj, var.field, &light);
+			if (var.varValue.empty()) continue;
 
-				break;
-			case m_Type::MONO_FLOAT:
-				//mono_field_get_value(script->obj, var.field, &test);
-				//std::cout << test << std::endl;
-				//mono_field_set_value(script->obj, var.field, &test);
-				break;
-			default:
-				break;
+			if (var.type == m_Type::MONO_UNDEFINED || var.type == m_Type::MONO_HEADER) continue;
+			else if (var.type == m_Type::MONO_LIGHT)
+			{
+				mono_field_set_value(
+					script->obj,
+					mono_class_get_field_from_name(klass, var.varName.c_str()),
+					CreateLightClass(std::strtoul(var.varValue.c_str(), 0, 10))
+				);
+			}
+			else if (var.type == m_Type::MONO_FLOAT)
+			{
+				float temp = std::stof(var.varValue);
+				mono_field_set_value(
+					script->obj,
+					mono_class_get_field_from_name(klass, var.varName.c_str()),
+					&temp);
+			}
+			else if (var.type == m_Type::MONO_GAMEOBJECT)
+			{
+				mono_field_set_value(
+					script->obj,
+					mono_class_get_field_from_name(klass, var.varName.c_str()),
+					CreateGameObjectClass(std::strtoul(var.varValue.c_str(), 0, 10))
+				);
+			}
+			else
+			{
+				ENGINE_CORE_INFO("Variable type cannot be added because it is not recognised.");
 			}
 		}
 	}
@@ -298,8 +303,6 @@ namespace Eclipse
 				
 				break;
 			}
-
-			var.field = field;
 
 			if (!CheckIfFieldExist(script, var.varName, i))
 				script->vars.insert(script->vars.begin() + i, var);
@@ -596,6 +599,17 @@ namespace Eclipse
 	MonoObject* MonoManager::CreateLightClass(Entity ent)
 	{
 		MonoClass* klass = GetAPIMonoClass("Light");
+		MonoObject* obj = CreateObjectFromClass(klass, false);
+		std::vector<void*> args;
+		args.push_back(&ent);
+		ExecuteMethod(obj, GetMethodFromClass(klass, ".ctor", 1), args);
+
+		return obj;
+	}
+
+	MonoObject* MonoManager::CreateGameObjectClass(Entity ent)
+	{
+		MonoClass* klass = GetAPIMonoClass("GameObject");
 		MonoObject* obj = CreateObjectFromClass(klass, false);
 		std::vector<void*> args;
 		args.push_back(&ent);
