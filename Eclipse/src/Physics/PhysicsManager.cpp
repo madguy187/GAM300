@@ -278,12 +278,14 @@ namespace Eclipse
 
 	bool PhysicsManager::CheckSphere(ECVec3 position, float radius, std::string layerMask)
 	{
-		PxTransform temp;
-		temp.p.x = position.getX();
-		temp.p.y = position.getY();
-		temp.p.z = position.getZ();
+		PxVec3 temppos;
+		temppos.x = position.getX();
+		temppos.y = position.getY();
+		temppos.z = position.getZ();
+		PxTransform temp{temppos};
+		
 		PxSphereGeometry sphere{ radius };
-		PxQueryFlags qf(PxQueryFlag::eSTATIC | PxQueryFlag::eDYNAMIC | PxQueryFlag::ePREFILTER);
+		PxQueryFlags qf(PxQueryFlag::eSTATIC | PxQueryFlag::eDYNAMIC | PxQueryFlag::ePREFILTER | PxQueryFlag::eANY_HIT);
 		PxQueryFilterData filter(PxFilterData(), qf);
 		std::bitset<20> mask = std::bitset<20>(layerMask);
 		QueryReportCallback _callback{ mask };
@@ -293,12 +295,13 @@ namespace Eclipse
 
 	bool PhysicsManager::CheckBox(ECVec3 position, ECVec3 halfextents, std::string layerMask)
 	{
+		PxVec3 temppos;
+		temppos.x = position.getX();
+		temppos.y = position.getY();
+		temppos.z = position.getZ();
 		PxTransform temp;
-		temp.p.x = position.getX();
-		temp.p.y = position.getY();
-		temp.p.z = position.getZ();
 		PxBoxGeometry box{halfextents.getX(),halfextents.getY(),halfextents.getZ()};
-		PxQueryFlags qf(PxQueryFlag::eSTATIC | PxQueryFlag::eDYNAMIC | PxQueryFlag::ePREFILTER);
+		PxQueryFlags qf(PxQueryFlag::eSTATIC | PxQueryFlag::eDYNAMIC | PxQueryFlag::ePREFILTER | PxQueryFlag::eANY_HIT);
 		PxQueryFilterData filter(PxFilterData(), qf);
 		std::bitset<20> mask = std::bitset<20>(layerMask);
 		QueryReportCallback _callback{ mask };
