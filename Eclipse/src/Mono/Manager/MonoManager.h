@@ -8,7 +8,6 @@ namespace Eclipse
 	struct MonoVariable
 	{
 		m_Type type = m_Type::MONO_UNDEFINED;
-		MonoClassField* field;
 		std::string varName = "";
 		std::string varValue = "";
 	};
@@ -36,11 +35,6 @@ namespace Eclipse
 		MonoMethod* method = nullptr;
 	};
 
-	struct M_LIGHT
-	{
-		uint32_t ent;
-	};
-
 	class MonoManager
 	{
 		MonoDomain* domain;
@@ -64,13 +58,13 @@ namespace Eclipse
 
 		// Manager Functions
 		void Init();
-		void LoadVariable(MonoScript*& script);
 		void StartMono();
 		void StopMono();
 		void Terminate();
 		void UpdateInvokers();
 		void AddInvoke(MonoScript* _script, float _timer, MonoMethod* _method);
 		MonoScript* GetScriptPointerByName(const std::string& name);
+		void LoadVariable(MonoScript* script);
 
 		// API Functions
 		void Awake(MonoScript* obj);
@@ -84,6 +78,7 @@ namespace Eclipse
 		MonoObject* CreateQuaternionClass(float x, float y, float z);
 		MonoObject* CreateRayCastHit(float x, float y, float z);
 		MonoObject* CreateLightClass(Entity ent);
+		MonoObject* CreateGameObjectClass(Entity ent);
 		ECVec3 ConvertVectorToECVec(MonoObject* vec);
 		ECVec3 ConvertQuaternionToECVec3(MonoObject* vec);
 

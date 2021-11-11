@@ -8,7 +8,7 @@ namespace Eclipse
     class AnimationSystem : public System
     {
     public:
-        static void Init();
+        void Init();
         void Update() override;
     };
 }

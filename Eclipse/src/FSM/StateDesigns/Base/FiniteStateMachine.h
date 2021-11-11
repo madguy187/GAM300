@@ -64,8 +64,8 @@ namespace Eclipse
 			{
 				m_CurrentStateTimer += dt;
 				UpdateState((T)m_CurrentState);
-				T printState = (T)m_CurrentState;
-				std::cout << lexical_cast_toStr<T>(printState) << std::endl;
+				// T printState = (T)m_CurrentState;
+			    // std::cout << lexical_cast_toStr<T>(printState) << std::endl;
 			}
 			else
 			{

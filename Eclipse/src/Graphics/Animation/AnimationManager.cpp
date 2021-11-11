@@ -112,7 +112,16 @@ void Eclipse::AnimationManager::CheckForAnimation(unsigned int ID)
             {
                 if (!engine->world.CheckComponent<AnimationComponent>(ID))
                 {
-                    engine->world.AddComponent(ID, AnimationComponent{});
+                    AnimationComponent animCom{};
+
+                    if (!strcmp(meshName.c_str(), "Frog"))
+                    {
+                        engine->gFSM.AddFSM(ID);
+                        animCom.m_CurrentAnimation.m_AnimationState = AnimationState::IDLE;
+                        engine->gFSM.FindFSM(ID)->SetState(animCom.m_CurrentAnimation.m_AnimationState);
+                    }
+
+                    engine->world.AddComponent(ID, animCom);
                 }
         
                 auto& animation = engine->world.GetComponent<AnimationComponent>(ID);

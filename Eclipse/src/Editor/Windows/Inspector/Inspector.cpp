@@ -87,7 +87,9 @@ namespace Eclipse
             ShowAIProperty("AI Properties", currEnt, CompFilter);
             ShowParentProperty("Parent", currEnt, CompFilter);
             ShowChildProperty("Child", currEnt, CompFilter);
+            ShowAnimationProperty("Animation", currEnt, CompFilter);
             ShowNavMeshProperty("NavMesh Volume", currEnt, CompFilter);
+
             AddComponentsController(currEnt);
             ECGui::NextColumn();
             RemoveComponentsController(currEnt);
@@ -1325,6 +1327,19 @@ namespace Eclipse
         //        ECGui::InsertHorizontalLineSeperator();
         //    }
         //}
+
+        return false;
+    }
+
+    bool InspectorWindow::ShowAnimationProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+    {
+        if (engine->world.CheckComponent<AnimationComponent>(ID))
+        {
+            if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+            {
+                // auto& animCom = engine->world.GetComponent<AnimationComponent>(ID);
+            }
+        }
 
         return false;
     }

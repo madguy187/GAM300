@@ -1,6 +1,7 @@
 #pragma once
 
-#include "FSM/FiniteStateMachine.h"
+#include "../StateDesigns/Base/FiniteStateMachine.h"
+#include "../StateDesigns/Animation/AnimationFSM.h"
 
 namespace Eclipse
 {
@@ -8,7 +9,10 @@ namespace Eclipse
 	{
 	public:
 		void Init();
+		void AddFSM(Entity ID);
+		void RemoveFSM(Entity ID);
+		AnimationFSM* FindFSM(Entity ID);
 	private:
-		std::unordered_map<std::string, std::any> m_FSMMap;
+		std::unordered_map<Entity, AnimationFSM> m_AnimationFSMMap;
 	};
 }

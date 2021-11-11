@@ -45,9 +45,9 @@ namespace Eclipse
 
         public static float Distance(Vector3 a, Vector3 b)
         {
-            return (a.x - b.x) * (a.x - b.x) + 
+            return (float)Math.Sqrt((a.x - b.x) * (a.x - b.x) + 
                     (a.y - b.y) * (a.y - b.y) +
-                    (a.z - b.z) * (a.z - b.z);
+                    (a.z - b.z) * (a.z - b.z));
         }
 
         public override string ToString() => $"{x} {y} {z}";
