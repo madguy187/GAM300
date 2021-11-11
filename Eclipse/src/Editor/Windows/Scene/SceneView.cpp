@@ -95,8 +95,8 @@ namespace Eclipse
 
 		// Selected Entity Transform
 		auto& transCom = engine->world.GetComponent<TransformComponent>(selectedEntity);
-		// glm::mat4 transform{};
-		glm::mat4 transform = transCom.GetTransform();
+		glm::mat4 transform{};
+		// glm::mat4 transform = transCom.GetTransform();
 
 		ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(transCom.position.ConvertToGlmVec3Type()),
 			glm::value_ptr(transCom.rotation.ConvertToGlmVec3Type()),
@@ -148,9 +148,9 @@ namespace Eclipse
 		if (ImGuizmo::IsUsing() && ECGui::IsItemHovered())
 		{
 			glm::vec3 translation, rotation, scale;
-			/*ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(translation),
-				glm::value_ptr(rotation), glm::value_ptr(scale));*/
-			DecomposeTransform(transform, translation, rotation, scale);
+			ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(translation),
+				glm::value_ptr(rotation), glm::value_ptr(scale));
+			// DecomposeTransform(transform, translation, rotation, scale);
 
 			glm::vec3 deltaRotation = rotation - transCom.rotation.ConvertToGlmVec3Type();
 
@@ -197,8 +197,6 @@ namespace Eclipse
 
 				for (auto& it : parent.child)
 				{
-					auto& transform = engine->world.GetComponent<TransformComponent>(it);
-				
 					engine->gPicker.UpdateAabb(it);
 					engine->gDynamicAABBTree.UpdateData(it);
 				}
