@@ -25,12 +25,18 @@ public class MouseLook : EclipseBehavior
     // Update is called once per frame
     void Update()
     {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
-        //Console.WriteLine("Mouse X = " + mouseX);
-        //Console.WriteLine("Mouse Y = " + mouseY);
+        //float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        float mouseY = 1.0f; //Input.GetAxis("Mouse Y");
+
         // Rotate Camera by the X-Axis
         xRotation -= mouseY;
+        //transform.Rotate(new Vector3(mouseY, 0, 0));
+
+        if (xRotation > minimumXRotation && xRotation < maximumXRotation)
+        {
+            
+            //transform.rotation = Quaternion.Euler(xRotation, 0f, 0f);
+        }            
 
         // Clamps the Camera's X Rotation
         if (xRotation < minimumXRotation)
@@ -45,7 +51,6 @@ public class MouseLook : EclipseBehavior
         //xRotation = Mathf.Clamp(xRotation, minimumXRotation, maximumXRotation);
 
         //transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        transform.Rotate(new Vector3(0f, xRotation, 0f));
         //playerBody.Rotate(Vector3.up * mouseX);
 
         // Unlock Mouse cursor

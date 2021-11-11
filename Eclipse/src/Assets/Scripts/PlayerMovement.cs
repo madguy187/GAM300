@@ -7,6 +7,7 @@ public class PlayerMovement : EclipseBehavior
 {
     [Header("Stats")]
     public float moveSpeed = 10f;
+    public float mouseSensitivity = 100f;
     //public float moveSpeedClamp = 3f;
     //public float jumpForce = 16f;
 
@@ -35,6 +36,8 @@ public class PlayerMovement : EclipseBehavior
 
     private float horizontalInput = 0;
     private float verticalInput = 0;
+
+    private float mouseXInput;
 
     //Rigidbody rb;
     //bool isGrounded;
@@ -74,10 +77,16 @@ public class PlayerMovement : EclipseBehavior
         //    //transform.position += new vector3(movespeed * time.deltatime, 0, 0);
         //}
 
+        // Movement
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
         transform.position = transform.position + new Vector3(horizontalInput * moveSpeed * Time.deltaTime, 0, verticalInput * moveSpeed * Time.deltaTime);
+
+        // Turning
+        mouseXInput = 0.2f; //Input.GetAxis("Mouse X");
+
+        transform.Rotate(new Vector3(0, mouseXInput, 0));
 
         //// Movement        
         //moveForce = (transform.right * horizontal + transform.forward * vertical) * moveSpeed;
