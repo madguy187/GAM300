@@ -213,6 +213,7 @@ namespace Eclipse
 		"AS_MOTION",
 		"AS_RUN",
 		"AS_DANCE",
+		"AS_WALK",
 		"AS_INVALID"
 	};
 }

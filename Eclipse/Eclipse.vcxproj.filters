@@ -1032,7 +1032,9 @@
     </ClInclude>
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\FSM\Manager\FSMManager.h" />
-    <ClInclude Include="src\FSM\States\FrogFSM\FrogFSM.h" />
+    <ClInclude Include="src\FSM\StateDesigns\TestingFSM\TestingFSM.h" />
+    <ClInclude Include="src\FSM\StateDesigns\Base\FiniteStateMachine.h" />
+    <ClInclude Include="src\FSM\StateDesigns\Animation\AnimationFSM.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1499,6 +1501,7 @@
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\FSM\Manager\FSMManager.cpp" />
-    <ClCompile Include="src\FSM\States\FrogFSM\FrogFSM.cpp" />
+    <ClCompile Include="src\FSM\StateDesigns\TestingFSM\TestingFSM.cpp" />
+    <ClCompile Include="src\FSM\StateDesigns\Animation\AnimationFSM.cpp" />
   </ItemGroup>
 </Project>

@@ -471,15 +471,16 @@ namespace Eclipse
 
     void Engine::CleanUp(const Entity& ent)
     {
-        engine->gDynamicAABBTree.RemoveData(ent);
-        engine->gCullingManager->Remove(ent);
-        engine->LightManager.DestroyLight(ent);
-        engine->gPhysics.RemoveActor(ent);
+        gDynamicAABBTree.RemoveData(ent);
+        gCullingManager->Remove(ent);
+        LightManager.DestroyLight(ent);
+        gPhysics.RemoveActor(ent);
+        gFSM.RemoveFSM(ent);
 
         if (IsEditorActive)
         {
-            engine->editorManager->DestroyEntity(ent);
-            engine->gPicker.SetCurrentCollisionID(engine->editorManager->GetSelectedEntity());
+            editorManager->DestroyEntity(ent);
+            gPicker.SetCurrentCollisionID(editorManager->GetSelectedEntity());
         }
         else
         {

@@ -274,7 +274,9 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Events\Events.h" />
     <ClInclude Include="src\FSM\FiniteStateMachine.h" />
     <ClInclude Include="src\FSM\Manager\FSMManager.h" />
-    <ClInclude Include="src\FSM\States\FrogFSM\FrogFSM.h" />
+    <ClInclude Include="src\FSM\StateDesigns\Animation\AnimationFSM.h" />
+    <ClInclude Include="src\FSM\StateDesigns\Base\FiniteStateMachine.h" />
+    <ClInclude Include="src\FSM\StateDesigns\TestingFSM\TestingFSM.h" />
     <ClInclude Include="src\FSM\States\TestingFSM\TestingFSM.h" />
     <ClInclude Include="src\Global.h" />
     <ClInclude Include="src\Graphics\Animation\AnimationManager.h" />
@@ -461,8 +463,8 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Engine\Engine.cpp" />
     <ClCompile Include="src\EntryPoint\EntryPoint.cpp" />
     <ClCompile Include="src\FSM\Manager\FSMManager.cpp" />
-    <ClCompile Include="src\FSM\States\FrogFSM\FrogFSM.cpp" />
-    <ClCompile Include="src\FSM\States\TestingFSM\TestingFSM.cpp" />
+    <ClCompile Include="src\FSM\StateDesigns\Animation\AnimationFSM.cpp" />
+    <ClCompile Include="src\FSM\StateDesigns\TestingFSM\TestingFSM.cpp" />
     <ClCompile Include="src\Graphics\Animation\AnimationManager.cpp" />
     <ClCompile Include="src\Graphics\Camera\CameraManager.cpp" />
     <ClCompile Include="src\Graphics\Culling\CullingManager.cpp" />
