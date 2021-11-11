@@ -104,6 +104,7 @@ enum class EntityType
     ENT_LIGHT_SPOT, // LAST
     // END OF LIGHTS
     ENT_GAMECAMERA,
+    ENT_EDITORCAMERA,
     ENT_MODEL,
     ENT_TARGETPOINT,
     ENT_MESH,
@@ -263,6 +264,7 @@ enum class AnimationState
     RUN,
     DANCE,
     WALK,
+    SLASH,
     INVALID
 };
 

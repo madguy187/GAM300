@@ -10,12 +10,13 @@ namespace Eclipse
             return;
         }
 
-        Entity newCam = engine->editorManager->CreateDefaultEntity(EntityType::ENT_GAMECAMERA);
-
-        //engine->world.AddComponent(newCam, EntityComponent{EntityType::ENT_CAMERA,
-        // lexical_cast_toStr<EntityType>(EntityType::ENT_CAMERA)});
+        //Entity newCam = engine->editorManager->CreateDefaultEntity(EntityType::ENT_GAMECAMERA);
+        Entity newCam = engine->world.CreateEntity();
+        EntityType entCamType = EntityType::ENT_EDITORCAMERA;
+        engine->world.AddComponent(newCam, EntityComponent{EntityType::ENT_EDITORCAMERA, 
+            lexical_cast_toStr<EntityType>(entCamType)});
         engine->world.AddComponent(newCam, CameraComponent{});
-        // engine->world.AddComponent(newCam, TransformComponent{});
+        engine->world.AddComponent(newCam, TransformComponent{});
 
         editorCamID = newCam;
 
@@ -42,9 +43,10 @@ namespace Eclipse
             return;
         }
 
-        Entity newCam = engine->world.CreateEntity();
+        // Entity newCam = engine->world.CreateEntity();
+        Entity newCam = engine->editorManager->CreateDefaultEntity(EntityType::ENT_GAMECAMERA);
         engine->world.AddComponent(newCam, CameraComponent{});
-        engine->world.AddComponent(newCam, TransformComponent{});
+        // engine->world.AddComponent(newCam, TransformComponent{});
 
         gameCamID = newCam;
 

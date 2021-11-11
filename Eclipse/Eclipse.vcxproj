@@ -366,6 +366,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\ImGui\Vendor\imstb_textedit.h" />
     <ClInclude Include="src\ImGui\Vendor\imstb_truetype.h" />
     <ClInclude Include="src\ImGui\Vendor\stb_image.h" />
+    <ClInclude Include="src\Library\Math\Math.h" />
     <ClInclude Include="src\Library\Math\Matrix.h" />
     <ClInclude Include="src\Library\Math\Vector.h" />
     <ClInclude Include="src\Library\Random\Random.h" />
@@ -541,6 +542,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\ImGui\Vendor\imgui_impl_glfw.cpp" />
     <ClCompile Include="src\ImGui\Vendor\imgui_impl_opengl3.cpp" />
     <ClCompile Include="src\ImGui\Vendor\imgui_widgets.cpp" />
+    <ClCompile Include="src\Library\Math\Math.cpp" />
     <ClCompile Include="src\Library\Math\Matrix.cpp" />
     <ClCompile Include="src\Library\Random\Random.cpp" />
     <ClCompile Include="src\Library\UUID\UUIDGenerator.cpp" />
