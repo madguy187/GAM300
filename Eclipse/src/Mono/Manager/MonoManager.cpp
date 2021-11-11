@@ -120,7 +120,8 @@ namespace Eclipse
 		mono_add_internal_call("Eclipse.Transform::GetForward", GetForward);
 		mono_add_internal_call("Eclipse.Transform::GetBack", GetBack);
 		mono_add_internal_call("Eclipse.Transform::GetLeft", GetLeft);
-		mono_add_internal_call("Eclipse.Transform::GetLeft", GetUp);
+		mono_add_internal_call("Eclipse.Transform::GetUp", GetUp);
+		mono_add_internal_call("Eclipse.Transform::GetDown", GetDown);
 
 		// Quaternion Internal Calls
 		mono_add_internal_call("Eclipse.Quaternion::GetEuler", Euler);
@@ -174,7 +175,7 @@ namespace Eclipse
 				mono_field_set_value(
 					script->obj,
 					mono_class_get_field_from_name(klass, var.varName.c_str()),
-					CreateGameObjectClass(std::strtoul(var.varValue.c_str(), 0, 10))
+					CreateGameObjectClass(std::strtoul(var.varValue.c_str(), 0, 10), "")
 				);
 			}
 			else
@@ -617,13 +618,19 @@ namespace Eclipse
 		return obj;
 	}
 
-	MonoObject* MonoManager::CreateGameObjectClass(Entity ent)
+	MonoObject* MonoManager::CreateGameObjectClass(Entity ent, std::string scriptName)
 	{
 		MonoClass* klass = GetAPIMonoClass("GameObject");
 		MonoObject* obj = CreateObjectFromClass(klass, false);
+
+
+		MonoString* str = mono_string_new(mono_domain_get(), scriptName.c_str());
+
 		std::vector<void*> args;
 		args.push_back(&ent);
-		ExecuteMethod(obj, GetMethodFromClass(klass, ".ctor", 1), args);
+		args.push_back(str);
+
+		ExecuteMethod(obj, GetMethodFromClass(klass, ".ctor", 2), args);
 
 		return obj;
 	}
