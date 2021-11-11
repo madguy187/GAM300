@@ -1622,7 +1622,7 @@ namespace Eclipse
             }
 
             Mouse_X = MouseX;
-            Mouse_Y = MouseY;
+            //Mouse_Y = MouseY;
         }
         else
         {
@@ -1653,7 +1653,7 @@ namespace Eclipse
                 }
             }
 
-            Mouse_X = MouseX;
+            //Mouse_X = MouseX;
             Mouse_Y = MouseY;
         }
         else
