@@ -1,6 +1,7 @@
 #pragma once
 #include "Global.h"
 #include "pch.h"
+#include "ECS/SystemManager/Systems/System/EntityCompSystem/EntityCompSystem.h"
 
 namespace Eclipse
 {
@@ -21,5 +22,13 @@ namespace Eclipse
 				return;
 			}
 		}
+	}
+
+	static MonoObject* Find(MonoString* entName)
+	{
+		Entity ent = engine->world.GetSystem<EntityCompSystem>()->FindEntity(mono_string_to_utf8(entName));
+		if (ent == MAX_ENTITY) return nullptr;
+
+		return engine->mono.CreateGameObjectClass(ent);
 	}
 }

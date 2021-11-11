@@ -116,12 +116,18 @@ namespace Eclipse
 		mono_add_internal_call("Eclipse.Transform::SetTransform", SetTransform);
 		mono_add_internal_call("Eclipse.Transform::GetRotation", GetRotation);
 		mono_add_internal_call("Eclipse.Transform::SetRotation", SetRotation);
+		mono_add_internal_call("Eclipse.Transform::GetRight", GetRight);
+		mono_add_internal_call("Eclipse.Transform::GetForward", GetForward);
+		mono_add_internal_call("Eclipse.Transform::GetBack", GetBack);
+		mono_add_internal_call("Eclipse.Transform::GetLeft", GetLeft);
+		mono_add_internal_call("Eclipse.Transform::GetLeft", GetUp);
 
 		// Quaternion Internal Calls
 		mono_add_internal_call("Eclipse.Quaternion::GetEuler", Euler);
 
 		// InvokeFunc Internal Calls
 		mono_add_internal_call("Eclipse.EclipseBehavior::InvokeFunc", Invoke);
+		mono_add_internal_call("Eclipse.EclipseBehavior::Find", Find);
 
 		// Physics Internal Calls
 		mono_add_internal_call("Eclipse.Physics::RaycastCheck", RaycastFunc);
@@ -296,6 +302,8 @@ namespace Eclipse
 					var.type = m_Type::MONO_LIGHT;
 				else if (klass == GetAPIMonoClass("AudioSource"))
 					var.type = m_Type::MONO_AUDIO;
+				else if (klass == GetAPIMonoClass("GameObject"))
+					var.type = m_Type::MONO_GAMEOBJECT;
 				else
 					var.type = m_Type::MONO_UNDEFINED;
 

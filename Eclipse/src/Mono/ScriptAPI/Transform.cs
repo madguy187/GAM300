@@ -30,6 +30,26 @@ namespace Eclipse
             RotateEuler(Entity, angle.x, angle.y, angle.z);
         }
 
+        public Vector3 left
+        {
+            get => GetLeft(Entity);
+        }
+
+        public Vector3 right
+        {
+            get => GetRight(Entity);
+        }
+
+        public Vector3 forward
+        {
+            get => GetForward(Entity);
+        }
+
+        public Vector3 back
+        {
+            get => GetBack(Entity);
+        }
+
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         public extern static void RotateEuler(UInt32 ent, float x, float y, float z);
 
@@ -44,6 +64,18 @@ namespace Eclipse
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         private extern static void SetRotation(UInt32 ent, Quaternion rot);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        private extern static Vector3 GetLeft(UInt32 ent);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        private extern static Vector3 GetRight(UInt32 ent);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        private extern static Vector3 GetForward(UInt32 ent);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        private extern static Vector3 GetBack(UInt32 ent);
 
         //[MethodImplAttribute(MethodImplOptions.InternalCall)]
         //public extern static Vector3 GetScale(Entity ent);
