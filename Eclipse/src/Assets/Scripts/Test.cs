@@ -5,16 +5,13 @@ using Eclipse;
 
 public class Test : EclipseBehavior
 {
-    public Light light;
-    public float temp;
-
     public void Start()
     {
     }
 
     public void Update()
     {
-        Console.WriteLine(light.Entity);
-        Console.WriteLine(temp);
+        if (Input.GetKey(KeyCode.Space))
+          transform.position = transform.position + transform.left;
     }
 }

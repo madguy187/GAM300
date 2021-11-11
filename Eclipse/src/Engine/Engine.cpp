@@ -45,6 +45,7 @@
 #include "Editor/Windows/NodeEditor/NodeEditor.h"
 #include "ECS/SystemManager/Systems/System/AnimationSystem/AnimationSystem.h"
 #include "ECS/SystemManager/Systems/System/NavMeshSystem/NavMeshSystem.h"
+#include "ECS/SystemManager/Systems/System/EntityCompSystem/EntityCompSystem.h"
 //#include "FSM/States/TestingFSM/TestingFSM.h"
 
 bool Tester1(const Test1&)
@@ -157,6 +158,7 @@ namespace Eclipse
         world.RegisterSystem<AISystem>();
         world.RegisterSystem<InputSystem>();
         world.RegisterSystem<AnimationSystem>();
+        world.RegisterSystem<EntityCompSystem>();
 
         prefabWorld.RegisterSystem<PrefabSystem>();
 
