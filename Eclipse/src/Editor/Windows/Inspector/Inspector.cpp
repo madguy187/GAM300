@@ -868,6 +868,15 @@ namespace Eclipse
                                             engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity",
                                                 scriptCom.scriptList[i].vars[j].varValue, "Audio Entity ID registered", PayloadTargetType::PTT_SCRIPT_AUDIO, ID, j);
                                     }
+                                    else
+                                        if (scriptCom.scriptList[i]->vars[j].type == m_Type::MONO_GAMEOBJECT)
+                                        {
+                                            ECGui::DrawInputTextHintWidget("Game Obj Entity ID", "Drag Game Obj Entity Here",
+                                                const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()), 256,
+                                                true, ImGuiInputTextFlags_ReadOnly);
+                                            engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity",
+                                                scriptCom.scriptList[i]->vars[j].varValue, "Game Obj Entity ID registered", PayloadTargetType::PTT_SCRIPT_GAMEOBJECT, ID, j);
+                                        }
                                 else
                                 {
                                     ECGui::DrawInputTextWidget(scriptCom.scriptList[i].vars[j].varName.c_str(),

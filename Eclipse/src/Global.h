@@ -133,6 +133,7 @@ enum class PayloadTargetType
     PTT_ASSETS,
     PTT_SCRIPT_LIGHT,
     PTT_SCRIPT_AUDIO,
+    PTT_SCRIPT_GAMEOBJECT,
 	PTT_UNASSIGNED
 };
 
