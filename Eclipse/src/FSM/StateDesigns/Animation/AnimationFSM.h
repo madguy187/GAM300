@@ -16,5 +16,7 @@ namespace Eclipse
 		void SetEntity(Entity ID);
 	private:
 		Entity m_ID{ MAX_ENTITY };
+		std::vector<AnimationState> States;
+		int StateIndex{ 0 };
 	};
 }

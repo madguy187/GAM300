@@ -356,21 +356,21 @@ namespace Eclipse
             std::string temp;
             temp = relativePath.filename().string().c_str();
 
-            switch (InspectorWindow::str2int(temp.substr(temp.find_last_of(".") + 1).c_str()))
+            switch (str2int(temp.substr(temp.find_last_of(".") + 1).c_str()))
             {
-            case InspectorWindow::str2int("png"):
+            case str2int("png"):
                 engine->editorManager->DragAndDropInst_.StringPayloadSource("png", relativePath.string());
                 break;
-            case InspectorWindow::str2int("cs"):
+            case str2int("cs"):
                 engine->editorManager->DragAndDropInst_.StringPayloadSource("cs", relativePath.string());
                 break;
-            case InspectorWindow::str2int("txt"):
+            case str2int("txt"):
                 engine->editorManager->DragAndDropInst_.StringPayloadSource("txt", relativePath.string());
                 break;
-            case InspectorWindow::str2int("wav"):
+            case str2int("wav"):
                 engine->editorManager->DragAndDropInst_.StringPayloadSource("wav", "src\\Assets\\" + relativePath.string());
                 break;
-            case InspectorWindow::str2int("prefab"):
+            case str2int("prefab"):
                 temp = "src\\Assets\\" + relativePath.string();
 
                 if (ECGui::IsMouseDoubleClicked(0) && ECGui::IsItemClicked(0) && ECGui::IsItemHovered())
@@ -391,7 +391,7 @@ namespace Eclipse
                 engine->editorManager->DragAndDropInst_.StringPayloadSource("prefab", temp);
                 //engine->editorManager->DragAndDropInst_.StringPayloadSource("prefab", "src\\Assets\\" + relativePath.string());
                 break;
-            case InspectorWindow::str2int("mat"):
+            case str2int("mat"):
 
                 temp = "src\\Assets\\" + relativePath.string();
 
@@ -415,7 +415,7 @@ namespace Eclipse
 
                 engine->editorManager->DragAndDropInst_.StringPayloadSource("mat", relativePath.string());
                 break;
-            case InspectorWindow::str2int("dds"):
+            case str2int("dds"):
                 engine->editorManager->DragAndDropInst_.StringPayloadSource("dds", relativePath.string());
                 break;
             default:

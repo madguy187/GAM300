@@ -345,7 +345,7 @@ namespace Eclipse
                 world.Update<AISystem>();
 
             world.Update<CollisionSystem>();
-            if (IsScenePlaying())
+            // if (IsScenePlaying())
             {
                 for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
                 {
@@ -354,6 +354,8 @@ namespace Eclipse
                     mono.fixUpdate = true;
                     world.Update<MonoSystem>();
                     mono.fixUpdate = false;
+                    // ANIMATIONSYSTEM =============================
+                    world.Update<AnimationSystem>();
                 }
             }
 
@@ -378,9 +380,6 @@ namespace Eclipse
 
             // MATERIALSYSTEM =============================
             world.Update<MaterialSystem>();
-
-            // ANIMATIONSYSTEM =============================
-            world.Update<AnimationSystem>();
 
             // RENDERSYSTEM =============================
             world.Update<RenderSystem>();
