@@ -59,7 +59,9 @@ namespace Eclipse
 			ScriptComponent& scriptCom = engine->world.GetComponent<ScriptComponent>(entity);
 
 			for (auto& script : scriptCom.scriptList)
+			{
 				script->obj = nullptr;
+			}
 		}
 	}
 }

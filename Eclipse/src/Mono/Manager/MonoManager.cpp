@@ -138,20 +138,27 @@ namespace Eclipse
 		StartMono();
 	}
 
-	void MonoManager::LoadVariable(MonoScript*& script)
+	void MonoManager::LoadVariable(MonoScript* script)
 	{
-		float test = 5.0f;
+		MonoClass* klass = GetScriptMonoClass(script->scriptName);
+		//MonoObject* lightInst = CreateLightClass(std::strtoul(script->vars[0].varValue.c_str(), 0, 10));
+		//mono_field_set_value(script->obj, field, lightInst);
+
+		/*float test = 5.0f;
 		M_LIGHT light;
+		auto& var = script->vars[0];
+		mono_field_get_value(script->obj, var.field, &test);
+		std::cout << test << std::endl;*/
+
 		for (auto& var : script->vars)
 		{
-			light.ent = std::strtoul(var.varValue.c_str(), 0, 10);
 			switch (var.type)
 			{
 			case m_Type::MONO_AUDIO:
 				
 				break;
 			case m_Type::MONO_LIGHT:
-				//mono_field_set_value(script->obj, var.field, CreateLightClass(std::strtoul(var.varValue.c_str(), 0, 10)));
+				mono_field_set_value(script->obj, mono_class_get_field_from_name(klass, var.varName.c_str()), CreateLightClass(std::strtoul(var.varValue.c_str(), 0, 10)));
 				//mono_field_set_value(script->obj, var.field, &light);
 
 				break;
@@ -436,6 +443,8 @@ namespace Eclipse
 			return nullptr;
 		}
 
+		mono_runtime_object_init(obj);
+
 		MonoClass* base = mono_class_from_name(APIImage, "Eclipse", "EclipseBehavior");
 		if (!base)
 		{
@@ -448,8 +457,6 @@ namespace Eclipse
 			std::cout << "Failed loading class method" << std::endl;
 			return nullptr;
 		}
-
-		mono_runtime_object_init(obj);
 
 		void* args[3];
 		uint32_t handle = mono_gchandle_new(obj, true);

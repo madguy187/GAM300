@@ -64,13 +64,13 @@ namespace Eclipse
 
 		// Manager Functions
 		void Init();
-		void LoadVariable(MonoScript*& script);
 		void StartMono();
 		void StopMono();
 		void Terminate();
 		void UpdateInvokers();
 		void AddInvoke(MonoScript* _script, float _timer, MonoMethod* _method);
 		MonoScript* GetScriptPointerByName(const std::string& name);
+		void LoadVariable(MonoScript* script);
 
 		// API Functions
 		void Awake(MonoScript* obj);
