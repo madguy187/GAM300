@@ -357,6 +357,8 @@ namespace Eclipse
                 }
             }
 
+            //mono.PrintAllScript();
+
             world.Update<FileWatchSystem>();
 
             world.Update<ParentSystem>();

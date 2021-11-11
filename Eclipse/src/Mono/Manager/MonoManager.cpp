@@ -162,6 +162,14 @@ namespace Eclipse
 					CreateLightClass(std::strtoul(var.varValue.c_str(), 0, 10))
 				);
 			}
+			else if (var.type == m_Type::MONO_AUDIO)
+			{
+				mono_field_set_value(
+					script->obj,
+					mono_class_get_field_from_name(klass, var.varName.c_str()),
+					CreateAudioSourceClass(std::strtoul(var.varValue.c_str(), 0, 10))
+				);
+			}
 			else if (var.type == m_Type::MONO_FLOAT)
 			{
 				float temp = std::stof(var.varValue);
@@ -330,6 +338,19 @@ namespace Eclipse
 
 		if (script->vars[index].varName == fieldName) return true;
 		return false;
+	}
+
+	void MonoManager::PrintAllScript()
+	{
+		for (auto& script : UserImplementedScriptList)
+		{
+			std::cout << script.scriptName << std::endl;
+			for (auto& var : script.vars)
+			{
+				std::cout << "\t" << var.varName << " " << std::endl;
+			}
+		}
+		std::cout << std::endl;
 	}
 
 	void MonoManager::Update(MonoScript* obj)
@@ -610,6 +631,17 @@ namespace Eclipse
 	MonoObject* MonoManager::CreateLightClass(Entity ent)
 	{
 		MonoClass* klass = GetAPIMonoClass("Light");
+		MonoObject* obj = CreateObjectFromClass(klass, false);
+		std::vector<void*> args;
+		args.push_back(&ent);
+		ExecuteMethod(obj, GetMethodFromClass(klass, ".ctor", 1), args);
+
+		return obj;
+	}
+
+	MonoObject* MonoManager::CreateAudioSourceClass(Entity ent)
+	{
+		MonoClass* klass = GetAPIMonoClass("AudioSource");
 		MonoObject* obj = CreateObjectFromClass(klass, false);
 		std::vector<void*> args;
 		args.push_back(&ent);
