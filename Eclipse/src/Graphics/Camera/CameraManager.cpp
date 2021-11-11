@@ -13,8 +13,8 @@ namespace Eclipse
         //Entity newCam = engine->editorManager->CreateDefaultEntity(EntityType::ENT_GAMECAMERA);
         Entity newCam = engine->world.CreateEntity();
         EntityType entCamType = EntityType::ENT_EDITORCAMERA;
-        engine->world.AddComponent(newCam, EntityComponent{EntityType::ENT_EDITORCAMERA, 
-            lexical_cast_toStr<EntityType>(entCamType)});
+        engine->world.AddComponent(newCam, EntityComponent{ EntityType::ENT_EDITORCAMERA,
+            lexical_cast_toStr<EntityType>(entCamType) });
         engine->world.AddComponent(newCam, CameraComponent{});
         engine->world.AddComponent(newCam, TransformComponent{});
 
@@ -90,7 +90,7 @@ namespace Eclipse
         Entity newCam = engine->world.CreateEntity();
         engine->world.AddComponent(newCam, CameraComponent{});
         engine->world.AddComponent(newCam, TransformComponent{});
-        engine->world.AddComponent(newCam, EntityComponent{EntityType::ENT_UNASSIGNED });
+        engine->world.AddComponent(newCam, EntityComponent{ EntityType::ENT_UNASSIGNED });
 
         auto& viewCam = engine->world.GetComponent<CameraComponent>(newCam);
         viewCam.camType = _camType;
@@ -212,61 +212,58 @@ namespace Eclipse
 
         float cameraSpd = engine->Game_Clock.get_DeltaTime() * camera.cameraSpeed;
 
-        if (ECGui::IsMouseDragging(1))
+        //std::cout << input << std::endl;
+        if (input.test(0))
         {
-            //std::cout << input << std::endl;
-            if (input.test(0))
-            {
-                _transform.position += glm::normalize(glm::cross(camera.eyeFront, camera.upVec)) * cameraSpd;
-            }
+            _transform.position += glm::normalize(glm::cross(camera.eyeFront, camera.upVec)) * cameraSpd;
+        }
 
-            if (input.test(1))
-            {
-                _transform.position -= glm::normalize(glm::cross(camera.eyeFront, camera.upVec)) * cameraSpd;
-            }
+        if (input.test(1))
+        {
+            _transform.position -= glm::normalize(glm::cross(camera.eyeFront, camera.upVec)) * cameraSpd;
+        }
 
-            if (input.test(2))
-            {
-                _transform.position += camera.eyeFront * cameraSpd;
-            }
+        if (input.test(2))
+        {
+            _transform.position += camera.eyeFront * cameraSpd;
+        }
 
-            if (input.test(3))
-            {
-                _transform.position -= camera.eyeFront * cameraSpd;
-            }
+        if (input.test(3))
+        {
+            _transform.position -= camera.eyeFront * cameraSpd;
+        }
 
-            if (input.test(6))
-            {
-                _transform.position += camera.upVec * cameraSpd;
-            }
+        if (input.test(10))
+        {
+            _transform.position += camera.upVec * cameraSpd;
+        }
 
-            if (input.test(7))
-            {
-                _transform.position -= camera.upVec * cameraSpd;
-            }
+        if (input.test(11))
+        {
+            _transform.position -= camera.upVec * cameraSpd;
+        }
 
-            if (input.test(8))
+        if (input.test(8))
+        {
+            if (camera.fov < 2.0f)
             {
-                if (camera.fov < 2.0f)
-                {
-                    camera.fov = 1.0f;
-                }
-                else
-                {
-                    camera.fov -= cameraSpd;
-                }
+                camera.fov = 1.0f;
             }
-
-            if (input.test(9))
+            else
             {
-                if (camera.fov > 179.0f)
-                {
-                    camera.fov = 180.0f;
-                }
-                else
-                {
-                    camera.fov += cameraSpd;
-                }
+                camera.fov -= cameraSpd;
+            }
+        }
+
+        if (input.test(9))
+        {
+            if (camera.fov > 179.0f)
+            {
+                camera.fov = 180.0f;
+            }
+            else
+            {
+                camera.fov += cameraSpd;
             }
         }
         //if (input.test(6))

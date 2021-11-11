@@ -33,7 +33,7 @@ void Eclipse::CameraSystem::Update()
 
         if (_camera.camType == CameraComponent::CameraType::Editor_Camera)
         {
-            engine->gCamera.CheckCameraInput();
+            //engine->gCamera.CheckCameraInput();
             //engine->gCamera.SetFarPlane(_camera, 300.0f);
             engine->gCamera.UpdateEditorCamera(_transform);
         }
