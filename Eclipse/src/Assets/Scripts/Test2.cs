@@ -8,6 +8,7 @@ public class Test2 : EclipseBehavior
     public float fikrul;
     public Light darren;
     public AudioSource stupid;
+	public GameObject eeeee;
 
     public void Start()
     {

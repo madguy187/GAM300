@@ -116,12 +116,19 @@ namespace Eclipse
 		mono_add_internal_call("Eclipse.Transform::SetTransform", SetTransform);
 		mono_add_internal_call("Eclipse.Transform::GetRotation", GetRotation);
 		mono_add_internal_call("Eclipse.Transform::SetRotation", SetRotation);
+		mono_add_internal_call("Eclipse.Transform::GetRight", GetRight);
+		mono_add_internal_call("Eclipse.Transform::GetForward", GetForward);
+		mono_add_internal_call("Eclipse.Transform::GetBack", GetBack);
+		mono_add_internal_call("Eclipse.Transform::GetLeft", GetLeft);
+		mono_add_internal_call("Eclipse.Transform::GetUp", GetUp);
+		mono_add_internal_call("Eclipse.Transform::GetDown", GetDown);
 
 		// Quaternion Internal Calls
 		mono_add_internal_call("Eclipse.Quaternion::GetEuler", Euler);
 
 		// InvokeFunc Internal Calls
 		mono_add_internal_call("Eclipse.EclipseBehavior::InvokeFunc", Invoke);
+		mono_add_internal_call("Eclipse.EclipseBehavior::Find", Find);
 
 		// Physics Internal Calls
 		mono_add_internal_call("Eclipse.Physics::RaycastCheck", RaycastFunc);
@@ -168,7 +175,7 @@ namespace Eclipse
 				mono_field_set_value(
 					script->obj,
 					mono_class_get_field_from_name(klass, var.varName.c_str()),
-					CreateGameObjectClass(std::strtoul(var.varValue.c_str(), 0, 10))
+					CreateGameObjectClass(std::strtoul(var.varValue.c_str(), 0, 10), "")
 				);
 			}
 			else
@@ -284,23 +291,27 @@ namespace Eclipse
 			MonoVariable var;
 
 			int typeInt = mono_type_get_type(mono_field_get_type(field));
+			var.varName = mono_field_get_name(field);
+
+			MonoClass* fieldklass = mono_type_get_class(mono_field_get_type(field));
+
 			switch (typeInt)
 			{
 			case MONO_TYPE_R4:
 				var.type = m_Type::MONO_FLOAT;
-				var.varName = mono_field_get_name(field);
 				break;
 			case MONO_TYPE_VALUETYPE:
-				MonoClass* klass = mono_type_get_class(mono_field_get_type(field));
-				if (klass == GetAPIMonoClass("Light"))
+				
+				if (fieldklass == GetAPIMonoClass("Light"))
 					var.type = m_Type::MONO_LIGHT;
-				else if (klass == GetAPIMonoClass("AudioSource"))
+				else if (fieldklass == GetAPIMonoClass("AudioSource"))
 					var.type = m_Type::MONO_AUDIO;
 				else
-					var.type = m_Type::MONO_UNDEFINED;
-
-				var.varName = mono_field_get_name(field);
-				
+					var.type = m_Type::MONO_UNDEFINED;				
+				break;
+			case MONO_TYPE_CLASS:
+				if (fieldklass == GetAPIMonoClass("GameObject"))
+					var.type = m_Type::MONO_GAMEOBJECT;
 				break;
 			}
 
@@ -607,13 +618,19 @@ namespace Eclipse
 		return obj;
 	}
 
-	MonoObject* MonoManager::CreateGameObjectClass(Entity ent)
+	MonoObject* MonoManager::CreateGameObjectClass(Entity ent, std::string scriptName)
 	{
 		MonoClass* klass = GetAPIMonoClass("GameObject");
 		MonoObject* obj = CreateObjectFromClass(klass, false);
+
+
+		MonoString* str = mono_string_new(mono_domain_get(), scriptName.c_str());
+
 		std::vector<void*> args;
 		args.push_back(&ent);
-		ExecuteMethod(obj, GetMethodFromClass(klass, ".ctor", 1), args);
+		args.push_back(str);
+
+		ExecuteMethod(obj, GetMethodFromClass(klass, ".ctor", 2), args);
 
 		return obj;
 	}

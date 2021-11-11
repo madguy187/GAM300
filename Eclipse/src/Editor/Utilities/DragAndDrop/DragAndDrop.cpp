@@ -44,7 +44,6 @@ namespace Eclipse
 			case PayloadSourceType::PST_ENTITY:
 				if (engine->world.CheckComponent<EntityComponent>(ID))
 				{
-					std::cout << source;
 					auto& entCom = engine->world.GetComponent<EntityComponent>(static_cast<Entity>(ID));
 
 					if (entCom.Name != "Untagged Entity")
@@ -124,7 +123,6 @@ namespace Eclipse
 					}
 					break;
 				case PayloadTargetType::PTT_SCRIPT_LIGHT:
-					std::cout << engine->editorManager->GetEntityID(*((int*)payload->Data));
 					if (engine->world.CheckComponent<LightComponent>(engine->editorManager->GetEntityID(*((int*)payload->Data))))
 					{
 						destination = std::to_string(engine->editorManager->GetEntityID(*((int*)payload->Data)));
@@ -135,7 +133,6 @@ namespace Eclipse
 					}
 					break;
 				case PayloadTargetType::PTT_SCRIPT_AUDIO:
-					std::cout << engine->editorManager->GetEntityID(*((int*)payload->Data));
 					if (engine->world.CheckComponent<AudioComponent>(engine->editorManager->GetEntityID(*((int*)payload->Data))))
 						
 					{
@@ -144,6 +141,17 @@ namespace Eclipse
 					else
 					{
 						cMsg = "Wrong type of entity dragged , entity needs to have AUDIO COMPONENT";
+					}
+					break;
+				case PayloadTargetType::PTT_SCRIPT_GAMEOBJECT:
+					if (engine->world.CheckComponent<EntityComponent>(engine->editorManager->GetEntityID(*((int*)payload->Data))))
+
+					{
+						destination = std::to_string(engine->editorManager->GetEntityID(*((int*)payload->Data)));
+					}
+					else
+					{
+						cMsg = "Wrong type of entity dragged , entity needs to have ENTITY COMPONENT";
 					}
 					break;
 				}

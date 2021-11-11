@@ -44,6 +44,9 @@ namespace Eclipse
         }
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        public extern static GameObject Find(string entName);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
         private extern static void InvokeFunc(UInt32 entity, string scriptName, string funcName, float time);
     }
 }
