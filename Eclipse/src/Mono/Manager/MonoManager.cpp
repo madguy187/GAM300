@@ -340,6 +340,19 @@ namespace Eclipse
 		return false;
 	}
 
+	void MonoManager::PrintAllScript()
+	{
+		for (auto& script : UserImplementedScriptList)
+		{
+			std::cout << script.scriptName << std::endl;
+			for (auto& var : script.vars)
+			{
+				std::cout << "\t" << var.varName << " " << std::endl;
+			}
+		}
+		std::cout << std::endl;
+	}
+
 	void MonoManager::Update(MonoScript* obj)
 	{
 		MonoClass* klass = mono_class_from_name(ScriptImage, "", obj->scriptName.c_str());

@@ -98,6 +98,8 @@ namespace Eclipse
 		void LoadAllFields(MonoScript* script);
 		bool CheckIfFieldExist(MonoScript* script, std::string& fieldName, size_t index);
 
+		void PrintAllScript();
+
 		// Gets image containing all API Scripts
 		MonoImage* GetAPIImage();
 		// Gets image containing all User scripts
