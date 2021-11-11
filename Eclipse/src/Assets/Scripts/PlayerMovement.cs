@@ -54,32 +54,30 @@ public class PlayerMovement : EclipseBehavior
         //Jump();
 
         // Controls
-        if (Input.GetKey(KeyCode.A)) //|| Input.GetKey(KeyCode.LeftArrow))
-        {
-            //transform.position -= new vector3(movespeed * time.deltatime, 0, 0);
-        }
+        //if (Input.GetKey(KeyCode.A)) //|| Input.GetKey(KeyCode.LeftArrow))
+        //{
+        //    //transform.position -= new vector3(movespeed * time.deltatime, 0, 0);
+        //}
 
-        if (Input.GetKey(KeyCode.D))// || Input.GetKey(KeyCode.RightArrow))
-        {
-            //transform.position += new vector3(movespeed * time.deltatime, 0, 0);
-        }
+        //if (Input.GetKey(KeyCode.D))// || Input.GetKey(KeyCode.RightArrow))
+        //{
+        //    //transform.position += new vector3(movespeed * time.deltatime, 0, 0);
+        //}
 
-        if (Input.GetKey(KeyCode.W))// || Input.GetKey(KeyCode.UpArrow))
-        {
-            //transform.position -= new vector3(movespeed * time.deltatime, 0, 0);
-        }
+        //if (Input.GetKey(KeyCode.W))// || Input.GetKey(KeyCode.UpArrow))
+        //{
+        //    //transform.position -= new vector3(movespeed * time.deltatime, 0, 0);
+        //}
 
-        if (Input.GetKey(KeyCode.S))// || Input.GetKey(KeyCode.DownArrow))
-        {
-            //transform.position += new vector3(movespeed * time.deltatime, 0, 0);
-        }
+        //if (Input.GetKey(KeyCode.S))// || Input.GetKey(KeyCode.DownArrow))
+        //{
+        //    //transform.position += new vector3(movespeed * time.deltatime, 0, 0);
+        //}
 
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
-        transform.position = transform.position + new Vector3(horizontalInput * moveSpeed * Time.deltaTime, verticalInput * moveSpeed * Time.deltaTime, 0);
-        Console.WriteLine("Horizontal" + horizontalInput);
-        Console.WriteLine("verticalInput" + verticalInput);
+        transform.position = transform.position + new Vector3(horizontalInput * moveSpeed * Time.deltaTime, 0, verticalInput * moveSpeed * Time.deltaTime);
 
         //// Movement        
         //moveForce = (transform.right * horizontal + transform.forward * vertical) * moveSpeed;

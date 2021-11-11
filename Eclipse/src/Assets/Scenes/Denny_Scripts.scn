@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<Entities Size="4">
+<Entities Size="5">
     <Entity_0 ID="8">
         <CameraComponent>
             <eyeAlpha value="0" />
@@ -7,8 +7,8 @@
             <fov value="53.6" />
             <nearPlane value="0.1" />
             <farPlane value="300" />
-            <aspect value="2.13193" />
-            <eyePos x="-17.1143" y="4.10181" z="6.14117" />
+            <aspect value="3.04645" />
+            <eyePos x="-6.54992" y="4.6613" z="7.41317" />
             <eyeFront x="1" y="0" z="0" />
             <upVec x="0" y="1" z="0" />
             <rightVec x="0" y="0" z="1" />
@@ -17,10 +17,10 @@
                 <Col0 _00="0" _01="0" _02="-1" _03="0" />
                 <Col1 _10="0" _11="1" _12="-0" _13="0" />
                 <Col2 _20="1" _21="0" _22="-0" _23="0" />
-                <Col3 _30="-6.14117" _31="-4.10181" _32="-17.1143" _33="1" />
+                <Col3 _30="-7.41317" _31="-4.6613" _32="-6.54992" _33="1" />
             </viewMtx>
             <projMtx Col="4" Row="4">
-                <Col0 _00="0.928578" _01="0" _02="0" _03="0" />
+                <Col0 _00="0.649827" _01="0" _02="0" _03="0" />
                 <Col1 _10="0" _11="1.97966" _12="0" _13="0" />
                 <Col2 _20="0" _21="0" _22="-1.00067" _23="-1" />
                 <Col3 _30="0" _31="0" _32="-0.200067" _33="0" />
@@ -36,20 +36,8 @@
             <hightLightChild value="true" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
-        <ScriptComponent>
-            <scriptList size="1">
-                <Member0 ScriptName="MouseLook">
-                    <MonoVariables size="3">
-                        <Member0 Type="MONO_FLOAT" Name="mouseSensitivity" Value="900" />
-                        <Member1 Type="MONO_FLOAT" Name="minimumXRotation" Value="" />
-                        <Member2 Type="MONO_FLOAT" Name="maximumXRotation" Value="" />
-                    </MonoVariables>
-                </Member0>
-            </scriptList>
-            <LayerMask value="00000000000000000011" />
-        </ScriptComponent>
         <TransformComponent>
-            <position x="-17.1143" y="4.10181" z="6.14117" />
+            <position x="-6.54992" y="4.6613" z="7.41317" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
@@ -84,9 +72,9 @@
     </Entity_1>
     <Entity_2 ID="10">
         <AABBComponent>
-            <center x="0" y="3.46169" z="0.851583" />
-            <Min x="-1" y="1.46169" z="-0.148417" />
-            <Max x="1" y="5.46169" z="1.85158" />
+            <center x="0" y="3" z="0" />
+            <Min x="-1" y="1" z="-1" />
+            <Max x="1" y="5" z="1" />
         </AABBComponent>
         <EntityComponent>
             <Tag value="Cylinder" />
@@ -149,21 +137,39 @@
             <enableRotation value="false" />
         </RigidBodyComponent>
         <ScriptComponent>
-            <scriptList size="1">
+            <scriptList size="2">
                 <Member0 ScriptName="PlayerMovement">
                     <MonoVariables size="2">
                         <Member0 Type="MONO_HEADER" Name="Stats" Value="" />
                         <Member1 Type="MONO_FLOAT" Name="moveSpeed" Value="5" />
                     </MonoVariables>
                 </Member0>
+                <Member1 ScriptName="MouseLook">
+                    <MonoVariables size="3">
+                        <Member0 Type="MONO_FLOAT" Name="mouseSensitivity" Value="10" />
+                        <Member1 Type="MONO_FLOAT" Name="minimumXRotation" Value="-90" />
+                        <Member2 Type="MONO_FLOAT" Name="maximumXRotation" Value="50" />
+                    </MonoVariables>
+                </Member1>
             </scriptList>
             <LayerMask value="00000000000000000011" />
         </ScriptComponent>
+        <ParentComponent>
+            <child size="1">
+                <Member0 value="12" />
+            </child>
+            <model Col="4" Row="4">
+                <Col0 _00="1" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="1" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="1" _23="0" />
+                <Col3 _30="0" _31="3" _32="0" _33="1" />
+            </model>
+        </ParentComponent>
         <CollisionComponent>
             <shape Shape="Px_CUBE" Hx="1" Hy="2" Hz="1" Radius="1" Hheight="1" />
         </CollisionComponent>
         <TransformComponent>
-            <position x="0" y="3.46169" z="0.851583" />
+            <position x="0" y="3" z="0" />
             <rotation x="0" y="0" z="0" />
             <scale x="2" y="4" z="2" />
         </TransformComponent>
@@ -232,4 +238,73 @@
             <scale x="20" y="1" z="20" />
         </TransformComponent>
     </Entity_3>
+    <Entity_4 ID="12">
+        <AABBComponent>
+            <center x="5" y="4" z="0" />
+            <Min x="4.5" y="3.5" z="-0.5" />
+            <Max x="5.5" y="4.5" z="0.5" />
+        </AABBComponent>
+        <EntityComponent>
+            <Tag value="Cube" />
+            <Name value="Ray Direction" />
+            <LayerIndex value="0" />
+            <hightLightChild value="true" />
+            <ImguiIndentValue value="20" />
+        </EntityComponent>
+        <MaterialComponent>
+            <Modeltype value="Models3D" />
+            <ambient x="0" y="0" z="0" />
+            <diffuse x="1" y="1" z="1" />
+            <specular x="1" y="1" z="1" />
+            <NoTextures value="true" />
+            <shininess value="0.25" />
+            <MaximumShininess value="128" />
+            <IsNormalMap value="false" />
+            <ComboIndex value="1" />
+            <TextureComboIndex value="0" />
+            <Type value="TT_UNASSIGNED" />
+            <hasTexture value="false" />
+            <TextureRef value="Default" />
+            <TextureKey value="" />
+            <HoldingTextures size="0" />
+            <HasMaterialIstance value="false" />
+            <MaterialInstanceName value="" />
+        </MaterialComponent>
+        <MeshComponent>
+            <MeshName value="Cube" />
+            <color x="1" y="1" z="1" />
+            <textureIdx x="0" y="0" />
+            <isQuad value="false" />
+            <modelNDC_xform Col="4" Row="4">
+                <Col0 _00="0" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="0" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="0" _23="0" />
+                <Col3 _30="0" _31="0" _32="0" _33="0" />
+            </modelNDC_xform>
+            <modelRef value="Cube" />
+            <shaderRef value="shader3DShdrpgm" />
+            <transparency value="1" />
+            <ENV_MAP value="false" />
+            <ENV_TYPE value="MT_REFLECT" />
+        </MeshComponent>
+        <ModelComponent>
+            <NameOfModel value="" />
+            <Directory value="" />
+            <type value="MT_UNASSIGNED" />
+            <ComboIndex value="0" />
+        </ModelComponent>
+        <ChildComponent>
+            <parentIndex value="10" />
+            <PosOffset x="5" y="1" z="0" />
+            <RotOffset x="0" y="0" z="0" />
+            <ScaleOffset x="0.5" y="0.25" z="0.5" />
+            <hasParent value="true" />
+            <IsAChild value="true" />
+        </ChildComponent>
+        <TransformComponent>
+            <position x="5" y="4" z="0" />
+            <rotation x="0" y="0" z="0" />
+            <scale x="1" y="1" z="1" />
+        </TransformComponent>
+    </Entity_4>
 </Entities>

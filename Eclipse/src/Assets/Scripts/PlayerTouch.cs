@@ -36,16 +36,30 @@ public class PlayerTouch : EclipseBehavior
 
     Rigidbody pickedObject_rb = null;
 
+    public GameObject targetCube;
+    public float targetVectorDistance;
+    private Transform targetCubeTransform;
+
+    private float targetDistance;
+
     //AudioSource audioSource;
 
     private void Start()
     {
+        targetCubeTransform = targetCube.transform;
         //audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        targetDistance = Vector3.Distance(targetCubeTransform.position, transform.position);
+
+        Vector3 targetDirection = targetCubeTransform.position - transform.position;
+
+        targetDirection = targetDirection / targetDistance;
+        targetDirection = targetDirection * targetVectorDistance;
+
         if (pickedObject != null)
         {
             pickedObject.transform.position = transform.position - new Vector3(0, 0.1f, 0) + transform.TransformDirection(Vector3.forward);
