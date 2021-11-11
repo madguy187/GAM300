@@ -50,6 +50,16 @@ namespace Eclipse
             get => GetBack(Entity);
         }
 
+        public Vector3 up
+        {
+            get => GetUp(Entity);
+        }
+
+        public Vector3 down
+        {
+            get => GetDown(Entity);
+        }
+
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         public extern static void RotateEuler(UInt32 ent, float x, float y, float z);
 
@@ -77,6 +87,11 @@ namespace Eclipse
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         private extern static Vector3 GetBack(UInt32 ent);
 
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        private extern static Vector3 GetUp(UInt32 ent);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        private extern static Vector3 GetDown(UInt32 ent);
         //[MethodImplAttribute(MethodImplOptions.InternalCall)]
         //public extern static Vector3 GetScale(Entity ent);
     }

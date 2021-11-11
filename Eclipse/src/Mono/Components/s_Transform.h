@@ -40,11 +40,13 @@ namespace Eclipse
 	{
 		TransformComponent& trans = engine->world.GetComponent<TransformComponent>(entity);
 		glm::vec3 direction;
-		direction.x = cos(glm::radians(trans.rotation.y)) * cos(glm::radians(trans.rotation.x));
+		std::cout << "C++: " << trans.rotation.x << " " << trans.rotation.y << " " << trans.rotation.z << std::endl;
+		direction.x = sin(glm::radians(trans.rotation.y)) * cos(glm::radians(trans.rotation.x));
 		direction.y = sin(glm::radians(trans.rotation.x));
-		direction.z = sin(glm::radians(trans.rotation.y)) * cos(glm::radians(trans.rotation.x));
+		direction.z = cos(glm::radians(trans.rotation.y)) * cos(glm::radians(trans.rotation.x));
 		direction = glm::normalize(direction);
-		direction = -direction;
+
+		direction = glm::normalize(glm::cross(direction, glm::vec3(0, 1, 0)));
 
 		return engine->mono.CreateVector3Class(direction.x, direction.y, direction.z);
 	}
@@ -52,13 +54,18 @@ namespace Eclipse
 	static MonoObject* GetRight(Entity entity)
 	{
 		TransformComponent& trans = engine->world.GetComponent<TransformComponent>(entity);
+
 		glm::vec3 direction;
 		direction.x = cos(glm::radians(trans.rotation.y)) * cos(glm::radians(trans.rotation.x));
 		direction.y = sin(glm::radians(trans.rotation.x));
 		direction.z = sin(glm::radians(trans.rotation.y)) * cos(glm::radians(trans.rotation.x));
 		direction = glm::normalize(direction);
 
-		return engine->mono.CreateVector3Class(direction.x, direction.y, direction.z);
+		glm::vec3 rightVec = glm::normalize(glm::cross(direction, glm::vec3(0, 1, 0)));
+		//glm::vec3 upVec = glm::normalize(glm::cross(_camera.rightVec, direction));
+		std::cout << "C++: " << direction.x << " " << direction.y << " " << direction.z << std::endl;
+
+		return engine->mono.CreateVector3Class(rightVec.x, rightVec.y, rightVec.z);
 	}
 
 	static MonoObject* GetForward(Entity entity)
@@ -98,7 +105,21 @@ namespace Eclipse
 		direction.z = sin(glm::radians(trans.rotation.y)) * cos(glm::radians(trans.rotation.x));
 		direction = glm::normalize(direction);
 
-		direction = glm::normalize(glm::cross(direction, glm::vec3(1, 0, 0)));
+		direction = glm::normalize(glm::cross(direction, glm::vec3(0, 0, -1)));
+
+		return engine->mono.CreateVector3Class(direction.x, direction.y, direction.z);
+	}
+
+	static MonoObject* GetDown(Entity entity)
+	{
+		TransformComponent& trans = engine->world.GetComponent<TransformComponent>(entity);
+		glm::vec3 direction;
+		direction.x = cos(glm::radians(trans.rotation.y)) * cos(glm::radians(trans.rotation.x));
+		direction.y = sin(glm::radians(trans.rotation.x));
+		direction.z = sin(glm::radians(trans.rotation.y)) * cos(glm::radians(trans.rotation.x));
+		direction = glm::normalize(direction);
+
+		direction = glm::normalize(glm::cross(direction, glm::vec3(0, 0, 1)));
 
 		return engine->mono.CreateVector3Class(direction.x, direction.y, direction.z);
 	}

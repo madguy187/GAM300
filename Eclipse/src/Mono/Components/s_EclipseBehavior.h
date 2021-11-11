@@ -29,6 +29,6 @@ namespace Eclipse
 		Entity ent = engine->world.GetSystem<EntityCompSystem>()->FindEntity(mono_string_to_utf8(entName));
 		if (ent == MAX_ENTITY) return nullptr;
 
-		return engine->mono.CreateGameObjectClass(ent);
+		return engine->mono.CreateGameObjectClass(ent, "");
 	}
 }
