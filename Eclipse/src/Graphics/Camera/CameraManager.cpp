@@ -210,9 +210,10 @@ namespace Eclipse
 
         float cameraSpd = engine->Game_Clock.get_DeltaTime() * camera.cameraSpeed;
 
+        //std::cout << input << std::endl;
         if (input.test(0))
         {
-            _transform.position += glm::normalize(glm::cross(camera.eyeFront, camera.upVec)) * cameraSpd;
+           _transform.position += glm::normalize(glm::cross(camera.eyeFront, camera.upVec)) * cameraSpd;
         }
 
         if (input.test(1))
@@ -230,12 +231,12 @@ namespace Eclipse
             _transform.position -= camera.eyeFront * cameraSpd;
         }
 
-        if (input.test(10))
+        if (input.test(6))
         {
             _transform.position += camera.upVec * cameraSpd;
         }
 
-        if (input.test(11))
+        if (input.test(7))
         {
             _transform.position -= camera.upVec * cameraSpd;
         }
@@ -264,53 +265,53 @@ namespace Eclipse
             }
         }
 
-        if (input.test(6))
-        {
-            if (_transform.rotation.y < -90.0f)
-            {
-                _transform.rotation.y = 270.0f;
-            }
-            else
-            {
-                _transform.rotation.y -= cameraSpd;
-            }
-        }
-
-        if (input.test(7))
-        {
-            if (_transform.rotation.y > 270.0f)
-            {
-                _transform.rotation.y = -90.0f;
-            }
-            else
-            {
-                _transform.rotation.y += cameraSpd;
-            }
-        }
-
-        if (input.test(4))
-        {
-            if (_transform.rotation.x > 89.0f)
-            {
-                _transform.rotation.x = 89.0f;
-            }
-            else
-            {
-                _transform.rotation.x += cameraSpd;
-            }
-        }
-
-        if (input.test(5))
-        {
-            if (_transform.rotation.x < -89.0f)
-            {
-                _transform.rotation.x = -89.0f;
-            }
-            else
-            {
-                _transform.rotation.x -= cameraSpd;
-            }
-        }
+        //if (input.test(6))
+        //{
+        //    if (_transform.rotation.y < -90.0f)
+        //    {
+        //        _transform.rotation.y = 270.0f;
+        //    }
+        //    else
+        //    {
+        //        _transform.rotation.y -= cameraSpd;
+        //    }
+        //}
+        //
+        //if (input.test(7))
+        //{
+        //    if (_transform.rotation.y > 270.0f)
+        //    {
+        //        _transform.rotation.y = -90.0f;
+        //    }
+        //    else
+        //    {
+        //        _transform.rotation.y += cameraSpd;
+        //    }
+        //}
+        //
+        //if (input.test(4))
+        //{
+        //    if (_transform.rotation.x > 89.0f)
+        //    {
+        //        _transform.rotation.x = 89.0f;
+        //    }
+        //    else
+        //    {
+        //        _transform.rotation.x += cameraSpd;
+        //    }
+        //}
+        //
+        //if (input.test(5))
+        //{
+        //    if (_transform.rotation.x < -89.0f)
+        //    {
+        //        _transform.rotation.x = -89.0f;
+        //    }
+        //    else
+        //    {
+        //        _transform.rotation.x -= cameraSpd;
+        //    }
+        //}
     }
 
     void CameraManager::UpdateMeshCamera(TransformComponent& _transform)

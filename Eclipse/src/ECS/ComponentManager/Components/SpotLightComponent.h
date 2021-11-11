@@ -17,7 +17,7 @@ namespace Eclipse
         ECVec3 specular{ 0.1f,0.1f,0.1f };
         ECVec4 Color{ 1.0f,1.0f,1.0f,1.0f };
 
-        float IntensityStrength = 0.5f;
+        float IntensityStrength = 5.5f;
         float radius = 0.0f;
         float cutOff = 12.5f;
         float outerCutOff = 27.5f;

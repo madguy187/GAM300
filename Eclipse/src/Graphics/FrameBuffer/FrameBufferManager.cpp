@@ -392,15 +392,15 @@ namespace Eclipse
         }
 
         //For Darren to Check Depth Map
-        engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_GAME);
-        auto& debugDepthQuad = Graphics::shaderpgms["DepthQuad"];
-        debugDepthQuad.Use();
-        debugDepthQuad.setFloat("near_plane", 1);
-        debugDepthQuad.setFloat("far_plane", 100.0f);
+        //engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_GAME);
+        //auto& debugDepthQuad = Graphics::shaderpgms["DepthQuad"];
+        //debugDepthQuad.Use();
+        //debugDepthQuad.setFloat("near_plane", 1);
+        //debugDepthQuad.setFloat("far_plane", 100.0f);
 
-        glBindVertexArray(engine->gFrameBufferManager->PostProcess->rectVAO);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SHADOW));
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+        //glBindVertexArray(engine->gFrameBufferManager->PostProcess->rectVAO);
+        //glActiveTexture(GL_TEXTURE0);
+        //glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SHADOW));
+        //glDrawArrays(GL_TRIANGLES, 0, 6);
     }
 }
