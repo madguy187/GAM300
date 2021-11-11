@@ -135,7 +135,6 @@ namespace Eclipse
 					}
 					break;
 				case PayloadTargetType::PTT_SCRIPT_AUDIO:
-					std::cout << engine->editorManager->GetEntityID(*((int*)payload->Data));
 					if (engine->world.CheckComponent<AudioComponent>(engine->editorManager->GetEntityID(*((int*)payload->Data))))
 						
 					{
@@ -145,6 +144,9 @@ namespace Eclipse
 					{
 						cMsg = "Wrong type of entity dragged , entity needs to have AUDIO COMPONENT";
 					}
+					break;
+				case PayloadTargetType::PTT_SCRIPT_GAMEOBJECT:
+						destination = std::to_string(engine->editorManager->GetEntityID(*((int*)payload->Data)));
 					break;
 				}
 
