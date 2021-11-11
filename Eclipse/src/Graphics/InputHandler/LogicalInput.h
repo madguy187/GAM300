@@ -10,11 +10,13 @@ namespace Eclipse
     {
         InputState inputState = InputState::Key_NULLSTATE;
         float AxisValue = 0.0f;
+        bool Trigger = false;
 
         InputData() {};
 
-        InputData(InputState in) :
-            inputState(in)
+        InputData(InputState in , bool trigger) :
+            inputState(in),
+            Trigger(trigger)
         {
 
         };
@@ -111,7 +113,7 @@ namespace Eclipse
         float YDeltaKey = 0.0f;
         float XDeltaKeyRaw = 0.0f;
         float YDeltaKeyRaw = 0.0f;
-
+        bool RawAxisFlag = false;
 
     private:
         void init();

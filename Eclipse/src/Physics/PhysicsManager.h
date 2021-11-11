@@ -124,8 +124,8 @@ namespace Eclipse
 		void RemoveActorFromScene(Entity ent);
 		void RemoveActor(Entity ent);
 		void ChangeType(Entity ent);
-		bool Raycast(ECVec3 origin, ECVec3 dir, float dist, PxRaycastBuffer& hit,std::string layerMask);
-		bool CheckSphere(ECVec3 position, float radius, std::string layerMask);
+		bool Raycast(ECVec3 origin, ECVec3 dir, float dist, PxRaycastBuffer& hit, std::string layerMask = "00000000000000000011");
+		bool CheckSphere(ECVec3 position, float radius, PxOverlapBuffer& hit, std::string layerMask = "00000000000000000011");
 		bool CheckBox(ECVec3 position, ECVec3 halfextents, std::string layerMask);
 		void CleanupScene();
 	};

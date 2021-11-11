@@ -23,6 +23,8 @@ namespace Eclipse
 
 		void SetMonoScriptPointer(const std::string& scriptName, MonoScript*& att_data);
 
+		void CleanMonoVariables(std::vector<MonoVariable>& origin, std::vector<MonoVariable>& saved);
+
 	public:
 		Deserializer();
 
@@ -189,10 +191,12 @@ namespace Eclipse
 			std::string scriptName;
 			ReadAttributeFromElement("ScriptName", scriptName);
 			SetMonoScriptPointer(scriptName, att_data);
-			att_data->vars.clear();
+
+			std::vector<MonoVariable> saved;
 			StartElement("MonoVariables");
-			ReadAttributeFromElement("Variables", att_data->vars);
+			ReadAttributeFromElement("Variables", saved);
 			CloseElement();
+			CleanMonoVariables(att_data->vars, saved);
 		}
 
 		template <>

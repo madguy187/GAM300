@@ -78,6 +78,7 @@ namespace Eclipse
 		MonoObject* CreateQuaternionClass(float x, float y, float z);
 		MonoObject* CreateRayCastHit(float x, float y, float z);
 		MonoObject* CreateLightClass(Entity ent);
+		MonoObject* CreateAudioSourceClass(Entity ent);
 		MonoObject* CreateGameObjectClass(Entity ent, std::string scriptName);
 		ECVec3 ConvertVectorToECVec(MonoObject* vec);
 		ECVec3 ConvertQuaternionToECVec3(MonoObject* vec);
@@ -96,6 +97,8 @@ namespace Eclipse
 		bool CheckIfScriptExist(std::string scriptName);
 		void LoadAllFields(MonoScript* script);
 		bool CheckIfFieldExist(MonoScript* script, std::string& fieldName, size_t index);
+
+		void PrintAllScript();
 
 		// Gets image containing all API Scripts
 		MonoImage* GetAPIImage();

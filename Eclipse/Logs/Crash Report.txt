@@ -12,3 +12,5 @@
 [11/05/21 18:13:34] [CORE] [error] Crash Report: Assertion Failed! E:\Git\GAM300\Eclipse\src\Graphics\FrameBuffer\FrameBuffer.cpp Line 150:  Framebuffer is not complete!
 [11/09/21 00:04:03] [CORE] [error] Crash Report: Assertion Failed! D:\GAM300\GAM300\Eclipse\src\Graphics\FrameBuffer\FrameBuffer.cpp Line 150:  Framebuffer is not complete!
 [11/09/21 00:05:50] [CORE] [error] Crash Report: Assertion Failed! D:\GAM300\GAM300\Eclipse\src\Graphics\FrameBuffer\FrameBuffer.cpp Line 150:  Framebuffer is not complete!
+[11/10/21 19:10:26] [CORE] [error] Crash Report: Assertion Failed! E:\GAM 300\GAM300\Eclipse\src\Reflection\Meta.cpp Line 139: Unknown data type. Did you forget to register with DEFINE_META_POD?
+[11/10/21 19:20:29] [CORE] [error] Crash Report: Assertion Failed! E:\GAM 300\GAM300\Eclipse\src\Reflection\Meta.cpp Line 139: Unknown data type. Did you forget to register with DEFINE_META_POD?

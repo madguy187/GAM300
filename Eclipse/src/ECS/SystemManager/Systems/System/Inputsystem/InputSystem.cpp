@@ -5,11 +5,33 @@
 #include "GLM/glm/gtc/type_ptr.hpp"
 #include "GLM/glm/gtx/rotate_vector.hpp"
 #include "GLM/glm/gtx/vector_angle.hpp"
+#include "ECS/SystemManager/Systems/System/EntityCompSystem/EntityCompSystem.h"
 
 namespace Eclipse
 {
     void InputSystem::Update()
     {
+        if (engine->InputManager->GetKeyTriggered(InputKeycode::Key_E))
+        {
+            auto entsystem = engine->world.GetSystem<EntityCompSystem>();
+            Entity ID;
+
+            if (ID = (entsystem->FindEntity("Ray Direction") != MAX_ENTITY))
+            {
+                if (engine->world.CheckComponent<CollisionComponent>(ID))
+                {
+                    auto& transCom = engine->world.GetComponent<TransformComponent>(ID);
+                    PxOverlapBuffer hit;
+                    if (engine->gPhysics.CheckSphere(transCom.position, transCom.scale.getX() / 2.0f, hit))
+                    {
+                        Entity hitID = *(Entity*)(hit.block.actor->userData);
+                        auto& hittransCom = engine->world.GetComponent<TransformComponent>(hitID);
+                        hittransCom.position = transCom.position;
+                    }
+                }
+            }
+        }
+
         auto& Cam = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
         auto& CamT = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetEditorCameraID());
 
