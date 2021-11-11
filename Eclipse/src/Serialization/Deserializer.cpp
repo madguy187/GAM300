@@ -8,6 +8,30 @@ namespace Eclipse
 		att_data = engine->mono.GetScriptPointerByName(scriptName);
 	}
 
+	void Deserializer::CleanMonoVariables(std::vector<MonoVariable>& origin, std::vector<MonoVariable>& saved)
+	{
+		for (auto& variable : origin)
+		{
+			auto result = std::find_if(saved.begin(), saved.end(), [&variable](MonoVariable& var)
+				{
+					if (variable.varName == var.varName)
+					{
+						return true;
+					}
+
+					return false;
+				}
+			);
+
+			if (result != saved.end())
+			{
+				variable.varValue = result->varValue;
+				saved.erase(result);
+			}
+		}
+		saved.clear();
+	}
+
 	Deserializer::Deserializer() :
 		_currElement{ 0 },
 		hasFile{ false }
