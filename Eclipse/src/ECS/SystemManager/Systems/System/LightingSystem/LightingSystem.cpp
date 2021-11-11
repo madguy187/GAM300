@@ -7,10 +7,10 @@ namespace Eclipse
     {
         engine->LightManager.Init();
 
-        engine->LightManager.Hand = engine->world.CreateEntity();
-        engine->world.AddComponent(engine->LightManager.Hand, TransformComponent{});
-        engine->world.AddComponent(engine->LightManager.Hand, EntityComponent{ EntityType::ENT_LIGHT_SPOT });
-        engine->LightManager.CreateLights(TypesOfLights::SPOTLIGHT, engine->LightManager.Hand);
+       // engine->LightManager.Hand = engine->world.CreateEntity();
+       // engine->world.AddComponent(engine->LightManager.Hand, TransformComponent{});
+       // engine->world.AddComponent(engine->LightManager.Hand, EntityComponent{ EntityType::ENT_LIGHT_SPOT });
+       // engine->LightManager.CreateLights(TypesOfLights::SPOTLIGHT, engine->LightManager.Hand);
     }
 
     /*************************************************************************

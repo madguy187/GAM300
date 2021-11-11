@@ -212,61 +212,63 @@ namespace Eclipse
 
         float cameraSpd = engine->Game_Clock.get_DeltaTime() * camera.cameraSpeed;
 
-        //std::cout << input << std::endl;
-        if (input.test(0))
+        if (ECGui::IsMouseDragging(1))
         {
-           _transform.position += glm::normalize(glm::cross(camera.eyeFront, camera.upVec)) * cameraSpd;
-        }
-
-        if (input.test(1))
-        {
-            _transform.position -= glm::normalize(glm::cross(camera.eyeFront, camera.upVec)) * cameraSpd;
-        }
-
-        if (input.test(2))
-        {
-            _transform.position += camera.eyeFront * cameraSpd;
-        }
-
-        if (input.test(3))
-        {
-            _transform.position -= camera.eyeFront * cameraSpd;
-        }
-
-        if (input.test(6))
-        {
-            _transform.position += camera.upVec * cameraSpd;
-        }
-
-        if (input.test(7))
-        {
-            _transform.position -= camera.upVec * cameraSpd;
-        }
-
-        if (input.test(8))
-        {
-            if (camera.fov < 2.0f)
+            //std::cout << input << std::endl;
+            if (input.test(0))
             {
-                camera.fov = 1.0f;
+                _transform.position += glm::normalize(glm::cross(camera.eyeFront, camera.upVec)) * cameraSpd;
             }
-            else
+
+            if (input.test(1))
             {
-                camera.fov -= cameraSpd;
+                _transform.position -= glm::normalize(glm::cross(camera.eyeFront, camera.upVec)) * cameraSpd;
+            }
+
+            if (input.test(2))
+            {
+                _transform.position += camera.eyeFront * cameraSpd;
+            }
+
+            if (input.test(3))
+            {
+                _transform.position -= camera.eyeFront * cameraSpd;
+            }
+
+            if (input.test(6))
+            {
+                _transform.position += camera.upVec * cameraSpd;
+            }
+
+            if (input.test(7))
+            {
+                _transform.position -= camera.upVec * cameraSpd;
+            }
+
+            if (input.test(8))
+            {
+                if (camera.fov < 2.0f)
+                {
+                    camera.fov = 1.0f;
+                }
+                else
+                {
+                    camera.fov -= cameraSpd;
+                }
+            }
+
+            if (input.test(9))
+            {
+                if (camera.fov > 179.0f)
+                {
+                    camera.fov = 180.0f;
+                }
+                else
+                {
+                    camera.fov += cameraSpd;
+                }
             }
         }
-
-        if (input.test(9))
-        {
-            if (camera.fov > 179.0f)
-            {
-                camera.fov = 180.0f;
-            }
-            else
-            {
-                camera.fov += cameraSpd;
-            }
-        }
-
         //if (input.test(6))
         //{
         //    if (_transform.rotation.y < -90.0f)

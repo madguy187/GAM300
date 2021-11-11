@@ -94,24 +94,24 @@ namespace Eclipse
         //Cam.viewMtx = glm::lookAt(CamT.position.ConvertToGlmVec3Type(), CamT.position.ConvertToGlmVec3Type() + Cam.eyeFront, Cam.upVec);
         Cam.projMtx = glm::perspective(glm::radians(Cam.fov), (float)Cam.aspect, 0.1f, Cam.farPlane);
 
-        auto& Lite = engine->world.GetComponent<SpotLightComponent>(engine->LightManager.Hand);
-
-        if (engine->InputManager->GetKeyTriggered(InputKeycode::Key_TAB))
-        {
-            if (Lite.IntensityStrength <= 10.0f)
-            {
-                Lite.IntensityStrength += 2.0f;
-            }
-        }
-
-        if (Lite.IntensityStrength > 0.0f)
-        {
-            Lite.IntensityStrength -= (engine->Game_Clock.get_DeltaTime() * 2 );
-        }
-        else
-        {
-            Lite.IntensityStrength = 0.0f;
-        }
+        //auto& Lite = engine->world.GetComponent<SpotLightComponent>(engine->LightManager.Hand);
+        //
+        //if (engine->InputManager->GetKeyTriggered(InputKeycode::Key_TAB))
+        //{
+        //    if (Lite.IntensityStrength <= 10.0f)
+        //    {
+        //        Lite.IntensityStrength += 2.0f;
+        //    }
+        //}
+        //
+        //if (Lite.IntensityStrength > 0.0f)
+        //{
+        //    Lite.IntensityStrength -= (engine->Game_Clock.get_DeltaTime() * 2 );
+        //}
+        //else
+        //{
+        //    Lite.IntensityStrength = 0.0f;
+        //}
 
         engine->InputManager->CursorUpdate();
         engine->InputManager->AxisUpdate();
