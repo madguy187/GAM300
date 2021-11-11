@@ -926,10 +926,22 @@ namespace Eclipse
                     {
                         bool selected = false;
 
-                        if (ECGui::CreateSelectableButton(my_strcat(scriptCom.scriptList[i]->scriptName.c_str(), " ", i + 1).c_str(), &selected))
+                        if (scriptCom.scriptList[i] == nullptr)
                         {
-                            auto posItr = scriptCom.scriptList.begin() + i;
-                            scriptCom.scriptList.erase(posItr);
+                            std::string temp = { "Empty Script Column" };
+                            if (ECGui::CreateSelectableButton(my_strcat(temp.c_str(), " ", i + 1).c_str(), &selected))
+                            {
+                                auto posItr = scriptCom.scriptList.begin() + i;
+                                scriptCom.scriptList.erase(posItr);
+                            }
+                        }
+                        else
+                        {
+                            if (ECGui::CreateSelectableButton(my_strcat(scriptCom.scriptList[i]->scriptName.c_str(), " ", i + 1).c_str(), &selected))
+                            {
+                                auto posItr = scriptCom.scriptList.begin() + i;
+                                scriptCom.scriptList.erase(posItr);
+                            }
                         }
                     }
                 }

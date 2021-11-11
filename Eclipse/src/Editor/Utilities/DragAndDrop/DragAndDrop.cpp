@@ -146,7 +146,15 @@ namespace Eclipse
 					}
 					break;
 				case PayloadTargetType::PTT_SCRIPT_GAMEOBJECT:
+					if (engine->world.CheckComponent<EntityComponent>(engine->editorManager->GetEntityID(*((int*)payload->Data))))
+
+					{
 						destination = std::to_string(engine->editorManager->GetEntityID(*((int*)payload->Data)));
+					}
+					else
+					{
+						cMsg = "Wrong type of entity dragged , entity needs to have ENTITY COMPONENT";
+					}
 					break;
 				}
 

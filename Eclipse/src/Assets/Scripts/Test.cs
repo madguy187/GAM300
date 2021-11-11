@@ -7,10 +7,7 @@ public class Test : EclipseBehavior
 {
     public Light light;
     public float temp;
-	
-	[Header("Object Interactions")]
-    public GameObject touchedObject;
-    public GameObject pickedObject;
+    public GameObject eeeee;
 	
     public void Start()
     {
