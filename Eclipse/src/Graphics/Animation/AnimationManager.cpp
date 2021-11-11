@@ -216,7 +216,22 @@ AnimationState Eclipse::AnimationManager::InitAnimationState(std::string modelNa
     }
     else if (modelName.compare("Body") == 0)
     {
-        return AnimationState::WALK;
+        if (fileName.compare("Breathing_Idle") == 0)
+        {
+            return AnimationState::IDLE;
+        }
+        else if (fileName.compare("Walking") == 0)
+        {
+            return AnimationState::WALK;
+        }
+        else if (fileName.compare("Great_Sword_Slash") == 0)
+        {
+            return AnimationState::SLASH;
+        }
+        else if (fileName.compare("Jogging") == 0)
+        {
+            return AnimationState::RUN;
+        } 
     }
     else
     {

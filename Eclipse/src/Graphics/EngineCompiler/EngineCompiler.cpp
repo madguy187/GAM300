@@ -292,10 +292,10 @@ namespace Eclipse
             std::vector<Bone> newBones;
             std::vector<BoneInfo> newBoneInfos;
             AssimpNodeData rootNode;
-        
+       
             AnimationFileRead.read(reinterpret_cast<char*>(&animationdata), (2 * sizeof(float)) + sizeof(int) + 
                 sizeof(animationdata.fileName) + sizeof(animationdata.modelName));
-        
+
             AnimationFileRead.read(reinterpret_cast<char*>(&boneInfoSize), sizeof(boneInfoSize));
             boneinfoData.resize(boneInfoSize);
             AnimationFileRead.read(reinterpret_cast<char*>(boneinfoData.data()), sizeof(BoneInfoData) * boneInfoSize);
