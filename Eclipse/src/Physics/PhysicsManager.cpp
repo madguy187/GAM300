@@ -367,21 +367,21 @@ namespace Eclipse
 		float unit = sqx + sqy + sqz + sqw; // if normalised is one, otherwise is correction factor
 		float test = q1.x * q1.y + q1.z * q1.w;
 		if (test > 0.499 * unit) { // singularity at north pole
-			temp.setY(2 * atan2(q1.x, q1.w) * 180/M_PI);
+			temp.setY(static_cast<float>(2 * atan2(q1.x, q1.w)) * 180/M_PI);
 			temp.setZ(M_PI / 2 * 180 / M_PI);
 			temp.setX(0);
 			return temp;
 		}
 		if (test < -0.499 * unit) { // singularity at south pole
-			temp.setY ( -2 * atan2(q1.x, q1.w) * 180 / M_PI);
+			temp.setY (static_cast<float>( -2 * atan2(q1.x, q1.w)) * 180 / M_PI);
 			temp.setZ( -M_PI / 2 * 180 / M_PI);
 			temp.setX(0);
 			return temp;
 		}
-		temp.setY(atan2(2 * q1.y * q1.w - 2 * q1.x * q1.z, sqx - sqy - sqz + sqw) * 180 / M_PI);
-		temp.setZ(asin(2 * test / unit) * 180 / M_PI);
-		temp.setX(atan2(2 * q1.x * q1.w - 2 * q1.y * q1.z, -sqx + sqy - sqz + sqw) * 180 / M_PI);
-		return temp;
+		temp.setY(static_cast<float>(atan2(2 * q1.y * q1.w - 2 * q1.x * q1.z, sqx - sqy - sqz + sqw)) * 180 / M_PI);
+		temp.setZ(static_cast<float>(asin(2 * test / unit)) * 180 / M_PI);
+		temp.setX(static_cast<float>(atan2(2 * q1.x * q1.w - 2 * q1.y * q1.z, -sqx + sqy - sqz + sqw)) * 180 / M_PI);
+		return temp;				
 	}
 	
 	void PhysicsManager::AddActorToScene(Entity ent)
