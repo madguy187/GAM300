@@ -464,13 +464,13 @@ namespace Eclipse
             {
                 ImDrawList* draw_list = ECGui::GetWindowDrawList();
 
-                ECGui::DrawTextWrappedWidget(fileNameString.c_str(), "");
+                ECGui::DrawTextWidget(fileNameString.c_str(), "");
 
                 draw_list->AddRect(ECGui::GetItemRectMin(), ECGui::GetItemRectMax(), IM_COL32(255, 255, 0, 255));
             }
             else
             {
-                ECGui::DrawTextWrappedWidget(fileNameString.c_str(), "");
+                ECGui::DrawTextWidget(fileNameString.c_str(), "");
             }
 
             ECGui::NextColumn();

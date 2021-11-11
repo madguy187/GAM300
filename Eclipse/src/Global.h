@@ -104,6 +104,7 @@ enum class EntityType
     ENT_LIGHT_SPOT, // LAST
     // END OF LIGHTS
     ENT_GAMECAMERA,
+    ENT_EDITORCAMERA,
     ENT_MODEL,
     ENT_TARGETPOINT,
     ENT_MESH,
@@ -133,6 +134,7 @@ enum class PayloadTargetType
     PTT_ASSETS,
     PTT_SCRIPT_LIGHT,
     PTT_SCRIPT_AUDIO,
+    PTT_SCRIPT_GAMEOBJECT,
 	PTT_UNASSIGNED
 };
 
@@ -258,12 +260,17 @@ enum class CursorLockMode
     Confined = 2
 };
 
-struct MonoVariable
+enum class AnimationState
 {
-    m_Type type = m_Type::MONO_UNDEFINED;
-    std::string varName = "";
-    std::string varValue = "";
+    IDLE,
+    MOTION,
+    RUN,
+    DANCE,
+    WALK,
+    SLASH,
+    INVALID
 };
+
 
 enum class TestState
 {

@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "ECS/SystemManager/Systems/System/PickingSystem/PickingSystem.h"
 #include "ImGuizmo/ImGuizmo.h"
+#include "Library/Math/Math.h"
 
 namespace Eclipse
 {
@@ -95,6 +96,7 @@ namespace Eclipse
 		// Selected Entity Transform
 		auto& transCom = engine->world.GetComponent<TransformComponent>(selectedEntity);
 		glm::mat4 transform{};
+		// glm::mat4 transform = transCom.GetTransform();
 
 		ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(transCom.position.ConvertToGlmVec3Type()),
 			glm::value_ptr(transCom.rotation.ConvertToGlmVec3Type()),
@@ -111,18 +113,27 @@ namespace Eclipse
 			{ mSnapSettings.mPosSnapValue,
 			  mSnapSettings.mPosSnapValue,
 			  mSnapSettings.mPosSnapValue };
+			/*{ mSnapSettings.mPosSnapValue,
+			  mSnapSettings.mPosSnapValue,
+			  mSnapSettings.mPosSnapValue };*/
 			break;
 		case ImGuizmo::OPERATION::ROTATE:
 			snapValues =
 			{ mSnapSettings.mRotSnapValue,
 			  mSnapSettings.mRotSnapValue,
 			  mSnapSettings.mRotSnapValue };
+			/*{ mSnapSettings.mRotSnapValue,
+			  mSnapSettings.mRotSnapValue,
+			  mSnapSettings.mRotSnapValue };*/
 			break;
 		case ImGuizmo::OPERATION::SCALE:
 			snapValues =
 			{ mSnapSettings.mScaleSnapValue,
 			  mSnapSettings.mScaleSnapValue,
 			  mSnapSettings.mScaleSnapValue };
+			/*{ mSnapSettings.mScaleSnapValue,
+			  mSnapSettings.mScaleSnapValue,
+			  mSnapSettings.mScaleSnapValue };*/
 			break;
 		default:
 			break;
@@ -139,8 +150,9 @@ namespace Eclipse
 			glm::vec3 translation, rotation, scale;
 			ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(translation),
 				glm::value_ptr(rotation), glm::value_ptr(scale));
+			// DecomposeTransform(transform, translation, rotation, scale);
 
-			// glm::vec3 deltaRotation = rotation - transCom.rotation.ConvertToGlmVec3Type();
+			glm::vec3 deltaRotation = rotation - transCom.rotation.ConvertToGlmVec3Type();
 
 			auto& ent = engine->world.GetComponent<EntityComponent>(selectedEntity);
 
@@ -164,7 +176,8 @@ namespace Eclipse
 				}
 				break;
 			case ImGuizmo::OPERATION::ROTATE:
-				transCom.rotation = rotation;
+				transCom.rotation += deltaRotation;
+				std::cout << deltaRotation.x << " " << deltaRotation.y << " " << deltaRotation.z << std::endl;
 				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.rotation, transCom.rotation, selectedEntity });
 				break;
 			case ImGuizmo::OPERATION::SCALE:
@@ -184,8 +197,6 @@ namespace Eclipse
 
 				for (auto& it : parent.child)
 				{
-					auto& transform = engine->world.GetComponent<TransformComponent>(it);
-				
 					engine->gPicker.UpdateAabb(it);
 					engine->gDynamicAABBTree.UpdateData(it);
 				}
@@ -242,7 +253,6 @@ namespace Eclipse
 	{
 		if (ECGui::IsMouseClicked(0) && !ImGuizmo::IsUsing())
 		{
-			//std::cout << "picking being used" << std::endl;
 			engine->world.GetSystem<PickingSystem>()->EditorUpdate();
 
 			if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)

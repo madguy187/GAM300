@@ -28,9 +28,26 @@ namespace Eclipse
         public static readonly Vector3 forward;
         public static readonly Vector3 up;
 
-        public static Vector3 operator *(Vector3 a, Vector3 b)
+        public static Vector3 operator *(Vector3 a, float val)
         {
-            return new Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
+            return new Vector3(a.x * val, a.y * val, a.z * val);
+        }
+
+        public static Vector3 operator +(Vector3 a, Vector3 b)
+        {
+            return new Vector3(a.x + b.x, a.y + b.y, a.z + b.z);
+        }
+
+        public static Vector3 operator -(Vector3 a, Vector3 b)
+        {
+            return new Vector3(a.x - b.x, a.y - b.y, a.z - b.z);
+        }
+
+        public static float Distance(Vector3 a, Vector3 b)
+        {
+            return (float)Math.Sqrt((a.x - b.x) * (a.x - b.x) + 
+                    (a.y - b.y) * (a.y - b.y) +
+                    (a.z - b.z) * (a.z - b.z));
         }
 
         public override string ToString() => $"{x} {y} {z}";

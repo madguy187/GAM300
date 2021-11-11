@@ -2,7 +2,7 @@
 #include "GeometryCompiler.h"
 #include "TextureCompiler.h"
 #include "PrefabsCompiler.h"
-#include "AnimationCompiler.h"
+#include "../Animation/AnimationCompiler.h"
 
 using namespace EclipseCompiler;
 

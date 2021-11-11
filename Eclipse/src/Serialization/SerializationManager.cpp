@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "SerializationManager.h"
-#include "ECS/SystemManager/Systems/System/ParentChildSystem/ParentSystem/ParentSystem.h"
 #include "Editor/Windows/Debug/Debug.h"
 
 namespace Eclipse
@@ -26,26 +25,56 @@ namespace Eclipse
 		return backUpPath;
 	}
 
-	void SerializationManager::ParentChildPostUpdate::RegisterForPostUpdate(World&, const Entity& oldEnt, const Entity& newEnt)
+	void SerializationManager::PostUpdate::RegisterForPostUpdate(World&, const Entity& oldEnt, const Entity& newEnt)
 	{
 		oldToNewMap[oldEnt] = newEnt;
 	}
 
-	void SerializationManager::ParentChildPostUpdate::PostUpdate()
+	void SerializationManager::PostUpdate::RunPostUpdate()
 	{
 		auto& w = engine->world;
-		const auto& entSet = w.GetSystem<ParentSystem>()->mEntities;
 
-		for (auto& ent : entSet)
+		for (auto& pair : oldToNewMap)
 		{
-			auto& parent = w.GetComponent<ParentComponent>(ent);
-
-			for (auto& child : parent.child)
+			if (w.CheckComponent<ParentComponent>(pair.second))
 			{
-				child = oldToNewMap[child];
-				
-				auto& childComp = w.GetComponent<ChildComponent>(child);
-				childComp.parentIndex = ent;
+				auto& parentComp = w.GetComponent<ParentComponent>(pair.second);
+				for (auto& ent : parentComp.child)
+				{
+					ent = oldToNewMap[ent];
+				}
+			}
+
+			if (w.CheckComponent<ChildComponent>(pair.second))
+			{
+				auto& childComp = w.GetComponent<ChildComponent>(pair.second);
+				childComp.parentIndex = oldToNewMap[childComp.parentIndex];
+			}
+
+			if (w.CheckComponent<AIComponent>(pair.second))
+			{
+				auto& aiComp = w.GetComponent<AIComponent>(pair.second);
+				for (auto& ent : aiComp.waypoints)
+				{
+					ent = oldToNewMap[ent];
+				}
+			}
+
+			if (w.CheckComponent<ScriptComponent>(pair.second))
+			{
+				auto& scriptComp = w.GetComponent<ScriptComponent>(pair.second);
+
+				for (auto script : scriptComp.scriptList) 
+				{
+					for (auto& var : script->vars)
+					{
+						if (!var.varValue.empty() && (var.type == m_Type::MONO_LIGHT || var.type == m_Type::MONO_AUDIO))
+						{
+							Entity old = lexical_cast<Entity>(var.varValue);
+							var.varValue = lexical_cast<std::string>(oldToNewMap[old]);
+						}
+					}
+				}
 			}
 		}
 		Clear();
@@ -71,7 +100,7 @@ namespace Eclipse
 			{
 				if (!PrefabUse)
 				{
-					PCPostUpdate.RegisterForPostUpdate(w, oldEnt, ent);
+					pUpdate.RegisterForPostUpdate(w, oldEnt, ent);
 					engine->editorManager->RegisterExistingEntity(ent);
 				}
 			}
@@ -186,7 +215,7 @@ namespace Eclipse
 		if (LoadFile(fullpath))
 		{
 			DeserializeAllEntity();
-			PCPostUpdate.PostUpdate();
+			pUpdate.RunPostUpdate();
 		}
 	}
 
@@ -274,7 +303,7 @@ namespace Eclipse
 		SceneManager::Clear();
 		backup.LoadBackup(dsz);
 		DeserializeAllEntity();
-		PCPostUpdate.PostUpdate();
+		pUpdate.RunPostUpdate();
 		std::filesystem::remove(std::filesystem::path(backup.GetBackUpPath()));
 	}
 
@@ -474,14 +503,14 @@ namespace Eclipse
 		SaveFile(path.c_str());
 	}
 
-	Entity SerializationManager::ParentChildPostUpdate::GetNew(const Entity& oldEnt)
+	Entity SerializationManager::PostUpdate::GetNew(const Entity& oldEnt)
 	{
 		if (oldToNewMap.find(oldEnt) != oldToNewMap.end())
 			return oldToNewMap[oldEnt];
 		else
 			return MAX_ENTITY;
 	}
-	void SerializationManager::ParentChildPostUpdate::Clear()
+	void SerializationManager::PostUpdate::Clear()
 	{
 		oldToNewMap.clear();
 	}
