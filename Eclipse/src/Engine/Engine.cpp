@@ -357,7 +357,7 @@ namespace Eclipse
                 }
             }
 
-            mono.PrintAllScript();
+            //mono.PrintAllScript();
 
             world.Update<FileWatchSystem>();
 
