@@ -31,10 +31,6 @@ void Eclipse::CameraSystem::Update()
         auto& _camera = engine->world.GetComponent<CameraComponent>(it);
         auto& _transform = engine->world.GetComponent<TransformComponent>(it);
 
-
-        if (_camera.camType == CameraComponent::CameraType::Game_Camera)
-            continue;
-
         if (_camera.camType == CameraComponent::CameraType::Editor_Camera)
         {
             engine->gCamera.CheckCameraInput();
@@ -62,9 +58,9 @@ void Eclipse::CameraSystem::Update()
 
         if (_camera.camType == CameraComponent::CameraType::Game_Camera)
         {
-            //engine->gCamera.ComputeViewDirection(_camera, _transform);
-            //engine->gCamera.ComputeViewMtx(_camera, _transform);
-            //engine->gCamera.ComputePerspectiveMtx(_camera);
+            engine->gCamera.ComputeViewDirection(_camera, _transform);
+            engine->gCamera.ComputeViewMtx(_camera, _transform);
+            engine->gCamera.ComputePerspectiveMtx(_camera);
         }
         else
         {
