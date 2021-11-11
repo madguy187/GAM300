@@ -26,12 +26,12 @@
                 <Col3 _30="0" _31="0" _32="-0.200067" _33="0" />
             </projMtx>
             <cameraSpeed value="50" />
-            <camType value="Editor_Camera" />
+            <camType value="Game_Camera" />
             <projType value="Perspective" />
         </CameraComponent>
         <EntityComponent>
-            <Tag value="Camera" />
-            <Name value="Camera" />
+            <Tag value="GameCamera" />
+            <Name value="GameCamera" />
             <LayerIndex value="0" />
             <hightLightChild value="true" />
             <ImguiIndentValue value="20" />
