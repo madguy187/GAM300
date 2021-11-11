@@ -1036,6 +1036,7 @@
     <ClInclude Include="src\FSM\StateDesigns\Base\FiniteStateMachine.h" />
     <ClInclude Include="src\FSM\StateDesigns\Animation\AnimationFSM.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\EntityCompSystem\EntityCompSystem.h" />
+    <ClInclude Include="src\Library\Math\Math.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1502,5 +1503,6 @@
     <ClCompile Include="src\FSM\StateDesigns\TestingFSM\TestingFSM.cpp" />
     <ClCompile Include="src\FSM\StateDesigns\Animation\AnimationFSM.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\EntityCompSystem\EntityCompSystem.cpp" />
+    <ClCompile Include="src\Library\Math\Math.cpp" />
   </ItemGroup>
 </Project>
