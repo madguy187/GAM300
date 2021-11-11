@@ -7,9 +7,9 @@ namespace Eclipse
     {
         engine->LightManager.Init();
 
-        Hand = engine->world.CreateEntity();
-        engine->world.AddComponent(Hand, TransformComponent{});
-        engine->LightManager.CreateLights(TypesOfLights::SPOTLIGHT, Hand);
+        engine->LightManager.Hand = engine->world.CreateEntity();
+        engine->world.AddComponent(engine->LightManager.Hand, TransformComponent{});
+        engine->LightManager.CreateLights(TypesOfLights::SPOTLIGHT, engine->LightManager.Hand);
     }
 
     /*************************************************************************
@@ -47,7 +47,7 @@ namespace Eclipse
                 {
                     auto& SpotLight = engine->world.GetComponent<SpotLightComponent>(LightEntityID);
 
-                    if (LightEntityID == Hand)
+                    if (LightEntityID == engine->LightManager.Hand)
                     {
                         auto& SpotLightT = engine->world.GetComponent<TransformComponent>(LightEntityID);
 
