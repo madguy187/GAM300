@@ -79,10 +79,10 @@ namespace Eclipse
                 }
 
                 // If CUlled off , dont render
-                if (engine->gCullingManager->ToRenderOrNot(entityID) == false)
-                {
-                    continue;
-                }
+               //if (engine->gCullingManager->ToRenderOrNot(entityID) == false)
+               //{
+               //    continue;
+               //}
 
                 MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
 
