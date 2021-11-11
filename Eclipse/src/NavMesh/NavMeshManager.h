@@ -73,7 +73,7 @@ namespace Eclipse
 		unsigned int m_offMeshConId[MAX_OFFMESH_CONNECTIONS];
 		int m_offMeshConCount;
 
-
+		PATHDATA m_PathStore[MAX_PATHSLOT];
 	public:
 		void CreateRecastPolyMesh(const rcPolyMesh& mesh);
 		void CalculateMinMax(Entity ent);
@@ -81,5 +81,6 @@ namespace Eclipse
 		bool BuildNavMesh(Entity ent);
 		void RenderMesh();
 		void RecastCleanup();
+		int FindPath(float* StartPos, float* EndPos, int pathslot, int target);
 	};
 }

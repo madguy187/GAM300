@@ -613,6 +613,57 @@ namespace Eclipse
 		if (m_ctx) delete m_ctx;
 	}
 
+	int NavMeshManager::FindPath(float* StartPos, float* EndPos, int nPathSlot, int target)
+	{
+		dtStatus status;
+		float pExtents[3] = { 32.0f,32.0f,32.0f };
+		dtPolyRef startPoly;
+		float startNearest[3];
+		dtPolyRef EndPoly;
+		float EndNearest[3];
+		dtPolyRef PolyPath[MAX_PATHPOLY];
+		int nPathCount = 0;
+		float straightPath[MAX_PATHVERT * 3];
+		int nVertCount = 0;
+
+		dtQueryFilter _filter;
+		_filter.setIncludeFlags(0xFFFF);
+		_filter.setExcludeFlags(0);
+		_filter.setAreaCost(SAMPLE_POLYAREA_GROUND, 1.0f);
+
+		status = m_navQuery->findNearestPoly(StartPos, pExtents, &_filter, &startPoly, startNearest);
+
+		if ((status & DT_FAILURE) || (status & DT_STATUS_DETAIL_MASK)) return -1; // couldn't find a polygon
+
+	// find the end polygon
+		status = m_navQuery->findNearestPoly(EndPos, pExtents, &_filter, &EndPoly, EndNearest);
+		if ((status & DT_FAILURE) || (status & DT_STATUS_DETAIL_MASK)) return -2; // couldn't find a polygon
+
+		status = m_navQuery->findPath(startPoly, EndPoly, startNearest, EndNearest, &_filter, PolyPath, &nPathCount, MAX_PATHPOLY);
+		if ((status & DT_FAILURE) || (status & DT_STATUS_DETAIL_MASK)) return -3; // couldn't create a path
+		if (nPathCount == 0) return -4; // couldn't find a path
+
+		status = m_navQuery->findStraightPath(startNearest, EndNearest, PolyPath, nPathCount, straightPath, NULL, NULL, &nVertCount, MAX_PATHVERT);
+		if ((status & DT_FAILURE) || (status & DT_STATUS_DETAIL_MASK)) return -5; // couldn't create a path
+		if (nVertCount == 0) return -6; // couldn't find a path
+
+		// At this point we have our path.  Copy it to the path store
+		int nIndex = 0;
+		for (int nVert = 0; nVert < nVertCount; nVert++)
+		{
+			m_PathStore[nPathSlot].PosX[nVert] = straightPath[nIndex++];
+			m_PathStore[nPathSlot].PosY[nVert] = straightPath[nIndex++];
+			m_PathStore[nPathSlot].PosZ[nVert] = straightPath[nIndex++];
+
+			//sprintf(m_chBug, "Path Vert %i, %f %f %f", nVert, m_PathStore[nPathSlot].PosX[nVert], m_PathStore[nPathSlot].PosY[nVert], m_PathStore[nPathSlot].PosZ[nVert]) ;
+			//m_pLog->logMessage(m_chBug);
+		}
+		m_PathStore[nPathSlot].MaxVertex = nVertCount;
+		m_PathStore[nPathSlot].Target = target;
+
+		return nVertCount;
+	}
+
 	void NavMeshManager::RenderMesh()
 	{
 			if (!m_navMesh)

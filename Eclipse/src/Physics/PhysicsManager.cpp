@@ -339,41 +339,45 @@ namespace Eclipse
 		float pitch = static_cast<float>(degreeY * (M_PI/180));
 		float roll = static_cast<float>(degreeX * (M_PI/180));
 
-
 		float cy = cosf(yaw * 0.5f);
 		float sy = sinf(yaw * 0.5f);
 		float cp = cosf(pitch * 0.5f);
 		float sp = sinf(pitch * 0.5f);
 		float cr = cosf(roll * 0.5f);
-		float sr = sinf(roll* 0.5f);
+		float sr = sinf(roll * 0.5f);
 
-		return PxQuat(sr * cp * cy - cr * sp * sy ,//X
-					  cr * sp * cy + sr * cp * sy ,//Y
-				      cr * cp * sy - sr * sp * cy ,//Z
-			          cr * cp * cy + sr * sp * sy);//W
+		PxQuat q;
+		q.w = cr * cp * cy + sr * sp * sy;
+		q.x = sr * cp * cy - cr * sp * sy;
+		q.y = cr * sp * cy + sr * cp * sy;
+		q.z = cr * cp * sy - sr * sp * cy;
+		return q;
 	}
 
-	ECVec3 PhysicsManager::QuattoAngles(PxQuat quat)
+	ECVec3 PhysicsManager::QuattoAngles(PxQuat q1)
 	{
 		ECVec3 temp{0,0,0};
-		//x rotation
-		float sinr_cosp = 2 * (quat.w * quat.x + quat.y * quat.z);
-		float cosr_cosp = 1 - 2 * (quat.x * quat.x + quat.y * quat.y);
-		
-		temp.setX(static_cast<float>(std::atan2f(sinr_cosp, cosr_cosp) * (180.0f/M_PI)));
-
-		//y rotation
-		float sinp = 2 * (quat.w * quat.y - quat.z * quat.x);
-		if (std::abs(sinp) >= 1)
-			temp.setY(static_cast<float>(std::copysign(M_PI / 2, sinp) * (180.0/M_PI)));
-		else
-			temp.setY(static_cast<float>(std::asinf(sinp) * (180.0f/M_PI)));
-
-		float siny_cosp = 2 * (quat.w * quat.z + quat.x * quat.y);
-		float cosy_cosp = 1 - 2 * (quat.y * quat.y + quat.z * quat.z);
-
-		temp.setZ(static_cast<float>(std::atan2f(siny_cosp, cosy_cosp) * (180.0f/M_PI)));
-
+		float sqw = q1.w * q1.w;
+		float sqx = q1.x * q1.x;
+		float sqy = q1.y * q1.y;
+		float sqz = q1.z * q1.z;
+		float unit = sqx + sqy + sqz + sqw; // if normalised is one, otherwise is correction factor
+		float test = q1.x * q1.y + q1.z * q1.w;
+		if (test > 0.499 * unit) { // singularity at north pole
+			temp.setY(2 * atan2(q1.x, q1.w) * 180/M_PI);
+			temp.setZ(M_PI / 2 * 180 / M_PI);
+			temp.setX(0);
+			return temp;
+		}
+		if (test < -0.499 * unit) { // singularity at south pole
+			temp.setY ( -2 * atan2(q1.x, q1.w) * 180 / M_PI);
+			temp.setZ( -M_PI / 2 * 180 / M_PI);
+			temp.setX(0);
+			return temp;
+		}
+		temp.setY(atan2(2 * q1.y * q1.w - 2 * q1.x * q1.z, sqx - sqy - sqz + sqw) * 180 / M_PI);
+		temp.setZ(asin(2 * test / unit) * 180 / M_PI);
+		temp.setX(atan2(2 * q1.x * q1.w - 2 * q1.y * q1.z, -sqx + sqy - sqz + sqw) * 180 / M_PI);
 		return temp;
 	}
 	
