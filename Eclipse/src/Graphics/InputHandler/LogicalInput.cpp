@@ -565,6 +565,7 @@ namespace Eclipse
                     XDeltaKey = 0.0;
                     DeleteContainer.push_back(pair3.first);
                 }
+                XDeltaKeyRaw = 0;
             }
 
             if (pair3.first == InputKeycode::Key_RIGHT || pair3.first == InputKeycode::Key_D)
@@ -578,6 +579,7 @@ namespace Eclipse
                     XDeltaKey = 0.0;
                     DeleteContainer.push_back(pair3.first);
                 }
+                XDeltaKeyRaw = 0;
             }
 
             if (pair3.first == InputKeycode::Key_UP || pair3.first == InputKeycode::Key_W)
@@ -591,6 +593,7 @@ namespace Eclipse
                     YDeltaKey = 0.0;
                     DeleteContainer.push_back(pair3.first);
                 }
+                YDeltaKeyRaw = 0;
             }
 
             if (pair3.first == InputKeycode::Key_DOWN || pair3.first == InputKeycode::Key_S)
@@ -604,6 +607,7 @@ namespace Eclipse
                     YDeltaKey = 0.0;
                     DeleteContainer.push_back(pair3.first);
                 }
+                YDeltaKeyRaw = 0;
             }
         }
 
@@ -1570,6 +1574,7 @@ namespace Eclipse
         {
             // If not moving , we reset.
             XDelta = 0;
+            XDeltaRaw = 0;
         }
 
         // VERTICAL
@@ -1600,6 +1605,7 @@ namespace Eclipse
         else
         {
             YDelta = 0;
+            YDeltaRaw = 0;
         }
     }
 
