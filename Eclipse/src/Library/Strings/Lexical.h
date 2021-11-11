@@ -193,7 +193,11 @@ namespace Eclipse
 		"MONO_UNDEFINED",
 		"MONO_VAR",
 		"MONO_HEADER",
-		"MONO_LAYERMASK"
+		"MONO_LAYERMASK",
+		"MONO_GAMEOBJECT",
+		"MONO_AUDIO",
+		"MONO_LIGHT",
+		"MONO_FLOAT"
 	};
 
 	template<> char const* enumStrings<TestState>::data[] =
@@ -201,5 +205,15 @@ namespace Eclipse
 		"TS_WALK",
 		"TS_RUN",
 		"TS_JUMP"
+	};
+
+	template<> char const* enumStrings<AnimationState>::data[] =
+	{
+		"AS_IDLE",
+		"AS_MOTION",
+		"AS_RUN",
+		"AS_DANCE",
+		"AS_WALK",
+		"AS_INVALID"
 	};
 }

@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "SerializationManager.h"
-#include "ECS/SystemManager/Systems/System/ParentChildSystem/ParentSystem/ParentSystem.h"
 #include "Editor/Windows/Debug/Debug.h"
 
 namespace Eclipse
@@ -26,26 +25,56 @@ namespace Eclipse
 		return backUpPath;
 	}
 
-	void SerializationManager::ParentChildPostUpdate::RegisterForPostUpdate(World& w, const Entity& oldEnt, const Entity& newEnt)
+	void SerializationManager::PostUpdate::RegisterForPostUpdate(World&, const Entity& oldEnt, const Entity& newEnt)
 	{
 		oldToNewMap[oldEnt] = newEnt;
 	}
 
-	void SerializationManager::ParentChildPostUpdate::PostUpdate()
+	void SerializationManager::PostUpdate::RunPostUpdate()
 	{
 		auto& w = engine->world;
-		const auto& entSet = w.GetSystem<ParentSystem>()->mEntities;
 
-		for (auto& ent : entSet)
+		for (auto& pair : oldToNewMap)
 		{
-			auto& parent = w.GetComponent<ParentComponent>(ent);
-
-			for (auto& child : parent.child)
+			if (w.CheckComponent<ParentComponent>(pair.second))
 			{
-				child = oldToNewMap[child];
-				
-				auto& childComp = w.GetComponent<ChildComponent>(child);
-				childComp.parentIndex = ent;
+				auto& parentComp = w.GetComponent<ParentComponent>(pair.second);
+				for (auto& ent : parentComp.child)
+				{
+					ent = oldToNewMap[ent];
+				}
+			}
+
+			if (w.CheckComponent<ChildComponent>(pair.second))
+			{
+				auto& childComp = w.GetComponent<ChildComponent>(pair.second);
+				childComp.parentIndex = oldToNewMap[childComp.parentIndex];
+			}
+
+			if (w.CheckComponent<AIComponent>(pair.second))
+			{
+				auto& aiComp = w.GetComponent<AIComponent>(pair.second);
+				for (auto& ent : aiComp.waypoints)
+				{
+					ent = oldToNewMap[ent];
+				}
+			}
+
+			if (w.CheckComponent<ScriptComponent>(pair.second))
+			{
+				auto& scriptComp = w.GetComponent<ScriptComponent>(pair.second);
+
+				for (auto script : scriptComp.scriptList) 
+				{
+					for (auto& var : script->vars)
+					{
+						if (!var.varValue.empty() && (var.type == m_Type::MONO_LIGHT || var.type == m_Type::MONO_AUDIO))
+						{
+							Entity old = lexical_cast<Entity>(var.varValue);
+							var.varValue = lexical_cast<std::string>(oldToNewMap[old]);
+						}
+					}
+				}
 			}
 		}
 		Clear();
@@ -71,7 +100,7 @@ namespace Eclipse
 			{
 				if (!PrefabUse)
 				{
-					PCPostUpdate.RegisterForPostUpdate(w, oldEnt, ent);
+					pUpdate.RegisterForPostUpdate(w, oldEnt, ent);
 					engine->editorManager->RegisterExistingEntity(ent);
 				}
 			}
@@ -186,7 +215,7 @@ namespace Eclipse
 		if (LoadFile(fullpath))
 		{
 			DeserializeAllEntity();
-			PCPostUpdate.PostUpdate();
+			pUpdate.RunPostUpdate();
 		}
 	}
 
@@ -274,7 +303,7 @@ namespace Eclipse
 		SceneManager::Clear();
 		backup.LoadBackup(dsz);
 		DeserializeAllEntity();
-		PCPostUpdate.PostUpdate();
+		pUpdate.RunPostUpdate();
 		std::filesystem::remove(std::filesystem::path(backup.GetBackUpPath()));
 	}
 
@@ -283,9 +312,9 @@ namespace Eclipse
 		return backup.GetBackUpPath();
 	}
 
-	void SerializationManager::SavePrefab(const EUUID& prefabID, const Entity& ent)
+	void SerializationManager::SavePrefab(const EUUID& prefabID, const Entity& ent, bool IsFromMainWorld)
 	{
-		World& prefabW = engine->prefabWorld;
+		World& prefabW = IsFromMainWorld ? engine->world : engine->prefabWorld;
 		size_t counter = 0;
 		size_t tempSize = 0;
 		sz.AddAttributeToElement("PrefabID", prefabID);
@@ -301,7 +330,7 @@ namespace Eclipse
 			{
 				sz.StartElement("Child", true, counter++);
 				auto& prefabComp = prefabW.GetComponent<PrefabComponent>(child);
-				SavePrefab(prefabComp.PrefabID, child);
+				SavePrefab(prefabComp.PrefabID, child, IsFromMainWorld);
 				sz.CloseElement();
 			}
 			tempSize = parentComp.child.size();
@@ -320,7 +349,7 @@ namespace Eclipse
 		}
 	}
 
-	void SerializationManager::UpdateParentChild(World& world, const Entity& parentEnt, const Entity& childEnt)
+	void SerializationManager::UpdateParentChild(World& world, const Entity& parentEnt, const Entity& childEnt, bool IsFromMainWorld)
 	{
 		if (world.CheckComponent<ParentComponent>(parentEnt))
 		{
@@ -338,6 +367,35 @@ namespace Eclipse
 		{
 			auto& childComp = world.GetComponent<ChildComponent>(childEnt);
 			childComp.parentIndex = parentEnt;
+
+			if (IsFromMainWorld)
+			{
+				TransformComponent& childTransComp = engine->world.GetComponent<TransformComponent>(childEnt);
+				TransformComponent& parentTransComp = engine->world.GetComponent<TransformComponent>(parentEnt);
+
+				glm::mat4 T = glm::mat4(1.0f);
+				glm::mat4 R = glm::mat4(1.0f);
+				glm::mat4 identityMatrix = glm::mat4(1.0f);
+				T = glm::translate(T, parentTransComp.position.ConvertToGlmVec3Type());
+				R = glm::rotate(R, glm::radians(parentTransComp.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+				R = glm::rotate(R, glm::radians(parentTransComp.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+				R = glm::rotate(R, glm::radians(parentTransComp.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+
+				glm::mat4 model = T * R;
+				ParentComponent& parentComp = engine->world.GetComponent<ParentComponent>(parentEnt);
+				parentComp.model = model;
+
+				model = glm::translate(model, childComp.PosOffset.ConvertToGlmVec3Type());
+				glm::vec4 temp = glm::vec4{ 0, 0, 0, 1 };
+				glm::vec3 newPos = model * temp;
+				childTransComp.position = newPos;
+
+				childTransComp.rotation = parentTransComp.rotation + childComp.RotOffset;
+				childTransComp.scale.setX(parentTransComp.scale.getX() * childComp.ScaleOffset.getX());
+				childTransComp.scale.setY(parentTransComp.scale.getY() * childComp.ScaleOffset.getY());
+				childTransComp.scale.setZ(parentTransComp.scale.getZ() * childComp.ScaleOffset.getZ());
+				childComp.RotOffset = childTransComp.rotation - parentTransComp.rotation;
+			}
 		}
 		else
 		{
@@ -367,7 +425,7 @@ namespace Eclipse
 				Entity child = MAX_ENTITY;
 				dsz.StartElement("Child", true, i);
 				LoadPrefab(child, IsFromMainWorld);
-				UpdateParentChild(prefabW, dszEnt, child);
+				UpdateParentChild(prefabW, dszEnt, child, IsFromMainWorld);
 				dsz.CloseElement();
 			}
 
@@ -389,10 +447,10 @@ namespace Eclipse
 		}
 	}
 
-	void SerializationManager::SavePrefabFile(const EUUID& prefabID, const Entity& ent, const char* path)
+	void SerializationManager::SavePrefabFile(const EUUID& prefabID, const Entity& ent, const char* path, bool IsFromMainWorld)
 	{
 		sz.StartElement("Prefab");
-		SavePrefab(prefabID, ent);
+		SavePrefab(prefabID, ent, IsFromMainWorld);
 		sz.CloseElement();
 		SaveFile(path);
 	}
@@ -445,14 +503,14 @@ namespace Eclipse
 		SaveFile(path.c_str());
 	}
 
-	Entity SerializationManager::ParentChildPostUpdate::GetNew(const Entity& oldEnt)
+	Entity SerializationManager::PostUpdate::GetNew(const Entity& oldEnt)
 	{
 		if (oldToNewMap.find(oldEnt) != oldToNewMap.end())
 			return oldToNewMap[oldEnt];
 		else
 			return MAX_ENTITY;
 	}
-	void SerializationManager::ParentChildPostUpdate::Clear()
+	void SerializationManager::PostUpdate::Clear()
 	{
 		oldToNewMap.clear();
 	}

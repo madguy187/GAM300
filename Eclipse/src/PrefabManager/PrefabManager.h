@@ -21,6 +21,8 @@ namespace Eclipse
 
 		void UpdateParentChildTransform(const Entity& ent, const Entity& parentEnt);
 
+		void RecursiveUpdateParentChildTransform(const Entity& ent);
+
 		void RegisterForNewInstance(const Entity& ent, const Entity& parentEnt);
 
 		void CleanUpForInstancesAfterCopy(const Entity& ent);
@@ -32,37 +34,42 @@ namespace Eclipse
 		std::vector<Entity> GetInstanceList(const EUUID& prefabID = 0);
 
 		template <typename T>
-		inline void Equalize(T& lhs, T& rhs)
+		inline void Equalize(T& lhs, T& rhs, bool isChild = false)
 		{
+			(void)isChild;
 			lhs = rhs;
 		}
 
 		template<>
-		inline void Equalize(EntityComponent& lhs, EntityComponent& rhs)
+		inline void Equalize(EntityComponent& lhs, EntityComponent& rhs, bool)
 		{
 			lhs.Tag = rhs.Tag;
 			lhs.LayerIndex = rhs.LayerIndex;
 		}
 
 		template<>
-		inline void Equalize(TransformComponent& lhs, TransformComponent& rhs)
+		inline void Equalize(TransformComponent& lhs, TransformComponent& rhs, bool isChild)
 		{
+			if (isChild)
+			{
+				lhs.position = rhs.position;
+			}
 			lhs.rotation = rhs.rotation;
 			lhs.scale = rhs.scale;
 		}
 
 		template<>
-		inline void Equalize(ParentComponent&, ParentComponent&)
+		inline void Equalize(ParentComponent&, ParentComponent&, bool)
 		{
 		}
 
 		template<>
-		inline void Equalize(PrefabComponent&, PrefabComponent&)
+		inline void Equalize(PrefabComponent&, PrefabComponent&, bool)
 		{
 		}
 
 		template<>
-		inline void Equalize(ChildComponent& lhs, ChildComponent& rhs)
+		inline void Equalize(ChildComponent& lhs, ChildComponent& rhs, bool)
 		{
 			lhs.PosOffset = rhs.PosOffset;
 			lhs.RotOffset = rhs.RotOffset;
@@ -70,7 +77,7 @@ namespace Eclipse
 		}
 		
 		template<>
-		inline void Equalize(AIComponent& lhs, AIComponent& rhs)
+		inline void Equalize(AIComponent& lhs, AIComponent& rhs, bool)
 		{
 			lhs.MinDisttoChange = rhs.MinDisttoChange;
 			lhs.patrolling = rhs.patrolling;
@@ -91,6 +98,13 @@ namespace Eclipse
 
 			const auto& changesSource = sourcePrefabComp.CompChanges;
 			const auto& changesTarget = targetPrefabComp.CompChanges;
+
+			bool isChild = false;
+
+			if (targetWorld.CheckComponent<ChildComponent>(targetEnt))
+			{
+				isChild = true;
+			}
 
 			if (changesSource.test(sourceWorld.GetComponentType<T>()) || changesTarget.test(targetWorld.GetComponentType<T>()))
 			{
@@ -136,15 +150,21 @@ namespace Eclipse
 			{
 				T& comparingComp = prefabW.GetComponent<T>(comparingPrefabEnt);
 				T& targetComp = entW.GetComponent<T>(instancesEnt);
+				bool isChild = false;
 
-				if (SerializationManager::CompareComponentData(targetComp, comparingComp))
+				if (entW.CheckComponent<ChildComponent>(instancesEnt))
+				{
+					isChild = true;
+				}
+
+				if (SerializationManager::CompareComponentData(targetComp, comparingComp, isChild))
 				{
 					if (!UpdateSignatureOnly)
 					{
 						if (copySourceWorld.CheckComponent<T>(copyingSourceEnt))
 						{
 							T& copyingComp = copySourceWorld.GetComponent<T>(copyingSourceEnt);
-							Equalize(targetComp, copyingComp);
+							Equalize(targetComp, copyingComp, isChild);
 						}
 						else
 						{
@@ -179,8 +199,6 @@ namespace Eclipse
 
 		std::string GetPath(const EUUID& id);
 
-		void OverwritePrefab(const Entity& ent, const char* path);
-
 		bool CheckPrefabExistence(const EUUID& prefabID);
 
 		void InsertPrefab(const Entity& ent, const char* path, const EUUID& prefabID);
@@ -209,6 +227,8 @@ namespace Eclipse
 
 		void LoadAllPrefab();
 
+		std::string GetPath(const std::string& prefabName);
+
 		//Perform updates of prefab to instances right after loading of scene
 		void PostUpdate();
 
@@ -217,6 +237,8 @@ namespace Eclipse
 		void ApplyChangesToAll(Entity ent);
 
 		void GeneratePrefab(const Entity& ent, const char* path);
+
+		void OverwritePrefab(const Entity& ent, const char* path, bool IsFromMainWorld = false);
 
 		Entity CreatePrefabInstance(const char* path);
 

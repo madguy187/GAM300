@@ -241,6 +241,9 @@ namespace Eclipse
 
 	PxQueryHitType::Enum	QueryReportCallback::preFilter(const PxFilterData& filterData, const PxShape* shape, const PxRigidActor* actor, PxHitFlags& queryFlags)
 	{
+		PX_UNUSED(filterData);
+		PX_UNUSED(queryFlags);
+		PX_UNUSED(shape);
 		// PT: ignore triggers
 		auto& entcomp = engine->world.GetComponent<EntityComponent>(*(Entity*)actor->userData);
 		if(_mask.test(entcomp.LayerIndex))
@@ -251,6 +254,8 @@ namespace Eclipse
 
 	PxQueryHitType::Enum	QueryReportCallback::postFilter(const PxFilterData& filterData, const PxQueryHit& hit)
 	{
+		PX_UNUSED(filterData);
+		PX_UNUSED(hit);
 		return PxQueryHitType::eBLOCK;
 	}
 

@@ -31,6 +31,8 @@ namespace Eclipse
 		static void InitStartingScene(const std::string& name);*/
 
 		static SceneIndex RegisterScene(const std::string& path);
+		
+		static void RegisterRecentSaveScene(const std::string& path);
 
 		static SceneIndex RegisterTempScene(const std::string& path);
 

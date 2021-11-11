@@ -5,9 +5,8 @@ using Eclipse;
 
 public class Test : EclipseBehavior
 {
-    public float test;
     public Light light;
-    public AudioSource audio;
+    public float temp;
 
     public void Start()
     {
@@ -15,6 +14,7 @@ public class Test : EclipseBehavior
 
     public void Update()
     {
-        
+        Console.WriteLine(light.Entity);
+        Console.WriteLine(temp);
     }
 }

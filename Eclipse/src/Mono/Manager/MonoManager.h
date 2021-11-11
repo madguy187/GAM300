@@ -5,6 +5,13 @@
 
 namespace Eclipse
 {
+	struct MonoVariable
+	{
+		m_Type type = m_Type::MONO_UNDEFINED;
+		std::string varName = "";
+		std::string varValue = "";
+	};
+
 	struct MonoScript
 	{
 		std::string scriptName{};
@@ -36,6 +43,7 @@ namespace Eclipse
 		MonoImage* ScriptImage;
 		MonoImage* APIImage;
 
+		std::vector<MonoScript> UserImplementedScriptList;
 		std::vector<InvokeFunc> InvokeContainer;
 
 		// Generates all the scripts into a dll
@@ -55,6 +63,8 @@ namespace Eclipse
 		void Terminate();
 		void UpdateInvokers();
 		void AddInvoke(MonoScript* _script, float _timer, MonoMethod* _method);
+		MonoScript* GetScriptPointerByName(const std::string& name);
+		void LoadVariable(MonoScript* script);
 
 		// API Functions
 		void Awake(MonoScript* obj);
@@ -67,6 +77,8 @@ namespace Eclipse
 		MonoObject* CreateVector3Class(float x, float y, float z);
 		MonoObject* CreateQuaternionClass(float x, float y, float z);
 		MonoObject* CreateRayCastHit(float x, float y, float z);
+		MonoObject* CreateLightClass(Entity ent);
+		MonoObject* CreateGameObjectClass(Entity ent);
 		ECVec3 ConvertVectorToECVec(MonoObject* vec);
 		ECVec3 ConvertQuaternionToECVec3(MonoObject* vec);
 
@@ -80,6 +92,8 @@ namespace Eclipse
 		MonoMethod* GetMethodFromClass(MonoClass* klass, std::string funcName, int param_count = -1);
 		MonoObject* ExecuteMethod(MonoObject* obj, MonoMethod* method, std::vector<void*> args);
 
+		void LoadAllScripts();
+		bool CheckIfScriptExist(std::string scriptName);
 		void LoadAllFields(MonoScript* script);
 		bool CheckIfFieldExist(MonoScript* script, std::string& fieldName, size_t index);
 

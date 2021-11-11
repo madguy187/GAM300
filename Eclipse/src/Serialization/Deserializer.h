@@ -21,7 +21,7 @@ namespace Eclipse
 
 		bool GetAttributeValue(const std::string& name, std::string& result);
 
-		
+		void SetMonoScriptPointer(const std::string& scriptName, MonoScript*& att_data);
 
 	public:
 		Deserializer();
@@ -183,12 +183,15 @@ namespace Eclipse
 		}
 
 		template <>
-		inline void ReadAttributeFromElement(const std::string& att_name, MonoScript& att_data)
+		inline void ReadAttributeFromElement(const std::string& att_name, MonoScript*& att_data)
 		{
 			(void)att_name;
-			ReadAttributeFromElement("ScriptName", att_data.scriptName);
+			std::string scriptName;
+			ReadAttributeFromElement("ScriptName", scriptName);
+			SetMonoScriptPointer(scriptName, att_data);
+			att_data->vars.clear();
 			StartElement("MonoVariables");
-			ReadAttributeFromElement("Variables", att_data.vars);
+			ReadAttributeFromElement("Variables", att_data->vars);
 			CloseElement();
 		}
 

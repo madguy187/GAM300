@@ -149,6 +149,9 @@ namespace Eclipse
                         SetSingleMesh(MeshID, name);
                     }
 
+                    if (engine->GetEditorState())
+                        engine->editorManager->SetSelectedEntity(ParentID);
+
                     return ParentID;
                 }
             }
