@@ -99,6 +99,7 @@ namespace Eclipse
 		std::map<std::filesystem::path, std::vector<std::filesystem::path>> getPathMap();
 		////////////////////////////////
 
+		void DragAndDropWrapper(std::string filename,std::string relativePath_,std::filesystem::directory_entry dirEntry);
 		
 		// converting to small case letters
 		////////////////////////////////
