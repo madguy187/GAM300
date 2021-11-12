@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AnimationManager.h"
+#include "Global.h"
 
 void Eclipse::AnimationManager::RecurseChildren(AssimpNodeData& nodeData, std::fstream& AnimationFileRead)
 {
@@ -111,7 +112,16 @@ void Eclipse::AnimationManager::CheckForAnimation(unsigned int ID)
             {
                 if (!engine->world.CheckComponent<AnimationComponent>(ID))
                 {
-                    engine->world.AddComponent(ID, AnimationComponent{});
+                    AnimationComponent animCom{};
+
+                    if (!strcmp(meshName.c_str(), "Frog"))
+                    {
+                        engine->gFSM.AddFSM(ID);
+                        animCom.m_CurrentAnimation.m_AnimationState = AnimationState::IDLE;
+                        engine->gFSM.FindFSM(ID)->SetState(animCom.m_CurrentAnimation.m_AnimationState);
+                    }
+
+                    engine->world.AddComponent(ID, animCom);
                 }
         
                 auto& animation = engine->world.GetComponent<AnimationComponent>(ID);
@@ -206,7 +216,22 @@ AnimationState Eclipse::AnimationManager::InitAnimationState(std::string modelNa
     }
     else if (modelName.compare("Body") == 0)
     {
-        return AnimationState::WALK;
+        if (fileName.compare("Breathing_Idle") == 0)
+        {
+            return AnimationState::IDLE;
+        }
+        else if (fileName.compare("Walking") == 0)
+        {
+            return AnimationState::WALK;
+        }
+        else if (fileName.compare("Great_Sword_Slash") == 0)
+        {
+            return AnimationState::SLASH;
+        }
+        else if (fileName.compare("Jogging") == 0)
+        {
+            return AnimationState::RUN;
+        } 
     }
     else
     {

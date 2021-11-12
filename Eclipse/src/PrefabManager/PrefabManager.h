@@ -227,6 +227,8 @@ namespace Eclipse
 
 		void LoadAllPrefab();
 
+		std::string GetPath(const std::string& prefabName);
+
 		//Perform updates of prefab to instances right after loading of scene
 		void PostUpdate();
 

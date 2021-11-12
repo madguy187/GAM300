@@ -5,9 +5,8 @@ using Eclipse;
 
 public class Test : EclipseBehavior
 {
-    public float test;
-    public Light light;
-    public AudioSource audio;
+    public GameObject obj;
+    bool isLocked = false;
 
     public void Start()
     {
@@ -15,6 +14,18 @@ public class Test : EclipseBehavior
 
     public void Update()
     {
-        
+        if (Input.GetKey(KeyCode.A))
+        {
+            if (isLocked == false)
+            {
+                isLocked = true;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            else
+            {
+                isLocked = false;
+                Cursor.lockState = CursorLockMode.None;
+            }
+        }
     }
 }

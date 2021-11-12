@@ -52,8 +52,7 @@ namespace Eclipse
 		bool ShowPrefebProperty(Entity ID);
 		bool ShowAIProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowBPProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
-
-
+		bool ShowAnimationProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 		bool ShowNavMeshProperty(const char* name, Entity ID, ImGuiTextFilter& filter);
 
 		void AddComponentsController(Entity ID);

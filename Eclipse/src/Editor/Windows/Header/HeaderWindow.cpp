@@ -42,7 +42,6 @@ namespace Eclipse
 				engine->editorManager->GetEditorWindow<MeshEditorWindow>()->Unload();
 				engine->szManager.SaveBackupFile();
 				engine->mono.StartMono();
-				//auto& mono = engine->world.GetSystem<MonoSystem>();
 				engine->world.GetSystem<MonoSystem>()->Init();
 
 				engine->SetPlayState(true);
@@ -273,7 +272,7 @@ namespace Eclipse
 		ECGui::DrawTextWidget<const char*>("Pos Snap:", EMPTY_STRING);
 		std::vector<std::string> posValues = { "1","5","10","50","100","500","1000","5000","10000" };
 		ECGui::CreateComboList({"Pos Snap:"}, posValues, posValueIndex);
-		scene->GetRefToSnapSettings().mPosSnapValue = static_cast<float>(std::stoi(posValues[posValueIndex]));
+		scene->GetRefToSnapSettings().mPosSnapValue = static_cast<float>(std::stoi(posValues[posValueIndex])) / 20.0f;
 
 		//ECGui::DrawSliderFloatWidget("Pos Snap", &scene->GetRefToSnapSettings().mPosSnapValue, true, 1.f, 100.f);
 		ECGui::DrawTextWidget<const char*>("Rot Snap:", EMPTY_STRING);

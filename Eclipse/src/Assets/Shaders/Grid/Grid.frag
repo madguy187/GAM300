@@ -40,14 +40,27 @@ vec4 grid(vec3 fragPos3D, int scale, bool drawAxis)
 
     vec4 color = vec4(GridColour.x, GridColour.y, GridColour.z , 1.0 - min(line, 1.0));
 
+      float Fix  = 1;
+
+      if(scale <= 0.5)
+      {
+          Fix *= 0.2;
+          Fix *= 0.2;
+      }
+      else
+      {
+          Fix *= 1;
+          Fix *= 1;
+      }
+
       // z axis
-      if(fragPos3D.x > -Z_Thickness * minimumx && fragPos3D.x < Z_Thickness * minimumx)
+      if(fragPos3D.x > -Z_Thickness * minimumx * Fix && fragPos3D.x < Z_Thickness * minimumx * Fix)
       {
             color.z = ZAxis_Colour;
       }
 
       // x axis
-      if(fragPos3D.z > -X_Thickness * minimumz && fragPos3D.z < X_Thickness * minimumz)
+      if(fragPos3D.z > -X_Thickness * minimumz * Fix && fragPos3D.z < X_Thickness * minimumz * Fix)
       {
             color.x = XAxis_Colour;
       }

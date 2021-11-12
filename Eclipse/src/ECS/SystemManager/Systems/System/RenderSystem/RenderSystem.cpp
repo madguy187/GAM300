@@ -53,7 +53,6 @@ namespace Eclipse
             engine->MaterialManager.DoNotUpdateStencil();
             engine->GraphicsManager.RenderSky(FrameBufferMode::FBM_SCENE);
 
-
             for (auto const& entityID : mEntities)
             {
                 MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
@@ -81,9 +80,10 @@ namespace Eclipse
                 // After hot-realoding , we check if he still exists or not
                 if (engine->AssimpManager.CheckGeometryExist(Mesh))
                 {
-                    Renderer.RenderScene(Mesh, entityID);
+                    // Shadows
+                    //Renderer.RenderSceneNormally(Mesh, entityID);
 
-                    Renderer.RenderSceneNormally(Mesh, entityID);
+                    Renderer.RenderScene(Mesh, entityID);
                     Renderer.RenderGame(Mesh, entityID);
                     Renderer.RenderOtherViews(Mesh, entityID);
                 }

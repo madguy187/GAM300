@@ -4,9 +4,8 @@ namespace Eclipse
 {
 	void NavMeshSystem::Update()
 	{
-		for (auto const& entity : mEntities)
-		{
-
-		}
+		//for (auto const& entity : mEntities)
+		//{	
+		//}
 	}
 }

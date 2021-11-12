@@ -5,9 +5,9 @@
 
 namespace Eclipse
 {
-	static void AddForce(Entity ent, float x, float y, float z,ForceMode mode)
+	static void AddForce(Entity ent, float x, float y, float z, int mode)
 	{
-		engine->gPhysics.AddForce(ent, { x, y, z },mode);
+		engine->gPhysics.AddForce(ent, { x, y, z }, static_cast<ForceMode>(mode));
 	}
 
 	static float getMass(Entity ent)

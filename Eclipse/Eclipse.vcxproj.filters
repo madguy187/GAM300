@@ -654,7 +654,7 @@
     <ClInclude Include="src\Events\Events.h">
       <Filter>Events</Filter>
     </ClInclude>
-    <ClInclude Include="src\FSM\FSM\FiniteStateMachine.h">
+    <ClInclude Include="src\FSM\FiniteStateMachine.h">
       <Filter>FSM\FSM</Filter>
     </ClInclude>
     <ClInclude Include="src\FSM\States\TestingFSM\TestingFSM.h">
@@ -1032,6 +1032,12 @@
     </ClInclude>
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Graphics\RendererAPI\RenderManager\RenderManger.h" />
+    <ClInclude Include="src\FSM\Manager\FSMManager.h" />
+    <ClInclude Include="src\FSM\StateDesigns\TestingFSM\TestingFSM.h" />
+    <ClInclude Include="src\FSM\StateDesigns\Base\FiniteStateMachine.h" />
+    <ClInclude Include="src\FSM\StateDesigns\Animation\AnimationFSM.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\EntityCompSystem\EntityCompSystem.h" />
+    <ClInclude Include="src\Library\Math\Math.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1204,9 +1210,6 @@
     </ClCompile>
     <ClCompile Include="src\EntryPoint\EntryPoint.cpp">
       <Filter>EntryPoint</Filter>
-    </ClCompile>
-    <ClCompile Include="src\FSM\States\TestingFSM\TestingFSM.cpp">
-      <Filter>FSM\States\TestingFSM</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\Animation\AnimationManager.cpp">
       <Filter>Graphics\Animation</Filter>
@@ -1506,5 +1509,10 @@
     <None Include="src\Assets\Shaders\PBRShader\PBR.vert" />
     <None Include="src\Assets\Shaders\ShadowMapping\ShadowMap.vert" />
     <None Include="src\Assets\Shaders\ShadowMapping\ShadowMap.frag" />
+    <ClCompile Include="src\FSM\Manager\FSMManager.cpp" />
+    <ClCompile Include="src\FSM\StateDesigns\TestingFSM\TestingFSM.cpp" />
+    <ClCompile Include="src\FSM\StateDesigns\Animation\AnimationFSM.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\EntityCompSystem\EntityCompSystem.cpp" />
+    <ClCompile Include="src\Library\Math\Math.cpp" />
   </ItemGroup>
 </Project>

@@ -45,7 +45,8 @@
 #include "Editor/Windows/NodeEditor/NodeEditor.h"
 #include "ECS/SystemManager/Systems/System/AnimationSystem/AnimationSystem.h"
 #include "ECS/SystemManager/Systems/System/NavMeshSystem/NavMeshSystem.h"
-// #include "FSM/States/TestingFSM/TestingFSM.h"
+#include "ECS/SystemManager/Systems/System/EntityCompSystem/EntityCompSystem.h"
+//#include "FSM/States/TestingFSM/TestingFSM.h"
 
 bool Tester1(const Test1&)
 {
@@ -157,6 +158,7 @@ namespace Eclipse
         world.RegisterSystem<AISystem>();
         world.RegisterSystem<InputSystem>();
         world.RegisterSystem<AnimationSystem>();
+        world.RegisterSystem<EntityCompSystem>();
 
         prefabWorld.RegisterSystem<PrefabSystem>();
 
@@ -282,8 +284,8 @@ namespace Eclipse
         else
             std::cout << "its the not same!" << std::endl;*/
 
-        // TestingFSMClass eg{ Entity{MAX_ENTITY} };
-        // eg.SetState(TestState::TS_WALK);
+        /*TestingFSMClass eg{ Entity{MAX_ENTITY} };
+        eg.SetState(TestState::TS_WALK);*/
 
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
@@ -335,7 +337,7 @@ namespace Eclipse
             }
 
             // GRID SYSTEM =============================
-            //world.Update<GridSystem>();
+            // world.Update<GridSystem>();
             // eg.UpdateFSM(Game_Clock.get_fixedDeltaTime());
             world.Update<CameraSystem>();
 
@@ -471,15 +473,16 @@ namespace Eclipse
 
     void Engine::CleanUp(const Entity& ent)
     {
-        engine->gDynamicAABBTree.RemoveData(ent);
-        engine->gCullingManager->Remove(ent);
-        engine->LightManager.DestroyLight(ent);
-        engine->gPhysics.RemoveActor(ent);
+        gDynamicAABBTree.RemoveData(ent);
+        gCullingManager->Remove(ent);
+        LightManager.DestroyLight(ent);
+        gPhysics.RemoveActor(ent);
+        gFSM.RemoveFSM(ent);
 
         if (IsEditorActive)
         {
-            engine->editorManager->DestroyEntity(ent);
-            engine->gPicker.SetCurrentCollisionID(engine->editorManager->GetSelectedEntity());
+            editorManager->DestroyEntity(ent);
+            gPicker.SetCurrentCollisionID(editorManager->GetSelectedEntity());
         }
         else
         {
