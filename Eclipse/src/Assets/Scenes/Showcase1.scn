@@ -1568,7 +1568,7 @@
             <velocity x="0" y="0" z="0" />
             <Angvelocity x="0" y="0" z="0" />
             <MaxVelocity value="10" />
-            <mass value="1" />
+            <mass value="200" />
             <drag value="0" />
             <angdrag value="0" />
             <_Kinematic value="false" />

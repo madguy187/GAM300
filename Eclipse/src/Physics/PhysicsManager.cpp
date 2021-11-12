@@ -460,7 +460,9 @@ namespace Eclipse
 			}
 			rigid.forces.clear();
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setMaxLinearVelocity(static_cast<PxReal>(rigid.MaxVelocity));
-			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setMass(rigid.mass);
+
+
+			PxRigidBodyExt::updateMassAndInertia(*(static_cast<PxRigidBody*>(Px_Actors[ent].actor)), rigid.mass);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setActorFlag(PxActorFlag::eDISABLE_GRAVITY,rigid.enableGravity ? false : true);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setAngularVelocity(tempangVelo);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setAngularDamping(0.f);
