@@ -78,12 +78,16 @@ public class Test2 : EclipseBehavior
 		{			
 			if(Spot != null)
 			{
-				if(light.Intensity >= 0.0f )
+				if(light.Intensity > 0.0f )
 				{
 					light.Intensity = light.Intensity - Time.fixedDeltaTime;
 					light.Intensity = light.Intensity - Time.fixedDeltaTime;
-										light.Intensity = light.Intensity - Time.fixedDeltaTime;
-															light.Intensity = light.Intensity - Time.fixedDeltaTime;
+					light.Intensity = light.Intensity - Time.fixedDeltaTime;
+					light.Intensity = light.Intensity - Time.fixedDeltaTime;
+				}
+				else
+				{
+					light.Intensity = 0;
 				}
 			}
 		}
