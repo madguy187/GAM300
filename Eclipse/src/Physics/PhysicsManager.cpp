@@ -458,6 +458,7 @@ namespace Eclipse
 				else
 					static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->addForce(tempforce, PxForceMode::eIMPULSE);
 			}
+			rigid.forces.clear();
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setMaxLinearVelocity(static_cast<PxReal>(rigid.MaxVelocity));
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setMass(rigid.mass);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setActorFlag(PxActorFlag::eDISABLE_GRAVITY,rigid.enableGravity ? false : true);

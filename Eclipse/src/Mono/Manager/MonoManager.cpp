@@ -95,9 +95,10 @@ namespace Eclipse
 		mono_add_internal_call("Eclipse.Rigidbody::getX", getX);
 		mono_add_internal_call("Eclipse.Rigidbody::getY", getY);
 		mono_add_internal_call("Eclipse.Rigidbody::getZ", getZ);
+		mono_add_internal_call("Eclipse.Rigidbody::setGravBool", setGravBool);
 
 		// Input Internal Calls
-		mono_add_internal_call("Eclipse.Input::GetButtonDown", GetKeyCurrentByName);
+		mono_add_internal_call("Eclipse.Input::GetKeyDown", GetKeyTriggered);
 		mono_add_internal_call("Eclipse.Input::GetKey", GetKeyCurrentByKeyCode);
 		mono_add_internal_call("Eclipse.Input::GetAxis", GetMouseAxis);
 		mono_add_internal_call("Eclipse.Input::GetAxisRaw", GetRawMouseAxis);
@@ -587,8 +588,9 @@ namespace Eclipse
 		GetFloatFromField(vec, GetAPIMonoClass("Quaternion"), "z", z);
 
 		glm::quat quad{ w, x, y, z };
-		auto rot = glm::degrees(glm::eulerAngles(quad));
-		ECVec3 VecRot{ rot.x, rot.y, rot.z };
+		PxQuat tempquat{ x,y,z,w };
+		//auto rot = glm::degrees(glm::eulerAngles(quad));
+		ECVec3 VecRot = engine->gPhysics.QuattoAngles(tempquat);
 		return VecRot;
 	}
 
@@ -601,8 +603,9 @@ namespace Eclipse
 		MonoMethod* method = GetMethodFromClass(klass, ".ctor", 4);
 		if (!method) return nullptr;
 
-		glm::vec3 vec{ x, y, z };
-		glm::quat quad{ vec };
+		PxQuat quad = engine->gPhysics.AnglestoQuat(x,y,z);
+		//glm::vec3 vec{ x, y, z };
+		//glm::quat quad{ glm::radians(vec) };
 
 		std::vector<void*> args;
 		args.push_back(&quad.w);
@@ -615,15 +618,16 @@ namespace Eclipse
 		return obj;
 	}
 
-	MonoObject* MonoManager::CreateRayCastHit(float x, float y, float z)
+	MonoObject* MonoManager::CreateRayCastHit(Entity ent, float x, float y, float z)
 	{
-		MonoClass* klass = GetAPIMonoClass("RayCastHit");
+		MonoClass* klass = GetAPIMonoClass("RaycastHit");
 		MonoObject* obj = CreateObjectFromClass(klass, false);
 		std::vector<void*> args;
+		args.push_back(&ent);
 		args.push_back(&x);
 		args.push_back(&y);
 		args.push_back(&z);
-		ExecuteMethod(obj, GetMethodFromClass(klass, ".ctor", 3), args);
+		ExecuteMethod(obj, GetMethodFromClass(klass, ".ctor", 4), args);
 		
 		return obj;
 	}

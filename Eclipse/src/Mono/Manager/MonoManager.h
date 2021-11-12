@@ -76,7 +76,7 @@ namespace Eclipse
 		MonoObject* CreateObjectFromClass(MonoClass* klass, bool defaultConstructor = true);
 		MonoObject* CreateVector3Class(float x, float y, float z);
 		MonoObject* CreateQuaternionClass(float x, float y, float z);
-		MonoObject* CreateRayCastHit(float x, float y, float z);
+		MonoObject* CreateRayCastHit(Entity ent, float x, float y, float z);
 		MonoObject* CreateLightClass(Entity ent);
 		MonoObject* CreateAudioSourceClass(Entity ent);
 		MonoObject* CreateGameObjectClass(Entity ent, std::string scriptName);

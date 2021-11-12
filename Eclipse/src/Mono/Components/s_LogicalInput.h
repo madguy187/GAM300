@@ -5,14 +5,9 @@
 
 namespace Eclipse
 {
-	static void GetKeyTriggered(InputKeycode KeyIn)
+	static bool GetKeyTriggered(uint32_t keycode)
 	{
-		engine->InputManager->GetKeyTriggered(KeyIn);
-	}
-
-	static void GetKeyTriggered(MonoString* Mappedkeycode)
-	{
-		engine->InputManager->GetKeyTriggered(mono_string_to_utf8(Mappedkeycode));
+		return engine->InputManager->GetKeyTriggered(static_cast<InputKeycode>(keycode));
 	}
 
 	static bool GetKeyCurrentByKeyCode(uint32_t keycode)
