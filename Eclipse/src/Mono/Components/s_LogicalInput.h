@@ -21,9 +21,9 @@ namespace Eclipse
 	}
 
 	// I haven do UI FOR MOUSE YET
-	static void GetMouseTriggered(InputMouseKeycode KeyIn)
+	static void GetMouseTriggered(uint32_t keycode)
 	{
-		engine->InputManager->GetMouseTriggered(KeyIn);
+		engine->InputManager->GetMouseTriggered(static_cast<InputMouseKeycode>(keycode));
 	}
 
 	static void GetMouseTriggered(std::string Mappedkeycode)

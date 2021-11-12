@@ -38,10 +38,8 @@ namespace Eclipse
             InvokeFunc(Entity, gameObject.ScriptName, funcName, time);
         }
 
-        public void Instantiate(GameObject obj, Vector3 pos, Quaternion rot)
-        {
-            
-        }
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        public extern static GameObject Instantiate(string prefabName, Vector3 pos, Vector3 direction);
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         public extern static GameObject Find(string entName);

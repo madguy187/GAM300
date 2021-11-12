@@ -56,18 +56,9 @@ void Eclipse::CameraSystem::Update()
             engine->gCamera.UpdateViewCamera(_camera, _transform);
         }
 
-        if (_camera.camType == CameraComponent::CameraType::Game_Camera)
-        {
             engine->gCamera.ComputeViewDirection(_camera, _transform);
             engine->gCamera.ComputeViewMtx(_camera, _transform);
             engine->gCamera.ComputePerspectiveMtx(_camera);
-        }
-        else
-        {
-            engine->gCamera.ComputeViewDirection(_camera, _transform);
-            engine->gCamera.ComputeViewMtx(_camera, _transform);
-            engine->gCamera.ComputePerspectiveMtx(_camera);
-        }
     }
     engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());
     engine->Timer.UpdateTimeContainer(engine->Timer.tracker);

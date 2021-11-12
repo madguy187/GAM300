@@ -130,6 +130,7 @@ namespace Eclipse
 		// InvokeFunc Internal Calls
 		mono_add_internal_call("Eclipse.EclipseBehavior::InvokeFunc", Invoke);
 		mono_add_internal_call("Eclipse.EclipseBehavior::Find", Find);
+		mono_add_internal_call("Eclipse.EclipseBehavior::Instantiate", Instantiate);
 
 		// Physics Internal Calls
 		mono_add_internal_call("Eclipse.Physics::RaycastCheck", RaycastFunc);
@@ -139,6 +140,8 @@ namespace Eclipse
 
 		// Light Internal Calls
 		mono_add_internal_call("Eclipse.Light::SetLightEnabled", SetLightEnabled);
+		mono_add_internal_call("Eclipse.Light::SetIntensity", SetIntensity);
+		mono_add_internal_call("Eclipse.Light::SetDirection", SetDirection);
 
 		// AudioSource Internal Calls
 		mono_add_internal_call("Eclipse.AudioSource::PlayAudio", Play);

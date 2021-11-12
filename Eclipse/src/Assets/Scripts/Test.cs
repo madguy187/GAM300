@@ -43,9 +43,7 @@ public class Test : EclipseBehavior
 
               if (Physics.Raycast(obj.transform.position, transform.forward, out hit, 5.0f))
               {
-                Console.WriteLine(hit.Entity);
                 pickedObj = new GameObject(hit.Entity, "");
-                Console.WriteLine(Vector3.Distance(transform.position, hit.point));
 
                 isPicked = true;
                 pickedObj.GetComponent<Rigidbody>().Gravity = false;
@@ -60,8 +58,11 @@ public class Test : EclipseBehavior
 
         if (isPicked)
         {
-          Vector3 newVec = transform.forward * 3.0f;
-          pickedObj.transform.position = obj.transform.position + newVec;
+          if(pickedObj != null)
+          {
+             Vector3 newVec = transform.forward * 3.0f;
+             pickedObj.transform.position = obj.transform.position + newVec;
+          }
         }
 
         

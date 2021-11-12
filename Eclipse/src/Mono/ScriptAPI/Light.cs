@@ -18,7 +18,23 @@ namespace Eclipse
             set => SetLightEnabled(Entity, value ? 1 : 0);
         }
 
+        public float Intensity
+        {
+            set => SetIntensity(Entity, value);
+        }
+
+        public Vector3 Direction
+        {
+            set => SetDirection(Entity, value);
+        }
+
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         private extern static void SetLightEnabled(UInt32 ent, int state);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        private extern static void SetIntensity(UInt32 ent, float value);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        private extern static void SetDirection(UInt32 ent, Vector3 value);
     }
 }
