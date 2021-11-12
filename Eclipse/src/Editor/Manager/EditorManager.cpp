@@ -346,6 +346,11 @@ namespace Eclipse
 		return DoesRecoveryFileExist;
 	}
 
+	bool EditorManager::GetIsSimulatingAnimation() const
+	{
+		return SimulateAnimation;
+	}
+
 	void EditorManager::SetSelectedEntity(Entity ID)
 	{
 		GEHIndex_ = static_cast<size_t>(EntityToIndexMap_[ID]);
@@ -366,6 +371,11 @@ namespace Eclipse
 	void EditorManager::SetRecoveryFileExistence(bool exist)
 	{
 		DoesRecoveryFileExist = exist;
+	}
+
+	void EditorManager::SetAnimationSimulation(bool active)
+	{
+		SimulateAnimation = active;
 	}
 
 	void EditorManager::Clear()
