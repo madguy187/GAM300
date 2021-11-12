@@ -391,6 +391,26 @@ namespace Eclipse
 		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
 	}
 
+	void MonoManager::OnCollision(Entity ent)
+	{
+		auto& scriptComp = engine->world.GetComponent<ScriptComponent>(ent);
+
+		for (auto& script : scriptComp.scriptList)
+		{
+			MonoClass* klass = mono_class_from_name(ScriptImage, "", script->scriptName.c_str());
+
+			if (klass == nullptr) {
+				std::cout << "Failed loading class, MonoVec3" << std::endl;
+				continue;
+			}
+
+			MonoMethod* m_update = mono_class_get_method_from_name(klass, "OnCollision", -1);
+			if (!m_update) continue;
+
+			mono_runtime_invoke(m_update, script->obj, nullptr, NULL);
+		}
+	}
+
 	void MonoManager::StopMono()
 	{
 		mono_image_close(ScriptImage);

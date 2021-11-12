@@ -71,6 +71,7 @@ namespace Eclipse
 		void Start(MonoScript* obj);
 		void Update(MonoScript* obj);
 		void FixedUpdate(MonoScript* obj);
+		void OnCollision(Entity ent);
 
 		MonoObject* CreateMonoObject(std::string scriptName, Entity entity);
 		MonoObject* CreateObjectFromClass(MonoClass* klass, bool defaultConstructor = true);

@@ -515,9 +515,11 @@ namespace Eclipse
 						AttachCapsuleToActor(ent, collision.shape.radius, collision.shape.hheight);
 					}
 					break;
+
 				}
+				shapes[i]->setFlag(PxShapeFlag::eTRIGGER_SHAPE, collision.isTrigger);
+				delete[] shapes;
 			}
-			delete[] shapes;
 		}
 	}
 
@@ -584,6 +586,14 @@ namespace Eclipse
 			break;
 		}
 	}
+
+	void ContactReportCallback::onTrigger(PxTriggerPair* pairs, PxU32 count)
+	{
+		Entity ent = *(Entity*)pairs->otherActor->userData;
+		if (engine->world.CheckComponent<ScriptComponent>(ent))
+			engine->mono.OnCollision(ent);
+
+	};
 
 	void PhysicsManager::GetActorPosition(Entity ent)
 	{

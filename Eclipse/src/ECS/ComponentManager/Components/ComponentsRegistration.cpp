@@ -79,6 +79,7 @@ namespace Eclipse
     DEFINE_META(CollisionComponent)
     {
         ADD_MEMBER(shape);
+        ADD_MEMBER(isTrigger);
     }
 
     DEFINE_META(AIComponent)
