@@ -46,4 +46,15 @@ namespace Eclipse
 
 		return engine->mono.CreateGameObjectClass(TaggedSpoLight, "");
 	}
+
+	static MonoObject* CreatePrefab(MonoString* prefabName, MonoObject* pos, MonoObject* dir)
+	{
+		std::string fullPath = engine->pfManager.GetPath(mono_string_to_utf8(prefabName));
+		Entity ent = engine->pfManager.CreatePrefabInstanceSetTransform(
+			fullPath.c_str(),
+			engine->mono.ConvertVectorToECVec(pos),
+			engine->mono.ConvertVectorToECVec(dir)
+		);
+		return engine->mono.CreateGameObjectClass(ent, "");
+	}
 }

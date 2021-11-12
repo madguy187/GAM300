@@ -46,5 +46,8 @@ namespace Eclipse
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         private extern static void InvokeFunc(UInt32 entity, string scriptName, string funcName, float time);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        public extern static GameObject CreatePrefab(string prefabName, Vector3 pos, Vector3 rot);
     }
 }

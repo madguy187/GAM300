@@ -24,10 +24,7 @@ namespace Eclipse
 			States.push_back(AnimationState::DANCE);
 			break;
 		case str2int("Body"):
-			States.push_back(AnimationState::IDLE);
 			States.push_back(AnimationState::WALK);
-			States.push_back(AnimationState::RUN);
-			States.push_back(AnimationState::SLASH);
 			break;
 		default:
 			break;

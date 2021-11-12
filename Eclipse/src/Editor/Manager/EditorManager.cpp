@@ -140,7 +140,7 @@ namespace Eclipse
 	{
 		Entity ID = engine->world.CreateEntity();
 
-		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast_toStr<EntityType>(type), 0, true });
+		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast_toStr<EntityType>(type), 0, true, true });
 		engine->world.AddComponent(ID, TransformComponent{});
 
 		// Check this please - Rachel

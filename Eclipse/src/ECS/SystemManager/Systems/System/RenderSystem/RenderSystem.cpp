@@ -59,6 +59,9 @@ namespace Eclipse
             // Basic Primitives Render Start =============================
             for (auto const& entityID : mEntities)
             {
+                auto& entCom = engine->world.GetComponent<EntityComponent>(entityID);
+
+                if (!entCom.IsVisible) continue;
                 // Used somewhere else.
                 //if (entityID == engine->gPBRManager->gMaterialEditorSettings->InnerEntity || entityID == engine->gPBRManager->gMaterialEditorSettings->OuterEntity)
                 //    continue;

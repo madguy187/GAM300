@@ -131,6 +131,7 @@ namespace Eclipse
 		mono_add_internal_call("Eclipse.EclipseBehavior::InvokeFunc", Invoke);
 		mono_add_internal_call("Eclipse.EclipseBehavior::Find", Find);
 		mono_add_internal_call("Eclipse.EclipseBehavior::Instantiate", Instantiate);
+		mono_add_internal_call("Eclipse.EclipseBehavior::CreatePrefab", CreatePrefab);
 
 		// Physics Internal Calls
 		mono_add_internal_call("Eclipse.Physics::RaycastCheck", RaycastFunc);

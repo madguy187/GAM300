@@ -517,6 +517,7 @@ namespace Eclipse
 					break;
 
 				}
+				shapes[i]->setFlag(PxShapeFlag::eSIMULATION_SHAPE, !collision.isTrigger);
 				shapes[i]->setFlag(PxShapeFlag::eTRIGGER_SHAPE, collision.isTrigger);
 				delete[] shapes;
 			}
@@ -589,7 +590,7 @@ namespace Eclipse
 
 	void ContactReportCallback::onTrigger(PxTriggerPair* pairs, PxU32 count)
 	{
-		Entity ent = *(Entity*)pairs->otherActor->userData;
+		Entity ent = *(Entity*)pairs->triggerActor->userData;
 		if (engine->world.CheckComponent<ScriptComponent>(ent))
 			engine->mono.OnCollision(ent);
 

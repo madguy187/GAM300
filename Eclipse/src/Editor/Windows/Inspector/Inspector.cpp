@@ -50,6 +50,8 @@ namespace Eclipse
             }
 
             ECGui::DrawTextWidget<int>("ID ", currEnt);
+            ECGui::InsertSameLine();
+            ECGui::CheckBoxBool("HideEntity", &entcom.IsVisible);
 
             ECGui::PushItemWidth(WindowSize_.getX() * 0.35f);
             ECGui::DrawTextWidget<const char*>("Tag ", EMPTY_STRING);
@@ -1137,8 +1139,6 @@ namespace Eclipse
                     }
                 }
 
-               
-
                 switch (_Collision.shape.shape)
                 {
                 case PxShapeType::Px_CUBE:
@@ -1199,6 +1199,8 @@ namespace Eclipse
                     ECGui::DrawInputTextWidget("HalfHeight: ", HalfHeightValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
                     _Collision.shape.radius = static_cast<float>(atof(HalfHeightValue));
                 }
+
+                ECGui::CheckBoxBool("IsTrigger", &_Collision.isTrigger, false);
             }
         }
         return false;
