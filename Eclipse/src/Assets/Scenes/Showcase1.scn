@@ -7,8 +7,8 @@
             <fov value="40" />
             <nearPlane value="0.1" />
             <farPlane value="300" />
-            <aspect value="2.15955" />
-            <eyePos x="0" y="5.46962" z="0" />
+            <aspect value="2.05291" />
+            <eyePos x="0" y="6.60603" z="0" />
             <eyeFront x="1" y="0" z="0" />
             <upVec x="0" y="1" z="0" />
             <rightVec x="0" y="0" z="1" />
@@ -17,10 +17,10 @@
                 <Col0 _00="0" _01="0" _02="-1" _03="0" />
                 <Col1 _10="0" _11="1" _12="-0" _13="0" />
                 <Col2 _20="1" _21="0" _22="-0" _23="0" />
-                <Col3 _30="-0" _31="-5.46962" _32="0" _33="1" />
+                <Col3 _30="-0" _31="-6.60603" _32="0" _33="1" />
             </viewMtx>
             <projMtx Col="4" Row="4">
-                <Col0 _00="1.27224" _01="0" _02="0" _03="0" />
+                <Col0 _00="1.33833" _01="0" _02="0" _03="0" />
                 <Col1 _10="0" _11="2.74748" _12="0" _13="0" />
                 <Col2 _20="0" _21="0" _22="-1.00067" _23="-1" />
                 <Col3 _30="0" _31="0" _32="-0.200067" _33="0" />
@@ -46,7 +46,7 @@
             <IsAChild value="true" />
         </ChildComponent>
         <TransformComponent>
-            <position x="0" y="5.46962" z="0" />
+            <position x="0" y="6.60603" z="0" />
             <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
@@ -139,7 +139,7 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <CollisionComponent>
-            <shape Shape="Px_CUBE" Hx="12.5" Hy="12.5" Hz="12.5" Radius="1" Hheight="1" />
+            <shape Shape="Px_CUBE" Hx="12.5" Hy="1" Hz="12.5" Radius="1" Hheight="1" />
             <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
@@ -207,7 +207,7 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <CollisionComponent>
-            <shape Shape="Px_CUBE" Hx="4" Hy="4" Hz="4" Radius="1" Hheight="1" />
+            <shape Shape="Px_CUBE" Hx="2" Hy="2" Hz="4" Radius="1" Hheight="1" />
             <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
@@ -343,7 +343,7 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <CollisionComponent>
-            <shape Shape="Px_CUBE" Hx="12.5" Hy="12.5" Hz="2.5" Radius="1" Hheight="1" />
+            <shape Shape="Px_CUBE" Hx="12.5" Hy="12.5" Hz="1" Radius="1" Hheight="1" />
             <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
@@ -411,7 +411,7 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <CollisionComponent>
-            <shape Shape="Px_CUBE" Hx="12.5" Hy="12.5" Hz="2.5" Radius="1" Hheight="1" />
+            <shape Shape="Px_CUBE" Hx="12.5" Hy="12.5" Hz="1" Radius="1" Hheight="1" />
             <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
@@ -479,7 +479,7 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <CollisionComponent>
-            <shape Shape="Px_CUBE" Hx="2.5" Hy="2.5" Hz="2.5" Radius="1" Hheight="1" />
+            <shape Shape="Px_CUBE" Hx="1" Hy="2.5" Hz="1" Radius="1" Hheight="1" />
             <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
@@ -547,7 +547,7 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <CollisionComponent>
-            <shape Shape="Px_CUBE" Hx="2" Hy="2" Hz="2" Radius="1" Hheight="1" />
+            <shape Shape="Px_CUBE" Hx="1" Hy="2" Hz="1" Radius="1" Hheight="1" />
             <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
@@ -615,7 +615,7 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <CollisionComponent>
-            <shape Shape="Px_CUBE" Hx="4" Hy="4" Hz="4" Radius="1" Hheight="1" />
+            <shape Shape="Px_CUBE" Hx="2" Hy="2" Hz="4" Radius="1" Hheight="1" />
             <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
@@ -683,7 +683,7 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <CollisionComponent>
-            <shape Shape="Px_CUBE" Hx="2.5" Hy="2.5" Hz="2.5" Radius="1" Hheight="1" />
+            <shape Shape="Px_CUBE" Hx="2.5" Hy="2.5" Hz="1" Radius="1" Hheight="1" />
             <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
@@ -751,7 +751,7 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <CollisionComponent>
-            <shape Shape="Px_CUBE" Hx="4" Hy="4" Hz="4" Radius="1" Hheight="1" />
+            <shape Shape="Px_CUBE" Hx="1" Hy="4" Hz="2" Radius="1" Hheight="1" />
             <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
@@ -955,7 +955,7 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <CollisionComponent>
-            <shape Shape="Px_CUBE" Hx="4" Hy="5" Hz="4" Radius="1" Hheight="1" />
+            <shape Shape="Px_CUBE" Hx="1" Hy="5" Hz="4" Radius="1" Hheight="1" />
             <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
@@ -1023,7 +1023,7 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <CollisionComponent>
-            <shape Shape="Px_CUBE" Hx="2" Hy="2" Hz="0.5" Radius="1" Hheight="1" />
+            <shape Shape="Px_CUBE" Hx="0.5" Hy="2" Hz="2" Radius="1" Hheight="1" />
             <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
@@ -1091,7 +1091,7 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <CollisionComponent>
-            <shape Shape="Px_CUBE" Hx="2" Hy="2" Hz="0.5" Radius="1" Hheight="1" />
+            <shape Shape="Px_CUBE" Hx="0.5" Hy="2" Hz="2" Radius="1" Hheight="1" />
             <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
@@ -1159,7 +1159,7 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <CollisionComponent>
-            <shape Shape="Px_CUBE" Hx="12.5" Hy="12.5" Hz="12.5" Radius="1" Hheight="1" />
+            <shape Shape="Px_CUBE" Hx="12.5" Hy="1" Hz="12.5" Radius="1" Hheight="1" />
             <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
@@ -1227,7 +1227,7 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <CollisionComponent>
-            <shape Shape="Px_CUBE" Hx="12.5" Hy="12.5" Hz="1.25" Radius="1" Hheight="1" />
+            <shape Shape="Px_CUBE" Hx="1" Hy="12.5" Hz="12.5" Radius="1" Hheight="1" />
             <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
@@ -1510,9 +1510,9 @@
     </Entity_22>
     <Entity_23 ID="31">
         <AABBComponent>
-            <center x="0" y="2.5" z="0" />
-            <Min x="-1.25" y="0.5" z="-1.25" />
-            <Max x="1.25" y="4.5" z="1.25" />
+            <center x="0" y="3.63641" z="0" />
+            <Min x="-1.25" y="1.63641" z="-1.25" />
+            <Max x="1.25" y="5.63641" z="1.25" />
         </AABBComponent>
         <EntityComponent>
             <Tag value="Cylinder" />
@@ -1564,6 +1564,17 @@
             <type value="MT_UNASSIGNED" />
             <ComboIndex value="0" />
         </ModelComponent>
+        <RigidBodyComponent>
+            <velocity x="0" y="0" z="0" />
+            <Angvelocity x="0" y="0" z="0" />
+            <MaxVelocity value="10" />
+            <mass value="1" />
+            <drag value="0" />
+            <angdrag value="0" />
+            <_Kinematic value="false" />
+            <enableGravity value="true" />
+            <enableRotation value="false" />
+        </RigidBodyComponent>
         <ScriptComponent>
             <scriptList size="1">
                 <Member0 ScriptName="Test">
@@ -1582,11 +1593,15 @@
                 <Col0 _00="1" _01="0" _02="0" _03="0" />
                 <Col1 _10="0" _11="1" _12="0" _13="0" />
                 <Col2 _20="0" _21="0" _22="1" _23="0" />
-                <Col3 _30="0" _31="2.5" _32="0" _33="1" />
+                <Col3 _30="0" _31="3.63641" _32="0" _33="1" />
             </model>
         </ParentComponent>
+        <CollisionComponent>
+            <shape Shape="Px_CUBE" Hx="1" Hy="2.5" Hz="1" Radius="1" Hheight="1" />
+            <isTrigger value="false" />
+        </CollisionComponent>
         <TransformComponent>
-            <position x="0" y="2.5" z="0" />
+            <position x="0" y="3.63641" z="0" />
             <rotation x="0" y="0" z="0" />
             <scale x="2.5" y="4" z="2.5" />
         </TransformComponent>
