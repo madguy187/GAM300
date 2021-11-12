@@ -317,7 +317,7 @@ namespace Eclipse
 	}
 
 	void DragAndDrop::AssetBrowerFilesAndFoldersTarget(const char* type, const char* paths,
-		std::string AssetPath, std::filesystem::directory_entry dirEntry, bool& refreshBrowser,
+		std::string AssetPath, std::filesystem::path dirEntry, bool& refreshBrowser,
 		std::map<std::filesystem::path, std::vector<std::filesystem::path>> pathMap, bool& CopyMode)
 	{
 
@@ -380,21 +380,21 @@ namespace Eclipse
 											{
 												if (baseFile)
 												{
-													files.insert(std::pair<std::string, std::string>(dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName, dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName));
+													files.insert(std::pair<std::string, std::string>(dirEntry.string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName, dirEntry.string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName));
 												}
 												else
 												{
-													files.insert(std::pair<std::string, std::string>(dirEntry.path().string() + folderName, dirEntry.path().string() + folderName));
+													files.insert(std::pair<std::string, std::string>(dirEntry.string() + folderName, dirEntry.string() + folderName));
 												}
 											}
 											if (baseFile)
 											{
-												std::filesystem::create_directories(dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string());
-												std::filesystem::create_directories(dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName);
+												std::filesystem::create_directories(dirEntry.string() + "\\" + std::filesystem::path(parentPath).filename().string());
+												std::filesystem::create_directories(dirEntry.string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName);
 											}
 											else
 											{
-												std::filesystem::create_directories(dirEntry.path().string() + folderName);
+												std::filesystem::create_directories(dirEntry.string() + folderName);
 											}
 										}
 									}
@@ -422,11 +422,11 @@ namespace Eclipse
 												}
 												else
 												{
-													files.insert(std::pair<std::string, std::string>(dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName, dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName));
+													files.insert(std::pair<std::string, std::string>(dirEntry.string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName, dirEntry.string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName));
 												}
 
-												std::filesystem::create_directories(dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string());
-												std::filesystem::copy(pair2, dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName);
+												std::filesystem::create_directories(dirEntry.string() + "\\" + std::filesystem::path(parentPath).filename().string());
+												std::filesystem::copy(pair2, dirEntry.string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName);
 
 											}
 											else
@@ -438,9 +438,9 @@ namespace Eclipse
 												}
 												else
 												{
-													files.insert(std::pair<std::string, std::string>(dirEntry.path().string() + folderName, dirEntry.path().string() + folderName));
+													files.insert(std::pair<std::string, std::string>(dirEntry.string() + folderName, dirEntry.string() + folderName));
 												}
-												std::filesystem::copy(pair2, dirEntry.path().string() + folderName);
+												std::filesystem::copy(pair2, dirEntry.string() + folderName);
 											}
 										}
 									}
@@ -480,10 +480,10 @@ namespace Eclipse
 
 							if (std::filesystem::is_directory(std::filesystem::path(itemPaths / paths)) && once)
 							{
-								std::filesystem::create_directories(dirEntry.path().string() + "\\" + std::filesystem::path(itemPaths / paths).filename().string());
+								std::filesystem::create_directories(dirEntry.string() + "\\" + std::filesystem::path(itemPaths / paths).filename().string());
 								once = false;
 							}
-							std::filesystem::copy(std::filesystem::path(itemPaths / paths), dirEntry.path().string() + "//" + folderName, copyOptions);
+							std::filesystem::copy(std::filesystem::path(itemPaths / paths), dirEntry.string() + "//" + folderName, copyOptions);
 						}
 
 						if (!CopyMode)
@@ -496,9 +496,9 @@ namespace Eclipse
 					}
 					else
 					{
-						if (std::filesystem::is_directory(dirEntry.path()))
+						if (std::filesystem::is_directory(dirEntry))
 						{
-							std::filesystem::copy(std::filesystem::path(itemPaths / paths), dirEntry.path());
+							std::filesystem::copy(std::filesystem::path(itemPaths / paths), dirEntry);
 
 							if (!CopyMode)
 							{
