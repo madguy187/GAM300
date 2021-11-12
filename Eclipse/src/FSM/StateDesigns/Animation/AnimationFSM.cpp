@@ -38,7 +38,7 @@ namespace Eclipse
 		auto& meshCom = engine->world.GetComponent<MeshComponent>(m_ID);
 		std::string meshName = std::string(meshCom.MeshName.data());
 		
-		if (GetTimeInCurrentState() > 3.0f)
+		if (GetTimeInCurrentState() > 4.0f)
 		{
 			if (StateIndex < States.size())
 				SetNextState(States[StateIndex++]);
@@ -54,7 +54,18 @@ namespace Eclipse
 
 	void AnimationFSM::EndState(AnimationState state)
 	{
-		(void)state;
+		/*auto& meshCom = engine->world.GetComponent<MeshComponent>(m_ID);
+		std::string meshName = std::string(meshCom.MeshName.data());
+
+		switch (str2int(meshName.c_str()))
+		{
+		case str2int("Body"):
+			engine->DestroyGameObject(m_ID);
+			m_ID = MAX_ENTITY;
+			break;
+		default:
+			break;
+		}*/
 	}
 
 	void AnimationFSM::SetEntity(Entity ID)

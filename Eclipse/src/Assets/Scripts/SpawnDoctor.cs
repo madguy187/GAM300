@@ -12,9 +12,10 @@ public class SpawnDoctor : EclipseBehavior
     {
       if (!isCreated)
       {
-        Console.WriteLine("CREATING PREFAB");
         Vector3 temp = transform.position;
-        Vector3 rot = new Vector3(0.0f, 90.0f, 0.0f);
+        temp.x += 5.0f;
+        temp.y -= 2.5f;
+        Vector3 rot = new Vector3(0.0f, 180.0f, 0.0f);
         obj = CreatePrefab("DoctorIslami", temp, rot);
         isCreated = true;
       }
@@ -29,7 +30,7 @@ public class SpawnDoctor : EclipseBehavior
         if (obj != null)
         {
           Vector3 temp = obj.transform.position;
-          temp.x += 0.1f;
+          temp.z -= 0.05f;
           obj.transform.position = temp;
         }
         /*if (Input.GetKey(KeyCode.W))
