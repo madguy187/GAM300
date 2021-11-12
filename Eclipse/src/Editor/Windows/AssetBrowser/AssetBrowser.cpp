@@ -351,7 +351,7 @@ namespace Eclipse
 
             int icon = dirEntry.is_directory() ? engine->editorManager->FolderIcon_ : engine->editorManager->spriteIcon_;
 
-            ECGui::ImageButton((void*)icon, buttonSize, { 1,0 }, { 2,1 });
+            ECGui::ImageButton((void*)(size_t)icon, buttonSize, { 1,0 }, { 2,1 });
 
             std::string temp;
             temp = relativePath.filename().string().c_str();
@@ -646,7 +646,7 @@ namespace Eclipse
             if (found && nameString.find(searchItemsLowerCase) != std::string::npos)
             {
                 int icon = std::filesystem::is_directory(pair2) ? engine->editorManager->FolderIcon_ : engine->editorManager->spriteIcon_;
-                ECGui::ImageButton((void*)(intptr_t)icon,
+                ECGui::ImageButton((void*)(size_t)(intptr_t)icon,
                     buttonSize,
                     { 1,0 },
                     { 2,1 });

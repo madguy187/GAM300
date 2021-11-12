@@ -1295,7 +1295,7 @@ namespace Eclipse
 				ImNodes::EndNodeTitleBar();
 
 				ImGui::SetNextItemWidth(100);
-				ECGui::Image((ImTextureID)textureID, {69,69}, { 1,0 }, { 2,1 });
+				ECGui::Image((ImTextureID)(size_t)textureID, {69,69}, { 1,0 }, { 2,1 });
 				beginOutput();
 
 				endOutput();
