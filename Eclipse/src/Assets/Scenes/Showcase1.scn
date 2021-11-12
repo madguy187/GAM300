@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<Entities Size="23">
+<Entities Size="24">
     <Entity_0 ID="8">
         <CameraComponent>
             <eyeAlpha value="0" />
@@ -7,20 +7,20 @@
             <fov value="40" />
             <nearPlane value="0.1" />
             <farPlane value="300" />
-            <aspect value="2.01538" />
-            <eyePos x="-4.60599" y="7.93459" z="-2.7005" />
-            <eyeFront x="-3.34849e-08" y="-0.642788" z="-0.766045" />
-            <upVec x="-2.80971e-08" y="0.766044" z="-0.642788" />
-            <rightVec x="1" y="0" z="-4.37114e-08" />
+            <aspect value="2.15955" />
+            <eyePos x="0" y="5.46962" z="0" />
+            <eyeFront x="1" y="0" z="0" />
+            <upVec x="0" y="1" z="0" />
+            <rightVec x="0" y="0" z="1" />
             <worldUp x="0" y="1" z="0" />
             <viewMtx Col="4" Row="4">
-                <Col0 _00="1" _01="-2.80971e-08" _02="-0" _03="0" />
-                <Col1 _10="2.15237e-08" _11="0.766045" _12="0.642787" _13="0" />
-                <Col2 _20="-1.80605e-08" _21="-0.642787" _22="0.766045" _23="0" />
-                <Col3 _30="4.60599" _31="-7.8141" _32="-3.03155" _33="1" />
+                <Col0 _00="0" _01="0" _02="-1" _03="0" />
+                <Col1 _10="0" _11="1" _12="-0" _13="0" />
+                <Col2 _20="1" _21="0" _22="-0" _23="0" />
+                <Col3 _30="-0" _31="-5.46962" _32="0" _33="1" />
             </viewMtx>
             <projMtx Col="4" Row="4">
-                <Col0 _00="1.36325" _01="0" _02="0" _03="0" />
+                <Col0 _00="1.27224" _01="0" _02="0" _03="0" />
                 <Col1 _10="0" _11="2.74748" _12="0" _13="0" />
                 <Col2 _20="0" _21="0" _22="-1.00067" _23="-1" />
                 <Col3 _30="0" _31="0" _32="-0.200067" _33="0" />
@@ -33,12 +33,21 @@
             <Tag value="GameCamera" />
             <Name value="GameCamera" />
             <LayerIndex value="0" />
-            <hightLightChild value="false" />
+            <IsVisible value="true" />
+            <hightLightChild value="true" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
+        <ChildComponent>
+            <parentIndex value="31" />
+            <PosOffset x="0" y="2.96962" z="0" />
+            <RotOffset x="0" y="0" z="0" />
+            <ScaleOffset x="2" y="1.25" z="2" />
+            <hasParent value="true" />
+            <IsAChild value="true" />
+        </ChildComponent>
         <TransformComponent>
-            <position x="-4.60599" y="7.93459" z="-2.7005" />
-            <rotation x="-40" y="-90" z="0" />
+            <position x="0" y="5.46962" z="0" />
+            <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_0>
@@ -60,6 +69,7 @@
             <Tag value="DirectionalLight" />
             <Name value="DirectionalLight" />
             <LayerIndex value="0" />
+            <IsVisible value="true" />
             <hightLightChild value="false" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
@@ -80,6 +90,7 @@
             <Tag value="Model" />
             <Name value="floor" />
             <LayerIndex value="0" />
+            <IsVisible value="true" />
             <hightLightChild value="false" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
@@ -147,6 +158,7 @@
             <Tag value="Model" />
             <Name value="bed" />
             <LayerIndex value="0" />
+            <IsVisible value="true" />
             <hightLightChild value="false" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
@@ -214,6 +226,7 @@
             <Tag value="Model" />
             <Name value="pillow" />
             <LayerIndex value="0" />
+            <IsVisible value="true" />
             <hightLightChild value="false" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
@@ -281,6 +294,7 @@
             <Tag value="Model" />
             <Name value="wall" />
             <LayerIndex value="0" />
+            <IsVisible value="true" />
             <hightLightChild value="false" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
@@ -348,6 +362,7 @@
             <Tag value="Model" />
             <Name value="wall 2" />
             <LayerIndex value="0" />
+            <IsVisible value="true" />
             <hightLightChild value="false" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
@@ -415,6 +430,7 @@
             <Tag value="Model" />
             <Name value="iv" />
             <LayerIndex value="0" />
+            <IsVisible value="true" />
             <hightLightChild value="false" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
@@ -482,6 +498,7 @@
             <Tag value="Model" />
             <Name value="chair" />
             <LayerIndex value="0" />
+            <IsVisible value="true" />
             <hightLightChild value="false" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
@@ -549,6 +566,7 @@
             <Tag value="Model" />
             <Name value="table" />
             <LayerIndex value="0" />
+            <IsVisible value="true" />
             <hightLightChild value="false" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
@@ -616,6 +634,7 @@
             <Tag value="Model" />
             <Name value="tv" />
             <LayerIndex value="0" />
+            <IsVisible value="true" />
             <hightLightChild value="false" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
@@ -683,6 +702,7 @@
             <Tag value="Model" />
             <Name value="door" />
             <LayerIndex value="0" />
+            <IsVisible value="true" />
             <hightLightChild value="false" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
@@ -750,6 +770,7 @@
             <Tag value="Model" />
             <Name value="shelf" />
             <LayerIndex value="0" />
+            <IsVisible value="true" />
             <hightLightChild value="false" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
@@ -817,6 +838,7 @@
             <Tag value="Model" />
             <Name value="drawer" />
             <LayerIndex value="0" />
+            <IsVisible value="true" />
             <hightLightChild value="false" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
@@ -877,13 +899,14 @@
     <Entity_14 ID="22">
         <AABBComponent>
             <center x="12.2792" y="4.57631" z="-8.51461" />
-            <Min x="8.2792" y="0.57631" z="-12.5146" />
-            <Max x="16.2792" y="8.57631" z="-4.51461" />
+            <Min x="8.2792" y="-0.42369" z="-12.5146" />
+            <Max x="16.2792" y="9.57631" z="-4.51461" />
         </AABBComponent>
         <EntityComponent>
             <Tag value="Model" />
             <Name value="window wall" />
             <LayerIndex value="0" />
+            <IsVisible value="true" />
             <hightLightChild value="false" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
@@ -932,13 +955,13 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <CollisionComponent>
-            <shape Shape="Px_CUBE" Hx="4" Hy="4" Hz="4" Radius="1" Hheight="1" />
+            <shape Shape="Px_CUBE" Hx="4" Hy="5" Hz="4" Radius="1" Hheight="1" />
             <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
             <position x="12.2792" y="4.57631" z="-8.51461" />
             <rotation x="0" y="90" z="0" />
-            <scale x="8" y="8" z="8" />
+            <scale x="8" y="10" z="8" />
         </TransformComponent>
     </Entity_14>
     <Entity_15 ID="23">
@@ -951,6 +974,7 @@
             <Tag value="Model" />
             <Name value="window " />
             <LayerIndex value="0" />
+            <IsVisible value="true" />
             <hightLightChild value="false" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
@@ -1018,6 +1042,7 @@
             <Tag value="Model" />
             <Name value="window " />
             <LayerIndex value="0" />
+            <IsVisible value="true" />
             <hightLightChild value="false" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
@@ -1085,6 +1110,7 @@
             <Tag value="Model" />
             <Name value="ceiling" />
             <LayerIndex value="0" />
+            <IsVisible value="true" />
             <hightLightChild value="false" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
@@ -1152,6 +1178,7 @@
             <Tag value="Model" />
             <Name value="wall 2" />
             <LayerIndex value="0" />
+            <IsVisible value="true" />
             <hightLightChild value="false" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
@@ -1219,6 +1246,7 @@
             <Tag value="Model" />
             <Name value="wall 2" />
             <LayerIndex value="0" />
+            <IsVisible value="true" />
             <hightLightChild value="false" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
@@ -1286,6 +1314,7 @@
             <Tag value="Model" />
             <Name value="wall 2" />
             <LayerIndex value="0" />
+            <IsVisible value="true" />
             <hightLightChild value="false" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
@@ -1353,6 +1382,7 @@
             <Tag value="Model" />
             <Name value="Model" />
             <LayerIndex value="0" />
+            <IsVisible value="true" />
             <hightLightChild value="false" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
@@ -1420,6 +1450,7 @@
             <Tag value="Model" />
             <Name value="Model" />
             <LayerIndex value="0" />
+            <IsVisible value="true" />
             <hightLightChild value="false" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
@@ -1477,4 +1508,87 @@
             <scale x="0.8" y="1" z="0.8" />
         </TransformComponent>
     </Entity_22>
+    <Entity_23 ID="31">
+        <AABBComponent>
+            <center x="0" y="2.5" z="0" />
+            <Min x="-1.25" y="0.5" z="-1.25" />
+            <Max x="1.25" y="4.5" z="1.25" />
+        </AABBComponent>
+        <EntityComponent>
+            <Tag value="Cylinder" />
+            <Name value="Cylinder" />
+            <LayerIndex value="0" />
+            <IsVisible value="true" />
+            <hightLightChild value="true" />
+            <ImguiIndentValue value="20" />
+        </EntityComponent>
+        <MaterialComponent>
+            <Modeltype value="Models3D" />
+            <ambient x="0" y="0" z="0" />
+            <diffuse x="1" y="1" z="1" />
+            <specular x="1" y="1" z="1" />
+            <NoTextures value="true" />
+            <shininess value="0.25" />
+            <MaximumShininess value="128" />
+            <IsNormalMap value="false" />
+            <ComboIndex value="1" />
+            <TextureComboIndex value="0" />
+            <Type value="TT_UNASSIGNED" />
+            <hasTexture value="false" />
+            <TextureRef value="Default" />
+            <TextureKey value="" />
+            <HoldingTextures size="0" />
+            <HasMaterialIstance value="false" />
+            <MaterialInstanceName value="" />
+        </MaterialComponent>
+        <MeshComponent>
+            <MeshName value="Cylinder" />
+            <color x="1" y="1" z="1" />
+            <textureIdx x="0" y="0" />
+            <isQuad value="false" />
+            <modelNDC_xform Col="4" Row="4">
+                <Col0 _00="0" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="0" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="0" _23="0" />
+                <Col3 _30="0" _31="0" _32="0" _33="0" />
+            </modelNDC_xform>
+            <modelRef value="Cube" />
+            <shaderRef value="shader3DShdrpgm" />
+            <transparency value="1" />
+            <ENV_MAP value="false" />
+            <ENV_TYPE value="MT_REFLECT" />
+        </MeshComponent>
+        <ModelComponent>
+            <NameOfModel value="" />
+            <Directory value="" />
+            <type value="MT_UNASSIGNED" />
+            <ComboIndex value="0" />
+        </ModelComponent>
+        <ScriptComponent>
+            <scriptList size="1">
+                <Member0 ScriptName="Test">
+                    <MonoVariables size="1">
+                        <Member0 Type="MONO_GAMEOBJECT" Name="obj" Value="8" />
+                    </MonoVariables>
+                </Member0>
+            </scriptList>
+            <LayerMask value="00000000000000000011" />
+        </ScriptComponent>
+        <ParentComponent>
+            <child size="1">
+                <Member0 value="8" />
+            </child>
+            <model Col="4" Row="4">
+                <Col0 _00="1" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="1" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="1" _23="0" />
+                <Col3 _30="0" _31="2.5" _32="0" _33="1" />
+            </model>
+        </ParentComponent>
+        <TransformComponent>
+            <position x="0" y="2.5" z="0" />
+            <rotation x="0" y="0" z="0" />
+            <scale x="2.5" y="4" z="2.5" />
+        </TransformComponent>
+    </Entity_23>
 </Entities>
