@@ -7,7 +7,7 @@
             <fov value="45" />
             <nearPlane value="0.1" />
             <farPlane value="100" />
-            <aspect value="2.11636" />
+            <aspect value="2.01538" />
             <eyePos x="2.63703e-07" y="26.8106" z="23.9671" />
             <eyeFront x="-4.37114e-08" y="0" z="-1" />
             <upVec x="0" y="1" z="0" />
@@ -20,7 +20,7 @@
                 <Col3 _30="7.83932e-07" _31="-26.8106" _32="-23.9671" _33="1" />
             </viewMtx>
             <projMtx Col="4" Row="4">
-                <Col0 _00="1.14074" _01="0" _02="0" _03="0" />
+                <Col0 _00="1.19789" _01="0" _02="0" _03="0" />
                 <Col1 _10="0" _11="2.41421" _12="0" _13="0" />
                 <Col2 _20="0" _21="0" _22="-1.002" _23="-1" />
                 <Col3 _30="0" _31="0" _32="-0.2002" _33="0" />
@@ -148,6 +148,7 @@
         </ModelComponent>
         <CollisionComponent>
             <shape Shape="Px_CUBE" Hx="50" Hy="50" Hz="12.5" Radius="1" Hheight="1" />
+            <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
             <position x="0" y="0" z="0" />
@@ -214,6 +215,7 @@
         </ModelComponent>
         <CollisionComponent>
             <shape Shape="Px_CUBE" Hx="50" Hy="50" Hz="2.5" Radius="1" Hheight="1" />
+            <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
             <position x="0" y="19.764" z="-49.5769" />
@@ -291,6 +293,7 @@
         </RigidBodyComponent>
         <CollisionComponent>
             <shape Shape="Px_CUBE" Hx="2.5" Hy="2.5" Hz="2.5" Radius="1" Hheight="1" />
+            <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
             <position x="0" y="21.8293" z="-41.4129" />
@@ -355,6 +358,7 @@
         </ModelComponent>
         <CollisionComponent>
             <shape Shape="Px_CUBE" Hx="12.5" Hy="5" Hz="12.5" Radius="1" Hheight="1" />
+            <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
             <position x="0" y="8.25963" z="-41.8163" />
@@ -372,7 +376,7 @@
             <Tag value="Model" />
             <Name value="Model" />
             <LayerIndex value="0" />
-            <hightLightChild value="false" />
+            <hightLightChild value="true" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
         <MaterialComponent>

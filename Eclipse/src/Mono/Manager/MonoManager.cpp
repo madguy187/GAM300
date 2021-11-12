@@ -142,6 +142,9 @@ namespace Eclipse
 		mono_add_internal_call("Eclipse.Light::SetLightEnabled", SetLightEnabled);
 		mono_add_internal_call("Eclipse.Light::SetIntensity", SetIntensity);
 		mono_add_internal_call("Eclipse.Light::SetDirection", SetDirection);
+		mono_add_internal_call("Eclipse.Light::IncreaseIntensity", IncreaseIntensity);
+		mono_add_internal_call("Eclipse.Light::DecreaseIntensity", DecreaseIntensity);
+		mono_add_internal_call("Eclipse.Light::GetIntensity", GetIntensity);
 
 		// AudioSource Internal Calls
 		mono_add_internal_call("Eclipse.AudioSource::PlayAudio", Play);

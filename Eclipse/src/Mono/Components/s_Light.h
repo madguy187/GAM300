@@ -35,11 +35,36 @@ namespace Eclipse
 		}
 	}
 
-	static void SetDirection(Entity ent, ECVec3 value)
+	static void SetDirection(Entity ent, MonoObject* value)
 	{
 		if (engine->world.CheckComponent<SpotLightComponent>(ent))
 		{
-			engine->world.GetComponent<SpotLightComponent>(ent).direction = value;
+			ECVec3 Dir = engine->mono.ConvertVectorToECVec(value);
+			engine->world.GetComponent<SpotLightComponent>(ent).direction = Dir;
+		}
+	}
+
+	static void IncreaseIntensity(Entity ent, float value)
+	{
+		if (engine->world.CheckComponent<SpotLightComponent>(ent))
+		{
+			engine->world.GetComponent<SpotLightComponent>(ent).IntensityStrength += value;
+		}
+	}
+
+	static void DecreaseIntensity(Entity ent, float value)
+	{
+		if (engine->world.CheckComponent<SpotLightComponent>(ent))
+		{
+			engine->world.GetComponent<SpotLightComponent>(ent).IntensityStrength = value;
+		}
+	}
+
+	static float GetIntensity(Entity ent)
+	{
+		if (engine->world.CheckComponent<SpotLightComponent>(ent))
+		{
+			return engine->world.GetComponent<SpotLightComponent>(ent).IntensityStrength;
 		}
 	}
 }

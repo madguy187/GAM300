@@ -19,6 +19,25 @@ public class Test2 : EclipseBehavior
     {
       //Spot.transform.position = transform.position;
 
+       if (Input.GetKey(KeyCode.W))
+        {
+          Vector3 temp = transform.position;
+          transform.position = transform.position + transform.forward * 0.3f;
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+          Vector3 temp = transform.position;
+          transform.position = transform.position - transform.forward * 0.3f;
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+          transform.Rotate(new Vector3(0, 2, 0));
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+          transform.Rotate(new Vector3(0, -2, 0));
+        }
+		
         if (Input.GetKeyDown(KeyCode.E))
         {
             RaycastHit hit;
@@ -34,7 +53,11 @@ public class Test2 : EclipseBehavior
 
                     Spot.transform.position = transform.position;
                     light.Direction = transform.forward;
-                    light.Intensity = 2.0f;
+
+					if(light.Intensity <= 10.0f )
+					{					
+						light.Intensity = light.Intensity + 2.0f;
+					}
                     iscreated = true;
 
                     //Console.WriteLine("test" +  light.Intensity);
@@ -42,14 +65,28 @@ public class Test2 : EclipseBehavior
             }
             else
             {
-                if (Physics.Raycast(transform.position, transform.forward, out hit, 5.0f))
-                {
                     Spot.transform.position = transform.position;
                     light.Direction = transform.forward;
-                    light.Intensity = 2.0f;
-                }
+					
+					if(light.Intensity <= 10.0f )
+					{							
+						light.Intensity = light.Intensity + 2.0f;
+					}
             }   
         }
+		else
+		{			
+			if(Spot != null)
+			{
+				if(light.Intensity >= 0.0f )
+				{
+					light.Intensity = light.Intensity - Time.fixedDeltaTime;
+					light.Intensity = light.Intensity - Time.fixedDeltaTime;
+										light.Intensity = light.Intensity - Time.fixedDeltaTime;
+															light.Intensity = light.Intensity - Time.fixedDeltaTime;
+				}
+			}
+		}
         
     }
 }

@@ -48,7 +48,7 @@ namespace Eclipse
         if (engine->IsScenePlaying() == false)
         {
             LightIcons.RenderLights();
-            //SpotLightIcons.RenderSpotLights();
+            //xSpotLightIcons.RenderSpotLights();
         }
 
         engine->MaterialManager.StencilBufferClear();
