@@ -113,14 +113,6 @@ void Eclipse::AnimationManager::CheckForAnimation(unsigned int ID)
                 if (!engine->world.CheckComponent<AnimationComponent>(ID))
                 {
                     AnimationComponent animCom{};
-
-                    if (!strcmp(meshName.c_str(), "Frog"))
-                    {
-                        engine->gFSM.AddFSM(ID);
-                        animCom.m_CurrentAnimation.m_AnimationState = AnimationState::IDLE;
-                        engine->gFSM.FindFSM(ID)->SetState(animCom.m_CurrentAnimation.m_AnimationState);
-                    }
-
                     engine->world.AddComponent(ID, animCom);
                 }
         
@@ -134,6 +126,28 @@ void Eclipse::AnimationManager::CheckForAnimation(unsigned int ID)
                 for (unsigned int i = 0; i < 100; ++i)
                 {
                     animation.m_Transforms.push_back(glm::mat4(1.0f));
+                }
+
+                if (!strcmp(meshName.c_str(), "Frog"))
+                {
+                    engine->gFSM.AddFSM(ID);
+                    animation.m_CurrentAnimation.m_AnimationState = AnimationState::IDLE;
+                    engine->gFSM.FindFSM(ID)->SetState(animation.m_CurrentAnimation.m_AnimationState);
+                    ChangeAnimationState(ID, animation.m_CurrentAnimation.m_AnimationState);
+                }
+                else if (!strcmp(meshName.c_str(), "Body"))
+                {
+                    engine->gFSM.AddFSM(ID);
+                    animation.m_CurrentAnimation.m_AnimationState = AnimationState::WALK;
+                    engine->gFSM.FindFSM(ID)->SetState(animation.m_CurrentAnimation.m_AnimationState);
+                    ChangeAnimationState(ID, animation.m_CurrentAnimation.m_AnimationState);
+                }
+                else if (!strcmp(meshName.c_str(), "MutantMesh"))
+                {
+                    engine->gFSM.AddFSM(ID);
+                    animation.m_CurrentAnimation.m_AnimationState = AnimationState::MOTION;
+                    engine->gFSM.FindFSM(ID)->SetState(animation.m_CurrentAnimation.m_AnimationState);
+                    ChangeAnimationState(ID, animation.m_CurrentAnimation.m_AnimationState);
                 }
             }
         }

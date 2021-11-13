@@ -27,6 +27,11 @@ namespace Eclipse
 
 	void SceneWindow::RunMainWindow()
 	{
+		//ImGui::BeginTooltip();
+		//ImGui::Text("x: %f", OpenGL_Context::m_posX);
+		//ImGui::Text("y: %f", OpenGL_Context::m_posY);
+		//ImGui::EndTooltip();
+
 		ImVec2 viewportPanelSize = ECGui::GetWindowSize();
 		//std::cout << "Scene View: " << ImGui::GetWindowDockID() << std::endl;
 		if (mViewportSize.getX() != viewportPanelSize.x ||
@@ -353,36 +358,36 @@ namespace Eclipse
 
 	void SceneWindow::OnCameraMoveEvent()
 	{
-		ImGuiIO& io = ImGui::GetIO();
+		// ImGuiIO& io = ImGui::GetIO();
 		ImVec2 value_with_lock_threshold = ECGui::GetMouseDragDelta(1);
 		const float benchmarkValue = 0.0f;
 
 		// ImGui Right Click Detection
 		if (ECGui::IsMouseDragging(1))
 		{
-			// Camera Yaw Right
-			if (value_with_lock_threshold.x > benchmarkValue && io.MouseDelta.x > 0.0f)
-				engine->gCamera.GetInput().set(7, 1);
-			else
-				engine->gCamera.GetInput().set(7, 0);
+			//// Camera Yaw Right
+			//if (value_with_lock_threshold.x > benchmarkValue && io.MouseDelta.x > 0.0f)
+			//	engine->gCamera.GetInput().set(7, 1);
+			//else
+			//	engine->gCamera.GetInput().set(7, 0);
 
-			// Camera Yaw Left
-			if (value_with_lock_threshold.x < benchmarkValue && io.MouseDelta.x < 0.0f)
-				engine->gCamera.GetInput().set(6, 1);
-			else
-				engine->gCamera.GetInput().set(6, 0);
+			//// Camera Yaw Left
+			//if (value_with_lock_threshold.x < benchmarkValue && io.MouseDelta.x < 0.0f)
+			//	engine->gCamera.GetInput().set(6, 1);
+			//else
+			//	engine->gCamera.GetInput().set(6, 0);
 
-			// Camera Pitch Down
-			if (value_with_lock_threshold.y > benchmarkValue && io.MouseDelta.y > 0.0f)
-				engine->gCamera.GetInput().set(5, 1);
-			else
-				engine->gCamera.GetInput().set(5, 0);
+			//// Camera Pitch Down
+			//if (value_with_lock_threshold.y > benchmarkValue && io.MouseDelta.y > 0.0f)
+			//	engine->gCamera.GetInput().set(5, 1);
+			//else
+			//	engine->gCamera.GetInput().set(5, 0);
 
-			// Camera Pitch Up
-			if (value_with_lock_threshold.y < benchmarkValue && io.MouseDelta.y < 0.0f)
-				engine->gCamera.GetInput().set(4, 1);
-			else
-				engine->gCamera.GetInput().set(4, 0);
+			//// Camera Pitch Up
+			//if (value_with_lock_threshold.y < benchmarkValue && io.MouseDelta.y < 0.0f)
+			//	engine->gCamera.GetInput().set(4, 1);
+			//else
+			//	engine->gCamera.GetInput().set(4, 0);
 
 			// Camera Move Front
 			if (ECGui::IsKeyDown(ECGui::GetKeyIndex(ImGuiKey_W)))

@@ -91,8 +91,6 @@ namespace Eclipse
 
 		void SetCurrentEntityName(const char* name);
 		void ClearEntityName();
-
-		static constexpr unsigned int str2int(const char* str, int h = 0);
 	private:
 		ECVec2 WindowSize_{};
 		bool IsRemovingScripts{ false };
@@ -126,10 +124,5 @@ namespace Eclipse
 	inline void InspectorWindow::ClearEntityName()
 	{
 		memset(EntNameInput, 0, 255);
-	}
-
-	constexpr unsigned int InspectorWindow::str2int(const char* str, int h)
-	{
-		return !str[h] ? 5381 : (str2int(str, h + 1) * 33) ^ str[h];
 	}
 }

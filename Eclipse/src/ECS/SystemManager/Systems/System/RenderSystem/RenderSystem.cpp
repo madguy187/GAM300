@@ -2,6 +2,12 @@
 #include "RenderSystem.h"
 
 // Views
+#include "Editor/Windows/SwitchViews/TopSwitchViewWindow.h"
+#include "Editor/Windows/SwitchViews/BottomSwitchViewWindow.h"
+#include "Editor/Windows/SwitchViews/LeftSwitchViewWindow.h"
+#include "Editor/Windows/SwitchViews/RightSwitchViewWindow.h"
+#include "Editor/Windows/GameView/GameView.h"
+#include "Editor/Windows/Scene/SceneView.h"
 #include "Editor/Windows/MeshEditor/MeshEditor.h"
 #include "ECS/SystemManager/Systems/System/MaterialSystem/MaterialSystem.h"
 
@@ -20,7 +26,7 @@ namespace Eclipse
         glEnable(GL_STENCIL_TEST);
         glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
-        // Load All Compilers ====================== =======
+        // Load All Compilers =============================
         engine->gEngineCompiler->Init();
 
         // Create SKY =============================
@@ -28,12 +34,6 @@ namespace Eclipse
 
         // DebugManagerRender
         engine->gDebugDrawManager->Init();
-
-        auto& ShadowMappingShader = Graphics::shaderpgms["ShadowMapping"];
-        ShadowMappingShader.Use();
-        ShadowMappingShader.Use();
-        ShadowMappingShader.setInt("diffuseTexture", 0);
-        ShadowMappingShader.setInt("shadowMap", 2);
     }
 
     void RenderSystem::Update()
@@ -43,27 +43,37 @@ namespace Eclipse
         engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
         engine->GraphicsManager.UploadGlobalUniforms();
-        Renderer.UpdateLightMatrix();
 
         if (engine->GraphicsManager.CheckRender == true)
         {
             // Estiamtion which models are in our frustrum
             //const auto& RenderablesVsFrustrum = engine->gCullingManager->ReturnContacted();
 
+            /*************************************************************************
+              Render Without Stencer
+              Render Sky to Sceneview
+            *************************************************************************/
             engine->MaterialManager.DoNotUpdateStencil();
             engine->GraphicsManager.RenderSky(FrameBufferMode::FBM_SCENE);
 
-            if (engine->LightManager.EnableShadows == true)
-            {
-                for (auto const& entityID : mEntities)
-                {
-                    MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
-                    Renderer.RenderSceneFromLightPOV(Mesh, entityID);
-                }
-            }
 
             for (auto const& entityID : mEntities)
             {
+                MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
+                Renderer.RenderSceneFromLightPOV(Mesh, entityID);
+            }
+
+                if (!entCom.IsVisible) continue;
+                // Used somewhere else.
+                //if (entityID == engine->gPBRManager->gMaterialEditorSettings->InnerEntity || entityID == engine->gPBRManager->gMaterialEditorSettings->OuterEntity)
+                //    continue;
+
+                //If No Mesh Component, Do not Continue
+                if (!engine->world.CheckComponent<MeshComponent>(entityID))
+                {
+                    continue;
+                }
+
                 // If it is a base prefab, dont render
                 if (engine->world.CheckComponent<PrefabComponent>(entityID))
                 {
@@ -74,16 +84,24 @@ namespace Eclipse
                 }
 
                 // If CUlled off , dont render
-                if (engine->gCullingManager->ToRenderOrNot(entityID) == false) { continue; }
+               //if (engine->gCullingManager->ToRenderOrNot(entityID) == false)
+               //{
+               //    continue;
+               //}
 
                 MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
 
-                if (Mesh.transparency == 0.0f) { continue; }
+                if (Mesh.transparency == 0.0f)
+                {
+                    continue;
+                }
 
                 // After hot-realoding , we check if he still exists or not
                 if (engine->AssimpManager.CheckGeometryExist(Mesh))
                 {
                     Renderer.RenderScene(Mesh, entityID);
+
+                    Renderer.RenderSceneNormally(Mesh, entityID);
                     Renderer.RenderGame(Mesh, entityID);
                     Renderer.RenderOtherViews(Mesh, entityID);
                 }

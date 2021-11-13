@@ -226,7 +226,7 @@ namespace Eclipse
     {
         if (engine->gPBRManager->gMaterialEditorSettings->SelectedIndex != comboIndex)
         {
-            engine->gPBRManager->gMaterialEditorSettings->SelectedIndex = comboIndex;
+            engine->gPBRManager->gMaterialEditorSettings->SelectedIndex = static_cast<unsigned int>(comboIndex);
 
             if (comboIndex == 0)
             {

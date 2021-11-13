@@ -33,6 +33,11 @@ namespace Eclipse
             return new Vector3(a.x * val, a.y * val, a.z * val);
         }
 
+        public static Vector3 operator /(Vector3 a, float val)
+        {
+            return new Vector3(a.x / val, a.y / val, a.z / val);
+        }
+
         public static Vector3 operator +(Vector3 a, Vector3 b)
         {
             return new Vector3(a.x + b.x, a.y + b.y, a.z + b.z);

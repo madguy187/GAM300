@@ -71,12 +71,13 @@ namespace Eclipse
 		void Start(MonoScript* obj);
 		void Update(MonoScript* obj);
 		void FixedUpdate(MonoScript* obj);
+		void OnCollision(Entity ent);
 
 		MonoObject* CreateMonoObject(std::string scriptName, Entity entity);
 		MonoObject* CreateObjectFromClass(MonoClass* klass, bool defaultConstructor = true);
 		MonoObject* CreateVector3Class(float x, float y, float z);
 		MonoObject* CreateQuaternionClass(float x, float y, float z);
-		MonoObject* CreateRayCastHit(float x, float y, float z);
+		MonoObject* CreateRayCastHit(Entity ent, float x, float y, float z);
 		MonoObject* CreateLightClass(Entity ent);
 		MonoObject* CreateAudioSourceClass(Entity ent);
 		MonoObject* CreateGameObjectClass(Entity ent, std::string scriptName);
@@ -97,6 +98,8 @@ namespace Eclipse
 		bool CheckIfScriptExist(std::string scriptName);
 		void LoadAllFields(MonoScript* script);
 		bool CheckIfFieldExist(MonoScript* script, std::string& fieldName, size_t index);
+
+		void PrintAllScript();
 
 		// Gets image containing all API Scripts
 		MonoImage* GetAPIImage();

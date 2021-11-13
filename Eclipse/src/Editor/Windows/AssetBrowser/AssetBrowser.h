@@ -91,6 +91,7 @@ namespace Eclipse
 		void MainSearchLogic(std::map<std::filesystem::path, std::vector<std::filesystem::path>>::value_type Key);
 		void MainSearchLogic(std::vector<std::string> subDirItemsPaths);
 		bool BuffIsEmpty(const char* buffer);
+		void findRootPath(std::string inputPath, std::string& outputPath);
 		//TODO  for Darren material editor 
 		//bool test2 = false;
 		//std::string tempcontainer;
@@ -99,7 +100,7 @@ namespace Eclipse
 		std::map<std::filesystem::path, std::vector<std::filesystem::path>> getPathMap();
 		////////////////////////////////
 
-		
+		void DragAndDropWrapper(std::string filename,std::string relativePath_, std::filesystem::path dirEntry);
 		// converting to small case letters
 		////////////////////////////////
 		std::string LowerCase(const char* buffer);

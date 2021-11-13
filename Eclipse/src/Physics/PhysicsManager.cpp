@@ -281,29 +281,31 @@ namespace Eclipse
 
 	}
 
-	bool PhysicsManager::CheckSphere(ECVec3 position, float radius, std::string layerMask)
+	bool PhysicsManager::CheckSphere(ECVec3 position, float radius, PxOverlapBuffer& hit, std::string layerMask)
 	{
-		PxTransform temp;
-		temp.p.x = position.getX();
-		temp.p.y = position.getY();
-		temp.p.z = position.getZ();
+		PxVec3 temppos;
+		temppos.x = position.getX();
+		temppos.y = position.getY();
+		temppos.z = position.getZ();
+		PxTransform temp{ temppos };
+
 		PxSphereGeometry sphere{ radius };
-		PxQueryFlags qf(PxQueryFlag::eSTATIC | PxQueryFlag::eDYNAMIC | PxQueryFlag::ePREFILTER);
+		PxQueryFlags qf(PxQueryFlag::eSTATIC | PxQueryFlag::eDYNAMIC | PxQueryFlag::ePREFILTER | PxQueryFlag::eANY_HIT);
 		PxQueryFilterData filter(PxFilterData(), qf);
 		std::bitset<20> mask = std::bitset<20>(layerMask);
 		QueryReportCallback _callback{ mask };
-		PxOverlapBuffer hit;
 		return Px_Scene->overlap(sphere,temp,hit, filter, &_callback);
 	}
 
 	bool PhysicsManager::CheckBox(ECVec3 position, ECVec3 halfextents, std::string layerMask)
 	{
-		PxTransform temp;
-		temp.p.x = position.getX();
-		temp.p.y = position.getY();
-		temp.p.z = position.getZ();
+		PxVec3 temppos;
+		temppos.x = position.getX();
+		temppos.y = position.getY();
+		temppos.z = position.getZ();
+		PxTransform temp{temppos};
 		PxBoxGeometry box{halfextents.getX(),halfextents.getY(),halfextents.getZ()};
-		PxQueryFlags qf(PxQueryFlag::eSTATIC | PxQueryFlag::eDYNAMIC | PxQueryFlag::ePREFILTER);
+		PxQueryFlags qf(PxQueryFlag::eSTATIC | PxQueryFlag::eDYNAMIC | PxQueryFlag::ePREFILTER | PxQueryFlag::eANY_HIT);
 		PxQueryFilterData filter(PxFilterData(), qf);
 		std::bitset<20> mask = std::bitset<20>(layerMask);
 		QueryReportCallback _callback{ mask };
@@ -358,27 +360,30 @@ namespace Eclipse
 			          cr * cp * cy + sr * sp * sy);//W
 	}
 
-	ECVec3 PhysicsManager::QuattoAngles(PxQuat quat)
+	ECVec3 PhysicsManager::QuattoAngles(PxQuat q1)
 	{
-		ECVec3 temp{0,0,0};
-		//x rotation
-		float sinr_cosp = 2 * (quat.w * quat.x + quat.y * quat.z);
-		float cosr_cosp = 1 - 2 * (quat.x * quat.x + quat.y * quat.y);
-		
-		temp.setX(static_cast<float>(std::atan2f(sinr_cosp, cosr_cosp) * (180.0f/M_PI)));
-
-		//y rotation
-		float sinp = 2 * (quat.w * quat.y - quat.z * quat.x);
-		if (std::abs(sinp) >= 1)
-			temp.setY(static_cast<float>(std::copysign(M_PI / 2, sinp) * (180.0/M_PI)));
-		else
-			temp.setY(static_cast<float>(std::asinf(sinp) * (180.0f/M_PI)));
-
-		float siny_cosp = 2 * (quat.w * quat.z + quat.x * quat.y);
-		float cosy_cosp = 1 - 2 * (quat.y * quat.y + quat.z * quat.z);
-
-		temp.setZ(static_cast<float>(std::atan2f(siny_cosp, cosy_cosp) * (180.0f/M_PI)));
-
+		ECVec3 temp{ 0,0,0 };
+		float sqw = q1.w * q1.w;
+		float sqx = q1.x * q1.x;
+		float sqy = q1.y * q1.y;
+		float sqz = q1.z * q1.z;
+		float unit = sqx + sqy + sqz + sqw; // if normalised is one, otherwise is correction factor
+		float test = q1.x * q1.y + q1.z * q1.w;
+		if (test > 0.499 * unit) { // singularity at north pole
+			temp.setY(static_cast<float>(2 * atan2(q1.x, q1.w)) * 180 / M_PI);
+			temp.setZ(M_PI / 2 * 180 / M_PI);
+			temp.setX(0);
+			return temp;
+		}
+		if (test < -0.499 * unit) { // singularity at south pole
+			temp.setY(static_cast<float>(-2 * atan2(q1.x, q1.w)) * 180 / M_PI);
+			temp.setZ(-M_PI / 2 * 180 / M_PI);
+			temp.setX(0);
+			return temp;
+		}
+		temp.setY(static_cast<float>(atan2(2 * q1.y * q1.w - 2 * q1.x * q1.z, sqx - sqy - sqz + sqw)) * 180 / M_PI);
+		temp.setZ(static_cast<float>(asin(2 * test / unit)) * 180 / M_PI);
+		temp.setX(static_cast<float>(atan2(2 * q1.x * q1.w - 2 * q1.y * q1.z, -sqx + sqy - sqz + sqw)) * 180 / M_PI);
 		return temp;
 	}
 	
@@ -453,8 +458,11 @@ namespace Eclipse
 				else
 					static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->addForce(tempforce, PxForceMode::eIMPULSE);
 			}
+			rigid.forces.clear();
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setMaxLinearVelocity(static_cast<PxReal>(rigid.MaxVelocity));
-			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setMass(rigid.mass);
+
+
+			PxRigidBodyExt::updateMassAndInertia(*(static_cast<PxRigidBody*>(Px_Actors[ent].actor)), rigid.mass);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setActorFlag(PxActorFlag::eDISABLE_GRAVITY,rigid.enableGravity ? false : true);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setAngularVelocity(tempangVelo);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setAngularDamping(0.f);
@@ -509,9 +517,12 @@ namespace Eclipse
 						AttachCapsuleToActor(ent, collision.shape.radius, collision.shape.hheight);
 					}
 					break;
+
 				}
+				shapes[i]->setFlag(PxShapeFlag::eSIMULATION_SHAPE, !collision.isTrigger);
+				shapes[i]->setFlag(PxShapeFlag::eTRIGGER_SHAPE, collision.isTrigger);
+				delete[] shapes;
 			}
-			delete[] shapes;
 		}
 	}
 
@@ -572,12 +583,20 @@ namespace Eclipse
 		{
 		case PxShapeType::Px_CUBE :
 			auto& transform = engine->world.GetComponent<TransformComponent>(ent);
-			collision.shape.hx = transform.scale.getX() / 2;
+		/*	collision.shape.hx = transform.scale.getX() / 2;
 			collision.shape.hy = transform.scale.getY() / 2;
-			collision.shape.hz = transform.scale.getZ() / 2;
+			collision.shape.hz = transform.scale.getZ() / 2;*/
 			break;
 		}
 	}
+
+	void ContactReportCallback::onTrigger(PxTriggerPair* pairs, PxU32 count)
+	{
+		Entity ent = *(Entity*)pairs->triggerActor->userData;
+		if (engine->world.CheckComponent<ScriptComponent>(ent))
+			engine->mono.OnCollision(ent);
+
+	};
 
 	void PhysicsManager::GetActorPosition(Entity ent)
 	{

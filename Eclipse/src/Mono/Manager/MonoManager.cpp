@@ -95,9 +95,10 @@ namespace Eclipse
 		mono_add_internal_call("Eclipse.Rigidbody::getX", getX);
 		mono_add_internal_call("Eclipse.Rigidbody::getY", getY);
 		mono_add_internal_call("Eclipse.Rigidbody::getZ", getZ);
+		mono_add_internal_call("Eclipse.Rigidbody::setGravBool", setGravBool);
 
 		// Input Internal Calls
-		mono_add_internal_call("Eclipse.Input::GetButtonDown", GetKeyCurrentByName);
+		mono_add_internal_call("Eclipse.Input::GetKeyDown", GetKeyTriggered);
 		mono_add_internal_call("Eclipse.Input::GetKey", GetKeyCurrentByKeyCode);
 		mono_add_internal_call("Eclipse.Input::GetAxis", GetMouseAxis);
 		mono_add_internal_call("Eclipse.Input::GetAxisRaw", GetRawMouseAxis);
@@ -129,6 +130,8 @@ namespace Eclipse
 		// InvokeFunc Internal Calls
 		mono_add_internal_call("Eclipse.EclipseBehavior::InvokeFunc", Invoke);
 		mono_add_internal_call("Eclipse.EclipseBehavior::Find", Find);
+		mono_add_internal_call("Eclipse.EclipseBehavior::Instantiate", Instantiate);
+		mono_add_internal_call("Eclipse.EclipseBehavior::CreatePrefab", CreatePrefab);
 
 		// Physics Internal Calls
 		mono_add_internal_call("Eclipse.Physics::RaycastCheck", RaycastFunc);
@@ -138,6 +141,11 @@ namespace Eclipse
 
 		// Light Internal Calls
 		mono_add_internal_call("Eclipse.Light::SetLightEnabled", SetLightEnabled);
+		mono_add_internal_call("Eclipse.Light::SetIntensity", SetIntensity);
+		mono_add_internal_call("Eclipse.Light::SetDirection", SetDirection);
+		mono_add_internal_call("Eclipse.Light::IncreaseIntensity", IncreaseIntensity);
+		mono_add_internal_call("Eclipse.Light::DecreaseIntensity", DecreaseIntensity);
+		mono_add_internal_call("Eclipse.Light::GetIntensity", GetIntensity);
 
 		// AudioSource Internal Calls
 		mono_add_internal_call("Eclipse.AudioSource::PlayAudio", Play);
@@ -340,6 +348,19 @@ namespace Eclipse
 		return false;
 	}
 
+	void MonoManager::PrintAllScript()
+	{
+		for (auto& script : UserImplementedScriptList)
+		{
+			std::cout << script.scriptName << std::endl;
+			for (auto& var : script.vars)
+			{
+				std::cout << "\t" << var.varName << " " << std::endl;
+			}
+		}
+		std::cout << std::endl;
+	}
+
 	void MonoManager::Update(MonoScript* obj)
 	{
 		MonoClass* klass = mono_class_from_name(ScriptImage, "", obj->scriptName.c_str());
@@ -372,6 +393,26 @@ namespace Eclipse
 		if (!m_update) return;
 
 		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
+	}
+
+	void MonoManager::OnCollision(Entity ent)
+	{
+		auto& scriptComp = engine->world.GetComponent<ScriptComponent>(ent);
+
+		for (auto& script : scriptComp.scriptList)
+		{
+			MonoClass* klass = mono_class_from_name(ScriptImage, "", script->scriptName.c_str());
+
+			if (klass == nullptr) {
+				std::cout << "Failed loading class, MonoVec3" << std::endl;
+				continue;
+			}
+
+			MonoMethod* m_update = mono_class_get_method_from_name(klass, "OnCollision", -1);
+			if (!m_update) continue;
+
+			mono_runtime_invoke(m_update, script->obj, nullptr, NULL);
+		}
 	}
 
 	void MonoManager::StopMono()
@@ -574,8 +615,9 @@ namespace Eclipse
 		GetFloatFromField(vec, GetAPIMonoClass("Quaternion"), "z", z);
 
 		glm::quat quad{ w, x, y, z };
-		auto rot = glm::degrees(glm::eulerAngles(quad));
-		ECVec3 VecRot{ rot.x, rot.y, rot.z };
+		PxQuat tempquat{ x,y,z,w };
+		//auto rot = glm::degrees(glm::eulerAngles(quad));
+		ECVec3 VecRot = engine->gPhysics.QuattoAngles(tempquat);
 		return VecRot;
 	}
 
@@ -588,8 +630,9 @@ namespace Eclipse
 		MonoMethod* method = GetMethodFromClass(klass, ".ctor", 4);
 		if (!method) return nullptr;
 
-		glm::vec3 vec{ x, y, z };
-		glm::quat quad{ vec };
+		PxQuat quad = engine->gPhysics.AnglestoQuat(x,y,z);
+		//glm::vec3 vec{ x, y, z };
+		//glm::quat quad{ glm::radians(vec) };
 
 		std::vector<void*> args;
 		args.push_back(&quad.w);
@@ -602,15 +645,16 @@ namespace Eclipse
 		return obj;
 	}
 
-	MonoObject* MonoManager::CreateRayCastHit(float x, float y, float z)
+	MonoObject* MonoManager::CreateRayCastHit(Entity ent, float x, float y, float z)
 	{
-		MonoClass* klass = GetAPIMonoClass("RayCastHit");
+		MonoClass* klass = GetAPIMonoClass("RaycastHit");
 		MonoObject* obj = CreateObjectFromClass(klass, false);
 		std::vector<void*> args;
+		args.push_back(&ent);
 		args.push_back(&x);
 		args.push_back(&y);
 		args.push_back(&z);
-		ExecuteMethod(obj, GetMethodFromClass(klass, ".ctor", 3), args);
+		ExecuteMethod(obj, GetMethodFromClass(klass, ".ctor", 4), args);
 		
 		return obj;
 	}

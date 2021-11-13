@@ -13,8 +13,8 @@ namespace Eclipse
         //Entity newCam = engine->editorManager->CreateDefaultEntity(EntityType::ENT_GAMECAMERA);
         Entity newCam = engine->world.CreateEntity();
         EntityType entCamType = EntityType::ENT_EDITORCAMERA;
-        engine->world.AddComponent(newCam, EntityComponent{EntityType::ENT_EDITORCAMERA, 
-            lexical_cast_toStr<EntityType>(entCamType)});
+        engine->world.AddComponent(newCam, EntityComponent{ EntityType::ENT_EDITORCAMERA,
+            lexical_cast_toStr<EntityType>(entCamType) });
         engine->world.AddComponent(newCam, CameraComponent{});
         engine->world.AddComponent(newCam, TransformComponent{});
 
@@ -71,6 +71,7 @@ namespace Eclipse
         Entity newCam = engine->world.CreateEntity();
         engine->world.AddComponent(newCam, CameraComponent{});
         engine->world.AddComponent(newCam, TransformComponent{});
+        engine->world.AddComponent(newCam, EntityComponent{ EntityType::ENT_UNASSIGNED });
 
         auto& _camera = engine->world.GetComponent<CameraComponent>(newCam);
         _camera.camType = _camType;
@@ -89,6 +90,7 @@ namespace Eclipse
         Entity newCam = engine->world.CreateEntity();
         engine->world.AddComponent(newCam, CameraComponent{});
         engine->world.AddComponent(newCam, TransformComponent{});
+        engine->world.AddComponent(newCam, EntityComponent{ EntityType::ENT_UNASSIGNED });
 
         auto& viewCam = engine->world.GetComponent<CameraComponent>(newCam);
         viewCam.camType = _camType;
@@ -210,6 +212,7 @@ namespace Eclipse
 
         float cameraSpd = engine->Game_Clock.get_DeltaTime() * camera.cameraSpeed;
 
+        //std::cout << input << std::endl;
         if (input.test(0))
         {
             _transform.position += glm::normalize(glm::cross(camera.eyeFront, camera.upVec)) * cameraSpd;
@@ -263,54 +266,53 @@ namespace Eclipse
                 camera.fov += cameraSpd;
             }
         }
-
-        if (input.test(6))
-        {
-            if (_transform.rotation.y < -90.0f)
-            {
-                _transform.rotation.y = 270.0f;
-            }
-            else
-            {
-                _transform.rotation.y -= cameraSpd;
-            }
-        }
-
-        if (input.test(7))
-        {
-            if (_transform.rotation.y > 270.0f)
-            {
-                _transform.rotation.y = -90.0f;
-            }
-            else
-            {
-                _transform.rotation.y += cameraSpd;
-            }
-        }
-
-        if (input.test(4))
-        {
-            if (_transform.rotation.x > 89.0f)
-            {
-                _transform.rotation.x = 89.0f;
-            }
-            else
-            {
-                _transform.rotation.x += cameraSpd;
-            }
-        }
-
-        if (input.test(5))
-        {
-            if (_transform.rotation.x < -89.0f)
-            {
-                _transform.rotation.x = -89.0f;
-            }
-            else
-            {
-                _transform.rotation.x -= cameraSpd;
-            }
-        }
+        //if (input.test(6))
+        //{
+        //    if (_transform.rotation.y < -90.0f)
+        //    {
+        //        _transform.rotation.y = 270.0f;
+        //    }
+        //    else
+        //    {
+        //        _transform.rotation.y -= cameraSpd;
+        //    }
+        //}
+        //
+        //if (input.test(7))
+        //{
+        //    if (_transform.rotation.y > 270.0f)
+        //    {
+        //        _transform.rotation.y = -90.0f;
+        //    }
+        //    else
+        //    {
+        //        _transform.rotation.y += cameraSpd;
+        //    }
+        //}
+        //
+        //if (input.test(4))
+        //{
+        //    if (_transform.rotation.x > 89.0f)
+        //    {
+        //        _transform.rotation.x = 89.0f;
+        //    }
+        //    else
+        //    {
+        //        _transform.rotation.x += cameraSpd;
+        //    }
+        //}
+        //
+        //if (input.test(5))
+        //{
+        //    if (_transform.rotation.x < -89.0f)
+        //    {
+        //        _transform.rotation.x = -89.0f;
+        //    }
+        //    else
+        //    {
+        //        _transform.rotation.x -= cameraSpd;
+        //    }
+        //}
     }
 
     void CameraManager::UpdateMeshCamera(TransformComponent& _transform)

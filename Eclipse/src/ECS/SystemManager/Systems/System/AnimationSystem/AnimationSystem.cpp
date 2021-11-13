@@ -15,7 +15,7 @@ void Eclipse::AnimationSystem::Update()
 {
 	for (auto& it : mEntities)
 	{
-		// engine->gFSM.FindFSM(it)->UpdateFSM(engine->Game_Clock.get_fixedDeltaTime());
-		engine->gAnimationManager.UpdateAnimation(it, engine->Game_Clock.get_DeltaTime());	
+		engine->gFSM.FindFSM(it)->UpdateFSM(engine->Game_Clock.get_fixedDeltaTime());
+		// engine->gAnimationManager.UpdateAnimation(it, engine->Game_Clock.get_DeltaTime());	
 	}
 }

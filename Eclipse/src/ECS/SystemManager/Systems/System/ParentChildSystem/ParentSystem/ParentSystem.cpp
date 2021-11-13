@@ -26,16 +26,18 @@ namespace Eclipse
 			}
 			
 			return;
-		}
-
-		for (auto& entity : mEntities)
+		}	
+		else
 		{
-			ParentComponent& parentComp = engine->world.GetComponent<ParentComponent>(entity);
-
-			for (auto& childEntity : parentComp.child)
+			for (auto& entity : mEntities)
 			{
-				UpdateChildPosition(entity, childEntity);
-			}
+				ParentComponent& parentComp = engine->world.GetComponent<ParentComponent>(entity);
+
+				for (auto& childEntity : parentComp.child)
+				{
+					UpdateChildPosition(entity, childEntity);
+				}
+			}			
 		}
 
 		engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());

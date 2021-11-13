@@ -79,6 +79,7 @@ namespace Eclipse
     DEFINE_META(CollisionComponent)
     {
         ADD_MEMBER(shape);
+        ADD_MEMBER(isTrigger);
     }
 
     DEFINE_META(AIComponent)
@@ -110,6 +111,7 @@ namespace Eclipse
         ADD_MEMBER(Tag);
         ADD_MEMBER(Name);
         ADD_MEMBER(LayerIndex);
+        ADD_MEMBER(IsVisible);
         ADD_MEMBER(hightLightChild);
         ADD_MEMBER(ImguiIndentValue);
     }

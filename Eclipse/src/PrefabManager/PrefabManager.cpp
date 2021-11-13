@@ -2,6 +2,7 @@
 #include "PrefabManager.h"
 #include "ECS/ComponentManager/ComponentList.h"
 #include "ECS/SystemManager/Systems/System/PrefabSystem/PrefabSystem.h"
+#include "ECS/SystemManager/Systems/System/ParentChildSystem/ParentSystem/ParentSystem.h"
 
 namespace Eclipse
 {
@@ -417,9 +418,12 @@ namespace Eclipse
 			std::vector<Entity> newChildren;
 			std::vector<Entity> targetChildren;
 
-			for (auto& sampleChild : sampleParentComp.child)
+			if (compareTargetWorld.CheckComponent<ParentComponent>(compareTarget))
 			{
-				if (compareTargetWorld.CheckComponent<ParentComponent>(compareTarget))
+				auto& targetParentComp = compareTargetWorld.GetComponent<ParentComponent>(compareTarget);
+				targetChildren = targetParentComp.child;
+				
+				for (auto& sampleChild : sampleParentComp.child)
 				{
 					bool isFound = false;
 
@@ -427,8 +431,6 @@ namespace Eclipse
 					{
 						auto& sampleChildPrefabID = compareSampleWorld.GetComponent<PrefabComponent>(sampleChild).PrefabID;
 
-						auto& targetParentComp = compareTargetWorld.GetComponent<ParentComponent>(compareTarget);
-						targetChildren = targetParentComp.child;
 
 						for (auto& targetChild : targetChildren)
 						{
@@ -452,12 +454,7 @@ namespace Eclipse
 						newChildren.push_back(sampleChild);
 					}
 				}
-				else
-				{
-					newChildren.push_back(sampleChild);
-				}
 			}
-
 			if (newChildren.size())
 			{
 				newChildMap[compareTarget] = newChildren;
@@ -542,6 +539,7 @@ namespace Eclipse
 			}
 		}
 
+		engine->gAnimationManager.CheckForAnimation(newEnt);
 		return newEnt;
 	}
 
@@ -584,31 +582,7 @@ namespace Eclipse
 
 	void PrefabManager::UpdateParentChildTransform(const Entity& childEnt, const Entity& parentEnt)
 	{
-		ChildComponent& childComp = engine->world.GetComponent<ChildComponent>(childEnt);
-		TransformComponent& childTransComp = engine->world.GetComponent<TransformComponent>(childEnt);
-		TransformComponent& parentTransComp = engine->world.GetComponent<TransformComponent>(parentEnt);
-
-		glm::mat4 T = glm::mat4(1.0f);
-		glm::mat4 R = glm::mat4(1.0f);
-		glm::mat4 identityMatrix = glm::mat4(1.0f);
-		T = glm::translate(T, parentTransComp.position.ConvertToGlmVec3Type());
-		R = glm::rotate(R, glm::radians(parentTransComp.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-		R = glm::rotate(R, glm::radians(parentTransComp.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-		R = glm::rotate(R, glm::radians(parentTransComp.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-
-		glm::mat4 model = T * R;
-		ParentComponent& parentComp = engine->world.GetComponent<ParentComponent>(parentEnt);
-		parentComp.model = model;
-
-		model = glm::translate(model, childComp.PosOffset.ConvertToGlmVec3Type());
-		glm::vec4 temp = glm::vec4{ 0, 0, 0, 1 };
-		glm::vec3 newPos = model * temp;
-		childTransComp.position = newPos;
-
-		childTransComp.rotation = parentTransComp.rotation + childComp.RotOffset;
-		childTransComp.scale.setX(parentTransComp.scale.getX() * childComp.ScaleOffset.getX());
-		childTransComp.scale.setY(parentTransComp.scale.getY() * childComp.ScaleOffset.getY());
-		childTransComp.scale.setZ(parentTransComp.scale.getZ() * childComp.ScaleOffset.getZ());
+		engine->world.GetSystem<ParentSystem>()->UpdateChildPosition(parentEnt, childEnt);
 	}
 
 	void PrefabManager::RecursiveUpdateParentChildTransform(const Entity& ent)
