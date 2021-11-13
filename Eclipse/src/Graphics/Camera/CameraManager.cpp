@@ -280,8 +280,8 @@ namespace Eclipse
                 double mouseX, mouseY;
                 glfwGetCursorPos(OpenGL_Context::ptr_window, &mouseX, &mouseY);
 
-                float offsetX = mouseX - mouseCursors[GetEditorCameraID()].x;
-                float offsetY = mouseCursors[GetEditorCameraID()].y - mouseY;
+                float offsetX = static_cast<float>(mouseX - mouseCursors[GetEditorCameraID()].x);
+                float offsetY = static_cast<float>(mouseCursors[GetEditorCameraID()].y - mouseY);
                 mouseCursors[GetEditorCameraID()].x = mouseX;
                 mouseCursors[GetEditorCameraID()].y = mouseY;
 
@@ -1020,17 +1020,19 @@ namespace Eclipse
 
     void CameraManager::UpdateGameCamera(TransformComponent& _transform)
     {
-        auto* scene = engine->editorManager->GetEditorWindow<eGameViewWindow>();
+        //auto* scene = engine->editorManager->GetEditorWindow<eGameViewWindow>();
 
         if (engine->IsScenePlaying())
         {
             if (glfwGetMouseButton(OpenGL_Context::ptr_window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
             {
+                ImGui::SetMouseCursor(ImGuiMouseCursor_None);
+
                 double mouseX, mouseY;
                 glfwGetCursorPos(OpenGL_Context::ptr_window, &mouseX, &mouseY);
 
-                float offsetX = mouseX - mouseCursors[GetGameCameraID()].x;
-                float offsetY = mouseCursors[GetGameCameraID()].y - mouseY;
+                float offsetX = static_cast<float>(mouseX - mouseCursors[GetGameCameraID()].x);
+                float offsetY = static_cast<float>(mouseCursors[GetGameCameraID()].y - mouseY);
                 mouseCursors[GetGameCameraID()].x = mouseX;
                 mouseCursors[GetGameCameraID()].y = mouseY;
 

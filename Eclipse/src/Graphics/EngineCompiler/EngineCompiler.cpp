@@ -235,18 +235,18 @@ namespace Eclipse
         
         struct AnimationData
         {
-            float modelLargestAxis;
-            float m_Duration;
-            int m_TicksPerSecond;
-            std::array<char, 128> fileName;
-            std::array<char, 128> modelName;
+            float modelLargestAxis = 0.0f;
+            float m_Duration = 0.0f;
+            int m_TicksPerSecond = 0;
+            std::array<char, 128> fileName{};
+            std::array<char, 128> modelName{};
         };
         
         struct BoneInfoData
         {
-            int id;
-            glm::mat4 offset;
-            std::array<char, 128> name;
+            int id = 0;
+            glm::mat4 offset{ 0.0f };
+            std::array<char, 128> name{};
         };
         
         struct BoneData
@@ -255,13 +255,13 @@ namespace Eclipse
             std::vector<KeyRotation> m_Rotations;
             std::vector<KeyScale> m_Scales;
         
-            int m_NumPositions;
-            int m_NumRotations;
-            int m_NumScalings;
+            int m_NumPositions = 0;
+            int m_NumRotations = 0;
+            int m_NumScalings = 0;
         
-            int m_ID;
-            glm::mat4 m_LocalTransform;
-            std::array<char, 128> BoneName;
+            int m_ID = 0;
+            glm::mat4 m_LocalTransform{ 0.0f };
+            std::array<char, 128> BoneName{};
         };
         
         unsigned int totalAnimation = 0;
@@ -276,7 +276,7 @@ namespace Eclipse
         
         AnimationFileRead.read(reinterpret_cast<char*>(&totalAnimation), sizeof(totalAnimation));
         
-        for (unsigned int i = 0; i < totalAnimation; i++)
+        for (unsigned int count = 0; count < totalAnimation; count++)
         {
             boneSize = 0;
             boneInfoSize = 0;

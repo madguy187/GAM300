@@ -11,7 +11,7 @@ void Eclipse::AnimationManager::RecurseChildren(AssimpNodeData& nodeData, std::f
     int childCount;
     int parentCount;
 
-    for (unsigned int i = 0; i < nodeData.childrenCount; ++i)
+    for (unsigned int i = 0; i < static_cast<unsigned int>(nodeData.childrenCount); ++i)
     {
         AnimationFileRead.read(reinterpret_cast<char*>(&parentName), sizeof(parentName));
         AnimationFileRead.read(reinterpret_cast<char*>(&parentCount), sizeof(int));
@@ -24,14 +24,6 @@ void Eclipse::AnimationManager::RecurseChildren(AssimpNodeData& nodeData, std::f
         nodeData.name = parentName;
         nodeData.childrenCount = parentCount;
         nodeData.transformation = parentTrans;
-
-        //Garbage values
-        if (childCount > MAX_CHILDREN_NODE || childCount < 0)
-        {
-            //nodeData.children[i].childrenCount = 0;
-            AnimationFileRead.seekg(-(sizeof(glm::mat4) + sizeof(name) + sizeof(int)), AnimationFileRead.cur);
-            return;
-        }
 
         if (childCount != 0)
         {
@@ -57,7 +49,7 @@ void Eclipse::AnimationManager::RecurseChildren(AssimpNodeData& nodeData, std::f
 
 void Eclipse::AnimationManager::CheckRecursionData(AssimpNodeData& nodeData)
 {
-    for (unsigned int i = 0; i < nodeData.childrenCount; ++i)
+    for (unsigned int i = 0; i < static_cast<unsigned int>(nodeData.childrenCount); ++i)
     {
         std::cout << "i: " << i << std::endl;
         std::cout << "Parent Name: " << nodeData.name.data() << std::endl;
@@ -223,6 +215,11 @@ AnimationState Eclipse::AnimationManager::InitAnimationState(std::string modelNa
         {
             return AnimationState::MOTION;
         }
+        else
+        {
+            EDITOR_LOG_WARN("WARNING! Some models have invalid animation state.");
+            return AnimationState::INVALID;
+        }
     }
     else if (modelName.compare("MutantMesh") == 0)
     {
@@ -246,6 +243,11 @@ AnimationState Eclipse::AnimationManager::InitAnimationState(std::string modelNa
         {
             return AnimationState::RUN;
         } 
+        else
+        {
+            EDITOR_LOG_WARN("WARNING! Some models have invalid animation state.");
+            return AnimationState::INVALID;
+        }
     }
     else
     {
@@ -321,38 +323,45 @@ int Eclipse::Bone::GetPositionIndex(float animationTime)
 {
     for (int index = 0; index < m_NumPositions - 1; ++index)
     {
-        if (animationTime < m_Positions[index + 1].timeStamp)
+        if (animationTime < m_Positions[static_cast<size_t>(index) + 1].timeStamp)
         {
             return index;
         }
     }
 
     assert(0);
+
+    return 0;
 }
 
 int Eclipse::Bone::GetScaleIndex(float animationTime)
 {
     for (int index = 0; index < m_NumScalings - 1; ++index)
     {
-        if (animationTime < m_Scales[index + 1].timeStamp)
+        if (animationTime < m_Scales[static_cast<size_t>(index) + 1].timeStamp)
         {
             return index;
         }
     }
+
     assert(0);
+
+    return 0;
 }
 
 int Eclipse::Bone::GetRotationIndex(float animationTime)
 {
     for (int index = 0; index < m_NumRotations - 1; ++index)
     {
-        if (animationTime < m_Rotations[index + 1].timeStamp)
+        if (animationTime < m_Rotations[static_cast<size_t>(index) + 1].timeStamp)
         {
             return index;
         }
     }
 
     assert(0);
+
+    return 0;
 }
 
 void Eclipse::Bone::Update(float animationTime)

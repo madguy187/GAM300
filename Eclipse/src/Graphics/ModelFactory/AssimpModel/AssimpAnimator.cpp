@@ -381,7 +381,6 @@ namespace Eclipse
 
         glm::vec3 centroid = ComputeCentroid(minmaxX, minmaxY, minmaxZ);
         float largestAxis = GetLargestAxisValue(minmaxX, minmaxY, minmaxZ);
-        int counter = 0;
 
         for (auto& it : meshData)
         {
@@ -433,7 +432,7 @@ namespace Eclipse
 
         auto animation = scene->mAnimations[0];
 
-        const char* NodeName;
+        const char* NodeName = " ";
 
         for (unsigned int i = 0; i < scene->mRootNode->mNumChildren; i++)
         {
@@ -445,8 +444,8 @@ namespace Eclipse
 
         strcpy_s(newAnimation.modelName.data(), newAnimation.modelName.size(), NodeName);
         newAnimation.modelName[newAnimation.modelName.size() - 1] = '\0';
-        newAnimation.m_Duration = animation->mDuration;
-        newAnimation.m_TicksPerSecond = animation->mTicksPerSecond;
+        newAnimation.m_Duration = static_cast<float>(animation->mDuration);
+        newAnimation.m_TicksPerSecond = static_cast<int>(animation->mTicksPerSecond);
 
         aiMatrix4x4 globalTransformation = scene->mRootNode->mTransformation;
         globalTransformation = globalTransformation.Inverse();
@@ -466,7 +465,7 @@ namespace Eclipse
         dest.transformation = AssimpGLMHelpers::ConvertMatrixToGLMFormat(src->mTransformation);
         dest.childrenCount = src->mNumChildren;
 
-        for (int i = 0; i < src->mNumChildren; i++)
+        for (int i = 0; i < static_cast<int>(src->mNumChildren); i++)
         {
             mAssimpNodeData newData;
             ReadHeirarchyData(newData, src->mChildren[i]);
@@ -476,6 +475,8 @@ namespace Eclipse
 
     void AssimpAnimator::SetupBones(mAnimationData& animationData, const aiAnimation* animation, const aiNode* node)
     {
+        (void)node;
+
         int size = animation->mNumChannels;
 
         std::string meshName = std::string(animationData.modelName.data());
@@ -523,11 +524,11 @@ namespace Eclipse
                 continue;
             }
     
-            for (auto& dirEntry : std::filesystem::directory_iterator(GoIntoModelFolder))
+            for (auto& _dirEntry : std::filesystem::directory_iterator(GoIntoModelFolder))
             {
-                const auto& FbxOrGltf = dirEntry.path();
-                auto relativePath = relative(FbxOrGltf, "..//Eclipse//src//");
-                std::string FbxOrGltfName = relativePath.filename().string();
+                const auto& FbxOrGltf = _dirEntry.path();
+                auto relativePathIn = relative(FbxOrGltf, "..//Eclipse//src//");
+                std::string FbxOrGltfName = relativePathIn.filename().string();
     
                 if (FbxOrGltfName.find("gltf") != std::string::npos || FbxOrGltfName.find("fbx") != std::string::npos)
                 {
@@ -587,7 +588,7 @@ namespace Eclipse
         return centroid;
     }
 
-    void AssimpAnimator::LoadNewModel(std::unordered_map<std::string, mMesh>& GeometryContainer)
+    void AssimpAnimator::LoadNewModel(std::unordered_map<std::string, mMesh>& _GeometryContainer)
     {
         std::vector<glm::vec3> combinedVertices;
 
@@ -607,7 +608,6 @@ namespace Eclipse
 
         glm::vec3 centroid = ComputeCentroid(minmaxX, minmaxY, minmaxZ);
         float largestAxis = GetLargestAxisValue(minmaxX, minmaxY, minmaxZ);
-        int counter = 0;
 
         for (auto& it : meshData)
         {
@@ -624,13 +624,13 @@ namespace Eclipse
             {
                 mMesh NewMesh(it.vertices, it.indices, it.MeshName, it.textures);
                 Meshes.push_back(NewMesh);
-                GeometryContainer.emplace(it.MeshName, (NewMesh));
+                _GeometryContainer.emplace(it.MeshName, (NewMesh));
             }
             else
             {
                 mMesh NewMesh(it.vertices, it.indices, it.Diffuse, it.Specular, it.Ambient, it.NoTextures, it.MeshName);
                 Meshes.push_back(NewMesh);
-                GeometryContainer.emplace(it.MeshName, (NewMesh));
+                _GeometryContainer.emplace(it.MeshName, (NewMesh));
             }
         }
 
@@ -668,12 +668,14 @@ namespace Eclipse
 
     void AssimpAnimator::ExtractBoneWeightForVertices(std::vector<mVertex>& vertices, aiMesh* mesh, const aiScene* scene, const char* MeshName)
     {
+        (void)scene;
+
         std::string meshName = std::string(MeshName);
 
         auto& boneInfoMap = AllBoneInfoMaps[meshName];
         int& boneCount = AllBoneCount[meshName];
 
-        for (int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex)
+        for (int boneIndex = 0; boneIndex < static_cast<int>(mesh->mNumBones); ++boneIndex)
         {
             int boneID = -1;
             std::string boneName = mesh->mBones[boneIndex]->mName.C_Str();
