@@ -176,7 +176,7 @@ vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness)
 
 void main()
 {	
-    vec3 AmbientSettings = directionlight[0].AmbientSettings; // if i want abit of ambient ill give it 0.03 , lets see as our game need this
+    vec3 AmbientSettings = vec3(0.03,0.03,0.03); //; //directionlight[0].AmbientSettings; // if i want abit of ambient ill give it 0.03 , lets see as our game need this
 
     vec3 N;
     vec3 V = normalize(camPos - WorldPos);
@@ -249,12 +249,12 @@ void main()
             
             vec3 kS = F;
             vec3 kD = vec3(1.0) - kS;
-            
+          
             if(HasInstance == 1)
             {
                 kD *= 1.0 - metallic;	 
                 float NdotL = max(dot(N, L), 0.0);        
-                Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+                Lo += (kD * albedo / PI + specular) * radiance * NdotL ;
             } 
             else
             {
@@ -383,25 +383,22 @@ void main()
             }
         }
     }   
+       float shadow = ShadowCalculation(FragPosLightSpace);  
 
        if( HasInstance == 1 )
        {
-          float shadow = ShadowCalculation(FragPosLightSpace);     
-          vec3 ambient =  AmbientSettings * albedo * ao;
-          vec3 color = (ambient) + Lo ;
+          vec3 ambient = vec3(0.03) * albedo * ao;
+          vec3 color = (ambient+ (1.0 - shadow)) + Lo ;
           color = color / (color + vec3(1.0));
           color = pow(color, vec3(1.0/2.2)); 
-          //color = color * (1.0 - shadow);
           FragColor = vec4(color, Transparency);            
         }
         else
-        {
-          float shadow = ShadowCalculation(FragPosLightSpace);     
-
-          vec3 ambient = AmbientSettings * AlbedoConstant * AoConstant;
+        {   
+          vec3 ambient = AmbientSettings* AlbedoConstant * AoConstant;
           vec3 color = ambient + Lo;
           color = color / (color + vec3(1.0));  
-          //color = pow(color, vec3(1.0/2.2)); 
+          color = pow(color, vec3(1.0/2.2)); 
           FragColor = vec4(color, Transparency);      
         }
 }
