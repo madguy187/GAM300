@@ -33,6 +33,8 @@ namespace Eclipse
 
 	void AnimationFSM::UpdateState(AnimationState state)
 	{
+		(void)state;
+
 		engine->gAnimationManager.UpdateAnimation(m_ID, engine->Game_Clock.get_fixedDeltaTime());
 
 		auto& meshCom = engine->world.GetComponent<MeshComponent>(m_ID);
@@ -66,6 +68,8 @@ namespace Eclipse
 		default:
 			break;
 		}*/
+
+		(void)state;
 	}
 
 	void AnimationFSM::SetEntity(Entity ID)

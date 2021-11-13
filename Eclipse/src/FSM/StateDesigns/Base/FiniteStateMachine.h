@@ -13,13 +13,13 @@ namespace Eclipse
 
 		// Entering Next State
 		// State -> Going to Next State
-		virtual void BeginState(T state) {}
+		virtual void BeginState(T) {}
 		// Updating Current State
 		// State -> Mainitaning at Current State
-		virtual void UpdateState(T state) {}
+		virtual void UpdateState(T) {}
 		// Leaving Previous State
 		// State -> Leaving Previous State
-		virtual void EndState(T state) {}
+		virtual void EndState(T) {}
 
 		void SetState(T state);
 		void UpdateFSM(float dt = 0.0f);
