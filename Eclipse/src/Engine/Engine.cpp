@@ -318,7 +318,6 @@ namespace Eclipse
 
             currTime = newTime;
             ECGuiInputHandler::Update();
-
             ImGuiSetup::Begin(IsEditorActive);
             //ECGuiInputHandler::Update();
             EditorSystem::Update();
@@ -338,7 +337,6 @@ namespace Eclipse
 
             // GRID SYSTEM =============================
             // world.Update<GridSystem>();
-            // eg.UpdateFSM(Game_Clock.get_fixedDeltaTime());
             world.Update<CameraSystem>();
 
             if (IsScenePlaying())
