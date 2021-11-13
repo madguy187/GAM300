@@ -50,6 +50,8 @@ namespace Eclipse
     class LightManager
     {
     public:
+        Entity Hand;
+
         // Base Classes =============================
         template<typename T, typename = void>
         struct has_Color : std::false_type {};

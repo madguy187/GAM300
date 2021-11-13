@@ -6,27 +6,44 @@ namespace Eclipse
 	AnimationFSM::AnimationFSM() :
 		FSM<AnimationState>{}, m_ID{ MAX_ENTITY }
 	{}
+
 	AnimationFSM::AnimationFSM(Entity ID) :
 		FSM<AnimationState>{}, m_ID{ ID }
-	{}
+	{
+		auto& meshCom = engine->world.GetComponent<MeshComponent>(m_ID);
+		std::string meshName = std::string(meshCom.MeshName.data());
+
+		switch (str2int(meshName.c_str()))
+		{
+		case str2int("Frog"):
+			States.push_back(AnimationState::IDLE);
+			States.push_back(AnimationState::MOTION);
+			States.push_back(AnimationState::RUN);
+			break;
+		case str2int("MutantMesh"):
+			States.push_back(AnimationState::DANCE);
+			break;
+		case str2int("Body"):
+			States.push_back(AnimationState::WALK);
+			break;
+		default:
+			break;
+		}
+	}
 
 	void AnimationFSM::UpdateState(AnimationState state)
 	{
-		engine->gAnimationManager.UpdateAnimation(m_ID, engine->Game_Clock.get_DeltaTime());
+		engine->gAnimationManager.UpdateAnimation(m_ID, engine->Game_Clock.get_fixedDeltaTime());
 
-		if (GetTimeInCurrentState() > 5.0f)
+		auto& meshCom = engine->world.GetComponent<MeshComponent>(m_ID);
+		std::string meshName = std::string(meshCom.MeshName.data());
+		
+		if (GetTimeInCurrentState() > 4.0f)
 		{
-			int temp = (int)state;
-
-			if (temp < 2)
-			{
-				temp++;
-				SetNextState((AnimationState)temp);
-			}
+			if (StateIndex < States.size())
+				SetNextState(States[StateIndex++]);
 			else
-			{
-				SetNextState((AnimationState)0);
-			}
+				StateIndex = 0;
 		}
 	}
 
@@ -37,7 +54,18 @@ namespace Eclipse
 
 	void AnimationFSM::EndState(AnimationState state)
 	{
-		(void)state;
+		/*auto& meshCom = engine->world.GetComponent<MeshComponent>(m_ID);
+		std::string meshName = std::string(meshCom.MeshName.data());
+
+		switch (str2int(meshName.c_str()))
+		{
+		case str2int("Body"):
+			engine->DestroyGameObject(m_ID);
+			m_ID = MAX_ENTITY;
+			break;
+		default:
+			break;
+		}*/
 	}
 
 	void AnimationFSM::SetEntity(Entity ID)

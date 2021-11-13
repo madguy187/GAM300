@@ -140,7 +140,7 @@ namespace Eclipse
 	{
 		Entity ID = engine->world.CreateEntity();
 
-		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast_toStr<EntityType>(type), 0, true });
+		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast_toStr<EntityType>(type), 0, true, true });
 		engine->world.AddComponent(ID, TransformComponent{});
 
 		// Check this please - Rachel
@@ -346,6 +346,11 @@ namespace Eclipse
 		return DoesRecoveryFileExist;
 	}
 
+	bool EditorManager::GetIsSimulatingAnimation() const
+	{
+		return SimulateAnimation;
+	}
+
 	void EditorManager::SetSelectedEntity(Entity ID)
 	{
 		GEHIndex_ = static_cast<size_t>(EntityToIndexMap_[ID]);
@@ -366,6 +371,11 @@ namespace Eclipse
 	void EditorManager::SetRecoveryFileExistence(bool exist)
 	{
 		DoesRecoveryFileExist = exist;
+	}
+
+	void EditorManager::SetAnimationSimulation(bool active)
+	{
+		SimulateAnimation = active;
 	}
 
 	void EditorManager::Clear()

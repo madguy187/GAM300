@@ -32,6 +32,7 @@ namespace Eclipse
 	{
 		if (ECGui::BeginDragDropSource())
 		{
+			std::cout << "Being dragged here" << std::endl;
 			ECGui::SetDragDropPayload(id, &source, sizeof(source));
 			switch (type)
 			{

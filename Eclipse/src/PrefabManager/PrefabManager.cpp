@@ -542,6 +542,7 @@ namespace Eclipse
 			}
 		}
 
+		engine->gAnimationManager.CheckForAnimation(newEnt);
 		return newEnt;
 	}
 
