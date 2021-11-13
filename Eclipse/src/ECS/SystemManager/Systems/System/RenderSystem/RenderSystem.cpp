@@ -43,6 +43,7 @@ namespace Eclipse
         engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
         engine->GraphicsManager.UploadGlobalUniforms();
+        Renderer.UpdateLightMatrix();
 
         if (engine->GraphicsManager.CheckRender == true)
         {
@@ -63,10 +64,10 @@ namespace Eclipse
                 Renderer.RenderSceneFromLightPOV(Mesh, entityID);
             }
 
+            for (auto const& entityID : mEntities)
+            {
+                auto& entCom = engine->world.GetComponent<EntityComponent>(entityID);
                 if (!entCom.IsVisible) continue;
-                // Used somewhere else.
-                //if (entityID == engine->gPBRManager->gMaterialEditorSettings->InnerEntity || entityID == engine->gPBRManager->gMaterialEditorSettings->OuterEntity)
-                //    continue;
 
                 //If No Mesh Component, Do not Continue
                 if (!engine->world.CheckComponent<MeshComponent>(entityID))
@@ -100,8 +101,6 @@ namespace Eclipse
                 if (engine->AssimpManager.CheckGeometryExist(Mesh))
                 {
                     Renderer.RenderScene(Mesh, entityID);
-
-                    Renderer.RenderSceneNormally(Mesh, entityID);
                     Renderer.RenderGame(Mesh, entityID);
                     Renderer.RenderOtherViews(Mesh, entityID);
                 }

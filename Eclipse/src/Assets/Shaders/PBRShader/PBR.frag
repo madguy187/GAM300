@@ -263,7 +263,7 @@ void main()
             {
                 kD *= 1.0 - MetallicConstant;	 
                 float NdotL = max(dot(N, L), 0.0);        
-                Lo += (kD * AlbedoConstant / PI + specular) * radiance * NdotL * vec3(0.0);        
+                Lo += (kD * AlbedoConstant / PI + specular) * radiance * NdotL;        
             }
         }
     }

@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <Prefab PrefabID="7029523980311834736">
-    <Entity_0 ID="3">
+    <Entity_0 ID="0">
         <AABBComponent>
             <center x="0" y="0" z="0" />
             <Min x="-2.5" y="-2.5" z="-2.5" />
