@@ -94,7 +94,7 @@ namespace Eclipse
                 if (ImGui::Selectable(my_strcat("Prefab ", MeshFamily[n]).c_str(), is_selected))
                 {
                     auto* insp = engine->editorManager->GetEditorWindow<InspectorWindow>();
-                    MeshIndex = n;
+                    MeshIndex = static_cast<int>(n);
                     MeshID = MeshFamily[MeshIndex];
 
                     auto& entCom = engine->world.GetComponent<EntityComponent>(MeshID);
