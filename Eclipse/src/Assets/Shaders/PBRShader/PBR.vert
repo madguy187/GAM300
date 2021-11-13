@@ -51,6 +51,7 @@ void main()
             mat4 viewModel = view * model;
             Normal = mat3(model) * aNormal;
             //Normal = mat3(model) * localNormal;
+            FragPosLightSpace = lightSpaceMatrix * vec4(WorldPos, 1.0);
             gl_Position =  projection * viewModel * totalPosition;
     }
     else

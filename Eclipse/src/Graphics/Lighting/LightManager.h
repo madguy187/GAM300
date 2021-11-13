@@ -110,6 +110,8 @@ namespace Eclipse
 
     public:
         bool ApplyLighting = true;
+        Entity DirectionLightID = 0;
+        bool EnableShadows = false;
 
         void Init();
         void CreateLights(TypesOfLights in, unsigned int CreatedID);
