@@ -107,14 +107,14 @@ void Eclipse::AnimationManager::CheckForAnimation(unsigned int ID)
                     AnimationComponent animCom{};
                     engine->world.AddComponent(ID, animCom);
                 }
-        
+
                 auto& animation = engine->world.GetComponent<AnimationComponent>(ID);
-                
+
                 animation.m_CurrentAnimation = it.second.begin()->second;
                 animation.modelLargestAxis = it.second.begin()->second.modelLargestAxis;
                 animation.m_CurrentTime = 0.0f;
                 animation.m_Transforms.reserve(100);
-        
+
                 for (unsigned int i = 0; i < 100; ++i)
                 {
                     animation.m_Transforms.push_back(glm::mat4(1.0f));
@@ -174,7 +174,7 @@ void Eclipse::AnimationManager::CalculateBoneTransform(unsigned int ID, const As
     for (int i = 0; i < node->childrenCount; i++)
     {
         CalculateBoneTransform(ID, &node->children[i], globalTransformation);
-    }      
+    }
 }
 
 void Eclipse::AnimationManager::UpdateAnimation(unsigned int ID, float dt)
@@ -242,7 +242,7 @@ AnimationState Eclipse::AnimationManager::InitAnimationState(std::string modelNa
         else if (fileName.compare("Jogging") == 0)
         {
             return AnimationState::RUN;
-        } 
+        }
         else
         {
             EDITOR_LOG_WARN("WARNING! Some models have invalid animation state.");
@@ -265,9 +265,9 @@ void Eclipse::AnimationManager::SetAnimationSpeed(unsigned int ID, int speed)
     }
 }
 
-Eclipse::Bone::Bone(std::vector<KeyPosition> positions, std::vector<KeyRotation> rotations, std::vector<KeyScale> scales, 
-                    int numPos, int numRot, int numScale, int id, glm::mat4 localTrans, std::array<char, 128> name):
-    m_Positions(positions), m_Rotations(rotations), m_Scales(scales), 
+Eclipse::Bone::Bone(std::vector<KeyPosition> positions, std::vector<KeyRotation> rotations, std::vector<KeyScale> scales,
+    int numPos, int numRot, int numScale, int id, glm::mat4 localTrans, std::array<char, 128> name) :
+    m_Positions(positions), m_Rotations(rotations), m_Scales(scales),
     m_NumPositions(numPos), m_NumRotations(numRot), m_NumScalings(numScale),
     m_ID(id)
 {
@@ -379,7 +379,7 @@ glm::mat4 Eclipse::Bone::InterpolatePosition(float animationTime)
     {
         return glm::translate(glm::mat4(1.0f), m_Positions[0].position);
     }
-        
+
     int p0Index = GetPositionIndex(animationTime);
     int p1Index = p0Index + 1;
     float scaleFactor = GetScaleFactor(m_Positions[p0Index].timeStamp, m_Positions[p1Index].timeStamp, animationTime);
@@ -412,7 +412,7 @@ glm::mat4 Eclipse::Bone::InterpolateScaling(float animationTime)
     {
         return glm::scale(glm::mat4(1.0f), m_Scales[0].scale);
     }
-      
+
     int p0Index = GetScaleIndex(animationTime);
     int p1Index = p0Index + 1;
     float scaleFactor = GetScaleFactor(m_Scales[p0Index].timeStamp, m_Scales[p1Index].timeStamp, animationTime);
@@ -453,8 +453,8 @@ Eclipse::Animation::Animation()
 {
 }
 
-Eclipse::Animation::Animation(float axis, float duration, int ticks, AnimationState state, std::array<char, 128> name, std::vector<BoneInfo> boneInfo, std::vector<Bone> bones, AssimpNodeData rootNode):
-    modelLargestAxis(axis), m_Duration(duration),  m_TicksPerSecond(ticks), m_AnimationState(state)
+Eclipse::Animation::Animation(float axis, float duration, int ticks, AnimationState state, std::array<char, 128> name, std::vector<BoneInfo> boneInfo, std::vector<Bone> bones, AssimpNodeData rootNode) :
+    modelLargestAxis(axis), m_Duration(duration), m_TicksPerSecond(ticks), m_AnimationState(state)
 {
     modelName = std::string(name.data());
 
@@ -479,7 +479,7 @@ Bone* Eclipse::Animation::FindBone(std::string& name)
     if (iter == m_Bones.end())
     {
         return nullptr;
-    }   
+    }
     else
     {
         return &(*iter);
