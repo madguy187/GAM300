@@ -8,6 +8,7 @@ namespace Eclipse
     {
     public:
         static void Init();
+        static inline Entity Hand;
 
     private:
         void Update() override;

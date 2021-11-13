@@ -33,4 +33,10 @@ namespace Eclipse
 		RigidBodyComponent& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
 		return rigid.velocity.getZ();
 	}
+
+	static void setGravBool(Entity ent, int state)
+	{
+		RigidBodyComponent& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
+		rigid.enableGravity = state ? true : false;
+	}
 }

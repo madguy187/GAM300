@@ -196,8 +196,10 @@ namespace Eclipse
         engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
         Shader shdrpgm = Graphics::shaderpgms["PBRShader"];
-       
         shdrpgm.Use();
+
+        auto& Camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+        auto& CameraPos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
 
         //gEnvironmentMap.CheckUniform(ModelMesh, _camera);
         ChecModelkUniforms(shdrpgm, _camera, ID);
@@ -211,6 +213,45 @@ namespace Eclipse
         {
             RenderMesh(ModelMesh, GL_LINE);
         }
+    }
+
+    void AssimpModelManager::RenderToDepth(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType)
+    {
+        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
+        engine->gFrameBufferManager->UseFrameBuffer(Mode);
+
+        Shader shdrpgm = Graphics::shaderpgms["SimpleDepthShader"];
+        shdrpgm.Use();
+
+        TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(_camera.camType));
+        TransformComponent Transform = engine->world.GetComponent<TransformComponent>(ID);
+
+        glm::mat4 mModelNDC;
+        glm::mat4 model = glm::mat4(1.0f);
+
+        model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
+        model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
+
+        GLuint model_ = shdrpgm.GetLocation("model");
+        glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
+
+        RenderMesh(ModelMesh, GL_FILL);
+    }
+
+    void AssimpModelManager::RenderFromDepth(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType)
+    {
+        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
+        engine->gFrameBufferManager->UseFrameBuffer(Mode);
+
+        auto shdrpgm = Graphics::shaderpgms["ShadowMapping"];
+        shdrpgm.Use();
+
+        ChecModelkUniforms(shdrpgm, _camera, ID);
+        CheckUniforms(shdrpgm, ID, ModelMesh, _camera);
+        RenderMesh(ModelMesh, GL_FILL);
     }
 
     void AssimpModelManager::DebugNormals(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode In, CameraComponent::CameraType _camType)
@@ -577,7 +618,7 @@ namespace Eclipse
     {
         glEnable(GL_BLEND);
         glEnable(GL_DEPTH_TEST);
-        //glDisable(GL_CULL_FACE);
+        glDisable(GL_CULL_FACE);
 
         if (strcmp(In.MeshName.data(), "Plane") == 0)
         {
@@ -746,7 +787,7 @@ namespace Eclipse
             auto& animation = engine->world.GetComponent<AnimationComponent>(ModelID);
 
             glUniform1i(hasAnimation, true);
-         
+
             for (unsigned int i = 0; i < animation.m_Transforms.size(); ++i)
             {
                 std::string matrixName = "finalBonesMatrices[" + std::to_string(i) + "]";

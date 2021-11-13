@@ -318,7 +318,6 @@ namespace Eclipse
 
             currTime = newTime;
             ECGuiInputHandler::Update();
-
             ImGuiSetup::Begin(IsEditorActive);
             //ECGuiInputHandler::Update();
             EditorSystem::Update();
@@ -338,13 +337,13 @@ namespace Eclipse
 
             // GRID SYSTEM =============================
             // world.Update<GridSystem>();
-            // eg.UpdateFSM(Game_Clock.get_fixedDeltaTime());
             world.Update<CameraSystem>();
 
             if (IsScenePlaying())
                 world.Update<AISystem>();
 
             world.Update<CollisionSystem>();
+
             if (IsScenePlaying())
             {
                 for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
@@ -354,8 +353,12 @@ namespace Eclipse
                     mono.fixUpdate = true;
                     world.Update<MonoSystem>();
                     mono.fixUpdate = false;
+                    // ANIMATIONSYSTEM =============================
+                    world.Update<AnimationSystem>();
                 }
             }
+
+            //mono.PrintAllScript();
 
             world.Update<FileWatchSystem>();
 
@@ -378,9 +381,6 @@ namespace Eclipse
 
             // MATERIALSYSTEM =============================
             world.Update<MaterialSystem>();
-
-            // ANIMATIONSYSTEM =============================
-            world.Update<AnimationSystem>();
 
             // RENDERSYSTEM =============================
             world.Update<RenderSystem>();

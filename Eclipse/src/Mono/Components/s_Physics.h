@@ -17,6 +17,8 @@ namespace Eclipse
 			test
 		)) return nullptr;
 
-		return engine->mono.CreateRayCastHit(hit.block.position.x, hit.block.position.y, hit.block.position.z);
+		Entity ent = *(Entity*)hit.block.actor->userData;
+
+		return engine->mono.CreateRayCastHit(ent, hit.block.position.x, hit.block.position.y, hit.block.position.z);
 	}
 }

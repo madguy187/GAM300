@@ -50,6 +50,8 @@ namespace Eclipse
             }
 
             ECGui::DrawTextWidget<int>("ID ", currEnt);
+            ECGui::InsertSameLine();
+            ECGui::CheckBoxBool("HideEntity", &entcom.IsVisible);
 
             ECGui::PushItemWidth(WindowSize_.getX() * 0.35f);
             ECGui::DrawTextWidget<const char*>("Tag ", EMPTY_STRING);
@@ -1137,8 +1139,6 @@ namespace Eclipse
                     }
                 }
 
-               
-
                 switch (_Collision.shape.shape)
                 {
                 case PxShapeType::Px_CUBE:
@@ -1199,6 +1199,8 @@ namespace Eclipse
                     ECGui::DrawInputTextWidget("HalfHeight: ", HalfHeightValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
                     _Collision.shape.radius = static_cast<float>(atof(HalfHeightValue));
                 }
+
+                ECGui::CheckBoxBool("IsTrigger", &_Collision.isTrigger, false);
             }
         }
         return false;
@@ -1358,7 +1360,71 @@ namespace Eclipse
         {
             if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
             {
-                // auto& animCom = engine->world.GetComponent<AnimationComponent>(ID);
+                auto& animCom = engine->world.GetComponent<AnimationComponent>(ID);
+                auto& meshCom = engine->world.GetComponent<MeshComponent>(ID);
+
+                ECGui::DrawTextWidget<const char*>("Model ID:", EMPTY_STRING);
+                ECGui::InsertSameLine();
+                ECGui::DrawInputTextWidget("ModelID:",
+                    const_cast<char*>(animCom.m_CurrentAnimation.modelName.c_str()),
+                    animCom.m_CurrentAnimation.modelName.size(),
+                    ImGuiInputTextFlags_ReadOnly, false);
+
+                ECGui::DrawTextWidget<const char*>("Current State", EMPTY_STRING);
+                ECGui::InsertSameLine();
+                ECGui::DrawInputTextWidget("CurrentState", 
+                    const_cast<char*>(lexical_cast_toStr<AnimationState>(animCom.m_CurrentAnimation.m_AnimationState).c_str()), 
+                    lexical_cast_toStr<AnimationState>(animCom.m_CurrentAnimation.m_AnimationState).size(),
+                    ImGuiInputTextFlags_ReadOnly, false);
+
+                ECGui::DrawTextWidget<const char*>("Ticks", EMPTY_STRING);
+                ECGui::InsertSameLine();
+                if (ECGui::DrawSliderIntWidget("Ticks", &animCom.m_CurrentAnimation.m_TicksPerSecond, true,
+                    0, 60))
+                {
+                    engine->gAnimationManager.SetAnimationSpeed(ID, animCom.m_CurrentAnimation.m_TicksPerSecond);
+                }
+
+                ECGui::DrawTextWidget<const char*>("Animation List", EMPTY_STRING);
+                ECGui::InsertSameLine();
+                std::string combo_label = lexical_cast_toStr<AnimationState>(animCom.m_CurrentAnimation.m_AnimationState).c_str();
+                if (ImGuiAPI::BeginComboList("AnimationMap", combo_label.c_str(), true))
+                {
+                    std::string modelName = std::string{ meshCom.MeshName.data() };
+
+                    for (auto& [key, value] : engine->gAnimationManager.GetAnimationMap()[modelName])
+                    {
+                        bool is_selected = (key == animCom.m_CurrentAnimation.m_AnimationState);
+                        
+                        if (ECGui::CreateSelectableButton(lexical_cast_toStr<AnimationState>(const_cast<AnimationState>(key)).c_str(), 
+                            &is_selected))
+                        {
+                            engine->gAnimationManager.ChangeAnimationState(ID, key);
+                        }
+
+                        if (is_selected)
+                            ImGui::SetItemDefaultFocus();
+                    }
+
+                    ImGuiAPI::EndComboList();
+                }
+
+                if (engine->editorManager->GetIsSimulatingAnimation())
+                {
+                    engine->gAnimationManager.UpdateAnimation(ID, engine->Game_Clock.get_DeltaTime());
+
+                    if (ECGui::ButtonBool("Stop"))
+                    {
+                        engine->editorManager->SetAnimationSimulation(false);
+                    }
+                }
+                else
+                {
+                    if (ECGui::ButtonBool("Simulate"))
+                    {
+                        engine->editorManager->SetAnimationSimulation(true);
+                    }
+                }
             }
         }
 

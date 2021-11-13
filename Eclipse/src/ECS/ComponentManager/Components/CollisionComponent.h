@@ -31,5 +31,6 @@ namespace Eclipse
         std::vector<Entity> Collided;
         EC_Shape shape;
         bool created{ false };
+        bool isTrigger{ false };
     };
 }

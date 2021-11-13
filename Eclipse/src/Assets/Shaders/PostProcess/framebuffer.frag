@@ -62,12 +62,45 @@ vec3 tintAdjust(vec3 color, vec3 mapBlackTo, vec3 mapWhiteTo, float amount)
     return mix(color, mix(mapBlackTo, mapWhiteTo, luminance), amount);
 }
 
+const float flashlightRange = 0.4;
+const float rotationSpeed = 0.4;
+const vec2 rotationOrigin = vec2( 0.5, 0.5 );
+
+vec2 rotateVertex( in vec2 _vertex, in vec2 _origin, in float _angle )
+{
+    vec2 result;
+    
+    //result.x = _origin.x + ( _vertex.x - _origin.x ) * cos( _angle ) - ( _vertex.y - _origin.y ) * sin( _angle );
+	//result.y = _origin.y + ( _vertex.y - _origin.y ) * cos( _angle ) + ( _vertex.x - _origin.x ) * sin( _angle );
+    
+    return result;
+}
+
+float mouseSize = 0.5;
+float smoothObjectPadding = 0.33;
 
 void main()
 {
     if(Type ==  1)
     {
-        FragColor = vec4(vec3(1.0 - texture(screenTexture, texCoords)), 1.0);
+        //FragColor = vec4(vec3(1.0 - texture(screenTexture, texCoords)), 1.0);
+        
+        vec2 uv = texCoords.xy / vec2(1270,593);
+        vec3 color = texture(screenTexture, uv).rgb;
+	    vec3 blurColor = texture(screenTexture, uv,5.0).rgb;
+
+        float aspectRatio = 1270 / 593;
+        vec2 objectCenter = vec2(900,300)/vec2(1270,593);
+
+        vec2 v = uv - objectCenter;
+        v.x = v.x * aspectRatio;
+        float size = mouseSize / 2.0;
+        float smoothSize = size * smoothObjectPadding;
+        float circleMix = smoothstep( size,size - smoothSize, length(v));
+        blurColor.rgb = mix(blurColor.rgb, color.rgb, circleMix);
+
+        FragColor = vec4(blurColor, 1.0);
+
     }
     else if( Type == 2 )
     {

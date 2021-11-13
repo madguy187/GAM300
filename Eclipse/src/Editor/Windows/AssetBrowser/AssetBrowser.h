@@ -101,7 +101,6 @@ namespace Eclipse
 		////////////////////////////////
 
 		void DragAndDropWrapper(std::string filename,std::string relativePath_, std::filesystem::path dirEntry);
-		void SearchDragAndDropWrapper(std::string filename, std::string relativePath_, std::filesystem::path dirEntry);
 		// converting to small case letters
 		////////////////////////////////
 		std::string LowerCase(const char* buffer);

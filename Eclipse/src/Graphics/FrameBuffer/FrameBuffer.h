@@ -15,6 +15,7 @@ namespace Eclipse
       "MATERIALEDITORVIEW",
       "MESHEDITORVIEW",
       "GAMEVIEW_SOBEL",
+      "SHADOWVIEW",
       "MAXCOUNT"
     };
 
@@ -66,6 +67,7 @@ namespace Eclipse
         static void ShowWindow(FrameBuffer g);
         void CreateFrameBuffer(unsigned int p_width, unsigned int p_height);
         void FrameBuffer::DeleteBuffers();
+        void CreateShadowFBO(unsigned int p_width, unsigned int p_height);
         void FrameBuffer::SetViewPort() const;
 
     public:
