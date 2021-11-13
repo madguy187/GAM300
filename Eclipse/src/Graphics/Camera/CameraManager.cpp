@@ -1022,6 +1022,13 @@ namespace Eclipse
         }
     }
 
+    void CameraManager::UpdateGameCamera(TransformComponent& _transform)
+    {
+        //auto* scene = engine->editorManager->GetEditorWindow<eGameViewWindow>();
+
+
+    }
+
     void CameraManager::SetCameraSpeed(float newSpeed)
     {
         unsigned int editorID = GetEditorCameraID();

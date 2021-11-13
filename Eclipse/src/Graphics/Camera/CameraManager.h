@@ -107,6 +107,7 @@ namespace Eclipse
         void CheckMaterialCameraInput();
         void UpdateViewCamera(CameraComponent& _camera, TransformComponent& _transform);
         void UpdateMaterialCamera(TransformComponent& _transform);
+        void UpdateGameCamera(TransformComponent& _transform);
 
         void SetCameraSpeed(float newSpeed);
         void SetNearPlane(CameraComponent& _camera, float _nearPlane);
