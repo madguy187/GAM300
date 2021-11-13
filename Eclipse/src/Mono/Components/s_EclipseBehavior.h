@@ -31,4 +31,30 @@ namespace Eclipse
 
 		return engine->mono.CreateGameObjectClass(ent, "");
 	}
+
+	static MonoObject* Instantiate(MonoString* prefabName, MonoObject* pos, MonoObject* dir)
+	{
+		ECVec3 posVec = engine->mono.ConvertVectorToECVec(pos);
+		Entity TaggedSpoLight = engine->editorManager->CreateDefaultEntity(EntityType::ENT_LIGHT_SPOT);
+
+		auto& transform = engine->world.GetComponent<TransformComponent>(TaggedSpoLight);
+		engine->LightManager.CreateLights(TypesOfLights::SPOTLIGHT, TaggedSpoLight);
+
+		ECVec3 spotVec = engine->mono.ConvertVectorToECVec(dir);
+		auto& spot = engine->world.GetComponent<SpotLightComponent>(TaggedSpoLight);
+		spot.direction = spotVec;
+
+		return engine->mono.CreateGameObjectClass(TaggedSpoLight, "");
+	}
+
+	static MonoObject* CreatePrefab(MonoString* prefabName, MonoObject* pos, MonoObject* dir)
+	{
+		std::string fullPath = engine->pfManager.GetPath(mono_string_to_utf8(prefabName));
+		Entity ent = engine->pfManager.CreatePrefabInstanceSetTransform(
+			fullPath.c_str(),
+			engine->mono.ConvertVectorToECVec(pos),
+			engine->mono.ConvertVectorToECVec(dir)
+		);
+		return engine->mono.CreateGameObjectClass(ent, "");
+	}
 }

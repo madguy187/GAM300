@@ -59,6 +59,9 @@ namespace Eclipse
             // Basic Primitives Render Start =============================
             for (auto const& entityID : mEntities)
             {
+                auto& entCom = engine->world.GetComponent<EntityComponent>(entityID);
+
+                if (!entCom.IsVisible) continue;
                 // Used somewhere else.
                 //if (entityID == engine->gPBRManager->gMaterialEditorSettings->InnerEntity || entityID == engine->gPBRManager->gMaterialEditorSettings->OuterEntity)
                 //    continue;
@@ -79,10 +82,10 @@ namespace Eclipse
                 }
 
                 // If CUlled off , dont render
-                if (engine->gCullingManager->ToRenderOrNot(entityID) == false)
-                {
-                    continue;
-                }
+               //if (engine->gCullingManager->ToRenderOrNot(entityID) == false)
+               //{
+               //    continue;
+               //}
 
                 MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
 

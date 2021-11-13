@@ -23,7 +23,7 @@ namespace Eclipse
         ECVec4 Color{ 1.0f,1.0f,1.0f,1 };
 
         // Overall 
-        ECVec3 AmbientSettings{ 0.005f };
+        ECVec3 AmbientSettings{ 0.05f };
     };
 }
 #endif /* DIRECTIONALIGHTCOMPONENT_H */

@@ -347,6 +347,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\RendererAPI\GraphicsManager.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Mesh.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Renderer.h" />
+    <ClInclude Include="src\Graphics\RendererAPI\RenderManager\RenderManger.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Shader.h" />
     <ClInclude Include="src\Graphics\Textures\Texture.h" />
     <ClInclude Include="src\ImGui\ImGuiAPI\ImGuiAPI.h" />
@@ -527,6 +528,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\RendererAPI\Graphics.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\GraphicsManager.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\Mesh.cpp" />
+    <ClCompile Include="src\Graphics\RendererAPI\RenderManager\RenderManager.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\Shader.cpp" />
     <ClCompile Include="src\Graphics\Textures\Texture.cpp" />
     <ClCompile Include="src\Graphics\Textures\stb_image.cpp" />
@@ -568,6 +570,14 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />
+    <None Include="src\Assets\Shaders\PBRShader\PBR.vert" />
+    <None Include="src\Assets\Shaders\ShadowMapping\ShadowMap.frag" />
+    <None Include="src\Assets\Shaders\ShadowMapping\ShadowMap.vert" />
+    <None Include="src\Assets\Shaders\SimpleDepthShader\SimpleDepthShader.frag" />
+    <None Include="src\Assets\Shaders\SimpleDepthShader\SimpleDepthShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -17,10 +17,10 @@ namespace Eclipse
         ECVec3 specular{ 0.1f,0.1f,0.1f };
         ECVec4 Color{ 1.0f,1.0f,1.0f,1.0f };
 
-        float IntensityStrength = 0.5f;
+        float IntensityStrength = 0.0f;
         float radius = 0.0f;
-        float cutOff = 12.5f;
-        float outerCutOff = 27.5f;
+        float cutOff = 7.5f;
+        float outerCutOff = 13.5f;
         float constant = 1.0f;
         float linear = 0.09f;
         float quadratic = 0.032f;
