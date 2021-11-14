@@ -6,7 +6,7 @@ namespace Eclipse
 		class Node
 		{
 		public:
-			NodeType _type;
+			NodeType _type = NodeType::NODE_UNASSIGNED;
 			virtual bool run() = 0;
 			virtual ~Node() = default;
 		};
@@ -15,7 +15,7 @@ namespace Eclipse
 		{
 		private:
 			std::vector<Node*> _Children;
-			Node* Parent;
+			Node* Parent = nullptr;
 		public:
 			const std::vector<Node*>& getChildren() const;
 			void AddChild(Node* Child);
@@ -51,7 +51,7 @@ namespace Eclipse
 		class DecoratorNode : public Node
 		{
 		private:
-			Node* _Child;
+			Node* _Child = nullptr;
 		protected:
 			Node* getChild() const;
 		public:

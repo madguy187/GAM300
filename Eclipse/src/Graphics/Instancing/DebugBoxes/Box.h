@@ -10,16 +10,16 @@ namespace Eclipse
     {
 
     private:
-        unsigned int VAO;
-        unsigned int VBO;
-        unsigned int EBO;
+        unsigned int VAO = 0;
+        unsigned int VBO = 0;
+        unsigned int EBO = 0;
         std::vector<float> Vertices;
         std::vector<unsigned int> Indices;
         std::vector<glm::vec3> Offsets;
         std::vector<glm::vec3> Sizes;
         int Counter = 0;
-        unsigned int OffsetVBO;
-        unsigned int SizeVBO;
+        unsigned int OffsetVBO = 0;
+        unsigned int SizeVBO = 0;
 
         // Check if there is any Debug Boxes to render
         bool CheckToRender();

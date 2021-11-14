@@ -46,7 +46,7 @@ namespace Eclipse
         ECVec2 mSceneBufferPos;
         ECVec2 mCursorScreenPos;
         SnapValueSettings mSnapSettings;
-        FrameBuffer* m_frameBuffer;
+        FrameBuffer* m_frameBuffer = { nullptr };
         int m_GizmoType{ 0 };
         bool IsWindowActive{ false };
         bool IsSnapping{ false };
