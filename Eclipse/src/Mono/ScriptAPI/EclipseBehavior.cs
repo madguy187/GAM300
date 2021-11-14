@@ -19,7 +19,6 @@ namespace Eclipse
 
         protected void InitBehavior(UInt32 handle, UInt32 entity, string name)
         {
-            Console.WriteLine(name);
             gameObject = new GameObject(entity, name);
             gc_handle = handle;
             transform = gameObject.transform;
