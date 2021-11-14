@@ -419,13 +419,14 @@ namespace Eclipse
 		{
 			//static object
 			PxVec3 temptrans;
+			PxQuat temprot;
 			temptrans.x = transform.position.x;
 			temptrans.y = transform.position.y;
 			temptrans.z = transform.position.z;
 
+			temprot = AnglestoQuat(transform.rotation.getX(), transform.rotation.getY(), transform.rotation.getZ());
 
-
-			static_cast<PxRigidStatic*>(Px_Actors[ent].actor)->setGlobalPose(PxTransform{ temptrans });
+			static_cast<PxRigidStatic*>(Px_Actors[ent].actor)->setGlobalPose(PxTransform{ temptrans,temprot });
 			return;
 		}
 		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
