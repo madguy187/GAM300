@@ -101,6 +101,7 @@ namespace Eclipse
 		mono_add_internal_call("Eclipse.Input::GetKey", GetKeyCurrentByKeyCode);
 		mono_add_internal_call("Eclipse.Input::GetAxis", GetMouseAxis);
 		mono_add_internal_call("Eclipse.Input::GetAxisRaw", GetRawMouseAxis);
+		mono_add_internal_call("Eclipse.Input::LockCamera", SetCameraState);
 
 		// Time Internal Calls
 		mono_add_internal_call("Eclipse.Time::getDeltaTime", GetDeltaTime);
@@ -374,26 +375,18 @@ namespace Eclipse
 		}
 
 		// remove if
-		std::cout << "FOR SCRIPT: " << script->scriptName << std::endl;
 		script->vars.erase(std::remove_if(script->vars.begin(),
 			script->vars.end(),
 			[&](const MonoVariable& var)-> bool
 			{
-				std::cout << "Checking name" << std::endl;
 				for (auto& name : fieldNameList)
 				{
-					if (name == var.varName)
-					{
-						return false;
-						std::cout << "VARIABLE FOUND: " << var.varName << std::endl;
-					}
+					if (name == var.varName) return false;
 				}
 				
-				std::cout << "VARIABLE NOT FOUND: " << var.varName << std::endl;
 				return true;
 			}),
 			script->vars.end());
-		std::cout << std::endl;
 	}
 
 	bool MonoManager::CheckIfFieldExist(MonoScript* script, std::string& fieldName)
