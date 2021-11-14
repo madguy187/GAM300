@@ -33,7 +33,7 @@ namespace Eclipse
 	class Engine
 	{
 	public:
-		bool CheckEditor = false;
+		bool CheckEditor = true;
 
 		World world;
 		World prefabWorld;

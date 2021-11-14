@@ -197,8 +197,6 @@ namespace Eclipse
         if (engine->CheckEditor == true)
         {
             engine->gFrameBufferManager->UseFrameBuffer(Mode);
-            glViewport(0, 0, OpenGL_Context::width, OpenGL_Context::height);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         }
         else
         {
