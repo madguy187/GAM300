@@ -534,6 +534,22 @@ namespace Eclipse
         return false;
     }
 
+    bool CameraManager::isWithinGameTimeWindow()
+    {
+        double mouseX, mouseY;
+        glfwGetCursorPos(OpenGL_Context::ptr_window, &mouseX, &mouseY);
+
+        glm::vec2 windowPos = OpenGL_Context::GetContextPosition();
+
+        if ((mouseX > windowPos.x) && (mouseX < (windowPos.x + OpenGL_Context::GetWidth())) &&
+            (mouseY > windowPos.y) && (mouseY < (windowPos.y + OpenGL_Context::GetHeight())))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     void CameraManager::CheckCameraInput()
     {
         //Camera movement keys
@@ -1193,8 +1209,6 @@ namespace Eclipse
         {
             if (firstEntry)
             {
-                //auto* scene = engine->editorManager->GetEditorWindow<eGameViewWindow>();
-                //glm::vec2 center = ComputeGameScreenCenter(scene);
                 glm::vec2 center = ComputeGameTimeScreenCenter();
 
                 glfwSetCursorPos(OpenGL_Context::ptr_window, center.x, center.y);
@@ -1203,7 +1217,6 @@ namespace Eclipse
             }
 
             //ImGui::SetMouseCursor(ImGuiMouseCursor_None);
-
             glfwSetInputMode(OpenGL_Context::ptr_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
             double mouseX, mouseY;
@@ -1229,6 +1242,13 @@ namespace Eclipse
             if (_transform.rotation.getX() < -89.0f)
             {
                 _transform.rotation.setX(-89.0f);
+            }
+
+            if (!isWithinGameTimeWindow())
+            {
+                glm::vec2 center = ComputeGameTimeScreenCenter();
+                glfwSetCursorPos(OpenGL_Context::ptr_window, center.x, center.y);
+                glfwGetCursorPos(OpenGL_Context::ptr_window, &mouseCursors[GetGameCameraID()].x, &mouseCursors[GetGameCameraID()].y);
             }
         }
     }

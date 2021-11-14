@@ -105,12 +105,13 @@ namespace Eclipse
         void ComputePerspectiveMtx(CameraComponent& _camera);
         glm::vec2 ComputeEditorScreenCenter(SceneWindow* scene);
         glm::vec2 ComputeGameScreenCenter(eGameViewWindow* scene);
-        glm::vec2 CameraManager::ComputeGameTimeScreenCenter();
+        glm::vec2 ComputeGameTimeScreenCenter();
         void UpdateEditorCamera(TransformComponent& _transform);
         void UpdateMeshCamera(TransformComponent& _transform);
 
-        bool CameraManager::isWithinGameWindow(eGameViewWindow* scene);
-        bool CameraManager::isWithinEditorWindow(SceneWindow* scene);
+        bool isWithinGameWindow(eGameViewWindow* scene);
+        bool isWithinEditorWindow(SceneWindow* scene);
+        bool isWithinGameTimeWindow();
 
         void CheckCameraInput();
         void CheckMeshCameraInput();

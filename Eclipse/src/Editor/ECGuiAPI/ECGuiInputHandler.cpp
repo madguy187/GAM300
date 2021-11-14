@@ -29,7 +29,10 @@ namespace Eclipse
             }
             else if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_O)) && io.KeyCtrl)
             {
-                FileDialog::FileBrowser();
+                if (!engine->GetPlayState())
+                {
+                    FileDialog::FileBrowser();
+                }
             }
             // ImGuizmo Change
             else if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_Q)))
@@ -84,7 +87,12 @@ namespace Eclipse
             }
             // File Saving
             else if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_S)) && io.KeyCtrl)
-                FileDialog::SaveFile();
+            {
+                if (!engine->GetPlayState())
+                {
+                    FileDialog::SaveFile();
+                }
+            }
         }
     }
 }
