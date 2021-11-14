@@ -8,7 +8,7 @@ namespace Eclipse
         if (engine->CheckEditor == true)
         {
             // Basic FrameBuffers
-            CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_GAME);
+            CreateFBO(1270, 593, FrameBufferMode::FBM_GAME);
             CreateFBO(1270, 593, FrameBufferMode::FBM_SCENE);
             CreateFBO(1270, 593, FrameBufferMode::FBM_TOP);
             CreateFBO(1270, 593, FrameBufferMode::FBM_BOTTOM);
@@ -21,7 +21,7 @@ namespace Eclipse
 
             // Sobel Framebuffers
             // We Render to this FBO then we will render the effect into scene view.
-            CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_GAME_SOBEL);
+            CreateFBO(1270, 593, FrameBufferMode::FBM_GAME_SOBEL);
             CreateFBO(1270, 593, FrameBufferMode::FBM_SCENE_SOBEL);
 
             // Additionals - PostProcess
@@ -380,9 +380,18 @@ namespace Eclipse
 
                 // We will output to Game FrameBuffer
                 //UseFrameBuffer(RenderFBO);
-                glBindFramebuffer(GL_FRAMEBUFFER, 0);
-                glViewport(0, 0, OpenGL_Context::width, OpenGL_Context::height);
-                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+                if (engine->CheckEditor == true)
+                {
+                    // We will output to Game FrameBuffer
+                    UseFrameBuffer(RenderFBO);
+                }
+                else
+                {
+                    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+                    glViewport(0, 0, OpenGL_Context::width, OpenGL_Context::height);
+                    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+                }
 
                 auto& shdrpgm = Graphics::shaderpgms["PostProcess"];
                 shdrpgm.Use();
