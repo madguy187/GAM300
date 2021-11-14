@@ -130,7 +130,7 @@ void Eclipse::OpenGL_Context::LoadConfigData(std::string configFile)
 
 bool Eclipse::OpenGL_Context::init(std::string configFile)
 {
-    LoadConfigData(configFile);
+    // LoadConfigData(configFile);
 
     // Part 1
     if (!glfwInit())

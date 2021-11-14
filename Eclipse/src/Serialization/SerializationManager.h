@@ -108,8 +108,8 @@ namespace Eclipse
 
 		void SaveDefaultEngineConfig();
 
-		void SaveEngineConfig(const std::string& windowName = { "Transcend Engine" }, const int& windowWidth = 1280,
-			const int& windowHeight = 960, const bool& editorState = true, const bool& isFullscreen = false);
+		void SaveEngineConfig(const std::string& windowName = { "Unagi Studios : Eclipse" }, const int& windowWidth = 1850,
+			const int& windowHeight = 970, const bool& editorState = true, const bool& isFullscreen = false);
 
 		void LoadEngineConfig(std::string& windowName, int& windowWidth, int& windowHeight, bool& editorState, bool& isFullscreen);
 

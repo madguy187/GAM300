@@ -18,7 +18,7 @@ namespace Eclipse
 		void Rotate();
 		void Scale();
 		void HideTabBar(bool active);
-
+		void Terminate();
 	private:
 		bool IsTabBarHidden{ false };
 	};

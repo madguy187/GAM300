@@ -627,7 +627,8 @@ namespace Eclipse
 		auto& prefabComp = w.GetComponent<PrefabComponent>(ent);
 		prefabComp.IsInstance = true;
 
-		engine->editorManager->RegisterExistingEntity(ent);
+		if (engine->GetEditorState())
+			engine->editorManager->RegisterExistingEntity(ent);
 
 		//CameraComponent update
 		if (w.CheckComponent<CameraComponent>(ent))

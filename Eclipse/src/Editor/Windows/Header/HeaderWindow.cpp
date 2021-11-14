@@ -39,9 +39,17 @@ namespace Eclipse
 		{
 			if (ECGui::ButtonBool(" " ICON_FA_PLAY, ImVec2{30.f,22.f}))
 			{
+				engine->mono.StartMono();
+
+				if (!engine->mono.CheckIfScriptCompiled())
+				{
+					engine->mono.StopMono();
+					EDITOR_LOG_WARN("Scene stopped as scripts failed to compile. Check Eclipse/mcs_script_output.txt for more details.");
+					return;
+				}
+
 				engine->editorManager->GetEditorWindow<MeshEditorWindow>()->Unload();
 				engine->szManager.SaveBackupFile();
-				engine->mono.StartMono();
 				engine->world.GetSystem<MonoSystem>()->Init();
 
 				engine->SetPlayState(true);
@@ -50,26 +58,13 @@ namespace Eclipse
 
 				// Darren Was Here , Reset Values
 				engine->gFrameBufferManager->SetSobelEffect();
-
-				//engine->mono.
 			}
 		}
 		else
 		{
 			if (ECGui::ButtonBool("" ICON_FA_STOP,ImVec2{ 30.f,22.f }))
 			{
-				//auto& mono = engine->world.GetSystem<MonoSystem>();
-				engine->world.GetSystem<MonoSystem>()->Terminate();
-				engine->mono.StopMono();
-
-				engine->SetPlayState(false);
-				engine->SetPauseState(false);
-				ECGui::SetWindowFocus("Scene View " ICON_MDI_MONITOR);
-				engine->szManager.LoadBackupFile();
-				EDITOR_LOG_INFO("Scene has stopped playing. Reverting to original state...");
-
-				// Darren Was Here , Reset Values
-				engine->gFrameBufferManager->Reset();
+				Terminate();
 			}
 		}
 
@@ -331,5 +326,20 @@ namespace Eclipse
 			ImGui::SetNextWindowClass(&windowClass);
 			IsTabBarHidden = true;
 		}
+	}
+
+	void HeaderWindow::Terminate()
+	{
+		engine->world.GetSystem<MonoSystem>()->Terminate();
+		engine->mono.StopMono();
+
+		engine->SetPlayState(false);
+		engine->SetPauseState(false);
+		ECGui::SetWindowFocus("Scene View " ICON_MDI_MONITOR);
+		engine->szManager.LoadBackupFile();
+		EDITOR_LOG_INFO("Scene has stopped playing. Reverting to original state...");
+
+		// Darren Was Here , Reset Values
+		engine->gFrameBufferManager->Reset();
 	}
 }

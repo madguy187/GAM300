@@ -336,7 +336,7 @@ namespace Eclipse
             }
         }
 
-        if (engine->editorManager->IsSceneViewportActive())
+        if (engine->GetEditorState() && engine->editorManager->IsSceneViewportActive())
         {
             auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
 

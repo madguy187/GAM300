@@ -105,7 +105,9 @@ namespace Eclipse
 				if (!PrefabUse)
 				{
 					pUpdate.RegisterForPostUpdate(w, oldEnt, ent);
-					engine->editorManager->RegisterExistingEntity(ent);
+
+					if (engine->GetEditorState())
+						engine->editorManager->RegisterExistingEntity(ent);
 				}
 			}
 			dsz.CloseElement();
