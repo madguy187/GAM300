@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "MonoManager.h"
 
+#include <locale>
+#include <codecvt>
+
 #include <mono/metadata/mono-config.h>
 #include <mono/metadata/threads.h>
 #include <mono/metadata/assembly.h>
@@ -858,8 +861,14 @@ namespace Eclipse
 
 		TCHAR buffer[MAX_PATH] = { 0 };
 		GetModuleFileName(NULL, buffer, MAX_PATH); // get exe buff
+
+
 		std::wstring wBuffer{ buffer }; // convert buffer into wstring
-		std::string exePath{ wBuffer.begin(), wBuffer.end() }; // convert wstring into string
+		//std::string exePath{ wBuffer.begin(), wBuffer.end() }; // convert wstring into string
+		std::string exePath;
+		std::transform(wBuffer.begin(), wBuffer.end(), std::back_inserter(exePath), [](wchar_t c) {
+			return (char)c;
+			});
 		std::string cmdCall = "cmd /C "; // string for command call
 
 		// removes path from bin onwards
