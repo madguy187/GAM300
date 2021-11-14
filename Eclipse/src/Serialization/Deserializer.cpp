@@ -3,9 +3,17 @@
 
 namespace Eclipse
 {
-	void Deserializer::SetMonoScriptPointer(const std::string& scriptName, MonoScript*& att_data)
+	bool Deserializer::SetMonoScriptPointer(const std::string& scriptName, MonoScript*& att_data)
 	{
-		att_data = engine->mono.GetScriptPointerByName(scriptName);
+		MonoScript* mono = engine->mono.GetScriptPointerByName(scriptName);
+
+		if (mono)
+		{
+			att_data = engine->mono.GetScriptPointerByName(scriptName);
+			return true;
+		}
+
+		return false;
 	}
 
 	void Deserializer::CleanMonoVariables(std::vector<MonoVariable>& origin, std::vector<MonoVariable>& saved)
