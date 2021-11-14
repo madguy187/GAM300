@@ -7,20 +7,20 @@
             <fov value="40" />
             <nearPlane value="0.1" />
             <farPlane value="300" />
-            <aspect value="2.01538" />
-            <eyePos x="-2.86575" y="6.46961" z="-2.26259" />
-            <eyeFront x="0.869145" y="2.73376e-05" z="-0.494558" />
-            <upVec x="-2.37603e-05" y="1" z="1.352e-05" />
-            <rightVec x="0.494558" y="-0" z="0.869145" />
+            <aspect value="2.22515" />
+            <eyePos x="-6.45962" y="4.49999" z="-4.42193" />
+            <eyeFront x="0.369564" y="-0.295681" z="-0.880906" />
+            <upVec x="0.114388" y="0.955287" z="-0.272659" />
+            <rightVec x="0.922138" y="-0" z="0.386862" />
             <worldUp x="0" y="1" z="0" />
             <viewMtx Col="4" Row="4">
-                <Col0 _00="0.494558" _01="-2.36231e-05" _02="-0.869145" _03="0" />
-                <Col1 _10="-1.81899e-12" _11="1" _12="-2.71797e-05" _13="0" />
-                <Col2 _20="0.869145" _21="1.34419e-05" _22="0.494558" _23="0" />
-                <Col3 _30="3.3838" _31="-6.46965" _32="-1.37159" _33="1" />
+                <Col0 _00="0.922138" _01="0.114388" _02="-0.369564" _03="0" />
+                <Col1 _10="-4.47035e-08" _11="0.955287" _12="0.295682" _13="0" />
+                <Col2 _20="0.386862" _21="-0.272659" _22="0.880906" _23="0" />
+                <Col3 _30="7.66734" _31="-4.76556" _32="0.177496" _33="1" />
             </viewMtx>
             <projMtx Col="4" Row="4">
-                <Col0 _00="1.36325" _01="0" _02="0" _03="0" />
+                <Col0 _00="1.23474" _01="0" _02="0" _03="0" />
                 <Col1 _10="0" _11="2.74748" _12="0" _13="0" />
                 <Col2 _20="0" _21="0" _22="-1.00067" _23="-1" />
                 <Col3 _30="0" _31="0" _32="-0.200067" _33="0" />
@@ -38,8 +38,8 @@
             <ImguiIndentValue value="20" />
         </EntityComponent>
         <TransformComponent>
-            <position x="-2.86575" y="6.46961" z="-2.26259" />
-            <rotation x="0.00156633" y="-29.6406" z="-0.00109478" />
+            <position x="-6.45962" y="4.49999" z="-4.42193" />
+            <rotation x="-17.1984" y="-67.2406" z="-0.00109478" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_0>
@@ -47,7 +47,7 @@
         <DirectionalLightComponent>
             <Counter value="0" />
             <visible value="false" />
-            <AffectsWorld value="true" />
+            <AffectsWorld value="false" />
             <EnableBlinnPhong value="true" />
             <lightColor x="1" y="1" z="1" />
             <Direction x="-10" y="-10" z="-10" />
@@ -55,7 +55,7 @@
             <diffuse x="0.4" y="0.4" z="0.4" />
             <specular x="0.5" y="0.5" z="0.5" />
             <Color x="1" y="1" z="1" w="1" />
-            <AmbientSettings x="0.023" y="0.023" z="0.023" />
+            <AmbientSettings x="0.02" y="0.02" z="0.02" />
         </DirectionalLightComponent>
         <EntityComponent>
             <Tag value="DirectionalLight" />
@@ -1366,14 +1366,14 @@
     </Entity_20>
     <Entity_21 ID="28">
         <AABBComponent>
-            <center x="-2.8658" y="3.49999" z="-2.2627" />
-            <Min x="-4.1158" y="1.49999" z="-3.5127" />
-            <Max x="-1.6158" y="5.49999" z="-1.0127" />
+            <center x="-9.69992" y="3.49999" z="-0.0332557" />
+            <Min x="-10.9499" y="1.49999" z="-1.28326" />
+            <Max x="-8.44992" y="5.49999" z="1.21674" />
         </AABBComponent>
         <EntityComponent>
             <Tag value="Cylinder" />
             <Name value="Player" />
-            <LayerIndex value="0" />
+            <LayerIndex value="4" />
             <IsVisible value="true" />
             <hightLightChild value="false" />
             <ImguiIndentValue value="20" />
@@ -1421,7 +1421,7 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <RigidBodyComponent>
-            <velocity x="-0.000339892" y="-0.000397921" z="0.000886979" />
+            <velocity x="0.0018245" y="-0.000394136" z="0.00285051" />
             <Angvelocity x="0" y="0" z="0" />
             <MaxVelocity value="10" />
             <mass value="200" />
@@ -1432,24 +1432,27 @@
             <enableRotation value="false" />
         </RigidBodyComponent>
         <ScriptComponent>
-            <scriptList size="1">
+            <scriptList size="2">
                 <Member0 ScriptName="Test">
                     <MonoVariables size="3">
                         <Member0 Type="MONO_GAMEOBJECT" Name="obj" Value="8" />
                         <Member1 Type="MONO_GAMEOBJECT" Name="camera_obj" Value="8" />
-                        <Member2 Type="MONO_UNDEFINED" Name="mask" Value="1" />
+                        <Member2 Type="MONO_LAYERMASK" Name="mask" Value="1" />
                     </MonoVariables>
                 </Member0>
+                <Member1 ScriptName="Test2">
+                    <MonoVariables size="0" />
+                </Member1>
             </scriptList>
-            <LayerMask value="00000000000000000011" />
+            <LayerMask value="00000000000000000010" />
         </ScriptComponent>
         <CollisionComponent>
             <shape Shape="Px_CUBE" Hx="1" Hy="2.5" Hz="1" Radius="1" Hheight="1" />
             <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
-            <position x="-2.8658" y="3.49999" z="-2.2627" />
-            <rotation x="0.00156633" y="-29.6406" z="-0.00109478" />
+            <position x="-9.69992" y="3.49999" z="-0.0332557" />
+            <rotation x="0" y="0" z="0" />
             <scale x="2.5" y="4" z="2.5" />
         </TransformComponent>
     </Entity_21>
