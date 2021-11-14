@@ -360,7 +360,6 @@ namespace Eclipse
 				var.type = m_Type::MONO_FLOAT;
 				break;
 			case MONO_TYPE_VALUETYPE:
-				
 				if (fieldklass == GetAPIMonoClass("Light"))
 					var.type = m_Type::MONO_LIGHT;
 				else if (fieldklass == GetAPIMonoClass("AudioSource"))
@@ -372,7 +371,10 @@ namespace Eclipse
 				if (fieldklass == GetAPIMonoClass("GameObject"))
 					var.type = m_Type::MONO_GAMEOBJECT;
 				else if (fieldklass == GetAPIMonoClass("LayerMask"))
+				{
 					var.type = m_Type::MONO_LAYERMASK;
+					var.varValue = "11";
+				}
 				break;
 			}
 
