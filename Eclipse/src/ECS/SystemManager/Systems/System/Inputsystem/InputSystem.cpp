@@ -11,26 +11,26 @@ namespace Eclipse
 {
     void InputSystem::Update()
     {
-        if (engine->InputManager->GetKeyTriggered(InputKeycode::Key_L))
-        {
-            auto entsystem = engine->world.GetSystem<EntityCompSystem>();
-            Entity ID = entsystem->FindEntity("Ray Direction");
+        //if (engine->InputManager->GetKeyTriggered(InputKeycode::Key_L))
+        //{
+        //    auto entsystem = engine->world.GetSystem<EntityCompSystem>();
+        //    Entity ID = entsystem->FindEntity("Ray Direction");
 
-            if (ID != MAX_ENTITY)
-            {
-                // if (engine->world.CheckComponent<CollisionComponent>(ID))
-                {
-                    auto& transCom = engine->world.GetComponent<TransformComponent>(ID);
-                    PxOverlapBuffer hit;
-                    if (engine->gPhysics.CheckSphere(transCom.position, transCom.scale.getX() / 2.0f, hit))
-                    {
-                        Entity hitID = *(Entity*)(hit.block.actor->userData);
-                        auto& hittransCom = engine->world.GetComponent<TransformComponent>(hitID);
-                        hittransCom.position = transCom.position;
-                    }
-                }
-            }
-        }
+        //    if (ID != MAX_ENTITY)
+        //    {
+        //        // if (engine->world.CheckComponent<CollisionComponent>(ID))
+        //        {
+        //            auto& transCom = engine->world.GetComponent<TransformComponent>(ID);
+        //            PxOverlapBuffer hit;
+        //            if (engine->gPhysics.CheckSphere(transCom.position, transCom.scale.getX() / 2.0f, hit))
+        //            {
+        //                Entity hitID = *(Entity*)(hit.block.actor->userData);
+        //                auto& hittransCom = engine->world.GetComponent<TransformComponent>(hitID);
+        //                hittransCom.position = transCom.position;
+        //            }
+        //        }
+        //    }
+        //}
 
         //auto& Cam = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
         //auto& CamT = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetEditorCameraID());
@@ -112,6 +112,10 @@ namespace Eclipse
         //{
         //    Lite.IntensityStrength = 0.0f;
         //}
+
+        if (!engine->GetEditorState())
+            if (engine->InputManager->GetKeyTriggered(InputKeycode::Key_ESC))
+                glfwSetWindowShouldClose(OpenGL_Context::GetWindow(), 1);
 
         engine->InputManager->CursorUpdate();
         engine->InputManager->AxisUpdate();

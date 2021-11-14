@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Editor/Utilities/OpenFileDialog/OpenFileDialog.h"
 #include "Editor/Windows/GameView/GameView.h"
+#include "Editor/Windows/Header/HeaderWindow.h"
 #include "ECGuiInputHandler.h"
 
 namespace Eclipse
@@ -71,6 +72,14 @@ namespace Eclipse
                         gv->SetViewToFullscreen(false);
                         gv->SetViewToOriginalState(true);
                     }
+                }
+            }
+            else if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_Escape)))
+            {
+                if (engine->GetPlayState())
+                {
+                    auto* hdr = engine->editorManager->GetEditorWindow<HeaderWindow>();
+                    hdr->Terminate();
                 }
             }
             // File Saving

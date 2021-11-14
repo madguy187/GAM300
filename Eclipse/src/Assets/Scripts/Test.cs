@@ -16,10 +16,8 @@ public class Test : EclipseBehavior
 
     public void Update()
     {
-		// Console.WriteLine("Updating movement");
         if (Input.GetKey(KeyCode.W))
         {
-		  // Console.WriteLine("Moving Forward");	
           Vector3 temp = transform.position;
           transform.position = transform.position + transform.forward * 0.1f;
         }

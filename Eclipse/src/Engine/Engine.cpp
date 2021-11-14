@@ -277,6 +277,7 @@ namespace Eclipse
             IsInPlayState = true;
             SceneManager::RegisterScene(std::string{ ASSETS_PATH } + "Scenes\\Showcase1.scn");
             SceneManager::LoadScene("Showcase1");
+            SceneManager::ProcessScene();
             mono.StartMono();
             world.GetSystem<MonoSystem>()->Init();
         }
