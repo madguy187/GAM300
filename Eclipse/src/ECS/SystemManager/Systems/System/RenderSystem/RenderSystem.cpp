@@ -47,10 +47,13 @@ namespace Eclipse
 
         if (engine->CheckEditor == false)
         {
-            for (auto const& entityID : mEntities)
+            if (engine->LightManager.EnableShadows)
             {
-                MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
-                Renderer.RenderGameFromLightPOV(Mesh, entityID);
+                for (auto const& entityID : mEntities)
+                {
+                    MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
+                    Renderer.RenderGameFromLightPOV(Mesh, entityID);
+                }
             }
 
             for (auto const& entityID : mEntities)

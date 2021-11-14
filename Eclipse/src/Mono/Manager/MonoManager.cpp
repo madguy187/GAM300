@@ -243,10 +243,16 @@ namespace Eclipse
 			uint32_t cols[MONO_TYPEDEF_SIZE];
 			mono_metadata_decode_row(table_info, i, cols, MONO_TYPEDEF_SIZE);
 			const char* name = mono_metadata_string_heap(ScriptImage, cols[MONO_TYPEDEF_NAME]);
-			//if (CheckIfScriptExist(name)) continue;
-			UserImplementedScriptList.push_back(MonoScript{});
-			UserImplementedScriptList.back().scriptName = name;
-			LoadAllFields(&UserImplementedScriptList.back());
+
+			int index = CheckIfScriptExist(name);
+			if (index == -1)
+			{
+				UserImplementedScriptList.push_back(MonoScript{});
+				UserImplementedScriptList.back().scriptName = name;
+				LoadAllFields(&UserImplementedScriptList.back());
+			}
+			else
+				LoadAllFields(&UserImplementedScriptList[index]);
 		}
 	}
 
@@ -280,12 +286,12 @@ namespace Eclipse
 		return false;
 	}
 
-	bool MonoManager::CheckIfScriptExist(std::string scriptName)
+	int MonoManager::CheckIfScriptExist(std::string scriptName)
 	{
-		for (auto& script : UserImplementedScriptList)
-			if (script.scriptName == scriptName) return true;
+		for (int i = 0; i < UserImplementedScriptList.size(); i++)
+			if (UserImplementedScriptList[i].scriptName == scriptName) return i;
 		
-		return false;
+		return -1;
 	}
 
 	void MonoManager::LoadAllFields(MonoScript* script)
