@@ -358,7 +358,7 @@ namespace Eclipse
 
 	void SceneWindow::OnCameraMoveEvent()
 	{
-		ImGuiIO& io = ImGui::GetIO();
+		// ImGuiIO& io = ImGui::GetIO();
 		ImVec2 value_with_lock_threshold = ECGui::GetMouseDragDelta(1);
 		const float benchmarkValue = 0.0f;
 

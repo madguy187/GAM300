@@ -72,7 +72,6 @@ namespace Eclipse
 		void* args[1];
 		args[0] = &ent;
 		mono_runtime_invoke(method, obj, args, NULL);
-		uint32_t handle = mono_gchandle_new(obj, true);
 
 		return obj;
 	}
@@ -130,7 +129,7 @@ namespace Eclipse
 		// InvokeFunc Internal Calls
 		mono_add_internal_call("Eclipse.EclipseBehavior::InvokeFunc", Invoke);
 		mono_add_internal_call("Eclipse.EclipseBehavior::Find", Find);
-		mono_add_internal_call("Eclipse.EclipseBehavior::Instantiate", Instantiate);
+		mono_add_internal_call("Eclipse.EclipseBehavior::CreateSpotLight", CreateSpotLight);
 		mono_add_internal_call("Eclipse.EclipseBehavior::CreatePrefab", CreatePrefab);
 
 		// Physics Internal Calls
@@ -211,11 +210,7 @@ namespace Eclipse
 		}
 
 		MonoMethod* m_update = mono_class_get_method_from_name(klass, "Awake", -1);
-		if (!m_update)
-		{
-			std::cout << "Failed to get method" << std::endl;
-			return;
-		}
+		if (!m_update) return;
 
 		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
 	}
@@ -230,11 +225,7 @@ namespace Eclipse
 		}
 
 		MonoMethod* m_update = mono_class_get_method_from_name(klass, "Start", -1);
-		if (!m_update)
-		{
-			std::cout << "Failed to get method" << std::endl;
-			return;
-		}
+		if (!m_update) return;
 
 		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
 	}
@@ -248,7 +239,6 @@ namespace Eclipse
 		/* For each row, get some of its values */
 		for (int i = 1; i < rows; i++)
 		{
-			MonoClass* _class = nullptr;
 			uint32_t cols[MONO_TYPEDEF_SIZE];
 			mono_metadata_decode_row(table_info, i, cols, MONO_TYPEDEF_SIZE);
 			const char* name = mono_metadata_string_heap(ScriptImage, cols[MONO_TYPEDEF_NAME]);
@@ -276,8 +266,10 @@ namespace Eclipse
 		MonoClassField* field;
 		void* iter = NULL;
 
-		while ((field = mono_class_get_fields(klass, &iter)))
+		while (true)
 		{
+			field = mono_class_get_fields(klass, &iter);
+			if (!field) break;
 			// check for attributes
 			MonoCustomAttrInfo* attrInfo = mono_custom_attrs_from_field(klass, field);
 
@@ -348,19 +340,6 @@ namespace Eclipse
 		return false;
 	}
 
-	void MonoManager::PrintAllScript()
-	{
-		for (auto& script : UserImplementedScriptList)
-		{
-			std::cout << script.scriptName << std::endl;
-			for (auto& var : script.vars)
-			{
-				std::cout << "\t" << var.varName << " " << std::endl;
-			}
-		}
-		std::cout << std::endl;
-	}
-
 	void MonoManager::Update(MonoScript* obj)
 	{
 		MonoClass* klass = mono_class_from_name(ScriptImage, "", obj->scriptName.c_str());
@@ -371,11 +350,7 @@ namespace Eclipse
 		}
 
 		MonoMethod* m_update = mono_class_get_method_from_name(klass, "Update", -1);
-		if (!m_update)
-		{
-			std::cout << "Failed to get method" << std::endl;
-			return;
-		}
+		if (!m_update) return;
 
 		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
 	}
@@ -883,8 +858,10 @@ namespace Eclipse
 
 			void* iter = NULL;
 			MonoMethod* method;
-			while (method = mono_class_get_methods(_class, &iter))
+			while (true)
 			{
+				method = mono_class_get_methods(_class, &iter);
+				if (!method) break;
 				std::cout << mono_method_full_name(method, 1) << std::endl;
 			}
 		}
@@ -898,8 +875,10 @@ namespace Eclipse
 
 		void* iter = NULL;
 		MonoMethod* method;
-		while (method = mono_class_get_methods(_class, &iter))
+		while (true)
 		{
+			method = mono_class_get_methods(_class, &iter);
+			if (!method) break;
 			std::cout << mono_method_full_name(method, 1) << std::endl;
 		}
 

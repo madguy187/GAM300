@@ -29,7 +29,7 @@ namespace Eclipse
 
         }
 
-        aiTextureType Type;
+        aiTextureType Type{ aiTextureType_NONE };
         std::string TextureDirectory;
         std::string TexturePath;
     };
@@ -41,8 +41,8 @@ namespace Eclipse
         glm::vec2 TextureCoodinates{ 0,0 };
         glm::vec3 Tangents{ 0,0,0 };
         glm::vec4 m_Color{ 0,0,0,0 };
-        int m_BoneIDs[MAX_BONE_INFLUENCE];
-        float m_Weights[MAX_BONE_INFLUENCE];
+        int m_BoneIDs[MAX_BONE_INFLUENCE] = { 0 };
+        float m_Weights[MAX_BONE_INFLUENCE] = { 0.0f };
     };
 
     struct mMesh
@@ -99,11 +99,11 @@ namespace Eclipse
     {
         std::vector<mVertex> vertices;
         std::vector<unsigned int> indices;
-        glm::vec4 Diffuse;
-        glm::vec4 Specular;
-        glm::vec4 Ambient;
+        glm::vec4 Diffuse{ 0.0f, 0.0f, 0.0f, 0.0f };
+        glm::vec4 Specular{ 0.0f, 0.0f, 0.0f, 0.0f };
+        glm::vec4 Ambient{ 0.0f, 0.0f, 0.0f, 0.0f };
         bool NoTextures = false;
-        std::string MeshName;
+        std::string MeshName{};
         std::vector<mTexture> textures;
     };
 
@@ -184,7 +184,7 @@ namespace Eclipse
             for (int positionIndex = 0; positionIndex < m_NumPositions; ++positionIndex)
             {
                 aiVector3D aiPosition = channel->mPositionKeys[positionIndex].mValue;
-                float timeStamp = channel->mPositionKeys[positionIndex].mTime;
+                float timeStamp = static_cast<float>(channel->mPositionKeys[positionIndex].mTime);
                 mKeyPosition data;
                 data.position = AssimpGLMHelpers::GetGLMVec(aiPosition);
                 data.timeStamp = timeStamp;
@@ -195,7 +195,7 @@ namespace Eclipse
             for (int rotationIndex = 0; rotationIndex < m_NumRotations; ++rotationIndex)
             {
                 aiQuaternion aiOrientation = channel->mRotationKeys[rotationIndex].mValue;
-                float timeStamp = channel->mRotationKeys[rotationIndex].mTime;
+                float timeStamp = static_cast<float>(channel->mRotationKeys[rotationIndex].mTime);
                 mKeyRotation data;
                 data.orientation = AssimpGLMHelpers::GetGLMQuat(aiOrientation);
                 data.timeStamp = timeStamp;
@@ -206,7 +206,7 @@ namespace Eclipse
             for (int keyIndex = 0; keyIndex < m_NumScalings; ++keyIndex)
             {
                 aiVector3D scale = channel->mScalingKeys[keyIndex].mValue;
-                float timeStamp = channel->mScalingKeys[keyIndex].mTime;
+                float timeStamp = static_cast<float>(channel->mScalingKeys[keyIndex].mTime);
                 mKeyScale data;
                 data.scale = AssimpGLMHelpers::GetGLMVec(scale);
                 data.timeStamp = timeStamp;
@@ -217,17 +217,17 @@ namespace Eclipse
 
     struct mAssimpNodeData
     {
-        glm::mat4 transformation;
-        std::array<char, 128> name;
-        int childrenCount;
+        glm::mat4 transformation{ 0 };
+        std::array<char, 128> name{};
+        int childrenCount = 0;
         std::vector<mAssimpNodeData> children;
     };
 
     struct mAnimationData
     {
-        float m_Duration;
-        int m_TicksPerSecond;
-        std::array<char, 128> modelName;
+        float m_Duration = 0.0f;
+        int m_TicksPerSecond = 0;
+        std::array<char, 128> modelName{};
         std::vector<mBoneInfo> m_BoneInfo;
         std::vector<mBone> m_Bones;
         mAssimpNodeData m_RootNode;

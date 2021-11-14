@@ -28,9 +28,11 @@ namespace Eclipse
 
 	void TestingFSMClass::BeginState(TestState state)
 	{
+		(void)state;
 	}
 
 	void TestingFSMClass::EndState(TestState state)
 	{
+		(void)state;
 	}
 }

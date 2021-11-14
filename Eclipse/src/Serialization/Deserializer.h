@@ -21,7 +21,7 @@ namespace Eclipse
 
 		bool GetAttributeValue(const std::string& name, std::string& result);
 
-		void SetMonoScriptPointer(const std::string& scriptName, MonoScript*& att_data);
+		bool SetMonoScriptPointer(const std::string& scriptName, MonoScript*& att_data);
 
 		void CleanMonoVariables(std::vector<MonoVariable>& origin, std::vector<MonoVariable>& saved);
 
@@ -190,13 +190,14 @@ namespace Eclipse
 			(void)att_name;
 			std::string scriptName;
 			ReadAttributeFromElement("ScriptName", scriptName);
-			SetMonoScriptPointer(scriptName, att_data);
-
-			std::vector<MonoVariable> saved;
-			StartElement("MonoVariables");
-			ReadAttributeFromElement("Variables", saved);
-			CloseElement();
-			CleanMonoVariables(att_data->vars, saved);
+			if (SetMonoScriptPointer(scriptName, att_data))
+			{
+				std::vector<MonoVariable> saved;
+				StartElement("MonoVariables");
+				ReadAttributeFromElement("Variables", saved);
+				CloseElement();
+				CleanMonoVariables(att_data->vars, saved);
+			}
 		}
 
 		template <>

@@ -180,7 +180,7 @@ namespace Eclipse
 
                 for (auto& it : parent.child)
                 {
-                    auto& transform = engine->world.GetComponent<TransformComponent>(it);
+                    // auto& transform = engine->world.GetComponent<TransformComponent>(it);
 
                     engine->gPicker.UpdateAabb(it);
                     engine->gDynamicAABBTree.UpdateData(it);

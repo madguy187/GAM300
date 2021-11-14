@@ -1,6 +1,6 @@
 #pragma once
 
-#define GLM_ENABLE_EXPERIMENTAL
+// #define GLM_ENABLE_EXPERIMENTAL
 #include "pch.h"
 #include "../Dep/GLM/glm/gtx/matrix_decompose.inl"
 //#include <glm/gtx/matrix_decompose.hpp>
@@ -35,7 +35,7 @@ namespace Eclipse
 		translation = vec3(LocalMatrix[3]);
 		LocalMatrix[3] = vec4(0, 0, 0, LocalMatrix[3].w);
 
-		vec3 Row[3], Pdum3;
+		vec3 Row[3];
 
 		// Now get scale and shear.
 		for (length_t i = 0; i < 3; ++i)
