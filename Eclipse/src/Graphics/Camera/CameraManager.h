@@ -133,6 +133,6 @@ namespace Eclipse
         void ReInitCameraList(CameraComponent::CameraType _camType, unsigned int ID);
 
     public:
-        bool EnableGameCameraMouse = false;
+        bool EnableGameCameraMouse = true;
     };
 }

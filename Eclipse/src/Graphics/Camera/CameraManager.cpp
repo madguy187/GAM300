@@ -1139,40 +1139,37 @@ namespace Eclipse
         {
             if (engine->editorManager->IsGameViewportActive())
             {
-                if (glfwGetMouseButton(OpenGL_Context::ptr_window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) 
+                auto* scene = engine->editorManager->GetEditorWindow<eGameViewWindow>();
+
+                if (isWithinGameWindow(scene) && glfwGetMouseButton(OpenGL_Context::ptr_window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
                 {
-                    auto* scene = engine->editorManager->GetEditorWindow<eGameViewWindow>();
+                    releaseMouse = true;
 
-                    if (isWithinGameWindow(scene))
+                    ImGui::SetMouseCursor(ImGuiMouseCursor_None);
+
+                    double mouseX, mouseY;
+                    glfwGetCursorPos(OpenGL_Context::ptr_window, &mouseX, &mouseY);
+
+                    float offsetX = static_cast<float>(mouseX - mouseCursors[GetGameCameraID()].x);
+                    float offsetY = static_cast<float>(mouseCursors[GetGameCameraID()].y - mouseY);
+                    mouseCursors[GetGameCameraID()].x = mouseX;
+                    mouseCursors[GetGameCameraID()].y = mouseY;
+
+                    float sensitivity = 0.2f;
+                    offsetX *= sensitivity;
+                    offsetY *= sensitivity;
+
+                    _transform.rotation.setX(_transform.rotation.getX() + offsetY);
+                    _transform.rotation.setY(_transform.rotation.getY() + offsetX);
+
+                    if (_transform.rotation.getX() > 89.0f)
                     {
-                        releaseMouse = true;
+                        _transform.rotation.setX(89.0f);
+                    }
 
-                        ImGui::SetMouseCursor(ImGuiMouseCursor_None);
-
-                        double mouseX, mouseY;
-                        glfwGetCursorPos(OpenGL_Context::ptr_window, &mouseX, &mouseY);
-
-                        float offsetX = static_cast<float>(mouseX - mouseCursors[GetGameCameraID()].x);
-                        float offsetY = static_cast<float>(mouseCursors[GetGameCameraID()].y - mouseY);
-                        mouseCursors[GetGameCameraID()].x = mouseX;
-                        mouseCursors[GetGameCameraID()].y = mouseY;
-
-                        float sensitivity = 0.2f;
-                        offsetX *= sensitivity;
-                        offsetY *= sensitivity;
-
-                        _transform.rotation.setX(_transform.rotation.getX() + offsetY);
-                        _transform.rotation.setY(_transform.rotation.getY() + offsetX);
-
-                        if (_transform.rotation.getX() > 89.0f)
-                        {
-                            _transform.rotation.setX(89.0f);
-                        }
-
-                        if (_transform.rotation.getX() < -89.0f)
-                        {
-                            _transform.rotation.setX(-89.0f);
-                        }
+                    if (_transform.rotation.getX() < -89.0f)
+                    {
+                        _transform.rotation.setX(-89.0f);
                     }
                 }
                 else
