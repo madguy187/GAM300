@@ -294,7 +294,7 @@ namespace Eclipse
             }
         }
 
-        if (!engine->IsScenePlaying())
+        if (engine->editorManager->IsSceneViewportActive())
         {
             if (glfwGetMouseButton(OpenGL_Context::ptr_window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
             {
@@ -1043,9 +1043,7 @@ namespace Eclipse
 
     void CameraManager::UpdateGameCamera(TransformComponent& _transform)
     {
-        //auto* scene = engine->editorManager->GetEditorWindow<eGameViewWindow>();
-
-        if (engine->IsScenePlaying())
+        if (engine->editorManager->IsGameViewportActive())
         {
             if (glfwGetMouseButton(OpenGL_Context::ptr_window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
             {
@@ -1156,6 +1154,7 @@ namespace Eclipse
             if (engine->GetEditorState())
             {
                 engine->editorManager->DestroyEntity(gameCamID);
+                engine->world.DestroyEntity(gameCamID);
             }
             else
             {
