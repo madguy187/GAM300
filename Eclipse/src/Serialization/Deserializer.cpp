@@ -130,13 +130,13 @@ namespace Eclipse
 			os << "Fail to load the file \"" << _path.filename() << "\"." <<
 				_doc.ErrorDesc() << " at Row " << _doc.ErrorRow() << " Column "
 				<< _doc.ErrorCol();
-			EDITOR_LOG_WARN(os.str().c_str())
+			ENGINE_CORE_WARN(os.str().c_str())
 		}
 		else
 		{
 			std::ostringstream os;
 			os << "File \"" << _path.filename() << "\"" << " is loaded successfuly.";
-			EDITOR_LOG_INFO(os.str().c_str())
+			ENGINE_CORE_INFO(os.str().c_str())
 		}
 
 		return hasFile;

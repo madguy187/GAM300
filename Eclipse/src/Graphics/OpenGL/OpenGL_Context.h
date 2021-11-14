@@ -24,7 +24,7 @@ namespace Eclipse
         inline static GLint width, height;
         GLint prevWidth, prevHeight;
         inline static float windowRatioX, windowRatioY;
-        std::string title;
+        inline static std::string title;
         inline static GLFWwindow* ptr_window;
         inline static GLdouble m_posX, m_posY;
         inline static GLdouble winPosX, winPosY;

@@ -46,7 +46,6 @@
 #include "ECS/SystemManager/Systems/System/AnimationSystem/AnimationSystem.h"
 #include "ECS/SystemManager/Systems/System/NavMeshSystem/NavMeshSystem.h"
 #include "ECS/SystemManager/Systems/System/EntityCompSystem/EntityCompSystem.h"
-//#include "FSM/States/TestingFSM/TestingFSM.h"
 
 bool Tester1(const Test1&)
 {
@@ -73,6 +72,9 @@ namespace Eclipse
 
         engine->gFrameBufferManager = std::make_unique<FrameBufferManager>();
         engine->gDebugDrawManager = std::make_unique<DebugManager>();
+
+        szManager.LoadEngineConfig(OpenGL_Context::title, OpenGL_Context::width, OpenGL_Context::height,
+            IsEditorActive, IsWindowFullscreen);
 
         engine->GraphicsManager.Pre_Render();
 
@@ -269,26 +271,15 @@ namespace Eclipse
 
         // Check for Recovery File
         if (IsEditorActive)
+        {
             engine->editorManager->SetRecoveryFileExistence(szManager.CheckBackUpPathExistence());
-
-        /*audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);*/
-        //audioManager.PlayEvent("event:/WaterEffect");
-
-        /*TransformComponent trans1;
-        TransformComponent trans2;
-        trans2.position.setX(5.0f);
-        trans1.position.setX(5.0f);
-        RefVariant ob1 = trans1;
-        RefVariant ob2 = trans2;
-
-        if (SerializationManager::CompareComponentData(ob1, ob2))
-            std::cout << "its the same!" << std::endl;
+        }
         else
-            std::cout << "its the not same!" << std::endl;*/
-
-        /*TestingFSMClass eg{ Entity{MAX_ENTITY} };
-        eg.SetState(TestState::TS_WALK);*/
-
+        {
+            SceneManager::RegisterScene(std::string{ ASSETS_PATH } + "Scenes\\Showcase1.scn");
+            SceneManager::LoadScene("Showcase1");
+        }
+       
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
             glfwPollEvents();

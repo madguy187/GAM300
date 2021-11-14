@@ -86,5 +86,6 @@ namespace Eclipse
 		bool IsInPlayState{ false };
 		bool IsInPauseState{ false };
 		bool IsInStepState{ false };
+		bool IsWindowFullscreen{ false };
 	};
 }
