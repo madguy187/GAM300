@@ -34,13 +34,18 @@ namespace Eclipse
 		/*                           WINDOW CREATIONS                            */
 		/*************************************************************************/
 		template <typename T, typename... Args>
-		static void DrawMainWindow(const char* name, std::function<T> fn,
+		static bool DrawMainWindow(const char* name, std::function<T> fn,
 			Args&... args)
 		{
 			if (ImGuiAPI::BeginMainWindow(name))
+			{
 				fn(args...);
+				ImGuiAPI::EndMainWindow();
+				return true;
+			}
 
 			ImGuiAPI::EndMainWindow();
+			return false;
 		}
 
 		template <typename T, typename... Args>

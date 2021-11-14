@@ -127,8 +127,12 @@ namespace Eclipse
         DeSerializeLogicalInputs();
         DeSerializeMouseLogicalInputs();
 
-        auto& DebugWindow_ = *engine->editorManager->GetEditorWindow<DebugWindow>();
-        engine->InputManager->InputCompiler_.ProvideContainer(DebugWindow_.KeyMappings);
+        // Darren remember this!!!!!!! - Fikrul ur dog
+        if (engine->GetEditorState())
+        {
+            auto& DebugWindow_ = *engine->editorManager->GetEditorWindow<DebugWindow>();
+            engine->InputManager->InputCompiler_.ProvideContainer(DebugWindow_.KeyMappings);
+        }
     }
 
     void InputCompiler::Write()

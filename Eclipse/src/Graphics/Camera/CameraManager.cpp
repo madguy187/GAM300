@@ -48,7 +48,20 @@ namespace Eclipse
         }
 
         // Entity newCam = engine->world.CreateEntity();
-        Entity newCam = engine->editorManager->CreateDefaultEntity(EntityType::ENT_GAMECAMERA);
+        Entity newCam = MAX_ENTITY;
+
+        if (engine->GetEditorState())
+        {
+            newCam = engine->editorManager->CreateDefaultEntity(EntityType::ENT_GAMECAMERA);
+        }
+        else
+        {
+            newCam = engine->world.CreateEntity();
+            EntityType type = EntityType::ENT_GAMECAMERA;
+            engine->world.AddComponent(newCam, EntityComponent{ type, lexical_cast_toStr<EntityType>(type), 0, true });
+            engine->world.AddComponent(newCam, TransformComponent{});
+        }
+
         engine->world.AddComponent(newCam, CameraComponent{});
         // engine->world.AddComponent(newCam, TransformComponent{});
 

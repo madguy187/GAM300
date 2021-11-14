@@ -5,11 +5,14 @@ namespace Eclipse
 {
     void GridSystem::Init()
     {
-        // Initialise Grid
-        engine->GridManager = std::make_unique<Grid>();
+        if (engine->GetEditorState())
+        {
+            // Initialise Grid
+            engine->GridManager = std::make_unique<Grid>();
 
-        // Create Grid =============================
-        engine->GridManager->Init();
+            // Create Grid =============================
+            engine->GridManager->Init();
+        }
     }
 
     void GridSystem::Update()

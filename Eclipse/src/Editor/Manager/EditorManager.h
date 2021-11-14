@@ -44,6 +44,8 @@ namespace Eclipse
 		bool GetMeshEditorActive() const;
 		bool GetRecoveryFileExistence() const;
 		bool GetIsSimulatingAnimation() const;
+		bool IsSceneViewportActive() const;
+		bool IsGameViewportActive() const;
 
 		// Setters
 		void SetSelectedEntity(Entity ID);

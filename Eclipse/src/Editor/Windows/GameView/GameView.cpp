@@ -18,8 +18,10 @@ namespace Eclipse
                 AlreadySetDockIDTracker = false;
             }
 
-            ECGui::DrawMainWindow<void()>(WindowName, std::bind(&eGameViewWindow::RunMainWindow, this));
+            IsWindowRunning = ECGui::DrawMainWindow<void()>(WindowName, std::bind(&eGameViewWindow::RunMainWindow, this));
         }
+        else
+            IsWindowRunning = false;
     }
 
     void eGameViewWindow::Init()
@@ -116,5 +118,10 @@ namespace Eclipse
     ECVec2 eGameViewWindow::GetViewPortSize()
     {
         return mViewportSize;
+    }
+
+    bool eGameViewWindow::GetIsWindowRunning() const
+    {
+        return IsWindowRunning;
     }
 }

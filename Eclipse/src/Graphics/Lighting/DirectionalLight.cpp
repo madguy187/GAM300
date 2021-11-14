@@ -138,7 +138,19 @@ namespace Eclipse
 
     Entity DirectionalLight::FirstGlobalLight()
     {
-        auto FirstGlobalLight = engine->editorManager->CreateDefaultEntity(EntityType::ENT_LIGHT_DIRECTIONAL);
+        Entity FirstGlobalLight = MAX_ENTITY;
+
+        if (engine->GetEditorState())
+        {
+            FirstGlobalLight = engine->editorManager->CreateDefaultEntity(EntityType::ENT_LIGHT_DIRECTIONAL);
+        }
+        else
+        {
+            FirstGlobalLight = engine->world.CreateEntity();
+            EntityType type = EntityType::ENT_LIGHT_DIRECTIONAL;
+            engine->world.AddComponent(FirstGlobalLight, EntityComponent{ type, lexical_cast_toStr<EntityType>(type), 0, true });
+            engine->world.AddComponent(FirstGlobalLight, TransformComponent{});
+        }
 
         // Add DirectionalLight Component
         engine->world.AddComponent(FirstGlobalLight, LightComponent{});
