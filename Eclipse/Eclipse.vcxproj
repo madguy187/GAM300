@@ -79,7 +79,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
-      <DisableSpecificWarnings>4302;4311;4505;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4302;4311;4505;4702;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;_CRT_SECURE_NO_WARNINGS;TRACY_ENABLE;ENGINE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\Dep;src;..\Dep\RAPIDJSON\rapidjson-master\include\rapidjson;..\Dep\GLEW\include\GL;..\Dep\STB\stb-master;..\Dep\GLM\glm;..\Dep\GLFW\include\GLFW;..\Dep\GLM\glm\gtc;..\Dep\GLM\glm\gtx;..\Dep\GLEW\lib\Release\x64;..\Dep\spdlog\include;src\Graphics\Still_Cleaning;src\Graphics\RendererAPI;src\Graphics\Parser;src\Graphics\ModelFactory\BasicPrimitives;src\Graphics\ModelFactory;src\Graphics\FrameBuffer;src\Graphics\OpenGL;src\ImGui\Vendor;src\ImGui\Vendor\ImGuizmo;..\Dep\PhysX\include;..\Dep\PhysX\include\characterkinematic;..\Dep\PhysX\include\collision;..\Dep\PhysX\include\common;..\Dep\PhysX\include\cooking;..\Dep\PhysX\include\cudamanager;..\Dep\PhysX\include\extensions;..\Dep\PhysX\include\filebuf;..\Dep\PhysX\include\foundation;..\Dep\PhysX\include\geometry;..\Dep\PhysX\include\geomutils;..\Dep\PhysX\include\gpu;..\Dep\PhysX\include\pvd;..\Dep\PhysX\include\solver;..\Dep\PhysX\include\task;..\Dep\PhysX\include\vehicle;..\Dep\mono\include\mono-2.0;..\Dep\ASSIMP\include\assimp;..\Dep\ASSIMP;..\Dep\Fmod\core\inc;..\Dep\Tracy;..\Dep\Recast&amp;Detour\DebugUtils\Include;..\Dep\Recast&amp;Detour\Detour\Include;..\Dep\Recast&amp;Detour\DetourCrowd\Include;..\Dep\Recast&amp;Detour\DetourTileCache\Include;..\Dep\Recast&amp;Detour\Recast\Include;src\Editor\Windows\NodeEditor\ImNodes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -119,7 +119,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
-      <DisableSpecificWarnings>4302;4311;4505;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4302;4311;4505;4702;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;_CRT_SECURE_NO_WARNINGS;TRACY_ENABLE;ENGINE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\Dep;src;..\Dep\RAPIDJSON\rapidjson-master\include\rapidjson;..\Dep\GLEW\include\GL;..\Dep\STB\stb-master;..\Dep\GLM\glm;..\Dep\GLFW\include\GLFW;..\Dep\GLM\glm\gtc;..\Dep\GLM\glm\gtx;..\Dep\GLEW\lib\Release\x64;..\Dep\spdlog\include;src\Graphics\Still_Cleaning;src\Graphics\RendererAPI;src\Graphics\Parser;src\Graphics\ModelFactory\BasicPrimitives;src\Graphics\ModelFactory;src\Graphics\FrameBuffer;src\Graphics\OpenGL;src\ImGui\Vendor;src\ImGui\Vendor\ImGuizmo;..\Dep\PhysX\include;..\Dep\PhysX\include\characterkinematic;..\Dep\PhysX\include\collision;..\Dep\PhysX\include\common;..\Dep\PhysX\include\cooking;..\Dep\PhysX\include\cudamanager;..\Dep\PhysX\include\extensions;..\Dep\PhysX\include\filebuf;..\Dep\PhysX\include\foundation;..\Dep\PhysX\include\geometry;..\Dep\PhysX\include\geomutils;..\Dep\PhysX\include\gpu;..\Dep\PhysX\include\pvd;..\Dep\PhysX\include\solver;..\Dep\PhysX\include\task;..\Dep\PhysX\include\vehicle;..\Dep\mono\include\mono-2.0;..\Dep\ASSIMP\include\assimp;..\Dep\ASSIMP;..\Dep\Fmod\core\inc;..\Dep\Tracy;..\Dep\Recast&amp;Detour\DebugUtils\Include;..\Dep\Recast&amp;Detour\Detour\Include;..\Dep\Recast&amp;Detour\DetourCrowd\Include;..\Dep\Recast&amp;Detour\DetourTileCache\Include;..\Dep\Recast&amp;Detour\Recast\Include;src\Editor\Windows\NodeEditor\ImNodes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
@@ -273,12 +273,10 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\EntryPoint\EntryPoint.h" />
     <ClInclude Include="src\Events\EventManager.h" />
     <ClInclude Include="src\Events\Events.h" />
-    <ClInclude Include="src\FSM\FiniteStateMachine.h" />
     <ClInclude Include="src\FSM\Manager\FSMManager.h" />
     <ClInclude Include="src\FSM\StateDesigns\Animation\AnimationFSM.h" />
     <ClInclude Include="src\FSM\StateDesigns\Base\FiniteStateMachine.h" />
     <ClInclude Include="src\FSM\StateDesigns\TestingFSM\TestingFSM.h" />
-    <ClInclude Include="src\FSM\States\TestingFSM\TestingFSM.h" />
     <ClInclude Include="src\Global.h" />
     <ClInclude Include="src\Graphics\Animation\AnimationManager.h" />
     <ClInclude Include="src\Graphics\Camera\CameraManager.h" />
@@ -346,8 +344,8 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\RendererAPI\Graphics.h" />
     <ClInclude Include="src\Graphics\RendererAPI\GraphicsManager.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Mesh.h" />
-    <ClInclude Include="src\Graphics\RendererAPI\Renderer.h" />
     <ClInclude Include="src\Graphics\RendererAPI\RenderManager\RenderManger.h" />
+    <ClInclude Include="src\Graphics\RendererAPI\Renderer.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Shader.h" />
     <ClInclude Include="src\Graphics\Textures\Texture.h" />
     <ClInclude Include="src\ImGui\ImGuiAPI\ImGuiAPI.h" />
@@ -570,14 +568,6 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />
-    <None Include="src\Assets\Shaders\PBRShader\PBR.vert" />
-    <None Include="src\Assets\Shaders\ShadowMapping\ShadowMap.frag" />
-    <None Include="src\Assets\Shaders\ShadowMapping\ShadowMap.vert" />
-    <None Include="src\Assets\Shaders\SimpleDepthShader\SimpleDepthShader.frag" />
-    <None Include="src\Assets\Shaders\SimpleDepthShader\SimpleDepthShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

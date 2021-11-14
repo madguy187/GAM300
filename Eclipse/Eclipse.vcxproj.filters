@@ -55,6 +55,9 @@
     <Filter Include="ECS\SystemManager\Systems\System\Editor">
       <UniqueIdentifier>{20CA7CC1-8C59-3EAC-9555-1FC4016479B8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\EntityCompSystem">
+      <UniqueIdentifier>{AA137F5D-16DA-DB79-5F35-6ADCCB3A4ADE}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\FileWatchSystem">
       <UniqueIdentifier>{15C0BC50-0169-2480-2AFF-3FFF16073FC1}</UniqueIdentifier>
     </Filter>
@@ -181,14 +184,20 @@
     <Filter Include="FSM">
       <UniqueIdentifier>{ABE7870B-17F1-877C-A06C-9E7C0C75937C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FSM\FSM">
-      <UniqueIdentifier>{C0BF54D7-2C9F-D372-35B7-5E49A1153AD4}</UniqueIdentifier>
+    <Filter Include="FSM\Manager">
+      <UniqueIdentifier>{D59E3A2D-4154-B322-CA48-ADF936FDA926}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FSM\States">
-      <UniqueIdentifier>{0ED3AE10-FA8A-F05D-6392-C9B94F698B4E}</UniqueIdentifier>
+    <Filter Include="FSM\StateDesigns">
+      <UniqueIdentifier>{28A0F4A2-1499-13F5-3DCB-F8792923F300}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FSM\States\TestingFSM">
-      <UniqueIdentifier>{4193AD8F-ADFF-688A-76F3-00E8E21E8BF2}</UniqueIdentifier>
+    <Filter Include="FSM\StateDesigns\Animation">
+      <UniqueIdentifier>{17AB8D19-03BB-39EA-6C74-9E0858A32883}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FSM\StateDesigns\Base">
+      <UniqueIdentifier>{B2559F35-1EC2-5A30-E7B5-F28D53E17C98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FSM\StateDesigns\TestingFSM">
+      <UniqueIdentifier>{1BBC50E7-87C9-7ECD-10B0-7AB87CBC4A84}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics">
       <UniqueIdentifier>{1653CE33-0220-293F-2B39-17E717655ECD}</UniqueIdentifier>
@@ -291,6 +300,9 @@
     </Filter>
     <Filter Include="Graphics\RendererAPI">
       <UniqueIdentifier>{162DD20E-02BC-5BD8-ABDA-6FD397486C7E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\RendererAPI\RenderManager">
+      <UniqueIdentifier>{00EEE5E7-EC29-E951-553C-01494197916C}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\Textures">
       <UniqueIdentifier>{A9FD1089-1514-0F1F-5E8B-9A40CAE0DFA6}</UniqueIdentifier>
@@ -489,6 +501,9 @@
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.h">
       <Filter>ECS\SystemManager\Systems\System\Editor</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\EntityCompSystem\EntityCompSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\EntityCompSystem</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\FileWatchSystem\FileWatchSystem.h">
       <Filter>ECS\SystemManager\Systems\System\FileWatchSystem</Filter>
     </ClInclude>
@@ -654,11 +669,17 @@
     <ClInclude Include="src\Events\Events.h">
       <Filter>Events</Filter>
     </ClInclude>
-    <ClInclude Include="src\FSM\FiniteStateMachine.h">
-      <Filter>FSM\FSM</Filter>
+    <ClInclude Include="src\FSM\Manager\FSMManager.h">
+      <Filter>FSM\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="src\FSM\States\TestingFSM\TestingFSM.h">
-      <Filter>FSM\States\TestingFSM</Filter>
+    <ClInclude Include="src\FSM\StateDesigns\Animation\AnimationFSM.h">
+      <Filter>FSM\StateDesigns\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FSM\StateDesigns\Base\FiniteStateMachine.h">
+      <Filter>FSM\StateDesigns\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FSM\StateDesigns\TestingFSM\TestingFSM.h">
+      <Filter>FSM\StateDesigns\TestingFSM</Filter>
     </ClInclude>
     <ClInclude Include="src\Global.h" />
     <ClInclude Include="src\Graphics\Animation\AnimationManager.h">
@@ -859,6 +880,9 @@
     <ClInclude Include="src\Graphics\RendererAPI\Mesh.h">
       <Filter>Graphics\RendererAPI</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\RendererAPI\RenderManager\RenderManger.h">
+      <Filter>Graphics\RendererAPI\RenderManager</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\RendererAPI\Renderer.h">
       <Filter>Graphics\RendererAPI</Filter>
     </ClInclude>
@@ -918,6 +942,9 @@
     </ClInclude>
     <ClInclude Include="src\ImGui\Vendor\stb_image.h">
       <Filter>ImGui\Vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Library\Math\Math.h">
+      <Filter>Library\Math</Filter>
     </ClInclude>
     <ClInclude Include="src\Library\Math\Matrix.h">
       <Filter>Library\Math</Filter>
@@ -1031,13 +1058,6 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\Graphics\RendererAPI\RenderManager\RenderManger.h" />
-    <ClInclude Include="src\FSM\Manager\FSMManager.h" />
-    <ClInclude Include="src\FSM\StateDesigns\TestingFSM\TestingFSM.h" />
-    <ClInclude Include="src\FSM\StateDesigns\Base\FiniteStateMachine.h" />
-    <ClInclude Include="src\FSM\StateDesigns\Animation\AnimationFSM.h" />
-    <ClInclude Include="src\ECS\SystemManager\Systems\System\EntityCompSystem\EntityCompSystem.h" />
-    <ClInclude Include="src\Library\Math\Math.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1084,6 +1104,9 @@
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\EntityCompSystem\EntityCompSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\EntityCompSystem</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\FileWatchSystem\FileWatchSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\FileWatchSystem</Filter>
@@ -1210,6 +1233,15 @@
     </ClCompile>
     <ClCompile Include="src\EntryPoint\EntryPoint.cpp">
       <Filter>EntryPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FSM\Manager\FSMManager.cpp">
+      <Filter>FSM\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FSM\StateDesigns\Animation\AnimationFSM.cpp">
+      <Filter>FSM\StateDesigns\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FSM\StateDesigns\TestingFSM\TestingFSM.cpp">
+      <Filter>FSM\StateDesigns\TestingFSM</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\Animation\AnimationManager.cpp">
       <Filter>Graphics\Animation</Filter>
@@ -1388,6 +1420,9 @@
     <ClCompile Include="src\Graphics\RendererAPI\Mesh.cpp">
       <Filter>Graphics\RendererAPI</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\RendererAPI\RenderManager\RenderManager.cpp">
+      <Filter>Graphics\RendererAPI\RenderManager</Filter>
+    </ClCompile>
     <ClCompile Include="src\Graphics\RendererAPI\Shader.cpp">
       <Filter>Graphics\RendererAPI</Filter>
     </ClCompile>
@@ -1432,6 +1467,9 @@
     </ClCompile>
     <ClCompile Include="src\ImGui\Vendor\imgui_widgets.cpp">
       <Filter>ImGui\Vendor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Library\Math\Math.cpp">
+      <Filter>Library\Math</Filter>
     </ClCompile>
     <ClCompile Include="src\Library\Math\Matrix.cpp">
       <Filter>Library\Math</Filter>
@@ -1500,19 +1538,5 @@
       <Filter>Tracy</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\Graphics\RendererAPI\RenderManager\RenderManager.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\Assets\Shaders\SimpleDepthShader\SimpleDepthShader.frag" />
-    <None Include="src\Assets\Shaders\SimpleDepthShader\SimpleDepthShader.vert" />
-    <None Include="src\Assets\Shaders\PBRShader\PBR.frag" />
-    <None Include="src\Assets\Shaders\PBRShader\PBR.vert" />
-    <None Include="src\Assets\Shaders\ShadowMapping\ShadowMap.vert" />
-    <None Include="src\Assets\Shaders\ShadowMapping\ShadowMap.frag" />
-    <ClCompile Include="src\FSM\Manager\FSMManager.cpp" />
-    <ClCompile Include="src\FSM\StateDesigns\TestingFSM\TestingFSM.cpp" />
-    <ClCompile Include="src\FSM\StateDesigns\Animation\AnimationFSM.cpp" />
-    <ClCompile Include="src\ECS\SystemManager\Systems\System\EntityCompSystem\EntityCompSystem.cpp" />
-    <ClCompile Include="src\Library\Math\Math.cpp" />
   </ItemGroup>
 </Project>
