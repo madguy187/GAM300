@@ -152,7 +152,7 @@ namespace Eclipse
 
         if (engine->GetEditorState())
         {
-            engine->editorManager->CreateDefaultEntity(EntityType::ENT_LIGHT_DIRECTIONAL);
+            FirstGlobalLight = engine->editorManager->CreateDefaultEntity(EntityType::ENT_LIGHT_DIRECTIONAL);
         }
         else
         {

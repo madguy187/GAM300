@@ -36,6 +36,7 @@ namespace Eclipse
         int GetGizmoType() const;
         bool GetIsWindowActive() const;
         bool GetSnapping() const;
+        bool GetIsWindowRunning() const;
 
         void SetGizmoType(int type);
         void SetSnapping(bool active);
@@ -50,5 +51,6 @@ namespace Eclipse
         bool IsWindowActive{ false };
         bool IsSnapping{ false };
         bool IsCopying{ false };
+        bool IsWindowRunning{ false };
     };
 }
