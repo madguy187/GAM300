@@ -723,6 +723,14 @@ namespace Eclipse
                         engine->gPBRManager->SetAlbedoConstant(shader, glm::vec4(0.8, 0.8, 0.8, 1.0));
                     }
 
+                    Material.HoldingTextures.clear();
+
+                    std::pair<MMAPIterator, MMAPIterator> result = Graphics::textures.equal_range(Material.TextureKey);
+                    for (MMAPIterator it = result.first; it != result.second; it++)
+                    {
+                        Material.HoldingTextures.push_back(it->second);
+                    }
+
                     for (unsigned int it = 0; it < Material.HoldingTextures.size(); it++)
                     {
                         std::string name;
