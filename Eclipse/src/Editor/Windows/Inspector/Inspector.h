@@ -82,10 +82,10 @@ namespace Eclipse
 		void ComponentRegistry(const char* CompName, Entity ID,
 			const std::string EntityName, EditComponent method);
 
-		void OnCollisionMatrixUpdate(Entity ID);
+		void OnCollisionMatrixUpdate(Entity ID, MonoVariable& monoVar);
 		void UpdateCollisionLayerTracker(DebugWindow* dw, int ClickedIndex);
 		void SetCollisionLayerTracker(const std::unordered_map<int, std::string>& layerlist);
-		void SetScriptBitset(ScriptComponent& scriptCom, EntityComponent& entcom);
+		void SetScriptBitset(ScriptComponent& scriptCom, EntityComponent& entcom, MonoVariable& monoVar);
 		void OnLayerListUpdate(EntityComponent& entcom);
 		void LoadScriptBitset(ScriptComponent& scriptCom);
 
