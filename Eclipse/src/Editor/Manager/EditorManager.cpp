@@ -359,7 +359,7 @@ namespace Eclipse
 
 	bool EditorManager::IsGameViewportActive() const
 	{
-		auto* gameview = dynamic_cast<SceneWindow*>(Windows_[3].get());
+		auto* gameview = dynamic_cast<eGameViewWindow*>(Windows_[3].get());
 		return gameview->GetIsWindowRunning();
 	}
 

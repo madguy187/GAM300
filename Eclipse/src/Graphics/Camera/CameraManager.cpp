@@ -294,8 +294,7 @@ namespace Eclipse
             }
         }
 
-        //if (engine->editorManager->IsSceneViewportActive())
-        if(!engine->IsScenePlaying())
+        if (engine->editorManager->IsSceneViewportActive())
         {
             if (glfwGetMouseButton(OpenGL_Context::ptr_window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
             {
@@ -1044,8 +1043,7 @@ namespace Eclipse
 
     void CameraManager::UpdateGameCamera(TransformComponent& _transform)
     {
-        //if (engine->editorManager->IsGameViewportActive())
-        if (engine->IsScenePlaying())
+        if (engine->editorManager->IsGameViewportActive())
         {
             if (glfwGetMouseButton(OpenGL_Context::ptr_window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
             {
