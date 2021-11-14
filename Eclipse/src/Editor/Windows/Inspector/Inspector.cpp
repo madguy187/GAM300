@@ -1898,12 +1898,12 @@ namespace Eclipse
                     ///////////////
                     std::pair<MMAPIterator, MMAPIterator> result = Graphics::textures.equal_range(textureNames[i].c_str());
                     Item.HoldingTextures.clear();
+
                     for (MMAPIterator it = result.first; it != result.second; it++)
                     {
                         Item.HoldingTextures.push_back(it->second);
                         return;
                     }
-                    //////////////////
                 }
 
                 ECGui::DrawTextWrappedWidget(textureNames[i].c_str(), "");
