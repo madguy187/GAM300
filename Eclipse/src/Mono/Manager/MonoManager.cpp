@@ -303,6 +303,8 @@ namespace Eclipse
 		MonoClassField* field;
 		void* iter = NULL;
 
+		std::vector<std::string> fieldNameList;
+
 		while (true)
 		{
 			field = mono_class_get_fields(klass, &iter);
@@ -321,7 +323,9 @@ namespace Eclipse
 						var.type = m_Type::MONO_HEADER;
 						var.varName = GetStringFromField(attrObj, attrKlass, "name");
 
-						if (CheckIfFieldExist(script, var.varName, i))
+						fieldNameList.push_back(var.varName);
+
+						if (CheckIfFieldExist(script, var.varName))
 							i++;
 						else
 							script->vars.insert(script->vars.begin() + i++, var);
@@ -337,6 +341,7 @@ namespace Eclipse
 
 			int typeInt = mono_type_get_type(mono_field_get_type(field));
 			var.varName = mono_field_get_name(field);
+			fieldNameList.push_back(var.varName);
 
 			MonoClass* fieldklass = mono_type_get_class(mono_field_get_type(field));
 
@@ -351,6 +356,8 @@ namespace Eclipse
 					var.type = m_Type::MONO_LIGHT;
 				else if (fieldklass == GetAPIMonoClass("AudioSource"))
 					var.type = m_Type::MONO_AUDIO;
+				else if (fieldklass == GetAPIMonoClass("LayerMask"))
+					var.type = m_Type::MONO_LAYERMASK;
 				else
 					var.type = m_Type::MONO_UNDEFINED;				
 				break;
@@ -360,20 +367,40 @@ namespace Eclipse
 				break;
 			}
 
-			if (!CheckIfFieldExist(script, var.varName, i))
+			if (!CheckIfFieldExist(script, var.varName))
 				script->vars.insert(script->vars.begin() + i, var);
 
 			i++;
-			
-			
 		}
+
+		// remove if
+		std::cout << "FOR SCRIPT: " << script->scriptName << std::endl;
+		script->vars.erase(std::remove_if(script->vars.begin(),
+			script->vars.end(),
+			[&](const MonoVariable& var)-> bool
+			{
+				std::cout << "Checking name" << std::endl;
+				for (auto& name : fieldNameList)
+				{
+					if (name == var.varName)
+					{
+						return false;
+						std::cout << "VARIABLE FOUND: " << var.varName << std::endl;
+					}
+				}
+				
+				std::cout << "VARIABLE NOT FOUND: " << var.varName << std::endl;
+				return true;
+			}),
+			script->vars.end());
+		std::cout << std::endl;
 	}
 
-	bool MonoManager::CheckIfFieldExist(MonoScript* script, std::string& fieldName, size_t index)
+	bool MonoManager::CheckIfFieldExist(MonoScript* script, std::string& fieldName)
 	{
-		if (index >= script->vars.size()) return false;
+		for (auto& var : script->vars)
+			if (var.varName == fieldName) return true;
 
-		if (script->vars[index].varName == fieldName) return true;
 		return false;
 	}
 

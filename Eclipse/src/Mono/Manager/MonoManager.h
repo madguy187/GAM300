@@ -54,7 +54,7 @@ namespace Eclipse
 		void UnloadDomain();
 
 		int CheckIfScriptExist(std::string scriptName);
-		bool CheckIfFieldExist(MonoScript* script, std::string& fieldName, size_t index);
+		bool CheckIfFieldExist(MonoScript* script, std::string& fieldName);
 		void LoadAllFields(MonoScript* script);
 
 	public:
