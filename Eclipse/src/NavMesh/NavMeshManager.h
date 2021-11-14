@@ -14,11 +14,11 @@
 // structure for storing output straight line paths
 typedef struct
 {
-	float PosX[MAX_PATHVERT];
-	float PosY[MAX_PATHVERT];
-	float PosZ[MAX_PATHVERT];
-	int MaxVertex;
-	int Target;
+	float PosX[MAX_PATHVERT]{0.0f};
+	float PosY[MAX_PATHVERT]{0.0f};
+	float PosZ[MAX_PATHVERT]{0.0f};
+	int MaxVertex{0};
+	int Target{0};
 }
 PATHDATA;
 
@@ -49,35 +49,35 @@ namespace Eclipse
 	class NavMeshManager
 	{
 	private:
-		unsigned char* m_triareas;
-		rcHeightfield* m_solid;
-		rcCompactHeightfield* m_chf;
-		rcContourSet* m_cset;
-		rcPolyMesh* m_pmesh;
+		unsigned char* m_triareas{nullptr};
+		rcHeightfield* m_solid{ nullptr };
+		rcCompactHeightfield* m_chf{ nullptr };
+		rcContourSet* m_cset{ nullptr };
+		rcPolyMesh* m_pmesh{ nullptr };
 		rcConfig m_cfg;
-		rcPolyMeshDetail* m_dmesh;
+		rcPolyMeshDetail* m_dmesh{ nullptr };
 
 		class InputGeom* m_geom;
 		class dtNavMesh* m_navMesh;
 		class dtNavMeshQuery* m_navQuery;
-		unsigned char m_navMeshDrawFlags;
+		unsigned char m_navMeshDrawFlags{0};
 
-		rcContext* m_ctx;
+		rcContext* m_ctx{ nullptr };
 
-		float m_cellSize;
-		float m_cellHeight;
-		float m_agentHeight;
-		float m_agentRadius;
-		float m_agentMaxClimb;
-		float m_agentMaxSlope;
-		float m_regionMinSize;
-		float m_regionMergeSize;
-		float m_edgeMaxLen;
-		float m_edgeMaxError;
-		float m_vertsPerPoly;
-		float m_detailSampleDist;
-		float m_detailSampleMaxError;
-		bool m_keepInterResults;
+		float m_cellSize{0.0f};
+		float m_cellHeight{ 0.0f };
+		float m_agentHeight{ 0.0f };
+		float m_agentRadius{ 0.0f };
+		float m_agentMaxClimb{ 0.0f };
+		float m_agentMaxSlope{ 0.0f };
+		float m_regionMinSize{ 0.0f };
+		float m_regionMergeSize{ 0.0f };
+		float m_edgeMaxLen{ 0.0f };
+		float m_edgeMaxError{ 0.0f };
+		float m_vertsPerPoly{ 0.0f };
+		float m_detailSampleDist{ 0.0f };
+		float m_detailSampleMaxError{ 0.0f };
+		bool m_keepInterResults{ false };
 
 		// Off-Mesh connections.  Not used yet.
 		static const int MAX_OFFMESH_CONNECTIONS = 256;
@@ -87,7 +87,7 @@ namespace Eclipse
 		unsigned char m_offMeshConAreas[MAX_OFFMESH_CONNECTIONS];
 		unsigned short m_offMeshConFlags[MAX_OFFMESH_CONNECTIONS];
 		unsigned int m_offMeshConId[MAX_OFFMESH_CONNECTIONS];
-		int m_offMeshConCount;
+		int m_offMeshConCount{0};
 
 
 	public:
