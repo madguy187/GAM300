@@ -5,6 +5,8 @@ using Eclipse;
 
 public class Test : EclipseBehavior
 {
+	public GameObject hand;
+		
     public GameObject obj;
     public GameObject camera_obj;
     public LayerMask mask;
@@ -30,14 +32,6 @@ public class Test : EclipseBehavior
           Vector3 temp = transform.position;
           transform.position = transform.position - transform.forward * 0.1f;
         }
-        // if (Input.GetKey(KeyCode.D))
-        // {
-        //   transform.Rotate(new Vector3(0, 2, 0));
-        // }
-        // if (Input.GetKey(KeyCode.A))
-        // {
-        //   transform.Rotate(new Vector3(0, -2, 0));
-        // }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -73,6 +67,12 @@ public class Test : EclipseBehavior
         Vector3 tempVec = transform.position;
         tempVec.y += 1.0f;
         camera_obj.transform.position = tempVec;
+		
+		tempVec = transform.position + transform.forward * 4.0f;
+		tempVec.y += 0.5f;
+		
+		hand.transform.position = tempVec;
+		//hand.transform.rotation = camera_obj.transform.rotation;
 
         transform.rotation = Quaternion.identity;
     }

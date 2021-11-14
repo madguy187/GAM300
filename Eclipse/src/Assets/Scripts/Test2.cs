@@ -27,8 +27,9 @@ public class Test2 : EclipseBehavior
                 {
                     Spot = CreateSpotLight(transform.position, transform.forward);
                     light = new Light(Spot.Entity);
-
-                    Spot.transform.position = transform.position;
+					
+                    Spot.transform.position = hit.point;
+					
                     light.Direction = transform.forward;
 
 					if(light.Intensity <= 10.0f )
