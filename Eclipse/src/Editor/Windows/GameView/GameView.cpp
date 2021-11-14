@@ -22,8 +22,6 @@ namespace Eclipse
         }
         else
             IsWindowRunning = false;
-
-        std::cout << "Is game view running? " << lexical_cast<std::string>(IsWindowRunning) << std::endl;
     }
 
     void eGameViewWindow::Init()

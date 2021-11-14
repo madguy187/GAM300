@@ -14,8 +14,6 @@ namespace Eclipse
 		}
 		else
 			IsWindowRunning = false;
-
-		std::cout << "Is Scene view running? " << lexical_cast<std::string>(IsWindowRunning) << std::endl;
 	}
 
 	void SceneWindow::Init()
