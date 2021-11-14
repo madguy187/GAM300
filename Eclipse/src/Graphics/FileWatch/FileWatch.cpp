@@ -140,7 +140,7 @@ namespace Eclipse
 
         case FileStatus::FS_MODIFIED:
         {
-            std::cout << "File modified: " << PATH_TO_WATCH << '\n';
+            //std::cout << "File modified: " << PATH_TO_WATCH << '\n';
             ReloadType(PATH_TO_WATCH);
         }
         break;

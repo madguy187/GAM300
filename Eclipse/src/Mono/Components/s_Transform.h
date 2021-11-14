@@ -62,7 +62,6 @@ namespace Eclipse
 	{
 		TransformComponent& trans = engine->world.GetComponent<TransformComponent>(entity);
 		glm::vec3 direction;
-		std::cout << "C++: " << trans.rotation.x << " " << trans.rotation.y << " " << trans.rotation.z << std::endl;
 		direction.x = sin(glm::radians(trans.rotation.y)) * cos(glm::radians(trans.rotation.x));
 		direction.y = sin(glm::radians(trans.rotation.x));
 		direction.z = cos(glm::radians(trans.rotation.y)) * cos(glm::radians(trans.rotation.x));
@@ -84,8 +83,6 @@ namespace Eclipse
 		direction = glm::normalize(direction);
 
 		glm::vec3 rightVec = glm::normalize(glm::cross(direction, glm::vec3(0, 1, 0)));
-		//glm::vec3 upVec = glm::normalize(glm::cross(_camera.rightVec, direction));
-		std::cout << "C++: " << direction.x << " " << direction.y << " " << direction.z << std::endl;
 
 		return engine->mono.CreateVector3Class(rightVec.x, rightVec.y, rightVec.z);
 	}
