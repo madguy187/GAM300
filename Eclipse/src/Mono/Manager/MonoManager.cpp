@@ -101,6 +101,7 @@ namespace Eclipse
 		mono_add_internal_call("Eclipse.Input::GetKey", GetKeyCurrentByKeyCode);
 		mono_add_internal_call("Eclipse.Input::GetAxis", GetMouseAxis);
 		mono_add_internal_call("Eclipse.Input::GetAxisRaw", GetRawMouseAxis);
+		mono_add_internal_call("Eclipse.Input::LockCamera", SetCameraState);
 
 		// Time Internal Calls
 		mono_add_internal_call("Eclipse.Time::getDeltaTime", GetDeltaTime);
@@ -191,6 +192,14 @@ namespace Eclipse
 					script->obj,
 					mono_class_get_field_from_name(klass, var.varName.c_str()),
 					CreateGameObjectClass(std::strtoul(var.varValue.c_str(), 0, 10), "")
+				);
+			}
+			else if (var.type == m_Type::MONO_LAYERMASK)
+			{
+				mono_field_set_value(
+					script->obj,
+					mono_class_get_field_from_name(klass, var.varName.c_str()),
+					CreateLayerMaskClass(var.varValue)
 				);
 			}
 			else
@@ -351,19 +360,21 @@ namespace Eclipse
 				var.type = m_Type::MONO_FLOAT;
 				break;
 			case MONO_TYPE_VALUETYPE:
-				
 				if (fieldklass == GetAPIMonoClass("Light"))
 					var.type = m_Type::MONO_LIGHT;
 				else if (fieldklass == GetAPIMonoClass("AudioSource"))
 					var.type = m_Type::MONO_AUDIO;
-				else if (fieldklass == GetAPIMonoClass("LayerMask"))
-					var.type = m_Type::MONO_LAYERMASK;
 				else
 					var.type = m_Type::MONO_UNDEFINED;				
 				break;
 			case MONO_TYPE_CLASS:
 				if (fieldklass == GetAPIMonoClass("GameObject"))
 					var.type = m_Type::MONO_GAMEOBJECT;
+				else if (fieldklass == GetAPIMonoClass("LayerMask"))
+				{
+					var.type = m_Type::MONO_LAYERMASK;
+					var.varValue = "11";
+				}
 				break;
 			}
 
@@ -374,26 +385,18 @@ namespace Eclipse
 		}
 
 		// remove if
-		std::cout << "FOR SCRIPT: " << script->scriptName << std::endl;
 		script->vars.erase(std::remove_if(script->vars.begin(),
 			script->vars.end(),
 			[&](const MonoVariable& var)-> bool
 			{
-				std::cout << "Checking name" << std::endl;
 				for (auto& name : fieldNameList)
 				{
-					if (name == var.varName)
-					{
-						return false;
-						std::cout << "VARIABLE FOUND: " << var.varName << std::endl;
-					}
+					if (name == var.varName) return false;
 				}
 				
-				std::cout << "VARIABLE NOT FOUND: " << var.varName << std::endl;
 				return true;
 			}),
 			script->vars.end());
-		std::cout << std::endl;
 	}
 
 	bool MonoManager::CheckIfFieldExist(MonoScript* script, std::string& fieldName)
@@ -733,6 +736,24 @@ namespace Eclipse
 		args.push_back(str);
 
 		ExecuteMethod(obj, GetMethodFromClass(klass, ".ctor", 2), args);
+
+		return obj;
+	}
+
+	MonoObject* MonoManager::CreateLayerMaskClass(std::string mask)
+	{
+		if (mask.empty())
+			mask = "1";
+
+		MonoClass* klass = GetAPIMonoClass("LayerMask");
+		MonoObject* obj = CreateObjectFromClass(klass, false);
+
+		MonoString* str = mono_string_new(mono_domain_get(), mask.c_str());
+
+		std::vector<void*> args;
+		args.push_back(str);
+
+		ExecuteMethod(obj, GetMethodFromClass(klass, ".ctor", 1), args);
 
 		return obj;
 	}

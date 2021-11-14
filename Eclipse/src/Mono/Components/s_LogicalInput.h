@@ -52,4 +52,9 @@ namespace Eclipse
 		std::string axis = mono_string_to_utf8(Axis);
 		return engine->InputManager->GetRawAxis(axis);
 	}
+
+	static void SetCameraState(uint32_t state)
+	{
+		engine->gCamera.EnableGameCameraMouse = state ? true : false;
+	}
 }

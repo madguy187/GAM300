@@ -85,6 +85,7 @@ namespace Eclipse
 		MonoObject* CreateLightClass(Entity ent);
 		MonoObject* CreateAudioSourceClass(Entity ent);
 		MonoObject* CreateGameObjectClass(Entity ent, std::string scriptName);
+		MonoObject* CreateLayerMaskClass(std::string mask);
 		ECVec3 ConvertVectorToECVec(MonoObject* vec);
 		ECVec3 ConvertQuaternionToECVec3(MonoObject* vec);
 
