@@ -198,7 +198,7 @@ namespace Eclipse
             engine->AssimpManager.MeshEditor_.Render();
 
             // Frustrum
-            if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
+            if (engine->GetEditorState() && engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
             {
                 engine->MaterialManager.DoNotUpdateStencil();
                 engine->gDebugManager.DrawDebugShapes(FrameBufferMode::FBM_SCENE);

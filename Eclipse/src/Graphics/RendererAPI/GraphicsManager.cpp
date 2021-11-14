@@ -435,7 +435,7 @@ namespace Eclipse
 
     void Eclipse::GraphicsManager::FinalRender()
     {
-        if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
+        if (engine->GetEditorState() && engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
         {
             if (engine->gFrameBufferManager->IsSobelEffect())
             {
