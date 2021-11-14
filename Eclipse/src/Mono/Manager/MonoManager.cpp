@@ -274,7 +274,7 @@ namespace Eclipse
 		const std::ifstream input_stream(outputTxtFile, std::ios_base::binary);
 
 		if (input_stream.fail()) {
-			throw std::runtime_error("Failed to open file");
+			return true;
 		}
 
 		std::stringstream streambuffer;
