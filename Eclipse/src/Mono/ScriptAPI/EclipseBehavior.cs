@@ -39,7 +39,7 @@ namespace Eclipse
         }
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        public extern static GameObject Instantiate(string prefabName, Vector3 pos, Vector3 direction);
+        public extern static GameObject CreateSpotLight(Vector3 pos, Vector3 direction);
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         public extern static GameObject Find(string entName);

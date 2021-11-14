@@ -66,5 +66,7 @@ namespace Eclipse
 		{
 			return engine->world.GetComponent<SpotLightComponent>(ent).IntensityStrength;
 		}
+
+		return 0.0f;
 	}
 }
