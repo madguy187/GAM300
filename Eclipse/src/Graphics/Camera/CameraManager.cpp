@@ -179,34 +179,44 @@ namespace Eclipse
 
     void CameraManager::ComputePerspectiveMtx(CameraComponent& _camera)
     {
-        auto& editorCam = engine->world.GetComponent<CameraComponent>(GetEditorCameraID());
-        auto& transform = engine->world.GetComponent<TransformComponent>(GetCameraID(_camera.camType));
-
-        //_camera.aspect = static_cast<float>((OpenGL_Context::GetWindowRatioX() * OpenGL_Context::GetWidth()) / (OpenGL_Context::GetWindowRatioY() * OpenGL_Context::GetHeight()));
-
-        if (_camera.projType == CameraComponent::ProjectionType::Orthographic)
+        if (engine->CheckEditor == false)
         {
-            // Darren was here . Actually wanna check only scene using ortho? if yes for now i hardcode ortho.
-            _camera.aspect = engine->gFrameBufferManager->GetAspectRatio(_camera.camType);
-
-            _camera.projMtx = glm::ortho(static_cast<float>(-(OpenGL_Context::GetWidth()) * _camera.aspect) / transform.scale.x,
-                static_cast<float>((OpenGL_Context::GetWidth()) * _camera.aspect) / transform.scale.x,
-                static_cast<float>(-(OpenGL_Context::GetHeight()) * _camera.aspect) / transform.scale.x,
-                static_cast<float>((OpenGL_Context::GetHeight()) * _camera.aspect) / transform.scale.x,
-                editorCam.nearPlane, editorCam.farPlane);
-        }
-        else
-        {
-            // Darren was here . Actually wanna check only scene using perspective? if yes for now i hardcode scene.
-            _camera.aspect = engine->gFrameBufferManager->GetAspectRatio(_camera.camType);
+            _camera.aspect = engine->gFrameBufferManager->GetAspectRatio(CameraComponent::CameraType::Game_Camera);
 
             if ((OpenGL_Context::GetWidth() != 0) && (OpenGL_Context::GetHeight() != 0))
             {
-                _camera.projMtx = glm::perspective(glm::radians(_camera.fov),
-                    _camera.aspect, _camera.nearPlane, _camera.farPlane);
+                _camera.projMtx = glm::perspective(glm::radians(_camera.fov), _camera.aspect, _camera.nearPlane, _camera.farPlane);
             }
         }
+        else
+        {
+            auto& editorCam = engine->world.GetComponent<CameraComponent>(GetEditorCameraID());
+            auto& transform = engine->world.GetComponent<TransformComponent>(GetCameraID(_camera.camType));
 
+            if (_camera.projType == CameraComponent::ProjectionType::Orthographic)
+            {
+                // Darren was here . Actually wanna check only scene using ortho? if yes for now i hardcode ortho.
+                _camera.aspect = engine->gFrameBufferManager->GetAspectRatio(_camera.camType);
+
+                _camera.projMtx = glm::ortho(static_cast<float>(-(OpenGL_Context::GetWidth()) * _camera.aspect) / transform.scale.x,
+                    static_cast<float>((OpenGL_Context::GetWidth()) * _camera.aspect) / transform.scale.x,
+                    static_cast<float>(-(OpenGL_Context::GetHeight()) * _camera.aspect) / transform.scale.x,
+                    static_cast<float>((OpenGL_Context::GetHeight()) * _camera.aspect) / transform.scale.x,
+                    editorCam.nearPlane, editorCam.farPlane);
+            }
+            else
+            {
+                // Darren was here . Actually wanna check only scene using perspective? if yes for now i hardcode scene.
+                _camera.aspect = engine->gFrameBufferManager->GetAspectRatio(_camera.camType);
+
+                if ((OpenGL_Context::GetWidth() != 0) && (OpenGL_Context::GetHeight() != 0))
+                {
+                    _camera.projMtx = glm::perspective(glm::radians(_camera.fov),
+                        _camera.aspect, _camera.nearPlane, _camera.farPlane);
+                }
+            }
+
+        }
     }
 
     void CameraManager::UpdateEditorCamera(TransformComponent& _transform)

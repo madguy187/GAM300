@@ -193,7 +193,16 @@ namespace Eclipse
     void AssimpModelManager::MeshDraw(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType)
     {
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
-        engine->gFrameBufferManager->UseFrameBuffer(Mode);
+        
+        if (engine->CheckEditor == true)
+        {
+            engine->gFrameBufferManager->UseFrameBuffer(Mode);
+        }
+        else
+        {
+            //engine->gFrameBufferManager->UseFrameBuffer(Mode);
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        }
 
         Shader shdrpgm = Graphics::shaderpgms["PBRShader"];
         shdrpgm.Use();
@@ -238,7 +247,9 @@ namespace Eclipse
         GLuint model_ = shdrpgm.GetLocation("model");
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
 
+        glCullFace(GL_FRONT);
         RenderMesh(ModelMesh, GL_FILL);
+        glCullFace(GL_BACK);
     }
 
     void AssimpModelManager::RenderFromDepth(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType)
@@ -282,7 +293,6 @@ namespace Eclipse
             glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
             glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
             GLCall(glUniform1f(uniform_var_loc5, engine->GraphicsManager.Magnitude));
-
 
             // EBO stuff
             glBindVertexArray(engine->AssimpManager.Geometry[ModelMesh.MeshName.data()]->VAO);

@@ -83,24 +83,7 @@ void main()
 {
     if(Type ==  1)
     {
-        //FragColor = vec4(vec3(1.0 - texture(screenTexture, texCoords)), 1.0);
-        
-        vec2 uv = texCoords.xy / vec2(1270,593);
-        vec3 color = texture(screenTexture, uv).rgb;
-	    vec3 blurColor = texture(screenTexture, uv,5.0).rgb;
-
-        float aspectRatio = 1270 / 593;
-        vec2 objectCenter = vec2(900,300)/vec2(1270,593);
-
-        vec2 v = uv - objectCenter;
-        v.x = v.x * aspectRatio;
-        float size = mouseSize / 2.0;
-        float smoothSize = size * smoothObjectPadding;
-        float circleMix = smoothstep( size,size - smoothSize, length(v));
-        blurColor.rgb = mix(blurColor.rgb, color.rgb, circleMix);
-
-        FragColor = vec4(blurColor, 1.0);
-
+        FragColor = vec4(vec3(1.0 - texture(screenTexture, texCoords)), 1.0);
     }
     else if( Type == 2 )
     {

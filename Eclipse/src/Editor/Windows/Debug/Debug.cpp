@@ -171,6 +171,8 @@ namespace Eclipse
         ECGui::CheckBoxBool("Draw DebugShapes", &engine->gDebugDrawManager->Visible, false);
         ECGui::InsertSameLine();
         ECGui::CheckBoxBool("Enable Outline", &engine->MaterialManager.EnableHighlight, false);
+        ECGui::InsertSameLine();
+        ECGui::CheckBoxBool("Enable Shadows", &engine->LightManager.EnableShadows, false);
 
         ECGui::CheckBoxBool("Draw Frustrum", &engine->gDebugManager.Visible, false);
         ECGui::InsertSameLine();

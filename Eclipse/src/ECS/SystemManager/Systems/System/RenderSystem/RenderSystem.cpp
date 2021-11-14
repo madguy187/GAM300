@@ -43,28 +43,20 @@ namespace Eclipse
         engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
         engine->GraphicsManager.UploadGlobalUniforms();
+        Renderer.UpdateLightMatrix();
 
-        if (engine->GraphicsManager.CheckRender == true)
+        if (engine->CheckEditor == false)
         {
-            // Estiamtion which models are in our frustrum
-            //const auto& RenderablesVsFrustrum = engine->gCullingManager->ReturnContacted();
+            for (auto const& entityID : mEntities)
+            {
+                MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
+                Renderer.RenderGameFromLightPOV(Mesh, entityID);
+            }
 
-            /*************************************************************************
-              Render Without Stencer
-              Render Sky to Sceneview
-            *************************************************************************/
-            engine->MaterialManager.DoNotUpdateStencil();
-            engine->GraphicsManager.RenderSky(FrameBufferMode::FBM_SCENE);
-
-            // Basic Primitives Render Start =============================
             for (auto const& entityID : mEntities)
             {
                 auto& entCom = engine->world.GetComponent<EntityComponent>(entityID);
-
                 if (!entCom.IsVisible) continue;
-                // Used somewhere else.
-                //if (entityID == engine->gPBRManager->gMaterialEditorSettings->InnerEntity || entityID == engine->gPBRManager->gMaterialEditorSettings->OuterEntity)
-                //    continue;
 
                 //If No Mesh Component, Do not Continue
                 if (!engine->world.CheckComponent<MeshComponent>(entityID))
@@ -81,12 +73,6 @@ namespace Eclipse
                         continue;
                 }
 
-                // If CUlled off , dont render
-               //if (engine->gCullingManager->ToRenderOrNot(entityID) == false)
-               //{
-               //    continue;
-               //}
-
                 MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
 
                 if (Mesh.transparency == 0.0f)
@@ -94,117 +80,83 @@ namespace Eclipse
                     continue;
                 }
 
-                // After hot-realoding , we check if he still exists or not
-                if (engine->AssimpManager.CheckGeometryExist(Mesh))
+                Renderer.RenderGame(Mesh, entityID);
+            }
+        }
+        else
+        {
+            if (engine->GraphicsManager.CheckRender == true)
+            {
+                // Estiamtion which models are in our frustrum
+                //const auto& RenderablesVsFrustrum = engine->gCullingManager->ReturnContacted();
+
+                /*************************************************************************
+                  Render Without Stencer
+                  Render Sky to Sceneview
+                *************************************************************************/
+                engine->MaterialManager.DoNotUpdateStencil();
+                engine->GraphicsManager.RenderSky(FrameBufferMode::FBM_SCENE);
+
+
+                for (auto const& entityID : mEntities)
                 {
-                    // If Scene View is visible
-                    if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
+                    MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
+                    Renderer.RenderSceneFromLightPOV(Mesh, entityID);
+                }
+
+                for (auto const& entityID : mEntities)
+                {
+                    auto& entCom = engine->world.GetComponent<EntityComponent>(entityID);
+                    if (!entCom.IsVisible) continue;
+
+                    //If No Mesh Component, Do not Continue
+                    if (!engine->world.CheckComponent<MeshComponent>(entityID))
                     {
-                        // If PostProcess::Sobel is activated
-                        if (engine->gFrameBufferManager->IsSobelEffect())
-                        {
-                            // If activated , we render to FBM_SCENE_SOBEL then in the FrameBufferManager , we render the texture back to FBM_SCENE
-                            engine->MaterialManager.UpdateStencilWithActualObject(entityID);
-
-                            engine->AssimpManager.MeshDraw(Mesh, entityID,
-                            FrameBufferMode::FBM_SCENE_SOBEL,
-                            engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SCENE_SOBEL),
-                            CameraComponent::CameraType::Editor_Camera);
-                        }
-                        else
-                        {
-                            // If no post process , just render normally
-                            engine->MaterialManager.UpdateStencilWithActualObject(entityID);
-
-                            engine->AssimpManager.MeshDraw(Mesh, entityID,
-                            FrameBufferMode::FBM_SCENE,
-                            engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SCENE),
-                            CameraComponent::CameraType::Editor_Camera);
-                        }
-
-                        // See Normal Vectors
-                        engine->MaterialManager.UpdateStencilWithActualObject(entityID);
-                        engine->AssimpManager.DebugNormals(Mesh, entityID, FrameBufferMode::FBM_SCENE, CameraComponent::CameraType::Editor_Camera);
+                        continue;
                     }
 
-                    // If Game View is visible
-                    if (engine->editorManager->GetEditorWindow<eGameViewWindow>()->IsVisible)
+                    // If it is a base prefab, dont render
+                    if (engine->world.CheckComponent<PrefabComponent>(entityID))
                     {
-                        // If activated , we render to FBM_GAME_SOBEL then in the FrameBufferManager , we render the texture back to FBM_GAME
-                        if (engine->gFrameBufferManager->IsSobelEffect() && (engine->IsScenePlaying() == true) )
-                        {
-                            engine->MaterialManager.DoNotUpdateStencil();
+                        auto& prefab = engine->world.GetComponent<PrefabComponent>(entityID);
 
-                            engine->AssimpManager.MeshDraw(Mesh, entityID,
-                            FrameBufferMode::FBM_GAME_SOBEL,
-                            engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME_SOBEL),
-                            CameraComponent::CameraType::Game_Camera);
-                        }
-                        else
-                        {
-                            // If no post process , just render normally
-                            engine->MaterialManager.DoNotUpdateStencil();
-
-                            engine->AssimpManager.MeshDraw(Mesh, entityID,
-                            FrameBufferMode::FBM_GAME,
-                            engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME),
-                            CameraComponent::CameraType::Game_Camera);
-                        }
+                        if (!prefab.IsInstance)
+                            continue;
                     }
 
-                    // Top View Port
-                    if (engine->editorManager->GetEditorWindow<TopSwitchViewWindow>()->IsVisible)
+                    // If CUlled off , dont render
+                   //if (engine->gCullingManager->ToRenderOrNot(entityID) == false)
+                   //{
+                   //    continue;
+                   //}
+
+                    MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
+
+                    if (Mesh.transparency == 0.0f)
                     {
-                        engine->MaterialManager.DoNotUpdateStencil();
-                        engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_TOP, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_TOP),
-                            CameraComponent::CameraType::TopView_Camera);
+                        continue;
                     }
 
-                    // Bottom View port
-                    if (engine->editorManager->GetEditorWindow<BottomSwitchViewWindow>()->IsVisible)
+                    // After hot-realoding , we check if he still exists or not
+                    if (engine->AssimpManager.CheckGeometryExist(Mesh))
                     {
-                        engine->MaterialManager.DoNotUpdateStencil();
-                        engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_BOTTOM, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_BOTTOM),
-                            CameraComponent::CameraType::BottomView_Camera);
-                    }
-
-                    // Left View Port
-                    if (engine->editorManager->GetEditorWindow<LeftSwitchViewWindow>()->IsVisible)
-                    {
-                        engine->MaterialManager.DoNotUpdateStencil();
-                        engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_LEFT, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_LEFT),
-                            CameraComponent::CameraType::LeftView_Camera);
-                    }
-
-                    // Right ViewPort
-                    if (engine->editorManager->GetEditorWindow<RightSwitchViewWindow>()->IsVisible)
-                    {
-                        engine->MaterialManager.DoNotUpdateStencil();
-                        engine->AssimpManager.MeshDraw(Mesh, entityID, FrameBufferMode::FBM_RIGHT, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_RIGHT),
-                            CameraComponent::CameraType::RightView_camera);
-                    }
-
-                    // If scene not playing , we enable highlight
-                    if (engine->IsScenePlaying() != true)
-                    {
-                        if (!engine->world.CheckComponent<AnimationComponent>(entityID))
-                        {
-                            engine->MaterialManager.Highlight3DModels(entityID, FrameBufferMode::FBM_SCENE);
-                        }                    
+                        Renderer.RenderScene(Mesh, entityID);
+                        Renderer.RenderGame(Mesh, entityID);
+                        Renderer.RenderOtherViews(Mesh, entityID);
                     }
                 }
+
+                engine->AssimpManager.MeshEditor_.Render();
+
+                // Frustrum
+                if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
+                {
+                    engine->MaterialManager.DoNotUpdateStencil();
+                    engine->gDebugManager.DrawDebugShapes(FrameBufferMode::FBM_SCENE);
+                }
+
+                engine->MaterialManager.StencilBufferClear();
             }
-
-            engine->AssimpManager.MeshEditor_.Render();
-
-            // Frustrum
-            if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
-            {
-                engine->MaterialManager.DoNotUpdateStencil();
-                engine->gDebugManager.DrawDebugShapes(FrameBufferMode::FBM_SCENE);
-            }
-
-            engine->MaterialManager.StencilBufferClear();
         }
 
         engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());
