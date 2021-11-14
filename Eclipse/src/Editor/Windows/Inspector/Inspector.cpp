@@ -1197,7 +1197,7 @@ namespace Eclipse
                     ECGui::InsertSameLine();
                     snprintf(HalfHeightValue, 256, "%f", _Collision.shape.hheight);
                     ECGui::DrawInputTextWidget("HalfHeight: ", HalfHeightValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
-                    _Collision.shape.radius = static_cast<float>(atof(HalfHeightValue));
+                    _Collision.shape.hheight = static_cast<float>(atof(HalfHeightValue));
                 }
 
                 ECGui::CheckBoxBool("IsTrigger", &_Collision.isTrigger, false);
