@@ -319,7 +319,7 @@ namespace Eclipse
 
 	void DragAndDrop::AssetBrowerFilesAndFoldersTarget(const char* type, const char* paths,
 		std::string AssetPath, std::filesystem::path dirEntry, bool& refreshBrowser,
-		std::map<std::filesystem::path, std::vector<std::filesystem::path>> pathMap, bool& CopyMode)
+		const std::map<std::filesystem::path, std::vector<std::filesystem::path>> & pathMap, bool& CopyMode)
 	{
 
 		if (ECGui::BeginDragDropTarget())
