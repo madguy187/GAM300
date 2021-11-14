@@ -7,6 +7,7 @@ public class Test : EclipseBehavior
 {
     public GameObject obj;
     public GameObject camera_obj;
+    public LayerMask mask;
 
     private GameObject pickedObj;
     bool isPicked = false;
@@ -18,7 +19,6 @@ public class Test : EclipseBehavior
 
     public void Update()
     {
-		// Console.WriteLine("Updating movement");
         if (Input.GetKey(KeyCode.W))
         {
 		  // Console.WriteLine("Moving Forward");	
@@ -45,8 +45,9 @@ public class Test : EclipseBehavior
             {
               RaycastHit hit;
 
-              if (Physics.Raycast(obj.transform.position, transform.forward, out hit, 5.0f))
+              if (Physics.Raycast(obj.transform.position, transform.forward, out hit, 5.0f, mask.mask))
               {
+                Console.WriteLine(hit.Entity);
                 pickedObj = new GameObject(hit.Entity, "");
 
                 isPicked = true;
@@ -70,7 +71,7 @@ public class Test : EclipseBehavior
         }
 
         Vector3 tempVec = transform.position;
-        tempVec.y += 2.0f;
+        tempVec.y += 1.0f;
         camera_obj.transform.position = tempVec;
 
         transform.rotation = Quaternion.identity;
