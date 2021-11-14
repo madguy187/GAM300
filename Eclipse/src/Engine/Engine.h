@@ -83,7 +83,7 @@ namespace Eclipse
 		void SetStepState(bool check);
 	private:
 		bool IsEditorActive{ true };
-		bool IsInPlayState{ true };
+		bool IsInPlayState{ false };
 		bool IsInPauseState{ false };
 		bool IsInStepState{ false };
 	};
