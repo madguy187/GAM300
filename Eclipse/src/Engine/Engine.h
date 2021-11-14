@@ -75,14 +75,14 @@ namespace Eclipse
         void DestroyGameObject(const Entity& ent);
         void CleanUp(const Entity& ent);
 
-        void SetEditorState(bool check);
-        void SetPlayState(bool check);
-        void SetPauseState(bool check);
-        void SetStepState(bool check);
-    private:
-        bool IsEditorActive{ true };
-        bool IsInPlayState{ true };
-        bool IsInPauseState{ false };
-        bool IsInStepState{ false };
-    };
+		void SetEditorState(bool check);
+		void SetPlayState(bool check);
+		void SetPauseState(bool check);
+		void SetStepState(bool check);
+	private:
+		bool IsEditorActive{ true };
+		bool IsInPlayState{ false };
+		bool IsInPauseState{ false };
+		bool IsInStepState{ false };
+	};
 }

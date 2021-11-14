@@ -135,10 +135,9 @@ namespace Eclipse
         prefabWorld.RegisterComponent<PrefabComponent>();
         prefabWorld.RegisterComponent<AIComponent>();
         prefabWorld.RegisterComponent<NodeEditor>();
-        prefabWorld.RegisterComponent <NavMeshVolumeComponent>();
-
         prefabWorld.RegisterComponent<NodeEditor>();
         prefabWorld.RegisterComponent<AnimationComponent>();
+        prefabWorld.RegisterComponent<NavMeshVolumeComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
