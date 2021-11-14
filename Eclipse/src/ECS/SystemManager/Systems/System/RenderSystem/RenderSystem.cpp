@@ -45,7 +45,7 @@ namespace Eclipse
         engine->GraphicsManager.UploadGlobalUniforms();
         Renderer.UpdateLightMatrix();
 
-        if (engine->GetEditorState() == false)
+        if (!engine->GetEditorState())
         {
             if (engine->LightManager.EnableShadows)
             {

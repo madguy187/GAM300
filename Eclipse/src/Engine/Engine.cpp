@@ -255,8 +255,6 @@ namespace Eclipse
 
         if (IsEditorActive)
             IsInPlayState = false;
-        else
-            IsInPlayState = true;
 
         float currTime = static_cast<float>(clock());
         float accumulatedTime = 0.0f;
@@ -276,8 +274,11 @@ namespace Eclipse
         }
         else
         {
+            IsInPlayState = true;
             SceneManager::RegisterScene(std::string{ ASSETS_PATH } + "Scenes\\Showcase1.scn");
             SceneManager::LoadScene("Showcase1");
+            mono.StartMono();
+            world.GetSystem<MonoSystem>()->Init();
         }
        
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
