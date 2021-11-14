@@ -166,6 +166,8 @@ namespace Eclipse
 
 	bool DragAndDrop::NodeEditorTextureTarget(const char* id, std::string& destination, const char* cMsg, PayloadTargetType type, Entity ID, size_t arrayIndex)
 	{
+		(void)arrayIndex;
+		(void)ID;
 		if (ECGui::BeginDragDropTarget())
 		{
 			const ImGuiPayload* payload = ECGui::AcceptDragDropPayload(id);
