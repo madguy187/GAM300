@@ -57,7 +57,7 @@ namespace Eclipse
 
                 engine->AssimpManager.MeshDraw(Mesh, entityID,
                     FrameBufferMode::FBM_GAME_SOBEL,
-                    engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME_SOBEL),
+                    engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME),
                     CameraComponent::CameraType::Game_Camera);
             }
             else
