@@ -57,7 +57,7 @@ void Eclipse::CameraSystem::Update()
         }
         else if (_camera.camType == CameraComponent::CameraType::Game_Camera)
         {
-            if (engine->gCamera.EnableGameCameraMouse)
+            if (engine->GetEditorState() || engine->gCamera.EnableGameCameraMouse)
             {
                 engine->gCamera.UpdateGameCamera(_transform);
             }         

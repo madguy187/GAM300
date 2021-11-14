@@ -83,6 +83,7 @@ namespace Eclipse
         std::map<unsigned int, glm::dvec2> mouseCursors;
 
         bool releaseMouse = true;
+        bool firstEntry = true;
     public:
         void CreateEditorCamera();
         unsigned int GetEditorCameraID();
@@ -104,8 +105,12 @@ namespace Eclipse
         void ComputePerspectiveMtx(CameraComponent& _camera);
         glm::vec2 ComputeEditorScreenCenter(SceneWindow* scene);
         glm::vec2 ComputeGameScreenCenter(eGameViewWindow* scene);
+        glm::vec2 CameraManager::ComputeGameTimeScreenCenter();
         void UpdateEditorCamera(TransformComponent& _transform);
         void UpdateMeshCamera(TransformComponent& _transform);
+
+        bool CameraManager::isWithinGameWindow(eGameViewWindow* scene);
+        bool CameraManager::isWithinEditorWindow(SceneWindow* scene);
 
         void CheckCameraInput();
         void CheckMeshCameraInput();

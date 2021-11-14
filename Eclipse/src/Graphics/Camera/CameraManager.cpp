@@ -261,6 +261,19 @@ namespace Eclipse
         return glm::vec2{ GameWindowCenterX , GameWindowCenterY };
     }
 
+    glm::vec2 CameraManager::ComputeGameTimeScreenCenter()
+    {
+        float GameWindowMinX =  OpenGL_Context::GetContextPosition().x;
+        float GameWindowMaxX =  OpenGL_Context::GetContextPosition().x + OpenGL_Context::GetWidth();
+        float GameWindowCenterX = (GameWindowMaxX + GameWindowMinX) / 2;
+
+        float GameWindowMinY = OpenGL_Context::GetContextPosition().y;
+        float GameWindowMaxY = OpenGL_Context::GetContextPosition().y + OpenGL_Context::GetHeight();
+        float GameWindowCenterY = (GameWindowMinY + GameWindowMaxY) / 2;
+
+        return glm::vec2{ GameWindowCenterX , GameWindowCenterY };
+    }
+
     void CameraManager::UpdateEditorCamera(TransformComponent& _transform)
     {
         unsigned int editorID = GetEditorCameraID();
@@ -325,8 +338,10 @@ namespace Eclipse
 
         if (engine->GetEditorState() && engine->editorManager->IsSceneViewportActive())
         {
-            if (glfwGetMouseButton(OpenGL_Context::ptr_window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
-            {
+            auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
+
+            if (isWithinEditorWindow(scene) && (glfwGetMouseButton(OpenGL_Context::ptr_window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS))
+            {   
                 releaseMouse = true;
 
                 ImGui::SetMouseCursor(ImGuiMouseCursor_None);
@@ -483,6 +498,40 @@ namespace Eclipse
                 _transform.rotation.x -= cameraSpd;
             }
         }
+    }
+
+    bool CameraManager::isWithinEditorWindow(SceneWindow* scene)
+    {
+        glm::vec2 windowPos = scene->GetSceneBufferPos();
+        glm::vec2 windowSize = scene->GetSceneBufferSize();
+
+        double mouseX, mouseY;
+        glfwGetCursorPos(OpenGL_Context::ptr_window, &mouseX, &mouseY);
+
+        if ((mouseX > windowPos.x) && (mouseX < (windowPos.x + windowSize.x)) &&
+            (mouseY > windowPos.y) && (mouseY < (windowPos.y + windowSize.y)))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    bool CameraManager::isWithinGameWindow(eGameViewWindow* scene)
+    {
+        ImVec2 windowPos = scene->vMin;
+        ECVec2 windowSize = scene->GetViewPortSize();
+
+        double mouseX, mouseY;
+        glfwGetCursorPos(OpenGL_Context::ptr_window, &mouseX, &mouseY);
+
+        if ((mouseX > windowPos.x) && (mouseX < (windowPos.x + windowSize.x)) &&
+            (mouseY > windowPos.y) && (mouseY < (windowPos.y + windowSize.y)))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     void CameraManager::CheckCameraInput()
@@ -1086,52 +1135,97 @@ namespace Eclipse
 
     void CameraManager::UpdateGameCamera(TransformComponent& _transform)
     {
-        if (!engine->GetEditorState() || engine->editorManager->IsGameViewportActive())
+        if (engine->GetEditorState())
         {
-            if (glfwGetMouseButton(OpenGL_Context::ptr_window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+            if (engine->editorManager->IsGameViewportActive())
             {
-                releaseMouse = true;
+                auto* scene = engine->editorManager->GetEditorWindow<eGameViewWindow>();
 
-                ImGui::SetMouseCursor(ImGuiMouseCursor_None);
-
-                double mouseX, mouseY;
-                glfwGetCursorPos(OpenGL_Context::ptr_window, &mouseX, &mouseY);
-
-                float offsetX = static_cast<float>(mouseX - mouseCursors[GetGameCameraID()].x);
-                float offsetY = static_cast<float>(mouseCursors[GetGameCameraID()].y - mouseY);
-                mouseCursors[GetGameCameraID()].x = mouseX;
-                mouseCursors[GetGameCameraID()].y = mouseY;
-
-                float sensitivity = 0.2f;
-                offsetX *= sensitivity;
-                offsetY *= sensitivity;
-
-                _transform.rotation.setX(_transform.rotation.getX() + offsetY);
-                _transform.rotation.setY(_transform.rotation.getY() + offsetX);
-
-                if (_transform.rotation.getX() > 89.0f)
+                if (isWithinGameWindow(scene) && glfwGetMouseButton(OpenGL_Context::ptr_window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
                 {
-                    _transform.rotation.setX(89.0f);
+                    releaseMouse = true;
+
+                    ImGui::SetMouseCursor(ImGuiMouseCursor_None);
+
+                    double mouseX, mouseY;
+                    glfwGetCursorPos(OpenGL_Context::ptr_window, &mouseX, &mouseY);
+
+                    float offsetX = static_cast<float>(mouseX - mouseCursors[GetGameCameraID()].x);
+                    float offsetY = static_cast<float>(mouseCursors[GetGameCameraID()].y - mouseY);
+                    mouseCursors[GetGameCameraID()].x = mouseX;
+                    mouseCursors[GetGameCameraID()].y = mouseY;
+
+                    float sensitivity = 0.2f;
+                    offsetX *= sensitivity;
+                    offsetY *= sensitivity;
+
+                    _transform.rotation.setX(_transform.rotation.getX() + offsetY);
+                    _transform.rotation.setY(_transform.rotation.getY() + offsetX);
+
+                    if (_transform.rotation.getX() > 89.0f)
+                    {
+                        _transform.rotation.setX(89.0f);
+                    }
+
+                    if (_transform.rotation.getX() < -89.0f)
+                    {
+                        _transform.rotation.setX(-89.0f);
+                    }
                 }
-
-                if (_transform.rotation.getX() < -89.0f)
+                else
                 {
-                    _transform.rotation.setX(-89.0f);
+                    if (releaseMouse)
+                    {
+                        auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
+                        glm::vec2 center = ComputeEditorScreenCenter(scene);
+
+                        glfwSetCursorPos(OpenGL_Context::ptr_window, center.x, center.y);
+
+                        releaseMouse = false;
+                    }
+
+                    glfwGetCursorPos(OpenGL_Context::ptr_window, &mouseCursors[GetGameCameraID()].x, &mouseCursors[GetGameCameraID()].y);
                 }
             }
-            else
+        }
+        else //Editor is off
+        {
+            if (firstEntry)
             {
-                if (releaseMouse)
-                {
-                    auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
-                    glm::vec2 center = ComputeEditorScreenCenter(scene);
+                //auto* scene = engine->editorManager->GetEditorWindow<eGameViewWindow>();
+                //glm::vec2 center = ComputeGameScreenCenter(scene);
+                glm::vec2 center = ComputeGameTimeScreenCenter();
 
-                    glfwSetCursorPos(OpenGL_Context::ptr_window, center.x, center.y);
-
-                    releaseMouse = false;
-                }
-
+                glfwSetCursorPos(OpenGL_Context::ptr_window, center.x, center.y);
                 glfwGetCursorPos(OpenGL_Context::ptr_window, &mouseCursors[GetGameCameraID()].x, &mouseCursors[GetGameCameraID()].y);
+                firstEntry = false;
+            }
+
+            ImGui::SetMouseCursor(ImGuiMouseCursor_None);
+
+            double mouseX, mouseY;
+            glfwGetCursorPos(OpenGL_Context::ptr_window, &mouseX, &mouseY);
+
+            float offsetX = static_cast<float>(mouseX - mouseCursors[GetGameCameraID()].x);
+            float offsetY = static_cast<float>(mouseCursors[GetGameCameraID()].y - mouseY);
+            mouseCursors[GetGameCameraID()].x = mouseX;
+            mouseCursors[GetGameCameraID()].y = mouseY;
+
+            float sensitivity = 0.2f;
+            offsetX *= sensitivity;
+            offsetY *= sensitivity;
+
+            _transform.rotation.setX(_transform.rotation.getX() + offsetY);
+            _transform.rotation.setY(_transform.rotation.getY() + offsetX);
+
+            if (_transform.rotation.getX() > 89.0f)
+            {
+                _transform.rotation.setX(89.0f);
+            }
+
+            if (_transform.rotation.getX() < -89.0f)
+            {
+                _transform.rotation.setX(-89.0f);
             }
         }
     }

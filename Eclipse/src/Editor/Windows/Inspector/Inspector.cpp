@@ -869,6 +869,7 @@ namespace Eclipse
                             "Script File inserted.", PayloadTargetType::PTT_WIDGET, ID, i);
 
                         if (!scriptCom.scriptList[i]) continue;
+
                         for (size_t j = 0; j < scriptCom.scriptList[i]->vars.size(); ++j)
                         {
                             ECGui::SetColumns(2, nullptr, true);
@@ -884,42 +885,45 @@ namespace Eclipse
                                     "Non-modifiable", const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()),
                                     256, true, ImGuiInputTextFlags_ReadOnly);
                             }
-                            else
-                                if (scriptCom.scriptList[i]->vars[j].type == m_Type::MONO_LIGHT)
-                                {
-                                    ECGui::DrawInputTextHintWidget("Light Entity ID", "Drag Light Entity Here",
-                                        const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()), 256,
-                                        true, ImGuiInputTextFlags_ReadOnly);
+                            else if (scriptCom.scriptList[i]->vars[j].type == m_Type::MONO_LIGHT)
+                            {
+                                ECGui::DrawInputTextHintWidget("Light Entity ID", "Drag Light Entity Here",
+                                    const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()), 256,
+                                    true, ImGuiInputTextFlags_ReadOnly);
+                                engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity",
+                                    scriptCom.scriptList[i]->vars[j].varValue, "Light Entity ID registered", 
+                                    PayloadTargetType::PTT_SCRIPT_LIGHT, ID, j);
+                            }
+                            else if (scriptCom.scriptList[i]->vars[j].type == m_Type::MONO_AUDIO)
+                            {
+                                ECGui::DrawInputTextHintWidget("Audio Entity ID", "Drag Light Entity Here",
+                                    const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()), 256,
+                                    true, ImGuiInputTextFlags_ReadOnly);
                                     engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity",
-                                        scriptCom.scriptList[i]->vars[j].varValue, "Light Entity ID registered", PayloadTargetType::PTT_SCRIPT_LIGHT, ID, j);
-                                }
-                                else
-                                    if (scriptCom.scriptList[i]->vars[j].type == m_Type::MONO_AUDIO)
-                                    {
-                                        ECGui::DrawInputTextHintWidget("Audio Entity ID", "Drag Light Entity Here",
-                                            const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()), 256,
-                                            true, ImGuiInputTextFlags_ReadOnly);
-                                            engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity",
-                                                scriptCom.scriptList[i]->vars[j].varValue, "Audio Entity ID registered", PayloadTargetType::PTT_SCRIPT_AUDIO, ID, j);
-                                    }
-                                    else
-                                        if (scriptCom.scriptList[i]->vars[j].type == m_Type::MONO_GAMEOBJECT)
-                                        {
-                                            ECGui::DrawInputTextHintWidget("Game Obj Entity ID", "Drag Game Obj Entity Here",
-                                                const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()), 256,
-                                                true, ImGuiInputTextFlags_ReadOnly);
-                                            engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity",
-                                                scriptCom.scriptList[i]->vars[j].varValue, "Game Obj Entity ID registered", PayloadTargetType::PTT_SCRIPT_GAMEOBJECT, ID, j);
-                                        }
-                                else
-                                {
-                                    ECGui::DrawInputTextWidget(scriptCom.scriptList[i]->vars[j].varName.c_str(),
-                                        const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()),
-                                        256, 0, true);
-                                }
+                                        scriptCom.scriptList[i]->vars[j].varValue, "Audio Entity ID registered",
+                                        PayloadTargetType::PTT_SCRIPT_AUDIO, ID, j);
+                            }
+                            else if (scriptCom.scriptList[i]->vars[j].type == m_Type::MONO_GAMEOBJECT)
+                            {
+                                ECGui::DrawInputTextHintWidget("Game Obj Entity ID", "Drag Game Obj Entity Here",
+                                    const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()), 256,
+                                    true, ImGuiInputTextFlags_ReadOnly);
+                                engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity",
+                                    scriptCom.scriptList[i]->vars[j].varValue, "Game Obj Entity ID registered", 
+                                    PayloadTargetType::PTT_SCRIPT_GAMEOBJECT, ID, j);
+                            }
+                            else if (scriptCom.scriptList[i]->vars[j].type == m_Type::MONO_LAYERMASK)
+                            {
+                                OnCollisionMatrixUpdate(ID, scriptCom.scriptList[i]->vars[j]);
+                            }
+                            else
+                            {
+                                ECGui::DrawInputTextWidget(scriptCom.scriptList[i]->vars[j].varName.c_str(),
+                                    const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()),
+                                    256, 0, true);
+                            }
 
                             ECGui::NextColumn();
-
                         }
 
                         ECGui::SetColumns(1, nullptr, true);
@@ -1201,6 +1205,13 @@ namespace Eclipse
                 }
 
                 ECGui::CheckBoxBool("IsTrigger", &_Collision.isTrigger, false);
+
+                if (engine->world.CheckComponent<ScriptComponent>(ID))
+                {
+                    auto& scriptCom = engine->world.GetComponent<ScriptComponent>(ID);
+
+                    OnCollisionMatrixUpdate(ID,scriptCom.scriptList[0]->vars[0]);
+                }
             }
         }
         return false;
@@ -1262,17 +1273,14 @@ namespace Eclipse
                     engine->gNavMesh.BuildNavMesh(ID);
                 }
 
-                if (engine->world.CheckComponent<ScriptComponent>(ID))
+                /*if (engine->world.CheckComponent<ScriptComponent>(ID))
                 {
                     OnCollisionMatrixUpdate(ID);
-                }
+                }*/
             }
         }
         return false;
     }
-
-
-
 
     bool InspectorWindow::ShowPrefebProperty(Entity ID)
     {
@@ -2147,12 +2155,12 @@ namespace Eclipse
         }
     }
 
-    void InspectorWindow::OnCollisionMatrixUpdate(Entity ID)
+    void InspectorWindow::OnCollisionMatrixUpdate(Entity ID, MonoVariable& monoVar)
     {
         auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
         auto& scriptCom = engine->world.GetComponent<ScriptComponent>(ID);
         auto* settings = engine->editorManager->GetEditorWindow<DebugWindow>();
-
+     
         const char* currentLabel = nullptr;
 
         if (CollisionLayerChecker.Current.IsNothing)
@@ -2172,9 +2180,7 @@ namespace Eclipse
             currentLabel = settings->GetStringLayer(*CollisionLayerChecker.Current.UnLayerTracker.begin()).c_str();
         }
 
-        ECGui::DrawTextWidget<const char*>("Collision Mask ", EMPTY_STRING);
-        ECGui::InsertSameLine();
-        if (ImGuiAPI::BeginComboList("CollisionLayerComboList", currentLabel, true))
+        if (ImGuiAPI::BeginComboList(monoVar.varName.c_str(), currentLabel, true))
         {
             for (const auto& pair : settings->GetLayerList())
             {
@@ -2183,7 +2189,7 @@ namespace Eclipse
                 if (ImGui::Selectable(pair.second.c_str(), CollisionLayerChecker.Current.IndexActiveList[pair.first]))
                 {
                     UpdateCollisionLayerTracker(settings, pair.first);
-                    SetScriptBitset(scriptCom, entCom);
+                    SetScriptBitset(scriptCom, entCom, monoVar);
                 }
             }
 
@@ -2272,7 +2278,6 @@ namespace Eclipse
                         CollisionLayerChecker.Current.IsEverything = true;
                         CollisionLayerChecker.Current.IndexActiveList[2] = true;
                     }
-                    
                 }
             }
         }
@@ -2363,7 +2368,8 @@ namespace Eclipse
         }
     }
 
-    void InspectorWindow::SetScriptBitset(ScriptComponent& scriptCom, EntityComponent& entcom)
+    void InspectorWindow::SetScriptBitset(ScriptComponent& scriptCom, EntityComponent& entcom, 
+        MonoVariable& monoVar)
     {
         scriptCom.LayerMask.reset();
 
@@ -2380,7 +2386,7 @@ namespace Eclipse
                 scriptCom.LayerMask.set(key, val);
         }
 
-        // std::cout << scriptCom.LayerMask << std::endl;
+        monoVar.varValue = scriptCom.LayerMask.to_string();
     }
 
     void InspectorWindow::OnLayerListUpdate(EntityComponent& entcom)
