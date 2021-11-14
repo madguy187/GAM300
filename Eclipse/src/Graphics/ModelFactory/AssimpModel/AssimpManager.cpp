@@ -200,6 +200,7 @@ namespace Eclipse
         }
         else
         {
+            //engine->gFrameBufferManager->UseFrameBuffer(Mode);
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 

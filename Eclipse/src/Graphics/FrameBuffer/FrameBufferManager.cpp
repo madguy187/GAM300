@@ -36,10 +36,13 @@ namespace Eclipse
             // Basic FrameBuffers
             CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_GAME);
             CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_SCENE);
-            //CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_TOP);
-            //CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_BOTTOM);
-            //CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_LEFT);
-            //CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_RIGHT);
+            CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_TOP);
+            CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_BOTTOM);
+            CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_LEFT);
+            CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_RIGHT);
+
+            CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_MATERIALEDITOR);
+            CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_MESHEDITOR);
 
             // Sobel Framebuffers
             // We Render to this FBO then we will render the effect into scene view.
@@ -146,6 +149,12 @@ namespace Eclipse
                 i.second->Bind();
                 i.second->Clear();
             }
+        }
+
+        for (auto& i : FrameBufferContainer)
+        {
+            i.second->Bind();
+            i.second->Clear();
         }
     }
 
@@ -426,6 +435,7 @@ namespace Eclipse
                         SobelEffectUpdate(FrameBufferMode::FBM_GAME_SOBEL, FrameBufferMode::FBM_GAME);
                     }
 
+                    SobelEffectUpdate(FrameBufferMode::FBM_GAME_SOBEL, FrameBufferMode::FBM_GAME);
                     SobelEffectUpdate(FrameBufferMode::FBM_SCENE_SOBEL, FrameBufferMode::FBM_SCENE);
                 }
                 else
