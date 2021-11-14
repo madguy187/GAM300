@@ -36,7 +36,10 @@ namespace Eclipse
 
 			if (ECGui::CreateMenuItem(key, &selected))
 			{
-				SceneManager::NewScene();
+				if (!engine->GetPlayState())
+				{
+					SceneManager::NewScene();
+				}
 			}
 		}
 		

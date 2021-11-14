@@ -723,6 +723,14 @@ namespace Eclipse
                         engine->gPBRManager->SetAlbedoConstant(shader, glm::vec4(0.8, 0.8, 0.8, 1.0));
                     }
 
+                    Material.HoldingTextures.clear();
+
+                    std::pair<MMAPIterator, MMAPIterator> result = Graphics::textures.equal_range(Material.TextureKey);
+                    for (MMAPIterator it = result.first; it != result.second; it++)
+                    {
+                        Material.HoldingTextures.push_back(it->second);
+                    }
+
                     for (unsigned int it = 0; it < Material.HoldingTextures.size(); it++)
                     {
                         std::string name;
@@ -816,10 +824,29 @@ namespace Eclipse
         glm::mat4 mModelNDC;
         glm::mat4 model = glm::mat4(1.0f);
 
-        model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
-        model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+        auto& TouchingHand = engine->world.GetComponent<MeshComponent>(ModelID);
+
+        if (strcmp(TouchingHand.MeshName.data(), "hand") == 0)
+        {
+            auto& campos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetGameCameraID());
+            auto& handPos = engine->world.GetComponent<TransformComponent>(ModelID);
+
+            handPos.rotation.setY(-1 * campos.rotation.getY() - 90.0f);
+            handPos.rotation.setX(campos.rotation.getX());
+
+            model = glm::translate(model, handPos.position.ConvertToGlmVec3Type());
+            model = glm::rotate(model, glm::radians(handPos.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(handPos.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(handPos.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+
+        }
+        else
+        {
+            model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
+            model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+        }
 
         if (engine->world.CheckComponent<AnimationComponent>(ModelID))
         {

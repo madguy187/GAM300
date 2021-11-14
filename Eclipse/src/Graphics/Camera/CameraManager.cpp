@@ -1160,8 +1160,9 @@ namespace Eclipse
                 if (isWithinGameWindow(scene) && glfwGetMouseButton(OpenGL_Context::ptr_window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
                 {
                     releaseMouse = true;
-
-                    ImGui::SetMouseCursor(ImGuiMouseCursor_None);
+                    
+                    glfwSetInputMode(OpenGL_Context::ptr_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+                    //ImGui::SetMouseCursor(ImGuiMouseCursor_None);
 
                     double mouseX, mouseY;
                     glfwGetCursorPos(OpenGL_Context::ptr_window, &mouseX, &mouseY);
