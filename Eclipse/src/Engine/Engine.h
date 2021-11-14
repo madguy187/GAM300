@@ -33,8 +33,6 @@ namespace Eclipse
     class Engine
     {
     public:
-        bool CheckEditor = false;
-
         World world;
         World prefabWorld;
         CameraManager gCamera;

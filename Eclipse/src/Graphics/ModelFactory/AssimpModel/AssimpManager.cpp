@@ -194,7 +194,7 @@ namespace Eclipse
     {
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
         
-        if (engine->CheckEditor == true)
+        if (engine->GetEditorState() == true)
         {
             engine->gFrameBufferManager->UseFrameBuffer(Mode);
         }

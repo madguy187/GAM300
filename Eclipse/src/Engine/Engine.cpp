@@ -290,8 +290,6 @@ namespace Eclipse
         /*TestingFSMClass eg{ Entity{MAX_ENTITY} };
         eg.SetState(TestState::TS_WALK);*/
 
-        CheckEditor = false;
-
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
             glfwPollEvents();
