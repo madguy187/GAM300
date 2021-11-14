@@ -5,7 +5,7 @@ namespace Eclipse
 {
     void FrameBufferManager::CreateFrameBuffers()
     {
-        if (engine->CheckEditor == true)
+        if (engine->GetEditorState() == true)
         {
             // Basic FrameBuffers
             CreateFBO(1270, 593, FrameBufferMode::FBM_GAME);
@@ -72,7 +72,7 @@ namespace Eclipse
 
     void FrameBufferManager::FrameBufferDraw()
     {
-        if (engine->CheckEditor == false)
+        if (engine->GetEditorState() == false)
         {
             FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_GAME)));
             FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_SCENE)));
@@ -142,7 +142,7 @@ namespace Eclipse
 
     void FrameBufferManager::GlobalBind()
     {
-        if (engine->CheckEditor == true)
+        if (engine->GetEditorState() == true)
         {
             for (auto& i : FrameBufferContainer)
             {
@@ -381,7 +381,7 @@ namespace Eclipse
                 // We will output to Game FrameBuffer
                 //UseFrameBuffer(RenderFBO);
 
-                if (engine->CheckEditor == true)
+                if (engine->GetEditorState() == true)
                 {
                     // We will output to Game FrameBuffer
                     UseFrameBuffer(RenderFBO);
@@ -431,7 +431,7 @@ namespace Eclipse
 
     void FrameBufferManager::PostProcessUpdate()
     {
-        if (engine->CheckEditor == false)
+        if (engine->GetEditorState() == false)
         {
             PostProcess->AllowPostProcess = true;
             PostProcess->PPType_ = FrameBuffer::PostProcessType::PPT_SOBEL;

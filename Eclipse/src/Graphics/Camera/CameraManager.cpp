@@ -192,7 +192,7 @@ namespace Eclipse
 
     void CameraManager::ComputePerspectiveMtx(CameraComponent& _camera)
     {
-        if (engine->CheckEditor == false)
+        if (engine->GetEditorState() == false)
         {
             _camera.aspect = engine->gFrameBufferManager->GetAspectRatio(CameraComponent::CameraType::Game_Camera);
 
