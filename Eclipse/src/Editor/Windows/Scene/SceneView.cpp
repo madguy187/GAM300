@@ -9,7 +9,11 @@ namespace Eclipse
 	void SceneWindow::Update()
 	{
 		if (IsVisible)
-			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&SceneWindow::RunMainWindow, this));
+		{
+			IsWindowRunning = ECGui::DrawMainWindow<void()>(WindowName, std::bind(&SceneWindow::RunMainWindow, this));
+		}
+		else
+			IsWindowRunning = false;
 	}
 
 	void SceneWindow::Init()
@@ -33,7 +37,7 @@ namespace Eclipse
 		//ImGui::EndTooltip();
 
 		ImVec2 viewportPanelSize = ECGui::GetWindowSize();
-		//std::cout << "Scene View: " << ImGui::GetWindowDockID() << std::endl;
+
 		if (mViewportSize.getX() != viewportPanelSize.x ||
 			mViewportSize.getY() != viewportPanelSize.y)
 		{
@@ -478,6 +482,11 @@ namespace Eclipse
 	bool SceneWindow::GetSnapping() const
 	{
 		return IsSnapping;
+	}
+
+	bool SceneWindow::GetIsWindowRunning() const
+	{
+		return IsWindowRunning;
 	}
 
 	void SceneWindow::SetGizmoType(int type)

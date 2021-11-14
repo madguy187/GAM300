@@ -232,6 +232,7 @@ namespace Eclipse
 
 	void MonoManager::LoadAllScripts()
 	{
+		if (!CheckIfScriptCompiled()) return;
 		const MonoTableInfo* table_info = mono_image_get_table_info(ScriptImage, MONO_TABLE_TYPEDEF);
 
 		int rows = mono_table_info_get_rows(table_info);
@@ -242,19 +243,55 @@ namespace Eclipse
 			uint32_t cols[MONO_TYPEDEF_SIZE];
 			mono_metadata_decode_row(table_info, i, cols, MONO_TYPEDEF_SIZE);
 			const char* name = mono_metadata_string_heap(ScriptImage, cols[MONO_TYPEDEF_NAME]);
-			if (CheckIfScriptExist(name)) continue;
-			UserImplementedScriptList.push_back(MonoScript{});
-			UserImplementedScriptList.back().scriptName = name;
-			LoadAllFields(&UserImplementedScriptList.back());
+
+			int index = CheckIfScriptExist(name);
+			if (index == -1)
+			{
+				UserImplementedScriptList.push_back(MonoScript{});
+				UserImplementedScriptList.back().scriptName = name;
+				LoadAllFields(&UserImplementedScriptList.back());
+			}
+			else
+				LoadAllFields(&UserImplementedScriptList[index]);
 		}
 	}
 
-	bool MonoManager::CheckIfScriptExist(std::string scriptName)
+	bool MonoManager::CheckIfScriptCompiled()
 	{
-		for (auto& script : UserImplementedScriptList)
-			if (script.scriptName == scriptName) return true;
-		
+		TCHAR buffer[MAX_PATH] = { 0 };
+		GetModuleFileName(NULL, buffer, MAX_PATH); // get exe buff
+		std::wstring wBuffer{ buffer }; // convert buffer into wstring
+		std::string exePath{ wBuffer.begin(), wBuffer.end() }; // convert wstring into string
+
+		// removes path from bin onwards
+		size_t index = exePath.find("bin");
+		if (index == exePath.npos) return false;
+		exePath = exePath.substr(0, index);
+
+		// combine strings to make api and script path
+		std::string outputTxtFile = exePath + "Eclipse//mcs_script_output.txt";
+
+		const std::ifstream input_stream(outputTxtFile, std::ios_base::binary);
+
+		if (input_stream.fail()) {
+			throw std::runtime_error("Failed to open file");
+		}
+
+		std::stringstream streambuffer;
+		streambuffer << input_stream.rdbuf();
+		std::string output{ streambuffer.str() };
+
+		if (output.find("succeed") != output.npos) return true;
+
 		return false;
+	}
+
+	int MonoManager::CheckIfScriptExist(std::string scriptName)
+	{
+		for (int i = 0; i < UserImplementedScriptList.size(); i++)
+			if (UserImplementedScriptList[i].scriptName == scriptName) return i;
+		
+		return -1;
 	}
 
 	void MonoManager::LoadAllFields(MonoScript* script)

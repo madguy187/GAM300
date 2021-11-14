@@ -150,11 +150,12 @@ namespace Eclipse
                 i.second->Clear();
             }
         }
-
-        for (auto& i : FrameBufferContainer)
+        else
         {
-            i.second->Bind();
-            i.second->Clear();
+            FrameBufferContainer[FrameBufferMode::FBM_GAME]->Bind();
+            FrameBufferContainer[FrameBufferMode::FBM_GAME]->Clear();
+            FrameBufferContainer[FrameBufferMode::FBM_GAME_SOBEL]->Bind();
+            FrameBufferContainer[FrameBufferMode::FBM_GAME_SOBEL]->Clear();
         }
     }
 
@@ -378,7 +379,19 @@ namespace Eclipse
                 FadeIn(FrameBuffer::PostProcessType::PPT_SOBEL, PostProcess->FadeInTimer, PostProcess->Multiplier, RenderFBO);
 
                 // We will output to Game FrameBuffer
-                UseFrameBuffer(RenderFBO);
+                //UseFrameBuffer(RenderFBO);
+
+                if (engine->CheckEditor == true)
+                {
+                    // We will output to Game FrameBuffer
+                    UseFrameBuffer(RenderFBO);
+                }
+                else
+                {
+                    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+                    glViewport(0, 0, OpenGL_Context::width, OpenGL_Context::height);
+                    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+                }
 
                 auto& shdrpgm = Graphics::shaderpgms["PostProcess"];
                 shdrpgm.Use();

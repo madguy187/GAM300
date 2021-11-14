@@ -19,12 +19,12 @@ public class Test : EclipseBehavior
         if (Input.GetKey(KeyCode.W))
         {
           Vector3 temp = transform.position;
-          transform.position = transform.position + transform.forward * 0.3f;
+          transform.position = transform.position + transform.forward * 0.1f;
         }
         if (Input.GetKey(KeyCode.S))
         {
           Vector3 temp = transform.position;
-          transform.position = transform.position - transform.forward * 0.3f;
+          transform.position = transform.position - transform.forward * 0.1f;
         }
         if (Input.GetKey(KeyCode.D))
         {

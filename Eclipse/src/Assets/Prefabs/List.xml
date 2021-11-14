@@ -67,5 +67,6 @@
             <CompChanges value="00000000000000000000000000000000" />
             <PrefabID value="7029523980311834736" />
         </PrefabComponent>
+        <NavMeshVolumeComponent />
     </Entity_0>
 </Entities>

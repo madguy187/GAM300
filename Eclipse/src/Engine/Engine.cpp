@@ -242,7 +242,10 @@ namespace Eclipse
         //Check this! - Rachel
         CameraSystem::Init();
         RenderSystem::Init();
-        engine->editorManager->TextureIconInit();
+
+        if (IsEditorActive)
+            engine->editorManager->TextureIconInit();
+
         gPhysics.Init();
         audioManager.Init();
 
@@ -379,7 +382,8 @@ namespace Eclipse
             world.Update<AudioSystem>();
 
             // MATERIALSYSTEM =============================
-            world.Update<MaterialSystem>();
+            if (engine->IsEditorActive)
+                world.Update<MaterialSystem>();
 
             // RENDERSYSTEM =============================
             world.Update<RenderSystem>();
