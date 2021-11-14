@@ -99,6 +99,7 @@ namespace Eclipse
 		MonoObject* ExecuteMethod(MonoObject* obj, MonoMethod* method, std::vector<void*> args);
 
 		void LoadAllScripts();
+		bool CheckIfScriptCompiled();
 
 		// Gets image containing all API Scripts
 		MonoImage* GetAPIImage();

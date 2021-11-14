@@ -212,7 +212,7 @@ namespace Eclipse
 
         if (ScriptCounter)
         {
-
+            engine->mono.StartMono();
             ScriptCounter = 0;
         }
     }
