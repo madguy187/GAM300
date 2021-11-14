@@ -495,6 +495,6 @@ namespace Eclipse
                 nameChanged = true;
                 return true;
             }
-
+        return false;
     }
 }
