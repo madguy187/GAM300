@@ -247,8 +247,8 @@ namespace Eclipse
 		{
 			(void)isChild;
 			bool result = true;
-			result = (lhs.Tag == rhs.Tag);
-			result = (lhs.LayerIndex == rhs.LayerIndex);
+			result = (lhs.Tag == rhs.Tag) && result;
+			result = (lhs.LayerIndex == rhs.LayerIndex) && result;
 			return result;
 		}
 		
@@ -257,10 +257,10 @@ namespace Eclipse
 			bool result = true;
 			if (isChild)
 			{
-				result = (lhs.position == rhs.position);
+				result = (lhs.position == rhs.position) && result;
 			}
-			result = (lhs.rotation == rhs.rotation);
-			result = (lhs.scale == rhs.scale);
+			result = (lhs.rotation == rhs.rotation) && result;
+			result = (lhs.scale == rhs.scale) && result;
 			return result;
 		}
 		
@@ -280,9 +280,9 @@ namespace Eclipse
 		{
 			(void)isChild;
 			bool result = true;
-			result = (lhs.PosOffset == rhs.PosOffset);
-			result = (lhs.RotOffset == rhs.RotOffset);
-			result = (lhs.ScaleOffset == rhs.ScaleOffset);
+			result = (lhs.PosOffset == rhs.PosOffset) && result;
+			result = (lhs.RotOffset == rhs.RotOffset) && result;
+			result = (lhs.ScaleOffset == rhs.ScaleOffset) && result;
 			return result;
 		}
 
@@ -290,9 +290,9 @@ namespace Eclipse
 		{
 			(void)isChild;
 			bool result = true;
-			result = (lhs.MinDisttoChange == rhs.MinDisttoChange);
-			result = (lhs.patrolling == rhs.patrolling);
-			result = (lhs.PatrolSpeed == rhs.PatrolSpeed);
+			result = (lhs.MinDisttoChange == rhs.MinDisttoChange) && result;
+			result = (lhs.patrolling == rhs.patrolling) && result;
+			result = (lhs.PatrolSpeed == rhs.PatrolSpeed) && result;
 			return result;
 		}
 
