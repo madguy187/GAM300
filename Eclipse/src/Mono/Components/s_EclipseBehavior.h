@@ -35,7 +35,10 @@ namespace Eclipse
 	static MonoObject* CreateSpotLight(MonoObject* pos, MonoObject* dir)
 	{
 		ECVec3 posVec = engine->mono.ConvertVectorToECVec(pos);
-		Entity TaggedSpoLight = engine->editorManager->CreateDefaultEntity(EntityType::ENT_LIGHT_SPOT);
+		Entity TaggedSpoLight = engine->world.CreateEntity();
+
+		engine->world.AddComponent(TaggedSpoLight, TransformComponent{});
+		engine->world.AddComponent(TaggedSpoLight, EntityComponent{});
 
 		engine->LightManager.CreateLights(TypesOfLights::SPOTLIGHT, TaggedSpoLight);
 
