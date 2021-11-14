@@ -1205,6 +1205,13 @@ namespace Eclipse
                 }
 
                 ECGui::CheckBoxBool("IsTrigger", &_Collision.isTrigger, false);
+
+                if (engine->world.CheckComponent<ScriptComponent>(ID))
+                {
+                    auto& scriptCom = engine->world.GetComponent<ScriptComponent>(ID);
+
+                    OnCollisionMatrixUpdate(ID,scriptCom.scriptList[0]->vars[0]);
+                }
             }
         }
         return false;
@@ -2150,11 +2157,10 @@ namespace Eclipse
 
     void InspectorWindow::OnCollisionMatrixUpdate(Entity ID, MonoVariable& monoVar)
     {
-        static int index = 0;
         auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
         auto& scriptCom = engine->world.GetComponent<ScriptComponent>(ID);
         auto* settings = engine->editorManager->GetEditorWindow<DebugWindow>();
-
+     
         const char* currentLabel = nullptr;
 
         if (CollisionLayerChecker.Current.IsNothing)
@@ -2174,9 +2180,7 @@ namespace Eclipse
             currentLabel = settings->GetStringLayer(*CollisionLayerChecker.Current.UnLayerTracker.begin()).c_str();
         }
 
-        /*ECGui::DrawTextWidget<const char*>("Collision Mask ", EMPTY_STRING);
-        ECGui::InsertSameLine();*/
-        if (ImGuiAPI::BeginComboList(my_strcat(monoVar.varName, index++).c_str(), currentLabel, true))
+        if (ImGuiAPI::BeginComboList(monoVar.varName.c_str(), currentLabel, true))
         {
             for (const auto& pair : settings->GetLayerList())
             {
@@ -2185,7 +2189,7 @@ namespace Eclipse
                 if (ImGui::Selectable(pair.second.c_str(), CollisionLayerChecker.Current.IndexActiveList[pair.first]))
                 {
                     UpdateCollisionLayerTracker(settings, pair.first);
-                    SetScriptBitset(scriptCom, entCom);
+                    SetScriptBitset(scriptCom, entCom, monoVar);
                 }
             }
 
@@ -2274,7 +2278,6 @@ namespace Eclipse
                         CollisionLayerChecker.Current.IsEverything = true;
                         CollisionLayerChecker.Current.IndexActiveList[2] = true;
                     }
-                    
                 }
             }
         }
@@ -2384,7 +2387,6 @@ namespace Eclipse
         }
 
         monoVar.varValue = scriptCom.LayerMask.to_string();
-        // std::cout << scriptCom.LayerMask << std::endl;
     }
 
     void InspectorWindow::OnLayerListUpdate(EntityComponent& entcom)
