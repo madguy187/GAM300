@@ -21,7 +21,7 @@ namespace Eclipse
 		void Draw(unsigned int EntityId,DirectionalLightComponent* in, FrameBufferMode, unsigned int indexID, GLenum mode);
 		void CheckUniformPBR(int index, unsigned int EntityId);
 		// First Created Light
-		void FirstGlobalLight();
+		Entity FirstGlobalLight();
 		void Destroy();
 
 	private:

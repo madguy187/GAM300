@@ -46,7 +46,7 @@ public class Test2 : EclipseBehavior
             {
                 if (Physics.Raycast(transform.position, transform.forward, out hit, 20.0f))
                 {
-                    Spot = Instantiate("", transform.position, transform.forward);
+                    Spot = CreateSpotLight(transform.position, transform.forward);
                     light = new Light(Spot.Entity);
 
                     //Console.WriteLine("test" + transform.forward);

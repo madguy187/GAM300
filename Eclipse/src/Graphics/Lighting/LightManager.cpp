@@ -8,7 +8,7 @@ namespace Eclipse
     {
         // LightManager Init =============================
         CreateAttenuationLevels();
-        _DirectionalLights.FirstGlobalLight();
+        DirectionLightID = _DirectionalLights.FirstGlobalLight();
     }
 
     void LightManager::CreateLights(TypesOfLights in, unsigned int CreatedID)

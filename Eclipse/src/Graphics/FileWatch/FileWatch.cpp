@@ -110,10 +110,17 @@ namespace Eclipse
         {
             MaterialInstanceCounter++;
         }
+        break;
 
         case ReloadTypes::RT_MATERIAL_TETXURES:
         {
             MaterialTexturesCounter++;
+        }
+        break;
+
+        case ReloadTypes::RT_SCRIPTS:
+        {
+            ScriptCounter++;
         }
         break;
         }
@@ -133,7 +140,7 @@ namespace Eclipse
 
         case FileStatus::FS_MODIFIED:
         {
-            //std::cout << "File modified: " << PATH_TO_WATCH << '\n';
+            std::cout << "File modified: " << PATH_TO_WATCH << '\n';
             ReloadType(PATH_TO_WATCH);
         }
         break;
@@ -153,7 +160,7 @@ namespace Eclipse
 
     void EclipseFileWatcher::CheckReloadStatus()
     {
-        if (AssetCounter != 0 || BasicTextureCounter != 0 || MaterialInstanceCounter != 0 || MaterialTexturesCounter != 0)
+        if (AssetCounter != 0 || BasicTextureCounter != 0 || MaterialInstanceCounter != 0 || MaterialTexturesCounter != 0 || ScriptCounter != 0)
             return;
     }
 
@@ -202,6 +209,12 @@ namespace Eclipse
             MaterialTexturesCounter = 0;
             EDITOR_LOG_INFO("MATERIALS TEXTURES : HOT-RELOAD DONE");
         }
+
+        if (ScriptCounter)
+        {
+            engine->mono.StartMono();
+            ScriptCounter = 0;
+        }
     }
 
     ReloadTypes EclipseFileWatcher::CheckFolder(std::string const& inString)
@@ -226,6 +239,11 @@ namespace Eclipse
             return ReloadTypes::RT_MATERIAL_TETXURES;
         }
 
+        if (inString.find("src/Assets\\Scripts\\") != std::string::npos)
+        {
+            return ReloadTypes::RT_SCRIPTS;
+        }
+
         return ReloadTypes::RT_NONE;
     }
 
@@ -233,7 +251,7 @@ namespace Eclipse
     {
         if (inString.find("src/Assets\\Fonts") != std::string::npos ||
             inString.find("src/Assets\\meshes") != std::string::npos ||
-            inString.find("src/Assets\\Scripts") != std::string::npos ||
+            //inString.find("src/Assets\\Scripts") != std::string::npos ||
             inString.find("src/Assets\\Shaders") != std::string::npos ||
             inString.find("src/Assets\\Sounds") != std::string::npos ||
             inString.find("src/Assets\\Test Drag DRop") != std::string::npos)
