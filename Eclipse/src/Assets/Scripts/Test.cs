@@ -7,6 +7,7 @@ public class Test : EclipseBehavior
 {
     public GameObject obj;
     public GameObject camera_obj;
+    public LayerMask mask;
 
     private GameObject pickedObj;
     bool isPicked = false;
@@ -18,7 +19,6 @@ public class Test : EclipseBehavior
 
     public void Update()
     {
-		// Console.WriteLine("Updating movement");
         if (Input.GetKey(KeyCode.W))
         {
 		  // Console.WriteLine("Moving Forward");	

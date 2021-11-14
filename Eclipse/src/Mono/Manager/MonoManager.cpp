@@ -365,14 +365,14 @@ namespace Eclipse
 					var.type = m_Type::MONO_LIGHT;
 				else if (fieldklass == GetAPIMonoClass("AudioSource"))
 					var.type = m_Type::MONO_AUDIO;
-				else if (fieldklass == GetAPIMonoClass("LayerMask"))
-					var.type = m_Type::MONO_LAYERMASK;
 				else
 					var.type = m_Type::MONO_UNDEFINED;				
 				break;
 			case MONO_TYPE_CLASS:
 				if (fieldklass == GetAPIMonoClass("GameObject"))
 					var.type = m_Type::MONO_GAMEOBJECT;
+				else if (fieldklass == GetAPIMonoClass("LayerMask"))
+					var.type = m_Type::MONO_LAYERMASK;
 				break;
 			}
 
