@@ -37,11 +37,11 @@ namespace Eclipse
 
 	class MonoManager
 	{
-		MonoDomain* domain;
-		MonoAssembly* ScriptAssembly;
-		MonoAssembly* APIAssembly;
-		MonoImage* ScriptImage;
-		MonoImage* APIImage;
+		MonoDomain* domain = nullptr;
+		MonoAssembly* ScriptAssembly = nullptr;
+		MonoAssembly* APIAssembly = nullptr;
+		MonoImage* ScriptImage = nullptr;
+		MonoImage* APIImage = nullptr;
 
 		std::vector<MonoScript> UserImplementedScriptList;
 		std::vector<InvokeFunc> InvokeContainer;
