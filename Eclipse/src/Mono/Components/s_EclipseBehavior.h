@@ -32,7 +32,7 @@ namespace Eclipse
 		return engine->mono.CreateGameObjectClass(ent, "");
 	}
 
-	static MonoObject* Instantiate(MonoString* prefabName, MonoObject* pos, MonoObject* dir)
+	static MonoObject* CreateSpotLight(MonoObject* pos, MonoObject* dir)
 	{
 		ECVec3 posVec = engine->mono.ConvertVectorToECVec(pos);
 		Entity TaggedSpoLight = engine->editorManager->CreateDefaultEntity(EntityType::ENT_LIGHT_SPOT);
