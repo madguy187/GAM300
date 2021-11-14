@@ -412,7 +412,10 @@ namespace Eclipse
 
         //Serialization(Temp)
         //szManager.SaveSceneFile();
-        pfManager.UnloadSaving();
+        if (GetEditorState())
+        {
+            pfManager.UnloadSaving();
+        }
         // unLoad
         mono.Terminate();
         GraphicsManager.End();
