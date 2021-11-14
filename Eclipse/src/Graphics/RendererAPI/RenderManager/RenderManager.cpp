@@ -65,6 +65,15 @@ namespace Eclipse
                 // If no post process , just render normally
                 engine->MaterialManager.DoNotUpdateStencil();
 
+                if (engine->LightManager.EnableShadows == true)
+                {
+                    auto& ShadowMappingShader = Graphics::shaderpgms["PBRShader"];
+                    ShadowMappingShader.Use();
+                    glActiveTexture(GL_TEXTURE0 + 2);
+                    ShadowMappingShader.setInt("shadowMap", 2);
+                    glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SHADOW));
+                }
+
                 engine->AssimpManager.MeshDraw(Mesh, entityID,
                     FrameBufferMode::FBM_GAME,
                     engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME),
@@ -119,17 +128,20 @@ namespace Eclipse
 
     void RenderManager::UpdateLightMatrix()
     {
-        auto& DLight_T = engine->world.GetComponent<TransformComponent>(engine->LightManager.DirectionLightID);
+        if (engine->LightManager.EnableShadows)
+        {
+            auto& DLight_T = engine->world.GetComponent<TransformComponent>(engine->LightManager.DirectionLightID);
 
-        lightProjection = glm::ortho(-100.0f, 100.0f, 100.0f, -100.0f, near_plane, far_plane);
-        lightView = glm::lookAt(DLight_T.position.ConvertToGlmVec3Type(), glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
-        lightSpaceMatrix = lightProjection * lightView;
+            lightProjection = glm::ortho(-100.0f, 100.0f, 100.0f, -100.0f, near_plane, far_plane);
+            lightView = glm::lookAt(DLight_T.position.ConvertToGlmVec3Type(), glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+            lightSpaceMatrix = lightProjection * lightView;
 
-        auto& simpleDepthShader = Graphics::shaderpgms["SimpleDepthShader"];
-        simpleDepthShader.Use();
+            auto& simpleDepthShader = Graphics::shaderpgms["SimpleDepthShader"];
+            simpleDepthShader.Use();
 
-        GLint lightSpaceMatrix_ = simpleDepthShader.GetLocation("lightSpaceMatrix");
-        glUniformMatrix4fv(lightSpaceMatrix_, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+            GLint lightSpaceMatrix_ = simpleDepthShader.GetLocation("lightSpaceMatrix");
+            glUniformMatrix4fv(lightSpaceMatrix_, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+        }
     }
 
     void RenderManager::RenderSceneFromLightPOV(MeshComponent& Mesh, Entity entityID)
