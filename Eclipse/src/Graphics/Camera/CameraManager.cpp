@@ -1216,6 +1216,7 @@ namespace Eclipse
             }
 
             //ImGui::SetMouseCursor(ImGuiMouseCursor_None);
+            glfwSetInputMode(OpenGL_Context::ptr_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
             double mouseX, mouseY;
             glfwGetCursorPos(OpenGL_Context::ptr_window, &mouseX, &mouseY);
