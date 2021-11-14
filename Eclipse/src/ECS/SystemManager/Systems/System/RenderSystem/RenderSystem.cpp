@@ -45,23 +45,12 @@ namespace Eclipse
         engine->GraphicsManager.UploadGlobalUniforms();
         Renderer.UpdateLightMatrix();
 
-        if (engine->GraphicsManager.CheckRender == true)
+        if (engine->CheckEditor == false)
         {
-            // Estiamtion which models are in our frustrum
-            //const auto& RenderablesVsFrustrum = engine->gCullingManager->ReturnContacted();
-
-            /*************************************************************************
-              Render Without Stencer
-              Render Sky to Sceneview
-            *************************************************************************/
-            engine->MaterialManager.DoNotUpdateStencil();
-            engine->GraphicsManager.RenderSky(FrameBufferMode::FBM_SCENE);
-
-
             for (auto const& entityID : mEntities)
             {
                 MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
-                Renderer.RenderSceneFromLightPOV(Mesh, entityID);
+                Renderer.RenderGameFromLightPOV(Mesh, entityID);
             }
 
             for (auto const& entityID : mEntities)
@@ -84,12 +73,6 @@ namespace Eclipse
                         continue;
                 }
 
-                // If CUlled off , dont render
-               //if (engine->gCullingManager->ToRenderOrNot(entityID) == false)
-               //{
-               //    continue;
-               //}
-
                 MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
 
                 if (Mesh.transparency == 0.0f)
@@ -97,25 +80,83 @@ namespace Eclipse
                     continue;
                 }
 
-                // After hot-realoding , we check if he still exists or not
-                if (engine->AssimpManager.CheckGeometryExist(Mesh))
-                {
-                    Renderer.RenderScene(Mesh, entityID);
-                    Renderer.RenderGame(Mesh, entityID);
-                    Renderer.RenderOtherViews(Mesh, entityID);
-                }
+                Renderer.RenderGame(Mesh, entityID);
             }
-
-            engine->AssimpManager.MeshEditor_.Render();
-
-            // Frustrum
-            if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
+        }
+        else
+        {
+            if (engine->GraphicsManager.CheckRender == true)
             {
-                engine->MaterialManager.DoNotUpdateStencil();
-                engine->gDebugManager.DrawDebugShapes(FrameBufferMode::FBM_SCENE);
-            }
+                // Estiamtion which models are in our frustrum
+                //const auto& RenderablesVsFrustrum = engine->gCullingManager->ReturnContacted();
 
-            engine->MaterialManager.StencilBufferClear();
+                /*************************************************************************
+                  Render Without Stencer
+                  Render Sky to Sceneview
+                *************************************************************************/
+                engine->MaterialManager.DoNotUpdateStencil();
+                engine->GraphicsManager.RenderSky(FrameBufferMode::FBM_SCENE);
+
+
+                for (auto const& entityID : mEntities)
+                {
+                    MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
+                    Renderer.RenderSceneFromLightPOV(Mesh, entityID);
+                }
+
+                for (auto const& entityID : mEntities)
+                {
+                    auto& entCom = engine->world.GetComponent<EntityComponent>(entityID);
+                    if (!entCom.IsVisible) continue;
+
+                    //If No Mesh Component, Do not Continue
+                    if (!engine->world.CheckComponent<MeshComponent>(entityID))
+                    {
+                        continue;
+                    }
+
+                    // If it is a base prefab, dont render
+                    if (engine->world.CheckComponent<PrefabComponent>(entityID))
+                    {
+                        auto& prefab = engine->world.GetComponent<PrefabComponent>(entityID);
+
+                        if (!prefab.IsInstance)
+                            continue;
+                    }
+
+                    // If CUlled off , dont render
+                   //if (engine->gCullingManager->ToRenderOrNot(entityID) == false)
+                   //{
+                   //    continue;
+                   //}
+
+                    MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
+
+                    if (Mesh.transparency == 0.0f)
+                    {
+                        continue;
+                    }
+
+                    // After hot-realoding , we check if he still exists or not
+                    if (engine->AssimpManager.CheckGeometryExist(Mesh))
+                    {
+                        Renderer.RenderScene(Mesh, entityID);
+                        Renderer.RenderGame(Mesh, entityID);
+                        Renderer.RenderOtherViews(Mesh, entityID);
+                    }
+                }
+
+                engine->AssimpManager.MeshEditor_.Render();
+
+                // Frustrum
+                if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
+                {
+                    engine->MaterialManager.DoNotUpdateStencil();
+                    engine->gDebugManager.DrawDebugShapes(FrameBufferMode::FBM_SCENE);
+                }
+
+                engine->MaterialManager.StencilBufferClear();
+            }
         }
 
         engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());

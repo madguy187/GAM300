@@ -7,20 +7,20 @@
             <fov value="40" />
             <nearPlane value="0.1" />
             <farPlane value="300" />
-            <aspect value="2.1434" />
-            <eyePos x="0" y="6.60603" z="0" />
-            <eyeFront x="1" y="0" z="0" />
-            <upVec x="0" y="1" z="0" />
-            <rightVec x="0" y="0" z="1" />
+            <aspect value="2.20281" />
+            <eyePos x="-2.86575" y="6.46961" z="-2.26259" />
+            <eyeFront x="0.869145" y="2.73375e-05" z="-0.494558" />
+            <upVec x="-2.37603e-05" y="1" z="1.352e-05" />
+            <rightVec x="0.494558" y="-0" z="0.869145" />
             <worldUp x="0" y="1" z="0" />
             <viewMtx Col="4" Row="4">
-                <Col0 _00="0" _01="0" _02="-1" _03="0" />
-                <Col1 _10="0" _11="1" _12="-0" _13="0" />
-                <Col2 _20="1" _21="0" _22="-0" _23="0" />
-                <Col3 _30="-0" _31="-6.60603" _32="0" _33="1" />
+                <Col0 _00="0.494558" _01="-2.36231e-05" _02="-0.869145" _03="0" />
+                <Col1 _10="9.09495e-13" _11="1" _12="-2.71797e-05" _13="0" />
+                <Col2 _20="0.869145" _21="1.34419e-05" _22="0.494558" _23="0" />
+                <Col3 _30="3.3838" _31="-6.46965" _32="-1.3716" _33="1" />
             </viewMtx>
             <projMtx Col="4" Row="4">
-                <Col0 _00="1.28183" _01="0" _02="0" _03="0" />
+                <Col0 _00="1.24726" _01="0" _02="0" _03="0" />
                 <Col1 _10="0" _11="2.74748" _12="0" _13="0" />
                 <Col2 _20="0" _21="0" _22="-1.00067" _23="-1" />
                 <Col3 _30="0" _31="0" _32="-0.200067" _33="0" />
@@ -46,8 +46,8 @@
             <IsAChild value="true" />
         </ChildComponent>
         <TransformComponent>
-            <position x="0" y="6.60603" z="0" />
-            <rotation x="0" y="0" z="0" />
+            <position x="-2.86575" y="6.46961" z="-2.26259" />
+            <rotation x="0.00156633" y="-29.6406" z="-0.00109478" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_0>
@@ -110,7 +110,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Floor" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Floor" Handle="111" />
+                <Member0 Type="3435973836" Directory="" Handle="121" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -178,7 +178,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Bed" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Bed" Handle="102" />
+                <Member0 Type="3435973836" Directory="" Handle="114" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -246,7 +246,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Bed_Pillow" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/BedPillow" Handle="103" />
+                <Member0 Type="3435973836" Directory="" Handle="123" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -314,7 +314,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Wall" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="147" />
+                <Member0 Type="3435973836" Directory="" Handle="129" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -382,7 +382,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Wall" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Wall" Handle="128" />
+                <Member0 Type="3435973836" Directory="" Handle="129" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -450,7 +450,7 @@
             <TextureRef value="Default" />
             <TextureKey value="UV_Drip_Object" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="143" />
+                <Member0 Type="3435973836" Directory="" Handle="125" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -518,7 +518,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Chair" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Chair" Handle="106" />
+                <Member0 Type="3435973836" Directory="" Handle="117" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -586,7 +586,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Long_Table" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="144" />
+                <Member0 Type="3435973836" Directory="" Handle="126" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -654,7 +654,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Wall_TV.001" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="146" />
+                <Member0 Type="3435973836" Directory="" Handle="128" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -722,7 +722,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Sliding_Door" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="137" />
+                <Member0 Type="3435973836" Directory="" Handle="119" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -790,7 +790,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Small_Drawer_1" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="131" />
+                <Member0 Type="3435973836" Directory="" Handle="113" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -843,7 +843,7 @@
             <ImguiIndentValue value="20" />
         </EntityComponent>
         <MaterialComponent>
-            <Modeltype value="Models3D" />
+            <Modeltype value="BasicPrimitives" />
             <ambient x="0" y="0" z="0" />
             <diffuse x="1" y="1" z="1" />
             <specular x="1" y="1" z="1" />
@@ -858,7 +858,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Small_Drawer_2" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="140" />
+                <Member0 Type="3435973836" Directory="" Handle="122" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -926,7 +926,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Wall_Window" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Wall_Window" Handle="129" />
+                <Member0 Type="3435973836" Directory="" Handle="130" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -994,7 +994,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Floor" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="139" />
+                <Member0 Type="3435973836" Directory="" Handle="121" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -1062,7 +1062,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Wall" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Wall" Handle="128" />
+                <Member0 Type="3435973836" Directory="" Handle="121" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -1130,7 +1130,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Wall" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Wall" Handle="128" />
+                <Member0 Type="3435973836" Directory="" Handle="121" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -1198,7 +1198,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Wall" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Wall" Handle="128" />
+                <Member0 Type="3435973836" Directory="" Handle="121" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -1251,7 +1251,7 @@
             <ImguiIndentValue value="20" />
         </EntityComponent>
         <MaterialComponent>
-            <Modeltype value="Models3D" />
+            <Modeltype value="BasicPrimitives" />
             <ambient x="0" y="0" z="0" />
             <diffuse x="1" y="1" z="1" />
             <specular x="1" y="1" z="1" />
@@ -1266,7 +1266,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Poster" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Poster" Handle="123" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Poster" Handle="105" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -1319,7 +1319,7 @@
             <ImguiIndentValue value="20" />
         </EntityComponent>
         <MaterialComponent>
-            <Modeltype value="Models3D" />
+            <Modeltype value="BasicPrimitives" />
             <ambient x="0" y="0" z="0" />
             <diffuse x="1" y="1" z="1" />
             <specular x="1" y="1" z="1" />
@@ -1334,7 +1334,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Vase.001" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Vase" Handle="127" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Vase" Handle="109" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -1374,9 +1374,9 @@
     </Entity_20>
     <Entity_21 ID="29">
         <AABBComponent>
-            <center x="0" y="3.63641" z="0" />
-            <Min x="-1.25" y="1.63641" z="-1.25" />
-            <Max x="1.25" y="5.63641" z="1.25" />
+            <center x="-2.86579" y="3.49999" z="-2.26272" />
+            <Min x="-4.11579" y="1.49999" z="-3.51272" />
+            <Max x="-1.61579" y="5.49999" z="-1.01272" />
         </AABBComponent>
         <EntityComponent>
             <Tag value="Cylinder" />
@@ -1429,7 +1429,7 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <RigidBodyComponent>
-            <velocity x="0" y="0" z="0" />
+            <velocity x="-0.000339892" y="-0.000397921" z="0.000886979" />
             <Angvelocity x="0" y="0" z="0" />
             <MaxVelocity value="10" />
             <mass value="200" />
@@ -1454,10 +1454,10 @@
                 <Member0 value="8" />
             </child>
             <model Col="4" Row="4">
-                <Col0 _00="1" _01="0" _02="0" _03="0" />
-                <Col1 _10="0" _11="1" _12="0" _13="0" />
-                <Col2 _20="0" _21="0" _22="1" _23="0" />
-                <Col3 _30="0" _31="3.63641" _32="0" _33="1" />
+                <Col0 _00="0.869145" _01="-3.26275e-05" _02="0.494558" _03="0" />
+                <Col1 _10="1.66071e-05" _11="1" _12="3.67873e-05" _13="0" />
+                <Col2 _20="-0.494558" _21="-2.37603e-05" _22="0.869145" _23="0" />
+                <Col3 _30="-2.8658" _31="3.49999" _32="-2.2627" _33="1" />
             </model>
         </ParentComponent>
         <CollisionComponent>
@@ -1465,8 +1465,8 @@
             <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
-            <position x="0" y="3.63641" z="0" />
-            <rotation x="0" y="0" z="0" />
+            <position x="-2.8658" y="3.49999" z="-2.2627" />
+            <rotation x="0.00156633" y="-29.6406" z="-0.00109478" />
             <scale x="2.5" y="4" z="2.5" />
         </TransformComponent>
     </Entity_21>

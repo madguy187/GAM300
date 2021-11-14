@@ -24,6 +24,7 @@ namespace Eclipse
         // Shadow
         void UpdateLightMatrix();
         void RenderSceneFromLightPOV(MeshComponent& , Entity );
+        void RenderGameFromLightPOV(MeshComponent& Mesh, Entity entityID);
         void RenderSceneNormally(MeshComponent&, Entity);
     };
 }

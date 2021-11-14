@@ -193,7 +193,15 @@ namespace Eclipse
     void AssimpModelManager::MeshDraw(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType)
     {
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
-        engine->gFrameBufferManager->UseFrameBuffer(Mode);
+        
+        if (engine->CheckEditor == true)
+        {
+            engine->gFrameBufferManager->UseFrameBuffer(Mode);
+        }
+        else
+        {
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        }
 
         Shader shdrpgm = Graphics::shaderpgms["PBRShader"];
         shdrpgm.Use();

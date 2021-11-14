@@ -33,6 +33,8 @@ namespace Eclipse
 	class Engine
 	{
 	public:
+		bool CheckEditor = false;
+
 		World world;
 		World prefabWorld;
 		CameraManager gCamera;
@@ -81,7 +83,7 @@ namespace Eclipse
 		void SetStepState(bool check);
 	private:
 		bool IsEditorActive{ true };
-		bool IsInPlayState{ false };
+		bool IsInPlayState{ true };
 		bool IsInPauseState{ false };
 		bool IsInStepState{ false };
 	};

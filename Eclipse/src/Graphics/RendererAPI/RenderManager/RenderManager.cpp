@@ -138,6 +138,12 @@ namespace Eclipse
         engine->AssimpManager.RenderToDepth(Mesh, entityID, FrameBufferMode::FBM_SHADOW, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SHADOW), CameraComponent::CameraType::Editor_Camera);
     }
 
+    void RenderManager::RenderGameFromLightPOV(MeshComponent& Mesh, Entity entityID)
+    {
+        engine->MaterialManager.DoNotUpdateStencil();
+        engine->AssimpManager.RenderToDepth(Mesh, entityID, FrameBufferMode::FBM_SHADOW, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SHADOW), CameraComponent::CameraType::Game_Camera);
+    }
+
     void RenderManager::RenderSceneNormally(MeshComponent& Mesh, Entity entityID)
     {
         auto& Camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
