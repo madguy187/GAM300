@@ -229,54 +229,54 @@ namespace Eclipse
         if (OpenFile(AnimationFileRead, AnimationPath) == false)
         {
             return;
-        }    
-        
+        }
+
         CompilerFlags.set(4, 0);
-        
+
         struct AnimationData
         {
-            float modelLargestAxis;
-            float m_Duration;
-            int m_TicksPerSecond;
-            std::array<char, 128> fileName;
-            std::array<char, 128> modelName;
+            float modelLargestAxis = 0.0f;
+            float m_Duration = 0.0f;
+            int m_TicksPerSecond = 0;
+            std::array<char, 128> fileName{};
+            std::array<char, 128> modelName{};
         };
-        
+
         struct BoneInfoData
         {
-            int id;
-            glm::mat4 offset;
-            std::array<char, 128> name;
+            int id = 0;
+            glm::mat4 offset{ 0.0f };
+            std::array<char, 128> name{};
         };
-        
+
         struct BoneData
         {
             std::vector<KeyPosition> m_Positions;
             std::vector<KeyRotation> m_Rotations;
             std::vector<KeyScale> m_Scales;
-        
-            int m_NumPositions;
-            int m_NumRotations;
-            int m_NumScalings;
-        
-            int m_ID;
-            glm::mat4 m_LocalTransform;
-            std::array<char, 128> BoneName;
+
+            int m_NumPositions = 0;
+            int m_NumRotations = 0;
+            int m_NumScalings = 0;
+
+            int m_ID = 0;
+            glm::mat4 m_LocalTransform{ 0.0f };
+            std::array<char, 128> BoneName{};
         };
-        
+
         unsigned int totalAnimation = 0;
         unsigned int boneSize = 0;
         unsigned int boneInfoSize = 0;
-        
+
         unsigned int keyPosSize = 0;
         unsigned int keyRotSize = 0;
         unsigned int keyScaleSize = 0;
-        
+
         unsigned int nodeChildrenSize = 0;
-        
+
         AnimationFileRead.read(reinterpret_cast<char*>(&totalAnimation), sizeof(totalAnimation));
-        
-        for (unsigned int i = 0; i < totalAnimation; i++)
+
+        for (unsigned int count = 0; count < totalAnimation; count++)
         {
             boneSize = 0;
             boneInfoSize = 0;
@@ -284,67 +284,67 @@ namespace Eclipse
             keyRotSize = 0;
             keyScaleSize = 0;
             nodeChildrenSize = 0;
-        
+
             AnimationData animationdata;
             std::vector<BoneInfoData> boneinfoData;
             std::vector<BoneData> boneData;
-        
+
             std::vector<Bone> newBones;
             std::vector<BoneInfo> newBoneInfos;
             AssimpNodeData rootNode;
-       
-            AnimationFileRead.read(reinterpret_cast<char*>(&animationdata), (2 * sizeof(float)) + sizeof(int) + 
+
+            AnimationFileRead.read(reinterpret_cast<char*>(&animationdata), (2 * sizeof(float)) + sizeof(int) +
                 sizeof(animationdata.fileName) + sizeof(animationdata.modelName));
 
             AnimationFileRead.read(reinterpret_cast<char*>(&boneInfoSize), sizeof(boneInfoSize));
             boneinfoData.resize(boneInfoSize);
             AnimationFileRead.read(reinterpret_cast<char*>(boneinfoData.data()), sizeof(BoneInfoData) * boneInfoSize);
-        
+
             // Populate BoneInfo vector
             for (auto& it : boneinfoData)
             {
                 BoneInfo newBoneInfo(it.id, it.offset, it.name);
                 newBoneInfos.push_back(newBoneInfo);
             }
-        
+
             AnimationFileRead.read(reinterpret_cast<char*>(&boneSize), sizeof(boneSize));
             boneData.resize(boneSize);
-        
+
             for (unsigned int i = 0; i < boneSize; ++i)
             {
                 AnimationFileRead.read(reinterpret_cast<char*>(&keyPosSize), sizeof(keyPosSize));
                 boneData[i].m_Positions.resize(keyPosSize);
                 AnimationFileRead.read(reinterpret_cast<char*>(boneData[i].m_Positions.data()), sizeof(KeyPosition) * keyPosSize);
-        
+
                 AnimationFileRead.read(reinterpret_cast<char*>(&keyRotSize), sizeof(keyRotSize));
                 boneData[i].m_Rotations.resize(keyRotSize);
-                AnimationFileRead.read(reinterpret_cast<char*>(boneData[i].m_Rotations.data()), sizeof(KeyRotation)* keyRotSize);
-        
+                AnimationFileRead.read(reinterpret_cast<char*>(boneData[i].m_Rotations.data()), sizeof(KeyRotation) * keyRotSize);
+
                 AnimationFileRead.read(reinterpret_cast<char*>(&keyScaleSize), sizeof(keyScaleSize));
                 boneData[i].m_Scales.resize(keyScaleSize);
-                AnimationFileRead.read(reinterpret_cast<char*>(boneData[i].m_Scales.data()), sizeof(KeyScale)* keyScaleSize);
-        
+                AnimationFileRead.read(reinterpret_cast<char*>(boneData[i].m_Scales.data()), sizeof(KeyScale) * keyScaleSize);
+
                 AnimationFileRead.read(reinterpret_cast<char*>(&boneData[i].m_NumPositions), sizeof(int));
                 AnimationFileRead.read(reinterpret_cast<char*>(&boneData[i].m_NumRotations), sizeof(int));
                 AnimationFileRead.read(reinterpret_cast<char*>(&boneData[i].m_NumScalings), sizeof(int));
-        
+
                 AnimationFileRead.read(reinterpret_cast<char*>(&boneData[i].m_ID), sizeof(int));
-        
+
                 AnimationFileRead.read(reinterpret_cast<char*>(&boneData[i].m_LocalTransform), sizeof(glm::mat4));
                 AnimationFileRead.read(reinterpret_cast<char*>(&boneData[i].BoneName), sizeof(boneData[i].BoneName));
-        
+
                 //Insert into Bone vector
                 Bone newBone(boneData[i].m_Positions, boneData[i].m_Rotations, boneData[i].m_Scales,
                     boneData[i].m_NumPositions, boneData[i].m_NumRotations, boneData[i].m_NumScalings,
                     boneData[i].m_ID, boneData[i].m_LocalTransform, boneData[i].BoneName);
-        
+
                 newBones.push_back(newBone);
             }
-            
+
             AnimationFileRead.read(reinterpret_cast<char*>(&rootNode.transformation), sizeof(glm::mat4));
             AnimationFileRead.read(reinterpret_cast<char*>(&rootNode.name), sizeof(rootNode.name));
             AnimationFileRead.read(reinterpret_cast<char*>(&rootNode.childrenCount), sizeof(int));
-        
+
             rootNode.children.resize(rootNode.childrenCount);
             engine->gAnimationManager.RecurseChildren(rootNode, AnimationFileRead);
 
@@ -356,7 +356,7 @@ namespace Eclipse
 
             engine->gAnimationManager.InsertAnimation(newAnimation);
         }
-        
+
         CloseFile(AnimationFileRead, AllNames[4], totalAnimation);
     }
 

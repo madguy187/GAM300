@@ -28,5 +28,7 @@ namespace Eclipse
 				return var->obj;
 			}
 		}
+
+		return nullptr;
 	}
 }

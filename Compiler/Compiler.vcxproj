@@ -57,14 +57,14 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>..\Eclipse\</OutDir>
     <IntDir>..\bin-int\Debug-windows-x86_64\Compiler\</IntDir>
-    <TargetName>Compiler</TargetName>
+    <TargetName>Compiler-Debug</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>..\Eclipse\</OutDir>
     <IntDir>..\bin-int\Release-windows-x86_64\Compiler\</IntDir>
-    <TargetName>Compiler</TargetName>
+    <TargetName>Compiler-Release</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">

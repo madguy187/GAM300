@@ -800,89 +800,87 @@ namespace Eclipse
 
     void AssetBrowserWindow::DragAndDropWrapper(std::string filename, std::string relativePath_, std::filesystem::path dirEntry)
     {
-        std::string temp;
-        switch (str2int(filename.substr(filename.find_last_of(".") + 1).c_str()))
-        {
-        case str2int("png"):
-            engine->editorManager->DragAndDropInst_.StringPayloadSource("png", relativePath_);
-            break;
-        case str2int("cs"):
-            engine->editorManager->DragAndDropInst_.StringPayloadSource("cs", relativePath_);
-            break;
-        case str2int("txt"):
-            engine->editorManager->DragAndDropInst_.StringPayloadSource("txt", relativePath_);
-            break;
-        case str2int("wav"):
-            engine->editorManager->DragAndDropInst_.StringPayloadSource("wav", "src\\Assets\\" + relativePath_);
-            break;
-        case str2int("prefab"):
-            
-            temp = "src\\Assets\\" + relativePath_;
-
-            if (ECGui::IsMouseDoubleClicked(0) && ECGui::IsItemClicked(0) && ECGui::IsItemHovered())
+            std::string temp;
+            switch (str2int(filename.substr(filename.find_last_of(".") + 1).c_str()))
             {
-                auto* meshEditor = engine->editorManager->GetEditorWindow<MeshEditorWindow>();
+            case str2int("png"):
+                engine->editorManager->DragAndDropInst_.StringPayloadSource("png", relativePath_);
+                break;
+            case str2int("cs"):
+                engine->editorManager->DragAndDropInst_.StringPayloadSource("cs", relativePath_);
+                break;
+            case str2int("txt"):
+                engine->editorManager->DragAndDropInst_.StringPayloadSource("txt", relativePath_);
+                break;
+            case str2int("wav"):
+                engine->editorManager->DragAndDropInst_.StringPayloadSource("wav", "src\\Assets\\" + relativePath_);
+                break;
+            case str2int("prefab"):
 
-                if (!meshEditor->IsVisible)
+                temp = "src\\Assets\\" + relativePath_;
+
+                if (ECGui::IsMouseDoubleClicked(0) && ECGui::IsItemClicked(0) && ECGui::IsItemHovered())
                 {
-                    Entity ent = MAX_ENTITY;
-                    engine->szManager.LoadPrefabFile(ent, temp.c_str(), true);
-                    meshEditor->SetMeshID(ent);
-                    meshEditor->SetPath(temp);
-                    engine->editorManager->SetMeshEditorActive(true);
-                    meshEditor->IsVisible = true;
+                    auto* meshEditor = engine->editorManager->GetEditorWindow<MeshEditorWindow>();
+
+                    if (!meshEditor->IsVisible)
+                    {
+                        Entity ent = MAX_ENTITY;
+                        engine->szManager.LoadPrefabFile(ent, temp.c_str(), true);
+                        meshEditor->SetMeshID(ent);
+                        meshEditor->SetPath(temp);
+                        engine->editorManager->SetMeshEditorActive(true);
+                        meshEditor->IsVisible = true;
+                    }
                 }
+
+                engine->editorManager->DragAndDropInst_.StringPayloadSource("prefab", temp);
+                //engine->editorManager->DragAndDropInst_.StringPayloadSource("prefab", "src\\Assets\\" + relativePath.string());
+                break;
+            case str2int("mat"):
+
+                temp = "src\\Assets\\" + relativePath_;
+
+                if (ECGui::IsMouseDoubleClicked(0) && ECGui::IsItemClicked(0) && ECGui::IsItemHovered())
+                {
+                    size_t lastindex = filename.find_last_of(".");
+                    std::string tempName = filename.substr(0, lastindex);
+
+                    auto* MaterialEditor = engine->editorManager->GetEditorWindow<MaterialEditorWindow>();
+
+                    if (!MaterialEditor->IsVisible)
+                    {
+                        engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial = *engine->gPBRManager->AllMaterialInstances[tempName];
+                        MaterialEditor->IsVisible = true;
+                    }
+                    else
+                    {
+                        engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial = *engine->gPBRManager->AllMaterialInstances[tempName];
+                    }
+                }
+
+                engine->editorManager->DragAndDropInst_.StringPayloadSource("mat", relativePath_);
+                break;
+            case str2int("dds"):
+                engine->editorManager->DragAndDropInst_.StringPayloadSource("dds", relativePath_);
+                break;
+            default:
+                engine->editorManager->DragAndDropInst_.StringPayloadSource("ITEM", relativePath_);
+                break;
             }
 
-            engine->editorManager->DragAndDropInst_.StringPayloadSource("prefab", temp);
-            //engine->editorManager->DragAndDropInst_.StringPayloadSource("prefab", "src\\Assets\\" + relativePath.string());
-            break;
-        case str2int("mat"):
 
-            temp = "src\\Assets\\" + relativePath_;
+            //relativePath.string()
+            //// GetFileName(relativePath.filename().string().c_str())
+            std::string parentPath = std::filesystem::path(dirEntry).string();
+            parentPath = parentPath.substr(0, parentPath.find_last_of("/\\"));
 
-            if (ECGui::IsMouseDoubleClicked(0) && ECGui::IsItemClicked(0) && ECGui::IsItemHovered())
-            {
-                size_t lastindex = filename.find_last_of(".");
-                std::string tempName = filename.substr(0, lastindex);
+            std::string materialFolder = AssetPath.string() + "\\Materials";
 
-                auto* MaterialEditor = engine->editorManager->GetEditorWindow<MaterialEditorWindow>();
-
-                if (!MaterialEditor->IsVisible)
-                {
-                    engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial = *engine->gPBRManager->AllMaterialInstances[tempName];
-                    MaterialEditor->IsVisible = true;
-                }
-                else
-                {
-                    engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial = *engine->gPBRManager->AllMaterialInstances[tempName];
-                }
-            }
-
-            engine->editorManager->DragAndDropInst_.StringPayloadSource("mat", relativePath_);
-            break;
-        case str2int("dds"):
-            engine->editorManager->DragAndDropInst_.StringPayloadSource("dds", relativePath_);
-            break;
-        default:
-            engine->editorManager->DragAndDropInst_.StringPayloadSource("ITEM", relativePath_);
-            break;
-        }
-
-        //relativePath.string()
-        //// GetFileName(relativePath.filename().string().c_str())
-        std::string parentPath = std::filesystem::path(dirEntry).string();
-        parentPath = parentPath.substr(0, parentPath.find_last_of("/\\"));
-
-        std::string materialFolder = AssetPath.string() + "\\Materials";
-
-        if (parentPath != AssetPath.string() && (parentPath != materialFolder))
-        {
             for (size_t i = 0; i < allExtensions.size(); ++i)
             {
                 engine->editorManager->DragAndDropInst_.AssetBrowerFilesAndFoldersTarget(allExtensions[i].c_str(), paths, AssetPath.string(), dirEntry, refresh, pathMap, CopyFilesAndFolder);
             }
-        }
 
     }
 }

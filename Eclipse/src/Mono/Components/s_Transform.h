@@ -92,6 +92,7 @@ namespace Eclipse
 
 	static MonoObject* GetForward(Entity entity)
 	{
+		(void)entity;
 		CameraComponent& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetGameCameraID());
 		glm::vec3 direction = camera.eyeFront;
 		/*glm::quat quaternion{ glm::radians(trans.rotation.ConvertToGlmVec3Type()) };

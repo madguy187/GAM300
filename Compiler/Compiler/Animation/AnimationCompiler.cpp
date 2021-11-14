@@ -118,7 +118,7 @@ void EclipseCompiler::AnimationCompiler::ReadFile()
 
 void EclipseCompiler::AnimationCompiler::RecurseChildren(AssimpNodeData& nodeData)
 {
-    for (unsigned int i = 0; i < nodeData.childrenCount; ++i)
+    for (unsigned int i = 0; i < static_cast<unsigned int>(nodeData.childrenCount); ++i)
     {
         AnimationFileWrite.write(reinterpret_cast<const char*>(&nodeData.name), sizeof(nodeData.name));
         AnimationFileWrite.write(reinterpret_cast<const char*>(&nodeData.childrenCount), sizeof(int));

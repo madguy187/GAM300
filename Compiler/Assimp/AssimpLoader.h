@@ -29,7 +29,7 @@ namespace EclipseCompiler
 
         }
 
-        aiTextureType Type;
+        aiTextureType Type{ aiTextureType_NONE };
         std::string TextureDirectory;
         std::string TexturePath;
     };
@@ -41,8 +41,8 @@ namespace EclipseCompiler
         glm::vec2 TextureCoodinates{ 0,0 };
         glm::vec3 Tangents{ 0,0,0 };
         glm::vec4 m_Color{ 0,0,0,0 };
-        int m_BoneIDs[MAX_BONE_INFLUENCE];
-        float m_Weights[MAX_BONE_INFLUENCE];
+        int m_BoneIDs[MAX_BONE_INFLUENCE] = { 0 };
+        float m_Weights[MAX_BONE_INFLUENCE] = { 0.0f };
     };
 
     struct Mesh
@@ -97,11 +97,11 @@ namespace EclipseCompiler
     {
         std::vector<Vertex> vertices;
         std::vector<unsigned int> indices;
-        glm::vec4 Diffuse;
-        glm::vec4 Specular;
-        glm::vec4 Ambient;
+        glm::vec4 Diffuse{ 0.0f, 0.0f, 0.0f, 0.0f };
+        glm::vec4 Specular{ 0.0f, 0.0f, 0.0f, 0.0f };
+        glm::vec4 Ambient{ 0.0f, 0.0f, 0.0f, 0.0f };
         bool NoTextures = false;
-        const char* MeshName;
+        const char* MeshName = " ";
         std::vector<Texture> textures;
     };
 
@@ -134,7 +134,7 @@ namespace EclipseCompiler
     {
         int id = 0;
         glm::mat4 offset{ 0.0f };
-        std::array<char, 128> name;
+        std::array<char, 128> name{};
     };
 
     struct KeyPosition
@@ -216,7 +216,7 @@ namespace EclipseCompiler
     struct AssimpNodeData
     {
         glm::mat4 transformation{ 0.0f };
-        std::array<char, 128> name;
+        std::array<char, 128> name{};
         int childrenCount = 0;
         std::vector<AssimpNodeData> children;
     };
@@ -226,8 +226,8 @@ namespace EclipseCompiler
         float modelLargestAxis = 0.0f;
         float m_Duration = 0.0f;
         int m_TicksPerSecond = 0;
-        std::array<char, 128> fileName;
-        std::array<char, 128> modelName;
+        std::array<char, 128> fileName{};
+        std::array<char, 128> modelName{};
         std::vector<BoneInfo> m_BoneInfo;
         std::vector<Bone> m_Bones;
         AssimpNodeData m_RootNode;

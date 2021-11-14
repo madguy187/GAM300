@@ -17,7 +17,7 @@ namespace Eclipse
         engine->world.AddComponent(CreatedID, DirectionalLightComponent{ DirectionalLightcounter });
 
         auto& Tr = engine->world.GetComponent<TransformComponent>(CreatedID);
-        Tr.position = ECVec3(0.0f, 150.0f, 150.0f);
+        Tr.position = ECVec3(50.0f, 50.0f, 50.0f);
 
         EDITOR_LOG_INFO("Directional Light Created Successfully");
         DirectionalLightcounter++;
@@ -29,28 +29,10 @@ namespace Eclipse
 
         engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
-        //auto& shdrpgm = Graphics::shaderpgms["shader3DShdrpgm"];
-        //shdrpgm.Use();
-        //
-        //glBindVertexArray(Graphics::models["Sphere"]->GetVaoID());
-        //
         glEnable(GL_BLEND);
         glPolygonMode(GL_FRONT_AND_BACK, mode);
         glDisable(GL_CULL_FACE);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        //
-        //CheckUniformLoc(&shdrpgm, *in, IndexID, DirectionalLightcounter, EntityId);
-        //
-        //auto& Light = engine->world.GetComponent<LightComponent>(EntityId);
-
-        //if (in->visible && Light.Render)
-        //{
-        //    GLCall(glDrawElements(Graphics::models["Sphere"]->GetPrimitiveType(),
-        //        Graphics::models["Sphere"]->GetDrawCount(), GL_UNSIGNED_SHORT, NULL));
-        //}
-
-        //glBindVertexArray(0);
-        //shdrpgm.UnUse();
 
         CheckUniformPBR(IndexID, EntityId);
     }
@@ -76,10 +58,18 @@ namespace Eclipse
             GLint uniform_var_loc1 = shdrpgm.GetLocation(("directionlight[" + number + "].direction").c_str());
             GLint uniform_var_loc2 = shdrpgm.GetLocation(("directionlight[" + number + "].lightColor").c_str());
             GLint uniform_var_loc3 = shdrpgm.GetLocation(("directionlight[" + number + "].position").c_str());
+            GLint lightSpaceMatrix_ = shdrpgm.GetLocation("lightSpaceMatrix");
+
+            glm::mat4 lightProjection, lightView;
+            glm::mat4 lightSpaceMatrix;
+            lightProjection = glm::ortho(-100.0f, 100.0f, 100.0f, -100.0f, 0.1f, 150.0f);
+            lightView = glm::lookAt(DLightTrans.position.ConvertToGlmVec3Type(), glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+            lightSpaceMatrix = lightProjection * lightView;
 
             GLCall(glUniform3f(uniform_var_loc1, DLight.Direction.getX(), DLight.Direction.getY(), DLight.Direction.getZ()));
             GLCall(glUniform3f(uniform_var_loc3, DLightTrans.position.getX(), DLightTrans.position.getY(), DLightTrans.position.getZ()));
             GLCall(glUniform3f(uniform_var_loc2, 8.0f, 8.0f, 8.0f));
+            glUniformMatrix4fv(lightSpaceMatrix_, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
         }
 
         shdrpgm.UnUse();
@@ -146,7 +136,7 @@ namespace Eclipse
         }
     }
 
-    void DirectionalLight::FirstGlobalLight()
+    Entity DirectionalLight::FirstGlobalLight()
     {
         Entity FirstGlobalLight = MAX_ENTITY;
 
@@ -167,9 +157,11 @@ namespace Eclipse
         engine->world.AddComponent(FirstGlobalLight, DirectionalLightComponent{ DirectionalLightcounter });
 
         auto& Tr = engine->world.GetComponent<TransformComponent>(FirstGlobalLight);
-        Tr.position = ECVec3(0, 150, 150);
+        Tr.position = ECVec3(50.0f, 50.0f, 50.0f);
 
         DirectionalLightcounter++;
+
+        return FirstGlobalLight;
     }
 
     void DirectionalLight::Destroy()

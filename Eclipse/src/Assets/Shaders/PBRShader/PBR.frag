@@ -83,6 +83,7 @@ uniform SpotLight spotLights[NR_SPOTLIGHTS];
 uniform int NumberOfSpotLights;
 
 uniform int Directional;
+uniform int EnableShadows;
 
 float ShadowCalculation(vec4 fragPosLightSpace)
 {
@@ -91,8 +92,8 @@ float ShadowCalculation(vec4 fragPosLightSpace)
     float closestDepth = texture(shadowMap, projCoords.xy).r; 
     float currentDepth = projCoords.z;
     vec3 normal = normalize(Normal);
-    vec3 lightDir = normalize(lightPos - WorldPos);
-    float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
+    vec3 lightDir = normalize(directionlight[0].position - WorldPos);
+    float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.0005);
 
     float shadow = 0.0;
     vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
@@ -107,7 +108,9 @@ float ShadowCalculation(vec4 fragPosLightSpace)
     shadow /= 9.0;
     
     if(projCoords.z > 1.0)
-        shadow = 0.0;
+    {
+            shadow = 0.0;
+    }
         
     return shadow;
 }
@@ -384,24 +387,36 @@ void main()
         }
     }   
 
-       if( HasInstance == 1 )
+    float shadow = 0.0;
+
+       if(Directional == 1 && directionlight[0].AffectsWorld == 1)
        {
-          float shadow = ShadowCalculation(FragPosLightSpace);     
-          vec3 ambient =  AmbientSettings * albedo * ao;
-          vec3 color = (ambient) + Lo ;
+           shadow = ShadowCalculation(FragPosLightSpace);    
+       }
+       else
+       {
+           shadow = 1.0;
+       }
+
+       if(EnableShadows == 0)
+       {
+           shadow = 1.0;
+       }
+
+       if( HasInstance == 1 )
+       {  
+          vec3 ambient =  ( AmbientSettings + (1.0 - shadow) ) * albedo * ao;
+          vec3 color = ambient + Lo ;
           color = color / (color + vec3(1.0));
           color = pow(color, vec3(1.0/2.2)); 
-          //color = color * (1.0 - shadow);
           FragColor = vec4(color, Transparency);            
         }
         else
         {
-          float shadow = ShadowCalculation(FragPosLightSpace);     
-
-          vec3 ambient = AmbientSettings * AlbedoConstant * AoConstant;
+          vec3 ambient = ( AmbientSettings + (1.0 - shadow)) * AlbedoConstant * AoConstant;
           vec3 color = ambient + Lo;
           color = color / (color + vec3(1.0));  
-          //color = pow(color, vec3(1.0/2.2)); 
+          color = pow(color, vec3(1.0/2.2)); 
           FragColor = vec4(color, Transparency);      
         }
 }
