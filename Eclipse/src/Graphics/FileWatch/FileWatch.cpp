@@ -212,7 +212,8 @@ namespace Eclipse
 
         if (ScriptCounter)
         {
-            engine->mono.StartMono();
+            if (!engine->GetPlayState())
+                engine->mono.StartMono();
             ScriptCounter = 0;
         }
     }
