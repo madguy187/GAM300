@@ -289,17 +289,17 @@ namespace Eclipse
                 offsetX *= sensitivity;
                 offsetY *= sensitivity;
 
-                _transform.rotation.x += offsetY;
-                _transform.rotation.y += offsetX;
+                _transform.rotation.setX(_transform.rotation.getX() + offsetY);
+                _transform.rotation.setY(_transform.rotation.getY() + offsetX);
 
-                if (_transform.rotation.x > 89.0f)
+                if (_transform.rotation.getX() > 89.0f)
                 {
-                    _transform.rotation.x = 89.0f;
+                    _transform.rotation.setX(89.0f);
                 }
 
-                if (_transform.rotation.x < -89.0f)
+                if (_transform.rotation.getX() < -89.0f)
                 {
-                    _transform.rotation.x = -89.0f;
+                    _transform.rotation.setX(-89.0f);
                 }
             }
             else
@@ -1040,17 +1040,17 @@ namespace Eclipse
                 offsetX *= sensitivity;
                 offsetY *= sensitivity;
 
-                _transform.rotation.x += offsetY;
-                _transform.rotation.y += offsetX;
+                _transform.rotation.setX(_transform.rotation.getX() + offsetY);
+                _transform.rotation.setY(_transform.rotation.getY() + offsetX);
 
-                if (_transform.rotation.x > 89.0f)
+                if (_transform.rotation.getX() > 89.0f)
                 {
-                    _transform.rotation.x = 89.0f;
+                    _transform.rotation.setX(89.0f);
                 }
 
-                if (_transform.rotation.x < -89.0f)
+                if (_transform.rotation.getX() < -89.0f)
                 {
-                    _transform.rotation.x = -89.0f;
+                    _transform.rotation.setX(-89.0f);
                 }
             }
             else
