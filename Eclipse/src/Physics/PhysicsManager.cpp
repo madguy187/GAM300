@@ -460,12 +460,6 @@ namespace Eclipse
 			}
 			rigid.forces.clear();
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setMaxLinearVelocity(static_cast<PxReal>(rigid.MaxVelocity));
-
-
-			auto& collider = engine->world.GetComponent<CollisionComponent>(ent);
-			//static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setMass(rigid.mass);
-			//static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setCMassLocalPose(PxTransform({0,-collider.shape.hy,0}));
-			//PxRigidBodyExt::setMassAndUpdateInertia();
 			PxRigidBodyExt::setMassAndUpdateInertia(*(static_cast<PxRigidBody*>(Px_Actors[ent].actor)), rigid.mass);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setActorFlag(PxActorFlag::eDISABLE_GRAVITY,rigid.enableGravity ? false : true);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setAngularVelocity(tempangVelo);
