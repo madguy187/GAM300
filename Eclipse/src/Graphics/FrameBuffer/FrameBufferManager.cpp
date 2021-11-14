@@ -311,6 +311,8 @@ namespace Eclipse
     void FrameBufferManager::FadeIn(FrameBuffer::PostProcessType Type, float& timer, float multiplier, FrameBufferMode WhichFBO)
     {
         (void)WhichFBO;
+        (void)multiplier;
+        (void)Type;
 
         timer = 1.0f;
 

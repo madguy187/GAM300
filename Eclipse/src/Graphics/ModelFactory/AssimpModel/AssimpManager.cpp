@@ -206,9 +206,6 @@ namespace Eclipse
         Shader shdrpgm = Graphics::shaderpgms["PBRShader"];
         shdrpgm.Use();
 
-        auto& Camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
-        auto& CameraPos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
-
         //gEnvironmentMap.CheckUniform(ModelMesh, _camera);
         ChecModelkUniforms(shdrpgm, _camera, ID);
         CheckUniforms(shdrpgm, ID, ModelMesh, _camera);
@@ -225,6 +222,8 @@ namespace Eclipse
 
     void AssimpModelManager::RenderToDepth(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType)
     {
+        (void)_renderMode;
+
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
         engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
@@ -234,7 +233,6 @@ namespace Eclipse
         TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(_camera.camType));
         TransformComponent Transform = engine->world.GetComponent<TransformComponent>(ID);
 
-        glm::mat4 mModelNDC;
         glm::mat4 model = glm::mat4(1.0f);
 
         model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());

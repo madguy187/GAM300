@@ -126,6 +126,8 @@ namespace Eclipse
 
     void MaterialEditorSettings::UpdateInner(Shader& shdrpgm, CameraComponent& _camera, Entity ID)
     {
+        (void)_camera;
+
         auto& Trans = engine->world.GetComponent<TransformComponent>(ID);
 
         GLuint MetallicConstant = shdrpgm.GetLocation("MetallicConstant");
@@ -154,21 +156,23 @@ namespace Eclipse
         model = glm::scale(model, Trans.scale.ConvertToGlmVec3Type());
 
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
-        GLCall(glUniform3f(SurfaceColour_, 1.0, 1.0, 1.0));
+        GLCall(glUniform3f(SurfaceColour_, 1.0f, 1.0f, 1.0f));
         GLCall(glUniform1f(HeightScale_, 0.0f));
         GLCall(glUniform1i(NormalMap_, true));
         GLCall(glUniform1i(HasInstance, false));
-        GLCall(glUniform3f(AlbedoConstant, 0.8, 0.8, 0.8));
-        GLCall(glUniform1f(AoConstant, 1.0));
-        GLCall(glUniform1f(MetallicConstant, 0.0));
-        GLCall(glUniform1f(RoughnessConstant, 0.5));
-        GLCall(glUniform3f(BaseReflectivity, 0.4, 0.4, 0.4));
+        GLCall(glUniform3f(AlbedoConstant, 0.8f, 0.8f, 0.8f));
+        GLCall(glUniform1f(AoConstant, 1.0f));
+        GLCall(glUniform1f(MetallicConstant, 0.0f));
+        GLCall(glUniform1f(RoughnessConstant, 0.5f));
+        GLCall(glUniform3f(BaseReflectivity, 0.4f, 0.4f, 0.4f));
         BindMaterial(shdrpgm, "None");
 
     }
 
     void MaterialEditorSettings::UpdateCurrentMaterial(Shader& shdrpgm, CameraComponent& _camera)
     {
+        (void)_camera;
+
         GLuint MetallicConstant = shdrpgm.GetLocation("MetallicConstant");
         GLuint RoughnessConstant = shdrpgm.GetLocation("RoughnessConstant");
         GLint model_ = shdrpgm.GetLocation("model");
