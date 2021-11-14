@@ -6,7 +6,7 @@ namespace Eclipse
 	struct ChildComponent
 	{
 		META_DATA(ChildComponent);
-		Entity parentIndex;
+		Entity parentIndex = MAX_ENTITY;
 		ECVec3 PosOffset;
 		ECVec3 RotOffset;
 		ECVec3 ScaleOffset;

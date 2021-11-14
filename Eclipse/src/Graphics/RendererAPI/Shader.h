@@ -79,7 +79,7 @@ private:
     GLuint handle;
     GLboolean isLinked;
     std::string message;
-    unsigned int m_id;
+    //unsigned int m_id = 0;
 };
 
 #endif /* SHADER_H */

@@ -14,8 +14,8 @@ namespace Eclipse
 
 		std::vector<glm::mat4> m_Transforms;
 		Animation m_CurrentAnimation;
-		float m_CurrentTime;
-		float m_DeltaTime;
-		float modelLargestAxis;
+		float m_CurrentTime = 0.0f;
+		float m_DeltaTime = 0.0f;
+		float modelLargestAxis = 0.0f;
 	};
 }

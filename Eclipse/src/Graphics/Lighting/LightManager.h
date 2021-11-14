@@ -50,7 +50,7 @@ namespace Eclipse
     class LightManager
     {
     public:
-        Entity Hand;
+        Entity Hand = MAX_ENTITY;
 
         // Base Classes =============================
         template<typename T, typename = void>

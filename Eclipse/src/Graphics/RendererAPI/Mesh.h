@@ -30,7 +30,7 @@ namespace Eclipse
         glm::vec4 Diffuse{ 0,0,0,0 };
         glm::vec4 Specular{ 0,0,0,0 };
         glm::vec4 Ambient{ 0,0,0,0 };
-        std::array<char, 128> MeshName;
+        std::array<char, 128> MeshName{ 0 };
         bool NoTex{ true };
         std::vector<Vertex> Vertices;
         std::vector<unsigned int> Indices;

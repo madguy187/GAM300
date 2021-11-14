@@ -42,7 +42,7 @@ namespace Eclipse
 			MaterialEditor_Camera
 		};
 
-		CameraType camType;
+		CameraType camType{ CameraType::LeftView_Camera };
 
 		enum class ProjectionType
 		{
