@@ -57,7 +57,10 @@ void Eclipse::CameraSystem::Update()
         }
         else if (_camera.camType == CameraComponent::CameraType::Game_Camera)
         {
-            engine->gCamera.UpdateGameCamera(_transform);
+            if (engine->gCamera.EnableGameCameraMouse)
+            {
+                engine->gCamera.UpdateGameCamera(_transform);
+            }         
         }
 
         engine->gCamera.ComputeViewDirection(_camera, _transform);

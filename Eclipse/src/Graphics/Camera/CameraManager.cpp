@@ -232,6 +232,35 @@ namespace Eclipse
         }
     }
 
+    glm::vec2 CameraManager::ComputeEditorScreenCenter(SceneWindow* scene)
+    {
+        glm::vec2 bufferPos = scene->GetSceneBufferPos();
+        glm::vec2 bufferSize = scene->GetSceneBufferSize();
+
+        float GameWindowMinX = bufferPos.x - OpenGL_Context::GetContextPosition().x;
+        float GameWindowMaxX = bufferPos.x + bufferSize.x - OpenGL_Context::GetContextPosition().x;
+        float GameWindowCenterX = (GameWindowMaxX + GameWindowMinX) / 2;
+
+        float GameWindowMinY = bufferPos.y - OpenGL_Context::GetContextPosition().y;
+        float GameWindowMaxY = bufferPos.y + bufferSize.y - OpenGL_Context::GetContextPosition().y;
+        float GameWindowCenterY = (GameWindowMinY + GameWindowMaxY) / 2;
+
+        return glm::vec2{ GameWindowCenterX , GameWindowCenterY };
+    }
+
+    glm::vec2 CameraManager::ComputeGameScreenCenter(eGameViewWindow* scene)
+    {
+        float GameWindowMinX = scene->vMin.x - OpenGL_Context::GetContextPosition().x;
+        float GameWindowMaxX = scene->vMin.x + scene->GetViewPortSize().getX() - OpenGL_Context::GetContextPosition().x;
+        float GameWindowCenterX = (GameWindowMaxX + GameWindowMinX) / 2;
+
+        float GameWindowMinY = scene->vMin.y - OpenGL_Context::GetContextPosition().y;
+        float GameWindowMaxY = scene->vMin.y + scene->GetViewPortSize().getY() - OpenGL_Context::GetContextPosition().y;
+        float GameWindowCenterY = (GameWindowMinY + GameWindowMaxY) / 2;
+
+        return glm::vec2{ GameWindowCenterX , GameWindowCenterY };
+    }
+
     void CameraManager::UpdateEditorCamera(TransformComponent& _transform)
     {
         unsigned int editorID = GetEditorCameraID();
@@ -298,6 +327,8 @@ namespace Eclipse
         {
             if (glfwGetMouseButton(OpenGL_Context::ptr_window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
             {
+                releaseMouse = true;
+
                 ImGui::SetMouseCursor(ImGuiMouseCursor_None);
 
                 double mouseX, mouseY;
@@ -327,8 +358,20 @@ namespace Eclipse
             }
             else
             {
+                if (releaseMouse)
+                {
+                    auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
+                    glm::vec2 center = ComputeEditorScreenCenter(scene);
+
+                    glfwSetCursorPos(OpenGL_Context::ptr_window, center.x, center.y);
+
+                    releaseMouse = false;
+                }
+
                 glfwGetCursorPos(OpenGL_Context::ptr_window, &mouseCursors[GetEditorCameraID()].x, &mouseCursors[GetEditorCameraID()].y);
             }
+
+
         }
     }
 
@@ -1047,6 +1090,8 @@ namespace Eclipse
         {
             if (glfwGetMouseButton(OpenGL_Context::ptr_window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
             {
+                releaseMouse = true;
+
                 ImGui::SetMouseCursor(ImGuiMouseCursor_None);
 
                 double mouseX, mouseY;
@@ -1076,6 +1121,16 @@ namespace Eclipse
             }
             else
             {
+                if (releaseMouse)
+                {
+                    auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
+                    glm::vec2 center = ComputeEditorScreenCenter(scene);
+
+                    glfwSetCursorPos(OpenGL_Context::ptr_window, center.x, center.y);
+
+                    releaseMouse = false;
+                }
+
                 glfwGetCursorPos(OpenGL_Context::ptr_window, &mouseCursors[GetGameCameraID()].x, &mouseCursors[GetGameCameraID()].y);
             }
         }

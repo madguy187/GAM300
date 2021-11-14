@@ -81,8 +81,8 @@ namespace Eclipse
         unsigned int gameCamID = MAX_ENTITY;
 
         std::map<unsigned int, glm::dvec2> mouseCursors;
-        double prevPosX;
-        double prevPosY;
+
+        bool releaseMouse = true;
     public:
         void CreateEditorCamera();
         unsigned int GetEditorCameraID();
@@ -102,6 +102,8 @@ namespace Eclipse
         void ComputeViewDirection(CameraComponent& _camera, TransformComponent& _transform);
         void ComputeViewMtx(CameraComponent& _camera, TransformComponent& _transform);
         void ComputePerspectiveMtx(CameraComponent& _camera);
+        glm::vec2 ComputeEditorScreenCenter(SceneWindow* scene);
+        glm::vec2 ComputeGameScreenCenter(eGameViewWindow* scene);
         void UpdateEditorCamera(TransformComponent& _transform);
         void UpdateMeshCamera(TransformComponent& _transform);
 
@@ -124,5 +126,7 @@ namespace Eclipse
 
         void ResetScene();
         void ReInitCameraList(CameraComponent::CameraType _camType, unsigned int ID);
+
+        bool EnableGameCameraMouse = false;
     };
 }
