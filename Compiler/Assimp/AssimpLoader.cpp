@@ -442,7 +442,7 @@ namespace EclipseCompiler
 
         auto animation = scene->mAnimations[0];
 
-        const char* NodeName;
+        const char* NodeName = " ";
 
         for (unsigned int i = 0; i < scene->mRootNode->mNumChildren; i++)
         {
@@ -478,7 +478,7 @@ namespace EclipseCompiler
         dest.transformation = AssimpGLMHelpers::ConvertMatrixToGLMFormat(src->mTransformation);
         dest.childrenCount = src->mNumChildren;
 
-        for (int i = 0; i < src->mNumChildren; i++)
+        for (int i = 0; i < static_cast<int>(src->mNumChildren); i++)
         {
             AssimpNodeData newData;
             ReadHeirarchyData(newData, src->mChildren[i]);
@@ -660,7 +660,7 @@ namespace EclipseCompiler
         auto& boneInfoMap = AllBoneInfoMaps[meshName];
         int& boneCount = AllBoneCount[meshName];
 
-        for (int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex)
+        for (int boneIndex = 0; boneIndex < static_cast<int>(mesh->mNumBones); ++boneIndex)
         {
             int boneID = -1;
             std::string boneName = mesh->mBones[boneIndex]->mName.C_Str();

@@ -59,8 +59,8 @@ namespace Eclipse
 
     struct BoneInfo
     {
-        int id;
-        glm::mat4 offset;
+        int id = 0;
+        glm::mat4 offset{ 0.0f };
         std::string name;
 
         BoneInfo();
@@ -72,8 +72,8 @@ namespace Eclipse
 
     struct AssimpNodeData
     {
-        glm::mat4 transformation;
-        std::array<char, 128> name;
+        glm::mat4 transformation{ 0 };
+        std::array<char, 128> name{};
         int childrenCount = 0;
         std::vector<AssimpNodeData> children;
     };
@@ -84,7 +84,7 @@ namespace Eclipse
         float m_Duration = 0.0f;
         int animationIndex = 0;
         int m_TicksPerSecond = 0;
-        AnimationState m_AnimationState;
+        AnimationState m_AnimationState{ AnimationState::INVALID };
         std::string modelName;
         std::map<std::string, BoneInfo> m_BoneInfoMap;
         std::vector<Bone> m_Bones;

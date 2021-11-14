@@ -53,6 +53,10 @@ namespace Eclipse
 		MonoDomain* LoadDomain();
 		void UnloadDomain();
 
+		bool CheckIfScriptExist(std::string scriptName);
+		bool CheckIfFieldExist(MonoScript* script, std::string& fieldName, size_t index);
+		void LoadAllFields(MonoScript* script);
+
 	public:
 		bool fixUpdate = false;
 
@@ -95,11 +99,6 @@ namespace Eclipse
 		MonoObject* ExecuteMethod(MonoObject* obj, MonoMethod* method, std::vector<void*> args);
 
 		void LoadAllScripts();
-		bool CheckIfScriptExist(std::string scriptName);
-		void LoadAllFields(MonoScript* script);
-		bool CheckIfFieldExist(MonoScript* script, std::string& fieldName, size_t index);
-
-		void PrintAllScript();
 
 		// Gets image containing all API Scripts
 		MonoImage* GetAPIImage();

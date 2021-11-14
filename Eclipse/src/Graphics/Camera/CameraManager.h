@@ -79,6 +79,10 @@ namespace Eclipse
 
         unsigned int editorCamID = MAX_ENTITY;
         unsigned int gameCamID = MAX_ENTITY;
+
+        std::map<unsigned int, glm::dvec2> mouseCursors;
+        double prevPosX;
+        double prevPosY;
     public:
         void CreateEditorCamera();
         unsigned int GetEditorCameraID();
@@ -107,6 +111,7 @@ namespace Eclipse
         void CheckMaterialCameraInput();
         void UpdateViewCamera(CameraComponent& _camera, TransformComponent& _transform);
         void UpdateMaterialCamera(TransformComponent& _transform);
+        void UpdateGameCamera(TransformComponent& _transform);
 
         void SetCameraSpeed(float newSpeed);
         void SetNearPlane(CameraComponent& _camera, float _nearPlane);
