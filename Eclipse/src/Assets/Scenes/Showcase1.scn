@@ -1437,7 +1437,7 @@
                     <MonoVariables size="3">
                         <Member0 Type="MONO_GAMEOBJECT" Name="obj" Value="8" />
                         <Member1 Type="MONO_GAMEOBJECT" Name="camera_obj" Value="8" />
-                        <Member2 Type="MONO_LAYERMASK" Name="mask" Value="1" />
+                        <Member2 Type="MONO_LAYERMASK" Name="mask" Value="1000" />
                     </MonoVariables>
                 </Member0>
                 <Member1 ScriptName="Test2">
