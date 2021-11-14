@@ -375,8 +375,8 @@ namespace Eclipse
             {
                 if (releaseMouse)
                 {
-                    auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
-                    glm::vec2 center = ComputeEditorScreenCenter(scene);
+                    auto* _scene = engine->editorManager->GetEditorWindow<SceneWindow>();
+                    glm::vec2 center = ComputeEditorScreenCenter(_scene);
 
                     glfwSetCursorPos(OpenGL_Context::ptr_window, center.x, center.y);
 
@@ -508,8 +508,8 @@ namespace Eclipse
         double mouseX, mouseY;
         glfwGetCursorPos(OpenGL_Context::ptr_window, &mouseX, &mouseY);
 
-        if ((mouseX > windowPos.x) && (mouseX < (windowPos.x + windowSize.x)) &&
-            (mouseY > windowPos.y) && (mouseY < (windowPos.y + windowSize.y)))
+        if ((mouseX > windowPos.x) && (mouseX < (static_cast<double>(windowPos.x) + windowSize.x)) &&
+            (mouseY > windowPos.y) && (mouseY < (static_cast<double>(windowPos.y) + windowSize.y)))
         {
             return true;
         }
@@ -525,8 +525,8 @@ namespace Eclipse
         double mouseX, mouseY;
         glfwGetCursorPos(OpenGL_Context::ptr_window, &mouseX, &mouseY);
 
-        if ((mouseX > windowPos.x) && (mouseX < (windowPos.x + windowSize.x)) &&
-            (mouseY > windowPos.y) && (mouseY < (windowPos.y + windowSize.y)))
+        if ((mouseX > windowPos.x) && (mouseX < (static_cast<double>(windowPos.x) + windowSize.x)) &&
+            (mouseY > windowPos.y) && (mouseY < (static_cast<double>(windowPos.y) + windowSize.y)))
         {
             return true;
         }
@@ -541,8 +541,11 @@ namespace Eclipse
 
         glm::vec2 windowPos = OpenGL_Context::GetContextPosition();
 
-        if ((mouseX > windowPos.x) && (mouseX < (windowPos.x + OpenGL_Context::GetWidth())) &&
-            (mouseY > windowPos.y) && (mouseY < (windowPos.y + OpenGL_Context::GetHeight())))
+        float width = static_cast<float>(OpenGL_Context::GetWidth());
+        float height = static_cast<float>(OpenGL_Context::GetHeight());
+
+        if ((mouseX > windowPos.x) && (mouseX < (static_cast<double>(windowPos.x) + width)) &&
+            (mouseY > windowPos.y) && (mouseY < (static_cast<double>(windowPos.y) + height)))
         {
             return true;
         }
@@ -1193,8 +1196,8 @@ namespace Eclipse
                 {
                     if (releaseMouse)
                     {
-                        auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
-                        glm::vec2 center = ComputeEditorScreenCenter(scene);
+                        auto* _scene = engine->editorManager->GetEditorWindow<SceneWindow>();
+                        glm::vec2 center = ComputeEditorScreenCenter(_scene);
 
                         glfwSetCursorPos(OpenGL_Context::ptr_window, center.x, center.y);
 
