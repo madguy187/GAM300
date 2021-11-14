@@ -44,7 +44,7 @@ namespace Eclipse
 				if (!engine->mono.CheckIfScriptCompiled())
 				{
 					engine->mono.StopMono();
-					EDITOR_LOG_WARN("Scene stopped as scripts failed to compile. Check Eclipse/mcs_script_output.txt for more details.");
+					EDITOR_LOG_ERROR("Scene stopped as scripts failed to compile. Check Eclipse/mcs_script_output.txt for more details.");
 					return;
 				}
 
