@@ -260,6 +260,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Editor\Windows\MeshEditor\MeshEditor.h" />
     <ClInclude Include="src\Editor\Windows\NodeEditor\ImNodes\imnodes.h" />
     <ClInclude Include="src\Editor\Windows\NodeEditor\ImNodes\imnodes_internal.h" />
+    <ClInclude Include="src\Editor\Windows\NodeEditor\MaterialNodeEditor.h" />
     <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditor.h" />
     <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorWindow.h" />
     <ClInclude Include="src\Editor\Windows\Profiler\Profiler.h" />
