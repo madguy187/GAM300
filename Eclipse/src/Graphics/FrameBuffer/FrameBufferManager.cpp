@@ -24,12 +24,17 @@ namespace Eclipse
             CreateFBO(1270, 593, FrameBufferMode::FBM_GAME_SOBEL);
             CreateFBO(1270, 593, FrameBufferMode::FBM_SCENE_SOBEL);
 
+            // Shadow FBO
+            CreateFBO(1270, 593, FrameBufferMode::FBM_SHADOW);
+            
             // Additionals - PostProcess
             PostProcess = std::make_unique<FrameBuffer>();
             PostProcess->CreatePostProcessFramebuffer();
 
-            // Shadow FBO
-            CreateFBO(1270, 593, FrameBufferMode::FBM_SHADOW);
+            // Bloom
+            Bloom = std::make_unique<FrameBuffer>();
+            Bloom->CreatePingPong();
+            CreateFBO(1270, 593, FrameBufferMode::FBM_EMISSIVE);
         }
         else
         {
@@ -460,6 +465,8 @@ namespace Eclipse
             }
         }
 
+        BloomUpdate();
+
         //For Darren to Check Depth Map
         //engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_GAME);
         //auto& debugDepthQuad = Graphics::shaderpgms["DepthQuad"];
@@ -471,5 +478,53 @@ namespace Eclipse
         //glActiveTexture(GL_TEXTURE0);
         //glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SHADOW));
         //glDrawArrays(GL_TRIANGLES, 0, 6);
+    }
+
+    void FrameBufferManager::BloomUpdate()
+    {
+        auto& shdrpgm3 = Graphics::shaderpgms["Blur"];
+        shdrpgm3.Use();
+        horizontal = true, first_iteration = true;
+        unsigned int amount = 20;
+        shdrpgm3.setInt("image", 0);
+
+        engine->MaterialManager.DoNotUpdateStencil();
+        for (unsigned int i = 0; i < amount; i++)
+        {
+            glBindFramebuffer(GL_FRAMEBUFFER, engine->gFrameBufferManager->Bloom->pingpongFBO[horizontal]);
+            shdrpgm3.setInt("horizontal", horizontal);
+
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, first_iteration ?
+                engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_SCENE)->m_data.ColorBuffers[1] :
+                engine->gFrameBufferManager->Bloom->pingpongColorbuffers[!horizontal]);
+
+            glBindVertexArray(PostProcess->rectVAO);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+
+            horizontal = !horizontal;
+
+            if (first_iteration)
+                first_iteration = false;
+        }
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+        engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SCENE);
+        engine->MaterialManager.DoNotUpdateStencil();
+
+        auto& shdrpgm4 = Graphics::shaderpgms["BloomFinal"];
+        shdrpgm4.Use();
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SCENE));
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->Bloom->pingpongColorbuffers[!horizontal]);
+        shdrpgm4.setInt("bloom", true);
+        shdrpgm4.setFloat("exposure", 1.0f);
+        shdrpgm4.setInt("scene", 0);
+        shdrpgm4.setInt("bloomBlur", 1);
+
+        glBindVertexArray(PostProcess->rectVAO);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        engine->MaterialManager.StencilBufferClear();
     }
 }

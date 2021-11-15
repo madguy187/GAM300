@@ -34,6 +34,8 @@ namespace Eclipse
 
         // DebugManagerRender
         engine->gDebugDrawManager->Init();
+
+        MaterialSystem::Init();
     }
 
     void RenderSystem::Update()
@@ -95,10 +97,13 @@ namespace Eclipse
                 engine->GraphicsManager.RenderSky(FrameBufferMode::FBM_SCENE);
 
 
-                for (auto const& entityID : mEntities)
+                if (engine->LightManager.EnableShadows == true)
                 {
-                    MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
-                    Renderer.RenderSceneFromLightPOV(Mesh, entityID);
+                    for (auto const& entityID : mEntities)
+                    {
+                        MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
+                        Renderer.RenderSceneFromLightPOV(Mesh, entityID);
+                    }
                 }
 
                 for (auto const& entityID : mEntities)

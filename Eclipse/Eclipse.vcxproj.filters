@@ -1539,4 +1539,8 @@
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\Desktop\GAM300\Eclipse\src\Assets\Shaders\Bloom\Bloom.frag" />
+    <None Include="..\..\..\..\Desktop\GAM300\Eclipse\src\Assets\Shaders\Bloom\Bloom.vert" />
+  </ItemGroup>
 </Project>

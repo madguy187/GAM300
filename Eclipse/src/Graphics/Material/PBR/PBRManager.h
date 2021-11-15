@@ -79,5 +79,18 @@ namespace Eclipse
         unsigned int loadTexture(char const* path);
         void NonTexturedUpdateLoop();
         void Clear(std::string& TextureName, MaterialType In);
+
+        // Bloom Scene
+        bool horizontal = true, first_iteration = true;
+        unsigned int woodTexture = 0;
+        unsigned int quadVAO = 0;
+        unsigned int quadVBO = 0;
+        unsigned int cubeVAO = 0;
+        unsigned int cubeVBO = 0;
+        bool bloom = true;
+        void BloomScene();
+        void renderCube();
+        void last();
+        void renderQuad();
     };
 }
