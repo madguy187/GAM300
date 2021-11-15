@@ -465,8 +465,9 @@ namespace Eclipse
             }
         }
 
-        BloomUpdate(FrameBufferMode::FBM_SCENE);
-        BloomUpdate(FrameBufferMode::FBM_MATERIALEDITOR);
+        // Bloom
+        //BloomUpdate(FrameBufferMode::FBM_SCENE);
+        //BloomUpdate(FrameBufferMode::FBM_MATERIALEDITOR);
 
         //For Darren to Check Depth Map
         //engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_GAME);
