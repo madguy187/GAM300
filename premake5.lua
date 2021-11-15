@@ -277,7 +277,7 @@ project "Compiler"
   
   pchheader "pch.h"
   pchsource "%{prj.name}/Source/pch.cpp"
-
+   
   files
   {
     "%{prj.name}/**.h",
@@ -299,7 +299,12 @@ project "Compiler"
 	  "%{prj.name}/Source"
   }
   
-
+  filter "configurations:Debug"
+		targetname "%{prj.name}-Debug" 
+  
+  filter "configurations:Release"
+		targetname "%{prj.name}-Release" 
+	
   filter "system:windows"
     cppdialect "C++17"
     staticruntime "On"

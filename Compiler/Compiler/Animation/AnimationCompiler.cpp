@@ -49,8 +49,22 @@ void EclipseCompiler::AnimationCompiler::WriteToFile(std::vector<AnimationData>&
 
     if (AnimationFileWrite.fail())
     {
-        std::cout << "Fail To Open Animation Compiled File" << std::endl << std::endl;
-        return;
+        std::cout << "Failed To Open Animation Compiled File" << std::endl << std::endl;
+
+        std::filesystem::create_directories(Path + "AnimationFile");
+
+        std::cout << "Created new folder at directory." << std::endl;
+
+        AnimationFileWrite.open(Path + "AnimationFile/Animation" + FileName,
+            std::ios_base::out |
+            std::ios_base::trunc |
+            std::ios_base::binary);
+
+        if(AnimationFileWrite.fail())
+        {
+            std::cout << "Failed To Open Animation Compiled File, exiting.." << std::endl << std::endl;
+            return;
+        }
     }
 
     int animationNum = In.size();
