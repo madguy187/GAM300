@@ -193,7 +193,7 @@ namespace Eclipse
     void AssimpModelManager::MeshDraw(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType)
     {
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
-        
+
         if (engine->GetEditorState() == true)
         {
             engine->gFrameBufferManager->UseFrameBuffer(Mode);
@@ -662,16 +662,23 @@ namespace Eclipse
             {
                 if (engine->gPBRManager->CheckMaterialExist(Material))
                 {
-                    // If Material Instance no Textures
-                    if (engine->gPBRManager->AllMaterialInstances[Material.MaterialInstanceName]->HasTexture == false)
+                    if (engine->gPBRManager->AllMaterialInstances[Material.MaterialInstanceName]->EmissiveMaterial == true)
                     {
-                        engine->gPBRManager->NonTexturedUniform(EntityID, Cam);
+                        engine->gPBRManager->SetEmissive(shader, true, engine->gPBRManager->AllMaterialInstances[Material.MaterialInstanceName]->EmissiveColour);
                     }
-
-                    // If Material Instance have textures
                     else
                     {
-                        engine->gPBRManager->TexturedUniform(EntityID, Cam);
+                        // If Material Instance no Textures
+                        if (engine->gPBRManager->AllMaterialInstances[Material.MaterialInstanceName]->HasTexture == false)
+                        {
+                            engine->gPBRManager->NonTexturedUniform(EntityID, Cam);
+                        }
+
+                        // If Material Instance have textures
+                        else
+                        {
+                            engine->gPBRManager->TexturedUniform(EntityID, Cam);
+                        }
                     }
                 }
                 // If cannot find material.

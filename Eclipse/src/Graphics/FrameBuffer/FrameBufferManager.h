@@ -35,7 +35,7 @@ namespace Eclipse
         void CreateFBO(unsigned int Height, unsigned int Width, FrameBufferMode in);
 
         void PostProcessUpdate();
-        void BloomUpdate();
+        void BloomUpdate(FrameBufferMode);
         bool IsSobelEffect();
         void Reset();
         void SetSobelEffect();

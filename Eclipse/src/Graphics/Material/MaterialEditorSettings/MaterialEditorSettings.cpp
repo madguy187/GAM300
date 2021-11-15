@@ -105,6 +105,8 @@ namespace Eclipse
         GLint NormalMap_ = shdrpgm.GetLocation("NormalMap");
         GLint HeightScale_ = shdrpgm.GetLocation("HeightScale");
         GLint SurfaceColour_ = shdrpgm.GetLocation("SurfaceColour");
+        GLint EmissiveMaterial_ = shdrpgm.GetLocation("EmissiveMaterial");
+        GLint EmissiveColour_ = shdrpgm.GetLocation("EmissiveColour");
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::mat4(1.0f);
@@ -116,6 +118,10 @@ namespace Eclipse
 
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
 
+        // Emissive
+        GLCall(glUniform1i(EmissiveMaterial_, CurrentMaterial.EmissiveMaterial));
+        GLCall(glUniform3f(EmissiveColour_, CurrentMaterial.EmissiveColour.getX(), CurrentMaterial.EmissiveColour.getY(), CurrentMaterial.EmissiveColour.getZ()));
+
         // When Material is selected
         GLCall(glUniform3f(SurfaceColour_, CurrentMaterial.SurfaceColour.getX(), CurrentMaterial.SurfaceColour.getY(), CurrentMaterial.SurfaceColour.getZ()));
         GLCall(glUniform1i(NormalMap_, CurrentMaterial.IsNormalMap));
@@ -126,6 +132,7 @@ namespace Eclipse
         GLCall(glUniform1f(MetallicConstant, CurrentMaterial.MetallicConstant));
         GLCall(glUniform1f(RoughnessConstant, CurrentMaterial.RoughnessConstant));
         GLCall(glUniform3f(BaseReflectivity, CurrentMaterial.BaseReflectivity.getX(), CurrentMaterial.BaseReflectivity.getY(), CurrentMaterial.BaseReflectivity.getZ()));
+
         BindMaterial(shdrpgm, CurrentMaterial.Name.data());
     }
 

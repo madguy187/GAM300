@@ -394,6 +394,15 @@ namespace Eclipse
         In.setInt("aoMap", 0);
     }
 
+    void PBRManager::SetEmissive(Shader& In, bool in,  ECVec3 EmissiveColor)
+    {
+        GLuint EmissiveMaterial_ = In.GetLocation("EmissiveMaterial");
+        GLuint EmissiveColour_ = In.GetLocation("EmissiveColour");
+
+        GLCall(glUniform1f(EmissiveMaterial_, in));
+        glUniform3f(EmissiveColour_, EmissiveColor.getX(), EmissiveColor.getY(), EmissiveColor.getZ());
+    }
+
     void PBRManager::SetSurfaceColour(Shader& In, glm::vec3 SurfaceColour_)
     {
         GLuint AlbedoConstant = In.GetLocation("SurfaceColour");

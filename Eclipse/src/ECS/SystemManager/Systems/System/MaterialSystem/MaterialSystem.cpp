@@ -41,7 +41,7 @@ namespace Eclipse
         engine->gPBRManager->gMaterialEditorSettings->RenderMaterialScene();
 
         // Bloom Scene
-        engine->gPBRManager->BloomScene();
+        //engine->gPBRManager->BloomScene();
 
         engine->MaterialManager.StencilBufferClear();
 

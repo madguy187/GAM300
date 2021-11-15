@@ -12,6 +12,9 @@ namespace Eclipse
         ECVec3 BaseReflectivity = { 0.4f,0.4f,0.4f };
         ECVec3 SurfaceColour = { 1.0f,1.0f,1.0f };
 
+        bool EmissiveMaterial = false;
+        ECVec3 EmissiveColour = { 1.0f,1.0f,1.f };
+
         // Non Textured Parameters
         ECVec3 AlbedoConstant{ 1.0f };
         float AoConstant = 1.0f;

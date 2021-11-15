@@ -67,6 +67,7 @@ namespace Eclipse
         void UnBindMetallicTexture(Shader& In);
         void UnBindRoughnessTexture(Shader& In);
         void UnBindAOTexture(Shader& In);
+        void SetEmissive(Shader& In, bool in, ECVec3 EmissiveColor);
         void SetSurfaceColour(Shader& In, glm::vec3 SurfaceColour_);
         void SetSurfaceColour(Shader& In, ECVec3 SurfaceColour_);
         bool CheckMaterialExist(MaterialComponent& in);

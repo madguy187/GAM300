@@ -465,7 +465,8 @@ namespace Eclipse
             }
         }
 
-        BloomUpdate();
+        BloomUpdate(FrameBufferMode::FBM_SCENE);
+        BloomUpdate(FrameBufferMode::FBM_MATERIALEDITOR);
 
         //For Darren to Check Depth Map
         //engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_GAME);
@@ -480,7 +481,7 @@ namespace Eclipse
         //glDrawArrays(GL_TRIANGLES, 0, 6);
     }
 
-    void FrameBufferManager::BloomUpdate()
+    void FrameBufferManager::BloomUpdate(FrameBufferMode Mode)
     {
         auto& shdrpgm3 = Graphics::shaderpgms["Blur"];
         shdrpgm3.Use();
@@ -496,7 +497,7 @@ namespace Eclipse
 
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, first_iteration ?
-                engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_SCENE)->m_data.ColorBuffers[1] :
+                engine->gFrameBufferManager->GetFramebuffer(Mode)->m_data.ColorBuffers[1] :
                 engine->gFrameBufferManager->Bloom->pingpongColorbuffers[!horizontal]);
 
             glBindVertexArray(PostProcess->rectVAO);
@@ -509,13 +510,13 @@ namespace Eclipse
         }
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-        engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SCENE);
+        engine->gFrameBufferManager->UseFrameBuffer(Mode);
         engine->MaterialManager.DoNotUpdateStencil();
 
         auto& shdrpgm4 = Graphics::shaderpgms["BloomFinal"];
         shdrpgm4.Use();
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SCENE));
+        glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(Mode));
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->Bloom->pingpongColorbuffers[!horizontal]);
         shdrpgm4.setInt("bloom", true);
