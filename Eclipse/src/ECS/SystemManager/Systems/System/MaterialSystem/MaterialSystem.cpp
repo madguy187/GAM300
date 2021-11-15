@@ -25,6 +25,7 @@ namespace Eclipse
             }
             else
             {
+                // Whenever we open up the material Editor , we Will Clear it.
                 MaterialEditor->ColorPicker = ECVec3{ 1.0f };
                 engine->gPBRManager->gMaterialEditorSettings->ClearCurrentMaterial();
                 engine->gPBRManager->gMaterialEditorSettings->ClearTextureFields();
@@ -32,6 +33,7 @@ namespace Eclipse
             }
         }
 
+        // Material Node Editor
         engine->gPBRManager->gMaterialEditorSettings->RenderMaterialScene();
         engine->MaterialManager.StencilBufferClear();
 

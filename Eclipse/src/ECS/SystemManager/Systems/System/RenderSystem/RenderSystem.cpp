@@ -62,10 +62,7 @@ namespace Eclipse
                 if (!entCom.IsVisible) continue;
 
                 //If No Mesh Component, Do not Continue
-                if (!engine->world.CheckComponent<MeshComponent>(entityID))
-                {
-                    continue;
-                }
+                if (!engine->world.CheckComponent<MeshComponent>(entityID)) { continue; }
 
                 // If it is a base prefab, dont render
                 if (engine->world.CheckComponent<PrefabComponent>(entityID))
@@ -78,10 +75,7 @@ namespace Eclipse
 
                 MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
 
-                if (Mesh.transparency == 0.0f)
-                {
-                    continue;
-                }
+                if (Mesh.transparency == 0.0f) { continue; }
 
                 Renderer.RenderGame(Mesh, entityID);
             }
@@ -151,12 +145,12 @@ namespace Eclipse
 
                 engine->AssimpManager.MeshEditor_.Render();
 
-            // Frustrum
-            if (engine->GetEditorState() && engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
-            {
-                engine->MaterialManager.DoNotUpdateStencil();
-                engine->gDebugManager.DrawDebugShapes(FrameBufferMode::FBM_SCENE);
-            }
+                // Frustrum
+                if (engine->GetEditorState() && engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
+                {
+                    engine->MaterialManager.DoNotUpdateStencil();
+                    engine->gDebugManager.DrawDebugShapes(FrameBufferMode::FBM_SCENE);
+                }
 
                 engine->MaterialManager.StencilBufferClear();
             }

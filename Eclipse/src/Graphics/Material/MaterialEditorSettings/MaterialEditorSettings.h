@@ -44,13 +44,11 @@ namespace Eclipse
           - Inner
           - Outer
         *************************************************************************/
-        unsigned int InnerEntity = 0;
-        unsigned int OuterEntity = 0;
 
         MaterialEditorSettings();
         void BindMaterial(Shader& In, std::string MaterialName);
         void RenderSphere();
-        void UpdateCurrentMaterial(Shader& ShaderIn, CameraComponent& Camin);
+        void UpdateCurrentMaterial(Shader& ShaderIn);
         void UpdateLights(Shader& MaterialEditorShader);
         void UpdateCamera(Shader& MaterialEditorShader, CameraComponent& MeshEditorCamera);
         void CreateSphere();
@@ -58,7 +56,5 @@ namespace Eclipse
         void RenderMaterialScene();
         void ClearCurrentMaterial();
         void ClearTextureFields();
-        void CreateModel();
-        void UpdateInner(Shader& shdrpgm, CameraComponent& _camera, Entity ID);
     };
 }
