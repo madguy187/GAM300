@@ -50,6 +50,8 @@ namespace Eclipse
     class LightManager
     {
     public:
+        Entity Hand = MAX_ENTITY;
+
         // Base Classes =============================
         template<typename T, typename = void>
         struct has_Color : std::false_type {};
@@ -110,6 +112,8 @@ namespace Eclipse
 
     public:
         bool ApplyLighting = true;
+        Entity DirectionLightID = 0;
+        bool EnableShadows = false;
 
         void Init();
         void CreateLights(TypesOfLights in, unsigned int CreatedID);

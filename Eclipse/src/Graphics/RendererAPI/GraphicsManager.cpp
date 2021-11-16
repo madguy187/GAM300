@@ -435,7 +435,7 @@ namespace Eclipse
 
     void Eclipse::GraphicsManager::FinalRender()
     {
-        if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
+        if (engine->GetEditorState() && engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
         {
             if (engine->gFrameBufferManager->IsSobelEffect())
             {
@@ -496,17 +496,15 @@ namespace Eclipse
         auto& shdrpgm = Graphics::shaderpgms["PBRShader"];
         shdrpgm.Use();
 
-        GLint uniform_var_loc1 = shdrpgm.GetLocation("gamma");
-        GLint uniform_var_loc2 = shdrpgm.GetLocation("EnableGammaCorrection");
         GLint uniform_var_loc3 = shdrpgm.GetLocation("camPos");
         GLint uniform_var_loc4 = shdrpgm.GetLocation("Exposure");
         GLint uniform_var_loc5 = shdrpgm.GetLocation("EnableNormalMapping");
+        GLint uniform_var_loc6 = shdrpgm.GetLocation("EnableShadows");
 
-        GLCall(glUniform1f(uniform_var_loc1, engine->GraphicsManager.GetGammaCorrection()));
-        GLCall(glUniform1i(uniform_var_loc2, engine->GraphicsManager.EnableGammaCorrection));
         GLCall(glUniform3f(uniform_var_loc3, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ()));
         GLCall(glUniform1f(uniform_var_loc4, engine->GraphicsManager.Exposure));
         GLCall(glUniform1i(uniform_var_loc5, engine->GraphicsManager.EnableNormalMapping));
+        GLCall(glUniform1i(uniform_var_loc6, engine->LightManager.EnableShadows));
         shdrpgm.UnUse();
     }
 #endif

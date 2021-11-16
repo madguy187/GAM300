@@ -117,7 +117,8 @@ project "Eclipse"
   { 
     "4302",
     "4311",	
-    "4505"	
+    "4505",	
+    "4702"	
   }
 
   links
@@ -204,7 +205,8 @@ project "Eclipse"
   { 
     "4302",
     "4311",	
-    "4505"	
+    "4505",	
+    "4702"	
   }
 
   links
@@ -280,7 +282,7 @@ project "Compiler"
   cppdialect "C++17"
   warnings "Extra"
 
-  targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+  targetdir ("Eclipse/")
   objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
   
   pchheader "pch.h"
@@ -299,7 +301,7 @@ project "Compiler"
 	  "%{prj.name}/Compiler/ICompiler",
 	  "%{prj.name}/Compiler/Prefabs",
 	  "%{prj.name}/Compiler/Texture",
-	  "%{prj.name}/Compiler/Texture",
+	  "%{prj.name}/Compiler/Animation",
 	  "%{prj.name}/Compiler",
 	  "Dep/GLM/glm",
 	  "Dep/",

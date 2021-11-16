@@ -17,13 +17,19 @@ namespace Eclipse
 		void OnCameraZoomEvent();
 
 		void SetMeshID(Entity ID);
-		Entity GetMeshID();
+		void SetPath(const std::string& path);
+		Entity GetMeshID() const;
+		Entity GetOldestParentID() const;
 		bool GetActiveState();
 	private:
 		FrameBuffer* m_frameBuffer{ nullptr };
 		ECVec2 mViewportSize{ 0.f, 0.f };
 		Entity MeshID{ MAX_ENTITY };
+		Entity OldestParentID{ MAX_ENTITY };
+		std::vector<Entity> MeshFamily;
+		int MeshIndex{ 0 };
 		bool IsActive{ false };
+		std::string _path;
 
 		//Temporary, can move to any where else.
 		void RecursiveDestroy(const Entity& ent);

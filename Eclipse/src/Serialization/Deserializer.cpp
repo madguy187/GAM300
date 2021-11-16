@@ -3,6 +3,43 @@
 
 namespace Eclipse
 {
+	bool Deserializer::SetMonoScriptPointer(const std::string& scriptName, MonoScript*& att_data)
+	{
+		MonoScript* mono = engine->mono.GetScriptPointerByName(scriptName);
+
+		if (mono)
+		{
+			att_data = engine->mono.GetScriptPointerByName(scriptName);
+			return true;
+		}
+
+		return false;
+	}
+
+	void Deserializer::CleanMonoVariables(std::vector<MonoVariable>& origin, std::vector<MonoVariable>& saved)
+	{
+		for (auto& variable : origin)
+		{
+			auto result = std::find_if(saved.begin(), saved.end(), [&variable](MonoVariable& var)
+				{
+					if (variable.varName == var.varName)
+					{
+						return true;
+					}
+
+					return false;
+				}
+			);
+
+			if (result != saved.end())
+			{
+				variable.varValue = result->varValue;
+				saved.erase(result);
+			}
+		}
+		saved.clear();
+	}
+
 	Deserializer::Deserializer() :
 		_currElement{ 0 },
 		hasFile{ false }
@@ -93,13 +130,13 @@ namespace Eclipse
 			os << "Fail to load the file \"" << _path.filename() << "\"." <<
 				_doc.ErrorDesc() << " at Row " << _doc.ErrorRow() << " Column "
 				<< _doc.ErrorCol();
-			EDITOR_LOG_WARN(os.str().c_str())
+			ENGINE_CORE_WARN(os.str().c_str())
 		}
 		else
 		{
 			std::ostringstream os;
 			os << "File \"" << _path.filename() << "\"" << " is loaded successfuly.";
-			EDITOR_LOG_INFO(os.str().c_str())
+			ENGINE_CORE_INFO(os.str().c_str())
 		}
 
 		return hasFile;

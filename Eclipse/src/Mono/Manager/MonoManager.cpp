@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "MonoManager.h"
 
+#include <locale>
+#include <codecvt>
+
 #include <mono/metadata/mono-config.h>
 #include <mono/metadata/threads.h>
 #include <mono/metadata/assembly.h>
@@ -18,6 +21,10 @@
 #include "../Components/s_Quaternion.h"
 #include "../Components/s_GameObject.h"
 #include "../Components/s_EclipseBehavior.h"
+#include "../Components/s_Physics.h"
+#include "../Components/s_Cursor.h"
+#include "../Components/s_Light.h"
+#include "../Components/s_AudioSource.h"
 
 
 namespace Eclipse
@@ -68,7 +75,6 @@ namespace Eclipse
 		void* args[1];
 		args[0] = &ent;
 		mono_runtime_invoke(method, obj, args, NULL);
-		uint32_t handle = mono_gchandle_new(obj, true);
 
 		return obj;
 	}
@@ -85,21 +91,125 @@ namespace Eclipse
 
 		ENGINE_LOG_ASSERT(domain, "Domain could not be created");
 
-		mono_add_internal_call("Eclipse.RigidBody::Add_Force", AddForce);
-		mono_add_internal_call("Eclipse.RigidBody::getMass", getMass);
-		mono_add_internal_call("Eclipse.RigidBody::getX", getX);
-		mono_add_internal_call("Eclipse.RigidBody::getY", getY);
-		mono_add_internal_call("Eclipse.RigidBody::getZ", getZ);
-		mono_add_internal_call("Eclipse.Input::GetButtonDown", GetKeyCurrentByName);
+		// RigidBody Internal Calls
+		mono_add_internal_call("Eclipse.Rigidbody::Add_Force", AddForce);
+		mono_add_internal_call("Eclipse.Rigidbody::getMass", getMass);
+		mono_add_internal_call("Eclipse.Rigidbody::getX", getX);
+		mono_add_internal_call("Eclipse.Rigidbody::getY", getY);
+		mono_add_internal_call("Eclipse.Rigidbody::getZ", getZ);
+		mono_add_internal_call("Eclipse.Rigidbody::setGravBool", setGravBool);
+
+		// Input Internal Calls
+		mono_add_internal_call("Eclipse.Input::GetKeyDown", GetKeyTriggered);
 		mono_add_internal_call("Eclipse.Input::GetKey", GetKeyCurrentByKeyCode);
 		mono_add_internal_call("Eclipse.Input::GetAxis", GetMouseAxis);
+		mono_add_internal_call("Eclipse.Input::GetAxisRaw", GetRawMouseAxis);
+		mono_add_internal_call("Eclipse.Input::LockCamera", SetCameraState);
+
+		// Time Internal Calls
 		mono_add_internal_call("Eclipse.Time::getDeltaTime", GetDeltaTime);
 		mono_add_internal_call("Eclipse.Time::getFixedDeltaTime", GetFixedDeltaTime);
+
+		// GameObject Internal Calls
 		mono_add_internal_call("Eclipse.GameObject::setEnabled", setEnabled);
 		mono_add_internal_call("Eclipse.GameObject::getBehavior", getBehavior);
+
+		// Transform Internal Calls
 		mono_add_internal_call("Eclipse.Transform::RotateEuler", RotateEuler);
+		mono_add_internal_call("Eclipse.Transform::GetTransform", GetTransform);
+		mono_add_internal_call("Eclipse.Transform::SetTransform", SetTransform);
+		mono_add_internal_call("Eclipse.Transform::GetRotation", GetRotation);
+		mono_add_internal_call("Eclipse.Transform::SetRotation", SetRotation);
+		mono_add_internal_call("Eclipse.Transform::GetRight", GetRight);
+		mono_add_internal_call("Eclipse.Transform::GetForward", GetForward);
+		mono_add_internal_call("Eclipse.Transform::GetBack", GetBack);
+		mono_add_internal_call("Eclipse.Transform::GetLeft", GetLeft);
+		mono_add_internal_call("Eclipse.Transform::GetUp", GetUp);
+		mono_add_internal_call("Eclipse.Transform::GetDown", GetDown);
+
+		// Quaternion Internal Calls
 		mono_add_internal_call("Eclipse.Quaternion::GetEuler", Euler);
+
+		// InvokeFunc Internal Calls
 		mono_add_internal_call("Eclipse.EclipseBehavior::InvokeFunc", Invoke);
+		mono_add_internal_call("Eclipse.EclipseBehavior::Find", Find);
+		mono_add_internal_call("Eclipse.EclipseBehavior::CreateSpotLight", CreateSpotLight);
+		mono_add_internal_call("Eclipse.EclipseBehavior::CreatePrefab", CreatePrefab);
+
+		// Physics Internal Calls
+		mono_add_internal_call("Eclipse.Physics::RaycastCheck", RaycastFunc);
+
+		// Cursor Internal Calls
+		mono_add_internal_call("Eclipse.Cursor::setState", setState);
+
+		// Light Internal Calls
+		mono_add_internal_call("Eclipse.Light::SetLightEnabled", SetLightEnabled);
+		mono_add_internal_call("Eclipse.Light::SetIntensity", SetIntensity);
+		mono_add_internal_call("Eclipse.Light::SetDirection", SetDirection);
+		mono_add_internal_call("Eclipse.Light::IncreaseIntensity", IncreaseIntensity);
+		mono_add_internal_call("Eclipse.Light::DecreaseIntensity", DecreaseIntensity);
+		mono_add_internal_call("Eclipse.Light::GetIntensity", GetIntensity);
+
+		// AudioSource Internal Calls
+		mono_add_internal_call("Eclipse.AudioSource::PlayAudio", Play);
+
+		StartMono();
+	}
+
+	void MonoManager::LoadVariable(MonoScript* script)
+	{
+		MonoClass* klass = GetScriptMonoClass(script->scriptName);
+
+		for (auto& var : script->vars)
+		{
+			if (var.varValue.empty()) continue;
+
+			if (var.type == m_Type::MONO_UNDEFINED || var.type == m_Type::MONO_HEADER) continue;
+			else if (var.type == m_Type::MONO_LIGHT)
+			{
+				mono_field_set_value(
+					script->obj,
+					mono_class_get_field_from_name(klass, var.varName.c_str()),
+					CreateLightClass(std::strtoul(var.varValue.c_str(), 0, 10))
+				);
+			}
+			else if (var.type == m_Type::MONO_AUDIO)
+			{
+				mono_field_set_value(
+					script->obj,
+					mono_class_get_field_from_name(klass, var.varName.c_str()),
+					CreateAudioSourceClass(std::strtoul(var.varValue.c_str(), 0, 10))
+				);
+			}
+			else if (var.type == m_Type::MONO_FLOAT)
+			{
+				float temp = std::stof(var.varValue);
+				mono_field_set_value(
+					script->obj,
+					mono_class_get_field_from_name(klass, var.varName.c_str()),
+					&temp);
+			}
+			else if (var.type == m_Type::MONO_GAMEOBJECT)
+			{
+				mono_field_set_value(
+					script->obj,
+					mono_class_get_field_from_name(klass, var.varName.c_str()),
+					CreateGameObjectClass(std::strtoul(var.varValue.c_str(), 0, 10), "")
+				);
+			}
+			else if (var.type == m_Type::MONO_LAYERMASK)
+			{
+				mono_field_set_value(
+					script->obj,
+					mono_class_get_field_from_name(klass, var.varName.c_str()),
+					CreateLayerMaskClass(var.varValue)
+				);
+			}
+			else
+			{
+				ENGINE_CORE_INFO("Variable type cannot be added because it is not recognised.");
+			}
+		}
 	}
 
 	void MonoManager::Awake(MonoScript* obj)
@@ -112,11 +222,7 @@ namespace Eclipse
 		}
 
 		MonoMethod* m_update = mono_class_get_method_from_name(klass, "Awake", -1);
-		if (!m_update)
-		{
-			std::cout << "Failed to get method" << std::endl;
-			return;
-		}
+		if (!m_update) return;
 
 		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
 	}
@@ -131,25 +237,90 @@ namespace Eclipse
 		}
 
 		MonoMethod* m_update = mono_class_get_method_from_name(klass, "Start", -1);
-		if (!m_update)
-		{
-			std::cout << "Failed to get method" << std::endl;
-			return;
-		}
+		if (!m_update) return;
 
 		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
 	}
 
+	void MonoManager::LoadAllScripts()
+	{
+		if (!CheckIfScriptCompiled()) return;
+		const MonoTableInfo* table_info = mono_image_get_table_info(ScriptImage, MONO_TABLE_TYPEDEF);
+
+		int rows = mono_table_info_get_rows(table_info);
+
+		/* For each row, get some of its values */
+		for (int i = 1; i < rows; i++)
+		{
+			uint32_t cols[MONO_TYPEDEF_SIZE];
+			mono_metadata_decode_row(table_info, i, cols, MONO_TYPEDEF_SIZE);
+			const char* name = mono_metadata_string_heap(ScriptImage, cols[MONO_TYPEDEF_NAME]);
+
+			int index = CheckIfScriptExist(name);
+			if (index == -1)
+			{
+				UserImplementedScriptList.push_back(MonoScript{});
+				UserImplementedScriptList.back().scriptName = name;
+				LoadAllFields(&UserImplementedScriptList.back());
+			}
+			else
+				LoadAllFields(&UserImplementedScriptList[index]);
+		}
+	}
+
+	bool MonoManager::CheckIfScriptCompiled()
+	{
+		TCHAR buffer[MAX_PATH] = { 0 };
+		GetModuleFileName(NULL, buffer, MAX_PATH); // get exe buff
+		std::wstring wBuffer{ buffer }; // convert buffer into wstring
+		std::string exePath{ wBuffer.begin(), wBuffer.end() }; // convert wstring into string
+
+		// removes path from bin onwards
+		size_t index = exePath.find("bin");
+		if (index == exePath.npos) return false;
+		exePath = exePath.substr(0, index);
+
+		// combine strings to make api and script path
+		std::string outputTxtFile = exePath + "Eclipse//mcs_script_output.txt";
+
+		const std::ifstream input_stream(outputTxtFile, std::ios_base::binary);
+
+		if (input_stream.fail()) {
+			return true;
+		}
+
+		std::stringstream streambuffer;
+		streambuffer << input_stream.rdbuf();
+		std::string output{ streambuffer.str() };
+
+		if (output.find("succeed") != output.npos) return true;
+
+		return false;
+	}
+
+	int MonoManager::CheckIfScriptExist(std::string scriptName)
+	{
+		for (int i = 0; i < UserImplementedScriptList.size(); i++)
+			if (UserImplementedScriptList[i].scriptName == scriptName) return i;
+		
+		return -1;
+	}
+
 	void MonoManager::LoadAllFields(MonoScript* script)
 	{
+		if (script->scriptName.empty()) return;
 		size_t i = 0;
 		MonoClass* klass = GetScriptMonoClass(script->scriptName);
 		MonoClass* attrKlass = mono_class_from_name(engine->mono.GetAPIImage(), "", "Header");
 		MonoClassField* field;
 		void* iter = NULL;
 
-		while ((field = mono_class_get_fields(klass, &iter)))
+		std::vector<std::string> fieldNameList;
+
+		while (true)
 		{
+			field = mono_class_get_fields(klass, &iter);
+			if (!field) break;
 			// check for attributes
 			MonoCustomAttrInfo* attrInfo = mono_custom_attrs_from_field(klass, field);
 
@@ -164,7 +335,9 @@ namespace Eclipse
 						var.type = m_Type::MONO_HEADER;
 						var.varName = GetStringFromField(attrObj, attrKlass, "name");
 
-						if (CheckIfFieldExist(script, var.varName, i))
+						fieldNameList.push_back(var.varName);
+
+						if (CheckIfFieldExist(script, var.varName))
 							i++;
 						else
 							script->vars.insert(script->vars.begin() + i++, var);
@@ -177,20 +350,63 @@ namespace Eclipse
 			mono_custom_attrs_free(attrInfo);
 
 			MonoVariable var;
-			var.type = m_Type::MONO_VAR;
+
+			int typeInt = mono_type_get_type(mono_field_get_type(field));
 			var.varName = mono_field_get_name(field);
-			if (CheckIfFieldExist(script, var.varName, i))
-				i++;
-			else
-				script->vars.insert(script->vars.begin() + i++, var);
+			fieldNameList.push_back(var.varName);
+
+			MonoClass* fieldklass = mono_type_get_class(mono_field_get_type(field));
+
+			switch (typeInt)
+			{
+			case MONO_TYPE_R4:
+				var.type = m_Type::MONO_FLOAT;
+				break;
+			case MONO_TYPE_VALUETYPE:
+				if (fieldklass == GetAPIMonoClass("Light"))
+					var.type = m_Type::MONO_LIGHT;
+				else if (fieldklass == GetAPIMonoClass("AudioSource"))
+					var.type = m_Type::MONO_AUDIO;
+				else
+					var.type = m_Type::MONO_UNDEFINED;				
+				break;
+			case MONO_TYPE_CLASS:
+				if (fieldklass == GetAPIMonoClass("GameObject"))
+					var.type = m_Type::MONO_GAMEOBJECT;
+				else if (fieldklass == GetAPIMonoClass("LayerMask"))
+				{
+					var.type = m_Type::MONO_LAYERMASK;
+					var.varValue = "11";
+				}
+				break;
+			}
+
+			if (!CheckIfFieldExist(script, var.varName))
+				script->vars.insert(script->vars.begin() + i, var);
+
+			i++;
 		}
+
+		// remove if
+		script->vars.erase(std::remove_if(script->vars.begin(),
+			script->vars.end(),
+			[&](const MonoVariable& var)-> bool
+			{
+				for (auto& name : fieldNameList)
+				{
+					if (name == var.varName) return false;
+				}
+				
+				return true;
+			}),
+			script->vars.end());
 	}
 
-	bool MonoManager::CheckIfFieldExist(MonoScript* script, std::string& fieldName, size_t index)
+	bool MonoManager::CheckIfFieldExist(MonoScript* script, std::string& fieldName)
 	{
-		if (index >= script->vars.size()) return false;
+		for (auto& var : script->vars)
+			if (var.varName == fieldName) return true;
 
-		if (script->vars[index].varName == fieldName) return true;
 		return false;
 	}
 
@@ -204,11 +420,7 @@ namespace Eclipse
 		}
 
 		MonoMethod* m_update = mono_class_get_method_from_name(klass, "Update", -1);
-		if (!m_update)
-		{
-			std::cout << "Failed to get method" << std::endl;
-			return;
-		}
+		if (!m_update) return;
 
 		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
 	}
@@ -226,6 +438,26 @@ namespace Eclipse
 		if (!m_update) return;
 
 		mono_runtime_invoke(m_update, obj->obj, nullptr, NULL);
+	}
+
+	void MonoManager::OnCollision(Entity ent)
+	{
+		auto& scriptComp = engine->world.GetComponent<ScriptComponent>(ent);
+
+		for (auto& script : scriptComp.scriptList)
+		{
+			MonoClass* klass = mono_class_from_name(ScriptImage, "", script->scriptName.c_str());
+
+			if (klass == nullptr) {
+				std::cout << "Failed loading class, MonoVec3" << std::endl;
+				continue;
+			}
+
+			MonoMethod* m_update = mono_class_get_method_from_name(klass, "OnCollision", -1);
+			if (!m_update) continue;
+
+			mono_runtime_invoke(m_update, script->obj, nullptr, NULL);
+		}
 	}
 
 	void MonoManager::StopMono()
@@ -249,6 +481,8 @@ namespace Eclipse
 		LoadDomain();
 		LoadDLLImage("../EclipseScriptsAPI.dll", APIImage, APIAssembly);
 		LoadDLLImage("../EclipseScripts.dll", ScriptImage, ScriptAssembly);
+
+		LoadAllScripts();
 	}
 
 	void MonoManager::Terminate()
@@ -291,8 +525,19 @@ namespace Eclipse
 		InvokeContainer.push_back({ _script, _timer, _method });
 	}
 
+	MonoScript* MonoManager::GetScriptPointerByName(const std::string& name)
+	{
+		for (auto& script : UserImplementedScriptList)
+		{
+			if (script.scriptName == name) return &script;
+		}
+
+		return nullptr;
+	}
+
 	MonoObject* MonoManager::CreateMonoObject(std::string scriptName, Entity entity)
 	{
+		if (scriptName == "") return nullptr;
 		MonoClass* script = mono_class_from_name(ScriptImage, "", scriptName.c_str());
 		if (!script)
 		{
@@ -306,6 +551,8 @@ namespace Eclipse
 			return nullptr;
 		}
 
+		mono_runtime_object_init(obj);
+
 		MonoClass* base = mono_class_from_name(APIImage, "Eclipse", "EclipseBehavior");
 		if (!base)
 		{
@@ -318,8 +565,6 @@ namespace Eclipse
 			std::cout << "Failed loading class method" << std::endl;
 			return nullptr;
 		}
-
-		mono_runtime_object_init(obj);
 
 		void* args[3];
 		uint32_t handle = mono_gchandle_new(obj, true);
@@ -391,6 +636,36 @@ namespace Eclipse
 		return obj;
 	}
 
+	ECVec3 MonoManager::ConvertVectorToECVec(MonoObject* vec)
+	{
+		MonoClass* klass = GetAPIMonoClass("Vector3");
+		float x;
+		float y;
+		float z;
+		GetFloatFromField(vec, klass, "x", x);
+		GetFloatFromField(vec, klass, "y", y);
+		GetFloatFromField(vec, klass, "z", z);
+		return ECVec3{ x, y, z };
+	}
+
+	ECVec3 MonoManager::ConvertQuaternionToECVec3(MonoObject* vec)
+	{
+		float w;
+		GetFloatFromField(vec, GetAPIMonoClass("Quaternion"), "w", w);
+		float x;
+		GetFloatFromField(vec, GetAPIMonoClass("Quaternion"), "x", x);
+		float y;
+		GetFloatFromField(vec, GetAPIMonoClass("Quaternion"), "y", y);
+		float z;
+		GetFloatFromField(vec, GetAPIMonoClass("Quaternion"), "z", z);
+
+		glm::quat quad{ w, x, y, z };
+		PxQuat tempquat{ x,y,z,w };
+		//auto rot = glm::degrees(glm::eulerAngles(quad));
+		ECVec3 VecRot = engine->gPhysics.QuattoAngles(tempquat);
+		return VecRot;
+	}
+
 	MonoObject* MonoManager::CreateQuaternionClass(float x, float y, float z)
 	{
 		MonoClass* klass = GetAPIMonoClass("Quaternion");
@@ -400,8 +675,9 @@ namespace Eclipse
 		MonoMethod* method = GetMethodFromClass(klass, ".ctor", 4);
 		if (!method) return nullptr;
 
-		glm::vec3 vec{ x, y, z };
-		glm::fquat quad{ vec };
+		PxQuat quad = engine->gPhysics.AnglestoQuat(x,y,z);
+		//glm::vec3 vec{ x, y, z };
+		//glm::quat quad{ glm::radians(vec) };
 
 		std::vector<void*> args;
 		args.push_back(&quad.w);
@@ -410,6 +686,77 @@ namespace Eclipse
 		args.push_back(&quad.z);
 
 		ExecuteMethod(obj, method, args);
+
+		return obj;
+	}
+
+	MonoObject* MonoManager::CreateRayCastHit(Entity ent, float x, float y, float z)
+	{
+		MonoClass* klass = GetAPIMonoClass("RaycastHit");
+		MonoObject* obj = CreateObjectFromClass(klass, false);
+		std::vector<void*> args;
+		args.push_back(&ent);
+		args.push_back(&x);
+		args.push_back(&y);
+		args.push_back(&z);
+		ExecuteMethod(obj, GetMethodFromClass(klass, ".ctor", 4), args);
+		
+		return obj;
+	}
+
+	MonoObject* MonoManager::CreateLightClass(Entity ent)
+	{
+		MonoClass* klass = GetAPIMonoClass("Light");
+		MonoObject* obj = CreateObjectFromClass(klass, false);
+		std::vector<void*> args;
+		args.push_back(&ent);
+		ExecuteMethod(obj, GetMethodFromClass(klass, ".ctor", 1), args);
+
+		return obj;
+	}
+
+	MonoObject* MonoManager::CreateAudioSourceClass(Entity ent)
+	{
+		MonoClass* klass = GetAPIMonoClass("AudioSource");
+		MonoObject* obj = CreateObjectFromClass(klass, false);
+		std::vector<void*> args;
+		args.push_back(&ent);
+		ExecuteMethod(obj, GetMethodFromClass(klass, ".ctor", 1), args);
+
+		return obj;
+	}
+
+	MonoObject* MonoManager::CreateGameObjectClass(Entity ent, std::string scriptName)
+	{
+		MonoClass* klass = GetAPIMonoClass("GameObject");
+		MonoObject* obj = CreateObjectFromClass(klass, false);
+
+
+		MonoString* str = mono_string_new(mono_domain_get(), scriptName.c_str());
+
+		std::vector<void*> args;
+		args.push_back(&ent);
+		args.push_back(str);
+
+		ExecuteMethod(obj, GetMethodFromClass(klass, ".ctor", 2), args);
+
+		return obj;
+	}
+
+	MonoObject* MonoManager::CreateLayerMaskClass(std::string mask)
+	{
+		if (mask.empty())
+			mask = "1";
+
+		MonoClass* klass = GetAPIMonoClass("LayerMask");
+		MonoObject* obj = CreateObjectFromClass(klass, false);
+
+		MonoString* str = mono_string_new(mono_domain_get(), mask.c_str());
+
+		std::vector<void*> args;
+		args.push_back(str);
+
+		ExecuteMethod(obj, GetMethodFromClass(klass, ".ctor", 1), args);
 
 		return obj;
 	}
@@ -443,6 +790,19 @@ namespace Eclipse
 		}
 
 		mono_field_set_value(obj, field, &fieldValue);
+	}
+
+	bool MonoManager::GetFloatFromField(MonoObject* obj, MonoClass* klass, const char* fieldName, float& value)
+	{
+		MonoClassField* field = mono_class_get_field_from_name(klass, fieldName);
+		if (!field) {
+			ENGINE_CORE_WARN("Can't find field in klass");
+			return false;
+		}
+
+		mono_field_get_value(obj, field, (void*)&value);
+
+		return true;
 	}
 
 	MonoMethod* MonoManager::GetMethodFromClass(MonoClass* klass, std::string funcName, int param_count)
@@ -497,8 +857,32 @@ namespace Eclipse
 	void MonoManager::GenerateDLL()
 	{
 		ENGINE_CORE_INFO("Mono: Generating DLLs");
-		system("sh -c ../Dep/mono/bin/mcs_api.bat");
-		system("sh -c ../Dep/mono/bin/mcs_scripts.bat");
+		//system("sh -c ../Dep/mono/bin/mcs_api.bat");
+
+		TCHAR buffer[MAX_PATH] = { 0 };
+		GetModuleFileName(NULL, buffer, MAX_PATH); // get exe buff
+
+
+		std::wstring wBuffer{ buffer }; // convert buffer into wstring
+		//std::string exePath{ wBuffer.begin(), wBuffer.end() }; // convert wstring into string
+		std::string exePath;
+		std::transform(wBuffer.begin(), wBuffer.end(), std::back_inserter(exePath), [](wchar_t c) {
+			return (char)c;
+			});
+		std::string cmdCall = "cmd /C "; // string for command call
+
+		// removes path from bin onwards
+		size_t index = exePath.find("bin");
+		if (index == exePath.npos) return;
+		exePath = exePath.substr(0, index);
+
+		// combine strings to make api and script path
+		std::string apiPath = '"' + exePath + "Dep//mono//bin//mcs_api.bat" + '"';
+		std::string scriptPath = '"' + exePath + "Dep//mono//bin//mcs_scripts.bat" + '"';
+
+		// system call path
+		system((cmdCall + apiPath).c_str());
+		system((cmdCall + scriptPath).c_str());
 		ENGINE_CORE_INFO("Mono: Successfully Generate DLLs");
 	}
 
@@ -551,23 +935,6 @@ namespace Eclipse
 		std::cout << "#####################################" << std::endl;
 		std::cout << mono_image_get_name(_image) << std::endl;
 		std::cout << "#####################################" << std::endl;
-		/*std::list<MonoClass*> objs = GetAssemblyClassList(_image);
-
-		int index = 0;
-		for (auto it = objs.begin(); it != objs.end(); it++)
-		{
-			std::cout << index << std::endl;
-			void* iter = NULL;
-			MonoMethod* method = nullptr;
-			while (method == mono_class_get_methods(*it, &iter))
-			{
-				if (!method) continue;
-				std::cout << mono_method_get_name(method) << std::endl;
-				std::cout << mono_method_full_name(method, 1) << std::endl;
-			}
-			index++;
-			std::cout << std::endl;
-		}*/
 
 		const MonoTableInfo* table_info = mono_image_get_table_info(_image, MONO_TABLE_TYPEDEF);
 
@@ -585,8 +952,10 @@ namespace Eclipse
 
 			void* iter = NULL;
 			MonoMethod* method;
-			while (method = mono_class_get_methods(_class, &iter))
+			while (true)
 			{
+				method = mono_class_get_methods(_class, &iter);
+				if (!method) break;
 				std::cout << mono_method_full_name(method, 1) << std::endl;
 			}
 		}
@@ -600,8 +969,10 @@ namespace Eclipse
 
 		void* iter = NULL;
 		MonoMethod* method;
-		while (method = mono_class_get_methods(_class, &iter))
+		while (true)
 		{
+			method = mono_class_get_methods(_class, &iter);
+			if (!method) break;
 			std::cout << mono_method_full_name(method, 1) << std::endl;
 		}
 

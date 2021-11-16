@@ -9,7 +9,7 @@
 #include "spdlog/fmt/ostr.h"
 
 // Use this instead of static_assert
-#define ENGINE_LOG_ASSERT(x, ...) { if(!(x)) { ENGINE_CORE_WARN("Program has crashed. Please check crash log for details."); ENGINE_CORE_ERROR("Assertion Failed! {0}", my_strcat(__FILE__, " Line ", __LINE__, ": ", __VA_ARGS__).c_str()); std::stringstream ss; ss<<"File: "<< __FILE__<< "\n"<< "Line: "<< __LINE__<< "\n"<< "\n"<< "For more information, please check crash log for details."<< "\n"<< "\n"<< "(Click Retry to debug application)"; wchar_t* msg = charToWChar(ss.str().c_str()); int msgID = MessageBox( nullptr, msg, TEXT("Debug Assertion Failed!"), MB_ABORTRETRYIGNORE ); delete[] msg; if (msgID == IDRETRY) { __debugbreak(); } else if (msgID == IDABORT) { glfwSetWindowShouldClose(OpenGL_Context::GetWindow(), 1); } } }
+#define ENGINE_LOG_ASSERT(x, ...) { if(!(x)) { ENGINE_CORE_FATAL("Program has crashed. Please check crash log for details."); ENGINE_CORE_WRITE_CRASH("Assertion Failed! {0}", my_strcat(__FILE__, " Line ", __LINE__, ": ", __VA_ARGS__).c_str()); std::stringstream ss; ss<<"File: "<< __FILE__<< "\n"<< "Line: "<< __LINE__<< "\n"<< "\n"<< "For more information, please check crash log for details."<< "\n"<< "\n"<< "(Click Retry to debug application)"; wchar_t* msg = charToWChar(ss.str().c_str()); int msgID = MessageBox( nullptr, msg, TEXT("Debug Assertion Failed!"), MB_ABORTRETRYIGNORE ); delete[] msg; if (msgID == IDRETRY) { __debugbreak(); } else if (msgID == IDABORT) { glfwSetWindowShouldClose(OpenGL_Context::GetWindow(), 1); } } }
 
 namespace Eclipse
 {
@@ -28,9 +28,9 @@ namespace Eclipse
 /**************************************************************************************/
 /*         ONLY USE THIS WHEN THINGS ARE DONE BEFORE EDITOR INITIALIZATION            */
 /**************************************************************************************/
-// Inclusive in Log Assert so use ENGINE_LOG_ASSERT instead
+// To predict errors from outside sources, file browser, mono scripts, compiler, etc
 // TEXT COLOR -> RED
-#define ENGINE_CORE_ERROR(...) Eclipse::Log::GetCrashLogger()->error(__VA_ARGS__);
+#define ENGINE_CORE_ERROR(...) Eclipse::Log::GetConsoleLogger()->error(__VA_ARGS__);
 
 // For normal messages like initialization or creating entities, etc
 // TEXT COLOR -> GREEN
@@ -41,4 +41,6 @@ namespace Eclipse
 // TEXT COLOR -> YELLOW
 #define ENGINE_CORE_WARN(...) Eclipse::Log::GetConsoleLogger()->warn(__VA_ARGS__);
 
-//#define ENGINE_CORE_FATAL(...) Transcend::Log::GetConsoleLogger()->fatal(__VA_ARGS__);
+// Inclusive in Log Assert so use ENGINE_LOG_ASSERT instead
+#define ENGINE_CORE_FATAL(...) Eclipse::Log::GetConsoleLogger()->critical(__VA_ARGS__);
+#define ENGINE_CORE_WRITE_CRASH(...) Eclipse::Log::GetCrashLogger()->critical(__VA_ARGS__);

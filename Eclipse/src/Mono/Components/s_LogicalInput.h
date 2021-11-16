@@ -5,14 +5,9 @@
 
 namespace Eclipse
 {
-	static void GetKeyTriggered(InputKeycode KeyIn)
+	static bool GetKeyTriggered(uint32_t keycode)
 	{
-		engine->InputManager->GetKeyTriggered(KeyIn);
-	}
-
-	static void GetKeyTriggered(MonoString* Mappedkeycode)
-	{
-		engine->InputManager->GetKeyTriggered(mono_string_to_utf8(Mappedkeycode));
+		return engine->InputManager->GetKeyTriggered(static_cast<InputKeycode>(keycode));
 	}
 
 	static bool GetKeyCurrentByKeyCode(uint32_t keycode)
@@ -26,9 +21,9 @@ namespace Eclipse
 	}
 
 	// I haven do UI FOR MOUSE YET
-	static void GetMouseTriggered(InputMouseKeycode KeyIn)
+	static void GetMouseTriggered(uint32_t keycode)
 	{
-		engine->InputManager->GetMouseTriggered(KeyIn);
+		engine->InputManager->GetMouseTriggered(static_cast<InputMouseKeycode>(keycode));
 	}
 
 	static void GetMouseTriggered(std::string Mappedkeycode)
@@ -50,5 +45,16 @@ namespace Eclipse
 	{
 		std::string axis = mono_string_to_utf8(Axis);
 		return engine->InputManager->GetAxis(axis);
+	}
+
+	static float GetRawMouseAxis(MonoString* Axis)
+	{
+		std::string axis = mono_string_to_utf8(Axis);
+		return engine->InputManager->GetRawAxis(axis);
+	}
+
+	static void SetCameraState(uint32_t state)
+	{
+		engine->gCamera.EnableGameCameraMouse = state ? true : false;
 	}
 }

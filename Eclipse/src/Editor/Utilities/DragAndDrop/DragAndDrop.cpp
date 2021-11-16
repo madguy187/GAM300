@@ -32,6 +32,7 @@ namespace Eclipse
 	{
 		if (ECGui::BeginDragDropSource())
 		{
+			std::cout << "Being dragged here" << std::endl;
 			ECGui::SetDragDropPayload(id, &source, sizeof(source));
 			switch (type)
 			{
@@ -81,7 +82,8 @@ namespace Eclipse
 						std::filesystem::path temp = ((const char*)payload->Data);
 						destination = AssetBrowserWindow::GetFileName(temp.filename().string().c_str());
 						auto& scriptCom = engine->world.GetComponent<ScriptComponent>(ID);
-						scriptCom.scriptList[arrayIndex].scriptName = destination;
+						scriptCom.scriptList[arrayIndex] = engine->mono.GetScriptPointerByName(destination);
+						//scriptCom.scriptList[arrayIndex]->scriptName = destination;
 					}
 					else
 					{
@@ -121,6 +123,38 @@ namespace Eclipse
 						engine->pfManager.GeneratePrefab(PrefabID, destination.c_str());
 					}
 					break;
+				case PayloadTargetType::PTT_SCRIPT_LIGHT:
+					if (engine->world.CheckComponent<LightComponent>(engine->editorManager->GetEntityID(*((int*)payload->Data))))
+					{
+						destination = std::to_string(engine->editorManager->GetEntityID(*((int*)payload->Data)));
+					}
+					else
+					{
+						cMsg = "Wrong type of entity dragged , entity needs to have LIGHT COMPONENT";
+					}
+					break;
+				case PayloadTargetType::PTT_SCRIPT_AUDIO:
+					if (engine->world.CheckComponent<AudioComponent>(engine->editorManager->GetEntityID(*((int*)payload->Data))))
+						
+					{
+						destination = std::to_string(engine->editorManager->GetEntityID(*((int*)payload->Data)));
+					}
+					else
+					{
+						cMsg = "Wrong type of entity dragged , entity needs to have AUDIO COMPONENT";
+					}
+					break;
+				case PayloadTargetType::PTT_SCRIPT_GAMEOBJECT:
+					if (engine->world.CheckComponent<EntityComponent>(engine->editorManager->GetEntityID(*((int*)payload->Data))))
+
+					{
+						destination = std::to_string(engine->editorManager->GetEntityID(*((int*)payload->Data)));
+					}
+					else
+					{
+						cMsg = "Wrong type of entity dragged , entity needs to have ENTITY COMPONENT";
+					}
+					break;
 				}
 
 				EDITOR_LOG_INFO(cMsg);
@@ -132,6 +166,8 @@ namespace Eclipse
 
 	bool DragAndDrop::NodeEditorTextureTarget(const char* id, std::string& destination, const char* cMsg, PayloadTargetType type, Entity ID, size_t arrayIndex)
 	{
+		(void)arrayIndex;
+		(void)ID;
 		if (ECGui::BeginDragDropTarget())
 		{
 			const ImGuiPayload* payload = ECGui::AcceptDragDropPayload(id);
@@ -233,15 +269,15 @@ namespace Eclipse
 									{
 										engine->world.AddComponent(engine->editorManager->GetEntityID(SourceIndex_), ChildComponent{});
 										engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).parentIndex = engine->editorManager->GetEntityID(DestinationIndex_);
+										engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).hasParent = true;
+										engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).IsAChild = true;
 									}
 									else
 									{
 										engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).parentIndex = engine->editorManager->GetEntityID(DestinationIndex_);
+										engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).hasParent = true;
+										engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_)).IsAChild = true;
 									}
-
-									DestinationEntCom->Child.push_back(engine->editorManager->GetEntityID(SourceIndex_));
-									SourceEntCom->IsAChild = true;
-									SourceEntCom->Parent.push_back(engine->editorManager->GetEntityID(DestinationIndex_));
 
 									childComp = &engine->world.GetComponent<ChildComponent>(engine->editorManager->GetEntityID(SourceIndex_));
 									childTransComp = &engine->world.GetComponent<TransformComponent>(engine->editorManager->GetEntityID(SourceIndex_));
@@ -284,8 +320,8 @@ namespace Eclipse
 	}
 
 	void DragAndDrop::AssetBrowerFilesAndFoldersTarget(const char* type, const char* paths,
-		std::string AssetPath, std::filesystem::directory_entry dirEntry, bool& refreshBrowser,
-		std::map<std::filesystem::path, std::vector<std::filesystem::path>> pathMap, bool& CopyMode)
+		std::string AssetPath, std::filesystem::path dirEntry, bool& refreshBrowser,
+		const std::map<std::filesystem::path, std::vector<std::filesystem::path>> & pathMap, bool& CopyMode)
 	{
 
 		if (ECGui::BeginDragDropTarget())
@@ -347,21 +383,21 @@ namespace Eclipse
 											{
 												if (baseFile)
 												{
-													files.insert(std::pair<std::string, std::string>(dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName, dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName));
+													files.insert(std::pair<std::string, std::string>(dirEntry.string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName, dirEntry.string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName));
 												}
 												else
 												{
-													files.insert(std::pair<std::string, std::string>(dirEntry.path().string() + folderName, dirEntry.path().string() + folderName));
+													files.insert(std::pair<std::string, std::string>(dirEntry.string() + folderName, dirEntry.string() + folderName));
 												}
 											}
 											if (baseFile)
 											{
-												std::filesystem::create_directories(dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string());
-												std::filesystem::create_directories(dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName);
+												std::filesystem::create_directories(dirEntry.string() + "\\" + std::filesystem::path(parentPath).filename().string());
+												std::filesystem::create_directories(dirEntry.string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName);
 											}
 											else
 											{
-												std::filesystem::create_directories(dirEntry.path().string() + folderName);
+												std::filesystem::create_directories(dirEntry.string() + folderName);
 											}
 										}
 									}
@@ -389,11 +425,11 @@ namespace Eclipse
 												}
 												else
 												{
-													files.insert(std::pair<std::string, std::string>(dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName, dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName));
+													files.insert(std::pair<std::string, std::string>(dirEntry.string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName, dirEntry.string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName));
 												}
 
-												std::filesystem::create_directories(dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string());
-												std::filesystem::copy(pair2, dirEntry.path().string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName);
+												std::filesystem::create_directories(dirEntry.string() + "\\" + std::filesystem::path(parentPath).filename().string());
+												std::filesystem::copy(pair2, dirEntry.string() + "\\" + std::filesystem::path(parentPath).filename().string() + folderName);
 
 											}
 											else
@@ -405,9 +441,9 @@ namespace Eclipse
 												}
 												else
 												{
-													files.insert(std::pair<std::string, std::string>(dirEntry.path().string() + folderName, dirEntry.path().string() + folderName));
+													files.insert(std::pair<std::string, std::string>(dirEntry.string() + folderName, dirEntry.string() + folderName));
 												}
-												std::filesystem::copy(pair2, dirEntry.path().string() + folderName);
+												std::filesystem::copy(pair2, dirEntry.string() + folderName);
 											}
 										}
 									}
@@ -447,10 +483,10 @@ namespace Eclipse
 
 							if (std::filesystem::is_directory(std::filesystem::path(itemPaths / paths)) && once)
 							{
-								std::filesystem::create_directories(dirEntry.path().string() + "\\" + std::filesystem::path(itemPaths / paths).filename().string());
+								std::filesystem::create_directories(dirEntry.string() + "\\" + std::filesystem::path(itemPaths / paths).filename().string());
 								once = false;
 							}
-							std::filesystem::copy(std::filesystem::path(itemPaths / paths), dirEntry.path().string() + "//" + folderName, copyOptions);
+							std::filesystem::copy(std::filesystem::path(itemPaths / paths), dirEntry.string() + "//" + folderName, copyOptions);
 						}
 
 						if (!CopyMode)
@@ -463,9 +499,9 @@ namespace Eclipse
 					}
 					else
 					{
-						if (std::filesystem::is_directory(dirEntry.path()))
+						if (std::filesystem::is_directory(dirEntry))
 						{
-							std::filesystem::copy(std::filesystem::path(itemPaths / paths), dirEntry.path());
+							std::filesystem::copy(std::filesystem::path(itemPaths / paths), dirEntry);
 
 							if (!CopyMode)
 							{

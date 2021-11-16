@@ -48,7 +48,7 @@ namespace Eclipse
         if (engine->IsScenePlaying() == false)
         {
             LightIcons.RenderLights();
-            SpotLightIcons.RenderSpotLights();
+            //xSpotLightIcons.RenderSpotLights();
         }
 
         engine->MaterialManager.StencilBufferClear();
@@ -56,6 +56,8 @@ namespace Eclipse
 
     void DebugManager::AddBoundingRegion(glm::mat4 model, CameraComponent& _camera, Entity EntityID)
     {
+        (void)model;
+
         if (Visible == false)
             return;
 
@@ -84,8 +86,9 @@ namespace Eclipse
                     //glm::vec3 Scale = glm::vec3{ BodyShape.shape.hx, BodyShape.shape.hy ,  BodyShape.shape.hz };
                     //BoundingRegion br(Transform.position.ConvertToGlmVec3Type(), Scale);
                     //engine->gDebugDrawManager->DebugBoxes.AddInstance(br);
-
-                    BoundingRegion br(Transform.position.ConvertToGlmVec3Type(), Transform.scale.ConvertToGlmVec3Type());
+                    auto& collision = engine->world.GetComponent<CollisionComponent>(EntityID);
+                    ECVec3 temp{ 2.0f  *collision.shape.hx,2.0f * collision.shape.hy,2.0f * collision.shape.hz };
+                    BoundingRegion br(Transform.position.ConvertToGlmVec3Type(), temp.ConvertToGlmVec3Type());
                     engine->gDebugDrawManager->DebugBoxes.AddInstance(br);
                 }
                 break;

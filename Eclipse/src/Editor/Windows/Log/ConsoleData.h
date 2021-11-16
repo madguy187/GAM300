@@ -107,6 +107,28 @@ struct ConsoleData
                 _LineOffsets.push_back(old_size + 1);
     }
 
+    void AddErrorLogs(const char* fmt, ...) IM_FMTARGS(2)
+    {
+        // Set to SPDLOG Format
+        std::string logmsg = "{ff0000}";
+        logmsg += currentDateTime();
+        logmsg += " [EDITOR]";
+        logmsg += " [warn] ";
+        logmsg += fmt;
+        logmsg += "\n";
+        const char* msg = logmsg.c_str();
+
+        int old_size = _Buffer.size();
+        va_list args;
+        va_start(args, msg);
+        _Buffer.appendfv(msg, args);
+        va_end(args);
+
+        for (int new_size = _Buffer.size(); old_size < new_size; old_size++)
+            if (_Buffer[old_size] == '\n')
+                _LineOffsets.push_back(old_size + 1);
+    }
+
     void DrawItems(const char* title, bool* p_open = NULL)
     {
         if (!ImGui::Begin(title, p_open))

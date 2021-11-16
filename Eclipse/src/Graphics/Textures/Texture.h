@@ -37,7 +37,7 @@ namespace Eclipse
         // 2D Textures =============================
     public:
         /// Public for now - from Jian Herng.
-        unsigned int Type; //aiTextureType
+        unsigned int Type = 0; //aiTextureType
         std::string Directory;
         unsigned int handle = 0;
         ///

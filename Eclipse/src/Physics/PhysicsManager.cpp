@@ -112,7 +112,7 @@ namespace Eclipse
 
 			for (PxU32 i = 0; i < numofshapes; ++i)
 			{
-				PxMaterial* tempmat = Px_Physics->createMaterial(0.5f, 0.5f, 0.1f);
+				PxMaterial* tempmat = Px_Physics->createMaterial(0.5f, 0.5f, 0.0f);
 				if (!tempmat)
 				{
 					std::cout << "creatematerial failed" << std::endl;
@@ -160,7 +160,7 @@ namespace Eclipse
 			static_cast<PxRigidActor*>(Px_Actors[ent].actor)->getShapes(shapes, numofshapes);
 			for (PxU32 i = 0; i < numofshapes; ++i)
 			{
-				PxMaterial* tempmat = Px_Physics->createMaterial(0.5f, 0.5f, 0.1f);
+				PxMaterial* tempmat = Px_Physics->createMaterial(0.5f, 0.5f, 0.0f);
 				if (!tempmat)
 				{
 					std::cout << "creatematerial failed" << std::endl;
@@ -193,7 +193,7 @@ namespace Eclipse
 		if (Px_Actors[ent].actor == nullptr)
 			return;
 
-		PxMaterial* tempmat = Px_Physics->createMaterial(0.5f, 0.5f, 0.1f);
+		PxMaterial* tempmat = Px_Physics->createMaterial(0.5f,0.5, 0.0f);
 		if (!tempmat)
 		{
 			std::cout << "creatematerial failed" << std::endl;
@@ -212,7 +212,7 @@ namespace Eclipse
 		if (Px_Actors[ent].actor == nullptr)
 			return;
 
-		PxMaterial* tempmat = Px_Physics->createMaterial(0.5f, 0.5f, 0.1f);
+		PxMaterial* tempmat = Px_Physics->createMaterial(0.5f, 0.5f, 0.0f);
 		if (!tempmat)
 		{
 			std::cout << "creatematerial failed" << std::endl;
@@ -241,6 +241,9 @@ namespace Eclipse
 
 	PxQueryHitType::Enum	QueryReportCallback::preFilter(const PxFilterData& filterData, const PxShape* shape, const PxRigidActor* actor, PxHitFlags& queryFlags)
 	{
+		PX_UNUSED(filterData);
+		PX_UNUSED(queryFlags);
+		PX_UNUSED(shape);
 		// PT: ignore triggers
 		auto& entcomp = engine->world.GetComponent<EntityComponent>(*(Entity*)actor->userData);
 		if(_mask.test(entcomp.LayerIndex))
@@ -251,6 +254,8 @@ namespace Eclipse
 
 	PxQueryHitType::Enum	QueryReportCallback::postFilter(const PxFilterData& filterData, const PxQueryHit& hit)
 	{
+		PX_UNUSED(filterData);
+		PX_UNUSED(hit);
 		return PxQueryHitType::eBLOCK;
 	}
 
@@ -271,25 +276,24 @@ namespace Eclipse
 		std::bitset<20> mask = std::bitset<20>(layerMask);
 		QueryReportCallback _callback{ mask };
 
-		auto& transformComponent = engine->world.GetComponent<TransformComponent>(*(Entity*)hit.block.actor->userData);
+		//auto& transformComponent = engine->world.GetComponent<TransformComponent>(*(Entity*)hit.block.actor->userData);
 		return Px_Scene->raycast(_origin, _dir, dist, hit, PxHitFlag::eDEFAULT, filter,&_callback);
 
 	}
 
-	bool PhysicsManager::CheckSphere(ECVec3 position, float radius, std::string layerMask)
+	bool PhysicsManager::CheckSphere(ECVec3 position, float radius, PxOverlapBuffer& hit, std::string layerMask)
 	{
 		PxVec3 temppos;
 		temppos.x = position.getX();
 		temppos.y = position.getY();
 		temppos.z = position.getZ();
-		PxTransform temp{temppos};
-		
+		PxTransform temp{ temppos };
+
 		PxSphereGeometry sphere{ radius };
 		PxQueryFlags qf(PxQueryFlag::eSTATIC | PxQueryFlag::eDYNAMIC | PxQueryFlag::ePREFILTER | PxQueryFlag::eANY_HIT);
 		PxQueryFilterData filter(PxFilterData(), qf);
 		std::bitset<20> mask = std::bitset<20>(layerMask);
 		QueryReportCallback _callback{ mask };
-		PxOverlapBuffer hit;
 		return Px_Scene->overlap(sphere,temp,hit, filter, &_callback);
 	}
 
@@ -299,7 +303,7 @@ namespace Eclipse
 		temppos.x = position.getX();
 		temppos.y = position.getY();
 		temppos.z = position.getZ();
-		PxTransform temp;
+		PxTransform temp{temppos};
 		PxBoxGeometry box{halfextents.getX(),halfextents.getY(),halfextents.getZ()};
 		PxQueryFlags qf(PxQueryFlag::eSTATIC | PxQueryFlag::eDYNAMIC | PxQueryFlag::ePREFILTER | PxQueryFlag::eANY_HIT);
 		PxQueryFilterData filter(PxFilterData(), qf);
@@ -315,7 +319,7 @@ namespace Eclipse
 		if (Px_Actors[ent].actor == nullptr)
 			return;
 
-		PxMaterial* tempmat = Px_Physics->createMaterial(0.5f, 0.5f, 0.1f);
+		PxMaterial* tempmat = Px_Physics->createMaterial(0.5f, 0.5f, 0.0f);
 		if (!tempmat)
 		{
 			std::cout << "creatematerial failed" << std::endl;
@@ -359,7 +363,7 @@ namespace Eclipse
 
 	ECVec3 PhysicsManager::QuattoAngles(PxQuat q1)
 	{
-		ECVec3 temp{0,0,0};
+		ECVec3 temp{ 0,0,0 };
 		float sqw = q1.w * q1.w;
 		float sqx = q1.x * q1.x;
 		float sqy = q1.y * q1.y;
@@ -367,21 +371,21 @@ namespace Eclipse
 		float unit = sqx + sqy + sqz + sqw; // if normalised is one, otherwise is correction factor
 		float test = q1.x * q1.y + q1.z * q1.w;
 		if (test > 0.499 * unit) { // singularity at north pole
-			temp.setY(static_cast<float>(2 * atan2(q1.x, q1.w)) * 180/M_PI);
-			temp.setZ(M_PI / 2 * 180 / M_PI);
+			temp.setY(static_cast<float>(2 * atan2(q1.x, q1.w)) * 180 / static_cast<float>(M_PI));
+			temp.setZ(static_cast<float>(M_PI) / 2 * 180 / static_cast<float>(M_PI));
 			temp.setX(0);
 			return temp;
 		}
 		if (test < -0.499 * unit) { // singularity at south pole
-			temp.setY (static_cast<float>( -2 * atan2(q1.x, q1.w)) * 180 / M_PI);
-			temp.setZ( -M_PI / 2 * 180 / M_PI);
+			temp.setY(static_cast<float>(-2 * atan2(q1.x, q1.w)) * 180 / static_cast<float>(M_PI));
+			temp.setZ(static_cast<float>(-M_PI) / 2 * 180 / static_cast<float>(M_PI));
 			temp.setX(0);
 			return temp;
 		}
-		temp.setY(static_cast<float>(atan2(2 * q1.y * q1.w - 2 * q1.x * q1.z, sqx - sqy - sqz + sqw)) * 180 / M_PI);
-		temp.setZ(static_cast<float>(asin(2 * test / unit)) * 180 / M_PI);
-		temp.setX(static_cast<float>(atan2(2 * q1.x * q1.w - 2 * q1.y * q1.z, -sqx + sqy - sqz + sqw)) * 180 / M_PI);
-		return temp;				
+		temp.setY(static_cast<float>(atan2(2 * q1.y * q1.w - 2 * q1.x * q1.z, sqx - sqy - sqz + sqw)) * 180 / static_cast<float>(M_PI));
+		temp.setZ(static_cast<float>(asin(2 * test / unit)) * 180 / static_cast<float>(M_PI));
+		temp.setX(static_cast<float>(atan2(2 * q1.x * q1.w - 2 * q1.y * q1.z, -sqx + sqy - sqz + sqw)) * 180 / static_cast<float>(M_PI));
+		return temp;
 	}
 	
 	void PhysicsManager::AddActorToScene(Entity ent)
@@ -416,13 +420,14 @@ namespace Eclipse
 		{
 			//static object
 			PxVec3 temptrans;
+			PxQuat temprot;
 			temptrans.x = transform.position.x;
 			temptrans.y = transform.position.y;
 			temptrans.z = transform.position.z;
 
+			temprot = AnglestoQuat(transform.rotation.getX(), transform.rotation.getY(), transform.rotation.getZ());
 
-
-			static_cast<PxRigidStatic*>(Px_Actors[ent].actor)->setGlobalPose(PxTransform{ temptrans });
+			static_cast<PxRigidStatic*>(Px_Actors[ent].actor)->setGlobalPose(PxTransform{ temptrans,temprot });
 			return;
 		}
 		auto& rigid = engine->world.GetComponent<RigidBodyComponent>(ent);
@@ -455,8 +460,9 @@ namespace Eclipse
 				else
 					static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->addForce(tempforce, PxForceMode::eIMPULSE);
 			}
+			rigid.forces.clear();
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setMaxLinearVelocity(static_cast<PxReal>(rigid.MaxVelocity));
-			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setMass(rigid.mass);
+			PxRigidBodyExt::setMassAndUpdateInertia(*(static_cast<PxRigidBody*>(Px_Actors[ent].actor)), rigid.mass);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setActorFlag(PxActorFlag::eDISABLE_GRAVITY,rigid.enableGravity ? false : true);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setAngularVelocity(tempangVelo);
 			static_cast<PxRigidDynamic*>(Px_Actors[ent].actor)->setAngularDamping(0.f);
@@ -511,9 +517,12 @@ namespace Eclipse
 						AttachCapsuleToActor(ent, collision.shape.radius, collision.shape.hheight);
 					}
 					break;
+
 				}
+				shapes[i]->setFlag(PxShapeFlag::eSIMULATION_SHAPE, !collision.isTrigger);
+				shapes[i]->setFlag(PxShapeFlag::eTRIGGER_SHAPE, collision.isTrigger);
+				delete[] shapes;
 			}
-			delete[] shapes;
 		}
 	}
 
@@ -573,13 +582,22 @@ namespace Eclipse
 		switch (collision.shape.shape)
 		{
 		case PxShapeType::Px_CUBE :
-			auto& transform = engine->world.GetComponent<TransformComponent>(ent);
-			collision.shape.hx = transform.scale.getX() / 2;
+			//auto& transform = engine->world.GetComponent<TransformComponent>(ent);
+		/*	collision.shape.hx = transform.scale.getX() / 2;
 			collision.shape.hy = transform.scale.getY() / 2;
-			collision.shape.hz = transform.scale.getZ() / 2;
+			collision.shape.hz = transform.scale.getZ() / 2;*/
 			break;
 		}
 	}
+
+	void ContactReportCallback::onTrigger(PxTriggerPair* pairs, PxU32 count)
+	{
+		PX_UNUSED(count);
+		Entity ent = *(Entity*)pairs->triggerActor->userData;
+		if (engine->world.CheckComponent<ScriptComponent>(ent))
+			engine->mono.OnCollision(ent);
+
+	};
 
 	void PhysicsManager::GetActorPosition(Entity ent)
 	{

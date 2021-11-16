@@ -3,10 +3,10 @@
 
 namespace Eclipse
 {
-	void NavMeshManager::CreateRecastPolyMesh(const rcPolyMesh& mesh)
+	/*void NavMeshManager::CreateRecastPolyMesh(const rcPolyMesh& mesh)
 	{
 
-	}
+	}*/
 	void NavMeshManager::CalculateMinMax(Entity ent)
 	{
 		auto& transform = engine->world.GetComponent<TransformComponent>(ent);
@@ -124,7 +124,7 @@ namespace Eclipse
 
 		auto& navmeshcomp = engine->world.GetComponent<NavMeshVolumeComponent>(ent);
 		EDITOR_LOG_INFO("Building navmesh...");
-		int nLoop = 0;
+		unsigned int nLoop = 0;
 		float* rc_verts;
 		unsigned int     rc_nverts;
 		int* rc_tris;
@@ -154,8 +154,8 @@ namespace Eclipse
 
 		GetVertsandTrisOnScene(verts, tris);
 
-		rc_nverts = verts.size();
-		rc_verts = new float[rc_nverts * 3];
+		rc_nverts = static_cast<unsigned int>(verts.size());
+		rc_verts = new float[static_cast<size_t>(rc_nverts) * 3];
 		for (nLoop = 0; nLoop < rc_nverts; nLoop++)
 		{
 			rc_verts[nLoop * 3 + 0] = verts[nLoop].getX();
@@ -169,9 +169,9 @@ namespace Eclipse
 		//}
 
 
-		rc_ntris = tris.size();
-		rc_tris = new int[rc_ntris * 3];
-		rc_trinorms = new float[rc_ntris * 3];
+		rc_ntris = static_cast<unsigned int>(tris.size());
+		rc_tris = new int[static_cast<size_t>(rc_ntris) * 3];
+		rc_trinorms = new float[static_cast<size_t>(rc_ntris) * 3];
 		int nTriCount = 0;
 		for (nLoop = 0; nLoop < rc_ntris; nLoop++)
 		{
@@ -222,15 +222,15 @@ namespace Eclipse
 
 
 		m_ctx = new rcContext(true);
-		m_cellSize = 0.3;
-		m_cellHeight = 0.2;
+		m_cellSize = 0.3f;
+		m_cellHeight = 0.2f;
 		m_agentMaxSlope = navmeshcomp.MaxSlope;
 		m_agentHeight = navmeshcomp.AgentHeight;
 		m_agentMaxClimb = navmeshcomp.JumpDistance;
 		m_agentRadius = navmeshcomp.AgentRadius;
-		m_edgeMaxLen = 12;
-		m_edgeMaxError = 1.3;
-		m_regionMinSize = 8;
+		m_edgeMaxLen = 512;
+		m_edgeMaxError = 1.3f;
+		m_regionMinSize = 50;
 		m_regionMergeSize = 20;
 		m_vertsPerPoly = 6;
 		m_detailSampleDist = 6;

@@ -296,8 +296,11 @@ namespace Eclipse
 
 	void Grid::InsertAsDebugBox()
 	{
-		BoundingRegion br({ 0,0,0 }, { GridScale * GridSize , 0  ,GridScale * GridSize });
-		engine->gDebugDrawManager->DebugBoxes.AddInstance(br);
+		if (engine->GetEditorState())
+		{
+			BoundingRegion br({ 0,0,0 }, { GridScale * GridSize , 0  ,GridScale * GridSize });
+			engine->gDebugDrawManager->DebugBoxes.AddInstance(br);
+		}
 	}
 
 	bool Grid::CheckTileOccupied(TILE_ID& tileID)

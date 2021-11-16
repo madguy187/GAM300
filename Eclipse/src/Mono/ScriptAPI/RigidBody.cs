@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Eclipse
 {
-    public class RigidBody : IScriptable
+    public class Rigidbody : IScriptable
     {
-        public RigidBody(UInt32 entity)
+        public Rigidbody(UInt32 entity)
         {
             Entity = entity;
         }
@@ -38,6 +38,11 @@ namespace Eclipse
             Add_Force(Entity, x, y, z);
         }
 
+        public bool Gravity
+        {
+            set => setGravBool(Entity, value ? 1 : 0);
+        }
+
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         private extern static void Add_Force(UInt32 entity, float x, float y, float z);
 
@@ -52,5 +57,8 @@ namespace Eclipse
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         private extern static float getZ(UInt32 entity);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        private extern static void setGravBool(UInt32 entity, int state);
     }
 }

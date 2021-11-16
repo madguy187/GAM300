@@ -43,12 +43,16 @@ namespace Eclipse
 		bool IsAnySwitchWindowHovered();
 		bool GetMeshEditorActive() const;
 		bool GetRecoveryFileExistence() const;
+		bool GetIsSimulatingAnimation() const;
+		bool IsSceneViewportActive() const;
+		bool IsGameViewportActive() const;
 
 		// Setters
 		void SetSelectedEntity(Entity ID);
 		void SetGlobalIndex(size_t index);
 		void SetMeshEditorActive(bool active);
 		void SetRecoveryFileExistence(bool exist);
+		void SetAnimationSimulation(bool active);
 
 		template <typename TWindow>
 		TWindow* GetEditorWindow();
@@ -65,6 +69,7 @@ namespace Eclipse
 		std::vector<std::unique_ptr<ECGuiWindow>> Windows_;
 		MenuBar MenuBar_;
 		size_t Size_{ 0 };
+		bool SimulateAnimation{ false };
 
 		std::vector<Entity> EntityHierarchyList_;
 		std::unordered_map<Entity, int> EntityToIndexMap_;

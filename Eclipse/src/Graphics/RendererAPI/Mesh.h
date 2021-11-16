@@ -7,6 +7,8 @@
 #include "color4.h"
 #include "color4.inl"
 
+#define MAX_BONE_INFLUENCE 4
+
 namespace Eclipse
 {
     class Vertex
@@ -17,6 +19,8 @@ namespace Eclipse
         glm::vec2 TextureCoodinates{ 0,0 };
         glm::vec3 Tangents{ 0,0,0 };
         glm::vec4 m_Color{ 0,0,0,0 };
+        int m_BoneIDs[MAX_BONE_INFLUENCE];
+        float m_Weights[MAX_BONE_INFLUENCE];
         static std::vector<Vertex> GenList(float* vertices, int noVertices);
     };
 
@@ -26,7 +30,7 @@ namespace Eclipse
         glm::vec4 Diffuse{ 0,0,0,0 };
         glm::vec4 Specular{ 0,0,0,0 };
         glm::vec4 Ambient{ 0,0,0,0 };
-        std::array<char, 128> MeshName;
+        std::array<char, 128> MeshName{ 0 };
         bool NoTex{ true };
         std::vector<Vertex> Vertices;
         std::vector<unsigned int> Indices;

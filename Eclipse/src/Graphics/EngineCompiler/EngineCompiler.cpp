@@ -45,6 +45,10 @@ namespace Eclipse
             {
                 CompilerFlags.set(3, 1);
             }
+            else if (FileName == AllNames[4])
+            {
+                CompilerFlags.set(4, 1);
+            }
         }
     }
 
@@ -220,11 +224,156 @@ namespace Eclipse
         CloseFile(ModelTextureFileRead, AllNames[3], NumberOfTextures);
     }
 
+    void EngineCompiler::LoadAnimation()
+    {
+        if (OpenFile(AnimationFileRead, AnimationPath) == false)
+        {
+            return;
+        }
+
+        CompilerFlags.set(4, 0);
+
+        struct AnimationData
+        {
+            float modelLargestAxis = 0.0f;
+            float m_Duration = 0.0f;
+            int m_TicksPerSecond = 0;
+            std::array<char, 128> fileName{};
+            std::array<char, 128> modelName{};
+        };
+
+        struct BoneInfoData
+        {
+            int id = 0;
+            glm::mat4 offset{ 0.0f };
+            std::array<char, 128> name{};
+        };
+
+        struct BoneData
+        {
+            std::vector<KeyPosition> m_Positions;
+            std::vector<KeyRotation> m_Rotations;
+            std::vector<KeyScale> m_Scales;
+
+            int m_NumPositions = 0;
+            int m_NumRotations = 0;
+            int m_NumScalings = 0;
+
+            int m_ID = 0;
+            glm::mat4 m_LocalTransform{ 0.0f };
+            std::array<char, 128> BoneName{};
+        };
+
+        unsigned int totalAnimation = 0;
+        unsigned int boneSize = 0;
+        unsigned int boneInfoSize = 0;
+
+        unsigned int keyPosSize = 0;
+        unsigned int keyRotSize = 0;
+        unsigned int keyScaleSize = 0;
+
+        unsigned int nodeChildrenSize = 0;
+
+        AnimationFileRead.read(reinterpret_cast<char*>(&totalAnimation), sizeof(totalAnimation));
+
+        for (unsigned int count = 0; count < totalAnimation; count++)
+        {
+            boneSize = 0;
+            boneInfoSize = 0;
+            keyPosSize = 0;
+            keyRotSize = 0;
+            keyScaleSize = 0;
+            nodeChildrenSize = 0;
+
+            AnimationData animationdata;
+            std::vector<BoneInfoData> boneinfoData;
+            std::vector<BoneData> boneData;
+
+            std::vector<Bone> newBones;
+            std::vector<BoneInfo> newBoneInfos;
+            AssimpNodeData rootNode;
+
+            AnimationFileRead.read(reinterpret_cast<char*>(&animationdata), (2 * sizeof(float)) + sizeof(int) +
+                sizeof(animationdata.fileName) + sizeof(animationdata.modelName));
+
+            AnimationFileRead.read(reinterpret_cast<char*>(&boneInfoSize), sizeof(boneInfoSize));
+            boneinfoData.resize(boneInfoSize);
+            AnimationFileRead.read(reinterpret_cast<char*>(boneinfoData.data()), sizeof(BoneInfoData) * boneInfoSize);
+
+            // Populate BoneInfo vector
+            for (auto& it : boneinfoData)
+            {
+                BoneInfo newBoneInfo(it.id, it.offset, it.name);
+                newBoneInfos.push_back(newBoneInfo);
+            }
+
+            AnimationFileRead.read(reinterpret_cast<char*>(&boneSize), sizeof(boneSize));
+            boneData.resize(boneSize);
+
+            for (unsigned int i = 0; i < boneSize; ++i)
+            {
+                AnimationFileRead.read(reinterpret_cast<char*>(&keyPosSize), sizeof(keyPosSize));
+                boneData[i].m_Positions.resize(keyPosSize);
+                AnimationFileRead.read(reinterpret_cast<char*>(boneData[i].m_Positions.data()), sizeof(KeyPosition) * keyPosSize);
+
+                AnimationFileRead.read(reinterpret_cast<char*>(&keyRotSize), sizeof(keyRotSize));
+                boneData[i].m_Rotations.resize(keyRotSize);
+                AnimationFileRead.read(reinterpret_cast<char*>(boneData[i].m_Rotations.data()), sizeof(KeyRotation) * keyRotSize);
+
+                AnimationFileRead.read(reinterpret_cast<char*>(&keyScaleSize), sizeof(keyScaleSize));
+                boneData[i].m_Scales.resize(keyScaleSize);
+                AnimationFileRead.read(reinterpret_cast<char*>(boneData[i].m_Scales.data()), sizeof(KeyScale) * keyScaleSize);
+
+                AnimationFileRead.read(reinterpret_cast<char*>(&boneData[i].m_NumPositions), sizeof(int));
+                AnimationFileRead.read(reinterpret_cast<char*>(&boneData[i].m_NumRotations), sizeof(int));
+                AnimationFileRead.read(reinterpret_cast<char*>(&boneData[i].m_NumScalings), sizeof(int));
+
+                AnimationFileRead.read(reinterpret_cast<char*>(&boneData[i].m_ID), sizeof(int));
+
+                AnimationFileRead.read(reinterpret_cast<char*>(&boneData[i].m_LocalTransform), sizeof(glm::mat4));
+                AnimationFileRead.read(reinterpret_cast<char*>(&boneData[i].BoneName), sizeof(boneData[i].BoneName));
+
+                //Insert into Bone vector
+                Bone newBone(boneData[i].m_Positions, boneData[i].m_Rotations, boneData[i].m_Scales,
+                    boneData[i].m_NumPositions, boneData[i].m_NumRotations, boneData[i].m_NumScalings,
+                    boneData[i].m_ID, boneData[i].m_LocalTransform, boneData[i].BoneName);
+
+                newBones.push_back(newBone);
+            }
+
+            AnimationFileRead.read(reinterpret_cast<char*>(&rootNode.transformation), sizeof(glm::mat4));
+            AnimationFileRead.read(reinterpret_cast<char*>(&rootNode.name), sizeof(rootNode.name));
+            AnimationFileRead.read(reinterpret_cast<char*>(&rootNode.childrenCount), sizeof(int));
+
+            rootNode.children.resize(rootNode.childrenCount);
+            engine->gAnimationManager.RecurseChildren(rootNode, AnimationFileRead);
+
+            AnimationState animationState = engine->gAnimationManager.InitAnimationState(std::string(animationdata.modelName.data()),
+                std::string(animationdata.fileName.data()));
+
+            Animation newAnimation(animationdata.modelLargestAxis, animationdata.m_Duration, animationdata.m_TicksPerSecond, animationState,
+                animationdata.modelName, newBoneInfos, newBones, rootNode);
+
+            engine->gAnimationManager.InsertAnimation(newAnimation);
+        }
+
+        CloseFile(AnimationFileRead, AllNames[4], totalAnimation);
+    }
+
     void EngineCompiler::RunCompiler()
     {
         // Please Check this in the future - Darren Sim
-        system("Compiler.exe");
-        EDITOR_LOG_INFO("Compiler Execution finished.");
+#ifdef DEBUG
+        {
+            system("Compiler-Debug.exe");
+            EDITOR_LOG_INFO("Compiler Execution finished.");
+        }
+#else
+        {
+            system("Compiler-Release.exe");
+            EDITOR_LOG_INFO("Compiler Execution finished.");
+        }
+#endif 
     }
 
     bool EngineCompiler::IsGeometryCompiled()
@@ -246,8 +395,14 @@ namespace Eclipse
         return CompilerFlags.test(2);
     }
 
+    bool EngineCompiler::IsAnimationCompiled()
+    {
+        return CompilerFlags.test(4);
+    }
+
     bool EngineCompiler::AreAllCompiled()
     {
+        //return IsGeometryCompiled() && IsPrefabsCompiled() && IsModelTexturesCompiled() && IsBasicTexturesCompiled() && IsAnimationCompiled();
         return IsGeometryCompiled() && IsPrefabsCompiled() && IsModelTexturesCompiled() && IsBasicTexturesCompiled();
     }
 
@@ -261,6 +416,7 @@ namespace Eclipse
         LoadPrefabs();
         LoadModelTextures();
         LoadBasicTextures();
+        LoadAnimation();
         engine->gPBRManager->gMaterialEditorSettings->gMaterialCompiler.LoadMaterials();
         engine->InputManager->InputCompiler_.Load();
         //CompilerThreads["LoadPrefabs"]->join();
@@ -296,6 +452,11 @@ namespace Eclipse
                 if (IsBasicTexturesCompiled() == false)
                 {
                     EDITOR_LOG_WARN("Basic Textures failed to compile, unable to generate Basic Textures.");
+                }
+
+                if (IsAnimationCompiled() == false)
+                {
+                    EDITOR_LOG_WARN("Animation failed to compile, unable to generate animation data.");
                 }
             }
         }

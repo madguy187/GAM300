@@ -139,6 +139,7 @@ namespace EclipseCompiler
         CompilerThreads.emplace("InitGeometry", std::make_unique<std::thread>(std::thread{ &CompilerManager::InitGeometry }));
         CompilerThreads.emplace("InitTextures", std::make_unique<std::thread>(std::thread{ &CompilerManager::InitTextures }));
         CompilerThreads.emplace("InitPrefabs", std::make_unique<std::thread>(std::thread{ &CompilerManager::InitPrefabs }));
+        CompilerThreads.emplace("InitAnimation", std::make_unique<std::thread>(std::thread{ &CompilerManager::InitAnimation }));
 
         for (auto& i : CompilerThreads)
         {
@@ -153,6 +154,7 @@ namespace EclipseCompiler
         CompilerThreads.emplace("ReleaseGeometry", std::make_unique<std::thread>(std::thread{ &CompilerManager::ReleaseGeometry }));
         CompilerThreads.emplace("ReleaseTextures", std::make_unique<std::thread>(std::thread{ &CompilerManager::ReleaseTextures }));
         CompilerThreads.emplace("ReleasePrefabs", std::make_unique<std::thread>(std::thread{ &CompilerManager::ReleasePrefabs }));
+        CompilerThreads.emplace("ReleaseAnimation", std::make_unique<std::thread>(std::thread{ &CompilerManager::ReleaseAnimation }));
 
         for (auto& i : CompilerThreads)
         {
@@ -185,6 +187,11 @@ namespace EclipseCompiler
         AllCompilerContainer[2]->Init();
     }
 
+    void CompilerManager::InitAnimation()
+    {
+        AllCompilerContainer[3]->Init();
+    }
+
     void CompilerManager::ReleaseGeometry()
     {
         AllCompilerContainer[0]->ReleaseFile();
@@ -198,5 +205,10 @@ namespace EclipseCompiler
     void CompilerManager::ReleasePrefabs()
     {
         AllCompilerContainer[2]->ReleaseFile();
+    }
+
+    void CompilerManager::ReleaseAnimation()
+    {
+        AllCompilerContainer[3]->ReleaseFile();
     }
 }

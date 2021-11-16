@@ -20,6 +20,7 @@
 #include "ScriptComponent.h"
 #include "ChildComponent.h"
 #include "ParentComponent.h"
+#include "AnimationComponent.h"
 #include "NavMeshVolumeComponent.h"
 
 namespace Eclipse
@@ -78,6 +79,7 @@ namespace Eclipse
     DEFINE_META(CollisionComponent)
     {
         ADD_MEMBER(shape);
+        ADD_MEMBER(isTrigger);
     }
 
     DEFINE_META(AIComponent)
@@ -109,11 +111,9 @@ namespace Eclipse
         ADD_MEMBER(Tag);
         ADD_MEMBER(Name);
         ADD_MEMBER(LayerIndex);
-        ADD_MEMBER(Child);
-        ADD_MEMBER(Parent);
-        ADD_MEMBER(IsAChild);
-        ADD_MEMBER(ImguiIndentValue);
+        ADD_MEMBER(IsVisible);
         ADD_MEMBER(hightLightChild);
+        ADD_MEMBER(ImguiIndentValue);
     }
 
     DEFINE_META(ScriptComponent)
@@ -194,7 +194,6 @@ namespace Eclipse
     {
         ADD_MEMBER(velocity);
         ADD_MEMBER(Angvelocity);
-       // ADD_MEMBER(forces);
         ADD_MEMBER(MaxVelocity);
         ADD_MEMBER(mass);
         ADD_MEMBER(drag);
@@ -255,6 +254,8 @@ namespace Eclipse
         ADD_MEMBER(PosOffset);
         ADD_MEMBER(RotOffset);
         ADD_MEMBER(ScaleOffset);
+        ADD_MEMBER(hasParent);
+        ADD_MEMBER(IsAChild);
     }
 
     DEFINE_META(ParentComponent)
@@ -273,6 +274,15 @@ namespace Eclipse
        ADD_MEMBER(JumpDistance);
     }
 
+    //DEFINE_META(AnimationComponent)
+    //{
+    //    ADD_MEMBER(m_Transforms);
+    //    ADD_MEMBER(m_CurrentAnimation);
+    //    ADD_MEMBER(m_CurrentTime);
+    //    ADD_MEMBER(m_DeltaTime);
+    //    ADD_MEMBER(modelLargestAxis);
+    //}
+
     /*************************************************************************/
     /*               REGISTERING DATA TYPE - NO NEED TOUCH                   */
     /*************************************************************************/
@@ -288,7 +298,7 @@ namespace Eclipse
     DEFINE_META_POD(std::string);
     DEFINE_META_POD(std::vector<Texture>);
     DEFINE_META_POD(std::vector<Entity>);
-    DEFINE_META_POD(std::vector<MonoScript>);
+    DEFINE_META_POD(std::vector<MonoScript*>);
     DEFINE_META_POD(MeshComponent::MeshNameType);
     DEFINE_META_POD(ECVec2);
     DEFINE_META_POD(ECVec3);
@@ -309,4 +319,6 @@ namespace Eclipse
     DEFINE_META_POD(Signature);
     DEFINE_META_POD(std::bitset<20>);
     //DEFINE_META_POD(MonoScript);
+    //DEFINE_META_POD(std::vector<glm::mat4>);
+    //DEFINE_META_POD(Animation);
 }

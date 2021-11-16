@@ -17,7 +17,7 @@ namespace Eclipse
         bool DrawModel = true;
 
         Instance_Renderer() {};
-        void Init(std::vector <Vertex>& vertices, std::vector <unsigned int>& indices, unsigned int instancing = 1, std::vector <glm::mat4> instanceMatrix = {});
+        void Init(std::vector <Vertex>& vertices, std::vector <unsigned int>& indices, size_t instancing, std::vector <glm::mat4> instanceMatrix = {});
         void Draw(Shader& shader, CameraComponent& camera);
     };
 }

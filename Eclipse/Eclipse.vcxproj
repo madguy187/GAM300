@@ -79,7 +79,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
-      <DisableSpecificWarnings>4302;4311;4505;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4302;4311;4505;4702;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;_CRT_SECURE_NO_WARNINGS;TRACY_ENABLE;ENGINE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\Dep;src;..\Dep\RAPIDJSON\rapidjson-master\include\rapidjson;..\Dep\GLEW\include\GL;..\Dep\STB\stb-master;..\Dep\GLM\glm;..\Dep\GLFW\include\GLFW;..\Dep\GLM\glm\gtc;..\Dep\GLM\glm\gtx;..\Dep\GLEW\lib\Release\x64;..\Dep\spdlog\include;src\Graphics\Still_Cleaning;src\Graphics\RendererAPI;src\Graphics\Parser;src\Graphics\ModelFactory\BasicPrimitives;src\Graphics\ModelFactory;src\Graphics\FrameBuffer;src\Graphics\OpenGL;src\ImGui\Vendor;src\ImGui\Vendor\ImGuizmo;..\Dep\PhysX\include;..\Dep\PhysX\include\characterkinematic;..\Dep\PhysX\include\collision;..\Dep\PhysX\include\common;..\Dep\PhysX\include\cooking;..\Dep\PhysX\include\cudamanager;..\Dep\PhysX\include\extensions;..\Dep\PhysX\include\filebuf;..\Dep\PhysX\include\foundation;..\Dep\PhysX\include\geometry;..\Dep\PhysX\include\geomutils;..\Dep\PhysX\include\gpu;..\Dep\PhysX\include\pvd;..\Dep\PhysX\include\solver;..\Dep\PhysX\include\task;..\Dep\PhysX\include\vehicle;..\Dep\mono\include\mono-2.0;..\Dep\ASSIMP\include\assimp;..\Dep\ASSIMP;..\Dep\Fmod\core\inc;..\Dep\Tracy;..\Dep\Recast&amp;Detour\DebugUtils\Include;..\Dep\Recast&amp;Detour\Detour\Include;..\Dep\Recast&amp;Detour\DetourCrowd\Include;..\Dep\Recast&amp;Detour\DetourTileCache\Include;..\Dep\Recast&amp;Detour\Recast\Include;..\Dep\Recast&amp;Detour\SDL\include;src\Editor\Windows\NodeEditor\ImNodes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -119,7 +119,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
-      <DisableSpecificWarnings>4302;4311;4505;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4302;4311;4505;4702;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;_CRT_SECURE_NO_WARNINGS;TRACY_ENABLE;ENGINE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\Dep;src;..\Dep\RAPIDJSON\rapidjson-master\include\rapidjson;..\Dep\GLEW\include\GL;..\Dep\STB\stb-master;..\Dep\GLM\glm;..\Dep\GLFW\include\GLFW;..\Dep\GLM\glm\gtc;..\Dep\GLM\glm\gtx;..\Dep\GLEW\lib\Release\x64;..\Dep\spdlog\include;src\Graphics\Still_Cleaning;src\Graphics\RendererAPI;src\Graphics\Parser;src\Graphics\ModelFactory\BasicPrimitives;src\Graphics\ModelFactory;src\Graphics\FrameBuffer;src\Graphics\OpenGL;src\ImGui\Vendor;src\ImGui\Vendor\ImGuizmo;..\Dep\PhysX\include;..\Dep\PhysX\include\characterkinematic;..\Dep\PhysX\include\collision;..\Dep\PhysX\include\common;..\Dep\PhysX\include\cooking;..\Dep\PhysX\include\cudamanager;..\Dep\PhysX\include\extensions;..\Dep\PhysX\include\filebuf;..\Dep\PhysX\include\foundation;..\Dep\PhysX\include\geometry;..\Dep\PhysX\include\geomutils;..\Dep\PhysX\include\gpu;..\Dep\PhysX\include\pvd;..\Dep\PhysX\include\solver;..\Dep\PhysX\include\task;..\Dep\PhysX\include\vehicle;..\Dep\mono\include\mono-2.0;..\Dep\ASSIMP\include\assimp;..\Dep\ASSIMP;..\Dep\Fmod\core\inc;..\Dep\Tracy;..\Dep\Recast&amp;Detour\DebugUtils\Include;..\Dep\Recast&amp;Detour\Detour\Include;..\Dep\Recast&amp;Detour\DetourCrowd\Include;..\Dep\Recast&amp;Detour\DetourTileCache\Include;..\Dep\Recast&amp;Detour\Recast\Include;..\Dep\Recast&amp;Detour\SDL\include;src\Editor\Windows\NodeEditor\ImNodes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
@@ -187,6 +187,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\ECS\ComponentManager\ComponentManager.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AIComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\AnimationComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\AudioComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\CameraComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ChildComponent.h" />
@@ -211,10 +212,12 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\ECS\EntityManager\EntityManager.h" />
     <ClInclude Include="src\ECS\SystemManager\SystemManager.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\AI\AISystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\AnimationSystem\AnimationSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\CameraSystem\CameraSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Collision\CollisionSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\EntityCompSystem\EntityCompSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\FileWatchSystem\FileWatchSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\GridSystem\GridSystem.h" />
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Inputsystem\InputSystem.h" />
@@ -270,7 +273,12 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\EntryPoint\EntryPoint.h" />
     <ClInclude Include="src\Events\EventManager.h" />
     <ClInclude Include="src\Events\Events.h" />
+    <ClInclude Include="src\FSM\Manager\FSMManager.h" />
+    <ClInclude Include="src\FSM\StateDesigns\Animation\AnimationFSM.h" />
+    <ClInclude Include="src\FSM\StateDesigns\Base\FiniteStateMachine.h" />
+    <ClInclude Include="src\FSM\StateDesigns\TestingFSM\TestingFSM.h" />
     <ClInclude Include="src\Global.h" />
+    <ClInclude Include="src\Graphics\Animation\AnimationManager.h" />
     <ClInclude Include="src\Graphics\Camera\CameraManager.h" />
     <ClInclude Include="src\Graphics\Culling\CullingManager.h" />
     <ClInclude Include="src\Graphics\Debugging\DebugRenderingManager.h" />
@@ -306,6 +314,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\Material\MaterialManager.h" />
     <ClInclude Include="src\Graphics\Material\PBR\PBRManager.h" />
     <ClInclude Include="src\Graphics\MeshEditor\MeshEditorSource.h" />
+    <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpAnimator.h" />
     <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.h" />
     <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.h" />
     <ClInclude Include="src\Graphics\ModelFactory\BasicPrimitives\AllBasicPrimitives.h" />
@@ -335,6 +344,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\RendererAPI\Graphics.h" />
     <ClInclude Include="src\Graphics\RendererAPI\GraphicsManager.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Mesh.h" />
+    <ClInclude Include="src\Graphics\RendererAPI\RenderManager\RenderManger.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Renderer.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Shader.h" />
     <ClInclude Include="src\Graphics\Textures\Texture.h" />
@@ -355,6 +365,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\ImGui\Vendor\imstb_textedit.h" />
     <ClInclude Include="src\ImGui\Vendor\imstb_truetype.h" />
     <ClInclude Include="src\ImGui\Vendor\stb_image.h" />
+    <ClInclude Include="src\Library\Math\Math.h" />
     <ClInclude Include="src\Library\Math\Matrix.h" />
     <ClInclude Include="src\Library\Math\Vector.h" />
     <ClInclude Include="src\Library\Random\Random.h" />
@@ -363,9 +374,12 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Library\UUID\UUIDGenerator.h" />
     <ClInclude Include="src\Logger\Logger.h" />
     <ClInclude Include="src\Mono\Components\s_AudioSource.h" />
+    <ClInclude Include="src\Mono\Components\s_Cursor.h" />
     <ClInclude Include="src\Mono\Components\s_EclipseBehavior.h" />
     <ClInclude Include="src\Mono\Components\s_GameObject.h" />
+    <ClInclude Include="src\Mono\Components\s_Light.h" />
     <ClInclude Include="src\Mono\Components\s_LogicalInput.h" />
+    <ClInclude Include="src\Mono\Components\s_Physics.h" />
     <ClInclude Include="src\Mono\Components\s_Quaternion.h" />
     <ClInclude Include="src\Mono\Components\s_RigidBodyComponent.h" />
     <ClInclude Include="src\Mono\Components\s_Time.h" />
@@ -414,10 +428,12 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\ECS\EntityManager\EntityManager.cpp" />
     <ClCompile Include="src\ECS\SystemManager\SystemManager.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\AI\AISystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\AnimationSystem\AnimationSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\CameraSystem\CameraSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Collision\CollisionSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\EntityCompSystem\EntityCompSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\FileWatchSystem\FileWatchSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\GridSystem\GridSystem.cpp" />
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Inputsystem\InputSystem.cpp" />
@@ -460,6 +476,10 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Editor\Windows\SwitchViews\TopSwitchViewWindow.cpp" />
     <ClCompile Include="src\Engine\Engine.cpp" />
     <ClCompile Include="src\EntryPoint\EntryPoint.cpp" />
+    <ClCompile Include="src\FSM\Manager\FSMManager.cpp" />
+    <ClCompile Include="src\FSM\StateDesigns\Animation\AnimationFSM.cpp" />
+    <ClCompile Include="src\FSM\StateDesigns\TestingFSM\TestingFSM.cpp" />
+    <ClCompile Include="src\Graphics\Animation\AnimationManager.cpp" />
     <ClCompile Include="src\Graphics\Camera\CameraManager.cpp" />
     <ClCompile Include="src\Graphics\Culling\CullingManager.cpp" />
     <ClCompile Include="src\Graphics\Debugging\DebugRenderingManager.cpp" />
@@ -491,6 +511,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\Material\MaterialManager.cpp" />
     <ClCompile Include="src\Graphics\Material\PBR\PBRManager.cpp" />
     <ClCompile Include="src\Graphics\MeshEditor\MeshEditorSource.cpp" />
+    <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpAnimator.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpModel.cpp" />
     <ClCompile Include="src\Graphics\ModelFactory\BasicPrimitives\Circle.cpp" />
@@ -517,6 +538,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\RendererAPI\Graphics.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\GraphicsManager.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\Mesh.cpp" />
+    <ClCompile Include="src\Graphics\RendererAPI\RenderManager\RenderManager.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\Shader.cpp" />
     <ClCompile Include="src\Graphics\Textures\Texture.cpp" />
     <ClCompile Include="src\Graphics\Textures\stb_image.cpp" />
@@ -532,6 +554,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\ImGui\Vendor\imgui_impl_glfw.cpp" />
     <ClCompile Include="src\ImGui\Vendor\imgui_impl_opengl3.cpp" />
     <ClCompile Include="src\ImGui\Vendor\imgui_widgets.cpp" />
+    <ClCompile Include="src\Library\Math\Math.cpp" />
     <ClCompile Include="src\Library\Math\Matrix.cpp" />
     <ClCompile Include="src\Library\Random\Random.cpp" />
     <ClCompile Include="src\Library\UUID\UUIDGenerator.cpp" />

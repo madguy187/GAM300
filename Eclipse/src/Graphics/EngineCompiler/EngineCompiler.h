@@ -5,12 +5,14 @@ namespace Eclipse
     class EngineCompiler
     {
     private:
-        static inline std::vector<std::string> AllNames = { "GEOMETRY" , "PREFABS" , "BASICTEXTURES" , "TEXTURES" };
+        static inline std::vector<std::string> AllNames = { "GEOMETRY" , "PREFABS" , "BASICTEXTURES" , "TEXTURES" , "ANIMATION"};
+        //static inline std::vector<std::string> AllNames = { "GEOMETRY" , "PREFABS" , "BASICTEXTURES" , "TEXTURES"};
         // Touch Only When Needed
         static inline std::string GeometryPath = "../Compiler/CompilerKeyFiles/GeometryFile/Geometry.eclipse";
         static inline std::string PrefabsPath = "../Compiler/CompilerKeyFiles/PrefabsFile/Prefabs.eclipse";
         static inline std::string ModelTexturePath = "../Compiler/CompilerKeyFiles/TextureFile/Texture.eclipse";
         static inline std::string TexturePath = "../Compiler/CompilerKeyFiles/BasicTextureFile/Texture.eclipse";
+        static inline std::string AnimationPath = "../Compiler/CompilerKeyFiles/AnimationFile/Animation.eclipse";
         // Loading Geometry.eclipse File
         static inline std::fstream GeometryFileRead;
         // Loading Prefabs.eclipse File
@@ -19,7 +21,10 @@ namespace Eclipse
         static inline std::fstream TextureFileRead;
         // Loading Textures.eclipse File
         static inline std::fstream ModelTextureFileRead;
-        static inline std::bitset<4> CompilerFlags;
+        // Loading Animation.eclipse File
+        static inline std::fstream AnimationFileRead;
+        static inline std::bitset<5> CompilerFlags;
+        //static inline std::bitset<4> CompilerFlags;
 
         std::unordered_map<std::string, std::unique_ptr<std::thread>> CompilerThreads;
 
@@ -31,6 +36,9 @@ namespace Eclipse
         static void LoadBasicTextures();
         // Load Model Textures 
         static void LoadModelTextures();
+        // Load Animation Data
+        static void LoadAnimation();
+
         // Execute Compiler
         static void RunCompiler();
         void LoadCompilers();
@@ -42,6 +50,7 @@ namespace Eclipse
         bool IsPrefabsCompiled();
         bool IsModelTexturesCompiled();
         bool IsBasicTexturesCompiled();
+        bool IsAnimationCompiled();
         bool AreAllCompiled();
         void HotReload();
         void HotReloadTetxures();

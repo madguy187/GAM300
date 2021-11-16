@@ -140,7 +140,7 @@ namespace Eclipse
 	{
 		Entity ID = engine->world.CreateEntity();
 
-		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast_toStr<EntityType>(type), 0, true });
+		engine->world.AddComponent(ID, EntityComponent{ type, lexical_cast_toStr<EntityType>(type), 0, true, true });
 		engine->world.AddComponent(ID, TransformComponent{});
 
 		// Check this please - Rachel
@@ -346,6 +346,23 @@ namespace Eclipse
 		return DoesRecoveryFileExist;
 	}
 
+	bool EditorManager::GetIsSimulatingAnimation() const
+	{
+		return SimulateAnimation;
+	}
+
+	bool EditorManager::IsSceneViewportActive() const
+	{
+		auto* scene = dynamic_cast<SceneWindow*>(Windows_[4].get());
+		return scene->GetIsWindowRunning();
+	}
+
+	bool EditorManager::IsGameViewportActive() const
+	{
+		auto* gameview = dynamic_cast<eGameViewWindow*>(Windows_[3].get());
+		return gameview->GetIsWindowRunning();
+	}
+
 	void EditorManager::SetSelectedEntity(Entity ID)
 	{
 		GEHIndex_ = static_cast<size_t>(EntityToIndexMap_[ID]);
@@ -368,22 +385,26 @@ namespace Eclipse
 		DoesRecoveryFileExist = exist;
 	}
 
+	void EditorManager::SetAnimationSimulation(bool active)
+	{
+		SimulateAnimation = active;
+	}
+
 	void EditorManager::Clear()
 	{
-		EntityHierarchyList_.clear();
-		EntityToIndexMap_.clear();
-		GEHIndex_ = 0;
-
 		for (const auto& window : Windows_)
 		{
 			window->Unload();
 		}
+
+		EntityHierarchyList_.clear();
+		EntityToIndexMap_.clear();
+		GEHIndex_ = 0;
 	}
 
 	void EditorManager::TextureIconInit()
 	{
 		FolderIcon_ = Graphics::FindTextures("FolderIcon").GetHandle();
-
 		spriteIcon_ = Graphics::FindTextures("Playstop").GetHandle();
 	}
 }

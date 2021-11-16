@@ -1,8 +1,17 @@
 #pragma once
+#include "Global.h"
 #include "mono/jit/jit.h"
+#include "Library/Math/Vector.h"
 
 namespace Eclipse
 {
+	struct MonoVariable
+	{
+		m_Type type = m_Type::MONO_UNDEFINED;
+		std::string varName = "";
+		std::string varValue = "";
+	};
+
 	struct MonoScript
 	{
 		std::string scriptName{};
@@ -28,12 +37,13 @@ namespace Eclipse
 
 	class MonoManager
 	{
-		MonoDomain* domain;
-		MonoAssembly* ScriptAssembly;
-		MonoAssembly* APIAssembly;
-		MonoImage* ScriptImage;
-		MonoImage* APIImage;
+		MonoDomain* domain = nullptr;
+		MonoAssembly* ScriptAssembly = nullptr;
+		MonoAssembly* APIAssembly = nullptr;
+		MonoImage* ScriptImage = nullptr;
+		MonoImage* APIImage = nullptr;
 
+		std::vector<MonoScript> UserImplementedScriptList;
 		std::vector<InvokeFunc> InvokeContainer;
 
 		// Generates all the scripts into a dll
@@ -42,6 +52,10 @@ namespace Eclipse
 
 		MonoDomain* LoadDomain();
 		void UnloadDomain();
+
+		int CheckIfScriptExist(std::string scriptName);
+		bool CheckIfFieldExist(MonoScript* script, std::string& fieldName);
+		void LoadAllFields(MonoScript* script);
 
 	public:
 		bool fixUpdate = false;
@@ -53,30 +67,40 @@ namespace Eclipse
 		void Terminate();
 		void UpdateInvokers();
 		void AddInvoke(MonoScript* _script, float _timer, MonoMethod* _method);
+		MonoScript* GetScriptPointerByName(const std::string& name);
+		void LoadVariable(MonoScript* script);
 
 		// API Functions
 		void Awake(MonoScript* obj);
 		void Start(MonoScript* obj);
 		void Update(MonoScript* obj);
 		void FixedUpdate(MonoScript* obj);
+		void OnCollision(Entity ent);
 
 		MonoObject* CreateMonoObject(std::string scriptName, Entity entity);
 		MonoObject* CreateObjectFromClass(MonoClass* klass, bool defaultConstructor = true);
 		MonoObject* CreateVector3Class(float x, float y, float z);
 		MonoObject* CreateQuaternionClass(float x, float y, float z);
+		MonoObject* CreateRayCastHit(Entity ent, float x, float y, float z);
+		MonoObject* CreateLightClass(Entity ent);
+		MonoObject* CreateAudioSourceClass(Entity ent);
+		MonoObject* CreateGameObjectClass(Entity ent, std::string scriptName);
+		MonoObject* CreateLayerMaskClass(std::string mask);
+		ECVec3 ConvertVectorToECVec(MonoObject* vec);
+		ECVec3 ConvertQuaternionToECVec3(MonoObject* vec);
 
 		std::string GetStringFromField(MonoObject* obj, MonoClass* klass, const char* fieldName);
 
 		void SetFloatFromField(MonoObject* obj, MonoClass* klass, const char* fieldName, float fieldValue);
+		bool GetFloatFromField(MonoObject* obj, MonoClass* klass, const char* fieldName, float& value);
 
 		MonoClass* GetAPIMonoClass(std::string className);
 		MonoClass* GetScriptMonoClass(std::string className);
 		MonoMethod* GetMethodFromClass(MonoClass* klass, std::string funcName, int param_count = -1);
-
-		void LoadAllFields(MonoScript* script);
-		bool CheckIfFieldExist(MonoScript* script, std::string& fieldName, size_t index);
-
 		MonoObject* ExecuteMethod(MonoObject* obj, MonoMethod* method, std::vector<void*> args);
+
+		void LoadAllScripts();
+		bool CheckIfScriptCompiled();
 
 		// Gets image containing all API Scripts
 		MonoImage* GetAPIImage();

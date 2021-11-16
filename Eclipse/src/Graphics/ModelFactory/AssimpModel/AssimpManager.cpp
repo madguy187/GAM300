@@ -19,17 +19,18 @@ namespace Eclipse
 
         glm::mat4 mModelNDC;
         glm::mat4 model = glm::mat4(1.0f);
+
         model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
         model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
+
         mModelNDC = _camera.projMtx * _camera.viewMtx * model;
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
         glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
         GLCall(glUniform3f(cameraPos, camerapos.position.getX(), camerapos.position.getY(), camerapos.position.getZ()));
-
     }
 
     bool AssimpModelManager::GeometryContainerCheck(const std::string& in)
@@ -131,15 +132,8 @@ namespace Eclipse
                     {
                         auto& name = Prefabs[NameOfFolder][i];
                         MeshID = engine->editorManager->CreateDefaultEntity(EntityType::ENT_MESH);
-                        EntityComponent* test = &engine->world.GetComponent<EntityComponent>(ParentID);
-                        EntityComponent* Child = &engine->world.GetComponent<EntityComponent>(MeshID);
 
                         engine->world.AddComponent(MeshID, ChildComponent{});
-
-                        test->Child.push_back(MeshID);
-                        Child->IsAChild = true;
-                        Child->Parent.push_back(ParentID);
-
                         engine->world.GetComponent<ParentComponent>(ParentID).child.push_back(MeshID);
 
                         ChildComponent& childComp = engine->world.GetComponent<ChildComponent>(MeshID);
@@ -154,6 +148,9 @@ namespace Eclipse
                         engine->world.AddComponent(MeshID, MaterialComponent{ MaterialModelType::MT_MODELS3D });
                         SetSingleMesh(MeshID, name);
                     }
+
+                    if (engine->GetEditorState())
+                        engine->editorManager->SetSelectedEntity(ParentID);
 
                     return ParentID;
                 }
@@ -196,10 +193,21 @@ namespace Eclipse
     void AssimpModelManager::MeshDraw(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType)
     {
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
-        engine->gFrameBufferManager->UseFrameBuffer(Mode);
+        
+        if (engine->GetEditorState() == true)
+        {
+            engine->gFrameBufferManager->UseFrameBuffer(Mode);
+        }
+        else
+        {
+            engine->gFrameBufferManager->UseFrameBuffer(Mode);
+        }
 
-        auto shdrpgm = Graphics::shaderpgms["PBRShader"];
+        Shader shdrpgm = Graphics::shaderpgms["PBRShader"];
         shdrpgm.Use();
+
+        auto& Camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+        auto& CameraPos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
 
         //gEnvironmentMap.CheckUniform(ModelMesh, _camera);
         ChecModelkUniforms(shdrpgm, _camera, ID);
@@ -213,6 +221,47 @@ namespace Eclipse
         {
             RenderMesh(ModelMesh, GL_LINE);
         }
+    }
+
+    void AssimpModelManager::RenderToDepth(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType)
+    {
+        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
+        engine->gFrameBufferManager->UseFrameBuffer(Mode);
+
+        Shader shdrpgm = Graphics::shaderpgms["SimpleDepthShader"];
+        shdrpgm.Use();
+
+        TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(_camera.camType));
+        TransformComponent Transform = engine->world.GetComponent<TransformComponent>(ID);
+
+        glm::mat4 mModelNDC;
+        glm::mat4 model = glm::mat4(1.0f);
+
+        model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
+        model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
+
+        GLuint model_ = shdrpgm.GetLocation("model");
+        glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
+
+        glCullFace(GL_FRONT);
+        RenderMesh(ModelMesh, GL_FILL);
+        glCullFace(GL_BACK);
+    }
+
+    void AssimpModelManager::RenderFromDepth(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType)
+    {
+        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
+        engine->gFrameBufferManager->UseFrameBuffer(Mode);
+
+        auto shdrpgm = Graphics::shaderpgms["ShadowMapping"];
+        shdrpgm.Use();
+
+        ChecModelkUniforms(shdrpgm, _camera, ID);
+        CheckUniforms(shdrpgm, ID, ModelMesh, _camera);
+        RenderMesh(ModelMesh, GL_FILL);
     }
 
     void AssimpModelManager::DebugNormals(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode In, CameraComponent::CameraType _camType)
@@ -243,7 +292,6 @@ namespace Eclipse
             glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(_camera.viewMtx));
             glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));
             GLCall(glUniform1f(uniform_var_loc5, engine->GraphicsManager.Magnitude));
-
 
             // EBO stuff
             glBindVertexArray(engine->AssimpManager.Geometry[ModelMesh.MeshName.data()]->VAO);
@@ -579,7 +627,7 @@ namespace Eclipse
     {
         glEnable(GL_BLEND);
         glEnable(GL_DEPTH_TEST);
-        //glDisable(GL_CULL_FACE);
+        glDisable(GL_CULL_FACE);
 
         if (strcmp(In.MeshName.data(), "Plane") == 0)
         {
@@ -675,6 +723,17 @@ namespace Eclipse
                         engine->gPBRManager->SetAlbedoConstant(shader, glm::vec4(0.8, 0.8, 0.8, 1.0));
                     }
 
+                    if (!engine->GetEditorState() || engine->IsScenePlaying())
+                    {
+                        Material.HoldingTextures.clear();
+
+                        std::pair<MMAPIterator, MMAPIterator> result = Graphics::textures.equal_range(Material.TextureKey);
+                        for (MMAPIterator it = result.first; it != result.second; it++)
+                        {
+                            Material.HoldingTextures.push_back(it->second);
+                        }
+                    }
+
                     for (unsigned int it = 0; it < Material.HoldingTextures.size(); it++)
                     {
                         std::string name;
@@ -741,16 +800,65 @@ namespace Eclipse
         GLuint cameraPos = _shdrpgm.GetLocation("camPos");
         GLint projection = _shdrpgm.GetLocation("projection");
         GLuint model_ = _shdrpgm.GetLocation("model");
+        GLuint hasAnimation = _shdrpgm.GetLocation("hasAnimation");
+
+        if (engine->world.CheckComponent<AnimationComponent>(ModelID))
+        {
+            auto& animation = engine->world.GetComponent<AnimationComponent>(ModelID);
+
+            glUniform1i(hasAnimation, true);
+
+            for (unsigned int i = 0; i < animation.m_Transforms.size(); ++i)
+            {
+                std::string matrixName = "finalBonesMatrices[" + std::to_string(i) + "]";
+                glm::mat4 matrix = animation.m_Transforms[i];
+                GLuint boneMatrix = _shdrpgm.GetLocation(matrixName.c_str());
+
+                glUniformMatrix4fv(boneMatrix, 1, GL_FALSE, &matrix[0][0]);
+            }
+        }
+        else
+        {
+            glUniform1i(hasAnimation, false);
+        }
 
         auto& Transform = engine->world.GetComponent<TransformComponent>(ModelID);
 
         glm::mat4 mModelNDC;
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
-        model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+
+        auto& TouchingHand = engine->world.GetComponent<MeshComponent>(ModelID);
+
+        if (strcmp(TouchingHand.MeshName.data(), "hand") == 0)
+        {
+            auto& campos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetGameCameraID());
+            auto& handPos = engine->world.GetComponent<TransformComponent>(ModelID);
+
+            handPos.rotation.setY(-1 * campos.rotation.getY() - 90.0f);
+            handPos.rotation.setX(campos.rotation.getX());
+
+            model = glm::translate(model, handPos.position.ConvertToGlmVec3Type());
+            model = glm::rotate(model, glm::radians(handPos.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(handPos.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(handPos.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+
+        }
+        else
+        {
+            model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
+            model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+        }
+
+        if (engine->world.CheckComponent<AnimationComponent>(ModelID))
+        {
+            auto& animation = engine->world.GetComponent<AnimationComponent>(ModelID);
+            model = glm::scale(model, glm::vec3{ 1.0f / animation.modelLargestAxis, 1.0f / animation.modelLargestAxis, 1.0f / animation.modelLargestAxis });
+        }
+
         model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
+
         mModelNDC = _camera.projMtx * _camera.viewMtx * model;
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(_camera.projMtx));

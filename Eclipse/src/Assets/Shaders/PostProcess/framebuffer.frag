@@ -62,6 +62,22 @@ vec3 tintAdjust(vec3 color, vec3 mapBlackTo, vec3 mapWhiteTo, float amount)
     return mix(color, mix(mapBlackTo, mapWhiteTo, luminance), amount);
 }
 
+const float flashlightRange = 0.4;
+const float rotationSpeed = 0.4;
+const vec2 rotationOrigin = vec2( 0.5, 0.5 );
+
+vec2 rotateVertex( in vec2 _vertex, in vec2 _origin, in float _angle )
+{
+    vec2 result;
+    
+    //result.x = _origin.x + ( _vertex.x - _origin.x ) * cos( _angle ) - ( _vertex.y - _origin.y ) * sin( _angle );
+	//result.y = _origin.y + ( _vertex.y - _origin.y ) * cos( _angle ) + ( _vertex.x - _origin.x ) * sin( _angle );
+    
+    return result;
+}
+
+float mouseSize = 0.5;
+float smoothObjectPadding = 0.33;
 
 void main()
 {

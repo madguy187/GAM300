@@ -17,6 +17,11 @@ namespace Eclipse
 		bool GetIsViewFullscreen();
 		void SetViewToFullscreen(bool active);
 		void SetViewToOriginalState(bool active);
+		ECVec2 GetViewPortSize();
+		bool GetIsWindowRunning() const;
+
+		ImVec2 vMin;
+		ImVec2 vMax;
 	private:
 		ECVec2 mViewportSize{ 0.f,0.f};
 		FrameBuffer* m_frameBuffer = nullptr;
@@ -24,5 +29,6 @@ namespace Eclipse
 		bool IsViewFullscreen{ false };
 		bool IsViewBackToOriginalState{ false };
 		bool AlreadySetDockIDTracker{ false };
+		bool IsWindowRunning{ false };
 	};
 }

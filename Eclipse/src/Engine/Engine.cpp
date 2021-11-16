@@ -43,8 +43,10 @@
 #include "ECS/SystemManager/Systems/System/AI/AISystem.h"
 #include "ECS/SystemManager/Systems/System/InputSystem/InputSystem.h"
 #include "Editor/Windows/NodeEditor/NodeEditor.h"
-
+#include "ECS/SystemManager/Systems/System/AnimationSystem/AnimationSystem.h"
 #include "ECS/SystemManager/Systems/System/NavMeshSystem/NavMeshSystem.h"
+#include "ECS/SystemManager/Systems/System/EntityCompSystem/EntityCompSystem.h"
+
 bool Tester1(const Test1&)
 {
     std::cout << "Engine.cpp Tester1" << std::endl;
@@ -68,9 +70,11 @@ namespace Eclipse
         EventSystem<Test1>::registerListener(Tester2);
         EventSystem<Test1>::registerListener(std::bind(&World::TempFunc, &world, std::placeholders::_1));
 
-        InputManager = std::make_unique<LogicalInput>();
         engine->gFrameBufferManager = std::make_unique<FrameBufferManager>();
         engine->gDebugDrawManager = std::make_unique<DebugManager>();
+
+        szManager.LoadEngineConfig(OpenGL_Context::title, OpenGL_Context::width, OpenGL_Context::height,
+            IsEditorActive, IsWindowFullscreen);
 
         engine->GraphicsManager.Pre_Render();
 
@@ -79,6 +83,7 @@ namespace Eclipse
         if (IsEditorActive)
             editorManager = std::make_unique<EditorManager>();
 
+        InputManager = std::make_unique<LogicalInput>();
         glfwSetWindowCloseCallback(OpenGL_Context::GetWindow(), GraphicsManager.WindowCloseCallback);
     }
 
@@ -108,6 +113,7 @@ namespace Eclipse
         world.RegisterComponent<PrefabComponent>();
         world.RegisterComponent<AIComponent>();
         world.RegisterComponent<NodeEditor>();
+        world.RegisterComponent<AnimationComponent>();
         world.RegisterComponent<NavMeshVolumeComponent>();
 
         prefabWorld.RegisterComponent<EntityComponent>();
@@ -130,9 +136,11 @@ namespace Eclipse
         prefabWorld.RegisterComponent<CollisionComponent>();
         prefabWorld.RegisterComponent<PrefabComponent>();
         prefabWorld.RegisterComponent<AIComponent>();
-        prefabWorld.RegisterComponent <NavMeshVolumeComponent>();
-
         prefabWorld.RegisterComponent<NodeEditor>();
+        prefabWorld.RegisterComponent<NodeEditor>();
+        prefabWorld.RegisterComponent<AnimationComponent>();
+        prefabWorld.RegisterComponent<NavMeshVolumeComponent>();
+
         // registering system
         world.RegisterSystem<RenderSystem>();
         world.RegisterSystem<CameraSystem>();
@@ -150,6 +158,9 @@ namespace Eclipse
         world.RegisterSystem<PrefabSystem>();
         world.RegisterSystem<AISystem>();
         world.RegisterSystem<InputSystem>();
+        world.RegisterSystem<AnimationSystem>();
+        world.RegisterSystem<EntityCompSystem>();
+
         prefabWorld.RegisterSystem<PrefabSystem>();
 
         // Render System
@@ -226,10 +237,17 @@ namespace Eclipse
         parentSys.set(world.GetComponentType<ParentComponent>(), 1);
         world.RegisterSystemSignature<ParentSystem>(parentSys);
 
+        Signature animationSys;
+        animationSys.set(world.GetComponentType<AnimationComponent>(), 1);
+        world.RegisterSystemSignature<AnimationSystem>(animationSys);
+
         //Check this! - Rachel
         CameraSystem::Init();
         RenderSystem::Init();
-        engine->editorManager->TextureIconInit();
+
+        if (IsEditorActive)
+            engine->editorManager->TextureIconInit();
+
         gPhysics.Init();
         audioManager.Init();
 
@@ -237,8 +255,6 @@ namespace Eclipse
 
         if (IsEditorActive)
             IsInPlayState = false;
-        else
-            IsInPlayState = true;
 
         float currTime = static_cast<float>(clock());
         float accumulatedTime = 0.0f;
@@ -253,23 +269,19 @@ namespace Eclipse
 
         // Check for Recovery File
         if (IsEditorActive)
+        {
             engine->editorManager->SetRecoveryFileExistence(szManager.CheckBackUpPathExistence());
-
-        /*audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);*/
-        //audioManager.PlayEvent("event:/WaterEffect");
-
-        /*TransformComponent trans1;
-        TransformComponent trans2;
-        trans2.position.setX(5.0f);
-        trans1.position.setX(5.0f);
-        RefVariant ob1 = trans1;
-        RefVariant ob2 = trans2;
-
-        if (SerializationManager::CompareComponentData(ob1, ob2))
-            std::cout << "its the same!" << std::endl;
+        }
         else
-            std::cout << "its the not same!" << std::endl;*/
-
+        {
+            IsInPlayState = true;
+            SceneManager::RegisterScene(std::string{ ASSETS_PATH } + "Scenes\\Showcase1.scn");
+            SceneManager::LoadScene("Showcase1");
+            SceneManager::ProcessScene();
+            mono.StartMono();
+            world.GetSystem<MonoSystem>()->Init();
+        }
+       
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
             glfwPollEvents();
@@ -301,7 +313,6 @@ namespace Eclipse
 
             currTime = newTime;
             ECGuiInputHandler::Update();
-
             ImGuiSetup::Begin(IsEditorActive);
             //ECGuiInputHandler::Update();
             EditorSystem::Update();
@@ -320,14 +331,14 @@ namespace Eclipse
             }
 
             // GRID SYSTEM =============================
-            //world.Update<GridSystem>();
-
+            // world.Update<GridSystem>();
             world.Update<CameraSystem>();
 
             if (IsScenePlaying())
                 world.Update<AISystem>();
 
             world.Update<CollisionSystem>();
+
             if (IsScenePlaying())
             {
                 for (int step = 0; step < Game_Clock.get_timeSteps(); step++)
@@ -337,8 +348,12 @@ namespace Eclipse
                     mono.fixUpdate = true;
                     world.Update<MonoSystem>();
                     mono.fixUpdate = false;
+                    // ANIMATIONSYSTEM =============================
+                    world.Update<AnimationSystem>();
                 }
             }
+
+            //mono.PrintAllScript();
 
             world.Update<FileWatchSystem>();
 
@@ -360,7 +375,8 @@ namespace Eclipse
             world.Update<AudioSystem>();
 
             // MATERIALSYSTEM =============================
-            world.Update<MaterialSystem>();
+            if (engine->IsEditorActive)
+                world.Update<MaterialSystem>();
 
             // RENDERSYSTEM =============================
             world.Update<RenderSystem>();
@@ -395,8 +411,11 @@ namespace Eclipse
         }
 
         //Serialization(Temp)
-        szManager.SaveSceneFile();
-        pfManager.UnloadSaving();
+        //szManager.SaveSceneFile();
+        if (GetEditorState())
+        {
+            pfManager.UnloadSaving();
+        }
         // unLoad
         mono.Terminate();
         GraphicsManager.End();
@@ -430,6 +449,44 @@ namespace Eclipse
     bool Engine::IsScenePlaying()
     {
         return IsInPlayState && !IsInPauseState;
+    }
+
+    void Engine::DestroyGameObject(const Entity& ent)
+    {
+        if (engine->world.CheckComponent<ParentComponent>(ent))
+        {
+            auto& parentComp = engine->world.GetComponent<ParentComponent>(ent);
+
+            for (auto& child : parentComp.child)
+            {
+                DestroyGameObject(child);
+            }
+
+            CleanUp(ent);
+        }
+        else
+        {
+            CleanUp(ent);
+        }
+    }
+
+    void Engine::CleanUp(const Entity& ent)
+    {
+        gDynamicAABBTree.RemoveData(ent);
+        gCullingManager->Remove(ent);
+        LightManager.DestroyLight(ent);
+        gPhysics.RemoveActor(ent);
+        gFSM.RemoveFSM(ent);
+
+        if (IsEditorActive)
+        {
+            editorManager->DestroyEntity(ent);
+            gPicker.SetCurrentCollisionID(editorManager->GetSelectedEntity());
+        }
+        else
+        {
+            world.DestroyEntity(ent);
+        }
     }
 
     void Engine::SetEditorState(bool check)

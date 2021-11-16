@@ -5,27 +5,57 @@ namespace Eclipse
 {
     void FrameBufferManager::CreateFrameBuffers()
     {
-        // Basic FrameBuffers
-        CreateFBO(1270, 593, FrameBufferMode::FBM_GAME);
-        CreateFBO(1270, 593, FrameBufferMode::FBM_SCENE);
-        CreateFBO(1270, 593, FrameBufferMode::FBM_TOP);
-        CreateFBO(1270, 593, FrameBufferMode::FBM_BOTTOM);
-        CreateFBO(1270, 593, FrameBufferMode::FBM_LEFT);
-        CreateFBO(1270, 593, FrameBufferMode::FBM_RIGHT);
+        if (engine->GetEditorState() == true)
+        {
+            // Basic FrameBuffers
+            CreateFBO(1270, 593, FrameBufferMode::FBM_GAME);
+            CreateFBO(1270, 593, FrameBufferMode::FBM_SCENE);
+            CreateFBO(1270, 593, FrameBufferMode::FBM_TOP);
+            CreateFBO(1270, 593, FrameBufferMode::FBM_BOTTOM);
+            CreateFBO(1270, 593, FrameBufferMode::FBM_LEFT);
+            CreateFBO(1270, 593, FrameBufferMode::FBM_RIGHT);
 
-        // Editor Stuffs
-        CreateFBO(1270, 593, FrameBufferMode::FBM_MATERIALEDITOR);
-        CreateFBO(1270, 593, FrameBufferMode::FBM_MESHEDITOR);
+            // Editor Stuffs
+            CreateFBO(1270, 593, FrameBufferMode::FBM_MATERIALEDITOR);
+            CreateFBO(1270, 593, FrameBufferMode::FBM_MESHEDITOR);
 
-        // Sobel Framebuffers
-        // We Render to this FBO then we will render the effect into scene view.
-        CreateFBO(1270, 593, FrameBufferMode::FBM_GAME_SOBEL);
-        CreateFBO(1270, 593, FrameBufferMode::FBM_SCENE_SOBEL);
+            // Sobel Framebuffers
+            // We Render to this FBO then we will render the effect into scene view.
+            CreateFBO(1270, 593, FrameBufferMode::FBM_GAME_SOBEL);
+            CreateFBO(1270, 593, FrameBufferMode::FBM_SCENE_SOBEL);
 
-        // Additionals - PostProcess
-        PostProcess = std::make_unique<FrameBuffer>();
-        PostProcess->CreatePostProcessFramebuffer();
+            // Additionals - PostProcess
+            PostProcess = std::make_unique<FrameBuffer>();
+            PostProcess->CreatePostProcessFramebuffer();
 
+            // Shadow FBO
+            CreateFBO(1270, 593, FrameBufferMode::FBM_SHADOW);
+        }
+        else
+        {
+            // Basic FrameBuffers
+            CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_GAME);
+            CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_SCENE);
+            CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_TOP);
+            CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_BOTTOM);
+            CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_LEFT);
+            CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_RIGHT);
+
+            CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_MATERIALEDITOR);
+            CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_MESHEDITOR);
+
+            // Sobel Framebuffers
+            // We Render to this FBO then we will render the effect into scene view.
+            CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_GAME_SOBEL);
+            CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_SCENE_SOBEL);
+
+            // Additionals - PostProcess
+            PostProcess = std::make_unique<FrameBuffer>();
+            PostProcess->CreatePostProcessFramebuffer();
+
+            // Shadow FBO
+            CreateFBO(OpenGL_Context::GetWidth(), OpenGL_Context::GetHeight(), FrameBufferMode::FBM_SHADOW);
+        }
     }
 
     void FrameBufferManager::CreateFBO(unsigned int width_, unsigned int height_, FrameBufferMode in)
@@ -42,16 +72,24 @@ namespace Eclipse
 
     void FrameBufferManager::FrameBufferDraw()
     {
-        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_GAME)));
-        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_SCENE)));
-        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_TOP)));
-        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_BOTTOM)));
-        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_LEFT)));
-        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_RIGHT)));
+        if (engine->GetEditorState() == false)
+        {
+            FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_GAME)));
+            FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_SCENE)));
+        }
+        else
+        {
+            FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_GAME)));
+            FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_SCENE)));
+            FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_TOP)));
+            FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_BOTTOM)));
+            FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_LEFT)));
+            FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_RIGHT)));
 
-        //Editor Stuffs
-        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_MATERIALEDITOR)));
-        FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_MESHEDITOR)));
+            //Editor Stuffs
+            FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_MATERIALEDITOR)));
+            FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_MESHEDITOR)));
+        }
     }
 
     FrameBuffer* FrameBufferManager::GetFramebuffer(FrameBufferMode mode)
@@ -104,10 +142,20 @@ namespace Eclipse
 
     void FrameBufferManager::GlobalBind()
     {
-        for (auto& i : FrameBufferContainer)
+        if (engine->GetEditorState() == true)
         {
-            i.second->Bind();
-            i.second->Clear();
+            for (auto& i : FrameBufferContainer)
+            {
+                i.second->Bind();
+                i.second->Clear();
+            }
+        }
+        else
+        {
+            FrameBufferContainer[FrameBufferMode::FBM_GAME]->Bind();
+            FrameBufferContainer[FrameBufferMode::FBM_GAME]->Clear();
+            FrameBufferContainer[FrameBufferMode::FBM_GAME_SOBEL]->Bind();
+            FrameBufferContainer[FrameBufferMode::FBM_GAME_SOBEL]->Clear();
         }
     }
 
@@ -140,12 +188,12 @@ namespace Eclipse
 
     unsigned int FrameBufferManager::GetFrameBufferWidth(FrameBufferMode in)
     {
-        return FrameBufferContainer[FrameBufferMode::FBM_MESHEDITOR]->m_width;
+        return FrameBufferContainer[in]->m_width;
     }
 
     unsigned int FrameBufferManager::GetFrameBufferHeight(FrameBufferMode in)
     {
-        return FrameBufferContainer[FrameBufferMode::FBM_MESHEDITOR]->m_height;
+        return FrameBufferContainer[in]->m_height;
     }
 
     float FrameBufferManager::GetAspectRatio(CameraComponent::CameraType in)
@@ -256,14 +304,20 @@ namespace Eclipse
         }
         break;
         }
+
+        return FrameBufferMode::MAXCOUNT;
     }
 
     void FrameBufferManager::FadeIn(FrameBuffer::PostProcessType Type, float& timer, float multiplier, FrameBufferMode WhichFBO)
     {
-        if (PostProcess->PPType_ == Type && timer <= 1.0f)
-        {
-            timer += (engine->Game_Clock.get_fixedDeltaTime() / multiplier);
-        }
+        (void)WhichFBO;
+
+        timer = 1.0f;
+
+        //if (PostProcess->PPType_ == Type && timer <= 1.0f)
+        //{
+        //    timer += (engine->Game_Clock.get_fixedDeltaTime() / multiplier);
+        //}
     }
 
     void FrameBufferManager::PostProcessUpdate(FrameBufferMode Scene)
@@ -325,7 +379,19 @@ namespace Eclipse
                 FadeIn(FrameBuffer::PostProcessType::PPT_SOBEL, PostProcess->FadeInTimer, PostProcess->Multiplier, RenderFBO);
 
                 // We will output to Game FrameBuffer
-                UseFrameBuffer(RenderFBO);
+                //UseFrameBuffer(RenderFBO);
+
+                if (engine->GetEditorState() == true)
+                {
+                    // We will output to Game FrameBuffer
+                    UseFrameBuffer(RenderFBO);
+                }
+                else
+                {
+                    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+                    glViewport(0, 0, OpenGL_Context::width, OpenGL_Context::height);
+                    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+                }
 
                 auto& shdrpgm = Graphics::shaderpgms["PostProcess"];
                 shdrpgm.Use();
@@ -365,21 +431,43 @@ namespace Eclipse
 
     void FrameBufferManager::PostProcessUpdate()
     {
-        if (PostProcess->AllowPostProcess == true)
+        if (engine->GetEditorState() == false)
         {
-            if (PostProcess->PPType_ == FrameBuffer::PostProcessType::PPT_SOBEL)
+            PostProcess->AllowPostProcess = true;
+            PostProcess->PPType_ = FrameBuffer::PostProcessType::PPT_SOBEL;
+            SobelEffectUpdate(FrameBufferMode::FBM_GAME_SOBEL, FrameBufferMode::FBM_GAME);
+        }
+        else
+        {
+            if (PostProcess->AllowPostProcess == true)
             {
-                if (engine->IsScenePlaying() == true)
+                if (PostProcess->PPType_ == FrameBuffer::PostProcessType::PPT_SOBEL)
                 {
-                    SobelEffectUpdate(FrameBufferMode::FBM_GAME_SOBEL, FrameBufferMode::FBM_GAME);
-                }
+                    if (engine->IsScenePlaying() == true)
+                    {
+                        SobelEffectUpdate(FrameBufferMode::FBM_GAME_SOBEL, FrameBufferMode::FBM_GAME);
+                    }
 
-                SobelEffectUpdate(FrameBufferMode::FBM_SCENE_SOBEL, FrameBufferMode::FBM_SCENE);
-            }
-            else
-            {
-                PostProcessUpdate(FrameBufferMode::FBM_SCENE);
+                    SobelEffectUpdate(FrameBufferMode::FBM_GAME_SOBEL, FrameBufferMode::FBM_GAME);
+                    SobelEffectUpdate(FrameBufferMode::FBM_SCENE_SOBEL, FrameBufferMode::FBM_SCENE);
+                }
+                else
+                {
+                    PostProcessUpdate(FrameBufferMode::FBM_SCENE);
+                }
             }
         }
+
+        //For Darren to Check Depth Map
+        //engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_GAME);
+        //auto& debugDepthQuad = Graphics::shaderpgms["DepthQuad"];
+        //debugDepthQuad.Use();
+        //debugDepthQuad.setFloat("near_plane", 1);
+        //debugDepthQuad.setFloat("far_plane", 100.0f);
+
+        //glBindVertexArray(engine->gFrameBufferManager->PostProcess->rectVAO);
+        //glActiveTexture(GL_TEXTURE0);
+        //glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SHADOW));
+        //glDrawArrays(GL_TRIANGLES, 0, 6);
     }
 }

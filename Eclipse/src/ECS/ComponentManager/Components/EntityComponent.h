@@ -13,12 +13,10 @@ namespace Eclipse
 		EntityType Tag{ EntityType::ENT_UNASSIGNED };
 		std::string Name{"Untagged Entity"};
 		int LayerIndex{ 0 };
+		bool IsVisible{ true };
 
 		// DONT USE, FOR EDITOR STUFF
 		bool IsActive{ false };
-		std::vector<Entity> Child;
-		std::vector<Entity> Parent;
-		bool IsAChild = false;
 		bool hightLightChild = false;
 		float ImguiIndentValue = 20.f;
 	};

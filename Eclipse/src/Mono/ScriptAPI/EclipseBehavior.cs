@@ -19,7 +19,6 @@ namespace Eclipse
 
         protected void InitBehavior(UInt32 handle, UInt32 entity, string name)
         {
-            Console.WriteLine(name);
             gameObject = new GameObject(entity, name);
             gc_handle = handle;
             transform = gameObject.transform;
@@ -39,6 +38,15 @@ namespace Eclipse
         }
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        public extern static GameObject CreateSpotLight(Vector3 pos, Vector3 direction);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        public extern static GameObject Find(string entName);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
         private extern static void InvokeFunc(UInt32 entity, string scriptName, string funcName, float time);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        public extern static GameObject CreatePrefab(string prefabName, Vector3 pos, Vector3 rot);
     }
 }

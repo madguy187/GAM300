@@ -36,7 +36,10 @@ namespace Eclipse
 
 			if (ECGui::CreateMenuItem(key, &selected))
 			{
-				SceneManager::NewScene();
+				if (!engine->GetPlayState())
+				{
+					SceneManager::NewScene();
+				}
 			}
 		}
 		
@@ -46,7 +49,10 @@ namespace Eclipse
 
 			if (ECGui::CreateMenuItem(key, &selected, "CTRL+O"))
 			{
-				FileDialog::FileBrowser();
+				if (!engine->GetPlayState())
+				{
+					FileDialog::FileBrowser();
+				}
 			}
 		
 		
@@ -58,7 +64,10 @@ namespace Eclipse
 
 			if (ECGui::CreateMenuItem(key, &selected, "CTRL+S"))
 			{
-				FileDialog::SaveFile();
+				if (!engine->GetPlayState())
+				{
+					FileDialog::SaveFile();
+				}
 			}
 		}
 
@@ -68,7 +77,10 @@ namespace Eclipse
 
 			if (ECGui::CreateMenuItem(key, &selected))
 			{
-				FileDialog::SaveAsFile();
+				if (!engine->GetPlayState())
+				{
+					FileDialog::SaveAsFile();
+				}
 			}
 		}
 

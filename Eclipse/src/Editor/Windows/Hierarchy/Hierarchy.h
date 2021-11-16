@@ -35,7 +35,7 @@ namespace Eclipse
 		void TrackEntitySelection(const std::vector<Entity>& list, EntitySelectionTracker& prev,
 			EntitySelectionTracker& curr, ImGuiTextFilter& filter);
 
-		void ParentRecursion(EntityComponent& entCom, Entity Num, const std::vector<Entity>& list, 
+		void ParentRecursion(Entity Num, const std::vector<Entity>& list, 
 			EntitySelectionTracker& prev, EntitySelectionTracker& curr);
 		void ShowEntityCreationList();
 		void UpdateEntityTracker(Entity ID);

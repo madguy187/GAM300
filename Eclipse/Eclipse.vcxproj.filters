@@ -40,6 +40,9 @@
     <Filter Include="ECS\SystemManager\Systems\System\AI">
       <UniqueIdentifier>{8378C556-EF31-3001-7891-4ADBE449E670}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\AnimationSystem">
+      <UniqueIdentifier>{FEEF1844-EA98-8073-132F-9CF2FF369BB4}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\Audio">
       <UniqueIdentifier>{AB25D4DE-9777-ABCE-8096-E8DE6C87C4B7}</UniqueIdentifier>
     </Filter>
@@ -51,6 +54,9 @@
     </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\Editor">
       <UniqueIdentifier>{20CA7CC1-8C59-3EAC-9555-1FC4016479B8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\SystemManager\Systems\System\EntityCompSystem">
+      <UniqueIdentifier>{AA137F5D-16DA-DB79-5F35-6ADCCB3A4ADE}</UniqueIdentifier>
     </Filter>
     <Filter Include="ECS\SystemManager\Systems\System\FileWatchSystem">
       <UniqueIdentifier>{15C0BC50-0169-2480-2AFF-3FFF16073FC1}</UniqueIdentifier>
@@ -175,8 +181,29 @@
     <Filter Include="Events">
       <UniqueIdentifier>{3A8963B1-262B-8E87-0FE6-A1DBFB2615D8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FSM">
+      <UniqueIdentifier>{ABE7870B-17F1-877C-A06C-9E7C0C75937C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FSM\Manager">
+      <UniqueIdentifier>{D59E3A2D-4154-B322-CA48-ADF936FDA926}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FSM\StateDesigns">
+      <UniqueIdentifier>{28A0F4A2-1499-13F5-3DCB-F8792923F300}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FSM\StateDesigns\Animation">
+      <UniqueIdentifier>{17AB8D19-03BB-39EA-6C74-9E0858A32883}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FSM\StateDesigns\Base">
+      <UniqueIdentifier>{B2559F35-1EC2-5A30-E7B5-F28D53E17C98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FSM\StateDesigns\TestingFSM">
+      <UniqueIdentifier>{1BBC50E7-87C9-7ECD-10B0-7AB87CBC4A84}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Graphics">
       <UniqueIdentifier>{1653CE33-0220-293F-2B39-17E717655ECD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Animation">
+      <UniqueIdentifier>{855FDEBF-7143-9F15-DAA3-9968C6A68997}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\Camera">
       <UniqueIdentifier>{CED20E8B-3A5E-7C4F-436F-FF43AF79D84F}</UniqueIdentifier>
@@ -273,6 +300,9 @@
     </Filter>
     <Filter Include="Graphics\RendererAPI">
       <UniqueIdentifier>{162DD20E-02BC-5BD8-ABDA-6FD397486C7E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\RendererAPI\RenderManager">
+      <UniqueIdentifier>{00EEE5E7-EC29-E951-553C-01494197916C}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\Textures">
       <UniqueIdentifier>{A9FD1089-1514-0F1F-5E8B-9A40CAE0DFA6}</UniqueIdentifier>
@@ -384,6 +414,9 @@
     <ClInclude Include="src\ECS\ComponentManager\Components\AabbComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\ComponentManager\Components\AnimationComponent.h">
+      <Filter>ECS\ComponentManager\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager\Components\AudioComponent.h">
       <Filter>ECS\ComponentManager\Components</Filter>
     </ClInclude>
@@ -456,6 +489,9 @@
     <ClInclude Include="src\ECS\SystemManager\Systems\System\AI\AISystem.h">
       <Filter>ECS\SystemManager\Systems\System\AI</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\AnimationSystem\AnimationSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\AnimationSystem</Filter>
+    </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.h">
       <Filter>ECS\SystemManager\Systems\System\Audio</Filter>
     </ClInclude>
@@ -467,6 +503,9 @@
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.h">
       <Filter>ECS\SystemManager\Systems\System\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\EntityCompSystem\EntityCompSystem.h">
+      <Filter>ECS\SystemManager\Systems\System\EntityCompSystem</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager\Systems\System\FileWatchSystem\FileWatchSystem.h">
       <Filter>ECS\SystemManager\Systems\System\FileWatchSystem</Filter>
@@ -633,7 +672,22 @@
     <ClInclude Include="src\Events\Events.h">
       <Filter>Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\FSM\Manager\FSMManager.h">
+      <Filter>FSM\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FSM\StateDesigns\Animation\AnimationFSM.h">
+      <Filter>FSM\StateDesigns\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FSM\StateDesigns\Base\FiniteStateMachine.h">
+      <Filter>FSM\StateDesigns\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FSM\StateDesigns\TestingFSM\TestingFSM.h">
+      <Filter>FSM\StateDesigns\TestingFSM</Filter>
+    </ClInclude>
     <ClInclude Include="src\Global.h" />
+    <ClInclude Include="src\Graphics\Animation\AnimationManager.h">
+      <Filter>Graphics\Animation</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\Camera\CameraManager.h">
       <Filter>Graphics\Camera</Filter>
     </ClInclude>
@@ -739,6 +793,9 @@
     <ClInclude Include="src\Graphics\MeshEditor\MeshEditorSource.h">
       <Filter>Graphics\MeshEditor</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpAnimator.h">
+      <Filter>Graphics\ModelFactory\AssimpModel</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.h">
       <Filter>Graphics\ModelFactory\AssimpModel</Filter>
     </ClInclude>
@@ -826,6 +883,9 @@
     <ClInclude Include="src\Graphics\RendererAPI\Mesh.h">
       <Filter>Graphics\RendererAPI</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\RendererAPI\RenderManager\RenderManger.h">
+      <Filter>Graphics\RendererAPI\RenderManager</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\RendererAPI\Renderer.h">
       <Filter>Graphics\RendererAPI</Filter>
     </ClInclude>
@@ -886,6 +946,9 @@
     <ClInclude Include="src\ImGui\Vendor\stb_image.h">
       <Filter>ImGui\Vendor</Filter>
     </ClInclude>
+    <ClInclude Include="src\Library\Math\Math.h">
+      <Filter>Library\Math</Filter>
+    </ClInclude>
     <ClInclude Include="src\Library\Math\Matrix.h">
       <Filter>Library\Math</Filter>
     </ClInclude>
@@ -910,13 +973,22 @@
     <ClInclude Include="src\Mono\Components\s_AudioSource.h">
       <Filter>Mono\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\Mono\Components\s_Cursor.h">
+      <Filter>Mono\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\Mono\Components\s_EclipseBehavior.h">
       <Filter>Mono\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\Mono\Components\s_GameObject.h">
       <Filter>Mono\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\Mono\Components\s_Light.h">
+      <Filter>Mono\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\Mono\Components\s_LogicalInput.h">
+      <Filter>Mono\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mono\Components\s_Physics.h">
       <Filter>Mono\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\Mono\Components\s_Quaternion.h">
@@ -1057,6 +1129,9 @@
     <ClCompile Include="src\ECS\SystemManager\Systems\System\AI\AISystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\AI</Filter>
     </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\AnimationSystem\AnimationSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\AnimationSystem</Filter>
+    </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Audio\AudioSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\Audio</Filter>
     </ClCompile>
@@ -1068,6 +1143,9 @@
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\Editor\EditorSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\EntityCompSystem\EntityCompSystem.cpp">
+      <Filter>ECS\SystemManager\Systems\System\EntityCompSystem</Filter>
     </ClCompile>
     <ClCompile Include="src\ECS\SystemManager\Systems\System\FileWatchSystem\FileWatchSystem.cpp">
       <Filter>ECS\SystemManager\Systems\System\FileWatchSystem</Filter>
@@ -1195,6 +1273,18 @@
     <ClCompile Include="src\EntryPoint\EntryPoint.cpp">
       <Filter>EntryPoint</Filter>
     </ClCompile>
+    <ClCompile Include="src\FSM\Manager\FSMManager.cpp">
+      <Filter>FSM\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FSM\StateDesigns\Animation\AnimationFSM.cpp">
+      <Filter>FSM\StateDesigns\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FSM\StateDesigns\TestingFSM\TestingFSM.cpp">
+      <Filter>FSM\StateDesigns\TestingFSM</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Animation\AnimationManager.cpp">
+      <Filter>Graphics\Animation</Filter>
+    </ClCompile>
     <ClCompile Include="src\Graphics\Camera\CameraManager.cpp">
       <Filter>Graphics\Camera</Filter>
     </ClCompile>
@@ -1288,6 +1378,9 @@
     <ClCompile Include="src\Graphics\MeshEditor\MeshEditorSource.cpp">
       <Filter>Graphics\MeshEditor</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpAnimator.cpp">
+      <Filter>Graphics\ModelFactory\AssimpModel</Filter>
+    </ClCompile>
     <ClCompile Include="src\Graphics\ModelFactory\AssimpModel\AssimpManager.cpp">
       <Filter>Graphics\ModelFactory\AssimpModel</Filter>
     </ClCompile>
@@ -1366,6 +1459,9 @@
     <ClCompile Include="src\Graphics\RendererAPI\Mesh.cpp">
       <Filter>Graphics\RendererAPI</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\RendererAPI\RenderManager\RenderManager.cpp">
+      <Filter>Graphics\RendererAPI\RenderManager</Filter>
+    </ClCompile>
     <ClCompile Include="src\Graphics\RendererAPI\Shader.cpp">
       <Filter>Graphics\RendererAPI</Filter>
     </ClCompile>
@@ -1410,6 +1506,9 @@
     </ClCompile>
     <ClCompile Include="src\ImGui\Vendor\imgui_widgets.cpp">
       <Filter>ImGui\Vendor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Library\Math\Math.cpp">
+      <Filter>Library\Math</Filter>
     </ClCompile>
     <ClCompile Include="src\Library\Math\Matrix.cpp">
       <Filter>Library\Math</Filter>

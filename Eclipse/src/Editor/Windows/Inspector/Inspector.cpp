@@ -40,7 +40,7 @@ namespace Eclipse
             Entity currEnt = mesheditor->IsVisible ? mesheditor->GetMeshID() : engine->editorManager->GetSelectedEntity();
             auto& entcom = engine->world.GetComponent<EntityComponent>(currEnt);
 
-            ECGui::PushItemWidth(WindowSize_.getX());
+            ECGui::PushItemWidth(WindowSize_.getX()); 
             if (ECGui::DrawInputTextHintWidget("InputEntityName", "Enter Entity Name", EntNameInput,
                 256, true, ImGuiInputTextFlags_EnterReturnsTrue))
             {
@@ -50,6 +50,8 @@ namespace Eclipse
             }
 
             ECGui::DrawTextWidget<int>("ID ", currEnt);
+            ECGui::InsertSameLine();
+            ECGui::CheckBoxBool("HideEntity", &entcom.IsVisible);
 
             ECGui::PushItemWidth(WindowSize_.getX() * 0.35f);
             ECGui::DrawTextWidget<const char*>("Tag ", EMPTY_STRING);
@@ -87,7 +89,9 @@ namespace Eclipse
             ShowAIProperty("AI Properties", currEnt, CompFilter);
             ShowParentProperty("Parent", currEnt, CompFilter);
             ShowChildProperty("Child", currEnt, CompFilter);
+            ShowAnimationProperty("Animation", currEnt, CompFilter);
             ShowNavMeshProperty("NavMesh Volume", currEnt, CompFilter);
+
             AddComponentsController(currEnt);
             ECGui::NextColumn();
             RemoveComponentsController(currEnt);
@@ -121,17 +125,21 @@ namespace Eclipse
 
                 auto& ent = engine->world.GetComponent<EntityComponent>(ID);
 
-                if (ECGui::DrawSliderFloat3Widget("TransVec", &transCom.position, true, -100.f, 100.f, ID))
+                if (ECGui::DrawInputFloat3Widget("TransVec", &transCom.position, true, ID))
                 {
                     if (engine->world.CheckComponent<ChildComponent>(ID))
                     {
                         auto& child = engine->world.GetComponent<ChildComponent>(ID);
                         child.UpdateChildren = true;
 
-                        if (ent.Tag != EntityType::ENT_MESH)
+                        if ((engine->world.CheckComponent<PrefabComponent>(ID) && engine->world.GetComponent<PrefabComponent>(ID).IsInstance) ||
+                            !engine->world.CheckComponent<PrefabComponent>(ID))
                         {
-                            engine->gPicker.UpdateAabb(ID);
-                            engine->gDynamicAABBTree.UpdateData(ID);
+                            if (ent.Tag != EntityType::ENT_MESH)
+                            {
+                                engine->gPicker.UpdateAabb(ID);
+                                engine->gDynamicAABBTree.UpdateData(ID);
+                            }
                         }
                     }
                 }
@@ -149,11 +157,24 @@ namespace Eclipse
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
 
-                if (ECGui::DrawSliderFloat3Widget("TransRot", &transCom.rotation, true, -360.f, 360.f, ID))
+                if (ECGui::DrawInputFloat3Widget("TransRot", &transCom.rotation, true, ID))
                 {
+                    if (engine->world.CheckComponent<ChildComponent>(ID))
+                    {
+                        auto& child = engine->world.GetComponent<ChildComponent>(ID);
+                        child.UpdateChildren = true;
+                    }
                     if (engine->world.CheckComponent<SpotLightComponent>(ID))
                     {
 
+                    }
+                }
+                else
+                {
+                    if (ImGui::IsItemDeactivatedAfterChange() && engine->world.CheckComponent<ChildComponent>(ID))
+                    {
+                        auto& child = engine->world.GetComponent<ChildComponent>(ID);
+                        child.UpdateChildren = false;
                     }
                 }
 
@@ -162,7 +183,7 @@ namespace Eclipse
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
 
-                ECGui::DrawSliderFloat3Widget("TransScale", &transCom.scale, true, -100.f, 100.f, ID);
+                ECGui::DrawInputFloat3Widget("TransScale", &transCom.scale, true, ID);
 
                 //Update for DynamicAABB Tree -Rachel
                 if (!IsNotInScene)
@@ -829,29 +850,78 @@ namespace Eclipse
                 {
                     if (!IsRemovingScripts)
                     {
-                        ECGui::DrawInputTextHintWidget(my_strcat("ScriptName", i + 1).c_str(), "Drag Script files here",
-                            const_cast<char*>(scriptCom.scriptList[i].scriptName.c_str()), 256,
-                            true, ImGuiInputTextFlags_ReadOnly);
-                        engine->editorManager->DragAndDropInst_.StringPayloadTarget("cs", scriptCom.scriptList[i].scriptName,
+                        static char dummy[256];
+
+                        if (scriptCom.scriptList[i])
+                        {
+                            ECGui::DrawInputTextHintWidget(my_strcat("ScriptName", i + 1).c_str(), "Drag Script files here",
+                                const_cast<char*>(scriptCom.scriptList[i]->scriptName.c_str()), 256,
+                                true, ImGuiInputTextFlags_ReadOnly);
+                        }
+                        else
+                        {
+                            ECGui::DrawInputTextHintWidget(my_strcat("ScriptName", i + 1).c_str(), "Drag Script files here",
+                                dummy, 256, true, ImGuiInputTextFlags_ReadOnly);
+                        }
+
+                        std::string dummyString{ dummy };
+                        engine->editorManager->DragAndDropInst_.StringPayloadTarget("cs", dummyString,
                             "Script File inserted.", PayloadTargetType::PTT_WIDGET, ID, i);
 
-                        for (size_t j = 0; j < scriptCom.scriptList[i].vars.size(); ++j)
+                        if (!scriptCom.scriptList[i]) continue;
+
+                        for (size_t j = 0; j < scriptCom.scriptList[i]->vars.size(); ++j)
                         {
                             ECGui::SetColumns(2, nullptr, true);
 
-                            ECGui::DrawTextWidget<const char*>(scriptCom.scriptList[i].vars[j].varName.c_str(), EMPTY_STRING);
+                            ECGui::DrawTextWidget<const char*>(scriptCom.scriptList[i]->vars[j].varName.c_str(), EMPTY_STRING);
                             ECGui::InsertSameLine();
 
                             ECGui::NextColumn();
 
-                            if (scriptCom.scriptList[i].vars[j].type == m_Type::MONO_HEADER)
-                                ECGui::DrawInputTextHintWidget(scriptCom.scriptList[i].vars[j].varName.c_str(),
-                                    "Non-modifiable", const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()),
-                                    256, ImGuiInputTextFlags_ReadOnly, true);
+                            if (scriptCom.scriptList[i]->vars[j].type == m_Type::MONO_HEADER)
+                            {
+                                ECGui::DrawInputTextHintWidget(scriptCom.scriptList[i]->vars[j].varName.c_str(),
+                                    "Non-modifiable", const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()),
+                                    256, true, ImGuiInputTextFlags_ReadOnly);
+                            }
+                            else if (scriptCom.scriptList[i]->vars[j].type == m_Type::MONO_LIGHT)
+                            {
+                                ECGui::DrawInputTextHintWidget("Light Entity ID", "Drag Light Entity Here",
+                                    const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()), 256,
+                                    true, ImGuiInputTextFlags_ReadOnly);
+                                engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity",
+                                    scriptCom.scriptList[i]->vars[j].varValue, "Light Entity ID registered", 
+                                    PayloadTargetType::PTT_SCRIPT_LIGHT, ID, j);
+                            }
+                            else if (scriptCom.scriptList[i]->vars[j].type == m_Type::MONO_AUDIO)
+                            {
+                                ECGui::DrawInputTextHintWidget("Audio Entity ID", "Drag Light Entity Here",
+                                    const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()), 256,
+                                    true, ImGuiInputTextFlags_ReadOnly);
+                                    engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity",
+                                        scriptCom.scriptList[i]->vars[j].varValue, "Audio Entity ID registered",
+                                        PayloadTargetType::PTT_SCRIPT_AUDIO, ID, j);
+                            }
+                            else if (scriptCom.scriptList[i]->vars[j].type == m_Type::MONO_GAMEOBJECT)
+                            {
+                                ECGui::DrawInputTextHintWidget("Game Obj Entity ID", "Drag Game Obj Entity Here",
+                                    const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()), 256,
+                                    true, ImGuiInputTextFlags_ReadOnly);
+                                engine->editorManager->DragAndDropInst_.StringPayloadTarget("Entity",
+                                    scriptCom.scriptList[i]->vars[j].varValue, "Game Obj Entity ID registered", 
+                                    PayloadTargetType::PTT_SCRIPT_GAMEOBJECT, ID, j);
+                            }
+                            else if (scriptCom.scriptList[i]->vars[j].type == m_Type::MONO_LAYERMASK)
+                            {
+                                OnCollisionMatrixUpdate(ID, scriptCom.scriptList[i]->vars[j]);
+                            }
                             else
-                                ECGui::DrawInputTextWidget(scriptCom.scriptList[i].vars[j].varName.c_str(),
-                                    const_cast<char*>(scriptCom.scriptList[i].vars[j].varValue.c_str()),
+                            {
+                                ECGui::DrawInputTextWidget(scriptCom.scriptList[i]->vars[j].varName.c_str(),
+                                    const_cast<char*>(scriptCom.scriptList[i]->vars[j].varValue.c_str()),
                                     256, 0, true);
+                            }
 
                             ECGui::NextColumn();
                         }
@@ -862,10 +932,22 @@ namespace Eclipse
                     {
                         bool selected = false;
 
-                        if (ECGui::CreateSelectableButton(my_strcat(scriptCom.scriptList[i].scriptName.c_str(), " ", i + 1).c_str(), &selected))
+                        if (scriptCom.scriptList[i] == nullptr)
                         {
-                            auto posItr = scriptCom.scriptList.begin() + i;
-                            scriptCom.scriptList.erase(posItr);
+                            std::string temp = { "Empty Script Column" };
+                            if (ECGui::CreateSelectableButton(my_strcat(temp.c_str(), " ", i + 1).c_str(), &selected))
+                            {
+                                auto posItr = scriptCom.scriptList.begin() + i;
+                                scriptCom.scriptList.erase(posItr);
+                            }
+                        }
+                        else
+                        {
+                            if (ECGui::CreateSelectableButton(my_strcat(scriptCom.scriptList[i]->scriptName.c_str(), " ", i + 1).c_str(), &selected))
+                            {
+                                auto posItr = scriptCom.scriptList.begin() + i;
+                                scriptCom.scriptList.erase(posItr);
+                            }
                         }
                     }
                 }
@@ -876,10 +958,10 @@ namespace Eclipse
                 {
                     if (ECGui::ButtonBool("Add Script", { ImGui::GetColumnWidth(), 25 }))
                     {
-                        std::string scriptName;
-                        scriptName.reserve(256);
+                        //std::string scriptName;
+                        //scriptName.reserve(256);
                         scriptCom.scriptList.push_back({});
-                        scriptCom.scriptList.back().scriptName = scriptName;
+                        //scriptCom.scriptList.back()->scriptName = scriptName;
                     }
 
                     if (ECGui::ButtonBool("Remove Script", { ImGui::GetColumnWidth(), 25 }))
@@ -1061,8 +1143,6 @@ namespace Eclipse
                     }
                 }
 
-               
-
                 switch (_Collision.shape.shape)
                 {
                 case PxShapeType::Px_CUBE:
@@ -1121,7 +1201,16 @@ namespace Eclipse
                     ECGui::InsertSameLine();
                     snprintf(HalfHeightValue, 256, "%f", _Collision.shape.hheight);
                     ECGui::DrawInputTextWidget("HalfHeight: ", HalfHeightValue, 256, ImGuiInputTextFlags_EnterReturnsTrue);
-                    _Collision.shape.radius = static_cast<float>(atof(HalfHeightValue));
+                    _Collision.shape.hheight = static_cast<float>(atof(HalfHeightValue));
+                }
+
+                ECGui::CheckBoxBool("IsTrigger", &_Collision.isTrigger, false);
+
+                if (engine->world.CheckComponent<ScriptComponent>(ID))
+                {
+                    auto& scriptCom = engine->world.GetComponent<ScriptComponent>(ID);
+
+                    OnCollisionMatrixUpdate(ID,scriptCom.scriptList[0]->vars[0]);
                 }
             }
         }
@@ -1184,21 +1273,18 @@ namespace Eclipse
                     engine->gNavMesh.BuildNavMesh(ID);
                 }
 
-                if (engine->world.CheckComponent<ScriptComponent>(ID))
+                /*if (engine->world.CheckComponent<ScriptComponent>(ID))
                 {
                     OnCollisionMatrixUpdate(ID);
-                }
+                }*/
             }
         }
         return false;
     }
 
-
-
-
     bool InspectorWindow::ShowPrefebProperty(Entity ID)
     {
-        if (engine->world.CheckComponent<PrefabComponent>(ID) && !engine->world.GetComponent<PrefabComponent>(ID).IsInstance)
+        if (engine->world.CheckComponent<PrefabComponent>(ID) && !engine->world.GetComponent<PrefabComponent>(ID).IsInstance && !engine->world.CheckComponent<ChildComponent>(ID))
         {
             ECGui::InsertHorizontalLineSeperator();
             ECGui::SetColumns(2, nullptr, true);
@@ -1276,6 +1362,83 @@ namespace Eclipse
         return false;
     }
 
+    bool InspectorWindow::ShowAnimationProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
+    {
+        if (engine->world.CheckComponent<AnimationComponent>(ID))
+        {
+            if (filter.PassFilter(name) && ECGui::CreateCollapsingHeader(name))
+            {
+                auto& animCom = engine->world.GetComponent<AnimationComponent>(ID);
+                auto& meshCom = engine->world.GetComponent<MeshComponent>(ID);
+
+                ECGui::DrawTextWidget<const char*>("Model ID:", EMPTY_STRING);
+                ECGui::InsertSameLine();
+                ECGui::DrawInputTextWidget("ModelID:",
+                    const_cast<char*>(animCom.m_CurrentAnimation.modelName.c_str()),
+                    animCom.m_CurrentAnimation.modelName.size(),
+                    ImGuiInputTextFlags_ReadOnly, false);
+
+                ECGui::DrawTextWidget<const char*>("Current State", EMPTY_STRING);
+                ECGui::InsertSameLine();
+                ECGui::DrawInputTextWidget("CurrentState", 
+                    const_cast<char*>(lexical_cast_toStr<AnimationState>(animCom.m_CurrentAnimation.m_AnimationState).c_str()), 
+                    lexical_cast_toStr<AnimationState>(animCom.m_CurrentAnimation.m_AnimationState).size(),
+                    ImGuiInputTextFlags_ReadOnly, false);
+
+                ECGui::DrawTextWidget<const char*>("Ticks", EMPTY_STRING);
+                ECGui::InsertSameLine();
+                if (ECGui::DrawSliderIntWidget("Ticks", &animCom.m_CurrentAnimation.m_TicksPerSecond, true,
+                    0, 60))
+                {
+                    engine->gAnimationManager.SetAnimationSpeed(ID, animCom.m_CurrentAnimation.m_TicksPerSecond);
+                }
+
+                ECGui::DrawTextWidget<const char*>("Animation List", EMPTY_STRING);
+                ECGui::InsertSameLine();
+                std::string combo_label = lexical_cast_toStr<AnimationState>(animCom.m_CurrentAnimation.m_AnimationState).c_str();
+                if (ImGuiAPI::BeginComboList("AnimationMap", combo_label.c_str(), true))
+                {
+                    std::string modelName = std::string{ meshCom.MeshName.data() };
+
+                    for (auto& [key, value] : engine->gAnimationManager.GetAnimationMap()[modelName])
+                    {
+                        bool is_selected = (key == animCom.m_CurrentAnimation.m_AnimationState);
+                        
+                        if (ECGui::CreateSelectableButton(lexical_cast_toStr<AnimationState>(const_cast<AnimationState>(key)).c_str(), 
+                            &is_selected))
+                        {
+                            engine->gAnimationManager.ChangeAnimationState(ID, key);
+                        }
+
+                        if (is_selected)
+                            ImGui::SetItemDefaultFocus();
+                    }
+
+                    ImGuiAPI::EndComboList();
+                }
+
+                if (engine->editorManager->GetIsSimulatingAnimation())
+                {
+                    engine->gAnimationManager.UpdateAnimation(ID, engine->Game_Clock.get_DeltaTime());
+
+                    if (ECGui::ButtonBool("Stop"))
+                    {
+                        engine->editorManager->SetAnimationSimulation(false);
+                    }
+                }
+                else
+                {
+                    if (ECGui::ButtonBool("Simulate"))
+                    {
+                        engine->editorManager->SetAnimationSimulation(true);
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
     bool InspectorWindow::ShowParentProperty(const char* name, Entity ID, ImGuiTextFilter& filter)
     {
         if (engine->world.CheckComponent<ParentComponent>(ID))
@@ -1309,7 +1472,7 @@ namespace Eclipse
 
                 ECGui::DrawTextWidget<const char*>("Parent:", EMPTY_STRING);
                 auto& child = engine->world.GetComponent<ChildComponent>(ID);
-                auto& childEntComp = engine->world.GetComponent<EntityComponent>(ID);
+                //auto& childEntComp = engine->world.GetComponent<EntityComponent>(ID);
                 auto& en = engine->world.GetComponent<EntityComponent>(child.parentIndex);
                 ECGui::DrawTextWidget<const char*>(my_strcat(en.Name, " ", child.parentIndex).c_str(), EMPTY_STRING);
 
@@ -1317,15 +1480,7 @@ namespace Eclipse
 
                 if (ECGui::ButtonBool("Break From Parent"))
                 {
-                    auto& parentComp = engine->world.GetComponent<EntityComponent>(child.parentIndex);
                     auto& parent = engine->world.GetComponent<ParentComponent>(child.parentIndex);
-                    for (auto& allchld : parentComp.Child)
-                    {
-                        if (allchld == ID)
-                        {
-                            parentComp.Child.erase(std::remove(parentComp.Child.begin(), parentComp.Child.end(), allchld), parentComp.Child.end());
-                        }
-                    }
                     for (auto& allchld : parent.child)
                     {
                         if (allchld == ID)
@@ -1333,17 +1488,15 @@ namespace Eclipse
                             parent.child.erase(std::remove(parent.child.begin(), parent.child.end(), allchld), parent.child.end());
                         }
                     }
-
-                    if (parentComp.Child.empty())
+                
+                    if (parent.child.empty())
                     {
-                        ComponentRegistry<ParentComponent>("ParentComponent", child.parentIndex, childEntComp.Name, EditComponent::EC_REMOVECOMPONENT);
+                        ComponentRegistry<ParentComponent>("ParentComponent", child.parentIndex, "Child", EditComponent::EC_REMOVECOMPONENT);
                     }
-
-                    childEntComp.Parent.clear();
-
+                    child.hasParent = false;
                     //ComponentRegistry<ParentComponent>("ParentComponent", ID, childEntComp.Name, EditComponent::EC_ADDCOMPONENT);
-                    ComponentRegistry<ChildComponent>("ChildComponent", ID, childEntComp.Name, EditComponent::EC_REMOVECOMPONENT);
-
+                    ComponentRegistry<ChildComponent>("ChildComponent", ID, "child", EditComponent::EC_REMOVECOMPONENT);
+                
                 }
 
             }
@@ -1745,12 +1898,12 @@ namespace Eclipse
                     ///////////////
                     std::pair<MMAPIterator, MMAPIterator> result = Graphics::textures.equal_range(textureNames[i].c_str());
                     Item.HoldingTextures.clear();
+
                     for (MMAPIterator it = result.first; it != result.second; it++)
                     {
                         Item.HoldingTextures.push_back(it->second);
                         return;
                     }
-                    //////////////////
                 }
 
                 ECGui::DrawTextWrappedWidget(textureNames[i].c_str(), "");
@@ -2002,12 +2155,12 @@ namespace Eclipse
         }
     }
 
-    void InspectorWindow::OnCollisionMatrixUpdate(Entity ID)
+    void InspectorWindow::OnCollisionMatrixUpdate(Entity ID, MonoVariable& monoVar)
     {
         auto& entCom = engine->world.GetComponent<EntityComponent>(ID);
         auto& scriptCom = engine->world.GetComponent<ScriptComponent>(ID);
         auto* settings = engine->editorManager->GetEditorWindow<DebugWindow>();
-
+     
         const char* currentLabel = nullptr;
 
         if (CollisionLayerChecker.Current.IsNothing)
@@ -2027,9 +2180,7 @@ namespace Eclipse
             currentLabel = settings->GetStringLayer(*CollisionLayerChecker.Current.UnLayerTracker.begin()).c_str();
         }
 
-        ECGui::DrawTextWidget<const char*>("Collision Mask ", EMPTY_STRING);
-        ECGui::InsertSameLine();
-        if (ImGuiAPI::BeginComboList("CollisionLayerComboList", currentLabel, true))
+        if (ImGuiAPI::BeginComboList(monoVar.varName.c_str(), currentLabel, true))
         {
             for (const auto& pair : settings->GetLayerList())
             {
@@ -2038,7 +2189,7 @@ namespace Eclipse
                 if (ImGui::Selectable(pair.second.c_str(), CollisionLayerChecker.Current.IndexActiveList[pair.first]))
                 {
                     UpdateCollisionLayerTracker(settings, pair.first);
-                    SetScriptBitset(scriptCom, entCom);
+                    SetScriptBitset(scriptCom, entCom, monoVar);
                 }
             }
 
@@ -2127,7 +2278,6 @@ namespace Eclipse
                         CollisionLayerChecker.Current.IsEverything = true;
                         CollisionLayerChecker.Current.IndexActiveList[2] = true;
                     }
-                    
                 }
             }
         }
@@ -2218,7 +2368,8 @@ namespace Eclipse
         }
     }
 
-    void InspectorWindow::SetScriptBitset(ScriptComponent& scriptCom, EntityComponent& entcom)
+    void InspectorWindow::SetScriptBitset(ScriptComponent& scriptCom, EntityComponent& entcom, 
+        MonoVariable& monoVar)
     {
         scriptCom.LayerMask.reset();
 
@@ -2235,7 +2386,7 @@ namespace Eclipse
                 scriptCom.LayerMask.set(key, val);
         }
 
-        // std::cout << scriptCom.LayerMask << std::endl;
+        monoVar.varValue = scriptCom.LayerMask.to_string();
     }
 
     void InspectorWindow::OnLayerListUpdate(EntityComponent& entcom)

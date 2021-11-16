@@ -4,14 +4,14 @@ namespace Eclipse
 {
     struct Key
     {
-        std::array<char, 128> MapName;
+        std::array<char, 128> MapName{ 0 };
         InputKeycode Key;
         bool Stopper = false;
     };
 
     struct MouseKey
     {
-        std::array<char, 128> MapName;
+        std::array<char, 128> MapName{ 0 };
         InputMouseKeycode MouseKey;
         bool Stopper = false;
     };
@@ -49,7 +49,7 @@ namespace Eclipse
         // Take Note that editor kep is the keycode.
         // Darren to check if need multimap
 
-        void ProvideContainer(std::map<std::string, std::string> In);
-        void ReceiveMapping(std::map<std::string, std::string> In);
+        void ProvideContainer(std::map<std::string, std::string>& In);
+        void ReceiveMapping(std::map<std::string, std::string>& In);
     };
 }

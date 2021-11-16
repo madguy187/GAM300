@@ -7,7 +7,7 @@
 #define DEFAULTVAL 99999
 namespace Eclipse
 {
-	static constexpr unsigned int OUTPUT_FLAG = 1 << 31;
+	static constexpr int OUTPUT_FLAG = 1 << 31;
 
 	struct NodeEditor
 	{
@@ -94,8 +94,8 @@ namespace Eclipse
 				inputCounter = 0;
 				outputCounter = 0;
 				ImNodes::SetNodeEditorSpacePos(nodeId, editorSpacePos);
-				bool res = onGUI(nodeId);
-				return res;
+				bool nd = onGUI(nodeId);
+				return nd;
 			}
 
 			int nodeId;
@@ -105,8 +105,8 @@ namespace Eclipse
 			virtual bool onGUI(int nodeId) = 0;
 
 			NodeEditor& res;
-			unsigned char inputCounter;
-			unsigned char outputCounter;
+			unsigned char inputCounter = 0;
+			unsigned char outputCounter = 0;
 		};
 
 		Node* getNodeByID(unsigned short id) const {
@@ -128,9 +128,9 @@ namespace Eclipse
 
 			NodeType getType() const override { return NodeType::ENTITY; }
 
-			bool onGUI(int nodeId) override 
+			bool onGUI(int nodeId_) override 
 			{
-				ImNodes::BeginNode(nodeId);
+				ImNodes::BeginNode(nodeId_);
 				getName();
 				beginOutput();
 				ImGui::SetNextItemWidth(60);
@@ -162,7 +162,7 @@ namespace Eclipse
 
 			NodeType getType() const override { return NodeType::TRANSFORM; }
 
-			bool onGUI(int nodeId) override 
+			bool onGUI(int nodeId_) override
 			{
 				ImNodes::PushColorStyle(
 					ImNodesCol_TitleBar, IM_COL32(11, 0, 0, 255));
@@ -170,7 +170,7 @@ namespace Eclipse
 					ImNodesCol_TitleBarSelected, IM_COL32(81, 0, 0, 255));
 				ImNodes::PushColorStyle(
 					ImNodesCol_TitleBarHovered, IM_COL32(81, 0, 0, 255));
-				ImNodes::BeginNode(nodeId);
+				ImNodes::BeginNode(nodeId_);
 				ImNodes::BeginNodeTitleBar();
 				ImGui::TextUnformatted("TransFormNode");
 				ImNodes::EndNodeTitleBar();
@@ -220,7 +220,7 @@ namespace Eclipse
 
 		unsigned short generatedId()
 		{
-			return ++current_id;
+			return static_cast<unsigned short>(++current_id);
 		}
 
 		struct Link
@@ -242,12 +242,12 @@ namespace Eclipse
 			unsigned char toPin() const
 			{
 				unsigned short temp = (endPoint >> 16) & 0xff;
-				return temp;
+				return static_cast<unsigned char>(temp);
 			}
 			unsigned char fromPin() const
 			{
 				unsigned short temp = (startPoint >> 16) & 0xff;
-				return temp;
+				return static_cast<unsigned char>(temp);
 			}
 		};
 
@@ -311,7 +311,7 @@ namespace Eclipse
 
 	inline void Eclipse::NodeEditor::DrawNodeEditor(const char* graphName, NodeEditor& editor)
 	{
-
+		(void)graphName;
 		ImNodes::EditorContextSet(editor.context);
 
 		ImNodes::BeginNodeEditor();
@@ -370,9 +370,9 @@ namespace Eclipse
 			n->nodeOnGui();
 		}
 
-		for (const const NodeEditor::Link& link : editor.links)
+		for (const Link& link_ : editor.links)
 		{
-			ImNodes::Link(link.linkId, link.startPoint, link.endPoint);
+			ImNodes::Link(link_.linkId, link_.startPoint, link_.endPoint);
 		}
 
 		ImNodes::EndNodeEditor();
@@ -396,13 +396,13 @@ namespace Eclipse
 		}
 
 		{
-			Link links;
-			if (ImNodes::IsLinkCreated(&links.startPoint, &links.endPoint))
+			Link lnk;
+			if (ImNodes::IsLinkCreated(&lnk.startPoint, &lnk.endPoint))
 			{
-				editor.links.push_back(links);
+				editor.links.push_back(lnk);
 				editor.links.back().linkId = editor.generatedId();
-				editor.links.back().startPoint = links.startPoint;
-				editor.links.back().endPoint = links.endPoint;
+				editor.links.back().startPoint = lnk.startPoint;
+				editor.links.back().endPoint = lnk.endPoint;
 
 			}
 		}
@@ -424,6 +424,7 @@ namespace Eclipse
 
 	}
 
+	//TODO FOR JIANHERNG
 	struct MaterialNode
 	{
 
@@ -502,8 +503,8 @@ namespace Eclipse
 				inputCounter = 0;
 				outputCounter = 0;
 				ImNodes::SetNodeEditorSpacePos(nodeId, editorSpacePos);
-				bool res = onGUI(nodeId);
-				return res;
+				bool nods = onGUI(nodeId);
+				return nods;
 			}
 
 			int getId()
@@ -518,8 +519,8 @@ namespace Eclipse
 			virtual bool onGUI(int nodeId) = 0;
 
 			MaterialNode& res;
-			unsigned char inputCounter;
-			unsigned char outputCounter;
+			unsigned char inputCounter = 0;
+			unsigned char outputCounter = 0;
 		};
 
 		Node* getNodeByID(unsigned short id) const 
@@ -550,9 +551,9 @@ namespace Eclipse
 				}
 			}
 
-			bool onGUI(int nodeId) override
+			bool onGUI(int nodeId_) override
 			{
-				ImNodes::BeginNode(nodeId);
+				ImNodes::BeginNode(nodeId_);
 				ImNodes::BeginNodeTitleBar();
 				ImGui::SetNextItemWidth(60);
 				switch (operationType)
@@ -675,7 +676,7 @@ namespace Eclipse
 				return NodeType::FLOAT;
 			}
 
-			bool onGUI(int nodeId) override 
+			bool onGUI(int nodeId_) override 
 			{
 				ImNodes::PushColorStyle(
 					ImNodesCol_TitleBar, IM_COL32(0, 25, 0, 255));
@@ -683,7 +684,7 @@ namespace Eclipse
 					ImNodesCol_TitleBarSelected, IM_COL32(0, 45, 0, 255));
 				ImNodes::PushColorStyle(
 					ImNodesCol_TitleBarHovered, IM_COL32(0, 45, 0, 255));
-				ImNodes::BeginNode(nodeId);
+				ImNodes::BeginNode(nodeId_);
 				ImNodes::BeginNodeTitleBar();
 				ECGui::DrawTextWidget<std::string>("Float", EMPTY_STRING);
 				ImNodes::EndNodeTitleBar();
@@ -715,7 +716,7 @@ namespace Eclipse
 				}
 			}
 
-			bool onGUI(int nodeId) override
+			bool onGUI(int nodeId_) override
 			{
 				ImNodes::PushColorStyle(
 					ImNodesCol_TitleBar, IM_COL32(100, 42, 42, 255));
@@ -723,7 +724,7 @@ namespace Eclipse
 					ImNodesCol_TitleBarSelected, IM_COL32(120, 42, 42, 255));
 				ImNodes::PushColorStyle(
 					ImNodesCol_TitleBarHovered, IM_COL32(120, 42, 42, 255));
-				ImNodes::BeginNode(nodeId);
+				ImNodes::BeginNode(nodeId_);
 				ImNodes::BeginNodeTitleBar();
 				switch (operationType)
 				{
@@ -770,7 +771,7 @@ namespace Eclipse
 				return NodeType::BASENODE;
 			}
 
-			bool onGUI(int nodeId) override
+			bool onGUI(int nodeId_) override
 			{
 				ImNodes::PushColorStyle(
 					ImNodesCol_NodeBackground, IM_COL32(0, 0, 0, 255));
@@ -778,7 +779,7 @@ namespace Eclipse
 					ImNodesCol_NodeBackgroundHovered, IM_COL32(0, 0, 0, 255));
 				ImNodes::PushColorStyle(
 					ImNodesCol_NodeBackgroundSelected, IM_COL32(0, 0, 0, 255));
-				ImNodes::BeginNode(nodeId);
+				ImNodes::BeginNode(nodeId_);
 				ImNodes::BeginNodeTitleBar();
 				ImNodes::EndNodeTitleBar();
 				
@@ -1048,7 +1049,7 @@ namespace Eclipse
 						{
 							auto downcastedPtr = dynamic_cast<TextureNode*>(getInput(4).node);
 							engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
-							auto i = engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.Albedo;
+							//auto i = engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.Albedo;
 						}
 						else
 						{
@@ -1246,7 +1247,7 @@ namespace Eclipse
 				return NodeType::BOOL;
 			}
 
-			bool onGUI(int nodeId) override
+			bool onGUI(int nodeId_) override
 			{
 				ImNodes::PushColorStyle(
 					ImNodesCol_TitleBar, IM_COL32(60, 0, 0, 255));
@@ -1254,7 +1255,7 @@ namespace Eclipse
 					ImNodesCol_TitleBarSelected, IM_COL32(70, 0, 0, 255));
 				ImNodes::PushColorStyle(
 					ImNodesCol_TitleBarHovered, IM_COL32(70, 0, 0, 255));
-				ImNodes::BeginNode(nodeId);
+				ImNodes::BeginNode(nodeId_);
 				ImNodes::BeginNodeTitleBar();
 				ECGui::DrawTextWidget<std::string>("Bool", EMPTY_STRING);
 				ImNodes::EndNodeTitleBar();
@@ -1280,7 +1281,7 @@ namespace Eclipse
 				return NodeType::TEXTURE;
 			}
 
-			bool onGUI(int nodeId) override
+			bool onGUI(int nodeId_) override
 			{
 				ImNodes::PushColorStyle(
 					ImNodesCol_TitleBar, IM_COL32(0, 0, 0, 255));
@@ -1288,13 +1289,13 @@ namespace Eclipse
 					ImNodesCol_TitleBarSelected, IM_COL32(0, 0, 0, 255));
 				ImNodes::PushColorStyle(
 					ImNodesCol_TitleBarHovered, IM_COL32(0, 0, 0, 255));
-				ImNodes::BeginNode(nodeId);
+				ImNodes::BeginNode(nodeId_);
 				ImNodes::BeginNodeTitleBar();
 				ECGui::DrawTextWidget<std::string>(fileName_.c_str(), EMPTY_STRING);
 				ImNodes::EndNodeTitleBar();
 
 				ImGui::SetNextItemWidth(100);
-				ECGui::Image((ImTextureID)textureID, {69,69}, { 1,0 }, { 2,1 });
+				ECGui::Image((ImTextureID)(size_t)textureID, {69,69}, { 1,0 }, { 2,1 });
 				beginOutput();
 
 				endOutput();
@@ -1319,7 +1320,7 @@ namespace Eclipse
 
 		unsigned short generatedId()
 		{
-			return ++current_id;
+			return static_cast<unsigned short>(++current_id);
 		}
 
 		struct Link
@@ -1341,12 +1342,12 @@ namespace Eclipse
 			unsigned char toPin() const 
 			{
 				unsigned short temp = (endPoint >> 16) & 0xff;
-				return temp;
+				return static_cast<unsigned char>(temp);
 			}
 			unsigned char fromPin() const
 			{
 				unsigned short temp = (startPoint >> 16) & 0xff;
-				return temp;
+				return static_cast<unsigned char>(temp);
 			}
 		};
 
@@ -1386,17 +1387,18 @@ namespace Eclipse
 			return nodes.back().get();
 		}
 
+		//TODO JIANHERNG PLSSSS PAPA
 		ImNodesEditorContext* context = nullptr;
 		std::vector<std::shared_ptr<Node>>     nodes;
 		std::vector<Link>     links;
 		int                   current_id = 0;
-
+		
 		bool initialized = false;
 		bool BaseNodeExist = false;
 		int m_context_link = 0;
 		int m_context_node = 0;
 
-
+		//
 		int findMaterialNodePos(MaterialNode editor, int id);
 
 		void DrawMaterialNodeEditor(const char* graphName, MaterialNode& editor);
@@ -1426,7 +1428,7 @@ namespace Eclipse
 
 	inline void MaterialNode::DrawMaterialNodeEditor(const char* graphName, MaterialNode& editor)
 	{
-
+		(void)graphName;
 		ImNodes::EditorContextSet(editor.context);
 
 		ImNodes::BeginNodeEditor();
@@ -1516,9 +1518,9 @@ namespace Eclipse
 			n->nodeOnGui();
 		}
 
-		for (const const MaterialNode::Link& link : editor.links)
+		for (const MaterialNode::Link lnks : editor.links)
 		{
-			ImNodes::Link(link.linkId, link.startPoint, link.endPoint);
+			ImNodes::Link(lnks.linkId, lnks.startPoint, lnks.endPoint);
 		}
 
 		ImNodes::EndNodeEditorReturnString(TextureString);
@@ -1540,13 +1542,13 @@ namespace Eclipse
 		}
 
 		{
-			Link links;
-			if (ImNodes::IsLinkCreated(&links.startPoint, &links.endPoint))
+			Link lnk;
+			if (ImNodes::IsLinkCreated(&lnk.startPoint, &lnk.endPoint))
 			{
-				editor.links.push_back(links);
+				editor.links.push_back(lnk);
 				editor.links.back().linkId = editor.generatedId();
-				editor.links.back().startPoint = links.startPoint;
-				editor.links.back().endPoint = links.endPoint;
+				editor.links.back().startPoint = lnk.startPoint;
+				editor.links.back().endPoint = lnk.endPoint;
 
 			}
 		}

@@ -2,13 +2,18 @@
 #include "Scene.h"
 #include "ECS/SystemManager/Systems/System/PickingSystem/PickingSystem.h"
 #include "ImGuizmo/ImGuizmo.h"
+#include "Library/Math/Math.h"
 
 namespace Eclipse
 {
 	void SceneWindow::Update()
 	{
 		if (IsVisible)
-			ECGui::DrawMainWindow<void()>(WindowName, std::bind(&SceneWindow::RunMainWindow, this));
+		{
+			IsWindowRunning = ECGui::DrawMainWindow<void()>(WindowName, std::bind(&SceneWindow::RunMainWindow, this));
+		}
+		else
+			IsWindowRunning = false;
 	}
 
 	void SceneWindow::Init()
@@ -26,8 +31,13 @@ namespace Eclipse
 
 	void SceneWindow::RunMainWindow()
 	{
+		//ImGui::BeginTooltip();
+		//ImGui::Text("x: %f", OpenGL_Context::m_posX);
+		//ImGui::Text("y: %f", OpenGL_Context::m_posY);
+		//ImGui::EndTooltip();
+
 		ImVec2 viewportPanelSize = ECGui::GetWindowSize();
-		//std::cout << "Scene View: " << ImGui::GetWindowDockID() << std::endl;
+
 		if (mViewportSize.getX() != viewportPanelSize.x ||
 			mViewportSize.getY() != viewportPanelSize.y)
 		{
@@ -95,6 +105,7 @@ namespace Eclipse
 		// Selected Entity Transform
 		auto& transCom = engine->world.GetComponent<TransformComponent>(selectedEntity);
 		glm::mat4 transform{};
+		// glm::mat4 transform = transCom.GetTransform();
 
 		ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(transCom.position.ConvertToGlmVec3Type()),
 			glm::value_ptr(transCom.rotation.ConvertToGlmVec3Type()),
@@ -111,18 +122,27 @@ namespace Eclipse
 			{ mSnapSettings.mPosSnapValue,
 			  mSnapSettings.mPosSnapValue,
 			  mSnapSettings.mPosSnapValue };
+			/*{ mSnapSettings.mPosSnapValue,
+			  mSnapSettings.mPosSnapValue,
+			  mSnapSettings.mPosSnapValue };*/
 			break;
 		case ImGuizmo::OPERATION::ROTATE:
 			snapValues =
 			{ mSnapSettings.mRotSnapValue,
 			  mSnapSettings.mRotSnapValue,
 			  mSnapSettings.mRotSnapValue };
+			/*{ mSnapSettings.mRotSnapValue,
+			  mSnapSettings.mRotSnapValue,
+			  mSnapSettings.mRotSnapValue };*/
 			break;
 		case ImGuizmo::OPERATION::SCALE:
 			snapValues =
 			{ mSnapSettings.mScaleSnapValue,
 			  mSnapSettings.mScaleSnapValue,
 			  mSnapSettings.mScaleSnapValue };
+			/*{ mSnapSettings.mScaleSnapValue,
+			  mSnapSettings.mScaleSnapValue,
+			  mSnapSettings.mScaleSnapValue };*/
 			break;
 		default:
 			break;
@@ -139,8 +159,9 @@ namespace Eclipse
 			glm::vec3 translation, rotation, scale;
 			ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(translation),
 				glm::value_ptr(rotation), glm::value_ptr(scale));
+			// DecomposeTransform(transform, translation, rotation, scale);
 
-			// glm::vec3 deltaRotation = rotation - transCom.rotation.ConvertToGlmVec3Type();
+			glm::vec3 deltaRotation = rotation - transCom.rotation.ConvertToGlmVec3Type();
 
 			auto& ent = engine->world.GetComponent<EntityComponent>(selectedEntity);
 
@@ -154,6 +175,7 @@ namespace Eclipse
 				{
 					auto& child = engine->world.GetComponent<ChildComponent>(selectedEntity);
 					child.UpdateChildren = true;
+					/*std::cout << selectedEntity << ": " << lexical_cast<std::string>(child.UpdateChildren) << std::endl;*/
 
 					if (ent.Tag != EntityType::ENT_MESH)
 					{
@@ -163,7 +185,8 @@ namespace Eclipse
 				}
 				break;
 			case ImGuizmo::OPERATION::ROTATE:
-				transCom.rotation = rotation;
+				transCom.rotation += deltaRotation;
+				std::cout << deltaRotation.x << " " << deltaRotation.y << " " << deltaRotation.z << std::endl;
 				CommandHistory::RegisterCommand(new ECVec3DeltaCommand{ transCom.rotation, transCom.rotation, selectedEntity });
 				break;
 			case ImGuizmo::OPERATION::SCALE:
@@ -183,8 +206,6 @@ namespace Eclipse
 
 				for (auto& it : parent.child)
 				{
-					auto& transform = engine->world.GetComponent<TransformComponent>(it);
-				
 					engine->gPicker.UpdateAabb(it);
 					engine->gDynamicAABBTree.UpdateData(it);
 				}
@@ -201,6 +222,7 @@ namespace Eclipse
 			{
 				auto& child = engine->world.GetComponent<ChildComponent>(selectedEntity);
 				child.UpdateChildren = false;
+				/*std::cout << selectedEntity << ": " << lexical_cast<std::string>(child.UpdateChildren) << std::endl;*/
 			}
 		}
 
@@ -240,7 +262,6 @@ namespace Eclipse
 	{
 		if (ECGui::IsMouseClicked(0) && !ImGuizmo::IsUsing())
 		{
-			//std::cout << "picking being used" << std::endl;
 			engine->world.GetSystem<PickingSystem>()->EditorUpdate();
 
 			if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
@@ -254,48 +275,123 @@ namespace Eclipse
 		{
 			if (!IsCopying)
 			{
-				Entity ID = engine->world.CopyEntity(engine->world, engine->editorManager->GetSelectedEntity(), all_component_list);
-				auto& trans = engine->world.GetComponent<TransformComponent>(ID);
-				auto& ent = engine->world.GetComponent<EntityComponent>(ID);
-				engine->gPicker.GenerateAabb(ID, trans, ent.Tag);
-				engine->editorManager->RegisterExistingEntity(ID);
+				if (engine->world.CheckComponent<ParentComponent>(engine->editorManager->GetSelectedEntity()))
+				{
+					IterativeCopy(engine->editorManager->GetSelectedEntity());
+				}
+				else
+				{
+					Entity newID = LoadEntity(engine->editorManager->GetSelectedEntity());
+
+					if (engine->world.CheckComponent<ChildComponent>(newID))
+					{
+						auto& child = engine->world.GetComponent<ChildComponent>(newID);
+						auto& parent = engine->world.GetComponent<ParentComponent>(child.parentIndex);
+						parent.child.push_back(newID);
+					}
+				}
+				
 				IsCopying = true;
 			}
 		}
 	}
 
+	void SceneWindow::IterativeCopy(const Entity& ID)
+	{
+		std::queue<Entity> parentsQ;
+		std::unordered_map<Entity, std::vector<Entity>> ParentToFamily;
+		std::unordered_map<Entity, Entity> OldToNewEntity;
+		parentsQ.push(ID);
+		Entity MainParentID = LoadEntity(ID);
+		OldToNewEntity[ID] = MainParentID;
+
+		while (!parentsQ.empty())
+		{
+			Entity CurrID = parentsQ.front();
+			parentsQ.pop();
+
+			if (engine->world.CheckComponent<ParentComponent>(CurrID))
+			{
+				auto& parentCom = engine->world.GetComponent<ParentComponent>(ID);
+				std::vector<Entity> List;
+
+				for (const auto& childEnt : parentCom.child)
+				{
+					Entity newChildID = LoadEntity(childEnt);
+
+					if (engine->world.CheckComponent<ParentComponent>(childEnt))
+					{
+						parentsQ.push(childEnt);
+						OldToNewEntity[childEnt] = newChildID;
+					}
+
+					List.push_back(newChildID);
+				}
+
+				ParentToFamily[OldToNewEntity[CurrID]] = List;
+			}
+		}
+
+		for (const auto& [parent, childList] : ParentToFamily)
+		{
+			auto& parentcom = engine->world.GetComponent<ParentComponent>(parent);
+			parentcom.child.clear();
+
+			for (const auto& child2 : childList)
+			{
+				parentcom.child.push_back(child2);
+
+				auto& childcom = engine->world.GetComponent<ChildComponent>(child2);
+				childcom.parentIndex = parent;
+			}
+		}
+		
+		engine->editorManager->SetSelectedEntity(MainParentID);
+	}
+
+	Entity SceneWindow::LoadEntity(const Entity& ID)
+	{
+		Entity newID = engine->world.CopyEntity(engine->world, ID, all_component_list);
+		auto& trans = engine->world.GetComponent<TransformComponent>(newID);
+		auto& ent = engine->world.GetComponent<EntityComponent>(newID);
+		engine->gPicker.GenerateAabb(newID, trans, ent.Tag);
+		engine->editorManager->RegisterExistingEntity(newID);
+
+		return newID;
+	}
+
 	void SceneWindow::OnCameraMoveEvent()
 	{
-		ImGuiIO& io = ImGui::GetIO();
+		// ImGuiIO& io = ImGui::GetIO();
 		ImVec2 value_with_lock_threshold = ECGui::GetMouseDragDelta(1);
 		const float benchmarkValue = 0.0f;
 
 		// ImGui Right Click Detection
 		if (ECGui::IsMouseDragging(1))
 		{
-			// Camera Yaw Right
-			if (value_with_lock_threshold.x > benchmarkValue && io.MouseDelta.x > 0.0f)
-				engine->gCamera.GetInput().set(7, 1);
-			else
-				engine->gCamera.GetInput().set(7, 0);
+			//// Camera Yaw Right
+			//if (value_with_lock_threshold.x > benchmarkValue && io.MouseDelta.x > 0.0f)
+			//	engine->gCamera.GetInput().set(7, 1);
+			//else
+			//	engine->gCamera.GetInput().set(7, 0);
 
-			// Camera Yaw Left
-			if (value_with_lock_threshold.x < benchmarkValue && io.MouseDelta.x < 0.0f)
-				engine->gCamera.GetInput().set(6, 1);
-			else
-				engine->gCamera.GetInput().set(6, 0);
+			//// Camera Yaw Left
+			//if (value_with_lock_threshold.x < benchmarkValue && io.MouseDelta.x < 0.0f)
+			//	engine->gCamera.GetInput().set(6, 1);
+			//else
+			//	engine->gCamera.GetInput().set(6, 0);
 
-			// Camera Pitch Down
-			if (value_with_lock_threshold.y > benchmarkValue && io.MouseDelta.y > 0.0f)
-				engine->gCamera.GetInput().set(5, 1);
-			else
-				engine->gCamera.GetInput().set(5, 0);
+			//// Camera Pitch Down
+			//if (value_with_lock_threshold.y > benchmarkValue && io.MouseDelta.y > 0.0f)
+			//	engine->gCamera.GetInput().set(5, 1);
+			//else
+			//	engine->gCamera.GetInput().set(5, 0);
 
-			// Camera Pitch Up
-			if (value_with_lock_threshold.y < benchmarkValue && io.MouseDelta.y < 0.0f)
-				engine->gCamera.GetInput().set(4, 1);
-			else
-				engine->gCamera.GetInput().set(4, 0);
+			//// Camera Pitch Up
+			//if (value_with_lock_threshold.y < benchmarkValue && io.MouseDelta.y < 0.0f)
+			//	engine->gCamera.GetInput().set(4, 1);
+			//else
+			//	engine->gCamera.GetInput().set(4, 0);
 
 			// Camera Move Front
 			if (ECGui::IsKeyDown(ECGui::GetKeyIndex(ImGuiKey_W)))
@@ -386,6 +482,11 @@ namespace Eclipse
 	bool SceneWindow::GetSnapping() const
 	{
 		return IsSnapping;
+	}
+
+	bool SceneWindow::GetIsWindowRunning() const
+	{
+		return IsWindowRunning;
 	}
 
 	void SceneWindow::SetGizmoType(int type)

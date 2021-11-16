@@ -6,6 +6,11 @@ namespace Eclipse
     void LightingSystem::Init()
     {
         engine->LightManager.Init();
+
+       // engine->LightManager.Hand = engine->world.CreateEntity();
+       // engine->world.AddComponent(engine->LightManager.Hand, TransformComponent{});
+       // engine->world.AddComponent(engine->LightManager.Hand, EntityComponent{ EntityType::ENT_LIGHT_SPOT });
+       // engine->LightManager.CreateLights(TypesOfLights::SPOTLIGHT, engine->LightManager.Hand);
     }
 
     /*************************************************************************
@@ -33,10 +38,6 @@ namespace Eclipse
         {
             for (auto const& LightEntityID : mEntities)
             {
-                //auto& Light = engine->world.GetComponent<LightComponent>(LightEntityID);
-                //
-                //Light.Render = true; // engine->gCullingManager->ToRenderOrNot(LightEntityID);
-
                 if (engine->world.CheckComponent<DirectionalLightComponent>(LightEntityID))
                 {
                     auto& DirectionalLight = engine->world.GetComponent<DirectionalLightComponent>(LightEntityID);
@@ -47,7 +48,21 @@ namespace Eclipse
                 {
                     auto& SpotLight = engine->world.GetComponent<SpotLightComponent>(LightEntityID);
 
-                    engine->LightManager.DrawSpotLight(LightEntityID, &SpotLight, FrameBufferMode::FBM_SCENE, SpotLight.Counter, GL_FILL);
+                    if (LightEntityID == engine->LightManager.Hand)
+                    {
+                        auto& SpotLightT = engine->world.GetComponent<TransformComponent>(LightEntityID);
+
+                        auto& Cam = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+                        auto& CamT = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetEditorCameraID());
+
+                        SpotLight.direction = ECVec3(Cam.eyeFront.x, Cam.eyeFront.y, Cam.eyeFront.z);
+                        SpotLightT.position = CamT.position;
+                        engine->LightManager.DrawSpotLight(LightEntityID, &SpotLight, FrameBufferMode::FBM_SCENE, SpotLight.Counter, GL_FILL);
+                    }
+                    else
+                    {
+                        engine->LightManager.DrawSpotLight(LightEntityID, &SpotLight, FrameBufferMode::FBM_SCENE, SpotLight.Counter, GL_FILL);
+                    }
                 }
                 else if (engine->world.CheckComponent<PointLightComponent>(LightEntityID))
                 {

@@ -37,6 +37,7 @@ namespace Eclipse
         unsigned int Delete = 0;
         unsigned int MaterialInstanceCounter = 0;
         unsigned int MaterialTexturesCounter = 0;
+        unsigned int ScriptCounter = 0;
 
         bool Modified = false;
         float Delays = 0.0f;

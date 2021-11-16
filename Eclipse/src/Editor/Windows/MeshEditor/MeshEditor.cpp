@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "MeshEditor.h"
+#include "../Inspector/Inspector.h"
 
 namespace Eclipse
 {
@@ -24,11 +25,20 @@ namespace Eclipse
     {
         if (MeshID != MAX_ENTITY)
         {
+            engine->pfManager.OverwritePrefab(OldestParentID, _path.c_str(), true);
             IsVisible = false;
             //engine->world.DestroyEntity(MeshID);
-            RecursiveDestroy(MeshID);
+            RecursiveDestroy(OldestParentID);
+            MeshFamily.clear();
             MeshID = MAX_ENTITY;
+            OldestParentID = MAX_ENTITY;
+            MeshIndex = 0;
+            _path.clear();
             engine->editorManager->SetMeshEditorActive(false);
+
+            auto* insp = engine->editorManager->GetEditorWindow<InspectorWindow>();
+            auto& entCom = engine->world.GetComponent<EntityComponent>(engine->editorManager->GetSelectedEntity());
+            insp->SetCurrentEntityName(entCom.Name.c_str());
         }
     }
 
@@ -70,6 +80,34 @@ namespace Eclipse
 
     void MeshEditorWindow::RunMeshSettings()
     {
+        std::string combo_label = my_strcat("Prefab ", MeshFamily[MeshIndex]);
+
+        ECGui::DrawTextWidget<const char*>("Prefab IDs", EMPTY_STRING);
+        ECGui::InsertSameLine();
+
+        if (ECGui::BeginComboList("MeshEditorFamily", combo_label.c_str()))
+        {
+            for (size_t n = 0; n < MeshFamily.size(); n++)
+            {
+                const bool is_selected = (MeshIndex == n);
+
+                if (ImGui::Selectable(my_strcat("Prefab ", MeshFamily[n]).c_str(), is_selected))
+                {
+                    auto* insp = engine->editorManager->GetEditorWindow<InspectorWindow>();
+                    MeshIndex = static_cast<int>(n);
+                    MeshID = MeshFamily[MeshIndex];
+
+                    auto& entCom = engine->world.GetComponent<EntityComponent>(MeshID);
+                    insp->SetCurrentEntityName(entCom.Name.c_str());
+                }
+
+                if (is_selected)
+                    ImGui::SetItemDefaultFocus();
+            }
+
+            ECGui::EndComboList();
+        }
+
         if (ECGui::ButtonBool("Close Mesh Editor"))
             Unload();
     }
@@ -186,11 +224,34 @@ namespace Eclipse
     void MeshEditorWindow::SetMeshID(Entity ID)
     {
         MeshID = ID;
+        OldestParentID = ID;
+
+        MeshFamily.push_back(ID);
+
+        if (engine->world.CheckComponent<ParentComponent>(ID))
+        {
+            auto& parentCom = engine->world.GetComponent<ParentComponent>(ID);
+
+            for (const auto& kid : parentCom.child)
+            {
+                MeshFamily.push_back(kid);
+            }
+        }
     }
 
-    Entity MeshEditorWindow::GetMeshID()
+    void MeshEditorWindow::SetPath(const std::string& path)
+    {
+        _path = path;
+    }
+
+    Entity MeshEditorWindow::GetMeshID() const
     {
         return MeshID;
+    }
+
+    Entity MeshEditorWindow::GetOldestParentID() const
+    {
+        return OldestParentID;
     }
 
     bool MeshEditorWindow::GetActiveState()
@@ -200,12 +261,20 @@ namespace Eclipse
 
     void MeshEditorWindow::RecursiveDestroy(const Entity& ent)
     {
-        auto& entComp = engine->world.GetComponent<EntityComponent>(ent);
-        for (auto& child : entComp.Child)
+        if (engine->world.CheckComponent<ParentComponent>(ent))
         {
-            RecursiveDestroy(child);
-        }
+            auto& parentComp = engine->world.GetComponent<ParentComponent>(ent);
 
-        engine->world.DestroyEntity(ent);
+            for (auto& child : parentComp.child)
+            {
+                RecursiveDestroy(child);
+            }
+
+            engine->world.DestroyEntity(ent);
+        }
+        else
+        {
+            engine->world.DestroyEntity(ent);
+        }
     }
 }

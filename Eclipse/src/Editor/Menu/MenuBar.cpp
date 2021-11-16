@@ -21,6 +21,7 @@ namespace Eclipse
 		}
 
 		ShowExitDialogBox(IsExiting);
+		ShowErrorDialogBox(IsThereAnError);
 	}
 
 	void MenuBar::AddMenuComponents(MenuComponent com)
@@ -68,6 +69,34 @@ namespace Eclipse
 				{
 					IsExiting = false;
 					ECGui::CloseCurrentPopup();
+				}
+
+				ECGui::EndPopup();
+			}
+		}
+	}
+
+	void MenuBar::ShowErrorDialogBox(bool active)
+	{
+		if (active)
+		{
+			ECGui::OpenPopup("Error!");
+
+			ImGui::GetMainViewport()->Flags |= ImGuiViewportFlags_NoFocusOnClick;
+			ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+
+			ImVec2 center = ECGui::GetMainViewport()->GetCenter();
+			ECGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+			if (ECGui::BeginPopupModal("Error!", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+			{
+				ECGui::DrawTextWidget<const char*>("The engine has met an unexpected error. Check console log.", EMPTY_STRING);
+				ECGui::InsertHorizontalLineSeperator();
+
+				ImGui::Indent(120.0f);
+				if (ECGui::ButtonBool("Close", ImVec2(140, 0)))
+				{
+					IsThereAnError = false;
 				}
 
 				ECGui::EndPopup();
@@ -156,7 +185,7 @@ namespace Eclipse
 		return temp;
 	}
 
-	bool MenuBar::GetExitStatus()
+	bool MenuBar::GetExitStatus() const
 	{
 		return IsExiting;
 	}
@@ -164,5 +193,15 @@ namespace Eclipse
 	void MenuBar::SetExitStatus(bool check)
 	{
 		IsExiting = check;
+	}
+
+	bool MenuBar::GetErrorStatus() const
+	{
+		return IsThereAnError;
+	}
+
+	void MenuBar::SetErrorStatus(bool check)
+	{
+		IsThereAnError = check;
 	}
 }

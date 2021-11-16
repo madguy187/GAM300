@@ -12,15 +12,31 @@ namespace Eclipse
 
     void MeshEditorSource::Render()
     {
-        auto* meshEditor = engine->editorManager->GetEditorWindow<MeshEditorWindow>();
-
-        if (meshEditor->IsVisible)
+        if (engine->GetEditorState())
         {
-            Entity meshID = meshEditor->GetMeshID();
-            auto& mewMesh = engine->world.GetComponent<MeshComponent>(meshID);
+            auto* meshEditor = engine->editorManager->GetEditorWindow<MeshEditorWindow>();
 
-            engine->MaterialManager.DoNotUpdateStencil();
-            MeshEditorDraw(engine->world, mewMesh, meshID,FrameBufferMode::FBM_MESHEDITOR, CameraComponent::CameraType::MeshEditor_Camera);
+            if (meshEditor->IsVisible)
+            {
+                Entity meshID = meshEditor->GetOldestParentID();
+                auto& newMesh = engine->world.GetComponent<MeshComponent>(meshID);
+
+                engine->MaterialManager.DoNotUpdateStencil();
+                MeshEditorDraw(engine->world, newMesh, meshID, FrameBufferMode::FBM_MESHEDITOR, CameraComponent::CameraType::MeshEditor_Camera);
+
+                if (engine->world.CheckComponent<ParentComponent>(meshID))
+                {
+                    auto& parentCom = engine->world.GetComponent<ParentComponent>(meshID);
+
+                    for (const auto& kid : parentCom.child)
+                    {
+                        auto& newKidMesh = engine->world.GetComponent<MeshComponent>(kid);
+
+                        engine->MaterialManager.DoNotUpdateStencil();
+                        MeshEditorDraw(engine->world, newKidMesh, kid, FrameBufferMode::FBM_MESHEDITOR, CameraComponent::CameraType::MeshEditor_Camera);
+                    }
+                }
+            }
         }
     }
 

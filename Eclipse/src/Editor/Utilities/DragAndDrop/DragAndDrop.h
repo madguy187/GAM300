@@ -21,8 +21,8 @@ namespace Eclipse
 		void IndexPayloadTarget(const char* id, const int& destination, bool& IsSelected,
 			PayloadTargetType type = PayloadTargetType::PTT_INDEXEDIT);
 		void AssetBrowerFilesAndFoldersTarget(const char* type, const char* paths, std::string AssetPath,
-			std::filesystem::directory_entry dirEntry, bool& refreshBrowser, std::map<std::filesystem::path,
-			std::vector<std::filesystem::path>> pathMap, bool& CopyMode);
+			std::filesystem::path dirEntry, bool& refreshBrowser, const std::map<std::filesystem::path,
+			std::vector<std::filesystem::path>> & pathMap, bool& CopyMode);
 
 		void ClearAllFiles(std::string& folderName, std::string& parentPath, bool& refreshBrowser);
 

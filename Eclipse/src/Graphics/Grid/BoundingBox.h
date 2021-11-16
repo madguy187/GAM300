@@ -14,17 +14,17 @@ namespace Eclipse
     class BoundingRegion
     {
     public:
-        BoundTypes type;
+        BoundTypes type = BoundTypes::None;
 
         // sphere values
-        glm::vec3 center;
-        float radius;
+        glm::vec3 center{ 0 };
+        float radius = 0.0f;
 
         // bounding box values
-        glm::vec3 Minimum;
-        glm::vec3 Maximum;
-        glm::vec3 Position;
-        glm::vec3 Scale;
+        glm::vec3 Minimum{ 0 };
+        glm::vec3 Maximum{ 0 };
+        glm::vec3 Position{ 0 };
+        glm::vec3 Scale{ 0 };
 
         BoundingRegion(glm::vec3 center, float radius);
         BoundingRegion(glm::vec3 min, glm::vec3 max , glm::vec3 position, glm::vec3 scale);
