@@ -11,8 +11,8 @@ namespace Eclipse
         glm::mat4 captureViews;
         unsigned int cubeVAO = 0;
         unsigned int cubeVBO = 0;
-        //unsigned int captureFBO;
-        //unsigned int captureRBO;
+        unsigned int captureFBO;
+        unsigned int captureRBO;
         unsigned int irradianceMap;
         void Init();
         void SetupCubeMap();

@@ -466,8 +466,8 @@ namespace Eclipse
         }
 
         // Bloom
-        //BloomUpdate(FrameBufferMode::FBM_SCENE);
-        //BloomUpdate(FrameBufferMode::FBM_MATERIALEDITOR);
+        BloomUpdate(FrameBufferMode::FBM_SCENE);
+        BloomUpdate(FrameBufferMode::FBM_MATERIALEDITOR);
 
         //For Darren to Check Depth Map
         //engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_GAME);
@@ -509,7 +509,6 @@ namespace Eclipse
             if (first_iteration)
                 first_iteration = false;
         }
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         engine->gFrameBufferManager->UseFrameBuffer(Mode);
         engine->MaterialManager.DoNotUpdateStencil();

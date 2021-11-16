@@ -195,7 +195,6 @@ void main()
           BrightColor = vec4(FragColor.rgb, 1.0);
 	  else
 	  	BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
-
     }
     else
     {
