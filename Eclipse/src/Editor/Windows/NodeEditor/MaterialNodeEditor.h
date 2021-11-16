@@ -155,28 +155,59 @@ namespace Eclipse
 				ImGui::SetNextItemWidth(60);
 				switch (operationType)
 				{
-				case MaterialNode::Node::InstructionType::DIV:
-					ECGui::DrawTextWidget<std::string>("Divide" ICON_MDI_SLASH_FORWARD, EMPTY_STRING);
-					output = A / B;
-
-					break;
-				case MaterialNode::Node::InstructionType::MUL:
-					ECGui::DrawTextWidget<std::string>("Multiply" ICON_MDI_CLOSE, EMPTY_STRING);
-					output = A * B;
-					break;
-				case MaterialNode::Node::InstructionType::ADD:
-					ECGui::DrawTextWidget<std::string>("Add" ICON_MDI_PLUS, EMPTY_STRING);
-					output = A + B;
-					break;
-				case MaterialNode::Node::InstructionType::SUB:
-					ECGui::DrawTextWidget<std::string>("Sub" ICON_MDI_MINUS, EMPTY_STRING);
-					output = A - B;
-					break;
-				default: EDITOR_LOG_INFO("Should not come in here one"); break;
+					case MaterialNode::Node::InstructionType::DIV:
+						ECGui::DrawTextWidget<std::string>("Divide" ICON_MDI_SLASH_FORWARD, EMPTY_STRING);
+						if (getInput(0).node)
+						{
+							if (getInput(1).node)
+							{
+								if (getInput(0).node->getType() == Node::NodeType::FLOAT && getInput(1).node->getType() == Node::NodeType::FLOAT)
+								{
+									output = A / B;
+								}
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3 && getInput(1).node->getType() == Node::NodeType::FLOAT)
+								{
+									vec3Output = { vec3A.x / B , vec3A.y / B, vec3A.z / B };
+								}
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR && getInput(1).node->getType() == Node::NodeType::FLOAT)
+								{
+									vec3Output = { vec3A.x / B , vec3A.y / B, vec3A.z / B };
+								}
+								if (getInput(0).node->getType() == Node::NodeType::FLOAT && getInput(1).node->getType() == Node::NodeType::ECVEC3)
+								{
+									vec3Output = { vec3B.x / A, vec3B.y / A, vec3B.z / A };
+								}
+								if (getInput(0).node->getType() == Node::NodeType::FLOAT && getInput(1).node->getType() == Node::NodeType::ECVEC3COLOUR)
+								{
+									vec3Output = { vec3B.x / A, vec3B.y / A, vec3B.z / A };
+								}
+							}
+						}
+						break;
+					case MaterialNode::Node::InstructionType::MUL:
+						ECGui::DrawTextWidget<std::string>("Multiply" ICON_MDI_CLOSE, EMPTY_STRING);
+						output = A * B;
+						break;
+					case MaterialNode::Node::InstructionType::ADD:
+						ECGui::DrawTextWidget<std::string>("Add" ICON_MDI_PLUS, EMPTY_STRING);
+						output = A + B;
+						break;
+					case MaterialNode::Node::InstructionType::SUB:
+						ECGui::DrawTextWidget<std::string>("Sub" ICON_MDI_MINUS, EMPTY_STRING);
+						output = A - B;
+						break;
+					default: 
+						EDITOR_LOG_INFO("Should not come in here one");
+						break;
 				}
 				ImNodes::EndNodeTitleBar();
 
 				beginOutput();
+				if (getInput(0).node && getInput(1).node)
+				{
+					ImGui::SetNextItemWidth(60);
+					ECGui::DrawTextWidget<std::string>("C", std::to_string(output));
+				}
 				endOutput();
 
 				ImNodes::PushColorStyle(
@@ -185,15 +216,32 @@ namespace Eclipse
 				// check for first pin if its linked
 				if (getInput(0).node)
 				{
-					//might case problem down the line 
-					if (getInput(0).node->getType() == Node::NodeType::FLOAT)
+					switch (getInput(0).node->getType())
 					{
-						auto downcastedPtr = dynamic_cast<FloatNode*>(getInput(0).node);
-						A = downcastedPtr->inputFloat;
-					}
-					else
-					{
-						LinkError = true;
+						case Node::NodeType::FLOAT:
+							A = (dynamic_cast<FloatNode*>(getInput(0).node))->inputFloat;
+							break;
+						case Node::NodeType::ECVEC3:
+							vec3A = (dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3>*>(getInput(0).node))->inputVec3;
+							break;
+						case Node::NodeType::ECVEC3COLOUR:
+							vec3A = (dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3COLOUR>*>(getInput(0).node))->inputVec3;
+							break;
+						case Node::NodeType::DIV:
+							A = (dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(0).node))->output;
+							break;
+						case Node::NodeType::MUL:
+							A = (dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(0).node))->output;
+							break;
+						case Node::NodeType::ADD:
+							A = (dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(0).node))->output;
+							break;
+						case Node::NodeType::SUB:
+							A = (dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(0).node))->output;
+							break;
+						default:
+							LinkError = true;
+							break;
 					}
 					ImGui::SetNextItemWidth(60);
 					ECGui::DrawTextWidget<std::string>("A", EMPTY_STRING);
@@ -212,15 +260,32 @@ namespace Eclipse
 				// check for first pin if its linked
 				if (getInput(1).node)
 				{
-					if (getInput(1).node->getType() == Node::NodeType::FLOAT)
+					switch (getInput(1).node->getType())
 					{
-						auto downcastedPtr = dynamic_cast<FloatNode*>(getInput(1).node);
-						B = downcastedPtr->inputFloat;
-					}
-					else
-					{
-
-						LinkError = true;
+						case Node::NodeType::FLOAT:
+							B = (dynamic_cast<FloatNode*>(getInput(1).node))->inputFloat;
+							break;
+						case Node::NodeType::ECVEC3:
+							vec3B = (dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3>*>(getInput(1).node))->inputVec3;
+							break;
+						case Node::NodeType::ECVEC3COLOUR:
+							vec3B = (dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3COLOUR>*>(getInput(1).node))->inputVec3;
+							break;
+						case Node::NodeType::DIV:
+							B = (dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(1).node))->output;
+							break;
+						case Node::NodeType::MUL:
+							B = (dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(1).node))->output;
+							break;
+						case Node::NodeType::ADD:
+							B = (dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(1).node))->output;
+							break;
+						case Node::NodeType::SUB:
+							B = (dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(1).node))->output;
+							break;
+						default:
+							LinkError = true;
+							break;
 					}
 					ImGui::SetNextItemWidth(60);
 					ECGui::DrawTextWidget<std::string>("B", EMPTY_STRING);
@@ -343,8 +408,7 @@ namespace Eclipse
 					break;
 				case MaterialNode::Node::VEC3TYPE::ECVEC3COLOUR:
 					ImGui::SetNextItemWidth(150);
-					ECGui::ColorPicker3("Vec3_Colour", (float*)&ColourVec3, ImGuiColorEditFlags_DisplayRGB);
-					inputVec3 = ColourVec3;
+					ECGui::ColorPicker3("Vec3_Colour", (float*)&inputVec3, ImGuiColorEditFlags_DisplayRGB);
 					break;
 				default: EDITOR_LOG_INFO("Should not come in here one"); break;
 
@@ -357,7 +421,6 @@ namespace Eclipse
 				return false;
 			}
 			ECVec3 inputVec3 = { 0.0f,0.0f,0.0f };
-			ECVec3 ColourVec3 = { 0.0f,0.0f,0.0f };
 		};
 
 		struct BasedMaterialNode : public Node
@@ -460,7 +523,7 @@ namespace Eclipse
 							{
 								auto downcastedPtr = dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3COLOUR>*>(getInput(2).node);
 								//A = downcastedPtr->inputFloat;
-								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant = downcastedPtr->ColourVec3;
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant = downcastedPtr->inputVec3;
 							}
 							else
 							{
@@ -617,7 +680,7 @@ namespace Eclipse
 							{
 
 								auto downcastedPtr = dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3COLOUR>*>(getInput(3).node);
-								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour = downcastedPtr->ColourVec3;
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour = downcastedPtr->inputVec3;
 							}
 							else
 							{
