@@ -171,8 +171,13 @@ namespace Eclipse
 									vec3Mode = true;
 									vec3Output = { vec3A.x / B , vec3A.y / B, vec3A.z / B };
 								}
-								if (getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR || 
-									getInput(1).node->getType() == Node::NodeType::ECVEC3COLOUR || 
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR && getInput(1).node->getType() == Node::NodeType::FLOAT)
+								{
+									floatMode = false;
+									vec3Mode = true;
+									vec3Output = { vec3A.x / B , vec3A.y / B, vec3A.z / B };
+								}
+								if ((getInput(0).node->getType() == Node::NodeType::FLOAT && getInput(1).node->getType() == Node::NodeType::ECVEC3COLOUR) ||
 									(getInput(0).node->getType() == Node::NodeType::FLOAT && getInput(1).node->getType() == Node::NodeType::ECVEC3))
 								{
 									floatMode = false;
@@ -180,6 +185,24 @@ namespace Eclipse
 									LinkError = true;
 								}
 								if (getInput(0).node->getType() == Node::NodeType::ECVEC3 && getInput(1).node->getType() == Node::NodeType::ECVEC3)
+								{
+									floatMode = false;
+									vec3Mode = true;
+									vec3Output = { vec3A.x / vec3B.x ,  vec3A.y / vec3B.y,  vec3A.z / vec3B.z };
+								}
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3 && getInput(1).node->getType() == Node::NodeType::ECVEC3COLOUR)
+								{
+									floatMode = false;
+									vec3Mode = true;
+									vec3Output = { vec3A.x / vec3B.x ,  vec3A.y / vec3B.y,  vec3A.z / vec3B.z };
+								}
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR && getInput(1).node->getType() == Node::NodeType::ECVEC3)
+								{
+									floatMode = false;
+									vec3Mode = true;
+									vec3Output = { vec3A.x / vec3B.x ,  vec3A.y / vec3B.y,  vec3A.z / vec3B.z };
+								}
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR && getInput(1).node->getType() == Node::NodeType::ECVEC3COLOUR)
 								{
 									floatMode = false;
 									vec3Mode = true;
@@ -218,8 +241,13 @@ namespace Eclipse
 									vec3Mode = true;
 									vec3Output = { vec3A.x * B , vec3A.y * B, vec3A.z * B };
 								}
-								if (getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR ||
-									getInput(1).node->getType() == Node::NodeType::ECVEC3COLOUR ||
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR && getInput(1).node->getType() == Node::NodeType::FLOAT)
+								{
+									floatMode = false;
+									vec3Mode = true;
+									vec3Output = { vec3A.x * B , vec3A.y * B, vec3A.z * B };
+								}
+								if ((getInput(0).node->getType() == Node::NodeType::FLOAT && getInput(1).node->getType() == Node::NodeType::ECVEC3COLOUR) ||
 									(getInput(0).node->getType() == Node::NodeType::FLOAT && getInput(1).node->getType() == Node::NodeType::ECVEC3))
 								{
 									floatMode = false;
@@ -227,6 +255,24 @@ namespace Eclipse
 									LinkError = true;
 								}
 								if (getInput(0).node->getType() == Node::NodeType::ECVEC3 && getInput(1).node->getType() == Node::NodeType::ECVEC3)
+								{
+									floatMode = false;
+									vec3Mode = true;
+									vec3Output = { vec3A.x * vec3B.x ,  vec3A.y * vec3B.y,  vec3A.z * vec3B.z };
+								}
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3 && getInput(1).node->getType() == Node::NodeType::ECVEC3COLOUR)
+								{
+									floatMode = false;
+									vec3Mode = true;
+									vec3Output = { vec3A.x * vec3B.x ,  vec3A.y * vec3B.y,  vec3A.z * vec3B.z };
+								}
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR && getInput(1).node->getType() == Node::NodeType::ECVEC3)
+								{
+									floatMode = false;
+									vec3Mode = true;
+									vec3Output = { vec3A.x * vec3B.x ,  vec3A.y * vec3B.y,  vec3A.z * vec3B.z };
+								}
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR && getInput(1).node->getType() == Node::NodeType::ECVEC3COLOUR)
 								{
 									floatMode = false;
 									vec3Mode = true;
@@ -265,8 +311,13 @@ namespace Eclipse
 									vec3Mode = true;
 									vec3Output = { vec3A.x + B , vec3A.y + B, vec3A.z + B };
 								}
-								if (getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR ||
-									getInput(1).node->getType() == Node::NodeType::ECVEC3COLOUR ||
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR && getInput(1).node->getType() == Node::NodeType::FLOAT)
+								{
+									floatMode = false;
+									vec3Mode = true;
+									vec3Output = { vec3A.x + B , vec3A.y + B, vec3A.z + B };
+								}
+								if ((getInput(0).node->getType() == Node::NodeType::FLOAT && getInput(1).node->getType() == Node::NodeType::ECVEC3COLOUR) ||
 									(getInput(0).node->getType() == Node::NodeType::FLOAT && getInput(1).node->getType() == Node::NodeType::ECVEC3))
 								{
 									floatMode = false;
@@ -274,6 +325,24 @@ namespace Eclipse
 									LinkError = true;
 								}
 								if (getInput(0).node->getType() == Node::NodeType::ECVEC3 && getInput(1).node->getType() == Node::NodeType::ECVEC3)
+								{
+									floatMode = false;
+									vec3Mode = true;
+									vec3Output = { vec3A.x + vec3B.x ,  vec3A.y + vec3B.y,  vec3A.z + vec3B.z };
+								}
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3 && getInput(1).node->getType() == Node::NodeType::ECVEC3COLOUR)
+								{
+									floatMode = false;
+									vec3Mode = true;
+									vec3Output = { vec3A.x + vec3B.x ,  vec3A.y + vec3B.y,  vec3A.z + vec3B.z };
+								}
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR && getInput(1).node->getType() == Node::NodeType::ECVEC3)
+								{
+									floatMode = false;
+									vec3Mode = true;
+									vec3Output = { vec3A.x + vec3B.x ,  vec3A.y + vec3B.y,  vec3A.z + vec3B.z };
+								}
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR && getInput(1).node->getType() == Node::NodeType::ECVEC3COLOUR)
 								{
 									floatMode = false;
 									vec3Mode = true;
@@ -312,8 +381,13 @@ namespace Eclipse
 									vec3Mode = true;
 									vec3Output = { vec3A.x - B , vec3A.y - B, vec3A.z - B };
 								}
-								if (getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR ||
-									getInput(1).node->getType() == Node::NodeType::ECVEC3COLOUR ||
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR && getInput(1).node->getType() == Node::NodeType::FLOAT)
+								{
+									floatMode = false;
+									vec3Mode = true;
+									vec3Output = { vec3A.x - B , vec3A.y - B, vec3A.z - B };
+								}
+								if ((getInput(0).node->getType() == Node::NodeType::FLOAT && getInput(1).node->getType() == Node::NodeType::ECVEC3COLOUR) ||
 									(getInput(0).node->getType() == Node::NodeType::FLOAT && getInput(1).node->getType() == Node::NodeType::ECVEC3))
 								{
 									floatMode = false;
@@ -321,6 +395,24 @@ namespace Eclipse
 									LinkError = true;
 								}
 								if (getInput(0).node->getType() == Node::NodeType::ECVEC3 && getInput(1).node->getType() == Node::NodeType::ECVEC3)
+								{
+									floatMode = false;
+									vec3Mode = true;
+									vec3Output = { vec3A.x - vec3B.x ,  vec3A.y - vec3B.y,  vec3A.z - vec3B.z };
+								}
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3 && getInput(1).node->getType() == Node::NodeType::ECVEC3COLOUR)
+								{
+									floatMode = false;
+									vec3Mode = true;
+									vec3Output = { vec3A.x - vec3B.x ,  vec3A.y - vec3B.y,  vec3A.z - vec3B.z };
+								}
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR && getInput(1).node->getType() == Node::NodeType::ECVEC3)
+								{
+									floatMode = false;
+									vec3Mode = true;
+									vec3Output = { vec3A.x - vec3B.x ,  vec3A.y - vec3B.y,  vec3A.z - vec3B.z };
+								}
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR && getInput(1).node->getType() == Node::NodeType::ECVEC3COLOUR)
 								{
 									floatMode = false;
 									vec3Mode = true;
@@ -350,7 +442,8 @@ namespace Eclipse
 				beginOutput();
 				if (getInput(0).node && getInput(1).node)
 				{
-					if (getInput(0).node->getType() == Node::NodeType::ECVEC3 || getInput(1).node->getType() == Node::NodeType::ECVEC3)
+					if (getInput(0).node->getType() == Node::NodeType::ECVEC3 || getInput(1).node->getType() == Node::NodeType::ECVEC3
+						|| getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR || getInput(1).node->getType() == Node::NodeType::ECVEC3COLOUR)
 					{
 						ImGui::SetNextItemWidth(120);
 						ECGui::DrawSliderFloat3Widget("C", &vec3Output, false, 0.0f, 0.0f);
@@ -564,6 +657,10 @@ namespace Eclipse
 				case MaterialNode::Node::VEC3TYPE::ECVEC3COLOUR:
 					ImGui::SetNextItemWidth(150);
 					ECGui::ColorPicker3("Vec3_Colour", (float*)&inputVec3, ImGuiColorEditFlags_DisplayRGB);
+					inputVec3.x = (Saturate(((float*)(&inputVec3))[0]) * 255.0f);
+					inputVec3.y = (Saturate(((float*)(&inputVec3))[1]) * 255.0f);
+					inputVec3.z = (Saturate(((float*)(&inputVec3))[2]) * 255.0f);
+					inputVec3.w = 1.0f;
 					break;
 				default: EDITOR_LOG_INFO("Should not come in here one"); break;
 
@@ -642,7 +739,7 @@ namespace Eclipse
 							break;
 						case Node::NodeType::ECVEC3COLOUR:
 							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
-								(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3>*>(getInput(1).node))->inputVec3;
+								(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3COLOUR>*>(getInput(1).node))->inputVec3;
 							break;
 						case Node::NodeType::MUL:
 							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(1).node))->vec3Mode)
@@ -723,7 +820,7 @@ namespace Eclipse
 								break;
 							case Node::NodeType::ECVEC3COLOUR:
 								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant =
-									(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3>*>(getInput(2).node))->inputVec3;
+									(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3COLOUR>*>(getInput(2).node))->inputVec3;
 								break;
 							case Node::NodeType::MUL:
 								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(2).node))->vec3Mode)
@@ -1047,7 +1144,7 @@ namespace Eclipse
 							break;
 						case Node::NodeType::ECVEC3COLOUR:
 							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour =
-								(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3>*>(getInput(3).node))->inputVec3;
+								(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3COLOUR>*>(getInput(3).node))->inputVec3;
 							break;
 						case Node::NodeType::MUL:
 							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(3).node))->vec3Mode)
@@ -1478,6 +1575,11 @@ namespace Eclipse
 
 		void CreateTextureNode(std::string folderName, std::string fileName);
 	};
+
+	static inline float  Saturate(float f) 
+	{ 
+		return (f < 0.0f) ? 0.0f : (f > 1.0f) ? 1.0f : f; 
+	}
 
 	inline int MaterialNode::findMaterialNodePos(MaterialNode editor, int id)
 	{
