@@ -28,3 +28,6 @@ namespace Eclipse
 // To predict undefined behaviour such as undefined tags, nan values
 // Basically things that don't make the engine crash but may give undesirable results
 #define EDITOR_LOG_WARN(...) { if(engine->GetEditorState()) { ENGINE_CORE_WARN(__VA_ARGS__); Eclipse::LoggerWindow::GetEditorLogger()->AddWarnLogs(__VA_ARGS__); } }
+
+// To display unexpected error from external compilers, e.g. scripts, compilers, tracy, etc
+#define EDITOR_LOG_ERROR(...) { if(engine->GetEditorState()) { ENGINE_CORE_ERROR(__VA_ARGS__); Eclipse::LoggerWindow::GetEditorLogger()->AddErrorLogs(__VA_ARGS__); engine->editorManager->GetMenuBar().SetErrorStatus(true); } }

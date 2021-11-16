@@ -46,6 +46,9 @@ void Eclipse::OpenGL_Context::on_resize(int width_, int height_)
 
     glViewport(0, 0, width, height);
     engine->InputManager->SetAxis(width_, height_);
+
+    engine->gFrameBufferManager->UpdateAspectRatio(FrameBufferMode::FBM_GAME, glm::vec2(width_, height_));
+    engine->gFrameBufferManager->UpdateAspectRatio(FrameBufferMode::FBM_GAME_SOBEL, glm::vec2(width_, height_));
 }
 
 static void on_window_close_callback(GLFWwindow* window)
@@ -127,7 +130,7 @@ void Eclipse::OpenGL_Context::LoadConfigData(std::string configFile)
 
 bool Eclipse::OpenGL_Context::init(std::string configFile)
 {
-    LoadConfigData(configFile);
+    // LoadConfigData(configFile);
 
     // Part 1
     if (!glfwInit())

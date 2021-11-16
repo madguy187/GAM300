@@ -12,8 +12,8 @@ namespace Eclipse
     class RenderManager
     {
     public:
-        glm::mat4 lightProjection, lightView;
-        glm::mat4 lightSpaceMatrix;
+        glm::mat4 lightProjection, lightView{ 0.0f };
+        glm::mat4 lightSpaceMatrix{ 0.0f };
         float near_plane = 0.1f, far_plane = 150.0f;
 
         // Normal Render Passes
@@ -25,6 +25,5 @@ namespace Eclipse
         void UpdateLightMatrix();
         void RenderSceneFromLightPOV(MeshComponent& , Entity );
         void RenderGameFromLightPOV(MeshComponent& Mesh, Entity entityID);
-        void RenderSceneNormally(MeshComponent&, Entity);
     };
 }

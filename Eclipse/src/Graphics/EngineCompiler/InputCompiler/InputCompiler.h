@@ -4,14 +4,14 @@ namespace Eclipse
 {
     struct Key
     {
-        std::array<char, 128> MapName;
+        std::array<char, 128> MapName{ 0 };
         InputKeycode Key;
         bool Stopper = false;
     };
 
     struct MouseKey
     {
-        std::array<char, 128> MapName;
+        std::array<char, 128> MapName{ 0 };
         InputMouseKeycode MouseKey;
         bool Stopper = false;
     };

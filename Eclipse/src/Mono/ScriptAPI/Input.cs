@@ -17,5 +17,8 @@ namespace Eclipse
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         public extern static float GetAxisRaw(string Axis);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        public extern static float LockCamera(int state);
     }
 }

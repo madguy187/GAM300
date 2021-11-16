@@ -16,6 +16,9 @@ namespace Eclipse
       "MESHEDITORVIEW",
       "GAMEVIEW_SOBEL",
       "SHADOWVIEW",
+      "BLOOM",
+      "ANIMATION_VIEW",
+      "UI_MANAGER_VIEW"
       "MAXCOUNT"
     };
 
@@ -97,6 +100,11 @@ namespace Eclipse
 
         // Bleeding
         float BleedingTimer = 0.0f;
+
+        // Bloom
+        unsigned int pingpongFBO[2];
+        unsigned int pingpongColorbuffers[2];
+        void CreatePingPong();
     };
 }
 #endif//FRAMEBUFFER_H

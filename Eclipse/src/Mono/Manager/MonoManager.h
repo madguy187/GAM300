@@ -37,11 +37,11 @@ namespace Eclipse
 
 	class MonoManager
 	{
-		MonoDomain* domain;
-		MonoAssembly* ScriptAssembly;
-		MonoAssembly* APIAssembly;
-		MonoImage* ScriptImage;
-		MonoImage* APIImage;
+		MonoDomain* domain = nullptr;
+		MonoAssembly* ScriptAssembly = nullptr;
+		MonoAssembly* APIAssembly = nullptr;
+		MonoImage* ScriptImage = nullptr;
+		MonoImage* APIImage = nullptr;
 
 		std::vector<MonoScript> UserImplementedScriptList;
 		std::vector<InvokeFunc> InvokeContainer;
@@ -53,8 +53,8 @@ namespace Eclipse
 		MonoDomain* LoadDomain();
 		void UnloadDomain();
 
-		bool CheckIfScriptExist(std::string scriptName);
-		bool CheckIfFieldExist(MonoScript* script, std::string& fieldName, size_t index);
+		int CheckIfScriptExist(std::string scriptName);
+		bool CheckIfFieldExist(MonoScript* script, std::string& fieldName);
 		void LoadAllFields(MonoScript* script);
 
 	public:
@@ -85,6 +85,7 @@ namespace Eclipse
 		MonoObject* CreateLightClass(Entity ent);
 		MonoObject* CreateAudioSourceClass(Entity ent);
 		MonoObject* CreateGameObjectClass(Entity ent, std::string scriptName);
+		MonoObject* CreateLayerMaskClass(std::string mask);
 		ECVec3 ConvertVectorToECVec(MonoObject* vec);
 		ECVec3 ConvertQuaternionToECVec3(MonoObject* vec);
 
@@ -99,6 +100,7 @@ namespace Eclipse
 		MonoObject* ExecuteMethod(MonoObject* obj, MonoMethod* method, std::vector<void*> args);
 
 		void LoadAllScripts();
+		bool CheckIfScriptCompiled();
 
 		// Gets image containing all API Scripts
 		MonoImage* GetAPIImage();

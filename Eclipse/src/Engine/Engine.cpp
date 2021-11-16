@@ -46,7 +46,6 @@
 #include "ECS/SystemManager/Systems/System/AnimationSystem/AnimationSystem.h"
 #include "ECS/SystemManager/Systems/System/NavMeshSystem/NavMeshSystem.h"
 #include "ECS/SystemManager/Systems/System/EntityCompSystem/EntityCompSystem.h"
-//#include "FSM/States/TestingFSM/TestingFSM.h"
 
 bool Tester1(const Test1&)
 {
@@ -74,6 +73,9 @@ namespace Eclipse
         engine->gFrameBufferManager = std::make_unique<FrameBufferManager>();
         engine->gDebugDrawManager = std::make_unique<DebugManager>();
 
+        szManager.LoadEngineConfig(OpenGL_Context::title, OpenGL_Context::width, OpenGL_Context::height,
+            IsEditorActive, IsWindowFullscreen);
+
         engine->GraphicsManager.Pre_Render();
 
         ImGuiSetup::Init(IsEditorActive);
@@ -89,8 +91,8 @@ namespace Eclipse
     {
         ZoneScopedN("Engine")
 
-        // register component
-        world.RegisterComponent<EntityComponent>();
+            // register component
+            world.RegisterComponent<EntityComponent>();
         world.RegisterComponent<TransformComponent>();
         world.RegisterComponent<MeshComponent>();
         world.RegisterComponent<CameraComponent>();
@@ -135,10 +137,9 @@ namespace Eclipse
         prefabWorld.RegisterComponent<PrefabComponent>();
         prefabWorld.RegisterComponent<AIComponent>();
         prefabWorld.RegisterComponent<NodeEditor>();
-        prefabWorld.RegisterComponent <NavMeshVolumeComponent>();
-
         prefabWorld.RegisterComponent<NodeEditor>();
         prefabWorld.RegisterComponent<AnimationComponent>();
+        prefabWorld.RegisterComponent<NavMeshVolumeComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();
@@ -243,7 +244,10 @@ namespace Eclipse
         //Check this! - Rachel
         CameraSystem::Init();
         RenderSystem::Init();
-        engine->editorManager->TextureIconInit();
+
+        if (IsEditorActive)
+            engine->editorManager->TextureIconInit();
+
         gPhysics.Init();
         audioManager.Init();
 
@@ -251,8 +255,6 @@ namespace Eclipse
 
         if (IsEditorActive)
             IsInPlayState = false;
-        else
-            IsInPlayState = true;
 
         float currTime = static_cast<float>(clock());
         float accumulatedTime = 0.0f;
@@ -267,25 +269,18 @@ namespace Eclipse
 
         // Check for Recovery File
         if (IsEditorActive)
+        {
             engine->editorManager->SetRecoveryFileExistence(szManager.CheckBackUpPathExistence());
-
-        /*audioManager.PlaySounds("src/Assets/Sounds/WIN.wav", 0.5f, true);*/
-        //audioManager.PlayEvent("event:/WaterEffect");
-
-        /*TransformComponent trans1;
-        TransformComponent trans2;
-        trans2.position.setX(5.0f);
-        trans1.position.setX(5.0f);
-        RefVariant ob1 = trans1;
-        RefVariant ob2 = trans2;
-
-        if (SerializationManager::CompareComponentData(ob1, ob2))
-            std::cout << "its the same!" << std::endl;
+        }
         else
-            std::cout << "its the not same!" << std::endl;*/
-
-        /*TestingFSMClass eg{ Entity{MAX_ENTITY} };
-        eg.SetState(TestState::TS_WALK);*/
+        {
+            IsInPlayState = true;
+            SceneManager::RegisterScene(std::string{ ASSETS_PATH } + "Scenes\\Showcase1.scn");
+            SceneManager::LoadScene("Showcase1");
+            SceneManager::ProcessScene();
+            mono.StartMono();
+            world.GetSystem<MonoSystem>()->Init();
+        }
 
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
@@ -380,7 +375,8 @@ namespace Eclipse
             world.Update<AudioSystem>();
 
             // MATERIALSYSTEM =============================
-            world.Update<MaterialSystem>();
+            if (engine->IsEditorActive)
+                world.Update<MaterialSystem>();
 
             // RENDERSYSTEM =============================
             world.Update<RenderSystem>();
@@ -416,7 +412,10 @@ namespace Eclipse
 
         //Serialization(Temp)
         //szManager.SaveSceneFile();
-        pfManager.UnloadSaving();
+        if (GetEditorState())
+        {
+            pfManager.UnloadSaving();
+        }
         // unLoad
         mono.Terminate();
         GraphicsManager.End();

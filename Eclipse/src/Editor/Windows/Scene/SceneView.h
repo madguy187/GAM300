@@ -36,6 +36,7 @@ namespace Eclipse
         int GetGizmoType() const;
         bool GetIsWindowActive() const;
         bool GetSnapping() const;
+        bool GetIsWindowRunning() const;
 
         void SetGizmoType(int type);
         void SetSnapping(bool active);
@@ -45,10 +46,11 @@ namespace Eclipse
         ECVec2 mSceneBufferPos;
         ECVec2 mCursorScreenPos;
         SnapValueSettings mSnapSettings;
-        FrameBuffer* m_frameBuffer;
+        FrameBuffer* m_frameBuffer = { nullptr };
         int m_GizmoType{ 0 };
         bool IsWindowActive{ false };
         bool IsSnapping{ false };
         bool IsCopying{ false };
+        bool IsWindowRunning{ false };
     };
 }

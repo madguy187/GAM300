@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Editor/Utilities/OpenFileDialog/OpenFileDialog.h"
 #include "Editor/Windows/GameView/GameView.h"
+#include "Editor/Windows/Header/HeaderWindow.h"
 #include "ECGuiInputHandler.h"
 
 namespace Eclipse
@@ -28,7 +29,10 @@ namespace Eclipse
             }
             else if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_O)) && io.KeyCtrl)
             {
-                FileDialog::FileBrowser();
+                if (!engine->GetPlayState())
+                {
+                    FileDialog::FileBrowser();
+                }
             }
             // ImGuizmo Change
             else if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_Q)))
@@ -73,9 +77,22 @@ namespace Eclipse
                     }
                 }
             }
+            else if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_Escape)))
+            {
+                if (engine->GetPlayState())
+                {
+                    auto* hdr = engine->editorManager->GetEditorWindow<HeaderWindow>();
+                    hdr->Terminate();
+                }
+            }
             // File Saving
             else if (ECGui::IsKeyPressed(ECGui::GetKeyIndex(ImGuiKey_S)) && io.KeyCtrl)
-                FileDialog::SaveFile();
+            {
+                if (!engine->GetPlayState())
+                {
+                    FileDialog::SaveFile();
+                }
+            }
         }
     }
 }

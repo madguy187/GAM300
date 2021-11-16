@@ -21,9 +21,9 @@ namespace Eclipse
         std::vector<Vertex> vertices;
         std::vector<unsigned int> indices;
 
-        glm::vec4 Diffuse;
-        glm::vec4 Specular;
-        glm::vec4 Ambient;
+        glm::vec4 Diffuse{ 0 };
+        glm::vec4 Specular{ 0 };
+        glm::vec4 Ambient{ 0 };
 
         bool NoTextures = false;
         std::vector<Texture> textures;

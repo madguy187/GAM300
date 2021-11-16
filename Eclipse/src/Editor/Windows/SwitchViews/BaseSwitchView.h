@@ -19,9 +19,9 @@ namespace Eclipse
 		bool GetIsWindowActive() const;
 		bool GetIsWindowHovered() const;
 	protected:
-		CameraComponent::CameraType mCamType;
+		CameraComponent::CameraType mCamType{ CameraComponent::CameraType::TopView_Camera };
 		ECVec2 mViewportSize;
-		FrameBuffer* m_frameBuffer;
+		FrameBuffer* m_frameBuffer{nullptr};
 		FrameBufferMode FBO_Mode;
 		std::vector<std::string> mProjectionView_List;
 		bool IsWireframeMode{ false };

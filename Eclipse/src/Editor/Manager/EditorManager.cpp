@@ -351,6 +351,18 @@ namespace Eclipse
 		return SimulateAnimation;
 	}
 
+	bool EditorManager::IsSceneViewportActive() const
+	{
+		auto* scene = dynamic_cast<SceneWindow*>(Windows_[4].get());
+		return scene->GetIsWindowRunning();
+	}
+
+	bool EditorManager::IsGameViewportActive() const
+	{
+		auto* gameview = dynamic_cast<eGameViewWindow*>(Windows_[3].get());
+		return gameview->GetIsWindowRunning();
+	}
+
 	void EditorManager::SetSelectedEntity(Entity ID)
 	{
 		GEHIndex_ = static_cast<size_t>(EntityToIndexMap_[ID]);
@@ -393,7 +405,6 @@ namespace Eclipse
 	void EditorManager::TextureIconInit()
 	{
 		FolderIcon_ = Graphics::FindTextures("FolderIcon").GetHandle();
-
 		spriteIcon_ = Graphics::FindTextures("Playstop").GetHandle();
 	}
 }

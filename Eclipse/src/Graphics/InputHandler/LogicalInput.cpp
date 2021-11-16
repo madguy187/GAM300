@@ -1548,8 +1548,8 @@ namespace Eclipse
 {
     void LogicalInput::SetAxis(GLint width, GLint height)
     {
-        XMiddle = (width / 2);
-        YMiddle = (height / 2);
+        XMiddle = static_cast<float>((width / 2));
+        YMiddle = static_cast<float>((height / 2));
     }
 
     void LogicalInput::CursorUpdate()
@@ -1719,12 +1719,14 @@ namespace Eclipse
             {
                 if (YDeltaKey > 0.0f)
                     return YDeltaKey -= engine->Game_Clock.get_DeltaTime();
-                else if (YDeltaKey < 0.0f )
+                else if (YDeltaKey < 0.0f)
                     return YDeltaKey += engine->Game_Clock.get_DeltaTime();
                 else
                     return (YDeltaKey = 0.0f);
             }
         }
+
+        return 0.0f;
     }
 
     bool LogicalInput::LockCursor(CursorLockMode Mode)

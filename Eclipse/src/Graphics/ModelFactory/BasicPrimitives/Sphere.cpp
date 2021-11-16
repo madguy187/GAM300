@@ -24,7 +24,7 @@ void Sphere::InsertPosVtx()
     for (int stack = 0; stack <= 32; ++stack)
     {
         float row = static_cast<float>(stack) / 32;
-        float beta = static_cast<float>(M_PI * (row - 0.5f));
+        float beta = static_cast<float>(M_PI * (static_cast<double>(row) - 0.5f));
 
         for (int slice = 0; slice <= 32; ++slice)
         {

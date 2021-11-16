@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<Entities Size="23">
+<Entities Size="25">
     <Entity_0 ID="8">
         <CameraComponent>
             <eyeAlpha value="0" />
@@ -7,20 +7,20 @@
             <fov value="40" />
             <nearPlane value="0.1" />
             <farPlane value="300" />
-            <aspect value="2.20281" />
-            <eyePos x="-2.86575" y="6.46961" z="-2.26259" />
-            <eyeFront x="0.869145" y="2.73375e-05" z="-0.494558" />
-            <upVec x="-2.37603e-05" y="1" z="1.352e-05" />
-            <rightVec x="0.494558" y="-0" z="0.869145" />
+            <aspect value="1.90722" />
+            <eyePos x="-4.99724" y="4.49999" z="-2.10081" />
+            <eyeFront x="1" y="0" z="0" />
+            <upVec x="0" y="1" z="0" />
+            <rightVec x="0" y="0" z="1" />
             <worldUp x="0" y="1" z="0" />
             <viewMtx Col="4" Row="4">
-                <Col0 _00="0.494558" _01="-2.36231e-05" _02="-0.869145" _03="0" />
-                <Col1 _10="9.09495e-13" _11="1" _12="-2.71797e-05" _13="0" />
-                <Col2 _20="0.869145" _21="1.34419e-05" _22="0.494558" _23="0" />
-                <Col3 _30="3.3838" _31="-6.46965" _32="-1.3716" _33="1" />
+                <Col0 _00="0" _01="0" _02="-1" _03="0" />
+                <Col1 _10="0" _11="1" _12="-0" _13="0" />
+                <Col2 _20="1" _21="0" _22="-0" _23="0" />
+                <Col3 _30="2.10081" _31="-4.49999" _32="-4.99724" _33="1" />
             </viewMtx>
             <projMtx Col="4" Row="4">
-                <Col0 _00="1.24726" _01="0" _02="0" _03="0" />
+                <Col0 _00="1.44057" _01="0" _02="0" _03="0" />
                 <Col1 _10="0" _11="2.74748" _12="0" _13="0" />
                 <Col2 _20="0" _21="0" _22="-1.00067" _23="-1" />
                 <Col3 _30="0" _31="0" _32="-0.200067" _33="0" />
@@ -34,28 +34,20 @@
             <Name value="GameCamera" />
             <LayerIndex value="0" />
             <IsVisible value="true" />
-            <hightLightChild value="false" />
+            <hightLightChild value="true" />
             <ImguiIndentValue value="20" />
         </EntityComponent>
-        <ChildComponent>
-            <parentIndex value="29" />
-            <PosOffset x="0" y="2.96962" z="0" />
-            <RotOffset x="0" y="0" z="0" />
-            <ScaleOffset x="2" y="1.25" z="2" />
-            <hasParent value="true" />
-            <IsAChild value="true" />
-        </ChildComponent>
         <TransformComponent>
-            <position x="-2.86575" y="6.46961" z="-2.26259" />
-            <rotation x="0.00156633" y="-29.6406" z="-0.00109478" />
+            <position x="-4.99724" y="4.49999" z="-2.10081" />
+            <rotation x="0" y="0" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_0>
-    <Entity_1 ID="9">
+    <Entity_1 ID="7">
         <DirectionalLightComponent>
             <Counter value="0" />
             <visible value="false" />
-            <AffectsWorld value="true" />
+            <AffectsWorld value="false" />
             <EnableBlinnPhong value="true" />
             <lightColor x="1" y="1" z="1" />
             <Direction x="-10" y="-10" z="-10" />
@@ -63,7 +55,7 @@
             <diffuse x="0.4" y="0.4" z="0.4" />
             <specular x="0.5" y="0.5" z="0.5" />
             <Color x="1" y="1" z="1" w="1" />
-            <AmbientSettings x="0.023" y="0.023" z="0.023" />
+            <AmbientSettings x="0.005" y="0.005" z="0.005" />
         </DirectionalLightComponent>
         <EntityComponent>
             <Tag value="DirectionalLight" />
@@ -80,7 +72,7 @@
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_1>
-    <Entity_2 ID="10">
+    <Entity_2 ID="9">
         <AABBComponent>
             <center x="1.3029e-15" y="0" z="-7.62939e-06" />
             <Min x="-12.5" y="-12.5" z="-12.5" />
@@ -110,7 +102,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Floor" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="121" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Floor" Handle="111" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -148,7 +140,7 @@
             <scale x="25" y="25" z="25" />
         </TransformComponent>
     </Entity_2>
-    <Entity_3 ID="11">
+    <Entity_3 ID="10">
         <AABBComponent>
             <center x="-2.84959" y="2.31272" z="-7.7307" />
             <Min x="-6.84959" y="-1.68728" z="-11.7307" />
@@ -178,7 +170,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Bed" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="114" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Bed" Handle="102" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -207,7 +199,7 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <CollisionComponent>
-            <shape Shape="Px_CUBE" Hx="2" Hy="2" Hz="4" Radius="1" Hheight="1" />
+            <shape Shape="Px_CUBE" Hx="2" Hy="0.8" Hz="4" Radius="1" Hheight="1" />
             <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
@@ -216,7 +208,7 @@
             <scale x="8" y="8" z="8" />
         </TransformComponent>
     </Entity_3>
-    <Entity_4 ID="12">
+    <Entity_4 ID="11">
         <AABBComponent>
             <center x="-2.78916" y="3.1104" z="-10.3901" />
             <Min x="-4.28916" y="2.1104" z="-11.8901" />
@@ -246,7 +238,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Bed_Pillow" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="123" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/BedPillow" Handle="103" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -275,7 +267,7 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <CollisionComponent>
-            <shape Shape="Px_CUBE" Hx="1.5" Hy="1" Hz="1.5" Radius="1" Hheight="1" />
+            <shape Shape="Px_CUBE" Hx="1.5" Hy="0.4" Hz="1.5" Radius="1" Hheight="1" />
             <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
@@ -284,7 +276,7 @@
             <scale x="3" y="2" z="3" />
         </TransformComponent>
     </Entity_4>
-    <Entity_5 ID="13">
+    <Entity_5 ID="12">
         <AABBComponent>
             <center x="0" y="2.57764" z="-12.2631" />
             <Min x="-12.5" y="-9.92236" z="-14.7631" />
@@ -314,7 +306,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Wall" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="129" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Wall" Handle="128" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -352,7 +344,7 @@
             <scale x="25" y="25" z="5" />
         </TransformComponent>
     </Entity_5>
-    <Entity_6 ID="14">
+    <Entity_6 ID="13">
         <AABBComponent>
             <center x="-7.7846e-07" y="2.57764" z="3.38236" />
             <Min x="-12.5" y="-9.92236" z="0.88236" />
@@ -382,7 +374,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Wall" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="129" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Wall" Handle="128" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -420,7 +412,7 @@
             <scale x="25" y="25" z="5" />
         </TransformComponent>
     </Entity_6>
-    <Entity_7 ID="15">
+    <Entity_7 ID="14">
         <AABBComponent>
             <center x="-6.66555" y="3.19003" z="-10.2245" />
             <Min x="-9.16555" y="0.69003" z="-12.7245" />
@@ -450,7 +442,7 @@
             <TextureRef value="Default" />
             <TextureKey value="UV_Drip_Object" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="125" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/IV_Drip" Handle="118" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -488,7 +480,7 @@
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_7>
-    <Entity_8 ID="16">
+    <Entity_8 ID="15">
         <AABBComponent>
             <center x="0.957961" y="2.63336" z="-6.45751" />
             <Min x="-1.04204" y="0.63336" z="-8.45751" />
@@ -518,7 +510,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Chair" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="117" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Chair" Handle="106" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -556,7 +548,7 @@
             <scale x="4" y="4" z="4" />
         </TransformComponent>
     </Entity_8>
-    <Entity_9 ID="17">
+    <Entity_9 ID="16">
         <AABBComponent>
             <center x="9.75796" y="2.05899" z="-7.91292" />
             <Min x="5.75796" y="-1.94101" z="-11.9129" />
@@ -586,7 +578,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Long_Table" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="126" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Long_Table" Handle="119" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -615,7 +607,7 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <CollisionComponent>
-            <shape Shape="Px_CUBE" Hx="2" Hy="2" Hz="4" Radius="1" Hheight="1" />
+            <shape Shape="Px_CUBE" Hx="2" Hy="1.5" Hz="4" Radius="1" Hheight="1" />
             <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
@@ -624,7 +616,7 @@
             <scale x="8" y="8" z="8" />
         </TransformComponent>
     </Entity_9>
-    <Entity_10 ID="18">
+    <Entity_10 ID="17">
         <AABBComponent>
             <center x="-2.76822" y="5.75485" z="2.69095" />
             <Min x="-5.26822" y="3.25485" z="0.19095" />
@@ -654,7 +646,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Wall_TV.001" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="128" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/TV" Handle="126" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -682,17 +674,13 @@
             <type value="MT_UNASSIGNED" />
             <ComboIndex value="0" />
         </ModelComponent>
-        <CollisionComponent>
-            <shape Shape="Px_CUBE" Hx="2.5" Hy="2.5" Hz="1" Radius="1" Hheight="1" />
-            <isTrigger value="false" />
-        </CollisionComponent>
         <TransformComponent>
             <position x="-2.76822" y="5.75485" z="2.69095" />
             <rotation x="0" y="180" z="0" />
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_10>
-    <Entity_11 ID="19">
+    <Entity_11 ID="18">
         <AABBComponent>
             <center x="12.3108" y="4.62441" z="-0.529492" />
             <Min x="8.3108" y="0.62441" z="-4.52949" />
@@ -722,7 +710,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Sliding_Door" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="119" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Door" Handle="107" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -760,7 +748,7 @@
             <scale x="8" y="8" z="8" />
         </TransformComponent>
     </Entity_11>
-    <Entity_12 ID="20">
+    <Entity_12 ID="19">
         <AABBComponent>
             <center x="0.998435" y="2.09733" z="-10.4349" />
             <Min x="-0.501565" y="0.59733" z="-11.9349" />
@@ -790,7 +778,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Small_Drawer_1" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="113" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Drawer_1" Handle="108" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -828,7 +816,7 @@
             <scale x="3" y="3" z="3" />
         </TransformComponent>
     </Entity_12>
-    <Entity_13 ID="21">
+    <Entity_13 ID="20">
         <AABBComponent>
             <center x="0.999953" y="2.08132" z="-10.262" />
             <Min x="-0.250047" y="0.83132" z="-11.512" />
@@ -858,7 +846,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Small_Drawer_2" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="122" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Drawer_2" Handle="109" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -896,7 +884,7 @@
             <scale x="2.5" y="2.5" z="2.5" />
         </TransformComponent>
     </Entity_13>
-    <Entity_14 ID="22">
+    <Entity_14 ID="21">
         <AABBComponent>
             <center x="12.2792" y="4.57631" z="-8.51461" />
             <Min x="8.2792" y="-0.42369" z="-12.5146" />
@@ -926,7 +914,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Wall_Window" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="130" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Wall_Window" Handle="129" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -964,7 +952,7 @@
             <scale x="8" y="10" z="8" />
         </TransformComponent>
     </Entity_14>
-    <Entity_15 ID="23">
+    <Entity_15 ID="22">
         <AABBComponent>
             <center x="1.3029e-15" y="9.15227" z="-7.62939e-06" />
             <Min x="-12.5" y="-3.34773" z="-12.5" />
@@ -994,7 +982,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Floor" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="121" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Floor" Handle="111" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -1032,11 +1020,11 @@
             <scale x="25" y="25" z="25" />
         </TransformComponent>
     </Entity_15>
-    <Entity_16 ID="24">
+    <Entity_16 ID="23">
         <AABBComponent>
             <center x="-12.3014" y="2.57764" z="0.19436" />
-            <Min x="-24.8014" y="-9.92236" z="-1.05564" />
-            <Max x="0.1986" y="15.0776" z="1.44436" />
+            <Min x="-24.8014" y="-9.92236" z="-0.30564" />
+            <Max x="0.1986" y="15.0776" z="0.69436" />
         </AABBComponent>
         <EntityComponent>
             <Tag value="Model" />
@@ -1062,7 +1050,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Wall" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="121" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Wall" Handle="128" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -1097,10 +1085,10 @@
         <TransformComponent>
             <position x="-12.3014" y="2.57764" z="0.19436" />
             <rotation x="0" y="90" z="0" />
-            <scale x="25" y="25" z="2.5" />
+            <scale x="25" y="25" z="1" />
         </TransformComponent>
     </Entity_16>
-    <Entity_17 ID="25">
+    <Entity_17 ID="24">
         <AABBComponent>
             <center x="12.3086" y="2.57764" z="-3.50831" />
             <Min x="11.3086" y="-9.92236" z="-6.00831" />
@@ -1130,7 +1118,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Wall" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="121" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Wall" Handle="128" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -1168,7 +1156,7 @@
             <scale x="2" y="25" z="5" />
         </TransformComponent>
     </Entity_17>
-    <Entity_18 ID="26">
+    <Entity_18 ID="25">
         <AABBComponent>
             <center x="12.3086" y="2.57764" z="2.46686" />
             <Min x="11.3086" y="-9.92236" z="-0.0331399" />
@@ -1198,7 +1186,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Wall" />
             <HoldingTextures size="1">
-                <Member0 Type="3435973836" Directory="" Handle="121" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Wall" Handle="128" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -1236,7 +1224,7 @@
             <scale x="2" y="25" z="5" />
         </TransformComponent>
     </Entity_18>
-    <Entity_19 ID="27">
+    <Entity_19 ID="26">
         <AABBComponent>
             <center x="0.831014" y="4.97704" z="-12.0843" />
             <Min x="-0.418986" y="3.72704" z="-13.0843" />
@@ -1266,7 +1254,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Poster" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Poster" Handle="105" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Poster" Handle="123" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -1304,7 +1292,7 @@
             <scale x="2.5" y="2.5" z="2" />
         </TransformComponent>
     </Entity_19>
-    <Entity_20 ID="28">
+    <Entity_20 ID="27">
         <AABBComponent>
             <center x="11.0075" y="3.9781" z="-4.78025" />
             <Min x="10.6075" y="3.4781" z="-5.18025" />
@@ -1334,7 +1322,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Vase.001" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Vase" Handle="109" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Vase" Handle="127" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -1372,11 +1360,11 @@
             <scale x="0.8" y="1" z="0.8" />
         </TransformComponent>
     </Entity_20>
-    <Entity_21 ID="29">
+    <Entity_21 ID="28">
         <AABBComponent>
-            <center x="-2.86579" y="3.49999" z="-2.26272" />
-            <Min x="-4.11579" y="1.49999" z="-3.51272" />
-            <Max x="-1.61579" y="5.49999" z="-1.01272" />
+            <center x="-8.47124" y="3.49999" z="0.014161" />
+            <Min x="-9.72124" y="1.49999" z="-1.23584" />
+            <Max x="-7.22124" y="5.49999" z="1.26416" />
         </AABBComponent>
         <EntityComponent>
             <Tag value="Cylinder" />
@@ -1429,7 +1417,7 @@
             <ComboIndex value="0" />
         </ModelComponent>
         <RigidBodyComponent>
-            <velocity x="-0.000339892" y="-0.000397921" z="0.000886979" />
+            <velocity x="0.002094" y="-0.000482008" z="0.00275995" />
             <Angvelocity x="0" y="0" z="0" />
             <MaxVelocity value="10" />
             <mass value="200" />
@@ -1440,37 +1428,32 @@
             <enableRotation value="false" />
         </RigidBodyComponent>
         <ScriptComponent>
-            <scriptList size="1">
+            <scriptList size="2">
                 <Member0 ScriptName="Test">
-                    <MonoVariables size="1">
-                        <Member0 Type="MONO_GAMEOBJECT" Name="obj" Value="8" />
+                    <MonoVariables size="4">
+                        <Member0 Type="MONO_GAMEOBJECT" Name="hand" Value="30" />
+                        <Member1 Type="MONO_GAMEOBJECT" Name="obj" Value="8" />
+                        <Member2 Type="MONO_GAMEOBJECT" Name="camera_obj" Value="8" />
+                        <Member3 Type="MONO_LAYERMASK" Name="mask" Value="1000" />
                     </MonoVariables>
                 </Member0>
+                <Member1 ScriptName="Test2">
+                    <MonoVariables size="0" />
+                </Member1>
             </scriptList>
             <LayerMask value="00000000000000000011" />
         </ScriptComponent>
-        <ParentComponent>
-            <child size="1">
-                <Member0 value="8" />
-            </child>
-            <model Col="4" Row="4">
-                <Col0 _00="0.869145" _01="-3.26275e-05" _02="0.494558" _03="0" />
-                <Col1 _10="1.66071e-05" _11="1" _12="3.67873e-05" _13="0" />
-                <Col2 _20="-0.494558" _21="-2.37603e-05" _22="0.869145" _23="0" />
-                <Col3 _30="-2.8658" _31="3.49999" _32="-2.2627" _33="1" />
-            </model>
-        </ParentComponent>
         <CollisionComponent>
             <shape Shape="Px_CUBE" Hx="1" Hy="2.5" Hz="1" Radius="1" Hheight="1" />
             <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
-            <position x="-2.8658" y="3.49999" z="-2.2627" />
-            <rotation x="0.00156633" y="-29.6406" z="-0.00109478" />
+            <position x="-8.47124" y="3.49999" z="0.014161" />
+            <rotation x="0" y="0" z="0" />
             <scale x="2.5" y="4" z="2.5" />
         </TransformComponent>
     </Entity_21>
-    <Entity_22 ID="30">
+    <Entity_22 ID="29">
         <AABBComponent>
             <center x="8.41758" y="4.26927" z="-0.382856" />
             <Min x="6.34258" y="2.19427" z="-2.45786" />
@@ -1544,4 +1527,143 @@
             <scale x="4.15" y="4.15" z="4.15" />
         </TransformComponent>
     </Entity_22>
+    <Entity_23 ID="30">
+        <AABBComponent>
+            <center x="-6.19715" y="4.82622" z="-3.58776" />
+            <Min x="-6.69715" y="4.32622" z="-4.08776" />
+            <Max x="-5.69715" y="5.32622" z="-3.08776" />
+        </AABBComponent>
+        <EntityComponent>
+            <Tag value="Model" />
+            <Name value="Hand" />
+            <LayerIndex value="0" />
+            <IsVisible value="true" />
+            <hightLightChild value="false" />
+            <ImguiIndentValue value="20" />
+        </EntityComponent>
+        <MaterialComponent>
+            <Modeltype value="Models3D" />
+            <ambient x="0" y="0" z="0" />
+            <diffuse x="1" y="1" z="1" />
+            <specular x="1" y="1" z="1" />
+            <NoTextures value="true" />
+            <shininess value="0.25" />
+            <MaximumShininess value="128" />
+            <IsNormalMap value="false" />
+            <ComboIndex value="1" />
+            <TextureComboIndex value="0" />
+            <Type value="TT_UNASSIGNED" />
+            <hasTexture value="false" />
+            <TextureRef value="Default" />
+            <TextureKey value="" />
+            <HoldingTextures size="0" />
+            <HasMaterialIstance value="false" />
+            <MaterialInstanceName value="" />
+        </MaterialComponent>
+        <MeshComponent>
+            <MeshName value="hand" />
+            <color x="1" y="1" z="1" />
+            <textureIdx x="0" y="0" />
+            <isQuad value="false" />
+            <modelNDC_xform Col="4" Row="4">
+                <Col0 _00="0" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="0" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="0" _23="0" />
+                <Col3 _30="0" _31="0" _32="0" _33="0" />
+            </modelNDC_xform>
+            <modelRef value="Cube" />
+            <shaderRef value="shader3DShdrpgm" />
+            <transparency value="0.5" />
+            <ENV_MAP value="false" />
+            <ENV_TYPE value="MT_REFLECT" />
+        </MeshComponent>
+        <ModelComponent>
+            <NameOfModel value="" />
+            <Directory value="" />
+            <type value="MT_UNASSIGNED" />
+            <ComboIndex value="0" />
+        </ModelComponent>
+        <TransformComponent>
+            <position x="-6.19715" y="4.82622" z="-3.58776" />
+            <rotation x="0" y="-90" z="0" />
+            <scale x="1" y="1" z="1" />
+        </TransformComponent>
+    </Entity_23>
+    <Entity_24 ID="31">
+        <AABBComponent>
+            <center x="-3.79099" y="3.59508" z="-6.04363" />
+            <Min x="-4.29099" y="3.09508" z="-6.54363" />
+            <Max x="-3.29099" y="4.09508" z="-5.54363" />
+        </AABBComponent>
+        <EntityComponent>
+            <Tag value="Cube" />
+            <Name value="Cube" />
+            <LayerIndex value="3" />
+            <IsVisible value="true" />
+            <hightLightChild value="false" />
+            <ImguiIndentValue value="20" />
+        </EntityComponent>
+        <MaterialComponent>
+            <Modeltype value="Models3D" />
+            <ambient x="0" y="0" z="0" />
+            <diffuse x="1" y="1" z="1" />
+            <specular x="1" y="1" z="1" />
+            <NoTextures value="true" />
+            <shininess value="0.25" />
+            <MaximumShininess value="128" />
+            <IsNormalMap value="false" />
+            <ComboIndex value="1" />
+            <TextureComboIndex value="0" />
+            <Type value="TT_UNASSIGNED" />
+            <hasTexture value="false" />
+            <TextureRef value="Default" />
+            <TextureKey value="" />
+            <HoldingTextures size="0" />
+            <HasMaterialIstance value="false" />
+            <MaterialInstanceName value="" />
+        </MaterialComponent>
+        <MeshComponent>
+            <MeshName value="Cube" />
+            <color x="1" y="1" z="1" />
+            <textureIdx x="0" y="0" />
+            <isQuad value="false" />
+            <modelNDC_xform Col="4" Row="4">
+                <Col0 _00="0" _01="0" _02="0" _03="0" />
+                <Col1 _10="0" _11="0" _12="0" _13="0" />
+                <Col2 _20="0" _21="0" _22="0" _23="0" />
+                <Col3 _30="0" _31="0" _32="0" _33="0" />
+            </modelNDC_xform>
+            <modelRef value="Cube" />
+            <shaderRef value="shader3DShdrpgm" />
+            <transparency value="1" />
+            <ENV_MAP value="false" />
+            <ENV_TYPE value="MT_REFLECT" />
+        </MeshComponent>
+        <ModelComponent>
+            <NameOfModel value="" />
+            <Directory value="" />
+            <type value="MT_UNASSIGNED" />
+            <ComboIndex value="0" />
+        </ModelComponent>
+        <RigidBodyComponent>
+            <velocity x="0" y="0" z="0" />
+            <Angvelocity x="0" y="0" z="0" />
+            <MaxVelocity value="10" />
+            <mass value="1" />
+            <drag value="0" />
+            <angdrag value="0" />
+            <_Kinematic value="false" />
+            <enableGravity value="true" />
+            <enableRotation value="false" />
+        </RigidBodyComponent>
+        <CollisionComponent>
+            <shape Shape="Px_CUBE" Hx="0.5" Hy="0.5" Hz="0.5" Radius="1" Hheight="1" />
+            <isTrigger value="false" />
+        </CollisionComponent>
+        <TransformComponent>
+            <position x="-3.79099" y="3.59508" z="-6.04363" />
+            <rotation x="0" y="0" z="0" />
+            <scale x="1" y="1" z="1" />
+        </TransformComponent>
+    </Entity_24>
 </Entities>

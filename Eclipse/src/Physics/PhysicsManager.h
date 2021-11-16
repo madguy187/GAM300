@@ -8,10 +8,10 @@ namespace Eclipse
 	using namespace physx;
 	struct EC_Actor
 	{
-		PxActor* actor;
-		ActorType type;
-		Entity ID;
-		bool InScene;
+		PxActor* actor = nullptr;
+		ActorType type = ActorType::ACTOR_UNASSIGNED;
+		Entity ID = MAX_ENTITY;
+		bool InScene = false;
 	};
 
 	//PxFilterFlags contactReportFilterShader(PxFilterObjectAttributes attributes0, PxFilterData filterData0,

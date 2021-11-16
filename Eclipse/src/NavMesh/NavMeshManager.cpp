@@ -155,7 +155,7 @@ namespace Eclipse
 		GetVertsandTrisOnScene(verts, tris);
 
 		rc_nverts = static_cast<unsigned int>(verts.size());
-		rc_verts = new float[rc_nverts * 3];
+		rc_verts = new float[static_cast<size_t>(rc_nverts) * 3];
 		for (nLoop = 0; nLoop < rc_nverts; nLoop++)
 		{
 			rc_verts[nLoop * 3 + 0] = verts[nLoop].getX();
@@ -170,8 +170,8 @@ namespace Eclipse
 
 
 		rc_ntris = static_cast<unsigned int>(tris.size());
-		rc_tris = new int[rc_ntris * 3];
-		rc_trinorms = new float[rc_ntris * 3];
+		rc_tris = new int[static_cast<size_t>(rc_ntris) * 3];
+		rc_trinorms = new float[static_cast<size_t>(rc_ntris) * 3];
 		int nTriCount = 0;
 		for (nLoop = 0; nLoop < rc_ntris; nLoop++)
 		{

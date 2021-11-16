@@ -9,6 +9,7 @@ namespace Eclipse
 
         // Seperate FBO for Post Process
         std::unique_ptr<FrameBuffer> PostProcess;
+        std::unique_ptr<FrameBuffer> Bloom;
 
         FrameBufferManager() {};
         void FrameBufferDraw();
@@ -34,6 +35,7 @@ namespace Eclipse
         void CreateFBO(unsigned int Height, unsigned int Width, FrameBufferMode in);
 
         void PostProcessUpdate();
+        void BloomUpdate(FrameBufferMode);
         bool IsSobelEffect();
         void Reset();
         void SetSobelEffect();
@@ -43,5 +45,7 @@ namespace Eclipse
         void FadeIn(FrameBuffer::PostProcessType Type, float& timer, float multiplier, FrameBufferMode WhichFBO);
         void PostProcessUpdate(FrameBufferMode);
         void SobelEffectUpdate(FrameBufferMode TargetFBO, FrameBufferMode RenderFBO);
+
+        bool horizontal = true, first_iteration = true;
     };
 }

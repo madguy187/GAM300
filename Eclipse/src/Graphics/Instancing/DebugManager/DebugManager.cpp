@@ -97,12 +97,12 @@ namespace Eclipse
                 {
                     glm::vec3 RadiusScale = glm::vec3{ BodyShape.shape.radius, BodyShape.shape.radius ,  BodyShape.shape.radius };
 
-                    glm::mat4 model = glm::mat4(1.0f);
-                    model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
-                    model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-                    model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-                    model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-                    model = glm::scale(model, RadiusScale);
+                    glm::mat4 model1 = glm::mat4(1.0f);
+                    model = glm::translate(model1, Transform.position.ConvertToGlmVec3Type());
+                    model = glm::rotate(model1, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
+                    model = glm::rotate(model1, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
+                    model = glm::rotate(model1, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+                    model = glm::scale(model1, RadiusScale);
 
                     engine->gDebugDrawManager->DebugSpheres.Addinstance(model);
                 }

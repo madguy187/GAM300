@@ -8,7 +8,10 @@ namespace Eclipse
 	Serializer SerializationManager::sz;
 	Deserializer SerializationManager::dsz;
 
-	SerializationManager::SerializationManager() {}
+	SerializationManager::SerializationManager() 
+	{
+		std::filesystem::create_directories("Config");
+	}
 
 	void SerializationManager::Backup::SaveBackup(Serializer& targetSz)
 	{
@@ -102,7 +105,9 @@ namespace Eclipse
 				if (!PrefabUse)
 				{
 					pUpdate.RegisterForPostUpdate(w, oldEnt, ent);
-					engine->editorManager->RegisterExistingEntity(ent);
+
+					if (engine->GetEditorState())
+						engine->editorManager->RegisterExistingEntity(ent);
 				}
 			}
 			dsz.CloseElement();
@@ -202,6 +207,82 @@ namespace Eclipse
 
 	SerializationManager::~SerializationManager()
 	{
+	}
+
+	void SerializationManager::SaveEngineConfig(const std::string& windowName, const int& windowWidth,
+		const int& windowHeight, const bool& editorState, const bool& isFullscreen)
+	{
+		sz.StartElement("EngineConfig");
+		{
+			sz.StartElement("Window");
+			{
+				sz.AddAttributeToElement("Name", windowName);
+				sz.AddAttributeToElement("Width", windowWidth);
+				sz.AddAttributeToElement("Height", windowHeight);
+				sz.CloseElement();
+			}
+
+			sz.StartElement("EditorState");
+			{
+				sz.AddAttributeToElement("Bool", editorState);
+				sz.CloseElement();
+			}
+
+			sz.StartElement("VSYNC");
+			{
+				sz.AddAttributeToElement("Bool", false);
+				sz.CloseElement();
+			}
+
+			sz.StartElement("Fullscreen");
+			{
+				sz.AddAttributeToElement("Bool", isFullscreen);
+				sz.CloseElement();
+			}
+			
+			sz.CloseElement();
+		}
+		SaveFile("Config\\Engine.cfg");
+	}
+
+	void SerializationManager::SaveDefaultEngineConfig()
+	{
+		SaveEngineConfig();
+	}
+
+	void SerializationManager::LoadEngineConfig(std::string& windowName, int& windowWidth, int& windowHeight, bool& editorState, bool& isFullscreen)
+	{
+		if (LoadFile("Config\\Engine.cfg"))
+		{
+			if(dsz.StartElement("EngineConfig"))
+			{
+				if (dsz.StartElement("Window"))
+				{
+					dsz.ReadAttributeFromElement("Name", windowName);
+					dsz.ReadAttributeFromElement("Width", windowWidth);
+					dsz.ReadAttributeFromElement("Height", windowHeight);
+					dsz.CloseElement();
+				}
+
+				if (dsz.StartElement("EditorState"))
+				{
+					dsz.ReadAttributeFromElement("Bool", editorState);
+					dsz.CloseElement();
+				}
+
+				if (dsz.StartElement("Fullscreen"))
+				{
+					dsz.ReadAttributeFromElement("Bool", isFullscreen);
+					dsz.CloseElement();
+				}
+
+				dsz.CloseElement();
+			}
+		}
+		else
+		{
+			SaveDefaultEngineConfig();
+		}
 	}
 
 	void SerializationManager::SaveSceneFile(const char* fullpath)

@@ -14,7 +14,7 @@ namespace Eclipse
 
 		sLogCrash = spdlog::basic_logger_mt("Crash Report", "Logs/Crash Report.txt");
 		spdlog::set_default_logger(sLogCrash);
-		spdlog::flush_on(spdlog::level::err);
+		spdlog::flush_on(spdlog::level::critical);
 	}
 
 	std::shared_ptr<spdlog::logger>& Log::GetConsoleLogger()

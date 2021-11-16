@@ -1,8 +1,13 @@
 #version 450 core
-out vec4 FragColor;
+layout (location = 0) out vec4 FragColor;
+layout (location = 1) out vec4 BrightColor;
+
 in vec2 TexCoords;
 in vec3 WorldPos;
 in vec3 Normal;
+
+uniform bool EmissiveMaterial;
+uniform vec3 EmissiveColour;
 
 // material parameters
 uniform sampler2D albedoMap;
@@ -107,7 +112,21 @@ void main()
     vec3 N;
     vec3 V = normalize(camPos - WorldPos);
     //vec3 N = getNormalFromMap(); // no normal map can use vec3(0.1) or we normalize 
-     
+    
+    if(EmissiveMaterial == true)
+    {
+      FragColor = vec4(EmissiveColour, 1.0);
+      
+      float brightness = dot(FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+      if(brightness > 1.0)
+          BrightColor = vec4(FragColor.rgb, 1.0);
+	  else
+	  	BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
+
+    }
+    else
+    {
+
     // Variables that control parallax occlusion mapping quality
 //	float heightScale = HeightScale;
 //	const float minLayers = 8.0f;
@@ -234,5 +253,6 @@ void main()
           color = color / (color + vec3(1.0));
           color = pow(color, vec3(1.0/2.2)); 
           FragColor = vec4(color, 1.0);      
+        }
         }
 }

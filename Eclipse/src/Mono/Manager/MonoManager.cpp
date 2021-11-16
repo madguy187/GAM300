@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "MonoManager.h"
 
+#include <locale>
+#include <codecvt>
+
 #include <mono/metadata/mono-config.h>
 #include <mono/metadata/threads.h>
 #include <mono/metadata/assembly.h>
@@ -101,6 +104,7 @@ namespace Eclipse
 		mono_add_internal_call("Eclipse.Input::GetKey", GetKeyCurrentByKeyCode);
 		mono_add_internal_call("Eclipse.Input::GetAxis", GetMouseAxis);
 		mono_add_internal_call("Eclipse.Input::GetAxisRaw", GetRawMouseAxis);
+		mono_add_internal_call("Eclipse.Input::LockCamera", SetCameraState);
 
 		// Time Internal Calls
 		mono_add_internal_call("Eclipse.Time::getDeltaTime", GetDeltaTime);
@@ -193,6 +197,14 @@ namespace Eclipse
 					CreateGameObjectClass(std::strtoul(var.varValue.c_str(), 0, 10), "")
 				);
 			}
+			else if (var.type == m_Type::MONO_LAYERMASK)
+			{
+				mono_field_set_value(
+					script->obj,
+					mono_class_get_field_from_name(klass, var.varName.c_str()),
+					CreateLayerMaskClass(var.varValue)
+				);
+			}
 			else
 			{
 				ENGINE_CORE_INFO("Variable type cannot be added because it is not recognised.");
@@ -232,6 +244,7 @@ namespace Eclipse
 
 	void MonoManager::LoadAllScripts()
 	{
+		if (!CheckIfScriptCompiled()) return;
 		const MonoTableInfo* table_info = mono_image_get_table_info(ScriptImage, MONO_TABLE_TYPEDEF);
 
 		int rows = mono_table_info_get_rows(table_info);
@@ -242,19 +255,55 @@ namespace Eclipse
 			uint32_t cols[MONO_TYPEDEF_SIZE];
 			mono_metadata_decode_row(table_info, i, cols, MONO_TYPEDEF_SIZE);
 			const char* name = mono_metadata_string_heap(ScriptImage, cols[MONO_TYPEDEF_NAME]);
-			if (CheckIfScriptExist(name)) continue;
-			UserImplementedScriptList.push_back(MonoScript{});
-			UserImplementedScriptList.back().scriptName = name;
-			LoadAllFields(&UserImplementedScriptList.back());
+
+			int index = CheckIfScriptExist(name);
+			if (index == -1)
+			{
+				UserImplementedScriptList.push_back(MonoScript{});
+				UserImplementedScriptList.back().scriptName = name;
+				LoadAllFields(&UserImplementedScriptList.back());
+			}
+			else
+				LoadAllFields(&UserImplementedScriptList[index]);
 		}
 	}
 
-	bool MonoManager::CheckIfScriptExist(std::string scriptName)
+	bool MonoManager::CheckIfScriptCompiled()
 	{
-		for (auto& script : UserImplementedScriptList)
-			if (script.scriptName == scriptName) return true;
-		
+		TCHAR buffer[MAX_PATH] = { 0 };
+		GetModuleFileName(NULL, buffer, MAX_PATH); // get exe buff
+		std::wstring wBuffer{ buffer }; // convert buffer into wstring
+		std::string exePath{ wBuffer.begin(), wBuffer.end() }; // convert wstring into string
+
+		// removes path from bin onwards
+		size_t index = exePath.find("bin");
+		if (index == exePath.npos) return false;
+		exePath = exePath.substr(0, index);
+
+		// combine strings to make api and script path
+		std::string outputTxtFile = exePath + "Eclipse//mcs_script_output.txt";
+
+		const std::ifstream input_stream(outputTxtFile, std::ios_base::binary);
+
+		if (input_stream.fail()) {
+			return true;
+		}
+
+		std::stringstream streambuffer;
+		streambuffer << input_stream.rdbuf();
+		std::string output{ streambuffer.str() };
+
+		if (output.find("succeed") != output.npos) return true;
+
 		return false;
+	}
+
+	int MonoManager::CheckIfScriptExist(std::string scriptName)
+	{
+		for (int i = 0; i < UserImplementedScriptList.size(); i++)
+			if (UserImplementedScriptList[i].scriptName == scriptName) return i;
+		
+		return -1;
 	}
 
 	void MonoManager::LoadAllFields(MonoScript* script)
@@ -265,6 +314,8 @@ namespace Eclipse
 		MonoClass* attrKlass = mono_class_from_name(engine->mono.GetAPIImage(), "", "Header");
 		MonoClassField* field;
 		void* iter = NULL;
+
+		std::vector<std::string> fieldNameList;
 
 		while (true)
 		{
@@ -284,7 +335,9 @@ namespace Eclipse
 						var.type = m_Type::MONO_HEADER;
 						var.varName = GetStringFromField(attrObj, attrKlass, "name");
 
-						if (CheckIfFieldExist(script, var.varName, i))
+						fieldNameList.push_back(var.varName);
+
+						if (CheckIfFieldExist(script, var.varName))
 							i++;
 						else
 							script->vars.insert(script->vars.begin() + i++, var);
@@ -300,6 +353,7 @@ namespace Eclipse
 
 			int typeInt = mono_type_get_type(mono_field_get_type(field));
 			var.varName = mono_field_get_name(field);
+			fieldNameList.push_back(var.varName);
 
 			MonoClass* fieldklass = mono_type_get_class(mono_field_get_type(field));
 
@@ -309,7 +363,6 @@ namespace Eclipse
 				var.type = m_Type::MONO_FLOAT;
 				break;
 			case MONO_TYPE_VALUETYPE:
-				
 				if (fieldklass == GetAPIMonoClass("Light"))
 					var.type = m_Type::MONO_LIGHT;
 				else if (fieldklass == GetAPIMonoClass("AudioSource"))
@@ -320,23 +373,40 @@ namespace Eclipse
 			case MONO_TYPE_CLASS:
 				if (fieldklass == GetAPIMonoClass("GameObject"))
 					var.type = m_Type::MONO_GAMEOBJECT;
+				else if (fieldklass == GetAPIMonoClass("LayerMask"))
+				{
+					var.type = m_Type::MONO_LAYERMASK;
+					var.varValue = "11";
+				}
 				break;
 			}
 
-			if (!CheckIfFieldExist(script, var.varName, i))
+			if (!CheckIfFieldExist(script, var.varName))
 				script->vars.insert(script->vars.begin() + i, var);
 
 			i++;
-			
-			
 		}
+
+		// remove if
+		script->vars.erase(std::remove_if(script->vars.begin(),
+			script->vars.end(),
+			[&](const MonoVariable& var)-> bool
+			{
+				for (auto& name : fieldNameList)
+				{
+					if (name == var.varName) return false;
+				}
+				
+				return true;
+			}),
+			script->vars.end());
 	}
 
-	bool MonoManager::CheckIfFieldExist(MonoScript* script, std::string& fieldName, size_t index)
+	bool MonoManager::CheckIfFieldExist(MonoScript* script, std::string& fieldName)
 	{
-		if (index >= script->vars.size()) return false;
+		for (auto& var : script->vars)
+			if (var.varName == fieldName) return true;
 
-		if (script->vars[index].varName == fieldName) return true;
 		return false;
 	}
 
@@ -673,6 +743,24 @@ namespace Eclipse
 		return obj;
 	}
 
+	MonoObject* MonoManager::CreateLayerMaskClass(std::string mask)
+	{
+		if (mask.empty())
+			mask = "1";
+
+		MonoClass* klass = GetAPIMonoClass("LayerMask");
+		MonoObject* obj = CreateObjectFromClass(klass, false);
+
+		MonoString* str = mono_string_new(mono_domain_get(), mask.c_str());
+
+		std::vector<void*> args;
+		args.push_back(str);
+
+		ExecuteMethod(obj, GetMethodFromClass(klass, ".ctor", 1), args);
+
+		return obj;
+	}
+
 	std::string MonoManager::GetStringFromField(MonoObject* obj, MonoClass* klass, const char* fieldName)
 	{
 		MonoString* stringField;
@@ -773,8 +861,14 @@ namespace Eclipse
 
 		TCHAR buffer[MAX_PATH] = { 0 };
 		GetModuleFileName(NULL, buffer, MAX_PATH); // get exe buff
+
+
 		std::wstring wBuffer{ buffer }; // convert buffer into wstring
-		std::string exePath{ wBuffer.begin(), wBuffer.end() }; // convert wstring into string
+		//std::string exePath{ wBuffer.begin(), wBuffer.end() }; // convert wstring into string
+		std::string exePath;
+		std::transform(wBuffer.begin(), wBuffer.end(), std::back_inserter(exePath), [](wchar_t c) {
+			return (char)c;
+			});
 		std::string cmdCall = "cmd /C "; // string for command call
 
 		// removes path from bin onwards

@@ -48,7 +48,7 @@ namespace Eclipse
     void RenderManager::RenderGame(MeshComponent& Mesh, Entity entityID)
     {
         // If Game View is visible
-        if (engine->editorManager->GetEditorWindow<eGameViewWindow>()->IsVisible)
+        if (!engine->GetEditorState() || engine->editorManager->GetEditorWindow<eGameViewWindow>()->IsVisible)
         {
             // If activated , we render to FBM_GAME_SOBEL then in the FrameBufferManager , we render the texture back to FBM_GAME
             if (engine->gFrameBufferManager->IsSobelEffect())
@@ -57,13 +57,22 @@ namespace Eclipse
 
                 engine->AssimpManager.MeshDraw(Mesh, entityID,
                     FrameBufferMode::FBM_GAME_SOBEL,
-                    engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME_SOBEL),
+                    engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME),
                     CameraComponent::CameraType::Game_Camera);
             }
             else
             {
                 // If no post process , just render normally
                 engine->MaterialManager.DoNotUpdateStencil();
+
+                if (engine->LightManager.EnableShadows == true)
+                {
+                    auto& ShadowMappingShader = Graphics::shaderpgms["PBRShader"];
+                    ShadowMappingShader.Use();
+                    glActiveTexture(GL_TEXTURE0 + 2);
+                    ShadowMappingShader.setInt("shadowMap", 2);
+                    glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SHADOW));
+                }
 
                 engine->AssimpManager.MeshDraw(Mesh, entityID,
                     FrameBufferMode::FBM_GAME,
@@ -119,17 +128,20 @@ namespace Eclipse
 
     void RenderManager::UpdateLightMatrix()
     {
-        auto& DLight_T = engine->world.GetComponent<TransformComponent>(engine->LightManager.DirectionLightID);
+        if (engine->LightManager.EnableShadows)
+        {
+            auto& DLight_T = engine->world.GetComponent<TransformComponent>(engine->LightManager.DirectionLightID);
 
-        lightProjection = glm::ortho(-100.0f, 100.0f, 100.0f, -100.0f, near_plane, far_plane);
-        lightView = glm::lookAt(DLight_T.position.ConvertToGlmVec3Type(), glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
-        lightSpaceMatrix = lightProjection * lightView;
+            lightProjection = glm::ortho(-100.0f, 100.0f, 100.0f, -100.0f, near_plane, far_plane);
+            lightView = glm::lookAt(DLight_T.position.ConvertToGlmVec3Type(), glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+            lightSpaceMatrix = lightProjection * lightView;
 
-        auto& simpleDepthShader = Graphics::shaderpgms["SimpleDepthShader"];
-        simpleDepthShader.Use();
+            auto& simpleDepthShader = Graphics::shaderpgms["SimpleDepthShader"];
+            simpleDepthShader.Use();
 
-        GLint lightSpaceMatrix_ = simpleDepthShader.GetLocation("lightSpaceMatrix");
-        glUniformMatrix4fv(lightSpaceMatrix_, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+            GLint lightSpaceMatrix_ = simpleDepthShader.GetLocation("lightSpaceMatrix");
+            glUniformMatrix4fv(lightSpaceMatrix_, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+        }
     }
 
     void RenderManager::RenderSceneFromLightPOV(MeshComponent& Mesh, Entity entityID)
@@ -142,33 +154,5 @@ namespace Eclipse
     {
         engine->MaterialManager.DoNotUpdateStencil();
         engine->AssimpManager.RenderToDepth(Mesh, entityID, FrameBufferMode::FBM_SHADOW, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SHADOW), CameraComponent::CameraType::Game_Camera);
-    }
-
-    void RenderManager::RenderSceneNormally(MeshComponent& Mesh, Entity entityID)
-    {
-        auto& Camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
-        auto& CameraPos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
-        auto& ShadowMappingShader = Graphics::shaderpgms["ShadowMapping"];
-        ShadowMappingShader.Use();
-
-        GLint projection_ = ShadowMappingShader.GetLocation("projection");
-        GLint view_ = ShadowMappingShader.GetLocation("view");
-
-        glUniformMatrix4fv(projection_, 1, GL_FALSE, glm::value_ptr(Camera.projMtx));
-        glUniformMatrix4fv(view_, 1, GL_FALSE, glm::value_ptr(Camera.viewMtx));
-
-        GLint viewPos_ = ShadowMappingShader.GetLocation("viewPos");
-        GLint lightPos_ = ShadowMappingShader.GetLocation("lightPos");
-        GLint lightSpaceMatrix_1 = ShadowMappingShader.GetLocation("lightSpaceMatrix");
-
-        //glUniform3f(viewPos_, CameraPos.position.getX(), CameraPos.position.getY(), CameraPos.position.getZ());
-        //glUniform3f(lightPos_, lightPos.x, lightPos.y, lightPos.z);
-        //glUniformMatrix4fv(lightSpaceMatrix_1, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
-
-        glActiveTexture(GL_TEXTURE0 + 2);
-        ShadowMappingShader.setInt("shadowMap", 2);
-        glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SHADOW));
-        engine->AssimpManager.RenderFromDepth(Mesh, entityID, FrameBufferMode::FBM_SCENE, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME),
-            CameraComponent::CameraType::Editor_Camera);
     }
 }

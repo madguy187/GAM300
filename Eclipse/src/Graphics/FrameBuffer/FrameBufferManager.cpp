@@ -5,7 +5,7 @@ namespace Eclipse
 {
     void FrameBufferManager::CreateFrameBuffers()
     {
-        if (engine->CheckEditor == true)
+        if (engine->GetEditorState() == true)
         {
             // Basic FrameBuffers
             CreateFBO(1270, 593, FrameBufferMode::FBM_GAME);
@@ -24,12 +24,17 @@ namespace Eclipse
             CreateFBO(1270, 593, FrameBufferMode::FBM_GAME_SOBEL);
             CreateFBO(1270, 593, FrameBufferMode::FBM_SCENE_SOBEL);
 
+            // Shadow FBO
+            CreateFBO(1270, 593, FrameBufferMode::FBM_SHADOW);
+            
             // Additionals - PostProcess
             PostProcess = std::make_unique<FrameBuffer>();
             PostProcess->CreatePostProcessFramebuffer();
 
-            // Shadow FBO
-            CreateFBO(1270, 593, FrameBufferMode::FBM_SHADOW);
+            // Bloom
+            Bloom = std::make_unique<FrameBuffer>();
+            Bloom->CreatePingPong();
+            CreateFBO(1270, 593, FrameBufferMode::FBM_EMISSIVE);
         }
         else
         {
@@ -72,7 +77,7 @@ namespace Eclipse
 
     void FrameBufferManager::FrameBufferDraw()
     {
-        if (engine->CheckEditor == false)
+        if (engine->GetEditorState() == false)
         {
             FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_GAME)));
             FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_SCENE)));
@@ -142,7 +147,7 @@ namespace Eclipse
 
     void FrameBufferManager::GlobalBind()
     {
-        if (engine->CheckEditor == true)
+        if (engine->GetEditorState() == true)
         {
             for (auto& i : FrameBufferContainer)
             {
@@ -150,11 +155,12 @@ namespace Eclipse
                 i.second->Clear();
             }
         }
-
-        for (auto& i : FrameBufferContainer)
+        else
         {
-            i.second->Bind();
-            i.second->Clear();
+            FrameBufferContainer[FrameBufferMode::FBM_GAME]->Bind();
+            FrameBufferContainer[FrameBufferMode::FBM_GAME]->Clear();
+            FrameBufferContainer[FrameBufferMode::FBM_GAME_SOBEL]->Bind();
+            FrameBufferContainer[FrameBufferMode::FBM_GAME_SOBEL]->Clear();
         }
     }
 
@@ -310,6 +316,8 @@ namespace Eclipse
     void FrameBufferManager::FadeIn(FrameBuffer::PostProcessType Type, float& timer, float multiplier, FrameBufferMode WhichFBO)
     {
         (void)WhichFBO;
+        (void)multiplier;
+        (void)Type;
 
         timer = 1.0f;
 
@@ -378,7 +386,19 @@ namespace Eclipse
                 FadeIn(FrameBuffer::PostProcessType::PPT_SOBEL, PostProcess->FadeInTimer, PostProcess->Multiplier, RenderFBO);
 
                 // We will output to Game FrameBuffer
-                UseFrameBuffer(RenderFBO);
+                //UseFrameBuffer(RenderFBO);
+
+                if (engine->GetEditorState() == true)
+                {
+                    // We will output to Game FrameBuffer
+                    UseFrameBuffer(RenderFBO);
+                }
+                else
+                {
+                    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+                    glViewport(0, 0, OpenGL_Context::width, OpenGL_Context::height);
+                    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+                }
 
                 auto& shdrpgm = Graphics::shaderpgms["PostProcess"];
                 shdrpgm.Use();
@@ -418,7 +438,7 @@ namespace Eclipse
 
     void FrameBufferManager::PostProcessUpdate()
     {
-        if (engine->CheckEditor == false)
+        if (engine->GetEditorState() == false)
         {
             PostProcess->AllowPostProcess = true;
             PostProcess->PPType_ = FrameBuffer::PostProcessType::PPT_SOBEL;
@@ -445,6 +465,10 @@ namespace Eclipse
             }
         }
 
+        // Bloom
+        BloomUpdate(FrameBufferMode::FBM_SCENE);
+        BloomUpdate(FrameBufferMode::FBM_MATERIALEDITOR);
+
         //For Darren to Check Depth Map
         //engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_GAME);
         //auto& debugDepthQuad = Graphics::shaderpgms["DepthQuad"];
@@ -456,5 +480,52 @@ namespace Eclipse
         //glActiveTexture(GL_TEXTURE0);
         //glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SHADOW));
         //glDrawArrays(GL_TRIANGLES, 0, 6);
+    }
+
+    void FrameBufferManager::BloomUpdate(FrameBufferMode Mode)
+    {
+        auto& shdrpgm3 = Graphics::shaderpgms["Blur"];
+        shdrpgm3.Use();
+        horizontal = true, first_iteration = true;
+        unsigned int amount = 20;
+        shdrpgm3.setInt("image", 0);
+
+        engine->MaterialManager.DoNotUpdateStencil();
+        for (unsigned int i = 0; i < amount; i++)
+        {
+            glBindFramebuffer(GL_FRAMEBUFFER, engine->gFrameBufferManager->Bloom->pingpongFBO[horizontal]);
+            shdrpgm3.setInt("horizontal", horizontal);
+
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, first_iteration ?
+                engine->gFrameBufferManager->GetFramebuffer(Mode)->m_data.ColorBuffers[1] :
+                engine->gFrameBufferManager->Bloom->pingpongColorbuffers[!horizontal]);
+
+            glBindVertexArray(PostProcess->rectVAO);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+
+            horizontal = !horizontal;
+
+            if (first_iteration)
+                first_iteration = false;
+        }
+
+        engine->gFrameBufferManager->UseFrameBuffer(Mode);
+        engine->MaterialManager.DoNotUpdateStencil();
+
+        auto& shdrpgm4 = Graphics::shaderpgms["BloomFinal"];
+        shdrpgm4.Use();
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(Mode));
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->Bloom->pingpongColorbuffers[!horizontal]);
+        shdrpgm4.setInt("bloom", true);
+        shdrpgm4.setFloat("exposure", 1.0f);
+        shdrpgm4.setInt("scene", 0);
+        shdrpgm4.setInt("bloomBlur", 1);
+
+        glBindVertexArray(PostProcess->rectVAO);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        engine->MaterialManager.StencilBufferClear();
     }
 }

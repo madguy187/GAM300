@@ -30,52 +30,50 @@
 
 namespace Eclipse
 {
-	class Engine
-	{
-	public:
-		bool CheckEditor = true;
+    class Engine
+    {
+    public:
+        World world;
+        World prefabWorld;
+        CameraManager gCamera;
+        GraphicsManager GraphicsManager;
+        ProfilerWindow Timer;
+        Clock Game_Clock;
+        std::unique_ptr<EditorManager> editorManager;
+        LightManager LightManager;
+        MonoManager mono;
+        AssimpModelManager AssimpManager;
+        PickingManager gPicker;
+        MaterialManager MaterialManager{ true , true };
+        AABBTree CollisionGridTree{ 150 };
+        std::unique_ptr<Grid> GridManager;
+        DebugRenderingManager gDebugManager;
+        SerializationManager szManager;
+        AudioManager audioManager;
+        DynamicAABBTree gDynamicAABBTree;
+        PrefabManager pfManager;
+        PhysicsManager gPhysics;
+        NavMeshManager gNavMesh;
+        FSMManager gFSM;
+        AIManager gAI;
+        AnimationManager gAnimationManager;
+        std::unique_ptr<CullingManager> gCullingManager;
+        std::unique_ptr<EclipseFileWatcher> gFileWatchManager;
+        std::unique_ptr<EngineCompiler> gEngineCompiler;
+        std::unique_ptr<FrameBufferManager> gFrameBufferManager;
+        std::unique_ptr<PBRManager> gPBRManager;
+        std::unique_ptr<LogicalInput> InputManager;
+        std::unique_ptr<DebugManager> gDebugDrawManager;
 
-		World world;
-		World prefabWorld;
-		CameraManager gCamera;
-		GraphicsManager GraphicsManager;
-		ProfilerWindow Timer;
-		Clock Game_Clock;
-		std::unique_ptr<EditorManager> editorManager;
-		LightManager LightManager;
-		MonoManager mono;
-		AssimpModelManager AssimpManager;
-		PickingManager gPicker;
-		MaterialManager MaterialManager{ true , true };
-		AABBTree CollisionGridTree{ 150 };
-		std::unique_ptr<Grid> GridManager;
-		DebugRenderingManager gDebugManager;
-		SerializationManager szManager;
-		AudioManager audioManager;
-		DynamicAABBTree gDynamicAABBTree;
-		PrefabManager pfManager;
-		PhysicsManager gPhysics;
-		NavMeshManager gNavMesh;
-		FSMManager gFSM;
-		AIManager gAI;
-		AnimationManager gAnimationManager;
-		std::unique_ptr<CullingManager> gCullingManager;
-		std::unique_ptr<EclipseFileWatcher> gFileWatchManager;
-		std::unique_ptr<EngineCompiler> gEngineCompiler;
-		std::unique_ptr<FrameBufferManager> gFrameBufferManager;
-		std::unique_ptr<PBRManager> gPBRManager;
-		std::unique_ptr<LogicalInput> InputManager;
-		std::unique_ptr<DebugManager> gDebugDrawManager;
-
-		void Init();
-		void Run();
-		bool GetEditorState();
-		bool GetPlayState();
-		bool GetPauseState();
-		bool GetStepState();
-		bool IsScenePlaying();
-		void DestroyGameObject(const Entity& ent);
-		void CleanUp(const Entity& ent);
+        void Init();
+        void Run();
+        bool GetEditorState();
+        bool GetPlayState();
+        bool GetPauseState();
+        bool GetStepState();
+        bool IsScenePlaying();
+        void DestroyGameObject(const Entity& ent);
+        void CleanUp(const Entity& ent);
 
 		void SetEditorState(bool check);
 		void SetPlayState(bool check);
@@ -83,8 +81,9 @@ namespace Eclipse
 		void SetStepState(bool check);
 	private:
 		bool IsEditorActive{ true };
-		bool IsInPlayState{ true };
+		bool IsInPlayState{ false };
 		bool IsInPauseState{ false };
 		bool IsInStepState{ false };
+		bool IsWindowFullscreen{ false };
 	};
 }

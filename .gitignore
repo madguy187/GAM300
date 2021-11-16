@@ -1,6 +1,7 @@
 .vs/
 bin/
 bin-int/
+*.dll
 *.ipch
 *.db
 *.db-wal
@@ -22,3 +23,4 @@ x64/Debug/GAM300.exe
 Eclipse/Logs/Crash Report.txt
 Eclipse/mcs_script_output.txt
 Eclipse/mcs_api_output.txt
+

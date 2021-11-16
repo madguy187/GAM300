@@ -1,6 +1,7 @@
 #pragma once
 #include "Graphics/Material/MaterialInstance/MaterialInstance.h"
 #include "Graphics/Material/MaterialEditorSettings/MaterialEditorSettings.h"
+#include "Graphics/Material/IBL/Irradiance.h"
 
 namespace Eclipse
 {
@@ -33,6 +34,7 @@ namespace Eclipse
         std::unique_ptr<MaterialEditorSettings> gMaterialEditorSettings;
         std::unordered_map<std::string, ECVec3> BaseReflectivity;
         std::vector<std::string> AllMaterialInstName;
+        Irradiance IrradianceSettings;
 
         PBRManager();
         void Init();
@@ -67,6 +69,7 @@ namespace Eclipse
         void UnBindMetallicTexture(Shader& In);
         void UnBindRoughnessTexture(Shader& In);
         void UnBindAOTexture(Shader& In);
+        void SetEmissive(Shader& In, bool in, ECVec3 EmissiveColor);
         void SetSurfaceColour(Shader& In, glm::vec3 SurfaceColour_);
         void SetSurfaceColour(Shader& In, ECVec3 SurfaceColour_);
         bool CheckMaterialExist(MaterialComponent& in);
@@ -79,5 +82,18 @@ namespace Eclipse
         unsigned int loadTexture(char const* path);
         void NonTexturedUpdateLoop();
         void Clear(std::string& TextureName, MaterialType In);
+
+        // Bloom Scene
+        bool horizontal = true, first_iteration = true;
+        unsigned int woodTexture = 0;
+        unsigned int quadVAO = 0;
+        unsigned int quadVBO = 0;
+        unsigned int cubeVAO = 0;
+        unsigned int cubeVBO = 0;
+        bool bloom = true;
+        void BloomScene();
+        void renderCube();
+        void last();
+        void renderQuad();
     };
 }
