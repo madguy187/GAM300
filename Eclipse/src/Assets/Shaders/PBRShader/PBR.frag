@@ -39,6 +39,9 @@ uniform sampler2D shadowMap;
 uniform vec3 lightPos;
 uniform vec3 viewPos;
 
+// IBL
+uniform samplerCube irradianceMap;
+
 struct PointLight 
 {    
     vec3 lightColor;
@@ -404,7 +407,7 @@ void main()
         }
     }   
 
-    float shadow = 0.0;
+       float shadow = 0.0;
 
        if(Directional == 1 && directionlight[0].AffectsWorld == 1)
        {
@@ -419,6 +422,13 @@ void main()
        {
            shadow = 1.0;
        }
+
+       vec3 kS = fresnelSchlick(max(dot(N, V), 0.0), F0);
+       vec3 kD = 1.0 - kS;
+       kD *= 1.0 - metallic;	  
+       vec3 irradiance = texture(irradianceMap, N).rgb;
+       vec3 diffuse      = irradiance * albedo;
+       vec3 ambient = (kD * diffuse) * ao;
 
        if( HasInstance == 1 )
        {  

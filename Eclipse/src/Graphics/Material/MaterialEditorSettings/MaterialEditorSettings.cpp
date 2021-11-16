@@ -122,6 +122,7 @@ namespace Eclipse
         GLCall(glUniform1i(EmissiveMaterial_, CurrentMaterial.EmissiveMaterial));
         GLCall(glUniform3f(EmissiveColour_, CurrentMaterial.EmissiveColour.getX(), CurrentMaterial.EmissiveColour.getY(), CurrentMaterial.EmissiveColour.getZ()));
 
+
         // When Material is selected
         GLCall(glUniform3f(SurfaceColour_, CurrentMaterial.SurfaceColour.getX(), CurrentMaterial.SurfaceColour.getY(), CurrentMaterial.SurfaceColour.getZ()));
         GLCall(glUniform1i(NormalMap_, CurrentMaterial.IsNormalMap));

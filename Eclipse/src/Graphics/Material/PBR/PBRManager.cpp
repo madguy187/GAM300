@@ -6,6 +6,7 @@ namespace Eclipse
     PBRManager::PBRManager()
     {
         Init();
+        IrradianceSettings.Init();
     }
 
     void PBRManager::Init()

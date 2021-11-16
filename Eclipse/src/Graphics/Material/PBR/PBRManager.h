@@ -1,6 +1,7 @@
 #pragma once
 #include "Graphics/Material/MaterialInstance/MaterialInstance.h"
 #include "Graphics/Material/MaterialEditorSettings/MaterialEditorSettings.h"
+#include "Graphics/Material/IBL/Irradiance.h"
 
 namespace Eclipse
 {
@@ -33,6 +34,7 @@ namespace Eclipse
         std::unique_ptr<MaterialEditorSettings> gMaterialEditorSettings;
         std::unordered_map<std::string, ECVec3> BaseReflectivity;
         std::vector<std::string> AllMaterialInstName;
+        Irradiance IrradianceSettings;
 
         PBRManager();
         void Init();
