@@ -19,7 +19,6 @@ namespace Eclipse
 				ADD,
 				SUB,
 				MUL,
-				MULTIPLY_ADD,
 				DIV
 			};
 
@@ -35,7 +34,6 @@ namespace Eclipse
 				ADD,
 				SUB,
 				MUL,
-				MULTIPLY_ADD,
 				DIV,
 				FLOAT,
 				ECVEC3,
@@ -638,60 +636,60 @@ namespace Eclipse
 				{
 					switch (getInput(1).node->getType())
 					{
-					case Node::NodeType::ECVEC3:
-						engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
-							(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3>*>(getInput(1).node))->inputVec3;
-						break;
-					case Node::NodeType::ECVEC3COLOUR:
-						engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
-							(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3>*>(getInput(1).node))->inputVec3;
-						break;
-					case Node::NodeType::MUL:
-						if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(1).node))->vec3Mode)
-						{
+						case Node::NodeType::ECVEC3:
 							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
-								(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(1).node))->vec3Output;
-						}
-						else
-						{
-							LinkError = true;
-						}
-						break;
-					case Node::NodeType::DIV:
-						if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(1).node))->vec3Mode)
-						{
+								(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3>*>(getInput(1).node))->inputVec3;
+							break;
+						case Node::NodeType::ECVEC3COLOUR:
 							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
-								(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(1).node))->vec3Output;
-						}
-						else
-						{
+								(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3>*>(getInput(1).node))->inputVec3;
+							break;
+						case Node::NodeType::MUL:
+							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(1).node))->vec3Mode)
+							{
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
+									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(1).node))->vec3Output;
+							}
+							else
+							{
+								LinkError = true;
+							}
+							break;
+						case Node::NodeType::DIV:
+							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(1).node))->vec3Mode)
+							{
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
+									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(1).node))->vec3Output;
+							}
+							else
+							{
+								LinkError = true;
+							}
+							break;
+						case Node::NodeType::ADD:
+							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(1).node))->vec3Mode)
+							{
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
+									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(1).node))->vec3Output;
+							}
+							else
+							{
+								LinkError = true;
+							}
+							break;
+						case Node::NodeType::SUB:
+							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(1).node))->vec3Mode)
+							{
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
+									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(2).node))->vec3Output;
+							}
+							else
+							{
+								LinkError = true;
+							}
+							break;
+						default:
 							LinkError = true;
-						}
-						break;
-					case Node::NodeType::ADD:
-						if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(1).node))->vec3Mode)
-						{
-							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
-								(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(1).node))->vec3Output;
-						}
-						else
-						{
-							LinkError = true;
-						}
-						break;
-					case Node::NodeType::SUB:
-						if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(1).node))->vec3Mode)
-						{
-							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
-								(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(2).node))->vec3Output;
-						}
-						else
-						{
-							LinkError = true;
-						}
-						break;
-					default:
-						LinkError = true;
 					}
 
 					ImGui::SetNextItemWidth(50);
