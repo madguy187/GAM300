@@ -156,45 +156,192 @@ namespace Eclipse
 				switch (operationType)
 				{
 					case MaterialNode::Node::InstructionType::DIV:
-						ECGui::DrawTextWidget<std::string>("Divide" ICON_MDI_SLASH_FORWARD, EMPTY_STRING);
+						ECGui::DrawTextWidget<std::string>("Divide" " A" ICON_MDI_SLASH_FORWARD "B = C", EMPTY_STRING);
 						if (getInput(0).node)
 						{
 							if (getInput(1).node)
 							{
 								if (getInput(0).node->getType() == Node::NodeType::FLOAT && getInput(1).node->getType() == Node::NodeType::FLOAT)
 								{
+									floatMode = true;
+									vec3Mode = false;
 									output = A / B;
 								}
 								if (getInput(0).node->getType() == Node::NodeType::ECVEC3 && getInput(1).node->getType() == Node::NodeType::FLOAT)
 								{
+									floatMode = false;
+									vec3Mode = true;
 									vec3Output = { vec3A.x / B , vec3A.y / B, vec3A.z / B };
 								}
-								if (getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR && getInput(1).node->getType() == Node::NodeType::FLOAT)
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR || 
+									getInput(1).node->getType() == Node::NodeType::ECVEC3COLOUR || 
+									(getInput(0).node->getType() == Node::NodeType::FLOAT && getInput(1).node->getType() == Node::NodeType::ECVEC3))
 								{
-									vec3Output = { vec3A.x / B , vec3A.y / B, vec3A.z / B };
+									floatMode = false;
+									vec3Mode = false;
+									LinkError = true;
 								}
-								if (getInput(0).node->getType() == Node::NodeType::FLOAT && getInput(1).node->getType() == Node::NodeType::ECVEC3)
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3 && getInput(1).node->getType() == Node::NodeType::ECVEC3)
 								{
-									vec3Output = { vec3B.x / A, vec3B.y / A, vec3B.z / A };
-								}
-								if (getInput(0).node->getType() == Node::NodeType::FLOAT && getInput(1).node->getType() == Node::NodeType::ECVEC3COLOUR)
-								{
-									vec3Output = { vec3B.x / A, vec3B.y / A, vec3B.z / A };
+									floatMode = false;
+									vec3Mode = true;
+									vec3Output = { vec3A.x / vec3B.x ,  vec3A.y / vec3B.y,  vec3A.z / vec3B.z };
 								}
 							}
+							else
+							{
+								//if only one is linked 
+								vec3Output = { 0.0f,0.0f,0.0f };
+								output = 0.0f;
+							}
+						}
+						else
+						{	
+							//if only one is linked 
+							vec3Output = { 0.0f,0.0f,0.0f };
+							output = 0.0f;
 						}
 						break;
 					case MaterialNode::Node::InstructionType::MUL:
-						ECGui::DrawTextWidget<std::string>("Multiply" ICON_MDI_CLOSE, EMPTY_STRING);
-						output = A * B;
+						ECGui::DrawTextWidget<std::string>("Multiply" " A" ICON_MDI_CLOSE "B = C", EMPTY_STRING);
+						if (getInput(0).node)
+						{
+							if (getInput(1).node)
+							{
+								if (getInput(0).node->getType() == Node::NodeType::FLOAT && getInput(1).node->getType() == Node::NodeType::FLOAT)
+								{
+									floatMode = true;
+									vec3Mode = false;
+									output = A * B;
+								}
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3 && getInput(1).node->getType() == Node::NodeType::FLOAT)
+								{
+									floatMode = false;
+									vec3Mode = true;
+									vec3Output = { vec3A.x * B , vec3A.y * B, vec3A.z * B };
+								}
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR ||
+									getInput(1).node->getType() == Node::NodeType::ECVEC3COLOUR ||
+									(getInput(0).node->getType() == Node::NodeType::FLOAT && getInput(1).node->getType() == Node::NodeType::ECVEC3))
+								{
+									floatMode = false;
+									vec3Mode = false;
+									LinkError = true;
+								}
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3 && getInput(1).node->getType() == Node::NodeType::ECVEC3)
+								{
+									floatMode = false;
+									vec3Mode = true;
+									vec3Output = { vec3A.x * vec3B.x ,  vec3A.y * vec3B.y,  vec3A.z * vec3B.z };
+								}
+							}
+							else
+							{
+								//if only one is linked 
+								vec3Output = { 0.0f,0.0f,0.0f };
+								output = 0.0f;
+							}
+						}
+						else
+						{
+							//if only one is linked 
+							vec3Output = { 0.0f,0.0f,0.0f };
+							output = 0.0f;
+						}
 						break;
 					case MaterialNode::Node::InstructionType::ADD:
-						ECGui::DrawTextWidget<std::string>("Add" ICON_MDI_PLUS, EMPTY_STRING);
-						output = A + B;
+						ECGui::DrawTextWidget<std::string>("Add" " A" ICON_MDI_PLUS "B = C", EMPTY_STRING);
+						if (getInput(0).node)
+						{
+							if (getInput(1).node)
+							{
+								if (getInput(0).node->getType() == Node::NodeType::FLOAT && getInput(1).node->getType() == Node::NodeType::FLOAT)
+								{
+									floatMode = true;
+									vec3Mode = false;
+									output = A + B;
+								}
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3 && getInput(1).node->getType() == Node::NodeType::FLOAT)
+								{
+									floatMode = false;
+									vec3Mode = true;
+									vec3Output = { vec3A.x + B , vec3A.y + B, vec3A.z + B };
+								}
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR ||
+									getInput(1).node->getType() == Node::NodeType::ECVEC3COLOUR ||
+									(getInput(0).node->getType() == Node::NodeType::FLOAT && getInput(1).node->getType() == Node::NodeType::ECVEC3))
+								{
+									floatMode = false;
+									vec3Mode = false;
+									LinkError = true;
+								}
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3 && getInput(1).node->getType() == Node::NodeType::ECVEC3)
+								{
+									floatMode = false;
+									vec3Mode = true;
+									vec3Output = { vec3A.x + vec3B.x ,  vec3A.y + vec3B.y,  vec3A.z + vec3B.z };
+								}
+							}
+							else
+							{
+								//if only one is linked 
+								vec3Output = { 0.0f,0.0f,0.0f };
+								output = 0.0f;
+							}
+						}
+						else
+						{
+							//if only one is linked 
+							vec3Output = { 0.0f,0.0f,0.0f };
+							output = 0.0f;
+						}
 						break;
 					case MaterialNode::Node::InstructionType::SUB:
-						ECGui::DrawTextWidget<std::string>("Sub" ICON_MDI_MINUS, EMPTY_STRING);
-						output = A - B;
+						ECGui::DrawTextWidget<std::string>("Sub" " A" ICON_MDI_MINUS "B = C", EMPTY_STRING);
+						if (getInput(0).node)
+						{
+							if (getInput(1).node)
+							{
+								if (getInput(0).node->getType() == Node::NodeType::FLOAT && getInput(1).node->getType() == Node::NodeType::FLOAT)
+								{
+									floatMode = true;
+									vec3Mode = false;
+									output = A - B;
+								}
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3 && getInput(1).node->getType() == Node::NodeType::FLOAT)
+								{
+									floatMode = false;
+									vec3Mode = true;
+									vec3Output = { vec3A.x - B , vec3A.y - B, vec3A.z - B };
+								}
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3COLOUR ||
+									getInput(1).node->getType() == Node::NodeType::ECVEC3COLOUR ||
+									(getInput(0).node->getType() == Node::NodeType::FLOAT && getInput(1).node->getType() == Node::NodeType::ECVEC3))
+								{
+									floatMode = false;
+									vec3Mode = false;
+									LinkError = true;
+								}
+								if (getInput(0).node->getType() == Node::NodeType::ECVEC3 && getInput(1).node->getType() == Node::NodeType::ECVEC3)
+								{
+									floatMode = false;
+									vec3Mode = true;
+									vec3Output = { vec3A.x - vec3B.x ,  vec3A.y - vec3B.y,  vec3A.z - vec3B.z };
+								}
+							}
+							else
+							{
+								//if only one is linked 
+								vec3Output = { 0.0f,0.0f,0.0f };
+								output = 0.0f;
+							}
+						}
+						else
+						{
+							//if only one is linked 
+							vec3Output = { 0.0f,0.0f,0.0f };
+							output = 0.0f;
+						}
 						break;
 					default: 
 						EDITOR_LOG_INFO("Should not come in here one");
@@ -205,8 +352,16 @@ namespace Eclipse
 				beginOutput();
 				if (getInput(0).node && getInput(1).node)
 				{
-					ImGui::SetNextItemWidth(60);
-					ECGui::DrawTextWidget<std::string>("C", std::to_string(output));
+					if (getInput(0).node->getType() == Node::NodeType::ECVEC3 || getInput(1).node->getType() == Node::NodeType::ECVEC3)
+					{
+						ImGui::SetNextItemWidth(120);
+						ECGui::DrawSliderFloat3Widget("C", &vec3Output, false, 0.0f, 0.0f);
+					}
+					else
+					{
+						ImGui::SetNextItemWidth(60);
+						ECGui::DrawTextWidget<std::string>("C", std::to_string(output));
+					}
 				}
 				endOutput();
 
@@ -305,7 +460,7 @@ namespace Eclipse
 
 				if (ECGui::BeginPopupModal("Link Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 				{
-					ECGui::DrawTextWidget<const char*>("Operator Nodes only accept Floats", EMPTY_STRING);
+					ECGui::DrawTextWidget<const char*>("Link Error, Nodes Linked Wrongly", EMPTY_STRING);
 					ECGui::NextColumn();
 					if (ECGui::ButtonBool("OK", ImVec2(320, 0)))
 					{
@@ -323,6 +478,8 @@ namespace Eclipse
 			float B = 0.f;
 			float output = 0.f;
 			bool LinkError = false;
+			bool floatMode = false;
+			bool vec3Mode = false;
 			//testing for future implimentation
 			ECVec3 vec3A = { 0.0f,0.0f,0.0f };
 			ECVec3 vec3B = { 0.0f,0.0f,0.0f };
@@ -479,13 +636,61 @@ namespace Eclipse
 				beginInput();
 				if (getInput(1).node)
 				{
-					if (getInput(1).node->getType() == Node::NodeType::ECVEC3)
+					switch (getInput(1).node->getType())
 					{
-						auto downcastedPtr = dynamic_cast<Vec3Nodes< MaterialNode::Node::VEC3TYPE::ECVEC3>*>(getInput(1).node);
-						engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity = downcastedPtr->inputVec3;
-					}
-					else
-					{
+					case Node::NodeType::ECVEC3:
+						engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
+							(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3>*>(getInput(1).node))->inputVec3;
+						break;
+					case Node::NodeType::ECVEC3COLOUR:
+						engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
+							(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3>*>(getInput(1).node))->inputVec3;
+						break;
+					case Node::NodeType::MUL:
+						if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(1).node))->vec3Mode)
+						{
+							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
+								(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(1).node))->vec3Output;
+						}
+						else
+						{
+							LinkError = true;
+						}
+						break;
+					case Node::NodeType::DIV:
+						if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(1).node))->vec3Mode)
+						{
+							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
+								(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(1).node))->vec3Output;
+						}
+						else
+						{
+							LinkError = true;
+						}
+						break;
+					case Node::NodeType::ADD:
+						if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(1).node))->vec3Mode)
+						{
+							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
+								(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(1).node))->vec3Output;
+						}
+						else
+						{
+							LinkError = true;
+						}
+						break;
+					case Node::NodeType::SUB:
+						if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(1).node))->vec3Mode)
+						{
+							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
+								(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(2).node))->vec3Output;
+						}
+						else
+						{
+							LinkError = true;
+						}
+						break;
+					default:
 						LinkError = true;
 					}
 
@@ -512,24 +717,63 @@ namespace Eclipse
 					if (getInput(2).node)
 					{
 						//might case problem down the line 
-						if (getInput(2).node->getType() == Node::NodeType::ECVEC3)
+						switch (getInput(2).node->getType())
 						{
-							auto downcastedPtr = dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3>*>(getInput(2).node);
-							//A = downcastedPtr->inputFloat;
-							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant = downcastedPtr->inputVec3;
-						}
-						else
-							if (getInput(2).node->getType() == Node::NodeType::ECVEC3COLOUR)
-							{
-								auto downcastedPtr = dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3COLOUR>*>(getInput(2).node);
-								//A = downcastedPtr->inputFloat;
-								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant = downcastedPtr->inputVec3;
-							}
-							else
-							{
+							case Node::NodeType::ECVEC3:
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant =
+									(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3>*>(getInput(2).node))->inputVec3;
+								break;
+							case Node::NodeType::ECVEC3COLOUR:
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant =
+									(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3>*>(getInput(2).node))->inputVec3;
+								break;
+							case Node::NodeType::MUL:
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(2).node))->vec3Mode)
+								{
+									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant =
+										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(2).node))->vec3Output;
+								}
+								else
+								{
+									LinkError = true;
+								}
+								break;
+							case Node::NodeType::DIV:
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(2).node))->vec3Mode)
+								{
+									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant =
+										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(2).node))->vec3Output;
+								}
+								else
+								{
+									LinkError = true;
+								}
+								break;
+							case Node::NodeType::ADD:
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(2).node))->vec3Mode)
+								{
+									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant =
+										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(2).node))->vec3Output;
+								}
+								else
+								{
+									LinkError = true;
+								}
+								break;
+							case Node::NodeType::SUB:
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(2).node))->vec3Mode)
+								{
+									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant =
+										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(2).node))->vec3Output;
+								}
+								else
+								{
+									LinkError = true;
+								}
+								break;
+							default:
 								LinkError = true;
-							}
-
+						}
 						ImGui::SetNextItemWidth(50);
 						ECGui::DrawTextWidget<std::string>("Albedo Constant", EMPTY_STRING);
 					}
@@ -549,14 +793,57 @@ namespace Eclipse
 					if (getInput(3).node)
 					{
 						//might case problem down the line 
-						if (getInput(3).node->getType() == Node::NodeType::FLOAT)
+						switch (getInput(3).node->getType())
 						{
-							auto downcastedPtr = dynamic_cast<FloatNode*>(getInput(3).node);
-							//A = downcastedPtr->inputFloat;
-							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.MetallicConstant = downcastedPtr->inputFloat;
-						}
-						else
-						{
+						case Node::NodeType::FLOAT:
+							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.MetallicConstant =
+								(dynamic_cast<FloatNode*>(getInput(3).node))->inputFloat;
+							break;
+						case Node::NodeType::MUL:
+							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(3).node))->floatMode)
+							{
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.MetallicConstant =
+									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(3).node))->output;
+							}
+							else
+							{
+								LinkError = true;
+							}
+							break;
+						case Node::NodeType::DIV:
+							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(3).node))->floatMode)
+							{
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.MetallicConstant =
+									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(3).node))->output;
+							}
+							else
+							{
+								LinkError = true;
+							}
+							break;
+						case Node::NodeType::ADD:
+							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(3).node))->floatMode)
+							{
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.MetallicConstant =
+									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(3).node))->output;
+							}
+							else
+							{
+								LinkError = true;
+							}
+							break;
+						case Node::NodeType::SUB:
+							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(3).node))->floatMode)
+							{
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.MetallicConstant =
+									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(3).node))->output;
+							}
+							else
+							{
+								LinkError = true;
+							}
+							break;
+						default:
 							LinkError = true;
 						}
 						ImGui::SetNextItemWidth(50);
@@ -578,15 +865,58 @@ namespace Eclipse
 					if (getInput(4).node)
 					{
 						//might case problem down the line 
-						if (getInput(4).node->getType() == Node::NodeType::FLOAT)
+						switch (getInput(4).node->getType())
 						{
-							auto downcastedPtr = dynamic_cast<FloatNode*>(getInput(4).node);
-							//A = downcastedPtr->inputFloat;
-							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.RoughnessConstant = downcastedPtr->inputFloat;
-						}
-						else
-						{
-							LinkError = true;
+							case Node::NodeType::FLOAT:
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.RoughnessConstant =
+									(dynamic_cast<FloatNode*>(getInput(4).node))->inputFloat;
+								break;
+							case Node::NodeType::MUL:
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(4).node))->floatMode)
+								{
+									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.RoughnessConstant =
+										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(4).node))->output;
+								}
+								else
+								{
+									LinkError = true;
+								}
+								break;
+							case Node::NodeType::DIV:
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(4).node))->floatMode)
+								{
+									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.RoughnessConstant =
+										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(4).node))->output;
+								}
+								else
+								{
+									LinkError = true;
+								}
+								break;
+							case Node::NodeType::ADD:
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(4).node))->output)
+								{
+									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.RoughnessConstant =
+										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(4).node))->output;
+								}
+								else
+								{
+									LinkError = true;
+								}
+								break;
+							case Node::NodeType::SUB:
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(4).node))->floatMode)
+								{
+									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.RoughnessConstant =
+										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(4).node))->output;
+								}
+								else
+								{
+									LinkError = true;
+								}
+								break;
+							default:
+								LinkError = true;
 						}
 
 						ImGui::SetNextItemWidth(50);
@@ -606,18 +936,59 @@ namespace Eclipse
 					beginInput();
 					if (getInput(5).node)
 					{
-						//might case problem down the line 
-						if (getInput(5).node->getType() == Node::NodeType::FLOAT)
+						switch (getInput(5).node->getType())
 						{
-							auto downcastedPtr = dynamic_cast<FloatNode*>(getInput(5).node);
-							//A = downcastedPtr->inputFloat;
-							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AoConstant = downcastedPtr->inputFloat;
-						}
-						else
-						{
+						case Node::NodeType::FLOAT:
+							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AoConstant =
+								(dynamic_cast<FloatNode*>(getInput(5).node))->inputFloat;
+							break;
+						case Node::NodeType::MUL:
+							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(5).node))->floatMode)
+							{
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AoConstant =
+									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(5).node))->output;
+							}
+							else
+							{
+								LinkError = true;
+							}
+							break;
+						case Node::NodeType::DIV:
+							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(5).node))->floatMode)
+							{
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AoConstant =
+									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(5).node))->output;
+							}
+							else
+							{
+								LinkError = true;
+							}
+							break;
+						case Node::NodeType::ADD:
+							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(5).node))->output)
+							{
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AoConstant =
+									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(5).node))->output;
+							}
+							else
+							{
+								LinkError = true;
+							}
+							break;
+						case Node::NodeType::SUB:
+							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(5).node))->floatMode)
+							{
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AoConstant =
+									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(5).node))->output;
+							}
+							else
+							{
+								LinkError = true;
+							}
+							break;
+						default:
 							LinkError = true;
 						}
-
 						ImGui::SetNextItemWidth(50);
 						ECGui::DrawTextWidget<std::string>("Ao Constant", EMPTY_STRING);
 					}
@@ -670,23 +1041,63 @@ namespace Eclipse
 					if (getInput(3).node)
 					{
 						//might case problem down the line 
-						if (getInput(3).node->getType() == Node::NodeType::ECVEC3)
+						switch (getInput(3).node->getType())
 						{
-							auto downcastedPtr = dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3>*>(getInput(3).node);
-							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour = downcastedPtr->inputVec3;
-						}
-						else
-							if (getInput(3).node->getType() == Node::NodeType::ECVEC3COLOUR)
+						case Node::NodeType::ECVEC3:
+							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour =
+								(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3>*>(getInput(3).node))->inputVec3;
+							break;
+						case Node::NodeType::ECVEC3COLOUR:
+							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour =
+								(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3>*>(getInput(3).node))->inputVec3;
+							break;
+						case Node::NodeType::MUL:
+							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(3).node))->vec3Mode)
 							{
-
-								auto downcastedPtr = dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3COLOUR>*>(getInput(3).node);
-								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour = downcastedPtr->inputVec3;
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour =
+									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(3).node))->vec3Output;
 							}
 							else
 							{
 								LinkError = true;
 							}
-
+							break;
+						case Node::NodeType::DIV:
+							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(3).node))->vec3Mode)
+							{
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour =
+									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(3).node))->vec3Output;
+							}
+							else
+							{
+								LinkError = true;
+							}
+							break;
+						case Node::NodeType::ADD:
+							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(3).node))->vec3Mode)
+							{
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour =
+									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(3).node))->vec3Output;
+							}
+							else
+							{
+								LinkError = true;
+							}
+							break;
+						case Node::NodeType::SUB:
+							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(3).node))->vec3Mode)
+							{
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour =
+									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(3).node))->vec3Output;
+							}
+							else
+							{
+								LinkError = true;
+							}
+							break;
+						default:
+							LinkError = true;
+						}
 						ImGui::SetNextItemWidth(50);
 						ECGui::DrawTextWidget<std::string>("Material Colour", EMPTY_STRING);
 					}
