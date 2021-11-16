@@ -342,6 +342,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\Parser\Parser.h" />
     <ClInclude Include="src\Graphics\Picker\DynamicAABBTree.h" />
     <ClInclude Include="src\Graphics\Picker\PickingManager.h" />
+    <ClInclude Include="src\Graphics\Quaternions\Quaternions.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Graphics.h" />
     <ClInclude Include="src\Graphics\RendererAPI\GraphicsManager.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Mesh.h" />
@@ -525,6 +526,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\Parser\Parser.cpp" />
     <ClCompile Include="src\Graphics\Picker\DynamicAABBTree.cpp" />
     <ClCompile Include="src\Graphics\Picker\PickingManager.cpp" />
+    <ClCompile Include="src\Graphics\Quaternions\Quaternions.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\Graphics.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\GraphicsManager.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\Mesh.cpp" />
