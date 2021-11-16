@@ -582,10 +582,10 @@ namespace Eclipse
 		switch (collision.shape.shape)
 		{
 		case PxShapeType::Px_CUBE :
-			//auto& transform = engine->world.GetComponent<TransformComponent>(ent);
-		/*	collision.shape.hx = transform.scale.getX() / 2;
+			auto& transform = engine->world.GetComponent<TransformComponent>(ent);
+			collision.shape.hx = transform.scale.getX() / 2;
 			collision.shape.hy = transform.scale.getY() / 2;
-			collision.shape.hz = transform.scale.getZ() / 2;*/
+			collision.shape.hz = transform.scale.getZ() / 2;
 			break;
 		}
 	}

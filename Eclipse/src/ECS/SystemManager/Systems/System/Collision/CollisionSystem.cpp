@@ -9,7 +9,7 @@ namespace Eclipse
 		engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 		for (auto const& entity : mEntities)
 		{
-			engine->gPhysics.UpdateVariables(entity);
+			//engine->gPhysics.UpdateVariables(entity);
 
 			if(engine->IsScenePlaying())
 			{ 

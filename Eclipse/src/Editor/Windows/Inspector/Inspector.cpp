@@ -183,7 +183,13 @@ namespace Eclipse
                 ECGui::NextColumn();
                 ECGui::PushItemWidth(ECGui::GetWindowSize().x);
 
-                ECGui::DrawInputFloat3Widget("TransScale", &transCom.scale, true, ID);
+                if (ECGui::DrawInputFloat3Widget("TransScale", &transCom.scale, true, ID))
+                {
+                    if (engine->world.CheckComponent<CollisionComponent>(ID))
+                    {
+                        engine->gPhysics.UpdateVariables(ID);
+                    }
+                }
 
                 //Update for DynamicAABB Tree -Rachel
                 if (!IsNotInScene)
