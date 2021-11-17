@@ -38,11 +38,7 @@ namespace Eclipse
         }
 
         // Material Node Editor
-        engine->gPBRManager->gMaterialEditorSettings->RenderMaterialScene();
-
-        // Bloom Scene
-        //engine->gPBRManager->BloomScene();
-        
+        engine->gPBRManager->gMaterialEditorSettings->RenderMaterialScene();    
         engine->MaterialManager.StencilBufferClear();
 
         engine->Timer.tracker.system_end = static_cast<float>(glfwGetTime());

@@ -93,7 +93,6 @@ namespace Eclipse
         bool bloom = true;
         void BloomScene();
         void renderCube();
-        void last();
         void renderQuad();
     };
 }

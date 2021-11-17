@@ -740,52 +740,6 @@ namespace Eclipse
         glBindVertexArray(0);
     }
 
-    void PBRManager::last()
-    {
-        auto& shdrpgm3 = Graphics::shaderpgms["Blur"];
-        shdrpgm3.Use();
-        horizontal = true, first_iteration = true;
-        unsigned int amount = 10;
-        shdrpgm3.setInt("image", 0);
-
-        engine->MaterialManager.DoNotUpdateStencil();
-        for (unsigned int i = 0; i < amount; i++)
-        {
-            glBindFramebuffer(GL_FRAMEBUFFER, engine->gFrameBufferManager->Bloom->pingpongFBO[horizontal]);
-            shdrpgm3.setInt("horizontal", horizontal);
-
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, first_iteration ?
-                engine->gFrameBufferManager->GetFramebuffer(FrameBufferMode::FBM_SCENE)->m_data.ColorBuffers[1] :
-                engine->gFrameBufferManager->Bloom->pingpongColorbuffers[!horizontal]);
-
-            renderQuad();
-
-            horizontal = !horizontal;
-
-            if (first_iteration)
-                first_iteration = false;
-        }
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-        engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SCENE);
-        engine->MaterialManager.DoNotUpdateStencil();
-
-        auto& shdrpgm4 = Graphics::shaderpgms["BloomFinal"];
-        shdrpgm4.Use();
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SCENE));
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->Bloom->pingpongColorbuffers[!horizontal]);
-        shdrpgm4.setInt("bloom", bloom);
-        shdrpgm4.setFloat("exposure", 1.0f);
-        shdrpgm4.setInt("scene", 0);
-        shdrpgm4.setInt("bloomBlur", 1);
-
-        renderQuad();
-        engine->MaterialManager.StencilBufferClear();
-    }
-
     void PBRManager::renderQuad()
     {
         if (quadVAO == 0)

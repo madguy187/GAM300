@@ -286,8 +286,10 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\EngineCompiler\InputCompiler\InputCompiler.h" />
     <ClInclude Include="src\Graphics\EngineCompiler\MaterialCompiler\MaterialCompiler.h" />
     <ClInclude Include="src\Graphics\FileWatch\FileWatch.h" />
+    <ClInclude Include="src\Graphics\FrameBuffer\EmissiveFrameBuffer.h" />
     <ClInclude Include="src\Graphics\FrameBuffer\FrameBuffer.h" />
     <ClInclude Include="src\Graphics\FrameBuffer\FrameBufferManager.h" />
+    <ClInclude Include="src\Graphics\FrameBuffer\PostProcessFrameBuffer.h" />
     <ClInclude Include="src\Graphics\FrameBuffer\WindowConstraint.h" />
     <ClInclude Include="src\Graphics\Grid\AABB.h" />
     <ClInclude Include="src\Graphics\Grid\AABBTree.h" />
@@ -477,8 +479,10 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\EngineCompiler\InputCompiler\InputCompiler.cpp" />
     <ClCompile Include="src\Graphics\EngineCompiler\MaterialCompiler\MaterialCompiler.cpp" />
     <ClCompile Include="src\Graphics\FileWatch\FileWatch.cpp" />
+    <ClCompile Include="src\Graphics\FrameBuffer\EmissiveFrameBuffer.cpp" />
     <ClCompile Include="src\Graphics\FrameBuffer\FrameBuffer.cpp" />
     <ClCompile Include="src\Graphics\FrameBuffer\FrameBufferManager.cpp" />
+    <ClCompile Include="src\Graphics\FrameBuffer\PostProcessFrameBuffer.cpp" />
     <ClCompile Include="src\Graphics\FrameBuffer\WindowConstraint.cpp" />
     <ClCompile Include="src\Graphics\Grid\AABB.cpp" />
     <ClCompile Include="src\Graphics\Grid\AABBTree.cpp" />
