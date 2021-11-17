@@ -458,7 +458,7 @@ namespace Eclipse
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
             model = model * Transform.UpdateRotation();
-            model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
+            model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type() * glm::vec3(1.02));
             Transform.ModelMatrix = model;
 
             mModelNDC = _camera.projMtx * _camera.viewMtx * model;
@@ -526,7 +526,7 @@ namespace Eclipse
 
     void MaterialManager::Highlight3DModels(FrameBufferMode Mode, unsigned int ModelID, GLenum mode)
     {
-        if (EnableHighlight == true)
+        if (EnableHighlight == true && !engine->world.CheckComponent<AnimationComponent>(ModelID) )
         {
             auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
             engine->gFrameBufferManager->UseFrameBuffer(Mode);
