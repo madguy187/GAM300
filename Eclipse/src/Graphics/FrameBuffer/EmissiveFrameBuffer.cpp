@@ -27,7 +27,7 @@ namespace Eclipse
 
     void BloomEffect::GaussianBlur(FrameBufferMode Mode)
     {
-        if (AllowBloom == true)
+        if (Mode == FrameBufferMode::FBM_MATERIALEDITOR || (Mode == FrameBufferMode::FBM_SCENE && AllowBloom ))
         {
             auto& shdrpgm3 = Graphics::shaderpgms["Blur"];
             shdrpgm3.Use();

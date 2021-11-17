@@ -666,6 +666,9 @@ namespace Eclipse
                     }
                     else
                     {
+                        GLuint EmissiveMaterial_ = shader.GetLocation("EmissiveMaterial"); //test
+                        glUniform1i(EmissiveMaterial_, false);
+
                         // If Material Instance no Textures
                         if (engine->gPBRManager->AllMaterialInstances[Material.MaterialInstanceName]->HasTexture == false)
                         {
@@ -682,6 +685,9 @@ namespace Eclipse
                 // If cannot find material.
                 else
                 {
+                    GLuint EmissiveMaterial_ = shader.GetLocation("EmissiveMaterial"); //test
+                    glUniform1i(EmissiveMaterial_, false);
+
                     // reset
                     glActiveTexture(GL_TEXTURE0);
 
@@ -694,6 +700,9 @@ namespace Eclipse
             }
             else
             {
+                GLuint EmissiveMaterial_ = shader.GetLocation("EmissiveMaterial"); //test
+                glUniform1i(EmissiveMaterial_, false);
+
                 // If Do not have textures
                 //if (engine->AssimpManager.Geometry[mesh.MeshName.data()]->NoTex && (!engine->world.CheckComponent<TextureComponent>(EntityID)))
                 if (Material.NoTextures && (!engine->world.CheckComponent<TextureComponent>(EntityID)))

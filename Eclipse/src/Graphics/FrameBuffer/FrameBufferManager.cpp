@@ -369,6 +369,7 @@ namespace Eclipse
 
         // Bloom
         EmissiveFBO->GaussianBlur(FrameBufferMode::FBM_SCENE);
+        EmissiveFBO->GaussianBlur(FrameBufferMode::FBM_MATERIALEDITOR);
 
         //BloomUpdate(FrameBufferMode::FBM_SCENE);
         //BloomUpdate(FrameBufferMode::FBM_MATERIALEDITOR);
