@@ -18,20 +18,20 @@ void Eclipse::PickingSystem::EditorUpdate()
 
 	auto& camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 	float tMin = (std::numeric_limits<float>::max)();
-
+	
 	glm::vec3 rayDir = engine->gPicker.ComputeCursorRayDirection();
 	unsigned int collisionID = engine->gDynamicAABBTree.RayCast(engine->gDynamicAABBTree.GetTreeRoot(), camera.eyePos, rayDir, tMin);
-
+	
 	if (collisionID != MAX_ENTITY)
 	{
 		if (engine->gPicker.GetCurrentCollisionID() != MAX_ENTITY)
 		{
 			engine->MaterialManager.UnHighlight(engine->gPicker.GetCurrentCollisionID());
 		}
-
+	
 		engine->gPicker.SetCurrentCollisionID(collisionID);
 		engine->MaterialManager.HighlightClick(collisionID);
-
+	
 		//engine->gPicker.UpdateAabb(collisionID);
 		//engine->gDynamicAABBTree.UpdateData(collisionID);
 	}

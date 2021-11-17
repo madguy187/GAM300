@@ -307,7 +307,8 @@ namespace Eclipse
 		}
 		else
 		{
-			if ((node->ID != COMBINE_NODE) && time < tMin)
+			//if ((node->ID != COMBINE_NODE) && (time < tMin) && (time > 0))
+			if ((node->ID != COMBINE_NODE) && (time > 0))
 			{
 				nodeID = node->ID;
 
