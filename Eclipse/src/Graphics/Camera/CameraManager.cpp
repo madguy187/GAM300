@@ -1165,7 +1165,8 @@ namespace Eclipse
             auto* materialEditor = engine->editorManager->GetEditorWindow<MaterialEditorWindow>();
             auto* nodeEditor = engine->editorManager->GetEditorWindow<NodeEditorWindow>();
 
-            if (engine->editorManager->IsGameViewportActive() && !materialEditor->IsVisible && !nodeEditor->IsVisible)
+            if (engine->editorManager->IsGameViewportActive() && !materialEditor->IsVisible && !nodeEditor->IsVisible
+                && !engine->editorManager->IsSceneViewportActive())
             {
                 auto* scene = engine->editorManager->GetEditorWindow<eGameViewWindow>();
 
