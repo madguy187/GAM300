@@ -216,6 +216,7 @@ namespace Eclipse
 		"AS_DANCE",
 		"AS_WALK",
 		"AS_SLASH",
+		"AS_DEATH",
 		"AS_INVALID"
 	};
 }

@@ -1,6 +1,17 @@
 #pragma once
 
-struct Test1
+#include "Global.h"
+
+namespace Eclipse
 {
-    int x = 1;
-};
+    struct Test1
+    {
+        int x = 1;
+    };
+
+    struct DestroyEvent
+    {
+        Entity ID{ MAX_ENTITY };
+        bool IsDead{ false };
+    };
+}

@@ -46,6 +46,7 @@
 #include "ECS/SystemManager/Systems/System/AnimationSystem/AnimationSystem.h"
 #include "ECS/SystemManager/Systems/System/NavMeshSystem/NavMeshSystem.h"
 #include "ECS/SystemManager/Systems/System/EntityCompSystem/EntityCompSystem.h"
+#include "ECS/SystemManager/Systems/System/GraveyardSystem/GraveyardSystem.h"
 
 bool Tester1(const Test1&)
 {
@@ -91,8 +92,8 @@ namespace Eclipse
     {
         ZoneScopedN("Engine")
 
-            // register component
-            world.RegisterComponent<EntityComponent>();
+        // register component
+        world.RegisterComponent<EntityComponent>();
         world.RegisterComponent<TransformComponent>();
         world.RegisterComponent<MeshComponent>();
         world.RegisterComponent<CameraComponent>();
@@ -160,6 +161,7 @@ namespace Eclipse
         world.RegisterSystem<InputSystem>();
         world.RegisterSystem<AnimationSystem>();
         world.RegisterSystem<EntityCompSystem>();
+        world.RegisterSystem<GraveyardSystem>();
 
         prefabWorld.RegisterSystem<PrefabSystem>();
 
@@ -240,6 +242,9 @@ namespace Eclipse
         Signature animationSys;
         animationSys.set(world.GetComponentType<AnimationComponent>(), 1);
         world.RegisterSystemSignature<AnimationSystem>(animationSys);
+
+        auto gvsys = world.GetSystem<GraveyardSystem>();
+        EventSystem<DestroyEvent>::registerListener(std::bind(&GraveyardSystem::CommenceBurial, gvsys, std::placeholders::_1));
 
         //Check this! - Rachel
         CameraSystem::Init();
@@ -408,6 +413,8 @@ namespace Eclipse
             }
 
             world.Update<InputSystem>();
+
+            world.Update<GraveyardSystem>();
         }
 
         //Serialization(Temp)

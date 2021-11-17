@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AnimationFSM.h"
+#include "ECS/SystemManager/Systems/System/EntityCompSystem/EntityCompSystem.h"
 
 namespace Eclipse
 {
@@ -25,6 +26,7 @@ namespace Eclipse
 			break;
 		case str2int("Body"):
 			States.push_back(AnimationState::WALK);
+			States.push_back(AnimationState::DEATH);
 			break;
 		default:
 			break;
@@ -40,7 +42,7 @@ namespace Eclipse
 		auto& meshCom = engine->world.GetComponent<MeshComponent>(m_ID);
 		std::string meshName = std::string(meshCom.MeshName.data());
 		
-		if (GetTimeInCurrentState() > 4.0f)
+		if (GetTimeInCurrentState() > 5.0f)
 		{
 			if (StateIndex < States.size())
 				SetNextState(States[StateIndex++]);
@@ -56,18 +58,37 @@ namespace Eclipse
 
 	void AnimationFSM::EndState(AnimationState state)
 	{
-		/*auto& meshCom = engine->world.GetComponent<MeshComponent>(m_ID);
-		std::string meshName = std::string(meshCom.MeshName.data());
-
-		switch (str2int(meshName.c_str()))
+		if (GetNextState() == AnimationState::DEATH)
 		{
-		case str2int("Body"):
-			engine->DestroyGameObject(m_ID);
-			m_ID = MAX_ENTITY;
-			break;
-		default:
-			break;
-		}*/
+			auto entcomSys = engine->world.GetSystem<EntityCompSystem>();
+			auto& meshCom = engine->world.GetComponent<MeshComponent>(m_ID);
+			std::string meshName = std::string(meshCom.MeshName.data());
+			DestroyEvent de;
+			Entity toDie = MAX_ENTITY;
+
+			switch (str2int(meshName.c_str()))
+			{
+			case str2int("Body"):
+				de.ID = m_ID;
+				de.IsDead = true;
+				EventSystem<DestroyEvent>::dispatchEvent(de);
+
+				// temp
+				toDie = entcomSys->FindEntity("AnimationTriggerBox");
+
+				if (toDie != MAX_ENTITY)
+				{
+					de.ID = toDie;
+					de.IsDead = true;
+					EventSystem<DestroyEvent>::dispatchEvent(de);
+				}
+
+				m_ID = MAX_ENTITY;
+				break;
+			default:
+				break;
+			}
+		}
 
 		(void)state;
 	}

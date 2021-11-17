@@ -1062,6 +1062,8 @@
     <ClInclude Include="src\Graphics\Quaternions\Quaternions.h" />
     <ClInclude Include="src\Graphics\FrameBuffer\EmissiveFrameBuffer.h" />
     <ClInclude Include="src\Graphics\FrameBuffer\PostProcessFrameBuffer.h" />
+    <ClInclude Include="src\Editor\Windows\NodeEditor\MaterialNodeEditor.h" />
+    <ClInclude Include="src\ECS\SystemManager\Systems\System\GraveyardSystem\GraveyardSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1546,6 +1548,7 @@
     <ClCompile Include="src\Graphics\Quaternions\Quaternions.cpp" />
     <ClCompile Include="src\Graphics\FrameBuffer\EmissiveFrameBuffer.cpp" />
     <ClCompile Include="src\Graphics\FrameBuffer\PostProcessFrameBuffer.cpp" />
+    <ClCompile Include="src\ECS\SystemManager\Systems\System\GraveyardSystem\GraveyardSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\..\Desktop\GAM300\Eclipse\src\Assets\Shaders\Bloom\Bloom.frag" />

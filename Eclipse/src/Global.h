@@ -277,6 +277,7 @@ enum class AnimationState
     DANCE,
     WALK,
     SLASH,
+    DEATH,
     INVALID
 };
 
