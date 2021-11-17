@@ -1,10 +1,13 @@
 #include "pch.h"
 #include "CameraManager.h"
+#include "Editor/Windows/MaterialEditor/MaterialEditor.h"
+#include "Editor/Windows/NodeEditor/NodeEditorWindow.h"
 
 #include "GLM/glm/gtc/matrix_transform.hpp"
 #include "GLM/glm/gtc/type_ptr.hpp"
 #include "GLM/glm/gtx/rotate_vector.hpp"
 #include "GLM/glm/gtx/vector_angle.hpp"
+
 namespace Eclipse
 {
     void CameraManager::CreateEditorCamera()
@@ -336,7 +339,10 @@ namespace Eclipse
             }
         }
 
-        if (engine->GetEditorState() && engine->editorManager->IsSceneViewportActive())
+        auto* materialEditor = engine->editorManager->GetEditorWindow<MaterialEditorWindow>();
+        auto* nodeEditor = engine->editorManager->GetEditorWindow<NodeEditorWindow>();
+
+        if (engine->GetEditorState() && engine->editorManager->IsSceneViewportActive() && !materialEditor->IsVisible && !nodeEditor->IsVisible)
         {
             auto* scene = engine->editorManager->GetEditorWindow<SceneWindow>();
 
@@ -1156,7 +1162,10 @@ namespace Eclipse
     {
         if (engine->GetEditorState())
         {
-            if (engine->editorManager->IsGameViewportActive())
+            auto* materialEditor = engine->editorManager->GetEditorWindow<MaterialEditorWindow>();
+            auto* nodeEditor = engine->editorManager->GetEditorWindow<NodeEditorWindow>();
+
+            if (engine->editorManager->IsGameViewportActive() && !materialEditor->IsVisible && !nodeEditor->IsVisible)
             {
                 auto* scene = engine->editorManager->GetEditorWindow<eGameViewWindow>();
 
