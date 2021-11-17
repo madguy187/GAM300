@@ -18,6 +18,7 @@ namespace Eclipse
             // Editor Stuffs
             CreateFBO(1270, 593, FrameBufferMode::FBM_MATERIALEDITOR);
             CreateFBO(1270, 593, FrameBufferMode::FBM_MESHEDITOR);
+            CreateFBO(1270, 593, FrameBufferMode::FBM_ANIMATION_EDITOR);
 
             // Sobel Framebuffers
             // We Render to this FBO then we will render the effect into scene view.
@@ -93,6 +94,7 @@ namespace Eclipse
             //Editor Stuffs
             FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_MATERIALEDITOR)));
             FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_MESHEDITOR)));
+            FrameBuffer::ShowWindow(*(GetFramebuffer(FrameBufferMode::FBM_ANIMATION_EDITOR)));
         }
     }
 

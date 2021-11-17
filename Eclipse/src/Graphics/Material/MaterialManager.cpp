@@ -457,10 +457,9 @@ namespace Eclipse
             glm::mat4 mModelNDC;
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
-            model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-            model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-            model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+            model = model * Transform.UpdateRotation();
             model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
+            Transform.ModelMatrix = model;
 
             mModelNDC = _camera.projMtx * _camera.viewMtx * model;
             glUniformMatrix4fv(uModelToNDC_, 1, GL_FALSE, glm::value_ptr(mModelNDC));

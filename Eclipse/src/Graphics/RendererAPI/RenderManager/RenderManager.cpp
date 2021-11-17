@@ -116,14 +116,14 @@ namespace Eclipse
                 CameraComponent::CameraType::RightView_camera);
         }
 
-        // If scene not playing , we enable highlight
-        if (engine->IsScenePlaying() != true)
-        {
-            if (!engine->world.CheckComponent<AnimationComponent>(entityID))
-            {
-                //engine->MaterialManager.Highlight3DModels(entityID, FrameBufferMode::FBM_SCENE);
-            }
-        }
+        //// If scene not playing , we enable highlight
+        //if (engine->IsScenePlaying() != true)
+        //{
+        //    if (!engine->world.CheckComponent<AnimationComponent>(entityID))
+        //    {
+        //        //engine->MaterialManager.Highlight3DModels(entityID, FrameBufferMode::FBM_SCENE);
+        //    }
+        //}
     }
 
     void RenderManager::UpdateLightMatrix()
@@ -154,5 +154,17 @@ namespace Eclipse
     {
         engine->MaterialManager.DoNotUpdateStencil();
         engine->AssimpManager.RenderToDepth(Mesh, entityID, FrameBufferMode::FBM_SHADOW, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SHADOW), CameraComponent::CameraType::Game_Camera);
+    }
+
+    void RenderManager::Outline(MeshComponent& Mesh, Entity ID)
+    {
+        // If scene not playing , we enable highlight
+        if (engine->IsScenePlaying() != true)
+        {
+            if (!engine->world.CheckComponent<AnimationComponent>(ID))
+            {
+                engine->MaterialManager.Highlight3DModels(ID, FrameBufferMode::FBM_SCENE);
+            }
+        }
     }
 }
