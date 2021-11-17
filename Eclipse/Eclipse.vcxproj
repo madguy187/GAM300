@@ -301,6 +301,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\InputHandler\LogicalEnum.hpp" />
     <ClInclude Include="src\Graphics\InputHandler\LogicalInput.h" />
     <ClInclude Include="src\Graphics\Instancing\DebugBoxes\Box.h" />
+    <ClInclude Include="src\Graphics\Instancing\DebugBoxes\DebugBoxes.h" />
     <ClInclude Include="src\Graphics\Instancing\DebugLights\DebugLights.h" />
     <ClInclude Include="src\Graphics\Instancing\DebugManager\DebugManager.h" />
     <ClInclude Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.h" />
@@ -491,6 +492,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\Grid\Grid.cpp" />
     <ClCompile Include="src\Graphics\InputHandler\LogicalInput.cpp" />
     <ClCompile Include="src\Graphics\Instancing\DebugBoxes\Box.cpp" />
+    <ClCompile Include="src\Graphics\Instancing\DebugBoxes\DebugBoxes.cpp" />
     <ClCompile Include="src\Graphics\Instancing\DebugLights\DebugLights.cpp" />
     <ClCompile Include="src\Graphics\Instancing\DebugManager\DebugManager.cpp" />
     <ClCompile Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.cpp" />

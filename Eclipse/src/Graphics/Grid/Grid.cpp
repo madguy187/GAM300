@@ -208,7 +208,7 @@ namespace Eclipse
 					if (AddDebugBoxes)
 					{
 						BoundingRegion br(GridArray[Index]->CenterPoint.ConvertToGlmVec3Type(), { GridScale ,GridScale ,GridScale });
-						engine->gDebugDrawManager->DebugBoxes.AddInstance(br);
+						//engine->gDebugDrawManager->DebugBoxes.AddInstance(br);
 					}
 
 					// Set AABB For Dynamic Tree
@@ -299,7 +299,7 @@ namespace Eclipse
 		if (engine->GetEditorState())
 		{
 			BoundingRegion br({ 0,0,0 }, { GridScale * GridSize , 0  ,GridScale * GridSize });
-			engine->gDebugDrawManager->DebugBoxes.AddInstance(br);
+			//engine->gDebugDrawManager->DebugBoxes.AddInstance(br);
 		}
 	}
 

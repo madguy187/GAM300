@@ -27,44 +27,47 @@ namespace Eclipse
 
     void BloomEffect::GaussianBlur(FrameBufferMode Mode)
     {
-        auto& shdrpgm3 = Graphics::shaderpgms["Blur"];
-        shdrpgm3.Use();
-        Horizontal = true, First_iteration = true;
-        shdrpgm3.setInt("image", 0);
-
-        engine->MaterialManager.DoNotUpdateStencil();
-        for (unsigned int i = 0; i < Amount; i++)
+        if (AllowBloom == true)
         {
-            glBindFramebuffer(GL_FRAMEBUFFER, BlurFBOs[Horizontal]);
-            shdrpgm3.setInt("horizontal", Horizontal);
+            auto& shdrpgm3 = Graphics::shaderpgms["Blur"];
+            shdrpgm3.Use();
+            Horizontal = true, First_iteration = true;
+            shdrpgm3.setInt("image", 0);
 
+            engine->MaterialManager.DoNotUpdateStencil();
+            for (unsigned int i = 0; i < Amount; i++)
+            {
+                glBindFramebuffer(GL_FRAMEBUFFER, BlurFBOs[Horizontal]);
+                shdrpgm3.setInt("horizontal", Horizontal);
+
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, First_iteration ?
+                    engine->gFrameBufferManager->GetFramebuffer(Mode)->m_data.ColorBuffers[1] :
+                    BlurColorbuffers[!Horizontal]);
+
+                engine->gFrameBufferManager->RenderToScreen();
+
+                Horizontal = !Horizontal;
+
+                if (First_iteration) First_iteration = false;
+            }
+
+            engine->gFrameBufferManager->UseFrameBuffer(Mode);
+            engine->MaterialManager.DoNotUpdateStencil();
+
+            auto& shdrpgm4 = Graphics::shaderpgms["BloomFinal"];
+            shdrpgm4.Use();
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, First_iteration ?
-                engine->gFrameBufferManager->GetFramebuffer(Mode)->m_data.ColorBuffers[1] :
-                BlurColorbuffers[!Horizontal]);
+            glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(Mode));
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, BlurColorbuffers[!Horizontal]);
+            shdrpgm4.setInt("bloom", true);
+            shdrpgm4.setFloat("exposure", 1.0f);
+            shdrpgm4.setInt("scene", 0);
+            shdrpgm4.setInt("bloomBlur", 1);
 
             engine->gFrameBufferManager->RenderToScreen();
-
-            Horizontal = !Horizontal;
-
-            if (First_iteration) First_iteration = false;
+            engine->MaterialManager.StencilBufferClear();
         }
-
-        engine->gFrameBufferManager->UseFrameBuffer(Mode);
-        engine->MaterialManager.DoNotUpdateStencil();
-
-        auto& shdrpgm4 = Graphics::shaderpgms["BloomFinal"];
-        shdrpgm4.Use();
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(Mode));
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, BlurColorbuffers[!Horizontal]);
-        shdrpgm4.setInt("bloom", true);
-        shdrpgm4.setFloat("exposure", 1.0f);
-        shdrpgm4.setInt("scene", 0);
-        shdrpgm4.setInt("bloomBlur", 1);
-
-        engine->gFrameBufferManager->RenderToScreen();
-        engine->MaterialManager.StencilBufferClear();
     }
 }

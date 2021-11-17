@@ -10,10 +10,11 @@ namespace Eclipse
 
     void DebugManager::Init()
     {
-        DebugBoxes.Init();
+        //DebugBoxes.Init();
         DebugSpheres.Init();
         LightIcons.Init();
         SpotLightIcons.Init();
+        DebugBoxes_.Init();
     }
 
     void DebugManager::Reset()
@@ -22,6 +23,7 @@ namespace Eclipse
         DebugSpheres.ResetInstancedDebugSpheres();
         LightIcons.ResetInstancedDebugLights();
         SpotLightIcons.ResetInstancedDebugSpotLights();
+        DebugBoxes_.ResetInstancedDebugBoxes();
     }
 }
 
@@ -29,28 +31,19 @@ namespace Eclipse
 {
     void DebugManager::ResetInstancedDebugBoxes()
     {
-        DebugBoxes.Reset();
+        //DebugBoxes.Reset();
     }
 
     void DebugManager::Render()
     {
         if (Visible == true)
         {
-            engine->MaterialManager.DoNotUpdateStencil();
-            if (engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
-            {
-                DebugBoxes.DrawAll(FrameBufferMode::FBM_SCENE);
-            }
-
+            DebugBoxes_.RenderDebugBoxes();
             DebugSpheres.RenderBoundingSpheres();
         }
 
-        if (engine->IsScenePlaying() == false)
-        {
-            LightIcons.RenderLights();
-            //xSpotLightIcons.RenderSpotLights();
-        }
-
+        LightIcons.RenderLights();
+        SpotLightIcons.RenderSpotLights();
         engine->MaterialManager.StencilBufferClear();
     }
 
@@ -70,8 +63,14 @@ namespace Eclipse
         {
             if (engine->world.CheckComponent<CollisionComponent>(EntityID) == false)
             {
-                BoundingRegion br(Transform.position.ConvertToGlmVec3Type(), Transform.scale.ConvertToGlmVec3Type());
-                engine->gDebugDrawManager->DebugBoxes.AddInstance(br);
+                //BoundingRegion br(Transform.position.ConvertToGlmVec3Type(), Transform.scale.ConvertToGlmVec3Type());
+                //engine->gDebugDrawManager->DebugBoxes.AddInstance(br);
+                glm::mat4 model1 = glm::mat4(1.0f);
+                model1 = glm::translate(model1, Transform.position.ConvertToGlmVec3Type());
+                model1 = model1 * Transform.UpdateRotation();
+                model1 = glm::scale(model1, Transform.scale.ConvertToGlmVec3Type());
+
+                DebugBoxes_.Addinstance(model1);
             }
             else
             {
@@ -82,14 +81,15 @@ namespace Eclipse
 
                 case PxShapeType::Px_CUBE:
                 {
-                    // Below are half extents , we take transform for now
-                    //glm::vec3 Scale = glm::vec3{ BodyShape.shape.hx, BodyShape.shape.hy ,  BodyShape.shape.hz };
-                    //BoundingRegion br(Transform.position.ConvertToGlmVec3Type(), Scale);
-                    //engine->gDebugDrawManager->DebugBoxes.AddInstance(br);
                     auto& collision = engine->world.GetComponent<CollisionComponent>(EntityID);
-                    ECVec3 temp{ 2.0f  *collision.shape.hx,2.0f * collision.shape.hy,2.0f * collision.shape.hz };
-                    BoundingRegion br(Transform.position.ConvertToGlmVec3Type(), temp.ConvertToGlmVec3Type());
-                    engine->gDebugDrawManager->DebugBoxes.AddInstance(br);
+                    ECVec3 temp{ 2.0f * collision.shape.hx,2.0f * collision.shape.hy,2.0f * collision.shape.hz };
+
+                    glm::mat4 model1 = glm::mat4(1.0f);
+                    model1 = glm::translate(model1, Transform.position.ConvertToGlmVec3Type());
+                    model1 = model1 * Transform.UpdateRotation();
+                    model1 = glm::scale(model1, temp.ConvertToGlmVec3Type());
+
+                    engine->gDebugDrawManager->DebugBoxes_.Addinstance(model1);
                 }
                 break;
 
@@ -98,13 +98,11 @@ namespace Eclipse
                     glm::vec3 RadiusScale = glm::vec3{ BodyShape.shape.radius, BodyShape.shape.radius ,  BodyShape.shape.radius };
 
                     glm::mat4 model1 = glm::mat4(1.0f);
-                    model = glm::translate(model1, Transform.position.ConvertToGlmVec3Type());
-                    model = glm::rotate(model1, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-                    model = glm::rotate(model1, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-                    model = glm::rotate(model1, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-                    model = glm::scale(model1, RadiusScale);
+                    model1 = glm::translate(model1, Transform.position.ConvertToGlmVec3Type());
+                    model1 = model1 * Transform.UpdateRotation();
+                    model1 = glm::scale(model1, RadiusScale);
 
-                    engine->gDebugDrawManager->DebugSpheres.Addinstance(model);
+                    engine->gDebugDrawManager->DebugSpheres.Addinstance(model1);
                 }
                 break;
 

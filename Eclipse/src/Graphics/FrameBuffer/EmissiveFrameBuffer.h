@@ -12,6 +12,8 @@ namespace Eclipse
         unsigned int Amount = 20;
 
     public:
+        bool AllowBloom = false;
+
         void SetupGaussianBlurFBOs();
         void GaussianBlur(FrameBufferMode Mode);
     };
