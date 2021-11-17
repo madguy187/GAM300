@@ -60,6 +60,10 @@ public:
     void set4Float(const std::string& name, glm::vec4 v);
     void setMat4(const std::string& name, glm::mat4 val);
 
+    void setVec3(const std::string& name, const glm::vec3& value) const;
+
+    void setVec3(const std::string& name, float x, float y, float z) const;
+
 private:
     std::string GetShaderData(const std::string& fileName);
     GLboolean CompileShader(GLenum shaderType, const std::string fileName);

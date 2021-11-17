@@ -16,6 +16,9 @@ namespace Eclipse
       "MESHEDITORVIEW",
       "GAMEVIEW_SOBEL",
       "SHADOWVIEW",
+      "BLOOM",
+      "ANIMATION_VIEW",
+      "UI_MANAGER_VIEW"
       "MAXCOUNT"
     };
 
@@ -72,31 +75,31 @@ namespace Eclipse
 
     public:
         // POST PROCESS HERE ==========================
-        enum class PostProcessType : unsigned int
-        {
-            PPT_NONE = 0,
-            PPT_INVERSE = 1,
-            PPT_GREY = 2,
-            PPT_KERNEL = 3,
-            PPT_BLUR = 4,
-            PPT_SOBEL = 5,
-            PPT_BLLEDING = 6,
-            PPT_SCREENSHAKE = 7,
-            PPT_MAXCOUNT
-        };
-        PostProcessType PPType_ = PostProcessType::PPT_NONE;
-        bool AllowPostProcess = false;
-        unsigned int rectVAO = 0;
-        unsigned int rectVBO = 0;
-        void CreatePostProcessFramebuffer();
+        //enum class PostProcessType : unsigned int
+        //{
+        //    PPT_NONE = 0,
+        //    PPT_INVERSE = 1,
+        //    PPT_GREY = 2,
+        //    PPT_KERNEL = 3,
+        //    PPT_BLUR = 4,
+        //    PPT_SOBEL = 5,
+        //    PPT_BLLEDING = 6,
+        //    PPT_SCREENSHAKE = 7,
+        //    PPT_MAXCOUNT
+        //};
+        //PostProcessType PPType_ = PostProcessType::PPT_NONE;
+        //bool AllowPostProcess = false;
+        //unsigned int rectVAO = 0;
+        //unsigned int rectVBO = 0;
+        //void CreatePostProcessFramebuffer();
 
-        // Sobel
-        float FadeInTimer = 0.0f;
-        float Multiplier = 30.0f;
-        float Visible = 1.0f;
+        //// Sobel
+        //float FadeInTimer = 0.0f;
+        //float Multiplier = 30.0f;
+        //float Visible = 1.0f;
 
-        // Bleeding
-        float BleedingTimer = 0.0f;
+        //// Bleeding
+        //float BleedingTimer = 0.0f;
     };
 }
 #endif//FRAMEBUFFER_H

@@ -34,6 +34,8 @@ namespace Eclipse
 
         // DebugManagerRender
         engine->gDebugDrawManager->Init();
+
+        MaterialSystem::Init();
     }
 
     void RenderSystem::Update()
@@ -62,10 +64,7 @@ namespace Eclipse
                 if (!entCom.IsVisible) continue;
 
                 //If No Mesh Component, Do not Continue
-                if (!engine->world.CheckComponent<MeshComponent>(entityID))
-                {
-                    continue;
-                }
+                if (!engine->world.CheckComponent<MeshComponent>(entityID)) { continue; }
 
                 // If it is a base prefab, dont render
                 if (engine->world.CheckComponent<PrefabComponent>(entityID))
@@ -78,10 +77,7 @@ namespace Eclipse
 
                 MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
 
-                if (Mesh.transparency == 0.0f)
-                {
-                    continue;
-                }
+                if (Mesh.transparency == 0.0f) { continue; }
 
                 Renderer.RenderGame(Mesh, entityID);
             }
@@ -101,10 +97,13 @@ namespace Eclipse
                 engine->GraphicsManager.RenderSky(FrameBufferMode::FBM_SCENE);
 
 
-                for (auto const& entityID : mEntities)
+                if (engine->LightManager.EnableShadows == true)
                 {
-                    MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
-                    Renderer.RenderSceneFromLightPOV(Mesh, entityID);
+                    for (auto const& entityID : mEntities)
+                    {
+                        MeshComponent& Mesh = engine->world.GetComponent<MeshComponent>(entityID);
+                        Renderer.RenderSceneFromLightPOV(Mesh, entityID);
+                    }
                 }
 
                 for (auto const& entityID : mEntities)
@@ -151,12 +150,12 @@ namespace Eclipse
 
                 engine->AssimpManager.MeshEditor_.Render();
 
-            // Frustrum
-            if (engine->GetEditorState() && engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
-            {
-                engine->MaterialManager.DoNotUpdateStencil();
-                engine->gDebugManager.DrawDebugShapes(FrameBufferMode::FBM_SCENE);
-            }
+                // Frustrum
+                if (engine->GetEditorState() && engine->editorManager->GetEditorWindow<SceneWindow>()->IsVisible)
+                {
+                    engine->MaterialManager.DoNotUpdateStencil();
+                    engine->gDebugManager.DrawDebugShapes(FrameBufferMode::FBM_SCENE);
+                }
 
                 engine->MaterialManager.StencilBufferClear();
             }

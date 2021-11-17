@@ -1,11 +1,15 @@
 #version 450 core
-out vec4 FragColor;
+layout (location = 0) out vec4 FragColor;
+layout (location = 1) out vec4 BrightColor;
+
 in vec2 TexCoords;
 in vec3 WorldPos;
 in vec3 Normal;
 in vec4 FragPosLightSpace;
 
 uniform float Transparency;
+uniform bool EmissiveMaterial;
+uniform vec3 EmissiveColour;
 
 // material parameters
 uniform sampler2D albedoMap;
@@ -34,6 +38,9 @@ const float PI = 3.14159265359;
 uniform sampler2D shadowMap;
 uniform vec3 lightPos;
 uniform vec3 viewPos;
+
+// IBL
+uniform samplerCube irradianceMap;
 
 struct PointLight 
 {    
@@ -179,6 +186,18 @@ vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness)
 
 void main()
 {	
+    if(EmissiveMaterial == true)
+    {
+      FragColor = vec4(EmissiveColour, 1.0);
+      
+      float brightness = dot(FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+      if(brightness > 1.0)
+          BrightColor = vec4(FragColor.rgb, 1.0);
+	  else
+	  	BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
+    }
+    else
+    {
     vec3 AmbientSettings = directionlight[0].AmbientSettings; // if i want abit of ambient ill give it 0.03 , lets see as our game need this
 
     vec3 N;
@@ -387,7 +406,7 @@ void main()
         }
     }   
 
-    float shadow = 0.0;
+       float shadow = 0.0;
 
        if(Directional == 1 && directionlight[0].AffectsWorld == 1)
        {
@@ -402,6 +421,13 @@ void main()
        {
            shadow = 1.0;
        }
+
+       vec3 kS = fresnelSchlick(max(dot(N, V), 0.0), F0);
+       vec3 kD = 1.0 - kS;
+       kD *= 1.0 - metallic;	  
+       vec3 irradiance = texture(irradianceMap, N).rgb;
+       vec3 diffuse      = irradiance * albedo;
+       vec3 ambient = (kD * diffuse) * ao;
 
        if( HasInstance == 1 )
        {  
@@ -418,5 +444,6 @@ void main()
           color = color / (color + vec3(1.0));  
           color = pow(color, vec3(1.0/2.2)); 
           FragColor = vec4(color, Transparency);      
+        }
         }
 }

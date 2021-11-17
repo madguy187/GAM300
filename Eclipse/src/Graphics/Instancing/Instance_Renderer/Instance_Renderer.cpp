@@ -7,7 +7,7 @@ namespace Eclipse
     {
         Vertices = vertices_;
         Indices = indices_;
-        Instancing = instancing_;
+        Instancing = static_cast<unsigned int>(instancing_);
 
         glGenVertexArrays(1, &VAO);
         glBindVertexArray(VAO);
