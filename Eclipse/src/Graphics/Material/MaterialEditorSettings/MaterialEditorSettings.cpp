@@ -116,6 +116,8 @@ namespace Eclipse
         model = glm::rotate(model, glm::radians(Rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::scale(model, glm::vec3{ 5.0f });
 
+        NegativeChecks();
+
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
 
         // Emissive
@@ -152,6 +154,45 @@ namespace Eclipse
         AoTexture.clear();
         HeightTexture.clear();
         MaterialName.clear();
+    }
+
+    void MaterialEditorSettings::NegativeChecks()
+    {
+        if (CurrentMaterial.BaseReflectivity.getX() > 1.0f)
+            CurrentMaterial.BaseReflectivity.setX(1.0f);;
+
+        if (CurrentMaterial.BaseReflectivity.getY() > 1.0f)
+            CurrentMaterial.BaseReflectivity.setY(1.0f);;
+
+        if (CurrentMaterial.BaseReflectivity.getZ() > 1.0f)
+            CurrentMaterial.BaseReflectivity.setZ(1.0f);;
+
+        if (CurrentMaterial.BaseReflectivity.getX() < 0.0f)
+            CurrentMaterial.BaseReflectivity.setX(0.0f);;
+
+        if (CurrentMaterial.BaseReflectivity.getY() < 0.0f)
+            CurrentMaterial.BaseReflectivity.setY(0.0f);;
+
+        if (CurrentMaterial.BaseReflectivity.getZ() < 0.0f)
+            CurrentMaterial.BaseReflectivity.setZ(0.0f);
+
+        if (CurrentMaterial.RoughnessConstant < 0.0f)
+            CurrentMaterial.RoughnessConstant = 0.0f;
+
+        if (CurrentMaterial.RoughnessConstant > 1.0f)
+            CurrentMaterial.RoughnessConstant = 1.0f;
+
+        if (CurrentMaterial.MetallicConstant < 0.0f)
+            CurrentMaterial.MetallicConstant = 0.0f;
+
+        if (CurrentMaterial.MetallicConstant > 1.0f)
+            CurrentMaterial.MetallicConstant = 1.0f;
+
+        if (CurrentMaterial.AoConstant < 0.0f)
+            CurrentMaterial.AoConstant = 0.0f;
+
+        if (CurrentMaterial.AoConstant > 1.0f)
+            CurrentMaterial.AoConstant = 1.0f;
     }
 
     void MaterialEditorSettings::UpdateLights(Shader& MaterialEditorShader)

@@ -56,5 +56,6 @@ namespace Eclipse
         void RenderMaterialScene();
         void ClearCurrentMaterial();
         void ClearTextureFields();
+        void NegativeChecks();
     };
 }
