@@ -12,7 +12,7 @@ namespace Eclipse
 	{
 		//META_DATA(AnimationComponent);
 
-		std::vector<glm::mat4> m_Transforms;
+		std::vector<glm::mat4> m_Transforms{ 100, glm::mat4(1.0f) };
 		Animation m_CurrentAnimation;
 		float m_CurrentTime = 0.0f;
 		float m_DeltaTime = 0.0f;

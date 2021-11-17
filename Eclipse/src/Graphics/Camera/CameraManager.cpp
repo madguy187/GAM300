@@ -379,6 +379,11 @@ namespace Eclipse
             }
             else
             {
+                if (!isWithinEditorWindow(scene) && glfwGetMouseButton(OpenGL_Context::ptr_window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+                {
+                    ImGui::SetMouseCursor(ImGuiMouseCursor_None);
+                }
+
                 if (releaseMouse)
                 {
                     auto* _scene = engine->editorManager->GetEditorWindow<SceneWindow>();
@@ -1204,6 +1209,11 @@ namespace Eclipse
                 }
                 else
                 {
+                    if (!isWithinGameWindow(scene) && glfwGetMouseButton(OpenGL_Context::ptr_window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+                    {
+                        glfwSetInputMode(OpenGL_Context::ptr_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+                    }
+
                     if (releaseMouse)
                     {
                         auto* _scene = engine->editorManager->GetEditorWindow<SceneWindow>();

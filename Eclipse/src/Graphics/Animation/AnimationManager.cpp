@@ -113,12 +113,12 @@ void Eclipse::AnimationManager::CheckForAnimation(unsigned int ID)
                 animation.m_CurrentAnimation = it.second.begin()->second;
                 animation.modelLargestAxis = it.second.begin()->second.modelLargestAxis;
                 animation.m_CurrentTime = 0.0f;
-                animation.m_Transforms.reserve(100);
-
-                for (unsigned int i = 0; i < 100; ++i)
-                {
-                    animation.m_Transforms.push_back(glm::mat4(1.0f));
-                }
+                //animation.m_Transforms.reserve(100);
+                //
+                //for (unsigned int i = 0; i < 100; ++i)
+                //{
+                //    animation.m_Transforms.push_back(glm::mat4(1.0f));
+                //}
 
                 if (!strcmp(meshName.c_str(), "Frog"))
                 {
