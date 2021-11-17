@@ -655,7 +655,7 @@ namespace Eclipse
 					ECGui::DrawSliderFloat3Widget("Vec3", &inputVec3, true, -100.f, 100.f);
 					break;
 				case MaterialNode::Node::VEC3TYPE::ECVEC3COLOUR:
-					ImGui::SetNextItemWidth(150);
+					ImGui::SetNextItemWidth(100);
 					ECGui::ColorPicker3("Vec3_Colour", (float*)&inputVec3, ImGuiColorEditFlags_DisplayRGB);
 					inputVec3.x = (Saturate(((float*)(&inputVec3))[0]) * 255.0f);
 					inputVec3.y = (Saturate(((float*)(&inputVec3))[1]) * 255.0f);
@@ -695,7 +695,7 @@ namespace Eclipse
 				ImNodes::BeginNodeTitleBar();
 				ImNodes::EndNodeTitleBar();
 
-				//Has Texture
+				//is Emissive
 				ImNodes::PushColorStyle(
 					ImNodesCol_Pin, IM_COL32(60, 0, 0, 255));
 				beginInput();
@@ -705,46 +705,50 @@ namespace Eclipse
 					{
 						auto downcastedPtr = dynamic_cast<BoolNode*>(getInput(0).node);
 						//A = downcastedPtr->inputFloat;
-						hasTexture = downcastedPtr->inputBool;
-						engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.HasTexture = hasTexture;
+						isEmissive = downcastedPtr->inputBool;
+						engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.EmissiveMaterial = isEmissive;
 						ImGui::SetNextItemWidth(50);
 					}
 					else
 					{
 						LinkError = true;
 					}
-					ECGui::CheckBoxBool("Has Textures", &hasTexture, false);
-					engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.HasTexture = hasTexture;
+					ECGui::CheckBoxBool("Is Emissive", &isEmissive, false);
+					engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.EmissiveMaterial = isEmissive;
 				}
 				else
 				{
 					ImGui::SetNextItemWidth(50);
-					ECGui::CheckBoxBool("Has Texture", &hasTexture, false);
-					engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.HasTexture = hasTexture;
+					ECGui::CheckBoxBool("Is Emissive", &isEmissive, false);
+					engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.EmissiveMaterial = isEmissive;
 				}
 				endInput();
 				ImNodes::PopColorStyle();
 
-				//base reflective
-				ImNodes::PushColorStyle(
-					ImNodesCol_Pin, IM_COL32(100, 42, 42, 255));
-				beginInput();
-				if (getInput(1).node)
+				if (isEmissive)
 				{
-					switch (getInput(1).node->getType())
+					// Albedo Constant
+					ImNodes::PushColorStyle(
+						ImNodesCol_Pin, IM_COL32(100, 42, 42, 255));
+					beginInput();
+					// check for first pin if its linked
+					if (getInput(1).node)
 					{
+						//might case problem down the line 
+						switch (getInput(1).node->getType())
+						{
 						case Node::NodeType::ECVEC3:
-							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
+							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.EmissiveColour =
 								(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3>*>(getInput(1).node))->inputVec3;
 							break;
 						case Node::NodeType::ECVEC3COLOUR:
-							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
+							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.EmissiveColour =
 								(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3COLOUR>*>(getInput(1).node))->inputVec3;
 							break;
 						case Node::NodeType::MUL:
 							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(1).node))->vec3Mode)
 							{
-								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.EmissiveColour =
 									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(1).node))->vec3Output;
 							}
 							else
@@ -755,7 +759,7 @@ namespace Eclipse
 						case Node::NodeType::DIV:
 							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(1).node))->vec3Mode)
 							{
-								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.EmissiveColour =
 									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(1).node))->vec3Output;
 							}
 							else
@@ -766,7 +770,7 @@ namespace Eclipse
 						case Node::NodeType::ADD:
 							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(1).node))->vec3Mode)
 							{
-								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.EmissiveColour =
 									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(1).node))->vec3Output;
 							}
 							else
@@ -776,6 +780,113 @@ namespace Eclipse
 							break;
 						case Node::NodeType::SUB:
 							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(1).node))->vec3Mode)
+							{
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.EmissiveColour =
+									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(1).node))->vec3Output;
+							}
+							else
+							{
+								LinkError = true;
+							}
+							break;
+						default:
+							LinkError = true;
+						}
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("EmissiveColour", EMPTY_STRING);
+					}
+					else
+					{
+						engine->gPBRManager->ResetAlbedoConstant();
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("EmissiveColour", EMPTY_STRING);
+					}
+					endInput();
+					ImNodes::PopColorStyle();
+				}
+				else
+				{
+					//Has Texture
+					ImNodes::PushColorStyle(
+						ImNodesCol_Pin, IM_COL32(60, 0, 0, 255));
+					beginInput();
+					if (getInput(1).node)
+					{
+						if (getInput(1).node->getType() == Node::NodeType::BOOL)
+						{
+							auto downcastedPtr = dynamic_cast<BoolNode*>(getInput(1).node);
+							//A = downcastedPtr->inputFloat;
+							hasTexture = downcastedPtr->inputBool;
+							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.HasTexture = hasTexture;
+							ImGui::SetNextItemWidth(50);
+						}
+						else
+						{
+							LinkError = true;
+						}
+						ECGui::CheckBoxBool("Has Textures", &hasTexture, false);
+						engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.HasTexture = hasTexture;
+					}
+					else
+					{
+						ImGui::SetNextItemWidth(50);
+						ECGui::CheckBoxBool("Has Texture", &hasTexture, false);
+						engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.HasTexture = hasTexture;
+					}
+					endInput();
+					ImNodes::PopColorStyle();
+
+					//base reflective
+					ImNodes::PushColorStyle(
+						ImNodesCol_Pin, IM_COL32(200, 42, 42, 255));
+					beginInput();
+					if (getInput(2).node)
+					{
+						switch (getInput(2).node->getType())
+						{
+						case Node::NodeType::ECVEC3:
+							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
+								(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3>*>(getInput(2).node))->inputVec3;
+							break;
+						case Node::NodeType::ECVEC3COLOUR:
+							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
+								(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3COLOUR>*>(getInput(2).node))->inputVec3;
+							break;
+						case Node::NodeType::MUL:
+							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(2).node))->vec3Mode)
+							{
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
+									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(2).node))->vec3Output;
+							}
+							else
+							{
+								LinkError = true;
+							}
+							break;
+						case Node::NodeType::DIV:
+							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(2).node))->vec3Mode)
+							{
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
+									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(2).node))->vec3Output;
+							}
+							else
+							{
+								LinkError = true;
+							}
+							break;
+						case Node::NodeType::ADD:
+							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(2).node))->vec3Mode)
+							{
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
+									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(2).node))->vec3Output;
+							}
+							else
+							{
+								LinkError = true;
+							}
+							break;
+						case Node::NodeType::SUB:
+							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(2).node))->vec3Mode)
 							{
 								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.BaseReflectivity =
 									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(2).node))->vec3Output;
@@ -787,46 +898,45 @@ namespace Eclipse
 							break;
 						default:
 							LinkError = true;
+						}
+
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("Base Reflective", EMPTY_STRING);
 					}
-
-					ImGui::SetNextItemWidth(50);
-					ECGui::DrawTextWidget<std::string>("Base Reflective", EMPTY_STRING);
-				}
-				else
-				{
-					engine->gPBRManager->ResetReflectivity();
-					ImGui::SetNextItemWidth(50);
-					ECGui::DrawTextWidget<std::string>("Base Reflective", EMPTY_STRING);
-				}
-				endInput();
-				ImNodes::PopColorStyle();
-
-
-				if (!hasTexture)
-				{
-					// Albedo Constant
-					ImNodes::PushColorStyle(
-						ImNodesCol_Pin, IM_COL32(100, 42, 42, 255));
-					beginInput();
-					// check for first pin if its linked
-					if (getInput(2).node)
+					else
 					{
-						//might case problem down the line 
-						switch (getInput(2).node->getType())
+						engine->gPBRManager->ResetReflectivity();
+						ImGui::SetNextItemWidth(50);
+						ECGui::DrawTextWidget<std::string>("Base Reflective", EMPTY_STRING);
+					}
+					endInput();
+					ImNodes::PopColorStyle();
+
+					if (!hasTexture)
+					{
+						// Albedo Constant
+						ImNodes::PushColorStyle(
+							ImNodesCol_Pin, IM_COL32(100, 42, 42, 255));
+						beginInput();
+						// check for first pin if its linked
+						if (getInput(3).node)
 						{
+							//might case problem down the line 
+							switch (getInput(3).node->getType())
+							{
 							case Node::NodeType::ECVEC3:
 								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant =
-									(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3>*>(getInput(2).node))->inputVec3;
+									(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3>*>(getInput(3).node))->inputVec3;
 								break;
 							case Node::NodeType::ECVEC3COLOUR:
 								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant =
-									(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3COLOUR>*>(getInput(2).node))->inputVec3;
+									(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3COLOUR>*>(getInput(3).node))->inputVec3;
 								break;
 							case Node::NodeType::MUL:
-								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(2).node))->vec3Mode)
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(3).node))->vec3Mode)
 								{
 									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant =
-										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(2).node))->vec3Output;
+										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(3).node))->vec3Output;
 								}
 								else
 								{
@@ -834,10 +944,10 @@ namespace Eclipse
 								}
 								break;
 							case Node::NodeType::DIV:
-								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(2).node))->vec3Mode)
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(3).node))->vec3Mode)
 								{
 									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant =
-										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(2).node))->vec3Output;
+										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(3).node))->vec3Output;
 								}
 								else
 								{
@@ -845,10 +955,10 @@ namespace Eclipse
 								}
 								break;
 							case Node::NodeType::ADD:
-								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(2).node))->vec3Mode)
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(3).node))->vec3Mode)
 								{
 									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant =
-										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(2).node))->vec3Output;
+										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(3).node))->vec3Output;
 								}
 								else
 								{
@@ -856,10 +966,10 @@ namespace Eclipse
 								}
 								break;
 							case Node::NodeType::SUB:
-								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(2).node))->vec3Mode)
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(3).node))->vec3Mode)
 								{
 									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AlbedoConstant =
-										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(2).node))->vec3Output;
+										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(3).node))->vec3Output;
 								}
 								else
 								{
@@ -868,108 +978,36 @@ namespace Eclipse
 								break;
 							default:
 								LinkError = true;
+							}
+							ImGui::SetNextItemWidth(50);
+							ECGui::DrawTextWidget<std::string>("Albedo Constant", EMPTY_STRING);
 						}
-						ImGui::SetNextItemWidth(50);
-						ECGui::DrawTextWidget<std::string>("Albedo Constant", EMPTY_STRING);
-					}
-					else
-					{
-						engine->gPBRManager->ResetAlbedoConstant();
-						ImGui::SetNextItemWidth(50);
-						ECGui::DrawTextWidget<std::string>("Albedo Constant", EMPTY_STRING);
-					}
-					endInput();
-					ImNodes::PopColorStyle();
-
-					// metallic constant
-					ImNodes::PushColorStyle(
-						ImNodesCol_Pin, IM_COL32(0, 60, 0, 255));
-					beginInput();
-					if (getInput(3).node)
-					{
-						//might case problem down the line 
-						switch (getInput(3).node->getType())
+						else
 						{
-						case Node::NodeType::FLOAT:
-							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.MetallicConstant =
-								(dynamic_cast<FloatNode*>(getInput(3).node))->inputFloat;
-							break;
-						case Node::NodeType::MUL:
-							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(3).node))->floatMode)
-							{
-								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.MetallicConstant =
-									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(3).node))->output;
-							}
-							else
-							{
-								LinkError = true;
-							}
-							break;
-						case Node::NodeType::DIV:
-							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(3).node))->floatMode)
-							{
-								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.MetallicConstant =
-									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(3).node))->output;
-							}
-							else
-							{
-								LinkError = true;
-							}
-							break;
-						case Node::NodeType::ADD:
-							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(3).node))->floatMode)
-							{
-								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.MetallicConstant =
-									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(3).node))->output;
-							}
-							else
-							{
-								LinkError = true;
-							}
-							break;
-						case Node::NodeType::SUB:
-							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(3).node))->floatMode)
-							{
-								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.MetallicConstant =
-									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(3).node))->output;
-							}
-							else
-							{
-								LinkError = true;
-							}
-							break;
-						default:
-							LinkError = true;
+							engine->gPBRManager->ResetAlbedoConstant();
+							ImGui::SetNextItemWidth(50);
+							ECGui::DrawTextWidget<std::string>("Albedo Constant", EMPTY_STRING);
 						}
-						ImGui::SetNextItemWidth(50);
-						ECGui::DrawTextWidget<std::string>("Metallic Constant", EMPTY_STRING);
-					}
-					else
-					{
-						engine->gPBRManager->ResetMetallicConstant();
-						ImGui::SetNextItemWidth(50);
-						ECGui::DrawTextWidget<std::string>("Metallic Constant", EMPTY_STRING);
-					}
-					endInput();
-					ImNodes::PopColorStyle();
+						endInput();
+						ImNodes::PopColorStyle();
 
-					// Roughness constant
-					ImNodes::PushColorStyle(
-						ImNodesCol_Pin, IM_COL32(0, 60, 0, 255));
-					beginInput();
-					if (getInput(4).node)
-					{
-						//might case problem down the line 
-						switch (getInput(4).node->getType())
+						// metallic constant
+						ImNodes::PushColorStyle(
+							ImNodesCol_Pin, IM_COL32(0, 60, 0, 255));
+						beginInput();
+						if (getInput(4).node)
 						{
+							//might case problem down the line 
+							switch (getInput(4).node->getType())
+							{
 							case Node::NodeType::FLOAT:
-								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.RoughnessConstant =
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.MetallicConstant =
 									(dynamic_cast<FloatNode*>(getInput(4).node))->inputFloat;
 								break;
 							case Node::NodeType::MUL:
 								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(4).node))->floatMode)
 								{
-									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.RoughnessConstant =
+									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.MetallicConstant =
 										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(4).node))->output;
 								}
 								else
@@ -980,7 +1018,7 @@ namespace Eclipse
 							case Node::NodeType::DIV:
 								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(4).node))->floatMode)
 								{
-									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.RoughnessConstant =
+									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.MetallicConstant =
 										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(4).node))->output;
 								}
 								else
@@ -989,9 +1027,9 @@ namespace Eclipse
 								}
 								break;
 							case Node::NodeType::ADD:
-								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(4).node))->output)
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(4).node))->floatMode)
 								{
-									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.RoughnessConstant =
+									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.MetallicConstant =
 										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(4).node))->output;
 								}
 								else
@@ -1002,7 +1040,7 @@ namespace Eclipse
 							case Node::NodeType::SUB:
 								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(4).node))->floatMode)
 								{
-									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.RoughnessConstant =
+									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.MetallicConstant =
 										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(4).node))->output;
 								}
 								else
@@ -1012,368 +1050,441 @@ namespace Eclipse
 								break;
 							default:
 								LinkError = true;
-						}
-
-						ImGui::SetNextItemWidth(50);
-						ECGui::DrawTextWidget<std::string>("Roughness Constant", EMPTY_STRING);
-					}
-					else
-					{
-						engine->gPBRManager->ResetRoughnessConstant();
-						ImGui::SetNextItemWidth(50);
-						ECGui::DrawTextWidget<std::string>("Roughness Constant", EMPTY_STRING);
-					}
-					endInput();
-					ImNodes::PopColorStyle();
-					// AO constant
-					ImNodes::PushColorStyle(
-						ImNodesCol_Pin, IM_COL32(0, 60, 0, 255));
-					beginInput();
-					if (getInput(5).node)
-					{
-						switch (getInput(5).node->getType())
-						{
-						case Node::NodeType::FLOAT:
-							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AoConstant =
-								(dynamic_cast<FloatNode*>(getInput(5).node))->inputFloat;
-							break;
-						case Node::NodeType::MUL:
-							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(5).node))->floatMode)
-							{
-								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AoConstant =
-									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(5).node))->output;
 							}
-							else
-							{
-								LinkError = true;
-							}
-							break;
-						case Node::NodeType::DIV:
-							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(5).node))->floatMode)
-							{
-								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AoConstant =
-									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(5).node))->output;
-							}
-							else
-							{
-								LinkError = true;
-							}
-							break;
-						case Node::NodeType::ADD:
-							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(5).node))->output)
-							{
-								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AoConstant =
-									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(5).node))->output;
-							}
-							else
-							{
-								LinkError = true;
-							}
-							break;
-						case Node::NodeType::SUB:
-							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(5).node))->floatMode)
-							{
-								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AoConstant =
-									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(5).node))->output;
-							}
-							else
-							{
-								LinkError = true;
-							}
-							break;
-						default:
-							LinkError = true;
-						}
-						ImGui::SetNextItemWidth(50);
-						ECGui::DrawTextWidget<std::string>("Ao Constant", EMPTY_STRING);
-					}
-					else
-					{
-						engine->gPBRManager->ResetAoConstant();
-						ImGui::SetNextItemWidth(50);
-						ECGui::DrawTextWidget<std::string>("Ao Constant", EMPTY_STRING);
-					}
-					endInput();
-					ImNodes::PopColorStyle();
-				}
-				else
-				{
-					//normal map
-					ImNodes::PushColorStyle(
-						ImNodesCol_Pin, IM_COL32(60, 0, 0, 255));
-					beginInput();
-					if (getInput(2).node)
-					{
-						if (getInput(2).node->getType() == Node::NodeType::BOOL)
-						{
-							auto downcastedPtr = dynamic_cast<BoolNode*>(getInput(2).node);
-							NormalMap = downcastedPtr->inputBool;
 							ImGui::SetNextItemWidth(50);
+							ECGui::DrawTextWidget<std::string>("Metallic Constant", EMPTY_STRING);
+						}
+						else
+						{
+							engine->gPBRManager->ResetMetallicConstant();
+							ImGui::SetNextItemWidth(50);
+							ECGui::DrawTextWidget<std::string>("Metallic Constant", EMPTY_STRING);
+						}
+						endInput();
+						ImNodes::PopColorStyle();
 
+						// Roughness constant
+						ImNodes::PushColorStyle(
+							ImNodesCol_Pin, IM_COL32(0, 60, 0, 255));
+						beginInput();
+						if (getInput(5).node)
+						{
+							//might case problem down the line 
+							switch (getInput(5).node->getType())
+							{
+							case Node::NodeType::FLOAT:
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.RoughnessConstant =
+									(dynamic_cast<FloatNode*>(getInput(5).node))->inputFloat;
+								break;
+							case Node::NodeType::MUL:
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(5).node))->floatMode)
+								{
+									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.RoughnessConstant =
+										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(5).node))->output;
+								}
+								else
+								{
+									LinkError = true;
+								}
+								break;
+							case Node::NodeType::DIV:
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(5).node))->floatMode)
+								{
+									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.RoughnessConstant =
+										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(5).node))->output;
+								}
+								else
+								{
+									LinkError = true;
+								}
+								break;
+							case Node::NodeType::ADD:
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(5).node))->output)
+								{
+									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.RoughnessConstant =
+										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(5).node))->output;
+								}
+								else
+								{
+									LinkError = true;
+								}
+								break;
+							case Node::NodeType::SUB:
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(5).node))->floatMode)
+								{
+									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.RoughnessConstant =
+										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(5).node))->output;
+								}
+								else
+								{
+									LinkError = true;
+								}
+								break;
+							default:
+								LinkError = true;
+							}
+
+							ImGui::SetNextItemWidth(50);
+							ECGui::DrawTextWidget<std::string>("Roughness Constant", EMPTY_STRING);
+						}
+						else
+						{
+							engine->gPBRManager->ResetRoughnessConstant();
+							ImGui::SetNextItemWidth(50);
+							ECGui::DrawTextWidget<std::string>("Roughness Constant", EMPTY_STRING);
+						}
+						endInput();
+						ImNodes::PopColorStyle();
+						// AO constant
+						ImNodes::PushColorStyle(
+							ImNodesCol_Pin, IM_COL32(0, 60, 0, 255));
+						beginInput();
+						if (getInput(6).node)
+						{
+							switch (getInput(6).node->getType())
+							{
+							case Node::NodeType::FLOAT:
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AoConstant =
+									(dynamic_cast<FloatNode*>(getInput(6).node))->inputFloat;
+								break;
+							case Node::NodeType::MUL:
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(6).node))->floatMode)
+								{
+									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AoConstant =
+										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(6).node))->output;
+								}
+								else
+								{
+									LinkError = true;
+								}
+								break;
+							case Node::NodeType::DIV:
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(6).node))->floatMode)
+								{
+									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AoConstant =
+										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(6).node))->output;
+								}
+								else
+								{
+									LinkError = true;
+								}
+								break;
+							case Node::NodeType::ADD:
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(6).node))->output)
+								{
+									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AoConstant =
+										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(6).node))->output;
+								}
+								else
+								{
+									LinkError = true;
+								}
+								break;
+							case Node::NodeType::SUB:
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(6).node))->floatMode)
+								{
+									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.AoConstant =
+										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(6).node))->output;
+								}
+								else
+								{
+									LinkError = true;
+								}
+								break;
+							default:
+								LinkError = true;
+							}
+							ImGui::SetNextItemWidth(50);
+							ECGui::DrawTextWidget<std::string>("Ao Constant", EMPTY_STRING);
+						}
+						else
+						{
+							engine->gPBRManager->ResetAoConstant();
+							ImGui::SetNextItemWidth(50);
+							ECGui::DrawTextWidget<std::string>("Ao Constant", EMPTY_STRING);
+						}
+						endInput();
+						ImNodes::PopColorStyle();
+					}
+					else
+					{
+						//normal map
+						ImNodes::PushColorStyle(
+							ImNodesCol_Pin, IM_COL32(60, 0, 0, 255));
+						beginInput();
+						if (getInput(3).node)
+						{
+							if (getInput(3).node->getType() == Node::NodeType::BOOL)
+							{
+								auto downcastedPtr = dynamic_cast<BoolNode*>(getInput(3).node);
+								NormalMap = downcastedPtr->inputBool;
+								ImGui::SetNextItemWidth(50);
+
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.IsNormalMap = NormalMap;
+							}
+							else
+							{
+								LinkError = true;
+							}
+							ECGui::CheckBoxBool("", &NormalMap, false);
+						}
+						else
+						{
+							ImGui::SetNextItemWidth(50);
+							ECGui::CheckBoxBool("Normal Map", &NormalMap, false);
 							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.IsNormalMap = NormalMap;
 						}
+
+						endInput();
+						ImNodes::PopColorStyle();
+
+						// colours
+						ImNodes::PushColorStyle(
+							ImNodesCol_Pin, IM_COL32(100, 42, 42, 255));
+						beginInput();
+						// check for first pin if its linked
+						if (getInput(4).node)
+						{
+							//might case problem down the line 
+							switch (getInput(4).node->getType())
+							{
+							case Node::NodeType::ECVEC3:
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour =
+									(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3>*>(getInput(4).node))->inputVec3;
+								break;
+							case Node::NodeType::ECVEC3COLOUR:
+								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour =
+									(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3COLOUR>*>(getInput(4).node))->inputVec3;
+								break;
+							case Node::NodeType::MUL:
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(4).node))->vec3Mode)
+								{
+									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour =
+										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(4).node))->vec3Output;
+								}
+								else
+								{
+									LinkError = true;
+								}
+								break;
+							case Node::NodeType::DIV:
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(4).node))->vec3Mode)
+								{
+									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour =
+										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(4).node))->vec3Output;
+								}
+								else
+								{
+									LinkError = true;
+								}
+								break;
+							case Node::NodeType::ADD:
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(4).node))->vec3Mode)
+								{
+									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour =
+										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(4).node))->vec3Output;
+								}
+								else
+								{
+									LinkError = true;
+								}
+								break;
+							case Node::NodeType::SUB:
+								if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(4).node))->vec3Mode)
+								{
+									engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour =
+										(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(4).node))->vec3Output;
+								}
+								else
+								{
+									LinkError = true;
+								}
+								break;
+							default:
+								LinkError = true;
+							}
+							ImGui::SetNextItemWidth(50);
+							ECGui::DrawTextWidget<std::string>("Material Colour", EMPTY_STRING);
+						}
 						else
 						{
-							LinkError = true;
+							engine->gPBRManager->ResetSurfaceColour();
+							ECGui::DrawTextWidget<std::string>("Material Colour", EMPTY_STRING);
 						}
-						ECGui::CheckBoxBool("", &NormalMap, false);
-					}
-					else
-					{
-						ImGui::SetNextItemWidth(50);
-						ECGui::CheckBoxBool("Normal Map", &NormalMap, false);
-						engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.IsNormalMap = NormalMap;
-					}
+						endInput();
+						ImNodes::PopColorStyle();
 
-					endInput();
-					ImNodes::PopColorStyle();
 
-					// colours
-					ImNodes::PushColorStyle(
-						ImNodesCol_Pin, IM_COL32(100, 42, 42, 255));
-					beginInput();
-					// check for first pin if its linked
-					if (getInput(3).node)
-					{
-						//might case problem down the line 
-						switch (getInput(3).node->getType())
+						// for Albdeo texture nodes
+						ImNodes::PushColorStyle(
+							ImNodesCol_Pin, IM_COL32(255, 255, 255, 255));
+						beginInput();
+						if (getInput(5).node)
 						{
-						case Node::NodeType::ECVEC3:
-							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour =
-								(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3>*>(getInput(3).node))->inputVec3;
-							break;
-						case Node::NodeType::ECVEC3COLOUR:
-							engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour =
-								(dynamic_cast<Vec3Nodes<MaterialNode::Node::VEC3TYPE::ECVEC3COLOUR>*>(getInput(3).node))->inputVec3;
-							break;
-						case Node::NodeType::MUL:
-							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(3).node))->vec3Mode)
+							if (getInput(5).node->getType() == Node::NodeType::TEXTURE)
 							{
-								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour =
-									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::MUL>*>(getInput(3).node))->vec3Output;
+								auto downcastedPtr = dynamic_cast<TextureNode*>(getInput(5).node);
+								engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
+								//auto i = engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.Albedo;
 							}
 							else
 							{
 								LinkError = true;
 							}
-							break;
-						case Node::NodeType::DIV:
-							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(3).node))->vec3Mode)
+							ImGui::SetNextItemWidth(50);
+							ECGui::DrawTextWidget<std::string>("Albdeo Texture", EMPTY_STRING);
+						}
+						else
+						{
+							engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->AlbedoTexture, MaterialType::MT_ALBEDO);
+							ImGui::SetNextItemWidth(50);
+							ECGui::DrawTextWidget<std::string>("Albdeo Texture", EMPTY_STRING);
+						}
+						endInput();
+						ImNodes::PopColorStyle();
+
+
+						// for Normal texture nodes
+						ImNodes::PushColorStyle(
+							ImNodesCol_Pin, IM_COL32(255, 255, 255, 255));
+						beginInput();
+						if (getInput(6).node)
+						{
+							if (getInput(6).node->getType() == Node::NodeType::TEXTURE)
 							{
-								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour =
-									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::DIV>*>(getInput(3).node))->vec3Output;
+								auto downcastedPtr = dynamic_cast<TextureNode*>(getInput(6).node);
+								//A = downcastedPtr->inputFloat;
+								engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
 							}
 							else
 							{
 								LinkError = true;
 							}
-							break;
-						case Node::NodeType::ADD:
-							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(3).node))->vec3Mode)
+							ImGui::SetNextItemWidth(50);
+							ECGui::DrawTextWidget<std::string>("Normal Texture", EMPTY_STRING);
+						}
+						else
+						{
+							engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->NormalTexture, MaterialType::MT_NORMAL);
+							ImGui::SetNextItemWidth(50);
+							ECGui::DrawTextWidget<std::string>("Normal Texture", EMPTY_STRING);
+						}
+						endInput();
+						ImNodes::PopColorStyle();
+
+
+						// for metallic texture nodes
+						ImNodes::PushColorStyle(
+							ImNodesCol_Pin, IM_COL32(255, 255, 255, 255));
+						beginInput();
+						if (getInput(7).node)
+						{
+							if (getInput(7).node->getType() == Node::NodeType::TEXTURE)
 							{
-								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour =
-									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::ADD>*>(getInput(3).node))->vec3Output;
+								auto downcastedPtr = dynamic_cast<TextureNode*>(getInput(7).node);
+								//A = downcastedPtr->inputFloat;
+								engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
 							}
 							else
 							{
 								LinkError = true;
 							}
-							break;
-						case Node::NodeType::SUB:
-							if ((dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(3).node))->vec3Mode)
+							ImGui::SetNextItemWidth(50);
+							ECGui::DrawTextWidget<std::string>("Metallic Texture", EMPTY_STRING);
+						}
+						else
+						{
+							engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->MetallicTexture, MaterialType::MT_METALLIC);
+							ImGui::SetNextItemWidth(50);
+							ECGui::DrawTextWidget<std::string>("Metallic Texture", EMPTY_STRING);
+						}
+						endInput();
+						ImNodes::PopColorStyle();
+
+						// for Roughness texture nodes
+						ImNodes::PushColorStyle(
+							ImNodesCol_Pin, IM_COL32(255, 255, 255, 255));
+						beginInput();
+						if (getInput(8).node)
+						{
+							if (getInput(8).node->getType() == Node::NodeType::TEXTURE)
 							{
-								engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.SurfaceColour =
-									(dynamic_cast<BinOpNode<MaterialNode::Node::InstructionType::SUB>*>(getInput(3).node))->vec3Output;
+								auto downcastedPtr = dynamic_cast<TextureNode*>(getInput(8).node);
+								//A = downcastedPtr->inputFloat;
+								engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
 							}
 							else
 							{
 								LinkError = true;
 							}
-							break;
-						default:
-							LinkError = true;
-						}
-						ImGui::SetNextItemWidth(50);
-						ECGui::DrawTextWidget<std::string>("Material Colour", EMPTY_STRING);
-					}
-					else
-					{
-						engine->gPBRManager->ResetSurfaceColour();
-						ECGui::DrawTextWidget<std::string>("Material Colour", EMPTY_STRING);
-					}
-					endInput();
-					ImNodes::PopColorStyle();
-
-
-					// for Albdeo texture nodes
-					ImNodes::PushColorStyle(
-						ImNodesCol_Pin, IM_COL32(255, 255, 255, 255));
-					beginInput();
-					if (getInput(4).node)
-					{
-						if (getInput(4).node->getType() == Node::NodeType::TEXTURE)
-						{
-							auto downcastedPtr = dynamic_cast<TextureNode*>(getInput(4).node);
-							engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
-							//auto i = engine->gPBRManager->gMaterialEditorSettings->CurrentMaterial.Albedo;
+							ImGui::SetNextItemWidth(50);
+							ECGui::DrawTextWidget<std::string>("Roughness Texture", EMPTY_STRING);
 						}
 						else
 						{
-							LinkError = true;
+							engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->RoughnessTexture, MaterialType::MT_ROUGHNESS);
+							ImGui::SetNextItemWidth(50);
+							ECGui::DrawTextWidget<std::string>("Roughness Texture", EMPTY_STRING);
 						}
-						ImGui::SetNextItemWidth(50);
-						ECGui::DrawTextWidget<std::string>("Albdeo Texture", EMPTY_STRING);
-					}
-					else
-					{
-						engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->AlbedoTexture, MaterialType::MT_ALBEDO);
-						ImGui::SetNextItemWidth(50);
-						ECGui::DrawTextWidget<std::string>("Albdeo Texture", EMPTY_STRING);
-					}
-					endInput();
-					ImNodes::PopColorStyle();
+						endInput();
+						ImNodes::PopColorStyle();
 
-
-					// for Normal texture nodes
-					ImNodes::PushColorStyle(
-						ImNodesCol_Pin, IM_COL32(255, 255, 255, 255));
-					beginInput();
-					if (getInput(5).node)
-					{
-						if (getInput(5).node->getType() == Node::NodeType::TEXTURE)
+						// for Ao texture nodes
+						ImNodes::PushColorStyle(
+							ImNodesCol_Pin, IM_COL32(255, 255, 255, 255));
+						beginInput();
+						if (getInput(9).node)
 						{
-							auto downcastedPtr = dynamic_cast<TextureNode*>(getInput(5).node);
-							//A = downcastedPtr->inputFloat;
-							engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
+							if (getInput(9).node->getType() == Node::NodeType::TEXTURE)
+							{
+								auto downcastedPtr = dynamic_cast<TextureNode*>(getInput(9).node);
+								//A = downcastedPtr->inputFloat;
+								engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
+							}
+							else
+							{
+								LinkError = true;
+							}
+							ImGui::SetNextItemWidth(50);
+							ECGui::DrawTextWidget<std::string>("Ao Texture", EMPTY_STRING);
 						}
 						else
 						{
-							LinkError = true;
+							engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->AoTexture, MaterialType::MT_AO);
+							ImGui::SetNextItemWidth(50);
+							ECGui::DrawTextWidget<std::string>("Ao Texture", EMPTY_STRING);
 						}
-						ImGui::SetNextItemWidth(50);
-						ECGui::DrawTextWidget<std::string>("Normal Texture", EMPTY_STRING);
-					}
-					else
-					{
-						engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->NormalTexture, MaterialType::MT_NORMAL);
-						ImGui::SetNextItemWidth(50);
-						ECGui::DrawTextWidget<std::string>("Normal Texture", EMPTY_STRING);
-					}
-					endInput();
-					ImNodes::PopColorStyle();
+						endInput();
+						ImNodes::PopColorStyle();
 
-
-					// for metallic texture nodes
-					ImNodes::PushColorStyle(
-						ImNodesCol_Pin, IM_COL32(255, 255, 255, 255));
-					beginInput();
-					if (getInput(6).node)
-					{
-						if (getInput(6).node->getType() == Node::NodeType::TEXTURE)
+						// for Height texture nodes
+						ImNodes::PushColorStyle(
+							ImNodesCol_Pin, IM_COL32(255, 255, 255, 255));
+						beginInput();
+						if (getInput(10).node)
 						{
-							auto downcastedPtr = dynamic_cast<TextureNode*>(getInput(6).node);
-							//A = downcastedPtr->inputFloat;
-							engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
+							if (getInput(10).node->getType() == Node::NodeType::TEXTURE)
+							{
+								auto downcastedPtr = dynamic_cast<TextureNode*>(getInput(10).node);
+								//A = downcastedPtr->inputFloat;
+								engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
+							}
+							else
+							{
+								LinkError = true;
+							}
+							ImGui::SetNextItemWidth(50);
+							ECGui::DrawTextWidget<std::string>("Height Texture", EMPTY_STRING);
 						}
 						else
 						{
-							LinkError = true;
+							engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->HeightTexture, MaterialType::MT_HEIGHT);
+							ImGui::SetNextItemWidth(50);
+							ECGui::DrawTextWidget<std::string>("Height Texture", EMPTY_STRING);
 						}
-						ImGui::SetNextItemWidth(50);
-						ECGui::DrawTextWidget<std::string>("Metallic Texture", EMPTY_STRING);
+						endInput();
+						ImNodes::PopColorStyle();
 					}
-					else
-					{
-						engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->MetallicTexture, MaterialType::MT_METALLIC);
-						ImGui::SetNextItemWidth(50);
-						ECGui::DrawTextWidget<std::string>("Metallic Texture", EMPTY_STRING);
-					}
-					endInput();
-					ImNodes::PopColorStyle();
-
-					// for Roughness texture nodes
-					ImNodes::PushColorStyle(
-						ImNodesCol_Pin, IM_COL32(255, 255, 255, 255));
-					beginInput();
-					if (getInput(7).node)
-					{
-						if (getInput(7).node->getType() == Node::NodeType::TEXTURE)
-						{
-							auto downcastedPtr = dynamic_cast<TextureNode*>(getInput(7).node);
-							//A = downcastedPtr->inputFloat;
-							engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
-						}
-						else
-						{
-							LinkError = true;
-						}
-						ImGui::SetNextItemWidth(50);
-						ECGui::DrawTextWidget<std::string>("Roughness Texture", EMPTY_STRING);
-					}
-					else
-					{
-						engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->RoughnessTexture, MaterialType::MT_ROUGHNESS);
-						ImGui::SetNextItemWidth(50);
-						ECGui::DrawTextWidget<std::string>("Roughness Texture", EMPTY_STRING);
-					}
-					endInput();
-					ImNodes::PopColorStyle();
-
-					// for Ao texture nodes
-					ImNodes::PushColorStyle(
-						ImNodesCol_Pin, IM_COL32(255, 255, 255, 255));
-					beginInput();
-					if (getInput(8).node)
-					{
-						if (getInput(8).node->getType() == Node::NodeType::TEXTURE)
-						{
-							auto downcastedPtr = dynamic_cast<TextureNode*>(getInput(8).node);
-							//A = downcastedPtr->inputFloat;
-							engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
-						}
-						else
-						{
-							LinkError = true;
-						}
-						ImGui::SetNextItemWidth(50);
-						ECGui::DrawTextWidget<std::string>("Ao Texture", EMPTY_STRING);
-					}
-					else
-					{
-						engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->AoTexture, MaterialType::MT_AO);
-						ImGui::SetNextItemWidth(50);
-						ECGui::DrawTextWidget<std::string>("Ao Texture", EMPTY_STRING);
-					}
-					endInput();
-					ImNodes::PopColorStyle();
-
-					// for Height texture nodes
-					ImNodes::PushColorStyle(
-						ImNodesCol_Pin, IM_COL32(255, 255, 255, 255));
-					beginInput();
-					if (getInput(9).node)
-					{
-						if (getInput(9).node->getType() == Node::NodeType::TEXTURE)
-						{
-							auto downcastedPtr = dynamic_cast<TextureNode*>(getInput(9).node);
-							//A = downcastedPtr->inputFloat;
-							engine->gPBRManager->GenerateMaterialTexture(downcastedPtr->folderName_, downcastedPtr->fileName_);
-						}
-						else
-						{
-							LinkError = true;
-						}
-						ImGui::SetNextItemWidth(50);
-						ECGui::DrawTextWidget<std::string>("Height Texture", EMPTY_STRING);
-					}
-					else
-					{
-						engine->gPBRManager->Clear(engine->gPBRManager->gMaterialEditorSettings->HeightTexture, MaterialType::MT_HEIGHT);
-						ImGui::SetNextItemWidth(50);
-						ECGui::DrawTextWidget<std::string>("Height Texture", EMPTY_STRING);
-					}
-					endInput();
-					ImNodes::PopColorStyle();
 				}
 
 				if (LinkError)
@@ -1403,6 +1514,7 @@ namespace Eclipse
 			bool LinkError = false;
 			bool NormalMap = false;
 			bool hasTexture = false;
+			bool isEmissive = false;
 		};
 
 		struct BoolNode : public Node
