@@ -312,15 +312,15 @@ namespace Eclipse
             }
 
 
-                auto& parentCom = engine->world.GetComponent<EntityComponent>(Num);
+            auto& parentCom = engine->world.GetComponent<EntityComponent>(Num);
 
-                if (parentCom.hightLightChild)
-                {
-                    draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(0, 0, 255, 255));
-                }
+            if (parentCom.hightLightChild)
+            {
+                draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(0, 0, 255, 255));
+            }
             
-                engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
-                    engine->editorManager->GetEntityIndex(Num), PayloadSourceType::PST_ENTITY, curr.index);
+            engine->editorManager->DragAndDropInst_.IndexPayloadSource("Entity",
+                engine->editorManager->GetEntityIndex(Num), PayloadSourceType::PST_ENTITY, curr.index);
             engine->editorManager->DragAndDropInst_.IndexPayloadTarget("Entity",
                 engine->editorManager->GetEntityIndex(Num), entCom.IsActive);
 
