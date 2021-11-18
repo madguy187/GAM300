@@ -37,7 +37,7 @@ namespace Eclipse
         // ---------------------------------
         stbi_set_flip_vertically_on_load(true);
         int width, height, nrComponents;
-        float* data = stbi_loadf("src/Assets/Textures/newport_loft.hdr", &width, &height, &nrComponents, 0);
+        float* data = stbi_loadf("src/Assets/Textures/studio_country_hall_1k.hdr", &width, &height, &nrComponents, 0);
         if (data)
         {
             glGenTextures(1, &hdrTexture);

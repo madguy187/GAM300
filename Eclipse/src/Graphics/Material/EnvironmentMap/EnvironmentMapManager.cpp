@@ -7,7 +7,7 @@ namespace Eclipse
     {
         TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(Camera.camType));
 
-        if (ModelMesh.ENV_MAP == true && engine->GraphicsManager.DrawSky == true)
+        if (ModelMesh.ENV_MAP == true)
         {
             auto& Transform = engine->world.GetComponent<TransformComponent>(MeshID);
 
