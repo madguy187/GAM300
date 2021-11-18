@@ -242,6 +242,8 @@ namespace Eclipse
 
     void AssimpModelManager::RenderFromDepth(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType)
     {
+        (void)_renderMode;
+
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
         engine->gFrameBufferManager->UseFrameBuffer(Mode);
 

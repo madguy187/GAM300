@@ -241,11 +241,11 @@ namespace Eclipse
         unsigned int maxMipLevels = 5;
         for (unsigned int mip = 0; mip < maxMipLevels; ++mip)
         {
-            unsigned int mipWidth = 128 * std::pow(0.5, mip);
-            unsigned int mipHeight = 128 * std::pow(0.5, mip);
+            double mipWidth = 128 * std::pow(0.5, mip);
+            double mipHeight = 128 * std::pow(0.5, mip);
             glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
-            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, mipWidth, mipHeight);
-            glViewport(0, 0, mipWidth, mipHeight);
+            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, static_cast<GLsizei>(mipWidth), static_cast<GLsizei>(mipHeight));
+            glViewport(0, 0, static_cast<GLsizei>(mipWidth), static_cast<GLsizei>(mipHeight));
 
             float roughness = (float)mip / (float)(maxMipLevels - 1);
             prefilterShader.setFloat("roughness", roughness);

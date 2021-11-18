@@ -94,5 +94,8 @@ namespace Eclipse
         void BloomScene();
         void renderCube();
         void renderQuad();
+
+        // IBL
+        void RenderSky(FrameBufferMode In);
     };
 }

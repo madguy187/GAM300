@@ -158,6 +158,8 @@ namespace Eclipse
 
     void RenderManager::Outline(MeshComponent& Mesh, Entity ID , FrameBufferMode Mode)
     {
+        (void)Mesh;
+
         // If scene not playing , we enable highlight
         if (engine->IsScenePlaying() != true)
         {

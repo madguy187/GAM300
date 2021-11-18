@@ -105,7 +105,6 @@ namespace Eclipse
                 engine->MaterialManager.DoNotUpdateStencil();
                 engine->GraphicsManager.RenderSky(FrameBufferMode::FBM_SCENE);
 
-
                 if (engine->LightManager.EnableShadows == true)
                 {
                     for (auto const& entityID : mEntities)

@@ -158,6 +158,8 @@ namespace Eclipse
 
         template <typename TypeOfLight>
         void SetRGBLightColor(TypeOfLight& OBJ, ECVec4 in);
+
+        void Reset();
     };
 
 #include "Graphics/Lighting/LightProperties.hpp"

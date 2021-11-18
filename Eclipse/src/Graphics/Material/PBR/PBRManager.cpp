@@ -766,4 +766,20 @@ namespace Eclipse
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         glBindVertexArray(0);
     }
+
+    void PBRManager::RenderSky(FrameBufferMode In)
+    {
+        if (engine->GraphicsManager.DrawSky == true)
+        {
+            engine->gFrameBufferManager->UseFrameBuffer(In);
+            auto& cam = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+            auto& background_ = Graphics::shaderpgms["background"];
+            background_.Use();
+            background_.setMat4("view", cam.viewMtx);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_CUBE_MAP, engine->gPBRManager->IrradianceSettings.envCubemap);
+            engine->MaterialManager.DoNotUpdateStencil();
+            engine->gPBRManager->renderCube();
+        }
+    }
 }

@@ -10,7 +10,7 @@ namespace Eclipse
 
     class PointLight
     {
-    private:
+    public:
         // Global Counter for all pointlights to loop in shader
         inline static unsigned int PointLightCounter = 0;
 

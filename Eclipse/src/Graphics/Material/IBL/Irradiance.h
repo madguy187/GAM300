@@ -5,16 +5,15 @@ namespace Eclipse
     class Irradiance
     {
     public:
-        unsigned int hdrTexture;
-        unsigned int envCubemap;
+        unsigned int hdrTexture = 0;
+        unsigned int envCubemap = 0;
         glm::mat4 captureProjection;
-        glm::mat4 captureViews;
         unsigned int cubeVAO = 0;
         unsigned int cubeVBO = 0;
-        unsigned int captureFBO;
-        unsigned int captureRBO;
-        unsigned int irradianceMap;
-        unsigned int brdfLUTTexture;
+        unsigned int captureFBO = 0;
+        unsigned int captureRBO = 0;
+        unsigned int irradianceMap = 0;
+        unsigned int brdfLUTTexture = 0;
         unsigned int prefilterMap;
         unsigned int quadVAO = 0;
         unsigned int quadVBO = 0;

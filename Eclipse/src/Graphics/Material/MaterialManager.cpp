@@ -458,7 +458,7 @@ namespace Eclipse
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
             model = model * Transform.UpdateRotation();
-            model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type() * glm::vec3(1.02));
+            model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type() * glm::vec3(1.02f));
             Transform.ModelMatrix = model;
 
             mModelNDC = _camera.projMtx * _camera.viewMtx * model;

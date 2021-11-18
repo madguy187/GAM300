@@ -39,6 +39,10 @@ namespace Eclipse
 			else if (nextScene == EMPTY)
 			{
 				curScene = nextScene;
+
+				// Need to reset
+				engine->LightManager.Reset();
+
 				return;
 			}
 			else if (nextScene != QUIT)
@@ -281,7 +285,7 @@ namespace Eclipse
 			engine->gPicker.ResetScene();
 			CommandHistory::Clear();
 		}
-		//engine->AssimpManager.ClearContainer();
+
 		engine->world.Clear();
 		engine->gCamera.ResetScene();
 		engine->gCullingManager->Clear();

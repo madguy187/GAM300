@@ -6,8 +6,6 @@ namespace Eclipse
 {
     void MaterialSystem::Init()
     {
-        engine->gPBRManager->woodTexture = Graphics::FindTextures("brick").GetHandle();
-
         auto& shdrpgm3 = Graphics::shaderpgms["Blur"];
         shdrpgm3.Use();
         shdrpgm3.setInt("image", 0);
@@ -22,14 +20,8 @@ namespace Eclipse
         // Material Node Editor
         engine->gPBRManager->gMaterialEditorSettings->RenderMaterialScene();
 
-        engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SCENE);
-        auto& cam = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
-        auto& background_ = Graphics::shaderpgms["background"];
-        background_.Use();
-        background_.setMat4("view", cam.viewMtx);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_CUBE_MAP, engine->gPBRManager->IrradianceSettings.envCubemap);
-        engine->gPBRManager->renderCube();
+        // Sky
+        engine->gPBRManager->RenderSky(FrameBufferMode::FBM_SCENE);
 
         engine->MaterialManager.StencilBufferClear();
 

@@ -252,12 +252,14 @@ namespace Eclipse
 
     void Eclipse::GraphicsManager::RenderSky(FrameBufferMode mode)
     {
+        (void)mode;
+
         if (DrawSky == true)
         {
-            engine->gFrameBufferManager->UseFrameBuffer(mode);
-            auto& shdrpgm = Graphics::shaderpgms["Sky"];
-
-            Sky->Render(shdrpgm);
+            //engine->gFrameBufferManager->UseFrameBuffer(mode);
+            //auto& shdrpgm = Graphics::shaderpgms["Sky"];
+            //
+            //Sky->Render(shdrpgm);
         }
     }
 
