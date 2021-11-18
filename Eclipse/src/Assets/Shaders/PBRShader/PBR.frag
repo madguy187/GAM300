@@ -426,13 +426,6 @@ void main()
 
        if( HasInstance == 1 )
        {  
-            //vec3 kS = fresnelSchlick(max(dot(N, V), 0.0), F0);
-            //vec3 kD = 1.0 - kS;
-            //kD *= 1.0 - metallic;	  
-            //vec3 irradiance =    texture(irradianceMap, N).rgb;
-            //vec3 diffuse      =  irradiance * albedo;
-            //vec3 ambient =  (kD * diffuse) * ao;
-
             vec3 F = fresnelSchlickRoughness(max(dot(N, V), 0.0), F0, roughness);     
             vec3 kS = F;
             vec3 kD = 1.0 - kS;
@@ -445,6 +438,11 @@ void main()
             vec3 specular = prefilteredColor * (F * brdf.x + brdf.y);
             vec3 ambient = AmbientSettings + (kD * diffuse + specular) * ao;
 
+            if(directionlight[0].AffectsWorld == 0)
+            {
+                ambient = ( AmbientSettings) * albedo * ao;
+            }
+
             //vec3 ambient =  ( AmbientSettings + (1.0 - shadow) ) * albedo * ao;
             vec3 color = ambient + Lo ;
             color = color / (color + vec3(1.0));
@@ -453,13 +451,6 @@ void main()
         }
         else
           {
-            //vec3 kS = fresnelSchlick(max(dot(N, V), 0.0), F0);
-            //vec3 kD = 1.0 - kS;
-            //kD *= 1.0 - MetallicConstant;	  
-            //vec3 irradiance =    texture(irradianceMap, N).rgb;
-            //vec3 diffuse      =  irradiance * AlbedoConstant;
-            //vec3 ambient = (kD * diffuse) * AoConstant;
-
             vec3 F = fresnelSchlickRoughness(max(dot(N, V), 0.0), F0, RoughnessConstant);     
             vec3 kS = F;
             vec3 kD = 1.0 - kS;
@@ -472,6 +463,11 @@ void main()
             vec3 specular = prefilteredColor * (F * brdf.x + brdf.y);
             vec3 ambient = AmbientSettings + (kD * diffuse + specular) * AoConstant;
     
+            if(directionlight[0].AffectsWorld == 0)
+            {
+                ambient = ( AmbientSettings) * AlbedoConstant * AoConstant;
+            }
+
             //vec3 ambient = ( AmbientSettings + (1.0 - shadow)) * AlbedoConstant * AoConstant;
 
             vec3 color = ambient + Lo;
