@@ -27,6 +27,6 @@ namespace Eclipse
         void RenderGameFromLightPOV(MeshComponent& Mesh, Entity entityID);
 
         // Outlining
-        void Outline(MeshComponent& Mesh, Entity ID);
+        void Outline(MeshComponent& Mesh, Entity ID, FrameBufferMode);
     };
 }
