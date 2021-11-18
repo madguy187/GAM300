@@ -145,7 +145,7 @@ namespace Eclipse
                         Renderer.RenderScene(Mesh, entityID);
                         Renderer.RenderGame(Mesh, entityID);
                         Renderer.RenderOtherViews(Mesh, entityID);
-                        //oRenderer.Outline(Mesh, entityID, FrameBufferMode::FBM_SCENE);
+                        Renderer.Outline(Mesh, entityID, FrameBufferMode::FBM_SCENE);
                     }
                 }
 

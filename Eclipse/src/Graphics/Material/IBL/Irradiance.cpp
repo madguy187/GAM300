@@ -5,13 +5,30 @@ namespace Eclipse
 {
     void Irradiance::Init()
     {
-        // configure global opengl state
-        // -----------------------------
-        glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_LEQUAL); // set depth function to less than AND equal for skybox depth trick.
-        glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+        if (quadVAO == 0)
+        {
+            float quadVertices[] =
+            {
+                -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+                -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+                 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+                 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+            };
 
-        auto& camcam = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+            glGenVertexArrays(1, &quadVAO);
+            glGenBuffers(1, &quadVBO);
+            glBindVertexArray(quadVAO);
+            glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+            glEnableVertexAttribArray(0);
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+            glEnableVertexAttribArray(1);
+            glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+        }
+
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LEQUAL);
+        glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
         auto& PBRShader_ = Graphics::shaderpgms["PBRShader"];
         PBRShader_.Use();
@@ -23,8 +40,6 @@ namespace Eclipse
         background_.Use();
         background_.setInt("environmentMap", 0);
 
-        // pbr: setup framebuffer
-        // ----------------------
         glGenFramebuffers(1, &captureFBO);
         glGenRenderbuffers(1, &captureRBO);
 
@@ -33,8 +48,6 @@ namespace Eclipse
         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, captureRBO);
 
-        // pbr: load the HDR environment map
-        // ---------------------------------
         stbi_set_flip_vertically_on_load(true);
         int width, height, nrComponents;
         float* data = stbi_loadf("src/Assets/Textures/studio_country_hall_1k.hdr", &width, &height, &nrComponents, 0);
@@ -61,8 +74,6 @@ namespace Eclipse
 
     void Irradiance::SetupCubeMap()
     {
-        // pbr: setup cubemap to render to and attach to framebuffer
-        // ---------------------------------------------------------
         glGenTextures(1, &envCubemap);
         glBindTexture(GL_TEXTURE_CUBE_MAP, envCubemap);
         for (unsigned int i = 0; i < 6; ++i)
@@ -72,11 +83,9 @@ namespace Eclipse
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); // enable pre-filter mipmap sampling (combatting visible dots artifact)
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        // pbr: set up projection and view matrices for capturing data onto the 6 cubemap face directions
-        // ----------------------------------------------------------------------------------------------
         captureProjection = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 10.0f);
         glm::mat4 captureViews[] =
         {
@@ -88,8 +97,6 @@ namespace Eclipse
         glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  0.0f, -1.0f), glm::vec3(0.0f, -1.0f,  0.0f))
         };
 
-        // pbr: convert HDR equirectangular environment map to cubemap equivalent
-        // ----------------------------------------------------------------------
         auto& Equirectangular_ = Graphics::shaderpgms["Equirectangular"];
         Equirectangular_.Use();
         Equirectangular_.setInt("equirectangularMap", 0);
@@ -97,7 +104,7 @@ namespace Eclipse
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, hdrTexture);
 
-        glViewport(0, 0, 512, 512); // don't forget to configure the viewport to the capture dimensions.
+        glViewport(0, 0, 512, 512);
         glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
         for (unsigned int i = 0; i < 6; ++i)
         {
@@ -109,12 +116,9 @@ namespace Eclipse
         }
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-        // then let OpenGL generate mipmaps from first mip face (combatting visible dots artifact)
         glBindTexture(GL_TEXTURE_CUBE_MAP, envCubemap);
         glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 
-        // pbr: create an irradiance cubemap, and re-scale capture FBO to irradiance scale.
-        // --------------------------------------------------------------------------------
         glGenTextures(1, &irradianceMap);
         glBindTexture(GL_TEXTURE_CUBE_MAP, irradianceMap);
         for (unsigned int i = 0; i < 6; ++i)
@@ -131,8 +135,6 @@ namespace Eclipse
         glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 32, 32);
 
-        // pbr: solve diffuse integral by convolution to create an irradiance (cube)map.
-        // -----------------------------------------------------------------------------
         auto& irradianceShader = Graphics::shaderpgms["Irradiance"];
         irradianceShader.Use();
         irradianceShader.setInt("environmentMap", 0);
@@ -140,7 +142,7 @@ namespace Eclipse
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_CUBE_MAP, envCubemap);
 
-        glViewport(0, 0, 32, 32); // don't forget to configure the viewport to the capture dimensions.
+        glViewport(0, 0, 32, 32);
         glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
         for (unsigned int i = 0; i < 6; ++i)
         {
@@ -152,8 +154,6 @@ namespace Eclipse
         }
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-        // pbr: create a pre-filter cubemap, and re-scale capture FBO to pre-filter scale.
-        // --------------------------------------------------------------------------------
         glGenTextures(1, &prefilterMap);
         glBindTexture(GL_TEXTURE_CUBE_MAP, prefilterMap);
         for (unsigned int i = 0; i < 6; ++i)
@@ -163,13 +163,10 @@ namespace Eclipse
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); // be sure to set minification filter to mip_linear 
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        // generate mipmaps for the cubemap so OpenGL automatically allocates the required memory.
         glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 
-        // pbr: run a quasi monte-carlo simulation on the environment lighting to create a prefilter (cube)map.
-        // ----------------------------------------------------------------------------------------------------
         auto& prefilterShader = Graphics::shaderpgms["PreFilter"];
         prefilterShader.Use();
         prefilterShader.setInt("environmentMap", 0);
@@ -181,7 +178,6 @@ namespace Eclipse
         unsigned int maxMipLevels = 5;
         for (unsigned int mip = 0; mip < maxMipLevels; ++mip)
         {
-            // reisze framebuffer according to mip-level size.
             unsigned int mipWidth = 128 * std::pow(0.5, mip);
             unsigned int mipHeight = 128 * std::pow(0.5, mip);
             glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
@@ -201,20 +197,15 @@ namespace Eclipse
         }
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-        // pbr: generate a 2D LUT from the BRDF equations used.
-        // ----------------------------------------------------
-        glGenTextures(1, &brdfLUTTexture);
 
-        // pre-allocate enough memory for the LUT texture.
+        glGenTextures(1, &brdfLUTTexture);
         glBindTexture(GL_TEXTURE_2D, brdfLUTTexture);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, 512, 512, 0, GL_RG, GL_FLOAT, 0);
-        // be sure to set wrapping mode to GL_CLAMP_TO_EDGE
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        // then re-configure capture framebuffer object and render screen-space quad with BRDF shader.
         glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
         glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
@@ -229,7 +220,7 @@ namespace Eclipse
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         auto& cam = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
-        glm::mat4 projection = glm::perspective(glm::radians(cam.fov), (float)1155 / (float)513, 0.1f, 100.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(cam.fov), (float)1850 / (float)950, 0.1f, 100.0f);
         auto& background_ = Graphics::shaderpgms["background"];
         background_.Use();
         background_.setMat4("projection", projection);
@@ -241,26 +232,6 @@ namespace Eclipse
 
     void Irradiance::renderQuad()
     {
-        if (quadVAO == 0)
-        {
-            float quadVertices[] = {
-                // positions        // texture Coords
-                -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-                -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-                 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
-                 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-            };
-            // setup plane VAO
-            glGenVertexArrays(1, &quadVAO);
-            glGenBuffers(1, &quadVBO);
-            glBindVertexArray(quadVAO);
-            glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-            glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
-            glEnableVertexAttribArray(0);
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-            glEnableVertexAttribArray(1);
-            glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-        }
         glBindVertexArray(quadVAO);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         glBindVertexArray(0);

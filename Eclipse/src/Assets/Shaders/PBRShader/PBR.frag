@@ -204,7 +204,6 @@ void main()
 
     vec3 N;
     vec3 V = normalize(camPos - WorldPos);
-    //vec3 N = getNormalFromMap(); // no normal map can use vec3(0.1) or we normalize 
       
     // Variables declared first;
     vec3 albedo;
