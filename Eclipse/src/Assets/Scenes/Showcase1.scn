@@ -7,7 +7,7 @@
             <fov value="40" />
             <nearPlane value="0.1" />
             <farPlane value="300" />
-            <aspect value="1.90722" />
+            <aspect value="2.22515" />
             <eyePos x="-4.99724" y="4.49999" z="-2.10081" />
             <eyeFront x="1" y="0" z="0" />
             <upVec x="0" y="1" z="0" />
@@ -20,7 +20,7 @@
                 <Col3 _30="2.10081" _31="-4.49999" _32="-4.99724" _33="1" />
             </viewMtx>
             <projMtx Col="4" Row="4">
-                <Col0 _00="1.44057" _01="0" _02="0" _03="0" />
+                <Col0 _00="1.23474" _01="0" _02="0" _03="0" />
                 <Col1 _10="0" _11="2.74748" _12="0" _13="0" />
                 <Col2 _20="0" _21="0" _22="-1.00067" _23="-1" />
                 <Col3 _30="0" _31="0" _32="-0.200067" _33="0" />
@@ -102,7 +102,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Floor" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Floor" Handle="111" />
+                <Member0 Type="0" Directory="" Handle="154" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -170,7 +170,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Bed" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Bed" Handle="102" />
+                <Member0 Type="0" Directory="" Handle="147" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -238,7 +238,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Bed_Pillow" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/BedPillow" Handle="103" />
+                <Member0 Type="0" Directory="" Handle="156" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -306,7 +306,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Wall" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Wall" Handle="128" />
+                <Member0 Type="0" Directory="" Handle="162" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -374,7 +374,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Wall" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Wall" Handle="128" />
+                <Member0 Type="0" Directory="" Handle="162" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -442,7 +442,7 @@
             <TextureRef value="Default" />
             <TextureKey value="UV_Drip_Object" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/IV_Drip" Handle="118" />
+                <Member0 Type="0" Directory="" Handle="158" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -510,7 +510,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Chair" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Chair" Handle="106" />
+                <Member0 Type="0" Directory="" Handle="150" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -578,7 +578,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Long_Table" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Long_Table" Handle="119" />
+                <Member0 Type="0" Directory="" Handle="159" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -646,7 +646,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Wall_TV.001" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/TV" Handle="126" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/TV" Handle="141" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -710,7 +710,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Sliding_Door" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Door" Handle="107" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Door" Handle="122" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -778,7 +778,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Small_Drawer_1" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Drawer_1" Handle="108" />
+                <Member0 Type="0" Directory="" Handle="146" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -846,7 +846,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Small_Drawer_2" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Drawer_2" Handle="109" />
+                <Member0 Type="0" Directory="" Handle="155" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -914,7 +914,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Wall_Window" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Wall_Window" Handle="129" />
+                <Member0 Type="0" Directory="" Handle="163" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -982,7 +982,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Floor" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Floor" Handle="111" />
+                <Member0 Type="0" Directory="" Handle="154" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -1050,7 +1050,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Wall" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Wall" Handle="128" />
+                <Member0 Type="0" Directory="" Handle="162" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -1118,7 +1118,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Wall" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Wall" Handle="128" />
+                <Member0 Type="0" Directory="" Handle="162" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -1186,7 +1186,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Wall" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Wall" Handle="128" />
+                <Member0 Type="0" Directory="" Handle="162" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -1254,7 +1254,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Poster" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Poster" Handle="123" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Poster" Handle="138" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -1322,7 +1322,7 @@
             <TextureRef value="Default" />
             <TextureKey value="Vase.001" />
             <HoldingTextures size="1">
-                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Vase" Handle="127" />
+                <Member0 Type="1" Directory="..//Eclipse//src/Assets/Models/Vase" Handle="142" />
             </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
@@ -1375,7 +1375,7 @@
             <ImguiIndentValue value="20" />
         </EntityComponent>
         <MaterialComponent>
-            <Modeltype value="Models3D" />
+            <Modeltype value="BasicPrimitives" />
             <ambient x="0" y="0" z="0" />
             <diffuse x="1" y="1" z="1" />
             <specular x="1" y="1" z="1" />
@@ -1542,7 +1542,7 @@
             <ImguiIndentValue value="20" />
         </EntityComponent>
         <MaterialComponent>
-            <Modeltype value="Models3D" />
+            <Modeltype value="BasicPrimitives" />
             <ambient x="0" y="0" z="0" />
             <diffuse x="1" y="1" z="1" />
             <specular x="1" y="1" z="1" />
@@ -1604,7 +1604,7 @@
             <ImguiIndentValue value="20" />
         </EntityComponent>
         <MaterialComponent>
-            <Modeltype value="Models3D" />
+            <Modeltype value="BasicPrimitives" />
             <ambient x="0" y="0" z="0" />
             <diffuse x="1" y="1" z="1" />
             <specular x="1" y="1" z="1" />
@@ -1618,7 +1618,9 @@
             <hasTexture value="false" />
             <TextureRef value="Default" />
             <TextureKey value="" />
-            <HoldingTextures size="0" />
+            <HoldingTextures size="1">
+                <Member0 Type="0" Directory="" Handle="162" />
+            </HoldingTextures>
             <HasMaterialIstance value="false" />
             <MaterialInstanceName value="" />
         </MaterialComponent>
