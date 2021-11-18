@@ -41,6 +41,8 @@ uniform vec3 viewPos;
 
 // IBL
 uniform samplerCube irradianceMap;
+uniform samplerCube prefilterMap;
+uniform sampler2D brdfLUT;
 
 struct PointLight 
 {    
@@ -203,7 +205,8 @@ void main()
     vec3 N;
     vec3 V = normalize(camPos - WorldPos);
     //vec3 N = getNormalFromMap(); // no normal map can use vec3(0.1) or we normalize 
-     
+    vec3 R = reflect(-V, N); 
+      
     // Variables declared first;
     vec3 albedo;
     float metallic,roughness,ao;
@@ -439,13 +442,31 @@ void main()
         }
         else
         {
-           vec3 kS = fresnelSchlick(max(dot(N, V), 0.0), F0);
-           vec3 kD = 1.0 - kS;
-           kD *= 1.0 - MetallicConstant;	  
-           vec3 irradiance =    texture(irradianceMap, N).rgb;
-           vec3 diffuse      =  irradiance * AlbedoConstant;
-           vec3 ambient = (kD * diffuse) * AoConstant;
+          vec3 kS = fresnelSchlick(max(dot(N, V), 0.0), F0);
+          vec3 kD = 1.0 - kS;
+          kD *= 1.0 - MetallicConstant;	  
+          vec3 irradiance =    texture(irradianceMap, N).rgb;
+          vec3 diffuse      =  irradiance * AlbedoConstant;
+          vec3 ambient = (kD * diffuse) * AoConstant;
 
+           // ambient lighting (we now use IBL as the ambient term)
+          //vec3 F = fresnelSchlickRoughness(max(dot(N, V), 0.0), F0, RoughnessConstant);
+          //
+          //vec3 kS = F;
+          //vec3 kD = 1.0 - kS;
+          //kD *= 1.0 - MetallicConstant;	  
+          //
+          //vec3 irradiance = texture(irradianceMap, N).rgb;
+          //vec3 diffuse      = irradiance * AlbedoConstant;
+          //
+          //// sample both the pre-filter map and the BRDF lut and combine them together as per the Split-Sum approximation to get the IBL specular part.
+          //const float MAX_REFLECTION_LOD = 4.0;
+          //vec3 prefilteredColor = textureLod(prefilterMap, R,  roughness * MAX_REFLECTION_LOD).rgb;    
+          //vec2 brdf  = texture(brdfLUT, vec2(max(dot(N, V), 0.0), roughness)).rg;
+          //vec3 specular = prefilteredColor * (F * brdf.x + brdf.y);
+          //
+          //vec3 ambient = (kD * diffuse + specular) * ao;
+    
           //vec3 ambient = ( AmbientSettings + (1.0 - shadow)) * AlbedoConstant * AoConstant;
           //vec3 ambient = vec3(0.03) * AlbedoConstant * AoConstant;
           vec3 color = ambient + Lo;

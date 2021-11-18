@@ -14,6 +14,8 @@ namespace Eclipse
         unsigned int captureFBO;
         unsigned int captureRBO;
         unsigned int irradianceMap;
+        unsigned int brdfLUTTexture;
+        unsigned int prefilterMap;
         void Init();
         void SetupCubeMap();
         void renderCube();

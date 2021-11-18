@@ -19,6 +19,14 @@ namespace Eclipse
             engine->Timer.SetName({ SystemName::MATERIAL });
         engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
+        // bind pre-computed IBL data
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, engine->gPBRManager->IrradianceSettings.irradianceMap);
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, engine->gPBRManager->IrradianceSettings.prefilterMap);
+        glActiveTexture(GL_TEXTURE3);
+        glBindTexture(GL_TEXTURE_2D, engine->gPBRManager->IrradianceSettings.brdfLUTTexture);
+
         // Material Node Editor
         engine->gPBRManager->gMaterialEditorSettings->RenderMaterialScene();
 

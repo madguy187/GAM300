@@ -395,7 +395,7 @@ namespace Eclipse
         In.setInt("aoMap", 0);
     }
 
-    void PBRManager::SetEmissive(Shader& In, bool in,  ECVec3 EmissiveColor)
+    void PBRManager::SetEmissive(Shader& In, bool in, ECVec3 EmissiveColor)
     {
         GLuint EmissiveMaterial_ = In.GetLocation("EmissiveMaterial");
         GLuint EmissiveColour_ = In.GetLocation("EmissiveColour");
