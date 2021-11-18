@@ -136,7 +136,7 @@ namespace Eclipse
                         Renderer.RenderScene(Mesh, entityID);
                         Renderer.RenderGame(Mesh, entityID);
                         Renderer.RenderOtherViews(Mesh, entityID);
-                        //Renderer.Outline(Mesh, entityID);
+                        Renderer.Outline(Mesh, entityID);
                     }
                 }
 

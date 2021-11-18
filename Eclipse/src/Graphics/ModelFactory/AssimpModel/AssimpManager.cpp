@@ -197,7 +197,7 @@ namespace Eclipse
         Shader shdrpgm = Graphics::shaderpgms["PBRShader"];
         shdrpgm.Use();
 
-        gEnvironmentMap.CheckUniform(ModelMesh, _camera);
+        gEnvironmentMap.CheckUniform(ModelMesh, _camera, ID);
         ChecModelkUniforms(shdrpgm, _camera, ID);
         CheckUniforms(shdrpgm, ID, ModelMesh, _camera);
 

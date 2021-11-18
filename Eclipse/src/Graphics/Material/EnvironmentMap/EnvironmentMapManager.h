@@ -5,6 +5,6 @@ namespace Eclipse
     class EnvironmentMapManager
     {
     public:
-        void CheckUniform(MeshComponent& ModelMesh, CameraComponent& Camera);
+        void CheckUniform(MeshComponent& ModelMesh, CameraComponent& Camera , Entity MeshID);
     };
 }
