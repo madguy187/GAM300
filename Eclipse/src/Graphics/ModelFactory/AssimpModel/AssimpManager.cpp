@@ -192,19 +192,12 @@ namespace Eclipse
     {
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
 
-        if (engine->GetEditorState() == true)
-        {
-            engine->gFrameBufferManager->UseFrameBuffer(Mode);
-        }
-        else
-        {
-            engine->gFrameBufferManager->UseFrameBuffer(Mode);
-        }
+        engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
         Shader shdrpgm = Graphics::shaderpgms["PBRShader"];
         shdrpgm.Use();
 
-        //gEnvironmentMap.CheckUniform(ModelMesh, _camera);
+        gEnvironmentMap.CheckUniform(ModelMesh, _camera);
         ChecModelkUniforms(shdrpgm, _camera, ID);
         CheckUniforms(shdrpgm, ID, ModelMesh, _camera);
 
