@@ -9,14 +9,15 @@ namespace Eclipse
         // -----------------------------
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_LEQUAL); // set depth function to less than AND equal for skybox depth trick.
+        glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
         auto& camcam = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
 
         auto& PBRShader_ = Graphics::shaderpgms["PBRShader"];
         PBRShader_.Use();
         PBRShader_.setInt("irradianceMap", 1);
-        PBRShader_.setInt("prefilterMap", 2);
-        PBRShader_.setInt("brdfLUT", 3);
+        PBRShader_.setInt("prefilterMap", 20);
+        PBRShader_.setInt("brdfLUT", 21);
 
         auto& background_ = Graphics::shaderpgms["background"];
         background_.Use();
@@ -71,7 +72,7 @@ namespace Eclipse
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); // enable pre-filter mipmap sampling (combatting visible dots artifact)
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         // pbr: set up projection and view matrices for capturing data onto the 6 cubemap face directions
@@ -89,7 +90,6 @@ namespace Eclipse
 
         // pbr: convert HDR equirectangular environment map to cubemap equivalent
         // ----------------------------------------------------------------------
-        auto& camcam = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
         auto& Equirectangular_ = Graphics::shaderpgms["Equirectangular"];
         Equirectangular_.Use();
         Equirectangular_.setInt("equirectangularMap", 0);
@@ -108,6 +108,10 @@ namespace Eclipse
             renderCube();
         }
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+        // then let OpenGL generate mipmaps from first mip face (combatting visible dots artifact)
+        glBindTexture(GL_TEXTURE_CUBE_MAP, envCubemap);
+        glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 
         // pbr: create an irradiance cubemap, and re-scale capture FBO to irradiance scale.
         // --------------------------------------------------------------------------------
@@ -166,7 +170,7 @@ namespace Eclipse
 
         // pbr: run a quasi monte-carlo simulation on the environment lighting to create a prefilter (cube)map.
         // ----------------------------------------------------------------------------------------------------
-        auto& prefilterShader = Graphics::shaderpgms["Irradiance"];
+        auto& prefilterShader = Graphics::shaderpgms["PreFilter"];
         prefilterShader.Use();
         prefilterShader.setInt("environmentMap", 0);
         prefilterShader.setMat4("projection", captureProjection);
@@ -220,7 +224,7 @@ namespace Eclipse
         auto& brdfShader = Graphics::shaderpgms["BRDF"];
         brdfShader.Use();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        engine->gFrameBufferManager->RenderToScreen();
+        renderQuad();
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -233,6 +237,33 @@ namespace Eclipse
         auto& PBRShader_ = Graphics::shaderpgms["PBRShader"];
         PBRShader_.Use();
         PBRShader_.setMat4("projection", projection);
+    }
+
+    void Irradiance::renderQuad()
+    {
+        if (quadVAO == 0)
+        {
+            float quadVertices[] = {
+                // positions        // texture Coords
+                -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+                -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+                 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+                 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+            };
+            // setup plane VAO
+            glGenVertexArrays(1, &quadVAO);
+            glGenBuffers(1, &quadVBO);
+            glBindVertexArray(quadVAO);
+            glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+            glEnableVertexAttribArray(0);
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+            glEnableVertexAttribArray(1);
+            glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+        }
+        glBindVertexArray(quadVAO);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        glBindVertexArray(0);
     }
 
     void Irradiance::renderCube()

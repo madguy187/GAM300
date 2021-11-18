@@ -44,6 +44,15 @@ namespace Eclipse
             engine->Timer.SetName({ SystemName::RENDER });
         engine->Timer.tracker.system_start = static_cast<float>(glfwGetTime());
 
+        // bind pre-computed IBL data
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, engine->gPBRManager->IrradianceSettings.irradianceMap);
+        glActiveTexture(GL_TEXTURE20);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, engine->gPBRManager->IrradianceSettings.prefilterMap);
+        glActiveTexture(GL_TEXTURE21);
+        glBindTexture(GL_TEXTURE_2D, engine->gPBRManager->IrradianceSettings.brdfLUTTexture);
+
+
         engine->GraphicsManager.UploadGlobalUniforms();
         Renderer.UpdateLightMatrix();
 
@@ -136,7 +145,7 @@ namespace Eclipse
                         Renderer.RenderScene(Mesh, entityID);
                         Renderer.RenderGame(Mesh, entityID);
                         Renderer.RenderOtherViews(Mesh, entityID);
-                        Renderer.Outline(Mesh, entityID, FrameBufferMode::FBM_SCENE);
+                        //oRenderer.Outline(Mesh, entityID, FrameBufferMode::FBM_SCENE);
                     }
                 }
 

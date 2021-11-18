@@ -704,8 +704,8 @@ namespace Eclipse
                     glActiveTexture(GL_TEXTURE0);
 
                     engine->gPBRManager->SetAOConstant(shader, 1.0f);
-                    engine->gPBRManager->SetMetallicConstant(shader, 0.5f);
-                    engine->gPBRManager->SetRoughnessConstant(shader, 0.5f);
+                    engine->gPBRManager->SetMetallicConstant(shader, 0.1f);
+                    engine->gPBRManager->SetRoughnessConstant(shader, 0.05f);
                     engine->gPBRManager->SetInstanceFlag(shader, false);
                     engine->gPBRManager->SetAlbedoConstant(shader, engine->AssimpManager.Geometry[mesh.MeshName.data()]->Diffuse);
 

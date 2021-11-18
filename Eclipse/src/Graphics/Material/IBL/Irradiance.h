@@ -16,8 +16,12 @@ namespace Eclipse
         unsigned int irradianceMap;
         unsigned int brdfLUTTexture;
         unsigned int prefilterMap;
+        unsigned int quadVAO = 0;
+        unsigned int quadVBO = 0;
+
         void Init();
         void SetupCubeMap();
+        void renderQuad();
         void renderCube();
     };
 }
