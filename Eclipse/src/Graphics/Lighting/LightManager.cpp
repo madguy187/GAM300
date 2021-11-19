@@ -127,11 +127,18 @@ namespace Eclipse
         }
     }
 
-    void LightManager::Reset()
+    void LightManager::NewSceneReset()
     {
         _DirectionalLights.Destroy();
         _DirectionalLights.FirstGlobalLight();
 
+        _allpointlights.PointLightCounter = 0;
+        _allspotlights.SpotLightCounter = 0;
+    }
+
+    void LightManager::LoadingSceneReset()
+    {
+        _DirectionalLights.Destroy();
         _allpointlights.PointLightCounter = 0;
         _allspotlights.SpotLightCounter = 0;
     }

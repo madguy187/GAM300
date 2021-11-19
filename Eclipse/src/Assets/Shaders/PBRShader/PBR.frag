@@ -438,7 +438,7 @@ void main()
             vec3 specular = prefilteredColor * (F * brdf.x + brdf.y);
             vec3 ambient = AmbientSettings + (kD * diffuse + specular) * ao;
 
-            if(directionlight[0].AffectsWorld == 0)
+            if(directionlight[0].AffectsWorld == 0 && (NumberOfSpotLights == 0 ) && (NumberOfPointLights == 0))
             {
                 ambient = ( AmbientSettings) * albedo * ao;
             }
@@ -463,7 +463,7 @@ void main()
             vec3 specular = prefilteredColor * (F * brdf.x + brdf.y);
             vec3 ambient = AmbientSettings + (kD * diffuse + specular) * AoConstant;
     
-            if(directionlight[0].AffectsWorld == 0)
+            if(directionlight[0].AffectsWorld == 0 && (NumberOfSpotLights == 0 ) && (NumberOfPointLights == 0))
             {
                 ambient = ( AmbientSettings) * AlbedoConstant * AoConstant;
             }

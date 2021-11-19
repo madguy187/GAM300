@@ -156,17 +156,12 @@ namespace Eclipse
         engine->AssimpManager.RenderToDepth(Mesh, entityID, FrameBufferMode::FBM_SHADOW, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SHADOW), CameraComponent::CameraType::Game_Camera);
     }
 
-    void RenderManager::Outline(MeshComponent& Mesh, Entity ID , FrameBufferMode Mode)
+    void RenderManager::Outline(MeshComponent& Mesh, Entity ID, FrameBufferMode Mode)
     {
         (void)Mesh;
-
-        // If scene not playing , we enable highlight
-        if (engine->IsScenePlaying() != true)
+        if (!engine->world.CheckComponent<AnimationComponent>(ID))
         {
-            if (!engine->world.CheckComponent<AnimationComponent>(ID))
-            {
-                engine->MaterialManager.Highlight3DModels(ID, Mode);
-            }
+            engine->MaterialManager.Highlight3DModels(ID, Mode);
         }
     }
 }

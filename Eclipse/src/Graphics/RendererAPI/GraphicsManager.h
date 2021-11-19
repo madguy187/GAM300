@@ -20,7 +20,6 @@ namespace Eclipse
     {
     public:
         OpenGL_Context mRenderContext;
-        std::vector<AssimpModel*> ModelContainer;
         GLenum GlobalMode = GL_FILL;
         std::unique_ptr<CubeMap> Sky;
         std::unique_ptr<Quad> GridQuad;
@@ -29,7 +28,7 @@ namespace Eclipse
         unsigned int SkyCount = 0;
         bool CheckRender = true;
         bool EnableGammaCorrection = true;
-        bool DrawSky = false;
+        bool DrawSky = true;
         float GammaCorrection = 2.2f;
         ECVec3 BackGroundColour{ 0.1f,0.2f,0.3f };
         float Exposure = 1.0f;

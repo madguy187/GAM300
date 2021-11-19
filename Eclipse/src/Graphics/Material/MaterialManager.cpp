@@ -458,6 +458,13 @@ namespace Eclipse
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
             model = model * Transform.UpdateRotation();
+
+            if (engine->world.CheckComponent<AnimationComponent>(ModelID))
+            {
+                auto& animation = engine->world.GetComponent<AnimationComponent>(ModelID);
+                model = glm::scale(model, glm::vec3{ 1.0f / animation.modelLargestAxis, 1.0f / animation.modelLargestAxis, 1.0f / animation.modelLargestAxis });
+            }
+
             model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type() * glm::vec3(1.02f));
             Transform.ModelMatrix = model;
 

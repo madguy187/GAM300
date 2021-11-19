@@ -180,8 +180,6 @@ namespace Eclipse
         ECGui::InsertSameLine();
         ECGui::CheckBoxBool("Normal Mapx", &engine->GraphicsManager.EnableNormalMapping, false);
         ECGui::InsertSameLine();
-        ECGui::CheckBoxBool("Environment Maps", &engine->GraphicsManager.EnableEnvironmentMapForAll, false);
-        ECGui::InsertSameLine();
         ECGui::CheckBoxBool("Cursor Hide", &engine->InputManager->HideCursor, false);
         ECGui::InsertSameLine();
         ECGui::CheckBoxBool("Bloom", &engine->gFrameBufferManager->EmissiveFBO->AllowBloom, false);
