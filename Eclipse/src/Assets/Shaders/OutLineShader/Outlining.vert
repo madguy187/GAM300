@@ -9,5 +9,6 @@ uniform float outlining;
 
 void main() 
 {
-		gl_Position =  uModelToNDC * vec4(vVertexPosition + normal_from_vtxbuffer * outlining, 1.0f);
+		//gl_Position =  uModelToNDC * vec4(vVertexPosition + normal_from_vtxbuffer * outlining, 1.0f);
+		gl_Position =  uModelToNDC * vec4(vVertexPosition, 1.0f);
 }

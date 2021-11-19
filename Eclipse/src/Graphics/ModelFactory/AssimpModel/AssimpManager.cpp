@@ -21,9 +21,7 @@ namespace Eclipse
         glm::mat4 model = glm::mat4(1.0f);
 
         model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
-        model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = model * Transform.UpdateRotation();
         model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
 
         mModelNDC = _camera.projMtx * _camera.viewMtx * model;
@@ -193,23 +191,13 @@ namespace Eclipse
     void AssimpModelManager::MeshDraw(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType)
     {
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
-        
-        if (engine->GetEditorState() == true)
-        {
-            engine->gFrameBufferManager->UseFrameBuffer(Mode);
-        }
-        else
-        {
-            engine->gFrameBufferManager->UseFrameBuffer(Mode);
-        }
+
+        engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
         Shader shdrpgm = Graphics::shaderpgms["PBRShader"];
         shdrpgm.Use();
 
-        auto& Camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
-        auto& CameraPos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
-
-        //gEnvironmentMap.CheckUniform(ModelMesh, _camera);
+        gEnvironmentMap.CheckUniform(ModelMesh, _camera, ID);
         ChecModelkUniforms(shdrpgm, _camera, ID);
         CheckUniforms(shdrpgm, ID, ModelMesh, _camera);
 
@@ -225,6 +213,8 @@ namespace Eclipse
 
     void AssimpModelManager::RenderToDepth(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType)
     {
+        (void)_renderMode;
+
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
         engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
@@ -234,7 +224,6 @@ namespace Eclipse
         TransformComponent camerapos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(_camera.camType));
         TransformComponent Transform = engine->world.GetComponent<TransformComponent>(ID);
 
-        glm::mat4 mModelNDC;
         glm::mat4 model = glm::mat4(1.0f);
 
         model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
@@ -253,6 +242,8 @@ namespace Eclipse
 
     void AssimpModelManager::RenderFromDepth(MeshComponent& ModelMesh, unsigned int ID, FrameBufferMode Mode, RenderMode _renderMode, CameraComponent::CameraType _camType)
     {
+        (void)_renderMode;
+
         auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(_camType));
         engine->gFrameBufferManager->UseFrameBuffer(Mode);
 
@@ -664,21 +655,34 @@ namespace Eclipse
             {
                 if (engine->gPBRManager->CheckMaterialExist(Material))
                 {
-                    // If Material Instance no Textures
-                    if (engine->gPBRManager->AllMaterialInstances[Material.MaterialInstanceName]->HasTexture == false)
+                    if (engine->gPBRManager->AllMaterialInstances[Material.MaterialInstanceName]->EmissiveMaterial == true)
                     {
-                        engine->gPBRManager->NonTexturedUniform(EntityID, Cam);
+                        engine->gPBRManager->SetEmissive(shader, true, engine->gPBRManager->AllMaterialInstances[Material.MaterialInstanceName]->EmissiveColour);
                     }
-
-                    // If Material Instance have textures
                     else
                     {
-                        engine->gPBRManager->TexturedUniform(EntityID, Cam);
+                        GLuint EmissiveMaterial_ = shader.GetLocation("EmissiveMaterial"); //test
+                        glUniform1i(EmissiveMaterial_, false);
+
+                        // If Material Instance no Textures
+                        if (engine->gPBRManager->AllMaterialInstances[Material.MaterialInstanceName]->HasTexture == false)
+                        {
+                            engine->gPBRManager->NonTexturedUniform(EntityID, Cam);
+                        }
+
+                        // If Material Instance have textures
+                        else
+                        {
+                            engine->gPBRManager->TexturedUniform(EntityID, Cam);
+                        }
                     }
                 }
                 // If cannot find material.
                 else
                 {
+                    GLuint EmissiveMaterial_ = shader.GetLocation("EmissiveMaterial"); //test
+                    glUniform1i(EmissiveMaterial_, false);
+
                     // reset
                     glActiveTexture(GL_TEXTURE0);
 
@@ -691,6 +695,9 @@ namespace Eclipse
             }
             else
             {
+                GLuint EmissiveMaterial_ = shader.GetLocation("EmissiveMaterial"); //test
+                glUniform1i(EmissiveMaterial_, false);
+
                 // If Do not have textures
                 //if (engine->AssimpManager.Geometry[mesh.MeshName.data()]->NoTex && (!engine->world.CheckComponent<TextureComponent>(EntityID)))
                 if (Material.NoTextures && (!engine->world.CheckComponent<TextureComponent>(EntityID)))
@@ -699,8 +706,8 @@ namespace Eclipse
                     glActiveTexture(GL_TEXTURE0);
 
                     engine->gPBRManager->SetAOConstant(shader, 1.0f);
-                    engine->gPBRManager->SetMetallicConstant(shader, 0.5f);
-                    engine->gPBRManager->SetRoughnessConstant(shader, 0.5f);
+                    engine->gPBRManager->SetMetallicConstant(shader, 0.1f);
+                    engine->gPBRManager->SetRoughnessConstant(shader, 0.05f);
                     engine->gPBRManager->SetInstanceFlag(shader, false);
                     engine->gPBRManager->SetAlbedoConstant(shader, engine->AssimpManager.Geometry[mesh.MeshName.data()]->Diffuse);
 
@@ -838,17 +845,12 @@ namespace Eclipse
             handPos.rotation.setX(campos.rotation.getX());
 
             model = glm::translate(model, handPos.position.ConvertToGlmVec3Type());
-            model = glm::rotate(model, glm::radians(handPos.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-            model = glm::rotate(model, glm::radians(handPos.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-            model = glm::rotate(model, glm::radians(handPos.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-
+            model = model * Transform.UpdateRotation();
         }
         else
         {
             model = glm::translate(model, Transform.position.ConvertToGlmVec3Type());
-            model = glm::rotate(model, glm::radians(Transform.rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-            model = glm::rotate(model, glm::radians(Transform.rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-            model = glm::rotate(model, glm::radians(Transform.rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+            model = model * Transform.UpdateRotation();
         }
 
         if (engine->world.CheckComponent<AnimationComponent>(ModelID))
@@ -858,6 +860,7 @@ namespace Eclipse
         }
 
         model = glm::scale(model, Transform.scale.ConvertToGlmVec3Type());
+        Transform.ModelMatrix = model;
 
         mModelNDC = _camera.projMtx * _camera.viewMtx * model;
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));

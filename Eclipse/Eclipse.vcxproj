@@ -260,6 +260,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Editor\Windows\MeshEditor\MeshEditor.h" />
     <ClInclude Include="src\Editor\Windows\NodeEditor\ImNodes\imnodes.h" />
     <ClInclude Include="src\Editor\Windows\NodeEditor\ImNodes\imnodes_internal.h" />
+    <ClInclude Include="src\Editor\Windows\NodeEditor\MaterialNodeEditor.h" />
     <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditor.h" />
     <ClInclude Include="src\Editor\Windows\NodeEditor\NodeEditorWindow.h" />
     <ClInclude Include="src\Editor\Windows\Profiler\Profiler.h" />
@@ -286,8 +287,10 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\EngineCompiler\InputCompiler\InputCompiler.h" />
     <ClInclude Include="src\Graphics\EngineCompiler\MaterialCompiler\MaterialCompiler.h" />
     <ClInclude Include="src\Graphics\FileWatch\FileWatch.h" />
+    <ClInclude Include="src\Graphics\FrameBuffer\EmissiveFrameBuffer.h" />
     <ClInclude Include="src\Graphics\FrameBuffer\FrameBuffer.h" />
     <ClInclude Include="src\Graphics\FrameBuffer\FrameBufferManager.h" />
+    <ClInclude Include="src\Graphics\FrameBuffer\PostProcessFrameBuffer.h" />
     <ClInclude Include="src\Graphics\FrameBuffer\WindowConstraint.h" />
     <ClInclude Include="src\Graphics\Grid\AABB.h" />
     <ClInclude Include="src\Graphics\Grid\AABBTree.h" />
@@ -298,6 +301,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\InputHandler\LogicalEnum.hpp" />
     <ClInclude Include="src\Graphics\InputHandler\LogicalInput.h" />
     <ClInclude Include="src\Graphics\Instancing\DebugBoxes\Box.h" />
+    <ClInclude Include="src\Graphics\Instancing\DebugBoxes\DebugBoxes.h" />
     <ClInclude Include="src\Graphics\Instancing\DebugLights\DebugLights.h" />
     <ClInclude Include="src\Graphics\Instancing\DebugManager\DebugManager.h" />
     <ClInclude Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.h" />
@@ -309,6 +313,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\Lighting\PointLight.h" />
     <ClInclude Include="src\Graphics\Lighting\SpotLight.h" />
     <ClInclude Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.h" />
+    <ClInclude Include="src\Graphics\Material\IBL\Irradiance.h" />
     <ClInclude Include="src\Graphics\Material\MaterialEditorSettings\MaterialEditorSettings.h" />
     <ClInclude Include="src\Graphics\Material\MaterialInstance\MaterialInstance.h" />
     <ClInclude Include="src\Graphics\Material\MaterialManager.h" />
@@ -341,6 +346,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\Graphics\Parser\Parser.h" />
     <ClInclude Include="src\Graphics\Picker\DynamicAABBTree.h" />
     <ClInclude Include="src\Graphics\Picker\PickingManager.h" />
+    <ClInclude Include="src\Graphics\Quaternions\Quaternions.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Graphics.h" />
     <ClInclude Include="src\Graphics\RendererAPI\GraphicsManager.h" />
     <ClInclude Include="src\Graphics\RendererAPI\Mesh.h" />
@@ -475,8 +481,10 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\EngineCompiler\InputCompiler\InputCompiler.cpp" />
     <ClCompile Include="src\Graphics\EngineCompiler\MaterialCompiler\MaterialCompiler.cpp" />
     <ClCompile Include="src\Graphics\FileWatch\FileWatch.cpp" />
+    <ClCompile Include="src\Graphics\FrameBuffer\EmissiveFrameBuffer.cpp" />
     <ClCompile Include="src\Graphics\FrameBuffer\FrameBuffer.cpp" />
     <ClCompile Include="src\Graphics\FrameBuffer\FrameBufferManager.cpp" />
+    <ClCompile Include="src\Graphics\FrameBuffer\PostProcessFrameBuffer.cpp" />
     <ClCompile Include="src\Graphics\FrameBuffer\WindowConstraint.cpp" />
     <ClCompile Include="src\Graphics\Grid\AABB.cpp" />
     <ClCompile Include="src\Graphics\Grid\AABBTree.cpp" />
@@ -484,6 +492,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\Grid\Grid.cpp" />
     <ClCompile Include="src\Graphics\InputHandler\LogicalInput.cpp" />
     <ClCompile Include="src\Graphics\Instancing\DebugBoxes\Box.cpp" />
+    <ClCompile Include="src\Graphics\Instancing\DebugBoxes\DebugBoxes.cpp" />
     <ClCompile Include="src\Graphics\Instancing\DebugLights\DebugLights.cpp" />
     <ClCompile Include="src\Graphics\Instancing\DebugManager\DebugManager.cpp" />
     <ClCompile Include="src\Graphics\Instancing\DebugSpheres\DebugSphere.cpp" />
@@ -494,6 +503,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\Lighting\PointLight.cpp" />
     <ClCompile Include="src\Graphics\Lighting\SpotLight.cpp" />
     <ClCompile Include="src\Graphics\Material\EnvironmentMap\EnvironmentMapManager.cpp" />
+    <ClCompile Include="src\Graphics\Material\IBL\Irradiance.cpp" />
     <ClCompile Include="src\Graphics\Material\MaterialEditorSettings\MaterialEditorSettings.cpp" />
     <ClCompile Include="src\Graphics\Material\MaterialInstance\MaterialInstance.cpp" />
     <ClCompile Include="src\Graphics\Material\MaterialManager.cpp" />
@@ -523,6 +533,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\Graphics\Parser\Parser.cpp" />
     <ClCompile Include="src\Graphics\Picker\DynamicAABBTree.cpp" />
     <ClCompile Include="src\Graphics\Picker\PickingManager.cpp" />
+    <ClCompile Include="src\Graphics\Quaternions\Quaternions.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\Graphics.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\GraphicsManager.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI\Mesh.cpp" />
@@ -568,6 +579,10 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\Desktop\GAM300\Eclipse\src\Assets\Shaders\Bloom\Bloom.frag" />
+    <None Include="..\..\..\..\Desktop\GAM300\Eclipse\src\Assets\Shaders\Bloom\Bloom.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

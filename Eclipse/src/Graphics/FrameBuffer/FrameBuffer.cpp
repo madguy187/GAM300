@@ -188,35 +188,35 @@ namespace Eclipse
         Unbind();
     }
 
-    void FrameBuffer::CreatePostProcessFramebuffer()
-    {
-        float RectangleVertices[] =
-        {
-            // Coords    // texCoords
-             1.0f, -1.0f,  1.0f, 0.0f,
-            -1.0f, -1.0f,  0.0f, 0.0f,
-            -1.0f,  1.0f,  0.0f, 1.0f,
+    //void FrameBuffer::CreatePostProcessFramebuffer()
+    //{
+    //    float RectangleVertices[] =
+    //    {
+    //        // Coords    // texCoords
+    //         1.0f, -1.0f,  1.0f, 0.0f,
+    //        -1.0f, -1.0f,  0.0f, 0.0f,
+    //        -1.0f,  1.0f,  0.0f, 1.0f,
 
-             1.0f,  1.0f,  1.0f, 1.0f,
-             1.0f, -1.0f,  1.0f, 0.0f,
-            -1.0f,  1.0f,  0.0f, 1.0f
-        };
+    //         1.0f,  1.0f,  1.0f, 1.0f,
+    //         1.0f, -1.0f,  1.0f, 0.0f,
+    //        -1.0f,  1.0f,  0.0f, 1.0f
+    //    };
 
-        auto& shdrpgm = Graphics::shaderpgms["framebuffer"];
-        shdrpgm.Use();
-        glUniform1i(glGetUniformLocation(shdrpgm.GetHandle(), "screenTexture"), 0);
+    //    auto& shdrpgm = Graphics::shaderpgms["framebuffer"];
+    //    shdrpgm.Use();
+    //    glUniform1i(glGetUniformLocation(shdrpgm.GetHandle(), "screenTexture"), 0);
 
-        // Prepare framebuffer rectangle VBO and VAO
-        glGenVertexArrays(1, &rectVAO);
-        glGenBuffers(1, &rectVBO);
-        glBindVertexArray(rectVAO);
-        glBindBuffer(GL_ARRAY_BUFFER, rectVBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(RectangleVertices), &RectangleVertices, GL_STATIC_DRAW);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-    }
+    //    // Prepare framebuffer rectangle VBO and VAO
+    //    glGenVertexArrays(1, &rectVAO);
+    //    glGenBuffers(1, &rectVBO);
+    //    glBindVertexArray(rectVAO);
+    //    glBindBuffer(GL_ARRAY_BUFFER, rectVBO);
+    //    glBufferData(GL_ARRAY_BUFFER, sizeof(RectangleVertices), &RectangleVertices, GL_STATIC_DRAW);
+    //    glEnableVertexAttribArray(0);
+    //    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+    //    glEnableVertexAttribArray(1);
+    //    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+    //}
 
     std::string Eclipse::FrameBuffer::getStringForEnum(int enum_val)
     {

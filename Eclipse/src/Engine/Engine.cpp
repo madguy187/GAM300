@@ -91,8 +91,8 @@ namespace Eclipse
     {
         ZoneScopedN("Engine")
 
-        // register component
-        world.RegisterComponent<EntityComponent>();
+            // register component
+            world.RegisterComponent<EntityComponent>();
         world.RegisterComponent<TransformComponent>();
         world.RegisterComponent<MeshComponent>();
         world.RegisterComponent<CameraComponent>();
@@ -281,7 +281,7 @@ namespace Eclipse
             mono.StartMono();
             world.GetSystem<MonoSystem>()->Init();
         }
-       
+
         while (!glfwWindowShouldClose(OpenGL_Context::GetWindow()))
         {
             glfwPollEvents();
@@ -382,7 +382,6 @@ namespace Eclipse
             world.Update<RenderSystem>();
 
             // Final DRAW ================================ 
-            //engine->gDebugDrawManager->Render();
             engine->GraphicsManager.FinalRender();
 
             if (IsScenePlaying())

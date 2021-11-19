@@ -1,4 +1,6 @@
 #pragma once
+#include "EmissiveFrameBuffer.h"
+#include "PostProcessFrameBuffer.h"
 
 namespace Eclipse
 {
@@ -8,7 +10,8 @@ namespace Eclipse
         std::unordered_map <FrameBufferMode, std::shared_ptr<FrameBuffer>> FrameBufferContainer;
 
         // Seperate FBO for Post Process
-        std::unique_ptr<FrameBuffer> PostProcess;
+        std::unique_ptr<PostProcess> PostProcessFBO;
+        std::unique_ptr<BloomEffect> EmissiveFBO;
 
         FrameBufferManager() {};
         void FrameBufferDraw();
@@ -37,11 +40,6 @@ namespace Eclipse
         bool IsSobelEffect();
         void Reset();
         void SetSobelEffect();
-
-    private:
-        // Effects
-        void FadeIn(FrameBuffer::PostProcessType Type, float& timer, float multiplier, FrameBufferMode WhichFBO);
-        void PostProcessUpdate(FrameBufferMode);
-        void SobelEffectUpdate(FrameBufferMode TargetFBO, FrameBufferMode RenderFBO);
+        void RenderToScreen();
     };
 }

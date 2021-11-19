@@ -1058,6 +1058,12 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Graphics\Material\IBL\Irradiance.h" />
+    <ClInclude Include="src\Graphics\Quaternions\Quaternions.h" />
+    <ClInclude Include="src\Graphics\FrameBuffer\EmissiveFrameBuffer.h" />
+    <ClInclude Include="src\Graphics\FrameBuffer\PostProcessFrameBuffer.h" />
+    <ClInclude Include="src\Editor\Windows\NodeEditor\MaterialNodeEditor.h" />
+    <ClInclude Include="src\Graphics\Instancing\DebugBoxes\DebugBoxes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">
@@ -1538,5 +1544,14 @@
       <Filter>Tracy</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\Graphics\Material\IBL\Irradiance.cpp" />
+    <ClCompile Include="src\Graphics\Quaternions\Quaternions.cpp" />
+    <ClCompile Include="src\Graphics\FrameBuffer\EmissiveFrameBuffer.cpp" />
+    <ClCompile Include="src\Graphics\FrameBuffer\PostProcessFrameBuffer.cpp" />
+    <ClCompile Include="src\Graphics\Instancing\DebugBoxes\DebugBoxes.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\Desktop\GAM300\Eclipse\src\Assets\Shaders\Bloom\Bloom.frag" />
+    <None Include="..\..\..\..\Desktop\GAM300\Eclipse\src\Assets\Shaders\Bloom\Bloom.vert" />
   </ItemGroup>
 </Project>

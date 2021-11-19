@@ -116,14 +116,14 @@ namespace Eclipse
                 CameraComponent::CameraType::RightView_camera);
         }
 
-        // If scene not playing , we enable highlight
-        if (engine->IsScenePlaying() != true)
-        {
-            if (!engine->world.CheckComponent<AnimationComponent>(entityID))
-            {
-                //engine->MaterialManager.Highlight3DModels(entityID, FrameBufferMode::FBM_SCENE);
-            }
-        }
+        //// If scene not playing , we enable highlight
+        //if (engine->IsScenePlaying() != true)
+        //{
+        //    if (!engine->world.CheckComponent<AnimationComponent>(entityID))
+        //    {
+        //        //engine->MaterialManager.Highlight3DModels(entityID, FrameBufferMode::FBM_SCENE);
+        //    }
+        //}
     }
 
     void RenderManager::UpdateLightMatrix()
@@ -156,31 +156,12 @@ namespace Eclipse
         engine->AssimpManager.RenderToDepth(Mesh, entityID, FrameBufferMode::FBM_SHADOW, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_SHADOW), CameraComponent::CameraType::Game_Camera);
     }
 
-    void RenderManager::RenderSceneNormally(MeshComponent& Mesh, Entity entityID)
+    void RenderManager::Outline(MeshComponent& Mesh, Entity ID, FrameBufferMode Mode)
     {
-        auto& Camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
-        auto& CameraPos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
-        auto& ShadowMappingShader = Graphics::shaderpgms["ShadowMapping"];
-        ShadowMappingShader.Use();
-
-        GLint projection_ = ShadowMappingShader.GetLocation("projection");
-        GLint view_ = ShadowMappingShader.GetLocation("view");
-
-        glUniformMatrix4fv(projection_, 1, GL_FALSE, glm::value_ptr(Camera.projMtx));
-        glUniformMatrix4fv(view_, 1, GL_FALSE, glm::value_ptr(Camera.viewMtx));
-
-        GLint viewPos_ = ShadowMappingShader.GetLocation("viewPos");
-        GLint lightPos_ = ShadowMappingShader.GetLocation("lightPos");
-        GLint lightSpaceMatrix_1 = ShadowMappingShader.GetLocation("lightSpaceMatrix");
-
-        //glUniform3f(viewPos_, CameraPos.position.getX(), CameraPos.position.getY(), CameraPos.position.getZ());
-        //glUniform3f(lightPos_, lightPos.x, lightPos.y, lightPos.z);
-        //glUniformMatrix4fv(lightSpaceMatrix_1, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
-
-        glActiveTexture(GL_TEXTURE0 + 2);
-        ShadowMappingShader.setInt("shadowMap", 2);
-        glBindTexture(GL_TEXTURE_2D, engine->gFrameBufferManager->GetTextureID(FrameBufferMode::FBM_SHADOW));
-        engine->AssimpManager.RenderFromDepth(Mesh, entityID, FrameBufferMode::FBM_SCENE, engine->gFrameBufferManager->GetRenderMode(FrameBufferMode::FBM_GAME),
-            CameraComponent::CameraType::Editor_Camera);
+        (void)Mesh;
+        if (!engine->world.CheckComponent<AnimationComponent>(ID))
+        {
+            engine->MaterialManager.Highlight3DModels(ID, Mode);
+        }
     }
 }

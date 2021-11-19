@@ -7,7 +7,7 @@ namespace Eclipse
     {
         Vertices = vertices_;
         Indices = indices_;
-        Instancing = instancing_;
+        Instancing = static_cast<unsigned int>(instancing_);
 
         glGenVertexArrays(1, &VAO);
         glBindVertexArray(VAO);
@@ -76,7 +76,7 @@ namespace Eclipse
     }
 
 
-    void Instance_Renderer::Draw(Shader& shader, CameraComponent& camera)
+    void Instance_Renderer::Draw(Shader& shader, CameraComponent& camera , RenderMode In)
     {
         shader.Use();
         glBindVertexArray(VAO);
@@ -91,7 +91,15 @@ namespace Eclipse
         glEnable(GL_BLEND);
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_CULL_FACE);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+        if (In == RenderMode::Fill_Mode)
+        {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        }
+        else
+        {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        }
         glDrawElementsInstanced(GL_TRIANGLES, static_cast<GLsizei>(Indices.size()), GL_UNSIGNED_INT, 0, Instancing);
     }
 }

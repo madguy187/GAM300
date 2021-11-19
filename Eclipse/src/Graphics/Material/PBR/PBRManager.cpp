@@ -6,6 +6,7 @@ namespace Eclipse
     PBRManager::PBRManager()
     {
         Init();
+        IrradianceSettings.Init();
     }
 
     void PBRManager::Init()
@@ -394,6 +395,15 @@ namespace Eclipse
         In.setInt("aoMap", 0);
     }
 
+    void PBRManager::SetEmissive(Shader& In, bool in, ECVec3 EmissiveColor)
+    {
+        GLuint EmissiveMaterial_ = In.GetLocation("EmissiveMaterial");
+        GLuint EmissiveColour_ = In.GetLocation("EmissiveColour");
+
+        GLCall(glUniform1f(EmissiveMaterial_, in));
+        glUniform3f(EmissiveColour_, EmissiveColor.getX(), EmissiveColor.getY(), EmissiveColor.getZ());
+    }
+
     void PBRManager::SetSurfaceColour(Shader& In, glm::vec3 SurfaceColour_)
     {
         GLuint AlbedoConstant = In.GetLocation("SurfaceColour");
@@ -590,6 +600,186 @@ namespace Eclipse
                 gMaterialEditorSettings->CurrentMaterial.Height = 0;
         }
         break;
+        }
+    }
+}
+
+namespace Eclipse
+{
+    void PBRManager::BloomScene()
+    {
+        std::vector<glm::vec3> lightPositions;
+        lightPositions.push_back(glm::vec3(0.0f, 5.5f, 1.5f));
+        lightPositions.push_back(glm::vec3(4.0f, 5.5f, 7.0f));
+        lightPositions.push_back(glm::vec3(3.0f, 5.5f, 1.0f));
+        lightPositions.push_back(glm::vec3(.8f, 9.4f, 1.0f));
+
+        std::vector<glm::vec3> lightColors;
+        lightColors.push_back(glm::vec3(5.0f, 5.0f, 5.0f));
+        lightColors.push_back(glm::vec3(10.0f, 0.0f, 0.0f));
+        lightColors.push_back(glm::vec3(0.0f, 0.0f, 15.0f));
+        lightColors.push_back(glm::vec3(0.0f, 5.0f, 0.0f));
+
+        auto& _camera = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+        auto& campos = engine->world.GetComponent<TransformComponent>(engine->gCamera.GetCameraID(CameraComponent::CameraType::Editor_Camera));
+
+        engine->MaterialManager.DoNotUpdateStencil();
+        engine->gFrameBufferManager->UseFrameBuffer(FrameBufferMode::FBM_SCENE);
+
+        auto& shdrpgm = Graphics::shaderpgms["Bloom"];
+        shdrpgm.Use();
+        shdrpgm.setMat4("projection", _camera.projMtx);
+        shdrpgm.setMat4("view", _camera.viewMtx);
+        shdrpgm.setInt("diffuseTexture", 0);
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, woodTexture);
+        glm::mat4 model = glm::mat4(1.0f);
+
+        for (unsigned int i = 0; i < lightPositions.size(); i++)
+        {
+            shdrpgm.setVec3("lights[" + std::to_string(i) + "].Position", lightPositions[i]);
+            shdrpgm.setVec3("lights[" + std::to_string(i) + "].Color", lightColors[i]);
+        }
+
+        glm::vec3 hi = campos.position.ConvertToGlmVec3Type();
+        shdrpgm.setVec3("viewPos", hi);
+
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(0.0f, 2.0f, 0.0));
+        model = glm::scale(model, glm::vec3(12.5f, 0.5f, 12.5f));
+        shdrpgm.setMat4("model", model);
+        renderCube();
+
+
+        auto& shdrpgm2 = Graphics::shaderpgms["ShaderLights"];
+        shdrpgm2.Use();
+        shdrpgm2.setMat4("projection", _camera.projMtx);
+        shdrpgm2.setMat4("view", _camera.viewMtx);
+
+        for (unsigned int i = 0; i < lightPositions.size(); i++)
+        {
+            model = glm::mat4(1.0f);
+            model = glm::translate(model, glm::vec3(lightPositions[i]));
+            model = glm::scale(model, glm::vec3(0.25f));
+            shdrpgm2.setMat4("model", model);
+            shdrpgm2.setVec3("lightColor", lightColors[i]);
+
+            gMaterialEditorSettings->RenderSphere();
+        }
+    }
+
+    void PBRManager::renderCube()
+    {
+        // initialize (if necessary)
+        if (cubeVAO == 0)
+        {
+            float vertices[] = {
+                // back face
+                -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f,
+                 1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f,
+                 1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 0.0f,
+                 1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f,
+                -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f,
+                -1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 1.0f,
+                // front face
+                -1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f,
+                 1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 0.0f,
+                 1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f,
+                 1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f,
+                -1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 1.0f,
+                -1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f,
+                // left face
+                -1.0f,  1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
+                -1.0f,  1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 1.0f,
+                -1.0f, -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
+                -1.0f, -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
+                -1.0f, -1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 0.0f,
+                -1.0f,  1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
+                // right face
+                 1.0f,  1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
+                 1.0f, -1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
+                 1.0f,  1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 1.0f,
+                 1.0f, -1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
+                 1.0f,  1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
+                 1.0f, -1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 0.0f,
+                 // bottom face
+                 -1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,
+                  1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 1.0f,
+                  1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f,
+                  1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f,
+                 -1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 0.0f,
+                 -1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,
+                 // top face
+                 -1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,
+                  1.0f,  1.0f , 1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f,
+                  1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 1.0f,
+                  1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f,
+                 -1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,
+                 -1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 0.0f
+            };
+            glGenVertexArrays(1, &cubeVAO);
+            glGenBuffers(1, &cubeVBO);
+
+            glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+            glBindVertexArray(cubeVAO);
+            glEnableVertexAttribArray(0);
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+            glEnableVertexAttribArray(1);
+            glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+            glEnableVertexAttribArray(2);
+            glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glBindVertexArray(0);
+        }
+
+        glBindVertexArray(cubeVAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glBindVertexArray(0);
+    }
+
+    void PBRManager::renderQuad()
+    {
+        if (quadVAO == 0)
+        {
+            float quadVertices[] = {
+                // positions        // texture Coords
+                -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+                -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+                 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+                 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+            };
+            // setup plane VAO
+            glGenVertexArrays(1, &quadVAO);
+            glGenBuffers(1, &quadVBO);
+            glBindVertexArray(quadVAO);
+            glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+            glEnableVertexAttribArray(0);
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+            glEnableVertexAttribArray(1);
+            glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+        }
+        glBindVertexArray(quadVAO);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        glBindVertexArray(0);
+    }
+
+    void PBRManager::RenderSky(FrameBufferMode In)
+    {
+        if (engine->GraphicsManager.DrawSky == true)
+        {
+            engine->gFrameBufferManager->UseFrameBuffer(In);
+            auto& cam = engine->world.GetComponent<CameraComponent>(engine->gCamera.GetEditorCameraID());
+            auto& background_ = Graphics::shaderpgms["background"];
+            background_.Use();
+            background_.setMat4("view", cam.viewMtx);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_CUBE_MAP, engine->gPBRManager->IrradianceSettings.envCubemap);
+            engine->MaterialManager.DoNotUpdateStencil();
+            engine->gPBRManager->renderCube();
         }
     }
 }

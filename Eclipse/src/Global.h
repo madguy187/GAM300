@@ -208,8 +208,6 @@ enum class FrameBufferMode
     FBM_BOTTOM = 4,
     FBM_LEFT = 5,
     FBM_RIGHT = 6,
-    FBM_MATERIALEDITOR = 7,
-    FBM_MESHEDITOR = 8,
 
     // SOBEL FBO
     FBM_GAME_SOBEL = 9,
@@ -217,6 +215,17 @@ enum class FrameBufferMode
 
     // Shadow
     FBM_SHADOW = 11,
+
+    // Bloom
+    FBM_EMISSIVE = 12,
+
+    // All Editors
+    FBM_MATERIALEDITOR = 7,
+    FBM_MESHEDITOR = 8,
+    FBM_ANIMATION_EDITOR = 12,
+
+    // UI
+    FBM_UI_EDITOR = 13,
 
     MAXCOUNT
 };

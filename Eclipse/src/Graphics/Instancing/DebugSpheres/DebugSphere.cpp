@@ -55,7 +55,7 @@ namespace Eclipse
                 glUniform3f(DiffuseColour, 0.8f, 0.8f, 0.8f);
 
                 engine->MaterialManager.DoNotUpdateStencil();
-                DebugSpheres.Draw(shdrpgm, _camera);
+                DebugSpheres.Draw(shdrpgm, _camera, RenderMode::Fill_Mode);
             }
         }
     }

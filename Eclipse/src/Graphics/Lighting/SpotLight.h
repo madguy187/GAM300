@@ -9,7 +9,7 @@ namespace Eclipse
 
     class SpotLight
     {
-    private:
+    public:
         inline static unsigned int SpotLightCounter = 0;
 
     public:

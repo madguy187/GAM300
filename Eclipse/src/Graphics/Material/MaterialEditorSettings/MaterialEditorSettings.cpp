@@ -13,33 +13,6 @@ namespace Eclipse
         CreateSphere();
     }
 
-    void MaterialEditorSettings::CreateModel()
-    {
-        auto& Innername = engine->AssimpManager.Prefabs["Cube"][0];
-        InnerEntity = engine->world.CreateEntity();
-        engine->world.AddComponent(InnerEntity, TransformComponent{});
-        engine->world.AddComponent(InnerEntity, MeshComponent{});
-        engine->AssimpManager.SetSingleMesh(InnerEntity, Innername);
-
-        auto& trans = engine->world.GetComponent<TransformComponent>(InnerEntity);
-        trans.scale.setX(100.0f);
-        trans.scale.setX(5.0f);
-        trans.scale.setX(100.0f);
-
-        //
-        //auto& Outername = engine->AssimpManager.Prefabs["Outer"][0];
-        //OuterEntity = engine->world.CreateEntity();
-        //engine->world.AddComponent(OuterEntity, TransformComponent{});
-        //engine->world.AddComponent(OuterEntity, MeshComponent{});
-        //engine->AssimpManager.SetSingleMesh(OuterEntity, Outername);\
-
-        //auto& Outer = engine->world.GetComponent<MeshComponent>(OuterEntity);
-        //engine->AssimpManager.RenderMesh(Outer, GL_FILL);
-        //UpdateInner(shdrpgm, _camera, InnerEntity);
-        //auto& Inner = engine->world.GetComponent<MeshComponent>(InnerEntity);
-        //engine->AssimpManager.RenderMesh(Inner, GL_FILL);
-    }
-
     void MaterialEditorSettings::CreateMaterialInstance()
     {
         engine->gPBRManager->AllMaterialInstances.emplace(CurrentMaterial.Name.data(), std::make_unique<MaterialInstance>(CurrentMaterial));
@@ -113,61 +86,14 @@ namespace Eclipse
 
             UpdateCamera(shdrpgm, _camera);
             UpdateLights(shdrpgm);
-            UpdateCurrentMaterial(shdrpgm, _camera);
+            UpdateCurrentMaterial(shdrpgm);
             RenderSphere();
 
-            //auto& i = engine->world.GetComponent<MeshComponent>(InnerEntity);       
-            //UpdateCamera(shdrpgm, _camera);
-            //UpdateInner(shdrpgm, _camera, InnerEntity);
-            //engine->AssimpManager.RenderMesh(i, GL_FILL);
             shdrpgm.UnUse();
         }
     }
 
-    void MaterialEditorSettings::UpdateInner(Shader& shdrpgm, CameraComponent& _camera, Entity ID)
-    {
-        auto& Trans = engine->world.GetComponent<TransformComponent>(ID);
-
-        GLuint MetallicConstant = shdrpgm.GetLocation("MetallicConstant");
-        GLuint RoughnessConstant = shdrpgm.GetLocation("RoughnessConstant");
-        GLint model_ = shdrpgm.GetLocation("model");
-        GLuint AlbedoConstant = shdrpgm.GetLocation("AlbedoConstant");
-        GLuint AoConstant = shdrpgm.GetLocation("AoConstant");
-        GLint HasInstance = shdrpgm.GetLocation("HasInstance");
-        GLint BaseReflectivity = shdrpgm.GetLocation("BaseReflectivity");
-        GLint NormalMap_ = shdrpgm.GetLocation("NormalMap");
-        GLint HeightScale_ = shdrpgm.GetLocation("HeightScale");
-        GLint SurfaceColour_ = shdrpgm.GetLocation("SurfaceColour");
-
-        Trans.scale.setX(50);
-        Trans.scale.setY(1);
-        Trans.scale.setZ(50);
-
-        Trans.position.setY(-15);
-
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, Trans.position.ConvertToGlmVec3Type());
-        model = glm::rotate(model, glm::radians(Rotation.getX()), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(Rotation.getY()), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(Rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::scale(model, Trans.scale.ConvertToGlmVec3Type());
-
-        glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
-        GLCall(glUniform3f(SurfaceColour_, 1.0, 1.0, 1.0));
-        GLCall(glUniform1f(HeightScale_, 0.0f));
-        GLCall(glUniform1i(NormalMap_, true));
-        GLCall(glUniform1i(HasInstance, false));
-        GLCall(glUniform3f(AlbedoConstant, 0.8, 0.8, 0.8));
-        GLCall(glUniform1f(AoConstant, 1.0));
-        GLCall(glUniform1f(MetallicConstant, 0.0));
-        GLCall(glUniform1f(RoughnessConstant, 0.5));
-        GLCall(glUniform3f(BaseReflectivity, 0.4, 0.4, 0.4));
-        BindMaterial(shdrpgm, "None");
-
-    }
-
-    void MaterialEditorSettings::UpdateCurrentMaterial(Shader& shdrpgm, CameraComponent& _camera)
+    void MaterialEditorSettings::UpdateCurrentMaterial(Shader& shdrpgm)
     {
         GLuint MetallicConstant = shdrpgm.GetLocation("MetallicConstant");
         GLuint RoughnessConstant = shdrpgm.GetLocation("RoughnessConstant");
@@ -179,6 +105,8 @@ namespace Eclipse
         GLint NormalMap_ = shdrpgm.GetLocation("NormalMap");
         GLint HeightScale_ = shdrpgm.GetLocation("HeightScale");
         GLint SurfaceColour_ = shdrpgm.GetLocation("SurfaceColour");
+        GLint EmissiveMaterial_ = shdrpgm.GetLocation("EmissiveMaterial");
+        GLint EmissiveColour_ = shdrpgm.GetLocation("EmissiveColour");
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::mat4(1.0f);
@@ -188,7 +116,14 @@ namespace Eclipse
         model = glm::rotate(model, glm::radians(Rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::scale(model, glm::vec3{ 5.0f });
 
+        NegativeChecks();
+
         glUniformMatrix4fv(model_, 1, GL_FALSE, glm::value_ptr(model));
+
+        // Emissive
+        GLCall(glUniform1i(EmissiveMaterial_, CurrentMaterial.EmissiveMaterial));
+        GLCall(glUniform3f(EmissiveColour_, CurrentMaterial.EmissiveColour.getX(), CurrentMaterial.EmissiveColour.getY(), CurrentMaterial.EmissiveColour.getZ()));
+
 
         // When Material is selected
         GLCall(glUniform3f(SurfaceColour_, CurrentMaterial.SurfaceColour.getX(), CurrentMaterial.SurfaceColour.getY(), CurrentMaterial.SurfaceColour.getZ()));
@@ -200,6 +135,7 @@ namespace Eclipse
         GLCall(glUniform1f(MetallicConstant, CurrentMaterial.MetallicConstant));
         GLCall(glUniform1f(RoughnessConstant, CurrentMaterial.RoughnessConstant));
         GLCall(glUniform3f(BaseReflectivity, CurrentMaterial.BaseReflectivity.getX(), CurrentMaterial.BaseReflectivity.getY(), CurrentMaterial.BaseReflectivity.getZ()));
+
         BindMaterial(shdrpgm, CurrentMaterial.Name.data());
     }
 
@@ -218,6 +154,45 @@ namespace Eclipse
         AoTexture.clear();
         HeightTexture.clear();
         MaterialName.clear();
+    }
+
+    void MaterialEditorSettings::NegativeChecks()
+    {
+        if (CurrentMaterial.BaseReflectivity.getX() > 1.0f)
+            CurrentMaterial.BaseReflectivity.setX(1.0f);;
+
+        if (CurrentMaterial.BaseReflectivity.getY() > 1.0f)
+            CurrentMaterial.BaseReflectivity.setY(1.0f);;
+
+        if (CurrentMaterial.BaseReflectivity.getZ() > 1.0f)
+            CurrentMaterial.BaseReflectivity.setZ(1.0f);;
+
+        if (CurrentMaterial.BaseReflectivity.getX() < 0.0f)
+            CurrentMaterial.BaseReflectivity.setX(0.0f);;
+
+        if (CurrentMaterial.BaseReflectivity.getY() < 0.0f)
+            CurrentMaterial.BaseReflectivity.setY(0.0f);;
+
+        if (CurrentMaterial.BaseReflectivity.getZ() < 0.0f)
+            CurrentMaterial.BaseReflectivity.setZ(0.0f);
+
+        if (CurrentMaterial.RoughnessConstant < 0.0f)
+            CurrentMaterial.RoughnessConstant = 0.0f;
+
+        if (CurrentMaterial.RoughnessConstant > 1.0f)
+            CurrentMaterial.RoughnessConstant = 1.0f;
+
+        if (CurrentMaterial.MetallicConstant < 0.0f)
+            CurrentMaterial.MetallicConstant = 0.0f;
+
+        if (CurrentMaterial.MetallicConstant > 1.0f)
+            CurrentMaterial.MetallicConstant = 1.0f;
+
+        if (CurrentMaterial.AoConstant < 0.0f)
+            CurrentMaterial.AoConstant = 0.0f;
+
+        if (CurrentMaterial.AoConstant > 1.0f)
+            CurrentMaterial.AoConstant = 1.0f;
     }
 
     void MaterialEditorSettings::UpdateLights(Shader& MaterialEditorShader)
@@ -344,98 +319,6 @@ namespace Eclipse
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_CULL_FACE);
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-        //if (sphereVAO == 0)
-        //{
-        //    glGenVertexArrays(1, &sphereVAO);
-
-        //    unsigned int vbo, ebo;
-        //    glGenBuffers(1, &vbo);
-        //    glGenBuffers(1, &ebo);
-
-        //    std::vector<glm::vec3> positions;
-        //    std::vector<glm::vec3> normals;
-        //    std::vector<glm::vec2> uv;
-        //    std::vector<unsigned int> indices;
-
-        //    const unsigned int X_SEGMENTS = 64;
-        //    const unsigned int Y_SEGMENTS = 64;
-        //    for (unsigned int x = 0; x <= X_SEGMENTS; ++x)
-        //    {
-        //        for (unsigned int y = 0; y <= Y_SEGMENTS; ++y)
-        //        {
-        //            float xSegment = (float)x / (float)X_SEGMENTS;
-        //            float ySegment = (float)y / (float)Y_SEGMENTS;
-        //            float xPos = std::cos(xSegment * 2.0f * PI) * std::sin(ySegment * PI);
-        //            float yPos = std::cos(ySegment * PI);
-        //            float zPos = std::sin(xSegment * 2.0f * PI) * std::sin(ySegment * PI);
-
-        //            positions.push_back(glm::vec3(xPos, yPos, zPos));
-        //            normals.push_back(glm::vec3(xPos, yPos, zPos));
-        //            uv.push_back(glm::vec2(xSegment, ySegment));
-        //        }
-        //    }
-
-        //    bool oddRow = false;
-        //    for (unsigned int y = 0; y < Y_SEGMENTS; ++y)
-        //    {
-        //        if (!oddRow) // even rows: y == 0, y == 2; and so on
-        //        {
-        //            for (unsigned int x = 0; x <= X_SEGMENTS; ++x)
-        //            {
-        //                indices.push_back(y * (X_SEGMENTS + 1) + x);
-        //                indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            for (int x = X_SEGMENTS; x >= 0; --x)
-        //            {
-        //                indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
-        //                indices.push_back(y * (X_SEGMENTS + 1) + x);
-        //            }
-        //        }
-        //        oddRow = !oddRow;
-        //    }
-        //    indexCount = static_cast<unsigned int>(indices.size());
-
-        //    std::vector<float> data;
-        //    for (unsigned int i = 0; i < positions.size(); ++i)
-        //    {
-        //        data.push_back(positions[i].x);
-        //        data.push_back(positions[i].y);
-        //        data.push_back(positions[i].z);
-
-        //        if (normals.size() > 0)
-        //        {
-        //            data.push_back(normals[i].x);
-        //            data.push_back(normals[i].y);
-        //            data.push_back(normals[i].z);
-        //        }
-
-        //        if (uv.size() > 0)
-        //        {
-        //            data.push_back(uv[i].x);
-        //            data.push_back(uv[i].y);
-        //        }
-        //    }
-
-        //    glBindVertexArray(sphereVAO);
-        //    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        //    glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), &data[0], GL_STATIC_DRAW);
-        //    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-        //    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
-        //    unsigned int stride = (3 + 2 + 3) * sizeof(float);
-
-        //    glEnableVertexAttribArray(0);
-        //    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
-
-        //    glEnableVertexAttribArray(1);
-        //    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
-
-        //    glEnableVertexAttribArray(2);
-        //    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (void*)(6 * sizeof(float)));
-        //}
 
         glBindVertexArray(sphereVAO);
         glDrawElements(GL_TRIANGLE_STRIP, indexCount, GL_UNSIGNED_INT, 0);

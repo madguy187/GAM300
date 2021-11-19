@@ -164,7 +164,7 @@ namespace Eclipse
     {
         ECGui::CheckBoxBool("Draw Grid", &engine->GridManager->Visible, false);
         ECGui::InsertSameLine();
-        ECGui::CheckBoxBool("PostProcess", &engine->gFrameBufferManager->PostProcess->AllowPostProcess, false);
+        ECGui::CheckBoxBool("PostProcess", &engine->gFrameBufferManager->PostProcessFBO->AllowPostProcess, false);
         ECGui::InsertSameLine();
         ECGui::CheckBoxBool("Draw Normals", &engine->GraphicsManager.VisualizeNormalVectors, false);
         ECGui::InsertSameLine();
@@ -180,9 +180,9 @@ namespace Eclipse
         ECGui::InsertSameLine();
         ECGui::CheckBoxBool("Normal Mapx", &engine->GraphicsManager.EnableNormalMapping, false);
         ECGui::InsertSameLine();
-        ECGui::CheckBoxBool("Environment Maps", &engine->GraphicsManager.EnableEnvironmentMapForAll, false);
-        ECGui::InsertSameLine();
         ECGui::CheckBoxBool("Cursor Hide", &engine->InputManager->HideCursor, false);
+        ECGui::InsertSameLine();
+        ECGui::CheckBoxBool("Bloom", &engine->gFrameBufferManager->EmissiveFBO->AllowBloom, false);
 
         //ECGui::DrawTextWidget<const char*>("Gamma:", EMPTY_STRING);
         //ECGui::DrawSliderFloatWidget("Gamma", &engine->GraphicsManager.GammaCorrection, true, 0.5f, 2.5f);
@@ -193,15 +193,15 @@ namespace Eclipse
         //ECGui::DrawTextWidget<const char*>("HDR Exposure:", EMPTY_STRING);
         //ECGui::DrawSliderFloatWidget("HDR Exposure", &engine->GraphicsManager.Exposure, true, 0.1f, 10.5f);
 
-            if (engine->gFrameBufferManager->PostProcess->AllowPostProcess)
-            {
-                std::vector<std::string> Methods = { "NONE" , "INVERSE" , "GREYSCALE" ,"KERNEL" , "BLUR" , "SOBEL" , "BLEEDING"};
-                ComboListSettings settingsss = { "PostProcess Methods" };
-                static size_t comboindex = 0;
-                ECGui::DrawTextWidget<const char*>("PostProcess Types:", EMPTY_STRING);
-                ECGui::CreateComboList(settingsss, Methods, comboindex);
-                engine->gFrameBufferManager->PostProcess->PPType_ = static_cast<FrameBuffer::PostProcessType>(comboindex);
-            }
+        if (engine->gFrameBufferManager->PostProcessFBO->AllowPostProcess)
+        {
+            std::vector<std::string> Methods = { "NONE" , "INVERSE" , "GREYSCALE" ,"KERNEL" , "BLUR" , "SOBEL" , "BLEEDING" };
+            ComboListSettings settingsss = { "PostProcess Methods" };
+            static size_t comboindex = 0;
+            ECGui::DrawTextWidget<const char*>("PostProcess Types:", EMPTY_STRING);
+            ECGui::CreateComboList(settingsss, Methods, comboindex);
+            engine->gFrameBufferManager->PostProcessFBO->PPType_ = static_cast<PostProcessType>(comboindex);
+        }
 
         if (engine->GraphicsManager.VisualizeNormalVectors)
         {

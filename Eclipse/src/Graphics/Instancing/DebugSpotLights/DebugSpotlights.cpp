@@ -51,7 +51,7 @@ namespace Eclipse
                     engine->AssimpManager.Geometry["SpotLight"]->Diffuse.b);
 
                 engine->MaterialManager.DoNotUpdateStencil();
-                DebugSpotLights_.Draw(shdrpgm, _camera);
+                DebugSpotLights_.Draw(shdrpgm, _camera, RenderMode::Fill_Mode);
             }
         }
     }

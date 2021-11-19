@@ -61,7 +61,7 @@ namespace Eclipse
                     engine->AssimpManager.Geometry["LightBulb"]->Diffuse.b);
 
                 engine->MaterialManager.DoNotUpdateStencil();
-                DebugLights_.Draw(shdrpgm, _camera);
+                DebugLights_.Draw(shdrpgm, _camera, RenderMode::Fill_Mode);
             }
         }
     }

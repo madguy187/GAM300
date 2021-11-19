@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Interface/ECGuiWindow.h"
-#include "../NodeEditor/NodeEditor.h"
+#include "../NodeEditor/MaterialNodeEditor.h"
 namespace Eclipse
 {
 	class MaterialEditorWindow final : public ECGuiWindow

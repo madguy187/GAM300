@@ -3,6 +3,7 @@
 #include "Graphics/Instancing/DebugSpheres/DebugSphere.h"
 #include "Graphics/Instancing/DebugLights/DebugLights.h"
 #include "Graphics/Instancing/DebugSpotLights/DebugSpotLights.h"
+#include "Graphics/Instancing/DebugBoxes/DebugBoxes.h"
 
 namespace Eclipse
 {
@@ -25,7 +26,7 @@ namespace Eclipse
         void Render();
 
     public:
-        AABB_ DebugBoxes;
+        //AABB_ DebugBoxes;
         void ResetInstancedDebugBoxes();
         void AddBoundingRegion(glm::mat4 model, CameraComponent& _camera, Entity EntityID);
 
@@ -33,5 +34,6 @@ namespace Eclipse
         DebugSphere DebugSpheres;
         DebugLights LightIcons;
         DebugSpotLights SpotLightIcons;
+        DebugBoxes DebugBoxes_;
     };
 }

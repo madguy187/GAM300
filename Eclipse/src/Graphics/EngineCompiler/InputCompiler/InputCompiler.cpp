@@ -49,7 +49,7 @@ namespace Eclipse
 
         OpenFile(InputFileWrite, "src/Assets/LogicalInput/Keyboard/LogicalInputMappings.input");
 
-        int NumberOfLogicalInputs = engine->InputManager->KeyMappings.size();
+        size_t NumberOfLogicalInputs = engine->InputManager->KeyMappings.size();
         InputFileWrite.write(reinterpret_cast<const char*>(&NumberOfLogicalInputs), sizeof(NumberOfLogicalInputs));
 
         for (auto i : engine->InputManager->KeyMappings)
@@ -90,7 +90,7 @@ namespace Eclipse
 
         OpenFile(MouseFileWrite, "src/Assets/LogicalInput/Mouse/LogicalMouseInputMappings.input");
 
-        int MouseKeys = engine->InputManager->MouseMappings.size();
+        size_t MouseKeys = engine->InputManager->MouseMappings.size();
         MouseFileWrite.write(reinterpret_cast<const char*>(&MouseKeys), sizeof(MouseKeys));
 
         for (auto i : engine->InputManager->MouseMappings)
