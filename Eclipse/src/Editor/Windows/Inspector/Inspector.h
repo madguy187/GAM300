@@ -25,6 +25,7 @@ namespace Eclipse
 	struct CollisionMatrixGroup
 	{
 		CollisionMatrixTracker Current;
+		std::unordered_map< std::string, std::vector<std::bitset<20>> > LayerMaskList;
 	};
 
 	class InspectorWindow final : public ECGuiWindow
