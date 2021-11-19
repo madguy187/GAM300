@@ -1097,6 +1097,7 @@
       <Filter>TypeID</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\NavMeshAgentComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\AIManager.cpp">

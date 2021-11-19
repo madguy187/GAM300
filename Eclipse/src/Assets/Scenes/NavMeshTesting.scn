@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <Entities Size="3">
-    <Entity_0 ID="7">
+    <Entity_0 ID="8">
         <CameraComponent>
             <eyeAlpha value="0" />
             <eyeBeta value="-90" />
@@ -43,11 +43,11 @@
             <scale x="5" y="5" z="5" />
         </TransformComponent>
     </Entity_0>
-    <Entity_1 ID="8">
+    <Entity_1 ID="7">
         <AABBComponent>
-            <center x="0" y="0" z="0" />
-            <Min x="-15" y="-0.5" z="-15" />
-            <Max x="15" y="0.5" z="15" />
+            <center x="0" y="0.86304" z="0" />
+            <Min x="-15" y="0.36304" z="-15" />
+            <Max x="15" y="1.36304" z="15" />
         </AABBComponent>
         <EntityComponent>
             <Tag value="Cube" />
@@ -104,7 +104,7 @@
             <isTrigger value="false" />
         </CollisionComponent>
         <TransformComponent>
-            <position x="0" y="0" z="0" />
+            <position x="0" y="0.86304" z="0" />
             <rotation x="0" y="0" z="0" />
             <scale x="30" y="1" z="30" />
         </TransformComponent>
@@ -112,8 +112,8 @@
     <Entity_2 ID="9">
         <AABBComponent>
             <center x="0" y="0" z="0" />
-            <Min x="-20" y="-2.5" z="-20" />
-            <Max x="20" y="2.5" z="20" />
+            <Min x="-250" y="-250" z="-250" />
+            <Max x="250" y="250" z="250" />
         </AABBComponent>
         <EntityComponent>
             <Tag value="Cube" />
@@ -168,7 +168,7 @@
         <TransformComponent>
             <position x="0" y="0" z="0" />
             <rotation x="0" y="0" z="0" />
-            <scale x="40" y="5" z="40" />
+            <scale x="500" y="500" z="500" />
         </TransformComponent>
     </Entity_2>
 </Entities>

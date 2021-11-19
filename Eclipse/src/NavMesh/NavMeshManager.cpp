@@ -613,7 +613,15 @@ namespace Eclipse
 		if (m_ctx) delete m_ctx;
 	}
 
-	int NavMeshManager::FindPath(float* StartPos, float* EndPos, int nPathSlot, int target)
+	int NavMeshManager::FindPath(Entity ent, ECVec3 destination)
+	{
+		auto& trans = engine->world.GetComponent<TransformComponent>(ent);
+		float entpos[3]{trans.position.getX(),trans.position.getY(),trans.position.getZ()};
+		float destpos[3]{ destination.getX(),destination.getY(),destination.getZ() };
+		return 0;
+	}
+
+	int NavMeshManager::FindPath(float* StartPos, float* EndPos,Entity pathstore)
 	{
 		dtStatus status;
 		float pExtents[3] = { 32.0f,32.0f,32.0f };
@@ -625,6 +633,7 @@ namespace Eclipse
 		int nPathCount = 0;
 		float straightPath[MAX_PATHVERT * 3];
 		int nVertCount = 0;
+		auto& agentcomp = engine->world.GetComponent<NavMeshAgentComponent>(pathstore);
 
 		dtQueryFilter _filter;
 		_filter.setIncludeFlags(0xFFFF);
@@ -651,15 +660,14 @@ namespace Eclipse
 		int nIndex = 0;
 		for (int nVert = 0; nVert < nVertCount; nVert++)
 		{
-			m_PathStore[nPathSlot].PosX[nVert] = straightPath[nIndex++];
-			m_PathStore[nPathSlot].PosY[nVert] = straightPath[nIndex++];
-			m_PathStore[nPathSlot].PosZ[nVert] = straightPath[nIndex++];
+			agentcomp._path.PosX[nVert] = straightPath[nIndex++];
+			agentcomp._path.PosY[nVert] = straightPath[nIndex++];
+			agentcomp._path.PosZ[nVert] = straightPath[nIndex++];
 
 			//sprintf(m_chBug, "Path Vert %i, %f %f %f", nVert, m_PathStore[nPathSlot].PosX[nVert], m_PathStore[nPathSlot].PosY[nVert], m_PathStore[nPathSlot].PosZ[nVert]) ;
 			//m_pLog->logMessage(m_chBug);
 		}
-		m_PathStore[nPathSlot].MaxVertex = nVertCount;
-		m_PathStore[nPathSlot].Target = target;
+		agentcomp._path.MaxVertex = nVertCount;
 
 		return nVertCount;
 	}

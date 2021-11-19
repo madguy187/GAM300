@@ -21,6 +21,7 @@
 #include "ECS/ComponentManager/Components/ParentComponent.h"
 #include "ECS/ComponentManager/Components/ChildComponent.h"
 #include "ECS/ComponentManager/Components/NavMeshVolumeComponent.h"
+#include "ECS/ComponentManager/Components/NavMeshAgentComponent.h"
 
 #include "ECS/SystemManager/Systems/System/RenderSystem/RenderSystem.h"
 #include "ECS/SystemManager/Systems/System/CameraSystem/CameraSystem.h"
@@ -115,6 +116,7 @@ namespace Eclipse
         world.RegisterComponent<NodeEditor>();
         world.RegisterComponent<AnimationComponent>();
         world.RegisterComponent<NavMeshVolumeComponent>();
+        world.RegisterComponent<NavMeshAgentComponent>();
 
         prefabWorld.RegisterComponent<EntityComponent>();
         prefabWorld.RegisterComponent<TransformComponent>();
@@ -140,6 +142,7 @@ namespace Eclipse
         prefabWorld.RegisterComponent<NodeEditor>();
         prefabWorld.RegisterComponent<AnimationComponent>();
         prefabWorld.RegisterComponent<NavMeshVolumeComponent>();
+        prefabWorld.RegisterComponent<NavMeshAgentComponent>();
 
         // registering system
         world.RegisterSystem<RenderSystem>();

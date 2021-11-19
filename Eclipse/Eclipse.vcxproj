@@ -200,6 +200,7 @@ IF EXIST ..\Dep\ASSIMP\assimp-vc142-mtd.lib\ (xcopy /Q /E /Y /I ..\Dep\ASSIMP\as
     <ClInclude Include="src\ECS\ComponentManager\Components\MaterialComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\MeshComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ModelComponent.h" />
+    <ClInclude Include="src\ECS\ComponentManager\Components\NavMeshAgentComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\NavMeshVolumeComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\ParentComponent.h" />
     <ClInclude Include="src\ECS\ComponentManager\Components\PointLightComponent.h" />

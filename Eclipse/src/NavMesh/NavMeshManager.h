@@ -6,24 +6,14 @@
 #include "DetourDebugDraw.h"
 #include "RecastDebugDraw.h"
 #include "ECS/ComponentManager/Components/NavMeshVolumeComponent.h"
+#include "ECS/ComponentManager/Components/NavMeshAgentComponent.h"
 #include "Source/Sample.h"
 #include "Source/InputGeom.h"
 #include "Source/SampleInterfaces.h"
 #define MAX_PATHSLOT		128 // how many paths we can store
 #define MAX_PATHPOLY		256 // max number of polygons in a path
-#define MAX_PATHVERT		512 // most verts in a path 
 
 // structure for storing output straight line paths
-typedef struct
-{
-	float PosX[MAX_PATHVERT]{0.0f};
-	float PosY[MAX_PATHVERT]{0.0f};
-	float PosZ[MAX_PATHVERT]{0.0f};
-	int MaxVertex{0};
-	int Target{0};
-}
-PATHDATA;
-
 // These are just sample areas to use consistent values across the samples.
 // The use should specify these base on his needs.
 
@@ -73,7 +63,6 @@ namespace Eclipse
 		unsigned int m_offMeshConId[MAX_OFFMESH_CONNECTIONS];
 		int m_offMeshConCount{0};
 
-		PATHDATA m_PathStore[MAX_PATHSLOT];
 	public:
 		//void CreateRecastPolyMesh(const rcPolyMesh& mesh);
 		void CalculateMinMax(Entity ent);
@@ -81,6 +70,7 @@ namespace Eclipse
 		bool BuildNavMesh(Entity ent);
 		void RenderMesh();
 		void RecastCleanup();
-		int FindPath(float* StartPos, float* EndPos, int pathslot, int target);
+		int FindPath(Entity ent, ECVec3 destination);
+		int FindPath(float* StartPos, float* EndPos,Entity pathstore);
 	};
 }
