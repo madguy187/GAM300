@@ -653,7 +653,7 @@ namespace Eclipse
 				case MaterialNode::Node::VEC3TYPE::ECVEC3:
 					ImGui::SetNextItemWidth(150);
 					ECGui::DrawSliderFloat3Widget("Vec3", &inputVec3, true, -100.f, 100.f);
-					break;
+					break; 
 				case MaterialNode::Node::VEC3TYPE::ECVEC3COLOUR:
 					ImGui::SetNextItemWidth(100);
 					ECGui::ColorPicker3("Vec3_Colour", (float*)&inputVec3, ImGuiColorEditFlags_DisplayRGB);
